@@ -7967,6 +7967,7 @@
       || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
       || (activeLocale === "ru" && id === "animal-one-line")
       || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")
+      || (id === "shadow-wolf" && Boolean(override.intro))
       || (id === "animal-unblock" && activeLocale !== "en" && Boolean(override.intro))) return merged;
     const translateValue = (value) => {
       if (typeof value === "string") {
@@ -9100,6 +9101,380 @@
     localizedGames[locale] ||= {};
     localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy };
   });
+
+  // Shadow Wolf v10 Guide repair: these seven locale-owned records keep the
+  // complete public Guide from falling back to English source fragments. The
+  // Arabic and Chinese records above remain their own authored sources.
+  const shadowWolfGuideLocaleCopy = {
+    ko: {
+      title: "그림자 늑대 전설", difficulty: "어려움", time: "스테이지당 3~8분",
+      gameplay: "횡스크롤 액션 플랫폼 RPG", genre: ["액션", "플랫폼", "동물", "RPG"], skills: ["논리", "문제 해결", "집중"],
+      guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드", noteTitle: "플레이어 및 저장 정보", hideScoreBands: true,
+      intro: "그림자 늑대 전설은 30개 스테이지로 구성된 횡스크롤 액션 플랫폼 캠페인입니다. 탐험가 늑대를 폐허가 된 절벽 사이로 이끌고, 눈에 보이는 위험 경고를 읽고, 그림자 생물과 싸우고, 경험치를 모으며, 레벨이 오를 때마다 정확히 두 개의 능력 포인트를 사용하세요. 다섯 번째 스테이지마다 방어 또는 공격 패턴에 맞는 다른 대응이 필요한 지역 보스가 등장합니다.",
+      story: [
+        "한때 여섯 봉인이 숲의 변경과 거수의 왕관 사이 달그늘 길을 지켰습니다. 봉인이 깨지자 수정 동굴에는 수정이 떨어지고, 뿌리 황야는 길을 닫고, 잿불 금고의 통풍구는 불을 뿜고, 균열의 바람은 황혼 다리를 뒤흔들며, 왕관 길은 앞 지역의 위협을 다시 조합합니다.",
+        "당신은 룬이 새겨진 그림자 늑대 탐험가입니다. 선택한 스테이지의 모든 지정 생물을 처치해야 그 구간이 복구됩니다. 클리어하면 길의 해당 구간이 저장되고 다음 카드가 열리며, 30 스테이지는 마지막 거수의 봉인을 깨는 결말입니다. 완료한 모든 스테이지는 다시 플레이할 수 있습니다."
+      ],
+      systems: [
+        "이동과 전투: 달리고, 이중 점프하고, 바라보는 방향으로 발톱을 휘두르며, 잠시 보호되는 돌진으로 위험을 통과합니다. 적, 투사체, 가시, 활성 지형에 닿으면 늑대의 HP가 줄고, 추락하면 안정된 지면으로 돌아오며 HP 5를 잃습니다.",
+        "경험치와 능력치: 일반 적과 특수 적이 경험치 구슬을 떨어뜨립니다. 레벨업은 전투를 잠시 멈추고 반드시 배분해야 하는 두 포인트를 줍니다. 힘은 피해량, 민첩은 속도, 체질은 최대 HP, 행운은 치명타 확률을 올리며 각 선택은 현재값과 다음 값을 보여 줍니다.",
+        "특수 적: 수정 박쥐는 탄환을 퍼뜨리고, 장갑 멧돼지는 순찰 실패 뒤 방어를 열며, 돌진 멧돼지는 통로를 가로지릅니다. 잿불 늑대는 불길을 남기고, 잠수 박쥐는 높이를 따라오며, 균열 박쥐는 발판 사이를 순간이동하고, 거울 늑대는 한 번만 두 개의 약한 잔상으로 갈라집니다.",
+        "지형: 떨어지는 수정, 독, 뿌리, 불, 충격파, 균열 바람은 활성화 전에 경고 시간을 둡니다. 움직이는 발판은 점프 경로를 바꾸고, 고정 가시는 닿는 순간 위험합니다.",
+        "선택형 영구 지원: 안개 부적은 다이아몬드 15개가 필요하며 시작 최대 HP를 30에서 40으로 바꿉니다. 두 단계 확인에서 지출 전후 잔액을 정확히 보여 주고, 일반 스테이지 해금에는 다이아몬드가 필요하지 않습니다."
+      ],
+      how: [
+        "가로로 이어진 30개 스테이지 카드에서 해금된 카드를 고르세요. 다섯 번째 카드는 보스 체크포인트입니다.",
+        "A/D 또는 왼쪽/오른쪽 방향키로 이동하고, W·위쪽 방향키·Space로 점프하세요. 착지 전에 한 번 더 누르면 이중 점프가 됩니다.",
+        "J로 발톱 공격을 하고 K 또는 Shift로 돌진하세요. 터치 플레이어는 화면의 방향, 점프, 공격 버튼을 사용합니다.",
+        "점선 지형 경고가 활성화되기 전에 읽고, 적의 장갑이나 보호막 고리는 피해를 주고받으라는 신호가 아니라 반격 창을 찾으라는 신호로 보세요.",
+        "경험치를 모으고 레벨업으로 전투가 멈추면 정확한 두 능력 포인트를 모두 배분하세요.",
+        "완전한 전투를 끝내면 스테이지가 저장되고 다음 카드가 열립니다. 패배해도 이전 클리어를 지우지 않고 바로 재도전할 수 있습니다."
+      ],
+      strategyTips: [
+        "움직이는 발판, 탄환 확산, 위험 주기가 안전한 착지를 확인할 때까지 두 번째 점프를 아껴 두세요.",
+        "투사체 부채나 돌진의 끝을 통과할 때 돌진을 쓰고, 회복 중에 돌아서 발톱을 휘두르세요.",
+        "느린 장갑 멧돼지의 반격 창을 노리기 전에 원거리 위협부터 제거하세요.",
+        "힘은 전투를 줄이고, 체질은 실수를 견디며, 민첩은 위치 선정을 돕고, 행운은 변동적인 폭발력을 만듭니다. 현재 스테이지 규칙에 맞게 고르세요.",
+        "거울 늑대를 쓰러뜨리기 전에 갈라지는 지점에서 물러나 두 잔상이 동시에 나타나지 않게 하세요."
+      ],
+      progression: [
+        "1~5 스테이지는 순찰, 절벽, 조준 탄환, 움직이는 발판, 가시를 가르치고, 바실리스크 골짜기는 독 구역과 넓어지는 탄환 부채를 추가합니다.",
+        "6~10 스테이지는 떨어지는 수정 경고, 수정 박쥐의 확산탄, 장갑 멧돼지를 더합니다. 돌 수호자는 정면 발톱을 막고 지면 강타 뒤 두 번의 충격파로 반격 창을 만듭니다.",
+        "11~15 스테이지는 가시 통로, 돌진, 장갑, 원거리 우선순위를 섞습니다. 가시 거상은 뿌리 강타가 빗나가기 전까지 핵을 보호합니다.",
+        "16~20 스테이지는 불길 통로, 잿불 늑대의 불길, 잠수 박쥐를 순환시키고, 재의 비룡은 보호된 공중 부채 뒤 착지할 때 약점을 보입니다.",
+        "21~25 스테이지는 돌풍, 순간이동 박쥐, 분열하는 거울 늑대를 추가합니다. 황혼 사슴은 돌진이 경기장 가장자리에 부딪힐 때까지 대부분의 피해를 반사합니다.",
+        "26~30 스테이지는 이전 반격 규칙과 보이는 경고를 함께 사용합니다. 거수의 왕관은 두 번의 HP 문턱에서 수정 낙하와 뿌리 압박을 추가하지만 존재하지 않는 31 스테이지는 만들지 않습니다."
+      ],
+      designNote: "이 캠페인은 여섯 개의 5스테이지 학습 구간으로 구성되어, 단순히 적의 HP를 키우는 대신 인식과 대응으로 액션 플랫폼 난이도를 높입니다. 지형은 먼저 경고한 뒤 활성화되고, 고정된 논리 전투 화면은 휴대폰과 데스크톱에서 발판·HUD·조작·성장 선택·결과의 위치를 유지합니다. 회피, 점프, 목표 우선순위, 공격 시점은 모두 플레이어가 직접 결정합니다.",
+      parent: "이 브라우저에는 최고 해금 스테이지, 선택 스테이지, 클리어 목록, 시도 횟수, 최고 기록, 왕관 클리어, 안개 부적 소유 정보가 저장됩니다. 이전 저장 데이터는 진행을 다시 잠그지 않고 이어지며, 사이트 데이터를 지우거나 브라우저를 바꾸면 기록이 사라질 수 있습니다. 기본 플레이에는 로그인이 필요하지 않고 다이아몬드는 선택형 지원 자원입니다.",
+      faq: [
+        ["그림자 늑대 전설은 무료인가요?", "네. 전체 30개 스테이지 캠페인을 구매나 로그인 없이 브라우저에서 플레이할 수 있습니다."],
+        ["스테이지는 어떻게 열리나요?", "새 저장은 1 스테이지에서 시작합니다. 전투를 모두 끝내면 해당 스테이지가 저장되고 다음 카드가 열리며, 완료한 스테이지는 다시 플레이할 수 있습니다."],
+        ["늑대가 떨어지면 어떻게 되나요?", "늑대는 안정된 지면으로 돌아오며 HP 5를 잃습니다. 이 벌점으로 HP가 0이 될 때만 시도가 끝납니다."],
+        ["장갑 적에게 피해가 거의 들어가지 않는 이유는 무엇인가요?", "방어 상태가 활성화된 것입니다. 돌진 실패, 지면 강타, 뿌리 강타, 착지 또는 벽 충돌 뒤의 보이는 반격 창을 이용하세요."],
+        ["능력 포인트 두 개를 모두 써야 하나요?", "네. 두 포인트를 힘, 민첩, 체질, 행운 중 하나에 배분해야 전투가 재개됩니다."],
+        ["다이아몬드가 필요한가요?", "아니요. 선택형 안개 부적에만 쓰이며 30개 스테이지의 일반 진행에는 필요하지 않습니다."],
+        ["어떤 진행 정보가 저장되나요?", "스테이지 해금과 클리어, 선택 스테이지, 시도 횟수, 최고 기록, 왕관 클리어, 안개 부적 소유 정보가 이 브라우저에 저장됩니다."],
+        ["여섯 보스는 어떻게 다른가요?", "바실리스크는 독으로 지면을 통제하고, 수호자는 강타 뒤 방어를 열며, 거상은 핵을 드러냅니다. 비룡은 비행과 착지를 오가고, 사슴은 돌진 실패 때 보호막을 깨며, 거수는 수정과 뿌리 압박을 단계별로 조합합니다."]
+      ],
+    },
+    "pt-BR": {
+      title: "Lenda do Lobo das Sombras", difficulty: "Difícil", time: "3–8 minutos por fase",
+      gameplay: "RPG de ação e plataforma lateral", genre: ["Ação", "Plataforma", "Animais", "RPG"], skills: ["Lógica", "Resolução de problemas", "Foco"],
+      guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia do jogo", noteTitle: "Informações do jogador e salvamento", hideScoreBands: true,
+      intro: "Lenda do Lobo das Sombras é uma campanha de ação e plataforma lateral com 30 fases. Guie o lobo explorador por penhascos em ruínas, leia avisos de perigo visíveis, enfrente criaturas sombrias, colete EXP e use exatamente dois pontos de atributo sempre que subir de nível. Cada quinta fase termina com um chefe regional cujo padrão de defesa ou ataque exige uma resposta diferente.",
+      story: [
+        "Seis selos mantinham aberto o caminho do luar entre a fronteira da floresta e a Coroa do Beemote. Quando se romperam, cristais passaram a cair nas cavernas, raízes fecharam caminhos, aberturas da Forja das Cinzas acenderam, ventos de fenda distorceram a Ponte do Eclipse e a Estrada da Coroa reuniu ameaças das regiões anteriores.",
+        "Você joga como o explorador Lobo das Sombras marcado por runas. Uma fase só é restaurada depois que todas as criaturas designadas são derrotadas. A vitória salva esse trecho e libera a próxima carta; a Fase 30 quebra o selo final do Beemote, e todas as fases concluídas continuam disponíveis para rejogar."
+      ],
+      systems: [
+        "Movimento e combate: corra, faça um pulo duplo, golpeie na direção do lobo e use a investida para atravessar o perigo durante um breve momento protegido. Inimigos, projéteis, espinhos e terreno ativo reduzem o HP; uma queda devolve o lobo ao chão seguro com uma penalidade de 5 HP.",
+        "EXP e atributos: inimigos comuns e especiais soltam esferas de experiência. Subir de nível pausa a Batalha e concede dois pontos obrigatórios. Força aumenta o dano, Agilidade aumenta a velocidade, Constituição aumenta o HP máximo e Sorte aumenta a chance crítica; cada escolha mostra os valores atual e seguinte.",
+        "Inimigos especiais: Morcegos de Cristal espalham tiros, Javalis Blindados abrem a defesa depois de uma patrulha falha e Javalis de Investida atravessam as rotas. Lobos de Brasa deixam fogo, Morcegos de Mergulho perseguem a altura, Morcegos da Fenda piscam entre plataformas e Lobos Espelhados se dividem uma vez em dois ecos frágeis.",
+        "Terreno: cristais caindo, veneno, raízes, fogo, ondas de choque e rajadas da fenda têm um aviso antes de ficarem ativos. Plataformas móveis mudam o caminho do salto, enquanto espinhos permanentes continuam perigosos ao toque.",
+        "Suporte permanente opcional: o Amuleto da Névoa custa 15 diamantes e aumenta o HP máximo inicial de 30 para 40. A confirmação em duas etapas mostra o saldo exato antes e depois; o desbloqueio normal das fases não exige diamantes."
+      ],
+      how: [
+        "Escolha uma carta desbloqueada na fileira horizontal de 30 fases; cada quinta carta é um ponto de controle de chefe.",
+        "Use A/D ou as setas esquerda/direita para mover. Pressione W, seta para cima ou Espaço para pular e pressione novamente antes de aterrissar para fazer o segundo salto.",
+        "Pressione J para golpear e K ou Shift para investir. No toque, use os botões visíveis de direção, salto e ataque.",
+        "Leia os avisos pontilhados antes de o terreno ficar ativo e trate o anel de armadura ou escudo como um convite para procurar a janela de contra-ataque.",
+        "Colete EXP e distribua os dois pontos de atributo com os valores exatos sempre que o crescimento pausar a mesma tela de Batalha.",
+        "Derrote todo o encontro para salvar a fase e liberar a próxima. A derrota oferece uma nova tentativa sem apagar vitórias anteriores."
+      ],
+      strategyTips: [
+        "Guarde o segundo salto até uma plataforma móvel, uma rajada ou um ciclo de perigo confirmar o pouso seguro.",
+        "Use a investida no fim de uma chuva de projéteis ou de uma investida inimiga e vire para golpear durante a recuperação.",
+        "Elimine ameaças de longo alcance antes de se comprometer com a janela lenta de punição do Javali Blindado.",
+        "Força encurta combates, Constituição perdoa erros, Agilidade melhora o posicionamento e Sorte cria explosões variáveis; escolha de acordo com a regra da fase.",
+        "Afaste-se do ponto de divisão antes de derrotar um Lobo Espelhado, pois dois ecos surgem ao redor dele."
+      ],
+      progression: [
+        "As fases 1–5 ensinam patrulhas, penhascos, tiros direcionados, plataformas móveis e espinhos; o Vale do Basilisco acrescenta veneno e uma rajada cada vez mais ampla.",
+        "As fases 6–10 acrescentam avisos de cristais caindo, disparos espalhados dos Morcegos de Cristal e Javalis Blindados. O Guardião de Pedra bloqueia garras frontais e abre uma brecha após um golpe no chão com duas ondas de choque saltáveis.",
+        "As fases 11–15 combinam corredores de espinhos, investidas, armadura e prioridade de ameaças à distância. O Colosso de Espinhos protege o núcleo até uma pancada de raiz errar e abrir uma curta janela de dano.",
+        "As fases 16–20 alternam corredores de fogo, trilhas de Lobos de Brasa e Morcegos de Mergulho; o Wyvern de Cinzas fica protegido no ar e pode ser punido ao aterrissar.",
+        "As fases 21–25 acrescentam rajadas de vento, Morcegos da Fenda e Lobos Espelhados que se dividem. O Cervo do Eclipse reflete a maior parte do dano até sua investida bater na borda da arena.",
+        "As fases 26–30 combinam as regras de contra-ataque anteriores com avisos visíveis. A Coroa do Beemote muda em dois limiares de vida, acrescentando cristais e raízes sem criar uma Fase 31 escondida."
+      ],
+      designNote: "A campanha usa seis arcos de cinco fases para aumentar a dificuldade por reconhecimento e contra-ataque, não apenas por barras de vida maiores. O terreno avisa antes de ativar, e uma tela lógica fixa mantém plataformas, HUD, controles, crescimento e Resultado na mesma geometria em celular e desktop. Cada esquiva, salto, prioridade e momento de ataque continua sob controle direto do jogador.",
+      parent: "Este navegador guarda a fase mais alta desbloqueada, a fase escolhida, a lista de conclusões, tentativas, melhor resultado, vitórias da Coroa e posse do Amuleto da Névoa. Um salvamento antigo avança sem bloquear novamente o progresso; limpar os dados do site ou trocar de navegador pode removê-lo. Não é preciso criar conta para jogar, e diamantes são um suporte opcional.",
+      faq: [
+        ["Lenda do Lobo das Sombras é grátis?", "Sim. A campanha completa de 30 fases funciona no navegador sem compra ou login obrigatório."],
+        ["Como as fases são desbloqueadas?", "Um novo salvamento começa na Fase 1. Derrotar todo o encontro salva a fase e libera a próxima carta; fases concluídas continuam disponíveis para rejogar."],
+        ["O que acontece quando o lobo cai?", "O lobo volta ao chão seguro e perde 5 HP. A tentativa só termina se essa penalidade zerar o HP."],
+        ["Por que um inimigo blindado recebe pouco dano?", "A defesa está ativa. Procure a janela visível depois de uma investida, pancada, golpe de raiz, aterrissagem ou colisão com a parede."],
+        ["Preciso gastar os dois pontos de atributo?", "Sim. A Batalha só continua depois que os dois pontos são atribuídos a Força, Agilidade, Constituição ou Sorte."],
+        ["Diamantes são necessários?", "Não. Eles servem apenas para o Amuleto da Névoa opcional; o progresso normal pelas 30 fases não exige diamantes."],
+        ["Que progresso fica salvo?", "Desbloqueios e conclusões, fase escolhida, tentativas, melhor resultado, vitórias da Coroa e posse do Amuleto da Névoa ficam salvos neste navegador."],
+        ["Como os seis chefes são diferentes?", "O Basilisco controla o chão com veneno, o Guardião abre a defesa após golpes, o Colosso expõe o núcleo, o Wyvern alterna voo e pouso, o Cervo quebra o escudo ao falhar na investida e o Beemote combina cristais e raízes por fases."]
+      ],
+    },
+    fr: {
+      title: "Légende du Loup de l’Ombre", difficulty: "Difficile", time: "3 à 8 minutes par étape",
+      gameplay: "RPG d’action et de plateforme à défilement latéral", genre: ["Action", "Plateforme", "Animaux", "RPG"], skills: ["Logique", "Résolution de problèmes", "Concentration"],
+      guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu", noteTitle: "Informations du joueur et sauvegarde", hideScoreBands: true,
+      intro: "Légende du Loup de l’Ombre est une campagne d’action et de plateforme à défilement latéral en 30 étapes. Guidez le loup explorateur sur des corniches en ruine, lisez les avertissements de danger visibles, combattez les créatures de l’ombre, récoltez de l’EXP et dépensez exactement deux points d’attribut à chaque montée de niveau. Une étape sur cinq se termine par un boss régional qui demande une réponse différente selon sa défense ou son attaque.",
+      story: [
+        "Six sceaux maintenaient autrefois ouvert le chemin de Clair de Lune entre la frontière forestière et la Couronne du Béhemoth. Leur rupture a fait tomber des cristaux dans les cavernes, fermer des passages par les racines, embraser les conduits de la Forge des Cendres, déformer le Pont de l’Éclipse par les vents de faille et réunir les menaces précédentes sur la Route de la Couronne.",
+        "Vous incarnez le loup explorateur marqué par les runes. Une étape n’est restaurée qu’après la défaite de toutes les créatures assignées. La victoire sauvegarde cette portion du chemin et débloque la carte suivante ; l’étape 30 brise le dernier sceau du Béhemoth et toutes les étapes terminées restent rejouables."
+      ],
+      systems: [
+        "Déplacement et combat : courez, faites un double saut, frappez dans la direction du loup et utilisez la ruée pour traverser le danger pendant un bref instant protégé. Le contact avec un ennemi, un projectile, des piques ou un terrain actif réduit les PV ; une chute ramène le loup au sol et lui retire 5 PV.",
+        "EXP et attributs : les ennemis ordinaires et spéciaux lâchent des orbes d’expérience. La montée de niveau met la bataille en pause et donne deux points obligatoires. La Force augmente les dégâts, l’Agilité la vitesse, la Constitution les PV maximum et la Chance les coups critiques ; chaque choix affiche les valeurs actuelle et suivante.",
+        "Ennemis spéciaux : les Chauves-souris de cristal dispersent leurs tirs, les Sangliers blindés ouvrent leur défense après une patrouille manquée et les Sangliers chargeurs traversent les voies. Les Loups de braise laissent du feu, les Chauves-souris plongeuses suivent la hauteur, les Chauves-souris de faille se téléportent entre les plateformes et les Loups-miroirs se séparent une fois en deux échos fragiles.",
+        "Terrain : cristaux tombants, poison, racines, feu, ondes de choc et rafales de faille affichent un avertissement avant leur activation. Les plateformes mobiles modifient la trajectoire du saut, tandis que les piques permanentes restent dangereuses au contact.",
+        "Soutien permanent facultatif : l’Amulette de brume coûte 15 diamants et fait passer les PV maximum de départ de 30 à 40. Sa confirmation en deux étapes affiche le solde exact avant et après la dépense ; les déblocages normaux n’exigent aucun diamant."
+      ],
+      how: [
+        "Choisissez une carte débloquée dans la rangée horizontale des 30 étapes ; chaque cinquième carte est un point de contrôle de boss.",
+        "Déplacez-vous avec A/D ou les flèches gauche/droite. Appuyez sur W, la flèche haut ou Espace pour sauter, puis appuyez encore avant l’atterrissage pour le double saut.",
+        "Appuyez sur J pour frapper et sur K ou Maj pour ruer. Sur écran tactile, utilisez les boutons visibles de direction, de saut et d’attaque.",
+        "Lisez les avertissements en pointillés avant l’activation du terrain et considérez l’anneau d’armure ou de bouclier comme un signal pour chercher une fenêtre de contre-attaque.",
+        "Récoltez l’EXP et dépensez les deux points d’attribut avec leurs valeurs exactes chaque fois que la progression met la même bataille en pause.",
+        "Vainquez toute la rencontre pour sauvegarder l’étape et débloquer la suivante. Une défaite permet de réessayer sans supprimer les victoires précédentes."
+      ],
+      strategyTips: [
+        "Gardez le second saut jusqu’à ce qu’une plateforme mobile, une salve ou un cycle de danger confirme l’atterrissage sûr.",
+        "Utilisez la ruée à la fin d’une gerbe de projectiles ou d’une charge, puis retournez-vous pour frapper pendant la récupération.",
+        "Éliminez les menaces à distance avant de vous engager dans la lente fenêtre de punition du Sanglier blindé.",
+        "La Force raccourcit les combats, la Constitution pardonne les erreurs, l’Agilité améliore le placement et la Chance crée des rafales variables ; choisissez selon la règle de l’étape.",
+        "Éloignez-vous du point de séparation avant de vaincre un Loup-miroir, car deux échos apparaissent autour de lui."
+      ],
+      progression: [
+        "Les étapes 1–5 enseignent les patrouilles, corniches, tirs dirigés, plateformes mobiles et piques ; le Creux du Basilic ajoute le poison et une gerbe de projectiles qui s’élargit.",
+        "Les étapes 6–10 ajoutent les avertissements de cristaux tombants, les tirs dispersés des Chauves-souris de cristal et les Sangliers blindés. Le Gardien de pierre bloque les griffes frontales et ouvre une faille après un coup au sol suivi de deux ondes franchissables.",
+        "Les étapes 11–15 combinent couloirs épineux, charges, armure et priorité aux menaces à distance. Le Colosse épineux protège son cœur jusqu’à ce qu’un coup de racine manque sa cible et ouvre une courte fenêtre de dégâts.",
+        "Les étapes 16–20 font alterner les couloirs de feu, les traces des Loups de braise et les Chauves-souris plongeuses ; le Wyverne de cendres est protégé dans les airs et devient vulnérable à l’atterrissage.",
+        "Les étapes 21–25 ajoutent rafales, Chauves-souris de faille et Loups-miroirs divisibles. Le Cerf de l’Éclipse réfléchit la plupart des dégâts jusqu’à ce que sa charge frappe le bord de l’arène.",
+        "Les étapes 26–30 combinent les contres précédents et des avertissements visibles. La Couronne du Béhemoth change à deux seuils de vie, ajoute cristaux et racines, mais ne crée pas d’étape 31 cachée."
+      ],
+      designNote: "La campagne utilise six arcs de cinq étapes pour faire progresser la difficulté par la lecture et la contre-attaque plutôt que par de simples barres de vie. Le terrain prévient avant de s’activer et une scène logique fixe garde plateformes, HUD, commandes, progression et résultat dans la même géométrie sur mobile et ordinateur. Chaque esquive, saut, priorité de cible et moment d’attaque reste sous le contrôle direct du joueur.",
+      parent: "Ce navigateur enregistre l’étape maximale débloquée, l’étape choisie, les étapes terminées, les tentatives, le meilleur résultat, les victoires de la Couronne et la possession de l’Amulette de brume. Une ancienne sauvegarde avance sans reverrouiller la progression ; effacer les données du site ou changer de navigateur peut supprimer ce relevé. Aucun compte n’est nécessaire et les diamants sont un soutien facultatif.",
+      faq: [
+        ["Légende du Loup de l’Ombre est-elle gratuite ?", "Oui. La campagne complète de 30 étapes fonctionne dans le navigateur sans achat ni connexion obligatoire."],
+        ["Comment débloquer les étapes ?", "Une nouvelle sauvegarde commence à l’étape 1. Vaincre toute la rencontre sauvegarde l’étape et débloque la carte suivante ; les étapes terminées restent rejouables."],
+        ["Que se passe-t-il si le loup tombe ?", "Le loup revient sur un sol stable et perd 5 PV. La tentative se termine seulement si cette pénalité réduit les PV à zéro."],
+        ["Pourquoi un ennemi blindé subit-il peu de dégâts ?", "Sa défense est active. Cherchez la fenêtre visible après une charge manquée, un coup au sol, un coup de racine, un atterrissage ou un choc contre un mur."],
+        ["Faut-il dépenser les deux points d’attribut ?", "Oui. La bataille reprend après l’attribution des deux points à la Force, l’Agilité, la Constitution ou la Chance."],
+        ["Les diamants sont-ils nécessaires ?", "Non. Ils servent uniquement à l’Amulette de brume facultative ; la progression normale des 30 étapes ne les exige pas."],
+        ["Quelle progression est sauvegardée ?", "Les déblocages et victoires, l’étape choisie, les tentatives, le meilleur résultat, les victoires de la Couronne et l’Amulette de brume sont sauvegardés dans ce navigateur."],
+        ["En quoi les six boss diffèrent-ils ?", "Le Basilic contrôle le sol avec le poison, le Gardien ouvre sa défense après les frappes, le Colosse expose son cœur, le Wyverne alterne vol et atterrissage, le Cerf brise son bouclier après une charge ratée et le Béhemoth combine cristaux et racines selon ses phases."]
+      ],
+    },
+    de: {
+      title: "Legende des Schattenwolfs", difficulty: "Schwer", time: "3–8 Minuten pro Stufe",
+      gameplay: "Seitlich scrollendes Action-Plattform-RPG", genre: ["Action", "Plattform", "Tiere", "RPG"], skills: ["Logik", "Problemlösung", "Fokus"],
+      guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden", noteTitle: "Spieler- und Speicherinformationen", hideScoreBands: true,
+      intro: "Legende des Schattenwolfs ist eine seitlich scrollende Action-Plattform-Kampagne mit 30 Stufen. Führe den Entdeckerwolf über zerstörte Felsvorsprünge, lies sichtbare Gefahrenwarnungen, bekämpfe Schattenwesen, sammle Erfahrung und gib bei jedem Levelaufstieg genau zwei Attributpunkte aus. Jede fünfte Stufe endet mit einem regionalen Boss, dessen Verteidigungs- oder Angriffsmuster eine andere Reaktion verlangt.",
+      story: [
+        "Sechs Siegel hielten einst den Mondschattenweg zwischen der Waldgrenze und der Behemoth-Krone offen. Nach ihrem Bruch fallen Kristalle in den Höhlen, Wurzeln versperren Wege, die Schmelzofen-Schächte entzünden sich, Spaltenwinde verzerren die Eclipse-Brücke und der Kronenweg verbindet die Bedrohungen der früheren Regionen.",
+        "Du spielst den runenmarkierten Schattenwolf-Entdecker. Eine Stufe wird erst wiederhergestellt, wenn jedes zugewiesene Wesen besiegt ist. Ein Sieg speichert diesen Wegabschnitt und schaltet die nächste Karte frei; Stufe 30 bricht das letzte Behemoth-Siegel, und jede abgeschlossene Stufe bleibt wiederholbar."
+      ],
+      systems: [
+        "Bewegung und Kampf: Laufe, springe doppelt, greife in Blickrichtung an und nutze den Ansturm, um für einen kurzen geschützten Moment durch Gefahr zu kommen. Gegner, Geschosse, Stacheln und aktives Gelände verringern die LP; ein Sturz bringt den Wolf auf sicheren Boden zurück und kostet 5 LP.",
+        "Erfahrung und Attribute: Gewöhnliche und besondere Gegner lassen Erfahrungskugeln fallen. Ein Levelaufstieg pausiert den Kampf und gewährt zwei verpflichtende Punkte. Stärke erhöht Schaden, Beweglichkeit das Tempo, Konstitution die maximalen LP und Glück die kritische Trefferchance; jede Wahl zeigt den aktuellen und nächsten Wert.",
+        "Besondere Gegner: Kristallfledermäuse streuen Geschosse, Panzerwild öffnet seine Abwehr nach einer verfehlten Patrouille und Sturmschweine rasen durch die Wege. Glutwölfe hinterlassen Feuer, Tauchfledermäuse verfolgen die Höhe, Spaltenfledermäuse springen zwischen Plattformen und Spiegelwölfe teilen sich einmal in zwei schwache Echos.",
+        "Gelände: Fallkristalle, Gift, Wurzeln, Feuer, Schockwellen und Spaltenstöße warnen vor ihrer Aktivierung. Bewegliche Plattformen verändern die Sprungroute, während feste Stacheln bei jeder Berührung gefährlich bleiben.",
+        "Optionale dauerhafte Hilfe: Der Nebelamulett kostet 15 Diamanten und erhöht die anfänglichen maximalen LP von 30 auf 40. Die zweistufige Bestätigung zeigt das genaue Guthaben vor und nach dem Kauf; normale Stufenfreischaltungen brauchen keine Diamanten."
+      ],
+      how: [
+        "Wähle eine freigeschaltete Karte aus der waagerechten Reihe mit 30 Stufen; jede fünfte Karte ist ein Boss-Checkpoint.",
+        "Bewege dich mit A/D oder den Pfeiltasten links/rechts. Drücke W, Pfeil nach oben oder Leertaste zum Springen und vor der Landung noch einmal für den Doppelsprung.",
+        "Drücke J zum Zuschlagen und K oder Umschalt zum Ansturm. Auf Touch-Geräten nutzt du die sichtbaren Richtungs-, Sprung- und Angriffsschaltflächen.",
+        "Lies gestrichelte Geländewarnungen, bevor sie aktiv werden, und betrachte den sichtbaren Rüstungs- oder Schildring als Hinweis auf ein Gegenfenster.",
+        "Sammle Erfahrung und verteile bei jeder Kampfunterbrechung durch einen Levelaufstieg beide Attributpunkte mit ihren genauen Werten.",
+        "Besiege die vollständige Begegnung, um die Stufe zu speichern und die nächste Karte freizuschalten. Eine Niederlage erlaubt einen neuen Versuch, ohne frühere Siege zu löschen."
+      ],
+      strategyTips: [
+        "Spare den zweiten Sprung auf, bis eine bewegliche Plattform, ein Geschossfächer oder ein Gefahrenzyklus die sichere Landung bestätigt.",
+        "Nutze den Ansturm am Ende eines Geschossfächers oder einer gegnerischen Attacke und drehe dich in der Erholungszeit zum Zuschlagen um.",
+        "Beseitige Fernbedrohungen, bevor du das langsame Gegenfenster des Panzerwilds ausnutzt.",
+        "Stärke verkürzt Kämpfe, Konstitution verzeiht Fehler, Beweglichkeit verbessert die Position und Glück erzeugt wechselnde Ausbrüche; wähle nach der Regel der Stufe.",
+        "Halte Abstand vom Teilungspunkt, bevor du einen Spiegelwolf besiegst, damit nicht zwei Echos neben dir erscheinen."
+      ],
+      progression: [
+        "Stufen 1–5 lehren Patrouillen, Felsvorsprünge, gezielte Schüsse, bewegliche Plattformen und Stacheln; die Basiliskenmulde ergänzt Giftzonen und einen breiter werdenden Geschossfächer.",
+        "Stufen 6–10 führen Fallkristall-Warnungen, Streuschüsse der Kristallfledermäuse und Panzerwild ein. Der Steinhüter blockt frontale Klauen und öffnet sich nach einem Bodenschlag mit zwei überspringbaren Schockwellen.",
+        "Stufen 11–15 verbinden Dornengänge, Anstürme, Rüstung und die Priorität von Fernbedrohungen. Der Dornkoloss schützt seinen Kern, bis ein Wurzelschlag verfehlt und ein kurzes Schadensfenster öffnet.",
+        "Stufen 16–20 wechseln zwischen Feuergängen, Glutwolf-Spuren und Tauchfledermäusen; der Aschewyvern ist in der Luft geschützt und wird bei der Landung verwundbar.",
+        "Stufen 21–25 ergänzen Böen, Spaltenfledermäuse und sich teilende Spiegelwölfe. Der Eklipsenhirsch reflektiert den meisten Schaden, bis sein Ansturm am Arenarand endet.",
+        "Stufen 26–30 verbinden die früheren Gegenregeln mit sichtbaren Warnungen. Die Behemoth-Krone ändert sich an zwei Lebensschwellen, fügt Kristallfall und Wurzeldruck hinzu, erzeugt aber keine versteckte Stufe 31."
+      ],
+      designNote: "Die Kampagne nutzt sechs Lernbögen aus je fünf Stufen, damit die Schwierigkeit durch Erkennen und Gegenmaßnahmen wächst statt nur durch größere Lebensbalken. Das Gelände warnt vor der Aktivierung, und eine feste logische Kampfszene hält Plattformen, HUD, Steuerung, Entwicklung und Ergebnis auf Handy und Desktop in derselben Geometrie. Ausweichen, Sprünge, Zielpriorität und Angriffstiming bleiben direkte Entscheidungen des Spielers.",
+      parent: "Dieser Browser speichert die höchste freigeschaltete Stufe, die ausgewählte Stufe, abgeschlossene Stufen, Versuche, das beste Ergebnis, Kronensiege und den Besitz des Nebelamuletts. Ein älterer Spielstand wird übernommen, ohne den Fortschritt erneut zu sperren; gelöschte Websitedaten oder ein anderer Browser können ihn entfernen. Ein Konto ist nicht erforderlich und Diamanten sind eine optionale Hilfe.",
+      faq: [
+        ["Ist Legende des Schattenwolfs kostenlos?", "Ja. Die vollständige Kampagne mit 30 Stufen läuft ohne erforderlichen Kauf oder Login im Browser."],
+        ["Wie werden Stufen freigeschaltet?", "Ein neuer Spielstand beginnt mit Stufe 1. Wenn die gesamte Begegnung besiegt ist, wird die Stufe gespeichert und die nächste Karte geöffnet; abgeschlossene Stufen bleiben wiederholbar."],
+        ["Was passiert, wenn der Wolf fällt?", "Der Wolf kehrt auf sicheren Boden zurück und verliert 5 LP. Der Versuch endet nur, wenn diese Strafe die LP auf null senkt."],
+        ["Warum verursacht ein gepanzerter Gegner kaum Schaden?", "Seine Verteidigung ist aktiv. Nutze das sichtbare Gegenfenster nach einem verfehlten Ansturm, Bodenschlag, Wurzelschlag, einer Landung oder einem Wandaufprall."],
+        ["Muss ich beide Attributpunkte ausgeben?", "Ja. Der Kampf geht erst weiter, wenn beide Punkte auf Stärke, Beweglichkeit, Konstitution oder Glück verteilt sind."],
+        ["Sind Diamanten nötig?", "Nein. Sie dienen nur dem optionalen Nebelamulett; der normale Fortschritt durch alle 30 Stufen benötigt keine Diamanten."],
+        ["Welche Fortschritte werden gespeichert?", "Freischaltungen und Siege, die ausgewählte Stufe, Versuche, das beste Ergebnis, Kronensiege und der Amulettbesitz werden in diesem Browser gespeichert."],
+        ["Wie unterscheiden sich die sechs Bosse?", "Der Basilisk kontrolliert den Boden mit Gift, der Hüter öffnet seine Abwehr nach Schlägen, der Koloss legt seinen Kern frei, der Wyvern wechselt zwischen Flug und Landung, der Hirsch bricht sein Schild nach einem verfehlten Ansturm und der Behemoth kombiniert Kristalle und Wurzeln nach Phasen."]
+      ],
+    },
+    it: {
+      title: "Leggenda del Lupo Ombra", difficulty: "Difficile", time: "3–8 minuti per livello",
+      gameplay: "RPG d’azione e piattaforme a scorrimento laterale", genre: ["Azione", "Piattaforme", "Animali", "RPG"], skills: ["Logica", "Risoluzione dei problemi", "Concentrazione"],
+      guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida al gioco", noteTitle: "Informazioni sul giocatore e salvataggio", hideScoreBands: true,
+      intro: "Leggenda del Lupo Ombra è una campagna d’azione e piattaforme a scorrimento laterale di 30 livelli. Guida il lupo esploratore tra sporgenze in rovina, leggi gli avvisi di pericolo visibili, combatti creature d’ombra, raccogli esperienza e assegna esattamente due punti attributo a ogni passaggio di livello. Ogni quinto livello termina con un boss regionale che richiede una risposta diversa in base alla sua difesa o al suo attacco.",
+      story: [
+        "Sei sigilli tenevano aperto il sentiero dell’Ombra Lunare tra la frontiera della foresta e la Corona del Behemoth. Quando si sono spezzati, cristalli sono caduti nelle caverne, le radici hanno chiuso i passaggi, le bocche della Forgia delle Braci hanno acceso il fuoco, i venti della frattura hanno deformato il Ponte dell’Eclissi e la Strada della Corona ha riunito le minacce delle regioni precedenti.",
+        "Interpreti l’esploratore Lupo Ombra segnato dalle rune. Un livello viene ripristinato solo dopo aver sconfitto ogni creatura assegnata. La vittoria salva quel tratto e sblocca la carta successiva; il livello 30 spezza l’ultimo sigillo del Behemoth e ogni livello completato resta disponibile per essere rigiocato."
+      ],
+      systems: [
+        "Movimento e combattimento: corri, fai un doppio salto, colpisci nella direzione in cui guardi e usa lo scatto per attraversare il pericolo durante un breve momento protetto. Nemici, proiettili, spuntoni e terreno attivo riducono i PV; una caduta riporta il lupo al suolo stabile e costa 5 PV.",
+        "Esperienza e attributi: i nemici comuni e speciali lasciano sfere d’esperienza. Il passaggio di livello mette in pausa la battaglia e concede due punti obbligatori. La Forza aumenta i danni, l’Agilità la velocità, la Costituzione i PV massimi e la Fortuna la probabilità di critico; ogni scelta mostra il valore attuale e quello successivo.",
+        "Nemici speciali: i Pipistrelli di Cristallo diffondono colpi, i Cinghiali Corazzati aprono la difesa dopo una pattuglia fallita e i Cinghiali Caricatori attraversano le vie. I Lupi di Brace lasciano fuoco, i Pipistrelli Tuffatori seguono l’altezza, i Pipistrelli della Frattura lampeggiano tra le piattaforme e i Lupi Specchio si dividono una volta in due echi fragili.",
+        "Terreno: cristalli cadenti, veleno, radici, fuoco, onde d’urto e raffiche della frattura mostrano un avviso prima di attivarsi. Le piattaforme mobili cambiano il percorso del salto, mentre gli spuntoni permanenti restano pericolosi al contatto.",
+        "Supporto permanente opzionale: l’Amuleto della Nebbia costa 15 diamanti e porta i PV massimi iniziali da 30 a 40. La conferma in due passaggi mostra il saldo esatto prima e dopo la spesa; lo sblocco normale dei livelli non richiede diamanti."
+      ],
+      how: [
+        "Scegli una carta sbloccata dalla fila orizzontale dei 30 livelli; ogni quinta carta è un checkpoint del boss.",
+        "Usa A/D o le frecce sinistra/destra per muoverti. Premi W, freccia su o Spazio per saltare e premi di nuovo prima di atterrare per il doppio salto.",
+        "Premi J per colpire e K o Maiusc per scattare. Sul touch usa i pulsanti visibili per direzione, salto e attacco.",
+        "Leggi gli avvisi tratteggiati prima che il terreno si attivi e considera l’anello di armatura o scudo come un invito a cercare la finestra di contrattacco.",
+        "Raccogli esperienza e assegna entrambi i punti attributo con i valori esatti ogni volta che la crescita mette in pausa la stessa battaglia.",
+        "Sconfiggi l’incontro completo per salvare il livello e sbloccare la carta successiva. La sconfitta offre un nuovo tentativo senza cancellare le vittorie precedenti."
+      ],
+      strategyTips: [
+        "Conserva il secondo salto finché una piattaforma mobile, una raffica o un ciclo di pericolo non conferma l’atterraggio sicuro.",
+        "Usa lo scatto alla fine di una ventata di proiettili o di una carica, poi voltati e colpisci durante il recupero.",
+        "Elimina le minacce a distanza prima di impegnarti nella lenta finestra di punizione del Cinghiale Corazzato.",
+        "La Forza accorcia i combattimenti, la Costituzione perdona gli errori, l’Agilità migliora il posizionamento e la Fortuna crea esplosioni variabili; scegli secondo la regola del livello.",
+        "Allontanati dal punto di divisione prima di sconfiggere un Lupo Specchio, perché due echi appariranno lì vicino."
+      ],
+      progression: [
+        "I livelli 1–5 insegnano pattuglie, sporgenze, colpi mirati, piattaforme mobili e spuntoni; la Conca del Basilisco aggiunge zone velenose e una raffica di proiettili sempre più ampia.",
+        "I livelli 6–10 aggiungono gli avvisi dei cristalli cadenti, i colpi sparsi dei Pipistrelli di Cristallo e i Cinghiali Corazzati. Il Guardiano di Pietra blocca gli artigli frontali e apre una breccia dopo un colpo a terra con due onde d’urto scavalcabili.",
+        "I livelli 11–15 combinano corridoi spinosi, cariche, armatura e priorità alle minacce a distanza. Il Colosso Spinoso protegge il nucleo finché un colpo di radice non va a vuoto e apre una breve finestra di danno.",
+        "I livelli 16–20 alternano corridoi di fuoco, scie dei Lupi di Brace e Pipistrelli Tuffatori; il Viverna delle Ceneri è protetto in aria e diventa vulnerabile all’atterraggio.",
+        "I livelli 21–25 aggiungono raffiche, Pipistrelli della Frattura e Lupi Specchio divisibili. Il Cervo dell’Eclissi riflette la maggior parte dei danni finché la sua carica non colpisce il bordo dell’arena.",
+        "I livelli 26–30 uniscono le regole di contrattacco precedenti ad avvisi visibili. La Corona del Behemoth cambia a due soglie di vita, aggiunge cristalli e radici, ma non crea un livello 31 nascosto."
+      ],
+      designNote: "La campagna usa sei archi didattici di cinque livelli per far crescere la difficoltà attraverso riconoscimento e contrattacco, non solo con barre della vita più grandi. Il terreno avvisa prima di attivarsi e una scena logica fissa mantiene piattaforme, HUD, comandi, crescita e risultato nella stessa geometria su telefono e desktop. Schivate, salti, priorità e tempi di attacco restano decisioni dirette del giocatore.",
+      parent: "Questo browser salva il livello massimo sbloccato, quello scelto, i livelli completati, i tentativi, il miglior risultato, le vittorie della Corona e il possesso dell’Amuleto della Nebbia. Un vecchio salvataggio avanza senza bloccare di nuovo i progressi; cancellare i dati del sito o cambiare browser può rimuoverli. Non serve un account e i diamanti sono un aiuto opzionale.",
+      faq: [
+        ["Leggenda del Lupo Ombra è gratuita?", "Sì. La campagna completa di 30 livelli funziona nel browser senza acquisto o accesso obbligatorio."],
+        ["Come si sbloccano i livelli?", "Un nuovo salvataggio parte dal livello 1. Sconfiggi l’incontro completo per salvare il livello e sbloccare la carta successiva; i livelli completati restano rigiocabili."],
+        ["Cosa succede se il lupo cade?", "Il lupo torna su un terreno stabile e perde 5 PV. Il tentativo finisce solo se questa penalità porta i PV a zero."],
+        ["Perché un nemico corazzato subisce pochi danni?", "La sua difesa è attiva. Cerca la finestra visibile dopo una carica mancata, un colpo a terra, un colpo di radice, un atterraggio o un urto contro il muro."],
+        ["Devo spendere entrambi i punti attributo?", "Sì. La battaglia riprende solo dopo aver assegnato entrambi i punti a Forza, Agilità, Costituzione o Fortuna."],
+        ["I diamanti sono necessari?", "No. Servono solo per l’Amuleto della Nebbia opzionale; il normale percorso dei 30 livelli non richiede diamanti."],
+        ["Quali progressi vengono salvati?", "Sblocchi e vittorie, livello scelto, tentativi, miglior risultato, vittorie della Corona e possesso dell’amuleto vengono salvati in questo browser."],
+        ["In cosa differiscono i sei boss?", "Il Basilisco controlla il terreno con il veleno, il Guardiano apre la difesa dopo i colpi, il Colosso espone il nucleo, il Viverna alterna volo e atterraggio, il Cervo rompe lo scudo dopo una carica fallita e il Behemoth combina cristalli e radici nelle sue fasi."]
+      ],
+    },
+    ru: {
+      title: "Легенда Теневого Волка", difficulty: "Сложная", time: "3–8 минут на этап",
+      gameplay: "Боковой экшен-платформер с RPG", genre: ["Экшен", "Платформер", "Животные", "RPG"], skills: ["Логика", "Решение задач", "Внимание"],
+      guideKicker: "Оригинальное игровое руководство WeightPlay", guideTitleSuffix: "Руководство по игре", noteTitle: "Сведения об игроке и сохранении", hideScoreBands: true,
+      intro: "Легенда Теневого Волка — это боковая экшен-платформенная кампания на 30 этапов. Ведите волка-исследователя по разрушенным уступам, читайте видимые предупреждения об опасностях, сражайтесь с теневыми существами, собирайте опыт и тратьте ровно два очка атрибутов при каждом повышении уровня. Каждый пятый этап заканчивается региональным боссом, чья защита или атака требует особого ответа.",
+      story: [
+        "Шесть печатей когда-то открывали Лунную тропу между лесной окраиной и Короной Бегемота. После их разрушения в пещерах падают кристаллы, корни перекрывают пути, жерла Пепельной кузницы загораются, ветры разлома искажают Мост затмения, а Коронная дорога объединяет угрозы прошлых регионов.",
+        "Вы играете за отмеченного рунами исследователя Теневого Волка. Этап восстанавливается только после победы над каждым назначенным существом. Победа сохраняет этот участок пути и открывает следующую карту; этап 30 ломает последнюю печать Бегемота, а каждый пройденный этап остаётся доступным для повторной игры."
+      ],
+      systems: [
+        "Движение и бой: бегите, выполняйте двойной прыжок, бейте в направлении взгляда и используйте рывок, чтобы на короткое время пройти сквозь опасность под защитой. Враги, снаряды, шипы и активный рельеф уменьшают здоровье; падение возвращает волка на устойчивую землю и отнимает 5 единиц здоровья.",
+        "Опыт и атрибуты: обычные и особые враги оставляют сферы опыта. Повышение уровня ставит бой на паузу и даёт два обязательных очка. Сила увеличивает урон, Ловкость — скорость, Стойкость — максимум здоровья, а Удача — шанс критического удара; каждый выбор показывает текущее и следующее значение.",
+        "Особые враги: Кристальные летучие мыши рассеивают выстрелы, Бронированные кабаны открывают защиту после сорванного патруля, а Кабаны-налётчики проносятся по проходам. Угли-волки оставляют огонь, Ныряющие мыши преследуют по высоте, Разломные мыши перемещаются между платформами, а Зеркальные волки один раз разделяются на два слабых эха.",
+        "Рельеф: падающие кристаллы, яд, корни, огонь, ударные волны и порывы разлома предупреждают об активации. Подвижные платформы меняют маршрут прыжка, а постоянные шипы опасны при любом касании.",
+        "Необязательная постоянная поддержка: Талисман тумана стоит 15 алмазов и увеличивает начальный максимум здоровья с 30 до 40. Двухэтапное подтверждение показывает точный баланс до и после траты; для обычного открытия этапов алмазы не нужны."
+      ],
+      how: [
+        "Выберите открытую карту в горизонтальном ряду из 30 этапов; каждая пятая карта — контрольная точка босса.",
+        "Двигайтесь клавишами A/D или стрелками влево/вправо. Нажмите W, стрелку вверх или пробел для прыжка и нажмите ещё раз до приземления для двойного прыжка.",
+        "Нажмите J для удара и K или Shift для рывка. На сенсорном экране используйте видимые кнопки движения, прыжка и атаки.",
+        "Читайте пунктирные предупреждения до активации рельефа, а видимое кольцо брони или щита воспринимайте как подсказку искать окно контратаки.",
+        "Собирайте опыт и распределяйте оба очка атрибутов с точными значениями каждый раз, когда повышение уровня ставит тот же бой на паузу.",
+        "Победите во всей встрече, чтобы сохранить этап и открыть следующую карту. Поражение позволяет повторить попытку и не удаляет прежние победы."
+      ],
+      strategyTips: [
+        "Берегите второй прыжок, пока подвижная платформа, веер снарядов или цикл опасности не подтвердят безопасное приземление.",
+        "Используйте рывок в конце веера снарядов или вражеской атаки, затем развернитесь и бейте во время восстановления противника.",
+        "Уничтожайте дальние угрозы до того, как займёте позицию для медленного окна наказания Бронированного кабана.",
+        "Сила сокращает бой, Стойкость прощает ошибки, Ловкость улучшает позицию, а Удача даёт переменный взрывной урон; выбирайте по правилу этапа.",
+        "Отойдите от точки разделения перед победой над Зеркальным волком, чтобы два эха не появились рядом одновременно."
+      ],
+      progression: [
+        "Этапы 1–5 обучают патрулям, уступам, направленным выстрелам, подвижным платформам и шипам; Лощина василиска добавляет ядовитые зоны и расширяющийся веер снарядов.",
+        "Этапы 6–10 добавляют предупреждения о падающих кристаллах, рассеянные выстрелы Кристальных мышей и Бронированных кабанов. Каменный страж блокирует фронтальные удары и открывается после удара по земле с двумя перепрыгиваемыми волнами.",
+        "Этапы 11–15 соединяют колючие проходы, рывки, броню и приоритет дальних угроз. Терновый колосс защищает ядро, пока промах корневого удара не откроет короткое окно урона.",
+        "Этапы 16–20 чередуют огненные проходы, следы Углей-волков и Ныряющих мышей; Пепельный виверн защищён в воздухе и уязвим при приземлении.",
+        "Этапы 21–25 добавляют порывы, Разломных мышей и разделяющихся Зеркальных волков. Олень затмения отражает большую часть урона, пока его рывок не ударит о край арены.",
+        "Этапы 26–30 объединяют прежние контрправила с видимыми предупреждениями. Корона Бегемота меняется на двух порогах здоровья, добавляет кристаллы и корни, но не создаёт скрытый этап 31."
+      ],
+      designNote: "Кампания состоит из шести учебных дуг по пять этапов, чтобы сложность росла через распознавание и контратаки, а не только через большие полосы здоровья. Рельеф сначала предупреждает, затем активируется, а фиксированная логическая боевая сцена сохраняет геометрию платформ, HUD, управления, развития и результата на телефоне и компьютере. Уклонение, прыжок, приоритет цели и момент атаки всегда выбирает игрок.",
+      parent: "Этот браузер сохраняет максимальный открытый этап, выбранный этап, список пройденных этапов, попытки, лучший результат, победы Короны и владение Талисманом тумана. Старое сохранение переносится без повторной блокировки прогресса; очистка данных сайта или другой браузер могут удалить запись. Учётная запись не нужна, а алмазы — необязательная поддержка.",
+      faq: [
+        ["Легенда Теневого Волка бесплатна?", "Да. Полная кампания из 30 этапов работает в браузере без обязательной покупки или входа."],
+        ["Как открываются этапы?", "Новое сохранение начинается с этапа 1. Победа над всей встречей сохраняет этап и открывает следующую карту; пройденные этапы можно повторять."],
+        ["Что будет, если волк упадёт?", "Волк вернётся на устойчивую землю и потеряет 5 единиц здоровья. Попытка закончится только при обнулении здоровья этой потерей."],
+        ["Почему бронированный враг получает мало урона?", "Его защита активна. Ищите видимое окно после промаха рывка, удара по земле, корневого удара, приземления или столкновения со стеной."],
+        ["Нужно ли потратить оба очка атрибутов?", "Да. Бой продолжится после распределения обоих очков между Силой, Ловкостью, Стойкостью и Удачей."],
+        ["Нужны ли алмазы?", "Нет. Они нужны только для необязательного Талисмана тумана; обычное прохождение 30 этапов не требует алмазов."],
+        ["Какой прогресс сохраняется?", "Открытия и победы, выбранный этап, попытки, лучший результат, победы Короны и владение талисманом сохраняются в этом браузере."],
+        ["Чем отличаются шесть боссов?", "Василиск управляет землёй ядом, Страж открывает защиту после ударов, Колосс раскрывает ядро, Виверн чередует полёт и посадку, Олень ломает щит после сорванного рывка, а Бегемот сочетает кристаллы и корни по фазам."]
+      ],
+    },
+    hi: {
+      title: "शैडो वुल्फ लीजेंड", difficulty: "कठिन", time: "हर चरण 3–8 मिनट",
+      gameplay: "साइड-स्क्रॉलिंग एक्शन प्लेटफ़ॉर्म RPG", genre: ["एक्शन", "प्लेटफ़ॉर्म", "जानवर", "RPG"], skills: ["तर्क", "समस्या समाधान", "ध्यान"],
+      guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", hideScoreBands: true,
+      intro: "शैडो वुल्फ लीजेंड 30 चरणों वाला साइड-स्क्रॉलिंग एक्शन प्लेटफ़ॉर्म अभियान है। खोजी भेड़िये को टूटे हुए किनारों के पार ले जाएँ, दिखाई देने वाली खतरे की चेतावनियाँ पढ़ें, छाया प्राणियों से लड़ें, EXP इकट्ठा करें और हर स्तर बढ़ने पर ठीक दो विशेषता अंक खर्च करें। हर पाँचवाँ चरण एक क्षेत्रीय बॉस पर समाप्त होता है, जिसकी रक्षा या हमले के ढंग के लिए अलग प्रतिक्रिया चाहिए।",
+      story: [
+        "कभी छह मुहरें वन-सीमा और बेहेमोथ मुकुट के बीच चंद्र-छाया मार्ग को खुला रखती थीं। उनके टूटने के बाद गुफाओं में क्रिस्टल गिरने लगे, जड़ों ने रास्ते बंद किए, राख-भट्ठी के द्वार जल उठे, दरार की हवाओं ने ग्रहण पुल को मोड़ दिया और मुकुट मार्ग ने पिछले क्षेत्रों के खतरों को जोड़ दिया।",
+        "आप रूण-चिह्नित शैडो वुल्फ खोजी की भूमिका निभाते हैं। किसी चरण को तभी बहाल किया जाता है जब उसमें नियुक्त हर प्राणी हार जाए। जीत उस मार्ग-खंड को सेव करके अगला कार्ड खोलती है; चरण 30 अंतिम बेहेमोथ मुहर तोड़ता है और हर पूरा किया गया चरण फिर से खेला जा सकता है।"
+      ],
+      systems: [
+        "गति और लड़ाई: दौड़ें, दोहरी छलांग लगाएँ, जिस दिशा में भेड़िया देख रहा हो वहाँ पंजे से वार करें और थोड़े सुरक्षित समय के लिए खतरे से निकलने हेतु डैश करें। दुश्मन, प्रक्षेप्य, काँटे और सक्रिय भूभाग HP घटाते हैं; गिरने पर भेड़िया सुरक्षित जमीन पर लौटता है और 5 HP खोता है।",
+        "EXP और विशेषताएँ: सामान्य और विशेष दुश्मन अनुभव गोले छोड़ते हैं। स्तर बढ़ने पर लड़ाई रुकती है और दो अनिवार्य अंक मिलते हैं। शक्ति नुकसान, फुर्ती गति, सहनशक्ति अधिकतम HP और भाग्य क्रिटिकल अवसर बढ़ाता है; हर चुनाव वर्तमान और अगला मान दिखाता है।",
+        "विशेष दुश्मन: क्रिस्टल चमगादड़ गोलियाँ फैलाते हैं, कवच वाले जंगली सूअर गश्त चूकने के बाद रक्षा खोलते हैं और धावा सूअर रास्तों से दौड़ते हैं। अंगारा भेड़िये आग छोड़ते हैं, गोता चमगादड़ ऊँचाई का पीछा करते हैं, दरार चमगादड़ मंचों के बीच झपकते हैं और दर्पण भेड़िये एक बार दो कमजोर प्रतिध्वनियों में बँटते हैं।",
+        "भूभाग: गिरते क्रिस्टल, ज़हर, जड़ें, आग, सदमे की लहरें और दरार की हवा सक्रिय होने से पहले चेतावनी देते हैं। चलती हुई मंच छलांग का रास्ता बदलती हैं, जबकि स्थायी काँटे छूते ही खतरनाक रहते हैं।",
+        "वैकल्पिक स्थायी सहायता: धुंध ताबीज की कीमत 15 हीरे है और वह शुरुआती अधिकतम HP को 30 से 40 कर देता है। दो चरण की पुष्टि खर्च से पहले और बाद का सही शेष दिखाती है; सामान्य चरण खोलने के लिए हीरे आवश्यक नहीं हैं।"
+      ],
+      how: [
+        "30 चरणों की क्षैतिज पंक्ति में खुले कार्ड चुनें; हर पाँचवाँ कार्ड बॉस जाँच-बिंदु है।",
+        "A/D या बाएँ/दाएँ तीर से चलें। W, ऊपर तीर या Space से कूदें और उतरने से पहले फिर दबाकर दोहरी छलांग लगाएँ।",
+        "J से पंजे का वार और K या Shift से डैश करें। टच खिलाड़ी दिखाई देने वाले दिशा, कूद और हमले के बटन इस्तेमाल करें।",
+        "भूभाग सक्रिय होने से पहले बिंदीदार चेतावनी पढ़ें और दिखाई देने वाले कवच या ढाल के घेरे को पलटवार की खिड़की खोजने का संकेत मानें।",
+        "EXP इकट्ठा करें और जब स्तर बढ़ने पर वही लड़ाई रुके तो दोनों विशेषता अंक सही मानों के साथ बाँटें।",
+        "पूरी मुठभेड़ जीतकर चरण सेव करें और अगला कार्ड खोलें। हारने पर पिछली जीत मिटाए बिना फिर से प्रयास कर सकते हैं।"
+      ],
+      strategyTips: [
+        "चलती मंच, गोलियों की बौछार या खतरे का चक्र सुरक्षित उतरने की पुष्टि करे तब तक दूसरी छलांग बचाकर रखें।",
+        "प्रक्षेप्यों की बौछार या धावे के अंत में डैश करें, फिर दुश्मन के संभलने के समय मुड़कर पंजे से वार करें।",
+        "कवच वाले जंगली सूअर की धीमी पलटवार खिड़की में जाने से पहले दूर से आने वाले खतरे हटाएँ।",
+        "शक्ति लड़ाई छोटी करती है, सहनशक्ति गलतियाँ सहती है, फुर्ती जगह बनाने में मदद करती है और भाग्य बदलता हुआ जोरदार नुकसान देता है; चरण के नियम के अनुसार चुनें।",
+        "दर्पण भेड़िये को हराने से पहले बँटने वाली जगह से दूर हो जाएँ, क्योंकि वहाँ दो प्रतिध्वनियाँ उभरेंगी।"
+      ],
+      progression: [
+        "चरण 1–5 गश्त, किनारे, निशाना लगाए प्रक्षेप्य, चलती मंच और काँटे सिखाते हैं; बेसिलिस्क घाटी ज़हर और फैलती हुई प्रक्षेप्य बौछार जोड़ती है।",
+        "चरण 6–10 गिरते क्रिस्टल की चेतावनी, क्रिस्टल चमगादड़ों की फैली गोलियाँ और कवच वाले सूअर जोड़ते हैं। पत्थर रक्षक सामने से पंजे रोकता है और जमीन पर वार के बाद दो छलाँग योग्य सदमे की लहरों से खुलता है।",
+        "चरण 11–15 काँटेदार गलियारे, धावे, कवच और दूर के खतरों की प्राथमिकता मिलाते हैं। काँटा दैत्य जड़ का वार चूकने तक अपने केंद्र की रक्षा करता है, फिर थोड़ी देर की नुकसान-खिड़की खुलती है।",
+        "चरण 16–20 आग वाले रास्ते, अंगारा भेड़ियों की लपटें और गोता चमगादड़ घुमाते हैं; राख ड्रैगन हवा में सुरक्षित रहता है और उतरते समय कमजोर होता है।",
+        "चरण 21–25 हवा के झोंके, दरार चमगादड़ और बँटने वाले दर्पण भेड़िये जोड़ते हैं। ग्रहण हिरण अधिकतर नुकसान लौटाता है जब तक उसका धावा मैदान के किनारे से न टकराए।",
+        "चरण 26–30 पुराने पलटवार नियमों को दिखाई देने वाली चेतावनियों के साथ मिलाते हैं। बेहेमोथ मुकुट दो HP सीमाओं पर बदलता है, क्रिस्टल और जड़ों का दबाव जोड़ता है, लेकिन कोई छिपा हुआ चरण 31 नहीं बनाता।"
+      ],
+      designNote: "अभियान पाँच-पाँच चरणों के छह सीखने वाले भागों में बना है, ताकि कठिनाई केवल बड़ी HP पट्टियों से नहीं बल्कि पहचान और पलटवार से बढ़े। भूभाग पहले चेतावनी देता है और फिर सक्रिय होता है; एक स्थिर तार्किक लड़ाई दृश्य फोन और डेस्कटॉप पर मंच, HUD, नियंत्रण, बढ़त और परिणाम की ज्यामिति समान रखता है। बचना, कूदना, लक्ष्य चुनना और वार का समय खिलाड़ी के सीधे निर्णय हैं।",
+      parent: "यह ब्राउज़र सबसे अधिक खुले चरण, चुने हुए चरण, पूरे किए गए चरण, प्रयास, सर्वश्रेष्ठ परिणाम, मुकुट जीत और धुंध ताबीज का स्वामित्व सेव करता है। पुरानी सेव आगे बढ़ती है और कमाए हुए चरण फिर से लॉक नहीं करती; साइट डेटा मिटाने या ब्राउज़र बदलने से रिकॉर्ड हट सकता है। खाते की जरूरत नहीं है और हीरे वैकल्पिक सहायता हैं।",
+      faq: [
+        ["क्या शैडो वुल्फ लीजेंड मुफ्त है?", "हाँ। पूरा 30-चरण अभियान ब्राउज़र में बिना अनिवार्य खरीद या लॉगिन के चलता है।"],
+        ["चरण कैसे खुलते हैं?", "नई सेव चरण 1 से शुरू होती है। पूरी मुठभेड़ जीतने पर चरण सेव होता है और अगला कार्ड खुलता है; पूरे किए गए चरण फिर से खेले जा सकते हैं।"],
+        ["भेड़िया गिर जाए तो क्या होता है?", "भेड़िया सुरक्षित जमीन पर लौटता है और 5 HP खोता है। प्रयास तभी खत्म होता है जब इस दंड से HP शून्य हो जाए।"],
+        ["कवच वाले दुश्मन को बहुत कम नुकसान क्यों होता है?", "उसकी रक्षा सक्रिय है। धावा चूकने, जमीन पर वार, जड़ के वार, उतरने या दीवार से टकराने के बाद दिखाई देने वाली पलटवार खिड़की खोजें।"],
+        ["क्या दोनों विशेषता अंक खर्च करना जरूरी है?", "हाँ। दोनों अंक शक्ति, फुर्ती, सहनशक्ति या भाग्य में बाँटने के बाद ही लड़ाई जारी रहती है।"],
+        ["क्या हीरे आवश्यक हैं?", "नहीं। वे केवल वैकल्पिक धुंध ताबीज के लिए हैं; 30 चरणों की सामान्य प्रगति में हीरे नहीं चाहिए।"],
+        ["कौन-सी प्रगति सेव होती है?", "चरण खोलना और पूरा करना, चुना हुआ चरण, प्रयास, सर्वश्रेष्ठ परिणाम, मुकुट जीत और ताबीज का स्वामित्व इस ब्राउज़र में सेव होता है।"],
+        ["छह बॉस कैसे अलग हैं?", "बेसिलिस्क ज़हर से जमीन नियंत्रित करता है, रक्षक वार के बाद रक्षा खोलता है, दैत्य केंद्र दिखाता है, ड्रैगन उड़ान और उतरने के बीच बदलता है, हिरण असफल धावे पर ढाल तोड़ता है और बेहेमोथ चरणों के अनुसार क्रिस्टल व जड़ों का दबाव मिलाता है।"]
+      ],
+    },
+  };
+  for (const [locale, copy] of Object.entries(shadowWolfGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["shadow-wolf"] = { ...games["shadow-wolf"], ...copy };
+  }
 
   window.WeightPlayGameInfo = {
     render,
@@ -12215,6 +12590,7 @@
       "animal-triple-match": { title: "पशु ट्रिपल मैच", intro: "परतों से खुले वस्तुओं को सात-स्थान ट्रे में ले जाएँ और असंगत वस्तुओं से जगह भरने से पहले तीन समान वस्तुएँ मिलाएँ।" }
     },
     "ar": {
+      "beast-tactician": { title: "حارس الوحوش", intro: "ابنِ مسارات دفاعية على شبكة الغابة، وضع الجنود والأبطال، واحمِ النواة البلورية عبر ثلاثين مرحلة." },
       "maze-chase": { title: "مطاردة المتاهة", intro: "قد أورلا داخل متاهة ثابتة لجمع ذرات النجوم، واقرأ أربعة أنماط لمطاردة الومضات، وحوّل الممر الخطير إلى فرصة قصيرة للهجوم المضاد باستخدام المنارات." },
       "animal-number-match": { title: "بستان رقم بانكو", intro: "أزل الأزواج التي يساوي مجموعها عشرة عندما تتلامس أو ترى بعضها عبر الخانات الفارغة، وافتح خطوط رؤية جديدة." },
       "animal-sunbeam-garden": { title: "حديقة شعاع الشمس", intro: "أدر المرايا على لوحة حديقة من ستة في ستة حتى يسلك كل شعاع ظاهر مسارًا صحيحًا من مصدره إلى الزنبق النائم." },

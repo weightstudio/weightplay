@@ -185,6 +185,39 @@
     ar: { title: "البستوني", summary: "راهن على لمّات فريقك، واستخدم البستوني حكماً، وتعاون مع زميلك من الذكاء الاصطناعي.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "يقدّم فريقان العطاءات قبل جولة اللمّات. البستوني حكم دائماً، وتُسجَّل اللمّات الزائدة كأكياس.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لمّات كلاسيكية بحكم", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "الوقت التقريبي", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة للفوز بالعقد.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "راهن على لمّات فريقك، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة.", opponents: ["أنت", "الذكاء الاصطناعي شمالاً", "الذكاء الاصطناعي شرقاً", "الذكاء الاصطناعي غرباً"], metaDescription: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة البطاقات هذه ضمن معاينة المالك." },
   };
 
+  // War's static shell predates the shared card-game runtime and therefore
+  // still contains English control labels on the Arabic route. Keep the
+  // repair owned by the card-game runtime so Main, Battle, and Result stay in
+  // one exact Arabic tuple while every other locale keeps its route copy.
+  const WAR_SHELL_COPY = {
+    ar: {
+      title: "الحرب",
+      summary: "يكشف كلا اللاعبين عن بطاقة واحدة. الرتبة الأعلى تفوز بالمجموع؛ الرتب المقيدة تؤدي إلى حرب ببطاقات إضافية.",
+      guideKicker: "دليل ألعاب WeightPlay الأصلية",
+      guideSummary: "يكشف كلا اللاعبين عن بطاقة واحدة. الرتبة الأعلى تفوز بالمجموع؛ الرتب المقيدة تؤدي إلى حرب ببطاقات إضافية.",
+      gameplayLabel: "طريقة اللعب",
+      gameplay: "لعبة بطاقات كلاسيكية لكشف الأوراق",
+      genreLabel: "النوع",
+      genre: "بطاقات · عائلية · استراتيجية",
+      difficultyLabel: "الصعوبة",
+      difficulty: "سهل",
+      timeLabel: "وقت اللعب المقدر",
+      time: "3-8 دقائق",
+      skillsLabel: "المهارات المتدرَّبة",
+      skills: "التركيز · التعرّف على الأنماط",
+      howTo: "طريقة اللعب",
+      howToCopy: "اضغط على «اقلب» للكشف، ثم شاهد تحرك الكومة. اللاعب الذي يجمع كل بطاقة يفوز.",
+      preview: "حالة المعاينة",
+      previewCopy: "معاينة المالك هذه غير موجودة في الكتالوج العام الرسمي.",
+      faq: "الأسئلة الشائعة",
+      faqQuestion: "هل يُحفظ التقدم؟",
+      faqAnswer: "نعم، في هذا المتصفح فقط.",
+      quickGuide: "طريقة اللعب",
+      quickGuideCopy: "اضغط على «اقلب» للكشف، ثم شاهد تحرك الكومة. اللاعب الذي يجمع كل بطاقة يفوز.",
+      metaDescription: "يكشف كلا اللاعبين عن بطاقة واحدة. الرتبة الأعلى تفوز بالمجموع؛ الرتب المقيدة تؤدي إلى حرب ببطاقات إضافية.",
+    },
+  };
+
   const SPADES_CLASSIC_GUIDE_TITLES = {
     en: "Spades Guide",
     "zh-Hant": "黑桃遊戲指南",
@@ -208,6 +241,81 @@
     const text = String(value ?? "");
     if (node.textContent !== text) node.textContent = text;
     if (node.getAttribute("data-runtime-localize") !== "off") node.setAttribute("data-runtime-localize", "off");
+  };
+  const warShellCopy = () => WAR_SHELL_COPY[currentLocale()] || null;
+  let warShellSyncing = false;
+  const syncWarShell = () => {
+    const copy = warShellCopy();
+    if (!copy || warShellSyncing) return;
+    warShellSyncing = true;
+    try {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const guideRoot = document.querySelector(".game-page-info");
+      if (guideRoot) guideRoot.setAttribute("data-runtime-localize", "off");
+      const pageTitle = `${copy.title} - دليل اللعبة | WeightPlay`;
+      if (document.title !== pageTitle) document.title = pageTitle;
+      const summary = document.querySelector('meta[name="description"]');
+      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
+      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
+      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
+      const jsonLd = document.querySelector('script[type="application/ld+json"]');
+      if (jsonLd) {
+        try {
+          const data = JSON.parse(jsonLd.textContent);
+          data.name = copy.title;
+          data.description = copy.metaDescription;
+          data.inLanguage = currentLocale();
+          jsonLd.textContent = JSON.stringify(data);
+        } catch (_error) {}
+      }
+      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+      const facts = [...document.querySelectorAll(".game-info-fact")];
+      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
+        const fact = facts[index];
+        if (!fact) return;
+        ownLocalizedText(fact.querySelector("span"), label);
+        ownLocalizedText(fact.querySelector("strong"), value);
+      });
+      const sections = [...document.querySelectorAll(".game-info-section")];
+      const guide = sections.find((section) => section.querySelector("ol"));
+      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+      const faq = sections.find((section) => section.querySelector("dl"));
+      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      ownLocalizedText(document.querySelector("#startBtn"), labels.start);
+      ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
+      ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", labels.language);
+      const mainReturn = document.querySelector(".main-return");
+      if (mainReturn) mainReturn.setAttribute("aria-label", "العودة إلى الصفحة الرئيسية");
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) {
+        battleBack.setAttribute("aria-label", labels.back);
+        battleBack.setAttribute("data-runtime-localize", "off");
+      }
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), labels.hand);
+      ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
+      ownLocalizedText(document.querySelector("#resultNewGame"), labels.newGame);
+      ownLocalizedText(document.querySelector("#resultRestart"), labels.restart);
+      ownLocalizedText(document.querySelector("#resultClose"), labels.close);
+    } finally {
+      warShellSyncing = false;
+    }
   };
   let spadesShellSyncing = false;
   const syncSpadesShell = () => {
@@ -1159,10 +1267,11 @@
     const localeSelect = document.querySelector("#localeSelect");
     const guideContent = () => {
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
-      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
-      return { heading, paragraph, localized: Boolean(heartsShell) };
+      const warShell = id === "war" ? warShellCopy() : null;
+      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : warShell?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : warShell?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || warShell || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
+      return { heading, paragraph, localized: Boolean(warShell || heartsShell) };
     };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
@@ -1218,6 +1327,10 @@
       window.setTimeout(syncCribbageShell, 1200);
     }
     if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
+    if (id === "war") {
+      syncWarShell();
+      window.addEventListener("weightplay:shell-sync", syncWarShell);
+    }
     if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
     if (id === "casino") {
       statusText?.setAttribute("aria-live", "polite");

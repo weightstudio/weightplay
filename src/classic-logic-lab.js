@@ -602,6 +602,11 @@
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
+    const poster = id === "lights-out"
+      ? "../../assets/lights-out-cover-v2.webp"
+      : id === "peg-solitaire"
+        ? "../../assets/peg-solitaire-cover-v2.webp"
+        : "../../assets/classic-logic-lab-cover.webp";
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
@@ -609,7 +614,7 @@
       <div class="logic-lab">
         <main class="logic-main" id="logicMain">
           <header class="logic-header"><a class="logic-return" href="/" aria-label="${esc(t("back"))}"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1>${esc(title)}</h1><div class="logic-header-tools"><button id="settingsButton" class="logic-icon-button" type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
-          <section class="logic-hero"><div class="logic-poster"><img src="../../assets/classic-logic-lab-cover.webp" alt=""></div><div class="logic-copy"><p class="logic-kicker">${esc(t("preview"))}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><button id="startButton" class="logic-primary" type="button">${esc(t("start"))}</button></div></section>
+          <section class="logic-hero"><div class="logic-poster"><img src="${poster}" alt=""></div><div class="logic-copy"><p class="logic-kicker">${esc(t("preview"))}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><button id="startButton" class="logic-primary" type="button">${esc(t("start"))}</button></div></section>
           <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
         <section class="logic-battle-screen" id="logicBattle" hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>

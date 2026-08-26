@@ -808,11 +808,11 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "그림자 늑대 전설",
     "es": "Lobo Sombrío",
     "pt-BR": "Lenda do Lobo das Sombras",
-    "fr": "Légende du loup de l'ombre",
-    "de": "Schattenwolf-Legende",
-    "it": "Leggenda del lupo ombra",
+    "fr": "Légende du Loup de l’Ombre",
+    "de": "Legende des Schattenwolfs",
+    "it": "Leggenda del Lupo Ombra",
     "ru": "Легенда Теневого Волка",
-    "hi": "छाया भेड़िया किंवदंती",
+    "hi": "शैडो वुल्फ लीजेंड",
     "ar": "أسطورة ظل الذئب"
   },
   "animal-block-grove": {
