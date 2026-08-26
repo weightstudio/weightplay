@@ -2158,8 +2158,8 @@ window.WONDER_LOBBY.games.push({
     ko: "체커", es: "Damas", "pt-BR": "Damas", fr: "Dames", de: "Dame",
     it: "Dama", ru: "Шашки", hi: "चेकर्स", ar: "الداما",
   },
-  status: "planned",
-  statusText: { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
   type: {
     en: "Diagonal Board Sprint", "zh-Hant": "斜向棋盤短跑", "zh-Hans": "斜向棋盘短跑", ja: "斜め盤面スプリント",
     ko: "대각선 보드 스프린트", es: "Sprint de tablero diagonal", "pt-BR": "Sprint de tabuleiro diagonal",
@@ -2171,7 +2171,7 @@ window.WONDER_LOBBY.games.push({
   ages: ["9", "family"],
   ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
   href: "games/checkers/",
-  internalTrial: "index.html?preview=1",
+  previewVideo: "assets/previews/checkers-battle.webm",
   description: {
     en: "Play five legal diagonal moves, choose a clear branch, and crown a checker in a short promotion sprint.",
     "zh-Hant": "完成五步合法斜向移動，選擇清楚的分支，並在短暫升變衝刺中讓棋子升王。",
