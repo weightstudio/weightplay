@@ -1072,9 +1072,29 @@
   }
   function cardsMarkup(cards, options = {}) { return (cards || []).map((item, index) => cardMarkup(item, index, { ...options, selected: options.selected?.has(index) })).join(""); }
   function opponentMarkup(name, count, extra = "") { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")}${extra ? ` · ${extra}` : ""}</span></div>`; }
+  const HEARTS_CARD_COUNT_COPY = {
+    en: { one: "card", other: "cards" },
+    "zh-Hant": { other: "張牌" },
+    "zh-Hans": { other: "张牌" },
+    ja: { other: "枚" },
+    ko: { other: "장" },
+    es: { one: "carta", other: "cartas" },
+    "pt-BR": { one: "carta", other: "cartas" },
+    fr: { one: "carte", other: "cartes" },
+    de: { one: "Karte", other: "Karten" },
+    it: { one: "carta", other: "carte" },
+    ru: { one: "карта", few: "карты", many: "карт", other: "карты" },
+    hi: { one: "पत्ता", other: "पत्ते" },
+    ar: { zero: "بطاقات", one: "بطاقة", two: "بطاقتان", few: "بطاقات", many: "بطاقة", other: "بطاقة" },
+  };
+  function heartsCardLabel(count) {
+    const locale = currentLocale();
+    const copy = HEARTS_CARD_COUNT_COPY[locale] || HEARTS_CARD_COUNT_COPY.en;
+    const category = new Intl.PluralRules(locale).select(count);
+    return copy[category] || copy.other || HEARTS_CARD_COUNT_COPY.en.other;
+  }
   function heartsOpponentMarkup(name, count, extra = "") {
-    const cardLabel = currentLocale() === "ar" ? (count === 1 ? "بطاقة" : "بطاقات") : t("cards");
-    return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${cardLabel}${extra ? ` · ${extra}` : ""}</span></div>`;
+    return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${heartsCardLabel(count)}${extra ? ` · ${extra}` : ""}</span></div>`;
   }
   function spadesOpponentMarkup(name, count, bid) { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")} · <span class="spades-bid-label" data-runtime-localize="off">${t("bid")}: ${bid}</span></span></div>`; }
   function makePegBoard(player, ai) {
@@ -1137,18 +1157,28 @@
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
     const localeSelect = document.querySelector("#localeSelect");
-    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-    const guideParagraph = id === "spades" || id === "gin-rummy" || id === "cribbage" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
+    const guideContent = () => {
+      const heartsShell = id === "hearts" ? heartsShellCopy() : null;
+      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
+      return { heading, paragraph, localized: Boolean(heartsShell) };
+    };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
     quickGuide.setAttribute("role", "note");
     quickGuide.dataset.cardQuickGuide = "true";
-    if (id === "spades" || id === "gin-rummy" || id === "cribbage") quickGuide.setAttribute("data-runtime-localize", "off");
-    const quickGuideLabel = document.createElement("strong");
-    quickGuideLabel.textContent = guideHeading;
-    quickGuide.append(quickGuideLabel);
-    if (guideParagraph) quickGuide.append(document.createTextNode(`: ${guideParagraph}`));
+    const updateQuickGuide = () => {
+      const { heading, paragraph, localized } = guideContent();
+      quickGuide.replaceChildren();
+      const quickGuideLabel = document.createElement("strong");
+      quickGuideLabel.textContent = heading;
+      quickGuide.append(quickGuideLabel);
+      if (paragraph) quickGuide.append(document.createTextNode(`: ${paragraph}`));
+      if (localized || id === "spades" || id === "gin-rummy" || id === "cribbage") quickGuide.setAttribute("data-runtime-localize", "off");
+      else quickGuide.removeAttribute("data-runtime-localize");
+    };
+    updateQuickGuide();
     if (!main || !battle || !table || !hand || !actions) return;
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {
@@ -1268,7 +1298,8 @@
       if (id === "hearts" && heartsShellCopy()) {
         [opponents, center, hand, actions, status, statusText].forEach((node) => node?.setAttribute("data-runtime-localize", "off"));
       }
-      if (guideParagraph) actions.prepend(quickGuide);
+      updateQuickGuide();
+      if (quickGuide.textContent) actions.prepend(quickGuide);
       status.textContent = view.status || "";
       statusText.textContent = view.help || "";
       document.querySelector("#cardGameScore").textContent = view.score || "0";

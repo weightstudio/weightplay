@@ -178,7 +178,9 @@
     if (!document.querySelector('script[src*="game-page-info.js"]')) {
       const script = document.createElement("script");
       const gameId = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
-      const gameInfoCacheTag = gameId === "maze-chase" ? "20260826-maze-guide-v15" : "20260817-bus-jam-guide-v12";
+      const gameInfoCacheTag = gameId === "maze-chase"
+        ? "20260826-maze-guide-v15"
+        : gameId === "cribbage" ? "20260827-cribbage-arabic-opening-v1" : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;
       document.body.append(script);
     }
