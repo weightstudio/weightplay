@@ -33,15 +33,17 @@
     ],
     chapters: ["桃園起兵", "黃巾風雲", "虎牢雄關", "徐州月夜", "荊州長歌", "赤壁東風", "漢中爭鋒", "五丈星落"],
     missions: [
-      { id: "battle10", label: "擊敗 10 名敵軍", target: 10, field: "kills", reward: { coins: 1200 } },
-      { id: "upgrade3", label: "完成 3 次武將升級", target: 3, field: "upgrades", reward: { ingots: 30 } },
-      { id: "summon1", label: "在酒館招募 1 次", target: 1, field: "summons", reward: { coins: 1800 } },
-      { id: "weekly-stage", label: "每週成長：推進至第 20 關", target: 20, field: "stage", reward: { ingots: 160 } }
+      { id: "battle10", label: "主線：擊敗 10 名敵軍", target: 10, field: "kills", reward: { coins: 1200 } },
+      { id: "upgrade3", label: "每日：完成 3 次武將升級", target: 3, field: "upgrades", reward: { ingots: 30 } },
+      { id: "summon1", label: "每日：在酒館招募 1 次", target: 1, field: "summons", reward: { coins: 1800 } },
+      { id: "weekly-stage", label: "每週：推進至第 20 關", target: 20, field: "stage", reward: { ingots: 160 } },
+      { id: "growth-power", label: "成長：隊伍戰力達 1,000", target: 1000, field: "power", reward: { materials: 40 } }
     ],
     achievements: [
       { id: "stage5", label: "初露鋒芒：通過第 5 關", target: 5, field: "stage", reward: { ingots: 50 } },
       { id: "power500", label: "義軍成形：戰力達 500", target: 500, field: "power", reward: { ingots: 80 } },
-      { id: "boss3", label: "破陣名將：擊敗 3 名 Boss", target: 3, field: "bossKills", reward: { coins: 5000 } }
+      { id: "boss3", label: "破陣名將：擊敗 3 名 Boss", target: 3, field: "bossKills", reward: { coins: 5000 } },
+      { id: "collect5", label: "群英齊聚：收集 5 名武將", target: 5, field: "collection", reward: { ingots: 120 } }
     ]
   });
 })();

@@ -110,6 +110,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .bottom-nav button > b { font-size: 11px; }
 .bottom-nav button.is-active { color: #fff; background: linear-gradient(0deg,rgba(245,200,76,.18),transparent); }
 .bottom-nav button.is-active > span { color: #253044; background: #f5c84c; }
+.bottom-nav button.is-locked { opacity: .48; }
+.bottom-nav button.is-locked > span::after { content: "鎖"; position: absolute; padding: 2px; border-radius: 4px; color: #fff; background: #8e3030; font-size: 7px; }
 .bottom-nav .dot { top: 8px; right: calc(50% - 24px); }
 .ad-reserve { position: fixed; z-index: 2; left: max(0px,calc((100vw - 920px)/2)); bottom: 0; width: min(100vw,920px); height: 56px; background: #0a121d; }
 .app[data-scene="main"] > .ad-reserve { display: none; }

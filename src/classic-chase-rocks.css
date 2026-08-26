@@ -98,6 +98,17 @@ h2 { font-size: clamp(1.45rem, 5vw, 2.3rem); }
 .battle-topline { justify-content: space-between; }
 .round-label { color: var(--accent); font-size: 0.83rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
 .icon-button { width: 44px; min-width: 44px; padding: 8px; }
+
+/* The shared shell promotes Maze Chase's Back control into a fixed physical
+   left-edge header. In portrait RTL, reserve that strip in the native row so
+   Restart/Sound remain independently targetable instead of sitting beneath
+   the promoted control. Landscape and LTR keep the established composition. */
+@media (max-width: 649px) and (min-height: 501px) {
+  html[dir="rtl"] body[data-game-id="maze-chase"] .battle-topline {
+    padding-left: 56px;
+  }
+}
+
 .hud { flex-wrap: wrap; justify-content: space-between; padding: 10px 2px; }
 .hud-item { display: grid; gap: 2px; min-width: 62px; }
 .hud-label { color: var(--muted); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; }

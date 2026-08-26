@@ -85,7 +85,7 @@
   function heroStats(id) {
     const base = heroData(id);
     const progress = state.heroes[id];
-    const growth = 1 + (progress.level - 1) * .13 + (progress.star - 1) * .18;
+    const growth = 1 + (progress.level - 1) * .13 + (progress.star - 1) * .18 + (progress.rank || 0) * .25;
     let atk = base.atk * growth * (1 + state.law.valor * .045);
     let hp = base.hp * growth * (1 + state.law.bulwark * .055);
     let speed = base.speed * (1 + state.law.tactics * .022);
@@ -142,11 +142,20 @@
     $("#waveText").textContent = `Wave ${state.wave} / 5`;
     if (!$("#management").classList.contains("is-hidden")) $("#managementMeta").textContent = `戰力 ${fmt(totalPower())}`;
     updateDots();
+    updateUnlocks();
+  }
+
+  function updateUnlocks() {
+    const campaign = $('.bottom-nav [data-tab="campaign"]');
+    const locked = state.stage < 2;
+    campaign?.classList.toggle("is-locked", locked);
+    if (campaign) campaign.setAttribute("aria-label", locked ? "戰役，第 2 關解鎖" : "戰役");
   }
 
   function progressFor(entry) {
     if (entry.field === "stage") return state.stage;
     if (entry.field === "power") return totalPower();
+    if (entry.field === "collection") return C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
     return state.stats[entry.field] || 0;
   }
 
@@ -160,7 +169,7 @@
       shop: state.daily.quick,
       heroes: state.resources.coins >= heroUpgradeCost(state.team[0]),
       tavern: state.daily.freeSummon,
-      campaign: Object.values(state.daily.campaign).reduce((a, b) => a + b, 0) < 4
+      campaign: state.stage >= 2 && Object.values(state.daily.campaign).reduce((a, b) => a + b, 0) < 9
     };
     Object.entries(flags).forEach(([key, visible]) => {
       $$(`[data-dot="${key}"]`).forEach((dot) => dot.classList.toggle("is-hidden", !visible));
@@ -232,7 +241,7 @@
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
     return `<div class="unit" data-unit="${unit.key}" style="--sheet:${sheet};--pos:${pos}">
       <i class="hp"><b style="width:${hp}%"></b></i><div class="sprite"></div>
-      <span class="unit-name">${unit.data.name}</span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
+      <span class="unit-name">${unit.data.name}</span><span class="status-badge is-hidden"></span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
     </div>`;
   }
 
@@ -253,12 +262,14 @@
     if (!alive.length) return;
     unit.cooldown = clamp(1.32 / unit.speed, .46, 1.65);
     unit.attacks += 1;
-    const skill = unit.side === "hero" && unit.attacks % 5 === 0;
+    const skill = (unit.side === "hero" && unit.attacks % 5 === 0) || (unit.id === "cobra" && unit.attacks % 4 === 0);
     const target = alive[Math.floor(Math.random() * alive.length)];
     const crit = Math.random() < (unit.id === "tiger" ? .22 : .1);
     const counter = C.troopCounters[unit.data.troop] === target.data.troop ? 1.22 : 1;
     const variation = .86 + Math.random() * .28;
-    let damage = Math.max(1, Math.round(unit.atk * variation * counter * (crit ? 1.7 : 1) * (skill ? 1.85 : 1)));
+    let damage = Math.max(1, Math.round(unit.atk * variation * counter * (crit ? 1.7 : 1) * (skill ? (unit.side === "hero" ? 1.85 : 1.25) : 1)));
+    if ((unit.status.weakenUntil || 0) > Date.now()) damage = Math.round(damage * .78);
+    if ((target.status.shieldUntil || 0) > Date.now()) damage = Math.round(damage * .76);
     if (target.id === "bear" && target.side === "hero") damage = Math.round(damage * .92);
     target.hp = Math.max(0, target.hp - damage);
     animateAttack(unit, target, damage, crit, skill);
@@ -270,11 +281,16 @@
       targets.filter((target) => target.hp > 0).forEach((target) => { target.hp = Math.max(0, target.hp - Math.round(unit.atk * .62)); });
       $("#battleStatus").textContent = `${unit.data.name}施放「${unit.data.skill}」`;
     } else if (unit.id === "leo") {
-      battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { hero.hp = Math.min(hero.maxHp, hero.hp + Math.round(hero.maxHp * .08)); });
+      battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { hero.hp = Math.min(hero.maxHp, hero.hp + Math.round(hero.maxHp * .08)); hero.status.buffUntil = Date.now() + 2800; });
       $("#battleStatus").textContent = "桃園盟誓：全隊回復";
     } else if (unit.id === "bear") {
       unit.hp = Math.min(unit.maxHp, unit.hp + Math.round(unit.maxHp * .14));
+      unit.status.shieldUntil = Date.now() + 3200;
       $("#battleStatus").textContent = "鐵壁守陣：獲得護盾";
+    } else if (unit.id === "cobra") {
+      const target = battle.heroes.filter((hero) => hero.hp > 0).sort((a, b) => b.atk - a.atk)[0];
+      if (target) target.status.weakenUntil = Date.now() + 3200;
+      $("#battleStatus").textContent = "白蛇妖士施放虛弱咒";
     } else {
       $("#battleStatus").textContent = `${unit.data.name}施放「${unit.data.skill}」`;
     }
@@ -306,6 +322,15 @@
       const fill = $(".hp b", el);
       if (fill) fill.style.width = `${clamp(unit.hp / unit.maxHp * 100, 0, 100)}%`;
       el.style.opacity = unit.hp <= 0 ? ".18" : "1";
+      const badge = $(".status-badge", el);
+      if (badge) {
+        const weakened = (unit.status.weakenUntil || 0) > Date.now();
+        const shielded = (unit.status.shieldUntil || 0) > Date.now();
+        const buffed = (unit.status.buffUntil || 0) > Date.now();
+        badge.textContent = weakened ? "Debuff 虛弱" : shielded ? "Buff 鐵壁" : buffed ? "Buff 仁心" : "";
+        badge.classList.toggle("is-debuff", weakened);
+        badge.classList.toggle("is-hidden", !weakened && !shielded && !buffed);
+      }
     });
     const boss = battle.enemies.find((unit) => unit.data.boss);
     if (boss) $("#bossHpFill").style.width = `${clamp(boss.hp / boss.maxHp * 100, 0, 100)}%`;
@@ -403,18 +428,21 @@
       const p = state.heroes[hero.id];
       const stats = p.owned ? heroStats(hero.id) : null;
       const cost = heroUpgradeCost(hero.id);
+      const breakCost = 8 + (p.rank || 0) * 6;
+      const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
       return `<article class="hero-card">
         <div class="hero-portrait"><div class="sprite" style="--sheet:url('assets/heroes.png');--pos:${hero.sprite * 25}%"></div></div>
         <div class="hero-card-copy"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3>
         <p>${p.owned ? `${hero.role} · ${hero.skill}` : `碎片 ${p.fragments}/10`}</p>
-        ${p.owned ? `<div class="mini-stats"><span>Lv.${p.level}</span><span>攻 ${stats.atk}</span><span>血 ${stats.hp}</span></div>
-        <div class="card-actions"><button data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>升級 ${cost}</button><button class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? "下陣" : "上陣"}</button></div>` : ""}
+        ${p.owned ? `<div class="mini-stats"><span>Lv.${p.level}</span><span>${p.star} 星</span><span>突破 +${p.rank || 0}</span><span>攻 ${stats.atk}</span><span>血 ${stats.hp}</span></div>
+        <div class="card-actions"><button data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>升級 ${cost}</button><button data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>突破 ${breakCost}</button><button class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? "下陣" : "上陣"}</button></div>` : ""}
         </div></article>`;
     }).join("");
     const equipment = state.inventory.length ? state.inventory.map((entry) => {
       const def = equipmentData(entry.itemId);
       const holder = Object.keys(state.equipped).find((id) => state.equipped[id] === entry.uid);
-      return `<div class="equipment-row"><div><strong>${def.name} +${entry.level}</strong><small>${def.slot} · ${def.quality} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${heroData(holder).name}` : ""}</small></div><div class="card-actions"><button data-action="equip" data-uid="${entry.uid}">穿戴</button><button class="alt" data-action="salvage" data-uid="${entry.uid}">分解</button></div></div>`;
+      const enhanceCost = 3 + entry.level * 2;
+      return `<div class="equipment-row"><div><strong>${def.name} +${entry.level}</strong><small>${def.slot} · ${def.quality} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${heroData(holder).name}` : ""}</small></div><div class="card-actions"><button data-action="equip" data-uid="${entry.uid}">穿戴</button><button data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>強化 ${enhanceCost}</button><button class="alt" data-action="salvage" data-uid="${entry.uid}">分解</button></div></div>`;
     }).join("") : "<p>背包目前沒有裝備；Boss 與裝備戰役會掉落新裝備。</p>";
     $("#managementBody").innerHTML = `<div class="section-title"><h3>隊伍陣型</h3><span>最多 3 名上陣</span></div><div class="formation">${formation}</div>
       <div class="section-title"><h3>武將養成</h3><span>等級、星級、技能、兵種</span></div><div class="hero-grid">${cards}</div>
@@ -441,9 +469,10 @@
       { id: "coins", title: "銅雀金庫", copy: "迎戰守庫軍，取得大量銅錢。", reward: { coins: 2200 + state.stage * 80 } },
       { id: "xp", title: "群英試煉", copy: "與名將切磋，取得主公經驗。", reward: { xp: 90 + state.stage * 4 } },
       { id: "gear", title: "兵甲秘庫", copy: "打開古代軍械庫，必得一件裝備。", reward: { gear: 1 } },
-      { id: "materials", title: "軍法演武", copy: "完成兵種操演，取得軍法材料。", reward: { materials: 14 + Math.floor(state.stage / 2) } }
+      { id: "materials", title: "軍法演武", copy: "完成兵種操演，取得軍法材料。", reward: { materials: 14 + Math.floor(state.stage / 2) } },
+      { id: "daily-boss", title: "每日 Boss · 黑角試煉", copy: "每日挑戰強敵一次，取得元寶與必得裝備。", reward: { ingots: 25, gear: 1 }, limit: 1 }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>每項 2 次</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; return `<article class="campaign-card"><span class="quality">剩餘 ${2 - used} / 2</span><h3>${c.title}</h3><p>${c.copy}</p><button data-action="campaign" data-id="${c.id}" ${used >= 2 ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><button data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
   }
 
   function managementAction(event) {
@@ -457,6 +486,15 @@
       state.heroes[id].level = Math.min(C.heroLevelCap, state.heroes[id].level + 1);
       state.stats.upgrades += 1;
       toast(`${heroData(id).name}提升至 Lv.${state.heroes[id].level}`);
+      renderHeroes();
+    }
+    if (action === "break-hero") {
+      const p = state.heroes[id];
+      const cost = 8 + (p.rank || 0) * 6;
+      if (p.level < ((p.rank || 0) + 1) * 5 || state.resources.materials < cost) return;
+      state.resources.materials -= cost;
+      p.rank = (p.rank || 0) + 1;
+      toast(`${heroData(id).name}突破成功，基礎成長大幅提升`);
       renderHeroes();
     }
     if (action === "toggle-team") {
@@ -482,6 +520,16 @@
       state.inventory.splice(index, 1);
       state.resources.materials += 5;
       toast("裝備已分解，獲得 5 材料");
+      renderHeroes();
+    }
+    if (action === "upgrade-equipment") {
+      const item = state.inventory.find((entry) => entry.uid === itemUid);
+      if (!item) return;
+      const cost = 3 + item.level * 2;
+      if (state.resources.materials < cost) return;
+      state.resources.materials -= cost;
+      item.level += 1;
+      toast(`${equipmentData(item.itemId).name}強化至 +${item.level}`);
       renderHeroes();
     }
     if (action === "summon") summon(Number(button.dataset.count || 1));
@@ -519,12 +567,14 @@
 
   function runCampaign(id) {
     const used = state.daily.campaign[id] || 0;
-    if (used >= 2) return;
+    const limit = id === "daily-boss" ? 1 : 2;
+    if (used >= limit) return;
     state.daily.campaign[id] = used + 1;
     if (id === "coins") grant({ coins: 2200 + state.stage * 80 });
     if (id === "xp") grant({ xp: 90 + state.stage * 4 });
     if (id === "materials") grant({ materials: 14 + Math.floor(state.stage / 2) });
-    if (id === "gear") {
+    if (id === "daily-boss") { grant({ ingots: 25 }); state.stats.bossKills += 1; }
+    if (id === "gear" || id === "daily-boss") {
       const def = C.equipment[Math.floor(Math.random() * C.equipment.length)];
       state.inventory.push({ uid: uid(), itemId: def.id, level: 1 });
       toast(`取得裝備：${def.name}`);
@@ -567,7 +617,7 @@
     const day = Math.min(7, Math.max(1, Math.floor((new Date(today()) - new Date(state.firstSeen)) / 86400000) + 1));
     openModal("登入與七日活動", `<div class="list"><div class="list-item"><div><p>第 ${day} 日登入獎勵</p><small>元寶 ${20 + day * 10} · 軍糧 ${5 + day}</small></div><button data-event="login" ${state.daily.loginClaimed ? "disabled" : ""}>${state.daily.loginClaimed ? "已領取" : "領取"}</button></div>
       <div class="list-item"><div><p>新手成長：通過第 5 關</p><small>完成後獲得稀有裝備箱</small><div class="progress"><b style="width:${clamp(state.stage / 5 * 100,0,100)}%"></b></div></div><button disabled>${state.stage >= 5 ? "待開放" : `${state.stage}/5`}</button></div>
-      <div class="list-item"><div><p>限時活動：桃花軍備</p><small>每日完成 3 次武將升級可獲得 30 元寶</small></div><button disabled>活動中</button></div></div>`);
+      <div class="list-item"><div><p>限時活動：桃花軍備</p><small>完成 3 次武將升級可獲得 30 元寶</small><div class="progress"><b style="width:${clamp(state.stats.upgrades / 3 * 100,0,100)}%"></b></div></div><button data-event="upgrade" ${state.stats.upgrades < 3 || state.claimed["event-upgrades"] ? "disabled" : ""}>${state.claimed["event-upgrades"] ? "已領取" : "領取"}</button></div></div>`);
   }
 
   function renderCodex() {
@@ -604,6 +654,9 @@
     if (eventButton?.dataset.event === "login" && !state.daily.loginClaimed) {
       const day = Math.min(7, Math.max(1, Math.floor((new Date(today()) - new Date(state.firstSeen)) / 86400000) + 1));
       state.daily.loginClaimed = true; grant({ ingots: 20 + day * 10, food: 5 + day }); renderEvents();
+    }
+    if (eventButton?.dataset.event === "upgrade" && state.stats.upgrades >= 3 && !state.claimed["event-upgrades"]) {
+      state.claimed["event-upgrades"] = true; grant({ ingots: 30 }); renderEvents();
     }
     const shop = event.target.closest("[data-shop]");
     if (shop) shopPurchase(shop.dataset.shop);
@@ -701,7 +754,10 @@
     $("#speedBtn").addEventListener("click", () => { battle.speed = battle.speed === 1 ? 2 : 1; $("#speedBtn").textContent = `×${battle.speed}`; });
     $("#lootPile").addEventListener("click", () => collectLoot(false));
     $$("[data-open]").forEach((button) => button.addEventListener("click", () => quickOpen(button.dataset.open)));
-    $$(".bottom-nav button").forEach((button) => button.addEventListener("click", () => button.dataset.tab === "battle" ? closeManagement() : openManagement(button.dataset.tab)));
+    $$(".bottom-nav button").forEach((button) => button.addEventListener("click", () => {
+      if (button.dataset.tab === "campaign" && state.stage < 2) return toast("通過第 1 關後解鎖戰役");
+      return button.dataset.tab === "battle" ? closeManagement() : openManagement(button.dataset.tab);
+    }));
     $("#closeManagement").addEventListener("click", closeManagement);
     $("#managementBody").addEventListener("click", managementAction);
     $("#modalClose").addEventListener("click", closeModal);
