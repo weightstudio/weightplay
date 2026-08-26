@@ -80,6 +80,17 @@ const workshopPlanFeedback={
   it:{workshopPlanTarget:"Pianifica {name} · Costo: {cost} Marchi Seme. Il saldo resta visibile."},
   ru:{workshopPlanTarget:"Цель: {name} · Стоимость: {cost} Семенных знаков. Баланс остаётся видимым."},
 };
+const arabicSurface={
+  ar:{
+    loading:"جارٍ فتح خزانة الجذور…",language:"اللغة",title:"دبابيس الجذور الحيوانية",titleShort:"دبابيس الجذور",posterAlt:"تارو ذو الدرع الطحلبي يسحب دبوسًا ذهبيًا من خزانة الجذور",mainSummary:"اقرأ الغرف، ثم اسحب دبوسًا ذهبيًا كاملًا.",mainGoal:"وجّه تارو والنواة النجمية إلى الملاذ من دون خلط المواد الخطرة.",startGame:"ابدأ اللعبة",progress:"تم ترميم {done} من 30 غرفة",
+    guideKicker:"دليل لعبة أصلي من WeightPlay",guideTitle:"كل دبوس يغيّر الخزانة",guideIntro:"تشرح هذه التجربة الخاصة منطق الغرف كاملًا، وتبقى اللعبة خارج البحث العام.",guideWorldTitle:"خزانة تارو الحية",guideWorld:"تشابكت قنوات ماء القمر تحت قوقعة حصن تارو مع الجمر والظلال والأقفال الرونية القديمة.",guideRulesTitle:"المواد تتفاعل",guideRules:"يبرّد ماء القمر الجمر ليصبح بخارًا. تحمي درع القوقعة تارو مرة واحدة. تفتح المفاتيح الدبابيس ذات الرون المطابق.",guideStrategyTitle:"راقب قبل السحب",guideStrategy:"قد يحبس المسار الخاطئ النواة النجمية أو يعرّض تارو للخطر. تعيد إعادة البدء الغرفة كما كانت.",guideAccessTitle:"حركة واحدة في كل مرة",guideAccess:"اختر دبوسًا واسحبه، أو حدده ثم اضغط Enter أو المسافة. لا تتكرر الحركة عند الضغط المطوّل.",
+    chooseChamber:"اختر غرفة في خزانة الجذور",stageRailLabel:"محدد غرف خزانة الجذور",chamberBrief:"الغرفة",workshop:"ورشة الجذور",enterChamber:"دخول الغرفة",stageHint:"اسحب شريط الغرف؛ الإطار المضيء يحدد الغرفة الوسطى.",workshopTitle:"ورشة الجذور",workshopIntro:"أنفق علامات البذور على مساعدات التخطيط. لا تتغير الحلول.",seeds:"{n} علامة بذور",level:"المستوى {n}/3",upgradeBuy:"تحسين · {n}",maxed:"الحد الأقصى",pulls:"السحبات",battleObjective:"أوصل تارو والنواة النجمية إلى الملاذ",help:"طريقة اللعب",boardLabel:"لغز غرفة خزانة الجذور",restart:"إعادة البدء",pullPin:"اسحب الدبوس",
+    helpTitle:"اقرأ الغرفة قبل السحب",help1:"ينقل الدبوس كل عنصر من غرفة المصدر إلى غرفة الوجهة.",help2:"يتحول ماء القمر والجمر إلى بخار غير ضار؛ ويحجب الدرع والسلحفاة تارو ظلًا واحدًا.",help3:"يفتح مفتاح الرون الدبابيس ذات العلامة المطابقة. أوصل تارو والنواة النجمية إلى الملاذ.",continue:"متابعة",leaveTitle:"هل تُبقي هذه الغرفة مفتوحة؟",leaveText:"تحافظ المتابعة على الغرف والدبابيس والمواد وعدد السحبات. تنهي العودة هذه المحاولة.",returnChambers:"العودة إلى الغرف",best:"الأفضل",reward:"المكافأة",retry:"إعادة المحاولة",chambers:"الغرف",nextChamber:"الغرفة التالية",
+    chapter:"الفصل {n}",locked:"مقفلة",selected:"تم اختيار الدبوس",pulled:"محتويات الغرفة تتحرك.",lockedPin:"دبوس الرون هذا ما زال مقفلاً.",empty:"كانت القناة فارغة. افحص المسارات المتبقية.",steam:"برّد ماء القمر الجمر وحوّله إلى بخار.",warded:"جهّز تارو درع القوقعة.",unlocked:"فتح مفتاح الرون الدبابيس المعلّمة.",failTaro:"دخل تارو الخطر من دون حماية.",failCore:"لوّث الظل النواة النجمية.",winKicker:"تم ترميم خزانة الجذور",winTitle:"تم بلوغ الملاذ!",winText:"التقى تارو والنواة النجمية في الغرفة {n}.",failKicker:"المسار مكسور",failTitle:"تحتاج الغرفة إلى خطة جديدة",failText:"أعد البدء واختر ترتيبًا أكثر أمانًا.",seedReward:"+{n}",bestPulls:"{n} سحبة",ready:"اختر دبوسًا ذهبيًا كاملًا.",
+    chapterNames:["أساسيات المسار الجذري","حدائق البخار","دروع الظلال","التياران المتلازمان","الأقفال الرونية","خزانة الجذور الحية"],chapterRules:["وجّه تارو والنواة","برّد الجمر أولًا","جهّز الدرع قبل الظلال","نسّق التيارين","سلّم مفتاح الرون أولًا","اجمع قواعد الجذور كلها"],upgradeNames:["خيط المعاينة","يد ثابتة","ذاكرة الدرع"],upgradeDescs:["يعرض دبوسًا آمنًا تاليًا.","يحفظ آخر تلميح بعد إعادة البدء.","يضيف تذكيرًا اختياريًا بالدرع."],
+    lobbyReturn:"العودة إلى WeightPlay",back:"العودة",workshopReady:"اختر مساعدة للتخطيط؛ تبقى كلفتها ورصيدك ظاهرين.",needSeeds:"تحتاج إلى {cost} من علامات البذور. رصيدك الحالي: {n}.",upgradeComplete:"تم تحسين {name} إلى المستوى {level}/3.",firstPullPayoff:"اكتمل سحب الدبوس الأول · {reaction} · التالي: افحص المسارات المتبقية.",pullSettled:"اكتمل سحب الدبوس من دون تفاعل للمواد.",workshopPlanTarget:"خطّط نحو {name} · الكلفة: {cost} من علامات البذور. يبقى رصيدك ظاهرًا."
+  }
+};
 const publicGuide={
   en:{guideKicker:"WEIGHTPLAY ORIGINAL GAME GUIDE",guideIntro:"Plan each pull, resolve material reactions, and guide Taro and the Star Core through 30 handcrafted Rootvault chambers."},
   "zh-Hant":{guideKicker:"WEIGHTPLAY 原創遊戲指南",guideIntro:"規劃每次拉針、處理材質反應，帶領 Taro 與星核通過 30 個精心設計的根脈房間。"},
@@ -95,5 +106,5 @@ const publicGuide={
 };
 for(const code of Object.keys(packs))Object.assign(packs[code],publicGuide[code],navigation[code],workshopFeedback[code],firstPullPayoff[code],workshopPlanFeedback[code]);
 window.ROOTVAULT_PIN_LOCALES=packs;
-window.ROOTVAULT_PIN_DYNAMIC_LOCALES={hi:firstPullPayoff.hi,ar:firstPullPayoff.ar};
+window.ROOTVAULT_PIN_DYNAMIC_LOCALES={hi:firstPullPayoff.hi,ar:{...firstPullPayoff.ar,...arabicSurface.ar}};
 })();
