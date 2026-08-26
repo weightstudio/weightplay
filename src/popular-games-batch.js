@@ -748,10 +748,10 @@
     if (game.type === "wordle") document.body.dataset.gameVersion = "v6";
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
-    // Snake owns a complete 13-locale shell and guide. Keep the generic
-    // runtime translator from re-translating freshly rendered copy using the
-    // previous locale during an in-place language switch.
-    if (game.type === "snake") {
+    // Snake and Checkers own complete 13-locale shells and guides. Keep the
+    // generic runtime translator from re-translating freshly rendered copy
+    // using the previous route locale during an in-place language switch.
+    if (["snake", "checkers"].includes(game.type)) {
       root.dataset.runtimeLocalize = "off";
       document.body.dataset.runtimeLocalize = "off";
     }

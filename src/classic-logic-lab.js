@@ -552,7 +552,7 @@
   }
   function currentLocale(id) {
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
-    if (id === "four-in-a-row") {
+    if (["four-in-a-row", "sliding-15"].includes(id)) {
       const selectedPath = localStorageSafe(LOCALE_SELECTION_PATH_KEY);
       const selectedValue = localStorageSafe(LOCALE_SELECTION_VALUE_KEY);
       if (selectedPath === window.location.pathname && LOCALES.includes(selectedValue)) return selectedValue;
@@ -602,7 +602,9 @@
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
-    const poster = id === "lights-out"
+    const poster = id === "sliding-15"
+      ? "../../assets/sliding-15-cover-v1.webp"
+      : id === "lights-out"
       ? "../../assets/lights-out-cover-v2.webp"
       : id === "peg-solitaire"
         ? "../../assets/peg-solitaire-cover-v2.webp"

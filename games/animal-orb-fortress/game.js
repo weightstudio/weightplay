@@ -1615,7 +1615,16 @@
     const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
     const target = nodes.stageRail.scrollLeft
       + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
-    const bounded = Math.max(0, Math.min(target, nodes.stageRail.scrollWidth - nodes.stageRail.clientWidth));
+    // Chromium exposes an RTL overflow rail with a negative scroll range:
+    // zero is the rightmost edge and `clientWidth - scrollWidth` is the
+    // leftmost edge. Clamping to the LTR-only [0, max] range silently pins a
+    // progressed Arabic selection to Route 1 while aria-current moves to the
+    // requested route. Keep the same measured center target, but clamp against
+    // the direction's actual scroll interval.
+    const rtl = getComputedStyle(nodes.stageRail).direction === "rtl";
+    const minScroll = rtl ? Math.min(0, nodes.stageRail.clientWidth - nodes.stageRail.scrollWidth) : 0;
+    const maxScroll = rtl ? 0 : Math.max(0, nodes.stageRail.scrollWidth - nodes.stageRail.clientWidth);
+    const bounded = Math.max(minScroll, Math.min(target, maxScroll));
     const previousBehavior = nodes.stageRail.style.getPropertyValue("scroll-behavior");
     const previousPriority = nodes.stageRail.style.getPropertyPriority("scroll-behavior");
     nodes.stageRail.style.setProperty("scroll-behavior", "auto", "important");
