@@ -1429,6 +1429,27 @@ body.orb-fortress-playing #stagePanel #stageBackBtn {
     min-width: 0 !important;
     overflow: hidden !important;
   }
+
+  /* Arabic grid numbering starts at the inline end. Keep the selector on the
+     physical left track so its centered card can use the full Stage Canvas
+     anchor without covering the Workshop track. */
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .stage-content {
+    grid-template-columns: 258px minmax(0, 1fr) !important;
+  }
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .profile-grid,
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .stage-rail {
+    grid-column: 2 !important;
+  }
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .workshop-title,
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .room-grid {
+    grid-column: 1 !important;
+  }
+  html[dir="rtl"] body.wp-stage-select-active #stagePanel .raid-card {
+    flex: 0 0 264px !important;
+    width: 264px !important;
+    min-width: 264px !important;
+    max-width: 264px !important;
+  }
   body.wp-stage-select-active #stagePanel .room-card {
     grid-template-columns: 30px minmax(0, 1fr) !important;
     grid-template-rows: minmax(0, 1fr) 44px !important;

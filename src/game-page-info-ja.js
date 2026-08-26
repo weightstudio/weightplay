@@ -38,7 +38,7 @@
   };
   const labels = {
     kicker: "WeightPlay ゲームガイド", gameplay: "ゲーム内容", genre: "ジャンル", recommendedAge: "おすすめ年齢", difficulty: "難易度", estimatedTime: "目安時間", skills: "育てる力",
-    worldAndMission: "世界とミッション", gameSystems: "ゲームのしくみ", progressionAndDifficulty: "進行と難易度", developerNote: "デザインノート", howToPlay: "遊び方", strategyTips: "攻略のヒント", parentNote: "保護者の方へ", faq: "よくある質問", guideLabel: "{title} のゲーム情報",
+    worldAndMission: "世界とミッション", gameSystems: "ゲームのしくみ", progressionAndDifficulty: "進行と難易度", developerNote: "デザインノート", howToPlay: "遊び方", strategyTips: "攻略のヒント", parentNote: "保護者の方へ", faq: "よくある質問", relatedGames: "関連ゲーム", relatedIntro: "このゲームでは{skill}を練習するので、こちらもどうぞ：", relatedBySkill: "{skill}のゲーム", relatedByAge: "{age}向けゲーム", relatedAnimal: "動物ゲーム", guideLabel: "{title} のゲーム情報",
   };
   const skillLabels = { Memory: "記憶力", Logic: "論理力", Reaction: "反応", Focus: "集中", Math: "数の力", Reading: "読む力", "Color Recognition": "色の見分け", "Hand-Eye Coordination": "手と目の協調", "Problem Solving": "問題解決", "Animal Knowledge": "動物の知識", Planning: "計画力", "Spatial Reasoning": "空間認識", "Risk Assessment": "判断力", Sequencing: "順序理解" };
   const guide = ([title, play]) => ({

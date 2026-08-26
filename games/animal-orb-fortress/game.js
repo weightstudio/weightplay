@@ -1584,12 +1584,24 @@
     const pitch = first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 274;
     return { pitch: pitch || 274 };
   }
+  function stageAnchorCenter(railRect = nodes.stageRail.getBoundingClientRect()) {
+    const compactLandscape = window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches;
+    if (!compactLandscape) return railRect.left + railRect.width / 2;
+    const canvasRect = nodes.stagePanel.getBoundingClientRect();
+    return canvasRect.left + canvasRect.width / 2;
+  }
   function positionStageRail(logical) {
     const value = Math.max(1, Math.min(MAX_RAID_TIER, logical)), anchor = Math.round(value);
     moveStageWindow(desiredStageWindow(anchor));
     const card = nodes.stageRail.querySelector(`[data-tier="${anchor}"]`);
     card?.scrollIntoView({ block:"nearest", inline:"center", behavior:"auto" });
     nodes.stageRail.scrollLeft += (value - anchor) * stageRailGeometry().pitch;
+    if (card && window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches) {
+      const railRect = nodes.stageRail.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
+      nodes.stageRail.scrollLeft += ((cardRect.left + cardRect.width / 2) - stageAnchorCenter(railRect)) * coordinateScale;
+    }
     nodes.stageRail.dataset.wpStageDragLogical = value.toFixed(4);
     return value;
   }
@@ -1614,7 +1626,7 @@
     const cardRect = card.getBoundingClientRect();
     const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
     const target = nodes.stageRail.scrollLeft
-      + ((cardRect.left + cardRect.width / 2) - (railRect.left + railRect.width / 2)) * coordinateScale;
+      + ((cardRect.left + cardRect.width / 2) - stageAnchorCenter(railRect)) * coordinateScale;
     // Chromium exposes an RTL overflow rail with a negative scroll range:
     // zero is the rightmost edge and `clientWidth - scrollWidth` is the
     // leftmost edge. Clamping to the LTR-only [0, max] range silently pins a
@@ -1638,7 +1650,7 @@
     const cards = [...nodes.stageRail.querySelectorAll(".raid-card")];
     if (!cards.length || !nodes.stageRail.getClientRects().length) return;
     const railRect = nodes.stageRail.getBoundingClientRect();
-    const railCenter = railRect.left + railRect.width / 2;
+    const railCenter = stageAnchorCenter(railRect);
     let centeredCard = cards[0];
     let centeredDistance = Number.POSITIVE_INFINITY;
     cards.forEach((card) => {

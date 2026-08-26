@@ -608,7 +608,9 @@
       ? "../../assets/lights-out-cover-v2.webp"
       : id === "peg-solitaire"
         ? "../../assets/peg-solitaire-cover-v2.webp"
-        : "../../assets/classic-logic-lab-cover.webp";
+        : id === "code-breaker"
+          ? "../../assets/code-breaker-cover-v2.webp"
+          : "../../assets/classic-logic-lab-cover.webp";
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
