@@ -135,6 +135,37 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-opponents { display: flex; flex-direction: column; overflow: auto; }
   .card-table-center { min-height: 0; }
   .card-game-player { min-height: 0; overflow: auto; }
+  /* Cribbage keeps its six-card decision row in a dedicated bottom track so
+     every card and its 44px interaction target stay inside the short Canvas. */
+  body[data-wp-card-game="cribbage"] .card-game-board {
+    grid-template-columns: minmax(120px, .3fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="cribbage"] .card-game-player {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="cribbage"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="cribbage"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="cribbage"] .card-hand .playing-card {
+    flex: 0 1 43px;
+  }
   body[data-wp-card-game="hearts"] .card-game-player {
     min-width: 0;
     display: flex;
