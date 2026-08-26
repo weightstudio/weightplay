@@ -972,7 +972,7 @@ button.control-mini {
   .battle-canvas {
     --card-width: clamp(36px, 5vw, 46px);
     --card-height: calc(var(--card-width) * 1.42);
-    --card-step: clamp(5px, 0.85vw, 8px);
+    --card-step: clamp(5px, 0.7vw, 6px);
     --tableau-gap: 0.45rem;
     --tableau-selection-gutter: 2px;
     padding: 0.5rem 0.6rem 0.35rem;

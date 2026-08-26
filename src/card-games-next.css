@@ -172,6 +172,90 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="hearts"] .card-hand .playing-card {
     flex: 0 1 43px;
   }
+  body[data-wp-card-game="gin-rummy"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="gin-rummy"] .card-game-player {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="gin-rummy"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="gin-rummy"] .card-game-player-header small {
+    min-width: 0;
+    flex: 1 1 auto;
+    font-size: 10px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+  body[data-wp-card-game="gin-rummy"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="gin-rummy"] .card-hand .playing-card {
+    flex: 0 1 43px;
+  }
+  body[data-wp-card-game="spades"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="spades"] .card-game-battle {
+    color: #f8fafc;
+  }
+  body[data-wp-card-game="spades"] .card-opponents {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+    align-content: start;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="spades"] .opponent-card {
+    min-height: 0;
+    padding: 6px;
+    font-size: 10px;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  body[data-wp-card-game="spades"] .opponent-card span {
+    font-size: 9px;
+  }
+  body[data-wp-card-game="spades"] .card-game-player {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="spades"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="spades"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="spades"] .card-hand .playing-card {
+    flex: 0 1 43px;
+  }
   body[data-wp-card-game="go-fish"] .card-game-board,
   body[data-wp-card-game="speed"] .card-game-board,
   body[data-wp-card-game="old-maid"] .card-game-board {

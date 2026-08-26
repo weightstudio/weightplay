@@ -185,6 +185,22 @@
     ar: { title: "البستوني", summary: "راهن على لمّات فريقك، واستخدم البستوني حكماً، وتعاون مع زميلك من الذكاء الاصطناعي.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "يقدّم فريقان العطاءات قبل جولة اللمّات. البستوني حكم دائماً، وتُسجَّل اللمّات الزائدة كأكياس.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لمّات كلاسيكية بحكم", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "الوقت التقريبي", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة للفوز بالعقد.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "راهن على لمّات فريقك، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة.", opponents: ["أنت", "الذكاء الاصطناعي شمالاً", "الذكاء الاصطناعي شرقاً", "الذكاء الاصطناعي غرباً"], metaDescription: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة البطاقات هذه ضمن معاينة المالك." },
   };
 
+  const SPADES_CLASSIC_GUIDE_TITLES = {
+    en: "Spades Guide",
+    "zh-Hant": "黑桃遊戲指南",
+    "zh-Hans": "黑桃游戏指南",
+    ja: "スペードゲームガイド",
+    ko: "스페이드 게임 가이드",
+    es: "Guía de Picas",
+    "pt-BR": "Guia de Espadas",
+    fr: "Guide du jeu de Pique",
+    de: "Pik-Spielguide",
+    it: "Guida al gioco di Picche",
+    ru: "Гид по игре «Пики»",
+    hi: "स्पेड्स गेम गाइड",
+    ar: "دليل لعبة البستوني",
+  };
+
   const spadesShellCopy = () => SPADES_SHELL_COPY[currentLocale()] || SPADES_SHELL_COPY.en;
   const spadesOpponentNames = () => spadesShellCopy().opponents;
   const ownLocalizedText = (node, value) => {
@@ -204,6 +220,16 @@
         const ariaLabel = `${copy.title} game information`;
         if (guideRoot.getAttribute("aria-label") !== ariaLabel) guideRoot.setAttribute("aria-label", ariaLabel);
         if (guideRoot.getAttribute("data-runtime-localize") !== "off") guideRoot.setAttribute("data-runtime-localize", "off");
+        if (guideRoot.classList.contains("classic-guide")) {
+          const headings = [...guideRoot.querySelectorAll("h2, h3")];
+          const paragraphs = [...guideRoot.querySelectorAll("p")];
+          ownLocalizedText(headings[0], SPADES_CLASSIC_GUIDE_TITLES[currentLocale()] || SPADES_CLASSIC_GUIDE_TITLES.en);
+          ownLocalizedText(paragraphs[0], copy.guideSummary);
+          ownLocalizedText(headings[1], copy.howTo);
+          ownLocalizedText(paragraphs[1], copy.howToCopy);
+          ownLocalizedText(headings[2], copy.preview);
+          ownLocalizedText(paragraphs[2], copy.previewCopy);
+        }
       }
       const pageTitle = `${copy.title} | WeightPlay`;
       if (document.title !== pageTitle) document.title = pageTitle;
@@ -471,6 +497,110 @@
       if (mainReturn) mainReturn.setAttribute("aria-label", labels.back === "Back" ? "Back to WeightPlay" : labels.back);
     } finally {
       ginShellSyncing = false;
+    }
+  };
+
+  const CRIBBAGE_SHELL_COPY = {
+    en: { title: "Cribbage", summary: "Discard two cards to the crib, peg without passing 31, then score hands using classic combinations.", guideKicker: "WeightPlay Original Game Guide", guideSummary: "Discard two cards to the crib, peg without passing 31, then score hands using classic combinations.", gameplayLabel: "Gameplay", gameplay: "Classic Pegging Card Game", genreLabel: "Genre", genre: "Card · Family · Strategy", difficultyLabel: "Difficulty", difficulty: "Easy to Challenging", timeLabel: "Estimated Play Time", time: "5-15 minutes", skillsLabel: "Skills Trained", skills: "Planning · Focus · Pattern Recognition", howTo: "How to Play", howToCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins.", preview: "Preview status", previewCopy: "This owner preview is not in the formal public catalog.", faq: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser.", quickGuide: "How to play", quickGuideCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins.", metaDescription: "Choose two cards for the crib, peg toward 31, and score classic combinations in this owner-preview Cribbage game." },
+    "zh-Hant": { title: "克里比奇", summary: "送兩張牌進入 crib，在不超過 31 的情況下出牌，再用經典組合為手牌計分。", guideKicker: "WeightPlay 原創遊戲指南", guideSummary: "將兩張牌送入 crib，在不超過 31 的情況下出牌，再用經典組合為手牌計分。", gameplayLabel: "玩法", gameplay: "經典計數卡牌遊戲", genreLabel: "類型", genre: "卡牌 · 家庭 · 策略", difficultyLabel: "難度", difficulty: "由簡單到具挑戰", timeLabel: "預計遊玩時間", time: "5–15 分鐘", skillsLabel: "訓練技能", skills: "規劃 · 專注 · 模式辨識", howTo: "玩法說明", howToCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。", preview: "預覽狀態", previewCopy: "這是擁有者預覽，尚未列入正式公開目錄。", faq: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，只保存在這個瀏覽器中。", quickGuide: "玩法說明", quickGuideCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。", metaDescription: "選兩張牌送入 crib，朝 31 點出牌，並在這款擁有者預覽的克里比奇遊戲中用經典組合得分。" },
+    "zh-Hans": { title: "克里比奇", summary: "将两张牌送入 crib，在不超过 31 的情况下出牌，再用经典组合为手牌计分。", guideKicker: "WeightPlay 原创游戏指南", guideSummary: "将两张牌送入 crib，在不超过 31 的情况下出牌，再用经典组合为手牌计分。", gameplayLabel: "玩法", gameplay: "经典计数卡牌游戏", genreLabel: "类型", genre: "卡牌 · 家庭 · 策略", difficultyLabel: "难度", difficulty: "从简单到具挑战", timeLabel: "预计游玩时间", time: "5–15 分钟", skillsLabel: "训练技能", skills: "规划 · 专注 · 模式识别", howTo: "玩法说明", howToCopy: "对子、顺子和十五都能得分；先到 121 分的玩家获胜。", preview: "预览状态", previewCopy: "这是拥有者预览，尚未列入正式公开目录。", faq: "常见问题", faqQuestion: "进度会保存吗？", faqAnswer: "会，只保存在这个浏览器中。", quickGuide: "玩法说明", quickGuideCopy: "对子、顺子和十五都能得分；先到 121 分的玩家获胜。", metaDescription: "选两张牌送入 crib，朝 31 点出牌，并在这款拥有者预览的克里比奇游戏中用经典组合得分。" },
+    ja: { title: "クリベッジ", summary: "2枚をクリブに送り、31を超えないようにペギングし、定番の組み合わせで手札を得点化します。", guideKicker: "WeightPlay オリジナルゲームガイド", guideSummary: "2枚をクリブに送り、31を超えないようにペギングし、定番の組み合わせで手札を得点化します。", gameplayLabel: "遊び方", gameplay: "クラシックなペギングカードゲーム", genreLabel: "ジャンル", genre: "カード · ファミリー · 戦略", difficultyLabel: "難易度", difficulty: "簡単から挑戦的", timeLabel: "プレイ時間の目安", time: "5～15分", skillsLabel: "鍛えられる力", skills: "計画 · 集中 · パターン認識", howTo: "遊び方", howToCopy: "ペア、ラン、15で得点します。最初に121点へ到達したプレイヤーが勝ちです。", preview: "プレビュー状態", previewCopy: "この所有者プレビューは正式な公開カタログには含まれていません。", faq: "よくある質問", faqQuestion: "進行状況は保存されますか？", faqAnswer: "はい。このブラウザ内だけに保存されます。", quickGuide: "遊び方", quickGuideCopy: "ペア、ラン、15で得点します。最初に121点へ到達したプレイヤーが勝ちです。", metaDescription: "2枚をクリブに送り、31を目指してペギングし、定番の組み合わせで得点するクリベッジです。" },
+    ko: { title: "크리비지", summary: "두 장을 크립에 보내고 31을 넘지 않게 페깅한 뒤 고전 조합으로 패의 점수를 계산하세요.", guideKicker: "WeightPlay 오리지널 게임 가이드", guideSummary: "두 장을 크립에 보내고 31을 넘지 않게 페깅한 뒤 고전 조합으로 패의 점수를 계산하세요.", gameplayLabel: "게임 방식", gameplay: "클래식 페깅 카드 게임", genreLabel: "장르", genre: "카드 · 가족 · 전략", difficultyLabel: "난이도", difficulty: "쉬움부터 도전적", timeLabel: "예상 플레이 시간", time: "5~15분", skillsLabel: "훈련 능력", skills: "계획 · 집중 · 패턴 인식", howTo: "플레이 방법", howToCopy: "페어, 런, 15로 점수를 얻습니다. 먼저 121점에 도달한 플레이어가 승리합니다.", preview: "프리뷰 상태", previewCopy: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다.", faq: "자주 묻는 질문", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "네. 이 브라우저에만 저장됩니다.", quickGuide: "플레이 방법", quickGuideCopy: "페어, 런, 15로 점수를 얻습니다. 먼저 121점에 도달한 플레이어가 승리합니다.", metaDescription: "두 장을 크립에 보내고 31을 향해 페깅하며 고전 조합으로 점수를 얻는 크리비지 소유자 프리뷰입니다." },
+    es: { title: "Cribbage", summary: "Envía dos cartas a la cuna, juega sin superar 31 y puntúa la mano con combinaciones clásicas.", guideKicker: "Guía de juegos originales de WeightPlay", guideSummary: "Envía dos cartas a la cuna, juega sin superar 31 y puntúa la mano con combinaciones clásicas.", gameplayLabel: "Jugabilidad", gameplay: "Juego clásico de conteo de cartas", genreLabel: "Género", genre: "Cartas · Familiar · Estrategia", difficultyLabel: "Dificultad", difficulty: "De fácil a desafiante", timeLabel: "Tiempo estimado", time: "5-15 minutos", skillsLabel: "Habilidades", skills: "Planificación · Concentración · Reconocimiento de patrones", howTo: "Cómo jugar", howToCopy: "Las parejas, las escaleras y los quince dan puntos. Gana quien llegue primero a 121.", preview: "Estado de la vista previa", previewCopy: "Esta vista previa del propietario aún no está en el catálogo público oficial.", faq: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, solo en este navegador.", quickGuide: "Cómo jugar", quickGuideCopy: "Las parejas, las escaleras y los quince dan puntos. Gana quien llegue primero a 121.", metaDescription: "Envía dos cartas a la cuna, juega hacia 31 y puntúa combinaciones clásicas en este Cribbage de vista previa del propietario." },
+    "pt-BR": { title: "Cribbage", summary: "Envie duas cartas ao crib, faça o pegging sem passar de 31 e pontue a mão com combinações clássicas.", guideKicker: "Guia de jogos originais WeightPlay", guideSummary: "Envie duas cartas ao crib, faça o pegging sem passar de 31 e pontue a mão com combinações clássicas.", gameplayLabel: "Como jogar", gameplay: "Jogo clássico de contagem de cartas", genreLabel: "Gênero", genre: "Cartas · Família · Estratégia", difficultyLabel: "Dificuldade", difficulty: "De fácil a desafiador", timeLabel: "Tempo estimado", time: "5–15 minutos", skillsLabel: "Habilidades", skills: "Planejamento · Foco · Reconhecimento de padrões", howTo: "Como jogar", howToCopy: "Pares, sequências e quinze valem pontos. Vence quem chegar primeiro a 121.", preview: "Status da prévia", previewCopy: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.", faq: "Perguntas frequentes", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador.", quickGuide: "Como jogar", quickGuideCopy: "Pares, sequências e quinze valem pontos. Vence quem chegar primeiro a 121.", metaDescription: "Envie duas cartas ao crib, avance até 31 e pontue combinações clássicas neste Cribbage em prévia do proprietário." },
+    fr: { title: "Cribbage", summary: "Envoyez deux cartes au crib, jouez sans dépasser 31, puis marquez la main avec des combinaisons classiques.", guideKicker: "Guide des jeux originaux WeightPlay", guideSummary: "Envoyez deux cartes au crib, jouez sans dépasser 31, puis marquez la main avec des combinaisons classiques.", gameplayLabel: "Jeu", gameplay: "Jeu de cartes classique à comptage", genreLabel: "Genre", genre: "Cartes · Famille · Stratégie", difficultyLabel: "Difficulté", difficulty: "De facile à exigeant", timeLabel: "Durée estimée", time: "5 à 15 minutes", skillsLabel: "Compétences", skills: "Planification · Concentration · Reconnaissance des motifs", howTo: "Comment jouer", howToCopy: "Les paires, suites et quinze rapportent des points. Le premier à atteindre 121 gagne.", preview: "État de l’aperçu", previewCopy: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.", faq: "Questions fréquentes", faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Oui, uniquement dans ce navigateur.", quickGuide: "Comment jouer", quickGuideCopy: "Les paires, suites et quinze rapportent des points. Le premier à atteindre 121 gagne.", metaDescription: "Envoyez deux cartes au crib, visez 31 et marquez des combinaisons classiques dans ce Cribbage en aperçu propriétaire." },
+    de: { title: "Cribbage", summary: "Lege zwei Karten in den Crib, spiele ohne über 31 zu kommen und werte die Hand mit klassischen Kombinationen.", guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideSummary: "Lege zwei Karten in den Crib, spiele ohne über 31 zu kommen und werte die Hand mit klassischen Kombinationen.", gameplayLabel: "Spielweise", gameplay: "Klassisches Zähl-Kartenspiel", genreLabel: "Genre", genre: "Karten · Familie · Strategie", difficultyLabel: "Schwierigkeit", difficulty: "Einfach bis anspruchsvoll", timeLabel: "Geschätzte Spielzeit", time: "5–15 Minuten", skillsLabel: "Trainierte Fähigkeiten", skills: "Planung · Fokus · Mustererkennung", howTo: "So wird gespielt", howToCopy: "Paare, Folgen und Fünfzehner bringen Punkte. Wer zuerst 121 erreicht, gewinnt.", preview: "Vorschaustatus", previewCopy: "Diese Besitzer-Vorschau gehört noch nicht zum offiziellen öffentlichen Katalog.", faq: "Häufig gestellte Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser.", quickGuide: "So wird gespielt", quickGuideCopy: "Paare, Folgen und Fünfzehner bringen Punkte. Wer zuerst 121 erreicht, gewinnt.", metaDescription: "Lege zwei Karten in den Crib, spiele Richtung 31 und werte klassische Kombinationen in dieser Cribbage-Besitzer-Vorschau." },
+    it: { title: "Cribbage", summary: "Manda due carte nel crib, gioca senza superare 31 e assegna i punti alla mano con combinazioni classiche.", guideKicker: "Guida ai giochi originali WeightPlay", guideSummary: "Manda due carte nel crib, gioca senza superare 31 e assegna i punti alla mano con combinazioni classiche.", gameplayLabel: "Come si gioca", gameplay: "Gioco classico di conteggio delle carte", genreLabel: "Genere", genre: "Carte · Famiglia · Strategia", difficultyLabel: "Difficoltà", difficulty: "Da facile a impegnativo", timeLabel: "Tempo stimato", time: "5–15 minuti", skillsLabel: "Abilità allenate", skills: "Pianificazione · Concentrazione · Riconoscimento degli schemi", howTo: "Come si gioca", howToCopy: "Coppie, sequenze e quindici fanno punti. Vince chi raggiunge per primo 121.", preview: "Stato anteprima", previewCopy: "Questa anteprima del proprietario non è ancora nel catalogo pubblico ufficiale.", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", quickGuide: "Come si gioca", quickGuideCopy: "Coppie, sequenze e quindici fanno punti. Vince chi raggiunge per primo 121.", metaDescription: "Manda due carte nel crib, gioca verso 31 e segna combinazioni classiche in questo Cribbage in anteprima." },
+    ru: { title: "Криббедж", summary: "Отправьте две карты в криб, играйте, не переходя 31, затем начисляйте очки за классические комбинации.", guideKicker: "Руководство по оригинальным играм WeightPlay", guideSummary: "Отправьте две карты в криб, играйте, не переходя 31, затем начисляйте очки за классические комбинации.", gameplayLabel: "Как играть", gameplay: "Классическая карточная игра с подсчётом", genreLabel: "Жанр", genre: "Карты · Семейная · Стратегия", difficultyLabel: "Сложность", difficulty: "От простой до сложной", timeLabel: "Примерное время", time: "5–15 минут", skillsLabel: "Развиваемые навыки", skills: "Планирование · Внимание · Распознавание шаблонов", howTo: "Как играть", howToCopy: "Пары, последовательности и пятнадцать приносят очки. Побеждает первый игрок, набравший 121.", preview: "Статус предпросмотра", previewCopy: "Этот предпросмотр владельца ещё не входит в официальный публичный каталог.", faq: "Частые вопросы", faqQuestion: "Прогресс сохраняется?", faqAnswer: "Да, только в этом браузере.", quickGuide: "Как играть", quickGuideCopy: "Пары, последовательности и пятнадцать приносят очки. Побеждает первый игрок, набравший 121.", metaDescription: "Отправляйте две карты в криб, двигайтесь к 31 и набирайте очки за классические комбинации в Cribbage." },
+    hi: { title: "क्रिबेज", summary: "दो पत्ते क्रिब में भेजें, 31 से आगे जाए बिना पेगिंग करें और क्लासिक संयोजनों से हाथ के अंक पाएँ।", guideKicker: "WeightPlay मौलिक गेम गाइड", guideSummary: "दो पत्ते क्रिब में भेजें, 31 से आगे जाए बिना पेगिंग करें और क्लासिक संयोजनों से हाथ के अंक पाएँ।", gameplayLabel: "गेमप्ले", gameplay: "क्लासिक अंक-गणना कार्ड गेम", genreLabel: "शैली", genre: "कार्ड · परिवार · रणनीति", difficultyLabel: "कठिनाई", difficulty: "आसान से चुनौतीपूर्ण", timeLabel: "अनुमानित समय", time: "5–15 मिनट", skillsLabel: "अभ्यास कौशल", skills: "योजना · ध्यान · पैटर्न पहचान", howTo: "कैसे खेलें", howToCopy: "जोड़े, रन और पंद्रह अंक देते हैं। 121 तक पहले पहुँचने वाला खिलाड़ी जीतता है।", preview: "प्रीव्यू स्थिति", previewCopy: "यह मालिक का प्रीव्यू आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", quickGuide: "कैसे खेलें", quickGuideCopy: "जोड़े, रन और पंद्रह अंक देते हैं। 121 तक पहले पहुँचने वाला खिलाड़ी जीतता है।", metaDescription: "दो पत्ते क्रिब में भेजें, 31 की ओर पेगिंग करें और इस मालिक-प्रीव्यू क्रिबेज गेम में क्लासिक संयोजनों से अंक पाएँ।" },
+    ar: { title: "كريبدج", summary: "أرسل بطاقتين إلى الكريب، والعب من دون تجاوز 31، ثم احسب نقاط اليد باستخدام التركيبات الكلاسيكية.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "أرسل بطاقتين إلى الكريب، والعب من دون تجاوز 31، ثم احسب نقاط اليد باستخدام التركيبات الكلاسيكية.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة بطاقات كلاسيكية للعدّ", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "وقت اللعب المقدر", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121.", metaDescription: "أرسل بطاقتين إلى الكريب، والعب نحو 31، واحسب نقاط التركيبات الكلاسيكية في لعبة كريبدج ضمن معاينة المالك." },
+  };
+
+  const cribbageShellCopy = () => CRIBBAGE_SHELL_COPY[currentLocale()] || CRIBBAGE_SHELL_COPY.en;
+  const CRIBBAGE_SELECTION_COPY = {
+    en: { status: "Select cards: {count}/2 to the crib.", quickGuide: "How to play", quickGuideCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins." },
+    "zh-Hant": { status: "選擇牌：{count}/2 張送入 crib。", quickGuide: "玩法說明", quickGuideCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。" },
+    "zh-Hans": { status: "选择牌：{count}/2 张送入 crib。", quickGuide: "玩法说明", quickGuideCopy: "对子、顺子和十五都能得分；先到 121 分的玩家获胜。" },
+    ja: { status: "カードを選択：クリブへ {count}/2 枚。", quickGuide: "遊び方", quickGuideCopy: "ペア、ラン、15で得点します。最初に121点へ到達したプレイヤーが勝ちです。" },
+    ko: { status: "카드 선택: 크립에 {count}/2장.", quickGuide: "플레이 방법", quickGuideCopy: "페어, 런, 15로 점수를 얻습니다. 먼저 121점에 도달한 플레이어가 승리합니다." },
+    es: { status: "Elige cartas: {count}/2 para la cuna.", quickGuide: "Cómo jugar", quickGuideCopy: "Las parejas, las escaleras y los quince dan puntos. Gana quien llegue primero a 121." },
+    "pt-BR": { status: "Escolha cartas: {count}/2 para o crib.", quickGuide: "Como jogar", quickGuideCopy: "Pares, sequências e quinze valem pontos. Vence quem chegar primeiro a 121." },
+    fr: { status: "Choisissez des cartes : {count}/2 pour le crib.", quickGuide: "Comment jouer", quickGuideCopy: "Les paires, suites et quinze rapportent des points. Le premier à atteindre 121 gagne." },
+    de: { status: "Karten wählen: {count}/2 für den Crib.", quickGuide: "So wird gespielt", quickGuideCopy: "Paare, Folgen und Fünfzehner bringen Punkte. Wer zuerst 121 erreicht, gewinnt." },
+    it: { status: "Scegli le carte: {count}/2 nel crib.", quickGuide: "Come si gioca", quickGuideCopy: "Coppie, sequenze e quindici fanno punti. Vince chi raggiunge per primo 121." },
+    ru: { status: "Выберите карты: {count}/2 в криб.", quickGuide: "Как играть", quickGuideCopy: "Пары, последовательности и пятнадцать приносят очки. Побеждает первый игрок, набравший 121." },
+    hi: { status: "पत्ते चुनें: क्रिब में {count}/2.", quickGuide: "कैसे खेलें", quickGuideCopy: "जोड़े, रन और पंद्रह अंक देते हैं। 121 तक पहले पहुँचने वाला खिलाड़ी जीतता है।" },
+    ar: { status: "اختر البطاقات: {count}/2 إلى الكريب.", quickGuide: "طريقة اللعب", quickGuideCopy: "تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121." },
+  };
+  const cribbageSelectionText = (count) => {
+    const copy = CRIBBAGE_SELECTION_COPY[currentLocale()] || CRIBBAGE_SELECTION_COPY.en;
+    return copy.status.replace("{count}", String(count));
+  };
+
+  let cribbageShellSyncing = false;
+  const syncCribbageShell = () => {
+    if (cribbageShellSyncing) return;
+    cribbageShellSyncing = true;
+    try {
+      const copy = cribbageShellCopy();
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const guideRoot = document.querySelector(".game-page-info");
+      if (guideRoot) guideRoot.setAttribute("data-runtime-localize", "off");
+      const pageTitle = `${copy.title} | WeightPlay`;
+      if (document.title !== pageTitle) document.title = pageTitle;
+      const summary = document.querySelector('meta[name="description"]');
+      if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;
+      document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((node) => { if (node.content !== pageTitle) node.content = pageTitle; });
+      document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((node) => { if (node.content !== copy.metaDescription) node.content = copy.metaDescription; });
+      const jsonLd = document.querySelector('script[type="application/ld+json"]');
+      if (jsonLd) { try { const data = JSON.parse(jsonLd.textContent); data.name = copy.title; data.description = copy.metaDescription; data.inLanguage = currentLocale(); jsonLd.textContent = JSON.stringify(data); } catch (_error) {} }
+      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+      const facts = [...document.querySelectorAll(".game-info-fact")];
+      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
+        const fact = facts[index];
+        if (!fact) return;
+        ownLocalizedText(fact.querySelector("span"), label);
+        ownLocalizedText(fact.querySelector("strong"), value);
+      });
+      const sections = [...document.querySelectorAll(".game-info-section")];
+      const guide = sections.find((section) => section.querySelector("ol"));
+      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+      const faq = sections.find((section) => section.querySelector("dl"));
+      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      ownLocalizedText(document.querySelector("#startBtn"), labels.start);
+      ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
+      ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", labels.language);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) {
+        battleBack.setAttribute("aria-label", labels.back);
+        battleBack.setAttribute("data-runtime-localize", "off");
+      }
+      const mainReturn = document.querySelector(".main-return");
+      if (mainReturn) mainReturn.setAttribute("aria-label", labels.back === "Back" ? "Back to WeightPlay" : labels.back);
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), labels.hand);
+      ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
+      ownLocalizedText(document.querySelector("#resultNewGame"), labels.newGame);
+      ownLocalizedText(document.querySelector("#resultRestart"), labels.restart);
+      ownLocalizedText(document.querySelector("#resultClose"), labels.close);
+    } finally {
+      cribbageShellSyncing = false;
     }
   };
 
@@ -1007,14 +1137,14 @@
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
     const localeSelect = document.querySelector("#localeSelect");
-    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-    const guideParagraph = id === "spades" || id === "gin-rummy" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
+    const guideSource = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+    const guideHeading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+    const guideParagraph = id === "spades" || id === "gin-rummy" || id === "cribbage" ? guideSource : (root.WeightPlayGameRuntimeLocalizer?.translate?.(guideSource) || guideSource);
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
     quickGuide.setAttribute("role", "note");
     quickGuide.dataset.cardQuickGuide = "true";
-    if (id === "spades" || id === "gin-rummy") quickGuide.setAttribute("data-runtime-localize", "off");
+    if (id === "spades" || id === "gin-rummy" || id === "cribbage") quickGuide.setAttribute("data-runtime-localize", "off");
     const quickGuideLabel = document.createElement("strong");
     quickGuideLabel.textContent = guideHeading;
     quickGuide.append(quickGuideLabel);
@@ -1040,6 +1170,22 @@
         node.textContent = ginShellText(key);
         node.setAttribute("data-runtime-localize", "off");
       });
+    }
+    if (id === "cribbage") {
+      syncCribbageShell();
+      window.addEventListener("weightplay:shell-sync", syncCribbageShell);
+      statusText?.setAttribute("data-runtime-localize", "off");
+      const shellTitle = document.querySelector(".main-header [data-card-title]");
+      if (shellTitle && !shellTitle.dataset.cribbageShellObserver) {
+        shellTitle.dataset.cribbageShellObserver = "true";
+        new MutationObserver(() => {
+          const copy = cribbageShellCopy();
+          if (shellTitle.textContent !== copy.title) ownLocalizedText(shellTitle, copy.title);
+        }).observe(shellTitle, { childList: true, characterData: true, subtree: true });
+      }
+      window.setTimeout(syncCribbageShell, 0);
+      window.setTimeout(syncCribbageShell, 400);
+      window.setTimeout(syncCribbageShell, 1200);
     }
     if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
     if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
@@ -1608,7 +1754,7 @@
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
       action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter)}</span>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? `${t("selectCards")}: ${s.selected.size}/2 to the crib.` : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
+      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter)}</span>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? cribbageSelectionText(s.selected.size) : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
     };
   }
 

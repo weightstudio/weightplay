@@ -1400,12 +1400,12 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "크리비지",
     "es": "Cribbage",
     "pt-BR": "Cribbage",
-    "fr": "Criblage",
+    "fr": "Cribbage",
     "de": "Cribbage",
     "it": "Cribbage",
     "ru": "Криббедж",
-    "hi": "पालना",
-    "ar": "الكريبج"
+    "hi": "क्रिबेज",
+    "ar": "كريبدج"
   },
   "go-fish": {
     "__localizedExact": true,

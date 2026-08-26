@@ -10855,6 +10855,68 @@
     ],
   };
 
+  // Cribbage owns a complete General guide in every supported locale. These
+  // authored records keep static route facts and FAQ copy from falling back
+  // to the English source tokens used by the generic runtime catalog.
+  const cribbageGuideLocaleCopy = {
+    en: {
+      title: "Cribbage", difficulty: "Easy to Challenging", time: "5-15 minutes", gameplay: "Classic Pegging Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      intro: "Discard two cards to the crib, peg without passing 31, then score hands using classic combinations.", how: ["Pairs, runs, and fifteens score points. The first player to reach 121 wins."], noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.", faq: [["Is progress saved?", "Yes, only in this browser."]],
+    },
+    "zh-Hant": {
+      title: "克里比奇", difficulty: "由簡單到具挑戰", time: "5–15 分鐘", gameplay: "經典計數卡牌遊戲", genre: ["卡牌", "家庭", "策略"], skills: ["規劃", "專注", "模式辨識"],
+      intro: "將兩張牌送入 crib，在不超過 31 的情況下出牌，再用經典組合為手牌計分。", how: ["對子、順子和十五都能得分；先到 121 分的玩家獲勝。"], noteTitle: "預覽狀態", parent: "這是擁有者預覽，尚未列入正式公開目錄。", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]],
+    },
+    "zh-Hans": {
+      title: "克里比奇", difficulty: "从简单到具挑战", time: "5–15 分钟", gameplay: "经典计数卡牌游戏", genre: ["卡牌", "家庭", "策略"], skills: ["规划", "专注", "模式识别"],
+      intro: "将两张牌送入 crib，在不超过 31 的情况下出牌，再用经典组合为手牌计分。", how: ["对子、顺子和十五都能得分；先到 121 分的玩家获胜。"], noteTitle: "预览状态", parent: "这是拥有者预览，尚未列入正式公开目录。", faq: [["进度会保存吗？", "会，只保存在这个浏览器中。"]],
+    },
+    ja: {
+      title: "クリベッジ", difficulty: "簡単から挑戦的", time: "5～15分", gameplay: "クラシックなペギングカードゲーム", genre: ["カード", "ファミリー", "戦略"], skills: ["計画", "集中", "パターン認識"],
+      intro: "2枚をクリブに送り、31を超えないようにペギングし、定番の組み合わせで手札を得点化します。", how: ["ペア、ラン、15で得点します。最初に121点へ到達したプレイヤーが勝ちです。"], noteTitle: "プレビュー状態", parent: "この所有者プレビューは正式な公開カタログには含まれていません。", faq: [["進行状況は保存されますか？", "はい。このブラウザ内だけに保存されます。"]],
+    },
+    ko: {
+      title: "크리비지", difficulty: "쉬움부터 도전적", time: "5~15분", gameplay: "클래식 페깅 카드 게임", genre: ["카드", "가족", "전략"], skills: ["계획", "집중", "패턴 인식"],
+      intro: "두 장을 크립에 보내고 31을 넘지 않게 페깅한 뒤 고전 조합으로 패의 점수를 계산하세요.", how: ["페어, 런, 15로 점수를 얻습니다. 먼저 121점에 도달한 플레이어가 승리합니다."], noteTitle: "프리뷰 상태", parent: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다.", faq: [["진행 상황이 저장되나요?", "네. 이 브라우저에만 저장됩니다."]],
+    },
+    es: {
+      title: "Cribbage", difficulty: "De fácil a desafiante", time: "5-15 minutos", gameplay: "Juego clásico de conteo de cartas", genre: ["Cartas", "Familiar", "Estrategia"], skills: ["Planificación", "Concentración", "Reconocimiento de patrones"],
+      intro: "Envía dos cartas a la cuna, juega sin superar 31 y puntúa la mano con combinaciones clásicas.", how: ["Las parejas, las escaleras y los quince dan puntos. Gana quien llegue primero a 121."], noteTitle: "Estado de la vista previa", parent: "Esta vista previa del propietario aún no está en el catálogo público oficial.", faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
+    },
+    "pt-BR": {
+      title: "Cribbage", difficulty: "De fácil a desafiador", time: "5–15 minutos", gameplay: "Jogo clássico de contagem de cartas", genre: ["Cartas", "Família", "Estratégia"], skills: ["Planejamento", "Foco", "Reconhecimento de padrões"],
+      intro: "Envie duas cartas ao crib, faça o pegging sem passar de 31 e pontue a mão com combinações clássicas.", how: ["Pares, sequências e quinze valem pontos. Vence quem chegar primeiro a 121."], noteTitle: "Status da prévia", parent: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]],
+    },
+    fr: {
+      title: "Cribbage", difficulty: "De facile à exigeant", time: "5 à 15 minutes", gameplay: "Jeu de cartes classique à comptage", genre: ["Cartes", "Famille", "Stratégie"], skills: ["Planification", "Concentration", "Reconnaissance des motifs"],
+      intro: "Envoyez deux cartes au crib, jouez sans dépasser 31, puis marquez la main avec des combinaisons classiques.", how: ["Les paires, suites et quinze rapportent des points. Le premier à atteindre 121 gagne."], noteTitle: "État de l’aperçu", parent: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.", faq: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]],
+    },
+    de: {
+      title: "Cribbage", difficulty: "Einfach bis anspruchsvoll", time: "5–15 Minuten", gameplay: "Klassisches Zähl-Kartenspiel", genre: ["Karten", "Familie", "Strategie"], skills: ["Planung", "Fokus", "Mustererkennung"],
+      intro: "Lege zwei Karten in den Crib, spiele ohne über 31 zu kommen und werte die Hand mit klassischen Kombinationen.", how: ["Paare, Folgen und Fünfzehner bringen Punkte. Wer zuerst 121 erreicht, gewinnt."], noteTitle: "Vorschaustatus", parent: "Diese Besitzer-Vorschau gehört noch nicht zum offiziellen öffentlichen Katalog.", faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
+    },
+    it: {
+      title: "Cribbage", difficulty: "Da facile a impegnativo", time: "5–15 minuti", gameplay: "Gioco classico di conteggio delle carte", genre: ["Carte", "Famiglia", "Strategia"], skills: ["Pianificazione", "Concentrazione", "Riconoscimento degli schemi"],
+      intro: "Manda due carte nel crib, gioca senza superare 31 e assegna i punti alla mano con combinazioni classiche.", how: ["Coppie, sequenze e quindici fanno punti. Vince chi raggiunge per primo 121."], noteTitle: "Stato anteprima", parent: "Questa anteprima del proprietario non è ancora nel catalogo pubblico ufficiale.", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]],
+    },
+    ru: {
+      title: "Криббедж", difficulty: "От простой до сложной", time: "5–15 минут", gameplay: "Классическая карточная игра с подсчётом", genre: ["Карты", "Семейная", "Стратегия"], skills: ["Планирование", "Внимание", "Распознавание шаблонов"],
+      intro: "Отправьте две карты в криб, играйте, не переходя 31, затем начисляйте очки за классические комбинации.", how: ["Пары, последовательности и пятнадцать приносят очки. Побеждает первый игрок, набравший 121."], noteTitle: "Статус предпросмотра", parent: "Этот предпросмотр владельца ещё не входит в официальный публичный каталог.", faq: [["Прогресс сохраняется?", "Да, только в этом браузере."]],
+    },
+    hi: {
+      title: "क्रिबेज", difficulty: "आसान से चुनौतीपूर्ण", time: "5–15 मिनट", gameplay: "क्लासिक अंक-गणना कार्ड गेम", genre: ["कार्ड", "परिवार", "रणनीति"], skills: ["योजना", "ध्यान", "पैटर्न पहचान"],
+      intro: "दो पत्ते क्रिब में भेजें, 31 से आगे जाए बिना पेगिंग करें और क्लासिक संयोजनों से हाथ के अंक पाएँ।", how: ["जोड़े, रन और पंद्रह अंक देते हैं। 121 तक पहले पहुँचने वाला खिलाड़ी जीतता है।"], noteTitle: "प्रीव्यू स्थिति", parent: "यह मालिक का प्रीव्यू आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]],
+    },
+    ar: {
+      title: "كريبدج", difficulty: "من السهل إلى التحدي", time: "5–15 دقيقة", gameplay: "لعبة بطاقات كلاسيكية للعدّ", genre: ["بطاقات", "عائلية", "استراتيجية"], skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"],
+      intro: "أرسل بطاقتين إلى الكريب، والعب من دون تجاوز 31، ثم احسب نقاط اليد باستخدام التركيبات الكلاسيكية.", how: ["تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121."], noteTitle: "حالة المعاينة", parent: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+    },
+  };
+  for (const [locale, copy] of Object.entries(cribbageGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale].cribbage = { ...games.cribbage, ...copy };
+  }
+
   // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {
     title: "Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
@@ -12006,7 +12068,19 @@
     "ar": {
       "animal-twin-switchyard": { title: "ساحة مفاتيح التوأم", intro: "وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا." },
       "zhao-yun-a-dou": { title: "تشاو يون وآ دو: دفاع الحبر", intro: "جنّد جنود الرموز، وضعهم في ثلاثة مسارات، وادمج الوحدات المتطابقة، وأبعد العدو المتقدم عن آ دو." },
-      "animal-skyport-dispatch": { title: "إرسال سكايبورت الحيوان", intro: "أدر مسارات المناطيد الحيوانية في 30 مناوبة ضمن ستة فصول، وارسم مسارًا آمنًا عبر العقد المرقمة إلى الرصيف المناسب، وأكمل الحملة قبل انتهاء المناوبات." },
+      "animal-skyport-dispatch": {
+        title: "إرسال سكايبورت الحيوان", age: "13+", difficulty: "متوسطة إلى التحدي", time: "4-7 دقائق لكل مناوبة",
+        gameplay: "إدارة طريق المنطاد", genre: ["استراتيجية", "إدارة", "محاكاة", "حيوانات"], skills: ["التخطيط", "تحديد الأولويات", "الاستدلال المكاني", "إدارة الموارد"],
+        intro: "إرسال سكايبورت الحيوان لعبة استراتيجية لإدارة المسارات في 30 مناوبة ضمن Cloudline Skyport. اقرأ طلب كل منطاد حيواني، وارسم مسارًا آمنًا عبر العقد المرقمة إلى الرصيف المناسب، وأكمل فصول الإرسال الستة.",
+        story: ["يدير Moon Cap Orla برج الإرسال بينما تتولى Gear Horn Rux صيانة أرصفة الشحن والركاب والإصلاح. تتولى Bubble Fin Nori رحلات البريد السريع والإنقاذ العاجلة. يحافظون معًا على حركة منطقة Cloudline عبر الوافدين العاديين ومعابر البضائع والعواصف ونوافذ الإصلاح والاندفاع النهائي للمهرجان.", "تنجح المناوبة بخدمة الرحلات المطلوبة وتحقيق هدف السمعة. تكسب مطابقة الأرصفة المتخصصة ورسم الطرق الفعالة وإكمال أهداف الإتقان الاختيارية ميداليات، من دون اشتراط اللعب المثالي."],
+        systems: ["اضغط على رحلة منتظرة، ثم اسحب من علامة التثبيت الخاصة بها إلى رصيف متوافق ومفتوح. يستخدم المسار المنحني المرئي ومنطق التصادم نقاطًا مأخوذة بالعينات نفسها، لذلك فالخط تحت المؤشر هو المسار الذي يتبعه المنطاد.", "يخدم رصيف الشحن A البضائع بكفاءة، ويتولى رصيف الركاب B رحلات الركاب والبريد السريع، ويُفضّل رصيف الإصلاح C للرحلات المتضررة. يكلف الرصيف غير المتخصص وقتًا أو طاقمًا إضافيًا، ولا يمكن تأكيد الحالات الحمراء غير المتوافقة.", "يؤدي عبور حركة المرور النشطة إلى تعارض كهرماني وزيادة الازدحام. تبطئ خلايا العاصفة المسارات وقد تتلف الرحلات ما لم تحمِ منارة الطقس ذلك الجزء. ينخفض الازدحام عندما تسير الحركة بأمان.", "الطاقم والوقود وقطع الغيار محدودة في كل مناوبة. تعيد الرحلات المخدومة الطاقم، وتوفر الطرق الفعالة الوقود، ويجب حفظ قطع الغيار للطائرات المتضررة. تنهي ثلاث رحلات بلا خدمة أو امتلاء الازدحام المحاولة مع إعادة محاولة مجانية."],
+        how: ["حدد منطادًا حيوانيًا قادمًا واقرأ رصيفه وصبره واحتياج الشحن أو الركاب وحالة الضرر.", "اسحب من علامة التثبيت إلى رصيف مفتوح ومتوافق، مع تجنب المسارات النشطة والعواصف وممرات الصيانة المغلقة.", "حرر المنطاد فوق الرصيف لتأكيد المسار، ثم اختر إجراء الخدمة المطلوب بعد الرسو.", "اخدم هدف المناوبة، واحمِ حد الرحلات الثلاث غير المخدومة، واستخدم المناوبة التالية أو اختيار المناوبة من شاشة النتيجة."],
+        strategyTips: ["اترك رصيفًا واحدًا ومسار اقتراب واحدًا متاحين للوصولات العاجلة.", "فضّل الأرصفة المتخصصة عندما يكون الصبر منخفضًا، لكن اقبل رصيفًا آمنًا أبطأ إذا كان التعارض سيزيد الازدحام أكثر.", "احتفظ بقطع الغيار للرحلات التي لا يمكنها المغادرة بأمان من دونها.", "أعد الرسم قبل الإفلات إذا عبرت المعاينة عاصفة أو مسارًا مشغولًا؛ خط المسار هو المرجع الحاسم."],
+        progression: ["تعلّم المناوبتان 1 و2 مسار العقد المرقمة والأرصفة المطابقة. تضيف المناوبة 3 أول ممر جوي مغلق، ثم تضيف الفصول اللاحقة عقدًا أكثر وتركيبات من الممرات المغلقة ضمن حملة من 30 مناوبة وستة فصول."],
+        designNote: "اللعبة عبارة عن إرسال نشط وليست أتمتة خاملة: تحتاج كل رحلة إلى مسار وقرار خدمة. تحافظ شاشات Main وStage وBattle وResult على قواعد Canvas المستجيبة المشتركة، ويستخدم حقل Battle كامل العرض الآمن حتى 920 بكسلًا مع بقاء الاحتياطي العام البالغ 56 بكسل خارج Canvas. يستخدم اللمس والماوس هندسة المسار نفسها المأخوذة بالعينات، لذلك تظل الخطوط المرسومة بمحاذاة الإصبع أو المؤشر.",
+        parent: "لا يلزم إنشاء حساب. تبقى فتحات المناوبات الثلاثين عبر ستة فصول، والميداليات والسمعة والترقيات والاكتشافات وحالة البرنامج التعليمي والإعدادات في هذا المتصفح. تتطلب إجراءات الألماس الاختيارية تأكيدًا ولا تلزم أبدًا لإكمال المناوبات الثلاثين.",
+        faq: [["كم عدد المناوبات المتاحة؟", "تضم الحملة 30 مناوبة مصممة في ستة فصول؛ تعلّم المناوبات الأولى قاعدة المسار، ثم تضيف المناوبات اللاحقة الممرات المغلقة وعقدًا مرقمة أكثر."], ["كيف أرسم مسارًا؟", "اسحب من علامة تثبيت الرحلة المحددة عبر العقد المرقمة إلى رصيف مفتوح ومتوافق ثم حررها فوق الرصيف."], ["لماذا يصبح المسار كهرمانيًا؟", "لأنه يعبر حركة مرور نشطة، فيرفع الازدحام بينما تشغل الرحلتان منطقة التعارض."], ["ما الذي يسبب الفشل؟", "تنتهي المناوبة عند امتلاء الازدحام أو بعد مغادرة ثلاث رحلات من دون خدمة."], ["هل إعادة المحاولة مجانية؟", "نعم. تعرض المناوبة الفاشلة دائمًا إعادة محاولة مجانية أولًا."], ["ما الذي يُحفظ؟", "يبقى تقدم المناوبة والميداليات والسمعة والترقيات والاكتشافات وحالة البرنامج التعليمي والإعدادات في هذا المتصفح."], ["هل الألماس مطلوب؟", "لا. تتطلب إعادة عقود الاختيار والتأمين تأكيدًا، وليست ضرورية لإكمال الحملة."], ["ماذا يحدث بعد المناوبة 30؟", "بعد حملة المناوبات الثلاثين تعود النتيجة إلى اختيار المناوبة؛ لا توجد مناوبة 31."]]
+      },
       "animal-rift-salvage": { title: "إنقاذ الحيوان المتصدع", intro: "وجّه جامعًا قمريًا صغيرًا داخل صدع دائري، واجمع الخردة المناسبة، وابنِ سلسلة نقاط، وأكمل حصة الإنقاذ قبل انتهاء الوقت." },
       "animal-hero-trials": { title: "محاكمات بطل الحيوان", intro: "حملة حركة من 30 تجربة يقودها أربعة أبطال متكررون من WeightPlay؛ لكل بطل حركة ومدى ومتانة ومهارة نشطة مختلفة. أكمل ثلاث غرف غابية، واختر نعمة بعد كل غرفة، واهزم سيد الظلال، ثم أنفق علامات التجربة على الإتقان الدائم." },
       "animal-canopy-cut": { title: "قطع مظلة الحيوانات", intro: "اسحب عبر الفاكهة الآمنة، وابنِ سلسلة، وتجنب قرون البذور الداكنة في تحدٍّ سريع داخل المظلة." },

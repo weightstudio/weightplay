@@ -336,6 +336,21 @@
       backToLobby:'العودة إلى الردهة', back:'رجوع', shiftSelection:'اختيار المناوبة', language:'اللغة',
     },
   };
+  Object.assign(skyportDynamicText, {
+    en: {keyboardChooseDock:'Airship selected. Use arrow keys to choose a dock, then press Enter to dispatch. Escape cancels.'},
+    'zh-Hant': {keyboardChooseDock:'已選擇飛船。用方向鍵選碼頭，按 Enter 調度；Escape 取消。'},
+    'zh-Hans': {keyboardChooseDock:'已选择飞艇。使用方向键选择码头，然后按 Enter 调度。Escape 取消。'},
+    ja: {keyboardChooseDock:'飛行船を選択しました。矢印キーでドックを選び、Enterでディスパッチ。Escapeでキャンセル。'},
+    ko: {keyboardChooseDock:'비행선을 선택했습니다. 화살표 키로 도크를 선택한 후 Enter를 눌러 배차하세요. Escape로 취소합니다.'},
+    es: {keyboardChooseDock:'Aeronave seleccionada. Usa las flechas para elegir un muelle, pulsa Enter para despachar. Escape cancela.'},
+    'pt-BR': {keyboardChooseDock:'Aeronave selecionada. Use as setas para escolher uma doca e pressione Enter para despachar. Escape cancela.'},
+    fr: {keyboardChooseDock:'Dirigeable sélectionné. Utilisez les flèches pour choisir un quai, puis appuyez sur Entrée pour répartir. Échap annule.'},
+    de: {keyboardChooseDock:'Luftschiff ausgewählt. Wähle mit den Pfeiltasten ein Dock und drücke Enter zum Dispatch. Escape bricht ab.'},
+    it: {keyboardChooseDock:'Aeronave selezionata. Usa le frecce per scegliere un molo, poi premi Invio per il dispatch. Escape annulla.'},
+    ru: {keyboardChooseDock:'Дирижабль выбран. Выберите док стрелками и нажмите Enter для отправки. Escape отменяет выбор.'},
+    hi: {keyboardChooseDock:'एयरशिप चुना गया। तीर कुंजियों से डॉक चुनें, फिर डिस्पैच के लिए Enter दबाएँ। Escape रद्द करता है।'},
+    ar: {keyboardChooseDock:'تم اختيار المنطاد. استخدم الأسهم لاختيار الرصيف، ثم اضغط Enter للإرسال. يلغي Escape العملية.'},
+  });
   const skyportUiText = {
     'zh-Hant': {title:'動物天空港調度隊', headline:'讓雲線天空港持續運作。', intro:'繪出安全航線，配對飛船與碼頭，保護班次不被壅塞。', start:'開始調度', chooseShift:'選擇班次', best:'最佳班次：{n}', stageReady:'可開始', stageLocked:'未解鎖', stageReplay:'可重玩', menu:'回主選單', shifts:'班次選擇', next:'下一班', retry:'重試班次', win:'班次完成！', lose:'天空港壅塞！', winCopy:'清晰調度為天空港寫下新紀錄。', loseCopy:'三次不安全進場關閉了班次，重試免費。', nextShiftPreview:'下一班 {shift}：完成 {goal} 架飛船 · {rule}', guideTitle:'如何調度', guideBody:'選擇班次、依序連接編號節點；出現紅色封鎖航線時避開，再將每艘飛船引導到相符碼頭。'},
     'zh-Hans': {title:'动物天空港调度队', headline:'让云线天空港持续运作。', intro:'绘出安全航线，匹配飞艇与码头，保护班次不被拥堵。', start:'开始调度', chooseShift:'选择班次', best:'最佳班次：{n}', stageReady:'可开始', stageLocked:'未解锁', stageReplay:'可重玩', menu:'返回主菜单', shifts:'班次选择', next:'下一班', retry:'重试班次', win:'班次完成！', lose:'天空港拥堵！', winCopy:'清晰调度为天空港写下新纪录。', loseCopy:'三次不安全进场结束了班次，重试免费。', nextShiftPreview:'下一班 {shift}：完成 {goal} 架飞艇 · {rule}', guideTitle:'如何调度', guideBody:'选择班次，按顺序连接编号节点；出现红色封锁航线时避开，再将每艘飞艇引导到匹配码头。'},
@@ -364,7 +379,14 @@
     hi: {medals:'पदक {n}/3', contractDescription:'प्राथमिकता अनुबंध: बिना त्रुटि पूरा करें और 20 स्काई कॉइन पाएँ।', insurance:'5 डायमंड का बीमा', insuranceSelect:'बीमा खरीदने से पहले प्राथमिकता अनुबंध चुनें।', insuranceLabel:'असफलता पर 20 स्काई कॉइन के अनुबंध बोनस को बचाता है। कीमत 5 डायमंड।'},
     ar: {medals:'الأوسمة {n}/3', contractDescription:'العقد ذو الأولوية: أكمل دون أخطاء لتحصل على 20 عملة سماء إضافية.', insurance:'تأمين 5 ماسات', insuranceSelect:'اختر العقد ذا الأولوية قبل شراء التأمين.', insuranceLabel:'يحمي مكافأة العقد البالغة 20 عملة سماء عند الفشل. التكلفة 5 ماسات.'},
   };
-  const activeLocale = () => window.WonderI18n?.actualLocale?.() || readStorage('weightPlayLocale') || document.documentElement.lang || 'en';
+  const activeLocale = () => {
+    const routeLocale = document.documentElement.lang;
+    if (routeLocale && skyportDynamicText[routeLocale]) return routeLocale;
+    const runtimeLocale = window.WonderI18n?.actualLocale?.();
+    if (runtimeLocale && skyportDynamicText[runtimeLocale]) return runtimeLocale;
+    const storedLocale = readStorage('weightPlayLocale');
+    return skyportDynamicText[storedLocale] ? storedLocale : 'en';
+  };
   const t = (key, values = {}) => {
     const template = skyportDynamicText[activeLocale()]?.[key] ?? skyportUiText[activeLocale()]?.[key] ?? skyportStageText[activeLocale()]?.[key] ?? strings[locale]?.[key] ?? strings.en?.[key] ?? key;
     return Object.entries(values).reduce((value, [name, replacement]) => String(value).replace(`{${name}}`, replacement), template);
