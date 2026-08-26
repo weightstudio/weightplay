@@ -1231,11 +1231,13 @@
     // Fortress keeps its HUD and hint as overlays on that envelope, so the
     // canvas itself must cover the logical panel rather than fitting its
     // portrait/landscape bitmap into the middle grid track and leaving a gap
-    // above the physical reserve.
+    // above the physical reserve. Match the bitmap to that logical envelope
+    // so artwork and hit geometry keep one common scale instead of stretching.
     if (document.body.classList.contains("wp-logical-battle-active")) {
       const logicalWidth = nodes.gamePanel.clientWidth;
       const logicalHeight = nodes.gamePanel.clientHeight;
       if (logicalWidth > 0 && logicalHeight > 0) {
+        resizeOrbCoordinateSystem(logicalWidth, logicalHeight);
         canvas.style.setProperty("width", `${logicalWidth}px`, "important");
         canvas.style.setProperty("height", `${logicalHeight}px`, "important");
       }
@@ -1257,6 +1259,55 @@
     if (Math.abs(currentRect.height - arenaHeight * coordinateScale) > 0.5) {
       canvas.style.setProperty("height", `${arenaHeight}px`, "important");
     }
+  }
+
+  function resizeOrbCoordinateSystem(nextWidth, nextHeight) {
+    const targetWidth = Math.max(1, Math.round(nextWidth));
+    const targetHeight = Math.max(1, Math.round(nextHeight));
+    if (targetWidth === W && targetHeight === H && canvas.width === targetWidth && canvas.height === targetHeight) return;
+    const scaleX = targetWidth / Math.max(1, W);
+    const scaleY = targetHeight / Math.max(1, H);
+    const scaleRadius = Math.min(scaleX, scaleY);
+    const scalePoint = (point) => {
+      if (!point) return;
+      if (Number.isFinite(point.x)) point.x *= scaleX;
+      if (Number.isFinite(point.y)) point.y *= scaleY;
+    };
+    const scaleVelocity = (point) => {
+      if (!point) return;
+      if (Number.isFinite(point.vx)) point.vx *= scaleX;
+      if (Number.isFinite(point.vy)) point.vy *= scaleY;
+    };
+    if (state) {
+      scalePoint(state.launcher);
+      state.enemies?.forEach((enemy) => {
+        scalePoint(enemy);
+        if (Number.isFinite(enemy.size)) enemy.size *= scaleRadius;
+      });
+      state.orbs?.forEach((orb) => {
+        scalePoint(orb);
+        scaleVelocity(orb);
+        if (Number.isFinite(orb.r)) orb.r *= scaleRadius;
+      });
+      state.sparks?.forEach((spark) => {
+        scalePoint(spark);
+        if (Number.isFinite(spark.fromX)) spark.fromX *= scaleX;
+        if (Number.isFinite(spark.fromY)) spark.fromY *= scaleY;
+      });
+      state.pylons?.forEach((pylon) => {
+        scalePoint(pylon);
+        if (Number.isFinite(pylon.r)) pylon.r *= scaleRadius;
+        if (Number.isFinite(pylon.minX)) pylon.minX *= scaleX;
+        if (Number.isFinite(pylon.maxX)) pylon.maxX *= scaleX;
+        if (Number.isFinite(pylon.speed)) pylon.speed *= scaleX;
+      });
+      state.preview?.forEach(scalePoint);
+    }
+    W = targetWidth;
+    H = targetHeight;
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    document.documentElement.style.setProperty("--orb-arena-ratio", `${W} / ${H}`);
   }
 
   let arenaFitFrame = 0;
@@ -1287,7 +1338,11 @@
 
   function refreshOrbBattleLayout() {
     const nextOrientation = innerWidth > innerHeight ? "landscape" : "portrait";
-    if (canvas.dataset.orientation !== nextOrientation) configureArena();
+    // Keep the active logical coordinate system intact while the shared
+    // scaler settles a new envelope. The next fit resizes it once and scales
+    // live points/velocities, avoiding a transient fixed-ratio reset during
+    // portrait ↔ landscape rotation.
+    if (canvas.dataset.orientation !== nextOrientation) canvas.dataset.orientation = nextOrientation;
     updateOrbBattleScale();
     window.dispatchEvent(new Event("weightplay:battle-open"));
     queueOrbArenaFit();

@@ -767,7 +767,10 @@
       document.body.dataset.runtimeLocalize = "off";
     }
     const routeLocale = document.documentElement.lang;
-    let locale = game.type === "snake" && COPY[routeLocale] ? routeLocale : randomLocale();
+    // Every localized route owns its first interactive locale. Falling back to
+    // the previous browser preference here made Tetris (and the other popular
+    // games) repaint an `/ar/` shell as English before the player interacted.
+    let locale = COPY[routeLocale] ? routeLocale : randomLocale();
     if (!COPY[locale]) locale = "en";
     let state = makeState(game.type);
     let hangmanRoundIndex = 0;

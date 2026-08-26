@@ -2547,6 +2547,78 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Animal Peach Oath is a real internal prototype, so keep it discoverable in
+// the owner-preview Coming Soon rail without promoting it into the playable
+// catalog or attaching a public gameplay preview.
+const animalPeachOathOwnerPreview = {
+  id: "animal-peach-oath",
+  title: {
+    en: "Peach Garden Oath", "zh-Hant": "桃園結義", "zh-Hans": "桃园结义", ja: "桃園の盟誓",
+    ko: "복숭아밭 맹세", es: "Juramento del Jardín de Melocotones", "pt-BR": "Juramento do Jardim dos Pêssegos",
+    fr: "Serment du Jardin des Pêchers", de: "Schwur im Pfirsichgarten", it: "Giuramento del Giardino dei Peschi",
+    ru: "Клятва персикового сада", hi: "आड़ू बाग़ की शपथ", ar: "قسم بستان الخوخ",
+  },
+  status: "planned",
+  statusText: {
+    en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
+    es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
+    ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+  },
+  type: {
+    en: "Vertical Idle Squad RPG", "zh-Hant": "直式放置小隊 RPG", "zh-Hans": "竖式放置小队 RPG", ja: "縦型放置スクワッドRPG",
+    ko: "세로형 방치 스쿼드 RPG", es: "RPG de escuadrón idle vertical", "pt-BR": "RPG de esquadrão idle vertical",
+    fr: "RPG d'escouade idle vertical", de: "Vertikales Idle-Trupp-RPG", it: "RPG idle a squadra verticale",
+    ru: "Вертикальная idle-RPG отряда", hi: "वर्टिकल आइडल स्क्वाड RPG", ar: "لعبة RPG عمودية لفريق خامل",
+  },
+  categories: ["Animal Games", "RPG", "Strategy", "Idle"],
+  skills: ["Planning", "Resource Management", "Strategy"],
+  ages: ["13", "teen", "adult", "family"],
+  ageLabel: {
+    en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+",
+    fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+",
+  },
+  href: "games/animal-peach-oath/",
+  internalTrial: "/games/animal-peach-oath/index.html?trial=1",
+  description: {
+    en: "Lead an oath-bound animal squad through auto battles, hero growth, equipment, troop counters, and boss stages.",
+    "zh-Hant": "率領結義動物武將自動迎戰，培養隊伍、整備兵裝、運用兵種克制，挑戰層層 Boss 關卡。",
+    "zh-Hans": "率领结义动物武将自动迎战，培养队伍、整备兵装、运用兵种克制，挑战层层 Boss 关卡。",
+    ja: "盟誓を結んだ動物武将を率い、自動戦闘と育成、装備、兵種相性でボス戦に挑みます。",
+    ko: "맹세한 동물 장수들을 이끌고 자동 전투, 성장, 장비와 병종 상성으로 보스전에 도전하세요.",
+    es: "Lidera un escuadrón animal juramentado con batallas automáticas, mejoras, equipo y contraataques de tropas.",
+    "pt-BR": "Lidere um esquadrão animal juramentado com batalhas automáticas, evolução, equipamentos e counters de tropas.",
+    fr: "Menez une escouade animale jurée avec combats automatiques, progression, équipement et contres d'unités.",
+    de: "Führe einen tierischen Eidtrupp durch automatische Kämpfe, Wachstum, Ausrüstung und Truppenkonter.",
+    it: "Guida una squadra animale giurata tra battaglie automatiche, crescita, equipaggiamento e contromosse.",
+    ru: "Ведите отряд зверей-братьев через автобои, развитие героев, снаряжение и контрпики войск.",
+    hi: "शपथबद्ध पशु दल का नेतृत्व करें: ऑटो बैटल, नायक विकास, उपकरण और सेना-काउंटर के साथ बॉस से लड़ें।",
+    ar: "قد فريقًا من أبطال الحيوانات المتعاهدين عبر قتال تلقائي وتطوير وتجهيزات وتفوق أنواع الوحدات على الزعماء.",
+  },
+  meta: {
+    en: ["Auto Battle RPG", "Hero Growth", "Boss Campaign"],
+    "zh-Hant": ["自動戰鬥 RPG", "武將養成", "Boss 戰役"],
+    "zh-Hans": ["自动战斗 RPG", "武将养成", "Boss 战役"],
+    ja: ["自動戦闘RPG", "武将育成", "ボスキャンペーン"],
+    ko: ["자동 전투 RPG", "장수 성장", "보스 캠페인"],
+    es: ["RPG de auto batalla", "Mejora de héroes", "Campaña de jefes"],
+    "pt-BR": ["RPG de batalha automática", "Evolução de heróis", "Campanha de chefes"],
+    fr: ["RPG auto-bataille", "Progression des héros", "Campagne de boss"],
+    de: ["Auto-Kampf-RPG", "Heldenwachstum", "Boss-Kampagne"],
+    it: ["RPG auto-battle", "Crescita eroi", "Campagna boss"],
+    ru: ["RPG с автобоями", "Развитие героев", "Кампания с боссами"],
+    hi: ["ऑटो बैटल RPG", "नायक विकास", "बॉस अभियान"],
+    ar: ["RPG قتال تلقائي", "تطوير الأبطال", "حملة الزعماء"],
+  },
+  art: { kind: "image", background: "games/animal-peach-oath/assets/cover.webp", hideHero: true },
+};
+
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPeachOathOwnerPreview.id)) {
+  window.WONDER_LOBBY.games.unshift(animalPeachOathOwnerPreview);
+}
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPeachOathOwnerPreview.id)) {
+  window.WONDER_LOBBY.audiences.generalGameIds.push(animalPeachOathOwnerPreview.id);
+}
+
 // The classic owner-preview builds have full playable routes and production
 // records, so they must also appear in the preview lobby's planned count.
 // They stay Coming Soon and never enter the public playable catalog here.

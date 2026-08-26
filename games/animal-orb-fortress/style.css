@@ -1494,7 +1494,6 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battle
   aspect-ratio: auto !important;
   align-self: stretch !important;
   justify-self: stretch !important;
-  object-fit: fill !important;
 }
 
 body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row,
