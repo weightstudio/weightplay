@@ -69,6 +69,13 @@ body[data-wp-card-game="war"] .card-action-row button {
 .card-game-quick-guide strong { color: #ffefa7; }
 .card-main-controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .card-main-controls button { min-height: 44px; flex: 1 1 140px; }
+@media (max-width: 720px), (max-height: 560px) and (orientation: landscape) {
+  /* The shared Guide uses content-box sizing; keep Gin's locale-owned Main
+     Guide inside the viewport after its mobile padding is applied. */
+  body[data-wp-card-game="gin-rummy"] .game-page-info.game-page-info-static {
+    box-sizing: border-box;
+  }
+}
 .card-help { max-width: 64ch; text-align: center; color: #d7f9e7; font-size: 13px; margin: 0 auto; }
 .card-choice-panel { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .card-choice-panel button { min-width: 48px; min-height: 44px; }
