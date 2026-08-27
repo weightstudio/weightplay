@@ -72,6 +72,7 @@
   codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=localeData[code].label;$("#locale").append(option)});
   $("#locale").onchange=event=>{locale=event.target.value;write(localeKey,locale);write("weightPlayLocale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()};
   $("#audio").onclick=()=>{sound=!sound;write(soundKey,sound?"on":"off");$("#audio small").textContent=t(sound?"audioOn":"audioOff");if(sound)beep("move")};
+  $("#battleUtility").onclick=()=>$("#audio").click();
   $("#start").onclick=()=>show("stage");
   $("#stageBack").onclick=()=>show("main");
   $("#battleBack").onclick=()=>$("#leaveDialog").showModal();

@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 32927)
-Total output lines: 401
-
 <!doctype html>
 <html lang="es">
 <head>
@@ -99,7 +96,8 @@ Total output lines: 401
         <button id="start" class="primary" type="button" data-wp-main-start data-t="start">Start game</button>
       </div>
     </section>
-    <section id="guide" class="game-guide" aria-labelledby="guideTitle">
+  </main>
+  <section id="guide" class="game-guide guide" data-wp-game-guide aria-labelledby="guideTitle">
       <p class="eyebrow" data-t="guideTitle">Game guide</p>
       <h2 id="guideTitle" data-t="guideIntro">Read colors, patterns, rows, and columns together.</h2>
       <div class="guide-grid">
@@ -109,8 +107,7 @@ Total output lines: 401
       </div>
       <div class="guide-faq"><h3 data-t="faqTitle">FAQ</h3><details><summary data-t="faq1Q"></summary><p data-t="faq1A"></p></details><details><summary data-t="faq2Q"></summary><p data-t="faq2A"></p></details></div>
       <nav class="related" aria-labelledby="relatedTitle"><h3 id="relatedTitle" data-t="relatedTitle">More logic games</h3><a href="../sudoku/index.html?trial=1" data-t="relatedSudoku">Numeric Sudoku</a><a href="../minefield-logic/index.html?trial=1" data-t="relatedMinefield">Minefield Logic</a></nav>
-    </section>
-  </main>
+  </section>
 
   <main id="stage" class="screen canvas stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
     <header class="scene-header">
@@ -126,7 +123,7 @@ Total output lines: 401
     <header class="scene-header">
       <button id="battleBack" type="button" data-wp-return="battle" data-t-aria="battleBack" aria-label="Back">←</button>
       <div><small id="battleChapter"></small><h2 id="battleStage"></h2></div>
-      <span id="objective"></span>
+      <div class="battle-header-tools"><span id="objective"></span><button id="battleUtility" class="utility-button" type="button" data-wp-battle-utility aria-label="Audio" data-t-aria="audio"><span aria-hidden="true">♪</span></button></div>
     </header>
     <section class="battle-content">
       <div class="board-wrap">
@@ -134,7 +131,7 @@ Total output lines: 401
         <p id="status" class="status" aria-live="polite"></p>
       </div>
       <aside class="battle-tools" data-t-aria="toolsLabel" aria-label="Puzzle tools">
-        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat">Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
+        <div class="mode-switch" role="group" data-t-aria="placementMode" aria-label="Placement mode"><button id="toolCat" class="active" type="button" aria-pressed="true" data-t="toolCat" data-wp-primary-action>Place cat</button><button id="toolMark" type="button" aria-pressed="false" data-t="toolMark">Mark X</button></div>
         <div class="action-row"><button id="undo" type="button" data-t="undo">Undo</button><button id="hint" type="button" data-t="hint">Hint</button><button id="restart" type="button" data-t="restart">Restart</button></div>
         <section class="rule-card"><img src="../../assets/cat-color-sudoku-moonwhisker-v1.png" alt="" aria-hidden="true"><div><strong id="ruleChapter"></strong><p id="ruleText"></p></div></section>
       </aside>
@@ -168,7 +165,7 @@ Total output lines: 401
 
 
 
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, solo en este navegador.</dd></div></dl></div>
 
     </div>
   </section>
@@ -176,4 +173,3 @@ Total output lines: 401
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>
-
