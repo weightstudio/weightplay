@@ -10,17 +10,17 @@
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081a32">
-  <title>箭逃脱 | WeightPlay</title>
-  <meta name="description" content="Arrow Escape 是一款 30 级顺序谜题。阅读每个箭头前面的完整路径，仅在该路径畅通时才移除方块，并通过墙壁、旋转箭头、匹配的锁、冰、传送门和单向门揭示安全序列。" />
+  <title>箭头大逃亡 | WeightPlay</title>
+  <meta name="description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="箭逃脱 | WeightPlay" />
-  <meta property="og:description" content="Arrow Escape 是一款 30 级顺序谜题。阅读每个箭头前面的完整路径，仅在该路径畅通时才移除方块，并通过墙壁、旋转箭头、匹配的锁、冰、传送门和单向门揭示安全序列。" />
+  <meta property="og:title" content="箭头大逃亡 | WeightPlay" />
+  <meta property="og:description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
   <meta property="og:url" content="https://weightplay.com/zh-cn/games/arrow-escape/" />
   <meta property="og:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="箭逃脱 | WeightPlay" />
-  <meta name="twitter:description" content="Arrow Escape 是一款 30 级顺序谜题。阅读每个箭头前面的完整路径，仅在该路径畅通时才移除方块，并通过墙壁、旋转箭头、匹配的锁、冰、传送门和单向门揭示安全序列。" />
+  <meta name="twitter:title" content="箭头大逃亡 | WeightPlay" />
+  <meta name="twitter:description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/arrow-escape/cover.webp" />
   <link rel="canonical" href="https://weightplay.com/zh-cn/games/arrow-escape/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/arrow-escape/" />
@@ -47,10 +47,10 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "箭逃脱",
+  "name": "箭头大逃亡",
   "url": "https://weightplay.com/zh-cn/games/arrow-escape/",
   "image": "https://weightplay.com/assets/arrow-escape/cover.png",
-  "description": "Arrow Escape 是一款 30 级顺序谜题。阅读每个箭头前面的完整路径，仅在该路径畅通时才移除方块，并通过墙壁、旋转箭头、匹配的锁、冰、传送门和单向门揭示安全序列。",
+  "description": "《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -60,9 +60,9 @@
   "inLanguage": "zh-Hans",
   "isAccessibleForFree": true,
   "genre": [
-    "Puzzle",
-    "Strategy",
-    "Family",
+    "益智",
+    "策略",
+    "空间推理",
     "Browser Game"
   ],
   "audience": {
@@ -75,7 +75,7 @@
     </script>
 </head>
 <body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>箭逃脱</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>箭头大逃亡</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-canvas">
       <header class="main-header">
@@ -84,32 +84,32 @@
         <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
       </header>
       <section class="hero">
-        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="《箭逃脱》游戏图片">
-        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-runtime-localize="off">箭逃脱</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start" data-runtime-localize="off">Start Game</button></div>
+        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="《箭头大逃亡》游戏图片">
+        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-runtime-localize="off">箭头大逃亡</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start" data-runtime-localize="off">Start Game</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="箭逃脱 游戏信息">
+    <section class="game-page-info game-page-info-static" aria-label="箭头大逃亡 游戏信息">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>箭逃脱</h2><p>Arrow Escape 是一款 30 级顺序谜题。阅读每个箭头前面的完整路径，仅在该路径畅通时才移除方块，并通过墙壁、旋转箭头、匹配的锁、冰、传送门和单向门揭示安全序列。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>难度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>2-8分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>Planning · 空间推理 · 专注</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>箭头大逃亡</h2><p>《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>箭头顺序解谜</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 策略 · 空间推理</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 2–8 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>规划 · 空间推理 · 专注</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>每个阶段都是一个确定性的逃生板，而不是随机的布局。同一阶段始终以相同的块开始，并且始终具有经过验证的完整解决方案。</p>
-<p>六个教学章节一次介绍一个规则，然后结合最后五个谜题中的每个机制。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>正常的箭只有在其射线上的每个单元都畅通无阻时才能离开。受阻的选择会摇晃并确定第一个障碍，而无需花费任何一步。</p>
-<p>旋转箭头在逃脱之前会旋转一圈。钥匙只能打开与其匹配的锁，并且移除相邻的块可以解冻冰。</p>
-<p>传送门从其配对的出口继续发出相同的光线。单向门仅接受匹配的方向。</p>
-<p>提示会标记一个安全的下一个箭头并将键盘焦点移至该箭头，但不会为您执行该操作或更改棋盘。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从水平舞台导轨中选择一个未锁定的舞台。</li><li>检查每个箭头的方向和完整路线。</li><li>点击、单击或聚焦并激活路线清晰的箭头。</li><li>使用阻止程序大纲来了解不安全的选择，或使用提示来进行建议性操作。</li><li>移除所有箭头以清除舞台并解锁下一个谜题。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>从已经面向开放边缘的箭头开始。</li><li>在提交之前追踪完整的光线，包括传送门之后的空间。</li><li>当出现关键或冻结块时，计划其移除会对附近的箭头产生什么变化。</li><li>被阻止的尝试不会花费任何行动，因此请使用突出显示的第一个阻止者作为信息，而不是重复猜测。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1-5 阶段教授清晰的光线和移除顺序。</p>
-<p>第 6-15 阶段添加了互锁行和固定墙。</p>
-<p>第 16 至 25 阶段介绍了旋转、匹配锁、钥匙和冰。</p>
-<p>第 26-30 阶段将门户和单向门与早期规则结合起来。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>独特的合法箭头会立即做出反应，因此快速的玩家可以连续点击安全移动，而无需等待较早的飞行动画。棋盘状态仍会确定性地解析，并且已删除箭头上的重复点击将被忽略。 完整界面使用居中的单一逻辑布局，最大宽度为 920 像素。手机、横屏和桌面画面会一起缩放相同的控件、点击区域、图像和游戏坐标，而不会拉伸单个元素。因此触控、鼠标和键盘都会操作同一个合法状态。Main 海报和开始游戏操作与 Stage 管理分开；Stage 选择、Battle、对话框和 Result 各自保留有界内容与返回路径。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>Arrow Escape 是一款适合普通观众的浏览器谜题，建议 9 岁以上儿童和家庭游戏。无需帐户。舞台解锁、语言和声音首选项仅存储在此浏览器中，因此清除站点数据或更改设备可能会删除本地进度。 你可以不创建账号直接游玩。进度会保存在当前浏览器配置文件的本地存储中，而不是在线账号或跨设备数据库。清除网站数据、使用无痕浏览、更换浏览器或换到另一台设备，都可能创建独立存档或移除现有存档。只要浏览器允许存储，语言、音效和减少动态效果偏好就会沿用 WeightPlay 的共享控件。任何指南结果都不是医疗、学校或专业评估。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>包括几个阶段？</dt><dd>六个规则章节共有 30 个手工制作的阶段，并且第 30 阶段仍然可以重玩。</dd></div><div><dt>被阻挡的水龙头是否需要移动？</dt><dd>不会。它会识别第一个阻挡者并保持棋盘不变。</dd></div><div><dt>提示会自动解决谜题吗？</dt><dd>不。提示标记并聚焦一个安全的下一个箭头，但您仍然可以选择是否玩它。</dd></div><div><dt>多个箭头可以同时移动吗？</dt><dd>是的。不同的合法箭头可以立即开始其逃逸动画，而无需全局输入冷却。</dd></div><div><dt>门户网站如何运作？</dt><dd>一支箭头进入一个入口，并在紧邻配对出口之后沿相同方向继续前进。</dd></div><div><dt>Is progress saved?</dt><dd>舞台解锁和首选项存储在该浏览器本地。</dd></div><div><dt>支持哪些操作方式和屏幕尺寸？</dt><dd>在游戏支持的情况下，触控、鼠标和键盘使用相同规则。界面会在所需的手机、横屏和桌面屏幕尺寸中，按同一套逻辑布局缩放。</dd></div><div><dt>进度会自动转移到其他设备吗？</dt><dd>不会。本游戏目前只将进度保存在浏览器本地，因此其他浏览器配置文件或设备会拥有各自独立的本地进度，除非未来加入账号系统。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界与任务</h3><p>每一关都是固定设计的逃脱棋盘，不是随机排列。同一关每次都会从同一组方块开始，而且都有经过验证的完整解法。</p>
+<p>六个教学章节会逐一介绍规则，最后五关再把所有机制组合成完整挑战。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>普通箭头只有在前方射线上的每一格都没有障碍时才能离开。点到受阻的箭头会晃动并标出第一个障碍，而且不会消耗步数。</p>
+<p>旋转箭头要先转向一次；钥匙只会打开相同颜色的锁；移除相邻方块则能解冻冰块。</p>
+<p>箭头进入传送门后，会从成对出口沿原方向继续前进；单向闸门只允许相符方向通过。</p>
+<p>提示只会标出一个安全的下一步，并把键盘焦点移到该箭头，不会代替玩家行动或改变棋盘。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁关卡。</li><li>查看每个箭头的方向与完整离场路线。</li><li>用触控、鼠标或键盘选择路线畅通的箭头。</li><li>从障碍标示理解错误选择，或使用提示获得一个建议步骤。</li><li>移除全部箭头即可过关并解锁下一关。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先找已经朝向棋盘外侧、路线明显畅通的箭头。</li><li>遇到传送门时，要连同出口后方的路线一起检查。</li><li>出现钥匙或冰块时，先思考移除后会改变哪些邻近箭头。</li><li>受阻操作不会消耗步数，可以利用第一个障碍的标示找出真正的依赖顺序。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 关教导直线路径与移除顺序。</p>
+<p>第 6–15 关加入互相卡住的排列与固定墙壁。</p>
+<p>第 16–25 关加入旋转、配对锁、钥匙与冰块。</p>
+<p>第 26–30 关把传送门、单向闸门与先前规则结合。</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>不同且合法的箭头会立即响应，因此熟练玩家可以连续快速点击，不必等待前一段飞出动画结束。棋盘状态仍维持固定顺序，同一个已移除箭头的重复输入会被安全忽略。</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《箭头大逃亡》是建议 9 岁以上与家庭玩家游玩的浏览器益智游戏，不需要账号。关卡解锁、语言与音效偏好只保存在当前浏览器；清除网站数据或更换设备可能失去本地进度。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少关？</dt><dd>共有 30 个手工设计关卡，分成六个规则章节；第 30 关完成后仍可重玩。</dd></div><div><dt>点到受阻箭头会消耗步数吗？</dt><dd>不会。游戏只会标出第一个障碍，棋盘保持不变。</dd></div><div><dt>提示会自动解题吗？</dt><dd>不会。提示只会标出并聚焦一个安全箭头，是否执行仍由玩家决定。</dd></div><div><dt>可以连续快速点多个箭头吗？</dt><dd>可以。不同的合法箭头能立即开始飞出，不受全局冷却限制。</dd></div><div><dt>传送门怎么运作？</dt><dd>箭头会从一个传送门进入，并从成对出口沿相同方向继续。</dd></div><div><dt>进度会保存吗？</dt><dd>关卡解锁与偏好会保存在当前浏览器。</dd></div></dl></div>
 
     </div>
   </section>
@@ -122,7 +122,7 @@
   </section>
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-runtime-localize="off">箭逃脱</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-runtime-localize="off">箭头大逃亡</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play">?</button></header>
         <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
       <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">How to play</h2><p id="helpText" data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>

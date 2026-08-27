@@ -112,3 +112,25 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
 /* v51 HUD readability repair: reserve a wider narrow-screen track for the
    full Firepower label instead of clipping it with the five equal tracks. */
 @media(max-width:480px){.battle-hud>.hud-stats{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(58px,1.2fr) minmax(0,1fr)!important}}
+
+/* v52 responsive recovery repair: reserve the full back-control track on
+   narrow RTL/LTR Battle headers, and use a compact two-column Result in short
+   landscape so every recovery action remains visible without page scrolling. */
+@media(max-width:480px){
+  .battle-hud{grid-template-columns:48px minmax(0,1fr) auto!important}
+}
+@media(max-height:500px){
+  #resultScreen.result-screen{min-height:100dvh!important;padding:8px 12px 56px!important;box-sizing:border-box!important;align-items:start!important}
+  #resultScreen .result-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.9fr);column-gap:16px;align-items:center;width:min(100%,560px);max-height:calc(100dvh - 16px);overflow:auto;margin:0 auto;padding:14px 16px!important;text-align:center}
+  #resultScreen .result-card>.result-kicker,#resultScreen .result-card>h2,#resultScreen .result-card>p:not(.result-kicker),#resultScreen .result-card>.result-goal{grid-column:1;margin-block:4px}
+  #resultScreen .result-card>.result-stats,#resultScreen .result-card>.result-actions{grid-column:2}
+  #resultScreen .result-card>h2{font-size:clamp(1.45rem,4vw,2.2rem);line-height:1.1;margin-block:3px 6px}
+  #resultScreen .result-card>p:not(.result-kicker){line-height:1.3;margin-block:4px}
+  #resultScreen .result-card>.result-goal{margin:5px 0!important;padding:7px 9px}
+  #resultScreen .result-stats{gap:6px;margin:8px 0}
+  #resultScreen .result-stats span{min-width:0;padding:6px 4px}
+  #resultScreen .result-stats b{font-size:.65rem}
+  #resultScreen .result-stats strong{font-size:1.05rem}
+  #resultScreen .result-actions{gap:6px}
+  #resultScreen .result-actions button{min-height:42px;padding-inline:4px;font-size:.8rem}
+}

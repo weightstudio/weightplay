@@ -893,6 +893,7 @@
             : state.message;
       }
       if (game.type === "wordle" && state.messageKey === "wordleHint") state.message = wordleHint(locale, state.target[0]);
+      if (game.type === "wordle" && state.messageKey === "ready") state.message = copy(locale, "ready");
       if (game.type === "hangman") {
         if (state.messageKey === "hangmanHint") state.message = hangmanHint(locale, state.target.length, state.theme);
         else if (state.messageKey === "hangmanMiss") state.message = hangmanMiss(locale, state.lastLetter, state.misses);

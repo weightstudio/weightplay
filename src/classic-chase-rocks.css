@@ -99,6 +99,16 @@ h2 { font-size: clamp(1.45rem, 5vw, 2.3rem); }
 .round-label { color: var(--accent); font-size: 0.83rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
 .icon-button { width: 44px; min-width: 44px; padding: 8px; }
 
+/* General Space Rocks has a shared shell return overlay at the physical
+   left edge. Reserve that strip in the authored row while the viewport is
+   narrower than the desktop canvas cap; otherwise the overlay hides the
+   round label even though the Battle controls themselves remain reachable. */
+@media (max-width: 919px) {
+  body[data-game-id="space-rocks"].is-game-playing .battle-topline {
+    padding-left: 56px;
+  }
+}
+
 /* The shared shell promotes Maze Chase's Back control into a fixed physical
    left-edge header. In portrait RTL, reserve that strip in the native row so
    Restart/Sound remain independently targetable instead of sitting beneath
@@ -320,6 +330,66 @@ body.is-game-playing .confirm-back {
   body.is-game-playing .game-message { min-height: 18px; padding: 2px; font-size: 0.75rem; }
   body.is-game-playing .touch-controls { padding: 5px 0 0; }
   body.is-game-playing .control-hint { display: none; }
+}
+
+/* Space Rocks Result shares the fixed Battle envelope. In short landscape,
+   the portrait Result stack is taller than the 334px play area and leaves
+   both recovery buttons below the physical viewport. Keep the same Result
+   content and actions, but place the actions in a compact side track and
+   lay out all five stats in one bounded row. */
+@media (min-width: 650px) and (max-height: 500px) and (min-aspect-ratio: 3 / 2) {
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultScreen {
+    padding: 8px 12px;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result .result-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(176px, 220px);
+    grid-template-areas:
+      "title actions"
+      "copy actions"
+      "stats actions";
+    align-items: center;
+    column-gap: 18px;
+    padding: 14px 18px;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultTitle {
+    grid-area: title;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultCopy {
+    grid-area: copy;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultStats {
+    grid-area: stats;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    margin: 8px 0 0;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultStats .stat {
+    min-width: 0;
+    padding: 6px 4px;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result #resultStats .stat span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result .result-actions {
+    grid-area: actions;
+    align-self: stretch;
+    align-content: center;
+    gap: 6px;
+  }
+
+  body[data-game-id="space-rocks"].is-game-playing .battle-screen.has-result .result-actions > button {
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

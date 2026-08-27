@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "space-rocks";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
   const INTERFACE_VERSION = "7";
   let inputType = "unknown";
   let resultVisible = false;
