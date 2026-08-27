@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["it"] = {
+  "Capture progress": "Progresso delle catture",
+  "Capture table cards by rank or sum.": "Cattura le carte del tavolo per valore o somma.",
+  "Play progress": "Progresso della partita",
   "Tetris game artwork": "Immagine del gioco Tetris",
   "Tetris game information": "Tetris informazioni sul gioco",
   "Tetris": "Tetris",

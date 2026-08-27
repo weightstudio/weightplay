@@ -72,6 +72,12 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
   margin: 0 auto;
 }
 
+body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
+  box-sizing: border-box;
+  width: min(100%, 920px);
+  margin-inline: auto;
+}
+
 .main-screen {
   padding: 20px 16px 56px;
 }
@@ -83,6 +89,10 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
   align-items: center;
   min-height: 48px;
   gap: 12px;
+}
+
+.battle .scene-header {
+  grid-template-columns: 48px minmax(0, 1fr) auto 48px;
 }
 
 .main-header strong,
@@ -109,6 +119,21 @@ body[data-wp-game-id="zhao-yun-a-dou"] .screen {
   color: var(--paper);
   background: rgba(255, 255, 255, .08);
   text-decoration: none;
+}
+
+.battle-utility {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 14px;
+  color: var(--paper);
+  background: rgba(255, 255, 255, .08);
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .return img {
@@ -337,6 +362,16 @@ button.primary:focus-visible {
 .stage-canvas,
 .battle {
   position: relative;
+}
+
+body.wp-shell-battle-active #generalReserve {
+  display: block;
+  width: min(100%, 920px);
+  height: 56px;
+  min-height: 56px;
+  margin: 0 auto;
+  background: rgba(9, 20, 16, .9);
+  pointer-events: none;
 }
 
 .stage-intro {

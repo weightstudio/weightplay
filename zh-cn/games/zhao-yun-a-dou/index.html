@@ -27,7 +27,7 @@
   <meta name="theme-color" content="#18231f">
   <title>赵云与阿斗：墨线守卫 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260827-zhao-analytics-identity-v21">
+  <link rel="stylesheet" href="style.css?v=20260828-zhao-interface-contract-v22">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <meta name="description" content="征召汉字小兵、分配三条战线并合成相同部队，在 30 个短局水墨防守关卡中保护阿斗。" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -129,6 +129,7 @@
       <button id="battleBack" data-back data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button>
       <div class="battle-heading"><small id="chapter"></small><h2 id="stageName"></h2></div>
       <span id="remaining" class="wave-readout"></span>
+      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-wp-battle-utility="true" data-t-aria="tutorialAria" aria-label="Battle tutorial" title="Battle tutorial">?</button>
     </header>
     <section class="battle-content">
       <div class="battle-hud">
@@ -153,7 +154,7 @@
         <div id="formation" class="formation-grid" role="grid" aria-label="Formation slots"></div>
       </div>
       <div class="battle-actions">
-        <button id="recruit" class="primary action-recruit" data-t="recruit">Recruit</button>
+        <button id="recruit" class="primary action-recruit" data-wp-primary-action data-t="recruit">Recruit</button>
         <span id="recruitHint" class="action-hint" data-t="recruitHint">Spend 3 buns to call a new soldier.</span>
         <div id="skills" class="skills" aria-label="General skills"></div>
         <button id="hint" class="ghost-action" data-t="hint">Hint</button>
@@ -162,7 +163,7 @@
     </section>
   </main>
 
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true"></div>
+  <div id="generalReserve" class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
   <dialog id="tutorial" class="game-dialog" aria-labelledby="tutorialTitle">
     <p class="eyebrow" data-t="tip">TIP</p>
@@ -198,9 +199,9 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
-  <script src="locales.js?v=20260827-zhao-analytics-identity-v21"></script>
-  <script src="game.js?v=20260827-zhao-analytics-identity-v21"></script>
-  <script src="analytics-ownership.js?v=20260827-zhao-analytics-identity-v21"></script>
+  <script src="locales.js?v=20260828-zhao-interface-contract-v22"></script>
+  <script src="game.js?v=20260828-zhao-interface-contract-v22"></script>
+  <script src="analytics-ownership.js?v=20260828-zhao-interface-contract-v22"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

@@ -79,6 +79,12 @@ body[data-wp-card-game="war"] .card-action-row button {
   body[data-wp-card-game="gin-rummy"] .game-page-info.game-page-info-static,
   body[data-wp-card-game="cribbage"] .game-page-info.game-page-info-static,
   body[data-wp-card-game="cribbage"] .game-page-info,
+  body[data-wp-card-game="go-fish"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="go-fish"] .game-page-info,
+  body[data-wp-card-game="casino"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="casino"] .game-page-info,
+  body[data-wp-card-game="crazy-eights"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="crazy-eights"] .game-page-info,
   body[data-wp-card-game="old-maid"] .game-page-info.game-page-info-static,
   body[data-wp-card-game="old-maid"] .game-page-info {
     box-sizing: border-box;

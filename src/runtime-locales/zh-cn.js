@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
+  "Capture progress": "捕获进度",
+  "Capture table cards by rank or sum.": "按点数或合计捕获桌面牌。",
+  "Play progress": "游玩进度",
   "Tetris game artwork": "《俄罗斯方块》游戏图片",
   "Tetris game information": "俄罗斯方块 游戏信息",
   "Tetris": "俄罗斯方块",

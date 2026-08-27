@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "Capture progress": "पकड़ की प्रगति",
+  "Capture table cards by rank or sum.": "मान या योग से मेज़ के पत्ते पकड़ें।",
+  "Play progress": "खेल की प्रगति",
   "Tetris game artwork": "टेट्रिस game artwork",
   "Tetris game information": "टेट्रिस खेल की जानकारी",
   "Tetris": "टेट्रिस",

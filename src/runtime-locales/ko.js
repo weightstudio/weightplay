@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "Capture progress": "캡처 진행",
+  "Capture table cards by rank or sum.": "같은 값이나 합으로 테이블 카드를 잡으세요.",
+  "Play progress": "플레이 진행",
   "Tetris game artwork": "테트리스 게임 이미지",
   "Tetris game information": "테트리스 게임 정보",
   "Tetris": "테트리스",

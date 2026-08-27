@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "Capture progress": "تقدّم الالتقاط",
+  "Capture table cards by rank or sum.": "التقط بطاقات الطاولة حسب القيمة أو المجموع.",
+  "Play progress": "تقدّم اللعب",
   "Tetris game artwork": "شعار WeightPlay",
   "Tetris game information": "معلومات لعبة تتريس",
   "Tetris": "تتريس",

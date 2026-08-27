@@ -980,6 +980,43 @@
     return value;
   };
 
+  const CASINO_PROGRESS_COPY = {
+    en: { label: "Capture progress", copy: "Capture table cards by rank or sum." },
+    "zh-Hant": { label: "捕獲進度", copy: "按點數或合計捕獲桌面牌。" },
+    "zh-Hans": { label: "捕获进度", copy: "按点数或合计捕获桌面牌。" },
+    ja: { label: "キャプチャー進行", copy: "同じ値または合計で場札を獲得します。" },
+    ko: { label: "캡처 진행", copy: "같은 값이나 합으로 테이블 카드를 잡으세요." },
+    es: { label: "Progreso de capturas", copy: "Captura cartas de mesa por valor o suma." },
+    "pt-BR": { label: "Progresso de capturas", copy: "Capture cartas da mesa por valor ou soma." },
+    fr: { label: "Progression des captures", copy: "Capturez les cartes de table par valeur ou somme." },
+    de: { label: "Fangfortschritt", copy: "Nimm Tischkarten nach Wert oder Summe." },
+    it: { label: "Progresso delle catture", copy: "Cattura le carte del tavolo per valore o somma." },
+    ru: { label: "Прогресс взятия", copy: "Забирайте карты стола по значению или сумме." },
+    hi: { label: "पकड़ की प्रगति", copy: "मान या योग से मेज़ के पत्ते पकड़ें।" },
+    ar: { label: "تقدّم الالتقاط", copy: "التقط بطاقات الطاولة بالقيمة أو بالمجموع." },
+  };
+
+  let casinoShellSyncing = false;
+  const syncCasinoShell = () => {
+    if (casinoShellSyncing) return;
+    casinoShellSyncing = true;
+    try {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progressCopy = CASINO_PROGRESS_COPY[currentLocale()] || CASINO_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", labels.settings);
+        battleUtility.title = labels.settings;
+      }
+    } finally {
+      casinoShellSyncing = false;
+    }
+  };
+
   const t = (key, values = {}) => {
     const dictionary = TEXT[currentLocale()] || TEXT.en;
     let value = key === "cribbage" ? (TITLES.cribbage[currentLocale()] || TITLES.cribbage.en) : (dictionary[key] || TEXT.en[key] || key);
@@ -1103,11 +1140,46 @@
     hi: { pending: "तय करें कि {opponent} से कौन-सी रैंक पूछनी है", ready: "{opponent} से {rank} पूछें", book: "{rank} का सेट पूरा · प्रगति {books}/13", result: "सेट: {books} · पूरी हुई रैंक: {completed}", target: "अगले खेल का लक्ष्य: {rank} का चार-पत्तों वाला सेट पूरा करें ({count}/4)।", fullTarget: "अगले खेल का लक्ष्य: फिर से सभी सेट पूरे करें।" },
     ar: { pending: "اختر الرتبة التي ستسأل عنها {opponent}", ready: "اسأل {opponent} عن {rank}", book: "اكتملت مجموعة {rank} · التقدم {books}/13", result: "المجموعات: {books} · الرتب المكتملة: {completed}", target: "هدف الجولة التالية: أكمل مجموعة {rank} من أربع بطاقات (الآن {count}/4).", fullTarget: "هدف الجولة التالية: حاول إكمال كل المجموعات مرة أخرى." },
   };
+  const GO_FISH_PROGRESS_COPY = {
+    en: { label: "Book progress", copy: "Complete four-of-a-kind books." },
+    "zh-Hant": { label: "組牌進度", copy: "完成四張同點數牌的組牌。" },
+    "zh-Hans": { label: "组牌进度", copy: "完成四张同点数牌的组牌。" },
+    ja: { label: "組の進捗", copy: "同じランク4枚の組を完成させます。" },
+    ko: { label: "세트 진행", copy: "같은 랭크 네 장 세트를 완성하세요." },
+    es: { label: "Progreso de grupos", copy: "Completa grupos de cuatro cartas del mismo rango." },
+    "pt-BR": { label: "Progresso dos grupos", copy: "Complete grupos de quatro cartas do mesmo valor." },
+    fr: { label: "Progression des familles", copy: "Complétez des familles de quatre cartes du même rang." },
+    de: { label: "Vierlingsfortschritt", copy: "Bilde Vierlinge aus vier Karten desselben Rangs." },
+    it: { label: "Progresso delle combinazioni", copy: "Completa combinazioni di quattro carte dello stesso valore." },
+    ru: { label: "Прогресс четвёрок", copy: "Соберите четвёрки из четырёх карт одного ранга." },
+    hi: { label: "सेट की प्रगति", copy: "एक ही रैंक के चार पत्तों का सेट पूरा करें।" },
+    ar: { label: "تقدّم المجموعات", copy: "أكمل مجموعات من أربع بطاقات من الرتبة نفسها." },
+  };
   const goFishText = (key, values = {}) => {
     const dictionary = GO_FISH_COPY[currentLocale()] || GO_FISH_COPY.en;
     let value = dictionary[key] || GO_FISH_COPY.en[key] || key;
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
+  };
+  let goFishShellSyncing = false;
+  const syncGoFishShell = () => {
+    if (goFishShellSyncing) return;
+    goFishShellSyncing = true;
+    try {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progressCopy = GO_FISH_PROGRESS_COPY[currentLocale()] || GO_FISH_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", labels.settings);
+        battleUtility.title = labels.settings;
+      }
+    } finally {
+      goFishShellSyncing = false;
+    }
   };
   const heartsText = () => (HEARTS_COPY[currentLocale()] || HEARTS_COPY.en).help;
   const heartsPassText = (handCards, selected) => {
@@ -1250,6 +1322,22 @@
     return value;
   };
 
+  const CRAZY_EIGHTS_PROGRESS_COPY = {
+    en: { label: "Play progress", copy: "Match suit or rank, then use an Eight to change the active suit." },
+    "zh-Hant": { label: "遊玩進度", copy: "配對花色或點數，再用 8 改變目前花色。" },
+    "zh-Hans": { label: "游玩进度", copy: "配对花色或点数，再用 8 改变当前花色。" },
+    ja: { label: "プレイ進行", copy: "スートかランクを合わせ、8で場のスートを変えます。" },
+    ko: { label: "플레이 진행", copy: "무늬나 랭크를 맞추고 8로 활성 무늬를 바꾸세요." },
+    es: { label: "Progreso de juego", copy: "Combina palo o rango y usa un ocho para cambiar el palo activo." },
+    "pt-BR": { label: "Progresso da partida", copy: "Combine naipe ou valor e use um oito para mudar o naipe ativo." },
+    fr: { label: "Progression de la partie", copy: "Associez couleur ou valeur, puis utilisez un huit pour changer la couleur active." },
+    de: { label: "Spielfortschritt", copy: "Passe Farbe oder Rang an und ändere mit einer Acht die aktive Farbe." },
+    it: { label: "Progresso della partita", copy: "Abbina seme o valore e usa un otto per cambiare il seme attivo." },
+    ru: { label: "Прогресс игры", copy: "Совмещайте масть или ранг, а восьмёркой меняйте активную масть." },
+    hi: { label: "खेल की प्रगति", copy: "सूट या रैंक मिलाएँ और आठ से सक्रिय सूट बदलें।" },
+    ar: { label: "تقدّم اللعب", copy: "طابق النوع أو الرتبة، ثم استخدم الثمانية لتغيير النوع النشط." },
+  };
+
   function card(suit, rank, extra = {}) { return { suit, rank, id: `${suit}-${rank}-${Math.random().toString(36).slice(2)}`, ...extra }; }
   function deck() {
     const cards = [];
@@ -1366,7 +1454,7 @@
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
-    const battleUtility = document.querySelector("[data-wp-battle-utility]");
+    let battleUtility = document.querySelector("[data-wp-battle-utility]");
     const localeSelect = document.querySelector("#localeSelect");
     const guideContent = () => {
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
@@ -1392,6 +1480,99 @@
     };
     updateQuickGuide();
     if (!main || !battle || !table || !hand || !actions) return;
+    const ensureGoFishMainProgress = () => {
+      const copy = document.querySelector(".wp-standard-main-copy") || document.querySelector(".main-copy");
+      if (!copy || copy.querySelector("[data-wp-main-progress]")) return;
+      const progress = document.createElement("div");
+      progress.className = "main-progress";
+      progress.dataset.wpMainProgress = "true";
+      progress.setAttribute("role", "status");
+      progress.setAttribute("aria-live", "polite");
+      progress.innerHTML = "<strong></strong><span></span>";
+      const actions = copy.querySelector(".main-actions,[data-card-main-controls]");
+      if (actions) copy.insertBefore(progress, actions);
+      else copy.append(progress);
+    };
+    const ensureGoFishBattleUtility = () => {
+      const topbar = battle.querySelector(".card-game-topbar");
+      if (!topbar || topbar.querySelector("[data-wp-battle-utility]")) return;
+      const utility = document.createElement("button");
+      utility.type = "button";
+      utility.className = "battle-utility header-icon-btn";
+      utility.dataset.wpBattleUtility = "true";
+      utility.setAttribute("aria-label", "Settings");
+      utility.title = "Settings";
+      utility.textContent = "⚙";
+      topbar.append(utility);
+    };
+    if (id === "go-fish") {
+      ensureGoFishMainProgress();
+      ensureGoFishBattleUtility();
+      battleUtility = document.querySelector("[data-wp-battle-utility]");
+      syncGoFishShell();
+      window.addEventListener("wonder:locale-change", syncGoFishShell);
+      window.addEventListener("weightplay:shell-sync", syncGoFishShell);
+      window.setTimeout(syncGoFishShell, 0);
+      window.setTimeout(syncGoFishShell, 400);
+    }
+    const ensureCrazyEightsMainProgress = () => {
+      const copy = document.querySelector(".wp-standard-main-copy") || document.querySelector(".main-copy");
+      if (!copy || copy.querySelector("[data-wp-main-progress]")) return;
+      const progress = document.createElement("div");
+      progress.className = "main-progress";
+      progress.dataset.wpMainProgress = "true";
+      progress.setAttribute("role", "status");
+      progress.setAttribute("aria-live", "polite");
+      progress.innerHTML = "<strong></strong><span></span>";
+      const controls = copy.querySelector(".main-actions,[data-card-main-controls]");
+      if (controls) copy.insertBefore(progress, controls);
+      else copy.append(progress);
+    };
+    const ensureCrazyEightsBattleUtility = () => {
+      const topbar = battle.querySelector(".card-game-topbar");
+      if (!topbar || topbar.querySelector("[data-wp-battle-utility]")) return;
+      const utility = document.createElement("button");
+      utility.id = "battleUtilityBtn";
+      utility.type = "button";
+      utility.className = "battle-utility header-icon-btn";
+      utility.dataset.wpBattleUtility = "true";
+      utility.setAttribute("aria-label", "Settings");
+      utility.title = "Settings";
+      utility.textContent = "⚙";
+      topbar.append(utility);
+    };
+    let crazyEightsShellSyncing = false;
+    const syncCrazyEightsShell = () => {
+      if (crazyEightsShellSyncing) return;
+      crazyEightsShellSyncing = true;
+      try {
+        const labels = TEXT[currentLocale()] || TEXT.en;
+        const progressCopy = CRAZY_EIGHTS_PROGRESS_COPY[currentLocale()] || CRAZY_EIGHTS_PROGRESS_COPY.en;
+        ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+        ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+        const settings = document.querySelector("#audioMenuBtn");
+        if (settings) settings.setAttribute("aria-label", labels.settings);
+        const utility = document.querySelector("[data-wp-battle-utility]");
+        if (utility) {
+          utility.setAttribute("aria-label", labels.settings);
+          utility.title = labels.settings;
+        }
+      } finally {
+        crazyEightsShellSyncing = false;
+      }
+    };
+    if (id === "crazy-eights") {
+      ensureCrazyEightsMainProgress();
+      ensureCrazyEightsBattleUtility();
+      battleUtility = document.querySelector("[data-wp-battle-utility]");
+      syncCrazyEightsShell();
+      window.addEventListener("wonder:locale-change", syncCrazyEightsShell);
+      window.addEventListener("weightplay:shell-sync", syncCrazyEightsShell);
+      window.setTimeout(syncCrazyEightsShell, 0);
+      window.setTimeout(syncCrazyEightsShell, 400);
+      statusText?.setAttribute("aria-live", "polite");
+      statusText?.setAttribute("aria-atomic", "true");
+    }
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {
       syncGinShell();
@@ -1442,6 +1623,11 @@
       statusText?.setAttribute("data-runtime-localize", "off");
     }
     if (id === "casino") {
+      syncCasinoShell();
+      window.addEventListener("wonder:locale-change", syncCasinoShell);
+      window.addEventListener("weightplay:shell-sync", syncCasinoShell);
+      window.setTimeout(syncCasinoShell, 0);
+      window.setTimeout(syncCasinoShell, 400);
       statusText?.setAttribute("aria-live", "polite");
       statusText?.setAttribute("aria-atomic", "true");
     }

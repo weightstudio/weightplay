@@ -29,6 +29,7 @@
     stageGrid: document.getElementById("stageGrid"),
     progress: document.getElementById("progress"),
     battleBack: document.getElementById("battleBack"),
+    battleUtility: document.getElementById("battleUtilityBtn"),
     chapter: document.getElementById("chapter"),
     stageName: document.getElementById("stageName"),
     remaining: document.getElementById("remaining"),
@@ -129,6 +130,7 @@
       posterAlt: t("posterAlt"),
       stageList: t("stageList"),
       stageTabs: t("stageNavigation"),
+      tutorialAria: t("tutorialAria"),
     };
     document.querySelectorAll("[data-t-aria]").forEach(function (node) {
       const key = node.getAttribute("data-t-aria");
@@ -158,6 +160,11 @@
         option.selected = code === locale;
         el.locale.appendChild(option);
       });
+    }
+    if (el.battleUtility) {
+      const label = t("tutorialAria");
+      el.battleUtility.setAttribute("aria-label", label);
+      el.battleUtility.title = label;
     }
     const mainProgress = document.querySelector(".wp-standard-main-progress");
     const progressMatch = mainProgress && mainProgress.textContent.match(/(\d+)\s*\/\s*(\d+)/);
@@ -978,6 +985,11 @@
     if (nextLocale && nextLocale !== locale) applyLocale(nextLocale);
   });
   el.recruit.addEventListener("click", recruit);
+  el.battleUtility?.addEventListener("click", function () {
+    if (!battle || battle.result || !el.tutorial) return;
+    if (el.tutorial.open) el.tutorial.close();
+    else el.tutorial.showModal();
+  });
   el.formation.addEventListener("click", function (event) {
     const target = event.target;
     const button = target && typeof target.closest === "function" ? target.closest(".unit-slot") : null;

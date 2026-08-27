@@ -23,6 +23,8 @@
     time: "3–10 دقائق",
     skillsLabel: "المهارات المتدرَّبة",
     skills: "التخطيط · التركيز · التعرّف على الأنماط",
+    progressLabel: "تقدّم اللعب",
+    progressCopy: "طابق النوع أو الرتبة، ثم استخدم الثمانية لتغيير النوع النشط.",
     howTo: "طريقة اللعب",
     howToCopy: "عندما لا تكون هناك بطاقة قانونية، اسحب بطاقة. أول لاعب يفرغ يده يفوز.",
     preview: "حالة المعاينة",
@@ -41,6 +43,18 @@
     if (!node || node.textContent === value) return;
     node.textContent = value;
   };
+  const setFactValue = (fact, value) => {
+    if (!fact) return;
+    const scalar = fact.querySelector("strong");
+    if (scalar) {
+      setText(scalar, value);
+      return;
+    }
+    const list = fact.querySelector(".game-info-tags, .game-info-skills");
+    if (!list) return;
+    const values = String(value).split(" · ").map((item) => item.trim()).filter(Boolean);
+    list.replaceChildren(...values.map((item) => Object.assign(document.createElement("span"), { textContent: item })));
+  };
   const syncArabicShell = () => {
     if (!isArabic() || syncing) return;
     syncing = true;
@@ -58,6 +72,13 @@
       setText(document.querySelector("#startBtn"), ARABIC_SHELL.start);
       setText(document.querySelector("#restartBtn"), ARABIC_SHELL.restart);
       setText(document.querySelector("#newGameBtn"), ARABIC_SHELL.newGame);
+      setText(document.querySelector("[data-wp-main-progress] strong"), ARABIC_SHELL.progressLabel);
+      setText(document.querySelector("[data-wp-main-progress] span"), ARABIC_SHELL.progressCopy);
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", ARABIC_SHELL.settings);
+        battleUtility.title = ARABIC_SHELL.settings;
+      }
 
       const info = document.querySelector(".game-page-info");
       if (info) {
@@ -71,7 +92,7 @@
           const fact = facts[index];
           if (!fact) return;
           setText(fact.querySelector("span"), label);
-          setText(fact.querySelector("strong"), value);
+          setFactValue(fact, value);
         });
         const sections = [...info.querySelectorAll(".game-info-section")];
         const guide = sections.find((section) => section.querySelector("ol"));
@@ -117,6 +138,33 @@
       syncing = false;
     }
   };
+
+  const mainCopy = document.querySelector("#mainScreen .main-copy");
+  if (mainCopy && !mainCopy.querySelector("[data-wp-main-progress]")) {
+    const progress = document.createElement("div");
+    progress.className = "main-progress";
+    progress.dataset.wpMainProgress = "true";
+    progress.setAttribute("role", "status");
+    progress.setAttribute("aria-live", "polite");
+    const label = document.createElement("strong");
+    label.textContent = "Play progress";
+    const copy = document.createElement("span");
+    copy.textContent = "Match suit or rank, then use an Eight to change the active suit.";
+    progress.append(label, copy);
+    mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
+  }
+  const topbar = document.querySelector("#battleScreen .card-game-topbar");
+  if (topbar && !topbar.querySelector("[data-wp-battle-utility]")) {
+    const utility = document.createElement("button");
+    utility.id = "battleUtilityBtn";
+    utility.className = "battle-utility header-icon-btn";
+    utility.type = "button";
+    utility.dataset.wpBattleUtility = "true";
+    utility.setAttribute("aria-label", "Settings");
+    utility.title = "Settings";
+    utility.textContent = "⚙";
+    topbar.append(utility);
+  }
 
   window.WPCardGamesNext?.mount({ id: "crazy-eights" });
   syncArabicShell();
