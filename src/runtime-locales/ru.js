@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ru"] = {
+  "AI North": "ИИ Север",
+  "AI East": "ИИ Восток",
+  "AI West": "ИИ Запад",
   "Hold ◀/▶ to move closer, then BOUNCE.": "Удерживайте ◀/▶, чтобы приблизиться, затем нажмите УДАР.",
   "Checkers": "Шашки",
   "Checkers game information": "Информация об игре в шашки",

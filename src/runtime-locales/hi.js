@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "AI North": "AI उत्तर",
+  "AI East": "AI पूर्व",
+  "AI West": "AI पश्चिम",
   "Hold ◀/▶ to move closer, then BOUNCE.": "पास आने के लिए ◀/▶ दबाए रखें, फिर उछाल दबाएँ।",
   "Checkers": "चेकर्स",
   "Checkers game information": "चेकर्स गेम की जानकारी",

@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "AI North": "الذكاء الاصطناعي شمالاً",
+  "AI East": "الذكاء الاصطناعي شرقاً",
+  "AI West": "الذكاء الاصطناعي غرباً",
   "Hold ◀/▶ to move closer, then BOUNCE.": "اضغط مطولًا على ◀/▶ للاقتراب، ثم اضغط ارتداد.",
   "Checkers": "الداما",
   "Checkers game information": "معلومات عن لعبة الداما",

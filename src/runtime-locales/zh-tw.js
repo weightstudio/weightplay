@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
+  "AI North": "AI 北位",
+  "AI East": "AI 東位",
+  "AI West": "AI 西位",
   "Hold ◀/▶ to move closer, then BOUNCE.": "按住 ◀/▶ 靠近對手，再按「彈跳」。",
   "Checkers": "西洋跳棋",
   "Checkers game information": "西洋跳棋遊戲資訊",

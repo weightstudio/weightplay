@@ -30,6 +30,24 @@
     hi: "फिर शुरू करें यही बाज़ी रखता है; नया खेल नई व्यवस्था देता है।",
     ar: "إعادة البدء تبقي هذه التوزيعة؛ اللعبة الجديدة تقدم ترتيبًا جديدًا.",
   };
+  const GOLF_REPLAY_GOAL_COPY = {
+    en: "Next-deal target: reach a {target}-card chain (best: {best}).",
+    "zh-Hant": "下一局目標：連出 {target} 張（最佳連鎖：{best} 張）。",
+    "zh-Hans": "下一局目标：连出 {target} 张（最佳连锁：{best} 张）。",
+    ja: "次の配りの目標：{target}枚連鎖を目指す（ベスト：{best}枚）。",
+    ko: "다음 딜 목표: {target}장 연속 달성 (최고 기록: {best}장).",
+    es: "Objetivo de la próxima partida: logra una cadena de {target} cartas (mejor: {best}).",
+    "pt-BR": "Meta da próxima partida: alcance uma sequência de {target} cartas (melhor: {best}).",
+    fr: "Objectif de la prochaine donne : atteindre une chaîne de {target} cartes (record : {best}).",
+    de: "Ziel für die nächste Partie: eine {target}-Karten-Kette erreichen (Bestwert: {best}).",
+    it: "Obiettivo della prossima partita: raggiungi una catena di {target} carte (record: {best}).",
+    ru: "Цель следующей раздачи: собрать цепочку из {target} карт (лучший результат: {best}).",
+    hi: "अगली बाज़ी का लक्ष्य: {target} कार्ड की चेन बनाएँ (सर्वश्रेष्ठ: {best})।",
+    ar: "هدف التوزيعة التالية: كوّن سلسلة من {target} بطاقة (الأفضل: {best}).",
+  };
+  const formatReplayGoal = (template, target, best) => template
+    .replaceAll("{target}", String(target))
+    .replaceAll("{best}", String(best));
   const mount = () => {
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {
@@ -54,6 +72,11 @@
         const actions = GOLF_RESULT_ACTION_COPY[locale] || GOLF_RESULT_ACTION_COPY.en;
         view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${actions}`;
       }
+      if (!view.game?.won && !view.game?.lost) return;
+      const best = Math.max(0, Number(view.game?.bestCombo) || 0);
+      const target = Math.min(35, Math.max(2, best + 1));
+      const goal = GOLF_REPLAY_GOAL_COPY[locale] || GOLF_REPLAY_GOAL_COPY.en;
+      view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${formatReplayGoal(goal, target, best)}`;
     };
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });

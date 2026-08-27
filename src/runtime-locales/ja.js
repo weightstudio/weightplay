@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "AI North": "AI 北",
+  "AI East": "AI 東",
+  "AI West": "AI 西",
   "Hold ◀/▶ to move closer, then BOUNCE.": "◀/▶を長押しして近づき、「バウンス」を押します。",
   "Checkers": "チェッカー",
   "Checkers game information": "チェッカーのゲーム情報",

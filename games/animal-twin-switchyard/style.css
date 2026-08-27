@@ -8,3 +8,16 @@
 .stage-screen{position:relative;display:flex;flex-direction:column;gap:10px;overflow:hidden;background-image:linear-gradient(180deg,rgba(7,22,38,.42),rgba(7,22,38,.9)),url("cover-v2.webp");background-size:cover;background-position:center}.stage-screen .stage-help{margin:0;flex:0 0 auto}.stage-screen .stage-grid{flex:1 1 auto;min-height:190px;align-items:center}.stage-screen .stage-tabs{position:absolute;left:0;right:0;bottom:0;height:56px;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:stretch;border-top:1px solid #ffffff24;background:rgba(7,22,38,.96);z-index:5}.stage-screen .stage-tabs button{grid-column:2;border:0;border-radius:0;background:transparent;color:var(--text);font-weight:900}.stage-screen .stage-tabs button[aria-current="page"]{color:var(--accent);box-shadow:inset 0 -3px var(--accent)}.stage-screen{padding-bottom:72px!important}
 .battle-screen{display:flex;flex-direction:column;gap:8px;min-height:0;height:100%;overflow:hidden;background:#071b2c}.battle-screen .canvas-wrap{flex:1 1 auto;min-height:0;align-items:center}.battle-screen .canvas-wrap canvas{width:min(100%,960px);height:auto;max-height:100%;object-fit:contain}.battle-screen .touch-controls{flex:0 0 auto}.battle-screen .control-hint{flex:0 0 auto}.battle-screen>#restartBtn{flex:0 0 auto}
 @media(max-width:560px){.stage-screen{padding-inline:10px!important}.stage-screen .stage-grid{min-height:190px}.battle-screen{padding:10px!important}.battle-screen .canvas-wrap{padding:6px}.battle-screen .battle-head{padding-bottom:12px}}
+
+/* The shared shell moves the Stage title into the header grid and retires the
+   game's old sound button. Keep one title track so the title never sits under
+   a second control on a phone. */
+.stage-header{grid-template-columns:48px minmax(0,1fr) 48px!important;min-width:0!important}
+.stage-header>#stageSoundBtn,.stage-header>.wp-shell-legacy-control{display:none!important}
+.stage-header>#stageTitle{grid-column:2!important;grid-row:1!important;min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important;line-height:1.2!important}
+.stage-header>.wp-shell-settings{grid-column:3!important;grid-row:1!important}
+
+/* A selected Stage is persistent state, not just a transient pointer hover. */
+.stage-card.selected,.stage-card[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 24px #ffd27766,inset 0 0 0 1px #fff8;background:linear-gradient(150deg,#245a78,#163b58);transform:translateY(-1px)}
+.stage-card.selected:hover,.stage-card[aria-current="true"]:hover{border-color:#ffe8a9;box-shadow:0 0 0 2px #ffe8a9,0 0 28px #ffd27788,inset 0 0 0 1px #fff}
+.stage-card.selected:focus-visible,.stage-card[aria-current="true"]:focus-visible{outline:3px solid #fff;outline-offset:3px}

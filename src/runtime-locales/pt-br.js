@@ -1,5 +1,8 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["pt-BR"] = {
+  "AI North": "IA Norte",
+  "AI East": "IA Leste",
+  "AI West": "IA Oeste",
   "Hold ◀/▶ to move closer, then BOUNCE.": "Segure ◀/▶ para se aproximar e toque em SALTO.",
   "Checkers": "Damas",
   "Checkers game information": "Informações do jogo de damas",
