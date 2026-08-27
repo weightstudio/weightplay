@@ -27,7 +27,7 @@
   <meta name="description" content="Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260827-triple-match-responsive-board-v14">
+  <link rel="stylesheet" href="style.css?v=20260827-triple-match-first-pair-plan-v14">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -149,6 +149,12 @@
         <button id="tutorialClose" class="primary" type="button" data-t="continue">Continue</button>
       </div></section>
 
+      <section id="firstPlanModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="firstPlanTitle" hidden><div class="dialog-card first-plan-card">
+        <h2 id="firstPlanTitle" data-t="firstPlanTitle">A safe first plan</h2>
+        <p data-t="firstPlanText">Begin with an exposed pair or trio, then keep one tray slot open. You choose the order—nothing is selected for you.</p>
+        <button id="firstPlanClose" class="primary" type="button" data-t="firstPlanClose">Got it</button>
+      </div></section>
+
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-t="leaveTitle">Leave this shelf?</h2>
         <p data-t="leaveText">Continue keeps the exact pile. Returning to stages ends only this attempt.</p>
@@ -171,7 +177,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="game.js?v=20260827-triple-match-responsive-board-v14"></script>
+  <script src="game.js?v=20260827-triple-match-first-pair-plan-v14"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260826-arabic-locale-v13" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>

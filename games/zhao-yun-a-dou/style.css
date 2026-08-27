@@ -472,8 +472,8 @@ button.primary:focus-visible {
 .battle-content {
   box-sizing: border-box;
   display: grid;
-  gap: 6px;
-  padding: 6px 0;
+  gap: 4px;
+  padding: 4px 0;
 }
 
 .battle-hud {
@@ -509,7 +509,9 @@ button.primary:focus-visible {
   position: relative;
   display: grid;
   grid-template-rows: 27px minmax(100px, 1fr) 6px minmax(100px, 1fr) 27px;
-  min-height: 310px;
+  height: 300px;
+  min-height: 300px;
+  max-height: 300px;
   overflow: hidden;
   border: 1px solid rgba(238, 228, 204, .22);
   border-radius: 20px;
@@ -1073,19 +1075,22 @@ button.primary:focus-visible {
   }
 
   .hud-card {
-    display: grid;
-    justify-content: center;
-    gap: 1px;
-    padding: 5px 3px;
+    display: flex;
+    height: 38px;
+    min-height: 38px;
+    justify-content: space-between;
+    gap: 3px;
+    padding: 4px;
     text-align: center;
+    font-size: 10px;
   }
 
   .hud-card strong {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .battle-field {
-    min-height: 278px;
+    min-height: 250px;
   }
 
   .formation-grid {
@@ -1451,16 +1456,17 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   .battle-guide {
     grid-template-columns: 1fr;
     gap: 3px;
-    height: 58px;
-    padding: 7px 9px;
-    font-size: 11px;
+    height: 54px;
+    padding: 5px 9px;
+    font-size: 10px;
+    line-height: 1.25;
   }
 
   .battle-field {
     grid-template-rows: 24px minmax(0, 1fr) 6px minmax(0, 1fr) 24px;
-    height: 260px;
-    min-height: 260px;
-    max-height: 260px;
+    height: 250px;
+    min-height: 250px;
+    max-height: 250px;
     align-self: start;
   }
 
@@ -1477,7 +1483,7 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   }
 
   .formation-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 5px;
   }
 
@@ -1548,6 +1554,48 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
     gap: 6px;
   }
 
+  .pressure-cue {
+    height: 24px;
+    min-height: 24px;
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview {
+    padding: 4px 6px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-title {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-body {
+    margin-top: 1px;
+    font-size: 9px;
+    line-height: 11px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-list {
+    gap: 4px;
+    margin-top: 3px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-item {
+    padding: 3px 4px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-item b {
+    font-size: 9px;
+    line-height: 11px;
+  }
+
+  .battle-actions.has-skill-preview .skill-preview-item small {
+    margin-top: 1px;
+    font-size: 8px;
+    line-height: 10px;
+  }
+
   .battle-actions .action-recruit {
     grid-column: 1;
     grid-row: 1;
@@ -1573,5 +1621,25 @@ body[data-wp-game-id="zhao-yun-a-dou"] .stage-card[data-wp-stage-selected="true"
   .battle-actions.has-skill-preview .ghost-action {
     grid-column: 3;
     grid-row: 1;
+  }
+}
+
+@media (min-width: 681px) and (max-height: 500px) {
+  .battle-guide {
+    height: 38px;
+    padding: 6px 10px;
+  }
+
+  .pressure-cue {
+    height: 24px;
+    min-height: 24px;
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .battle-field {
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
   }
 }
