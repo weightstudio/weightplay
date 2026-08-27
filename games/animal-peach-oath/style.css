@@ -74,8 +74,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .arena { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(rgba(12,25,30,.12),rgba(12,25,30,.06)),url("assets/battlefield.png") center/cover; }
 .ambient-petals { display: none; }
 .unit-line { position: absolute; left: 4%; right: 4%; z-index: 4; display: flex; justify-content: center; gap: clamp(2px,2vw,18px); }
-.enemy-line { top: 12%; align-items: flex-start; }
-.hero-line { bottom: 5%; align-items: flex-end; }
+.enemy-line { top: 8%; align-items: flex-start; }
+.hero-line { bottom: 12%; align-items: flex-end; }
 .unit { position: relative; width: clamp(68px,15vw,118px); height: clamp(112px,24vh,200px); filter: drop-shadow(0 12px 9px rgba(0,0,0,.42)); transition: transform .18s, filter .18s; }
 .unit.is-attacking { transform: translateY(-10px) scale(1.04); filter: drop-shadow(0 0 12px #fff6bc); }
 .enemy-line .unit.is-attacking { transform: translateY(10px) scale(1.04); }
@@ -98,7 +98,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .battle-tip { position: absolute; z-index: 14; left: 50%; bottom: 8px; display: flex; align-items: center; gap: 8px; transform: translateX(-50%); }
 .battle-tip span { padding: 7px 12px; border-radius: 99px; background: rgba(13,28,36,.82); font-size: 11px; font-weight: 800; white-space: nowrap; }
 .battle-tip button { min-width: 44px; height: 44px; border: 0; border-radius: 50%; color: #17243a; background: #f5c84c; font-weight: 900; }
-.campaign-goal { position: absolute; z-index: 14; left: 50%; bottom: 58px; width: min(calc(100% - 32px), 520px); margin: 0; padding: 7px 12px; transform: translateX(-50%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; color: #fff0ad; background: rgba(13,28,36,.82); font-size: 11px; line-height: 1.35; text-align: center; }
+.campaign-goal { position: absolute; z-index: 14; left: 50%; top: 50%; width: min(calc(100% - 32px), 520px); margin: 0; padding: 7px 12px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; color: #fff0ad; background: rgba(13,28,36,.82); font-size: 11px; line-height: 1.35; text-align: center; }
 .loot-pile { position: absolute; z-index: 15; left: 50%; top: 51%; transform: translate(-50%,-50%); min-width: 96px; height: 44px; border: 2px solid #fff0a8; border-radius: 99px; color: #3a2a0a; background: linear-gradient(#fff1a8,#f0b83d); font-weight: 900; box-shadow: 0 0 18px #ffe47b; animation: loot 1s ease-in-out infinite alternate; }
 @keyframes loot { to { transform: translate(-50%,-56%) scale(1.05); } }
 
@@ -126,25 +126,26 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .section-title { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 8px; }
 .section-title h3 { margin: 0; font-size: 15px; }
 .section-title span { color: var(--wp-ui-muted); font-size: 11px; }
-.hero-grid, .card-grid, .campaign-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 8px; }
+.hero-grid, .card-grid, .campaign-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 8px; }
 .hero-card, .panel-card, .campaign-card { overflow: hidden; border: 1px solid var(--wp-ui-border); border-radius: 16px; background: rgba(27,48,69,.92); }
-.hero-card { display: grid; grid-template-columns: 78px minmax(0,1fr); min-height: 128px; }
-.hero-portrait { position: relative; min-height: 128px; background: linear-gradient(#4a6379,#1a2c3e); }
-.hero-portrait .sprite { inset: 4px -24px; }
-.hero-card-copy { display: grid; align-content: center; gap: 4px; padding: 8px; }
+.hero-card { display: grid; grid-template-columns: 96px minmax(0,1fr); min-height: 150px; }
+.hero-portrait { position: relative; min-height: 150px; overflow: hidden; background: linear-gradient(#4a6379,#1a2c3e); }
+.hero-portrait .sprite { inset: 4px 0 0; }
+.hero-card-copy { display: grid; min-width: 0; align-content: center; gap: 4px; padding: 8px; }
 .quality { color: #ffe291; font-size: 10px; font-weight: 800; }
 .hero-card h3, .panel-card h3, .campaign-card h3 { margin: 0; font-size: 15px; }
 .hero-card p, .panel-card p, .campaign-card p { margin: 0; color: var(--wp-ui-muted); font-size: 11px; line-height: 1.4; }
 .mini-stats { display: flex; flex-wrap: wrap; gap: 4px; color: #9fe9d4; font-size: 10px; }
-.card-actions { display: flex; gap: 5px; margin-top: 4px; }
-.card-actions button, .panel-card button, .campaign-card button, .modal button:not(.modal-close) { min-height: 38px; flex: 1; padding: 6px 8px; border: 0; border-radius: 10px; color: #1f2937; background: #f5c84c; font-size: 11px; font-weight: 900; }
+.card-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; min-width: 0; margin-top: 4px; }
+.card-actions button, .panel-card button, .campaign-card button, .modal button:not(.modal-close) { min-width: 0; min-height: 38px; width: 100%; padding: 6px 8px; border: 0; border-radius: 10px; color: #1f2937; background: #f5c84c; font-size: 11px; font-weight: 900; line-height: 1.15; white-space: normal; }
 .card-actions button.alt { color: #fff; background: #435978; }
 .card-actions button:disabled, .panel-card button:disabled, .campaign-card button:disabled { opacity: .45; cursor: not-allowed; }
 .panel-card, .campaign-card { display: grid; gap: 8px; padding: 12px; }
 .formation { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
 .formation-slot { min-height: 88px; display: grid; place-items: center; padding: 8px; border: 1px dashed #79cdb6; border-radius: 14px; background: rgba(33,92,76,.32); text-align: center; font-size: 11px; }
 .formation-slot strong { display: block; margin-top: 4px; }
-.equipment-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--wp-ui-border); }
+.equipment-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,360px); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--wp-ui-border); }
+.equipment-row > .card-actions { grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 0; }
 .equipment-row small { display: block; color: var(--wp-ui-muted); }
 .equipment-row button { min-height: 38px; border: 0; border-radius: 10px; color: #1f2937; background: #f5c84c; font-weight: 900; }
 .summon-stage { min-height: 210px; display: grid; place-items: center; align-content: center; gap: 12px; margin-bottom: 12px; border-radius: 20px; background: radial-gradient(circle,#884133,#26334b 70%); text-align: center; }
@@ -204,7 +205,12 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .quick-rail button { min-height: 38px; padding: 3px; border-color: rgba(255,255,255,.3); background: rgba(24,43,60,.82); font-size: 10px; }
   .arena-wrap { grid-column: 1/-1; }
   .wave-hud { top: 6px; }
+  /* The portrait quick rail sits above the arena on narrow screens.  Shift
+     this informational strip clear of that rail so its first characters are
+     never hidden behind a button. */
+  .campaign-goal { left: calc(50% + 24px); width: calc(100% - 80px); padding-inline: 8px; font-size: 10px; }
   .hero-grid, .card-grid, .campaign-grid { grid-template-columns: 1fr; }
+  .equipment-row { grid-template-columns: minmax(0,1fr) minmax(0,185px); }
   .result-actions { grid-template-columns: 1fr; }
 }
 
@@ -215,7 +221,17 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .bottom-nav { height: 62px; }
   .quick-rail { grid-template-columns: repeat(2,1fr); align-content: center; }
   .quick-rail button { min-height: 38px; }
-  .unit { height: min(42vh,150px); }
+  .unit-line { top: 50%; bottom: auto; flex-wrap: wrap; align-content: center; gap: 4px; transform: translateY(-50%); }
+  .hero-line { left: 2%; right: 58%; justify-content: center; }
+  .enemy-line { left: 58%; right: 2%; justify-content: center; }
+  .unit { width: clamp(48px,6.2vw,60px); height: min(28vh,104px); }
+  .unit-name { max-width: 120%; padding-inline: 3px; font-size: 8px; }
+  .battle-tip { top: calc(50% + 38px); bottom: auto; gap: 4px; }
+  .battle-tip span { max-width: 68px; padding: 5px 6px; font-size: 9px; line-height: 1.15; white-space: normal; text-align: center; }
+  .battle-tip button { min-width: 38px; width: 38px; height: 38px; }
+  .campaign-goal { display: none; }
+  .hero-grid { grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); }
+  .equipment-row { grid-template-columns: minmax(0,1fr) minmax(0,300px); }
   .management { inset: 56px 0 0; }
   .result-panel { inset: 56px 0 0; gap: 4px; padding: 8px 24px; }
   .result-panel h2 { font-size: clamp(30px, 8vh, 42px); line-height: 1.05; }
@@ -224,6 +240,13 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .result-panel .campaign-milestone { padding: 6px 10px; font-size: 12px; line-height: 1.3; }
   .result-panel .result-actions { gap: 6px; margin-top: 2px; }
   .result-panel .result-actions button { min-height: 44px; }
+}
+
+/* The desktop canvas has room for a larger status gap; shorten the unit
+   frames there so the milestone remains readable between enemy and hero lanes
+   without covering either one. */
+@media (min-width:700px) and (orientation:landscape) and (min-height:521px) {
+  .unit { height: min(20vh,170px); }
 }
 
 @media (min-width:921px) {

@@ -2566,6 +2566,9 @@ const animalPeachOathOwnerPreview = {
     ru: "Клятва персикового сада", hi: "आड़ू बाग़ की शपथ", ar: "قسم بستان الخوخ",
   },
   status: "planned",
+  // This prototype is intentionally not playable yet, but its announcement
+  // belongs in the public Coming Soon rail rather than owner-only preview.
+  publicComingSoon: true,
   statusText: {
     en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
     es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",

@@ -716,6 +716,7 @@ function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
   return allLobbyGames
     .filter((game) =>
       game.status === "planned"
+      && (ownerPreviewMode || (!isKidsLobby && game.publicComingSoon === true))
       && (game.art?.background || game.art?.hero))
     .slice(0, limit);
 }
@@ -1342,12 +1343,6 @@ function renderMobilePicks() {
 
 function renderUpcomingGames() {
   if (!upcomingGames || !upcomingGamesSection) return;
-  if (!ownerPreviewMode) {
-    upcomingGamesSection.hidden = true;
-    upcomingGamesSection.classList.add("hidden");
-    upcomingGames.replaceChildren();
-    return;
-  }
   const cards = upcomingPreviewGames().map((game) => {
     const title = text(game.title);
     const type = text(game.type);
@@ -1702,8 +1697,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
-  const hideUpcoming = !ownerPreviewMode
-    || upcomingPreviewGames().length === 0
+  const hideUpcoming = upcomingPreviewGames().length === 0
     || (isFiltered && upcomingVisibleCount === 0);
   if (upcomingGamesSection) {
     upcomingGamesSection.hidden = hideUpcoming;
