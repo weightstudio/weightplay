@@ -449,7 +449,7 @@
       const cost = heroUpgradeCost(hero.id);
       const breakCost = 8 + (p.rank || 0) * 6;
       const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
-      return `<article class="hero-card">
+      return `<article class="hero-card" data-hero="${hero.id}">
         <div class="hero-portrait"><div class="sprite" style="--sheet:url('assets/heroes.png');--pos:${hero.sprite * 25}%"></div></div>
         <div class="hero-card-copy"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3>
         <p>${p.owned ? `${hero.role} · ${hero.skill}` : `碎片 ${p.fragments}/10`}</p>

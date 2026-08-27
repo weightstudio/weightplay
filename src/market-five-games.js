@@ -91,10 +91,16 @@
   const locale = () => window.WeightPlayMarketFiveLocale?.locale || "en";
   const formatCopy = (text, values = {}) => Object.entries(values).reduce((result, [key, value]) => result.replaceAll(`{${key}}`, String(value)), text || "");
   function fitImage(image) {
-    if (!image.complete || !image.naturalWidth) { ctx.fillStyle = "#0a2940"; ctx.fillRect(0, 0, 960, 540); return; }
-    const scale = Math.max(960 / image.naturalWidth, 540 / image.naturalHeight);
+    const width = canvas.width || 960, height = canvas.height || 540;
+    if (!image.complete || !image.naturalWidth) { ctx.fillStyle = "#0a2940"; ctx.fillRect(0, 0, width, height); return; }
+    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
     const w = image.naturalWidth * scale, h = image.naturalHeight * scale;
-    ctx.drawImage(image, (960 - w) / 2, (540 - h) / 2, w, h);
+    ctx.drawImage(image, (width - w) / 2, (height - h) / 2, w, h);
+  }
+  function designViewport() {
+    const width = canvas.width || 960, height = canvas.height || 540;
+    const scale = Math.min(width / 960, height / 540);
+    return { width, height, scale, offsetX: (width - 960 * scale) / 2, offsetY: (height - 540 * scale) / 2 };
   }
   function drawAtlas(index, x, y, w, h, alpha = 1) {
     if (!atlas.complete || !atlas.naturalWidth) return;
@@ -116,6 +122,17 @@
   function syncCanvasFit() {
     const host=canvas.parentElement;if(!host||state.screen!=="battle")return;
     const widthLimit=host.clientWidth,heightLimit=host.clientHeight;if(!widthLimit||!heightLimit)return;
+    if(gameId==="animal-habitat-builder"){
+      const root=canvas.closest("#battle-screen"),width=root?.clientWidth||widthLimit,height=root?.clientHeight||heightLimit;
+      canvas.style.setProperty("width",`${Math.floor(width*100)/100}px`,"important");
+      canvas.style.setProperty("height",`${Math.floor(height*100)/100}px`,"important");
+      canvas.style.setProperty("max-width","none","important");
+      canvas.style.setProperty("max-height","none","important");
+      canvas.style.setProperty("aspect-ratio","auto","important");
+      const backingWidth=Math.max(1,Math.round(width)),backingHeight=Math.max(1,Math.round(height));
+      if(canvas.width!==backingWidth||canvas.height!==backingHeight){canvas.width=backingWidth;canvas.height=backingHeight;}
+      return;
+    }
     const ratio=16/9;let width=widthLimit,height=width/ratio;if(height>heightLimit){height=heightLimit;width=height*ratio;}
     canvas.style.setProperty("width",`${Math.floor(width*100)/100}px`,"important");canvas.style.setProperty("height",`${Math.floor(height*100)/100}px`,"important");
   }
@@ -264,7 +281,7 @@
   }
   function placeBuilder(event) {
     if(gameId!=="animal-habitat-builder"||state.screen!=="battle")return;
-    const rect=canvas.getBoundingClientRect(),x=(event.clientX-rect.left)*960/rect.width,y=(event.clientY-rect.top)*540/rect.height;
+    const rect=canvas.getBoundingClientRect(),viewport=designViewport(),canvasX=(event.clientX-rect.left)*viewport.width/rect.width,canvasY=(event.clientY-rect.top)*viewport.height/rect.height,x=(canvasX-viewport.offsetX)/viewport.scale,y=(canvasY-viewport.offsetY)/viewport.scale;
     const col=Math.floor((x-250)/92),row=Math.floor((y-90)/92);if(col<0||col>4||row<0||row>3)return;
     const g=state.game,profile=builderProfiles[state.stage-1],index=row*5+col;if(profile.blocked?.includes(index)){g.feedback="⛔";g.ceremony=null;setBuilderBrief();draw();return;}if(g.grid[index]===g.selected){g.feedback="↺";g.ceremony=null;setBuilderBrief();draw();return;}
     if(g.grid[index]>=0)g.counts[g.grid[index]]--;g.grid[index]=g.selected;g.counts[g.selected]++;g.moves++;g.feedback="";const checks=builderChecks(profile,g),reducedMotion=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;g.ceremony={index,until:performance.now()+(reducedMotion?180:720),reduced:reducedMotion};setBuilderBrief();updateHud();
@@ -306,8 +323,9 @@
   }
   function draw(){
     if(state.screen!=="battle")return;
-    ctx.clearRect(0,0,960,540);fitImage(background);ctx.fillStyle="#06152255";ctx.fillRect(0,0,960,540);
+    const viewport=designViewport();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,viewport.width,viewport.height);fitImage(background);ctx.save();ctx.translate(viewport.offsetX,viewport.offsetY);ctx.scale(viewport.scale,viewport.scale);ctx.fillStyle="#06152255";ctx.fillRect(0,0,960,540);
     ({"animal-hoop-league":drawHoop,"animal-habitat-atlas":drawAtlasGame,"animal-moonlight-workshop":drawWorkshop,"animal-chameleon-blend":drawBlend,"animal-habitat-builder":drawBuilder})[gameId]();
+    ctx.restore();
   }
   function drawHoop(){const g=state.game,challenge=hoopChallenge(Math.min(hoopProfiles[state.stage-1].shots,g.shots+1)),x=345,w=360;drawHero(65,205,245,310);ctx.strokeStyle="#ffe79a";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(278,330);ctx.quadraticCurveTo(460,70+g.aim*120,690,280);ctx.stroke();ctx.fillStyle="#10283ce8";ctx.fillRect(x,426,w,20);ctx.fillStyle="#ffd166";ctx.fillRect(x+w*(challenge.aim-challenge.aimTolerance),426,w*challenge.aimTolerance*2,20);ctx.fillStyle="#eafcff";ctx.fillRect(x+w*g.aim-3,421,6,30);ctx.fillStyle="#10283ce8";ctx.fillRect(x,470,w,24);ctx.fillStyle="#ffd166";ctx.fillRect(x+w*(challenge.power-challenge.powerTolerance),470,w*challenge.powerTolerance*2,24);ctx.fillStyle="#6be2dc";ctx.fillRect(x,470,w*g.power,24);ctx.font="bold 23px system-ui";ctx.fillStyle="#f5fbff";ctx.fillText("🎯",305,444);ctx.fillText("⚡",305,491);if(g.ball){const t=Math.min(1,g.ball.t),aimMiss=Math.max(-1.6,Math.min(1.6,g.ball.aimDelta)),powerMiss=Math.max(-1.6,Math.min(1.6,g.ball.powerDelta)),endX=g.ball.made?690:690+aimMiss*74,endY=g.ball.made?280:280-powerMiss*62+Math.abs(aimMiss)*12,arc=190+Math.min(1,g.ball.releasePower)*165,bx=278+(endX-278)*t,by=330+(endY-330)*t-arc*Math.sin(Math.PI*t);if(g.ball.perfect&&t>.62){ctx.strokeStyle=`rgba(255,231,154,${(t-.62)*2})`;ctx.lineWidth=9;ctx.beginPath();ctx.arc(690,280,42-(t-.62)*18,0,Math.PI*2);ctx.stroke();drawAtlas(1,642,232,96,96,Math.min(1,(t-.62)*2.6));}drawAtlas(0,bx-34,by-34,68,68);}}
   function drawAtlasGame(){const g=state.game,plan=atlasCluePlan();drawHero(32,280,180,220);const boxes=[[235,90],[595,90],[235,305],[595,305]];boxes.forEach(([x,y],i)=>{ctx.fillStyle=i===g.target&&g.feedback>0?"#ffd166cc":"#071b2dcc";ctx.fillRect(x,y,250,150);drawAtlas(i,x+82,y+8,86,86);ctx.font="bold 24px system-ui";ctx.fillStyle="#f7fbff";ctx.textAlign="center";ctx.fillText(habitatTraits[i].join("  "),x+125,y+128);ctx.strokeStyle="#8de7ee";ctx.lineWidth=3;ctx.strokeRect(x,y,250,150);});ctx.textAlign="start";for(let i=0;i<g.clues;i++){const type=plan[i],x=438+i*56;if(type===3)drawAtlas(4+g.target,x,242,50,50);else{ctx.fillStyle="#0b2438e8";ctx.fillRect(x,242,50,50);ctx.font="bold 30px system-ui";ctx.fillStyle="#ffe7a3";ctx.textAlign="center";ctx.fillText(habitatTraits[g.target][type],x+25,278);ctx.textAlign="start";}}if(g.feedback>0){ctx.font="bold 74px system-ui";ctx.fillStyle=g.lastCorrect?"#8cf0b4":"#ff8580";ctx.fillText(g.lastCorrect?"✓":"×",455,300);}}

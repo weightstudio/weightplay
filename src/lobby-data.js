@@ -3079,6 +3079,18 @@ const approvedGeneralReleases = {
   },
 };
 
+const animalBounceBrawlPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-bounce-brawl");
+if (animalBounceBrawlPublic) {
+  animalBounceBrawlPublic.status = "playable";
+  animalBounceBrawlPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  animalBounceBrawlPublic.previewVideo = "assets/previews/animal-bounce-brawl-battle.webm";
+  delete animalBounceBrawlPublic.internalTrial;
+}
+
 for (const game of window.WONDER_LOBBY.games) {
   const release = approvedGeneralReleases[game.id];
   if (!release) continue;
