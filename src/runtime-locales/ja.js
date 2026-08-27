@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "◀/▶を長押しして近づき、「バウンス」を押します。",
   "Checkers": "チェッカー",
   "Checkers game information": "チェッカーのゲーム情報",
   "Complete Checkers Match": "完全なチェッカー対局",

@@ -21,8 +21,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-bounce-brawl" /><meta name="weightplay-game-version" content="v12" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena." />
-    <title>Bounce Brawl | WeightPlay</title>
+    <meta name="description" content="掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。" />
+    <title>彈跳鬥場 | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260827-result-actions-mobile-v11" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(26,18,42,.22),rgba(26,18,42,.70)),url("assets/animal-bounce-brawl-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
@@ -30,22 +30,23 @@
     <script defer src="game.js?v=20260827-result-localization-v12"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Bounce Brawl | WeightPlay" />
-    <meta property="og:description" content="Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena." />
+    <meta property="og:title" content="彈跳鬥場 | WeightPlay" />
+    <meta property="og:description" content="掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-bounce-brawl/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-bounce-brawl-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Bounce Brawl | WeightPlay" />
-    <meta name="twitter:description" content="Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena." />
+    <meta name="twitter:title" content="彈跳鬥場 | WeightPlay" />
+    <meta name="twitter:description" content="掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-bounce-brawl-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Bounce Brawl",
+  "name": "彈跳鬥場",
+  "alternateName": "Bounce Brawl",
   "url": "https://weightplay.com/zh-tw/games/animal-bounce-brawl/",
   "image": "https://weightplay.com/assets/animal-bounce-brawl-cover.webp",
-  "description": "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
+  "description": "掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -55,9 +56,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Action",
-    "Arcade",
-    "Animal"
+    "動作",
+    "街機",
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -68,25 +69,25 @@
     </script>
   </head>
   <body data-wp-five-game="animal-bounce-brawl" data-wp-game-id="animal-bounce-brawl" data-runtime-localize="off" data-screen="main">
-    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Bounce Brawl</strong><span>Preparing the foam arena…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+    <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>彈跳鬥場</strong><span>正在準備泡棉鬥場……</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-bounce-brawl" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Bounce Brawl</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">彈跳鬥場</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </header><img class="five-game-cover" src="assets/animal-bounce-brawl-cover.png" alt="" aria-hidden="true" />
         <p class="lede" data-five-copy="lede">A toy arena about timing, ricochets, and sending a foam challenger off balance.</p>
         <p id="main-progress" class="progress">Best wins: 0</p>
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
+      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
         <header class="stage-header"><button id="stage-back" class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 id="stage-title">Foam Arenas</h2></header><p id="stage-status" class="stage-status">Choose one of six foam arenas.</p>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></header>
         <p id="battle-status" class="battle-status">Move with arrows. Press SPACE to bounce-strike.</p>
-        <canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas>
-        <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">BOUNCE</button></div>
+        <div class="arena-frame"><canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas></div>
+        <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="ArrowUp" class="hop">HOP</button><button data-key="Space" class="jump">BOUNCE</button></div>
         <div class="tool-controls" aria-label="Foam tools"><button data-tool="0" class="selected">BUMP</button><button data-tool="1">SPRING</button><button data-tool="2">PAD</button></div>
         <div class="touch-hint">Hold ◀/▶ to move closer, then BOUNCE.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
@@ -97,22 +98,22 @@
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Bounce Brawl 遊戲資訊">
+    <section class="game-page-info game-page-info-static" aria-label="彈跳鬥場 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>Bounce Brawl</h2><p>Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>柔和物理擊退競技場</strong></div><div class="game-info-fact"><span>類型</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>難度</span><strong>容易到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>2-5 minutes per arena</strong></div><div class="game-info-fact"><span>練習能力</span><strong>定時 · 反應 · 空間意識</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>彈跳鬥場</h2><p>掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>柔和物理擊退競技場</strong></div><div class="game-info-fact"><span>類型</span><strong>動作 · 街機 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每座鬥場約 2–5 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>時機 · 反應 · 空間意識</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms.</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>Arrow keys or visible controls move your character. Space performs the bounce-strike, and the tool buttons change the active foam tool.</p>
-<p>Hits create visible knockback and a brief impact effect. Win by reducing the rival&#39;s energy; lose by exhausting your own energy or letting the arena timer run out.</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>Choose an arena and watch the rival&#39;s approach.</li><li>Move to create space, then press Space or BOUNCE when the timing is favorable.</li><li>Switch foam tools when the current spacing or platform layout calls for a different approach.</li><li>After the result, retry the arena or continue to the next one.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>Do not hold contact forever; step out, read the rebound, and strike during the next opening.</li><li>Use platforms and arena edges to control where the rival can recover.</li><li>Save a tool change for a clear spacing problem rather than switching after every bounce.</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>The six arenas progress from a warm-up to spring lanes, moving pads, tight corners, a faster rival, and a final rhythm that tests deliberate spacing.</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.</p></div>
-      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Arena wins and best progress stay in this browser.</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度會保存嗎？</dt><dd>會，只保存在這個瀏覽器中。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界與任務</h3><p>友善的泡棉挑戰者在六座玩具鬥場迎戰對手。每座鬥場會改變間距、平台或對手節奏，但目標始終清楚：按照自己的節奏製造碰撞。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>使用方向鍵或畫面控制移動角色；按上方向鍵或「跳躍」起跳，再按 Space 或「彈跳」進行攻擊，工具按鈕可切換目前的泡棉工具。</p>
+<p>命中會產生明顯擊退與短暫衝擊效果；削弱對手能量即可獲勝，自己的能量耗盡或鬥場計時結束則失敗。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇鬥場，先觀察對手的接近節奏。</li><li>移動角色拉開距離，在時機有利時按上方向鍵或「跳躍」起跳，再按 Space 或「彈跳」。</li><li>依照間距與平台配置切換泡棉工具，不必每次碰撞都更換。</li><li>查看結果後重試目前鬥場，或繼續前往下一座鬥場。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>不要長時間黏住對手；先退開、讀懂反彈，再抓下一個空檔出手。</li><li>善用平台與鬥場邊緣，控制對手能夠恢復的位置。</li><li>遇到明顯的間距問題時再換工具，避免每次彈跳都頻繁切換。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六座鬥場會從暖身關卡逐步加入彈簧路線、移動踏板、狹窄轉角、更快的對手與考驗空間判斷的最終節奏。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>彈跳鬥場使用原創的柔和物理美術、清楚的擊退回饋、三種泡棉工具與短回合鬥場循環，讓每次碰撞都看得見結果。介面在手機、橫向與桌面維持同一套邏輯，觸控、滑鼠與鍵盤共用相同操作狀態。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。鬥場勝場與最佳進度只保存在目前瀏覽器；清除網站資料、使用無痕模式或更換裝置可能會產生另一份存檔。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>如何擊中對手？</dt><dd>先靠近到能接觸的距離，按上方向鍵或「跳躍」起跳，再在空檔按下 Space 或畫面上的「彈跳」控制。</dd></div><div><dt>泡棉工具有什麼作用？</dt><dd>工具會改變泡棉碰撞的反應，提供不同的時機與距離選擇。</dd></div><div><dt>怎麼會輸？</dt><dd>自己的能量耗盡，或鬥場時間結束前仍未擊敗對手，就會輸掉這座鬥場。</dd></div><div><dt>進度會保存嗎？</dt><dd>會，只保存在這個瀏覽器中。</dd></div></dl></div>
 
     </div>
   </section>
@@ -126,6 +127,7 @@
     <script src="analytics-ownership.js?v=20260827-result-localization-v12"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-page-info.js?v=20260827-locale-title-fix-v1"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>

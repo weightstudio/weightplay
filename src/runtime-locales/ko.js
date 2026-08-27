@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "◀/▶를 길게 눌러 가까이 간 뒤 BOUNCE를 누르세요.",
   "Checkers": "체커",
   "Checkers game information": "체커 게임 정보",
   "Complete Checkers Match": "완전한 체커 대국",

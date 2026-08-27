@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "按住 ◀/▶ 靠近對手，再按「彈跳」。",
   "Checkers": "西洋跳棋",
   "Checkers game information": "西洋跳棋遊戲資訊",
   "Complete Checkers Match": "完整西洋跳棋對局",
@@ -1552,9 +1553,9 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "BOTTOM": "底部",
   "Bottom matched · Pulse now!": "底部匹配·立即脈衝！",
   "Bounce {current}/{total}": "反彈 {current}/{total}",
-  "Bounce Brawl - Game Guide": "彈跳亂鬥 - 遊戲指南",
-  "Bounce Brawl game guide": "彈跳亂鬥遊戲指南",
-  "Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.": "Bounce Brawl 使用原創的軟體藝術、可讀的擊退、三種不同的泡沫工具和緊湊的競技場循環，因此每次攻擊都會產生明顯的後果，而不會產生刺耳的表現。",
+  "Bounce Brawl - Game Guide": "彈跳鬥場 - 遊戲指南",
+  "Bounce Brawl game guide": "彈跳鬥場遊戲指南",
+  "Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.": "彈跳鬥場使用原創的柔和物理美術、清楚的擊退回饋、三種泡棉工具與短回合鬥場循環，讓每次碰撞都看得見結果。",
   "Bounce fruit into the animal basket to clear the stage.": "將水果彈入動物籃以清除舞台。",
   "Bounce fruit to animals.": "將水果彈給動物。",
   "Bounce shots off a wall to get around rocks.": "將子彈從牆上彈回以繞過岩石。",

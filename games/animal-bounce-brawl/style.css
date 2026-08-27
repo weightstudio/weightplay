@@ -4,3 +4,23 @@
 #arena{flex:0 0 auto;aspect-ratio:16 / 9;width:100%;max-width:min(100%,calc((100vh - 230px) * 16 / 9));height:auto;max-height:calc(100vh - 230px)}
 .touch-controls button{touch-action:none;user-select:none}
 @media (max-width:700px){.screen.battle-screen .result{width:100%;max-width:100%;min-width:0;padding-inline:12px}.screen.battle-screen .result-actions{width:min(100%,360px);display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.screen.battle-screen .result-actions button{width:100%;min-width:0}}
+
+/* Main stays a normal document-flow entry, while active Battle owns a
+   full-height play surface. The old centered Main left a large blank mobile
+   header and the old Battle stack left an unowned lower strip. */
+body[data-wp-five-game="animal-bounce-brawl"] .screen.main-screen{justify-content:flex-start;align-items:stretch;text-align:center;gap:0;padding-top:12px}
+body[data-wp-five-game="animal-bounce-brawl"] .main-screen .five-game-cover{width:min(390px,calc(100vw - 28px));height:auto;min-height:0;margin:12px auto 20px}
+body[data-wp-five-game="animal-bounce-brawl"] .main-screen .lede{margin:0 auto 12px;max-width:58ch}
+body[data-wp-five-game="animal-bounce-brawl"] .main-screen .progress{margin:0 auto 12px}
+body[data-wp-five-game="animal-bounce-brawl"] .main-screen #start-game{margin-inline:auto}
+body[data-wp-five-game="animal-bounce-brawl"] .battle-screen{display:flex;flex-direction:column;gap:8px;min-height:0;height:100%;overflow:hidden;padding:12px}
+body[data-wp-five-game="animal-bounce-brawl"] .arena-frame{flex:1 1 auto;min-height:0;width:100%;display:grid;place-items:center;overflow:hidden;border:1px solid #9c7ac3;border-radius:18px;background:linear-gradient(180deg,#261b3c,#171122)}
+body[data-wp-five-game="animal-bounce-brawl"] #arena{width:min(100%,960px);height:auto;max-height:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#211831}
+body[data-wp-five-game="animal-bounce-brawl"] .touch-controls{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0;width:100%;max-width:none}
+body[data-wp-five-game="animal-bounce-brawl"] .touch-controls button{min-width:0;min-height:52px;padding:10px 8px}
+body[data-wp-five-game="animal-bounce-brawl"] .touch-controls .hop{color:var(--mint);border-color:#79d9ca}
+body[data-wp-five-game="animal-bounce-brawl"] .tool-controls{flex:0 0 auto;display:flex;gap:8px;width:100%;justify-content:center}
+body[data-wp-five-game="animal-bounce-brawl"] .tool-controls button{flex:1 1 0;min-width:0}
+body[data-wp-five-game="animal-bounce-brawl"] .touch-hint{flex:0 0 auto;margin:0;padding:2px 0;min-height:22px}
+@media(max-width:560px){body[data-wp-five-game="animal-bounce-brawl"] .screen.main-screen{padding-top:10px}.main-screen .five-game-cover{width:min(390px,calc(100vw - 28px))}.battle-screen{padding:10px!important}.arena-frame{border-radius:12px}.touch-controls{gap:6px}.touch-controls button{font-size:1rem;padding-inline:4px!important}}
+@media (orientation:landscape) and (max-height:560px){body[data-wp-five-game="animal-bounce-brawl"] .battle-screen{display:grid;grid-template-columns:minmax(0,1fr) 244px;grid-template-rows:52px 24px minmax(0,1fr) 24px;gap:6px 10px;padding:8px}.battle-screen .battle-header{grid-column:1/-1;grid-row:1}.battle-screen .battle-status{grid-column:1/-1;grid-row:2;margin:0;min-height:24px}.battle-screen .arena-frame{grid-column:1;grid-row:3}.battle-screen .touch-controls{grid-column:2;grid-row:3;align-self:center;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.battle-screen .tool-controls{grid-column:2;grid-row:3;align-self:end}.battle-screen .touch-hint{grid-column:1/-1;grid-row:4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.battle-screen .arena-frame #arena{max-height:100%}}

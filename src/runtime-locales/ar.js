@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "اضغط مطولًا على ◀/▶ للاقتراب، ثم اضغط ارتداد.",
   "Checkers": "الداما",
   "Checkers game information": "معلومات عن لعبة الداما",
   "Complete Checkers Match": "مباراة داما كاملة",

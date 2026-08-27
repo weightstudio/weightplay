@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "पास आने के लिए ◀/▶ दबाए रखें, फिर उछाल दबाएँ।",
   "Checkers": "चेकर्स",
   "Checkers game information": "चेकर्स गेम की जानकारी",
   "Complete Checkers Match": "पूरा चेकर्स मैच",

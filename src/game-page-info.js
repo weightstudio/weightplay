@@ -7967,6 +7967,9 @@
       || (activeLocale === "pt-BR" && id === "animal-rune-tactics")
       || (activeLocale === "ru" && id === "animal-one-line")
       || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")
+      || (["zh-Hant", "zh-Hans"].includes(activeLocale)
+        && ["animal-bounce-brawl", "animal-twin-switchyard"].includes(id)
+        && Boolean(override.intro))
       || (id === "shadow-wolf" && Boolean(override.intro))
       || (id === "animal-auto-squad" && Boolean(override.intro))
       || (id === "animal-unblock" && activeLocale !== "en" && Boolean(override.intro))) return merged;
@@ -12584,33 +12587,53 @@
     ]
   };
   const runeRelatedCardLocaleCopy = {
+    "zh-Hant": {
+      "animal-twin-switchyard": { title: "雙獸燈場" },
+    },
+    "zh-Hans": {
+      "animal-twin-switchyard": { title: "双兽灯场" },
+    },
+    ja: {
+      "animal-twin-switchyard": { title: "ツイン・スイッチヤード" },
+    },
     "ko": {
       "animal-twin-switchyard": { title: "트윈 스위치야드", intro: "수달과 산양을 나뉜 차선으로 안내하고 신호 게이트를 바꾸며 모든 릴레이 조각을 함께 모으는 동기화 플랫폼 퍼즐입니다." },
       "zhao-yun-a-dou": { title: "조운과 아두: 먹선 방어", intro: "한자를 쓰는 병사를 모집해 세 줄에 배치하고 같은 유닛을 합쳐 전진하는 적이 아두에게 닿지 않게 막습니다." },
       "golf-solitaire": { title: "골프 솔리테어", intro: "빠른 한 장 폐기 더미 연쇄 카드 퍼즐로, 폐기 더미보다 한 단계 위나 아래인 카드를 이어서 일곱 줄을 비웁니다." }
     },
     "pt-BR": {
+      "animal-twin-switchyard": { title: "Pátio dos Gêmeos" },
       "animal-prism-battalion": { title: "Batalhão de Prismas Animal", intro: "Alterne uma bateria prismática automática entre três faixas, destrua cada formação, colete núcleos raros e proteja o núcleo de cristal." },
       "animal-number-match": { title: "Bosque dos Números de Panko", intro: "Remova pares que somam dez quando se tocam ou enxergam um ao outro por espaços livres, abrindo novas linhas de visão no tabuleiro." }
     },
+    "es": {
+      "animal-twin-switchyard": { title: "Estación de los Gemelos" },
+    },
+    fr: {
+      "animal-twin-switchyard": { title: "Relais des Jumeaux" },
+    },
+    de: {
+      "animal-twin-switchyard": { title: "Zwillings-Schaltfeld" },
+    },
     "it": {
+      "animal-twin-switchyard": { title: "Scambio dei Gemelli" },
       "animal-triple-match": { title: "Abbinamento triplo animale", intro: "Sposta gli oggetti scoperti da una pila a strati in un vassoio da sette posti e raccogli tre oggetti uguali prima che i singoli riempiano ogni spazio." },
       "animal-prism-battalion": { title: "Battaglione Prismi Animali", intro: "Sposta una batteria prismatica automatica tra tre corsie, distruggi ogni formazione, raccogli i nuclei rari e proteggi il nucleo di cristallo." }
     },
     "ru": {
-      "animal-twin-switchyard": { title: "Твин: сортировочная станция", intro: "Проведите выдру и горного козла по разделённым полосам, переключайте сигнальные ворота и вместе соберите все релейные осколки." },
+      "animal-twin-switchyard": { title: "Станция двойных путей", intro: "Проведите выдру и горного козла по разделённым полосам, переключайте сигнальные ворота и вместе соберите все релейные осколки." },
       "zhao-yun-a-dou": { title: "Чжао Юнь и А Доу: защита тушью", intro: "Нанимайте воинов-символов, расставляйте их на трёх линиях, объединяйте одинаковые отряды и не подпускайте врага к А Доу." },
       "animal-bus-jam": { title: "Автобусный джем Панко", intro: "Следите за фиксированным порядком отправления, открывайте нужных пассажиров и не допускайте блокировки ограниченной очереди ожидания." },
       "animal-bamboo-pipes": { title: "Бамбуковый водный путь Панко", intro: "Поворачивайте участки бамбуковой сети, чтобы вода прошла от резного источника к цветущему бассейну без разрывов и ложных ответвлений." },
       "animal-prism-battalion": { title: "Батальон Животных Призм", intro: "Переключайте автоматическую призматическую батарею между тремя линиями, уничтожайте формации, собирайте редкие ядра и защищайте кристальное ядро." }
     },
     "hi": {
-      "animal-twin-switchyard": { title: "ट्विन स्विचयार्ड", intro: "ऊदबिलाव और पहाड़ी बकरी को अलग गलियों से ले जाएँ, सिग्नल गेट बदलें और सभी रिले शार्ड साथ में इकट्ठा करें।" },
+      "animal-twin-switchyard": { title: "जुड़वाँ स्विचयार्ड", intro: "ऊदबिलाव और पहाड़ी बकरी को अलग गलियों से ले जाएँ, सिग्नल गेट बदलें और सभी रिले शार्ड साथ में इकट्ठा करें।" },
       "zhao-yun-a-dou": { title: "झाओ युन और आ दू: स्याही रक्षा", intro: "चरित्र-सैनिकों की भर्ती करें, उन्हें तीन गलियों में रखें, समान इकाइयों को मिलाएँ और आगे बढ़ते शत्रु को आ दू से दूर रखें।" },
       "animal-one-line": { title: "एक पंक्ति", intro: "परतदार बोर्ड के खुले खानों से एक सतत मार्ग बनाएँ और किसी भी खाने पर दोबारा गए बिना पूरा ग्रिड रंग दें।" }
     },
     "ar": {
-      "animal-twin-switchyard": { title: "ساحة مفاتيح التوأم", intro: "وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا." },
+      "animal-twin-switchyard": { title: "ساحة تبديل التوأمين", intro: "وجّه قضاعة وماعزًا جبليًا عبر مسارين منفصلين، وبدّل بوابات الإشارة، واجمع كل شظايا التتابع معًا." },
       "zhao-yun-a-dou": { title: "تشاو يون وآ دو: دفاع الحبر", intro: "جنّد جنود الرموز، وضعهم في ثلاثة مسارات، وادمج الوحدات المتطابقة، وأبعد العدو المتقدم عن آ دو." },
       "animal-skyport-dispatch": {
         title: "إرسال سكايبورت الحيوان", age: "13+", difficulty: "متوسطة إلى التحدي", time: "4-7 دقائق لكل مناوبة",
@@ -14473,18 +14496,18 @@
   // Bounce Brawl's public Guide is game-owned data, so these exact fields must
   // stay locale-owned instead of relying on the shared English fallback.
   const animalBounceBrawlGuideLocaleCopy = {
-    "zh-Hant": { gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
-    "zh-Hans": { gameplay: "柔和物理击退竞技场", difficulty: "容易到有挑战性", faq: [["进度会保存吗？", "会，仅保存在此浏览器中。"]] },
-    ja: { gameplay: "ソフト物理ノックバックアリーナ", difficulty: "やさしく始めて挑戦的", faq: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]] },
-    ko: { gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
-    es: { gameplay: "Arena de retroceso con física suave", difficulty: "De fácil a desafiante", faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]] },
-    "pt-BR": { gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]] },
-    fr: { gameplay: "Arène de recul à physique douce", difficulty: "Facile à relever, puis exigeant", faq: [["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]] },
-    de: { gameplay: "Arena mit sanfter Rückstoßphysik", difficulty: "Leicht bis anspruchsvoll", faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]] },
-    it: { gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
-    ru: { gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
-    hi: { gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
-    ar: { gameplay: "ساحة ارتداد بفيزياء ناعمة", difficulty: "من السهل إلى التحدي", faq: [["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]] },
+    "zh-Hant": { title: "彈跳鬥場", gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
+    "zh-Hans": { title: "弹跳斗场", gameplay: "柔和物理击退竞技场", difficulty: "容易到有挑战性", faq: [["进度会保存吗？", "会，仅保存在此浏览器中。"]] },
+    ja: { title: "バウンス乱闘", gameplay: "ソフト物理ノックバックアリーナ", difficulty: "やさしく始めて挑戦的", faq: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]] },
+    ko: { title: "바운스 난투", gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
+    es: { title: "Duelo de rebotes", gameplay: "Arena de retroceso con física suave", difficulty: "De fácil a desafiante", faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]] },
+    "pt-BR": { title: "Briga de Rebotes", gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]] },
+    fr: { title: "Baston rebondissant", gameplay: "Arène de recul à physique douce", difficulty: "Facile à relever, puis exigeant", faq: [["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]] },
+    de: { title: "Hüpfduell", gameplay: "Arena mit sanfter Rückstoßphysik", difficulty: "Leicht bis anspruchsvoll", faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]] },
+    it: { title: "Rissa rimbalzante", gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
+    ru: { title: "Прыгучая схватка", gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
+    hi: { title: "उछलती भिड़ंत", gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
+    ar: { title: "نزال الارتداد", gameplay: "ساحة ارتداد بفيزياء ناعمة", difficulty: "من السهل إلى التحدي", faq: [["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]] },
   };
   for (const [locale, copy] of Object.entries(animalBounceBrawlGuideLocaleCopy)) {
     localizedGames[locale] ||= {};
@@ -14493,6 +14516,94 @@
       ...copy,
     };
   }
+
+  // Keep the complete Traditional Chinese guide authored in the same source
+  // as its official title. This prevents the runtime catalog from filling
+  // missing fields with English prose after the guide section is rendered.
+  localizedGames["zh-Hant"] ||= {};
+  localizedGames["zh-Hant"]["animal-bounce-brawl"] = {
+    ...(localizedGames["zh-Hant"]["animal-bounce-brawl"] || {}),
+    title: "彈跳鬥場",
+    age: "9+",
+    difficulty: "容易到具挑戰性",
+    time: "每座鬥場約 2–5 分鐘",
+    gameplay: "柔和物理擊退競技場",
+    genre: ["動作", "街機", "動物"],
+    skills: ["時機", "反應", "空間意識"],
+    intro: "掌握彈跳時機，選擇泡棉工具，在歡樂物理鬥場讓對手失去平衡。",
+    story: [
+      "友善的泡棉挑戰者在六座玩具鬥場迎戰對手。每座鬥場會改變間距、平台或對手節奏，但目標始終清楚：按照自己的節奏製造碰撞。",
+    ],
+    systems: [
+      "使用方向鍵或畫面控制移動角色；按上方向鍵或「跳躍」起跳，再按 Space 或「彈跳」進行攻擊，工具按鈕可切換目前的泡棉工具。",
+      "命中會產生明顯擊退與短暫衝擊效果；削弱對手能量即可獲勝，自己的能量耗盡或鬥場計時結束則失敗。",
+    ],
+    how: [
+      "選擇鬥場，先觀察對手的接近節奏。",
+      "移動角色拉開距離，在時機有利時按上方向鍵或「跳躍」起跳，再按 Space 或「彈跳」。",
+      "依照間距與平台配置切換泡棉工具，不必每次碰撞都更換。",
+      "查看結果後重試目前鬥場，或繼續前往下一座鬥場。",
+    ],
+    strategyTips: [
+      "不要長時間黏住對手；先退開、讀懂反彈，再抓下一個空檔出手。",
+      "善用平台與鬥場邊緣，控制對手能夠恢復的位置。",
+      "遇到明顯的間距問題時再換工具，避免每次彈跳都頻繁切換。",
+    ],
+    progression: [
+      "六座鬥場會從暖身關卡逐步加入彈簧路線、移動踏板、狹窄轉角、更快的對手與考驗空間判斷的最終節奏。",
+    ],
+    designNote: "彈跳鬥場使用原創的柔和物理美術、清楚的擊退回饋、三種泡棉工具與短回合鬥場循環，讓每次碰撞都看得見結果。介面在手機、橫向與桌面維持同一套邏輯，觸控、滑鼠與鍵盤共用相同操作狀態。",
+    noteTitle: "玩家與存檔資訊",
+    parent: "這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。鬥場勝場與最佳進度只保存在目前瀏覽器；清除網站資料、使用無痕模式或更換裝置可能會產生另一份存檔。",
+    faq: [
+      ["如何擊中對手？", "先靠近到能接觸的距離，按上方向鍵或「跳躍」起跳，再在空檔按下 Space 或畫面上的「彈跳」控制。"],
+      ["泡棉工具有什麼作用？", "工具會改變泡棉碰撞的反應，提供不同的時機與距離選擇。"],
+      ["怎麼會輸？", "自己的能量耗盡，或鬥場時間結束前仍未擊敗對手，就會輸掉這座鬥場。"],
+      ["進度會保存嗎？", "會，只保存在這個瀏覽器中。"],
+    ],
+  };
+
+  localizedGames["zh-Hant"]["animal-twin-switchyard"] = {
+    ...(localizedGames["zh-Hant"]["animal-twin-switchyard"] || {}),
+    title: "雙獸燈場",
+    age: "9+",
+    difficulty: "容易到具挑戰性",
+    time: "每關約 3–8 分鐘",
+    gameplay: "同步平台益智",
+    genre: ["益智", "平台", "動物"],
+    skills: ["協調", "規劃", "時機"],
+    intro: "引導水獺與山羊穿過分道、切換訊號門，並一起收集所有中繼碎片的同步平台益智遊戲。",
+    story: [
+      "兩位路線守護者共用一條訊號線：水獺負責低道，山羊走高道。每座燈場都要求兩名旅者在同一個節奏中前進，不能留下任何一位。",
+    ],
+    systems: [
+      "兩名角色共用同一組輸入。左右鍵讓他們在各自分道前進，跳躍則讓兩人一起越過定時障礙；訊號門可能開啟一條路、關閉另一條路。",
+      "只有正確的角色抵達碎片時才會收集成功。撞到障礙會重置目前嘗試，穿過所有碎片與出口後才會進入結果畫面。",
+    ],
+    how: [
+      "從關卡列選擇已解鎖的關卡，先閱讀分道規則與障礙預覽。",
+      "使用左右鍵或畫面控制對齊兩名旅者，再用跳躍越過標記的障礙。",
+      "觀察訊號門顏色，讓兩名旅者各自靠近自己的中繼碎片。",
+      "收集所有碎片並抵達成對出口；碰撞會重開嘗試，成功則進入結果並解鎖下一關。",
+    ],
+    strategyTips: [
+      "按下跳躍前先規劃兩條分道的下一個位置；一人安全落地不代表另一人也安全。",
+      "接近訊號門時使用短促方向輸入，避免長按讓兩人一起滑過安全位置。",
+      "同時閱讀上下分道標記，最醒目的碎片不一定是下一個安全目標。",
+    ],
+    progression: [
+      "六座關卡會從清楚的分道與寬鬆跳躍開始，逐步加入交替訊號門、移動障礙、錯開碎片與更窄的落點，最後要求兩名旅者同步抵達出口。",
+    ],
+    designNote: "雙獸燈場在手機、橫向與桌面維持同一個邏輯遊戲空間；同步移動、分道危險、觸控、滑鼠與鍵盤都解析到相同狀態，而主頁、關卡、戰鬥與結果是分開且可直接返回的畫面。",
+    noteTitle: "玩家與存檔資訊",
+    parent: "這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。關卡進度與最佳步數只保存在目前瀏覽器；清除網站資料、使用無痕模式或更換裝置可能會產生另一份存檔。",
+    faq: [
+      ["兩名旅者可以分開移動嗎？", "不行。每次輸入都會同時移動兩人，因此解法重點是共用時機與分道規劃。"],
+      ["訊號門會改變什麼？", "畫面上的門規則會改變當下哪一條分道開啟或安全，跳躍前要先讀清楚。"],
+      ["什麼情況會讓關卡失敗？", "任一旅者碰到標記障礙或離開可玩路線，就會重置目前嘗試。"],
+      ["進度會保存嗎？", "已解鎖關卡與最佳步數會保存在這個瀏覽器中。"],
+    ],
+  };
 
   [
     "block-blast",

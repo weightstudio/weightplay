@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["fr"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "Maintenez ◀/▶ pour approcher, puis utilisez REBOND.",
   "Checkers": "Dames",
   "Checkers game information": "Informations sur le jeu de dames",
   "Complete Checkers Match": "Partie complète de dames",

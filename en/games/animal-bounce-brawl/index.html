@@ -78,15 +78,15 @@
         <p id="main-progress" class="progress">Best wins: 0</p>
         <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
+      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" hidden>
         <header class="stage-header"><button id="stage-back" class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2 id="stage-title">Foam Arenas</h2></header><p id="stage-status" class="stage-status">Choose one of six foam arenas.</p>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button id="stage-tab" type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button id="battle-back" class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Arenas">←</button><strong id="arena-label">Arena 1 / 6</strong><span id="health-label">You 100 · Rival 100</span></header>
         <p id="battle-status" class="battle-status">Move with arrows. Press SPACE to bounce-strike.</p>
-        <canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas>
-        <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">BOUNCE</button></div>
+        <div class="arena-frame"><canvas id="arena" width="960" height="540" aria-label="Bounce Brawl play area"></canvas></div>
+        <div class="touch-controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="ArrowUp" class="hop">HOP</button><button data-key="Space" class="jump">BOUNCE</button></div>
         <div class="tool-controls" aria-label="Foam tools"><button data-tool="0" class="selected">BUMP</button><button data-tool="1">SPRING</button><button data-tool="2">PAD</button></div>
         <div class="touch-hint">Hold ◀/▶ to move closer, then BOUNCE.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
@@ -125,6 +125,7 @@
     <script src="analytics-ownership.js?v=20260827-result-localization-v12"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="/src/game-page-info.js?v=20260827-locale-title-fix-v1"></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>

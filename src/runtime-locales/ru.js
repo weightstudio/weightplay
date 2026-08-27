@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ru"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "Удерживайте ◀/▶, чтобы приблизиться, затем нажмите УДАР.",
   "Checkers": "Шашки",
   "Checkers game information": "Информация об игре в шашки",
   "Complete Checkers Match": "Полная партия в шашки",

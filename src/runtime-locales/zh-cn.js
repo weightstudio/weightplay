@@ -1,5 +1,6 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
+  "Hold ◀/▶ to move closer, then BOUNCE.": "按住 ◀/▶ 靠近对手，再按「弹跳」。",
   "Checkers": "西洋跳棋",
   "Checkers game information": "西洋跳棋游戏信息",
   "Complete Checkers Match": "完整西洋跳棋对局",
