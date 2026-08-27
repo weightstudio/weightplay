@@ -3326,8 +3326,21 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   resource.gameplayProfiles["animal-cratebound"] = { gameplay: "Puzle logístico de empuje y arrastre", genre: ["Puzle", "Estrategia", "Animales"] };
   resource.games["animal-rootvault-pins"] = {
     ...(resource.games["animal-rootvault-pins"] || {}),
-    title: "Pasadores de la Cámara Raíz Animal",
-    intro: "Libera mecanismos en el orden correcto para resolver cámaras de materiales."
+    title: "Clavijas de la Cámara Animal",
+    difficulty: "Fácil a desafiante",
+    time: "2-6 minutos por cámara",
+    gameplay: "Rompecabezas de clavijas con reacciones materiales",
+    genre: ["Puzle", "Estrategia", "Animales"],
+    skills: ["Lógica", "Planificación", "Resolución de problemas"],
+    intro: "Clavijas de la Cámara Animal es un rompecabezas de 30 cámaras protagonizado por Taro. Saca clavijas doradas completas en un orden seguro, resuelve las reacciones visibles y reúne a Taro con el Núcleo Estelar en el santuario.",
+    story: ["Los canales de Agua Lunar bajo el caparazón de fortaleza viviente de Taro se han enredado con Emberlight, las Sombras, los escudos y los antiguos cierres rúnicos. Restaurar los seis capítulos vuelve a abrir la Cámara Raíz."],
+    systems: ["Cada tirón mueve todos los objetos de la sala de origen a la sala de destino. El Agua Lunar enfría Emberlight hasta convertirlo en vapor, un Escudo protege a Taro una vez y las Llaves Rúnicas abren las clavijas con la marca correspondiente.", "Reiniciar restaura la cámara creada exactamente. Las cámaras superadas, los mejores resultados, las Marcas Semilla y las mejoras del taller se guardan localmente en este navegador."],
+    how: ["Elige una cámara desbloqueada en el carril horizontal de salas.", "Inspecciona cada sala, material, destino y cierre rúnico.", "Selecciona una clavija dorada completa y tira de ella.", "Lleva a Taro y al Núcleo Estelar al santuario sin exponerlos al peligro."],
+    strategyTips: ["Enfría Emberlight antes de enviar a Taro por esa ruta.", "Consigue un Escudo antes de exponer a Taro a una Sombra.", "Entrega cada Llave Rúnica antes de depender de su clavija marcada.", "Planifica dónde terminarán Taro y el Núcleo Estelar, no solo cuál será la próxima reacción."],
+    progression: ["Las cámaras 1-5 enseñan el orden de las rutas. Los capítulos posteriores incorporan reacciones de vapor, escudos y sombras, corrientes gemelas, cierres rúnicos y combinaciones de dominio hasta la cámara 30."],
+    designNote: "Cada cámara es determinista y se puede leer antes de tirar la primera clavija. El tacto, el ratón y el teclado usan la misma acción única; las pantallas Main, Stage, Battle y Result conservan un diseño lógico centrado de 920 píxeles como máximo y una reserva inferior independiente de 56 píxeles.",
+    parent: "No se necesita una cuenta. El progreso y las mejoras del taller permanecen en este navegador y pueden reiniciarse si se borran los datos del sitio. Esta guía no es una evaluación médica, escolar ni profesional.",
+    faq: [["¿Cuántas cámaras hay?", "Hay 30 cámaras diseñadas en seis capítulos de reglas materiales."], ["¿Se puede tirar parcialmente de una clavija?", "No. Cada acción mueve una clavija dorada completa."], ["¿Qué hace el Agua Lunar?", "Enfría Emberlight hasta convertirlo en vapor inofensivo."], ["¿Qué controles y tamaños de pantalla se admiten?", "El tacto, el ratón y el teclado siguen las mismas reglas; la interfaz escala como un solo diseño lógico en móvil, apaisado y escritorio."], ["¿El progreso puede pasar automáticamente a otro dispositivo?", "No. El juego solo se guarda en el almacenamiento local del navegador actual, así que otro navegador o dispositivo tiene un progreso separado."], ["¿Se guarda el progreso?", "Sí, localmente en este navegador."]]
   };
   Object.entries(resource.games).forEach(([id, game]) => {
     if (titles[id]) game.title = titles[id];

@@ -7891,7 +7891,7 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20260718-es1", sharedAssetBase).href;
+      script.src = new URL("game-page-info-es.js?v=20260827-rootvault-spanish-guide-v14", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -8875,7 +8875,7 @@
     },
     es: {
       designNote: "Cada cámara es determinista y se puede leer antes de tirar el primer pasador. El tacto, el ratón y el teclado usan la misma acción única; las pantallas Main, Stage, Battle y Result conservan un diseño lógico centrado de 920 píxeles como máximo y una reserva inferior independiente de 56 píxeles.",
-      faq: [["¿Qué controles y tamaños de pantalla se admiten?", "El tacto, el ratón y el teclado siguen las mismas reglas; la interfaz escala como un solo diseño lógico en móvil, apaisado y escritorio."], ["¿El progreso puede pasar automáticamente a otro dispositivo?", "No. El juego solo se guarda en el almacenamiento local del navegador actual, así que otro navegador o dispositivo tiene un progreso separado."]]
+      faq: [["¿Cuántas cámaras hay?", "Hay 30 cámaras diseñadas en seis capítulos de reglas materiales."], ["¿Se puede tirar parcialmente de una clavija?", "No. Cada acción mueve una clavija dorada completa."], ["¿Qué hace el Agua Lunar?", "Enfría Emberlight hasta convertirlo en vapor inofensivo."], ["¿Qué controles y tamaños de pantalla se admiten?", "El tacto, el ratón y el teclado siguen las mismas reglas; la interfaz escala como un solo diseño lógico en móvil, apaisado y escritorio."], ["¿El progreso puede pasar automáticamente a otro dispositivo?", "No. El juego solo se guarda en el almacenamiento local del navegador actual, así que otro navegador o dispositivo tiene un progreso separado."], ["¿Se guarda el progreso?", "Sí, localmente en este navegador."]]
     },
     "pt-BR": {
       designNote: "Cada câmara é determinística e pode ser lida antes de puxar o primeiro pino. Toque, mouse e teclado usam a mesma ação única; as telas Main, Stage, Battle e Result mantêm um layout lógico centralizado de no máximo 920 pixels e uma reserva inferior separada de 56 pixels.",

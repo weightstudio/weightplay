@@ -110,6 +110,23 @@
   function chapterIndex() { return clamp(Math.floor((state.stage - 1) / C.chapterSize), 0, C.chapters.length - 1); }
   function stageCode() { return `${chapterIndex() + 1}-${((state.stage - 1) % C.chapterSize) + 1}`; }
 
+  function campaignMilestoneText() {
+    const chapter = chapterIndex();
+    const chapterEnd = Math.min((chapter + 1) * C.chapterSize, C.chapters.length * C.chapterSize);
+    const nextChapter = C.chapters[chapter + 1];
+    return nextChapter
+      ? `第 ${chapter + 1} 章里程碑：完成第 ${chapterEnd} 關，進入「${nextChapter}」。`
+      : `最終戰役里程碑：完成第 ${chapterEnd} 關，完成全部 ${C.chapters.length} 章征戰。`;
+  }
+
+  function renderCampaignMilestone(resultWin = false) {
+    const text = campaignMilestoneText();
+    const battleGoal = $("#campaignGoal");
+    const resultGoal = $("#resultMilestone");
+    if (battleGoal) battleGoal.textContent = `長線目標：${text}`;
+    if (resultGoal) resultGoal.textContent = `${resultWin ? "戰役里程碑" : "整軍目標"}：${text}`;
+  }
+
   function grant(reward) {
     Object.entries(reward).forEach(([key, value]) => {
       if (key === "xp") gainPlayerXp(value);
@@ -218,6 +235,7 @@
     battle.enemies = enemyPack();
     $("#resultPanel").classList.add("is-hidden");
     $("#battleStatus").textContent = state.wave === 5 ? "Boss 來襲！" : "敵軍來襲";
+    renderCampaignMilestone();
     renderUnits();
     updateHud();
     battle.tickHandle = window.setInterval(battleTick, 260);
@@ -373,6 +391,7 @@
     $("#resultTitle").textContent = win ? "大捷！" : "戰敗";
     $("#resultCopy").textContent = win ? "義軍擊破關卡 Boss。獎勵已入帳，下一關的敵軍將更強。" : "進度保留在目前關卡；強化武將、裝備與軍法後再次挑戰。";
     $("#resultRewards").innerHTML = win ? `<span>主公經驗 +${35 + state.stage * 6}</span><span>Boss 材料 +${reward.materials || 3}</span>` : "";
+    renderCampaignMilestone(win);
     $("#resultNext").classList.toggle("is-hidden", !win);
     $("#resultRetry").classList.toggle("is-hidden", win);
     if (win) collectLoot(true);
