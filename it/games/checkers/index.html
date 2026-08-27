@@ -30,7 +30,8 @@
   .preview-art img { width: 100%; height: 100%; min-height: 220px; object-fit: cover; border-radius: inherit; display: block; }
   @media (max-width: 700px) { .preview-art img { min-height: 140px; } }
 </style>
-<link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260827-checkers-responsive-battle-v12">
+<link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260827-checkers-main-guide-v13">
+<link rel="stylesheet" href="../../src/game-page-info.css?v=20260827-checkers-main-guide-v13">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Dama | WeightPlay" />
@@ -75,19 +76,20 @@
   </head>
 <body data-runtime-localize="off" data-wp-game-owned-guide="true">
 <main id="popularArcade" class="popular-arcade">
-  <header class="arcade-header">
-    <div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Dama</h1><p id="gameTagline" class="tagline"></p></div>
+  <header class="arcade-header checkers-shell-header">
+    <a class="checkers-main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay" title="Back to WeightPlay"><span class="checkers-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+    <div class="checkers-heading"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Dama</h1><p id="gameTagline" class="tagline"></p></div>
     <label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label>
   </header>
   <section id="mainScreen" class="screen">
     <div class="arcade-panel main-panel">
-      <div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div>
+      <div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline"></p><button id="startBtn" class="primary">Start game</button></div>
       <div class="preview-art"><img src="../../assets/checkers-cover.webp" alt="" aria-hidden="true"></div>
     </div>
   </section>
   <section id="battleScreen" class="screen" hidden>
     <div class="arcade-panel battle-panel">
-      <div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div>
+      <div class="battle-top"><button class="checkers-battle-return" data-wp-return="battle" type="button" aria-label="Back to main" title="Back to main"><span class="checkers-return-arrow" aria-hidden="true">←</span></button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div>
       <div class="board-wrap"><div id="board" class="board"></div></div>
       <p id="gameMessage" class="game-message" aria-live="polite"></p>
       <div id="controls"></div>
@@ -100,8 +102,8 @@
 </main>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
 <script src="../../src/analytics.js?v=20260824-checkers-public-art-v9"></script>
-<script src="../../src/checkers-engine.js?v=20260827-checkers-responsive-battle-v12"></script>
-<script src="../../src/popular-games-batch.js?v=20260827-checkers-locale-switch-v12"></script>
+<script src="../../src/checkers-engine.js?v=20260827-checkers-main-guide-v13"></script>
+<script src="../../src/popular-games-batch.js?v=20260827-checkers-main-guide-v13"></script>
 <script src="game.js"></script>
 <section class="game-page-info game-page-info-static" aria-label="Dama informazioni sul gioco">
 

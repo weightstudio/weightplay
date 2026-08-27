@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "Checkers": "チェッカー",
+  "Checkers game information": "チェッカーのゲーム情報",
+  "Complete Checkers Match": "完全なチェッカー対局",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "8×8盤で強制取り、連続ジャンプ、キング昇格を使い、実際に応手する相手と完全な対局を遊びます。",
   "-{value}% DMG / {value} · {value}": "-{value}% ダメージ / {value} · {value}",
   "· defeat the Boss": "・ボスを倒す",
   "· derrota al jefe": "・デロータ・アル・ジェフェ",

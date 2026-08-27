@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "Checkers": "체커",
+  "Checkers game information": "체커 게임 정보",
+  "Complete Checkers Match": "완전한 체커 대국",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "8×8 보드에서 강제 잡기, 연속 점프, 킹 승격을 활용해 실제로 응수하는 상대와 완전한 대국을 플레이하세요.",
   "-{value}% DMG / {value} · {value}": "-{value}% 데미지 / {value} · {value}",
   "· defeat the Boss": "· 보스를 물리치세요",
   "· derrota al jefe": "· 데로타 알 헤페",

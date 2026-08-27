@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
+  "Checkers": "西洋跳棋",
+  "Checkers game information": "西洋跳棋游戏信息",
+  "Complete Checkers Match": "完整西洋跳棋对局",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "进行完整 8×8 西洋跳棋对局，运用强制吃子、连跳与升王击败真正会回手的对手。",
   "-{value}% DMG / {value} · {value}": "-{value}% DMG / {value}·{value}",
   "· defeat the Boss": "· 击败Boss",
   "· derrota al jefe": "· 德罗塔·阿尔杰夫",

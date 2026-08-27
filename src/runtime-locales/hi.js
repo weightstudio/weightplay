@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "Checkers": "चेकर्स",
+  "Checkers game information": "चेकर्स गेम की जानकारी",
+  "Complete Checkers Match": "पूरा चेकर्स मैच",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "अनिवार्य कैप्चर, लगातार छलाँग, किंग और असली प्रतिद्वंद्वी के साथ पूरा 8×8 चेकर्स मैच खेलें।",
   "-{value}% DMG / {value} · {value}": "-{value}% डीएमजी / {value} · {value}",
   "· defeat the Boss": "· बॉस को हराना",
   "· derrota al jefe": "· डेरोटा अल जेफ",

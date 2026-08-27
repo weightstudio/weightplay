@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["it"] = {
+  "Checkers": "Dama",
+  "Checkers game information": "Informazioni sul gioco della dama",
+  "Complete Checkers Match": "Partita completa a dama",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "Gioca una partita completa a dama 8×8 con prese obbligatorie, salti multipli, promozione e un vero avversario.",
   "-{value}% DMG / {value} · {value}": "-{value}% DAN / {value} · {value}",
   "· defeat the Boss": "· sconfiggere il Boss",
   "· derrota al jefe": "· derrota al jefe",

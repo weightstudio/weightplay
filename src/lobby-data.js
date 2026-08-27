@@ -2816,8 +2816,8 @@ for (const candidate of marketFiveCandidates) {
 }
 
 // Researched next-batch builds. Cloudhook Courier remains owner-preview only
-// after the owner usability report; the explicit release fields keep the
-// catalog state auditable.
+// after the owner usability report; Twin Switchyard is opened only after its
+// exact Tester, Reviewer, Director, and Preflight gates are recorded below.
 const researchedNextBatchCandidates = [
   {
     id: "animal-cloudhook-courier",
@@ -2835,7 +2835,8 @@ const researchedNextBatchCandidates = [
     description: { en: "Guide two different jumpers through split lanes, flip signal gates, and gather every relay shard together.", "zh-Hant": "引導兩位跳躍者通過分岔路線，切換訊號閘門，一起收集所有接力碎片。", "zh-Hans": "引导两位跳跃者通过分岔路线，切换信号闸门，一起收集所有接力碎片。", ja: "異なるジャンパーを分岐レーンへ導き、信号ゲートを切り替え、すべての中継シャードを一緒に集めよう。", ko: "서로 다른 점퍼를 갈라진 레인으로 이끌고 신호 게이트를 전환해 모든 릴레이 조각을 함께 모으세요.", es: "Guía a dos saltadores por carriles divididos, cambia las compuertas de señal y reúne todos los fragmentos de relevo.", "pt-BR": "Guie dois saltadores por pistas separadas, alterne portões de sinal e reúna todos os fragmentos de relé.", fr: "Guide deux sauteurs sur des voies séparées, active les portes de signal et rassemble tous les éclats relais.", de: "Führe zwei Springer durch getrennte Bahnen, schalte Signaltore um und sammle gemeinsam alle Relais-Splitter.", it: "Guida due saltatori su corsie divise, cambia i varchi di segnale e raccogli insieme tutti i frammenti relè.", ru: "Проведите двух прыгунов по разным дорожкам, переключайте сигнальные ворота и соберите все осколки реле вместе.", hi: "दो अलग कूदने वालों को विभाजित लेन से ले जाएँ, सिग्नल गेट बदलें और सभी रिले टुकड़े साथ जुटाएँ।", ar: "قد لاعبين قافزين عبر مسارات منفصلة وبدّل بوابات الإشارة واجمعا كل شظايا الترحيل معاً." },
     meta: { en: ["Two-Lane Sync", "6 Switchyards", "Shared Timing"], "zh-Hant": ["雙線同步", "6 個燈場", "共同時機"], "zh-Hans": ["双线同步", "6 个灯场", "共同时机"], ja: ["2レーン同期", "6つの切替場", "共有タイミング"], ko: ["2레인 동기화", "6개 스위치야드", "공유 타이밍"], es: ["Sincronía de dos carriles", "6 estaciones", "Ritmo compartido"], "pt-BR": ["Sincronia em duas pistas", "6 pátios", "Ritmo compartilhado"], fr: ["Synchronisation à deux voies", "6 relais", "Timing partagé"], de: ["Zwei-Bahnen-Sync", "6 Schaltfelder", "Gemeinsames Timing"], it: ["Sincronia a due corsie", "6 scambi", "Tempismo condiviso"], ru: ["Синхрон двух дорожек", "6 станций", "Общий ритм"], hi: ["दो लेन सिंक", "6 स्विचयार्ड", "साझा समय"], ar: ["تزامن مسارين", "6 ساحات تبديل", "توقيت مشترك"] },
     art: { kind: "image", background: "games/animal-twin-switchyard/cover-v2.webp", hideHero: true },
-    categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/", internalTrial: "index.html?trial=1",
+    previewVideo: "assets/previews/animal-twin-switchyard-battle.webm",
+    categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/",
   },
 ];
 for (const candidate of researchedNextBatchCandidates) {
@@ -2845,9 +2846,8 @@ for (const candidate of researchedNextBatchCandidates) {
     delete candidate.previewVideo;
   }
   if (candidate.id === "animal-twin-switchyard") {
-    candidate.status = "planned";
-    candidate.statusText = { ...ownerPreviewStatusText };
-    delete candidate.previewVideo;
+    candidate.status = "playable";
+    candidate.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
   }
 }
 const researchedComingSoonStatus = ownerPreviewStatusText;

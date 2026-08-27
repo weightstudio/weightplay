@@ -50,6 +50,61 @@ h1 { margin-top: 5px; font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.05; 
 .tagline { margin-top: 8px; color: var(--arcade-muted); max-width: 62ch; }
 .locale-picker { display: grid; gap: 5px; min-width: 142px; color: var(--arcade-muted); font-size: .76rem; }
 .locale-picker select { border: 1px solid var(--arcade-line); border-radius: 12px; background: var(--arcade-panel-2); padding: 9px 10px; }
+/* Checkers keeps the collection shell, Guide, and live Battle in one clear
+   hierarchy: a stable return affordance anchors Main, while Battle gets an
+   equally reachable way back without changing the shared panel geometry. */
+body[data-game-id="checkers"] .checkers-shell-header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+}
+body[data-game-id="checkers"] .checkers-heading { min-width: 0; }
+body[data-game-id="checkers"] .checkers-main-return,
+body[data-game-id="checkers"] .checkers-battle-return {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  min-width: 48px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0;
+  border: 1px solid var(--arcade-line);
+  border-radius: 13px;
+  color: var(--arcade-accent);
+  background: rgba(255,255,255,.07);
+  text-decoration: none;
+  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+}
+body[data-game-id="checkers"] .checkers-main-return:hover,
+body[data-game-id="checkers"] .checkers-battle-return:hover {
+  transform: translateY(-1px);
+  border-color: var(--arcade-accent);
+  background: rgba(126,231,201,.14);
+}
+body[data-game-id="checkers"] .checkers-main-return img {
+  display: none;
+}
+body[data-game-id="checkers"] .checkers-return-arrow {
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1;
+}
+body[data-game-id="checkers"] .game-page-info {
+  width: min(920px, calc(100% - 24px));
+}
+body[data-game-id="checkers"] #battleScreen .battle-top {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+body[data-game-id="checkers"] #battleScreen .battle-top > .round-label { min-width: 0; }
+body[data-game-id="checkers"] #battleScreen .battle-top > .control-row {
+  justify-content: flex-end;
+}
 .screen[hidden] { display: none; }
 /* Static public guides belong to Main. Keep them out of the live Battle and
    Result viewport so they cannot add document height behind the game shell. */
@@ -390,6 +445,22 @@ body[data-game-id="tetris"] .tetris-result-stat strong { margin-left: 0; font-si
 
 @media (max-width: 650px) {
   .arcade-header { flex-direction: column; }
+  body[data-game-id="checkers"] .checkers-shell-header {
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: start;
+  }
+  body[data-game-id="checkers"] .checkers-shell-header .locale-picker {
+    grid-column: 2;
+    width: 100%;
+  }
+  body[data-game-id="checkers"] #battleScreen .battle-top {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+  body[data-game-id="checkers"] #battleScreen .battle-top > .control-row {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+  body[data-game-id="checkers"] #battleScreen .battle-top > .control-row > button { flex: 1; }
   .locale-picker { width: 100%; }
   .main-panel { grid-template-columns: 1fr; }
   .preview-art { min-height: 140px; font-size: 4.6rem; }

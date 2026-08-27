@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "Checkers": "الداما",
+  "Checkers game information": "معلومات عن لعبة الداما",
+  "Complete Checkers Match": "مباراة داما كاملة",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "العب مباراة داما كاملة 8×8 مع الأخذ الإجباري والقفزات المتعددة والترقية وخصم حقيقي.",
   "-{value}% DMG / {value} · {value}": "-{value}% ضرر / {value} · {value}",
   "· defeat the Boss": "· هزيمة بوس",
   "· derrota al jefe": "· ديروتا آل جيفي",

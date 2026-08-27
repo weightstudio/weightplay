@@ -1,5 +1,9 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ru"] = {
+  "Checkers": "Шашки",
+  "Checkers game information": "Информация об игре в шашки",
+  "Complete Checkers Match": "Полная партия в шашки",
+  "Play a complete 8×8 Checkers match with mandatory captures, multi-jumps, kings, and a real rival.": "Сыграйте полную партию в шашки 8×8 с обязательным взятием, сериями прыжков, дамками и настоящим соперником.",
   "-{value}% DMG / {value} · {value}": "-{value}% урона / {value} · {value}",
   "· defeat the Boss": "· победить Босса",
   "· derrota al jefe": "· Деррота аль-Хефе",
