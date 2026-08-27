@@ -5,7 +5,7 @@
   });
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v28";
+  const GAME_VERSION = "v29";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -505,6 +505,62 @@
   };
   Object.entries(localeOwnedDecisionCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
 
+  const localeOwnedBackpackHints = {
+    ko: "보유한 동물만 표시합니다. 활성 스쿼드로 옮긴 뒤 원정 중 임시 업그레이드에 보급품을 사용하세요.",
+    "pt-BR": "Mostrando apenas animais obtidos. Mova-os para o esquadrão ativo e gaste suprimentos em melhorias temporárias da expedição.",
+    fr: "Seuls les animaux obtenus sont affichés. Placez-les dans l’escouade active, puis dépensez des provisions pour des améliorations temporaires de l’expédition.",
+    de: "Nur erhaltene Tiere werden angezeigt. Verschiebe sie ins aktive Team und gib Vorräte für vorübergehende Expeditionsverbesserungen aus.",
+    it: "Vengono mostrati solo gli animali ottenuti. Spostali nella squadra attiva e spendi le provviste per miglioramenti temporanei della spedizione.",
+    ru: "Показываются только полученные животные. Переместите их в активный отряд и тратьте припасы на временные улучшения экспедиции.",
+    hi: "केवल प्राप्त पशु दिखाए जाते हैं। उन्हें सक्रिय दल में रखें और अभियान के अस्थायी उन्नयन के लिए रसद खर्च करें।"
+  };
+  Object.entries(localeOwnedBackpackHints).forEach(([locale, value]) => {
+    localeOwnedDecisionCopy[locale].backpackHint = value;
+    text[locale] = { ...(text[locale] || {}), backpackHint: value };
+  });
+
+  const localeOwnedRelicRerollLabels = {
+    ko: "유물 재추첨 (다이아 3개)",
+    "pt-BR": "Rerrolar relíquias (3 💎)",
+    fr: "Relancer les reliques (3 💎)",
+    de: "Relikte neu würfeln (3 💎)",
+    it: "Rilancia reliquie (3 💎)",
+    ru: "Перебросить реликвии (3 💎)",
+    hi: "अवशेष फिर चुनें (3 💎)"
+  };
+  Object.entries(localeOwnedRelicRerollLabels).forEach(([locale, value]) => {
+    localeOwnedDecisionCopy[locale].relicReroll = value;
+    text[locale] = { ...(text[locale] || {}), relicReroll: value };
+  });
+
+  const localeOwnedResultCopy = {
+    ko: {
+      savedProgress: "저장된 진행 상황", stageClearText: "스테이지 {stage} 클리어! 스테이지 {next}가 열렸습니다.", allStagesClearText: "30개 스테이지와 6개 지역 보스를 모두 클리어했습니다! 아무 스테이지나 다시 플레이해 스쿼드를 다듬어 보세요.", resultXpEarned: "팀 경험치 +{earned} · 레벨 {level} · 경험치 {xp}/{goal}", resultGoldEarned: "훈련 골드 +{earned} · 총 {total}", resultStageSaved: "잠금 해제 스테이지 {unlocked}/{total}", resultGrowthNext: "영구 보너스 공격력 +{atk} / 체력 +{hp} · 다음 팀 레벨까지 {remaining} 경험치", skillReport: "논리적 추론, 계획, 전술적 배치가 향상되었습니다!", skillsLearned: "훈련한 능력: 논리, 문제 해결, 전략적 계획."
+    },
+    "pt-BR": {
+      savedProgress: "Progresso salvo", stageClearText: "Fase {stage} concluída! A fase {next} foi desbloqueada.", allStagesClearText: "Todas as 30 fases e os seis chefes regionais foram concluídos! Repita qualquer fase para aprimorar seu esquadrão.", resultXpEarned: "XP da equipe +{earned} · Nv. {level} · XP {xp}/{goal}", resultGoldEarned: "Ouro de treinamento +{earned} · Total {total}", resultStageSaved: "Fases desbloqueadas {unlocked}/{total}", resultGrowthNext: "Bônus permanente ATQ +{atk} / PV +{hp} · faltam {remaining} XP para o próximo nível da equipe", skillReport: "Seu raciocínio lógico, planejamento e posicionamento tático melhoraram!", skillsLearned: "Habilidades treinadas: lógica, resolução de problemas e planejamento estratégico."
+    },
+    fr: {
+      savedProgress: "Progression enregistrée", stageClearText: "Niveau {stage} réussi ! Le niveau {next} est débloqué.", allStagesClearText: "Les 30 niveaux et les six boss régionaux sont terminés ! Rejouez à n’importe quel niveau pour perfectionner votre escouade.", resultXpEarned: "XP de l’escouade +{earned} · Niv. {level} · XP {xp}/{goal}", resultGoldEarned: "Or d’entraînement +{earned} · Total {total}", resultStageSaved: "Niveaux débloqués {unlocked}/{total}", resultGrowthNext: "Bonus permanent ATQ +{atk} / PV +{hp} · encore {remaining} XP avant le prochain niveau d’escouade", skillReport: "Votre logique, votre planification et votre placement tactique se sont améliorés !", skillsLearned: "Compétences entraînées : logique, résolution de problèmes et planification stratégique."
+    },
+    de: {
+      savedProgress: "Gespeicherter Fortschritt", stageClearText: "Stufe {stage} geschafft! Stufe {next} wurde freigeschaltet.", allStagesClearText: "Alle 30 Stufen und sechs Regionsbosse geschafft! Spiele eine beliebige Stufe erneut, um dein Team zu verbessern.", resultXpEarned: "Team-EP +{earned} · Stufe {level} · EP {xp}/{goal}", resultGoldEarned: "Trainingsgold +{earned} · Gesamt {total}", resultStageSaved: "Freigeschaltete Stufen {unlocked}/{total}", resultGrowthNext: "Dauerhafter Bonus ANG +{atk} / TP +{hp} · noch {remaining} EP bis zur nächsten Teamstufe", skillReport: "Logisches Denken, Planung und taktische Aufstellung haben sich verbessert!", skillsLearned: "Trainierte Fähigkeiten: Logik, Problemlösung und strategische Planung."
+    },
+    it: {
+      savedProgress: "Progressi salvati", stageClearText: "Livello {stage} completato! Il livello {next} è stato sbloccato.", allStagesClearText: "Tutti i 30 livelli e i sei boss regionali sono stati completati! Ripeti qualsiasi livello per perfezionare la squadra.", resultXpEarned: "PE della squadra +{earned} · Liv. {level} · PE {xp}/{goal}", resultGoldEarned: "Oro d’addestramento +{earned} · Totale {total}", resultStageSaved: "Livelli sbloccati {unlocked}/{total}", resultGrowthNext: "Bonus permanente ATT +{atk} / PS +{hp} · mancano {remaining} PE al prossimo livello della squadra", skillReport: "Il ragionamento logico, la pianificazione e il posizionamento tattico sono migliorati!", skillsLearned: "Abilità allenate: logica, risoluzione dei problemi e pianificazione strategica."
+    },
+    ru: {
+      savedProgress: "Сохранённый прогресс", stageClearText: "Этап {stage} пройден! Этап {next} открыт.", allStagesClearText: "Все 30 этапов и шесть региональных боссов пройдены! Повторяйте любой этап, чтобы улучшить отряд.", resultXpEarned: "Опыт отряда +{earned} · Ур. {level} · Опыт {xp}/{goal}", resultGoldEarned: "Тренировочное золото +{earned} · Всего {total}", resultStageSaved: "Открытые этапы {unlocked}/{total}", resultGrowthNext: "Постоянный бонус: атака +{atk} / здоровье +{hp} · до следующего уровня отряда ещё {remaining} опыта", skillReport: "Логика, планирование и тактическая расстановка стали лучше!", skillsLearned: "Освоенные навыки: логика, решение задач и стратегическое планирование."
+    },
+    hi: {
+      savedProgress: "सहेजी गई प्रगति", stageClearText: "चरण {stage} पूरा हुआ! चरण {next} खुल गया।", allStagesClearText: "सभी 30 चरण और छह क्षेत्रीय बॉस पूरे हुए! दल को निखारने के लिए कोई भी चरण फिर खेलें।", resultXpEarned: "दल अनुभव +{earned} · स्तर {level} · अनुभव {xp}/{goal}", resultGoldEarned: "प्रशिक्षण सिक्के +{earned} · कुल {total}", resultStageSaved: "खुले चरण {unlocked}/{total}", resultGrowthNext: "स्थायी बोनस: आक्रमण +{atk} / स्वास्थ्य +{hp} · अगले दल स्तर तक {remaining} अनुभव बाकी", skillReport: "तार्किक सोच, योजना और सामरिक व्यवस्था बेहतर हुई!", skillsLearned: "अभ्यासित कौशल: तर्क, समस्या समाधान और रणनीतिक योजना।"
+    }
+  };
+  Object.entries(localeOwnedResultCopy).forEach(([locale, copy]) => {
+    localeOwnedDecisionCopy[locale] = { ...localeOwnedDecisionCopy[locale], ...copy };
+    text[locale] = { ...(text[locale] || {}), ...copy };
+  });
+
   const paceCopy = {
     en: {
       paceGroup: "Combat pace",
@@ -797,6 +853,105 @@
     { id: 104, nameEn: "Eclipse Archowl", nameZht: "\u6708\u8755\u689f\u7687", targetMode: "back", ability: "eclipseBoss", roleEn: "Twin Moonfall", roleZht: "\u96d9\u6708\u661f\u843d", imageKey: "bossEclipse", isBoss: true, atkMod: 1.4, hpMod: 2.8 },
     { id: 105, nameEn: "Void Crown Emperor", nameZht: "\u865b\u7a7a\u738b\u51a0\u7345\u7687", targetMode: "row", ability: "voidBoss", roleEn: "End of Night", roleZht: "\u7d42\u591c\u964d\u81e8", imageKey: "bossVoid", isBoss: true, atkMod: 1.65, hpMod: 4.2 }
   ];
+
+  // Required-locale combat metadata is authored alongside the game rules so
+  // the Stage preparation preview and accessible squad cards never splice an
+  // English name or role into an otherwise localized decision surface.
+  const localeOwnedCombatMetadata = {
+    ko: {
+      animalNames: ["불꽃발 여우", "거품지느러미 수달", "북소리 팬더", "달모자 부엉이", "이끼껍질 거북", "무지개 도약 토끼", "톱니뿔 코뿔소", "폭발 갈기 사자", "불꽃발 대장", "코뿔소 수호자"],
+      animalRoles: ["전열 급습", "파도 돌봄", "리듬 수호", "후열 별똥별", "껍질 방벽", "현장 치료", "보호막 벽", "줄 포효", "지휘", "최후의 저항"],
+      enemyNames: ["그림자 다람쥐", "그림자 늑대", "그림자 멧돼지", "그림자 오소리", "그림자 골렘", "가시 여우 정찰병", "프리즘 까마귀", "철갑 멧돼지", "뿌리 수호자", "크리스털 셰이드", "균열 질주자", "흑요석 전차", "밤표범", "룬 늑대", "룬 까마귀", "일식 박쥐", "그림자 재규어"],
+      enemyRoles: ["후열 기습", "무리 물기", "선제 돌진", "굴 파기 수호", "바위 휩쓸기", "쌍 단검", "조각 급강하", "갑옷 돌진", "살아 있는 방벽", "생명 흡수", "균열 난무", "흑요석 벽", "침묵 사냥", "룬 무리", "룬 폭풍", "달빛 흡수", "황혼 연속 공격"],
+      bossNames: ["가시숲 우두머리", "프리즘 바실리스크", "심연 껍질 레비아탄", "마그마 엄니 거상", "일식 아치부엉이", "공허 왕관 황제"],
+      bossRoles: ["가시 왕관", "프리즘 폭풍", "침몰 요새", "칼데라 충돌", "쌍둥이 달 낙하", "밤의 종말"],
+      relicNames: ["단풍 방패", "참나무 씨앗", "그림자 발톱", "클로버 잎"],
+      relicDescs: ["전열 유닛이 멜론 보호막을 얻고 시작합니다.", "전투 중 모든 유닛의 체력이 1 증가합니다.", "전투 중 모든 유닛의 공격력이 1 증가합니다.", "각 웨이브의 첫 상점 다시 굴리기가 무료입니다."]
+    },
+    "pt-BR": {
+      animalNames: ["Raposa Pata de Faísca", "Lontra Barbatana-Bolha", "Panda Barriga de Tambor", "Coruja Boné Lunar", "Tartaruga Casco de Musgo", "Coelho Salto Arco-Íris", "Rinoceronte Chifre de Engrenagem", "Leão Juba Explosiva", "Capitão Pata de Faísca", "Guardião Rinoceronte"],
+      animalRoles: ["Investida frontal", "Cuidado da maré", "Guarda rítmica", "Chuva estelar traseira", "Muralha de casco", "Médico de campo", "Muralha de escudo", "Rugido de fileira", "Comando", "Última resistência"],
+      enemyNames: ["Esquilo Sombrio", "Lobo Sombrio", "Javali Sombrio", "Texugo Sombrio", "Golem Sombrio", "Batedor Raposa dos Espinhos", "Corvo Prismático", "Javali Couraçado", "Guardião das Raízes", "Sombra Cristalina", "Corredor da Fenda", "Tanque de Obsidiana", "Pantera Noturna", "Lobo Rúnico", "Corvo Rúnico", "Morcego do Eclipse", "Onça Sombria"],
+      enemyRoles: ["Emboscada traseira", "Mordida da matilha", "Investida inicial", "Guarda escavadora", "Varredura de pedra", "Duas adagas", "Mergulho de estilhaços", "Investida blindada", "Baluarte vivo", "Dreno de vida", "Rajada da fenda", "Muralha de obsidiana", "Caçada silenciosa", "Matilha rúnica", "Tempestade rúnica", "Dreno lunar", "Rajada do crepúsculo"],
+      bossNames: ["Alfa de Thornwood", "Basilisco Prismático", "Leviatã do Casco Abissal", "Colosso da Presa Magmática", "Arqui-Coruja do Eclipse", "Imperador da Coroa do Vazio"],
+      bossRoles: ["Coroa de espinhos", "Tempestade prismática", "Fortaleza submersa", "Impacto da caldeira", "Queda das luas gêmeas", "Fim da noite"],
+      relicNames: ["Escudo de Bordo", "Semente de Carvalho", "Garra Sombria", "Folha de Trevo"],
+      relicDescs: ["A unidade da frente começa com Escudo de Melão.", "Todas as unidades ganham +1 de Vida na batalha.", "Todas as unidades ganham +1 de Ataque na batalha.", "O primeiro reroll da loja em cada rodada é grátis."]
+    },
+    fr: {
+      animalNames: ["Renard Patte-Étincelle", "Loutre Nageoire-Bulle", "Panda Ventre-Tambour", "Hibou Bonnet-Lunaire", "Tortue Carapace-Mousse", "Lapin Saut Arc-en-ciel", "Rhinocéros Corne-Engrenage", "Lion Crinière-Explosion", "Capitaine Patte-Étincelle", "Gardien Rhinocéros"],
+      animalRoles: ["Bond avant", "Soin des marées", "Garde rythmique", "Pluie d’étoiles arrière", "Mur carapace", "Médecin de terrain", "Mur de bouclier", "Rugissement de rangée", "Commandement", "Dernier rempart"],
+      enemyNames: ["Écureuil de l’ombre", "Loup de l’ombre", "Sanglier de l’ombre", "Blaireau de l’ombre", "Golem de l’ombre", "Éclaireur renard épineux", "Corbeau prismatique", "Sanglier cuirassé", "Gardien des racines", "Ombre cristalline", "Coureur de faille", "Char d’obsidienne", "Panthère nocturne", "Loup runique", "Corbeau runique", "Chauve-souris de l’éclipse", "Jaguar de l’ombre"],
+      enemyRoles: ["Embuscade arrière", "Morsure de meute", "Charge initiale", "Garde fouisseuse", "Balayage de pierre", "Doubles dagues", "Plongeon d’éclats", "Charge blindée", "Bastion vivant", "Drain de vie", "Rafale de faille", "Mur d’obsidienne", "Chasse silencieuse", "Meute runique", "Tempête runique", "Drain lunaire", "Rafale du crépuscule"],
+      bossNames: ["Alpha de Thornwood", "Basilic prismatique", "Léviathan de la coquille abyssale", "Colosse à défenses magmatiques", "Archibou de l’éclipse", "Empereur de la Couronne du Vide"],
+      bossRoles: ["Couronne d’épines", "Tempête prismatique", "Forteresse engloutie", "Choc de caldeira", "Double chute lunaire", "Fin de la nuit"],
+      relicNames: ["Bouclier d’érable", "Graine de chêne", "Griffe d’ombre", "Feuille de trèfle"],
+      relicDescs: ["L’unité avant commence avec un bouclier de melon.", "Toutes les unités gagnent +1 en Santé au combat.", "Toutes les unités gagnent +1 en Attaque au combat.", "Le premier relance de boutique de chaque manche est gratuit."]
+    },
+    de: {
+      animalNames: ["Funkenpfoten-Fuchs", "Blasenflossen-Otter", "Trommelbauch-Panda", "Mondkappen-Eule", "Moospanzer-Schildkröte", "Regenbogenhoppser", "Getriebehorn-Nashorn", "Bummmähnen-Löwe", "Kapitän Funkenpfote", "Nashornwächter"],
+      animalRoles: ["Frontsprung", "Gezeitenpflege", "Rhythmuswache", "Sternenfall hinten", "Panzerwall", "Feldmedizin", "Schildwall", "Reihenbrüllen", "Kommando", "Letzter Stand"],
+      enemyNames: ["Schattenhörnchen", "Schattenwolf", "Schatteneber", "Schatten-Dachs", "Schatten-Golem", "Dornfuchs-Späher", "Prismakrähe", "Eisenhaut-Eber", "Wurzelwächter", "Kristallschatten", "Spaltenläufer", "Obsidiantank", "Nachtpanther", "Runenwolf", "Runenkrähe", "Eklipse-Fledermaus", "Schattenjaguar"],
+      enemyRoles: ["Hinterhalt hinten", "Rudelbiss", "Erstangriff", "Grabwache", "Steinschlag", "Zwillingsdolche", "Splittersturz", "Rüstungsladung", "Lebender Wall", "Lebensentzug", "Spaltenwirbel", "Obsidianwall", "Stille Jagd", "Runenrudel", "Runensturm", "Mondentzug", "Dämmerwirbel"],
+      bossNames: ["Thornwood-Alphatier", "Prismabasilisk", "Abgrundpanzer-Leviathan", "Magmazahn-Koloss", "Eklipse-Erz-Eule", "Leerenkronen-Kaiser"],
+      bossRoles: ["Dornenkrone", "Prismensturm", "Versunkene Festung", "Kratersturz", "Doppelmondfall", "Ende der Nacht"],
+      relicNames: ["Ahornschild", "Eichensamen", "Schattenklaue", "Kleeblatt"],
+      relicDescs: ["Das vordere Tier startet mit einem Melonenschild.", "Alle Einheiten erhalten im Kampf +1 Gesundheit.", "Alle Einheiten erhalten im Kampf +1 Angriff.", "Der erste Laden-Neuwurf jeder Runde ist kostenlos."]
+    },
+    it: {
+      animalNames: ["Volpe Zampa Scintilla", "Lontra Pinna Bolla", "Panda Pancia Tamburo", "Gufo Cappello Lunare", "Tartaruga Guscio Muschio", "Coniglio Salto Arcobaleno", "Rinoceronte Corno Ingranaggio", "Leone Criniera Boom", "Capitano Zampa Scintilla", "Guardiano Rinoceronte"],
+      animalRoles: ["Balzo frontale", "Cura delle maree", "Guardia ritmica", "Pioggia stellare posteriore", "Muro di guscio", "Medico da campo", "Muro di scudi", "Ruggito di fila", "Comando", "Ultima resistenza"],
+      enemyNames: ["Scoiattolo Ombra", "Lupo Ombra", "Cinghiale Ombra", "Tasso Ombra", "Golem Ombra", "Esploratore Volpe Spinosa", "Corvo Prisma", "Cinghiale Corazzato", "Guardiano delle Radici", "Ombra Cristallina", "Corridore della Fenditura", "Carro d’Ossidiana", "Pantera Notturna", "Lupo Runico", "Corvo Runico", "Pipistrello dell’Eclissi", "Giaguaro Ombra"],
+      enemyRoles: ["Imboscata posteriore", "Morso del branco", "Carica iniziale", "Guardia sotterranea", "Spazzata di pietra", "Doppi pugnali", "Tuffo di schegge", "Carica corazzata", "Baluardo vivente", "Drenaggio vitale", "Raffica della fenditura", "Muro d’ossidiana", "Caccia silenziosa", "Branco runico", "Tempesta runica", "Drenaggio lunare", "Raffica del crepuscolo"],
+      bossNames: ["Alfa di Thornwood", "Basilisco Prisma", "Leviatano del Guscio Abissale", "Colosso Zanna Magma", "Arcigufo dell’Eclissi", "Imperatore della Corona del Vuoto"],
+      bossRoles: ["Corona di spine", "Tempesta prismatica", "Fortezza sommersa", "Impatto della caldera", "Doppia caduta lunare", "Fine della notte"],
+      relicNames: ["Scudo d’Acero", "Seme di Quercia", "Artiglio d’Ombra", "Foglia di Trifoglio"],
+      relicDescs: ["L’unità anteriore inizia con Scudo di Melone.", "Tutte le unità ottengono +1 Salute in battaglia.", "Tutte le unità ottengono +1 Attacco in battaglia.", "Il primo rimescolamento del negozio in ogni round è gratuito."]
+    },
+    ru: {
+      animalNames: ["Лис Искролап", "Выдра Пузырь-плавник", "Панда Барабанное брюхо", "Сова Лунный колпак", "Черепаха Мшистый панцирь", "Радужный кролик", "Носорог Шестеророг", "Лев Взрывная грива", "Капитан Искролап", "Носорог-страж"],
+      animalRoles: ["Передний прыжок", "Приливное лечение", "Ритмичная стража", "Звездопад в тылу", "Панцирная стена", "Полевой лекарь", "Щитовая стена", "Рёв ряда", "Командование", "Последний рубеж"],
+      enemyNames: ["Теневая белка", "Теневой волк", "Теневой кабан", "Теневой барсук", "Теневой голем", "Шипастый лис-разведчик", "Призматический ворон", "Железношкурый кабан", "Страж корней", "Кристальная тень", "Бегун разлома", "Обсидиановый танк", "Ночная пантера", "Рунический волк", "Рунический ворон", "Летучая мышь затмения", "Теневой ягуар"],
+      enemyRoles: ["Засада в тылу", "Укус стаи", "Первый натиск", "Подземная стража", "Каменный взмах", "Два кинжала", "Пикирование осколков", "Бронированный натиск", "Живой бастион", "Похищение жизни", "Шквал разлома", "Обсидиановая стена", "Тихая охота", "Руническая стая", "Рунический шторм", "Лунное поглощение", "Сумеречный шквал"],
+      bossNames: ["Альфа Thornwood", "Призматический василиск", "Левиафан бездны", "Магмовый клыкастый колосс", "Архисова затмения", "Император Короны Пустоты"],
+      bossRoles: ["Терновая корона", "Призматический шторм", "Затонувшая крепость", "Удар кальдеры", "Падение двух лун", "Конец ночи"],
+      relicNames: ["Кленовый щит", "Жёлудь", "Теневой коготь", "Клеверный лист"],
+      relicDescs: ["Передний боец начинает со щитом дыни.", "Все бойцы получают в бою +1 к здоровью.", "Все бойцы получают в бою +1 к атаке.", "Первая смена товаров в каждом раунде бесплатна."]
+    },
+    hi: {
+      animalNames: ["स्पार्क पॉ फॉक्स", "बबल फिन ऊदबिलाव", "ड्रम बेली पांडा", "मून कैप उल्लू", "मॉस शेल कछुआ", "रेनबो हॉप खरगोश", "गियर हॉर्न गैंडा", "बूम मेन शेर", "स्पार्क पॉ कप्तान", "गैंडा रक्षक"],
+      animalRoles: ["आगे की छलांग", "ज्वार उपचार", "लय रक्षक", "पीछे तारापात", "कवच दीवार", "मैदानी उपचारक", "ढाल दीवार", "पंक्ति दहाड़", "कमांड", "अंतिम मोर्चा"],
+      enemyNames: ["छाया गिलहरी", "छाया भेड़िया", "छाया जंगली सूअर", "छाया बिज्जू", "छाया गोलेम", "काँटेदार लोमड़ी टोही", "प्रिज़्म कौआ", "लोहे की खाल वाला सूअर", "जड़ रक्षक", "क्रिस्टल छाया", "दरार धावक", "ऑब्सीडियन टैंक", "रात्रि तेंदुआ", "रूण भेड़िया", "रूण कौआ", "ग्रहण चमगादड़", "छाया जगुआर"],
+      enemyRoles: ["पीछे घात", "झुंड काट", "पहला धावा", "बिल रक्षक", "पत्थर सफाया", "दो खंजर", "टुकड़ा गोता", "कवच धावा", "जीवित गढ़", "जीवन सोख", "दरार बौछार", "ऑब्सीडियन दीवार", "मौन शिकार", "रूण झुंड", "रूण तूफान", "चंद्र सोख", "सांझ बौछार"],
+      bossNames: ["थॉर्नवुड अल्फा", "प्रिज़्म बेसिलिस्क", "एबिस शेल लेवियाथन", "मैग्मा टस्क कोलोसस", "ग्रहण आर्कउल्लू", "वॉइड क्राउन सम्राट"],
+      bossRoles: ["काँटों का मुकुट", "प्रिज़्म तूफान", "डूबा किला", "काल्डेरा टक्कर", "जुड़वाँ चंद्र पतन", "रात का अंत"],
+      relicNames: ["मेपल ढाल", "ओक बीज", "छाया पंजा", "क्लोवर पत्ती"],
+      relicDescs: ["आगे की यूनिट खरबूजे की ढाल के साथ शुरू होती है।", "लड़ाई में सभी यूनिट को +1 स्वास्थ्य मिलता है।", "लड़ाई में सभी यूनिट को +1 आक्रमण मिलता है।", "हर लहर में दुकान का पहला पुनः-चयन मुफ्त है।"]
+    }
+  };
+  for (const [localeKey, copy] of Object.entries(localeOwnedCombatMetadata)) {
+    const applyFields = (records, names, roles) => {
+      records.forEach((record, index) => {
+        if (names?.[index]) {
+          record.nameLocaleOwned ||= {};
+          record.nameLocaleOwned[localeKey] = names[index];
+        }
+        if (roles?.[index]) {
+          record.roleLocaleOwned ||= {};
+          record.roleLocaleOwned[localeKey] = roles[index];
+        }
+      });
+    };
+    applyFields(ANIMAL_METADATA, copy.animalNames, copy.animalRoles);
+    applyFields(ENEMY_METADATA, copy.enemyNames, copy.enemyRoles);
+    applyFields(BOSS_METADATA, copy.bossNames, copy.bossRoles);
+    RELIC_METADATA.forEach((record, index) => {
+      record.nameLocaleOwned ||= {};
+      record.descLocaleOwned ||= {};
+      record.nameLocaleOwned[localeKey] = copy.relicNames[index];
+      record.descLocaleOwned[localeKey] = copy.relicDescs[index];
+    });
+  }
 
   const REGION_METADATA = [
     { id: 1, nameEn: "Thornwood", nameZht: "\u834a\u68d8\u6797", overlay: "rgba(31,94,54,.62)" },
@@ -1972,6 +2127,7 @@
     const source = (active === "fr" && frenchRuntimeText[key]) || (active === "zh-Hant" && zhRuntimeText[key]) || text[active]?.[key] || text[locale]?.[key] || text.en[key] || key;
     const value = Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), source);
     if (active === "es" && key === "battleArena") return value;
+    if (localeOwnedDecisionCopy[active]?.[key]) return value;
     return runtimeTranslate(value);
   }
 
@@ -2013,7 +2169,7 @@
   function localizedField(record, field) {
     if (!record) return "";
     const active = actualGameLocale();
-    if (field === "name" && record.nameLocaleOwned?.[active]) return record.nameLocaleOwned[active];
+    if (record[`${field}LocaleOwned`]?.[active]) return record[`${field}LocaleOwned`][active];
     if (locale === "zh-Hant") return record[`${field}Zht`] || record[`${field}En`] || "";
     if (locale === "es") return record[`${field}Es`] || record[`${field}En`] || "";
     if (locale === "ja") return record[`${field}Ja`] || record[`${field}En`] || "";

@@ -7968,6 +7968,7 @@
       || (activeLocale === "ru" && id === "animal-one-line")
       || (["zh-Hant", "zh-Hans"].includes(activeLocale) && id === "block-blast")
       || (id === "shadow-wolf" && Boolean(override.intro))
+      || (id === "animal-auto-squad" && Boolean(override.intro))
       || (id === "animal-unblock" && activeLocale !== "en" && Boolean(override.intro))) return merged;
     const translateValue = (value) => {
       if (typeof value === "string") {
@@ -13854,6 +13855,355 @@
     for (const [id, copy] of Object.entries(localeData.games || {})) {
       localizedGames[code][id] = { ...(localizedGames[code][id] || {}), ...copy };
     }
+  }
+
+  // Animal Auto Squad's required locales own the complete player-facing Guide
+  // here. Keeping the full records together prevents the generic runtime
+  // catalog from mixing translated metadata with English story, systems, or
+  // FAQ paragraphs when a generated route is rendered.
+  const animalAutoSquadGuideLocaleCopy = {
+    ko: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "보통", time: "5~10분", gameplay: "전술 자동 전투",
+      genre: ["자동 전투", "전략", "동물"], skills: ["논리", "문제 해결", "전략 계획"],
+      guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드", noteTitle: "플레이어 및 저장 정보", hideScoreBands: true,
+      intro: "Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고, 원정 유물을 하나 고른 뒤 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 30개 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.",
+      story: [
+        "원정대는 그림자 동물, 크리스털 생물, 갑옷 수호자, 룬 야수, 일식 사냥꾼이 점령한 길을 따라갑니다. 분대는 Thornwood의 Mossy Trail에서 출발해 Prism Heart, Sunken Crown, Caldera King, Midnight Court를 지나 Void Crown으로 향합니다. 각 지역은 다른 적 조합과 최종 전투를 보여 주며, 여섯 지역을 모두 돌파하면 지역 봉쇄의 연결고리를 끊게 됩니다.",
+        "당신은 전장에 나서는 전사가 아니라 분대 지휘관입니다. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle과 해금 가능한 영웅들은 각자 공격 대상이나 지원 규칙이 다릅니다. 자동 전투가 시작되기 전에 함께 데려갈 여섯 명과 앞줄 또는 뒷줄 위치를 결정하세요."
+      ],
+      systems: [
+        "진형: 위쪽 세 칸은 앞줄, 아래쪽 세 칸은 뒷줄입니다. 일부 유닛은 선두 적을 공격하고, Moon Cap Owl은 뒷줄을 노리며, Boom Mane Lion은 한 줄 전체를 휩쓸기 때문에 위치가 중요합니다.",
+        "동물 역할: 공격, 회복, 보호막, 팀 강화, 기절 효과가 자동으로 처리됩니다. Bubble Fin Otter와 Rainbow Hop Rabbit은 약해진 아군을 돕고, Drum Belly Panda와 Moss Shell Turtle은 팀의 버티는 힘을 높입니다.",
+        "원정 유물: Maple Shield, Oak Seed, Shadow Claw, Clover Leaf 중 하나를 골라 이번 원정 전체에 적용합니다. 유물 선택은 무료이며, 선택지를 다시 굴리는 3 Diamonds는 선택 사항입니다.",
+        "임시 Supplies: 원정은 Supplies 12개로 시작합니다. 준비 화면에서 보유 동물을 선택해 이번 원정 동안 Attack과 Health를 올리는 임시 레벨을 구매할 수 있습니다. 전투 중 얻은 Supplies도 현재 원정에 남습니다.",
+        "영구 성장: 웨이브를 클리어하면 Team XP와 Training Gold를 얻습니다. Team Level은 공통 Attack과 Health 보너스를 주고, Training Gold는 일반 영웅을 해금하고 레벨 20까지 강화합니다. 프리미엄 영웅 두 명은 Training Gold 대신 선택형 Diamonds를 사용합니다."
+      ],
+      how: [
+        "가로 캠페인 레일에서 해금된 스테이지를 고르세요. 5번째 스테이지마다 보스 스테이지 표시가 붙습니다.",
+        "Training에서 저장한 Training Gold를 쓰고 일반 영웅을 해금하거나 영구 Team Level 보너스를 확인하세요.",
+        "배치 화면에서 세로 배낭의 보유 동물을 누른 뒤 여섯 진형 칸 중 하나를 누르세요. 배치된 동물을 누르면 이동하거나 교체할 수 있습니다.",
+        "원정 유물 하나를 고른 다음, 출전시킬 동물에게 원정 Supplies를 임시 강화로 사용하세요.",
+        "Start Battle을 누르세요. 공격, 회복, 보호막, 줄 공격과 기절 효과는 선택한 진형에 따라 자동으로 처리됩니다.",
+        "승리한 분대는 즉시 다음 웨이브로 이어집니다. 패배하면 Heart 하나를 잃고 준비 화면이 다시 열립니다. Heart가 모두 없어지면 선택형 부활을 수락하지 않는 한 원정이 끝납니다.",
+        "다섯 번째 웨이브를 클리어하면 스테이지, Team XP, Training Gold와 다음 해금 스테이지가 저장됩니다. Result 패널에서 Next Stage, Retry 또는 Back to Stages를 선택하세요."
+      ],
+      strategyTips: [
+        "Start Battle 전에 다섯 웨이브를 모두 생각하세요. 승리하면 다음 적 진형으로 바로 이어지므로 한 웨이브만 겨냥한 조합보다 균형 잡힌 선발대가 안전합니다.",
+        "압박을 견디거나 팀을 보호할 영웅을 앞줄에 두세요. Moss Shell Turtle, Drum Belly Panda, Gear Horn Rhino는 뒷줄 공격수와 회복수가 준비할 시간을 벌어 줍니다.",
+        "Attack 수치만 비교하지 말고 대상 규칙을 읽으세요. Moon Cap Owl은 약한 뒷줄 적에게 닿고 Boom Mane Lion은 한 줄에 적이 많을 때 강합니다.",
+        "보스 기술은 서로 다릅니다. Thornwood Alpha는 줄을 공격하고 자신을 보호하며, Abyss Shell Leviathan은 자기 편을 보호하고 회복시키고, Void Crown Emperor는 분대 전체를 공격하면서 체력을 회복합니다."
+      ],
+      progression: [
+        "스테이지 1~5는 선두 대상, 뒷줄 위협, 수호자와 두 줄 진형을 작은 Thornwood 부대로 가르칩니다. Thornwood Throne은 첫 보스 체크포인트입니다. 6~15에서는 뒷줄 공격, 체력 흡수, 줄 쓸기, 튼튼한 수호자를 쓰는 Crystal Cavern과 Sunken Ruin 적이 추가됩니다.",
+        "스테이지 16~25는 진형 규모와 능력의 겹침을 높입니다. Ember Peak는 돌진 멧돼지, Obsidian Tanks, Rift Runners, Rune Wolves를 섞고, Moonlit Citadel은 Night Panthers, Eclipse Bats, Rune Ravens, Shadow Jaguars를 더합니다. 보스 웨이브에도 다른 적이 있으므로 중심 보스만 처치해서는 충분하지 않습니다.",
+        "스테이지 26~30은 Void Crown 전체 적 목록을 사용합니다. 스테이지 29에는 플레이어의 최대 분대와 같은 여섯 적이 동시에 나올 수 있습니다. 스테이지 30 마지막 웨이브는 Void Crown Emperor와 룬, 일식, 그림자 호위대를 배치해 줄 범위, 회복, 피해와 캠페인에서 쌓은 영구 훈련을 시험합니다."
+      ],
+      designNote: "자동 전투는 의도된 구조입니다. 실행은 짧게 하고 핵심 작업은 진형, 역할 범위, 대상 순서, 유물 선택과 장기 훈련에 두었습니다. 성공한 웨이브가 다음 웨이브로 바로 이어져 다섯 웨이브가 따로 떨어진 메뉴 방문이 아니라 하나의 원정처럼 느껴집니다. 패배하면 준비 화면이 다시 열려 같은 실패한 배치를 무작정 반복하지 않고 대응할 수 있습니다. 탭으로 선택하고 배치하는 조작은 휴대폰에서 쓰기 쉽고, 데스크톱에서는 같은 카드를 마우스로 사용할 수 있습니다. WeightPlay의 턴제 Animal Rune Tactics나 실시간 Animal Crystal Survivor와 달리, Animal Auto Squad는 전투 중 공격을 지시하지 않고 계획을 세운 뒤 그 결과를 평가하게 합니다.",
+      parent: "후반 스테이지는 여섯 유닛 진형, 특수 대상 규칙, 영구 강화, 전투 실패 압박, 보스 능력과 선택형 Diamond 결정을 함께 다룹니다. 캠페인 진행, 마지막 진형과 칸 위치, Training Gold, Team Level, 해금 동물, 영구 동물 레벨, 완료 스테이지와 꾸미기 선택은 이 브라우저에 저장되며 기본 플레이에는 로그인이 필요하지 않습니다. 사이트 데이터를 지우면 이 기기의 진행이 사라질 수 있습니다.",
+      faq: [
+        ["Animal Auto Squad는 무료인가요?", "네. 30스테이지 캠페인은 WeightPlay 브라우저에서 필수 구매나 로그인 없이 실행됩니다."],
+        ["각 스테이지의 목표는 무엇인가요?", "다섯 개의 연속 웨이브를 버틸 분대를 만드는 것입니다. 다섯 번째 웨이브를 클리어하면 스테이지가 저장되고 다음 스테이지가 열리며, 5번째마다 지역 보스가 등장합니다."],
+        ["전투 중 공격을 조작하나요?", "아니요. 전투 전에 영웅, 두 줄 위치, 유물과 임시 강화를 정합니다. 이후 동물들이 자동으로 공격, 회복, 보호막과 능력을 사용합니다."],
+        ["매 웨이브 사이에 분대를 바꿀 수 있나요?", "승리하면 다음 웨이브로 바로 이동합니다. Heart가 남아 있는 동안 패배나 무승부 뒤에는 준비가 다시 열리므로 처음 진형은 여러 적 패턴을 견딜 수 있어야 합니다."],
+        ["웨이브에서 패배하면 어떻게 되나요?", "Heart 하나를 잃습니다. Heart가 남아 있으면 분대를 조정해 다시 시도할 수 있고, 모두 없어지면 원정을 끝내거나 선택형 5-Diamond 부활을 사용할 수 있습니다."],
+        ["Diamonds는 어디에 쓰나요?", "선택 사항입니다. 유물 선택 다시 굴리기, 실패한 원정 부활, 프리미엄 영웅 두 명 해금, 황금 꾸미기 해금에 사용할 수 있지만 일반 스테이지 진행에는 필요하지 않습니다."],
+        ["어떤 진행이 저장되나요?", "해금 및 완료 스테이지, 마지막 진형과 칸 위치, Team Level과 XP, Training Gold, 해금 동물, 영구 동물 레벨, 원정 기록과 꾸미기 선택이 이 기기의 브라우저에 저장됩니다."]
+      ]
+    },
+    "pt-BR": {
+      title: "Animal Auto Squad", age: "13+", difficulty: "Médio", time: "5–10 minutos", gameplay: "Auto-batalha tática",
+      genre: ["Auto-batalha", "Estratégia", "Animais"], skills: ["Lógica", "Resolução de problemas", "Planejamento estratégico"],
+      guideKicker: "Guia de jogo original da WeightPlay", guideTitleSuffix: "Guia do jogo", noteTitle: "Informações do jogador e do salvamento", hideScoreBands: true,
+      intro: "Animal Auto Squad é um jogo de estratégia de formação baseado nas decisões tomadas antes do combate. Desbloqueie e treine heróis animais, coloque até seis deles em duas fileiras, escolha uma relíquia de expedição e observe cada confronto ser resolvido automaticamente. A campanha tem 30 fases em Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Cada fase possui cinco ondas criadas à mão, e as fases 5, 10, 15, 20, 25 e 30 terminam com um chefe regional diferente.",
+      story: [
+        "A expedição percorre rotas ocupadas por animais sombrios, criaturas de cristal, guardiões blindados, feras rúnicas e caçadores do eclipse. A equipe começa na Mossy Trail de Thornwood e segue pelo Prism Heart, Sunken Crown, Caldera King, Midnight Court e pelas ruínas que levam à Void Crown. Cada região traz uma mistura de inimigos e um encontro final próprios; atravessar as seis regiões quebra toda a cadeia de bloqueios.",
+        "Você comanda a equipe em vez de lutar no campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle e os demais heróis desbloqueáveis têm regras de alvo ou suporte diferentes. Decida quais seis viajam juntos e se ficam na fileira da frente ou de trás antes de iniciar o confronto automático."
+      ],
+      systems: [
+        "Formação: os três espaços de cima são a fileira da frente e os três de baixo são a de trás. A posição importa: algumas unidades atacam o inimigo líder, Moon Cap Owl caça a fileira de trás e Boom Mane Lion varre uma fileira inteira.",
+        "Funções animais: ataque, cura, escudos, bônus de equipe e efeitos de desmaio são resolvidos automaticamente. Bubble Fin Otter e Rainbow Hop Rabbit protegem aliados enfraquecidos, enquanto Drum Belly Panda e Moss Shell Turtle aumentam a resistência do grupo.",
+        "Relíquias de expedição: escolha Maple Shield, Oak Seed, Shadow Claw ou Clover Leaf para aplicar uma regra durante toda a expedição. A escolha é gratuita; gastar 3 Diamonds para sortear as opções de novo é opcional.",
+        "Supplies temporários: cada expedição começa com 12 Supplies. Na preparação, selecione um animal que você possui para comprar um nível temporário que acrescenta Attack e Health àquela expedição. Supplies ganhos no combate continuam na rodada atual.",
+        "Crescimento permanente: ondas concluídas concedem Team XP e Training Gold. Team Level adiciona bônus compartilhados de Attack e Health, enquanto Training Gold desbloqueia e aprimora heróis comuns até o nível 20. Dois heróis premium usam Diamonds opcionais em vez de Training Gold."
+      ],
+      how: [
+        "Escolha uma fase desbloqueada na trilha de campanha horizontal; toda quinta fase é marcada como fase de chefe.",
+        "Abra Training para gastar Training Gold salvo, desbloquear outro herói comum ou conferir o bônus permanente de Team Level.",
+        "Na preparação, toque em um animal possuído na mochila vertical e depois em um dos seis espaços da formação. Toque em um animal colocado para movê-lo ou substituí-lo.",
+        "Escolha uma relíquia de expedição e gaste os Supplies da rodada em melhorias temporárias para os animais que pretende usar.",
+        "Pressione Start Battle. Ataques, cura, escudos, ataques por fileira e efeitos de desmaio acontecem automaticamente conforme a formação escolhida.",
+        "Uma equipe vencedora segue imediatamente para a próxima onda. Uma derrota custa um Heart e reabre a preparação; quando os Hearts acabam, a expedição termina se você não aceitar a ressurreição opcional.",
+        "Conclua a quinta onda para salvar a fase, Team XP, Training Gold e a próxima fase desbloqueada. No painel Result, use Next Stage, Retry ou Back to Stages."
+      ],
+      strategyTips: [
+        "Planeje as cinco ondas antes de pressionar Start Battle: as vitórias continuam direto na próxima formação, então uma abertura equilibrada é mais segura que um contra-ataque de uma só onda.",
+        "Use a fileira da frente para heróis que absorvem pressão ou protegem a equipe. Moss Shell Turtle, Drum Belly Panda e Gear Horn Rhino compram tempo para atacantes e curadores na fileira de trás.",
+        "Leia as regras de alvo em vez de comparar apenas Attack. Moon Cap Owl alcança inimigos frágeis na fileira de trás, enquanto Boom Mane Lion é melhor quando vários inimigos dividem uma fileira.",
+        "As habilidades dos chefes são diferentes. Thornwood Alpha ataca uma fileira e cria um escudo, Abyss Shell Leviathan protege e cura seu lado, e Void Crown Emperor causa dano à equipe inteira enquanto recupera a própria vida."
+      ],
+      progression: [
+        "As fases 1–5 ensinam alvo líder, ameaças da fileira de trás, guardas e a formação de duas fileiras com pequenos grupos de Thornwood. Thornwood Throne é o primeiro ponto de controle de chefe. As fases 6–15 acrescentam inimigos de Crystal Cavern e Sunken Ruin que atacam a retaguarda, drenam vida, varrem fileiras ou se escondem atrás de guardas resistentes.",
+        "As fases 16–25 aumentam o tamanho das formações e a sobreposição de habilidades. Ember Peak combina javalis de investida, Obsidian Tanks, Rift Runners e Rune Wolves; Moonlit Citadel adiciona Night Panthers, Eclipse Bats, Rune Ravens e Shadow Jaguars. As ondas de chefe também têm outros inimigos, então derrotar a peça central não basta.",
+        "As fases 26–30 usam todo o elenco de Void Crown. A fase 29 pode colocar seis inimigos ao mesmo tempo, igualando o limite da equipe do jogador. A onda final da fase 30 coloca Void Crown Emperor ao lado de escoltas rúnicas, do eclipse e sombrias, testando cobertura de fileiras, recuperação, dano e o treinamento permanente conquistado na campanha."
+      ],
+      designNote: "A batalha automática é intencional: a execução é curta para que o trabalho importante fique na formação, na cobertura de funções, na ordem dos alvos, na relíquia e no treinamento de longo prazo. Uma onda vencida flui para a próxima e faz a fase de cinco ondas parecer uma expedição única, não cinco visitas desconectadas a menus. As derrotas reabrem a preparação para que você possa responder em vez de repetir a mesma configuração. Selecionar e posicionar com toques funciona no celular, e as mesmas cartas podem ser usadas com o mouse no desktop. Ao contrário de Animal Rune Tactics, por turnos, ou Animal Crystal Survivor, em tempo real, Animal Auto Squad pede um plano e depois deixa você avaliar seu desempenho sem emitir ataques durante o combate.",
+      parent: "As fases avançadas combinam formações de seis unidades, regras de alvo especializadas, melhorias permanentes, pressão de falha, habilidades de chefe e decisões opcionais com Diamonds. O progresso da campanha, a última formação e os espaços usados, Training Gold, Team Level, animais desbloqueados, níveis permanentes, fases concluídas e escolha cosmética são salvos neste navegador; não é necessário fazer login para jogar. Limpar os dados deste site pode remover o progresso local.",
+      faq: [
+        ["Animal Auto Squad é gratuito?", "Sim. A campanha de 30 fases roda no navegador da WeightPlay sem compra ou login obrigatório."],
+        ["Qual é o objetivo de cada fase?", "Monte uma equipe que sobreviva a cinco ondas contínuas. Concluir a quinta salva a fase e desbloqueia a próxima; toda quinta fase termina com um chefe regional."],
+        ["Eu controlo os ataques durante a batalha?", "Não. Antes do combate você controla o elenco, as duas fileiras, a relíquia e as melhorias temporárias. Depois os animais atacam, curam, protegem e ativam habilidades automaticamente."],
+        ["Posso reorganizar a equipe entre todas as ondas?", "A vitória leva direto à próxima onda. A preparação reabre depois de uma derrota ou empate enquanto ainda houver Hearts, então a formação inicial deve lidar com mais de um padrão de inimigos."],
+        ["O que acontece quando perco uma onda?", "A rodada perde um Heart. Com Hearts restantes, ajuste a equipe e tente novamente; com zero Hearts, você pode encerrar a expedição ou usar a ressurreição opcional de cinco Diamonds."],
+        ["Para que servem os Diamonds?", "Eles são opcionais. Podem sortear relíquias novamente, reviver uma expedição, desbloquear dois heróis premium ou a skin dourada; a progressão normal não exige Diamonds."],
+        ["Que progresso é salvo?", "Fases desbloqueadas e concluídas, última formação e espaços usados, Team Level e XP, Training Gold, animais desbloqueados, níveis permanentes, registros da rodada e escolha cosmética ficam salvos neste dispositivo."]
+      ]
+    },
+    fr: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "Moyenne", time: "5 à 10 minutes", gameplay: "Auto-bataille tactique",
+      genre: ["Auto-bataille", "Stratégie", "Animaux"], skills: ["Logique", "Résolution de problèmes", "Planification stratégique"],
+      guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu", noteTitle: "Informations du joueur et sauvegarde", hideScoreBands: true,
+      intro: "Animal Auto Squad est un jeu de stratégie de formation fondé sur les décisions prises avant le combat. Déverrouillez et entraînez des héros animaux, placez-en jusqu’à six sur deux rangées, choisissez une relique d’expédition, puis observez chaque affrontement se résoudre automatiquement. La campagne compte 30 niveaux dans Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel et Void Crown. Chaque niveau possède cinq vagues conçues à la main, et les niveaux 5, 10, 15, 20, 25 et 30 se terminent par un boss régional différent.",
+      story: [
+        "L’expédition suit des routes occupées par des animaux d’ombre, des créatures de cristal, des gardiens blindés, des bêtes runiques et des chasseurs de l’éclipse. L’escouade commence sur Mossy Trail, à Thornwood, puis traverse Prism Heart, Sunken Crown, Caldera King et Midnight Court avant les abords brisés de Void Crown. Chaque région propose un mélange d’ennemis et une rencontre finale distincts ; traverser les six régions rompt toute la chaîne de barrages.",
+        "Vous commandez l’escouade au lieu de combattre sur le terrain. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle et les autres héros à débloquer ont chacun une règle de ciblage ou de soutien. Choisissez les six compagnons et leur rangée avant le début de l’affrontement automatique."
+      ],
+      systems: [
+        "Formation : les trois emplacements du haut forment la rangée avant et les trois du bas la rangée arrière. La position compte : certaines unités attaquent l’ennemi en tête, Moon Cap Owl vise l’arrière et Boom Mane Lion balaie une rangée entière.",
+        "Rôles animaux : attaque, soins, boucliers, bonus d’équipe et effets d’étourdissement se résolvent automatiquement. Bubble Fin Otter et Rainbow Hop Rabbit protègent les alliés affaiblis, tandis que Drum Belly Panda et Moss Shell Turtle renforcent la résistance du groupe.",
+        "Reliques d’expédition : choisissez Maple Shield, Oak Seed, Shadow Claw ou Clover Leaf pour appliquer une règle pendant toute l’expédition. Le choix est gratuit ; dépenser 3 Diamonds pour relancer les options est facultatif.",
+        "Supplies temporaires : chaque expédition commence avec 12 Supplies. Pendant la préparation, sélectionnez un animal possédé pour acheter un niveau temporaire qui ajoute Attack et Health à cette expédition. Les Supplies gagnés au combat restent dans la partie en cours.",
+        "Progression permanente : les vagues réussies rapportent Team XP et Training Gold. Team Level ajoute des bonus communs d’Attack et de Health, tandis que Training Gold débloque et améliore les héros ordinaires jusqu’au niveau 20. Deux héros premium utilisent des Diamonds facultatifs plutôt que Training Gold."
+      ],
+      how: [
+        "Choisissez un niveau débloqué sur la campagne horizontale ; un niveau sur cinq est marqué comme niveau de boss.",
+        "Ouvrez Training pour dépenser le Training Gold sauvegardé, débloquer un autre héros ordinaire ou consulter le bonus permanent de Team Level.",
+        "Au déploiement, touchez un animal possédé dans le sac vertical, puis l’un des six emplacements de formation. Touchez un animal placé pour le déplacer ou le remplacer.",
+        "Choisissez une relique d’expédition, puis dépensez les Supplies de la partie en améliorations temporaires pour les animaux envoyés au combat.",
+        "Appuyez sur Start Battle. Les attaques, soins, boucliers, attaques de rangée et effets d’étourdissement se résolvent automatiquement selon la formation.",
+        "Une escouade victorieuse passe immédiatement à la vague suivante. Une défaite coûte un Heart et rouvre la préparation ; lorsque les Hearts sont épuisés, l’expédition se termine sans résurrection facultative.",
+        "Terminez la cinquième vague pour enregistrer le niveau, Team XP, Training Gold et le prochain niveau débloqué. Depuis Result, choisissez Next Stage, Retry ou Back to Stages."
+      ],
+      strategyTips: [
+        "Planifiez les cinq vagues avant Start Battle : les victoires enchaînent directement la formation ennemie suivante, donc une ouverture équilibrée est plus sûre qu’un contre destiné à une seule vague.",
+        "Placez devant les héros capables d’absorber la pression ou de protéger l’équipe. Moss Shell Turtle, Drum Belly Panda et Gear Horn Rhino donnent du temps aux attaquants et soigneurs arrière.",
+        "Lisez les règles de ciblage au lieu de comparer seulement Attack. Moon Cap Owl atteint les ennemis fragiles à l’arrière, tandis que Boom Mane Lion est meilleur quand plusieurs ennemis partagent une rangée.",
+        "Les compétences des boss diffèrent. Thornwood Alpha attaque une rangée et se protège, Abyss Shell Leviathan protège et soigne son camp, et Void Crown Emperor blesse toute l’escouade tout en récupérant sa propre santé."
+      ],
+      progression: [
+        "Les niveaux 1 à 5 enseignent le ciblage du premier ennemi, les menaces arrière, les gardiens et la formation à deux rangées avec de petits groupes de Thornwood. Thornwood Throne est le premier point de contrôle de boss. Les niveaux 6 à 15 ajoutent des ennemis de Crystal Cavern et Sunken Ruin qui attaquent l’arrière, drainent la santé, balayent les rangées ou se cachent derrière des gardiens robustes.",
+        "Les niveaux 16 à 25 augmentent la taille des formations et le chevauchement des capacités. Ember Peak combine des sangliers chargeurs, Obsidian Tanks, Rift Runners et Rune Wolves ; Moonlit Citadel ajoute Night Panthers, Eclipse Bats, Rune Ravens et Shadow Jaguars. Les vagues de boss comprennent aussi d’autres ennemis : vaincre le centre ne suffit pas.",
+        "Les niveaux 26 à 30 utilisent tout le catalogue de Void Crown. Le niveau 29 peut aligner six ennemis, autant que la taille maximale de l’escouade. La dernière vague du niveau 30 place Void Crown Emperor avec des escortes runiques, d’éclipse et d’ombre, et teste couverture des rangées, récupération, dégâts et entraînement permanent."
+      ],
+      designNote: "La bataille automatique est intentionnelle : l’exécution reste courte pour que le travail important porte sur la formation, la couverture des rôles, l’ordre des cibles, la relique et l’entraînement à long terme. Une vague réussie enchaîne la suivante afin que le niveau de cinq vagues ressemble à une expédition unique plutôt qu’à cinq visites de menu. Les défaites rouvrent la préparation pour permettre une réponse au lieu de répéter la même configuration. La sélection et le placement par toucher conviennent au téléphone, et les mêmes cartes restent utilisables à la souris sur ordinateur. À la différence d’Animal Rune Tactics, au tour par tour, et d’Animal Crystal Survivor, en temps réel, Animal Auto Squad demande de construire un plan puis d’en observer le résultat sans commander d’attaques pendant le combat.",
+      parent: "Les niveaux avancés combinent formations de six unités, ciblages spécialisés, améliorations permanentes, pression de défaite, capacités de boss et choix facultatifs de Diamonds. La progression de campagne, la dernière formation et ses emplacements, Training Gold, Team Level, les animaux débloqués, leurs niveaux permanents, les niveaux terminés et le choix cosmétique sont enregistrés dans ce navigateur ; aucun compte n’est nécessaire pour jouer. Effacer les données du site peut supprimer cette progression locale.",
+      faq: [
+        ["Animal Auto Squad est-il gratuit ?", "Oui. La campagne de 30 niveaux fonctionne dans le navigateur WeightPlay sans achat ni compte obligatoire."],
+        ["Quel est le but d’un niveau ?", "Construire une escouade capable de survivre à cinq vagues continues. La cinquième vague terminée enregistre le niveau et débloque le suivant ; un boss apparaît tous les cinq niveaux."],
+        ["Contrôle-t-on les attaques pendant le combat ?", "Non. Avant le combat, vous contrôlez les héros, les deux rangées, la relique et les améliorations temporaires. Les animaux attaquent, soignent, protègent et déclenchent ensuite leurs capacités automatiquement."],
+        ["Puis-je réorganiser l’escouade entre chaque vague ?", "La victoire mène directement à la vague suivante. La préparation revient après une défaite ou une égalité tant qu’il reste des Hearts ; la formation initiale doit donc répondre à plusieurs modèles ennemis."],
+        ["Que se passe-t-il après une défaite ?", "La partie perd un Heart. Avec des Hearts restants, vous pouvez ajuster l’escouade et réessayer ; à zéro Heart, vous pouvez terminer l’expédition ou utiliser la résurrection facultative de cinq Diamonds."],
+        ["À quoi servent les Diamonds ?", "Ils sont facultatifs. Ils permettent de relancer les reliques, de ressusciter une expédition, de débloquer deux héros premium ou le cosmétique doré ; la progression normale n’en dépend pas."],
+        ["Quelle progression est sauvegardée ?", "Les niveaux débloqués et terminés, la dernière formation et ses emplacements, Team Level et XP, Training Gold, les animaux débloqués, leurs niveaux permanents, les résultats de partie et le choix cosmétique sont enregistrés sur cet appareil."]
+      ]
+    },
+    de: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "Mittel", time: "5–10 Minuten", gameplay: "Taktischer Auto-Battler",
+      genre: ["Auto-Battler", "Strategie", "Tiere"], skills: ["Logik", "Problemlösung", "Strategische Planung"],
+      guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden", noteTitle: "Spieler- und Speicherinformationen", hideScoreBands: true,
+      intro: "Animal Auto Squad ist ein Formation-Strategiespiel, in dem die Entscheidungen vor dem Kampf zählen. Schalte Tierhelden frei und trainiere sie, stelle bis zu sechs von ihnen in zwei Reihen auf, wähle ein Expeditionsrelikt und beobachte, wie jeder Kampf automatisch entschieden wird. Die Kampagne umfasst 30 Stufen in Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel und Void Crown. Jede Stufe hat fünf handgefertigte Wellen; die Stufen 5, 10, 15, 20, 25 und 30 enden mit einem eigenen regionalen Boss.",
+      story: [
+        "Die Expedition folgt Wegen, die von Schattenwesen, Kristallkreaturen, gepanzerten Wächtern, Runenbestien und Eclipse-Jägern besetzt sind. Das Team beginnt auf Thornwoods Mossy Trail und zieht durch Prism Heart, Sunken Crown, Caldera King und Midnight Court zu den zerbrochenen Zugängen von Void Crown. Jede Region bringt eine eigene Gegnerkombination und ein eigenes Finale; wer alle sechs Regionen durchquert, durchbricht die gesamte Kette der Blockaden.",
+        "Du führst das Team, statt selbst auf dem Feld zu kämpfen. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle und weitere freischaltbare Helden haben eigene Ziel- oder Unterstützungsregeln. Entscheide vor dem automatischen Kampf, welche sechs Tiere mitreisen und in welcher Reihe sie stehen."
+      ],
+      systems: [
+        "Formation: Die drei oberen Plätze bilden die vordere Reihe, die drei unteren die hintere. Die Position ist wichtig: Manche Einheiten greifen den vordersten Gegner an, Moon Cap Owl jagt die hintere Reihe und Boom Mane Lion fegt eine ganze Reihe hinweg.",
+        "Tierrollen: Angriffe, Heilung, Schilde, Teamboni und Betäubungseffekte werden automatisch ausgeführt. Bubble Fin Otter und Rainbow Hop Rabbit schützen geschwächte Verbündete, während Drum Belly Panda und Moss Shell Turtle die Widerstandskraft des Teams erhöhen.",
+        "Expeditionsrelikte: Wähle Maple Shield, Oak Seed, Shadow Claw oder Clover Leaf für eine Regel, die für die ganze Expedition gilt. Die Wahl ist kostenlos; ein erneutes Würfeln mit 3 Diamonds ist optional.",
+        "Temporäre Supplies: Jede Expedition beginnt mit 12 Supplies. Wähle in der Vorbereitung ein eigenes Tier und kaufe eine temporäre Stufe, die für diese Expedition Attack und Health erhöht. Während des Kampfes erhaltene Supplies bleiben im laufenden Durchgang.",
+        "Permanenter Fortschritt: Gewonnene Wellen geben Team XP und Training Gold. Team Level erhöht Attack und Health des Teams, Training Gold schaltet normale Helden frei und verbessert sie bis Level 20. Zwei Premiumhelden verwenden optionale Diamonds statt Training Gold."
+      ],
+      how: [
+        "Wähle eine freigeschaltete Stufe auf der waagerechten Kampagnenleiste; jede fünfte Stufe ist als Bossstufe markiert.",
+        "Öffne Training, um gespeichertes Training Gold auszugeben, einen weiteren normalen Helden freizuschalten oder den permanenten Team-Level-Bonus anzusehen.",
+        "Tippe bei der Aufstellung ein eigenes Tier im senkrechten Rucksack und danach einen der sechs Formationsplätze an. Tippe ein platziertes Tier an, um es zu verschieben oder zu ersetzen.",
+        "Wähle ein Expeditionsrelikt und gib die Supplies des Durchgangs für temporäre Verbesserungen der eingesetzten Tiere aus.",
+        "Drücke Start Battle. Angriffe, Heilung, Schilde, Reihenangriffe und Betäubungen werden entsprechend der gewählten Formation automatisch ausgeführt.",
+        "Ein siegreiches Team gelangt sofort zur nächsten Welle. Eine Niederlage kostet ein Heart und öffnet die Vorbereitung erneut; bei null Hearts endet die Expedition, sofern du die optionale Wiederbelebung nicht annimmst.",
+        "Schließe die fünfte Welle ab, um Stufe, Team XP, Training Gold und die nächste freigeschaltete Stufe zu speichern. Wähle im Result-Panel Next Stage, Retry oder Back to Stages."
+      ],
+      strategyTips: [
+        "Plane alle fünf Wellen, bevor du Start Battle drückst: Siege gehen direkt in die nächste Gegnerformation über, daher ist ein ausgeglichener Start sicherer als ein Konter für nur eine Welle.",
+        "Setze Helden, die Druck aushalten oder das Team schützen, nach vorn. Moss Shell Turtle, Drum Belly Panda und Gear Horn Rhino verschaffen Angreifern und Heilern hinten Zeit.",
+        "Lies die Zielregeln, statt nur Attack zu vergleichen. Moon Cap Owl erreicht verletzliche Gegner hinten, während Boom Mane Lion am stärksten ist, wenn mehrere Gegner eine Reihe teilen.",
+        "Bossfähigkeiten sind verschieden. Thornwood Alpha greift eine Reihe an und schützt sich, Abyss Shell Leviathan schützt und heilt seine Seite, und Void Crown Emperor verletzt das ganze Team und heilt sich dabei."
+      ],
+      progression: [
+        "Stufen 1–5 lehren vorderstes Ziel, Bedrohungen hinten, Wächter und die Zwei-Reihen-Formation mit kleinen Thornwood-Gruppen. Thornwood Throne ist der erste Boss-Checkpoint. Stufen 6–15 bringen Crystal-Cavern- und Sunken-Ruin-Gegner, die hinten angreifen, Gesundheit entziehen, Reihen fegen oder sich hinter robusten Wächtern verstecken.",
+        "Stufen 16–25 erhöhen Formationsgröße und Überschneidung der Fähigkeiten. Ember Peak kombiniert angreifende Wildschweine, Obsidian Tanks, Rift Runners und Rune Wolves; Moonlit Citadel fügt Night Panthers, Eclipse Bats, Rune Ravens und Shadow Jaguars hinzu. In Bosswellen stehen weitere Gegner, daher reicht der Sieg über das Zentrum nicht aus.",
+        "Stufen 26–30 verwenden das gesamte Void-Crown-Aufgebot. Stufe 29 kann sechs Gegner zugleich aufstellen, so viele wie das eigene Team maximal hat. In der letzten Welle von Stufe 30 steht Void Crown Emperor neben Runen-, Eclipse- und Schattenbegleitern und prüft Reihenabdeckung, Erholung, Schaden und dauerhaftes Training."
+      ],
+      designNote: "Der automatische Kampf ist beabsichtigt: Die Ausführung bleibt kurz, damit die wichtige Arbeit in Formation, Rollenabdeckung, Zielreihenfolge, Reliktwahl und langfristigem Training steckt. Eine gewonnene Welle fließt direkt in die nächste, damit die fünf Wellen wie eine Expedition statt wie fünf getrennte Menüs wirken. Niederlagen öffnen die Vorbereitung erneut, damit du reagieren kannst, statt dieselbe gescheiterte Aufstellung zu wiederholen. Tippen und Platzieren eignet sich für das Handy; auf dem Desktop funktionieren dieselben Karten mit der Maus. Anders als das rundenbasierte Animal Rune Tactics oder das Echtzeitspiel Animal Crystal Survivor lässt Animal Auto Squad dich einen Plan bauen und seine Wirkung beurteilen, ohne im Kampf einzelne Angriffe zu befehlen.",
+      parent: "Späte Stufen verbinden Sechserformationen, spezialisierte Zielregeln, permanente Verbesserungen, Niederlagendruck, Bossfähigkeiten und optionale Diamond-Entscheidungen. Kampagnenfortschritt, letzte Formation und Plätze, Training Gold, Team Level, freigeschaltete Tiere, permanente Tierlevel, abgeschlossene Stufen und kosmetische Auswahl werden in diesem Browser gespeichert; für das normale Spiel ist kein Login nötig. Das Löschen der Websitedaten kann den lokalen Fortschritt entfernen.",
+      faq: [
+        ["Ist Animal Auto Squad kostenlos?", "Ja. Die 30-stufige Kampagne läuft im WeightPlay-Browser ohne verpflichtenden Kauf oder Login."],
+        ["Was ist das Ziel jeder Stufe?", "Baue ein Team, das fünf aufeinanderfolgende Wellen überlebt. Nach Welle fünf wird die Stufe gespeichert und die nächste freigeschaltet; jede fünfte Stufe endet mit einem regionalen Boss."],
+        ["Steuere ich die Angriffe im Kampf?", "Nein. Vor dem Kampf bestimmst du Team, Reihen, Relikt und temporäre Verbesserungen. Danach greifen die Tiere automatisch an, heilen, schützen und aktivieren Fähigkeiten."],
+        ["Kann ich das Team zwischen jeder Welle umstellen?", "Ein Sieg führt direkt zur nächsten Welle. Nach einer Niederlage oder einem Gleichstand öffnet sich die Vorbereitung erneut, solange Hearts übrig sind; die Startformation sollte daher mehrere Muster aushalten."],
+        ["Was passiert bei einer verlorenen Welle?", "Der Durchgang verliert ein Heart. Solange Hearts übrig sind, kannst du das Team ändern und es erneut versuchen. Bei null Hearts beendest du die Expedition oder verwendest die optionale Wiederbelebung für fünf Diamonds."],
+        ["Wofür sind Diamonds da?", "Sie sind optional. Du kannst Reliktangebote neu würfeln, eine Expedition wiederbeleben, zwei Premiumhelden oder den goldenen Skin freischalten; für den normalen Fortschritt sind sie nicht nötig."],
+        ["Welcher Fortschritt wird gespeichert?", "Freigeschaltete und abgeschlossene Stufen, letzte Formation und Plätze, Team Level und XP, Training Gold, freigeschaltete Tiere, permanente Tierlevel, Rundenergebnisse und die kosmetische Auswahl werden auf diesem Gerät gespeichert."]
+      ]
+    },
+    it: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "Media", time: "5–10 minuti", gameplay: "Auto-battler tattico",
+      genre: ["Auto-battler", "Strategia", "Animali"], skills: ["Logica", "Risoluzione dei problemi", "Pianificazione strategica"],
+      guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida del gioco", noteTitle: "Informazioni del giocatore e salvataggio", hideScoreBands: true,
+      intro: "Animal Auto Squad è un gioco di strategia della formazione basato sulle decisioni prese prima del combattimento. Sblocca e allena eroi animali, posizionane fino a sei in due file, scegli una reliquia della spedizione e osserva ogni scontro risolversi automaticamente. La campagna comprende 30 livelli nelle regioni Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Ogni livello ha cinque ondate create a mano; i livelli 5, 10, 15, 20, 25 e 30 terminano con un boss regionale diverso.",
+      story: [
+        "La spedizione segue percorsi occupati da animali d’ombra, creature di cristallo, guardiani corazzati, bestie runiche e cacciatori dell’eclissi. La squadra parte dal Mossy Trail di Thornwood e attraversa Prism Heart, Sunken Crown, Caldera King e Midnight Court prima di arrivare agli accessi spezzati di Void Crown. Ogni regione propone una combinazione di nemici e un incontro finale diversi; superarle tutte spezza la catena completa dei blocchi regionali.",
+        "Tu comandi la squadra invece di combattere sul campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle e gli altri eroi sbloccabili hanno regole di bersaglio o supporto specifiche. Decidi quali sei partiranno e in quale fila stare prima che inizi lo scontro automatico."
+      ],
+      systems: [
+        "Formazione: i tre slot superiori sono la fila anteriore e i tre inferiori quella posteriore. La posizione conta: alcune unità attaccano il nemico in testa, Moon Cap Owl cerca la fila posteriore e Boom Mane Lion spazza una fila intera.",
+        "Ruoli animali: attacchi, cure, scudi, bonus di squadra ed effetti di stordimento si risolvono automaticamente. Bubble Fin Otter e Rainbow Hop Rabbit proteggono gli alleati indeboliti, mentre Drum Belly Panda e Moss Shell Turtle aumentano la resistenza del gruppo.",
+        "Reliquie della spedizione: scegli Maple Shield, Oak Seed, Shadow Claw o Clover Leaf per una regola valida per tutta la spedizione. La scelta è gratuita; spendere 3 Diamonds per rimescolare le opzioni è facoltativo.",
+        "Supplies temporanei: ogni spedizione inizia con 12 Supplies. Durante la preparazione seleziona un animale posseduto e compra un livello temporaneo che aumenta Attack e Health per quella spedizione. I Supplies ottenuti in battaglia restano nella partita in corso.",
+        "Crescita permanente: le ondate superate assegnano Team XP e Training Gold. Team Level aggiunge bonus condivisi ad Attack e Health, mentre Training Gold sblocca e potenzia gli eroi normali fino al livello 20. Due eroi premium usano Diamonds opzionali invece di Training Gold."
+      ],
+      how: [
+        "Scegli un livello sbloccato sulla barra orizzontale della campagna; ogni quinto livello è indicato come livello boss.",
+        "Apri Training per spendere il Training Gold salvato, sbloccare un altro eroe normale o controllare il bonus permanente di Team Level.",
+        "Durante il dispiegamento tocca un animale posseduto nello zaino verticale e poi uno dei sei slot della formazione. Tocca un animale posizionato per spostarlo o sostituirlo.",
+        "Scegli una reliquia della spedizione, poi spendi i Supplies della partita per potenziamenti temporanei degli animali che vuoi schierare.",
+        "Premi Start Battle. Attacchi, cure, scudi, attacchi di fila ed effetti di stordimento si risolvono automaticamente in base alla formazione scelta.",
+        "Una squadra vittoriosa passa subito all’ondata successiva. Una sconfitta costa un Heart e riapre la preparazione; quando gli Hearts finiscono la spedizione termina, a meno che tu non accetti la resurrezione opzionale.",
+        "Completa la quinta ondata per salvare il livello, Team XP, Training Gold e il livello successivo sbloccato. Dal pannello Result usa Next Stage, Retry o Back to Stages."
+      ],
+      strategyTips: [
+        "Pianifica tutte e cinque le ondate prima di premere Start Battle: le vittorie portano direttamente alla formazione nemica successiva, quindi un’apertura equilibrata è più sicura di un contromossa per una sola ondata.",
+        "Metti davanti gli eroi capaci di assorbire pressione o proteggere la squadra. Moss Shell Turtle, Drum Belly Panda e Gear Horn Rhino danno tempo ad attaccanti e curatori posteriori.",
+        "Leggi le regole dei bersagli invece di confrontare solo Attack. Moon Cap Owl raggiunge i nemici fragili in fondo, mentre Boom Mane Lion è più forte quando più nemici condividono una fila.",
+        "Le abilità dei boss sono diverse. Thornwood Alpha attacca una fila e si protegge, Abyss Shell Leviathan protegge e cura il proprio lato, e Void Crown Emperor danneggia tutta la squadra recuperando la propria salute."
+      ],
+      progression: [
+        "I livelli 1–5 insegnano il bersaglio in testa, le minacce posteriori, le guardie e la formazione a due file con piccoli gruppi di Thornwood. Thornwood Throne è il primo checkpoint boss. I livelli 6–15 aggiungono nemici di Crystal Cavern e Sunken Ruin che attaccano la fila posteriore, prosciugano salute, spazzano le file o si nascondono dietro guardie robuste.",
+        "I livelli 16–25 aumentano dimensione della formazione e sovrapposizione delle abilità. Ember Peak combina cinghiali in carica, Obsidian Tanks, Rift Runners e Rune Wolves; Moonlit Citadel aggiunge Night Panthers, Eclipse Bats, Rune Ravens e Shadow Jaguars. Le ondate boss hanno anche altri nemici: sconfiggere il pezzo centrale non basta.",
+        "I livelli 26–30 usano l’intero gruppo di Void Crown. Il livello 29 può schierare sei nemici, quanti sono gli slot massimi del giocatore. L’ondata finale del livello 30 mette Void Crown Emperor accanto a scorte runiche, dell’eclissi e d’ombra, mettendo alla prova copertura delle file, recupero, danno e allenamento permanente."
+      ],
+      designNote: "La battaglia automatica è intenzionale: l’esecuzione è breve perché il lavoro importante resti nella formazione, nella copertura dei ruoli, nell’ordine dei bersagli, nella reliquia e nell’allenamento a lungo termine. Un’ondata vinta fluisce direttamente nella successiva, così il livello da cinque ondate sembra una spedizione unica e non cinque visite separate ai menu. Le sconfitte riaprono la preparazione, permettendo di reagire invece di ripetere la stessa configurazione fallita. Selezione e posizionamento a tocco funzionano sul telefono; su desktop le stesse carte sono utilizzabili con il mouse. A differenza di Animal Rune Tactics, a turni, e Animal Crystal Survivor, in tempo reale, Animal Auto Squad chiede di costruire un piano e valutarne l’esito senza impartire attacchi durante il combattimento.",
+      parent: "I livelli avanzati combinano formazioni da sei unità, bersagli specializzati, potenziamenti permanenti, pressione della sconfitta, abilità dei boss e scelte opzionali con Diamonds. Progressi della campagna, ultima formazione e slot, Training Gold, Team Level, animali sbloccati, livelli permanenti, livelli completati e scelta cosmetica vengono salvati in questo browser; non serve un account per giocare. Cancellare i dati del sito può rimuovere i progressi locali.",
+      faq: [
+        ["Animal Auto Squad è gratuito?", "Sì. La campagna di 30 livelli funziona nel browser WeightPlay senza acquisto o accesso obbligatorio."],
+        ["Qual è l’obiettivo di ogni livello?", "Costruire una squadra che sopravviva a cinque ondate consecutive. Superare la quinta salva il livello e sblocca il successivo; ogni quinto livello termina con un boss regionale."],
+        ["Controllo gli attacchi durante la battaglia?", "No. Prima del combattimento controlli rosa, due file, reliquia e potenziamenti temporanei. Poi gli animali attaccano, curano, proteggono e attivano le abilità automaticamente."],
+        ["Posso riorganizzare la squadra tra ogni ondata?", "La vittoria porta direttamente all’ondata successiva. La preparazione si riapre dopo una sconfitta o un pareggio finché restano Hearts, quindi la formazione iniziale deve gestire più schemi nemici."],
+        ["Cosa succede quando perdo un’ondata?", "La partita perde un Heart. Con Hearts rimanenti puoi modificare la squadra e riprovare; con zero Hearts puoi terminare la spedizione o usare la resurrezione opzionale da cinque Diamonds."],
+        ["A cosa servono i Diamonds?", "Sono opzionali. Permettono di rimescolare le reliquie, resuscitare una spedizione, sbloccare due eroi premium o la skin dorata; non sono necessari per la progressione normale."],
+        ["Quali progressi vengono salvati?", "Livelli sbloccati e completati, ultima formazione e slot, Team Level e XP, Training Gold, animali sbloccati, livelli permanenti, risultati della partita e scelta cosmetica vengono salvati su questo dispositivo."]
+      ]
+    },
+    ru: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "Средняя", time: "5–10 минут", gameplay: "Тактический автобаттлер",
+      genre: ["Автобаттлер", "Стратегия", "Животные"], skills: ["Логика", "Решение задач", "Стратегическое планирование"],
+      guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник", noteTitle: "Сведения об игроке и сохранении", hideScoreBands: true,
+      intro: "Animal Auto Squad — это стратегия построения строя, где главное — решения до начала боя. Открывайте и тренируйте звериных героев, размещайте до шести из них в два ряда, выбирайте одну реликвию экспедиции и наблюдайте, как каждый бой разрешается автоматически. Кампания состоит из 30 этапов в Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel и Void Crown. В каждом этапе пять авторских волн, а этапы 5, 10, 15, 20, 25 и 30 заканчиваются своим региональным боссом.",
+      story: [
+        "Экспедиция идёт по маршрутам, занятым теневыми животными, кристальными существами, бронированными стражами, руническими зверями и охотниками затмения. Отряд начинает на Mossy Trail в Thornwood, затем проходит через Prism Heart, Sunken Crown, Caldera King и Midnight Court к разрушенным подступам Void Crown. В каждом регионе свой состав врагов и финальная встреча; прохождение всех шести регионов разрывает всю цепь региональных блокад.",
+        "Вы командуете отрядом, а не сражаетесь на поле. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle и другие открываемые герои имеют собственные правила целей и поддержки. До автоматического боя решите, какие шесть героев отправятся в путь и в каком ряду будут стоять."
+      ],
+      systems: [
+        "Строй: три верхних места — передний ряд, три нижних — задний. Позиция важна: одни бойцы атакуют ведущего врага, Moon Cap Owl охотится на задний ряд, а Boom Mane Lion сметает целый ряд.",
+        "Роли животных: атаки, лечение, щиты, усиления команды и оглушение срабатывают автоматически. Bubble Fin Otter и Rainbow Hop Rabbit защищают ослабленных союзников, а Drum Belly Panda и Moss Shell Turtle повышают выносливость отряда.",
+        "Реликвии экспедиции: выберите Maple Shield, Oak Seed, Shadow Claw или Clover Leaf для правила на всю экспедицию. Выбор бесплатен; повторно бросить варианты за 3 Diamonds можно по желанию.",
+        "Временные Supplies: каждая экспедиция начинается с 12 Supplies. На подготовке выберите принадлежащее вам животное и купите временный уровень, который добавит Attack и Health в этой экспедиции. Supplies, полученные в бою, остаются в текущем походе.",
+        "Постоянный рост: за пройденные волны выдаются Team XP и Training Gold. Team Level добавляет общие бонусы Attack и Health, а Training Gold открывает и улучшает обычных героев до 20-го уровня. Два премиальных героя используют необязательные Diamonds вместо Training Gold."
+      ],
+      how: [
+        "Выберите открытый этап на горизонтальной кампанийной шкале; каждый пятый этап отмечен как этап босса.",
+        "Откройте Training, чтобы потратить сохранённый Training Gold, открыть обычного героя или посмотреть постоянный бонус Team Level.",
+        "На подготовке нажмите на принадлежащее животное в вертикальном рюкзаке, затем на одно из шести мест строя. Нажмите на размещённое животное, чтобы переместить или заменить его.",
+        "Выберите одну реликвию экспедиции, затем потратьте Supplies похода на временные улучшения отправляемых животных.",
+        "Нажмите Start Battle. Атаки, лечение, щиты, атаки по ряду и оглушение срабатывают автоматически согласно выбранному строю.",
+        "Победивший отряд сразу переходит в следующую волну. Поражение отнимает один Heart и снова открывает подготовку; при нуле Hearts поход заканчивается, если не принять необязательное возрождение.",
+        "Пройдите пятую волну, чтобы сохранить этап, Team XP, Training Gold и открыть следующий этап. В панели Result выберите Next Stage, Retry или Back to Stages."
+      ],
+      strategyTips: [
+        "Планируйте все пять волн до Start Battle: победа сразу ведёт к следующему строю врагов, поэтому сбалансированный старт надёжнее контрмеры под одну волну.",
+        "Ставьте впереди героев, способных выдержать давление или защитить команду. Moss Shell Turtle, Drum Belly Panda и Gear Horn Rhino дают время задним атакующим и лекарям.",
+        "Читайте правила целей, а не сравнивайте только Attack. Moon Cap Owl достаёт хрупких врагов в заднем ряду, а Boom Mane Lion особенно силён, когда несколько врагов стоят в одном ряду.",
+        "Навыки боссов различаются. Thornwood Alpha атакует ряд и ставит себе щит, Abyss Shell Leviathan защищает и лечит свою сторону, а Void Crown Emperor наносит урон всему отряду и восстанавливает собственное здоровье."
+      ],
+      progression: [
+        "Этапы 1–5 знакомят с атакой ведущей цели, угрозами заднего ряда, стражами и двухрядным строем на небольших группах Thornwood. Thornwood Throne — первая контрольная точка босса. Этапы 6–15 добавляют врагов Crystal Cavern и Sunken Ruin, которые бьют задний ряд, высасывают здоровье, сметают ряды или прячутся за стойкими стражами.",
+        "Этапы 16–25 увеличивают размер строя и пересечение способностей. Ember Peak сочетает атакующих кабанов, Obsidian Tanks, Rift Runners и Rune Wolves; Moonlit Citadel добавляет Night Panthers, Eclipse Bats, Rune Ravens и Shadow Jaguars. В волнах с боссом есть и другие враги, поэтому победить только главную цель недостаточно.",
+        "Этапы 26–30 используют весь состав Void Crown. На этапе 29 одновременно могут появиться шесть врагов — столько же, сколько мест в отряде игрока. Последняя волна этапа 30 ставит Void Crown Emperor рядом с руническим, затменным и теневым сопровождением и проверяет охват рядов, восстановление, урон и постоянную тренировку."
+      ],
+      designNote: "Автоматический бой задуман именно так: исполнение короткое, чтобы главная работа была в строе, покрытии ролей, порядке целей, выборе реликвии и долгой тренировке. Победа в волне сразу ведёт в следующую, поэтому пять волн ощущаются одной экспедицией, а не пятью разрозненными меню. После поражения открывается подготовка, чтобы игрок мог ответить на проблему, а не повторять ту же неудачную расстановку. Выбор касанием и размещение подходят для телефона, а на компьютере те же карточки работают мышью. В отличие от пошаговой Animal Rune Tactics и игры в реальном времени Animal Crystal Survivor, Animal Auto Squad предлагает составить план и оценить его результат без командования отдельными атаками во время боя.",
+      parent: "Поздние этапы объединяют строи из шести бойцов, специальные правила целей, постоянные улучшения, давление поражения, способности боссов и необязательные решения с Diamonds. Прогресс кампании, последний строй и места, Training Gold, Team Level, открытые животные, их постоянные уровни, пройденные этапы и косметический выбор сохраняются в этом браузере; для обычной игры вход не нужен. Очистка данных сайта может удалить локальный прогресс.",
+      faq: [
+        ["Animal Auto Squad бесплатна?", "Да. Кампания из 30 этапов запускается в браузере WeightPlay без обязательной покупки или входа."],
+        ["Какова цель каждого этапа?", "Соберите отряд, который переживёт пять непрерывных волн. После пятой этап сохраняется и открывается следующий, а каждый пятый этап заканчивается региональным боссом."],
+        ["Можно ли управлять атаками в бою?", "Нет. До боя вы выбираете состав, два ряда, реликвию и временные улучшения. Затем животные автоматически атакуют, лечат, защищают и используют способности."],
+        ["Можно ли менять строй между волнами?", "Победа сразу ведёт в следующую волну. После поражения или ничьей подготовка открывается снова, пока остаются Hearts, поэтому начальный строй должен отвечать нескольким моделям врагов."],
+        ["Что происходит после поражения в волне?", "Поход теряет один Heart. Пока Hearts есть, строй можно изменить и попробовать снова; при нуле Hearts можно закончить экспедицию или использовать необязательное возрождение за пять Diamonds."],
+        ["Для чего нужны Diamonds?", "Это необязательная валюта. Ею можно перебросить реликвии, возродить экспедицию, открыть двух премиальных героев или золотой косметический скин; обычному прохождению Diamonds не нужны."],
+        ["Какой прогресс сохраняется?", "На устройстве сохраняются открытые и пройденные этапы, последний строй и места, Team Level и XP, Training Gold, открытые животные, их постоянные уровни, записи походов и косметический выбор."]
+      ]
+    },
+    hi: {
+      title: "Animal Auto Squad", age: "13+", difficulty: "मध्यम", time: "5–10 मिनट", gameplay: "टैक्टिकल ऑटो-बैटलर",
+      genre: ["ऑटो-बैटलर", "रणनीति", "जानवर"], skills: ["तर्क", "समस्या समाधान", "रणनीतिक योजना"],
+      guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", hideScoreBands: true,
+      intro: "Animal Auto Squad एक फॉर्मेशन रणनीति गेम है जिसमें लड़ाई से पहले लिए गए फैसले सबसे महत्वपूर्ण हैं। जानवर नायकों को अनलॉक और प्रशिक्षित करें, उनमें से अधिकतम छह को दो पंक्तियों में रखें, एक अभियान अवशेष चुनें और हर मुकाबले को अपने-आप सुलझते देखें। अभियान Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel और Void Crown के छह क्षेत्रों में 30 चरणों का है। हर चरण में हाथ से बनाए गए पाँच वेव हैं और चरण 5, 10, 15, 20, 25 और 30 अलग क्षेत्रीय बॉस पर समाप्त होते हैं।",
+      story: [
+        "अभियान उन रास्तों से गुजरता है जिन पर छाया जानवर, क्रिस्टल जीव, कवचधारी रक्षक, रूण पशु और ग्रहण शिकारी कब्ज़ा किए हुए हैं। दल Thornwood के Mossy Trail से शुरू होकर Prism Heart, Sunken Crown, Caldera King और Midnight Court से गुजरता है और Void Crown के टूटे रास्तों तक पहुँचता है। हर क्षेत्र में अलग दुश्मन मिश्रण और अंतिम मुकाबला है; सभी छह क्षेत्रों को पार करने पर क्षेत्रीय नाकेबंदी की पूरी कड़ी टूटती है।",
+        "आप मैदान में लड़ने वाले योद्धा नहीं, दल के कमांडर हैं। Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle और बाकी अनलॉक होने वाले नायकों की लक्ष्य या सहायता नियम अलग हैं। अपने-आप होने वाली लड़ाई शुरू होने से पहले तय करें कि कौन से छह जानवर साथ जाएंगे और किसे आगे या पीछे की पंक्ति में रखना है।"
+      ],
+      systems: [
+        "फॉर्मेशन: ऊपर के तीन स्थान आगे की पंक्ति और नीचे के तीन स्थान पीछे की पंक्ति हैं। जगह मायने रखती है: कुछ यूनिट सबसे आगे वाले दुश्मन पर हमला करती हैं, Moon Cap Owl पीछे की पंक्ति को निशाना बनाता है और Boom Mane Lion पूरी पंक्ति पर वार करता है।",
+        "जानवरों की भूमिकाएँ: हमला, उपचार, ढाल, दल बोनस और बेहोशी प्रभाव अपने-आप लागू होते हैं। Bubble Fin Otter और Rainbow Hop Rabbit कमजोर साथियों की रक्षा करते हैं, जबकि Drum Belly Panda और Moss Shell Turtle दल की सहनशक्ति बढ़ाते हैं।",
+        "अभियान अवशेष: Maple Shield, Oak Seed, Shadow Claw या Clover Leaf में से एक चुनें और उसे पूरे अभियान पर लागू करें। अवशेष चुनना मुफ्त है; विकल्पों को 3 Diamonds में फिर से घुमाना वैकल्पिक है।",
+        "अस्थायी Supplies: हर अभियान 12 Supplies से शुरू होता है। तैयारी में अपने किसी जानवर को चुनकर अस्थायी स्तर खरीदें, जो उस अभियान में Attack और Health बढ़ाता है। लड़ाई में मिले Supplies मौजूदा अभियान में बने रहते हैं।",
+        "स्थायी प्रगति: जीते गए वेव Team XP और Training Gold देते हैं। Team Level साझा Attack और Health बोनस देता है, जबकि Training Gold सामान्य नायकों को अनलॉक और स्तर 20 तक उन्नत करता है। दो प्रीमियम नायक Training Gold की जगह वैकल्पिक Diamonds लेते हैं।"
+      ],
+      how: [
+        "क्षैतिज अभियान पट्टी से अनलॉक किया हुआ चरण चुनें; हर पाँचवाँ चरण बॉस चरण के रूप में चिह्नित होता है।",
+        "Training खोलकर सेव किया हुआ Training Gold खर्च करें, सामान्य नायक अनलॉक करें या स्थायी Team Level बोनस देखें।",
+        "तैनाती में लंबवत बैकपैक के अपने जानवर को टैप करें और फिर छह फॉर्मेशन स्थानों में से एक को टैप करें। रखे हुए जानवर को टैप करके उसे स्थानांतरित या बदलें।",
+        "एक अभियान अवशेष चुनें और अभियान के Supplies को चुने गए जानवरों के अस्थायी उन्नयन पर खर्च करें।",
+        "Start Battle दबाएँ। चुने हुए फॉर्मेशन के अनुसार हमले, उपचार, ढाल, पंक्ति हमले और बेहोशी अपने-आप होते हैं।",
+        "जीतने वाला दल तुरंत अगले वेव में जाता है। हारने पर एक Heart कम होता है और तैयारी फिर खुलती है; Heart खत्म होने पर वैकल्पिक पुनर्जीवन न लेने पर अभियान समाप्त हो जाता है।",
+        "पाँचवाँ वेव पूरा करके चरण, Team XP, Training Gold और अगला अनलॉक चरण सेव करें। Result पैनल में Next Stage, Retry या Back to Stages चुनें।"
+      ],
+      strategyTips: [
+        "Start Battle से पहले पाँचों वेव की योजना बनाएँ: जीत के बाद अगला दुश्मन फॉर्मेशन तुरंत आता है, इसलिए केवल एक वेव के लिए बनाया गया जवाब देने वाले दल से संतुलित शुरुआती दल सुरक्षित है।",
+        "आगे की पंक्ति में ऐसे नायक रखें जो दबाव सह सकें या दल की रक्षा करें। Moss Shell Turtle, Drum Belly Panda और Gear Horn Rhino पीछे के हमलावरों और उपचारकों के लिए समय बनाते हैं।",
+        "सिर्फ Attack की तुलना न करें, लक्ष्य नियम पढ़ें। Moon Cap Owl कमजोर पीछे वाले दुश्मनों तक पहुँचता है, जबकि Boom Mane Lion एक ही पंक्ति में कई दुश्मन होने पर अधिक मजबूत है।",
+        "बॉस की क्षमताएँ अलग हैं। Thornwood Alpha एक पंक्ति पर हमला करके खुद को ढाल देता है, Abyss Shell Leviathan अपने पक्ष की रक्षा और उपचार करता है, और Void Crown Emperor पूरे दल को नुकसान देकर अपना स्वास्थ्य लौटाता है।"
+      ],
+      progression: [
+        "चरण 1–5 छोटे Thornwood दलों में सबसे आगे वाले लक्ष्य, पीछे की धमकी, रक्षक और दो-पंक्ति फॉर्मेशन सिखाते हैं। Thornwood Throne पहला बॉस जाँच-बिंदु है। चरण 6–15 में Crystal Cavern और Sunken Ruin के ऐसे दुश्मन आते हैं जो पीछे हमला करते हैं, स्वास्थ्य खींचते हैं, पंक्ति साफ करते हैं या मजबूत रक्षकों के पीछे छिपते हैं।",
+        "चरण 16–25 फॉर्मेशन आकार और क्षमताओं के मेल को बढ़ाते हैं। Ember Peak में दौड़ते सूअर, Obsidian Tanks, Rift Runners और Rune Wolves मिलते हैं; Moonlit Citadel में Night Panthers, Eclipse Bats, Rune Ravens और Shadow Jaguars जुड़ते हैं। बॉस वेव में दूसरे दुश्मन भी होते हैं, इसलिए मुख्य बॉस को हराना ही पर्याप्त नहीं है।",
+        "चरण 26–30 में Void Crown के सभी दुश्मन आते हैं। चरण 29 में एक साथ छह दुश्मन हो सकते हैं, जितने खिलाड़ी के अधिकतम दल में होते हैं। चरण 30 का अंतिम वेव Void Crown Emperor के साथ रूण, ग्रहण और छाया रक्षक रखता है और पंक्ति कवरेज, रिकवरी, नुकसान तथा अभियान में अर्जित स्थायी प्रशिक्षण की परीक्षा लेता है।"
+      ],
+      designNote: "ऑटो-बैटल जानबूझकर रखा गया है: क्रियान्वयन छोटा है ताकि असली काम फॉर्मेशन, भूमिकाओं की कवरेज, लक्ष्य क्रम, अवशेष और लंबे समय के प्रशिक्षण में हो। जीता हुआ वेव सीधे अगले वेव में जाता है, इसलिए पाँच-वेव चरण पाँच अलग मेनू यात्राओं के बजाय एक अभियान जैसा लगता है। हार के बाद तैयारी खुलती है ताकि खिलाड़ी वही असफल व्यवस्था दोहराने के बजाय जवाब दे सके। टैप से चुनना और रखना फोन पर आसान है और डेस्कटॉप पर वही कार्ड माउस से चलते हैं। बारी-आधारित Animal Rune Tactics और रीयल-टाइम Animal Crystal Survivor से अलग, Animal Auto Squad में खिलाड़ी योजना बनाता है और लड़ाई के दौरान हमले चलाए बिना उसके परिणाम को देखता है।",
+      parent: "बाद के चरण छह-यूनिट फॉर्मेशन, विशेष लक्ष्य नियम, स्थायी उन्नयन, हार का दबाव, बॉस क्षमताएँ और वैकल्पिक Diamond फैसले जोड़ते हैं। अभियान प्रगति, पिछला फॉर्मेशन और स्थान, Training Gold, Team Level, अनलॉक जानवर, स्थायी स्तर, पूरे किए चरण और कॉस्मेटिक चुनाव इसी ब्राउज़र में सेव होते हैं; सामान्य खेल के लिए लॉगिन ज़रूरी नहीं है। साइट डेटा मिटाने पर स्थानीय प्रगति हट सकती है।",
+      faq: [
+        ["क्या Animal Auto Squad मुफ्त है?", "हाँ। 30 चरणों का अभियान WeightPlay ब्राउज़र में बिना अनिवार्य खरीद या लॉगिन के चलता है।"],
+        ["हर चरण का लक्ष्य क्या है?", "ऐसा दल बनाना जो लगातार पाँच वेव झेल सके। पाँचवाँ वेव पूरा करने पर चरण सेव होता है और अगला खुलता है; हर पाँचवाँ चरण क्षेत्रीय बॉस पर समाप्त होता है।"],
+        ["क्या लड़ाई में हमले नियंत्रित कर सकता हूँ?", "नहीं। लड़ाई से पहले आप दल, दोनों पंक्तियाँ, अवशेष और अस्थायी उन्नयन चुनते हैं। उसके बाद जानवर अपने-आप हमला, उपचार, रक्षा और क्षमताएँ करते हैं।"],
+        ["क्या हर वेव के बीच दल बदल सकता हूँ?", "जीत के बाद अगला वेव तुरंत शुरू होता है। हार या ड्रॉ के बाद Heart बचे होने पर तैयारी फिर खुलती है, इसलिए शुरुआती फॉर्मेशन को एक से अधिक दुश्मन पैटर्न संभालने चाहिए।"],
+        ["वेव हारने पर क्या होता है?", "अभियान का एक Heart कम होता है। Heart बचा हो तो दल बदलकर फिर कोशिश कर सकते हैं; शून्य Heart पर अभियान समाप्त करें या पाँच Diamond का वैकल्पिक पुनर्जीवन इस्तेमाल करें।"],
+        ["Diamonds का उपयोग किसलिए है?", "Diamonds वैकल्पिक हैं। इनसे अवशेष विकल्प फिर घुमाए, अभियान पुनर्जीवित, दो प्रीमियम नायक या सुनहरी कॉस्मेटिक स्किन अनलॉक की जा सकती है; सामान्य प्रगति के लिए ये ज़रूरी नहीं हैं।"],
+        ["कौन सी प्रगति सेव होती है?", "अनलॉक और पूरे किए चरण, पिछला फॉर्मेशन और स्थान, Team Level और XP, Training Gold, अनलॉक जानवर, स्थायी स्तर, अभियान रिकॉर्ड और कॉस्मेटिक चुनाव इस डिवाइस पर सेव होते हैं।"]
+      ]
+    }
+  };
+  for (const [locale, copy] of Object.entries(animalAutoSquadGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-auto-squad"] = { ...games["animal-auto-squad"], ...copy };
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGameplayProfiles[locale]["animal-auto-squad"] = { gameplay: copy.gameplay, genre: copy.genre };
   }
 
   [

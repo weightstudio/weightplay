@@ -2418,6 +2418,14 @@ const classicLogicEntries = [
   ["naval-battle", ["Naval Battle", "海戰棋", "海战棋", "海戦ゲーム", "해전", "Batalla naval", "Batalha Naval", "Bataille navale", "Seeschlacht", "Battaglia navale", "Морской бой", "नौसैनिक युद्ध", "المعركة البحرية"], ["Hidden-Grid Strategy", "隱藏棋盤策略", "隐藏棋盘策略", "隠し盤面ストラテジー", "숨은 보드 전략", "Estrategia de cuadrícula oculta", "Estratégia de grade oculta", "Stratégie de grille cachée", "Verdeckte-Raster-Strategie", "Strategia a griglia nascosta", "Стратегия скрытой сетки", "रणनीति छिपी ग्रिड", "استراتيجية الشبكة المخفية"], ["Place your fleet, fire at hidden coordinates, and sink every enemy ship first.", "配置艦隊、攻擊隱藏座標，率先擊沉敵方所有船艦。", "配置舰队、攻击隐藏坐标，率先击沉敌方所有船舰。", "艦隊を配置し、隠れた座標を撃って敵艦を沈めます。", "함대를 배치하고 숨은 좌표를 공격해 상대 함대를 먼저 침몰시키세요.", "Coloca tu flota, dispara a coordenadas ocultas y hunde todos los barcos.", "Posicione sua frota, ataque coordenadas ocultas e afunde todos os navios.", "Placez votre flotte, tirez sur les coordonnées cachées et coulez tous les navires.", "Platziere deine Flotte, feuere auf geheime Koordinaten und versenke alle Schiffe.", "Posiziona la flotta, spara alle coordinate nascoste e affonda tutte le navi.", "Расставьте флот, стреляйте по скрытым координатам и потопите все корабли.", "बेड़ा रखें, छिपे निर्देशांकों पर गोली चलाएँ और सभी जहाज़ डुबाएँ।", "ضع أسطولك وأطلق على الإحداثيات المخفية وأغرق كل سفن العدو."], ["6×6 Waters", "Fleet Placement", "Hit + Miss"]],
 ].map(([id, title, type, description, meta]) => ({ id, title: classicLogicText(title), status: "planned", statusText: classicLogicStatusText, type: classicLogicText(type), categories: ["Classic", "Puzzle", "Strategy", "Family"], skills: ["Logic", "Planning", "Focus"], ages: ["9", "family"], ageLabel: classicLogicText(["9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+", "9+"]), href: `games/${id}/`, internalTrial: "index.html?trial=1", description: classicLogicText(description), meta: classicLogicMeta(meta), art: { kind: "image", background: id === "cat-color-sudoku" ? "assets/cat-color-sudoku-cover-v1.webp" : id === "sudoku" ? "assets/sudoku-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "peg-solitaire" ? "assets/peg-solitaire-cover-v2.webp" : id === "code-breaker" ? "assets/code-breaker-cover-v2.webp" : id === "sliding-15" ? "assets/sliding-15-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true } }));
 window.WONDER_LOBBY.games.push(...classicLogicEntries);
+// The Classic Logic Lab owner-preview routes are General-audience games. Keep
+// the audience registry aligned with their planned lobby entries so generated
+// Guides and runtime metadata use the General identity rather than Kids copy.
+for (const entry of classicLogicEntries) {
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(entry.id)) {
+    window.WONDER_LOBBY.audiences.generalGameIds.push(entry.id);
+  }
+}
 
 const cleanZhLobbyCopy = {
   "beast-deck": {
