@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v15";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -574,6 +574,22 @@
     ru: { mute: "\u0412\u044b\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0437\u0432\u0443\u043a", unmute: "\u0412\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0437\u0432\u0443\u043a" },
   };
 
+  const healthLabels = Object.freeze({
+    en: "Health",
+    "zh-Hant": "生命",
+    "zh-Hans": "生命值",
+    ja: "体力",
+    ko: "체력",
+    es: "Salud",
+    "pt-BR": "Vida",
+    fr: "Santé",
+    de: "Gesundheit",
+    it: "Salute",
+    ru: "Здоровье",
+    hi: "स्वास्थ्य",
+    ar: "الصحة",
+  });
+
   function syncSoundToggle() {
     const button = $("#soundToggle");
     if (!button) return;
@@ -1018,7 +1034,7 @@
   function updateHud() {
     $("#hpFill").style.width = `${Math.max(0, (run.hp / run.maxHp) * 100)}%`;
     const healthBar = $(".health");
-    const healthLabel = localizedValue("Health", "生命", "Salud");
+    const healthLabel = healthLabels[locale] || healthLabels.en;
     healthBar.setAttribute("role", "progressbar");
     healthBar.setAttribute("aria-valuemin", "0");
     healthBar.setAttribute("aria-valuemax", String(run.maxHp));
