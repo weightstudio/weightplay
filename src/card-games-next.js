@@ -915,6 +915,28 @@
     return copy.replaceAll("{cards}", cards.map(cardText).join(" + ")).replaceAll("{starter}", cardText(starter));
   };
 
+  const CRIBBAGE_RESULT_MASTERY_COPY = {
+    en: { round: "Pegging this deal: {score} points.", target: "Next-deal target: reach {target} pegging points." },
+    "zh-Hant": { round: "本局出牌得分：{score} 分。", target: "下一局目標：出牌得分達到 {target} 分。" },
+    "zh-Hans": { round: "本局出牌得分：{score} 分。", target: "下一局目标：出牌得分达到 {target} 分。" },
+    ja: { round: "このディールのペギング得点：{score}点。", target: "次のディールの目標：ペギングで{target}点に到達。" },
+    ko: { round: "이번 딜 페깅 점수: {score}점.", target: "다음 딜 목표: 페깅 {target}점에 도달하세요." },
+    es: { round: "Puntos de pegging en esta mano: {score}.", target: "Objetivo de la próxima mano: alcanza {target} puntos de pegging." },
+    "pt-BR": { round: "Pontos de pegging nesta mão: {score}.", target: "Meta da próxima mão: alcance {target} pontos de pegging." },
+    fr: { round: "Points de pegging pour cette donne : {score}.", target: "Objectif de la prochaine donne : atteindre {target} points de pegging." },
+    de: { round: "Pegging-Punkte in dieser Runde: {score}.", target: "Ziel der nächsten Runde: {target} Pegging-Punkte erreichen." },
+    it: { round: "Punti di pegging in questa mano: {score}.", target: "Obiettivo della prossima mano: raggiungi {target} punti di pegging." },
+    ru: { round: "Очки пеггинга в этой раздаче: {score}.", target: "Цель следующей раздачи: набрать {target} очков пеггинга." },
+    hi: { round: "इस डील में पेगिंग अंक: {score}।", target: "अगले डील का लक्ष्य: पेगिंग में {target} अंक पाएँ।" },
+    ar: { round: "نقاط العدّ في هذه الجولة: {score}.", target: "هدف الجولة التالية: حقّق {target} نقطة في العدّ." },
+  };
+
+  const cribbageResultMasteryText = (score) => {
+    const copy = CRIBBAGE_RESULT_MASTERY_COPY[currentLocale()] || CRIBBAGE_RESULT_MASTERY_COPY.en;
+    const target = Math.max(1, Number(score) + 1);
+    return `${copy.round.replace("{score}", String(score))} · ${copy.target.replace("{target}", String(target))}`;
+  };
+
   const CRIB_PEGGING_RESET_COPY = {
     en: { go: "Go ends this count — reset to 0. Watch for a pair, run, 15, or 31 in the next sequence.", thirtyOne: "31 ends this count — reset to 0. Watch for a pair, run, 15, or another 31." },
     "zh-Hant": { go: "Go 結束這次計數，重設為 0。下一段留意對子、順子、15 或 31。", thirtyOne: "31 結束這次計數，重設為 0。下一段留意對子、順子、15 或下一個 31。" },
@@ -1590,7 +1612,7 @@
       statusText?.setAttribute("aria-live", "polite");
       statusText?.setAttribute("aria-atomic", "true");
     }
-    if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy") resultText?.setAttribute("data-runtime-localize", "off");
+    if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy" || id === "cribbage") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {
       syncGinShell();
       statusText?.setAttribute("data-runtime-localize", "off");
@@ -1716,7 +1738,17 @@
       isBattleActive() { return !battle.hidden && rootElement.dataset.screen === "battle"; },
       openBattle() { resultRecorded = false; main.hidden = true; battle.hidden = false; rootElement.dataset.screen = "battle"; render(); window.dispatchEvent(new Event("weightplay:battle-open")); window.dispatchEvent(new Event("weightplay:battle-sync")); window.dispatchEvent(new Event("weightplay:shell-sync")); },
       openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync")); },
-      result(won, message = "") { if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); } resultTitle.textContent = id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser")); resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver")); result.hidden = false; sound?.[won ? "win" : "reject"]?.(); },
+      result(won, message = "") {
+        if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); }
+        resultTitle.textContent = id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
+        resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
+        if (id === "cribbage") {
+          result.dataset.outcome = won ? "win" : "loss";
+          resultText.dataset.cribbageResultMastery = message ? "true" : "false";
+        }
+        result.hidden = false;
+        sound?.[won ? "win" : "reject"]?.();
+      },
       beep(name = "place") { sound?.[name]?.(); },
     };
     const render = () => {
@@ -2123,7 +2155,7 @@
   }
 
   function makeCribbageFixed(controller) {
-    const s = { hand: [], ai: [], crib: [], playerCrib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round: 1, dealer: 1 };
+    const s = { hand: [], ai: [], crib: [], playerCrib: [], stock: [], starter: null, playerPeg: [], aiPeg: [], pegSequence: [], roundPegScore: [0, 0], count: 0, turn: 0, phase: "discard", score: [0, 0], selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round: 1, dealer: 1 };
     const combinations = (cards, target) => { let points = 0; const total = 1 << cards.length; for (let mask = 1; mask < total; mask += 1) { const chosen = cards.filter((_, index) => mask & (1 << index)); if (sum(chosen) === target) points += 2; } return points; };
     const scoreCards = (cards, isCrib = false) => {
       let points = combinations(cards, 15);
@@ -2149,7 +2181,7 @@
       return points;
     };
     const legalPeg = (player) => (player === 0 ? s.hand : s.ai).filter((item) => s.count + value(item) <= 31);
-    const finish = () => { if (s.score[0] >= 121 || s.score[1] >= 121) { controller.result(s.score[0] >= s.score[1], `${t("score")}: ${s.score[0]} / ${s.score[1]}`); return true; } return false; };
+    const finish = () => { if (s.score[0] >= 121 || s.score[1] >= 121) { controller.result(s.score[0] >= s.score[1], `${t("score")}: ${s.score[0]} / ${s.score[1]} · ${cribbageResultMasteryText(s.roundPegScore[0])}`); return true; } return false; };
     const scorePegCard = (player, item) => {
       (player === 0 ? s.playerPeg : s.aiPeg).push(item);
       s.pegSequence.push(item);
@@ -2166,6 +2198,7 @@
         if (new Set(ranks).size === length && Math.max(...ranks) - Math.min(...ranks) === length - 1) { points += length; break; }
       }
       s.score[player] += points;
+      s.roundPegScore[player] += points;
     };
     const settleRound = () => {
       const nonDealer = 1 - s.dealer;
@@ -2213,7 +2246,7 @@
       scheduleTurn(1 - player);
     };
     const aiPeg = () => { if (s.phase !== "pegging" || s.turn !== 1) return; const item = legalPeg(1).sort((a, b) => b.rank - a.rank)[0]; if (item) playPeg(1, item); else passPeg(1); };
-    function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], playerCrib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
+    function startRound() { const cards = deck(); const round = s.round + 1; Object.assign(s, { hand: [], ai: [], crib: [], playerCrib: [], stock: cards, starter: null, playerPeg: [], aiPeg: [], pegSequence: [], roundPegScore: [0, 0], count: 0, turn: 0, phase: "discard", selected: new Set(), passed: [false, false], lastPegPlayer: null, resetCue: "", round, dealer: round % 2 === 1 ? 1 : 0 }); for (let i = 0; i < 6; i += 1) { s.hand.push(s.stock.pop()); s.ai.push(s.stock.pop()); } }
     return {
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },

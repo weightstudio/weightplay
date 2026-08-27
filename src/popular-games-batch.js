@@ -70,7 +70,51 @@
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v7";
-  const TETRIS_GAME_VERSION = "v14";
+  const TETRIS_GAME_VERSION = "v15";
+  // The short Tetris sprint uses real tetromino silhouettes so Rotate changes
+  // placement geometry and Drop has visible spatial consequences. The board
+  // remains the compact 8×8 owner-preview canvas and the four-line sprint
+  // contract stays deterministic for the existing acceptance checks.
+  const TETRIS_SHAPES = [
+    { key: "I", cells: [[0, 1], [1, 1], [2, 1], [3, 1]] },
+    { key: "O", cells: [[0, 0], [1, 0], [0, 1], [1, 1]] },
+    { key: "T", cells: [[1, 0], [0, 1], [1, 1], [2, 1]] },
+    { key: "L", cells: [[2, 0], [0, 1], [1, 1], [2, 1]] },
+    { key: "J", cells: [[0, 0], [0, 1], [1, 1], [2, 1]] },
+    { key: "S", cells: [[1, 0], [2, 0], [0, 1], [1, 1]] },
+    { key: "Z", cells: [[0, 0], [1, 0], [1, 1], [2, 1]] },
+  ];
+  const tetrisRotatedCells = (shape, rotation = 0) => {
+    let cells = shape.cells.map(([x, y]) => [x, y]);
+    for (let turn = 0; turn < ((Number(rotation) || 0) % 4 + 4) % 4; turn += 1) {
+      cells = cells.map(([x, y]) => [-y, x]);
+      const minX = Math.min(...cells.map(([x]) => x));
+      const minY = Math.min(...cells.map(([, y]) => y));
+      cells = cells.map(([x, y]) => [x - minX, y - minY]);
+    }
+    return cells;
+  };
+  const tetrisCurrentCells = (state, overrides = {}) => {
+    const pieceIndex = ((Number(overrides.pieceIndex ?? state.pieceIndex) || 0) % TETRIS_SHAPES.length + TETRIS_SHAPES.length) % TETRIS_SHAPES.length;
+    const rotation = Number(overrides.rotation ?? state.rotation) || 0;
+    const x = Number(overrides.x ?? state.active) || 0;
+    const y = Number(overrides.y ?? state.activeY) || 0;
+    return tetrisRotatedCells(TETRIS_SHAPES[pieceIndex], rotation).map(([dx, dy]) => ({ x: x + dx, y: y + dy }));
+  };
+  const tetrisCanPlace = (state, overrides = {}) => {
+    const cells = tetrisCurrentCells(state, overrides);
+    return cells.every(({ x, y }) => x >= 0 && x < 8 && y >= 0 && y < 8 && !(state.blocks || []).some((block) => block.x === x && block.y === y));
+  };
+  const tetrisMaxAnchor = (state, rotation = state.rotation, pieceIndex = state.pieceIndex) => {
+    const width = Math.max(...tetrisRotatedCells(TETRIS_SHAPES[((Number(pieceIndex) || 0) % TETRIS_SHAPES.length + TETRIS_SHAPES.length) % TETRIS_SHAPES.length], rotation).map(([x]) => x), 0) + 1;
+    return Math.max(0, 8 - width);
+  };
+  const tetrisLandingY = (state) => {
+    let y = Math.max(0, Number(state.activeY) || 0);
+    if (!tetrisCanPlace(state, { y })) return null;
+    while (tetrisCanPlace(state, { y: y + 1 })) y += 1;
+    return y;
+  };
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
   const pongLanePosition = (lane) => Math.max(17, Math.min(82, Number(lane) * 13 + 17));
@@ -751,7 +795,7 @@
   };
   const makeState = (type) => {
     const state = { type, score: 0, moves: 0, done: false, success: false, message: "", tone: "", messageKey: "", mismatchTile: "" };
-    if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 3, blocks: [] });
+    if (type === "tetris") Object.assign(state, { pieces: 0, lines: 0, active: 2, activeY: 0, pieceIndex: 0, rotation: 0, blocks: [] });
     if (type === "snake") Object.assign(state, { started: false, food: 0, foodCell: 45, direction: "up", trail: snakeTrailForDirection("up"), runNumber: 1, goalFood: 3, modeKey: "open", obstacles: [], milestoneReached: false, milestoneCueActive: false, foodFlashCell: -1, foodCueCell: -1 });
     if (type === "tic") Object.assign(state, { cells: Array(9).fill(""), playerMoves: 0, aiMoves: 0, winningCells: [], rivalCell: -1, outcome: "" });
     if (type === "chess") Object.assign(state, { step: 0 });
@@ -1216,14 +1260,39 @@
       }
       state.moves += 1;
       if (game.type === "tetris") {
-        if (name === "left") state.active = Math.max(0, state.active - 1);
-        if (name === "right") state.active = Math.min(7, state.active + 1);
-        if (name === "rotate") state.score += 5;
+        if (name === "left" || name === "right") {
+          const nextActive = state.active + (name === "left" ? -1 : 1);
+          if (nextActive >= 0 && nextActive <= tetrisMaxAnchor(state) && tetrisCanPlace(state, { x: nextActive })) state.active = nextActive;
+        }
+        if (name === "rotate") {
+          const nextRotation = (state.rotation + 1) % 4;
+          const kick = [state.active, state.active - 1, state.active + 1, state.active - 2, state.active + 2]
+            .find((x) => x >= 0 && x <= tetrisMaxAnchor(state, nextRotation) && tetrisCanPlace(state, { x, rotation: nextRotation }));
+          if (kick !== undefined) {
+            state.active = kick;
+            state.rotation = nextRotation;
+            state.score += 5;
+            announce(tetrisProgressCopy(locale, state.lines), "", "tetrisProgress");
+          }
+        }
         if (name === "drop") {
           const previousLines = state.lines;
           state.pieces += 1;
           state.lines = Math.min(4, Math.floor(state.pieces / 2));
-          state.blocks.push({ x: state.active, y: 7 - (state.pieces % 7) });
+          let landingY = tetrisLandingY(state);
+          if (landingY === null) {
+            // The sprint is intentionally short; clear the preview stack if a
+            // crowded board would otherwise make the next piece unspawnable.
+            state.blocks = [];
+            state.active = Math.min(state.active, tetrisMaxAnchor(state));
+            state.activeY = 0;
+            landingY = tetrisLandingY(state) ?? 0;
+          }
+          tetrisCurrentCells(state, { y: landingY }).forEach(({ x, y }) => state.blocks.push({ x, y }));
+          state.pieceIndex = (state.pieceIndex + 1) % TETRIS_SHAPES.length;
+          state.rotation = 0;
+          state.active = Math.min(2, tetrisMaxAnchor(state, 0, state.pieceIndex));
+          state.activeY = 0;
           if (state.lines > previousLines && state.lines < 4) announce(tetrisLineClearCopy(locale, state.lines), "good", "tetrisLineClear");
           else if (state.lines < 4) announce(tetrisProgressCopy(locale, state.lines), "", "tetrisProgress");
           if (state.lines >= 4) finish(true);
@@ -1307,7 +1376,17 @@
     const button = (label, name, extra = "") => `<button type="button" class="control ${extra}" data-action="${name}">${label}</button>`;
     const renderBoard = () => {
       if (game.type === "snake") { const foodCell = state.foodCell; const routeCueCell = state.foodCueCell; const routeCueLabel = (SNAKE_ROUTE_CUE[locale] || SNAKE_ROUTE_CUE.en).cell; const cells = Array.from({ length: SNAKE_GRID_SIZE * SNAKE_GRID_SIZE }, (_, i) => `<span class="grid-cell ${state.trail.includes(i) ? "filled" : ""} ${i === state.trail[0] ? "snake-head" : ""} ${i === foodCell ? "food" : ""} ${i === routeCueCell ? "food-route-cue" : ""} ${state.obstacles.includes(i) ? "obstacle" : ""} ${i === state.foodFlashCell ? "food-hit" : ""}" data-cell="${i}"${state.obstacles.includes(i) ? ` aria-label="${snakeModeLabel(locale, state.modeKey)}"` : ""}${i === routeCueCell ? ` aria-label="${routeCueLabel}" data-food-route-cue="true"` : ""}></span>`).join(""); els.board.innerHTML = `<div class="grid-board snake-grid ${state.milestoneReached ? "milestone-pulse" : ""} ${state.milestoneCueActive ? "milestone-cue" : ""}" role="grid" aria-label="${copy(locale, game.objective)}" data-grid-size="${SNAKE_GRID_SIZE}" data-tick-ms="${snakeTickMs()}" data-head-cell="${state.trail[0]}" data-food-cell="${foodCell}" data-food-route-cue-cell="${routeCueCell}" data-food-count="${state.food}" data-score="${state.score}" data-run="${state.runNumber}" data-mode="${state.modeKey}" data-mode-label="${snakeModeLabel(locale, state.modeKey)}" data-obstacles="${state.obstacles.join(",")}" data-goal-food="${state.goalFood}" data-milestone-reached="${state.milestoneReached}" data-milestone-cue="${state.milestoneCueActive}" data-direction="${state.direction}" data-moves="${state.moves}" data-trail="${state.trail.join(",")}">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "up"), "up")}</div><div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "down"), "down")}${button(copy(locale, "right"), "right")}</div>`; return; }
-      if (game.type === "tetris") { const cells = Array.from({ length: 64 }, (_, i) => { const block = state.blocks.some((b) => b.x + b.y * 8 === i); const active = i === state.active; return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}"></span>`; }).join(""); els.board.innerHTML = `<div class="grid-board tetris-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
+      if (game.type === "tetris") {
+        const activeCells = new Set(tetrisCurrentCells(state).map(({ x, y }) => y * 8 + x));
+        const settledCells = new Set((state.blocks || []).map(({ x, y }) => y * 8 + x));
+        const shape = TETRIS_SHAPES[state.pieceIndex] || TETRIS_SHAPES[0];
+        const cells = Array.from({ length: 64 }, (_, i) => {
+          const block = settledCells.has(i);
+          const active = activeCells.has(i);
+          return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}" data-cell="${i}"></span>`;
+        }).join("");
+        els.board.innerHTML = `<div class="grid-board tetris-grid" data-piece-shape="${shape.key}" data-piece-rotation="${state.rotation}" data-active-cells="${[...activeCells].join(",")}" data-settled-cells="${[...settledCells].join(",")}">${cells}</div>`;
+        els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
       } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}" data-outcome="${state.outcome}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { const pieces = ["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"]; els.board.innerHTML = `<div class="chess-board" role="group" aria-label="${copy(locale, "chess")}">${pieces.map((piece, i) => { const target = i === 6 + state.step; return `<button class="chess-cell ${target ? "target" : ""}" data-action="move" data-cell="${i}"${target ? " data-target=\"true\"" : ""} aria-label="${chessCellLabel(locale, i, piece, target)}">${piece}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
       } else if (game.type === "checkers") { const engine = window.WPCheckersEngine; const legalMoves = state.turn === engine.HUMAN ? checkersLegalMoves(state) : []; const selectableSources = new Set(legalMoves.map((move) => move.from)); const selectedMoves = legalMoves.filter((move) => move.from === state.selected); const targetCells = new Set(selectedMoves.map((move) => move.to)); const lastHuman = state.lastMoves.human; const lastAi = state.lastMoves.ai; const cells = state.checkersBoard.map((piece, i) => { const row = engine.rowOf(i); const column = engine.columnOf(i); const dark = (row + column) % 2 === 1; const target = targetCells.has(i); const selectable = selectableSources.has(i); const selected = state.selected === i; const hinted = state.hintSource === i; const humanFrom = lastHuman?.from === i; const humanTo = lastHuman?.to === i; const aiFrom = lastAi?.from === i; const aiTo = lastAi?.to === i; const captured = lastHuman?.captured === i || lastAi?.captured === i; const classes = ["checker-cell", dark ? "dark" : "light", target ? "target" : "", selectable ? "selectable" : "", selected ? "selected" : "", hinted ? "hinted" : "", humanFrom ? "last-human-from" : "", humanTo ? "last-human-to" : "", aiFrom ? "last-ai-from" : "", aiTo ? "last-ai-to" : "", captured ? "last-captured" : ""].filter(Boolean).join(" "); const pieceClass = piece ? `checker-piece ${piece.player === engine.AI ? "enemy" : "player"} ${piece.king ? "king" : ""}` : ""; const contents = piece ? `<span class="${pieceClass}" aria-hidden="true">${piece.king ? "★" : ""}</span>` : ""; const interactive = dark && (selectable || target || piece?.player === engine.HUMAN); const label = checkersCellLabel(locale, i, piece, target, selectable); return interactive ? `<button type="button" class="${classes}" data-cell="${i}" data-action="checkers-cell" data-value="${i}"${target ? " data-target=\"true\"" : ""}${selectable ? " data-selectable=\"true\"" : ""} aria-label="${label}" aria-pressed="${selected}">${contents}</button>` : `<div class="${classes}" data-cell="${i}" aria-label="${label}" role="gridcell">${contents}</div>`; }).join(""); els.board.innerHTML = `<div class="checkers-board" role="grid" aria-label="${checkersCopy(locale, "board")}" data-turn="${state.turn}" data-human-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.HUMAN).length}" data-ai-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.AI).length}" data-human-captures="${state.captures.human}" data-ai-captures="${state.captures.ai}" data-last-human="${checkersMoveLabel(lastHuman)}" data-last-ai="${checkersMoveLabel(lastAi)}">${cells}</div>`; els.controls.innerHTML = "";
