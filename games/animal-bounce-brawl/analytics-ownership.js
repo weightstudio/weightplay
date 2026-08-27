@@ -5,7 +5,7 @@
   window.__weightplayAnimalBounceBrawlAnalyticsInstalled = true;
 
   const GAME_ID = "animal-bounce-brawl";
-  const GAME_VERSION = "v11";
+  const GAME_VERSION = "v12";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",

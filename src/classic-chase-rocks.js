@@ -60,7 +60,7 @@
   const DIR_LIST = Object.entries(DIRS);
   const ui = {
     main: document.getElementById("mainScreen"), battle: document.getElementById("battleScreen"), result: document.getElementById("resultScreen"),
-    eyebrow: document.getElementById("eyebrow"), title: document.getElementById("gameTitle"), tagline: document.getElementById("gameTagline"), objective: document.getElementById("objective"), guide: document.getElementById("guideCopy"),
+    eyebrow: document.getElementById("eyebrow"), title: document.getElementById("gameTitle"), tagline: document.getElementById("gameTagline"), objective: document.getElementById("objective"), guide: document.getElementById("guideCopy"), wavePlan: document.getElementById("wavePlan"), wavePlanKicker: document.getElementById("wavePlanKicker"), wavePlanTitle: document.getElementById("wavePlanTitle"), wavePlanIntro: document.getElementById("wavePlanIntro"), wavePlanList: document.getElementById("wavePlanList"),
     language: document.getElementById("languageLabel"), locale: document.getElementById("localeSelect"), start: document.getElementById("startBtn"), cover: document.getElementById("coverArt"), footer: document.getElementById("footerText"),
     round: document.getElementById("roundLabel"), back: document.getElementById("backBtn"), sound: document.getElementById("soundBtn"), restart: document.getElementById("restartBtn"), scoreLabel: document.getElementById("scoreLabel"), score: document.getElementById("scoreValue"), bestLabel: document.getElementById("bestLabel"), best: document.getElementById("bestValue"), levelLabel: document.getElementById("levelLabel"), level: document.getElementById("levelValue"), powerLabel: document.getElementById("powerLabel"), power: document.getElementById("powerValue"), livesHud: document.getElementById("livesHud"), livesLabel: document.getElementById("livesLabel"), lives: document.getElementById("livesValue"), progressLabel: document.getElementById("progressLabel"), progress: document.getElementById("progressValue"),
     confirm: document.getElementById("backConfirm"), confirmCopy: document.getElementById("backConfirmCopy"), stay: document.getElementById("backStayBtn"), leave: document.getElementById("backLeaveBtn"), canvas: document.getElementById("gameCanvas"), message: document.getElementById("gameMessage"), controls: document.getElementById("touchControls"), controlHint: document.getElementById("controlHint"), resultTitle: document.getElementById("resultTitle"), resultCopy: document.getElementById("resultCopy"), stats: document.getElementById("resultStats"), retry: document.getElementById("retryBtn"), home: document.getElementById("homeBtn")
@@ -88,6 +88,21 @@
     reacquireCue: { en: "One fragment remains. Rotate until the gold line points at it.", "zh-Hant": "只剩一塊碎片。旋轉，直到金色線指向它。", "zh-Hans": "只剩一块碎片。旋转，直到金色线指向它。", ja: "残りは1つ。金色の線が向くまで回転しよう。", ko: "파편 하나만 남았습니다. 금색 선이 가리킬 때까지 회전하세요.", es: "Queda un fragmento. Gira hasta que la línea dorada lo señale.", "pt-BR": "Resta um fragmento. Gire até a linha dourada apontar para ele.", fr: "Il reste un fragment. Tournez jusqu’à ce que la ligne dorée le pointe.", de: "Ein Fragment bleibt. Drehe, bis die goldene Linie darauf zeigt.", it: "Resta un frammento. Ruota finché la linea dorata non lo indica.", ru: "Осколок остался один. Повернитесь так, чтобы золотая линия указывала на него.", hi: "एक टुकड़ा बचा है। सुनहरी रेखा उस पर आए तब तक घूमें।", ar: "تبقى جزء واحد. أدر المركبة حتى يشير الخط الذهبي إليه." },
     guardianCue: { en: "Guardian phase: find the orange core.", "zh-Hant": "守護階段：鎖定橘色核心。", "zh-Hans": "守护阶段：锁定橙色核心。", ja: "ガーディアン段階：橙色コアを狙おう。", ko: "수호 단계: 주황색 코어를 노리세요.", es: "Fase guardián: busca el núcleo naranja.", "pt-BR": "Fase guardiã: encontre o núcleo laranja.", fr: "Phase gardien : visez le noyau orange.", de: "Wächterphase: Ziele auf den orangefarbenen Kern.", it: "Fase guardiano: cerca il nucleo arancione.", ru: "Фаза стража: найдите оранжевое ядро.", hi: "गार्डियन चरण: नारंगी कोर खोजें।", ar: "مرحلة الحارس: ابحث عن النواة البرتقالية." },
     guardianHitCue: { en: "Guardian hit! Keep the orbit and finish the wave.", "zh-Hant": "命中守護核心！維持軌道完成這一波。", "zh-Hans": "命中守护核心！保持轨道完成这一波。", ja: "ガーディアンに命中！軌道を保ってウェーブを終えよう。", ko: "수호자 명중! 궤도를 유지하고 웨이브를 끝내세요.", es: "¡Impacto al guardián! Mantén la órbita y termina la oleada.", "pt-BR": "Guardião atingido! Mantenha a órbita e conclua a onda.", fr: "Gardien touché ! Gardez votre orbite et terminez la vague.", de: "Wächter getroffen! Halte die Umlaufbahn und beende die Welle.", it: "Guardiano colpito! Mantieni l'orbita e chiudi l'ondata.", ru: "Страж поражён! Держите орбиту и завершите волну.", hi: "गार्डियन पर प्रहार! कक्षा बनाए रखें और वेव पूरी करें।", ar: "أصبت الحارس! حافظ على المدار وأنهِ الموجة." }
+  };
+  const SPACE_WAVE_PLAN = {
+    en: { kicker: "Preparation", title: "Three-wave flight plan", intro: "Know what is ahead before your first thrust.", waves: [["Wave 1", "Learn drift", "Rotate, thrust, and clear split rocks."], ["Wave 2", "Control pressure", "Track the UFO and grab Rapid Fire."], ["Wave 3", "Guard the core", "Save Shield for the orange guardian."]] },
+    "zh-Hant": { kicker: "準備階段", title: "三波飛行計畫", intro: "第一次推進前，先看懂前方路線。", waves: [["第一波", "熟悉漂移", "旋轉、推進，清除分裂晶礦。"], ["第二波", "控制壓力", "留意 UFO，取得連射能量。"], ["第三波", "守住核心", "把護盾留給橘色守護核心。"]] },
+    "zh-Hans": { kicker: "准备阶段", title: "三波飞行计划", intro: "第一次推进前，先看懂前方路线。", waves: [["第一波", "熟悉漂移", "旋转、推进，清除分裂晶矿。"], ["第二波", "控制压力", "留意 UFO，取得连射能量。"], ["第三波", "守住核心", "把护盾留给橙色守护核心。"]] },
+    ja: { kicker: "準備", title: "3ウェーブ飛行プラン", intro: "最初の推進前に、先の流れを確認しよう。", waves: [["ウェーブ1", "漂いを学ぶ", "回転と推進で分裂する岩を壊す。"], ["ウェーブ2", "圧力を制御", "UFOを追い、連射を集める。"], ["ウェーブ3", "コアを守る", "シールドを守護コアに残す。"]] },
+    ko: { kicker: "준비", title: "3웨이브 비행 계획", intro: "첫 추진 전에 앞으로의 흐름을 확인하세요.", waves: [["웨이브 1", "드리프트 익히기", "회전하고 추진해 분열 바위를 지우세요."], ["웨이브 2", "압박 제어", "UFO를 추적하고 연사 파워를 얻으세요."], ["웨이브 3", "코어 지키기", "주황색 수호 코어를 위해 실드를 아끼세요."]] },
+    es: { kicker: "Preparación", title: "Plan de tres oleadas", intro: "Mira lo que viene antes de tu primer impulso.", waves: [["Oleada 1", "Aprende la deriva", "Gira, impulsa y limpia rocas divididas."], ["Oleada 2", "Controla la presión", "Sigue al OVNI y recoge Fuego rápido."], ["Oleada 3", "Protege el núcleo", "Guarda el escudo para el guardián naranja."]] },
+    "pt-BR": { kicker: "Preparação", title: "Plano de três ondas", intro: "Veja o que vem antes do seu primeiro impulso.", waves: [["Onda 1", "Aprenda a deriva", "Gire, acelere e limpe rochas divididas."], ["Onda 2", "Controle a pressão", "Siga o UFO e pegue Fogo rápido."], ["Onda 3", "Proteja o núcleo", "Guarde o escudo para o guardião laranja."]] },
+    fr: { kicker: "Préparation", title: "Plan en trois vagues", intro: "Voyez la suite avant votre première poussée.", waves: [["Vague 1", "Apprendre la dérive", "Tournez, poussez et détruisez les rochers divisés."], ["Vague 2", "Gérer la pression", "Suivez l’OVNI et prenez le tir rapide."], ["Vague 3", "Garder le noyau", "Gardez le bouclier pour le gardien orange."]] },
+    de: { kicker: "Vorbereitung", title: "Flugplan für drei Wellen", intro: "Sieh voraus, bevor du erstmals Schub gibst.", waves: [["Welle 1", "Drift lernen", "Drehe, schiebe und räume geteilte Felsen."], ["Welle 2", "Druck steuern", "Verfolge das UFO und sammle Schnellfeuer."], ["Welle 3", "Kern schützen", "Spare den Schild für den orangen Wächter."]] },
+    it: { kicker: "Preparazione", title: "Piano di volo in tre ondate", intro: "Guarda cosa ti aspetta prima della prima spinta.", waves: [["Ondata 1", "Impara la deriva", "Ruota, spingi e libera le rocce divise."], ["Ondata 2", "Controlla la pressione", "Segui l’UFO e raccogli il Fuoco rapido."], ["Ondata 3", "Proteggi il nucleo", "Conserva lo scudo per il guardiano arancione."]] },
+    ru: { kicker: "Подготовка", title: "План полёта на три волны", intro: "Узнайте, что впереди, до первой тяги.", waves: [["Волна 1", "Освойте дрейф", "Поворачивайте, ускоряйтесь и разбивайте глыбы."], ["Волна 2", "Держите давление", "Следите за НЛО и соберите скорострельность."], ["Волна 3", "Защитите ядро", "Берегите щит для оранжевого стража."]] },
+    hi: { kicker: "तैयारी", title: "तीन लहरों की उड़ान योजना", intro: "पहले थ्रस्ट से पहले आगे का रास्ता समझें।", waves: [["लहर 1", "बहाव सीखें", "घूमें, थ्रस्ट करें और टूटे पत्थर साफ़ करें।"], ["लहर 2", "दबाव संभालें", "UFO पर नज़र रखें और रैपिड फायर लें।"], ["लहर 3", "कोर बचाएँ", "नारंगी गार्डियन के लिए शील्ड बचाएँ।"]] },
+    ar: { kicker: "التحضير", title: "خطة الطيران لثلاث موجات", intro: "اعرف ما ينتظرك قبل أول دفعة.", waves: [["الموجة 1", "تعلم الانجراف", "أدر المركبة وادفع وحطم الصخور المتشظية."], ["الموجة 2", "تحكم بالضغط", "راقب الـUFO واجمع النيران السريعة."], ["الموجة 3", "احمِ النواة", "احتفظ بالدرع للحارس البرتقالي."]] }
   };
   const SPACE_RESULT = {
     win: { en: "Sector cleared!", "zh-Hant": "星域清除！", "zh-Hans": "星域清除！", ja: "セクター制圧！", ko: "구역 클리어!", es: "¡Sector despejado!", "pt-BR": "Setor limpo!", fr: "Secteur nettoyé !", de: "Sektor geräumt!", it: "Settore ripulito!", ru: "Сектор очищен!", hi: "क्षेत्र साफ़!", ar: "تم تطهير القطاع!" },
@@ -155,6 +170,27 @@
     ui.objective.textContent = gt("objective");
     const pilotName = gameId === "space" && locale === "zh-Hant" ? "魯克" : gameId === "maze" ? "Orla" : "Rux";
     ui.guide.innerHTML = `<strong>${pilotName}</strong> · ${gt("guide")}`;
+    if (ui.wavePlan) {
+      const plan = SPACE_WAVE_PLAN[locale] || SPACE_WAVE_PLAN.en;
+      ui.wavePlan.hidden = gameId !== "space";
+      ui.wavePlanKicker.textContent = plan.kicker;
+      ui.wavePlanTitle.textContent = plan.title;
+      ui.wavePlanIntro.textContent = plan.intro;
+      ui.wavePlanList.replaceChildren();
+      plan.waves.forEach(([labelText, titleText, copyText]) => {
+        const item = document.createElement("li");
+        item.className = "wave-plan-step";
+        const label = document.createElement("span");
+        label.className = "wave-plan-label";
+        label.textContent = labelText;
+        const title = document.createElement("strong");
+        title.textContent = titleText;
+        const copy = document.createElement("p");
+        copy.textContent = copyText;
+        item.append(label, title, copy);
+        ui.wavePlanList.append(item);
+      });
+    }
     ui.language.textContent = tr("language");
     ui.start.textContent = locale === "en" ? "Start Game" : locale === "zh-Hant" ? "開始遊戲" : locale === "zh-Hans" ? "开始游戏" : locale === "ja" ? "ゲーム開始" : locale === "ko" ? "게임 시작" : locale === "es" ? "Comenzar" : locale === "pt-BR" ? "Começar" : locale === "fr" ? "Commencer" : locale === "de" ? "Starten" : locale === "it" ? "Inizia" : locale === "ru" ? "Начать игру" : locale === "hi" ? "खेल शुरू करें" : "ابدأ اللعبة";
     ui.round.textContent = gameId === "maze" ? `${tr("stage")} ${state.level}` : `${tr("wave")} ${state.level}`;
