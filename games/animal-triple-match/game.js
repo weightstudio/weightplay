@@ -14,7 +14,8 @@
     "undo","magnet","shuffle","tutorialTitle","tutorial1","tutorial2","tutorial3","continue","leaveTitle","leaveText","returnStages",
     "nextPlan","retry","next","stages","stage","locked","cleared","best","pieces","openShelf","vineGallery","crystalRoom","mysteryLoft",
     "shiftingHall","grandFinale","tangled","cracked","revealed","matched","trayDanger","noUndo","noPair","shuffled","winKicker","winTitle",
-    "winText","failKicker","failTitle","failText","planWin","planRetry","complete","soundOn","soundOff","chapterPreview","finaleRule"
+    "winText","failKicker","failTitle","failText","planWin","planRetry","complete","soundOn","soundOff","chapterPreview","finaleRule",
+    "firstPlanTitle","firstPlanText","firstPlanClose"
   ];
   const L = {
     en: [
@@ -99,6 +100,25 @@
     for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
   }
 
+  const firstPlanCopy = {
+    en: { firstPlanTitle: "A safe first plan", firstPlanText: "Begin with an exposed pair or trio, then keep one tray slot open. You choose the order—nothing is selected for you.", firstPlanClose: "Got it" },
+    "zh-Hant": { firstPlanTitle: "第一組配對小計畫", firstPlanText: "先從已露出的成對或三連物件開始，再保留一格托盤空間。順序由你決定，系統不會代你選擇。", firstPlanClose: "知道了" },
+    "zh-Hans": { firstPlanTitle: "第一组配对小计划", firstPlanText: "先从已露出的成对或三连物件开始，再保留一个托盘空位。顺序由你决定，系统不会代你选择。", firstPlanClose: "知道了" },
+    ja: { firstPlanTitle: "最初のペア作戦", firstPlanText: "まずは見えているペアか3個組から始め、トレイを1枠空けておきましょう。順番はあなたが決めます。", firstPlanClose: "わかりました" },
+    ko: { firstPlanTitle: "첫 짝 계획", firstPlanText: "먼저 드러난 짝이나 세트를 찾고 트레이 한 칸을 비워 두세요. 순서는 직접 정하며 자동 선택은 없습니다.", firstPlanClose: "알겠어요" },
+    es: { firstPlanTitle: "Un primer plan seguro", firstPlanText: "Empieza con una pareja o un trío visible y conserva una casilla libre. Tú eliges el orden; nada se selecciona por ti.", firstPlanClose: "Entendido" },
+    "pt-BR": { firstPlanTitle: "Um primeiro plano seguro", firstPlanText: "Comece com um par ou trio visível e mantenha uma vaga livre. Você escolhe a ordem; nada é selecionado por você.", firstPlanClose: "Entendi" },
+    fr: { firstPlanTitle: "Un premier plan sûr", firstPlanText: "Commencez par une paire ou un trio visible et gardez une case libre. Vous choisissez l'ordre : rien n'est sélectionné à votre place.", firstPlanClose: "Compris" },
+    de: { firstPlanTitle: "Ein sicherer erster Plan", firstPlanText: "Beginne mit einem offenen Paar oder Trio und halte einen Ablageplatz frei. Du wählst die Reihenfolge – nichts wird für dich ausgewählt.", firstPlanClose: "Verstanden" },
+    it: { firstPlanTitle: "Un primo piano sicuro", firstPlanText: "Inizia con una coppia o un trio visibile e lascia libero uno spazio. Scegli tu l'ordine: nulla viene selezionato al posto tuo.", firstPlanClose: "Ho capito" },
+    ru: { firstPlanTitle: "Безопасный первый план", firstPlanText: "Начните с открытой пары или тройки и оставьте одну ячейку лотка свободной. Порядок выбираете вы — игра ничего не выбирает за вас.", firstPlanClose: "Понятно" },
+    hi: { firstPlanTitle: "पहली सुरक्षित योजना", firstPlanText: "खुले जोड़े या तिकड़ी से शुरू करें और ट्रे में एक खाना खाली रखें। क्रम आप चुनते हैं—आपकी जगह कुछ नहीं चुना जाएगा।", firstPlanClose: "समझ गया" },
+    ar: { firstPlanTitle: "خطة أولى آمنة", firstPlanText: "ابدأ بزوج أو ثلاثية مكشوفة واترك خانة في الصينية فارغة. أنت تختار الترتيب، ولن تختار اللعبة نيابة عنك.", firstPlanClose: "فهمت" },
+  };
+  for (const [code, copy] of Object.entries(firstPlanCopy)) {
+    for (const [key, value] of Object.entries(copy)) L[code][K.indexOf(key)] = value;
+  }
+
   const generatedGuidePatchCopy = {
     "pt-BR": {
       kicker: "Guia original do WeightPlay",
@@ -127,7 +147,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 13;
+  const GAME_VERSION = 14;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -193,6 +213,19 @@
     rewardBeatTimer = 0;
     els.feedback.classList.remove("reward-beat");
   }
+  function showFirstPlan() {
+    if (!run || run.ended || save.firstPlanSeen || !els.firstPlanModal) return;
+    save.firstPlanSeen = true;
+    persist();
+    run.paused = true;
+    openModal(els.firstPlanModal, els.firstPlanClose);
+    track("first_plan_hint_shown", { stage: stageIndex + 1 });
+  }
+  function dismissFirstPlan() {
+    if (!els.firstPlanModal || els.firstPlanModal.hidden) return;
+    track("first_plan_hint_dismissed", { stage: stageIndex + 1 });
+    closeModal(els.firstPlanModal, els.helpBtn);
+  }
   function showFirstTrioBeat() {
     clearRewardBeat();
     els.feedback.textContent = rewardBeatText("firstTrio");
@@ -206,7 +239,7 @@
   }
 
   function isForeground() { return document.visibilityState === "visible" && windowFocused; }
-  function hasOpenBattleModal() { return [els.tutorialModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
+  function hasOpenBattleModal() { return [els.tutorialModal, els.firstPlanModal, els.leaveModal, els.resultModal].some(modal => !modal.hidden); }
   function cancelPendingMatch() {
     if (!pendingMatch) return;
     clearTimeout(pendingMatch.timer);
@@ -257,8 +290,8 @@
   function loadSave() {
     try {
       const raw = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
-      return { unlocked: Math.max(1, Math.min(30, +raw.unlocked || 1)), stars: raw.stars || {}, best: raw.best || {}, tutorial: !!raw.tutorial, sound: raw.sound !== false };
-    } catch { return { unlocked: 1, stars: {}, best: {}, tutorial: false, sound: true }; }
+      return { unlocked: Math.max(1, Math.min(30, +raw.unlocked || 1)), stars: raw.stars || {}, best: raw.best || {}, tutorial: !!raw.tutorial, firstPlanSeen: !!raw.firstPlanSeen, sound: raw.sound !== false };
+    } catch { return { unlocked: 1, stars: {}, best: {}, tutorial: false, firstPlanSeen: false, sound: true }; }
   }
   function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch {} }
   function t(key, vars = {}) {
@@ -815,7 +848,7 @@
     stageIndex = Math.max(0, Math.min(29, index));
     const config = stageConfig(stageIndex);
     run = { config, pieces: buildPieces(stageIndex), tray: [], history: [], matches: 0, moves: 0, lastTrayId: null, tools: { undo: 2, magnet: 2, shuffle: 2 }, ended: false, paused: false };
-    [els.tutorialModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
+    [els.tutorialModal, els.firstPlanModal, els.leaveModal, els.resultModal].forEach(modal => modal.hidden = true);
     els.feedback.textContent = "";
     els.resultReward.hidden = true;
     els.resultReward.textContent = "";
@@ -827,6 +860,7 @@
     }));
     sound("start");
     if (!save.tutorial && !skipTutorial) { run.paused = true; openModal(els.tutorialModal, els.tutorialClose); }
+    else showFirstPlan();
     track("game_start", { stage: stageIndex + 1 });
   }
   function spriteStyle(type) {
@@ -1121,13 +1155,15 @@
   els.leaveContinue.addEventListener("click", () => closeModal(els.leaveModal, els.battleBack));
   els.leaveStage.addEventListener("click", () => { track("return_stages", { stage: stageIndex + 1, outcome: "leave_battle" }); clearRewardBeat(); cancelPendingMatch(); els.leaveModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); });
   els.helpBtn.addEventListener("click", () => { if (!run) return; run.paused = true; openModal(els.tutorialModal, els.tutorialClose); });
-  els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); });
+  els.tutorialClose.addEventListener("click", () => { save.tutorial = true; persist(); closeModal(els.tutorialModal, els.helpBtn); showFirstPlan(); });
+  els.firstPlanClose.addEventListener("click", dismissFirstPlan);
   els.undoBtn.addEventListener("click", undo); els.magnetBtn.addEventListener("click", magnet); els.shuffleBtn.addEventListener("click", shuffleTool);
   els.retryBtn.addEventListener("click", () => commitResultDecision(() => { track("retry", { stage: stageIndex + 1, outcome: "result_retry" }); startBattle(stageIndex, true); }));
   els.nextBtn.addEventListener("click", () => commitResultDecision(() => { track("next_stage", { stage: stageIndex + 2, from_stage: stageIndex + 1, outcome: "result_next" }); startBattle(Math.min(29, stageIndex + 1), true); }));
   els.resultStages.addEventListener("click", () => commitResultDecision(() => { track("return_stages", { stage: stageIndex + 1, outcome: "result_stages" }); cancelPendingMatch(); els.resultModal.hidden = true; isolateBattle(false); run = null; setScreen("stage"); }));
   els.soundBtn.addEventListener("click", () => { save.sound = !save.sound; persist(); renderRun(); if (save.sound) sound("pick"); });
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
+  els.firstPlanModal.addEventListener("keydown", e => trap(e, dismissFirstPlan));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));
   els.resultModal.addEventListener("keydown", e => trap(e));
   // The shared battle scaler settles the logical root on its animation frame.

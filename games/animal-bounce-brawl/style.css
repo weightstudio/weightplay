@@ -3,3 +3,4 @@
  .battle-status{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:4px 10px;line-height:1.2;min-height:26px}.selected-tool-label{color:var(--gold);font-weight:800;white-space:nowrap}.approach-cue{color:var(--mint);font-size:.82em;font-weight:700;white-space:nowrap}@media (orientation:landscape) and (max-height:560px){.screen.battle.battle-screen .battle-status{white-space:normal;font-size:.82rem}}
 #arena{flex:0 0 auto;aspect-ratio:16 / 9;width:100%;max-width:min(100%,calc((100vh - 230px) * 16 / 9));height:auto;max-height:calc(100vh - 230px)}
 .touch-controls button{touch-action:none;user-select:none}
+@media (max-width:700px){.screen.battle-screen .result{width:100%;max-width:100%;min-width:0;padding-inline:12px}.screen.battle-screen .result-actions{width:min(100%,360px);display:grid;grid-template-columns:minmax(0,1fr);gap:10px}.screen.battle-screen .result-actions button{width:100%;min-width:0}}

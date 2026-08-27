@@ -7891,7 +7891,7 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20260827-rootvault-spanish-guide-v14", sharedAssetBase).href;
+      script.src = new URL("game-page-info-es.js?v=20260827-rootvault-spanish-guide-v14b", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -8901,7 +8901,11 @@
   for (const [code, additions] of Object.entries(rootvaultLocaleGuideAdditions)) {
     localizedGames[code] ||= {};
     const current = localizedGames[code]["animal-rootvault-pins"] || {};
-    const faq = Array.isArray(current.faq) && current.faq.length ? [...current.faq] : [...games["animal-rootvault-pins"].faq];
+    const faq = code === "es"
+      ? []
+      : Array.isArray(current.faq) && current.faq.length
+        ? [...current.faq]
+        : [...games["animal-rootvault-pins"].faq];
     for (const entry of additions.faq) if (!faq.some(([question]) => question === entry[0])) faq.push(entry);
     localizedGames[code]["animal-rootvault-pins"] = {
       ...current,
