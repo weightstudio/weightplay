@@ -138,7 +138,8 @@
     // Scene state is published on <body> for shell synchronization, but the
     // body is never the playable Battle Canvas. Prefer the actual descendant
     // screen so the shared scaler cannot shrink a game into a narrow column.
-    return candidates.find((node) => node !== document.body && node !== document.documentElement)
+    return candidates.find((node) => node.matches("[data-wp-battle-canvas-root]"))
+      || candidates.find((node) => node !== document.body && node !== document.documentElement)
       || candidates[0]
       || null;
   };
@@ -269,9 +270,13 @@
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width - GUTTER * 2, maximumWidth));
     const availableHeight = Math.max(1, height - RESERVE_HEIGHT - GUTTER * 2);
-    const useLandscapeEnvelope = config[3] && config[4] && availableWidth / availableHeight >= 1.5;
-    const minimumLogicalWidth = useLandscapeEnvelope ? config[3] : config[1];
-    const minimumLogicalHeight = useLandscapeEnvelope ? config[4] : config[2];
+    const configuredPortraitWidth = Number.parseFloat(root.dataset.wpBattleMinWidth || "") || config[1];
+    const configuredPortraitHeight = Number.parseFloat(root.dataset.wpBattleMinHeight || "") || config[2];
+    const configuredLandscapeWidth = Number.parseFloat(root.dataset.wpBattleLandscapeWidth || "") || config[3];
+    const configuredLandscapeHeight = Number.parseFloat(root.dataset.wpBattleLandscapeHeight || "") || config[4];
+    const useLandscapeEnvelope = configuredLandscapeWidth && configuredLandscapeHeight && availableWidth / availableHeight >= 1.5;
+    const minimumLogicalWidth = useLandscapeEnvelope ? configuredLandscapeWidth : configuredPortraitWidth;
+    const minimumLogicalHeight = useLandscapeEnvelope ? configuredLandscapeHeight : configuredPortraitHeight;
     const scale = Math.max(0.01, Math.min(
       availableWidth / minimumLogicalWidth,
       availableHeight / minimumLogicalHeight
