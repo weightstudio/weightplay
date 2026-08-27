@@ -1647,22 +1647,6 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
-  "naval-battle": {
-    "__localizedExact": true,
-    "en": "Naval Battle",
-    "zh-Hant": "海戰棋",
-    "zh-Hans": "海战棋",
-    "ja": "海戦ゲーム",
-    "ko": "해전",
-    "es": "Batalla naval",
-    "pt-BR": "Batalha Naval",
-    "fr": "Bataille navale",
-    "de": "Seeschlacht",
-    "it": "Battaglia navale",
-    "ru": "Морской бой",
-    "hi": "नौसैनिक युद्ध",
-    "ar": "المعركة البحرية"
-  },
   "breakout": {
     "__localizedExact": true,
     "en": "Breakout",

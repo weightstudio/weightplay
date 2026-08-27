@@ -964,6 +964,25 @@
     const dictionary = WAR_GUIDANCE_COPY[currentLocale()] || WAR_GUIDANCE_COPY.en;
     return dictionary[phase] || WAR_GUIDANCE_COPY.en[phase];
   };
+  const WAR_RESULT_COPY = {
+    en: "WAR {wars} · Biggest pot {largest} cards · Next: trigger and win a WAR.",
+    "zh-Hant": "戰爭 {wars} 次 · 最大底池 {largest} 張 · 下一局：觸發並贏下戰爭。",
+    "zh-Hans": "战争 {wars} 次 · 最大底池 {largest} 张 · 下一局：触发并赢下战争。",
+    ja: "戦争 {wars}回 · 最大ポット {largest}枚 · 次の目標：戦争を起こして勝つ。",
+    ko: "전쟁 {wars}회 · 최대 더미 {largest}장 · 다음 목표: 전쟁을 일으켜 승리하세요.",
+    es: "Guerras: {wars} · Bote mayor: {largest} cartas · Próximo: provoca y gana una guerra.",
+    "pt-BR": "Guerras: {wars} · Maior monte: {largest} cartas · Próxima: provoque e vença uma guerra.",
+    fr: "Batailles : {wars} · Plus gros pot : {largest} cartes · Ensuite : déclenchez et gagnez une bataille.",
+    de: "Kriege: {wars} · Größter Stapel: {largest} Karten · Nächstes Ziel: einen Krieg auslösen und gewinnen.",
+    it: "Guerre: {wars} · Piatto massimo: {largest} carte · Prossimo: innesca e vinci una guerra.",
+    ru: "Войн: {wars} · Крупнейший банк: {largest} карт · Цель: вызвать и выиграть войну.",
+    hi: "युद्ध: {wars} · सबसे बड़ा ढेर: {largest} पत्ते · अगला लक्ष्य: युद्ध शुरू करके जीतें।",
+    ar: "الحروب: {wars} · أكبر كومة: {largest} بطاقة · الهدف التالي: أشعل حربًا واربحها.",
+  };
+  const warResultText = (wars, largest) => {
+    const template = WAR_RESULT_COPY[currentLocale()] || WAR_RESULT_COPY.en;
+    return template.replaceAll("{wars}", String(wars)).replaceAll("{largest}", String(largest));
+  };
   const SPEED_LEGAL_COPY = {
     en: "{card} — legal play",
     "zh-Hant": "{card} — 可出牌",
@@ -1627,10 +1646,11 @@
   }
 
   function makeWarFixed(controller) {
-    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "" };
-    const finish = (playerWins) => controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length}`);
+    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 };
+    const finish = (playerWins) => controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length} · ${warResultText(s.warCount, s.largestPot)}`);
     const settle = () => {
       const playerWins = s.playerCard.rank > s.aiCard.rank;
+      s.largestPot = Math.max(s.largestPot, s.pot.length);
       s.swingCue = warSwingText(playerWins ? "player" : "ai", s.pot.length);
       (playerWins ? s.player : s.ai).push(...s.pot.sort(() => Math.random() - 0.5));
       s.pot = [];
@@ -1643,12 +1663,13 @@
       s.playerCard = s.player.shift();
       s.aiCard = s.ai.shift();
       s.pot.push(s.playerCard, s.aiCard);
-      if (s.playerCard.rank === s.aiCard.rank) s.phase = "war";
+      if (s.playerCard.rank === s.aiCard.rank) { s.warCount += 1; s.phase = "war"; }
       else settle();
     };
     const continueWar = () => {
       if (s.player.length < 4 || s.ai.length < 4) {
         const playerWins = s.player.length >= 4;
+        s.largestPot = Math.max(s.largestPot, s.pot.length);
         (playerWins ? s.player : s.ai).push(...s.pot);
         s.pot = [];
         finish(playerWins);
@@ -1658,7 +1679,7 @@
       reveal();
     };
     return {
-      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "" }); },
+      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
       view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }

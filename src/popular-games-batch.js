@@ -748,6 +748,32 @@
     if (game.type === "wordle") document.body.dataset.gameVersion = "v6";
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
+    if (game.type === "hangman") {
+      const preview = root.querySelector(".preview-art");
+      if (preview && !preview.querySelector("img")) {
+        preview.textContent = "";
+        const image = document.createElement("img");
+        image.src = "../../assets/hangman-cover-v1.webp";
+        image.alt = "";
+        image.width = 1254;
+        image.height = 1254;
+        image.decoding = "async";
+        preview.append(image);
+      }
+    }
+    if (game.type === "wordle") {
+      const preview = root.querySelector(".preview-art");
+      if (preview && !preview.querySelector("img")) {
+        preview.textContent = "";
+        const image = document.createElement("img");
+        image.src = "../../assets/wordle-cover-v1.webp";
+        image.alt = "";
+        image.width = 1254;
+        image.height = 1254;
+        image.decoding = "async";
+        preview.append(image);
+      }
+    }
     // Snake and Checkers own complete 13-locale shells and guides. Keep the
     // generic runtime translator from re-translating freshly rendered copy
     // using the previous route locale during an in-place language switch.
