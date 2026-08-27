@@ -11,6 +11,32 @@
   .battle-head { padding-right: 150px; }
 }
 
+@media (max-height: 520px) and (orientation: landscape) {
+  /* Keep Main inside the landscape viewport; the portrait-sized poster used
+     to force the whole shell past the bottom edge before Battle started. */
+  .main-screen { min-height: 0; }
+  .main-screen .topbar { padding-bottom: 8px; }
+  .main-screen .main-grid { align-items: center; gap: 14px; padding: 12px; }
+  .main-screen .poster { width: min(32vw, 270px); margin-inline: auto; }
+  .main-screen .guide,
+  .main-screen .main-howto { display: none; }
+  body.wp-shell-main-active .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: clamp(200px, calc(100dvh - 130px), 270px) !important;
+  }
+  body.wp-shell-main-active .wp-standard-main-poster,
+  body.wp-shell-main-active .wp-standard-main-poster-media,
+  body.wp-shell-main-active .wp-standard-main-poster-media > img,
+  body.wp-shell-main-active .wp-standard-main-poster > img {
+    width: var(--wp-main-landscape-poster-size) !important;
+    min-width: var(--wp-main-landscape-poster-size) !important;
+    max-width: var(--wp-main-landscape-poster-size) !important;
+    height: var(--wp-main-landscape-poster-size) !important;
+    min-height: var(--wp-main-landscape-poster-size) !important;
+    max-height: var(--wp-main-landscape-poster-size) !important;
+  }
+  body.wp-shell-main-active .wp-standard-main-copy { height: var(--wp-main-landscape-poster-size) !important; }
+}
+
 .twin-landscape-controls {
   display: none;
 }
@@ -24,7 +50,7 @@
     position: fixed;
     z-index: 60;
     left: 50%;
-    bottom: 62px;
+    bottom: 8px;
     width: min(92vw, 560px);
     display: grid;
     grid-template-columns: 80px minmax(160px, 1fr) 80px;
@@ -57,8 +83,14 @@
   .shell { padding: 4px; }
   .battle-screen { padding: 6px; }
   .battle-status, .control-hint { display: none; }
-  .canvas-wrap { padding: 3px; }
+  .battle-screen .canvas-wrap { padding: 3px; display: grid; place-items: center; }
+  .battle-screen .canvas-wrap canvas {
+    width: auto !important;
+    height: calc(100dvh - 195px) !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 195px) !important;
+  }
   .touch-controls { margin: 4px auto; grid-template-columns: 60px minmax(140px,280px) 60px; }
   .restart { min-height: 34px; }
-  .canvas-wrap canvas { height: calc(100dvh - 195px); width: auto; max-width: 100%; }
+  .battle-screen .canvas-wrap canvas { height: calc(100dvh - 195px) !important; width: auto !important; max-width: 100% !important; max-height: calc(100dvh - 195px) !important; }
 }

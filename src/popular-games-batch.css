@@ -404,6 +404,11 @@ button.checker-cell.dark { cursor: pointer; touch-action: manipulation; }
 .checker-cell.selected { box-shadow: inset 0 0 0 4px var(--arcade-accent-2); }
 .checker-cell.target { background: #285c64; box-shadow: inset 0 0 0 4px var(--arcade-accent); }
 .checker-cell.target::after { content: ""; position: absolute; width: 28%; aspect-ratio: 1; border-radius: 50%; background: var(--arcade-accent); box-shadow: 0 0 0 4px rgba(126, 231, 201, .18); pointer-events: none; }
+.checker-cell.last-human-from { outline: 3px dashed rgba(126, 231, 201, .82); outline-offset: -4px; }
+.checker-cell.last-human-to { box-shadow: inset 0 0 0 4px rgba(126, 231, 201, .95), 0 0 13px rgba(126, 231, 201, .45); z-index: 2; }
+.checker-cell.last-ai-from { outline: 3px dashed rgba(255, 184, 107, .82); outline-offset: -4px; }
+.checker-cell.last-ai-to { box-shadow: inset 0 0 0 4px rgba(255, 184, 107, .95), 0 0 13px rgba(255, 184, 107, .4); z-index: 2; }
+.checker-cell.last-captured::before { content: "×"; position: absolute; z-index: 3; color: #ff8c9b; font-size: clamp(.9rem, 4vw, 1.4rem); font-weight: 900; text-shadow: 0 1px 3px #08121e; pointer-events: none; }
 .checker-cell.hinted .checker-piece { animation: checkers-hint-pulse .8s ease-in-out infinite alternate; }
 .checker-piece { position: relative; z-index: 1; display: grid; place-items: center; width: 72%; aspect-ratio: 1; border: 2px solid rgba(255,255,255,.55); border-radius: 50%; background: var(--arcade-accent-2); color: #203047; font-size: clamp(.65rem, 3vw, 1.25rem); font-weight: 900; box-shadow: inset 0 -5px 0 rgba(0,0,0,.22), 0 3px 8px rgba(0,0,0,.28); }
 .checker-piece.enemy { background: var(--arcade-danger); color: #fff2d8; }

@@ -90,7 +90,7 @@
     hi: { tagline: "हर चाल में असली चुनाव वाला पूरा मैच।", objective: "प्रतिद्वंद्वी के सभी मोहरे लें या उसकी सभी वैध चालें रोकें।", main: "सुनहरा मोहरा चुनें, फिर चमकता तिरछा खाना। कैप्चर अनिवार्य है और लगातार छलाँग जारी रहती है।", yourTurn: "आपकी चाल: सुनहरा मोहरा चुनें।", choose: "चमकता लक्ष्य चुनें।", capture: "कैप्चर उपलब्ध है और अनिवार्य है।", continueCapture: "उसी मोहरे से अगला कैप्चर करें।", aiTurn: "प्रतिद्वंद्वी चाल चुन रहा है…", invalid: "यह वैध चाल नहीं है।", selected: "मोहरा चुना गया। लक्ष्य चुनें।", captured: "मोहरा लिया गया; अगला कैप्चर हो तो जारी रखें।", promoted: "मोहरा अंतिम पंक्ति पर पहुँचकर किंग बन गया।", aiMoved: "प्रतिद्वंद्वी चला। अब आपकी चाल।", hint: "संकेत: धड़कता मोहरा चुनें, फिर चमकता लक्ष्य।", winTitle: "आप जीते!", lossTitle: "प्रतिद्वंद्वी जीता", drawTitle: "मैच ड्रॉ", winCopy: "प्रतिद्वंद्वी के पास मोहरा या वैध चाल नहीं बची।", lossCopy: "आपके पास मोहरा या वैध चाल नहीं बची।", drawCopy: "चाल सीमा पूरी हुई।", board: "चेकर्स बोर्ड", human: "आपका मोहरा", humanKing: "आपका किंग", ai: "प्रतिद्वंद्वी मोहरा", aiKing: "प्रतिद्वंद्वी किंग", empty: "खाली", target: "वैध लक्ष्य", selectable: "चुनने योग्य" },
     ar: { tagline: "مباراة كاملة بقرارات حقيقية في كل دور.", objective: "التقط كل قطع الخصم أو اتركه بلا حركة قانونية.", main: "اختر قطعة ذهبية ثم مربعاً قطرياً مميزاً. الأخذ إجباري وتستمر القفزات المتعددة.", yourTurn: "دورك: اختر قطعة ذهبية.", choose: "اختر وجهة مميزة.", capture: "هناك أخذ متاح ويجب تنفيذه.", continueCapture: "تابع سلسلة الأخذ بالقطعة نفسها.", aiTurn: "الخصم يختار حركة…", invalid: "هذا المربع ليس حركة قانونية.", selected: "تم اختيار القطعة. اختر الوجهة.", captured: "تم أخذ قطعة؛ تابع إن توفرت قفزة أخرى.", promoted: "وصلت قطعتك إلى الصف الأخير وأصبحت ملكاً.", aiMoved: "تحرك الخصم. دورك الآن.", hint: "تلميح: اختر القطعة النابضة ثم الوجهة المميزة.", winTitle: "فزت!", lossTitle: "فاز الخصم", drawTitle: "تعادل", winCopy: "لم يبق للخصم قطع أو حركات قانونية.", lossCopy: "لم يبق لديك قطع أو حركات قانونية.", drawCopy: "تم بلوغ حد الحركات.", board: "لوحة الداما", human: "قطعتك", humanKing: "ملكك", ai: "قطعة الخصم", aiKing: "ملك الخصم", empty: "فارغ", target: "وجهة قانونية", selectable: "قابل للاختيار" },
   };
-  const CHECKERS_GAME_VERSION = "v13";
+  const CHECKERS_GAME_VERSION = "v14";
   const TIC_TAC_TOE_GAME_VERSION = "v14";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
@@ -658,6 +658,32 @@
   const hangmanHint = (locale, length, theme = "puzzle") => `${(HANGMAN_HINT_COPY[locale] || HANGMAN_HINT_COPY.en)(length)} ${(HANGMAN_THEME_COPY[locale] || HANGMAN_THEME_COPY.en)[theme]}`;
   const hangmanMiss = (locale, letter, misses) => (HANGMAN_MISS_COPY[locale] || HANGMAN_MISS_COPY.en)(letter, misses);
   const checkersCopy = (locale, keyName) => (CHECKERS_UI[locale] || CHECKERS_UI.en)[keyName];
+  const CHECKERS_TURN_COPY = {
+    en: ({ human, rival, points }) => `You moved ${human}; +${points} activity points. Rival moved ${rival}. Your turn.`,
+    "zh-Hant": ({ human, rival, points }) => `你走了 ${human}；行動分 +${points}。對手走了 ${rival}，輪到你。`,
+    "zh-Hans": ({ human, rival, points }) => `你走了 ${human}；行动分 +${points}。对手走了 ${rival}，轮到你。`,
+    ja: ({ human, rival, points }) => `あなたは ${human}、行動点 +${points}。相手は ${rival}。あなたの番です。`,
+    ko: ({ human, rival, points }) => `내 수 ${human}, 행동 점수 +${points}. 상대 수 ${rival}. 내 차례입니다.`,
+    es: ({ human, rival, points }) => `Moviste ${human}; +${points} puntos de acción. El rival movió ${rival}. Tu turno.`,
+    "pt-BR": ({ human, rival, points }) => `Você moveu ${human}; +${points} pontos de ação. O rival moveu ${rival}. Sua vez.`,
+    fr: ({ human, rival, points }) => `Vous avez joué ${human} ; +${points} points d’action. L’adversaire a joué ${rival}. À vous.`,
+    de: ({ human, rival, points }) => `Du hast ${human} gezogen; +${points} Aktionspunkte. Der Gegner zog ${rival}. Du bist dran.`,
+    it: ({ human, rival, points }) => `Hai mosso ${human}; +${points} punti azione. Il rivale ha mosso ${rival}. Tocca a te.`,
+    ru: ({ human, rival, points }) => `Ваш ход: ${human}; +${points} очков действия. Ход соперника: ${rival}. Теперь вы.`,
+    hi: ({ human, rival, points }) => `आपने ${human} चला; +${points} चाल अंक। प्रतिद्वंद्वी ने ${rival} चला। अब आपकी बारी।`,
+    ar: ({ human, rival, points }) => `حركتك ${human}؛ +${points} نقطة حركة. حركة الخصم ${rival}. دورك الآن.`,
+  };
+  const checkersMoveLabel = (move) => {
+    if (!move) return "—";
+    const engine = window.WPCheckersEngine;
+    const cell = (index) => `${engine.rowOf(index) + 1},${engine.columnOf(index) + 1}`;
+    return `${cell(move.from)}→${cell(move.to)}${move.captured >= 0 ? ` ×${cell(move.captured)}` : ""}${move.promoted ? " ★" : ""}`;
+  };
+  const checkersTurnSummary = (locale, state) => (CHECKERS_TURN_COPY[locale] || CHECKERS_TURN_COPY.en)({
+    human: checkersMoveLabel(state.lastMoves?.human),
+    rival: checkersMoveLabel(state.lastMoves?.ai),
+    points: state.lastMoves?.human?.points || 0,
+  });
   const checkersLegalMoves = (state) => window.WPCheckersEngine.getLegalMoves(
     state.checkersBoard,
     window.WPCheckersEngine.HUMAN,
@@ -722,6 +748,7 @@
         hintSource: -1,
         forcedFrom: -1,
         captures: { human: 0, ai: 0 },
+        lastMoves: { human: null, ai: null },
         outcome: "",
         noProgressTurns: 0,
         step: 0,
@@ -886,7 +913,9 @@
           checkersAiMoved: "aiMoved",
           checkersHint: "hint",
         };
-        state.message = messageKeys[state.messageKey]
+        state.message = state.messageKey === "checkersTurnSummary"
+          ? checkersTurnSummary(locale, state)
+          : messageKeys[state.messageKey]
           ? checkersCopy(locale, messageKeys[state.messageKey])
           : document.body.dataset.screen === "battle"
             ? checkersStatusCopy(locale, state)
@@ -1051,6 +1080,7 @@
           const move = engine.chooseAiMove(state.checkersBoard, forcedFrom);
           if (!move) break;
           const result = engine.applyMove(state.checkersBoard, move);
+          state.lastMoves.ai = { ...move, promoted: result.promoted };
           state.checkersBoard = result.board;
           state.moves += 1;
           state.step += 1;
@@ -1072,7 +1102,7 @@
         state.turn = engine.HUMAN;
         state.selected = -1;
         state.forcedFrom = -1;
-        announce(checkersCopy(locale, "aiMoved"), "", "checkersAiMoved");
+        announce(checkersTurnSummary(locale, state), "", "checkersTurnSummary");
         render();
       }, 420);
     };
@@ -1116,12 +1146,13 @@
           return;
         }
         const result = engine.applyMove(state.checkersBoard, selectedMove);
+        const points = (result.captured ? 60 : 15) + (result.promoted ? 40 : 0);
+        state.lastMoves.human = { ...selectedMove, promoted: result.promoted, points };
         state.hintSource = -1;
         state.checkersBoard = result.board;
         state.moves += 1;
         state.step += 1;
-        state.score += result.captured ? 60 : 15;
-        if (result.promoted) state.score += 40;
+        state.score += points;
         if (result.captured) state.captures.human += 1;
         state.noProgressTurns = result.captured || result.promoted ? 0 : state.noProgressTurns + 1;
         trackCheckers("move_selected", { actor: "human", from: selectedMove.from, to: selectedMove.to, capture: result.captured, promoted: result.promoted });
@@ -1238,7 +1269,7 @@
       if (game.type === "tetris") { const cells = Array.from({ length: 64 }, (_, i) => { const block = state.blocks.some((b) => b.x + b.y * 8 === i); const active = i === state.active; return `<span class="grid-cell ${block ? "filled" : ""} ${active ? "active" : ""}"></span>`; }).join(""); els.board.innerHTML = `<div class="grid-board tetris-grid">${cells}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "rotate"), "rotate")}${button(copy(locale, "right"), "right")}${button(copy(locale, "drop"), "drop", "primary")}</div>`;
       } else if (game.type === "tic") { els.board.innerHTML = `<div class="tic-board" data-winning-count="${state.winningCells?.length || 0}" data-outcome="${state.outcome}">${state.cells.map((cell, i) => { const winning = state.winningCells?.includes(i); const rivalReply = state.rivalCell === i; return `<button class="tic-cell${winning ? " winning" : ""}${rivalReply ? " rival-reply" : ""}" data-action="cell" data-value="${i}"${winning ? " data-winning-cell=\"true\"" : ""}${rivalReply ? " data-rival-reply=\"true\"" : ""} aria-label="${ticCellLabel(locale, i, cell, winning)}"${cell || state.done ? " disabled" : ""}>${cell}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "hint"), "hint")}</div>`;
       } else if (game.type === "chess") { const pieces = ["♜", "♟", "", "♚", "", "♙", "", "", "", "", "♙", "", "", "", "", "♔"]; els.board.innerHTML = `<div class="chess-board" role="group" aria-label="${copy(locale, "chess")}">${pieces.map((piece, i) => { const target = i === 6 + state.step; return `<button class="chess-cell ${target ? "target" : ""}" data-action="move" data-cell="${i}"${target ? " data-target=\"true\"" : ""} aria-label="${chessCellLabel(locale, i, piece, target)}">${piece}</button>`; }).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(`${copy(locale, "select")} ${state.step + 1}`, "move", "primary")}</div>`;
-      } else if (game.type === "checkers") { const engine = window.WPCheckersEngine; const legalMoves = state.turn === engine.HUMAN ? checkersLegalMoves(state) : []; const selectableSources = new Set(legalMoves.map((move) => move.from)); const selectedMoves = legalMoves.filter((move) => move.from === state.selected); const targetCells = new Set(selectedMoves.map((move) => move.to)); const cells = state.checkersBoard.map((piece, i) => { const row = engine.rowOf(i); const column = engine.columnOf(i); const dark = (row + column) % 2 === 1; const target = targetCells.has(i); const selectable = selectableSources.has(i); const selected = state.selected === i; const hinted = state.hintSource === i; const classes = ["checker-cell", dark ? "dark" : "light", target ? "target" : "", selectable ? "selectable" : "", selected ? "selected" : "", hinted ? "hinted" : ""].filter(Boolean).join(" "); const pieceClass = piece ? `checker-piece ${piece.player === engine.AI ? "enemy" : "player"} ${piece.king ? "king" : ""}` : ""; const contents = piece ? `<span class="${pieceClass}" aria-hidden="true">${piece.king ? "★" : ""}</span>` : ""; const interactive = dark && (selectable || target || piece?.player === engine.HUMAN); const label = checkersCellLabel(locale, i, piece, target, selectable); return interactive ? `<button type="button" class="${classes}" data-cell="${i}" data-action="checkers-cell" data-value="${i}"${target ? " data-target=\"true\"" : ""}${selectable ? " data-selectable=\"true\"" : ""} aria-label="${label}" aria-pressed="${selected}">${contents}</button>` : `<div class="${classes}" data-cell="${i}" aria-label="${label}" role="gridcell">${contents}</div>`; }).join(""); els.board.innerHTML = `<div class="checkers-board" role="grid" aria-label="${checkersCopy(locale, "board")}" data-turn="${state.turn}" data-human-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.HUMAN).length}" data-ai-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.AI).length}" data-human-captures="${state.captures.human}" data-ai-captures="${state.captures.ai}">${cells}</div>`; els.controls.innerHTML = "";
+      } else if (game.type === "checkers") { const engine = window.WPCheckersEngine; const legalMoves = state.turn === engine.HUMAN ? checkersLegalMoves(state) : []; const selectableSources = new Set(legalMoves.map((move) => move.from)); const selectedMoves = legalMoves.filter((move) => move.from === state.selected); const targetCells = new Set(selectedMoves.map((move) => move.to)); const lastHuman = state.lastMoves.human; const lastAi = state.lastMoves.ai; const cells = state.checkersBoard.map((piece, i) => { const row = engine.rowOf(i); const column = engine.columnOf(i); const dark = (row + column) % 2 === 1; const target = targetCells.has(i); const selectable = selectableSources.has(i); const selected = state.selected === i; const hinted = state.hintSource === i; const humanFrom = lastHuman?.from === i; const humanTo = lastHuman?.to === i; const aiFrom = lastAi?.from === i; const aiTo = lastAi?.to === i; const captured = lastHuman?.captured === i || lastAi?.captured === i; const classes = ["checker-cell", dark ? "dark" : "light", target ? "target" : "", selectable ? "selectable" : "", selected ? "selected" : "", hinted ? "hinted" : "", humanFrom ? "last-human-from" : "", humanTo ? "last-human-to" : "", aiFrom ? "last-ai-from" : "", aiTo ? "last-ai-to" : "", captured ? "last-captured" : ""].filter(Boolean).join(" "); const pieceClass = piece ? `checker-piece ${piece.player === engine.AI ? "enemy" : "player"} ${piece.king ? "king" : ""}` : ""; const contents = piece ? `<span class="${pieceClass}" aria-hidden="true">${piece.king ? "★" : ""}</span>` : ""; const interactive = dark && (selectable || target || piece?.player === engine.HUMAN); const label = checkersCellLabel(locale, i, piece, target, selectable); return interactive ? `<button type="button" class="${classes}" data-cell="${i}" data-action="checkers-cell" data-value="${i}"${target ? " data-target=\"true\"" : ""}${selectable ? " data-selectable=\"true\"" : ""} aria-label="${label}" aria-pressed="${selected}">${contents}</button>` : `<div class="${classes}" data-cell="${i}" aria-label="${label}" role="gridcell">${contents}</div>`; }).join(""); els.board.innerHTML = `<div class="checkers-board" role="grid" aria-label="${checkersCopy(locale, "board")}" data-turn="${state.turn}" data-human-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.HUMAN).length}" data-ai-pieces="${state.checkersBoard.filter((piece) => piece?.player === engine.AI).length}" data-human-captures="${state.captures.human}" data-ai-captures="${state.captures.ai}" data-last-human="${checkersMoveLabel(lastHuman)}" data-last-ai="${checkersMoveLabel(lastAi)}">${cells}</div>`; els.controls.innerHTML = "";
       } else if (game.type === "mahjong") { els.board.innerHTML = `<div class="tile-board" data-layout-key="${state.layoutKey}" data-depth="${state.depth}">${state.tiles.map((tile, i) => tile ? `<button class="tile ${state.selected === i ? "selected" : ""}" data-action="tile" data-value="${i}" data-symbol="${tile}" aria-label="${mahjongTileLabel(locale, i, tile, state.selected === i)}" aria-pressed="${state.selected === i}">${tile}</button>` : "").join("")}</div>`; els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${state.targetPairs - state.matched}</span></div>`;
       } else if (game.type === "wordle") { const labels = WORDLE_CELL_COPY[locale] || WORDLE_CELL_COPY.en; els.board.innerHTML = `<div class="wordle-board" role="table" aria-label="${wordleEscape(labels.board)}" data-word-key="${state.wordKey}">${Array.from({ length: 6 }, (_, row) => `<div class="wordle-row" role="row" aria-rowindex="${row + 1}">${Array.from({ length: 5 }, (_, col) => { const guess = state.guesses[row] || ""; const letter = guess[col] || ""; const tone = letter && letter === state.target[col] ? "hit" : letter && state.target.includes(letter) ? "near" : letter ? "miss" : ""; const safeLetter = wordleEscape(letter); const ariaLabel = wordleEscape(wordleCellLabel(locale, row + 1, col + 1, letter, tone)); return `<span class="word-cell ${tone}" role="cell" aria-colindex="${col + 1}" aria-label="${ariaLabel}" data-word-state="${tone || "empty"}">${safeLetter}</span>`; }).join("")}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="word-entry"><input id="wordInput" maxlength="5" aria-label="${copy(locale, "wordle")}" autocomplete="off" /><button class="primary" data-action="submit">${copy(locale, "submit")}</button></div>`;
       } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" data-word-key="${state.theme}" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => { const used = state.letters.includes(letter); return `<button class="letter ${used ? "used" : ""}" data-action="letter" data-value="${letter}" aria-pressed="${used}" aria-label="${used ? `${letter}, ${hangmanAlreadyUsed(locale)}` : letter}">${letter}</button>`; }).join("")}</div>`;

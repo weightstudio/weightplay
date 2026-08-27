@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -188,6 +188,56 @@
   Object.assign(copy["zh-Hant"], { stages: "\u8a66\u7149", replay: "\u91cd\u65b0\u6311\u6230" });
   Object.assign(copy.es, { stages: "Pruebas", replay: "Repetir" });
   copy.ar = {
+    title: "محاكمات بطل الحيوان",
+    pitch: "اختر واحدًا من أربعة أبطال وأكمل حملة الظلال المكوّنة من 30 تجربة.",
+    marks: "علامات التجربة",
+    mastery: "إتقان القلب",
+    start: "ابدأ اللعبة",
+    choose: "اختر تجربة",
+    blessing: "اختر نعمة",
+    menu: "القائمة الرئيسية",
+    locked: "أكمل التجربة السابقة",
+    win: "اكتملت التجربة!",
+    fail: "فشلت التجربة",
+    retry: "حاول مرة أخرى",
+    scoutObjective: "اهزم {count} من الكشافة الظليين",
+    bossObjective: "اهزم سيد الظلال",
+    reroll: "إعادة سحب 3",
+    rerollConfirm: "هل تنفق 3 ماسات لإعادة سحب هذه النعم؟",
+    rerollConfirmStatus: "استبدل النعم الثلاث مرة واحدة · الماسات {balance} → {result}. اضغط مرة أخرى للتأكيد.",
+    rerollUsed: "استُخدمت إعادة السحب في هذه التجربة.",
+    rerollNeed: "تحتاج إلى 3 ماسات · لديك {balance}. اختر نعمة مجانية.",
+    rerollDone: "ظهرت نعم جديدة.",
+    room: "الغرفة {room}/3",
+    bossRoom: "الغرفة {room}/3 · الزعيم",
+    failCopy: "{hero} يحتاج إلى مسار آخر.",
+    quitTitle: "هل تريد مغادرة هذه التجربة؟",
+    quitCopy: "ستفقد تقدّم الغرفة والنعمة في هذه الجولة.",
+    keepPlaying: "متابعة اللعب",
+    leaveTrial: "مغادرة التجربة",
+    arenaLabel: "ساحة محاكمات الأبطال. تحرّك بمفاتيح الأسهم أو WASD. اضغط المسافة لاستخدام مهارة البطل.",
+    controlHint: "المس أو اسحب للتحرك · استخدم {skill} أو المسافة عند الجاهزية",
+    rangeHint: "تحرّك نحو العدو المميز · الهجمات تلقائية داخل المدى",
+    rangeHitHint: "داخل المدى · أصابت الهجمة التلقائية",
+    earnedMarks: "+{gain} من علامات التجربة · الإجمالي {total}.",
+    trialUnlocked: "اكتُشفت التجربة {next}.",
+    trialAvailable: "لا تزال التجربة {next} متاحة.",
+    allTrialsUnlocked: "تم فتح التجارب الثلاثين كلها.",
+    enemyObjective: "اهزم {count} من {enemy}",
+    eliteObjective: "اهزم قائد {enemy}",
+    bossObjectiveNamed: "اهزم {boss}",
+    recommended: "المقترح: {hero}",
+    roomsAndMarks: "3 غرف · +{marks} علامة",
+    masteryReady: "إتقان القلب جاهز للترقية.",
+    masteryNeed: "ينقص إتقان القلب {remaining} من علامات التجربة.",
+    masteryUpgradeReady: "الحد الأقصى لصحة جميع الأبطال +{current} → +{next} · أنفق {cost} / لديك {marks} علامة",
+    masteryUpgradeNeed: "الحد الأقصى لصحة جميع الأبطال +{current} → +{next} · تحتاج إلى {cost} / لديك {marks} علامة",
+    skillReadyLabel: "{skill} جاهزة. {effect} اضغط للاستخدام.",
+    skillCooldownLabel: "{skill} غير متاحة لمدة {seconds} ثوانٍ. {effect}",
+    leoSkillEffect: "ألحق {damage} ضررًا بالأعداء القريبين.",
+    fiaSkillEffect: "اندفع نحو أقرب عدو، واحصل على حصانة لمدة 0.55 ثانية، وألحق {damage} ضررًا قريب المدى.",
+    orlaSkillEffect: "ألحق {damage} ضررًا بأقرب عدو وعلّمه لتضيف هجمته التلقائية التالية 18 ضررًا.",
+    taroSkillEffect: "احمِ نفسك لمدة 3.5 ثوانٍ، واستعد حتى {heal} من نقاط الصحة، وألحق {damage} ضررًا في نطاق واسع.",
     stages: "المراحل",
     next: "المحاكمة القادمة",
     replay: "إعادة اللعب",
@@ -530,7 +580,7 @@
     const muted = Boolean(window.WonderSound?.isMuted?.());
     const labels = soundActionLabels[locale] || soundActionLabels.en;
     const sourceLabel = muted ? "Turn sound on" : "Mute sound";
-    const label = window.WeightPlayGameRuntimeLocalizer ? sourceLabel : labels[muted ? "unmute" : "mute"];
+    const label = labels[muted ? "unmute" : "mute"] || sourceLabel;
     button.setAttribute("aria-pressed", String(muted));
     button.setAttribute("aria-label", label);
     button.title = label;
