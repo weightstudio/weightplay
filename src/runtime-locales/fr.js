@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["fr"] = {
+  "Tetris game artwork": "Illustration du jeu Tetris",
+  "Tetris game information": "Informations sur Tetris",
+  "Tetris": "Tetris",
+  "Place pieces and clear 4 lines.": "Placez les pièces et effacez 4 lignes.",
+  "Race to 121": "Course vers 121",
+  "First player to reach 121 wins.": "Le premier à atteindre 121 gagne.",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "Placez chaque pièce qui tombe, utilisez Gauche, Tourner, Droite et Lâcher, puis effacez quatre lignes pour terminer la courte manche.",
+  "A complete classic game currently finishing its release checks.": "Un jeu classique complet qui termine ses vérifications avant sortie.",
+  "Classic Game": "Jeu classique",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · Arcades",
+  "Blind-draw pairs": "Paires à l’aveugle",
+  "Clear pairs and avoid the Old Maid.": "Éliminez les paires et évitez de garder le Pouilleux.",
   "AI North": "IA Nord",
   "AI East": "IA Est",
   "AI West": "IA Ouest",

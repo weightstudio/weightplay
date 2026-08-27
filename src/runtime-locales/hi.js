@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["hi"] = {
+  "Tetris game artwork": "टेट्रिस game artwork",
+  "Tetris game information": "टेट्रिस खेल की जानकारी",
+  "Tetris": "टेट्रिस",
+  "Place pieces and clear 4 lines.": "ब्लॉक रखकर 4 पंक्तियाँ साफ करें।",
+  "Race to 121": "121 तक दौड़",
+  "First player to reach 121 wins.": "जो पहले 121 तक पहुँचे, वही जीतता है।",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "हर गिरते ब्लॉक को रखें, बाएँ, घुमाएँ, दाएँ और गिराएँ का उपयोग करें और छोटी बाज़ी पूरी करने के लिए चार पंक्तियाँ साफ करें।",
+  "A complete classic game currently finishing its release checks.": "एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।",
+  "Classic Game": "क्लासिक गेम",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · आर्केड",
+  "Blind-draw pairs": "छिपे जोड़े",
+  "Clear pairs and avoid the Old Maid.": "जोड़े हटाएँ और ओल्ड मेड अपने पास न रखें।",
   "AI North": "AI उत्तर",
   "AI East": "AI पूर्व",
   "AI West": "AI पश्चिम",

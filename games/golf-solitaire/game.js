@@ -45,9 +45,25 @@
     hi: "अगली बाज़ी का लक्ष्य: {target} कार्ड की चेन बनाएँ (सर्वश्रेष्ठ: {best})।",
     ar: "هدف التوزيعة التالية: كوّن سلسلة من {target} بطاقة (الأفضل: {best}).",
   };
+  const GOLF_PROGRESS_COPY = {
+    en: "Best chain: {best} cards · 35 tableau cards",
+    "zh-Hant": "最佳連鎖：{best} 張 · 主牌共 35 張",
+    "zh-Hans": "最佳连锁：{best} 张 · 主牌共 35 张",
+    ja: "ベスト連鎖：{best}枚 · 場札35枚",
+    ko: "최고 연속: {best}장 · 테이블 35장",
+    es: "Mejor cadena: {best} cartas · 35 cartas en mesa",
+    "pt-BR": "Melhor sequência: {best} cartas · 35 cartas na mesa",
+    fr: "Meilleure chaîne : {best} cartes · 35 cartes sur le tableau",
+    de: "Beste Kette: {best} Karten · 35 Karten auf dem Tableau",
+    it: "Miglior catena: {best} carte · 35 carte sul tavolo",
+    ru: "Лучшая цепочка: {best} карт · 35 карт на столе",
+    hi: "सर्वश्रेष्ठ चेन: {best} कार्ड · टेबल पर 35 कार्ड",
+    ar: "أفضل سلسلة: {best} بطاقة · 35 بطاقة على الطاولة",
+  };
   const formatReplayGoal = (template, target, best) => template
     .replaceAll("{target}", String(target))
     .replaceAll("{best}", String(best));
+  const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {
@@ -59,6 +75,80 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "golf", id: "golf-solitaire" });
     if (!view || typeof view.showResult !== "function") return;
+    const mainProgress = document.getElementById("mainProgress") || (() => {
+      const copy = document.querySelector(".main-copy");
+      const start = document.getElementById("startBtn");
+      if (!copy || !start) return null;
+      const node = document.createElement("div");
+      node.id = "mainProgress";
+      node.className = "main-progress";
+      node.dataset.wpMainProgress = "true";
+      node.setAttribute("aria-live", "polite");
+      const owner = start.closest(".wp-standard-main-copy") || start.closest(".main-actions")?.parentElement || copy;
+      owner.insertBefore(node, start);
+      return node;
+    })();
+    const battleHeader = document.querySelector("#battleScreen .battle-header");
+    let battleUtility = document.getElementById("battleSettingsBtn");
+    let battleSettingsPopover = document.getElementById("battleSettingsPopover");
+    let battleSoundBtn = document.getElementById("battleSoundBtn");
+    if (!battleUtility && battleHeader) {
+      battleUtility = document.createElement("button");
+      battleUtility.id = "battleSettingsBtn";
+      battleUtility.type = "button";
+      battleUtility.className = "battle-utility header-icon-btn";
+      battleUtility.dataset.wpBattleUtility = "true";
+      battleUtility.setAttribute("aria-expanded", "false");
+      battleUtility.textContent = "⚙";
+      battleHeader.append(battleUtility);
+    }
+    if (battleUtility && !battleSettingsPopover) {
+      battleSettingsPopover = document.createElement("div");
+      battleSettingsPopover.id = "battleSettingsPopover";
+      battleSettingsPopover.className = "battle-settings-popover";
+      battleSettingsPopover.hidden = true;
+      battleSettingsPopover.setAttribute("role", "dialog");
+      battleSettingsPopover.setAttribute("aria-label", "Settings");
+      battleSoundBtn = document.createElement("button");
+      battleSoundBtn.id = "battleSoundBtn";
+      battleSoundBtn.type = "button";
+      battleSoundBtn.className = "settings-row";
+      battleSettingsPopover.append(battleSoundBtn);
+      battleHeader.append(battleSettingsPopover);
+      battleUtility.addEventListener("click", () => {
+        battleSettingsPopover.hidden = !battleSettingsPopover.hidden;
+        battleUtility.setAttribute("aria-expanded", String(!battleSettingsPopover.hidden));
+      });
+      battleSoundBtn.addEventListener("click", () => {
+        view.audio?.setEnabled?.(!view.audio.enabled);
+        updateBattleUtility();
+      });
+    }
+    const updateProgress = () => {
+      if (!mainProgress) return;
+      const locale = view.locale || document.documentElement.lang || "en";
+      const best = Math.max(0, Number(view.game?.bestCombo) || 0);
+      mainProgress.textContent = formatProgress(GOLF_PROGRESS_COPY[locale] || GOLF_PROGRESS_COPY.en, best);
+    };
+    const updateBattleUtility = () => {
+      if (!battleUtility) return;
+      const locale = view.locale || document.documentElement.lang || "en";
+      const soundLabel = view.audio?.enabled ? view.t("soundOn") : view.t("soundOff");
+      battleUtility.setAttribute("aria-label", view.t("settings"));
+      battleUtility.title = soundLabel;
+      if (battleSoundBtn) {
+        battleSoundBtn.textContent = soundLabel;
+        battleSoundBtn.setAttribute("aria-pressed", String(Boolean(view.audio?.enabled)));
+        battleSettingsPopover?.setAttribute("aria-label", view.t("settings"));
+      }
+      battleUtility.dataset.locale = locale;
+    };
+    const renderMain = view.renderMain?.bind(view);
+    if (renderMain) view.renderMain = () => { renderMain(); updateProgress(); };
+    const refreshCopy = view.refreshCopy?.bind(view);
+    if (refreshCopy) view.refreshCopy = () => { refreshCopy(); updateProgress(); updateBattleUtility(); };
+    updateProgress();
+    updateBattleUtility();
     const showResult = view.showResult.bind(view);
     view.showResult = () => {
       showResult();

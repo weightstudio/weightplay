@@ -70,7 +70,7 @@
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v7";
-  const TETRIS_GAME_VERSION = "v13";
+  const TETRIS_GAME_VERSION = "v14";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
   const pongLanePosition = (lane) => Math.max(17, Math.min(82, Number(lane) * 13 + 17));
@@ -880,6 +880,31 @@
       message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"),
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
+    const tetrisSettingsButton = game.type === "tetris" ? document.querySelector("#audioMenuBtn") : null;
+    const tetrisSettingsPopover = game.type === "tetris" ? document.querySelector("#audioPopover") : null;
+    const tetrisSoundButton = game.type === "tetris" ? document.querySelector("#soundBtn[data-sound-toggle]") : null;
+    if (tetrisSettingsButton && tetrisSettingsPopover) {
+      const setSettingsOpen = (open) => {
+        tetrisSettingsPopover.hidden = !open;
+        tetrisSettingsPopover.classList.toggle("is-hidden", !open);
+        tetrisSettingsButton.setAttribute("aria-expanded", String(open));
+      };
+      tetrisSettingsButton.addEventListener("click", () => setSettingsOpen(tetrisSettingsPopover.hidden));
+      document.addEventListener("pointerdown", (event) => {
+        if (!tetrisSettingsPopover.hidden && !tetrisSettingsPopover.contains(event.target) && event.target !== tetrisSettingsButton) setSettingsOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !tetrisSettingsPopover.hidden) {
+          setSettingsOpen(false);
+          tetrisSettingsButton.focus({ preventScroll: true });
+        }
+      });
+    }
+    tetrisSoundButton?.addEventListener("click", () => {
+      const enabled = tetrisSoundButton.getAttribute("aria-pressed") !== "true";
+      tetrisSoundButton.setAttribute("aria-pressed", String(enabled));
+      tetrisSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+    });
     let tetrisFocusedControl = null;
     const rememberTetrisFocus = (event) => {
       if (game.type !== "tetris") return;
@@ -1295,7 +1320,7 @@
     let snakePointerActionUntil = 0;
     const runActionNode = (node) => { if (!node || node.disabled) return; if (node.dataset.action === "hint") { hint(); return; } const value = node.dataset.action === "letter" ? node.dataset.value : node.dataset.value === undefined ? undefined : Number(node.dataset.value); action(node.dataset.action, value); };
     const handleActionClick = (event) => { const node = event.target?.closest?.("[data-action]"); if (!node || (!els.controls.contains(node) && !els.board.contains(node)) || node.disabled) return; if (game.type === "snake" && performance.now() < snakePointerActionUntil) return; runActionNode(node); };
-    const render = () => { els.round.textContent = game.type === "snake" ? `${snakeCopy(locale, "run", state.runNumber)} · ${snakeModeLabel(locale, state.modeKey)} · ${snakeGoalLabel()} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}` : `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; renderBoard(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
+    const render = () => { els.round.textContent = game.type === "snake" ? `${snakeCopy(locale, "run", state.runNumber)} · ${snakeModeLabel(locale, state.modeKey)} · ${snakeGoalLabel()} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}` : `${copy(locale, "round")} · ${copy(locale, "score")}: ${state.score} · ${copy(locale, "moves")}: ${state.moves}`; if (game.type === "tetris") { const progress = document.querySelector("[data-wp-main-progress]"); if (progress) { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = tetrisProgressCopy(locale, state.lines); } } renderBoard(); const defaultMessage = game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "snake" ? (state.started ? snakeInstruction(locale) : (SNAKE_READY[locale] || SNAKE_READY.en)) : game.type === "breakout" ? breakoutStateCopy(locale, state) : copy(locale, "ready"); const liveMessage = game.type === "tic" && state.messageKey === "ticRivalReply" && state.rivalCell >= 0 ? ticRivalReplyCopy(locale, state.rivalCell) : state.message; els.message.textContent = liveMessage || defaultMessage; els.message.dataset.tone = state.tone; els.message.dataset.messageKey = state.messageKey || ""; if (game.type === "mahjong") { if (state.messageKey === "mahjongMismatch") els.message.dataset.mahjongMismatch = "true"; else delete els.message.dataset.mahjongMismatch; } if (game.type === "mahjong" && document.body.dataset.screen === "battle" && state.focusTile >= 0) { const focusTarget = els.board.querySelector(`[data-action="tile"][data-value="${state.focusTile}"]`); if (focusTarget) focusTarget.focus(); state.focusTile = -1; } if (game.type === "hangman" && document.body.dataset.screen === "battle" && state.focusLetter) { const focusTarget = els.controls.querySelector(`[data-action="letter"][data-value="${state.focusLetter}"]`); if (focusTarget) focusTarget.focus(); state.focusLetter = ""; } };
     let snakePointerStart = null;
     els.board.addEventListener("pointerdown", (event) => { if (game.type === "snake" && document.body.dataset.screen === "battle") snakePointerStart = { x: event.clientX, y: event.clientY }; });
     els.board.addEventListener("pointerup", (event) => { if (game.type !== "snake" || document.body.dataset.screen !== "battle") return; const startPoint = snakePointerStart; snakePointerStart = null; if (!startPoint) return; const deltaX = event.clientX - startPoint.x; const deltaY = event.clientY - startPoint.y; if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < 18) { beginSnake(); return; } action(Math.abs(deltaX) > Math.abs(deltaY) ? (deltaX > 0 ? "right" : "left") : (deltaY > 0 ? "down" : "up")); });

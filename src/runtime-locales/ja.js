@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ja"] = {
+  "Tetris game artwork": "テトリスのゲーム画像",
+  "Tetris game information": "テトリス ゲーム情報",
+  "Tetris": "テトリス",
+  "Place pieces and clear 4 lines.": "ピースを置いて4列消します。",
+  "Race to 121": "121点レース",
+  "First player to reach 121 wins.": "先に121点へ到達したプレイヤーが勝ちです。",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "落ちてくる各ピースを置き、左・回転・右・落下を使って4列消し、短いスプリントを終えます。",
+  "A complete classic game currently finishing its release checks.": "公開前チェックを進めている完成済みのクラシックゲームです。",
+  "Classic Game": "クラシックゲーム",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · アーケード",
+  "Blind-draw pairs": "裏引きのペア",
+  "Clear pairs and avoid the Old Maid.": "ペアを消し、ババを残さない。",
   "AI North": "AI 北",
   "AI East": "AI 東",
   "AI West": "AI 西",

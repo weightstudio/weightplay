@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ko"] = {
+  "Tetris game artwork": "테트리스 게임 이미지",
+  "Tetris game information": "테트리스 게임 정보",
+  "Tetris": "테트리스",
+  "Place pieces and clear 4 lines.": "블록을 놓고 4줄을 지우세요.",
+  "Race to 121": "121점 레이스",
+  "First player to reach 121 wins.": "먼저 121점에 도달한 플레이어가 승리합니다.",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "떨어지는 블록을 배치하고 왼쪽, 회전, 오른쪽, 내리기를 사용해 4줄을 지우면 짧은 라운드가 끝납니다.",
+  "A complete classic game currently finishing its release checks.": "출시 전 검사를 마무리 중인 완성된 클래식 게임입니다.",
+  "Classic Game": "클래식 게임",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · 아케이드",
+  "Blind-draw pairs": "뒷면 뽑기 짝",
+  "Clear pairs and avoid the Old Maid.": "짝을 없애고 버바를 남기지 마세요.",
   "AI North": "AI 북",
   "AI East": "AI 동",
   "AI West": "AI 서",

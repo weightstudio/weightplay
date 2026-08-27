@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
+  "Tetris game artwork": "《俄羅斯方塊》遊戲圖片",
+  "Tetris game information": "俄羅斯方塊 遊戲資訊",
+  "Tetris": "俄羅斯方塊",
+  "Place pieces and clear 4 lines.": "放置方塊並消除 4 行。",
+  "Race to 121": "121 分競賽",
+  "First player to reach 121 wins.": "先到 121 分的玩家獲勝。",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "放置每個下落方塊，使用左移、旋轉、右移與落下，消除四行完成短回合。",
+  "A complete classic game currently finishing its release checks.": "正在完成發佈檢查的完整經典遊戲。",
+  "Classic Game": "經典遊戲",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · 街機",
+  "Blind-draw pairs": "盲抽配對",
+  "Clear pairs and avoid the Old Maid.": "消除配對，別讓鬼牌留在手上。",
   "AI North": "AI 北位",
   "AI East": "AI 東位",
   "AI West": "AI 西位",

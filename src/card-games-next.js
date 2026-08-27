@@ -506,6 +506,22 @@
     ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي." },
   };
 
+  const OLD_MAID_PROGRESS_COPY = {
+    en: { label: "Blind-draw pairs", copy: "Clear pairs and avoid the Old Maid." },
+    "zh-Hant": { label: "盲抽配對", copy: "消除配對，別讓鬼牌留在手上。" },
+    "zh-Hans": { label: "盲抽配对", copy: "消除配对，别让鬼牌留在手上。" },
+    ja: { label: "裏引きのペア", copy: "ペアを消し、ババを残さない。" },
+    ko: { label: "뒷면 뽑기 짝", copy: "짝을 없애고 버바를 남기지 마세요." },
+    es: { label: "Parejas a ciegas", copy: "Forma parejas y evita quedarte con la Solterona." },
+    "pt-BR": { label: "Pares às cegas", copy: "Elimine pares e não fique com o Mico." },
+    fr: { label: "Paires à l’aveugle", copy: "Éliminez les paires et évitez de garder le Pouilleux." },
+    de: { label: "Blind gezogene Paare", copy: "Bilde Paare und behalte nicht den Schwarzen Peter." },
+    it: { label: "Coppie alla cieca", copy: "Elimina le coppie e non restare con l’Asino." },
+    ru: { label: "Слепые пары", copy: "Убирайте пары и не оставайтесь со Старой девой." },
+    hi: { label: "छिपे जोड़े", copy: "जोड़े हटाएँ और ओल्ड मेड अपने पास न रखें।" },
+    ar: { label: "أزواج السحب الأعمى", copy: "أزل الأزواج وتجنب الاحتفاظ بالعانس." },
+  };
+
   const OLD_MAID_NAMES = {
     en: ["You", "Fox", "Panda", "Otter"],
     "zh-Hant": ["你", "狐狸", "熊貓", "水獺"],
@@ -525,6 +541,27 @@
   const oldMaidText = (key, values = {}) => {
     const dictionary = OLD_MAID_COPY[currentLocale()] || OLD_MAID_COPY.en;
     return (dictionary[key] || OLD_MAID_COPY.en[key] || key).replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
+  };
+
+  let oldMaidShellSyncing = false;
+  const syncOldMaidShell = () => {
+    if (oldMaidShellSyncing) return;
+    oldMaidShellSyncing = true;
+    try {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progressCopy = OLD_MAID_PROGRESS_COPY[currentLocale()] || OLD_MAID_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+      const settings = document.querySelector("#audioMenuBtn");
+      if (settings) settings.setAttribute("aria-label", labels.settings);
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", labels.settings);
+        battleUtility.title = labels.settings;
+      }
+    } finally {
+      oldMaidShellSyncing = false;
+    }
   };
 
   const OLD_MAID_RESULT = {
@@ -648,6 +685,21 @@
   };
 
   const cribbageShellCopy = () => CRIBBAGE_SHELL_COPY[currentLocale()] || CRIBBAGE_SHELL_COPY.en;
+  const CRIBBAGE_PROGRESS_COPY = {
+    en: { label: "Race to 121", copy: "First player to reach 121 wins." },
+    "zh-Hant": { label: "121 分競賽", copy: "先到 121 分的玩家獲勝。" },
+    "zh-Hans": { label: "121 分竞赛", copy: "先到 121 分的玩家获胜。" },
+    ja: { label: "121点レース", copy: "先に121点へ到達したプレイヤーが勝ちです。" },
+    ko: { label: "121점 레이스", copy: "먼저 121점에 도달한 플레이어가 승리합니다." },
+    es: { label: "Carrera a 121", copy: "Gana quien llegue primero a 121." },
+    "pt-BR": { label: "Corrida até 121", copy: "Vence quem chegar primeiro a 121." },
+    fr: { label: "Course vers 121", copy: "Le premier à atteindre 121 gagne." },
+    de: { label: "Rennen bis 121", copy: "Wer zuerst 121 erreicht, gewinnt." },
+    it: { label: "Corsa a 121", copy: "Vince chi raggiunge per primo 121." },
+    ru: { label: "Гонка до 121", copy: "Побеждает тот, кто первым наберёт 121." },
+    hi: { label: "121 तक दौड़", copy: "जो पहले 121 तक पहुँचे, वही जीतता है।" },
+    ar: { label: "سباق إلى 121", copy: "يفوز أول لاعب يصل إلى 121." },
+  };
   const CRIBBAGE_SELECTION_COPY = {
     en: { status: "Select cards: {count}/2 to the crib.", quickGuide: "How to play", quickGuideCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins." },
     "zh-Hant": { status: "選擇牌：{count}/2 張送入 crib。", quickGuide: "玩法說明", quickGuideCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。" },
@@ -712,10 +764,18 @@
       ownLocalizedText(document.querySelector("#startBtn"), labels.start);
       ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
       ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);
+      const progressCopy = CRIBBAGE_PROGRESS_COPY[currentLocale()] || CRIBBAGE_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
       ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
       ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
       const settings = document.querySelector("#audioMenuBtn");
       if (settings) settings.setAttribute("aria-label", labels.settings);
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", labels.settings);
+        battleUtility.title = labels.settings;
+      }
       const language = document.querySelector("#localeSelect");
       if (language) language.setAttribute("aria-label", labels.language);
       const battleBack = document.querySelector("#battleBackBtn");
@@ -1306,6 +1366,7 @@
     const resultTitle = document.querySelector("#resultTitle");
     const resultText = document.querySelector("#resultText");
     const audioButton = document.querySelector("#soundBtn");
+    const battleUtility = document.querySelector("[data-wp-battle-utility]");
     const localeSelect = document.querySelector("#localeSelect");
     const guideContent = () => {
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
@@ -1373,7 +1434,13 @@
       syncWarShell();
       window.addEventListener("weightplay:shell-sync", syncWarShell);
     }
-    if (id === "old-maid") statusText?.setAttribute("data-runtime-localize", "off");
+    if (id === "old-maid") {
+      syncOldMaidShell();
+      window.addEventListener("wonder:locale-change", syncOldMaidShell);
+      window.addEventListener("weightplay:shell-sync", syncOldMaidShell);
+      window.setTimeout(syncOldMaidShell, 0);
+      statusText?.setAttribute("data-runtime-localize", "off");
+    }
     if (id === "casino") {
       statusText?.setAttribute("aria-live", "polite");
       statusText?.setAttribute("aria-atomic", "true");
@@ -1423,6 +1490,12 @@
     }
     if (loading) { loading.hidden = true; loading.remove(); }
     let sound = root.WPCardEngine?.SoundEngine ? new root.WPCardEngine.SoundEngine("card_games_next_sound_v1") : null;
+    battleUtility?.addEventListener("click", () => {
+      const next = !sound?.enabled;
+      sound?.setEnabled(next);
+      battleUtility.setAttribute("aria-pressed", String(next));
+      battleUtility.textContent = next ? "⚙" : "🔇";
+    });
     let resultRecorded = false;
     const statsKey = `weightplay.cardgame.stats.${id}`;
     const readStats = () => { try { return JSON.parse(localStorage.getItem(statsKey) || "{\"played\":0,\"wins\":0,\"losses\":0}"); } catch (_error) { return { played: 0, wins: 0, losses: 0 }; } };

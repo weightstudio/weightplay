@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ru"] = {
+  "Tetris game artwork": "Изображение игры «Тетрис»",
+  "Tetris game information": "Тетрис информация об игре",
+  "Tetris": "Тетрис",
+  "Place pieces and clear 4 lines.": "Размещайте фигуры и очистите 4 линии.",
+  "Race to 121": "Гонка до 121",
+  "First player to reach 121 wins.": "Побеждает тот, кто первым наберёт 121.",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "Размещайте каждую падающую фигуру, используйте «Влево», «Повернуть», «Вправо» и «Уронить», чтобы очистить четыре линии и завершить короткий раунд.",
+  "A complete classic game currently finishing its release checks.": "Готовая классическая игра, проходящая финальные проверки перед выпуском.",
+  "Classic Game": "Классическая игра",
+  "Classic · Puzzle · Arcade": "Classic · Puzzle · Аркады",
+  "Blind-draw pairs": "Слепые пары",
+  "Clear pairs and avoid the Old Maid.": "Убирайте пары и не оставайтесь со Старой девой.",
   "AI North": "ИИ Север",
   "AI East": "ИИ Восток",
   "AI West": "ИИ Запад",

@@ -52,6 +52,7 @@ body.wp-shell-main-active .main-header .header-utilities { display: none !import
 .eyebrow, .feature-title { color: var(--classic-gold); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .main-copy p, .feature-list, .classic-guide { color: var(--classic-muted); line-height: 1.55; }
 .stats-panel { margin: 12px 0; padding: 12px; border: 1px solid rgba(255,255,255,.14); border-radius: 14px; color: var(--classic-text); background: rgba(16,46,80,.52); }
+.main-progress { display: flex; min-height: 40px; align-items: center; margin: 12px 0; padding: 8px 12px; border: 1px solid rgba(255,209,102,.32); border-radius: 12px; color: var(--classic-gold); background: rgba(16,46,80,.42); font-size: 13px; font-weight: 800; }
 .main-actions, .battle-actions, .result-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .primary-btn, .secondary-btn, .mini-btn { min-height: 44px; padding: 10px 14px; border: 0; border-radius: 14px; font-weight: 800; cursor: pointer; }
 .primary-btn { color: #102034; background: linear-gradient(120deg, var(--classic-accent), #45b7d1); }
@@ -81,6 +82,11 @@ body[data-wp-game-id="tripeaks-solitaire"] .feature-list { display: none !import
 body[data-wp-game-id="tripeaks-solitaire"] .battle-canvas { display: flex; flex-direction: column; }
 .battle-header { display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 6px; min-height: 50px; }
 .battle-header .battle-back { padding: 8px; cursor: pointer; }
+.battle-utility { position: relative; padding: 8px; cursor: pointer; }
+.battle-settings-popover { position: absolute; top: 56px; right: 0; z-index: 30; width: min(240px, calc(100vw - 28px)); padding: 10px; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; background: #0b2442; box-shadow: 0 18px 36px rgba(0,0,0,.35); }
+.battle-settings-popover[hidden] { display: none; }
+.battle-settings-popover .settings-row { margin: 0; cursor: pointer; }
+body[data-wp-game-id="golf-solitaire"] .battle-header { grid-template-columns: auto repeat(3, minmax(0, 1fr)) auto; }
 .header-stat { min-width: 0; padding: 4px 6px; border: 1px solid rgba(255,255,255,.13); border-radius: 10px; background: rgba(255,255,255,.08); text-align: center; }
 .header-stat small, .header-stat strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .header-stat small { color: var(--classic-muted); font-size: 10px; }

@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "animal-mosaic-clues";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
   const INTERFACE_VERSION = "6";
   let inputType = "unknown";
   let resultVisible = false;

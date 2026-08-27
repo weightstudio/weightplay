@@ -2753,7 +2753,7 @@
       faq: [["진행 상황이 저장되나요?", "네. 이 브라우저에만 저장됩니다."]],
     },
     es: {
-      title: "Gin Rummy", difficulty: "De fácil a desafiante", time: "5-15 minutos",
+      title: "Rummy de Gin", difficulty: "De fácil a desafiante", time: "5-15 minutos",
       gameplay: "Juego clásico de combinaciones de cartas", genre: ["Cartas", "Familiar", "Estrategia"], skills: ["Planificación", "Concentración", "Reconocimiento de patrones"],
       intro: "Forma grupos del mismo valor y escaleras del mismo palo mientras reduces las cartas sin combinar.",
       how: ["Roba del mazo o del descarte y luego descarta una carta. Golpea con pocas cartas sin combinar o consigue Gin."],

@@ -1,5 +1,17 @@
 window.WeightPlayGameRuntimeLocales = window.WeightPlayGameRuntimeLocales || {};
 window.WeightPlayGameRuntimeLocales["ar"] = {
+  "Tetris game artwork": "شعار WeightPlay",
+  "Tetris game information": "معلومات لعبة تتريس",
+  "Tetris": "تتريس",
+  "Place pieces and clear 4 lines.": "ضع القطع وامسح 4 صفوف.",
+  "Race to 121": "سباق إلى 121",
+  "First player to reach 121 wins.": "يفوز أول لاعب يصل إلى 121.",
+  "Place each falling piece, use Left, Rotate, Right, and Drop, and clear four lines to finish the short sprint.": "ضع كل قطعة ساقطة، واستخدم اليسار والتدوير واليمين والإسقاط، وامسح أربعة صفوف لإنهاء الجولة القصيرة.",
+  "A complete classic game currently finishing its release checks.": "لعبة كلاسيكية مكتملة تُنهي فحوص الإصدار حالياً.",
+  "Classic Game": "لعبة كلاسيكية",
+  "Classic · Puzzle · Arcade": "ألغاز · أركيد · استراتيجية",
+  "Blind-draw pairs": "أزواج السحب الأعمى",
+  "Clear pairs and avoid the Old Maid.": "أزل الأزواج وتجنب الاحتفاظ بالعانس.",
   "AI North": "الذكاء الاصطناعي شمالاً",
   "AI East": "الذكاء الاصطناعي شرقاً",
   "AI West": "الذكاء الاصطناعي غرباً",

@@ -15,6 +15,8 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-table-ui { width: 100%; height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 12px; box-sizing: border-box; }
 .card-game-topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
 .card-game-topbar .battle-back { flex: 0 0 44px; }
+.battle-utility { box-sizing: border-box; flex: 0 0 44px; width: 44px; min-width: 44px; min-height: 44px; border: 1px solid rgba(255,255,255,.28); border-radius: 12px; color: #f8fafc; background: rgba(9, 29, 47, .75); cursor: pointer; font-size: 20px; }
+.battle-utility:focus-visible { outline: 3px solid #ffefa7; outline-offset: 2px; }
 .card-game-stats { display: flex; justify-content: center; gap: 8px; flex: 1; flex-wrap: wrap; }
 .card-stat { min-width: 78px; padding: 5px 10px; border-radius: 12px; background: rgba(9, 29, 47, .75); border: 1px solid rgba(255,255,255,.14); text-align: center; }
 .card-stat small { display: block; color: #b9d8d3; font-size: 11px; }
@@ -69,11 +71,19 @@ body[data-wp-card-game="war"] .card-action-row button {
 .card-game-quick-guide strong { color: #ffefa7; }
 .card-main-controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
 .card-main-controls button { min-height: 44px; flex: 1 1 140px; }
+.main-progress { display: flex; min-height: 40px; box-sizing: border-box; flex-direction: column; justify-content: center; gap: 2px; margin: 10px 0 0; padding: 7px 12px; border: 1px solid rgba(215,249,231,.28); border-radius: 10px; color: #e7fff1; background: rgba(7,28,43,.38); font-size: 12px; line-height: 1.3; }
+.main-progress strong { color: #ffefa7; font-size: 13px; }
 @media (max-width: 720px), (max-height: 560px) and (orientation: landscape) {
   /* The shared Guide uses content-box sizing; keep Gin's locale-owned Main
      Guide inside the viewport after its mobile padding is applied. */
-  body[data-wp-card-game="gin-rummy"] .game-page-info.game-page-info-static {
+  body[data-wp-card-game="gin-rummy"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="cribbage"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="cribbage"] .game-page-info,
+  body[data-wp-card-game="old-maid"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="old-maid"] .game-page-info {
     box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 }
 .card-help { max-width: 64ch; text-align: center; color: #d7f9e7; font-size: 13px; margin: 0 auto; }

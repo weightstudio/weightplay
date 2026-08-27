@@ -1366,7 +1366,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hans": "金拉米",
     "ja": "ジン・ラミー",
     "ko": "진 러미",
-    "es": "Gin Rummy",
+    "es": "Rummy de Gin",
     "pt-BR": "Gin Rummy",
     "fr": "Gin rami",
     "de": "Gin Rommé",
