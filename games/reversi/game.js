@@ -3,7 +3,7 @@ window.WPClassicLogic?.mount("reversi");
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v8";
+  const GAME_VERSION = "v9";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const CELL_LABELS = {
@@ -13,19 +13,34 @@ window.WPClassicLogic?.mount("reversi");
     ru: "Строка {row}, столбец {col}", hi: "पंक्ति {row}, स्तंभ {col}", ar: "الصف {row}، العمود {col}"
   };
   const GUIDE_COPY = {
-    en: { aria: "Reversi game information", kicker: "WeightPlay Kids Game Guide", title: "Reversi", description: "Place discs to surround the opponent; the player with more discs at the end wins.", gameplayLabel: "Gameplay", gameplay: "Strategy Board Game", genreLabel: "Genre", genre: "Classic · Puzzle · Strategy · Family", faqTitle: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser." },
-    "zh-Hant": { aria: "黑白棋 遊戲資訊", kicker: "WeightPlay 兒童遊戲指南", title: "黑白棋", description: "放置棋子夾住對手，結束時棋子較多者獲勝。", gameplayLabel: "玩法", gameplay: "策略棋盤遊戲", genreLabel: "類型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常見問題", faqQuestion: "進度保存了嗎？", faqAnswer: "是的，僅在該瀏覽器中。" },
-    "zh-Hans": { aria: "黑白棋 游戏资讯", kicker: "WeightPlay 儿童游戏指南", title: "黑白棋", description: "放置棋子夹住对手，结束时棋子较多者获胜。", gameplayLabel: "玩法", gameplay: "策略棋盘游戏", genreLabel: "类型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常见问题", faqQuestion: "进度保存了吗？", faqAnswer: "是的，仅在该浏览器中。" },
-    ja: { aria: "リバーシ のゲーム情報", kicker: "WeightPlay ゲームガイド", title: "リバーシ", description: "相手の石を挟み、最後に石が多い方が勝ちです。", gameplayLabel: "ゲーム内容", gameplay: "戦略ボードゲーム", genreLabel: "ジャンル", genre: "Classic · Puzzle · 戦略 · 家族", faqTitle: "よくある質問", faqQuestion: "進行状況は保存されますか?", faqAnswer: "はい、このブラウザでのみ可能です。" },
-    ko: { aria: "리버시 게임 정보", kicker: "WeightPlay 어린이 게임 가이드", title: "리버시", description: "상대 돌을 둘러싸 뒤집고 마지막에 돌이 많은 쪽이 승리합니다.", gameplayLabel: "Gameplay", gameplay: "전략 보드게임", genreLabel: "Genre", genre: "Classic · Puzzle · 전략 · 가족", faqTitle: "FAQ", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에서만 가능합니다." },
-    es: { aria: "Guía de Reversi", kicker: "Guía de juegos Kids de WeightPlay", title: "Reversi", description: "Rodea y voltea fichas rivales; gana quien tenga más al final.", gameplayLabel: "Cómo se juega", gameplay: "Juego de estrategia", genreLabel: "Género", genre: "Classic · Puzzle · Estrategia · familia", faqTitle: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, sólo en este navegador." },
-    "pt-BR": { aria: "Reversi informações do jogo", kicker: "WeightPlay Guia do jogo infantil", title: "Reversi", description: "Cerque e vire as peças rivais; vence quem tiver mais no fim.", gameplayLabel: "Gameplay", gameplay: "Jogo de estratégia", genreLabel: "Genre", genre: "Classic · Puzzle · Estratégia · Família", faqTitle: "FAQ", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador." },
-    fr: { aria: "Informations sur le jeu Reversi", kicker: "Guide de jeu WeightPlay pour enfants", title: "Reversi", description: "Encadrez les pions adverses ; le plus grand nombre gagne.", gameplayLabel: "Type de jeu", gameplay: "Jeu de stratégie", genreLabel: "Genre", genre: "Classic · Puzzle · Stratégie · Famille", faqTitle: "Questions fréquentes", faqQuestion: "La progression est-elle enregistrée ?", faqAnswer: "Oui, uniquement dans ce navigateur." },
-    de: { aria: "Spielanleitung für Reversi", kicker: "WeightPlay Kids-Spielanleitung", title: "Reversi", description: "Umschließe gegnerische Steine; am Ende gewinnt die größere Zahl.", gameplayLabel: "Spielweise", gameplay: "Strategiespiel", genreLabel: "Genre", genre: "Classic · Puzzle · Strategie · Familie", faqTitle: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser." },
-    it: { aria: "Reversi informazioni sul gioco", kicker: "WeightPlay Guida ai giochi per bambini", title: "Reversi", description: "Circonda e rovescia le pedine rivali; vince chi ne ha di più.", gameplayLabel: "Gameplay", gameplay: "Gioco strategico", genreLabel: "Genre", genre: "Classic · Puzzle · Strategia · Famiglia", faqTitle: "FAQ", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser." },
-    ru: { aria: "Реверси информация об игре", kicker: "WeightPlay Руководство по игре для детей", title: "Реверси", description: "Окружайте фишки соперника; побеждает тот, у кого их больше.", gameplayLabel: "Gameplay", gameplay: "Стратегическая игра", genreLabel: "Genre", genre: "Classic · Puzzle · Стратегия · Семья", faqTitle: "FAQ", faqQuestion: "Прогресс сохраняется?", faqAnswer: "Да, только в этом браузере." },
-    hi: { aria: "रिवर्सी खेल की जानकारी", kicker: "WeightPlay किड्स गेम गाइड", title: "रिवर्सी", description: "प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।", gameplayLabel: "Gameplay", gameplay: "रणनीति बोर्ड गेम", genreLabel: "Genre", genre: "Classic · Puzzle · रणनीति · परिवार", faqTitle: "FAQ", faqQuestion: "क्या प्रगति सहेजी गई है?", faqAnswer: "हाँ, केवल इस ब्राउज़र में." },
-    ar: { aria: "دليل لعبة ريفيرسي", kicker: "دليل ألعاب WeightPlay للأطفال", title: "ريفيرسي", description: "أحط قطع الخصم واقلبها؛ يفوز من يملك قطعًا أكثر.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لوحية استراتيجية", genreLabel: "النوع", genre: "Classic · Puzzle · الإستراتيجية · العائلة", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يتم حفظ التقدم؟", faqAnswer: "نعم، فقط في هذا المتصفح." }
+    en: { aria: "Reversi game information", kicker: "WeightPlay Original Game Guide", title: "Reversi", description: "Place discs to surround the opponent; the player with more discs at the end wins.", gameplayLabel: "Gameplay", gameplay: "Strategy Board Game", genreLabel: "Genre", genre: "Classic · Puzzle · Strategy · Family", faqTitle: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, only in this browser." },
+    "zh-Hant": { aria: "黑白棋 遊戲資訊", kicker: "WeightPlay 原創遊戲指南", title: "黑白棋", description: "放置棋子夾住對手，結束時棋子較多者獲勝。", gameplayLabel: "玩法", gameplay: "策略棋盤遊戲", genreLabel: "類型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常見問題", faqQuestion: "進度保存了嗎？", faqAnswer: "是的，僅在該瀏覽器中。" },
+    "zh-Hans": { aria: "黑白棋 游戏资讯", kicker: "WeightPlay 原创游戏指南", title: "黑白棋", description: "放置棋子夹住对手，结束时棋子较多者获胜。", gameplayLabel: "玩法", gameplay: "策略棋盘游戏", genreLabel: "类型", genre: "Classic · Puzzle · 策略 · 家庭", faqTitle: "常见问题", faqQuestion: "进度保存了吗？", faqAnswer: "是的，仅在该浏览器中。" },
+    ja: { aria: "リバーシ のゲーム情報", kicker: "WeightPlay オリジナルゲームガイド", title: "リバーシ", description: "相手の石を挟み、最後に石が多い方が勝ちです。", gameplayLabel: "ゲーム内容", gameplay: "戦略ボードゲーム", genreLabel: "ジャンル", genre: "Classic · Puzzle · 戦略 · 家族", faqTitle: "よくある質問", faqQuestion: "進行状況は保存されますか?", faqAnswer: "はい、このブラウザでのみ可能です。" },
+    ko: { aria: "리버시 게임 정보", kicker: "WeightPlay 오리지널 게임 가이드", title: "리버시", description: "상대 돌을 둘러싸 뒤집고 마지막에 돌이 많은 쪽이 승리합니다.", gameplayLabel: "Gameplay", gameplay: "전략 보드게임", genreLabel: "Genre", genre: "Classic · Puzzle · 전략 · 가족", faqTitle: "FAQ", faqQuestion: "진행 상황이 저장되나요?", faqAnswer: "예, 이 브라우저에서만 가능합니다." },
+    es: { aria: "Guía de Reversi", kicker: "Guía de juegos originales de WeightPlay", title: "Reversi", description: "Rodea y voltea fichas rivales; gana quien tenga más al final.", gameplayLabel: "Cómo se juega", gameplay: "Juego de estrategia", genreLabel: "Género", genre: "Classic · Puzzle · Estrategia · familia", faqTitle: "Preguntas frecuentes", faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Sí, sólo en este navegador." },
+    "pt-BR": { aria: "Reversi informações do jogo", kicker: "Guia de jogos originais WeightPlay", title: "Reversi", description: "Cerque e vire as peças rivais; vence quem tiver mais no fim.", gameplayLabel: "Gameplay", gameplay: "Jogo de estratégia", genreLabel: "Genre", genre: "Classic · Puzzle · Estratégia · Família", faqTitle: "FAQ", faqQuestion: "O progresso é salvo?", faqAnswer: "Sim, apenas neste navegador." },
+    fr: { aria: "Informations sur le jeu Reversi", kicker: "Guide des jeux originaux WeightPlay", title: "Reversi", description: "Encadrez les pions adverses ; le plus grand nombre gagne.", gameplayLabel: "Type de jeu", gameplay: "Jeu de stratégie", genreLabel: "Genre", genre: "Classic · Puzzle · Stratégie · Famille", faqTitle: "Questions fréquentes", faqQuestion: "La progression est-elle enregistrée ?", faqAnswer: "Oui, uniquement dans ce navigateur." },
+    de: { aria: "Spielanleitung für Reversi", kicker: "WeightPlay-Leitfaden für Originalspiele", title: "Reversi", description: "Umschließe gegnerische Steine; am Ende gewinnt die größere Zahl.", gameplayLabel: "Spielweise", gameplay: "Strategiespiel", genreLabel: "Genre", genre: "Classic · Puzzle · Strategie · Familie", faqTitle: "Häufige Fragen", faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Ja, nur in diesem Browser." },
+    it: { aria: "Reversi informazioni sul gioco", kicker: "Guida ai giochi originali WeightPlay", title: "Reversi", description: "Circonda e rovescia le pedine rivali; vince chi ne ha di più.", gameplayLabel: "Gameplay", gameplay: "Gioco strategico", genreLabel: "Genre", genre: "Classic · Puzzle · Strategia · Famiglia", faqTitle: "FAQ", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser." },
+    ru: { aria: "Реверси информация об игре", kicker: "Руководство по оригинальным играм WeightPlay", title: "Реверси", description: "Окружайте фишки соперника; побеждает тот, у кого их больше.", gameplayLabel: "Gameplay", gameplay: "Стратегическая игра", genreLabel: "Genre", genre: "Classic · Puzzle · Стратегия · Семья", faqTitle: "FAQ", faqQuestion: "Прогресс сохраняется?", faqAnswer: "Да, только в этом браузере." },
+    hi: { aria: "रिवर्सी खेल की जानकारी", kicker: "WeightPlay मौलिक गेम गाइड", title: "रिवर्सी", description: "प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।", gameplayLabel: "Gameplay", gameplay: "रणनीति बोर्ड गेम", genreLabel: "Genre", genre: "Classic · Puzzle · रणनीति · परिवार", faqTitle: "FAQ", faqQuestion: "क्या प्रगति सहेजी गई है?", faqAnswer: "हाँ, केवल इस ब्राउज़र में." },
+    ar: { aria: "دليل لعبة ريفيرسي", kicker: "دليل ألعاب WeightPlay الأصلية", title: "ريفيرسي", description: "أحط قطع الخصم واقلبها؛ يفوز من يملك قطعًا أكثر.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لوحية استراتيجية", genreLabel: "النوع", genre: "Classic · Puzzle · الإستراتيجية · العائلة", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يتم حفظ التقدم؟", faqAnswer: "نعم، فقط في هذا المتصفح." }
+  };
+  const GUIDE_QUICK_START = {
+    en: "Choose a difficulty, read the rule, then use Hint to inspect a safe next move. Replay or New Puzzle resets the board for a fresh round.",
+    "zh-Hant": "選擇難度、閱讀規則，再用提示查看安全的下一步。使用再玩一次或新謎題即可重新設定棋盤。",
+    "zh-Hans": "选择难度、阅读规则，再用提示查看安全的下一步。使用再玩一次或新谜题即可重新设置棋盘。",
+    ja: "難易度を選び、ルールを読んでから、ヒントで安全な次の手を確認しましょう。リプレイまたは新しいパズルで盤面をリセットできます。",
+    ko: "난이도를 고르고 규칙을 읽은 뒤 힌트로 안전한 다음 수를 확인하세요. 다시 하기 또는 새 퍼즐로 보드를 초기화할 수 있습니다.",
+    es: "Elige una dificultad, lee la regla y usa Pista para ver una jugada segura. Repetir o Nuevo puzzle reinicia el tablero.",
+    "pt-BR": "Escolha uma dificuldade, leia a regra e use Dica para ver uma jogada segura. Jogar de novo ou Novo quebra-cabeça reinicia o tabuleiro.",
+    fr: "Choisissez une difficulté, lisez la règle, puis utilisez Indice pour voir un coup sûr. Rejouer ou Nouveau puzzle réinitialise le plateau.",
+    de: "Wähle eine Schwierigkeit, lies die Regel und nutze Tipp für einen sicheren nächsten Zug. Nochmal oder Neues Rätsel setzt das Brett zurück.",
+    it: "Scegli una difficoltà, leggi la regola e usa Suggerimento per vedere una mossa sicura. Rigioca o Nuovo puzzle reimposta la tavola.",
+    ru: "Выберите сложность, прочитайте правило и используйте подсказку, чтобы увидеть безопасный следующий ход. Кнопка «Снова» или «Новая задача» сбрасывает поле.",
+    hi: "कठिनाई चुनें, नियम पढ़ें और सुरक्षित अगली चाल देखने के लिए संकेत का उपयोग करें। फिर खेलें या नई पहेली से बोर्ड रीसेट होता है।",
+    ar: "اختر مستوى الصعوبة واقرأ القاعدة، ثم استخدم التلميح لمعرفة خطوة آمنة تالية. يعيد «العب مجددًا» أو «لغز جديد» ضبط اللوحة."
   };
   const SCENARIOS = [
     {
@@ -96,6 +111,8 @@ window.WPClassicLogic?.mount("reversi");
   };
 
   const syncGuide = () => {
+    const quickStart = document.querySelector(".logic-guide p:last-child");
+    if (quickStart) quickStart.textContent = GUIDE_QUICK_START[locale()] || GUIDE_QUICK_START.en;
     const guide = document.querySelector(".game-page-info-static");
     if (!guide) return;
     const copy = GUIDE_COPY[locale()] || GUIDE_COPY.en;

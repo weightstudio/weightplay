@@ -602,15 +602,19 @@
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
-    const poster = id === "sliding-15"
+    const poster = id === "naval-battle"
+      ? "../../assets/naval-battle-cover-v1.webp"
+      : id === "sliding-15"
       ? "../../assets/sliding-15-cover-v1.webp"
       : id === "lights-out"
       ? "../../assets/lights-out-cover-v2.webp"
       : id === "peg-solitaire"
         ? "../../assets/peg-solitaire-cover-v2.webp"
-        : id === "code-breaker"
+          : id === "code-breaker"
           ? "../../assets/code-breaker-cover-v2.webp"
-          : "../../assets/classic-logic-lab-cover.webp";
+          : id === "four-in-a-row"
+            ? "../../assets/four-in-a-row-cover-v1.webp"
+            : "../../assets/classic-logic-lab-cover.webp";
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };

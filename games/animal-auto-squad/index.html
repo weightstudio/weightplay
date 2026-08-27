@@ -4,7 +4,7 @@
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-auto-squad/"+location.search+location.hash)}catch{location.replace("/en/games/animal-auto-squad/"+location.search+location.hash)}})();</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v29" />
+    <meta name="weightplay-game-version" content="v30" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="Animal Auto Squad is a tactical auto-battler with 30 stages, six regions, varied enemy formations, and six unique animal bosses." />
@@ -348,13 +348,13 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260827-auto-squad-guide-locales-v29"></script>
+  <script src="game.js?v=20260827-auto-squad-skill-locales-v30"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260827-auto-squad-guide-locales-v29";
+          script.src = "../../src/game-page-info.js?v=20260827-auto-squad-skill-locales-v30";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
