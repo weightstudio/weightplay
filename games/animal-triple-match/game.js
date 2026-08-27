@@ -1130,7 +1130,13 @@
   els.tutorialModal.addEventListener("keydown", e => trap(e, () => closeModal(els.tutorialModal, els.helpBtn)));
   els.leaveModal.addEventListener("keydown", e => trap(e, () => closeModal(els.leaveModal, els.battleBack)));
   els.resultModal.addEventListener("keydown", e => trap(e));
-  window.addEventListener("resize", fitCanvas, { passive: true });
+  // The shared battle scaler settles the logical root on its animation frame.
+  // Reflow the absolute treasure pieces one frame later so a portrait ↔
+  // short-landscape switch cannot leave them positioned from the old board.
+  window.addEventListener("resize", () => {
+    fitCanvas();
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (run) layoutPieces(); }));
+  }, { passive: true });
   window.addEventListener("blur", () => { windowFocused = false; suspendPendingMatch(); });
   window.addEventListener("focus", () => { windowFocused = true; armPendingMatch(); });
   window.addEventListener("pagehide", () => { windowFocused = false; suspendPendingMatch(); });

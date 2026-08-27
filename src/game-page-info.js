@@ -11791,6 +11791,57 @@
     faq: [["Does the battery fire by itself?", "Yes. You choose the lane; the selected battery attacks automatically."], ["Why should I collect a power core?", "It raises attack for the current defense, and later formations are balanced around that increase."], ["What damages the crystal core?", "A monster that reaches the bottom or an unresolved special attack."], ["How many defenses are included?", "There are 30 authored defenses with a Boss at the end of each five-stage chapter."]]
   }, "動物稜光軍團", "动物棱光军团");
 
+  // Animal Prism Battalion's public Arabic Guide must own the complete
+  // rendered surface. Keep the existing v20 gameplay/runtime contract while
+  // replacing the static Guide's English story, facts, and FAQ fallback.
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-prism-battalion"] = {
+    ...games["animal-prism-battalion"],
+    title: "كتيبة بريزم الحيوان",
+    difficulty: "من السهل إلى التحدي",
+    time: "2–8 دقائق لكل دفاع",
+    gameplay: "دفاع آلي عن النواة عبر ثلاثة ممرات",
+    genre: ["أركيد", "استراتيجية", "دفاع", "حيوانات"],
+    skills: ["تحديد الأولويات", "رد الفعل", "التخطيط"],
+    guideKicker: "دليل لعبة WeightPlay الأصلية",
+    noteTitle: "معلومات اللاعب والحفظ",
+    intro: "بدّل بطارية منشورية آلية بين ثلاثة ممرات، ودمر كل تشكيل قادم، واجمع نوى الهجوم النادرة، وأبعد كل وحش باقٍ عن النواة البلورية.",
+    story: [
+      "تحمي ثلاثون دفعة دفاعية قلعة منشورية تتعرض ممراتها الثلاثة للهجوم في الوقت نفسه. تطلق البطاريات النار تلقائيًا، لكن الممر المحدد وحده يتلقى التركيز، لذلك يقرر القائد أي تهديد يجب أن يختفي أولًا.",
+      "تنتهي كل دفعة دفاعية خامسة بمواجهة زعيم الفصل. تعلّم الموجات السابقة قاعدة الفصل قبل أن يجمعها الزعيم مع تشكيلات أكثر كثافة.",
+    ],
+    systems: [
+      "اضغط على ممر أو استخدم اليسار واليمين أو A وD لتحريك البطارية المحددة. يضيء الممر المختار ويتلقى قيمة الهجوم الحالية تلقائيًا.",
+      "معظم الأهداف أعداء، لكن نواة طاقة متوهجة نادرة ترفع الهجوم لبقية الدفاع الحالي. تفترض صحة التشكيلات اللاحقة أنك جمعت النواة، لذلك يؤدي تجاهلها إلى كلفة استراتيجية حقيقية.",
+      "يجب إزالة درع التشكيلات المحمية قبل أن تتلقى الضرر العادي. يجب تعطيل القنابل قبل انتهاء عدّها، وتحتاج الأبطال إلى تركيز مستمر، وأي وحش يعبر الخط السفلي يضر بالنواة البلورية.",
+      "تحسن الشظايا المكتسبة من الدفاعات المكتملة سرعة الإطلاق وقوة الهجوم أو درع النواة في المختبر. تساعد هذه الترقيات على اللعب لكنها لا تلغي قرارات الممرات.",
+    ],
+    how: [
+      "اختر دفاعًا مفتوحًا من مسار المراحل.",
+      "اقرأ الممرات الثلاثة واختر التشكيل النشط الأقرب أو الأكثر خطورة.",
+      "انتقل لفترة قصيرة إلى نواة طاقة أو قنبلة عندما يكون توقيتها أكثر إلحاحًا من الضرر العادي.",
+      "طهّر كل موجة واهزم زعيم الفصل قبل أن تصل النواة البلورية إلى الصفر.",
+    ],
+    strategyTips: [
+      "امنح المسافة والسلوك الخاص الأولوية، لا الصحة المتبقية وحدها.",
+      "أنه التشكيل الذي أوشك على الهزيمة قبل التبديل، إلا إذا كانت قنبلة أو عملية اختراق وشيكة.",
+      "اجمع نواة الطاقة عندما يصبح الممر آمنًا بما يكفي، لأن الموجات اللاحقة متوازنة حول زيادة الهجوم التي تمنحها.",
+      "استخدم ترقيات الدرع للتسامح مع الأخطاء، وترقيات السرعة والقوة عندما ينجو تشكيل مرارًا بفارق صغير.",
+    ],
+    progression: [
+      "تضيف ستة فصول، يتكون كل منها من خمس دفعات دفاعية، مجموعات منقسمة وحاملات دروع وقنابل مؤقتة وأبطالًا وضغطًا متقاربًا وست مواجهات زعماء مميزة.",
+      "تغيّر تشكيلات الموجات المصممة توقيت الممر والأولوية بدل الاكتفاء بمضاعفة صحة الأعداء.",
+    ],
+    designNote: "تبقى الممر المحدد ومسافة الهدف القادم وحالة الهدف الخاص وصحة النواة وقيمة الهجوم ظاهرة معًا. لا يغيّر التبديل موضع الهدف أو معنى الممرات الثلاثة عند تغيير حجم الشاشة.",
+    parent: "لا يلزم حساب أو شراء أو لوحة متصدرين عامة. تُحفظ الفتوحات والنجوم والشظايا وترقيات المختبر محليًا في هذا المتصفح.",
+    faq: [
+      ["هل تطلق البطارية النار تلقائيًا؟", "نعم. تختار الممر، وتهاجم البطارية المحددة تلقائيًا."],
+      ["لماذا ينبغي أن أجمع نواة الطاقة؟", "ترفع الهجوم في الدفاع الحالي، وتُوازَن التشكيلات اللاحقة حول هذه الزيادة."],
+      ["ما الذي يضر النواة البلورية؟", "وحش يصل إلى الخط السفلي أو هجوم خاص لم يُحسم."],
+      ["كم عدد الدفاعات الموجودة؟", "هناك 30 دفاعًا مصممًا بعناية، مع زعيم في نهاية كل فصل من خمسة دفاعات."],
+    ],
+  };
+
   registerExpandedGuide("animal-prism-breakers", {
     title: "Animal Prism Breakers", gameplay: "Paddle-Angle Crystal Breaker",
     genre: ["Arcade", "Action", "Animal"],
@@ -14413,6 +14464,30 @@
     localizedGames[locale]["animal-auto-squad"] = { ...games["animal-auto-squad"], ...copy };
     localizedGameplayProfiles[locale] ||= {};
     localizedGameplayProfiles[locale]["animal-auto-squad"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
+
+  // Bounce Brawl's public Guide is game-owned data, so these exact fields must
+  // stay locale-owned instead of relying on the shared English fallback.
+  const animalBounceBrawlGuideLocaleCopy = {
+    "zh-Hant": { gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
+    "zh-Hans": { gameplay: "柔和物理击退竞技场", difficulty: "容易到有挑战性", faq: [["进度会保存吗？", "会，仅保存在此浏览器中。"]] },
+    ja: { gameplay: "ソフト物理ノックバックアリーナ", difficulty: "やさしく始めて挑戦的", faq: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]] },
+    ko: { gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
+    es: { gameplay: "Arena de retroceso con física suave", difficulty: "De fácil a desafiante", faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]] },
+    "pt-BR": { gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]] },
+    fr: { gameplay: "Arène de recul à physique douce", difficulty: "Facile à relever, puis exigeant", faq: [["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]] },
+    de: { gameplay: "Arena mit sanfter Rückstoßphysik", difficulty: "Leicht bis anspruchsvoll", faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]] },
+    it: { gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
+    ru: { gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
+    hi: { gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
+    ar: { gameplay: "ساحة ارتداد بفيزياء ناعمة", difficulty: "من السهل إلى التحدي", faq: [["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]] },
+  };
+  for (const [locale, copy] of Object.entries(animalBounceBrawlGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-bounce-brawl"] = {
+      ...(localizedGames[locale]["animal-bounce-brawl"] || {}),
+      ...copy,
+    };
   }
 
   [
