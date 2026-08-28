@@ -6,6 +6,23 @@
   const RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const localeMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const currentLocale = () => localeMap[document.documentElement.lang] || root.WonderI18n?.actualLocale?.() || document.documentElement.lang || "en";
+  const OLD_MAID_ANALYTICS_VERSION = 17;
+  const oldMaidViewportBucket = () => {
+    const width = Number(root.innerWidth) || 0;
+    return width < 500 ? "phone" : width < 900 ? "compact-landscape" : "desktop";
+  };
+  const oldMaidTrack = (event, details = {}) => {
+    try {
+      root.WonderAnalytics?.track?.(event, {
+        game_id: "old-maid",
+        game_version: `v${OLD_MAID_ANALYTICS_VERSION}`,
+        interface_version: "6",
+        locale: currentLocale(),
+        viewport_bucket: oldMaidViewportBucket(),
+        ...details,
+      });
+    } catch (_error) {}
+  };
 
   const TITLES = {
     hearts: { en: "Hearts", "zh-Hant": "紅心大戰", "zh-Hans": "红心大战", ja: "ハーツ", ko: "하트", es: "Corazones", "pt-BR": "Copas", fr: "Cœurs", de: "Herz", it: "Cuori", ru: "Черви", hi: "हर्ट्स", ar: "القلوب" },
@@ -491,19 +508,19 @@
   };
 
   const OLD_MAID_COPY = {
-    en: { help: "Draw one hidden card from {name}. Pairs disappear automatically.", pair: "A pair disappeared. Your next blind draw is ready.", risk: "The Old Maid stays in your hand. Try to clear it.", none: "No pair disappeared. Watch the next blind draw." },
-    "zh-Hant": { help: "從 {name} 抽一張背面牌。配對會自動消除。", pair: "成功消除一對牌。準備迎接下一次盲抽。", risk: "鬼牌仍在你手上。想辦法把它清掉。", none: "沒有消除配對。留意下一次盲抽。" },
-    "zh-Hans": { help: "从 {name} 抽一张背面牌。配对会自动消除。", pair: "成功消除一对牌。准备迎接下一次盲抽。", risk: "鬼牌仍在你手上。想办法把它清掉。", none: "没有消除配对。留意下一次盲抽。" },
-    ja: { help: "{name} から裏向きのカードを1枚引きます。ペアは自動で消えます。", pair: "ペアが1組消えました。次の裏引きに備えましょう。", risk: "ババが手札に残っています。手放す方法を考えましょう。", none: "ペアは消えませんでした。次の裏引きに注意しましょう。" },
-    ko: { help: "{name}에게서 뒷면 카드 한 장을 뽑습니다. 짝은 자동으로 사라집니다.", pair: "짝 하나가 사라졌습니다. 다음 뒷면 카드 뽑기를 준비하세요.", risk: "버바가 내 패에 남아 있습니다. 넘길 방법을 찾아보세요.", none: "사라진 짝이 없습니다. 다음 뒷면 카드 뽑기를 주의하세요." },
-    es: { help: "Roba una carta oculta de {name}. Las parejas desaparecen automáticamente.", pair: "Una pareja desapareció. Prepárate para el próximo robo a ciegas.", risk: "La Solterona sigue en tu mano. Intenta deshacerte de ella.", none: "No desapareció ninguna pareja. Cuidado con el próximo robo." },
-    "pt-BR": { help: "Compre uma carta virada de {name}. Os pares desaparecem automaticamente.", pair: "Um par desapareceu. Prepare-se para a próxima compra às cegas.", risk: "O Mico continua na sua mão. Tente passá-lo.", none: "Nenhum par desapareceu. Atenção à próxima compra às cegas." },
-    fr: { help: "Piochez une carte cachée chez {name}. Les paires disparaissent automatiquement.", pair: "Une paire a disparu. Préparez-vous pour la prochaine pioche à l’aveugle.", risk: "Le Pouilleux reste dans votre main. Essayez de vous en défaire.", none: "Aucune paire n’a disparu. Attention à la prochaine pioche." },
-    de: { help: "Ziehe eine verdeckte Karte von {name}. Paare verschwinden automatisch.", pair: "Ein Paar ist verschwunden. Bereite dich auf den nächsten Blindzug vor.", risk: "Der Schwarze Peter bleibt auf deiner Hand. Versuche, ihn loszuwerden.", none: "Kein Paar ist verschwunden. Achte auf den nächsten Blindzug." },
-    it: { help: "Pesca una carta coperta da {name}. Le coppie spariscono automaticamente.", pair: "Una coppia è sparita. Preparati alla prossima pesca alla cieca.", risk: "L'Asino è ancora nella tua mano. Prova a passarlo.", none: "Nessuna coppia è sparita. Attenzione alla prossima pesca." },
-    ru: { help: "Возьмите закрытую карту у {name}. Пары исчезают автоматически.", pair: "Пара исчезла. Приготовьтесь к следующему слепому добору.", risk: "Старая дева осталась у вас в руке. Постарайтесь передать её.", none: "Пара не исчезла. Следующий слепой добор всё ещё рискован." },
-    hi: { help: "{name} से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं।", pair: "एक जोड़ा हट गया। अगली छिपी हुई चाल के लिए तैयार रहें।", risk: "ओल्ड मेड आपके हाथ में बनी हुई है। इसे आगे देने का रास्ता खोजें।", none: "कोई जोड़ा नहीं हटा। अगली छिपी हुई चाल पर ध्यान दें।" },
-    ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي." },
+    en: { help: "Draw one hidden card from {name}. Pairs disappear automatically.", pair: "A pair disappeared. Your next blind draw is ready.", risk: "The Old Maid stays in your hand. Try to clear it.", none: "No pair disappeared. Watch the next blind draw.", hiddenCard: "Hidden card {position} of {total}" },
+    "zh-Hant": { help: "從 {name} 抽一張背面牌。配對會自動消除。", pair: "成功消除一對牌。準備迎接下一次盲抽。", risk: "鬼牌仍在你手上。想辦法把它清掉。", none: "沒有消除配對。留意下一次盲抽。", hiddenCard: "背面牌 {position}／共 {total} 張" },
+    "zh-Hans": { help: "从 {name} 抽一张背面牌。配对会自动消除。", pair: "成功消除一对牌。准备迎接下一次盲抽。", risk: "鬼牌仍在你手上。想办法把它清掉。", none: "没有消除配对。留意下一次盲抽。", hiddenCard: "背面牌 {position}／共 {total} 张" },
+    ja: { help: "{name} から裏向きのカードを1枚引きます。ペアは自動で消えます。", pair: "ペアが1組消えました。次の裏引きに備えましょう。", risk: "ババが手札に残っています。手放す方法を考えましょう。", none: "ペアは消えませんでした。次の裏引きに注意しましょう。", hiddenCard: "裏向きカード {position}／{total}枚中" },
+    ko: { help: "{name}에게서 뒷면 카드 한 장을 뽑습니다. 짝은 자동으로 사라집니다.", pair: "짝 하나가 사라졌습니다. 다음 뒷면 카드 뽑기를 준비하세요.", risk: "버바가 내 패에 남아 있습니다. 넘길 방법을 찾아보세요.", none: "사라진 짝이 없습니다. 다음 뒷면 카드 뽑기를 주의하세요.", hiddenCard: "뒷면 카드 {position} / {total}장" },
+    es: { help: "Roba una carta oculta de {name}. Las parejas desaparecen automáticamente.", pair: "Una pareja desapareció. Prepárate para el próximo robo a ciegas.", risk: "La Solterona sigue en tu mano. Intenta deshacerte de ella.", none: "No desapareció ninguna pareja. Cuidado con el próximo robo.", hiddenCard: "Carta oculta {position} de {total}" },
+    "pt-BR": { help: "Compre uma carta virada de {name}. Os pares desaparecem automaticamente.", pair: "Um par desapareceu. Prepare-se para a próxima compra às cegas.", risk: "O Mico continua na sua mão. Tente passá-lo.", none: "Nenhum par desapareceu. Atenção à próxima compra às cegas.", hiddenCard: "Carta virada {position} de {total}" },
+    fr: { help: "Piochez une carte cachée chez {name}. Les paires disparaissent automatiquement.", pair: "Une paire a disparu. Préparez-vous pour la prochaine pioche à l’aveugle.", risk: "Le Pouilleux reste dans votre main. Essayez de vous en défaire.", none: "Aucune paire n’a disparu. Attention à la prochaine pioche.", hiddenCard: "Carte cachée {position} sur {total}" },
+    de: { help: "Ziehe eine verdeckte Karte von {name}. Paare verschwinden automatisch.", pair: "Ein Paar ist verschwunden. Bereite dich auf den nächsten Blindzug vor.", risk: "Der Schwarze Peter bleibt auf deiner Hand. Versuche, ihn loszuwerden.", none: "Kein Paar ist verschwunden. Achte auf den nächsten Blindzug.", hiddenCard: "Verdeckte Karte {position} von {total}" },
+    it: { help: "Pesca una carta coperta da {name}. Le coppie spariscono automaticamente.", pair: "Una coppia è sparita. Preparati alla prossima pesca alla cieca.", risk: "L'Asino è ancora nella tua mano. Prova a passarlo.", none: "Nessuna coppia è sparita. Attenzione alla prossima pesca.", hiddenCard: "Carta coperta {position} di {total}" },
+    ru: { help: "Возьмите закрытую карту у {name}. Пары исчезают автоматически.", pair: "Пара исчезла. Приготовьтесь к следующему слепому добору.", risk: "Старая дева осталась у вас в руке. Постарайтесь передать её.", none: "Пара не исчезла. Следующий слепой добор всё ещё рискован.", hiddenCard: "Закрытая карта {position} из {total}" },
+    hi: { help: "{name} से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं।", pair: "एक जोड़ा हट गया। अगली छिपी हुई चाल के लिए तैयार रहें।", risk: "ओल्ड मेड आपके हाथ में बनी हुई है। इसे आगे देने का रास्ता खोजें।", none: "कोई जोड़ा नहीं हटा। अगली छिपी हुई चाल पर ध्यान दें।", hiddenCard: "छिपा हुआ पत्ता {position} / {total}" },
+    ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي.", hiddenCard: "البطاقة المخفية {position} من {total}" },
   };
 
   const OLD_MAID_BATTLE_COPY = {
@@ -1120,6 +1137,22 @@
     return value;
   };
 
+  const CASINO_BATTLE_COPY = {
+    en: { quickGuide: "How to play", quickGuideCopy: "Capture table cards by rank or sum, then build or play when no capture is available." },
+    "zh-Hant": { quickGuide: "玩法說明", quickGuideCopy: "按點數或合計捕獲桌面牌；無法捕獲時再建牌或出牌。" },
+    "zh-Hans": { quickGuide: "玩法说明", quickGuideCopy: "按点数或合计捕获桌面牌；无法捕获时再建牌或出牌。" },
+    ja: { quickGuide: "遊び方", quickGuideCopy: "同じ値または合計で場札を取り、取れないときはビルドするか場に出します。" },
+    ko: { quickGuide: "플레이 방법", quickGuideCopy: "같은 값이나 합으로 테이블 카드를 잡고, 잡을 수 없을 때 빌드하거나 내려놓으세요." },
+    es: { quickGuide: "Cómo jugar", quickGuideCopy: "Captura cartas de mesa por valor o suma; si no puedes capturar, construye o juega una carta." },
+    "pt-BR": { quickGuide: "Como jogar", quickGuideCopy: "Capture cartas da mesa por valor ou soma; sem captura, construa ou jogue uma carta." },
+    fr: { quickGuide: "Comment jouer", quickGuideCopy: "Capturez les cartes de table par valeur ou somme ; sans capture, construisez ou posez une carte." },
+    de: { quickGuide: "So wird gespielt", quickGuideCopy: "Nimm Tischkarten nach Wert oder Summe; wenn das nicht geht, baue oder lege eine Karte ab." },
+    it: { quickGuide: "Come si gioca", quickGuideCopy: "Cattura le carte del tavolo per valore o somma; se non puoi, costruisci o gioca una carta." },
+    ru: { quickGuide: "Как играть", quickGuideCopy: "Забирайте карты стола по значению или сумме; если взять нельзя, собирайте или выкладывайте карту." },
+    hi: { quickGuide: "कैसे खेलें", quickGuideCopy: "मान या योग से मेज़ के पत्ते पकड़ें; पकड़ न हो तो समूह बनाएँ या पत्ता चलें।" },
+    ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "التقط بطاقات الطاولة بالقيمة أو بالمجموع؛ وإذا تعذر الالتقاط فابنِ أو ضع بطاقة." },
+  };
+
   const CASINO_PROGRESS_COPY = {
     en: { label: "Capture progress", copy: "Capture table cards by rank or sum." },
     "zh-Hant": { label: "捕獲進度", copy: "按點數或合計捕獲桌面牌。" },
@@ -1391,19 +1424,19 @@
   };
 
   const CRAZY_EIGHTS_COPY = {
-    en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
-    "zh-Hant": { summary: "各花色的非萬用牌：{counts}。手上牌較多的花色，通常能保留更多選擇。", suits: ["梅花", "方塊", "紅心", "黑桃"] },
-    "zh-Hans": { summary: "各花色的非万能牌：{counts}。手中牌较多的花色，通常能保留更多选择。", suits: ["梅花", "方块", "红心", "黑桃"] },
-    ja: { summary: "ワイルドではないカードのスート別枚数：{counts}。枚数の多いスートを選ぶと、次の選択肢を残しやすくなります。", suits: ["クラブ", "ダイヤ", "ハート", "スペード"] },
-    ko: { summary: "와일드가 아닌 카드의 무늬별 수: {counts}. 카드가 많은 무늬를 고르면 다음 선택지를 더 남길 수 있습니다.", suits: ["클럽", "다이아몬드", "하트", "스페이드"] },
-    es: { summary: "Cartas no comodín por palo: {counts}. Elegir un palo con más cartas puede mantener más opciones abiertas.", suits: ["tréboles", "diamantes", "corazones", "picas"] },
-    "pt-BR": { summary: "Cartas não coringa por naipe: {counts}. Escolher um naipe com mais cartas pode manter mais opções abertas.", suits: ["paus", "ouros", "copas", "espadas"] },
-    fr: { summary: "Cartes non jokers par couleur : {counts}. Choisir une couleur plus présente peut garder davantage d'options.", suits: ["trèfles", "carreaux", "cœurs", "piques"] },
-    de: { summary: "Nicht-Wildkarten nach Farbe: {counts}. Eine Farbe mit mehr Karten kann mehr Möglichkeiten offenhalten.", suits: ["Kreuz", "Karo", "Herz", "Pik"] },
-    it: { summary: "Carte non jolly per seme: {counts}. Scegliere un seme più numeroso può lasciare più opzioni aperte.", suits: ["fiori", "quadri", "cuori", "picche"] },
-    ru: { summary: "Обычные карты по мастям: {counts}. Масть с большим числом карт может сохранить больше вариантов.", suits: ["крести", "бубны", "черви", "пики"] },
-    hi: { summary: "गैर-वाइल्ड पत्ते सूट के अनुसार: {counts}। जिस सूट के पत्ते अधिक हों, उसे चुनने से अधिक विकल्प खुले रह सकते हैं।", suits: ["क्लब", "डायमंड", "हार्ट", "स्पेड"] },
-    ar: { summary: "البطاقات غير الجوكر حسب النوع: {counts}. اختيار النوع الذي تملك منه بطاقات أكثر قد يبقي خيارات أكثر متاحة.", suits: ["النوادي", "الماس", "القلوب", "البستوني"] },
+    en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", draw: "Drew 1 card — hand now {hand}; draws this round: {draws}.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
+    "zh-Hant": { summary: "各花色的非萬用牌：{counts}。手上牌較多的花色，通常能保留更多選擇。", draw: "抽到 1 張牌——目前手牌 {hand} 張；本局抽牌 {draws} 次。", suits: ["梅花", "方塊", "紅心", "黑桃"] },
+    "zh-Hans": { summary: "各花色的非万能牌：{counts}。手中牌较多的花色，通常能保留更多选择。", draw: "抽到 1 张牌——当前手牌 {hand} 张；本局抽牌 {draws} 次。", suits: ["梅花", "方块", "红心", "黑桃"] },
+    ja: { summary: "ワイルドではないカードのスート別枚数：{counts}。枚数の多いスートを選ぶと、次の選択肢を残しやすくなります。", draw: "1枚引きました。手札は{hand}枚、今回のドローは{draws}回です。", suits: ["クラブ", "ダイヤ", "ハート", "スペード"] },
+    ko: { summary: "와일드가 아닌 카드의 무늬별 수: {counts}. 카드가 많은 무늬를 고르면 다음 선택지를 더 남길 수 있습니다.", draw: "카드 1장을 뽑았습니다 — 현재 손패 {hand}장, 이번 라운드 뽑기 {draws}회.", suits: ["클럽", "다이아몬드", "하트", "스페이드"] },
+    es: { summary: "Cartas no comodín por palo: {counts}. Elegir un palo con más cartas puede mantener más opciones abiertas.", draw: "Robaste 1 carta: ahora tienes {hand}; robos en esta ronda: {draws}.", suits: ["tréboles", "diamantes", "corazones", "picas"] },
+    "pt-BR": { summary: "Cartas não coringa por naipe: {counts}. Escolher um naipe com mais cartas pode manter mais opções abertas.", draw: "Você comprou 1 carta — agora tem {hand}; compras nesta rodada: {draws}.", suits: ["paus", "ouros", "copas", "espadas"] },
+    fr: { summary: "Cartes non jokers par couleur : {counts}. Choisir une couleur plus présente peut garder davantage d'options.", draw: "Vous avez pioché 1 carte — main de {hand}; pioches dans cette manche : {draws}.", suits: ["trèfles", "carreaux", "cœurs", "piques"] },
+    de: { summary: "Nicht-Wildkarten nach Farbe: {counts}. Eine Farbe mit mehr Karten kann mehr Möglichkeiten offenhalten.", draw: "1 Karte gezogen — jetzt {hand} auf der Hand; Ziehungen in dieser Runde: {draws}.", suits: ["Kreuz", "Karo", "Herz", "Pik"] },
+    it: { summary: "Carte non jolly per seme: {counts}. Scegliere un seme più numeroso può lasciare più opzioni aperte.", draw: "Hai pescato 1 carta — ora ne hai {hand}; pescate in questa mano: {draws}.", suits: ["fiori", "quadri", "cuori", "picche"] },
+    ru: { summary: "Обычные карты по мастям: {counts}. Масть с большим числом карт может сохранить больше вариантов.", draw: "Вы взяли 1 карту — теперь карт на руке: {hand}; доборов в раунде: {draws}.", suits: ["крести", "бубны", "черви", "пики"] },
+    hi: { summary: "गैर-वाइल्ड पत्ते सूट के अनुसार: {counts}। जिस सूट के पत्ते अधिक हों, उसे चुनने से अधिक विकल्प खुले रह सकते हैं।", draw: "1 पत्ता लिया — हाथ में अब {hand} पत्ते; इस राउंड में लिए गए पत्ते: {draws}।", suits: ["क्लब", "डायमंड", "हार्ट", "स्पेड"] },
+    ar: { summary: "البطاقات غير الجوكر حسب النوع: {counts}. اختيار النوع الذي تملك منه بطاقات أكثر قد يبقي خيارات أكثر متاحة.", draw: "سحبت بطاقة واحدة — في يدك الآن {hand} بطاقة؛ مرات السحب في الجولة: {draws}.", suits: ["النوادي", "الماس", "القلوب", "البستوني"] },
   };
 
   const CRAZY_EIGHTS_RESULT_COPY = {
@@ -1480,6 +1513,8 @@
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
+
+  const crazyEightsDrawText = (hand, draws) => crazyEightsText("draw", { hand, draws });
 
   const crazyEightsResultText = (key, values = {}) => {
     const dictionary = CRAZY_EIGHTS_RESULT_COPY[currentLocale()] || CRAZY_EIGHTS_RESULT_COPY.en;
@@ -1626,11 +1661,12 @@
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
       const warBattle = id === "war" ? warBattleCopy() : null;
       const goFishBattle = id === "go-fish" ? goFishBattleCopy() : null;
+      const casinoBattle = id === "casino" ? (CASINO_BATTLE_COPY[currentLocale()] || CASINO_BATTLE_COPY.en) : null;
       const oldMaidBattle = id === "old-maid" ? (OLD_MAID_BATTLE_COPY[currentLocale()] || OLD_MAID_BATTLE_COPY.en) : null;
-      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : oldMaidBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : oldMaidBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || oldMaidBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
-      return { heading, paragraph, localized: Boolean(oldMaidBattle || goFishBattle || warBattle || heartsShell) };
+      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : oldMaidBattle?.quickGuideCopy || casinoBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : oldMaidBattle?.quickGuide || casinoBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
+      return { heading, paragraph, localized: Boolean(oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell) };
     };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
@@ -1870,6 +1906,7 @@
       openMain() { battle.hidden = true; main.hidden = false; rootElement.dataset.screen = "main"; result.hidden = true; window.scrollTo({ top: 0, left: 0, behavior: "auto" }); window.dispatchEvent(new Event("weightplay:shell-sync")); },
       result(won, message = "") {
         if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); }
+        if (id === "old-maid") oldMaidTrack("result", { outcome: won ? "win" : "loss" });
         resultTitle.textContent = id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
         resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
         if (id === "cribbage") {
@@ -1907,13 +1944,13 @@
       if (cardNode && game.card) { game.card(Number(cardNode.dataset.cardIndex)); controller.beep("place"); render(); }
     };
     battle.addEventListener("click", clickHandler);
-    document.querySelector("#battleBackBtn")?.addEventListener("click", () => controller.openMain());
-    document.querySelector("#resultNewGame")?.addEventListener("click", () => { result.hidden = true; game.reset(); controller.openBattle(); });
-    document.querySelector("#resultRestart")?.addEventListener("click", () => { resultRecorded = false; result.hidden = true; game.reset(); render(); });
-    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid") controller.openMain(); else { result.hidden = true; render(); } });
-    document.querySelector("#startBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
-    document.querySelector("#restartBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
-    document.querySelector("#newGameBtn")?.addEventListener("click", () => { game.reset(); controller.openBattle(); });
+    document.querySelector("#battleBackBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("back", { source: "battle" }); controller.openMain(); });
+    document.querySelector("#resultNewGame")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "result" }); result.hidden = true; game.reset(); controller.openBattle(); });
+    document.querySelector("#resultRestart")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "result" }); resultRecorded = false; result.hidden = true; game.reset(); render(); });
+    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid") { oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { result.hidden = true; render(); } });
+    document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
+    document.querySelector("#restartBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "main" }); game.reset(); controller.openBattle(); });
+    document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { game.reset(); render(); });
     document.querySelector("#battleNewBtn")?.addEventListener("click", () => { game.reset(); render(); });
     audioButton?.addEventListener("click", () => { const next = !sound?.enabled; sound?.setEnabled(next); audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`; });
@@ -2269,10 +2306,10 @@
   }
 
   function makeCrazyEightsFixed(controller) {
-    const s = { hands: [[], [], [], []], stock: [], discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0 };
+    const s = { hands: [[], [], [], []], stock: [], discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "" };
     const names = ["You", "AI North", "AI East", "AI West"];
     const legal = (item) => item && (item.rank === 8 || item.suit === s.activeSuit || item.rank === s.discard.at(-1)?.rank);
-    const draw = (player) => { if (s.stock.length) { s.hands[player].push(s.stock.pop()); if (player === 0) s.playerDraws += 1; } };
+    const draw = (player) => { if (!s.stock.length) return null; const item = s.stock.pop(); s.hands[player].push(item); if (player === 0) s.playerDraws += 1; return item; };
     const wildSuitName = (suit) => {
       const copy = CRAZY_EIGHTS_COPY[currentLocale()] || CRAZY_EIGHTS_COPY.en;
       const index = SUITS.indexOf(suit);
@@ -2311,10 +2348,10 @@
       else { draw(s.turn); const drawn = s.hands[s.turn].at(-1); if (legal(drawn)) play(s.turn, drawn); else next(); }
     };
     return {
-      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0 }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
-      card(index) { if (s.turn === 0 && !s.pendingSuit) play(0, s.hands[0][index]); },
-      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { draw(0); const drawn = s.hands[0].at(-1); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; next(); } },
-      view() { return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${s.pendingSuit ? `<p class="card-choice-summary" role="status" aria-live="polite">${suitPreview()}</p><div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
+      reset() { Object.assign(s, { hands: [[], [], [], []], stock: deck(), discard: [], activeSuit: null, pendingSuit: false, turn: 0, playerDraws: 0, playerWildSuit: null, playerWildSuitCards: 0, drawCue: "" }); for (let i = 0; i < 5; i += 1) s.hands.forEach((cards) => cards.push(s.stock.pop())); s.discard.push(s.stock.pop()); s.activeSuit = s.discard[0].suit; },
+      card(index) { if (s.turn === 0 && !s.pendingSuit) { s.drawCue = ""; play(0, s.hands[0][index]); } },
+      action(action, selected) { if (action === "draw" && s.turn === 0 && !s.pendingSuit) { const drawn = draw(0); if (drawn) s.drawCue = crazyEightsDrawText(s.hands[0].length, s.playerDraws); if (legal(drawn)) play(0, drawn); } if (action === "suit" && s.turn === 0 && s.pendingSuit) { s.drawCue = ""; s.activeSuit = selected; s.playerWildSuit = selected; s.playerWildSuitCards = s.hands[0].filter((item) => item.suit === selected && item.rank !== 8).length; s.pendingSuit = false; next(); } },
+      view() { const drawCue = s.drawCue ? `<p class="card-choice-summary card-crazy-eights-draw-cue" data-runtime-localize="off" role="status" aria-live="polite" aria-atomic="true">${s.drawCue}</p>` : ""; return { phase: `${t("play")} ${SYMBOLS[s.activeSuit] || "8"}`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.pendingSuit ? t("chooseSuit") : `${t("play")}: ${rankText(s.discard.at(-1).rank)}${SYMBOLS[s.activeSuit]}`, score: s.hands[0].length, opponents: names.slice(1).map((name, index) => opponentMarkup(name, s.hands[index + 1].length)).join(""), center: `<div class="card-table-label">${t("discard")}</div><div class="table-row">${cardMarkup(s.discard.at(-1), 0)}${s.stock.length ? `<button class="playing-card is-face-down" data-action="draw" aria-label="${t("draw")}"></button>` : ""}</div>${drawCue}${s.pendingSuit ? `<p class="card-choice-summary" role="status" aria-live="polite">${suitPreview()}</p><div class="card-choice-panel">${SUITS.map((suit) => `<button class="secondary-btn" data-action="suit" data-value="${suit}">${SYMBOLS[suit]}</button>`).join("")}</div>` : ""}`, hand: cardsMarkup(s.hands[0]), actions: `<button class="secondary-btn" data-action="draw" ${s.pendingSuit ? "disabled" : ""}>${t("draw")}</button>` }; }
     };
   }
 
@@ -2551,13 +2588,31 @@
     const finishIfDone = () => { const active = s.players.filter((cards) => cards.length); if (active.length <= 1) { const loser = s.players.findIndex((cards) => cards.length); const copy = OLD_MAID_RESULT[currentLocale()] || OLD_MAID_RESULT.en; const lesson = (copy[loser === 0 ? "lost" : "cleared"] || copy.cleared).replace("{holder}", names[loser]); const holderLine = loser === 0 ? t("oldMaid") : `${names[loser]} ${t("oldMaid")}`; s.over = true; controller.result(loser !== 0, `${holderLine} · ${lesson}`); } };
     const targetFor = (player) => { for (let offset = 1; offset < s.players.length; offset += 1) { const target = (player + offset) % s.players.length; if (s.players[target].length) return target; } return -1; };
     const next = () => { s.turn = (s.turn + 1) % 4; while (!s.players[s.turn].length && s.players.some((cards) => cards.length)) s.turn = (s.turn + 1) % 4; if (s.turn !== 0) setTimeout(aiTurn, 320); };
-    const drawFrom = (player, index) => { const target = targetFor(player); if (target < 0) { finishIfDone(); return; } if (player === 0) s.drawCue = ""; const source = s.players[target]; const pairsBefore = s.books[player]; const item = source.splice(Math.min(index, source.length - 1), 1)[0]; s.players[player].push(item); pair(player); if (player === 0) { const cueKey = s.books[player] > pairsBefore ? "pair" : s.players[player].some((card) => card.oldMaid) ? "risk" : "none"; s.drawCue = oldMaidText(cueKey); } finishIfDone(); if (!s.over) next(); };
+    const drawFrom = (player, index) => {
+      const target = targetFor(player);
+      if (target < 0) { finishIfDone(); return; }
+      if (player === 0) s.drawCue = "";
+      const source = s.players[target];
+      const position = Math.min(index, source.length - 1) + 1;
+      const pairsBefore = s.books[player];
+      const item = source.splice(position - 1, 1)[0];
+      s.players[player].push(item);
+      pair(player);
+      const cueKey = s.books[player] > pairsBefore ? "pair" : s.players[player].some((card) => card.oldMaid) ? "risk" : "none";
+      if (player === 0) {
+        s.drawCue = oldMaidText(cueKey);
+        oldMaidTrack("blind_draw", { source: "opponent_hand", position, remaining_count: source.length, input_type: "card_control" });
+        oldMaidTrack("pair_outcome", { outcome: cueKey, pairs_delta: s.books[player] - pairsBefore });
+      }
+      finishIfDone();
+      if (!s.over) next();
+    };
     const aiTurn = () => { if (s.turn !== 0 && !s.over) { const target = targetFor(s.turn); if (target < 0) finishIfDone(); else drawFrom(s.turn, Math.floor(Math.random() * s.players[target].length)); } };
     return {
       reset() { const cards = deck(); const removed = cards.findIndex((item) => item.suit === "spades" && item.rank === 12); cards.splice(removed, 1); const odd = cards.find((item) => item.rank === 12); if (odd) odd.oldMaid = true; Object.assign(s, { players: [[], [], [], []], turn: 0, books: [0, 0, 0, 0], over: false, drawCue: "" }); cards.forEach((item, index) => s.players[index % 4].push(item)); s.players.forEach((_, index) => pair(index)); },
       card(index) { if (s.turn === 0 && !s.over) drawFrom(0, index); },
       action() {},
-      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${target.map((_, index) => cardMarkup({ faceDown: true }, index)).join("")}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
+      view() { const targetIndex = targetFor(0); const target = targetIndex < 0 ? [] : s.players[targetIndex]; const turnTarget = targetFor(s.turn); const playerHasOldMaid = s.players[0].some((item) => item.oldMaid); const riskCopy = (OLD_MAID_RISK[currentLocale()] || OLD_MAID_RISK.en)[playerHasOldMaid ? "held" : "hidden"]; const drawCue = s.drawCue ? `<p class="card-choice-summary card-old-maid-draw-cue" data-old-maid-draw-cue data-runtime-localize="off" role="status" aria-live="polite">${s.drawCue}</p>` : ""; const choices = target.map((_, index) => cardMarkup({ faceDown: true }, index, { ariaLabel: oldMaidText("hiddenCard", { position: index + 1, total: target.length }), runtimeLocalizeOff: true })).join(""); return { phase: t("oldMaid"), status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: oldMaidText("help", { name: names[turnTarget < 0 ? 0 : turnTarget] }), score: s.books[0], opponents: names.slice(1).map((name, index) => oldMaidOpponentMarkup(name, s.players[index + 1].length, `${s.books[index + 1]} ${t("pairs")}`)).join(""), center: `<div class="card-table-label">${t("oldMaid")}</div><div class="card-old-maid-risk ${playerHasOldMaid ? "is-held" : ""}" role="status">${riskCopy}</div>${drawCue}<div class="table-row">${choices}</div>`, hand: cardsMarkup(s.players[0]), actions: "" }; }
     };
   }
 
