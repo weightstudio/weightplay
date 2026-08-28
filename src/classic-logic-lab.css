@@ -29,6 +29,14 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--logic-warn
 [hidden] { display: none !important; }
 
 .logic-lab { min-height: 100svh; }
+.logic-main.main-screen { width: min(920px, 100%); margin: 0 auto; }
+.logic-battle-screen.battle-screen { width: min(920px, 100%); height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); margin: 0 auto; overflow: hidden; }
+.logic-progress-slot { min-height: 40px; display: flex; align-items: center; padding: 8px 12px; border: 1px solid var(--logic-line); border-radius: 12px; color: var(--logic-muted); }
+.logic-main [data-wp-main-start] { min-height: 52px; }
+.logic-return.wp-shell-return { width: 58px; min-width: 58px; justify-self: start; }
+.logic-battle-back[data-wp-return="battle"] { width: 58px; min-width: 58px; min-height: 48px; height: 48px; justify-self: start; }
+.battle-ad-reserve { width: min(920px, 100%); height: 56px; margin: 0 auto; }
+body:not(.logic-playing) .battle-ad-reserve { display: none; }
 body.logic-playing .game-page-info,
 body.logic-playing .game-page-info-static { display: none !important; }
 .logic-main { min-height: 100svh; padding: max(14px, env(safe-area-inset-top)) 16px 36px; }
