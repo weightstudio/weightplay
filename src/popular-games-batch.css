@@ -1099,3 +1099,370 @@ body[data-game-id="breakout"][data-screen="result"] .game-page-info-static { dis
   body[data-game-id="breakout"][data-screen="battle"] #battleScreen .battle-top { margin: 0; }
   body[data-game-id="breakout"][data-screen="battle"] #battleScreen .brick { min-height: 24px; }
 }
+
+/* Mahjong v9 adopts the shared General Main/Battle shell while retaining the
+   flat six-pair runtime and optional Mastery round. */
+body[data-game-id="mahjong-solitaire"] .arcade-header.main-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 12px;
+  direction: ltr;
+}
+body[data-game-id="mahjong-solitaire"] .main-header-copy {
+  min-width: 0;
+  width: calc(100% - 128px);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+body[data-game-id="mahjong-solitaire"] .main-header-copy h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-game-id="mahjong-solitaire"] .main-header-copy .tagline { margin: 4px auto 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-game-id="mahjong-solitaire"] .main-return {
+  width: 58px;
+  min-width: 58px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 13px;
+  color: var(--arcade-accent);
+  background: rgba(255,255,255,.07);
+  text-decoration: none;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+body[data-game-id="mahjong-solitaire"] .main-return img { width: 22px; height: 22px; object-fit: contain; }
+body[data-game-id="mahjong-solitaire"] .settings-control { grid-column: 3; position: relative; width: 48px; height: 48px; }
+body[data-game-id="mahjong-solitaire"] .header-icon-btn,
+body[data-game-id="mahjong-solitaire"] .battle-utility {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 1px solid var(--arcade-line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.07);
+  color: var(--arcade-text);
+  font-size: 1.2rem;
+}
+body[data-game-id="mahjong-solitaire"] .settings-popover {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  gap: 8px;
+  width: min(260px, calc(100vw - 28px));
+  padding: 12px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 14px;
+  background: #10243d;
+  box-shadow: 0 16px 36px rgba(0,0,0,.35);
+}
+body[data-game-id="mahjong-solitaire"] .settings-popover.is-hidden { display: none; }
+body[data-game-id="mahjong-solitaire"] .settings-title { color: var(--arcade-text); }
+body[data-game-id="mahjong-solitaire"] .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; color: var(--arcade-muted); }
+body[data-game-id="mahjong-solitaire"] .settings-row select { min-width: 0; flex: 1; border: 1px solid var(--arcade-line); border-radius: 10px; background: var(--arcade-panel-2); padding: 8px; }
+body[data-game-id="mahjong-solitaire"] #mainScreen { width: 100%; }
+body[data-game-id="mahjong-solitaire"] #mainScreen .main-panel { align-items: center; }
+body[data-game-id="mahjong-solitaire"] #mainScreen .preview-art { width: min(100%, 320px); aspect-ratio: 1; min-height: 0; justify-self: center; overflow: hidden; }
+body[data-game-id="mahjong-solitaire"] #mainScreen .preview-art img.cover { width: 100%; height: 100%; min-height: 0; aspect-ratio: 1; object-fit: cover; }
+body[data-game-id="mahjong-solitaire"] #mainScreen #startBtn { width: 100%; height: 52px; min-height: 52px; max-height: 52px; }
+body[data-game-id="mahjong-solitaire"] #mainScreen .main-progress { min-height: 40px; display: grid; gap: 3px; padding: 10px 12px; border-left: 3px solid var(--arcade-accent); background: rgba(126,231,201,.08); border-radius: 12px; line-height: 1.35; }
+body[data-game-id="mahjong-solitaire"] .game-page-info-static { width: min(920px, calc(100% - 28px)); margin: 0 auto 28px; }
+
+html:has(body[data-game-id="mahjong-solitaire"][data-screen="battle"]),
+html:has(body[data-game-id="mahjong-solitaire"][data-screen="result"]) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"],
+body[data-game-id="mahjong-solitaire"][data-screen="result"] {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .popular-arcade,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .popular-arcade {
+  width: min(100%, 920px) !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-header,
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .arcade-footer,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .arcade-header,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .arcade-footer { display: none !important; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen {
+  display: flex !important;
+  flex: 0 0 100dvh !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  flex-direction: column !important;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-canvas,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen .battle-canvas {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-panel,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen .arcade-panel {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-panel {
+  padding: 12px 16px !important;
+  align-content: stretch !important;
+  grid-template-rows: auto minmax(0, 1fr) auto auto !important;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto 48px;
+  align-items: center;
+  gap: 8px;
+  direction: ltr;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .battle-back { grid-column: 1; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .round-label { grid-column: 2; min-width: 0; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .control-row { grid-column: 3; justify-content: flex-end; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .battle-utility { grid-column: 4; }
+body[data-game-id="mahjong-solitaire"] .battle-back { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; border: 1px solid var(--arcade-line); border-radius: 13px; background: rgba(255,255,255,.07); color: var(--arcade-accent); font-size: 1.45rem; font-weight: 900; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-utility { width: 48px; min-width: 48px; height: 48px; min-height: 48px; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-ad-reserve,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] #resultScreen .battle-ad-reserve {
+  display: block !important;
+  flex: 0 0 56px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  pointer-events: none;
+  background: transparent;
+}
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .board-wrap { min-height: 0; overflow: hidden; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .board { height: 100%; min-height: 0; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .tile-board { max-height: 100%; }
+body[data-game-id="mahjong-solitaire"][data-screen="battle"] .game-page-info-static,
+body[data-game-id="mahjong-solitaire"][data-screen="result"] .game-page-info-static { display: none !important; }
+
+@media (max-width: 650px) {
+  body[data-game-id="mahjong-solitaire"] .arcade-header.main-header { grid-template-columns: 58px minmax(0, 1fr) 48px; gap: 8px; padding: 8px; }
+  body[data-game-id="mahjong-solitaire"] .main-header-copy .tagline { display: none; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-panel { padding: 10px !important; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top { grid-template-columns: 48px minmax(0, 1fr) 48px; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .control-row { grid-column: 2; grid-row: 2; justify-content: stretch; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .battle-utility { grid-column: 3; grid-row: 1; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top > .control-row > button { flex: 1; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .tile-board { width: min(100%, 500px); }
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-panel { padding: 7px !important; gap: 6px 12px; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .battle-top { margin: 0; }
+  body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .tile { min-height: 48px; }
+}
+
+/* Pong v6 shares the repaired General shell. Its five-rally runtime remains
+   unchanged while Main and Battle now expose the governed controls and safe
+   canvas envelope at every required viewport. */
+body[data-game-id="pong"] .arcade-header.main-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 12px;
+  direction: ltr;
+}
+body[data-game-id="pong"] .main-header-copy {
+  min-width: 0;
+  width: calc(100% - 128px);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+body[data-game-id="pong"] .main-header-copy h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-game-id="pong"] .main-header-copy .tagline { margin: 4px auto 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body[data-game-id="pong"] .main-return {
+  width: 58px;
+  min-width: 58px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 13px;
+  color: var(--arcade-accent);
+  background: rgba(255,255,255,.07);
+  text-decoration: none;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+body[data-game-id="pong"] .main-return img { width: 22px; height: 22px; object-fit: contain; }
+body[data-game-id="pong"] .settings-control { grid-column: 3; position: relative; width: 48px; height: 48px; }
+body[data-game-id="pong"] .header-icon-btn,
+body[data-game-id="pong"] .battle-utility {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 1px solid var(--arcade-line);
+  border-radius: 13px;
+  background: rgba(255,255,255,.07);
+  color: var(--arcade-text);
+  font-size: 1.2rem;
+}
+body[data-game-id="pong"] .settings-popover {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  gap: 8px;
+  width: min(260px, calc(100vw - 28px));
+  padding: 12px;
+  border: 1px solid var(--arcade-line);
+  border-radius: 14px;
+  background: #10243d;
+  box-shadow: 0 16px 36px rgba(0,0,0,.35);
+}
+body[data-game-id="pong"] .settings-popover.is-hidden { display: none; }
+body[data-game-id="pong"] .settings-title { color: var(--arcade-text); }
+body[data-game-id="pong"] .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; color: var(--arcade-muted); }
+body[data-game-id="pong"] .settings-row select { min-width: 0; flex: 1; border: 1px solid var(--arcade-line); border-radius: 10px; background: var(--arcade-panel-2); padding: 8px; }
+body[data-game-id="pong"] #mainScreen { width: 100%; }
+body[data-game-id="pong"] #mainScreen .preview-art { width: min(100%, 320px); aspect-ratio: 1; min-height: 0; justify-self: center; overflow: hidden; }
+body[data-game-id="pong"] #mainScreen .preview-art img.cover { width: 100%; height: 100%; min-height: 0; aspect-ratio: 1; object-fit: cover; }
+body[data-game-id="pong"] #mainScreen #startBtn { width: 100%; height: 52px; min-height: 52px; max-height: 52px; }
+body[data-game-id="pong"] #mainScreen .main-progress { min-height: 40px; display: grid; gap: 3px; padding: 10px 12px; border-left: 3px solid var(--arcade-accent); background: rgba(126,231,201,.08); border-radius: 12px; line-height: 1.35; }
+body[data-game-id="pong"] .game-page-info-static { width: min(920px, calc(100% - 28px)); margin: 0 auto 28px; }
+
+html:has(body[data-game-id="pong"][data-screen="battle"]),
+html:has(body[data-game-id="pong"][data-screen="result"]) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body[data-game-id="pong"][data-screen="battle"],
+body[data-game-id="pong"][data-screen="result"] {
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+body[data-game-id="pong"][data-screen="battle"] .popular-arcade,
+body[data-game-id="pong"][data-screen="result"] .popular-arcade {
+  width: min(100%, 920px) !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+body[data-game-id="pong"][data-screen="battle"] .arcade-header,
+body[data-game-id="pong"][data-screen="battle"] .arcade-footer,
+body[data-game-id="pong"][data-screen="result"] .arcade-header,
+body[data-game-id="pong"][data-screen="result"] .arcade-footer { display: none !important; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen,
+body[data-game-id="pong"][data-screen="result"] #resultScreen {
+  display: flex !important;
+  flex: 0 0 100dvh !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  flex-direction: column !important;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-canvas,
+body[data-game-id="pong"][data-screen="result"] #resultScreen .battle-canvas {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-panel,
+body[data-game-id="pong"][data-screen="result"] #resultScreen .arcade-panel {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-panel {
+  padding: 12px 16px !important;
+  align-content: stretch !important;
+  grid-template-rows: auto minmax(0, 1fr) auto auto !important;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto 48px;
+  align-items: center;
+  gap: 8px;
+  direction: ltr;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .battle-back { grid-column: 1; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .round-label { grid-column: 2; min-width: 0; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .control-row { grid-column: 3; justify-content: flex-end; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .battle-utility { grid-column: 4; }
+body[data-game-id="pong"] .battle-back { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; border: 1px solid var(--arcade-line); border-radius: 13px; background: rgba(255,255,255,.07); color: var(--arcade-accent); font-size: 1.45rem; font-weight: 900; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-ad-reserve,
+body[data-game-id="pong"][data-screen="result"] #resultScreen .battle-ad-reserve {
+  display: block !important;
+  flex: 0 0 56px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  margin: 0 !important;
+  pointer-events: none;
+  background: transparent;
+}
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .board-wrap { min-height: 0; overflow: hidden; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .board { height: 100%; min-height: 0; }
+body[data-game-id="pong"][data-screen="battle"] #battleScreen .pong-board { width: min(100%, 560px); height: min(250px, 100%); }
+body[data-game-id="pong"][data-screen="battle"] .game-page-info-static,
+body[data-game-id="pong"][data-screen="result"] .game-page-info-static { display: none !important; }
+
+@media (max-width: 650px) {
+  body[data-game-id="pong"] .arcade-header.main-header { grid-template-columns: 58px minmax(0, 1fr) 48px; gap: 8px; padding: 8px; }
+  body[data-game-id="pong"] .main-header-copy .tagline { display: none; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-panel { padding: 10px !important; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top { grid-template-columns: 48px minmax(0, 1fr) 48px; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .control-row { grid-column: 2; grid-row: 2; justify-content: stretch; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .battle-utility { grid-column: 3; grid-row: 1; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top > .control-row > button { flex: 1; }
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-panel { padding: 7px !important; gap: 6px 12px; }
+  body[data-game-id="pong"][data-screen="battle"] #battleScreen .battle-top { margin: 0; }
+}

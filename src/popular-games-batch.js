@@ -924,6 +924,9 @@
       message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"),
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
+    if (game.type === "mahjong") {
+      document.querySelectorAll("[data-wp-battle-physical-reserve]").forEach((node) => node.setAttribute("data-wp-general-reserve", ""));
+    }
     const tetrisSettingsButton = game.type === "tetris" ? document.querySelector("#audioMenuBtn") : null;
     const tetrisSettingsPopover = game.type === "tetris" ? document.querySelector("#audioPopover") : null;
     const tetrisSoundButton = game.type === "tetris" ? document.querySelector("#soundBtn[data-sound-toggle]") : null;
@@ -973,6 +976,56 @@
       const enabled = breakoutSoundButton.getAttribute("aria-pressed") !== "true";
       breakoutSoundButton.setAttribute("aria-pressed", String(enabled));
       breakoutSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+    });
+    const mahjongSettingsButton = game.type === "mahjong" ? document.querySelector("#audioMenuBtn") : null;
+    const mahjongSettingsPopover = game.type === "mahjong" ? document.querySelector("#audioPopover") : null;
+    const mahjongSoundButton = game.type === "mahjong" ? document.querySelector("#soundBtn[data-sound-toggle]") : null;
+    if (mahjongSettingsButton && mahjongSettingsPopover) {
+      const setSettingsOpen = (open) => {
+        mahjongSettingsPopover.hidden = !open;
+        mahjongSettingsPopover.classList.toggle("is-hidden", !open);
+        mahjongSettingsButton.setAttribute("aria-expanded", String(open));
+      };
+      mahjongSettingsButton.addEventListener("click", () => setSettingsOpen(mahjongSettingsPopover.hidden));
+      document.addEventListener("pointerdown", (event) => {
+        if (!mahjongSettingsPopover.hidden && !mahjongSettingsPopover.contains(event.target) && event.target !== mahjongSettingsButton) setSettingsOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !mahjongSettingsPopover.hidden) {
+          setSettingsOpen(false);
+          mahjongSettingsButton.focus({ preventScroll: true });
+        }
+      });
+    }
+    mahjongSoundButton?.addEventListener("click", () => {
+      const enabled = mahjongSoundButton.getAttribute("aria-pressed") !== "true";
+      mahjongSoundButton.setAttribute("aria-pressed", String(enabled));
+      mahjongSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+    });
+    const pongSettingsButton = game.type === "pong" ? document.querySelector("#audioMenuBtn") : null;
+    const pongSettingsPopover = game.type === "pong" ? document.querySelector("#audioPopover") : null;
+    const pongSoundButton = game.type === "pong" ? document.querySelector("#soundBtn[data-sound-toggle]") : null;
+    if (pongSettingsButton && pongSettingsPopover) {
+      const setSettingsOpen = (open) => {
+        pongSettingsPopover.hidden = !open;
+        pongSettingsPopover.classList.toggle("is-hidden", !open);
+        pongSettingsButton.setAttribute("aria-expanded", String(open));
+      };
+      pongSettingsButton.addEventListener("click", () => setSettingsOpen(pongSettingsPopover.hidden));
+      document.addEventListener("pointerdown", (event) => {
+        if (!pongSettingsPopover.hidden && !pongSettingsPopover.contains(event.target) && event.target !== pongSettingsButton) setSettingsOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !pongSettingsPopover.hidden) {
+          setSettingsOpen(false);
+          pongSettingsButton.focus({ preventScroll: true });
+        }
+      });
+    }
+    pongSoundButton?.addEventListener("click", () => {
+      const enabled = pongSoundButton.getAttribute("aria-pressed") !== "true";
+      pongSoundButton.setAttribute("aria-pressed", String(enabled));
+      pongSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
     });
     let tetrisFocusedControl = null;
     const rememberTetrisFocus = (event) => {
@@ -1439,7 +1492,7 @@
     });
     els.controls.addEventListener("click", handleActionClick);
     els.board.addEventListener("click", handleActionClick);
-    const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; };
+    const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } };
     els.start.addEventListener("click", () => start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); start("retry"); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => start("restart"));
     document.addEventListener("keydown", (event) => { if (document.body.dataset.screen !== "battle") return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
