@@ -38,6 +38,11 @@
   };
 
   const isArabic = () => document.documentElement.lang === "ar" || /\/ar\/games\/crazy-eights\//.test(location.pathname);
+  const legacySettingsButton = document.querySelector("#audioMenuBtn");
+  if (legacySettingsButton) {
+    legacySettingsButton.setAttribute("aria-controls", "audioPopover");
+    legacySettingsButton.closest(".header-utilities")?.classList.add("settings-control");
+  }
   let syncing = false;
   const setText = (node, value) => {
     if (!node || node.textContent === value) return;

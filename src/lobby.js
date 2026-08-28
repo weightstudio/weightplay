@@ -713,10 +713,12 @@ function recentlyUpdatedGames(limit = 4) {
 }
 
 function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
+  // Unreleased cards belong only to the explicit owner-preview lobby.
+  // Per-game announcement flags must never bypass this boundary.
+  if (!ownerPreviewMode) return [];
   return allLobbyGames
     .filter((game) =>
       game.status === "planned"
-      && (ownerPreviewMode || (!isKidsLobby && game.publicComingSoon === true))
       && (game.art?.background || game.art?.hero))
     .slice(0, limit);
 }

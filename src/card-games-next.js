@@ -506,6 +506,22 @@
     ar: { help: "اسحب بطاقة مقلوبة من {name}. تختفي الأزواج تلقائياً.", pair: "اختفى زوج واحد. استعد للسحب الأعمى التالي.", risk: "ما زالت بطاقة العانس في يدك. حاول تمريرها.", none: "لم يختفِ أي زوج. انتبه إلى السحب الأعمى التالي." },
   };
 
+  const OLD_MAID_BATTLE_COPY = {
+    en: { quickGuide: "How to play", quickGuideCopy: "Draw one hidden card from the next hand. Pairs disappear automatically; avoid ending with the Old Maid." },
+    "zh-Hant": { quickGuide: "玩法說明", quickGuideCopy: "從下一位玩家的手牌抽一張背面牌。配對會自動消除，別讓鬼牌留在手上。" },
+    "zh-Hans": { quickGuide: "玩法说明", quickGuideCopy: "从下一位玩家的手牌抽一张背面牌。配对会自动消除，别让鬼牌留在手上。" },
+    ja: { quickGuide: "遊び方", quickGuideCopy: "次のプレイヤーの手札から裏向きのカードを1枚引きます。ペアは自動で消え、ババを残さないようにします。" },
+    ko: { quickGuide: "플레이 방법", quickGuideCopy: "다음 플레이어의 뒷면 패에서 한 장을 뽑습니다. 짝은 자동으로 사라지며 버바를 남기지 마세요." },
+    es: { quickGuide: "Cómo jugar", quickGuideCopy: "Roba una carta oculta de la siguiente mano. Las parejas desaparecen automáticamente; evita quedarte con la Solterona." },
+    "pt-BR": { quickGuide: "Como jogar", quickGuideCopy: "Compre uma carta virada da próxima mão. Os pares desaparecem automaticamente; não fique com o Mico." },
+    fr: { quickGuide: "Comment jouer", quickGuideCopy: "Piochez une carte cachée dans la main suivante. Les paires disparaissent automatiquement ; évitez de garder le Pouilleux." },
+    de: { quickGuide: "So wird gespielt", quickGuideCopy: "Ziehe eine verdeckte Karte aus der nächsten Hand. Paare verschwinden automatisch; behalte nicht den Schwarzen Peter." },
+    it: { quickGuide: "Come si gioca", quickGuideCopy: "Pesca una carta coperta dalla mano successiva. Le coppie spariscono automaticamente; non restare con l’Asino." },
+    ru: { quickGuide: "Как играть", quickGuideCopy: "Возьмите закрытую карту из следующей руки. Пары исчезают автоматически; не оставайтесь со Старой девой." },
+    hi: { quickGuide: "कैसे खेलें", quickGuideCopy: "अगली बाज़ी से एक छिपा हुआ पत्ता लें। जोड़े अपने-आप हटते हैं; ओल्ड मेड अपने पास न रखें।" },
+    ar: { quickGuide: "طريقة اللعب", quickGuideCopy: "اسحب بطاقة مقلوبة من يد اللاعب التالي. تختفي الأزواج تلقائياً؛ وتجنب إنهاء الجولة وبطاقة العانس في يدك." },
+  };
+
   const OLD_MAID_PROGRESS_COPY = {
     en: { label: "Blind-draw pairs", copy: "Clear pairs and avoid the Old Maid." },
     "zh-Hant": { label: "盲抽配對", copy: "消除配對，別讓鬼牌留在手上。" },
@@ -552,8 +568,24 @@
       const progressCopy = OLD_MAID_PROGRESS_COPY[currentLocale()] || OLD_MAID_PROGRESS_COPY.en;
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+      ["#startBtn", "#restartBtn", "#newGameBtn"].forEach((selector, index) => ownLocalizedText(document.querySelector(selector), [labels.start, labels.restart, labels.newGame][index]));
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${labels.back}`);
+      ownLocalizedText(document.querySelector("#resultNewGame"), labels.newGame);
+      ownLocalizedText(document.querySelector("#resultRestart"), labels.restart);
+      ownLocalizedText(document.querySelector("#resultClose"), labels.back);
       const settings = document.querySelector("#audioMenuBtn");
       if (settings) settings.setAttribute("aria-label", labels.settings);
+      const mainReturn = document.querySelector(".main-return");
+      if (mainReturn) mainReturn.setAttribute("aria-label", labels.back === "Back" ? "Back to WeightPlay" : labels.back);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) {
+        battleBack.setAttribute("aria-label", labels.back);
+        battleBack.setAttribute("data-runtime-localize", "off");
+      }
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", labels.language);
       const battleUtility = document.querySelector("[data-wp-battle-utility]");
       if (battleUtility) {
         battleUtility.setAttribute("aria-label", labels.settings);
@@ -1056,10 +1088,26 @@
     ar: { existingBuildChoice: "تم اختيار بناء موجود: {cards} = {value}. الالتقاط يأخذ هذه المجموعة المحفوظة؛ والبناء باستخدام {hand} ينشئ مجموعة جديدة بقيمة {newValue}. اختر الالتقاط أو البناء؛ لا يوجد إجراء تلقائي.", capturePayoffLabel: "مكافأة الالتقاط" },
   };
 
+  const CASINO_BUILD_COPY = {
+    en: "Build unavailable: {value} is above the playable 1–10 range. Remove a table card or choose a legal group.",
+    "zh-Hant": "無法建牌：{value} 超過可被手牌捕獲的 1–10 範圍。請移除一張桌面牌，或改選合法牌組。",
+    "zh-Hans": "无法建牌：{value} 超过可由手牌捕获的 1–10 范围。请移除一张桌面牌，或改选合法牌组。",
+    ja: "ビルド不可：{value} は手札で取れる 1〜10 の範囲を超えています。場札を1枚外すか、合法な組み合わせを選んでください。",
+    ko: "빌드 불가: {value}은(는) 손패로 잡을 수 있는 1~10 범위를 넘습니다. 테이블 카드를 한 장 빼거나 합법적인 그룹을 고르세요.",
+    es: "Build no disponible: {value} supera el rango jugable de 1–10. Retira una carta de mesa o elige un grupo legal.",
+    "pt-BR": "Construção indisponível: {value} ultrapassa o intervalo jogável de 1–10. Remova uma carta da mesa ou escolha um grupo legal.",
+    fr: "Build impossible : {value} dépasse la plage jouable de 1 à 10. Retirez une carte de table ou choisissez un groupe légal.",
+    de: "Bauen nicht möglich: {value} liegt über dem spielbaren Bereich 1–10. Entferne eine Tischkarte oder wähle eine legale Gruppe.",
+    it: "Costruzione non disponibile: {value} supera l'intervallo giocabile 1–10. Rimuovi una carta dal tavolo o scegli un gruppo legale.",
+    ru: "Сбор недоступен: {value} выше игрового диапазона 1–10. Уберите карту со стола или выберите допустимую группу.",
+    hi: "बनाना उपलब्ध नहीं: {value} खेलने योग्य 1–10 सीमा से अधिक है। मेज़ से एक पत्ता हटाएँ या कानूनी समूह चुनें।",
+    ar: "لا يمكن البناء: القيمة {value} تتجاوز النطاق القابل للالتقاط من 1 إلى 10. أزل بطاقة من الطاولة أو اختر مجموعة قانونية.",
+  };
+
   const casinoText = (key, values = {}) => {
     const dictionary = CASINO_COPY[currentLocale()] || CASINO_COPY.en;
     const intentCopy = CASINO_INTENT_COPY[currentLocale()] || CASINO_INTENT_COPY.en;
-    let value = dictionary[key] || intentCopy[key] || CASINO_COPY.en[key] || CASINO_INTENT_COPY.en[key] || key;
+    let value = dictionary[key] || intentCopy[key] || (key === "buildUnavailable" ? CASINO_BUILD_COPY[currentLocale()] : "") || CASINO_COPY.en[key] || CASINO_INTENT_COPY.en[key] || CASINO_BUILD_COPY.en || key;
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
@@ -1570,10 +1618,11 @@
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
       const warBattle = id === "war" ? warBattleCopy() : null;
       const goFishBattle = id === "go-fish" ? goFishBattleCopy() : null;
-      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
-      return { heading, paragraph, localized: Boolean(goFishBattle || warBattle || heartsShell) };
+      const oldMaidBattle = id === "old-maid" ? (OLD_MAID_BATTLE_COPY[currentLocale()] || OLD_MAID_BATTLE_COPY.en) : null;
+      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : oldMaidBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : oldMaidBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || oldMaidBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
+      return { heading, paragraph, localized: Boolean(oldMaidBattle || goFishBattle || warBattle || heartsShell) };
     };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
@@ -2140,9 +2189,12 @@
         }
         if (action === "trail" && s.selectedCard !== null) trail(s.selectedCard);
         if (action === "build" && s.selectedCard !== null && s.selectedTable.size) {
-          const item = s.player.splice(s.selectedCard, 1)[0];
           const indices = [...s.selectedTable];
-          const built = { card: item, buildValue: value(item) + indices.reduce((total, index) => total + tableValue(s.table[index]), 0), buildCards: [item, ...indices.map((index) => s.table[index].card)] };
+          const item = s.player[s.selectedCard];
+          const builtValue = value(item) + indices.reduce((total, index) => total + tableValue(s.table[index]), 0);
+          if (!item || builtValue > 10) return;
+          s.player.splice(s.selectedCard, 1);
+          const built = { card: item, buildValue: builtValue, buildCards: [item, ...indices.flatMap((index) => entryCards(s.table[index]))] };
           s.table = s.table.filter((_, index) => !indices.includes(index));
           s.table.push(built);
           s.selectedCard = null;
@@ -2166,8 +2218,14 @@
         const selectedBuildCards = selectedItem && s.selectedTable.size
           ? [selectedItem, ...[...s.selectedTable].flatMap((index) => entryCards(s.table[index]))]
           : [];
+        const selectedBuildValue = selectedItem && s.selectedTable.size
+          ? value(selectedItem) + [...s.selectedTable].reduce((total, index) => total + tableValue(s.table[index]), 0)
+          : null;
         const buildPreview = selectedBuildCards.length > 1
-          ? `<p class="card-choice-summary card-casino-build-preview" role="status" aria-live="polite" aria-atomic="true">${casinoText("buildPreview", { cards: selectedBuildCards.map(cardText).join(" + "), value: value(selectedItem) + [...s.selectedTable].reduce((total, index) => total + tableValue(s.table[index]), 0) })}</p>`
+          ? `<p class="card-choice-summary card-casino-build-preview" role="status" aria-live="polite" aria-atomic="true">${casinoText("buildPreview", { cards: selectedBuildCards.map(cardText).join(" + "), value: selectedBuildValue })}</p>`
+          : "";
+        const buildUnavailable = selectedBuildValue > 10
+          ? `<p class="card-choice-summary card-casino-build-unavailable" role="status" aria-live="polite" aria-atomic="true">${casinoText("buildUnavailable", { value: selectedBuildValue })}</p>`
           : "";
         const selectedBuildEntry = selectedItem && [...s.selectedTable]
           .map((index) => s.table[index])
@@ -2184,9 +2242,9 @@
           help: s.feedback || (selectedItem ? (trailReady ? casinoText("trailPrompt") : `${t("selectCards")}: ${cardText(selectedItem)} · ${s.selectedTable.size}`) : casinoText("selectPrompt")),
           score: s.captured[0].length,
           opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`),
-          center: `<div class="card-table-label">${t("table")}</div>${captureHint}${selectedBuildCue}${buildPreview}${payoffCue}<div class="table-row">${tableMarkup}</div>`,
+          center: `<div class="card-table-label">${t("table")}</div>${captureHint}${selectedBuildCue}${buildPreview}${buildUnavailable}${payoffCue}<div class="table-row">${tableMarkup}</div>`,
           hand: cardsMarkup(s.player, { selected: new Set(s.selectedCard === null ? [] : [s.selectedCard]) }),
-          actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>`
+          actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size || selectedBuildValue > 10 ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>`
         };
       }
     };
