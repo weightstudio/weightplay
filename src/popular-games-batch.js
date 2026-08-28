@@ -949,6 +949,31 @@
       tetrisSoundButton.setAttribute("aria-pressed", String(enabled));
       tetrisSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
     });
+    const breakoutSettingsButton = game.type === "breakout" ? document.querySelector("#audioMenuBtn") : null;
+    const breakoutSettingsPopover = game.type === "breakout" ? document.querySelector("#audioPopover") : null;
+    const breakoutSoundButton = game.type === "breakout" ? document.querySelector("#soundBtn[data-sound-toggle]") : null;
+    if (breakoutSettingsButton && breakoutSettingsPopover) {
+      const setSettingsOpen = (open) => {
+        breakoutSettingsPopover.hidden = !open;
+        breakoutSettingsPopover.classList.toggle("is-hidden", !open);
+        breakoutSettingsButton.setAttribute("aria-expanded", String(open));
+      };
+      breakoutSettingsButton.addEventListener("click", () => setSettingsOpen(breakoutSettingsPopover.hidden));
+      document.addEventListener("pointerdown", (event) => {
+        if (!breakoutSettingsPopover.hidden && !breakoutSettingsPopover.contains(event.target) && event.target !== breakoutSettingsButton) setSettingsOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !breakoutSettingsPopover.hidden) {
+          setSettingsOpen(false);
+          breakoutSettingsButton.focus({ preventScroll: true });
+        }
+      });
+    }
+    breakoutSoundButton?.addEventListener("click", () => {
+      const enabled = breakoutSoundButton.getAttribute("aria-pressed") !== "true";
+      breakoutSoundButton.setAttribute("aria-pressed", String(enabled));
+      breakoutSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+    });
     let tetrisFocusedControl = null;
     const rememberTetrisFocus = (event) => {
       if (game.type !== "tetris") return;

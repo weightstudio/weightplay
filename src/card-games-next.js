@@ -995,9 +995,26 @@
     ar: { selectPrompt: "اختر بطاقة من يدك، ثم بطاقات على الطاولة بالقيمة نفسها أو بمجموع مطابق.", captureHint: "القيمة {value}: {rank} خيار بالقيمة نفسها و{sum} تركيبة مجموع. البطاقات المميزة مرشحة؛ وأنت تختار الالتقاط.", buildPreview: "معاينة البناء: {cards} = {value}. اضغط «بناء» للتأكيد؛ لا يتم اختيار البطاقات تلقائياً.", trailPrompt: "اختر بطاقات لالتقاطها أو بنائها؛ إذا لم يتوفر التقاط، ضع هذه البطاقة على الطاولة.", trail: "ضع على الطاولة", captureFeedback: "تم التقاط {count} بطاقة · {special} · مكافأة البطاقات الفورية +{bonus}. تُحتسب أغلبية البطاقات عند نهاية الجولة.", specialNone: "لا توجد مكافأة لبطاقة خاصة", specialTen: "مكافأة 10♦ +2", specialTwo: "مكافأة 2♠ +3", specialSpade: "مكافأة البستوني ×{count}: +{bonus}", resultBreakdown: "تم التقاط {cards} بطاقة · المكافآت الخاصة +{immediate} · مكافأة الأغلبية: {majority} · النتيجة النهائية: {score}." },
   };
 
+  const CASINO_INTENT_COPY = {
+    en: { existingBuildChoice: "Existing Build selected: {cards} = {value}. Capture takes this stored group; Build with {hand} creates a new group at {newValue}. Choose Capture or Build; no action is automatic.", capturePayoffLabel: "Capture payoff" },
+    "zh-Hant": { existingBuildChoice: "已選取現有牌組：{cards} = {value}。捕獲會拿走這組牌；用 {hand} 建牌會建立新的 {newValue} 牌組。請選擇捕獲或建牌；不會自動執行。", capturePayoffLabel: "捕獲回饋" },
+    "zh-Hans": { existingBuildChoice: "已选取现有牌组：{cards} = {value}。捕获会拿走这组牌；用 {hand} 建牌会建立新的 {newValue} 牌组。请选择捕获或建牌；不会自动执行。", capturePayoffLabel: "捕获反馈" },
+    ja: { existingBuildChoice: "既存ビルドを選択中：{cards} = {value}。キャプチャーは保存済みの組を取ります。{hand} でビルドすると新しい {newValue} の組になります。キャプチャーかビルドを選んでください。自動実行はありません。", capturePayoffLabel: "キャプチャーの成果" },
+    ko: { existingBuildChoice: "기존 빌드를 선택했습니다: {cards} = {value}. 캡처는 저장된 그룹을 가져가고, {hand}로 빌드하면 {newValue} 새 그룹을 만듭니다. 캡처 또는 빌드를 직접 선택하세요. 자동 실행은 없습니다.", capturePayoffLabel: "캡처 보상" },
+    es: { existingBuildChoice: "Build existente seleccionado: {cards} = {value}. Capturar toma este grupo guardado; construir con {hand} crea un grupo nuevo de {newValue}. Elige Capturar o Construir; no se hace nada automáticamente.", capturePayoffLabel: "Recompensa de captura" },
+    "pt-BR": { existingBuildChoice: "Construção existente selecionada: {cards} = {value}. Capturar pega este grupo salvo; construir com {hand} cria um novo grupo de {newValue}. Escolha Capturar ou Construir; nenhuma ação é automática.", capturePayoffLabel: "Retorno da captura" },
+    fr: { existingBuildChoice: "Build existant sélectionné : {cards} = {value}. Capturer prend ce groupe enregistré ; construire avec {hand} crée un nouveau groupe de {newValue}. Choisissez Capturer ou Construire ; aucune action n'est automatique.", capturePayoffLabel: "Gain de capture" },
+    de: { existingBuildChoice: "Vorhandener Build ausgewählt: {cards} = {value}. Nehmen nimmt diese gespeicherte Gruppe; Bauen mit {hand} erstellt eine neue Gruppe mit {newValue}. Wähle Nehmen oder Bauen; nichts geschieht automatisch.", capturePayoffLabel: "Fang-Belohnung" },
+    it: { existingBuildChoice: "Costruzione esistente selezionata: {cards} = {value}. Cattura prende questo gruppo salvato; costruire con {hand} crea un nuovo gruppo da {newValue}. Scegli Cattura o Costruisci; nessuna azione è automatica.", capturePayoffLabel: "Ricompensa della cattura" },
+    ru: { existingBuildChoice: "Выбран существующий сбор: {cards} = {value}. Взятие забирает сохранённую группу; сбор с картой {hand} создаёт новую группу со значением {newValue}. Выберите «Взять» или «Собрать» — автоматического действия нет.", capturePayoffLabel: "Результат взятия" },
+    hi: { existingBuildChoice: "मौजूदा समूह चुना गया: {cards} = {value}। पकड़ने पर यह सुरक्षित समूह लिया जाएगा; {hand} से बनाने पर {newValue} का नया समूह बनेगा। पकड़ें या बनाएँ चुनें; कोई कार्रवाई अपने-आप नहीं होगी।", capturePayoffLabel: "पकड़ का लाभ" },
+    ar: { existingBuildChoice: "تم اختيار بناء موجود: {cards} = {value}. الالتقاط يأخذ هذه المجموعة المحفوظة؛ والبناء باستخدام {hand} ينشئ مجموعة جديدة بقيمة {newValue}. اختر الالتقاط أو البناء؛ لا يوجد إجراء تلقائي.", capturePayoffLabel: "مكافأة الالتقاط" },
+  };
+
   const casinoText = (key, values = {}) => {
     const dictionary = CASINO_COPY[currentLocale()] || CASINO_COPY.en;
-    let value = dictionary[key] || CASINO_COPY.en[key] || key;
+    const intentCopy = CASINO_INTENT_COPY[currentLocale()] || CASINO_INTENT_COPY.en;
+    let value = dictionary[key] || intentCopy[key] || CASINO_COPY.en[key] || CASINO_INTENT_COPY.en[key] || key;
     Object.entries(values).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
@@ -2028,6 +2045,7 @@
   function makeCasino(controller) {
     const s = { player: [], ai: [], stock: [], table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" };
     const tableValue = (entry) => entry.buildValue || value(entry.card);
+    const entryCards = (entry) => entry?.buildCards?.length ? entry.buildCards : [entry?.card].filter(Boolean);
     const combinations = (items, target) => { const output = []; const walk = (start, chosen, total) => { if (total === target && chosen.length) output.push(chosen.slice()); if (total >= target) return; for (let i = start; i < items.length; i += 1) walk(i + 1, [...chosen, i], total + tableValue(items[i])); }; walk(0, [], 0); return output; };
     const captureOptions = (item) => {
       if (!item) return { rankMatches: [], sumCombos: [], candidates: [] };
@@ -2047,14 +2065,86 @@
       if (ordinarySpades) parts.push(casinoText("specialSpade", { count: ordinarySpades, bonus: ordinarySpades }));
       return parts.length ? parts.join(" · ") : casinoText("specialNone");
     };
-    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.map((entry) => entry.card)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
+    const capture = (indices, cardIndex) => { const item = s.player.splice(cardIndex, 1)[0]; const picked = indices.map((index) => s.table[index]); const capturedCards = [item, ...picked.flatMap(entryCards)]; s.table = s.table.filter((_, index) => !indices.includes(index)); s.captured[0].push(...capturedCards); s.feedback = casinoText("captureFeedback", { count: capturedCards.length, special: specialBonusSummary(capturedCards), bonus: immediateBonus(capturedCards) }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
     const trail = (cardIndex) => { const item = s.player[cardIndex]; if (!item || s.selectedTable.size || canCapture(item)) return; s.player.splice(cardIndex, 1); s.table.push({ card: item }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0) + (cards.length >= 27 ? 3 : 0);
     const resultBreakdown = (cards) => casinoText("resultBreakdown", { cards: cards.length, immediate: immediateBonus(cards), majority: cards.length >= 27 ? "+3" : "—", score: scoreCasino(cards) });
     const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore >= aiScore, `${t("score")}: ${playerScore} / ${aiScore} · ${resultBreakdown(s.captured[0])}`); };
     const dealNextHand = () => { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } };
-    const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) dealNextHand(); else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.map((index) => s.table[index].card)); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.ai.length && s.stock.length) dealNextHand(); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
-    return { reset() { Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" }); for (let i = 0; i < 4; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); s.table.push({ card: s.stock.pop() }); } }, card(index) { if (s.selectedCard === null) { s.selectedCard = index; return; } const tableIndex = index; if (tableIndex < s.table.length) { if (s.selectedTable.has(tableIndex)) s.selectedTable.delete(tableIndex); else s.selectedTable.add(tableIndex); } }, action(action) { if (action === "clear-selection") { s.selectedCard = null; s.selectedTable.clear(); } if (action === "capture" && s.selectedCard !== null) { const indices = [...s.selectedTable]; const item = s.player[s.selectedCard]; const valid = indices.length && (indices.some((index) => tableValue(s.table[index]) === value(item)) || combinations(s.table, value(item)).some((combo) => combo.length === indices.length && combo.every((index) => indices.includes(index)))); if (valid) capture(indices, s.selectedCard); } if (action === "trail" && s.selectedCard !== null) trail(s.selectedCard); if (action === "build" && s.selectedCard !== null && s.selectedTable.size) { const item = s.player.splice(s.selectedCard, 1)[0]; const indices = [...s.selectedTable]; const built = { card: item, buildValue: value(item) + indices.reduce((total, index) => total + tableValue(s.table[index]), 0), buildCards: [item, ...indices.map((index) => s.table[index].card)] }; s.table = s.table.filter((_, index) => !indices.includes(index)); s.table.push(built); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); } }, view() { const selectedItem = s.selectedCard === null ? null : s.player[s.selectedCard]; const options = captureOptions(selectedItem); const trailReady = selectedItem && !s.selectedTable.size && !canCapture(selectedItem); const candidateIndexes = new Set(options.candidates); const tableMarkup = s.table.map((entry, index) => { const candidateClass = candidateIndexes.has(index) ? " is-capture-candidate" : ""; if (entry.buildValue) return `<span class="card-build${candidateClass}">${entry.buildCards.map((item) => cardMarkup(item, index, { className: candidateIndexes.has(index) ? "is-capture-candidate" : "" })).join("")}<small>=${entry.buildValue}</small></span>`; return cardMarkup(entry.card, index, { selected: s.selectedTable.has(index), className: candidateIndexes.has(index) ? "is-capture-candidate" : "" }); }).join(""); const captureHint = selectedItem && options.candidates.length ? `<p class="card-choice-summary card-casino-capture-hint" role="status" aria-live="polite">${casinoText("captureHint", { value: value(selectedItem), rank: options.rankMatches.length, sum: options.sumCombos.length })}</p>` : ""; const selectedBuildCards = selectedItem && s.selectedTable.size ? [selectedItem, ...[...s.selectedTable].flatMap((index) => s.table[index]?.buildCards || [s.table[index]?.card]).filter(Boolean)] : []; const buildPreview = selectedBuildCards.length > 1 ? `<p class="card-choice-summary card-casino-build-preview" role="status" aria-live="polite" aria-atomic="true">${casinoText("buildPreview", { cards: selectedBuildCards.map(cardText).join(" + "), value: value(selectedItem) + [...s.selectedTable].reduce((total, index) => total + tableValue(s.table[index]), 0) })}</p>` : ""; return { phase: t("capture"), status: t("yourTurn"), help: s.feedback || (selectedItem ? (trailReady ? casinoText("trailPrompt") : `${t("selectCards")}: ${cardText(selectedItem)} · ${s.selectedTable.size}`) : casinoText("selectPrompt")), score: s.captured[0].length, opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`), center: `<div class="card-table-label">${t("table")}</div>${captureHint}${buildPreview}<div class="table-row">${tableMarkup}</div>` , hand: cardsMarkup(s.player, { selected: new Set(s.selectedCard === null ? [] : [s.selectedCard]) }), actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>` }; } };
+    const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) dealNextHand(); else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.flatMap((index) => entryCards(s.table[index]))); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.ai.length && s.stock.length) dealNextHand(); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
+    return {
+      reset() {
+        Object.assign(s, { player: [], ai: [], stock: deck(), table: [], captured: [[], []], selectedCard: null, selectedTable: new Set(), phase: "play", score: [0, 0], feedback: "" });
+        for (let i = 0; i < 4; i += 1) { s.player.push(s.stock.pop()); s.ai.push(s.stock.pop()); s.table.push({ card: s.stock.pop() }); }
+      },
+      card(index) {
+        if (s.selectedCard === null) { s.selectedCard = index; return; }
+        const tableIndex = index;
+        if (tableIndex < s.table.length) {
+          if (s.selectedTable.has(tableIndex)) s.selectedTable.delete(tableIndex);
+          else s.selectedTable.add(tableIndex);
+        }
+      },
+      action(action) {
+        if (action === "clear-selection") { s.selectedCard = null; s.selectedTable.clear(); }
+        if (action === "capture" && s.selectedCard !== null) {
+          const indices = [...s.selectedTable];
+          const item = s.player[s.selectedCard];
+          const valid = indices.length && (indices.some((index) => tableValue(s.table[index]) === value(item)) || combinations(s.table, value(item)).some((combo) => combo.length === indices.length && combo.every((index) => indices.includes(index))));
+          if (valid) capture(indices, s.selectedCard);
+        }
+        if (action === "trail" && s.selectedCard !== null) trail(s.selectedCard);
+        if (action === "build" && s.selectedCard !== null && s.selectedTable.size) {
+          const item = s.player.splice(s.selectedCard, 1)[0];
+          const indices = [...s.selectedTable];
+          const built = { card: item, buildValue: value(item) + indices.reduce((total, index) => total + tableValue(s.table[index]), 0), buildCards: [item, ...indices.map((index) => s.table[index].card)] };
+          s.table = s.table.filter((_, index) => !indices.includes(index));
+          s.table.push(built);
+          s.selectedCard = null;
+          s.selectedTable.clear();
+          aiTurn();
+        }
+      },
+      view() {
+        const selectedItem = s.selectedCard === null ? null : s.player[s.selectedCard];
+        const options = captureOptions(selectedItem);
+        const trailReady = selectedItem && !s.selectedTable.size && !canCapture(selectedItem);
+        const candidateIndexes = new Set(options.candidates);
+        const tableMarkup = s.table.map((entry, index) => {
+          const candidateClass = candidateIndexes.has(index) ? " is-capture-candidate" : "";
+          if (entry.buildValue) return `<span class="card-build${candidateClass}">${entry.buildCards.map((item) => cardMarkup(item, index, { className: candidateIndexes.has(index) ? "is-capture-candidate" : "" })).join("")}<small>=${entry.buildValue}</small></span>`;
+          return cardMarkup(entry.card, index, { selected: s.selectedTable.has(index), className: candidateIndexes.has(index) ? "is-capture-candidate" : "" });
+        }).join("");
+        const captureHint = selectedItem && options.candidates.length
+          ? `<p class="card-choice-summary card-casino-capture-hint" role="status" aria-live="polite">${casinoText("captureHint", { value: value(selectedItem), rank: options.rankMatches.length, sum: options.sumCombos.length })}</p>`
+          : "";
+        const selectedBuildCards = selectedItem && s.selectedTable.size
+          ? [selectedItem, ...[...s.selectedTable].flatMap((index) => entryCards(s.table[index]))]
+          : [];
+        const buildPreview = selectedBuildCards.length > 1
+          ? `<p class="card-choice-summary card-casino-build-preview" role="status" aria-live="polite" aria-atomic="true">${casinoText("buildPreview", { cards: selectedBuildCards.map(cardText).join(" + "), value: value(selectedItem) + [...s.selectedTable].reduce((total, index) => total + tableValue(s.table[index]), 0) })}</p>`
+          : "";
+        const selectedBuildEntry = selectedItem && [...s.selectedTable]
+          .map((index) => s.table[index])
+          .find((entry) => entry?.buildValue && tableValue(entry) === value(selectedItem));
+        const selectedBuildCue = selectedBuildEntry
+          ? `<p class="card-choice-summary card-casino-build-intent" role="status" aria-live="polite" aria-atomic="true">${casinoText("existingBuildChoice", { cards: entryCards(selectedBuildEntry).map(cardText).join(" + "), value: selectedBuildEntry.buildValue, hand: cardText(selectedItem), newValue: value(selectedItem) + selectedBuildEntry.buildValue })}</p>`
+          : "";
+        const payoffCue = s.feedback
+          ? `<p class="card-choice-summary card-casino-payoff" role="status" aria-live="polite" aria-atomic="true"><strong>${casinoText("capturePayoffLabel")}</strong><span>${s.feedback}</span></p>`
+          : "";
+        return {
+          phase: t("capture"),
+          status: t("yourTurn"),
+          help: s.feedback || (selectedItem ? (trailReady ? casinoText("trailPrompt") : `${t("selectCards")}: ${cardText(selectedItem)} · ${s.selectedTable.size}`) : casinoText("selectPrompt")),
+          score: s.captured[0].length,
+          opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`),
+          center: `<div class="card-table-label">${t("table")}</div>${captureHint}${selectedBuildCue}${buildPreview}${payoffCue}<div class="table-row">${tableMarkup}</div>`,
+          hand: cardsMarkup(s.player, { selected: new Set(s.selectedCard === null ? [] : [s.selectedCard]) }),
+          actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>`
+        };
+      }
+    };
   }
 
   function makeCribbage(controller) {
