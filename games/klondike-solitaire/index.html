@@ -60,7 +60,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260827-klondike-v41-landscape-containment" />
+  <link rel="stylesheet" href="style.css?v=20260829-klondike-interface-contract-v41" />
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-combined-sound="true">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
@@ -124,6 +124,10 @@
         <h1 data-klocale="ui.hero.title">Klondike Solitaire</h1>
         <p id="menuHint" class="menu-hint" data-klocale="ui.hero.copy">A refined Klondike run with smoother motion, cleaner controls, and long-session performance. Play from phone or desktop with drag-and-drop, one-click moves, auto finish, Undo history, and live hints.</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
+        <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
+          <strong data-klocale="ui.feature.target_title">Target</strong>
+          <span data-klocale="ui.feature.target_text">Build all four Foundations from A to K.</span>
+        </div>
         <div class="main-actions">
           <button id="startBtn" class="primary-btn standard-main-start" data-wp-main-start data-runtime-localize="off" type="button" data-klocale="ui.action.start">Start Game</button>
           <button id="restartBtn" class="secondary-btn" type="button" data-klocale="ui.action.restart">Restart Current Game</button>
@@ -152,6 +156,7 @@
           <small data-klocale="ui.draw_mode.label">Draw Mode</small><strong id="drawModeValue">Draw 1</strong>
         </div>
         <button id="drawModeBtn" class="control-mini" type="button" aria-pressed="true">Draw Mode</button>
+        <button id="soundToggleBattle" class="control-mini battle-utility" type="button" data-wp-battle-utility="true" aria-label="Sound: On">Sound: On</button>
       </header>
 
       <section class="board-shell">
@@ -192,7 +197,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-    <script src="game.js?v=20260827-klondike-arabic-dynamic-a11y-v42"></script>
+    <script src="game.js?v=20260829-klondike-interface-contract-v41"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js?v=20260821-klondike-arabic-guide-v39"></script>
     <script src="analytics-ownership.js?v=20260821-klondike-arabic-guide-v39"></script>

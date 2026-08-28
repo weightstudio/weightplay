@@ -4,7 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v17";
   document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {
@@ -178,6 +178,7 @@
   }
 
   function show(nextScreen) {
+    const previousScreen = screen;
     if (nextScreen !== "battle") {
       animationToken += 1;
       moveLocked = false;
@@ -192,6 +193,9 @@
     });
     $("generalReserve").hidden = nextScreen !== "battle";
     screen = nextScreen;
+    if (nextScreen === "stage" && previousScreen === "battle") {
+      renderStage();
+    }
     window.scrollTo(0, 0);
   }
 
