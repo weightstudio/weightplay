@@ -1839,6 +1839,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "फ्लिप कार्यशाला",
     "ar": "ورشة القلب"
   },
+  "animal-deep-sea-salvage": {
+    "__localizedExact": true,
+    "en": "Deep Sea Salvage Company",
+    "zh-Hant": "深海打撈公司",
+    "zh-Hans": "深海打捞公司",
+    "ja": "深海サルベージ会社",
+    "ko": "심해 인양 회사",
+    "es": "Compañía de Rescate Abisal",
+    "pt-BR": "Companhia de Salvamento Abissal",
+    "fr": "Compagnie de Récupération des Abysses",
+    "de": "Tiefsee-Bergungsfirma",
+    "it": "Compagnia di Recupero Abissale",
+    "ru": "Компания глубоководного сбора",
+    "hi": "डीप सी साल्वेज कंपनी",
+    "ar": "شركة الإنقاذ في أعماق البحر"
+  },
   "animal-hoop-league": {
     "__localizedExact": true,
     "en": "Animal Hoop League",

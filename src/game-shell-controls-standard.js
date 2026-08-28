@@ -181,7 +181,8 @@
       const gameInfoCacheTag = gameId === "maze-chase"
         ? "20260826-maze-guide-v15"
         : gameId === "cribbage" ? "20260827-cribbage-arabic-opening-v1"
-          : gameId === "old-maid" ? "20260828-old-maid-guide-runtime-v16"
+          : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"
+          : gameId === "animal-trap-trail" ? "20260829-animal-trap-trail-faq-timing-v6"
           : gameId === "casino" ? "20260828-casino-build-legality-v15"
           : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;

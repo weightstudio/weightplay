@@ -1886,6 +1886,19 @@
       parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Landing streaks and best progress stay in this browser.",
       faq: [["How do I launch the canister?", "Drag upward from the canister on the arena; the gesture must be long enough to launch."], ["What makes a landing good?", "The canister must reach the next surface upright within the landing window."], ["Can I use a mouse?", "Yes. Mouse dragging and touch swiping use the same launch gesture."], ["Is progress saved?", "Only the local best streak is saved in this browser."]],
     },
+    "animal-deep-sea-salvage": {
+      title: "Deep Sea Salvage Company", age: "13+", difficulty: "Easy to Strategic", time: "5-15 minutes per session",
+      gameplay: "Deep-Sea Idle Company", genre: ["Simulation", "Strategy", "Idle", "Animal"], skills: ["Resource Management", "Planning", "Long-term Growth"],
+      intro: "Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare discoveries in a growing museum.",
+      story: ["Your small research vessel begins at the harbour edge with one friendly ROV. Each automatic dive reaches a target depth, searches the seafloor, and returns with cargo that funds the next pressure-hull upgrade or a new sea zone."],
+      systems: ["The automatic dive loop moves through Diving, Searching, and Returning phases. Cargo has weight and salvage time; ordinary finds are sold automatically, while collection finds go to the museum and trigger seven types of sea events for bonus payouts.", "Eight ship upgrades, three recruitable ROV types, seven depth zones, daily/company missions, achievements, and five permanent research branches turn each return into a clear next decision. A capped offline calculation keeps the company working between visits."],
+      how: ["Watch the live ROV scene and let the first dive complete, or use Quick Dive for an immediate test reward.", "Spend credits in Upgrades and ROVs, then select an unlocked zone to aim for deeper finds without exceeding cargo weight.", "Open Museum for collection targets, Missions for daily and company rewards, and Achievements for long-term milestones.", "When the abyss requirement is met, start research to reset normal upgrades while keeping the museum and earning permanent income, speed, rare-find, depth, and offline bonuses."],
+      strategyTips: ["Upgrade dive time and sale value early so each cycle pays back faster.", "Buy pressure depth before selecting a deeper zone; the target depth is always bounded by the hull's maximum.", "Cargo and grabber arms improve the value of a run, while the sonar array is most useful after rare items become reachable.", "Treat the museum and research reset as long-term goals: short-term credits unlock the next depth, but permanent research accelerates every future expedition."],
+      progression: ["The harbour teaches the automatic loop and basic upgrades. Wreck waters, deep canyon, dark midnight, seafloor volcano, ancient ruins, and the unknown abyss add higher-value finds, special targets, and tighter upgrade decisions; the abyss research reset then turns a completed expedition into lasting company growth."],
+      designNote: "The game keeps the core decision visible: let the ROV work, read the return, and choose the next investment. A fixed logical canvas scales to portrait phones and desktop screens, while LocalStorage and a capped offline simulation preserve a useful idle rhythm without a backend.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, multiplayer, or advertising flow. Company progress, museum entries, mission claims, and research stay only in this browser; clearing site data may remove them.",
+      faq: [["How does a dive make money?", "The ROV brings back weighted salvage. Common and uncommon items are sold automatically for credits, while collection finds stay in the museum with a small curator payout."], ["How do I reach deeper zones?", "Buy Pressure Hull upgrades until your maximum depth reaches the zone's unlock threshold, then select that zone in Explore."], ["What happens while I am away?", "The next visit calculates up to eight hours of completed automatic dives and presents the credits in an offline-earnings dialog."], ["What does abyss research reset?", "Once its depth and sales requirements are met, research resets cash and ordinary upgrades, keeps the museum and achievements, and opens permanent technology bonuses."], ["Is progress saved?", "Company progress is saved locally in this browser with no account required."]],
+    },
   });
 
   const labels = {
@@ -2884,6 +2897,18 @@
     how: ["انقر بسرعة وحافظ على تجدد يدك. لا تنتظر دور الخصم."],
     noteTitle: "حالة المعاينة",
     parent: "هذه معاينة للمالك وليست ضمن الكتالوج العام الرسمي.",
+    faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+  };
+  localizedGames["ar"]["old-maid"] = {
+    ...games["old-maid"],
+    title: "خادمة قديمة",
+    gameplay: "لعبة بطاقات كلاسيكية لتكوين الأزواج",
+    genre: ["بطاقات", "عائلية", "استراتيجية"],
+    skills: ["التركيز", "التعرّف على الأنماط"],
+    intro: "أزل أزواج الرتب المتطابقة، ثم اسحب بطاقة مقلوبة واحدة من يد اللاعب التالي وتجنب أن تبقى مع بطاقة العانس.",
+    how: ["تختفي الأزواج المتطابقة فورًا. اسحب بطاقة مقلوبة واحدة من يد اللاعب التالي؛ ويخسر آخر لاعب يحمل بطاقة العانس الخاصة."],
+    noteTitle: "حالة المعاينة",
+    parent: "هذه معاينة للمالك وليست ضمن الكتالوج العام الرسمي بعد.",
     faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
   };
   localizedGames["ar"]["wonder-crash"] = {
@@ -12807,7 +12832,7 @@
       "animal-rift-salvage": { title: "إنقاذ الحيوان المتصدع", intro: "وجّه جامعًا قمريًا صغيرًا داخل صدع دائري، واجمع الخردة المناسبة، وابنِ سلسلة نقاط، وأكمل حصة الإنقاذ قبل انتهاء الوقت." },
       "animal-hero-trials": { title: "محاكمات بطل الحيوان", intro: "حملة حركة من 30 تجربة يقودها أربعة أبطال متكررون من WeightPlay؛ لكل بطل حركة ومدى ومتانة ومهارة نشطة مختلفة. أكمل ثلاث غرف غابية، واختر نعمة بعد كل غرفة، واهزم سيد الظلال، ثم أنفق علامات التجربة على الإتقان الدائم." },
       "animal-canopy-cut": { title: "قطع مظلة الحيوانات", intro: "اسحب عبر الفاكهة الآمنة، وابنِ سلسلة، وتجنب قرون البذور الداكنة في تحدٍّ سريع داخل المظلة." },
-      "animal-trap-trail": { title: "مسار الفخ القمري", intro: "اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية." }
+      "animal-trap-trail": { title: "مسار الفخ القمري", intro: "اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية.", faq: [["هل يُحفظ التقدم؟", "يبقى أفضل مستوى محفوظًا في هذا المتصفح فقط."]] }
     }
   };
   for (const [localeCode, relatedCards] of Object.entries(runeRelatedCardLocaleCopy)) {
@@ -14784,6 +14809,56 @@
     localizedGames[localeCode].casino = {
       ...(localizedGames[localeCode].casino || {}),
       faq,
+    };
+  }
+
+  // Deep Sea Salvage owns a complete Traditional Chinese Guide so the
+  // preview route does not inherit English FAQ or category text.
+  localizedGames["zh-Hant"] ||= {};
+  localizedGames["zh-Hant"]["animal-deep-sea-salvage"] = {
+    ...(localizedGames["zh-Hant"]["animal-deep-sea-salvage"] || {}),
+    title: "深海打撈公司",
+    age: "13+",
+    difficulty: "容易上手，逐步考驗策略",
+    time: "每次約 5–15 分鐘",
+    gameplay: "深海放置經營",
+    genre: ["模擬", "策略", "放置", "動物"],
+    skills: ["資源管理", "規劃", "長期成長"],
+    intro: "《深海打撈公司》是一款原創瀏覽器放置遊戲。派出 ROV 深入海底，出售普通打撈品，並把稀有發現保存進持續成長的博物館。",
+    story: ["你的研究船從港灣外緣起步，只有一台友善的 ROV。每趟自動下潛都會抵達目標深度、搜尋海床，再帶回能支付耐壓升級或新海域解鎖費用的貨物。"],
+    systems: ["自動下潛循環會依序經過下潛中、搜尋中與返航中；每件貨物都有重量與打撈時間。普通物資會立即自動出售，收藏物品則保留在博物館；七種海域事件還會帶來額外加成。", "八條船體升級、三種可招募 ROV、七個深度海域、每日／公司任務、成就與五條永久研究分支，讓每趟返航都提供清楚的下一步；離線計算則讓公司在你離開時繼續工作。"],
+    how: ["先觀察即時 ROV 場景，等待第一趟完成；也可以按「快速下潛」立即測試一次收益。", "在「升級」與「ROV 機器人」分頁花費資金，再選擇已解鎖的海域；系統會依貨艙重量限制裝載。", "打開「博物館」追蹤收藏，在「任務」領取每日／公司獎勵，並到「成就」領取長期里程碑獎勵。", "達到深淵條件後啟動研究：重置一般升級與現金，保留博物館與成就，換取收入、速度、稀有率、深度及離線收益科技。"],
+    strategyTips: ["前期先提升下潛時間與出售價值，讓每一輪更快回本。", "選擇深海前先升級耐壓船殼；目標深度永遠不會超過目前最大深度。", "貨艙與機械臂能提高單趟價值，聲納陣列則在能抵達稀有物的深度後更有用。", "把博物館與深淵研究當成長期目標：短期資金解鎖下一片海域，永久研究則加速之後每次遠征。"],
+    progression: ["港灣外緣先教你理解自動循環與基礎升級。沉船海域、深海峽谷、黑暗午夜海、海底火山、遠古遺跡與未知深淵會帶來更高價值的發現、特殊目標與更難取捨的投資；完成一輪後，深淵研究把遠征成果轉成永久公司成長。"],
+    designNote: "遊戲把核心決策留在畫面中央：讓 ROV 工作、讀懂返航成果，再決定下一筆投資。固定邏輯 Canvas 會等比例適配直向手機與桌面，LocalStorage 加上有上限的離線計算，讓放置節奏在沒有後端的情況下仍然完整。",
+    noteTitle: "玩家與存檔資訊",
+    parent: "這款一般向瀏覽器遊戲沒有帳號、購買、聊天、排行榜、多人連線或廣告流程。公司進度、博物館收藏、任務領取與研究點數只保存在這個瀏覽器；清除網站資料可能會移除它們。",
+    faq: [["下潛如何賺取資金？", "ROV 會依深度帶回不同重量與價值的打撈品。普通與罕見物品會自動出售換成資金，收藏發現則保存在博物館並提供館長補助。"], ["如何前往更深海域？", "購買耐壓船殼或深度科技，讓有效最大深度達到海域門檻，再到「探索」選擇該海域。"], ["離開遊戲時會發生什麼？", "下次回來時，系統會計算最多八小時內完成的自動下潛，並在離線收益視窗呈現一次性可領資金。"], ["深淵研究會重置什麼？", "達到深度與出售額條件後，研究會重置現金與一般升級，保留博物館與成就，並可把永久點數分配到五種科技。"], ["進度會保存嗎？", "會，公司的進度會以 LocalStorage 保存在這個瀏覽器，不需要帳號。"]],
+  };
+
+  // Keep the official title localized in every route and in the shared title
+  // registry. The full Traditional Chinese guide above remains the authored
+  // source for the primary owner locale.
+  const deepSeaSalvageTitles = {
+    en: "Deep Sea Salvage Company",
+    "zh-Hant": "深海打撈公司",
+    "zh-Hans": "深海打捞公司",
+    ja: "深海サルベージ会社",
+    ko: "심해 인양 회사",
+    es: "Compañía de Rescate Abisal",
+    "pt-BR": "Companhia de Salvamento Abissal",
+    fr: "Compagnie de Récupération des Abysses",
+    de: "Tiefsee-Bergungsfirma",
+    it: "Compagnia di Recupero Abissale",
+    ru: "Компания глубоководного сбора",
+    hi: "डीप सी साल्वेज कंपनी",
+    ar: "شركة الإنقاذ في أعماق البحر",
+  };
+  for (const [localeCode, title] of Object.entries(deepSeaSalvageTitles)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-deep-sea-salvage"] = {
+      ...(localizedGames[localeCode]["animal-deep-sea-salvage"] || {}),
+      title,
     };
   }
 

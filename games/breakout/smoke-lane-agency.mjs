@@ -25,6 +25,7 @@ await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const browser = await playwright.chromium.launch({ headless: true });
 const origin = `http://127.0.0.1:${server.address().port}`;
 const viewports = [{ width: 390, height: 844 }, { width: 612, height: 876 }, { width: 844, height: 390 }, { width: 1280, height: 720 }];
+const viewportBucket = ({ width, height }) => height <= 430 ? "short-landscape" : width <= 480 ? "phone" : width <= 900 ? (height > width ? "tablet-portrait" : "tablet-landscape") : (height > width ? "desktop-portrait" : "desktop-landscape");
 const missCopy = {
   en: "No brick cleared — shot 3 used. Column 3 is clear; next target: column 2. Move Left before serving.", "zh-Hant": "沒有清除磚塊——已使用第 3 次射擊。第 3 欄已清空；下一個目標：第 2 欄。發球前左移。", "zh-Hans": "没有清除砖块——已使用第 3 次射击。第 3 列已清空；下一个目标：第 2 列。发球前左移。",
   ja: "ブロックは消えませんでした（3ショット）。3列は空です。次の目標は2列。サーブ前に左へ移動しましょう。", ko: "3번째 서브에서 벽돌을 깨지 못했습니다. 3번 열이 비었습니다. 다음 목표는 2번 열입니다. 서브 전에 왼쪽으로 이동하세요.", es: "No rompiste ningún ladrillo: tiro 3. La columna 3 está vacía; próximo objetivo: columna 2. Muévete Izquierda antes de sacar.",
@@ -67,9 +68,14 @@ try {
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => { if (message.type() === "error" && !/favicon|Failed to load resource/iu.test(message.text())) errors.push(message.text()); });
     await page.goto(`${origin}/games/breakout/?preview=1`, { waitUntil: "networkidle" });
+    await page.waitForFunction(() => window.__weightplayBreakoutAnalyticsInstalled === true);
+    await page.evaluate(() => {
+      window.__BREAKOUT_FUNNEL_EVENTS__ = [];
+      window.WonderAnalytics = { track: (name, data) => window.__BREAKOUT_FUNNEL_EVENTS__.push({ name, data }) };
+    });
     await page.locator("#startBtn").click();
     const initial = await state(page);
-    assert(initial.version === "v9" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v9 identity failed", { viewport, initial });
+    assert(initial.version === "v10" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v10 identity failed", { viewport, initial });
     await fireTwice(page);
     const clearedLane = await state(page);
     assert(clearedLane.bricks === 10 && clearedLane.laneState === "clear" && clearedLane.target === null && clearedLane.shots === 2, "Cleared lane still auto-targeted another column", { viewport, clearedLane });
@@ -91,11 +97,18 @@ try {
     await clearRemainingFromColumnThree(page);
     const clean = await state(page);
     assert(clean.shots === 12 && /12/.test(clean.goal) && /shot/iu.test(clean.goal), "Clean lane route did not preserve the 12-shot Result goal", { viewport, clean });
-    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v7 escaped viewport or emitted diagnostics", { viewport, clean, errors });
-    evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0 });
+    const funnelEvents = await page.evaluate(() => window.__BREAKOUT_FUNNEL_EVENTS__ || []);
+    const count = (name) => funnelEvents.filter((event) => event.name === name).length;
+    const requiredCounts = { breakout_game_start: 2, breakout_first_serve: 2, breakout_first_brick_clear: 2, breakout_result: 2, breakout_play_again: 1 };
+    assert(Object.entries(requiredCounts).every(([name, expected]) => count(name) === expected), "Breakout funnel milestones were not exactly once per round", { viewport, requiredCounts, counts: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])), funnelEvents });
+    const ownedEvents = funnelEvents.filter((event) => event.name.startsWith("breakout_"));
+    assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v10" && event.data?.interface_version === "6" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
+    assert(ownedEvents.every((event) => !["user_id", "email", "name", "row", "column", "x", "y", "url", "path", "text", "message"].some((field) => field in event.data)), "Breakout funnel emitted a prohibited personal or free-form field", { viewport, ownedEvents });
+    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v10 escaped viewport or emitted diagnostics", { viewport, clean, errors });
+    evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0, funnel: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])) });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v9", evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v10", evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

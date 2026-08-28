@@ -63,6 +63,7 @@ WeightPlay covers these game and content clusters:
 - Block Blast: https://weightplay.com/en/games/block-blast/
 - Hexa Sort: https://weightplay.com/en/games/hexa-sort/
 - Spider Solitaire: https://weightplay.com/en/games/spider-solitaire/
+- TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/
 - Space Rocks: https://weightplay.com/en/games/space-rocks/
 - Panko's Number Grove: https://weightplay.com/games/animal-number-match/

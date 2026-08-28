@@ -19,7 +19,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-deep-sea-salvage/" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="noindex,nofollow" />
     <meta name="theme-color" content="#061c32" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-deep-sea-salvage" />
@@ -43,12 +43,12 @@
 
       <section class="hero-grid" aria-labelledby="gameTitle">
         <div class="hero-copy">
-          <span class="eyebrow">WEIGHTPLAY · IDLE EXPEDITION</span>
+          <span class="eyebrow" data-i18n="eyebrow">WEIGHTPLAY · IDLE EXPEDITION</span>
           <h1 id="gameTitle" data-i18n="title">Deep Sea Salvage Company</h1>
           <p data-i18n="tagline">Send friendly ROVs into the blue and turn every find into a deeper expedition.</p>
           <div class="hero-actions"><button id="dispatchButton" class="primary" type="button" data-i18n="dispatch">Dispatch ROV</button><button id="quickDiveButton" class="secondary" type="button" data-i18n="quickDive">Quick dive</button></div>
         </div>
-        <div class="stat-grid" aria-label="Company stats">
+        <div class="stat-grid" data-i18n-aria="statsLabel" aria-label="Company stats">
           <div class="stat-card"><span data-i18n="funds">Funds</span><strong id="fundsValue">0</strong><small data-i18n="credits">credits</small></div>
           <div class="stat-card"><span data-i18n="depth">Max depth</span><strong id="depthValue">0</strong><small data-i18n="metres">m</small></div>
           <div class="stat-card"><span data-i18n="robots">ROV team</span><strong id="robotsValue">1</strong><small>ROV</small></div>
@@ -60,15 +60,16 @@
         <div class="card-heading"><div><span class="section-kicker" data-i18n="zone">Sea zone</span><h2 id="sceneHeading"><span id="zoneName">Harbour Edge</span><small id="zoneDepth">0–120m</small></h2></div><span id="diveStateBadge" class="state-badge" data-state="diving">Diving</span></div>
         <div class="ocean-stage">
           <canvas id="oceanCanvas" width="960" height="560" role="img" data-i18n-aria="sceneLabel" aria-label="Animated deep sea salvage scene"></canvas>
-          <div class="depth-scale" aria-hidden="true"><span>0m</span><span>250m</span><span>500m</span><span>750m</span><span>1000m</span></div>
+          <div class="depth-scale" aria-hidden="true"><span>0m</span><span>400m</span><span>800m</span><span>1200m</span><span>1600m</span><span>2000m</span></div>
           <div class="scene-readout"><span data-i18n="targetDepth">Target depth</span><strong id="targetDepthValue">0m</strong><small id="nextDropValue">Next find · —</small></div>
+          <div id="eventBanner" class="event-banner" hidden><span class="event-spark" aria-hidden="true">✦</span><span><b id="eventTitle"></b><small id="eventCopy"></small></span><strong id="eventBonusValue"></strong></div>
         </div>
         <div class="dive-progress-wrap"><div class="progress-label"><span data-i18n="progress">Dive progress</span><strong id="progressValue">0%</strong></div><div class="progress-track"><i id="progressFill"></i></div><div class="dive-meta"><span><b data-i18n="diveState">Dive status</b><strong id="diveStatus">Diving</strong></span><span><b data-i18n="cargo">Cargo</b><strong id="cargoValue">0/4</strong></span><span><b data-i18n="depthMeter">Depth meter</b><strong id="currentDepthValue">0m</strong></span></div></div>
       </section>
 
       <section class="loop-strip"><div><span class="section-kicker" data-i18n="autoLoop">Automatic salvage loop</span><p data-i18n="autoLoopCopy">A new ROV dive begins as soon as the previous one returns.</p></div><button id="collectButton" class="collect-button" type="button" data-i18n="collect">Collect</button></section>
 
-      <nav class="tab-nav" aria-label="Game sections"><button class="tab-button active" type="button" data-tab="explore" data-i18n="explore">Explore</button><button class="tab-button" type="button" data-tab="upgrades" data-i18n="upgrades">Upgrades</button><button class="tab-button" type="button" data-tab="museum" data-i18n="museum">Museum</button><button class="tab-button" type="button" data-tab="missions" data-i18n="missions">Missions</button><button class="tab-button" type="button" data-tab="technology" data-i18n="technology">Technology</button></nav>
+      <nav class="tab-nav" data-i18n-aria="sectionsLabel" aria-label="Game sections"><button class="tab-button active" type="button" data-tab="explore" data-i18n="explore">Explore</button><button class="tab-button" type="button" data-tab="upgrades" data-i18n="upgrades">Upgrades</button><button class="tab-button" type="button" data-tab="robots" data-i18n="robotsTab">ROVs</button><button class="tab-button" type="button" data-tab="museum" data-i18n="museum">Museum</button><button class="tab-button" type="button" data-tab="missions" data-i18n="missions">Missions</button><button class="tab-button" type="button" data-tab="achievements" data-i18n="achievements">Achievements</button><button class="tab-button" type="button" data-tab="technology" data-i18n="technology">Technology</button><button class="tab-button" type="button" data-tab="settings" data-i18n="settings">Settings</button></nav>
 
       <section id="panel-explore" class="tab-panel active" data-panel="explore">
         <div class="panel-heading"><div><span class="section-kicker" data-i18n="selectZone">Select a zone</span><h2 data-i18n="explore">Explore</h2></div><span id="zoneCount" class="muted-count"></span></div>
@@ -78,11 +79,17 @@
 
       <section id="panel-upgrades" class="tab-panel" data-panel="upgrades" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="effect">Effect</span><h2 data-i18n="upgrades">Upgrades</h2></div><span class="upgrade-note" data-i18n="funds">Funds</span></div><div id="upgradeList" class="upgrade-list"></div></section>
 
+      <section id="panel-robots" class="tab-panel" data-panel="robots" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="robotBay">Robot bay</span><h2 data-i18n="robotsTab">ROVs</h2></div><span id="robotCount" class="muted-count"></span></div><p class="panel-intro" data-i18n="robotCopy">Configure the crew that dives together. Unlock specialised ROVs as the company reaches deeper water.</p><div id="robotList" class="robot-list"></div></section>
+
       <section id="panel-museum" class="tab-panel" data-panel="museum" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="museumCopy">Every first discovery is kept in the captain's museum.</span><h2 data-i18n="museum">Museum</h2></div><span id="museumCount" class="muted-count"></span></div><div id="museumGrid" class="museum-grid"></div></section>
 
-      <section id="panel-missions" class="tab-panel" data-panel="missions" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="missionProgress">Mission progress</span><h2 data-i18n="missions">Missions</h2></div><span id="missionCount" class="muted-count"></span></div><div id="missionList" class="mission-list"></div></section>
+      <section id="panel-missions" class="tab-panel" data-panel="missions" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="missionProgress">Mission progress</span><h2 data-i18n="missions">Missions</h2></div><span id="missionCount" class="muted-count"></span></div><div class="subpanel-heading"><h3 data-i18n="dailyMissions">Daily missions</h3><span id="dailyMissionCount" class="muted-count"></span></div><div id="dailyMissionList" class="mission-list"></div><div class="subpanel-heading"><h3 data-i18n="generalMissions">Company missions</h3></div><div id="missionList" class="mission-list"></div></section>
 
-      <section id="panel-technology" class="tab-panel" data-panel="technology" hidden><div class="tech-card"><div class="tech-icon" aria-hidden="true">✦</div><div><span class="section-kicker" data-i18n="technology">Technology</span><h2 data-i18n="prestige">Start abyss research</h2><p id="techCopy" data-i18n="techLocked">Deep abyss research unlocks at 760m and 3,000 credits sold.</p><div class="tech-stats"><span><b data-i18n="techPoints">Research points</b><strong id="researchValue">0</strong></span><span><b data-i18n="multiplier">multiplier</b><strong id="researchMultiplier">×1.0</strong></span></div><button id="prestigeButton" class="primary" type="button" data-i18n="prestige" disabled>Start abyss research</button></div></div><p class="tech-footnote" data-i18n="prestigeCopy">Reset cash and normal upgrades, keep the museum, and gain a permanent sale multiplier.</p></section>
+      <section id="panel-achievements" class="tab-panel" data-panel="achievements" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="achievementProgress">Achievement progress</span><h2 data-i18n="achievements">Achievements</h2></div><span id="achievementCount" class="muted-count"></span></div><div id="achievementList" class="achievement-list"></div></section>
+
+      <section id="panel-technology" class="tab-panel" data-panel="technology" hidden><div class="tech-card"><div class="tech-icon" aria-hidden="true">✦</div><div><span class="section-kicker" data-i18n="technology">Technology</span><h2 data-i18n="prestige">Start abyss research</h2><p id="techCopy" data-i18n="techLocked">Deep abyss research unlocks at 760m and 3,000 credits sold.</p><div class="tech-stats"><span><b data-i18n="techPoints">Research points</b><strong id="researchValue">0</strong></span><span><b data-i18n="multiplier">multiplier</b><strong id="researchMultiplier">×1.0</strong></span></div><button id="prestigeButton" class="primary" type="button" data-i18n="prestige" disabled>Start abyss research</button></div></div><div id="techUpgradeList" class="tech-upgrade-list"></div><p class="tech-footnote" data-i18n="prestigeCopy">Reset cash and normal upgrades, keep the museum, and gain a permanent sale multiplier.</p></section>
+
+      <section id="panel-settings" class="tab-panel" data-panel="settings" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="preferences">Preferences</span><h2 data-i18n="settings">Settings</h2></div></div><p class="panel-intro" data-i18n="settingsCopy">Tune the presentation without changing the company balance.</p><div id="settingsList" class="settings-list"></div></section>
 
       <footer class="game-footer"><span>◒</span><span data-i18n="autoLoopCopy">A new ROV dive begins as soon as the previous one returns.</span><strong id="saveState">●</strong></footer>
     </main>

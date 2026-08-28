@@ -42,6 +42,21 @@
     hi: "मून पल्स: दरार के बाद चमकते हिस्से में उतरें, फिर काँटों पर कूदें।",
     ar: "نبضة القمر: اهبط في النافذة المضيئة بعد الشق، ثم اقفز فوق الأشواك.",
   };
+  const landingWindowCopy = {
+    en: "SAFE LANDING",
+    "zh-Hant": "安全落點",
+    "zh-Hans": "安全落点",
+    ja: "安全な着地点",
+    ko: "안전 착지",
+    es: "ATERRIZAJE SEGURO",
+    "pt-BR": "POUSO SEGURO",
+    fr: "ATTERRISSAGE SÛR",
+    de: "SICHERE LANDUNG",
+    it: "ATTERRAGGIO SICURO",
+    ru: "БЕЗОПАСНАЯ ПОСАДКА",
+    hi: "सुरक्षित लैंडिंग",
+    ar: "هبوط آمن",
+  };
   function format(value, values) { return value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ""); }
   function currentLocale() {
     const candidate = window.WeightPlayFiveGameLocale?.locale || document.documentElement.lang || "en";
@@ -58,7 +73,8 @@
     setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} / 3`);
     setText("death-label", deathLabel(state.deaths));
     const pulseText = state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.pulseFeedback;
-    setText("battle-status", state.statusKey === "gap" ? c.gapDeath : state.statusKey === "hazard" ? c.hazardDeath : state.statusKey === "pulse" ? pulseText : c.battleStatus);
+    const roomCue = state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.battleStatus;
+    setText("battle-status", state.statusKey === "gap" ? c.gapDeath : state.statusKey === "hazard" ? c.hazardDeath : state.statusKey === "pulse" ? pulseText : roomCue);
   }
   function renderResult() {
     const c = copy();
@@ -161,14 +177,25 @@
     const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
     ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
     ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
+    if (state.chapter === 1 && state.room === 1) {
+      const landingStart = t.gap + 78;
+      const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
+      ctx.save();
+      ctx.fillStyle = state.pulse > 0 ? "#a4ead566" : "#a4ead533";
+      ctx.fillRect(landingStart, 394, landingWidth, 42);
+      ctx.strokeStyle = state.pulse > 0 ? "#a4ead5" : "#83cdb8";
+      ctx.lineWidth = state.pulse > 0 ? 4 : 2;
+      ctx.setLineDash(state.pulse > 0 ? [10, 7] : [6, 8]);
+      ctx.strokeRect(landingStart, 394, landingWidth, 42);
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#dfffee";
+      ctx.font = "bold 13px system-ui";
+      ctx.fillText(landingWindowCopy[currentLocale()], landingStart + 4, 389);
+      ctx.restore();
+    }
     if (state.pulse > 0) {
       ctx.strokeStyle="#fff1a1"; ctx.lineWidth=6; ctx.strokeRect(t.gap-10,394,94,42); ctx.strokeRect(t.spike-28,382,92,44);
       if (propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,1360,60,430,600,t.gap-22,350,124,124);
-      if (state.chapter === 1 && state.room === 1) {
-        const landingStart = t.gap + 78;
-        const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
-        ctx.save(); ctx.fillStyle="#a4ead533"; ctx.fillRect(landingStart,394,landingWidth,42); ctx.strokeStyle="#a4ead5"; ctx.lineWidth=3; ctx.setLineDash([10,7]); ctx.strokeRect(landingStart,394,landingWidth,42); ctx.setLineDash([]); ctx.restore();
-      }
     }
     const p=state.player;
     if (heroArt.complete && heroArt.naturalWidth) {

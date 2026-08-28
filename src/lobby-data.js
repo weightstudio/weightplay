@@ -429,11 +429,11 @@ window.WONDER_LOBBY = {
     {
       id: "tripeaks-solitaire",
       title: { en: "TriPeaks Solitaire", "zh-Hant": "三峰接龍", "zh-Hans": "三峰接龙", ja: "トライピークス・ソリティア", ko: "트라이픽스 솔리테어", es: "Solitario TriPeaks", "pt-BR": "Paciência TriPeaks", fr: "Solitaire TriPeaks", de: "TriPeaks-Solitär", it: "Solitario TriPeaks", ru: "Пасьянс Три Пика", hi: "ट्राईपीक्स सॉलिटेयर", ar: "سوليتير القمم الثلاث" },
-      status: "planned",
-      statusText: { en: "Coming Soon", "zh-Hant": "\u656c\u8acb\u671f\u5f85", "zh-Hans": "\u656c\u8bf7\u671f\u5f85", ja: "\u8fd1\u65e5\u516c\u958b", ko: "\ucd9c\uc2dc \uc608\uc815", es: "Pr\u00f3ximamente", "pt-BR": "Em breve", fr: "Bient\u00f4t disponible", de: "Demn\u00e4chst", it: "Prossimamente", ru: "\u0421\u043a\u043e\u0440\u043e", hi: "\u091c\u0932\u094d\u0926 \u0906 \u0930\u0939\u093e \u0939\u0948", ar: "\u0642\u0631\u064a\u0628\u064b\u0627" },
+      status: "playable",
+      statusText: { en: "Playable", "zh-Hant": "立即遊玩", "zh-Hans": "立即游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
       type: { en: "Card Chain Puzzle", "zh-Hant": "紙牌連鎖益智", "zh-Hans": "纸牌连锁益智", ja: "カードチェーンパズル", ko: "카드 체인 퍼즐", es: "Puzle de cadenas", "pt-BR": "Puzzle de sequências", fr: "Puzzle de chaînes", de: "Kartenketten-Puzzle", it: "Puzzle a catena", ru: "Карточная цепочка", hi: "कार्ड चेन पहेली", ar: "لغز سلاسل البطاقات" },
       categories: ["Puzzle", "Card", "Family"], skills: ["Pattern Recognition", "Planning", "Focus"], ages: ["9", "family"],
-      href: "games/tripeaks-solitaire/", internalTrial: "index.html?trial=1",
+      href: "games/tripeaks-solitaire/", previewVideo: "assets/previews/tripeaks-solitaire-battle.webm",
       description: { en: "Clear three peaks by chaining exposed cards one rank above or below the waste card, with Stock, Hint, and Undo.", "zh-Hant": "以高一或低一的順序連續移牌，清除三座牌峰，支援牌堆、提示與還原。", "zh-Hans": "以高一或低一的顺序连续移牌，清除三座牌峰，支持牌堆、提示与撤销。", ja: "捨て札の1つ上または下のランクをつなぎ、3つの山を消します。山札、ヒント、元に戻すに対応。", ko: "버린 카드보다 한 단계 높거나 낮은 카드를 이어 세 개의 봉우리를 지웁니다. 덱, 힌트, 실행 취소를 지원합니다.", es: "Despeja tres picos encadenando cartas expuestas un rango arriba o abajo del descarte.", "pt-BR": "Limpe três picos encadeando cartas expostas um valor acima ou abaixo do descarte.", fr: "Videz trois pics en enchaînant les cartes visibles d'un rang au-dessus ou au-dessous de la défausse.", de: "Räumen Sie drei Gipfel ab, indem Sie offene Karten eine Rangstufe über oder unter dem Ablagestapel spielen.", it: "Libera tre picchi concatenando carte scoperte di un valore sopra o sotto lo scarto.", ru: "Очищайте три вершины, выкладывая открытые карты на ранг выше или ниже сброса.", hi: "खुले कार्ड को डिस्कार्ड से एक रैंक ऊपर या नीचे जोड़कर तीनों शिखर साफ करें।", ar: "نظّف القمم الثلاث بربط بطاقات مكشوفة أعلى أو أسفل بطاقة الرمي برتبة واحدة." },
       meta: { en: ["3 Peaks", "28 Tableau Cards", "Combo Chains"], "zh-Hant": ["3 座牌峰", "28 張桌面牌", "連鎖 Combo"], "zh-Hans": ["3 座牌峰", "28 张桌面牌", "连锁 Combo"], ja: ["3つの山", "28枚", "コンボ連鎖"], ko: ["3개 봉우리", "28장", "콤보 체인"], es: ["3 picos", "28 cartas", "Cadenas combo"], "pt-BR": ["3 picos", "28 cartas", "Combos"], fr: ["3 pics", "28 cartes", "Chaînes combo"], de: ["3 Gipfel", "28 Karten", "Combo-Ketten"], it: ["3 picchi", "28 carte", "Catene combo"], ru: ["3 вершины", "28 карт", "Цепочки комбо"], hi: ["3 शिखर", "28 पत्ते", "कॉम्बो चेन"], ar: ["3 قمم", "28 بطاقة", "سلاسل كومبو"] },
       art: { kind: "image", background: "assets/tripeaks-solitaire-cover.webp", hideHero: true },
@@ -2759,6 +2759,61 @@ for (const candidate of nextFiveGeneralCandidates) {
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
+
+// Original idle-company preview requested by the owner. The card stays
+// Coming Soon in the public lobby while its complete local trial is available
+// through the owner-preview path.
+const deepSeaSalvagePreview = {
+  id: "animal-deep-sea-salvage",
+  title: {
+    en: "Deep Sea Salvage Company", "zh-Hant": "深海打撈公司", "zh-Hans": "深海打捞公司", ja: "深海サルベージ会社", ko: "심해 인양 회사", es: "Compañía de Rescate Abisal", "pt-BR": "Companhia de Salvamento Abissal", fr: "Compagnie de Récupération des Abysses", de: "Tiefsee-Bergungsfirma", it: "Compagnia di Recupero Abissale", ru: "Компания глубоководного сбора", hi: "डीप सी साल्वेज कंपनी", ar: "شركة الإنقاذ في أعماق البحر",
+  },
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: {
+    en: "Deep-Sea Idle Company", "zh-Hant": "深海放置經營", "zh-Hans": "深海放置经营", ja: "深海放置経営", ko: "심해 방치 경영", es: "Gestión idle de aguas profundas", "pt-BR": "Gestão idle em alto-mar", fr: "Gestion idle des grands fonds", de: "Idle-Tiefseeunternehmen", it: "Gestionale idle degli abissi", ru: "Idle-управление глубоководьем", hi: "डीप-सी आइडल प्रबंधन", ar: "إدارة أعماق البحر الخاملة",
+  },
+  description: {
+    en: "Send ROV robots into the deep, sell salvage, unlock new sea zones, and curate a living museum of the ocean floor.",
+    "zh-Hant": "派遣 ROV 深入海底，出售打撈品、解鎖新海域，打造持續成長的海床博物館。",
+    "zh-Hans": "派遣 ROV 深入海底，出售打捞品、解锁新海域，打造持续成长的海床博物馆。",
+    ja: "ROVを深海へ送り、回収品を売り、新しい海域を解放し、海底博物館を育てます。",
+    ko: "ROV를 심해로 보내 인양품을 팔고 새 해역을 열어 해저 박물관을 키우세요.",
+    es: "Envía robots ROV al abismo, vende hallazgos, desbloquea zonas y crea un museo del fondo marino.",
+    "pt-BR": "Envie robôs ROV ao abismo, venda achados, desbloqueie zonas e monte um museu submarino.",
+    fr: "Envoyez des ROV dans les abysses, vendez les trouvailles, débloquez des zones et créez un musée marin.",
+    de: "Schicke ROVs in die Tiefe, verkaufe Funde, schalte Meereszonen frei und baue ein Meeresbodenmuseum.",
+    it: "Invia ROV negli abissi, vendi i ritrovamenti, sblocca zone e cura un museo del fondale.",
+    ru: "Отправляйте ROV в глубины, продавайте находки, открывайте зоны и создавайте музей морского дна.",
+    hi: "ROV को गहराई में भेजें, खोज बेचें, नए समुद्री क्षेत्र खोलें और समुद्र-तल का संग्रहालय बनाएँ।",
+    ar: "أرسل روبوتات ROV إلى الأعماق وبع المكتشفات وافتح مناطق جديدة وابنِ متحفاً لقاع البحر.",
+  },
+  meta: {
+    en: ["Automatic Dives", "Deep-Zone Unlocks", "Museum + Prestige"],
+    "zh-Hant": ["自動下潛", "深度海域解鎖", "博物館＋重生科技"],
+    "zh-Hans": ["自动下潜", "深度海域解锁", "博物馆＋重生科技"],
+    ja: ["自動潜航", "深度ゾーン解放", "博物館＋研究"],
+    ko: ["자동 잠수", "심해 구역 해금", "박물관 + 연구"],
+    es: ["Inmersiones automáticas", "Zonas profundas", "Museo + investigación"],
+    "pt-BR": ["Mergulhos automáticos", "Zonas profundas", "Museu + pesquisa"],
+    fr: ["Plongées automatiques", "Zones profondes", "Musée + recherche"],
+    de: ["Automatische Tauchgänge", "Tiefenzonen", "Museum + Forschung"],
+    it: ["Immersioni automatiche", "Zone profonde", "Museo + ricerca"],
+    ru: ["Автопогружения", "Глубокие зоны", "Музей + исследование"],
+    hi: ["स्वचालित गोते", "गहरे क्षेत्र", "संग्रहालय + शोध"],
+    ar: ["غوص تلقائي", "مناطق عميقة", "متحف + بحث"],
+  },
+  categories: ["Simulation", "Strategy", "Idle", "Animal"],
+  skills: ["Resource Management", "Planning", "Long-term Growth"],
+  ages: ["13", "teen", "adult", "family"],
+  ageLabel: { en: "13+", "zh-Hant": "13+", "zh-Hans": "13+", ja: "13+", ko: "13+", es: "13+", "pt-BR": "13+", fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+" },
+  href: "games/animal-deep-sea-salvage/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(deepSeaSalvagePreview[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === deepSeaSalvagePreview.id)) window.WONDER_LOBBY.games.push(deepSeaSalvagePreview);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(deepSeaSalvagePreview.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(deepSeaSalvagePreview.id);
 
 // Owner-requested market-reference originals (2026-08-19). Public cards remain
 // planned/static; the completed builds are available only through owner trial.
