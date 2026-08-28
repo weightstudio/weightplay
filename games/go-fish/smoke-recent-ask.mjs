@@ -21,7 +21,7 @@ const routes = [
 
 const locales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 
-assert.match(source, /const GAME_VERSION = "v16"/);
+assert.match(source, /const GAME_VERSION = "v17"/);
 assert.match(source, /const RECENT_ASK_COPY = \{/);
 assert.match(source, /recentAsks\.unshift\(\{ rank, opponent: opponentName \}\)/);
 assert.match(source, /recentAsks\.splice\(3\)/);
@@ -33,13 +33,13 @@ for (const locale of locales) {
   assert.match(source, new RegExp(`(?:^|\\n)\\s*["']?${locale.replace("-", "\\-")}["']?\\s*:`));
 }
 for (const route of routes) {
-  assert.match(route, /game\.js\?v=20260828-go-fish-main-guide-flow-v16/);
+  assert.match(route, /game\.js\?v=20260828-go-fish-book-transition-v17/);
   assert.doesNotMatch(route, /20260821-result-actions-locale-v12/);
 }
 
 console.log(JSON.stringify({
   pass: true,
-  gameVersion: 16,
+  gameVersion: 17,
   localeCopies: locales.length,
   routeCount: routes.length,
   maxRecentAsks: 3,
