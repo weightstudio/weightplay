@@ -125,6 +125,21 @@
     hi: "सही उतरने की जगह",
     ar: "خيار هبوط قانوني",
   };
+  const pegCellLabelCopy = {
+    en: { peg: "Peg {index}", empty: "Empty hole {index}" },
+    "zh-Hant": { peg: "棋子 {index}", empty: "空洞 {index}" },
+    "zh-Hans": { peg: "棋子 {index}", empty: "空洞 {index}" },
+    ja: { peg: "ペグ {index}", empty: "空き穴 {index}" },
+    ko: { peg: "페그 {index}", empty: "빈 칸 {index}" },
+    es: { peg: "Ficha {index}", empty: "Hueco vacío {index}" },
+    "pt-BR": { peg: "Pino {index}", empty: "Casa vazia {index}" },
+    fr: { peg: "Pion {index}", empty: "Trou vide {index}" },
+    de: { peg: "Stein {index}", empty: "Leeres Loch {index}" },
+    it: { peg: "Piolo {index}", empty: "Foro vuoto {index}" },
+    ru: { peg: "Фишка {index}", empty: "Пустая лунка {index}" },
+    hi: { peg: "गोटी {index}", empty: "खाली खाना {index}" },
+    ar: { peg: "الحجر {index}", empty: "الحفرة الفارغة {index}" },
+  };
   const hintRouteCopy = {
     en: (source, target) => `Hint: Peg ${source} → Empty hole ${target}.`,
     "zh-Hant": (source, target) => `提示：棋子 ${source} → 空洞 ${target}。`,
@@ -146,6 +161,21 @@
   const legalTargetLabel = legalTargetLabelCopy[locale] || legalTargetLabelCopy.en;
   const hintRouteMessage = hintRouteCopy[locale] || hintRouteCopy.en;
   const status = document.querySelector("#logicStatus");
+  const syncPegCellLabels = () => {
+    const board = document.querySelector(".logic-peg-board");
+    if (!board) return;
+    const labels = pegCellLabelCopy[document.documentElement.lang] || pegCellLabelCopy.en;
+    [...board.querySelectorAll(".logic-cell")].forEach((cell, index) => {
+      if (cell.classList.contains("void")) return;
+      const template = cell.classList.contains("peg") ? labels.peg : labels.empty;
+      cell.setAttribute("aria-label", template.replace("{index}", String(index + 1)));
+    });
+  };
+  const logicBoard = document.querySelector("#logicBoard");
+  if (logicBoard) {
+    new MutationObserver(syncPegCellLabels).observe(logicBoard, { childList: true, subtree: true });
+    syncPegCellLabels();
+  }
   const clearInvalidTargetCue = () => {
     if (!status) return;
     status.removeAttribute("data-peg-invalid-target");
