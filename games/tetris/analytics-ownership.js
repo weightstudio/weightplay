@@ -5,7 +5,7 @@
   window.__weightplayTetrisAnalyticsInstalled = true;
 
   const GAME_ID = "tetris";
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = "7";
   const LOCALE_MAP = {
     en: "en",
@@ -23,7 +23,7 @@
     ar: "ar",
   };
   const LOCALES = new Set(Object.values(LOCALE_MAP));
-  const ACTIONS = new Set(["left", "right", "rotate", "drop"]);
+  const ACTIONS = new Set(["left", "right", "rotate", "down", "drop"]);
   let inputType = "unknown";
   let resultVisible = false;
   let lastProgressSignature = "";

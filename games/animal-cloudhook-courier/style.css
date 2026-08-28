@@ -5,3 +5,4 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}.stage-card:hover{transform:none}}
 .shell{width:min(100%,920px)}.poster{aspect-ratio:1;min-height:0}.primary{min-height:52px}.main-howto{border-top:1px solid #ffffff16;margin-top:6px;padding-top:13px}.main-howto h2{font-size:1rem;margin:0 0 5px}.main-howto p{font-size:.88rem;margin:5px 0;color:var(--muted);line-height:1.6}
 .tether-state{margin:0 0 8px;min-height:22px;color:var(--accent);font-size:.86rem;font-weight:800;text-align:center}.tether-state[data-attached="true"]{color:var(--cyan)}
+.parcel-objective{margin:0 auto 8px;color:var(--accent);font-size:.82rem;font-weight:800;text-align:center}

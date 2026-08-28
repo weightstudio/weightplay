@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 6;
+  const GAME_VERSION = 7;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -97,6 +97,7 @@
     const touchControls = document.querySelector(".touch-controls"); if (touchControls) touchControls.setAttribute("aria-label", c.touchControls);
     const jumpButton = document.querySelector('[data-key="Space"]'); if (jumpButton) { jumpButton.textContent = c.jump; jumpButton.setAttribute("aria-label", c.jump); }
     const pulseButton = document.querySelector('[data-key="Pulse"]'); if (pulseButton) { pulseButton.textContent = c.pulse; pulseButton.setAttribute("aria-label", c.pulse); }
+    const headerPulse = $("battle-pulse"); if (headerPulse) { headerPulse.textContent = c.pulse; headerPulse.setAttribute("aria-label", c.pulse); }
     const leftButton = document.querySelector('[data-key="ArrowLeft"]'); if (leftButton) leftButton.setAttribute("aria-label", c.moveLeft);
     const rightButton = document.querySelector('[data-key="ArrowRight"]'); if (rightButton) rightButton.setAttribute("aria-label", c.moveRight);
     const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = c.touchHint;
@@ -123,7 +124,7 @@
   }
   function stageCards() {
     const c = copy();
-    $("stage-list").innerHTML = [1,2,3,4].map((n) => `<button data-chapter="${n}">${chapterLabel(n)}<br><small>${c.descriptions[n - 1]}</small></button>`).join("");
+    $("stage-list").innerHTML = [1,2,3,4].map((n) => `<button type="button" class="stage-card" data-chapter="${n}" data-wp-stage-card="${n}" data-wp-enter-battle aria-label="${chapterLabel(n)}: ${c.descriptions[n - 1]}">${chapterLabel(n)}<br><small>${c.descriptions[n - 1]}</small></button>`).join("");
     $("stage-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => startRoom(Number(b.dataset.chapter), 1)));
   }
   function resetRoom() {
@@ -211,5 +212,6 @@
   window.addEventListener("keydown", (e) => { const key = e.code === "Space" ? "Space" : e.code; if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(key)) { e.preventDefault(); if (key === "KeyE") pulse(); else pressKey(key,true); } });
   window.addEventListener("keyup", (e) => pressKey(e.code === "Space" ? "Space" : e.code,false));
   document.querySelectorAll("[data-key]").forEach((button) => { const key = button.dataset.key; if (key === "Pulse") { button.addEventListener("pointerdown", (e) => { e.preventDefault(); pulse(); }); return; } const start = (e) => { e.preventDefault(); if (e.pointerId !== undefined && button.setPointerCapture) { try { button.setPointerCapture(e.pointerId); } catch (_) {} } pressKey(key,true); }; const stop = () => pressKey(key,false); button.addEventListener("pointerdown", start); button.addEventListener("touchstart", start, { passive: false }); ["pointerup","pointercancel","pointerleave","lostpointercapture","touchend","touchcancel"].forEach((event) => button.addEventListener(event, stop)); button.addEventListener("click", () => { state.tap = key; }); });
+  $("battle-pulse")?.addEventListener("click", pulse);
   $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle"); }); $("next").addEventListener("click", () => startRoom(state.chapter, state.room >= 3 ? 1 : state.room + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
 })();

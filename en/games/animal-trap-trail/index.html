@@ -23,12 +23,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Read a deceptive moonlit trail, learn the trap cues, and reach the lantern without trusting every floor tile." />
     <title>Moonlit Trap Trail | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260829-animal-trap-trail-faq-timing-v6" />
+    <link rel="stylesheet" href="style.css?v=20260829-animal-trap-trail-interface-contract-v7" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260829-animal-trap-trail-faq-timing-v6"></script>
+    <script defer src="game.js?v=20260829-animal-trap-trail-interface-contract-v7"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Moonlit Trap Trail | WeightPlay" />
@@ -74,17 +74,17 @@
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Moonlit Trap Trail</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
-        </header><img class="five-game-cover" src="assets/animal-trap-trail-cover.png" alt="" aria-hidden="true" />
-        <p class="lede" data-five-copy="lede">Read the quiet path, test the next step, and reach the lantern without trusting every floor tile.</p>
-        <p id="main-progress" class="progress">Best room: 0 · Deaths: 0</p>
-        <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
+        </header><img class="five-game-cover main-poster" src="assets/animal-trap-trail-cover.png" alt="" aria-hidden="true" />
+        <p class="lede main-summary" data-five-copy="lede">Read the quiet path, test the next step, and reach the lantern without trusting every floor tile.</p>
+        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best room: 0 · Deaths: 0</p>
+        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
+      <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-trap-trail-background.png" style="--wp-stage-art:url('assets/animal-trap-trail-background.png')" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Trap Chapters</h2></header>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="death-label">Deaths 0</span></header>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="death-label">Deaths 0</span><button id="battle-pulse" class="utility-button" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Pulse">PULSE</button></header>
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>

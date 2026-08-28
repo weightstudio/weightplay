@@ -181,8 +181,9 @@
       const gameInfoCacheTag = gameId === "maze-chase"
         ? "20260826-maze-guide-v15"
         : gameId === "cribbage" ? "20260827-cribbage-arabic-opening-v1"
-          : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"
+        : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"
           : gameId === "animal-trap-trail" ? "20260829-animal-trap-trail-faq-timing-v6"
+          : gameId === "animal-canopy-cut" ? "20260829-canopy-v10-result-arabic"
           : gameId === "casino" ? "20260828-casino-build-legality-v15"
           : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;
@@ -715,8 +716,29 @@
     syncMainFlowHeight(owner, composition);
   }
 
+  // Market-five pages intentionally own a compact Main composition instead
+  // of the standard poster/copy wrapper. Keep their player-facing structure
+  // intact while exposing the shared semantic hooks used by shell and QA.
+  function normalizeMarketFiveSemantics() {
+    const main = document.querySelector(".m5-main[data-screen='main']");
+    if (!main) return;
+    const cover = main.querySelector(".m5-cover");
+    const summary = main.querySelector(".m5-lede");
+    const progress = main.querySelector("#main-progress,.m5-progress");
+    const start = main.querySelector("#start-game");
+    const guide = main.querySelector(".m5-guide");
+    cover?.classList.add("main-cover");
+    summary?.classList.add("main-summary");
+    progress?.classList.add("main-progress");
+    progress?.setAttribute("data-wp-main-progress", "");
+    start?.setAttribute("data-wp-main-start", "");
+    guide?.setAttribute("data-wp-game-guide", "");
+    if (guide) document.body.dataset.wpGameOwnedGuide = "true";
+  }
+
   function normalizeMainLayout(screen) {
     if (!screen) return;
+    if (screen.matches?.(".m5-main")) return;
     let start = firstVisible(MAIN_START_SELECTORS, screen);
     let poster = firstVisible(MAIN_POSTER_SELECTORS, screen);
     const existingStandardScreen = start?.closest(".wp-standard-main-screen");
@@ -1134,6 +1156,7 @@
 
   function init() {
     window.__weightPlayShellControlsPhase = "init";
+    normalizeMarketFiveSemantics();
     ensureStageSelectorRuntime();
     ensureStageV6Runtime();
     ensureBattleCanvasRuntime();

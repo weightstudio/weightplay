@@ -17,215 +17,27 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/wordle/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/wordle/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wordle/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general"><title>Wordle | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css">
-<style>
-@media (orientation: landscape) and (max-height: 430px) {
-  body[data-game-id="wordle"][data-screen="battle"],
-  body[data-game-id="wordle"][data-screen="result"] { overflow: hidden; }
-  body[data-game-id="wordle"][data-screen="battle"] .popular-arcade,
-  body[data-game-id="wordle"][data-screen="result"] .popular-arcade {
-    height: 100dvh;
-    min-height: 0;
-    padding: 6px;
-    gap: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-header,
-  body[data-game-id="wordle"][data-screen="result"] .arcade-header {
-    display: block;
-    position: fixed;
-    top: 6px;
-    left: 6px;
-    z-index: 10;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-header > div,
-  body[data-game-id="wordle"][data-screen="result"] .arcade-header > div { display: none; }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker,
-  body[data-game-id="wordle"][data-screen="result"] .locale-picker {
-    display: block;
-    width: 74px;
-    min-width: 0;
-    font-size: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker span,
-  body[data-game-id="wordle"][data-screen="result"] .locale-picker span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker select,
-  body[data-game-id="wordle"][data-screen="result"] .locale-picker select {
-    width: 74px;
-    height: 46px;
-    padding: 4px 3px;
-    font-size: .7rem;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-footer,
-  body[data-game-id="wordle"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="wordle"][data-screen="battle"] #battleScreen,
-  body[data-game-id="wordle"][data-screen="result"] #resultScreen {
-    min-height: 0;
-    height: 100%;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-panel {
-    height: 100%;
-    min-height: 0;
-    padding: 7px;
-    gap: 6px 12px;
-    align-content: stretch;
-    grid-template-columns: minmax(320px, 1fr) minmax(280px, .85fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .board-wrap {
-    grid-column: 1;
-    grid-row: 1 / 4;
-    min-height: 0;
-    padding: 5px;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .board {
-    height: 100%;
-    min-height: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-board {
-    width: min(100%, 290px);
-    height: 100%;
-    max-height: 100%;
-    grid-template-rows: repeat(6, minmax(0, 1fr));
-    gap: 5px;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-row { min-height: 0; gap: 5px; }
-  body[data-game-id="wordle"][data-screen="battle"] .word-cell {
-    min-height: 0;
-    aspect-ratio: auto;
-    font-size: 1.1rem;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="wordle"][data-screen="battle"] .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="wordle"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="wordle"][data-screen="battle"] .word-entry { width: 100%; }
-  body[data-game-id="wordle"][data-screen="result"] #resultScreen .arcade-panel {
-    min-height: 0;
-    height: 100%;
-    padding: 16px;
-    gap: 10px;
-  }
-}
-@media (min-width: 921px) and (max-height: 760px) {
-  body[data-game-id="wordle"][data-screen="battle"], body[data-game-id="wordle"][data-screen="result"] { overflow: hidden; }
-  body[data-game-id="wordle"][data-screen="battle"] .popular-arcade, body[data-game-id="wordle"][data-screen="result"] .popular-arcade { height: 100dvh; min-height: 0; padding: 10px 32px 0; gap: 10px; }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-header, body[data-game-id="wordle"][data-screen="result"] .arcade-header { display: block; position: fixed; top: 10px; left: 10px; z-index: 10; padding: 0; border: 0; background: transparent; box-shadow: none; }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-header > div, body[data-game-id="wordle"][data-screen="result"] .arcade-header > div { display: none; }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker, body[data-game-id="wordle"][data-screen="result"] .locale-picker { display: block; width: 74px; min-width: 0; font-size: 0; }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker span, body[data-game-id="wordle"][data-screen="result"] .locale-picker span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-  body[data-game-id="wordle"][data-screen="battle"] .locale-picker select, body[data-game-id="wordle"][data-screen="result"] .locale-picker select { width: 74px; height: 46px; padding: 4px 3px; font-size: .7rem; }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-footer, body[data-game-id="wordle"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="wordle"][data-screen="battle"] #battleScreen, body[data-game-id="wordle"][data-screen="result"] #resultScreen { min-height: 0; height: 100%; }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-panel { height: 100%; min-height: 0; padding: 8px; gap: 8px 12px; align-content: stretch; grid-template-columns: minmax(300px, 1fr) minmax(380px, .9fr); grid-template-rows: auto minmax(0, 1fr) auto; }
-  body[data-game-id="wordle"][data-screen="battle"] .board-wrap { grid-column: 1; grid-row: 1 / 4; min-height: 0; padding: 5px; }
-  body[data-game-id="wordle"][data-screen="battle"] .board { height: 100%; min-height: 0; }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-board { width: min(100%, 310px); height: 100%; max-height: 100%; grid-template-rows: repeat(6, minmax(0, 1fr)); gap: 5px; }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-row { min-height: 0; gap: 5px; }
-  body[data-game-id="wordle"][data-screen="battle"] .word-cell { min-height: 0; aspect-ratio: auto; font-size: 1.1rem; }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="wordle"][data-screen="battle"] .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="wordle"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="wordle"][data-screen="battle"] .word-entry { width: 100%; }
-  body[data-game-id="wordle"][data-screen="result"] #resultScreen .arcade-panel { min-height: 0; height: 100%; padding: 14px; gap: 8px; }
-}
-@media (max-width: 650px) {
-  html:has(body[data-game-id="wordle"][data-screen="battle"]),
-  html:has(body[data-game-id="wordle"][data-screen="result"]) {
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-  body[data-game-id="wordle"][data-screen="battle"],
-  body[data-game-id="wordle"][data-screen="result"] {
-    height: 100dvh;
-    min-height: 0;
-    overflow: hidden;
-    overscroll-behavior: none;
-    touch-action: manipulation;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .popular-arcade,
-  body[data-game-id="wordle"][data-screen="result"] .popular-arcade {
-    width: 100%;
-    height: 100dvh;
-    min-height: 0;
-    padding: 10px;
-    gap: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-header,
-  body[data-game-id="wordle"][data-screen="battle"] .arcade-footer,
-  body[data-game-id="wordle"][data-screen="result"] .arcade-header,
-  body[data-game-id="wordle"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="wordle"][data-screen="battle"] #battleScreen,
-  body[data-game-id="wordle"][data-screen="result"] #resultScreen {
-    min-height: 0;
-    height: 100%;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-panel {
-    height: 100%;
-    min-height: 0;
-    padding: 10px;
-    gap: 8px;
-    align-content: stretch;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto auto;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .battle-top { grid-column: 1; grid-row: 1; }
-  body[data-game-id="wordle"][data-screen="battle"] .board-wrap {
-    grid-column: 1;
-    grid-row: 2;
-    min-height: 0;
-    overflow: hidden;
-    padding: 6px;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .board {
-    height: 100%;
-    min-height: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-board {
-    width: min(100%, 310px);
-    height: auto;
-    max-height: 100%;
-    aspect-ratio: 5 / 6;
-    grid-template-rows: repeat(6, minmax(0, 1fr));
-    gap: 5px;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .wordle-row { min-height: 0; gap: 5px; }
-  body[data-game-id="wordle"][data-screen="battle"] .word-cell {
-    min-height: 0;
-    aspect-ratio: 1;
-    font-size: 1.1rem;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .game-message {
-    grid-column: 1;
-    grid-row: 3;
-    min-height: 26px;
-    align-self: center;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] #controls {
-    grid-column: 1;
-    grid-row: 4;
-    min-width: 0;
-  }
-  body[data-game-id="wordle"][data-screen="battle"] .word-entry { width: 100%; min-width: 0; }
-  body[data-game-id="wordle"][data-screen="result"] #resultScreen .arcade-panel {
-    min-height: 0;
-    height: 100%;
-    padding: 18px;
-    gap: 10px;
-  }
-}
-</style></head>
-<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle"></h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true">W</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/popular-games-batch.js?v=20260827-wordle-art-v7"></script><script src="game.js?v=20260827-wordle-art-v7"></script></body>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general"><title>Wordle | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260829-wordle-canonical-interface-v9"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260829-wordle-canonical-interface-v9">
+</head>
+<body data-screen="main" data-audience="general" data-wp-game-id="wordle">
+  <main id="popularArcade" class="popular-arcade">
+    <header class="arcade-header main-header">
+      <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+      <div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle"></h1><p id="gameTagline" class="tagline"></p></div>
+      <div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div>
+    </header>
+    <section id="mainScreen" class="screen main-screen">
+      <div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction">Use visible controls to play a complete short round, then review the Result.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Complete the six-puzzle Wordle sprint.</span></div><button id="startBtn" class="primary" data-wp-main-start="true">Start game</button></div><div class="preview-art"><img class="cover" src="../../assets/wordle-cover-v1.webp" alt="Wordle game artwork" width="1254" height="1254" decoding="async"></div></div>
+    </section>
+    <section id="battleScreen" class="screen battle-screen" hidden>
+      <div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to main" title="Back to main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <section id="resultScreen" class="screen" hidden>
+      <div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+    <footer class="arcade-footer" id="footerText"></footer>
+  </main>
+  <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Wordle game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Wordle</h2><p>Read each five-letter result, keep the useful clues, and finish a short six-puzzle owner-preview round.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Classic Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Puzzle · Word</strong></div><div class="game-info-fact"><span>Session</span><strong>2–5 minutes</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>How to play</h3><ol><li>Start a round and enter a five-letter word.</li><li>Read the exact, near, and miss feedback on each row.</li><li>Use Hint when you want a clue without auto-playing a guess.</li><li>Submit up to six guesses, then review the natural Result.</li><li>Choose Play again for another short puzzle or return to Main.</li></ol></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Best results and preferences are saved only in this browser.</dd></div></dl></div></div></section>
+  <script src="../../src/popular-games-batch.js?v=20260829-wordle-canonical-interface-v9"></script><script src="game.js?v=20260829-wordle-canonical-interface-v9"></script>
+</body>
 </html>

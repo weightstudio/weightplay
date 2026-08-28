@@ -152,7 +152,7 @@
     $("stage-list").innerHTML = Array.from({ length: cfg.stages }, (_, i) => {
       const n = i + 1, available = n <= unlocked;
       const detail=gameId==="animal-hoop-league"?`${hoopProfiles[i].badge} · ${window.WeightPlayMarketFiveLocale.game().courts[i]} · ${hoopProfiles[i].shots} 🏀`:gameId==="animal-habitat-atlas"?`${atlasProfiles[i].badge} · ${atlasProfiles[i].targets.length} 🧭`:gameId==="animal-moonlight-workshop"?`${workshopProfiles[i].badge} · ${workshopProfiles[i].switches.length} ✦ · ${workshopProfiles[i].limit} ↟`:gameId==="animal-chameleon-blend"?`${blendProfiles[i].badge} · ${blendProfiles[i].rounds} ◎ · ${blendProfiles[i].sequence}×`:gameId==="animal-habitat-builder"?`${builderProfiles[i].badge} · ${builderProfiles[i].need.reduce((sum,value)=>sum+value,0)} ◇ · ${builderProfiles[i].limit} ↟`:`${cfg.noun} ${n}`;
-      return `<button class="m5-stage-card${n === unlocked ? " recommended" : ""}" data-stage="${n}" aria-disabled="${!available}" ${available ? "" : "disabled"}><span>${common(9)} ${n}</span><small>${available ? detail : "🔒"}</small></button>`;
+      return `<button class="m5-stage-card stage-card${n === unlocked ? " recommended" : ""}" data-stage="${n}"${available ? " data-wp-enter-battle" : ""} aria-disabled="${!available}" ${available ? "" : "disabled"}><span>${common(9)} ${n}</span><small>${available ? detail : "🔒"}</small></button>`;
     }).join("");
     $("stage-list").querySelectorAll("button:not(:disabled)").forEach((button) => button.addEventListener("click", () => start(Number(button.dataset.stage))));
     requestAnimationFrame(() => $("stage-list").querySelector(".recommended")?.scrollIntoView({ inline: "center", block: "nearest" }));
@@ -184,7 +184,7 @@
     buildControls(); updateHud(); draw();
   }
   function escapeAttribute(value) { return String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;"); }
-  function control(label, action, className = "", ariaLabel = "") { return `<button type="button" data-action="${action}" class="${className}"${ariaLabel?` aria-label="${escapeAttribute(ariaLabel)}"`:""}>${label}</button>`; }
+  function control(label, action, className = "", ariaLabel = "") { return `<button type="button" data-action="${action}"${action !== "reset" ? " data-wp-primary-action" : ""} class="${className}"${ariaLabel?` aria-label="${escapeAttribute(ariaLabel)}"`:""}>${label}</button>`; }
   function buildControls() {
     const host = $("battle-controls");
     if (gameId === "animal-hoop-league") host.innerHTML = control("◀", "aim-left", "", common(17)) + control(common(14), "shoot", "primary-control", common(14)) + control("▶", "aim-right", "", common(19));

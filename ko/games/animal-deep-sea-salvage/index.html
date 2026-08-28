@@ -24,22 +24,23 @@
     <meta name="theme-color" content="#061c32" />
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-deep-sea-salvage" />
-    <meta name="weightplay-game-version" content="v2" />
+    <meta name="weightplay-game-version" content="v3" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare..." />
+    <meta name="description" content="‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다." />
     <title>심해 인양 회사 | WeightPlay</title>
     <link rel="icon" href="../../assets/weightplay-logo.png" />
-    <link rel="stylesheet" href="style.css?v=20260829-deep-sea-v2" />
+    <link rel="stylesheet" href="style.css?v=20260829-deep-sea-v3" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell2" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="심해 인양 회사 | WeightPlay" />
-    <meta property="og:description" content="Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare..." />
+    <meta property="og:description" content="‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-deep-sea-salvage/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="심해 인양 회사 | WeightPlay" />
-    <meta name="twitter:description" content="Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare..." />
+    <meta name="twitter:description" content="‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp" />
     <script type="application/ld+json">
 {
@@ -49,7 +50,7 @@
   "alternateName": "Deep Sea Salvage Company",
   "url": "https://weightplay.com/ko/games/animal-deep-sea-salvage/",
   "image": "https://weightplay.com/games/animal-deep-sea-salvage/assets/animal-deep-sea-salvage-cover.webp",
-  "description": "Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare...",
+  "description": "‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -60,9 +61,9 @@
   "operatingSystem": "Any modern web browser",
   "genre": [
     "시뮬레이션",
-    "Strategy",
-    "유휴",
-    "Animal"
+    "전략",
+    "방치",
+    "동물"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -75,18 +76,31 @@
   <body data-wp-game-id="animal-deep-sea-salvage" data-wp-audience="general" data-runtime-localize="off">
     <div id="loading" class="loading" role="status" aria-live="polite"><span class="loading-orb" aria-hidden="true"></span><strong data-i18n="loading">Warming the ROV lights…</strong></div>
     <main id="app" class="app" data-screen="main">
-      <header class="topbar">
-        <a class="back-link" href="/" data-i18n-aria="backLobby" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><span data-i18n="backLobby">Back to WeightPlay</span></a>
-        <div class="brand-lockup"><span class="brand-mark" aria-hidden="true">◈</span><div><strong data-i18n="shortTitle">Deep Sea Salvage</strong><small data-i18n="tagline">Send friendly ROVs into the blue and turn every find into a deeper expedition.</small></div></div>
+      <header class="topbar wp-shell-header wp-main-shell-header">
+        <a class="back-link wp-shell-return" data-wp-return="main" href="/" data-i18n-aria="backLobby" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <strong class="wp-shell-main-title" data-runtime-localize="off">심해 인양 회사</strong>
         <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
-        <button id="resetButton" class="icon-button" type="button" data-i18n-aria="reset" aria-label="Reset save">↺</button>
       </header>
 
-      <section class="hero-grid" aria-labelledby="gameTitle">
+      <section id="mainLanding" class="wp-standard-main-screen" aria-labelledby="gameTitle">
+        <div class="wp-standard-main-composition">
+          <div class="wp-standard-main-poster"><img class="main-poster" src="assets/animal-deep-sea-salvage-cover.webp" data-i18n-alt="posterAlt" alt="심해 인양 회사 게임 이미지" draggable="false" /></div>
+          <div class="wp-standard-main-copy">
+            <span class="eyebrow" data-i18n="eyebrow">WEIGHTPLAY · IDLE EXPEDITION</span>
+            <h1 id="gameTitle" data-runtime-localize="off">심해 인양 회사</h1>
+            <p class="main-summary" data-i18n="summary">Dispatch ROVs, sell salvage, and explore deeper sea zones to build a living museum.</p>
+            <p class="main-progress" data-wp-main-progress data-i18n="mainProgress">Your automatic expedition is ready.</p>
+            <button id="startGameButton" class="primary standard-main-start" type="button" data-wp-main-start data-i18n="startGame">Start Game</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="gameDashboard" hidden>
+      <section class="hero-grid" aria-labelledby="dashboardHeading">
         <div class="hero-copy">
-          <span class="eyebrow" data-i18n="eyebrow">WEIGHTPLAY · IDLE EXPEDITION</span>
-          <h1 id="gameTitle" data-runtime-localize="off">심해 인양 회사</h1>
-          <p data-i18n="tagline">Send friendly ROVs into the blue and turn every find into a deeper expedition.</p>
+          <span class="eyebrow" data-i18n="liveExpedition">LIVE EXPEDITION</span>
+          <h2 id="dashboardHeading" data-i18n="dashboardTitle">Deep-sea operations</h2>
+          <p data-i18n="dashboardCopy">Watch the ROV work, then reinvest each return into a deeper expedition.</p>
           <div class="hero-actions"><button id="dispatchButton" class="primary" type="button" data-i18n="dispatch">Dispatch ROV</button><button id="quickDiveButton" class="secondary" type="button" data-i18n="quickDive">Quick dive</button></div>
         </div>
         <div class="stat-grid" data-i18n-aria="statsLabel" aria-label="Company stats">
@@ -130,9 +144,10 @@
 
       <section id="panel-technology" class="tab-panel" data-panel="technology" hidden><div class="tech-card"><div class="tech-icon" aria-hidden="true">✦</div><div><span class="section-kicker" data-i18n="technology">Technology</span><h2 data-i18n="prestige">Start abyss research</h2><p id="techCopy" data-i18n="techLocked">Deep abyss research unlocks at 760m and 3,000 credits sold.</p><div class="tech-stats"><span><b data-i18n="techPoints">Research points</b><strong id="researchValue">0</strong></span><span><b data-i18n="multiplier">multiplier</b><strong id="researchMultiplier">×1.0</strong></span></div><button id="prestigeButton" class="primary" type="button" data-i18n="prestige" disabled>Start abyss research</button></div></div><div id="techUpgradeList" class="tech-upgrade-list"></div><p class="tech-footnote" data-i18n="prestigeCopy">Reset cash and normal upgrades, keep the museum, and gain a permanent sale multiplier.</p></section>
 
-      <section id="panel-settings" class="tab-panel" data-panel="settings" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="preferences">Preferences</span><h2 data-i18n="settings">Settings</h2></div></div><p class="panel-intro" data-i18n="settingsCopy">Tune the presentation without changing the company balance.</p><div id="settingsList" class="settings-list"></div></section>
+      <section id="panel-settings" class="tab-panel" data-panel="settings" hidden><div class="panel-heading"><div><span class="section-kicker" data-i18n="preferences">Preferences</span><h2 data-i18n="settings">Settings</h2></div></div><p class="panel-intro" data-i18n="settingsCopy">Tune the presentation without changing the company balance.</p><div id="settingsList" class="settings-list"></div><div class="setting-row setting-reset-row"><span><strong data-i18n="reset">Reset save</strong><small data-i18n="resetConfirm">Reset this local save? This cannot be undone.</small></span><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset save</button></div></section>
 
       <footer class="game-footer"><span>◒</span><span data-i18n="autoLoopCopy">A new ROV dive begins as soon as the previous one returns.</span><strong id="saveState">●</strong></footer>
+      </section>
     </main>
 
     <div id="offlineModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="offlineTitle" hidden><div class="modal-card"><span class="modal-icon" aria-hidden="true">✦</span><h2 id="offlineTitle" data-i18n="offlineTitle">Welcome back, captain</h2><p data-i18n="offlineCopy">Your crew kept working while you were away.</p><strong id="offlineValue" class="offline-value">+0 credits</strong><button id="offlineCollectButton" class="primary" type="button" data-i18n="collectOffline">Collect offline earnings</button><button id="offlineCloseButton" class="text-button" type="button" data-i18n="close">Close</button></div></div>
@@ -142,26 +157,26 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
     <script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-    <script src="locales.js?v=20260829-deep-sea-v2"></script>
-    <script src="game.js?v=20260829-deep-sea-v2"></script>
+    <script src="locales.js?v=20260829-deep-sea-v3"></script>
+    <script src="game.js?v=20260829-deep-sea-v3"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <section class="game-page-info game-page-info-static" aria-label="심해 인양 회사 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>심해 인양 회사</h2><p>Deep Sea Salvage Company is an original browser idle game about sending ROV robots into deeper water, selling ordinary salvage, and preserving rare discoveries in a growing museum.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Deep-Sea Idle Company</strong></div><div class="game-info-fact"><span>Genre</span><strong>시뮬레이션 · Strategy · 유휴 · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Strategic</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>5-15 minutes per session</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>자원 관리 · Planning · Long-term Growth</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>심해 인양 회사</h2><p>‘심해 인양 회사’는 ROV를 깊은 바다로 보내 인양품을 판매하고 희귀 발견물을 성장하는 박물관에 보관하는 오리지널 브라우저 방치 게임입니다.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>심해 방치 경영</strong></div><div class="game-info-fact"><span>Genre</span><strong>시뮬레이션 · 전략 · 방치 · 동물</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>쉽게 시작해 전략적으로</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>세션당 약 5~15분</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>자원 관리 · 계획 · 장기 성장</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Your small research vessel begins at the harbour edge with one friendly ROV. Each automatic dive reaches a target depth, searches the seafloor, and returns with cargo that funds the next pressure-hull upgrade or a new sea zone.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>The automatic dive loop moves through Diving, Searching, and Returning phases. Cargo has weight and salvage time; ordinary finds are sold automatically, while collection finds go to the museum and trigger seven types of sea events for bonus payouts.</p>
-<p>Eight ship upgrades, three recruitable ROV types, seven depth zones, daily/company missions, achievements, and five permanent research branches turn each return into a clear next decision. A capped offline calculation keeps the company working between visits.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Watch the live ROV scene and let the first dive complete, or use Quick Dive for an immediate test reward.</li><li>Spend credits in Upgrades and ROVs, then select an unlocked zone to aim for deeper finds without exceeding cargo weight.</li><li>Open Museum for collection targets, Missions for daily and company rewards, and Achievements for long-term milestones.</li><li>When the abyss requirement is met, start research to reset normal upgrades while keeping the museum and earning permanent income, speed, rare-find, depth, and offline bonuses.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Upgrade dive time and sale value early so each cycle pays back faster.</li><li>Buy pressure depth before selecting a deeper zone; the target depth is always bounded by the hull&#39;s maximum.</li><li>Cargo and grabber arms improve the value of a run, while the sonar array is most useful after rare items become reachable.</li><li>Treat the museum and research reset as long-term goals: short-term credits unlock the next depth, but permanent research accelerates every future expedition.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>The harbour teaches the automatic loop and basic upgrades. Wreck waters, deep canyon, dark midnight, seafloor volcano, ancient ruins, and the unknown abyss add higher-value finds, special targets, and tighter upgrade decisions; the abyss research reset then turns a completed expedition into lasting company growth.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>The game keeps the core decision visible: let the ROV work, read the return, and choose the next investment. A fixed logical canvas scales to portrait phones and desktop screens, while LocalStorage and a capped offline simulation preserve a useful idle rhythm without a backend.</p></div>
-      <div class="game-info-section game-info-parent"><h3>학부모 메모</h3><p>This General browser game has no account, purchase, chat, leaderboard, multiplayer, or advertising flow. Company progress, museum entries, mission claims, and research stay only in this browser; clearing site data may remove them.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How does a dive make money?</dt><dd>The ROV brings back weighted salvage. Common and uncommon items are sold automatically for credits, while collection finds stay in the museum with a small curator payout.</dd></div><div><dt>How do I reach deeper zones?</dt><dd>Buy Pressure Hull upgrades until your maximum depth reaches the zone&#39;s unlock threshold, then select that zone in Explore.</dd></div><div><dt>What happens while I am away?</dt><dd>The next visit calculates up to eight hours of completed automatic dives and presents the credits in an offline-earnings dialog.</dd></div><div><dt>What does abyss research reset?</dt><dd>Once its depth and sales requirements are met, research resets cash and ordinary upgrades, keeps the museum and achievements, and opens permanent technology bonuses.</dd></div><div><dt>Is progress saved?</dt><dd>Company progress is saved locally in this browser with no account required.</dd></div></dl></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>작은 연구선은 항구 외곽에서 친근한 ROV 한 대로 시작합니다. 자동 잠수는 목표 수심에 도달해 해저를 탐색하고, 선체 강화나 새 해역의 비용을 마련할 화물을 가져옵니다.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>자동 잠수는 잠수 중·탐색 중·귀환 중 단계를 차례로 진행합니다. 화물에는 무게와 인양 시간이 있으며 일반 물품은 자동 판매되고 수집품은 박물관에 남습니다. 일곱 가지 해역 이벤트가 추가 보너스를 제공합니다.</p>
+<p>선체 업그레이드 8종, 영입 가능한 ROV 3종, 수심 해역 7곳, 일일·회사 임무, 업적과 영구 연구 5종이 매 귀환의 다음 선택을 만듭니다. 제한된 오프라인 계산으로 자리를 비워도 회사가 운영됩니다.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>실시간 ROV 장면을 보며 첫 잠수를 기다리거나 ‘빠른 잠수’로 보상을 바로 시험합니다.</li><li>‘업그레이드’와 ‘ROV’에서 자금을 사용하고 해금된 해역을 선택합니다. 화물은 적재 중량 제한을 따릅니다.</li><li>‘박물관’에서 수집 목표를 확인하고 ‘임무’에서 보상을 받으며 ‘업적’에서 장기 보상을 수령합니다.</li><li>심연 조건을 달성하면 연구를 시작합니다. 현금과 일반 업그레이드는 초기화되지만 박물관과 업적은 유지되고 영구 보너스를 얻습니다.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>초반에는 잠수 시간과 판매 가치를 올려 순환을 빠르게 회수하세요.</li><li>깊은 해역을 고르기 전에 압력 선체를 강화해 최대 수심을 해금 기준까지 올리세요.</li><li>화물칸과 집게팔은 한 번의 가치를 높이고, 소나 배열은 희귀품 깊이에 도달한 뒤 특히 유용합니다.</li><li>박물관과 심연 연구를 장기 목표로 삼으세요. 단기 자금으로 해역을 열고 영구 연구로 다음 원정을 가속합니다.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>항구 외곽에서 자동 순환과 기본 업그레이드를 익힙니다. 난파선 지대, 심해 협곡, 자정 해역, 해저 화산, 고대 유적, 미지의 심연으로 갈수록 가치와 투자 판단이 커지고, 연구 초기화가 성과를 영구 성장으로 바꿉니다.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>화면 중앙에 핵심 결정을 두어 ROV의 작업과 귀환 결과를 읽고 다음 투자를 고르게 했습니다. 고정 논리 Canvas는 세로형 휴대폰과 데스크톱에 비례 대응하며 LocalStorage와 제한된 계산으로 서버 없이도 방치 리듬을 유지합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>이 일반 브라우저 게임에는 계정, 구매, 채팅, 순위표, 멀티플레이나 광고가 없습니다. 회사 진행, 박물관, 임무 보상과 연구는 이 브라우저에만 저장되며 사이트 데이터를 지우면 사라질 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>잠수로 어떻게 돈을 버나요?</dt><dd>ROV가 수심에 따라 다른 무게와 가치의 인양품을 가져옵니다. 일반품은 자동 판매되고 수집품은 박물관에 남아 보너스를 줍니다.</dd></div><div><dt>더 깊은 해역에는 어떻게 가나요?</dt><dd>압력 선체나 수심 연구를 강화해 최대 수심을 해금 기준까지 올린 뒤 ‘탐사’에서 선택하세요.</dd></div><div><dt>자리를 비우면 어떻게 되나요?</dt><dd>돌아오면 최대 8시간의 자동 잠수를 계산해 오프라인 수익 창에서 한 번에 받을 수 있습니다.</dd></div><div><dt>심연 연구는 무엇을 초기화하나요?</dt><dd>조건을 충족하면 현금과 일반 업그레이드가 초기화되지만 박물관과 업적은 유지되고 영구 기술을 얻습니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예. 계정 없이 이 브라우저의 LocalStorage에 저장됩니다.</dd></div></dl></div>
 
     </div>
   </section>

@@ -1,0 +1,47 @@
+/* This stylesheet belongs only to Tetris; no sibling arcade layout changes. */
+body[data-game-id="tetris"] #board { position: relative; display: grid; place-items: center; min-height: 0; width: 100%; height: 100%; }
+body[data-game-id="tetris"] #battleScreen .board-wrap { min-height: 0; height: 100%; }
+body[data-game-id="tetris"] #battleScreen .tetris-grid {
+  width: auto; height: 100%; max-width: 100%; max-height: 100%; aspect-ratio: 1 / 2;
+  display: grid; grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-rows: repeat(20, minmax(0, 1fr)); padding: 0; gap: 1px;
+  border: 1px solid #697d95; border-radius: 4px; background: #0a1726;
+  direction: ltr; box-shadow: 0 0 24px #71dacf18;
+}
+body[data-game-id="tetris"] .tetris-grid .grid-cell { aspect-ratio: auto; min-width: 0; min-height: 0; border-radius: 2px; background: #122137; border: 1px solid #203148; }
+body[data-game-id="tetris"] .tetris-grid .ghost { border: 2px solid #d6edf9; background: #ffffff0d; }
+body[data-game-id="tetris"] .tetris-grid :is(.filled,.active) { background: var(--piece-color, #76ddca); border: 1px solid #ffffffaa; box-shadow: inset 2px 2px #ffffff50, inset -2px -2px #0004; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="0"] { --piece-color: #f9c86e; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="1"] { --piece-color: #85d9bd; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="2"] { --piece-color: #ab9fe8; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="3"] { --piece-color: #d9a88c; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="4"] { --piece-color: #83bcea; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="5"] { --piece-color: #d696c6; }
+body[data-game-id="tetris"] .tetris-grid [data-piece="6"] { --piece-color: #aacd83; }
+body[data-game-id="tetris"] .tetris-next { position: absolute; top: 0; right: 0; width: 72px; display: grid; gap: 6px; font-size: 11px; text-align: center; }
+body[data-game-id="tetris"] .tetris-next-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: repeat(4,1fr); width: 56px; height: 56px; margin: auto; direction: ltr; }
+body[data-game-id="tetris"] .tetris-next-grid .filled { background: #f9c86e; border: 1px solid #fff8; }
+body[data-game-id="tetris"] #controls .control-row { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; direction: ltr; }
+body[data-game-id="tetris"] #controls button { min-width: 0; height: 48px; min-height: 48px; padding: 0; font-size: 24px; touch-action: manipulation; }
+body[data-game-id="tetris"] #controls button.primary { background: #ffd273; color: #112033; }
+body[data-game-id="tetris"] #gameMessage { height: 44px; min-height: 44px; margin: 0; overflow: auto; font-size: 13px; line-height: 1.4; }
+body[data-game-id="tetris"] .round-label { font-size: 13px; font-variant-numeric: tabular-nums; }
+body[data-game-id="tetris"] .tetris-dialog { width: min(88vw,400px); max-height: calc(100dvh - 90px); padding: 20px; overflow: auto; border: 1px solid #91aec9; border-radius: 18px; background: #122137; color: #f1f5fb; }
+body[data-game-id="tetris"] .tetris-dialog::backdrop { background: #030a14b8; }
+body[data-game-id="tetris"] .tetris-dialog button { width: 100%; min-height: 48px; margin: 6px 0; }
+body[data-game-id="tetris"][data-screen="result"] .popular-arcade { width: min(100%,920px) !important; height: calc(100dvh - 56px) !important; padding: 0 !important; }
+body[data-game-id="tetris"][data-screen="result"] #resultScreen { height: 100% !important; overflow: auto; }
+body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { display: flex; flex-direction: column; justify-content: center; min-height: min-content; }
+@media (max-width: 460px) {
+  body[data-game-id="tetris"] #battleScreen .tetris-grid { max-height: calc((100vw - 104px) * 2); }
+  body[data-game-id="tetris"] .tetris-next { right: -2px; width: 48px; }
+  body[data-game-id="tetris"] .tetris-next-grid { width: 40px; height: 40px; }
+}
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-game-id="tetris"] #battleScreen .battle-panel { grid-template-columns: 44% minmax(0,1fr); grid-template-rows: auto minmax(0,1fr) 52px; gap: 8px; }
+  body[data-game-id="tetris"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / 4; }
+  body[data-game-id="tetris"] #battleScreen #board { height: 100%; }
+  body[data-game-id="tetris"] #battleScreen .tetris-grid { height: 100%; width: auto; }
+  body[data-game-id="tetris"] .tetris-next { right: 2px; }
+  body[data-game-id="tetris"][data-screen="result"] #resultScreen .arcade-panel { justify-content: flex-start; }
+}

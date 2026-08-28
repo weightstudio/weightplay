@@ -42,7 +42,7 @@ try {
   page.on("response", (response) => { if (response.status() >= 400 && !/favicon/iu.test(response.url())) errors.push(`http ${response.status()}: ${response.url()}`); });
   await page.goto(`http://127.0.0.1:${server.address().port}/games/wordle/?preview=1`, { waitUntil: "networkidle" });
   await page.locator("#startBtn").click();
-  assert(await page.locator("body").getAttribute("data-game-version") === "v7", "Wordle runtime identity is not v7");
+  assert(await page.locator("body").getAttribute("data-game-version") === "v9", "Wordle runtime identity is not v9");
   await page.locator("#wordInput").fill("CRANE");
   await page.locator('[data-action="submit"]').click();
   const battle = await page.evaluate(() => {
@@ -76,7 +76,7 @@ try {
   const firstGuessStates = battle.boardSemantics.cells.slice(0, 5).map((cell) => cell.state).join(",");
   assert(battle.boardSemantics.role === "table" && battle.boardSemantics.label && battle.boardSemantics.rows.length === 6 && battle.boardSemantics.rows.every((role) => role === "row") && battle.boardSemantics.cells.length === 30 && battle.boardSemantics.cells.every((cell) => cell.role === "cell" && cell.label && cell.row && cell.column) && firstGuessStates === "miss,hit,hit,miss,hit" && battle.boardSemantics.cells.slice(5).every((cell) => cell.state === "empty"), "Wordle guessed and empty cells are missing localized table semantics", battle.boardSemantics);
   assert(inside(battle.input, battle.viewport.width, battle.viewport.height) && inside(battle.submit, battle.viewport.width, battle.viewport.height), "Wordle input and Submit are not reachable in the first frame", battle);
-  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v7-844x390-battle.png"), fullPage: false });
+  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v9-844x390-battle.png"), fullPage: false });
   await page.locator("#wordInput").fill("BRAVE");
   await page.locator('[data-action="submit"]').click();
   const feedbackSemantics = await page.evaluate(() => ({
@@ -104,7 +104,7 @@ try {
   });
   assert(result.screen === "result" && /cleared|挑戰|desafío|クリア|클리어|conclu/iu.test(result.title || ""), "Natural Wordle success Result is missing", result);
   assert(result.scrollY <= 1 && result.scrollHeight <= result.viewport.height + 1 && inside(result.actions, result.viewport.width, result.viewport.height) && inside(result.retry, result.viewport.width, result.viewport.height) && inside(result.home, result.viewport.width, result.viewport.height), "Result recovery actions are not reachable in the first frame", result);
-  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v7-844x390-result.png"), fullPage: false });
+  if (process.env.WORDLE_SMOKE_SCREENSHOTS === "1") await page.screenshot({ path: path.join(process.env.TEMP || process.env.TMP || ".", "wordle-v9-844x390-result.png"), fullPage: false });
   assert(errors.length === 0, "Wordle short-landscape smoke emitted browser errors", errors);
   console.log(JSON.stringify({ generatedAt: new Date().toISOString(), viewport: "844x390", route: "Main > Battle > valid guess > natural success Result", battle, feedbackSemantics, result, errors }, null, 2));
   await context.close();

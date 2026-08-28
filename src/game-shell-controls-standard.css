@@ -909,3 +909,13 @@ body.wp-kids-audience
   :is([data-screen], #mainScreen, #stageScreen, #battleScreen)[hidden] {
   display: none !important;
 }
+
+/* The market-five Main keeps its authored compact composition but still
+   participates in the shared Main contract. */
+body[data-wp-market-game] .m5-progress {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}

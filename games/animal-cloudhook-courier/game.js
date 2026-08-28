@@ -4,7 +4,7 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-const GAME_VERSION = "v11";
+  const GAME_VERSION = "v12";
   const INTERFACE_VERSION = 6;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
@@ -80,6 +80,8 @@ const GAME_VERSION = "v11";
   let lastInputType = "system";
 
   const text = (key) => (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key;
+  const parcelObjectiveCopy = { en: "Parcels {collected}/{total} · Reach the lantern", "zh-Hant": "包裹 {collected}/{total} · 抵達燈籠", "zh-Hans": "包裹 {collected}/{total} · 抵达灯笼", ja: "荷物 {collected}/{total} · ランタンへ", ko: "소포 {collected}/{total} · 랜턴에 도착", es: "Paquetes {collected}/{total} · Llega al farol", "pt-BR": "Pacotes {collected}/{total} · Chegue à lanterna", fr: "Colis {collected}/{total} · Atteignez la lanterne", de: "Pakete {collected}/{total} · Erreiche die Laterne", it: "Pacchi {collected}/{total} · Raggiungi la lanterna", ru: "Посылки {collected}/{total} · Долетите до фонаря", hi: "पैकेट {collected}/{total} · लालटेन तक पहुँचें", ar: "الطرود {collected}/{total} · أصل إلى الفانوس" };
+  const parcelObjectiveText = () => (parcelObjectiveCopy[locale] || parcelObjectiveCopy.en).replace("{collected}", String(state?.parcels || 0)).replace("{total}", String(config().parcels.length));
   const stageKey = (index) => `weightplay_cloudhook_stage_${index}`;
   const bestKey = (index) => `weightplay_cloudhook_best_${index}`;
   const safeGet = (key, fallback = "") => { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } };
@@ -250,7 +252,7 @@ const GAME_VERSION = "v11";
     if (state?.flash > 0) { ctx.fillStyle = `rgba(255,235,157,${Math.min(0.35, state.flash)})`; ctx.fillRect(0, 0, W, H); }
   };
   const tick = (now) => { const dt = Math.min(0.032, Math.max(0, (now - lastTime) / 1000 || 0)); lastTime = now; if (!hidden) { if (isBattleActive()) update(dt); draw(); updateHud(); } frame = window.requestAnimationFrame(tick); };
-  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.swingReady = String(state.swingReady); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); canvas.dataset.y = String(state.y); updateTetherLabel(); };
+  const updateHud = () => { if (!state) return; $("#scoreLabel").textContent = `${text("score")}: ${state.score}`; $("#timeLabel").textContent = `${text("time")}: ${formatTime(state.time)}`; $("#parcelObjective").textContent = parcelObjectiveText(); $("#controlHint").textContent = text("hint"); canvas.dataset.attached = String(state.attached); canvas.dataset.swingReady = String(state.swingReady); canvas.dataset.time = String(state.time); canvas.dataset.x = String(state.x); canvas.dataset.y = String(state.y); updateTetherLabel(); };
   const renderResult = () => { const best = Number(safeGet(bestKey(currentStage), 0)) || 0; $("#resultEyebrow").textContent = `${text("stage")} ${currentStage + 1}`; $("#resultTitle").textContent = text(state.success ? "success" : "failure"); $("#resultCopy").textContent = text(state.success ? (currentStage === stageConfigs.length - 1 ? "final" : "successCopy") : "failureCopy") + (state.success ? "" : ` ${text("retryCue")}`); $("#resultScore").innerHTML = `<span>${text("scoreStat")}</span><strong>${state.score}</strong>`; $("#resultTime").innerHTML = `<span>${text("timeStat")}</span><strong>${best ? formatTime(best) : "—"}</strong>`; $("#nextBtn").textContent = text("next"); $("#nextBtn").disabled = !state.success || currentStage >= stageConfigs.length - 1; $("#retryBtn").textContent = text("retry"); $("#resultStagesBtn").textContent = text("stageMap"); };
   const liveBattleNodes = () => [...battleScreen.children].filter((node) => node !== resultScreen && node !== leaveOverlay);
   const syncBattleOverlayState = () => { liveBattleNodes().forEach((node) => { const inert = resultOpen || leaveOpen; node.inert = inert; if (inert) node.setAttribute("aria-hidden", "true"); else node.removeAttribute("aria-hidden"); }); };

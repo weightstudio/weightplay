@@ -107,7 +107,7 @@
   });
 
   const els = {
-    loading: $("loading"), app: $("app"), locale: $("localeSelect"), reset: $("resetButton"),
+    loading: $("loading"), app: $("app"), landing: $("mainLanding"), dashboard: $("gameDashboard"), startGame: $("startGameButton"), locale: $("localeSelect"), reset: $("resetButton"),
     dispatch: $("dispatchButton"), quickDive: $("quickDiveButton"), collect: $("collectButton"),
     funds: $("fundsValue"), depth: $("depthValue"), robots: $("robotsValue"), multiplier: $("multiplierValue"),
     zoneName: $("zoneName"), zoneDepth: $("zoneDepth"), stateBadge: $("diveStateBadge"), canvas: $("oceanCanvas"),
@@ -697,8 +697,6 @@
 
   const renderSettings = () => {
     const settings = [
-      { id: "sound", key: "sound", copyKey: "soundCopy" },
-      { id: "music", key: "music", copyKey: "musicCopy" },
       { id: "motion", key: "motion", copyKey: "motionCopy" },
     ];
     els.settingsList.innerHTML = settings.map((setting) => `<div class="setting-row"><span><strong>${escapeHtml(t(setting.key))}</strong><small>${escapeHtml(t(setting.copyKey))}</small></span><button type="button" class="setting-toggle" data-setting="${setting.id}" data-enabled="${state.settings[setting.id]}">${state.settings[setting.id] ? escapeHtml(t("on")) : escapeHtml(t("off"))}</button></div>`).join("");
@@ -821,6 +819,13 @@
   };
 
   const bind = () => {
+    els.startGame?.addEventListener("click", () => {
+      if (els.landing) els.landing.hidden = true;
+      if (els.dashboard) els.dashboard.hidden = false;
+      document.body.dataset.gameStarted = "true";
+      els.dispatch?.focus?.({ preventScroll: true });
+      render();
+    });
     els.locale?.addEventListener("change", () => window.deepSeaSetLocale?.(els.locale.value));
     els.reset?.addEventListener("click", () => {
       if (!window.confirm(t("resetConfirm"))) return;

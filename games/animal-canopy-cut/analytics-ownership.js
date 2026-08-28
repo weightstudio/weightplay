@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-canopy-cut";
-  const GAME_VERSION = "v9";
+  const GAME_VERSION = "v10";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-canopy-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);

@@ -2,7 +2,7 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-penalty-cup";
-  const GAME_VERSION = 4;
+  const GAME_VERSION = 5;
   const INTERFACE_VERSION = 6;
   const LOCALES = ["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const LOCALE_LABELS = {en:"English","zh-Hant":"繁體中文","zh-Hans":"简体中文",ja:"日本語",ko:"한국어",es:"Español","pt-BR":"Português",fr:"Français",de:"Deutsch",it:"Italiano",ru:"Русский",hi:"हिन्दी",ar:"العربية"};
