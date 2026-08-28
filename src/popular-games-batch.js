@@ -69,7 +69,7 @@
     hi: "मालिक का प्रीव्यू: नियंत्रित शॉट से 12 ईंटें तोड़ें। गेम अभी सार्वजनिक रूप से जारी नहीं हुआ है।",
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v7";
+  const BREAKOUT_GAME_VERSION = "v8";
   const TETRIS_GAME_VERSION = "v15";
   // The short Tetris sprint uses real tetromino silhouettes so Rotate changes
   // placement geometry and Drop has visible spatial consequences. The board
