@@ -650,6 +650,53 @@
     hi: { battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ" },
     ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay" },
   };
+  const PONG_SHELL_COPY = {
+    en: { battleBack: "Back to main", mainBack: "Back to WeightPlay", settings: "Settings", objective: "Objective", sound: "Sound", soundOn: "On", soundOff: "Off", progress: "Win five rallies with deliberate moves." },
+    "zh-Hant": { battleBack: "返回主頁", mainBack: "返回 WeightPlay", settings: "設定", objective: "目標", sound: "音效", soundOn: "開啟", soundOff: "關閉", progress: "用精準移動贏下五個回合。" },
+    "zh-Hans": { battleBack: "返回主页", mainBack: "返回 WeightPlay", settings: "设置", objective: "目标", sound: "音效", soundOn: "开启", soundOff: "关闭", progress: "用精准移动赢下五个回合。" },
+    ja: { battleBack: "メインへ戻る", mainBack: "WeightPlayへ戻る", settings: "設定", objective: "目標", sound: "サウンド", soundOn: "オン", soundOff: "オフ", progress: "慎重に動いて5ラリーに勝ちます。" },
+    ko: { battleBack: "메인으로", mainBack: "WeightPlay로 돌아가기", settings: "설정", objective: "목표", sound: "소리", soundOn: "켜기", soundOff: "끄기", progress: "신중하게 움직여 다섯 랠리를 이기세요." },
+    es: { battleBack: "Volver al inicio", mainBack: "Volver a WeightPlay", settings: "Ajustes", objective: "Objetivo", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado", progress: "Gana cinco rallies con movimientos precisos." },
+    "pt-BR": { battleBack: "Voltar ao início", mainBack: "Voltar ao WeightPlay", settings: "Configurações", objective: "Objetivo", sound: "Som", soundOn: "Ativado", soundOff: "Desativado", progress: "Vença cinco ralis com movimentos deliberados." },
+    fr: { battleBack: "Retour à l’accueil", mainBack: "Retour à WeightPlay", settings: "Paramètres", objective: "Objectif", sound: "Son", soundOn: "Activé", soundOff: "Désactivé", progress: "Gagnez cinq échanges avec des mouvements précis." },
+    de: { battleBack: "Zur Startseite", mainBack: "Zurück zu WeightPlay", settings: "Einstellungen", objective: "Ziel", sound: "Ton", soundOn: "An", soundOff: "Aus", progress: "Gewinne fünf Ballwechsel mit gezielten Zügen." },
+    it: { battleBack: "Torna alla home", mainBack: "Torna a WeightPlay", settings: "Impostazioni", objective: "Obiettivo", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato", progress: "Vinci cinque scambi con mosse deliberate." },
+    ru: { battleBack: "На главную", mainBack: "Вернуться в WeightPlay", settings: "Настройки", objective: "Цель", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл.", progress: "Выиграйте пять розыгрышей точными движениями." },
+    hi: { battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ", settings: "सेटिंग", objective: "लक्ष्य", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", progress: "सधे हुए कदमों से पाँच रैलियाँ जीतें।" },
+    ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay", settings: "الإعدادات", objective: "الهدف", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", progress: "اربح خمسة تبادلات بحركات مدروسة." },
+  };
+  const syncPongShellLocale = () => {
+    if (document.body?.dataset.gameId !== "pong") return;
+    const locale = document.documentElement.lang || "en";
+    const copy = PONG_SHELL_COPY[locale] || PONG_SHELL_COPY.en;
+    const setLabel = (selector, label) => {
+      const node = document.querySelector(selector);
+      if (!node) return;
+      node.setAttribute("aria-label", label);
+      node.setAttribute("title", label);
+    };
+    setLabel('[data-wp-return="battle"]', copy.battleBack);
+    setLabel('[data-wp-return="main"]', copy.mainBack);
+    setLabel("#audioMenuBtn", copy.settings);
+    setLabel("#battleUtilityBtn", copy.settings);
+    document.querySelector("#audioPopover")?.setAttribute("aria-label", copy.settings);
+    const settingsTitle = document.querySelector(".settings-title");
+    if (settingsTitle) settingsTitle.textContent = copy.settings;
+    const soundButton = document.querySelector("#soundBtn[data-sound-toggle]");
+    if (soundButton) {
+      const enabled = soundButton.getAttribute("aria-pressed") !== "false";
+      soundButton.textContent = `${copy.sound}: ${enabled ? copy.soundOn : copy.soundOff}`;
+    }
+    const progress = document.querySelector("[data-wp-main-progress]");
+    if (progress) {
+      const label = progress.querySelector("strong");
+      const value = progress.querySelector("span");
+      if (label) label.textContent = copy.objective;
+      if (value) value.textContent = copy.progress;
+    }
+  };
+  window.addEventListener("wonder:locale-change", syncPongShellLocale);
+  setTimeout(syncPongShellLocale, 0);
   const SNAKE_OBJECTIVE = {
     en: "Guide the snake to food and keep moving.",
     "zh-Hant": "引導蛇吃食物並持續前進。",
@@ -833,6 +880,8 @@
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
     if (game.type === "wordle") document.body.dataset.gameVersion = "v6";
+    if (game.type === "pong") document.body.dataset.gameVersion = "v8";
+    if (game.type === "pong") syncPongShellLocale();
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
     if (game.type === "hangman") {
@@ -1025,7 +1074,8 @@
     pongSoundButton?.addEventListener("click", () => {
       const enabled = pongSoundButton.getAttribute("aria-pressed") !== "true";
       pongSoundButton.setAttribute("aria-pressed", String(enabled));
-      pongSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+      const soundCopy = PONG_SHELL_COPY[locale] || PONG_SHELL_COPY.en;
+      pongSoundButton.textContent = `${soundCopy.sound}: ${enabled ? soundCopy.soundOn : soundCopy.soundOff}`;
     });
     let tetrisFocusedControl = null;
     const rememberTetrisFocus = (event) => {

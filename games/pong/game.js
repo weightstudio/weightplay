@@ -1,4 +1,4 @@
-const GAME_VERSION = "v7";
+const GAME_VERSION = "v8";
 window.WPPopularArcade?.mount("pong");
 document.body.dataset.gameVersion = GAME_VERSION;
 (() => {

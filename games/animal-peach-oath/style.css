@@ -74,14 +74,14 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .arena { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(rgba(12,25,30,.12),rgba(12,25,30,.06)),url("assets/battlefield.png") center/cover; }
 .ambient-petals { display: none; }
 .unit-line { position: absolute; left: 4%; right: 4%; z-index: 4; display: flex; justify-content: center; gap: clamp(2px,2vw,18px); }
-.enemy-line { top: 8%; align-items: flex-start; }
+.enemy-line { top: max(8%, 76px); align-items: flex-start; }
 .hero-line { bottom: 12%; align-items: flex-end; }
 .unit { position: relative; width: clamp(68px,15vw,118px); height: clamp(112px,24vh,200px); filter: drop-shadow(0 12px 9px rgba(0,0,0,.42)); transition: transform .18s, filter .18s; }
 .unit.is-attacking { transform: translateY(-10px) scale(1.04); filter: drop-shadow(0 0 12px #fff6bc); }
 .enemy-line .unit.is-attacking { transform: translateY(10px) scale(1.04); }
 .unit.is-hit { animation: hit .18s linear; }
 @keyframes hit { 50% { transform: translateX(7px); filter: brightness(1.7) saturate(.5); } }
-.sprite { position: absolute; inset: 15px 0 0; background-image: var(--sheet); background-repeat: no-repeat; background-size: 500% 100%; background-position: var(--pos) center; }
+.sprite { position: absolute; top: 15px; left: 0; width: 100%; height: calc(100% - 37px); overflow: hidden; pointer-events: none; }
 .enemy-line .sprite { transform: scaleX(-1); }
 .unit-name { position: absolute; left: 50%; bottom: 5px; transform: translateX(-50%); max-width: 100%; padding: 2px 6px; border-radius: 8px; background: rgba(10,15,22,.78); font-size: 10px; font-weight: 900; white-space: nowrap; }
 .hp { position: absolute; z-index: 2; top: 4px; left: 8%; width: 84%; height: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 8px; background: #39231f; }
@@ -130,15 +130,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .hero-card, .panel-card, .campaign-card { overflow: hidden; border: 1px solid var(--wp-ui-border); border-radius: 16px; background: rgba(27,48,69,.92); }
 .hero-card { display: grid; grid-template-columns: 96px minmax(0,1fr); min-height: 150px; }
 .hero-portrait { position: relative; min-height: 150px; overflow: hidden; background: linear-gradient(#4a6379,#1a2c3e); }
-.hero-portrait .sprite { inset: 4px 0 0; }
-/* heroes.png is a packed atlas rather than five equal-width frames.  Keep a
-   dedicated source window for each roster card so the transparent crop never
-   exposes the neighbouring hero at the atlas seam. */
-.hero-card[data-hero="leo"] .hero-portrait .sprite { background-size: 486.43% 100%; background-position: 0.62% center; }
-.hero-card[data-hero="tiger"] .hero-portrait .sprite { background-size: 681% 100%; background-position: 26.85% center; }
-.hero-card[data-hero="bear"] .hero-portrait .sprite { background-size: 504.44% 100%; background-position: 54.95% center; }
-.hero-card[data-hero="crane"] .hero-portrait .sprite { background-size: 669.84% 100%; background-position: 77.1% center; }
-.hero-card[data-hero="fox"] .hero-portrait .sprite { background-size: 620.67% 100%; background-position: 99.48% center; }
+.hero-portrait .sprite { top: 6px; left: 6px; width: calc(100% - 12px); height: calc(100% - 12px); }
 .hero-card-copy { display: grid; min-width: 0; align-content: center; gap: 4px; padding: 8px; }
 .quality { color: #ffe291; font-size: 10px; font-weight: 800; }
 .hero-card h3, .panel-card h3, .campaign-card h3 { margin: 0; font-size: 15px; }
@@ -232,6 +224,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .unit-line { top: 50%; bottom: auto; flex-wrap: wrap; align-content: center; gap: 4px; transform: translateY(-50%); }
   .hero-line { left: 2%; right: 58%; justify-content: center; }
   .enemy-line { left: 58%; right: 2%; justify-content: center; }
+  /* Keep the Boss HUD in the center gap, never across either sprite lane. */
+  .boss-bar { top: 38px; width: 14%; }
   .unit { width: clamp(48px,6.2vw,60px); height: min(28vh,104px); }
   .unit-name { max-width: 120%; padding-inline: 3px; font-size: 8px; }
   .battle-tip { top: calc(50% + 38px); bottom: auto; gap: 4px; }

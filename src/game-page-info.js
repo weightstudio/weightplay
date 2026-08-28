@@ -44,6 +44,10 @@
     hi: "टच, माउस और कीबोर्ड में वही वैध चालें रहती हैं। रीस्टार्ट मौजूदा डील दोहराता है, नया गेम नई डील बनाता है, पूर्ववत पिछला बोर्ड लौटाता है और खाते या खरीद की जरूरत नहीं है।",
     ar: "تستخدم اللمسة والماوس ولوحة المفاتيح الحركات القانونية نفسها. يعيد البدء التوزيع الحالي، وتنشئ لعبة جديدة توزيعاً جديداً، ويستعيد التراجع اللوحة السابقة؛ لا يلزم حساب أو شراء.",
   });
+  // Assigned with the locale-owned Casino FAQ data below before the first
+  // render; keep the binding initialized so early related-game lookups cannot
+  // hit the temporal dead zone during script startup.
+  let casinoGuideFaqLocaleCopy = null;
   const games = {
     "maze-chase": {
       title: "Maze Chase",
@@ -8150,6 +8154,7 @@
     const translated = translateValue(merged);
     if (translated.designNoteParts?.length && !override.designNote) translated.designNote = translated.designNoteParts.join(" ");
     if (translated.parentParts?.length && !override.parent) translated.parent = translated.parentParts.join(" ");
+    if (id === "casino" && casinoGuideFaqLocaleCopy?.[activeLocale]) translated.faq = casinoGuideFaqLocaleCopy[activeLocale];
     return translated;
   }
 
@@ -14741,6 +14746,32 @@
       ["進度會保存嗎？", "已解鎖關卡與最佳步數會保存在這個瀏覽器中。"],
     ],
   };
+
+  // Casino owns the FAQ on every localized route. The generated HTML already
+  // carries this copy, so keep the runtime Guide from replacing it with the
+  // generic English fallback during its first render or a locale change.
+  casinoGuideFaqLocaleCopy = {
+    en: [["Is progress saved?", "Yes, only in this browser."]],
+    "zh-Hant": [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]],
+    "zh-Hans": [["进度会保存吗？", "是，仅保存在此浏览器中。"]],
+    ja: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]],
+    ko: [["진행 상황이 저장되나요?", "예. 이 브라우저에만 저장됩니다."]],
+    es: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
+    "pt-BR": [["O progresso é salvo?", "Sim, somente neste navegador."]],
+    fr: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]],
+    de: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
+    it: [["I progressi vengono salvati?", "Sì, solo in questo browser."]],
+    ru: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]],
+    hi: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]],
+    ar: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+  };
+  for (const [localeCode, faq] of Object.entries(casinoGuideFaqLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode].casino = {
+      ...(localizedGames[localeCode].casino || {}),
+      faq,
+    };
+  }
 
   [
     "block-blast",

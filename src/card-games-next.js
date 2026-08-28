@@ -732,6 +732,14 @@
     hi: { label: "121 तक दौड़", copy: "जो पहले 121 तक पहुँचे, वही जीतता है।" },
     ar: { label: "سباق إلى 121", copy: "يفوز أول لاعب يصل إلى 121." },
   };
+  const CRIBBAGE_BATTLE_COPY = {
+    en: { round: "Round", go: "Go", ai: "AI" },
+    ar: { round: "الجولة", go: "جو", ai: "الذكاء الاصطناعي" },
+  };
+  const cribbageBattleCopy = () => CRIBBAGE_BATTLE_COPY[currentLocale()] || CRIBBAGE_BATTLE_COPY.en;
+  const cribbageStatsText = (stats) => currentLocale() === "ar"
+    ? `${stats.wins} فوز · ${stats.losses} خسارة`
+    : `${stats.wins}W · ${stats.losses}L`;
   const CRIBBAGE_SELECTION_COPY = {
     en: { status: "Select cards: {count}/2 to the crib.", quickGuide: "How to play", quickGuideCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins." },
     "zh-Hant": { status: "選擇牌：{count}/2 張送入 crib。", quickGuide: "玩法說明", quickGuideCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。" },
@@ -999,7 +1007,7 @@
     it: { go: "Go chiude questo conteggio e si torna a 0. Cerca una coppia, una scala, 15 o 31 nella prossima sequenza.", thirtyOne: "31 chiude questo conteggio e si torna a 0. Cerca una coppia, una scala, 15 o un altro 31." },
     ru: { go: "Go завершает этот счёт, и он сбрасывается на 0. В следующей серии ищите пару, ряд, 15 или 31.", thirtyOne: "31 завершает этот счёт, и он сбрасывается на 0. В следующей серии ищите пару, ряд, 15 или новый 31." },
     hi: { go: "Go से यह गिनती खत्म होकर 0 पर लौटती है। अगली श्रृंखला में जोड़ी, रन, 15 या 31 देखें।", thirtyOne: "31 से यह गिनती खत्म होकर 0 पर लौटती है। अगली श्रृंखला में जोड़ी, रन, 15 या अगला 31 देखें।" },
-    ar: { go: "تنهي Go هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 في السلسلة التالية.", thirtyOne: "ينهي 31 هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 آخر في السلسلة التالية." },
+    ar: { go: "تنهي جو هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 في السلسلة التالية.", thirtyOne: "ينهي 31 هذا العد ويعود إلى 0. ابحث عن زوج أو تسلسل أو 15 أو 31 آخر في السلسلة التالية." },
   };
 
   const cribPeggingResetText = (reason) => {
@@ -1041,7 +1049,7 @@
     it: { join: " + ", reasons: { fifteen: "15", thirtyOne: "31", pair: "coppia", three: "tris", four: "poker", run: "scala di {length}" }, earned: "Punti di pegging +{points}: {reasons}. Conteggio {count}/31.", zero: "Punti di pegging +0. Conteggio {count}/31.", go: "Go: +1 punto. Il conteggio torna a 0." },
     ru: { join: " + ", reasons: { fifteen: "15", thirtyOne: "31", pair: "пара", three: "тройка", four: "каре", run: "ряд из {length}" }, earned: "Очки пеггинга +{points}: {reasons}. Счёт {count}/31.", zero: "Очки пеггинга +0. Счёт {count}/31.", go: "Go: +1 очко. Счёт сбрасывается до 0." },
     hi: { join: " + ", reasons: { fifteen: "15", thirtyOne: "31", pair: "जोड़ी", three: "तीन एक जैसे", four: "चार एक जैसे", run: "{length} पत्तों की रन" }, earned: "पेगिंग अंक +{points}: {reasons}। गिनती {count}/31।", zero: "पेगिंग अंक +0। गिनती {count}/31।", go: "Go: +1 अंक। गिनती 0 पर लौटती है।" },
-    ar: { join: " + ", reasons: { fifteen: "15", thirtyOne: "31", pair: "زوج", three: "ثلاثية", four: "رباعية", run: "تسلسل من {length}" }, earned: "نقاط العدّ +{points}: {reasons}. العدّ {count}/31.", zero: "نقاط العدّ +0. العدّ {count}/31.", go: "Go: +1 نقطة. يعود العدّ إلى 0." },
+    ar: { join: " + ", reasons: { fifteen: "15", thirtyOne: "31", pair: "زوج", three: "ثلاثية", four: "رباعية", run: "تسلسل من {length}" }, earned: "نقاط العدّ +{points}: {reasons}. العدّ {count}/31.", zero: "نقاط العدّ +0. العدّ {count}/31.", go: "جو: +1 نقطة. يعود العدّ إلى 0." },
   };
 
   const cribPeggingScoreText = (points, reasons, count) => {
@@ -1849,9 +1857,10 @@
     const statsContainer = document.querySelector(".card-game-stats");
     const statsNode = document.createElement("div");
     statsNode.className = "card-stat card-stat-history";
+    if (id === "cribbage") statsNode.setAttribute("data-runtime-localize", "off");
     statsNode.setAttribute("aria-label", STAT_LABELS[currentLocale()] || STAT_LABELS.en);
     statsContainer?.append(statsNode);
-    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${stats.wins}W · ${stats.losses}L</strong>`; };
+    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "cribbage" ? cribbageStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
     updateStatsView();
     let game;
     const controller = {
@@ -2457,7 +2466,7 @@
       reset() { Object.assign(s, { score: [0, 0], round: 0, dealer: 0 }); startRound(); },
       card(index) { if (s.phase === "discard" && s.turn === 0) { if (s.selected.has(index)) s.selected.delete(index); else if (s.selected.size < 2) s.selected.add(index); } else if (s.phase === "pegging" && s.turn === 0) playPeg(0, s.hand[index]); },
       action(action) { if (action === "send-crib" && s.phase === "discard" && s.selected.size === 2) { const selectedCards = [...s.selected].sort((a, b) => a - b).map((index) => s.hand[index]).filter(Boolean); s.playerCrib = selectedCards; [...s.selected].sort((a, b) => b - a).forEach((index) => s.crib.push(s.hand.splice(index, 1)[0])); s.selected.clear(); s.crib.push(...s.ai.splice(0, 2)); s.roundPlayerHand = [...s.hand]; s.roundAiHand = [...s.ai]; s.starter = s.stock.pop(); s.phase = "pegging"; s.playerPeg = []; s.aiPeg = []; s.pegSequence = []; s.count = 0; s.passed = [false, false]; s.lastPegPlayer = null; s.resetCue = ""; s.pegCue = ""; if (s.starter.rank === 11) { s.score[s.dealer] += 2; if (finish()) return; } scheduleTurn(1 - s.dealer); } if (action === "go" && s.phase === "pegging" && s.turn === 0) passPeg(0); },
-      view() { const playable = legalPeg(0); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter, s.dealer)}</span>` : ""; const pegCue = s.phase === "pegging" && s.pegCue ? `<div class="card-crib-score-cue" role="status" aria-live="polite">${s.pegCue}</div>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? cribbageSelectionText(s.selected.size) : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup("AI", s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label">${t("cribbage")} · Round ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>${pegCue}`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" ${s.turn !== 0 || playable.length ? "disabled" : ""}>Go</button>` }; }
+      view() { const playable = legalPeg(0); const battleCopy = cribbageBattleCopy(); const resetCue = s.resetCue ? `<div class="card-crib-transition card-crib-reset" role="status" aria-live="polite">${s.resetCue}</div>` : ""; const choiceCue = s.playerCrib.length === 2 && s.starter ? `<span class="card-crib-choice-plan">${cribChoicePayoffText(s.playerCrib, s.starter, s.dealer)}</span>` : ""; const pegCue = s.phase === "pegging" && s.pegCue ? `<div class="card-crib-score-cue" role="status" aria-live="polite">${s.pegCue}</div>` : ""; return { phase: s.phase === "discard" ? t("selectCards") : `${t("score")}: ${s.count}/31`, status: s.turn === 0 ? t("yourTurn") : t("aiTurn"), help: s.phase === "discard" ? cribbageSelectionText(s.selected.size) : s.turn === 0 ? cribPeggingCoachText(playable.length > 0) : t("aiTurn"), score: s.score[0], opponents: opponentMarkup(battleCopy.ai, s.ai.length, `${t("score")}: ${s.score[1]}`), center: `<div class="card-table-label" data-runtime-localize="off">${t("cribbage")} · ${battleCopy.round} ${s.round} · ${s.starter ? cardText(s.starter) : ""}</div>${s.phase === "pegging" ? `<div class="card-crib-transition" role="status" aria-live="polite">${cribTransitionText(s.starter, s.dealer)} ${choiceCue}</div>${resetCue}` : ""}${makePegBoard(s.score[0], s.score[1])}<div class="table-row">${cardsMarkup(s.playerPeg)}${cardsMarkup(s.aiPeg)}</div>${pegCue}`, hand: cardsMarkup(s.hand, { selected: s.selected }), actions: s.phase === "discard" ? `<button class="primary-btn" data-action="send-crib" ${s.selected.size !== 2 ? "disabled" : ""}>${t("submit")}</button>` : `<button class="secondary-btn" data-action="go" data-runtime-localize="off" ${s.turn !== 0 || playable.length ? "disabled" : ""}>${battleCopy.go}</button>` }; }
     };
   }
 

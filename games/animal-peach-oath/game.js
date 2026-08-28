@@ -2,6 +2,7 @@
   "use strict";
 
   const C = window.PEACH_OATH_CONFIG;
+  const sprites = window.PEACH_OATH_SPRITES;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const today = () => new Date().toISOString().slice(0, 10);
@@ -254,11 +255,9 @@
   }
 
   function unitMarkup(unit) {
-    const sheet = unit.side === "hero" ? "url('assets/heroes.png')" : "url('assets/enemies.png')";
-    const pos = `${unit.data.sprite * 25}%`;
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
-    return `<div class="unit" data-unit="${unit.key}" style="--sheet:${sheet};--pos:${pos}">
-      <i class="hp"><b style="width:${hp}%"></b></i><div class="sprite"></div>
+    return `<div class="unit" data-unit="${unit.key}">
+      <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.id, `battle-${unit.key}`)}
       <span class="unit-name">${unit.data.name}</span><span class="status-badge is-hidden"></span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
     </div>`;
   }
@@ -450,7 +449,7 @@
       const breakCost = 8 + (p.rank || 0) * 6;
       const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
       return `<article class="hero-card" data-hero="${hero.id}">
-        <div class="hero-portrait"><div class="sprite" style="--sheet:url('assets/heroes.png');--pos:${hero.sprite * 25}%"></div></div>
+        <div class="hero-portrait">${sprites.markup("hero", hero.id, `roster-${hero.id}`)}</div>
         <div class="hero-card-copy"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3>
         <p>${p.owned ? `${hero.role} · ${hero.skill}` : `碎片 ${p.fragments}/10`}</p>
         ${p.owned ? `<div class="mini-stats"><span>Lv.${p.level}</span><span>${p.star} 星</span><span>突破 +${p.rank || 0}</span><span>攻 ${stats.atk}</span><span>血 ${stats.hp}</span></div>
