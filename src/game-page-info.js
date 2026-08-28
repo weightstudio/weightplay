@@ -1692,6 +1692,51 @@
   // preview. Keep the same copy in the shared guide data so localized routes
   // and the runtime guide do not fall back to a title, summary, and FAQ only.
   Object.assign(games, {
+    checkers: {
+      title: "Checkers",
+      age: "9+",
+      difficulty: "Easy to Challenging",
+      time: "5-15 minutes per match",
+      gameplay: "Complete Checkers Match",
+      genre: ["Classic", "Puzzle", "Strategy", "Family"],
+      skills: ["Planning", "Pattern Recognition", "Focus"],
+      intro: "Checkers is a complete 8×8 match against a responsive rival. Read the dark squares, choose a legal diagonal move, and turn a forced capture into a safe route toward promotion.",
+      story: [
+        "The board is a compact 8×8 arena where only the dark squares are playable. You begin with twelve pieces and the rival begins with twelve pieces, so every open diagonal can become an escape route, a trap, or the first link in a capture sequence.",
+      ],
+      systems: [
+        "Ordinary pieces move one step diagonally forward. A capture jumps over an adjacent rival piece into an empty square and removes that piece. If any capture exists anywhere on the board, non-capturing moves are not legal.",
+        "After a capture, check the same piece again: when another capture is available, the multi-jump must continue from its new square. Reaching the far row promotes a piece to a king, which can move and capture diagonally in both directions.",
+        "The rival answers after your turn and can make its own capture sequence. The match ends when one side has no pieces or no legal move; a long no-progress sequence can also settle as a draw. Hint marks a legal piece but never chooses the destination for you.",
+      ],
+      how: [
+        "Start from Main and study the highlighted gold pieces and the current turn message.",
+        "Select a gold piece with a legal diagonal destination, then select the highlighted landing square.",
+        "If a capture is available, take it even when a quiet move would look safer; after landing, continue with the same piece whenever another capture is shown.",
+        "Protect a path to the far row, promote to a king, and use the king's two-way movement to change the shape of the position.",
+        "Use Hint when you need one legal starting piece, or Restart to replay the same match from its opening position.",
+      ],
+      strategyTips: [
+        "Before moving, scan every rival piece for a forced capture and count the landing square, not just the jumped piece.",
+        "Avoid advancing one piece alone; keep diagonal support so the rival cannot answer with a free capture.",
+        "During a multi-jump, reassess the next landing square after every jump instead of assuming the first capture is the whole turn.",
+        "Reach promotion with a clear escape square in mind. A king is flexible, but it can still be trapped by a forced capture or blocked diagonal.",
+        "When ahead in pieces, trade safely and reduce the rival's legal moves; when behind, preserve mobility and search for a promotion race.",
+      ],
+      progression: [
+        "The opening teaches diagonal movement and the global capture rule. Midgame positions add competing capture choices and multi-jump decisions, while the endgame rewards kings, blocked routes, and move-count awareness.",
+      ],
+      designNote: "The Checkers preview uses the same legal-move engine for touch, mouse, keyboard focus, Hint, the rival response, and accessible board labels. A selected piece and legal targets remain visually distinct, so the player can understand why a quiet move is unavailable without relying on hidden rules.",
+      parent: "Checkers is a general-audience browser strategy game recommended for ages 9+ and family play. No account or purchase is required; the current match and Best record stay in this browser only.",
+      faq: [
+        ["Are captures mandatory?", "Yes. If any capture is available, you must choose a capturing move."],
+        ["How do multi-jumps work?", "After a capture, the same piece must continue if it has another capture from its new square."],
+        ["What does promotion do?", "A piece that reaches the far row becomes a king and can move or capture diagonally in both directions."],
+        ["How is the winner decided?", "You win when the rival has no pieces or no legal moves. A long no-progress sequence can settle as a draw."],
+        ["Does Hint play for me?", "No. Hint marks one legal starting piece; you still choose the destination and complete the move."],
+        ["Is progress saved?", "The current match and Best record stay only in this browser; no account is required."],
+      ],
+    },
     hearts: {
       title: "Hearts", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
       gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
@@ -9602,6 +9647,30 @@
   for (const [locale, copy] of Object.entries(shadowWolfGuideLocaleCopy)) {
     localizedGames[locale] ||= {};
     localizedGames[locale]["shadow-wolf"] = { ...games["shadow-wolf"], ...copy };
+  }
+
+  // Checkers owns its complete interactive shell in popular-games-batch.js,
+  // while this shared data owns the static SEO Guide. Keep the route identity
+  // and the high-signal facts localized even when a locale does not yet have
+  // a separately reviewed long-form translation; the remaining authored
+  // mechanics stay truthful and are covered by the English source guide.
+  const checkersLocaleFacts = {
+    "zh-Hant": { title: "西洋跳棋", difficulty: "漸進挑戰", time: "5～15 分鐘／局", gameplay: "完整西洋跳棋對局", genre: ["經典", "益智", "策略", "家庭"], skills: ["規劃", "模式辨識", "專注"], intro: "在響應式 8×8 棋盤上進行完整西洋跳棋對局，包含強制吃子、連跳、升王與會回應的真正對手。" },
+    "zh-Hans": { title: "西洋跳棋", difficulty: "渐进挑战", time: "5～15 分钟／局", gameplay: "完整西洋跳棋对局", genre: ["经典", "益智", "策略", "家庭"], skills: ["规划", "模式识别", "专注"], intro: "在响应式 8×8 棋盘上进行完整西洋跳棋对局，包含强制吃子、连跳、升王与会回应的真实对手。" },
+    ja: { title: "チェッカー", difficulty: "初級から挑戦的", time: "1局 5〜15分", gameplay: "完全なチェッカー対局", genre: ["クラシック", "パズル", "戦略", "ファミリー"], skills: ["計画", "パターン認識", "集中"], intro: "レスポンシブな8×8盤で、強制取り、連続ジャンプ、キング昇格、応手する対戦相手を含むチェッカーを最後まで遊びます。" },
+    ko: { title: "체커", difficulty: "쉬움부터 도전적", time: "한 판 5~15분", gameplay: "완전한 체커 대국", genre: ["클래식", "퍼즐", "전략", "가족"], skills: ["계획", "패턴 인식", "집중"], intro: "반응형 8×8 보드에서 강제 잡기, 연속 점프, 킹 승격과 실제로 응수하는 상대가 있는 체커 한 판을 끝까지 플레이하세요." },
+    es: { title: "Damas", difficulty: "De fácil a desafiante", time: "5-15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clásico", "Puzzle", "Estrategia", "Familia"], skills: ["Planificación", "Reconocimiento de patrones", "Concentración"], intro: "Juega una partida completa de damas en un tablero adaptable de 8×8, con capturas obligatorias, saltos múltiples, coronación y un rival que responde de verdad." },
+    "pt-BR": { title: "Damas", difficulty: "De fácil a desafiador", time: "5–15 minutos por partida", gameplay: "Partida completa de damas", genre: ["Clássico", "Quebra-cabeça", "Estratégia", "Família"], skills: ["Planejamento", "Reconhecimento de padrões", "Concentração"], intro: "Jogue uma partida completa de damas em um tabuleiro responsivo 8×8, com capturas obrigatórias, saltos múltiplos, promoção e um rival que reage de verdade." },
+    fr: { title: "Dames", difficulty: "De facile à exigeant", time: "5 à 15 minutes par partie", gameplay: "Partie complète de dames", genre: ["Classique", "Puzzle", "Stratégie", "Famille"], skills: ["Planification", "Reconnaissance des motifs", "Concentration"], intro: "Jouez une partie complète de dames sur un plateau 8×8 adaptatif, avec prises obligatoires, rafles, promotion et un véritable adversaire." },
+    de: { title: "Dame", difficulty: "Einfach bis anspruchsvoll", time: "5–15 Minuten pro Partie", gameplay: "Vollständige Damepartie", genre: ["Klassisch", "Puzzle", "Strategie", "Familie"], skills: ["Planung", "Mustererkennung", "Konzentration"], intro: "Spiele eine vollständige Damepartie auf einem responsiven 8×8-Brett mit Schlagzwang, Mehrfachsprüngen, Damen und einem echten Gegenspieler." },
+    it: { title: "Dama", difficulty: "Da facile a impegnativo", time: "5–15 minuti a partita", gameplay: "Partita completa a dama", genre: ["Classico", "Puzzle", "Strategia", "Famiglia"], skills: ["Pianificazione", "Riconoscimento degli schemi", "Concentrazione"], intro: "Gioca una partita completa a dama su una tavola 8×8 adattiva, con prese obbligatorie, salti multipli, promozione e un vero avversario." },
+    ru: { title: "Шашки", difficulty: "От простого к сложному", time: "5–15 минут за партию", gameplay: "Полная партия в шашки", genre: ["Классика", "Головоломка", "Стратегия", "Семейная"], skills: ["Планирование", "Распознавание схем", "Концентрация"], intro: "Сыграйте полную партию в шашки на адаптивной доске 8×8 с обязательным взятием, сериями прыжков, дамками и настоящим соперником." },
+    hi: { title: "चेकर्स", difficulty: "आसान से चुनौतीपूर्ण", time: "हर मैच 5–15 मिनट", gameplay: "पूरा चेकर्स मैच", genre: ["क्लासिक", "पहेली", "रणनीति", "परिवार"], skills: ["योजना", "पैटर्न पहचान", "एकाग्रता"], intro: "8×8 अनुकूल बोर्ड पर अनिवार्य कैप्चर, लगातार छलाँग, किंग पदोन्नति और जवाब देने वाले असली प्रतिद्वंद्वी के साथ पूरा चेकर्स मैच खेलें।" },
+    ar: { title: "الداما", difficulty: "من السهل إلى التحدي", time: "5–15 دقيقة للمباراة", gameplay: "مباراة داما كاملة", genre: ["كلاسيكية", "ألغاز", "استراتيجية", "عائلية"], skills: ["التخطيط", "تمييز الأنماط", "التركيز"], intro: "العب مباراة داما كاملة على لوحة 8×8 متجاوبة مع الأخذ الإجباري والقفزات المتعددة والترقية إلى ملك وخصم حقيقي يرد على حركاتك." },
+  };
+  for (const [locale, facts] of Object.entries(checkersLocaleFacts)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale].checkers = { ...localizedGames[locale].checkers, ...facts };
   }
 
   window.WeightPlayGameInfo = {

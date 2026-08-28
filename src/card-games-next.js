@@ -1034,6 +1034,16 @@
         battleUtility.setAttribute("aria-label", labels.settings);
         battleUtility.title = labels.settings;
       }
+      // Casino owns its Result actions so the generic route localizer cannot
+      // partially translate them (for example, Arabic `جديد Game`). Keep the
+      // action labels tied to the active locale for both the initial mount and
+      // every Settings locale transaction.
+      [
+        [document.querySelector("#resultTitle"), labels.roundOver],
+        [document.querySelector("#resultNewGame"), labels.newGame],
+        [document.querySelector("#resultRestart"), labels.restart],
+        [document.querySelector("#resultClose"), labels.close],
+      ].forEach(([node, value]) => ownLocalizedText(node, value));
     } finally {
       casinoShellSyncing = false;
     }
