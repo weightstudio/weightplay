@@ -24,6 +24,7 @@ body[data-game-id="tetris"] .tetris-next-grid .filled { background: #f9c86e; bor
 body[data-game-id="tetris"] #controls .control-row { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; direction: ltr; }
 body[data-game-id="tetris"] #controls button { min-width: 0; height: 48px; min-height: 48px; padding: 0; font-size: 24px; touch-action: manipulation; }
 body[data-game-id="tetris"] #controls button.primary { background: #ffd273; color: #112033; }
+body[data-game-id="tetris"] #controls button:is(:hover,:active,:focus) { transform: none; }
 body[data-game-id="tetris"] #gameMessage { height: 44px; min-height: 44px; margin: 0; overflow: auto; font-size: 13px; line-height: 1.4; }
 body[data-game-id="tetris"] .round-label { font-size: 13px; font-variant-numeric: tabular-nums; }
 body[data-game-id="tetris"] .tetris-dialog { width: min(88vw,400px); max-height: calc(100dvh - 90px); padding: 20px; overflow: auto; border: 1px solid #91aec9; border-radius: 18px; background: #122137; color: #f1f5fb; }

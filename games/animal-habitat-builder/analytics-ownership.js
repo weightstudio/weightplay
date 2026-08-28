@@ -5,7 +5,7 @@
   window.__weightplayAnimalHabitatBuilderAnalyticsInstalled = true;
 
   const GAME_ID = "animal-habitat-builder";
-  const GAME_VERSION = "v7";
+  const GAME_VERSION = "v10";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",

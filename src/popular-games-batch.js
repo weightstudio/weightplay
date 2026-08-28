@@ -994,6 +994,16 @@
       if (guide) guide.textContent = `${ui.objective} ${ui.instructions}`;
       const faq = document.querySelector(".game-info-sections dd");
       if (faq) faq.textContent = ui.saved;
+      const faqQuestion = document.querySelector(".game-info-sections dt");
+      if (faqQuestion) faqQuestion.textContent = ui.saveQuestion;
+      const guideHeading = guide?.previousElementSibling;
+      if (guideHeading) guideHeading.textContent = ui.how;
+      document.querySelector("#battleBackBtn")?.setAttribute("aria-label",copy(locale,"home"));
+      document.querySelector(".main-return")?.setAttribute("aria-label","← WeightPlay");
+      document.querySelector("#audioMenuBtn")?.setAttribute("aria-label",ui.settings);
+      document.querySelector("#audioPopover")?.setAttribute("aria-label",ui.settings);
+      const settingsTitle = document.querySelector(".settings-title");
+      if (settingsTitle) settingsTitle.textContent = ui.settings;
       els.round.textContent = `${copy(locale,"score")}: ${state.score} · ${ui.lines}: ${state.lines} · ${ui.level}: ${state.level}`;
       state.message = state.paused ? ui.paused : state.messageKey === "tetrisHint" ? ui.instructions : `${ui.lines}: ${state.lines} · ${ui.level}: ${state.level}`;
       if (!tetrisGrid) {
@@ -1461,7 +1471,7 @@
       if (game.type === "tetris") {
         if (state.paused || document.querySelector('.tetris-dialog[open]')) return;
         window.WPTetrisEngine.step(state, name);
-        announce(`${tetrisText().lines}: ${state.lines} · ${tetrisText().level}: ${state.level}`, state.cleared ? "good" : "");
+        announce(`${tetrisText().lines}: ${state.lines} · ${tetrisText().level}: ${state.level}`, state.cleared ? "good" : "", state.cleared ? "tetrisLineClear" : "tetrisProgress");
         if (state.over) finish(false);
         if (name === "drop") scheduleTetris();
         render();

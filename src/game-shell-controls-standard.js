@@ -106,6 +106,19 @@
     ".stage-rail", ".world-map-grid",
   ];
 
+  function sceneCandidates(selectors) {
+    const seen = new Set();
+    const candidates = [];
+    selectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((node) => {
+        if (node === document.body || node === document.documentElement || seen.has(node)) return;
+        seen.add(node);
+        candidates.push(node);
+      });
+    });
+    return candidates;
+  }
+
   function ensureStageSelectorRuntime() {
     if (!STAGE_RAIL_SELECTORS.some((selector) => document.querySelector(selector))) return;
     if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
@@ -493,7 +506,7 @@
         if (declaredScreen) return { type: declaredType, screen: declaredScreen };
       }
     }
-    const stages = STAGE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
+    const stages = sceneCandidates(STAGE_SELECTORS);
     const activeRail = STAGE_RAIL_SELECTORS
       .map((selector) => document.querySelector(selector))
       .find(visible);
@@ -519,7 +532,7 @@
       || (stageRouteActive && inferredStage)
       || explicitStageCanvas;
     if (stage) return { type: "stage", screen: stage };
-    const mains = MAIN_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
+    const mains = sceneCandidates(MAIN_SELECTORS);
     const visibleStart = firstVisible(MAIN_START_SELECTORS, document);
     const visiblePoster = firstVisible(MAIN_POSTER_SELECTORS, document);
     let inferredMain = null;
@@ -568,7 +581,7 @@
       }
       if (nativelyAvailable) main = standardScreen;
     }
-    const battles = BATTLE_SELECTORS.map((selector) => document.querySelector(selector)).filter(Boolean);
+    const battles = sceneCandidates(BATTLE_SELECTORS);
     const battle = battles.find(visible);
     const result = RESULT_SELECTORS
       .map((selector) => document.querySelector(selector))

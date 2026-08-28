@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-penalty-cup/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-penalty-cup/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-penalty-cup/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-penalty-cup/" />
@@ -46,6 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "पशु पेनल्टी कप",
+  "alternateName": "Animal Penalty Cup",
   "url": "https://weightplay.com/hi/games/animal-penalty-cup/",
   "image": "https://weightplay.com/games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp",
   "description": "शॉट लें, निष्पक्ष संकेत पढ़ें और छह अध्यायों में 30 पशु टीमों से खेलें।",
@@ -61,15 +61,13 @@
     "विशेष रुप से प्रदर्शित",
     "पशु खेल",
     "आर्केड",
-    "परिवार",
-    "Browser Game"
+    "परिवार"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Penalty Cup"
+  }
 }
     </script>
   </head>
@@ -82,7 +80,7 @@
     <main id="mainScreen" class="main-screen" data-screen="main">
       <header class="shared-header main-header">
         <a class="home-link wp-shell-return" data-wp-return="main" data-wp-return-normalized="true" href="/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong class="header-title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Animal Penalty Cup</strong>
+        <strong class="header-title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">पशु पेनल्टी कप</strong>
         <section id="mainSettings" hidden>
           <label class="settings-row"><span data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
         </section>
@@ -123,7 +121,7 @@
   <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="assets/animal-penalty-cup-cover-v1.webp" style="--wp-stage-art:url('assets/animal-penalty-cup-cover-v1.webp')">
       <header class="shared-header stage-header">
-        <button id="stageBackBtn" class="back-button stage-fixed-back" data-wp-return="stage" data-wp-return-normalized="true" type="button" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
+        <button id="stageBackBtn" class="back-button stage-fixed-back wp-shell-return" data-wp-return="stage" data-wp-return-normalized="true" type="button" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
         <strong class="header-title" data-i18n="title" data-wp-game-title data-runtime-localize="off">पशु पेनल्टी कप</strong>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
@@ -165,7 +163,7 @@
   <div id="generalReserve" class="general-reserve battle-ad-reserve" aria-hidden="true" hidden></div>
 
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" aria-describedby="tutorialCopy" hidden>
-    <div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button><img src="assets/animal-penalty-cup-cover-v1.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">One goal, two roles</h2><ol id="tutorialCopy"><li data-i18n="tutorial1">Press a numbered goal zone and release when the power pulse reaches gold.</li><li data-i18n="tutorial2">On defence, wait for the bright paw cue; dim rings can be feints.</li><li data-i18n="tutorial3">After five pairs, the higher score wins. Ties enter fair sudden death.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Play Match 1</button></div>
+    <div class="tutorial-card"><button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button><img src="assets/animal-penalty-cup-cover-v1.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">One goal, two roles</h2><ol id="tutorialCopy"><li data-i18n="tutorial1">Press a numbered goal zone and release when the power pulse reaches gold.</li><li data-i18n="tutorial2">On defence, wait for the bright paw cue; dim rings can be feints.</li><li data-i18n="tutorial3">After five pairs, the higher score wins. Ties enter fair sudden death.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-wp-enter-battle data-i18n="tutorialStart">Play Match 1</button></div>
   </section>
 
   <script src="../../src/site-config.js"></script>

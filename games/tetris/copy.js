@@ -17,5 +17,12 @@
     ar: ["الصفوف", "المستوى", "التالي", "إيقاف", "متابعة اللعب", "كتل متساقطة", "املأ صفوفاً أفقية كاملة. تسقط الكتل تلقائياً وتنتهي الجولة عندما تُغلق القمة.", "← → تحريك · ↑ تدوير · ↓ سقوط بطيء · مسافة إسقاط سريع. الإطار يبيّن موضع الهبوط. كل 10 صفوف يرتفع المستوى.", "اللعبة متوقفة", "المغادرة تفقد الجولة الحالية. يبقى أفضل مجموع في هذا المتصفح.", "وصلت الكتل إلى القمة. أبقِ الكومة منخفضة وتجنب الفراغات المغطاة.", "إعادة بدء الجولة؟", "سقوط بطيء", "إسقاط سريع", "يُحفظ أفضل مجموع فقط، وليس اللوح الحالي."],
   };
   const keys = ["lines","level","next","pause","resume","tagline","objective","instructions","paused","leave","failure","restart","soft","hard","saved"];
-  root.WPTetrisCopy = (locale) => Object.fromEntries(keys.map((key,i) => [key, (data[locale] || data.en)[i]]));
+  const labels = {
+    en: ["How to play", "What is saved?", "Settings"], "zh-Hant": ["遊玩方式", "會保存哪些進度？", "設定"], "zh-Hans": ["游玩方式", "会保存哪些进度？", "设置"],
+    ja: ["遊び方", "何が保存されますか？", "設定"], ko: ["게임 방법", "무엇이 저장되나요?", "설정"], es: ["Cómo jugar", "¿Qué se guarda?", "Ajustes"],
+    "pt-BR": ["Como jogar", "O que é salvo?", "Configurações"], fr: ["Comment jouer", "Qu'est-ce qui est enregistré ?", "Réglages"], de: ["Spielanleitung", "Was wird gespeichert?", "Einstellungen"],
+    it: ["Come giocare", "Che cosa viene salvato?", "Impostazioni"], ru: ["Как играть", "Что сохраняется?", "Настройки"], hi: ["कैसे खेलें", "क्या सहेजा जाता है?", "सेटिंग"], ar: ["طريقة اللعب", "ما الذي يُحفظ؟", "الإعدادات"],
+  };
+  root.WPTetrisCopy = (locale) => ({...Object.fromEntries(keys.map((key,i) => [key, (data[locale] || data.en)[i]])),
+    ...Object.fromEntries(["how","saveQuestion","settings"].map((key,i)=>[key,(labels[locale]||labels.en)[i]]))});
 })(globalThis);
