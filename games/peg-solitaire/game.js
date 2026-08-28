@@ -39,6 +39,19 @@
     if (mainReady) mainReady.textContent = mainReadyCopy[locale] || mainReadyCopy.en;
     const mainGuide = app.root.querySelector(".logic-guide h3 + p");
     if (mainGuide) mainGuide.textContent = mainGuideCopy[locale] || mainGuideCopy.en;
+
+    // The canonical preview shell owns the concise Logic guide, but the
+    // standard Main validator only recognizes a public guide after Main. The
+    // generated locale routes already provide their own static Guide, so
+    // promote the existing guide only when that route-level marker is absent.
+    const guide = app.root.querySelector(".logic-guide");
+    const hasRouteGuide = document.querySelector(".game-page-info, [data-wp-game-guide]");
+    if (guide && app.main && !hasRouteGuide) {
+      guide.classList.add("game-page-info-static");
+      guide.dataset.wpGameGuide = "true";
+      guide.setAttribute("aria-label", "Peg Solitaire game information");
+      app.main.insertAdjacentElement("afterend", guide);
+    }
   }
 
   const lessonCopy = {

@@ -174,6 +174,7 @@ button:disabled { cursor: not-allowed; opacity: 0.46; filter: grayscale(0.25); t
 .subpanel-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin: 0.6rem 0 0.5rem; padding: 0 0.25rem; }
 .subpanel-heading h3 { margin: 0; color: var(--muted-strong); font-size: 0.88rem; }
 .muted-count, .upgrade-note { color: var(--muted); font-size: 0.75rem; white-space: nowrap; }
+#museumCount { max-width: 16rem; text-align: right; white-space: normal; line-height: 1.35; }
 
 .zone-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
 .zone-card { position: relative; display: grid; gap: 0.25rem; min-height: 7.8rem; padding: 0.9rem; overflow: hidden; text-align: left; color: var(--ink); border: 1px solid rgba(146, 211, 239, 0.18); border-radius: 0.95rem; background: linear-gradient(145deg, rgba(16, 63, 89, 0.7), rgba(7, 30, 52, 0.88)); }
@@ -305,6 +306,7 @@ button:disabled { cursor: not-allowed; opacity: 0.46; filter: grayscale(0.25); t
   .stat-card strong { font-size: 1.2rem; }
   .stat-card span, .stat-card small { font-size: 0.66rem; }
   .card-heading, .panel-heading { padding-right: 0.7rem; padding-left: 0.7rem; }
+  #museumCount { max-width: 10rem; }
   .ocean-stage { min-height: 15rem; }
   #oceanCanvas { min-height: 14rem; }
   .scene-readout { left: 0.65rem; bottom: 0.65rem; min-width: 8.4rem; padding: 0.5rem 0.6rem; }

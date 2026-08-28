@@ -6,6 +6,11 @@
   const STORE_KEY = "weightplay:animal-deep-sea-salvage:v1";
   const LEGACY_KEYS = ["weightplay_animal_deep_sea_salvage_v1"];
   const MAX_OFFLINE_MS = 8 * 60 * 60 * 1000;
+  const MIN_DIVE_MS = 4200;
+  // The minimum-speed dive is the worst case for the eight-hour offline
+  // window. Keep the guard above that derived maximum so an upgraded crew
+  // cannot silently lose completed dives.
+  const MAX_OFFLINE_CYCLES = Math.ceil(MAX_OFFLINE_MS / MIN_DIVE_MS) + 2;
   const OFFLINE_RATE = 0.72;
   const LOCALE_LABELS = {
     en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español",
@@ -39,6 +44,12 @@
       { id: "ancientRelic", key: "lootAncientRelic", minDepth: 1320, baseValue: 1450, weight: 2, salvageMs: 2400, rarity: "legendary", category: "collection", special: true, collection: true, icon: "♜" },
       { id: "mysteryDevice", key: "lootMysteryDevice", minDepth: 1500, baseValue: 1900, weight: 1, salvageMs: 2100, rarity: "legendary", category: "collection", special: true, collection: true, icon: "⌬" },
       { id: "abyssalCrown", key: "lootAbyssalCrown", minDepth: 1700, baseValue: 2800, weight: 2, salvageMs: 3200, rarity: "legendary", category: "collection", special: true, collection: true, icon: "♛" },
+    ],
+    museumMilestones: [
+      { id: "curator", key: "museumMilestoneCurator", threshold: 2, reward: 200, valueBonus: 0.04 },
+      { id: "archive", key: "museumMilestoneArchive", threshold: 4, reward: 500, valueBonus: 0.06 },
+      { id: "hall", key: "museumMilestoneHall", threshold: 6, reward: 900, valueBonus: 0.08 },
+      { id: "abyssal", key: "museumMilestoneAbyssal", threshold: 8, reward: 1600, valueBonus: 0.12 },
     ],
     upgrades: [
       { id: "dive", key: "upgradeDiving", effectKey: "effectDiving", max: 12, baseCost: 45, costScale: 1.52 },
@@ -131,23 +142,24 @@
     robotRoster: { scout: 1, salvager: 0, abyss: 0 },
     robotLevels: { scout: 0, salvager: 0, abyss: 0 },
     activeRobotType: "scout",
-    museum: [], recentFinds: [], missionsClaimed: [], dailyKey: "", dailyClaimed: [], achievementsClaimed: [],
+    museum: [], museumMilestonesClaimed: [], museumValueBonus: 0, recentFinds: [], missionsClaimed: [], dailyKey: "", dailyClaimed: [], achievementsClaimed: [],
     research: 0, prestigeCount: 0, techLevels: Object.fromEntries(CONFIG.techUpgrades.map((upgrade) => [upgrade.id, 0])),
     totalDives: 0, totalSold: 0, totalValue: 0, totalWeight: 0, rareFound: 0, totalEvents: 0, lastEvent: null,
     dailyProgress: { dives: 0, sold: 0, events: 0 },
     settings: { sound: true, music: true, motion: true },
-    lastSavedAt: Date.now(), currentDive: null,
+    lastSavedAt: Date.now(), currentDive: null, pendingOffline: 0,
   });
 
   const normalize = (raw) => {
     const state = freshState();
     if (!raw || typeof raw !== "object") return state;
-    for (const key of ["coins", "maxDepth", "robots", "research", "prestigeCount", "totalDives", "totalSold", "totalValue", "totalWeight", "rareFound", "totalEvents", "lastSavedAt"]) {
+    for (const key of ["coins", "maxDepth", "robots", "research", "prestigeCount", "museumValueBonus", "totalDives", "totalSold", "totalValue", "totalWeight", "rareFound", "totalEvents", "lastSavedAt", "pendingOffline"]) {
       if (Number.isFinite(Number(raw[key]))) state[key] = Number(raw[key]);
     }
     const normalizedZoneId = ZONE_ALIASES[raw.zoneId] || raw.zoneId;
     if (CONFIG.zones.some((zone) => zone.id === normalizedZoneId)) state.zoneId = normalizedZoneId;
-    if (Array.isArray(raw.museum)) state.museum = raw.museum.filter((id) => CONFIG.loot.some((loot) => loot.id === id && loot.collection));
+    if (Array.isArray(raw.museum)) state.museum = [...new Set(raw.museum.filter((id) => CONFIG.loot.some((loot) => loot.id === id && loot.collection)))];
+    if (Array.isArray(raw.museumMilestonesClaimed)) state.museumMilestonesClaimed = [...new Set(raw.museumMilestonesClaimed.filter((id) => CONFIG.museumMilestones.some((milestone) => milestone.id === id)))];
     if (Array.isArray(raw.recentFinds)) state.recentFinds = raw.recentFinds.slice(0, 8).filter((entry) => entry && typeof entry === "object");
     if (Array.isArray(raw.missionsClaimed)) state.missionsClaimed = raw.missionsClaimed.filter((id) => CONFIG.missions.some((mission) => mission.id === id));
     if (Array.isArray(raw.dailyClaimed)) state.dailyClaimed = raw.dailyClaimed.filter((id) => CONFIG.dailyMissions.some((mission) => mission.id === id));
@@ -166,12 +178,14 @@
     state.settings = { ...state.settings, ...(raw.settings && typeof raw.settings === "object" ? raw.settings : {}) };
     for (const key of Object.keys(state.settings)) state.settings[key] = state.settings[key] !== false;
     state.coins = Math.max(0, state.coins); state.maxDepth = clamp(state.maxDepth, 120, 2200);
+    state.museumValueBonus = clamp(Number(state.museumValueBonus) || 0, 0, 1.5);
+    state.pendingOffline = Math.max(0, Math.round(Number(state.pendingOffline) || 0));
     if (CONFIG.robotTypes.every((robot) => state.robotRoster[robot.id] <= 0)) state.robotRoster.scout = 1;
     state.robots = clamp(CONFIG.robotTypes.reduce((sum, robot) => sum + state.robotRoster[robot.id], 0), 1, 24);
     if (raw.currentDive && Number.isFinite(Number(raw.currentDive.startedAt))) {
       state.currentDive = {
         startedAt: Number(raw.currentDive.startedAt),
-        durationMs: clamp(Number(raw.currentDive.durationMs) || 17000, 4500, 40000),
+        durationMs: clamp(Number(raw.currentDive.durationMs) || 17000, MIN_DIVE_MS, 40000),
         targetDepth: clamp(Number(raw.currentDive.targetDepth) || 70, 10, 1900),
         zoneId: CONFIG.zones.some((zone) => zone.id === (ZONE_ALIASES[raw.currentDive.zoneId] || raw.currentDive.zoneId)) ? (ZONE_ALIASES[raw.currentDive.zoneId] || raw.currentDive.zoneId) : state.zoneId,
         previewLootId: CONFIG.loot.some((loot) => loot.id === raw.currentDive.previewLootId) ? raw.currentDive.previewLootId : "metal",
@@ -193,7 +207,9 @@
   };
 
   let state = loadState();
-  let pendingOffline = 0;
+  // Keep unclaimed offline credits in the save too. Closing the dialog (or
+  // leaving the page before pressing Collect) must not erase a completed run.
+  let pendingOffline = Math.max(0, Math.round(Number(state.pendingOffline) || 0));
   let lastRender = 0;
   let saveTimer = 0;
   let toastTimer = 0;
@@ -234,10 +250,10 @@
     const capacity = Math.max(8, Math.round(8 + level("cargo") * 1.2 + Math.max(0, robots.capacityBonus) + (robots.count - 1) * 0.8));
     const finds = 1 + Math.floor(level("salvage") / 2);
     const targetBoost = 1 + level("movement") * 0.06;
-    const valueMultiplier = researchMultiplier * (1 + level("value") * 0.12);
+    const valueMultiplier = researchMultiplier * (1 + level("value") * 0.12 + state.museumValueBonus);
     const rareChance = clamp(0.045 + level("rare") * 0.024 + techLevel("rare") * 0.018 + robots.rareBonus, 0.045, 0.58);
     const offlineRate = clamp(OFFLINE_RATE + techLevel("offline") * 0.035, OFFLINE_RATE, 0.98);
-    return { researchMultiplier, diveDuration: clamp(diveDuration, 4200, 17000), capacity, finds, targetBoost, valueMultiplier, rareChance, offlineRate, robots };
+    return { researchMultiplier, diveDuration: clamp(diveDuration, MIN_DIVE_MS, 17000), capacity, finds, targetBoost, valueMultiplier, rareChance, offlineRate, robots };
   };
 
   const zoneLabel = (zone) => t(zone.nameKey) === zone.nameKey ? zone.name : t(zone.nameKey);
@@ -246,6 +262,7 @@
 
   const save = () => {
     state.lastSavedAt = Date.now();
+    state.pendingOffline = pendingOffline;
     storageSet(STORE_KEY, JSON.stringify(state));
     if (els.saveState) { els.saveState.dataset.saving = "false"; els.saveState.textContent = "●"; }
   };
@@ -261,6 +278,24 @@
     els.toast.textContent = message;
     els.toast.hidden = false;
     toastTimer = window.setTimeout(() => { els.toast.hidden = true; }, 2600);
+  };
+
+  const applyMuseumMilestones = ({ silent = false, deferReward = false } = {}) => {
+    let changed = false;
+    for (const milestone of CONFIG.museumMilestones) {
+      if (state.museum.length < milestone.threshold || state.museumMilestonesClaimed.includes(milestone.id)) continue;
+      state.museumMilestonesClaimed.push(milestone.id);
+      state.museumValueBonus = clamp(state.museumValueBonus + milestone.valueBonus, 0, 1.5);
+      if (deferReward) pendingOffline += milestone.reward;
+      else state.coins += milestone.reward;
+      changed = true;
+      if (!silent) showToast(t("museumMilestoneMessage", { name: t(milestone.key), value: number(milestone.reward), bonus: number(milestone.valueBonus * 100) }));
+    }
+    if (changed) {
+      document.body.dataset.museumTier = String(state.museumMilestonesClaimed.length);
+      markSaving();
+    }
+    return changed;
   };
 
   const weightedPick = (items, weights) => {
@@ -306,7 +341,7 @@
     const targetDepth = clamp(Math.round((lower + Math.random() * Math.max(20, upper - lower)) * stats.targetBoost), lower, upper);
     const preview = chooseLoot(targetDepth);
     const salvageTime = Math.round((preview.salvageMs || 0) * 0.3);
-    return { startedAt, durationMs: clamp(stats.diveDuration + salvageTime, 4200, 20000), targetDepth, zoneId: zone.id, previewLootId: preview.id };
+    return { startedAt, durationMs: clamp(stats.diveDuration + salvageTime, MIN_DIVE_MS, 20000), targetDepth, zoneId: zone.id, previewLootId: preview.id };
   };
 
   const startDive = (startedAt = Date.now()) => {
@@ -368,6 +403,7 @@
       soldValue += eventBonus;
       if (!suppressToast) showToast(`${t(event.key)} · +${number(eventBonus)} ${t("credits")}`);
     }
+    applyMuseumMilestones({ silent: suppressToast, deferReward: offline });
     earned = soldValue + museumValue;
     state.totalSold += soldValue;
     state.totalValue += eventBonus;
@@ -383,20 +419,35 @@
 
   const processOffline = () => {
     const now = Date.now();
-    const savedAt = Number.isFinite(state.lastSavedAt) ? state.lastSavedAt : now;
+    const savedAt = Number.isFinite(state.lastSavedAt) ? clamp(state.lastSavedAt, 0, now) : now;
     const horizon = Math.min(now, savedAt + MAX_OFFLINE_MS);
-    let cursor = savedAt;
     let cycles = 0;
-    if (!state.currentDive) state.currentDive = makeDive(cursor);
-    while (state.currentDive && state.currentDive.startedAt + state.currentDive.durationMs <= horizon && cycles < 120) {
+    if (!state.currentDive) state.currentDive = makeDive(savedAt);
+    else {
+      const finishedAt = Number(state.currentDive.startedAt) + Number(state.currentDive.durationMs);
+      if (!Number.isFinite(finishedAt)) state.currentDive = makeDive(savedAt);
+      else if (finishedAt <= savedAt) {
+        // A throttled/hidden tab can save after a dive ended but before its
+        // interval settled it. Settle that saved in-flight run at the window
+        // boundary instead of dropping its payout or replaying older hours.
+        state.currentDive = { ...state.currentDive, startedAt: Math.max(0, savedAt - state.currentDive.durationMs) };
+      }
+      else if (state.currentDive.startedAt < savedAt) {
+        state.currentDive = { ...state.currentDive, startedAt: savedAt, durationMs: Math.max(1, finishedAt - savedAt) };
+      }
+    }
+    while (state.currentDive && state.currentDive.startedAt + state.currentDive.durationMs <= horizon && cycles < MAX_OFFLINE_CYCLES) {
       const result = settleDive({ offline: true, silent: true });
       const finishedAt = result.finishedAt;
       state.currentDive = makeDive(finishedAt);
-      cursor = finishedAt;
       cycles += 1;
     }
-    if (cycles >= 120 && state.currentDive) state.currentDive.startedAt = horizon;
+    if (cycles >= MAX_OFFLINE_CYCLES && state.currentDive) state.currentDive.startedAt = horizon;
     state.lastSavedAt = now;
+    state.pendingOffline = pendingOffline;
+    // Persist the new dive anchor and any unclaimed payout immediately. This
+    // keeps a dismissed offline dialog recoverable on the next visit.
+    save();
     if (pendingOffline > 0) {
       els.offlineValue.textContent = `+${number(pendingOffline)} ${t("credits")}`;
       window.setTimeout(() => { els.offlineModal.hidden = false; }, 500);
@@ -510,7 +561,9 @@
 
   const renderMuseum = () => {
     const collectionLoot = CONFIG.loot.filter(lootIsCollection);
-    els.museumCount.textContent = `${state.museum.length}/${collectionLoot.length} ${t("found")}`;
+    const bonus = Math.round(state.museumValueBonus * 100);
+    document.body.dataset.museumTier = String(state.museumMilestonesClaimed.length);
+    els.museumCount.textContent = `${state.museum.length}/${collectionLoot.length} ${t("found")}${bonus ? ` · +${bonus}% ${t("museumBonus")}` : ""}`;
     els.museumGrid.innerHTML = collectionLoot.map((loot) => {
       const found = state.museum.includes(loot.id);
       return `<article class="museum-card${found ? " discovered" : ""}"><div class="museum-icon" aria-hidden="true">${found ? loot.icon : "·"}</div><div><strong>${escapeHtml(found ? lootLabel(loot) : t("unknownItem"))}</strong><small>${escapeHtml(found ? `${rarityLabel(loot.rarity)} · ${t("discovered")} · ${loot.weight}${t("kg")}` : t("undiscovered"))}</small></div></article>`;
@@ -793,12 +846,15 @@
       if (effectiveMaxDepth() < 760 || state.totalSold < 3000) return;
       if (!window.confirm(t("prestigeCopy"))) return;
       const museum = state.museum.slice();
+      const museumMilestonesClaimed = state.museumMilestonesClaimed.slice();
+      const museumValueBonus = state.museumValueBonus;
       const achievementsClaimed = state.achievementsClaimed.slice();
       const techLevels = { ...state.techLevels };
       const research = state.research + 1;
       const prestigeCount = state.prestigeCount + 1;
       state = freshState();
-      state.museum = museum; state.achievementsClaimed = achievementsClaimed; state.techLevels = techLevels;
+      state.museum = museum; state.museumMilestonesClaimed = museumMilestonesClaimed; state.museumValueBonus = museumValueBonus;
+      state.achievementsClaimed = achievementsClaimed; state.techLevels = techLevels;
       state.research = research; state.prestigeCount = prestigeCount; state.dailyKey = localDateKey();
       pendingOffline = 0; applySettings(); startDive(); save(); render(); showToast(t("prestigeDone"));
     });
@@ -809,6 +865,7 @@
   applyStaticTranslations();
   applySettings();
   ensureDailyState();
+  applyMuseumMilestones({ silent: true });
   processOffline();
   if (!state.currentDive) startDive();
   bind();

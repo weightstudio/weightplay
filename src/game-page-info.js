@@ -277,6 +277,19 @@
       related: ["pyramid-solitaire", "golf-solitaire"], relatedIds: ["pyramid-solitaire", "golf-solitaire"],
       faq: [["Do suits matter?", "No. Only rank matters for the one-above or one-below rule."], ["Does Ace wrap to King?", "No. This strict classic version keeps Ace and King at opposite ends."], ["How many cards are in the peaks?", "There are 28 tableau cards across three peaks."], ["What builds Combo?", "Consecutive legal tableau plays build the current Combo; Stock turns begin a new chain."], ["Can I undo?", "Yes. Undo restores the complete prior chain and board state."]],
     },
+    "sliding-15": {
+      title: "Sliding 15", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Planning", "Spatial Reasoning", "Focus"],
+      intro: "Sliding 15 is a classic 4x4 number puzzle. Slide one neighboring tile into the empty space, rebuild the order from 1 through 15, and decide when a tempting move helps or traps the next route.",
+      story: ["The board begins with fifteen numbered tiles and one empty space in a fixed scrambled arrangement. Every legal slide changes which tile can move next, so the puzzle is a small planning field rather than a speed test.", "The goal is readable: put 1 through 15 left to right, top to bottom, leaving the empty space in the bottom-right corner. The challenge is preserving future access while opening the next part of the order."],
+      systems: ["A tile moves only when it shares an edge with the empty space. Diagonal moves, jumps over another tile, and swapping two occupied tiles are not legal.", "The board uses a deterministic scrambled opening for a repeatable practice route. Moves counts every legal slide; Hint marks one actual adjacent candidate but does not move it for you.", "Undo restores the previous board and move count. New Puzzle returns to the starting arrangement, while Result appears only after the ordered board is complete.", "Touch, mouse, and keyboard-friendly controls use the same board state. No timer, account, purchase, or network service is required; locale and sound preferences stay in this browser."],
+      how: ["Choose Start Game from Main and inspect the blank square before moving.", "Slide a neighboring numbered tile into the blank; after each move, read the new legal neighbors.", "Use Hint when you want one candidate, then decide whether it preserves access to the next number.", "Use Undo to compare a route or recover from a move that closes the useful corridor.", "Place 1 through 15 in order and keep the blank in the final corner to complete the puzzle."],
+      strategyTips: ["Work from the next target number, but do not trap the blank behind a row or column you still need.", "Keep more than one route to the next target when possible; a legal move can be safe now but harmful two moves later.", "Use the bottom row and right column deliberately because the final placement needs room for the blank.", "When the board feels stuck, use Undo to return to the last position with more open neighbors instead of guessing.", "Compare Hint with your own plan—the hint explains a legal option, not a mandatory solution."],
+      progression: ["Sliding 15 is a single classic puzzle with a deterministic scrambled opening and a clear ordered finish.", "Replay is about improving route quality and move count, not unlocking paid content or extra difficulty tiers.", "Short practice sessions teach adjacency first, then reward planning the final rows and columns without a timer."],
+      designNote: "Sliding 15 uses the shared Classic Logic Lab shell, a responsive 4x4 board, touch, mouse, and keyboard input, localized Hint and Result feedback, reversible Undo, local preferences, and an explicit Main-Battle-Result recovery path.",
+      parent: "Sliding 15 is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required. The game is a practice experience, not a formal assessment; browser-local preferences may be cleared with site data.",
+      related: ["pyramid-solitaire", "tripeaks-solitaire"], relatedIds: ["pyramid-solitaire", "tripeaks-solitaire"],
+      faq: [["What makes a move legal?", "A numbered tile must share an edge with the empty space; diagonal moves and jumps are not allowed."], ["What is the goal?", "Restore 1 through 15 from left to right and top to bottom, with the empty space in the bottom-right corner."], ["Does Hint solve the puzzle?", "No. Hint marks one actual adjacent tile, and you still decide whether to slide it."], ["Can I undo?", "Yes. Undo restores the previous board and move count."], ["Is the opening repeatable?", "Yes. New Puzzle returns to the deterministic starting arrangement for this practice route."], ["Is progress saved?", "The puzzle is played locally in this browser; no account or cloud save is required."]],
+    },
     "golf-solitaire": {
       title: "Golf Solitaire", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Pattern Recognition", "Planning", "Focus"],
       intro: "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.",
@@ -11565,7 +11578,7 @@
       intro: "Envie duas cartas ao crib, faça o pegging sem passar de 31 e pontue a mão com combinações clássicas.", how: ["Pares, sequências e quinze valem pontos. Vence quem chegar primeiro a 121."], noteTitle: "Status da prévia", parent: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]],
     },
     fr: {
-      title: "Cribbage", difficulty: "De facile à exigeant", time: "5 à 15 minutes", gameplay: "Jeu de cartes classique à comptage", genre: ["Cartes", "Famille", "Stratégie"], skills: ["Planification", "Concentration", "Reconnaissance des motifs"],
+      title: "Criblage", difficulty: "De facile à exigeant", time: "5 à 15 minutes", gameplay: "Jeu de cartes classique à comptage", genre: ["Cartes", "Famille", "Stratégie"], skills: ["Planification", "Concentration", "Reconnaissance des motifs"],
       intro: "Envoyez deux cartes au crib, jouez sans dépasser 31, puis marquez la main avec des combinaisons classiques.", how: ["Les paires, suites et quinze rapportent des points. Le premier à atteindre 121 gagne."], noteTitle: "État de l’aperçu", parent: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.", faq: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]],
     },
     de: {
@@ -14808,6 +14821,7 @@
     localizedGames[localeCode] ||= {};
     localizedGames[localeCode].casino = {
       ...(localizedGames[localeCode].casino || {}),
+      ...(localeCode === "es" ? { title: "casinos" } : {}),
       faq,
     };
   }

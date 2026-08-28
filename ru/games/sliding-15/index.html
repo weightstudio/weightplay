@@ -16,7 +16,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/sliding-15/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/sliding-15/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/sliding-15/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Пятнашки | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260827-sliding-15-general-guide-v7">  <meta name="description" content="Сдвигайте соседние числа в пустоту и соберите 1–15." />
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Пятнашки | WeightPlay</title><link rel="stylesheet" href="../../src/classic-logic-lab.css?v=20260829-sliding-15-static-guide-v8">  <meta name="description" content="Сдвигайте соседние числа в пустоту и соберите 1–15." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Пятнашки | WeightPlay" />
@@ -57,24 +57,31 @@
   }
 }
     </script>
-  </head><body><div id="logicApp"></div><script src="/src/site-config.js?v=20260827-sliding-15-general-guide-v7"></script><script src="../../src/analytics.js?v=20260827-sliding-15-general-guide-v7"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260827-sliding-15-art-v1"></script><script src="game.js?v=20260827-sliding-15-general-guide-v7"></script><script src="analytics-ownership.js?v=20260827-sliding-15-general-guide-v7"></script><script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
+  </head><body>
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Пятнашки</h1><div id="logicApp"></div><script src="/src/site-config.js?v=20260829-sliding-15-static-guide-v8"></script><script src="../../src/analytics.js?v=20260829-sliding-15-static-guide-v8"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/classic-logic-lab.js?v=20260827-sliding-15-art-v1"></script><script src="game.js?v=20260829-sliding-15-static-guide-v8"></script><script src="analytics-ownership.js?v=20260829-sliding-15-static-guide-v8"></script><script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Пятнашки информация об игре" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Пятнашки</h2><p>Сдвигайте соседние числа в пустоту и соберите 1–15.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Числовой пятнашки</strong></div><div class="game-info-fact"><span>Genre</span><strong>Классика · Головоломка · Стратегия · Семейная</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Числовой пятнашки</strong></div><div class="game-info-fact"><span>Genre</span><strong>Классика · Головоломка · Стратегия · Семейная</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>3–10 минут</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Planning · Пространственное мышление · Внимание</strong></div></div>
     </div>
     <div class="game-info-sections">
-
-
-
-
-
-
-
+      <div class="game-info-section"><h3>World and Mission</h3><p>The board begins with fifteen numbered tiles and one empty space in a fixed scrambled arrangement. Every legal slide changes which tile can move next, so the puzzle is a small planning field rather than a speed test.</p>
+<p>The goal is readable: put 1 through 15 left to right, top to bottom, leaving the empty space in the bottom-right corner. The challenge is preserving future access while opening the next part of the order.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>A tile moves only when it shares an edge with the empty space. Diagonal moves, jumps over another tile, and swapping two occupied tiles are not legal.</p>
+<p>The board uses a deterministic scrambled opening for a repeatable practice route. Moves counts every legal slide; Hint marks one actual adjacent candidate but does not move it for you.</p>
+<p>Undo restores the previous board and move count. New Puzzle returns to the starting arrangement, while Result appears only after the ordered board is complete.</p>
+<p>Touch, mouse, and keyboard-friendly controls use the same board state. No timer, account, purchase, or network service is required; locale and sound preferences stay in this browser.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose Start Game from Main and inspect the blank square before moving.</li><li>Slide a neighboring numbered tile into the blank; after each move, read the new legal neighbors.</li><li>Use Hint when you want one candidate, then decide whether it preserves access to the next number.</li><li>Use Undo to compare a route or recover from a move that closes the useful corridor.</li><li>Place 1 through 15 in order and keep the blank in the final corner to complete the puzzle.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Work from the next target number, but do not trap the blank behind a row or column you still need.</li><li>Keep more than one route to the next target when possible; a legal move can be safe now but harmful two moves later.</li><li>Use the bottom row and right column deliberately because the final placement needs room for the blank.</li><li>When the board feels stuck, use Undo to return to the last position with more open neighbors instead of guessing.</li><li>Compare Hint with your own plan—the hint explains a legal option, not a mandatory solution.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Sliding 15 is a single classic puzzle with a deterministic scrambled opening and a clear ordered finish.</p>
+<p>Replay is about improving route quality and move count, not unlocking paid content or extra difficulty tiers.</p>
+<p>Short practice sessions teach adjacency first, then reward planning the final rows and columns without a timer.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Sliding 15 uses the shared Classic Logic Lab shell, a responsive 4x4 board, touch, mouse, and keyboard input, localized Hint and Result feedback, reversible Undo, local preferences, and an explicit Main-Battle-Result recovery path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Примечание для родителей</h3><p>Sliding 15 is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required. The game is a practice experience, not a formal assessment; browser-local preferences may be cleared with site data.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Сохраняется ли прогресс?</dt><dd>Да, только в этом браузере.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>Related Games</h3><p>Поскольку в этой игре используется Planning, попробуйте следующее:</p><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/pyramid-solitaire/"><img src="/assets/pyramid-solitaire-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Пасьянс Пирамида</strong><span>Пасьянс «Пирамида» — это классическая карточная головоломка: удалите открытые пары, которые в сумме дают 13, очистите семирядную пирамиду и используйте запас только тогда, когда текущий расклад не предлагает полезной пары.</span></span></a><a class="game-info-related-card" href="/ru/games/tripeaks-solitaire/"><img src="/assets/tripeaks-solitaire-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Пасьянс ТриПикс</strong><span>В TriPeaks Solitaire используются три перекрывающихся вершины и цепочка отходов.</span></span></a></div></div>
     </div>
   </section>
 </body></html>
