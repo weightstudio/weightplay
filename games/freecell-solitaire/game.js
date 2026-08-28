@@ -15,6 +15,36 @@
     hi: "क्रम खुला: {count} कार्ड साथ ले जाए गए।",
     ar: "تم فتح التسلسل: نُقلت {count} بطاقات معًا.",
   };
+  const FREECELL_PROGRESS_LABEL = {
+    en: "Goal",
+    "zh-Hant": "目標",
+    "zh-Hans": "目标",
+    ja: "目標",
+    ko: "목표",
+    es: "Objetivo",
+    "pt-BR": "Objetivo",
+    fr: "Objectif",
+    de: "Ziel",
+    it: "Obiettivo",
+    ru: "Цель",
+    hi: "लक्ष्य",
+    ar: "الهدف",
+  };
+  const FREECELL_BATTLE_SOUND_COPY = {
+    en: { on: "Sound: On", off: "Sound: Off" },
+    "zh-Hant": { on: "音效：開", off: "音效：關" },
+    "zh-Hans": { on: "音效：开", off: "音效：关" },
+    ja: { on: "効果音：オン", off: "効果音：オフ" },
+    ko: { on: "효과음: 켬", off: "효과음: 끔" },
+    es: { on: "Sonido: activado", off: "Sonido: desactivado" },
+    "pt-BR": { on: "Som: ligado", off: "Som: desligado" },
+    fr: { on: "Son : activé", off: "Son : désactivé" },
+    de: { on: "Ton: an", off: "Ton: aus" },
+    it: { on: "Suono: attivo", off: "Suono: disattivo" },
+    ru: { on: "Звук: вкл.", off: "Звук: выкл." },
+    hi: { on: "ध्वनि: चालू", off: "ध्वनि: बंद" },
+    ar: { on: "الصوت: مفعّل", off: "الصوت: متوقف" },
+  };
   const FREECELL_HINT_CUE = {
     en: "Hint: the highlighted card is selected; tap a numbered destination.",
     "zh-Hant": "提示：反白牌已選取；請點編號目的地。",
@@ -141,6 +171,29 @@
     ar: "انقل العمود {source} كاملًا إلى العمود {destination} لفتح مساحة وزيادة سعة النقل.",
   };
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
+  const battleSoundToggle = document.getElementById("soundToggleBattle");
+  const refreshFreecellHeaderCopy = () => {
+    const locale = view?.locale || "en";
+    const progressLabel = document.getElementById("mainProgressLabel");
+    const progressText = document.querySelector("#mainProgress [data-copy=target]");
+    if (progressLabel) progressLabel.textContent = FREECELL_PROGRESS_LABEL[locale] || FREECELL_PROGRESS_LABEL.en;
+    if (progressText) progressText.textContent = view?.variantCopy?.().target || "Build four suit foundations from Ace to King using eight open columns and four temporary cells.";
+    if (!battleSoundToggle) return;
+    const copy = FREECELL_BATTLE_SOUND_COPY[locale] || FREECELL_BATTLE_SOUND_COPY.en;
+    const label = view?.audio?.enabled ? copy.on : copy.off;
+    battleSoundToggle.textContent = label;
+    battleSoundToggle.setAttribute("aria-label", label);
+    battleSoundToggle.setAttribute("aria-pressed", String(Boolean(view?.audio?.enabled)));
+  };
+  battleSoundToggle?.addEventListener("click", () => {
+    if (!view?.audio) return;
+    view.audio.setEnabled(!view.audio.enabled);
+    view.refreshSound?.();
+    refreshFreecellHeaderCopy();
+  });
+  view?.nodes?.localeSelect?.addEventListener("change", () => window.requestAnimationFrame(refreshFreecellHeaderCopy));
+  window.addEventListener("wonder:locale-change", refreshFreecellHeaderCopy);
+  refreshFreecellHeaderCopy();
   const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";
   const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);

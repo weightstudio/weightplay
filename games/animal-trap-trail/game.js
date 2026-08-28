@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 7;
+  const GAME_VERSION = 8;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -10,7 +10,7 @@
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, statusKey: "", resultKind: "room" };
+  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -57,6 +57,68 @@
     hi: "सुरक्षित लैंडिंग",
     ar: "هبوط آمن",
   };
+  const timingCueCopy = {
+    gap: {
+      en: "Jump before the dark edge, then land in the lit window.",
+      "zh-Hant": "在暗邊前跳起，落在發光區，再跳過尖刺。",
+      "zh-Hans": "在暗边前起跳，落在发光区，再跳过尖刺。",
+      ja: "暗い端の前で跳び、光る範囲に着地してからトゲを越えよう。",
+      ko: "어두운 가장자리 전에 점프해 빛나는 구간에 착지한 뒤 가시를 넘으세요.",
+      es: "Salta antes del borde oscuro, aterriza en la zona iluminada y supera las púas.",
+      "pt-BR": "Pule antes da borda escura, pouse na faixa iluminada e passe pelos espinhos.",
+      fr: "Saute avant le bord sombre, atterris dans la zone éclairée, puis franchis les piques.",
+      de: "Springe vor dem dunklen Rand, lande im Lichtfenster und überspringe dann die Spitzen.",
+      it: "Salta prima del bordo scuro, atterra nella zona illuminata e supera gli spuntoni.",
+      ru: "Прыгните перед тёмным краем, приземлитесь в светлом окне и перепрыгните шипы.",
+      hi: "गहरे किनारे से पहले कूदें, चमकते हिस्से में उतरें और फिर काँटों को पार करें।",
+      ar: "اقفز قبل الحافة المعتمة، واهبط في النافذة المضيئة، ثم تجاوز الأشواك.",
+    },
+    landing: {
+      en: "Safe landing — press JUMP now to clear the spike.",
+      "zh-Hant": "安全落點——現在按下跳躍，越過尖刺。",
+      "zh-Hans": "安全落点——现在按下跳跃，越过尖刺。",
+      ja: "安全な着地点です。今ジャンプしてトゲを越えよう。",
+      ko: "안전 착지입니다. 지금 점프해 가시를 넘으세요.",
+      es: "Aterrizaje seguro: pulsa SALTAR ahora para superar las púas.",
+      "pt-BR": "Pouso seguro: pressione PULAR agora para passar pelos espinhos.",
+      fr: "Atterrissage sûr : appuie sur SAUTER maintenant pour franchir les piques.",
+      de: "Sichere Landung: Jetzt SPRINGEN drücken, um die Spitzen zu überwinden.",
+      it: "Atterraggio sicuro: premi SALTA ora per superare gli spuntoni.",
+      ru: "Безопасная посадка: нажмите ПРЫЖОК сейчас, чтобы преодолеть шипы.",
+      hi: "सुरक्षित लैंडिंग — काँटों को पार करने के लिए अभी कूदें।",
+      ar: "هبوط آمن — اضغط قفز الآن لتجاوز الأشواك.",
+    },
+    spike: {
+      en: "Jump now — clear the spike, then keep moving right.",
+      "zh-Hant": "現在跳躍——越過尖刺後繼續向右。",
+      "zh-Hans": "现在跳跃——越过尖刺后继续向右。",
+      ja: "今ジャンプ——トゲを越えて右へ進もう。",
+      ko: "지금 점프하세요. 가시를 넘고 오른쪽으로 계속 가세요.",
+      es: "Salta ahora: supera las púas y sigue a la derecha.",
+      "pt-BR": "Pule agora: passe pelos espinhos e continue à direita.",
+      fr: "Saute maintenant : franchis les piques, puis continue à droite.",
+      de: "Jetzt springen: Spitzen überwinden und weiter nach rechts.",
+      it: "Salta ora: supera gli spuntoni e continua a destra.",
+      ru: "Прыгайте сейчас: преодолейте шипы и двигайтесь вправо.",
+      hi: "अभी कूदें — काँटों को पार करके दाईं ओर बढ़ें।",
+      ar: "اقفز الآن — تجاوز الأشواك ثم واصل إلى اليمين.",
+    },
+    clear: {
+      en: "Past the spike — keep moving to the lantern.",
+      "zh-Hant": "通過尖刺——繼續前往燈籠。",
+      "zh-Hans": "通过尖刺——继续前往灯笼。",
+      ja: "トゲを越えた。ランタンまで進もう。",
+      ko: "가시를 넘었습니다. 랜턴까지 계속 가세요.",
+      es: "Pasadas las púas: sigue hacia el farol.",
+      "pt-BR": "Depois dos espinhos: continue até a lanterna.",
+      fr: "Après les piques : continue vers la lanterne.",
+      de: "Hinter den Spitzen: weiter zur Laterne.",
+      it: "Oltre gli spuntoni: continua verso la lanterna.",
+      ru: "Шипы позади: двигайтесь к фонарю.",
+      hi: "काँटे पीछे हैं — लालटेन की ओर बढ़ें।",
+      ar: "تجاوزت الأشواك — واصل إلى المصباح.",
+    },
+  };
   function format(value, values) { return value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ""); }
   function currentLocale() {
     const candidate = window.WeightPlayFiveGameLocale?.locale || document.documentElement.lang || "en";
@@ -68,13 +130,30 @@
   function deathLabel(number) { return format(copy().deaths, { n: number }); }
   function setText(id, value) { const element = $(id); if (element) element.textContent = value; }
   function updateMainProgress() { setText("main-progress", format(copy().progress, { bestRoom: state.bestRoom, deaths: state.deaths })); }
+  function firstRoomTimingKey() {
+    if (state.chapter !== 1 || state.room !== 1 || !state.player) return "";
+    const t = trapData();
+    const p = state.player;
+    if (p.x < t.gap - 42) return "approach";
+    if (p.x < t.gap + 70) return "gap";
+    if (p.x < t.spike - 42) return state.firstRoomLandingSeen ? (p.grounded ? "landing" : "spike") : "gap";
+    if (p.x < t.spike + 52) return "spike";
+    return "clear";
+  }
+  function currentBattleStatus() {
+    const c = copy();
+    if (state.statusKey === "gap") return c.gapDeath;
+    if (state.statusKey === "hazard") return c.hazardDeath;
+    if (state.statusKey === "pulse") return state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.pulseFeedback;
+    if (state.chapter === 1 && state.room === 1 && state.timingCue && state.timingCue !== "approach") return timingCueCopy[state.timingCue][currentLocale()];
+    if (state.chapter === 1 && state.room === 1) return landingCueCopy[currentLocale()];
+    return c.battleStatus;
+  }
   function updateBattleText() {
     const c = copy();
     setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} / 3`);
     setText("death-label", deathLabel(state.deaths));
-    const pulseText = state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.pulseFeedback;
-    const roomCue = state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.battleStatus;
-    setText("battle-status", state.statusKey === "gap" ? c.gapDeath : state.statusKey === "hazard" ? c.hazardDeath : state.statusKey === "pulse" ? pulseText : roomCue);
+    setText("battle-status", currentBattleStatus());
   }
   function renderResult() {
     const c = copy();
@@ -130,7 +209,7 @@
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
     state.keys.clear(); state.tap = null;
-    state.pulse = 0;
+    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomLandingSeen = false; state.timingCue = firstRoomTimingKey();
     updateBattleText();
   }
   function startRoom(chapter = 1, room = 1) { state.chapter = chapter; state.room = room; state.statusKey = ""; resetRoom(); show("battle"); }
@@ -153,9 +232,12 @@
     const p = state.player; const t = trapData(); const reversed = t.reverse;
     const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
     const left = reversed ? (state.keys.has("ArrowRight") || state.keys.has("KeyD")) : (state.keys.has("ArrowLeft") || state.keys.has("KeyA"));
+    const jumpHeld = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
+    const inputStarted = Boolean(state.tap || right || left || jumpHeld);
+    if (inputStarted && state.statusKey) state.statusKey = "";
     if (state.tap) {
       if (state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW") {
-        if (p.grounded) { p.vy = -10.5; p.grounded = false; }
+        state.jumpBuffer = 12;
       } else {
         const tapRight = state.tap === "ArrowRight" || state.tap === "KeyD";
         if (reversed ? !tapRight : tapRight) p.x += 24; else p.x -= 24;
@@ -163,14 +245,19 @@
       state.tap = null;
     }
     if (right) p.x += 3.2 * dt; if (left) p.x -= 3.2 * dt;
-    if ((state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW")) && p.grounded) { p.vy = -10.5; p.grounded = false; }
+    if (jumpHeld) state.jumpBuffer = 12;
+    if (state.jumpBuffer > 0) state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
     p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));
     const floor = solidAt(p.x) ? 418 : 540;
     if (p.y >= floor - 28) { p.y = floor - 28; p.vy = 0; p.grounded = true; } else p.grounded = false;
+    if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) state.firstRoomLandingSeen = true;
+    if (state.jumpBuffer > 0 && p.grounded) { p.vy = -10.5; p.grounded = false; state.jumpBuffer = 0; }
     if (p.y > 560) return die("gap");
     if (hazardAt(p.x, p.y) && p.grounded) return die("hazard");
     if (p.x > 870 && p.grounded) { if (state.room < 3) { state.room += 1; resetRoom(); } else finish(); }
     if (state.pulse > 0) state.pulse -= dt;
+    const timingCue = firstRoomTimingKey();
+    if (timingCue !== state.timingCue) { state.timingCue = timingCue; updateBattleText(); }
   }
   function draw() {
     const t = trapData(); ctx.clearRect(0,0,960,540); const g = ctx.createLinearGradient(0,0,0,540); g.addColorStop(0,"#101933"); g.addColorStop(1,"#070b16"); ctx.fillStyle = g; ctx.fillRect(0,0,960,540);
@@ -181,17 +268,24 @@
     if (state.chapter === 1 && state.room === 1) {
       const landingStart = t.gap + 78;
       const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
+      const landingEnd = landingStart + landingWidth;
       ctx.save();
-      ctx.fillStyle = state.pulse > 0 ? "#a4ead566" : "#a4ead533";
+      ctx.fillStyle = state.timingCue === "landing" || state.pulse > 0 ? "#a4ead566" : "#a4ead533";
       ctx.fillRect(landingStart, 394, landingWidth, 42);
-      ctx.strokeStyle = state.pulse > 0 ? "#a4ead5" : "#83cdb8";
-      ctx.lineWidth = state.pulse > 0 ? 4 : 2;
+      ctx.strokeStyle = state.timingCue === "landing" || state.pulse > 0 ? "#a4ead5" : "#83cdb8";
+      ctx.lineWidth = state.timingCue === "landing" || state.pulse > 0 ? 4 : 2;
       ctx.setLineDash(state.pulse > 0 ? [10, 7] : [6, 8]);
       ctx.strokeRect(landingStart, 394, landingWidth, 42);
       ctx.setLineDash([]);
       ctx.fillStyle = "#dfffee";
       ctx.font = "bold 13px system-ui";
       ctx.fillText(landingWindowCopy[currentLocale()], landingStart + 4, 389);
+      ctx.strokeStyle = "#ffd36b";
+      ctx.lineWidth = state.timingCue === "spike" ? 5 : 2;
+      ctx.beginPath(); ctx.moveTo(landingEnd + 8, 430); ctx.lineTo(t.spike - 30, 430); ctx.lineTo(t.spike - 42, 423); ctx.moveTo(t.spike - 30, 430); ctx.lineTo(t.spike - 42, 437); ctx.stroke();
+      ctx.fillStyle = state.timingCue === "spike" ? "#fff1a1" : "#ffe4a3";
+      ctx.font = "bold 15px system-ui";
+      ctx.fillText(copy().jump, t.spike - 18, 365);
       ctx.restore();
     }
     if (state.pulse > 0) {

@@ -559,7 +559,9 @@
   }
   function currentLocale(id) {
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
-    if (["four-in-a-row", "sliding-15", "sudoku"].includes(id)) {
+    // Localized Lights Out routes must own their locale instead of inheriting
+    // a previously selected language from another route in this shared lab.
+    if (["four-in-a-row", "sliding-15", "sudoku", "lights-out"].includes(id)) {
       const selectedPath = localStorageSafe(LOCALE_SELECTION_PATH_KEY);
       const selectedValue = localStorageSafe(LOCALE_SELECTION_VALUE_KEY);
       if (selectedPath === window.location.pathname && LOCALES.includes(selectedValue)) return selectedValue;

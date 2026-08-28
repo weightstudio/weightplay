@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v20";
+  document.body.dataset.gameVersion = "v21";
   const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const TRIPEAKS_DYNAMIC_COPY = Object.freeze({
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", moves: "Moves", score: "Score", combo: "Combo", back: "Back", ariaCard: "{rank} of {suit}", suits: { spades: "spades", hearts: "hearts", clubs: "clubs", diamonds: "diamonds" } },
@@ -167,8 +167,46 @@
     if (!view) return;
     const dynamicCopy = () => TRIPEAKS_DYNAMIC_COPY[view.locale] || TRIPEAKS_DYNAMIC_COPY.en;
     const markGameOwned = (node) => node?.setAttribute("data-runtime-localize", "off");
+    const ensureMainProgress = () => {
+      const mainCopy = document.querySelector(".main-copy");
+      const actions = mainCopy?.querySelector(".main-actions");
+      if (!mainCopy || !actions) return null;
+      const existing = document.getElementById("mainProgress");
+      if (existing) return existing;
+      const progress = document.createElement("div");
+      progress.id = "mainProgress";
+      progress.className = "main-progress";
+      progress.setAttribute("data-wp-main-progress", "");
+      progress.setAttribute("role", "status");
+      progress.setAttribute("aria-live", "polite");
+      mainCopy.insertBefore(progress, actions);
+      return progress;
+    };
+    const battleSoundToggle = document.getElementById("soundToggleBattle");
+    const refreshBattleSound = () => {
+      if (!battleSoundToggle) return;
+      const label = view.audio?.enabled ? view.t("soundOn") : view.t("soundOff");
+      battleSoundToggle.textContent = label;
+      battleSoundToggle.setAttribute("aria-label", label);
+      battleSoundToggle.setAttribute("aria-pressed", String(Boolean(view.audio?.enabled)));
+      markGameOwned(battleSoundToggle);
+    };
+    battleSoundToggle?.addEventListener("click", () => {
+      if (!view.audio) return;
+      view.audio.setEnabled(!view.audio.enabled);
+      view.refreshSound?.();
+      refreshBattleSound();
+    });
     const updateDynamicCopy = () => {
       const copy = dynamicCopy();
+      refreshBattleSound();
+      const mainProgress = ensureMainProgress();
+      const peakCopy = PEAK_PROGRESS_COPY[view.locale] || PEAK_PROGRESS_COPY.en;
+      if (mainProgress) {
+        mainProgress.textContent = `${peakCopy.label}: 0/3`;
+        mainProgress.setAttribute("aria-label", peakCopy.aria.replace("{cleared}", "0"));
+        markGameOwned(mainProgress);
+      }
       const buttonCopy = { startBtn: copy.start, restartBtn: copy.restart, newGameBtn: copy.newGame, battleNewBtn: copy.newGame, battleRestartBtn: copy.restart, resultNewGame: copy.newGame, resultRestart: copy.restart };
       Object.entries(buttonCopy).forEach(([id, text]) => { const node = document.getElementById(id); if (!node) return; node.textContent = text; markGameOwned(node); });
       const headerLabels = [...document.querySelectorAll("#battleScreen .battle-header .header-stat small")];

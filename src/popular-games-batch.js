@@ -72,7 +72,7 @@
   const BREAKOUT_GAME_VERSION = "v10";
   const TETRIS_GAME_VERSION = "v15";
   const SNAKE_GAME_VERSION = "v26";
-  const WORDLE_GAME_VERSION = "v9";
+  const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
   const pongLanePosition = (lane) => Math.max(17, Math.min(82, Number(lane) * 13 + 17));
@@ -598,6 +598,56 @@
     hi: { battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ", settings: "सेटिंग", objective: "लक्ष्य", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", progress: "सधे हुए कदमों से पाँच रैलियाँ जीतें।" },
     ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay", settings: "الإعدادات", objective: "الهدف", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", progress: "اربح خمسة تبادلات بحركات مدروسة." },
   };
+  const WORDLE_SHELL_COPY = {
+    en: { settings: "Settings", language: "Language", sound: "Sound", soundOn: "On", soundOff: "Off" },
+    "zh-Hant": { settings: "設定", language: "語言", sound: "音效", soundOn: "開啟", soundOff: "關閉" },
+    "zh-Hans": { settings: "设置", language: "语言", sound: "音效", soundOn: "开启", soundOff: "关闭" },
+    ja: { settings: "設定", language: "言語", sound: "サウンド", soundOn: "オン", soundOff: "オフ" },
+    ko: { settings: "설정", language: "언어", sound: "소리", soundOn: "켜기", soundOff: "끄기" },
+    es: { settings: "Ajustes", language: "Idioma", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado" },
+    "pt-BR": { settings: "Configurações", language: "Idioma", sound: "Som", soundOn: "Ativado", soundOff: "Desativado" },
+    fr: { settings: "Paramètres", language: "Langue", sound: "Son", soundOn: "Activé", soundOff: "Désactivé" },
+    de: { settings: "Einstellungen", language: "Sprache", sound: "Ton", soundOn: "An", soundOff: "Aus" },
+    it: { settings: "Impostazioni", language: "Lingua", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato" },
+    ru: { settings: "Настройки", language: "Язык", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл." },
+    hi: { settings: "सेटिंग", language: "भाषा", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद" },
+    ar: { settings: "الإعدادات", language: "اللغة", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف" },
+  };
+  const syncWordleShellLocale = () => {
+    if (document.body?.dataset.gameId !== "wordle") return;
+    const locale = document.documentElement.lang || "en";
+    const ui = WORDLE_SHELL_COPY[locale] || WORDLE_SHELL_COPY.en;
+    const localeCopy = COPY[locale] || COPY.en;
+    const setLabel = (selector, label) => {
+      const node = document.querySelector(selector);
+      if (!node) return;
+      node.setAttribute("aria-label", label);
+      node.setAttribute("title", label);
+    };
+    setLabel("#audioMenuBtn", ui.settings);
+    setLabel("#battleUtilityBtn", ui.settings);
+    document.querySelector("#audioPopover")?.setAttribute("aria-label", ui.settings);
+    const settingsTitle = document.querySelector(".settings-title");
+    if (settingsTitle) settingsTitle.textContent = ui.settings;
+    const languageLabel = document.querySelector("#languageLabel");
+    if (languageLabel) languageLabel.textContent = ui.language;
+    const localeSelect = document.querySelector("#localeSelect");
+    if (localeSelect) localeSelect.setAttribute("aria-label", ui.language);
+    const soundButton = document.querySelector("#soundBtn[data-sound-toggle]");
+    if (soundButton) {
+      const enabled = soundButton.getAttribute("aria-pressed") !== "false";
+      soundButton.textContent = `${ui.sound}: ${enabled ? ui.soundOn : ui.soundOff}`;
+    }
+    const progress = document.querySelector("[data-wp-main-progress]");
+    if (progress) {
+      const label = progress.querySelector("strong");
+      const value = progress.querySelector("span");
+      if (label) label.textContent = localeCopy.objective;
+      if (value) value.textContent = localeCopy.wordle;
+    }
+  };
+  window.addEventListener("wonder:locale-change", syncWordleShellLocale);
+  setTimeout(syncWordleShellLocale, 0);
   const syncPongShellLocale = () => {
     if (document.body?.dataset.gameId !== "pong") return;
     const locale = document.documentElement.lang || "en";
@@ -824,6 +874,7 @@
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
     if (game.type === "wordle") document.body.dataset.gameVersion = WORDLE_GAME_VERSION;
     if (game.type === "pong") document.body.dataset.gameVersion = "v8";
+    if (game.type === "wordle") syncWordleShellLocale();
     if (game.type === "pong") syncPongShellLocale();
     const root = document.querySelector("#popularArcade");
     if (!root) throw new Error("Popular game root is missing.");
@@ -1081,7 +1132,8 @@
     wordleSoundButton?.addEventListener("click", () => {
       const enabled = wordleSoundButton.getAttribute("aria-pressed") !== "true";
       wordleSoundButton.setAttribute("aria-pressed", String(enabled));
-      wordleSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+      const soundCopy = WORDLE_SHELL_COPY[locale] || WORDLE_SHELL_COPY.en;
+      wordleSoundButton.textContent = `${soundCopy.sound}: ${enabled ? soundCopy.soundOn : soundCopy.soundOff}`;
     });
     const breakoutSettingsButton = game.type === "breakout" ? document.querySelector("#audioMenuBtn") : null;
     const breakoutSettingsPopover = game.type === "breakout" ? document.querySelector("#audioPopover") : null;
