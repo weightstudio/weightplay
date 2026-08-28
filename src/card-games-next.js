@@ -1293,6 +1293,36 @@
     hi: "तुरंत खेलें: किसी भी केंद्रीय कार्ड से एक रैंक ऊपर या नीचे वाला कार्ड।",
     ar: "العب فورًا: بطاقة أعلى أو أدنى بدرجة من أي بطاقة مركزية.",
   };
+  const SPEED_PROGRESS_COPY = {
+    en: { label: "Round progress", copy: "Keep both center cards in view and play legal ranks quickly." },
+    "zh-Hant": { label: "回合進度", copy: "同時留意兩張中央牌，快速出可接續的點數。" },
+    "zh-Hans": { label: "回合进度", copy: "同时留意两张中央牌，快速出可接续的点数。" },
+    ja: { label: "ラウンド進行", copy: "中央の2枚を見比べ、つながるランクを素早く出します。" },
+    ko: { label: "라운드 진행", copy: "중앙 카드 두 장을 모두 살피고 이어지는 랭크를 빠르게 내세요." },
+    es: { label: "Progreso de la ronda", copy: "Mira las dos cartas centrales y juega rápido los rangos válidos." },
+    "pt-BR": { label: "Progresso da rodada", copy: "Observe as duas cartas centrais e jogue rapidamente os valores válidos." },
+    fr: { label: "Progression de la manche", copy: "Regardez les deux cartes centrales et jouez vite les rangs valides." },
+    de: { label: "Rundenfortschritt", copy: "Behalte beide mittleren Karten im Blick und spiele passende Ränge schnell." },
+    it: { label: "Avanzamento del round", copy: "Guarda entrambe le carte centrali e gioca rapidamente i valori validi." },
+    ru: { label: "Прогресс раунда", copy: "Следите за обеими центральными картами и быстро играйте подходящие ранги." },
+    hi: { label: "राउंड की प्रगति", copy: "दोनों केंद्रीय पत्तों पर नज़र रखें और सही रैंक जल्दी चलें।" },
+    ar: { label: "تقدّم الجولة", copy: "راقب البطاقتين المركزيتين والعب الرتب المناسبة بسرعة." },
+  };
+  const SPEED_BATTLE_COPY = {
+    en: { heading: "How to play", paragraph: "Play one rank above or below either center card. Both players act at once, so refill your hand and keep scanning." },
+    "zh-Hant": { heading: "玩法說明", paragraph: "出任一張中央牌高一點或低一點的牌。雙方同時行動，補牌後持續掃描手牌。" },
+    "zh-Hans": { heading: "玩法说明", paragraph: "出任一张中央牌高一点或低一点的牌。双方同时行动，补牌后持续查看手牌。" },
+    ja: { heading: "遊び方", paragraph: "中央カードのどちらかより1ランク上か下を出します。両者同時に動くので、補充された手札も見続けましょう。" },
+    ko: { heading: "플레이 방법", paragraph: "어느 중앙 카드보다 한 랭크 높거나 낮은 카드를 내세요. 양쪽이 동시에 움직이므로 손패를 보충하며 계속 살피세요." },
+    es: { heading: "Cómo jugar", paragraph: "Juega una carta un rango por encima o por debajo de cualquier carta central. Ambos actúan a la vez: repón tu mano y sigue buscando." },
+    "pt-BR": { heading: "Como jogar", paragraph: "Jogue uma carta um valor acima ou abaixo de qualquer carta central. Os dois jogam ao mesmo tempo: reponha a mão e continue procurando." },
+    fr: { heading: "Comment jouer", paragraph: "Jouez une carte d’un rang au-dessus ou au-dessous de l’une des cartes centrales. Les deux joueurs agissent ensemble : renouvelez votre main et cherchez encore." },
+    de: { heading: "So wird gespielt", paragraph: "Spiele einen Rang über oder unter einer mittleren Karte. Beide handeln gleichzeitig – fülle deine Hand auf und suche weiter." },
+    it: { heading: "Come si gioca", paragraph: "Gioca una carta di un valore sopra o sotto una delle carte centrali. Si gioca insieme: rifornisci la mano e continua a cercare." },
+    ru: { heading: "Как играть", paragraph: "Играйте карту на ранг выше или ниже любой центральной. Оба игрока действуют одновременно — пополняйте руку и продолжайте поиск." },
+    hi: { heading: "कैसे खेलें", paragraph: "किसी भी केंद्रीय पत्ते से एक रैंक ऊपर या नीचे वाला पत्ता चलाएँ। दोनों साथ खेलते हैं, इसलिए हाथ भरते रहें और खोजते रहें।" },
+    ar: { heading: "طريقة اللعب", paragraph: "العب بطاقة أعلى أو أدنى بدرجة من أي بطاقة مركزية. يتحرك اللاعبان معًا، لذا أكمل يدك وواصل البحث." },
+  };
   const SPEED_DECISION_COPY = {
     en: { none: "No legal card is ready; scan both center cards for the next shared refresh.", one: "One legal card is ready; play it, then scan the refill.", many: "{count} legal cards are ready; choose one, then scan the refill." },
     "zh-Hant": { none: "目前沒有可出的牌；留意兩張中央牌的下一次同步更新。", one: "目前有一張可出的牌；出牌後重新掃描補牌。", many: "目前有 {count} 張可出的牌；選一張後重新掃描補牌。" },
@@ -1663,10 +1693,11 @@
       const goFishBattle = id === "go-fish" ? goFishBattleCopy() : null;
       const casinoBattle = id === "casino" ? (CASINO_BATTLE_COPY[currentLocale()] || CASINO_BATTLE_COPY.en) : null;
       const oldMaidBattle = id === "old-maid" ? (OLD_MAID_BATTLE_COPY[currentLocale()] || OLD_MAID_BATTLE_COPY.en) : null;
-      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : oldMaidBattle?.quickGuideCopy || casinoBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
-      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : oldMaidBattle?.quickGuide || casinoBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
-      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
-      return { heading, paragraph, localized: Boolean(oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell) };
+      const speedBattle = id === "speed" ? (SPEED_BATTLE_COPY[currentLocale()] || SPEED_BATTLE_COPY.en) : null;
+      const source = id === "spades" ? spadesShellCopy().quickGuideCopy : id === "gin-rummy" ? ginShellText("quickGuideCopy") : id === "cribbage" ? cribbageShellCopy().quickGuideCopy : speedBattle?.paragraph || oldMaidBattle?.quickGuideCopy || casinoBattle?.quickGuideCopy || goFishBattle?.paragraph || warBattle?.quickGuideCopy || heartsShell?.howToCopy || (CARD_GAME_GUIDES[id] || "Follow the on-screen prompt, complete the round, and use Restart to try again.");
+      const heading = id === "spades" ? spadesShellCopy().quickGuide : id === "gin-rummy" ? ginShellText("quickGuide") : id === "cribbage" ? cribbageShellCopy().quickGuide : speedBattle?.heading || oldMaidBattle?.quickGuide || casinoBattle?.quickGuide || goFishBattle?.heading || warBattle?.quickGuide || heartsShell?.howTo || (root.WeightPlayGameRuntimeLocalizer?.translate?.("How to play") || "How to play");
+      const paragraph = id === "spades" || id === "gin-rummy" || id === "cribbage" || speedBattle || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell ? source : (root.WeightPlayGameRuntimeLocalizer?.translate?.(source) || source);
+      return { heading, paragraph, localized: Boolean(speedBattle || oldMaidBattle || casinoBattle || goFishBattle || warBattle || heartsShell) };
     };
     const quickGuide = document.createElement("p");
     quickGuide.className = "card-game-quick-guide";
@@ -1776,6 +1807,53 @@
       window.setTimeout(syncCrazyEightsShell, 400);
       statusText?.setAttribute("aria-live", "polite");
       statusText?.setAttribute("aria-atomic", "true");
+    }
+    const ensureSpeedMainProgress = () => {
+      const copy = document.querySelector(".main-copy");
+      if (!copy || copy.querySelector("[data-wp-main-progress]")) return;
+      const progress = document.createElement("div");
+      progress.className = "main-progress";
+      progress.dataset.wpMainProgress = "true";
+      progress.setAttribute("role", "status");
+      progress.setAttribute("aria-live", "polite");
+      progress.innerHTML = "<strong></strong><span></span>";
+      const controls = copy.querySelector(".main-actions,[data-card-main-controls]");
+      if (controls) copy.insertBefore(progress, controls);
+      else copy.append(progress);
+    };
+    const ensureSpeedBattleUtility = () => {
+      const topbar = battle.querySelector(".card-game-topbar");
+      if (!topbar || topbar.querySelector("[data-wp-battle-utility]")) return;
+      const utility = document.createElement("button");
+      utility.type = "button";
+      utility.className = "battle-utility header-icon-btn";
+      utility.dataset.wpBattleUtility = "true";
+      utility.setAttribute("aria-label", "Settings");
+      utility.title = "Settings";
+      utility.textContent = "⚙";
+      topbar.append(utility);
+    };
+    const syncSpeedShell = () => {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progressCopy = SPEED_PROGRESS_COPY[currentLocale()] || SPEED_PROGRESS_COPY.en;
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
+      ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
+      const utility = document.querySelector("[data-wp-battle-utility]");
+      if (utility) {
+        utility.setAttribute("aria-label", labels.settings);
+        utility.title = labels.settings;
+      }
+      document.querySelector(".card-game-quick-guide")?.setAttribute("data-runtime-localize", "off");
+    };
+    if (id === "speed") {
+      ensureSpeedMainProgress();
+      ensureSpeedBattleUtility();
+      battleUtility = document.querySelector("[data-wp-battle-utility]");
+      syncSpeedShell();
+      window.addEventListener("wonder:locale-change", syncSpeedShell);
+      window.addEventListener("weightplay:shell-sync", syncSpeedShell);
+      window.setTimeout(syncSpeedShell, 0);
+      window.setTimeout(syncSpeedShell, 400);
     }
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy" || id === "cribbage") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {

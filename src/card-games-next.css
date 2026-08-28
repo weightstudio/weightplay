@@ -90,7 +90,9 @@ body[data-wp-card-game="war"] .card-action-row button {
   body[data-wp-card-game="crazy-eights"] .game-page-info.game-page-info-static,
   body[data-wp-card-game="crazy-eights"] .game-page-info,
   body[data-wp-card-game="old-maid"] .game-page-info.game-page-info-static,
-  body[data-wp-card-game="old-maid"] .game-page-info {
+  body[data-wp-card-game="old-maid"] .game-page-info,
+  body[data-wp-card-game="speed"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="speed"] .game-page-info {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
