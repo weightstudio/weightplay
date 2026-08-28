@@ -71,6 +71,7 @@
   };
   const BREAKOUT_GAME_VERSION = "v8";
   const TETRIS_GAME_VERSION = "v15";
+  const SNAKE_GAME_VERSION = "v26";
   // The short Tetris sprint uses real tetromino silhouettes so Rotate changes
   // placement geometry and Drop has visible spatial consequences. The board
   // remains the compact 8×8 owner-preview canvas and the four-line sprint
@@ -874,6 +875,7 @@
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
     document.body.dataset.gameId = gameId;
     if (game.type === "tetris") document.body.dataset.gameVersion = TETRIS_GAME_VERSION;
+    if (game.type === "snake") document.body.dataset.gameVersion = SNAKE_GAME_VERSION;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = TIC_TAC_TOE_GAME_VERSION;
     if (game.type === "hangman") document.body.dataset.gameVersion = "v7";

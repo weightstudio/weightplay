@@ -9,6 +9,9 @@
 @media(max-height:430px){.stage-canvas{grid-template-columns:190px minmax(0,1fr);grid-template-rows:44px minmax(0,1fr)}.stage-header{grid-column:1/-1}.planner{display:grid;grid-template-columns:52px minmax(0,1fr);align-self:stretch}.planner>img{width:52px;height:52px}.gadget-choices{gap:3px}.gadget-choice{width:40px;height:40px;padding:3px}.mission-rail{padding:8px max(12px,calc(50% - 120px))}.mission-card{flex-basis:240px;height:100%}.mission-card div{padding:8px}}
 
 .stage-canvas{grid-template-rows:44px 116px minmax(0,1fr)}
+.stage-header{grid-template-columns:44px minmax(0,1fr) auto;min-width:0}
+.stage-header>strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px}
+.stage-header>#coinLabel{min-width:max-content;padding:3px 7px;border:1px solid #56728f;border-radius:999px;background:#17314e;color:#ffe79a;font-size:11px;line-height:1.1;white-space:nowrap}
 .planner-body{min-width:0;display:grid;grid-template-rows:auto 52px auto;gap:3px}
 .planner-heading,.gadget-row{display:flex;align-items:center;gap:6px}
 .planner-heading{justify-content:space-between;font-size:12px}

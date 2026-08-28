@@ -579,6 +579,22 @@ body[data-game-id="tetris"][data-screen="result"] .game-page-info-static { displ
   body[data-game-id="tetris"][data-screen="battle"] .battle-top { grid-template-columns: 48px minmax(0, 1fr) 48px; }
   body[data-game-id="tetris"][data-screen="battle"] .battle-top > .control-row { grid-column: 2; grid-row: 2; justify-content: stretch; }
   body[data-game-id="tetris"][data-screen="battle"] .battle-top > .battle-utility { grid-column: 3; grid-row: 1; }
+  /* The shared Battle return is an intentional fixed overlay on this
+     collection shell. Reserve its 48px lane before the Snake run heading so
+     portrait play never hides the live run/mode/goal state. */
+  body[data-game-id="snake"][data-screen="battle"] .battle-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+    padding-left: 58px;
+  }
+  body[data-game-id="snake"][data-screen="battle"] .battle-top > .round-label {
+    min-width: 0;
+  }
+  body[data-game-id="snake"][data-screen="battle"] .battle-top > .control-row {
+    justify-content: flex-end;
+  }
 }
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-game-id="tetris"][data-screen="battle"],
