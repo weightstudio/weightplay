@@ -357,6 +357,44 @@ body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-scree
   padding: 4px 7px !important;
 }
 
+/* The shared Stage shell appends Settings as a fourth direct child after the
+   native title/status pair. Keep those four controls in distinct tracks so
+   the title and Moon Coins status cannot collapse into the same middle cell. */
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .stage-header.wp-stage-shell-header {
+  grid-template-columns: 48px minmax(0, 1fr) max-content 48px !important;
+  grid-template-rows: 48px !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .stage-header.wp-stage-shell-header > strong {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-align: start !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .stage-header.wp-stage-shell-header > #coinLabel {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+  text-align: end !important;
+  white-space: nowrap !important;
+}
+body[data-wp-game-id="animal-moonlight-heist"].wp-stage-select-active[data-screen="stage"] [data-wp-logical-stage-canvas] .stage-header.wp-stage-shell-header > .wp-shell-settings {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+  justify-self: end !important;
+}
+
 /* The shared gameplay coach and Help action belong to Battle, never Main or Stage. */
 body[data-wp-game-id="animal-moonlight-heist"]:not([data-screen="battle"]) :is(.wp-tutorial-button,.wp-tutorial-backdrop){
   display:none!important;

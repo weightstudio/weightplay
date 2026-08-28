@@ -69,7 +69,7 @@
     hi: "मालिक का प्रीव्यू: नियंत्रित शॉट से 12 ईंटें तोड़ें। गेम अभी सार्वजनिक रूप से जारी नहीं हुआ है।",
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v8";
+  const BREAKOUT_GAME_VERSION = "v9";
   const TETRIS_GAME_VERSION = "v15";
   const SNAKE_GAME_VERSION = "v26";
   // The short Tetris sprint uses real tetromino silhouettes so Rotate changes
@@ -364,6 +364,21 @@
     ru: (column) => `Столбец ${column} пуст — перед подачей переместите ракетку.`,
     hi: (column) => `स्तंभ ${column} खाली है—सर्व करने से पहले पैडल चलाएँ।`,
     ar: (column) => `العمود ${column} فارغ — حرّك المضرب قبل الإرسال.`,
+  };
+  const BREAKOUT_MISS_COPY = {
+    en: (column, shots, nextColumn, direction) => `No brick cleared — shot ${shots} used. Column ${column} is clear; next target: column ${nextColumn}. Move ${direction} before serving.`,
+    "zh-Hant": (column, shots, nextColumn, direction) => `沒有清除磚塊——已使用第 ${shots} 次射擊。第 ${column} 欄已清空；下一個目標：第 ${nextColumn} 欄。發球前${direction}。`,
+    "zh-Hans": (column, shots, nextColumn, direction) => `没有清除砖块——已使用第 ${shots} 次射击。第 ${column} 列已清空；下一个目标：第 ${nextColumn} 列。发球前${direction}。`,
+    ja: (column, shots, nextColumn, direction) => `ブロックは消えませんでした（${shots}ショット）。${column}列は空です。次の目標は${nextColumn}列。サーブ前に${direction}へ移動しましょう。`,
+    ko: (column, shots, nextColumn, direction) => `${shots}번째 서브에서 벽돌을 깨지 못했습니다. ${column}번 열이 비었습니다. 다음 목표는 ${nextColumn}번 열입니다. 서브 전에 ${direction}으로 이동하세요.`,
+    es: (column, shots, nextColumn, direction) => `No rompiste ningún ladrillo: tiro ${shots}. La columna ${column} está vacía; próximo objetivo: columna ${nextColumn}. Muévete ${direction} antes de sacar.`,
+    "pt-BR": (column, shots, nextColumn, direction) => `Nenhum bloco foi quebrado — tiro ${shots}. A coluna ${column} está vazia; próximo alvo: coluna ${nextColumn}. Mova para ${direction} antes de sacar.`,
+    fr: (column, shots, nextColumn, direction) => `Aucune brique cassée — tir ${shots}. La colonne ${column} est vide ; prochaine cible : colonne ${nextColumn}. Déplacez-vous ${direction} avant de servir.`,
+    de: (column, shots, nextColumn, direction) => `Kein Stein getroffen – Schuss ${shots}. Spalte ${column} ist frei; nächstes Ziel: Spalte ${nextColumn}. Bewege dich vor dem Aufschlag nach ${direction}.`,
+    it: (column, shots, nextColumn, direction) => `Nessun mattone colpito: tiro ${shots}. La colonna ${column} è vuota; prossimo bersaglio: colonna ${nextColumn}. Spostati a ${direction} prima del servizio.`,
+    ru: (column, shots, nextColumn, direction) => `Блок не разбит — удар ${shots}. Столбец ${column} пуст; следующая цель — столбец ${nextColumn}. Перед подачей двигайтесь ${direction}.`,
+    hi: (column, shots, nextColumn, direction) => `कोई ईंट नहीं टूटी—शॉट ${shots}। स्तंभ ${column} खाली है; अगला लक्ष्य स्तंभ ${nextColumn} है। सर्व से पहले ${direction} जाएँ।`,
+    ar: (column, shots, nextColumn, direction) => `لم تُحطّم أي لبنة — التسديدة ${shots}. العمود ${column} فارغ؛ الهدف التالي هو العمود ${nextColumn}. تحرّك نحو ${direction} قبل الإرسال.`,
   };
   const BREAKOUT_ROUTE_COPY = {
     en: (column, nextColumn, direction) => `Column ${column} is clear — next target: column ${nextColumn}. Move ${direction} before serving.`,
@@ -738,6 +753,7 @@
   const copy = (locale, k) => { const localized = COPY[locale] || COPY.en; if (k === "ready" && document.body?.dataset.gameId === "breakout") return BREAKOUT_PROMISE[locale] || BREAKOUT_PROMISE.en; if (k === "eatFood" && document.body?.dataset.gameId === "snake") return SNAKE_OBJECTIVE[locale] || SNAKE_OBJECTIVE.en; return localized[k]; };
   const breakoutAimCopy = (locale, column) => (BREAKOUT_AIM_COPY[locale] || BREAKOUT_AIM_COPY.en)(column);
   const breakoutEmptyCopy = (locale, column) => (BREAKOUT_EMPTY_COPY[locale] || BREAKOUT_EMPTY_COPY.en)(column);
+  const breakoutMissCopy = (locale, column, shots, nextColumn, direction) => (BREAKOUT_MISS_COPY[locale] || BREAKOUT_MISS_COPY.en)(column, shots, nextColumn, direction);
   const breakoutRouteTargetIndex = (state) => {
     const currentColumn = Math.max(0, Math.min(5, Number(state.paddle) || 0));
     return state.bricks
@@ -755,6 +771,14 @@
     const nextColumn = (routeIndex % 6) + 1;
     const direction = copy(locale, nextColumn < currentColumn ? "left" : "right");
     return breakoutRouteCopy(locale, currentColumn, nextColumn, direction);
+  };
+  const breakoutMissStateCopy = (locale, state) => {
+    const routeIndex = breakoutRouteTargetIndex(state);
+    if (routeIndex < 0) return breakoutEmptyCopy(locale, state.paddle + 1);
+    const currentColumn = state.paddle + 1;
+    const nextColumn = (routeIndex % 6) + 1;
+    const direction = copy(locale, nextColumn < currentColumn ? "left" : "right");
+    return breakoutMissCopy(locale, currentColumn, state.shots, nextColumn, direction);
   };
   const breakoutTargetIndex = (state) => {
     const desiredColumn = Math.max(0, Math.min(5, Number(state.paddle) || 0));
@@ -1159,7 +1183,7 @@
         const targetIndex = breakoutTargetIndex(state);
         state.message = targetIndex >= 0 ? breakoutAimCopy(locale, state.paddle + 1) : breakoutEmptyCopy(locale, state.paddle + 1);
       } else if (game.type === "breakout" && state.messageKey === "breakoutMiss") {
-        state.message = breakoutStateCopy(locale, state);
+        state.message = breakoutMissStateCopy(locale, state);
       } else if (game.type === "breakout" && state.messageKey === "breakoutRoute") {
         state.message = breakoutStateCopy(locale, state);
       }
@@ -1482,7 +1506,7 @@
       } else if (game.type === "mahjong") { if (name === "tile" && state.tiles[value]) { if (state.selected < 0) { state.selected = value; state.mismatchTile = ""; state.focusTile = value; announce(mahjongTileLabel(locale, value, state.tiles[value], true)); } else if (state.selected !== value && state.tiles[state.selected] === state.tiles[value]) { state.tiles[state.selected] = ""; state.tiles[value] = ""; state.matched += 1; state.score += 30; state.selected = -1; state.mismatchTile = ""; state.focusTile = state.tiles.findIndex(Boolean); announce(copy(locale, "matched"), "good"); if (state.matched >= state.targetPairs) { state.focusTile = -1; finish(true); } } else { if (state.selected !== value) { state.moves -= 1; state.mismatchTile = state.tiles[value]; announce((MAHJONG_MISMATCH_COPY[locale] || MAHJONG_MISMATCH_COPY.en)(state.mismatchTile), "warn", "mahjongMismatch"); } state.selected = value; state.focusTile = value; } }
       } else if (game.type === "wordle") { if (name === "submit") { const inputNode = document.querySelector("#wordInput"); const input = String(inputNode?.value || "").trim().toUpperCase(); if (!/^[A-Z]{5}$/.test(input)) { state.moves -= 1; announce(wordleLengthError(locale), "warn"); inputNode?.focus(); return; } state.guesses.push(input); state.score += input === state.target ? 100 : 10; if (input === state.target) finish(true); else if (state.guesses.length >= 6) finish(false); else announce(copy(locale, "next"), ""); }
       } else if (game.type === "hangman") { if (name === "letter") { state.letters.push(value); state.focusLetter = value; state.lastLetter = value; if (!state.target.includes(value)) { state.misses += 1; if (state.misses < 6) announce(hangmanMiss(locale, value, state.misses), "warn", "hangmanMiss"); } else state.score += 15; if ([...state.target].every((letter) => state.letters.includes(letter))) finish(true); else if (state.misses >= 6) finish(false); }
-      } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (["left", "right"].includes(name)) { state.message = ""; state.messageKey = ""; state.tone = ""; } if (name === "fire") { state.shots += 1; const index = breakoutTargetIndex(state); if (index >= 0) { state.bricks[index] = false; state.score += 20; state.message = ""; state.messageKey = ""; state.tone = ""; if (state.bricks.every((brick) => !brick)) finish(true); } else announce(breakoutStateCopy(locale, state), "warn", "breakoutRoute"); }
+      } else if (game.type === "breakout") { if (name === "left") state.paddle = Math.max(0, state.paddle - 1); if (name === "right") state.paddle = Math.min(5, state.paddle + 1); if (["left", "right"].includes(name)) { state.message = ""; state.messageKey = ""; state.tone = ""; } if (name === "fire") { state.shots += 1; const index = breakoutTargetIndex(state); if (index >= 0) { state.bricks[index] = false; state.score += 20; state.message = ""; state.messageKey = ""; state.tone = ""; if (state.bricks.every((brick) => !brick)) finish(true); } else announce(breakoutMissStateCopy(locale, state), "warn", "breakoutMiss"); }
       } else if (game.type === "pong") {
         if (name === "left") state.paddle = Math.max(0, state.paddle - 1);
         if (name === "right") state.paddle = Math.min(5, state.paddle + 1);

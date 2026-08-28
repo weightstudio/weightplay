@@ -26,10 +26,10 @@ const browser = await playwright.chromium.launch({ headless: true });
 const origin = `http://127.0.0.1:${server.address().port}`;
 const viewports = [{ width: 390, height: 844 }, { width: 612, height: 876 }, { width: 844, height: 390 }, { width: 1280, height: 720 }];
 const missCopy = {
-  en: "Column 3 is clear — move the paddle before serving.", "zh-Hant": "第 3 欄已清空——發球前先移動球拍。", "zh-Hans": "第 3 列已清空——发球前先移动球拍。",
-  ja: "第3列は空です。サーブの前にパドルを動かしましょう。", ko: "3번 열은 비었습니다. 서브하기 전에 패들을 옮기세요.", es: "La columna 3 está vacía: mueve la pala antes de sacar.",
-  "pt-BR": "A coluna 3 está vazia — mova a raquete antes de sacar.", fr: "La colonne 3 est vide : déplacez la raquette avant de servir.", de: "Spalte 3 ist frei – bewege das Paddle vor dem Aufschlag.",
-  it: "La colonna 3 è vuota: sposta la racchetta prima del servizio.", ru: "Столбец 3 пуст — перед подачей переместите ракетку.", hi: "स्तंभ 3 खाली है—सर्व करने से पहले पैडल चलाएँ।", ar: "العمود 3 فارغ — حرّك المضرب قبل الإرسال.",
+  en: "No brick cleared — shot 3 used. Column 3 is clear; next target: column 2. Move Left before serving.", "zh-Hant": "沒有清除磚塊——已使用第 3 次射擊。第 3 欄已清空；下一個目標：第 2 欄。發球前左移。", "zh-Hans": "没有清除砖块——已使用第 3 次射击。第 3 列已清空；下一个目标：第 2 列。发球前左移。",
+  ja: "ブロックは消えませんでした（3ショット）。3列は空です。次の目標は2列。サーブ前に左へ移動しましょう。", ko: "3번째 서브에서 벽돌을 깨지 못했습니다. 3번 열이 비었습니다. 다음 목표는 2번 열입니다. 서브 전에 왼쪽으로 이동하세요.", es: "No rompiste ningún ladrillo: tiro 3. La columna 3 está vacía; próximo objetivo: columna 2. Muévete Izquierda antes de sacar.",
+  "pt-BR": "Nenhum bloco foi quebrado — tiro 3. A coluna 3 está vazia; próximo alvo: coluna 2. Mova para Esquerda antes de sacar.", fr: "Aucune brique cassée — tir 3. La colonne 3 est vide ; prochaine cible : colonne 2. Déplacez-vous Gauche avant de servir.", de: "Kein Stein getroffen – Schuss 3. Spalte 3 ist frei; nächstes Ziel: Spalte 2. Bewege dich vor dem Aufschlag nach Links.",
+  it: "Nessun mattone colpito: tiro 3. La colonna 3 è vuota; prossimo bersaglio: colonna 2. Spostati a Sinistra prima del servizio.", ru: "Блок не разбит — удар 3. Столбец 3 пуст; следующая цель — столбец 2. Перед подачей двигайтесь Влево.", hi: "कोई ईंट नहीं टूटी—शॉट 3। स्तंभ 3 खाली है; अगला लक्ष्य स्तंभ 2 है। सर्व से पहले बायाँ जाएँ।", ar: "لم تُحطّم أي لبنة — التسديدة 3. العمود 3 فارغ؛ الهدف التالي هو العمود 2. تحرّك نحو يسار قبل الإرسال.",
 };
 const assert = (condition, message, details = {}) => { if (!condition) throw new Error(`${message}: ${JSON.stringify(details)}`); };
 const click = (page, action) => page.locator(`[data-action="${action}"]`).click();
@@ -69,7 +69,7 @@ try {
     await page.goto(`${origin}/games/breakout/?preview=1`, { waitUntil: "networkidle" });
     await page.locator("#startBtn").click();
     const initial = await state(page);
-    assert(initial.version === "v7" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v7 identity failed", { viewport, initial });
+    assert(initial.version === "v9" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v9 identity failed", { viewport, initial });
     await fireTwice(page);
     const clearedLane = await state(page);
     assert(clearedLane.bricks === 10 && clearedLane.laneState === "clear" && clearedLane.target === null && clearedLane.shots === 2, "Cleared lane still auto-targeted another column", { viewport, clearedLane });
@@ -95,7 +95,7 @@ try {
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0 });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v7", evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v9", evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

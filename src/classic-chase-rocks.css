@@ -135,11 +135,11 @@ h2 { font-size: clamp(1.45rem, 5vw, 2.3rem); }
 }
 
 /* The shared shell promotes Maze Chase's Back control into a fixed physical
-   left-edge header. In portrait RTL, reserve that strip in the native row so
-   Restart/Sound remain independently targetable instead of sitting beneath
-   the promoted control. Landscape and LTR keep the established composition. */
+   left-edge header. In portrait, reserve that strip in the native row so the
+   Stage label remains readable instead of sitting beneath the promoted
+   control. Landscape keeps the established composition. */
 @media (max-width: 649px) and (min-height: 501px) {
-  html[dir="rtl"] body[data-game-id="maze-chase"] .battle-topline {
+  body.is-game-playing[data-game-id="maze-chase"] .battle-topline {
     padding-left: 56px;
   }
 }
