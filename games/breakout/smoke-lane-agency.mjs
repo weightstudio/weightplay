@@ -75,7 +75,7 @@ try {
     });
     await page.locator("#startBtn").click();
     const initial = await state(page);
-    assert(initial.version === "v10" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v10 identity failed", { viewport, initial });
+    assert(initial.version === "v11" && initial.lane === "3" && initial.laneState === "armed" && initial.target === "2", "Initial lane target or v11 identity failed", { viewport, initial });
     await fireTwice(page);
     const clearedLane = await state(page);
     assert(clearedLane.bricks === 10 && clearedLane.laneState === "clear" && clearedLane.target === null && clearedLane.shots === 2, "Cleared lane still auto-targeted another column", { viewport, clearedLane });
@@ -102,13 +102,13 @@ try {
     const requiredCounts = { breakout_game_start: 2, breakout_first_serve: 2, breakout_first_brick_clear: 2, breakout_result: 2, breakout_play_again: 1 };
     assert(Object.entries(requiredCounts).every(([name, expected]) => count(name) === expected), "Breakout funnel milestones were not exactly once per round", { viewport, requiredCounts, counts: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])), funnelEvents });
     const ownedEvents = funnelEvents.filter((event) => event.name.startsWith("breakout_"));
-    assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v10" && event.data?.interface_version === "6" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
+    assert(ownedEvents.every((event) => event.data?.game_id === "breakout" && event.data?.game_version === "v11" && event.data?.interface_version === "6" && event.data?.locale === "en" && event.data?.viewport_bucket === viewportBucket(viewport)), "Breakout funnel event identity or coarse viewport context drifted", { viewport, ownedEvents });
     assert(ownedEvents.every((event) => !["user_id", "email", "name", "row", "column", "x", "y", "url", "path", "text", "message"].some((field) => field in event.data)), "Breakout funnel emitted a prohibited personal or free-form field", { viewport, ownedEvents });
-    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v10 escaped viewport or emitted diagnostics", { viewport, clean, errors });
+    assert(clean.scroll.width <= clean.viewport.width + 1 && clean.scroll.height <= clean.viewport.height + 1 && errors.length === 0, "Breakout v11 escaped viewport or emitted diagnostics", { viewport, clean, errors });
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, missShots: inefficient.shots, cleanShots: clean.shots, localizedMiss: viewport.width === 390 ? Object.keys(missCopy).length : 0, funnel: Object.fromEntries(Object.keys(requiredCounts).map((name) => [name, count(name)])) });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v10", evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v11", evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

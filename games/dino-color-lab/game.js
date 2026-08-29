@@ -4,6 +4,7 @@
   const $ = id => document.getElementById(id);
   const screens = {main: $("mainScreen"), lab: $("labScreen"), result: $("resultScreen")};
   let locale = "en", index = 0, score = 0, selected = [], coolingTimer = 0;
+  let hintKey = "choose", hintGood = false;
   const readBest = () => { try { return Number(localStorage.getItem("dinoColorLabBest") || 0); } catch { return 0; } };
   const saveBest = value => { try { localStorage.setItem("dinoColorLabBest", String(value)); } catch { /* restricted storage stays session-safe */ } };
   let best = readBest();
@@ -18,7 +19,12 @@
     updateBest();
   };
   const updateBest = () => { $("bestLine").textContent = best ? t("menuBest", {n: best}) : ""; };
-  const announce = (message, good = false) => { $("roundHint").textContent = message; $("roundHint").classList.toggle("is-good", good); };
+  const announce = (key, good = false, vars = {}) => {
+    hintKey = key;
+    hintGood = good;
+    $("roundHint").textContent = t(key, vars);
+    $("roundHint").classList.toggle("is-good", good);
+  };
   const renderReagents = () => {
     const sample = SAMPLES[index];
     $("labTitle").textContent = sample.target[locale] || sample.target.en;
@@ -29,6 +35,7 @@
     $("selectionLabel").textContent = selected.length ? t("selected", {n: selected.length}) : t("choose");
     $("mixBtn").textContent = t("mix");
     $("mixBtn").disabled = selected.length !== 2;
+    announce(hintKey, hintGood);
     const grid = $("reagentGrid"); grid.innerHTML = "";
     REAGENTS.forEach(reagent => {
       const button = document.createElement("button"); button.type = "button"; button.className = "reagent";
@@ -44,9 +51,9 @@
   };
   const startCooling = () => {
     clearTimeout(coolingTimer); $("coolingBar").classList.remove("cooling"); void $("coolingBar").offsetWidth; $("coolingBar").classList.add("cooling");
-    coolingTimer = window.setTimeout(() => announce(t("wrong")), 12000);
+    coolingTimer = window.setTimeout(() => announce("wrong"), 12000);
   };
-  const startLab = () => { index = 0; score = 0; selected = []; show("lab"); renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); };
+  const startLab = () => { index = 0; score = 0; selected = []; hintKey = "choose"; hintGood = false; show("lab"); renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); };
   const finish = () => {
     clearTimeout(coolingTimer); best = Math.max(best, score); saveBest(best);
     $("resultTitle").textContent = t("completeTitle"); $("resultBody").textContent = t("completeBody", {n: score});
@@ -54,9 +61,9 @@
   };
   $("mixBtn").addEventListener("click", () => {
     const answer = [...SAMPLES[index].answer].sort().join(","), attempt = [...selected].sort().join(",");
-    if (answer !== attempt) { announce(t("wrong")); selected = []; renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); return; }
-    score += 1; announce(t("correct"), true); $("scoreLabel").textContent = t("score", {n: score});
-    window.setTimeout(() => { index += 1; if (index >= SAMPLES.length) finish(); else { selected = []; renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); } }, 420);
+    if (answer !== attempt) { announce("wrong"); selected = []; renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); return; }
+    score += 1; announce("correct", true); $("scoreLabel").textContent = t("score", {n: score});
+    window.setTimeout(() => { index += 1; if (index >= SAMPLES.length) finish(); else { selected = []; hintKey = "choose"; hintGood = false; renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); } }, 420);
   });
   $("startBtn").addEventListener("click", startLab); $("replayBtn").addEventListener("click", startLab);
   $("homeBtn").addEventListener("click", () => { show("main"); updateBest(); $("startBtn").focus(); });
