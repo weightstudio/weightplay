@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/hexa-sort/" />
-
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -53,8 +52,8 @@
       data-wp-battle-standard
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260820-late-pressure-v35" />
-    <link rel="stylesheet" href="style.css?v=20260820-late-pressure-v35" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260829-interface-contract-v37" />
+    <link rel="stylesheet" href="style.css?v=20260829-interface-contract-v37" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -92,7 +91,7 @@
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Hexa Sort</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
     <div id="mainGroup" class="main-group">
-      <main class="main-canvas">
+      <main id="main" class="main-canvas">
         <header class="main-header">
           <a
             class="lobby-return"
@@ -234,10 +233,23 @@
             id="enterStage"
             class="primary stage-enter"
             type="button"
+            data-wp-enter-battle
             data-i18n="enter"
           >
             Enter Stage
           </button>
+          <nav class="stage-tabs" aria-label="Stage navigation">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              tabindex="0"
+              data-wp-stage-tab="stages"
+              data-i18n="chooseStage"
+            >
+              Choose a Stage
+            </button>
+          </nav>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -279,6 +291,7 @@
                 id="battleHelp"
                 class="icon-control"
                 type="button"
+                data-wp-battle-utility
                 aria-label="How to play"
               >
                 ?
@@ -386,7 +399,7 @@
     <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script src="game.js?v=20260827-arabic-hex-labels-v36"></script>
+    <script src="game.js?v=20260829-interface-contract-v37"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

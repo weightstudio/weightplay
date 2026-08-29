@@ -52,7 +52,7 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260820-late-pressure-v35" />
+    <link rel="stylesheet" href="style.css?v=20260829-interface-contract-v37" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Hexa Sort","url":"https://weightplay.com/en/games/hexa-sort/","image":"https://weightplay.com/assets/hexa-sort/cover.png","description":"Place colorful hex stacks, plan adjacent top-color merges, and clear 30 handcrafted stages or chase an Endless high score.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   </head>
   <body
@@ -62,7 +62,7 @@
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Hexa Sort</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
     <div id="mainGroup" class="main-group">
-      <main class="main-canvas">
+      <main id="main" class="main-canvas">
         <header class="main-header">
           <a
             class="lobby-return"
@@ -181,10 +181,23 @@
             id="enterStage"
             class="primary stage-enter"
             type="button"
+            data-wp-enter-battle
             data-i18n="enter"
           >
             Enter Stage
           </button>
+          <nav class="stage-tabs" aria-label="Stage navigation">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              tabindex="0"
+              data-wp-stage-tab="stages"
+              data-i18n="chooseStage"
+            >
+              Choose a Stage
+            </button>
+          </nav>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -226,6 +239,7 @@
                 id="battleHelp"
                 class="icon-control"
                 type="button"
+                data-wp-battle-utility
                 aria-label="How to play"
               >
                 ?
@@ -333,7 +347,7 @@
     <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js"></script>
-    <script src="game.js?v=20260827-arabic-hex-labels-v36"></script>
+    <script src="game.js?v=20260829-interface-contract-v37"></script>
     <script
       src="../../src/stage-selector-standard.js"
       data-wp-stage-standard
