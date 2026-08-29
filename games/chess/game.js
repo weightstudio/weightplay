@@ -1,10 +1,12 @@
 window.WPPopularArcade?.mount("chess");
 
-// Chess v9 keeps the shared shell and its accepted Interface V6 geometry, but
+// Chess v10 keeps the shared shell and its accepted Interface V6 geometry, but
 // owns the Chess decision loop locally so the Snake acceptance lane does not
 // need to be touched. The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
 (function installChessTargetAgency() {
+  const ANALYTICS_EVENT = "wp-chess-analytics";
+  const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);
   const STEPS = [
     { source: 15, target: 14 },
     { source: 10, target: 6 },
@@ -49,13 +51,21 @@ window.WPPopularArcade?.mount("chess");
   const copy = () => LOCALE_COPY[currentLocale()] || fallback;
   const isWhite = (piece) => piece === "♙" || piece === "♔";
   const pieceName = (localeCopy, piece) => piece ? localeCopy.pieceNames[piece] || localeCopy.piece : localeCopy.empty;
+  const bounded = (value, allowed) => allowed.has(String(value || "unknown")) ? String(value || "unknown") : "unknown";
+  let lastInputType = "unknown";
+  let sprint = 0;
+  const emitAnalytics = (event, detail = {}) => {
+    try {
+      window.dispatchEvent(new CustomEvent(ANALYTICS_EVENT, { detail: { event, inputType: bounded(detail.inputType || lastInputType, INPUT_TYPES), ...detail } }));
+    } catch {}
+  };
   const getEls = () => ({
     main: document.querySelector("#mainScreen"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"), message: document.querySelector("#gameMessage"), round: document.querySelector("#roundLabel"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultBeat: document.querySelector("#resultBeat"), resultStats: document.querySelector("#resultStats"), resultTarget: document.querySelector("#resultTarget"), retry: document.querySelector("#retryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
   });
   let state = null;
 
   const resetState = () => {
-    state = { pieces: [...INITIAL_PIECES], step: 0, score: 0, moves: 0, corrections: 0, selected: -1, done: false, success: false, messageKey: "chessAgencyChoosePiece", tone: "" };
+    state = { pieces: [...INITIAL_PIECES], step: 0, score: 0, moves: 0, corrections: 0, selected: -1, done: false, success: false, sprint, messageKey: "chessAgencyChoosePiece", tone: "" };
   };
   const applyMessage = (message, tone = "", messageKey = "") => {
     const els = getEls();
@@ -147,18 +157,23 @@ window.WPPopularArcade?.mount("chess");
       if (state.score > best) localStorage.setItem("weightplay_popular_chess_best", String(state.score));
     } catch {}
     renderResult();
+    emitAnalytics("result", { from: "battle", outcome: "cleared", sprint: state.sprint, step: state.step, score: state.score, moves: state.moves, correctionCount: state.corrections });
+  };
+  const recordCorrection = (reason) => {
+    state.corrections += 1;
+    emitAnalytics("correction", { from: "battle", outcome: "corrected", sprint: state.sprint, step: state.step + 1, reason, correctionCount: state.corrections });
   };
   const move = (index) => {
     const localeCopy = copy();
     const step = STEPS[state.step];
     if (index === step.target) {
       if (state.selected < 0) {
-        state.corrections += 1;
+        recordCorrection("target-first");
         setMessage(localeCopy.targetFirst, "warn", "chessAgencyTargetFirst");
         return;
       }
       if (state.selected !== step.source) {
-        state.corrections += 1;
+        recordCorrection("wrong-piece");
         setMessage(localeCopy.wrongPiece, "warn", "chessAgencyWrongPiece");
         return;
       }
@@ -168,6 +183,7 @@ window.WPPopularArcade?.mount("chess");
       state.moves += 1;
       state.step += 1;
       state.selected = -1;
+      emitAnalytics("valid_move", { from: "battle", outcome: "advanced", sprint: state.sprint, step: state.step, score: state.score, moves: state.moves, correctionCount: state.corrections });
       if (state.step >= STEPS.length) {
         finish();
         return;
@@ -182,10 +198,19 @@ window.WPPopularArcade?.mount("chess");
       renderBoard();
       return;
     }
-    state.corrections += 1;
+    recordCorrection(state.selected < 0 ? "target-first" : "wrong-target");
     setMessage(state.selected < 0 ? localeCopy.targetFirst : localeCopy.wrongTarget, "warn", state.selected < 0 ? "chessAgencyTargetFirst" : "chessAgencyWrongTarget");
   };
-  const resetAndRender = () => {
+  const resetAndRender = (from = "battle") => {
+    if (from === "main") {
+      sprint = 1;
+      emitAnalytics("game_start", { from, outcome: "started", sprint });
+    } else if (from === "result") {
+      sprint = Math.max(2, sprint + 1);
+      emitAnalytics("play_again", { from, outcome: "replay", sprint });
+    } else {
+      emitAnalytics("restart", { from, outcome: "restart", sprint: sprint || 1 });
+    }
     resetState();
     setMessage(copy().choosePiece, "", "chessAgencyChoosePiece");
     renderBattle();
@@ -200,7 +225,13 @@ window.WPPopularArcade?.mount("chess");
   }, 0);
 
   resetState();
-  document.body.dataset.gameVersion = "v9";
+  document.body.dataset.gameVersion = "v10";
+  document.addEventListener("pointerdown", (event) => {
+    lastInputType = bounded(event.pointerType, INPUT_TYPES);
+  }, { capture: true });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") lastInputType = "keyboard";
+  }, { capture: true });
   document.addEventListener("click", (event) => {
     const node = event.target?.closest?.("[data-action], #startBtn, #retryBtn, #homeBtn, #hintBtn, #restartBtn");
     if (!node) return;
@@ -215,29 +246,31 @@ window.WPPopularArcade?.mount("chess");
       event.stopImmediatePropagation();
       const localeCopy = copy();
       setMessage(localeCopy.hintCopy, "warn", "chessAgencyHint");
+      emitAnalytics("hint", { from: "battle", outcome: "shown", sprint: state?.sprint || sprint || 1 });
       return;
     }
     if (node.id === "restartBtn" && document.body.dataset.screen === "battle") {
       event.preventDefault();
       event.stopImmediatePropagation();
-      resetAndRender();
+      resetAndRender("battle");
       return;
     }
     if (node.id === "startBtn" && document.body.dataset.screen === "main") {
       event.preventDefault();
       event.stopImmediatePropagation();
-      resetAndRender();
+      resetAndRender("main");
       return;
     }
     if (node.id === "retryBtn" && document.body.dataset.screen === "result") {
       event.preventDefault();
       event.stopImmediatePropagation();
-      resetAndRender();
+      resetAndRender("result");
       return;
     }
     if (node.id === "homeBtn" && document.body.dataset.screen === "result") {
       event.preventDefault();
       event.stopImmediatePropagation();
+      emitAnalytics("main_return", { from: "result", outcome: "returned", sprint: state?.sprint || sprint || 1, correctionCount: state?.corrections || 0 });
       resetState();
       showScreen("main");
     }

@@ -1663,6 +1663,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-dewline": {
+    "__localizedExact": true,
+    "en": "Meadow Dewline",
+    "zh-Hant": "晨露水線",
+    "zh-Hans": "晨露水线",
+    "ja": "メドウ・デューライン",
+    "ko": "메도우 듀라인",
+    "es": "Línea de Rocío",
+    "pt-BR": "Linha de Orvalho",
+    "fr": "Ligne de Rosée",
+    "de": "Wiesen-Tautropfen",
+    "it": "Linea di Rugiada",
+    "ru": "Луговая роса",
+    "hi": "लुговая роса",
+    "ar": "خط الندى"
+  },
   "breakout": {
     "__localizedExact": true,
     "en": "Breakout",
@@ -2190,6 +2206,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Альбом светлячка",
     "hi": "जुगनू पुस्तिका",
     "ar": "دفتر اليراعات"
+  },
+  "animal-signal-scout": {
+    "__localizedExact": true,
+    "en": "Signal Scout",
+    "zh-Hant": "訊號偵察員",
+    "zh-Hans": "信号侦察员",
+    "ja": "シグナル・スカウト",
+    "ko": "신호 정찰대",
+    "es": "Explorador de señales",
+    "pt-BR": "Batedor de Sinais",
+    "fr": "Éclaireur des signaux",
+    "de": "Signal-Scout",
+    "it": "Esploratore dei segnali",
+    "ru": "Разведчик сигналов",
+    "hi": "सिग्नल स्काउट",
+    "ar": "كشّاف الإشارات"
   },
   "road-crosser": {
     "__localizedExact": true,

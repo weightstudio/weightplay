@@ -1,0 +1,10 @@
+{
+  "gameId": "animal-dewline",
+  "interfaceVersion": 6,
+  "audience": "general",
+  "components": { "main": 0, "stage": 0, "battle": 0, "result": 0, "accessibility": 0 },
+  "stage": "PRESENT",
+  "result": "BATTLE_SUBSTATE",
+  "reserve": "GENERAL_56PX",
+  "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
+}

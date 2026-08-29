@@ -2578,6 +2578,31 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-30). Keep the card planned and the
+// playable route private until art, Tester, Reviewer, and release gates pass.
+const animalDewlineLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalDewlineLocalized = (values) => Object.fromEntries(animalDewlineLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalDewlineStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalDewlinePlanned = {
+  id: "animal-dewline",
+  title: animalDewlineLocalized(["Meadow Dewline", "晨露水線", "晨露水线", "メドウ・デューライン", "메도우 듀라인", "Línea de Rocío", "Linha de Orvalho", "Ligne de Rosée", "Wiesen-Tautropfen", "Linea di Rugiada", "Луговая роса", "लुговая роса", "خط الندى"]),
+  status: "planned",
+  statusText: { ...animalDewlineStatusText },
+  type: animalDewlineLocalized(["Linked Waterflow Puzzle", "連動水流益智", "联动水流益智", "連動水流パズル", "연결 물줄기 퍼즐", "Puzzle de caudal enlazado", "Puzzle de fluxo ligado", "Puzzle de flux lié", "Verknüpftes Wasserfluss-Puzzle", "Puzzle di flusso collegato", "Пазл связанного потока", "जुड़ी जलधारा पहेली", "لغز تدفق المياه المترابط"]),
+  description: animalDewlineLocalized(["Tune three linked dew valves to match the meadow note and wake the dawn flowers.", "調整三個連動的晨露閥門，依照草地筆記喚醒晨光花朵。", "调整三个联动的晨露阀门，依照草地笔记唤醒晨光花朵。", "3つの連動する露バルブを調整し、草地のメモどおり朝の花を目覚めさせよう。", "서로 연결된 이슬 밸브 세 개를 조절해 초원 메모대로 새벽 꽃을 깨우세요.", "Ajusta tres válvulas de rocío enlazadas para despertar las flores del amanecer.", "Ajuste três válvulas de orvalho ligadas para acordar as flores da alvorada.", "Règle trois vannes de rosée liées pour réveiller les fleurs de l’aube.", "Stelle drei verbundene Taublichte nach der Wiesennotiz ein und wecke die Morgenblumen.", "Regola tre valvole di rugiada collegate seguendo la nota del prato.", "Настройте три связанные клапана росы по заметке луга и разбудите цветы.", "तीन जुड़ी ओस-वाल्व को मैदान की नोट के अनुसार मिलाकर भोर के फूल जगाएँ।", "اضبط ثلاثة صمامات ندى مترابطة وفق مذكرة المرج لإيقاظ زهور الفجر."]),
+  meta: animalDewlineLocalized([["3 Meadows", "Linked Valves", "Calm Retry"], ["3 片草地", "連動閥門", "平靜重試"], ["3 片草地", "联动阀门", "平静重试"], ["3つの草地", "連動バルブ", "穏やかな再挑戦"], ["초원 3곳", "연결 밸브", "차분한 재시도"], ["3 praderas", "Válvulas unidas", "Reintento sereno"], ["3 prados", "Válvulas ligadas", "Nova tentativa calma"], ["3 prés", "Vannes liées", "Reprise sereine"], ["3 Wiesen", "Verbundene Ventile", "Ruhiger Versuch"], ["3 prati", "Valvole collegate", "Riprova calma"], ["3 луга", "Связанные клапаны", "Спокойный повтор"], ["3 मैदान", "जुड़ी वाल्व", "शांत पुनः प्रयास"], ["3 مروج", "صمامات مترابطة", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Planning", "Family", "Animal"],
+  skills: ["Planning", "Cause and Effect", "Focus"],
+  ages: ["9", "family"],
+  ageLabel: animalDewlineLocalized(Array(13).fill("9+")),
+  href: "games/animal-dewline/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-dewline/assets/animal-dewline-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDewlinePlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDewlinePlanned.id)) window.WONDER_LOBBY.games.push(animalDewlinePlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDewlinePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDewlinePlanned.id);
+
 // Animal Peach Oath is a real internal prototype, so keep it discoverable in
 // the owner-preview Coming Soon rail without promoting it into the playable
 // catalog or attaching a public gameplay preview.
@@ -3231,6 +3256,24 @@ const animalFireflyFolioPlanned = {
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalFireflyFolioPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.games.push(animalFireflyFolioPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalFireflyFolioPlanned.id);
+
+// Signal Scout is a planned General identity for a bounded signal-decoding
+// prototype. Keep the card Coming Soon until art, Tester, Reviewer, release,
+// and owner-opening gates are complete.
+const animalSignalScoutPlanned = {
+  id: "animal-signal-scout",
+  title: marketFiveLocalized(["Signal Scout", "訊號偵察員", "信号侦察员", "シグナル・スカウト", "신호 정찰대", "Explorador de señales", "Batedor de Sinais", "Éclaireur des signaux", "Signal-Scout", "Esploratore dei segnali", "Разведчик сигналов", "सिग्नल स्काउट", "كشّاف الإشارات"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Signal Decoding Puzzle", "訊號解碼益智", "信号解码益智", "信号解読パズル", "신호 해독 퍼즐", "Puzzle de descifrado de señales", "Puzzle de decifração de sinais", "Puzzle de décodage de signaux", "Signal-Entschlüsselungspuzzle", "Puzzle di decodifica segnali", "Пазл расшифровки сигналов", "सिग्नल डिकोडिंग पहेली", "لغز فك الإشارات"]),
+  description: marketFiveLocalized(["Read three scout notes, match each animal to its signal colour, and copy the visible patrol order.", "讀懂三張偵察筆記，把動物配對到訊號顏色，再照著可見巡邏順序點選。", "读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。", "3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。", "세 정찰 기록을 읽고 동물과 신호 색을 맞춘 뒤 보이는 순서대로 누르세요.", "Lee tres notas, relaciona cada animal con su color y copia el orden de patrulla.", "Leia três notas, associe cada animal à sua cor e copie a ordem da patrulha.", "Lis trois notes, associe chaque animal à sa couleur puis copie l’ordre de patrouille.", "Lies drei Notizen, ordne jedem Tier seine Signalfarbe zu und kopiere die sichtbare Reihenfolge.", "Leggi tre note, abbina ogni animale al suo colore e copia l’ordine del giro.", "Прочитайте три заметки, сопоставьте зверей с цветами и повторите порядок патруля.", "तीन नोट पढ़ें, हर जानवर को संकेत रंग से मिलाएँ और गश्त का क्रम दोहराएँ।", "اقرأ ثلاث ملاحظات وطابق كل حيوان مع لون إشارته ثم انسخ ترتيب الدورية."]),
+  meta: marketFiveLocalized([["3 Patrol Notes", "Match + Copy", "Calm Retry"], ["3 張巡邏筆記", "配對＋照抄", "平靜重試"], ["3 张巡逻笔记", "配对＋照抄", "平静重试"], ["3つの巡回メモ", "合わせてまねる", "穏やかな再挑戦"], ["정찰 기록 3개", "맞추고 따라하기", "차분한 재시도"], ["3 notas", "Relaciona y copia", "Reintento tranquilo"], ["3 notas", "Associe e copie", "Nova tentativa calma"], ["3 notes", "Associer et copier", "Reprise sereine"], ["3 Notizen", "Zuordnen + Kopieren", "Ruhiger Versuch"], ["3 note", "Abbina e copia", "Riprova calma"], ["3 заметки", "Сопоставь и повтори", "Спокойный повтор"], ["3 नोट", "मिलाएँ और दोहराएँ", "शांत पुनः प्रयास"], ["3 ملاحظات", "طابق وانسخ", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"], skills: ["Observation", "Working Memory", "Focus"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-signal-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-signal-scout/assets/animal-signal-scout-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSignalScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSignalScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSignalScoutPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalSignalScoutPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalSignalScoutPlanned.id);
 
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.

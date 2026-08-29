@@ -2,9 +2,9 @@
   "use strict";
   const locales = window.ANIMAL_FIREFLY_FOLIO_LOCALES || {};
   const pages = [
-    { name: "Bramble Page", note: "note1", solution: ["east", "north", "east"] },
-    { name: "Reed Page", note: "note2", solution: ["north", "west", "north"] },
-    { name: "Moon Fence", note: "note3", solution: ["west", "south", "east"] },
+    { name: "name1", note: "note1", solution: ["east", "north", "east"] },
+    { name: "name2", note: "note2", solution: ["north", "west", "north"] },
+    { name: "name3", note: "note3", solution: ["west", "south", "east"] },
   ];
   const directions = ["north", "east", "south", "west"];
   const state = { locale: "en", page: 0, route: [], turns: 0, sessionTurns: 0, screen: "main" };

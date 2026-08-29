@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" role="img" aria-labelledby="title desc">
+  <title id="title">Signal Scout</title><desc id="desc">A twilight lookout with three coloured animal signal lights.</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#10234b"/><stop offset="1" stop-color="#071426"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffe18b" stop-opacity=".9"/><stop offset="1" stop-color="#ffe18b" stop-opacity="0"/></radialGradient></defs>
+  <rect width="900" height="700" fill="url(#sky)"/><circle cx="710" cy="145" r="76" fill="#e9f3ff" opacity=".9"/><circle cx="710" cy="145" r="116" fill="url(#glow)" opacity=".38"/>
+  <path d="M0 520Q170 420 330 505T650 470T900 510V700H0Z" fill="#0b3141"/><path d="M0 595Q180 505 360 590T700 560T900 590V700H0Z" fill="#082b39"/>
+  <path d="M205 505h370l-38 150H245z" fill="#153c59" stroke="#76e6c4" stroke-width="7"/><path d="M260 505l130-170 130 170" fill="#1c5270" stroke="#76e6c4" stroke-width="7"/><path d="M390 335v-95" stroke="#ffd166" stroke-width="12"/><circle cx="390" cy="220" r="34" fill="#ffd166"/><circle cx="390" cy="220" r="70" fill="url(#glow)" opacity=".55"/>
+  <g stroke="#d9efff" stroke-width="8" fill="none"><path d="M260 505v150M325 505v150M390 505v150M455 505v150M520 505v150"/><path d="M205 565h370M220 615h340"/></g>
+  <g><circle cx="220" cy="185" r="23" fill="#ffd166"/><circle cx="142" cy="265" r="23" fill="#76e6c4"/><circle cx="625" cy="280" r="23" fill="#b78cff"/><path d="M220 185l80 80M142 265l70 70M625 280l-75 70" stroke="#f4f7ff" stroke-width="4" opacity=".55"/></g>
+  <text x="55" y="90" fill="#f4f7ff" font-family="system-ui,sans-serif" font-size="42" font-weight="800">SIGNAL SCOUT</text>
+  <text x="58" y="132" fill="#b8c7df" font-family="system-ui,sans-serif" font-size="22">Decode the note · light the lookout</text>
+</svg>
