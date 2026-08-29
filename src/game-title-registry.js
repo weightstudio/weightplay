@@ -2159,6 +2159,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पंजों की पैचवर्क",
     "ar": "رقع آثار الحيوانات"
   },
+  "animal-cairn-courier": {
+    "__localizedExact": true,
+    "en": "Cairn Courier",
+    "zh-Hant": "石堆信使",
+    "zh-Hans": "石堆信使",
+    "ja": "ケルン・クーリエ",
+    "ko": "돌무덤 배달부",
+    "es": "Mensajero de Cairns",
+    "pt-BR": "Mensageiro dos Marcos",
+    "fr": "Messager des Cairns",
+    "de": "Steinmal-Bote",
+    "it": "Messaggero dei Cairn",
+    "ru": "Курьер каменных пирамид",
+    "hi": "पत्थर-ढेर संदेशवाहक",
+    "ar": "ساعي أكوام الحجارة"
+  },
+  "animal-firefly-folio": {
+    "__localizedExact": true,
+    "en": "Firefly Folio",
+    "zh-Hant": "螢火筆記",
+    "zh-Hans": "萤火笔记",
+    "ja": "ホタルの手帳",
+    "ko": "반딧불 기록장",
+    "es": "Cuaderno de Luciérnagas",
+    "pt-BR": "Caderno dos Vaga-lumes",
+    "fr": "Carnet des Lucioles",
+    "de": "Glühwürmchen-Folio",
+    "it": "Taccuino delle Lucciole",
+    "ru": "Альбом светлячка",
+    "hi": "जुगनू पुस्तिका",
+    "ar": "دفتر اليراعات"
+  },
   "road-crosser": {
     "__localizedExact": true,
     "en": "Road Crosser",

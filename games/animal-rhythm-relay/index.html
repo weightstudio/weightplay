@@ -6,10 +6,10 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-rhythm-relay">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <title>Animal Rhythm Relay | WeightPlay</title>
   <meta name="description" content="Tap the forest festival beat markers in a gentle timing relay.">
-  <link rel="stylesheet" href="style.css?v=20260829-animal-rhythm-relay-v2">
+  <link rel="stylesheet" href="style.css?v=20260829-animal-rhythm-relay-v3-cover">
 </head>
 <body data-screen="main" data-wp-game-id="animal-rhythm-relay" data-wp-audience="general">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><strong>Animal Rhythm Relay</strong><span>Preparing the forest beat…</span></section>
@@ -34,7 +34,10 @@
             <p id="mainProgress" class="progress" aria-live="polite"></p>
             <button id="startButton" class="primary" type="button" data-wp-main-start data-copy="start">Start the relay</button>
           </div>
-          <img class="main-poster" src="assets/animal-rhythm-relay-cover.svg" alt="" aria-hidden="true" width="800" height="800" fetchpriority="high">
+          <picture class="main-poster-frame">
+            <source srcset="assets/animal-rhythm-relay-cover-v1.webp" type="image/webp">
+            <img class="main-poster" src="assets/animal-rhythm-relay-cover-v1.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+          </picture>
         </article>
       </section>
       <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle"><h2 id="guideTitle" data-copy="howTo">How to play</h2><p data-copy="guide">Watch the pulse, then tap the glowing station when its ring is full. Each tap advances the parade; accuracy grows your combo, but the round never ends on one missed beat.</p></section>
@@ -53,6 +56,6 @@
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260829-animal-rhythm-relay-v2"></script>
+  <script src="game.js?v=20260829-animal-rhythm-relay-v3-cover"></script>
 </body>
 </html>

@@ -41,6 +41,13 @@
 
   function t(key) { if (key === "loading") return loadingLabels[state.locale] || loadingLabels.en; return (copy[state.locale] || copy.en)[key] || copy.en[key] || key; }
   function aria(key) { return ariaLabels[state.locale]?.[key] || ariaLabels.en[key] || key; }
+  function syncSoundControls() {
+    [document.querySelector("#soundButton"), document.querySelector("#settingsSoundButton")].forEach((button) => {
+      if (!button) return;
+      button.setAttribute("aria-pressed", String(state.sound));
+      button.textContent = state.sound ? t("soundOn") : t("soundOff");
+    });
+  }
   function loadProgress() { try { const value = JSON.parse(localStorage.getItem(progressKey) || "{}"); return value && typeof value === "object" ? value : {}; } catch { return {}; } }
   function saveProgress() { try { localStorage.setItem(progressKey, JSON.stringify(state.progress)); } catch {} }
   function format(template, values) { return template.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ""); }
@@ -50,10 +57,7 @@
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-aria]").forEach((node) => { node.setAttribute("aria-label", aria(node.dataset.aria)); });
-    document.querySelector("#soundButton").textContent = state.sound ? t("soundOn") : t("soundOff");
-    document.querySelector("#settingsSoundButton").textContent = state.sound ? t("soundOn") : t("soundOff");
-    document.querySelector("#soundButton").setAttribute("aria-pressed", String(state.sound));
-    document.querySelector("#settingsSoundButton").setAttribute("aria-pressed", String(state.sound));
+    syncSoundControls();
     document.querySelector("#aimAction")?.setAttribute("aria-label", t("aim"));
     renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp();
   }
@@ -100,9 +104,9 @@
   document.querySelector("#retryButton").addEventListener("click", () => startHole(state.holeIndex));
   document.querySelector("#nextButton").addEventListener("click", () => startHole(state.holeIndex + 1));
   document.querySelector("#mapButton").addEventListener("click", () => { document.querySelector("#resultCard").hidden = true; renderStageList(); showScreen("stage"); });
-  document.querySelector("#soundButton").addEventListener("click", () => { state.sound = !state.sound; const button = document.querySelector("#soundButton"); button.setAttribute("aria-pressed", String(state.sound)); button.textContent = state.sound ? t("soundOn") : t("soundOff"); });
+  document.querySelector("#soundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
   document.querySelector("#settingsButton").addEventListener("click", () => { const button = document.querySelector("#settingsButton"); const popover = document.querySelector("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; button.setAttribute("aria-expanded", String(open)); });
-  document.querySelector("#settingsSoundButton").addEventListener("click", () => { state.sound = !state.sound; const sound = document.querySelector("#soundButton"); const settingsSound = document.querySelector("#settingsSoundButton"); sound.setAttribute("aria-pressed", String(state.sound)); settingsSound.setAttribute("aria-pressed", String(state.sound)); sound.textContent = state.sound ? t("soundOn") : t("soundOff"); settingsSound.textContent = state.sound ? t("soundOn") : t("soundOff"); });
+  document.querySelector("#settingsSoundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
   document.querySelector("#aimAction").addEventListener("click", () => { canvas.focus?.(); updateHelp(); });
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
   canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);

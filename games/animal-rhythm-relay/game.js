@@ -26,7 +26,7 @@
   };
   let locale = "en", station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = true;
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
-  const track = (event, details = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, game_id:"animal-rhythm-relay", game_version:"v2", interface_version:"6", ...details } })); };
+  const track = (event, details = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, game_id:"animal-rhythm-relay", game_version:"v3", interface_version:"6", ...details } })); };
   function readBest() { try { return Number(localStorage.getItem("animalRhythmRelayBest") || 0); } catch { return 0; } }
   function saveBest(value) { try { localStorage.setItem("animalRhythmRelayBest", String(value)); } catch { /* session-safe */ } }
   function announce(text, good = false) { $("battleStatus").textContent = text; $("battleStatus").style.color = good ? "#ffe59b" : "#fff"; }

@@ -3186,6 +3186,52 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.games.push(animalPatchworkPawsPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPatchworkPawsPlanned.id);
 
+// Cairn Courier is a planned General identity for a bounded order-and-support
+// puzzle prototype. Keep its card Coming Soon until exact Tester, review,
+// release, art, and owner-opening gates are complete.
+const animalCairnCourierPlanned = {
+  id: "animal-cairn-courier",
+  title: marketFiveLocalized(["Cairn Courier", "石堆信使", "石堆信使", "ケルン・クーリエ", "돌무덤 배달부", "Mensajero de Cairns", "Mensageiro dos Marcos", "Messager des Cairns", "Steinmal-Bote", "Messaggero dei Cairn", "Курьер каменных пирамид", "पत्थर-ढेर संदेशवाहक", "ساعي أكوام الحجارة"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Support-Order Trail Puzzle", "支撐順序步道益智", "支撑顺序步道益智", "支え順トレイルパズル", "지지 순서 트레일 퍼즐", "Rompecabezas de orden y apoyo", "Quebra-cabeça de ordem e apoio", "Puzzle d’ordre et d’appui", "Stützreihenfolge-Pfadpuzzle", "Puzzle di ordine e appoggio", "Пазл порядка опор", "सहारा-क्रम पथ पहेली", "لغز مسار ترتيب الدعائم"]),
+  description: marketFiveLocalized(["Read the trail note, then stack three marked stones in the safe support order.", "讀懂步道筆記，再依安全支撐順序堆好三顆標記石頭。", "读懂步道笔记，再按安全支撑顺序堆好三颗标记石头。", "道しるべを読み、安全な支え順で3つの石を積もう。", "길 안내를 읽고 안전한 지지 순서로 표시된 돌 세 개를 쌓아 보세요.", "Lee la nota y apila tres piedras marcadas en el orden de apoyo seguro.", "Leia a nota e empilhe três pedras marcadas na ordem segura de apoio.", "Lis la note puis empile trois pierres marquées dans l’ordre d’appui sûr.", "Lies den Pfad-Hinweis und stapel drei markierte Steine in sicherer Stützfolge.", "Leggi la nota e impila tre pietre segnate nell’ordine di sostegno sicuro.", "Прочитайте заметку и сложите три камня в безопасном порядке опор.", "पथ-नोट पढ़ें और चिह्नित तीन पत्थरों को सुरक्षित सहारा क्रम में रखें।", "اقرأ ملاحظة الطريق ثم رصّ ثلاث حجارة بالترتيب الآمن للدعم."]),
+  meta: marketFiveLocalized([["3 Trail Cairns", "Read + Stack", "Calm Retry"], ["3 座步道石堆", "閱讀＋堆疊", "平靜重試"], ["3 座步道石堆", "阅读＋堆叠", "平静重试"], ["3つの石積み", "読んで積む", "穏やかな再挑戦"], ["돌무덤 3개", "읽고 쌓기", "차분한 재시도"], ["3 cairns", "Lee y apila", "Reintento tranquilo"], ["3 marcos", "Leia e empilhe", "Nova tentativa calma"], ["3 cairns", "Lire et empiler", "Reprise douce"], ["3 Steinmale", "Lesen + Stapeln", "Ruhiger Neustart"], ["3 cairn", "Leggi e impila", "Riprova calma"], ["3 пирамиды", "Читай и складывай", "Спокойный повтор"], ["3 पत्थर-ढेर", "पढ़ें और रखें", "शांत पुनःप्रयास"], ["3 أكوام", "اقرأ وارصص", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Sequencing", "Spatial Planning", "Family", "Animal"],
+  skills: ["Planning", "Sequencing", "Cause and Effect"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-cairn-courier/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-cairn-courier/assets/animal-cairn-courier-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalCairnCourierPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalCairnCourierPlanned.id)) window.WONDER_LOBBY.games.push(animalCairnCourierPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalCairnCourierPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalCairnCourierPlanned.id);
+
+// Firefly Folio is a planned General identity for a bounded route-code puzzle
+// prototype. Keep the card Coming Soon until art, Tester, Reviewer, release,
+// and owner-opening gates are complete.
+const animalFireflyFolioPlanned = {
+  id: "animal-firefly-folio",
+  title: marketFiveLocalized(["Firefly Folio", "螢火筆記", "萤火笔记", "ホタルの手帳", "반딧불 기록장", "Cuaderno de Luciérnagas", "Caderno dos Vaga-lumes", "Carnet des Lucioles", "Glühwürmchen-Folio", "Taccuino delle Lucciole", "Альбом светлячка", "जुगनू पुस्तिका", "دفتر اليراعات"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Route-Code Direction Puzzle", "路線密碼方向益智", "路线密码方向益智", "道順コードパズル", "경로 코드 방향 퍼즐", "Puzle de código y direcciones", "Puzzle de código e direções", "Puzzle de code directionnel", "Richtungs-Code-Puzzle", "Puzzle del codice direzionale", "Пазл маршрута и направлений", "दिशा-कोड पहेली", "لغز رمز الاتجاهات"]),
+  description: marketFiveLocalized(["Read three field notes and enter each exact direction code to guide a firefly home.", "讀懂三張田野筆記，輸入精確方向密碼，帶螢火蟲回家。", "读懂三张田野笔记，输入精确方向密码，带萤火虫回家。", "3つの野帳を読み、正確な方向コードでホタルを灯りへ導こう。", "세 현장 기록을 읽고 정확한 방향 코드로 반딧불을 집으로 이끄세요.", "Lee tres notas y escribe cada código de dirección para guiar a la luciérnaga.", "Leia três notas e insira cada código de direção para levar o vaga-lume para casa.", "Lis trois notes et entre le code de direction exact pour guider la luciole.", "Lies drei Feldnotizen und gib jeden genauen Richtungscode ein, um das Glühwürmchen heimzuführen.", "Leggi tre note e inserisci ogni codice direzionale per guidare la lucciola a casa.", "Читайте три заметки и вводите точный код направлений, чтобы привести светлячка домой.", "तीन मैदानी नोट पढ़ें और जुगनू को घर पहुँचाने के लिए सही दिशा-कोड दर्ज करें।", "اقرأ ثلاث ملاحظات وأدخل رمز الاتجاه الدقيق لإعادة اليراعة إلى منزلها."]),
+  meta: marketFiveLocalized([["3 Folio Pages", "Read + Trace", "Calm Retry"], ["3 張筆記", "閱讀＋描線", "平靜重試"], ["3 张笔记", "阅读＋描线", "平静重试"], ["3ページ", "読んでたどる", "穏やかな再挑戦"], ["기록 3개", "읽고 추적", "차분한 재시도"], ["3 páginas", "Lee y traza", "Reintento tranquilo"], ["3 páginas", "Leia e trace", "Nova tentativa calma"], ["3 pages", "Lire et tracer", "Reprise calme"], ["3 Seiten", "Lesen + Zeichnen", "Ruhiger Neustart"], ["3 pagine", "Leggi e traccia", "Riprova calma"], ["3 страницы", "Читай и веди", "Спокойный повтор"], ["3 पन्ने", "पढ़ें और बनाएँ", "शांत पुनःप्रयास"], ["3 صفحات", "اقرأ وتتبع", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Route Planning", "Family", "Animal"],
+  skills: ["Planning", "Spatial Reasoning", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-firefly-folio/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-firefly-folio/assets/animal-firefly-folio-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalFireflyFolioPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.games.push(animalFireflyFolioPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalFireflyFolioPlanned.id);
+
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.
 window.WONDER_LOBBY.games.push(
