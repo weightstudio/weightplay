@@ -1,16 +1,26 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 9;
+  const GAME_VERSION = 10;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
+  const debugEnabled = new URLSearchParams(window.location.search).get("debug") === "1";
+  const debugTrace = [];
+  function trace(label) {
+    if (!debugEnabled || !state?.player) return;
+    const entry = { label, x: Number(state.player.x.toFixed(2)), y: Number(state.player.y.toFixed(2)), vy: Number(state.player.vy.toFixed(2)), grounded: state.player.grounded, intent: Number(state.firstRoomJumpIntent.toFixed(2)), queued: state.firstRoomJumpQueued, jumpBuffer: Number(state.jumpBuffer.toFixed(2)), keys: [...state.keys], tap: state.tap, deaths: state.deaths, status: state.statusKey };
+    debugTrace.push(entry);
+    if (debugTrace.length > 1200) debugTrace.shift();
+    document.body.dataset.trapDebug = JSON.stringify(entry);
+    if (label !== "before") document.body.dataset.trapEvent = JSON.stringify(entry);
+  }
   const heroArt = new Image();
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
+  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -118,6 +128,21 @@
       hi: "काँटे पीछे हैं — लालटेन की ओर बढ़ें।",
       ar: "تجاوزت الأشواك — واصل إلى المصباح.",
     },
+    hidden: {
+      en: "Hidden floor ahead — press JUMP before the lantern.",
+      "zh-Hant": "前方有隱藏地板——在燈籠前按下跳躍。",
+      "zh-Hans": "前方有隐藏地板——在灯笼前按下跳跃。",
+      ja: "前方に隠し床。ランタンの前でジャンプしよう。",
+      ko: "앞에 숨은 바닥이 있습니다. 랜턴 전에 점프하세요.",
+      es: "Hay un suelo oculto delante: pulsa SALTAR antes del farol.",
+      "pt-BR": "Há um piso oculto à frente: pressione PULAR antes da lanterna.",
+      fr: "Sol caché devant : appuie sur SAUTER avant la lanterne.",
+      de: "Vor dir liegt ein versteckter Boden: Drücke vor der Laterne SPRINGEN.",
+      it: "Pavimento nascosto avanti: premi SALTA prima della lanterna.",
+      ru: "Впереди скрытый пол: нажмите ПРЫЖОК до фонаря.",
+      hi: "आगे छिपी ज़मीन है — लालटेन से पहले कूदें।",
+      ar: "هناك أرض مخفية أمامك — اضغط قفز قبل المصباح.",
+    },
   };
   function format(value, values) { return value.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ""); }
   function currentLocale() {
@@ -138,6 +163,7 @@
     if (p.x < t.gap + 70) return "gap";
     if (p.x < t.spike - 42) return state.firstRoomLandingSeen ? (p.grounded ? "landing" : "spike") : "gap";
     if (p.x < t.spike + 52) return "spike";
+    if (p.x < t.fake + 52) return "hidden";
     return "clear";
   }
   function currentBattleStatus() {
@@ -209,7 +235,7 @@
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
     state.keys.clear(); state.tap = null;
-    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomLandingSeen = false; state.timingCue = firstRoomTimingKey();
+    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.timingCue = firstRoomTimingKey();
     updateBattleText();
   }
   function startRoom(chapter = 1, room = 1) { state.chapter = chapter; state.room = room; state.statusKey = ""; resetRoom(); show("battle"); }
@@ -224,7 +250,7 @@
   function armFirstRoomJumpIntent() {
     if (state.chapter !== 1 || state.room !== 1 || !state.player) return;
     const t = trapData();
-    if (state.player.x >= t.gap - 54 && state.player.x < t.spike + 18) state.firstRoomJumpIntent = 180;
+    if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) { state.firstRoomJumpIntent = 360; state.firstRoomJumpQueued = true; }
   }
   function finish() {
     state.bestRoom = Math.max(state.bestRoom, state.room + (state.chapter - 1) * 3);
@@ -235,6 +261,7 @@
   }
   function update(dt) {
     const p = state.player; const t = trapData(); const reversed = t.reverse;
+    trace("before");
     const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
     const left = reversed ? (state.keys.has("ArrowRight") || state.keys.has("KeyD")) : (state.keys.has("ArrowLeft") || state.keys.has("KeyA"));
     const jumpHeld = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
@@ -260,19 +287,17 @@
     p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));
     const floor = solidAt(p.x) ? 418 : 540;
     if (p.y >= floor - 28) { p.y = floor - 28; p.vy = 0; p.grounded = true; } else p.grounded = false;
-    if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) state.firstRoomLandingSeen = true;
-    const firstRoomAssistReady = firstRoom && p.grounded && state.firstRoomJumpIntent > 0 && (
-      (p.x >= t.gap + 64 && p.x < t.spike + 18) ||
-      (p.x >= t.fake - 28 && p.x < t.fake + 34)
-    );
+    if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.firstRoomLandingSeen = true; state.firstRoomJumpQueued = true; }
+    const firstRoomAssistReady = firstRoom && p.grounded && (state.firstRoomJumpIntent > 0 || state.firstRoomJumpQueued || state.firstRoomLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
     if ((state.jumpBuffer > 0 || firstRoomAssistReady) && p.grounded) {
       p.vy = firstRoom ? -11.5 : -10.5;
       p.grounded = false;
       state.jumpBuffer = 0;
-      if (firstRoomAssistReady && p.x >= t.fake - 28) state.firstRoomJumpIntent = 0;
+      if (firstRoomAssistReady && p.x >= t.fake - 42) { state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; }
+      trace(firstRoomAssistReady ? "assist-jump" : "jump");
     }
-    if (p.y > 560) return die("gap");
-    if (hazardAt(p.x, p.y) && p.grounded) return die("hazard");
+    if (p.y > 560) { trace("gap-before-die"); return die("gap"); }
+    if (hazardAt(p.x, p.y) && p.grounded) { trace("hazard-before-die"); return die("hazard"); }
     if (p.x > 870 && p.grounded) { if (state.room < 3) { state.room += 1; resetRoom(); } else finish(); }
     if (state.pulse > 0) state.pulse -= dt;
     const timingCue = firstRoomTimingKey();
@@ -305,6 +330,13 @@
       ctx.fillStyle = state.timingCue === "spike" ? "#fff1a1" : "#ffe4a3";
       ctx.font = "bold 15px system-ui";
       ctx.fillText(copy().jump, t.spike - 18, 365);
+      if (state.timingCue === "hidden") {
+        ctx.strokeStyle = "#ffcf73";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(t.fake - 36, 382, 82, 54);
+        ctx.fillStyle = "#fff1a1";
+        ctx.fillText(copy().jump, t.fake - 18, 365);
+      }
       ctx.restore();
     }
     if (state.pulse > 0) {

@@ -45,6 +45,28 @@
     it: "Impostazioni", ru: "Настройки", hi: "सेटिंग्स", ar: "الإعدادات",
   };
   const frostSettingsText = () => FROST_SETTINGS_COPY[frostLocale()] || FROST_SETTINGS_COPY.en;
+  const FROST_BATTLE_BACK_COPY = {
+    en: "Back to Stages", "zh-tw": "返回章節", "zh-cn": "返回章节", ja: "ステージに戻る", ko: "스테이지로 돌아가기",
+    es: "Volver a las fases", "pt-br": "Voltar às fases", fr: "Retour aux niveaux", de: "Zurück zu den Stufen",
+    it: "Torna ai livelli", ru: "Вернуться к главам", hi: "अध्यायों पर वापस जाएँ", ar: "العودة إلى الفصول",
+  };
+  const frostBattleBackText = () => FROST_BATTLE_BACK_COPY[frostLocale()] || FROST_BATTLE_BACK_COPY.en;
+  const FROST_RETURN_COPY = {
+    en: { main: "Back to WeightPlay", stage: "Back to Main", battle: "Back to Stages" },
+    "zh-tw": { main: "返回 WeightPlay", stage: "返回主頁", battle: "返回章節" },
+    "zh-cn": { main: "返回 WeightPlay", stage: "返回主页", battle: "返回章节" },
+    ja: { main: "WeightPlayに戻る", stage: "メインに戻る", battle: "ステージに戻る" },
+    ko: { main: "WeightPlay로 돌아가기", stage: "메인으로 돌아가기", battle: "스테이지로 돌아가기" },
+    es: { main: "Volver a WeightPlay", stage: "Volver al inicio", battle: "Volver a las fases" },
+    "pt-br": { main: "Voltar ao WeightPlay", stage: "Voltar ao início", battle: "Voltar às fases" },
+    fr: { main: "Retour à WeightPlay", stage: "Retour à l'accueil", battle: "Retour aux niveaux" },
+    de: { main: "Zurück zu WeightPlay", stage: "Zurück zum Start", battle: "Zurück zu den Stufen" },
+    it: { main: "Torna a WeightPlay", stage: "Torna alla home", battle: "Torna ai livelli" },
+    ru: { main: "Вернуться в WeightPlay", stage: "Вернуться на главную", battle: "Вернуться к главам" },
+    hi: { main: "WeightPlay पर वापस जाएँ", stage: "मुख्य पर वापस जाएँ", battle: "अध्यायों पर वापस जाएँ" },
+    ar: { main: "العودة إلى WeightPlay", stage: "العودة إلى الرئيسية", battle: "العودة إلى الفصول" },
+  };
+  const frostReturnText = (destination) => FROST_RETURN_COPY[frostLocale()]?.[destination] || FROST_RETURN_COPY.en[destination];
   const FROST_STAGE_COPY = {
     en: { heading: "Ice Chapters", tab: "Stages", chapter: "Chapter", chapters: ["first thaw", "split routes", "drifter pressure", "final melt"] },
     "zh-tw": { heading: "冰原章節", tab: "章節", chapter: "第", chapterSuffix: "章", chapters: ["初次解凍", "分岔路線", "漂行者壓力", "最後融冰"] },
@@ -124,6 +146,14 @@
         const settingsLabel = frostSettingsText();
         battleUtility.setAttribute("aria-label", settingsLabel);
         battleUtility.title = settingsLabel;
+      }
+      for (const destination of ["main", "stage", "battle"]) {
+        const returnControl = document.querySelector(`[data-wp-return="${destination}"]`);
+        if (returnControl) {
+          const backLabel = destination === "battle" ? frostBattleBackText() : frostReturnText(destination);
+          returnControl.setAttribute("aria-label", backLabel);
+          returnControl.title = backLabel;
+        }
       }
       document.querySelector(".touch-hint")?.replaceChildren(document.createTextNode(frostText("hint")));
       const stageCopy = frostStageText();

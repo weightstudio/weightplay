@@ -26,7 +26,7 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
     <title>Frostline Rescue | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260823-arabic-guide-a11y-v8" />
+    <link rel="stylesheet" href="style.css?v=20260829-arabic-return-labels-v10" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen />
@@ -35,7 +35,7 @@
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260823-arabic-guide-a11y-v8"></script>
+    <script defer src="game.js?v=20260829-arabic-return-labels-v10"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Frostline Rescue | WeightPlay" />
@@ -79,7 +79,7 @@
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Frostline Rescue</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
-        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
+        <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Volver a WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
         <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
         <p class="lede main-summary" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
@@ -87,12 +87,12 @@
         <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
       <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
-        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
+        <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Volver al inicio">←</button><h2>Ice Chapters</h2></header>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span><button id="battle-utility" class="utility-button" type="button" data-wp-battle-utility data-five-aria="settings" aria-label="Settings">⚙</button></header>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Volver a las fases">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span><button id="battle-utility" class="utility-button" type="button" data-wp-battle-utility data-five-aria="settings" aria-label="Configuración">⚙</button></header>
         <p id="battle-status" class="battle-status">Arrows move. Press SPACE to break the ice ahead.</p>
         <canvas id="arena" width="960" height="560" aria-label="Frostline Rescue play area"></canvas>
         <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
@@ -126,8 +126,8 @@
   </section>
     <!-- adsense-static-guide:end -->
     <script src="../../src/site-config.js"></script>
-    <script src="../../src/analytics.js?v=20260823-arabic-guide-a11y-v8"></script>
-    <script src="analytics-ownership.js?v=20260823-arabic-guide-a11y-v8"></script>
+    <script src="../../src/analytics.js?v=20260829-arabic-return-labels-v10"></script>
+    <script src="analytics-ownership.js?v=20260829-arabic-return-labels-v10"></script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
