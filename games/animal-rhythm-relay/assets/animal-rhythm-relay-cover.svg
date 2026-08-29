@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Animal Rhythm Relay concept cover</title>
+  <desc id="desc">A warm forest festival concept with three beat rings and friendly animal silhouettes.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#173b4a"/><stop offset="1" stop-color="#5c8f83"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ffe59b"/><stop offset="1" stop-color="#eeae54"/></radialGradient>
+  </defs>
+  <rect width="800" height="800" rx="72" fill="url(#sky)"/>
+  <circle cx="400" cy="270" r="190" fill="url(#glow)" opacity=".92"/>
+  <path d="M0 590Q130 470 260 595t280 0q130-125 260 0v205H0Z" fill="#204e55"/>
+  <g fill="none" stroke="#fff3bd" stroke-width="14" opacity=".9">
+    <circle cx="242" cy="335" r="62"/><circle cx="400" cy="300" r="78"/><circle cx="558" cy="335" r="62"/>
+  </g>
+  <g fill="#fff7d0">
+    <circle cx="242" cy="335" r="15"/><circle cx="400" cy="300" r="18"/><circle cx="558" cy="335" r="15"/>
+  </g>
+  <g fill="#173b4a">
+    <path d="M172 621q10-72 70-72t70 72v28H172Z"/><path d="M325 622q10-88 75-88t75 88v27H325Z"/><path d="M488 621q10-72 70-72t70 72v28H488Z"/>
+  </g>
+  <text x="400" y="710" fill="#fff7d0" font-family="system-ui,sans-serif" font-size="48" font-weight="800" text-anchor="middle" letter-spacing="3">RHYTHM RELAY</text>
+</svg>

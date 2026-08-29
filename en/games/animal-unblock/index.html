@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-unblock/" />
-
     <link rel="canonical" href="https://weightplay.com/en/games/animal-unblock/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
@@ -66,8 +65,7 @@
     "Puzzle",
     "Strategy",
     "Logic",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -141,8 +139,8 @@
         ></div>
         <div class="tools">
           <button id="undo" data-t="undo"></button>
-          <button id="hint" data-t="hint"></button>
-          <button id="restart" data-t="restart"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -168,18 +166,17 @@
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
     <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
+    <script src="../../src/analytics.js?v=20260829-opening-funnel-v19"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
-    <script src="game.js?v=20260829-stage-return-progress-v17"></script>
+    <script src="game.js?v=20260829-opening-funnel-v19"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard
     ></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="Unblock Trail game information">
+    <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
+  <section class="game-page-info game-page-info-static" aria-label="Unblock Trail game information">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Unblock Trail</h2><p>Slide horizontal and vertical blocks along their own axes until the red explorer gains a clear route through the exit.</p></div>
@@ -202,5 +199,7 @@
       <div class="game-info-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-rootvault-pins/"><img src="/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Rootvault Pins</strong><span>Pull complete golden pins to route Taro, Moonwater, Emberlight, wards, keys, shadows, and a Star Core through 30 authored Rootvault chambers.</span></span></a><a class="game-info-related-card" href="/en/games/animal-one-line/"><img src="/assets/animal-one-line-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line</strong><span>One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi.</span></span></a><a class="game-info-related-card" href="/en/games/animal-2048/"><img src="/assets/animal-2048-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal 2048: Forest Evolution</strong><span>Animal 2048 is a turn-based forest strategy puzzle hosted by Moon Cap Orla.</span></span></a></div></div>
     </div>
   </section>
+<script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

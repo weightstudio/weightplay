@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="weightplay-audience" content="general">
+  <meta name="description" content="Dino Color Lab is an internal WeightPlay pattern-mixing prototype.">
+  <title>Dino Color Lab | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20260829-dino-color-lab-v2">
+</head>
+<body>
+  <main class="lab-shell" id="app">
+    <header class="lab-header">
+      <a class="back-link" href="/" aria-label="Back to WeightPlay">← <span data-copy="back">Back</span></a>
+      <div>
+        <p class="eyebrow" data-copy="eyebrow">WeightPlay prototype</p>
+        <h1 data-copy="title">Dino Color Lab</h1>
+      </div>
+      <label class="locale-picker"><span data-copy="language">Language</span>
+        <select id="localeSelect" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh-Hant">繁體中文</option>
+          <option value="zh-Hans">简体中文</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="es">Español</option>
+          <option value="pt-BR">Português (Brasil)</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="ru">Русский</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ar">العربية</option>
+        </select>
+      </label>
+    </header>
+
+    <section id="mainScreen" class="screen main-screen" aria-labelledby="mainTitle">
+      <div class="hero-card">
+        <div class="hero-copy">
+          <p class="guide-badge" data-copy="guide">Spark Paw Fia's lab</p>
+          <h2 id="mainTitle" data-copy="mainHeading">Mix two fossil inks to match the dino sample.</h2>
+          <p data-copy="mainBody">Choose two reagents, predict the blend, then lock the colour before the timer bar cools.</p>
+          <button id="startBtn" class="primary" data-copy="start">Open the lab</button>
+        </div>
+        <div class="fossil-mark" aria-hidden="true">DINO<span>LAB</span></div>
+      </div>
+      <details class="guide-card">
+        <summary data-copy="howTo">How to play</summary>
+        <p data-copy="howToBody">Each sample has one exact two-ink recipe. Tap two different reagent cards, then mix. A correct blend opens the next sample; a wrong blend can be tried again.</p>
+      </details>
+      <p id="bestLine" class="best-line" role="status"></p>
+    </section>
+
+    <section id="labScreen" class="screen" hidden aria-labelledby="labTitle">
+      <div class="status-row"><span id="roundLabel"></span><span id="scoreLabel"></span></div>
+      <div class="lab-card">
+        <div class="target-row">
+          <div><p class="eyebrow" data-copy="targetLabel">Target sample</p><h2 id="labTitle"></h2></div>
+          <div id="targetChip" class="colour-chip" role="img" aria-label="Target colour"></div>
+        </div>
+        <p id="roundHint" class="round-hint" role="status"></p>
+        <div id="reagentGrid" class="reagent-grid" role="group" aria-label="Reagent choices"></div>
+        <div class="selection-row"><span id="selectionLabel"></span><button id="mixBtn" class="primary" disabled></button></div>
+        <div class="cooling-track" aria-hidden="true"><span id="coolingBar"></span></div>
+        <button id="leaveBtn" class="text-button" data-copy="leave">Leave lab</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen" hidden aria-labelledby="resultTitle">
+      <div class="result-card">
+        <p class="guide-badge" data-copy="complete">Sample set complete</p>
+        <h2 id="resultTitle"></h2>
+        <p id="resultBody"></p>
+        <div class="result-stats"><span id="resultScore"></span><span id="resultBest"></span></div>
+        <div class="result-actions"><button id="replayBtn" class="primary" data-copy="replay">Run it again</button><button id="homeBtn" class="secondary" data-copy="home">Back to menu</button></div>
+      </div>
+    </section>
+    <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
+  </main>
+  <script src="game.js?v=20260829-dino-color-lab-v2"></script>
+</body>
+</html>

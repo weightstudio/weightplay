@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t d">
+  <title id="t">Animal Parade Builder concept cover</title><desc id="d">A friendly forest route-planning concept with three animals and colorful gates.</desc>
+  <defs><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2a5364"/><stop offset="1" stop-color="#8ab286"/></linearGradient></defs>
+  <rect width="800" height="800" rx="72" fill="url(#b)"/><circle cx="400" cy="238" r="145" fill="#ffe39c" opacity=".9"/>
+  <path d="M0 570Q150 460 300 580t300 0q100-85 200 0v230H0Z" fill="#315c52"/>
+  <g fill="#fff4c5" stroke="#244957" stroke-width="12"><circle cx="220" cy="475" r="62"/><circle cx="400" cy="440" r="74"/><circle cx="580" cy="475" r="62"/></g>
+  <g fill="#efb44e" stroke="#244957" stroke-width="12"><path d="M130 355h120v100H130z"/><path d="M340 305h120v120H340z"/><path d="M550 355h120v100H550z"/></g>
+  <g fill="#244957"><circle cx="200" cy="467" r="9"/><circle cx="240" cy="467" r="9"/><circle cx="380" cy="430" r="10"/><circle cx="420" cy="430" r="10"/><circle cx="560" cy="467" r="9"/><circle cx="600" cy="467" r="9"/></g>
+  <text x="400" y="700" fill="#fff4c5" font-family="system-ui,sans-serif" font-size="44" font-weight="800" text-anchor="middle" letter-spacing="2">PARADE BUILDER</text>
+</svg>

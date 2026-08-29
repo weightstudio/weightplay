@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-unblock/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-unblock/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
@@ -51,6 +50,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "解锁滑块",
+  "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/zh-cn/games/animal-unblock/",
   "image": "https://weightplay.com/assets/animal-unblock-cover-v2.webp",
   "description": "沿着每块木块自己的方向滑动，逐步清出出口通道，让红色探险家离开拥挤的森林关卡。",
@@ -66,15 +66,13 @@
     "益智",
     "策略",
     "逻辑",
-    "动物",
-    "Browser Game"
+    "动物"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Unblock Trail"
+  }
 }
     </script>
   </head>
@@ -142,8 +140,8 @@
         ></div>
         <div class="tools">
           <button id="undo" data-t="undo"></button>
-          <button id="hint" data-t="hint"></button>
-          <button id="restart" data-t="restart"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -170,18 +168,17 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
     <script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+    <script src="../../src/analytics.js?v=20260829-opening-funnel-v19"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
-    <script src="game.js?v=20260829-stage-return-progress-v17"></script>
+    <script src="game.js?v=20260829-opening-funnel-v19"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard
     ></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="解锁滑块 游戏信息">
+    <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
+  <section class="game-page-info game-page-info-static" aria-label="解锁滑块 游戏信息">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>解锁滑块</h2><p>沿着每块木块自己的方向滑动，逐步清出出口通道，让红色探险家离开拥挤的森林关卡。</p></div>
@@ -204,5 +201,7 @@
       <div class="game-info-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-rootvault-pins/"><img src="/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>动物根脉机关</strong><span>拉出完整金色机关针，引导 Taro、月水、烬光、护盾、钥匙、暗影与星核通过 30 个根脉房间。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-one-line/"><img src="/assets/animal-one-line-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一笔到底</strong><span>One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-2048/"><img src="/assets/animal-2048-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>动物 2048：森林进化</strong><span>《動物 2048：森林進化》是由月帽貓頭鷹 Orla 引導的回合制森林策略遊戲。</span></span></a></div></div>
     </div>
   </section>
+<script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

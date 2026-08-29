@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-unblock/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-unblock/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-unblock/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-unblock/" />
@@ -51,6 +50,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "रास्ता खोलें",
+  "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/hi/games/animal-unblock/",
   "image": "https://weightplay.com/assets/animal-unblock-cover-v2.webp",
   "description": "क्षैतिज और ऊर्ध्वाधर ब्लॉक को उनकी अपनी दिशा में खिसकाएँ, ताकि लाल खोजी के लिए निकास तक साफ रास्ता बन सके।",
@@ -66,15 +66,13 @@
     "पहेली",
     "रणनीति",
     "तर्क",
-    "जानवर",
-    "Browser Game"
+    "जानवर"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Unblock Trail"
+  }
 }
     </script>
   </head>
@@ -142,8 +140,8 @@
         ></div>
         <div class="tools">
           <button id="undo" data-t="undo"></button>
-          <button id="hint" data-t="hint"></button>
-          <button id="restart" data-t="restart"></button>
+          <button id="hint" data-t="hint" data-wp-battle-utility></button>
+          <button id="restart" data-t="restart" data-wp-primary-action></button>
         </div>
         <p id="status"></p>
       </section>
@@ -170,18 +168,17 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
     <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+    <script src="../../src/analytics.js?v=20260829-opening-funnel-v19"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
-    <script src="game.js?v=20260829-stage-return-progress-v17"></script>
+    <script src="game.js?v=20260829-opening-funnel-v19"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard
     ></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="रास्ता खोलें खेल की जानकारी">
+    <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
+  <section class="game-page-info game-page-info-static" aria-label="रास्ता खोलें खेल की जानकारी">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>रास्ता खोलें</h2><p>क्षैतिज और ऊर्ध्वाधर ब्लॉक को उनकी अपनी दिशा में खिसकाएँ, ताकि लाल खोजी के लिए निकास तक साफ रास्ता बन सके।</p></div>
@@ -204,5 +201,7 @@
 
     </div>
   </section>
+<script src="/src/game-page-info.js?v=20260826-reviewed-guide-v16"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

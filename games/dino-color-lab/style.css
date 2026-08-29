@@ -1,0 +1,70 @@
+:root { color-scheme: light; --ink:#243246; --muted:#64738a; --paper:#fbfaf4; --line:#d7dfd8; --accent:#df8b42; --mint:#dff2df; }
+* { box-sizing:border-box; }
+html, body { margin:0; min-height:100%; }
+body { background:linear-gradient(145deg,#f4f1e7 0%,#e9f2e5 55%,#eef6f0 100%); color:var(--ink); font-family:ui-rounded,"Avenir Next",system-ui,sans-serif; }
+button, select { font:inherit; }
+button { cursor:pointer; }
+.lab-shell { width:min(920px,calc(100% - 28px)); margin:0 auto; padding:18px 0 28px; }
+.lab-header { min-height:74px; display:grid; grid-template-columns:120px 1fr 150px; align-items:center; gap:14px; }
+.lab-header h1 { margin:0; font-size:clamp(26px,4vw,42px); letter-spacing:-.04em; }
+.eyebrow, .guide-badge { margin:0 0 4px; color:#52786a; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.back-link { color:var(--ink); font-weight:800; text-decoration:none; min-height:48px; display:flex; align-items:center; gap:6px; }
+.locale-picker { display:grid; gap:4px; color:var(--muted); font-size:12px; font-weight:700; }
+.locale-picker select { min-height:42px; border:1px solid var(--line); border-radius:12px; padding:0 8px; background:#fff; color:var(--ink); }
+.screen { margin-top:20px; }
+.hero-card, .lab-card, .result-card, .guide-card { border:1px solid rgba(102,132,111,.22); border-radius:24px; background:rgba(255,255,255,.83); box-shadow:0 14px 34px rgba(70,82,63,.12); }
+.hero-card { min-height:420px; padding:clamp(24px,5vw,60px); display:grid; grid-template-columns:1.2fr .8fr; gap:26px; align-items:center; }
+.hero-copy h2 { margin:10px 0 14px; max-width:580px; font-size:clamp(30px,6vw,56px); line-height:1.02; letter-spacing:-.05em; }
+.hero-copy p:not(.guide-badge) { max-width:520px; color:var(--muted); font-size:18px; line-height:1.5; }
+.fossil-mark { justify-self:center; width:min(240px,100%); aspect-ratio:1; border-radius:42% 58% 50% 50%; display:grid; place-content:center; text-align:center; color:#fff; font-size:34px; font-weight:900; letter-spacing:.08em; background:radial-gradient(circle at 35% 28%,#f7d48e 0 10%,transparent 11%), radial-gradient(circle at 66% 66%,#88c7a0 0 13%,transparent 14%), #6b9b86; transform:rotate(-7deg); box-shadow:inset 0 0 0 12px rgba(255,255,255,.22), inset 0 -20px 0 rgba(26,70,58,.14); }
+.fossil-mark span { display:block; font-size:15px; letter-spacing:.24em; margin-top:7px; }
+.primary, .secondary { min-height:52px; border-radius:14px; padding:0 22px; border:1px solid transparent; font-weight:900; }
+.primary { background:#df8b42; color:#fff; box-shadow:0 5px 0 #b96c2f; }
+.primary:active { transform:translateY(2px); box-shadow:0 3px 0 #b96c2f; }
+.primary:disabled { cursor:not-allowed; opacity:.45; box-shadow:none; }
+.secondary { background:#fff; color:var(--ink); border-color:var(--line); }
+.guide-card { margin-top:14px; padding:18px 22px; }
+.guide-card summary { cursor:pointer; font-weight:900; }
+.guide-card p { color:var(--muted); line-height:1.5; }
+.best-line { min-height:22px; margin:14px 4px 0; color:#52786a; font-weight:800; }
+.status-row { display:flex; justify-content:space-between; gap:12px; color:#52786a; font-weight:900; }
+.lab-card, .result-card { padding:clamp(22px,5vw,52px); }
+.target-row { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.target-row h2 { margin:0; font-size:clamp(28px,5vw,44px); letter-spacing:-.04em; }
+.colour-chip { width:78px; height:78px; flex:0 0 auto; border-radius:50%; border:7px solid #fff; box-shadow:0 0 0 1px var(--line),0 8px 18px rgba(70,82,63,.16); }
+.round-hint { min-height:28px; margin:22px 0 16px; color:var(--muted); font-weight:800; }
+.round-hint.is-good { color:#3b8c5e; }
+.reagent-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.reagent { min-height:104px; display:grid; place-items:center; align-content:center; gap:10px; border:2px solid var(--line); border-radius:16px; background:#fff; color:var(--ink); font-weight:900; }
+.reagent[aria-pressed="true"] { border-color:#df8b42; background:#fff5e8; box-shadow:0 0 0 3px rgba(223,139,66,.14); }
+.reagent-dot { width:38px; height:38px; border-radius:50%; box-shadow:inset 0 -5px 0 rgba(0,0,0,.12); }
+.selection-row { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:22px; color:var(--muted); font-weight:900; }
+.cooling-track { height:8px; margin:18px 0 10px; overflow:hidden; border-radius:99px; background:#e8ede7; }
+.cooling-track span { display:block; width:100%; height:100%; transform-origin:left; background:#8ec69c; }
+.cooling-track span.cooling { animation:cool 12s linear forwards; }
+@keyframes cool { from { transform:scaleX(1); } to { transform:scaleX(0); } }
+.text-button { border:0; background:transparent; color:var(--muted); text-decoration:underline; min-height:44px; font-weight:800; }
+.result-screen { display:grid; place-items:center; }
+.result-card { width:min(640px,100%); text-align:center; }
+.result-card h2 { margin:8px 0 12px; font-size:clamp(30px,6vw,50px); letter-spacing:-.05em; }
+.result-card p:not(.guide-badge) { color:var(--muted); font-size:18px; line-height:1.5; }
+.result-stats { display:flex; justify-content:center; gap:22px; margin:24px 0; color:#52786a; font-weight:900; }
+.result-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
+footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
+@media (max-width:700px) {
+  .lab-shell { width:min(100% - 20px,560px); padding-top:10px; }
+  .lab-header { grid-template-columns:1fr auto; gap:8px; }
+  .lab-header > div { grid-column:1 / -1; grid-row:1; padding:0 58px; text-align:center; }
+  .back-link { grid-column:1; grid-row:1; z-index:1; }
+  .locale-picker { grid-column:2; grid-row:1; z-index:1; }
+  .locale-picker span { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  .hero-card { min-height:0; grid-template-columns:1fr; padding:26px 20px; }
+  .fossil-mark { width:150px; grid-row:1; }
+  .hero-copy { grid-row:2; }
+  .hero-copy h2 { font-size:36px; }
+  .hero-copy p:not(.guide-badge) { font-size:16px; }
+  .reagent-grid { grid-template-columns:repeat(3,1fr); }
+  .reagent { min-height:88px; }
+  .selection-row { align-items:stretch; flex-direction:column; }
+  .selection-row .primary { width:100%; }
+}

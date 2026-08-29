@@ -4,7 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-  const GAME_VERSION = "v17";
+  const GAME_VERSION = "v19";
   document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {
@@ -90,6 +90,15 @@
       /\{(\w+)\}/g,
       (_, name) => values[name] ?? "",
     );
+
+  function trackFunnelEvent(name, detail = {}) {
+    window.WonderAnalytics?.track?.(name, {
+      game_id: "animal-unblock",
+      game_version: GAME_VERSION,
+      interface_version: "6",
+      ...detail,
+    });
+  }
 
   function challengePreviewKey(levelIndex) {
     const blocks = levels[levelIndex]?.blocks || [];
@@ -267,7 +276,7 @@
             levelIndex === selected ? "selected centered" : ""
           }${
             levelIndex && !progress[levelIndex - 1] ? " locked" : ""
-          }" data-index="${levelIndex}" data-stage-index="${levelIndex}" aria-current="${
+          }" data-index="${levelIndex}" data-stage-index="${levelIndex}"${levelIndex < 3 ? ' role="tab"' : ""} aria-current="${
              levelIndex === selected
           }" aria-posinset="${levelIndex + 1}" aria-setsize="${levels.length}" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-disabled="${
             Boolean(levelIndex && !progress[levelIndex - 1])
@@ -285,7 +294,7 @@
         const levelIndex = Number(button.dataset.index);
         selectStage(levelIndex, true);
         if (button.getAttribute("aria-disabled") !== "true") {
-          start(levelIndex);
+          start(levelIndex, "stage_card");
         }
       };
       button.addEventListener("keydown", handleStageCardKeydown);
@@ -293,7 +302,7 @@
     selectStage(selected);
   }
 
-  function start(levelIndex) {
+  function start(levelIndex, startSource = "stage_card") {
     index = levelIndex;
     blocks = levels[levelIndex].blocks.map((block) => ({ ...block }));
     history = [];
@@ -302,6 +311,10 @@
     moveLocked = false;
     show("battle");
     render();
+    trackFunnelEvent("game_start", {
+      stage: levelIndex + 1,
+      start_source: startSource,
+    });
   }
 
   function occupied(skip, x, y, width, height) {
@@ -391,8 +404,14 @@
     block.y = nextY;
     moves += 1;
     if (block.hero && block.x >= 4) {
+      const firstClear = !progress[index];
       progress[index] = true;
       writeStorage(saveKey, JSON.stringify(progress));
+      trackFunnelEvent("game_complete", {
+        stage: index + 1,
+        moves,
+        first_clear: firstClear,
+      });
       $("resultBody").textContent = t("resultBody", {
         n: index + 1,
         moves,
@@ -705,7 +724,7 @@
   });
   $("undo").onclick = undo;
   $("hint").onclick = hint;
-  $("restart").onclick = () => start(index);
+  $("restart").onclick = () => start(index, "battle_restart");
   $("resultStages").onclick = () => claimResultAction(() => {
     $("result").close();
     selected = Math.min(29, index + 1);
@@ -716,11 +735,15 @@
     if (index >= levels.length - 1) return;
     $("result").close();
     selected = index + 1;
-    start(selected);
+    trackFunnelEvent("next_stage_start", {
+      from_stage: index + 1,
+      stage: selected + 1,
+    });
+    start(selected, "result_next");
   });
   $("retry").onclick = () => claimResultAction(() => {
     $("result").close();
-    start(index);
+    start(index, "result_retry");
   });
   $("locale").innerHTML = codes
     .map((code) => `<option value="${code}">${dict[code].label}</option>`)

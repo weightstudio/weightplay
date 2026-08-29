@@ -353,6 +353,7 @@ body.is-game-playing .confirm-back {
   body.is-game-playing .battle-topline .secondary { min-height: 38px; padding: 6px 10px; }
   body.is-game-playing .battle-topline .icon-button { min-height: 38px; height: 38px; }
   body.is-game-playing[data-game-id="maze-chase"] .battle-topline [data-wp-battle-utility] { min-height: 48px; height: 48px; }
+  body.is-game-playing[data-game-id="space-rocks"] .battle-topline [data-wp-battle-utility] { min-height: 44px; height: 44px; }
   body.is-game-playing .hud { padding: 4px 2px; }
   body.is-game-playing .game-message { min-height: 18px; padding: 2px; font-size: 0.75rem; }
   body.is-game-playing .touch-controls { padding: 5px 0 0; }
