@@ -18,7 +18,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/chess/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/chess/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/chess/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Xadrez | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><style>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Xadrez | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260830-chess-interface-v11"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260830-chess-interface-v11"><style>
 html.popular-chess-active, html.popular-chess-active body { overflow: hidden; overscroll-behavior: none; }
 html.popular-chess-active body { height: 100dvh; min-height: 0; touch-action: none; }
 @media (orientation: landscape) and (max-height: 430px) {
@@ -112,6 +112,117 @@ body[data-game-id="chess"] .preview-art { overflow: hidden; aspect-ratio: 1; min
   body[data-game-id="chess"] .chess-cell,
   body[data-game-id="chess"] .game-message { transition: none !important; animation: none !important; }
 }
+
+/* Interface V6 shell ownership: keep Main chrome and the logical Battle
+   canvas separate so the physical reserve never steals gameplay space. */
+body[data-game-id="chess"] .arcade-header.main-header {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 58px;
+  align-items: center;
+  min-height: 76px;
+}
+body[data-game-id="chess"] .main-header-copy { min-width: 0; text-align: center; }
+body[data-game-id="chess"] .main-header-copy h1,
+body[data-game-id="chess"] .main-header-copy p { max-width: 100%; overflow-wrap: anywhere; }
+body[data-game-id="chess"] .main-return,
+body[data-game-id="chess"] .header-icon-btn,
+body[data-game-id="chess"] .battle-back,
+body[data-game-id="chess"] .battle-utility {
+  width: 48px; min-width: 48px; height: 48px; min-height: 48px;
+}
+body[data-game-id="chess"] .main-return { width: 58px; min-width: 58px; }
+body[data-game-id="chess"] .main-return img { width: 30px; height: 30px; object-fit: contain; }
+body[data-game-id="chess"] .settings-control { position: relative; display: grid; justify-items: end; }
+body[data-game-id="chess"] .settings-popover {
+  position: absolute; z-index: 20; top: calc(100% + 8px); right: 0;
+  width: min(260px, calc(100vw - 28px)); display: grid; gap: 8px; padding: 12px;
+  border: 1px solid var(--arcade-border); border-radius: 12px; background: var(--arcade-panel);
+  box-shadow: 0 14px 32px rgba(0,0,0,.28); color: var(--arcade-text);
+}
+body[data-game-id="chess"] .settings-popover[hidden] { display: none; }
+body[data-game-id="chess"] .settings-title { font-size: .85rem; }
+body[data-game-id="chess"] .settings-row {
+  min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+body[data-game-id="chess"] .settings-row select { min-height: 38px; max-width: 145px; }
+body[data-game-id="chess"] .main-panel { align-items: center; }
+body[data-game-id="chess"] .main-copy { min-width: 0; }
+body[data-game-id="chess"] #mainInstruction { margin: 0; }
+body[data-game-id="chess"] .main-progress {
+  min-height: 40px; display: grid; align-content: center; gap: 2px; padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--arcade-accent) 55%, transparent); border-radius: 10px;
+  background: color-mix(in srgb, var(--arcade-accent) 9%, transparent);
+}
+body[data-game-id="chess"] .main-progress strong { font-size: .78rem; }
+body[data-game-id="chess"] #startBtn { width: 100%; min-height: 52px; height: 52px; }
+body[data-game-id="chess"] .preview-art { aspect-ratio: 1; min-height: 0; overflow: hidden; }
+body[data-game-id="chess"] .preview-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+body[data-game-id="chess"] #battleScreen,
+body[data-game-id="chess"] #resultScreen { min-height: 0; height: 100%; display: flex; flex-direction: column; }
+body[data-game-id="chess"] #battleScreen[hidden],
+body[data-game-id="chess"] #resultScreen[hidden] { display: none !important; }
+html.popular-chess-active body[data-game-id="chess"] .popular-arcade {
+  width: min(100%, 920px); height: 100dvh; min-height: 0; padding: 0; gap: 0;
+}
+html.popular-chess-active body[data-game-id="chess"] .arcade-header,
+html.popular-chess-active body[data-game-id="chess"] .arcade-footer { display: none; }
+body[data-game-id="chess"] #battleScreen .battle-canvas,
+body[data-game-id="chess"] #resultScreen .battle-canvas {
+  flex: 1 1 auto; min-height: 0; width: 100%; height: auto; overflow: hidden; border-radius: 0;
+}
+body[data-game-id="chess"] #battleScreen .battle-ad-reserve,
+body[data-game-id="chess"] #resultScreen .battle-ad-reserve {
+  display: block; flex: 0 0 56px; width: 100%; height: 56px; min-height: 56px; pointer-events: none;
+}
+body[data-game-id="chess"] #battleScreen .battle-panel,
+body[data-game-id="chess"] #resultScreen .arcade-panel {
+  width: 100%; height: 100%; min-height: 0; border-radius: 0; box-shadow: none;
+}
+body[data-game-id="chess"] #battleScreen .battle-panel {
+  grid-template-rows: auto minmax(220px, 1fr) auto auto; align-content: stretch;
+}
+body[data-game-id="chess"] #battleScreen .battle-top {
+  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto 48px; align-items: center; gap: 8px;
+}
+body[data-game-id="chess"] #battleScreen .battle-top > .round-label { min-width: 0; overflow-wrap: anywhere; }
+body[data-game-id="chess"] #battleScreen .battle-top > .control-row { grid-column: 3; }
+body[data-game-id="chess"] #battleScreen .board-wrap { min-height: 0; overflow: hidden; display: grid; place-items: center; }
+body[data-game-id="chess"] #battleScreen .board { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; }
+body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 360px); height: auto; max-height: 100%; aspect-ratio: 1; }
+body[data-game-id="chess"] #battleScreen .game-message { min-height: 34px; margin: 0; }
+body[data-game-id="chess"] #battleScreen #controls { min-height: 0; }
+body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34px; }
+@media (max-width: 620px) {
+  body[data-game-id="chess"] .main-panel { grid-template-columns: 1fr; }
+  body[data-game-id="chess"] .preview-art { width: min(100%, 300px); justify-self: center; }
+  body[data-game-id="chess"] #battleScreen .battle-panel { padding: 10px; gap: 8px; }
+  body[data-game-id="chess"] #battleScreen .battle-top { grid-template-columns: 48px minmax(0, 1fr) 48px; }
+  body[data-game-id="chess"] #battleScreen .battle-top > .control-row { grid-column: 2; grid-row: 2; justify-self: stretch; }
+  body[data-game-id="chess"] #battleScreen .battle-top > .battle-utility { grid-column: 3; grid-row: 1; }
+  body[data-game-id="chess"] #battleScreen .battle-top > .round-label { grid-column: 2; grid-row: 1; }
+}
+@media (orientation: landscape) and (max-height: 430px) {
+  body[data-game-id="chess"] #battleScreen .battle-panel {
+    grid-template-columns: minmax(280px, 1fr) minmax(220px, .8fr);
+    grid-template-rows: auto minmax(0, 1fr) auto; padding: 8px; gap: 6px 12px;
+  }
+  body[data-game-id="chess"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / 4; }
+  body[data-game-id="chess"] #battleScreen .battle-top { grid-column: 2; grid-row: 1; }
+  body[data-game-id="chess"] #battleScreen .game-message { grid-column: 2; grid-row: 2; align-self: start; }
+  body[data-game-id="chess"] #battleScreen #controls { grid-column: 2; grid-row: 3; }
+  body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 320px); }
+}
+@media (min-width: 921px) and (max-height: 760px) {
+  body[data-game-id="chess"] #battleScreen .battle-panel {
+    grid-template-columns: minmax(300px, 1fr) minmax(220px, .72fr);
+    grid-template-rows: auto minmax(0, 1fr) auto; padding: 8px; gap: 8px 12px;
+  }
+  body[data-game-id="chess"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / 4; }
+  body[data-game-id="chess"] #battleScreen .battle-top { grid-column: 2; grid-row: 1; }
+  body[data-game-id="chess"] #battleScreen .game-message { grid-column: 2; grid-row: 2; align-self: start; }
+  body[data-game-id="chess"] #battleScreen #controls { grid-column: 2; grid-row: 3; }
+  body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 310px); }
+}
 </style>  <meta name="description" content="Um jogo clássico completo que está finalizando as verificações de lançamento." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -153,9 +264,7 @@ body[data-game-id="chess"] .preview-art { overflow: hidden; aspect-ratio: 1; min
 }
     </script>
   </head>
-<body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Xadrez</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art"><img src="../../assets/classic-logic-lab-cover.webp" alt="" aria-hidden="true"></div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><p id="resultBeat" class="result-beat" role="status" aria-live="polite"></p><div id="resultStats" class="stats"></div><p id="resultTarget" class="result-target" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/analytics.js?version=20260830-chess-return-funnel-v10"></script><script src="analytics-ownership.js?version=20260830-chess-return-funnel-v10"></script><script src="../../src/popular-games-batch.js?version=20260830-chess-return-funnel-v10"></script><script src="game.js?version=20260830-chess-return-funnel-v10"></script><script src="/src/runtime-locales/pt-br.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Xadrez informações do jogo">
+<body data-screen="main" data-audience="general" data-wp-game-id="chess" data-wp-battle-layout="native"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Xadrez</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction">Use visible controls to play a complete short round, then review the Result.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Complete the three-move Chess sprint.</span></div><button id="startBtn" class="primary" data-wp-main-start="true">Start game</button></div><div class="preview-art"><img class="cover" src="../../assets/classic-logic-lab-cover.webp" alt="Imagem do jogo Xadrez" width="1254" height="1254" decoding="async"></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to main" title="Back to main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><p id="resultBeat" class="result-beat" role="status" aria-live="polite"></p><div id="resultStats" class="stats"></div><p id="resultTarget" class="result-target" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="Xadrez informações do jogo">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Xadrez</h2><p>Um jogo clássico completo que está finalizando as verificações de lançamento.</p></div>
@@ -172,6 +281,7 @@ body[data-game-id="chess"] .preview-art { overflow: hidden; aspect-ratio: 1; min
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>O progresso é salvo?</dt><dd>Sim, somente neste navegador.</dd></div></dl></div>
 
     </div>
-  </section>
+  </section><script src="../../src/analytics.js?version=20260830-chess-interface-v11"></script><script src="analytics-ownership.js?version=20260830-chess-interface-v11"></script><script src="../../src/popular-games-batch.js?version=20260830-chess-interface-v11"></script><script src="game.js?version=20260830-chess-interface-v11"></script><script src="/src/runtime-locales/pt-br.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

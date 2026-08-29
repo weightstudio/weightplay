@@ -2605,6 +2605,57 @@ if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternLatticeP
 
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.
+const animalRingGardenLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalRingGardenLocalized = (values) => Object.fromEntries(animalRingGardenLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalRingGardenStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalRingGardenPlanned = {
+  id: "animal-ring-garden",
+  title: animalRingGardenLocalized(["Ring Garden", "環影花園", "环影花园", "リングガーデン", "링 가든", "Jardín de Anillos", "Jardim dos Anéis", "Jardin des Anneaux", "Ringgarten", "Giardino degli Anelli", "Сад колец", "रिंग गार्डन", "حديقة الحلقات"]),
+  status: "planned",
+  statusText: { ...animalRingGardenStatusText },
+  type: animalRingGardenLocalized(["Pattern Rotation Puzzle", "圖樣旋環益智", "图样旋环益智", "模様回転パズル", "무늬 회전 퍼즐", "Puzzle de rotación de patrones", "Puzzle de rotação de padrões", "Puzzle de rotation de motifs", "Muster-Drehpuzzle", "Puzzle di rotazione dei motivi", "Пазл вращения узоров", "पैटर्न घुमाने वाली पहेली", "لغز تدوير الأنماط"]),
+  description: animalRingGardenLocalized(["Turn three petal rings until the moon-garden pattern blooms, then replay for fewer turns.", "轉動三層花瓣環，讓月光花園圖樣綻放，再用更少轉動重玩。", "转动三层花瓣环，让月光花园图样绽放，再用更少转动重玩。", "3つの花びらリングを回して月夜の庭の模様を咲かせ、少ない回転数で再挑戦しよう。", "세 꽃잎 링을 돌려 달빛 정원 무늬를 피우고 더 적은 회전으로 다시 도전해요.", "Gira tres anillos de pétalos hasta hacer florecer el patrón del jardín lunar y repite con menos giros.", "Gire três anéis de pétalas até florescer o padrão do jardim lunar e tente de novo com menos giros.", "Tourne trois anneaux de pétales pour faire éclore le motif du jardin lunaire, puis recommence avec moins de tours.", "Drehe drei Blütenblatt-Ringe, bis das Mondgartenmuster erblüht, und spiele mit weniger Drehungen erneut.", "Ruota tre anelli di petali per far sbocciare il motivo del giardino lunare e riprova con meno giri.", "Поверните три кольца лепестков, чтобы узор лунного сада расцвёл, и повторите с меньшим числом поворотов.", "तीन पंखुड़ी छल्ले घुमाकर चाँद-बगीचे का पैटर्न खिलाएँ और कम घुमाव में फिर खेलें।", "أدر ثلاث حلقات من البتلات حتى يزهر نمط الحديقة القمرية، ثم أعد المحاولة بعدد لفات أقل."]),
+  meta: animalRingGardenLocalized([["3 moon gardens", "Ring turns", "Calm replay"], ["3 座月光花園", "旋環次數", "平靜重玩"], ["3 座月光花园", "旋环次数", "平静重玩"], ["3つの月夜の庭", "リング回数", "穏やかな再挑戦"], ["달빛 정원 3개", "링 회전", "차분한 재도전"], ["3 jardines lunares", "Giros", "Repetición serena"], ["3 jardins lunares", "Giros", "Repetição calma"], ["3 jardins lunaires", "Tours", "Reprise sereine"], ["3 Mondgärten", "Drehungen", "Ruhige Wiederholung"], ["3 giardini lunari", "Giri", "Riprova calma"], ["3 лунных сада", "Повороты", "Спокойный повтор"], ["3 चाँद-बगीचे", "घुमाव", "शांत दोबारा"], ["3 حدائق قمرية", "لفات الحلقات", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Pattern", "Planning", "Family", "Animal"],
+  skills: ["Pattern Recognition", "Spatial Planning", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalRingGardenLocalized(Array(13).fill("6+")),
+  href: "games/animal-ring-garden/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-ring-garden/assets/animal-ring-garden-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRingGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalRingGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalRingGardenPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalRingGardenPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalRingGardenPlanned.id);
+
+// General Issue repair (2026-08-30): keep Balance Grove's exact v2 candidate
+// routable for localized Tester acceptance while retaining its planned,
+// noindex boundary.
+const animalBalanceGroveLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalBalanceGroveLocalized = (values) => Object.fromEntries(animalBalanceGroveLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalBalanceGroveStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalBalanceGrovePlanned = {
+  id: "animal-balance-grove",
+  title: animalBalanceGroveLocalized(["Balance Grove", "平衡林地", "平衡林地", "バランス・グローブ", "밸런스 그로브", "Arboleda del Equilibrio", "Bosque do Equilíbrio", "Bosquet d’Équilibre", "Balance-Hain", "Bosco dell’Equilibrio", "Роща равновесия", "संतुलन उपवन", "بستان التوازن"]),
+  status: "planned",
+  statusText: { ...animalBalanceGroveStatusText },
+  type: animalBalanceGroveLocalized(["Balance Subset Puzzle", "平衡選石益智", "平衡选石益智", "バランス選択パズル", "균형 선택 퍼즐", "Puzzle de equilibrio", "Puzzle de equilíbrio", "Puzzle d’équilibre", "Balance-Puzzle", "Puzzle dell’equilibrio", "Пазл равновесия", "संतुलन पहेली", "لغز التوازن"]),
+  description: animalBalanceGroveLocalized(["Choose named stones to steady three forest bridges.", "選擇有名字的石頭，穩住三座森林小橋。", "选择有名字的石头，稳住三座森林小桥。", "名前のある石を選び、3つの森の橋を安定させよう。", "이름 있는 돌을 골라 숲속 다리 세 곳의 균형을 맞춰요.", "Elige piedras con nombre para estabilizar tres puentes del bosque.", "Escolha pedras nomeadas para equilibrar três pontes da floresta.", "Choisis des pierres nommées pour stabiliser trois ponts forestiers.", "Wähle benannte Steine, um drei Waldbrücken zu stabilisieren.", "Scegli pietre nominate per stabilizzare tre ponti nel bosco.", "Выбирайте камни с именами, чтобы укрепить три лесных моста.", "नाम वाले पत्थर चुनकर जंगल के तीन पुलों को स्थिर करें।", "اختر أحجارًا مسمّاة لتثبيت ثلاثة جسور في الغابة."]),
+  meta: animalBalanceGroveLocalized([["3 groves", "Named stones", "Calm retry"], ["3 座林地", "有名石頭", "平靜重試"], ["3 座林地", "有名石头", "平静重试"], ["3つの林", "名前付きの石", "穏やかな再挑戦"], ["숲 3곳", "이름 있는 돌", "차분한 재시도"], ["3 arboledas", "Piedras con nombre", "Reintento sereno"], ["3 bosques", "Pedras nomeadas", "Nova tentativa calma"], ["3 bosquets", "Pierres nommées", "Reprise sereine"], ["3 Haine", "Benannte Steine", "Ruhiger Versuch"], ["3 boschi", "Pietre nominate", "Riprova calma"], ["3 рощи", "Камни с именами", "Спокойная попытка"], ["3 उपवन", "नाम वाले पत्थर", "शांत पुनः प्रयास"], ["3 بساتين", "أحجار مسمّاة", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Balance", "Logic", "Family", "Animal"],
+  skills: ["Spatial Reasoning", "Planning", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalBalanceGroveLocalized(Array(13).fill("6+")),
+  href: "games/animal-balance-grove/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-balance-grove/assets/animal-balance-grove-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalBalanceGrovePlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.games.push(animalBalanceGrovePlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalBalanceGrovePlanned.id);
+
+// Weighted General prototype (2026-08-30). Keep the card planned and the
+// playable route private until art, Tester, Reviewer, and release gates pass.
 const animalDewlineLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 const animalDewlineLocalized = (values) => Object.fromEntries(animalDewlineLocaleKeys.map((locale, index) => [locale, values[index]]));
 const animalDewlineStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Ring Garden concept cover</title>
+  <desc id="desc">Three luminous petal rings float in a moonlit moss garden.</desc>
+  <defs>
+    <radialGradient id="sky" cx="50%" cy="35%" r="75%"><stop offset="0" stop-color="#405a86"/><stop offset="1" stop-color="#11192f"/></radialGradient>
+    <linearGradient id="petal" x1="0" x2="1"><stop stop-color="#f7c86b"/><stop offset="1" stop-color="#d87d9d"/></linearGradient>
+  </defs>
+  <rect width="900" height="900" rx="70" fill="url(#sky)"/>
+  <circle cx="720" cy="150" r="78" fill="#ffe7a0" opacity=".95"/>
+  <circle cx="720" cy="150" r="110" fill="none" stroke="#ffe7a0" stroke-opacity=".22" stroke-width="8"/>
+  <path d="M0 690 Q220 590 450 690 T900 670 V900 H0Z" fill="#162c3a"/>
+  <g transform="translate(450 470)" fill="none" stroke="url(#petal)" stroke-width="34">
+    <circle r="260" opacity=".45"/><circle r="190" opacity=".7"/><circle r="120"/>
+  </g>
+  <g fill="#fff0a8" opacity=".8"><circle cx="182" cy="230" r="7"/><circle cx="240" cy="150" r="5"/><circle cx="590" cy="260" r="6"/><circle cx="780" cy="390" r="5"/><circle cx="130" cy="430" r="4"/></g>
+  <g transform="translate(365 665)" fill="#f5e7d0"><ellipse cx="85" cy="80" rx="70" ry="52"/><circle cx="86" cy="24" r="55"/><path d="M47-3 Q8-92 52-106 Q93-76 92-12Z"/><path d="M107-3 Q145-92 105-106 Q64-76 65-12Z"/></g>
+  <path d="M440 740 Q500 770 555 742" fill="none" stroke="#f7c86b" stroke-width="9" stroke-linecap="round"/>
+</svg>

@@ -1,8 +1,8 @@
 window.WPPopularArcade?.mount("chess");
 
-// Chess v10 keeps the shared shell and its accepted Interface V6 geometry, but
-// owns the Chess decision loop locally so the Snake acceptance lane does not
-// need to be touched. The board presents a small, authored agency contract:
+// Chess v11 keeps the target-agency loop while owning the repaired Interface V6
+// shell contract, so the shared validator sees the same playable flow.
+// The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
 (function installChessTargetAgency() {
   const ANALYTICS_EVENT = "wp-chess-analytics";
@@ -103,6 +103,7 @@ window.WPPopularArcade?.mount("chess");
     els.result.hidden = screen !== "result";
     document.body.dataset.screen = screen;
     document.documentElement.classList.toggle("popular-chess-active", screen !== "main");
+    document.body.classList.toggle("wp-mobile-game-mode", screen !== "main");
   };
   const cellLabel = (localeCopy, index, piece, target, selected, candidate) => {
     const row = Math.floor(index / 4) + 1;
@@ -224,8 +225,57 @@ window.WPPopularArcade?.mount("chess");
     else if (document.body.dataset.screen === "result" && state?.done) renderResult();
   }, 0);
 
+  const setSettingsOpen = (open) => {
+    const menu = document.querySelector("#audioMenuBtn");
+    const popover = document.querySelector("#audioPopover");
+    if (!popover) return;
+    popover.hidden = !open;
+    popover.classList.toggle("is-hidden", !open);
+    menu?.setAttribute("aria-expanded", String(open));
+  };
+
+  const bindShellControls = () => {
+    const menu = document.querySelector("#audioMenuBtn");
+    const battleUtility = document.querySelector("#battleUtilityBtn");
+    const sound = document.querySelector("#soundBtn");
+    const localeSelect = document.querySelector("#localeSelect");
+    menu?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const popover = document.querySelector("#audioPopover");
+      setSettingsOpen(Boolean(popover?.hidden));
+    });
+    battleUtility?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setSettingsOpen(true);
+    });
+    sound?.addEventListener("click", () => {
+      const enabled = sound.getAttribute("aria-pressed") !== "true";
+      sound.setAttribute("aria-pressed", String(enabled));
+      sound.textContent = enabled ? "Sound: On" : "Sound: Off";
+    });
+    document.addEventListener("click", (event) => {
+      const popover = document.querySelector("#audioPopover");
+      if (popover?.hidden || event.target?.closest?.(".settings-control") || event.target?.closest?.("#battleUtilityBtn")) return;
+      setSettingsOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setSettingsOpen(false);
+    });
+    localeSelect?.setAttribute("aria-label", "Language");
+  };
+
   resetState();
-  document.body.dataset.gameVersion = "v10";
+  document.body.dataset.gameVersion = "v11";
+  bindShellControls();
+  document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    emitAnalytics("main_return", { from: "battle", outcome: "returned", sprint: state?.sprint || sprint || 1, correctionCount: state?.corrections || 0 });
+    resetState();
+    showScreen("main");
+  }, { capture: true });
   document.addEventListener("pointerdown", (event) => {
     lastInputType = bounded(event.pointerType, INPUT_TYPES);
   }, { capture: true });

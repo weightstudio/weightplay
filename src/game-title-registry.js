@@ -1679,6 +1679,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "लालटेन जाल",
     "ar": "شبكة الفوانيس"
   },
+  "animal-ring-garden": {
+    "__localizedExact": true,
+    "en": "Ring Garden",
+    "zh-Hant": "環影花園",
+    "zh-Hans": "环影花园",
+    "ja": "リングガーデン",
+    "ko": "링 가든",
+    "es": "Jardín de Anillos",
+    "pt-BR": "Jardim dos Anéis",
+    "fr": "Jardin des Anneaux",
+    "de": "Ringgarten",
+    "it": "Giardino degli Anelli",
+    "ru": "Сад колец",
+    "hi": "रिंग गार्डन",
+    "ar": "حديقة الحلقات"
+  },
+  "animal-balance-grove": {
+    "__localizedExact": true,
+    "en": "Balance Grove",
+    "zh-Hant": "平衡林地",
+    "zh-Hans": "平衡林地",
+    "ja": "バランス・グローブ",
+    "ko": "밸런스 그로브",
+    "es": "Arboleda del Equilibrio",
+    "pt-BR": "Bosque do Equilíbrio",
+    "fr": "Bosquet d’Équilibre",
+    "de": "Balance-Hain",
+    "it": "Bosco dell’Equilibrio",
+    "ru": "Роща равновесия",
+    "hi": "संतुलन उपवन",
+    "ar": "بستان التوازن"
+  },
   "animal-dewline": {
     "__localizedExact": true,
     "en": "Meadow Dewline",

@@ -408,12 +408,22 @@
       ownLocalizedText(document.querySelector("#startBtn"), t("start"));
       ownLocalizedText(document.querySelector("#restartBtn"), t("restart"));
       ownLocalizedText(document.querySelector("#newGameBtn"), t("newGame"));
+      const mainProgress = document.querySelector("[data-wp-main-progress]");
+      if (mainProgress) {
+        ownLocalizedText(mainProgress.querySelector("strong"), copy.quickGuide);
+        ownLocalizedText(mainProgress.querySelector("span"), copy.quickGuideCopy);
+      }
       ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
       const battleBack = document.querySelector("#battleBackBtn");
       if (battleBack && battleBack.getAttribute("aria-label") !== t("back")) battleBack.setAttribute("aria-label", t("back"));
       ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
       const settings = document.querySelector("#audioMenuBtn");
       if (settings && settings.getAttribute("aria-label") !== t("settings")) settings.setAttribute("aria-label", t("settings"));
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", t("settings"));
+        battleUtility.title = t("settings");
+      }
       const language = document.querySelector("#localeSelect");
       if (language && language.getAttribute("aria-label") !== t("language")) language.setAttribute("aria-label", t("language"));
       ownLocalizedText(document.querySelector(".card-game-player-header strong"), t("hand"));

@@ -1,0 +1,9 @@
+{
+  "gameId": "animal-ring-garden",
+  "audience": "general",
+  "interfaceVersion": 6,
+  "status": "internal-noindex-prototype",
+  "generalReservePx": 56,
+  "screens": ["Main", "Stage", "Battle", "Result-substate"],
+  "notes": "Result remains a Battle substate. Production art, full locale routes, Tester, Reviewer, and release gates remain open."
+}
