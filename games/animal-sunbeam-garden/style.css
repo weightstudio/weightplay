@@ -54,7 +54,7 @@ dialog button:disabled{opacity:.45;cursor:not-allowed}
   .stage-tabs{padding:4px 10px}.stage-tab{min-height:42px}
   .battle-content{grid-template-columns:1fr;grid-template-rows:1fr;justify-content:stretch;padding:6px 10px}
   .garden-panel{place-self:center;width:min(720px,100%);grid-template-columns:minmax(260px,1fr) 210px;grid-template-rows:1fr auto;gap:8px 14px;padding:8px 12px}
-  body #battle .board{grid-column:1;grid-row:1/3;width:min(252px,calc(100svh - 82px));min-width:0}
+  body #battle .board{grid-column:1;grid-row:1/3;width:min(308px,calc(100svh - 82px));min-width:0;padding:4px;gap:4px}
   .garden-panel #status{grid-column:2;grid-row:1;align-self:end}
   .tools{grid-column:2;grid-row:2;width:100%}
 }

@@ -30,6 +30,9 @@
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],
     "animal-sanctuary-loop": [".battle-canvas", 390, 788, 760, 334],
+    // Sunbeam Garden's authored 6x6 board needs the complete wide envelope
+    // in short landscape so mirror buttons retain a confident touch size.
+    "animal-sunbeam-garden": ["#battle", 390, 788, 760, 334],
     "animal-prism-battalion": [".battle-canvas", 390, 788, 760, 334],
     "animal-prism-breakers": [".battle-canvas", 390, 788, 760, 334],
     "animal-mosaic-clues": [".battle-canvas", 390, 788, 760, 334],

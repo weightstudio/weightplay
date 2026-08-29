@@ -2127,7 +2127,7 @@ window.WONDER_LOBBY.games.push({
 });
 
 window.WONDER_LOBBY.games.push({
-  id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-tide-tally/",internalTrial:"index.html?trial=1",categories:["Featured","Animal Games","Puzzle","Family"],skills:["Counting","Logic","Focus"],ages:["6","family"],ageLabel:{en:"6+", "zh-Hant":"6+", "zh-Hans":"6+",ja:"6+",ko:"6+",es:"6+", "pt-BR":"6+",fr:"6+",de:"6+",it:"6+",ru:"6+",hi:"6+",ar:"6+"},art:{kind:"image",background:"games/animal-tide-tally/assets/animal-tide-tally-cover.svg",hideHero:true},
+id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-tide-tally/",internalTrial:"index.html?trial=1",categories:["Featured","Animal Games","Puzzle","Family"],skills:["Counting","Logic","Focus"],ages:["6","family"],ageLabel:{en:"6+", "zh-Hant":"6+", "zh-Hans":"6+",ja:"6+",ko:"6+",es:"6+", "pt-BR":"6+",fr:"6+",de:"6+",it:"6+",ru:"6+",hi:"6+",ar:"6+"},art:{kind:"image",background:"games/animal-tide-tally/assets/animal-tide-tally-cover.webp",hideHero:true},
   title:{en:"Animal Tide Tally","zh-Hant":"動物潮汐總管","zh-Hans":"动物潮汐总管",ja:"どうぶつ潮汐カウント",ko:"애니멀 조수 세기",es:"Conteo de Mareas Animal","pt-BR":"Contagem de Marés Animal",fr:"Compte des Marées Animales",de:"Tierische Gezeitenzählung",it:"Conteggio delle Maree Animali",ru:"Звериный счёт прилива",hi:"पशु ज्वार गिनती",ar:"عدّ مدّ الحيوانات"},
   statusText:{en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待",ja:"近日公開",ko:"출시 예정",es:"Próximamente","pt-BR":"Em breve",fr:"Bientôt disponible",de:"Demnächst",it:"Prossimamente",ru:"Скоро",hi:"जल्द आ रहा है",ar:"قريبًا"},
   type:{en:"Tide counting puzzle","zh-Hant":"潮汐計數謎題","zh-Hans":"潮汐计数谜题",ja:"潮汐カウントパズル",ko:"조수 세기 퍼즐",es:"Rompecabezas de mareas","pt-BR":"Quebra-cabeça de marés",fr:"Puzzle de comptage des marées",de:"Gezeiten-Zählpuzzle",it:"Puzzle del conteggio delle maree",ru:"Головоломка о приливе",hi:"ज्वार गिनती पहेली",ar:"لغز عدّ المدّ"},
@@ -3162,6 +3162,29 @@ const animalAcornAuctionPlanned = {
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalAcornAuctionPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.games.push(animalAcornAuctionPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalAcornAuctionPlanned.id);
+
+// Patchwork Paws is a planned General identity for a bounded edge-matching
+// prototype. Keep its card Coming Soon until exact Tester, review, release,
+// art, and owner-opening gates are complete.
+const animalPatchworkPawsPlanned = {
+  id: "animal-patchwork-paws",
+  title: marketFiveLocalized(["Patchwork Paws", "動物拼布爪印", "动物拼布爪印", "パッチワーク・ポーズ", "패치워크 포즈", "Huellas de Mosaico", "Patas em Retalhos", "Pattes en Patchwork", "Pfoten-Patchwork", "Zampe a Patchwork", "Лапки в лоскутках", "पंजों की पैचवर्क", "رقع آثار الحيوانات"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Edge-Matching Habitat Puzzle", "棲地邊線拼接益智", "栖地边线拼接益智", "生息地の辺合わせパズル", "서식지 가장자리 맞추기 퍼즐", "Rompecabezas de bordes de hábitat", "Quebra-cabeça de bordas de habitat", "Puzzle d’assemblage d’habitats", "Lebensraum-Kantenpuzzle", "Puzzle dei bordi dell’habitat", "Пазл на совмещение краёв среды", "आवास किनारा-मिलान पहेली", "لغز مطابقة حواف الموطن"]),
+  description: marketFiveLocalized(["Turn four habitat patches until every neighbouring trail meets cleanly.", "轉動四塊棲地拼片，讓相鄰的路線整齊接起來。", "转动四块栖地拼片，让相邻的路线整齐接起来。", "4枚の生息地パッチを回して、となり合う道をきれいにつなごう。", "네 서식지 조각을 돌려 이웃한 길을 깔끔하게 이어 보세요.", "Gira cuatro piezas de hábitat hasta unir todos los senderos vecinos.", "Gire quatro partes do habitat até todos os caminhos vizinhos se encontrarem.", "Tournez quatre morceaux d’habitat pour relier chaque sentier voisin.", "Drehe vier Lebensraumstücke, bis alle Nachbarpfade sauber zusammenpassen.", "Ruota quattro pezzi di habitat finché tutti i sentieri vicini combaciano.", "Поворачивайте четыре фрагмента среды, пока соседние тропы не соединятся.", "चार आवास टुकड़ों को घुमाएँ ताकि पड़ोसी पगडंडियाँ जुड़ जाएँ।", "أدر أربع قطع من الموطن حتى تتصل كل المسارات المتجاورة."]),
+  meta: marketFiveLocalized([["3 Habitat Patches", "Rotate + Match", "Calm Retry"], ["3 塊棲地拼片", "轉動＋拼接", "平靜重試"], ["3 块栖地拼片", "转动＋拼接", "平静重试"], ["3つのパッチ", "回して合わせる", "穏やかな再挑戦"], ["서식지 조각 3개", "돌리고 맞추기", "차분한 재시도"], ["3 piezas", "Gira y une", "Reintento tranquilo"], ["3 retalhos", "Gire e una", "Nova tentativa calma"], ["3 morceaux", "Tourner et relier", "Reprise sereine"], ["3 Stücke", "Drehen + Verbinden", "Ruhiger Versuch"], ["3 pezzi", "Ruota e unisci", "Riprova sereno"], ["3 фрагмента", "Поверни и соедини", "Спокойный повтор"], ["3 टुकड़े", "घुमाएँ और जोड़ें", "शांत पुनः प्रयास"], ["3 رقع", "أدر ووصل", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Spatial Logic", "Family", "Animal"],
+  skills: ["Spatial Reasoning", "Planning", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-patchwork-paws/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalPatchworkPawsPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.games.push(animalPatchworkPawsPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPatchworkPawsPlanned.id);
 
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.

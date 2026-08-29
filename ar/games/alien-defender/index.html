@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/alien-defender/" />
-
-    <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" /><meta name="weightplay-scene-controls" content="immutable" />
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-release-state" content="playable" />
@@ -24,7 +23,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/alien-defender/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/alien-defender/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/alien-defender/" />
-    <title>مدافع الفضائيين | WeightPlay</title><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings1" data-wp-shell-standard /><link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260819-stage-flow1" data-wp-stage-standard /><link rel="stylesheet" href="style.css?v=20260827-alien-defender-responsive-v52" />
+    <title>مدافع الفضائيين | WeightPlay</title><link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings1" data-wp-shell-standard /><link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260819-stage-flow1" data-wp-stage-standard /><link rel="stylesheet" href="style.css?v=20260829-alien-defender-interface-contract-v54" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مدافع الفضائيين | WeightPlay" />
@@ -40,6 +39,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "مدافع الفضائيين",
+  "alternateName": "Alien Defender",
   "url": "https://weightplay.com/ar/games/alien-defender/",
   "image": "https://weightplay.com/assets/alien-defender-cover.webp",
   "description": "مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على شاشة ثابتة تضم 30 مرحلة. كل مرحلة معركة واحدة، وتشتري الاعتمادات ترقيات دائمة للقوة والبقاء.",
@@ -54,14 +54,12 @@
   "genre": [
     "كلاسيكية",
     "أركيد",
-    "حركة",
-    "لعبة متصفح"
+    "حركة"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players"
-  },
-  "alternateName": "Alien Defender"
+  }
 }
     </script>
   </head>
@@ -74,7 +72,7 @@
   <section id="battleScreen" data-screen="battle" class="screen battle-screen" hidden aria-label="معركة مدافع الفضائيين"><div class="battle-stage"><div class="battle-hud"><button id="battleBackBtn" class="icon-button" type="button" data-copy-aria="backToStages" aria-label="العودة إلى المراحل">←</button><div class="hud-stats"><div class="hud-stat"><span class="hud-label" data-copy="stage">المرحلة</span><strong id="waveValue">1 / 30</strong></div><div class="hud-stat"><span class="hud-label" data-copy="score">النتيجة</span><strong id="scoreValue">0</strong></div><div class="hud-stat"><span class="hud-label" data-copy="best">الأفضل</span><strong id="bestValue">0</strong></div><div class="hud-stat"><span class="hud-label" data-copy="firepower">القوة النارية</span><strong id="firepowerValue">1</strong></div><div class="hud-stat"><span class="hud-label" data-copy="lives">الحياة</span><strong id="livesValue">6</strong></div></div><div class="hud-actions"><button id="soundBtn" class="icon-button" type="button" data-copy-aria="soundOn" aria-label="الصوت يعمل">◒</button><button id="restartBtn" class="icon-button" type="button" data-copy-aria="restart" aria-label="إعادة البدء">↻</button></div></div><canvas id="gameCanvas" width="920" height="720" tabindex="0" aria-label="ساحة لعب مدافع الفضائيين"></canvas><div class="touch-controls" aria-label="عناصر التحكم باللمس"><button id="leftBtn" type="button" data-copy-aria="left" aria-label="يسار">◀</button><button id="fireBtn" class="fire-button" type="button" data-copy-aria="fire" aria-label="إطلاق">✦</button><button id="rightBtn" type="button" data-copy-aria="right" aria-label="يمين">▶</button></div><p id="battleMessage" class="battle-message" aria-live="polite">اقرأ قاعدة المرحلة.</p><div id="leaveDialog" class="leave-dialog" hidden role="dialog" aria-modal="true" aria-labelledby="leaveDialogTitle"><p class="leave-kicker" data-copy="leaveKicker">الدفاع متوقف مؤقتاً</p><h2 id="leaveDialogTitle" data-copy="leaveTitle">هل تريد مغادرة هذا الدفاع؟</h2><p data-copy="leaveCopy">ستفقد المرحلة والنتيجة الحاليتين عند العودة إلى قائمة المراحل.</p><div class="leave-actions"><button id="continueBtn" class="primary-action" type="button" data-copy="continue">متابعة اللعب</button><button id="leaveBtn" class="secondary-action" type="button" data-copy="leave">العودة إلى المراحل</button></div></div></div><div class="play-reserve" data-copy="reserve">مساحة لعب احتياطية</div></section>
     <section id="resultScreen" data-screen="result" class="screen result-screen" hidden><div class="result-card"><p class="result-kicker" data-copy="resultKicker">تقرير الدفاع</p><h2 id="resultTitle">المحطة آمنة</h2><p id="resultCopy"></p><p id="resultGoal" class="result-goal" aria-live="polite"></p><div class="result-stats"><span><b data-copy="score">النتيجة</b><strong id="resultScore">0</strong></span><span><b data-copy="best">الأفضل</b><strong id="resultBest">0</strong></span><span><b data-copy="stageReached">المرحلة التي تم بلوغها</b><strong id="resultWave">1 / 30</strong></span><span><b data-copy="credits">طاقة</b><strong id="resultCredits">0</strong></span></div><div class="result-actions"><button id="resultStages" class="secondary-action" type="button" data-copy="stages">المراحل</button><button id="nextStageBtn" class="primary-action" type="button" data-copy="nextStage">المرحلة التالية</button><button id="retryBtn" class="secondary-action" type="button" data-copy="replay">إعادة اللعب</button></div></div></section>
     <footer class="site-footer" data-copy="footer">معاينة WeightPlay・أركيد موجات أصلي</footer>
-  </main><script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script src="/src/sound.js?v=20260720-locale11"></script><script src="game.js?v=20260827-alien-defender-responsive-v52"></script><section class="game-page-info game-page-info-static" aria-label="معلومات لعبة مدافع الفضائيين">
+  </main><script src="../../src/site-config.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="game.js?v=20260829-alien-defender-interface-contract-v54"></script><section class="game-page-info game-page-info-static" aria-label="معلومات لعبة مدافع الفضائيين">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مدافع الفضائيين</h2><p>مدافع الفضائيين لعبة إطلاق نار أصلية من WeightPlay على شاشة ثابتة تضم 30 مرحلة. كل مرحلة معركة واحدة، وتشتري الاعتمادات ترقيات دائمة للقوة والبقاء.</p></div>
@@ -120,6 +118,16 @@
       };
       apply();
       document.getElementById("localeSelect")?.addEventListener("change", () => requestAnimationFrame(apply));
+    })();
+  </script>
+  <script data-wp-alien-interface-contract>
+    (() => {
+      document.getElementById("stageBackBtn")?.setAttribute("data-wp-return", "stage");
+      document.querySelector(".battle-stage")?.setAttribute("data-wp-logical-battle-canvas", "true");
+      document.querySelector("#battleScreen > .play-reserve")?.setAttribute("data-wp-ad-reserve", "true");
+      document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
+      document.getElementById("soundBtn")?.setAttribute("data-wp-battle-utility", "true");
+      document.getElementById("fireBtn")?.setAttribute("data-wp-primary-action", "true");
     })();
   </script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/stage-virtualization-standard.js?v=20260819-alien-defender-pool1" data-wp-stage-virtualization-standard></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-tide-tally/" />
-
     <link rel="canonical" href="https://weightplay.com/it/games/animal-tide-tally/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tide-tally/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tide-tally/" />
@@ -24,25 +23,26 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#176a73" />
   <title>Conteggio delle Maree Animali | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <link rel="stylesheet" href="style.css?v=20260829-tide-tally-candidate-v2" />
   <meta name="description" content="Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Conteggio delle Maree Animali | WeightPlay" />
     <meta property="og:description" content="Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-tide-tally/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Conteggio delle Maree Animali | WeightPlay" />
     <meta name="twitter:description" content="Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Conteggio delle Maree Animali",
+  "alternateName": "Animal Tide Tally",
   "url": "https://weightplay.com/it/games/animal-tide-tally/",
-  "image": "https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg",
+  "image": "https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.webp",
   "description": "Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto.",
   "publisher": {
     "@type": "Organization",
@@ -56,24 +56,23 @@
     "In primo piano",
     "Giochi di animali",
     "Puzzle",
-    "Famiglia",
-    "Browser Game"
+    "Famiglia"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "Children and families",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Animal Tide Tally"
+  }
 }
     </script>
   </head>
 <body>
   <div id="loading" class="screen loading-screen"><div class="loader-mark">≈</div><p data-i18n="loading">Counting the tide…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Animal Tide Tally</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
+    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Conteggio delle Maree Animali</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-tide-tally-cover.svg" alt="" width="1200" height="900" /><span class="cover-badge" data-i18n="kicker">A calm number puzzle</span></div>
+      <div class="cover-wrap"><img src="assets/animal-tide-tally-cover.webp" alt="" width="1254" height="1254" /><span class="cover-badge" data-i18n="kicker">A calm number puzzle</span></div>
+      <img class="guide-art" src="assets/animal-tide-tally-guide.png" alt="" width="1024" height="1536" aria-hidden="true" />
       <p class="eyebrow" data-i18n="world">Shell Cove tide desk</p><h1 data-runtime-localize="off">Conteggio delle Maree Animali</h1>
       <p class="intro" data-i18n="intro">Count what the tide brings in and carries away, then choose the shells that remain.</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open the first tide note</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a tide note</button></div>
@@ -82,14 +81,16 @@
     <section id="stageScreen" class="screen panel" data-screen="stage" hidden><p class="eyebrow" data-i18n="chapter">Shell Cove notebook</p><h2 data-i18n="choose">Choose a tide note</h2><div id="stageList" class="stage-list"></div></section>
     <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
       <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Tide note</p><h2 id="noteTitle">Dawn cove</h2></div><span id="progressPill" class="pill">1 / 3</span></div>
-      <p id="prompt" class="prompt"></p><div class="tide-card"><span class="tide-symbol" aria-hidden="true">◌</span><p id="story" class="story"></p><p id="equation" class="equation" aria-live="polite"></p></div>
+      <p id="prompt" class="prompt"></p><div class="tide-card"><span class="tide-symbol" aria-hidden="true">◌</span><span class="shell-art shell-art-incoming" aria-hidden="true"></span><p id="story" class="story"></p><p id="equation" class="equation" aria-live="polite"></p></div>
       <div id="answerGrid" class="answer-grid" role="group" aria-label="Tide answers"></div>
       <p id="status" class="status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset note</button></div>
     </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">≈</div><p class="eyebrow" data-i18n="finished">Tide settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every cove is counted!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next tide note</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a tide note</button></div></section>
-    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="result-guide" src="assets/animal-tide-tally-guide.png" alt="" width="1024" height="1536" aria-hidden="true" /><p class="eyebrow" data-i18n="finished">Tide settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every cove is counted!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next tide note</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a tide note</button></div></section>
+    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260829-tide-tally-v1"></script><script src="game.js?v=20260829-tide-tally-v1"></script>
+  <script src="locales.js?v=20260829-tide-tally-candidate-v2"></script><script src="game.js?v=20260829-tide-tally-candidate-v2"></script>
+<script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Conteggio delle Maree Animali informazioni sul gioco">
 
     <div class="game-info-hero">
@@ -108,7 +109,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6f1df"/><stop offset="1" stop-color="#f6e9ca"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#315c6a" flood-opacity=".18"/></filter></defs>
+  <rect width="720" height="720" rx="70" fill="url(#bg)"/>
+  <path d="M80 545c90-76 145-76 235 0s145 76 235 0 120-72 150-48v143H80z" fill="#8ab28b" opacity=".65"/>
+  <g filter="url(#s)" transform="translate(150 128)"><rect width="420" height="420" rx="42" fill="#fffaf0" stroke="#d9bd79" stroke-width="10"/><path d="M210 0v420M0 210h420" stroke="#d9bd79" stroke-width="8"/><path d="M42 210h126M252 210h126M210 42v126M210 252v126" stroke="#5b9dc0" stroke-width="18" stroke-linecap="round"/><path d="M62 62l65 65M293 293l65 65M358 62l-65 65M127 293l-65 65" stroke="#6da66c" stroke-width="16" stroke-linecap="round"/></g>
+  <g fill="#315c6a"><circle cx="324" cy="270" r="22"/><circle cx="396" cy="270" r="22"/><ellipse cx="360" cy="344" rx="66" ry="53"/><circle cx="294" cy="202" r="34"/><circle cx="426" cy="202" r="34"/></g><path d="M336 345q24 23 48 0" fill="none" stroke="#fffaf0" stroke-width="9" stroke-linecap="round"/><circle cx="350" cy="333" r="6" fill="#fffaf0"/><circle cx="370" cy="333" r="6" fill="#fffaf0"/>
+  <text x="360" y="650" text-anchor="middle" fill="#315c6a" font-family="system-ui,sans-serif" font-size="38" font-weight="800">PATCHWORK PAWS</text>
+</svg>

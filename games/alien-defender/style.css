@@ -142,3 +142,7 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
   #resultScreen .result-actions{gap:6px}
   #resultScreen .result-actions button{min-height:42px;padding-inline:4px;font-size:.8rem}
 }
+
+/* Keep the native Battle sound utility at the governed logical touch target
+   on compact phones; the semantic marker is installed before shell startup. */
+.battle-hud [data-wp-battle-utility]{width:44px!important;min-width:44px!important}

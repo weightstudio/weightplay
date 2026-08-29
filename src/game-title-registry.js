@@ -2143,6 +2143,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "बलूत नीलामी",
     "ar": "مزاد البلوط"
   },
+  "animal-patchwork-paws": {
+    "__localizedExact": true,
+    "en": "Patchwork Paws",
+    "zh-Hant": "動物拼布爪印",
+    "zh-Hans": "动物拼布爪印",
+    "ja": "パッチワーク・ポーズ",
+    "ko": "패치워크 포즈",
+    "es": "Huellas de Mosaico",
+    "pt-BR": "Patas em Retalhos",
+    "fr": "Pattes en Patchwork",
+    "de": "Pfoten-Patchwork",
+    "it": "Zampe a Patchwork",
+    "ru": "Лапки в лоскутках",
+    "hi": "पंजों की पैचवर्क",
+    "ar": "رقع آثار الحيوانات"
+  },
   "road-crosser": {
     "__localizedExact": true,
     "en": "Road Crosser",
