@@ -2127,6 +2127,15 @@ window.WONDER_LOBBY.games.push({
 });
 
 window.WONDER_LOBBY.games.push({
+  id:"animal-tide-tally",audience:"general",status:"planned",href:"games/animal-tide-tally/",internalTrial:"index.html?trial=1",categories:["Featured","Animal Games","Puzzle","Family"],skills:["Counting","Logic","Focus"],ages:["6","family"],ageLabel:{en:"6+", "zh-Hant":"6+", "zh-Hans":"6+",ja:"6+",ko:"6+",es:"6+", "pt-BR":"6+",fr:"6+",de:"6+",it:"6+",ru:"6+",hi:"6+",ar:"6+"},art:{kind:"image",background:"games/animal-tide-tally/assets/animal-tide-tally-cover.svg",hideHero:true},
+  title:{en:"Animal Tide Tally","zh-Hant":"動物潮汐總管","zh-Hans":"动物潮汐总管",ja:"どうぶつ潮汐カウント",ko:"애니멀 조수 세기",es:"Conteo de Mareas Animal","pt-BR":"Contagem de Marés Animal",fr:"Compte des Marées Animales",de:"Tierische Gezeitenzählung",it:"Conteggio delle Maree Animali",ru:"Звериный счёт прилива",hi:"पशु ज्वार गिनती",ar:"عدّ مدّ الحيوانات"},
+  statusText:{en:"Coming Soon","zh-Hant":"敬請期待","zh-Hans":"敬请期待",ja:"近日公開",ko:"출시 예정",es:"Próximamente","pt-BR":"Em breve",fr:"Bientôt disponible",de:"Demnächst",it:"Prossimamente",ru:"Скоро",hi:"जल्द आ रहा है",ar:"قريبًا"},
+  type:{en:"Tide counting puzzle","zh-Hant":"潮汐計數謎題","zh-Hans":"潮汐计数谜题",ja:"潮汐カウントパズル",ko:"조수 세기 퍼즐",es:"Rompecabezas de mareas","pt-BR":"Quebra-cabeça de marés",fr:"Puzzle de comptage des marées",de:"Gezeiten-Zählpuzzle",it:"Puzzle del conteggio delle maree",ru:"Головоломка о приливе",hi:"ज्वार गिनती पहेली",ar:"لغز عدّ المدّ"},
+  description:{en:"Count shells arriving and leaving at Shell Cove, then choose the tide total that remains.","zh-Hant":"數數貝殼灣進出潮水的貝殼，選出最後留下的潮汐總數。","zh-Hans":"数数贝壳湾进出潮水的贝壳，选出最后留下的潮汐总数。",ja:"貝殻湾に出入りする貝を数え、残った潮の合計を選ぼう。",ko:"조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요.",es:"Cuenta las conchas que llegan y se van, y elige el total que queda.","pt-BR":"Conte as conchas que chegam e saem e escolha o total que fica.",fr:"Comptez les coquillages qui arrivent et repartent, puis choisissez le total restant.",de:"Zähle ankommende und fortgetragene Muscheln und wähle die verbleibende Zahl.",it:"Conta le conchiglie che arrivano e partono, poi scegli il totale rimasto.",ru:"Считайте прибывшие и ушедшие ракушки и выберите оставшееся число.",hi:"आने और जाने वाले सीप गिनें और बची संख्या चुनें।",ar:"عُدّ الأصداف التي تصل وتغادر ثم اختر العدد المتبقي."},
+  meta:{en:["3 Tide Notes","Count In + Out","Calm Retry"],"zh-Hant":["3 張潮汐筆記","計算進出","平靜重試"],"zh-Hans":["3 张潮汐笔记","计算进出","平静重试"],ja:["3つの潮汐メモ","出入りを計算","落ち着いて再挑戦"],ko:["조수 노트 3개","들고남 계산","차분한 재도전"],es:["3 notas de marea","Cuenta entradas y salidas","Reintento tranquilo"],"pt-BR":["3 notas de maré","Conte entradas e saídas","Nova tentativa calma"],fr:["3 notes de marée","Compter entrées et sorties","Reprise sereine"],de:["3 Gezeiten-Notizen","Rein und raus zählen","Ruhiger Versuch"],it:["3 note di marea","Conta entrate e uscite","Riprova sereno"],ru:["3 заметки о приливе","Счёт входа и выхода","Спокойная попытка"],hi:["3 ज्वार नोट","आना-जाना गिनें","शांत पुनः प्रयास"],ar:["3 ملاحظات للمدّ","عُدّ الدخول والخروج","محاولة هادئة"]}
+});
+
+window.WONDER_LOBBY.games.push({
   id: "animal-reef-fisher",
   previewVideo: "assets/previews/animal-reef-fisher-battle.webm",
   title: { en: "Animal Reef Fisher", "zh-Hant": "動物珊瑚釣手" },
@@ -3038,6 +3047,121 @@ const animalGustGardenPlanned = {
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGustGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGustGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGustGardenPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalGustGardenPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalGustGardenPlanned.id);
+
+// Habitat Blueprint is a planned General identity for the weighted
+// constraint-planning prototype. Keep its card Coming Soon until production
+// art, exact Tester, Gameplay Review, release, and owner-opening gates pass.
+const animalHabitatBlueprintPlanned = {
+  id: "animal-habitat-blueprint",
+  title: marketFiveLocalized(["Habitat Blueprint", "棲地藍圖", "栖地蓝图", "ハビタット・ブループリント", "서식지 블루프린트", "Plano de Hábitat", "Planta do Habitat", "Plan d’Habitat", "Habitat-Bauplan", "Progetto Habitat", "Чертёж среды", "आवास खाका", "مخطط الموطن"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Habitat Constraint Puzzle", "棲地約束益智", "栖地约束益智", "生息地制約パズル", "서식지 제약 퍼즐", "Puzle de restricciones de hábitat", "Puzzle de restrições do habitat", "Puzzle de contraintes d’habitat", "Habitat-Regelpuzzle", "Puzzle dei vincoli dell’habitat", "Пазл ограничений среды", "आवास-नियम पहेली", "لغز قيود الموطن"]),
+  description: marketFiveLocalized(["Swap four habitat tiles to satisfy every neighbour clue and build a calm, connected home for the animals.", "交換四塊棲地拼片，滿足所有相鄰線索，為動物打造平靜又連通的家。", "交换四块栖地拼片，满足所有相邻线索，为动物打造平静又连通的家。", "4つの生息地タイルを入れ替え、隣接ヒントをすべて満たして動物の穏やかな家を作ります。", "네 서식지 타일을 바꿔 모든 이웃 단서를 만족시키고 동물들의 차분한 집을 완성하세요.", "Intercambia cuatro casillas de hábitat para cumplir todas las pistas vecinas y crear un hogar conectado.", "Troque quatro peças de habitat para cumprir todas as pistas vizinhas e criar um lar conectado.", "Échange quatre tuiles d’habitat pour respecter chaque indice voisin et créer un foyer relié.", "Tausche vier Habitat-Kacheln, erfülle alle Nachbarschaftshinweise und baue ein verbundenes Zuhause.", "Scambia quattro tessere habitat, soddisfa ogni indizio vicino e crea una casa collegata.", "Меняйте местами четыре клетки среды, выполняйте соседские подсказки и создавайте связный дом.", "चार आवास टाइल बदलकर हर पड़ोसी संकेत पूरा करें और जानवरों का जुड़ा हुआ घर बनाएँ।", "بدّل أربع قطع موطن وحقق كل تلميح مجاور لبناء بيت هادئ ومترابط للحيوانات."]),
+  meta: marketFiveLocalized([["3 Blueprints", "Neighbour Rules", "Calm Retry"], ["3 張藍圖", "相鄰規則", "平靜重試"], ["3 张蓝图", "相邻规则", "平静重试"], ["3つの設計図", "隣接ルール", "穏やかな再挑戦"], ["3개 설계도", "이웃 규칙", "차분한 재시도"], ["3 planos", "Reglas vecinas", "Reintento amable"], ["3 plantas", "Regras vizinhas", "Nova tentativa calma"], ["3 plans", "Règles voisines", "Reprise douce"], ["3 Baupläne", "Nachbarschaftsregeln", "Ruhiger Neustart"], ["3 progetti", "Regole vicine", "Riprova calma"], ["3 чертежа", "Соседние правила", "Спокойный повтор"], ["3 खाके", "पड़ोसी नियम", "शांत पुनःप्रयास"], ["3 مخططات", "قواعد الجوار", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Spatial Planning", "Family", "Animal"],
+  skills: ["Planning", "Deduction", "Spatial Reasoning"],
+  ages: ["9", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("9+")),
+  href: "games/animal-habitat-blueprint/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalHabitatBlueprintPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.games.push(animalHabitatBlueprintPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalHabitatBlueprintPlanned.id);
+
+// Weather Watch is a planned General identity for a bounded forecast-pattern
+// prototype. Keep its card Coming Soon until exact Tester, Gameplay Review,
+// release, art, and owner-opening gates are complete.
+const animalWeatherWatchPlanned = {
+  id: "animal-weather-watch",
+  title: marketFiveLocalized(["Weather Watch", "天氣觀察站", "天气观察站", "ウェザー・ウォッチ", "날씨 관측소", "Observatorio del Tiempo", "Observatório do Tempo", "Observatoire météo", "Wetterwarte", "Osservatorio del Tempo", "Метеопост", "मौसम चौकी", "مرصد الطقس"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Forecast Pattern Puzzle", "預報規律益智", "预报规律益智", "天気予報パターンパズル", "예보 패턴 퍼즐", "Puzle de patrones del tiempo", "Puzzle de padrões do tempo", "Puzzle de motifs météo", "Wetter-Musterpuzzle", "Puzzle di schemi meteo", "Пазл погодных узоров", "मौसम पैटर्न पहेली", "لغز أنماط الطقس"]),
+  description: marketFiveLocalized(["Read three weather signs, predict the next one, and guide each animal to a calm shelter window.", "讀懂三個天氣訊號，預測下一個變化，帶動物走進平靜的避風時段。", "读懂三个天气信号，预测下一次变化，带动物走进平静的避风时段。", "3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。", "세 가지 날씨 신호를 읽고 다음 신호를 예측해 동물을 평온한 대피 시간으로 이끄세요.", "Lee tres señales, predice la siguiente y lleva a cada animal a un refugio tranquilo.", "Leia três sinais, preveja o próximo e leve cada animal a uma janela de abrigo calma.", "Lis trois signaux, prédis le suivant et guide chaque animal vers un abri calme.", "Lies drei Wettersignale, sage das nächste voraus und führe jedes Tier zum ruhigen Schutzfenster.", "Leggi tre segnali, prevedi il prossimo e guida ogni animale verso un rifugio calmo.", "Читайте три сигнала погоды, предскажите следующий и приведите животных в спокойное укрытие.", "तीन मौसम संकेत पढ़ें, अगला अनुमान लगाएँ और हर जानवर को शांत आश्रय तक पहुँचाएँ।", "اقرأ ثلاث إشارات للطقس وتنبأ بالتالية وقد كل حيوان إلى مأوى هادئ."]),
+  meta: marketFiveLocalized([["3 Forecasts", "Next-Sign Logic", "Calm Retry"], ["3 次預報", "下一訊號邏輯", "平靜重試"], ["3 次预报", "下一信号逻辑", "平静重试"], ["3つの予報", "次のサイン", "穏やかな再挑戦"], ["3 예보", "다음 신호 논리", "차분한 재시도"], ["3 pronósticos", "Lógica de señales", "Reintento amable"], ["3 previsões", "Lógica de sinais", "Nova tentativa calma"], ["3 prévisions", "Logique des signaux", "Reprise douce"], ["3 Vorhersagen", "Nächstes Signal", "Ruhiger Neustart"], ["3 previsioni", "Logica del segnale", "Riprova calma"], ["3 прогноза", "Логика сигналов", "Спокойный повтор"], ["3 पूर्वानुमान", "अगला संकेत तर्क", "शांत पुनःप्रयास"], ["3 توقعات", "منطق الإشارة التالية", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"],
+  skills: ["Prediction", "Pattern Recognition", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-weather-watch/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalWeatherWatchPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalWeatherWatchPlanned.id)) window.WONDER_LOBBY.games.push(animalWeatherWatchPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalWeatherWatchPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalWeatherWatchPlanned.id);
+
+// River Gates is a planned General identity for a bounded binary-flow puzzle.
+// Keep its card Coming Soon until exact Tester, review, release, art, and
+// owner-opening gates are complete.
+const animalRiverGatesPlanned = {
+  id: "animal-river-gates",
+  title: marketFiveLocalized(["River Gates", "河閘守門員", "河闸守门员", "リバー・ゲート", "강문지기", "Guardianes de Compuertas", "Guardiões das Comportas", "Gardiens des Vannes", "Flusstore", "Guardiani delle Chiuse", "Стражи шлюзов", "नदी द्वार प्रहरी", "حرّاس بوابات النهر"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Binary Flow Puzzle", "二元水流益智", "二元水流益智", "二進フローパズル", "이진 흐름 퍼즐", "Puzle de flujo binario", "Puzzle de fluxo binário", "Puzzle de flux binaire", "Binäres Flusspuzzle", "Puzzle di flusso binario", "Пазл двоичного потока", "द्विआधारी प्रवाह पहेली", "لغز التدفق الثنائي"]),
+  description: marketFiveLocalized(["Toggle three friendly river gates to send the right amount of water to every animal garden.", "切換三座親切的河閘，把正確水量送到每座動物花園。", "切换三座亲切的河闸，把正确水量送到每座动物花园。", "3つの川門を切り替え、動物の庭へ正しい水量を送ろう。", "세 강문을 전환해 모든 동물 정원에 알맞은 물을 보내세요.", "Cambia tres compuertas y envía la cantidad justa a cada jardín animal.", "Alterne três comportas e envie a quantidade certa a cada jardim animal.", "Active trois vannes pour envoyer le bon débit à chaque jardin animal.", "Schalte drei freundliche Flusstore und sende jedem Tiergarten die richtige Menge Wasser.", "Aziona tre chiuse e manda la quantità giusta a ogni giardino animale.", "Переключайте три шлюза и отправляйте нужный поток в каждый сад животных.", "तीन नदी द्वार बदलकर हर पशु बगीचे तक सही पानी पहुँचाएँ।", "بدّل ثلاث بوابات نهرية وأرسل الكمية الصحيحة إلى كل حديقة حيوانات."]),
+  meta: marketFiveLocalized([["3 Water Plans", "Toggle + Read", "Calm Retry"], ["3 份水量計畫", "切換＋讀取", "平靜重試"], ["3 份水量计划", "切换＋读取", "平静重试"], ["3つの水計画", "切替＋読解", "穏やかな再挑戦"], ["3 물 계획", "전환 + 읽기", "차분한 재시도"], ["3 planes de agua", "Cambiar y leer", "Reintento amable"], ["3 planos de água", "Alternar e ler", "Nova tentativa calma"], ["3 plans d’eau", "Basculer et lire", "Reprise douce"], ["3 Wasserpläne", "Schalten + Lesen", "Ruhiger Neustart"], ["3 piani d'acqua", "Cambia e leggi", "Riprova calma"], ["3 водных плана", "Переключение", "Спокойный повтор"], ["3 जल योजनाएँ", "बदलें और पढ़ें", "शांत पुनःप्रयास"], ["3 خطط مياه", "بدّل واقرأ", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Simulation", "Family", "Animal"],
+  skills: ["Planning", "Systems Thinking", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-river-gates/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-river-gates/assets/animal-river-gates-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRiverGatesPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalRiverGatesPlanned.id)) window.WONDER_LOBBY.games.push(animalRiverGatesPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalRiverGatesPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalRiverGatesPlanned.id);
+
+// Echo Orchard is a planned General identity for a bounded sequence-memory
+// prototype. Keep its card Coming Soon until exact Tester, review, release,
+// art, and owner-opening gates are complete.
+const animalEchoOrchardPlanned = {
+  id: "animal-echo-orchard",
+  title: marketFiveLocalized(["Echo Orchard", "回音果園", "回音果园", "エコー・オーチャード", "메아리 과수원", "Huerto del Eco", "Pomar do Eco", "Verger des Échos", "Echo-Obstgarten", "Frutteto dell'Eco", "Эхо-оранжерея", "गूँजता बाग़", "بستان الصدى"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Sequence Memory Puzzle", "序列記憶益智", "序列记忆益智", "順番記憶パズル", "순서 기억 퍼즐", "Puzle de memoria secuencial", "Puzzle de memória sequencial", "Puzzle de mémoire séquentielle", "Sequenz-Merkpuzzle", "Puzzle di memoria sequenziale", "Пазл на запоминание последовательности", "पहचान क्रम पहेली", "لغز ذاكرة التسلسل"]),
+  description: marketFiveLocalized(["Listen to a chime-fruit sequence, replay it with four orchard buttons, and help the keeper tune each moonlit grove.", "聽見鐘果序列，用四個果實按鈕重現它，幫果園守護者調好每座月光果園。", "听见钟果序列，用四个果实按钮重现它，帮果园守护者调好每座月光果园。", "鐘の実の順番を聞き、4つの果実ボタンで再現して月明かりの果樹園を整えよう。", "차임 열매 순서를 듣고 네 과일 버튼으로 재현해 달빛 과수원을 가꿔 보세요.", "Escucha una secuencia de frutos sonoros, repítela con cuatro botones y afina cada huerto bajo la luna.", "Ouça uma sequência de frutos sonoros, repita-a com quatro botões e afine cada pomar ao luar.", "Écoute une séquence de fruits carillonnants, répète-la avec quatre boutons et accorde chaque verger au clair de lune.", "Hör dir eine Klangfruchtfolge an, wiederhole sie mit vier Knöpfen und stimme jeden Mondgarten.", "Ascolta una sequenza di frutti sonori, ripetila con quattro pulsanti e accorda ogni frutteto al chiaro di luna.", "Слушайте последовательность звенящих плодов, повторяйте её четырьмя кнопками и настраивайте лунные сады.", "ध्वनि-फलों का क्रम सुनें, चार बटनों से दोहराएँ और हर चाँदनी बाग़ को सँवारें।", "استمع إلى تسلسل ثمار رنانة، وكرره بأربعة أزرار واضبط كل بستان مضاء بالقمر."]),
+  meta: marketFiveLocalized([["3 Groves", "Listen + Replay", "Calm Retry"], ["3 座果園", "聆聽＋重現", "平靜重試"], ["3 座果园", "聆听＋重现", "平静重试"], ["3つの果樹園", "聞いて再現", "穏やかな再挑戦"], ["3 과수원", "듣고 재현", "차분한 재시도"], ["3 huertos", "Escuchar y repetir", "Reintento amable"], ["3 pomares", "Ouvir e repetir", "Nova tentativa calma"], ["3 vergers", "Écouter et répéter", "Reprise douce"], ["3 Gärten", "Hören + Wiederholen", "Ruhiger Neustart"], ["3 frutteti", "Ascolta e ripeti", "Riprova calma"], ["3 сада", "Слушать и повторять", "Спокойный повтор"], ["3 बाग़", "सुनें और दोहराएँ", "शांत पुनःप्रयास"], ["3 بساتين", "استمع وكرر", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Memory", "Pattern Recognition", "Family", "Animal"],
+  skills: ["Working Memory", "Sequencing", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-echo-orchard/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-echo-orchard/assets/animal-echo-orchard-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalEchoOrchardPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalEchoOrchardPlanned.id)) window.WONDER_LOBBY.games.push(animalEchoOrchardPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalEchoOrchardPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalEchoOrchardPlanned.id);
+
+// Acorn Auction is a planned General identity for a bounded quantity/budget
+// choice prototype. Keep its card Coming Soon until exact Tester, review,
+// release, art, and owner-opening gates are complete.
+const animalAcornAuctionPlanned = {
+  id: "animal-acorn-auction",
+  title: marketFiveLocalized(["Acorn Auction", "橡果競標", "橡果竞标", "どんぐりオークション", "도토리 경매", "Subasta de Bellotas", "Leilão de Bolotas", "Vente aux Glands", "Eichel-Auktion", "Asta di Ghiande", "Аукцион желудей", "बलूत नीलामी", "مزاد البلوط"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Quantity-and-Budget Choice Puzzle", "數量與預算選擇益智", "数量与预算选择益智", "数量と予算の選択パズル", "수량과 예산 선택 퍼즐", "Puzle de cantidad y presupuesto", "Puzzle de quantidade e orçamento", "Puzzle de quantité et budget", "Mengen- und Budgetpuzzle", "Puzzle quantità e budget", "Пазл выбора количества и бюджета", "मात्रा और बजट चयन पहेली", "لغز اختيار الكمية والميزانية"]),
+  description: marketFiveLocalized(["Read each animal's request, compare three acorn lots, and choose a fair fit for both quantity and budget.", "讀懂動物需求，比較三份橡果批次，挑出同時符合數量與預算的公平選擇。", "读懂动物需求，比较三份橡果批次，挑出同时符合数量与预算的公平选择。", "動物の依頼を読み、3つのどんぐりを比べ、数量と予算に合う公正な品を選ぼう。", "동물의 요청을 읽고 세 도토리 묶음을 비교해 수량과 예산에 맞는 공정한 선택을 하세요.", "Lee la petición, compara tres lotes de bellotas y elige el que encaje en cantidad y presupuesto.", "Leia o pedido, compare três lotes de bolotas e escolha o que cabe na quantidade e no orçamento.", "Lis la demande, compare trois lots de glands et choisis celui qui respecte quantité et budget.", "Lies die Bitte, vergleiche drei Eichellose und wähle das passende für Menge und Budget.", "Leggi la richiesta, confronta tre lotti di ghiande e scegli quello giusto per quantità e budget.", "Читайте просьбу, сравнивайте три лота желудей и выбирайте подходящий по количеству и бюджету.", "अनुरोध पढ़ें, तीन बलूत समूहों की तुलना करें और मात्रा व बजट के अनुसार सही चुनें।", "اقرأ طلب الحيوان وقارن ثلاث دفعات بلوط واختر ما يناسب الكمية والميزانية."]),
+  meta: marketFiveLocalized([["3 Market Requests", "Count + Budget", "Fair Retry"], ["3 份市集需求", "數量＋預算", "公平重試"], ["3 份市集需求", "数量＋预算", "公平重试"], ["3つの依頼", "数量＋予算", "公平な再挑戦"], ["3 시장 요청", "수량 + 예산", "공정한 재시도"], ["3 peticiones", "Cantidad y presupuesto", "Reintento justo"], ["3 pedidos", "Quantidade e orçamento", "Nova tentativa justa"], ["3 demandes", "Quantité et budget", "Reprise équitable"], ["3 Marktaufträge", "Menge + Budget", "Faire Wiederholung"], ["3 richieste", "Quantità e budget", "Riprova equa"], ["3 запроса", "Количество и бюджет", "Честный повтор"], ["3 अनुरोध", "मात्रा और बजट", "निष्पक्ष पुनःप्रयास"], ["3 طلبات", "كمية وميزانية", "إعادة عادلة"]]),
+  categories: ["Puzzle", "Logic", "Planning", "Family", "Animal"],
+  skills: ["Deduction", "Numeracy", "Planning"],
+  ages: ["9", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("9+")),
+  href: "games/animal-acorn-auction/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-acorn-auction/assets/animal-acorn-auction-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalAcornAuctionPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.games.push(animalAcornAuctionPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalAcornAuctionPlanned.id);
 
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.

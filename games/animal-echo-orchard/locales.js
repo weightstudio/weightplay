@@ -1,0 +1,11 @@
+(function () {
+  "use strict";
+  window.ECHO_ORCHARD_LOCALES = {
+    en: {
+      loading: "Tuning the orchard chimes…", title: "Echo Orchard", kicker: "A gentle memory rhythm", world: "Moonlit orchard", intro: "Watch the chime-fruits glow, then echo their order with a careful tap.", start: "Listen to an orchard", choose: "Choose a grove", best: "Best echoes: {best}", groves: "Orchard groves", round: "Echo round", replay: "Replay glow", reset: "Start over", finished: "Echo complete", resultTitle: "The orchard answered!", resultRound: "A clear echo!", next: "Next grove", settings: "Settings", sound: "Sound", language: "Language", on: "On", off: "Off", close: "Close", watch: "Watch the chime-fruits…", yourTurn: "Your turn: echo the glow.", wrong: "That echo wandered. Watch once more, then try again.", correct: "Beautifully echoed!", selection: "{count} of {total} chimes echoed", slot: "Chime {count}", grove1: "Amber path", grove2: "Leaf-lantern bend", grove3: "Raspberry moonwalk", hint1: "Three chimes, one quiet breath", hint2: "A longer turn through the leaves", hint3: "The orchard's final constellation", resultText: "{count} of 3 groves answered. This grove took {attempts} tap attempts.", resultAll: "All three groves answered. Your fewest full-orchard taps: {best}.", fruitAmber: "Amber chime", fruitMint: "Mint chime", fruitCoral: "Coral chime", fruitViolet: "Violet chime"
+    },
+    "zh-Hant": {
+      loading: "正在調準果園鈴聲⋯", title: "回聲果園", kicker: "溫柔的記憶節奏", world: "月光果園", intro: "看著果鈴依序發光，再用專注的一按重現順序。", start: "聆聽果園", choose: "選擇林地", best: "最佳回聲：{best}", groves: "果園林地", round: "回聲回合", replay: "重播光序", reset: "重新開始", finished: "回聲完成", resultTitle: "果園回應了！", resultRound: "清澈的回聲！", next: "下一片林地", settings: "設定", sound: "聲音", language: "語言", on: "開", off: "關", close: "關閉", watch: "看著果鈴發光⋯", yourTurn: "輪到你：重現光序。", wrong: "回聲走偏了。再看一次，然後重新嘗試。", correct: "回聲漂亮地完成了！", selection: "已重現 {count} / {total} 枚果鈴", slot: "第 {count} 枚果鈴", grove1: "琥珀小徑", grove2: "葉燈轉彎處", grove3: "覆盆子月光道", hint1: "三枚果鈴，安靜呼吸一次", hint2: "穿過葉影的加長回合", hint3: "果園最後的星座", resultText: "已回應 {count} / 3 片林地。這片林地用了 {attempts} 次按鍵。", resultAll: "三片林地都回應了。整座果園最少按鍵：{best}。", fruitAmber: "琥珀果鈴", fruitMint: "薄荷果鈴", fruitCoral: "珊瑚果鈴", fruitViolet: "紫羅蘭果鈴"
+    }
+  };
+}());

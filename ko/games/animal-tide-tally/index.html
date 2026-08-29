@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+
+    <base href="/games/animal-tide-tally/" />
+
+    <link rel="canonical" href="https://weightplay.com/ko/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-tide-tally/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-tide-tally/" />
+    <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#176a73" />
+  <title>애니멀 조수 세기 | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <meta name="description" content="조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="애니멀 조수 세기 | WeightPlay" />
+    <meta property="og:description" content="조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요." />
+    <meta property="og:url" content="https://weightplay.com/ko/games/animal-tide-tally/" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="애니멀 조수 세기 | WeightPlay" />
+    <meta name="twitter:description" content="조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요." />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "애니멀 조수 세기",
+  "url": "https://weightplay.com/ko/games/animal-tide-tally/",
+  "image": "https://weightplay.com/games/animal-tide-tally/assets/animal-tide-tally-cover.svg",
+  "description": "조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "ko",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "추천",
+    "동물 게임",
+    "Puzzle",
+    "가족",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "Children and families",
+    "suggestedMinAge": 6
+  },
+  "alternateName": "Animal Tide Tally"
+}
+    </script>
+  </head>
+<body>
+  <div id="loading" class="screen loading-screen"><div class="loader-mark">≈</div><p data-i18n="loading">Counting the tide…</p></div>
+  <main id="app" hidden>
+    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Animal Tide Tally</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
+    <section id="mainScreen" class="screen panel" data-screen="main">
+      <div class="cover-wrap"><img src="assets/animal-tide-tally-cover.svg" alt="" width="1200" height="900" /><span class="cover-badge" data-i18n="kicker">A calm number puzzle</span></div>
+      <p class="eyebrow" data-i18n="world">Shell Cove tide desk</p><h1 data-runtime-localize="off">애니멀 조수 세기</h1>
+      <p class="intro" data-i18n="intro">Count what the tide brings in and carries away, then choose the shells that remain.</p>
+      <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open the first tide note</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a tide note</button></div>
+      <p id="best" class="best"></p>
+    </section>
+    <section id="stageScreen" class="screen panel" data-screen="stage" hidden><p class="eyebrow" data-i18n="chapter">Shell Cove notebook</p><h2 data-i18n="choose">Choose a tide note</h2><div id="stageList" class="stage-list"></div></section>
+    <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
+      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Tide note</p><h2 id="noteTitle">Dawn cove</h2></div><span id="progressPill" class="pill">1 / 3</span></div>
+      <p id="prompt" class="prompt"></p><div class="tide-card"><span class="tide-symbol" aria-hidden="true">◌</span><p id="story" class="story"></p><p id="equation" class="equation" aria-live="polite"></p></div>
+      <div id="answerGrid" class="answer-grid" role="group" aria-label="Tide answers"></div>
+      <p id="status" class="status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset note</button></div>
+    </section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">≈</div><p class="eyebrow" data-i18n="finished">Tide settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every cove is counted!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next tide note</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a tide note</button></div></section>
+    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
+  </main>
+  <script src="locales.js?v=20260829-tide-tally-v1"></script><script src="game.js?v=20260829-tide-tally-v1"></script>
+<section class="game-page-info game-page-info-static" aria-label="애니멀 조수 세기 게임 정보">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>애니멀 조수 세기</h2><p>조개 만에 오고 가는 조개를 세고 남은 조수 합계를 고르세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>조수 세기 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>추천 · 동물 게임 · Puzzle · 가족</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+</body>
+</html>

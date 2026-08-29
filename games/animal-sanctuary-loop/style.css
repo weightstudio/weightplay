@@ -35,6 +35,10 @@
    layer stays transparent so it never reads as a pasted-on second scene. */
 .arena-wrap canvas{background:transparent}
 
+/* Keep both persistent Stage tabs at the governed 44px touch target, including
+   the compact landscape envelope where shared Stage CSS uses a 40px row. */
+.stage-tabs button{min-height:44px}
+
 /* Objective and authored encounter identity are separate rows so long locales
    never collide while the player is steering. */
 .battle-live{grid-template-rows:70px 52px minmax(0,1fr) 28px}
