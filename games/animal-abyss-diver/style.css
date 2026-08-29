@@ -55,5 +55,14 @@
 .main-group{display:contents}
 .main-group.hidden{display:none!important}
 
+/* Scene ownership is a hard visual boundary: a stale class or shell observer
+   must never allow Main, Stage, and Battle to paint at the same time. */
+body[data-screen="main"] #stageScreen,
+body[data-screen="main"] #battleShell,
+body[data-screen="stage"] #mainGroup,
+body[data-screen="stage"] #battleShell,
+body[data-screen="battle"] #mainGroup,
+body[data-screen="battle"] #stageScreen{display:none!important}
+
 .completion-hint,.result-completion-hint{margin:0;padding:4px 8px;border-radius:8px;background:#153f50;color:#ffe79a;font-size:.75rem;font-weight:800;text-align:center}
 .completion-hint.hidden,.result-completion-hint.hidden{display:none!important}

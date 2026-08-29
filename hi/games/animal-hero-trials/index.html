@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-hero-trials/" />
-
-    <meta charset="utf-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#071712" />
@@ -87,31 +86,40 @@
   </head>
 <body data-game-view="main" data-screen="main" data-game-id="animal-hero-trials" data-tutorial-auto-show="false" data-sound-toggle="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>पशु नायक परीक्षण</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
-  <main id="app" class="app">
-    <section id="mainView" class="view main-view" data-screen="main">
-      <header class="main-header">
+  <main id="main" class="app">
+    <section id="mainView" class="view main-view wp-standard-main-screen" data-screen="main">
+      <header class="main-header wp-shell-header wp-main-shell-header">
         <a class="lobby-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <strong class="wp-shell-main-title" data-wp-game-title>Animal Hero Trials</strong>
       </header>
       <button id="soundToggle" class="main-sound-toggle" type="button" data-sound-toggle="true" aria-label="Mute sound" aria-pressed="false"><span aria-hidden="true">&#128266;</span></button>
       <label class="locale"><span>Language</span><select id="localeSelect"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option></select></label>
-      <img class="cover" src="../../assets/animal-hero-trials-cover.webp" alt="पशु नायक परीक्षण game artwork" />
-      <div class="main-copy"><h1 data-t="title">पशु नायक परीक्षण</h1><p data-t="pitch">Choose one of four heroes and clear a 30-trial shadow campaign.</p></div>
-      <button id="startBtn" class="primary" type="button" data-t="start">Start Game</button>
+      <section class="wp-standard-main-composition" aria-label="Animal Hero Trials overview">
+        <div class="wp-standard-main-poster"><img class="cover wp-standard-main-poster-media" src="../../assets/animal-hero-trials-cover.png" alt="पशु नायक परीक्षण game artwork" /></div>
+        <div class="main-copy wp-standard-main-copy">
+          <h1 class="wp-standard-main-title" data-t="title">पशु नायक परीक्षण</h1>
+          <p class="wp-standard-main-summary" data-t="pitch">Choose one of four heroes and clear a 30-trial shadow campaign.</p>
+          <div id="mainProgress" class="wp-standard-main-progress" data-wp-main-progress role="status">Progress 1 / 30</div>
+          <button id="startBtn" class="primary wp-standard-main-start" data-wp-main-start type="button" data-t="start">Start Game</button>
+        </div>
+      </section>
     </section>
-    <section id="stageView" class="view hidden" data-screen="stage">
-      <header class="compact-head"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
+    <section id="stageView" class="view hidden wp-standard-stage-panel" data-screen="stage" data-wp-standard-stage-screen>
+      <header class="compact-head wp-standard-stage-heading"><button id="stageBack" class="icon-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button><h2 data-t="choose">Choose Trial</h2></header>
       <div id="heroPicker" class="hero-picker" aria-label="Choose hero"></div>
       <div class="progress-card"><span><img src="../../assets/animal-hero-trials-icon-trial-gate.png" alt="" aria-hidden="true" /><span class="progress-copy"><b data-t="marks">Trial Marks</b><strong id="markCount">0</strong></span></span><button id="masteryBtn" type="button"><img src="../../assets/animal-hero-trials-icon-heart-mastery.png" alt="" aria-hidden="true" /><span data-t="mastery">Heart Mastery</span><b id="masteryLevel">Lv.0</b><small id="masteryCost">All heroes Max HP +0 → +12 · Need 5 / Have 0 marks</small></button></div>
-      <div id="stageRail" class="stage-rail"></div><div class="stage-ad" aria-hidden="true"></div>
+      <nav id="stageTabs" class="stage-tabs" role="tablist" aria-label="Trial sections"><button id="stagesTab" class="stage-tab is-active" role="tab" aria-selected="true" aria-controls="stageRail" data-t="stages">Stages</button></nav>
+      <div id="stageRail" class="stage-rail" data-wp-stage-total="30"></div><div class="stage-ad" aria-hidden="true"></div>
     </section>
     <section id="battleView" class="view battle-view hidden" data-screen="battle" data-play-viewport data-wp-logical-battle-canvas>
-      <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health" role="progressbar" aria-valuemin="0"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><button id="skillBtn" class="skill-btn" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></header>
+      <header class="battle-head"><button id="battleBack" class="icon-btn" data-wp-return="battle" type="button" aria-label="Back">&larr;</button><div class="health" role="progressbar" aria-valuemin="0"><span id="roomText">Room 1/3</span><div><i id="hpFill"></i></div></div><div class="battle-tools"><button id="battleHelp" class="battle-utility" data-wp-battle-utility type="button" aria-label="Battle help" title="Battle help"><span aria-hidden="true">?</span></button><button id="skillBtn" class="skill-btn" data-wp-primary-action="skill" type="button"><img src="../../assets/animal-hero-trials-icon-roaring-mane.webp" alt="" /><span id="cooldownText">ROAR</span></button></div></header>
       <div class="canvas-wrap"><canvas id="game" width="460" height="560" tabindex="0" aria-describedby="battleBriefing objective controlHint" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D Space"></canvas><div class="battle-overlay"><small id="battleBriefing" class="battle-briefing"></small><p id="objective"></p><small id="controlHint" aria-live="polite" hidden></small></div></div>
       <div id="choiceModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="blessingTitle" aria-describedby="rerollStatus"><section><h2 id="blessingTitle" data-t="blessing">Choose a Blessing</h2><div id="choices" class="choices"></div><div class="reroll-row"><button id="rerollBtn" type="button"><img src="../../assets/weightplay-diamond.svg" alt="" /><span id="rerollLabel">Reroll 3</span></button><small id="rerollStatus"></small></div></section></div>
       <div id="quitModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="quitTitle" aria-describedby="quitCopy"><section><h2 id="quitTitle" data-t="quitTitle">Leave this trial?</h2><p id="quitCopy" data-t="quitCopy">This run's room and blessing progress will be lost.</p><div class="modal-actions"><button id="quitKeep" class="primary" type="button" data-t="keepPlaying">Keep Playing</button><button id="quitLeave" class="secondary" type="button" data-t="leaveTrial">Leave Trial</button></div></section></div>
       <div id="resultModal" class="modal hidden" style="position:absolute" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultCopy"><section><img id="resultFx" src="../../assets/animal-hero-trials-fx-victory.webp" alt="" /><h2 id="resultTitle"></h2><p id="resultCopy"></p><button id="resultNext" class="primary" type="button"></button><button id="resultHome" type="button" data-t="menu">Main Menu</button></section></div>
     </section>
-    <div id="battleAd" class="battle-ad" aria-hidden="true"></div>
+    <div id="stageAd" class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+    <div id="battleAd" class="battle-ad battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </main>
     <!-- adsense-static-guide:start -->
     <section class="game-page-info game-page-info-static" aria-label="पशु नायक परीक्षण खेल की जानकारी">

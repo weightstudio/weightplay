@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="style.css?v=20260809-main-poster-square-v13">
+  <link rel="stylesheet" href="style.css?v=20260829-stage-battle-a11y-v23">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
 <body data-screen="loading" data-game-id="animal-prism-battalion" data-sound-toggle="off" data-runtime-localize="off">
@@ -66,7 +66,7 @@
   <section id="battle" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="mission-block"><small id="missionLabel"></small><strong id="fortressValue">100%</strong></div><div class="battle-status"><span><b data-t="core">Core</b><strong id="coreValue">♥♥♥</strong></span><span><b data-t="time">Time</b><strong id="timeValue">60</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-wp-return="battle" data-ta="back">←</button><div class="mission-block"><small id="missionLabel"></small><strong id="fortressValue">100%</strong></div><div class="battle-status"><span><b data-t="core">Core</b><strong id="coreValue">♥♥♥</strong></span><span><b data-t="time">Time</b><strong id="timeValue">60</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="How to play" data-ta="help" data-wp-battle-utility="true">?</button></header>
         <p id="objective" class="objective-row"></p>
 <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight A D Space" aria-label="Prism battalion battlefield" data-ta="arenaLabel"></canvas><div class="aim-cue" aria-hidden="true">↔</div><button id="overdrive" type="button"><span data-t="overdrive">Overdrive</span><b id="overdriveValue">0%</b></button></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
@@ -77,7 +77,7 @@
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
-<script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260827-success-payoff-v22"></script><script src="stage-virtualization.js?v=20260804-stage-wave-v11-6e729693"></script><script src="game.js?v=20260827-success-payoff-v22"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+<script src="../../src/site-config.js"></script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260829-stage-battle-a11y-v23"></script><script src="stage-virtualization.js?v=20260804-stage-wave-v11-6e729693"></script><script src="game.js?v=20260829-stage-battle-a11y-v23"></script><script src="../../src/stage-selector-standard.js?v=20260721-landscape-envelope-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
 </body>
