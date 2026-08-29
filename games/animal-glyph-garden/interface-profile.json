@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-glyph-garden",
+  "interfaceVersion": 6,
+  "audience": "general",
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": { "enabled": true, "leftWorkspace": null, "rightWorkspace": null },
+  "components": { "main": 0, "stage": 0, "battle": 0, "result": 0, "accessibility": 0 },
+  "result": "BATTLE_SUBSTATE",
+  "reserve": "GENERAL_56PX",
+  "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
+}

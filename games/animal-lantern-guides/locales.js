@@ -240,6 +240,22 @@ const translations = {
   }
 };
 
+const interfaceCopy = {
+  en: { settings: "Settings", soundOn: "Sound: On", soundOff: "Sound: Off", progressTitle: "Three lanterns, one clear handoff", progressBody: "Reveal, tell, and match each scene with no timer." },
+  "zh-Hant": { settings: "設定", soundOn: "音效：開啟", soundOff: "音效：關閉", progressTitle: "三盞提燈，一次清楚交接", progressBody: "找出、告訴夥伴，再配對每一幕；沒有計時壓力。" },
+  "zh-Hans": { settings: "设置", soundOn: "音效：开启", soundOff: "音效：关闭", progressTitle: "三盏提灯，一次清楚交接", progressBody: "找出、告诉伙伴，再配对每一幕；没有计时压力。" },
+  ja: { settings: "設定", soundOn: "サウンド：オン", soundOff: "サウンド：オフ", progressTitle: "3つのランタン、明確な引き継ぎ", progressBody: "見つけて伝え、各場面で同じ印を選びます。時間制限はありません。" },
+  ko: { settings: "설정", soundOn: "소리: 켜기", soundOff: "소리: 끄기", progressTitle: "랜턴 세 개, 분명한 인계 한 번씩", progressBody: "찾고, 말하고, 각 장면에서 짝을 맞춰요. 시간 제한은 없습니다." },
+  es: { settings: "Ajustes", soundOn: "Sonido: Activado", soundOff: "Sonido: Desactivado", progressTitle: "Tres linternas, un relevo claro", progressBody: "Revela, cuenta y empareja cada escena sin límite de tiempo." },
+  "pt-BR": { settings: "Configurações", soundOn: "Som: Ativado", soundOff: "Som: Desativado", progressTitle: "Três lanternas, uma passagem clara", progressBody: "Revele, conte e combine cada cena sem limite de tempo." },
+  fr: { settings: "Paramètres", soundOn: "Son : activé", soundOff: "Son : désactivé", progressTitle: "Trois lanternes, un relais clair", progressBody: "Révèle, raconte et associe chaque scène sans chronomètre." },
+  de: { settings: "Einstellungen", soundOn: "Ton: An", soundOff: "Ton: Aus", progressTitle: "Drei Laternen, klare Übergaben", progressBody: "Zeige, erzähle und ordne jede Szene ohne Zeitdruck zu." },
+  it: { settings: "Impostazioni", soundOn: "Audio: attivo", soundOff: "Audio: disattivato", progressTitle: "Tre lanterne, un passaggio chiaro", progressBody: "Rivela, racconta e abbina ogni scena senza timer." },
+  ru: { settings: "Настройки", soundOn: "Звук: вкл.", soundOff: "Звук: выкл.", progressTitle: "Три фонаря — ясная передача", progressBody: "Откройте, расскажите и сопоставьте каждую сцену без таймера." },
+  hi: { settings: "सेटिंग", soundOn: "ध्वनि: चालू", soundOff: "ध्वनि: बंद", progressTitle: "तीन लालटेन, एक स्पष्ट अदला-बदली", progressBody: "हर दृश्य को बिना टाइमर के दिखाएँ, बताएँ और मिलाएँ।" },
+  ar: { settings: "الإعدادات", soundOn: "الصوت: مفعّل", soundOff: "الصوت: متوقف", progressTitle: "ثلاثة فوانيس، تسليم واضح", progressBody: "اكشفا وأخبرا وطابقا كل مشهد بلا مؤقت." }
+};
+
 window.ANIMAL_LANTERN_GUIDES_COPY = Object.fromEntries(
-  window.ANIMAL_LANTERN_GUIDES_LOCALES.map((code) => [code, { ...en, ...(translations[code] || {}) }])
+  window.ANIMAL_LANTERN_GUIDES_LOCALES.map((code) => [code, { ...en, ...(translations[code] || {}), ...interfaceCopy[code] }])
 );

@@ -2603,6 +2603,31 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternLatticePlanned.id)) window.WONDER_LOBBY.games.push(animalLanternLatticePlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternLatticePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalLanternLatticePlanned.id);
 
+// General Issue repair (2026-08-30): make the existing Lantern Guides
+// prototype routable for the 13 generated locale acceptance pages while it
+// remains planned, noindex, and absent from the public lobby catalog.
+const animalLanternGuidesLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalLanternGuidesLocalized = (values) => Object.fromEntries(animalLanternGuidesLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalLanternGuidesStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalLanternGuidesPlanned = {
+  id: "animal-lantern-guides",
+  title: animalLanternGuidesLocalized(["Animal Lantern Guides", "動物提燈引路隊", "动物提灯引路队", "どうぶつランタンガイド", "동물 랜턴 길잡이", "Guías de linternas animales", "Guias das Lanternas Animais", "Guides des lanternes animales", "Tierische Laternenlotsen", "Guide delle lanterne animali", "Звериные фонарики-проводники", "पशु लालटेन मार्गदर्शक", "أدلة فوانيس الحيوانات"]),
+  status: "planned",
+  statusText: { ...animalLanternGuidesStatusText },
+  type: animalLanternGuidesLocalized(["Asymmetric Co-op Puzzle", "非對稱合作益智", "非对称合作益智", "非対称協力パズル", "비대칭 협동 퍼즐", "Puzzle cooperativo asimétrico", "Quebra-cabeça cooperativo assimétrico", "Puzzle coopératif asymétrique", "Asymmetrisches Koop-Puzzle", "Puzzle cooperativo asimmetrico", "Асимметричная кооперативная головоломка", "असममित सहयोगी पहेली", "لغز تعاوني غير متماثل"]),
+  description: animalLanternGuidesLocalized(["Reveal safe lanterns, share the clue, and place matching trail markers together.", "找出安全提燈、分享提示，和夥伴一起放下相同的森林路標。", "找出安全提灯、分享提示，和伙伴一起放下相同的森林路标。", "安全なランタンを見つけ、手がかりを伝えて同じ道しるべを置こう。", "안전한 랜턴을 찾고 단서를 나누며 같은 길표를 함께 놓아요.", "Revela linternas seguras, comparte la pista y coloca juntos las señales correspondientes.", "Revele lanternas seguras, compartilhe a pista e coloquem juntos os marcadores correspondentes.", "Révèle les lanternes sûres, partage l’indice et posez ensemble les balises correspondantes.", "Enthülle sichere Laternen, teile den Hinweis und setzt gemeinsam passende Wegzeichen.", "Rivela le lanterne sicure, condividi l’indizio e posate insieme i segnavia corrispondenti.", "Открывайте безопасные фонари, передавайте подсказку и вместе ставьте подходящие знаки.", "सुरक्षित लालटेन दिखाएँ, संकेत साझा करें और मिलते रास्ते के निशान साथ रखें।", "اكشفا الفوانيس الآمنة، شاركا الدليل وضَعا علامات الطريق المطابقة معاً."]),
+  meta: animalLanternGuidesLocalized([["3 Night Scenes", "Scout + Guide", "Calm Recovery"], ["3 個夜林場景", "偵察員＋引路員", "平靜恢復"], ["3 个夜林场景", "侦察员＋引路员", "平静恢复"], ["3つの夜の場面", "スカウト＋ガイド", "穏やかな回復"], ["밤 장면 3개", "정찰자 + 안내자", "차분한 회복"], ["3 escenas nocturnas", "Explorador + Guía", "Recuperación serena"], ["3 cenas noturnas", "Batedor + Guia", "Recuperação calma"], ["3 scènes nocturnes", "Éclaireur + Guide", "Reprise sereine"], ["3 Nachtszenen", "Späher + Lotse", "Ruhige Erholung"], ["3 scene notturne", "Esploratore + Guida", "Recupero calmo"], ["3 ночные сцены", "Разведчик + Проводник", "Спокойное восстановление"], ["3 रात के दृश्य", "खोजी + मार्गदर्शक", "शांत वापसी"], ["3 مشاهد ليلية", "الكشّاف + المرشد", "تعافٍ هادئ"]]),
+  categories: ["Puzzle", "Co-op", "Logic", "Family", "Animal"],
+  skills: ["Communication", "Pattern Recognition", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalLanternGuidesLocalized(Array(13).fill("6+")),
+  href: "games/animal-lantern-guides/",
+  internalTrial: "index.html?trial=1",
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalLanternGuidesPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.games.push(animalLanternGuidesPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalLanternGuidesPlanned.id);
+
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.
 const animalRingGardenLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];

@@ -1679,6 +1679,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "लालटेन जाल",
     "ar": "شبكة الفوانيس"
   },
+  "animal-lantern-guides": {
+    "__localizedExact": true,
+    "en": "Animal Lantern Guides",
+    "zh-Hant": "動物提燈引路隊",
+    "zh-Hans": "动物提灯引路队",
+    "ja": "どうぶつランタンガイド",
+    "ko": "동물 랜턴 길잡이",
+    "es": "Guías de linternas animales",
+    "pt-BR": "Guias das Lanternas Animais",
+    "fr": "Guides des lanternes animales",
+    "de": "Tierische Laternenlotsen",
+    "it": "Guide delle lanterne animali",
+    "ru": "Звериные фонарики-проводники",
+    "hi": "पशु लालटेन मार्गदर्शक",
+    "ar": "أدلة فوانيس الحيوانات"
+  },
   "animal-ring-garden": {
     "__localizedExact": true,
     "en": "Ring Garden",
