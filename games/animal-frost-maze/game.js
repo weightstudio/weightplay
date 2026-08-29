@@ -39,6 +39,12 @@
     it: "COSTRUISCI GHIACCIO", ru: "СТРОИТЬ ЛЁД", hi: "बर्फ बनाएँ", ar: "بناء الجليد",
   };
   const frostBuildText = () => FROST_BUILD_COPY[frostLocale()] || FROST_BUILD_COPY.en;
+  const FROST_SETTINGS_COPY = {
+    en: "Settings", "zh-tw": "設定", "zh-cn": "设置", ja: "設定", ko: "설정",
+    es: "Configuración", "pt-br": "Configurações", fr: "Paramètres", de: "Einstellungen",
+    it: "Impostazioni", ru: "Настройки", hi: "सेटिंग्स", ar: "الإعدادات",
+  };
+  const frostSettingsText = () => FROST_SETTINGS_COPY[frostLocale()] || FROST_SETTINGS_COPY.en;
   const FROST_STAGE_COPY = {
     en: { heading: "Ice Chapters", tab: "Stages", chapter: "Chapter", chapters: ["first thaw", "split routes", "drifter pressure", "final melt"] },
     "zh-tw": { heading: "冰原章節", tab: "章節", chapter: "第", chapterSuffix: "章", chapters: ["初次解凍", "分岔路線", "漂行者壓力", "最後融冰"] },
@@ -113,6 +119,12 @@
       document.querySelector('[data-action="break"]')?.replaceChildren(document.createTextNode(frostText("breakButton")));
       document.querySelector('[data-action="build"]')?.replaceChildren(document.createTextNode(frostBuildText()));
       $("arena")?.setAttribute("aria-label", frostText("canvas"));
+      const battleUtility = $("battle-utility");
+      if (battleUtility) {
+        const settingsLabel = frostSettingsText();
+        battleUtility.setAttribute("aria-label", settingsLabel);
+        battleUtility.title = settingsLabel;
+      }
       document.querySelector(".touch-hint")?.replaceChildren(document.createTextNode(frostText("hint")));
       const stageCopy = frostStageText();
       const stageHeading = document.querySelector(".stage-header h2");
@@ -158,7 +170,7 @@
   frostStatusObserver.observe($("battle-status"), { childList: true, characterData: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyFrostLocale, { once: true }); else applyFrostLocale();
   function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});if(name==="battle")result?.setAttribute("hidden","");if(name==="battle")state.raf=requestAnimationFrame(frame);}
-  function stageCards(){const copy=frostStageText();$("stage-list").innerHTML=[1,2,3,4].map((n)=>`<button data-chapter="${n}">${copy.chapter} ${n}${copy.chapterSuffix || ""}<br><small>${copy.chapters[n-1]}</small></button>`).join("");$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),1)));}
+  function stageCards(){const copy=frostStageText();$("stage-list").innerHTML=[1,2,3,4].map((n)=>`<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-chapter="${n}">${copy.chapter} ${n}${copy.chapterSuffix || ""}<br><small>${copy.chapters[n-1]}</small></button>`).join("");$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),1)));}
   function layoutFor(chapter, room) { const variant=(chapter-1)*4+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter===4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y))}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
   function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`Chapter ${state.chapter} · Room ${state.room} / 4`;setBattleStatus("controls");updateLabels();}
   function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");}

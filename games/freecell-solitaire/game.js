@@ -30,6 +30,51 @@
     hi: "लक्ष्य",
     ar: "الهدف",
   };
+  const FREECELL_FOUNDATION_PROGRESS_LABEL = {
+    en: "Foundations",
+    "zh-Hant": "牌堆進度",
+    "zh-Hans": "基础牌堆",
+    ja: "ファンデーション進捗",
+    ko: "파운데이션 진행",
+    es: "Progreso de bases",
+    "pt-BR": "Progresso das fundações",
+    fr: "Progression des fondations",
+    de: "Foundation-Fortschritt",
+    it: "Progresso delle fondazioni",
+    ru: "Прогресс оснований",
+    hi: "फाउंडेशन प्रगति",
+    ar: "تقدم الأساسات",
+  };
+  const FREECELL_FOUNDATION_PROGRESS_COPY = {
+    en: "{label}: {foundation}/52 · {remaining} cards left",
+    "zh-Hant": "{label}：{foundation}/52・剩餘 {remaining} 張",
+    "zh-Hans": "{label}：{foundation}/52・剩余 {remaining} 张",
+    ja: "{label}：{foundation}/52・残り{remaining}枚",
+    ko: "{label}: {foundation}/52 · 남은 카드 {remaining}장",
+    es: "{label}: {foundation}/52 · quedan {remaining} cartas",
+    "pt-BR": "{label}: {foundation}/52 · {remaining} cartas restantes",
+    fr: "{label} : {foundation}/52 · {remaining} cartes restantes",
+    de: "{label}: {foundation}/52 · {remaining} Karten übrig",
+    it: "{label}: {foundation}/52 · {remaining} carte",
+    ru: "{label}: {foundation}/52 · осталось карт: {remaining}",
+    hi: "{label}: {foundation}/52 · {remaining} कार्ड शेष",
+    ar: "{label}: {foundation}/52 · تبقى {remaining} بطاقة",
+  };
+  const FREECELL_RESULT_NEXT_STEP_COPY = {
+    en: "Next: choose Restart to replay this deal or New Game for a fresh deal.",
+    "zh-Hant": "下一步：選「重新開始」重玩這個牌局，或選「新遊戲」開始新牌局。",
+    "zh-Hans": "下一步：选择“重新开始”重玩这副牌，或选择“新游戏”开始新牌局。",
+    ja: "次へ：「Restart」でこのディールを再挑戦するか、「新しいゲーム」で新しいディールを始めます。",
+    ko: "다음: 다시 시작으로 이 딜을 다시 플레이하거나 새 게임으로 새 딜을 시작하세요.",
+    es: "Siguiente: elige Reiniciar para repetir este reparto o Nueva partida para uno nuevo.",
+    "pt-BR": "Próximo passo: escolha Reiniciar para repetir esta distribuição ou Novo jogo para uma nova.",
+    fr: "Ensuite : choisissez Recommencer pour rejouer cette donne ou Nouvelle partie pour en commencer une autre.",
+    de: "Nächster Schritt: Mit Neustart diese Runde wiederholen oder ein neues Spiel beginnen.",
+    it: "Poi: scegli Riavvia per ripetere questa mano o Nuova partita per iniziarne una nuova.",
+    ru: "Дальше: нажмите «Начать заново», чтобы повторить сдачу, или «Новая игра» для новой.",
+    hi: "अगला कदम: इस डील को फिर खेलने के लिए फिर शुरू करें या नया खेल शुरू करें।",
+    ar: "الخطوة التالية: اختر إعادة البدء لإعادة هذه التوزيعة أو لعبة جديدة لبدء توزيعة جديدة.",
+  };
   const FREECELL_BATTLE_SOUND_COPY = {
     en: { on: "Sound: On", off: "Sound: Off" },
     "zh-Hant": { on: "音效：開", off: "音效：關" },
@@ -191,8 +236,14 @@
     view.refreshSound?.();
     refreshFreecellHeaderCopy();
   });
-  view?.nodes?.localeSelect?.addEventListener("change", () => window.requestAnimationFrame(refreshFreecellHeaderCopy));
-  window.addEventListener("wonder:locale-change", refreshFreecellHeaderCopy);
+  view?.nodes?.localeSelect?.addEventListener("change", () => window.requestAnimationFrame(() => {
+    refreshFreecellHeaderCopy();
+    refreshFreecellOutcomeCopy();
+  }));
+  window.addEventListener("wonder:locale-change", () => {
+    refreshFreecellHeaderCopy();
+    refreshFreecellOutcomeCopy();
+  });
   refreshFreecellHeaderCopy();
   const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";
@@ -235,6 +286,70 @@
       freeCellCards,
       remainingCards: bounded(tableauCards + freeCellCards, 52),
     };
+  };
+  const copyWithValues = (template, values) => Object.entries(values)
+    .reduce((output, [key, value]) => output.replaceAll(`{${key}}`, String(value)), template);
+  const ensureFreecellProgressStyles = () => {
+    if (document.getElementById("freecell-progress-cue-style")) return;
+    const style = document.createElement("style");
+    style.id = "freecell-progress-cue-style";
+    style.textContent = `
+      body[data-wp-game-id="freecell-solitaire"] .freecell-foundation-progress {
+        min-height: 13px; margin-top: 3px; color: var(--classic-muted); font-size: 10px;
+        font-weight: 700; line-height: 1.25; text-align: center; overflow-wrap: anywhere;
+      }
+      body[data-wp-game-id="freecell-solitaire"] .freecell-foundation-progress[hidden],
+      body[data-wp-game-id="freecell-solitaire"] .freecell-result-next-step[hidden] { display: none; }
+      body[data-wp-game-id="freecell-solitaire"] .freecell-result-next-step {
+        margin: 8px 0 0; color: var(--classic-muted); font-size: 12px;
+        line-height: 1.35; overflow-wrap: anywhere;
+      }
+      @media (max-width: 699px) {
+        body[data-wp-game-id="freecell-solitaire"] .freecell-foundation-progress { margin-top: 2px; font-size: 9px; }
+        body[data-wp-game-id="freecell-solitaire"] .freecell-result-next-step { font-size: 11px; }
+      }
+    `;
+    document.head.append(style);
+  };
+  const renderFoundationProgress = () => {
+    const node = document.getElementById("foundationProgress");
+    const state = snapshot();
+    if (!node) return;
+    const visible = Boolean(state && view?.active && !view.nodes?.battleScreen?.hidden);
+    node.hidden = !visible;
+    if (!visible || !state) {
+      node.textContent = "";
+      return;
+    }
+    const locale = view?.locale || "en";
+    const template = FREECELL_FOUNDATION_PROGRESS_COPY[locale] || FREECELL_FOUNDATION_PROGRESS_COPY.en;
+    const label = FREECELL_FOUNDATION_PROGRESS_LABEL[locale] || FREECELL_FOUNDATION_PROGRESS_LABEL.en;
+    node.dataset.foundationCards = String(state.foundationCards);
+    node.dataset.remainingCards = String(state.remainingCards);
+    node.dataset.foundationComplete = String(state.foundationCompleteCount);
+    node.textContent = copyWithValues(template, {
+      label,
+      foundation: state.foundationCards,
+      remaining: state.remainingCards,
+    });
+  };
+  const renderResultNextStep = () => {
+    const node = document.getElementById("freecellResultNextStep");
+    const state = snapshot();
+    if (!node) return;
+    const visible = Boolean(state && (state.won || state.lost));
+    node.hidden = !visible;
+    if (!visible) {
+      node.textContent = "";
+      return;
+    }
+    const locale = view?.locale || "en";
+    node.textContent = FREECELL_RESULT_NEXT_STEP_COPY[locale] || FREECELL_RESULT_NEXT_STEP_COPY.en;
+  };
+  const refreshFreecellOutcomeCopy = () => {
+    ensureFreecellProgressStyles();
+    renderFoundationProgress();
+    renderResultNextStep();
   };
   const capacitySnapshot = () => {
     const game = view?.game;
@@ -366,6 +481,7 @@
         }));
       }
       previousState = after;
+      refreshFreecellOutcomeCopy();
       renderCapacityStatus();
       return result;
     };
@@ -489,8 +605,10 @@
     window.requestAnimationFrame(() => {
       if (hintCueState.active) renderHintCue();
       else renderCapacityStatus(true);
+      refreshFreecellOutcomeCopy();
     });
   });
+  refreshFreecellOutcomeCopy();
   if (view?.nodes?.boardStatus) {
     let capacityRefreshQueued = false;
     new MutationObserver(() => {

@@ -42,21 +42,21 @@
       <section id="main-screen" class="screen main-screen active" data-screen="main">
         <header class="main-header"><a class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><h1 class="main-title" data-five-copy="title">Frostline Rescue</h1>
         <label class="locale-picker"><span data-five-copy="language">Language</span><select id="localeSelect" data-five-aria="language" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></header>
-        <img class="five-game-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
-        <p class="lede" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
-        <p id="main-progress" class="progress">Best rooms: 0</p>
-        <button id="start-game" class="primary" data-five-copy="start">Start Game</button>
+        <img class="five-game-cover main-cover" src="assets/animal-frost-maze-cover.png" alt="" aria-hidden="true" />
+        <p class="lede main-summary" data-five-copy="lede">Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.</p>
+        <p id="main-progress" class="progress main-progress" data-wp-main-progress>Best rooms: 0</p>
+        <button id="start-game" class="primary" data-wp-main-start data-five-copy="start">Start Game</button>
       </section>
-      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden>
+      <section id="stage-screen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Ice Chapters</h2></header>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span></header>
+        <header class="battle-header"><button class="back" data-back="stage" data-wp-return="battle" aria-label="Back to Stages">←</button><strong id="room-label">Chapter 1 · Room 1</strong><span id="fruit-label">Berries 0</span><button id="battle-utility" class="utility-button" type="button" data-wp-battle-utility data-five-aria="settings" aria-label="Settings">⚙</button></header>
         <p id="battle-status" class="battle-status">Arrows move. Press SPACE to break the ice ahead.</p>
         <canvas id="arena" width="960" height="560" aria-label="Frostline Rescue play area"></canvas>
-        <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
+        <div class="touch-controls"><button data-action="up">▲</button><button data-action="left">◀</button><button id="break-ice" data-action="break" data-wp-primary-action class="break">BREAK ICE</button><button data-action="build" class="build">BUILD ICE</button><button data-action="right">▶</button><button data-action="down">▼</button></div>
         <div id="frost-touch-hint" class="touch-hint">The blue blocks are breakable. Collect all berries before the drifter reaches you.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
           <h2 id="result-title">Room clear</h2><p id="result-copy"></p>
