@@ -147,7 +147,7 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 17;
+  const GAME_VERSION = 18;
   const INTERFACE_VERSION = 6;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
@@ -199,6 +199,21 @@
     hi: { firstTrio: "पहली तिकड़ी!", shelfClear: "शेल्फ़ साफ़!" },
     ar: { firstTrio: "الثلاثية الأولى!", shelfClear: "أُفرغ الرف!" },
   };
+  const PAIR_FINDER_FEEDBACK = {
+    en: "Pair Finder highlighted {name}; it is ready to select.",
+    "zh-Hant": "配對提示標出「{name}」，現在可以選取。",
+    "zh-Hans": "配对提示标出“{name}”，现在可以选择。",
+    ja: "ペア探しが「{name}」を示しました。選択できます。",
+    ko: "짝 찾기가 {name}을(를) 표시했습니다. 선택할 수 있습니다.",
+    es: "Buscar pareja señaló «{name}»; puedes seleccionarlo.",
+    "pt-BR": "Encontrar par destacou {name}; você pode escolhê-lo.",
+    fr: "Trouver une paire a signalé « {name} » ; vous pouvez le choisir.",
+    de: "Der Paarfinder markiert {name}; du kannst ihn auswählen.",
+    it: "Trova coppia ha indicato {name}: puoi selezionarlo.",
+    ru: "«Найти пару» подсветил объект «{name}» — его можно выбрать.",
+    hi: "जोड़ी खोजक ने {name} को दिखाया है; इसे चुना जा सकता है।",
+    ar: "حدّد «{name}» بواسطة أداة البحث عن زوج؛ يمكنك اختياره.",
+  };
   const RUNTIME_LOCALE_SEGMENTS = { "zh-Hant":"zh-tw", "zh-Hans":"zh-cn", ja:"ja", ko:"ko", es:"es", "pt-BR":"pt-br", fr:"fr", de:"de", it:"it", ru:"ru", hi:"hi", ar:"ar" };
   const SHARED_SRC_BASE = new URL("../../src/", document.currentScript?.src || location.href);
   const runtimeCatalogLoads = new Map();
@@ -208,6 +223,10 @@
 
   function starOutlookLabel() { return STAR_OUTLOOK_LABELS[locale] || STAR_OUTLOOK_LABELS.en; }
   function rewardBeatText(key) { return (REWARD_BEATS[locale] || REWARD_BEATS.en)[key] || REWARD_BEATS.en[key]; }
+  function pairFinderFeedback(name) {
+    const template = PAIR_FINDER_FEEDBACK[locale] || PAIR_FINDER_FEEDBACK.en;
+    return template.replace("{name}", name);
+  }
   function clearRewardBeat() {
     if (rewardBeatTimer) clearTimeout(rewardBeatTimer);
     rewardBeatTimer = 0;
@@ -1072,7 +1091,7 @@
     if (!target) { els.feedback.textContent = t("noPair"); return; }
     run.tools.magnet--; renderTools();
     els.board.querySelector(`[data-piece="${target.id}"]`)?.classList.add("hint");
-    els.feedback.textContent = t("noPair");
+    els.feedback.textContent = pairFinderFeedback(pieceName(target));
     sound("hint");
   }
   function shuffleTool() {

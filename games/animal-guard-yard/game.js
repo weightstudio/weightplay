@@ -172,7 +172,7 @@
 
 (() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v26";
+  const GAME_VERSION = "v27";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -1353,15 +1353,35 @@
   let stageBrowseIndex = 0;
   let stageSettleFrame = 0;
 
+  function ensureStageArtwork() {
+    if (!nodes.menuPanel) return;
+    const stageArt = new URL("../../assets/animal-guard-yard-poster.webp", document.baseURI).href;
+    const expectedValue = `url("${stageArt}")`;
+    if (!nodes.menuPanel.classList.contains("wp-stage-art-shell")) {
+      nodes.menuPanel.classList.add("wp-stage-art-shell");
+    }
+    if (nodes.menuPanel.dataset.wpStageArt !== stageArt) {
+      nodes.menuPanel.dataset.wpStageArt = stageArt;
+    }
+    if (nodes.menuPanel.style.getPropertyValue("--wp-stage-art") !== expectedValue) {
+      nodes.menuPanel.style.setProperty("--wp-stage-art", expectedValue);
+    }
+  }
+
   function activateScene(scene) {
     if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
     if (scene !== "stage") cancelStageSettlement();
     activeScene = scene;
     sceneGeneration += 1;
-    document.documentElement.dataset.screen = scene;
+    if (scene === "main") document.documentElement.removeAttribute("data-screen");
+    else document.documentElement.dataset.screen = scene;
     document.documentElement.dataset.wpActiveScene = scene;
-    document.body.dataset.screen = scene;
+    if (scene === "main") document.body.removeAttribute("data-screen");
+    else document.body.dataset.screen = scene;
     document.body.dataset.wpActiveScene = scene;
+    if (scene === "stage") {
+      ensureStageArtwork();
+    }
     document.documentElement.classList.toggle("guard-yard-stage", scene === "stage");
     document.body.classList.toggle("guard-yard-stage", scene === "stage");
     document.documentElement.classList.toggle("guard-yard-playing", scene === "battle");
@@ -1399,6 +1419,16 @@
     }
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     return sceneGeneration;
+  }
+
+  if (typeof MutationObserver === "function" && nodes.menuPanel) {
+    const stageArtworkObserver = new MutationObserver(() => {
+      if (activeScene === "stage") ensureStageArtwork();
+    });
+    stageArtworkObserver.observe(nodes.menuPanel, {
+      attributes: true,
+      attributeFilter: ["class", "style", "data-wp-stage-art"],
+    });
   }
 
   function updateGuardYardViewport() {
@@ -2395,7 +2425,9 @@
       panel.classList.toggle("hidden", panel.dataset.tabPanel !== activeMenuTab);
     });
     nodes.menuTabs?.querySelectorAll("button[data-menu-tab]").forEach((button) => {
-      button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
+      const selected = button.dataset.menuTab === activeMenuTab;
+      button.classList.toggle("active", selected);
+      button.setAttribute("aria-selected", String(selected));
     });
     renderWallet();
     renderTrainingBridge();
@@ -2431,7 +2463,9 @@
     nodes.resultPanel.classList.add("hidden");
     nodes.pausePanel.classList.add("hidden");
     showMenuTab(activeMenuTab);
+    ensureStageArtwork();
     window.requestAnimationFrame(() => {
+      ensureStageArtwork();
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       focusSelectedStage();
     });
@@ -2630,6 +2664,7 @@
       button.className = "unit-card";
       button.type = "button";
       button.dataset.unitId = unit.id;
+      button.dataset.wpPrimaryAction = "unit-select";
       button.setAttribute("aria-label", `${t(unit.nameKey)}: ${t(unit.roleKey)}. ${t(unit.abilityKey)}`);
       button.setAttribute("aria-pressed", String(unit.id === selectedUnit));
       if (unit.id === selectedUnit) button.classList.add("selected");
