@@ -2993,6 +2993,52 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPuttTrailsOwnerPreview.id)) window.WONDER_LOBBY.games.push(animalPuttTrailsOwnerPreview);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPuttTrailsOwnerPreview.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPuttTrailsOwnerPreview.id);
 
+// Kite Keeper is a planned General identity for the weighted internal
+// prototype. Keep its card Coming Soon while art, Tester, Reviewer, and
+// release gates remain open.
+const animalKiteKeeperPlanned = {
+  id: "animal-kite-keeper",
+  title: marketFiveLocalized(["Kite Keeper", "風箏守護員", "风筝守护员", "カイト・キーパー", "카이트 키퍼", "Guardián de Cometas", "Guardião de Pipas", "Gardien des Cerfs-volants", "Drachenhüter", "Custode degli Aquiloni", "Хранитель воздушных змеев", "पतंग प्रहरी", "حارس الطائرات الورقية"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Wind-Vector Route Puzzle", "風向路線益智", "风向路线益智", "風向ルートパズル", "바람 방향 경로 퍼즐", "Puzle de rutas de viento", "Puzzle de rotas do vento", "Puzzle de trajectoire du vent", "Windrouten-Puzzle", "Puzzle di rotte del vento", "Пазл маршрутов ветра", "हवा-दिशा मार्ग पहेली", "لغز مسارات اتجاه الريح"]),
+  description: marketFiveLocalized(["Choose each gust to steer Taro's kite through three sky windows and reach the lantern dock.", "選擇每陣風向，帶領塔羅的風箏穿過三扇天空窗並抵達燈塔碼頭。", "选择每阵风向，带领塔罗的风筝穿过三扇天空窗并抵达灯塔码头。", "風を選び、タロの凧を3つの空の窓へ導いてランタン桟橋へ届けます。", "바람을 골라 타로의 연을 하늘 창 세 곳으로 이끌고 등불 부두에 도착하세요.", "Elige cada ráfaga para llevar la cometa de Taro por tres ventanas del cielo hasta el muelle faro.", "Escolha cada rajada para levar a pipa de Taro por três janelas do céu até o cais-lanterna.", "Choisis chaque rafale pour guider le cerf-volant de Taro dans trois fenêtres du ciel jusqu'au quai-lanterne.", "Wähle jeden Windstoß, führe Taros Drachen durch drei Himmelsfenster zum Laternensteg.", "Scegli ogni raffica per guidare l'aquilone di Taro attraverso tre finestre del cielo fino al molo-lanterna.", "Выбирайте каждый порыв и проведите змея Таро через три небесных окна к фонарному причалу.", "हर झोंका चुनकर टारो की पतंग को तीन आकाश खिड़कियों से लालटेन घाट तक ले जाएँ।", "اختر كل هبة لتوجيه طائرة تارّو عبر ثلاث نوافذ سماوية إلى رصيف الفانوس."]),
+  meta: marketFiveLocalized([["3 Sky Routes", "Wind Vectors", "Calm Retry"], ["3 條天空路線", "風向向量", "平靜重試"], ["3 条天空路线", "风向向量", "平静重试"], ["3つの空路", "風ベクトル", "穏やかな再挑戦"], ["3 하늘 경로", "바람 벡터", "차분한 재시도"], ["3 rutas celestes", "Vectores de viento", "Reintento amable"], ["3 rotas celestes", "Vetores de vento", "Nova tentativa calma"], ["3 routes célestes", "Vecteurs de vent", "Reprise douce"], ["3 Himmelsrouten", "Windvektoren", "Ruhiger Neustart"], ["3 rotte celesti", "Vettori del vento", "Riprova calma"], ["3 небесных маршрута", "Векторы ветра", "Спокойный повтор"], ["3 आकाश मार्ग", "हवा वेक्टर", "शांत पुनःप्रयास"], ["3 مسارات سماوية", "متجهات الريح", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Route Planning", "Spatial Reasoning", "Family", "Animal"],
+  skills: ["Planning", "Spatial Reasoning", "Cause and Effect"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-kite-keeper/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalKiteKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalKiteKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalKiteKeeperPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalKiteKeeperPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalKiteKeeperPlanned.id);
+
+// Gust Garden is a planned General identity for the weighted wind-vector
+// prototype. Keep its card Coming Soon until production art, exact Tester,
+// Gameplay Review, release, and owner-opening gates are complete.
+const animalGustGardenPlanned = {
+  id: "animal-gust-garden",
+  title: marketFiveLocalized(["Gust Garden", "微風花園", "微风花园", "ガスト・ガーデン", "거스트 가든", "Jardín de Brisas", "Jardim das Brisas", "Jardin des Brises", "Windgarten", "Giardino delle Brezze", "Сад ветров", "बयार बाग़", "حديقة النسيم"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Wind-Vector Seed Puzzle", "風向種子益智", "风向种子益智", "風ベクトル種子パズル", "바람 벡터 씨앗 퍼즐", "Puzle de semillas y viento", "Puzzle de sementes e vento", "Puzzle de graines et de vent", "Windvektor-Samenpuzzle", "Puzzle semi e brezze", "Пазл семян и ветра", "हवा-वेक्टर बीज पहेली", "لغز بذور ومتجهات الريح"]),
+  description: marketFiveLocalized(["Choose a seed and send one gust at a time to bloom every flower without brushing a thorn.", "選擇種子，一次送出一陣微風，讓每朵花開放並避開荊棘。", "选择种子，一次送出一阵微风，让每朵花开放并避开荆棘。", "種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。", "씨앗을 고르고 한 번에 한 번의 바람을 보내 가시를 피해 모든 꽃을 피우세요.", "Elige una semilla y envía una brisa cada vez para abrir todas las flores sin tocar espinas.", "Escolha uma semente e envie uma brisa por vez para abrir todas as flores sem tocar nos espinhos.", "Choisis une graine et envoie une brise à la fois pour ouvrir chaque fleur sans toucher les épines.", "Wähle einen Samen und sende jeweils einen Windstoß, damit alle Blumen blühen, ohne Dornen zu streifen.", "Scegli un seme e invia una brezza alla volta per far sbocciare ogni fiore evitando le spine.", "Выбирайте семя и посылайте по одному порыву, чтобы раскрыть все цветы и не задеть шипы.", "एक बीज चुनें और हर बार एक हवा भेजकर काँटों से बचे हुए सभी फूल खिलाएँ।", "اختر بذرة وأرسل هبة واحدة كل مرة لتفتح كل زهرة دون لمس الأشواك."]),
+  meta: marketFiveLocalized([["3 Plots", "Four Gusts", "Calm Retry"], ["3 座花圃", "四種風向", "平靜重試"], ["3 座花圃", "四种风向", "平静重试"], ["3つの花壇", "4方向の風", "穏やかな再挑戦"], ["3개 화단", "네 방향 바람", "차분한 재시도"], ["3 parcelas", "Cuatro brisas", "Reintento amable"], ["3 canteiros", "Quatro brisas", "Nova tentativa calma"], ["3 parcelles", "Quatre brises", "Reprise douce"], ["3 Beete", "Vier Windrichtungen", "Ruhiger Neustart"], ["3 aiuole", "Quattro brezze", "Riprova calma"], ["3 участка", "Четыре ветра", "Спокойный повтор"], ["3 क्यारियाँ", "चार हवाएँ", "शांत पुनःप्रयास"], ["3 أحواض", "أربع هبات", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Spatial Planning", "Family", "Animal"],
+  skills: ["Planning", "Spatial Reasoning", "Cause and Effect"],
+  ages: ["9", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("9+")),
+  href: "games/animal-gust-garden/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-gust-garden/assets/animal-gust-garden-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGustGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGustGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGustGardenPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalGustGardenPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalGustGardenPlanned.id);
+
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.
 window.WONDER_LOBBY.games.push(

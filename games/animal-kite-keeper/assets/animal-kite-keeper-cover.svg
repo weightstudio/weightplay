@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">Kite Keeper</title><desc id="desc">A moss-green turtle guides a bright kite above three lantern windows.</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b7e8e7"/><stop offset="1" stop-color="#f8dfad"/></linearGradient><linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#72bfa4"/><stop offset="1" stop-color="#3c806e"/></linearGradient></defs>
+  <rect width="640" height="420" rx="28" fill="url(#sky)"/><circle cx="530" cy="82" r="44" fill="#fff5c5" opacity=".88"/>
+  <path d="M0 292c106-66 166-11 256-46 91-35 153-2 220-35 68-32 117-12 164 18v191H0Z" fill="url(#hill)"/>
+  <path d="M74 102c84 8 128 41 192 98 55 49 111 54 170 23" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-dasharray="3 18" opacity=".8"/>
+  <path d="m361 119 61 35-31 76-68-28Z" fill="#ef6f58" stroke="#17324a" stroke-width="7"/><path d="m361 119 30 83" stroke="#ffd56b" stroke-width="8"/><path d="m422 154-99 48" stroke="#17324a" stroke-width="4"/><path d="M323 201c-16 30-28 62-54 84" fill="none" stroke="#17324a" stroke-width="3"/>
+  <circle cx="266" cy="290" r="8" fill="#ffe29a"/><path d="M244 280q-12-20 4-31" fill="none" stroke="#ffe29a" stroke-width="5"/>
+  <g transform="translate(142 245)"><ellipse cx="72" cy="67" rx="73" ry="44" fill="#4f9b7d" stroke="#17324a" stroke-width="7"/><circle cx="23" cy="39" r="25" fill="#8ac5a3" stroke="#17324a" stroke-width="7"/><circle cx="15" cy="35" r="5" fill="#17324a"/><path d="M51 31q25-23 51 0M51 57q25 23 51 0" fill="none" stroke="#bfe4b3" stroke-width="8" stroke-linecap="round"/><path d="M34 99v24M112 99v24" stroke="#17324a" stroke-width="8" stroke-linecap="round"/></g>
+  <g fill="#ffe09a" stroke="#8a5b17" stroke-width="4"><circle cx="511" cy="263" r="20"/><circle cx="558" cy="284" r="15"/><circle cx="474" cy="300" r="13"/></g>
+  <text x="38" y="52" font-family="system-ui,sans-serif" font-size="22" font-weight="800" fill="#17324a" letter-spacing="3">WEIGHTPLAY</text><text x="38" y="385" font-family="system-ui,sans-serif" font-size="35" font-weight="900" fill="#17324a">KITE KEEPER</text>
+</svg>

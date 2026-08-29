@@ -2015,6 +2015,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "ऐनिमल पुट ट्रेल्स",
     "ar": "مسارات ضربات الحيوانات"
   },
+  "animal-kite-keeper": {
+    "__localizedExact": true,
+    "en": "Kite Keeper",
+    "zh-Hant": "風箏守護員",
+    "zh-Hans": "风筝守护员",
+    "ja": "カイト・キーパー",
+    "ko": "카이트 키퍼",
+    "es": "Guardián de Cometas",
+    "pt-BR": "Guardião de Pipas",
+    "fr": "Gardien des Cerfs-volants",
+    "de": "Drachenhüter",
+    "it": "Custode degli Aquiloni",
+    "ru": "Хранитель воздушных змеев",
+    "hi": "पतंग प्रहरी",
+    "ar": "حارس الطائرات الورقية"
+  },
+  "animal-gust-garden": {
+    "__localizedExact": true,
+    "en": "Gust Garden",
+    "zh-Hant": "微風花園",
+    "zh-Hans": "微风花园",
+    "ja": "ガスト・ガーデン",
+    "ko": "거스트 가든",
+    "es": "Jardín de Brisas",
+    "pt-BR": "Jardim das Brisas",
+    "fr": "Jardin des Brises",
+    "de": "Windgarten",
+    "it": "Giardino delle Brezze",
+    "ru": "Сад ветров",
+    "hi": "बयार बाग़",
+    "ar": "حديقة النسيم"
+  },
   "road-crosser": {
     "__localizedExact": true,
     "en": "Road Crosser",

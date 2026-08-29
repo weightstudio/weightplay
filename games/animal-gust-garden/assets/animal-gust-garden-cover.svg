@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Gust Garden concept cover</title><desc id="desc">A concept meadow with seeds moving on a gentle breeze toward flowers.</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b9e2c8"/><stop offset="1" stop-color="#5b9b78"/></linearGradient></defs>
+  <rect width="900" height="600" fill="url(#sky)"/><circle cx="720" cy="120" r="68" fill="#ffe7a1" opacity=".88"/>
+  <path d="M0 410 Q180 330 350 410 T700 395 T900 410 V600 H0Z" fill="#275f58"/><path d="M0 475 Q190 400 380 470 T730 455 T900 470 V600 H0Z" fill="#173f46"/>
+  <g fill="#f4d77f" stroke="#233f3a" stroke-width="8"><circle cx="180" cy="430" r="15"/><circle cx="310" cy="505" r="15"/><circle cx="590" cy="445" r="15"/></g>
+  <g fill="#fff2b0" stroke="#31594e" stroke-width="7"><path d="M155 500 q22-38 44 0 q-22 38-44 0Z"/><path d="M430 445 q22-38 44 0 q-22 38-44 0Z"/><path d="M700 510 q22-38 44 0 q-22 38-44 0Z"/></g>
+  <g fill="none" stroke="#edf8df" stroke-width="9" stroke-linecap="round" opacity=".75"><path d="M80 190 C250 100 340 230 500 150 S760 130 840 210"/><path d="M110 260 C260 180 350 300 540 230 S760 230 830 285"/></g>
+  <g fill="#f1c96d" stroke="#274b43" stroke-width="8"><circle cx="245" cy="205" r="23"/><circle cx="510" cy="260" r="23"/><circle cx="720" cy="190" r="23"/></g>
+  <g fill="#f5f0d2" stroke="#274b43" stroke-width="8"><path d="M215 200 l-42-24 8 45Z"/><path d="M480 255 l-42-24 8 45Z"/><path d="M690 185 l-42-24 8 45Z"/></g>
+  <text x="54" y="90" fill="#173f46" font-family="system-ui,sans-serif" font-size="46" font-weight="800">GUST GARDEN</text>
+</svg>
