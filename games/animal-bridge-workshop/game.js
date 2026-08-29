@@ -1,37 +1,45 @@
 (function () {
   "use strict";
 
-  const COPY = {
+  const COPY = Object.assign({
     en: {
-      eyebrow: "Forest engineering · 9+", title: "Bridge Workshop", lede: "Connect strong anchors, choose a material, then test a safe crossing for your animal crew.", fact1: "3 crossings", fact2: "Build + test", fact3: "Material medals", ready: "3 crossings ready", start: "Start workshop", guideButton: "How to play", guide: "Tap two anchors, choose a beam, rope, or pad, and place the link. Test when the path is connected. If a joint is weak, repair that joint and try again.", soundOn: "Sound: on", soundOff: "Sound: off", back: "Back to Main", place: "Place link", test: "Test crossing", undo: "Undo last", reset: "Reset crossing", beam: "Wood beam", rope: "Vine rope", pad: "Float pad", beamHint: "steady support", ropeHint: "light + flexible", padHint: "water-safe", choose: "Choose two anchors to preview a link.", chooseMaterial: "Choose two anchors and a material.", noStock: "That material is used up. Pick another.", placed: "Link placed. Add another or test the route.", crossing: "Crossing {n} / 3", clear: "Crossing clear", safe: "Safe route!", fail: "Joint needs repair", next: "Next crossing", retry: "Repair and retry", home: "Workshop home", medal: "Medal", complete: "Workshop complete!", completeCopy: "Your crew crossed all three routes. Best medal: {medal}.", successCopy: "The animal crew crossed safely using {count} links.", weakCopy: "First weak joint: {joint}. Add that link, then test again.", goal1: "Connect the three anchors for Pip's crossing.", goal2: "Build a three-link path; the middle joint needs a vine rope.", goal3: "Heavy Moss Shell Taro needs a pad on the first span.", stage1: "Triangle support", stage2: "Windy canyon", stage3: "Heavy cargo", material: "Material", route: "Route", links: "Links" },
+      eyebrow: "Forest engineering · 9+", title: "Bridge Workshop", lede: "Connect strong anchors, choose a material, then test a safe crossing for your animal crew.", fact1: "3 crossings", fact2: "Build + test", fact3: "Material medals", ready: "3 crossings ready", start: "Start workshop", guideButton: "How to play", guide: "Tap two anchors, choose a beam, rope, or pad, and place the link. Test when the path is connected. If a joint is weak, repair that joint and try again.", soundOn: "Sound: on", soundOff: "Sound: off", back: "Back to Main", place: "Place link", test: "Test crossing", undo: "Undo last", reset: "Reset crossing", beam: "Wood beam", rope: "Vine rope", pad: "Float pad", beamHint: "steady support", ropeHint: "light + flexible", padHint: "water-safe", choose: "Choose two anchors to preview a link.", chooseMaterial: "Choose two anchors and a material.", noStock: "That material is used up. Pick another.", placed: "Link placed. Add another or test the route.", crossing: "Crossing {n} / 3", clear: "Crossing clear", safe: "Safe route!", fail: "Joint needs repair", next: "Next crossing", retry: "Repair and retry", home: "Workshop home", medal: "Medal", complete: "Workshop complete!", completeCopy: "Your crew crossed all three routes. Best medal: {medal}.", successCopy: "The animal crew crossed safely using {count} links.", weakCopy: "First weak joint: {joint}. Add that link, then test again.", goal1: "Connect the three anchors for Pip's crossing.", goal2: "Build a three-link path; the middle joint needs a vine rope.", goal3: "Heavy Moss Shell Taro needs a pad on the first span.", stage1: "Triangle support", stage2: "Windy canyon", stage3: "Heavy cargo", material: "Material", route: "Route", links: "Links", settings: "Settings", language: "Language", coverAlt: "Moon Cap Orla planning a small animal bridge", canvasLabel: "Bridge workshop construction area", materials: "Materials" },
     "zh-Hant": {
-      eyebrow: "森林工程 · 9+", title: "動物橋樑工坊", lede: "連起穩固錨點、選好材料，再測試動物隊伍的安全通行。", fact1: "3 段跨越", fact2: "建造＋測試", fact3: "材料獎章", ready: "準備好 3 段跨越", start: "開始工坊", guideButton: "玩法說明", guide: "點兩個錨點，選擇木樑、藤繩或浮板，再放置連結。路線接通後按下測試；若接點脆弱，修好它再試一次。", soundOn: "音效：開", soundOff: "音效：關", back: "返回主畫面", place: "放置連結", test: "測試跨越", undo: "復原上一段", reset: "重設本段", beam: "木樑", rope: "藤繩", pad: "浮板", beamHint: "穩定支撐", ropeHint: "輕巧有彈性", padHint: "安全渡水", choose: "點兩個錨點預覽連結。", chooseMaterial: "先點兩個錨點並選擇材料。", noStock: "這種材料用完了，請換一種。", placed: "連結已放置，可再加一段或測試路線。", crossing: "跨越 {n} / 3", clear: "安全跨越", safe: "路線成功！", fail: "接點需要修理", next: "下一段跨越", retry: "修理後重試", home: "返回工坊", medal: "獎章", complete: "工坊完成！", completeCopy: "隊伍已通過三條路線，最佳獎章：{medal}。", successCopy: "動物隊伍用 {count} 段連結安全通過。", weakCopy: "第一個脆弱接點：{joint}。補上該段再測試。", goal1: "連起三個錨點，讓 Pip 安全通過。", goal2: "建立三段路線；中間接點需要藤繩。", goal3: "重裝 Moss Shell Taro 需要在第一段使用浮板。", stage1: "三角支撐", stage2: "風谷通道", stage3: "重裝貨物", material: "材料", route: "路線", links: "連結" }
-  };
+      eyebrow: "森林工程 · 9+", title: "動物橋樑工坊", lede: "連起穩固錨點、選好材料，再測試動物隊伍的安全通行。", fact1: "3 段跨越", fact2: "建造＋測試", fact3: "材料獎章", ready: "準備好 3 段跨越", start: "開始工坊", guideButton: "玩法說明", guide: "點兩個錨點，選擇木樑、藤繩或浮板，再放置連結。路線接通後按下測試；若接點脆弱，修好它再試一次。", soundOn: "音效：開", soundOff: "音效：關", back: "返回主畫面", place: "放置連結", test: "測試跨越", undo: "復原上一段", reset: "重設本段", beam: "木樑", rope: "藤繩", pad: "浮板", beamHint: "穩定支撐", ropeHint: "輕巧有彈性", padHint: "安全渡水", choose: "點兩個錨點預覽連結。", chooseMaterial: "先點兩個錨點並選擇材料。", noStock: "這種材料用完了，請換一種。", placed: "連結已放置，可再加一段或測試路線。", crossing: "跨越 {n} / 3", clear: "安全跨越", safe: "路線成功！", fail: "接點需要修理", next: "下一段跨越", retry: "修理後重試", home: "返回工坊", medal: "獎章", complete: "工坊完成！", completeCopy: "隊伍已通過三條路線，最佳獎章：{medal}。", successCopy: "動物隊伍用 {count} 段連結安全通過。", weakCopy: "第一個脆弱接點：{joint}。補上該段再測試。", goal1: "連起三個錨點，讓 Pip 安全通過。", goal2: "建立三段路線；中間接點需要藤繩。", goal3: "重裝 Moss Shell Taro 需要在第一段使用浮板。", stage1: "三角支撐", stage2: "風谷通道", stage3: "重裝貨物", material: "材料", route: "路線", links: "連結", settings: "設定", language: "語言", coverAlt: "Moon Cap Orla 正在規劃小動物橋樑", canvasLabel: "橋樑工坊建造區", materials: "材料選擇" }
+  }, window.BRIDGE_WORKSHOP_LOCALES || {});
   const STAGES = [
     { title: "stage1", goal: "goal1", anchors: [[90, 520], [420, 280], [810, 520]], animal: "Pip", required: [[0, 1], [1, 2]], stock: { beam: 2, rope: 1, pad: 0 } },
     { title: "stage2", goal: "goal2", anchors: [[75, 520], [300, 350], [590, 430], [825, 240]], animal: "Panko", required: [[0, 1], [1, 2], [2, 3]], stock: { beam: 2, rope: 1, pad: 1 }, must: { "1-2": "rope" } },
     { title: "stage3", goal: "goal3", anchors: [[90, 460], [420, 240], [810, 460]], animal: "Moss Shell Taro", required: [[0, 1], [1, 2]], stock: { beam: 1, rope: 1, pad: 1 }, must: { "0-1": "pad" } }
   ];
   const $ = (selector) => document.querySelector(selector);
-  const state = { locale: new URLSearchParams(location.search).get("lang") === "zh-Hant" ? "zh-Hant" : "en", stage: 0, links: [], selectedAnchor: null, selectedMaterial: "beam", sound: true, medals: loadMedals() };
+  const requestedLocale = new URLSearchParams(location.search).get("lang");
+  const state = { locale: COPY[requestedLocale] ? requestedLocale : "en", stage: 0, links: [], selectedAnchor: null, selectedMaterial: "beam", sound: true, medals: loadMedals() };
   const canvas = $("#bridgeCanvas");
   const ctx = canvas.getContext("2d");
 
   function loadMedals() { try { return JSON.parse(localStorage.getItem("weightplayBridgeWorkshopMedals") || "{}"); } catch (_) { return {}; } }
   function saveMedals() { try { localStorage.setItem("weightplayBridgeWorkshopMedals", JSON.stringify(state.medals)); } catch (_) {} }
   function t(key, values) { let text = COPY[state.locale][key] ?? COPY.en[key] ?? key; Object.entries(values || {}).forEach(([name, value]) => { text = text.replaceAll(`{${name}}`, String(value)); }); return text; }
-  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v1", interface_version: 6, ...payload }); }
+  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v2", interface_version: 6, ...payload }); }
   function setScreen(name) { $("#mainScreen").classList.toggle("active", name === "main"); $("#battleScreen").classList.toggle("active", name === "battle"); const guide = document.querySelector("[data-wp-game-guide]"); if (guide) guide.hidden = name !== "main"; const reserve = document.querySelector(".battle-ad-reserve"); if (reserve) reserve.hidden = name !== "battle"; }
   function stage() { return STAGES[state.stage]; }
   function edgeKey(a, b) { return `${Math.min(a, b)}-${Math.max(a, b)}`; }
   function localizedMaterialName(material) { return t(material); }
   function applyCopy() {
     document.documentElement.lang = state.locale;
-    document.documentElement.dir = state.locale === "zh-Hant" ? "ltr" : "ltr";
+    document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    document.title = `${t("title")} | WeightPlay`;
+    $("#settingsButton").setAttribute("aria-label", t("settings"));
+    $("#locale").setAttribute("aria-label", t("language"));
+    $("#mainScreen .poster img").setAttribute("alt", t("coverAlt"));
+    $("#bridgeCanvas").setAttribute("aria-label", t("canvasLabel"));
+    $(".materials").setAttribute("aria-label", t("materials"));
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     $("#soundButton").textContent = state.sound ? t("soundOn") : t("soundOff"); $("#mainProgress").textContent = t("ready");
     $("#battleBack").setAttribute("aria-label", t("back"));
     $("#placeButton").textContent = t("place"); $("#testButton").textContent = t("test"); $("#undoButton").textContent = t("undo"); $("#resetButton").textContent = t("reset");
+    $("#nextButton").textContent = t("next"); $("#retryButton").textContent = t("retry"); $("#homeButton").textContent = t("home");
     document.querySelector('[data-material="beam"] strong').textContent = t("beam"); document.querySelector('[data-material="beam"] small').textContent = t("beamHint");
     document.querySelector('[data-material="rope"] strong').textContent = t("rope"); document.querySelector('[data-material="rope"] small').textContent = t("ropeHint");
     document.querySelector('[data-material="pad"] strong').textContent = t("pad"); document.querySelector('[data-material="pad"] small').textContent = t("padHint");

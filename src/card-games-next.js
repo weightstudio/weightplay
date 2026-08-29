@@ -1452,6 +1452,27 @@
     text = text.replaceAll("{suit}", SYMBOLS[leadSuit] || "—");
     return text.replaceAll("{card}", cardText(winnerCard));
   };
+  const SPADES_RESULT_COPY = {
+    en: { met: "Contract met: {tricks}/{bid} tricks.", missed: "Contract missed by {missing}: {tricks}/{bid} tricks.", score: "Team score: {team} — Opponents: {enemy}.", nextWin: "Next hand goal: meet {bid} tricks again and protect the lead.", nextLoss: "Next hand goal: reach {bid} tricks to recover this hand." },
+    "zh-Hant": { met: "合約達成：{tricks}/{bid} 墩。", missed: "合約少了 {missing} 墩：{tricks}/{bid}。", score: "隊伍得分：{team} — 對手：{enemy}。", nextWin: "下一局目標：再次拿到 {bid} 墩，守住領先。", nextLoss: "下一局目標：拿到 {bid} 墩，追回這一局。" },
+    "zh-Hans": { met: "合约达成：{tricks}/{bid} 墩。", missed: "合约少了 {missing} 墩：{tricks}/{bid}。", score: "队伍得分：{team} — 对手：{enemy}。", nextWin: "下一局目标：再次拿到 {bid} 墩，守住领先。", nextLoss: "下一局目标：拿到 {bid} 墩，追回这一局。" },
+    ja: { met: "契約達成：{tricks}/{bid}トリック。", missed: "契約まであと{missing}トリック：{tricks}/{bid}。", score: "チーム得点：{team} — 相手：{enemy}。", nextWin: "次の目標：もう一度{bid}トリックを取り、リードを守ろう。", nextLoss: "次の目標：{bid}トリックを取り返して、このラウンドを挽回しよう。" },
+    ko: { met: "계약 달성: {tricks}/{bid} 트릭.", missed: "계약보다 {missing}트릭 부족: {tricks}/{bid}.", score: "팀 점수: {team} — 상대 팀: {enemy}.", nextWin: "다음 목표: {bid}트릭을 다시 달성해 리드를 지키세요.", nextLoss: "다음 목표: {bid}트릭을 달성해 이번 손을 만회하세요." },
+    es: { met: "Contrato cumplido: {tricks}/{bid} bazas.", missed: "Faltaron {missing} bazas: {tricks}/{bid}.", score: "Puntuación del equipo: {team} — rivales: {enemy}.", nextWin: "Próximo objetivo: logra {bid} bazas otra vez y conserva la ventaja.", nextLoss: "Próximo objetivo: logra {bid} bazas para remontar esta mano." },
+    "pt-BR": { met: "Contrato cumprido: {tricks}/{bid} vazas.", missed: "Faltaram {missing} vazas: {tricks}/{bid}.", score: "Pontuação da equipe: {team} — adversários: {enemy}.", nextWin: "Próxima meta: faça {bid} vazas novamente e proteja a liderança.", nextLoss: "Próxima meta: faça {bid} vazas para recuperar esta mão." },
+    fr: { met: "Contrat réussi : {tricks}/{bid} plis.", missed: "Il manque {missing} plis au contrat : {tricks}/{bid}.", score: "Score de l'équipe : {team} — adversaires : {enemy}.", nextWin: "Objectif suivant : atteindre {bid} plis et garder la tête.", nextLoss: "Objectif suivant : atteindre {bid} plis pour revenir dans la partie." },
+    de: { met: "Vertrag erfüllt: {tricks}/{bid} Stiche.", missed: "Vertrag um {missing} Stiche verfehlt: {tricks}/{bid}.", score: "Team-Punktestand: {team} — Gegner: {enemy}.", nextWin: "Nächstes Ziel: wieder {bid} Stiche holen und die Führung halten.", nextLoss: "Nächstes Ziel: {bid} Stiche holen und diese Runde drehen." },
+    it: { met: "Contratto raggiunto: {tricks}/{bid} prese.", missed: "Contratto mancato di {missing} prese: {tricks}/{bid}.", score: "Punteggio squadra: {team} — avversari: {enemy}.", nextWin: "Prossimo obiettivo: raggiungi {bid} prese e difendi il vantaggio.", nextLoss: "Prossimo obiettivo: raggiungi {bid} prese per rimontare." },
+    ru: { met: "Контракт выполнен: {tricks}/{bid} взяток.", missed: "До контракта не хватило {missing}: {tricks}/{bid}.", score: "Счёт команды: {team} — соперники: {enemy}.", nextWin: "Цель следующей раздачи: снова взять {bid} взяток и удержать лидерство.", nextLoss: "Цель следующей раздачи: взять {bid} взяток и отыграться." },
+    hi: { met: "अनुबंध पूरा: {tricks}/{bid} बाज़ियाँ।", missed: "अनुबंध से {missing} बाज़ियाँ कम: {tricks}/{bid}।", score: "टीम स्कोर: {team} — विरोधी: {enemy}।", nextWin: "अगले हाथ का लक्ष्य: फिर {bid} बाज़ियाँ लेकर बढ़त बनाए रखें।", nextLoss: "अगले हाथ का लक्ष्य: {bid} बाज़ियाँ लेकर इस हाथ की भरपाई करें।" },
+    ar: { met: "اكتمل العقد: {tricks}/{bid} لمّات.", missed: "نقصت {missing} لمّات عن العقد: {tricks}/{bid}.", score: "نتيجة الفريق: {team} — الخصم: {enemy}.", nextWin: "هدف الجولة التالية: حقق {bid} لمّات مجدداً وحافظ على التقدم.", nextLoss: "هدف الجولة التالية: حقق {bid} لمّات لتعويض هذه الجولة." },
+  };
+  const spadesResultText = (bid, tricks, team, enemy, won, contractMet) => {
+    const dictionary = SPADES_RESULT_COPY[currentLocale()] || SPADES_RESULT_COPY.en;
+    const values = { bid, tricks, missing: Math.max(0, bid - tricks), team, enemy };
+    const fill = (value) => Object.entries(values).reduce((text, [name, replacement]) => text.replaceAll(`{${name}}`, String(replacement)), value);
+    return [fill(contractMet ? dictionary.met : dictionary.missed), fill(dictionary.score), fill(won ? dictionary.nextWin : dictionary.nextLoss)].join(" ");
+  };
 
   const CRAZY_EIGHTS_COPY = {
     en: { summary: "Non-wild cards by suit: {counts}. A suit with more cards can keep more options open.", draw: "Drew 1 card — hand now {hand}; draws this round: {draws}.", suits: ["Clubs", "Diamonds", "Hearts", "Spades"] },
@@ -2126,7 +2147,7 @@
     const s = { hands: [[], [], [], []], bids: [null, null, null, null], tricks: [0, 0], turn: 0, trick: [], lastTrick: null, phase: "bid", scores: [0, 0] };
     const names = spadesOpponentNames();
     const legal = (cards) => { const lead = s.trick[0]?.card.suit; const suited = lead ? cards.filter((item) => item.suit === lead) : []; return suited.length ? suited : cards; };
-    const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; s.scores[0] += own ? 10 * (s.bids[0] + s.bids[2]) + Math.max(0, s.tricks[0] - s.bids[0] - s.bids[2]) : -10 * (s.bids[0] + s.bids[2]); s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); controller.result(s.scores[0] >= s.scores[1], `${t("score")}: ${s.scores[0]} — ${s.scores[1]}`); };
+    const finish = () => { const own = s.tricks[0] >= s.bids[0] + s.bids[2]; const enemy = s.tricks[1] >= s.bids[1] + s.bids[3]; const teamBid = s.bids[0] + s.bids[2]; s.scores[0] += own ? 10 * teamBid + Math.max(0, s.tricks[0] - teamBid) : -10 * teamBid; s.scores[1] += enemy ? 10 * (s.bids[1] + s.bids[3]) + Math.max(0, s.tricks[1] - s.bids[1] - s.bids[3]) : -10 * (s.bids[1] + s.bids[3]); const playerWon = s.scores[0] >= s.scores[1]; controller.result(playerWon, spadesResultText(teamBid, s.tricks[0], s.scores[0], s.scores[1], playerWon, own)); };
     const currentWinnerEntry = () => { const winner = trickWinner(s.trick, "spades"); return s.trick.find((entry) => entry.player === winner) || null; };
     const play = (player, item) => { const cards = s.hands[player]; if (!legal(cards).includes(item)) return; if (!s.trick.length) s.lastTrick = null; cards.splice(cards.indexOf(item), 1); s.trick.push({ player, card: item }); s.turn = (player + 1) % 4; if (s.trick.length === 4) { const winningEntry = currentWinnerEntry(); const winner = winningEntry?.player; s.lastTrick = winningEntry ? { card: winningEntry.card, leadSuit: s.trick[0]?.card.suit } : null; s.tricks[winner % 2 === 0 ? 0 : 1] += 1; s.trick = []; s.turn = winner; if (!s.hands[0].length) { finish(); return; } } if (s.turn !== 0) setTimeout(aiTurn, 180); };
     const aiTurn = () => { if (s.phase !== "play" || s.turn === 0) return; play(s.turn, chooseAiCard(s.hands[s.turn], legal(s.hands[s.turn]), s.turn % 2 ? "low" : "high")); };

@@ -2580,6 +2580,31 @@ for (const game of window.WONDER_LOBBY.games) {
 
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.
+const animalLanternLatticeLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalLanternLatticeLocalized = (values) => Object.fromEntries(animalLanternLatticeLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalLanternLatticeStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalLanternLatticePlanned = {
+  id: "animal-lantern-lattice",
+  title: animalLanternLatticeLocalized(["Lantern Lattice", "燈影連線", "灯影连线", "ランタン・ラティス", "랜턴 래티스", "Malla de Linternas", "Trama de Lanternas", "Trame des Lanternes", "Laternengeflecht", "Trama di Lanterne", "Фонарная сеть", "लालटेन जाल", "شبكة الفوانيس"]),
+  status: "planned",
+  statusText: { ...animalLanternLatticeStatusText },
+  type: animalLanternLatticeLocalized(["Constraint Path Puzzle", "約束路徑益智", "约束路径益智", "制約パスパズル", "제약 경로 퍼즐", "Puzzle de ruta con restricciones", "Puzzle de caminho com restrições", "Puzzle de chemin à contraintes", "Pfad-Puzzle mit Regeln", "Puzzle di percorso a vincoli", "Пазл пути с ограничениями", "बाधा-पथ पहेली", "لغز المسار بالقيود"]),
+  description: animalLanternLatticeLocalized(["Read three keeper clues, connect the right lanterns, and wake a safe path through the meadow night.", "閱讀三位守燈人的線索，連起正確燈影，為夜晚草地喚醒安全路徑。", "阅读三位守灯人的线索，连起正确灯影，为夜晚草地唤醒安全路径。", "3人の灯守りの手がかりを読み、正しいランタンをつないで夜の草地に安全な道を灯そう。", "세 등불지기의 단서를 읽고 올바른 랜턴을 이어 밤의 초원에 안전한 길을 밝혀요.", "Lee tres pistas de guardianes, conecta las linternas correctas y despierta un sendero seguro.", "Leia três pistas, conecte as lanternas certas e acenda um caminho seguro pela noite.", "Lis trois indices, relie les bonnes lanternes et éclaire un sentier sûr dans la nuit.", "Lies drei Hüterhinweise, verbinde die richtigen Laternen und erhelle einen sicheren Pfad.", "Leggi tre indizi, collega le lanterne giuste e illumina un sentiero sicuro.", "Прочитайте три подсказки хранителей, соедините нужные фонари и осветите безопасную тропу.", "तीन रखवालों के संकेत पढ़कर सही लालटेन जोड़ें और सुरक्षित पगडंडी जगाएँ।", "اقرأ ثلاث تلميحات للحراس، صِل الفوانيس الصحيحة وأضئ ممراً آمناً في лيل المرج."]),
+  meta: animalLanternLatticeLocalized([["3 Night Paths", "Clue Chains", "Calm Retry"], ["3 條夜路", "線索鏈", "平靜重試"], ["3 条夜路", "线索链", "平静重试"], ["3つの夜道", "手がかりの鎖", "穏やかな再挑戦"], ["밤길 3개", "단서 연결", "차분한 재시도"], ["3 senderos", "Cadenas de pistas", "Reintento sereno"], ["3 trilhas", "Cadeias de pistas", "Nova tentativa calma"], ["3 sentiers", "Chaînes d'indices", "Reprise sereine"], ["3 Nachtpfade", "Hinweisketten", "Ruhiger Versuch"], ["3 sentieri", "Catene di indizi", "Riprova calma"], ["3 ночные тропы", "Цепочки подсказок", "Спокойный повтор"], ["3 रात की पगडंडियाँ", "संकेत शृंखला", "शांत पुनः попытка"], ["3 مسارات ليلية", "سلاسل التلميحات", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Planning", "Family", "Animal"],
+  skills: ["Deduction", "Sequencing", "Cause and Effect"],
+  ages: ["9", "family"],
+  ageLabel: animalLanternLatticeLocalized(Array(13).fill("9+")),
+  href: "games/animal-lantern-lattice/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-lantern-lattice/assets/animal-lantern-lattice-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalLanternLatticePlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternLatticePlanned.id)) window.WONDER_LOBBY.games.push(animalLanternLatticePlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternLatticePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalLanternLatticePlanned.id);
+
+// Weighted General prototype (2026-08-30). Keep the card planned and the
+// playable route private until art, Tester, Reviewer, and release gates pass.
 const animalDewlineLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
 const animalDewlineLocalized = (values) => Object.fromEntries(animalDewlineLocaleKeys.map((locale, index) => [locale, values[index]]));
 const animalDewlineStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };

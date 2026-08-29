@@ -56,7 +56,7 @@
     $("tokenTray").querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => toggleToken(Number(button.dataset.token))));
   };
   const renderResult = () => { const final = state.stage >= stages.length - 1 && state.selected.length === 0; $("resultHeading").textContent = final ? t("finishTitle") : t("balanced"); $("resultText").textContent = final ? t("finishText", { n: state.sessionChecks }) : t("balanced"); $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next"); $("resultMapBtn").hidden = final; $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1); }; 
-  const startSession = () => { state.sessionChecks = 0; track("session_start"); startStage(0); };
+  const startSession = () => { state.sessionChecks = 0; track("session_start"); show("stages"); renderStages(); track("stage_map", { source: "start" }); };
   const startStage = (index) => { state.stage = Math.max(0, Math.min(stages.length - 1, index)); state.selected = []; state.checks = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("stage_start", { stage: state.stage + 1 }); };
   const toggleToken = (index) => { state.selected = state.selected.includes(index) ? state.selected.filter((item) => item !== index) : state.selected.concat(index); beep(420); renderBattle(); track("stone_select", { stage: state.stage + 1, value: stages[state.stage].pieces[index][1] }); };
   const clearTokens = () => { state.selected = []; $("battleStatus").textContent = ""; renderBattle(); track("stone_clear", { stage: state.stage + 1 }); };

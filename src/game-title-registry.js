@@ -1663,6 +1663,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-lantern-lattice": {
+    "__localizedExact": true,
+    "en": "Lantern Lattice",
+    "zh-Hant": "燈影連線",
+    "zh-Hans": "灯影连线",
+    "ja": "ランタン・ラティス",
+    "ko": "랜턴 래티스",
+    "es": "Malla de Linternas",
+    "pt-BR": "Trama de Lanternas",
+    "fr": "Trame des Lanternes",
+    "de": "Laternengeflecht",
+    "it": "Trama di Lanterne",
+    "ru": "Фонарная сеть",
+    "hi": "लालटेन जाल",
+    "ar": "شبكة الفوانيس"
+  },
   "animal-dewline": {
     "__localizedExact": true,
     "en": "Meadow Dewline",

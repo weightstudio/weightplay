@@ -1,0 +1,30 @@
+/* Interface V6 contract overrides for the original compact prototype. */
+.settings-panel[hidden]{display:none!important}
+#mainScreen{position:relative}
+#mainScreen>.guide-card{position:absolute;top:100%;left:0;right:0;margin-top:24px}
+.primary-btn{min-height:52px!important}
+.panel-screen{width:100%;height:100vh;min-height:0;margin:0;padding:0;overflow:hidden}
+.stage-canvas,.battle-canvas{width:min(920px,100%);height:calc(100vh - 56px);margin:0 auto;padding:clamp(18px,4vw,40px);overflow:hidden}
+.stage-canvas{position:relative;background:linear-gradient(180deg,rgba(32,86,76,.9),rgba(111,166,118,.34)),var(--wp-stage-art) center/cover}
+.panel-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.stage-rail{max-height:calc(100% - 96px);overflow:auto}
+.stage-tabs{position:absolute;left:0;right:0;bottom:0;height:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:8px;padding:6px 12px;background:rgba(255,250,240,.78)}
+.stage-tabs button{grid-column:2;width:100%;min-height:44px}
+.stage-ad-reserve,.battle-ad-reserve{width:min(920px,100%);height:56px;min-height:56px;margin:0 auto;background:rgba(32,58,56,.08);pointer-events:none}
+.battle-canvas{background:linear-gradient(160deg,rgba(217,244,237,.34),rgba(111,166,118,.22))}
+@media(max-height:520px) and (orientation:landscape){
+  .stage-canvas,.battle-canvas{padding:10px 16px}
+  .panel-head{margin-bottom:10px}
+  .stage-rail{max-height:calc(100% - 76px)}
+  .battle-content{padding:12px;max-width:none}
+  .battle-hint{margin-bottom:6px}
+  .scale{min-height:104px;margin-bottom:8px}
+  .pan{min-height:78px;padding:8px}
+  .scale-post{height:105px}
+  .pan-items{min-height:36px}
+  .fixed-weight,.placed-token{width:30px;height:30px}
+  .choice-head h3{margin-bottom:4px}
+  .token-btn{min-height:42px}
+  .battle-status{min-height:18px;margin:5px 0 2px}
+  .primary-btn,.secondary-btn{min-height:44px}
+}
