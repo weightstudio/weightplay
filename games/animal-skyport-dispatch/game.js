@@ -471,6 +471,12 @@
     $('startBtn').textContent = startLabels[activeLocale] || startLabels.en;
     $('stageBack').setAttribute('aria-label', t('back'));
     $('battleBack').setAttribute('aria-label', t('back'));
+    const battleHelp = $('battleHelp');
+    if (battleHelp) {
+      const guideLabel = t('guideTitle');
+      battleHelp.setAttribute('aria-label', guideLabel);
+      battleHelp.title = guideLabel;
+    }
     $('stageRail').setAttribute('aria-label', t('shiftSelection'));
     syncSoundToggle();
     renderContractControls();

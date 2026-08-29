@@ -88,6 +88,7 @@
         <img class="cover" src="../../assets/animal-skyport-dispatch-cover.webp" alt="Immagine del gioco Animal Skyport Dispatch" />
         <h2 data-i18n="headline">Keep Cloudline Skyport moving.</h2>
         <p data-i18n="intro">Draw safe routes, match airships to docks, and protect the shift from congestion.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Best shift: 1</p>
         <button id="startBtn" class="primary" data-i18n="start" data-runtime-localize="off">Start Dispatch</button>
         <section class="game-page-info game-page-info-static" aria-label="Animal Skyport Dispatch informazioni sul gioco">
 
@@ -112,21 +113,22 @@
     </div>
   </section>
       </section>
-      <section id="stageScreen" class="stage-screen hidden">
+      <section id="stageScreen" class="stage-screen hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-skyport-dispatch-cover.webp" style="--wp-stage-art:url('../../assets/animal-skyport-dispatch-cover.webp')">
         <button id="stageBack" class="return" data-wp-return="stage" aria-label="Indietro">&larr;</button>
         <div class="stage-copy" data-runtime-localize="off"><strong data-i18n="chooseShift">Choose a shift</strong><span id="bestText"></span></div>
         <div class="contract-row" data-runtime-localize="off"><label class="contract-choice"><input id="contractToggle" type="checkbox" /><span id="contractText">Priority contract: finish with no errors for bonus sky coins.</span></label><button id="insuranceBtn" class="secondary insurance-btn" type="button">Insure 5 diamonds</button></div>
         <div id="stageRail" data-runtime-localize="off" class="stage-rail" aria-label="Selezione del turno"></div>
+        <nav class="stage-tabs" aria-label="Shift sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-i18n="chooseShift">Choose a shift</button><span aria-hidden="true"></span></nav>
       </section>
       <section id="battleShell" class="battle-shell hidden">
         <section class="battle-canvas">
           <div id="battleLive" class="battle-live">
-          <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Indietro">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span></header>
+          <header class="battle-hud"><button id="battleBack" class="return" data-wp-return="battle" aria-label="Indietro">&larr;</button><strong id="shiftText"></strong><span id="scoreText"></span><button id="battleHelp" class="utility-button battle-utility" type="button" data-wp-battle-utility aria-label="How to dispatch" title="How to dispatch" aria-expanded="false" aria-controls="battleHelpPopover">?</button></header>
           <div class="objective" data-runtime-localize="off"><span id="objectiveText"></span><span id="resourceText" role="status" aria-live="polite"></span><strong id="flightTask" aria-live="polite"><span class="task-destination"></span><span class="task-steps"></span></strong></div>
           <div id="routeField" data-runtime-localize="off" class="route-field">
             <img class="skyport-bg" src="../../assets/animal-skyport-dispatch-skyport-bg.webp" alt="" />
             <img id="weatherZone" class="weather-zone hidden" alt="" />
-            <div id="flight" class="flight" role="button" tabindex="0" aria-describedby="flightTask feedback flightHint"></div>
+            <div id="flight" class="flight" role="button" tabindex="0" data-wp-primary-action aria-describedby="flightTask feedback flightHint"></div>
             <div class="dock cargo" data-dock="cargo" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-cargo.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
             <div class="dock passenger" data-dock="passenger" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-passenger.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
             <div class="dock repair" data-dock="repair" role="button" tabindex="-1"><img src="../../assets/animal-skyport-dispatch-dock-repair.webp" alt="" /><span class="dock-target-badge" aria-hidden="true"></span><span class="dock-label"></span></div>
@@ -137,6 +139,7 @@
           </div>
           <div class="flight-row" data-runtime-localize="off"><span id="flightHint" data-i18n="dragHint">Draw one continuous route through the numbered nodes to the matching dock.</span></div>
           </div>
+          <section id="battleHelpPopover" class="battle-help-popover hidden" role="dialog" aria-modal="false" aria-labelledby="battleHelpTitle"><h2 id="battleHelpTitle" data-i18n="guideTitle">How to dispatch</h2><p data-i18n="guideBody">Choose a shift, connect the numbered nodes in order, avoid red blocked airways when they appear, and guide each airship to its matching dock.</p></section>
           <section id="result" data-runtime-localize="off" class="result hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle"></h2><p id="resultCopy"></p><div id="resultRewards" class="result-rewards" aria-live="polite"></div><p id="nextShiftPreview" class="result-next-preview" aria-live="polite"></p><div class="result-actions"><button id="menuBtn" class="secondary" type="button">Shifts</button><button id="nextBtn" class="secondary" type="button">Next Shift</button><button id="retryBtn" class="secondary" type="button">Retry Shift</button></div></section>
           <section id="leaveConfirm" data-runtime-localize="off" class="leave-confirm hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveCopy"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><button id="leaveCancel" class="primary" type="button"></button><button id="leaveConfirmBtn" class="secondary" type="button"></button></section>
         </section>
