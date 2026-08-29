@@ -1967,6 +1967,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "जुड़वाँ स्विचयार्ड",
     "ar": "ساحة تبديل التوأمين"
   },
+  "animal-putt-trails": {
+    "__localizedExact": true,
+    "en": "Animal Putt Trails",
+    "zh-Hant": "動物推桿小徑",
+    "zh-Hans": "动物推杆小径",
+    "ja": "アニマル・パット・トレイル",
+    "ko": "애니멀 퍼트 트레일",
+    "es": "Senderos de Putt Animal",
+    "pt-BR": "Trilhas de Putt Animal",
+    "fr": "Sentiers de Putt Animal",
+    "de": "Tierische Putt-Pfade",
+    "it": "Sentieri di Putt Animali",
+    "ru": "Звериные пути для патта",
+    "hi": "ऐनिमल पुट ट्रेल्स",
+    "ar": "مسارات ضربات الحيوانات"
+  },
   "road-crosser": {
     "__localizedExact": true,
     "en": "Road Crosser",

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="it">
+<head>
+
+    <base href="/games/animal-putt-trails/" />
+
+    <link rel="canonical" href="https://weightplay.com/it/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-putt-trails/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-putt-trails/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-id" content="animal-putt-trails">
+  <meta name="weightplay-game-version" content="v6">
+  <title>Sentieri di Putt Animali | WeightPlay</title>
+  <meta name="description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
+  <link rel="stylesheet" href="../../src/loading-screen.css">
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ink:#233744; --muted:#5b7277; --cream:#fff9ec; --mint:#dff4e8; --leaf:#2f7d62; --gold:#f3b949; --coral:#e8755d; }
+    * { box-sizing: border-box; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    body { margin:0; min-height:100vh; background:linear-gradient(180deg,#eaf8f4,#fff9ec 58%,#f7e9c9); color:var(--ink); }
+    button, select { font:inherit; }
+    button { border:0; cursor:pointer; }
+    .shell { width:min(100%, 1120px); margin:0 auto; padding:clamp(12px,3vw,28px); }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:48px; }
+    .wp-main-shell-header { position:relative; }
+    .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.02em; }
+    .wp-shell-return { width:58px; height:48px; display:inline-flex; align-items:center; justify-content:center; gap:4px; border-radius:15px; background:var(--mint); color:var(--ink); font-weight:800; overflow:hidden; }
+    .wp-shell-return img { width:22px; height:22px; object-fit:contain; }
+    .wp-shell-return .wp-shell-return-arrow { font-size:1.25rem; line-height:1; }
+    .wp-shell-main-title { position:absolute; left:50%; transform:translateX(-50%); max-width:60%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:1rem; text-align:center; }
+    .locale { min-height:44px; border:2px solid rgba(47,125,98,.25); border-radius:14px; background:#fff; color:var(--ink); padding:8px 10px; }
+    .wp-shell-settings-button { width:48px; height:48px; border-radius:15px; background:var(--mint); color:var(--ink); font-size:1.2rem; font-weight:800; }
+    .settings-popover { position:absolute; z-index:10; top:56px; right:0; display:grid; gap:10px; min-width:220px; padding:14px; border:1px solid rgba(35,55,68,.15); border-radius:16px; background:#fff; box-shadow:0 14px 30px rgba(35,55,68,.2); }
+    .wp-shell-settings-popover { position:absolute; }
+    .settings-popover[hidden] { display:none; }
+    .settings-popover label { display:grid; gap:4px; color:var(--muted); font-size:.85rem; font-weight:700; }
+    .settings-sound { min-height:44px; border-radius:12px; background:var(--mint); color:var(--ink); font-weight:800; }
+    .screen { display:none; }
+    .screen.active { display:block; }
+    .main-card, .stage-card, .guide-card, .result-card { background:rgba(255,255,255,.9); border:1px solid rgba(35,55,68,.12); border-radius:28px; box-shadow:0 18px 48px rgba(35,55,68,.12); }
+    .main-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,420px); gap:clamp(18px,5vw,56px); align-items:center; padding:clamp(20px,5vw,58px); margin-top:18px; }
+    .eyebrow { color:var(--leaf); font-size:.8rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    h1 { margin:.3rem 0 .8rem; font-size:clamp(2rem,5vw,4.5rem); line-height:.98; letter-spacing:-.04em; }
+    h2 { margin:.2rem 0 .5rem; font-size:clamp(1.35rem,3vw,2rem); }
+    p { line-height:1.55; }
+    .lede { color:var(--muted); font-size:clamp(1rem,1.8vw,1.2rem); max-width:48ch; }
+    .cover { width:100%; height:auto; max-width:420px; justify-self:center; border-radius:24px; display:block; box-shadow:0 18px 36px rgba(18,63,61,.24); }
+    .primary, .secondary { min-height:48px; border-radius:16px; padding:12px 20px; font-weight:800; }
+    .primary { min-height:52px; }
+    .primary { background:var(--leaf); color:#fff; box-shadow:0 8px 0 #205944; }
+    .primary:active { transform:translateY(3px); box-shadow:0 5px 0 #205944; }
+    .secondary { background:var(--mint); color:var(--ink); }
+    .progress { min-height:40px; display:flex; align-items:center; color:var(--leaf); font-weight:800; margin:.9rem 0 1.2rem; }
+    .guide-card { margin-top:18px; padding:20px 22px; }
+    .guide-card h2 { font-size:1.1rem; }
+    .guide-card p { margin:.2rem 0 0; color:var(--muted); }
+    body[data-screen="stage"] .guide-card, body[data-screen="battle"] .guide-card { display:none; }
+    .stage-card { margin-top:18px; padding:clamp(18px,4vw,34px); }
+    .stage-head, .battle-head { display:flex; align-items:center; gap:12px; }
+    .stage-head { justify-content:space-between; }
+    .guide-art { width:clamp(64px,12vw,112px); height:clamp(92px,18vw,156px); object-fit:contain; object-position:center bottom; flex:0 0 auto; filter:drop-shadow(0 10px 12px rgba(35,55,68,.2)); }
+    .back { min-width:48px; min-height:48px; border-radius:15px; background:var(--mint); color:var(--ink); font-size:1.3rem; font-weight:800; }
+    .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:22px; }
+    .stage-choice { text-align:start; min-height:148px; padding:18px; border-radius:20px; background:#f7f2df; color:var(--ink); border:2px solid transparent; }
+    .stage-choice:hover, .stage-choice:focus-visible { border-color:var(--leaf); }
+    .stage-choice strong { display:block; font-size:1.1rem; margin-bottom:8px; }
+    .stage-choice span { display:block; color:var(--muted); font-size:.92rem; }
+    .stage-pager { display:flex; justify-content:space-between; gap:10px; margin-top:14px; }
+    .stage-pager button { min-width:48px; min-height:44px; border-radius:14px; background:var(--mint); color:var(--ink); font-weight:800; }
+    .stage-pager button[hidden] { display:none; }
+    .best { margin-top:16px; color:var(--muted); }
+    .battle-card { margin-top:18px; padding:clamp(12px,3vw,24px); background:#123f3d; border-radius:28px; box-shadow:0 18px 48px rgba(18,63,61,.22); }
+    .battle-ad-reserve { min-height:56px; }
+    .battle-head { justify-content:space-between; color:#fff; }
+    .battle-head .back { background:#dff4e8; }
+    .hud { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:12px 0; color:#e7fff3; font-weight:800; }
+    .hud span { min-height:36px; display:inline-flex; align-items:center; padding:6px 10px; border-radius:12px; background:rgba(255,255,255,.12); }
+    .sound { min-height:48px; border-radius:12px; padding:8px 12px; background:#f3b949; color:#233744; font-weight:800; }
+    #aimAction { min-height:44px; min-width:44px; border-radius:12px; padding:8px 12px; background:#dff4e8; color:#233744; font-weight:800; }
+    .canvas-wrap { position:relative; width:100%; overflow:hidden; border-radius:20px; background:#a9d7aa; }
+    canvas { display:block; width:100%; height:auto; aspect-ratio:4/3; touch-action:none; }
+    .battle-help { margin:10px 0 0; color:#d8f5e8; text-align:center; min-height:26px; }
+    .result-card { position:absolute; inset:8%; display:grid; place-items:center; text-align:center; padding:24px; }
+    .result-card[hidden] { display:none; }
+    .result-actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+    [dir="rtl"] .stage-choice { text-align:right; }
+    #mainScreen { width:min(100%,920px); margin:0 auto; }
+    [data-screen="stage"].active, [data-screen="battle"].active { position:fixed; z-index:5; top:0; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 56px); overflow:auto; padding:clamp(12px,3vw,28px); background:linear-gradient(180deg,#eaf8f4,#fff9ec 58%,#f7e9c9); }
+    [data-screen="stage"].active .stage-card, [data-screen="battle"].active .battle-card { margin:0 auto; width:min(100%,920px); }
+    [data-screen="stage"].active { --wp-stage-art:url("assets/animal-putt-trails-course-v2.png"); }
+    [data-screen="stage"].active .stage-list { position:relative; }
+    [data-screen="battle"].active .battle-card { min-height:calc(100% - 4px); }
+    [data-screen="battle"].active .battle-ad-reserve { position:fixed; z-index:6; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); bottom:0; width:auto; height:56px; min-height:56px; pointer-events:none; }
+    .stage-choice[data-wp-stage-card] { cursor:pointer; }
+    @media (max-width: 760px) {
+      .main-card { grid-template-columns:1fr; padding:24px; }
+      .cover { max-width:360px; order:-1; }
+      .stage-list { grid-template-columns:1fr; }
+      .stage-choice { min-height:88px; }
+      h1 { font-size:clamp(2.2rem,12vw,3.6rem); }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition-duration:0.01ms !important; animation-duration:0.01ms !important; } }
+  </style>
+  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sentieri di Putt Animali | WeightPlay" />
+    <meta property="og:description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
+    <meta property="og:url" content="https://weightplay.com/it/games/animal-putt-trails/" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sentieri di Putt Animali | WeightPlay" />
+    <meta name="twitter:description" content="Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina." />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Sentieri di Putt Animali",
+  "url": "https://weightplay.com/it/games/animal-putt-trails/",
+  "image": "https://weightplay.com/games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png",
+  "description": "Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "it",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Sports",
+    "Obiettivo",
+    "Tempistica",
+    "Spatial Planning",
+    "Famiglia",
+    "Animal",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 6
+  },
+  "alternateName": "Animal Putt Trails"
+}
+    </script>
+  </head>
+<body data-wp-game-id="animal-putt-trails" data-wp-audience="general" data-screen="main">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-copy="title">Animal Putt Trails</strong><span data-copy="loading">Preparing the trail…</span><div class="loading-track"><i></i></div></div></section>
+  <div class="shell">
+    <header class="topbar wp-main-shell-header">
+      <a class="brand wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="64" height="64"></a>
+      <strong class="wp-shell-main-title" data-copy="title">Animal Putt Trails</strong>
+      <button id="settingsButton" class="wp-shell-settings-button" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button>
+      <div id="settingsPopover" class="settings-popover wp-shell-settings-popover" hidden>
+        <label><span class="sr-only">Language</span><select id="localeSelect" class="locale" data-aria="language" aria-label="Language">
+          <option value="en">English</option><option value="zh-tw">繁體中文</option><option value="zh-cn">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-br">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
+        </select></label>
+        <button id="settingsSoundButton" class="settings-sound" type="button" data-sound-toggle aria-pressed="false">Sound: on</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="mainScreen" class="screen active" data-screen="main">
+        <article class="main-card">
+          <div>
+            <div class="eyebrow" data-copy="eyebrow">Family trail · 6+</div>
+            <h1 data-copy="title">Sentieri di Putt Animali</h1>
+            <p class="lede main-summary" data-copy="lede">Read the trail, choose a gentle line, and guide the ball to the flag. Every stroke is a small planning puzzle.</p>
+            <p id="mainProgress" class="progress" aria-live="polite"></p>
+            <button id="startButton" class="primary" data-wp-main-start data-copy="start">Start the trail</button>
+          </div>
+          <img class="cover" src="assets/animal-putt-trails-cover-v2.png" alt="Immagine del gioco Sentieri di Putt Animali" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+        </article>
+      </section>
+      <section class="guide-card" data-wp-game-guide aria-labelledby="mainGuideTitle"><h2 id="mainGuideTitle" data-copy="howTo">How to play</h2><p data-copy="guide">Drag back from the ball to aim. Release to putt. Short strokes are easier to control; use the banks and stop before the water.</p></section>
+
+      <section id="stageScreen" class="screen stage-canvas" data-screen="stage" data-wp-standard-stage-screen hidden>
+        <article class="stage-card">
+          <div class="stage-head"><button id="stageBack" class="back" type="button" data-wp-return="stage" data-aria="back" aria-label="Back">←</button><div><div class="eyebrow" data-copy="stageEyebrow">Choose a trail</div><h2 data-copy="stages">Trail map</h2></div><img class="guide-art" src="assets/animal-putt-trails-orla-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536"></div>
+          <div id="stageList" class="stage-list" data-wp-stage-rail role="list"></div>
+          <div class="stage-pager" aria-label="Trail pages"><button id="stagePageBack" type="button" hidden>←</button><button id="stagePageNext" type="button">→</button></div>
+          <p id="stageBest" class="best" aria-live="polite"></p>
+        </article>
+      </section>
+
+      <section id="battleScreen" class="screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas hidden>
+        <article class="battle-card">
+          <div class="battle-head"><button id="battleBack" class="back" type="button" data-wp-return="battle" data-aria="back" aria-label="Back">←</button><h2 id="holeTitle">Meadow Gate</h2><button id="soundButton" class="sound" type="button" data-wp-battle-utility aria-pressed="false">Sound: on</button></div>
+          <div class="hud"><span id="parLabel">Par 3</span><span id="strokeLabel">Strokes 0</span><span id="acornLabel">Acorns 0</span></div>
+          <div class="canvas-wrap"><canvas id="courseCanvas" width="960" height="720" data-aria="course" aria-label="Animal Putt Trails course"></canvas><section id="resultCard" class="result-card" role="dialog" aria-modal="true" hidden><div><div class="eyebrow" data-copy="holeClear">Trail clear</div><h2 id="resultTitle">Nice line!</h2><p id="resultCopy"></p><div class="result-actions"><button id="retryButton" class="secondary" type="button" data-copy="retry">Retry hole</button><button id="nextButton" class="primary" type="button" data-copy="next">Next hole</button><button id="mapButton" class="secondary" type="button" data-copy="map">Trail map</button></div></div></section></div>
+          <p id="battleHelp" class="battle-help" role="status" aria-live="polite"></p><button id="aimAction" type="button" data-wp-primary-action aria-label="Drag back from the ball, then release.">◎</button>
+        </article>
+        <div class="battle-ad-reserve" aria-hidden="true"></div>
+      </section>
+    </main>
+  </div>
+  <script src="game.js?v=20260829-fifth-hole-v6"></script>
+<section class="game-page-info game-page-info-static" aria-label="Sentieri di Putt Animali informazioni sul gioco">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Sentieri di Putt Animali</h2><p>Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Strategia di putt a un dito</strong></div><div class="game-info-fact"><span>Genre</span><strong>Sports · Obiettivo · Tempistica · Spatial Planning · Famiglia · Animal</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+<script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+</body>
+</html>

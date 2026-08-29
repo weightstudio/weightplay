@@ -2925,6 +2925,29 @@ for (const candidate of researchedNextBatchCandidates) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
 
+// Animal Putt Trails is an active unpublished production row. Keep its
+// owner-preview card planned/non-playable so the canonical Reviewer route can
+// see the exact tuple without promoting the noindex prototype to public play.
+const animalPuttTrailsOwnerPreview = {
+  id: "animal-putt-trails",
+  title: marketFiveLocalized(["Animal Putt Trails", "動物推桿小徑", "动物推杆小径", "アニマル・パット・トレイル", "애니멀 퍼트 트레일", "Senderos de Putt Animal", "Trilhas de Putt Animal", "Sentiers de Putt Animal", "Tierische Putt-Pfade", "Sentieri di Putt Animali", "Звериные пути для патта", "ऐनिमल पुट ट्रेल्स", "مسارات ضربات الحيوانات"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["One-Thumb Putting Strategy", "單指推桿策略", "单指推杆策略", "ワンタップ・パット戦略", "한 손 퍼팅 전략", "Estrategia de putt con un dedo", "Estratégia de putt com um dedo", "Stratégie de putt à un doigt", "Ein-Finger-Puttstrategie", "Strategia di putt a un dito", "Стратегия патта одним пальцем", "Одно-пальцевая стратегия патта", "استراتيجية الضربة بإصبع واحد"]),
+  categories: ["Sports", "Aim", "Timing", "Spatial Planning", "Family", "Animal"],
+  skills: ["Aim", "Timing", "Spatial Planning"],
+  ages: ["6", "family"],
+  ageLabel: marketFiveLocalized(["6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+", "6+"]),
+  href: "games/animal-putt-trails/",
+  internalTrial: "index.html?trial=1",
+  description: marketFiveLocalized(["Read each trail, choose a line and power, then guide the ball around banks and gentle water to the flag.", "讀懂每條小徑，選擇路線與力道，利用反彈並避開溫和水域，把球送到旗竿。", "读懂每条小径，选择路线与力度，利用反弹并避开温和水域，把球送到旗杆。", "コースを読み、ラインと強さを選び、バンクと穏やかな水を避けてボールを旗へ運びます。", "코스를 읽고 라인과 힘을 정해 둑과 잔잔한 물을 피해 공을 깃발까지 보내세요.", "Lee cada sendero, elige línea y fuerza, rodea bordes y agua suave hasta la bandera.", "Leia cada trilha, escolha linha e força e contorne bordas e água calma até a bandeira.", "Lis chaque sentier, choisis la ligne et la puissance, puis évite les bordures et l’eau jusqu’au drapeau.", "Lies jeden Pfad, wähle Linie und Kraft und umspiele Banden und ruhiges Wasser bis zur Fahne.", "Leggi ogni sentiero, scegli linea e potenza e aggira bordi e acqua calma fino alla bandierina.", "Читайте тропу, выбирайте линию и силу, обходите борта и тихую воду до флажка.", "हर पथ पढ़ें, रेखा और ताकत चुनें, किनारों व शांत पानी को पार कर गेंद झंडे तक पहुँचाएँ।", "اقرأ كل مسار واختر الخط والقوة وتجاوز الحواف والماء الهادئ حتى الراية."]),
+  meta: marketFiveLocalized([["Five Holes", "Aim + Power", "Bank Planning"], ["五洞球場", "瞄準＋力道", "反彈規劃"], ["五洞球场", "瞄准＋力度", "反弹规划"], ["5ホール", "狙い＋強さ", "バンク計画"], ["5홀", "조준 + 힘", "둑 계획"], ["Cinco hoyos", "Línea y fuerza", "Plan de rebotes"], ["Cinco buracos", "Linha e força", "Planejamento de bordas"], ["Cinq trous", "Ligne et puissance", "Plan des rebonds"], ["Fünf Löcher", "Linie und Kraft", "Bandenplanung"], ["Cinque buche", "Linea e potenza", "Piano dei rimbalzi"], ["Пять лунок", "Линия и сила", "План рикошета"], ["पाँच होल", "निशाना और ताकत", "किनारा योजना"], ["خمس حفرات", "خط وقوة", "تخطيط الارتداد"]]),
+  art: { kind: "image", background: "games/animal-putt-trails/assets/animal-putt-trails-cover-v2.png", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalPuttTrailsOwnerPreview[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPuttTrailsOwnerPreview.id)) window.WONDER_LOBBY.games.push(animalPuttTrailsOwnerPreview);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPuttTrailsOwnerPreview.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPuttTrailsOwnerPreview.id);
+
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.
 window.WONDER_LOBBY.games.push(

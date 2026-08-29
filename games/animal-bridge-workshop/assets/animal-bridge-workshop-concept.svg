@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Animal Bridge Workshop concept</title>
+  <desc id="desc">A gentle moonlit forest with three glowing anchors and a small shell animal beside a bridge under construction.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#102d4c"/><stop offset="1" stop-color="#071629"/></linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#1a6276"/><stop offset="1" stop-color="#204c75"/></linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7bd79"/><stop offset="1" stop-color="#a86b4e"/></linearGradient>
+  </defs>
+  <rect width="800" height="800" rx="48" fill="url(#sky)"/>
+  <circle cx="650" cy="135" r="68" fill="#ffe7a7" opacity=".92"/>
+  <circle cx="650" cy="135" r="92" fill="#ffd27d" opacity=".12"/>
+  <path d="M0 470 Q140 385 290 475 T575 455 T800 460 V800 H0Z" fill="#153a4a"/>
+  <path d="M0 575 C160 530 250 625 400 565 S650 525 800 590 V800 H0Z" fill="url(#water)"/>
+  <path d="M0 610 Q180 560 360 610 T800 600" fill="none" stroke="#72c8cf" stroke-width="8" opacity=".5"/>
+  <g fill="#214f4f" opacity=".95">
+    <path d="M42 560 Q55 370 85 290 Q115 370 130 560Z"/><path d="M154 570 Q175 340 207 245 Q238 350 248 570Z"/>
+    <path d="M670 570 Q690 360 725 250 Q755 370 773 570Z"/>
+  </g>
+  <g fill="#ffd27d" stroke="#f8fbff" stroke-width="6">
+    <circle cx="115" cy="515" r="27"/><circle cx="400" cy="310" r="27"/><circle cx="684" cy="515" r="27"/>
+  </g>
+  <path d="M115 515 L400 310 L684 515" fill="none" stroke="url(#wood)" stroke-width="24" stroke-linecap="round" opacity=".95"/>
+  <path d="M115 515 L400 310 L684 515" fill="none" stroke="#ffe1a2" stroke-width="4" stroke-dasharray="12 14" opacity=".8"/>
+  <g transform="translate(84 580)">
+    <path d="M10 74 Q12 25 67 20 Q120 22 132 71 Q98 100 10 74Z" fill="#c4a7ff" stroke="#f6e9ff" stroke-width="6"/>
+    <path d="M30 36 Q68 0 111 35 L97 65 Q60 75 30 36Z" fill="#7b5baf"/>
+    <circle cx="53" cy="45" r="5" fill="#071629"/><circle cx="89" cy="45" r="5" fill="#071629"/>
+    <path d="M65 57 Q73 64 82 57" fill="none" stroke="#071629" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g fill="#a9f0cf" opacity=".8"><circle cx="250" cy="170" r="6"/><circle cx="300" cy="120" r="4"/><circle cx="520" cy="210" r="5"/><circle cx="575" cy="155" r="3"/></g>
+  <rect x="38" y="38" width="270" height="66" rx="33" fill="#071629" opacity=".72"/>
+  <text x="72" y="80" fill="#fff7e8" font-family="system-ui,sans-serif" font-size="28" font-weight="800">BRIDGE WORKSHOP</text>
+</svg>

@@ -447,6 +447,7 @@
     document.title = `${t('title')} | WeightPlay`;
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     $('localeSelect').value = activeLocale;
+    $('mainProgress').textContent = t('best', {n:save.best || 1});
     $('localeSelect').options[1].textContent = '\u7e41\u9ad4\u4e2d\u6587';
     document.querySelector('.home-link').setAttribute('aria-label', t('backToLobby'));
     document.querySelector('.cover').alt = t('coverAlt');
@@ -457,6 +458,13 @@
     syncSoundToggle();
     renderContractControls();
     renderStages();
+  }
+  function setBattleHelp(open) {
+    const button = $('battleHelp');
+    const popover = $('battleHelpPopover');
+    if (!button || !popover) return;
+    popover.classList.toggle('hidden', !open);
+    button.setAttribute('aria-expanded', String(open));
   }
   function clearInsuranceConfirmation() {
     clearTimeout(insuranceConfirmTimer);
@@ -784,6 +792,7 @@
     const shift = state.shift || 1;
     const config = shiftConfig[shift];
     state = {shift, config, done:0, errors:0, goal:config.goal, flightIndex:0, matched:0, selected:false, routePassed:0, contract:Boolean(state.contract)};
+    setBattleHelp(false);
     show('battleShell');
     playSound('click');
     nextFlight();
@@ -817,6 +826,7 @@
   function result(win) {
     cancelRouteGesture({restoreGuidance:false});
     const insuredRun = insuranceActive;
+    setBattleHelp(false);
     show('result');
     if (win) playSound('win');
     $('resultTitle').textContent = win ? t('win') : t('lose');
@@ -1073,6 +1083,13 @@
     $('flight').focus({preventScroll:true});
   }
   $('startBtn').onclick = () => { state.shift = save.unlocked; centeredShift = state.shift; show('stageScreen'); renderStages(); };
+  $('battleHelp').onclick = () => setBattleHelp($('battleHelpPopover').classList.contains('hidden'));
+  $('battleHelp').addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); setBattleHelp(false); }
+  });
+  $('battleHelpPopover').addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') { event.preventDefault(); setBattleHelp(false); $('battleHelp').focus({preventScroll:true}); }
+  });
   $('soundToggle').onclick = () => {
     window.WonderSound?.unlock?.();
     const nextMuted = !Boolean(window.WonderSound?.isMuted?.());
