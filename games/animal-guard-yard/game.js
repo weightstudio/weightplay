@@ -172,7 +172,7 @@
 
 (() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v25";
+  const GAME_VERSION = "v26";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
