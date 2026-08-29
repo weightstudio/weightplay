@@ -55,7 +55,7 @@
     renderStageList(); renderMainProgress(); updateHoleLabels(); updateHelp();
   }
   function showScreen(name) { Object.entries(screens).forEach(([key, node]) => { const active = key === name; node.classList.toggle("active", active); node.hidden = !active; }); document.body.dataset.screen = name; }
-  function renderMainProgress() { const best = state.progress.bestTotal; document.querySelector("#mainProgress").textContent = best ? `${t("best")}: ${best} ${t("strokes")}` : `${t("trail")}: ${holes.length} ${t("hole")}`; }
+  function renderMainProgress() { const completed = holes.reduce((count, _, index) => count + (Number.isFinite(Number(state.progress[`hole${index + 1}`])) ? 1 : 0), 0); const best = state.progress.bestTotal || "—"; document.querySelector("#mainProgress").textContent = `${t("trail")}: ${completed}/${holes.length} ${t("hole")} · ${t("best")}: ${best} ${t("strokes")}`; }
   function renderStageList() {
     const list = document.querySelector("#stageList");
     const pageStart = state.stagePage * 3;

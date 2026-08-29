@@ -2925,6 +2925,51 @@ for (const candidate of researchedNextBatchCandidates) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
 
+// Animal Moon Market is a planned General identity for the weighted prototype
+// lane. Keep the card Coming Soon until the exact Tester, Reviewer, Director,
+// guide, preview, and release gates are complete.
+const animalMoonMarketPlanned = {
+  id: "animal-moon-market",
+  title: marketFiveLocalized(["Animal Moon Market", "月光市集", "月光市集", "アニマル・ムーンマーケット", "애니멀 문 마켓", "Mercado Lunar Animal", "Mercado Lunar Animal", "Marché Lunaire Animal", "Tierischer Mondmarkt", "Mercato Lunare Animale", "Лунный рынок животных", "ऐनिमल मून मार्केट", "سوق الحيوانات القمري"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Shelf-Demand Helper Management", "貨架需求與助手經營", "货架需求与助手经营", "棚需要と助手マネジメント", "선반 수요·도우미 경영", "Gestión de estantes y ayudantes", "Gestão de prateleiras e ajudantes", "Gestion des étagères et assistants", "Regalbedarf und Helfer", "Gestione scaffali e assistenti", "Управление полками и помощниками", "शेल्फ़ मांग और सहायक प्रबंधन", "إدارة الطلب على الرفوف والمساعدين"]),
+  description: marketFiveLocalized(["Read the moon market forecast, stock two shelves, and assign helpers before the short shift closes.", "讀懂月光市集預報、補好兩格貨架，並在短班結束前分配助手。", "读懂月光市集预报、补好两格货架，并在短班结束前分配助手。", "月市の予報を読み、2つの棚を補充し、短いシフトの前に助手を配置しよう。", "달빛 시장 예보를 읽고 선반 두 칸을 채운 뒤 짧은 교대 전에 도우미를 배치하세요.", "Lee el pronóstico, abastece dos estantes y asigna ayudantes antes del turno corto.", "Leia a previsão, abasteça duas prateleiras e atribua ajudantes antes do turno curto.", "Lis les prévisions, remplis deux étagères et assigne les assistants avant la courte session.", "Lies die Prognose, fülle zwei Regale und teile Helfer vor der kurzen Schicht ein.", "Leggi le previsioni, rifornisci due scaffali e assegna gli assistenti prima del turno breve.", "Читайте прогноз, заполните две полки и назначьте помощников до конца короткой смены.", "पूर्वानुमान पढ़ें, दो शेल्फ़ भरें और छोटी शिफ्ट से पहले सहायक लगाएँ।", "اقرأ توقعات السوق واملأ رفّين وعيّن المساعدين قبل انتهاء الوردية القصيرة."]),
+  meta: marketFiveLocalized([["3 Shifts", "Forecast + Shelves", "Helper Jobs"], ["3 個班次", "預報＋貨架", "助手工作"], ["3 个班次", "预报＋货架", "助手工作"], ["3シフト", "予報＋棚", "助手の仕事"], ["3교대", "예보 + 선반", "도우미 업무"], ["3 turnos", "Pronóstico + estantes", "Tareas de ayudantes"], ["3 turnos", "Previsão + prateleiras", "Tarefas dos ajudantes"], ["3 sessions", "Prévisions + étagères", "Tâches des assistants"], ["3 Schichten", "Prognose + Regale", "Helferaufgaben"], ["3 turni", "Previsioni + scaffali", "Compiti assistenti"], ["3 смены", "Прогноз + полки", "Задачи помощников"], ["3 शिफ्ट", "पूर्वानुमान + शेल्फ़", "सहायक काम"], ["3 ورديات", "توقعات + رفوف", "مهام المساعدين"]]),
+  categories: ["Management", "Planning", "Simulation", "Family", "Animal"],
+  skills: ["Planning", "Resource Management", "Adaptation"],
+  ages: ["9", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("9+")),
+  href: "games/animal-moon-market/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-moon-market/assets/animal-moon-market-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMoonMarketPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMoonMarketPlanned.id)) window.WONDER_LOBBY.games.push(animalMoonMarketPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalMoonMarketPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalMoonMarketPlanned.id);
+
+// Mirror Meadow is a planned General identity for a bounded rotation-puzzle
+// prototype. Keep the card Coming Soon until the exact release gates pass.
+const animalMirrorMeadowPlanned = {
+  id: "animal-mirror-meadow",
+  title: marketFiveLocalized(["Mirror Meadow", "鏡光草地", "镜光草地", "ミラー・メドウ", "미러 메도우", "Pradera de Espejos", "Prado dos Espelhos", "Prairie des Miroirs", "Spiegelwiese", "Prato degli Specchi", "Луговые зеркала", "मिरर मीडो", "مرج المرايا"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Moonbeam Rotation Puzzle", "月光旋轉路徑益智", "月光旋转路径益智", "月光回転パズル", "달빛 회전 퍼즐", "Puzle de rotación lunar", "Puzzle de rotação lunar", "Puzzle de rotation lunaire", "Mondstrahl-Drehpuzzle", "Puzzle di rotazione lunare", "Пазл вращения лунного луча", "चाँदनी घुमाव पहेली", "لغز تدوير شعاع القمر"]),
+  description: marketFiveLocalized(["Turn three meadow mirrors to guide one moonbeam through every habitat beacon.", "旋轉三面草地鏡子，讓一道月光穿過每個棲地信標。", "旋转三面草地镜子，让一道月光穿过每个栖地信标。", "3つの草地ミラーを回し、月光をすべての生息地ビーコンへ導こう。", "초원 거울 세 개를 돌려 달빛을 모든 서식지 비콘에 보내세요.", "Gira tres espejos para llevar un rayo lunar a cada baliza del hábitat.", "Gire três espelhos para levar um raio lunar a cada sinal do habitat.", "Tourne trois miroirs pour guider un rayon de lune vers chaque balise.", "Drehe drei Wiesen-Spiegel und leite einen Mondstrahl zu jedem Habitat-Signal.", "Ruota tre specchi per portare un raggio di luna a ogni faro dell’habitat.", "Поверните три зеркала и проведите лунный луч к каждому маяку среды.", "तीन घासभूमि दर्पण घुमाकर चाँदनी हर आवास संकेत तक पहुँचाएँ।", "أدر ثلاثة مرايا لتوجيه شعاع القمر إلى كل منارة موطن."]),
+  meta: marketFiveLocalized([["3 Meadows", "Quarter Turns", "Calm Retry"], ["3 片草地", "四分之一轉", "平靜重試"], ["3 片草地", "四分之一转", "平静重试"], ["3つの草地", "90度回転", "穏やかな再挑戦"], ["3 초원", "90도 회전", "차분한 재시도"], ["3 praderas", "Cuartos de giro", "Reintento amable"], ["3 prados", "Quartos de volta", "Nova tentativa calma"], ["3 prairies", "Quarts de tour", "Reprise douce"], ["3 Wiesen", "Vierteldrehungen", "Ruhiger Neustart"], ["3 prati", "Quarti di giro", "Riprova calma"], ["3 луга", "Четверти оборота", "Спокойный повтор"], ["3 घासभूमि", "चौथाई घुमाव", "शांत पुनःप्रयास"], ["3 مروج", "ربع دورة", "إعادة هادئة"]]),
+  categories: ["Puzzle", "Spatial Planning", "Family", "Animal"],
+  skills: ["Spatial Reasoning", "Planning", "Focus"],
+  ages: ["9", "family"],
+  ageLabel: marketFiveLocalized(Array(13).fill("9+")),
+  href: "games/animal-mirror-meadow/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-mirror-meadow/assets/animal-mirror-meadow-cover.webp", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMirrorMeadowPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMirrorMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMirrorMeadowPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalMirrorMeadowPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalMirrorMeadowPlanned.id);
+
 // Animal Putt Trails is an active unpublished production row. Keep its
 // owner-preview card planned/non-playable so the canonical Reviewer route can
 // see the exact tuple without promoting the noindex prototype to public play.

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Moonlit meadow mirror concept">
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#101b45"/><stop offset="1" stop-color="#1c5c62"/></linearGradient><radialGradient id="glow"><stop stop-color="#fff4b5"/><stop offset="1" stop-color="#fff4b500"/></radialGradient></defs>
+  <rect width="900" height="900" rx="70" fill="url(#sky)"/><circle cx="690" cy="170" r="110" fill="#fff4b5"/><circle cx="690" cy="170" r="230" fill="url(#glow)" opacity=".45"/>
+  <path d="M0 640Q180 520 340 650T900 600V900H0Z" fill="#163d56"/><path d="M0 760Q170 620 330 750T900 700V900H0Z" fill="#1f765f"/>
+  <g fill="#8ee3ca" stroke="#d8fff0" stroke-width="8"><path d="M190 635l95-60 95 60-95 60z"/><path d="M350 510l95-60 95 60-95 60z"/><path d="M510 650l95-60 95 60-95 60z"/></g>
+  <g stroke="#ffe28a" stroke-width="14" opacity=".9"><path d="M285 575L690 280"/><path d="M445 450L690 280"/><path d="M605 590L690 280"/></g>
+  <g fill="#f4c36f" stroke="#fff7cf" stroke-width="6"><circle cx="170" cy="770" r="22"/><circle cx="735" cy="760" r="28"/><circle cx="820" cy="680" r="16"/></g>
+</svg>

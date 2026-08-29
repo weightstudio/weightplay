@@ -1967,6 +1967,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "जुड़वाँ स्विचयार्ड",
     "ar": "ساحة تبديل التوأمين"
   },
+  "animal-moon-market": {
+    "__localizedExact": true,
+    "en": "Animal Moon Market",
+    "zh-Hant": "月光市集",
+    "zh-Hans": "月光市集",
+    "ja": "アニマル・ムーンマーケット",
+    "ko": "애니멀 문 마켓",
+    "es": "Mercado Lunar Animal",
+    "pt-BR": "Mercado Lunar Animal",
+    "fr": "Marché Lunaire Animal",
+    "de": "Tierischer Mondmarkt",
+    "it": "Mercato Lunare Animale",
+    "ru": "Лунный рынок животных",
+    "hi": "ऐनिमल मून मार्केट",
+    "ar": "سوق الحيوانات القمري"
+  },
+  "animal-mirror-meadow": {
+    "__localizedExact": true,
+    "en": "Mirror Meadow",
+    "zh-Hant": "鏡光草地",
+    "zh-Hans": "镜光草地",
+    "ja": "ミラー・メドウ",
+    "ko": "미러 메도우",
+    "es": "Pradera de Espejos",
+    "pt-BR": "Prado dos Espelhos",
+    "fr": "Prairie des Miroirs",
+    "de": "Spiegelwiese",
+    "it": "Prato degli Specchi",
+    "ru": "Луговые зеркала",
+    "hi": "मिरर मीडो",
+    "ar": "مرج المرايا"
+  },
   "animal-putt-trails": {
     "__localizedExact": true,
     "en": "Animal Putt Trails",
