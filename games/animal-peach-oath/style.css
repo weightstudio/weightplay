@@ -29,7 +29,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .app { min-height: 100dvh; background: radial-gradient(circle at 50% 0,#69352c 0,#17243a 38%,#0b1420 100%); }
 .scene { width: min(100%,920px); margin: 0 auto; }
 .shared-header, .battle-header { position: relative; z-index: 30; display: grid; align-items: center; min-height: 64px; padding: 8px 16px; background: var(--wp-ui-shell); border-bottom: 1px solid var(--wp-ui-border); }
-.shared-header { grid-template-columns: 58px 1fr 48px; }
+.shared-header { grid-template-columns: 58px 1fr 58px; }
+.shared-header .utility { justify-self: end; }
 .shared-header h1 { margin: 0; overflow: hidden; font-size: 22px; line-height: 1.2; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .return, .utility { display: grid; place-items: center; height: 48px; border: 0; border-radius: 14px; color: var(--wp-ui-control-text); background: var(--wp-ui-control); text-decoration: none; font-size: 25px; font-weight: 900; }
 .main-return { grid-template-columns: 18px 30px; width: 58px; gap: 2px; }
@@ -51,8 +52,9 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .guide p { margin: 0; color: var(--wp-ui-muted); line-height: 1.6; }
 
 .battle-scene { position: fixed; inset: 0 auto 56px 50%; transform: translateX(-50%); height: calc(100dvh - 56px); max-width: 920px; overflow: hidden; background: #132236; }
-.battle-header { grid-template-columns: 48px minmax(100px,1fr) minmax(110px,1fr) 72px; gap: 8px; height: 64px; }
+.battle-header { grid-template-columns: 48px minmax(100px,1fr) minmax(110px,1fr) 48px 72px; gap: 8px; height: 64px; }
 .battle-return { width: 48px; }
+.battle-settings { width: 48px; }
 .player-chip, .stage-chip { min-width: 0; display: grid; text-align: center; }
 .player-chip span, .stage-chip span { overflow: hidden; color: var(--wp-ui-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .player-chip strong, .stage-chip strong { overflow: hidden; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
@@ -193,13 +195,13 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 @keyframes toast { 0% { opacity: 0; transform: translate(-50%,10px); } 12%,78% { opacity: 1; transform: translate(-50%,0); } 100% { opacity: 0; } }
 
 @media (max-width:699px) and (orientation:portrait) {
-  .shared-header { min-height: 88px; grid-template-columns: 58px 1fr 48px; grid-template-rows: 48px 32px; padding: 8px 12px 0; }
+  .shared-header { min-height: 88px; grid-template-columns: 58px 1fr 58px; grid-template-rows: 48px 32px; padding: 8px 12px 0; }
   .shared-header h1 { grid-column: 1/-1; grid-row: 2; font-size: 20px; }
   .main-card { grid-template-columns: 1fr; gap: 12px; padding: 12px; }
   .main-copy { gap: 10px; padding: 16px; }
   .main-copy p { font-size: 14px; line-height: 1.5; }
   .guide { margin: 0 12px; }
-  .battle-header { padding-inline: 8px; grid-template-columns: 48px minmax(78px,1fr) minmax(86px,1fr) 64px; gap: 4px; }
+  .battle-header { padding-inline: 8px; grid-template-columns: 48px minmax(68px,1fr) minmax(76px,1fr) 48px 64px; gap: 4px; }
   .battle-layout { grid-template-columns: 0 minmax(0,1fr); }
   .quick-rail { position: absolute; z-index: 18; top: 52px; left: 4px; width: 56px; padding: 4px; background: transparent; }
   .quick-rail button { min-height: 38px; padding: 3px; border-color: rgba(255,255,255,.3); background: rgba(24,43,60,.82); font-size: 10px; }

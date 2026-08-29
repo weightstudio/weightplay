@@ -9,6 +9,16 @@
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const fmt = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : String(Math.floor(n));
   const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const localeLabels = { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português (Brasil)", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" };
+  const localeOrder = Object.keys(localeSegments);
+  const routeLocale = () => {
+    const segment = location.pathname.split("/").filter(Boolean)[0];
+    return localeOrder.find((locale) => localeSegments[locale] === segment)
+      || document.documentElement.lang
+      || localStorage.getItem("weightPlayLocale")
+      || "en";
+  };
 
   function defaultState() {
     const heroState = {};
@@ -197,6 +207,7 @@
   function showScene(name) {
     const main = name === "main";
     $("#mainScene").classList.toggle("is-hidden", !main);
+    $(".guide")?.classList.toggle("is-hidden", !main);
     $("#battleScene").classList.toggle("is-hidden", main);
     $("#app").dataset.scene = name;
     document.documentElement.classList.toggle("battle-active", !main);
@@ -652,7 +663,10 @@
   }
 
   function renderSettings() {
-    openModal("設定", `<div class="settings-list"><div class="setting-row"><span>音樂與音效</span><button class="toggle ${state.settings.sound ? "is-on" : ""}" data-setting="sound" aria-pressed="${state.settings.sound}"></button></div>
+    const locale = localeOrder.includes(routeLocale()) ? routeLocale() : "en";
+    const options = localeOrder.map((code) => `<option value="${code}" ${code === locale ? "selected" : ""}>${localeLabels[code]}</option>`).join("");
+    openModal("設定", `<div class="settings-list"><div class="setting-row"><span>語言</span><select id="localeSelect" data-setting="locale" data-wp-language aria-label="語言">${options}</select></div>
+      <div class="setting-row"><span>音樂與音效</span><button class="toggle ${state.settings.sound ? "is-on" : ""}" data-setting="sound" data-sound-toggle aria-pressed="${state.settings.sound}"></button></div>
       <div class="setting-row"><span>戰鬥畫質</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>精緻</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>省電</option></select></div>
       <div class="setting-row"><span>顯示傷害數字</span><button class="toggle ${state.settings.damage ? "is-on" : ""}" data-setting="damage" aria-pressed="${state.settings.damage}"></button></div>
       <div class="setting-row"><span>存檔</span><strong>LocalStorage 自動保存</strong></div>
@@ -782,6 +796,15 @@
     $("#modalLayer").addEventListener("click", (event) => { if (event.target === $("#modalLayer")) closeModal(); });
     $("#modalBody").addEventListener("click", modalAction);
     $("#modalBody").addEventListener("change", (event) => {
+      if (event.target.dataset.setting === "locale") {
+        const next = localeOrder.includes(event.target.value) ? event.target.value : "en";
+        localStorage.setItem("weightPlayLocale", next);
+        localStorage.setItem("weightplayLocale", next);
+        const target = `/${localeSegments[next]}/games/animal-peach-oath/${location.search}${location.hash}`;
+        if (/^https?:$/.test(location.protocol) && location.pathname !== target) { location.assign(target); return; }
+        document.documentElement.lang = next;
+        renderSettings();
+      }
       if (event.target.dataset.setting === "quality") { state.settings.quality = event.target.value; document.body.dataset.quality = event.target.value; save(); }
     });
     $("#resultManage").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); battle.manageFromResult = true; openManagement("heroes"); });

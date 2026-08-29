@@ -22,9 +22,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v5" />
+    <meta name="weightplay-game-version" content="v6" />
     <title>Juramento del Jardín de Melocotones | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260828-complete-sprites-v5" />
+    <link rel="stylesheet" href="style.css?v=20260829-main-battle-contract-v6" />
     <meta name="description" content="Lidera un escuadrón animal juramentado con batallas automáticas, mejoras, equipo y contraataques de tropas." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -69,16 +69,16 @@
   </head>
   <body>
     <main id="app" class="app" data-scene="main">
-      <section id="mainScene" class="scene main-scene" aria-labelledby="mainTitle">
+      <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
           <h1 id="mainTitle">Juramento del Jardín de Melocotones</h1>
-          <button class="utility" data-open="settings" type="button" aria-label="設定">⚙</button>
+          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
         </header>
         <div class="main-card">
-          <img class="cover" src="assets/cover.png" alt="Imagen del juego Juramento del Jardín de Melocotones" />
+          <img class="cover main-poster" src="assets/cover.png" alt="Imagen del juego Juramento del Jardín de Melocotones" />
           <div class="main-copy">
             <span class="eyebrow">三國動物放置 RPG</span>
             <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
@@ -86,17 +86,19 @@
             <button id="startBtn" class="primary" type="button">開始遊戲</button>
           </div>
         </div>
-        <section class="guide" aria-label="遊戲說明">
-          <h2>如何遊玩</h2>
-          <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
-        </section>
       </section>
 
-      <section id="battleScene" class="scene battle-scene is-hidden" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
+      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
+        <h2>如何遊玩</h2>
+        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
+      </section>
+
+      <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
+          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
         </header>
 
@@ -107,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" type="button"><span>設定</span></button>
+            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -123,7 +125,7 @@
               <div id="heroLane" class="unit-line hero-line"></div>
               <button id="lootPile" class="loot-pile is-hidden" type="button" aria-label="領取戰利品">戰利品</button>
             </div>
-            <div class="battle-tip"><span id="battleStatus">敵軍來襲</span><button id="speedBtn" type="button">×1</button></div>
+            <div class="battle-tip"><span id="battleStatus">敵軍來襲</span><button id="speedBtn" data-wp-primary-action type="button">×1</button></div>
             <p id="campaignGoal" class="campaign-goal" aria-live="polite"></p>
           </section>
         </div>
@@ -172,9 +174,9 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
-    <script src="config.js?v=5"></script>
-    <script src="sprites.js?v=20260828-complete-sprites-v5"></script>
-    <script src="game.js?v=20260828-complete-sprites-v5"></script>
+    <script src="config.js?v=6"></script>
+    <script src="sprites.js?v=20260829-main-battle-contract-v6"></script>
+    <script src="game.js?v=20260829-main-battle-contract-v6"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

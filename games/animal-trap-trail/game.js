@@ -6,16 +6,6 @@
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
   const ctx = canvas.getContext("2d");
-  const debugEnabled = new URLSearchParams(window.location.search).get("debug") === "1";
-  const debugTrace = [];
-  function trace(label) {
-    if (!debugEnabled || !state?.player) return;
-    const entry = { label, x: Number(state.player.x.toFixed(2)), y: Number(state.player.y.toFixed(2)), vy: Number(state.player.vy.toFixed(2)), grounded: state.player.grounded, intent: Number(state.firstRoomJumpIntent.toFixed(2)), queued: state.firstRoomJumpQueued, jumpBuffer: Number(state.jumpBuffer.toFixed(2)), keys: [...state.keys], tap: state.tap, deaths: state.deaths, status: state.statusKey };
-    debugTrace.push(entry);
-    if (debugTrace.length > 1200) debugTrace.shift();
-    document.body.dataset.trapDebug = JSON.stringify(entry);
-    if (label !== "before") document.body.dataset.trapEvent = JSON.stringify(entry);
-  }
   const heroArt = new Image();
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
@@ -261,7 +251,6 @@
   }
   function update(dt) {
     const p = state.player; const t = trapData(); const reversed = t.reverse;
-    trace("before");
     const right = reversed ? (state.keys.has("ArrowLeft") || state.keys.has("KeyA")) : (state.keys.has("ArrowRight") || state.keys.has("KeyD"));
     const left = reversed ? (state.keys.has("ArrowRight") || state.keys.has("KeyD")) : (state.keys.has("ArrowLeft") || state.keys.has("KeyA"));
     const jumpHeld = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
@@ -294,10 +283,9 @@
       p.grounded = false;
       state.jumpBuffer = 0;
       if (firstRoomAssistReady && p.x >= t.fake - 42) { state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; }
-      trace(firstRoomAssistReady ? "assist-jump" : "jump");
     }
-    if (p.y > 560) { trace("gap-before-die"); return die("gap"); }
-    if (hazardAt(p.x, p.y) && p.grounded) { trace("hazard-before-die"); return die("hazard"); }
+    if (p.y > 560) return die("gap");
+    if (hazardAt(p.x, p.y) && p.grounded) return die("hazard");
     if (p.x > 870 && p.grounded) { if (state.room < 3) { state.room += 1; resetRoom(); } else finish(); }
     if (state.pulse > 0) state.pulse -= dt;
     const timingCue = firstRoomTimingKey();

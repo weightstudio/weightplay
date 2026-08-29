@@ -754,29 +754,75 @@ function recommendationSeeds() {
   return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
 }
 
+function recommendationAgeCompatible(game, seeds) {
+  if (!seeds.length) return true;
+  return seeds.some((seed) => (game.ages || []).some((age) => (seed.ages || []).includes(age)));
+}
+
 function scoreRecommendation(game, seeds) {
   if (!seeds.length) {
     const stats = statFor(game);
     return (stats.plays7d || 0) * 10 + (stats.playsTotal || 0);
   }
-  return seeds.reduce((score, seed) => {
+  const affinity = seeds.reduce((score, seed) => {
     const sharedSkills = (game.skills || []).filter((skill) => (seed.skills || []).includes(skill)).length;
     const sharedCategories = (game.categories || []).filter((category) => (seed.categories || []).includes(category)).length;
     const sharedAges = (game.ages || []).filter((age) => (seed.ages || []).includes(age)).length;
     return score + sharedSkills * 5 + sharedCategories * 3 + sharedAges * 4;
   }, 0);
+  const stats = statFor(game);
+  const plays7d = Number(stats.plays7d) || 0;
+  const users7d = Number(stats.users7d) || 0;
+  const popularity = Math.min(8, Math.log2(plays7d + 1));
+  const repeatConfidence = users7d >= 3 ? Math.min(6, (plays7d + 3) / (users7d + 3)) : 0;
+  return affinity * 10 + popularity + repeatConfidence;
+}
+
+function recommendationPrimaryCategory(game) {
+  return game.categories?.[0] || "__uncategorized";
+}
+
+function recommendationReasonKey(game, seeds) {
+  if (!seeds.length) return "popular_fallback";
+  if ((game.skills || []).some((skill) => seeds.some((seed) => (seed.skills || []).includes(skill)))) return "shared_skill";
+  if ((game.ages || []).some((age) => seeds.some((seed) => (seed.ages || []).includes(age)))) return "shared_age";
+  return "activity";
 }
 
 function recommendedGames(limit = 3) {
   const seeds = recommendationSeeds();
   const seedIds = new Set(seeds.map((game) => game.id));
   const candidates = playableGames().filter((game) => !seedIds.has(game.id));
-  const ranked = candidates
+  const ageCompatible = candidates.filter((game) => recommendationAgeCompatible(game, seeds));
+  const ranked = (ageCompatible.length ? ageCompatible : candidates)
     .map((game) => ({ game, score: scoreRecommendation(game, seeds), stats: statFor(game) }))
     .sort((a, b) => b.score - a.score || (b.stats.plays7d || 0) - (a.stats.plays7d || 0) || (b.stats.playsTotal || 0) - (a.stats.playsTotal || 0))
-    .map((entry) => entry.game)
-    .slice(0, limit);
-  return ranked.length ? ranked : popularGames(limit);
+  if (!ranked.length) return popularGames(limit);
+  const selected = [];
+  const selectedIds = new Set();
+  const categoryCounts = new Map();
+  ranked.forEach((entry) => {
+    if (selected.length >= limit) return;
+    const category = recommendationPrimaryCategory(entry.game);
+    const categoryCount = categoryCounts.get(category) || 0;
+    const hasNearAlternative = ranked.some((alternative) => (
+      alternative.game.id !== entry.game.id
+      && recommendationPrimaryCategory(alternative.game) !== category
+      && Math.abs(entry.score - alternative.score) <= 5
+    ));
+    if (categoryCount >= 2 && hasNearAlternative) return;
+    selected.push(entry.game);
+    selectedIds.add(entry.game.id);
+    categoryCounts.set(category, categoryCount + 1);
+  });
+  if (selected.length < limit) {
+    ranked.forEach((entry) => {
+      if (selected.length >= limit || selectedIds.has(entry.game.id)) return;
+      selected.push(entry.game);
+      selectedIds.add(entry.game.id);
+    });
+  }
+  return selected;
 }
 
 function recommendationNote(game, seeds) {
@@ -1434,7 +1480,7 @@ function renderCharacterShowcase() {
 function renderRecommendations() {
   if (!recommendations || !recommendationsSection) return;
   const seeds = recommendationSeeds();
-  const cards = recommendedGames(3).map((game) => {
+  const cards = recommendedGames(3).map((game, index) => {
     const title = text(game.title);
     const type = text(game.type);
     const ageLabel = text(game.ageLabel);
@@ -1447,8 +1493,9 @@ function renderRecommendations() {
     card.addEventListener("click", () => {
       window.WonderAnalytics?.track("recommendation_open", {
         game_id: game.id,
-        game_title: title,
+        recommendation_position: index + 1,
         seed_count: seeds.length,
+        reason: recommendationReasonKey(game, seeds),
         locale: i18n.locale(),
       });
       recordRecentGame(game.id);

@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-triple-match/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <link rel="canonical" href="https://weightplay.com/ko/games/animal-triple-match/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-triple-match/" />
@@ -27,7 +26,7 @@
   <meta name="description" content="Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260827-triple-match-next-shelf-target-v16">
+  <link rel="stylesheet" href="style.css?v=20260829-triple-match-battle-utility-v17">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta property="og:site_name" content="WeightPlay" />
@@ -60,8 +59,7 @@
   "genre": [
     "Puzzle",
     "Strategy",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -130,7 +128,7 @@
           <div class="battle-title"><small id="stageLabel"></small><strong id="stageName">Animal Triple Match</strong></div>
           <div class="hud"><span><b data-t="left">Left</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
           <button id="soundBtn" class="icon-btn" type="button" aria-label="Sound" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
-          <button id="helpBtn" class="icon-btn" type="button" aria-label="How to play" data-t-aria="help">?</button>
+          <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="How to play" data-t-aria="help">?</button>
         </header>
         <p id="objective" class="objective" data-t="objective">Match every treasure without filling the tray.</p>
         <div id="board" class="board" aria-label="Treasure pile" data-t-aria="boardLabel"></div>
@@ -163,7 +161,7 @@
 
       <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card result-card">
         <small id="resultKicker"></small><p id="resultReward" class="result-reward" aria-live="polite" hidden></p><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
-        <div class="next-plan"><b data-t="nextPlan">Next shelf</b><span id="planText"></span><span id="chapterPreview" class="chapter-preview" aria-live="polite" hidden></span></div>
+        <div class="next-plan"><b data-t="nextPlan">Next shelf</b><span id="planText"></span><span id="masteryTarget" class="mastery-target" aria-live="polite"></span><span id="chapterPreview" class="chapter-preview" aria-live="polite" hidden></span></div>
         <div class="dialog-actions result-actions"><button id="resultStages" type="button" data-t="stages">Stages</button><button id="nextBtn" class="primary" type="button" data-t="next">Next Stage</button><button id="retryBtn" type="button" data-t="retry">Retry</button></div>
       </div></section>
     </div></div>
@@ -177,7 +175,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
-  <script src="game.js?v=20260827-triple-match-next-shelf-target-v16"></script>
+  <script src="game.js?v=20260829-triple-match-battle-utility-v17"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260826-arabic-locale-v13" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
