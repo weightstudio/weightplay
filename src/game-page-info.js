@@ -2100,7 +2100,7 @@
     "klondike-solitaire": "klondike-solitaire-cover.webp",
     "pyramid-solitaire": "pyramid-solitaire-cover-v2.webp",
     "spider-solitaire": "spider-solitaire-cover.png",
-    "tripeaks-solitaire": "tripeaks-solitaire-cover.svg",
+    "tripeaks-solitaire": "tripeaks-solitaire-cover-v2.webp",
     "yukon-solitaire": "yukon-solitaire-cover.svg",
     "wonder-crash": "wonder-crash-cover.webp",
     "color-lunchbox": "lunchbox-cover.webp",

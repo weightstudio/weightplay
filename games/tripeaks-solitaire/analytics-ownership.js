@@ -5,7 +5,7 @@
   window.__weightplayTriPeaksAnalyticsInstalled = true;
 
   const GAME_ID = "tripeaks-solitaire";
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
   const INTERFACE_VERSION = "6";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
   const EVENTS = new Set(["game_start", "round_start", "card_move", "peak_clear", "stock_draw", "stock_exhausted", "hint", "undo", "result", "result_action", "restart", "new_game", "main_return", "locale_change", "return_session"]);

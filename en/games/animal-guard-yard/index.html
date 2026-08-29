@@ -37,7 +37,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260729-guard-general2" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260729-guard-general2" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260829-guard-yard-interface-contract-v27" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=20260829-guard-yard-ar-guide-dedupe-v28" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
     <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -83,7 +83,7 @@
     <meta name="twitter:description" content="Clover Yard connects six garden regions that share sunlight, seeds, and water. When wild beasts crowd the paths, the player becomes the yard keeper and..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.webp" />
   </head>
-  <body data-tutorial-auto-show="false" data-wp-active-scene="main">
+  <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
     <main class="yard-game main-screen" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
@@ -263,7 +263,7 @@
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
-    <script src="game.js?v=20260829-guard-yard-interface-contract-v27"></script>
+    <script src="game.js?v=20260829-guard-yard-ar-guide-dedupe-v28"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
@@ -271,7 +271,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-guard-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260829-guard-yard-interface-contract-v27";
+          script.src = "../../src/game-page-info.js?v=20260829-guard-yard-ar-guide-dedupe-v28";
           script.dataset.guardGameInfo = "idle";
           document.body.appendChild(script);
         };

@@ -99,3 +99,155 @@ body:not([data-screen="battle"]) #battleView {
     min-height:50px;
   }
 }
+
+/* v16: the immutable shell owns its scene markup. Keep the native Main
+   composition inside the app flow so the public Guide starts after the app,
+   not inside the validator's body-level fallback root. */
+.main-view .main-copy {
+  grid-column: auto;
+}
+.main-view #startBtn {
+  grid-column: auto;
+  grid-row: auto;
+  height: 52px;
+  min-height: 52px;
+}
+.wp-standard-main-title {
+  margin: 0;
+  color: #fff5cf;
+  font-size: clamp(30px, 4vw, 52px);
+  line-height: 1.04;
+}
+.wp-standard-main-summary {
+  max-width: 38rem;
+}
+
+@media (min-width: 700px) {
+  .main-view .main-copy {
+    grid-column: 2;
+  }
+}
+
+/* The Stage is a fixed logical 390x788 workspace. Its persistent tab bar is
+   intentionally a single centered slot today, leaving the three-track bar
+   ready for future Team/Equipment work without inventing disabled controls. */
+body.wp-stage-select-active #stageView.wp-standard-stage-panel {
+  display: grid !important;
+  grid-template-rows: 56px 112px 92px 48px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  background: transparent;
+}
+body.wp-stage-select-active #stageView .hero-picker,
+body.wp-stage-select-active #stageView .progress-card,
+body.wp-stage-select-active #stageView .stage-rail,
+body.wp-stage-select-active #stageView .stage-tabs {
+  min-width: 0;
+  min-height: 0;
+}
+.stage-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 4px;
+}
+.stage-tab {
+  grid-column: 2;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid #ffd45f;
+  border-radius: 9px;
+  background: #194635;
+  color: #fff5cf;
+  font-weight: 900;
+  cursor: default;
+}
+.stage-tab[aria-selected="true"] {
+  box-shadow: 0 0 0 2px #ffd45f66;
+}
+
+/* Keep the platform-created Stage reserve and the explicit semantic reserve
+   on the same physical 56px boundary; only the latter is queried by the
+   validator, while the former supplies the shared shell background. */
+#stageAd {
+  display: none;
+  position: fixed;
+  z-index: 38;
+  top: var(--wp-stage-reserve-top, calc(100dvh - 56px));
+  left: var(--wp-stage-canvas-left, 0px);
+  right: auto;
+  width: var(--wp-stage-canvas-rendered-width, 100vw);
+  max-width: 920px;
+  height: 56px;
+  min-height: 56px;
+  background: #17243a;
+  border-top: 1px solid rgb(255 255 255 / 12%);
+  pointer-events: none;
+}
+body[data-screen="stage"] #stageAd {
+  display: block;
+}
+
+/* Battle exposes a distinct utility beside the enabled hero skill. The
+   utility gives the player a non-destructive help surface without changing
+   the existing movement/skill loop. */
+.battle-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+.battle-utility {
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  min-height: 56px;
+  border: 1px solid #8edbb3;
+  border-radius: 9px;
+  background: #0c281f;
+  color: #fff5cf;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+}
+.battle-utility:focus-visible,
+.stage-tab:focus-visible {
+  outline: 3px solid #ffd45f;
+  outline-offset: 2px;
+}
+body.wp-logical-battle-active #battleView .battle-head {
+  grid-template-columns: 56px minmax(0, 1fr) auto !important;
+}
+body.wp-logical-battle-active #battleAd {
+  display: block;
+}
+body:not([data-screen="battle"]) #battleAd {
+  display: none;
+}
+
+@media (max-width: 699px) {
+  .wp-standard-main-poster {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+
+  body .main-view .wp-standard-main-poster-media,
+  body .main-view .wp-standard-main-poster-media > img,
+  body .main-view .wp-standard-main-poster > img {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    aspect-ratio: 1 !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+  }
+}

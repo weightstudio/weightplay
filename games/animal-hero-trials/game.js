@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -17,6 +17,7 @@
       pitch: "Guide Leo through three forest trials and choose a blessing after every room.",
       marks: "Trial Marks",
       mastery: "Heart Mastery",
+      progress: "Progress",
       start: "Start Game",
       choose: "Choose Trial",
       blessing: "Choose a Blessing",
@@ -41,12 +42,14 @@
       quitCopy: "This run's room and blessing progress will be lost.",
       keepPlaying: "Keep Playing",
       leaveTrial: "Leave Trial",
+      battleHelp: "Battle help",
     },
     "zh-Hant": {
       title: "動物英雄試煉",
       pitch: "帶領獅子里歐通過三個森林試煉，每個房間結束後選擇一項祝福。",
       marks: "試煉印記",
       mastery: "勇氣精通",
+      progress: "進度",
       start: "開始遊戲",
       choose: "選擇試煉",
       blessing: "選擇祝福",
@@ -121,6 +124,7 @@
     fiaSkillEffect: "Dash toward the nearest enemy, become invulnerable for 0.55 seconds, and deal {damage} close-range damage.",
     orlaSkillEffect: "Deal {damage} damage to the nearest enemy and mark its next automatic hit for +18 damage.",
     taroSkillEffect: "Guard for 3.5 seconds, heal up to {heal} HP, and deal {damage} damage in a wide area.",
+    battleHelp: "Battle help",
   });
   Object.assign(copy["zh-Hant"], {
     skillReadyLabel: "{skill}已可使用。{effect}按下即可施放。",
@@ -129,6 +133,7 @@
     fiaSkillEffect: "衝向最近敵人、獲得 0.55 秒無敵，並造成 {damage} 點近距離傷害。",
     orlaSkillEffect: "對最近敵人造成 {damage} 點傷害，並使下一次自動攻擊追加 18 點傷害。",
     taroSkillEffect: "防護 3.5 秒、最多恢復 {heal} 點生命，並對大範圍敵人造成 {damage} 點傷害。",
+    battleHelp: "戰鬥說明",
   });
   copy.es = {
     controlHint: "Toca o arrastra para moverte · Usa {skill} o Espacio cuando esté disponible",
@@ -138,6 +143,7 @@
     pitch: "Elige uno de cuatro héroes y supera una campaña de 30 pruebas sombrías.",
     marks: "Marcas de prueba",
     mastery: "Maestría de vida",
+    progress: "Progreso",
     start: "Iniciar juego",
     choose: "Elegir prueba",
     blessing: "Elige una bendición",
@@ -182,16 +188,18 @@
     fiaSkillEffect: "Corre hacia el enemigo más cercano, se vuelve invulnerable durante 0,55 segundos e inflige {damage} de daño cercano.",
     orlaSkillEffect: "Inflige {damage} de daño al enemigo más cercano y marca su siguiente golpe automático para añadir 18 de daño.",
     taroSkillEffect: "Protege durante 3,5 segundos, recupera hasta {heal} PV e inflige {damage} de daño en un área amplia.",
+    battleHelp: "Ayuda de batalla",
   };
 
-  Object.assign(copy.en, { stages: "Stages", replay: "Replay" });
-  Object.assign(copy["zh-Hant"], { stages: "\u8a66\u7149", replay: "\u91cd\u65b0\u6311\u6230" });
-  Object.assign(copy.es, { stages: "Pruebas", replay: "Repetir" });
+  Object.assign(copy.en, { stages: "Stages", replay: "Replay", battleHelp: "Battle help" });
+  Object.assign(copy["zh-Hant"], { stages: "\u8a66\u7149", replay: "\u91cd\u65b0\u6311\u6230", battleHelp: "\u6230\u9b25\u8aaa\u660e" });
+  Object.assign(copy.es, { stages: "Pruebas", replay: "Repetir", battleHelp: "Ayuda de batalla" });
   copy.ar = {
     title: "محاكمات بطل الحيوان",
     pitch: "اختر واحدًا من أربعة أبطال وأكمل حملة الظلال المكوّنة من 30 تجربة.",
     marks: "علامات التجربة",
     mastery: "إتقان القلب",
+    progress: "التقدم",
     start: "ابدأ اللعبة",
     choose: "اختر تجربة",
     blessing: "اختر نعمة",
@@ -239,6 +247,7 @@
     orlaSkillEffect: "ألحق {damage} ضررًا بأقرب عدو وعلّمه لتضيف هجمته التلقائية التالية 18 ضررًا.",
     taroSkillEffect: "احمِ نفسك لمدة 3.5 ثوانٍ، واستعد حتى {heal} من نقاط الصحة، وألحق {damage} ضررًا في نطاق واسع.",
     stages: "المراحل",
+    battleHelp: "مساعدة المعركة",
     next: "المحاكمة القادمة",
     replay: "إعادة اللعب",
   };
@@ -469,6 +478,7 @@
   const ctx = canvas.getContext("2d");
   let activeScene = "main";
   let sceneGeneration = 0;
+  let battleHelpRestoreTimer = 0;
 
   function sceneFrame(scene, callback) {
     const generation = sceneGeneration;
@@ -616,6 +626,7 @@
     const title = localizedValue(definition.titleEn, definition.titleZh, definition.titleEs);
     const rule = localizedPair(region.rule);
     $("#battleBriefing").textContent = `${trialLabel} ${definition.stage} · ${title} · ${rule}`;
+    $("#battleBriefing").dataset.defaultText = $("#battleBriefing").textContent;
   }
 
   function interpolate(key, values) {
@@ -780,6 +791,9 @@
       node.textContent = t(node.dataset.t);
     });
     $("#markCount").textContent = marks;
+    $("#mainProgress").textContent = `${t("progress")} ${Math.max(1, unlocked)} / ${TRIAL_COUNT}`;
+    $("#battleHelp").setAttribute("aria-label", t("battleHelp"));
+    $("#battleHelp").title = t("battleHelp");
     const masteryLevel = formatMasteryLevel(mastery);
     $("#masteryLevel").textContent = masteryLevel;
     const masteryCost = 5 + mastery * 4;
@@ -1807,6 +1821,16 @@
   $("#startBtn").onclick = () => { playSound("click"); show("stage"); focusStage(); };
   $("#stageBack").onclick = () => { playSound("click"); show("main"); focusMain(); };
   $("#battleBack").onclick = openQuitDecision;
+  $("#battleHelp").onclick = () => {
+    if (!run || document.body.dataset.gameView !== "battle") return;
+    const briefing = $("#battleBriefing");
+    const fallback = briefing.dataset.defaultText || briefing.textContent;
+    window.clearTimeout(battleHelpRestoreTimer);
+    briefing.textContent = t("battleHelp");
+    battleHelpRestoreTimer = window.setTimeout(() => {
+      if (run && document.body.dataset.gameView === "battle") briefing.textContent = fallback;
+    }, 2400);
+  };
   $("#skillBtn").onclick = skill;
   $("#skillBtn").addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
