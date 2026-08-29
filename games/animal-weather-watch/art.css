@@ -1,0 +1,20 @@
+.weather-art {
+  display: block;
+  width: 52px;
+  height: 52px;
+  background-image: url("assets/animal-weather-watch-sign-atlas.webp");
+  background-repeat: no-repeat;
+  background-size: 300% 200%;
+  font-size: 0 !important;
+}
+
+.weather-sun { background-position: 0 0; }
+.weather-cloud { background-position: 50% 0; }
+.weather-rain { background-position: 100% 0; }
+.choice .sign-icon.weather-art { width: 58px; height: 58px; }
+
+#battleScreen {
+  background-image: linear-gradient(#ffffffb8, #ffffffd6), url("assets/animal-weather-watch-background.webp");
+  background-size: cover;
+  background-position: center;
+}

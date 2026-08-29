@@ -19,7 +19,7 @@
     return value;
   };
   const directionCopy = (direction) => ((COPY[locale] || COPY.en).directions || COPY.en.directions)[direction];
-  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v1", interface_version: 6, stage: stageIndex + 1, ...data }); }
+  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v2", interface_version: 6, stage: stageIndex + 1, ...data }); }
   function best() { const value = Number(localStorage.getItem("weightplay-animal-gust-garden-best-v1") || 0); return value > 0 ? value : null; }
   function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backButton").hidden = screen === "main"; }
   function stageName(index) { return copy("stage", { number: index + 1 }); }
@@ -46,9 +46,9 @@
     const thornSet = new Set(stageState.thorns.map((thorn) => cellKey(thorn.x, thorn.y)));
     for (let y = 0; y < stageState.height; y += 1) for (let x = 0; x < stageState.width; x += 1) {
       const cell = document.createElement("button"); cell.type = "button"; cell.className = "grid-cell"; cell.setAttribute("role", "gridcell"); const seedIndex = stageState.seeds.findIndex((seed) => seed.x === x && seed.y === y); const flower = findAt(stageState.flowers, x, y); const thorn = thornSet.has(cellKey(x, y));
-      if (thorn) { cell.classList.add("thorn"); cell.textContent = "✦"; cell.setAttribute("aria-label", copy("thorn")); }
-      else if (seedIndex >= 0) { const seed = stageState.seeds[seedIndex]; cell.classList.add("seed", seed.locked ? "locked" : "selectable"); if (flower) cell.classList.add("flower-target"); cell.dataset.seedIndex = String(seedIndex); cell.textContent = seed.locked ? "✿" : "●"; cell.setAttribute("aria-label", `${copy("seed")} ${seedIndex + 1}${seed.locked ? `, ${copy("flower")}` : ""}`); cell.setAttribute("aria-pressed", String(selectedSeed === seedIndex)); cell.addEventListener("click", () => { if (!seed.locked) { selectedSeed = seedIndex; selectedDirection = null; announce("select", { seed: seedIndex + 1 }); renderBattle(); } }); }
-      else if (flower) { cell.classList.add("flower"); cell.textContent = "✿"; cell.setAttribute("aria-label", copy("flower")); }
+      if (thorn) { cell.classList.add("thorn", "asset", "asset-thorn"); cell.textContent = ""; cell.setAttribute("aria-label", copy("thorn")); }
+      else if (seedIndex >= 0) { const seed = stageState.seeds[seedIndex]; const flowerIndex = stageState.flowers.findIndex((item) => item.x === x && item.y === y); cell.classList.add("seed", seed.locked ? "locked" : "selectable", "asset", seed.locked ? `asset-flower-${Math.max(0, flowerIndex) % 2 + 1}` : `asset-seed-${(seedIndex % 3) + 1}`); if (flower) cell.classList.add("flower-target"); cell.dataset.seedIndex = String(seedIndex); cell.textContent = ""; cell.setAttribute("aria-label", `${copy("seed")} ${seedIndex + 1}${seed.locked ? `, ${copy("flower")}` : ""}`); cell.setAttribute("aria-pressed", String(selectedSeed === seedIndex)); cell.addEventListener("click", () => { if (!seed.locked) { selectedSeed = seedIndex; selectedDirection = null; announce("select", { seed: seedIndex + 1 }); renderBattle(); } }); }
+      else if (flower) { const flowerIndex = stageState.flowers.findIndex((item) => item.x === x && item.y === y); cell.classList.add("flower", "asset", `asset-flower-${flowerIndex % 2 + 1}`); cell.textContent = ""; cell.setAttribute("aria-label", copy("flower")); }
       else { cell.classList.add("open"); cell.textContent = "·"; cell.setAttribute("aria-label", copy("empty")); }
       root.appendChild(cell);
     }

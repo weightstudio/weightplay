@@ -17,7 +17,8 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .panel { background: rgba(20, 49, 58, .86); border: 1px solid rgba(75, 136, 129, .7); border-radius: 24px; box-shadow: 0 18px 60px rgba(0, 0, 0, .25); }
 #mainScreen { margin-top: 8px; text-align: center; }
 .cover-wrap { position: relative; overflow: hidden; border-radius: 18px; background: #2b615b; }
-.cover-wrap img { display: block; width: 100%; height: auto; }
+.cover-wrap picture, .cover-wrap img { display: block; width: 100%; }
+.cover-wrap img { aspect-ratio: 1; height: auto; object-fit: cover; }
 .cover-badge { position: absolute; left: 12px; bottom: 12px; padding: 5px 9px; border-radius: 999px; background: rgba(8, 25, 28, .75); color: var(--accent); font-size: .8rem; font-weight: 800; }
 .eyebrow { margin: 16px 0 4px; color: var(--accent); font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 h1, h2 { margin: 0; line-height: 1.1; }
@@ -48,6 +49,13 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .grid-cell.seed { color: #f8d976; }
 .grid-cell.seed[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: 2px; }
 .grid-cell.seed.locked { color: var(--good); background: #285544; }
+.grid-cell.asset { background-image: url("assets/animal-gust-garden-garden-atlas.png"); background-repeat: no-repeat; background-size: 400% 200%; color: transparent; }
+.grid-cell.asset-seed-1 { background-position: 0 0; }
+.grid-cell.asset-seed-2 { background-position: 33.333% 0; }
+.grid-cell.asset-seed-3 { background-position: 66.667% 0; }
+.grid-cell.asset-flower-1 { background-position: 0 100%; }
+.grid-cell.asset-flower-2 { background-position: 33.333% 100%; }
+.grid-cell.asset-thorn { background-position: 66.667% 100%; }
 .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; color: var(--muted); font-size: .82rem; }
 .legend span { display: inline-flex; align-items: center; gap: 4px; }
 .legend-seed { color: #f8d976; }.legend-flower { color: #ffdd8a; }.legend-thorn { color: #ffb37c; }
@@ -57,7 +65,9 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .direction-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .direction-button { background: #285454; font-size: 1.4rem; }
 .direction-button[aria-pressed="true"] { background: var(--accent); color: #26321f; border-color: var(--accent); }
-.result-icon { margin: 10px auto 16px; width: 72px; height: 72px; display: grid; place-items: center; border-radius: 50%; background: #285544; color: var(--good); font-size: 2.6rem; }
+.result-icon { margin: 10px auto 16px; width: 108px; height: 108px; display: grid; place-items: end center; overflow: hidden; border-radius: 50%; background: #285544; color: var(--good); font-size: 2.6rem; }
+.result-art { width: 100%; height: 150%; object-fit: contain; object-position: center bottom; }
+#battleScreen { background-image: linear-gradient(rgba(20, 49, 58, .78), rgba(20, 49, 58, .88)), url("assets/animal-gust-garden-background.webp"); background-size: cover; background-position: center; }
 #resultScreen { text-align: center; }
 .modal { position: fixed; inset: 0; z-index: 4; display: grid; place-items: center; padding: 18px; background: rgba(4, 13, 17, .78); }
 .modal-card { position: relative; width: min(100%, 420px); padding: 26px 20px 20px; border: 1px solid var(--line); border-radius: 20px; background: #15363d; box-shadow: 0 20px 70px rgba(0, 0, 0, .45); }

@@ -22,7 +22,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v1" />
+  <meta name="weightplay-game-version" content="v2" />
   <title>Gust Garden | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260829-gust-garden-v1" />
 </head>
@@ -36,7 +36,7 @@
     </header>
 
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-gust-garden-cover.svg" width="900" height="600" data-i18n-alt="coverAlt" alt="" /><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
+      <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="coverAlt" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-i18n="title">Gust Garden</h1>
       <p class="intro" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
@@ -64,13 +64,13 @@
     </section>
 
     <section id="resultScreen" class="screen panel" data-screen="result" hidden>
-      <div class="result-icon" aria-hidden="true">✿</div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
+      <div class="result-icon"><img class="result-art" src="assets/animal-gust-garden-taro.png" width="1024" height="1536" data-i18n-alt="taroAlt" alt="" /></div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
       <div class="main-actions"><button id="nextButton" class="primary" type="button" data-i18n="next">Next plot</button><button id="mapButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
     </section>
 
     <section id="settingsPanel" class="modal" hidden aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260829-gust-garden-v1"></script>
-  <script src="game.js?v=20260829-gust-garden-v1"></script>
+  <script src="locales.js?v=20260830-gust-garden-v2"></script>
+  <script src="game.js?v=20260830-gust-garden-v2"></script>
 </body>
 </html>

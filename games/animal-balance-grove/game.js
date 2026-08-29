@@ -63,8 +63,8 @@
     $("rightPanLabel").textContent = t("rightPan", { n: state.selected.reduce((sum, index) => sum + stage.pieces[index][1], 0) });
     $("sessionChecks").textContent = String(state.sessionChecks);
     $("selectionCount").textContent = t("selected", { n: state.selected.length });
-    $("selectedItems").innerHTML = state.selected.map((index) => `<span class="placed-token" aria-label="${t(stage.pieces[index][0])}">${stage.pieces[index][2]}</span>`).join("");
-    $("tokenTray").innerHTML = stage.pieces.map((piece, index) => `<button class="token-btn" type="button" data-token="${index}" aria-pressed="${state.selected.includes(index)}"><span class="token-icon" aria-hidden="true">${piece[2]}</span><span><span class="token-name">${t(piece[0])}</span><br><span class="token-value">${piece[1]}</span></span></button>`).join("");
+    $("selectedItems").innerHTML = state.selected.map((index) => `<span class="placed-token placed-token-${index}" aria-label="${t(stage.pieces[index][0])}"></span>`).join("");
+    $("tokenTray").innerHTML = stage.pieces.map((piece, index) => `<button class="token-btn" type="button" data-token="${index}" aria-pressed="${state.selected.includes(index)}"><span class="token-icon token-icon-${index}" aria-hidden="true"></span><span><span class="token-name">${t(piece[0])}</span><br><span class="token-value">${piece[1]}</span></span></button>`).join("");
     $("tokenTray").querySelectorAll("[data-token]").forEach((button) => button.addEventListener("click", () => toggleToken(Number(button.dataset.token))));
   };
   const renderResult = () => { const final = state.stage >= stages.length - 1 && state.selected.length === 0; $("resultHeading").textContent = final ? t("finishTitle") : t("balanced"); $("resultText").textContent = final ? t("finishText", { n: state.sessionChecks }) : t("balanced"); $("resultPrimaryBtn").textContent = final ? t("stageMap") : t("next"); $("resultMapBtn").hidden = final; $("resultPrimaryBtn").onclick = final ? () => { show("stages"); renderStages(); } : () => startStage(state.stage + 1); }; 

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-balance-grove/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-balance-grove/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-balance-grove/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-balance-grove/" />
@@ -24,27 +23,28 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#d9f4ed">
   <title>संतुलन उपवन | WeightPlay</title>
-  <meta name="weightplay-game-version" content="v2">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260830-balance-grove-v2">
+  <meta name="weightplay-game-version" content="v3">
+  <link rel="stylesheet" href="style.css?v=20260830-balance-grove-v3">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260830-balance-grove-v3">
   <meta name="description" content="नाम वाले पत्थर चुनकर जंगल के तीन पुलों को स्थिर करें।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="संतुलन उपवन | WeightPlay" />
     <meta property="og:description" content="नाम वाले पत्थर चुनकर जंगल के तीन पुलों को स्थिर करें।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-balance-grove/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="संतुलन उपवन | WeightPlay" />
     <meta name="twitter:description" content="नाम वाले पत्थर चुनकर जंगल के तीन पुलों को स्थिर करें।" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.png" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "संतुलन उपवन",
+  "alternateName": "Balance Grove",
   "url": "https://weightplay.com/hi/games/animal-balance-grove/",
-  "image": "https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.svg",
+  "image": "https://weightplay.com/games/animal-balance-grove/assets/animal-balance-grove-cover.png",
   "description": "नाम वाले पत्थर चुनकर जंगल के तीन पुलों को स्थिर करें।",
   "publisher": {
     "@type": "Organization",
@@ -59,19 +59,17 @@
     "Balance",
     "Logic",
     "परिवार",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Balance Grove"
+  }
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-balance-grove" data-wp-game-version="v2" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-balance-grove" data-wp-game-version="v3" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><span class="loading-orb" aria-hidden="true">✦</span><strong data-copy="loading">Warming the grove…</strong><div class="loading-track"><i></i></div></div>
   </section>
@@ -88,17 +86,17 @@
       </div>
     </header>
     <section class="hero-grid">
-      <div class="cover-wrap"><img class="cover" src="assets/animal-balance-grove-cover.svg" alt="संतुलन उपवन game artwork" aria-hidden="true" width="1200" height="900"></div>
-      <div class="hero-copy"><p class="kicker" data-copy="kicker">Moss Shell Taro's gentle puzzle</p><h1 data-copy="title">संतुलन उपवन</h1><p class="intro" data-copy="intro">Place the right stones on the grove scale and help Taro steady the bridge.</p><p class="summary" data-copy="summary">Balance named stones to steady three peaceful forest bridges.</p><p id="mainProgress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite" data-copy="progress">Progress: 3 groves · 3 bridges · no timer</p><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a round</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Choose a grove</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div>
+      <div class="cover-wrap"><img class="cover" src="assets/animal-balance-grove-cover.png" alt="संतुलन उपवन game artwork" aria-hidden="true" width="1254" height="1254"></div>
+      <div class="hero-copy"><p class="kicker" data-copy="kicker">Moss Shell Taro's gentle puzzle</p><h1 data-copy="title">संतुलन उपवन</h1><p class="intro" data-copy="intro">Place the right stones on the grove scale and help Taro steady the bridge.</p><p class="summary" data-copy="summary">Balance named stones to steady three peaceful forest bridges.</p><img class="taro-guide" src="assets/animal-balance-grove-taro.png" alt="" aria-hidden="true" width="768" height="768"><p id="mainProgress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite" data-copy="progress">Progress: 3 groves · 3 bridges · no timer</p><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a round</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Choose a grove</button></div><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div>
     </section>
     <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle"><h2 id="guideTitle" data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOneTitle">1. Read the goal</b><p data-copy="guideOne">Each grove shows the total the right pan needs.</p></article><article><b data-copy="guideTwoTitle">2. Pick and check</b><p data-copy="guideTwo">Tap stones to place them, then check the balance. Names and shapes help you plan.</p></article><article><b data-copy="guideThreeTitle">3. Try again calmly</b><p data-copy="guideThree">A wrong mix clears gently. There is no timer or score pressure.</p></article></div></section>
   </main>
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-balance-grove-cover.svg')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 id="stageHeading" data-copy="stages">Choose a grove</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-label="Grove help" title="Grove help">i</button></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Grove sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Choose a grove</button><span aria-hidden="true"></span></nav></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="battleHeading"><div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><div><h2 id="battleHeading">Balance Grove</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span class="check-pill"><span data-copy="best">Best checks</span> <b id="sessionChecks">0</b></span><button id="battleInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-label="Grove help" title="Grove help">i</button></div></header><div class="battle-content"><p id="battleHint" class="battle-hint"></p><div class="goal-row"><span id="leftGoal"></span><span id="rightGoal"></span></div><div class="scale" aria-label="Balance scale"><div class="pan pan-left"><span class="pan-label" id="leftPanLabel"></span><div class="pan-items"><span class="fixed-weight" aria-hidden="true">◈</span></div></div><div class="scale-post" aria-hidden="true"><i></i></div><div class="pan pan-right"><span class="pan-label" id="rightPanLabel"></span><div id="selectedItems" class="pan-items"></div></div></div><div class="choice-head"><h3 data-copy="chooseStone">Choose a stone</h3><span id="selectionCount" class="selection-count"></span></div><div id="tokenTray" class="token-tray" role="group" aria-label="Choose a stone"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check balance</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear stones</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden aria-labelledby="resultHeading"><div class="result-card"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stageMap">Grove map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="back">Back</button></div></div></section>
+  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-balance-grove-cover.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 id="stageHeading" data-copy="stages">Choose a grove</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-label="Grove help" title="Grove help">i</button></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Grove sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Choose a grove</button><span aria-hidden="true"></span></nav></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
+  <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="battleHeading"><div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('assets/animal-balance-grove-background.png')"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><div><h2 id="battleHeading">Balance Grove</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span class="check-pill"><span data-copy="best">Best checks</span> <b id="sessionChecks">0</b></span><button id="battleInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-label="Grove help" title="Grove help">i</button></div></header><div class="battle-content"><p id="battleHint" class="battle-hint"></p><div class="goal-row"><span id="leftGoal"></span><span id="rightGoal"></span></div><div class="scale" aria-label="Balance scale"><div class="pan pan-left"><span class="pan-label" id="leftPanLabel"></span><div class="pan-items"><span class="fixed-weight" aria-hidden="true">◈</span></div></div><div class="scale-post" aria-hidden="true"><i></i></div><div class="pan pan-right"><span class="pan-label" id="rightPanLabel"></span><div id="selectedItems" class="pan-items"></div></div></div><div class="choice-head"><h3 data-copy="chooseStone">Choose a stone</h3><span id="selectionCount" class="selection-count"></span></div><div id="tokenTray" class="token-tray" role="group" aria-label="Choose a stone"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check balance</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear stones</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
+  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-taro" src="assets/animal-balance-grove-taro.png" alt="" aria-hidden="true" width="768" height="768"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stageMap">Grove map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="back">Back</button></div></div></section>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20260830-balance-grove-v2"></script><script src="game.js?v=20260830-balance-grove-v2"></script>
+  <script src="locales.js?v=20260830-balance-grove-v3"></script><script src="game.js?v=20260830-balance-grove-v3"></script>
 <section class="game-page-info game-page-info-static" aria-label="संतुलन उपवन खेल की जानकारी">
 
     <div class="game-info-hero">

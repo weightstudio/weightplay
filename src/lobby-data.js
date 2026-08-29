@@ -2648,7 +2648,7 @@ const animalBalanceGrovePlanned = {
   ageLabel: animalBalanceGroveLocalized(Array(13).fill("6+")),
   href: "games/animal-balance-grove/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-balance-grove/assets/animal-balance-grove-cover.svg", hideHero: true },
+  art: { kind: "image", background: "games/animal-balance-grove/assets/animal-balance-grove-cover.png", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalBalanceGrovePlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.games.push(animalBalanceGrovePlanned);
