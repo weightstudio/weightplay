@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-constellation-keeper",
+  "audience": "general",
+  "flow": "MAIN_STAGE_BATTLE",
+  "stage": {
+    "enabled": true,
+    "leftWorkspace": null,
+    "rightWorkspace": null
+  }
+}

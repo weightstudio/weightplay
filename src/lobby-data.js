@@ -2578,6 +2578,32 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-30). Keep the canonical identity
+// planned/Coming Soon while the playable route remains an internal noindex
+// prototype pending art, Tester, Reviewer, release, and publication gates.
+const animalConstellationKeeperLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalConstellationKeeperLocalized = (values) => Object.fromEntries(animalConstellationKeeperLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalConstellationKeeperStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalConstellationKeeperPlanned = {
+  id: "animal-constellation-keeper",
+  title: animalConstellationKeeperLocalized(["Constellation Keeper", "動物星圖守護員", "动物星图守护员", "どうぶつ星座守り", "동물 별자리 지킴이", "Guardián de Constelaciones", "Guardião das Constelações", "Gardien des constellations", "Sternbild-Hüter", "Custode delle costellazioni", "Хранитель созвездий", "नक्षत्र रक्षक", "حارس الكوكبات"]),
+  status: "planned",
+  statusText: { ...animalConstellationKeeperStatusText },
+  type: animalConstellationKeeperLocalized(["Relationship Deduction Puzzle", "關係推理益智", "关系推理益智", "関係推理パズル", "관계 추리 퍼즐", "Puzzle de deducción relacional", "Puzzle de dedução relacional", "Puzzle de déduction relationnelle", "Beziehungslogik-Puzzle", "Puzzle di deduzione relazionale", "Пазл логики отношений", "संबंध तर्क पहेली", "لغز استنتاج العلاقات"]),
+  description: animalConstellationKeeperLocalized(["Read two sky rules, choose the only animal constellation that obeys them, and restore three quiet night maps.", "閱讀兩條星空規則，選出唯一符合的動物星圖，修復三幅安靜夜空地圖。", "阅读两条星空规则，选出唯一符合的动物星图，修复三幅安静夜空地图。", "2つの星空ルールを読み、条件に合う動物星座を選んで3つの夜空地図を直そう。", "두 별자리 규칙을 읽고 조건에 맞는 동물 별자리를 골라 조용한 밤하늘 지도 세 장을 복원해요.", "Lee dos reglas del cielo, elige la única constelación animal válida y restaura tres mapas nocturnos.", "Leia duas regras do céu, escolha a única constelação animal correta e restaure três mapas noturnos.", "Lis deux règles du ciel, choisis la seule constellation animale correcte et restaure trois cartes nocturnes.", "Lies zwei Himmelsregeln, wähle das einzige passende Tiersternbild und repariere drei Nachtkarten.", "Leggi due regole del cielo, scegli l'unica costellazione animale corretta e restaura tre mappe notturne.", "Прочитайте два правила неба, выберите единственное подходящее звериное созвездие и восстановите три ночные карты.", "आकाश के दो नियम पढ़ें, सही पशु नक्षत्र चुनें और रात के तीन मानचित्र बहाल करें।", "اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية."]),
+  meta: animalConstellationKeeperLocalized([["3 Night Maps", "Relationship Clues", "Calm Retry"], ["3 幅夜空地圖", "關係線索", "平靜重試"], ["3 幅夜空地图", "关系线索", "平静重试"], ["3つの夜空マップ", "関係の手がかり", "穏やかな再挑戦"], ["밤하늘 지도 3개", "관계 단서", "차분한 재시도"], ["3 mapas nocturnos", "Pistas relacionales", "Reintento sereno"], ["3 mapas noturnos", "Pistas de relação", "Nova tentativa calma"], ["3 cartes nocturnes", "Indices relationnels", "Reprise sereine"], ["3 Nachtkarten", "Beziehungshinweise", "Ruhiger Versuch"], ["3 mappe notturne", "Indizi relazionali", "Riprova calma"], ["3 ночные карты", "Подсказки отношений", "Спокойный повтор"], ["3 रात के मानचित्र", "संबंध संकेत", "शांत पुनः попытка"], ["3 خرائط ليلية", "تلميحات العلاقات", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Deduction", "Planning", "Family", "Animal"],
+  skills: ["Logic", "Pattern Recognition", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalConstellationKeeperLocalized(Array(13).fill("6+")),
+  href: "games/animal-constellation-keeper/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalConstellationKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalConstellationKeeperPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalConstellationKeeperPlanned.id);
+
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.
 const animalLanternLatticeLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -2627,6 +2653,32 @@ const animalLanternGuidesPlanned = {
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalLanternGuidesPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.games.push(animalLanternGuidesPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalLanternGuidesPlanned.id);
+
+// General Issue repair (2026-08-30): provide the private planned identity
+// required by the localized-route generator while keeping Glyph Garden out of
+// the playable lobby catalog until its remaining release gates pass.
+const animalGlyphGardenLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalGlyphGardenLocalized = (values) => Object.fromEntries(animalGlyphGardenLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalGlyphGardenStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalGlyphGardenPlanned = {
+  id: "animal-glyph-garden",
+  title: animalGlyphGardenLocalized(["Glyph Garden", "符文花園", "符文花园", "グリフガーデン", "글리프 정원", "Jardín de Glifos", "Jardim dos Glifos", "Jardin des Glyphes", "Glyphen-Garten", "Giardino dei Glifi", "Сад глифов", "ग्लिफ़ गार्डन", "حديقة الرموز"]),
+  status: "planned",
+  statusText: { ...animalGlyphGardenStatusText },
+  type: animalGlyphGardenLocalized(["Shape-and-Colour Matching Puzzle", "形狀與顏色配對益智", "形状与颜色配对益智", "形と色のマッチングパズル", "모양과 색 맞추기 퍼즐", "Puzzle de formas y colores", "Puzzle de formas e cores", "Puzzle de formes et de couleurs", "Form- und Farbpuzzle", "Puzzle di forme e colori", "Пазл форм и цветов", "आकार और रंग मिलान पहेली", "لغز مطابقة الأشكال والألوان"]),
+  description: animalGlyphGardenLocalized(["Read each garden request, choose the one glyph with both matching clues, and plant three calm plots.", "閱讀每個花園要求，選出同時符合兩項線索的唯一符文，完成三座平靜花圃。", "阅读每个花园要求，选出同时符合两项线索的唯一符文，完成三座平静花圃。", "庭の依頼を読み、形と色の手がかりが両方合うグリフを選んで3つの花壇を植えよう。", "정원 요청을 읽고 모양과 색 단서가 모두 맞는 글리프를 골라 세 화단을 차분히 완성해요.", "Lee cada encargo, elige el glifo con las dos pistas correctas y planta tres parcelas tranquilas.", "Leia cada pedido, escolha o glifo com as duas pistas certas e plante três canteiros tranquilos.", "Lisez chaque demande, choisissez le glyphe qui correspond aux deux indices et plantez trois parcelles sereines.", "Lies jede Gartenaufgabe, wähle das Glyph mit beiden passenden Hinweisen und bepflanze drei ruhige Beete.", "Leggi ogni richiesta, scegli il glifo con entrambi gli indizi corretti e pianta tre aiuole tranquille.", "Прочитайте каждую просьбу, выберите глиф с двумя подходящими признаками и засадите три спокойные клумбы.", "हर बगीचे का अनुरोध पढ़ें, दोनों सही संकेतों वाला ग्लिफ़ चुनें और तीन शांत क्यारियाँ लगाएँ।", "اقرأ كل طلب في الحديقة، واختر الرمز الذي يطابق الدليلين وزرع ثلاث أحواض هادئة."]),
+  meta: animalGlyphGardenLocalized([["3 Garden Plots", "Shape + Colour", "Calm Retry"], ["3 座花圃", "形狀＋顏色", "平靜重試"], ["3 座花圃", "形状＋颜色", "平静重试"], ["3つの花壇", "形＋色", "穏やかな再挑戦"], ["화단 3개", "모양 + 색", "차분한 재시도"], ["3 parcelas", "Forma + color", "Reintento sereno"], ["3 canteiros", "Forma + cor", "Nova tentativa calma"], ["3 parcelles", "Forme + couleur", "Reprise sereine"], ["3 Beete", "Form + Farbe", "Ruhiger Neustart"], ["3 aiuole", "Forma + colore", "Riprova calma"], ["3 клумбы", "Форма + цвет", "Спокойный повтор"], ["3 क्यारियाँ", "आकार + रंग", "शांत पुनःप्रयास"], ["3 أحواض", "الشكل + اللون", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Visual Logic", "Shape Matching", "Family", "Animal"],
+  skills: ["Pattern Recognition", "Focus", "Visual Discrimination"],
+  ages: ["6", "family"],
+  ageLabel: animalGlyphGardenLocalized(Array(13).fill("6+")),
+  href: "games/animal-glyph-garden/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-glyph-garden/assets/animal-glyph-garden-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGlyphGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGlyphGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGlyphGardenPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalGlyphGardenPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalGlyphGardenPlanned.id);
 
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.

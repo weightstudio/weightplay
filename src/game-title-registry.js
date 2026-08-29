@@ -1663,6 +1663,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-constellation-keeper": {
+    "__localizedExact": true,
+    "en": "Constellation Keeper",
+    "zh-Hant": "動物星圖守護員",
+    "zh-Hans": "动物星图守护员",
+    "ja": "どうぶつ星座守り",
+    "ko": "동물 별자리 지킴이",
+    "es": "Guardián de Constelaciones",
+    "pt-BR": "Guardião das Constelações",
+    "fr": "Gardien des constellations",
+    "de": "Sternbild-Hüter",
+    "it": "Custode delle costellazioni",
+    "ru": "Хранитель созвездий",
+    "hi": "नक्षत्र रक्षक",
+    "ar": "حارس الكوكبات"
+  },
   "animal-lantern-lattice": {
     "__localizedExact": true,
     "en": "Lantern Lattice",
@@ -1694,6 +1710,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Звериные фонарики-проводники",
     "hi": "पशु लालटेन मार्गदर्शक",
     "ar": "أدلة فوانيس الحيوانات"
+  },
+  "animal-glyph-garden": {
+    "__localizedExact": true,
+    "en": "Glyph Garden",
+    "zh-Hant": "符文花園",
+    "zh-Hans": "符文花园",
+    "ja": "グリフガーデン",
+    "ko": "글리프 정원",
+    "es": "Jardín de Glifos",
+    "pt-BR": "Jardim dos Glifos",
+    "fr": "Jardin des Glyphes",
+    "de": "Glyphen-Garten",
+    "it": "Giardino dei Glifi",
+    "ru": "Сад глифов",
+    "hi": "ग्लिफ़ गार्डन",
+    "ar": "حديقة الرموز"
   },
   "animal-ring-garden": {
     "__localizedExact": true,
