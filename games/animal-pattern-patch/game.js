@@ -1,0 +1,74 @@
+(function () {
+  "use strict";
+
+  const locales = window.PATTERN_PATCH_LOCALES;
+  const localeKeys = locales.__localeKeys;
+  const rounds = [
+    { pattern: ["leaf", "sun", "leaf", "moon", "?", "moon", "leaf", "sun", "leaf"], answer: "sun", options: ["sun", "star", "droplet"] },
+    { pattern: ["moon", "dot", "leaf", "moon", "?", "leaf", "moon", "dot", "leaf"], answer: "dot", options: ["dot", "wave", "star"] },
+    { pattern: ["diamond", "circle", "diamond", "circle", "?", "circle", "diamond", "circle", "diamond"], answer: "diamond", options: ["diamond", "triangle", "flower"] },
+  ];
+  const symbols = { leaf: "✦", sun: "☀", moon: "☾", dot: "•", star: "★", droplet: "●", wave: "≈", diamond: "◆", circle: "○", triangle: "▲", flower: "✿" };
+  const state = { locale: "en", sound: true, roundIndex: 0, checks: 0, solved: 0 };
+  const $ = (id) => document.getElementById(id);
+  const safeStorage = {
+    get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } },
+    set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) { /* private mode */ } },
+  };
+  function queryLocale() { const value = new URLSearchParams(window.location.search).get("lang"); return value && locales[value] ? value : (safeStorage.get("weightplay-pattern-locale") || "en"); }
+  function t(key, vars = {}) { const copy = locales[state.locale] || locales.en; const text = copy[key] || locales.en[key] || key; return text.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
+  function applyLocale() {
+    const copy = locales[state.locale] || locales.en;
+    document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
+    document.documentElement.dir = copy.direction || "ltr";
+    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    const soundText = $("soundToggle").querySelector("[data-copy]");
+    if (soundText) soundText.textContent = t(state.sound ? "soundOn" : "soundOff");
+    $("soundToggle").setAttribute("aria-pressed", String(state.sound));
+    $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound));
+    $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
+    $("localeSelect").setAttribute("aria-label", t("language"));
+    if (!$('battleView').hidden) renderRound();
+  }
+  function populateLocales() {
+    const select = $("localeSelect");
+    localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key]; select.append(option); });
+    select.value = state.locale;
+    select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-pattern-locale", state.locale); applyLocale(); });
+  }
+  function playTone(kind) {
+    if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return;
+    try { const AudioCtor = window.AudioContext || window.webkitAudioContext; const audio = new AudioCtor(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "success" ? 640 : 220; gain.gain.setValueAtTime(0.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(0.035, audio.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.14); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) { /* optional audio */ }
+  }
+  function showView(id) { ["mainView", "battleView", "resultView"].forEach((viewId) => { const view = $(viewId); const active = viewId === id; view.hidden = !active; view.classList.toggle("is-active", active); }); window.scrollTo(0, 0); }
+  function makeToken(token, label, interactive, callback) {
+    const node = interactive ? document.createElement("button") : document.createElement("div");
+    node.className = "token"; node.dataset.token = token; if (interactive) node.type = "button";
+    node.setAttribute("aria-label", label);
+    const symbol = document.createElement("span"); symbol.setAttribute("aria-hidden", "true"); symbol.textContent = token === "?" ? "?" : symbols[token]; node.append(symbol);
+    if (interactive) node.addEventListener("click", callback);
+    return node;
+  }
+  function renderRound() {
+    const round = rounds[state.roundIndex];
+    $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length });
+    $("instruction").textContent = t("instruction");
+    $("patternGrid").replaceChildren(...round.pattern.map((token, index) => makeToken(token, token === "?" ? t("missing") : t("patternTile", { row: Math.floor(index / 3) + 1, tile: (index % 3) + 1, token: (locales[state.locale].tokenNames || {})[token] || token }), false)));
+    $("optionGrid").replaceChildren(...round.options.map((token) => { const option = makeToken(token, t("option", { token: (locales[state.locale].tokenNames || {})[token] || token }), true, () => choose(token, option)); option.classList.add("option-token"); return option; }));
+    $("checkCount").textContent = String(state.checks); $("feedback").textContent = ""; $("feedback").classList.remove("is-wrong");
+  }
+  function choose(token, node) {
+    state.checks += 1; $("checkCount").textContent = String(state.checks);
+    const round = rounds[state.roundIndex];
+    if (token !== round.answer) { node.classList.add("is-wrong"); $("feedback").textContent = t("wrong"); $("feedback").classList.add("is-wrong"); playTone("wrong"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
+    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); $("feedback").textContent = t("correct"); $("appStatus").textContent = t("correct"); playTone("success");
+    window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
+  }
+  function start() { state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }
+  function finish() { const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
+  function goHome() { showView("mainView"); applyLocale(); }
+  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  state.locale = queryLocale();
+  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("homeFromBattle").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome); $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound); });
+  window.PATTERN_PATCH_TEST = { rounds, symbols, start, renderRound };
+})();

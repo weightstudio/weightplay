@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-pattern-patch/"+location.search+location.hash)}catch{location.replace("/en/games/animal-pattern-patch/"+location.search+location.hash)}})();</script>
+    <link rel="canonical" href="https://weightplay.com/en/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-pattern-patch/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-pattern-patch/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <meta name="description" content="Pattern Patch is an internal WeightPlay visual-logic prototype.">
+    <title>Pattern Patch | WeightPlay</title>
+    <link rel="stylesheet" href="style.css?v=20260830-pattern-patch-v1">
+    <script src="locales.js?v=20260830-pattern-patch-v1" defer></script>
+    <script src="game.js?v=20260830-pattern-patch-v1" defer></script>
+  </head>
+  <body>
+    <main class="app-shell" id="app">
+      <section class="view is-active" id="mainView" aria-labelledby="mainTitle">
+        <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
+        <div class="hero-card">
+          <img class="cover-art" src="assets/animal-pattern-patch-cover.svg" alt="" aria-hidden="true">
+          <div class="hero-copy">
+            <p class="eyebrow" data-copy="eyebrow">A calm visual-logic game</p>
+            <h1 id="mainTitle" data-copy="title">Pattern Patch</h1>
+            <p class="lede" data-copy="subtitle">Complete one missing tile in each forest pattern.</p>
+            <p class="facts" data-copy="facts">Three short puzzles · no timer · no lives</p>
+            <button class="primary-button" id="startButton" type="button" data-copy="start">Start patching</button>
+          </div>
+        </div>
+        <div class="control-card">
+          <div class="field-row"><label for="localeSelect" data-copy="language">Language</label><select id="localeSelect" aria-label="Language"></select></div>
+          <button class="secondary-button" id="soundToggle" type="button" aria-pressed="true"><span data-copy="soundOn">Sound on</span></button>
+        </div>
+        <div class="help-card"><h2 data-copy="how">How to play</h2><p data-copy="howBody">Read the rows and columns around the gap. Choose the one tile that keeps the visible pattern consistent. A wrong choice stays harmless and leaves the puzzle open.</p></div>
+      </section>
+
+      <section class="view" id="battleView" aria-labelledby="battleTitle" hidden>
+        <div class="screen-head"><button class="quiet-button" id="homeFromBattle" type="button" data-copy="home">Home</button><div class="screen-heading"><p class="eyebrow" id="roundLabel">Puzzle 1 of 3</p><h2 id="battleTitle" data-copy="battleTitle">Patch the pattern</h2></div><button class="icon-button" id="battleSoundToggle" type="button" aria-label="Sound" aria-pressed="true">♪</button></div>
+        <p class="instruction" id="instruction" data-copy="instruction">Choose the tile that belongs in the gap.</p>
+        <div class="pattern-card"><div class="pattern-grid" id="patternGrid" aria-label="Pattern grid"></div></div>
+        <div class="options-heading" data-copy="options">Choose a tile</div>
+        <div class="option-grid" id="optionGrid"></div>
+        <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+        <div class="progress-line"><span id="checkCount">0</span> <span data-copy="checks">checks</span></div>
+      </section>
+
+      <section class="view" id="resultView" aria-labelledby="resultTitle" hidden>
+        <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
+        <div class="result-card"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Pattern complete</p><h2 id="resultTitle" data-copy="complete">A thoughtful patch.</h2><p id="resultSummary">Three forest patterns completed.</p><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
+      </section>
+      <div class="general-reserve" aria-hidden="true"></div>
+      <p class="sr-only" id="appStatus" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

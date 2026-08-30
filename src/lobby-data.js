@@ -2633,6 +2633,34 @@ for (const game of window.WONDER_LOBBY.games) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
 })();
 
+// Weighted General prototype (2026-08-30). Keep the canonical identity
+// planned/Coming Soon while the playable route remains an internal noindex
+// prototype pending art, Tester, Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-pattern-patch",
+    audience: "general",
+    status: "planned",
+    title: localize(["Pattern Patch", "圖紋補丁", "图纹补丁", "パターン・パッチ", "패턴 패치", "Parche de patrones", "Remendo de padrões", "Motif à compléter", "Muster-Patch", "Tessera del motivo", "Лесной узор", "पैटर्न पूरा करें", "رقعة الأنماط"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Visual Pattern Logic", "視覺圖紋邏輯", "视觉图纹逻辑", "視覚パターンロジック", "시각 패턴 논리", "Lógica visual de patrones", "Lógica visual de padrões", "Logique visuelle des motifs", "Visuelle Musterlogik", "Logica visiva dei motivi", "Визуальная логика узоров", "दृश्य पैटर्न तर्क", "منطق الأنماط البصرية"]),
+    description: localize(["Read the rows and columns, then choose the one tile that completes each calm forest pattern.", "閱讀橫列與直欄，選出能完成每個平靜森林圖紋的唯一格子。", "阅读横行与直列，选出能完成每个平静森林图纹的唯一格子。", "行と列を読み、穏やかな森の模様を完成させるタイルを選びます。", "행과 열을 읽고 차분한 숲 패턴을 완성할 타일 하나를 고르세요.", "Lee filas y columnas y elige la casilla que completa cada patrón del bosque.", "Leia linhas e colunas e escolha a casa que completa cada padrão da floresta.", "Lis les lignes et colonnes, puis choisis la case qui complète chaque motif forestier.", "Lies Reihen und Spalten und wähle das Feld, das jedes ruhige Waldmuster ergänzt.", "Leggi righe e colonne e scegli la tessera che completa ogni motivo del bosco.", "Смотри на строки и столбцы и выбирай клетку для завершения лесного узора.", "पंक्तियाँ और स्तंभ देखकर हर वन पैटर्न को पूरा करने वाली टाइल चुनें।", "اقرأ الصفوف والأعمدة ثم اختر الخلية التي تكمل كل نمط غابي هادئ."]),
+    meta: localize([["3 Pattern Puzzles", "Rows + Columns", "Calm Retry"], ["3 個圖紋謎題", "橫列＋直欄", "平靜重試"], ["3 个图纹谜题", "横行＋直列", "平静重试"], ["3つの模様パズル", "行と列", "穏やかな再挑戦"], ["패턴 퍼즐 3개", "행 + 열", "차분한 재시도"], ["3 puzles", "Filas y columnas", "Reintento sereno"], ["3 quebra-cabeças", "Linhas e colunas", "Nova tentativa calma"], ["3 puzzles", "Lignes et colonnes", "Reprise sereine"], ["3 Rätsel", "Reihen + Spalten", "Ruhiger Versuch"], ["3 puzzle", "Righe e colonne", "Riprova calma"], ["3 задачи", "Строки и столбцы", "Спокойный повтор"], ["3 पज़ल", "पंक्तियाँ + स्तंभ", "शांत पुनः प्रयास"], ["3 ألغاز", "صفوف وأعمدة", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Visual Logic", "Pattern Recognition", "Family", "Animal"],
+    skills: ["Pattern Reasoning", "Observation", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-pattern-patch/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-pattern-patch/assets/animal-pattern-patch-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Animal Footprint Folio is a weighted General prototype. Keep its planned
 // identity canonical while the source remains internal/noindex and pending
 // exact Tester, Reviewer, art, and release gates.

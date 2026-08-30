@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "घासभूमि खोज",
     "ar": "اكتشف الفرق في المرج"
   },
+  "animal-pattern-patch": {
+    "__localizedExact": true,
+    "en": "Pattern Patch",
+    "zh-Hant": "圖紋補丁",
+    "zh-Hans": "图纹补丁",
+    "ja": "パターン・パッチ",
+    "ko": "패턴 패치",
+    "es": "Parche de patrones",
+    "pt-BR": "Remendo de padrões",
+    "fr": "Motif à compléter",
+    "de": "Muster-Patch",
+    "it": "Tessera del motivo",
+    "ru": "Лесной узор",
+    "hi": "पैटर्न पूरा करें",
+    "ar": "رقعة الأنماط"
+  },
   "animal-footprint-folio": {
     "__localizedExact": true,
     "en": "Trail Logic",
