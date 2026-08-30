@@ -912,6 +912,13 @@ function setBattleShellActive(active) {
   }
 }
 
+function setPauseBattleAccessibility(covered) {
+  if (!canvas) return;
+  canvas.inert = covered;
+  if (covered) canvas.setAttribute("aria-hidden", "true");
+  else canvas.removeAttribute("aria-hidden");
+}
+
 window.addEventListener("resize", updateBattleShell);
 
 function startLevel(levelIndex) {
@@ -924,6 +931,7 @@ function startLevel(levelIndex) {
   pauseReturnIntent = false;
   state = makeState(levelIndex);
   state.running = true;
+  setPauseBattleAccessibility(false);
   canvas.dataset.heroX = String(state.hero.x);
   setBattleShellActive(true);
   wonderMain.classList.add("hidden");
@@ -2185,6 +2193,7 @@ function showMainMenu(tab = activeMenuTab) {
   state.won = false;
   state.gameOver = false;
   state.awaitingUpgrade = false;
+  setPauseBattleAccessibility(false);
   setBattleShellActive(false);
   wonderMain.classList.add("hidden");
   wonderStageBack.classList.remove("hidden");
@@ -2214,6 +2223,7 @@ function showWonderMain() {
   clearFloatingMessage();
   pauseReturnIntent = false;
   state.running = false;
+  setPauseBattleAccessibility(false);
   setBattleShellActive(false);
   document.body.classList.remove("wonder-stage-select", "wonder-tutorial-hidden");
   overlay.classList.add("hidden");
@@ -2602,10 +2612,15 @@ function showPauseMenu(returnIntent = false) {
   upgradeGrid.classList.add("hidden");
   pausePanel.classList.remove("hidden");
   overlay.classList.remove("hidden");
+  setPauseBattleAccessibility(true);
+  requestAnimationFrame(() => {
+    if (!pausePanel.classList.contains("hidden")) resumeBtn.focus({ preventScroll: true });
+  });
 }
 
 function resumeBattle() {
   pauseReturnIntent = false;
+  setPauseBattleAccessibility(false);
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");
   document.body.classList.add("wonder-tutorial-hidden");
@@ -2615,10 +2630,12 @@ function resumeBattle() {
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
   state.running = true;
+  requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
 }
 
 function leaveBattle() {
   pauseReturnIntent = false;
+  setPauseBattleAccessibility(false);
   bankRunCoins();
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");

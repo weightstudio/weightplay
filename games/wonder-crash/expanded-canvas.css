@@ -590,11 +590,10 @@ body.wonder-stage-select .wp-stage-shell-header .wp-shell-settings-popover .wp-s
   top: 5px;
 }
 
-/* Locale selection belongs to Main. Stage keeps only the in-game sound
-   setting; changing locale while a Stage is open is intentionally unavailable. */
-body.wonder-stage-select .wp-stage-shell-header .wp-shell-language-row,
-body.wonder-playing #pausePanel .pause-language-picker {
-  display: none !important;
+/* Keep Language available alongside Sound on Stage and on the frozen
+   in-game settings surface. */
+body.wonder-stage-select .wp-stage-shell-header .wp-shell-language-row {
+  display: grid !important;
 }
 
 body.wonder-stage-select #menuContent[data-menu-tab="settings"] .setting-row {

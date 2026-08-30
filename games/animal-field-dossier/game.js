@@ -106,6 +106,9 @@
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
     $("settingsButton").setAttribute("aria-label", t("settings"));
+    $("battleBack").setAttribute("aria-label", t("back"));
+    $("evidenceGrid").setAttribute("aria-label", t("clueLabel"));
+    $("planGrid").setAttribute("aria-label", t("choosePlan"));
     $("soundButton").textContent = soundOn ? t("soundOn") : t("soundOff");
     $("soundButton").setAttribute("aria-pressed", String(!soundOn));
     renderMain();
