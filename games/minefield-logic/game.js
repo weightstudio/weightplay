@@ -3,7 +3,7 @@ window.WPClassicLogic?.mount("minefield-logic");
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v10";
+  const GAME_VERSION = "v11";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const GUIDE_COPY = {
@@ -24,7 +24,8 @@ window.WPClassicLogic?.mount("minefield-logic");
 
   const locale = () => {
     const segment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-    const value = window.WonderI18n?.actualLocale?.() || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : ROUTE_LOCALES[segment] || "en");
+    const routed = ROUTE_LOCALES[segment];
+    const value = routed || window.WonderI18n?.actualLocale?.() || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : "en");
     return LOCALES.includes(value) ? value : "en";
   };
 

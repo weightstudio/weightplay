@@ -114,6 +114,37 @@
     }, 1500);
   };
 
+  // Pyramid Score counts removed Pyramid cards, so a Waste + Pyramid pair
+  // advances the HUD by one while a Pyramid + Pyramid pair advances it by
+  // two. Capture the actual delta at the engine boundary and let the shared
+  // interaction path keep the same localized pair cue and timing.
+  let pendingPairScoreDelta = null;
+  const pairPyramid = view.game.pairPyramid.bind(view.game);
+  view.game.pairPyramid = (...args) => {
+    const scoreBefore = 28 - view.game.remainingCards();
+    const moved = pairPyramid(...args);
+    const scoreAfter = 28 - view.game.remainingCards();
+    pendingPairScoreDelta = moved ? Math.max(0, scoreAfter - scoreBefore) : null;
+    return moved;
+  };
+  view.showPairCue = () => {
+    const status = view.nodes?.boardStatus;
+    const scoreDelta = Number.isFinite(pendingPairScoreDelta) && pendingPairScoreDelta > 0 ? pendingPairScoreDelta : 2;
+    pendingPairScoreDelta = null;
+    if (!status || view.game.won || view.game.lost) return;
+    status.setAttribute("data-runtime-localize", "off");
+    status.dataset.state = "pair";
+    status.textContent = `${view.t("pairClear")} · ${view.t("score")} +${scoreDelta} · ${view.t("combo")} ×${view.game.combo}`;
+    clearTimeout(view.statusTimer);
+    view.statusTimer = window.setTimeout(() => {
+      if (status && status.dataset.state === "pair" && !view.game.won && !view.game.lost) {
+        delete status.dataset.state;
+        status.textContent = "";
+      }
+      status?.removeAttribute("data-runtime-localize");
+    }, 1250);
+  };
+
   view.nodes?.stockPile?.addEventListener("click", () => {
     const marker = {};
     pendingStockDraw = { marker, stockBefore: view.game.stock.length, comboBefore: view.game.combo };

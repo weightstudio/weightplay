@@ -94,6 +94,8 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-status-line { min-height: 24px; color: var(--logic-good); text-align: center; font-size: 14px; font-weight: 700; }
 .logic-status-line.is-error { color: var(--logic-danger); }
 .logic-status-line.is-good { color: var(--logic-good); }
+body[data-logic-game="minefield-logic"] .logic-status-line { height: 52px; min-height: 52px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 4px; }
+body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(100svh - 122px); }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
 .logic-board-area { width: min(100%, 700px); min-width: 0; display: grid; gap: 12px; place-items: center; }
 .logic-board-toolbar, .logic-action-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
