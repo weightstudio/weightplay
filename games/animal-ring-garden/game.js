@@ -4,7 +4,7 @@
   const COPY = window.RING_GARDEN_COPY || {};
   const localeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-  const localeParam = new URLSearchParams(window.location.search).get("lang") || localeMap[routeSegment];
+  const localeParam = new URLSearchParams(window.location.search).get("lang") || window.__WEIGHTPLAY_ROUTE_LOCALE__ || localeMap[routeSegment];
   let locale = COPY[localeParam] ? localeParam : (localeParam === "ar" ? "ar" : "en");
   const petals = ["amber", "mint", "coral", "violet"];
   const symbols = ["✦", "✿", "✧", "●"];
@@ -23,7 +23,7 @@
     solved: false
   };
   const $ = (id) => document.getElementById(id);
-  const bestKey = (index) => `weightplay:animal-ring-garden:v3:best:${index}`;
+  const bestKey = (index) => `weightplay:animal-ring-garden:v5:best:${index}`;
 
   function t(key) { return (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key; }
   function fmt(value, n) { return value.replace("{n}", String(n)); }
@@ -53,11 +53,18 @@
     $("sound-toggle").setAttribute("aria-pressed", String(state.sound));
     $("main-eyebrow").textContent = t("eyebrow");
     $("main-title").textContent = t("title");
+    $("main-header-title").textContent = t("title");
     $("main-lede").textContent = t("lede");
+    $("main-summary").textContent = t("summary");
+    $("mainProgress").textContent = `${t("progress")}: ${Math.min(state.gardenIndex, gardens.length)} / ${gardens.length}`;
+    $("guide-title").textContent = t("guideTitle");
+    $("guide-one").textContent = t("guideOne");
+    $("guide-two").textContent = t("guideTwo");
+    $("guide-three").textContent = t("guideThree");
     $("fact-one").textContent = t("factOne");
     $("fact-two").textContent = t("factTwo");
     $("fact-three").textContent = t("factThree");
-    $("start-button").textContent = t("start");
+    $("startBtn").textContent = t("start");
     $("stage-back").textContent = t("back");
     $("stage-eyebrow").textContent = t("stageEyebrow");
     $("stage-title").textContent = t("stageTitle");
@@ -78,9 +85,10 @@
   }
   function showScreen(screen) {
     state.screen = screen;
-    $("main-screen").hidden = screen !== "main";
-    $("stage-screen").hidden = screen !== "stage";
-    $("battle-screen").hidden = screen !== "battle";
+    document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
+    // Stage and Battle are fixed canvases; clear the document flow offset that
+    // a focused Main action can leave behind when the Main tree is hidden.
+    window.scrollTo(0, 0);
   }
   function renderStage() {
     const list = $("garden-list");
@@ -88,7 +96,8 @@
     list.replaceChildren(...gardens.map((garden, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "garden-card";
+      button.className = "garden-card stage-card";
+      button.dataset.wpStageCard = "true";
       button.dataset.garden = String(index);
       button.innerHTML = `<span class="garden-number">0${index + 1}</span><span class="garden-copy"><strong>${t(garden.key)}</strong><small>${t(garden.clueKey)}</small></span><span class="garden-arrow" aria-hidden="true">→</span>`;
       button.setAttribute("aria-label", `${t("choose")}: ${t(garden.key)}`);
@@ -158,7 +167,7 @@
   function goStage() { state.solved = false; showScreen("stage"); renderStage(); }
   function nextGarden() { openGarden(Math.min(state.gardenIndex + 1, gardens.length - 1)); }
 
-  $("start-button").addEventListener("click", () => { emit("game_start", {}); goStage(); });
+  $("startBtn").addEventListener("click", () => { emit("game_start", {}); goStage(); });
   $("stage-back").addEventListener("click", () => showScreen("main"));
   $("battle-back").addEventListener("click", goStage);
   $("reset-button").addEventListener("click", resetGarden);

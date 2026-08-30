@@ -3371,7 +3371,7 @@ const animalWeatherWatchPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-weather-watch/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover.webp", hideHero: true },
+  art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalWeatherWatchPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalWeatherWatchPlanned.id)) window.WONDER_LOBBY.games.push(animalWeatherWatchPlanned);

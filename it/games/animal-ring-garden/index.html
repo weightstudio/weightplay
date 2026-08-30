@@ -23,10 +23,11 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="description" content="Ruota tre anelli di petali per far sbocciare il motivo del giardino lunare e riprova con meno giri." />
   <meta name="weightplay-game-id" content="animal-ring-garden" />
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="weightplay-game-version" content="v5" />
   <meta name="weightplay-interface-version" content="6" />
   <title>Giardino degli Anelli | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260830-ring-garden-v4-route-locale" />
+  <link rel="stylesheet" href="style.css?v=20260830-ring-garden-v5-scroll-reset" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Giardino degli Anelli | WeightPlay" />
@@ -69,50 +70,61 @@
 }
     </script>
   </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v3">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v5" data-runtime-localize="off">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
       <p id="loading-copy">Waking the moon garden…</p>
     </section>
 
-    <section id="main-screen" class="screen main-screen" hidden>
-      <header class="topbar">
-        <a class="return-link" href="../../index.html" aria-label="Back to WeightPlay">← W</a>
+    <section id="mainScreen" class="screen main-screen" data-screen="main" hidden>
+      <header class="topbar main-header">
+        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
+        <strong class="wp-shell-main-title" id="main-header-title">Ring Garden</strong>
         <div class="topbar-actions">
-          <button id="settings-button" class="utility-button" type="button">⚙ <span>Settings</span></button>
+          <button id="settings-button" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button>
         </div>
       </header>
       <div class="main-content">
-        <img class="concept-cover" src="assets/animal-ring-garden-cover.png" alt="Immagine del gioco Giardino degli Anelli" draggable="false" />
+        <img class="concept-cover main-cover" src="assets/animal-ring-garden-cover.png" alt="Immagine del gioco Giardino degli Anelli" draggable="false" />
         <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi, your moon-garden guide" draggable="false" />
         <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
         <h1 id="main-title">Giardino degli Anelli</h1>
         <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
+        <p id="main-summary" class="main-summary" aria-label="Gameplay summary">Turn each ring to match the target petals.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">Gardens: 0 / 4</p>
         <div class="fact-row" aria-label="Game facts">
           <span id="fact-one">3 gardens</span><span id="fact-two">Ring turns</span><span id="fact-three">Calm replay</span>
         </div>
-        <button id="start-button" class="primary-button" type="button">Start Garden</button>
+        <button id="startBtn" data-wp-main-start class="primary-button" type="button">Start Garden</button>
       </div>
     </section>
 
-    <section id="stage-screen" class="screen stage-screen" hidden>
-      <header class="topbar">
-        <button id="stage-back" class="return-link" type="button">← Main</button>
-        <div class="topbar-actions"><button id="stage-settings" class="utility-button" type="button">⚙ <span>Settings</span></button></div>
+    <section class="guide-card" data-screen="main" data-wp-game-guide aria-label="Ring Garden game guide">
+      <h2 id="guide-title">How to play</h2>
+      <div class="guide-grid"><p id="guide-one">Read the target petals.</p><p id="guide-two">Turn one ring at a time.</p><p id="guide-three">Reset calmly if the pattern misses.</p></div>
+    </section>
+
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-ring-garden-cover.png')" hidden>
+      <header class="topbar stage-header">
+        <button id="stage-back" class="return-link" data-wp-return="stage" type="button">← Main</button>
+        <strong class="stage-header-title">Choose a garden</strong>
+        <div class="topbar-actions"><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button></div>
       </header>
       <div class="content-column">
         <p class="eyebrow" id="stage-eyebrow">CHOOSE A GARDEN</p>
         <h1 id="stage-title">Where will you bloom?</h1>
         <p class="lede" id="stage-lede">Each garden has a different three-ring pattern.</p>
-        <div id="garden-list" class="garden-list"></div>
+        <div id="garden-list" class="garden-list stage-list stage-rail" data-wp-stage-rail></div>
+        <nav class="stage-tabs" aria-label="Garden sections"><button type="button" role="tab" aria-selected="true">Gardens</button></nav>
       </div>
     </section>
 
-    <section id="battle-screen" class="screen battle-screen" hidden>
-      <header class="topbar">
-        <button id="battle-back" class="return-link" type="button">← Gardens</button>
-        <div class="topbar-actions"><button id="battle-settings" class="utility-button" type="button">⚙ <span>Settings</span></button></div>
+    <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas hidden>
+      <header class="topbar battle-header">
+        <button id="battle-back" class="return-link" data-wp-return="battle" type="button">← Gardens</button>
+        <strong class="battle-header-title">Moon garden</strong>
+        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility type="button">⚙ <span>Settings</span></button></div>
       </header>
       <div id="play-panel" class="content-column battle-content">
         <div class="battle-heading">
@@ -138,20 +150,21 @@
         <div class="result-actions"><button id="next-button" class="primary-button" type="button">Next Garden</button><button id="result-main" class="secondary-button" type="button">Back to Gardens</button></div>
       </div>
     </section>
+    <div class="battle-ad-reserve" data-screen="battle" data-wp-ad-reserve aria-hidden="true"></div>
   </main>
 
-  <dialog id="settings-dialog" class="settings-dialog">
+  <dialog id="settings-dialog" class="settings-dialog wp-shell-settings-popover">
     <form method="dialog" class="settings-card">
       <div class="settings-head"><h2 id="settings-title">Settings</h2><button class="close-button" value="close" aria-label="Close settings">×</button></div>
       <label for="locale-select" id="language-label">Language</label>
-      <select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select>
-      <button id="sound-toggle" class="secondary-button" type="button" aria-pressed="true">Sound: On</button>
+      <select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
+      <button id="sound-toggle" class="secondary-button" data-sound-toggle type="button" aria-pressed="true">Sound: On</button>
     </form>
   </dialog>
-  <script src="locales.js?v=20260830-ring-garden-v4-route-locale"></script>
-  <script src="game.js?v=20260830-ring-garden-v4-route-locale"></script>
-<script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script>
+  <script src="locales.js?v=20260830-ring-garden-v5-scroll-reset"></script>
+  <script src="game.js?v=20260830-ring-garden-v5-scroll-reset"></script>
 <section class="game-page-info game-page-info-static" aria-label="Giardino degli Anelli informazioni sul gioco">
 
     <div class="game-info-hero">

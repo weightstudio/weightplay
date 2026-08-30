@@ -23,16 +23,16 @@
   <meta name="theme-color" content="#31566a" />
   <meta name="weightplay-game-id" content="animal-weather-watch" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v2" />
+  <meta name="weightplay-game-version" content="v3" />
   <title>Weather Watch | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260830-weather-watch-v2" />
+  <link rel="stylesheet" href="style.css?v=20260830-weather-watch-v3" />
 </head>
 <body>
   <div id="loading" class="screen loading-screen"><div class="loader-mark">☁</div><p data-i18n="loading">Reading the sky log…</p></div>
   <main id="app" hidden>
     <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-i18n="title">Weather Watch</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-weather-watch-cover.svg" alt="" width="1200" height="900" /><span class="cover-badge" data-i18n="kicker">A calm forecast puzzle</span></div>
+      <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture><span class="cover-badge" data-i18n="kicker">A calm forecast puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Willow weather station</p><h1 data-i18n="title">Weather Watch</h1>
       <p class="intro" data-i18n="intro">Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Read the first forecast</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
@@ -47,10 +47,10 @@
       <div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-i18n="check" disabled>Check forecast</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset forecast</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">✦</div><p class="eyebrow" data-i18n="finished">Forecast settled</p><h2 id="resultTitle" data-i18n="resultTitle">The shelter window is clear!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon result-guide-wrap"><img class="result-guide" src="assets/animal-weather-watch-guide.png" alt="" width="1024" height="1536" aria-hidden="true" /></div><p class="eyebrow" data-i18n="finished">Forecast settled</p><h2 id="resultTitle" data-i18n="resultTitle">The shelter window is clear!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next forecast</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div></section>
     <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
   </main>
-  <link rel="stylesheet" href="art.css?v=20260830-weather-watch-v2" />
-  <script src="locales.js?v=20260830-weather-watch-v2"></script><script src="game.js?v=20260830-weather-watch-v2"></script>
+  <link rel="stylesheet" href="art.css?v=20260830-weather-watch-v3" />
+  <script src="locales.js?v=20260830-weather-watch-v3"></script><script src="game.js?v=20260830-weather-watch-v3"></script>
 </body>
 </html>

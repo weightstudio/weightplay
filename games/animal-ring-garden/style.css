@@ -51,3 +51,52 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 .settings-dialog{width:min(calc(100% - 28px),420px);padding:0;border:1px solid var(--line);border-radius:20px;background:#152841;color:var(--text);box-shadow:0 30px 90px #000b}.settings-dialog::backdrop{background:#07101dcc}.settings-card{display:grid;gap:10px;padding:20px}.settings-head{display:flex;justify-content:space-between;align-items:center}.settings-head h2{margin:0}.close-button{width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--text);font-size:1.5rem}.settings-card label{color:var(--muted);font-size:.9rem;font-weight:800}.settings-card select{min-height:48px;border:1px solid var(--line);border-radius:12px;background:#0f1e33;color:var(--text);padding:8px 10px}.settings-card .secondary-button{width:100%;text-align:center}
 @media (max-width:640px){.screen{padding-inline:14px}.ring-board{gap:7px}.ring-unit{padding-inline:5px}.ring-visual{width:min(100%,140px)}.ring-label{font-size:.68rem}.ring-button{font-size:1.15rem;padding-inline:4px}.battle-heading{align-items:center}.target-card{font-size:.76rem}}
 @media (orientation:landscape) and (max-height:560px){.screen{min-height:100dvh}.main-content{padding-block:10px}.concept-cover{width:180px;margin-bottom:8px}.main-content .lede{margin-top:8px}.fact-row{margin:10px 0}.primary-button{min-height:48px}.stage-screen,.battle-screen{padding-bottom:calc(56px + env(safe-area-inset-bottom))}.battle-content{display:grid;grid-template-columns:minmax(0,1fr) 240px;grid-template-rows:auto auto minmax(0,1fr) auto;align-items:center;column-gap:14px}.battle-heading{grid-column:1/-1}.clue-card{grid-column:2;grid-row:2}.target-card{grid-column:2;grid-row:3}.ring-atlas-art{display:none}.ring-board{grid-column:1;grid-row:2/5}.status{grid-column:2;grid-row:4}.battle-actions{grid-column:2;grid-row:5}.ring-visual{width:min(100%,180px)}}
+
+/* Interface 6 shell contract: compact phone-first Main, fixed Stage/Battle canvas, and ad-safe footer. */
+.main-header{display:grid;grid-template-columns:58px minmax(0,1fr) 48px;align-items:center;min-height:58px;gap:8px}
+.main-header .wp-shell-return{width:58px;height:48px;min-height:48px;padding:0;justify-content:center;gap:4px;overflow:hidden}
+.main-header .wp-shell-return img{display:block;width:28px;height:28px;object-fit:contain}
+.wp-shell-main-title{min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1rem}
+.main-header .topbar-actions{justify-content:flex-end}
+.wp-shell-settings-button{width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
+.main-content{justify-content:flex-start;padding:8px 0 12px;gap:0}
+.main-cover{width:min(100%,300px);margin:0 auto 8px;aspect-ratio:1}
+.main-mimi{width:min(24vw,120px);height:min(24vw,120px);margin:0 auto 2px}
+.main-content .eyebrow{margin-bottom:5px}
+.main-content .lede{margin-top:7px;line-height:1.35}
+.main-summary{margin:7px auto 0;min-height:40px;max-width:54ch;color:var(--text);font-size:.92rem;line-height:1.35}
+.main-progress{display:grid;place-items:center;min-height:40px;margin:4px 0;color:var(--mint);font-size:.86rem;font-weight:850}
+.main-content .fact-row{margin:7px 0 10px}
+#startBtn{height:52px;min-height:52px}
+.guide-card{width:min(calc(100% - 36px),860px);margin:0 auto 18px;padding:16px 18px;border:1px solid #ffffff26;border-radius:18px;background:#172943cc;color:var(--muted)}
+.guide-card h2{margin:0 0 10px;color:var(--text);font-size:1rem;text-align:center}
+.guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.guide-grid p{margin:0;padding:8px 10px;border:1px solid #49668c;border-radius:12px;font-size:.82rem;line-height:1.35;text-align:center}
+
+#stageScreen,#battleScreen{position:fixed;inset:0 0 56px;width:min(100vw,920px);height:calc(100dvh - 56px);min-height:0;margin:0 auto;padding:env(safe-area-inset-top) 18px 14px;overflow:auto;z-index:10;background-color:var(--bg)}
+#stageScreen{background-image:linear-gradient(180deg,#1b3150ee,#101a2df2),var(--wp-stage-art);background-size:cover;background-position:center}
+#battleScreen{background-image:linear-gradient(180deg,#101a2dcc 0%,#101a2d9c 55%,#101a2df0 100%),url('assets/animal-ring-garden-background.png');background-size:cover;background-position:center}
+#stageScreen .topbar,#battleScreen .topbar{display:grid;grid-template-columns:58px minmax(0,1fr) 48px;align-items:center;min-height:58px;gap:8px}
+#stageScreen .topbar .return-link,#battleScreen .topbar .return-link{width:58px;min-height:48px;padding:0;justify-content:center;overflow:hidden}
+#stageScreen .topbar-actions,#battleScreen .topbar-actions{justify-content:flex-end}
+#stageScreen .stage-header-title,#battleScreen .battle-header-title{min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stageScreen .content-column{width:min(100%,760px);min-height:calc(100% - 60px);padding-top:8px;gap:10px}
+#stageScreen .stage-list{display:flex;gap:12px;overflow-x:auto;padding:8px 2px 14px;margin-top:2px;scroll-snap-type:x proximity}
+#stageScreen .garden-card{flex:0 0 min(264px,82vw);min-height:180px;scroll-snap-align:start}
+#stageScreen .stage-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%;margin-top:auto;position:sticky;bottom:0;padding-top:8px;background:linear-gradient(transparent,#172943ee 35%)}
+#stageScreen .stage-tabs button{min-height:48px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);font-weight:850}
+#battleScreen .battle-content,#battleScreen .result-panel{width:min(100%,700px);margin:0 auto}
+#battleScreen .battle-content{padding:12px 14px 14px;gap:10px}
+#battleScreen .battle-header .topbar-actions{justify-content:flex-end}
+#battleScreen .battle-settings{width:48px;height:48px}
+.battle-ad-reserve{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100vw,920px);height:56px;z-index:9;background:#0b1424ee;border-top:1px solid #49668c;pointer-events:none}
+.battle-ad-reserve[hidden]{display:none!important}
+
+@media (max-width:640px){
+  .main-cover{width:min(100%,190px)}
+  .main-mimi{width:72px;height:72px}
+  .guide-card{width:calc(100% - 28px);margin-bottom:14px}
+  .guide-grid{grid-template-columns:1fr;gap:6px}
+  #stageScreen,#battleScreen{padding-inline:14px}
+  #stageScreen .content-column{min-height:calc(100% - 58px)}
+}

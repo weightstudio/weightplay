@@ -2,9 +2,9 @@
   "use strict";
   const locales = window.ANIMAL_CAIRN_COURIER_LOCALES || {};
   const rounds = [
-    { name: "Cedar Landing", note: "note1", solution: ["base", "middle", "cap"] },
-    { name: "Fern Turn", note: "note2", solution: ["base", "cap", "middle"] },
-    { name: "Moon Ridge", note: "note3", solution: ["middle", "base", "cap"] }
+    { nameKey: "roundName1", note: "note1", solution: ["base", "middle", "cap"] },
+    { nameKey: "roundName2", note: "note2", solution: ["base", "cap", "middle"] },
+    { nameKey: "roundName3", note: "note3", solution: ["middle", "base", "cap"] }
   ];
   const stones = [
     { id: "base", key: "stoneBase", mark: "◒", weight: "1" },
@@ -36,32 +36,34 @@
     $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.round, rounds.length)} / ${rounds.length}`;
     $("settingsBtn").setAttribute("aria-label", t("settings"));
     $("localeSelect").setAttribute("aria-label", t("language"));
-    if (state.screen === "stages") renderStages();
+    document.querySelectorAll("[data-aria-copy]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.ariaCopy)); });
+    document.querySelectorAll("[data-alt-copy]").forEach((node) => { node.alt = t(node.dataset.altCopy); });
+    if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
     if (state.screen === "result") renderResult();
   };
-  const renderStages = () => { $("stageList").replaceChildren(...rounds.map((round, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.innerHTML = `<span><strong>${t("round", { n: index + 1, total: rounds.length })}</strong><small>${round.name} · ${index < state.round ? t("complete") : t("open")}</small></span><span class="stage-mark">${index < state.round ? "✓" : "→"}</span>`; button.addEventListener("click", () => startRound(index)); return button; })); };
+  const renderStages = () => { $("stageList").replaceChildren(...rounds.map((round, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.innerHTML = `<span><strong>${t("round", { n: index + 1, total: rounds.length })}</strong><small>${t(round.nameKey)} · ${index < state.round ? t("complete") : t("open")}</small></span><span class="stage-mark">${index < state.round ? "✓" : "→"}</span>`; button.addEventListener("click", () => startRound(index)); return button; })); };
   const renderBattle = () => {
     const round = rounds[state.round];
     $("roundLabel").textContent = t("round", { n: state.round + 1, total: rounds.length });
-    $("roundName").textContent = round.name;
+    $("roundName").textContent = t(round.nameKey);
     $("trailNote").textContent = t(round.note);
     $("selectionCount").textContent = t("selected", { n: state.stack.length });
     $("stack").replaceChildren(...state.stack.map((id, index) => { const stone = stones.find((item) => item.id === id); const node = document.createElement("span"); node.className = "stack-stone"; node.innerHTML = `<b>${index + 1}</b><span aria-hidden="true">${stone.mark}</span><small>${t(stone.key)}</small>`; return node; }));
     $("stoneTray").replaceChildren(...stones.map((stone) => { const button = document.createElement("button"); button.type = "button"; button.className = "stone-btn"; button.disabled = state.stack.includes(stone.id); button.setAttribute("aria-label", t(stone.key)); button.innerHTML = `<span class="stone-mark" aria-hidden="true">${stone.mark}</span><span>${t(stone.key)}</span><small>${t("selected", { n: stone.weight })}</small>`; button.addEventListener("click", () => pickStone(stone.id)); return button; }));
     $("battleStatus").textContent = $("battleStatus").dataset.message ? t($("battleStatus").dataset.message) : "";
   };
-  const renderResult = () => { const done = state.round >= rounds.length - 1; $("resultTitle").textContent = done ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: Math.min(state.round + 1, rounds.length), total: rounds.length, picks: state.sessionPicks }); $("resultPrimaryBtn").textContent = done ? t("map") : t("next"); $("resultPrimaryBtn").onclick = done ? () => { show("stages"); renderStages(); } : () => startRound(state.round + 1); $("resultMapBtn").hidden = done; };
+  const renderResult = () => { const done = state.round >= rounds.length - 1; $("resultTitle").textContent = done ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: Math.min(state.round + 1, rounds.length), total: rounds.length, picks: state.sessionPicks }); $("resultPrimaryBtn").textContent = done ? t("map") : t("next"); $("resultPrimaryBtn").onclick = done ? () => { show("stage"); renderStages(); } : () => startRound(state.round + 1); $("resultMapBtn").hidden = done; };
   const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.stack = []; state.picks = 0; $("battleStatus").dataset.message = ""; if (index === 0) state.sessionPicks = 0; show("battle"); renderBattle(); track("round_start"); };
   const pickStone = (id) => { if (state.stack.length >= stones.length) return; state.stack.push(id); state.picks += 1; state.sessionPicks += 1; track("stone_pick", { stone: id }); renderBattle(); };
   const checkStack = () => { const correct = JSON.stringify(state.stack) === JSON.stringify(rounds[state.round].solution); track("stack_check", { correct, picks: state.picks }); if (correct) { $("battleStatus").dataset.message = "correct"; if (state.round === rounds.length - 1) { writeBest(); track("session_complete", { picks: state.sessionPicks }); } show("result"); renderResult(); } else { $("battleStatus").dataset.message = "wrong"; state.stack = []; renderBattle(); } };
   const clearStack = () => { state.stack = []; $("battleStatus").dataset.message = "waiting"; renderBattle(); track("stack_clear"); };
   const setLocale = (locale) => { state.locale = locales[locale] ? locale : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); };
   $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); track("map_open", { source: "primary" }); });
-  $("mapBtn").addEventListener("click", () => { show("stages"); renderStages(); track("map_open"); });
+  $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); track("map_open"); });
   $("stageBackBtn").addEventListener("click", () => show("main"));
-  $("battleBackBtn").addEventListener("click", () => { show("stages"); renderStages(); });
-  $("resultMapBtn").addEventListener("click", () => { show("stages"); renderStages(); });
+  $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
+  $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultHomeBtn").addEventListener("click", () => show("main"));
   $("checkBtn").addEventListener("click", checkStack);
   $("clearBtn").addEventListener("click", clearStack);
