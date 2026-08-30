@@ -21,7 +21,7 @@
   function loadMedals() { try { return JSON.parse(localStorage.getItem("weightplayBridgeWorkshopMedals") || "{}"); } catch (_) { return {}; } }
   function saveMedals() { try { localStorage.setItem("weightplayBridgeWorkshopMedals", JSON.stringify(state.medals)); } catch (_) {} }
   function t(key, values) { let text = COPY[state.locale][key] ?? COPY.en[key] ?? key; Object.entries(values || {}).forEach(([name, value]) => { text = text.replaceAll(`{${name}}`, String(value)); }); return text; }
-  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v4", interface_version: 6, ...payload }); }
+  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v5", interface_version: 6, ...payload }); }
   function setScreen(name) { $("#mainScreen").classList.toggle("active", name === "main"); $("#battleScreen").classList.toggle("active", name === "battle"); const guide = document.querySelector("[data-wp-game-guide]"); if (guide) guide.hidden = name !== "main"; const reserve = document.querySelector(".battle-ad-reserve"); if (reserve) reserve.hidden = name !== "battle"; }
   function stage() { return STAGES[state.stage]; }
   function edgeKey(a, b) { return `${Math.min(a, b)}-${Math.max(a, b)}`; }

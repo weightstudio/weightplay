@@ -3456,6 +3456,25 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSignalScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSignalScoutPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalSignalScoutPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalSignalScoutPlanned.id);
 
+// Silhouette Scout is a planned General identity for a bounded outline-
+// recognition prototype. Keep the card Coming Soon until art, Tester,
+// Reviewer, release, and owner-opening gates are complete.
+const animalSilhouetteScoutPlanned = {
+  id: "animal-silhouette-scout",
+  title: marketFiveLocalized(["Silhouette Scout", "輪廓偵察員", "轮廓侦察员", "シルエット・スカウト", "실루엣 정찰대", "Explorador de siluetas", "Batedor de Silhuetas", "Éclaireur des silhouettes", "Silhouetten-Scout", "Esploratore di sagome", "Разведчик силуэтов", "सिल्हूट स्काउट", "كشّاف الظلال"]),
+  status: "planned",
+  statusText: { ...ownerPreviewStatusText },
+  type: marketFiveLocalized(["Outline Recognition Puzzle", "動物輪廓辨識益智", "动物轮廓辨识益智", "輪郭認識パズル", "실루엣 인식 퍼즐", "Puzle de reconocimiento de siluetas", "Puzzle de reconhecimento de silhuetas", "Puzzle de reconnaissance de silhouettes", "Silhouetten-Erkennungspuzzle", "Puzzle di riconoscimento sagome", "Пазл распознавания силуэтов", "सिल्हूट पहचान पहेली", "لغز تمييز الظلال"]),
+  description: marketFiveLocalized(["Read three dawn clues and match each animal outline to its full-colour card.", "讀懂三張黎明線索，把每個動物輪廓配對到彩色卡片。", "读懂三张黎明线索，把每个动物轮廓配对到彩色卡片。", "3つの夜明けの手がかりを読み、動物の輪郭を色付きカードと合わせます。", "새벽 단서를 읽고 동물 실루엣을 색 카드와 맞춰 보세요.", "Lee tres pistas del amanecer y combina cada silueta con su tarjeta a color.", "Leia três pistas do amanhecer e combine cada silhueta com seu cartão colorido.", "Lis trois indices de l’aube et associe chaque silhouette à sa carte en couleur.", "Lies drei Dämmerungshinweise und ordne jede Silhouette ihrer Farbkarte zu.", "Leggi tre indizi dell’alba e abbina ogni sagoma alla carta colorata.", "Читайте три утренние подсказки и сопоставляйте силуэты с цветными карточками.", "भोर के तीन संकेत पढ़ें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।", "اقرأ ثلاث تلميحات للفجر وطابق كل ظل مع بطاقته الملوّنة."]),
+  meta: marketFiveLocalized([["3 Lookouts", "See + Match", "Calm Retry"], ["3 座瞭望台", "觀察＋配對", "平靜重試"], ["3 座瞭望台", "观察＋配对", "平静重试"], ["3つの見張り台", "見て合わせる", "穏やかな再挑戦"], ["전망대 3개", "보고 맞추기", "차분한 재시도"], ["3 miradores", "Mira y combina", "Reintento tranquilo"], ["3 mirantes", "Veja e associe", "Nova tentativa calma"], ["3 belvédères", "Observe et associe", "Reprise sereine"], ["3 Ausgucke", "Sehen + Zuordnen", "Ruhiger Versuch"], ["3 vedette", "Guarda e abbina", "Riprova calma"], ["3 вышки", "Смотри и сопоставляй", "Спокойный повтор"], ["3 चौकियाँ", "देखें और मिलाएँ", "शांत पुनः प्रयास"], ["3 نقاط مراقبة", "انظر وطابق", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Observation", "Visual Recognition", "Family", "Animal"],
+  skills: ["Observation", "Focus", "Visual Reasoning"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
+  href: "games/animal-silhouette-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSilhouetteScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSilhouetteScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSilhouetteScoutPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalSilhouetteScoutPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalSilhouetteScoutPlanned.id);
+
 // Owner-requested classic originals. They enter the public catalog only after
 // exact-version gates and the paired public delivery gates have evidence.
 window.WONDER_LOBBY.games.push(

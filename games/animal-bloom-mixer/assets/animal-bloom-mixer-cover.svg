@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Moonlit flower mixing table</title><desc id="desc">Five colorful flowers glow in a quiet meadow.</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#192744"/><stop offset="1" stop-color="#0d182c"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffe898" stop-opacity=".9"/><stop offset="1" stop-color="#ffe898" stop-opacity="0"/></radialGradient></defs>
+  <rect width="800" height="800" rx="44" fill="url(#sky)"/><circle cx="590" cy="160" r="120" fill="url(#glow)"/><circle cx="590" cy="160" r="52" fill="#fff0ae"/>
+  <path d="M0 560Q180 470 355 570T800 520V800H0Z" fill="#183b3b"/><path d="M0 660Q190 580 380 670T800 630V800H0Z" fill="#102a31"/>
+  <g stroke="#91e6c7" stroke-width="9" stroke-linecap="round"><path d="M180 700V505M392 720V470M615 690V500M292 755V585M520 760V590"/></g>
+  <g stroke="#17223b" stroke-width="5"><circle cx="180" cy="485" r="42" fill="#f6c76d"/><circle cx="180" cy="485" r="16" fill="#6d4f59"/><circle cx="392" cy="450" r="48" fill="#c8a8ff"/><circle cx="392" cy="450" r="15" fill="#695d73"/><circle cx="615" cy="480" r="44" fill="#ff9b9b"/><circle cx="615" cy="480" r="16" fill="#694e5c"/><circle cx="292" cy="565" r="39" fill="#91e6c7"/><circle cx="292" cy="565" r="14" fill="#345e58"/><circle cx="520" cy="570" r="36" fill="#ffd66e"/><circle cx="520" cy="570" r="13" fill="#6d5a35"/></g>
+  <g fill="#fff0ae"><circle cx="118" cy="220" r="5"/><circle cx="210" cy="130" r="4"/><circle cx="310" cy="245" r="5"/><circle cx="470" cy="90" r="4"/><circle cx="700" cy="285" r="5"/></g>
+  <rect x="72" y="72" width="280" height="70" rx="35" fill="#0b1529aa" stroke="#ffd66e66"/><text x="212" y="118" text-anchor="middle" fill="#f9f4e9" font-family="system-ui,sans-serif" font-weight="700" font-size="30">Bloom Mixer</text>
+</svg>

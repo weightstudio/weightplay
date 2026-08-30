@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-patchwork-paws/" />
-
-    <link rel="canonical" href="https://weightplay.com/de/games/animal-patchwork-paws/" />
+  <link rel="canonical" href="https://weightplay.com/de/games/animal-patchwork-paws/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-patchwork-paws/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-patchwork-paws/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-patchwork-paws/" />
@@ -24,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#315c6a" />
   <title>Pfoten-Patchwork | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta name="description" content="Drehe vier Lebensraumstücke, bis alle Nachbarpfade sauber zusammenpassen." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -41,6 +40,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Pfoten-Patchwork",
+  "alternateName": "Patchwork Paws",
   "url": "https://weightplay.com/de/games/animal-patchwork-paws/",
   "image": "https://weightplay.com/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg",
   "description": "Drehe vier Lebensraumstücke, bis alle Nachbarpfade sauber zusammenpassen.",
@@ -56,22 +56,20 @@
     "Puzzle",
     "Spatial Logic",
     "Familie",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Patchwork Paws"
+  }
 }
     </script>
   </head>
-<body>
+  <body data-audience="general" data-wp-game-id="animal-patchwork-paws" data-wp-game-version="v2">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">✣</div><p data-i18n="loading">Weaving the trail…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Patchwork Paws</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
+    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Pfoten-Patchwork</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
       <div class="cover-wrap"><img src="assets/animal-patchwork-paws-cover.svg" alt="" width="720" height="720" /><span class="cover-badge" data-i18n="kicker">A calm edge-matching puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Pawprint Patchwork</p><h1 data-runtime-localize="off">Pfoten-Patchwork</h1>
@@ -81,7 +79,7 @@
     </section>
     <section id="stageScreen" class="screen panel" data-screen="stage" hidden><p class="eyebrow" data-i18n="chapter">Pawprint Patchwork</p><h2 data-i18n="choose">Choose a patch</h2><div id="stageList" class="stage-list"></div></section>
     <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
-      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Habitat patch</p><h2 id="patchTitle">Patch 1</h2></div><span id="progressPill" class="pill">1 / 3</span></div>
+      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Habitat patch</p><h2 id="patchTitle">Patch 1</h2></div><span id="progressPill" class="pill">1 / 4</span></div>
       <p id="prompt" class="prompt"></p>
       <div class="weave-card"><div id="board" class="board" role="grid" aria-label="Patchwork board"></div><p id="ruleText" class="rule" role="note"></p></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
@@ -90,7 +88,9 @@
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="result-guide" src="assets/animal-patchwork-paws-cover.svg" alt="" width="720" height="720" aria-hidden="true" /><p class="eyebrow" data-i18n="finished">The trails meet!</p><h2 id="resultTitle" data-i18n="resultTitle">A perfect patch</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next patch</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a patch</button></div></section>
     <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260829-patchwork-paws-v1"></script><script src="game.js?v=20260829-patchwork-paws-v1"></script>
+  <script src="locales.js?v=20260830-patchwork-paws-v2"></script><script src="game.js?v=20260830-patchwork-paws-v2"></script>
+<script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Informationen zu Pfoten-Patchwork">
 
     <div class="game-info-hero">
@@ -109,7 +109,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

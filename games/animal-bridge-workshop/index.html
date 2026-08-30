@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-bridge-workshop">
-  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-game-version" content="v5">
   <meta name="description" content="Build a safe bridge for a friendly animal crew across three forest crossings.">
   <title>Bridge Workshop | WeightPlay</title>
   <style>
@@ -23,13 +23,13 @@
     .shell { width:min(100%,920px); padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom); }
     .topbar { min-height:54px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
     .brand { color:var(--muted); font-size:.82rem; font-weight:900; letter-spacing:.04em; }
-    .wp-main-shell-header { position:relative; }
+    .wp-main-shell-header { position:relative; z-index:20; }
     .wp-shell-return { width:58px; height:48px; display:inline-flex; align-items:center; gap:3px; color:var(--ink); text-decoration:none; }
     .wp-shell-return img { width:38px; height:38px; object-fit:contain; }
     .wp-shell-return-arrow { font-size:1.15rem; }
     .wp-shell-main-title { position:absolute; left:50%; transform:translateX(-50%); max-width:58%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:1rem; }
     .wp-shell-settings-button { width:48px; height:48px; min-height:48px; padding:0; }
-    .settings-popover { position:absolute; z-index:5; right:0; top:52px; display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--line); border-radius:14px; background:var(--panel); box-shadow:0 14px 30px #030a1688; }
+    .settings-popover { position:absolute; z-index:30; right:0; top:52px; display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--line); border-radius:14px; background:var(--panel); box-shadow:0 14px 30px #030a1688; }
     .settings-popover[hidden] { display:none; }
     .progress { min-height:40px; margin-top:14px; padding:10px 12px; border:1px solid #365778; border-radius:12px; color:var(--muted); background:#0d1c31; }
     .guide-card { margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:18px; background:#10213a; }
@@ -131,7 +131,7 @@
       <div class="battle-ad-reserve" aria-hidden="true" hidden></div>
     </main>
   </div>
-  <script src="locales.js?v=20260830-bridge-workshop-v4-result-locale"></script>
-  <script src="game.js?v=20260830-bridge-workshop-v4-result-locale"></script>
+  <script src="locales.js?v=20260830-bridge-workshop-v5-settings-overlay"></script>
+  <script src="game.js?v=20260830-bridge-workshop-v5-settings-overlay"></script>
 </body>
 </html>

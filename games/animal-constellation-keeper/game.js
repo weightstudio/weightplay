@@ -16,17 +16,22 @@
       { id: "bear-centre", labelKey: "map3A", stars: [{ animal: "owl", row: 0, col: 1 }, { animal: "bear", row: 1, col: 1 }, { animal: "mole", row: 2, col: 1 }] },
       { id: "owl-centre-final", labelKey: "map3B", stars: [{ animal: "bear", row: 0, col: 1 }, { animal: "owl", row: 1, col: 1 }, { animal: "mole", row: 2, col: 1 }] },
       { id: "mole-centre", labelKey: "map3C", stars: [{ animal: "owl", row: 0, col: 1 }, { animal: "mole", row: 1, col: 1 }, { animal: "bear", row: 2, col: 1 }] }
+    ] },
+    { nameKey: "map4", introKey: "map4Intro", clues: ["clue4a", "clue4b"], hint: "clue4a", options: [
+      { id: "rabbit-west", labelKey: "map4A", stars: [{ animal: "rabbit", row: 1, col: 0 }, { animal: "owl", row: 1, col: 1 }, { animal: "bear", row: 2, col: 0 }] },
+      { id: "owl-west", labelKey: "map4B", stars: [{ animal: "owl", row: 1, col: 0 }, { animal: "rabbit", row: 1, col: 1 }, { animal: "bear", row: 2, col: 0 }] },
+      { id: "bear-west", labelKey: "map4C", stars: [{ animal: "rabbit", row: 1, col: 0 }, { animal: "bear", row: 1, col: 1 }, { animal: "owl", row: 2, col: 0 }] }
     ] }
   ];
-  const correctIds = ["fox-centre", "otter-centre", "bear-centre"];
+  const correctIds = ["fox-centre", "otter-centre", "bear-centre", "rabbit-west"];
   const state = { locale: "en", map: 0, completed: 0, selected: "", checks: 0, sessionChecks: 0, screen: "main", sound: true };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
-  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", event, ...detail } })); };
+  const track = (event, detail = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { game: "animal-constellation-keeper", game_version: "v3", interface_version: 6, event, ...detail } })); };
   const tone = (frequency) => { if (!state.sound) return; try { const AudioContextClass = window.AudioContext || window.webkitAudioContext; if (!AudioContextClass) return; const context = new AudioContextClass(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = frequency; gain.gain.setValueAtTime(0.035, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.12); oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + 0.12); oscillator.addEventListener("ended", () => context.close(), { once: true }); } catch (_) {} };
   const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen; };
-  const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-constellation-keeper-best-v2")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
-  const saveBest = () => { try { const old = readBest(); if (!old || state.sessionChecks < old) localStorage.setItem("weightplay-animal-constellation-keeper-best-v2", String(state.sessionChecks)); } catch (_) {} };
+  const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-constellation-keeper-best-v3")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
+  const saveBest = () => { try { const old = readBest(); if (!old || state.sessionChecks < old) localStorage.setItem("weightplay-animal-constellation-keeper-best-v3", String(state.sessionChecks)); } catch (_) {} };
   const announce = (key, vars = {}, kind = "") => { const node = $("battleStatus"); node.textContent = t(key, vars); node.dataset.kind = kind; };
   const animalAtlas = { fox: "fox", owl: "owl", rabbit: "rabbit", deer: "deer", otter: "bear", hare: "rabbit", bear: "bear", mole: "owl" };
   const renderStages = () => { $("stageList").replaceChildren(...maps.map((map, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.setAttribute("role", "listitem"); button.innerHTML = `<strong>${t("round", { n: index + 1, total: maps.length })}</strong><span>${t(map.nameKey)}</span><small>${index < state.completed ? t("complete") : t("open")}</small>`; button.addEventListener("click", () => startMap(index)); return button; })); };

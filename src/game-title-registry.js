@@ -2335,6 +2335,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "सिग्नल स्काउट",
     "ar": "كشّاف الإشارات"
   },
+  "animal-silhouette-scout": {
+    "__localizedExact": true,
+    "en": "Silhouette Scout",
+    "zh-Hant": "輪廓偵察員",
+    "zh-Hans": "轮廓侦察员",
+    "ja": "シルエット・スカウト",
+    "ko": "실루엣 정찰대",
+    "es": "Explorador de siluetas",
+    "pt-BR": "Batedor de Silhuetas",
+    "fr": "Éclaireur des silhouettes",
+    "de": "Silhouetten-Scout",
+    "it": "Esploratore di sagome",
+    "ru": "Разведчик силуэтов",
+    "hi": "सिल्हूट स्काउट",
+    "ar": "كشّاف الظلال"
+  },
   "road-crosser": {
     "__localizedExact": true,
     "en": "Road Crosser",
