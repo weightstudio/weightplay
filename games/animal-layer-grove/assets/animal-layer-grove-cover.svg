@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700" role="img" aria-labelledby="title desc">
+  <title id="title">Layer Grove</title>
+  <desc id="desc">Three translucent habitat layers frame a friendly deer in a moonlit grove.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#102b35"/><stop offset="1" stop-color="#547765"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e2f0bd" stop-opacity=".3"/><stop offset="1" stop-color="#8ac6a0" stop-opacity=".1"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="900" height="700" rx="42" fill="url(#sky)"/>
+  <circle cx="700" cy="125" r="70" fill="#f8e4a5" opacity=".9"/>
+  <circle cx="700" cy="125" r="105" fill="#f8e4a5" opacity=".16" filter="url(#glow)"/>
+  <path d="M0 535 Q140 410 270 525 T530 500 T900 510 V700 H0Z" fill="#172d32"/>
+  <path d="M0 590 Q180 490 360 575 T680 560 T900 575 V700 H0Z" fill="#25463f"/>
+  <g opacity=".78" fill="url(#glass)" stroke="#dff0c5" stroke-opacity=".65" stroke-width="5">
+    <path d="M90 160 L310 85 L410 185 L325 520 L100 465Z"/>
+    <path d="M310 85 L610 120 L680 485 L325 520 L410 185Z"/>
+    <path d="M610 120 L810 245 L760 535 L680 485Z"/>
+  </g>
+  <g fill="none" stroke="#dff0c5" stroke-width="8" stroke-linecap="round" opacity=".7"><path d="M145 442 Q185 330 230 265 T320 150"/><path d="M520 490 Q560 360 640 280"/><path d="M722 440 Q690 330 710 235"/></g>
+  <g transform="translate(395 310)">
+    <ellipse cx="65" cy="155" rx="112" ry="125" fill="#b97b58"/>
+    <circle cx="65" cy="55" r="88" fill="#c88a63"/>
+    <path d="M4 8 L-55 -44 L-25 52 M126 8 L184 -44 L155 52" fill="#b97b58" stroke="#e8ba85" stroke-width="12" stroke-linejoin="round"/>
+    <circle cx="34" cy="55" r="9" fill="#172d32"/><circle cx="96" cy="55" r="9" fill="#172d32"/>
+    <path d="M47 92 Q65 108 83 92" fill="none" stroke="#172d32" stroke-width="7" stroke-linecap="round"/>
+    <path d="M15 182 L5 275 M115 182 L125 275" stroke="#b97b58" stroke-width="20" stroke-linecap="round"/>
+  </g>
+  <g fill="#f8e4a5" font-family="system-ui,sans-serif" font-weight="800"><text x="58" y="90" font-size="30">WEIGHTPLAY ORIGINAL</text><text x="58" y="642" font-size="48">LAYER GROVE</text></g>
+  <text x="60" y="680" fill="#d7ecd0" font-family="system-ui,sans-serif" font-size="22">A calm habitat depth puzzle</text>
+</svg>

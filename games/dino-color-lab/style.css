@@ -26,18 +26,30 @@ button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visib
 .guide-card { margin-top:14px; padding:18px 22px; }
 .guide-card summary { cursor:pointer; font-weight:900; }
 .guide-card p { color:var(--muted); line-height:1.5; }
+.guide-layout { display:grid; grid-template-columns:minmax(90px,150px) 1fr; align-items:center; gap:18px; }
+.fia-guide { width:100%; max-height:180px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(70,82,63,.18)); }
+.guide-copy p { margin-bottom:0; }
 .best-line { min-height:22px; margin:14px 4px 0; color:#52786a; font-weight:800; }
 .status-row { display:flex; justify-content:space-between; gap:12px; color:#52786a; font-weight:900; }
 .lab-card, .result-card { padding:clamp(22px,5vw,52px); }
+.lab-scene { background-color:rgba(255,255,255,.86); background-image:linear-gradient(rgba(255,255,255,.78),rgba(255,255,255,.86)),url("assets/dino-color-lab-background.webp"); background-position:center; background-size:cover; }
 .target-row { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .target-row h2 { margin:0; font-size:clamp(28px,5vw,44px); letter-spacing:-.04em; }
-.colour-chip { width:78px; height:78px; flex:0 0 auto; border-radius:50%; border:7px solid #fff; box-shadow:0 0 0 1px var(--line),0 8px 18px rgba(70,82,63,.16); }
+.colour-chip { width:78px; height:78px; flex:0 0 auto; border-radius:50%; border:7px solid #fff; box-shadow:0 0 0 1px var(--line),0 8px 18px rgba(70,82,63,.16); background-image:url("assets/dino-color-lab-reagents.webp"); background-repeat:no-repeat; background-size:400% 200%; background-blend-mode:soft-light; }
+.target-art-amber { background-position:0% 100%; }
+.target-art-fern { background-position:33.333% 100%; }
+.target-art-violet { background-position:66.666% 100%; }
 .round-hint { min-height:28px; margin:22px 0 16px; color:var(--muted); font-weight:800; }
 .round-hint.is-good { color:#3b8c5e; }
 .reagent-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
-.reagent { min-height:104px; display:grid; place-items:center; align-content:center; gap:10px; border:2px solid var(--line); border-radius:16px; background:#fff; color:var(--ink); font-weight:900; }
+.reagent { min-height:104px; display:grid; place-items:center; align-content:center; gap:10px; border:2px solid var(--line); border-radius:16px; background:rgba(255,255,255,.92); color:var(--ink); font-weight:900; }
 .reagent[aria-pressed="true"] { border-color:#df8b42; background:#fff5e8; box-shadow:0 0 0 3px rgba(223,139,66,.14); }
-.reagent-dot { width:38px; height:38px; border-radius:50%; box-shadow:inset 0 -5px 0 rgba(0,0,0,.12); }
+.reagent-art { width:48px; height:48px; display:block; border-radius:14px; background-color:var(--reagent-colour,#eef2ec); background-image:url("assets/dino-color-lab-reagents.webp"); background-repeat:no-repeat; background-size:400% 200%; box-shadow:0 4px 10px rgba(70,82,63,.15); }
+.reagent-art-sun { background-position:0% 0%; }
+.reagent-art-leaf { background-position:33.333% 0%; }
+.reagent-art-ocean { background-position:66.666% 0%; }
+.reagent-art-berry { background-position:100% 0%; }
+.reagent-art-clay { background-position:100% 100%; }
 .selection-row { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:22px; color:var(--muted); font-weight:900; }
 .cooling-track { height:8px; margin:18px 0 10px; overflow:hidden; border-radius:99px; background:#e8ede7; }
 .cooling-track span { display:block; width:100%; height:100%; transform-origin:left; background:#8ec69c; }
@@ -49,6 +61,8 @@ button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visib
 .result-card h2 { margin:8px 0 12px; font-size:clamp(30px,6vw,50px); letter-spacing:-.05em; }
 .result-card p:not(.guide-badge) { color:var(--muted); font-size:18px; line-height:1.5; }
 .result-stats { display:flex; justify-content:center; gap:22px; margin:24px 0; color:#52786a; font-weight:900; }
+.result-fossils { display:flex; justify-content:center; gap:14px; margin:4px 0 26px; }
+.fossil-badge { width:58px; height:58px; display:block; border-radius:50%; border:5px solid #fff; background-color:var(--fossil-colour); background-image:url("assets/dino-color-lab-reagents.webp"); background-repeat:no-repeat; background-size:400% 200%; background-blend-mode:soft-light; box-shadow:0 0 0 1px var(--line),0 8px 16px rgba(70,82,63,.16); }
 .result-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; }
 footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
 @media (max-width:700px) {
@@ -63,6 +77,8 @@ footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
   .hero-copy { grid-row:2; }
   .hero-copy h2 { font-size:36px; }
   .hero-copy p:not(.guide-badge) { font-size:16px; }
+  .guide-layout { grid-template-columns:92px 1fr; gap:12px; }
+  .fia-guide { max-height:150px; }
   .reagent-grid { grid-template-columns:repeat(3,1fr); }
   .reagent { min-height:88px; }
   .selection-row { align-items:stretch; flex-direction:column; }

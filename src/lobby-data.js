@@ -2117,6 +2117,34 @@ for (const game of window.WONDER_LOBBY.games) {
   }
 }
 
+// Weighted General prototype (2026-08-30). Keep the layer-order slice
+// planned/Coming Soon and out of playable discovery until every downstream
+// acceptance gate passes.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-layer-grove",
+    audience: "general",
+    status: "planned",
+    title: localize(["Layer Grove", "疊影林地", "叠影林地", "レイヤーの森", "겹침 숲", "Bosque de Capas", "Bosque de Camadas", "Bois en couches", "Schichtenhain", "Bosco a strati", "Роща слоёв", "परतों का वन", "بستان الطبقات"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Habitat layer-order puzzle", "棲地疊影排序益智", "栖地叠影排序益智", "生息地レイヤー順パズル", "서식지 레이어 순서 퍼즐", "Puzzle de capas de hábitat", "Puzzle de camadas de habitat", "Puzzle d’ordre des couches d’habitat", "Habitat-Schichten-Puzzle", "Puzzle dell’ordine degli strati", "Пазл порядка слоёв среды", "Пазल क्रम-परत आवास", "لغز ترتيب طبقات الموطن"]),
+    description: localize(["Stack three transparent habitat layers to reveal the animal scene that matches the keeper’s target.", "疊放三層透明棲地圖層，顯現符合守護員目標的動物場景。", "叠放三层透明栖地图层，显现符合守护员目标的动物场景。", "3枚の透明な生息地レイヤーを重ね、守り手の目標に合う動物の景色を見つけよう。", "투명한 서식지 레이어 세 장을 겹쳐 수호자의 목표 동물 장면을 완성해요.", "Apila tres capas transparentes del hábitat para revelar la escena animal objetivo.", "Empilhe três camadas transparentes do habitat para revelar a cena animal desejada.", "Superpose trois couches transparentes pour révéler la scène animale demandée.", "Staple drei transparente Habitat-Schichten, bis die Zielszene sichtbar wird.", "Sovrapponi tre strati trasparenti per rivelare la scena animale richiesta.", "Наложите три прозрачных слоя среды, чтобы открыть нужную сцену с животным.", "तीन पारदर्शी आवास परतें लगाकर लक्ष्य पशु-दृश्य दिखाएँ।", "رتّب ثلاث طبقات شفافة للموطن لتكشف مشهد الحيوان المطلوب."]),
+    meta: localize([["3 Grove Scenes", "Layer Order", "Calm Retry"], ["3 個林地場景", "圖層順序", "平靜重試"], ["3 个林地场景", "图层顺序", "平静重试"], ["3つの森の景色", "レイヤー順", "穏やかな再挑戦"], ["숲 장면 3개", "레이어 순서", "차분한 재시도"], ["3 escenas", "Orden de capas", "Reintento sereno"], ["3 cenas", "Ordem das camadas", "Nova tentativa calma"], ["3 scènes", "Ordre des couches", "Reprise sereine"], ["3 Waldszenen", "Schichtenfolge", "Ruhiger Versuch"], ["3 scene", "Ordine degli strati", "Riprova calma"], ["3 сцены", "Порядок слоёв", "Спокойный повтор"], ["3 वन-दृश्य", "परत क्रम", "शांत पुनः प्रयास"], ["3 مشاهد", "ترتيب الطبقات", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Logic", "Spatial Planning", "Family", "Animal"],
+    skills: ["Visual Reasoning", "Sequencing", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-layer-grove/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-layer-grove/assets/animal-layer-grove-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 window.WONDER_LOBBY.games.push({
   id:"animal-penalty-cup",audience:"general",status:"planned",href:"games/animal-penalty-cup/",internalTrial:"index.html?trial=1",categories:["Featured","Animal Games","Arcade","Family"],skills:["Timing","Reaction","Pattern Reading"],ages:["9","family"],ageLabel:{en:"9+","zh-Hant":"9+","zh-Hans":"9+",ja:"9+",ko:"9+",es:"9+","pt-BR":"9+",fr:"9+",de:"9+",it:"9+",ru:"9+",hi:"9+",ar:"9+"},art:{kind:"image",background:"games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp",hideHero:true},
   title:{en:"Animal Penalty Cup","zh-Hant":"動物十二碼盃","zh-Hans":"动物点球杯",ja:"アニマルPKカップ",ko:"애니멀 승부차기 컵",es:"Copa de Penaltis Animal","pt-BR":"Copa Animal de Pênaltis",fr:"Coupe des Tirs au But Animaux",de:"Tierischer Elfmeterpokal",it:"Coppa dei Rigori Animali",ru:"Кубок звериных пенальти",hi:"पशु पेनल्टी कप",ar:"كأس ركلات جزاء الحيوانات"},

@@ -2,14 +2,30 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const locales = window.HABITAT_BLUEPRINT_LOCALES || {};
+  const supportedLocales = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const normalizeLocale = (value) => {
+    if (value === "zh-TW") return "zh-Hant";
+    if (value === "zh-CN") return "zh-Hans";
+    if (value?.toLowerCase?.().startsWith("pt")) return "pt-BR";
+    if (supportedLocales.includes(value)) return value;
+    const short = value?.split?.("-")?.[0];
+    return supportedLocales.includes(short) ? short : "en";
+  };
+  const safeStorage = { get(key, fallback = "") { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } }, set(key, value) { try { localStorage.setItem(key, value); } catch {} } };
+  const queryParams = new URLSearchParams(window.location.search);
+  const queryLocale = queryParams.get("route-locale") || queryParams.get("locale") || queryParams.get("lang");
+  const pathLocale = window.location.pathname.split("/").filter(Boolean).map((value) => localeMap[value] || "").find(Boolean);
+  const routeLocale = queryLocale && locales[normalizeLocale(queryLocale)] ? normalizeLocale(queryLocale) : (pathLocale && locales[pathLocale] ? pathLocale : "");
   const plans = [
     { id: 1, name: "blueprint1", hint: "hint1", tiles: ["pond", "nest", "reed", "meadow"], solution: ["pond", "reed", "nest", "meadow"], rules: [{ key: "ruleTouch", a: "pond", b: "reed" }, { key: "ruleApart", a: "pond", b: "nest" }, { key: "ruleBelow", a: "meadow", b: "nest" }] },
     { id: 2, name: "blueprint2", hint: "hint2", tiles: ["canopy", "stream", "burrow", "fern"], solution: ["fern", "canopy", "burrow", "stream"], rules: [{ key: "ruleTouch", a: "stream", b: "fern" }, { key: "ruleApart", a: "canopy", b: "stream" }, { key: "ruleBelow", a: "burrow", b: "canopy" }] },
     { id: 3, name: "blueprint3", hint: "hint3", tiles: ["dusk", "pool", "moss", "lantern"], solution: ["lantern", "moss", "dusk", "pool"], rules: [{ key: "ruleTouch", a: "lantern", b: "moss" }, { key: "ruleApart", a: "lantern", b: "pool" }, { key: "ruleBelow", a: "dusk", b: "moss" }] }
   ];
-  let locale = localStorage.getItem("weightplay-habitat-blueprint-locale") || "en";
+  let locale = routeLocale || safeStorage.get("weightPlayLocale", "") || safeStorage.get("weightplay-habitat-blueprint-locale", "") || "en";
+  locale = normalizeLocale(locale);
   if (!locales[locale]) locale = "en";
-  let sound = localStorage.getItem("weightplay-habitat-blueprint-sound") !== "off";
+  let sound = safeStorage.get("weightplay-habitat-blueprint-sound", "on") !== "off";
   let planIndex = 0; let tiles = []; let selected = []; let swaps = 0; let sessionSwaps = 0; let solved = new Set(); let feedback = ""; let currentScreen = "main";
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const tileName = (type) => copy(`tile${type[0].toUpperCase()}${type.slice(1)}`);
@@ -17,7 +33,7 @@
   const bestValue = () => Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0) || "—";
   const solvedPlan = () => tiles.every((tile, index) => tile === plans[planIndex].solution[index]);
   function show(screen) { currentScreen = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = screen === "main"; }
-  function renderStatic() { document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : "en"; document.documentElement.dir = "ltr"; document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); }); $("backBtn").setAttribute("aria-label", copy("back") || "Back"); $("settingsBtn").setAttribute("aria-label", copy("settings")); $("closeSettings").setAttribute("aria-label", copy("close")); $("localeSelect").setAttribute("aria-label", copy("language")); $("soundBtn").textContent = sound ? copy("on") : copy("off"); $("soundBtn").setAttribute("aria-pressed", String(sound)); $("best").textContent = copy("best", { best: bestValue() }); renderStages(); renderBattle(); renderResult(); }
+  function renderStatic() { document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.body.dataset.locale = locale; document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = copy(node.dataset.i18n); }); $("backBtn").setAttribute("aria-label", copy("back") || "Back"); $("settingsBtn").setAttribute("aria-label", copy("settings")); $("closeSettings").setAttribute("aria-label", copy("close")); $("localeSelect").setAttribute("aria-label", copy("language")); $("localeSelect").value = locale; $("soundBtn").textContent = sound ? copy("on") : copy("off"); $("soundBtn").setAttribute("aria-pressed", String(sound)); $("best").textContent = copy("best", { best: bestValue() }); renderStages(); renderBattle(); renderResult(); }
   function renderStages() { const root = $("stageList"); if (!root) return; root.replaceChildren(); plans.forEach((plan, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.dataset.planIndex = String(index); button.innerHTML = `<span><strong>${copy(plan.name)}</strong><small>${copy(plan.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`; button.addEventListener("click", () => startPlan(index, true)); root.appendChild(button); }); }
   function startPlan(index, fromStage = false) { planIndex = index; tiles = [...plans[index].tiles]; selected = []; swaps = 0; feedback = ""; if (index === 0 || fromStage) sessionSwaps = 0; show("battle"); renderBattle(); announce("start"); }
   function renderRules() { const root = $("rules"); root.replaceChildren(); plans[planIndex].rules.forEach((rule) => { const item = document.createElement("li"); item.textContent = copy(rule.key, { a: tileName(rule.a), b: tileName(rule.b) }); root.appendChild(item); }); }
@@ -26,8 +42,9 @@
   function renderResult() { if (!$("resultText")) return; const complete = solved.size === plans.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = copy("resultText", { count: solved.size, best: bestValue() }); $("nextBtn").hidden = complete; $("resultMapBtn").hidden = !complete; if (complete) { const old = Number(localStorage.getItem("weightplay-habitat-blueprint-best-v1") || 0); if (!old || sessionSwaps < old) localStorage.setItem("weightplay-habitat-blueprint-best-v1", String(sessionSwaps)); $("resultText").textContent = copy("resultText", { count: solved.size, best: Math.min(old || sessionSwaps, sessionSwaps) }); } }
   function nextPlan() { const nextIndex = planIndex + 1; if (nextIndex < plans.length) startPlan(nextIndex); else { show("stage"); renderStages(); } }
   function goBack() { if (currentScreen === "battle") { show("stage"); renderStages(); } else if (currentScreen === "stage" || currentScreen === "result") show("main"); }
-  function bind() { $("startBtn").addEventListener("click", () => startPlan(0)); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("swapBtn").addEventListener("click", swapSelected); $("resetBtn").addEventListener("click", () => { tiles = [...plans[planIndex].tiles]; selected = []; swaps = 0; feedback = ""; renderBattle(); announce("reset"); }); $("backBtn").addEventListener("click", goBack); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-habitat-blueprint-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-habitat-blueprint-locale", locale); renderStatic(); }); }
-  function boot() { bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); announce("loaded"); }
+  function bind() { $("startBtn").addEventListener("click", () => startPlan(0)); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("swapBtn").addEventListener("click", swapSelected); $("resetBtn").addEventListener("click", () => { tiles = [...plans[planIndex].tiles]; selected = []; swaps = 0; feedback = ""; renderBattle(); announce("reset"); }); $("backBtn").addEventListener("click", goBack); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundBtn").addEventListener("click", () => { sound = !sound; safeStorage.set("weightplay-habitat-blueprint-sound", sound ? "on" : "off"); renderStatic(); }); $("localeSelect").addEventListener("change", (event) => { locale = normalizeLocale(event.target.value); safeStorage.set("weightPlayLocale", locale); safeStorage.set("weightplay-habitat-blueprint-locale", locale); renderStatic(); announce("locale", { locale }); }); }
+  function enforceRouteLocale() { if (routeLocale && routeLocale !== locale) { locale = routeLocale; renderStatic(); } }
+  function boot() { bind(); $("localeSelect").value = locale; $("loading").hidden = true; $("app").hidden = false; show("main"); renderStatic(); enforceRouteLocale(); announce("loaded"); }
   window.__HABITAT_BLUEPRINT_TEST__ = { plans, startPlan, getState: () => ({ planIndex, tiles: [...tiles], solved: [...solved], swaps, screen: currentScreen }) };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

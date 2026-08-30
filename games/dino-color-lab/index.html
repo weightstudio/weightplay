@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-game-version" content="v7">
   <meta name="description" content="Dino Color Lab is an internal WeightPlay pattern-mixing prototype.">
   <title>Dino Color Lab | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260829-dino-color-lab-v4">
+  <link rel="stylesheet" href="style.css?v=20260830-dino-color-lab-v7">
 </head>
 <body>
   <main class="lab-shell" id="app">
@@ -48,15 +48,20 @@
         <img class="fossil-mark" src="assets/dino-color-lab-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
       </div>
       <details class="guide-card">
-        <summary data-copy="howTo">How to play</summary>
-        <p data-copy="howToBody">Each sample has one exact two-ink recipe. Tap two different reagent cards, then mix. A correct blend opens the next sample; a wrong blend can be tried again.</p>
+        <div class="guide-layout">
+          <img class="fia-guide" src="assets/dino-color-lab-fia.webp" alt="" aria-hidden="true" width="1024" height="1536" loading="eager">
+          <div class="guide-copy">
+            <summary data-copy="howTo">How to play</summary>
+            <p data-copy="howToBody">Each sample has one exact two-ink recipe. Tap two different reagent cards, then mix. A correct blend opens the next sample; a wrong blend can be tried again.</p>
+          </div>
+        </div>
       </details>
       <p id="bestLine" class="best-line" role="status"></p>
     </section>
 
     <section id="labScreen" class="screen" hidden aria-labelledby="labTitle">
       <div class="status-row"><span id="roundLabel"></span><span id="scoreLabel"></span></div>
-      <div class="lab-card">
+      <div class="lab-card lab-scene">
         <div class="target-row">
           <div><p class="eyebrow" data-copy="targetLabel">Target sample</p><h2 id="labTitle"></h2></div>
           <div id="targetChip" class="colour-chip" role="img" aria-label="Target colour"></div>
@@ -75,11 +80,12 @@
         <h2 id="resultTitle"></h2>
         <p id="resultBody"></p>
         <div class="result-stats"><span id="resultScore"></span><span id="resultBest"></span></div>
+        <div id="resultFossils" class="result-fossils" aria-hidden="true"></div>
         <div class="result-actions"><button id="replayBtn" class="primary" data-copy="replay">Run it again</button><button id="homeBtn" class="secondary" data-copy="home">Back to menu</button></div>
       </div>
     </section>
     <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
   </main>
-  <script src="game.js?v=20260829-dino-color-lab-v4"></script>
+  <script src="game.js?v=20260830-dino-color-lab-v7"></script>
 </body>
 </html>

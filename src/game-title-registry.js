@@ -1199,6 +1199,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पशु प्रिज्म तोड़ने वाले",
     "ar": "قواطع المنشور الحيواني"
   },
+  "animal-layer-grove": {
+    "__localizedExact": true,
+    "en": "Layer Grove",
+    "zh-Hant": "疊影林地",
+    "zh-Hans": "叠影林地",
+    "ja": "レイヤーの森",
+    "ko": "겹침 숲",
+    "es": "Bosque de Capas",
+    "pt-BR": "Bosque de Camadas",
+    "fr": "Bois en couches",
+    "de": "Schichtenhain",
+    "it": "Bosco a strati",
+    "ru": "Роща слоёв",
+    "hi": "परतों का वन",
+    "ar": "بستان الطبقات"
+  },
   "animal-penalty-cup": {
     "__localizedExact": true,
     "en": "Animal Penalty Cup",

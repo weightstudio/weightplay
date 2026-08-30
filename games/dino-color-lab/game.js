@@ -28,7 +28,8 @@
   const renderReagents = () => {
     const sample = SAMPLES[index];
     $("labTitle").textContent = sample.target[locale] || sample.target.en;
-    $("targetChip").style.background = sample.colour;
+    $("targetChip").style.backgroundColor = sample.colour;
+    $("targetChip").className = `colour-chip target-art-${sample.art}`;
     $("targetChip").setAttribute("aria-label", `${t("targetLabel")}: ${$("labTitle").textContent}`);
     $("roundLabel").textContent = t("round", {n: index + 1, total: SAMPLES.length});
     $("scoreLabel").textContent = t("score", {n: score});
@@ -40,7 +41,7 @@
     REAGENTS.forEach(reagent => {
       const button = document.createElement("button"); button.type = "button"; button.className = "reagent";
       button.dataset.reagent = reagent.id; button.setAttribute("aria-pressed", String(selected.includes(reagent.id)));
-      button.innerHTML = `<span class="reagent-dot" style="background:${reagent.colour}" aria-hidden="true"></span><span>${reagent.name[locale] || reagent.name.en}</span>`;
+      button.innerHTML = `<span class="reagent-art reagent-art-${reagent.id}" style="--reagent-colour:${reagent.colour}" aria-hidden="true"></span><span>${reagent.name[locale] || reagent.name.en}</span>`;
       button.addEventListener("click", () => {
         if (selected.includes(reagent.id)) selected = selected.filter(id => id !== reagent.id);
         else if (selected.length < 2) selected = [...selected, reagent.id];
@@ -57,7 +58,9 @@
   const finish = () => {
     clearTimeout(coolingTimer); best = Math.max(best, score); saveBest(best);
     $("resultTitle").textContent = t("completeTitle"); $("resultBody").textContent = t("completeBody", {n: score});
-    $("resultScore").textContent = t("score", {n: score}); $("resultBest").textContent = t("best", {n: best}); show("result"); $("replayBtn").focus(); updateBest();
+    $("resultScore").textContent = t("score", {n: score}); $("resultBest").textContent = t("best", {n: best});
+    $("resultFossils").innerHTML = SAMPLES.map(sample => `<span class="fossil-badge target-art-${sample.art}" style="--fossil-colour:${sample.colour}"></span>`).join("");
+    show("result"); $("replayBtn").focus(); updateBest();
   };
   $("mixBtn").addEventListener("click", () => {
     const answer = [...SAMPLES[index].answer].sort().join(","), attempt = [...selected].sort().join(",");
@@ -209,9 +212,9 @@
     {id: "clay", name: {en: "Clay", "zh-Hant": "陶土", "zh-Hans": "陶土", ja: "粘土", ko: "점토", es: "Arcilla", "pt-BR": "Argila", fr: "Argile", de: "Ton", it: "Argilla", ru: "Глина", hi: "चिकनी मिट्टी", ar: "طين"}, colour: "#d67b5b"}
   ];
   const SAMPLES = [
-    {target: {en: "Amber fossil", "zh-Hant": "琥珀化石", "zh-Hans": "琥珀化石", ja: "琥珀の化石", ko: "호박 화석", es: "Fósil ámbar", "pt-BR": "Fóssil âmbar", fr: "Fossile ambré", de: "Bernsteinfossil", it: "Fossile d'ambra", ru: "Янтарная окаменелость", hi: "अंबर जीवाश्म", ar: "أحفورة كهرمانية"}, colour: "#e69a4f", answer: ["clay", "sun"]},
-    {target: {en: "Fern fossil", "zh-Hant": "蕨葉化石", "zh-Hans": "蕨叶化石", ja: "シダの化石", ko: "고사리 화석", es: "Fósil de helecho", "pt-BR": "Fóssil de samambaia", fr: "Fossile de fougère", de: "Farnfossil", it: "Fossile di felce", ru: "Окаменелый папоротник", hi: "फर्न जीवाश्म", ar: "أحفورة سرخس"}, colour: "#70ad75", answer: ["leaf", "ocean"]},
-    {target: {en: "Violet fossil", "zh-Hant": "紫晶化石", "zh-Hans": "紫晶化石", ja: "紫水晶の化石", ko: "보랏빛 화석", es: "Fósil violeta", "pt-BR": "Fóssil violeta", fr: "Fossile violet", de: "Violettes Fossil", it: "Fossile viola", ru: "Фиолетовая окаменелость", hi: "बैंगनी जीवाश्म", ar: "أحفورة بنفسجية"}, colour: "#a67bc9", answer: ["berry", "sun"]}
+    {target: {en: "Amber fossil", "zh-Hant": "琥珀化石", "zh-Hans": "琥珀化石", ja: "琥珀の化石", ko: "호박 화석", es: "Fósil ámbar", "pt-BR": "Fóssil âmbar", fr: "Fossile ambré", de: "Bernsteinfossil", it: "Fossile d'ambra", ru: "Янтарная окаменелость", hi: "अंबर जीवाश्म", ar: "أحفورة كهرمانية"}, art: "amber", colour: "#e69a4f", answer: ["clay", "sun"]},
+    {target: {en: "Fern fossil", "zh-Hant": "蕨葉化石", "zh-Hans": "蕨叶化石", ja: "シダの化石", ko: "고사리 화석", es: "Fósil de helecho", "pt-BR": "Fóssil de samambaia", fr: "Fossile de fougère", de: "Farnfossil", it: "Fossile di felce", ru: "Окаменелый папоротник", hi: "फर्न जीवाश्म", ar: "أحفورة سرخس"}, art: "fern", colour: "#70ad75", answer: ["leaf", "ocean"]},
+    {target: {en: "Violet fossil", "zh-Hant": "紫晶化石", "zh-Hans": "紫晶化石", ja: "紫水晶の化石", ko: "보랏빛 화석", es: "Fósil violeta", "pt-BR": "Fóssil violeta", fr: "Fossile violet", de: "Violettes Fossil", it: "Fossile viola", ru: "Фиолетовая окаменелость", hi: "बैंगनी जीवाश्म", ar: "أحفورة بنفسجية"}, art: "violet", colour: "#a67bc9", answer: ["berry", "sun"]}
   ];
   applyCopy(); show("main");
 })();
