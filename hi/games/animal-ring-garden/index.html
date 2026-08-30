@@ -23,10 +23,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="description" content="तीन पंखुड़ी छल्ले घुमाकर चाँद-बगीचे का पैटर्न खिलाएँ और कम घुमाव में फिर खेलें।" />
   <meta name="weightplay-game-id" content="animal-ring-garden" />
-  <meta name="weightplay-game-version" content="v2" />
+  <meta name="weightplay-game-version" content="v3" />
   <meta name="weightplay-interface-version" content="6" />
   <title>रिंग गार्डन | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <link rel="stylesheet" href="style.css?v=20260830-ring-garden-v3-art1" />
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="रिंग गार्डन | WeightPlay" />
@@ -69,7 +69,7 @@
 }
     </script>
   </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v2">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v3">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
@@ -84,7 +84,8 @@
         </div>
       </header>
       <div class="main-content">
-        <img class="concept-cover" src="assets/animal-ring-garden-cover.svg" alt="रिंग गार्डन game artwork" draggable="false" />
+        <img class="concept-cover" src="assets/animal-ring-garden-cover.png" alt="रिंग गार्डन game artwork" draggable="false" />
+        <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi, your moon-garden guide" draggable="false" />
         <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
         <h1 id="main-title">रिंग गार्डन</h1>
         <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
@@ -122,12 +123,14 @@
         <div class="target-card" aria-label="Target pattern">
           <span id="target-label">Target</span><div id="target-pattern" class="target-pattern"></div>
         </div>
+        <img class="ring-atlas-art" src="assets/animal-ring-garden-ring-atlas.png" alt="" aria-hidden="true" draggable="false" />
         <div id="ring-board" class="ring-board" aria-label="Three petal rings"></div>
         <p id="battle-status" class="status" role="status" aria-live="polite">Choose a ring to begin.</p>
         <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">Reset</button></div>
       </div>
       <div id="result-panel" class="content-column result-panel" hidden>
         <p class="eyebrow" id="result-eyebrow">GARDEN COMPLETE</p>
+        <img class="mimi-guide result-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi celebrates the blooming garden" draggable="false" />
         <h1 id="result-title">The petals align!</h1>
         <p id="result-copy" class="lede">Your moon garden is glowing.</p>
         <div class="result-card"><span id="result-turn-label">Turns</span><strong id="result-turns">0</strong><span id="result-best-label">Best</span><strong id="result-best">—</strong></div>
@@ -145,8 +148,8 @@
       <button id="sound-toggle" class="secondary-button" type="button" aria-pressed="true">Sound: On</button>
     </form>
   </dialog>
-  <script src="locales.js?v=20260830-ring-garden-v2"></script>
-  <script src="game.js?v=20260830-ring-garden-v2"></script>
+  <script src="locales.js?v=20260830-ring-garden-v3-art1"></script>
+  <script src="game.js?v=20260830-ring-garden-v3-art1"></script>
 <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="रिंग गार्डन खेल की जानकारी">

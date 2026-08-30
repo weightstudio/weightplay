@@ -1743,6 +1743,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "मुड़ा हुआ मैदान",
     "ar": "الحقل المطوي"
   },
+  "animal-magnet-meadow": {
+    "__localizedExact": true,
+    "en": "Magnet Meadow",
+    "zh-Hant": "磁力草甸",
+    "zh-Hans": "磁力草甸",
+    "ja": "マグネット・メドウ",
+    "ko": "자석 초원",
+    "es": "Pradera Magnética",
+    "pt-BR": "Prado Magnético",
+    "fr": "Prairie Magnétique",
+    "de": "Magnetwiese",
+    "it": "Prato Magnetico",
+    "ru": "Магнитный луг",
+    "hi": "चुंबकीय मैदान",
+    "ar": "مرج مغناطيسي"
+  },
   "animal-glyph-garden": {
     "__localizedExact": true,
     "en": "Glyph Garden",

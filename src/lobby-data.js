@@ -2707,6 +2707,32 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFoldedFieldPlanned.id)) window.WONDER_LOBBY.games.push(animalFoldedFieldPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalFoldedFieldPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalFoldedFieldPlanned.id);
 
+// Magnet Meadow is a weighted General internal prototype. Keep its identity
+// Coming Soon while the two-body drag loop, production art, and exact release
+// gates are still under validation.
+const animalMagnetMeadowLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalMagnetMeadowLocalized = (values) => Object.fromEntries(animalMagnetMeadowLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalMagnetMeadowStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalMagnetMeadowPlanned = {
+  id: "animal-magnet-meadow",
+  title: animalMagnetMeadowLocalized(["Magnet Meadow", "磁力草甸", "磁力草甸", "マグネット・メドウ", "자석 초원", "Pradera Magnética", "Prado Magnético", "Prairie Magnétique", "Magnetwiese", "Prato Magnetico", "Магнитный луг", "चुंबकीय मैदान", "مرج مغناطيسي"]),
+  status: "planned",
+  statusText: { ...animalMagnetMeadowStatusText },
+  type: animalMagnetMeadowLocalized(["Magnetic Docking Puzzle", "磁力停靠益智", "磁力停靠益智", "磁石ドッキングパズル", "자석 도킹 퍼즐", "Puzle de atraque magnético", "Puzzle de encaixe magnético", "Puzzle d’amarrage magnétique", "Magnet-Andockpuzzle", "Puzzle di attracco magnetico", "Пазл магнитной стыковки", "चुंबकीय डॉकिंग पहेली", "لغز الرسو المغناطيسي"]),
+  description: animalMagnetMeadowLocalized(["Drag two moonstones into their meadow docks and watch the linked stone respond.", "拖曳兩顆月石到草甸停靠點，看著相連月石回應。", "拖曳两颗月石到草甸停靠点，看着相连月石回应。", "2つの月石を草原のドックへドラッグし、連動する石の動きを見届けよう。", "두 달돌을 초원 도크로 끌어 놓고 연결된 돌의 반응을 살펴보세요.", "Arrastra dos piedras lunares hasta sus muelles y observa cómo responde la piedra unida.", "Arraste duas pedras lunares até os encaixes e veja a pedra ligada reagir.", "Fais glisser deux pierres de lune vers leurs quais et observe la pierre liée réagir.", "Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein.", "Trascina due pietre lunari nei loro attracchi e osserva la pietra collegata.", "Перетащите два лунных камня к причалам и наблюдайте за связанным камнем.", "दो चंद्र-पत्थरों को घाटों पर खींचें और जुड़े पत्थर की प्रतिक्रिया देखें।", "اسحب حجري القمر إلى مرساهما وراقب استجابة الحجر المرتبط."]),
+  meta: animalMagnetMeadowLocalized([["3 Meadow Docks", "Drag + Observe", "Calm Retry"], ["3 座草甸停靠", "拖曳＋觀察", "平靜重試"], ["3 座草甸停靠", "拖曳＋观察", "平静重试"], ["3つの草原ドック", "ドラッグ＋観察", "穏やかな再挑戦"], ["초원 도크 3개", "끌고 관찰하기", "차분한 재시도"], ["3 muelles", "Arrastra y observa", "Reintento sereno"], ["3 encaixes", "Arraste e observe", "Nova tentativa calma"], ["3 quais", "Glisse et observe", "Reprise sereine"], ["3 Wiesenplätze", "Ziehen + Beobachten", "Ruhiger Neustart"], ["3 attracchi", "Trascina e osserva", "Riprova calma"], ["3 причала", "Тяните и наблюдайте", "Спокойный повтор"], ["3 घाट", "खींचें और देखें", "शांत पुनःप्रयास"], ["3 مراسٍ", "اسحب وراقب", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Spatial Reasoning", "Physics", "Family", "Animal"],
+  skills: ["Planning", "Cause and Effect", "Spatial Reasoning"],
+  ages: ["6", "family"],
+  ageLabel: animalMagnetMeadowLocalized(Array(13).fill("6+")),
+  href: "games/animal-magnet-meadow/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMagnetMeadowPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMagnetMeadowPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalMagnetMeadowPlanned.id);
+
 // General Issue repair (2026-08-30): provide the private planned identity
 // required by the localized-route generator while keeping Glyph Garden out of
 // the playable lobby catalog until its remaining release gates pass.

@@ -20,8 +20,8 @@
     return value;
   };
   const track = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_cairn_courier_${name}`, round: state.round + 1, ...data }); };
-  const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-cairn-courier-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
-  const writeBest = () => { try { const old = readBest(); if (!old || state.sessionPicks < old) localStorage.setItem("weightplay-animal-cairn-courier-best-v1", String(state.sessionPicks)); } catch (_) {} };
+  const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-cairn-courier-best-v2")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
+  const writeBest = () => { try { const old = readBest(); if (!old || state.sessionPicks < old) localStorage.setItem("weightplay-animal-cairn-courier-best-v2", String(state.sessionPicks)); } catch (_) {} };
   const show = (screen) => { state.screen = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;

@@ -7,3 +7,15 @@
 .wp-standard-main-poster{position:relative}
 .wp-standard-main-poster::after{content:"";position:absolute;right:-4%;bottom:-4%;width:30%;height:30%;background:url("assets/animal-constellation-keeper-orla.png") center/contain no-repeat;filter:drop-shadow(0 10px 14px #0009);pointer-events:none}
 @media(max-width:699px){.wp-standard-main-poster::after{right:-2%;bottom:-2%;width:34%;height:34%}}
+
+/* Interface 6 Stage contract: the shared scaler owns the fixed Canvas while
+   this game supplies the standard header, rail, three-slot tabs, and art. */
+.stage-canvas{display:grid;grid-template-rows:60px minmax(0,1fr) 56px;gap:8px;min-height:0;padding:14px;overflow:hidden;background:#17243a}
+.stage-canvas .panel-head{min-height:60px;margin:0}
+.stage-canvas .panel-head h2{color:#f8fafc}
+.stage-canvas .stage-list{display:flex;align-items:center;min-height:0;margin:0;padding-block:0;overflow-x:auto;overflow-y:hidden}
+.stage-canvas .stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:8px;min-height:56px;margin:0;padding:6px;border-radius:12px;background:rgb(13 27 45 / 78%)}
+.stage-canvas .stage-tabs>span,.stage-canvas .stage-tabs>button{min-width:0;min-height:44px}
+.stage-canvas .stage-tabs button{padding:8px 10px;border:1px solid rgb(255 255 255 / 25%);border-radius:10px;color:#f8fafc;background:rgb(255 255 255 / 8%);font-weight:800}
+.stage-canvas .stage-tabs button[aria-current="page"]{border-color:var(--gold);background:rgb(244 201 107 / 20%);box-shadow:0 0 0 2px rgb(244 201 107 / 20%)}
+.stage-canvas .stage-ad-reserve{display:none}
