@@ -24,9 +24,13 @@
   const COMPLETE_BODY = {
     en:"You guided all four stations with {n} accurate taps. The parade badge is yours.","zh-Hant":"你用 {n} 次準確點擊帶領四個站點，接力徽章屬於你。","zh-Hans":"你用 {n} 次准确点击带领四个站点，接力徽章属于你。",ja:"正確なタップ {n} 回で4つのステーションを導きました。リレーバッジをどうぞ。",ko:"정확한 탭 {n}번으로 네 스테이션을 이끌었습니다. 릴레이 배지를 받으세요.",es:"Guiaste las cuatro estaciones con {n} toques precisos. La insignia es tuya.","pt-BR":"Você guiou as quatro estações com {n} toques precisos. O distintivo é seu.",fr:"Tu as guidé les quatre stations avec {n} touches précises. Le badge du relais est à toi.",de:"Du hast alle vier Stationen mit {n} genauen Taps geführt. Das Staffelabzeichen gehört dir.",it:"Hai guidato tutte e quattro le stazioni con {n} tocchi precisi. Il distintivo è tuo.",ru:"Вы провели четыре станции {n} точными нажатиями. Эстафетный значок ваш.",hi:"आपने {n} सटीक टैप से चारों स्टेशन पूरे किए। रिले बैज आपका है।",ar:"قدت المحطات الأربع عبر {n} ضغطات دقيقة. شارة التتابع لك."
   };
-  let locale = "en", station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = true;
+  let locale = "en", station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = true, ready = false;
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
-  const track = (event, details = {}) => { window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, game_id:"animal-rhythm-relay", game_version:"v3", interface_version:"6", ...details } })); };
+  const track = (event, details = {}) => {
+    const payload = { game_id:"animal-rhythm-relay", game_version:"v4", interface_version:"6", locale, ...details };
+    window.WonderAnalytics?.track?.(event, payload);
+    window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, ...payload } }));
+  };
   function readBest() { try { return Number(localStorage.getItem("animalRhythmRelayBest") || 0); } catch { return 0; } }
   function saveBest(value) { try { localStorage.setItem("animalRhythmRelayBest", String(value)); } catch { /* session-safe */ } }
   function announce(text, good = false) { $("battleStatus").textContent = text; $("battleStatus").style.color = good ? "#ffe59b" : "#fff"; }
@@ -45,7 +49,7 @@
     if (station < 4) $("battleTip").textContent = t("timingTip");
   }
   function showMain(focus = true) { clearInterval(ticker); $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; renderMainProgress(); if (focus) $("startButton").focus(); }
-  function startRelay() { station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; renderBattle(); announce(t("timingTip")); ticker = window.setInterval(renderBattle, 120); track("game_start"); }
+  function startRelay() { if (!ready) return; station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; renderBattle(); announce(t("timingTip")); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start"); }
   function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultTitle").textContent = t("completeTitle"); $("resultBody").textContent = t("completeBody", { n: combo }); $("resultCard").hidden = false; $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
   function tap(index) {
     if ($("battleScreen").hidden || station >= 4) return;
@@ -55,10 +59,25 @@
     if (station >= 4) window.setTimeout(finishRelay, 260);
   }
   $("startButton").addEventListener("click", startRelay); $("retryButton").addEventListener("click", startRelay); $("homeButton").addEventListener("click", showMain); $("battleBack").addEventListener("click", showMain);
+  window.addEventListener("weightplay:tutorial-start", (event) => { if (event.detail?.gameId === "animal-rhythm-relay") startRelay(); });
   document.querySelectorAll("[data-station]").forEach((button) => button.addEventListener("click", () => tap(Number(button.dataset.station))));
   $("settingsButton").addEventListener("click", () => { const open = $("settingsPopover").hidden; $("settingsPopover").hidden = !open; $("settingsButton").setAttribute("aria-expanded", String(open)); if (open) $("localeSelect").focus(); });
   document.querySelectorAll("[data-sound-toggle]").forEach((button) => button.addEventListener("click", () => setSound(!sound)));
   $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; applyCopy(); });
   $("localeSelect").innerHTML = LOCALES.map((code) => `<option value="${code}">${LABELS[code]}</option>`).join("");
-  applyCopy(); showMain(false); track("game_view"); $("loadingPanel").hidden = true;
+  applyCopy(); showMain(false);
+  async function prepareRuntime() {
+    const poster = document.querySelector(".main-poster");
+    try {
+      if (poster?.decode) await poster.decode();
+      else if (poster && !poster.complete) await new Promise((resolve) => { poster.addEventListener("load", resolve, { once:true }); poster.addEventListener("error", resolve, { once:true }); });
+    } catch (_) { /* a missing optional poster cannot block the offline loop */ }
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    ready = true;
+    $("startButton").disabled = false;
+    $("loadingPanel").hidden = true;
+    track("game_ready");
+    track("game_view");
+  }
+  prepareRuntime();
 })();

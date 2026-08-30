@@ -28,6 +28,13 @@ body:is(.wonder-playing, .wonder-stage-select) #battleAdReserve[data-active] {
   transform: translateX(-50%);
 }
 
+/* The public guide belongs to Main. Keep the mounted document-flow guide out
+   of Stage and Battle so screen-specific validators and keyboard users see
+   only the active game surface. */
+body:is(.wonder-playing, .wonder-stage-select) .game-page-info {
+  display: none !important;
+}
+
 body.wonder-playing :is(#backToMenuBtn, #settingsBtn) {
   width: var(--wonder-battle-control-size, 48px) !important;
   min-width: var(--wonder-battle-control-size, 48px) !important;

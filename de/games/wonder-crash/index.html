@@ -81,9 +81,9 @@
   <body>
     <main class="wonder-main-flow-slot">
       <div class="game-shell" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="920" data-wp-stage-landscape-height="460">
-      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Fantasy-Löwenverteidigung-Spielbrett" data-i18n-aria="canvas_label" aria-description="Bewegen Sie den Löwen mit der linken und rechten Pfeiltaste oder ziehen Sie ihn über das Spielbrett." data-i18n-description="canvas_description"></canvas>
+      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Fantasy-Löwenverteidigung-Spielbrett" data-i18n-aria="canvas_label" aria-description="Bewegen Sie den Löwen mit der linken und rechten Pfeiltaste oder ziehen Sie ihn über das Spielbrett." data-i18n-description="canvas_description" data-wp-primary-action></canvas>
 
-      <section id="wonderMain" class="wonder-main">
+      <section id="wonderMain" class="wonder-main" data-screen="main">
         <header>
           <a class="home-link" data-wp-return="main" href="/" aria-label="Zur Lobby" data-i18n-aria="back_lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
           <strong data-i18n="game_title">Fantasy-Löwenverteidigung</strong>
@@ -98,16 +98,16 @@
         <span aria-hidden="true">&larr;</span>
       </button>
 
-      <div id="battleHud" class="hud battle-hud hidden">
+      <div id="battleHud" class="hud battle-hud hidden" data-screen="battle" data-wp-battle-return-only>
         <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
         <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
       </div>
 
       <!-- Internal pause safety trigger; the duplicate Battle Settings control is not exposed. -->
-      <button id="settingsBtn" type="button" class="settings-btn hidden" aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
+      <button id="settingsBtn" type="button" class="settings-btn hidden" data-wp-battle-utility aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->
-      <div id="overlay" class="overlay" data-wp-standard-stage-screen>
+      <div id="overlay" class="overlay" data-wp-standard-stage-screen data-screen="stage">
         <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         <h1 class="hidden" data-i18n="game_title">Fantasy-Löwenverteidigung</h1>
         <div id="menuCoinLine" class="menu-coin-line">
@@ -147,7 +147,7 @@
         <button id="startBtn" type="button" class="hidden" data-i18n="btn_start">Start</button>
 
         <!-- Navigation Menu Tabs -->
-        <nav id="menuTabs" class="menu-tabs">
+        <nav id="menuTabs" class="menu-tabs" data-wp-stage-management-nav>
           <button type="button" data-menu-tab="character"><img src="../../assets/menu-character.png" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/menu-equipment.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/menu-battle.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
@@ -203,7 +203,7 @@
     </div>
   </section>
     <!-- adsense-static-guide:end -->
-    <div id="battleAdReserve" class="battle-ad-reserve" aria-hidden="true"></div>
+    <div id="battleAdReserve" class="battle-ad-reserve" data-wp-stage-reserve-contract="scaled-canvas" aria-hidden="true"></div>
     <!-- Platform Modules and Script Loaders -->
     <script src="src/site-config.js?v=20260709-wonder-settlement-mobile1"></script>
     <script src="src/version.js?v=20260701-version2"></script>
@@ -219,7 +219,7 @@
     <script src="src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260822-dynamic-locale-v12"></script>
-    <script src="src/game.js?v=20260831-battle-return-confirmation-v14"></script>
+    <script src="src/game.js?v=20260831-battle-return-a11y-v15"></script>
     <script src="games/wonder-crash/expanded-canvas.js?v=20260822-dynamic-locale-v12"></script>
     <script src="src/game-page-info.js?v=20260825-arabic-guide-v13"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

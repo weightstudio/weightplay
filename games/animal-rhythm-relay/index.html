@@ -6,12 +6,13 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-rhythm-relay">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v4">
   <title>Animal Rhythm Relay | WeightPlay</title>
   <meta name="description" content="Tap the forest festival beat markers in a gentle timing relay.">
-  <link rel="stylesheet" href="style.css?v=20260829-animal-rhythm-relay-v3-cover">
+  <link rel="stylesheet" href="../../src/tutorial.css?v=20260831-rhythm-relay-tutorial">
+  <link rel="stylesheet" href="style.css?v=20260831-animal-rhythm-relay-v4">
 </head>
-<body data-screen="main" data-wp-game-id="animal-rhythm-relay" data-wp-audience="general">
+<body data-screen="main" data-wp-game-id="animal-rhythm-relay" data-wp-game-version="v4" data-wp-audience="general">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><strong>Animal Rhythm Relay</strong><span>Preparing the forest beat…</span></section>
   <div class="shell">
     <header class="topbar wp-main-shell-header">
@@ -32,7 +33,7 @@
             <h1 id="mainTitle" data-copy="title">Animal Rhythm Relay</h1>
             <p class="summary main-summary" data-copy="summary">Tap the beat rings as the parade passes. Early or late taps keep the relay moving while your timing builds a gentle combo.</p>
             <p id="mainProgress" class="progress" aria-live="polite"></p>
-            <button id="startButton" class="primary" type="button" data-wp-main-start data-copy="start">Start the relay</button>
+            <button id="startButton" class="primary" type="button" data-wp-main-start data-copy="start" disabled>Start the relay</button>
           </div>
           <picture class="main-poster-frame">
             <source srcset="assets/animal-rhythm-relay-cover-v1.webp" type="image/webp">
@@ -56,6 +57,9 @@
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260829-animal-rhythm-relay-v3-cover"></script>
+  <script src="../../src/site-config.js?v=20260831-rhythm-relay-shared-runtime"></script>
+  <script src="../../src/analytics.js?v=20260831-rhythm-relay-shared-runtime"></script>
+  <script src="../../src/tutorial.js?v=20260831-rhythm-relay-shared-runtime"></script>
+  <script src="game.js?v=20260831-animal-rhythm-relay-v4"></script>
 </body>
 </html>
