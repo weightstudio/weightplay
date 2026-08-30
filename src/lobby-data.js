@@ -2733,6 +2733,32 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMagnetMeadowPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalMagnetMeadowPlanned.id);
 
+// Dawn Shutters is a weighted General internal prototype. Keep its
+// multi-position light-calibration loop planned and noindex until art, QA,
+// review, and release gates are complete.
+const animalDawnShuttersLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalDawnShuttersLocalized = (values) => Object.fromEntries(animalDawnShuttersLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalDawnShuttersStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalDawnShuttersPlanned = {
+  id: "animal-dawn-shutters",
+  title: animalDawnShuttersLocalized(["Dawn Shutters", "晨光百葉窗", "晨光百叶窗", "ドーン・シャッター", "새벽 셔터", "Persianas del Amanecer", "Persianas do Amanhecer", "Volets de l’Aube", "Morgenlicht-Läden", "Persiane dell’Alba", "Ставни рассвета", "भोर की खिड़कियाँ", "مصاريع الفجر"]),
+  status: "planned",
+  statusText: { ...animalDawnShuttersStatusText },
+  type: animalDawnShuttersLocalized(["Light Calibration Puzzle", "晨光校準益智", "晨光校准益智", "光量調整パズル", "빛 조절 퍼즐", "Puzzle de calibración de luz", "Puzzle de calibração de luz", "Puzzle de calibration de lumière", "Lichtkalibrier-Puzzle", "Puzzle di calibrazione della luce", "Пазл настройки света", "रोशनी समायोजन पहेली", "لغز معايرة الضوء"]),
+  description: animalDawnShuttersLocalized(["Set each animal's shutter to the right dawn glow, then open the quiet room.", "把每扇動物窗調到正確晨光，打開安靜的小屋。", "把每扇动物窗调到正确晨光，打开安静的小屋。", "動物の窓を正しい朝の明るさに合わせ、静かな部屋を開こう。", "동물 창문의 새벽빛을 맞춰 조용한 방을 열어요.", "Ajusta cada persiana al brillo del amanecer y abre la habitación tranquila.", "Ajuste cada persiana ao brilho certo do amanhecer e abra a sala tranquila.", "Règle chaque volet sur la bonne lumière de l’aube et ouvre la pièce paisible.", "Stelle jeden Laden auf das richtige Morgenlicht und öffne den ruhigen Raum.", "Regola ogni persiana sulla luce giusta dell’alba e apri la stanza tranquilla.", "Настройте ставни на нужный свет рассвета и откройте тихую комнату.", "हर खिड़की को सही भोर की रोशनी पर रखें और शांत कमरा खोलें।", "اضبط كل مصراع على ضوء الفجر المناسب وافتح الغرفة الهادئة."]),
+  meta: animalDawnShuttersLocalized([["3 Dawn Rooms", "Tap + Calibrate", "Calm Retry"], ["3 間晨光小屋", "點按＋校準", "平靜重試"], ["3 间晨光小屋", "点按＋校准", "平静重试"], ["3つの朝の部屋", "タップ＋調整", "穏やかな再挑戦"], ["새벽 방 3개", "누르고 조절하기", "차분한 재시도"], ["3 habitaciones", "Toca y calibra", "Reintento sereno"], ["3 salas", "Toque e calibre", "Nova tentativa calma"], ["3 pièces", "Touche et règle", "Reprise sereine"], ["3 Morgenräume", "Tippen + einstellen", "Ruhiger Neustart"], ["3 stanze", "Tocca e regola", "Riprova calma"], ["3 комнаты", "Нажимайте и настраивайте", "Спокойный повтор"], ["3 कमरे", "दबाएँ और समायोजित करें", "शांत पुनःप्रयास"], ["3 غرف", "اضغط واضبط", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Calibration", "Visual Reasoning", "Family", "Animal"],
+  skills: ["Visual Reasoning", "Fine Motor Planning", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalDawnShuttersLocalized(Array(13).fill("6+")),
+  href: "games/animal-dawn-shutters/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-dawn-shutters/assets/animal-dawn-shutters-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDawnShuttersPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.games.push(animalDawnShuttersPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDawnShuttersPlanned.id);
+
 // General Issue repair (2026-08-30): provide the private planned identity
 // required by the localized-route generator while keeping Glyph Garden out of
 // the playable lobby catalog until its remaining release gates pass.

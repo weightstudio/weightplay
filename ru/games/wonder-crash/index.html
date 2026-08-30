@@ -3,7 +3,6 @@
   <head>
 
     <base href="/" />
-
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -82,13 +81,13 @@
   <body>
     <main class="wonder-main-flow-slot">
       <div class="game-shell" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="920" data-wp-stage-landscape-height="460">
-      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Игровое поле «Защита льва в стиле фэнтези»" aria-description="Перемещайте льва с помощью клавиш со стрелками влево и вправо или перетаскивайте его по игровому полю."></canvas>
+      <canvas id="game" class="play-area" width="950" height="1688" tabindex="0" aria-label="Игровое поле «Защита льва в стиле фэнтези»" data-i18n-aria="canvas_label" aria-description="Перемещайте льва с помощью клавиш со стрелками влево и вправо или перетаскивайте его по игровому полю." data-i18n-description="canvas_description"></canvas>
 
       <section id="wonderMain" class="wonder-main">
         <header>
-          <a class="home-link" data-wp-return="main" href="/" aria-label="Вернуться в лобби"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+          <a class="home-link" data-wp-return="main" href="/" aria-label="Вернуться в лобби" data-i18n-aria="back_lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
           <strong data-i18n="game_title">Фэнтези Лев защиты</strong>
-          <label><span data-i18n="language">Язык</span><select id="wonderMainLocaleSelect" aria-label="Язык" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option></select></label>
+          <label><span data-i18n="language">Язык</span><select id="wonderMainLocaleSelect" aria-label="Язык" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </header>
         <img class="wonder-main-cover" src="../../assets/wonder-crash-cover.webp" alt="" />
         <button id="wonderMainStart" class="standard-main-start" data-wp-main-start data-i18n="game.start" type="button">Начать игру</button>
@@ -119,7 +118,7 @@
           <span data-i18n="language">Язык</span>
           <select id="globalLocaleSelect" aria-label="Язык" data-i18n-aria="language">
             <option value="en">English</option>
-            <option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
+            <option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
           </select>
         </label>
         <p id="overlayText" data-i18n="menu_title">Main Menu</p>
@@ -138,7 +137,7 @@
             <span data-i18n="language">Язык</span>
             <select id="pauseLocaleSelect" class="settings-select" aria-label="Язык" data-i18n-aria="language">
               <option value="en">English</option>
-              <option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
+              <option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
             </select>
           </label>
           <button id="resumeBtn" type="button" data-i18n="btn_resume">Resume</button>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-label="Two moonstones resting on a moonlit meadow">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173b5a"/><stop offset="1" stop-color="#102039"/></linearGradient><linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#315f65"/><stop offset="1" stop-color="#102d3c"/></linearGradient></defs>
+  <rect width="1200" height="700" rx="44" fill="url(#sky)"/>
+  <circle cx="930" cy="145" r="72" fill="#ffe0a4" opacity=".9"/><circle cx="930" cy="145" r="92" fill="none" stroke="#ffd477" stroke-opacity=".22" stroke-width="10"/>
+  <path d="M0 480 Q230 365 430 465 T800 420 T1200 450 V700 H0Z" fill="url(#ground)"/>
+  <path d="M170 510 H1020" stroke="#6ee7d0" stroke-width="8" stroke-linecap="round" opacity=".7"/><path d="M170 510 H1020" stroke="#d7fff5" stroke-width="2" stroke-dasharray="3 27" opacity=".8"/>
+  <g transform="translate(320 390)"><circle r="75" fill="#55d7ce" stroke="#e0ffff" stroke-width="10"/><circle cx="-22" cy="-15" r="8" fill="#062a35"/><circle cx="22" cy="-15" r="8" fill="#062a35"/><path d="M-20 20 Q0 36 20 20" fill="none" stroke="#062a35" stroke-width="7" stroke-linecap="round"/><path d="M-48 58 Q-88 86 -96 58 M48 58 Q88 86 96 58" fill="none" stroke="#55d7ce" stroke-width="18" stroke-linecap="round"/></g>
+  <g transform="translate(760 390)"><circle r="75" fill="#ffc86f" stroke="#fff1c8" stroke-width="10"/><circle cx="-22" cy="-15" r="8" fill="#553c28"/><circle cx="22" cy="-15" r="8" fill="#553c28"/><path d="M-20 20 Q0 36 20 20" fill="none" stroke="#553c28" stroke-width="7" stroke-linecap="round"/></g>
+  <path d="M398 390 C490 320 590 320 682 390" fill="none" stroke="#ffd477" stroke-width="7" stroke-dasharray="12 18" opacity=".85"/>
+</svg>

@@ -1759,6 +1759,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "चुंबकीय मैदान",
     "ar": "مرج مغناطيسي"
   },
+  "animal-dawn-shutters": {
+    "__localizedExact": true,
+    "en": "Dawn Shutters",
+    "zh-Hant": "晨光百葉窗",
+    "zh-Hans": "晨光百叶窗",
+    "ja": "ドーン・シャッター",
+    "ko": "새벽 셔터",
+    "es": "Persianas del Amanecer",
+    "pt-BR": "Persianas do Amanhecer",
+    "fr": "Volets de l’Aube",
+    "de": "Morgenlicht-Läden",
+    "it": "Persiane dell’Alba",
+    "ru": "Ставни рассвета",
+    "hi": "भोर की खिड़कियाँ",
+    "ar": "مصاريع الفجر"
+  },
   "animal-glyph-garden": {
     "__localizedExact": true,
     "en": "Glyph Garden",

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="de">
+<head>
+
+    <base href="/games/animal-magnet-meadow/" />
+
+    <link rel="canonical" href="https://weightplay.com/de/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-magnet-meadow/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-magnet-meadow/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="weightplay-game-version" content="v1">
+  <meta name="description" content="Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein." />
+  <title>Magnetwiese | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Magnetwiese | WeightPlay" />
+    <meta property="og:description" content="Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein." />
+    <meta property="og:url" content="https://weightplay.com/de/games/animal-magnet-meadow/" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Magnetwiese | WeightPlay" />
+    <meta name="twitter:description" content="Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein." />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Magnetwiese",
+  "url": "https://weightplay.com/de/games/animal-magnet-meadow/",
+  "image": "https://weightplay.com/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg",
+  "description": "Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "de",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Puzzle",
+    "Räumliches Denken",
+    "Physik",
+    "Familie",
+    "Animal",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 6
+  },
+  "alternateName": "Magnet Meadow"
+}
+    </script>
+  </head>
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v1" data-screen="main">
+  <div id="app">
+    <main id="mainScreen" class="screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
+      <div class="main-canvas" data-wp-logical-main-canvas>
+        <header class="topbar">
+          <span class="eyebrow" data-copy="kicker">Moss Shell Taro's meadow puzzle</span>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+        </header>
+        <section class="hero-card">
+          <img class="cover-art" src="assets/animal-magnet-meadow-cover.svg" alt="" aria-hidden="true">
+          <div class="hero-copy">
+            <h1 data-copy="title">Magnetwiese</h1>
+            <p class="intro" data-copy="intro">Move one moonstone and watch its linked partner respond.</p>
+            <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
+            <div class="hero-actions">
+              <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a dock</button>
+              <button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button>
+            </div>
+          </div>
+        </section>
+        <section class="guide" aria-labelledby="guideHeading">
+          <h2 id="guideHeading" data-copy="guideTitle">How to play</h2>
+          <div class="guide-grid">
+            <article><b data-copy="guideOneTitle">1. Choose a stone</b><p data-copy="guideOne">Tap a moonstone, then drag it toward a dock.</p></article>
+            <article><b data-copy="guideTwoTitle">2. Watch the link</b><p data-copy="guideTwo">The other stone shifts with the same drag, by pull or push.</p></article>
+            <article><b data-copy="guideThreeTitle">3. Check the pair</b><p data-copy="guideThree">Both stones must sit on their glowing docks. A wrong try stays visible.</p></article>
+          </div>
+        </section>
+        <section id="settingsPanel" class="settings-panel" hidden aria-labelledby="settingsHeading">
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
+          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+          <button id="soundBtn" class="secondary-btn setting-sound" type="button" aria-pressed="true"></button>
+        </section>
+      </div>
+    </main>
+
+    <section id="stageScreen" class="screen" data-screen="stage" hidden>
+      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 data-copy="stages">Meadow map</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-copy-aria-label="help">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">Each dock teaches how one move changes the linked pair.</p>
+        <div id="stageList" class="stage-list" data-wp-stage-rail></div>
+        <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Meadow map</button><span aria-hidden="true"></span></nav>
+      </div>
+      <div class="game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+    </section>
+
+    <section id="battleScreen" class="screen" data-screen="battle" hidden>
+      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility" type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <div id="battlePanel">
+          <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">MEADOW DOCK</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
+          <div class="target-card"><span data-copy="target">Dock pattern</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
+          <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
+          <div id="magnetTrack" class="magnet-track" aria-label="Magnet meadow board">
+            <div id="slotGrid" class="slot-grid"></div>
+            <div id="stoneLayer" class="stone-layer"></div>
+          </div>
+          <div class="legend"><span class="legend-stone stone-a" data-copy="stoneA">Moonstone A</span><span class="legend-stone stone-b" data-copy="stoneB">Moonstone B</span></div>
+          <p class="move-hint" data-copy="moveHint">Drag a stone to a new dock. The linked stone responds automatically.</p>
+          <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the pair</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset positions</button></div>
+        </div>
+        <div id="resultPanel" class="result-panel" hidden>
+          <p class="eyebrow" data-copy="resultKicker">MEADOW RESULT</p>
+          <h2 id="resultHeading"></h2>
+          <p id="resultText"></p>
+          <div id="resultStats" class="result-stats"></div>
+          <div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div>
+        </div>
+      </div>
+      <div class="game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="locales.js?v=20260830-magnet-meadow-v1"></script>
+  <script src="game.js?v=20260830-magnet-meadow-v1"></script>
+<section class="game-page-info game-page-info-static" aria-label="Informationen zu Magnetwiese">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Magnetwiese</h2><p>Ziehe zwei Mondsteine zu ihren Plätzen und beobachte den verbundenen Stein.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Magnet-Andockpuzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Räumliches Denken · Physik · Familie · Animal</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+<script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+</body>
+</html>

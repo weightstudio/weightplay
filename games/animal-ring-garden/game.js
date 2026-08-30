@@ -2,8 +2,10 @@
   "use strict";
 
   const COPY = window.RING_GARDEN_COPY || {};
-  const localeParam = new URLSearchParams(window.location.search).get("lang");
-  let locale = COPY[localeParam] ? localeParam : "en";
+  const localeMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  const localeParam = new URLSearchParams(window.location.search).get("lang") || localeMap[routeSegment];
+  let locale = COPY[localeParam] ? localeParam : (localeParam === "ar" ? "ar" : "en");
   const petals = ["amber", "mint", "coral", "violet"];
   const symbols = ["✦", "✿", "✧", "●"];
   const gardens = [
@@ -39,7 +41,7 @@
   }
   function applyCopy() {
     document.documentElement.lang = locale;
-    document.documentElement.dir = "ltr";
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = `${t("title")} | WeightPlay`;
     $("loading-copy").textContent = t("loading");
     $("settings-button").innerHTML = `⚙ <span>${t("settings")}</span>`;
