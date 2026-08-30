@@ -61,6 +61,22 @@
   };
   Object.entries(localizedGardenClues).forEach(([localeKey, values]) => Object.assign(copy[localeKey], values));
 
+  const localizedWrongTurnCopy = {
+    "zh-Hant": "圖樣還沒醒來。換一層花環，或重設花園再試一次。",
+    "zh-Hans": "图案还没有醒来。换一个花环，或重置花园再试一次。",
+    ja: "模様はまだ目覚めていません。別のリングを回すか、庭をリセットしてみましょう。",
+    ko: "무늬가 아직 깨어나지 않았어요. 다른 링을 돌리거나 정원을 초기화해 보세요.",
+    es: "El patrón aún no despierta. Prueba otro anillo o reinicia el jardín.",
+    "pt-BR": "O padrão ainda não despertou. Tente outro anel ou redefina o jardim.",
+    fr: "Le motif n’est pas encore éveillé. Essayez un autre anneau ou réinitialisez le jardin.",
+    de: "Das Muster ist noch nicht erwacht. Drehe einen anderen Ring oder setze den Garten zurück.",
+    it: "Il motivo non si è ancora risvegliato. Prova un altro anello o reimposta il giardino.",
+    ru: "Узор ещё не проснулся. Поверните другое кольцо или сбросьте сад.",
+    hi: "पैटर्न अभी जागा नहीं है। कोई दूसरी रिंग घुमाएँ या बगीचा रीसेट करें।",
+    ar: "لم يستيقظ النمط بعد. جرّب حلقة أخرى أو أعد ضبط الحديقة."
+  };
+  Object.entries(localizedWrongTurnCopy).forEach(([localeKey, value]) => { copy[localeKey].wrong = value; });
+
   const initialAlignmentCopy = {
     en: "Choose a ring to begin; rings marked ↻ still need turns.",
     "zh-Hant": "選一層花環開始；標示 ↻ 的花環還需要旋轉。",
