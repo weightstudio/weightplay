@@ -40,7 +40,8 @@
   const setScreen = (screen) => {
     state.screen = screen;
     document.body.dataset.screen = screen;
-    $("guideSection").hidden = screen !== "main";
+    const guide = $("guideSection");
+    if (guide) guide.hidden = screen !== "main";
     ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.classList.toggle("active", name === screen); });
     if (screen === "main") applyText();
     if (screen === "stage") renderStages();
@@ -168,7 +169,7 @@
     const queryLocale = new URLSearchParams(location.search).get("lang");
     const pathLocale = location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\//)?.[1];
     const pathMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
-    return queryLocale || pathMap[pathLocale] || safeGet("weightplay-locale", "en");
+    return queryLocale || pathMap[pathLocale] || pathLocale || safeGet("weightplay-locale", "en");
   };
   const init = () => { state.sound = safeGet("weightplay-animal-nest-weigh-sound", "on") !== "off"; bind(); applyLocale(initialLocale()); setScreen("main"); };
   window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale };

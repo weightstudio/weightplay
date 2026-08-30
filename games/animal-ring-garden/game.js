@@ -23,7 +23,7 @@
     solved: false
   };
   const $ = (id) => document.getElementById(id);
-  const bestKey = (index) => `weightplay:animal-ring-garden:v5:best:${index}`;
+  const bestKey = (index) => `weightplay:animal-ring-garden:v6:best:${index}`;
 
   function t(key) { return (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key; }
   function fmt(value, n) { return value.replace("{n}", String(n)); }
@@ -111,8 +111,11 @@
   function ringMarkup(index) {
     const value = state.rings[index];
     const target = gardens[state.gardenIndex].target[index];
+    const aligned = value === target;
     const petalsMarkup = symbols.map((symbol, petalIndex) => `<span class="petal ${petals[petalIndex]}" aria-hidden="true" style="--petal-index:${petalIndex}">${symbol}</span>`).join("");
-    return `<article class="ring-unit"><div class="ring-label"><span>${fmt(t("ringName"), index + 1)}</span><span class="ring-state">${value + 1}/4</span></div><div class="ring-visual ring-value-${value}" role="img" aria-label="${fmt(t("ringName"), index + 1)} ${value + 1}/4"><div class="ring-orbit outer-orbit">${petalsMarkup}</div><div class="ring-orbit middle-orbit">${petalsMarkup}</div><div class="ring-orbit inner-orbit"><span class="center-mark">${symbols[target]}</span></div></div><div class="ring-controls"><button type="button" class="ring-button" data-ring="${index}" data-dir="-1" aria-label="${fmt(t("turnLeft"), index + 1)}">↺</button><button type="button" class="ring-button" data-ring="${index}" data-dir="1" aria-label="${fmt(t("turnRight"), index + 1)}">↻</button></div></article>`;
+    const stateClass = aligned ? "ring-aligned" : "ring-needs-turn";
+    const stateMark = aligned ? "✓" : "↻";
+    return `<article class="ring-unit"><div class="ring-label"><span>${fmt(t("ringName"), index + 1)}</span><span class="ring-state ${stateClass}"><span>${value + 1}/4</span><span class="ring-state-mark" aria-hidden="true">${stateMark}</span></span></div><div class="ring-visual ring-value-${value} ${stateClass}" data-aligned="${aligned}" role="img" aria-label="${fmt(t("ringName"), index + 1)} ${value + 1}/4"><div class="ring-orbit outer-orbit">${petalsMarkup}</div><div class="ring-orbit middle-orbit">${petalsMarkup}</div><div class="ring-orbit inner-orbit"><span class="center-mark">${symbols[target]}</span></div></div><div class="ring-controls"><button type="button" class="ring-button" data-ring="${index}" data-dir="-1" aria-label="${fmt(t("turnLeft"), index + 1)}">↺</button><button type="button" class="ring-button" data-ring="${index}" data-dir="1" aria-label="${fmt(t("turnRight"), index + 1)}">↻</button></div></article>`;
   }
   function renderBattle() {
     const garden = gardens[state.gardenIndex];

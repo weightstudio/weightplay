@@ -27,5 +27,21 @@
     hi: { ...en, title: "रिंग गार्डन", lede: "तीन पंखुड़ी रिंग घुमाएँ और चाँदनी बगीचे का पैटर्न खिलाएँ।", summary: "चार चाँदनी बगीचों वाला शांत तीन-रिंग पहेली खेल।", progress: "बगीचे की प्रगति", guideTitle: "कैसे खिलाएँ", guideOne: "1. बगीचा शुरू करें और चाँदनी दृश्य चुनें।", guideTwo: "2. लक्ष्य पंखुड़ियों से मिलाने के लिए हर रिंग घुमाएँ।", guideThree: "3. कभी भी रीसेट करें और अगले बगीचे पर जाएँ।", start: "बगीचा शुरू करें", settings: "सेटिंग्स", language: "भाषा", gardens: "बगीचे", back: "← मुख्य", stageEyebrow: "बगीचा चुनें", stageTitle: "कौन सा बगीचा खिलाएँगे?", stageLede: "हर बगीचे में तीन रिंग का अलग पैटर्न है।", choose: "बगीचा खोलें", battleEyebrow: "चाँदनी बगीचा", target: "लक्ष्य", turns: "घुमाव", clue: "तीनों रिंग को लक्ष्य पंखुड़ियों से मिलाएँ।", begin: "शुरू करने के लिए रिंग चुनें।", reset: "रीसेट", backToGardens: "बगीचों पर लौटें", next: "अगला बगीचा", complete: "पंखुड़ियाँ मिल गईं!", completeCopy: "आपका चाँदनी बगीचा चमक रहा है।", final: "चारों चाँदनी बगीचे खिल गए।", ringName: "पंखुड़ी रिंग {n}", targetPattern: "लक्ष्य पैटर्न" },
     ar: { ...en, title: "حديقة الحلقات", lede: "أدر ثلاث حلقات من البتلات حتى يزهر نمط حديقة القمر.", summary: "لغز هادئ من ثلاث حلقات في أربع حدائق مضيئة بالقمر.", progress: "تقدم الحديقة", guideTitle: "طريقة اللعب", guideOne: "1. ابدأ الحديقة واختر مشهداً قمرياً.", guideTwo: "2. أدر كل حلقة لتطابق البتلات الهدف.", guideThree: "3. أعد الضبط متى شئت ثم انتقل إلى الحديقة التالية.", start: "ابدأ الحديقة", settings: "الإعدادات", language: "اللغة", gardens: "الحدائق", back: "← الرئيسية", stageEyebrow: "اختر حديقة", stageTitle: "أي حديقة ستزهر؟", stageLede: "لكل حديقة نمط مختلف من ثلاث حلقات.", choose: "افتح الحديقة", battleEyebrow: "حديقة القمر", target: "الهدف", turns: "الدورات", clue: "طابق الحلقات الثلاث مع بتلات الهدف.", begin: "اختر حلقة للبدء.", reset: "إعادة ضبط", backToGardens: "العودة إلى الحدائق", next: "الحديقة التالية", complete: "تطابقت البتلات!", completeCopy: "حديقتك القمرية تتوهج.", final: "أزهرت الحدائق القمرية الأربع.", ringName: "حلقة البتلات {n}", targetPattern: "النمط الهدف" }
   };
+  const initialAlignmentCopy = {
+    en: "Choose a ring to begin; rings marked ↻ still need turns.",
+    "zh-Hant": "選一層花環開始；標示 ↻ 的花環還需要旋轉。",
+    "zh-Hans": "选择一层花环开始；标有 ↻ 的花环还需要旋转。",
+    ja: "リングを選んで開始。↻ のリングはまだ回転が必要です。",
+    ko: "링을 골라 시작하세요. ↻ 표시가 있는 링은 더 돌려야 합니다.",
+    es: "Elige un anillo para empezar; los anillos con ↻ aún necesitan giros.",
+    "pt-BR": "Escolha um anel para começar; os anéis com ↻ ainda precisam de giros.",
+    fr: "Choisissez un anneau pour commencer ; les anneaux marqués ↻ doivent encore tourner.",
+    de: "Wähle einen Ring zum Starten; Ringe mit ↻ müssen noch gedreht werden.",
+    it: "Scegli un anello per iniziare; gli anelli con ↻ devono ancora girare.",
+    ru: "Выберите кольцо, чтобы начать; кольца с отметкой ↻ ещё нужно повернуть.",
+    hi: "शुरू करने के लिए एक रिंग चुनें; ↻ वाले रिंग को अभी घुमाना है।",
+    ar: "اختر حلقة للبدء؛ الحلقات التي تحمل ↻ تحتاج إلى دورات إضافية."
+  };
+  Object.entries(initialAlignmentCopy).forEach(([localeKey, value]) => { copy[localeKey].begin = value; });
   window.RING_GARDEN_COPY = copy;
 })();
