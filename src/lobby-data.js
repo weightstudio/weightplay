@@ -2626,7 +2626,7 @@ const animalConstellationKeeperPlanned = {
   ageLabel: animalConstellationKeeperLocalized(Array(13).fill("6+")),
   href: "games/animal-constellation-keeper/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.svg", hideHero: true },
+  art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalConstellationKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalConstellationKeeperPlanned);

@@ -14,14 +14,14 @@
   ];
   const $ = (selector) => document.querySelector(selector);
   const requestedLocale = new URLSearchParams(location.search).get("lang");
-  const state = { locale: COPY[requestedLocale] ? requestedLocale : "en", stage: 0, links: [], selectedAnchor: null, selectedMaterial: "beam", sound: true, medals: loadMedals() };
+  const state = { locale: COPY[requestedLocale] ? requestedLocale : "en", stage: 0, links: [], selectedAnchor: null, selectedMaterial: "beam", sound: true, medals: loadMedals(), result: null };
   const canvas = $("#bridgeCanvas");
   const ctx = canvas.getContext("2d");
 
   function loadMedals() { try { return JSON.parse(localStorage.getItem("weightplayBridgeWorkshopMedals") || "{}"); } catch (_) { return {}; } }
   function saveMedals() { try { localStorage.setItem("weightplayBridgeWorkshopMedals", JSON.stringify(state.medals)); } catch (_) {} }
   function t(key, values) { let text = COPY[state.locale][key] ?? COPY.en[key] ?? key; Object.entries(values || {}).forEach(([name, value]) => { text = text.replaceAll(`{${name}}`, String(value)); }); return text; }
-  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v3", interface_version: 6, ...payload }); }
+  function track(name, payload) { window.WonderAnalytics?.track?.(name, { game_id: "animal-bridge-workshop", game_version: "v4", interface_version: 6, ...payload }); }
   function setScreen(name) { $("#mainScreen").classList.toggle("active", name === "main"); $("#battleScreen").classList.toggle("active", name === "battle"); const guide = document.querySelector("[data-wp-game-guide]"); if (guide) guide.hidden = name !== "main"; const reserve = document.querySelector(".battle-ad-reserve"); if (reserve) reserve.hidden = name !== "battle"; }
   function stage() { return STAGES[state.stage]; }
   function edgeKey(a, b) { return `${Math.min(a, b)}-${Math.max(a, b)}`; }
@@ -43,7 +43,22 @@
     document.querySelector('[data-material="beam"] strong').textContent = t("beam"); document.querySelector('[data-material="beam"] small').textContent = t("beamHint");
     document.querySelector('[data-material="rope"] strong').textContent = t("rope"); document.querySelector('[data-material="rope"] small').textContent = t("ropeHint");
     document.querySelector('[data-material="pad"] strong').textContent = t("pad"); document.querySelector('[data-material="pad"] small').textContent = t("padHint");
+    renderResult();
     renderStageText(); draw();
+  }
+  function renderResult() {
+    if (!state.result) return;
+    $("#medal").textContent = t("medal");
+    if (state.result.type === "complete") {
+      $("#resultEyebrow").textContent = t("clear");
+      $("#resultTitle").textContent = t("complete");
+      $("#resultCopy").textContent = t("completeCopy", { medal: state.result.medal });
+      return;
+    }
+    const good = state.result.type === "success";
+    $("#resultEyebrow").textContent = good ? t("clear") : t("fail");
+    $("#resultTitle").textContent = good ? t("safe") : t("fail");
+    $("#resultCopy").textContent = good ? t("successCopy", { count: state.result.count }) : t("weakCopy", { joint: state.result.joint });
   }
   function renderStageText() {
     const current = stage();
@@ -74,12 +89,12 @@
     const missing = stage().required.find(([a, b]) => !state.links.some((link) => link.key === edgeKey(a, b)));
     const wrongMaterial = Object.entries(stage().must || {}).find(([key, material]) => { const link = state.links.find((item) => item.key === key); return !link || link.material !== material; });
     const good = !missing && !wrongMaterial && connected();
-    $("#resultCard").hidden = false; $("#resultCard").classList.toggle("success", good); $("#resultCard").classList.toggle("fail", !good); $("#resultEyebrow").textContent = good ? t("clear") : t("fail"); $("#resultTitle").textContent = good ? t("safe") : t("fail"); $("#medal").textContent = t("medal");
-    if (good) { const medal = state.links.length <= stage().required.length ? "Gold" : "Silver"; const previous = state.medals[state.stage] || "Bronze"; state.medals[state.stage] = previous === "Gold" || (previous === "Silver" && medal === "Silver") ? previous : medal; saveMedals(); $("#resultCopy").textContent = t("successCopy", { count: state.links.length }); $("#nextButton").hidden = false; track("bridge_crossing_complete", { stage: state.stage + 1, links: state.links.length, medal: state.medals[state.stage] }); } else { const joint = missing ? edgeKey(missing[0], missing[1]) : wrongMaterial ? `${wrongMaterial[0]} (${localizedMaterialName(wrongMaterial[1])})` : "route"; $("#resultCopy").textContent = t("weakCopy", { joint }); $("#nextButton").hidden = true; track("bridge_crossing_fail", { stage: state.stage + 1, weak_joint: joint }); }
+    $("#resultCard").hidden = false; $("#resultCard").classList.toggle("success", good); $("#resultCard").classList.toggle("fail", !good);
+    if (good) { const medal = state.links.length <= stage().required.length ? "Gold" : "Silver"; const previous = state.medals[state.stage] || "Bronze"; state.medals[state.stage] = previous === "Gold" || (previous === "Silver" && medal === "Silver") ? previous : medal; saveMedals(); state.result = { type: "success", count: state.links.length }; renderResult(); $("#nextButton").hidden = false; track("bridge_crossing_complete", { stage: state.stage + 1, links: state.links.length, medal: state.medals[state.stage] }); } else { const joint = missing ? edgeKey(missing[0], missing[1]) : wrongMaterial ? `${wrongMaterial[0]} (${localizedMaterialName(wrongMaterial[1])})` : "route"; state.result = { type: "fail", joint }; renderResult(); $("#nextButton").hidden = true; track("bridge_crossing_fail", { stage: state.stage + 1, weak_joint: joint }); }
   }
-  function start() { state.stage = 0; state.links = []; state.selectedAnchor = null; state.previewAnchor = null; $("#resultCard").hidden = true; $("#nextButton").hidden = false; $("#retryButton").hidden = false; $("#feedback").textContent = ""; setScreen("battle"); renderStageText(); draw(); track("bridge_start", {}); }
-  function next() { if (state.stage >= STAGES.length - 1) { const medals = Object.values(state.medals); $("#resultEyebrow").textContent = t("clear"); $("#resultTitle").textContent = t("complete"); $("#resultCopy").textContent = t("completeCopy", { medal: medals.includes("Gold") ? "Gold" : medals.includes("Silver") ? "Silver" : "Bronze" }); $("#nextButton").hidden = true; $("#retryButton").hidden = true; return; } state.stage += 1; state.links = []; state.selectedAnchor = null; state.previewAnchor = null; $("#resultCard").hidden = true; $("#feedback").textContent = ""; renderStageText(); draw(); track("bridge_stage_start", { stage: state.stage + 1 }); }
-  function retry() { state.links = []; state.selectedAnchor = null; state.previewAnchor = null; $("#resultCard").hidden = true; $("#feedback").textContent = ""; renderStageText(); draw(); }
+  function start() { state.stage = 0; state.links = []; state.selectedAnchor = null; state.previewAnchor = null; state.result = null; $("#resultCard").hidden = true; $("#nextButton").hidden = false; $("#retryButton").hidden = false; $("#feedback").textContent = ""; setScreen("battle"); renderStageText(); draw(); track("bridge_start", {}); }
+  function next() { if (state.stage >= STAGES.length - 1) { const medals = Object.values(state.medals); state.result = { type: "complete", medal: medals.includes("Gold") ? "Gold" : medals.includes("Silver") ? "Silver" : "Bronze" }; renderResult(); $("#nextButton").hidden = true; $("#retryButton").hidden = true; return; } state.stage += 1; state.links = []; state.selectedAnchor = null; state.previewAnchor = null; state.result = null; $("#resultCard").hidden = true; $("#feedback").textContent = ""; renderStageText(); draw(); track("bridge_stage_start", { stage: state.stage + 1 }); }
+  function retry() { state.links = []; state.selectedAnchor = null; state.previewAnchor = null; state.result = null; $("#resultCard").hidden = true; $("#feedback").textContent = ""; renderStageText(); draw(); }
   function undo() { const link = state.links.pop(); if (link) { $("#feedback").textContent = t("placed"); renderStageText(); draw(); } }
   function reset() { state.links = []; state.selectedAnchor = null; state.previewAnchor = null; $("#feedback").textContent = ""; renderStageText(); draw(); }
   function draw() {
