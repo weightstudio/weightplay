@@ -10,6 +10,7 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .spinner { color: var(--accent); font-size: 2rem; animation: breathe 1.5s ease-in-out infinite; }
 @keyframes breathe { 50% { transform: scale(1.28) rotate(20deg); opacity: .55; } }
 #app { min-height: 100vh; padding-bottom: 28px; }
+body[data-wp-active-screen="stage"] #app, body[data-wp-active-screen="battle"] #app { min-height: 0; padding-bottom: 0; }
 .topbar { min-height: 64px; display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 10px; padding: 10px 16px; position: sticky; top: 0; z-index: 2; background: rgba(12, 28, 36, .92); backdrop-filter: blur(12px); }
 .topbar strong { text-align: center; letter-spacing: .02em; }
 .icon-button, .close-button { border: 1px solid var(--line); background: transparent; border-radius: 14px; width: 44px; height: 44px; font-size: 1.2rem; }
@@ -76,3 +77,45 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .setting-row select { min-height: 44px; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; background: #20474b; color: var(--text); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 @media (min-width: 720px) { .screen { padding: 24px 32px 34px; } #mainScreen { margin-top: 18px; } }
+
+/* Interface 6 shell contract: Main owns its centered header and guide, while
+   Stage and Battle fill the viewport above the General reserve. */
+.main-header { min-height: 64px; display: grid; grid-template-columns: 58px minmax(0, 1fr) 48px; align-items: center; gap: 10px; margin: -4px -4px 8px; }
+.main-header > strong { text-align: center; letter-spacing: .02em; }
+.main-return { width: 58px; height: 48px; display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 4px; color: var(--text); text-decoration: none; }
+.main-return img { display: block; width: 36px; height: 28px; object-fit: contain; }
+.main-header .icon-button, .stage-header .icon-button, .battle-head .icon-button { width: 48px; height: 48px; min-width: 48px; min-height: 48px; }
+#mainScreen .cover-wrap { width: min(100%, 420px); margin-inline: auto; }
+#mainScreen .primary { min-height: 52px; }
+#mainProgress { min-height: 40px; display: grid; place-items: center; }
+.stage-shell, .battle-shell { width: 100%; margin: 0; }
+.stage-canvas, .battle-canvas { width: min(100%, 920px); margin-inline: auto; color: var(--text); }
+.stage-canvas { height: calc(100svh - 56px); min-height: 0; display: grid; grid-template-rows: 64px minmax(0, 1fr) 56px; gap: 8px; padding: 10px 14px 0; overflow: hidden; border: 0; border-radius: 0; background: linear-gradient(145deg, rgb(20 49 58 / 92%), rgb(13 39 45 / 94%)), var(--wp-stage-art); background-size: cover; background-position: center; }
+.stage-header { min-height: 60px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
+.stage-header > div { text-align: center; min-width: 0; }
+.stage-header .eyebrow { margin: 0 0 4px; }
+.stage-intro { min-height: 48px; margin: 0 auto 8px; text-align: center; }
+.stage-canvas > div:nth-child(2) { min-height: 0; overflow: auto; }
+.stage-canvas .stage-list { min-height: 0; margin: 0; padding: 4px 0 10px; }
+.stage-canvas .stage-card { min-height: 72px; }
+.stage-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 8px; min-height: 56px; padding: 6px; border-radius: 12px; background: rgb(4 25 29 / 60%); }
+.stage-tabs > button { min-width: 0; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: rgb(255 255 255 / 8%); color: var(--text); font-weight: 800; }
+.stage-tabs > button[aria-current="page"] { border-color: var(--accent); background: rgb(246 205 114 / 18%); }
+.stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: 56px; margin-inline: auto; flex: 0 0 56px; background: transparent; }
+.battle-canvas { height: calc(100svh - 56px); min-height: 0; padding: 10px 14px 18px; overflow: auto; border: 0; border-radius: 0; background: linear-gradient(rgb(20 49 58 / 78%), rgb(20 49 58 / 90%)), url("assets/animal-gust-garden-background.webp"); background-size: cover; background-position: center; }
+.battle-head { min-height: 60px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
+.battle-head > div { min-width: 0; text-align: center; }
+.battle-head .eyebrow { margin: 0 0 4px; }
+.progress-pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .78rem; }
+.battle-head h2 { overflow-wrap: anywhere; }
+.battle-head .icon-button:last-child { justify-self: end; }
+.game-page-info { width: min(100%, 920px); margin: 18px auto 28px; padding: 0 16px 24px; }
+.game-info-hero, .game-info-sections { border: 1px solid var(--line); border-radius: 18px; background: rgb(20 49 58 / 86%); }
+.game-info-hero { padding: 18px; }
+.game-info-title h2 { margin: 4px 0; }
+.game-info-title p, .game-info-section { color: var(--muted); }
+.game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; padding: 16px; }
+.game-info-section h3 { margin-top: 0; color: var(--text); }
+.game-info-section li { margin-block: 6px; }
+@media (max-width: 699px) { .main-header { margin-inline: -2px; } .stage-canvas, .battle-canvas { padding-inline: 10px; } .game-info-sections { grid-template-columns: 1fr; } }
+@media (max-height: 520px) and (orientation: landscape) { .stage-canvas { padding-top: 4px; grid-template-rows: 56px minmax(0, 1fr) 56px; } .stage-header { min-height: 52px; } .stage-intro { min-height: 40px; margin-bottom: 4px; } .stage-canvas .stage-card { min-height: 60px; } .battle-canvas { padding-top: 4px; } .battle-head { min-height: 52px; } }

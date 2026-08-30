@@ -2663,7 +2663,7 @@ for (const game of window.WONDER_LOBBY.games) {
 
 // Animal Footprint Folio is a weighted General prototype. Keep its planned
 // identity canonical while the source remains internal/noindex and pending
-// exact Tester, Reviewer, art, and release gates.
+// exact Tester, Reviewer, and release gates.
 (() => {
   const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
@@ -2682,7 +2682,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-footprint-folio/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-footprint-folio/assets/animal-footprint-folio-cover.svg", hideHero: true },
+    art: { kind: "image", background: "games/animal-footprint-folio/assets/animal-footprint-folio-cover.png", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);

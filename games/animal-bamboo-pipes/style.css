@@ -88,6 +88,12 @@
 .stage-tab{grid-column:2;min-height:44px;padding:8px 12px;border:1px solid #f8dc72;border-radius:13px;background:linear-gradient(180deg,#f9dc72,#e7ad36);color:#23422f;font-weight:950;box-shadow:0 5px 14px #102b2166}
 
 .battle{grid-template-rows:68px minmax(0,1fr);gap:8px}
+.battle>header{position:relative}
+.battle .battle-utility{flex:0 0 48px;width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center;border:1px solid #75bd9c;border-radius:12px;background:#d9f4cf;color:#073c38;font-size:1.15rem;line-height:1}
+.battle-settings-panel{position:absolute;z-index:25;top:calc(100% + 6px);right:0;display:grid;gap:6px;padding:10px;border:1px solid #75bd9c;border-radius:12px;background:#edfae7;color:#073c38;box-shadow:0 8px 22px #001d1a66}
+.battle-settings-panel[hidden]{display:none}
+.battle-settings-panel label{display:grid;gap:4px;font-size:.76rem;font-weight:900;white-space:nowrap}
+.battle-settings-panel select{min-width:148px;min-height:38px;border:1px solid #75bd9c;border-radius:8px;background:#fff;color:#073c38}
 .battle-panel{min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:42px minmax(0,1fr) 52px;gap:8px;justify-items:center;align-items:center}
 .battle-objective{width:min(100%,620px);height:42px;margin:0;padding:10px 14px;overflow:hidden;border:1px solid #75bd9c;border-radius:12px;background:#063831e8;text-align:center;white-space:nowrap;text-overflow:ellipsis}
 .battle .board{grid-column:1;grid-row:2;width:min(100%,520px);height:auto;max-height:100%;align-self:center}
@@ -138,7 +144,7 @@
 @media(max-height:500px) and (orientation:landscape){
   .stage{grid-template-rows:58px minmax(0,1fr) 48px}
   .stage-tabs{height:48px;padding:2px 10px}
-  .stage-tab{min-height:40px}
+  .stage-tab{min-height:44px}
   .battle-objective{height:24px;padding:3px 8px;font-size:.7rem}
   #result:not([hidden]){top:0!important}
   #result{place-content:start center;padding:10px}

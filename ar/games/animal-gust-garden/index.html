@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-gust-garden/" />
-
     <link rel="canonical" href="https://weightplay.com/ar/games/animal-gust-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-gust-garden/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-gust-garden/" />
@@ -24,9 +23,9 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v1" />
+  <meta name="weightplay-game-version" content="v3" />
   <title>حديقة النسيم | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v3" />
   <meta name="description" content="اختر بذرة وأرسل هبة واحدة كل مرة لتفتح كل زهرة دون لمس الأشواك." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -43,6 +42,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "حديقة النسيم",
+  "alternateName": "Gust Garden",
   "url": "https://weightplay.com/ar/games/animal-gust-garden/",
   "image": "https://weightplay.com/games/animal-gust-garden/assets/animal-gust-garden-cover.webp",
   "description": "اختر بذرة وأرسل هبة واحدة كل مرة لتفتح كل زهرة دون لمس الأشواك.",
@@ -59,65 +59,59 @@
     "Logic",
     "Spatial Planning",
     "العائلة",
-    "Animal",
-    "لعبة متصفح"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Gust Garden"
+  }
 }
     </script>
   </head>
 <body data-wp-game-id="animal-gust-garden" data-wp-audience="general">
   <div id="loading" class="loading-screen"><span class="spinner" aria-hidden="true">✦</span><p data-i18n="loading">Waking the garden breeze…</p></div>
   <main id="app" hidden>
-    <header class="topbar">
-      <button id="backButton" class="icon-button" type="button" aria-label="Back" data-i18n-aria="back">←</button>
-      <strong data-runtime-localize="off">Gust Garden</strong>
-      <button id="settingsButton" class="icon-button" type="button" aria-label="Settings" data-i18n-aria="settings">⚙</button>
-    </header>
-
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-gust-garden-cover.svg" width="900" height="600" data-i18n-alt="شعار WeightPlay" alt="" /><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
+      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">حديقة النسيم</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+      <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="شعار WeightPlay" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-runtime-localize="off">حديقة النسيم</h1>
-      <p class="intro" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
+      <p class="intro main-summary" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
       <div class="facts"><span data-i18n="fact1">3 breezes</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
-      <p id="mainProgress" class="progress" aria-live="polite"></p>
-      <div class="main-actions"><button id="startButton" class="primary" type="button" data-i18n="start">Open the garden</button><button id="chooseButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
+      <p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p>
+      <div class="main-actions"><button id="startButton" class="primary" type="button" data-wp-main-start data-i18n="start">Open the garden</button><button id="chooseButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
       <p id="bestText" class="best" aria-live="polite"></p>
     </section>
 
-    <section id="stageScreen" class="screen panel" data-screen="stage" hidden>
-      <p class="eyebrow" data-i18n="chapter">Breeze plots</p>
-      <h2 data-i18n="choose">Choose a breeze</h2>
-      <p class="intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p>
-      <div id="stageList" class="stage-list"></div>
+    <section id="stageScreen" class="stage-shell" data-screen="stage" hidden>
+      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-gust-garden-cover-art.webp" style="--wp-stage-art:url('assets/animal-gust-garden-cover-art.webp')">
+        <header class="stage-header"><button id="stageBackButton" class="icon-button" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="chapter">Breeze plots</p><h2 data-i18n="choose">Choose a breeze</h2></div><button id="stageSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+        <div><p class="stage-intro intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
+        <nav class="stage-tabs" aria-label="Stage sections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
+      </div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
-    <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
-      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Breeze plot</p><h2 id="stageTitle"></h2></div><span id="progressPill" class="pill"></span></div>
-      <p id="prompt" class="prompt" aria-live="polite"></p>
-      <div id="grid" class="grid" role="grid"></div>
-      <div class="legend"><span><b class="legend-seed">●</b><span data-i18n="seed">seed</span></span><span><b class="legend-flower">✿</b><span data-i18n="flower">flower</span></span><span><b class="legend-thorn">✦</b><span data-i18n="thorn">thorn</span></span></div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-      <div class="direction-panel"><p class="eyebrow" data-i18n="chooseDirection">Choose a gust</p><div id="directionButtons" class="direction-buttons" role="group"></div></div>
-      <div class="battle-actions"><button id="gustButton" class="primary" type="button" data-i18n="gust">Send gust</button><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset plot</button></div>
+    <section id="battleScreen" class="battle-shell" data-screen="battle" hidden>
+      <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+        <header class="battle-head"><button id="battleBackButton" class="icon-button" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="round">Breeze plot</p><h2 id="stageTitle"></h2><span id="progressPill" class="progress-pill" aria-live="polite"></span></div><button id="battleSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+        <p id="prompt" class="prompt" aria-live="polite"></p>
+        <div id="grid" class="grid" role="grid"></div>
+        <div class="legend"><span><b class="legend-seed">●</b><span data-i18n="seed">seed</span></span><span><b class="legend-flower">✿</b><span data-i18n="flower">flower</span></span><span><b class="legend-thorn">✦</b><span data-i18n="thorn">thorn</span></span></div>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div class="direction-panel"><p class="eyebrow" data-i18n="chooseDirection">Choose a gust</p><div id="directionButtons" class="direction-buttons" role="group"></div></div>
+        <div class="battle-actions"><button id="gustButton" class="primary" type="button" data-i18n="gust">Send gust</button><button id="resetButton" class="secondary" type="button" data-i18n="reset">Reset plot</button></div>
+      </div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
 
     <section id="resultScreen" class="screen panel" data-screen="result" hidden>
-      <div class="result-icon" aria-hidden="true">✿</div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
+      <div class="result-icon"><img class="result-art" src="assets/animal-gust-garden-taro.png" width="1024" height="1536" data-i18n-alt="taroAlt" alt="" /></div><p class="eyebrow" data-i18n="finished">Plot in bloom</p><h2 data-i18n="resultTitle">The garden is breathing again!</h2><p id="resultText" class="intro"></p>
       <div class="main-actions"><button id="nextButton" class="primary" type="button" data-i18n="next">Next plot</button><button id="mapButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
     </section>
 
-    <section id="settingsPanel" class="modal" hidden aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
+    <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" data-sound-toggle aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260829-gust-garden-v1"></script>
-  <script src="game.js?v=20260829-gust-garden-v1"></script>
-<section class="game-page-info game-page-info-static" aria-label="معلومات لعبة حديقة النسيم">
+  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة حديقة النسيم">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>حديقة النسيم</h2><p>اختر بذرة وأرسل هبة واحدة كل مرة لتفتح كل زهرة دون لمس الأشواك.</p></div>
@@ -135,6 +129,8 @@
 
     </div>
   </section>
+  <script src="locales.js?v=20260831-gust-garden-interface-v3"></script>
+  <script src="game.js?v=20260831-gust-garden-interface-v3"></script>
 <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

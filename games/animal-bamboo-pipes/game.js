@@ -4,7 +4,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v18";
   const INTERFACE_VERSION = "6";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -277,6 +277,7 @@
       pipe.dataset.rotation = String(tile.rot);
       pipe.setAttribute("aria-label", pipeAccessibleLabel(tile, index, wet.has(index)));
       pipe.disabled = tile.target || run.completed;
+      if (!pipe.disabled && index === boardFocusIndex) pipe.dataset.wpPrimaryAction = "true";
       pipe.tabIndex = !pipe.disabled && index === boardFocusIndex ? 0 : -1;
       const flow = flowSvg(tile, index, wet.has(index));
       if (flow) pipe.append(flow);
@@ -396,6 +397,10 @@
     document.title = `${text("title")} | WeightPlay`;
     document.querySelectorAll("[data-bamboo-t]").forEach(node => { node.textContent = text(node.dataset.bambooT); });
     document.querySelector(".locale").firstChild.textContent = `${text("language")} `;
+    $("battleLocale").value = locale;
+    $("battleLanguageLabel").textContent = text("language");
+    $("battleUtilityBtn").setAttribute("aria-label", text("settings"));
+    $("battleSettingsPanel").setAttribute("aria-label", text("settings"));
     const mainReturn = document.querySelector(".return");
     if (mainReturn) {
       mainReturn.setAttribute("aria-label", text("returnLobby"));
@@ -415,20 +420,42 @@
       $("resultPreview").textContent = run?.completed && selected < LEVELS.length - 1
         ? text("nextPreview", { n: selected + 2, chapter: text("chapter", { n: Math.floor((selected + 1) / 5) + 1 }) })
         : "";
+      if (!screens.battle.hidden && $("result").hidden && !leaveOpen) renderBoard();
     }
     renderStages();
   }
   CODES.forEach(code => { const option = document.createElement("option"); option.value = code; option.textContent = window.BAMBOO_LOCALES[code].label; $("locale").append(option); });
+  CODES.forEach(code => { const option = document.createElement("option"); option.value = code; option.textContent = window.BAMBOO_LOCALES[code].label; $("battleLocale").append(option); });
   $("locale").value = locale;
-  $("locale").onchange = event => {
-    locale = event.target.value;
+  function changeLocale(nextLocale) {
+    if (!CODES.includes(nextLocale)) return;
+    locale = nextLocale;
     try {
       localStorage.setItem("weightPlayLocale", locale);
       localStorage.setItem("wp-locale", locale);
     } catch {}
     window.WonderI18n?.setLocale?.(locale);
     applyLocale();
+  }
+  $("locale").onchange = event => changeLocale(event.target.value);
+  $("battleLocale").onchange = event => changeLocale(event.target.value);
+  const battleUtility = $("battleUtilityBtn"), battleSettings = $("battleSettingsPanel");
+  const setBattleSettingsOpen = open => {
+    battleSettings.hidden = !open;
+    battleUtility.setAttribute("aria-expanded", String(open));
+    if (open) battleSettings.querySelector("select")?.focus();
   };
+  battleUtility.onclick = () => setBattleSettingsOpen(battleSettings.hidden);
+  document.addEventListener("pointerdown", event => {
+    if (!battleSettings.hidden && !battleSettings.contains(event.target) && event.target !== battleUtility) setBattleSettingsOpen(false);
+  }, true);
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !battleSettings.hidden) {
+      event.preventDefault();
+      setBattleSettingsOpen(false);
+      battleUtility.focus();
+    }
+  });
   window.addEventListener("wonder:locale-change", event => {
     const nextLocale = event.detail?.locale;
     if (!CODES.includes(nextLocale)) return;

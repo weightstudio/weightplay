@@ -54,7 +54,14 @@ h2 { margin-bottom: 10px; font-size: clamp(1.45rem, 3vw, 2.25rem); letter-spacin
 .primary-button:hover, .secondary-button:hover, .icon-button:hover, .back-button:hover { transform: translateY(-1px); border-color: var(--mint); }
 .guide { max-width: 720px; margin: 0 auto 30px; padding: 18px 20px; border-left: 3px solid var(--gold); border-radius: 0 14px 14px 0; background: rgba(13, 36, 38, .68); color: #cad6d1; line-height: 1.6; }
 .guide p:last-child { margin-bottom: 0; }
-.battle-screen { padding-bottom: 20px; }
+.battle-screen {
+  padding: 18px 18px 20px;
+  border: 1px solid rgba(201, 238, 224, .16);
+  border-radius: 24px;
+  background:
+    linear-gradient(rgba(7, 22, 25, .68), rgba(7, 22, 25, .76)),
+    url("assets/animal-footprint-folio-background.png") center / cover no-repeat;
+}
 .battle-header { padding-bottom: 24px; }
 .battle-header .eyebrow { margin: 0; }
 .battle-layout { display: grid; grid-template-columns: minmax(220px, .7fr) minmax(0, 1.5fr); gap: clamp(20px, 5vw, 72px); align-items: start; max-width: 1060px; margin: 7vh auto 20px; }
@@ -65,11 +72,25 @@ h2 { margin-bottom: 10px; font-size: clamp(1.45rem, 3vw, 2.25rem); letter-spacin
 .legend-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--mint); }
 .legend-dot.gap { background: var(--gold); box-shadow: 0 0 0 4px rgba(244, 200, 109, .14); }
 .board-column { min-width: 0; }
-.trail-board { display: grid; grid-template-columns: repeat(5, minmax(70px, 1fr)); gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 20px; background: rgba(7, 22, 25, .55); box-shadow: var(--shadow); }
+.trail-board { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 20px; background: rgba(7, 22, 25, .55); box-shadow: var(--shadow); }
 .trail-card { min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; border: 1px solid rgba(201, 238, 224, .13); border-radius: 15px; background: linear-gradient(160deg, rgba(26, 72, 73, .86), rgba(12, 37, 40, .86)); }
 .trail-card.missing { border-color: rgba(244, 200, 109, .7); background: rgba(99, 75, 35, .28); }
 .trail-card small { color: var(--quiet); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
 .marker-icon { width: 58px; height: 58px; }
+.marker-atlas {
+  display: block;
+  flex: 0 0 auto;
+  background-image: url("assets/animal-footprint-folio-marker-atlas.png");
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .28));
+}
+.marker-atlas-leaf { background-position: 0 0; }
+.marker-atlas-ripple { background-position: 50% 0; }
+.marker-atlas-diamond { background-position: 100% 0; }
+.marker-atlas-dot { background-position: 0 50%; }
+.marker-atlas-arc { background-position: 50% 50%; }
+.marker-atlas-star { background-position: 100% 50%; }
 .trail-card.missing .marker-icon { opacity: .25; }
 .feedback { min-height: 32px; margin: 16px 4px 20px; color: var(--mint); font-size: .93rem; line-height: 1.45; }
 .choice-area { padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: rgba(13, 36, 38, .72); }

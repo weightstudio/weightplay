@@ -404,6 +404,64 @@
         { icon: "4", en: ["Battle", "Press Start Battle to watch your squad fight automated shadow beast rounds."], "zh-Hant": ["戰鬥", "點擊開始戰鬥，觀看你的小隊在自動戰鬥中擊退影獸。"] }
       ],
     },
+    "animal-rhythm-relay": {
+      title: {
+        en: "Find the forest beat.", "zh-Hant": "找出森林節拍。", "zh-Hans": "找出森林节拍。",
+        ja: "森のビートを見つけよう。", ko: "숲의 박자를 찾아요.", es: "Encuentra el ritmo del bosque.",
+        "pt-BR": "Encontre o ritmo da floresta.", fr: "Trouvez le rythme de la forêt.", de: "Finde den Rhythmus des Waldes.",
+        it: "Trova il ritmo della foresta.", ru: "Найдите ритм леса.", hi: "जंगल की लय खोजें।", ar: "اعثر على إيقاع الغابة."
+      },
+      steps: [
+        {
+          icon: "1",
+          en: ["Watch the pulse", "The glowing ring marks the station that is ready."],
+          "zh-Hant": ["看著脈衝", "發光圓環會標出準備好的站點。"],
+          "zh-Hans": ["看着脉冲", "发光圆环会标出准备好的站点。"],
+          ja: ["脈動を見る", "光る輪が準備できたステーションを示します。"],
+          ko: ["맥박 보기", "빛나는 링이 준비된 스테이션을 알려 줍니다."],
+          es: ["Mira el pulso", "El aro brillante marca la estación preparada."],
+          "pt-BR": ["Observe o pulso", "O anel brilhante mostra a estação pronta."],
+          fr: ["Observez l’impulsion", "L’anneau lumineux indique la station prête."],
+          de: ["Beobachte den Puls", "Der leuchtende Ring zeigt die bereite Station."],
+          it: ["Guarda il battito", "L’anello luminoso indica la stazione pronta."],
+          ru: ["Следите за пульсом", "Светящееся кольцо отмечает готовую станцию."],
+          hi: ["पल्स देखें", "चमकती रिंग तैयार स्टेशन दिखाती है।"],
+          ar: ["راقب النبضة", "تُظهر الحلقة المضيئة المحطة الجاهزة."]
+        },
+        {
+          icon: "2",
+          en: ["Tap the ready station", "Tap the glowing ring. Early or late keeps the relay moving."],
+          "zh-Hant": ["點擊準備好的站點", "點擊發光圓環；早一點或晚一點都能繼續接力。"],
+          "zh-Hans": ["点击准备好的站点", "点击发光圆环；早一点或晚一点也能继续接力。"],
+          ja: ["準備できた駅をタップ", "光る輪をタップ。早くても遅くてもリレーは続きます。"],
+          ko: ["준비된 스테이션 누르기", "빛나는 링을 누르세요. 조금 빠르거나 늦어도 릴레이는 이어집니다."],
+          es: ["Toca la estación lista", "Toca el aro brillante. El relevo sigue aunque llegues pronto o tarde."],
+          "pt-BR": ["Toque a estação pronta", "Toque o anel brilhante. O revezamento continua mesmo cedo ou tarde."],
+          fr: ["Touchez la station prête", "Touchez l’anneau lumineux. Le relais continue même en avance ou en retard."],
+          de: ["Tippe die bereite Station an", "Tippe den leuchtenden Ring. Die Staffel läuft auch früh oder spät weiter."],
+          it: ["Tocca la stazione pronta", "Tocca l’anello luminoso. La staffetta continua anche in anticipo o in ritardo."],
+          ru: ["Нажмите готовую станцию", "Нажмите светящееся кольцо. Эстафета продолжается при раннем или позднем тапе."],
+          hi: ["तैयार स्टेशन टैप करें", "चमकती रिंग टैप करें। जल्दी या देर से भी रिले चलती रहती है।"],
+          ar: ["اضغط المحطة الجاهزة", "اضغط الحلقة المضيئة. يستمر التتابع حتى مع ضغطة مبكرة أو متأخرة."]
+        },
+        {
+          icon: "3",
+          en: ["Build your combo", "Accurate taps add to the badge; one missed station only resets the combo."],
+          "zh-Hant": ["累積連擊", "準確點擊會增加徽章進度；錯過一個站點只會重置連擊。"],
+          "zh-Hans": ["累积连击", "准确点击会增加徽章进度；错过一个站点只会重置连击。"],
+          ja: ["コンボを育てる", "正確なタップでバッジが増え、1回のミスはコンボだけを戻します。"],
+          ko: ["콤보 쌓기", "정확한 탭은 배지를 늘리고, 한 번의 실수는 콤보만 초기화합니다."],
+          es: ["Crea tu combo", "Los toques precisos suman a la insignia; un fallo solo reinicia el combo."],
+          "pt-BR": ["Monte seu combo", "Toques precisos aumentam o distintivo; um erro só reinicia o combo."],
+          fr: ["Construisez votre combo", "Les touches précises ajoutent au badge ; une erreur réinitialise seulement le combo."],
+          de: ["Baue deine Kombo auf", "Genaue Taps zählen fürs Abzeichen; ein Fehler setzt nur die Kombo zurück."],
+          it: ["Crea la combo", "I tocchi precisi aumentano il distintivo; un errore azzera solo la combo."],
+          ru: ["Собирайте комбо", "Точные нажатия добавляют значок; одна ошибка сбрасывает только комбо."],
+          hi: ["कॉम्बो बनाएँ", "सटीक टैप बैज बढ़ाते हैं; एक चूक केवल कॉम्बो रीसेट करती है।"],
+          ar: ["ابنِ سلسلتك", "تضيف الضغطات الدقيقة إلى الشارة؛ الخطأ الواحد يعيد السلسلة فقط."]
+        }
+      ]
+    },
   };
 
   const battleTutorialGames = new Set([

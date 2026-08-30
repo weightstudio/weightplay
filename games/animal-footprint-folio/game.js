@@ -26,7 +26,7 @@
   }
   function markerSvg(key, extra = "") {
     const marker = MARKERS[key];
-    return `<svg class="marker-icon ${extra}" viewBox="0 0 62 62" aria-hidden="true" focusable="false" style="color:${key === "ripple" || key === "arc" ? "#9ae8c7" : key === "star" ? "#f4c86d" : "#ffb09f"}">${marker.shape}</svg>`;
+    return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
   function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v1", interface_version: 6, ...payload }); }
   function setScreen(name) {
