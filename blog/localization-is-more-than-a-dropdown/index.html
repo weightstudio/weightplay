@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="Why a multilingual browser game needs locale routes, dynamic copy, metadata, and accessibility labels—not only translated buttons." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:title" content="A Language Dropdown Is Not Localization - WeightPlay Blog" />
+    <meta property="og:description" content="A practical note about treating routes, dynamic states, Result screens, and accessibility copy as part of a complete localized game experience." />
+    <meta property="og:url" content="https://weightplay.com/blog/localization-is-more-than-a-dropdown/" />
+    <meta property="og:image" content="https://weightplay.com/assets/weightplay-lion-mascot.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/blog/localization-is-more-than-a-dropdown/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/blog/localization-is-more-than-a-dropdown/" />
+    <title>A Language Dropdown Is Not Localization - WeightPlay Blog</title>
+    <link rel="stylesheet" href="../blog.css?v=20260731-blog2" />
+  </head>
+  <body>
+    <main class="blog-shell">
+      <nav class="blog-nav" aria-label="Blog navigation">
+        <a class="brand" href="/">WeightPlay</a>
+        <div class="blog-nav-links"><a href="/">Game Lobby</a><a href="/contact.html">Contact</a></div>
+      </nav>
+      <p class="article-back"><a href="../">&larr; All articles</a></p>
+      <header class="blog-hero">
+        <p class="eyebrow">WeightPlay Blog - Engineering notes</p>
+        <h1>A Language Dropdown Is Not Localization</h1>
+        <p class="dek">A translated button is only the visible beginning. The route, the next status message, and the screen reader announcement have to belong to the same language too.</p>
+        <div class="article-meta"><span>By WeightStudio</span><span>August 30, 2026</span><span>4 min read</span></div>
+        <p><a class="primary" href="/en/">Open the WeightPlay lobby &rarr;</a></p>
+      </header>
+      <article class="blog-article">
+        <p class="lead">The easiest localization bug to ship is the one that looks finished. The language dropdown says French, the main heading changes, and then a live status message or Result button quietly switches back to English. The screen feels translated until the player does something.</p>
+        <p>That is why I think of localization as a product contract rather than a bag of translated sentences. A selected language has to survive the route, the first paint, the next interaction, and the state after the game ends. If one of those layers falls back without a clear reason, the player receives a mixed interface.</p>
+        <h2>The route is part of the language</h2>
+        <p>WeightPlay keeps a canonical locale list and maps each locale to a public route segment. English uses <code>/en/</code>, Traditional Chinese uses <code>/zh-tw/</code>, Simplified Chinese uses <code>/zh-cn/</code>, and Brazilian Portuguese uses <code>/pt-br/</code>. The route is not cosmetic. It gives a refresh, a shared link, and a browser history entry a stable language identity.</p>
+        <p>A simplified version of the decision looks like this:</p>
+        <pre style="white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;"><code style="white-space:inherit;">const locale = localeFromPathname(pathname);
+const copy = dictionaries[locale] ?? dictionaries.en;
+const segment = localeSegments[locale] ?? "en";</code></pre>
+        <p>The important detail is the order. Read the language from the route first, then load the matching copy. A saved preference can help on a neutral entry page, but it should not silently override a locale-specific URL.</p>
+        <h2>Static copy is only the first layer</h2>
+        <p>A complete game surface has more text than the opening card. The language contract covers the lobby, public guide, Main, Stage, Battle, and Result screens. It also covers the page title, description, structured metadata, FAQ, dialog copy, dynamic progress, live-region feedback, and accessibility labels.</p>
+        <p>Dynamic text is where a partial translation becomes obvious. “Wave cleared,” “Retry,” a loading message, a score summary, or a count with a changing number is still part of the player’s current state. Leaving one of those strings in English is not harmless filler. It changes the language of the moment when the player most needs to understand what happened.</p>
+        <p>Accessibility copy makes the same point from another angle. A visible button may say “Start game” in Spanish while its accessible name still announces the English source string. The interface then disagrees with itself. A localized <code>aria-label</code> and live-region message are not polish added after the work; they are part of the control.</p>
+        <h2>Four failures worth checking</h2>
+        <ul>
+          <li><strong>The selector changes, but the route does not.</strong> Refreshing or sharing the page loses the language choice.</li>
+          <li><strong>The route exists, but the shell is English.</strong> A localized URL cannot be a shortcut to an English-only page with a translated dropdown.</li>
+          <li><strong>The first paint flashes the old language.</strong> The player sees one language, then another, before the page settles.</li>
+          <li><strong>The quiet states stay untranslated.</strong> Dialogs, Retry, Result summaries, dynamic feedback, and accessibility text reveal the missing dictionary entry.</li>
+        </ul>
+        <p>These failures are easy to miss when checking only the lobby. They also explain why a language audit that counts dictionary keys is useful but not sufficient. The route must resolve, the rendered page must use the route’s language, and an interaction must prove that changing state does not fall back.</p>
+        <h2>The smallest useful verification loop</h2>
+        <p>For each required locale, I want one bounded journey:</p>
+        <ol>
+          <li>Open the locale route directly and confirm the visible shell, page title, and metadata belong to that language.</li>
+          <li>Change a state that produces dynamic feedback, then inspect the visible message and its accessible name.</li>
+          <li>Reach a completion, failure, or retry state and check the Result or dialog copy.</li>
+          <li>Refresh and follow one internal link to make sure the locale identity survives navigation.</li>
+        </ol>
+        <p>Automation is good at finding missing routes, incomplete dictionaries, mixed strings, and unexpected fallback. A short hands-on pass is still valuable because it catches the copy that appears only after a click, a timeout, a failed round, or a screen transition. The two checks answer different questions.</p>
+        <h2>Know when English-only is the honest choice</h2>
+        <p>Not every surface needs thirteen translated copies. WeightPlay’s Blog is intentionally English-only. That is a clear content boundary: the article navigation and metadata use English, while the games and public lobby own the broader locale contract.</p>
+        <p>The distinction matters. Saying “this surface is English-only” is honest product scope. Showing a language selector that changes only half the experience is a broken promise. A smaller, clearly declared surface is better than a multilingual label attached to an incomplete route.</p>
+        <p>A language dropdown is a promise, not the proof. The proof is that the chosen language survives the URL, the first render, the next state, the Result screen, and the words a screen reader hears. The next time you add a translated label, ask one more question: which locale owns it after the player does something?</p>
+        <hr />
+        <p><em>This article was outlined with AI assistance and then checked and edited against the actual WeightPlay localization contract and source structure by the WeightStudio team.</em></p>
+      </article>
+      <footer class="blog-footer"><a href="../">Back to Blog</a><a href="/">Back to WeightPlay</a><span>Copyright 2026 WeightStudio</span><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></footer>
+    </main>
+  </body>
+</html>

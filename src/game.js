@@ -81,6 +81,9 @@ function translateStaticUI() {
   for (const element of document.querySelectorAll("[data-i18n-aria]")) {
     element.setAttribute("aria-label", t(element.dataset.i18nAria));
   }
+  for (const element of document.querySelectorAll("[data-i18n-description]")) {
+    element.setAttribute("aria-description", t(element.dataset.i18nDescription));
+  }
   syncLocaleSelects();
 }
 
@@ -149,6 +152,8 @@ const dictionary = {
     language: "Language",
     language_desc: "Choose display language",
     back_lobby: "Back to Lobby",
+    canvas_label: "Fantasy Lion Defense game board",
+    canvas_description: "Move the lion with Left and Right Arrow keys, or drag across the game board.",
     upgrade_panel_title: "Select Upgrade",
     upgrade_wave_complete: "Wave {wave} Complete",
     settlement_title: "Battle Summary",

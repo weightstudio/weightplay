@@ -214,7 +214,8 @@
   const SAMPLES = [
     {target: {en: "Amber fossil", "zh-Hant": "琥珀化石", "zh-Hans": "琥珀化石", ja: "琥珀の化石", ko: "호박 화석", es: "Fósil ámbar", "pt-BR": "Fóssil âmbar", fr: "Fossile ambré", de: "Bernsteinfossil", it: "Fossile d'ambra", ru: "Янтарная окаменелость", hi: "अंबर जीवाश्म", ar: "أحفورة كهرمانية"}, art: "amber", colour: "#e69a4f", answer: ["clay", "sun"]},
     {target: {en: "Fern fossil", "zh-Hant": "蕨葉化石", "zh-Hans": "蕨叶化石", ja: "シダの化石", ko: "고사리 화석", es: "Fósil de helecho", "pt-BR": "Fóssil de samambaia", fr: "Fossile de fougère", de: "Farnfossil", it: "Fossile di felce", ru: "Окаменелый папоротник", hi: "फर्न जीवाश्म", ar: "أحفورة سرخس"}, art: "fern", colour: "#70ad75", answer: ["leaf", "ocean"]},
-    {target: {en: "Violet fossil", "zh-Hant": "紫晶化石", "zh-Hans": "紫晶化石", ja: "紫水晶の化石", ko: "보랏빛 화석", es: "Fósil violeta", "pt-BR": "Fóssil violeta", fr: "Fossile violet", de: "Violettes Fossil", it: "Fossile viola", ru: "Фиолетовая окаменелость", hi: "बैंगनी जीवाश्म", ar: "أحفورة بنفسجية"}, art: "violet", colour: "#a67bc9", answer: ["berry", "sun"]}
+    {target: {en: "Violet fossil", "zh-Hant": "紫晶化石", "zh-Hans": "紫晶化石", ja: "紫水晶の化石", ko: "보랏빛 화석", es: "Fósil violeta", "pt-BR": "Fóssil violeta", fr: "Fossile violet", de: "Violettes Fossil", it: "Fossile viola", ru: "Фиолетовая окаменелость", hi: "बैंगनी जीवाश्म", ar: "أحفورة بنفسجية"}, art: "violet", colour: "#a67bc9", answer: ["berry", "sun"]},
+    {target: {en: "Sage fossil", "zh-Hant": "鼠尾草化石", "zh-Hans": "鼠尾草化石", ja: "セージの化石", ko: "세이지 화석", es: "Fósil de salvia", "pt-BR": "Fóssil de sálvia", fr: "Fossile de sauge", de: "Salbeifossil", it: "Fossile di salvia", ru: "Окаменелый шалфей", hi: "सेज जीवाश्म", ar: "أحفورة المريمية"}, art: "fern", colour: "#83b889", answer: ["leaf", "berry"]}
   ];
   applyCopy(); show("main");
 })();

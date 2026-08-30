@@ -18,6 +18,12 @@
   };
   const LOCALE_CODES = Object.keys(LOCALE_LABELS);
 
+  const DIVE_FOCUSES = Object.freeze({
+    balanced: { key: "focusBalanced", copyKey: "focusBalancedCopy", selectedKey: "focusBalancedSelected" },
+    value: { key: "focusValue", copyKey: "focusValueCopy", selectedKey: "focusValueSelected" },
+    museum: { key: "focusMuseum", copyKey: "focusMuseumCopy", selectedKey: "focusMuseumSelected" },
+  });
+
   const CONFIG = Object.freeze({
     zones: [
       { id: "harbour", name: "Shallow Sea", nameKey: "zoneShallow", minDepth: 0, maxDepth: 180, color: "#5bd3da", habitatKey: "habitatShallow" },
@@ -109,6 +115,7 @@
   const els = {
     loading: $("loading"), app: $("app"), landing: $("mainLanding"), dashboard: $("gameDashboard"), startGame: $("startGameButton"), locale: $("localeSelect"), reset: $("resetButton"),
     dispatch: $("dispatchButton"), quickDive: $("quickDiveButton"), collect: $("collectButton"),
+    focusCopy: $("diveFocusCopy"), focusStatus: $("diveFocusStatus"), focusPanel: $("diveFocusPanel"),
     funds: $("fundsValue"), depth: $("depthValue"), robots: $("robotsValue"), multiplier: $("multiplierValue"),
     zoneName: $("zoneName"), zoneDepth: $("zoneDepth"), stateBadge: $("diveStateBadge"), canvas: $("oceanCanvas"),
     targetDepth: $("targetDepthValue"), nextDrop: $("nextDropValue"), progress: $("progressValue"), progressFill: $("progressFill"),
@@ -146,7 +153,7 @@
     research: 0, prestigeCount: 0, techLevels: Object.fromEntries(CONFIG.techUpgrades.map((upgrade) => [upgrade.id, 0])),
     totalDives: 0, totalSold: 0, totalValue: 0, totalWeight: 0, rareFound: 0, totalEvents: 0, lastEvent: null,
     dailyProgress: { dives: 0, sold: 0, events: 0 },
-    settings: { sound: true, music: true, motion: true },
+    settings: { sound: true, music: true, motion: true }, diveFocus: "balanced",
     lastSavedAt: Date.now(), currentDive: null, pendingOffline: 0,
   });
 
@@ -175,6 +182,7 @@
     state.dailyProgress = { ...state.dailyProgress, ...(raw.dailyProgress && typeof raw.dailyProgress === "object" ? raw.dailyProgress : {}) };
     for (const key of Object.keys(state.dailyProgress)) state.dailyProgress[key] = Math.max(0, Number(state.dailyProgress[key]) || 0);
     state.lastEvent = raw.lastEvent && typeof raw.lastEvent === "object" ? raw.lastEvent : null;
+    state.diveFocus = Object.prototype.hasOwnProperty.call(DIVE_FOCUSES, raw.diveFocus) ? raw.diveFocus : "balanced";
     state.settings = { ...state.settings, ...(raw.settings && typeof raw.settings === "object" ? raw.settings : {}) };
     for (const key of Object.keys(state.settings)) state.settings[key] = state.settings[key] !== false;
     state.coins = Math.max(0, state.coins); state.maxDepth = clamp(state.maxDepth, 120, 2200);
@@ -189,6 +197,7 @@
         targetDepth: clamp(Number(raw.currentDive.targetDepth) || 70, 10, 1900),
         zoneId: CONFIG.zones.some((zone) => zone.id === (ZONE_ALIASES[raw.currentDive.zoneId] || raw.currentDive.zoneId)) ? (ZONE_ALIASES[raw.currentDive.zoneId] || raw.currentDive.zoneId) : state.zoneId,
         previewLootId: CONFIG.loot.some((loot) => loot.id === raw.currentDive.previewLootId) ? raw.currentDive.previewLootId : "metal",
+        focus: Object.prototype.hasOwnProperty.call(DIVE_FOCUSES, raw.currentDive.focus) ? raw.currentDive.focus : state.diveFocus,
       };
     }
     return state;
@@ -310,10 +319,10 @@
 
   const lootIsCollection = (loot) => Boolean(loot?.collection);
 
-  const chooseLoot = (targetDepth) => {
+  const chooseLoot = (targetDepth, focus = state.diveFocus) => {
     const available = CONFIG.loot.filter((loot) => loot.minDepth <= targetDepth);
     if (!available.length) return CONFIG.loot[0];
-    const rareRoll = Math.random() < derived().rareChance;
+    const rareRoll = Math.random() < clamp(derived().rareChance + (focus === "museum" ? 0.1 : 0), 0.045, 0.68);
     const pool = rareRoll
       ? available.filter((loot) => loot.rarity === "rare" || loot.rarity === "legendary")
       : available.filter((loot) => loot.rarity === "common" || loot.rarity === "uncommon");
@@ -321,7 +330,12 @@
     const weights = selected.map((loot) => {
       const depthFit = Math.max(1, 125 - Math.max(0, targetDepth - loot.minDepth) * 0.08);
       const targetBoost = loot.special ? 0.35 : 1;
-      return depthFit * targetBoost;
+      const focusBoost = focus === "value"
+        ? (lootIsCollection(loot) ? 0.62 : loot.special ? 1.55 : 1.18)
+        : focus === "museum"
+          ? (lootIsCollection(loot) ? 2.45 : loot.special ? 0.82 : 0.72)
+          : 1;
+      return depthFit * targetBoost * focusBoost;
     });
     return weightedPick(selected, weights);
   };
@@ -339,9 +353,10 @@
     const lower = Math.min(zone.maxDepth - 10, Math.max(zone.minDepth + 10, 28));
     const upper = Math.max(lower, Math.min(hullDepth, zone.maxDepth));
     const targetDepth = clamp(Math.round((lower + Math.random() * Math.max(20, upper - lower)) * stats.targetBoost), lower, upper);
-    const preview = chooseLoot(targetDepth);
+    const focus = Object.prototype.hasOwnProperty.call(DIVE_FOCUSES, state.diveFocus) ? state.diveFocus : "balanced";
+    const preview = chooseLoot(targetDepth, focus);
     const salvageTime = Math.round((preview.salvageMs || 0) * 0.3);
-    return { startedAt, durationMs: clamp(stats.diveDuration + salvageTime, MIN_DIVE_MS, 20000), targetDepth, zoneId: zone.id, previewLootId: preview.id };
+    return { startedAt, durationMs: clamp(stats.diveDuration + salvageTime, MIN_DIVE_MS, 20000), targetDepth, zoneId: zone.id, previewLootId: preview.id, focus };
   };
 
   const startDive = (startedAt = Date.now()) => {
@@ -388,7 +403,7 @@
       return true;
     };
     for (let index = 0; index < lootCount * 3 && cargoCount < lootCount; index += 1) {
-      loadLoot(chooseLoot(dive.targetDepth));
+      loadLoot(chooseLoot(dive.targetDepth, dive.focus));
     }
     if (!cargoCount) loadLoot(CONFIG.loot[0]);
     const event = rollEvent(dive.targetDepth);
@@ -689,6 +704,17 @@
     els.eventBonusValue.textContent = `×${Number(state.lastEvent.bonus || 1).toFixed(2)}`;
   };
 
+  const renderDiveFocus = () => {
+    const focus = DIVE_FOCUSES[state.diveFocus] || DIVE_FOCUSES.balanced;
+    if (els.focusStatus) els.focusStatus.textContent = t(focus.key);
+    if (els.focusCopy) els.focusCopy.textContent = t(focus.copyKey);
+    els.focusPanel?.querySelectorAll("[data-focus]").forEach((button) => {
+      const active = button.dataset.focus === state.diveFocus;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  };
+
   const applySettings = () => {
     document.body.dataset.motion = state.settings.motion ? "on" : "off";
     document.body.dataset.music = state.settings.music ? "on" : "off";
@@ -732,7 +758,7 @@
     els.diveStatus.textContent = phaseText(phase);
     els.cargo.textContent = `${Math.min(stats.capacity, Math.max(0, Math.floor(progress * stats.capacity)))} / ${stats.capacity}${t("kg")}`;
     els.currentDepth.textContent = `${number(depth)}${t("metres")}`;
-    renderZones(); renderFindLog(); renderUpgrades(); renderRobots(); renderMuseum(); renderMissions(); renderAchievements(); renderTechnology(); renderEvent(); renderSettings();
+    renderZones(); renderFindLog(); renderUpgrades(); renderRobots(); renderMuseum(); renderMissions(); renderAchievements(); renderTechnology(); renderEvent(); renderDiveFocus(); renderSettings();
     if (els.saveState && !els.saveState.dataset.saving) els.saveState.textContent = "●";
   };
 
@@ -840,6 +866,13 @@
       state.currentDive.startedAt = Date.now() - state.currentDive.durationMs + 120;
       showToast(t("diveNow")); markSaving(); render();
     });
+    els.focusPanel?.querySelectorAll("[data-focus]").forEach((button) => button.addEventListener("click", () => {
+      const focus = button.dataset.focus;
+      if (!Object.prototype.hasOwnProperty.call(DIVE_FOCUSES, focus)) return;
+      state.diveFocus = focus;
+      showToast(t(DIVE_FOCUSES[focus].selectedKey));
+      markSaving(); render();
+    }));
     els.collect?.addEventListener("click", () => {
       if (!pendingOffline) { showToast(t("noFinds")); return; }
       state.coins += pendingOffline; showToast(t("offlineMessage", { value: number(pendingOffline) })); pendingOffline = 0; markSaving(); render();

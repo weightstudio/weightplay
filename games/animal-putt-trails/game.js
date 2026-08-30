@@ -17,6 +17,27 @@
     ar: { eyebrow: "مسار عائلي · 6+", title: "مسارات ضربات الحيوانات", lede: "اقرأ المسار، اختر خطاً لطيفاً، ووجّه الكرة إلى الراية. كل ضربة لغز تخطيط صغير.", start: "ابدأ المسار", howTo: "طريقة اللعب", guide: "اسحب للخلف من الكرة للتصويب، ثم اتركها للضرب. الضربات القصيرة أسهل للتحكم؛ استخدم الحواف وتجنب الماء.", stageEyebrow: "اختر مساراً", stages: "خريطة المسارات", trail: "مسار", hole: "حفرة", par: "الضربات القياسية", best: "الأفضل", strokes: "الضربات", acorns: "البلوط", soundOn: "الصوت: تشغيل", soundOff: "الصوت: إيقاف", aim: "اسحب للخلف من الكرة ثم اتركها.", rolling: "الكرة تتدحرج…", clear: "اكتمل المسار", under: "أقل من القياسي", over: "أكثر من القياسي", even: "على القياسي", retry: "أعد الحفرة", next: "الحفرة التالية", map: "خريطة المسارات", complete: "اكتمل الملعب!", completeCopy: "جمعت {acorns} من ثمار البلوط عبر خمسة مسارات هادئة.", back: "رجوع", water: "ماء", holeNames: ["بوابة المرج", "الجسر الطحلبي", "منعطف ضوء القمر", "مفترق اليراعات", "حلقة الفوانيس"], holeTips: ["استخدم حافتي المرج للوصول إلى الراية.", "ضربة خفيفة تبقي الكرة بعيداً عن الجدول.", "يكافئ جسر القمر الضربة القطرية الهادئة.", "تجاوز الماء بضربة ارتداد لطيفة واعبر بين اليراعات.", "تجاوز الماء بارتداد طويل وخفف الضربة الأخيرة نحو الحفرة."] },
   };
 
+  const sixthHoleCopy = {
+    en: { name: "Willow Switchback", tip: "Use the willow banks to arc around the pond, then settle into the flag.", complete: "You earned {acorns} acorns across six calm trails." },
+    "zh-tw": { name: "柳影折返", tip: "利用柳樹邊界繞過池塘，再放輕力道接近旗子。", complete: "六條寧靜小徑一共取得 {acorns} 顆橡果。" },
+    "zh-cn": { name: "柳影折返", tip: "利用柳树边界绕过池塘，再放轻力度接近旗子。", complete: "六条宁静小径一共取得 {acorns} 颗橡果。" },
+    ja: { name: "柳の折り返し", tip: "柳の壁で池を大きく回り、最後は力を弱めて旗へ近づきます。", complete: "6つの穏やかなコースでどんぐりを {acorns} 個獲得しました。" },
+    ko: { name: "버드나무 굽이", tip: "버드나무 벽으로 연못을 돌아 마지막에는 힘을 줄여 깃발에 다가가세요.", complete: "여섯 트레일에서 도토리 {acorns}개를 얻었어요." },
+    es: { name: "Curva de Sauces", tip: "Rodea el estanque con los bordes de sauce y suaviza el golpe final hacia la bandera.", complete: "Conseguiste {acorns} bellotas en seis senderos tranquilos." },
+    "pt-br": { name: "Curva dos Salgueiros", tip: "Contorne o lago usando as bordas dos salgueiros e suavize a aproximação final.", complete: "Você ganhou {acorns} bolotas em seis trilhas tranquilas." },
+    fr: { name: "Méandre des Saules", tip: "Contourne l'étang avec les bordures de saules, puis adoucis l'approche du drapeau.", complete: "Tu as gagné {acorns} glands sur six sentiers calmes." },
+    de: { name: "Weidenkehre", tip: "Spiele an den Weidenbanden um den Teich und nähere dich sanft der Flagge.", complete: "Du hast {acorns} Eicheln auf sechs ruhigen Pfaden gesammelt." },
+    it: { name: "Ansa dei Salici", tip: "Gira intorno allo stagno usando i bordi dei salici e addolcisci l'avvicinamento alla bandierina.", complete: "Hai raccolto {acorns} ghiande in sei sentieri tranquilli." },
+    ru: { name: "Ивовый поворот", tip: "Обойди пруд по ивовым бортикам и смягчи последний удар к флажку.", complete: "Ты собрал {acorns} желудей на шести спокойных тропах." },
+    hi: { name: "विलो मोड़", tip: "तालाब के चारों ओर विलो किनारों से जाएँ और झंडे तक पहुँचते हुए अंतिम स्ट्रोक हल्का रखें।", complete: "छह शांत ट्रेल्स में आपने {acorns} बलूत पाए।" },
+    ar: { name: "منعطف الصفصاف", tip: "استخدم حواف الصفصاف للالتفاف حول البركة، ثم خفف الضربة الأخيرة نحو الراية.", complete: "جمعت {acorns} من ثمار البلوط عبر ستة مسارات هادئة." }
+  };
+  Object.entries(sixthHoleCopy).forEach(([locale, value]) => {
+    copy[locale].holeNames = [...copy[locale].holeNames, value.name];
+    copy[locale].holeTips = [...copy[locale].holeTips, value.tip];
+    copy[locale].completeCopy = value.complete;
+  });
+
   const localeMap = { "zh-tw": "zh-tw", "zh-cn": "zh-cn", "pt-br": "pt-br" };
   const localeToLang = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const loadingLabels = { en: "Preparing the trail…", "zh-tw": "正在準備小徑…", "zh-cn": "正在准备小径…", ja: "コースを準備中…", ko: "트레일을 준비하는 중…", es: "Preparando el sendero…", "pt-br": "Preparando a trilha…", fr: "Préparation du sentier…", de: "Pfad wird vorbereitet…", it: "Preparazione del sentiero…", ru: "Подготовка тропы…", hi: "ट्रेल तैयार हो रही है…", ar: "جارٍ تجهيز المسار…" };
@@ -36,6 +57,7 @@
     { par: 4, start: [160, 520], cup: [820, 185], water: [380, 275, 145, 72], walls: [[250, 420, 260, 20], [550, 250, 250, 20]], tint: "#c5d8a5" },
     { par: 5, start: [150, 190], cup: [810, 520], water: [390, 320, 180, 90], walls: [[240, 230, 300, 22], [520, 430, 280, 22], [690, 150, 22, 210]], tint: "#b7d8b1" },
     { par: 4, start: [805, 170], cup: [160, 540], water: [385, 280, 175, 100], walls: [[240, 300, 22, 180], [700, 280, 22, 220], [300, 440, 260, 22]], tint: "#d8c79d" },
+    { par: 5, start: [145, 540], cup: [820, 180], water: [420, 270, 170, 100], walls: [[220, 200, 270, 22], [520, 390, 270, 22], [700, 135, 22, 210]], tint: "#b9d4b2" },
   ];
   const state = { locale: "en", holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
 

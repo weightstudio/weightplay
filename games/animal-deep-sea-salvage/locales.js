@@ -69,6 +69,20 @@
     cargo: "Cargo",
     dispatch: "Dispatch ROV",
     quickDive: "Quick dive",
+    diveFocusLabel: "DIVE FOCUS",
+    diveFocusCopy: "Choose what the next ROV dive should prioritise.",
+    focusBalanced: "Balanced",
+    focusBalancedShort: "Steady mix",
+    focusBalancedCopy: "Keep a steady mix of sale-ready and museum finds.",
+    focusBalancedSelected: "Next dive set to a steady mix.",
+    focusValue: "Value",
+    focusValueShort: "Sale-ready haul",
+    focusValueCopy: "Bias the next haul toward items that sell for credits.",
+    focusValueSelected: "Next dive will prioritise sale value.",
+    focusMuseum: "Museum",
+    focusMuseumShort: "Rare discoveries",
+    focusMuseumCopy: "Improve rare-roll odds and favour discoveries kept in the museum.",
+    focusMuseumSelected: "Next dive will prioritise museum discoveries.",
     collect: "Collect",
     collectOffline: "Collect offline earnings",
     offlineTitle: "Welcome back, captain",
@@ -306,6 +320,20 @@
     cargo: "貨艙",
     dispatch: "派遣 ROV",
     quickDive: "快速下潛",
+    diveFocusLabel: "下潛焦點",
+    diveFocusCopy: "選擇下一趟 ROV 下潛要優先追求的方向。",
+    focusBalanced: "均衡",
+    focusBalancedShort: "穩定混合",
+    focusBalancedCopy: "在可出售打撈品與博物館收藏之間保持穩定比例。",
+    focusBalancedSelected: "下一趟下潛已設為穩定混合。",
+    focusValue: "價值",
+    focusValueShort: "優先收益",
+    focusValueCopy: "讓下一趟打撈更偏向能換取點數的物品。",
+    focusValueSelected: "下一趟下潛將優先追求出售價值。",
+    focusMuseum: "博物館",
+    focusMuseumShort: "稀有發現",
+    focusMuseumCopy: "提高稀有物機率，並偏好會留在博物館的發現。",
+    focusMuseumSelected: "下一趟下潛將優先追求博物館收藏。",
     collect: "領取",
     collectOffline: "領取離線收益",
     offlineTitle: "船長，歡迎回來",
@@ -636,9 +664,25 @@
     Object.assign(compact[localeCode], translations);
   }
 
-  const dictionaries = Object.fromEntries(localeCodes.map((code) => [code, { ...base, ...(compact[code] || {}) }]));
+  const focusTranslations = {
+    en: { diveFocusLabel: "DIVE FOCUS", diveFocusCopy: "Choose what the next ROV dive should prioritise.", focusBalanced: "Balanced", focusBalancedShort: "Steady mix", focusBalancedCopy: "Keep a steady mix of sale-ready and museum finds.", focusBalancedSelected: "Next dive set to a steady mix.", focusValue: "Value", focusValueShort: "Sale-ready haul", focusValueCopy: "Bias the next haul toward items that sell for credits.", focusValueSelected: "Next dive will prioritise sale value.", focusMuseum: "Museum", focusMuseumShort: "Rare discoveries", focusMuseumCopy: "Improve rare-roll odds and favour discoveries kept in the museum.", focusMuseumSelected: "Next dive will prioritise museum discoveries." },
+    "zh-Hant": { diveFocusLabel: "下潛焦點", diveFocusCopy: "選擇下一趟 ROV 下潛要優先追求的方向。", focusBalanced: "均衡", focusBalancedShort: "穩定混合", focusBalancedCopy: "在可出售打撈品與博物館收藏之間保持穩定比例。", focusBalancedSelected: "下一趟下潛已設為穩定混合。", focusValue: "價值", focusValueShort: "優先收益", focusValueCopy: "讓下一趟打撈更偏向能換取點數的物品。", focusValueSelected: "下一趟下潛將優先追求出售價值。", focusMuseum: "博物館", focusMuseumShort: "稀有發現", focusMuseumCopy: "提高稀有物機率，並偏好會留在博物館的發現。", focusMuseumSelected: "下一趟下潛將優先追求博物館收藏。" },
+    "zh-Hans": { diveFocusLabel: "下潜重点", diveFocusCopy: "选择下一趟 ROV 下潜要优先追求的方向。", focusBalanced: "均衡", focusBalancedShort: "稳定混合", focusBalancedCopy: "在可出售打捞品与博物馆收藏之间保持稳定比例。", focusBalancedSelected: "下一趟下潜已设为稳定混合。", focusValue: "价值", focusValueShort: "优先收益", focusValueCopy: "让下一趟打捞更偏向能换取点数的物品。", focusValueSelected: "下一趟下潜将优先追求出售价值。", focusMuseum: "博物馆", focusMuseumShort: "稀有发现", focusMuseumCopy: "提高稀有物概率，并偏好会留在博物馆的发现。", focusMuseumSelected: "下一趟下潜将优先追求博物馆收藏。" },
+    ja: { diveFocusLabel: "潜航フォーカス", diveFocusCopy: "次のROV潜航で優先するものを選びます。", focusBalanced: "バランス", focusBalancedShort: "安定した配分", focusBalancedCopy: "売却品と博物館の発見を安定して混ぜます。", focusBalancedSelected: "次の潜航を安定配分に設定しました。", focusValue: "価値", focusValueShort: "売却重視", focusValueCopy: "次の回収をクレジットになる品に寄せます。", focusValueSelected: "次の潜航は売却価値を優先します。", focusMuseum: "博物館", focusMuseumShort: "希少な発見", focusMuseumCopy: "希少判定を高め、博物館に残る発見を優先します。", focusMuseumSelected: "次の潜航は博物館の発見を優先します。" },
+    ko: { diveFocusLabel: "잠수 초점", diveFocusCopy: "다음 ROV 잠수에서 우선할 대상을 선택하세요.", focusBalanced: "균형", focusBalancedShort: "안정적 혼합", focusBalancedCopy: "판매품과 박물관 발견을 안정적으로 섞습니다.", focusBalancedSelected: "다음 잠수가 안정적 혼합으로 설정되었습니다.", focusValue: "가치", focusValueShort: "판매 우선", focusValueCopy: "다음 인양을 크레딧이 되는 물품에 맞춥니다.", focusValueSelected: "다음 잠수는 판매 가치를 우선합니다.", focusMuseum: "박물관", focusMuseumShort: "희귀 발견", focusMuseumCopy: "희귀 판정과 박물관에 남는 발견을 우선합니다.", focusMuseumSelected: "다음 잠수는 박물관 발견을 우선합니다." },
+    es: { diveFocusLabel: "ENFOQUE DE INMERSIÓN", diveFocusCopy: "Elige qué priorizará la próxima inmersión del ROV.", focusBalanced: "Equilibrado", focusBalancedShort: "Mezcla estable", focusBalancedCopy: "Mantén una mezcla estable de ventas y museo.", focusBalancedSelected: "La próxima inmersión usará una mezcla estable.", focusValue: "Valor", focusValueShort: "Carga vendible", focusValueCopy: "Inclina la próxima carga hacia objetos que dan créditos.", focusValueSelected: "La próxima inmersión priorizará el valor de venta.", focusMuseum: "Museo", focusMuseumShort: "Hallazgos raros", focusMuseumCopy: "Mejora la probabilidad de rareza y favorece piezas del museo.", focusMuseumSelected: "La próxima inmersión priorizará hallazgos del museo." },
+    "pt-BR": { diveFocusLabel: "FOCO DO MERGULHO", diveFocusCopy: "Escolha o que o próximo mergulho do ROV deve priorizar.", focusBalanced: "Equilibrado", focusBalancedShort: "Mistura estável", focusBalancedCopy: "Mantenha uma mistura estável de vendas e museu.", focusBalancedSelected: "O próximo mergulho usará uma mistura estável.", focusValue: "Valor", focusValueShort: "Carga vendável", focusValueCopy: "Favoreça itens que rendem créditos na próxima carga.", focusValueSelected: "O próximo mergulho priorizará valor de venda.", focusMuseum: "Museu", focusMuseumShort: "Descobertas raras", focusMuseumCopy: "Aumente a chance de raridade e favoreça peças do museu.", focusMuseumSelected: "O próximo mergulho priorizará descobertas do museu." },
+    fr: { diveFocusLabel: "FOCUS DE PLONGÉE", diveFocusCopy: "Choisissez la priorité de la prochaine plongée du ROV.", focusBalanced: "Équilibré", focusBalancedShort: "Mélange stable", focusBalancedCopy: "Gardez un mélange stable entre ventes et musée.", focusBalancedSelected: "La prochaine plongée utilise un mélange stable.", focusValue: "Valeur", focusValueShort: "Charge vendable", focusValueCopy: "Favorisez les objets qui rapportent des crédits.", focusValueSelected: "La prochaine plongée privilégiera la valeur de vente.", focusMuseum: "Musée", focusMuseumShort: "Trouvailles rares", focusMuseumCopy: "Augmentez les chances rares et favorisez les pièces du musée.", focusMuseumSelected: "La prochaine plongée privilégiera les découvertes du musée." },
+    de: { diveFocusLabel: "TAUCHFOKUS", diveFocusCopy: "Wähle, was der nächste ROV-Tauchgang priorisieren soll.", focusBalanced: "Ausgewogen", focusBalancedShort: "Stabile Mischung", focusBalancedCopy: "Halte eine stabile Mischung aus Verkauf und Museum.", focusBalancedSelected: "Der nächste Tauchgang nutzt eine stabile Mischung.", focusValue: "Wert", focusValueShort: "Verkaufsbeute", focusValueCopy: "Bevorzuge Funde, die Credits einbringen.", focusValueSelected: "Der nächste Tauchgang priorisiert Verkaufswert.", focusMuseum: "Museum", focusMuseumShort: "Seltene Funde", focusMuseumCopy: "Erhöhe seltene Würfe und bevorzuge Museumsfunde.", focusMuseumSelected: "Der nächste Tauchgang priorisiert Museumsfunde." },
+    it: { diveFocusLabel: "FOCUS DELL'IMMERSIONE", diveFocusCopy: "Scegli la priorità della prossima immersione del ROV.", focusBalanced: "Bilanciato", focusBalancedShort: "Mix stabile", focusBalancedCopy: "Mantieni un mix stabile tra vendite e museo.", focusBalancedSelected: "La prossima immersione userà un mix stabile.", focusValue: "Valore", focusValueShort: "Carico vendibile", focusValueCopy: "Favorisci gli oggetti che danno crediti.", focusValueSelected: "La prossima immersione darà priorità al valore di vendita.", focusMuseum: "Museo", focusMuseumShort: "Scoperte rare", focusMuseumCopy: "Aumenta le probabilità rare e favorisci i reperti del museo.", focusMuseumSelected: "La prossima immersione darà priorità alle scoperte del museo." },
+    ru: { diveFocusLabel: "ФОКУС ПОГРУЖЕНИЯ", diveFocusCopy: "Выберите приоритет следующего погружения ROV.", focusBalanced: "Баланс", focusBalancedShort: "Стабильная смесь", focusBalancedCopy: "Сохраняйте баланс между продажей и музеем.", focusBalancedSelected: "Следующее погружение настроено на стабильную смесь.", focusValue: "Ценность", focusValueShort: "Продажная добыча", focusValueCopy: "Сместите добычу к предметам, которые дают кредиты.", focusValueSelected: "Следующее погружение выбирает ценность продажи.", focusMuseum: "Музей", focusMuseumShort: "Редкие находки", focusMuseumCopy: "Повышайте шанс редкостей и ищите находки для музея.", focusMuseumSelected: "Следующее погружение выбирает музейные находки." },
+    hi: { diveFocusLabel: "गोता प्राथमिकता", diveFocusCopy: "अगले ROV गोते की प्राथमिकता चुनें।", focusBalanced: "संतुलित", focusBalancedShort: "स्थिर मिश्रण", focusBalancedCopy: "बिक्री और संग्रहालय की खोज का स्थिर मिश्रण रखें।", focusBalancedSelected: "अगला गोता स्थिर मिश्रण पर सेट है।", focusValue: "मूल्य", focusValueShort: "बिक्री योग्य माल", focusValueCopy: "अगली खोज में क्रेडिट देने वाली वस्तुओं को बढ़ाएं।", focusValueSelected: "अगला गोता बिक्री मूल्य को प्राथमिकता देगा।", focusMuseum: "संग्रहालय", focusMuseumShort: "दुर्लभ खोज", focusMuseumCopy: "दुर्लभ अवसर और संग्रहालय में रखी जाने वाली खोज बढ़ाएं।", focusMuseumSelected: "अगला गोता संग्रहालय की खोज को प्राथमिकता देगा।" },
+    ar: { diveFocusLabel: "تركيز الغوص", diveFocusCopy: "اختر ما ستعطيه رحلة ROV التالية الأولوية.", focusBalanced: "متوازن", focusBalancedShort: "مزيج ثابت", focusBalancedCopy: "حافظ على مزيج ثابت بين البيع واكتشافات المتحف.", focusBalancedSelected: "ضُبط الغوص التالي على مزيج ثابت.", focusValue: "القيمة", focusValueShort: "حمولة قابلة للبيع", focusValueCopy: "وجّه الحمولة التالية نحو عناصر تمنح رصيداً.", focusValueSelected: "سيعطي الغوص التالي أولوية لقيمة البيع.", focusMuseum: "المتحف", focusMuseumShort: "اكتشافات نادرة", focusMuseumCopy: "حسّن فرص الندرة وفضّل الاكتشافات المحفوظة في المتحف.", focusMuseumSelected: "سيعطي الغوص التالي أولوية لاكتشافات المتحف." },
+  };
+
+  const dictionaries = Object.fromEntries(localeCodes.map((code) => [code, { ...base, ...(compact[code] || {}), ...(focusTranslations[code] || {}) }]));
   dictionaries.en = { ...base };
-  dictionaries["zh-Hant"] = { ...base, ...zhHant };
+  dictionaries["zh-Hant"] = { ...base, ...zhHant, ...focusTranslations["zh-Hant"] };
 
   const pathMatch = window.location.pathname.match(/^\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)(?:\/|$)/u);
   const stored = (() => {
