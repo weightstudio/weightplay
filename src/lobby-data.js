@@ -3595,8 +3595,9 @@ window.WONDER_LOBBY.games.push(
   {
     id: "alien-defender",
     title: { en: "Alien Defender", "zh-Hant": "星際守衛", "zh-Hans": "星际守卫", ja: "エイリアン・ディフェンダー", ko: "에일리언 디펜더", es: "Defensor Alienígena", "pt-BR": "Defensor Alienígena", fr: "Défenseur Alien", de: "Alien-Verteidiger", it: "Difensore Alieno", ru: "Защитник от пришельцев", hi: "एलियन रक्षक", ar: "مدافع الفضائيين" },
-    status: "playable",
-    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
+    status: "planned",
+    statusText: { ...ownerPreviewStatusText },
+    internalTrial: "index.html?trial=1",
     type: { en: "Wave Survival Shooter", "zh-Hant": "波次生存射擊", "zh-Hans": "波次生存射击", ja: "ウェーブ生存シューティング", ko: "웨이브 생존 슈팅", es: "Disparos de supervivencia por oleadas", "pt-BR": "Tiro de sobrevivência por ondas", fr: "Tir de survie par vagues", de: "Wellen-Survival-Shooter", it: "Shooter di sopravvivenza a ondate", ru: "Шутер на выживание по волнам", hi: "लहर सर्वाइवल शूटर", ar: "لعبة إطلاق نار للبقاء" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Aim", "Movement", "Reaction"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
     href: "games/alien-defender/", previewVideo: "assets/previews/alien-defender-battle.webm",

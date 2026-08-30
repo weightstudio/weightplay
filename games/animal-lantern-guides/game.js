@@ -83,6 +83,7 @@
     const scene = SCENES[sceneIndex];
     setText("roundLabel", text("round", { n: sceneIndex + 1, total: SCENES.length })); setText("meterLabel", text("meter", { n: light }));
     setText("sceneTitle", text(scene.titleKey)); setText("sceneHint", text(scene.hintKey));
+    setText("handoffPrompt", phase === "guide" ? text("phaseGuide", { name: symbolName(clue) }) : text("phaseScout"));
     const scoutGrid = $("scoutChoices"); const guideGrid = $("guideChoices"); scoutGrid.replaceChildren(); guideGrid.replaceChildren();
     SYMBOLS.forEach(id => { scoutGrid.appendChild(makeSymbolButton(id, "scout")); guideGrid.appendChild(makeSymbolButton(id, "guide")); });
     scoutGrid.querySelectorAll("button").forEach(button => { button.disabled = phase !== "scout"; });
