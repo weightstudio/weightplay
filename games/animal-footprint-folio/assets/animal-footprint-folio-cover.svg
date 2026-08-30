@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Trail Logic field folio</title>
+  <desc id="desc">A moonlit teal field note with repeating trail markers and an open clue tile.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b2527"/><stop offset=".58" stop-color="#1b5a58"/><stop offset="1" stop-color="#123336"/></linearGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eff4df"/><stop offset="1" stop-color="#b4dcc3"/></linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="34"/></filter>
+  </defs>
+  <rect width="900" height="900" rx="48" fill="url(#sky)"/>
+  <circle cx="710" cy="150" r="160" fill="#9ae8c7" opacity=".12" filter="url(#blur)"/>
+  <path d="M0 720C170 620 280 720 430 645s275-5 470-108v363H0Z" fill="#082123" opacity=".78"/>
+  <path d="M90 170c125 35 190 110 290 112 108 2 154-74 288-39 55 14 89 42 142 70" fill="none" stroke="#9ae8c7" stroke-opacity=".3" stroke-width="5" stroke-dasharray="5 20"/>
+  <g transform="translate(133 167) rotate(-6)">
+    <rect width="615" height="525" rx="24" fill="url(#paper)"/>
+    <rect x="30" y="30" width="555" height="465" rx="14" fill="none" stroke="#174443" stroke-opacity=".3" stroke-width="3"/>
+    <text x="54" y="88" fill="#174443" font-family="system-ui,sans-serif" font-size="22" font-weight="800" letter-spacing="5">FIELD NOTE 03</text>
+    <text x="54" y="142" fill="#174443" font-family="system-ui,sans-serif" font-size="62" font-weight="900">TRAIL</text>
+    <text x="54" y="202" fill="#b36245" font-family="system-ui,sans-serif" font-size="62" font-weight="900">LOGIC</text>
+    <path d="M64 270h487" stroke="#174443" stroke-opacity=".3" stroke-width="3"/>
+    <g transform="translate(65 314)">
+      <rect width="100" height="112" rx="14" fill="#174443" opacity=".16"/><rect x="116" width="100" height="112" rx="14" fill="#174443" opacity=".16"/><rect x="348" width="100" height="112" rx="14" fill="#174443" opacity=".16"/>
+      <rect x="232" width="100" height="112" rx="14" fill="#f4c86d" opacity=".38" stroke="#b36245" stroke-width="4" stroke-dasharray="7 8"/>
+      <path d="M50 58c28-48 58 48 86 0s58 48 86 0" fill="none" stroke="#b36245" stroke-width="7" stroke-linecap="round"/>
+      <path d="m398 18 25 38-25 38-25-38 25-38Z" fill="none" stroke="#174443" stroke-width="7"/>
+    </g>
+    <text x="64" y="468" fill="#174443" opacity=".74" font-family="system-ui,sans-serif" font-size="18" font-weight="700" letter-spacing="3">OBSERVE · CHOOSE · CONFIRM</text>
+  </g>
+  <g fill="#f4c86d"><circle cx="103" cy="756" r="6"/><circle cx="125" cy="779" r="3"/><circle cx="770" cy="738" r="5"/></g>
+</svg>

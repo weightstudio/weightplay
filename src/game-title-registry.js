@@ -1679,6 +1679,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-footprint-folio": {
+    "__localizedExact": true,
+    "en": "Trail Logic",
+    "zh-Hant": "足跡線索",
+    "zh-Hans": "足迹线索",
+    "ja": "トレイル・ロジック",
+    "ko": "발자국 논리",
+    "es": "Lógica de Rastros",
+    "pt-BR": "Lógica das Trilhas",
+    "fr": "Logique des pistes",
+    "de": "Spurenlogik",
+    "it": "Logica delle tracce",
+    "ru": "Логика следов",
+    "hi": "पगचिह्न तर्क",
+    "ar": "منطق الآثار"
+  },
   "animal-constellation-keeper": {
     "__localizedExact": true,
     "en": "Constellation Keeper",

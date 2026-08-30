@@ -4,7 +4,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = "6";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -22,6 +22,11 @@
   try { save = { ...save, ...JSON.parse(localStorage.getItem("wp:bamboo") || "{}") }; } catch {}
   if (!save.best || typeof save.best !== "object" || Array.isArray(save.best)) save.best = {};
   selected = Math.max(0, Math.min(29, Number(save.unlocked || 1) - 1));
+  // Mark the authored game summary before the shared shell normalizes Main.
+  // Without this semantic hook, the normalizer falls back to the first Guide
+  // paragraph and leaves that stale locale-owned copy visible after a shell
+  // language switch.
+  document.querySelector('main#main [data-bamboo-t="summary"]')?.classList.add("main-summary");
   const text = (key, data = {}) => String((window.BAMBOO_LOCALES[locale] || BASE)[key] || BASE[key] || key).replace(/\{(\w+)\}/g, (_, name) => data[name] ?? "");
   const screens = { main: $("main"), stage: $("stage"), battle: $("battle") };
   $("battle").append($("leaveDialogTemplate").content.cloneNode(true));

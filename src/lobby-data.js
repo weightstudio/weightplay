@@ -2606,6 +2606,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Animal Footprint Folio is a weighted General prototype. Keep its planned
+// identity canonical while the source remains internal/noindex and pending
+// exact Tester, Reviewer, art, and release gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-footprint-folio",
+    audience: "general",
+    status: "planned",
+    title: localize(["Trail Logic", "足跡線索", "足迹线索", "トレイル・ロジック", "발자국 논리", "Lógica de Rastros", "Lógica das Trilhas", "Logique des pistes", "Spurenlogik", "Logica delle tracce", "Логика следов", "पगचिह्न तर्क", "منطق الآثار"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Trail Sequence Deduction", "足跡序列推理", "足迹序列推理", "足跡シーケンス推理", "발자국 순서 추리", "Deducción de secuencias", "Dedução de sequências", "Déduction de séquences", "Spurenfolgen-Logik", "Deduzione di sequenze", "Логика последовательностей следов", "तार्किक पगचिह्न क्रम", "استنتاج تسلسل الآثار"]),
+    description: localize(["Complete three visible trail records by choosing the one marker that keeps each clue sequence consistent.", "從三張可見的足跡紀錄中選出正確標記，完成三段線索序列。", "从三张可见的足迹记录中选出正确标记，完成三段线索序列。", "見えている足跡記録から、手がかりの並びを保つマーカーを選び、3つの記録を完成させよう。", "보이는 발자국 기록에서 단서 순서를 이어 줄 표식을 골라 세 기록을 완성하세요.", "Completa tres registros visibles eligiendo el marcador que mantiene cada secuencia de pistas.", "Complete três registros visíveis escolhendo o marcador que mantém cada sequência de pistas.", "Complétez trois fiches visibles en choisissant le marqueur qui respecte chaque suite d’indices.", "Vervollständige drei sichtbare Spurenkarten mit dem Marker, der jede Hinweisfolge stimmig hält.", "Completa tre schede visibili scegliendo il segno che mantiene coerente ogni sequenza di indizi.", "Заполните три видимые карточки следов, выбрав знак, который сохраняет каждую последовательность подсказок.", "दिखने वाले तीन पगचिह्न रिकॉर्ड पूरे करें और हर संकेत-क्रम को सही रखने वाला निशान चुनें।", "أكمل ثلاث بطاقات آثار ظاهرة باختيار العلامة التي تحافظ على اتساق كل تسلسل من الدلائل."]),
+    meta: localize([["3 Trail Records", "Visible Clues", "Gentle Retry"], ["3 段足跡紀錄", "可見線索", "平靜重試"], ["3 段足迹记录", "可见线索", "平静重试"], ["3つの記録", "見える手がかり", "やさしい再挑戦"], ["기록 3개", "보이는 단서", "차분한 재시도"], ["3 registros", "Pistas visibles", "Reintento amable"], ["3 registros", "Pistas visíveis", "Nova tentativa calma"], ["3 fiches", "Indices visibles", "Reprise douce"], ["3 Karten", "Sichtbare Hinweise", "Ruhiger Neustart"], ["3 schede", "Indizi visibili", "Riprova serena"], ["3 карточки", "Видимые подсказки", "Спокойный повтор"], ["3 रिकॉर्ड", "दिखने वाले संकेत", "शांत पुनः प्रयास"], ["3 بطاقات", "دلائل ظاهرة", "إعادة هادئة"]]),
+    categories: ["Puzzle", "Logic", "Family", "Animal"],
+    skills: ["Pattern Reasoning", "Observation", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-footprint-folio/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-footprint-folio/assets/animal-footprint-folio-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-30). Keep the canonical identity
 // planned/Coming Soon while the playable route remains an internal noindex
 // prototype pending art, Tester, Reviewer, release, and publication gates.
