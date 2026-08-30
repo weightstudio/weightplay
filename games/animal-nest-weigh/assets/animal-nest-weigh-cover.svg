@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="A calm moss-green turtle keeper weighing nest materials beside a woven nest">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9eddc"/><stop offset="1" stop-color="#f7e8c9"/></linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5d9b73"/><stop offset="1" stop-color="#2d6650"/></linearGradient>
+  </defs>
+  <rect width="800" height="800" rx="56" fill="url(#bg)"/>
+  <circle cx="642" cy="142" r="82" fill="#fff9df" opacity=".72"/>
+  <path d="M108 624c66-67 159-101 266-101 113 0 221 37 318 101v72H108z" fill="#c2d6b7"/>
+  <path d="M153 601c44-54 116-77 211-70 89 6 167 29 227 72-39 71-115 104-224 99-106-4-178-38-214-101z" fill="#9a633c"/>
+  <path d="M190 598c61-37 126-53 192-49 79 4 137 21 177 49-32 42-89 62-171 59-91-2-157-22-198-59z" fill="#d39951"/>
+  <ellipse cx="400" cy="502" rx="150" ry="129" fill="url(#shell)"/>
+  <path d="M290 464c31-62 74-91 130-91 66 0 111 32 134 95-78 44-166 46-264-4z" fill="#83b87e"/>
+  <path d="M339 406l61 49 61-49M291 466l109-11 112 12M330 573l70-118 72 118" fill="none" stroke="#377058" stroke-width="12" opacity=".7"/>
+  <circle cx="243" cy="466" r="66" fill="#6ca078"/>
+  <circle cx="224" cy="450" r="9" fill="#213a31"/><circle cx="260" cy="450" r="9" fill="#213a31"/>
+  <path d="M226 486c17 15 33 15 48 0" fill="none" stroke="#294d3d" stroke-width="8" stroke-linecap="round"/>
+  <path d="M292 590c-37 53-50 91-39 115 24 17 51 13 80-13M510 590c39 49 52 87 40 115-25 17-52 13-80-13" fill="#4c8666"/>
+  <path d="M525 374l78-72 24 25-78 78z" fill="#9a633c"/>
+  <path d="M580 313l40-31 21 20-39 37z" fill="#d39a54"/>
+  <path d="M599 282l23-29M618 301l31-23M605 312l-25-18" stroke="#6d4a31" stroke-width="9" stroke-linecap="round"/>
+  <path d="M543 381c38-12 72-8 104 12" fill="none" stroke="#e7c47e" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="655" cy="398" r="31" fill="#fff8dc" stroke="#b77e3d" stroke-width="9"/>
+  <path d="M655 398l18-13M655 398v-19" stroke="#496e52" stroke-width="6" stroke-linecap="round"/>
+</svg>

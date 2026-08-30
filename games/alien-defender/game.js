@@ -239,6 +239,22 @@
     ar:{backToStages:"العودة إلى المراحل"}
   };
   Object.entries(V47_RETURN_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
+  const V55_COPY_PATCH={
+    en:{guideIntro:"Defend the signal station across 30 authored Stages. Stage 1 teaches the Wave 1 to Wave 2 handoff; later Stages each focus on one authored formation."},
+    "zh-Hant":{guideIntro:"守護訊號站，迎戰 30 個原創關卡。第 1 關會教你從第 1 波銜接到第 2 波；之後每關聚焦一個原創編隊。"},
+    "zh-Hans":{guideIntro:"守护信号站，迎战 30 个原创关卡。第 1 关会教你从第 1 波衔接到第 2 波；之后每关聚焦一个原创编队。"},
+    ja:{guideIntro:"30のオリジナルステージで信号ステーションを守ります。ステージ1でウェーブ1から2へのつなぎを学び、以降は各ステージの編隊に挑みます。"},
+    ko:{guideIntro:"30개의 오리지널 스테이지에서 신호 기지를 지키세요. 스테이지 1에서 웨이브 1에서 2로 이어지는 흐름을 배우고, 이후에는 각 편대를 공략합니다."},
+    es:{guideIntro:"Defiende la estación en 30 fases originales. La fase 1 enseña el paso de la oleada 1 a la 2; las siguientes se centran en una formación propia."},
+    "pt-BR":{guideIntro:"Defenda a estação em 30 fases originais. A fase 1 ensina a passagem da onda 1 para a 2; as seguintes focam uma formação própria."},
+    fr:{guideIntro:"Défends la station dans 30 niveaux originaux. Le niveau 1 apprend le passage de la vague 1 à la 2 ; les suivants se concentrent sur une formation."},
+    de:{guideIntro:"Verteidige die Station in 30 originalen Stufen. Stufe 1 lehrt den Übergang von Welle 1 zu Welle 2; danach steht je eine Formation im Mittelpunkt."},
+    it:{guideIntro:"Difendi la stazione in 30 livelli originali. Il livello 1 insegna il passaggio dall'ondata 1 alla 2; gli altri si concentrano su una formazione."},
+    ru:{guideIntro:"Защищайте станцию в 30 оригинальных этапах. Этап 1 учит переходу от волны 1 к волне 2; дальше каждый этап посвящён одному строю."},
+    hi:{guideIntro:"30 मौलिक स्टेज में सिग्नल स्टेशन बचाएँ। स्टेज 1 में लहर 1 से लहर 2 तक पहुँचना सीखें; आगे हर स्टेज एक गठन पर केंद्रित है।"},
+    ar:{guideIntro:"احمِ المحطة عبر 30 مرحلة أصلية. تعلّم في المرحلة 1 الانتقال من الموجة 1 إلى الموجة 2؛ وتركّز المراحل التالية على تشكيل واحد لكل منها."}
+  };
+  Object.entries(V55_COPY_PATCH).forEach(([key,patch])=>Object.assign(COPY[key],patch));
   const V42_RESULT_COPY_PATCH={
     en:{stageResultWin:"Stage {stage} cleared.",stageResultFail:"Stage {stage} needs another run."},"zh-Hant":{stageResultWin:"第 {stage} 關已清除。",stageResultFail:"第 {stage} 關需要再挑戰一次。"},"zh-Hans":{stageResultWin:"第 {stage} 关已清除。",stageResultFail:"第 {stage} 关需要再挑战一次。"},ja:{stageResultWin:"ステージ{stage}をクリアしました。",stageResultFail:"ステージ{stage}をもう一度挑戦しましょう。"},ko:{stageResultWin:"스테이지 {stage} 클리어.",stageResultFail:"스테이지 {stage}를 다시 도전하세요."},es:{stageResultWin:"Fase {stage} superada.",stageResultFail:"La fase {stage} necesita otro intento."},"pt-BR":{stageResultWin:"Fase {stage} concluída.",stageResultFail:"A fase {stage} precisa de outra tentativa."},fr:{stageResultWin:"Niveau {stage} terminé.",stageResultFail:"Le niveau {stage} demande un nouvel essai."},de:{stageResultWin:"Stufe {stage} geschafft.",stageResultFail:"Stufe {stage} braucht einen weiteren Versuch."},it:{stageResultWin:"Livello {stage} completato.",stageResultFail:"Il livello {stage} richiede un altro tentativo."},ru:{stageResultWin:"Этап {stage} пройден.",stageResultFail:"Этап {stage} нужно пройти ещё раз."},hi:{stageResultWin:"स्टेज {stage} पूरा।",stageResultFail:"स्टेज {stage} फिर से खेलें।"},ar:{stageResultWin:"اكتملت المرحلة {stage}.",stageResultFail:"تحتاج المرحلة {stage} إلى محاولة أخرى."}
   };
@@ -313,7 +329,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="52",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="55",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -1014,5 +1030,80 @@
   update=function updateWithSweptFormationBounds(dt){
     if(world?.enemies)for(const enemy of world.enemies){enemy.previousX=enemy.x;enemy.previousY=enemy.y}
     v50Update(dt);
+  };
+  // v55 Planner repair: keep the 30-Stage campaign while restoring the
+  // adopted Wave 1 -> Wave 2 learning contract inside the opening Stage.
+  // The player still clears every formation with visible movement and Fire;
+  // the transition is only a second authored formation, never a hidden clear.
+  const v55MakeWorld=makeWorld;
+  makeWorld=function makeOpeningConvergenceWorld(){
+    const next=v55MakeWorld();
+    if(stageMode&&selectedStage===0&&wave===1){
+      next.lives=Math.max(next.lives,6);
+      next.shield=Math.max(next.shield,18);
+      next.config.moveEvery=Math.max(next.config.moveEvery,1.45);
+      next.moveEvery=next.config.moveEvery;
+      next.config.enemyFireEvery=Math.max(next.config.enemyFireEvery,2.2);
+    }
+    return next;
+  };
+  const v55Shoot=shoot;
+  shoot=function shootOpeningConvergence(){
+    const before=world?.bullets?.length||0;
+    v55Shoot();
+    if(stageMode&&selectedStage===0&&wave===1&&world?.bullets?.length>before){
+      const bullet=world.bullets[world.bullets.length-1];
+      // A narrow, player-fired training spread preserves lane choice while
+      // making the first natural clear dependable on coarse touch input.
+      world.bullets.push({x:bullet.x-20,y:bullet.y,s:bullet.s},{x:bullet.x+20,y:bullet.y,s:bullet.s});
+      world.fireTimer=Math.min(world.fireTimer,.14);
+      $("battleMessage").textContent=t("wave1Aim");
+    }
+  };
+  const v55Start=start;
+  start=function startOpeningConvergence(stageIndex=selectedStage){
+    v55Start(stageIndex);
+    if(stageMode&&selectedStage===0)$("battleMessage").textContent=t("wave1Goal");
+  };
+  const v55Update=update;
+  update=function updateOpeningConvergence(dt){
+    const beforeWave=wave,beforeEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;
+    v55Update(dt);
+    if(screen!=="battle"||!stageMode||selectedStage!==0||beforeWave!==1||wave!==1)return;
+    const afterEnemies=world?.enemies?.filter((enemy)=>enemy.alive).length??null;
+    if(beforeEnemies!==null&&afterEnemies!==null&&afterEnemies<beforeEnemies)$("battleMessage").textContent=t("wave1Hit");
+  };
+  const v55UpdateHud=updateHudV44;
+  updateHudV44=function updateOpeningConvergenceHud(){
+    v55UpdateHud();
+    if(screen==="battle"&&stageMode&&selectedStage===0&&wave===2)$("waveValue").textContent=`${t("wave")} 2 · ${t("stage")} 1 / ${TOTAL_STAGES}`;
+  };
+  const v55Finish=finish;
+  finish=function finishOpeningConvergence(win){
+    if(stageMode&&selectedStage===0&&win&&wave===1){
+      track("wave_clear",{wave:1,result_reason:"formation_cleared"});
+      wave=2;
+      score+=100;
+      world=makeWorld();
+      world.shield=Math.max(world.shield,6);
+      updateHudV44();
+      $("battleMessage").textContent=`${t("wave1Clear")} · ${t("wave")} 2`;
+      beep(980,.12);
+      return;
+    }
+    if(stageMode&&selectedStage===0&&wave===1&&!win){
+      v55Finish(win);
+      $("resultGoal").textContent=`${$("resultGoal").textContent} ${t("wave1Aim")}`.trim();
+      return;
+    }
+    if(stageMode&&selectedStage===0&&wave===2){
+      const actualWave=wave;
+      track("wave_clear",{wave:actualWave,result_reason:win?"formation_cleared":"not_cleared"});
+      wave=selectedStage+1;
+      v55Finish(win);
+      if(!win)$("resultGoal").textContent=`${$("resultGoal").textContent} ${t("wave1Aim")}`.trim();
+      return;
+    }
+    v55Finish(win);
   };
 })();

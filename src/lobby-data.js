@@ -2759,6 +2759,31 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.games.push(animalDawnShuttersPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDawnShuttersPlanned.id);
 
+// Weighted General prototype (2026-08-30). Keep the comparison lesson
+// planned and private until production art, QA, review, and release gates pass.
+const animalNestWeighLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalNestWeighLocalized = (values) => Object.fromEntries(animalNestWeighLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalNestWeighStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalNestWeighPlanned = {
+  id: "animal-nest-weigh",
+  title: animalNestWeighLocalized(["Nest Weigh-In", "巢材秤重", "巢材称重", "巣材はかり", "둥지 무게 재기", "Pesaje del nido", "Pesagem do ninho", "Pesée du nid", "Nest-Waage", "Peso del nido", "Вес гнезда", "घोंसला तौल", "ميزان العش"]),
+  status: "planned",
+  statusText: { ...animalNestWeighStatusText },
+  type: animalNestWeighLocalized(["Pairwise Comparison Puzzle", "成對比較益智", "成对比较益智", "ペア比較パズル", "쌍 비교 퍼즐", "Rompecabezas de comparación por pares", "Quebra-cabeça de comparação em pares", "Puzzle de comparaison par paires", "Paarvergleich-Puzzle", "Puzzle di confronto a coppie", "Пазл попарного сравнения", "जोड़ी तुलना पहेली", "لغز المقارنة بين زوجين"]),
+  description: animalNestWeighLocalized(["Compare nest materials on a visible balance, then choose the heaviest, lightest, or middle tray.", "用可見的秤比較巢材，再選出最重、最輕或中等重量的托盤。", "用可见的秤比较巢材，再选出最重、最轻或中等重量的托盘。", "見えるはかりで巣材を比べ、重い・軽い・真ん中のトレイを選ぼう。", "보이는 저울로 둥지 재료를 비교하고 가장 무겁거나 가볍거나 중간인 쟁반을 골라요.", "Compara materiales en una balanza visible y elige la bandeja más pesada, ligera o intermedia.", "Compare os materiais numa balança visível e escolha a bandeja mais pesada, leve ou intermediária.", "Compare les matériaux sur une balance visible, puis choisissez le plateau le plus lourd, léger ou intermédiaire.", "Vergleiche Nistmaterial auf einer sichtbaren Waage und wähle die schwerste, leichteste oder mittlere Schale.", "Confronta i materiali su una bilancia visibile e scegli il vassoio più pesante, leggero o intermedio.", "Сравните материалы на видимых весах и выберите самый тяжёлый, лёгкий или средний лоток.", "दिखने वाले तराज़ू पर सामग्री की तुलना करें और सबसे भारी, हल्की या बीच वाली ट्रे चुनें।", "قارن مواد العش على ميزان ظاهر، ثم اختر الصينية الأثقل أو الأخف أو المتوسطة."]),
+  meta: animalNestWeighLocalized([["3 nest lessons", "Compare + infer", "Calm retry"], ["3 堂巢材課", "比較＋推理", "平靜重試"], ["3 堂巢材课", "比较＋推理", "平静重试"], ["3つの巣レッスン", "比較＋推理", "穏やかな再挑戦"], ["둥지 레슨 3개", "비교 + 추론", "차분한 재시도"], ["3 lecciones", "Compara e infiere", "Reintento sereno"], ["3 lições", "Compare e infira", "Nova tentativa calma"], ["3 leçons", "Comparez et déduisez", "Reprise sereine"], ["3 Nestlektionen", "Vergleichen + folgern", "Ruhiger Neustart"], ["3 lezioni", "Confronta e deduci", "Riprova calma"], ["3 урока", "Сравнивайте и выводите", "Спокойный повтор"], ["3 पाठ", "तुलना और निष्कर्ष", "शांत पुनःप्रयास"], ["3 دروس", "قارن واستنتج", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Logic", "Comparison", "Family", "Animal"],
+  skills: ["Deductive Reasoning", "Comparison", "Focus"],
+  ages: ["6", "family"],
+  ageLabel: animalNestWeighLocalized(Array(13).fill("6+")),
+  href: "games/animal-nest-weigh/",
+  internalTrial: "index.html?trial=1",
+  art: { kind: "image", background: "games/animal-nest-weigh/assets/animal-nest-weigh-cover.svg", hideHero: true },
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalNestWeighPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalNestWeighPlanned.id)) window.WONDER_LOBBY.games.push(animalNestWeighPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalNestWeighPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalNestWeighPlanned.id);
+
 // General Issue repair (2026-08-30): provide the private planned identity
 // required by the localized-route generator while keeping Glyph Garden out of
 // the playable lobby catalog until its remaining release gates pass.

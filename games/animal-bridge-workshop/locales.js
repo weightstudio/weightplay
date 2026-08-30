@@ -24,4 +24,18 @@
     ar: {
       eyebrow:"هندسة الغابة · 9+",title:"ورشة جسور الحيوانات",lede:"صِل المراسي القوية، واختر مادة، واختبر عبوراً آمناً لفريق الحيوانات.",fact1:"3 معابر",fact2:"ابنِ + اختبر",fact3:"ميداليات المواد",ready:"3 معابر جاهزة",start:"ابدأ الورشة",guideButton:"طريقة اللعب",guide:"المس مرساتين، واختر عارضة خشبية أو حبلاً ليفياً أو وسادة عائمة ثم ضع الوصلة. اختبر الطريق بعد اكتماله؛ أصلح الوصلة الضعيفة وحاول من جديد.",soundOn:"الصوت: مفعّل",soundOff:"الصوت: متوقف",back:"العودة إلى الرئيسية",place:"ضع الوصلة",test:"اختبر المعبر",undo:"تراجع عن الأخيرة",reset:"إعادة ضبط المعبر",beam:"عارضة خشبية",rope:"حبل ليفي",pad:"وسادة عائمة",beamHint:"دعامة ثابتة",ropeHint:"خفيف ومرن",padHint:"آمن فوق الماء",choose:"اختر مرساتين لمعاينة وصلة.",chooseMaterial:"اختر مرساتين ومادة.",noStock:"نفدت هذه المادة. اختر مادة أخرى.",placed:"وُضعت الوصلة. أضف وصلة أو اختبر الطريق.",crossing:"المعبر {n} / 3",clear:"اكتمل العبور",safe:"طريق آمن!",fail:"تحتاج الوصلة إلى إصلاح",next:"المعبر التالي",retry:"أصلح وحاول مجدداً",home:"رئيسية الورشة",medal:"ميدالية",complete:"اكتملت الورشة!",completeCopy:"عبر فريقك الطرق الثلاثة. أفضل ميدالية: {medal}.",successCopy:"عبر الفريق بأمان باستخدام {count} وصلات.",weakCopy:"أول وصلة ضعيفة: {joint}. أضفها ثم اختبر من جديد.",goal1:"صِل المراسي الثلاثة ليعبر Pip بأمان.",goal2:"ابنِ طريقاً من ثلاث وصلات؛ الوصلة الوسطى تحتاج حبلاً ليفياً.",goal3:"يحتاج Moss Shell Taro الثقيل إلى وسادة عائمة في المقطع الأول.",stage1:"دعامة مثلثة",stage2:"وادي الرياح",stage3:"حمولة ثقيلة",material:"المادة",route:"الطريق",links:"الوصلات",settings:"الإعدادات",language:"اللغة",coverAlt:"Moon Cap Orla تخطط جسراً صغيراً للحيوانات",canvasLabel:"منطقة بناء ورشة الجسور",materials:"اختيار المادة" }
   };
+  const legendCopy = {
+    "zh-Hans": { legendAnchor: "锚点", legendLink: "连接", legendAnimal: "过桥动物" },
+    ja: { legendAnchor: "支点", legendLink: "リンク", legendAnimal: "渡る動物" },
+    ko: { legendAnchor: "고정점", legendLink: "연결", legendAnimal: "건너는 동물" },
+    es: { legendAnchor: "Anclaje", legendLink: "Enlace", legendAnimal: "Animal que cruza" },
+    "pt-BR": { legendAnchor: "Âncora", legendLink: "Ligação", legendAnimal: "Animal em travessia" },
+    fr: { legendAnchor: "Ancrage", legendLink: "Lien", legendAnimal: "Animal qui traverse" },
+    de: { legendAnchor: "Anker", legendLink: "Verbindung", legendAnimal: "Tier beim Überqueren" },
+    it: { legendAnchor: "Ancoraggio", legendLink: "Collegamento", legendAnimal: "Animale in attraversamento" },
+    ru: { legendAnchor: "Опора", legendLink: "Связь", legendAnimal: "Животное на переправе" },
+    hi: { legendAnchor: "एंकर", legendLink: "कड़ी", legendAnimal: "पार करता जानवर" },
+    ar: { legendAnchor: "مرساة", legendLink: "وصلة", legendAnimal: "حيوان يعبر" },
+  };
+  for (const [locale, labels] of Object.entries(legendCopy)) Object.assign(window.BRIDGE_WORKSHOP_LOCALES[locale], labels);
 }());

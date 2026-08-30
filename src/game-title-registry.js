@@ -1775,6 +1775,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "भोर की खिड़कियाँ",
     "ar": "مصاريع الفجر"
   },
+  "animal-nest-weigh": {
+    "__localizedExact": true,
+    "en": "Nest Weigh-In",
+    "zh-Hant": "巢材秤重",
+    "zh-Hans": "巢材称重",
+    "ja": "巣材はかり",
+    "ko": "둥지 무게 재기",
+    "es": "Pesaje del nido",
+    "pt-BR": "Pesagem do ninho",
+    "fr": "Pesée du nid",
+    "de": "Nest-Waage",
+    "it": "Peso del nido",
+    "ru": "Вес гнезда",
+    "hi": "घोंसला तौल",
+    "ar": "ميزان العش"
+  },
   "animal-glyph-garden": {
     "__localizedExact": true,
     "en": "Glyph Garden",
