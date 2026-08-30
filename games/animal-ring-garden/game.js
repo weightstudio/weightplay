@@ -9,7 +9,8 @@
   const gardens = [
     { key: "gardenOne", clueKey: "gardenOneClue", target: [1, 2, 3], seed: [0, 0, 0] },
     { key: "gardenTwo", clueKey: "gardenTwoClue", target: [3, 1, 2], seed: [0, 0, 0] },
-    { key: "gardenThree", clueKey: "gardenThreeClue", target: [2, 3, 1], seed: [0, 0, 0] }
+    { key: "gardenThree", clueKey: "gardenThreeClue", target: [2, 3, 1], seed: [0, 0, 0] },
+    { key: "gardenFour", clueKey: "gardenFourClue", target: [3, 2, 1], seed: [0, 0, 0] }
   ];
   const state = {
     screen: "main",
@@ -20,7 +21,7 @@
     solved: false
   };
   const $ = (id) => document.getElementById(id);
-  const bestKey = (index) => `weightplay:animal-ring-garden:v1:best:${index}`;
+  const bestKey = (index) => `weightplay:animal-ring-garden:v2:best:${index}`;
 
   function t(key) { return (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key; }
   function fmt(value, n) { return value.replace("{n}", String(n)); }

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-ring-garden/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-ring-garden/" />
@@ -24,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="description" content="转动三层花瓣环，让月光花园图样绽放，再用更少转动重玩。" />
   <meta name="weightplay-game-id" content="animal-ring-garden" />
-  <meta name="weightplay-game-version" content="v1" />
+  <meta name="weightplay-game-version" content="v2" />
   <meta name="weightplay-interface-version" content="6" />
   <title>环影花园 | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
@@ -43,6 +42,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "环影花园",
+  "alternateName": "Ring Garden",
   "url": "https://weightplay.com/zh-cn/games/animal-ring-garden/",
   "image": "https://weightplay.com/games/animal-ring-garden/assets/animal-ring-garden-cover.svg",
   "description": "转动三层花瓣环，让月光花园图样绽放，再用更少转动重玩。",
@@ -59,19 +59,17 @@
     "Pattern",
     "Planning",
     "家庭",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Ring Garden"
+  }
 }
     </script>
   </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v1">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v2">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
@@ -147,8 +145,10 @@
       <button id="sound-toggle" class="secondary-button" type="button" aria-pressed="true">Sound: On</button>
     </form>
   </dialog>
-  <script src="locales.js?v=20260830-ring-garden-v1"></script>
-  <script src="game.js?v=20260830-ring-garden-v1"></script>
+  <script src="locales.js?v=20260830-ring-garden-v2"></script>
+  <script src="game.js?v=20260830-ring-garden-v2"></script>
+<script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="环影花园 游戏信息">
 
     <div class="game-info-hero">
@@ -167,7 +167,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

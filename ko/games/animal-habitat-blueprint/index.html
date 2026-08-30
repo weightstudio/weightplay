@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-habitat-blueprint/" />
-
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-habitat-blueprint/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-habitat-blueprint/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-habitat-blueprint/" />
@@ -22,9 +21,13 @@
     <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
+  <meta name="weightplay-audience" content="general" />
+  <meta name="weightplay-game-id" content="animal-habitat-blueprint" />
+  <meta name="weightplay-game-version" content="v3" />
   <meta name="theme-color" content="#294a55" />
   <title>서식지 블루프린트 | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <link rel="stylesheet" href="art.css?v=20260830-habitat-blueprint-v3" />
   <meta name="description" content="네 서식지 타일을 바꿔 모든 이웃 단서를 만족시키고 동물들의 차분한 집을 완성하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -41,6 +44,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "서식지 블루프린트",
+  "alternateName": "Habitat Blueprint",
   "url": "https://weightplay.com/ko/games/animal-habitat-blueprint/",
   "image": "https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp",
   "description": "네 서식지 타일을 바꿔 모든 이웃 단서를 만족시키고 동물들의 차분한 집을 완성하세요.",
@@ -57,24 +61,23 @@
     "Logic",
     "Spatial Planning",
     "가족",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Habitat Blueprint"
+  }
 }
     </script>
   </head>
 <body>
   <div id="loading" class="screen loading-screen"><div class="loader-mark">⌂</div><p data-i18n="loading">Unrolling the habitat plans…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Habitat Blueprint</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
+    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">서식지 블루프린트</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
       <div class="cover-wrap"><img src="assets/animal-habitat-blueprint-cover.svg" alt="" width="1200" height="900" /><span class="cover-badge" data-i18n="kicker">A calm planning puzzle</span></div>
+      <img class="guide-art" src="assets/animal-habitat-blueprint-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536" />
       <p class="eyebrow" data-i18n="world">Mosslight field station</p><h1 data-runtime-localize="off">서식지 블루프린트</h1>
       <p class="intro" data-i18n="intro">Arrange four habitat tiles so every animal's little home has the right neighbour.</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open a blueprint</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div>
@@ -88,10 +91,12 @@
       <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-i18n="swap" disabled>Swap selected</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset plan</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
     <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260830-habitat-blueprint-v2"></script><script src="game.js?v=20260830-habitat-blueprint-v2"></script>
+  <script src="locales.js?v=20260830-habitat-blueprint-v3"></script><script src="game.js?v=20260830-habitat-blueprint-v3"></script>
+<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="서식지 블루프린트 게임 정보">
 
     <div class="game-info-hero">
@@ -110,7 +115,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

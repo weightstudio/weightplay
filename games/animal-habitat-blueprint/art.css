@@ -1,0 +1,27 @@
+.guide-art {
+  display: block;
+  width: min(100%, 220px);
+  max-height: 260px;
+  margin: 18px auto 2px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.result-guide-art {
+  width: min(100%, 180px);
+  max-height: 220px;
+  margin-top: -8px;
+}
+
+@media (max-width: 520px) {
+  .guide-art {
+    width: min(100%, 170px);
+    max-height: 190px;
+    margin-top: 12px;
+  }
+
+  .result-guide-art {
+    width: min(100%, 145px);
+    max-height: 165px;
+  }
+}
