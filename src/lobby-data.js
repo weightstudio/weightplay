@@ -2682,6 +2682,31 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.games.push(animalLanternGuidesPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalLanternGuidesPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalLanternGuidesPlanned.id);
 
+// Animal Folded Field is a weighted General internal prototype. Keep its
+// planned identity available to canonical route/metadata tooling while the
+// playable route remains noindex and outside public discovery.
+const animalFoldedFieldLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+const animalFoldedFieldLocalized = (values) => Object.fromEntries(animalFoldedFieldLocaleKeys.map((locale, index) => [locale, values[index]]));
+const animalFoldedFieldStatusText = { en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정", es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente", ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا" };
+const animalFoldedFieldPlanned = {
+  id: "animal-folded-field",
+  title: animalFoldedFieldLocalized(["Folded Field", "摺葉田", "折叶田", "フォールド・フィールド", "접힌 들판", "Campo plegado", "Campo dobrado", "Champ plié", "Faltfeld", "Campo piegato", "Складное поле", "मुड़ा हुआ मैदान", "الحقل المطوي"]),
+  status: "planned",
+  statusText: { ...animalFoldedFieldStatusText },
+  type: animalFoldedFieldLocalized(["Hinged Pattern Puzzle", "摺頁圖樣益智", "折页图样益智", "折り目模様パズル", "접힌 무늬 퍼즐", "Puzzle de patrones plegables", "Puzzle de padrões dobráveis", "Puzzle de motifs pliés", "Faltmuster-Puzzle", "Puzzle di motivi piegati", "Пазл складных узоров", "मुड़े पैटर्न पहेली", "لغز الأنماط المطوية"]),
+  description: animalFoldedFieldLocalized(["Tap the linked field flaps to match each animal trail before the nest opens.", "點按相連田葉，拼出每條動物小徑，讓巢門打開。", "点按相连田叶，拼出每条动物小径，让巢门打开。", "つながった野原の羽根をタップして動物の道を合わせ、巣を開こう。", "이어진 들판 덮개를 눌러 동물 길을 맞추고 둥지를 열어 보세요.", "Toca las solapas unidas hasta igualar cada sendero animal y abrir el nido.", "Toque as abas ligadas para combinar cada trilha animal e abrir o ninho.", "Touche les volets reliés pour aligner chaque sentier animal et ouvrir le nid.", "Tippe die verbundenen Feldklappen an, bis jeder Tierpfad passt und sich das Nest öffnet.", "Tocca le alette collegate per abbinare ogni sentiero animale e aprire il nido.", "Нажимайте на связанные створки поля, чтобы собрать звериную тропу и открыть гнездо.", "जुड़े मैदान-पैनल दबाकर हर पशु-पगडंडी मिलाएँ और घोंसला खोलें।", "اضغط على ألواح الحقل المتصلة لمطابقة كل مسار حيواني وفتح العش."]),
+  meta: animalFoldedFieldLocalized([["3 Field Folds", "Tap + Plan", "Calm Retry"], ["3 摺葉", "點按＋規劃", "平靜重試"], ["3 折叶", "点按＋规划", "平静重试"], ["3つの折り葉", "タップ＋計画", "穏やかな再挑戦"], ["들판 접기 3개", "누르고 계획하기", "차분한 재시도"], ["3 pliegues", "Toca y planea", "Reintento sereno"], ["3 dobras", "Toque e planeje", "Nova tentativa calma"], ["3 plis", "Touche et planifie", "Reprise sereine"], ["3 Falten", "Tippen + Planen", "Ruhiger Versuch"], ["3 pieghe", "Tocca e pianifica", "Riprova calma"], ["3 складки", "Нажимай и планируй", "Спокойный повтор"], ["3 मोड़", "दबाएँ और योजना बनाएँ", "शांत पुनः प्रयास"], ["3 طيات", "اضغط وخطط", "محاولة هادئة"]]),
+  categories: ["Puzzle", "Spatial Logic", "Pattern Recognition", "Family", "Animal"],
+  skills: ["Planning", "Visual Reasoning", "Cause and Effect"],
+  ages: ["6", "family"],
+  ageLabel: animalFoldedFieldLocalized(Array(13).fill("6+")),
+  href: "games/animal-folded-field/",
+  internalTrial: "index.html?trial=1",
+};
+for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalFoldedFieldPlanned[field], "__localizedExact", { value: true, enumerable: false });
+if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFoldedFieldPlanned.id)) window.WONDER_LOBBY.games.push(animalFoldedFieldPlanned);
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalFoldedFieldPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalFoldedFieldPlanned.id);
+
 // General Issue repair (2026-08-30): provide the private planned identity
 // required by the localized-route generator while keeping Glyph Garden out of
 // the playable lobby catalog until its remaining release gates pass.

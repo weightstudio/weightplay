@@ -1727,6 +1727,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पशु लालटेन मार्गदर्शक",
     "ar": "أدلة فوانيس الحيوانات"
   },
+  "animal-folded-field": {
+    "__localizedExact": true,
+    "en": "Folded Field",
+    "zh-Hant": "摺葉田",
+    "zh-Hans": "折叶田",
+    "ja": "フォールド・フィールド",
+    "ko": "접힌 들판",
+    "es": "Campo plegado",
+    "pt-BR": "Campo dobrado",
+    "fr": "Champ plié",
+    "de": "Faltfeld",
+    "it": "Campo piegato",
+    "ru": "Складное поле",
+    "hi": "मुड़ा हुआ मैदान",
+    "ar": "الحقل المطوي"
+  },
   "animal-glyph-garden": {
     "__localizedExact": true,
     "en": "Glyph Garden",
