@@ -5,7 +5,7 @@
     intro: "Read the scout note, decode each animal's signal colour, and copy the visible patrol order.",
     start: "Start the first patrol", choose: "Choose a patrol", best: "Best checks", noBest: "Not yet",
     guideTitle: "How to play", guideOne: "Read the animal-to-colour note.", guideTwo: "Tap signal cards in the shown patrol order.", guideThree: "A wrong code clears gently; no timer or lives are used.",
-    back: "Back", settings: "Settings", language: "Language", stages: "Patrols", round: "Patrol {n} of {total}", open: "Open", complete: "Complete",
+    back: "Back", settings: "Settings", language: "Language", signalChoices: "Signal choices", stages: "Patrols", round: "Patrol {n} of {total}", open: "Open", complete: "Complete",
     note1: "Scout note: Fox is amber, Owl is teal, and Rabbit is violet. Copy the patrol order: Fox, Owl, Fox.",
     note2: "Scout note: Otter is blue, Finch is gold, and Deer is rose. Copy the patrol order: Deer, Otter, Finch.",
     note3: "Scout note: Badger is green, Hare is coral, and Mole is indigo. Copy the patrol order: Mole, Badger, Hare.",
@@ -19,7 +19,7 @@
     amber: "Amber", teal: "Teal", violet: "Violet", blue: "Blue", gold: "Gold", rose: "Rose", green: "Green", coral: "Coral", indigo: "Indigo"
   };
   const tables = { en,
-    "zh-Hant": { ...en, title:"訊號偵察員", kicker:"平靜的訊號解碼益智", intro:"讀取偵察筆記，解碼動物的訊號顏色，照著看得見的巡邏順序點選。", start:"開始第一趟巡邏", choose:"選擇巡邏", best:"最佳檢查次數", stages:"巡邏任務", round:"第 {n} 趟／共 {total} 趟", open:"開始", complete:"完成", guideTitle:"玩法", guideOne:"讀懂動物與顏色的筆記。", guideTwo:"依看見的巡邏順序點選訊號卡。", guideThree:"錯誤代碼會平靜清空；沒有計時或生命。", back:"返回", settings:"設定", language:"語言", note1:"偵察筆記：狐狸是琥珀、貓頭鷹是青綠、兔子是紫羅蘭。照著順序：狐狸、貓頭鷹、狐狸。", note2:"偵察筆記：水獺是藍色、雀鳥是金色、鹿是玫瑰色。照著順序：鹿、水獺、雀鳥。", note3:"偵察筆記：獾是綠色、野兔是珊瑚色、鼴鼠是靛色。照著順序：鼴鼠、獾、野兔。", orderLabel:"巡邏順序", codeLabel:"你的代碼", check:"檢查代碼", clear:"清除代碼", waiting:"請選一張訊號卡。", wrong:"代碼與巡邏筆記不符，已清空，請再試一次。", correct:"瞭望燈亮起來了！", resultTitle:"巡邏完成", resultPartial:"巡邏完成", resultText:"你用 {checks} 次檢查解碼 {count}／{total} 趟巡邏。", next:"下一趟巡邏", map:"巡邏任務", home:"返回選單", guideSummary:"解碼動物訊號筆記，再照著可見順序點選，點亮瞭望台。", gameplayValue:"訊號解碼", genreValue:"益智・邏輯・家庭・動物", resultGuideTitle:"結果與紀錄", resultGuide:"三趟巡邏組成一段短遊戲；瀏覽器可用時才會在本機保存最佳檢查次數。", tipsTitle:"小提示", tips:"目標順序會直接顯示。用筆記把動物配對到顏色訊號，想重來時可隨時清除。" },
+    "zh-Hant": { ...en, title:"訊號偵察員", kicker:"平靜的訊號解碼益智", intro:"讀取偵察筆記，解碼動物的訊號顏色，照著看得見的巡邏順序點選。", start:"開始第一趟巡邏", choose:"選擇巡邏", best:"最佳檢查次數", stages:"巡邏任務", round:"第 {n} 趟／共 {total} 趟", open:"開始", complete:"完成", guideTitle:"玩法", guideOne:"讀懂動物與顏色的筆記。", guideTwo:"依看見的巡邏順序點選訊號卡。", guideThree:"錯誤代碼會平靜清空；沒有計時或生命。", back:"返回", settings:"設定", language:"語言", signalChoices:"訊號選項", note1:"偵察筆記：狐狸是琥珀、貓頭鷹是青綠、兔子是紫羅蘭。照著順序：狐狸、貓頭鷹、狐狸。", note2:"偵察筆記：水獺是藍色、雀鳥是金色、鹿是玫瑰色。照著順序：鹿、水獺、雀鳥。", note3:"偵察筆記：獾是綠色、野兔是珊瑚色、鼴鼠是靛色。照著順序：鼴鼠、獾、野兔。", orderLabel:"巡邏順序", codeLabel:"你的代碼", check:"檢查代碼", clear:"清除代碼", waiting:"請選一張訊號卡。", wrong:"代碼與巡邏筆記不符，已清空，請再試一次。", correct:"瞭望燈亮起來了！", resultTitle:"巡邏完成", resultPartial:"巡邏完成", resultText:"你用 {checks} 次檢查解碼 {count}／{total} 趟巡邏。", next:"下一趟巡邏", map:"巡邏任務", home:"返回選單", guideSummary:"解碼動物訊號筆記，再照著可見順序點選，點亮瞭望台。", gameplayValue:"訊號解碼", genreValue:"益智・邏輯・家庭・動物", resultGuideTitle:"結果與紀錄", resultGuide:"三趟巡邏組成一段短遊戲；瀏覽器可用時才會在本機保存最佳檢查次數。", tipsTitle:"小提示", tips:"目標順序會直接顯示。用筆記把動物配對到顏色訊號，想重來時可隨時清除。" },
     "zh-Hans": { ...en, title:"信号侦察员", intro:"阅读侦察笔记，解码动物的信号颜色，按可见的巡逻顺序点击。", start:"开始第一趟巡逻", choose:"选择巡逻", best:"最佳检查次数", stages:"巡逻任务", round:"第 {n} 趟／共 {total} 趟", guideTitle:"玩法", guideOne:"读懂动物与颜色的笔记。", guideTwo:"按巡逻顺序点击信号卡。", guideThree:"错误代码会平静清空；没有计时或生命。", note1:"侦察笔记：狐狸是琥珀、猫头鹰是青绿、兔子是紫罗兰。顺序：狐狸、猫头鹰、狐狸。", note2:"侦察笔记：水獭是蓝色、雀鸟是金色、鹿是玫瑰色。顺序：鹿、水獭、雀鸟。", note3:"侦察笔记：獾是绿色、野兔是珊瑚色、鼹鼠是靛色。顺序：鼹鼠、獾、野兔。", orderLabel:"巡逻顺序", check:"检查代码", clear:"清除代码", waiting:"请选择一张信号卡。", wrong:"代码与笔记不符，已清空，请再试一次。", correct:"瞭望灯亮起了！", resultTitle:"巡逻完成", resultText:"你用 {checks} 次检查解码了 {count}/{total} 趟巡逻。", next:"下一趟巡逻", map:"巡逻任务", home:"返回菜单", guideSummary:"解码动物信号笔记，再按可见顺序点击，点亮瞭望台。", gameplayValue:"信号解码", genreValue:"益智・逻辑・家庭・动物" },
     ja: { ...en, title:"シグナル・スカウト", intro:"偵察メモを読み、動物の信号色を解読して、見える巡回順をまねします。", start:"最初の巡回を開始", choose:"巡回を選ぶ", best:"最少チェック", stages:"巡回", round:"巡回 {n}／{total}", guideTitle:"遊び方", guideOne:"動物と色のメモを読む。", guideTwo:"表示された巡回順に信号カードをタップ。", guideThree:"間違えたコードは静かに消えます。タイマーもライフもありません。", orderLabel:"巡回順", check:"コードを確認", clear:"コードを消す", waiting:"信号カードを選びます。", wrong:"メモと違うコードです。消去してもう一度。", correct:"見張り台の灯りがつきました！", resultTitle:"巡回完了", resultText:"{checks}回のチェックで {count}/{total} 巡回を解読しました。", next:"次の巡回", map:"巡回", home:"メニューへ", guideSummary:"動物の信号メモを解読し、見える順番をまねして見張り台を照らします。", gameplayValue:"信号解読", genreValue:"パズル・論理・ファミリー・動物" },
     ko: { ...en, title:"신호 정찰대", intro:"정찰 기록을 읽고 동물의 신호 색을 해독해 보이는 순서대로 누르세요.", start:"첫 순찰 시작", choose:"순찰 선택", best:"최고 확인 횟수", stages:"순찰", round:"순찰 {n} / {total}", guideTitle:"게임 방법", guideOne:"동물과 색 기록을 읽으세요.", guideTwo:"보이는 순찰 순서대로 신호 카드를 누르세요.", guideThree:"틀린 코드는 조용히 지워집니다. 타이머와 목숨은 없어요.", orderLabel:"순찰 순서", check:"코드 확인", clear:"코드 지우기", waiting:"신호 카드를 선택하세요.", wrong:"기록과 다른 코드예요. 지우고 다시 시도하세요.", correct:"전망대 불빛이 켜졌어요!", resultTitle:"순찰 완료", resultText:"{checks}번 확인으로 {count}/{total} 순찰을 해독했어요.", next:"다음 순찰", map:"순찰", home:"메뉴로", guideSummary:"동물 신호 기록을 해독하고 보이는 순서를 따라 전망대를 밝혀요.", gameplayValue:"신호 해독", genreValue:"퍼즐・논리・가족・동물" },
@@ -43,5 +43,16 @@
   Object.assign(tables.it, { name1:"Vedetta dei pini", name2:"Vedetta del ruscello", name3:"Vedetta delle felci" });
   Object.assign(tables.ru, { name1:"Сосновая вышка", name2:"Вышка у ручья", name3:"Папоротниковая вышка" });
   Object.assign(tables.hi, { name1:"चीड़ चौकी", name2:"नाला चौकी", name3:"फर्न चौकी" });
+  Object.assign(tables["zh-Hans"], { signalChoices:"信号选项" });
+  Object.assign(tables.ja, { signalChoices:"信号カード" });
+  Object.assign(tables.ko, { signalChoices:"신호 카드 선택" });
+  Object.assign(tables.es, { signalChoices:"Opciones de señal" });
+  Object.assign(tables["pt-BR"], { signalChoices:"Opções de sinal" });
+  Object.assign(tables.fr, { signalChoices:"Choix de signaux" });
+  Object.assign(tables.de, { signalChoices:"Signalauswahl" });
+  Object.assign(tables.it, { signalChoices:"Scelte dei segnali" });
+  Object.assign(tables.ru, { signalChoices:"Варианты сигналов" });
+  Object.assign(tables.hi, { signalChoices:"सिग्नल विकल्प" });
+  Object.assign(tables.ar, { signalChoices:"خيارات الإشارة" });
   window.ANIMAL_SIGNAL_SCOUT_LOCALES = tables;
 })();

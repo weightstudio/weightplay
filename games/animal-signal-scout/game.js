@@ -18,6 +18,7 @@
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria)));
+    $("signalGrid").setAttribute("aria-label", t("signalChoices"));
     $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language"));
     $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.patrol, patrols.length)} / ${patrols.length}`;
     $("bestValue").textContent = readBest() || t("noBest");
@@ -29,7 +30,7 @@
   const renderBattle = () => {
     const patrol = patrols[state.patrol]; $("roundName").textContent = t(patrol.nameKey); $("roundLabel").textContent = t("round", { n: state.patrol + 1, total: patrols.length }); $("routeNote").textContent = t(patrol.note); $("checkCount").textContent = t("checks", { n: state.sessionChecks });
     $("targetOrder").replaceChildren(...patrol.order.map((animal, index) => { const chip = document.createElement("span"); chip.className = "target-chip"; chip.textContent = `${index + 1}. ${t(animal)}`; return chip; }));
-    $("signalGrid").replaceChildren(...patrol.cards.map((card) => { const button = document.createElement("button"); button.type = "button"; button.className = "signal-btn"; button.dataset.animal = card.animal; button.disabled = state.code.length >= patrol.order.length; button.innerHTML = `<span class="signal-dot signal-${card.colour}" aria-hidden="true"></span><strong>${t(card.animal)}</strong><small>${t(card.colour)}</small>`; button.addEventListener("click", () => chooseSignal(card.animal)); return button; }));
+    $("signalGrid").replaceChildren(...patrol.cards.map((card) => { const button = document.createElement("button"); button.type = "button"; button.className = "signal-btn"; button.dataset.animal = card.animal; button.disabled = state.code.length >= patrol.order.length; button.setAttribute("aria-label", `${t(card.animal)} · ${t(card.colour)}`); button.innerHTML = `<span class="signal-dot signal-${card.colour}" aria-hidden="true"></span><strong>${t(card.animal)}</strong><small>${t(card.colour)}</small>`; button.addEventListener("click", () => chooseSignal(card.animal)); return button; }));
     $("routeNote").setAttribute("aria-label", t("noteLabel")); $("codeLabel").textContent = t("codeLabel"); $("code").replaceChildren(...state.code.map((animal, index) => { const chip = document.createElement("span"); chip.className = "code-chip"; chip.textContent = `${index + 1}. ${t(animal)}`; return chip; }));
     $("checkBtn").disabled = state.code.length !== patrol.order.length;
   };
