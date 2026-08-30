@@ -717,6 +717,7 @@ let selectedWeaponInfo = { source: "equip", index: 0 };
 let suppressEquipmentClick = false;
 let floatingMessageTimer = null;
 let settlementDecisionPending = false;
+let pauseReturnIntent = false;
 const equipmentPointerDrag = {
   active: false,
   started: false,
@@ -920,6 +921,7 @@ function startLevel(levelIndex) {
     return;
   }
   clearFloatingMessage();
+  pauseReturnIntent = false;
   state = makeState(levelIndex);
   state.running = true;
   canvas.dataset.heroX = String(state.hero.x);
@@ -1051,7 +1053,7 @@ profilePanel.addEventListener("pointermove", moveEquipmentPointerDrag);
 profilePanel.addEventListener("pointerup", finishEquipmentPointerDrag);
 profilePanel.addEventListener("pointercancel", cancelEquipmentPointerDrag);
 settingsBtn.addEventListener("click", showPauseMenu);
-backToMenuBtn.addEventListener("click", leaveBattle);
+backToMenuBtn.addEventListener("click", () => showPauseMenu(true));
 resumeBtn.addEventListener("click", resumeBattle);
 leaveBtn.addEventListener("click", leaveBattle);
 weaponModalClose.addEventListener("click", closeWeaponModal);
@@ -1441,6 +1443,7 @@ function getBossBallColor(enemy) {
 
 function loseLevel() {
   clearFloatingMessage();
+  pauseReturnIntent = false;
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   bankRunCoins();
@@ -1467,6 +1470,7 @@ function loseLevel() {
 
 function winLevel() {
   clearFloatingMessage();
+  pauseReturnIntent = false;
   overlay.classList.remove("equipment-screen");
   overlay.classList.add("settlement-screen");
   bankRunCoins();
@@ -2175,6 +2179,7 @@ function updateHud() {
 
 function showMainMenu(tab = activeMenuTab) {
   clearFloatingMessage();
+  pauseReturnIntent = false;
   activeMenuTab = tab;
   state.running = false;
   state.won = false;
@@ -2207,6 +2212,7 @@ function showMainMenu(tab = activeMenuTab) {
 
 function showWonderMain() {
   clearFloatingMessage();
+  pauseReturnIntent = false;
   state.running = false;
   setBattleShellActive(false);
   document.body.classList.remove("wonder-stage-select", "wonder-tutorial-hidden");
@@ -2576,8 +2582,9 @@ function chooseUpgrade(id) {
   updateHud();
 }
 
-function showPauseMenu() {
+function showPauseMenu(returnIntent = false) {
   if (!state.running) return;
+  pauseReturnIntent = returnIntent;
   overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
   document.body.classList.add("wonder-tutorial-hidden");
@@ -2585,7 +2592,7 @@ function showPauseMenu() {
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
   menuCoinLine.classList.add("hidden");
-  overlay.querySelector("h1").textContent = t("menu_settings");
+  overlay.querySelector("h1").textContent = t(returnIntent ? "btn_leave" : "menu_settings");
   overlayText.textContent = t("settings_pause_question");
   startBtn.classList.add("hidden");
   menuContent.classList.add("hidden");
@@ -2598,6 +2605,7 @@ function showPauseMenu() {
 }
 
 function resumeBattle() {
+  pauseReturnIntent = false;
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");
   document.body.classList.add("wonder-tutorial-hidden");
@@ -2610,6 +2618,7 @@ function resumeBattle() {
 }
 
 function leaveBattle() {
+  pauseReturnIntent = false;
   bankRunCoins();
   pausePanel.classList.add("hidden");
   overlay.classList.add("hidden");
@@ -3530,8 +3539,11 @@ window.addEventListener("wonder:locale-change", () => {
       overlay.querySelector("h1").textContent = state.level.id === highestUnlocked ? t("victory_challenge_success") : t("victory_stage_clear");
       // To prevent complex drops state replication, we can keep the text updated
       overlayText.textContent = t("victory_stage_clear") + ` ` + t("hud_stage") + ` ${state.level.id}`;
+    } else if (!pausePanel.classList.contains("hidden")) {
+      overlay.querySelector("h1").textContent = t(pauseReturnIntent ? "btn_leave" : "menu_settings");
+      overlayText.textContent = t("settings_pause_question");
     } else {
-    overlay.querySelector("h1").textContent = t("game_title");
+      overlay.querySelector("h1").textContent = t("game_title");
       overlayText.textContent = getMenuTitle(activeMenuTab);
       renderMenuContent();
     }

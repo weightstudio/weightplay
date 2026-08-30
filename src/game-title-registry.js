@@ -1679,6 +1679,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-meadow-difference": {
+    "__localizedExact": true,
+    "en": "Meadow Find",
+    "zh-Hant": "草地找不同",
+    "zh-Hans": "草地找不同",
+    "ja": "メドウ・ファインド",
+    "ko": "초원 차이 찾기",
+    "es": "Busca en la pradera",
+    "pt-BR": "Encontre na campina",
+    "fr": "Trouver dans la prairie",
+    "de": "Wiesenblick",
+    "it": "Trova nel prato",
+    "ru": "Найди на лугу",
+    "hi": "घासभूमि खोज",
+    "ar": "اكتشف الفرق في المرج"
+  },
   "animal-footprint-folio": {
     "__localizedExact": true,
     "en": "Trail Logic",

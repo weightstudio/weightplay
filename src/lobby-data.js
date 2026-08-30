@@ -2606,6 +2606,33 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype: planned identity only; source, art, Tester,
+// Reviewer, and release gates remain internal until their exact checks pass.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-meadow-difference",
+    audience: "general",
+    status: "planned",
+    title: localize(["Meadow Find", "草地找不同", "草地找不同", "メドウ・ファインド", "초원 차이 찾기", "Busca en la pradera", "Encontre na campina", "Trouver dans la prairie", "Wiesenblick", "Trova nel prato", "Найди на лугу", "घासभूमि खोज", "اكتشف الفرق في المرج"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Visible Difference Puzzle", "可見找不同益智", "可见找不同益智", "見える間違い探し", "보이는 차이 찾기 퍼즐", "Puzle de diferencias visibles", "Puzzle de diferenças visíveis", "Puzzle des différences visibles", "Sichtbare Unterschiede", "Puzzle delle differenze visibili", "Пазл на поиск отличий", "दिखने वाले अंतर की पहेली", "لغز الفروق الظاهرة"]),
+    description: localize(["Compare two visible meadow panels and tap the one changed tile in each calm observation round.", "比較兩個可見的草地畫面，在每輪平靜觀察中點出變化的格子。", "比较两个可见的草地画面，在每轮平静观察中点出变化的格子。", "見える2つの草原を比べ、穏やかな観察ラウンドごとに変わったマスをタップしよう。", "보이는 두 초원 패널을 비교하고 차분한 관찰 라운드마다 바뀐 타일을 눌러요.", "Compara dos praderas visibles y toca la casilla que cambió en cada ronda tranquila.", "Compare dois painéis visíveis e toque no quadrado que mudou em cada rodada calma.", "Comparez deux prairies visibles et touchez la case modifiée à chaque tour d’observation.", "Vergleiche zwei sichtbare Wiesenbilder und tippe in jeder ruhigen Beobachtungsrunde auf die veränderte Kachel.", "Confronta due prati visibili e tocca la tessera cambiata in ogni tranquillo turno di osservazione.", "Сравнивайте две видимые поляны и нажимайте на изменившуюся клетку в каждом спокойном раунде.", "दो दिखने वाले घासभूमि पैनल की तुलना करें और हर शांत अवलोकन दौर में बदली हुई टाइल दबाएँ।", "قارن لوحتي المرج الظاهرتين واضغط على الخلية التي تغيّرت في كل جولة ملاحظة هادئة."]),
+    meta: localize([["3 Observation Rounds", "Side-by-side Clues", "Calm Retry"], ["3 輪觀察", "並排線索", "平靜重試"], ["3 轮观察", "并排线索", "平静重试"], ["3つの観察ラウンド", "並べた手がかり", "穏やかな再挑戦"], ["관찰 라운드 3개", "나란한 단서", "차분한 재시도"], ["3 rondas", "Pistas lado a lado", "Reintento sereno"], ["3 rodadas", "Pistas lado a lado", "Nova tentativa calma"], ["3 tours", "Indices côte à côte", "Reprise sereine"], ["3 Beobachtungsrunden", "Hinweise nebeneinander", "Ruhiger Neustart"], ["3 round", "Indizi affiancati", "Riprova calma"], ["3 раунда", "Подсказки рядом", "Спокойный повтор"], ["3 दौर", "साथ-साथ संकेत", "शांत पुनःप्रयास"], ["3 جولات", "دلائل متجاورة", "إعادة هادئة"]]),
+    categories: ["Puzzle", "Observation", "Visual Reasoning", "Family", "Animal"],
+    skills: ["Observation", "Focus", "Comparison"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-meadow-difference/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-meadow-difference/assets/animal-meadow-difference-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Animal Footprint Folio is a weighted General prototype. Keep its planned
 // identity canonical while the source remains internal/noindex and pending
 // exact Tester, Reviewer, art, and release gates.
