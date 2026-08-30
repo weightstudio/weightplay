@@ -1,5 +1,22 @@
 (function () {
   "use strict";
+  document.body.dataset.gameVersion = "v23";
+  const PYRAMID_PROGRESS_COPY = Object.freeze({
+    en: { label: "Pyramid", text: "{label}: {remaining} cards left", aria: "Pyramid cards remaining: {remaining} of 28" },
+    "zh-Hant": { label: "金字塔", text: "{label}：剩餘 {remaining} 張", aria: "金字塔剩餘 {remaining} 張，共 28 張" },
+    "zh-Hans": { label: "金字塔", text: "{label}：剩余 {remaining} 张", aria: "金字塔剩余 {remaining} 张，共 28 张" },
+    ja: { label: "ピラミッド", text: "{label}：残り{remaining}枚", aria: "ピラミッドの残りカード：{remaining}枚（全28枚）" },
+    ko: { label: "피라미드", text: "{label}: {remaining}장 남음", aria: "피라미드 남은 카드: 28장 중 {remaining}장" },
+    es: { label: "Pirámide", text: "{label}: quedan {remaining} cartas", aria: "Cartas restantes de la pirámide: {remaining} de 28" },
+    "pt-BR": { label: "Pirâmide", text: "{label}: restam {remaining} cartas", aria: "Cartas restantes da pirâmide: {remaining} de 28" },
+    fr: { label: "Pyramide", text: "{label} : {remaining} cartes restantes", aria: "Cartes restantes de la pyramide : {remaining} sur 28" },
+    de: { label: "Pyramide", text: "{label}: {remaining} Karten übrig", aria: "Verbleibende Pyramidenkarten: {remaining} von 28" },
+    it: { label: "Piramide", text: "{label}: {remaining} carte rimanenti", aria: "Carte della piramide rimanenti: {remaining} su 28" },
+    ru: { label: "Пирамида", text: "{label}: осталось карт — {remaining}", aria: "Осталось карт в пирамиде: {remaining} из 28" },
+    hi: { label: "पिरामिड", text: "{label}: {remaining} कार्ड शेष", aria: "पिरामिड में शेष कार्ड: 28 में से {remaining}" },
+    ar: { label: "الهرم", text: "{label}: تبقى {remaining} بطاقة", aria: "البطاقات المتبقية في الهرم: {remaining} من 28" },
+  });
+  const fillProgressCopy = (template, values) => String(template || "").replace(/\{(label|remaining)\}/gu, (_match, key) => String(values[key] ?? ""));
 
   const RESULT_SUMMARY_COPY = {
     en: "Strategy recap — Score {score} · Peak Combo ×{combo} · Stock used {stock} · Cards left {remaining}",
@@ -35,6 +52,62 @@
   const formatSummary = (template, values) => template.replace(/\{(score|combo|stock|remaining)\}/gu, (_, key) => String(values[key]));
   const view = window.WPClassicSolitaire?.mount({ variant: "pyramid", id: "pyramid-solitaire" });
   if (!view) return;
+  const markGameOwned = (node) => node?.setAttribute("data-runtime-localize", "off");
+  const ensureMainProgress = () => {
+    const mainCopy = document.querySelector(".main-copy");
+    const actions = mainCopy?.querySelector(".main-actions");
+    if (!mainCopy || !actions) return null;
+    const existing = document.getElementById("mainProgress");
+    if (existing) return existing;
+    const progress = document.createElement("div");
+    progress.id = "mainProgress";
+    progress.className = "main-progress";
+    progress.setAttribute("data-wp-main-progress", "");
+    progress.setAttribute("role", "status");
+    progress.setAttribute("aria-live", "polite");
+    mainCopy.insertBefore(progress, actions);
+    return progress;
+  };
+  const updateMainProgress = () => {
+    const progress = ensureMainProgress();
+    if (!progress) return;
+    const copy = PYRAMID_PROGRESS_COPY[view.locale] || PYRAMID_PROGRESS_COPY.en;
+    const remaining = Math.max(0, Math.min(28, Number(view.game?.remainingCards?.()) || 0));
+    progress.textContent = fillProgressCopy(copy.text, { label: copy.label, remaining });
+    progress.setAttribute("aria-label", fillProgressCopy(copy.aria, { label: copy.label, remaining }));
+    markGameOwned(progress);
+  };
+  const ensureBattleUtility = () => {
+    const header = document.querySelector("#battleScreen .battle-header");
+    if (!header) return null;
+    const existing = document.getElementById("soundToggleBattle");
+    if (existing) return existing;
+    const button = document.createElement("button");
+    button.id = "soundToggleBattle";
+    button.className = "battle-utility header-icon-btn";
+    button.type = "button";
+    button.setAttribute("data-wp-battle-utility", "true");
+    button.setAttribute("aria-pressed", "true");
+    header.append(button);
+    return button;
+  };
+  const battleSoundToggle = ensureBattleUtility();
+  const refreshBattleSound = () => {
+    if (!battleSoundToggle) return;
+    const label = view.audio?.enabled ? view.t("soundOn") : view.t("soundOff");
+    battleSoundToggle.textContent = label;
+    battleSoundToggle.setAttribute("aria-label", label);
+    battleSoundToggle.setAttribute("aria-pressed", String(Boolean(view.audio?.enabled)));
+    markGameOwned(battleSoundToggle);
+  };
+  battleSoundToggle?.addEventListener("click", () => {
+    if (!view.audio) return;
+    view.audio.setEnabled(!view.audio.enabled);
+    view.refreshSound?.();
+    refreshBattleSound();
+  });
+  updateMainProgress();
+  refreshBattleSound();
   let pendingStockDraw = null;
   let stockCueTimer = null;
 
@@ -156,6 +229,8 @@
   const render = view.render.bind(view);
   view.render = (...args) => {
     render(...args);
+    updateMainProgress();
+    refreshBattleSound();
     updateCardInteractionSemantics();
     updateResultSummary();
     const pending = pendingStockDraw;
@@ -164,5 +239,9 @@
       if (pending.comboBefore > 0 && view.game.combo === 0) showStockComboCue(pending.comboBefore);
     }
   };
+  window.addEventListener("wonder:locale-change", () => {
+    updateMainProgress();
+    refreshBattleSound();
+  });
   updateCardInteractionSemantics();
 })();

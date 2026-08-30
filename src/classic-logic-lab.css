@@ -232,6 +232,9 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-battle-wrap { height: calc(100% - 42px); min-height: 0; gap: 4px; }
   .logic-tutorial { max-height: 24px; overflow: hidden; padding: 3px 8px; font-size: 11px; line-height: 1.2; white-space: nowrap; }
   .logic-status-line { min-height: 16px; font-size: 12px; line-height: 1; }
+  body[data-logic-game="minefield-logic"] .logic-status-line {
+    height: 16px; min-height: 16px; overflow: hidden;
+  }
   .logic-board-panel { min-height: 0; padding: 3px; overflow: hidden; }
   .logic-board-area { height: auto; max-height: 100%; align-self: stretch; justify-self: stretch; overflow: hidden; gap: 4px; }
   .logic-board-area > div { height: auto; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; }
@@ -250,7 +253,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-board-area > div:has(.logic-minesweeper-board) .logic-minesweeper-board {
     grid-column: 1; grid-row: 1; width: min(100%, calc(100svh - 198px));
     height: auto; aspect-ratio: 1; max-width: 100%; max-height: 100%;
-    grid-template-rows: repeat(9, minmax(0, 1fr)); justify-self: center;
+    grid-template-rows: repeat(9, minmax(0, 1fr)); align-self: center; justify-self: center;
   }
   .logic-board-area > div:has(.logic-minesweeper-board) .logic-board-toolbar {
     grid-column: 2; grid-row: 1; width: 100%; align-content: center;
