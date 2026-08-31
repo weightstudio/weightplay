@@ -2655,6 +2655,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-31). Keep Orbit Orchard planned and
+// Coming Soon while its radial timing loop remains an internal/noindex slice
+// pending art, localization, Tester, Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-orbit-orchard",
+    audience: "general",
+    status: "planned",
+    title: localize(["Orbit Orchard", "軌道果園", "轨道果园", "オービット果樹園", "궤도 과수원", "Huerto orbital", "Pomar orbital", "Verger orbital", "Orbit-Obstgarten", "Frutteto orbitale", "Орбитальный сад", "कक्षा बाग़", "بستان المدار"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Orbit Timing Puzzle", "軌道時機益智", "轨道时机益智", "軌道タイミングパズル", "궤도 타이밍 퍼즐", "Puzzle de tiempo orbital", "Puzzle de tempo orbital", "Puzzle de timing orbital", "Orbit-Timing-Puzzle", "Puzzle di tempismo orbitale", "Пазл орбитального ритма", "कक्षा समय पहेली", "لغز توقيت المدار"]),
+    description: localize(["Tune a moonlit orbit, then release each seed when it reaches the matching orchard beacon.", "調整月光軌道，在種子抵達相符果園信標時放手。", "调整月光轨道，在种子抵达相符果园信标时放手。", "月明かりの軌道を整え、種が果樹園のビーコンに届く瞬間に放します。", "달빛 궤도를 맞추고 씨앗이 맞는 과수원 신호기에 닿을 때 놓으세요.", "Ajusta una órbita lunar y suelta cada semilla cuando llegue al faro correcto.", "Ajuste uma órbita lunar e solte cada semente ao alcançar o farol certo.", "Ajustez une orbite lunaire et libérez chaque graine au bon phare du verger.", "Stimme eine Mondbahn ab und löse den Samen am passenden Obstgarten-Leuchtfeuer.", "Regola un’orbita lunare e rilascia ogni seme al faro del frutteto corretto.", "Настройте лунную орбиту и отпустите семя у нужного маяка сада.", "चाँद की कक्षा मिलाएँ और बीज को सही बाग़ संकेतक पर छोड़ें।", "اضبط مداراً قمرياً ثم أطلق كل بذرة عند وصولها إلى منارة البستان المطابقة."]),
+    meta: localize([["3 Moon Orbits", "Dial + Release", "Calm Retry"], ["3 個月光軌道", "轉盤＋放手", "平靜重試"], ["3 个月光轨道", "转盘＋放手", "平静重试"], ["3つの月軌道", "ダイヤル＋リリース", "穏やかな再挑戦"], ["달 궤도 3개", "다이얼 + 놓기", "차분한 재시도"], ["3 órbitas", "Dial + soltar", "Reintento sereno"], ["3 órbitas", "Gire + solte", "Nova tentativa calma"], ["3 orbites", "Molette + libérer", "Reprise sereine"], ["3 Mondbahnen", "Drehen + lösen", "Ruhiger Versuch"], ["3 orbite", "Manopola + rilascio", "Riprova calma"], ["3 орбиты", "Диск + запуск", "Спокойный повтор"], ["3 चंद्र कक्षाएँ", "डायल + छोड़ें", "शांत पुनः प्रयास"], ["3 مدارات قمرية", "قرص + إطلاق", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Timing", "Spatial Reasoning", "Family", "Animal"],
+    skills: ["Timing", "Focus", "Prediction"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-orbit-orchard/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-orbit-orchard/assets/animal-orbit-orchard-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-31). Keep Habitat Counts planned and
 // Coming Soon while its route remains internal/noindex and its production,
 // Tester, Reviewer, release, and publication gates are still open.

@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/beast-deck/" />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-audience" content="general" />
@@ -13,11 +12,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Beast Deck: The Mist Forest عبارة عن حملة بناء مجموعة مكونة من 30 مهمة تعتمد على الأدوار، وهي مبنية على نية العدو المرئية ومجموعات بطاقات قوة الحيوان...." />
+    <meta name="description" content="Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="سطح الوحش: غابة الضباب | WeightPlay" />
-    <meta property="og:description" content="Beast Deck: The Mist Forest عبارة عن حملة بناء مجموعة مكونة من 30 مهمة تعتمد على الأدوار، وهي مبنية على نية العدو المرئية ومجموعات بطاقات قوة الحيوان...." />
+    <meta property="og:description" content="Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission..." />
     <meta property="og:url" content="https://weightplay.com/ar/games/beast-deck/" />
     <meta property="og:image" content="https://weightplay.com/assets/beast-deck-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -51,11 +50,11 @@
   "alternateName": "獸王牌組：迷霧森林",
   "url": "https://weightplay.com/ar/games/beast-deck/",
   "image": "https://weightplay.com/assets/beast-deck-cover.png",
-  "description": "Beast Deck: The Mist Forest عبارة عن حملة بناء مجموعة مكونة من 30 مهمة تعتمد على الأدوار، وهي مبنية على نية العدو المرئية ومجموعات بطاقات قوة الحيوان....",
+  "description": "Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission...",
   "genre": [
-    "بطاقة",
-    "روجلايك",
-    "Animal",
+    "Card Strategy",
+    "Roguelike",
+    "Animal Adventure",
     "لعبة متصفح"
   ],
   "gamePlatform": "Web browser",
@@ -79,11 +78,11 @@
     </script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:title" content="سطح الوحش: غابة الضباب | WeightPlay" />
-    <meta name="twitter:description" content="Beast Deck: The Mist Forest عبارة عن حملة بناء مجموعة مكونة من 30 مهمة تعتمد على الأدوار، وهي مبنية على نية العدو المرئية ومجموعات بطاقات قوة الحيوان...." />
+    <meta name="twitter:description" content="Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-deck-cover.webp" />
   </head>
   <body data-screen="main" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
-    <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+    <main id="main" class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
@@ -114,7 +113,7 @@
         <img class="cover" src="../../assets/beast-deck-cover.webp" alt="شعار WeightPlay" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
-          <span data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
+          <span class="main-summary" data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
           <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button">Start Game</button>
 
           <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
@@ -212,9 +211,9 @@
           <section class="beast-stage-view" data-stage-view="shop"></section>
         </div>
         <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
-          <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-pressed="true">Missions</button>
-          <button type="button" data-stage-tab="deck" data-ui="stageTabDeck" aria-pressed="false">Deck</button>
-          <button type="button" data-stage-tab="shop" data-ui="stageTabShop" aria-pressed="false">Upgrades</button>
+          <button type="button" role="tab" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-selected="true" aria-pressed="true">Missions</button>
+          <button type="button" role="tab" data-stage-tab="deck" data-ui="stageTabDeck" aria-selected="false" aria-pressed="false">Deck</button>
+          <button type="button" role="tab" data-stage-tab="shop" data-ui="stageTabShop" aria-selected="false" aria-pressed="false">Upgrades</button>
         </nav>
       </section>
 
@@ -227,6 +226,7 @@
           <div><span data-ui="hudEnergy">Energy</span><b id="energyText">3/3</b></div>
           <div><span data-ui="hudDeck">Deck</span><b id="deckText">10</b></div>
           <div><span data-ui="hudDiscard">Discard</span><b id="discardText">0</b></div>
+          <button id="battleUtilityBtn" class="battle-utility" data-wp-battle-utility="true" type="button" aria-label="Sound: On" aria-pressed="true">🔊</button>
         </div>
 
         <div class="battlefield">
@@ -261,7 +261,7 @@
         <div class="action-area">
           <div class="hand-row" id="handRow"></div>
           <div class="control-row">
-            <button id="endTurnBtn" type="button" class="action-btn" data-ui="endTurn">End Turn</button>
+            <button id="endTurnBtn" type="button" class="action-btn" data-wp-primary-action="true" data-ui="endTurn">End Turn</button>
           </div>
         </div>
 
@@ -310,29 +310,29 @@
     <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة سطح الوحش: غابة الضباب">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>سطح الوحش: غابة الضباب</h2><p>Beast Deck: The Mist Forest عبارة عن حملة بناء مجموعة مكونة من 30 مهمة تعتمد على الأدوار، وهي مبنية على نية العدو المرئية ومجموعات بطاقات قوة الحيوان. تحتوي كل مهمة على ثلاث معارك ومسودتين مؤقتتين. ست مناطق ذات خمس مهام تقدم الدروع، والرد، والعادم، والعلامات، والتجديد، والتطهير، والضعف، والأختام، والشتائم، والثالوث. تنتهي المهام 5 و10 و15 و20 و25 و30 بزعماء مختلفين متغيرين المراحل.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>بطاقة روجلايك</strong></div><div class="game-info-fact"><span>النوع</span><strong>بطاقة · روجلايك · Animal</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>متوسط</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>8-15 دقيقة لكل مهمة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>Logic · حل المشكلات · التركيز</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>سطح الوحش: غابة الضباب</h2><p>Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission contains three battles and two temporary drafts. Six five-mission regions introduce armor, riposte, Exhaust, marks, regeneration, cleanse, Weak, seals, curses and triad wards. Missions 5, 10, 15, 20, 25 and 30 end with different phase-changing Bosses.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>Turn-Based Roguelike Deckbuilder</strong></div><div class="game-info-fact"><span>النوع</span><strong>Card Strategy · Roguelike · Animal Adventure</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>متوسط</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>8-15 minutes per mission</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>Logic · حل المشكلات · التركيز</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تم تقسيم غابة الضباب في السابق إلى ستة مسارات يستخدمها حراس الحيوانات: مسار الضباب، وأعمال أيرونروت، وأمبر هانت، وحوض ميركويل، وأرشيف القمر، وتاج الضباب. عندما بدأ ضباب التاج يتحرك عكس اتجاه الريح، فسدت الحيوانات العادية وتوقفت الطرق عن الاتصال. احتلت Shadow Boars وVipers المسار الأول، وقامت مخلوقات Ironroot ببناء دروع مضادة، وقام صيادو Amber بوضع علامة على أي شيء يعبر أراضيهم، وتعلمت وحوش Mirecoil التجدد من خلال السم. أغلق أرشيف القمر فئات كاملة من القوى الحيوانية، بينما امتلأت المحكمة النهائية بالتعادلات النظيفة بلعنات الضباب.</p>
-<p>يحتفظ اللاعب بـ Beast Deck، وهو كتاب ميداني يدعو إلى نقاط قوة الحيوانات الصديقة. هجمات Wolf Pack، وGuard Bear وIron Tortoise يصنعان Block، وSky Hawk يجمع الضرر مع السحب، وCheetah Sprint يوفر البطاقات والطاقة، وViper Venom يبني السم، وOwl Wisdom يبحث في المجموعة. يؤدي مسح المهمة إلى إعادة ربط مسارها؛ هزيمة Mist Crown Monarch في المهمة 30 يكسر جناح المصدر ويعيد فتح الستة جميعًا.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>هيكل الدور: يقوم دور اللاعب باستعادة الطاقة، وإزالة الكتلة المؤقتة، وسحب ثلاث بطاقات. تدخل البطاقات التي تم لعبها أو المتبقية إلى الكومة المرفوضة؛ عندما تفرغ كومة السحب، يتم تبديل الكومة المهملة مرة أخرى. تحدد النية المرئية الإجراء التالي للعدو ما لم يكن الضباب نشطًا.</p>
-<p>تفاعلات البطاقة: تتسبب Wolf Pack في 6 ضرر، أو 12 بعد هجوم آخر. يتعامل Sky Hawk مع 14 ويتعادل واحدًا. يمنح Guard Bear 6 قطع، والسلحفاة الحديدية 15، ويسحب Cheetah Sprint قطعتين ويسترد طاقة واحدة، ويطبق Viper Venom ثلاثة سموم، ويسحب Owl Wisdom واحدًا مجانًا. يطلق السم بعد عمل العدو. كتلة العدو تمتص كمية ثابتة.</p>
-<p>الآليات الإقليمية: يقلل الدرع من كل إصابة مباشرة؛ الرد يتصدى للهجوم التالي؛ العادم يرفع التكلفة التالية لبطاقة واحدة؛ علامات معاقبة تنتهي ببطاقة مسماة؛ ضعيف يقلل من الهجوم التالي. يشفي التجديد، ويزيل التطهير السم، ويتخطى التسرع ترتيب النوايا، ويخفي الضباب نية، وتعطل الأختام نوع بطاقة واحدة في كل دور.</p>
-<p>قواعد تاج الضباب: اللعنات المؤقتة تكلف طاقة واحدة لإزالتها؛ يؤدي الاحتفاظ بواحدة عند نهاية الدور إلى حدوث ضرر قبل أن يتم التخلص منها. يمنع جناح الثالوث الضرر المباشر حتى يتم استخدام بطاقات الهجوم والدفاع والمنفعة. يتقاطع التقدم مع المنعطفات، لكن الزعيم النهائي يمكنه إعادة بناء الجناح.</p>
-<p>بناء المهمة: بعد المعركتين 1 و2، اختر بطاقة مؤقتة واحدة من ثلاث بطاقات؛ يدخل اليد الافتتاحية التالية. تكلف حزم الوحوش الدائمة 80 قطعة نقدية مكتسبة وتمنح بطاقة أو معدات، مع رفع التصنيف المكرر. يمكن إعداد ما يصل إلى ست بطاقات مملوكة وعنصر واحد من المعدات قبل المهمة.</p>
-<p>النمو المستمر: XP يرفع المستوى والحد الأقصى من الصحة. يضيف Mist Cloak نقاط الصحة، ويضيف Hunter Charm الطاقة، ويضيف Forest Banner الكتلة الافتتاحية. يتم حفظ المهام والجمع والعتاد والمعدات والمستوى ونقاط XP والعملات المعدنية محليًا. تضيف تميمة الضباب الاختيارية المكونة من 15 قطعة من الماس نقاط الصحة، وتتطلب تأكيدًا ولا تدخل ضمن الحملة.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اسحب شريط إعداد المهمة واختر أي مهمة غير مقفلة؛ تظل جميع بطاقات الطريق الثلاثين مرئية.</li><li>استخدم سطح السفينة لتجهيز ست بطاقات دائمة وعنصر معدات واحد. تحتوي الترقية على حزم العملات المكتسبة وتميمة الضباب الاختيارية.</li><li>اقرأ نية العدو، ثم اضغط على البطاقة التي يمكن دفع طاقتها. تشرح البطاقات المعطلة قيود الطاقة أو الدوران أو الختم.</li><li>اطلب البطاقات بعناية: قم بتمكين مجموعة Wolf Pack، واسحب قبل إنفاق الطاقة الأخيرة، وقم بالصد قبل هجوم كبير.</li><li>بعد المعركتين 1 و2، قم بسحب بطاقة مؤقتة لتوزيع الورق الافتتاحي التالي.</li><li>اهزم النخبة الثالثة أو زعيم نقطة التفتيش قبل أن تصل الصحة إلى الصفر.</li><li>عند النصر، تابع أو أعد المحاولة أو عد إلى التحضير. المهمات الفاشلة تحافظ على التقدم الدائم.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>التسرع يمكن أن يتخطى نية متوقعة؛ يزيل الضباب معلومات النية لدورة واحدة.</li><li>ضد الدروع، تفضل ضربة واحدة كبيرة على عدة ضربات صغيرة. السم يتجاهل الدروع والأجنحة.</li><li>لا تهاجم للرد. قم بحظر أو رسم أو تطبيق السم حتى يتغير الموقف.</li><li>العب بالبطاقة المميزة قبل إنهاء الدور؛ رسم المزيد يمكن أن يجعل من الصعب تحديد موقعه.</li><li>انطلق من خلال عملية التجديد، وانتظر حتى بعد التنظيف قبل تكديس السم.</li><li>اكسر جناحًا ثلاثيًا باستخدام المنفعة والدفاع قبل الهجوم الذي يهدف إلى إلحاق الضرر.</li><li>يعمل المستوى والمعدات على تحسين السلامة، لكن قراءة الميكانيكي الحالي أكثر أهمية من الطحن المتكرر.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>المهمات 1-5 تعلم النية والكتلة والسم والدروع. يقوم Stoneback Behemoth بتكثيف الدرع عند عتبتي الزعيم.</p>
-<p>تضيف المهمات 6-10 الرد والعادم. يرفع Ironroot Warden الضرر المضاد في كل مرحلة.</p>
-<p>تضيف المهمات 11-15 التسرع والعلامات والضعف. يتسارع Amber Huntmaster مع انخفاض الصحة.</p>
-<p>تجمع المهمات 16-20 بين التجديد والسم والتطهير. يكتسب ميركويل هيدرا شفاءً سلبيًا أقوى على مراحل.</p>
-<p>تقوم المهمات 21-25 بتدوير أختام الهجوم والدفاع والمرافق. يقوم Moon Archive Keeper بتغيير النوع المحظور حسب المرحلة.</p>
-<p>تضيف المهمات 26-30 اللعنات والضباب والثالوث. يقوم Mist Crown Monarch بإصلاح جناحه في المرحلة النهائية؛ تنهي المهمة 30 الحملة المؤلفة بدلاً من بدء حلقة رقمية لا نهاية لها.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تمنح ثلاث لقاءات مسودتين من الاختيارات وقتًا كافيًا لهما أهمية دون إنشاء مسار تحمل. تظل النية مرئية ما لم يكن الضباب هو القاعدة، مما يربط الخسائر بالقرارات القابلة للقراءة. يظل السقف العددي للمهمة 30 قريبًا من الإصدار السابق المكون من ثماني مهام؛ الصعوبة الآن تأتي من الميكانيكا المتداخلة. يستخدم الهاتف وسطح المكتب نفس ترتيب البطاقة وإجراءات النقر/النقر. على عكس تخطيط Animal Auto Squad قبل المعركة، فإن Beast Deck يحل كل منعطف؛ على عكس تكتيكات Animal Rune، فإنه يستبدل موضع الشبكة بترتيب السحب والطاقة وتوقيت التجاهل.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>يقوم هذا المتصفح محليًا بتخزين المهام والمستوى ونقاط الخبرة وعملات الوحوش والتجميع والعتاد ورتب المعدات وملكية Mist Amulet. لا يلزم تسجيل الدخول. قد يؤدي مسح مساحة تخزين الموقع إلى إزالة التقدم. لا تحتاج حزم العملات المكتسبة وجميع الزعماء الستة إلى أي ألماس. تؤكد تميمة الضباب الاختيارية الرصيد الناتج قبل الإنفاق. تسميات المهارات ليست تقييما رسميا.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل Beast Deck مجاني؟</dt><dd>نعم. يتم تشغيل جميع المهام الثلاثين والمسودات وحزم العملات المكتسبة وستة رؤساء مجانًا في المتصفح.</dd></div><div><dt>كم عدد الرؤساء هناك؟</dt><dd>ستة. المهام 5، 10، 15، 20، 25 و 30 لكل منها ميكانيكية مرحلة مختلفة.</dd></div><div><dt>ما الذي تم حفظه؟</dt><dd>المهمات، والمستوى، ونقاط الخبرة، والعملات المعدنية، والجمع، والعتاد، ورتب المعدات، وملكية Mist Amulet.</dd></div><div><dt>هل المسودات دائمة؟</dt><dd>لا، مسودات المعركة تستمر لمهمة واحدة؛ تأتي البطاقات الدائمة من حزم العملات المكتسبة.</dd></div><div><dt>كيف تعمل الشتائم؟</dt><dd>أنفق طاقة واحدة لإزالة واحدة. يؤدي الاحتفاظ به عند نهاية الدور إلى إحداث ضررين ويؤدي إلى التخلص منه.</dd></div><div><dt>كيف يتم كسر الجناح؟</dt><dd>استخدم بطاقات الهجوم والدفاع والمرافق. يتقاطع التقدم مع المنعطفات، لكن الزعيم النهائي يمكنه إصلاحه.</dd></div><div><dt>هل الماس مطلوب؟</dt><dd>لا، إنهم يفتحون فقط تميمة الضباب الاختيارية المؤكدة ولا يقومون مطلقًا ببوابة المهام أو الزعماء.</dd></div><div><dt>هل يعمل على الهواتف؟</dt><dd>نعم. اسحب المهام، وانقر على البطاقات الكبيرة واستخدم إجراء End Turn الثابت.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>The Mist Forest was once divided into six routes used by animal wardens: Mist Trail, Ironroot Works, Amber Hunt, Mirecoil Basin, Moon Archive and Mist Crown. When crown mist began moving against the wind, ordinary animals became corrupted and the routes stopped communicating. Shadow Boars and Vipers occupied the first trail, Ironroot creatures built countering armor, Amber hunters marked anything that crossed their territory, and Mirecoil beasts learned to regenerate through poison. The Moon Archive sealed away whole classes of animal powers, while the final court filled clean draws with Mist Curses.</p>
+<p>The player keeps the Beast Deck, a field book that calls on friendly animal strengths. Wolf Pack attacks, Guard Bear and Iron Tortoise create Block, Sky Hawk combines damage with a draw, Cheetah Sprint supplies cards and Energy, Viper Venom builds Poison, and Owl Wisdom searches the deck. Clearing a mission reconnects its route; defeating the Mist Crown Monarch in Mission 30 breaks the source ward and reopens all six.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>Turn structure: a player turn restores Energy, clears temporary Block and draws three cards. Played or leftover cards enter the discard pile; when the draw pile empties, the discard pile is shuffled back. Visible intent identifies the enemy&#39;s next action unless fog is active.</p>
+<p>Card interactions: Wolf Pack deals 6 damage, or 12 after another Attack. Sky Hawk deals 14 and draws one. Guard Bear grants 6 Block, Iron Tortoise 15, Cheetah Sprint draws two and refunds one Energy, Viper Venom applies three Poison, and Owl Wisdom draws one for free. Poison triggers after the enemy action; enemy Block absorbs a fixed amount.</p>
+<p>Regional mechanics: armor reduces each direct hit; riposte counters the next Attack; Exhaust raises one card&#39;s next cost; marks punish ending with a named card; Weak reduces the next Attack. Regeneration heals, cleanse removes Poison, haste skips through intent order, fog hides an intent, and seals disable one card type for a turn.</p>
+<p>Mist Crown rules: temporary curses cost one Energy to remove; holding one at turn end deals damage before it cycles through discard. The triad ward blocks direct damage until Attack, Defense and Utility cards have all been used. Progress crosses turns, but the final Boss can rebuild the ward.</p>
+<p>Mission building: after Battles 1 and 2, choose one temporary card from three; it enters the next opening hand. Permanent Beast Packs cost 80 earned Coins and award a card or equipment, with duplicates raising rank. Up to six owned cards and one equipment item can be prepared before a mission.</p>
+<p>Persistent growth: XP raises level and Max HP. Mist Cloak adds HP, Hunter Charm adds Energy and Forest Banner adds opening Block. Missions, collection, loadout, equipment, level, XP and Coins save locally. The optional 15-Diamond Mist Amulet adds HP, requires confirmation and does not gate the campaign.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>Swipe the Mission Preparation rail and choose any unlocked mission; all 30 route cards remain visible.</li><li>Use Deck to equip six permanent cards and one equipment item. Upgrade contains earned-Coin packs and the optional Mist Amulet.</li><li>Read enemy intent, then tap a card whose Energy can be paid. Disabled cards explain Energy, turn or seal restrictions.</li><li>Order cards carefully: enable Wolf Pack&#39;s combo, draw before spending the last Energy, and Block before a large attack.</li><li>After Battles 1 and 2, draft one temporary card for the next opening hand.</li><li>Defeat the third elite or checkpoint Boss before HP reaches zero.</li><li>On victory, continue, retry or return to preparation. Failed missions keep permanent progress.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>Haste can skip an expected intent; fog removes intent information for one turn.</li><li>Against armor, prefer one large hit over several small ones. Poison ignores armor and wards.</li><li>Do not attack into riposte. Block, draw or apply Poison until the stance changes.</li><li>Play a marked card before ending the turn; drawing more can make it harder to locate.</li><li>Burst through regeneration, and wait until after cleanse before stacking Poison.</li><li>Break a triad ward with Utility and Defense before the Attack meant to deal damage.</li><li>Level and equipment improve safety, but reading the current mechanic matters more than repeated grinding.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>Missions 1-5 teach intent, Block, Poison and armor. Stoneback Behemoth thickens armor at two Boss thresholds.</p>
+<p>Missions 6-10 add riposte and Exhaust. Ironroot Warden raises counter damage at each phase.</p>
+<p>Missions 11-15 add haste, marks and Weak. Amber Huntmaster accelerates as health falls.</p>
+<p>Missions 16-20 combine regeneration, Poison and cleanse. Mirecoil Hydra gains stronger passive healing by phase.</p>
+<p>Missions 21-25 rotate Attack, Defense and Utility seals. Moon Archive Keeper changes the forbidden type by phase.</p>
+<p>Missions 26-30 add curses, fog and triad wards. Mist Crown Monarch reforms its ward in the final phase; Mission 30 ends the authored campaign rather than starting a numeric endless loop.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>Three encounters give two draft choices enough time to matter without creating an endurance run. Intent stays visible unless fog is the rule, tying losses to readable decisions. Mission 30&#39;s numerical ceiling remains close to the former eight-mission version; difficulty now comes from overlapping mechanics. Phone and desktop use the same card order and tap/click actions. Unlike Animal Auto Squad&#39;s pre-battle planning, Beast Deck resolves every turn; unlike Animal Rune Tactics, it replaces grid position with draw order, Energy and discard timing.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>This browser locally stores missions, level, XP, Beast Coins, collection, loadout, equipment ranks and Mist Amulet ownership. No login is required; clearing site storage may remove progress. Earned-Coin packs and all six Bosses require no Diamonds. The optional Mist Amulet confirms the resulting balance before spending. Skill labels are not a formal assessment.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل Beast Deck مجاني؟</dt><dd>نعم. يتم تشغيل جميع المهام الثلاثين والمسودات وحزم العملات المكتسبة وستة رؤساء مجانًا في المتصفح.</dd></div><div><dt>كم عدد الرؤساء هناك؟</dt><dd>ستة. المهام 5، 10، 15، 20، 25 و30 لكل منها ميكانيكية مرحلة مختلفة.</dd></div><div><dt>ما الذي تم حفظه؟</dt><dd>المهمات، والمستوى، ونقاط الخبرة، والعملات المعدنية، والجمع، والعتاد، ورتب المعدات، وملكية Mist Amulet.</dd></div><div><dt>هل المسودات دائمة؟</dt><dd>لا، مسودات المعركة تستمر لمهمة واحدة؛ تأتي البطاقات الدائمة من حزم العملات المكتسبة.</dd></div><div><dt>كيف تعمل الشتائم؟</dt><dd>أنفق طاقة واحدة لإزالة واحدة. يؤدي الاحتفاظ بها عند نهاية الدور إلى إحداث ضررين وتدويرها عبر كومة المهملات.</dd></div><div><dt>كيف يتم كسر الجناح؟</dt><dd>استخدم بطاقات الهجوم والدفاع والمرافق. يتقاطع التقدم مع المنعطفات، لكن الزعيم النهائي يمكنه إصلاحه.</dd></div><div><dt>هل الماس مطلوب؟</dt><dd>لا، إنها تفتح فقط تميمة الضباب الاختيارية المؤكدة ولا تضع بوابة على المهام أو الزعماء.</dd></div><div><dt>هل يعمل على الهواتف؟</dt><dd>نعم. اسحب المهام، وانقر على البطاقات الكبيرة واستخدم إجراء End Turn الثابت.</dd></div></dl></div>
 
     </div>
   </section>

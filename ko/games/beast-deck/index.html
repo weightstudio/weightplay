@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/beast-deck/" />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="weightplay-audience" content="general" />
@@ -83,7 +82,7 @@
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-deck-cover.webp" />
   </head>
   <body data-screen="main" data-tutorial-auto-show="false" data-wp-combined-sound="true" data-wp-game-id="beast-deck" data-audience="general" class="wp-shell-main-active">
-    <main class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
+    <main id="main" class="beast-deck-app" data-no-mobile-immersive="true" data-wp-canvas-max-width="920">
       <header class="topbar">
         <a class="icon-btn" data-wp-return="main" href="/" data-aria="backToLobby" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand-title">
@@ -114,7 +113,7 @@
         <img class="cover" src="../../assets/beast-deck-cover.webp" alt="비스트 덱: 안개의 숲 게임 이미지" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Enter the Mist Forest.</strong>
-          <span data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
+          <span class="main-summary" data-ui="menuHint">Build animal-power decks across 30 missions, counter ten regional mechanics, and defeat six phase-changing forest Bosses.</span>
           <button id="mainStartBtn" class="standard-main-start" data-wp-main-start="true" data-ui="startGame" type="button">Start Game</button>
 
           <div class="prototype-goals" data-aria="progressTitle" aria-label="Local progress">
@@ -212,9 +211,9 @@
           <section class="beast-stage-view" data-stage-view="shop"></section>
         </div>
         <nav class="beast-stage-tabs" data-aria="preparation" aria-label="Preparation">
-          <button type="button" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-pressed="true">Missions</button>
-          <button type="button" data-stage-tab="deck" data-ui="stageTabDeck" aria-pressed="false">Deck</button>
-          <button type="button" data-stage-tab="shop" data-ui="stageTabShop" aria-pressed="false">Upgrades</button>
+          <button type="button" role="tab" class="is-active" data-stage-tab="missions" data-ui="stageTabMissions" aria-selected="true" aria-pressed="true">Missions</button>
+          <button type="button" role="tab" data-stage-tab="deck" data-ui="stageTabDeck" aria-selected="false" aria-pressed="false">Deck</button>
+          <button type="button" role="tab" data-stage-tab="shop" data-ui="stageTabShop" aria-selected="false" aria-pressed="false">Upgrades</button>
         </nav>
       </section>
 
@@ -227,6 +226,7 @@
           <div><span data-ui="hudEnergy">Energy</span><b id="energyText">3/3</b></div>
           <div><span data-ui="hudDeck">Deck</span><b id="deckText">10</b></div>
           <div><span data-ui="hudDiscard">Discard</span><b id="discardText">0</b></div>
+          <button id="battleUtilityBtn" class="battle-utility" data-wp-battle-utility="true" type="button" aria-label="Sound: On" aria-pressed="true">🔊</button>
         </div>
 
         <div class="battlefield">
@@ -261,7 +261,7 @@
         <div class="action-area">
           <div class="hand-row" id="handRow"></div>
           <div class="control-row">
-            <button id="endTurnBtn" type="button" class="action-btn" data-ui="endTurn">End Turn</button>
+            <button id="endTurnBtn" type="button" class="action-btn" data-wp-primary-action="true" data-ui="endTurn">End Turn</button>
           </div>
         </div>
 

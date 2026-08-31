@@ -5,7 +5,7 @@
   window.__weightplayAnimalBounceBrawlAnalyticsInstalled = true;
 
   const GAME_ID = "animal-bounce-brawl";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -59,8 +59,9 @@
   };
 
   const track = (event, details = {}) => {
+    if (!window.WonderAnalytics?.trackPrivacySafe) return;
     try {
-      window.WonderAnalytics?.track?.(event, {
+      window.WonderAnalytics.trackPrivacySafe(event, {
         game_id: GAME_ID,
         game_version: GAME_VERSION,
         interface_version: INTERFACE_VERSION,
@@ -69,7 +70,12 @@
         input_type: details.input_type || inputType,
         screen: screen(),
         arena: arena(),
-        ...details,
+        from: details.from,
+        entry: details.entry,
+        action: details.action,
+        tool: details.tool,
+        outcome: details.outcome,
+        to_locale: details.to_locale,
       });
     } catch {
       // Measurement must never interrupt the short physics loop.

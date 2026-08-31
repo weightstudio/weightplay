@@ -152,6 +152,7 @@
     startBtn: $("startBtn"),
     nextMissionBtn: $("nextMissionBtn"),
     menuBtn: $("menuBtn"),
+    battleUtilityBtn: $("battleUtilityBtn"),
     leavePanel: $("leavePanel"),
     leaveTitle: $("leaveTitle"),
     leaveMessage: $("leaveMessage"),
@@ -290,6 +291,7 @@
     nodes.stagePanel.querySelectorAll("[data-stage-tab]").forEach((button) => {
       const isActive = button.dataset.stageTab === tabName;
       button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
       button.setAttribute("aria-pressed", String(isActive));
     });
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {
@@ -3377,6 +3379,15 @@
   }
 
   function positionBattleSoundControl() {
+    const returnButton = nodes.menuBtn;
+    if (returnButton) {
+      ["width", "min-width", "height", "min-height"].forEach((property) => {
+        returnButton.style.setProperty(property, "52px", "important");
+      });
+      returnButton.style.setProperty("display", "grid", "important");
+      returnButton.style.setProperty("place-items", "center", "important");
+      returnButton.style.setProperty("padding", "0", "important");
+    }
     const applyPosition = () => {
       const toggle = document.querySelector("button[data-sound-toggle]");
       const panel = nodes.gamePanel.getBoundingClientRect();
@@ -3390,6 +3401,19 @@
     applyPosition();
     requestAnimationFrame(applyPosition);
     window.setTimeout(applyPosition, 120);
+  }
+
+  function refreshBattleUtility() {
+    const button = nodes.battleUtilityBtn;
+    if (!button) return;
+    const muted = Boolean(window.WonderSound?.isMuted?.());
+    const legacyToggle = document.querySelector("button[data-sound-toggle]");
+    const label = legacyToggle?.getAttribute("aria-label")
+      || (muted ? "Enable sound" : "Disable sound");
+    button.textContent = muted ? "🔇" : "🔊";
+    button.title = legacyToggle?.title || label;
+    button.setAttribute("aria-label", label);
+    button.setAttribute("aria-pressed", String(!muted));
   }
 
   function leaveStageCanvas() {
@@ -3833,6 +3857,13 @@
       window.WonderSound?.play("click");
       endPlayerTurn();
     });
+    nodes.battleUtilityBtn?.addEventListener("click", () => {
+      window.WonderSound?.setMuted?.(!Boolean(window.WonderSound?.isMuted?.()));
+      refreshBattleUtility();
+    });
+    window.addEventListener("wonder:locale-change", refreshBattleUtility);
+    window.addEventListener("wonder:audio-volume-change", refreshBattleUtility);
+    refreshBattleUtility();
     const rejectRepeatedBattleActivation = (event) => {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     };

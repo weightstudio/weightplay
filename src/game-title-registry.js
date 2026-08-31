@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-orbit-orchard": {
+    "__localizedExact": true,
+    "en": "Orbit Orchard",
+    "zh-Hant": "軌道果園",
+    "zh-Hans": "轨道果园",
+    "ja": "オービット果樹園",
+    "ko": "궤도 과수원",
+    "es": "Huerto orbital",
+    "pt-BR": "Pomar orbital",
+    "fr": "Verger orbital",
+    "de": "Orbit-Obstgarten",
+    "it": "Frutteto orbitale",
+    "ru": "Орбитальный сад",
+    "hi": "कक्षा बाग़",
+    "ar": "بستان المدار"
+  },
   "animal-habitat-counts": {
     "__localizedExact": true,
     "en": "Habitat Counts",

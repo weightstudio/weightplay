@@ -1888,6 +1888,29 @@ body.beast-deck-playing button[data-sound-toggle] { display:none !important; }
 body.beast-deck-playing #gamePanel.game-panel { position:fixed; inset:0 auto auto 0; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:86px minmax(0,1fr) 238px; justify-content:stretch; justify-items:stretch; gap:6px; width:var(--beast-vw,100vw); max-width:none; height:calc(var(--beast-vh,100dvh) - 56px); min-height:0; margin:0; padding:8px; overflow:hidden; transform:none !important; }
 body.beast-deck-playing .hud-row, body.beast-deck-playing .battlefield, body.beast-deck-playing .action-area { min-width:0; min-height:0; margin:0; overflow:hidden; }
 body.beast-deck-playing .hud-row { position:relative; padding-left:64px; }
+body.beast-deck-playing .hud-row > [data-wp-battle-utility] {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+body.beast-deck-playing .hud-row > [data-wp-battle-utility]:hover,
+body.beast-deck-playing .hud-row > [data-wp-battle-utility]:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+}
 @media (max-width:560px) {
   body.beast-deck-playing .hud-row > .soft-btn {
     position:absolute;
@@ -1919,6 +1942,16 @@ body.beast-deck-playing #gamePanel.result-open { isolation:isolate; }
 body.beast-deck-playing #gamePanel.result-open > .hud-row,
 body.beast-deck-playing #gamePanel.result-open > .battlefield,
 body.beast-deck-playing #gamePanel.result-open > .action-area { pointer-events:none; }
+
+body.beast-deck-playing #menuBtn {
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
 
 /* Standard Main, Stage, and responsive Battle ownership. */
 #menuPanel .menu-copy {
