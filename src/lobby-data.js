@@ -2655,6 +2655,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-31). Keep Habitat Counts planned and
+// Coming Soon while its route remains internal/noindex and its production,
+// Tester, Reviewer, release, and publication gates are still open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-habitat-counts",
+    audience: "general",
+    status: "planned",
+    title: localize(["Habitat Counts", "棲地數數", "栖地数数", "すみかカウント", "서식지 세기", "Cuenta el hábitat", "Contagem do habitat", "Comptes de l’habitat", "Habitat zählen", "Conta l’habitat", "Счёт в среде", "आवास गिनती", "عدّ المأوى"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Row-and-Column Habitat Logic", "列欄棲地邏輯", "行列栖地逻辑", "行と列のすみかロジック", "행·열 서식지 논리", "Lógica de filas y columnas", "Lógica de linhas e colunas", "Logique des lignes et colonnes", "Reihen-und-Spalten-Logik", "Logica di righe e colonne", "Логика строк и колонок", "पंक्ति-स्तंभ आवास तर्क", "منطق صفوف وأعمدة المأوى"]),
+    description: localize(["Fill habitat cells until every row and column matches its count.", "填入棲地格子，讓每列與每欄都符合數量提示。", "填入栖地格子，让每行与每列都符合数量提示。", "すみかのマスを埋め、行と列の数を合わせます。", "서식지 칸을 채워 행과 열의 수를 맞추세요.", "Rellena las casillas hasta igualar cada fila y columna.", "Preencha as casas até combinar cada linha e coluna.", "Remplis les cases pour faire correspondre chaque ligne et colonne.", "Fülle die Felder, bis jede Reihe und Spalte stimmt.", "Riempi le caselle per far combaciare righe e colonne.", "Заполняй клетки, пока строки и колонки не совпадут.", "कोशिकाएँ भरकर हर पंक्ति और स्तंभ की गिनती मिलाएँ।", "املأ الخلايا حتى يطابق كل صف وعمود عدده."]),
+    meta: localize([["3 Habitat Pages", "Rows + Columns", "Calm Retry"], ["3 個棲地頁面", "列欄數量", "平靜重試"], ["3 个栖地页面", "行列数量", "平静重试"], ["3つのページ", "行と列", "穏やかな再挑戦"], ["서식지 페이지 3개", "행 + 열", "차분한 재시도"], ["3 páginas", "Filas y columnas", "Reintento sereno"], ["3 páginas", "Linhas e colunas", "Nova tentativa calma"], ["3 pages", "Lignes et colonnes", "Reprise sereine"], ["3 Seiten", "Reihen + Spalten", "Ruhiger Versuch"], ["3 pagine", "Righe e colonne", "Riprova calma"], ["3 страницы", "Строки и колонки", "Спокойный повтор"], ["3 पृष्ठ", "पंक्तियाँ + स्तंभ", "शांत पुनः प्रयास"], ["3 صفحات", "صفوف وأعمدة", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Logic", "Spatial Reasoning", "Family", "Animal"],
+    skills: ["Counting", "Planning", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-habitat-counts/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-habitat-counts/assets/animal-habitat-counts-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-31). Keep Cushion Stack planned and
 // Coming Soon while its internal prototype remains behind the art, Tester,
 // Reviewer, release, and publication gates.

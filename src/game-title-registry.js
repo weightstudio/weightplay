@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-habitat-counts": {
+    "__localizedExact": true,
+    "en": "Habitat Counts",
+    "zh-Hant": "棲地數數",
+    "zh-Hans": "栖地数数",
+    "ja": "すみかカウント",
+    "ko": "서식지 세기",
+    "es": "Cuenta el hábitat",
+    "pt-BR": "Contagem do habitat",
+    "fr": "Comptes de l’habitat",
+    "de": "Habitat zählen",
+    "it": "Conta l’habitat",
+    "ru": "Счёт в среде",
+    "hi": "आवास गिनती",
+    "ar": "عدّ المأوى"
+  },
   "animal-cushion-stack": {
     "__localizedExact": true,
     "en": "Cushion Stack",

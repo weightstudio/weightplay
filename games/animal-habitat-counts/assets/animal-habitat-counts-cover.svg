@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Abstract woodland habitat grid illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff8dd"/>
+      <stop offset="1" stop-color="#cfe5cf"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffef8"/>
+      <stop offset="1" stop-color="#e7f1de"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="900" rx="90" fill="url(#sky)"/>
+  <circle cx="730" cy="165" r="82" fill="#f4c968" opacity=".85"/>
+  <path d="M0 610c112-96 211-84 304-11 108 84 179 55 277-20 105-80 205-72 319 10v311H0Z" fill="#86b087" opacity=".7"/>
+  <path d="M0 700c137-74 227-46 338 20 100 60 211 37 288-18 91-65 173-62 274 0v198H0Z" fill="#4e7f63" opacity=".86"/>
+  <g transform="translate(132 154)">
+    <rect width="636" height="540" rx="40" fill="url(#card)" stroke="#315b49" stroke-width="12"/>
+    <rect x="54" y="54" width="528" height="432" rx="24" fill="#f5f1dc" stroke="#a6c6a0" stroke-width="8"/>
+    <g fill="#d8ebd1" stroke="#4f7d5e" stroke-width="7">
+      <rect x="78" y="78" width="150" height="118" rx="18"/>
+      <rect x="243" y="78" width="150" height="118" rx="18"/>
+      <rect x="408" y="78" width="150" height="118" rx="18"/>
+      <rect x="78" y="211" width="150" height="118" rx="18"/>
+      <rect x="243" y="211" width="150" height="118" rx="18" fill="#fff3c9" stroke="#d59b45"/>
+      <rect x="408" y="211" width="150" height="118" rx="18"/>
+      <rect x="78" y="344" width="150" height="118" rx="18"/>
+      <rect x="243" y="344" width="150" height="118" rx="18"/>
+      <rect x="408" y="344" width="150" height="118" rx="18"/>
+    </g>
+    <g fill="#315b49">
+      <circle cx="153" cy="137" r="25"/><circle cx="318" cy="137" r="25"/><circle cx="483" cy="137" r="25"/>
+      <circle cx="153" cy="270" r="25"/><circle cx="483" cy="270" r="25"/>
+      <circle cx="153" cy="403" r="25"/><circle cx="318" cy="403" r="25"/><circle cx="483" cy="403" r="25"/>
+    </g>
+    <path d="M290 270h56M318 242v56" stroke="#d59b45" stroke-width="13" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(85 660)">
+    <path d="M60 126c-8-66 6-118 58-145 45-24 98-9 112 40 16 57-35 111-95 125Z" fill="#8cae79" stroke="#315b49" stroke-width="9"/>
+    <path d="M108 32c17-29 43-47 78-52 5 38-8 66-44 86Z" fill="#d5ebc2" stroke="#315b49" stroke-width="8"/>
+    <circle cx="163" cy="61" r="8" fill="#263746"/>
+    <path d="M94 125c-16 28-11 52 14 70M198 115c15 27 10 51-15 70" fill="none" stroke="#315b49" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>
