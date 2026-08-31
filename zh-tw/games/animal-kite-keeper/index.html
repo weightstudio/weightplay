@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-kite-keeper/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-kite-keeper/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-kite-keeper/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-kite-keeper/" />
@@ -22,8 +21,10 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
+  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-interface-version" content="6">
   <title>風箏守護員 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260901-kite-keeper-v3-stage-tabs">
   <meta name="description" content="選擇每陣風向，帶領塔羅的風箏穿過三扇天空窗並抵達燈塔碼頭。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -40,6 +41,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "風箏守護員",
+  "alternateName": "Kite Keeper",
   "url": "https://weightplay.com/zh-tw/games/animal-kite-keeper/",
   "image": "https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg",
   "description": "選擇每陣風向，帶領塔羅的風箏穿過三扇天空窗並抵達燈塔碼頭。",
@@ -56,15 +58,13 @@
     "路線規劃",
     "空間推理",
     "家庭",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Kite Keeper"
+  }
 }
     </script>
   </head>
@@ -73,7 +73,7 @@
   <main id="app" hidden>
     <header class="topbar">
       <button id="backBtn" class="icon-btn" type="button" aria-label="Back to General lobby">← W</button>
-      <div class="brand"><span class="eyebrow">WEIGHTPLAY · GENERAL</span><strong data-runtime-localize="off">Kite Keeper</strong></div>
+      <div class="brand"><span class="eyebrow">WEIGHTPLAY · GENERAL</span><strong data-runtime-localize="off">風箏守護員</strong></div>
       <div class="top-actions">
         <button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button>
       </div>
@@ -95,7 +95,7 @@
     <section id="stageScreen" data-screen="stage" class="screen" hidden>
       <div class="screen-heading"><p class="eyebrow">STAGE MAP</p><h1 data-i18n="map">Sky routes</h1></div>
       <p class="subtitle" data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p>
-      <div id="stageList" class="stage-list" aria-label="Sky routes"></div>
+      <div id="stageList" class="stage-list" role="tablist" aria-label="Sky routes"></div>
     </section>
 
     <section id="battleScreen" data-screen="battle" class="screen battle-screen" hidden>
@@ -121,7 +121,9 @@
 
     <aside id="settingsPanel" class="settings" hidden aria-labelledby="settingsTitle"><div class="settings-inner"><button id="closeSettings" class="close-btn" type="button" aria-label="Close settings">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select><button id="soundBtn" class="secondary" type="button" aria-pressed="true"><span data-i18n="sound">Sound</span>: <span id="soundState">On</span></button></div></aside>
   </main>
-  <script src="locales.js?v=20260829-kite-keeper-v2"></script><script src="game.js?v=20260829-kite-keeper-v2"></script>
+  <script src="locales.js?v=20260901-kite-keeper-v3-stage-tabs"></script><script src="game.js?v=20260901-kite-keeper-v3-stage-tabs"></script>
+<script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="風箏守護員 遊戲資訊">
 
     <div class="game-info-hero">
@@ -140,7 +142,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

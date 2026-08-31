@@ -21,13 +21,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v1">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="An internal WeightPlay puzzle about counting habitat cells.">
   <title>Habitat Counts | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260901-habitat-counts-v2">
+  <link rel="stylesheet" href="style.css?v=20260901-habitat-counts-v3-keyboard-grid">
 </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-habitat-counts" data-wp-game-version="v1" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-habitat-counts" data-wp-game-version="v3" data-wp-interface-version="6" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <div class="main-canvas" data-wp-logical-main-canvas>
@@ -71,7 +71,7 @@
         <div id="battlePanel" class="battle-content">
           <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
           <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid"></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
           <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
         </div>
         <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
@@ -80,7 +80,7 @@
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
-  <script src="locales.js?v=20260901-habitat-counts-v2"></script>
-  <script src="game.js?v=20260901-habitat-counts-v2"></script>
+  <script src="locales.js?v=20260901-habitat-counts-v3-keyboard-grid"></script>
+  <script src="game.js?v=20260901-habitat-counts-v3-keyboard-grid"></script>
 </body>
 </html>

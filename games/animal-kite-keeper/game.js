@@ -48,14 +48,24 @@
   }
   function renderStages() {
     const root = $("stageList"); if (!root) return;
+    root.setAttribute("role", "tablist"); root.setAttribute("aria-label", copy("map"));
     root.replaceChildren();
     routes.forEach((route, index) => {
       const button = document.createElement("button");
       button.className = "stage-card"; button.type = "button";
+      button.setAttribute("role", "tab"); button.setAttribute("aria-selected", String(index === routeIndex)); button.setAttribute("aria-controls", "battleScreen"); button.tabIndex = index === routeIndex ? 0 : -1;
+      button.setAttribute("aria-label", `${copy(route.name)}. ${copy(route.hint)}`);
       button.innerHTML = `<span><strong>${copy(route.name)}</strong><small>${copy(route.hint)}</small></span><span class="arrow">${solved.has(index) ? "✓" : "→"}</span>`;
       button.addEventListener("click", () => startRoute(index));
       root.appendChild(button);
     });
+  }
+  function handleStageKeydown(event) {
+    const cards = [...document.querySelectorAll("#stageList .stage-card")]; const current = cards.indexOf(document.activeElement); if (current < 0) return;
+    const delta = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0;
+    const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? cards.length - 1 : delta ? (current + delta + cards.length) % cards.length : -1;
+    if (nextIndex < 0 || !cards[nextIndex]) return;
+    event.preventDefault(); cards.forEach((card, index) => { card.tabIndex = index === nextIndex ? 0 : -1; }); cards[nextIndex].focus();
   }
   function startRoute(index) {
     routeIndex = index; const route = routes[index];
@@ -121,7 +131,7 @@
   function nextRoute() { const next = routeIndex + 1; if (next < routes.length) startRoute(next); else { show("stage"); renderStages(); } }
   function goLobby() { window.location.href = "../../index.html"; }
   function bind() {
-    $("startBtn").addEventListener("click", () => { try { startRoute(0); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } });
+    $("startBtn").addEventListener("click", () => { try { startRoute(0); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRoute);
     $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); });
     $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; });

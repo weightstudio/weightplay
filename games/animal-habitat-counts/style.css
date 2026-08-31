@@ -77,6 +77,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .cell[aria-pressed="true"]::before { content:"✦"; }
 .cell[aria-pressed="false"]::before { content:"·"; opacity:.4; }
 .cell.is-mismatch { border-color:var(--coral); background:#ffe4d9; }
+.keyboard-hint { margin:0 auto 10px; max-width:390px; color:var(--muted); font-size:.78rem; line-height:1.4; text-align:center; }
 .feedback { min-height:30px; margin:5px 0 10px; color:var(--deep-leaf); font-size:.9rem; font-weight:800; text-align:center; }
 .feedback.is-wrong { color:#b45b4c; }
 .battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 190px; }
