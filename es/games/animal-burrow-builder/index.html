@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-burrow-builder/" />
-
     <link rel="canonical" href="https://weightplay.com/es/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-burrow-builder/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-burrow-builder/" />
@@ -23,29 +22,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="noindex,nofollow" />
     <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v1">
+    <meta name="weightplay-game-version" content="v3">
     <meta name="description" content="Elige un módulo y colócalo en el plano de madriguera correcto." />
     <title>Constructor de madrigueras | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-    <script src="locales.js?v=20260831-burrow-builder-v1" defer></script>
-    <script src="game.js?v=20260831-burrow-builder-v1" defer></script>
+    <link rel="stylesheet" href="style.css?v=20260831-burrow-builder-art-v3">
+    <script src="locales.js?v=20260831-burrow-builder-art-v3" defer></script>
+    <script src="game.js?v=20260831-burrow-builder-art-v3" defer></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Constructor de madrigueras | WeightPlay" />
     <meta property="og:description" content="Elige un módulo y colócalo en el plano de madriguera correcto." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-burrow-builder/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Constructor de madrigueras | WeightPlay" />
     <meta name="twitter:description" content="Elige un módulo y colócalo en el plano de madriguera correcto." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.png" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Constructor de madrigueras",
+  "alternateName": "Burrow Builder",
   "url": "https://weightplay.com/es/games/animal-burrow-builder/",
-  "image": "https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.svg",
+  "image": "https://weightplay.com/games/animal-burrow-builder/assets/animal-burrow-builder-cover.png",
   "description": "Elige un módulo y colócalo en el plano de madriguera correcto.",
   "publisher": {
     "@type": "Organization",
@@ -60,15 +60,13 @@
     "Construction",
     "Spatial Planning",
     "familia",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Burrow Builder"
+  }
 }
     </script>
   </head>
@@ -86,7 +84,7 @@
         </header>
         <div class="hero-card">
           <div class="hero-copy"><p class="eyebrow" data-copy="eyebrow">A calm shelter-planning puzzle</p><h1 id="mainTitle" data-copy="title">Constructor de madrigueras</h1><p class="main-summary" data-copy="subtitle">Choose each habitat module, then place it in the matching burrow plan.</p><div class="main-progress" data-copy="facts">Three short plans · no timer · calm retry</div><button class="primary-button" id="startButton" type="button" data-copy="start">Start building</button></div>
-          <img class="main-poster" src="assets/animal-burrow-builder-cover.svg" alt="" aria-hidden="true" width="800" height="800" fetchpriority="high">
+          <img class="main-poster" src="assets/animal-burrow-builder-cover.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
         </div>
       </section>
       <details id="gameGuide" class="guide-card"><summary data-copy="how">How to play</summary><p data-copy="howBody">Tap a module, then tap the blueprint slot where it belongs. Correct pieces lock in. A wrong slot is harmless, so look again and try another place.</p></details>
@@ -94,12 +92,14 @@
         <header class="battle-header"><button class="back-button" id="homeFromBattle" type="button" aria-label="Home"><span aria-hidden="true">←</span><span class="sr-only" data-copy="home">Home</span></button><div class="header-title"><strong id="battleTitle" data-copy="battleTitle">Build the burrow</strong></div><button class="icon-button battle-utility" id="battleSoundToggle" type="button" aria-label="Sound" aria-pressed="true">♪</button></header>
         <div class="battle-content"><div class="status-row"><span id="roundLabel"></span><span><strong id="placementCount">0</strong> <span data-copy="placements">placements</span></span></div><p id="instruction" class="instruction" data-copy="instruction">Choose a module, then place it in the matching slot.</p><div id="blueprint" class="blueprint" aria-label="Burrow blueprint"></div><div class="module-heading"><span data-copy="modules">Habitat modules</span><span id="selectionHint" class="selection-hint" aria-live="polite"></span></div><div id="moduleGrid" class="module-grid"></div><p id="feedback" class="feedback" role="status" aria-live="polite"></p><button id="leaveBtn" class="text-button" type="button" data-copy="home">Home</button></div>
         <section id="leaveDialog" class="leave-dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><h2 id="leaveTitle" data-copy="leaveTitle">Leave this plan?</h2><p data-copy="leaveBody">Your current placements will be lost, but your best build stays saved.</p><div class="result-actions"><button id="continueBtn" class="primary-button" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="secondary-button" type="button" data-copy="confirmLeave">Return to Home</button></div></section>
-        <section id="resultView" class="result-screen" hidden aria-labelledby="resultTitle"><div class="result-card"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Shelter complete</p><h2 id="resultTitle" data-copy="complete">A cosy place to rest.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best placements</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Build again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div></section>
+        <section id="resultView" class="result-screen" hidden aria-labelledby="resultTitle"><div class="result-card"><img class="result-character" src="assets/animal-burrow-builder-taro.png" alt="" aria-hidden="true" width="1024" height="1536"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Shelter complete</p><h2 id="resultTitle" data-copy="complete">A cosy place to rest.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best placements</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Build again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div></section>
       </section>
       <div class="general-reserve battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
     </main>
-  <section class="game-page-info game-page-info-static" aria-label="Información de Constructor de madrigueras">
+  <script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+<section class="game-page-info game-page-info-static" aria-label="Información de Constructor de madrigueras">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Constructor de madrigueras</h2><p>Elige un módulo y colócalo en el plano de madriguera correcto.</p></div>
@@ -117,7 +117,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>
