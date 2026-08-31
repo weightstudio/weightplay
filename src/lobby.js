@@ -959,6 +959,7 @@ function createGameCard(game) {
     type,
     ageLabel,
     text(game.description),
+    ...(text(game.meta) || []),
     ...(game.categories || []).map(categoryText),
     ...(game.skills || []).map(skillText),
   ].join(" ");
