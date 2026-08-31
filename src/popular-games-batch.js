@@ -71,7 +71,7 @@
   };
   const BREAKOUT_GAME_VERSION = "v11";
   const TETRIS_GAME_VERSION = "v15";
-  const SNAKE_GAME_VERSION = "v27";
+  const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
