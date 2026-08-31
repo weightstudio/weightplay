@@ -21,9 +21,9 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-silhouette-scout/" />
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v1"><meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v2"><meta name="weightplay-interface-version" content="6">
   <title>Esploratore di sagome | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <meta name="description" content="Leggi tre indizi dell’alba e abbina ogni sagoma alla carta colorata." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -72,7 +72,7 @@
   <section id="mainScreen" class="screen" data-screen="main">
     <header class="topbar"><a href="/" data-copy="back">Back</a><strong data-copy="title">Silhouette Scout</strong><button id="settingsBtn" type="button" class="icon-btn" data-copy-aria="settings" aria-label="Settings">⚙</button></header>
     <div id="settingsPanel" class="settings-panel" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-    <div class="hero-grid"><img class="cover" src="assets/animal-silhouette-scout-cover.svg" width="900" height="700" alt="Immagine del gioco Esploratore di sagome"><div class="hero-copy"><small data-copy="kicker">A calm outline-recognition puzzle</small><h1 data-copy="title">Esploratore di sagome</h1><p data-copy="intro">Read the dawn clue, then match the animal outline to its full-colour card.</p><p id="mainProgress" class="progress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start the first lookout</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a lookout</button><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></div>
+    <div class="hero-grid"><img class="cover" src="assets/animal-silhouette-scout-cover.png" width="900" height="750" alt="Immagine del gioco Esploratore di sagome"><div class="hero-copy"><small data-copy="kicker">A calm outline-recognition puzzle</small><h1 data-copy="title">Esploratore di sagome</h1><p data-copy="intro">Read the dawn clue, then match the animal outline to its full-colour card.</p><p id="mainProgress" class="progress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start the first lookout</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a lookout</button><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></div>
     <section class="guide-card"><h2 data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOne">Study the outline and the clue.</b></article><article><b data-copy="guideTwo">Tap the matching animal card.</b></article><article><b data-copy="guideThree">A wrong pick clears gently; no timer or lives are used.</b></article></div></section>
   </section>
   <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 data-copy="lookouts">Lookouts</h2><span></span></header><div id="stageList" class="stage-list" role="list"></div></section>
@@ -96,7 +96,7 @@
 
     </div>
   </section>
-  <script src="locales.js"></script><script src="game.js"></script>
+  <script src="locales.js?v=20260831-silhouette-scout-v2-cover-locale"></script><script src="game.js?v=20260831-silhouette-scout-v2-cover-locale"></script>
 <script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
