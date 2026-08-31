@@ -49,12 +49,13 @@
   const setScreen = (screen) => {
     state.screen = screen;
     document.body.dataset.screen = screen;
-    ["main", "guide", "stage", "battle", "result"].forEach((name) => {
+    ["main", "stage", "battle", "result"].forEach((name) => {
       const element = $(name + "Screen");
       if (!element) return;
       element.hidden = name !== screen;
       element.classList.toggle("active", name === screen);
     });
+    $("guideScreen").hidden = screen !== "main";
     if (screen === "main") applyText();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
@@ -172,14 +173,13 @@
   const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
   const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
   const bind = () => {
-    $("startBtn").addEventListener("click", () => startBoard(0));
-    $("guideStartBtn").addEventListener("click", () => startBoard(0));
+    $("startBtn").addEventListener("click", () => setScreen("stage"));
+    $("guideStartBtn").addEventListener("click", () => setScreen("stage"));
     $("mapBtn").addEventListener("click", () => setScreen("stage"));
     $("mainSettingsBtn").addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); });
     $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); });
-    $("guideBackBtn").addEventListener("click", () => setScreen("main"));
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
-    $("stageInfoBtn").addEventListener("click", () => setScreen("guide"));
+    $("stageInfoBtn").addEventListener("click", () => { setScreen("main"); $("guideScreen").open = true; $("guideScreen").scrollIntoView({ block: "start" }); });
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
     $("checkBtn").addEventListener("click", checkBoard);
     $("resetBtn").addEventListener("click", resetBoard);

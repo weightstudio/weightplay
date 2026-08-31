@@ -324,6 +324,27 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
 /* Sliding 15 owns the target-floor repair; preserve other Logic Lab games. */
 body[data-logic-game="sliding-15"] .logic-action-row button { min-width: 44px; min-height: 44px; }
 body[data-logic-game="sliding-15"] .logic-battle-back { min-width: 48px; min-height: 44px; }
+/* Keep Sliding 15's primary board anchored while Hint replaces the short
+   ready message with a localized explanation that may wrap to extra lines. */
+body[data-logic-game="sliding-15"] .logic-status-line {
+  height: 56px;
+  min-height: 56px;
+  max-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding-inline: 4px;
+  line-height: 1.25;
+}
+@media (max-height: 560px) and (orientation: landscape) {
+  body[data-logic-game="sliding-15"] .logic-status-line {
+    height: 32px;
+    min-height: 32px;
+    max-height: 32px;
+    line-height: 1;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }

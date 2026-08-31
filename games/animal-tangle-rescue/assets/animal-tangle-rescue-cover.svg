@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Tangle Rescue concept cover</title>
+  <desc id="desc">Text-free illustrated concept art with crossing green and berry vines, four shelter markers, and a paw-shaped trail.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bce8c8"/><stop offset="1" stop-color="#86c6cf"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <g transform="translate(0 220)">
+  <rect width="1200" height="760" rx="52" fill="url(#sky)"/>
+  <circle cx="890" cy="100" r="170" fill="#fff3b5" opacity=".7" filter="url(#soft)"/>
+  <circle cx="890" cy="100" r="78" fill="#fff9d7" opacity=".8"/>
+  <path d="M-80 470 C220 210 350 670 610 370 S990 170 1280 410" fill="none" stroke="#347e62" stroke-width="48" stroke-linecap="round" opacity=".9"/>
+  <path d="M-50 590 C230 720 360 200 590 470 S930 680 1270 260" fill="none" stroke="#b85c6b" stroke-width="38" stroke-linecap="round" opacity=".86"/>
+  <path d="M70 660 C320 460 430 500 610 560 S900 690 1150 540" fill="none" stroke="#f7d36f" stroke-width="18" stroke-linecap="round" opacity=".88"/>
+  <g fill="#fff9e9" stroke="#397d67" stroke-width="12">
+    <path d="M118 196h154l30 64v162H88V260z"/><path d="M505 148h154l30 64v162H475V212z"/><path d="M860 370h154l30 64v162H830V434z"/><path d="M925 84h154l30 64v162H895V148z"/>
+  </g>
+  <g fill="#397d67" opacity=".85"><circle cx="182" cy="310" r="22"/><circle cx="569" cy="262" r="22"/><circle cx="924" cy="484" r="22"/><circle cx="1019" cy="198" r="22"/></g>
+  <path d="M574 460c-36-65-126-30-97 45 25 65 97 111 97 111s72-46 97-111c29-75-61-110-97-45z" fill="#fff9e9" stroke="#d76570" stroke-width="12"/>
+  <g fill="#d76570"><circle cx="530" cy="458" r="17"/><circle cx="570" cy="438" r="17"/><circle cx="610" cy="458" r="17"/></g>
+  </g>
+</svg>

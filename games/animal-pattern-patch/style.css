@@ -9,7 +9,7 @@ button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visib
 .screen { position:relative; }
 .screen[hidden], .game-page-info[hidden] { display:none !important; }
 .main-screen { min-height:0; }
-.main-header { position:relative; min-height:64px; height:64px; display:grid; grid-template-columns:58px minmax(0,1fr) 48px; align-items:center; gap:8px; margin:0; }
+.main-header, .battle-header { position:relative; min-height:64px; height:64px; display:grid; grid-template-columns:58px minmax(0,1fr) 48px; align-items:center; gap:8px; margin:0; }
 .header-title { min-width:0; display:grid; place-items:center; text-align:center; }
 .wp-shell-main-title, .wp-shell-battle-title { display:block; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:22px; line-height:1.2; font-weight:800; }
 .home-link, .back-button, .icon-button { width:48px; height:48px; min-width:48px; min-height:48px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); }
@@ -50,7 +50,7 @@ h2 { margin-bottom:10px; font-size:clamp(1.5rem,4vw,2.5rem); letter-spacing:-.04
 .guide-card:not([open]) .guide-layout { display:none; }
 .guide-pose { width:100%; max-height:180px; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 8px 10px rgba(49,91,73,.18)); }
 .battle-screen { width:100%; height:calc(100vh - 56px); min-height:0; margin-top:0; padding:0 14px 20px; overflow:auto; background:linear-gradient(rgba(255,253,247,.78),rgba(245,240,223,.84)),url("assets/animal-pattern-patch-background.png") center / cover; }
-.battle-screen .main-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); }
+.battle-screen .main-header, .battle-screen .battle-header { position:sticky; top:0; z-index:10; width:min(892px,100%); margin:0 auto; background:rgba(255,253,247,.96); }
 .battle-content { width:min(640px,100%); margin:0 auto; padding-top:14px; text-align:center; }
 .status-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:0 auto 14px; color:var(--deep-leaf); font-size:.9rem; font-weight:900; }
 .pattern-card { max-width:520px; margin:0 auto; padding:14px; }
@@ -88,8 +88,10 @@ footer { margin-top:22px; color:#728072; font-size:12px; text-align:center; }
 .sr-only { position:absolute !important; width:1px !important; height:1px !important; padding:0 !important; margin:-1px !important; overflow:hidden !important; clip:rect(0,0,0,0) !important; white-space:nowrap !important; border:0 !important; }
 @keyframes nudge { 0%,100% { transform:translateX(0); } 35% { transform:translateX(-3px); } 70% { transform:translateX(3px); } }
 body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
-body[data-screen="battle"] .app-shell { width:min(920px,100%); margin:0 auto; padding:0; }
-body[data-screen="battle"] footer { display:none; }
+body[data-screen="battle"] .app-shell,
+body[data-screen="result"] .app-shell { width:min(920px,100%); margin:0 auto; padding:0; }
+body[data-screen="battle"] footer,
+body[data-screen="result"] footer { display:none; }
 @media (max-width:700px) {
   .app-shell { width:calc(100% - 20px); padding-top:10px; }
   .main-header { height:88px; min-height:88px; grid-template-rows:48px 32px; align-items:center; }
@@ -107,7 +109,7 @@ body[data-screen="battle"] footer { display:none; }
   .guide-layout { grid-template-columns:92px 1fr; gap:12px; }
   .guide-pose { max-height:150px; }
   .battle-screen { padding-left:10px; padding-right:10px; }
-  .battle-screen .main-header { position:sticky; }
+.battle-screen .main-header, .battle-screen .battle-header { position:sticky; }
   .battle-content { padding-top:12px; }
   .battle-screen .pattern-card { margin-top:0; }
   .token { min-height:58px; border-radius:12px; }
@@ -116,3 +118,52 @@ body[data-screen="battle"] footer { display:none; }
 }
 [dir="rtl"] .settings-row { flex-direction:row-reverse; }
 [dir="rtl"] .status-row { direction:rtl; }
+
+/* Keep the first Battle choice visible in the wide and short governed frames.
+   The original 520px pattern is comfortable on a tall phone, but cannot share
+   the fixed Battle envelope with the option row on desktop or short landscape. */
+@media (min-width:701px) and (min-height:501px) {
+  .battle-content { width:min(640px,100%); padding-top:8px; }
+  .pattern-card { max-width:300px; padding:10px; }
+  .pattern-grid { gap:6px; }
+  .token { min-height:0; }
+  .instruction { margin-bottom:8px; font-size:.84rem; line-height:1.3; }
+  .options-heading { margin-top:8px; }
+  .option-grid { max-width:300px; gap:6px; margin-top:6px; }
+  .option-token { min-height:0; }
+  .feedback { min-height:24px; margin-top:6px; font-size:.8rem; }
+  .battle-content > #leaveBtn { position:absolute; left:50%; bottom:8px; transform:translateX(-50%); margin:0; min-height:40px; height:40px; }
+}
+
+@media (min-width:421px) and (max-width:700px) and (min-height:501px) {
+  .battle-content { padding-top:8px; }
+  .pattern-card { max-width:360px; padding:10px; }
+  .pattern-grid { gap:6px; }
+  .token { min-height:0; }
+  .instruction { margin-bottom:8px; font-size:.84rem; line-height:1.3; }
+  .options-heading { margin-top:8px; }
+  .option-grid { max-width:360px; gap:6px; margin-top:6px; }
+  .option-token { min-height:0; }
+  .feedback { min-height:24px; margin-top:6px; font-size:.8rem; }
+  .battle-content > #leaveBtn { position:absolute; left:50%; bottom:8px; transform:translateX(-50%); margin:0; min-height:40px; height:40px; }
+}
+
+@media (orientation:landscape) and (max-height:500px) {
+  .battle-screen { padding:0 8px 4px; }
+  .battle-screen .battle-header { min-height:48px; height:48px; }
+  .battle-screen .battle-header .home-link,
+  .battle-screen .battle-header .back-button,
+  .battle-screen .battle-header .icon-button { width:40px; height:40px; min-width:40px; min-height:40px; border-radius:10px; }
+  .battle-content { width:min(640px,100%); padding-top:2px; }
+  .status-row { margin-bottom:2px; font-size:.72rem; }
+  .pattern-card { max-width:180px; padding:6px; }
+  .instruction { max-width:170px; margin-bottom:4px; font-size:.7rem; line-height:1.15; }
+  .pattern-grid { width:120px; margin-inline:auto; gap:3px; }
+  .token { min-height:0; border-radius:7px; font-size:1.15rem; }
+  .options-heading { margin-top:3px; font-size:.7rem; }
+  .option-grid { max-width:180px; gap:4px; margin-top:3px; }
+  .option-token { min-height:0; height:48px; aspect-ratio:auto; font-size:1.15rem; border-radius:8px; }
+  .feedback { min-height:16px; height:16px; margin-top:2px; font-size:.65rem; }
+  .progress-line { font-size:.65rem; }
+  .battle-content > #leaveBtn { position:absolute; left:50%; bottom:2px; transform:translateX(-50%); margin:0; min-height:32px; height:32px; padding:4px 10px; font-size:.7rem; }
+}

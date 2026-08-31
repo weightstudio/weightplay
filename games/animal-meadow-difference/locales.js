@@ -26,13 +26,14 @@
     best: "Best checks",
     replay: "Replay",
     home: "Home",
+    backToLobby: "Back to WeightPlay",
     round: "Round {current} of {total}",
     tile: "Row {row}, tile {tile}: {shape}",
     languageNames: { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" },
     shapeNames: { leaf: "leaf", droplet: "droplet", circle: "circle", triangle: "triangle", star: "star", wave: "wave", diamond: "diamond", dot: "dot", crescent: "crescent", sun: "sun", hex: "hexagon", flower: "flower" },
   };
 
-  const makeLocale = (overrides) => ({ ...english, ...overrides, languageNames: english.languageNames, shapeNames: english.shapeNames });
+  const makeLocale = (overrides) => ({ ...english, ...overrides, languageNames: english.languageNames, shapeNames: { ...english.shapeNames, ...(overrides.shapeNames || {}) } });
   const MEADOW_FIND_LOCALES = {
     en: makeLocale({ direction: "ltr" }),
     "zh-Hant": makeLocale({ direction: "ltr", title: "草地找不同", subtitle: "比較兩個可見的草地畫面，找出一個變化的格子。", eyebrow: "平靜的觀察遊戲", facts: "三個短回合 · 沒有計時 · 沒有生命值", start: "開始遊戲", language: "語言", soundOn: "開啟聲音", soundOff: "關閉聲音", how: "玩法", howBody: "兩個草地畫面都會保持可見。逐行比較，再點按右側變化的格子。點錯時再看一次就好。", battleTitle: "比較草地", before: "之前", after: "之後——請在這裡選擇", instruction: "找出右側唯一變化的格子。", wrong: "再比較兩個畫面。看看第 {row} 行、第 {tile} 格。", correct: "觀察得好，找到變化的格子了。", checks: "次檢查", completeEyebrow: "觀察完成", complete: "細心的草地搜尋。", summary: "找到了三個變化的格子。", best: "最佳檢查次數", replay: "再玩一次", home: "首頁", round: "第 {current} 回合，共 {total} 回合", tile: "第 {row} 行、第 {tile} 格：{shape}" }),
@@ -48,6 +49,31 @@
     hi: makeLocale({ direction: "ltr", title: "घासभूमि खोज", subtitle: "दो दिखने वाले घासभूमि पैनल की तुलना करें और बदली हुई टाइल खोजें।", eyebrow: "शांत अवलोकन खेल", facts: "तीन छोटे दौर · कोई टाइमर नहीं · कोई जीवन नहीं", start: "गेम शुरू करें", language: "भाषा", soundOn: "ध्वनि चालू", soundOff: "ध्वनि बंद", how: "कैसे खेलें", howBody: "दोनों घासभूमि पैनल दिखते रहते हैं। पंक्ति दर पंक्ति तुलना करें और दाईं ओर बदली हुई टाइल दबाएँ। गलत दबाने पर बस फिर से देखें।", battleTitle: "घासभूमि की तुलना करें", before: "पहले", after: "बाद में — यहाँ चुनें", instruction: "दाईं ओर बदली हुई एक टाइल खोजें।", wrong: "दोनों पैनल फिर देखें। पंक्ति {row}, टाइल {tile} देखें।", correct: "अच्छा अवलोकन। बदली हुई टाइल मिल गई।", checks: "जाँच", completeEyebrow: "अवलोकन पूरा", complete: "ध्यान से की गई घासभूमि खोज।", summary: "तीन बदली हुई टाइल मिलीं।", best: "सबसे कम जाँच", replay: "फिर खेलें", home: "मुख्य पृष्ठ", round: "दौर {current} / {total}", tile: "पंक्ति {row}, टाइल {tile}: {shape}" }),
     ar: makeLocale({ direction: "rtl", title: "اكتشف الفرق في المرج", subtitle: "قارن لوحتي المرج الظاهرتين وابحث عن الخلية التي تغيّرت.", eyebrow: "لعبة ملاحظة هادئة", facts: "ثلاث جولات قصيرة · بلا مؤقت · بلا أرواح", start: "ابدأ اللعبة", language: "اللغة", soundOn: "الصوت مفعّل", soundOff: "الصوت متوقف", how: "طريقة اللعب", howBody: "تبقى لوحتا المرج ظاهرتين. قارن صفًا بعد صف، ثم اضغط الخلية المتغيّرة على اليمين. إن أخطأت، ألقِ نظرة أخرى بهدوء.", battleTitle: "قارن المرجين", before: "قبل", after: "بعد — اختر هنا", instruction: "ابحث عن الخلية الوحيدة التي تغيّرت على اليمين.", wrong: "قارن اللوحتين مرة أخرى. انظر إلى الصف {row} والخلية {tile}.", correct: "ملاحظة رائعة. وجدت الخلية المتغيّرة.", checks: "فحوصات", completeEyebrow: "اكتملت الملاحظة", complete: "بحث هادئ ودقيق في المرج.", summary: "وجدت ثلاث خلايا متغيّرة.", best: "أفضل عدد من الفحوصات", replay: "العب مجددًا", home: "الرئيسية", round: "الجولة {current} من {total}", tile: "الصف {row}، الخلية {tile}: {shape}" }),
   };
+  const shapeNamesByLocale = {
+    "zh-Hant": { leaf: "葉子", droplet: "水滴", circle: "圓形", triangle: "三角形", star: "星星", wave: "波浪", diamond: "菱形", dot: "圓點", crescent: "月牙", sun: "太陽", hex: "六角形", flower: "花朵" },
+    "zh-Hans": { leaf: "叶子", droplet: "水滴", circle: "圆形", triangle: "三角形", star: "星星", wave: "波浪", diamond: "菱形", dot: "圆点", crescent: "月牙", sun: "太阳", hex: "六边形", flower: "花朵" },
+    ja: { leaf: "葉", droplet: "水滴", circle: "丸", triangle: "三角", star: "星", wave: "波", diamond: "ひし形", dot: "点", crescent: "三日月", sun: "太陽", hex: "六角形", flower: "花" },
+    ko: { leaf: "잎", droplet: "물방울", circle: "원", triangle: "삼각형", star: "별", wave: "물결", diamond: "마름모", dot: "점", crescent: "초승달", sun: "해", hex: "육각형", flower: "꽃" },
+    es: { leaf: "hoja", droplet: "gota", circle: "círculo", triangle: "triángulo", star: "estrella", wave: "onda", diamond: "rombo", dot: "punto", crescent: "luna creciente", sun: "sol", hex: "hexágono", flower: "flor" },
+    "pt-BR": { leaf: "folha", droplet: "gota", circle: "círculo", triangle: "triângulo", star: "estrela", wave: "onda", diamond: "losango", dot: "ponto", crescent: "lua crescente", sun: "sol", hex: "hexágono", flower: "flor" },
+    fr: { leaf: "feuille", droplet: "goutte", circle: "cercle", triangle: "triangle", star: "étoile", wave: "vague", diamond: "losange", dot: "point", crescent: "croissant", sun: "soleil", hex: "hexagone", flower: "fleur" },
+    de: { leaf: "Blatt", droplet: "Tropfen", circle: "Kreis", triangle: "Dreieck", star: "Stern", wave: "Welle", diamond: "Raute", dot: "Punkt", crescent: "Mondsichel", sun: "Sonne", hex: "Sechseck", flower: "Blume" },
+    it: { leaf: "foglia", droplet: "goccia", circle: "cerchio", triangle: "triangolo", star: "stella", wave: "onda", diamond: "rombo", dot: "punto", crescent: "luna crescente", sun: "sole", hex: "esagono", flower: "fiore" },
+    ru: { leaf: "лист", droplet: "капля", circle: "круг", triangle: "треугольник", star: "звезда", wave: "волна", diamond: "ромб", dot: "точка", crescent: "полумесяц", sun: "солнце", hex: "шестиугольник", flower: "цветок" },
+    hi: { leaf: "पत्ता", droplet: "बूंद", circle: "वृत्त", triangle: "त्रिकोण", star: "तारा", wave: "लहर", diamond: "हीरा", dot: "बिंदु", crescent: "अर्धचंद्र", sun: "सूरज", hex: "षट्भुज", flower: "फूल" },
+    ar: { leaf: "ورقة", droplet: "قطرة", circle: "دائرة", triangle: "مثلث", star: "نجمة", wave: "موجة", diamond: "معيّن", dot: "نقطة", crescent: "هلال", sun: "شمس", hex: "سداسي", flower: "زهرة" },
+  };
+  Object.entries(shapeNamesByLocale).forEach(([locale, names]) => {
+    MEADOW_FIND_LOCALES[locale] = { ...MEADOW_FIND_LOCALES[locale], shapeNames: { ...MEADOW_FIND_LOCALES[locale].shapeNames, ...names } };
+  });
+  const backToLobbyByLocale = {
+    "zh-Hant": "返回 WeightPlay", "zh-Hans": "返回 WeightPlay", ja: "WeightPlayへ戻る", ko: "WeightPlay로 돌아가기",
+    es: "Volver a WeightPlay", "pt-BR": "Voltar ao WeightPlay", fr: "Retour à WeightPlay", de: "Zurück zu WeightPlay",
+    it: "Torna a WeightPlay", ru: "Вернуться в WeightPlay", hi: "WeightPlay पर वापस जाएँ", ar: "العودة إلى WeightPlay",
+  };
+  Object.entries(backToLobbyByLocale).forEach(([locale, label]) => {
+    MEADOW_FIND_LOCALES[locale] = { ...MEADOW_FIND_LOCALES[locale], backToLobby: label };
+  });
   Object.defineProperty(MEADOW_FIND_LOCALES, "__localeKeys", { value: localeKeys, enumerable: false });
   window.MEADOW_FIND_LOCALES = Object.freeze(MEADOW_FIND_LOCALES);
 })();

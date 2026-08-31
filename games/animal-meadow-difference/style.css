@@ -35,7 +35,9 @@ body[data-screen="battle"] > .game-page-info-static, body[data-screen="result"] 
 .main-screen > .main-header { margin-bottom: 10px; }
 .main-progress { display: flex; min-height: 40px; align-items: center; margin: 10px 0 0; padding: 8px 12px; border: 1px solid rgba(113, 155, 104, .25); border-radius: 12px; color: var(--deep-leaf); background: rgba(229, 240, 213, .64); font-size: .82rem; font-weight: 800; }
 .view { min-height: calc(100vh - 22px); padding-bottom: 18px; }
-.view#battleView { width: min(100%, 920px); min-height: calc(100vh - 56px); margin-inline: auto; padding: 18px; border-radius: 24px; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
+.view#battleView { width: min(100%, 920px); height: calc(100vh - 56px); min-height: 0; margin-inline: auto; padding: 18px; border-radius: 24px; overflow: auto; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
+.view#battleView.is-result > :not(#resultView) { display: none !important; }
+.view#battleView.is-result { overflow: auto; }
 .view[hidden] { display: none; }
 .brand-line { display: flex; align-items: center; gap: 8px; color: var(--deep-leaf); font-weight: 800; letter-spacing: .04em; }
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--sun); color: #fff; }
@@ -85,6 +87,7 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 .feedback { min-height: 26px; margin: 15px auto 0; max-width: 40rem; color: var(--deep-leaf); font-size: .92rem; font-weight: 700; text-align: center; }
 .feedback.is-wrong { color: #b45b4c; }
 .progress-line { margin-top: 7px; color: var(--muted); font-size: .82rem; text-align: center; }
+.result-screen { width: 100%; min-height: 100%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .result-card { margin-top: 28px; padding: 36px 24px; text-align: center; }
 .result-icon { display: grid; place-items: center; width: 74px; height: 74px; margin: 0 auto 18px; border-radius: 50%; background: var(--sun); color: white; font-size: 2.3rem; }
 .result-card h2 { margin-bottom: 14px; }

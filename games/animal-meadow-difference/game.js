@@ -37,10 +37,13 @@
     document.documentElement.dir = copy.direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     $("startButton").textContent = startLabels[state.locale] || t("start");
+    const mainReturn = document.querySelector(".main-return[data-wp-return='main']");
+    if (mainReturn) mainReturn.setAttribute("aria-label", t("backToLobby"));
     const soundText = $("soundToggle").querySelector("[data-copy]");
     if (soundText) soundText.textContent = t(state.sound ? "soundOn" : "soundOff");
     $("soundToggle").setAttribute("aria-pressed", String(state.sound));
     $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound));
+    $("battleSoundToggle").setAttribute("aria-label", t(state.sound ? "soundOn" : "soundOff"));
     $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
     $("localeSelect").setAttribute("aria-label", t("language"));
     if (!$("battleView").hidden) renderRound();
@@ -68,8 +71,16 @@
     } catch (_) { /* audio is an optional enhancement */ }
   }
   function showView(id) {
-    ["mainScreen", "battleView", "resultView"].forEach((viewId) => { const view = $(viewId); const active = viewId === id; view.hidden = !active; view.classList.toggle("is-active", active); });
-    document.body.dataset.screen = id === "mainScreen" ? "main" : id === "battleView" ? "battle" : "result";
+    const mainActive = id === "mainScreen";
+    const resultActive = id === "resultView";
+    $("mainScreen").hidden = !mainActive;
+    $("battleView").hidden = mainActive;
+    $("resultView").hidden = !resultActive;
+    $("mainScreen").classList.toggle("is-active", mainActive);
+    $("battleView").classList.toggle("is-active", !mainActive);
+    $("battleView").classList.toggle("is-result", resultActive);
+    $("resultView").classList.toggle("is-active", resultActive);
+    document.body.dataset.screen = mainActive ? "main" : resultActive ? "result" : "battle";
     window.scrollTo(0, 0);
   }
   function makeTile(token, index, interactive) {
