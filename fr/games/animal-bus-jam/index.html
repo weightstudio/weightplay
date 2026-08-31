@@ -111,7 +111,7 @@
     </nav>
   </main>
 
-  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+  <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
       <div><small id="chapter"></small><h2 id="stageName"></h2></div>
@@ -131,7 +131,7 @@
       </div>
       <div class="tools">
         <button id="undo" data-t="undo">Undo</button>
-        <button id="hint" data-t="hint">Hint</button>
+        <button id="hint" class="utility-button" data-wp-battle-utility="true" data-t="hint">Hint</button>
         <button id="restart" data-t="restart">Restart</button>
       </div>
       <p id="status" aria-live="polite" data-runtime-localize="off"></p>

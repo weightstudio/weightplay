@@ -408,6 +408,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   letter-spacing: .1em;
 }
 .passenger {
+  flex: 0 0 34px;
   min-height: 34px;
   border: 1px solid color-mix(in srgb, var(--person) 62%, #fff);
   border-radius: 8px;
@@ -466,6 +467,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
   padding: 8px 16px;
   font-weight: 850;
 }
+.tools button.utility-button { min-width: 48px; min-height: 48px; }
 .tools button:disabled { opacity: .35; cursor: default; }
 .status { margin: 0; min-height: 1.25em; padding: 4px 10px; border: 1px solid transparent; border-radius: 999px; background: rgba(8, 22, 34, .46); text-align: center; color: #c9d6de; font-size: .78rem; font-weight: 800; transition: color .16s ease, border-color .16s ease, background-color .16s ease; }
 .status[data-feedback="direct"] { color: #bff6d4; border-color: rgba(83, 210, 139, .55); background: rgba(39, 139, 91, .22); }
@@ -643,7 +645,7 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .scene-header { height: 60px; padding: 6px 12px; }
   .stage { grid-template-rows: 60px minmax(0, 1fr) 56px; }
   .battle { grid-template-rows: 60px minmax(0, 1fr); }
-  .battle-content { position: relative; grid-template-rows: 76px minmax(0, 1fr) 34px 18px; gap: 3px; padding: 4px 10px 22px; }
+  .battle-content { position: relative; grid-template-rows: 76px minmax(0, 1fr) 48px 18px; gap: 3px; padding: 4px 10px 22px; }
   .convoy-panel { padding: 4px 8px; }
   .panel-label { min-height: 14px; font-size: .52rem; }
   .buses { height: 57px; }
@@ -657,12 +659,13 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .holding-panel .panel-label { display: grid; text-align: center; }
   .holding { min-height: 0; height: calc(100% - 24px); flex-direction: column; gap: 4px; }
   .holding-slot { width: 100%; height: auto; min-height: 20px; }
-  .queue { padding: 3px; gap: 2px; }
+  .queue { padding: 3px; gap: 2px; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; }
   .queue-label { font-size: .48rem; }
-  .passenger { min-height: 23px; grid-template-columns: 18px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
+  .passenger { flex: 0 0 32px; min-height: 32px; grid-template-columns: 18px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
   .passenger-art-frame { width: 17px; height: 19px; }
   .passenger-art-frame > b { min-width: 8px; font-size: .34rem; line-height: 8px; }
   .tools button { min-height: 32px; padding: 3px 12px; }
+  .tools button.utility-button { min-width: 48px; min-height: 48px; padding: 3px 8px; }
   .status { position: absolute; left: 10px; right: 10px; bottom: 5px; font-size: .56rem; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   dialog[open] { top: calc((100svh - 56px) / 2); bottom: auto; margin: 0 auto; transform: translateY(-50%); max-height: calc(100svh - 72px); padding: 12px 20px; overflow: auto; }
   .result-mark { width: 42px; height: 42px; font-size: 1.2rem; }

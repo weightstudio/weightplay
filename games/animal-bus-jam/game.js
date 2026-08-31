@@ -580,7 +580,7 @@
 
   function passenger(color, queueIndex, itemIndex) {
     const front = itemIndex === 0;
-    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" data-color="${color}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "" : "tabindex=\"-1\" aria-hidden=\"true\""}>
+    return `<button class="passenger ${front ? "front" : ""}" data-queue="${queueIndex}" data-color="${color}" style="--person:${palette[color]}" aria-label="${t("personLabel", { color: t("colors")[color] })}" ${front ? "data-wp-primary-action=\"true\"" : "tabindex=\"-1\" aria-hidden=\"true\""}>
       <span class="passenger-art-frame" aria-hidden="true"><img class="passenger-art" src="${passengerArt[color]}" alt=""><b>${routeCodes[color]}</b></span>
       <span>${t("colors")[color]}</span>
     </button>`;
