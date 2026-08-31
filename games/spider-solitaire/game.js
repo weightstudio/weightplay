@@ -218,7 +218,7 @@
 
   const ui = {};
   const get = (id) => document.getElementById(id);
-  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "stockPressureCue", "undoBtn", "hintBtn", "copyReplayLinkBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
+  ["loadingPanel", "loadingText", "loadingFill", "mainGroup", "mainScreen", "stageScreen", "stageBackBtn", "stageStartBtn", "battleScreen", "audioMenuBtn", "audioPopover", "soundBtn", "battleSoundBtn", "soundStateText", "localeSelect", "statistics", "startBtn", "mainProgress", "restartBtn", "newGameBtn", "battleBackBtn", "moveCount", "timeValue", "scoreValue", "completedValue", "foundationRow", "stockPile", "dealLabel", "dealsLeft", "stockPressureCue", "undoBtn", "hintBtn", "copyReplayLinkBtn", "helpBtn", "boardShell", "tableauRow", "sequenceFx", "tutorialOverlay", "difficultyCoach", "tutorialSkip", "tutorialDone", "confirmOverlay", "confirmNo", "confirmYes", "resultOverlay", "resultText", "resultNewGame", "resultRestart", "resultClose", "hintOverlay", "dragLayer"].forEach((id) => { ui[id] = get(id); });
 
   const safeGet = (key, fallback = null) => { try { return localStorage.getItem(key) ?? fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) { } };
@@ -1752,6 +1752,10 @@
     ui.soundBtn.setAttribute("aria-pressed", String(enabled));
     ui.soundStateText.textContent = enabled ? t("sound_on") : t("sound_off");
     ui.soundBtn.setAttribute("aria-label", enabled ? t("aria_sound_on") : t("aria_sound_off"));
+    if (ui.battleSoundBtn) {
+      ui.battleSoundBtn.setAttribute("aria-pressed", String(enabled));
+      ui.battleSoundBtn.setAttribute("aria-label", enabled ? t("aria_sound_on") : t("aria_sound_off"));
+    }
   }
 
   function init() {
@@ -1776,6 +1780,7 @@
     ui.restartBtn.addEventListener("click", restartGame);
     ui.newGameBtn.addEventListener("click", requestNewGame);
     ui.battleBackBtn.addEventListener("click", requestBack);
+    ui.battleSoundBtn?.addEventListener("click", () => { setCardSoundEnabled(!audio.enabled); setSoundButton(); });
     ui.stockPile.addEventListener("click", clickStock);
     ui.undoBtn.addEventListener("click", requestUndo);
     ui.hintBtn.addEventListener("click", requestHint);

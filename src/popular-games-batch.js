@@ -861,6 +861,127 @@
     return state;
   };
 
+  // Hangman v8 keeps its deterministic word runtime but upgrades the legacy
+  // collection markup to the governed General Interface 6 shell.  The
+  // localized route generator intentionally starts from the compact canonical
+  // page, so this narrowly-scoped DOM adapter is shared by every route.
+  const ensureHangmanInterface6 = (root) => {
+    if (document.body?.dataset.gameId !== "hangman") return;
+    const header = root.querySelector(".arcade-header");
+    if (header) {
+      header.classList.add("main-header");
+      const heading = header.querySelector(":scope > div");
+      heading?.classList.add("main-header-copy");
+      const localePicker = header.querySelector(".locale-picker");
+      if (!header.querySelector("[data-wp-return='main']")) {
+        const returnLink = document.createElement("a");
+        returnLink.className = "main-return";
+        returnLink.href = "/";
+        returnLink.dataset.wpReturn = "main";
+        returnLink.setAttribute("aria-label", "Back to WeightPlay");
+        returnLink.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">';
+        const settings = document.createElement("div");
+        settings.className = "settings-control";
+        settings.innerHTML = '<button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span></label></div>';
+        const languageLabel = settings.querySelector("label");
+        const select = localePicker?.querySelector("select");
+        if (select) {
+          select.setAttribute("aria-label", "Language");
+          languageLabel?.append(select);
+        }
+        localePicker?.remove();
+        header.replaceChildren(returnLink, heading || document.createElement("div"), settings);
+      }
+    }
+    const main = root.querySelector("#mainScreen");
+    if (main) {
+      main.classList.add("main-screen");
+      const mainCopy = main.querySelector(".main-copy");
+      const instruction = mainCopy?.querySelector("p:not(#objective)");
+      if (instruction && !instruction.id) instruction.id = "mainInstruction";
+      if (mainCopy && !mainCopy.querySelector("[data-wp-main-progress]")) {
+        const progress = document.createElement("div");
+        progress.className = "main-progress";
+        progress.dataset.wpMainProgress = "";
+        progress.setAttribute("role", "status");
+        progress.setAttribute("aria-live", "polite");
+        progress.innerHTML = "<strong>Objective</strong><span>Reveal the hidden word before six misses.</span>";
+        (instruction || mainCopy.querySelector("#objective"))?.insertAdjacentElement("afterend", progress);
+      }
+      const poster = main.querySelector(".preview-art img");
+      if (poster) {
+        poster.classList.add("cover");
+        poster.alt = "Hangman game artwork";
+      }
+    }
+    const upgradeBattle = (screen, reserve = true) => {
+      if (!screen) return;
+      screen.classList.add(screen.id === "battleScreen" ? "battle-screen" : "result-screen");
+      let canvas = screen.querySelector("[data-wp-logical-battle-canvas]");
+      const panel = screen.querySelector(".arcade-panel");
+      if (!panel) return;
+      if (!canvas) {
+        canvas = document.createElement("div");
+        canvas.className = "battle-canvas";
+        canvas.dataset.wpLogicalBattleCanvas = "";
+        screen.insertBefore(canvas, screen.firstChild);
+        canvas.append(panel);
+      }
+      if (screen.id === "battleScreen") {
+        const top = panel.querySelector(".battle-top");
+        if (top && !top.querySelector("[data-wp-return='battle']")) {
+          const back = document.createElement("button");
+          back.type = "button";
+          back.className = "battle-back";
+          back.dataset.wpReturn = "battle";
+          back.setAttribute("aria-label", "Back to main");
+          back.title = "Back to main";
+          back.textContent = "←";
+          top.prepend(back);
+        }
+        if (top && !top.querySelector("[data-wp-battle-utility]")) {
+          const utility = document.createElement("button");
+          utility.type = "button";
+          utility.className = "battle-utility";
+          utility.dataset.wpBattleUtility = "true";
+          utility.setAttribute("aria-label", "Settings");
+          utility.title = "Settings";
+          utility.textContent = "⚙";
+          top.append(utility);
+        }
+      }
+      if (reserve && !screen.querySelector(".battle-ad-reserve")) {
+        const adReserve = document.createElement("div");
+        adReserve.className = "battle-ad-reserve";
+        adReserve.dataset.wpBattlePhysicalReserve = "";
+        adReserve.setAttribute("aria-hidden", "true");
+        screen.append(adReserve);
+      }
+    };
+    upgradeBattle(root.querySelector("#battleScreen"));
+    upgradeBattle(root.querySelector("#resultScreen"));
+    const settingsButton = root.querySelector("#audioMenuBtn");
+    const settingsPopover = root.querySelector("#audioPopover");
+    if (settingsButton && settingsPopover && !settingsButton.dataset.wpBound) {
+      const setSettingsOpen = (open) => {
+        settingsPopover.hidden = !open;
+        settingsPopover.classList.toggle("is-hidden", !open);
+        settingsButton.setAttribute("aria-expanded", String(open));
+      };
+      settingsButton.addEventListener("click", () => setSettingsOpen(settingsPopover.hidden));
+      document.addEventListener("pointerdown", (event) => {
+        if (!settingsPopover.hidden && !settingsPopover.contains(event.target) && event.target !== settingsButton) setSettingsOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !settingsPopover.hidden) {
+          setSettingsOpen(false);
+          settingsButton.focus({ preventScroll: true });
+        }
+      });
+      settingsButton.dataset.wpBound = "true";
+    }
+  };
+
   function mount(gameId) {
     const game = CATALOG[gameId];
     if (!game) throw new Error(`Unknown popular game: ${gameId}`);
@@ -869,7 +990,7 @@
     if (game.type === "snake") document.body.dataset.gameVersion = SNAKE_GAME_VERSION;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = TIC_TAC_TOE_GAME_VERSION;
-    if (game.type === "hangman") document.body.dataset.gameVersion = "v7";
+    if (game.type === "hangman") document.body.dataset.gameVersion = "v8";
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
     if (game.type === "wordle") document.body.dataset.gameVersion = WORDLE_GAME_VERSION;
@@ -891,6 +1012,7 @@
         preview.append(image);
       }
     }
+    ensureHangmanInterface6(root);
     if (game.type === "wordle") {
       const preview = root.querySelector(".preview-art");
       if (preview && !preview.querySelector("img")) {

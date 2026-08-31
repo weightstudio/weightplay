@@ -358,7 +358,24 @@
   $("start-game").addEventListener("click",()=>{stageCards();show("stage");});
   $("stage-back").addEventListener("click",()=>show("main"));
   $("battle-back").addEventListener("click",()=>{if(window.confirm(common(4)+"?")){stageCards();show("stage");}});
-  $("battle-utility")?.addEventListener("click",()=>$("battle-controls")?.querySelector("button:not(:disabled)")?.focus());
+  function focusFirstBattleControl() {
+    const focus = () => $("battle-controls")?.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
+    focus();
+    // A transformed Battle shell and native Enter/Space activation can restore
+    // focus to the utility after the click dispatch; re-assert the documented
+    // shortcut on the settled frame without relying on a stale control node.
+    requestAnimationFrame(focus);
+  }
+  $("battle-utility")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    focusFirstBattleControl();
+  });
+  $("battle-utility")?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      focusFirstBattleControl();
+    }
+  });
   $("to-stages").addEventListener("click",()=>{stageCards();show("stage");});
   $("retry").addEventListener("click",()=>start(state.stage));
   $("next").addEventListener("click",()=>{if(state.resultWin&&state.stage<cfg.stages)start(state.stage+1);});

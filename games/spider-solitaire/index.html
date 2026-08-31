@@ -58,7 +58,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260819-spider-run-preview-v35" />
+  <link rel="stylesheet" href="style.css?v=20260831-spider-interface-v36" />
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
@@ -96,7 +96,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
-    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-standard-stage-screen data-wp-canvas-max-width="920">
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
@@ -107,24 +107,28 @@
       </header>
       <div class="stage-content">
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-        <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
+        <div class="difficulty-picker stage-rail" role="group" data-wp-stage-rail data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
         </div>
         <div class="stage-actions">
-          <button id="stageStartBtn" class="primary-btn" type="button" data-sl="start">Start Game</button>
+          <button id="stageStartBtn" class="primary-btn" type="button" data-wp-enter-battle data-sl="start">Start Game</button>
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button>
         </div>
+        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+          <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">Difficulty</button>
+        </nav>
       </div>
     </div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+    <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
       <header class="battle-header">
         <button id="battleBackBtn" type="button" data-wp-return="battle" data-sl-aria="back">&larr;</button>
+        <button id="battleSoundBtn" class="battle-utility" type="button" data-wp-battle-utility aria-pressed="true" data-sl-aria="sound">♫</button>
         <div class="header-stat"><small data-sl="moves">Moves</small><strong id="moveCount">0</strong></div>
         <div class="header-stat"><small data-sl="time">Time</small><strong id="timeValue">00:00</strong></div>
         <div class="header-stat"><small data-sl="score">Score</small><strong id="scoreValue">500</strong></div>
@@ -151,7 +155,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="game.js?v=20260819-spider-run-preview-v35"></script>
+  <script src="game.js?v=20260831-spider-interface-v36"></script>
   <script src="analytics-ownership.js?v=20260816-spider-v33-es-first-move"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
