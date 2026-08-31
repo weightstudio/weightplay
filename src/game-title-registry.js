@@ -1679,6 +1679,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-burrow-builder": {
+    "__localizedExact": true,
+    "en": "Burrow Builder",
+    "zh-Hant": "地穴建造隊",
+    "zh-Hans": "地穴建造队",
+    "ja": "バロービルダー",
+    "ko": "굴 보금자리 만들기",
+    "es": "Constructor de madrigueras",
+    "pt-BR": "Construtor de Tocas",
+    "fr": "Bâtisseur de terriers",
+    "de": "Bau der Tierhöhle",
+    "it": "Costruttore di tane",
+    "ru": "Строитель нор",
+    "hi": "बिल बनाने वाला",
+    "ar": "بناء الجحور"
+  },
+  "animal-tangle-rescue": {
+    "__localizedExact": true,
+    "en": "Tangle Rescue",
+    "zh-Hant": "纏藤救援",
+    "zh-Hans": "缠藤救援",
+    "ja": "つるほどきレスキュー",
+    "ko": "덩굴 구조 작전",
+    "es": "Rescate de enredos",
+    "pt-BR": "Resgate do emaranhado",
+    "fr": "Sauvetage des lianes",
+    "de": "Rettung aus dem Rankenwirrwarr",
+    "it": "Soccorso tra i rampicanti",
+    "ru": "Спасение из зарослей",
+    "hi": "बेल बचाव",
+    "ar": "إنقاذ الأغصان المتشابكة"
+  },
   "animal-meadow-difference": {
     "__localizedExact": true,
     "en": "Meadow Find",

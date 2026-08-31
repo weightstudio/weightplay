@@ -35,8 +35,13 @@
     const soundText = $("soundToggle").querySelector("[data-copy]");
     if (soundText) soundText.textContent = t(state.sound ? "soundOn" : "soundOff");
     $("soundToggle").setAttribute("aria-pressed", String(state.sound));
+    $("soundToggle").setAttribute("aria-checked", String(state.sound));
     $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound));
     $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
+    $("battleSoundToggle").setAttribute("aria-label", t(state.sound ? "soundOn" : "soundOff"));
+    $("mainSettingsBtn").setAttribute("aria-label", t("settings"));
+    $("mainSettingsPopover").setAttribute("aria-label", t("settings"));
+    $("homeFromBattle").setAttribute("aria-label", t("home"));
     $("localeSelect").setAttribute("aria-label", t("language"));
     if (!$('battleView').hidden) renderRound();
   }
@@ -50,7 +55,24 @@
     if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return;
     try { const AudioCtor = window.AudioContext || window.webkitAudioContext; const audio = new AudioCtor(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "success" ? 640 : 220; gain.gain.setValueAtTime(0.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(0.035, audio.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.14); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) { /* optional audio */ }
   }
-  function showView(id) { ["mainView", "battleView", "resultView"].forEach((viewId) => { const view = $(viewId); const active = viewId === id; view.hidden = !active; view.classList.toggle("is-active", active); }); window.scrollTo(0, 0); }
+  function showView(id) {
+    const mainActive = id === "mainView";
+    const resultActive = id === "resultView";
+    $("mainView").hidden = !mainActive;
+    $("battleView").hidden = mainActive;
+    $("resultView").hidden = !resultActive;
+    $("gameGuide").hidden = !mainActive;
+    $("leaveDialog").hidden = true;
+    $("mainView").classList.toggle("is-active", mainActive);
+    $("battleView").classList.toggle("is-active", !mainActive);
+    $("resultView").classList.toggle("is-active", resultActive);
+    document.body.dataset.screen = mainActive ? "main" : resultActive ? "result" : "battle";
+    if (mainActive) {
+      $("mainSettingsPopover").hidden = true;
+      $("mainSettingsBtn").setAttribute("aria-expanded", "false");
+    }
+    window.scrollTo(0, 0);
+  }
   function makeToken(token, label, interactive, callback) {
     const node = interactive ? document.createElement("button") : document.createElement("div");
     node.className = "token"; node.dataset.token = token; if (interactive) node.type = "button";
@@ -84,7 +106,24 @@
   function finish() { const key = "weightplay-pattern-patch-best-checks"; const prior = Number(safeStorage.get(key)); if (!prior || state.checks < prior) safeStorage.set(key, String(state.checks)); $("resultSummary").textContent = t("summary"); $("bestCount").textContent = safeStorage.get(key) || String(state.checks); showView("resultView"); }
   function goHome() { showView("mainView"); applyLocale(); }
   function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSettings() { const popover = $("mainSettingsPopover"); const open = popover.hidden; popover.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
+  function openLeaveDialog() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
+  function closeLeaveDialog() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
   state.locale = queryLocale();
-  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("homeFromBattle").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome); $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound); });
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.dataset.screen = "main";
+    populateLocales();
+    applyLocale();
+    $("startButton").addEventListener("click", start);
+    $("replayButton").addEventListener("click", start);
+    $("homeFromBattle").addEventListener("click", openLeaveDialog);
+    $("leaveBtn").addEventListener("click", openLeaveDialog);
+    $("continueBtn").addEventListener("click", closeLeaveDialog);
+    $("confirmLeaveBtn").addEventListener("click", goHome);
+    $("homeFromResult").addEventListener("click", goHome);
+    $("mainSettingsBtn").addEventListener("click", toggleSettings);
+    $("soundToggle").addEventListener("click", toggleSound);
+    $("battleSoundToggle").addEventListener("click", toggleSound);
+  });
   window.PATTERN_PATCH_TEST = { rounds, symbols, start, renderRound };
 })();

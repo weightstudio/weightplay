@@ -92,8 +92,8 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 .best-line { margin: 22px 0; color: var(--deep-leaf); }
 .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
 .general-reserve { height: 56px; }
-.battle-ad-reserve { width: min(100%, 920px); height: 56px; margin-inline: auto; background: rgba(229, 240, 213, .82); }
-#battleView[hidden] + .battle-ad-reserve { display: none; }
+.battle-ad-reserve, #battleAdReserve { width: min(100%, 920px); height: 56px; margin-inline: auto; background: rgba(229, 240, 213, .82); }
+#battleView[hidden] + .battle-ad-reserve, #battleView[hidden] + #battleAdReserve { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }
 @media (min-width: 680px) {

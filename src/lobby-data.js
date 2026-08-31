@@ -2606,6 +2606,62 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-31). Keep Burrow Builder planned and
+// Coming Soon while its route remains internal/noindex and its production,
+// Tester, Reviewer, release, and publication gates are still open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-burrow-builder",
+    audience: "general",
+    status: "planned",
+    title: localize(["Burrow Builder", "地穴建造隊", "地穴建造队", "バロービルダー", "굴 보금자리 만들기", "Constructor de madrigueras", "Construtor de Tocas", "Bâtisseur de terriers", "Bau der Tierhöhle", "Costruttore di tane", "Строитель нор", "बिल बनाने वाला", "بناء الجحور"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Shelter Construction Puzzle", "棲地建造益智", "栖地建造益智", "すみか建築パズル", "보금자리 건설 퍼즐", "Puzzle de construcción", "Puzzle de construção", "Puzzle de construction", "Bau-Puzzle", "Puzzle di costruzione", "Пазл строительства", "Пазल строительства", "لغز بناء المأوى"]),
+    description: localize(["Choose a habitat module, then place it into the matching burrow plan.", "選擇棲地模組，再放入相符的地穴藍圖。", "选择栖地模块，再放入相符的地穴蓝图。", "すみかモジュールを選び、合う設計図に置きます。", "보금자리 모듈을 골라 알맞은 설계도에 놓으세요.", "Elige un módulo y colócalo en el plano de madriguera correcto.", "Escolha um módulo e coloque-o no plano de toca certo.", "Choisis un module et place-le dans le bon plan de terrier.", "Wähle ein Modul und setze es in den passenden Höhlenplan.", "Scegli un modulo e posizionalo nel progetto di tana giusto.", "Выберите модуль и поставьте его в подходящий план норы.", "मॉड्यूल चुनकर सही बिल योजना में रखें।", "اختر وحدة وضعها في مخطط الجحر المناسب."]),
+    meta: localize([["3 Burrow Plans", "Tap to Place", "Calm Retry"], ["3 個地穴藍圖", "點選放置", "平靜重試"], ["3 个地穴蓝图", "点击放置", "平静重试"], ["3つの設計図", "タップ配置", "穏やかな再挑戦"], ["굴 설계도 3개", "탭으로 배치", "차분한 재시도"], ["3 planos", "Toca para colocar", "Reintento sereno"], ["3 planos", "Toque para colocar", "Nova tentativa calma"], ["3 plans", "Touche pour placer", "Reprise sereine"], ["3 Pläne", "Tippen zum Platzieren", "Ruhiger Versuch"], ["3 progetti", "Tocca per posare", "Riprova calma"], ["3 плана", "Нажмите для размещения", "Спокойная попытка"], ["3 योजनाएँ", "टैप करके रखें", "शांत पुनः प्रयास"], ["3 مخططات", "اضغط للوضع", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Construction", "Spatial Planning", "Family", "Animal"],
+    skills: ["Planning", "Visual Matching", "Sequencing"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-burrow-builder/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-burrow-builder/assets/animal-burrow-builder-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
+// Weighted General prototype (2026-08-31). Keep Tangle Rescue planned and
+// Coming Soon while its route remains internal/noindex and its production,
+// Tester, Reviewer, release, and publication gates are still open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-tangle-rescue",
+    audience: "general",
+    status: "planned",
+    title: localize(["Tangle Rescue", "纏藤救援", "缠藤救援", "つるほどきレスキュー", "덩굴 구조 작전", "Rescate de enredos", "Resgate do emaranhado", "Sauvetage des lianes", "Rettung aus dem Rankenwirrwarr", "Soccorso tra i rampicanti", "Спасение из зарослей", "बेल बचाव", "إنقاذ الأغصان المتشابكة"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Endpoint Swap Logic Puzzle", "端點交換邏輯益智", "端点交换逻辑益智", "端点入れ替えロジックパズル", "끝점 교환 논리 퍼즐", "Rompecabezas de intercambio de extremos", "Quebra-cabeça de troca de pontas", "Puzzle logique d’échange d’extrémités", "Logikpuzzle mit Endpunkt-Tausch", "Puzzle logico con scambio delle estremità", "Логическая головоломка со сменой концов", "अंत-बिंदु अदला-बदली पहेली", "لغز منطقي لتبديل النهايات"]),
+    description: localize(["Swap two vine endpoints until every rescue trail reaches the matching animal shelter.", "交換兩個藤蔓端點，讓每條救援路徑都連到相符的動物棲所。", "交换两个藤蔓端点，让每条救援路径都连到相符的动物栖所。", "つるの端点を2つ入れ替え、救助の道を正しいすみかへつなごう。", "덩굴 끝점을 두 개씩 바꿔 모든 구조 길이를 알맞은 동물 보금자리에 연결하세요.", "Intercambia dos extremos de liana hasta que cada rescate llegue al refugio animal correcto.", "Troque duas pontas de cipó até cada trilha de resgate chegar ao abrigo certo.", "Échange deux extrémités de liane jusqu’à relier chaque sauvetage au bon refuge.", "Tausche zwei Rankenenden, bis jeder Rettungspfad das passende Tierversteck erreicht.", "Scambia due estremità di rampicante finché ogni sentiero di soccorso raggiunge il rifugio giusto.", "Меняйте местами концы лоз, пока каждый путь спасения не приведёт к нужному убежищу.", "दो बेलों के सिरों की अदला-बदली करें, जब तक हर बचाव-पथ सही पशु आश्रय तक न पहुँचे।", "بدّل طرفي غصنين حتى يصل كل مسار إنقاذ إلى مأوى الحيوان المطابق."]),
+    meta: localize([["3 Rescue Boards", "Swap to Connect", "Calm Retry"], ["3 張救援棋盤", "交換來連線", "平靜重試"], ["3 张救援棋盘", "交换来连线", "平静重试"], ["3つの救助盤", "交換してつなぐ", "穏やかな再挑戦"], ["구조 보드 3개", "바꿔서 연결", "차분한 재시도"], ["3 tableros", "Intercambia y conecta", "Reintento sereno"], ["3 tabuleiros", "Troque e conecte", "Nova tentativa calma"], ["3 plateaux", "Échange et relie", "Reprise sereine"], ["3 Rettungstafeln", "Tauschen und verbinden", "Ruhiger Versuch"], ["3 tavole", "Scambia e collega", "Riprova calma"], ["3 доски", "Меняй и соединяй", "Спокойная попытка"], ["3 बोर्ड", "बदलकर जोड़ें", "शांत पुनः प्रयास"], ["3 ألواح إنقاذ", "بدّل لتصل", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Spatial Logic", "Connection", "Family", "Animal"],
+    skills: ["Planning", "Spatial Reasoning", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-tangle-rescue/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype: planned identity only; source, art, Tester,
 // Reviewer, and release gates remain internal until their exact checks pass.
 (() => {

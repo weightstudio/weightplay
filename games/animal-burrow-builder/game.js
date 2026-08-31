@@ -1,0 +1,49 @@
+(function () {
+  "use strict";
+  const locales = window.BURROW_BUILDER_LOCALES;
+  const localeKeys = locales.__localeKeys;
+  const rounds = [
+    { slots: ["stone", "leaf", "acorn"], options: ["stone", "leaf", "acorn", "flower"] },
+    { slots: ["wood", "clay", "flower"], options: ["clay", "flower", "wood", "acorn"] },
+    { slots: ["stone", "wood", "acorn"], options: ["acorn", "stone", "wood", "leaf"] }
+  ];
+  const moduleSymbols = { stone: "⬟", leaf: "❧", acorn: "●", flower: "✿", wood: "▰", clay: "◉" };
+  const moduleNames = { en: { stone: "Stone floor", leaf: "Leaf canopy", acorn: "Acorn nest", flower: "Flower nest", wood: "Wood floor", clay: "Clay shelter" }, "zh-Hant": { stone: "石頭地板", leaf: "葉片遮棚", acorn: "橡果巢室", flower: "花朵巢室", wood: "木頭地板", clay: "黏土遮棚" } };
+  const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant" };
+  const state = { locale: "en", sound: true, roundIndex: 0, placements: 0, completed: 0, selected: null, placed: [] };
+  const $ = (id) => document.getElementById(id);
+  const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) {} } };
+  function queryLocale() { const q = new URLSearchParams(window.location.search).get("lang"); if (q && locales[q]) return q; const seg = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase(); return routeLocaleMap[seg] || safeStorage.get("weightplay-burrow-locale") || "en"; }
+  function t(key, vars = {}) { const copy = locales[state.locale] || locales.en; const value = copy[key] || locales.en[key] || key; return value.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
+  function name(token) { return (moduleNames[state.locale] || moduleNames.en)[token] || token; }
+  function applyLocale() {
+    const copy = locales[state.locale] || locales.en;
+    document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale; document.documentElement.dir = copy.direction || "ltr";
+    document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    $("mainSettingsBtn").setAttribute("aria-label", t("settings")); $("mainSettingsPopover").setAttribute("aria-label", t("settings")); $("homeFromBattle").setAttribute("aria-label", t("home")); $("localeSelect").setAttribute("aria-label", t("language"));
+    $("soundToggle").setAttribute("aria-pressed", String(state.sound)); $("soundToggle").setAttribute("aria-checked", String(state.sound)); $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound)); $("battleSoundToggle").setAttribute("aria-label", t(state.sound ? "soundOn" : "soundOff")); $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
+    if (!$('battleView').hidden) renderRound();
+  }
+  function populateLocales() { const select = $("localeSelect"); localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key]; select.append(option); }); select.value = state.locale; select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-burrow-locale", state.locale); applyLocale(); }); }
+  function tone(kind) { if (!state.sound || !(window.AudioContext || window.webkitAudioContext)) return; try { const C = window.AudioContext || window.webkitAudioContext; const a = new C(); const o = a.createOscillator(); const g = a.createGain(); o.frequency.value = kind === "success" ? 620 : 190; g.gain.setValueAtTime(.0001, a.currentTime); g.gain.exponentialRampToValueAtTime(.03, a.currentTime + .01); g.gain.exponentialRampToValueAtTime(.0001, a.currentTime + .11); o.connect(g).connect(a.destination); o.start(); o.stop(a.currentTime + .12); o.addEventListener("ended", () => a.close(), { once: true }); } catch (_) {} }
+  function showView(id) { const main = id === "mainView"; const result = id === "resultView"; $("mainView").hidden = !main; $("gameGuide").hidden = !main; $("battleView").hidden = main; $("resultView").hidden = !result; $("leaveDialog").hidden = true; document.body.dataset.screen = main ? "main" : result ? "result" : "battle"; if (main) { $("mainSettingsPopover").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); } window.scrollTo(0, 0); }
+  function start() { state.roundIndex = 0; state.placements = 0; state.completed = 0; state.selected = null; state.placed = []; showView("battleView"); renderRound(); }
+  function renderRound() {
+    const round = rounds[state.roundIndex]; $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length }); $("placementCount").textContent = String(state.placements); $("instruction").textContent = t("instruction");
+    const blueprint = $("blueprint"); blueprint.replaceChildren();
+    ["floor", "shelter", "nest"].forEach((slot, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "blueprint-slot"; button.dataset.slot = slot; const token = state.placed[index]; if (token) { button.classList.add("is-filled"); button.innerHTML = `<span class="slot-symbol" aria-hidden="true">${moduleSymbols[token]}</span><span>${name(token)}</span><small>${t("placed")}</small>`; button.disabled = true; } else { button.innerHTML = `<span class="slot-label">${t(slot)}</span><small>${t("missing")}</small>`; button.setAttribute("aria-label", `${t(slot)} — ${t("missing")}`); button.addEventListener("click", () => place(slot, index, button)); } blueprint.append(button); });
+    const moduleGrid = $("moduleGrid"); moduleGrid.replaceChildren(...round.options.map((token) => { const button = document.createElement("button"); button.type = "button"; button.className = "module-card"; button.dataset.module = token; button.disabled = state.placed.includes(token); button.setAttribute("aria-label", t("chooseModule", { module: name(token) })); button.innerHTML = `<span class="module-symbol" aria-hidden="true">${moduleSymbols[token]}</span><span>${name(token)}</span>`; if (state.selected === token) button.classList.add("is-selected"); button.addEventListener("click", () => select(token)); return button; }));
+    $("selectionHint").textContent = state.selected ? t("selected", { module: name(state.selected) }) : "";
+  }
+  function select(token) { state.selected = token; $("selectionHint").textContent = t("selected", { module: name(token) }); tone("select"); renderRound(); }
+  function place(slot, index, button) { if (!state.selected) { $("feedback").textContent = t("instruction"); button.classList.add("needs-selection"); window.setTimeout(() => button.classList.remove("needs-selection"), 350); return; } state.placements += 1; $("placementCount").textContent = String(state.placements); const correctSlot = ["floor", "shelter", "nest"][rounds[state.roundIndex].slots.indexOf(state.selected)]; if (correctSlot !== slot) { $("feedback").textContent = t("wrong"); $("feedback").className = "feedback is-wrong"; tone("wrong"); button.classList.add("is-wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 420); return; } state.placed[index] = state.selected; state.completed += 1; state.selected = null; $("feedback").textContent = t("correct"); $("feedback").className = "feedback is-correct"; tone("success"); renderRound(); if (state.placed.filter(Boolean).length === 3) window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; state.placed = []; $("feedback").textContent = ""; renderRound(); } else finish(); }, 420); }
+  function finish() { const key = "weightplay-burrow-best-placements"; const prior = Number(safeStorage.get(key)); if (!prior || state.placements < prior) safeStorage.set(key, String(state.placements)); $("resultSummary").textContent = t("summary", { count: state.placements }); $("bestCount").textContent = safeStorage.get(key) || String(state.placements); showView("resultView"); }
+  function goHome() { showView("mainView"); applyLocale(); }
+  function toggleSound() { state.sound = !state.sound; applyLocale(); }
+  function toggleSettings() { const panel = $("mainSettingsPopover"); const open = panel.hidden; panel.hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }
+  function openLeave() { $("leaveDialog").hidden = false; $("continueBtn").focus(); }
+  function closeLeave() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
+  state.locale = queryLocale();
+  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startButton").addEventListener("click", start); $("replayButton").addEventListener("click", start); $("homeFromBattle").addEventListener("click", openLeave); $("leaveBtn").addEventListener("click", openLeave); $("continueBtn").addEventListener("click", closeLeave); $("confirmLeaveBtn").addEventListener("click", goHome); $("homeFromResult").addEventListener("click", goHome); $("mainSettingsBtn").addEventListener("click", toggleSettings); $("soundToggle").addEventListener("click", toggleSound); $("battleSoundToggle").addEventListener("click", toggleSound); });
+  window.BURROW_BUILDER_TEST = { rounds, start, renderRound };
+})();

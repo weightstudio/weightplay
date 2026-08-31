@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Burrow Builder cover">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#dff4e6"/><stop offset="1" stop-color="#8fc9ad"/></linearGradient></defs>
+  <rect width="800" height="800" rx="72" fill="url(#g)"/>
+  <circle cx="610" cy="170" r="74" fill="#ffe7a3" opacity=".9"/>
+  <path d="M90 610c120-92 198-105 318-80 104 22 180-1 302-83v174H90z" fill="#5a9b76"/>
+  <path d="M180 595c37-115 128-172 222-146 51 14 89 48 121 104-83-27-144-16-205 21-52 31-93 39-138 21z" fill="#7b533e"/>
+  <path d="M239 551c34-71 84-102 146-92 46 7 76 33 100 70-72-13-133 10-180 35-26 14-45 12-66-13z" fill="#e9bf83"/>
+  <path d="M302 493h115v57H302z" fill="#f6dca8"/>
+  <circle cx="504" cy="448" r="50" fill="#9b6b4f"/><circle cx="486" cy="438" r="7" fill="#2d4a3a"/><circle cx="522" cy="438" r="7" fill="#2d4a3a"/>
+  <path d="M480 460q25 22 50 0" fill="none" stroke="#2d4a3a" stroke-width="7" stroke-linecap="round"/>
+  <path d="M450 399q32-35 75-2" fill="none" stroke="#5d3d31" stroke-width="16" stroke-linecap="round"/>
+  <path d="M134 259q34-41 68 0M102 301q46-48 92 0" fill="none" stroke="#4c8a68" stroke-width="14" stroke-linecap="round"/>
+  <g fill="#fff5cf"><circle cx="117" cy="684" r="10"/><circle cx="675" cy="635" r="12"/><circle cx="716" cy="576" r="8"/></g>
+</svg>
