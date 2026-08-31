@@ -1865,25 +1865,50 @@ const essentialLobbyCopy = {
   });
 
   const extendedCategoryCopy = {
-    en: ["Action", "Animals"],
-    "zh-Hant": ["動作", "動物"],
-    "zh-Hans": ["动作", "动物"],
-    ja: ["アクション", "動物"],
-    ko: ["액션", "동물"],
-    es: ["Acción", "Animales"],
-    "pt-BR": ["Ação", "Animais"],
-    fr: ["Action", "Animaux"],
-    de: ["Action", "Tiere"],
-    it: ["Azione", "Animali"],
-    ru: ["Экшен", "Животные"],
-    hi: ["एक्शन", "जानवर"],
-    ar: ["أكشن", "حيوانات"],
+    en: ["Action", "Animals", "Classic", "Word"],
+    "zh-Hant": ["動作", "動物", "經典", "文字"],
+    "zh-Hans": ["动作", "动物", "经典", "文字"],
+    ja: ["アクション", "動物", "クラシック", "ワード"],
+    ko: ["액션", "동물", "클래식", "단어"],
+    es: ["Acción", "Animales", "Clásicos", "Palabras"],
+    "pt-BR": ["Ação", "Animais", "Clássicos", "Palavras"],
+    fr: ["Action", "Animaux", "Classique", "Mots"],
+    de: ["Action", "Tiere", "Klassiker", "Wörter"],
+    it: ["Azione", "Animali", "Classici", "Parole"],
+    ru: ["Экшен", "Животные", "Классика", "Слова"],
+    hi: ["एक्शन", "जानवर", "क्लासिक", "शब्द"],
+    ar: ["أكشن", "حيوانات", "كلاسيكي", "كلمات"],
   };
-  Object.entries(extendedCategoryCopy).forEach(([locale, [action, animal]]) => {
+  Object.entries(extendedCategoryCopy).forEach(([locale, [action, animal, classic, word]]) => {
     dictionaries[locale] = {
       ...(dictionaries[locale] || {}),
       "category.Action": action,
       "category.Animal": animal,
+      "category.Classic": classic,
+      "category.Word": word,
+    };
+  });
+
+  const extendedSkillCopy = {
+    en: ["Timing", "Reaction"],
+    "zh-Hant": ["時機", "反應"],
+    "zh-Hans": ["时机", "反应"],
+    ja: ["タイミング", "反応"],
+    ko: ["타이밍", "반응"],
+    es: ["Tiempo", "Reacción"],
+    "pt-BR": ["Timing", "Reação"],
+    fr: ["Timing", "Réaction"],
+    de: ["Timing", "Reaktion"],
+    it: ["Tempismo", "Reazione"],
+    ru: ["Тайминг", "Реакция"],
+    hi: ["समय-साधना", "प्रतिक्रिया"],
+    ar: ["التوقيت", "رد الفعل"],
+  };
+  Object.entries(extendedSkillCopy).forEach(([locale, [timing, reaction]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "skill.Timing": timing,
+      "skill.Reaction": reaction,
     };
   });
 

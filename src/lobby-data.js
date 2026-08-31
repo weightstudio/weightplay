@@ -2655,6 +2655,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-08-31). Keep Cushion Stack planned and
+// Coming Soon while its internal prototype remains behind the art, Tester,
+// Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-cushion-stack",
+    audience: "general",
+    status: "planned",
+    title: localize(["Cushion Stack", "軟墊堆堆樂", "软垫堆堆乐", "クッションスタック", "쿠션 쌓기", "Torre de cojines", "Torre de almofadas", "Pile de coussins", "Kissenstapel", "Torre di cuscini", "Башня подушек", "कुशन टावर", "Башня подушек"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Stability Stack Puzzle", "穩定堆疊益智", "稳定堆叠益智", "安定スタックパズル", "안정 쌓기 퍼즐", "Puzzle de apilado estable", "Puzzle de empilhar com equilíbrio", "Puzzle de pile stable", "Stapel-Puzzle", "Puzzle della torre stabile", "Пазл устойчивой башни", "स्थिर ढेर पहेली", "لغز التكديس المتوازن"]),
+    description: localize(["Choose the next soft block so Taro can build a safe little lookout.", "選出下一塊柔軟積木，幫塔羅蓋好安全的小瞭望台。", "选出下一块柔软积木，帮塔罗盖好安全的小瞭望台。", "次のやわらかブロックを選び、タロの安全な見張り台を作ろう。", "다음 폭신한 블록을 골라 타로의 안전한 전망대를 만들어 보세요.", "Elige el siguiente bloque blando para construir un mirador seguro.", "Escolha o próximo bloco macio para construir um mirante seguro.", "Choisis le prochain bloc doux pour bâtir un belvédère sûr.", "Wähle den nächsten weichen Block für einen sicheren Ausguck.", "Scegli il prossimo blocco morbido per costruire un punto d'osservazione sicuro.", "Выберите следующий мягкий блок для безопасной смотровой площадки.", "अगला मुलायम ब्लॉक चुनकर सुरक्षित चौकी बनाएं।", "اختر الكتلة اللينة التالية لبناء منصة مراقبة آمنة."]),
+    meta: localize([["3 Lookouts", "Pick for Stability", "Calm Retry"], ["3 座瞭望台", "選出穩定積木", "平靜重試"], ["3 座瞭望台", "选出稳定积木", "平静重试"], ["3つの見張り台", "安定を選ぶ", "穏やかな再挑戦"], ["전망대 3개", "안정을 골라요", "차분한 재시도"], ["3 miradores", "Elige estabilidad", "Reintento sereno"], ["3 mirantes", "Escolha estabilidade", "Nova tentativa calma"], ["3 belvédères", "Choisis la stabilité", "Reprise sereine"], ["3 Ausgucke", "Stabilität wählen", "Ruhiger Versuch"], ["3 belvederi", "Scegli la stabilità", "Riprova calma"], ["3 площадки", "Выберите устойчивость", "Спокойная попытка"], ["3 चौकियां", "स्थिरता चुनें", "शांत पुनः प्रयास"], ["3 منصات", "اختر الثبات", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Construction", "Spatial Planning", "Family", "Animal"],
+    skills: ["Planning", "Spatial Reasoning", "Sequencing"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-cushion-stack/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-cushion-stack/assets/animal-cushion-stack-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-31). Keep Burrow Builder planned and
 // Coming Soon while its route remains internal/noindex and its production,
 // Tester, Reviewer, release, and publication gates are still open.

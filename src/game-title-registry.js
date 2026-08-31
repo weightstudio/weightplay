@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-cushion-stack": {
+    "__localizedExact": true,
+    "en": "Cushion Stack",
+    "zh-Hant": "軟墊堆堆樂",
+    "zh-Hans": "软垫堆堆乐",
+    "ja": "クッションスタック",
+    "ko": "쿠션 쌓기",
+    "es": "Torre de cojines",
+    "pt-BR": "Torre de almofadas",
+    "fr": "Pile de coussins",
+    "de": "Kissenstapel",
+    "it": "Torre di cuscini",
+    "ru": "Башня подушек",
+    "hi": "कुशन टावर",
+    "ar": "Башня подушек"
+  },
   "animal-burrow-builder": {
     "__localizedExact": true,
     "en": "Burrow Builder",
