@@ -1670,6 +1670,7 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
 }
 
 #stagePanel.stage-panel {
+  --wp-stage-art: url("../../assets/animal-reef-fisher-cover.webp");
   position: fixed;
   inset: 0;
   z-index: 40;
@@ -1913,9 +1914,9 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
   width: 96px;
   min-width: 96px;
   max-width: 96px;
-  height: 42px;
-  min-height: 42px;
-  max-height: 42px;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
   padding: 4px 6px;
   overflow: hidden;
   border-radius: 8px;
