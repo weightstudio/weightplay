@@ -7,10 +7,13 @@ button { cursor:pointer; }
 button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid #f3ad49; outline-offset:3px; }
 .screen[hidden], .game-page-info[hidden] { display:none !important; }
 .main-canvas, .stage-canvas, .battle-canvas { width:min(920px,calc(100% - 28px)); margin:0 auto; }
+#mainScreen { width:min(920px,100%); margin:0 auto; }
+.stage-canvas, .battle-canvas { width:min(920px,100%); }
 .topbar, .panel-head { min-height:64px; height:64px; display:grid; grid-template-columns:58px minmax(0,1fr) 48px; gap:8px; align-items:center; }
 .topbar { position:relative; }
 .shell-return, .back-btn, .icon-btn { width:48px; height:48px; min-width:48px; min-height:48px; display:grid; place-items:center; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); text-decoration:none; }
 .shell-return { width:58px; grid-template-columns:16px 28px; gap:4px; padding:4px; font-size:1.25rem; line-height:1; overflow:hidden; }
+.shell-return img { width:28px; height:28px; object-fit:contain; }
 .shell-mark { color:var(--coral); }
 .shell-title, .panel-head h2 { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; }
 .shell-title { font-size:21px; }
@@ -18,7 +21,7 @@ button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid 
 .icon-btn, .back-btn { border:1px solid var(--line); padding:0; font-size:1.3rem; }
 .hero-card, .guide, .stage-canvas, .clue-card, .grid-card, .result-panel, .leave-dialog { background:rgba(255,253,247,.93); border:1px solid rgba(79,125,94,.23); border-radius:24px; box-shadow:var(--shadow); }
 .hero-card { min-height:420px; display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:28px; align-items:center; padding:clamp(24px,5vw,60px); margin:20px 0 14px; overflow:hidden; }
-.cover-art { justify-self:center; width:420px; height:420px; max-width:100%; display:block; border-radius:24px; object-fit:cover; background:var(--moss); }
+.cover-art { justify-self:center; width:min(420px,100%); height:auto; aspect-ratio:1; max-width:100%; display:block; border-radius:24px; object-fit:cover; background:var(--moss); }
 .hero-copy { min-width:0; }
 .eyebrow { margin:0 0 8px; color:var(--coral); font-size:.74rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
 h1, h2, h3, p { margin-top:0; }
@@ -30,6 +33,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .hero-actions, .battle-actions, .result-actions { display:flex; flex-wrap:wrap; gap:10px; }
 .primary-btn, .secondary-btn, .text-btn { min-height:48px; border-radius:14px; border:1px solid transparent; font-weight:800; }
 .primary-btn { padding:12px 18px; background:var(--deep-leaf); color:#fff; box-shadow:0 8px 18px rgba(49,91,73,.22); }
+#startBtn { min-height:52px; }
 .secondary-btn { padding:10px 16px; background:#fff; border-color:var(--line); color:var(--deep-leaf); }
 .text-btn { padding:8px 14px; background:transparent; color:var(--muted); text-decoration:underline; }
 .primary-btn:hover, .secondary-btn:hover, .text-btn:hover, .icon-btn:hover, .back-btn:hover, .shell-return:hover { transform:translateY(-1px); }
@@ -90,7 +94,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 [dir="rtl"] .settings-head, [dir="rtl"] .setting-row, [dir="rtl"] .mission-row { direction:rtl; }
 body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
 @media (max-width:700px) {
-  .main-canvas, .stage-canvas, .battle-canvas, .guide { width:calc(100% - 20px); }
+  .main-canvas, .guide { width:calc(100% - 20px); }
   .topbar { height:88px; min-height:88px; grid-template-rows:48px 32px; }
   .shell-title { grid-column:1 / -1; grid-row:2; font-size:20px; }
   .topbar .shell-return, .topbar .icon-btn { grid-row:1; z-index:1; }
