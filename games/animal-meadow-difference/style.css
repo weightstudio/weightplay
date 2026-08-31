@@ -25,6 +25,7 @@ button, select { font: inherit; }
 button { cursor: pointer; }
 .app-shell { width: min(100%, 980px); margin: 0 auto; padding: 22px 18px 0; }
 .view { min-height: calc(100vh - 22px); padding-bottom: 18px; }
+.view#battleView { padding: 18px; border-radius: 24px; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
 .view[hidden] { display: none; }
 .brand-line { display: flex; align-items: center; gap: 8px; color: var(--deep-leaf); font-weight: 800; letter-spacing: .04em; }
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--sun); color: #fff; }
@@ -32,6 +33,7 @@ button { cursor: pointer; }
 .hero-card, .control-card, .help-card, .result-card { background: rgba(255, 253, 247, .9); border: 1px solid rgba(113, 155, 104, .23); border-radius: 24px; box-shadow: var(--shadow); }
 .hero-card { display: grid; gap: 4px; margin-top: 20px; overflow: hidden; }
 .cover-art { width: 100%; height: auto; aspect-ratio: 1.35; object-fit: cover; background: var(--meadow); }
+.guide-art { display: block; width: min(170px, 42vw); height: 170px; margin: 0 auto 12px; object-fit: contain; object-position: center; }
 .hero-copy { padding: 22px 22px 26px; }
 .eyebrow { margin: 0 0 8px; color: var(--coral); font-size: .74rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 h1, h2, p { margin-top: 0; }
@@ -64,6 +66,7 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 .panel-label { margin-bottom: 10px; color: var(--deep-leaf); font-size: .84rem; font-weight: 800; text-align: center; }
 .difference-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
 .tile { display: grid; place-items: center; min-width: 0; min-height: 58px; aspect-ratio: 1; padding: 0; border: 1px solid rgba(61, 105, 79, .2); border-radius: 13px; background: linear-gradient(145deg, #eef6e5, #d9eaca); color: var(--deep-leaf); font-size: clamp(1.4rem, 6vw, 2.2rem); box-shadow: inset 0 -3px 0 rgba(61, 105, 79, .09); }
+.tile span.has-sprite { display: block; width: 70%; height: 70%; background-image: url("assets/animal-meadow-difference-object-atlas.png"); background-position: var(--sprite-position) center; background-repeat: no-repeat; background-size: 800% 100%; font-size: 0; }
 .tile:not(:disabled):hover { background: #fff5cf; border-color: #e4bf63; transform: translateY(-1px); }
 .tile:disabled { cursor: default; }
 .tile.is-wrong { background: #ffe5d9; border-color: var(--coral); animation: nudge .24s linear; }

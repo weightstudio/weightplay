@@ -9,6 +9,7 @@
     { base: ["sun", "dot", "diamond", "wave", "leaf", "crescent", "hex", "circle", "triangle"], changedIndex: 2, changedTo: "flower" },
   ];
   const symbols = { leaf: "✦", droplet: "●", circle: "○", triangle: "▲", star: "★", wave: "≈", diamond: "◆", dot: "•", crescent: "☾", sun: "☀", hex: "⬢", flower: "✿" };
+  const spritePositions = { leaf: "0%", droplet: "14.2857%", circle: "28.5714%", triangle: "42.8571%", star: "57.1428%", wave: "14.2857%", diamond: "28.5714%", dot: "42.8571%", crescent: "71.4285%", sun: "57.1428%", hex: "42.8571%", flower: "28.5714%" };
   const state = { locale: "en", sound: true, roundIndex: 0, checks: 0, solved: 0 };
   const $ = (id) => document.getElementById(id);
   const safeStorage = {
@@ -72,7 +73,10 @@
     node.dataset.shape = token;
     node.setAttribute("aria-label", t("tile", { row: Math.floor(index / 3) + 1, tile: (index % 3) + 1, shape: (locales[state.locale].shapeNames || {})[token] || token }));
     const symbol = document.createElement("span");
-    symbol.setAttribute("aria-hidden", "true"); symbol.textContent = symbols[token]; node.append(symbol);
+    symbol.setAttribute("aria-hidden", "true"); symbol.textContent = symbols[token];
+    symbol.classList.toggle("has-sprite", spritePositions[token] !== undefined);
+    if (spritePositions[token] !== undefined) symbol.style.setProperty("--sprite-position", spritePositions[token]);
+    node.append(symbol);
     if (interactive) { node.type = "button"; node.addEventListener("click", () => chooseTile(index, node)); }
     return node;
   }

@@ -111,19 +111,19 @@
       ar: ["قطع مظلة الأشجار", "مرر على الثمار الآمنة وابنِ سلسلة وتجنب قرون البذور الداكنة.", "تحدٍّ سريع لرد الفعل مع الفاكهة."],
     },
     "animal-bounce-brawl": {
-      en: ["Bounce Brawl", "A toy arena about timing, ricochets, and sending a foam challenger off balance.", "A soft physics arena with friendly knockback."],
-      "zh-Hant": ["彈跳鬥場", "在玩具鬥場掌握時機與反彈，把泡棉對手撞到失去平衡。", "帶有友善擊退效果的柔軟物理鬥場。"],
-      "zh-Hans": ["弹跳斗场", "在玩具斗场掌握时机与反弹，把泡棉对手撞得失去平衡。", "带有友善击退效果的柔软物理斗场。"],
-      ja: ["バウンス乱闘", "タイミングと反射を使い、フォームの相手をバランス崩しに追い込む玩具アリーナ。", "やさしいノックバックの物理アリーナ。"],
-      ko: ["바운스 난투", "타이밍과 튕김을 활용해 폼 상대를 균형 잃게 만드는 장난감 경기장입니다.", "친근한 밀치기가 있는 부드러운 물리 경기장입니다."],
-      es: ["Duelo de rebotes", "Un campo de juguete de tiempos y rebotes para desequilibrar a un rival de espuma.", "Una arena de física amable con empujones."],
-      "pt-BR": ["Briga de Rebotes", "Uma arena de brinquedo de tempo e ricochetes para desequilibrar um rival de espuma.", "Uma arena de física leve com empurrões amigáveis."],
-      fr: ["Baston rebondissant", "Une arène jouet de timing et de rebonds pour déséquilibrer un rival en mousse.", "Une arène physique douce avec recul amusant."],
-      de: ["Hüpfduell", "Eine Spielzeugarena für Timing und Abpraller, um einen Schaumgegner aus dem Gleichgewicht zu bringen.", "Eine sanfte Physikarena mit freundlichem Rückstoß."],
-      it: ["Rissa rimbalzante", "Un'arena giocattolo di tempismo e rimbalzi per sbilanciare un rivale di gommapiuma.", "Un'arena fisica morbida con spinte amichevoli."],
-      ru: ["Прыгучая схватка", "Игрушечная арена с таймингом и рикошетами, где нужно сбить пенного соперника.", "Мягкая физическая арена с дружеским отбрасыванием."],
-      hi: ["उछलती भिड़ंत", "समय और टकराव से फोम प्रतिद्वंद्वी का संतुलन बिगाड़ने वाला खिलौना अखाड़ा।", "मज़ेदार नॉकबैक वाला नरम भौतिकी अखाड़ा।"],
-      ar: ["نزال الارتداد", "ساحة ألعاب تعتمد على التوقيت والارتداد لإخلال توازن خصم إسفنجي.", "ساحة فيزياء لطيفة مع دفع مرح."],
+      en: ["Bounce Brawl", "A toy arena about timing, ricochets, and sending a foam challenger off balance.", "A soft physics arena with friendly knockback.", "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena."],
+      "zh-Hant": ["彈跳鬥場", "在玩具鬥場掌握時機與反彈，把泡棉對手撞到失去平衡。", "帶有友善擊退效果的柔軟物理鬥場。", "計算你的彈跳時間，選擇泡沫工具，並在有趣的物理競技場中讓對手失去平衡。"],
+      "zh-Hans": ["弹跳斗场", "在玩具斗场掌握时机与反弹，把泡棉对手撞得失去平衡。", "带有友善击退效果的柔软物理斗场。", "计算你的弹跳时间，选择泡沫工具，并在有趣的物理竞技场中让对手失去平衡。"],
+      ja: ["バウンス乱闘", "タイミングと反射を使い、フォームの相手をバランス崩しに追い込む玩具アリーナ。", "やさしいノックバックの物理アリーナ。", "遊び心のある物理アリーナで、バウンスのタイミングを計り、フォームツールを選択し、ライバルのバランスを崩します。"],
+      ko: ["바운스 난투", "타이밍과 튕김을 활용해 폼 상대를 균형 잃게 만드는 장난감 경기장입니다.", "친근한 밀치기가 있는 부드러운 물리 경기장입니다.", "재미있는 물리 경기장에서 바운스 시간을 맞추고, 폼 도구를 선택하고, 라이벌의 균형을 무너뜨리세요."],
+      es: ["Duelo de rebotes", "Un campo de juguete de tiempos y rebotes para desequilibrar a un rival de espuma.", "Una arena de física amable con empujones.", "Calcula tus rebotes, elige herramientas de espuma y desequilibra al rival en un divertido campo de física."],
+      "pt-BR": ["Briga de Rebotes", "Uma arena de brinquedo de tempo e ricochetes para desequilibrar um rival de espuma.", "Uma arena de física leve com empurrões amigáveis.", "Cronometre seus saltos, escolha ferramentas de espuma e desequilibre o rival em uma divertida arena de física."],
+      fr: ["Baston rebondissant", "Une arène jouet de timing et de rebonds pour déséquilibrer un rival en mousse.", "Une arène physique douce avec recul amusant.", "Chronométrez vos rebonds, choisissez des outils en mousse et déséquilibrez votre rival dans une arène physique ludique."],
+      de: ["Hüpfduell", "Eine Spielzeugarena für Timing und Abpraller, um einen Schaumgegner aus dem Gleichgewicht zu bringen.", "Eine sanfte Physikarena mit freundlichem Rückstoß.", "Planen Sie Ihre Sprünge, wählen Sie Schaumstoffwerkzeuge und bringen Sie den Rivalen in einer spielerischen Physik-Arena aus dem Gleichgewicht."],
+      it: ["Rissa rimbalzante", "Un'arena giocattolo di tempismo e rimbalzi per sbilanciare un rivale di gommapiuma.", "Un'arena fisica morbida con spinte amichevoli.", "Cronometra i rimbalzi, scegli gli strumenti di schiuma e fai perdere l'equilibrio al rivale in una giocosa arena di fisica."],
+      ru: ["Прыгучая схватка", "Игрушечная арена с таймингом и рикошетами, где нужно сбить пенного соперника.", "Мягкая физическая арена с дружеским отбрасыванием.", "Рассчитывайте свои отскоки, выбирайте пенопластовые инструменты и выбивайте соперника из равновесия на игровой арене, основанной на физике."],
+      hi: ["उछलती भिड़ंत", "समय और टकराव से फोम प्रतिद्वंद्वी का संतुलन बिगाड़ने वाला खिलौना अखाड़ा।", "मज़ेदार नॉकबैक वाला नरम भौतिकी अखाड़ा।", "अपनी उछाल का समय निर्धारित करें, फोम टूल चुनें, और एक चंचल भौतिकी क्षेत्र में प्रतिद्वंद्वी को संतुलन से बाहर कर दें।"],
+      ar: ["نزال الارتداد", "ساحة ألعاب تعتمد على التوقيت والارتداد لإخلال توازن خصم إسفنجي.", "ساحة فيزياء لطيفة مع دفع مرح.", "حدد توقيت ارتداداتك، واختر الأدوات الرغوية، وأخل بتوازن المنافس في ساحة الفيزياء المرحة."],
     },
     "animal-frost-maze": {
       en: ["Frostline Rescue", "Open the frozen route, collect every berry, and keep one step ahead of the snow drifter.", "A route-changing ice maze rescue."],
@@ -180,10 +180,11 @@
     sourceToTranslation.set("Retry", values.retry); sourceToTranslation.set("Next", values.next);
     sourceToTranslation.set("How to Play", values.howTo); sourceToTranslation.set("Back", values.back);
     Object.entries(fixedText[locale] || fixedText.en).forEach(([source, translated]) => sourceToTranslation.set(source, translated));
-    const [title, lede, guide] = currentCopy(); sourceToTranslation.set("WEIGHTPLAY · INTERNAL PROTOTYPE", locale === "en" ? "WEIGHTPLAY · INTERNAL PROTOTYPE" : "WEIGHTPLAY · " + (locale === "zh-Hant" ? "內部原型" : locale === "zh-Hans" ? "内部原型" : "INTERNAL PROTOTYPE"));
+    const [title, lede, guide, guideSummary] = currentCopy(); sourceToTranslation.set("WEIGHTPLAY · INTERNAL PROTOTYPE", locale === "en" ? "WEIGHTPLAY · INTERNAL PROTOTYPE" : "WEIGHTPLAY · " + (locale === "zh-Hant" ? "內部原型" : locale === "zh-Hans" ? "内部原型" : "INTERNAL PROTOTYPE"));
     sourceToTranslation.set(gameCopy[gameId]?.en?.[0] || title, title);
     sourceToTranslation.set(gameCopy[gameId]?.en?.[1] || lede, lede);
     sourceToTranslation.set(gameCopy[gameId]?.en?.[2] || guide, guide);
+    if (gameCopy[gameId]?.en?.[3] && guideSummary) sourceToTranslation.set(gameCopy[gameId].en[3], guideSummary);
   }
   function dynamicTranslate(value) {
     const d = dynamicLabels[locale] || dynamicLabels.en;
@@ -228,7 +229,7 @@
       const key = element.dataset.fiveCopy;
       const values = common[locale] || common.en;
       const copy = currentCopy();
-      const map = { title: copy[0], lede: copy[1], guideBody: copy[2], start: values.start, howTo: values.howTo, language: values.language };
+      const map = { title: copy[0], lede: copy[1], guideBody: copy[2], guideSummary: copy[3], start: values.start, howTo: values.howTo, language: values.language };
       if (map[key] !== undefined) element.textContent = map[key];
     });
     root.querySelectorAll?.("[data-five-aria]").forEach((element) => {

@@ -9,13 +9,23 @@
     { pattern: ["diamond", "circle", "diamond", "circle", "?", "circle", "diamond", "circle", "diamond"], answer: "diamond", options: ["diamond", "triangle", "flower"] },
   ];
   const symbols = { leaf: "✦", sun: "☀", moon: "☾", dot: "•", star: "★", droplet: "●", wave: "≈", diamond: "◆", circle: "○", triangle: "▲", flower: "✿" };
+  const markerFiles = Object.fromEntries(Object.keys(symbols).map((token) => [token, `assets/animal-pattern-patch-marker-${token}.png`]));
+  markerFiles.mismatch = "assets/animal-pattern-patch-marker-mismatch.png";
+  markerFiles.completion = "assets/animal-pattern-patch-marker-completion.png";
   const state = { locale: "en", sound: true, roundIndex: 0, checks: 0, solved: 0 };
   const $ = (id) => document.getElementById(id);
   const safeStorage = {
     get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } },
     set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) { /* private mode */ } },
   };
-  function queryLocale() { const value = new URLSearchParams(window.location.search).get("lang"); return value && locales[value] ? value : (safeStorage.get("weightplay-pattern-locale") || "en"); }
+  const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  function queryLocale() {
+    const value = new URLSearchParams(window.location.search).get("lang");
+    if (value && locales[value]) return value;
+    const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+    const routedLocale = routeLocaleMap[routeSegment];
+    return routedLocale && locales[routedLocale] ? routedLocale : (safeStorage.get("weightplay-pattern-locale") || "en");
+  }
   function t(key, vars = {}) { const copy = locales[state.locale] || locales.en; const text = copy[key] || locales.en[key] || key; return text.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
   function applyLocale() {
     const copy = locales[state.locale] || locales.en;
@@ -45,9 +55,15 @@
     const node = interactive ? document.createElement("button") : document.createElement("div");
     node.className = "token"; node.dataset.token = token; if (interactive) node.type = "button";
     node.setAttribute("aria-label", label);
-    const symbol = document.createElement("span"); symbol.setAttribute("aria-hidden", "true"); symbol.textContent = token === "?" ? "?" : symbols[token]; node.append(symbol);
+    if (token === "?") { const symbol = document.createElement("span"); symbol.setAttribute("aria-hidden", "true"); symbol.textContent = "?"; node.append(symbol); }
+    else { const art = document.createElement("img"); art.className = "token-art"; art.src = markerFiles[token]; art.alt = ""; art.setAttribute("aria-hidden", "true"); node.append(art); }
     if (interactive) node.addEventListener("click", callback);
     return node;
+  }
+  function setFeedback(key, marker) {
+    const feedback = $("feedback"); feedback.replaceChildren();
+    const art = document.createElement("img"); art.className = "feedback-art"; art.src = markerFiles[marker]; art.alt = ""; art.setAttribute("aria-hidden", "true");
+    const copy = document.createElement("span"); copy.textContent = t(key); feedback.append(art, copy);
   }
   function renderRound() {
     const round = rounds[state.roundIndex];
@@ -60,8 +76,8 @@
   function choose(token, node) {
     state.checks += 1; $("checkCount").textContent = String(state.checks);
     const round = rounds[state.roundIndex];
-    if (token !== round.answer) { node.classList.add("is-wrong"); $("feedback").textContent = t("wrong"); $("feedback").classList.add("is-wrong"); playTone("wrong"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
-    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); $("feedback").textContent = t("correct"); $("appStatus").textContent = t("correct"); playTone("success");
+    if (token !== round.answer) { node.classList.add("is-wrong"); setFeedback("wrong", "mismatch"); $("feedback").classList.add("is-wrong"); playTone("wrong"); window.setTimeout(() => node.classList.remove("is-wrong"), 420); return; }
+    node.classList.add("is-correct"); node.disabled = true; state.solved += 1; $("feedback").classList.remove("is-wrong"); setFeedback("correct", "completion"); $("appStatus").textContent = t("correct"); playTone("success");
     window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; renderRound(); } else finish(); }, 460);
   }
   function start() { state.roundIndex = 0; state.checks = 0; state.solved = 0; showView("battleView"); renderRound(); }

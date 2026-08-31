@@ -103,6 +103,22 @@
     ar: { lesson: "{hearts} قلوب + Q♠ {queen} = {raw} نقطة جزاء. في التمرير التالي، مرّر بطاقة عالية المخاطر إذا حمت يدك.", moon: "تسبّب جمع كل بطاقات الجزاء في تغيير الإجماليات النهائية." },
   };
 
+  const HEARTS_PROGRESS_COPY = {
+    en: { label: "Round progress", copy: "Pass three cards, then follow suit and avoid penalty cards." },
+    "zh-Hant": { label: "回合進度", copy: "傳出三張牌，接著跟牌並避開扣分牌。" },
+    "zh-Hans": { label: "回合进度", copy: "传出三张牌，接着跟牌并避开扣分牌。" },
+    ja: { label: "ラウンド進行", copy: "3枚をパスし、同じスートに従ってペナルティを避けます。" },
+    ko: { label: "라운드 진행", copy: "카드 세 장을 패스한 뒤 같은 무늬를 내고 벌점 카드를 피하세요." },
+    es: { label: "Progreso de la ronda", copy: "Pasa tres cartas, sigue el palo y evita las cartas de penalización." },
+    "pt-BR": { label: "Progresso da rodada", copy: "Passe três cartas, siga o naipe e evite cartas de penalidade." },
+    fr: { label: "Progression de la manche", copy: "Passez trois cartes, fournissez la couleur et évitez les pénalités." },
+    de: { label: "Rundenfortschritt", copy: "Gib drei Karten weiter, bediene die Farbe und meide Strafkarten." },
+    it: { label: "Avanzamento della mano", copy: "Passa tre carte, segui il seme ed evita le carte penalità." },
+    ru: { label: "Прогресс раунда", copy: "Передайте три карты, следуйте масти и избегайте штрафных карт." },
+    hi: { label: "राउंड प्रगति", copy: "तीन पत्ते पास करें, रंग का पालन करें और दंड वाले पत्तों से बचें।" },
+    ar: { label: "تقدم الجولة", copy: "مرّر ثلاث بطاقات، واتبع النوع، وتجنب بطاقات الجزاء." },
+  };
+
   // Hearts owns the Arabic shell because the generic route catalog does not
   // know the card game's guide facts, named opponents, or first-trick cue.
   // Keep this bounded to the reviewed locale so other card-game routes retain
@@ -498,6 +514,28 @@
       ownLocalizedText(document.querySelector("#resultClose"), t("close"));
     } finally {
       heartsShellSyncing = false;
+    }
+  };
+
+  let heartsChromeSyncing = false;
+  const syncHeartsChrome = () => {
+    if (heartsChromeSyncing) return;
+    heartsChromeSyncing = true;
+    try {
+      const labels = TEXT[currentLocale()] || TEXT.en;
+      const progressCopy = HEARTS_PROGRESS_COPY[currentLocale()] || HEARTS_PROGRESS_COPY.en;
+      const progress = document.querySelector("[data-wp-main-progress]");
+      if (progress) {
+        ownLocalizedText(progress.querySelector("strong"), progressCopy.label);
+        ownLocalizedText(progress.querySelector("span"), progressCopy.copy);
+      }
+      const utility = document.querySelector("[data-wp-battle-utility]");
+      if (utility) {
+        utility.setAttribute("aria-label", labels.settings);
+        utility.title = labels.settings;
+      }
+    } finally {
+      heartsChromeSyncing = false;
     }
   };
 
@@ -1966,8 +2004,11 @@
       window.setTimeout(syncSpadesShell, 400);
     }
     if (id === "hearts") {
+      syncHeartsChrome();
       syncHeartsShell();
+      window.addEventListener("wonder:locale-change", syncHeartsChrome);
       window.addEventListener("weightplay:shell-sync", syncHeartsShell);
+      window.addEventListener("weightplay:shell-sync", syncHeartsChrome);
       const shellTitle = document.querySelector(".main-header [data-card-title]");
       if (shellTitle && !shellTitle.dataset.heartsShellObserver) {
         shellTitle.dataset.heartsShellObserver = "true";
@@ -1979,6 +2020,8 @@
       window.setTimeout(syncHeartsShell, 0);
       window.setTimeout(syncHeartsShell, 400);
       window.setTimeout(syncHeartsShell, 1200);
+      window.setTimeout(syncHeartsChrome, 0);
+      window.setTimeout(syncHeartsChrome, 400);
     }
     if (localeSelect) localeSelect.value = currentLocale();
     const resultCloseButton = document.querySelector("#resultClose");

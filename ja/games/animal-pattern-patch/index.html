@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-pattern-patch/" />
-
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-pattern-patch/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-pattern-patch/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-pattern-patch/" />
@@ -24,26 +23,27 @@
     <meta name="robots" content="noindex,nofollow" />
     <meta name="description" content="行と列を読み、穏やかな森の模様を完成させるタイルを選びます。" />
     <title>パターン・パッチ | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-    <script src="locales.js?v=20260830-pattern-patch-v1" defer></script>
-    <script src="game.js?v=20260830-pattern-patch-v1" defer></script>
+    <link rel="stylesheet" href="style.css?v=20260831-pattern-patch-art-v3">
+    <script src="locales.js?v=20260831-pattern-patch-art-v3" defer></script>
+    <script src="game.js?v=20260831-pattern-patch-art-v3" defer></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="パターン・パッチ | WeightPlay" />
     <meta property="og:description" content="行と列を読み、穏やかな森の模様を完成させるタイルを選びます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-pattern-patch/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="パターン・パッチ | WeightPlay" />
     <meta name="twitter:description" content="行と列を読み、穏やかな森の模様を完成させるタイルを選びます。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.png" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "パターン・パッチ",
+  "alternateName": "Pattern Patch",
   "url": "https://weightplay.com/ja/games/animal-pattern-patch/",
-  "image": "https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.svg",
+  "image": "https://weightplay.com/games/animal-pattern-patch/assets/animal-pattern-patch-cover.png",
   "description": "行と列を読み、穏やかな森の模様を完成させるタイルを選びます。",
   "publisher": {
     "@type": "Organization",
@@ -58,15 +58,13 @@
     "Visual Logic",
     "パターン認識",
     "家族",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Pattern Patch"
+  }
 }
     </script>
   </head>
@@ -75,8 +73,9 @@
       <section class="view is-active" id="mainView" aria-labelledby="mainTitle">
         <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
         <div class="hero-card">
-          <img class="cover-art" src="assets/animal-pattern-patch-cover.svg" alt="" aria-hidden="true">
+          <img class="cover-art" src="assets/animal-pattern-patch-cover.png" alt="" aria-hidden="true">
           <div class="hero-copy">
+            <div class="guide-lockup" aria-hidden="true"><img class="guide-pose" src="assets/animal-pattern-patch-guide.png" alt=""></div>
             <p class="eyebrow" data-copy="eyebrow">A calm visual-logic game</p>
             <h1 id="mainTitle" data-copy="title">パターン・パッチ</h1>
             <p class="lede" data-copy="subtitle">Complete one missing tile in each forest pattern.</p>
@@ -103,12 +102,15 @@
 
       <section class="view" id="resultView" aria-labelledby="resultTitle" hidden>
         <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
-        <div class="result-card"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Pattern complete</p><h2 id="resultTitle" data-copy="complete">A thoughtful patch.</h2><p id="resultSummary">Three forest patterns completed.</p><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
+        <div class="result-card"><img class="result-guide" src="assets/animal-pattern-patch-guide.png" alt="" aria-hidden="true"><div class="result-icon" aria-hidden="true">✦</div><p class="eyebrow" data-copy="completeEyebrow">Pattern complete</p><h2 id="resultTitle" data-copy="complete">A thoughtful patch.</h2><p id="resultSummary">Three forest patterns completed.</p><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
       </section>
       <div class="general-reserve" aria-hidden="true"></div>
       <p class="sr-only" id="appStatus" aria-live="polite"></p>
     </main>
-  <section class="game-page-info game-page-info-static" aria-label="パターン・パッチ ゲーム情報">
+  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+<section class="game-page-info game-page-info-static" aria-label="パターン・パッチ ゲーム情報">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パターン・パッチ</h2><p>行と列を読み、穏やかな森の模様を完成させるタイルを選びます。</p></div>
@@ -126,9 +128,6 @@
 
     </div>
   </section>
-<script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パターン・パッチ";document.title="パターン・パッチ | WeightPlay";},{once:true});</script>
 </body>
 </html>
