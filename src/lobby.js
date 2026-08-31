@@ -956,12 +956,22 @@ function createGameCard(game) {
   card.dataset.gameId = game.id;
   card.dataset.search = [
     title,
+    // Keep the localized title as the primary search label, but retain the
+    // canonical English title/type/description as aliases. A player who
+    // switches locale or follows an English recommendation should still be
+    // able to rediscover the same game from a localized lobby.
+    game.title?.en,
     type,
+    game.type?.en,
     ageLabel,
     text(game.description),
+    game.description?.en,
     ...(text(game.meta) || []),
+    ...(game.meta?.en || []),
     ...(game.categories || []).map(categoryText),
+    ...(game.categories || []),
     ...(game.skills || []).map(skillText),
+    ...(game.skills || []),
   ].join(" ");
   card.dataset.search = normalizeSearch(card.dataset.search);
   card.dataset.favorite = favorite ? "true" : "false";

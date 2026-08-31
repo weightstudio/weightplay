@@ -2705,3 +2705,21 @@ html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help {
 html body.wp-logical-battle-active.is-rune-playing .selected-card .skill-help i {
   grid-column: 1 / -1 !important;
 }
+
+/* The shared Canvas keeps this game on its portrait logical envelope in
+   short-landscape mode. At 844x390 that envelope is scaled to about 0.424,
+   so 104px logical controls land above the governed 44px physical target. */
+@media (max-height: 560px) and (orientation: landscape) {
+  html body.wp-logical-battle-active.is-rune-playing .topbar :is(.back-btn, .pause-toggle) {
+    width: 104px !important;
+    min-width: 104px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+  }
+
+  html body.wp-logical-battle-active.is-rune-playing .actions button {
+    height: 104px !important;
+    min-height: 104px !important;
+    max-height: 104px !important;
+  }
+}
