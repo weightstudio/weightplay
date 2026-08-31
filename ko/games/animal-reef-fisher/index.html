@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-reef-fisher/" />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
@@ -98,7 +97,7 @@
         </div>
       </section>
 
-      <section id="mainPanel" class="panel menu-panel">
+      <section id="mainPanel" class="panel menu-panel main-screen" data-screen="main">
         <img class="cover" src="../../assets/animal-reef-fisher-cover.webp" alt="Animal Reef Fisher 게임 이미지" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
@@ -108,7 +107,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
+      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
         <header class="stage-head">
           <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <strong data-ui="chooseZone">Choose Reef Zone</strong>
@@ -132,7 +131,7 @@
         <div class="stage-ad-reserve" aria-hidden="true"></div>
       </section>
 
-      <section id="gamePanel" class="panel game-panel is-hidden" data-play-viewport data-no-mobile-immersive="true">
+      <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-play-viewport data-no-mobile-immersive="true">
         <div class="battle-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <header class="hud-row">
           <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Return to reef map">&larr;</button>
@@ -163,6 +162,7 @@
           <button id="sonarBtn" class="icon-btn" type="button" aria-label="Use sonar">
             <img src="../../assets/animal-reef-fisher-diamond-sonar-ping.webp" alt="" />
           </button>
+          <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="Line Tension" aria-controls="tensionCoach" aria-expanded="true">?</button>
           <div class="tension-control">
             <div class="tension-head">
               <strong data-ui="tensionTitle">Line Tension</strong>
@@ -233,8 +233,8 @@
 <p>미션 21-25에서는 범위를 좁히고 3초 동안의 Storm Gust로 라인을 공격합니다. 폭풍 랜턴 감시자는 돌풍 사이에도 강력한 당김을 유지합니다.</p>
 <p>미션 26-30은 Abyss Trial에서 움직이는 압력과 돌풍을 결합합니다. Crystal Crown Sovereign은 최종 규칙 조합 테스트를 위해 갑옷 창을 추가합니다.</p></div>
       <div class="game-info-section"><h3>Developer Design Note</h3><p>원래의 2단계 입력은 30개 미션 전체에서 일관되게 유지됩니다. 즉, 캐스트를 충전한 다음 긴장을 관리하는 것입니다. 난이도는 더 빠른 물고기만이 아닌 읽기 쉬운 물 규칙으로 이동합니다. 표류하거나 좁아지는 띠는 조준 위치를 변경하고, 돌풍은 위치를 유지하는 시점을 변경하며, 안전 제어가 진행되면 Guardian 갑옷이 변경됩니다. 5개의 미션 챕터를 통해 지명된 Guardian이 이를 별도의 풀 프로필과 결합하기 전에 하나의 조건을 익히게 됩니다. 휴대폰, 데스크톱, 태블릿, 짧은 가로 모드는 동일한 논리적 전투 구성을 사용합니다. 포인터와 키보드는 하나의 상태를 공유하고 숨겨진 페이지 시간은 일시 중지되며 결과는 동일한 물리적 예비 위의 Battle 내부에 유지됩니다. 따라서 앨범 진행은 반복되는 실제 제어 결정에서 비롯되는 반면, 저장된 임무 및 장비 선택은 재방문에 명확한 목적을 제공합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>계정이 필요하지 않습니다. 이 브라우저는 잠금 해제 및 선택된 미션, 리프 노트, 베스트 캐치, 12개의 앨범 항목, 6개의 장비 레벨, 준비된 루어 또는 소나 상태를 저장합니다. 사이트 저장 공간을 비우거나 브라우저를 변경하면 별도의 저장이 시작될 수 있습니다. 공유 다이아몬드 잔액은 선택 사항이며 확인된 루어 및 소나 준비에만 사용됩니다. 30개의 미션, 6개의 Guardians, 장비 레벨 및 일반 앨범 진행은 해당 도구 없이도 계속 사용할 수 있습니다. 기술 보고서는 현재 엔터테인먼트 실행을 요약하며 진단, 순위 또는 공식적인 능력 평가가 아닙니다.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>미션과 가디언은 몇 개나 포함되어 있나요?</dt><dd>30개의 미션이 있습니다. 미션 5, 10, 15, 20, 25, 30에서는 6개의 서로 다른 가디언과의 만남을 보장합니다.</dd></div><div><dt>녹색 안전 밴드가 움직이거나 크기가 변경되는 이유는 무엇입니까?</dt><dd>그것이 미션의 해상 상황이다. Kelp는 표류하고, Coral은 너비를 변경하고, Moon은 측면을 바꾸고, Storm은 돌풍을 추가하고, Abyss는 여러 규칙을 결합합니다.</dd></div><div><dt>줄이 끊어지면 어떻게 되나요?</dt><dd>현재 물고기가 탈출하고 캐스팅이 재개됩니다. 탐험은 계속되지만 시계는 재설정되지 않습니다.</dd></div><div><dt>시전력이 더 좋은 물고기를 선택하나요?</dt><dd>아니요. 파워는 바이트 지연을 단축시킵니다. 종은 미션 풀, 스캐너 레벨, 준비된 미끼 또는 잠긴 소나 결과에서 나옵니다.</dd></div><div><dt>보호받는 수호자가 권력을 잃을 수도 있나요?</dt><dd>Coral Ram Ray와 Crystal Crown Sovereign은 가드가 열려 있고 마커가 안전할 때만 전력을 잃습니다.</dd></div><div><dt>Are Diamonds required?</dt><dd>아니요. 다이아몬드는 하나의 선택적 희귀 어획량 또는 하나의 다음 물고기 소나 잠금 장치만 준비합니다. 미션, 수호자, 장비는 잠금 해제되지 않습니다.</dd></div><div><dt>어떤 진행 상황이 저장되나요?</dt><dd>브라우저는 미션 잠금 해제, 메모, 앨범 검색, 장비 레벨, 베스트 캐치, 선택한 미션 및 준비된 옵션 도구를 저장합니다.</dd></div><div><dt>키보드로 플레이할 수 있나요?</dt><dd>그렇습니다. 캐스팅하려면 Space를 누르고 놓은 다음 낚시 영역이나 장력 슬라이더에서 왼쪽과 오른쪽을 사용하십시오.</dd></div></dl></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>계정이 필요하지 않습니다. 이 브라우저는 잠금 해제 및 선택된 미션, 리프 노트, 베스트 캐치, 12개의 앨범 항목, 6개의 장비 레벨, 준비된 루어 또는 소나 상태를 저장합니다. 사이트 저장 공간을 비우거나 브라우저를 변경하면 별도의 저장이 시작될 수 있습니다. 공유 다이아몬드 잔액은 선택 사항이며 확인된 루어 및 소나 준비에만 사용됩니다. 30개의 미션, 6개의 Guardians, 장비 레벨 및 일반 앨범 진행은 해당 도구 없이도 계속 사용할 수 있습니다. 기술 보고서는 현재 엔터테인먼트 실행을 요약하며 진단, 순위 또는 공식적인 능력 평가가 아닙니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>미션과 가디언은 몇 개나 포함되어 있나요?</dt><dd>30개의 미션이 있습니다. 미션 5, 10, 15, 20, 25, 30에서는 6개의 서로 다른 가디언과의 만남을 보장합니다.</dd></div><div><dt>녹색 안전 밴드가 움직이거나 크기가 변경되는 이유는 무엇입니까?</dt><dd>그것이 미션의 해상 상황이다. Kelp는 표류하고, Coral은 너비를 변경하고, Moon은 측면을 바꾸고, Storm은 돌풍을 추가하고, Abyss는 여러 규칙을 결합합니다.</dd></div><div><dt>줄이 끊어지면 어떻게 되나요?</dt><dd>현재 물고기가 탈출하고 캐스팅이 재개됩니다. 탐험은 계속되지만 시계는 재설정되지 않습니다.</dd></div><div><dt>시전력이 더 좋은 물고기를 선택하나요?</dt><dd>아니요. 파워는 바이트 지연을 단축시킵니다. 종은 미션 풀, 스캐너 레벨, 준비된 미끼 또는 잠긴 소나 결과에서 나옵니다.</dd></div><div><dt>보호받는 수호자가 권력을 잃을 수도 있나요?</dt><dd>Coral Ram Ray와 Crystal Crown Sovereign은 가드가 열려 있고 마커가 안전할 때만 전력을 잃습니다.</dd></div><div><dt>다이아몬드는 필수인가요?</dt><dd>아니요. 다이아몬드는 하나의 선택적 희귀 어획량 또는 하나의 다음 물고기 소나 잠금 장치만 준비합니다. 미션, 수호자, 장비는 잠금 해제되지 않습니다.</dd></div><div><dt>어떤 진행 상황이 저장되나요?</dt><dd>브라우저는 미션 잠금 해제, 메모, 앨범 검색, 장비 레벨, 베스트 캐치, 선택한 미션 및 준비된 옵션 도구를 저장합니다.</dd></div><div><dt>키보드로 플레이할 수 있나요?</dt><dd>그렇습니다. 캐스팅하려면 Space를 누르고 놓은 다음 낚시 영역이나 장력 슬라이더에서 왼쪽과 오른쪽을 사용하십시오.</dd></div></dl></div>
 
     </div>
   </section>

@@ -8041,7 +8041,7 @@
     if (!segment) return Promise.resolve();
     const promise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL(`runtime-locales/${segment}.js?v=20260726-block-trilogy-copy1`, sharedAssetBase).href;
+      script.src = new URL(`runtime-locales/${segment}.js?v=20260831-runtime-locale-cache-v1`, sharedAssetBase).href;
       script.dataset.wpGamePageInfoRuntimeLocale = activeLocale;
       script.onload = resolve;
       script.onerror = () => {

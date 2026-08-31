@@ -354,7 +354,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-beast-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.src = "../../src/game-page-info.js?v=20260831-runtime-locale-cache-v1";
           script.dataset.beastGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

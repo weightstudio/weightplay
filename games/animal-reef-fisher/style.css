@@ -628,6 +628,20 @@ canvas {
   object-fit: contain;
 }
 
+.tension-panel {
+  position: relative;
+}
+
+.battle-help-btn {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  z-index: 2;
+  color: #10313a;
+  font-size: 1.1rem;
+  font-weight: 1000;
+}
+
 .tension-lane {
   position: relative;
   min-width: 0;
@@ -2023,6 +2037,15 @@ body.reef-fisher-playing .icon-btn {
   min-height: 48px;
   max-height: 48px;
   border-radius: 8px;
+}
+
+body.reef-fisher-playing .battle-help-btn {
+  width: 48px;
+  min-width: 48px;
+  max-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
 }
 
 body.reef-fisher-playing .tension-control {

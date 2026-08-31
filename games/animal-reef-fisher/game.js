@@ -91,6 +91,7 @@
     lureBtn: $("lureBtn"),
     sonarPrepBtn: $("sonarPrepBtn"),
     sonarBtn: $("sonarBtn"),
+    battleHelpBtn: $("battleHelpBtn"),
     notesText: $("notesText"),
     albumText: $("albumText"),
     diamondText: $("diamondText"),
@@ -1062,6 +1063,8 @@
     nodes.nextZoneBtn.textContent = t("nextStage");
     nodes.retryBtn.textContent = t("replay");
     nodes.mapBtn.setAttribute("aria-label", t("reefMap"));
+    nodes.battleHelpBtn.setAttribute("aria-label", t("tensionTitle"));
+    nodes.battleHelpBtn.setAttribute("title", t("tensionTitle"));
     nodes.leaveTitle.textContent = t("leaveTitle");
     nodes.leaveKeepBtn.textContent = t("keepFishing");
     nodes.leaveConfirmBtn.textContent = t("leaveExpedition");
@@ -2841,6 +2844,12 @@
       behavior: run.hookFish.behavior,
       input_type: eventInputType(event),
     });
+  });
+  nodes.battleHelpBtn.addEventListener("click", () => {
+    const expanded = nodes.battleHelpBtn.getAttribute("aria-expanded") === "true";
+    nodes.battleHelpBtn.setAttribute("aria-expanded", String(!expanded));
+    nodes.tensionCoach.hidden = expanded;
+    if (!expanded) updateTensionGuide();
   });
   nodes.localeSelect.addEventListener("change", () => {
     const requested = nodes.localeSelect.value;

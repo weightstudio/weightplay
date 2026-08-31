@@ -1649,7 +1649,9 @@ function renderSkillPaths() {
 
 function setActiveButtons(buttons, dataKey, value) {
   buttons.forEach((button) => {
-    button.classList.toggle("active", button.dataset[dataKey] === value);
+    const isActive = button.dataset[dataKey] === value;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 }
 

@@ -246,6 +246,21 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
+  /* Keep the fixed Battle envelope intact while exposing the lower edge of
+     long piles through the board itself on short landscape screens. */
+  html.spider-battle-active,
+  html.spider-battle-active body[data-wp-game-id="spider-solitaire"],
+  html.has-game-page-info.spider-battle-active:not(.wp-mobile-game-mode),
+  html.has-game-page-info.spider-battle-active body.has-game-page-info:not(.wp-mobile-game-mode):not(.zoo-playing),
+  .battle-screen {
+    touch-action: pan-y !important;
+  }
+  .board-shell {
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
   .battle-canvas {
     --card-width: clamp(36px, 10vh, 52px);
     --card-height: calc(var(--card-width) * 1.397);
