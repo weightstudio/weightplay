@@ -1864,6 +1864,29 @@ const essentialLobbyCopy = {
     };
   });
 
+  const extendedCategoryCopy = {
+    en: ["Action", "Animals"],
+    "zh-Hant": ["動作", "動物"],
+    "zh-Hans": ["动作", "动物"],
+    ja: ["アクション", "動物"],
+    ko: ["액션", "동물"],
+    es: ["Acción", "Animales"],
+    "pt-BR": ["Ação", "Animais"],
+    fr: ["Action", "Animaux"],
+    de: ["Action", "Tiere"],
+    it: ["Azione", "Animali"],
+    ru: ["Экшен", "Животные"],
+    hi: ["एक्शन", "जानवर"],
+    ar: ["أكشن", "حيوانات"],
+  };
+  Object.entries(extendedCategoryCopy).forEach(([locale, [action, animal]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "category.Action": action,
+      "category.Animal": animal,
+    };
+  });
+
   dictionaries["zh-Hant"] = {
     ...(dictionaries["zh-Hant"] || {}),
     "upcoming.title": "\u5373\u5c07\u63a8\u51fa",

@@ -2704,7 +2704,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-tangle-rescue/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.svg", hideHero: true },
+    art: { kind: "image", background: "games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.png", hideHero: true },
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -3243,7 +3243,7 @@ const nextFiveGeneralCandidates = [
     title: { en: "Bounce Brawl", "zh-Hant": "彈跳鬥場", "zh-Hans": "弹跳斗场", ja: "バウンス乱闘", ko: "바운스 난투", es: "Duelo de rebotes", "pt-BR": "Briga de Rebotes", fr: "Baston rebondissant", de: "Hüpfduell", it: "Rissa rimbalzante", ru: "Прыгучая схватка", hi: "उछलती भिड़ंत", ar: "نزال الارتداد" },
     type: { en: "Soft Physics Arena", "zh-Hant": "柔軟物理鬥場", "zh-Hans": "柔软物理斗场", ja: "やわらか物理アリーナ", ko: "부드러운 물리 경기장", es: "Arena de física amable", "pt-BR": "Arena de física leve", fr: "Arène physique douce", de: "Sanfte Physikarena", it: "Arena fisica morbida", ru: "Мягкая физическая арена", hi: "नरम भौतिकी अखाड़ा", ar: "ساحة فيزياء لطيفة" },
     description: { en: "Time bounces, use foam tools, and knock the rival off balance in a playful physics arena.", "zh-Hant": "掌握彈跳時機，使用泡棉工具，在歡樂物理鬥場把對手撞到失去平衡。", "zh-Hans": "掌握弹跳时机，使用泡棉工具，在欢乐物理斗场把对手撞得失去平衡。", ja: "跳ねるタイミングとフォーム道具で相手をバランス崩しに追い込む物理アリーナ。", ko: "바운스 타이밍과 폼 도구로 상대의 균형을 무너뜨리는 물리 경기장입니다.", es: "Controla rebotes, usa herramientas de espuma y desequilibra al rival en una arena juguetona.", "pt-BR": "Use o tempo dos rebotes e ferramentas de espuma para desequilibrar o rival.", fr: "Maîtrise les rebonds, utilise la mousse et déséquilibre le rival dans une arène joyeuse.", de: "Nutze Abpraller und Schaumwerkzeuge, um den Gegner in einer verspielten Physikarena aus dem Gleichgewicht zu bringen.", it: "Usa il tempismo dei rimbalzi e gli strumenti di gommapiuma per sbilanciare il rivale.", ru: "Используйте рикошеты и пенные инструменты, чтобы сбить соперника с равновесия.", hi: "उछाल का समय साधें, फोम उपकरण चलाएँ और खेल-भरे भौतिकी अखाड़े में प्रतिद्वंद्वी को असंतुलित करें।", ar: "اضبط توقيت الارتداد واستخدم أدوات الإسفنج لإخلال توازن الخصم في ساحة مرحة." },
-    meta: { en: ["Physics", "3 Foam Tools", "Knockback"], "zh-Hant": ["物理碰撞", "3 種泡棉工具", "擊退"], "zh-Hans": ["物理碰撞", "3 种泡棉工具", "击退"] },
+    meta: { en: ["Physics", "3 Foam Tools", "Knockback"], "zh-Hant": ["物理碰撞", "3 種泡棉工具", "擊退"], "zh-Hans": ["物理碰撞", "3 种泡棉工具", "击退"], ja: ["物理演算", "フォームツール3種", "ノックバック"], ko: ["물리 상호작용", "폼 도구 3종", "밀쳐내기"], es: ["Física", "3 herramientas de espuma", "Empujón"], "pt-BR": ["Física", "3 ferramentas de espuma", "Empurrão"], fr: ["Physique", "3 outils en mousse", "Recul"], de: ["Physik", "3 Schaumwerkzeuge", "Rückstoß"], it: ["Fisica", "3 strumenti di schiuma", "Contraccolpo"], ru: ["Физика", "3 пенных инструмента", "Отбрасывание"], hi: ["भौतिकी", "3 फोम उपकरण", "नॉकबैक"], ar: ["فيزياء", "3 أدوات إسفنجية", "دفع"] },
     art: { kind: "image", background: "assets/animal-bounce-brawl-cover.webp", hideHero: true },
     categories: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction"], ages: ["9", "family"], href: "games/animal-bounce-brawl/", internalTrial: "index.html?trial=1",
   },

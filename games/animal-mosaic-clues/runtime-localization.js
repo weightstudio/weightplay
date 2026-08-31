@@ -27,6 +27,7 @@
   const translateTree=root=>{translateNode(root);const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateNode(walker.currentNode)};
   translateTree(document.body);
   new MutationObserver(records=>records.forEach(record=>record.type==="characterData"?translateNode(record.target):record.addedNodes.forEach(translateTree))).observe(document.body,{childList:true,subtree:true,characterData:true});
+  window.WeightPlayGameRuntimeLocalizer=Object.freeze({locale,translate:value=>exact.get(value)||value,translateTree});
 })();
 
 // Interface V6 installs the game-owned bounded Stage renderer before the

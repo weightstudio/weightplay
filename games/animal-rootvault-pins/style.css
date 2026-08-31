@@ -445,6 +445,8 @@ a:focus-visible {
   background: #061f1c;
 }
 .battle-live {
+  width: 100%;
+  min-width: 0;
   height: 100%;
   display: grid;
   grid-template-rows: 70px 40px minmax(0, 1fr) 32px 70px;
@@ -491,6 +493,8 @@ a:focus-visible {
   padding: 0;
 }
 .objective-row {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -500,17 +504,26 @@ a:focus-visible {
   font-size: 12px;
 }
 .objective-row strong {
+  min-width: 0;
+  flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .objective-row span {
+  min-width: 0;
+  max-width: 42%;
   color: #ffdf6a;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .chamber-board {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   min-height: 0;
+  min-width: 0;
   overflow: hidden;
   isolation: isolate;
   background:

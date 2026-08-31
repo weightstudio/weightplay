@@ -96,7 +96,7 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 #stageScreen, #battleScreen { padding: 0; }
 #stageScreen .stage-canvas, #battleScreen .battle-canvas { padding: 0 clamp(16px, 4vw, 56px) 16px; }
 #stageScreen .stage-canvas { background: linear-gradient(160deg, rgb(216 240 223 / 72%), rgb(255 253 247 / 94%)); }
-#battleScreen .battle-canvas { background: linear-gradient(160deg, rgb(238 248 239 / 76%), rgb(255 253 247 / 96%)); }
+#battleScreen .battle-canvas { background-image: linear-gradient(160deg, rgb(238 248 239 / 82%), rgb(255 253 247 / 94%)), url("assets/animal-tangle-rescue-background.png"); background-position: center; background-size: cover; background-repeat: no-repeat; }
 .stage-ad-reserve, .battle-ad-reserve { width: min(100%, 920px); height: 56px; min-height: 56px; margin: 0 auto; }
 .panel-intro { margin: 14px 0; }
 .stage-list { display: grid; gap: 12px; margin-top: 22px; }
@@ -140,7 +140,8 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 
 .result-canvas { display: grid; align-content: start; min-height: calc(100svh - 72px); }
 .result-card { max-width: 620px; margin: clamp(30px, 8vh, 90px) auto 0; padding: clamp(28px, 6vw, 56px); border-radius: 30px; text-align: center; background: var(--paper); box-shadow: var(--shadow); }
-.result-character { display: grid; place-items: center; width: 92px; height: 92px; margin: -92px auto 22px; border: 8px solid #eaf5ed; border-radius: 32px; background: var(--mint); font-size: 3rem; }
+.result-character { display: grid; place-items: end center; width: 124px; height: 132px; margin: -132px auto 22px; overflow: hidden; border: 8px solid #eaf5ed; border-radius: 36px; background: var(--mint); }
+.result-character img { display: block; width: 100%; height: 170%; object-fit: contain; object-position: center bottom; }
 .result-card h1 { margin-bottom: 14px; font-size: clamp(1.9rem, 5vw, 3rem); }
 .result-card p:not(.eyebrow) { color: var(--muted); line-height: 1.55; }
 .result-stats { display: inline-block; margin: 8px auto 24px; padding: 10px 14px; border-radius: 12px; color: #6f551b; background: #fff1bf; font-weight: 900; }
