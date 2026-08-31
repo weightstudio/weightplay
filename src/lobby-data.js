@@ -2237,6 +2237,55 @@ window.WONDER_LOBBY.games.push({
 });
 
 window.WONDER_LOBBY.games.push({
+  id: "hangman",
+  title: {
+    en: "Hangman", "zh-Hant": "猜字吊人", "zh-Hans": "猜词吊人", ja: "ハングマン",
+    ko: "행맨", es: "Ahorcado", "pt-BR": "Forca", fr: "Pendu", de: "Galgenmännchen",
+    it: "Impiccato", ru: "Виселица", hi: "हैंगमैन", ar: "الرجل المشنوق",
+  },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
+  type: {
+    en: "Vocabulary Deduction", "zh-Hant": "詞彙推理", "zh-Hans": "词汇推理", ja: "語彙推理",
+    ko: "어휘 추리", es: "Deducción de vocabulario", "pt-BR": "Dedução de vocabulário",
+    fr: "Déduction de vocabulaire", de: "Wortschatz-Rätsel", it: "Deduzione lessicale",
+    ru: "Словесная дедукция", hi: "शब्दावली अनुमान", ar: "استنتاج المفردات",
+  },
+  categories: ["Classic", "Word", "Puzzle", "Family"],
+  skills: ["Vocabulary", "Deduction", "Focus"],
+  ages: ["9", "family"],
+  ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" },
+  href: "games/hangman/",
+  previewVideo: "assets/previews/hangman-battle.webm",
+  description: {
+    en: "Read the word pattern, choose letters, and solve a complete Hangman round before six misses build the final clue.",
+    "zh-Hant": "讀取單字圖樣、選擇字母，在六次失誤形成完整提示前解開一局猜字吊人。",
+    "zh-Hans": "读取单词图样、选择字母，在六次失误形成完整提示前解开一局猜词吊人。",
+    ja: "単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。",
+    ko: "단어 패턴을 읽고 글자를 골라 여섯 번의 실수 전에 행맨 한 라운드를 풀어 보세요.",
+    es: "Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos.",
+    "pt-BR": "Leia o padrão da palavra, escolha letras e resolva uma rodada completa de Forca antes de seis erros.",
+    fr: "Lisez le motif du mot, choisissez des lettres et résolvez une partie complète de Pendu avant six erreurs.",
+    de: "Lies das Wortmuster, wähle Buchstaben und löse eine vollständige Galgenmännchen-Runde vor sechs Fehlern.",
+    it: "Leggi lo schema della parola, scegli le lettere e risolvi una partita completa a Impiccato prima di sei errori.",
+    ru: "Читайте рисунок слова, выбирайте буквы и решите полную партию в Виселицу до шести ошибок.",
+    hi: "शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।",
+    ar: "اقرأ نمط الكلمة واختر الحروف وحل جولة كاملة من الرجل المشنوق قبل اكتمال ستة أخطاء.",
+  },
+  meta: {
+    en: ["Six-Miss Tension", "Hint Tradeoff", "Quick Rematch"],
+    "zh-Hant": ["六次失誤壓力", "提示取捨", "快速重賽"], "zh-Hans": ["六次失误压力", "提示取舍", "快速重赛"],
+    ja: ["6回ミスの緊張", "ヒントの取捨", "すぐ再挑戦"], ko: ["6회 실수 긴장", "힌트 선택", "빠른 재도전"],
+    es: ["Tensión de seis fallos", "Decisión de pista", "Revancha rápida"], "pt-BR": ["Tensão de seis erros", "Escolha da dica", "Revanche rápida"],
+    fr: ["Tension à six erreurs", "Choix de l’indice", "Revanche rapide"], de: ["Spannung bei sechs Fehlern", "Hinweis-Abwägung", "Schnelle Revanche"],
+    it: ["Tensione dei sei errori", "Scelta dell’indizio", "Rivincita rapida"], ru: ["Напряжение шести ошибок", "Цена подсказки", "Быстрый повтор"],
+    hi: ["छह गलतियों का तनाव", "संकेत का चुनाव", "त्वरित रीमैच"], ar: ["توتر الأخطاء الستة", "مفاضلة التلميح", "إعادة سريعة"],
+  },
+  art: { kind: "image", background: "assets/hangman-cover-v1.webp", hideHero: true },
+});
+if (!window.WONDER_LOBBY.audiences.generalGameIds.includes("hangman")) window.WONDER_LOBBY.audiences.generalGameIds.push("hangman");
+
+window.WONDER_LOBBY.games.push({
   id: "tic-tac-toe",
   title: {
     en: "Tic-Tac-Toe", "zh-Hant": "井字棋", "zh-Hans": "井字棋", ja: "三目並べ",
@@ -3133,7 +3182,6 @@ const classicOwnerPreviewDescription = classicOwnerPreviewLocalized([
 const classicOwnerPreviewGames = [
   ["breakout", ["Breakout", "打磚塊", "打砖块", "ブロック崩し", "벽돌깨기", "Rompe ladrillos", "Quebra-blocos", "Casse-briques", "Brick Breaker", "Arkanoid", "Арканоид", "ब्रेकआउट", "كسر الطوب"], ["Classic", "Arcade", "Action"], ["Timing", "Aim"]],
   ["chess", ["Chess", "西洋棋", "国际象棋", "チェス", "체스", "Ajedrez", "Xadrez", "Échecs", "Schach", "Scacchi", "Шахматы", "शतरंज", "الشطرنج"], ["Classic", "Board", "Strategy"], ["Planning", "Tactics"]],
-  ["hangman", ["Hangman", "猜字吊人", "猜词吊人", "ハングマン", "행맨", "Ahorcado", "Forca", "Pendu", "Galgenmännchen", "Impiccato", "Виселица", "हैंगमैन", "الرجل المشنوق"], ["Classic", "Word", "Puzzle"], ["Vocabulary", "Deduction"]],
   ["mahjong-solitaire", ["Mahjong Solitaire", "麻將接龍", "麻将接龙", "麻雀ソリティア", "마작 솔리테어", "Mahjong solitario", "Paciência Mahjong", "Mahjong solitaire", "Mahjong-Solitär", "Mahjong solitario", "Маджонг-солитер", "माहजोंग सॉलिटेयर", "ماجونغ سوليتير"], ["Classic", "Puzzle", "Strategy"], ["Matching", "Planning"]],
   ["pong", ["Pong", "乒乓球", "乒乓球", "卓球", "퐁", "Pong", "Pong", "Pong", "Pong", "Pong", "Понг", "पोंग", "بونغ"], ["Classic", "Arcade", "Sports"], ["Timing", "Reaction"]],
   ["tetris", ["Tetris", "俄羅斯方塊", "俄罗斯方块", "テトリス", "테트리스", "Tetris", "Tetris", "Tetris", "Tetris", "Tetris", "Тетрис", "टेट्रिस", "تتريس"], ["Classic", "Puzzle", "Arcade"], ["Planning", "Reaction"]],

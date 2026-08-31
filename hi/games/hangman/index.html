@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/hangman/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/hangman/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hangman/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hangman/" />
@@ -19,7 +18,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hangman/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hangman/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hangman/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>हैंगमैन | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><style>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-release-state" content="playable"><meta name="description" content="शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।" /><title>हैंगमैन | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><link rel="stylesheet" href="../../src/game-page-info.css"><style>
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-game-id="hangman"][data-screen="battle"],
   body[data-game-id="hangman"][data-screen="result"] { overflow: hidden; }
@@ -118,25 +117,25 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
     animation: none;
   }
 }
-</style>  <meta name="description" content="एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।" />
-    <meta property="og:site_name" content="WeightPlay" />
+</style>  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="हैंगमैन | WeightPlay" />
-    <meta property="og:description" content="एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।" />
+    <meta property="og:description" content="शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/hangman/" />
     <meta property="og:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="हैंगमैन | WeightPlay" />
-    <meta name="twitter:description" content="एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।" />
+    <meta name="twitter:description" content="शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।" />
     <meta name="twitter:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "हैंगमैन",
+  "alternateName": "Hangman",
   "url": "https://weightplay.com/hi/games/hangman/",
-  "image": "https://weightplay.com/assets/classic-logic-lab-cover.webp",
-  "description": "एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।",
+  "image": "https://weightplay.com/assets/hangman-cover-v1.webp",
+  "description": "शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -146,39 +145,39 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Classic",
+    "क्लासिक",
     "शब्द",
-    "Puzzle",
-    "Browser Game"
+    "पहेली",
+    "परिवार"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Hangman"
+  }
 }
     </script>
   </head>
 <body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">हैंगमैन</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true">A</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/popular-games-batch.js?v=20260827-hangman-art-v7"></script><script src="game.js?v=20260827-hangman-art-v7"></script><section class="game-page-info game-page-info-static" aria-label="हैंगमैन खेल की जानकारी">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>हैंगमैन</h2><p>एक पूर्ण क्लासिक गेम जिसकी रिलीज़ जाँच पूरी की जा रही है।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>क्लासिक गेम</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · शब्द · Puzzle</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>हैंगमैन</h2><p>शब्द का पैटर्न पढ़ें, अक्षर चुनें और छह गलतियों से पहले हैंगमैन का पूरा राउंड हल करें।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>शब्दावली अनुमान</strong></div><div class="game-info-fact"><span>Genre</span><strong>क्लासिक · शब्द · पहेली · परिवार</strong></div></div>
     </div>
     <div class="game-info-sections">
 
 
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>छिपे शब्द का पैटर्न पढ़ें और विषय का संकेत चाहिए तो संकेत का उपयोग करें।</li><li>ऐसा अक्षर चुनें जिसका उपयोग नहीं हुआ है; सही अक्षर स्थान खोलते हैं और गलतियाँ छह की सीमा में गिनी जाती हैं।</li><li>किसी अक्षर को दोहराने पर अतिरिक्त नुकसान नहीं होता; वह पहले से उपयोग किया हुआ दिखता है।</li><li>पूरा शब्द खोलने के बाद तेज़ नया राउंड खेलने के लिए फिर खेलें या मुख्य पृष्ठ पर लौटें।</li></ol></div>
 
 
 
 
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></div>
 
     </div>
-  </section>
+  </section></body>
+<script src="../../src/site-config.js"></script>
+<script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
 <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-</body>
 </html>

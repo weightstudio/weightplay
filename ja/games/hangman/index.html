@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/hangman/" />
-
     <link rel="canonical" href="https://weightplay.com/ja/games/hangman/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hangman/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hangman/" />
@@ -19,7 +18,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hangman/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hangman/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hangman/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>ハングマン | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><style>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-release-state" content="playable"><meta name="description" content="単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。" /><title>ハングマン | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><link rel="stylesheet" href="../../src/game-page-info.css"><style>
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-game-id="hangman"][data-screen="battle"],
   body[data-game-id="hangman"][data-screen="result"] { overflow: hidden; }
@@ -118,25 +117,25 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
     animation: none;
   }
 }
-</style>  <meta name="description" content="公開前チェックを進めている完成済みのクラシックゲームです。" />
-    <meta property="og:site_name" content="WeightPlay" />
+</style>  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ハングマン | WeightPlay" />
-    <meta property="og:description" content="公開前チェックを進めている完成済みのクラシックゲームです。" />
+    <meta property="og:description" content="単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/hangman/" />
     <meta property="og:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ハングマン | WeightPlay" />
-    <meta name="twitter:description" content="公開前チェックを進めている完成済みのクラシックゲームです。" />
+    <meta name="twitter:description" content="単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "ハングマン",
+  "alternateName": "Hangman",
   "url": "https://weightplay.com/ja/games/hangman/",
-  "image": "https://weightplay.com/assets/classic-logic-lab-cover.webp",
-  "description": "公開前チェックを進めている完成済みのクラシックゲームです。",
+  "image": "https://weightplay.com/assets/hangman-cover-v1.webp",
+  "description": "単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -146,41 +145,41 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Classic",
-    "言葉",
-    "Puzzle",
-    "Browser Game"
+    "クラシック",
+    "ワード",
+    "パズル",
+    "ファミリー"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Hangman"
+  }
 }
     </script>
   </head>
 <body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">ハングマン</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true">A</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/popular-games-batch.js?v=20260827-hangman-art-v7"></script><script src="game.js?v=20260827-hangman-art-v7"></script><section class="game-page-info game-page-info-static" aria-label="ハングマン ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ハングマン</h2><p>公開前チェックを進めている完成済みのクラシックゲームです。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>クラシックゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Classic · 言葉 · Puzzle</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ハングマン</h2><p>単語の形を読み、文字を選び、6回のミスで最後の手掛かりが完成する前にハングマンを解きます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>語彙推理</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック · ワード · パズル · ファミリー</strong></div></div>
     </div>
     <div class="game-info-sections">
 
 
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>隠れた単語の形を読み、テーマの手掛かりが必要ならヒントを使います。</li><li>未使用の文字を選び、正解なら位置が開き、間違いなら6回のミス制限に加算されます。</li><li>同じ文字を繰り返し選んでも追加の損失はなく、使用済みとして表示されます。</li><li>単語をすべて明かしたら、もう一度で短い新ラウンドを始めるかメインへ戻ります。</li></ol></div>
 
 
 
 
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
 
     </div>
-  </section>
-<script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ハングマン";document.title="ハングマン | WeightPlay";},{once:true});</script>
+  </section>  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ハングマン";document.title="ハングマン | WeightPlay";},{once:true});</script>
 </body>
+<script src="../../src/site-config.js"></script>
+<script src="/src/i18n-ja.js?v=20260719-ja1"></script>
+  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+<script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </html>

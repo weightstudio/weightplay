@@ -36,6 +36,7 @@
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
     document.documentElement.dir = copy.direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    $("startButton").setAttribute("data-runtime-localize", "off");
     $("startButton").textContent = startLabels[state.locale] || t("start");
     const mainReturn = document.querySelector(".main-return[data-wp-return='main']");
     if (mainReturn) mainReturn.setAttribute("aria-label", t("backToLobby"));

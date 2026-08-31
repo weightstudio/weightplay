@@ -1279,6 +1279,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "चेकर्स",
     "ar": "الداما"
   },
+  "hangman": {
+    "__localizedExact": true,
+    "en": "Hangman",
+    "zh-Hant": "猜字吊人",
+    "zh-Hans": "猜词吊人",
+    "ja": "ハングマン",
+    "ko": "행맨",
+    "es": "Ahorcado",
+    "pt-BR": "Forca",
+    "fr": "Pendu",
+    "de": "Galgenmännchen",
+    "it": "Impiccato",
+    "ru": "Виселица",
+    "hi": "हैंगमैन",
+    "ar": "الرجل المشنوق"
+  },
   "tic-tac-toe": {
     "__localizedExact": true,
     "en": "Tic-Tac-Toe",
@@ -1966,22 +1982,6 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Шахматы",
     "hi": "शतरंज",
     "ar": "الشطرنج"
-  },
-  "hangman": {
-    "__localizedExact": true,
-    "en": "Hangman",
-    "zh-Hant": "猜字吊人",
-    "zh-Hans": "猜词吊人",
-    "ja": "ハングマン",
-    "ko": "행맨",
-    "es": "Ahorcado",
-    "pt-BR": "Forca",
-    "fr": "Pendu",
-    "de": "Galgenmännchen",
-    "it": "Impiccato",
-    "ru": "Виселица",
-    "hi": "हैंगमैन",
-    "ar": "الرجل المشنوق"
   },
   "mahjong-solitaire": {
     "__localizedExact": true,

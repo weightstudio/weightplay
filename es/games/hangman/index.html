@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/hangman/" />
-
     <link rel="canonical" href="https://weightplay.com/es/games/hangman/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hangman/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hangman/" />
@@ -19,7 +18,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/hangman/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hangman/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hangman/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>Ahorcado | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><style>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-release-state" content="playable"><meta name="description" content="Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos." /><title>Ahorcado | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css"><link rel="stylesheet" href="../../src/game-page-info.css"><style>
 @media (orientation: landscape) and (max-height: 430px) {
   body[data-game-id="hangman"][data-screen="battle"],
   body[data-game-id="hangman"][data-screen="result"] { overflow: hidden; }
@@ -118,25 +117,25 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
     animation: none;
   }
 }
-</style>  <meta name="description" content="Un juego clásico completo que está terminando sus controles de lanzamiento." />
-    <meta property="og:site_name" content="WeightPlay" />
+</style>  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Ahorcado | WeightPlay" />
-    <meta property="og:description" content="Un juego clásico completo que está terminando sus controles de lanzamiento." />
+    <meta property="og:description" content="Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos." />
     <meta property="og:url" content="https://weightplay.com/es/games/hangman/" />
     <meta property="og:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Ahorcado | WeightPlay" />
-    <meta name="twitter:description" content="Un juego clásico completo que está terminando sus controles de lanzamiento." />
+    <meta name="twitter:description" content="Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos." />
     <meta name="twitter:image" content="https://weightplay.com/assets/hangman-cover-v1.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Ahorcado",
+  "alternateName": "Hangman",
   "url": "https://weightplay.com/es/games/hangman/",
-  "image": "https://weightplay.com/assets/classic-logic-lab-cover.webp",
-  "description": "Un juego clásico completo que está terminando sus controles de lanzamiento.",
+  "image": "https://weightplay.com/assets/hangman-cover-v1.webp",
+  "description": "Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -146,39 +145,39 @@ body[data-game-id="hangman"][data-screen="result"] #resultScreen .arcade-panel {
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Classic",
-    "Palabra",
-    "Puzzle",
-    "Browser Game"
+    "Clásico",
+    "Palabras",
+    "Puzles",
+    "Familia"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Hangman"
+  }
 }
     </script>
   </head>
 <body><main id="popularArcade" class="popular-arcade"><header class="arcade-header"><div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Ahorcado</h1><p id="gameTagline" class="tagline"></p></div><label class="locale-picker"><span id="languageLabel">Language</span><select id="localeSelect"></select></label></header><section id="mainScreen" class="screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p>Use visible controls to play a complete short round, then review the Result.</p><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true">A</div></div></section><section id="battleScreen" class="screen" hidden><div class="arcade-panel battle-panel"><div class="battle-top"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></section><section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section><footer class="arcade-footer" id="footerText"></footer></main><script src="../../src/popular-games-batch.js?v=20260827-hangman-art-v7"></script><script src="game.js?v=20260827-hangman-art-v7"></script><section class="game-page-info game-page-info-static" aria-label="Información de Ahorcado">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Ahorcado</h2><p>Un juego clásico completo que está terminando sus controles de lanzamiento.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Juego clásico</strong></div><div class="game-info-fact"><span>Género</span><strong>Classic · Palabra · Puzzle</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Ahorcado</h2><p>Lee el patrón, elige letras y resuelve una ronda completa de Ahorcado antes de seis fallos.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Deducción de vocabulario</strong></div><div class="game-info-fact"><span>Género</span><strong>Clásico · Palabras · Puzles · Familia</strong></div></div>
     </div>
     <div class="game-info-sections">
 
 
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Lee el patrón de la palabra oculta y usa Pista cuando necesites una clave temática.</li><li>Elige una letra sin usar: las correctas revelan su posición y las fallidas cuentan para el límite de seis errores.</li><li>Repetir una letra no causa una pérdida adicional; queda marcada como usada y el reto sigue siendo deductivo.</li><li>Descubre la palabra completa y usa Jugar otra vez para una ronda rápida nueva o vuelve al inicio.</li></ol></div>
 
 
 
 
-
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, solo en este navegador.</dd></div></dl></div>
 
     </div>
-  </section>
+  </section></body>
+<script src="../../src/site-config.js"></script>
+<script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
 <script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-</body>
 </html>
