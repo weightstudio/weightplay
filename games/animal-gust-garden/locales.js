@@ -25,7 +25,26 @@
     ar: { title: "حديقة النسيم", kicker: "لغز رياح صغير", world: "مرج ضوء الطحلب", intro: "اختر بذرة وحدد اتجاه الريح، ثم قد كل بذرة إلى زهرة من دون لمس الأشواك.", fact1: "3 أحواض", fact2: "أربع هبات", fact3: "إعادة هادئة", start: "افتح الحديقة", choose: "اختر حوضاً", chapter: "أحواض النسيم", stageHint: "اختر حوضاً وقد كل بذرة مربعاً واحداً في كل مرة.", round: "حوض النسيم", chooseDirection: "اختر هبة", gust: "أرسل الهبة", reset: "إعادة ضبط الحوض", back: "العودة إلى الرئيسية", settings: "الإعدادات", close: "إغلاق", sound: "الصوت", on: "تشغيل", off: "إيقاف", language: "اللغة", seed: "بذرة", flower: "زهرة", thorn: "شوكة", empty: "مرج مفتوح", stage: "الحوض {number}", progress: "{done} / {total} أحواض مزهرة", prompt: "اختر بذرة واتجاهاً ثم أرسل هبة واحدة.", selected: "تم اختيار البذرة. إلى أي اتجاه تهب الريح؟", moved: "تحركت البذرة مربعاً واحداً.", bloomed: "تفتحت زهرة! قد البذور المتبقية.", blocked: "الهبة محجوبة. جرب اتجاهاً آخر.", outside: "ينتهي المرج هنا. جرب اتجاهاً آخر.", occupied: "توجد بذرة أخرى هناك. جرب اتجاهاً آخر.", noSeed: "اختر بذرة أولاً.", noDirection: "اختر اتجاهاً أولاً.", finished: "الحوض مزهر", resultTitle: "عادت الحديقة إلى التنفس!", resultText: "أزهر {name} في {checks} هبات. وجدت البذور أزهارها.", next: "الحوض التالي", directions: { up: "الشمال", right: "الشرق", down: "الجنوب", left: "الغرب" }, status: "{locked} / {total} بذور مزهرة", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideTitle: "طريقة لعب حديقة النسيم", guideSummary: "خطط لهبة واحدة في كل مرة وقد كل بذرة إلى زهرة.", guideOne: "اختر بذرة ثم اختر اتجاهاً أساسياً.", guideTwo: "أرسل الهبة واقرأ استجابة المرج.", guideThree: "استخدم إعادة الضبط للمحاولة بهدوء.", faqTitle: "الأسئلة الشائعة", faqAnswer: "تبقى أفضل نتيجة في هذا المتصفح فقط." }
   };
   const localeNames = { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" };
-  const complete = (copy) => ({ ...en, ...copy, directions: { ...en.directions, ...(copy.directions || {}) } });
-  window.GUST_GARDEN_LOCALES = { en, "zh-Hant": zhHant, ...Object.fromEntries(Object.entries(localized).map(([key, copy]) => [key, complete(copy)])) };
+  const shellA11y = {
+    en: { mainBack: "Back to WeightPlay", stageSections: "Stage sections" },
+    "zh-Hant": { mainBack: "返回 WeightPlay", stageSections: "階段區段" },
+    "zh-Hans": { mainBack: "返回 WeightPlay", stageSections: "阶段区段" },
+    ja: { mainBack: "WeightPlayへ戻る", stageSections: "ステージのセクション" },
+    ko: { mainBack: "WeightPlay로 돌아가기", stageSections: "스테이지 섹션" },
+    es: { mainBack: "Volver a WeightPlay", stageSections: "Secciones de fases" },
+    "pt-BR": { mainBack: "Voltar ao WeightPlay", stageSections: "Seções das fases" },
+    fr: { mainBack: "Retour à WeightPlay", stageSections: "Sections des niveaux" },
+    de: { mainBack: "Zurück zu WeightPlay", stageSections: "Stufenbereiche" },
+    it: { mainBack: "Torna a WeightPlay", stageSections: "Sezioni delle fasi" },
+    ru: { mainBack: "Вернуться в WeightPlay", stageSections: "Разделы этапа" },
+    hi: { mainBack: "WeightPlay पर वापस जाएँ", stageSections: "स्टेज सेक्शन" },
+    ar: { mainBack: "العودة إلى WeightPlay", stageSections: "أقسام المرحلة" },
+  };
+  const complete = (copy, locale) => ({ ...en, ...copy, ...(shellA11y[locale] || {}), directions: { ...en.directions, ...(copy.directions || {}) } });
+  window.GUST_GARDEN_LOCALES = {
+    en: { ...en, ...shellA11y.en },
+    "zh-Hant": { ...zhHant, ...shellA11y["zh-Hant"] },
+    ...Object.fromEntries(Object.entries(localized).map(([key, copy]) => [key, complete(copy, key)])),
+  };
   window.GUST_GARDEN_LOCALE_NAMES = localeNames;
 }());

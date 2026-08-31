@@ -23,9 +23,9 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-game-version" content="v4" />
   <title>ガスト・ガーデン | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v3" />
+  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v4" />
   <meta name="description" content="種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -55,11 +55,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Spatial Planning",
-    "家族",
-    "Animal"
+    "パズル",
+    "ロジック",
+    "空間計画",
+    "ファミリー",
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -73,7 +73,7 @@
   <div id="loading" class="loading-screen"><span class="spinner" aria-hidden="true">✦</span><p data-i18n="loading">Waking the garden breeze…</p></div>
   <main id="app" hidden>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">ガスト・ガーデン</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="WeightPlayへ戻る" data-i18n-aria="mainBack"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">ガスト・ガーデン</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
       <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="ガスト・ガーデンのゲーム画像" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-runtime-localize="off">ガスト・ガーデン</h1>
@@ -88,7 +88,7 @@
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-gust-garden-cover-art.webp" style="--wp-stage-art:url('assets/animal-gust-garden-cover-art.webp')">
         <header class="stage-header"><button id="stageBackButton" class="icon-button" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="chapter">Breeze plots</p><h2 data-i18n="choose">Choose a breeze</h2></div><button id="stageSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
         <div><p class="stage-intro intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" aria-label="ステージのセクション" data-i18n-aria="stageSections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
       </div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
@@ -115,7 +115,7 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ガスト・ガーデン</h2><p>種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>風ベクトル種子パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Logic · Spatial Planning · 家族 · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>風ベクトル種子パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · ロジック · 空間計画 · ファミリー · 動物</strong></div></div>
     </div>
     <div class="game-info-sections">
 
@@ -125,12 +125,12 @@
 
 
 
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
 
     </div>
   </section>
-  <script src="locales.js?v=20260831-gust-garden-interface-v3"></script>
-  <script src="game.js?v=20260831-gust-garden-interface-v3"></script>
+  <script src="locales.js?v=20260831-gust-garden-interface-v4"></script>
+  <script src="game.js?v=20260831-gust-garden-interface-v4"></script>
 <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

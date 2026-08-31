@@ -4,7 +4,7 @@
   const CODES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const LOCALE_ROUTES = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const ROUTE_LOCALES = Object.fromEntries(Object.entries(LOCALE_ROUTES).map(([code, route]) => [route, code]));
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const INTERFACE_VERSION = "6";
   const BASE = window.BAMBOO_LOCALES.en;
   const LEVELS = window.BAMBOO_LEVELS.levels;
@@ -413,6 +413,8 @@
     $("publicGuide")?.setAttribute("aria-label", text("guideTitle"));
     updateMainProgress();
     if (run) {
+      $("chapter").textContent = text("chapter", { n: Math.floor(selected / 5) + 1 });
+      $("stageName").textContent = text("waterway", { n: selected + 1 });
       $("resultText").textContent = text("resultText", { moves: run.moves, n: selected + 1 });
       $("resultMastery").textContent = run.completed
         ? text("replayGoal", { moves: save.best?.[selected] ?? run.moves })

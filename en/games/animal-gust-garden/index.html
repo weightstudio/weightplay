@@ -23,9 +23,9 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-game-version" content="v4" />
   <title>Gust Garden | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v3" />
+  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v4" />
   <meta name="description" content="Choose a seed and send one gust at a time to bloom every flower without brushing a thorn." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -72,7 +72,7 @@
   <div id="loading" class="loading-screen"><span class="spinner" aria-hidden="true">✦</span><p data-i18n="loading">Waking the garden breeze…</p></div>
   <main id="app" hidden>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">Gust Garden</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay" data-i18n-aria="mainBack"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">Gust Garden</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
       <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="Gust Garden game artwork" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-runtime-localize="off">Gust Garden</h1>
@@ -87,7 +87,7 @@
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-gust-garden-cover-art.webp" style="--wp-stage-art:url('assets/animal-gust-garden-cover-art.webp')">
         <header class="stage-header"><button id="stageBackButton" class="icon-button" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="chapter">Breeze plots</p><h2 data-i18n="choose">Choose a breeze</h2></div><button id="stageSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
         <div><p class="stage-intro intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" aria-label="Stage sections" data-i18n-aria="stageSections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
       </div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
@@ -128,7 +128,7 @@
 
     </div>
   </section>
-  <script src="locales.js?v=20260831-gust-garden-interface-v3"></script>
-  <script src="game.js?v=20260831-gust-garden-interface-v3"></script>
+  <script src="locales.js?v=20260831-gust-garden-interface-v4"></script>
+  <script src="game.js?v=20260831-gust-garden-interface-v4"></script>
 </body>
 </html>

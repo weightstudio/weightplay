@@ -22,15 +22,15 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-game-version" content="v4" />
   <title>Gust Garden | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v3" />
+  <link rel="stylesheet" href="style.css?v=20260831-gust-garden-interface-v4" />
 </head>
 <body data-wp-game-id="animal-gust-garden" data-wp-audience="general">
   <div id="loading" class="loading-screen"><span class="spinner" aria-hidden="true">✦</span><p data-i18n="loading">Waking the garden breeze…</p></div>
   <main id="app" hidden>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-i18n="title">Gust Garden</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
+      <header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay" data-i18n-aria="mainBack"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-i18n="title">Gust Garden</strong><button id="settingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
       <div class="cover-wrap"><picture><source srcset="assets/animal-gust-garden-cover-art.webp" type="image/webp" /><img src="assets/animal-gust-garden-cover-art.png" width="1254" height="1254" data-i18n-alt="coverAlt" alt="" /></picture><span class="cover-badge" data-i18n="kicker">A tiny wind puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-i18n="title">Gust Garden</h1>
@@ -45,7 +45,7 @@
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-gust-garden-cover-art.webp" style="--wp-stage-art:url('assets/animal-gust-garden-cover-art.webp')">
         <header class="stage-header"><button id="stageBackButton" class="icon-button" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">←</button><div><p class="eyebrow" data-i18n="chapter">Breeze plots</p><h2 data-i18n="choose">Choose a breeze</h2></div><button id="stageSettingsButton" class="icon-button" type="button" data-wp-settings aria-label="Settings" data-i18n-aria="settings">⚙</button></header>
         <div><p class="stage-intro intro" data-i18n="stageHint">Select a plot, then guide each seed one square at a time.</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div></div>
-        <nav class="stage-tabs" aria-label="Stage sections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" aria-label="Stage sections" data-i18n-aria="stageSections"><span aria-hidden="true"></span><button type="button" role="tab" aria-current="page" data-i18n="chapter">Breeze plots</button><span aria-hidden="true"></span></nav>
       </div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
@@ -69,7 +69,7 @@
     <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" data-sound-toggle aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
   <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Gust Garden game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span><h2 data-i18n="guideTitle">How to play Gust Garden</h2><p data-i18n="guideSummary">Plan one wind step at a time and guide every seed to a flower.</p></div></div><div class="game-info-sections"><article class="game-info-section"><h3 data-i18n="guideTitle">How to play</h3><ol><li data-i18n="guideOne">Choose a seed, then choose one cardinal gust.</li><li data-i18n="guideTwo">Send the gust and read the meadow response.</li><li data-i18n="guideThree">Use Reset to try a plot again without pressure.</li></ol></article><article class="game-info-section"><h3 data-i18n="faqTitle">Frequently asked questions</h3><p data-i18n="faqAnswer">Your best result is stored only in this browser.</p></article></div></section>
-  <script src="locales.js?v=20260830-gust-garden-v2"></script>
-  <script src="game.js?v=20260831-gust-garden-interface-v3"></script>
+  <script src="locales.js?v=20260831-gust-garden-interface-v4"></script>
+  <script src="game.js?v=20260831-gust-garden-interface-v4"></script>
 </body>
 </html>
