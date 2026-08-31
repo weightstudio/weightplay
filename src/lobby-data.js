@@ -2655,6 +2655,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-09-01). Keep Canopy Compass planned and
+// Coming Soon while its orientation loop remains an internal/noindex slice
+// pending art, Tester, Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-canopy-compass",
+    audience: "general",
+    status: "planned",
+    title: localize(["Canopy Compass", "樹冠羅盤", "树冠罗盘", "キャノピー・コンパス", "숲관 나침반", "Brújula del Dosel", "Bússola da Copa", "Boussole de la Canopée", "Kronen-Kompass", "Bussola della Chioma", "Компас кроны", "कैनोपी कम्पास", "بوصلة الغابة العليا"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Orientation Clue Puzzle", "風向線索益智", "风向线索益智", "方位手がかりパズル", "방향 단서 퍼즐", "Puzzle de orientación", "Puzzle de orientação", "Puzzle d’orientation", "Orientierungs-Puzzle", "Puzzle d’orientamento", "Пазл ориентации", "दिशा संकेत पहेली", "لغز دلائل الاتجاه"]),
+    description: localize(["Read two canopy clues, turn a compass, and align three safe lookouts for the night animals.", "閱讀兩條樹冠線索，轉動羅盤，為夜行動物對準三座安全瞭望台。", "阅读两条树冠线索，转动罗盘，为夜行动物对准三座安全瞭望台。", "2つの手がかりを読み、コンパスを回して夜の動物の見張り台を合わせよう。", "단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요.", "Lee dos pistas, gira la brújula y alinea tres miradores seguros.", "Leia duas pistas, gire a bússola e alinhe três mirantes seguros.", "Lis deux indices, tourne la boussole et aligne trois postes sûrs.", "Lies zwei Hinweise, drehe den Kompass und richte drei sichere Ausgucke aus.", "Leggi due indizi, ruota la bussola e allinea tre vedette sicure.", "Прочитайте две подсказки, поверните компас и выровняйте три безопасные площадки.", "दो संकेत पढ़ें, कम्पास घुमाएँ और तीन सुरक्षित चौकियाँ मिलाएँ।", "اقرأ دليلين، أدر البوصلة وحاذِ ثلاث منصات آمنة."]),
+    meta: localize([["3 Lookouts", "Compass Turns", "Calm Retry"], ["3 座瞭望台", "羅盤轉向", "平靜重試"], ["3 座瞭望台", "罗盘转向", "平静重试"], ["3つの見張り台", "コンパス回転", "穏やかな再挑戦"], ["전망대 3개", "나침반 회전", "차분한 재시도"], ["3 miradores", "Giros de brújula", "Reintento sereno"], ["3 mirantes", "Giros da bússola", "Nova tentativa calma"], ["3 postes", "Tours de boussole", "Reprise sereine"], ["3 Ausgucke", "Kompass drehen", "Ruhiger Versuch"], ["3 vedette", "Giri di bussola", "Riprova calma"], ["3 площадки", "Повороты компаса", "Спокойный повтор"], ["3 चौकियाँ", "कम्पास मोड़", "शांत पुनः प्रयास"], ["3 منصات", "دورات البوصلة", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Orientation", "Logic", "Family", "Animal"],
+    skills: ["Spatial Reasoning", "Observation", "Planning"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-canopy-compass/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-canopy-compass/assets/animal-canopy-compass-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-31). Keep Orbit Orchard planned and
 // Coming Soon while its radial timing loop remains an internal/noindex slice
 // pending art, localization, Tester, Reviewer, release, and publication gates.
@@ -4081,6 +4109,34 @@ if (animalBounceBrawlPublic) {
   animalBounceBrawlPublic.previewVideo = "assets/previews/animal-bounce-brawl-battle.webm";
   delete animalBounceBrawlPublic.internalTrial;
 }
+
+// Grove Chain is a weighted General prototype. Keep its canonical identity
+// planned for production-order tooling, but outside public General discovery
+// until the generated cover passes the independent Art Director gate.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-grove-dominoes",
+    audience: "general",
+    internalOnly: true,
+    status: "planned",
+    title: localize(["Grove Chain", "林間接龍", "林间接龙", "グローブ・チェーン", "그로브 체인", "Cadena del Bosque", "Corrente do Bosque", "Chaîne du Bosquet", "Waldkette", "Catena del Bosco", "Лесная цепочка", "वन श्रृंखला", "سلسلة الغابة"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Habitat Chain Puzzle", "棲地接龍益智", "栖地接龙益智", "生息地チェーンパズル", "서식지 연결 퍼즐", "Puzle de cadenas de hábitats", "Quebra-cabeça de correntes de habitats", "Puzzle de chaînes d’habitats", "Lebensraum-Kettenpuzzle", "Puzzle di catene di habitat", "Головоломка с цепочками мест обитания", "आवास-श्रृंखला पहेली", "لغز سلاسل المواطن"]),
+    description: localize(["Match habitat ends to close three gentle loops through the moonlit grove.", "配對棲地端點，完成月光森林裡的三段溫柔環路。", "配对栖地端点，完成月光森林里的三段温柔环路。", "生息地の端を合わせ、月明かりの森で3つの輪を完成させよう。", "서식지 끝을 맞춰 달빛 숲의 고리 세 개를 완성하세요.", "Une los extremos de hábitat para cerrar tres ciclos tranquilos bajo la luna.", "Combine as pontas dos habitats para fechar três ciclos serenos sob a lua.", "Associez les extrémités d’habitat pour fermer trois boucles paisibles sous la lune.", "Verbinde Lebensraum-Enden und schließe drei ruhige Mondwald-Kreise.", "Abbina le estremità degli habitat per chiudere tre cicli al chiaro di luna.", "Соединяйте края мест обитания и замыкайте три тихих лунных круга.", "आवास के सिरों को मिलाकर चाँदनी वन के तीन शांत चक्र पूरे करें।", "طابق نهايات المواطن لإكمال ثلاث حلقات هادئة في الغابة المضيئة بالقمر."]),
+    meta: localize([["3 Habitat Loops", "No Timer", "Calm Retry"], ["3 段棲地環路", "沒有計時", "平靜重試"], ["3 段栖地环路", "没有计时", "平静重试"], ["3つの輪", "タイマーなし", "穏やかな再挑戦"], ["서식지 고리 3개", "타이머 없음", "차분한 재시도"], ["3 ciclos", "Sin temporizador", "Reintento sereno"], ["3 ciclos", "Sem cronômetro", "Nova tentativa calma"], ["3 boucles", "Sans minuteur", "Reprise sereine"], ["3 Kreise", "Ohne Timer", "Ruhiger Versuch"], ["3 cicli", "Senza timer", "Riprova calma"], ["3 круга", "Без таймера", "Спокойный повтор"], ["3 चक्र", "कोई टाइमर नहीं", "शांत पुनः प्रयास"], ["3 حلقات", "بلا مؤقت", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Logic", "Spatial Reasoning", "Family", "Animal"],
+    skills: ["Matching", "Planning", "Spatial Reasoning"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-grove-dominoes/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+})();
 
 for (const game of window.WONDER_LOBBY.games) {
   const release = approvedGeneralReleases[game.id];

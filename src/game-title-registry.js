@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-canopy-compass": {
+    "__localizedExact": true,
+    "en": "Canopy Compass",
+    "zh-Hant": "樹冠羅盤",
+    "zh-Hans": "树冠罗盘",
+    "ja": "キャノピー・コンパス",
+    "ko": "숲관 나침반",
+    "es": "Brújula del Dosel",
+    "pt-BR": "Bússola da Copa",
+    "fr": "Boussole de la Canopée",
+    "de": "Kronen-Kompass",
+    "it": "Bussola della Chioma",
+    "ru": "Компас кроны",
+    "hi": "कैनोपी कम्पास",
+    "ar": "بوصلة الغابة العليا"
+  },
   "animal-orbit-orchard": {
     "__localizedExact": true,
     "en": "Orbit Orchard",
@@ -2622,5 +2638,21 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Космические глыбы",
     "hi": "अंतरिक्ष शिलाखंड",
     "ar": "صخور الفضاء"
+  },
+  "animal-grove-dominoes": {
+    "__localizedExact": true,
+    "en": "Grove Chain",
+    "zh-Hant": "林間接龍",
+    "zh-Hans": "林间接龙",
+    "ja": "グローブ・チェーン",
+    "ko": "그로브 체인",
+    "es": "Cadena del Bosque",
+    "pt-BR": "Corrente do Bosque",
+    "fr": "Chaîne du Bosquet",
+    "de": "Waldkette",
+    "it": "Catena del Bosco",
+    "ru": "Лесная цепочка",
+    "hi": "वन श्रृंखला",
+    "ar": "سلسلة الغابة"
   }
 };
