@@ -81,6 +81,13 @@ body[data-wp-card-game="war"] .card-action-row button {
    section padding in its declared width so the shared content-box rule cannot
    create a narrow-screen horizontal overflow. */
 body[data-wp-card-game="spades"] .game-page-info { box-sizing: border-box; }
+/* Hearts' static Guide is part of the legacy Main root. Include its padding
+   in the width so the shared content-box contract cannot create phone or
+   landscape overflow while preserving the existing Guide flow. */
+body[data-wp-card-game="hearts"] .game-page-info {
+  box-sizing: border-box;
+  max-width: 100%;
+}
 @media (max-width: 720px), (max-height: 560px) and (orientation: landscape) {
   /* The shared Guide uses content-box sizing; keep Gin's locale-owned Main
      Guide inside the viewport after its mobile padding is applied. */

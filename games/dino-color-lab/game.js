@@ -3,19 +3,51 @@
 
   const $ = id => document.getElementById(id);
   const screens = {main: $("mainScreen"), lab: $("labScreen"), result: $("resultScreen")};
+  const guide = $("gameGuide");
   let locale = "en", index = 0, score = 0, selected = [], coolingTimer = 0;
   let hintKey = "choose", hintGood = false;
   const readBest = () => { try { return Number(localStorage.getItem("dinoColorLabBest") || 0); } catch { return 0; } };
   const saveBest = value => { try { localStorage.setItem("dinoColorLabBest", String(value)); } catch { /* restricted storage stays session-safe */ } };
+  const readSound = () => { try { return localStorage.getItem("dinoColorLabSound") !== "off"; } catch { return true; } };
+  const saveSound = value => { try { localStorage.setItem("dinoColorLabSound", value ? "on" : "off"); } catch { /* restricted storage stays session-safe */ } };
   let best = readBest();
-  const t = (key, vars = {}) => Object.entries(vars).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), (COPY[locale] || COPY.en)[key] || COPY.en[key] || key);
-  const show = name => Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; });
+  let soundOn = readSound();
+  const EXTRA_COPY = {
+    en: {settings: "Settings", sound: "Sound", soundOn: "On", soundOff: "Off", progress: "4 samples", leaveTitle: "Leave the lab?", leaveBody: "Your current sample choices will be lost, but your best run stays saved.", continue: "Continue playing", confirmLeave: "Return to Main"},
+    "zh-Hant": {settings: "設定", sound: "音效", soundOn: "開", soundOff: "關", progress: "4 個樣本", leaveTitle: "要離開實驗室嗎？", leaveBody: "目前樣本的選擇會消失，但最佳紀錄會保留。", continue: "繼續遊玩", confirmLeave: "返回主畫面"},
+    "zh-Hans": {settings: "设置", sound: "声音", soundOn: "开", soundOff: "关", progress: "4 个样本", leaveTitle: "要离开实验室吗？", leaveBody: "当前样本选择会消失，但最佳记录会保留。", continue: "继续游戏", confirmLeave: "返回主画面"},
+    ja: {settings: "設定", sound: "サウンド", soundOn: "オン", soundOff: "オフ", progress: "4サンプル", leaveTitle: "ラボを出ますか？", leaveBody: "現在のサンプル選択は失われますが、ベスト記録は残ります。", continue: "プレイを続ける", confirmLeave: "メインへ戻る"},
+    ko: {settings: "설정", sound: "사운드", soundOn: "켜짐", soundOff: "꺼짐", progress: "샘플 4개", leaveTitle: "연구실을 나갈까요?", leaveBody: "현재 샘플 선택은 사라지지만 최고 기록은 저장됩니다.", continue: "계속 플레이", confirmLeave: "메인으로 돌아가기"},
+    es: {settings: "Ajustes", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado", progress: "4 muestras", leaveTitle: "¿Salir del laboratorio?", leaveBody: "Se perderá la selección actual, pero conservarás tu mejor ronda.", continue: "Seguir jugando", confirmLeave: "Volver al menú"},
+    "pt-BR": {settings: "Configurações", sound: "Som", soundOn: "Ligado", soundOff: "Desligado", progress: "4 amostras", leaveTitle: "Sair do laboratório?", leaveBody: "A seleção atual será perdida, mas seu melhor resultado fica salvo.", continue: "Continuar jogando", confirmLeave: "Voltar ao menu"},
+    fr: {settings: "Réglages", sound: "Son", soundOn: "Activé", soundOff: "Désactivé", progress: "4 échantillons", leaveTitle: "Quitter le labo ?", leaveBody: "La sélection actuelle sera perdue, mais ton meilleur tour reste sauvegardé.", continue: "Continuer", confirmLeave: "Retour au menu"},
+    de: {settings: "Einstellungen", sound: "Ton", soundOn: "An", soundOff: "Aus", progress: "4 Proben", leaveTitle: "Labor verlassen?", leaveBody: "Die aktuelle Auswahl geht verloren, aber dein bester Lauf bleibt gespeichert.", continue: "Weiterspielen", confirmLeave: "Zum Menü"},
+    it: {settings: "Impostazioni", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivo", progress: "4 campioni", leaveTitle: "Uscire dal laboratorio?", leaveBody: "La selezione attuale andrà persa, ma il record resta salvato.", continue: "Continua a giocare", confirmLeave: "Torna al menu"},
+    ru: {settings: "Настройки", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл.", progress: "4 образца", leaveTitle: "Выйти из лаборатории?", leaveBody: "Текущий выбор будет потерян, но лучший результат сохранится.", continue: "Продолжить игру", confirmLeave: "В главное меню"},
+    hi: {settings: "सेटिंग", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", progress: "4 नमूने", leaveTitle: "प्रयोगशाला छोड़ें?", leaveBody: "वर्तमान नमूने का चयन मिट जाएगा, लेकिन आपका सर्वोत्तम रन सुरक्षित रहेगा।", continue: "खेल जारी रखें", confirmLeave: "मुख्य मेनू पर लौटें"},
+    ar: {settings: "الإعدادات", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", progress: "٤ عينات", leaveTitle: "مغادرة المختبر؟", leaveBody: "سيضيع اختيار العينة الحالية، لكن أفضل جولة ستبقى محفوظة.", continue: "متابعة اللعب", confirmLeave: "العودة إلى القائمة"}
+  };
+  const t = (key, vars = {}) => Object.entries(vars).reduce((value, [name, replacement]) => value.replace(`{${name}}`, replacement), (COPY[locale] || COPY.en)[key] || COPY.en[key] || EXTRA_COPY[locale]?.[key] || EXTRA_COPY.en[key] || key);
+  const show = name => {
+    Object.entries(screens).forEach(([key, node]) => { node.hidden = key === "lab" && name === "result" ? false : key !== name; });
+    guide.hidden = name !== "main";
+    document.body.dataset.screen = name === "lab" || name === "result" ? "battle" : "main";
+    if (name !== "main") closeSettings();
+    if (name !== "lab") closeLeaveDialog();
+  };
   const applyCopy = () => {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach(node => { node.textContent = t(node.dataset.copy); });
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
+    $("mainSettingsBtn").setAttribute("aria-label", t("settings"));
+    $("mainSettingsPopover").setAttribute("aria-label", t("settings"));
+    $("soundToggle").setAttribute("aria-label", t("sound"));
+    $("soundToggle").setAttribute("aria-checked", String(soundOn));
+    $("soundToggle").querySelector(".sr-only").textContent = soundOn ? t("soundOn") : t("soundOff");
+    $("battleBack").setAttribute("aria-label", t("back"));
+    $("mainScreen").querySelector("[data-wp-return='main']").setAttribute("aria-label", t("back"));
     updateBest();
   };
   const updateBest = () => { $("bestLine").textContent = best ? t("menuBest", {n: best}) : ""; };
@@ -54,7 +86,33 @@
     clearTimeout(coolingTimer); $("coolingBar").classList.remove("cooling"); void $("coolingBar").offsetWidth; $("coolingBar").classList.add("cooling");
     coolingTimer = window.setTimeout(() => announce("wrong"), 12000);
   };
+  const closeSettings = (restoreFocus = false) => {
+    const popover = $("mainSettingsPopover");
+    if (popover.hidden) return;
+    popover.hidden = true;
+    $("mainSettingsBtn").setAttribute("aria-expanded", "false");
+    if (restoreFocus) $("mainSettingsBtn").focus();
+  };
+  const openSettings = () => {
+    const popover = $("mainSettingsPopover");
+    popover.hidden = false;
+    $("mainSettingsBtn").setAttribute("aria-expanded", "true");
+    $("localeSelect").focus();
+  };
+  const closeLeaveDialog = (restoreFocus = false) => {
+    const dialog = $("leaveDialog");
+    if (dialog.hidden) return;
+    dialog.hidden = true;
+    if (restoreFocus) $("battleBack").focus();
+  };
+  const openLeaveDialog = () => {
+    if ($("labScreen").hidden || !$("leaveDialog")) return;
+    clearTimeout(coolingTimer);
+    $("leaveDialog").hidden = false;
+    $("continueBtn").focus();
+  };
   const startLab = () => { index = 0; score = 0; selected = []; hintKey = "choose"; hintGood = false; show("lab"); renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); };
+  const returnToMain = () => { clearTimeout(coolingTimer); closeLeaveDialog(); show("main"); updateBest(); $("startBtn").focus(); };
   const finish = () => {
     clearTimeout(coolingTimer); best = Math.max(best, score); saveBest(best);
     $("resultTitle").textContent = t("completeTitle"); $("resultBody").textContent = t("completeBody", {n: score});
@@ -69,15 +127,26 @@
     window.setTimeout(() => { index += 1; if (index >= SAMPLES.length) finish(); else { selected = []; hintKey = "choose"; hintGood = false; renderReagents(); startCooling(); $("reagentGrid").querySelector("button")?.focus(); } }, 420);
   });
   $("startBtn").addEventListener("click", startLab); $("replayBtn").addEventListener("click", startLab);
-  $("homeBtn").addEventListener("click", () => { show("main"); updateBest(); $("startBtn").focus(); });
-  $("leaveBtn").addEventListener("click", () => { clearTimeout(coolingTimer); show("main"); updateBest(); $("startBtn").focus(); });
+  $("homeBtn").addEventListener("click", returnToMain);
+  $("battleBack").addEventListener("click", openLeaveDialog);
+  $("leaveBtn").addEventListener("click", openLeaveDialog);
+  $("continueBtn").addEventListener("click", () => { closeLeaveDialog(true); startCooling(); });
+  $("confirmLeaveBtn").addEventListener("click", returnToMain);
+  $("mainSettingsBtn").addEventListener("click", () => $("mainSettingsPopover").hidden ? openSettings() : closeSettings(true));
+  $("soundToggle").addEventListener("click", () => { soundOn = !soundOn; saveSound(soundOn); applyCopy(); });
   $("localeSelect").addEventListener("change", event => { locale = event.target.value; applyCopy(); if (!screens.lab.hidden) renderReagents(); });
+  document.addEventListener("pointerdown", event => { if (!$("mainSettingsPopover").hidden && !$("mainSettingsPopover").contains(event.target) && event.target !== $("mainSettingsBtn")) closeSettings(); });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    if (!$("leaveDialog").hidden) { closeLeaveDialog(true); startCooling(); }
+    else if (!$("mainSettingsPopover").hidden) closeSettings(true);
+  });
   const COPY = {
     en: {
       back: "Back", eyebrow: "WeightPlay prototype", title: "Dino Color Lab", language: "Language",
       guide: "Spark Paw Fia's lab", mainHeading: "Mix two fossil inks to match the dino sample.",
       mainBody: "Choose two reagents, predict the blend, then lock the colour before the timer bar cools.",
-      start: "Open the lab", howTo: "How to play", howToBody: "Each sample has one exact two-ink recipe. Tap two different reagent cards, then mix. A correct blend opens the next sample; a wrong blend can be tried again.",
+      start: "Start Game", howTo: "How to play", howToBody: "Each sample has one exact two-ink recipe. Tap two different reagent cards, then mix. A correct blend opens the next sample; a wrong blend can be tried again.",
       targetLabel: "Target sample", leave: "Leave lab", complete: "Sample set complete", replay: "Run it again", home: "Back to menu",
       footer: "Internal prototype · no public lobby or sitemap entry", round: "Sample {n} / {total}", score: "Stable blends: {n}",
       choose: "Choose two inks", selected: "{n} / 2 selected", mix: "Mix colours", correct: "Stable blend! The fossil glows.", wrong: "That blend fizzed. Try a different pair.",
@@ -87,7 +156,7 @@
       back: "返回", eyebrow: "WeightPlay 原型", title: "恐龍調色實驗室", language: "語言",
       guide: "Spark Paw Fia 的實驗室", mainHeading: "混合兩種化石墨水，配出恐龍樣本的顏色。",
       mainBody: "選兩張試劑卡，預測混色結果，在冷卻條結束前鎖定顏色。",
-      start: "開啟實驗室", howTo: "玩法", howToBody: "每個樣本都有唯一的兩色配方。點選兩張不同試劑，再按混合。配對正確就能開啟下一個樣本，配錯可以再試。",
+      start: "開始遊戲", howTo: "玩法", howToBody: "每個樣本都有唯一的兩色配方。點選兩張不同試劑，再按混合。配對正確就能開啟下一個樣本，配錯可以再試。",
       targetLabel: "目標樣本", leave: "離開實驗室", complete: "樣本組完成", replay: "再跑一次", home: "返回選單",
       footer: "內部原型 · 尚未加入公開大廳或 Sitemap", round: "樣本 {n} / {total}", score: "穩定混合：{n}",
       choose: "選兩種墨水", selected: "已選 {n} / 2", mix: "混合顏色", correct: "混合穩定！化石亮起來了。", wrong: "這個配方冒泡了，換另一組試試。",
@@ -97,7 +166,7 @@
       back: "返回", eyebrow: "WeightPlay 原型", title: "恐龙调色实验室", language: "语言",
       guide: "Spark Paw Fia 的实验室", mainHeading: "混合两种化石墨水，配出恐龙样本的颜色。",
       mainBody: "选择两张试剂卡，预测混色结果，在冷却条结束前锁定颜色。",
-      start: "开启实验室", howTo: "玩法", howToBody: "每个样本都有唯一的两色配方。选择两张不同试剂后混合。配对正确即可进入下一个样本，配错可以再试。",
+      start: "开始游戏", howTo: "玩法", howToBody: "每个样本都有唯一的两色配方。选择两张不同试剂后混合。配对正确即可进入下一个样本，配错可以再试。",
       targetLabel: "目标样本", leave: "离开实验室", complete: "样本组完成", replay: "再玩一次", home: "返回菜单",
       footer: "内部原型 · 尚未加入公开大厅或 Sitemap", round: "样本 {n} / {total}", score: "稳定混合：{n}",
       choose: "选择两种墨水", selected: "已选 {n} / 2", mix: "混合颜色", correct: "混合稳定！化石亮起来了。", wrong: "这个配方冒泡了，换一组试试。",
@@ -107,7 +176,7 @@
       back: "戻る", eyebrow: "WeightPlay プロトタイプ", title: "恐竜カラーラボ", language: "言語",
       guide: "スパーク・ポー・フィアのラボ", mainHeading: "2色の化石インクを混ぜて恐竜サンプルに合わせよう。",
       mainBody: "試薬を2つ選び、色を予想して、冷却バーが終わる前に混ぜよう。",
-      start: "ラボを開く", howTo: "遊び方", howToBody: "各サンプルには正確な2色レシピがあります。異なる試薬カードを2枚選び、混ぜます。正解なら次へ進み、間違えても再挑戦できます。",
+      start: "ゲーム開始", howTo: "遊び方", howToBody: "各サンプルには正確な2色レシピがあります。異なる試薬カードを2枚選び、混ぜます。正解なら次へ進み、間違えても再挑戦できます。",
       targetLabel: "目標サンプル", leave: "ラボを出る", complete: "サンプル完了", replay: "もう一度遊ぶ", home: "メニューへ",
       footer: "内部プロトタイプ · 公開ロビーとサイトマップには未掲載", round: "サンプル {n} / {total}", score: "安定ブレンド: {n}",
       choose: "インクを2つ選ぶ", selected: "{n} / 2 選択", mix: "色を混ぜる", correct: "安定したブレンド！化石が光った。", wrong: "そのブレンドは泡立った。別の組み合わせを試そう。",
@@ -117,7 +186,7 @@
       back: "뒤로", eyebrow: "WeightPlay 프로토타입", title: "공룡 컬러 연구실", language: "언어",
       guide: "스파크 포 피아의 연구실", mainHeading: "화석 잉크 두 가지를 섞어 공룡 샘플 색을 맞추세요.",
       mainBody: "시약 두 개를 고르고 색을 예상한 뒤 냉각 바가 끝나기 전에 섞어 보세요.",
-      start: "연구실 열기", howTo: "플레이 방법", howToBody: "각 샘플에는 정확한 두 잉크 조합이 있습니다. 다른 시약 카드 두 장을 고르고 섞으세요. 맞으면 다음 샘플로, 틀려도 다시 시도할 수 있습니다.",
+      start: "게임 시작", howTo: "플레이 방법", howToBody: "각 샘플에는 정확한 두 잉크 조합이 있습니다. 다른 시약 카드 두 장을 고르고 섞으세요. 맞으면 다음 샘플로, 틀려도 다시 시도할 수 있습니다.",
       targetLabel: "목표 샘플", leave: "연구실 나가기", complete: "샘플 세트 완료", replay: "다시 플레이", home: "메뉴로 돌아가기",
       footer: "내부 프로토타입 · 공개 로비와 사이트맵에 없음", round: "샘플 {n} / {total}", score: "안정 혼합: {n}",
       choose: "잉크 두 개 선택", selected: "{n} / 2 선택", mix: "색 섞기", correct: "혼합 안정! 화석이 빛납니다.", wrong: "그 조합은 거품이 났어요. 다른 쌍을 시도하세요.",
@@ -127,7 +196,7 @@
       back: "Volver", eyebrow: "Prototipo de WeightPlay", title: "Laboratorio de Color Dino", language: "Idioma",
       guide: "Laboratorio de Spark Paw Fia", mainHeading: "Mezcla dos tintas fósiles para igualar la muestra dino.",
       mainBody: "Elige dos reactivos, predice la mezcla y fija el color antes de que termine la barra de enfriamiento.",
-      start: "Abrir laboratorio", howTo: "Cómo jugar", howToBody: "Cada muestra tiene una receta exacta de dos tintas. Toca dos tarjetas distintas y mezcla. Una mezcla correcta abre la siguiente muestra; una incorrecta se puede intentar de nuevo.",
+      start: "Iniciar juego", howTo: "Cómo jugar", howToBody: "Cada muestra tiene una receta exacta de dos tintas. Toca dos tarjetas distintas y mezcla. Una mezcla correcta abre la siguiente muestra; una incorrecta se puede intentar de nuevo.",
       targetLabel: "Muestra objetivo", leave: "Salir del laboratorio", complete: "Muestras completadas", replay: "Jugar otra vez", home: "Volver al menú",
       footer: "Prototipo interno · sin entrada pública ni sitemap", round: "Muestra {n} / {total}", score: "Mezclas estables: {n}",
       choose: "Elige dos tintas", selected: "{n} / 2 elegidas", mix: "Mezclar colores", correct: "¡Mezcla estable! El fósil brilla.", wrong: "La mezcla hizo burbujas. Prueba otra pareja.",
@@ -137,7 +206,7 @@
       back: "Voltar", eyebrow: "Protótipo WeightPlay", title: "Laboratório de Cores Dino", language: "Idioma",
       guide: "Laboratório da Spark Paw Fia", mainHeading: "Misture duas tintas fósseis para combinar com a amostra dino.",
       mainBody: "Escolha dois reagentes, preveja a mistura e fixe a cor antes de a barra de resfriamento terminar.",
-      start: "Abrir laboratório", howTo: "Como jogar", howToBody: "Cada amostra tem uma receita exata de duas tintas. Toque em dois cartões diferentes e misture. A combinação correta abre a próxima amostra; a errada pode ser tentada novamente.",
+      start: "Iniciar jogo", howTo: "Como jogar", howToBody: "Cada amostra tem uma receita exata de duas tintas. Toque em dois cartões diferentes e misture. A combinação correta abre a próxima amostra; a errada pode ser tentada novamente.",
       targetLabel: "Amostra-alvo", leave: "Sair do laboratório", complete: "Conjunto concluído", replay: "Jogar de novo", home: "Voltar ao menu",
       footer: "Protótipo interno · sem lobby público ou sitemap", round: "Amostra {n} / {total}", score: "Misturas estáveis: {n}",
       choose: "Escolha duas tintas", selected: "{n} / 2 escolhidas", mix: "Misturar cores", correct: "Mistura estável! O fóssil brilhou.", wrong: "Essa mistura borbulhou. Tente outra dupla.",
@@ -147,7 +216,7 @@
       back: "Retour", eyebrow: "Prototype WeightPlay", title: "Laboratoire Couleur Dino", language: "Langue",
       guide: "Le labo de Spark Paw Fia", mainHeading: "Mélange deux encres fossiles pour égaler l'échantillon dino.",
       mainBody: "Choisis deux réactifs, prédis le mélange, puis fixe la couleur avant la fin de la barre de refroidissement.",
-      start: "Ouvrir le labo", howTo: "Comment jouer", howToBody: "Chaque échantillon possède une recette exacte de deux encres. Touche deux cartes différentes puis mélange. Un bon mélange ouvre l'échantillon suivant ; tu peux réessayer après une erreur.",
+      start: "Commencer", howTo: "Comment jouer", howToBody: "Chaque échantillon possède une recette exacte de deux encres. Touche deux cartes différentes puis mélange. Un bon mélange ouvre l'échantillon suivant ; tu peux réessayer après une erreur.",
       targetLabel: "Échantillon cible", leave: "Quitter le labo", complete: "Série terminée", replay: "Rejouer", home: "Retour au menu",
       footer: "Prototype interne · aucun lobby ni sitemap public", round: "Échantillon {n} / {total}", score: "Mélanges stables : {n}",
       choose: "Choisis deux encres", selected: "{n} / 2 choisies", mix: "Mélanger les couleurs", correct: "Mélange stable ! Le fossile brille.", wrong: "Ce mélange a moussé. Essaie une autre paire.",
@@ -157,7 +226,7 @@
       back: "Zurück", eyebrow: "WeightPlay-Prototyp", title: "Dino-Farblabor", language: "Sprache",
       guide: "Das Labor von Spark Paw Fia", mainHeading: "Mische zwei Fossiltinten passend zur Dino-Probe.",
       mainBody: "Wähle zwei Reagenzien, schätze die Mischung und lege die Farbe fest, bevor der Kühlbalken endet.",
-      start: "Labor öffnen", howTo: "So wird gespielt", howToBody: "Jede Probe hat ein genaues Rezept aus zwei Tinten. Wähle zwei verschiedene Reagenzkarten und mische. Eine richtige Mischung öffnet die nächste Probe; ein Fehler darf neu versucht werden.",
+      start: "Spiel starten", howTo: "So wird gespielt", howToBody: "Jede Probe hat ein genaues Rezept aus zwei Tinten. Wähle zwei verschiedene Reagenzkarten und mische. Eine richtige Mischung öffnet die nächste Probe; ein Fehler darf neu versucht werden.",
       targetLabel: "Zielprobe", leave: "Labor verlassen", complete: "Probensatz geschafft", replay: "Noch einmal spielen", home: "Zum Menü",
       footer: "Interner Prototyp · kein öffentliches Lobby- oder Sitemap-Ziel", round: "Probe {n} / {total}", score: "Stabile Mischungen: {n}",
       choose: "Wähle zwei Tinten", selected: "{n} / 2 gewählt", mix: "Farben mischen", correct: "Stabile Mischung! Das Fossil leuchtet.", wrong: "Diese Mischung schäumt. Versuche ein anderes Paar.",
@@ -167,7 +236,7 @@
       back: "Indietro", eyebrow: "Prototipo WeightPlay", title: "Laboratorio Colori Dino", language: "Lingua",
       guide: "Il laboratorio di Spark Paw Fia", mainHeading: "Mescola due inchiostri fossili per abbinare il campione dino.",
       mainBody: "Scegli due reagenti, prevedi la miscela e fissa il colore prima che finisca la barra di raffreddamento.",
-      start: "Apri il laboratorio", howTo: "Come si gioca", howToBody: "Ogni campione ha una ricetta esatta di due inchiostri. Tocca due schede diverse e mescola. La miscela corretta apre il campione seguente; puoi riprovare dopo un errore.",
+      start: "Inizia gioco", howTo: "Come si gioca", howToBody: "Ogni campione ha una ricetta esatta di due inchiostri. Tocca due schede diverse e mescola. La miscela corretta apre il campione seguente; puoi riprovare dopo un errore.",
       targetLabel: "Campione obiettivo", leave: "Esci dal laboratorio", complete: "Serie completata", replay: "Gioca ancora", home: "Torna al menu",
       footer: "Prototipo interno · nessun ingresso pubblico o sitemap", round: "Campione {n} / {total}", score: "Miscele stabili: {n}",
       choose: "Scegli due inchiostri", selected: "{n} / 2 scelti", mix: "Mescola i colori", correct: "Miscela stabile! Il fossile brilla.", wrong: "Questa miscela ha fatto schiuma. Prova un'altra coppia.",
@@ -177,7 +246,7 @@
       back: "Назад", eyebrow: "Прототип WeightPlay", title: "Лаборатория цвета динозавров", language: "Язык",
       guide: "Лаборатория Спарк Пауз Фии", mainHeading: "Смешайте две ископаемые краски под образец динозавра.",
       mainBody: "Выберите два реагента, предскажите смесь и закрепите цвет до окончания охлаждения.",
-      start: "Открыть лабораторию", howTo: "Как играть", howToBody: "У каждого образца есть точный рецепт из двух красок. Выберите две разные карты реагентов и смешайте их. Верная смесь открывает следующий образец, а после ошибки можно попробовать снова.",
+      start: "Начать игру", howTo: "Как играть", howToBody: "У каждого образца есть точный рецепт из двух красок. Выберите две разные карты реагентов и смешайте их. Верная смесь открывает следующий образец, а после ошибки можно попробовать снова.",
       targetLabel: "Целевой образец", leave: "Выйти из лаборатории", complete: "Набор образцов завершён", replay: "Играть снова", home: "В меню",
       footer: "Внутренний прототип · нет публичного лобби или sitemap", round: "Образец {n} / {total}", score: "Стабильные смеси: {n}",
       choose: "Выберите две краски", selected: "Выбрано {n} / 2", mix: "Смешать цвета", correct: "Смесь стабильна! Окаменелость светится.", wrong: "Смесь запузырилась. Попробуйте другую пару.",
@@ -187,7 +256,7 @@
       back: "वापस", eyebrow: "WeightPlay प्रोटोटाइप", title: "डाइनो रंग प्रयोगशाला", language: "भाषा",
       guide: "स्पार्क पॉ फिया की प्रयोगशाला", mainHeading: "डाइनो नमूने से मिलाने के लिए दो जीवाश्म स्याहियाँ मिलाएँ।",
       mainBody: "दो अभिकर्मक चुनें, मिश्रण का अनुमान लगाएँ और ठंडा होने की पट्टी खत्म होने से पहले रंग तय करें।",
-      start: "प्रयोगशाला खोलें", howTo: "कैसे खेलें", howToBody: "हर नमूने का दो स्याहियों वाला एक सही नुस्खा है। दो अलग अभिकर्मक कार्ड चुनकर मिलाएँ। सही मिश्रण अगला नमूना खोलता है; गलत होने पर फिर कोशिश कर सकते हैं।",
+      start: "खेल शुरू करें", howTo: "कैसे खेलें", howToBody: "हर नमूने का दो स्याहियों वाला एक सही नुस्खा है। दो अलग अभिकर्मक कार्ड चुनकर मिलाएँ। सही मिश्रण अगला नमूना खोलता है; गलत होने पर फिर कोशिश कर सकते हैं।",
       targetLabel: "लक्ष्य नमूना", leave: "प्रयोगशाला छोड़ें", complete: "नमूना सेट पूरा", replay: "फिर खेलें", home: "मेनू पर लौटें",
       footer: "आंतरिक प्रोटोटाइप · सार्वजनिक लॉबी या साइटमैप में नहीं", round: "नमूना {n} / {total}", score: "स्थिर मिश्रण: {n}",
       choose: "दो स्याहियाँ चुनें", selected: "{n} / 2 चुनी गईं", mix: "रंग मिलाएँ", correct: "मिश्रण स्थिर है! जीवाश्म चमकता है।", wrong: "यह मिश्रण झागदार हो गया। दूसरी जोड़ी आज़माएँ।",
@@ -197,7 +266,7 @@
       back: "رجوع", eyebrow: "نموذج أولي من WeightPlay", title: "مختبر ألوان الديناصور", language: "اللغة",
       guide: "مختبر سبارك باو فيا", mainHeading: "اخلط حبرين أحفوريين لمطابقة عينة الديناصور.",
       mainBody: "اختر مادتين، توقّع المزيج، وثبّت اللون قبل انتهاء شريط التبريد.",
-      start: "افتح المختبر", howTo: "طريقة اللعب", howToBody: "لكل عينة وصفة دقيقة من حبرين. اختر بطاقتي مادتين مختلفتين ثم اخلطهما. يفتح المزيج الصحيح العينة التالية، ويمكنك إعادة المحاولة بعد الخطأ.",
+      start: "ابدأ اللعبة", howTo: "طريقة اللعب", howToBody: "لكل عينة وصفة دقيقة من حبرين. اختر بطاقتي مادتين مختلفتين ثم اخلطهما. يفتح المزيج الصحيح العينة التالية، ويمكنك إعادة المحاولة بعد الخطأ.",
       targetLabel: "العينة المستهدفة", leave: "مغادرة المختبر", complete: "اكتمل طقم العينات", replay: "العب مرة أخرى", home: "العودة إلى القائمة",
       footer: "نموذج أولي داخلي · بلا ردهة عامة أو خريطة موقع", round: "العينة {n} / {total}", score: "خلطات مستقرة: {n}",
       choose: "اختر حبرين", selected: "تم اختيار {n} / 2", mix: "اخلط اللونين", correct: "مزيج مستقر! الأحفورة تضيء.", wrong: "فَقَّعَ المزيجُ فقاعاتٍ. جرّب زوجًا آخر.",

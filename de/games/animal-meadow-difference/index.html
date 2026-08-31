@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-meadow-difference/" />
-
     <link rel="canonical" href="https://weightplay.com/de/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-meadow-difference/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-meadow-difference/" />
@@ -22,11 +21,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow" />
+    <meta name="weightplay-audience" content="general">
+    <meta name="weightplay-game-id" content="animal-meadow-difference">
+    <meta name="weightplay-game-version" content="v3">
+    <meta name="weightplay-interface-version" content="6">
+    <meta name="weightplay-game-status" content="planned">
     <meta name="description" content="Vergleiche zwei sichtbare Wiesenbilder und tippe in jeder ruhigen Beobachtungsrunde auf die veränderte Kachel." />
     <title>Wiesenblick | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-    <script src="locales.js?v=20260831-meadow-difference-v2" defer></script>
-    <script src="game.js?v=20260831-meadow-difference-v2" defer></script>
+    <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard>
+    <link rel="stylesheet" href="style.css?v=20260831-meadow-shell-v6">
+    <script src="locales.js?v=20260831-meadow-shell-v6" defer></script>
+    <script src="game.js?v=20260831-meadow-shell-v6" defer></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Wiesenblick | WeightPlay" />
@@ -42,6 +48,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Wiesenblick",
+  "alternateName": "Meadow Find",
   "url": "https://weightplay.com/de/games/animal-meadow-difference/",
   "image": "https://weightplay.com/games/animal-meadow-difference/assets/animal-meadow-difference-cover.png",
   "description": "Vergleiche zwei sichtbare Wiesenbilder und tippe in jeder ruhigen Beobachtungsrunde auf die veränderte Kachel.",
@@ -58,30 +65,32 @@
     "Observation",
     "Visual Reasoning",
     "Familie",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Meadow Find"
+  }
 }
     </script>
   </head>
-  <body>
-    <main class="app-shell" id="app">
-      <section class="view is-active" id="mainView" aria-labelledby="mainTitle">
-        <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
+  <body data-audience="general" data-wp-game-id="animal-meadow-difference" data-wp-game-version="v4" data-screen="main">
+    <main class="app-shell screen main-screen" id="mainScreen" data-screen="main" aria-labelledby="mainTitle">
+      <header class="main-header topbar wp-main-shell-header">
+        <a class="main-return home-link" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+        <strong class="wp-shell-main-title" data-copy="title">Meadow Find</strong>
+      </header>
+      <section class="view is-active main-content" id="mainView" aria-labelledby="mainTitle">
         <div class="hero-card">
-          <img class="cover-art" src="assets/animal-meadow-difference-cover.png" alt="" aria-hidden="true">
+          <img class="cover-art main-poster" src="assets/animal-meadow-difference-cover.png" alt="" aria-hidden="true">
           <div class="hero-copy">
             <p class="eyebrow" data-copy="eyebrow">A calm observation game</p>
             <h1 id="mainTitle" data-copy="title">Wiesenblick</h1>
-            <p class="lede" data-copy="subtitle">Compare two visible meadow panels and find one changed tile.</p>
+            <p class="lede main-summary" data-copy="subtitle">Compare two visible meadow panels and find one changed tile.</p>
             <p class="facts" data-copy="facts">Three short rounds · no timer · no lives</p>
-            <button class="primary-button" id="startButton" type="button" data-copy="start">Start observing</button>
+            <p class="main-progress" id="mainProgress" data-wp-main-progress role="status" aria-live="polite" data-copy="facts">Three short rounds · no timer · no lives</p>
+            <button class="primary-button" id="startButton" type="button" data-wp-main-start data-meadow-copy="start">Spiel starten</button>
           </div>
         </div>
         <div class="control-card">
@@ -89,58 +98,16 @@
             <label for="localeSelect" data-copy="language">Language</label>
             <select id="localeSelect" aria-label="Language"></select>
           </div>
-          <button class="secondary-button" id="soundToggle" type="button" aria-pressed="true"><span data-copy="soundOn">Sound on</span></button>
+          <button class="secondary-button" id="soundToggle" type="button" data-sound-toggle aria-pressed="true"><span data-copy="soundOn">Sound on</span></button>
         </div>
         <div class="help-card">
           <h2 data-copy="how">How to play</h2>
           <p data-copy="howBody">Both meadow panels stay visible. Compare row by row, then tap the changed tile on the right. A wrong tap simply invites another look.</p>
         </div>
       </section>
-
-      <section class="view" id="battleView" aria-labelledby="battleTitle" hidden>
-        <div class="screen-head">
-          <button class="quiet-button" id="homeFromBattle" type="button" data-copy="home">Home</button>
-          <div class="screen-heading">
-            <p class="eyebrow" id="roundLabel">Round 1 of 3</p>
-            <h2 id="battleTitle" data-copy="battleTitle">Compare the meadows</h2>
-          </div>
-          <button class="icon-button" id="battleSoundToggle" type="button" aria-label="Sound" aria-pressed="true">♪</button>
-        </div>
-        <p class="instruction" id="instruction" data-copy="instruction">Find the one tile that changed on the right.</p>
-        <div class="compare-layout">
-          <div class="compare-panel" id="beforePanel">
-            <div class="panel-label" data-copy="before">Before</div>
-            <div class="difference-grid" id="beforeGrid" aria-hidden="true"></div>
-          </div>
-          <div class="compare-arrow" aria-hidden="true">→</div>
-          <div class="compare-panel answer-panel" id="afterPanel">
-            <div class="panel-label" data-copy="after">After — choose here</div>
-            <div class="difference-grid" id="afterGrid"></div>
-          </div>
-        </div>
-        <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
-        <div class="progress-line"><span id="checkCount">0</span> <span data-copy="checks">checks</span></div>
-      </section>
-
-      <section class="view" id="resultView" aria-labelledby="resultTitle" hidden>
-        <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
-        <div class="result-card">
-          <div class="result-icon" aria-hidden="true">✦</div>
-          <img class="guide-art" src="assets/animal-meadow-difference-orla.png" alt="" aria-hidden="true">
-          <p class="eyebrow" data-copy="completeEyebrow">Observation complete</p>
-          <h2 id="resultTitle" data-copy="complete">A careful meadow search.</h2>
-          <p id="resultSummary">Three changed tiles found.</p>
-          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p>
-          <div class="result-actions">
-            <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button>
-            <button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button>
-          </div>
-        </div>
-      </section>
-      <div class="general-reserve" aria-hidden="true"></div>
-      <p class="sr-only" id="appStatus" aria-live="polite"></p>
     </main>
-  <section class="game-page-info game-page-info-static" aria-label="Informationen zu Wiesenblick">
+
+    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Wiesenblick" data-wp-game-guide>
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Wiesenblick</h2><p>Vergleiche zwei sichtbare Wiesenbilder und tippe in jeder ruhigen Beobachtungsrunde auf die veränderte Kachel.</p></div>
@@ -158,7 +125,53 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
+
+      <section class="view screen battle-screen battle-canvas" id="battleView" data-screen="battle" aria-labelledby="battleTitle" hidden>
+        <div class="screen-head">
+          <button class="quiet-button" id="homeFromBattle" type="button" data-wp-return="battle" data-copy="home">Home</button>
+          <div class="screen-heading">
+            <p class="eyebrow" id="roundLabel">Round 1 of 3</p>
+            <h2 id="battleTitle" data-copy="battleTitle">Compare the meadows</h2>
+          </div>
+          <button class="icon-button" id="battleSoundToggle" type="button" data-wp-battle-utility aria-label="Sound" aria-pressed="true">♪</button>
+        </div>
+        <p class="instruction" id="instruction" data-copy="instruction">Find the one tile that changed on the right.</p>
+        <div class="compare-layout">
+          <div class="compare-panel" id="beforePanel">
+            <div class="panel-label" data-copy="before">Before</div>
+            <div class="difference-grid" id="beforeGrid" aria-hidden="true"></div>
+          </div>
+          <div class="compare-arrow" aria-hidden="true">→</div>
+          <div class="compare-panel answer-panel" id="afterPanel">
+            <div class="panel-label" data-copy="after">After — choose here</div>
+            <div class="difference-grid" id="afterGrid"></div>
+          </div>
+        </div>
+        <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+        <div class="progress-line"><span id="checkCount">0</span> <span data-copy="checks">checks</span></div>
+      </section>
+
+      <section class="view screen result-screen" id="resultView" data-screen="result" aria-labelledby="resultTitle" hidden>
+        <div class="brand-line"><span class="brand-mark" aria-hidden="true">✿</span><span>WeightPlay</span><span class="internal-badge">Internal</span></div>
+        <div class="result-card">
+          <div class="result-icon" aria-hidden="true">✦</div>
+          <img class="guide-art" src="assets/animal-meadow-difference-orla.png" alt="" aria-hidden="true">
+          <p class="eyebrow" data-copy="completeEyebrow">Observation complete</p>
+          <h2 id="resultTitle" data-copy="complete">A careful meadow search.</h2>
+          <p id="resultSummary">Three changed tiles found.</p>
+          <p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestCount">—</strong></p>
+          <div class="result-actions">
+            <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay</button>
+            <button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button>
+          </div>
+        </div>
+      </section>
+      <div class="general-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+      <p class="sr-only" id="appStatus" aria-live="polite"></p>
+    <script src="../../src/game-page-info.js?v=20260831-meadow-shell-v6" defer></script>
+    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260831-meadow-shell-v6" defer></script>
+  <script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

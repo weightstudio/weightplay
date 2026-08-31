@@ -23,16 +23,26 @@ body {
 }
 button, select { font: inherit; }
 button { cursor: pointer; }
-.app-shell { width: min(100%, 980px); margin: 0 auto; padding: 22px 18px 0; }
+.app-shell { width: min(100%, 920px); margin: 0 auto; padding: 12px 18px 0; }
+.screen { width: min(100%, 920px); margin-inline: auto; }
+.main-screen { min-height: 0; }
+.game-page-info-static { width: min(100%, 920px); margin: 14px auto 56px; }
+body[data-screen="battle"] > .game-page-info-static, body[data-screen="result"] > .game-page-info-static { display: none; }
+.topbar { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 60px; }
+.topbar > strong { min-width: 0; overflow: hidden; color: var(--deep-leaf); font-size: 1.05rem; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.home-link { width: 58px !important; height: 48px; display: grid; grid-template-columns: 16px 28px; gap: 4px; align-items: center; justify-content: center; padding: 4px; border: 1px solid var(--line); border-radius: 14px; color: var(--deep-leaf); background: rgba(255, 255, 255, .72); font-size: 1.35rem; line-height: 1; overflow: hidden; text-decoration: none; }
+.home-link img { width: 28px; height: 28px; object-fit: contain; }
+.main-screen > .main-header { margin-bottom: 10px; }
+.main-progress { display: flex; min-height: 40px; align-items: center; margin: 10px 0 0; padding: 8px 12px; border: 1px solid rgba(113, 155, 104, .25); border-radius: 12px; color: var(--deep-leaf); background: rgba(229, 240, 213, .64); font-size: .82rem; font-weight: 800; }
 .view { min-height: calc(100vh - 22px); padding-bottom: 18px; }
-.view#battleView { padding: 18px; border-radius: 24px; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
+.view#battleView { width: min(100%, 920px); min-height: calc(100vh - 56px); margin-inline: auto; padding: 18px; border-radius: 24px; background: linear-gradient(rgba(245, 240, 223, .72), rgba(229, 240, 213, .82)), url("assets/animal-meadow-difference-background.png") center / cover; }
 .view[hidden] { display: none; }
 .brand-line { display: flex; align-items: center; gap: 8px; color: var(--deep-leaf); font-weight: 800; letter-spacing: .04em; }
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--sun); color: #fff; }
 .internal-badge { margin-left: 4px; padding: 4px 8px; border: 1px solid #c9d7bb; border-radius: 999px; color: var(--muted); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .hero-card, .control-card, .help-card, .result-card { background: rgba(255, 253, 247, .9); border: 1px solid rgba(113, 155, 104, .23); border-radius: 24px; box-shadow: var(--shadow); }
-.hero-card { display: grid; gap: 4px; margin-top: 20px; overflow: hidden; }
-.cover-art { width: 100%; height: auto; aspect-ratio: 1.35; object-fit: cover; background: var(--meadow); }
+.hero-card { display: grid; gap: 4px; margin-top: 10px; overflow: hidden; }
+.cover-art { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; background: var(--meadow); }
 .guide-art { display: block; width: min(170px, 42vw); height: 170px; margin: 0 auto 12px; object-fit: contain; object-position: center; }
 .hero-copy { padding: 22px 22px 26px; }
 .eyebrow { margin: 0 0 8px; color: var(--coral); font-size: .74rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
@@ -82,12 +92,14 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
 .best-line { margin: 22px 0; color: var(--deep-leaf); }
 .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
 .general-reserve { height: 56px; }
+.battle-ad-reserve { width: min(100%, 920px); height: 56px; margin-inline: auto; background: rgba(229, 240, 213, .82); }
+#battleView[hidden] + .battle-ad-reserve { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 35% { transform: translateX(-3px); } 70% { transform: translateX(3px); } }
 @media (min-width: 680px) {
   .app-shell { padding-inline: 28px; }
-  .hero-card { grid-template-columns: minmax(260px, .9fr) 1.1fr; align-items: stretch; }
-  .cover-art { height: 100%; aspect-ratio: auto; }
+  .hero-card { grid-template-columns: minmax(260px, 420px) minmax(0, 1fr); align-items: stretch; }
+  .cover-art { width: 100%; height: 100%; aspect-ratio: 1; }
   .hero-copy { display: flex; flex-direction: column; justify-content: center; padding: 34px; }
   .compare-layout { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 14px; }
   .compare-arrow { transform: none; }
@@ -103,3 +115,4 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
   .quiet-button { padding-inline: 8px; }
 }
 [dir="rtl"] .field-row { flex-direction: row-reverse; }
+[dir="rtl"] .topbar { direction: ltr; }
