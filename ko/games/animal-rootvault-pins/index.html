@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-rootvault-pins/" />
-
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
@@ -83,13 +82,13 @@
         <label class="locale-control"><span class="sr-only" data-t="language">언어</span><select id="localeSelect" aria-label="언어" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="황금 Rootvault 핀을 당기는 Moss Shell Taro" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster main-poster" data-wp-main-poster src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="황금 장치 핀을 뽑는 모스 셸 타로" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">동물 뿌리금고 핀</h1>
           <p data-t="mainSummary">방을 살핀 뒤 완전한 황금 핀 하나를 뽑으세요.</p>
           <p data-t="mainGoal">위험한 재료를 섞지 말고 타로와 별핵을 성소로 보내세요.</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">게임 시작</button>
+          <span id="mainProgress" class="main-progress" data-wp-main-progress></span>
+          <button id="start" class="primary" type="button" data-wp-main-start data-t="startGame">게임 시작</button>
         </div>
       </section>
     </main>
@@ -119,7 +118,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="뒤로" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">뽑기</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="플레이 방법">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="뒤로" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">뽑기</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-wp-battle-utility data-t-aria="help" aria-label="플레이 방법">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">타로＋별핵을 성소로 보내기</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="뿌리 금고 방 퍼즐"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

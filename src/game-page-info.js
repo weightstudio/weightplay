@@ -2786,6 +2786,27 @@
     },
   };
 
+  // Hexa Sort owns a complete public FAQ in every generated route. The
+  // runtime guide renderer still starts from the generic English catalog, so
+  // keep the same locale-owned question and answer together here as well;
+  // otherwise the post-load guide can reintroduce an English fallback after
+  // the static route has already rendered the localized copy.
+  const hexaSortFaqByLocale = Object.freeze({
+    en: [["Is progress saved?", "Campaign unlocks, Endless best score, and preferences are stored locally in this browser."]],
+    "zh-Hant": [["進度會保存嗎？", "戰役解鎖、無盡最佳分數與偏好會儲存在目前瀏覽器。"]],
+    "zh-Hans": [["进度会保存吗？", "战役解锁、无尽最佳分数与偏好会保存在当前浏览器。"]],
+    ja: [["進行状況は保存されますか？", "キャンペーンの解放、エンドレスのベストスコア、設定はこのブラウザにローカル保存されます。"]],
+    ko: [["진행 상황이 저장되나요?", "캠페인 잠금 해제, Endless 최고 점수와 설정은 이 브라우저에 로컬로 저장됩니다."]],
+    es: [["¿Se guarda el progreso?", "Los desbloqueos de campaña, la mejor puntuación de Sin fin y las preferencias se guardan localmente en este navegador."]],
+    "pt-BR": [["O progresso é salvo?", "Desbloqueios da campanha, melhor pontuação do Endless e preferências ficam armazenados localmente neste navegador."]],
+    fr: [["La progression est-elle sauvegardée ?", "Les déverrouillages de campagne, le meilleur score sans fin et les préférences sont stockés localement dans ce navigateur."]],
+    de: [["Wird der Fortschritt gespeichert?", "Kampagnenfreischaltungen, Endless-Bestwert und Einstellungen werden lokal in diesem Browser gespeichert."]],
+    it: [["I progressi vengono salvati?", "Gli sblocchi della campagna, il miglior punteggio Infinita e le preferenze vengono salvati localmente in questo browser."]],
+    ru: [["Сохраняется ли прогресс?", "Открытия кампании, лучший результат в бесконечном режиме и настройки сохраняются локально в этом браузере."]],
+    hi: [["क्या प्रगति सहेजी जाती है?", "अभियान अनलॉक, अंतहीन सर्वोत्तम स्कोर और प्राथमिकताएँ इसी ब्राउज़र में स्थानीय रूप से सहेजी जाती हैं।"]],
+    ar: [["هل يُحفظ التقدم؟", "تُحفظ عمليات فتح الحملة وأفضل نتيجة في الوضع اللانهائي والتفضيلات محليًا في هذا المتصفح."]],
+  });
+
   const ginRummyLocalizedCopy = {
     en: {
       title: "Gin Rummy", difficulty: "Easy to Challenging", time: "5-15 minutes",
@@ -8204,6 +8225,9 @@
       return value;
     };
     const translated = translateValue(merged);
+    if (id === "hexa-sort" && hexaSortFaqByLocale[activeLocale]) {
+      translated.faq = hexaSortFaqByLocale[activeLocale];
+    }
     if (translated.designNoteParts?.length && !override.designNote) translated.designNote = translated.designNoteParts.join(" ");
     if (translated.parentParts?.length && !override.parent) translated.parent = translated.parentParts.join(" ");
     if (id === "casino" && casinoGuideFaqLocaleCopy?.[activeLocale]) translated.faq = casinoGuideFaqLocaleCopy[activeLocale];

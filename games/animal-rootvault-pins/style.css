@@ -167,6 +167,16 @@ a:focus-visible {
   color: #9dffd8;
   font-weight: 900;
 }
+.main-copy .main-progress {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid #477d6d;
+  border-radius: 10px;
+  background: #0b3029;
+  line-height: 1.2;
+}
 .main-copy button {
   width: 100%;
   font-size: 20px;
@@ -472,6 +482,13 @@ a:focus-visible {
   height: 42px;
   border-radius: 50%;
   font-size: 19px;
+}
+.battle-header > #battleHelp {
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
+  padding: 0;
 }
 .objective-row {
   display: flex;

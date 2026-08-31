@@ -39,9 +39,10 @@ body[data-screen="stage"] .game-page-info,body[data-screen="battle"] .game-page-
 
 .battle-screen{position:fixed;inset:0;background:#041020;overflow:hidden}
 .trail-battle-canvas{position:relative;width:390px;height:788px;padding:8px;display:grid;grid-template-rows:62px auto minmax(0,1fr) 42px 58px;gap:6px;background-color:#07172f;background-image:linear-gradient(rgba(4,13,34,.58),rgba(4,13,34,.8)),url('../../assets/animal-starlight-trails-bg.webp');background-position:center;background-size:cover;overflow:hidden}
-.battle-header{display:grid;grid-template-columns:48px minmax(0,1fr) 72px 64px;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--border);border-radius:14px;background:rgba(5,17,38,.9)}
+.battle-header{display:grid;grid-template-columns:48px minmax(0,1fr) 72px 64px 48px;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--border);border-radius:14px;background:rgba(5,17,38,.9)}
 .battle-progress{min-width:0;display:grid;gap:5px}.battle-progress>span{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.battle-progress>div{height:7px;border-radius:999px;background:#1a315e;overflow:hidden}.battle-progress i{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--cyan),var(--gold));transition:width .22s}
 .battle-stat{min-width:0;text-align:center;display:grid;gap:1px}.battle-stat small{color:var(--muted);font-size:10px}.battle-stat strong{font-size:16px;white-space:nowrap}
+.battle-utility{width:48px;min-width:48px;height:48px;padding:0;border:1px solid rgba(158,195,255,.34);border-radius:12px;background:linear-gradient(180deg,#234a80,#122b57);color:var(--ink);font-size:20px;font-weight:950}
 .objective-row{min-height:48px;display:flex;align-items:center;justify-content:center;padding:5px 12px;border:1px solid rgba(170,140,255,.3);border-radius:12px;background:rgba(15,22,60,.85);color:#d9d2ff;font-size:13px;font-weight:800;line-height:1.25;text-align:center;white-space:normal;overflow:visible;text-wrap:balance}
 .puzzle-scene{position:relative;min-width:0;min-height:0;display:grid;place-items:center;border:1px solid rgba(148,190,255,.25);border-radius:22px;background:radial-gradient(circle at center,rgba(43,70,126,.2),rgba(3,12,30,.62));overflow:hidden;touch-action:none}
 #graphSvg{display:block;width:min(100%,610px);height:min(100%,610px);min-width:340px;min-height:340px;touch-action:none;user-select:none;overflow:visible}
@@ -94,7 +95,7 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
   body[data-game-id="animal-starlight-trails"] .stage-header>.wp-shell-settings,
   body[data-game-id="animal-starlight-trails"] .stage-header .wp-shell-settings-button{width:104px!important;min-width:104px!important;max-width:104px!important;height:104px!important;min-height:104px!important;max-height:104px!important}
   .trail-battle-canvas{padding:8px;grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:48px minmax(0,1fr);gap:8px}
-  .battle-header{grid-column:1/-1;grid-row:1;grid-template-columns:48px minmax(0,1fr) 72px 64px;gap:8px;padding:4px 8px;border-radius:14px}
+  .battle-header{grid-column:1/-1;grid-row:1;grid-template-columns:48px minmax(0,1fr) 72px 64px 48px;gap:8px;padding:4px 8px;border-radius:14px}
   .battle-header button{font-size:20px}.battle-progress{gap:4px}.battle-progress>span{font-size:14px}.battle-progress>div{height:7px}.battle-stat{gap:1px}.battle-stat small{font-size:10px}.battle-stat strong{font-size:16px}
   .puzzle-scene{grid-column:1;grid-row:2;border-radius:18px}.puzzle-scene #graphSvg{width:100%;height:100%;min-width:0;min-height:0}
   .objective-row{grid-column:2;grid-row:2;align-self:start;min-height:54px;padding:6px 10px;border-radius:12px;font-size:14px;line-height:1.25;white-space:normal;overflow:visible}

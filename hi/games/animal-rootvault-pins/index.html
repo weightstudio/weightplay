@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-rootvault-pins/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
@@ -83,13 +82,13 @@
         <label class="locale-control"><span class="sr-only" data-t="language">भाषा</span><select id="localeSelect" aria-label="भाषा" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="मॉस शैल तारो एक सुनहरा रूटवॉल्ट पिन खींच रहा है" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster main-poster" data-wp-main-poster src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="मॉस शेल टैरो सुनहरी रूटवॉल्ट पिन खींच रहा है" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">पशु रूटवॉल्ट पिन</h1>
           <p data-t="mainSummary">कक्षों को समझें, फिर एक पूरी सुनहरी पिन खींचें।</p>
           <p data-t="mainGoal">खतरनाक पदार्थों को मिलाए बिना टैरो और स्टार कोर को तीर्थ तक पहुँचाएँ।</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">खेल शुरू करें</button>
+          <span id="mainProgress" class="main-progress" data-wp-main-progress></span>
+          <button id="start" class="primary" type="button" data-wp-main-start data-t="startGame">खेल शुरू करें</button>
         </div>
       </section>
     </main>
@@ -119,7 +118,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">पिन खींचना</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="कैसे खेलें">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">पिन खींचना</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-wp-battle-utility data-t-aria="help" aria-label="कैसे खेलें">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">टैरो और स्टार कोर को तीर्थ तक पहुँचाएँ</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="रूटवॉल्ट कक्ष पहेली"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-rootvault-pins/" />
-
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
@@ -83,13 +82,13 @@
         <label class="locale-control"><span class="sr-only" data-t="language">Язык</span><select id="localeSelect" aria-label="Язык" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="Таро Мосс Шелл выдергивает золотую булавку Корневого Хранилища" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster main-poster" data-wp-main-poster src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="Моховой Таро вытягивает золотой штифт" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">Звери: Штифты корневого хранилища</h1>
           <p data-t="mainSummary">Изучи камеры и вытяни один целый золотой штифт.</p>
           <p data-t="mainGoal">Проведи Таро и Звёздное ядро к святилищу, не смешивая опасные вещества.</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">Начать игру</button>
+          <span id="mainProgress" class="main-progress" data-wp-main-progress></span>
+          <button id="start" class="primary" type="button" data-wp-main-start data-t="startGame">Начать игру</button>
         </div>
       </section>
     </main>
@@ -119,7 +118,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Назад" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">Ходы</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="Как играть">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Назад" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">Ходы</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-wp-battle-utility data-t-aria="help" aria-label="Как играть">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">Доставь Таро + Ядро в святилище</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="Головоломка хранилища"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

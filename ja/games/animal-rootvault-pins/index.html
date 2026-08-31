@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-rootvault-pins/" />
-
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
@@ -83,13 +82,13 @@
         <label class="locale-control"><span class="sr-only" data-t="language">言語</span><select id="localeSelect" aria-label="言語" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="金色のルートボールピンを引く苔貝太郎" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster main-poster" data-wp-main-poster src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="金色の仕掛けピンを抜くモスシェル・タロ" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">どうぶつルートヴォルト・ピン</h1>
           <p data-t="mainSummary">部屋を読み、完全な金色のピンを一本抜こう。</p>
           <p data-t="mainGoal">危険な素材を混ぜず、タロとスターコアを聖泉へ導こう。</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">ゲーム開始</button>
+          <span id="mainProgress" class="main-progress" data-wp-main-progress></span>
+          <button id="start" class="primary" type="button" data-wp-main-start data-t="startGame">ゲーム開始</button>
         </div>
       </section>
     </main>
@@ -119,7 +118,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">ピン</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="遊び方">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">ピン</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-wp-battle-utility data-t-aria="help" aria-label="遊び方">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">タロ＋スターコアを聖泉へ</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="ルートヴォルトの部屋パズル"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

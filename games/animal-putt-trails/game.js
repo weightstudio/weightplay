@@ -90,7 +90,7 @@
     const pageStart = state.stagePage * 3;
     list.replaceChildren(...holes.slice(pageStart, pageStart + 3).map((hole, pageIndex) => {
       const index = pageStart + pageIndex;
-      const button = document.createElement("button"); button.type = "button"; button.className = "stage-choice"; button.setAttribute("role", "tab"); button.setAttribute("data-wp-stage-card", ""); button.setAttribute("data-wp-enter-battle", ""); button.setAttribute("aria-disabled", "false");
+      const button = document.createElement("button"); button.type = "button"; button.className = "stage-choice"; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", "false"); button.setAttribute("data-wp-stage-card", ""); button.setAttribute("data-wp-enter-battle", "");
       const best = state.progress[`hole${index + 1}`];
       button.innerHTML = `<strong>${index + 1}. ${t("holeNames")[index]}</strong><span>${t("par")} ${hole.par} · ${t("holeTips")[index]}</span><span>${best ? `${t("best")}: ${best}` : `${t("best")}: —`}</span>`;
       button.addEventListener("click", () => startHole(index));

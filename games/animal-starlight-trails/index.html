@@ -54,7 +54,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260824-arabic-guide-ownership-v19" />
+  <link rel="stylesheet" href="style.css?v=20260831-stage-battle-contract-v20" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
 <body data-screen="main" data-game-id="animal-starlight-trails" data-wp-combined-sound="true">
@@ -90,13 +90,13 @@
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="358" style="--wp-stage-art:url('../../assets/animal-starlight-trails-bg.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back">&larr;</button><div><strong data-i18n="chooseStage">Choose Constellation</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-management-nav data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Constellations"></div>
     </div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="trail-battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><div><i id="edgeProgress"></i></div></div><div class="battle-stat"><small data-i18n="trails">Trails</small><strong id="trailCount">0 / 0</strong></div><div class="battle-stat"><small data-i18n="stars">Stars</small><strong id="starTotal">0</strong></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility data-wp-primary-action aria-label="Hint">?</button></header>
       <div id="objectiveRow" class="objective-row"></div>
       <section id="puzzleScene" class="puzzle-scene" aria-label="Constellation puzzle"><svg id="graphSvg" viewBox="0 0 100 100" role="group" aria-label="One-stroke constellation"></svg><div id="hintPulse" class="hint-pulse" hidden></div></section>
       <div class="battle-feedback"><strong id="feedbackText" aria-live="polite"></strong><span id="assistText"></span></div>
@@ -114,7 +114,7 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/tutorial.js"></script>
-  <script src="game.js?v=20260824-arabic-guide-ownership-v19"></script>
+  <script src="game.js?v=20260831-stage-battle-contract-v20"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260824-starlight-hindi-guide-ownership-v19"></script>

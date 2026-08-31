@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-rootvault-pins/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-rootvault-pins/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-rootvault-pins/" />
@@ -83,13 +82,13 @@
         <label class="locale-control"><span class="sr-only" data-t="language">語言</span><select id="localeSelect" aria-label="語言" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="苔殼太郎拉動金色根穴別針" alt="Moss Shell Taro pulling a golden Rootvault pin">
+        <img class="poster main-poster" data-wp-main-poster src="../../assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" data-t-alt="苔甲龜 Taro 拉出根脈寶庫的金色機關針" alt="Moss Shell Taro pulling a golden Rootvault pin">
         <div class="main-copy">
           <h1 data-t="title">動物根脈機關</h1>
           <p data-t="mainSummary">先看懂每個房間，再拉出一根完整的金色機關針。</p>
           <p data-t="mainGoal">避開危險物質，讓 Taro 與星核一起抵達聖泉。</p>
-          <span id="mainProgress"></span>
-          <button id="start" class="primary" type="button" data-t="startGame">開始遊戲</button>
+          <span id="mainProgress" class="main-progress" data-wp-main-progress></span>
+          <button id="start" class="primary" type="button" data-wp-main-start data-t="startGame">開始遊戲</button>
         </div>
       </section>
     </main>
@@ -119,7 +118,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">拉針</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-t-aria="help" aria-label="遊玩說明">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div><small id="battleChapter"></small><strong id="battleStage"></strong></div><span><small data-t="pulls">拉針</small><strong id="pullCount">0</strong></span><button id="battleHelp" type="button" data-wp-battle-utility data-t-aria="help" aria-label="遊玩說明">?</button></header>
         <div class="objective-row"><strong data-t="battleObjective">讓 Taro＋星核抵達聖泉</strong><span id="ruleCue"></span></div>
         <div id="chamberBoard" class="chamber-board" tabindex="0" data-t-aria="boardLabel" aria-label="根脈寶庫房間謎題"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

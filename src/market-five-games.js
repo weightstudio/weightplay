@@ -366,16 +366,23 @@
     // shortcut on the settled frame without relying on a stale control node.
     requestAnimationFrame(focus);
   }
-  $("battle-utility")?.addEventListener("click", (event) => {
+  const takeBattleUtilityFocus = (event) => {
     event.preventDefault();
+    event.stopImmediatePropagation();
     focusFirstBattleControl();
-  });
+  };
+  // Claim the pointer before the browser focuses the utility itself. The
+  // capture listeners also keep a later shell/route listener from undoing the
+  // documented shortcut after the game has moved focus to its first action.
+  $("battle-utility")?.addEventListener("pointerdown", takeBattleUtilityFocus, { capture: true });
+  $("battle-utility")?.addEventListener("click", takeBattleUtilityFocus, { capture: true });
   $("battle-utility")?.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
+      event.stopImmediatePropagation();
       focusFirstBattleControl();
     }
-  });
+  }, { capture: true });
   $("to-stages").addEventListener("click",()=>{stageCards();show("stage");});
   $("retry").addEventListener("click",()=>start(state.stage));
   $("next").addEventListener("click",()=>{if(state.resultWin&&state.stage<cfg.stages)start(state.stage+1);});
