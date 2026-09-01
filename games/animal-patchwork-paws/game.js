@@ -4,8 +4,8 @@
   const locales=window.ANIMAL_PATCHWORK_PAWS_LOCALES||{};
   const storage={get(key){try{return window.localStorage?.getItem(key)||null}catch(_){return null}},set(key,value){try{window.localStorage?.setItem(key,value)}catch(_){}}};
   const patches=[
-    {name:"patch1",animal:"animal1",initial:[1,2,3,1],tiles:[{edges:["sun","leaf","water","moon"]},{edges:["moon","sun","stone","leaf"]},{edges:["water","stone","moon","sun"]},{edges:["stone","leaf","sun","water"]}]},
-    {name:"patch2",animal:"animal2",initial:[2,1,3,2],tiles:[{edges:["leaf","water","stone","moon"]},{edges:["moon","leaf","sun","water"]},{edges:["stone","sun","moon","leaf"]},{edges:["sun","water","leaf","stone"]}]},
+    {name:"patch1",animal:"animal1",initial:[1,2,3,1],tiles:[{edges:["water","leaf","water","moon"]},{edges:["moon","sun","stone","leaf"]},{edges:["water","stone","moon","sun"]},{edges:["stone","leaf","sun","water"]}]},
+    {name:"patch2",animal:"animal2",initial:[2,1,3,2],tiles:[{edges:["stone","water","stone","moon"]},{edges:["moon","leaf","sun","water"]},{edges:["stone","sun","moon","leaf"]},{edges:["sun","water","leaf","stone"]}]},
     {name:"patch3",animal:"animal3",initial:[3,2,1,3],tiles:[{edges:["moon","stone","leaf","sun"]},{edges:["sun","water","moon","stone"]},{edges:["leaf","moon","sun","water"]},{edges:["moon","sun","stone","leaf"]}]},
     {name:"patch4",animal:"animal4",initial:[1,3,2,1],tiles:[{edges:["sun","leaf","moon","stone"]},{edges:["water","sun","stone","leaf"]},{edges:["moon","water","sun","sun"]},{edges:["stone","leaf","water","water"]}]}
   ];
