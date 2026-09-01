@@ -71,6 +71,13 @@ body.logic-playing .game-page-info-static { display: none !important; }
    shared Logic Lab hero fluid for every sibling game, while making the
    canonical Tower surface deterministic at desktop widths. */
 body[data-logic-game="tower-of-hanoi"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
+/* Code Breaker's Main surface keeps the poster contract deterministic at
+   desktop widths so the copy and Start action do not resize the artwork. */
+body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
+/* Sudoku's Main surface follows the governed wide-layout poster column so
+   the puzzle promise and Start action remain readable beside a stable 420px
+   poster at desktop widths. */
+body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
 .logic-copy { display: grid; gap: 13px; }
 .logic-kicker { margin: 0; color: var(--logic-accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .logic-copy h2 { margin: 0; font-size: clamp(30px, 6vw, 54px); line-height: .98; letter-spacing: -.04em; }
@@ -192,6 +199,9 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-return { padding-inline: 8px; }
   .logic-return img { display: none; }
   .logic-hero { grid-template-columns: 1fr; gap: 18px; margin-top: 4px; }
+  body[data-logic-game="tower-of-hanoi"] .logic-hero { grid-template-columns: 1fr; }
+  body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 1fr; }
+  body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 1fr; }
   .logic-poster { max-width: 410px; margin: 0 auto; }
   .logic-copy h2 { font-size: clamp(31px, 11vw, 46px); }
   .logic-guide { margin-top: 18px; }
@@ -204,6 +214,8 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   /* Compact landscape reserves a narrower poster column so the summary,
      progress, and Start action remain visible beside it. */
   body[data-logic-game="tower-of-hanoi"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
+  body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
+  body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
 }
 @media (min-width: 661px) and (max-height: 760px) and (orientation: landscape) {
   .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
@@ -255,6 +267,8 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-status-line { min-height: 16px; font-size: 12px; line-height: 1; }
   body[data-logic-game="sudoku"] .logic-status-line { height: 24px; min-height: 24px; overflow: auto; }
   body[data-logic-game="code-breaker"] .logic-status-line { height: 24px; min-height: 24px; overflow: auto; }
+  body[data-logic-game="code-breaker"] .logic-battle-wrap { height: calc(100% - 48px); }
+  body[data-logic-game="sudoku"] .logic-battle-wrap { height: calc(100% - 48px); }
   body[data-logic-game="minefield-logic"] .logic-status-line {
     height: 16px; min-height: 16px; overflow: hidden;
   }
@@ -314,7 +328,25 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
    fixed canvas; otherwise focusing Hint scrolls the section and moves the
    primary board even though the status row itself is height-stable. */
 @media (max-width: 660px) and (min-height: 561px) {
+  body[data-logic-game="code-breaker"] .logic-battle-wrap {
+    height: calc(100svh - 122px);
+    min-height: 0;
+  }
+  body[data-logic-game="sudoku"] .logic-battle-wrap {
+    height: calc(100svh - 122px);
+    min-height: 0;
+  }
   body[data-logic-game="sliding-15"] .logic-battle-wrap {
+    height: calc(100svh - 122px);
+    min-height: 0;
+  }
+}
+
+/* Tall desktop Battle viewports need the same fixed canvas reserve as the
+   portrait layout. Without this Sudoku's status/action rows extend the
+   hidden section by a few pixels and focus scrolling moves the board. */
+@media (min-height: 761px) {
+  body[data-logic-game="sudoku"] .logic-battle-wrap {
     height: calc(100svh - 122px);
     min-height: 0;
   }
