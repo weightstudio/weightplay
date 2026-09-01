@@ -32,9 +32,11 @@
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    document.querySelectorAll("[data-copy-aria]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAria)); });
     $("localeSelect").value = state.locale;
     $("localeSelect").setAttribute("aria-label", t("language"));
     $("settingsBtn").setAttribute("aria-label", t("settings"));
+    [$("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-label", t("settings")));
     $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("bestValue").textContent = readBest() || t("noBest");
     if (state.screen === "stage") renderStages();
@@ -79,8 +81,8 @@
     $("resultMapBtn").hidden = !complete;
     $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startMeadow(state.meadow + 1);
   };
-  const startSession = () => { state.sessionTries = 0; track("session_start"); startMeadow(0); };
-  const startMeadow = (index) => { state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 }); };
+  const startSession = () => { state.sessionTries = 0; show("stage"); renderStages(); track("session_start"); };
+  const startMeadow = (index) => { state.meadow = Math.max(0, Math.min(meadows.length - 1, index)); state.values = [0, 0, 0]; state.tries = 0; $("battleStatus").textContent = ""; show("battle"); renderBattle(); track("meadow_start", { meadow: state.meadow + 1 }); };
   const changeValve = (index, delta) => { state.values[index] = Math.max(0, Math.min(6, state.values[index] + delta)); renderBattle(); track("valve_adjust", { meadow: state.meadow + 1, valve: index + 1, value: state.values[index] }); };
   const resetValves = () => { state.values = [0, 0, 0]; renderBattle(); $("battleStatus").textContent = t("ready"); track("reset", { meadow: state.meadow + 1 }); };
   const checkFlow = () => {
@@ -99,7 +101,8 @@
   $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultHomeBtn").addEventListener("click", () => show("main"));
   $("checkBtn").addEventListener("click", checkFlow); $("resetBtn").addEventListener("click", resetValves);
-  $("settingsBtn").addEventListener("click", () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden)); });
+  const toggleSettings = () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-expanded", String(!panel.hidden))); };
+  [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.addEventListener("click", toggleSettings));
   $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });
   $("localeSelect").addEventListener("change", (event) => { state.locale = copy[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); });
   try { const saved = localStorage.getItem("weightplayLocale"); if (saved && copy[saved]) state.locale = saved; } catch (_) {}

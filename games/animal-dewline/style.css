@@ -77,3 +77,63 @@ h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); }
 @keyframes load { to { transform: translateX(125%); } }
 @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; gap: 24px; } .cover-wrap { max-width: 520px; margin: 0 auto; } .nori-guide { width: min(170px, 48%); height: 150px; margin: -10px 0 -12px auto; } .guide-grid, .stage-list, .valve-grid { grid-template-columns: 1fr; } .guide-card { margin-top: 28px; } .panel-head { gap: 8px; } .panel-head h2 { font-size: 1.35rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+
+/* v2 / Interface 6 shell contract. Keep the authored meadow treatment while
+   giving the shared validators one stable Main, Stage, and Battle geometry. */
+.main-screen { width: min(100%, 920px); margin-inline: auto; padding: 12px; }
+.main-header { width: 100%; min-height: 56px; margin: 0 0 12px; display: grid; grid-template-columns: 58px minmax(0, 1fr) 48px; align-items: center; gap: 8px; justify-content: initial; }
+.main-header .wp-shell-main-title { text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.main-header .return-link { width: 58px; height: 48px; min-width: 58px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 0; }
+.main-header .return-link img { display: block; width: 24px; height: 24px; object-fit: contain; }
+.main-header .return-link .wp-shell-return-arrow { display: inline-block; font-size: 1.25rem; line-height: 1; }
+.main-header .icon-btn { width: 48px; height: 48px; min-width: 48px; min-height: 48px; }
+.hero-grid { width: 100%; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 18px; align-items: center; }
+.cover-wrap { width: 100%; max-width: 420px; }
+.cover { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.hero-copy { display: grid; gap: 12px; min-width: 0; }
+.hero-copy > * { margin-top: 0; margin-bottom: 0; }
+.hero-copy .main-summary { color: var(--muted); line-height: 1.45; }
+.main-progress { min-height: 42px; max-height: 42px; display: flex; align-items: center; margin: 0; padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: #fffffff0; color: var(--muted); }
+.hero-actions { margin-top: 0; }
+.primary-btn { min-height: 52px; }
+.guide-card.game-page-info { width: min(920px, calc(100% - 24px)); margin: 24px auto 0; padding: 16px; }
+.guide-card.game-page-info .game-info-sections { width: 100%; margin-top: 14px; padding: 0; border: 0; background: transparent; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.guide-card.game-page-info .game-info-section { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #eef9f2; }
+.guide-card.game-page-info .game-info-section p { color: var(--muted); line-height: 1.45; margin-bottom: 0; }
+.settings-panel { position: fixed; z-index: 20; top: 68px; right: max(12px, calc((100vw - 920px) / 2 + 12px)); width: min(320px, calc(100vw - 24px)); margin: 0; padding: 16px; display: grid; gap: 12px; border: 1px solid var(--line); border-radius: 18px; background: #fffffff2; box-shadow: 0 12px 32px #234b3b20; }
+.settings-panel .setting-row { width: 100%; }
+body[data-screen="stage"] .game-page-info,
+body[data-screen="battle"] .game-page-info,
+body[data-screen="result"] .game-page-info { display: none; }
+
+#stageScreen[data-wp-standard-stage-screen] { position: fixed; top: 0; left: 50%; right: auto; bottom: auto; transform: translateX(-50%); width: min(100%, 920px); height: calc(100vh - 56px); min-height: 0; margin: 0; padding: 10px; display: grid; grid-template-rows: 60px minmax(0, 1fr) 48px; gap: 8px; overflow: hidden; background: linear-gradient(180deg, #153f3ad9, #234c4bd9), var(--wp-stage-art) center / cover; }
+#stageScreen[data-wp-standard-stage-screen] .stage-header { width: 100%; height: 60px; min-height: 60px; margin: 0; padding: 0 2px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
+#stageScreen[data-wp-standard-stage-screen] .stage-header h2 { min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#stageScreen[data-wp-standard-stage-screen] .stage-rail { width: 100%; min-width: 0; height: auto; min-height: 198px; margin: 0; padding: 12px !important; padding-inline: 12px !important; display: flex; justify-content: center; align-items: center; gap: 14px; overflow-x: auto; overflow-y: hidden; }
+#stageScreen[data-wp-standard-stage-screen] .stage-card { flex: 0 0 264px; width: 264px; min-height: 166px; }
+#stageScreen[data-wp-standard-stage-screen] .stage-tabs { height: 48px; min-height: 48px; display: grid; place-items: center; }
+#stageScreen[data-wp-standard-stage-screen] .stage-tabs button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); font-weight: 800; }
+
+#battleScreen[data-wp-logical-battle-canvas] { position: fixed; top: 0; left: 50%; right: auto; bottom: auto; transform: translateX(-50%); width: min(100%, 920px); height: calc(100vh - 56px); min-height: 0; margin: 0; padding: 10px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; background: linear-gradient(145deg, #153f3ad9, #234c4bd9), url("assets/animal-dewline-background.png") center / cover; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-header { width: 100%; height: 60px; min-height: 60px; margin: 0; padding: 0 2px; display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-header > div:nth-child(2) { min-width: 0; text-align: center; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-header h2 { color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-utility { display: flex; align-items: center; gap: 8px; min-width: 48px; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-settings { width: 48px; height: 48px; min-width: 48px; min-height: 48px; padding: 0; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-content { width: min(100%, 760px); height: auto; min-height: 0; margin: auto; padding: 14px; display: grid; align-content: center; gap: 12px; overflow: auto; }
+#battleScreen[data-wp-logical-battle-canvas] .valve-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.battle-ad-reserve { position: fixed; top: calc(100vh - 56px); left: 50%; width: min(100%, 920px); height: 56px; min-height: 56px; transform: translateX(-50%); overflow: hidden; pointer-events: none; }
+
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="animal-dewline"] .wp-standard-main-composition { --wp-main-landscape-poster-size: 300px; }
+  .hero-grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
+  .cover-wrap { max-width: 300px; }
+}
+@media (max-width: 699px) {
+  .nori-guide { display: none; }
+  .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+  .cover-wrap { max-width: none; }
+  .guide-card.game-page-info .game-info-sections { grid-template-columns: 1fr; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-content { width: 100%; }
+  #stageScreen[data-wp-standard-stage-screen] .stage-rail { justify-content: flex-start; }
+}
