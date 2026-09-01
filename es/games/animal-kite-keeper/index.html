@@ -24,18 +24,18 @@
   <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
   <title>Guardián de Cometas | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260901-kite-keeper-v3-stage-tabs">
+  <link rel="stylesheet" href="style.css?v=20260901-kite-keeper-v4-art-pack">
   <meta name="description" content="Elige cada ráfaga para llevar la cometa de Taro por tres ventanas del cielo hasta el muelle faro." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Guardián de Cometas | WeightPlay" />
     <meta property="og:description" content="Elige cada ráfaga para llevar la cometa de Taro por tres ventanas del cielo hasta el muelle faro." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-kite-keeper/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Guardián de Cometas | WeightPlay" />
     <meta name="twitter:description" content="Elige cada ráfaga para llevar la cometa de Taro por tres ventanas del cielo hasta el muelle faro." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-v1.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,7 +43,7 @@
   "name": "Guardián de Cometas",
   "alternateName": "Kite Keeper",
   "url": "https://weightplay.com/es/games/animal-kite-keeper/",
-  "image": "https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg",
+  "image": "https://weightplay.com/games/animal-kite-keeper/assets/animal-kite-keeper-cover-v1.webp",
   "description": "Elige cada ráfaga para llevar la cometa de Taro por tres ventanas del cielo hasta el muelle faro.",
   "publisher": {
     "@type": "Organization",
@@ -80,12 +80,12 @@
     </header>
 
     <section id="mainScreen" data-screen="main" class="screen main-screen">
-      <div class="cover-wrap"><img class="cover" src="assets/animal-kite-keeper-cover-v1.png" alt="Imagen del juego Guardián de Cometas" width="1536" height="1024"></div>
+      <div class="cover-wrap"><img class="cover" src="assets/animal-kite-keeper-cover-v1.webp" alt="Imagen del juego Guardián de Cometas" width="1536" height="1024"></div>
       <p class="kicker">6+ · FAMILY · ORIGINAL PROTOTYPE</p>
       <h1 data-runtime-localize="off">Guardián de Cometas</h1>
       <p class="subtitle" data-i18n="subtitle">Choose the wind. Find the lantern dock.</p>
       <div class="guide-card">
-        <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro.png" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
+        <div class="guide-layout"><img class="guide-character" src="assets/animal-kite-keeper-taro.webp" alt="Moss Shell Taro holding a kite spool" width="1024" height="1536"><div><h2 data-i18n="guideTitle">How to play</h2><p data-i18n="guide">Choose one wind card at a time. Reach the lantern dock in exactly three gusts.</p></div></div>
       </div>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Start a sky route</button><button id="mapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button></div>
       <p id="best" class="best" data-i18n="best" data-i18n-vars="count">Best checks: —</p>
@@ -114,13 +114,13 @@
     </section>
 
     <section id="resultScreen" data-screen="result" class="screen result-screen" hidden>
-      <p class="eyebrow">RESULT</p><img class="result-character" src="assets/animal-kite-keeper-taro.png" alt="Moss Shell Taro celebrating with his kite" width="1024" height="1536"><h1 id="resultTitle" data-i18n="resultTitle">Route complete</h1><p id="resultText" class="result-text"></p>
+      <p class="eyebrow">RESULT</p><img class="result-character" src="assets/animal-kite-keeper-taro.webp" alt="Moss Shell Taro celebrating with his kite" width="1024" height="1536"><h1 id="resultTitle" data-i18n="resultTitle">Route complete</h1><p id="resultText" class="result-text"></p>
       <div class="result-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next route</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="map">Sky routes</button><button id="homeBtn" class="secondary" type="button" data-i18n="back">Back to General lobby</button></div>
     </section>
 
     <aside id="settingsPanel" class="settings" hidden aria-labelledby="settingsTitle"><div class="settings-inner"><button id="closeSettings" class="close-btn" type="button" aria-label="Close settings">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select><button id="soundBtn" class="secondary" type="button" aria-pressed="true"><span data-i18n="sound">Sound</span>: <span id="soundState">On</span></button></div></aside>
   </main>
-  <script src="locales.js?v=20260901-kite-keeper-v3-stage-tabs"></script><script src="game.js?v=20260901-kite-keeper-v3-stage-tabs"></script>
+  <script src="locales.js?v=20260901-kite-keeper-v4-art-pack"></script><script src="game.js?v=20260901-kite-keeper-v4-art-pack"></script>
 <script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Información de Guardián de Cometas">

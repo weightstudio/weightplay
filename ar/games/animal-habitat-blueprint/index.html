@@ -23,22 +23,22 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-habitat-blueprint" />
-  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-game-version" content="v4" />
   <meta name="theme-color" content="#294a55" />
   <title>مخطط الموطن | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-  <link rel="stylesheet" href="art.css?v=20260830-habitat-blueprint-v3" />
+  <link rel="stylesheet" href="art.css?v=20260901-habitat-blueprint-v4-art-pack" />
   <meta name="description" content="بدّل أربع قطع موطن وحقق كل تلميح مجاور لبناء بيت هادئ ومترابط للحيوانات." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مخطط الموطن | WeightPlay" />
     <meta property="og:description" content="بدّل أربع قطع موطن وحقق كل تلميح مجاور لبناء بيت هادئ ومترابط للحيوانات." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-habitat-blueprint/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="مخطط الموطن | WeightPlay" />
     <meta name="twitter:description" content="بدّل أربع قطع موطن وحقق كل تلميح مجاور لبناء بيت هادئ ومترابط للحيوانات." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,7 +46,7 @@
   "name": "مخطط الموطن",
   "alternateName": "Habitat Blueprint",
   "url": "https://weightplay.com/ar/games/animal-habitat-blueprint/",
-  "image": "https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp",
+  "image": "https://weightplay.com/games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp",
   "description": "بدّل أربع قطع موطن وحقق كل تلميح مجاور لبناء بيت هادئ ومترابط للحيوانات.",
   "publisher": {
     "@type": "Organization",
@@ -76,8 +76,8 @@
   <main id="app" hidden>
     <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">مخطط الموطن</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-habitat-blueprint-cover.svg" alt="" width="1200" height="900" /><span class="cover-badge" data-i18n="kicker">A calm planning puzzle</span></div>
-      <img class="guide-art" src="assets/animal-habitat-blueprint-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536" />
+      <div class="cover-wrap"><img src="assets/animal-habitat-blueprint-cover-v2.webp" alt="شعار WeightPlay" width="1536" height="1024" /><span class="cover-badge" data-i18n="kicker">A calm planning puzzle</span></div>
+      <img class="guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" />
       <p class="eyebrow" data-i18n="world">Mosslight field station</p><h1 data-runtime-localize="off">مخطط الموطن</h1>
       <p class="intro" data-i18n="intro">Arrange four habitat tiles so every animal's little home has the right neighbour.</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open a blueprint</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div>
@@ -91,10 +91,10 @@
       <div class="battle-actions"><button id="swapBtn" class="primary" type="button" data-i18n="swap" disabled>Swap selected</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset plan</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
     <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260830-habitat-blueprint-v3"></script><script src="game.js?v=20260830-habitat-blueprint-v3"></script>
+  <script src="locales.js?v=20260901-habitat-blueprint-v4-art-pack"></script><script src="game.js?v=20260901-habitat-blueprint-v4-art-pack"></script>
 <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة مخطط الموطن">

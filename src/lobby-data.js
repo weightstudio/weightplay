@@ -3626,7 +3626,7 @@ const animalKiteKeeperPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-kite-keeper/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-kite-keeper/assets/animal-kite-keeper-cover.svg", hideHero: true },
+  art: { kind: "image", background: "games/animal-kite-keeper/assets/animal-kite-keeper-cover-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalKiteKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalKiteKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalKiteKeeperPlanned);
@@ -3672,7 +3672,7 @@ const animalHabitatBlueprintPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-habitat-blueprint/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover.webp", hideHero: true },
+  art: { kind: "image", background: "games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalHabitatBlueprintPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.games.push(animalHabitatBlueprintPlanned);
@@ -3718,7 +3718,7 @@ const animalRiverGatesPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-river-gates/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-river-gates/assets/animal-river-gates-cover.webp", hideHero: true },
+  art: { kind: "image", background: "games/animal-river-gates/assets/animal-river-gates-cover-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRiverGatesPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalRiverGatesPlanned.id)) window.WONDER_LOBBY.games.push(animalRiverGatesPlanned);

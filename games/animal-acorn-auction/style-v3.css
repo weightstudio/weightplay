@@ -1,0 +1,15 @@
+/* v3 production art integration: keep the identity readable without making
+   the internal Main, Battle, or Result controls depend on image text. */
+.guide-art-wrap,.result-art-wrap{display:grid;place-items:center;margin:14px auto 0}
+.guide-art,.result-art{display:block;width:auto;max-width:100%;height:clamp(118px,24vw,172px);object-fit:contain}
+.result-art{height:clamp(132px,28vw,190px)}
+.battle-screen{background-image:linear-gradient(#fff8e8e8,#fff8e8e8),url("assets/animal-acorn-auction-background.png");background-size:cover;background-position:center}
+.request-card{background:#f5e6c2f2}
+.feedback-row{display:flex;align-items:center;gap:10px;min-height:58px}
+.prompt{flex:1}
+.feedback-art{display:block;flex:0 0 56px;width:56px;height:56px;background-image:url("assets/animal-acorn-auction-lot-atlas.png");background-repeat:no-repeat;background-size:400% auto;background-position:100% 100%}
+.feedback-art--wrong{filter:saturate(.82)}
+.feedback-art--correct{filter:saturate(1.12) drop-shadow(0 0 5px #e1ad37)}
+.lot-icon{display:block;width:64px;height:64px;background-image:url("assets/animal-acorn-auction-lot-atlas.png");background-repeat:no-repeat;background-size:400% auto;background-position:0 100%}
+.lot-icon--2{background-position:33.3333% 100%}
+.lot-icon--3{background-position:66.6667% 100%}

@@ -25,3 +25,78 @@
     max-height: 165px;
   }
 }
+
+/* v4 production art integration: preserve the quiet centre for the native grid. */
+.cover-wrap {
+  background: #d7ece0;
+  box-shadow: inset 0 0 0 1px #ffffff66;
+}
+
+.cover-wrap img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+#battleScreen {
+  background-image: linear-gradient(180deg, #fffdf5dd 0%, #fffdf5e8 72%, #fffdf5f2 100%), url("assets/animal-habitat-blueprint-background-v1.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.guide-art {
+  filter: drop-shadow(0 12px 12px #294a5526);
+}
+
+.tile-icon {
+  font-size: 0;
+  color: transparent;
+  background-image: url("assets/animal-habitat-blueprint-habitat-atlas-v1.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 200%;
+  box-shadow: inset 0 0 0 1px #ffffff66, 0 5px 10px #294a5520;
+}
+
+.habitat-tile.meadow .tile-icon,
+.habitat-tile.moss .tile-icon { background-position: 0 0; }
+.habitat-tile.stream .tile-icon { background-position: 33.333% 0; }
+.habitat-tile.canopy .tile-icon { background-position: 66.666% 0; }
+.habitat-tile.burrow .tile-icon { background-position: 100% 0; }
+.habitat-tile.fern .tile-icon,
+.habitat-tile.reed .tile-icon { background-position: 0 100%; }
+.habitat-tile.nest .tile-icon { background-position: 33.333% 100%; }
+.habitat-tile.pool .tile-icon,
+.habitat-tile.pond .tile-icon,
+.habitat-tile.dusk .tile-icon { background-position: 66.666% 100%; }
+.habitat-tile.lantern .tile-icon { background-position: 100% 100%; }
+
+/* The base palette uses a higher-specificity background shorthand; restate the
+   atlas image for every tile type so the transparent props remain visible. */
+.habitat-tile.pond .tile-icon,
+.habitat-tile.reed .tile-icon,
+.habitat-tile.nest .tile-icon,
+.habitat-tile.meadow .tile-icon,
+.habitat-tile.canopy .tile-icon,
+.habitat-tile.stream .tile-icon,
+.habitat-tile.burrow .tile-icon,
+.habitat-tile.fern .tile-icon,
+.habitat-tile.dusk .tile-icon,
+.habitat-tile.pool .tile-icon,
+.habitat-tile.moss .tile-icon,
+.habitat-tile.lantern .tile-icon {
+  background-image: url("assets/animal-habitat-blueprint-habitat-atlas-v1.webp");
+  background-repeat: no-repeat;
+  background-size: 400% 200%;
+}
+
+.habitat-tile .tile-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 15px;
+}
+
+@media (max-width: 520px) {
+  .habitat-tile .tile-icon {
+    width: 46px;
+    height: 46px;
+  }
+}

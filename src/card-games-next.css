@@ -244,6 +244,38 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="hearts"] .card-hand .playing-card {
     flex: 0 1 43px;
   }
+  /* Casino's four-card hand can wrap into the narrow right column at
+     844x390, where the second row collides with the quick guide. Give the
+     hand its own full-width row so every card remains reachable. */
+  body[data-wp-card-game="casino"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="casino"] .card-game-player {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="casino"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="casino"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="casino"] .card-hand .playing-card {
+    flex: 0 1 43px;
+  }
   body[data-wp-card-game="gin-rummy"] .card-game-board {
     grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
