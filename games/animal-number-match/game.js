@@ -1,6 +1,6 @@
 (()=>{
   "use strict";
-  const GAME_ID="animal-number-match",GAME_VERSION=13,INTERFACE_VERSION=6;
+  const GAME_ID="animal-number-match",GAME_VERSION=14,INTERFACE_VERSION=6;
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"];
   const $=selector=>document.querySelector(selector),screens=[...document.querySelectorAll(".screen")],levels=window.NUMBER_MATCH_LEVELS.levels;
   const storageKey="wp-animal-number-match-v1";
@@ -180,11 +180,11 @@
   function applyLocale(){
     document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-t]").forEach(node=>node.textContent=t(node.dataset.t));document.querySelectorAll("[data-t-aria]").forEach(node=>node.setAttribute("aria-label",t(node.dataset.tAria)));document.querySelectorAll("[data-t-alt]").forEach(node=>node.setAttribute("alt",t(node.dataset.tAlt)));
-    $("#locale").value=locale;if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden){$("#chapter").textContent=t("chapter",{n:Math.floor(selected/5)+1});$("#stageName").textContent=t("grove",{n:selected+1});$("#status").textContent=t("selectFirst");renderBoard()}
+    $("#locale").value=locale;$("#battleLocale").value=locale;$("#battleUtilityBtn").setAttribute("aria-label",t("settings"));$("#battleSettingsPanel").setAttribute("aria-label",t("settings"));$("#battleLanguageLabel").textContent=t("language");if(!$("#stage").hidden)renderStages();if(!$("#battle").hidden){$("#chapter").textContent=t("chapter",{n:Math.floor(selected/5)+1});$("#stageName").textContent=t("grove",{n:selected+1});$("#status").textContent=t("selectFirst");renderBoard()}
   }
-  codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.NUMBER_MATCH_LOCALES[code].label;$("#locale").append(option)});
+  codes.forEach(code=>{const option=document.createElement("option");option.value=code;option.textContent=window.NUMBER_MATCH_LOCALES[code].label;$("#locale").append(option);$("#battleLocale").append(option.cloneNode(true))});
   write("weightPlayLocale",locale);write("wp-locale",locale);
-  document.addEventListener("change",event=>{if(event.target.id!=="locale")return;locale=event.target.value;write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});
+  document.addEventListener("change",event=>{if(event.target.id!=="locale"&&event.target.id!=="battleLocale")return;locale=event.target.value;write("wp-locale",locale);try{window.WonderI18n?.setLocale?.(locale)}catch{}applyLocale()});
   window.addEventListener("wonder:locale-change",event=>{
     const next=event.detail?.actualLocale||event.detail?.locale;
     if(!codes.includes(next))return;
@@ -207,6 +207,7 @@
   });
   $("#undo").onclick=event=>{lastInputType=eventInputType(event);const last=history.pop();if(!last){track("undo",{grove:selected+1,outcome:"unavailable"});return}values[last.a]=last.va;values[last.b]=last.vb;picked=null;hintPair=[];moves=Math.max(0,moves-1);track("undo",{grove:selected+1,outcome:"applied",move:moves});$("#status").textContent=t("undone");renderBoard()};
   $("#hint").onclick=event=>hint(eventInputType(event));$("#shuffle").onclick=event=>reorder(eventInputType(event));$("#restart").onclick=event=>{lastInputType=eventInputType(event);track("restart",{from:"battle",grove:selected+1,input_type:lastInputType});startLevel(selected,lastInputType,"restart")};
+  const battleUtility=$("#battleUtilityBtn"),battleSettings=$("#battleSettingsPanel");const setBattleSettingsOpen=open=>{battleSettings.hidden=!open;battleUtility.setAttribute("aria-expanded",String(open));if(open)battleSettings.querySelector("select")?.focus()};battleUtility.onclick=()=>setBattleSettingsOpen(battleSettings.hidden);document.addEventListener("pointerdown",event=>{if(!battleSettings.hidden&&!battleSettings.contains(event.target)&&event.target!==battleUtility)setBattleSettingsOpen(false)},true);document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!battleSettings.hidden){event.preventDefault();setBattleSettingsOpen(false);battleUtility.focus()}});
   $("#resultStages").onclick=event=>claimResultAction("stages",eventInputType(event),()=>{selected=Math.min(29,unlocked-1);show("stage")});$("#next").onclick=event=>claimResultAction("next_grove",eventInputType(event),()=>startLevel(selected+1,eventInputType(event),"next_grove"));$("#retry").onclick=event=>claimResultAction("replay",eventInputType(event),()=>startLevel(selected,eventInputType(event),"replay"));
   applyLocale();show("main");$("#loadingPanel").classList.add("hidden");window.__NUMBER_MATCH_TEST__={matches,visiblePair,availablePair,currentSolution:()=>level?.solution?.map(pair=>pair.slice())||[]};
 })();

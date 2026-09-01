@@ -173,7 +173,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Hexa Sort",
     "ru": "Hexa Sort",
     "hi": "Hexa Sort",
-    "ar": "Hexa Sort"
+    "ar": "هيكسا سورت"
   },
   "klondike-solitaire": {
     "__localizedExact": true,
