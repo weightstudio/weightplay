@@ -37,7 +37,14 @@
     copy[locale].holeTips = [...copy[locale].holeTips, value.tip];
   });
 
-  const localeMap = { "zh-tw": "zh-tw", "zh-cn": "zh-cn", "pt-br": "pt-br" };
+  // Localized routes are generated from this canonical source. Resolve the
+  // route segment (or the generator's bootstrap marker) before stored locale
+  // state so a direct Arabic route starts with its authored Arabic copy.
+  const localeMap = { en: "en", "zh-tw": "zh-tw", "zh-cn": "zh-cn", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-br", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = localeMap[window.__WEIGHTPLAY_ROUTE_LOCALE__] || localeMap[routeSegment] || "";
+  const queryLocale = localeMap[new URLSearchParams(window.location.search).get("lang")] || "";
+  const storedLocale = (() => { try { return localeMap[localStorage.getItem("weightPlayLocale")] || localeMap[localStorage.getItem("weightplayLocale")] || ""; } catch { return ""; } })();
   const localeToLang = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const loadingLabels = { en: "Preparing the trail…", "zh-tw": "正在準備小徑…", "zh-cn": "正在准备小径…", ja: "コースを準備中…", ko: "트레일을 준비하는 중…", es: "Preparando el sendero…", "pt-br": "Preparando a trilha…", fr: "Préparation du sentier…", de: "Pfad wird vorbereitet…", it: "Preparazione del sentiero…", ru: "Подготовка тропы…", hi: "ट्रेल तैयार हो रही है…", ar: "جارٍ تجهيز المسار…" };
   const ariaLabels = { en: { language: "Language", back: "Back", course: "Animal Putt Trails course" }, "zh-tw": { language: "語言", back: "返回", course: "動物推桿小徑球場" }, "zh-cn": { language: "语言", back: "返回", course: "动物推杆小径球场" }, ja: { language: "言語", back: "戻る", course: "どうぶつパットトレイルのコース" }, ko: { language: "언어", back: "돌아가기", course: "동물 퍼팅 트레일 코스" }, es: { language: "Idioma", back: "Volver", course: "Campo de Senderos de Putt Animal" }, "pt-br": { language: "Idioma", back: "Voltar", course: "Campo das Trilhas de Putt Animal" }, fr: { language: "Langue", back: "Retour", course: "Parcours des Sentiers de Putt Animal" }, de: { language: "Sprache", back: "Zurück", course: "Kurs der Tierischen Putt-Pfade" }, it: { language: "Lingua", back: "Indietro", course: "Campo dei Sentieri di Putt Animali" }, ru: { language: "Язык", back: "Назад", course: "Поле Звериных путей для патта" }, hi: { language: "भाषा", back: "वापस", course: "ऐनिमल पुट ट्रेल्स का मैदान" }, ar: { language: "اللغة", back: "رجوع", course: "ملعب مسارات ضربات الحيوانات" } };
@@ -58,7 +65,8 @@
     { par: 4, start: [805, 170], cup: [160, 540], water: [385, 280, 175, 100], walls: [[240, 300, 22, 180], [700, 280, 22, 220], [300, 440, 260, 22]], tint: "#d8c79d" },
     { par: 5, start: [145, 540], cup: [820, 180], water: [420, 270, 170, 100], walls: [[220, 200, 270, 22], [520, 390, 270, 22], [700, 135, 22, 210]], tint: "#b9d4b2" },
   ];
-  const state = { locale: "en", holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
+  const initialLocale = [routeLocale, queryLocale, storedLocale].find((value) => value && copy[value]) || "en";
+  const state = { locale: initialLocale, holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
 
   function t(key) { if (key === "loading") return loadingLabels[state.locale] || loadingLabels.en; return (copy[state.locale] || copy.en)[key] || copy.en[key] || key; }
   function aria(key) { return ariaLabels[state.locale]?.[key] || ariaLabels.en[key] || key; }
@@ -77,6 +85,7 @@
     state.locale = localeMap[value] || value;
     document.documentElement.lang = localeToLang[state.locale] || "en";
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+    if (localeSelect) localeSelect.value = state.locale;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-aria]").forEach((node) => { node.setAttribute("aria-label", aria(node.dataset.aria)); });
     syncSoundControls();
@@ -133,7 +142,7 @@
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
   canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
   window.addEventListener("keydown", (event) => { if (event.key === "Escape" && !state.rolling && !state.aiming) showScreen("stage"); });
-  setLocale("en"); renderMainProgress(); draw();
+  setLocale(state.locale); renderMainProgress(); draw();
   const hideLoading = () => document.querySelector("#loadingPanel")?.remove();
   courseBackdrop.addEventListener("load", () => { draw(); hideLoading(); }, { once: true });
   courseBackdrop.addEventListener("error", hideLoading, { once: true });

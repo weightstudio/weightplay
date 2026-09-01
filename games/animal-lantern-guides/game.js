@@ -56,6 +56,11 @@
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = `${text("title")} | WeightPlay`;
+    document.querySelector('[data-wp-return="main"]')?.setAttribute("aria-label", text("back"));
+    $("settingsBtn")?.setAttribute("aria-label", text("settings"));
+    $("battleSettingsBtn")?.setAttribute("aria-label", text("settings"));
+    $("battleBackBtn")?.setAttribute("aria-label", text("back"));
+    $("settingsPanel")?.setAttribute("aria-label", text("settings"));
     setText("battleBackLabel", text("back")); setText("eyebrow", text("eyebrow")); setText("title", text("title")); setText("languageLabel", text("language")); setText("settingsLabel", text("settings")); setText("soundBtn", text(soundEnabled ? "soundOn" : "soundOff"));
     setText("guideBadge", text("guideBadge")); setText("mainHeading", text("mainHeading")); setText("mainBody", text("mainBody")); setText("progressTitle", text("progressTitle")); setText("progressBody", text("progressBody")); setText("startBtn", text("start")); setText("soloNote", text("soloNote"));
     setText("promiseOneTitle", text("scout")); setText("promiseOneBody", text("scoutPromise")); setText("promiseTwoTitle", text("guide")); setText("promiseTwoBody", text("guidePromise")); setText("promiseThreeTitle", text("together")); setText("promiseThreeBody", text("togetherPromise"));

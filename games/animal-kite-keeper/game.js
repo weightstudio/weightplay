@@ -13,6 +13,21 @@
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
   const routeLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__ || routeLocaleMap[routeSegment] || "";
+  const shellCopy = {
+    en: { brand: "GENERAL", progress: "3 sky routes · 3 gusts each", stage: "STAGE MAP", battle: "BATTLE", result: "RESULT" },
+    "zh-Hant": { brand: "一般", progress: "3 條天空路線 · 每條 3 陣風", stage: "天空路線", battle: "對戰", result: "結果" },
+    "zh-Hans": { brand: "一般", progress: "3 条天空路线 · 每条 3 阵风", stage: "天空路线", battle: "对战", result: "结果" },
+    ja: { brand: "一般", progress: "天空ルート3本 · 各3回の風", stage: "空のルート", battle: "バトル", result: "結果" },
+    ko: { brand: "일반", progress: "하늘 경로 3개 · 각 3번의 바람", stage: "하늘 경로", battle: "배틀", result: "결과" },
+    es: { brand: "GENERAL", progress: "3 rutas celestes · 3 ráfagas cada una", stage: "RUTAS CELESTES", battle: "BATALLA", result: "RESULTADO" },
+    "pt-BR": { brand: "GERAL", progress: "3 rotas celestes · 3 rajadas cada", stage: "ROTAS CELESTES", battle: "BATALHA", result: "RESULTADO" },
+    fr: { brand: "GÉNÉRAL", progress: "3 routes célestes · 3 rafales chacune", stage: "ROUTES CÉLESTES", battle: "BATAILLE", result: "RÉSULTAT" },
+    de: { brand: "ALLGEMEIN", progress: "3 Himmelsrouten · je 3 Böen", stage: "HIMMELSROUTEN", battle: "BATTLE", result: "ERGEBNIS" },
+    it: { brand: "GENERALE", progress: "3 rotte celesti · 3 raffiche ciascuna", stage: "ROTTE CELESTI", battle: "BATTAGLIA", result: "RISULTATO" },
+    ru: { brand: "ОБЩИЕ", progress: "3 небесных маршрута · по 3 порыва", stage: "НЕБЕСНЫЕ МАРШРУТЫ", battle: "БИТВА", result: "РЕЗУЛЬТАТ" },
+    hi: { brand: "सामान्य", progress: "3 आकाश मार्ग · हर एक में 3 झोंके", stage: "आकाश मार्ग", battle: "बैटल", result: "परिणाम" },
+    ar: { brand: "عام", progress: "3 مسارات سماوية · 3 هبات لكل مسار", stage: "المسارات السماوية", battle: "المعركة", result: "النتيجة" },
+  };
   let locale = routeLocale || localStorage.getItem("weightplay-kite-keeper-locale") || "en";
   if (!locales[locale]) locale = "en";
   let sound = localStorage.getItem("weightplay-kite-keeper-sound") !== "off";
@@ -43,6 +58,13 @@
   function applyLocale() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    const shell = shellCopy[locale] || shellCopy.en;
+    document.querySelector(".brand .eyebrow")?.replaceChildren(document.createTextNode(`WEIGHTPLAY · ${shell.brand}`));
+    $("mainProgress") && ($("mainProgress").textContent = shell.progress);
+    document.querySelector("#mainScreen h1")?.replaceChildren(document.createTextNode(copy("title")));
+    document.querySelectorAll("#stageScreen .screen-heading .eyebrow").forEach((node) => { node.textContent = shell.stage; });
+    document.querySelectorAll("#battleScreen .screen-heading .eyebrow").forEach((node) => { node.textContent = shell.battle; });
+    document.querySelectorAll("#resultScreen .screen-heading .eyebrow, #resultScreen > .eyebrow").forEach((node) => { node.textContent = shell.result; });
     document.querySelectorAll("[data-i18n]").forEach((node) => {
       if (node.dataset.i18n === "best") node.textContent = copy("best", { count: bestText() });
       else node.textContent = copy(node.dataset.i18n);
