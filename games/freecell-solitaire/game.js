@@ -30,6 +30,21 @@
     hi: "लक्ष्य",
     ar: "الهدف",
   };
+  const FREECELL_MAIN_RETURN_COPY = {
+    en: "Back to WeightPlay",
+    "zh-Hant": "返回 WeightPlay",
+    "zh-Hans": "返回 WeightPlay",
+    ja: "WeightPlayへ戻る",
+    ko: "WeightPlay로 돌아가기",
+    es: "Volver a WeightPlay",
+    "pt-BR": "Voltar ao WeightPlay",
+    fr: "Retour à WeightPlay",
+    de: "Zurück zu WeightPlay",
+    it: "Torna a WeightPlay",
+    ru: "Вернуться в WeightPlay",
+    hi: "WeightPlay पर वापस जाएँ",
+    ar: "العودة إلى WeightPlay",
+  };
   const FREECELL_MAIN_PROGRESS_COPY = {
     en: "52 cards · 4 foundations",
     "zh-Hant": "52 張牌・4 個牌堆",
@@ -234,6 +249,8 @@
   const battleSoundToggle = document.getElementById("soundToggleBattle");
   const refreshFreecellHeaderCopy = () => {
     const locale = view?.locale || "en";
+    const mainReturn = document.querySelector('[data-wp-return="main"]');
+    if (mainReturn) mainReturn.setAttribute("aria-label", FREECELL_MAIN_RETURN_COPY[locale] || FREECELL_MAIN_RETURN_COPY.en);
     const progressLabel = document.getElementById("mainProgressLabel");
     const progressText = document.querySelector("#mainProgress [data-freecell-progress]");
     if (progressLabel) progressLabel.textContent = FREECELL_PROGRESS_LABEL[locale] || FREECELL_PROGRESS_LABEL.en;

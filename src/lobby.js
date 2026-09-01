@@ -1006,7 +1006,10 @@ function createGameCard(game) {
     });
   }
 
-  const meta = isPlayable ? text(game.meta).map((item) => `<span>${item}</span>`).join("") : "";
+  const localizedMeta = text(game.meta);
+  const meta = isPlayable && Array.isArray(localizedMeta)
+    ? localizedMeta.map((item) => `<span>${item}</span>`).join("")
+    : "";
   const categoryBadges = (game.categories || []).map((item) => `<span>${categoryText(item)}</span>`).join("");
   const skillBadges = isKidsLobby && isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
   const skillReason = isKidsLobby && isPlayable ? skillReasonText(game) : "";

@@ -11,8 +11,9 @@
   const safeStorage = { get(key, fallback = "") { try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; } }, set(key, value) { try { localStorage.setItem(key, value); } catch {} } };
   const queryLocale = new URLSearchParams(location.search).get("route-locale");
   const pathLocale = location.pathname.split("/").filter(Boolean).map((value) => localeMap[value] || "").find(Boolean);
-  let locale = queryLocale && locales[queryLocale] ? queryLocale : safeStorage.get("weightPlayLocale", "");
-  if (!locales[locale]) locale = pathLocale && locales[pathLocale] ? pathLocale : "en";
+  const routeLocale = queryLocale && locales[queryLocale] ? queryLocale : pathLocale && locales[pathLocale] ? pathLocale : "";
+  let locale = routeLocale || safeStorage.get("weightPlayLocale", "");
+  if (!locales[locale]) locale = "en";
   let sound = safeStorage.get("weightplay-glyph-garden-sound", "on") !== "off";
   let plotIndex = 0;
   let selected = null;

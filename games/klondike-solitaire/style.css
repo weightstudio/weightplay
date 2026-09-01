@@ -1148,3 +1148,12 @@ button.control-mini {
   min-width: 48px;
   min-height: 44px !important;
 }
+
+/* Klondike's V6 Main contract uses the fixed 300px wide-layout poster at the
+   governed 844x390 viewport. Keep the shared formula unchanged for other
+   General games and override only this game's compact Main composition. */
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="klondike-solitaire"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+}

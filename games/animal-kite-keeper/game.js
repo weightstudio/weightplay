@@ -28,6 +28,21 @@
     hi: { brand: "सामान्य", progress: "3 आकाश मार्ग · हर एक में 3 झोंके", stage: "आकाश मार्ग", battle: "बैटल", result: "परिणाम" },
     ar: { brand: "عام", progress: "3 مسارات سماوية · 3 هبات لكل مسار", stage: "المسارات السماوية", battle: "المعركة", result: "النتيجة" },
   };
+  const metadataCopy = {
+    en: { kicker: "6+ · FAMILY · ORIGINAL PROTOTYPE", posterAlt: "Kite Keeper game artwork", guideAlt: "Moss Shell Taro holding a kite spool", guideLabel: "Kite Keeper game guide", resultAlt: "Moss Shell Taro celebrating with his kite" },
+    "zh-Hant": { kicker: "6+ · 家庭 · 原創原型", posterAlt: "風箏守護員遊戲插畫", guideAlt: "手持風箏線軸的苔殼塔羅", guideLabel: "風箏守護員遊戲指南", resultAlt: "拿著風箏慶祝的苔殼塔羅" },
+    "zh-Hans": { kicker: "6+ · 家庭 · 原创原型", posterAlt: "风筝守护员游戏插图", guideAlt: "手持风筝线轴的苔壳塔罗", guideLabel: "风筝守护员游戏指南", resultAlt: "拿着风筝庆祝的苔壳塔罗" },
+    ja: { kicker: "6+ · ファミリー · オリジナル試作", posterAlt: "カイト・キーパーのゲームアート", guideAlt: "凧の糸巻きを持つモスシェル・タロ", guideLabel: "カイト・キーパーのゲームガイド", resultAlt: "凧を持って喜ぶモスシェル・タロ" },
+    ko: { kicker: "6+ · 가족 · 오리지널 프로토타입", posterAlt: "카이트 키퍼 게임 아트", guideAlt: "연 실패를 들고 있는 모스 셸 타로", guideLabel: "카이트 키퍼 게임 가이드", resultAlt: "연을 들고 기뻐하는 모스 셸 타로" },
+    es: { kicker: "6+ · FAMILIAR · PROTOTIPO ORIGINAL", posterAlt: "Ilustración del juego Guardián de Cometas", guideAlt: "Taro Caparazón de Musgo con un carrete de cometa", guideLabel: "Guía del juego Guardián de Cometas", resultAlt: "Taro Caparazón de Musgo celebrando con su cometa" },
+    "pt-BR": { kicker: "6+ · FAMÍLIA · PROTÓTIPO ORIGINAL", posterAlt: "Arte do jogo Guardião de Pipas", guideAlt: "Taro Casco de Musgo segurando um carretel de pipa", guideLabel: "Guia do jogo Guardião de Pipas", resultAlt: "Taro Casco de Musgo comemorando com sua pipa" },
+    fr: { kicker: "6+ · FAMILLE · PROTOTYPE ORIGINAL", posterAlt: "Illustration du jeu Gardien des Cerfs-volants", guideAlt: "Taro Coquille de Mousse tenant un dévidoir de cerf-volant", guideLabel: "Guide du jeu Gardien des Cerfs-volants", resultAlt: "Taro Coquille de Mousse célébrant avec son cerf-volant" },
+    de: { kicker: "6+ · FAMILIE · ORIGINALES PROTOTYP", posterAlt: "Spielillustration von Drachenhüter", guideAlt: "Moosschalen-Taro mit einer Drachenschnurrolle", guideLabel: "Spielleitfaden für Drachenhüter", resultAlt: "Moosschalen-Taro feiert mit seinem Drachen" },
+    it: { kicker: "6+ · FAMIGLIA · PROTOTIPO ORIGINALE", posterAlt: "Illustrazione del gioco Custode degli Aquiloni", guideAlt: "Taro Guscio di Muschio con un rocchetto per aquilone", guideLabel: "Guida al gioco Custode degli Aquiloni", resultAlt: "Taro Guscio di Muschio festeggia con il suo aquilone" },
+    ru: { kicker: "6+ · СЕМЕЙНАЯ · ОРИГИНАЛЬНЫЙ ПРОТОТИП", posterAlt: "Иллюстрация игры «Хранитель воздушных змеев»", guideAlt: "Таро Моховая Ракушка с катушкой для змея", guideLabel: "Руководство по игре «Хранитель воздушных змеев»", resultAlt: "Таро Моховая Ракушка празднует со своим змеем" },
+    hi: { kicker: "6+ · परिवार · मौलिक प्रोटोटाइप", posterAlt: "पतंग प्रहरी गेम चित्र", guideAlt: "मॉस शेल टारो पतंग की चरखी थामे हुए", guideLabel: "पतंग प्रहरी गेम गाइड", resultAlt: "मॉस शेल टारो अपनी पतंग के साथ जश्न मनाते हुए" },
+    ar: { kicker: "6+ · عائلية · نموذج أولي أصلي", posterAlt: "رسم لعبة حارس الطائرات الورقية", guideAlt: "تارو ذو صدفة الطحلب يمسك بكرة خيط الطائرة الورقية", guideLabel: "دليل لعبة حارس الطائرات الورقية", resultAlt: "تارو ذو صدفة الطحلب يحتفل بطائرته الورقية" },
+  };
   let locale = routeLocale || localStorage.getItem("weightplay-kite-keeper-locale") || "en";
   if (!locales[locale]) locale = "en";
   let sound = localStorage.getItem("weightplay-kite-keeper-sound") !== "off";
@@ -59,7 +74,13 @@
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     const shell = shellCopy[locale] || shellCopy.en;
+    const metadata = metadataCopy[locale] || metadataCopy.en;
     document.querySelector(".brand .eyebrow")?.replaceChildren(document.createTextNode(`WEIGHTPLAY · ${shell.brand}`));
+    document.querySelector("#mainScreen .kicker")?.replaceChildren(document.createTextNode(metadata.kicker));
+    document.querySelector(".main-poster")?.setAttribute("alt", metadata.posterAlt);
+    document.querySelector(".guide-character")?.setAttribute("alt", metadata.guideAlt);
+    document.querySelector("#gameGuide")?.setAttribute("aria-label", metadata.guideLabel);
+    document.querySelector(".result-character")?.setAttribute("alt", metadata.resultAlt);
     $("mainProgress") && ($("mainProgress").textContent = shell.progress);
     document.querySelector("#mainScreen h1")?.replaceChildren(document.createTextNode(copy("title")));
     document.querySelectorAll("#stageScreen .screen-heading .eyebrow").forEach((node) => { node.textContent = shell.stage; });
