@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-silhouette-scout/" />
-
-    <link rel="canonical" href="https://weightplay.com/hi/games/animal-silhouette-scout/" />
+  <link rel="canonical" href="https://weightplay.com/hi/games/animal-silhouette-scout/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-silhouette-scout/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-silhouette-scout/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-silhouette-scout/" />
@@ -21,27 +20,28 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-silhouette-scout/" />
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2"><meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v3"><meta name="weightplay-interface-version" content="6">
   <title>सिल्हूट स्काउट | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="style.css?v=20260901-silhouette-scout-v3-art-approved"><link rel="stylesheet" href="style-v3.css?v=20260901-silhouette-scout-v3-art-approved">
   <meta name="description" content="भोर के तीन संकेत पढ़ें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="सिल्हूट स्काउट | WeightPlay" />
     <meta property="og:description" content="भोर के तीन संकेत पढ़ें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।" />
     <meta property="og:url" content="https://weightplay.com/hi/games/animal-silhouette-scout/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="सिल्हूट स्काउट | WeightPlay" />
     <meta name="twitter:description" content="भोर के तीन संकेत पढ़ें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "सिल्हूट स्काउट",
+  "alternateName": "Silhouette Scout",
   "url": "https://weightplay.com/hi/games/animal-silhouette-scout/",
-  "image": "https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.svg",
+  "image": "https://weightplay.com/games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp",
   "description": "भोर के तीन संकेत पढ़ें और हर सिल्हूट को रंगीन कार्ड से मिलाएँ।",
   "publisher": {
     "@type": "Organization",
@@ -56,28 +56,26 @@
     "Observation",
     "Visual Recognition",
     "परिवार",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Silhouette Scout"
+  }
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-silhouette-scout">
+<body data-audience="general" data-wp-game-id="animal-silhouette-scout" data-wp-game-version="v3">
   <section id="mainScreen" class="screen" data-screen="main">
     <header class="topbar"><a href="/" data-copy="back">Back</a><strong data-copy="title">Silhouette Scout</strong><button id="settingsBtn" type="button" class="icon-btn" data-copy-aria="settings" aria-label="Settings">⚙</button></header>
     <div id="settingsPanel" class="settings-panel" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-    <div class="hero-grid"><img class="cover" src="assets/animal-silhouette-scout-cover.png" width="900" height="750" alt="सिल्हूट स्काउट game artwork"><div class="hero-copy"><small data-copy="kicker">A calm outline-recognition puzzle</small><h1 data-copy="title">सिल्हूट स्काउट</h1><p data-copy="intro">Read the dawn clue, then match the animal outline to its full-colour card.</p><p id="mainProgress" class="progress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start the first lookout</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a lookout</button><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></div>
+    <div class="hero-grid"><img class="cover" src="assets/animal-silhouette-scout-cover.webp" width="900" height="750" alt="सिल्हूट स्काउट game artwork"><div class="hero-copy"><img class="scout-guide" src="assets/animal-silhouette-scout-guide.png" width="1024" height="1536" alt="" aria-hidden="true" loading="lazy"><small data-copy="kicker">A calm outline-recognition puzzle</small><h1 data-copy="title">सिल्हूट स्काउट</h1><p data-copy="intro">Read the dawn clue, then match the animal outline to its full-colour card.</p><p id="mainProgress" class="progress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start the first lookout</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a lookout</button><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></div>
     <section class="guide-card"><h2 data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOne">Study the outline and the clue.</b></article><article><b data-copy="guideTwo">Tap the matching animal card.</b></article><article><b data-copy="guideThree">A wrong pick clears gently; no timer or lives are used.</b></article></div></section>
   </section>
   <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 data-copy="lookouts">Lookouts</h2><span></span></header><div id="stageList" class="stage-list" role="list"></div></section>
   <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back">Back</button><div><h2 id="roundName"></h2><p id="roundLabel" class="round-label"></p></div><span id="checkCount" class="check-pill"></span></header><main class="battle-content"><p id="clue" class="clue" role="note"></p><div class="target-card"><h3 data-copy="targetLabel">Dawn outline</h3><div id="silhouette" class="silhouette" aria-live="polite"></div></div><div id="choiceGrid" class="choice-grid" role="group" aria-label="Animal choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check the match</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear choice</button></main></section>
-  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Lookouts</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
+  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><img class="scout-result" src="assets/animal-silhouette-scout-guide.png" width="1024" height="1536" alt="" aria-hidden="true" loading="lazy"><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Lookouts</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
   <section class="game-page-info game-page-info-static" aria-label="सिल्हूट स्काउट खेल की जानकारी">
 
     <div class="game-info-hero">
@@ -96,7 +94,7 @@
 
     </div>
   </section>
-  <script src="locales.js?v=20260831-silhouette-scout-v2-cover-locale"></script><script src="game.js?v=20260831-silhouette-scout-v2-cover-locale"></script>
+  <script src="locales.js?v=20260901-silhouette-scout-v3-art-approved"></script><script src="game.js?v=20260901-silhouette-scout-v3-art-approved"></script>
 <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

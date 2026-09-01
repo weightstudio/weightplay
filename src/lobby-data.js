@@ -3870,7 +3870,7 @@ const animalSilhouetteScoutPlanned = {
   meta: marketFiveLocalized([["3 Lookouts", "See + Match", "Calm Retry"], ["3 座瞭望台", "觀察＋配對", "平靜重試"], ["3 座瞭望台", "观察＋配对", "平静重试"], ["3つの見張り台", "見て合わせる", "穏やかな再挑戦"], ["전망대 3개", "보고 맞추기", "차분한 재시도"], ["3 miradores", "Mira y combina", "Reintento tranquilo"], ["3 mirantes", "Veja e associe", "Nova tentativa calma"], ["3 belvédères", "Observe et associe", "Reprise sereine"], ["3 Ausgucke", "Sehen + Zuordnen", "Ruhiger Versuch"], ["3 vedette", "Guarda e abbina", "Riprova calma"], ["3 вышки", "Смотри и сопоставляй", "Спокойный повтор"], ["3 चौकियाँ", "देखें और मिलाएँ", "शांत पुनः प्रयास"], ["3 نقاط مراقبة", "انظر وطابق", "محاولة هادئة"]]),
   categories: ["Puzzle", "Observation", "Visual Recognition", "Family", "Animal"],
   skills: ["Observation", "Focus", "Visual Reasoning"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-silhouette-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.svg", hideHero: true },
+  href: "games/animal-silhouette-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSilhouetteScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSilhouetteScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSilhouetteScoutPlanned);

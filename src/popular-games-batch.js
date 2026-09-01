@@ -70,7 +70,7 @@
     ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v11";
-  const TETRIS_GAME_VERSION = "v15";
+  const TETRIS_GAME_VERSION = "v17";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
@@ -92,7 +92,7 @@
     hi: { tagline: "हर चाल में असली चुनाव वाला पूरा मैच।", objective: "प्रतिद्वंद्वी के सभी मोहरे लें या उसकी सभी वैध चालें रोकें।", main: "सुनहरा मोहरा चुनें, फिर चमकता तिरछा खाना। कैप्चर अनिवार्य है और लगातार छलाँग जारी रहती है।", yourTurn: "आपकी चाल: सुनहरा मोहरा चुनें।", choose: "चमकता लक्ष्य चुनें।", capture: "कैप्चर उपलब्ध है और अनिवार्य है।", continueCapture: "उसी मोहरे से अगला कैप्चर करें।", aiTurn: "प्रतिद्वंद्वी चाल चुन रहा है…", invalid: "यह वैध चाल नहीं है।", selected: "मोहरा चुना गया। लक्ष्य चुनें।", captured: "मोहरा लिया गया; अगला कैप्चर हो तो जारी रखें।", promoted: "मोहरा अंतिम पंक्ति पर पहुँचकर किंग बन गया।", aiMoved: "प्रतिद्वंद्वी चला। अब आपकी चाल।", hint: "संकेत: धड़कता मोहरा चुनें, फिर चमकता लक्ष्य।", winTitle: "आप जीते!", lossTitle: "प्रतिद्वंद्वी जीता", drawTitle: "मैच ड्रॉ", winCopy: "प्रतिद्वंद्वी के पास मोहरा या वैध चाल नहीं बची।", lossCopy: "आपके पास मोहरा या वैध चाल नहीं बची।", drawCopy: "चाल सीमा पूरी हुई।", board: "चेकर्स बोर्ड", human: "आपका मोहरा", humanKing: "आपका किंग", ai: "प्रतिद्वंद्वी मोहरा", aiKing: "प्रतिद्वंद्वी किंग", empty: "खाली", target: "वैध लक्ष्य", selectable: "चुनने योग्य" },
     ar: { tagline: "مباراة كاملة بقرارات حقيقية في كل دور.", objective: "التقط كل قطع الخصم أو اتركه بلا حركة قانونية.", main: "اختر قطعة ذهبية ثم مربعاً قطرياً مميزاً. الأخذ إجباري وتستمر القفزات المتعددة.", yourTurn: "دورك: اختر قطعة ذهبية.", choose: "اختر وجهة مميزة.", capture: "هناك أخذ متاح ويجب تنفيذه.", continueCapture: "تابع سلسلة الأخذ بالقطعة نفسها.", aiTurn: "الخصم يختار حركة…", invalid: "هذا المربع ليس حركة قانونية.", selected: "تم اختيار القطعة. اختر الوجهة.", captured: "تم أخذ قطعة؛ تابع إن توفرت قفزة أخرى.", promoted: "وصلت قطعتك إلى الصف الأخير وأصبحت ملكاً.", aiMoved: "تحرك الخصم. دورك الآن.", hint: "تلميح: اختر القطعة النابضة ثم الوجهة المميزة.", winTitle: "فزت!", lossTitle: "فاز الخصم", drawTitle: "تعادل", winCopy: "لم يبق للخصم قطع أو حركات قانونية.", lossCopy: "لم يبق لديك قطع أو حركات قانونية.", drawCopy: "تم بلوغ حد الحركات.", board: "لوحة الداما", human: "قطعتك", humanKing: "ملكك", ai: "قطعة الخصم", aiKing: "ملك الخصم", empty: "فارغ", target: "وجهة قانونية", selectable: "قابل للاختيار" },
   };
-  const CHECKERS_GAME_VERSION = "v15";
+  const CHECKERS_GAME_VERSION = "v16";
   const TIC_TAC_TOE_GAME_VERSION = "v14";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
@@ -990,7 +990,7 @@
     if (game.type === "snake") document.body.dataset.gameVersion = SNAKE_GAME_VERSION;
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = TIC_TAC_TOE_GAME_VERSION;
-    if (game.type === "hangman") document.body.dataset.gameVersion = "v9";
+    if (game.type === "hangman") document.body.dataset.gameVersion = "v10";
     if (game.type === "mahjong") document.body.dataset.gameVersion = "v9";
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
     if (game.type === "wordle") document.body.dataset.gameVersion = WORDLE_GAME_VERSION;
@@ -1013,6 +1013,23 @@
       }
     }
     ensureHangmanInterface6(root);
+    if (game.type === "hangman" || game.type === "checkers") {
+      const panel = root.querySelector("#mainScreen .main-panel");
+      const preview = panel?.querySelector(":scope > .preview-art");
+      const mainCopy = panel?.querySelector(":scope > .main-copy");
+      const summary = mainCopy?.querySelector("#objective");
+      const legacyInstruction = mainCopy?.querySelector("#mainInstruction, p:not(#objective)");
+      const legacyProgress = mainCopy?.querySelector("[data-wp-main-progress]");
+      if (panel && preview && mainCopy) {
+        // Direct Main-to-Battle games use the same governed entrance sequence
+        // as the V6 template, without inventing Stage progress or repeating
+        // the objective in legacy helper cards.
+        if (panel.firstElementChild !== preview) panel.prepend(preview);
+        summary?.classList.add("main-summary");
+        if (legacyInstruction && legacyInstruction !== summary) legacyInstruction.hidden = true;
+        if (legacyProgress) legacyProgress.hidden = true;
+      }
+    }
     if (game.type === "wordle") {
       const preview = root.querySelector(".preview-art");
       if (preview && !preview.querySelector("img")) {

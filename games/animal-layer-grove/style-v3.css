@@ -1,0 +1,7 @@
+/* v3 production art: readable depth markers and a calm grove battle surface. */
+.keeper-guide{display:block;width:min(128px,34vw);height:clamp(128px,20vw,188px);object-fit:contain;object-position:center bottom;justify-self:end;filter:drop-shadow(0 12px 18px #0008)}
+#battleScreen{background-image:linear-gradient(180deg,#132523d9,#172d3be8),url("assets/animal-layer-grove-background.png");background-position:center;background-size:cover;background-attachment:fixed}
+.layer-art{background-image:url("assets/animal-layer-grove-layer-atlas.png");background-repeat:no-repeat;background-size:300% 300%;background-color:#163834;background-clip:padding-box;color:transparent;text-indent:-9999px;overflow:hidden}
+.layer-art-fern{background-position:0 0}.layer-art-pond{background-position:50% 0}.layer-art-moon{background-position:100% 0}.layer-art-reeds{background-position:0 50%}.layer-art-amber{background-position:50% 50%}.layer-art-creek{background-position:100% 50%}.layer-art-owl{background-position:0 100%}.layer-art-frost{background-position:50% 100%}.layer-art-pine{background-position:100% 100%}
+.layer-glyph{font-size:0}.keeper-result{display:block;width:min(180px,52vw);height:180px;object-fit:contain;margin:-16px auto 2px;filter:drop-shadow(0 12px 18px #0008)}
+@media(max-width:699px){.keeper-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.keeper-result{width:150px;height:150px}}
