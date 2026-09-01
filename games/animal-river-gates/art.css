@@ -110,6 +110,14 @@ body.wp-shell-battle-active .topbar {
   align-self: center;
   width: 100%;
   min-height: 198px;
+  padding-inline: 12px !important;
+}
+
+#stageScreen[data-wp-standard-stage-screen] .stage-rail > .stage-card {
+  flex: 0 0 min(264px, calc((100% - 24px) / 3)) !important;
+  width: min(264px, calc((100% - 24px) / 3)) !important;
+  min-width: min(264px, calc((100% - 24px) / 3)) !important;
+  max-width: min(264px, calc((100% - 24px) / 3)) !important;
 }
 
 #battleScreen[data-wp-logical-battle-canvas] {

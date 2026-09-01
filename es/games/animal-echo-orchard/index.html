@@ -23,6 +23,15 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#162c42" />
   <title>Huerto del Eco | WeightPlay</title>
+  <meta name="weightplay-audience" content="general" />
+  <meta name="weightplay-game-id" content="animal-echo-orchard" />
+  <meta name="weightplay-game-version" content="v3" />
+  <meta name="weightplay-interface-version" content="6" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260902-stage-contract-v1" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260902-battle-contract-v1" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-echo-orchard-guide-v1" />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260902-shell-contract-v1" />
+  <script defer src="../../src/game-page-info.js?v=20260902-echo-orchard-guide-v1"></script>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <meta name="description" content="Escucha una secuencia de frutos sonoros, repítela con cuatro botones y afina cada huerto bajo la luna." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -67,34 +76,20 @@
 }
     </script>
   </head>
-<body>
+<body data-runtime-localize="off" data-screen="main" data-audience="general" data-wp-game-id="animal-echo-orchard" data-wp-combined-sound="true">
   <div id="loading" class="loading-screen" aria-live="polite"><div class="loader-mark">✦</div><p data-i18n="loading">Tuning the orchard chimes…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Huerto del Eco</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-echo-orchard-cover.webp" alt="" width="1254" height="1254" /><span class="cover-badge" data-i18n="kicker">A gentle memory rhythm</span></div>
+      <header class="topbar wp-main-shell-header"><button id="backBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="main" aria-label="Back"><span class="wp-shell-return-arrow">←</span><img src="/assets/weightplay-logo.png" alt="Imagen del juego Huerto del Eco" width="28" height="28" /></button><strong data-runtime-localize="off">Huerto del Eco</strong><button id="settingsBtn" class="icon-btn wp-shell-legacy-control" type="button" aria-label="Settings" hidden>⚙</button></header>
+      <div class="cover-wrap"><img class="main-poster" src="assets/animal-echo-orchard-cover.webp" alt="Echo Orchard moonlit grove" width="1254" height="1254" /><span class="cover-badge" data-i18n="kicker">A gentle memory rhythm</span></div>
       <p class="eyebrow" data-i18n="world">Moonlit orchard</p><h1 data-runtime-localize="off">Huerto del Eco</h1>
-      <p class="intro" data-i18n="intro">Watch the chime-fruits glow, then echo their order with a careful tap.</p>
+      <p class="intro main-summary" data-i18n="intro">Watch the chime-fruits glow, then echo their order with a careful tap.</p>
       <div class="guide-art-wrap"><img class="guide-art" src="assets/animal-echo-orchard-guide-v1.png" alt="" width="1024" height="1536" /></div>
+      <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Groves 1 / 3</div>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Listen to an orchard</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div>
       <p id="best" class="best" data-i18n="best">Best echoes: —</p>
     </section>
-    <section id="stageScreen" class="screen panel" data-screen="stage" hidden><p class="eyebrow" data-i18n="groves">Orchard groves</p><h2 data-i18n="choose">Choose a grove</h2><div id="stageList" class="stage-list"></div></section>
-    <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
-      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Echo round</p><h2 id="roundTitle">First glow</h2></div><span id="progressPill" class="pill">1 / 3</span></div>
-      <p id="prompt" class="prompt" aria-live="polite"></p>
-      <div id="patternSlots" class="pattern-slots" role="img" aria-label="Chime pattern"></div>
-      <div id="orchardButtons" class="orchard-buttons" role="group" aria-label="Chime fruits"></div>
-      <div class="battle-actions"><button id="replayBtn" class="primary" type="button" data-i18n="replay" disabled>Replay glow</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Start over</button></div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-    </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">✦</div><div class="guide-art-wrap result-guide"><img class="guide-art" src="assets/animal-echo-orchard-guide-v1.png" alt="" width="1024" height="1536" /></div><p class="eyebrow" data-i18n="finished">Echo complete</p><h2 id="resultTitle" data-i18n="resultTitle">The orchard answered!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next grove</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div></section>
-    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
-  </main>
-  <script src="locales.js?v=20260901-echo-orchard-art-v3"></script><script src="game.js?v=20260901-echo-orchard-art-v3"></script>
-<script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Información de Huerto del Eco">
+    <section class="game-page-info game-page-info-static" aria-label="Información de Huerto del Eco">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Huerto del Eco</h2><p>Escucha una secuencia de frutos sonoros, repítela con cuatro botones y afina cada huerto bajo la luna.</p></div>
@@ -112,5 +107,22 @@
 
     </div>
   </section>
+    <section id="stageScreen" class="screen panel stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-echo-orchard-background.png" style="--wp-stage-art:url('assets/animal-echo-orchard-background.png')" hidden><header class="stage-header"><button id="stageBack" class="icon-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span class="wp-shell-return-arrow">←</span></button><div><p class="eyebrow" data-i18n="world">Moonlit orchard</p><h2 data-i18n="choose">Choose a grove</h2></div><button id="stageUtilityBtn" class="icon-btn utility-button wp-shell-legacy-control" type="button" data-wp-stage-utility aria-label="Settings" hidden>⚙</button></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="tablist" aria-label="Orchard grove selector"></div></section>
+    <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
+    <section id="battleScreen" class="screen panel battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="battle-header"><button id="battleBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="battle" aria-label="Back"><span class="wp-shell-return-arrow">←</span></button><div><p class="eyebrow" data-i18n="round">Echo round</p><h2 id="roundTitle">First glow</h2></div><div class="battle-utility"><span id="progressPill" class="pill">1 / 3</span><button id="battleUtilityBtn" class="icon-btn utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div></header>
+      <p id="prompt" class="prompt" aria-live="polite"></p>
+      <div id="patternSlots" class="pattern-slots" role="img" aria-label="Chime pattern"></div>
+      <div id="orchardButtons" class="orchard-buttons" role="group" aria-label="Chime fruits"></div>
+      <div class="battle-actions"><button id="replayBtn" class="primary" type="button" data-i18n="replay" disabled>Replay glow</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Start over</button></div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+    <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">✦</div><div class="guide-art-wrap result-guide"><img class="guide-art" src="assets/animal-echo-orchard-guide-v1.png" alt="" width="1024" height="1536" /></div><p class="eyebrow" data-i18n="finished">Echo complete</p><h2 id="resultTitle" data-i18n="resultTitle">The orchard answered!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next grove</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div></section>
+    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
+  </main>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260902-echo-orchard-interface-v4"></script><script src="game.js?v=20260902-echo-orchard-interface-v4"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/battle-canvas-standard.js?v=20260902-battle-contract-v1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>
