@@ -87,6 +87,9 @@ body[data-logic-game="sliding-15"] .logic-hero { grid-template-columns: 420px mi
 /* Peg Solitaire keeps the poster and action copy aligned to the governed
    wide-layout columns without changing its fixed-board rules. */
 body[data-logic-game="peg-solitaire"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
+/* Reversi uses the same governed wide-layout poster columns. Keep its
+   strategy copy from expanding the poster beyond the Main contract. */
+body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
 .logic-copy { display: grid; gap: 13px; }
 .logic-kicker { margin: 0; color: var(--logic-accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .logic-copy h2 { margin: 0; font-size: clamp(30px, 6vw, 54px); line-height: .98; letter-spacing: -.04em; }
@@ -216,8 +219,11 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="sliding-15"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
   body[data-logic-game="sliding-15"] .logic-return img { display: block; }
   body[data-logic-game="peg-solitaire"] .logic-hero { grid-template-columns: 1fr; }
+  body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="peg-solitaire"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
   body[data-logic-game="peg-solitaire"] .logic-return img { display: block; }
+  body[data-logic-game="reversi"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
+  body[data-logic-game="reversi"] .logic-return img { display: block; }
   .logic-poster { max-width: 410px; margin: 0 auto; }
   .logic-copy h2 { font-size: clamp(31px, 11vw, 46px); }
   .logic-guide { margin-top: 18px; }
@@ -225,6 +231,14 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-board-panel { padding: 8px 4px; border-radius: 18px; }
   .logic-naval-layout { grid-template-columns: 1fr; }
   .logic-result-actions { grid-template-columns: 1fr; }
+}
+@media (max-width: 660px) {
+  /* Keep the Reversi board playable while reserving the independent Battle
+     footer for Hint and New Puzzle on the wide-phone viewport. */
+  body[data-logic-game="reversi"] .logic-reversi-board {
+    width: min(100%, 488px);
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
 }
 @media (min-width: 661px) and (max-width: 1023px) and (orientation: landscape) {
   /* Compact landscape reserves a narrower poster column so the summary,
@@ -235,6 +249,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="four-in-a-row"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="sliding-15"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="peg-solitaire"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
+  body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
 }
 @media (min-width: 661px) and (max-height: 760px) and (orientation: landscape) {
   .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
@@ -391,7 +406,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
     gap: 12px;
   }
   body[data-logic-game="reversi"] .logic-poster {
-    max-width: min(100%, calc(100svh - 96px));
+    max-width: 300px;
   }
   body[data-logic-game="reversi"] .logic-copy {
     gap: 8px;

@@ -6373,6 +6373,7 @@
     document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-height", `${battleLogicalHeight}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
+    document.documentElement.style.setProperty("--squad-battle-return-size", `${48 * battleScale}px`);
     updateTrainingStageCanvas();
     pinMainSoundToggle();
   }

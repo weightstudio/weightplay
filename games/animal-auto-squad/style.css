@@ -222,10 +222,10 @@ body.squad-active .battle-external-return {
   z-index: 120;
   top: 8px;
   left: calc(var(--squad-canvas-left, 0px) + 8px);
-  width: calc(48px * var(--squad-battle-scale, 1));
-  min-width: calc(48px * var(--squad-battle-scale, 1));
-  height: calc(48px * var(--squad-battle-scale, 1));
-  min-height: calc(48px * var(--squad-battle-scale, 1));
+  width: var(--squad-battle-return-size, 48px);
+  min-width: var(--squad-battle-return-size, 48px);
+  height: var(--squad-battle-return-size, 48px);
+  min-height: var(--squad-battle-return-size, 48px);
   display: grid;
   place-items: center;
   pointer-events: auto !important;
@@ -444,6 +444,18 @@ body.squad-active #gamePanel > * {
 }
 body.squad-active #gamePanel * {
   pointer-events: auto !important;
+}
+
+/* The shared return contract uses !important sizing. Mirror the logical
+   Battle scale here so the external slot remains a 48px control in Canvas
+   units at wide desktop viewports. */
+body.squad-active button.battle-external-return {
+  width: var(--squad-battle-return-size, 48px) !important;
+  min-width: var(--squad-battle-return-size, 48px) !important;
+  max-width: var(--squad-battle-return-size, 48px) !important;
+  height: var(--squad-battle-return-size, 48px) !important;
+  min-height: var(--squad-battle-return-size, 48px) !important;
+  max-height: var(--squad-battle-return-size, 48px) !important;
 }
 
 @media (max-height: 470px) and (orientation: landscape) {
