@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-echo-orchard/" />
-
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-echo-orchard/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-echo-orchard/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-echo-orchard/" />
@@ -41,6 +40,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Эхо-оранжерея",
+  "alternateName": "Echo Orchard",
   "url": "https://weightplay.com/ru/games/animal-echo-orchard/",
   "image": "https://weightplay.com/games/animal-echo-orchard/assets/animal-echo-orchard-cover.webp",
   "description": "Слушайте последовательность звенящих плодов, повторяйте её четырьмя кнопками и настраивайте лунные сады.",
@@ -57,26 +57,25 @@
     "Память",
     "Распознавание образов",
     "Семья",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Echo Orchard"
+  }
 }
     </script>
   </head>
 <body>
   <div id="loading" class="loading-screen" aria-live="polite"><div class="loader-mark">✦</div><p data-i18n="loading">Tuning the orchard chimes…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Echo Orchard</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
+    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">Эхо-оранжерея</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
       <div class="cover-wrap"><img src="assets/animal-echo-orchard-cover.webp" alt="" width="1254" height="1254" /><span class="cover-badge" data-i18n="kicker">A gentle memory rhythm</span></div>
       <p class="eyebrow" data-i18n="world">Moonlit orchard</p><h1 data-runtime-localize="off">Эхо-оранжерея</h1>
       <p class="intro" data-i18n="intro">Watch the chime-fruits glow, then echo their order with a careful tap.</p>
+      <div class="guide-art-wrap"><img class="guide-art" src="assets/animal-echo-orchard-guide-v1.png" alt="" width="1024" height="1536" /></div>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Listen to an orchard</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div>
       <p id="best" class="best" data-i18n="best">Best echoes: —</p>
     </section>
@@ -89,10 +88,12 @@
       <div class="battle-actions"><button id="replayBtn" class="primary" type="button" data-i18n="replay" disabled>Replay glow</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Start over</button></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>
     </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">✦</div><p class="eyebrow" data-i18n="finished">Echo complete</p><h2 id="resultTitle" data-i18n="resultTitle">The orchard answered!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next grove</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div></section>
-    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-icon">✦</div><div class="guide-art-wrap result-guide"><img class="guide-art" src="assets/animal-echo-orchard-guide-v1.png" alt="" width="1024" height="1536" /></div><p class="eyebrow" data-i18n="finished">Echo complete</p><h2 id="resultTitle" data-i18n="resultTitle">The orchard answered!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next grove</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a grove</button></div></section>
+    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260829-echo-orchard-v1"></script><script src="game.js?v=20260829-echo-orchard-v1"></script>
+  <script src="locales.js?v=20260901-echo-orchard-art-v3"></script><script src="game.js?v=20260901-echo-orchard-art-v3"></script>
+<script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Эхо-оранжерея информация об игре">
 
     <div class="game-info-hero">
@@ -111,7 +112,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

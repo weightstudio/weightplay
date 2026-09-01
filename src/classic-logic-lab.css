@@ -94,6 +94,9 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-status-line { min-height: 24px; color: var(--logic-good); text-align: center; font-size: 14px; font-weight: 700; }
 .logic-status-line.is-error { color: var(--logic-danger); }
 .logic-status-line.is-good { color: var(--logic-good); }
+/* Sudoku feedback can be longer than the ready state. Keep its reserved
+   status band stable so Hint feedback never shifts the familiar board. */
+body[data-logic-game="sudoku"] .logic-status-line { height: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 6px; }
 body[data-logic-game="minefield-logic"] .logic-status-line { height: 52px; min-height: 52px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 4px; }
 body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(100svh - 122px); }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
@@ -238,6 +241,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-battle-wrap { height: calc(100% - 42px); min-height: 0; gap: 4px; }
   .logic-tutorial { max-height: 24px; overflow: hidden; padding: 3px 8px; font-size: 11px; line-height: 1.2; white-space: nowrap; }
   .logic-status-line { min-height: 16px; font-size: 12px; line-height: 1; }
+  body[data-logic-game="sudoku"] .logic-status-line { height: 24px; min-height: 24px; overflow: auto; }
   body[data-logic-game="minefield-logic"] .logic-status-line {
     height: 16px; min-height: 16px; overflow: hidden;
   }

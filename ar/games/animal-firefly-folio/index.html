@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-firefly-folio/" />
-
     <link rel="canonical" href="https://weightplay.com/ar/games/animal-firefly-folio/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-firefly-folio/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-firefly-folio/" />
@@ -29,7 +28,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <meta name="description" content="اقرأ ثلاث ملاحظات وأدخل رمز الاتجاه الدقيق لإعادة اليراعة إلى منزلها." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -46,6 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "دفتر اليراعات",
+  "alternateName": "Firefly Folio",
   "url": "https://weightplay.com/ar/games/animal-firefly-folio/",
   "image": "https://weightplay.com/games/animal-firefly-folio/assets/animal-firefly-folio-cover.svg",
   "description": "اقرأ ثلاث ملاحظات وأدخل رمز الاتجاه الدقيق لإعادة اليراعة إلى منزلها.",
@@ -62,15 +62,13 @@
     "Logic",
     "تخطيط الطريق",
     "العائلة",
-    "Animal",
-    "لعبة متصفح"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Firefly Folio"
+  }
 }
     </script>
   </head>
@@ -78,12 +76,12 @@
   <section id="mainScreen" class="screen main-screen" data-screen="main">
     <header class="topbar"><a class="return-link" href="/" data-wp-return="main" data-copy="back">Back</a><strong data-copy="title">Firefly Folio</strong><button id="settingsBtn" class="icon-btn" type="button" data-copy-aria="settings" aria-label="Settings">⚙</button></header>
     <div id="settingsPanel" class="settings-panel" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
-    <section class="hero-grid"><img class="cover" src="assets/animal-firefly-folio-cover.svg" width="900" height="700" alt="شعار WeightPlay"><div class="hero-copy"><small data-copy="kicker">A calm route-code puzzle</small><h1 data-copy="title">دفتر اليراعات</h1><p data-copy="intro">Read the field note, then trace the exact three-turn route to the firefly's lantern.</p><p class="progress" id="mainProgress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Open the first folio</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a folio</button><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestValue">Not yet</strong></p></div></section>
-    <section class="guide-card"><h2 data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOne">Read the destination clue.</b></article><article><b data-copy="guideTwo">Tap the four direction cards to trace the route.</b></article><article><b data-copy="guideThree">A wrong route clears gently; no timer or lives are used.</b></article></div></section>
+    <section class="hero-grid"><img class="cover" src="assets/animal-firefly-folio-cover.webp" width="900" height="750" alt="شعار WeightPlay"><div class="hero-copy"><small data-copy="kicker">A calm route-code puzzle</small><h1 data-copy="title">دفتر اليراعات</h1><p data-copy="intro">Read the field note, then trace the exact three-turn route to the firefly's lantern.</p><p class="progress" id="mainProgress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Open the first folio</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a folio</button><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestValue">Not yet</strong></p></div></section>
+    <section class="guide-card"><div class="guide-heading"><h2 data-copy="guideTitle">How to play</h2><img class="guide-art" src="assets/animal-firefly-folio-mica-guide-v1.png" width="1024" height="1536" alt=""></div><div class="guide-grid"><article><b data-copy="guideOne">Read the destination clue.</b></article><article><b data-copy="guideTwo">Tap the four direction cards to trace the route.</b></article><article><b data-copy="guideThree">A wrong route clears gently; no timer or lives are used.</b></article></div></section>
   </section>
   <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 data-copy="stages">Folio pages</h2><span></span></header><div id="stageList" class="stage-list" role="list"></div></section>
   <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back">Back</button><div><h2 id="roundName">Bramble Page</h2><p id="roundLabel" class="round-label"></p></div><span class="check-pill" id="turnCount"></span></header><main class="battle-content"><p id="routeNote" class="route-note"></p><div class="route-card"><h3 data-copy="routeLabel">Your route</h3><div id="route" class="route" aria-live="polite"></div></div><div class="direction-grid" id="directionGrid" role="group" aria-label="Direction choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check route</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear route</button></div></main></section>
-  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Folio pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
+  <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden><div class="result-card"><img class="result-guide-art" src="assets/animal-firefly-folio-mica-guide-v1.png" width="1024" height="1536" alt=""><span aria-hidden="true">✦</span><h2 id="resultTitle"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Folio pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
   <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة دفتر اليراعات">
 
     <div class="game-info-hero">
@@ -103,7 +101,7 @@
     </div>
   </section>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="locales.js"></script><script src="game.js"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="locales.js?v=20260901-firefly-folio-art-v2"></script><script src="game.js?v=20260901-firefly-folio-art-v2"></script>
 <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

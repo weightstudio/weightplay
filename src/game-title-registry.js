@@ -1522,18 +1522,18 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "casino": {
     "__localizedExact": true,
     "en": "Casino",
-    "zh-Hant": "Casino",
-    "zh-Hans": "Casino",
-    "ja": "Casino",
+    "zh-Hant": "卡西諾",
+    "zh-Hans": "卡西诺",
+    "ja": "カシノ",
     "ko": "카지노",
-    "es": "casinos",
+    "es": "Casino clásico",
     "pt-BR": "Cassino",
     "fr": "Casino",
-    "de": "Casino",
-    "it": "Casinò",
-    "ru": "Казино",
-    "hi": "कैसीनो",
-    "ar": "Casino"
+    "de": "Cassino",
+    "it": "Cassino",
+    "ru": "Кассино",
+    "hi": "कैसिनो",
+    "ar": "كاسينو"
   },
   "minefield-logic": {
     "__localizedExact": true,

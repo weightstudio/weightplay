@@ -8081,6 +8081,30 @@
     ]
   };
 
+  // Casino owns a complete localized Guide record. The shared runtime route
+  // can otherwise replace the generated static section with the English base
+  // record (and the legacy Spanish title casing), which is visible before and
+  // after hydration on every localized route.
+  const casinoGuideLocaleCopies = {
+    en: { title: "Casino", intro: "Play a card to capture a table card of the same value or several table cards whose values add to it.", gameplay: "Fishing and Capture Card Game", genre: ["Card", "Family", "Strategy"], difficulty: "Medium", time: "5-15 minutes", skills: ["Planning", "Focus", "Pattern Recognition"], how: ["Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses."], noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog." },
+    "zh-Hant": { title: "卡西諾", intro: "出一張牌，捕獲相同點數的桌面牌，或捕獲合計點數相符的多張桌面牌。", gameplay: "捕魚與捕獲紙牌遊戲", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分鐘", skills: ["規劃", "專注", "圖樣辨識"], how: ["為之後的捕獲建立牌組，收集黑桃，並留意方塊 10 與黑桃 2 的獎勵。"], noteTitle: "預覽狀態", parent: "這是擁有者預覽，尚未列入正式公開目錄。" },
+    "zh-Hans": { title: "卡西诺", intro: "出一张牌，捕获相同点数的桌面牌，或捕获合计点数相符的多张桌面牌。", gameplay: "捕鱼与捕获纸牌游戏", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分钟", skills: ["规划", "专注", "图样识别"], how: ["为之后的捕获建立牌组，收集黑桃，并留意方块 10 与黑桃 2 的奖励。"], noteTitle: "预览状态", parent: "这是拥有者预览，尚未列入正式公开目录。" },
+    ja: { title: "カシノ", intro: "カードを1枚出し、同じ値の場札、または合計が一致する複数の場札を獲得します。", gameplay: "フィッシング＆獲得カードゲーム", genre: ["カード", "ファミリー", "戦略"], difficulty: "中級", time: "5～15分", skills: ["計画", "集中", "パターン認識"], how: ["あとで獲得できるよう組み合わせを作り、スペードを集め、ダイヤの10とスペードの2のボーナスに注目します。"], noteTitle: "プレビューの状態", parent: "これは所有者向けプレビューで、正式な公開カタログには含まれません。" },
+    ko: { title: "카지노", intro: "카드 한 장을 내고 같은 값의 테이블 카드 또는 합이 맞는 여러 테이블 카드를 가져오세요.", gameplay: "피싱·캡처 카드 게임", genre: ["카드", "가족", "전략"], difficulty: "보통", time: "5~15분", skills: ["계획", "집중", "패턴 인식"], how: ["나중에 가져올 수 있도록 조합을 만들고, 스페이드를 모으며 다이아몬드 10과 스페이드 2 보너스를 살펴보세요."], noteTitle: "프리뷰 상태", parent: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다." },
+    es: { title: "Casino clásico", intro: "Juega una carta para capturar una carta de mesa del mismo valor o varias cuyo total coincida.", gameplay: "Juego de cartas de captura y pesca", genre: ["Cartas", "Familia", "Estrategia"], difficulty: "Media", time: "5-15 minutos", skills: ["Planificación", "Concentración", "Reconocimiento de patrones"], how: ["Forma combinaciones para capturar después, reúne picas y busca las bonificaciones del 10 de diamantes y el 2 de picas."], noteTitle: "Estado de la vista previa", parent: "Esta vista previa del propietario no forma parte del catálogo público oficial." },
+    "pt-BR": { title: "Cassino", intro: "Jogue uma carta para capturar uma carta da mesa do mesmo valor ou várias cujo total corresponda.", gameplay: "Jogo de cartas de pesca e captura", genre: ["Cartas", "Família", "Estratégia"], difficulty: "Média", time: "5–15 minutos", skills: ["Planejamento", "Concentração", "Reconhecimento de padrões"], how: ["Monte combinações para capturar depois, reúna espadas e observe os bônus do 10 de ouros e do 2 de espadas."], noteTitle: "Status da prévia", parent: "Esta prévia do proprietário não faz parte do catálogo público oficial." },
+    fr: { title: "Casino", intro: "Jouez une carte pour capturer une carte de table de même valeur ou plusieurs cartes dont la somme correspond.", gameplay: "Jeu de cartes de pêche et de capture", genre: ["Cartes", "Famille", "Stratégie"], difficulty: "Moyenne", time: "5–15 minutes", skills: ["Planification", "Concentration", "Reconnaissance des motifs"], how: ["Préparez des combinaisons à capturer plus tard, collectionnez les piques et surveillez les bonus du 10 de carreau et du 2 de pique."], noteTitle: "État de l’aperçu", parent: "Cet aperçu du propriétaire ne fait pas partie du catalogue public officiel." },
+    de: { title: "Cassino", intro: "Spiele eine Karte, um eine Tischkarte gleichen Werts oder mehrere Karten mit passender Summe zu nehmen.", gameplay: "Fang- und Sammelkartenspiel", genre: ["Karten", "Familie", "Strategie"], difficulty: "Mittel", time: "5–15 Minuten", skills: ["Planung", "Konzentration", "Mustererkennung"], how: ["Bilde Kombinationen für spätere Züge, sammle Pik und achte auf die Boni der Karo-10 und Pik-2."], noteTitle: "Vorschau-Status", parent: "Diese Besitzer-Vorschau gehört nicht zum offiziellen öffentlichen Katalog." },
+    it: { title: "Cassino", intro: "Gioca una carta per catturare una carta del tavolo dello stesso valore o più carte con una somma corrispondente.", gameplay: "Gioco di carte pesca e cattura", genre: ["Carte", "Famiglia", "Strategia"], difficulty: "Media", time: "5–15 minuti", skills: ["Pianificazione", "Concentrazione", "Riconoscimento dei pattern"], how: ["Prepara combinazioni da catturare in seguito, raccogli le picche e cerca i bonus del 10 di quadri e del 2 di picche."], noteTitle: "Stato dell’anteprima", parent: "Questa anteprima del proprietario non fa parte del catalogo pubblico ufficiale." },
+    ru: { title: "Кассино", intro: "Сыграйте карту, чтобы забрать карту стола того же значения или несколько карт с подходящей суммой.", gameplay: "Карточная игра на сбор и взятие", genre: ["Карты", "Семейная", "Стратегия"], difficulty: "Средняя", time: "5–15 минут", skills: ["Планирование", "Внимание", "Распознавание узоров"], how: ["Составляйте комбинации для последующего взятия, собирайте пики и следите за бонусами 10 бубен и 2 пик."], noteTitle: "Статус предпросмотра", parent: "Этот предпросмотр владельца не входит в официальный публичный каталог." },
+    hi: { title: "कैसिनो", intro: "एक पत्ता चलाकर उसी मान वाला मेज़ का पत्ता या ऐसा संयोजन पकड़ें जिसका योग बराबर हो।", gameplay: "पत्तों का पकड़ और संग्रह खेल", genre: ["कार्ड", "परिवार", "रणनीति"], difficulty: "मध्यम", time: "5–15 मिनट", skills: ["योजना", "एकाग्रता", "पैटर्न पहचान"], how: ["बाद में पकड़ने के लिए संयोजन बनाएँ, स्पेड इकट्ठे करें और डायमंड 10 व स्पेड 2 के बोनस पर ध्यान दें।"], noteTitle: "प्रीव्यू स्थिति", parent: "यह मालिक का प्रीव्यू आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।" },
+    ar: { title: "كاسينو", intro: "العب بطاقة لالتقاط بطاقة من الطاولة بالقيمة نفسها أو عدة بطاقات يساوي مجموعها القيمة.", gameplay: "لعبة بطاقات الصيد والالتقاط", genre: ["بطاقات", "عائلية", "استراتيجية"], difficulty: "متوسطة", time: "5–15 دقيقة", skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"], how: ["كوّن تركيبات لالتقاطها لاحقًا، واجمع البستوني، وانتبه إلى مكافأتي 10 الماس و2 البستوني."], noteTitle: "حالة المعاينة", parent: "هذه معاينة المالك وليست ضمن الكتالوج العام الرسمي." },
+  };
+  Object.entries(casinoGuideLocaleCopies).forEach(([localeKey, copy]) => {
+    localizedGames[localeKey] ||= {};
+    localizedGames[localeKey].casino = { ...(localizedGames[localeKey].casino || {}), ...copy };
+  });
+
   let spanishResourcePromise = null;
   let spanishResourceFailed = false;
   let japaneseResourcePromise = null;
@@ -14938,7 +14962,6 @@
     localizedGames[localeCode] ||= {};
     localizedGames[localeCode].casino = {
       ...(localizedGames[localeCode].casino || {}),
-      ...(localeCode === "es" ? { title: "casinos" } : {}),
       faq,
     };
   }

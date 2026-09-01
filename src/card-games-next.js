@@ -34,7 +34,7 @@
     war: { en: "War", "zh-Hant": "戰爭", "zh-Hans": "战争", ja: "戦争", ko: "전쟁", es: "Guerra", "pt-BR": "Guerra", fr: "Bataille", de: "Krieg", it: "Guerra", ru: "Война", hi: "युद्ध", ar: "الحرب" },
     speed: { en: "Speed", "zh-Hant": "快手接龍", "zh-Hans": "快手接龙", ja: "スピード", ko: "스피드", es: "Speed", "pt-BR": "Speed", fr: "Speed", de: "Speed", it: "Speed", ru: "Скорость", hi: "स्पीड", ar: "السرعة" },
     "old-maid": { en: "Old Maid", "zh-Hant": "抽鬼牌", "zh-Hans": "抽鬼牌", ja: "ババ抜き", ko: "ババ抜き", es: "La vieja solterona", "pt-BR": "Mico", fr: "Pouilleux", de: "Schwarzer Peter", it: "Asino", ru: "Старая дева", hi: "ओल्ड मेड", ar: "العانس" },
-    casino: { en: "Casino", "zh-Hant": "卡西諾", "zh-Hans": "卡西诺", ja: "カシノ", ko: "카지노", es: "casinos", "pt-BR": "Cassino", fr: "Casino", de: "Cassino", it: "Cassino", ru: "Кассино", hi: "कैसिनो", ar: "كاسينو" },
+    casino: { en: "Casino", "zh-Hant": "卡西諾", "zh-Hans": "卡西诺", ja: "カシノ", ko: "카지노", es: "Casino clásico", "pt-BR": "Cassino", fr: "Casino", de: "Cassino", it: "Cassino", ru: "Кассино", hi: "कैसिनो", ar: "كاسينو" },
   };
 
   const STAT_LABELS = { en: "Statistics", "zh-Hant": "統計", "zh-Hans": "统计", ja: "統計", ko: "통계", es: "Estadísticas", "pt-BR": "Estatísticas", fr: "Statistiques", de: "Statistik", it: "Statistiche", ru: "Статистика", hi: "आंकड़े", ar: "الإحصاءات" };
@@ -1217,13 +1217,44 @@
     ar: { label: "تقدّم الالتقاط", copy: "التقط بطاقات الطاولة بالقيمة أو بالمجموع." },
   };
 
+  const CASINO_MAIN_COPY = {
+    en: { summary: "Capture table cards by rank or sum, then score cards and special bonuses.", eyebrow: "Classic Card Game · Owner Preview" },
+    "zh-Hant": { summary: "按點數或合計捕獲桌面牌，再計算牌面與特殊獎勵。", eyebrow: "經典紙牌遊戲 · 擁有者預覽" },
+    "zh-Hans": { summary: "按点数或合计捕获桌面牌，再计算牌面与特殊奖励。", eyebrow: "经典纸牌游戏 · 拥有者预览" },
+    ja: { summary: "同じ値または合計で場札を獲得し、カードと特別ボーナスを得点します。", eyebrow: "クラシックカードゲーム · 所有者プレビュー" },
+    ko: { summary: "같은 값이나 합으로 테이블 카드를 가져온 뒤 카드와 특별 보너스를 계산합니다.", eyebrow: "클래식 카드 게임 · 소유자 프리뷰" },
+    es: { summary: "Captura cartas de mesa por valor o suma y consigue puntos y bonificaciones especiales.", eyebrow: "Juego de cartas clásico · Vista previa del propietario" },
+    "pt-BR": { summary: "Capture cartas da mesa por valor ou soma e marque cartas e bônus especiais.", eyebrow: "Jogo de cartas clássico · Prévia do proprietário" },
+    fr: { summary: "Capturez les cartes de table par valeur ou somme, puis marquez les cartes et bonus spéciaux.", eyebrow: "Jeu de cartes classique · Aperçu du propriétaire" },
+    de: { summary: "Nimm Tischkarten nach Wert oder Summe und sammle Punkte für Karten und Sonderboni.", eyebrow: "Klassisches Kartenspiel · Besitzer-Vorschau" },
+    it: { summary: "Cattura le carte del tavolo per valore o somma, poi ottieni punti e bonus speciali.", eyebrow: "Gioco di carte classico · Anteprima del proprietario" },
+    ru: { summary: "Забирайте карты стола по значению или сумме, затем получайте очки и особые бонусы.", eyebrow: "Классическая карточная игра · Предпросмотр владельца" },
+    hi: { summary: "मान या योग से मेज़ के पत्ते पकड़ें, फिर पत्तों और विशेष बोनस के अंक पाएँ।", eyebrow: "क्लासिक कार्ड गेम · मालिक का प्रीव्यू" },
+    ar: { summary: "التقط بطاقات الطاولة بالقيمة أو بالمجموع، ثم احسب نقاط البطاقات والمكافآت الخاصة.", eyebrow: "لعبة بطاقات كلاسيكية · معاينة المالك" },
+  };
+
   let casinoShellSyncing = false;
   const syncCasinoShell = () => {
     if (casinoShellSyncing) return;
     casinoShellSyncing = true;
     try {
       const labels = TEXT[currentLocale()] || TEXT.en;
+      const mainCopy = CASINO_MAIN_COPY[currentLocale()] || CASINO_MAIN_COPY.en;
       const progressCopy = CASINO_PROGRESS_COPY[currentLocale()] || CASINO_PROGRESS_COPY.en;
+      document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, TITLES.casino[currentLocale()] || TITLES.casino.en));
+      document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, mainCopy.summary));
+      ownLocalizedText(document.querySelector(".main-copy .eyebrow"), mainCopy.eyebrow);
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), labels.hand);
+      ownLocalizedText(document.querySelector("#startBtn"), labels.start);
+      ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
+      ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);
+      ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
+      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      ownLocalizedText(document.querySelector(".settings-row span"), labels.language);
+      const language = document.querySelector("#localeSelect");
+      if (language) language.setAttribute("aria-label", labels.language);
+      const battleBack = document.querySelector("#battleBackBtn");
+      if (battleBack) battleBack.setAttribute("aria-label", labels.back);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
       const settings = document.querySelector("#audioMenuBtn");
@@ -2156,7 +2187,7 @@
       war: "Reveal cards together; tied ranks trigger a dramatic War.",
       speed: "Play one rank above or below the center cards in a race against the AI.",
       "old-maid": "Pair ranks, draw from the next hand, and avoid being left with the Old Maid.",
-      casino: "Capture table cards by rank or sum, then score cards and special bonuses.",
+      casino: (CASINO_MAIN_COPY[currentLocale()] || CASINO_MAIN_COPY.en).summary,
     };
     return summaries[id] || summaries.hearts;
   }

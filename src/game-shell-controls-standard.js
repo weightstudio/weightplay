@@ -197,7 +197,7 @@
         : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"
           : gameId === "animal-trap-trail" ? "20260829-animal-trap-trail-faq-timing-v6"
           : gameId === "animal-canopy-cut" ? "20260829-canopy-v10-result-arabic"
-          : gameId === "casino" ? "20260828-casino-build-legality-v15"
+          : gameId === "casino" ? "20260901-casino-locale-v18d"
           : "20260817-bus-jam-guide-v12";
       script.src = `${new URL("game-page-info.js", sharedAssetBase).href}?v=${gameInfoCacheTag}`;
       document.body.append(script);
