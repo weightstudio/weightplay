@@ -1,0 +1,7 @@
+/* Old Maid v18 keeps the governed compact-landscape Main poster on the
+   canonical 300px column without changing the shared Interface V6 shell. */
+@media (min-width: 700px) and (max-height: 430px) and (orientation: landscape) {
+  .main-screen .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px !important;
+  }
+}
