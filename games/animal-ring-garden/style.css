@@ -60,7 +60,7 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 .main-header .topbar-actions{justify-content:flex-end}
 .wp-shell-settings-button{width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
 .main-content{justify-content:flex-start;padding:8px 0 12px;gap:0}
-.main-cover{width:min(100%,300px);margin:0 auto 8px;aspect-ratio:1}
+.main-cover{width:min(100%,420px);margin:0 auto 8px;aspect-ratio:1}
 .main-mimi{width:min(24vw,120px);height:min(24vw,120px);margin:0 auto 2px}
 .main-content .eyebrow{margin-bottom:5px}
 .main-content .lede{margin-top:7px;line-height:1.35}
@@ -93,10 +93,33 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 .battle-ad-reserve[hidden]{display:none!important}
 
 @media (max-width:640px){
-  .main-cover{width:min(100%,190px)}
   .main-mimi{width:72px;height:72px}
   .guide-card{width:calc(100% - 28px);margin-bottom:14px}
   .guide-grid{grid-template-columns:1fr;gap:6px}
   #stageScreen,#battleScreen{padding-inline:14px}
   #stageScreen .content-column{min-height:calc(100% - 58px)}
+}
+
+/* v8 responsive-surface repair: mobile uses the full content envelope while
+   wider portrait/desktop layouts retain the governed 420px poster. */
+@media (max-width:699px){
+  .main-cover{width:100%;max-width:none}
+}
+
+@media (min-width:700px){
+  #stageScreen .stage-list{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    overflow:visible;
+    min-height:202px;
+    flex:0 0 202px;
+    align-items:stretch;
+  }
+  #stageScreen .garden-card{min-width:0;flex:initial}
+}
+
+@media (orientation:landscape) and (max-height:560px){
+  .main-cover{width:min(100%,300px)}
+  #battleScreen .ring-board{align-self:start;transform:translateY(-16px)}
+  #battleScreen .ring-visual{width:min(100%,120px);margin:4px auto}
 }

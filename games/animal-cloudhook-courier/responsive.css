@@ -29,11 +29,37 @@
   .main-grid .poster { width: 300px; }
 }
 
+/* The shared Battle scaler fixes the play surface to the 334px landscape
+   envelope. Keep Cloudhook's physical controls in that envelope from the
+   first frame instead of waiting for a post-click reflow. */
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  body[data-game-id="animal-cloudhook-courier"].wp-logical-battle-active #battleScreen .touch-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 11px;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 3;
+  }
+}
+
 /* Keep the compact landscape poster column deterministic even when the
    first grid item has a wider intrinsic text minimum. */
 @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
   .main-grid > :first-child { min-width: 0; }
   .main-grid .poster { width: 300px; max-width: 300px; }
+  .wp-standard-main-composition { --wp-main-landscape-poster-size: 300px; grid-template-columns: 300px minmax(0, 1fr) !important; }
+  .wp-standard-main-poster,
+  .wp-standard-main-poster-media,
+  .wp-standard-main-poster-media > img,
+  .wp-standard-main-poster > img {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+  }
 }
 
 /* Cloudhook owns a compact in-Main Guide; give it the shared framed contract

@@ -289,6 +289,6 @@
   $("#battleScreen").setAttribute("data-wp-logical-battle-canvas", "");
   $("#stageScreen .section-head")?.classList.add("stage-header");
   $("#battleScreen .section-head")?.classList.add("battle-header");
-  const inlineGuide = document.querySelector("#mainScreen .guide");
+  const inlineGuide = document.querySelector(".guide[data-wp-game-guide]");
   inlineGuide?.classList.add("main-howto");
 })();

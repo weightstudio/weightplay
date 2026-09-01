@@ -267,7 +267,7 @@ window.WPPopularArcade?.mount("chess");
   };
 
   resetState();
-  document.body.dataset.gameVersion = "v11";
+  document.body.dataset.gameVersion = "v12";
   bindShellControls();
   document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
     event.preventDefault();
