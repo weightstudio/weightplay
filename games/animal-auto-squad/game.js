@@ -630,6 +630,117 @@
   };
   Object.entries(paceCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
 
+  const stallRecoveryCopy = {
+    en: {
+      stallTitle: "Battle needs a new plan",
+      stallHint: "No damage or defeats have occurred for several turns. Reconfigure your squad to keep this wave and its Supplies, or end the expedition.",
+      stallReconfigure: "Reconfigure Squad",
+      stallEnd: "End Expedition",
+      stallRecoveryNotice: "This wave is paused. Reconfigure your squad and start the same wave again; your Hearts and Supplies remain.",
+      stallEndNotice: "The expedition ended after a no-progress battle. Unsettled Supplies were not saved."
+    },
+    "zh-Hant": {
+      stallTitle: "戰鬥需要新的策略",
+      stallHint: "連續數回合沒有造成傷害或倒下。重新配置小隊可保留本波與補給；也可以結束遠征。",
+      stallReconfigure: "重新配置小隊",
+      stallEnd: "結束遠征",
+      stallRecoveryNotice: "本波戰鬥已暫停。重新配置小隊後，可從同一波重新開始；生命與補給會保留。",
+      stallEndNotice: "戰鬥長時間沒有進展，遠征已結束；未結算的補給不會保存。"
+    },
+    "zh-Hans": {
+      stallTitle: "战斗需要新的策略",
+      stallHint: "连续数回合没有造成伤害或倒下。重新布置小队可保留本波和补给；也可以结束远征。",
+      stallReconfigure: "重新布置小队",
+      stallEnd: "结束远征",
+      stallRecoveryNotice: "本波战斗已暂停。重新布置小队后，可以从同一波重新开始；生命和补给会保留。",
+      stallEndNotice: "战斗长时间没有进展，远征已结束；未结算的补给不会保存。"
+    },
+    ja: {
+      stallTitle: "戦闘に新しい作戦が必要です",
+      stallHint: "数ターンにわたりダメージも撃破も発生していません。スクワッドを組み直せばこのウェーブと物資を維持できます。遠征を終了することもできます。",
+      stallReconfigure: "スクワッドを再編成",
+      stallEnd: "遠征を終了",
+      stallRecoveryNotice: "このウェーブを一時停止しました。スクワッドを組み直して同じウェーブを再開できます。ハートと物資は維持されます。",
+      stallEndNotice: "戦闘が長時間進まなかったため遠征を終了しました。未確定の物資は保存されません。"
+    },
+    ko: {
+      stallTitle: "전투에 새 계획이 필요합니다",
+      stallHint: "여러 턴 동안 피해나 쓰러짐이 발생하지 않았습니다. 분대를 다시 편성하면 이 웨이브와 보급품을 유지할 수 있습니다. 원정을 끝낼 수도 있습니다.",
+      stallReconfigure: "분대 재편성",
+      stallEnd: "원정 종료",
+      stallRecoveryNotice: "이 웨이브를 일시 정지했습니다. 분대를 다시 편성해 같은 웨이브를 시작하세요. 하트와 보급품은 유지됩니다.",
+      stallEndNotice: "전투가 오랫동안 진행되지 않아 원정을 종료했습니다. 미정산 보급품은 저장되지 않습니다."
+    },
+    es: {
+      stallTitle: "La batalla necesita un plan nuevo",
+      stallHint: "No ha habido daño ni derrotas durante varios turnos. Reorganiza tu escuadrón para conservar esta oleada y sus suministros, o termina la expedición.",
+      stallReconfigure: "Reorganizar escuadrón",
+      stallEnd: "Terminar expedición",
+      stallRecoveryNotice: "Esta oleada está en pausa. Reorganiza tu escuadrón y vuelve a empezar la misma oleada; tus corazones y suministros se conservan.",
+      stallEndNotice: "La expedición terminó después de una batalla sin avances. Los suministros no liquidados no se guardaron."
+    },
+    "pt-BR": {
+      stallTitle: "A batalha precisa de um novo plano",
+      stallHint: "Não houve dano nem derrotas por vários turnos. Reorganize seu esquadrão para manter esta onda e seus suprimentos, ou encerre a expedição.",
+      stallReconfigure: "Reorganizar esquadrão",
+      stallEnd: "Encerrar expedição",
+      stallRecoveryNotice: "Esta onda está pausada. Reorganize o esquadrão e reinicie a mesma onda; seus corações e suprimentos permanecem.",
+      stallEndNotice: "A expedição terminou após uma batalha sem progresso. Os suprimentos não liquidados não foram salvos."
+    },
+    fr: {
+      stallTitle: "Le combat a besoin d’un nouveau plan",
+      stallHint: "Aucun dégât ni aucune défaite n’a eu lieu depuis plusieurs tours. Recomposez votre équipe pour conserver cette vague et ses provisions, ou terminez l’expédition.",
+      stallReconfigure: "Recomposer l’équipe",
+      stallEnd: "Terminer l’expédition",
+      stallRecoveryNotice: "Cette vague est en pause. Recomposez votre équipe et relancez la même vague ; vos cœurs et provisions sont conservés.",
+      stallEndNotice: "L’expédition s’est terminée après un combat sans progression. Les provisions non réglées n’ont pas été sauvegardées."
+    },
+    de: {
+      stallTitle: "Der Kampf braucht einen neuen Plan",
+      stallHint: "Seit mehreren Runden gab es weder Schaden noch Niederlagen. Stelle dein Team neu auf, um diese Welle und ihre Vorräte zu behalten, oder beende die Expedition.",
+      stallReconfigure: "Team neu aufstellen",
+      stallEnd: "Expedition beenden",
+      stallRecoveryNotice: "Diese Welle ist pausiert. Stelle dein Team neu auf und starte dieselbe Welle erneut; Herzen und Vorräte bleiben erhalten.",
+      stallEndNotice: "Die Expedition endete nach einem Kampf ohne Fortschritt. Nicht abgerechnete Vorräte wurden nicht gespeichert."
+    },
+    it: {
+      stallTitle: "La battaglia richiede un nuovo piano",
+      stallHint: "Per diversi turni non ci sono stati danni né sconfitte. Riorganizza la squadra per conservare questa ondata e le sue scorte, oppure termina la spedizione.",
+      stallReconfigure: "Riorganizza la squadra",
+      stallEnd: "Termina spedizione",
+      stallRecoveryNotice: "Questa ondata è in pausa. Riorganizza la squadra e riavvia la stessa ondata; cuori e scorte restano disponibili.",
+      stallEndNotice: "La spedizione è terminata dopo una battaglia senza progressi. Le scorte non liquidate non sono state salvate."
+    },
+    ru: {
+      stallTitle: "Бою нужен новый план",
+      stallHint: "Несколько ходов не было ни урона, ни поражений. Перестройте отряд, чтобы сохранить эту волну и припасы, или завершите экспедицию.",
+      stallReconfigure: "Перестроить отряд",
+      stallEnd: "Завершить экспедицию",
+      stallRecoveryNotice: "Эта волна приостановлена. Перестройте отряд и начните ту же волну снова; сердца и припасы сохранятся.",
+      stallEndNotice: "Экспедиция завершена после боя без прогресса. Нерасчётные припасы не сохранены."
+    },
+    hi: {
+      stallTitle: "लड़ाई के लिए नई योजना चाहिए",
+      stallHint: "कई दौर से न तो नुकसान हुआ है, न कोई हारा है। इस लहर और इसकी रसद को बनाए रखने के लिए दल को फिर से व्यवस्थित करें, या अभियान समाप्त करें।",
+      stallReconfigure: "दल फिर व्यवस्थित करें",
+      stallEnd: "अभियान समाप्त करें",
+      stallRecoveryNotice: "यह लहर रुकी हुई है। दल को फिर व्यवस्थित करके यही लहर फिर शुरू करें; आपके हृदय और रसद सुरक्षित रहेंगे।",
+      stallEndNotice: "बिना प्रगति वाली लड़ाई के बाद अभियान समाप्त हुआ। बिना निपटी रसद सहेजी नहीं गई।"
+    },
+    ar: {
+      stallTitle: "تحتاج المعركة إلى خطة جديدة",
+      stallHint: "لم يحدث ضرر أو سقوط لعدة أدوار. أعد تشكيل فرقتك للاحتفاظ بهذه الموجة ومؤنها، أو أنهِ الرحلة.",
+      stallReconfigure: "أعد تشكيل الفرقة",
+      stallEnd: "إنهاء الرحلة",
+      stallRecoveryNotice: "أوقفنا هذه الموجة مؤقتًا. أعد تشكيل فرقتك وابدأ الموجة نفسها من جديد؛ ستبقى القلوب والمؤن.",
+      stallEndNotice: "انتهت الرحلة بعد معركة بلا تقدم. لم تُحفظ المؤن غير المسوّاة."
+    }
+  };
+  Object.entries(stallRecoveryCopy).forEach(([key, copy]) => {
+    localeOwnedDecisionCopy[key] = { ...localeOwnedDecisionCopy[key], ...copy };
+    text[key] = { ...(text[key] || {}), ...copy };
+  });
+
   const pageMeta = {
     en: {
       title: "Animal Auto Squad - Play Free Auto-Battler Game",
@@ -1181,6 +1292,31 @@
     });
   });
 
+  function ensureCombatStallPanel() {
+    if ($("combatStallPanel")) return;
+    const panel = document.createElement("section");
+    panel.id = "combatStallPanel";
+    panel.className = "panel modal-panel is-hidden";
+    panel.setAttribute("role", "dialog");
+    panel.setAttribute("aria-modal", "true");
+    panel.setAttribute("aria-labelledby", "combatStallTitle");
+    panel.setAttribute("aria-describedby", "combatStallText");
+    panel.setAttribute("aria-live", "polite");
+    panel.innerHTML = `
+      <h2 id="combatStallTitle" data-ui="stallTitle">Battle needs a new plan</h2>
+      <p id="combatStallText" data-ui="stallHint" class="status-line">No damage or defeats have occurred for several turns. Reconfigure your squad to keep this wave and its Supplies, or end the expedition.</p>
+      <div class="revive-actions">
+        <button id="reconfigureStallBtn" class="primary-btn" type="button" data-ui="stallReconfigure">Reconfigure Squad</button>
+        <button id="endStallBtn" class="secondary-btn" type="button" data-ui="stallEnd">End Expedition</button>
+      </div>`;
+    const gamePanel = $("gamePanel");
+    const quitPanel = $("quitRunPanel");
+    const resultPanel = $("resultPanel");
+    if (gamePanel) gamePanel.insertBefore(panel, quitPanel || resultPanel || null);
+  }
+
+  ensureCombatStallPanel();
+
   function ensureQuitRunPanel() {
     if ($("quitRunPanel")) return;
     const panel = document.createElement("section");
@@ -1310,6 +1446,9 @@
     reviveBtn: $("reviveBtn"),
     reviveNotice: $("reviveNotice"),
     giveUpBtn: $("giveUpBtn"),
+    combatStallPanel: $("combatStallPanel"),
+    reconfigureStallBtn: $("reconfigureStallBtn"),
+    endStallBtn: $("endStallBtn"),
     quitRunPanel: $("quitRunPanel"),
     keepPlayingBtn: $("keepPlayingBtn"),
     confirmQuitBtn: $("confirmQuitBtn"),
@@ -1360,6 +1499,7 @@
 
   // State Management
   let locale = window.WonderI18n?.locale?.() || readStorage(localeKey) || "en";
+  let testLocaleOverride = "";
   let save = loadSave();
   let state = makeState();
   let resultDecisionCommitted = false;
@@ -1375,6 +1515,7 @@
   const combatStepTimers = new Set();
   let combatProgressTimer = null;
   let combatLastProgressAt = 0;
+  let stallDecisionOpen = false;
   let combatSuspendedForBackground = false;
   let windowFocused = true;
   let quitDecisionOpen = false;
@@ -1391,6 +1532,7 @@
   let stageWindowStart = 1;
   let stageBrowseLogical = 1;
   let stageSettleFrame = 0;
+  const COMBAT_STALL_STEP_LIMIT = 18;
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
@@ -1661,8 +1803,9 @@
   function installTestApi() {
     window.__ANIMAL_AUTO_SQUAD_TEST__ = {
       setLocaleForTest: (requested) => {
-        locale = window.WonderI18n?.legacyLocale?.(requested) || requested || "en";
-        document.documentElement.lang = requested || "en";
+        testLocaleOverride = requested || "en";
+        locale = window.WonderI18n?.legacyLocale?.(testLocaleOverride) || testLocaleOverride;
+        document.documentElement.lang = testLocaleOverride;
         translateUI();
         updatePageMeta();
         return locale;
@@ -2007,6 +2150,34 @@
         scheduleCombatEnd(result, Math.max(0, Number(delay) || 0));
         return true;
       },
+      simulateStallRecovery: () => {
+        clearScheduledCombatTimers();
+        if (combatProgressTimer !== null) {
+          clearInterval(combatProgressTimer);
+          combatProgressTimer = null;
+        }
+        cancelAnimationFrame(animationId);
+        const player = { id: 5, nameEn: "Bubble Fin Otter", nameZht: "Bubble Fin Otter", formationSlot: 0, atk: 1, hp: 12, maxHp: 12, shield: false, shieldHp: 0, level: 1 };
+        const enemy = { id: 999, nameEn: "Test Healer", nameZht: "Test Healer", formationSlot: 1, atk: 1, hp: 20, maxHp: 20, shield: false, shieldHp: 0, level: 1, ability: "heal", abilityUsed: false };
+        state.activeRun = true;
+        state.combat.playerSquad = [player];
+        state.combat.enemySquad = [enemy];
+        state.combat.step = 0;
+        state.combat.log = [];
+        state.combat.animating = true;
+        state.combat.ending = false;
+        state.combat.resolved = false;
+        state.combat.runId = ++combatRunSequence;
+        state.combat.noProgressSteps = COMBAT_STALL_STEP_LIMIT - 1;
+        state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
+        state.combat.stallEnded = false;
+        nodes.prepPhaseArea.classList.add("is-hidden");
+        nodes.combatArea.classList.remove("is-hidden");
+        nodes.combatSummary?.classList.remove("is-hidden");
+        updateCombatSummary();
+        resolveOrderedCombatStep(state.combat.playerSquad, state.combat.enemySquad);
+        return true;
+      },
       combatState: () => ({
         runId: state.combat.runId,
         round: state.round,
@@ -2017,6 +2188,8 @@
         animating: state.combat.animating,
         ending: state.combat.ending,
         resolved: state.combat.resolved,
+        noProgressSteps: state.combat.noProgressSteps,
+        stallVisible: !nodes.combatStallPanel.classList.contains("is-hidden"),
         windowFocused,
         suspended: combatSuspendedForBackground,
         prepVisible: !nodes.prepPhaseArea.classList.contains("is-hidden"),
@@ -2126,6 +2299,9 @@
         lastAction: "",
         waveInsight: "",
         lastDefeatEvent: null,
+        noProgressSteps: 0,
+        progressSignature: "",
+        stallEnded: false,
         effects: [] // visual particle FX
       },
       earnedTeamXp: 0,
@@ -2375,7 +2551,7 @@
   };
 
   function actualGameLocale() {
-    return window.WonderI18n?.actualLocale?.() || locale || "en";
+    return testLocaleOverride || window.WonderI18n?.actualLocale?.() || locale || "en";
   }
 
   function runtimeTranslate(value) {
@@ -2659,6 +2835,7 @@
 
   function renderMenu() {
     closeQuitDecision(false);
+    closeStallDecision(false);
     stopCombatSession();
     setResultOwnership(false);
     selectedSlot = null;
@@ -2672,6 +2849,7 @@
     nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
+    nodes.combatStallPanel.classList.add("is-hidden");
     setStageTab("stages");
     nodes.bestRoundsText.textContent = `${save.unlockedStage}/${STAGE_COUNT}`;
     if (nodes.clearedRunsText) nodes.clearedRunsText.textContent = String(save.completedStages.length);
@@ -2691,6 +2869,7 @@
 
   function showStageSelection() {
     closeQuitDecision(false);
+    closeStallDecision(false);
     stopCombatSession();
     setResultOwnership(false);
     window.WeightPlayGame?.exitMobileGameMode?.();
@@ -2701,6 +2880,7 @@
     nodes.gamePanel.classList.add("is-hidden");
     nodes.gamePanel.classList.remove("is-result");
     nodes.resultPanel.classList.add("is-hidden");
+    nodes.combatStallPanel.classList.add("is-hidden");
     save = loadSave();
     setStageTab("stages");
     renderStageSelector();
@@ -3500,6 +3680,7 @@
 
   // Language Setup
   function setLocale(next) {
+    testLocaleOverride = "";
     const current = window.WonderI18n?.actualLocale?.();
     const requested = next === "zh-Hant" && current === "zh-Hans" ? current : next || "en";
     if (current !== requested) window.WonderI18n?.setLocale?.(requested);
@@ -3596,6 +3777,13 @@
     nodes.reviveBtn.textContent = t("reviveAction");
     nodes.giveUpBtn.textContent = t("giveUp");
 
+    // No-progress recovery is a bounded Battle decision. It keeps the current
+    // wave recoverable without pretending that an endless heal loop is a loss.
+    nodes.combatStallPanel.querySelector("#combatStallTitle").textContent = t("stallTitle");
+    nodes.combatStallPanel.querySelector("#combatStallText").textContent = t("stallHint");
+    nodes.reconfigureStallBtn.textContent = t("stallReconfigure");
+    nodes.endStallBtn.textContent = t("stallEnd");
+
     // Result labels
     nodes.resultTitle.textContent = state.hearts > 0 ? t("expeditionClear") : t("expeditionFail");
     const savedProgressLabel = nodes.resultPanel.querySelector('[data-ui="savedProgress"]');
@@ -3629,6 +3817,8 @@
     nodes.prepPhaseArea.classList.remove("is-hidden");
     nodes.combatArea.classList.add("is-hidden");
     nodes.defeatRevivePanel.classList.add("is-hidden");
+    nodes.combatStallPanel.classList.add("is-hidden");
+    stallDecisionOpen = false;
 
     // Initial Relic draft
     openRelicDraft();
@@ -3636,9 +3826,12 @@
   }
 
   function openRelicDraft() {
+    nodes.startBattleBtn.disabled = true;
     nodes.relicDraftPanel.classList.remove("is-hidden");
     renderRelicChoices();
     setBattleDecisionOwnership(nodes.relicDraftPanel, true);
+    const firstRelic = nodes.relicChoices.querySelector(".relic-card");
+    firstRelic?.focus({ preventScroll: true });
     requestAnimationFrame(() => nodes.relicChoices.querySelector(".relic-card")?.focus({ preventScroll: true }));
   }
 
@@ -3672,6 +3865,7 @@
       const card = document.createElement("button");
       card.type = "button";
       card.className = "relic-card";
+      card.dataset.wpPrimaryAction = "true";
       card.dataset.relicId = String(relic.id);
       card.innerHTML = `
         <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
@@ -4706,6 +4900,9 @@
     state.combat.lastAction = "";
     state.combat.waveInsight = "";
     state.combat.lastDefeatEvent = null;
+    state.combat.noProgressSteps = 0;
+    state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
+    state.combat.stallEnded = false;
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
@@ -5221,6 +5418,31 @@
     });
   }
 
+  function combatProgressSignature(playerSquad, enemySquad) {
+    const serialize = (squad) => squad.map((unit) => [
+      Number(unit.id),
+      Number(unit.formationSlot),
+      Math.round(Number(unit.hp) || 0),
+      Math.round(Number(unit.maxHp) || 0),
+      Math.round(Number(unit.atk) || 0),
+      Boolean(unit.shield),
+      Math.round(Number(unit.shieldHp) || 0),
+      Boolean(unit.abilityUsed)
+    ]);
+    return JSON.stringify({ player: serialize(playerSquad), enemy: serialize(enemySquad) });
+  }
+
+  function noteCombatProgress(playerSquad, enemySquad) {
+    const signature = combatProgressSignature(playerSquad, enemySquad);
+    if (state.combat.progressSignature && state.combat.progressSignature === signature) {
+      state.combat.noProgressSteps = (state.combat.noProgressSteps || 0) + 1;
+    } else {
+      state.combat.noProgressSteps = 0;
+    }
+    state.combat.progressSignature = signature;
+    return state.combat.noProgressSteps >= COMBAT_STALL_STEP_LIMIT;
+  }
+
   // Sequential Combat Turn Steps logic
   function resolveCombatStep() {
     if (state.combat.ending || state.combat.resolved) return;
@@ -5338,6 +5560,7 @@
     const actionText = actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`;
     state.combat.lastAction = actionText;
     combatLog(actionText);
+    const shouldOpenStallRecovery = noteCombatProgress(playerSquad, enemySquad);
 
     scheduleCombatStepCleanup(() => {
       const before = playerSquad.length + enemySquad.length;
@@ -5345,6 +5568,9 @@
       removeDefeatedUnits(enemySquad, "enemy");
       if (before !== playerSquad.length + enemySquad.length) playSynth("faint");
     }, 0);
+    if (shouldOpenStallRecovery) {
+      scheduleCombatStepCleanup(() => openStallRecoveryPopup(), 0);
+    }
   }
 
   function resolveDirectClash(pUnit, eUnit) {
@@ -5607,6 +5833,9 @@
     state.combat.activeActors = [];
     state.combat.lastAction = "";
     state.combat.lastDefeatEvent = null;
+    state.combat.noProgressSteps = 0;
+    state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
+    state.combat.stallEnded = false;
     state.combat.effects = [];
     nodes.prepPhaseArea.classList.add("is-hidden");
     nodes.combatArea.classList.remove("is-hidden");
@@ -5715,6 +5944,72 @@
     setBattleDecisionOwnership(nodes.defeatRevivePanel, false);
     nodes.defeatRevivePanel.classList.add("is-hidden");
     state.activeRun = false;
+    openResultScreen(false);
+  }
+
+  function stopCombatForStallDecision() {
+    clearScheduledCombatTimers();
+    if (combatProgressTimer !== null) {
+      clearInterval(combatProgressTimer);
+      combatProgressTimer = null;
+    }
+    cancelAnimationFrame(animationId);
+    combatLastProgressAt = 0;
+    combatSuspendedForBackground = false;
+    combatRunSequence++;
+    state.combat.runId = combatRunSequence;
+    state.combat.animating = false;
+    state.combat.ending = false;
+    state.combat.resolved = true;
+  }
+
+  function closeStallDecision() {
+    if (!stallDecisionOpen) {
+      nodes.combatStallPanel.classList.add("is-hidden");
+      return;
+    }
+    stallDecisionOpen = false;
+    setBattleDecisionOwnership(nodes.combatStallPanel, false);
+    nodes.combatStallPanel.classList.add("is-hidden");
+  }
+
+  function openStallRecoveryPopup() {
+    if (stallDecisionOpen || !state.activeRun || state.combat.resolved) return;
+    stopCombatForStallDecision();
+    stallDecisionOpen = true;
+    nodes.combatStallPanel.classList.remove("is-hidden");
+    setBattleDecisionOwnership(nodes.combatStallPanel, true);
+    window.WonderAnalytics?.track("battle_no_progress", { game_id: GAME_ID, stage: state.stage, wave: state.round, steps: state.combat.noProgressSteps });
+    requestAnimationFrame(() => nodes.reconfigureStallBtn.focus({ preventScroll: true }));
+  }
+
+  function reconfigureAfterStall() {
+    if (!stallDecisionOpen) return;
+    closeStallDecision();
+    initAudio();
+    playSynth("click");
+    state.combat.playerSquad = [];
+    state.combat.enemySquad = [];
+    state.combat.lastAction = "";
+    state.combat.waveInsight = "";
+    state.combat.lastDefeatEvent = null;
+    state.combat.stallEnded = false;
+    nodes.prepPhaseArea.classList.remove("is-hidden");
+    nodes.combatArea.classList.add("is-hidden");
+    nodes.combatSummary?.classList.add("is-hidden");
+    startRoundPrep();
+    showActionNotice(nodes.prepNotice, t("stallRecoveryNotice"), nodes.startBattleBtn);
+    window.WonderAnalytics?.track("battle_no_progress_reconfigure", { game_id: GAME_ID, stage: state.stage, wave: state.round });
+  }
+
+  function endStalledRun() {
+    if (!stallDecisionOpen) return;
+    closeStallDecision();
+    initAudio();
+    playSynth("sell");
+    state.activeRun = false;
+    state.combat.stallEnded = true;
+    window.WonderAnalytics?.track("battle_no_progress_end", { game_id: GAME_ID, stage: state.stage, wave: state.round });
     openResultScreen(false);
   }
 
@@ -5833,7 +6128,9 @@
       ? state.stage < STAGE_COUNT
         ? t("stageClearText", { stage: state.stage, next: state.stage + 1 })
         : t("allStagesClearText")
-      : `${t("failText")} (${stageLabel(state.stage)} - ${t("round")} ${state.round}/${WAVES_PER_STAGE})`;
+      : state.combat.stallEnded
+        ? t("stallEndNotice")
+        : `${t("failText")} (${stageLabel(state.stage)} - ${t("round")} ${state.round}/${WAVES_PER_STAGE})`;
     save = normalizeSave(save);
     const bonus = teamBonus();
     const goal = teamXpGoal(save.teamLevel);
@@ -5950,6 +6247,7 @@
     nodes.rerollRelicsBtn.addEventListener("focus", updateRelicRerollDecision);
     nodes.relicDraftPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.relicDraftPanel, event));
     nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
+    nodes.combatStallPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.combatStallPanel, event));
     nodes.quitRunPanel.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -5977,6 +6275,8 @@
     
     nodes.reviveBtn.addEventListener("click", handleRevive);
     nodes.giveUpBtn.addEventListener("click", handleGiveUp);
+    nodes.reconfigureStallBtn.addEventListener("click", reconfigureAfterStall);
+    nodes.endStallBtn.addEventListener("click", endStalledRun);
     
     nodes.retryBtn.addEventListener("click", () => commitResultDecision(() => {
       nodes.resultPanel.classList.add("is-hidden");

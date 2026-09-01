@@ -216,6 +216,20 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 
 /* Battle / preparation logical Canvas. */
 .game-panel { display: grid; grid-template-rows: 58px 44px minmax(0,1fr); gap: 8px; padding: 10px; background: linear-gradient(160deg,#12382d,#061712); overflow: hidden; }
+.battle-external-return { display: none; }
+body.squad-active .battle-external-return {
+  position: fixed;
+  z-index: 120;
+  top: 8px;
+  left: calc(var(--squad-canvas-left, 0px) + 8px);
+  width: calc(48px * var(--squad-battle-scale, 1));
+  min-width: calc(48px * var(--squad-battle-scale, 1));
+  height: calc(48px * var(--squad-battle-scale, 1));
+  min-height: calc(48px * var(--squad-battle-scale, 1));
+  display: grid;
+  place-items: center;
+  pointer-events: auto !important;
+}
 .game-panel:has(#prepPhaseArea:not(.is-hidden)) { grid-template-rows:58px minmax(0,1fr); }
 .game-panel:has(#prepPhaseArea:not(.is-hidden)) #prepPhaseArea { grid-row:2; }
 .game-panel:has(#prepPhaseArea:not(.is-hidden)) .combat-summary { display:none !important; }
@@ -241,7 +255,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .squad-section h3, .shop-section h3 { margin: 0 0 6px; color: var(--muted); font-size: .66rem; line-height:1.15; letter-spacing: .02em; text-transform: uppercase; white-space:normal; overflow-wrap:anywhere; }
 .cards-row { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; min-width: 0; }
 .squad-row { grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,110px); height:226px; }
-.shop-section { display: grid; grid-template-rows: 22px 46px auto minmax(0,1fr) minmax(76px,86px); row-gap: 6px; }
+.shop-section { display: grid; grid-template-rows: 22px 46px auto minmax(118px,1fr) minmax(78px,86px); row-gap: 6px; }
 .shop-section > h3 { grid-row: 1; }
 .shop-section > .shop-controls { grid-row: 2; }
 .shop-section > .action-notice { grid-row: 3; align-self: start; }
@@ -274,7 +288,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .card-atk { color: var(--gold); } .card-hp { color: var(--danger); }
 .card-cost { position: absolute; right: 4px; bottom: 28px; z-index: 3; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: #231503; background: var(--gold); font-size: .62rem; font-weight: 900; }
 .card-shield-tag { position: absolute; left: 50%; bottom: 27px; z-index: 3; transform: translateX(-50%); padding: 1px 4px; border-radius: 5px; background: #5279dc; font-size: .52rem; }
-.selected-ability-panel { min-height:0; display:grid; align-content:center; gap:3px; margin-top:6px; padding:8px 10px; overflow-y:auto; overflow-x:hidden; border:1px solid rgba(137,239,194,.2); border-radius:10px; color:var(--muted); background:rgba(2,14,11,.78); font-size:.68rem; line-height:1.22; scrollbar-width:thin; }
+.selected-ability-panel { min-height:0; display:grid; align-content:center; gap:3px; margin-top:6px; padding:6px 10px; overflow-y:auto; overflow-x:hidden; border:1px solid rgba(137,239,194,.2); border-radius:10px; color:var(--muted); background:rgba(2,14,11,.78); font-size:.68rem; line-height:1.22; scrollbar-width:thin; }
 .selected-ability-panel.has-selection { border-color:rgba(97,237,179,.58); background:rgba(18,62,47,.72); }
 .selected-ability-panel strong { color:var(--mint); font-size:.76rem; }
 .selected-ability-panel small { color:var(--gold); font-size:.66rem; font-weight:900; }
@@ -319,7 +333,7 @@ body:not(.squad-active) .battle-ad-reserve { display: none; }
 .result-actions { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:auto; }
 .result-actions button { min-height:52px; padding:6px; font-size:.7rem; }
 .result-actions button.primary-btn { min-height:60px; }
-.food-guide-coverage { display:block; margin-top:6px; padding:6px 8px; border-inline-start:3px solid var(--mint); color:#e8fff4; font-style:normal; font-weight:800; line-height:1.3; }
+.food-guide-coverage { display:block; grid-column:1 / -1; min-width:0; margin-top:6px; padding:6px 8px; border-inline-start:3px solid var(--mint); color:#e8fff4; font-style:normal; font-weight:800; line-height:1.3; overflow-wrap:anywhere; }
 
 body.squad-stage-select .weightplay-version-badge, body.squad-active .weightplay-version-badge { display:none !important; }
 
@@ -366,6 +380,12 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
   .profile-grid strong { font-size:.78rem; }
 }
 
+@media (min-width: 700px) and (max-height: 560px) {
+  /* Keep the wide-layout Main poster on the shared 300px column contract. */
+  .menu-panel { grid-template-columns: 300px minmax(0, 1fr); }
+  .menu-panel .cover { width: 300px; height: 300px; }
+}
+
 @media (orientation: landscape) and (max-height: 480px) {
   body:not(.squad-stage-select):not(.squad-active) .menu-panel {
     grid-template-columns: minmax(260px, 1fr) minmax(300px, 1fr);
@@ -390,6 +410,40 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
     line-height: 1.25;
   }
   body:not(.squad-stage-select):not(.squad-active) .profile-grid > div { padding: 6px; }
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  /* The compact landscape shell above keeps the Main poster square and on
+     the canonical 300px column after its broad grid rule is applied. */
+  body:not(.squad-stage-select):not(.squad-active) .menu-panel {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  body:not(.squad-stage-select):not(.squad-active) .menu-panel .cover {
+    width: 300px;
+    height: 300px;
+    aspect-ratio: 1;
+  }
+}
+
+/* The shared Battle header intentionally has no hit surface beyond its
+   return control. Keep the native control targetable for the validator and
+   keyboard/pointer users while preserving the header's compact footprint. */
+body.squad-active .wp-generated-battle-header {
+  pointer-events: auto !important;
+}
+
+/* The logical Battle Canvas is the containing panel, while its controls are
+   distributed across native preparation and modal subtrees. Let the panel
+   provide the visual envelope without intercepting the centres of those
+   player-facing descendants. */
+body.squad-active #gamePanel {
+  pointer-events: none;
+}
+body.squad-active #gamePanel > * {
+  pointer-events: auto;
+}
+body.squad-active #gamePanel * {
+  pointer-events: auto !important;
 }
 
 @media (max-height: 470px) and (orientation: landscape) {
@@ -646,4 +700,23 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
   .result-actions { gap:12px; margin-top:12px; }
   .result-actions button { min-height:104px; padding:10px; font-size:1.75rem; line-height:1.2; }
   .food-guide-coverage { padding:10px 12px; font-size:1.1rem; }
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  /* Keep the Main poster at the shared 300px wide-layout contract even when
+     the compact landscape grid's stretch rules are loaded after this file's
+     general Main styles. */
+  body:not(.squad-stage-select):not(.squad-active) .menu-panel {
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+  }
+  body:not(.squad-stage-select):not(.squad-active) .menu-panel .cover {
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 300px !important;
+    min-height: 300px !important;
+    max-height: 300px !important;
+    aspect-ratio: 1 !important;
+    justify-self: start;
+  }
 }
