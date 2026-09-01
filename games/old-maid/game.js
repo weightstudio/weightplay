@@ -19,6 +19,31 @@
   const legacySettingsPopover = document.querySelector("#audioPopover");
   if (legacySettingsPopover) legacySettingsPopover.hidden = true;
 
+  const handLabels = {
+    en: "Your hand",
+    "zh-Hant": "你的手牌",
+    "zh-Hans": "你的手牌",
+    ja: "手札",
+    ko: "내 패",
+    es: "Tu mano",
+    "pt-BR": "Sua mão",
+    fr: "Votre main",
+    de: "Deine Hand",
+    it: "La tua mano",
+    ru: "Ваша рука",
+    hi: "आपके पत्ते",
+    ar: "يدك",
+  };
+  const syncHandLabel = () => {
+    const label = document.querySelector(".card-game-player-header strong");
+    if (!label) return;
+    const locale = document.documentElement.lang || "en";
+    label.textContent = handLabels[locale] || handLabels.en;
+    label.setAttribute("data-runtime-localize", "off");
+  };
+  window.addEventListener("wonder:locale-change", syncHandLabel);
+  window.addEventListener("weightplay:shell-sync", syncHandLabel);
+
   const mainCopy = document.querySelector("#mainScreen .main-copy");
   if (mainCopy && !mainCopy.querySelector("[data-wp-main-progress]")) {
     const progress = document.createElement("div");
@@ -48,4 +73,7 @@
   }
 
   window.WPCardGamesNext?.mount({ id: "old-maid" });
+  syncHandLabel();
+  window.setTimeout(syncHandLabel, 0);
+  window.setTimeout(syncHandLabel, 400);
 })();
