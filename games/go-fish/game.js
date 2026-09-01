@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
   const COPY = {
     en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players in the preview build." },
     "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。預覽版可選擇兩人、三人或四人。" },
