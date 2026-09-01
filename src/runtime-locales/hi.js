@@ -3739,7 +3739,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Found {found} · Empty taps {mistakes}": "मिला {found} · खाली नल {mistakes}",
   "Found words, the current path, and star progress in this run will reset.": "इस रन में मिले शब्द, वर्तमान पथ और स्टार प्रगति रीसेट हो जाएगी।",
   "Found!": "मिल गया!",
-  "Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "चार अध्याय पहले पिघलना से विभाजित मार्गों, ड्रिफ्टर दबाव और अंतिम पिघलने की ओर बढ़ते हैं। मार्ग छुपे हुए नियम परिवर्तनों के बजाय टूटने योग्य और निर्माण योग्य बर्फ के माध्यम से बदलता है।",
+  "Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "छह अध्याय और 30 कमरे पहले पिघलना से विभाजित मार्गों, ड्रिफ्टर दबाव और अंतिम पिघलने की ओर बढ़ते हैं। मार्ग छुपे हुए नियम परिवर्तनों के बजाय टूटने योग्य और निर्माण योग्य बर्फ के माध्यम से बदलता है।",
   "Four clear colors and fixed boxes.": "चार स्पष्ट रंग और निश्चित बक्से।",
   "Four days pair earlier rules in different combinations. The Grand Cafe Festival uses all of them and ends the campaign without creating a hidden Day 31.": "चार दिन पहले जोड़ी अलग-अलग संयोजनों में नियम बनाती है। ग्रैंड कैफे फेस्टिवल उन सभी का उपयोग करता है और कोई छिपा हुआ दिन 31 बनाए बिना अभियान को समाप्त करता है।",
   "Four Friends": "चार दोस्त",

@@ -3739,7 +3739,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Found {found} · Empty taps {mistakes}": "تم العثور على {found} · الصنابير الفارغة {mistakes}",
   "Found words, the current path, and star progress in this run will reset.": "سيتم إعادة تعيين الكلمات التي تم العثور عليها والمسار الحالي والتقدم النجمي في هذا التشغيل.",
   "Found!": "وجدت!",
-  "Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "تنتقل أربعة فصول من الذوبان الأول إلى الطرق المنقسمة، والضغط المنجرف، والذوبان النهائي. يتغير المسار من خلال الجليد القابل للكسر والبناء بدلاً من تغييرات القواعد المخفية.",
+  "Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "تنتقل ستة فصول و30 غرفة من الذوبان الأول إلى الطرق المنقسمة، وضغط المتجول، والذوبان النهائي. يتغير المسار من خلال الجليد القابل للكسر والبناء بدلاً من تغييرات القواعد المخفية.",
   "Four clear colors and fixed boxes.": "أربعة ألوان واضحة وصناديق ثابتة.",
   "Four days pair earlier rules in different combinations. The Grand Cafe Festival uses all of them and ends the campaign without creating a hidden Day 31.": "أربعة أيام تقترن بالقواعد السابقة في مجموعات مختلفة. يستخدمها مهرجان Grand Cafe جميعًا وينهي الحملة دون إنشاء يوم 31 مخفي.",
   "Four Friends": "أربعة أصدقاء",

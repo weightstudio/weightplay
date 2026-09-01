@@ -15,6 +15,35 @@
 
 #start-game[data-wp-main-start]{height:52px;min-height:52px}
 
+/* The shared shell's compact-landscape contract is a fixed 300px poster
+   column. Frost Maze keeps that contract so the summary and Start action stay
+   in the governed first frame. */
+@media (min-width:700px) and (max-height:560px) and (orientation:landscape){
+  body[data-wp-five-game="animal-frost-maze"] .wp-standard-main-composition{
+    --wp-main-landscape-poster-size:300px;
+  }
+}
+
+/* Keep the complete campaign in one horizontal rail. The runtime marks cards
+   outside the visible rail as temporarily unavailable so the active card
+   centres remain hit-testable at every responsive scale. */
+body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-list{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+}
+body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card{
+  display:grid;
+  align-content:center;
+  justify-items:center;
+  gap:8px;
+  text-align:center;
+  padding:16px;
+}
+body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card strong{font-size:28px;line-height:1}
+body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card span{color:#dff6ff;line-height:1.25}
+body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stage-card small{color:var(--gold);font-weight:800}
+
 .battle-status[data-state="cracked"],.battle-status[data-state="built"],.battle-status[data-state="berry"],.battle-status[data-state="berryClear"]{color:var(--gold);font-weight:800}.battle-status.frost-beat{animation:frost-battle-beat 420ms cubic-bezier(.2,.8,.3,1)}@keyframes frost-battle-beat{0%{transform:scale(.98);opacity:.65}45%{transform:scale(1.035);opacity:1}100%{transform:scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.battle-status.frost-beat{animation:none}}
 .battle-header .utility-button{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center;border-radius:12px}
 @media (orientation: landscape) and (max-height: 560px){

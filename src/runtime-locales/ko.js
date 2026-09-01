@@ -3739,7 +3739,7 @@ window.WeightPlayGameRuntimeLocales["ko"] = {
   "Found {found} · Empty taps {mistakes}": "발견됨 {found} · 빈 탭 {mistakes}",
   "Found words, the current path, and star progress in this run will reset.": "이번 실행에서 찾은 단어, 현재 경로 및 별 진행 상황이 재설정됩니다.",
   "Found!": "발견!",
-  "Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "4개의 챕터는 첫 번째 해빙에서 분할 경로, 표류자 압력 및 최종 용해로 이동합니다. 경로는 숨겨진 규칙 변경이 아닌 부서지고 건설 가능한 얼음을 통해 변경됩니다.",
+  "Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "6개의 챕터와 30개의 방은 첫 번째 해빙에서 분할 경로, 표류자 압력 및 최종 용해로 이동합니다. 경로는 숨겨진 규칙 변경이 아닌 부서지고 건설 가능한 얼음을 통해 변경됩니다.",
   "Four clear colors and fixed boxes.": "4가지의 선명한 색상과 고정된 상자.",
   "Four days pair earlier rules in different combinations. The Grand Cafe Festival uses all of them and ends the campaign without creating a hidden Day 31.": "4일 동안 서로 다른 조합으로 이전 규칙을 쌍으로 만듭니다. 그랜드카페 페스티벌은 이를 모두 활용해 숨겨진 Day 31을 생성하지 않고 캠페인을 종료합니다.",
   "Four Friends": "네 친구",

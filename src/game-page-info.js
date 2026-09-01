@@ -1881,7 +1881,7 @@
       systems: ["Arrow keys, WASD, or the visible direction controls move one grid cell at a time. Space breaks the ice ahead and F builds a short wall.", "The enemy advances after repeated movement. A room clears when all berries are collected; contact blocks the route and sends you to a focused retry."],
       how: ["Choose a chapter and read the berry count and route hint.", "Move one cell at a time and use Break Ice when a blue wall closes the next useful lane.", "Use Build Ice to create a short barrier when the enemy needs to be delayed.", "Collect every berry, then choose Next Room, Retry, or return to Chapters after the result."],
       strategyTips: ["Plan the next two cells before breaking a wall so the opening creates a real route.", "Keep the enemy on the far side of a barrier while collecting the exposed berry first.", "If the route closes, retry quickly and change the order of your breaks instead of repeating the same path."],
-      progression: ["Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes."],
+      progression: ["Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes."],
       designNote: "Frostline Rescue is an original grid rescue puzzle with direct wall edits, deterministic short rooms, visible enemy pressure, and responsive controls on both touch and desktop.",
       parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Cleared rooms and best progress stay in this browser.",
       faq: [["What do I collect?", "Collect every berry shown in the room to clear it."], ["When should I break ice?", "Break the blue wall that blocks the next useful route, then reassess the enemy position."], ["What does Build Ice do?", "It adds a short wall that can delay the snow drifter and give you a safer route."], ["Is progress saved?", "Only the best room is saved in this browser."]],
@@ -3345,7 +3345,7 @@
       "إذا أُغلق المسار، أعد المحاولة وغيّر ترتيب الكسر بدلاً من تكرار الطريق نفسه.",
     ],
     progression: [
-      "تنتقل الفصول الأربعة من الذوبان الأول إلى المسارات المتفرعة وضغط المتجول والنهاية الجليدية. يتغير الطريق عبر جليد قابل للكسر والبناء، لا عبر قواعد مخفية.",
+      "تنتقل الفصول الستة و30 غرفة من الذوبان الأول إلى المسارات المتفرعة وضغط المتجول والنهاية الجليدية. يتغير الطريق عبر جليد قابل للكسر والبناء، لا عبر قواعد مخفية.",
     ],
     designNote: "إنقاذ خط الصقيع لغز إنقاذ شبكي أصلي يعتمد على تعديل الجدران مباشرة، وغرف قصيرة حتمية، وضغط عدو ظاهر، وتحكم متجاوب باللمس والحاسوب.",
     parent: "هذه لعبة متصفح عامة بلا حساب أو شراء أو دردشة أو لوحة متصدرين أو إعلانات. تبقى الغرف المكتملة وأفضل نتيجة في هذا المتصفح.",

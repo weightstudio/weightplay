@@ -27,6 +27,90 @@
     empty: L("Slot {slot}: empty. Pick a color.", "第 {slot} 格：空白。請選擇顏色。", "第 {slot} 格：空白。请选择颜色。", "スロット{slot}：空白。色を選びます。", "슬롯 {slot}: 비어 있습니다. 색상을 고르세요.", "Casilla {slot}: vacía. Elige un color.", "Espaço {slot}: vazio. Escolha uma cor.", "Case {slot} : vide. Choisissez une couleur.", "Feld {slot}: leer. Wähle eine Farbe.", "Casella {slot}: vuota. Scegli un colore.", "Ячейка {slot}: пусто. Выберите цвет.", "खाना {slot}: खाली है। रंग चुनें।", "الخانة {slot}: فارغة. اختر لونًا."),
     filled: L("Slot {slot}: color {color}. Select to remove it.", "第 {slot} 格：顏色 {color}。選擇即可移除。", "第 {slot} 格：颜色 {color}。选择即可移除。", "スロット{slot}：色{color}。選択すると外せます。", "슬롯 {slot}: 색상 {color}. 선택하면 제거합니다.", "Casilla {slot}: color {color}. Selecciónala para quitarlo.", "Espaço {slot}: cor {color}. Selecione para remover.", "Case {slot} : couleur {color}. Sélectionnez-la pour la retirer.", "Feld {slot}: Farbe {color}. Zum Entfernen auswählen.", "Casella {slot}: colore {color}. Seleziona per rimuoverlo.", "Ячейка {slot}: цвет {color}. Выберите, чтобы убрать его.", "खाना {slot}: रंग {color}। हटाने के लिए चुनें।", "الخانة {slot}: اللون {color}. اخترها لإزالته.")
   };
+  const codeCampaignCopy = {
+    chooseStage: L("Choose a stage", "選擇關卡", "选择关卡", "ステージを選ぶ", "스테이지 선택", "Elige una fase", "Escolha uma fase", "Choisir une étape", "Wähle eine Stufe", "Scegli una fase", "Выберите этап", "चरण चुनें", "اختر مرحلة"),
+    progress: L("Stage {stage} / 30 · {cleared} cleared", "第 {stage} / 30 關 · 已通關 {cleared} 關", "第 {stage} / 30 关 · 已通关 {cleared} 关", "ステージ {stage} / 30 ・クリア {cleared}", "스테이지 {stage} / 30 · 클리어 {cleared}", "Fase {stage} / 30 · {cleared} superadas", "Fase {stage} / 30 · {cleared} concluídas", "Étape {stage} / 30 · {cleared} réussies", "Stufe {stage} / 30 · {cleared} geschafft", "Fase {stage} / 30 · {cleared} completate", "Этап {stage} / 30 · пройдено: {cleared}", "चरण {stage} / 30 · {cleared} पूरे", "المرحلة {stage} / 30 · المكتمل {cleared}"),
+    stageCard: L("Stage {stage}", "第 {stage} 關", "第 {stage} 关", "ステージ {stage}", "스테이지 {stage}", "Fase {stage}", "Fase {stage}", "Étape {stage}", "Stufe {stage}", "Fase {stage}", "Этап {stage}", "चरण {stage}", "المرحلة {stage}"),
+    cleared: L("Cleared", "已通關", "已通关", "クリア済み", "클리어", "Superada", "Concluída", "Réussie", "Geschafft", "Completata", "Пройдено", "पूरा", "مكتملة"),
+    locked: L("Locked · clear the previous stage", "鎖定 · 先通關上一關", "锁定 · 先通关上一关", "ロック中・前のステージをクリア", "잠김 · 이전 스테이지를 클리어하세요", "Bloqueada · supera la fase anterior", "Bloqueada · conclua a fase anterior", "Verrouillée · réussissez l'étape précédente", "Gesperrt · schaffe die vorige Stufe", "Bloccata · completa la fase precedente", "Заблокировано · пройдите прошлый этап", "Зाला हुआ · पिछला चरण पूरा करें", "مقفلة · أكمل المرحلة السابقة"),
+    checkpoint: L("Checkpoint", "檢查點", "检查点", "チェックポイント", "체크포인트", "Punto de control", "Checkpoint", "Point de contrôle", "Checkpoint", "Checkpoint", "Контрольная точка", "चेकपॉइंट", "نقطة تفتيش"),
+    objective: L("Objective", "目標", "目标", "目標", "목표", "Objetivo", "Objetivo", "Objectif", "Ziel", "Obiettivo", "Цель", "लक्ष्य", "الهدف"),
+    rule: L("Rule", "規則", "规则", "ルール", "규칙", "Regla", "Regra", "Règle", "Regel", "Regola", "Правило", "नियम", "القاعدة"),
+    backToMain: L("Back to Main", "回到主畫面", "返回主画面", "メインへ戻る", "메인으로", "Volver al inicio", "Voltar ao início", "Retour à l'accueil", "Zurück zum Hauptmenü", "Torna al menu", "В главное меню", "Вернуться в главное меню", "العودة إلى الرئيسية"),
+    nextStage: L("Next Stage", "下一關", "下一关", "次のステージ", "다음 스테이지", "Siguiente fase", "Próxima fase", "Étape suivante", "Nächste Stufe", "Fase successiva", "Следующий этап", "अगला चरण", "المرحلة التالية"),
+    continue: L("Continue", "繼續", "继续", "続ける", "계속", "Continuar", "Continuar", "Continuer", "Weiter", "Continua", "Продолжить", "जारी रखें", "متابعة"),
+    stages: L("Stages", "關卡", "关卡", "ステージ", "스테이지", "Fases", "Fases", "Étapes", "Stufen", "Fasi", "Этапы", "चरण", "المراحل"),
+    replay: L("Replay", "重玩", "重玩", "もう一度", "다시 하기", "Repetir", "Jogar de novo", "Rejouer", "Nochmal", "Rigioca", "Сыграть снова", "फिर खेलें", "العب مجددًا"),
+    stageStart: L("Select a stage to begin.", "選擇關卡開始。", "选择关卡开始。", "ステージを選んで開始します。", "스테이지를 골라 시작하세요.", "Elige una fase para empezar.", "Escolha uma fase para começar.", "Choisissez une étape pour commencer.", "Wähle eine Stufe zum Starten.", "Scegli una fase per iniziare.", "Выберите этап, чтобы начать.", "शुरू करने के लिए चरण चुनें।", "اختر مرحلة للبدء."),
+    saved: L("Progress saved locally", "進度已儲存在本機", "进度已保存在本机", "進行状況を端末に保存しました", "진행 상황이 기기에 저장되었습니다", "Progreso guardado localmente", "Progresso salvo localmente", "Progression enregistrée localement", "Fortschritt lokal gespeichert", "Progressi salvati localmente", "Прогресс сохранён локально", "प्रगति स्थानीय रूप से सहेजी गई", "تم حفظ التقدم محليًا"),
+    ready: L("Ready for Stage {stage}", "準備挑戰第 {stage} 關", "准备挑战第 {stage} 关", "ステージ {stage} の準備完了", "스테이지 {stage} 준비 완료", "Listo para la fase {stage}", "Pronto para a fase {stage}", "Prêt pour l'étape {stage}", "Bereit für Stufe {stage}", "Pronto per la fase {stage}", "Этап {stage} готов", "चरण {stage} के लिए तैयार", "جاهز للمرحلة {stage}"),
+    turns: L("Guesses: {turns}", "猜測次數：{turns}", "猜测次数：{turns}", "推測回数：{turns}", "추측: {turns}", "Intentos: {turns}", "Tentativas: {turns}", "Essais : {turns}", "Versuche: {turns}", "Tentativi: {turns}", "Попытки: {turns}", "अनुमान: {turns}", "التخمينات: {turns}"),
+    hints: L("Hints left: {hints}", "剩餘提示：{hints}", "剩余提示：{hints}", "残りヒント：{hints}", "남은 힌트: {hints}", "Pistas restantes: {hints}", "Dicas restantes: {hints}", "Indices restants : {hints}", "Tipps übrig: {hints}", "Suggerimenti rimasti: {hints}", "Осталось подсказок: {hints}", "बचे संकेत: {hints}", "التلميحات المتبقية: {hints}"),
+    sealed: L("Sealed color", "封存顏色", "封存颜色", "封印された色", "봉인된 색", "Color sellado", "Cor selada", "Couleur scellée", "Versiegelte Farbe", "Colore sigillato", "Запечатанный цвет", "सील किया रंग", "لون مختوم"),
+    anchored: L("Anchored slot", "錨定格", "锚定格", "固定スロット", "고정 슬롯", "Casilla anclada", "Espaço ancorado", "Case ancrée", "Verankertes Feld", "Spazio ancorato", "Закреплённая ячейка", "स्थिर स्लॉट", "خانة مثبتة"),
+    noHints: L("No hints this stage", "本關沒有提示", "本关没有提示", "このステージはヒントなし", "이 스테이지는 힌트가 없습니다", "Sin pistas en esta fase", "Sem dicas nesta fase", "Aucun indice pour cette étape", "Keine Tipps in dieser Stufe", "Nessun suggerimento in questa fase", "На этом этапе нет подсказок", "इस चरण में संकेत नहीं", "لا تلميحات في هذه المرحلة"),
+    stageWin: L("Stage {stage} cleared · progress saved.", "第 {stage} 關完成 · 進度已儲存。", "第 {stage} 关完成 · 进度已保存。", "ステージ {stage} クリア・進行状況を保存しました。", "스테이지 {stage} 클리어 · 진행 상황이 저장되었습니다.", "Fase {stage} superada · progreso guardado.", "Fase {stage} concluída · progresso salvo.", "Étape {stage} réussie · progression enregistrée.", "Stufe {stage} geschafft · Fortschritt gespeichert.", "Fase {stage} completata · progressi salvati.", "Этап {stage} пройден · прогресс сохранён.", "चरण {stage} पूरा · प्रगति सहेजी गई।", "اكتملت المرحلة {stage} · تم حفظ التقدم."),
+    stageLoss: L("Stage {stage} is still locked in your progress. Replay to learn the pattern.", "第 {stage} 關尚未完成，重玩以熟悉規律。", "第 {stage} 关尚未完成，重玩以熟悉规律。", "ステージ {stage} は未クリアです。もう一度、規則を読みましょう。", "스테이지 {stage}는 아직 미완료입니다. 다시 하며 패턴을 익히세요.", "La fase {stage} aún no está superada. Repite para aprender el patrón.", "A fase {stage} ainda não foi concluída. Jogue de novo para aprender o padrão.", "L'étape {stage} n'est pas encore réussie. Rejouez pour comprendre le motif.", "Stufe {stage} ist noch nicht geschafft. Spiele erneut, um das Muster zu lernen.", "La fase {stage} non è ancora completata. Rigioca per imparare il modello.", "Этап {stage} ещё не пройден. Повторите, чтобы понять закономерность.", "चरण {stage} अभी पूरा नहीं हुआ। पैटर्न सीखने के लिए फिर खेलें।", "المرحلة {stage} لم تكتمل بعد. أعد اللعب لتتعلم النمط.")
+  };
+  const codeCampaignArcs = [
+    { key: "signal", title: L("Signal School", "訊號學堂", "信号学堂", "シグナル学舎", "신호 학교", "Escuela de señales", "Escola de sinais", "École des signaux", "Signalschule", "Scuola dei segnali", "Школа сигналов", "सिग्नल स्कूल", "مدرسة الإشارات"), rule: L("Read exact positions and near colors. Repeats are not used.", "讀懂正確位置與顏色提示。本段不使用重複色。", "读懂正确位置与颜色提示。本段不使用重复色。", "位置一致と色一致を読みます。重複色はありません。", "정확한 위치와 색 힌트를 읽습니다. 중복 색은 없습니다.", "Lee posiciones exactas y colores cercanos. No hay repetidos.", "Leia posições exatas e cores próximas. Sem repetições.", "Lisez les positions exactes et les couleurs proches. Sans doublons.", "Lies exakte Positionen und nahe Farben. Keine Wiederholungen.", "Leggi posizioni esatte e colori vicini. Niente ripetizioni.", "Читайте точные позиции и близкие цвета. Повторов нет.", "सही स्थान और पास के रंग पढ़ें। दोहराव नहीं है।", "اقرأ المواضع الدقيقة والألوان القريبة. لا توجد ألوان مكررة."), index: 0 },
+    { key: "echo", title: L("Echo Chambers", "回聲密室", "回声密室", "エコー・チャンバー", "에코 챔버", "Cámaras de eco", "Câmaras de eco", "Chambres d'écho", "Echokammern", "Camere d'eco", "Эхо-камеры", "इको चैंबर", "غرف الصدى"), rule: L("Repeated colors can hide in the code. Count near clues carefully.", "重複顏色會藏在密碼裡，仔細計算顏色提示。", "重复颜色会藏在密码里，仔细计算颜色提示。", "重複色がコードに入ります。近い色の数を丁寧に数えます。", "코드에 중복 색이 들어갑니다. 근접 힌트를 세심히 세세요.", "Los colores repetidos pueden aparecer. Cuenta bien las pistas.", "As cores repetidas podem aparecer. Conte as dicas com cuidado.", "Les couleurs peuvent se répéter. Comptez bien les indices.", "Farben können sich wiederholen. Zähle nahe Hinweise genau.", "I colori possono ripetersi. Conta con cura gli indizi.", "Цвета могут повторяться. Внимательно считайте подсказки.", "रंग दोहराए जा सकते हैं। पास के संकेत ध्यान से गिनें।", "قد تتكرر الألوان. احسب تلميحات القرب بعناية."), index: 1 },
+    { key: "shadow", title: L("Shadow Palette", "影色調色盤", "影色调色盘", "シャドウ・パレット", "그림자 팔레트", "Paleta de sombras", "Paleta de sombras", "Palette d'ombres", "Schattenpalette", "Tavolozza d'ombre", "Палитра теней", "शैडो पैलेट", "لوحة الظلال"), rule: L("One palette color is sealed. Solve with the colors that remain.", "一種顏色被封存，只能用剩下的顏色破解。", "一种颜色被封存，只能用剩下的颜色破解。", "パレットの1色が封印されます。残りの色で解きます。", "팔레트 한 색이 봉인됩니다. 남은 색으로 해결하세요.", "Un color está sellado. Resuelve con los restantes.", "Uma cor está selada. Resolva com as restantes.", "Une couleur est scellée. Résolvez avec les autres.", "Eine Farbe ist versiegelt. Löse mit den übrigen.", "Un colore è sigillato. Risolvi con gli altri.", "Один цвет запечатан. Решайте оставшимися.", "एक रंग सील है। बाकी रंगों से हल करें।", "لون واحد مختوم. حل باستخدام الألوان الباقية."), index: 2 },
+    { key: "anchor", title: L("Anchor Protocol", "錨點協定", "锚点协定", "アンカー・プロトコル", "앵커 프로토콜", "Protocolo ancla", "Protocolo âncora", "Protocole d'ancrage", "Ankerprotokoll", "Protocollo ancora", "Протокол якоря", "एंकर प्रोटोकॉल", "بروتوكول المرساة"), rule: L("One slot is anchored at the start. Build around the verified position.", "開局時有一格已錨定，圍繞已確認位置組合。", "开局时有一格已锚定，围绕已确认位置组合。", "開始時に1スロットが固定されます。確定位置を軸に組み立てます。", "시작할 때 한 슬롯이 고정됩니다. 확인된 위치를 중심으로 조합하세요.", "Una casilla está anclada. Construye alrededor de ella.", "Um espaço começa ancorado. Monte ao redor dele.", "Une case est ancrée. Construisez autour de cette position.", "Ein Feld ist verankert. Baue um die bestätigte Position.", "Uno spazio è ancorato. Costruisci attorno a esso.", "Одна ячейка закреплена. Соберите код вокруг неё.", "एक स्लॉट स्थिर है। पक्के स्थान के आसपास बनाएं।", "خانة واحدة مثبتة. ابنِ الرمز حول الموضع المؤكد."), index: 3 },
+    { key: "pressure", title: L("Pressure Vault", "壓力密庫", "压力密库", "プレッシャー・ヴォルト", "압박 금고", "Bóveda de presión", "Cofre de pressão", "Coffre sous pression", "Druckkammer", "Cassaforte a pressione", "Хранилище давления", "प्रेशर वॉल्ट", "خزنة الضغط"), rule: L("Fewer guesses and one hint demand a clean deduction.", "猜測次數更少，只有一次提示，必須精準推理。", "猜测次数更少，只有一次提示，必须精准推理。", "推測回数が少なく、ヒントは1回。正確な推理が必要です。", "추측 횟수가 줄고 힌트가 한 번뿐입니다. 깔끔하게 추론하세요.", "Hay menos intentos y una sola pista: deduce con precisión.", "Há menos tentativas e uma dica: deduza com precisão.", "Moins d'essais et un indice : déduisez avec précision.", "Weniger Versuche und ein Tipp: schlussfolgere sauber.", "Meno tentativi e un suggerimento: deduci con precisione.", "Меньше попыток и одна подсказка: выводите точно.", "कम अनुमान और एक संकेत: साफ़ तर्क करें।", "تخمينات أقل وتلميح واحد: استنتج بدقة."), index: 4 },
+    { key: "mastery", title: L("Crown Cipher", "王冠密碼", "王冠密码", "クラウン・サイファー", "크라운 사이퍼", "Cifrado de corona", "Cifra da coroa", "Chiffre de la couronne", "Kronenchiffre", "Cifrario della corona", "Королевский шифр", "क्राउन सिफर", "شفرة التاج"), rule: L("The finale combines a sealed color, anchored slot, and no hints.", "終局結合封存顏色、錨定格與無提示挑戰。", "终局结合封存颜色、锚定格与无提示挑战。", "最終章は封印色・固定スロット・ノーヒントを組み合わせます。", "마지막은 봉인 색, 고정 슬롯, 무힌트를 결합합니다.", "El final combina color sellado, casilla anclada y sin pistas.", "O final combina cor selada, espaço ancorado e sem dicas.", "Le final combine couleur scellée, case ancrée et aucun indice.", "Das Finale verbindet versiegelte Farbe, verankertes Feld und keine Tipps.", "Il finale combina colore sigillato, spazio ancorato e niente suggerimenti.", "Финал сочетает запечатанный цвет, закреплённую ячейку и отсутствие подсказок.", "अंतिम चरण सील रंग, स्थिर स्लॉट और बिना संकेत जोड़ता है।", "تجمع النهاية بين لون مختوم وخانة مثبتة وبدون تلميحات."), index: 5 }
+  ];
+  const codeStageProfiles = [
+    { key: "signal", maxTurns: 10, hintLimit: 3, allowRepeats: false },
+    { key: "echo", maxTurns: 10, hintLimit: 2, allowRepeats: true },
+    { key: "shadow", maxTurns: 9, hintLimit: 2, allowRepeats: false, blockedColorOffset: 1 },
+    { key: "anchor", maxTurns: 8, hintLimit: 1, allowRepeats: false, anchorIndex: 0 },
+    { key: "pressure", maxTurns: 7, hintLimit: 1, allowRepeats: true, blockedColorOffset: 2 },
+    { key: "mastery", maxTurns: 6, hintLimit: 0, allowRepeats: false, blockedColorOffset: 3, anchorIndex: 1 }
+  ];
+  const CODE_BREAKER_TOTAL_STAGES = 30;
+  const CODE_BREAKER_SAVE_KEY = "codeBreakerCampaignProgress";
+  function codeStageData(stage) {
+    const safeStage = Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(stage) || 1));
+    const arcIndex = Math.floor((safeStage - 1) / 5);
+    const profile = codeStageProfiles[arcIndex];
+    const seed = safeStage * 17 + arcIndex * 11;
+    let secret = profile.allowRepeats
+      ? [seed % 6, (seed + 1) % 6, (seed + 1 + (safeStage % 2)) % 6, (seed + 3) % 6]
+      : Array.from({ length: 4 }, (_, index) => (seed + index * 2 + Math.floor(index / 2)) % 6);
+    const blockedColor = profile.blockedColorOffset === undefined ? null : (seed + profile.blockedColorOffset) % 6;
+    if (blockedColor !== null) {
+      for (let index = 0; index < secret.length; index += 1) if (secret[index] === blockedColor) secret[index] = (secret[index] + 1) % 6;
+    }
+    if (!profile.allowRepeats) {
+      const used = new Set();
+      secret = secret.map((value) => {
+        let candidate = value;
+        while (used.has(candidate) || candidate === blockedColor) candidate = (candidate + 1) % 6;
+        used.add(candidate);
+        return candidate;
+      });
+    }
+    return { stage: safeStage, arcIndex, arc: codeCampaignArcs[arcIndex], ...profile, checkpoint: safeStage % 5 === 0, secret, blockedColor };
+  }
+  function readCodeProgress() {
+    const fallback = { cleared: [], highestUnlocked: 1 };
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CODE_BREAKER_SAVE_KEY) || "null");
+      const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= CODE_BREAKER_TOTAL_STAGES))].sort((a, b) => a - b) : [];
+      const highest = Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(parsed?.highestUnlocked) || (cleared.length ? Math.max(...cleared) + 1 : 1)));
+      return { cleared, highestUnlocked: highest };
+    } catch { return fallback; }
+  }
+  function writeCodeProgress(progress) { localStorageSafe(CODE_BREAKER_SAVE_KEY, JSON.stringify(progress)); }
+  function markCodeStageCleared(stage) {
+    const progress = readCodeProgress();
+    if (!progress.cleared.includes(stage)) progress.cleared.push(stage);
+    progress.cleared.sort((a, b) => a - b);
+    progress.highestUnlocked = Math.min(CODE_BREAKER_TOTAL_STAGES, Math.max(progress.highestUnlocked, stage + 1));
+    writeCodeProgress(progress);
+    return progress;
+  }
   const mineCopy = {
     inputSupport: L("Mouse + touch", "滑鼠＋觸控", "鼠標＋觸控", "マウス＋タッチ", "마우스 + 터치", "Ratón + táctil", "Mouse + toque", "Souris + tactile", "Maus + Touch", "Mouse + tocco", "Мышь + сенсор", "माउस + टच", "الفأرة + اللمس"),
     flags: L("Flags", "旗標", "标记", "旗", "깃발", "Banderas", "Bandeiras", "Drapeaux", "Markierungen", "Bandiere", "Флаги", "झंडे", "الأعلام"),
@@ -631,16 +715,18 @@
     app.root.innerHTML = `
       <div class="logic-lab">
           <main class="logic-main main-screen" id="logicMain" data-screen="main">
-          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1>${esc(title)}</h1><div class="logic-header-tools"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
+          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
           <section class="logic-hero"><div class="logic-poster"><img class="main-poster" src="${poster}" alt=""></div><div class="logic-copy main-copy"><p class="logic-kicker">${esc(preview)}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><div class="logic-progress-slot" data-wp-main-progress>${esc(t("ready"))}</div><button id="startButton" class="logic-primary" data-wp-main-start type="button">${esc(t("start"))}</button></div></section>
           <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
-        <section class="logic-battle-screen battle-screen" id="logicBattle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" data-wp-return="battle" data-wp-battle-utility type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area battle-canvas"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
+        <section id="logicStage" class="code-breaker-stage-screen wp-standard-stage-panel wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas hidden aria-label="${esc(text(codeCampaignCopy.chooseStage))}" style="--wp-stage-art: url('${poster}')"><header class="wp-standard-stage-heading code-breaker-stage-heading"><button id="stageBack" class="logic-battle-back" data-wp-return="stage" type="button" aria-label="${esc(text(codeCampaignCopy.backToMain))}">←</button><div><span class="logic-kicker">${esc(text(codeCampaignCopy.chooseStage))}</span><h1>${esc(title)}</h1><p id="stageProgress" class="logic-live"></p></div><button id="stageSound" class="logic-icon-button utility-button code-breaker-stage-settings" type="button" aria-label="${esc(t("sound"))}" aria-pressed="false">🔊</button></header><p id="stageBrowseHint" class="code-breaker-stage-hint">${esc(text(codeCampaignCopy.stageStart))}</p><section id="stageRail" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-v6-auto="true" data-wp-stage-v6-total="30" data-wp-stage-recommendation="last" data-wp-stage-total="30" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="${esc(text(codeCampaignCopy.chooseStage))}"></section><nav class="stage-tabs code-breaker-stage-tabs" aria-label="${esc(text(codeCampaignCopy.stages))}"><button type="button" role="tab" aria-selected="true" tabindex="0" data-wp-stage-tab="stages">${esc(text(codeCampaignCopy.stages))}</button></nav><p id="stageStatus" class="logic-live" role="status" aria-live="polite"></p></section>
+        <section class="logic-battle-screen battle-screen" id="logicBattle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" data-wp-return="battle" data-wp-battle-utility type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area battle-canvas"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div id="logicLeave" class="logic-leave" hidden role="dialog" aria-modal="true" aria-labelledby="logicLeaveTitle"><div class="logic-leave-card"><h2 id="logicLeaveTitle">${esc(text(codeCampaignCopy.stages))}</h2><p>${esc(text(codeCampaignCopy.stageStart))}</p><div class="logic-result-actions"><button id="leaveContinue" class="logic-primary" type="button">${esc(t("continue"))}</button><button id="leaveStages" class="logic-secondary" type="button">${esc(text(codeCampaignCopy.stages))}</button></div></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultStages" class="logic-secondary" type="button" hidden>${esc(text(codeCampaignCopy.stages))}</button><button id="resultNext" class="logic-primary" type="button" hidden>${esc(text(codeCampaignCopy.nextStage))}</button><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
         <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div></div>`;
-    app.main = app.root.querySelector("#logicMain"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip");
+    app.main = app.root.querySelector("#logicMain"); app.stage = app.root.querySelector("#logicStage"); app.stageSound = app.root.querySelector("#stageSound"); app.stageRail = app.root.querySelector("#stageRail"); app.stageProgress = app.root.querySelector("#stageProgress"); app.stageStatus = app.root.querySelector("#stageStatus"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip"); app.currentStage = null;
     const picker = app.root.querySelector("#localePicker"); for (const key of LOCALES) { const option = document.createElement("option"); option.value = key; option.textContent = localeLabels[key]; option.selected = key === locale; picker.append(option); }
     const settings = app.root.querySelector("#settingsPanel"); const settingsButton = app.root.querySelector("#settingsButton"); settingsButton.addEventListener("click", () => { settings.hidden = !settings.hidden; settingsButton.setAttribute("aria-expanded", String(!settings.hidden)); });
     app.root.querySelector("#soundButton").addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
+    app.stageSound?.addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
     picker.addEventListener("change", () => {
       localStorageSafe("weightPlayLocale", picker.value);
       if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi"].includes(id)) {
@@ -649,13 +735,18 @@
       }
       window.location.reload();
     });
-    function updateSoundButton() { app.root.querySelector("#soundButton").textContent = `${t("sound")}: ${soundOn ? t("on") : t("off")}`; app.root.querySelector("#soundButton").setAttribute("aria-pressed", String(soundOn)); }
+    function updateSoundButton() { const soundButton = app.root.querySelector("#soundButton"); soundButton.textContent = `${t("sound")}: ${soundOn ? t("on") : t("off")}`; soundButton.setAttribute("aria-pressed", String(soundOn)); if (app.stageSound) { app.stageSound.textContent = soundOn ? "🔊" : "🔇"; app.stageSound.setAttribute("aria-pressed", String(soundOn)); } }
     updateSoundButton();
-    app.root.querySelector("#startButton").addEventListener("click", () => startGame());
-    app.root.querySelector("#battleBack").addEventListener("click", () => showMain());
+    app.root.querySelector("#startButton").addEventListener("click", () => id === "code-breaker" ? showStage() : startGame());
+    app.root.querySelector("#stageBack").addEventListener("click", showMain);
+    app.root.querySelector("#battleBack").addEventListener("click", () => id === "code-breaker" ? openLeaveDialog() : showMain());
     app.root.querySelector("#logicHint").addEventListener("click", () => activeGame?.hint?.());
     app.root.querySelector("#logicUndo").addEventListener("click", () => activeGame?.undo?.());
     app.root.querySelector("#logicReset").addEventListener("click", () => activeGame?.reset?.());
+    app.root.querySelector("#leaveContinue").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; });
+    app.root.querySelector("#leaveStages").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; showStage(); });
+    app.root.querySelector("#resultStages").addEventListener("click", () => { app.result.hidden = true; showStage(); });
+    app.root.querySelector("#resultNext").addEventListener("click", () => { app.result.hidden = true; startGame(Math.min(CODE_BREAKER_TOTAL_STAGES, (app.currentStage || 1) + 1)); });
     app.root.querySelector("#resultReplay").addEventListener("click", () => { app.result.hidden = true; activeGame?.reset?.(); });
     app.root.querySelector("#resultMenu").addEventListener("click", showMain);
     app.root.querySelector("#resultClose").addEventListener("click", () => { app.result.hidden = true; });
@@ -664,11 +755,52 @@
     return app;
 
     function resetScroll() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
-    function startGame() { resetScroll(); app.main.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = text(cfg.blurb); app.result.hidden = true; activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale }); }
-    function showMain() { activeGame?.stop?.(); activeGame = null; app.result.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); resetScroll(); }
+    function configureStageResult() { const staged = id === "code-breaker"; app.root.querySelector("#resultStages").hidden = !staged; app.root.querySelector("#resultNext").hidden = true; app.root.querySelector("#resultMenu").hidden = staged; app.root.querySelector("#resultClose").hidden = staged; app.root.querySelector("#resultReplay").textContent = staged ? text(codeCampaignCopy.replay) : t("replay"); }
+    function renderStageRail() {
+      if (id !== "code-breaker") return;
+      const progress = readCodeProgress();
+      app.stageProgress.textContent = fillTemplate(text(codeCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, CODE_BREAKER_TOTAL_STAGES), cleared: progress.cleared.length });
+      app.stageRail.replaceChildren();
+      for (let stage = 1; stage <= CODE_BREAKER_TOTAL_STAGES; stage += 1) {
+        const data = codeStageData(stage); const unlocked = stage <= progress.highestUnlocked; const cleared = progress.cleared.includes(stage); const card = document.createElement("button");
+        card.type = "button"; card.className = `stage-card code-breaker-stage-card ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`; card.dataset.stage = String(stage); card.dataset.stageIndex = String(stage - 1); card.dataset.wpStageIndex = String(stage - 1); card.setAttribute("aria-disabled", String(!unlocked)); card.dataset.wpStageTitle = text(data.arc.title);
+        if (stage === progress.highestUnlocked) { card.dataset.wpStageRecommended = "true"; card.dataset.wpStageRecommendation = "last"; }
+        const number = document.createElement("span"); number.className = "stage-number"; number.textContent = String(stage).padStart(2, "0");
+        const heading = document.createElement("strong"); heading.textContent = fillTemplate(text(codeCampaignCopy.stageCard), { stage });
+        const arc = document.createElement("span"); arc.className = "stage-card-arc"; arc.textContent = text(data.arc.title);
+        const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = `${text(codeCampaignCopy.objective)} · ${text(data.arc.rule)}`;
+        const state = document.createElement("span"); state.className = "stage-card-state"; state.textContent = cleared ? text(codeCampaignCopy.cleared) : unlocked ? text(codeCampaignCopy.ready).replace("{stage}", String(stage)) : text(codeCampaignCopy.locked);
+        card.append(number, heading, arc, objective, state);
+        card.addEventListener("click", () => { if (!unlocked) { app.stageStatus.textContent = text(codeCampaignCopy.locked); return; } startGame(stage); });
+        app.stageRail.append(card);
+      }
+      app.stageStatus.textContent = text(codeCampaignCopy.saved);
+      window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+    }
+    function showStage() { if (id !== "code-breaker") return showMain(); resetScroll(); activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.main.hidden = true; app.battle.hidden = true; app.stage.hidden = false; app.result.hidden = true; document.body.classList.remove("logic-playing"); renderStageRail(); resetScroll(); }
+    function openLeaveDialog() { app.root.querySelector("#logicLeave").hidden = false; }
+    function startGame(stage = null) { resetScroll(); app.currentStage = id === "code-breaker" ? Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(stage) || 1)) : null; app.main.hidden = true; app.stage.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = app.currentStage ? `${text(codeStageData(app.currentStage).arc.title)} · ${text(codeStageData(app.currentStage).arc.rule)}` : text(cfg.blurb); app.result.hidden = true; configureStageResult(); activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale, stage: app.currentStage || undefined }); }
+    function showMain() { activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.result.hidden = true; app.root.querySelector("#logicLeave").hidden = true; app.stage.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); resetScroll(); }
   }
 
-  function finish(won, detail = "") { if (!app) return; beep(won ? "success" : "wrong"); app.resultTitle.textContent = won ? t("win") : t("lose"); app.resultText.textContent = detail || (won ? t("solved") : t("failed")); app.result.hidden = false; app.battleChip.textContent = won ? t("solved") : t("lose"); }
+  function finish(won, detail = "") {
+    if (!app) return;
+    beep(won ? "success" : "wrong");
+    const staged = app.id === "code-breaker" && app.currentStage;
+    if (staged) {
+      const stage = Number(app.currentStage); const progress = won ? markCodeStageCleared(stage) : readCodeProgress();
+      app.resultTitle.textContent = won ? fillTemplate(text(codeCampaignCopy.stageWin), { stage }) : t("lose");
+      app.resultText.textContent = detail || (won ? fillTemplate(text(codeCampaignCopy.stageWin), { stage }) : fillTemplate(text(codeCampaignCopy.stageLoss), { stage }));
+      app.root.querySelector("#resultStages").hidden = false;
+      app.root.querySelector("#resultNext").hidden = !(won && stage < CODE_BREAKER_TOTAL_STAGES && stage + 1 <= progress.highestUnlocked);
+      app.root.querySelector("#resultReplay").hidden = false;
+      app.root.querySelector("#resultMenu").hidden = true;
+      app.root.querySelector("#resultClose").hidden = true;
+    } else {
+      app.resultTitle.textContent = won ? t("win") : t("lose"); app.resultText.textContent = detail || (won ? t("solved") : t("failed"));
+    }
+    app.result.hidden = false; app.battleChip.textContent = won ? t("solved") : t("lose");
+  }
   function setChip(value) { if (app) app.battleChip.textContent = value; }
   function cell(textValue, className, label, handler) { const b = document.createElement("button"); b.type = "button"; b.className = `logic-cell ${className || ""}`; b.textContent = textValue || ""; if (label) b.setAttribute("aria-label", label); b.addEventListener("click", handler); return b; }
   function historyApi(getState, setState) { const past = []; return { save() { past.push(JSON.stringify(getState())); if (past.length > 80) past.shift(); }, undo() { const value = past.pop(); if (!value) { announce(t("ready")); return; } setState(JSON.parse(value)); } }; }
@@ -786,13 +918,60 @@
   }
 
   function buildCode() {
-    let secret = [], guess = [], history = [], turn = 0; const colors = ["#ff6b6b", "#ffd166", "#6ee7b7", "#6ec8ff", "#b69cff", "#ff9ed2"]; const panel = document.createElement("div"); panel.className = "logic-code-board"; const slots = document.createElement("div"); slots.className = "logic-code-slots"; const palette = document.createElement("div"); palette.className = "logic-code-colors"; const legend = document.createElement("p"); legend.className = "logic-live logic-code-legend"; const submit = makeButton(t("submit"), "logic-primary"); const historyBox = document.createElement("div"); historyBox.className = "logic-code-history"; panel.append(slots, palette, legend, submit, historyBox); app.board.replaceChildren(panel);
-    function makeSecret() { const random = rng((Date.now() ^ Math.floor(performance.now())) >>> 0); return Array.from({ length: 4 }, () => Math.floor(random() * colors.length)); }
-    function render() { legend.textContent = `${t("correct")}: ● · ${t("near")}: ○`; slots.replaceChildren(); for (let i = 0; i < 4; i += 1) { const b = makeButton("", "logic-code-slot"); const color = guess[i]; b.dataset.color = color ?? ""; b.setAttribute("aria-label", color === undefined ? fillTemplate(text(codeSlotCopy.empty), { slot: i + 1 }) : fillTemplate(text(codeSlotCopy.filled), { slot: i + 1, color: color + 1 })); b.addEventListener("click", () => { guess.splice(i, 1); render(); }); slots.append(b); } palette.replaceChildren(); colors.forEach((color, i) => { const b = makeButton("", "logic-color"); b.dataset.color = i; b.style.background = color; b.setAttribute("aria-label", `${t("codePick")} ${i + 1}`); b.addEventListener("click", () => { if (guess.length < 4) guess.push(i); render(); }); palette.append(b); }); historyBox.replaceChildren(...history.map((row) => { const el = document.createElement("div"); el.className = "logic-guess-row"; el.innerHTML = `<span>${row.guess.map((v) => `<i class="logic-code-slot" data-color="${v}"></i>`).join("")}</span><span class="logic-feedback">${row.exact} ● ${row.near} ○</span>`; return el; })); }
-    function submitGuess() { if (guess.length !== 4) { announce(`${t("codePick")} · ${text(codeRemaining)}: ${4 - guess.length}`); return; } const exact = guess.filter((v, i) => v === secret[i]).length; const counts = Array(6).fill(0); secret.forEach((v, i) => { if (guess[i] !== v) counts[v] += 1; }); const near = guess.reduce((total, v, i) => total + (v !== secret[i] && counts[v] > 0 ? (counts[v] -= 1, 1) : 0), 0); history.push({ guess: guess.slice(), exact, near }); turn += 1; if (exact === 4) { render(); announce(t("solved")); finish(true, `${t("solved")} ${t("correct")}: 4`); } else if (turn >= 10) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((v) => v + 1).join(" · ")}`); } else { guess = []; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); } }
-    function reset() { secret = makeSecret(); guess = []; history = []; turn = 0; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
-    function hint() { if (guess.length < 4) guess.push(secret[guess.length]); render(); const remaining = 4 - guess.length; announce(remaining ? `${t("hint")} · ${text(codeRemaining)}: ${remaining}` : `${t("hint")} · ${t("submit")}`); }
-    submit.addEventListener("click", submitGuess); return { reset, hint, undo() { history.pop(); turn = history.length; render(); } };
+    const stage = app.currentStage ? codeStageData(app.currentStage) : null;
+    let secret = [], guess = [], history = [], turn = 0, hintsUsed = 0;
+    const colors = ["#ff6b6b", "#ffd166", "#6ee7b7", "#6ec8ff", "#b69cff", "#ff9ed2"];
+    const panel = document.createElement("div"); panel.className = "logic-code-board";
+    const meta = document.createElement("div"); meta.className = "logic-code-stage-meta";
+    const objective = document.createElement("strong"); const rule = document.createElement("span"); const metrics = document.createElement("span");
+    meta.append(objective, rule, metrics);
+    const slots = document.createElement("div"); slots.className = "logic-code-slots";
+    const palette = document.createElement("div"); palette.className = "logic-code-colors";
+    const legend = document.createElement("p"); legend.className = "logic-live logic-code-legend";
+    const submit = makeButton(t("submit"), "logic-primary"); const historyBox = document.createElement("div"); historyBox.className = "logic-code-history";
+    panel.append(meta, slots, palette, legend, submit, historyBox); app.board.replaceChildren(panel);
+    function filledCount() { return guess.filter((value) => value !== undefined).length; }
+    function nextOpenSlot() { return [...Array(4).keys()].find((index) => guess[index] === undefined && index !== stage?.anchorIndex); }
+    function makeSecret() { if (stage) return stage.secret.slice(); const random = rng((Date.now() ^ Math.floor(performance.now())) >>> 0); return Array.from({ length: 4 }, () => Math.floor(random() * colors.length)); }
+    function stageMetrics() { if (!stage) return ""; return [fillTemplate(text(codeCampaignCopy.turns), { turns: `${turn}/${stage.maxTurns}` }), fillTemplate(text(codeCampaignCopy.hints), { hints: Math.max(0, stage.hintLimit - hintsUsed) })].join(" · "); }
+    function render() {
+      legend.textContent = `${t("correct")}: ● · ${t("near")}: ○`;
+      if (stage) { objective.textContent = `${text(stage.arc.title)} · ${fillTemplate(text(codeCampaignCopy.objective), { stage: stage.stage })}`; rule.textContent = text(stage.arc.rule); metrics.textContent = stageMetrics(); }
+      else { objective.textContent = ""; rule.textContent = ""; metrics.textContent = ""; }
+      setChip(stage ? stageMetrics() : `${t("turn")}: ${turn}`);
+      slots.replaceChildren();
+      for (let i = 0; i < 4; i += 1) {
+        const b = makeButton("", "logic-code-slot"); const color = guess[i]; const anchored = stage?.anchorIndex === i;
+        b.dataset.color = color ?? ""; if (anchored) b.classList.add("is-anchored");
+        b.setAttribute("aria-label", anchored ? `${text(codeCampaignCopy.anchored)} · ${color + 1}` : color === undefined ? fillTemplate(text(codeSlotCopy.empty), { slot: i + 1 }) : fillTemplate(text(codeSlotCopy.filled), { slot: i + 1, color: color + 1 }));
+        b.addEventListener("click", () => { if (!anchored) { guess[i] = undefined; render(); } }); slots.append(b);
+      }
+      palette.replaceChildren();
+      colors.forEach((color, i) => {
+        const b = makeButton("", "logic-color"); const sealed = stage?.blockedColor === i; b.dataset.color = i; b.style.background = color; b.setAttribute("aria-label", sealed ? `${text(codeCampaignCopy.sealed)} ${i + 1}` : `${t("codePick")} ${i + 1}`); b.disabled = sealed;
+        if (sealed) b.classList.add("is-sealed");
+        b.addEventListener("click", () => { const index = nextOpenSlot(); if (index === undefined) return; if (!stage?.allowRepeats && guess.includes(i)) { announce(t("noRepeat")); return; } guess[index] = i; render(); }); palette.append(b);
+      });
+      historyBox.replaceChildren(...history.map((row) => { const el = document.createElement("div"); el.className = "logic-guess-row"; el.innerHTML = `<span>${row.guess.map((v) => `<i class="logic-code-slot" data-color="${v}"></i>`).join("")}</span><span class="logic-feedback">${row.exact} ● ${row.near} ○</span>`; return el; }));
+    }
+    function submitGuess() {
+      if (filledCount() !== 4) { announce(`${t("codePick")} · ${text(codeRemaining)}: ${4 - filledCount()}`); return; }
+      const exact = guess.filter((value, index) => value === secret[index]).length; const counts = Array(6).fill(0);
+      secret.forEach((value, index) => { if (guess[index] !== value) counts[value] += 1; });
+      const near = guess.reduce((total, value, index) => total + (value !== secret[index] && counts[value] > 0 ? (counts[value] -= 1, 1) : 0), 0);
+      history.push({ guess: guess.slice(), exact, near }); turn += 1;
+      if (exact === 4) { render(); announce(t("solved")); finish(true, `${fillTemplate(text(codeCampaignCopy.stageWin), { stage: stage?.stage || 1 })} ${t("correct")}: 4`); }
+      else if (turn >= (stage?.maxTurns || 10)) { render(); announce(t("lose")); finish(false, `${t("failed")} ${t("correct")}: ${secret.map((value) => value + 1).join(" · ")}`); }
+      else { guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); announce(`${t("correct")}: ${exact} · ${t("near")}: ${near} · ${t("turn")}`); }
+    }
+    function reset() { secret = makeSecret(); guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; history = []; turn = 0; hintsUsed = 0; app.result.hidden = true; setChip(t("turn")); render(); announce(stage ? fillTemplate(text(codeCampaignCopy.ready), { stage: stage.stage }) : t("ready")); }
+    function hint() {
+      if (!stage) { const index = nextOpenSlot(); if (index !== undefined) guess[index] = secret[index]; render(); announce(t("hint")); return; }
+      if (hintsUsed >= stage.hintLimit) { announce(stage.hintLimit ? text(codeCampaignCopy.hints).replace("{hints}", "0") : text(codeCampaignCopy.noHints)); return; }
+      const index = nextOpenSlot(); if (index === undefined) { announce(t("submit")); return; } guess[index] = secret[index]; hintsUsed += 1; render(); announce(`${t("hint")} · ${stageMetrics()}`);
+    }
+    submit.addEventListener("click", submitGuess);
+    return { reset, hint, undo() { history.pop(); turn = history.length; guess = Array(4).fill(undefined); if (stage?.anchorIndex !== undefined) guess[stage.anchorIndex] = secret[stage.anchorIndex]; render(); } };
   }
 
   function buildHanoi() {

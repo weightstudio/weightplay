@@ -1022,13 +1022,23 @@ body[data-game-id="breakout"] #mainScreen .main-panel { grid-template-columns: m
 body[data-game-id="breakout"] #mainScreen .preview-art { width: min(100%, 420px); aspect-ratio: 1; min-height: 0; justify-self: center; overflow: hidden; }
 body[data-game-id="breakout"] #mainScreen .preview-art img.cover { width: 100%; height: 100%; min-height: 0; aspect-ratio: 1; object-fit: cover; }
 body[data-game-id="breakout"] #mainScreen #startBtn { width: 100%; height: 52px; min-height: 52px; max-height: 52px; }
-body[data-game-id="breakout"] #mainScreen .main-progress { min-height: 40px; display: grid; gap: 3px; padding: 10px 12px; border-left: 3px solid var(--arcade-accent); background: rgba(126,231,201,.08); border-radius: 12px; line-height: 1.35; }
+body[data-game-id="breakout"] #mainScreen .main-progress { min-height: 42px; height: 42px; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-left: 3px solid var(--arcade-accent); background: rgba(126,231,201,.08); border-radius: 12px; line-height: 1.2; overflow: hidden; }
+body[data-game-id="breakout"] #mainScreen .main-progress strong { flex: 0 0 auto; }
+body[data-game-id="breakout"] #mainScreen .main-progress span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 body[data-game-id="breakout"] #stageScreen { width: min(100%, 920px); margin: 0 auto; }
 body[data-game-id="breakout"] #stageScreen .stage-shell { display: grid; gap: 18px; padding: 18px; min-height: 0; }
-body[data-game-id="breakout"] #stageScreen .stage-header { display: grid; grid-template-columns: 48px minmax(0,1fr) auto; align-items: center; gap: 12px; }
+body[data-game-id="breakout"] #stageScreen .stage-header { position: relative; display: grid; grid-template-columns: 48px minmax(0,1fr) auto 48px; align-items: center; gap: 12px; }
 body[data-game-id="breakout"] #stageScreen .stage-header h2 { margin: 0; }
 body[data-game-id="breakout"] #stageScreen .stage-kicker { margin: 0 0 3px; color: var(--arcade-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .12em; }
 body[data-game-id="breakout"] #stageScreen .stage-browse-hint { margin: 0; color: var(--arcade-muted); }
+body[data-game-id="breakout"] .breakout-stage-settings { position: relative; grid-column: 4; grid-row: 1; justify-self: end; z-index: 4; }
+body[data-game-id="breakout"] .breakout-stage-settings-button { width: 48px; min-width: 48px; height: 48px; min-height: 48px; border: 1px solid var(--arcade-line); border-radius: 12px; background: rgba(255,255,255,.08); color: var(--arcade-text); font-size: 1.2rem; }
+body[data-game-id="breakout"] .breakout-stage-settings-popover { position: absolute; top: calc(100% + 8px); right: 0; width: min(280px, calc(100vw - 32px)); padding: 12px; border: 1px solid var(--arcade-line); border-radius: 14px; background: #10243d; box-shadow: 0 16px 36px rgba(0,0,0,.35); }
+body[data-game-id="breakout"] .breakout-stage-settings-popover[hidden] { display: none; }
+body[data-game-id="breakout"] .breakout-stage-settings-popover .wp-shell-settings-title { display: block; margin-bottom: 8px; color: var(--arcade-text); }
+body[data-game-id="breakout"] .breakout-stage-settings-popover .wp-shell-combined-sound-toggle,
+body[data-game-id="breakout"] .breakout-stage-settings-popover .wp-shell-settings-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 44px; color: var(--arcade-muted); }
+body[data-game-id="breakout"] .breakout-stage-settings-popover select { min-width: 0; flex: 1; border: 1px solid var(--arcade-line); border-radius: 10px; background: var(--arcade-panel-2); color: var(--arcade-text); padding: 8px; }
 body[data-game-id="breakout"] #stageScreen .stage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(116px, 1fr)); gap: 10px; }
 body[data-game-id="breakout"] #stageScreen .stage-card { display: grid; gap: 4px; min-height: 92px; padding: 12px; border: 1px solid var(--arcade-line); border-radius: 14px; background: rgba(255,255,255,.06); color: var(--arcade-text); text-align: left; }
 body[data-game-id="breakout"] #stageScreen .stage-card:hover,
@@ -1134,7 +1144,7 @@ body[data-game-id="breakout"][data-screen="result"] .game-page-info-static { dis
 
 @media (max-width: 650px) {
   body[data-game-id="breakout"] #mainScreen .main-panel { grid-template-columns: 1fr; gap: 18px; }
-  body[data-game-id="breakout"] #mainScreen .preview-art { width: 100%; max-width: 420px; }
+  body[data-game-id="breakout"] #mainScreen .preview-art { width: 100%; max-width: none; }
   body[data-game-id="breakout"] #stageScreen .stage-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
   body[data-game-id="breakout"] .arcade-header.main-header { grid-template-columns: 58px minmax(0, 1fr) 48px; gap: 8px; padding: 8px; }
   body[data-game-id="breakout"] .main-header-copy .tagline { display: none; }

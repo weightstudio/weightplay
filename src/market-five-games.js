@@ -27,7 +27,7 @@
     "animal-habitat-atlas": { stages: 6, noun: "Expedition", hint: "Reveal clues · choose a habitat", iconCols: 4, hero: [34, 285, 180, 210] },
     "animal-moonlight-workshop": { stages: 6, noun: "Room", hint: "Light switches · key · exit", iconCols: 4, hero: [36, 296, 150, 190] },
     "animal-chameleon-blend": { stages: 6, noun: "Garden", hint: "Remember · match · lock", iconCols: 4, hero: [50, 294, 160, 205] },
-    "animal-habitat-builder": { stages: 6, noun: "Reserve", hint: "Place tiles · meet every need", iconCols: 4, hero: [35, 290, 170, 210] },
+    "animal-habitat-builder": { stages: 30, noun: "Reserve", hint: "Place tiles · meet every need", iconCols: 4, hero: [35, 290, 170, 210] },
   };
   const cfg = configs[gameId];
   const hoopProfiles = [
@@ -62,13 +62,31 @@
     { badge:"2·1", rounds:5, need:4, sequence:2, preview:1.55, choose:9, shuffle:true, reverse:true },
     { badge:"★", rounds:4, need:3, sequence:3, preview:1.35, choose:10, shuffle:true, reverse:false },
   ];
-  const builderProfiles = [
+  const builderBaseProfiles = [
     { badge:"◎", need:[2,2,1,1], limit:8 },
     { badge:"≋", need:[3,2,2,1], limit:10, waterConnected:true },
     { badge:"◫", need:[2,2,3,2], limit:12, edgeForest:2, shelterForest:true },
     { badge:"↔", need:[2,3,2,2], limit:12, meadowWater:3, shelterForest:true },
     { badge:"⇆", need:[5,3,3,2], limit:16, waterSpan:true, forestConnected:true, blocked:[6,8,16,18] },
     { badge:"★", need:[4,4,4,3], limit:18, waterConnected:true, forestConnected:true, shelterForest:true, meadowWater:4, blocked:[0,5,10,15] },
+  ];
+  const builderProfiles = [
+    ...builderBaseProfiles,
+    ...Array.from({ length: 24 }, (_, extraIndex) => {
+      const stage = extraIndex + 7;
+      const base = builderBaseProfiles[extraIndex % builderBaseProfiles.length];
+      const arc = Math.floor(extraIndex / builderBaseProfiles.length) + 2;
+      const need = base.need.map((value, tileIndex) => Math.min(5, value + ((extraIndex + tileIndex) % 3 === 0 ? 1 : 0)));
+      const total = need.reduce((sum, value) => sum + value, 0);
+      return {
+        badge: `${base.badge}·${arc}${(extraIndex % builderBaseProfiles.length) + 1}`,
+        need,
+        limit: Math.min(20, Math.max(total + 1, base.limit + arc)),
+        campaignArc: arc,
+        campaignStage: (extraIndex % builderBaseProfiles.length) + 1,
+        finale: stage === 30,
+      };
+    }),
   ];
   const blendPatternOrders=[[0,1,2],[1,2,0],[2,0,1],[2,1,0],[1,0,2],[0,2,1]];
   const blendPairCycle=[[1,2],[0,1],[2,0],[1,0],[2,2],[0,2],[1,1],[0,0],[2,1]];

@@ -14,6 +14,9 @@
   const drifterArt = heroArt;
   const berryArt = heroArt;
   const propArt = new Image(); propArt.src = "assets/animal-frost-maze-props.png";
+  const ROOMS_PER_CHAPTER = 5;
+  const TOTAL_STAGES = 30;
+  const CHAPTER_COUNT = Math.ceil(TOTAL_STAGES / ROOMS_PER_CHAPTER);
   const state = { screen: "main", chapter: 1, room: 1, best: Number(localStorage.getItem("wp-frost-best") || 0), player: null, enemy: null, walls: new Set(), fruits: new Set(), facing: { x: 1, y: 0 }, moves: 0, ticks: 0, raf: 0 };
   const notifyAnalytics = (name, details = {}) => window.__wpFrostAnalytics?.record?.(name, details);
   const key = (x,y) => `${x},${y}`;
@@ -82,6 +85,14 @@
     hi: { heading: "बर्फीले अध्याय", tab: "अध्याय", chapter: "अध्याय", chapters: ["पहली बर्फ़ पिघलना", "बँटे हुए रास्ते", "भटकने वाले का दबाव", "अंतिम बर्फ़ पिघलना"] },
     ar: { heading: "فصول الجليد", tab: "الفصول", chapter: "الفصل", chapters: ["الذوبان الأول", "مسارات متفرعة", "ضغط المتجول", "الذوبان الأخير"] },
   };
+  const FROST_STAGE_LABEL = {
+    en: "Stage", "zh-tw": "關卡", "zh-cn": "关卡", ja: "ステージ", ko: "스테이지",
+    es: "Fase", "pt-br": "Fase", fr: "Niveau", de: "Stufe", it: "Fase", ru: "Этап", hi: "चरण", ar: "المرحلة",
+  };
+  const FROST_ROOM_LABEL = {
+    en: "Room", "zh-tw": "房間", "zh-cn": "房间", ja: "ルーム", ko: "방",
+    es: "Sala", "pt-br": "Sala", fr: "Salle", de: "Raum", it: "Stanza", ru: "Комната", hi: "कमरा", ar: "الغرفة",
+  };
   const frostLocale = () => {
     const segment = String(location.pathname).split("/").filter(Boolean)[0]?.toLowerCase() || "en";
     const language = String(document.documentElement.lang || "").toLowerCase();
@@ -125,6 +136,9 @@
     return typeof value === "function" ? value(chapter, room) : value;
   };
   const frostStageText = () => FROST_STAGE_COPY[frostLocale()] || FROST_STAGE_COPY.en;
+  const frostStageLabel = () => FROST_STAGE_LABEL[frostLocale()] || FROST_STAGE_LABEL.en;
+  const frostRoomLabel = () => FROST_ROOM_LABEL[frostLocale()] || FROST_ROOM_LABEL.en;
+  const frostChapterName = (chapter, copy = frostStageText()) => copy.chapters[chapter - 1] || `${copy.chapter} ${chapter}`;
   let battleStatusKey = "controls";
   const setBattleStatus = (key) => {
     battleStatusKey = key;
@@ -163,12 +177,17 @@
       if (stageTabs) stageTabs.setAttribute("aria-label", stageCopy.tab);
       const stageTab = document.querySelector(".stage-tabs button");
       if (stageTab) stageTab.textContent = stageCopy.tab;
-      document.querySelectorAll("#stage-list [data-chapter]").forEach((button) => {
-        const chapter = Number(button.dataset.chapter);
-        if (chapter >= 1 && chapter <= stageCopy.chapters.length) {
-          button.innerHTML = `${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}<br><small>${stageCopy.chapters[chapter - 1]}</small>`;
-        }
+      document.querySelectorAll("#stage-list [data-wp-stage-card]").forEach((button) => {
+        const stage = Number(button.dataset.stageIndex || 0);
+        const chapter = Number(button.dataset.chapter || 0);
+        const room = Number(button.dataset.room || 0);
+        if (!stage || !chapter || !room) return;
+        const chapterName = frostChapterName(chapter, stageCopy);
+        const label = `${frostStageLabel()} ${stage}: ${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}, ${frostRoomLabel()} ${room}`;
+        button.innerHTML = `<strong>${frostStageLabel()} ${stage}</strong><span>${chapterName} · ${frostRoomLabel()} ${room}</span><small>${stageCopy.chapter} ${chapter}${stageCopy.chapterSuffix || ""}</small>`;
+        button.setAttribute("aria-label", label);
       });
+      syncFrostStageAvailability();
       $("result-title").textContent = frostResultText("winTitle");
       $("result-copy").textContent = frostResultText("winCopy", 1, 1);
       $("to-stages").textContent = frostResultText("stages");
@@ -199,10 +218,11 @@
   const frostStatusObserver = new MutationObserver(syncBattleStatusLocale);
   frostStatusObserver.observe($("battle-status"), { childList: true, characterData: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applyFrostLocale, { once: true }); else applyFrostLocale();
-  function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});if(name==="battle")result?.setAttribute("hidden","");if(name==="battle")state.raf=requestAnimationFrame(frame);}
-  function stageCards(){const copy=frostStageText();$("stage-list").innerHTML=[1,2,3,4].map((n)=>`<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-chapter="${n}">${copy.chapter} ${n}${copy.chapterSuffix || ""}<br><small>${copy.chapters[n-1]}</small></button>`).join("");$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),1)));}
-  function layoutFor(chapter, room) { const variant=(chapter-1)*4+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter===4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y))}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
-  function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`Chapter ${state.chapter} · Room ${state.room} / 4`;setBattleStatus("controls");updateLabels();}
+  function syncFrostStageAvailability(){const rail=$("stage-list");if(!rail)return;const railRect=rail.getBoundingClientRect();const canvasRect=rail.closest("[data-wp-logical-stage-canvas]")?.getBoundingClientRect()||railRect;const cards=[...rail.querySelectorAll("[data-wp-stage-card]")];cards.forEach((card)=>{const rect=card.getBoundingClientRect();const centerX=rect.left+rect.width/2;const centerY=rect.top+rect.height/2;const inRail=rect.width>1&&rect.height>1&&centerX>railRect.left+2&&centerX<railRect.right-2&&centerY>railRect.top+2&&centerY<railRect.bottom-2&&centerX>canvasRect.left+2&&centerX<canvasRect.right-2&&centerY>canvasRect.top+2&&centerY<canvasRect.bottom-2;card.setAttribute("aria-disabled",String(!inRail));card.tabIndex=inRail?0:-1;});}
+  function show(name){state.screen=name;document.body.dataset.screen=name==="result"?"battle":name;cancelAnimationFrame(state.raf);const result=document.querySelector("#result-screen");document.querySelectorAll(".screen").forEach((el)=>{const isResult=el===result&&name==="result";const keepBattle=name==="result"&&el.id==="battle-screen";const on=isResult||keepBattle||el.dataset.screen===name;el.hidden=!on;el.classList.toggle("active",on)});if(name==="battle")result?.setAttribute("hidden","");if(name==="stage")window.requestAnimationFrame(syncFrostStageAvailability);if(name==="battle")state.raf=requestAnimationFrame(frame);}
+  function stageCards(){const copy=frostStageText();const stageLabel=frostStageLabel();const roomLabel=frostRoomLabel();const cards=Array.from({length:TOTAL_STAGES},(_,index)=>{const stage=index+1;const chapter=Math.floor(index/ROOMS_PER_CHAPTER)+1;const room=index%ROOMS_PER_CHAPTER+1;const chapterName=frostChapterName(chapter,copy);const label=`${stageLabel} ${stage}: ${copy.chapter} ${chapter}${copy.chapterSuffix || ""}, ${roomLabel} ${room}`;return `<button type="button" class="stage-card" data-wp-stage-card data-wp-enter-battle data-stage-index="${stage}" data-chapter="${chapter}" data-room="${room}" aria-label="${label}"><strong>${stageLabel} ${stage}</strong><span>${chapterName} · ${roomLabel} ${room}</span><small>${copy.chapter} ${chapter}${copy.chapterSuffix || ""}</small></button>`;}).join("");$("stage-list").innerHTML=cards;$("stage-list").querySelectorAll("button").forEach((b)=>b.addEventListener("click",()=>startRoom(Number(b.dataset.chapter),Number(b.dataset.room))));syncFrostStageAvailability();}
+  function layoutFor(chapter, room) { const variant=(chapter-1)*ROOMS_PER_CHAPTER+room-1; const walls=new Set([key(3,1),key(3,2),key(3,3),key(5,3),key(6,3),key(8,2),key(8,3),key(8,4),key(4,5),key(5,5),key(7,5)]); const variants=[[2,2],[4,1],[6,4],[9,5],[2,5],[7,1],[9,2],[5,1]]; const extra=variants[variant%variants.length]; walls.add(key(extra[0],extra[1])); if(chapter>=2)walls.add(key(6,1)); if(chapter>=3)walls.add(key(9,4)); if(chapter>=4)walls.add(key(1,2)); const candidates=[[2,1],[5,1],[7,2],[10,4],[2,4],[6,6],[9,6],[10,1],[1,1]]; const fruits=new Set(); candidates.forEach(([x,y],i)=>{if(!walls.has(key(x,y))&&i<5+(variant%3))fruits.add(key(x,y));}); return {walls,fruits,enemy:{x:10-(variant%3),y:1+(variant%2)}}; }
+  function buildRoom(){window.clearTimeout(state.finishTimer);state.finishTimer=0;const layout=layoutFor(state.chapter,state.room);state.player={x:1,y:5};state.enemy=layout.enemy;state.facing={x:1,y:0};state.moves=0;state.ticks=0;state.walls=layout.walls;state.fruits=layout.fruits;$(`room-label`).textContent=`${frostStageText().chapter} ${state.chapter} · ${frostRoomLabel()} ${state.room} / ${ROOMS_PER_CHAPTER}`;setBattleStatus("controls");updateLabels();}
   function startRoom(chapter=1,room=1){state.chapter=chapter;state.room=room;buildRoom();show("battle");}
   function updateLabels(){$("fruit-label").textContent=`Berries ${state.fruits.size}`;}
   function updateProgress(){const value=`Best rooms: ${state.best}`;$("main-progress").textContent=window.wpFiveText?window.wpFiveText(value):value;}
@@ -211,14 +231,14 @@
   function breakIce(){const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(state.walls.delete(key(nx,ny))){setBattleStatus("cracked");notifyAnalytics("first_edit",{action:"break"});}else setBattleStatus("noBreak");}
   function buildIce(){const p=state.player,nx=p.x+state.facing.x,ny=p.y+state.facing.y;if(nx>0&&nx<cols-1&&ny>0&&ny<rows-1&&!state.walls.has(key(nx,ny))&&!state.fruits.has(key(nx,ny))&&!(state.enemy.x===nx&&state.enemy.y===ny)){setBattleStatus("built");state.walls.add(key(nx,ny));notifyAnalytics("first_edit",{action:"build"});}else setBattleStatus("noBuild");}
   function enemyStep(){const e=state.enemy,p=state.player;const options=[];if(Math.abs(p.x-e.x)>=Math.abs(p.y-e.y))options.push([Math.sign(p.x-e.x),0],[0,Math.sign(p.y-e.y)]);else options.push([0,Math.sign(p.y-e.y)],[Math.sign(p.x-e.x),0]);for(const [dx,dy] of options){if(canMove(e.x+dx,e.y+dy)){e.x+=dx;e.y+=dy;break;}}if(e.x===p.x&&e.y===p.y)finish(false);}
-  function finish(win){window.clearTimeout(state.finishTimer);state.finishTimer=0;if(win){state.best=Math.max(state.best,state.room+(state.chapter-1)*4);localStorage.setItem("wp-frost-best",String(state.best));updateProgress();}$("result-title").textContent=win?"Room clear":"Route blocked";$("result-copy").textContent=win?`All berries recovered in chapter ${state.chapter}, room ${state.room}.`:`The ice route needs another attempt.`;$("next").textContent=state.room>=4?"Replay Chapter":"Next Room";show("result");}
+  function finish(win){window.clearTimeout(state.finishTimer);state.finishTimer=0;const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(win){state.best=Math.max(state.best,currentStage);localStorage.setItem("wp-frost-best",String(state.best));updateProgress();}$("result-title").textContent=win?"Room clear":"Route blocked";$("result-copy").textContent=win?`All berries recovered in chapter ${state.chapter}, room ${state.room}.`:`The ice route needs another attempt.`;$("next").textContent=currentStage>=TOTAL_STAGES?"Replay Chapter":"Next Room";show("result");}
   function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#061b2c";ctx.fillRect(0,0,canvas.width,canvas.height);for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){ctx.strokeStyle="#174c68";ctx.strokeRect(x*cell,y*cell,cell,cell);if(state.walls.has(key(x,y))){ctx.fillStyle="#6dd4e8";ctx.fillRect(x*cell+6,y*cell+6,cell-12,cell-12);ctx.fillStyle="#c8f7ff";ctx.fillRect(x*cell+18,y*cell+18,cell-36,5);if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,0,0,500,650,x*cell+7,y*cell+5,cell-14,cell-10);}}state.fruits.forEach((v)=>{const [x,y]=v.split(",").map(Number);if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,480,0,350,600,x*cell+12,y*cell+12,48,48);else if(berryArt.complete&&berryArt.naturalWidth)ctx.drawImage(berryArt,625,5,310,340,x*cell+12,y*cell+12,48,48);else{ctx.fillStyle="#ff8198";ctx.beginPath();ctx.arc(x*cell+36,y*cell+36,15,0,Math.PI*2);ctx.fill();ctx.fillStyle="#ffd36b";ctx.fillRect(x*cell+30,y*cell+17,12,7);}});actor(state.enemy,drifterArt,"#d8f2ff","#176079",[25,760,570,500]);actor(state.player,heroArt,"#ffd36b","#24465b",[10,5,600,780]);ctx.fillStyle="#c5e0ea";ctx.font="bold 17px system-ui";ctx.fillText(text("BREAK THE ICE"),18,28);}
   function actor(o,art,body,ink,crop){ctx.save();ctx.translate(o.x*cell+36,o.y*cell+36);if(art.complete&&art.naturalWidth)ctx.drawImage(art,crop[0],crop[1],crop[2],crop[3],-28,-28,56,56);else{ctx.fillStyle=body;ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle=ink;ctx.fillRect(-13,-5,26,8);ctx.fillRect(-9,10,18,7);}ctx.restore();}
   // Localized Result transaction overrides the prototype fallback above while
   // preserving the existing finish/show flow.
-  function finish(win){window.clearTimeout(state.finishTimer);state.finishTimer=0;if(win){state.best=Math.max(state.best,state.room+(state.chapter-1)*4);localStorage.setItem("wp-frost-best",String(state.best));updateProgress();}$("result-title").textContent=frostResultText(win?"winTitle":"loseTitle");$("result-copy").textContent=frostResultText(win?"winCopy":"loseCopy");$("to-stages").textContent=frostResultText("stages");$("next").textContent=frostResultText(state.room>=4?"replay":"next");$("retry").textContent=frostResultText("retry");show("result");}
+  function finish(win){window.clearTimeout(state.finishTimer);state.finishTimer=0;const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;if(win){state.best=Math.max(state.best,currentStage);localStorage.setItem("wp-frost-best",String(state.best));updateProgress();}$("result-title").textContent=frostResultText(win?"winTitle":"loseTitle");$("result-copy").textContent=frostResultText(win?"winCopy":"loseCopy");$("to-stages").textContent=frostResultText("stages");$("next").textContent=frostResultText(currentStage>=TOTAL_STAGES?"replay":"next");$("retry").textContent=frostResultText("retry");show("result");}
   function frame(){if(state.screen!=="battle")return;state.ticks++;draw();state.raf=requestAnimationFrame(frame);}
   const actions={up:()=>move(0,-1),down:()=>move(0,1),left:()=>move(-1,0),right:()=>move(1,0),break:breakIce,build:buildIce};
   window.addEventListener("keydown",(e)=>{const k=e.code;if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD","Space","KeyF"].includes(k)){e.preventDefault();if(k==="Space")breakIce();else if(k==="KeyF")buildIce();else if(k==="ArrowUp"||k==="KeyW")move(0,-1);else if(k==="ArrowDown"||k==="KeyS")move(0,1);else if(k==="ArrowLeft"||k==="KeyA")move(-1,0);else move(1,0)}});document.querySelectorAll("[data-action]").forEach((b)=>b.addEventListener("pointerdown",()=>actions[b.dataset.action]()));
-  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>startRoom(state.chapter,state.room));$("next").addEventListener("click",()=>startRoom(state.chapter,state.room>=4?1:state.room+1));$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});updateProgress();stageCards();buildRoom();draw();
+  $("start-game").addEventListener("click",()=>{show("stage");stageCards()});document.querySelectorAll("[data-back]").forEach((b)=>b.addEventListener("click",()=>show(b.dataset.back)));$("retry").addEventListener("click",()=>startRoom(state.chapter,state.room));$("next").addEventListener("click",()=>{const currentStage=(state.chapter-1)*ROOMS_PER_CHAPTER+state.room;const nextStage=currentStage>=TOTAL_STAGES?1:currentStage+1;startRoom(Math.floor((nextStage-1)/ROOMS_PER_CHAPTER)+1,((nextStage-1)%ROOMS_PER_CHAPTER)+1);});$("to-stages").addEventListener("click",()=>{show("stage");stageCards()});$("stage-list").addEventListener("scroll",()=>window.requestAnimationFrame(syncFrostStageAvailability),{passive:true});window.addEventListener("resize",()=>window.requestAnimationFrame(syncFrostStageAvailability));updateProgress();stageCards();buildRoom();draw();
 })();

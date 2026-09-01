@@ -222,6 +222,19 @@ body.wp-stage-select-active [data-wp-logical-stage-canvas] :is(
   background-repeat: no-repeat !important;
 }
 
+/* Breakout owns a stable poster even while the Stage rail is populated after
+   the shared shell boots. Keep the production art addressable before the
+   first rail mutation, including localized routes. */
+body[data-wp-game-id="breakout"] [data-wp-standard-stage-screen] {
+  --wp-stage-art: url("../assets/breakout-cover-v1.webp");
+  --wp-stage-scrim: linear-gradient(rgb(9 18 32 / 78%), rgb(23 36 58 / 86%));
+  background-color: #17243a;
+  background-image: var(--wp-stage-scrim), var(--wp-stage-art);
+  background-position: center, center;
+  background-size: cover, cover;
+  background-repeat: no-repeat;
+}
+
 .wp-stage-art-shell :is(
   .wp-standard-stage-heading,
   .stage-head,

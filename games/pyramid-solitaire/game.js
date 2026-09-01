@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v23";
+  document.body.dataset.gameVersion = "v24";
   const PYRAMID_PROGRESS_COPY = Object.freeze({
     en: { label: "Pyramid", text: "{label}: {remaining} cards left", aria: "Pyramid cards remaining: {remaining} of 28" },
     "zh-Hant": { label: "金字塔", text: "{label}：剩餘 {remaining} 張", aria: "金字塔剩餘 {remaining} 張，共 28 張" },

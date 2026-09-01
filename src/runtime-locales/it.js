@@ -3738,7 +3738,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "Found {found} · Empty taps {mistakes}": "Trovato {found} · Rubinetti vuoti {mistakes}",
   "Found words, the current path, and star progress in this run will reset.": "Le parole trovate, il percorso attuale e il progresso delle stelle in questa corsa verranno ripristinati.",
   "Found!": "Trovato!",
-  "Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "Quattro capitoli spaziano dal primo disgelo alle rotte divise, alla pressione dei drifter e allo scioglimento finale. Il percorso cambia attraverso il ghiaccio fragile e costruibile anziché cambiamenti di regole nascoste.",
+  "Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "Sei capitoli e 30 stanze spaziano dal primo disgelo alle rotte divise, alla pressione dei drifter e allo scioglimento finale. Il percorso cambia attraverso il ghiaccio fragile e costruibile anziché cambiamenti di regole nascoste.",
   "Four clear colors and fixed boxes.": "Quattro colori chiari e scatole fisse.",
   "Four days pair earlier rules in different combinations. The Grand Cafe Festival uses all of them and ends the campaign without creating a hidden Day 31.": "Quattro giorni abbinano le regole precedenti in combinazioni diverse. Il Grand Cafe Festival li usa tutti e termina la campagna senza creare un Day 31 nascosto.",
   "Four Friends": "Quattro amici",

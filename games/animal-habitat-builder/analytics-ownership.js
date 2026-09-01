@@ -5,7 +5,7 @@
   window.__weightplayAnimalHabitatBuilderAnalyticsInstalled = true;
 
   const GAME_ID = "animal-habitat-builder";
-  const GAME_VERSION = "v10";
+  const GAME_VERSION = "v11";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -56,7 +56,7 @@
   const eventInput = (event) => event?.detail === 0 ? "keyboard" : inputType;
   const stageFromLabel = () => {
     const match = document.querySelector("#stage-label")?.textContent?.match(/(\d+)/);
-    return bounded(match?.[1] || lastStage, 6) || 1;
+    return bounded(match?.[1] || lastStage, 30) || 1;
   };
   const moveCount = () => {
     const match = document.querySelector("#score-label")?.textContent?.match(/(\d+)\//);
@@ -109,14 +109,14 @@
       return;
     }
     if (target.matches("#stage-list button[data-stage]")) {
-      lastStage = bounded(target.dataset.stage, 6) || 1;
+      lastStage = bounded(target.dataset.stage, 30) || 1;
       resultJourneyActive = false;
       resultToStages = false;
       track("stage_start", { stage: lastStage, stage_bucket: lastStage, from: "stage", entry: "stage_card", input_type });
       return;
     }
     if (target.matches("#next") && !target.disabled) {
-      const nextStage = Math.min(6, stageFromLabel() + 1);
+      const nextStage = Math.min(30, stageFromLabel() + 1);
       lastStage = nextStage;
       resultJourneyActive = false;
       resultToStages = false;

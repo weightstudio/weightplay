@@ -3739,7 +3739,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Found {found} · Empty taps {mistakes}": "求 {found} · 空水龍頭 {mistakes}",
   "Found words, the current path, and star progress in this run will reset.": "本次運行中找到的單字、目前路徑和星進度將重設。",
   "Found!": "找到了！",
-  "Four chapters move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "四個章節從第一次解凍到分裂路線、漂流壓力和最終融化。路線的改變是透過可破壞和可建造的冰塊來改變的，而不是隱藏規則的改變。",
+  "Six chapters and 30 rooms move from a first thaw to split routes, drifter pressure, and a final melt. The route changes through breakable and buildable ice rather than hidden rule changes.": "六個章節和30個房間從第一次解凍到分裂路線、漂流壓力和最終融化。路線的改變是透過可破壞和可建造的冰塊來改變的，而不是隱藏規則的改變。",
   "Four clear colors and fixed boxes.": "四種清晰的顏色和固定的盒子。",
   "Four days pair earlier rules in different combinations. The Grand Cafe Festival uses all of them and ends the campaign without creating a hidden Day 31.": "四天將較早的規則以不同的組合配對。 Grand Cafe Festival 使用了所有這些並結束了活動，而沒有創建隱藏的第 31 天。",
   "Four Friends": "四個朋友",

@@ -385,18 +385,25 @@ body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid > .pyram
 
 @media (orientation: landscape) and (min-width: 1000px) {
   body[data-wp-game-id="pyramid-solitaire"] .tableau-area.variant-pyramid {
-    --classic-card-width: clamp(46px, min(10vw, 6.6vh), 70px);
+    /* The Battle canvas already scales its logical 390x788 envelope to the
+       physical desktop surface.  Letting card size grow to 70 logical pixels
+       applies that scale a second time at large 16:9 sizes, which pushes the
+       seventh row below the clipped tableau.  Keep the complete seven-row
+       pyramid inside the owned track; the canvas transform still enlarges
+       these cards on a large monitor. */
+    --classic-card-width: clamp(46px, 4.7vh, 52px);
+    gap: 0;
     overflow: hidden;
     padding-bottom: 0;
   }
   body[data-wp-game-id="pyramid-solitaire"] .stock-pile {
-    --pyramid-stock-card-width: clamp(46px, min(10vw, 6.6vh), 70px);
+    --pyramid-stock-card-width: clamp(46px, 4.7vh, 52px);
   }
   body[data-wp-game-id="pyramid-solitaire"] .board-middle {
-    min-height: calc(clamp(46px, min(10vw, 6.6vh), 70px) * 1.42 + 12px);
+    min-height: calc(clamp(46px, 4.7vh, 52px) * 1.42 + 12px);
   }
   body[data-wp-game-id="pyramid-solitaire"] .board-middle .classic-slot {
-    min-height: calc(clamp(46px, min(10vw, 6.6vh), 70px) * 1.42 + 4px);
+    min-height: calc(clamp(46px, 4.7vh, 52px) * 1.42 + 4px);
   }
 }
 
