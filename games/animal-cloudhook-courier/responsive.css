@@ -23,3 +23,26 @@
 @media (min-width: 1000px) and (max-height: 760px) {
   .battle-screen > #restartBtn { min-height: 54px; }
 }
+.wp-stage-header-action { min-width: 0; }
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  .main-grid { grid-template-columns: 300px minmax(0, 1fr); }
+  .main-grid .poster { width: 300px; }
+}
+
+/* Keep the compact landscape poster column deterministic even when the
+   first grid item has a wider intrinsic text minimum. */
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  .main-grid > :first-child { min-width: 0; }
+  .main-grid .poster { width: 300px; max-width: 300px; }
+}
+
+/* Cloudhook owns a compact in-Main Guide; give it the shared framed contract
+   while retaining its game-specific copy and placement. */
+.guide[data-wp-game-guide] {
+  margin-top: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #102b42;
+  box-shadow: 0 10px 24px #02091355;
+}

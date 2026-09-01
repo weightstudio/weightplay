@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-putt-trails/" />
-
     <link rel="canonical" href="https://weightplay.com/en/games/animal-putt-trails/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-putt-trails/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-putt-trails/" />
@@ -24,9 +23,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v6">
+  <meta name="weightplay-game-version" content="v15">
   <title>Animal Putt Trails | WeightPlay</title>
   <meta name="description" content="Read each trail, choose a line and power, then guide the ball around banks and gentle water to the flag." />
+  <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <style>
     :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ink:#233744; --muted:#5b7277; --cream:#fff9ec; --mint:#dff4e8; --leaf:#2f7d62; --gold:#f3b949; --coral:#e8755d; }
@@ -53,19 +53,20 @@
     .screen { display:none; }
     .screen.active { display:block; }
     .main-card, .stage-card, .guide-card, .result-card { background:rgba(255,255,255,.9); border:1px solid rgba(35,55,68,.12); border-radius:28px; box-shadow:0 18px 48px rgba(35,55,68,.12); }
-    .main-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,420px); gap:clamp(18px,5vw,56px); align-items:center; padding:clamp(20px,5vw,58px); margin-top:18px; }
+    .main-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,420px); grid-template-areas:"copy cover"; gap:clamp(18px,5vw,56px); align-items:center; padding:clamp(20px,5vw,58px); margin-top:18px; }
+    .main-card > div { grid-area:copy; min-width:0; }
     .eyebrow { color:var(--leaf); font-size:.8rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
     h1 { margin:.3rem 0 .8rem; font-size:clamp(2rem,5vw,4.5rem); line-height:.98; letter-spacing:-.04em; }
     h2 { margin:.2rem 0 .5rem; font-size:clamp(1.35rem,3vw,2rem); }
     p { line-height:1.55; }
     .lede { color:var(--muted); font-size:clamp(1rem,1.8vw,1.2rem); max-width:48ch; }
-    .cover { width:100%; height:auto; max-width:420px; justify-self:center; border-radius:24px; display:block; box-shadow:0 18px 36px rgba(18,63,61,.24); }
+    .cover { grid-area:cover; width:100%; height:auto; max-width:420px; justify-self:center; border-radius:24px; display:block; box-shadow:0 18px 36px rgba(18,63,61,.24); }
     .primary, .secondary { min-height:48px; border-radius:16px; padding:12px 20px; font-weight:800; }
     .primary { min-height:52px; }
     .primary { background:var(--leaf); color:#fff; box-shadow:0 8px 0 #205944; }
     .primary:active { transform:translateY(3px); box-shadow:0 5px 0 #205944; }
     .secondary { background:var(--mint); color:var(--ink); }
-    .progress { min-height:40px; display:flex; align-items:center; color:var(--leaf); font-weight:800; margin:.9rem 0 1.2rem; }
+    .progress { min-height:40px; display:flex; align-items:center; color:var(--leaf); font-weight:800; margin:.9rem 0 1.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .guide-card { margin-top:18px; padding:20px 22px; }
     .guide-card h2 { font-size:1.1rem; }
     .guide-card p { margin:.2rem 0 0; color:var(--muted); }
@@ -108,11 +109,15 @@
     [data-screen="battle"].active .battle-ad-reserve { position:fixed; z-index:6; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); bottom:0; width:auto; height:56px; min-height:56px; pointer-events:none; }
     .stage-choice[data-wp-stage-card] { cursor:pointer; }
     @media (max-width: 760px) {
-      .main-card { grid-template-columns:1fr; padding:24px; }
-      .cover { max-width:360px; order:-1; }
+      .main-card { grid-template-columns:1fr; grid-template-areas:"cover" "copy"; padding:20px; }
+      .cover { max-width:none; }
       .stage-list { grid-template-columns:1fr; }
       .stage-choice { min-height:88px; }
       h1 { font-size:clamp(2.2rem,12vw,3.6rem); }
+    }
+    @media (max-height:500px) and (orientation:landscape) {
+      .main-card { grid-template-columns:300px minmax(0,1fr); grid-template-areas:"cover copy"; gap:18px; padding:20px; }
+      .cover { max-width:300px; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; transition-duration:0.01ms !important; animation-duration:0.01ms !important; } }
   </style>
@@ -148,8 +153,7 @@
     "Timing",
     "Spatial Planning",
     "Family",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -170,13 +174,14 @@
         <label><span class="sr-only">Language</span><select id="localeSelect" class="locale" data-aria="language" aria-label="Language">
           <option value="en">English</option><option value="zh-tw">繁體中文</option><option value="zh-cn">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-br">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option>
         </select></label>
-        <button id="settingsSoundButton" class="settings-sound" type="button" data-sound-toggle aria-pressed="false">Sound: on</button>
+        <button id="settingsSoundButton" class="settings-sound" type="button" data-sound-toggle aria-pressed="true">Sound: on</button>
       </div>
     </header>
 
     <main>
       <section id="mainScreen" class="screen active" data-screen="main">
         <article class="main-card">
+          <img class="cover" src="assets/animal-putt-trails-cover-v2.png" alt="Animal Putt Trails game artwork" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div>
             <div class="eyebrow" data-copy="eyebrow">Family trail · 6+</div>
             <h1 data-copy="title">Animal Putt Trails</h1>
@@ -184,7 +189,6 @@
             <p id="mainProgress" class="progress" aria-live="polite"></p>
             <button id="startButton" class="primary" data-wp-main-start data-copy="start">Start the trail</button>
           </div>
-          <img class="cover" src="assets/animal-putt-trails-cover-v2.png" alt="Animal Putt Trails game artwork" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
         </article>
       </section>
       <section class="guide-card" data-wp-game-guide aria-labelledby="mainGuideTitle"><h2 id="mainGuideTitle" data-copy="howTo">How to play</h2><p data-copy="guide">Drag back from the ball to aim. Release to putt. Short strokes are easier to control; use the banks and stop before the water.</p></section>
@@ -192,7 +196,7 @@
       <section id="stageScreen" class="screen stage-canvas" data-screen="stage" data-wp-standard-stage-screen hidden>
         <article class="stage-card">
           <div class="stage-head"><button id="stageBack" class="back" type="button" data-wp-return="stage" data-aria="back" aria-label="Back">←</button><div><div class="eyebrow" data-copy="stageEyebrow">Choose a trail</div><h2 data-copy="stages">Trail map</h2></div><img class="guide-art" src="assets/animal-putt-trails-orla-guide-v1.png" alt="" aria-hidden="true" width="1024" height="1536"></div>
-          <div id="stageList" class="stage-list" data-wp-stage-rail role="list"></div>
+    <div id="stageList" class="stage-list" data-wp-stage-rail role="tablist"></div>
           <div class="stage-pager" aria-label="Trail pages"><button id="stagePageBack" type="button" hidden>←</button><button id="stagePageNext" type="button">→</button></div>
           <p id="stageBest" class="best" aria-live="polite"></p>
         </article>
@@ -200,16 +204,16 @@
 
       <section id="battleScreen" class="screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <article class="battle-card">
-          <div class="battle-head"><button id="battleBack" class="back" type="button" data-wp-return="battle" data-aria="back" aria-label="Back">←</button><h2 id="holeTitle">Meadow Gate</h2><button id="soundButton" class="sound" type="button" data-wp-battle-utility aria-pressed="false">Sound: on</button></div>
+          <div class="battle-head"><button id="battleBack" class="back" type="button" data-wp-return="battle" data-aria="back" aria-label="Back">←</button><h2 id="holeTitle">Meadow Gate</h2><button id="soundButton" class="sound" type="button" data-wp-battle-utility aria-pressed="true">Sound: on</button></div>
           <div class="hud"><span id="parLabel">Par 3</span><span id="strokeLabel">Strokes 0</span><span id="acornLabel">Acorns 0</span></div>
-          <div class="canvas-wrap"><canvas id="courseCanvas" width="960" height="720" data-aria="course" aria-label="Animal Putt Trails course"></canvas><section id="resultCard" class="result-card" role="dialog" aria-modal="true" hidden><div><div class="eyebrow" data-copy="holeClear">Trail clear</div><h2 id="resultTitle">Nice line!</h2><p id="resultCopy"></p><div class="result-actions"><button id="retryButton" class="secondary" type="button" data-copy="retry">Retry hole</button><button id="nextButton" class="primary" type="button" data-copy="next">Next hole</button><button id="mapButton" class="secondary" type="button" data-copy="map">Trail map</button></div></div></section></div>
+          <div class="canvas-wrap"><canvas id="courseCanvas" width="960" height="720" tabindex="0" data-aria="course" aria-describedby="battleHelp" aria-label="Animal Putt Trails course"></canvas><section id="resultCard" class="result-card" role="dialog" aria-modal="true" hidden><div><div class="eyebrow" data-copy="holeClear">Trail clear</div><h2 id="resultTitle">Nice line!</h2><p id="resultCopy"></p><div class="result-actions"><button id="retryButton" class="secondary" type="button" data-copy="retry">Retry hole</button><button id="nextButton" class="primary" type="button" data-copy="next">Next hole</button><button id="mapButton" class="secondary" type="button" data-copy="map">Trail map</button></div></div></section></div>
           <p id="battleHelp" class="battle-help" role="status" aria-live="polite"></p><button id="aimAction" type="button" data-wp-primary-action aria-label="Drag back from the ball, then release.">◎</button>
         </article>
         <div class="battle-ad-reserve" aria-hidden="true"></div>
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260829-fifth-hole-v6"></script>
+  <script src="game.js?v=20260901-main-layout-v15"></script>
 <section class="game-page-info game-page-info-static" aria-label="Animal Putt Trails game information">
 
     <div class="game-info-hero">

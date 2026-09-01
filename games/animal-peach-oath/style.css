@@ -186,10 +186,10 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .reward-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .reward-row span { padding: 8px 12px; border-radius: 12px; color: #2a2110; background: #ffe39a; font-weight: 900; }
 .result-actions { display: grid; grid-template-columns: repeat(3,minmax(100px,1fr)); gap: 8px; width: min(100%,520px); margin: 6px auto 0; }
-.coach { z-index: 80; background: rgba(8,18,29,.94); }
+.coach { z-index: 80; pointer-events: none; background: rgba(8,18,29,.94); }
 .coach span { color: #ffb5aa; font-weight: 900; }
 .coach h2 { font-size: clamp(26px,6vw,42px); }
-.coach button { width: min(100%,320px); margin: 8px auto 0; }
+.coach button { width: min(100%,320px); margin: 8px auto 0; pointer-events: auto; }
 
 .toast { position: absolute; z-index: 100; left: 50%; bottom: 138px; max-width: calc(100% - 32px); transform: translateX(-50%); padding: 10px 16px; border-radius: 99px; color: #222; background: #fff0a8; font-size: 12px; font-weight: 900; box-shadow: 0 10px 30px rgba(0,0,0,.35); animation: toast 2.2s ease forwards; }
 @keyframes toast { 0% { opacity: 0; transform: translate(-50%,10px); } 12%,78% { opacity: 1; transform: translate(-50%,0); } 100% { opacity: 0; } }
@@ -259,4 +259,9 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+@media (min-width:700px) and (max-height:520px) and (orientation:landscape) {
+  .main-card { grid-template-columns: 300px minmax(0,1fr); }
+  .main-card .cover { width: 300px; }
 }
