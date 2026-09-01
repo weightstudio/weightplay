@@ -692,22 +692,23 @@
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     const cfg = CONFIG[id];
+    const assetPath = (name) => ["peg-solitaire", "sliding-15"].includes(id) ? `/assets/${name}` : `../../assets/${name}`;
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
-    const poster = id === "naval-battle"
-      ? "../../assets/naval-battle-cover-v1.webp"
+    const poster = assetPath(id === "naval-battle"
+      ? "naval-battle-cover-v1.webp"
       : id === "sliding-15"
-      ? "../../assets/sliding-15-cover-v1.webp"
+      ? "sliding-15-cover-v1.webp"
       : id === "lights-out"
-      ? "../../assets/lights-out-cover-v2.webp"
+      ? "lights-out-cover-v2.webp"
       : id === "peg-solitaire"
-        ? "../../assets/peg-solitaire-cover-v2.webp"
+        ? "peg-solitaire-cover-v2.webp"
           : id === "code-breaker"
-          ? "../../assets/code-breaker-cover-v2.webp"
+          ? "code-breaker-cover-v2.webp"
           : id === "four-in-a-row"
-            ? "../../assets/four-in-a-row-cover-v1.webp"
-            : "../../assets/classic-logic-lab-cover.webp";
+            ? "four-in-a-row-cover-v1.webp"
+            : "classic-logic-lab-cover.webp");
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
@@ -715,7 +716,7 @@
     app.root.innerHTML = `
       <div class="logic-lab">
           <main class="logic-main main-screen" id="logicMain" data-screen="main">
-          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
+          <header class="logic-header wp-main-shell-header"><a class="logic-return wp-shell-return" data-wp-return="main" href="/" aria-label="${esc(t("back"))}"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="${assetPath("weightplay-logo.png")}" alt=""></a><h1 class="wp-shell-main-title">${esc(title)}</h1><div class="logic-header-tools wp-shell-settings"><button id="settingsButton" class="logic-icon-button wp-shell-settings-button" data-wp-settings type="button" aria-label="${esc(t("settings"))}" aria-expanded="false">⚙</button><div id="settingsPanel" class="logic-settings wp-shell-settings-popover" hidden><h2>${esc(t("settings"))}</h2><div class="logic-setting-row wp-shell-sound-row"><span>${esc(t("sound"))}</span><button id="soundButton" type="button"></button></div><label class="logic-setting-row"><span>${esc(t("language"))}</span><select id="localePicker" aria-label="${esc(t("language"))}"></select></label></div></div></header>
           <section class="logic-hero"><div class="logic-poster"><img class="main-poster" src="${poster}" alt=""></div><div class="logic-copy main-copy"><p class="logic-kicker">${esc(preview)}</p><h2>${esc(title)}</h2><p>${esc(text(cfg.blurb))}</p><div class="logic-facts"><span>${esc(text(cfg.type))}</span><span>${esc(t("moves"))} + ${esc(t("hint"))}</span><span>${esc(text(mineCopy.inputSupport))}</span></div><div class="logic-progress-slot" data-wp-main-progress>${esc(t("ready"))}</div><button id="startButton" class="logic-primary" data-wp-main-start type="button">${esc(t("start"))}</button></div></section>
           <section class="logic-guide"><h2>${esc(t("how"))}</h2><p>${esc(text(cfg.blurb))}</p><h3>${esc(t("ready"))}</h3><p>${esc(text(quickStart))}</p></section>
         </main>
@@ -723,6 +724,11 @@
         <section class="logic-battle-screen battle-screen" id="logicBattle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" data-wp-return="battle" data-wp-battle-utility type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area battle-canvas"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div id="logicLeave" class="logic-leave" hidden role="dialog" aria-modal="true" aria-labelledby="logicLeaveTitle"><div class="logic-leave-card"><h2 id="logicLeaveTitle">${esc(text(codeCampaignCopy.stages))}</h2><p>${esc(text(codeCampaignCopy.stageStart))}</p><div class="logic-result-actions"><button id="leaveContinue" class="logic-primary" type="button">${esc(t("continue"))}</button><button id="leaveStages" class="logic-secondary" type="button">${esc(text(codeCampaignCopy.stages))}</button></div></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultStages" class="logic-secondary" type="button" hidden>${esc(text(codeCampaignCopy.stages))}</button><button id="resultNext" class="logic-primary" type="button" hidden>${esc(text(codeCampaignCopy.nextStage))}</button><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
         <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div></div>`;
     app.main = app.root.querySelector("#logicMain"); app.stage = app.root.querySelector("#logicStage"); app.stageSound = app.root.querySelector("#stageSound"); app.stageRail = app.root.querySelector("#stageRail"); app.stageProgress = app.root.querySelector("#stageProgress"); app.stageStatus = app.root.querySelector("#stageStatus"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip"); app.currentStage = null;
+    if (id !== "code-breaker") {
+      app.stage?.removeAttribute("data-screen");
+      app.stage?.removeAttribute("data-wp-standard-stage-screen");
+      app.stage?.removeAttribute("data-wp-logical-stage-canvas");
+    }
     const picker = app.root.querySelector("#localePicker"); for (const key of LOCALES) { const option = document.createElement("option"); option.value = key; option.textContent = localeLabels[key]; option.selected = key === locale; picker.append(option); }
     const settings = app.root.querySelector("#settingsPanel"); const settingsButton = app.root.querySelector("#settingsButton"); settingsButton.addEventListener("click", () => { settings.hidden = !settings.hidden; settingsButton.setAttribute("aria-expanded", String(!settings.hidden)); });
     app.root.querySelector("#soundButton").addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });

@@ -52,3 +52,157 @@
   .result-guide-art { width: min(100%, 145px); max-height: 165px; }
   .gate-icon { width: 64px; height: 54px; }
 }
+
+/* Interface 6 owns one responsive shell across Main, Stage, and Battle. */
+body.wp-shell-stage-active .topbar,
+body.wp-shell-battle-active .topbar {
+  display: none !important;
+}
+
+#mainScreen .main-poster {
+  object-fit: cover;
+}
+
+#mainProgress {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+#stageScreen[data-wp-standard-stage-screen] {
+  display: grid;
+  grid-template-rows: 60px minmax(0, 1fr);
+  gap: 12px;
+  align-content: stretch;
+  padding: 10px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(180deg, #173d4aee, #1e6570dd), var(--wp-stage-art);
+  background-position: center;
+  background-size: cover;
+  color: #f8fafc;
+}
+
+#stageScreen[data-wp-standard-stage-screen] .stage-header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 56px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgb(13 27 45 / 82%);
+}
+
+#stageScreen[data-wp-standard-stage-screen] .stage-header > div {
+  min-width: 0;
+  text-align: center;
+}
+
+#stageScreen[data-wp-standard-stage-screen] .stage-header h2,
+#stageScreen[data-wp-standard-stage-screen] .stage-header .eyebrow {
+  margin: 0;
+  color: #f8fafc;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 55%);
+}
+
+#stageScreen[data-wp-standard-stage-screen] .stage-rail {
+  align-self: center;
+  width: 100%;
+  min-height: 198px;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  border: 0;
+  border-radius: 0;
+  background-image: linear-gradient(180deg, #ffffffdb, #ffffffed), url("assets/animal-river-gates-background-v1.webp");
+  background-size: cover;
+  background-position: center;
+  color: var(--ink);
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .battle-header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 4px;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .battle-header > div:not(.battle-utility) {
+  min-width: 0;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .battle-header h2,
+#battleScreen[data-wp-logical-battle-canvas] .battle-header .eyebrow {
+  margin: 0;
+}
+
+.battle-utility {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .prompt,
+#battleScreen[data-wp-logical-battle-canvas] .rule {
+  margin: 0;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .gate-grid {
+  margin: 6px 0;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .battle-actions {
+  margin-top: 0;
+}
+
+#battleScreen[data-wp-logical-battle-canvas] .status {
+  margin: 0;
+}
+
+.battle-ad-reserve {
+  height: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#battleScreen:not([hidden]) + .battle-ad-reserve {
+  height: 56px;
+  min-height: 56px;
+}
+
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="animal-river-gates"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+}
+
+@media (max-width: 699px) {
+  #stageScreen[data-wp-standard-stage-screen] {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  #stageScreen[data-wp-standard-stage-screen] .stage-header h2 {
+    font-size: 1.25rem;
+  }
+
+  #battleScreen[data-wp-logical-battle-canvas] {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header {
+    gap: 6px;
+  }
+
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header h2 {
+    font-size: 1.35rem;
+  }
+}

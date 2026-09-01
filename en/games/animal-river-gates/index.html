@@ -20,15 +20,20 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-river-gates/" />
     <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="theme-color" content="#31566a" />
   <title>River Gates | WeightPlay</title>
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-river-gates" />
   <meta name="weightplay-game-version" content="v3" />
   <meta name="weightplay-interface-version" content="6" />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-  <link rel="stylesheet" href="art.css?v=20260901-river-gates-v3-art-pack" />
+  <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260902-stage-contract-v1" />
+  <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260902-battle-contract-v1" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-river-gates-guide-v1" />
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260902-shell-contract-v1" />
+  <script defer src="../../src/game-page-info.js?v=20260902-river-gates-guide-v1"></script>
+  <link rel="stylesheet" href="style.css?v=20260902-river-gates-interface-v4" />
+  <link rel="stylesheet" href="art.css?v=20260902-river-gates-interface-v4" />
   <meta name="description" content="Toggle three friendly river gates to send the right amount of water to every animal garden." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -71,30 +76,20 @@
 }
     </script>
   </head>
-<body data-runtime-localize="off">
+<body data-runtime-localize="off" data-screen="main" data-audience="general" data-wp-game-id="animal-river-gates" data-wp-combined-sound="true">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">≈</div><p data-i18n="loading">Waking the river…</p></div>
   <main id="app" hidden>
-    <header class="topbar"><button id="backBtn" class="icon-btn" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">River Gates</strong><button id="settingsBtn" class="icon-btn" type="button" aria-label="Settings">⚙</button></header>
     <section id="mainScreen" class="screen panel" data-screen="main">
-      <div class="cover-wrap"><img src="assets/animal-river-gates-cover-v1.webp" alt="River Gates game artwork" width="1536" height="1024" /><span class="cover-badge" data-i18n="kicker">A calm flow puzzle</span></div>
+      <header class="topbar wp-main-shell-header"><button id="backBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="main" aria-label="Back"><span class="wp-shell-return-arrow">←</span><img src="/assets/weightplay-logo.png" alt="River Gates game artwork" width="28" height="28" /></button><strong data-runtime-localize="off">River Gates</strong><button id="settingsBtn" class="icon-btn wp-shell-legacy-control" type="button" aria-label="Settings" hidden>⚙</button></header>
+      <div class="cover-wrap"><img class="main-poster" src="assets/animal-river-gates-cover-v1.webp" alt="River Gates moonlit station" width="1536" height="1024" /><span class="cover-badge" data-i18n="kicker">A calm flow puzzle</span></div>
       <img class="guide-art" src="assets/animal-river-gates-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" />
       <p class="eyebrow" data-i18n="world">Willow river station</p><h1 data-runtime-localize="off">River Gates</h1>
-      <p class="intro" data-i18n="intro">Read the water plan, toggle three gates, and send the right flow to every animal garden.</p>
+      <p class="intro main-summary" data-i18n="intro">Read the water plan, toggle three gates, and send the right flow to every animal garden.</p>
+      <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">Water plans 1 / 3</div>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open the first water plan</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a water plan</button></div>
       <p id="best" class="best"></p>
     </section>
-    <section id="stageScreen" class="screen panel" data-screen="stage" hidden><p class="eyebrow" data-i18n="chapter">Water notebook</p><h2 data-i18n="choose">Choose a water plan</h2><div id="stageList" class="stage-list"></div></section>
-    <section id="battleScreen" class="screen panel" data-screen="battle" hidden>
-      <div class="battle-head"><div><p class="eyebrow" data-i18n="round">Water plan</p><h2 id="planTitle">Meadow sluice</h2></div><span id="progressPill" class="pill">1 / 3</span></div>
-      <p id="prompt" class="prompt"></p><p id="rule" class="rule"></p><div id="gateGrid" class="gate-grid" role="group" aria-label="River gates"></div>
-      <p id="flow" class="flow" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-i18n="check" disabled>Check the flow</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset gates</button></div>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-    </section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-river-gates-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">≈</div><p class="eyebrow" data-i18n="finished">Flow settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every garden has water!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next water plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a water plan</button></div></section>
-    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
-  </main>
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260901-river-gates-v3-art-pack"></script><script src="game.js?v=20260901-river-gates-v3-art-pack"></script>
-<section class="game-page-info game-page-info-static" aria-label="River Gates game information">
+    <section class="game-page-info game-page-info-static" aria-label="River Gates game information">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>River Gates</h2><p>Toggle three friendly river gates to send the right amount of water to every animal garden.</p></div>
@@ -112,5 +107,19 @@
 
     </div>
   </section>
+    <section id="stageScreen" class="screen panel stage-canvas" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-river-gates-cover-v1.webp" style="--wp-stage-art:url('assets/animal-river-gates-cover-v1.webp')" hidden><header class="stage-header"><button id="stageBack" class="icon-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span class="wp-shell-return-arrow">←</span></button><div><p class="eyebrow" data-i18n="chapter">Water notebook</p><h2 data-i18n="choose">Choose a water plan</h2></div><button id="stageUtilityBtn" class="icon-btn utility-button wp-shell-legacy-control" type="button" data-wp-stage-utility aria-label="Settings" hidden>⚙</button></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="tablist" aria-label="Water plan selector"></div></section>
+    <div class="wp-stage-physical-reserve" aria-hidden="true"></div>
+    <section id="battleScreen" class="screen panel battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden>
+      <header class="battle-header"><button id="battleBackBtn" class="icon-btn wp-shell-return" type="button" data-wp-return="battle" aria-label="Back"><span class="wp-shell-return-arrow">←</span></button><div><p class="eyebrow" data-i18n="round">Water plan</p><h2 id="planTitle">Meadow sluice</h2></div><div class="battle-utility"><span id="progressPill" class="pill">1 / 3</span><button id="battleUtilityBtn" class="icon-btn utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div></header>
+      <p id="prompt" class="prompt"></p><p id="rule" class="rule"></p><div id="gateGrid" class="gate-grid" role="group" aria-label="River gates"></div>
+      <p id="flow" class="flow" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary" type="button" data-i18n="check" disabled>Check the flow</button><button id="resetBtn" class="secondary" type="button" data-i18n="reset">Reset gates</button></div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+    <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-river-gates-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">≈</div><p class="eyebrow" data-i18n="finished">Flow settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every garden has water!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next water plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a water plan</button></div></section>
+    <section id="settingsPanel" class="modal" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
+  </main>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script><script src="../../src/analytics.js"></script><script src="locales.js?v=20260902-river-gates-interface-v4"></script><script src="game.js?v=20260902-river-gates-interface-v4"></script><script src="../../src/stage-selector-standard.js?v=20260902-stage-contract-v1"></script><script src="../../src/battle-canvas-standard.js?v=20260902-battle-contract-v1"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260902-shell-contract-v1"></script>
 </body>
 </html>
