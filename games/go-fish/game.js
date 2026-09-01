@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v20";
   const COPY = {
     en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players in the preview build." },
     "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。預覽版可選擇兩人、三人或四人。" },
@@ -32,11 +32,140 @@
     hi: "हाल के सवाल: {items}",
     ar: "أحدث الأسئلة: {items}",
   };
+  const REPLAY_GOAL_KEY = "weightplay:go-fish:replay-goal:v20";
+  const REPLAY_GOAL_COPY = {
+    en: { label: "Replay goal", next: "Complete the {rank} book in a fresh deal.", full: "Complete every book in a fresh deal.", complete: "Replay goal complete: {rank} book.", fullComplete: "Replay goal complete: every book.", pending: "Start a fresh deal to begin this goal." },
+    "zh-Hant": { label: "重玩目標", next: "在新牌局完成 {rank} 組牌。", full: "在新牌局完成全部組牌。", complete: "重玩目標完成：{rank} 組牌。", fullComplete: "重玩目標完成：全部組牌。", pending: "開始新牌局以啟動這個目標。" },
+    "zh-Hans": { label: "重玩目标", next: "在新牌局完成 {rank} 组牌。", full: "在新牌局完成全部组牌。", complete: "重玩目标完成：{rank} 组牌。", fullComplete: "重玩目标完成：全部组牌。", pending: "开始新牌局以启动这个目标。" },
+    ja: { label: "リプレイ目標", next: "新しいディールで {rank} の組を完成させる。", full: "新しいディールですべての組を完成させる。", complete: "リプレイ目標達成：{rank} の組。", fullComplete: "リプレイ目標達成：すべての組。", pending: "新しいディールを始めてこの目標に挑戦。" },
+    ko: { label: "다시 하기 목표", next: "새 딜에서 {rank} 세트를 완성하세요.", full: "새 딜에서 모든 세트를 완성하세요.", complete: "다시 하기 목표 완료: {rank} 세트.", fullComplete: "다시 하기 목표 완료: 모든 세트.", pending: "새 딜을 시작해 이 목표를 시작하세요." },
+    es: { label: "Meta de repetición", next: "Completa el grupo de {rank} en una partida nueva.", full: "Completa todos los grupos en una partida nueva.", complete: "Meta de repetición cumplida: grupo de {rank}.", fullComplete: "Meta de repetición cumplida: todos los grupos.", pending: "Inicia una partida nueva para comenzar esta meta." },
+    "pt-BR": { label: "Meta de replay", next: "Complete o grupo de {rank} em uma nova rodada.", full: "Complete todos os grupos em uma nova rodada.", complete: "Meta de replay concluída: grupo de {rank}.", fullComplete: "Meta de replay concluída: todos os grupos.", pending: "Comece uma nova rodada para iniciar esta meta." },
+    fr: { label: "Objectif de revanche", next: "Complétez la famille de {rank} dans une nouvelle manche.", full: "Complétez toutes les familles dans une nouvelle manche.", complete: "Objectif de revanche atteint : famille de {rank}.", fullComplete: "Objectif de revanche atteint : toutes les familles.", pending: "Commencez une nouvelle manche pour lancer cet objectif." },
+    de: { label: "Wiederholungsziel", next: "Vervollständige den Vierling {rank} in einer neuen Runde.", full: "Vervollständige alle Vierlinge in einer neuen Runde.", complete: "Wiederholungsziel geschafft: Vierling {rank}.", fullComplete: "Wiederholungsziel geschafft: alle Vierlinge.", pending: "Starte eine neue Runde, um dieses Ziel zu beginnen." },
+    it: { label: "Obiettivo replay", next: "Completa la combinazione di {rank} in una nuova partita.", full: "Completa tutte le combinazioni in una nuova partita.", complete: "Obiettivo replay completato: combinazione di {rank}.", fullComplete: "Obiettivo replay completato: tutte le combinazioni.", pending: "Avvia una nuova partita per iniziare questo obiettivo." },
+    ru: { label: "Цель повтора", next: "Соберите четвёрку {rank} в новой партии.", full: "Соберите все четвёрки в новой партии.", complete: "Цель повтора выполнена: четвёрка {rank}.", fullComplete: "Цель повтора выполнена: все четвёрки.", pending: "Начните новую партию, чтобы запустить эту цель." },
+    hi: { label: "दोबारा खेलने का लक्ष्य", next: "नए खेल में {rank} का सेट पूरा करें।", full: "नए खेल में सभी सेट पूरे करें।", complete: "दोबारा खेलने का लक्ष्य पूरा: {rank} सेट।", fullComplete: "दोबारा खेलने का लक्ष्य पूरा: सभी सेट।", pending: "इस लक्ष्य को शुरू करने के लिए नया खेल शुरू करें।" },
+    ar: { label: "هدف الإعادة", next: "أكمل مجموعة {rank} في جولة جديدة.", full: "أكمل كل المجموعات في جولة جديدة.", complete: "اكتمل هدف الإعادة: مجموعة {rank}.", fullComplete: "اكتمل هدف الإعادة: كل المجموعات.", pending: "ابدأ جولة جديدة لبدء هذا الهدف." },
+  };
   const locale = document.documentElement.lang || "en";
   const copy = COPY[locale] || COPY.en;
   const recentAskCopy = RECENT_ASK_COPY[locale] || RECENT_ASK_COPY.en;
   const recentAsks = [];
   let selectedOpponentName = "";
+  let lastReplayResultSignature = "";
+
+  function readReplayGoal() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(REPLAY_GOAL_KEY) || "null");
+      if (!parsed || typeof parsed !== "object") return null;
+      const rank = Number(parsed.rank);
+      const full = parsed.full === true;
+      if (!full && (!Number.isInteger(rank) || rank < 1 || rank > 13)) return null;
+      return {
+        rank: full ? null : rank,
+        rankLabel: typeof parsed.rankLabel === "string" ? parsed.rankLabel : "",
+        full,
+        active: parsed.active === true,
+        completed: parsed.completed === true,
+      };
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function writeReplayGoal(goal) {
+    try { localStorage.setItem(REPLAY_GOAL_KEY, JSON.stringify(goal)); } catch (_error) {}
+  }
+
+  function readReplayTarget() {
+    const progress = document.querySelector(".card-book-progress");
+    const target = progress?.querySelector("[data-go-fish-target-rank], [data-go-fish-target-full]");
+    if (!progress || !target) return null;
+    const full = target.hasAttribute("data-go-fish-target-full");
+    const rank = Number(target.dataset.goFishTargetRank);
+    if (!full && (!Number.isInteger(rank) || rank < 1 || rank > 13)) return null;
+    return { rank: full ? null : rank, rankLabel: target.dataset.goFishTargetLabel || "", full };
+  }
+
+  function captureReplayGoalFromResult() {
+    const overlay = document.querySelector("#resultOverlay");
+    if (!overlay || overlay.hidden) return;
+    const target = readReplayTarget();
+    if (!target) return;
+    const signature = `${target.full ? "full" : target.rank}|${target.rankLabel}|${document.querySelector("#resultText")?.textContent || ""}`;
+    if (signature === lastReplayResultSignature) return;
+    lastReplayResultSignature = signature;
+    writeReplayGoal({ ...target, active: false, completed: false, createdAt: new Date().toISOString() });
+  }
+
+  function activateReplayGoal() {
+    const goal = readReplayGoal();
+    if (!goal) return;
+    goal.active = true;
+    goal.completed = false;
+    writeReplayGoal(goal);
+  }
+
+  function markReplayGoalComplete() {
+    const goal = readReplayGoal();
+    if (!goal || !goal.active || goal.completed) return;
+    const progress = document.querySelector(".card-book-progress");
+    const ranks = String(progress?.dataset.goFishBookRanks || "").split(",").filter(Boolean).map(Number);
+    if (goal.full ? ranks.length >= 13 : ranks.includes(goal.rank)) {
+      goal.completed = true;
+      writeReplayGoal(goal);
+    }
+  }
+
+  function replayGoalText(goal) {
+    const copy = REPLAY_GOAL_COPY[locale] || REPLAY_GOAL_COPY.en;
+    let template;
+    if (goal.completed) template = goal.full ? copy.fullComplete : copy.complete;
+    else if (!goal.active) template = copy.pending;
+    else template = goal.full ? copy.full : copy.next;
+    return `${copy.label}: ${template.replace("{rank}", goal.rankLabel || "?")}`;
+  }
+
+  function renderReplayGoal(host, resultSurface = false) {
+    if (!host) return;
+    let node = host.querySelector("[data-go-fish-replay-goal]");
+    const goal = readReplayGoal();
+    if (!goal) {
+      node?.remove();
+      return;
+    }
+    if (!node) {
+      node = document.createElement("p");
+      node.className = "card-choice-summary card-go-fish-replay-goal";
+      node.dataset.goFishReplayGoal = "true";
+      node.dataset.runtimeLocalize = "off";
+      node.setAttribute("role", "status");
+      node.setAttribute("aria-live", "polite");
+      if (resultSurface) {
+        const actions = host.querySelector(".result-actions");
+        if (actions) host.insertBefore(node, actions);
+        else host.append(node);
+      } else host.prepend(node);
+    }
+    const text = replayGoalText(goal);
+    if (node.textContent !== text) node.textContent = text;
+  }
+
+  function syncReplayGoalSurface() {
+    markReplayGoalComplete();
+    captureReplayGoalFromResult();
+    renderReplayGoal(document.querySelector(".result-card"), true);
+    renderReplayGoal(document.querySelector("#cardGameCenter"));
+  }
+
+  function observeReplayGoal() {
+    const center = document.querySelector("#cardGameCenter");
+    if (center) new MutationObserver(syncReplayGoalSurface).observe(center, { childList: true, subtree: true });
+    const overlay = document.querySelector("#resultOverlay");
+    if (overlay) new MutationObserver(syncReplayGoalSurface).observe(overlay, { attributes: true, attributeFilter: ["hidden"], childList: true, subtree: true });
+    syncReplayGoalSurface();
+  }
 
   function resetRecentAsks() {
     recentAsks.length = 0;
@@ -119,6 +248,7 @@
     const players = event.target?.closest?.('[data-action="players"]');
     if (players) {
       resetRecentAsks();
+      activateReplayGoal();
       return;
     }
     const ask = event.target?.closest?.('[data-action="ask"]');
@@ -134,11 +264,13 @@
     }
     if (event.target?.closest?.("#startBtn, #restartBtn, #newGameBtn, #resultNewGame, #resultRestart, #battleRestartBtn, #battleNewBtn")) {
       resetRecentAsks();
+      activateReplayGoal();
     }
   }, true);
 
   window.WPCardGamesNext?.mount({ id: "go-fish" });
   observeBattleRecord();
+  observeReplayGoal();
   applyLocaleOwnedEntryCopy();
-  [40, 120, 300, 600].forEach((delay) => window.setTimeout(applyLocaleOwnedEntryCopy, delay));
+  [40, 120, 300, 600].forEach((delay) => window.setTimeout(() => { applyLocaleOwnedEntryCopy(); syncReplayGoalSurface(); }, delay));
 })();

@@ -60,6 +60,21 @@
     hi: "सर्वश्रेष्ठ चेन: {best} कार्ड · टेबल पर 35 कार्ड",
     ar: "أفضل سلسلة: {best} بطاقة · 35 بطاقة على الطاولة",
   };
+  const GOLF_INVALID_SELECTION_COPY = {
+    en: "Choose an exposed card one rank above or below Waste.",
+    "zh-Hant": "請選擇比棄牌區高一級或低一級的明牌。",
+    "zh-Hans": "请选择比弃牌区高一级或低一级的明牌。",
+    ja: "捨て札より1つ上か下の表向きカードを選びます。",
+    ko: "버린 카드보다 한 단계 높거나 낮은 공개 카드를 고르세요.",
+    es: "Elige una carta expuesta un rango por encima o por debajo del descarte.",
+    "pt-BR": "Escolha uma carta exposta um valor acima ou abaixo do descarte.",
+    fr: "Choisissez une carte visible juste au-dessus ou au-dessous de la défausse.",
+    de: "Wähle eine offene Karte genau über oder unter der Ablage.",
+    it: "Scegli una carta scoperta di un valore sopra o sotto lo scarto.",
+    ru: "Выберите открытую карту на один ранг выше или ниже сброса.",
+    hi: "डिस्कार्ड से एक रैंक ऊपर या नीचे का खुला कार्ड चुनें।",
+    ar: "اختر بطاقة مكشوفة أعلى أو أدنى بدرجة من المهملات.",
+  };
   const formatReplayGoal = (template, target, best) => template
     .replaceAll("{target}", String(target))
     .replaceAll("{best}", String(best));
@@ -75,6 +90,41 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "golf", id: "golf-solitaire" });
     if (!view || typeof view.showResult !== "function") return;
+    const invalidStyle = document.createElement("style");
+    invalidStyle.dataset.wpGolfInvalidFeedback = "true";
+    invalidStyle.textContent = `
+      .board-status[data-state="golf-invalid"] { color: var(--classic-accent); animation: golf-invalid-selection-cue 480ms cubic-bezier(.2,.8,.3,1); }
+      @keyframes golf-invalid-selection-cue {
+        0% { opacity: .45; transform: scale(.96); }
+        45% { opacity: 1; transform: scale(1.04); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+    `;
+    document.head.append(invalidStyle);
+    const baseFeedback = view.feedback.bind(view);
+    const showInvalidSelectionCue = () => {
+      const locale = view.locale || document.documentElement.lang || "en";
+      const message = GOLF_INVALID_SELECTION_COPY[locale] || GOLF_INVALID_SELECTION_COPY.en;
+      const status = view.nodes?.boardStatus;
+      if (status) delete status.dataset.state;
+      baseFeedback(message);
+      if (!status || view.game?.won || view.game?.lost) return;
+      status.dataset.state = "golf-invalid";
+      clearTimeout(view.statusTimer);
+      view.statusTimer = setTimeout(() => {
+        if (status && !view.game?.won && !view.game?.lost) {
+          delete status.dataset.state;
+          status.textContent = "";
+        }
+      }, 1800);
+    };
+    view.feedback = (message) => {
+      if (view.config?.variant === "golf" && message === view.t("wrong")) {
+        showInvalidSelectionCue();
+        return;
+      }
+      baseFeedback(message);
+    };
     const mainProgress = document.getElementById("mainProgress") || (() => {
       const copy = document.querySelector(".main-copy");
       const start = document.getElementById("startBtn");
@@ -84,8 +134,10 @@
       node.className = "main-progress";
       node.dataset.wpMainProgress = "true";
       node.setAttribute("aria-live", "polite");
-      const owner = start.closest(".wp-standard-main-copy") || start.closest(".main-actions")?.parentElement || copy;
-      owner.insertBefore(node, start);
+      const actionGroup = start.closest(".main-actions");
+      const owner = actionGroup?.parentElement || start.closest(".wp-standard-main-copy") || copy;
+      const anchor = actionGroup?.parentElement === owner ? actionGroup : start;
+      owner.insertBefore(node, anchor);
       return node;
     })();
     const battleHeader = document.querySelector("#battleScreen .battle-header");
