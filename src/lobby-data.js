@@ -4152,6 +4152,20 @@ for (const game of window.WONDER_LOBBY.games) {
   }
 }
 
+// Tower of Hanoi is now an owner-approved public General release. Keep the
+// localized base copy above and change only the release-state wiring here.
+const towerOfHanoiPublic = window.WONDER_LOBBY.games.find((game) => game.id === "tower-of-hanoi");
+if (towerOfHanoiPublic) {
+  towerOfHanoiPublic.status = "playable";
+  towerOfHanoiPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  towerOfHanoiPublic.previewVideo = "assets/previews/tower-of-hanoi-battle.webm";
+  delete towerOfHanoiPublic.internalTrial;
+}
+
 for (const id of ["animal-color-springs", "animal-word-trails"]) {
   const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
   if (!game) continue;

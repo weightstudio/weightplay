@@ -55,21 +55,21 @@
   };
   const checkersMetaDescription = (locale) => CHECKERS_META_DESCRIPTION[locale] || "";
   const BREAKOUT_META_DESCRIPTION = {
-    en: "Owner preview: clear 12 Breakout bricks with controlled shots. Not released publicly.",
-    "zh-Hant": "擁有者試玩：以受控發球清除 12 塊磚塊；目前尚未公開發行。",
-    "zh-Hans": "所有者试玩：用受控发球清除 12 块砖块；目前尚未公开发布。",
-    ja: "オーナープレビュー：操作したショットで12個のブロックを消します。一般公開はしていません。",
-    ko: "소유자 프리뷰: 조준한 서브로 벽돌 12개를 깨세요. 아직 공개 출시되지 않았습니다.",
-    es: "Vista previa para el propietario: rompe 12 ladrillos con tiros controlados. Aún no está publicado.",
-    "pt-BR": "Prévia para o proprietário: quebre 12 blocos com tiros controlados. Ainda não foi publicado.",
-    fr: "Aperçu propriétaire : cassez 12 briques avec des tirs maîtrisés. Le jeu n’est pas publié.",
-    de: "Besitzer-Vorschau: Zerstöre 12 Steine mit kontrollierten Schüssen. Noch nicht öffentlich veröffentlicht.",
-    it: "Anteprima per il proprietario: rompi 12 mattoni con tiri controllati. Non è ancora pubblicato.",
-    ru: "Превью для владельца: разбейте 12 блоков управляемыми ударами. Игра ещё не опубликована.",
-    hi: "मालिक का प्रीव्यू: नियंत्रित शॉट से 12 ईंटें तोड़ें। गेम अभी सार्वजनिक रूप से जारी नहीं हुआ है।",
-    ar: "معاينة للمالك: حطّم 12 لبنة بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
+    en: "Owner preview: choose from 30 Breakout stages and clear each lane with controlled shots. Not released publicly.",
+    "zh-Hant": "擁有者試玩：從 30 個打磚塊關卡選擇路線，以受控發球清除每條路線；目前尚未公開發行。",
+    "zh-Hans": "所有者试玩：从 30 个打砖块关卡选择路线，用受控发球清除每条路线；目前尚未公开发布。",
+    ja: "オーナープレビュー：30ステージから選び、操作したショットで各レーンを消します。一般公開はしていません。",
+    ko: "소유자 프리뷰: 30개 브레이크아웃 스테이지에서 선택해 조준한 서브로 각 레인을 깨세요. 아직 공개 출시되지 않았습니다.",
+    es: "Vista previa para el propietario: elige entre 30 fases de Rompe ladrillos y despeja cada carril con tiros controlados. Aún no está publicado.",
+    "pt-BR": "Prévia para o proprietário: escolha entre 30 fases de Quebra-blocos e limpe cada faixa com tiros controlados. Ainda não foi publicado.",
+    fr: "Aperçu propriétaire : choisissez parmi 30 stages et cassez chaque voie avec des tirs maîtrisés. Le jeu n’est pas publié.",
+    de: "Besitzer-Vorschau: Wähle aus 30 Brick-Breaker-Stufen und räume jede Spalte mit kontrollierten Schüssen. Noch nicht öffentlich.",
+    it: "Anteprima per il proprietario: scegli tra 30 livelli e libera ogni corsia con tiri controllati. Non è ancora pubblicato.",
+    ru: "Превью для владельца: выберите один из 30 этапов и очистите линии управляемыми ударами. Игра ещё не опубликована.",
+    hi: "मालिक का प्रीव्यू: 30 ब्रेकआउट चरणों में से चुनें और नियंत्रित शॉट से हर लेन साफ़ करें। गेम अभी सार्वजनिक नहीं है।",
+    ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v11";
+  const BREAKOUT_GAME_VERSION = "v12";
   const TETRIS_GAME_VERSION = "v17";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
@@ -92,7 +92,7 @@
     hi: { tagline: "हर चाल में असली चुनाव वाला पूरा मैच।", objective: "प्रतिद्वंद्वी के सभी मोहरे लें या उसकी सभी वैध चालें रोकें।", main: "सुनहरा मोहरा चुनें, फिर चमकता तिरछा खाना। कैप्चर अनिवार्य है और लगातार छलाँग जारी रहती है।", yourTurn: "आपकी चाल: सुनहरा मोहरा चुनें।", choose: "चमकता लक्ष्य चुनें।", capture: "कैप्चर उपलब्ध है और अनिवार्य है।", continueCapture: "उसी मोहरे से अगला कैप्चर करें।", aiTurn: "प्रतिद्वंद्वी चाल चुन रहा है…", invalid: "यह वैध चाल नहीं है।", selected: "मोहरा चुना गया। लक्ष्य चुनें।", captured: "मोहरा लिया गया; अगला कैप्चर हो तो जारी रखें।", promoted: "मोहरा अंतिम पंक्ति पर पहुँचकर किंग बन गया।", aiMoved: "प्रतिद्वंद्वी चला। अब आपकी चाल।", hint: "संकेत: धड़कता मोहरा चुनें, फिर चमकता लक्ष्य।", winTitle: "आप जीते!", lossTitle: "प्रतिद्वंद्वी जीता", drawTitle: "मैच ड्रॉ", winCopy: "प्रतिद्वंद्वी के पास मोहरा या वैध चाल नहीं बची।", lossCopy: "आपके पास मोहरा या वैध चाल नहीं बची।", drawCopy: "चाल सीमा पूरी हुई।", board: "चेकर्स बोर्ड", human: "आपका मोहरा", humanKing: "आपका किंग", ai: "प्रतिद्वंद्वी मोहरा", aiKing: "प्रतिद्वंद्वी किंग", empty: "खाली", target: "वैध लक्ष्य", selectable: "चुनने योग्य" },
     ar: { tagline: "مباراة كاملة بقرارات حقيقية في كل دور.", objective: "التقط كل قطع الخصم أو اتركه بلا حركة قانونية.", main: "اختر قطعة ذهبية ثم مربعاً قطرياً مميزاً. الأخذ إجباري وتستمر القفزات المتعددة.", yourTurn: "دورك: اختر قطعة ذهبية.", choose: "اختر وجهة مميزة.", capture: "هناك أخذ متاح ويجب تنفيذه.", continueCapture: "تابع سلسلة الأخذ بالقطعة نفسها.", aiTurn: "الخصم يختار حركة…", invalid: "هذا المربع ليس حركة قانونية.", selected: "تم اختيار القطعة. اختر الوجهة.", captured: "تم أخذ قطعة؛ تابع إن توفرت قفزة أخرى.", promoted: "وصلت قطعتك إلى الصف الأخير وأصبحت ملكاً.", aiMoved: "تحرك الخصم. دورك الآن.", hint: "تلميح: اختر القطعة النابضة ثم الوجهة المميزة.", winTitle: "فزت!", lossTitle: "فاز الخصم", drawTitle: "تعادل", winCopy: "لم يبق للخصم قطع أو حركات قانونية.", lossCopy: "لم يبق لديك قطع أو حركات قانونية.", drawCopy: "تم بلوغ حد الحركات.", board: "لوحة الداما", human: "قطعتك", humanKing: "ملكك", ai: "قطعة الخصم", aiKing: "ملك الخصم", empty: "فارغ", target: "وجهة قانونية", selectable: "قابل للاختيار" },
   };
-  const CHECKERS_GAME_VERSION = "v16";
+  const CHECKERS_GAME_VERSION = "v17";
   const TIC_TAC_TOE_GAME_VERSION = "v14";
   const WORDLE_LENGTH_ERROR = { en: "Enter 5 letters.", "zh-Hant": "請輸入 5 個字母。", "zh-Hans": "请输入 5 个字母。", ja: "5文字入力してください。", ko: "글자 5개를 입력하세요.", es: "Introduce 5 letras.", "pt-BR": "Digite 5 letras.", fr: "Saisissez 5 lettres.", de: "Gib 5 Buchstaben ein.", it: "Inserisci 5 lettere.", ru: "Введите 5 букв.", hi: "5 अक्षर दर्ज करें।", ar: "أدخل 5 أحرف." };
   const WORDLE_CELL_COPY = {
@@ -236,20 +236,39 @@
     ar: (letter, misses) => `${letter}: الخطأ ${misses}/6. اختر حرفاً آخر غير مستخدم.`,
   };
 
+  const BREAKOUT_STAGE_TOTAL = 30;
+  const breakoutRowsForStage = (stage) => Math.min(5, 2 + Math.floor((Math.max(1, Number(stage) || 1) - 1) / 8));
+  const breakoutBricksForStage = (stage) => Array.from({ length: breakoutRowsForStage(stage) * 6 }, () => true);
+  const BREAKOUT_MAIN_COPY = {
+    en: { summary: "Read the target lane, move the paddle, and serve.", progress: "30 stages · six lanes · choose a route.", stageTitle: "Choose a stage", stageHint: "Select a stage to begin the campaign.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} of 30`, stages: "Stages", back: "Back to main" },
+    "zh-Hant": { summary: "讀取目標路線、移動球板並發球。", progress: "30 個關卡・六條路線・選擇你的路線。", stageTitle: "選擇關卡", stageHint: "選擇關卡開始這段路線。", stageLabel: (n) => `第 ${n} 關`, stageProgress: (n) => `第 ${n} / 30 關`, stages: "關卡", back: "返回主頁" },
+    "zh-Hans": { summary: "读取目标路线、移动球板并发球。", progress: "30 个关卡・六条路线・选择你的路线。", stageTitle: "选择关卡", stageHint: "选择关卡开始这段路线。", stageLabel: (n) => `第 ${n} 关`, stageProgress: (n) => `第 ${n} / 30 关`, stages: "关卡", back: "返回主页" },
+    ja: { summary: "目標レーンを読み、パドルを動かしてサーブします。", progress: "30ステージ・6レーン・ルートを選択。", stageTitle: "ステージを選択", stageHint: "ステージを選んでキャンペーンを開始します。", stageLabel: (n) => `ステージ ${n}`, stageProgress: (n) => `ステージ ${n} / 30`, stages: "ステージ", back: "メインへ戻る" },
+    ko: { summary: "목표 레인을 읽고 패들을 움직여 서브하세요.", progress: "30개 스테이지 · 6개 레인 · 경로를 선택하세요.", stageTitle: "스테이지 선택", stageHint: "스테이지를 선택해 캠페인을 시작하세요.", stageLabel: (n) => `스테이지 ${n}`, stageProgress: (n) => `스테이지 ${n} / 30`, stages: "스테이지", back: "메인으로" },
+    es: { summary: "Lee el carril objetivo, mueve la pala y saca.", progress: "30 fases · seis carriles · elige una ruta.", stageTitle: "Elige una fase", stageHint: "Selecciona una fase para comenzar la campaña.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Volver al inicio" },
+    "pt-BR": { summary: "Leia a faixa-alvo, mova a raquete e saque.", progress: "30 fases · seis faixas · escolha uma rota.", stageTitle: "Escolha uma fase", stageHint: "Selecione uma fase para iniciar a campanha.", stageLabel: (n) => `Fase ${n}`, stageProgress: (n) => `Fase ${n} de 30`, stages: "Fases", back: "Voltar ao início" },
+    fr: { summary: "Lisez la voie cible, déplacez la raquette et servez.", progress: "30 stages · six voies · choisissez une route.", stageTitle: "Choisir un stage", stageHint: "Sélectionnez un stage pour commencer la campagne.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} sur 30`, stages: "Stages", back: "Retour à l’accueil" },
+    de: { summary: "Lies die Zielspalte, bewege das Paddle und schlage auf.", progress: "30 Stufen · sechs Spalten · wähle eine Route.", stageTitle: "Stufe wählen", stageHint: "Wähle eine Stufe für den Kampagnenstart.", stageLabel: (n) => `Stufe ${n}`, stageProgress: (n) => `Stufe ${n} von 30`, stages: "Stufen", back: "Zurück zum Start" },
+    it: { summary: "Leggi la corsia bersaglio, muovi la racchetta e servi.", progress: "30 livelli · sei corsie · scegli un percorso.", stageTitle: "Scegli un livello", stageHint: "Seleziona un livello per iniziare la campagna.", stageLabel: (n) => `Livello ${n}`, stageProgress: (n) => `Livello ${n} di 30`, stages: "Livelli", back: "Torna alla schermata principale" },
+    ru: { summary: "Прочитайте цель, переместите ракетку и подайте.", progress: "30 этапов · шесть линий · выберите маршрут.", stageTitle: "Выберите этап", stageHint: "Выберите этап, чтобы начать кампанию.", stageLabel: (n) => `Этап ${n}`, stageProgress: (n) => `Этап ${n} из 30`, stages: "Этапы", back: "На главную" },
+    hi: { summary: "लक्ष्य लेन पढ़ें, पैडल चलाएँ और सर्व करें।", progress: "30 चरण · छह लेन · एक मार्ग चुनें।", stageTitle: "चरण चुनें", stageHint: "अभियान शुरू करने के लिए चरण चुनें।", stageLabel: (n) => `चरण ${n}`, stageProgress: (n) => `चरण ${n} / 30`, stages: "चरण", back: "मुख्य पृष्ठ पर लौटें" },
+    ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progress: "30 مرحلة · ستة مسارات · اختر طريقاً.", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
+  };
+  const breakoutMainCopy = (locale) => BREAKOUT_MAIN_COPY[locale] || BREAKOUT_MAIN_COPY.en;
   const BREAKOUT_PROMISE = {
-    en: "Short owner preview: move the paddle, Serve 12 bricks, then chase your Best score and Play again.",
-    "zh-Hant": "短篇擁有者試玩預覽：移動球拍，發球清除 12 塊磚，再挑戰最佳分數並再玩一次。",
-    "zh-Hans": "短篇拥有者试玩预览：移动球拍，发球清除 12 块砖，再挑战最佳分数并再玩一次。",
-    ja: "短いオーナープレビュー：パドルを動かし、12個のブロックにサーブして、ベストスコアを狙い、すぐにもう一度遊べます。",
-    ko: "짧은 오너 프리뷰: 패들을 움직여 12개 벽돌에 서브하고, 최고 점수에 도전한 뒤 바로 다시 플레이하세요.",
-    es: "Vista previa breve para el propietario: mueve la pala, sirve para romper 12 ladrillos, busca tu mejor puntuación y juega otra vez.",
-    "pt-BR": "Prévia curta para o proprietário: mova a raquete, saque para limpar 12 blocos, busque sua melhor pontuação e jogue novamente.",
-    fr: "Aperçu court pour le propriétaire : déplacez la raquette, servez pour casser 12 briques, visez votre meilleur score et rejouez.",
-    de: "Kurze Vorschau für den Besitzer: Bewege das Paddle, räume 12 Steine per Aufschlag ab, jage deinen Bestwert und spiele erneut.",
-    it: "Anteprima breve per il proprietario: muovi la racchetta, servi per rompere 12 mattoni, insegui il tuo record e rigioca.",
-    ru: "Короткое превью для владельца: двигайте ракетку, подавайте по 12 блокам, улучшайте рекорд и играйте снова.",
-    hi: "मालिक के लिए छोटा प्रीव्यू: पैडल चलाएँ, सर्व से 12 ईंटें तोड़ें, अपना सर्वश्रेष्ठ स्कोर चुनौती दें और फिर खेलें।",
-    ar: "معاينة قصيرة للمالك: حرّك المضرب، أرسل الكرة لتحطيم 12 لبنة، طارد أفضل نتيجة والعب مجدداً.",
+    en: "Choose a stage, align the paddle, and clear every brick with deliberate shots.",
+    "zh-Hant": "選擇關卡、對準球板，用精準發球清除所有磚塊。",
+    "zh-Hans": "选择关卡、对准球板，用精准发球清除所有砖块。",
+    ja: "ステージを選び、パドルを合わせ、狙ったショットですべてのブロックを消します。",
+    ko: "스테이지를 고르고 패들을 맞춘 뒤 정확한 서브로 모든 벽돌을 깨세요.",
+    es: "Elige una fase, alinea la pala y rompe todos los ladrillos con tiros precisos.",
+    "pt-BR": "Escolha uma fase, alinhe a raquete e quebre todos os blocos com tiros precisos.",
+    fr: "Choisissez un stage, alignez la raquette et cassez chaque brique avec des tirs précis.",
+    de: "Wähle eine Stufe, richte das Paddle aus und zerstöre alle Steine mit gezielten Schüssen.",
+    it: "Scegli un livello, allinea la racchetta e rompi tutti i mattoni con tiri precisi.",
+    ru: "Выберите этап, выровняйте ракетку и разбейте все блоки точными ударами.",
+    hi: "एक चरण चुनें, पैडल मिलाएँ और सटीक सर्व से सभी ईंटें तोड़ें।",
+    ar: "اختر مرحلة، حاذِ المضرب وحطّم كل اللبنات بتسديدات دقيقة.",
   };
 
   const BREAKOUT_AIM_COPY = {
@@ -717,7 +736,7 @@
     try { return localStorage.getItem("weightPlayLocale") || "en"; } catch { return "en"; }
   };
   const key = (gameId) => `weightplay_popular_${gameId}_best`;
-  const copy = (locale, k) => { const localized = COPY[locale] || COPY.en; if (k === "ready" && document.body?.dataset.gameId === "breakout") return BREAKOUT_PROMISE[locale] || BREAKOUT_PROMISE.en; if (k === "eatFood" && document.body?.dataset.gameId === "snake") return SNAKE_OBJECTIVE[locale] || SNAKE_OBJECTIVE.en; return localized[k]; };
+  const copy = (locale, k) => { const localized = COPY[locale] || COPY.en; if (k === "ready" && document.body?.dataset.gameId === "breakout") return breakoutMainCopy(locale).summary; if (k === "eatFood" && document.body?.dataset.gameId === "snake") return SNAKE_OBJECTIVE[locale] || SNAKE_OBJECTIVE.en; return localized[k]; };
   const breakoutAimCopy = (locale, column) => (BREAKOUT_AIM_COPY[locale] || BREAKOUT_AIM_COPY.en)(column);
   const breakoutEmptyCopy = (locale, column) => (BREAKOUT_EMPTY_COPY[locale] || BREAKOUT_EMPTY_COPY.en)(column);
   const breakoutMissCopy = (locale, column, shots, nextColumn, direction) => (BREAKOUT_MISS_COPY[locale] || BREAKOUT_MISS_COPY.en)(column, shots, nextColumn, direction);
@@ -856,7 +875,7 @@
     if (type === "mahjong") Object.assign(state, { tiles: [...MAHJONG_LAYOUTS[0].tiles], layoutKey: MAHJONG_LAYOUTS[0].key, selected: -1, matched: 0, targetPairs: 6, depth: "standard", focusTile: -1 });
     if (type === "wordle") Object.assign(state, { guesses: [], target: WORDLE_WORDS[0].target, wordKey: WORDLE_WORDS[0].wordKey });
     if (type === "hangman") Object.assign(state, { target: "PUZZLE", theme: "puzzle", letters: [], misses: 0 });
-    if (type === "breakout") Object.assign(state, { bricks: Array(12).fill(true), shots: 0, paddle: 2 });
+    if (type === "breakout") Object.assign(state, { stage: 1, bricks: breakoutBricksForStage(1), shots: 0, paddle: 2 });
     if (type === "pong") Object.assign(state, { rallies: 0, paddle: 2, pongTarget: pongTargetForRally(0) });
     return state;
   };
@@ -1102,7 +1121,7 @@
     document.addEventListener("keydown", noteInput, { capture: true });
     const els = {
       title: document.querySelector("#gameTitle"), tagline: document.querySelector("#gameTagline"), eyebrow: document.querySelector("#eyebrow"), locale: document.querySelector("#localeSelect"),
-      main: document.querySelector("#mainScreen"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
+      main: document.querySelector("#mainScreen"), stage: document.querySelector("#stageScreen"), stageRail: document.querySelector("#stageRail"), stageBack: document.querySelector("#stageBackBtn"), stageTitle: document.querySelector("#stageScreen h2"), stageHint: document.querySelector("#stageScreen .stage-browse-hint"), stageProgress: document.querySelector("#stageProgressText"), battle: document.querySelector("#battleScreen"), result: document.querySelector("#resultScreen"), board: document.querySelector("#board"), controls: document.querySelector("#controls"),
       message: document.querySelector("#gameMessage"), objective: document.querySelector("#objective"), instruction: document.querySelector("#mainInstruction"), resultTitle: document.querySelector("#resultTitle"), resultCopy: document.querySelector("#resultCopy"), resultStats: document.querySelector("#resultStats"), resultGoal: document.querySelector("#resultGoal"),
       round: document.querySelector("#roundLabel"), start: document.querySelector("#startBtn"), retry: document.querySelector("#retryBtn"), mastery: document.querySelector("#masteryBtn"), home: document.querySelector("#homeBtn"), hint: document.querySelector("#hintBtn"), restart: document.querySelector("#restartBtn"),
     };
@@ -1491,7 +1510,7 @@
     };
     els.locale.addEventListener("change", persistLocale);
     const announce = (message, tone = "", messageKey = "") => { state.message = message; state.tone = tone; state.messageKey = messageKey; els.message.textContent = message; els.message.dataset.tone = tone; };
-    const show = (screen) => { els.main.hidden = screen !== "main"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
+    const show = (screen) => { els.main.hidden = screen !== "main"; if (els.stage) els.stage.hidden = screen !== "stage"; els.battle.hidden = screen !== "battle"; els.result.hidden = screen !== "result"; document.body.dataset.screen = screen; if (game.type === "snake") document.querySelectorAll(".game-page-info").forEach((guide) => { guide.hidden = screen !== "main"; }); document.documentElement.classList.toggle("popular-checkers-active", game.type === "checkers" && screen !== "main"); document.documentElement.classList.toggle("popular-tic-tac-toe-active", game.type === "tic" && screen !== "main"); document.documentElement.classList.toggle("popular-breakout-active", game.type === "breakout" && screen !== "main"); document.documentElement.classList.toggle("popular-chess-active", game.type === "chess" && screen !== "main"); window.dispatchEvent(new Event("weightplay:shell-sync")); if (game.type === "tetris" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); if (game.type === "breakout" && screen !== "main") window.scrollTo({ top: 0, left: 0, behavior: "auto" }); };
     let snakeTimer = null;
     let ticResultTimer = null;
     let ticReplyTimer = null;
@@ -1510,6 +1529,23 @@
     };
     const snakeTickMs = () => Math.max(180, SNAKE_TICK_MS - state.food * 20);
     const snakeGoalLabel = () => state.milestoneReached ? snakeCopy(locale, "nextGoal", state.goalFood + 2) : snakeCopy(locale, "goal", state.goalFood);
+    const startBreakoutStage = (stage = 1) => {
+      stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer();
+      state = makeState("breakout");
+      state.stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+      state.bricks = breakoutBricksForStage(state.stage);
+      show("battle");
+      announce(breakoutStateCopy(locale, state), "", "breakoutAim");
+      render();
+    };
+    const openBreakoutStages = () => {
+      stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer();
+      state = makeState("breakout");
+      state.stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(state.stage) || 1));
+      show("stage");
+      renderStage();
+      render();
+    };
     const start = (entry = "start") => { stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); const previousHangman = game.type === "hangman" ? { target: state.target, theme: state.theme } : null; const previousMahjongKey = game.type === "mahjong" ? state.layoutKey : ""; const previousMahjongDepth = game.type === "mahjong" ? state.depth : "standard"; const previousWordle = game.type === "wordle" ? { target: state.target, wordKey: state.wordKey } : null; state = makeState(game.type); if (game.type === "hangman") { const round = entry === "restart" && previousHangman ? previousHangman : HANGMAN_WORDS[hangmanRoundIndex++ % HANGMAN_WORDS.length]; Object.assign(state, round); } if (game.type === "mahjong") { const mastery = entry === "mastery" || (entry === "restart" && previousMahjongDepth === "mastery"); const layout = mastery ? MAHJONG_MASTERY_LAYOUT : entry === "restart" && previousMahjongKey ? MAHJONG_LAYOUTS.find((candidate) => candidate.key === previousMahjongKey) || MAHJONG_LAYOUTS[0] : MAHJONG_LAYOUTS[mahjongRoundIndex++ % MAHJONG_LAYOUTS.length]; state.tiles = [...layout.tiles]; state.layoutKey = layout.key; state.depth = mastery ? "mastery" : "standard"; state.targetPairs = mastery ? 12 : 6; } if (game.type === "wordle") { const word = entry === "restart" && previousWordle ? previousWordle : WORDLE_WORDS[wordleRoundIndex++ % WORDLE_WORDS.length]; Object.assign(state, word); } if (game.type === "snake") { state.runNumber = nextSnakeRunNumber(); state.goalFood = snakeGoalForRun(state.runNumber); state.modeKey = snakeModeForRun(state.runNumber); state.obstacles = snakeObstaclesForMode(state.modeKey); state.foodCell = chooseSnakeFood(state.trail, state.obstacles); } show("battle"); trackCheckers("game_start", { entry }); const snakeModeCue = game.type === "snake" ? snakeModePreview(locale, state.modeKey) : ""; const breakoutReadyCue = game.type === "breakout" ? breakoutStateCopy(locale, state) : ""; const tetrisReadyCue = game.type === "tetris" ? tetrisProgressCopy(locale, state.lines) : ""; announce(game.type === "snake" ? snakeModeCue : game.type === "checkers" ? checkersStatusCopy(locale, state) : game.type === "breakout" ? breakoutReadyCue : game.type === "tetris" ? tetrisReadyCue : copy(locale, "ready"), "", game.type === "snake" ? "snakeModePreview" : game.type === "breakout" ? "breakoutAim" : game.type === "tetris" ? "tetrisProgress" : "ready"); render(); };
     const renderResult = () => { if (game.type === "tetris") { renderTetrisResult(); return; } const best = Number(localStorage.getItem(key(gameId)) || 0); const ticOutcome = TIC_OUTCOME_COPY[locale] || TIC_OUTCOME_COPY.en; const masteryCopy = MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en; const checkersOutcome = game.type === "checkers" ? state.outcome || (state.success ? "win" : "loss") : ""; els.resultTitle.textContent = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Title`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Title`] : state.success ? copy(locale, "success") : copy(locale, "failure"); const baseCopy = game.type === "checkers" ? checkersCopy(locale, `${checkersOutcome}Copy`) : game.type === "tic" && state.outcome ? ticOutcome[`${state.outcome}Copy`] : state.success ? copy(locale, "successCopy") : copy(locale, "failureCopy"); els.resultCopy.textContent = game.type === "wordle" ? `${baseCopy} ${(WORDLE_RESULT_COPY[locale] || WORDLE_RESULT_COPY.en)(state.target)}` : game.type === "hangman" ? `${baseCopy} ${(HANGMAN_RESULT_COPY[locale] || HANGMAN_RESULT_COPY.en)(state.target)}` : game.type === "mahjong" ? `${baseCopy} ${state.depth === "mastery" ? masteryCopy.result : `${MAHJONG_RESULT_COPY[locale] || MAHJONG_RESULT_COPY.en} ${masteryCopy.button}.`}` : baseCopy; els.result.dataset.outcome = game.type === "checkers" ? checkersOutcome : game.type === "tic" ? state.outcome : state.success ? "win" : "loss"; els.resultStats.innerHTML = `<span class="stat">${copy(locale, "score")}<strong>${state.score}</strong></span><span class="stat">${copy(locale, "moves")}<strong>${state.moves}</strong></span><span class="stat">${copy(locale, "best")}<strong>${Math.max(best, state.score)}</strong></span>`; if (els.resultGoal) { els.resultGoal.hidden = !["breakout", "tetris"].includes(game.type); if (game.type === "breakout") els.resultGoal.textContent = breakoutResultGoalCopy(locale, state.shots); if (game.type === "tetris") els.resultGoal.textContent = tetrisResultTargetCopy(locale, state.moves); } if (els.mastery) { els.mastery.hidden = game.type !== "mahjong" || !state.success || state.depth === "mastery"; els.mastery.textContent = masteryCopy.button; } };
     const finish = (success) => { if (state.done) return; stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer(); state.done = true; state.success = success; state.score = success ? Math.max(state.score, state.moves * 10 + 100) : state.score; const best = Number(localStorage.getItem(key(gameId)) || 0); if ((game.type === "snake" || success) && state.score > best) { try { localStorage.setItem(key(gameId), String(state.score)); } catch {} } if (game.type === "checkers") trackCheckers("match_result", { outcome: state.outcome, score: state.score }); if (game.type === "tic" && state.winningCells?.length === 3) { show("battle"); ticResultTimer = window.setTimeout(() => { ticResultTimer = null; if (!state.done) return; renderResult(); show("result"); }, 520); return; } renderResult(); show("result"); };
@@ -1809,6 +1845,20 @@
       } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = state.paddle; const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state); const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state); els.board.innerHTML = `<div class="brick-board" data-shot-column="${targetColumn + 1}" data-shot-count="${state.shots}" data-lane-state="${targetIndex >= 0 ? "armed" : "clear"}" data-route-target-column="${routeIndex >= 0 ? (routeIndex % 6) + 1 : ""}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { const targetPosition = pongLanePosition(state.pongTarget); const settledRally = ["pongHit", "pongMiss"].includes(state.messageKey); const visibleRally = settledRally ? state.rallies : Math.min(state.rallies + 1, 5); els.board.innerHTML = `<div class="pong-board" data-pong-rally="${visibleRally}" data-pong-target-lane="${state.pongTarget}" data-pong-paddle-lane="${state.paddle}"><span class="pong-ball" style="left:${targetPosition}%" aria-hidden="true"></span><span class="pong-paddle" style="left:${pongLanePosition(state.paddle)}%" aria-hidden="true"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
+    const renderStage = () => {
+      if (game.type !== "breakout" || !els.stageRail) return;
+      const ui = breakoutMainCopy(locale);
+      if (els.stageTitle) els.stageTitle.textContent = ui.stageTitle;
+      if (els.stageHint) els.stageHint.textContent = ui.stageHint;
+      if (els.stageProgress) els.stageProgress.textContent = ui.stageProgress(state.stage || 1);
+      els.stageRail.setAttribute("aria-label", ui.stages);
+      els.stageRail.innerHTML = Array.from({ length: BREAKOUT_STAGE_TOTAL }, (_, index) => {
+        const stage = index + 1;
+        const selected = stage === (state.stage || 1);
+        const rows = breakoutRowsForStage(stage);
+        return `<button type="button" class="stage-card${selected ? " is-selected" : ""}" data-action="stage" data-stage-index="${stage}" data-stage="${stage}" data-wp-stage-card="true" aria-current="${selected ? "page" : "false"}" aria-label="${ui.stageLabel(stage)}"><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><small>${rows} × 6</small></button>`;
+      }).join("");
+    };
     let snakePointerActionUntil = 0;
     const runActionNode = (node) => { if (!node || node.disabled) return; if (node.dataset.action === "hint") { hint(); return; } const value = node.dataset.action === "letter" ? node.dataset.value : node.dataset.value === undefined ? undefined : Number(node.dataset.value); action(node.dataset.action, value); };
     const handleActionClick = (event) => { const node = event.target?.closest?.("[data-action]"); if (!node || (!els.controls.contains(node) && !els.board.contains(node)) || node.disabled) return; if (game.type === "snake" && performance.now() < snakePointerActionUntil) return; runActionNode(node); };
@@ -1827,11 +1877,19 @@
     });
     els.controls.addEventListener("click", handleActionClick);
     els.board.addEventListener("click", handleActionClick);
-    const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && ["mahjong", "breakout"].includes(game.type)) { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } };
-    els.start.addEventListener("click", () => start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); start("retry"); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => start("restart"));
+    els.stageRail?.addEventListener("click", (event) => {
+      if (game.type !== "breakout") return;
+      const card = event.target?.closest?.("[data-action='stage']");
+      if (!card || !els.stageRail.contains(card)) return;
+      const stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(card.dataset.stageIndex || card.dataset.stage) || 1));
+      start(`stage:${stage}`);
+    });
+    const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } };
+    els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else start("retry"); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : start("restart"));
     document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle") return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
-    battleBack?.addEventListener("click", () => { trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); });
+    battleBack?.addEventListener("click", () => { trackCheckers("main_return", { from: "battle" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } });
+    els.stageBack?.addEventListener("click", () => { if (game.type !== "breakout") return; stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); show("main"); state = makeState(game.type); render(); });
     if (game.type === "tetris") {
       window.addEventListener("weightplay:shell-sync", scheduleTetris);
       document.addEventListener("visibilitychange", () => { if (document.hidden) openTetrisDialog(); });

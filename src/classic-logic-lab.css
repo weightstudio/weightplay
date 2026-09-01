@@ -78,6 +78,10 @@ body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 420px 
    the puzzle promise and Start action remain readable beside a stable 420px
    poster at desktop widths. */
 body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
+/* Four in a Row shares the Logic Lab wide-layout poster contract. Keep its
+   poster column deterministic so the Main validator cannot inherit a fluid
+   width that exceeds the governed 300px/420px breakpoints. */
+body[data-logic-game="four-in-a-row"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
 .logic-copy { display: grid; gap: 13px; }
 .logic-kicker { margin: 0; color: var(--logic-accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .logic-copy h2 { margin: 0; font-size: clamp(30px, 6vw, 54px); line-height: .98; letter-spacing: -.04em; }
@@ -202,6 +206,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="tower-of-hanoi"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 1fr; }
+  body[data-logic-game="four-in-a-row"] .logic-hero { grid-template-columns: 1fr; }
   .logic-poster { max-width: 410px; margin: 0 auto; }
   .logic-copy h2 { font-size: clamp(31px, 11vw, 46px); }
   .logic-guide { margin-top: 18px; }
@@ -216,6 +221,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="tower-of-hanoi"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="code-breaker"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="sudoku"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
+  body[data-logic-game="four-in-a-row"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
 }
 @media (min-width: 661px) and (max-height: 760px) and (orientation: landscape) {
   .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
