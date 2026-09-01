@@ -30,6 +30,21 @@
     hi: "लक्ष्य",
     ar: "الهدف",
   };
+  const FREECELL_MAIN_PROGRESS_COPY = {
+    en: "52 cards · 4 foundations",
+    "zh-Hant": "52 張牌・4 個牌堆",
+    "zh-Hans": "52 张牌・4 个牌堆",
+    ja: "52枚 · 4つのファンデーション",
+    ko: "52장 · 4개 파운데이션",
+    es: "52 cartas · 4 bases",
+    "pt-BR": "52 cartas · 4 fundações",
+    fr: "52 cartes · 4 fondations",
+    de: "52 Karten · 4 Foundations",
+    it: "52 carte · 4 fondazioni",
+    ru: "52 карты · 4 основания",
+    hi: "52 कार्ड · 4 फाउंडेशन",
+    ar: "52 بطاقة · 4 أساسات",
+  };
   const FREECELL_FOUNDATION_PROGRESS_LABEL = {
     en: "Foundations",
     "zh-Hant": "牌堆進度",
@@ -220,9 +235,9 @@
   const refreshFreecellHeaderCopy = () => {
     const locale = view?.locale || "en";
     const progressLabel = document.getElementById("mainProgressLabel");
-    const progressText = document.querySelector("#mainProgress [data-copy=target]");
+    const progressText = document.querySelector("#mainProgress [data-freecell-progress]");
     if (progressLabel) progressLabel.textContent = FREECELL_PROGRESS_LABEL[locale] || FREECELL_PROGRESS_LABEL.en;
-    if (progressText) progressText.textContent = view?.variantCopy?.().target || "Build four suit foundations from Ace to King using eight open columns and four temporary cells.";
+    if (progressText) progressText.textContent = FREECELL_MAIN_PROGRESS_COPY[locale] || FREECELL_MAIN_PROGRESS_COPY.en;
     if (!battleSoundToggle) return;
     const copy = FREECELL_BATTLE_SOUND_COPY[locale] || FREECELL_BATTLE_SOUND_COPY.en;
     const label = view?.audio?.enabled ? copy.on : copy.off;
@@ -244,6 +259,21 @@
     refreshFreecellHeaderCopy();
     refreshFreecellOutcomeCopy();
   });
+  const normalizeFreecellLandscapePoster = () => {
+    if (window.innerWidth < 700 || !window.matchMedia("(orientation: landscape) and (max-height: 700px)").matches) return;
+    document.querySelectorAll(".poster-frame img,.wp-standard-main-poster img,.wp-standard-main-poster-media").forEach((node) => {
+      node.style.setProperty("width", "300px", "important");
+      node.style.setProperty("height", "300px", "important");
+      node.style.setProperty("min-height", "0", "important");
+      node.style.setProperty("max-width", "300px", "important");
+      node.style.setProperty("min-width", "0", "important");
+    });
+  };
+  window.addEventListener("resize", normalizeFreecellLandscapePoster);
+  window.setTimeout(normalizeFreecellLandscapePoster, 0);
+  window.setTimeout(normalizeFreecellLandscapePoster, 120);
+  const landscapePosterTimer = window.setInterval(normalizeFreecellLandscapePoster, 80);
+  window.setTimeout(() => window.clearInterval(landscapePosterTimer), 3200);
   refreshFreecellHeaderCopy();
   const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";

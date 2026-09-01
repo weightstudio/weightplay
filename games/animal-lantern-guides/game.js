@@ -4,6 +4,7 @@
   const COPY = window.ANIMAL_LANTERN_GUIDES_COPY;
   const SUPPORTED_LOCALES = window.ANIMAL_LANTERN_GUIDES_LOCALES;
   const LOCALE_LABELS = window.ANIMAL_LANTERN_GUIDES_LABELS;
+  const ROUTE_LOCALE_MAP = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const SCENES = [
     { safe: "moon", titleKey: "scene1Title", hintKey: "scene1Hint" },
     { safe: "leaf", titleKey: "scene2Title", hintKey: "scene2Hint" },
@@ -13,7 +14,8 @@
   const $ = id => document.getElementById(id);
   const screens = { main: $("mainScreen"), battle: $("battleScreen"), result: $("resultScreen") };
   function preferredLocale() {
-    const candidates = [];
+    const segment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+    const candidates = [window.__WEIGHTPLAY_ROUTE_LOCALE__, ROUTE_LOCALE_MAP[segment]];
     try { candidates.push(localStorage.getItem("weightPlayLocale"), localStorage.getItem("weightplayLocale"), localStorage.getItem("wp-locale")); } catch { /* restricted storage is a supported path */ }
     candidates.push(document.documentElement.lang);
     return candidates.find(code => SUPPORTED_LOCALES.includes(code)) || "en";

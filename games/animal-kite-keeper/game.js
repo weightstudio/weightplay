@@ -10,7 +10,10 @@
     { id: 3, name: "route3", hint: "hint3", start: [0, 0], target: [2, 1], sequence: ["east", "south", "east"] },
   ];
   const vectors = { north: [0, -1], east: [1, 0], south: [0, 1], west: [-1, 0] };
-  let locale = localStorage.getItem("weightplay-kite-keeper-locale") || "en";
+  const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const routeSegment = window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__ || routeLocaleMap[routeSegment] || "";
+  let locale = routeLocale || localStorage.getItem("weightplay-kite-keeper-locale") || "en";
   if (!locales[locale]) locale = "en";
   let sound = localStorage.getItem("weightplay-kite-keeper-sound") !== "off";
   let routeIndex = 0;
@@ -29,7 +32,13 @@
   function show(screen) {
     document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; });
     $("settingsPanel").hidden = true;
-    $("backBtn").hidden = screen === "main";
+    $("backBtn").hidden = screen !== "main";
+    if ($("stageBack")) $("stageBack").hidden = screen !== "stage";
+    document.querySelectorAll(".game-page-info,[data-wp-game-guide]").forEach((node) => { node.hidden = screen !== "main"; });
+    if ($("battleAdReserve")) {
+      $("battleAdReserve").hidden = screen !== "battle";
+      $("battleAdReserve").setAttribute("aria-hidden", String(screen !== "battle"));
+    }
   }
   function applyLocale() {
     document.documentElement.lang = locale;
@@ -39,6 +48,8 @@
       else node.textContent = copy(node.dataset.i18n);
     });
     $("backBtn").setAttribute("aria-label", copy("back"));
+    if ($("stageBack")) $("stageBack").setAttribute("aria-label", copy("back"));
+    if ($("battleBack")) $("battleBack").setAttribute("aria-label", copy("map"));
     $("settingsBtn").setAttribute("aria-label", copy("settings"));
     $("closeSettings").setAttribute("aria-label", copy("close"));
     $("localeSelect").setAttribute("aria-label", copy("language"));
@@ -90,6 +101,7 @@
     const root = $("windGrid"); root.replaceChildren();
     ["north", "east", "south", "west"].forEach((direction) => {
       const button = document.createElement("button"); button.type = "button"; button.className = "wind-card";
+      button.setAttribute("data-wp-primary-action", "wind");
       button.setAttribute("role", "listitem"); button.disabled = locked || path.length >= 3;
       button.setAttribute("aria-selected", String(path.at(-1) === direction));
       button.innerHTML = `<span>${direction === "north" ? "↑" : direction === "east" ? "→" : direction === "south" ? "↓" : "←"}</span><small>${copy(direction)}</small>`;
@@ -131,9 +143,9 @@
   function nextRoute() { const next = routeIndex + 1; if (next < routes.length) startRoute(next); else { show("stage"); renderStages(); } }
   function goLobby() { window.location.href = "../../index.html"; }
   function bind() {
-    $("startBtn").addEventListener("click", () => { try { startRoute(0); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
+    $("startBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRoute);
-    $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); });
+    $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBack").addEventListener("click", () => { show("main"); });
     $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; });
     $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-kite-keeper-sound", sound ? "on" : "off"); applyLocale(); });
     $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-kite-keeper-locale", locale); applyLocale(); });
