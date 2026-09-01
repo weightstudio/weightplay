@@ -97,6 +97,9 @@ body.logic-playing .game-page-info-static { display: none !important; }
 /* Sudoku feedback can be longer than the ready state. Keep its reserved
    status band stable so Hint feedback never shifts the familiar board. */
 body[data-logic-game="sudoku"] .logic-status-line { height: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 6px; }
+/* Code Breaker Hint copy can be longer than the ready state. Keep the shared
+   board/status composition stable while preserving all slot agency. */
+body[data-logic-game="code-breaker"] .logic-status-line { height: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 6px; }
 body[data-logic-game="minefield-logic"] .logic-status-line { height: 52px; min-height: 52px; display: flex; align-items: center; justify-content: center; overflow: auto; padding-inline: 4px; }
 body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(100svh - 122px); }
 .logic-board-panel { min-height: 0; display: grid; place-items: center; padding: clamp(7px, 2vw, 18px); border: 1px solid var(--logic-line); border-radius: 22px; background: linear-gradient(160deg, rgba(17, 50, 92, .94), rgba(8, 23, 46, .96)); box-shadow: var(--logic-shadow); overflow: auto; }
@@ -242,6 +245,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-tutorial { max-height: 24px; overflow: hidden; padding: 3px 8px; font-size: 11px; line-height: 1.2; white-space: nowrap; }
   .logic-status-line { min-height: 16px; font-size: 12px; line-height: 1; }
   body[data-logic-game="sudoku"] .logic-status-line { height: 24px; min-height: 24px; overflow: auto; }
+  body[data-logic-game="code-breaker"] .logic-status-line { height: 24px; min-height: 24px; overflow: auto; }
   body[data-logic-game="minefield-logic"] .logic-status-line {
     height: 16px; min-height: 16px; overflow: hidden;
   }
@@ -364,6 +368,23 @@ body[data-logic-game="sliding-15"] .logic-status-line {
     max-height: 32px;
     line-height: 1;
   }
+}
+/* Sudoku Hint re-renders one cell. The shared cell pulse scales the hinted
+   cell, which can expand the centered panel's scrollable overflow and move
+   its internal scroll position at responsive sizes. Keep Sudoku feedback
+   inside the board paint box while retaining a visible, non-layout pulse. */
+body[data-logic-game="sudoku"] .logic-sudoku-board {
+  overflow: clip;
+}
+body[data-logic-game="sudoku"] .logic-sudoku-board .logic-cell.is-selected {
+  box-shadow: inset 0 0 18px rgba(255, 209, 102, .13);
+}
+body[data-logic-game="sudoku"] .logic-sudoku-board .logic-cell.is-hint {
+  animation: sudoku-hint-pulse 850ms ease-in-out 2;
+  transform: none;
+}
+@keyframes sudoku-hint-pulse {
+  50% { background: rgba(255, 209, 102, .2); border-color: var(--logic-warn); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; transition-duration: .001ms !important; }

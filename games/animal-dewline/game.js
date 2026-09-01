@@ -60,14 +60,15 @@
     $("currentTotal").textContent = String(state.values.reduce((sum, value) => sum + value, 0));
     $("targetTotal").textContent = String(meadow.targets.reduce((sum, value) => sum + value, 0));
     $("valveGrid").replaceChildren(...state.values.map((value, index) => {
-      const card = document.createElement("article"); card.className = "valve-card";
+      const card = document.createElement("article"); card.className = `valve-card valve-slot-${index + 1}`;
+      const art = document.createElement("span"); art.className = `valve-art valve-art-${index + 1}`; art.setAttribute("aria-hidden", "true");
       const label = document.createElement("strong"); label.textContent = t("valve", { n: index + 1 });
       const current = document.createElement("span"); current.className = "valve-value"; current.textContent = `${t("current")}: ${value}`;
       const controls = document.createElement("div"); controls.className = "valve-controls";
       const down = document.createElement("button"); down.type = "button"; down.textContent = "−"; down.setAttribute("aria-label", t("decrease", { n: index + 1 })); down.disabled = value === 0;
       const up = document.createElement("button"); up.type = "button"; up.textContent = "+"; up.setAttribute("aria-label", t("increase", { n: index + 1 })); up.disabled = value === 6;
       down.addEventListener("click", () => changeValve(index, -1)); up.addEventListener("click", () => changeValve(index, 1));
-      controls.append(down, up); card.append(label, current, controls); return card;
+      controls.append(down, up); card.append(art, label, current, controls); return card;
     }));
   };
   const renderResult = () => {

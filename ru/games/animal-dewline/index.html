@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-dewline/" />
-
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-dewline/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-dewline/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-dewline/" />
@@ -23,8 +22,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
+  <meta name="weightplay-game-version" content="v2">
   <title>Луговая роса | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260901-dewline-art-v2">
   <meta name="description" content="Настройте три связанные клапана росы по заметке луга и разбудите цветы." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -41,6 +41,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Луговая роса",
+  "alternateName": "Meadow Dewline",
   "url": "https://weightplay.com/ru/games/animal-dewline/",
   "image": "https://weightplay.com/games/animal-dewline/assets/animal-dewline-cover.svg",
   "description": "Настройте три связанные клапана росы по заметке луга и разбудите цветы.",
@@ -57,29 +58,29 @@
     "Logic",
     "Planning",
     "Семья",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Meadow Dewline"
+  }
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-dewline" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-dewline" data-wp-game-version="v2" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the meadow…</strong><div class="loading-track"><i></i></div></div></section>
   <main id="mainScreen" class="screen" hidden>
     <header class="topbar"><a class="return-link" href="/" data-wp-return="main" data-copy="back">Return to WeightPlay</a><div class="utilities"><button id="settingsBtn" class="icon-btn" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button><div id="settingsPanel" class="settings-panel" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-copy="soundOn">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div></div></header>
-    <section class="hero-grid"><div class="cover-wrap"><img class="cover" src="assets/animal-dewline-cover.svg" width="900" height="700" alt="Изображение игры «Луговая роса»"></div><div class="hero-copy"><p class="kicker" data-copy="kicker">A calm linked-flow puzzle</p><h1 data-copy="title">Луговая роса</h1><p class="intro" data-copy="intro">Tune three linked dew valves to match the meadow note and wake the dawn flowers.</p><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a meadow</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="plots">Choose a meadow</button></div><p class="best-line"><span data-copy="best">Best tries</span>: <strong id="bestValue">Not yet</strong></p></div></section>
+    <section class="hero-grid"><div class="cover-wrap"><img class="cover" src="assets/animal-dewline-cover.png" width="1254" height="1254" alt="Изображение игры «Луговая роса»"></div><div class="hero-copy"><img class="nori-guide" src="assets/animal-dewline-nori.png" width="1224" height="1285" alt="" aria-hidden="true" loading="lazy"><p class="kicker" data-copy="kicker">A calm linked-flow puzzle</p><h1 data-copy="title">Луговая роса</h1><p class="intro" data-copy="intro">Tune three linked dew valves to match the meadow note and wake the dawn flowers.</p><div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start a meadow</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="plots">Choose a meadow</button></div><p class="best-line"><span data-copy="best">Best tries</span>: <strong id="bestValue">Not yet</strong></p></div></section>
     <section class="guide-card"><h2 data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOneTitle">1. Read the note</b><p data-copy="guideOne">Each meadow shows the three flow levels the flowers need.</p></article><article><b data-copy="guideTwoTitle">2. Tune the valves</b><p data-copy="guideTwo">Use − and + to set every linked valve; the live total stays visible.</p></article><article><b data-copy="guideThreeTitle">3. Check gently</b><p data-copy="guideThree">A mismatch names the first valve to revisit. There is no timer or lives.</p></article></div></section>
   </main>
   <section id="stageScreen" class="screen panel-screen" hidden aria-labelledby="stageHeading"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 id="stageHeading" data-copy="plots">Choose a meadow</h2><span></span></header><div id="stageList" class="stage-list"></div></section>
   <section id="battleScreen" class="screen panel-screen" hidden aria-labelledby="battleHeading"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back">Back</button><div><h2 id="battleHeading">Meadow</h2><p id="roundLabel" class="round-label"></p></div><span class="check-pill"><span data-copy="tries">Tries</span> <b id="sessionTries">0</b></span></header><div class="battle-content"><p id="battleHint" class="battle-hint"></p><div class="note-card"><strong data-copy="noteLabel">Meadow note</strong><span id="targetValues"></span></div><div class="valve-grid" id="valveGrid" role="group" aria-label="Dew valves"></div><div class="total-row"><span data-copy="total">Current total</span><strong id="currentTotal">0</strong><span>/ <b id="targetTotal">0</b></span></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check flow</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset valves</button></div></div></section>
-  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="plots">Meadow map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="locales.js?v=20260830-dewline-v1"></script><script src="game.js?v=20260830-dewline-v1"></script>
+  <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="nori-result" src="assets/animal-dewline-nori.png" width="1224" height="1285" alt="" aria-hidden="true" loading="lazy"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="plots">Meadow map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
+  <script src="locales.js?v=20260901-dewline-art-v2"></script><script src="game.js?v=20260901-dewline-art-v2"></script>
+<script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Луговая роса информация об игре">
 
     <div class="game-info-hero">
@@ -98,7 +99,5 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>
