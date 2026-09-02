@@ -24,7 +24,8 @@
   <meta name="weightplay-audience" content="general">
   <title>랜턴 래티스 | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="interface-overrides.css?v=20260830-lattice-v3">
+  <link rel="stylesheet" href="interface-overrides.css?v=20260902-lantern-lattice-v3-interface6">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-lantern-lattice-v3-interface6">
   <meta name="description" content="세 등불지기의 단서를 읽고 올바른 랜턴을 이어 밤의 초원에 안전한 길을 밝혀요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -54,11 +55,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Planning",
+    "퍼즐",
+    "논리",
+    "계획",
     "가족",
-    "Animal"
+    "동물"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -78,26 +79,25 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>랜턴 래티스</h2><p>세 등불지기의 단서를 읽고 올바른 랜턴을 이어 밤의 초원에 안전한 길을 밝혀요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>제약 경로 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Planning · 가족 · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>제약 경로 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>퍼즐 · 논리 · 계획 · 가족 · 동물</strong></div></div>
     </div>
     <div class="game-info-sections">
 
 
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>선택한 밤길의 지킴이 단서 세 가지를 읽으세요.</li><li>단서가 설명한 순서대로 등불 세 개를 누르세요.</li><li>연결을 확인하세요. 첫 번째 오류가 표시되며 시간 제한이나 목숨은 없습니다.</li></ol></div>
 
 
 
 
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예. 이 브라우저에만 저장됩니다.</dd></div></dl></div>
 
     </div>
   </section>
-  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select></label></div>
+  <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden><strong data-copy="settings">Settings</strong><button id="soundBtn" class="setting-row" type="button" data-sound-toggle="true">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
   <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading"><div class="stage-canvas" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-lantern-lattice-cover.png')"><header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="backShort">Back</button><h2 id="stageHeading" data-copy="paths">Choose a path</h2><button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button></header><div class="stage-tabs" role="tablist" aria-label="Night path groups"><button class="stage-tab" type="button" role="tab" aria-selected="true" data-copy="stageAll">All night paths</button></div><div id="stageList" class="stage-list" data-wp-stage-rail></div></div><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
   <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="battleHeading"><div class="battle-canvas" data-wp-logical-battle-canvas style="--wp-battle-art:url('assets/animal-lantern-lattice-background.png')"><header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="backShort">Back</button><div><h2 id="battleHeading">Night path</h2><p id="roundLabel" class="round-label"></p></div><div class="battle-header-tools"><span class="check-pill"><span data-copy="checks">Checks</span> <b id="sessionChecks">0</b></span><button id="battleSettingsBtn" class="utility-button" data-wp-battle-utility type="button" aria-label="Settings">⚙</button></div></header><div class="battle-content"><div class="clue-card"><strong data-copy="clueLabel">Keeper clues</strong><ul id="clueList"></ul></div><p id="battleHint" class="battle-hint"></p><div class="chain-card"><strong data-copy="chainLabel">Your lantern chain</strong><div id="chainList" class="chain-list" aria-live="polite"></div></div><div id="lanternGrid" class="lantern-grid" role="group" aria-label="Lantern choices"></div><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-copy="check">Check path</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset chain</button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
   <section id="resultScreen" class="screen panel-screen" hidden aria-labelledby="resultHeading"><div class="result-card"><img class="result-orla" src="assets/animal-lantern-lattice-orla.png" width="1024" height="1024" alt="Moon Cap Orla celebrating the completed lantern path"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultHeading"></h2><p id="resultText"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="paths">Night map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to menu</button></div></div></section>
-  <script src="locales.js?v=20260830-lattice-v3"></script><script src="game.js?v=20260830-lattice-v3"></script>
-<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="locales.js?v=20260902-lantern-lattice-v3-interface6"></script><script src="game.js?v=20260902-lantern-lattice-v3-interface6"></script>
 </body>
 </html>

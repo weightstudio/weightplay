@@ -2,6 +2,11 @@
 #battleScreen::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,#091426b8 0%,#0d1b2bd9 48%,#0b1425f2 100%),url("assets/animal-lantern-lattice-background.png") center/cover no-repeat;opacity:.9}
 #battleScreen>.panel-head,#battleScreen>.battle-content{position:relative;z-index:1}
 .main-screen{max-width:920px}
+.hero-grid{grid-template-columns:minmax(0,420px) minmax(0,1fr)}
+#mainScreen .cover-wrap{width:100%;max-width:none}
+#mainScreen .cover-wrap{padding:0}
+#mainScreen .cover{display:block;width:100%;height:auto}
+html[lang="de"] .hero-copy h1{overflow-wrap:anywhere}
 .wp-main-shell-header{min-height:48px}
 .wp-shell-return{display:flex;align-items:center;justify-content:center;gap:3px;width:58px;height:48px;padding:0;border-radius:14px;color:var(--ink);text-decoration:none}
 .wp-shell-return:hover{background:#ffffff12}
@@ -11,6 +16,8 @@
 .wp-shell-settings-button{display:grid;place-items:center;width:48px;height:48px;padding:0}
 .wp-shell-settings-popover{position:fixed;top:66px;right:max(18px,calc((100vw - 920px)/2 + 18px));z-index:10}
 .main-progress{display:grid;gap:4px;min-height:56px;margin:18px 0;padding:12px 14px;border:1px solid #496486;border-radius:16px;background:#ffffff0b;color:#dfe2e5}
+.main-progress{height:44px;min-height:44px;box-sizing:border-box;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;padding:8px 12px;overflow:hidden}
+.main-progress>*{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .main-progress strong{color:var(--gold)}
 .main-progress span{color:var(--muted);font-size:.92rem;line-height:1.35}
 .game-page-info{margin-top:10px}
@@ -43,5 +50,8 @@
 .chain-light{display:inline-flex;align-items:center;gap:6px}
 .chain-icon{width:30px;height:30px}
 .lantern-choice .lantern-icon{width:58px;height:58px}
-@media(max-width:720px){.orla-guide{width:118px;max-height:124px;margin:-4px 0 -16px auto}.result-orla{width:min(52vw,220px);max-height:220px}.panel-head{grid-template-columns:64px 1fr auto}.battle-header-tools{gap:4px}.stage-canvas,.battle-canvas{padding:18px}.stage-ad-reserve,.battle-ad-reserve{height:56px}}
-@media(max-width:420px){#mainScreen .hero-grid{gap:10px;padding:12px 0 18px}#mainScreen .cover-wrap{max-width:220px;margin:0 auto;padding:8px}.main-progress{margin:10px 0;padding:10px 12px}.main-progress span{font-size:.85rem}}
+@media(max-width:720px){.orla-guide{width:88px;max-height:88px;margin:-10px 0 -34px auto}.result-orla{width:min(52vw,220px);max-height:220px}.panel-head{grid-template-columns:64px 1fr auto}.battle-header-tools{gap:4px}.stage-canvas,.battle-canvas{padding:18px}.stage-ad-reserve,.battle-ad-reserve{height:56px}}
+@media(max-width:699px){.hero-grid{grid-template-columns:1fr}#mainScreen .cover-wrap{width:100%;max-width:none}}
+@media(max-width:420px){#mainScreen .hero-grid{gap:10px;padding:12px 0 18px}.main-progress{margin:10px 0;padding:8px 12px}.main-progress span{font-size:.85rem}}
+@media(min-width:700px){#mainScreen .cover-wrap{width:420px}}
+@media(min-width:700px) and (max-height:560px){.hero-grid{grid-template-columns:300px minmax(0,1fr)}#mainScreen .cover-wrap{width:300px}#stageScreen .stage-canvas{display:grid;grid-template-rows:60px 48px minmax(0,1fr);gap:8px;padding:18px}#stageScreen .stage-canvas>.panel-head{margin-bottom:0}#stageScreen .stage-tabs{margin:0}#stageScreen .stage-list{grid-template-columns:repeat(3,minmax(0,1fr));align-content:stretch;gap:12px;min-height:0;height:100%;overflow:hidden;padding:0}#stageScreen .stage-card{width:auto;min-width:0;min-height:0;height:100%;overflow:hidden}}
