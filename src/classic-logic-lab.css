@@ -374,7 +374,10 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
     min-height: 0;
   }
   body[data-logic-game="sliding-15"] .logic-battle-wrap {
-    height: calc(100svh - 122px);
+    /* The Battle Canvas is fixed to a logical height by the shared scaler;
+       use that containing block instead of the physical viewport height so
+       the action row remains inside the hit-test surface. */
+    height: calc(100% - 72px);
     min-height: 0;
   }
 }

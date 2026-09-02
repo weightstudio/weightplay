@@ -282,11 +282,23 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="crazy-eights"] .card-game-board {
     grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
     gap: 7px;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-opponents { grid-area: opponents; }
+  body[data-wp-card-game="crazy-eights"] .card-table-center {
+    grid-area: table;
+    position: relative;
+    z-index: 2;
   }
   body[data-wp-card-game="crazy-eights"] .card-game-player {
     grid-column: 1 / -1;
+    grid-area: player;
     min-width: 0;
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -307,6 +319,10 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   }
   body[data-wp-card-game="crazy-eights"] .card-hand .playing-card {
     flex: 0 1 43px;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-choice-panel {
+    position: relative;
+    z-index: 3;
   }
   body[data-wp-card-game="gin-rummy"] .card-game-board {
     grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
