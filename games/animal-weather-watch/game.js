@@ -20,12 +20,16 @@
   const signName = (type) => copy(`sign${type[0].toUpperCase()}${type.slice(1)}`);
   const bestValue = () => Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0) || "—";
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `animal_weather_watch_${name}`, forecast: planIndex + 1, checks, ...data }); };
+  const challengeSelectors = [".battle-header", "#progressPill", "#prompt", "#rule", "#sequence", "#selection", "#choiceGrid", ".battle-actions", "#status"];
+  function setChallengeHidden(hidden) { challengeSelectors.forEach((selector) => document.querySelectorAll(selector).forEach((node) => { node.hidden = hidden; })); }
   function show(screen) {
     currentScreen = screen;
     const scene = screen === "result" ? "battle" : screen;
     document.querySelectorAll("#app > [data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== scene; });
     if ($("resultScreen")) $("resultScreen").hidden = screen !== "result";
+    setChallengeHidden(screen === "result");
     document.body.dataset.screen = scene;
+    document.body.dataset.weatherState = screen;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.body.dir = locale === "ar" ? "rtl" : "ltr";
     $("gameGuide").hidden = screen !== "main";
@@ -60,6 +64,7 @@
       button.innerHTML = `<span><strong>${copy(plan.name)}</strong><small>${copy(plan.hint)}</small></span><span class="arrow" aria-hidden="true">${solved.has(index) ? "✓" : "→"}</span>`;
       button.addEventListener("click", () => startPlan(index, true)); root.appendChild(button);
     });
+    root.scrollLeft = 0;
   }
   function startPlan(index, fromStage = false) { planIndex = index; selected = ""; checks = 0; feedback = ""; if (index === 0 || fromStage) sessionChecks = 0; show("battle"); renderBattle(); announce("start"); }
   function renderBattle() {
@@ -71,7 +76,7 @@
     $("selection").textContent = selected ? copy("selected", { name: signName(selected) }) : copy("selectPrompt");
     const root = $("choiceGrid"); root.replaceChildren();
     ["sun", "cloud", "rain"].forEach((type) => { const button = document.createElement("button"); button.type = "button"; button.className = "choice"; button.setAttribute("aria-label", signName(type)); button.setAttribute("aria-pressed", String(selected === type)); button.innerHTML = `<span class="sign-icon ${signArtClass(type)}" aria-hidden="true">${signs[type]}</span><strong>${signName(type)}</strong>`; button.addEventListener("click", () => { selected = type; feedback = ""; renderBattle(); }); root.appendChild(button); });
-    $("checkBtn").disabled = false; $("status").textContent = feedback ? copy(feedback) : ""; $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
+    $("checkBtn").disabled = !selected; $("status").textContent = feedback ? copy(feedback) : ""; $("status").className = feedback === "correct" ? "status good" : feedback === "wrong" ? "status try" : "status";
   }
   function checkForecast() { if (!selected) return; checks += 1; sessionChecks += 1; const correct = selected === plans[planIndex].answer; feedback = correct ? "correct" : "wrong"; announce("check", { selected, correct }); if (correct) { solved.add(planIndex); renderBattle(); setTimeout(() => { show("result"); renderResult(); }, 280); } else renderBattle(); }
   function renderResult() { if (!$("resultText")) return; const complete = solved.size === plans.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: bestValue() }); $("nextBtn").hidden = complete; $("resultMapBtn").hidden = !complete; if (complete) { const old = Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0); if (!old || sessionChecks < old) localStorage.setItem("weightplay-animal-weather-watch-best-v1", String(sessionChecks)); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: Math.min(old || sessionChecks, sessionChecks) }); } }
