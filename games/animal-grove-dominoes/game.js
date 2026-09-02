@@ -55,7 +55,8 @@
     const main = id === "mainView";
     const result = id === "resultView";
     $("mainView").hidden = !main;
-    document.querySelector(".guide-card").hidden = !main;
+    const guide = document.querySelector(".guide-card, [data-wp-game-guide], .game-page-info-static");
+    if (guide) guide.hidden = !main;
     $("battleView").hidden = main || result;
     $("resultView").hidden = !result;
     document.body.dataset.screen = main ? "main" : result ? "result" : "battle";
@@ -66,8 +67,8 @@
   function shuffle(items) { return [...items].sort((a, b) => (a[0].charCodeAt(0) + a[1].charCodeAt(0)) - (b[0].charCodeAt(0) + b[1].charCodeAt(0))); }
   function tileButton(tile, index) {
     const button = document.createElement("button");
-    button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
-    button.innerHTML = `<span class="tile-glyph" aria-hidden="true">${tile[0] === state.currentEnd ? "↗" : "·"}</span><span class="tile-side">${habitat(tile[0])}</span><span class="tile-link" aria-hidden="true">→</span><span class="tile-side">${habitat(tile[1])}</span>`;
+    button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.dataset.habitat = tile[0]; button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
+    button.innerHTML = `<span class="tile-art" aria-hidden="true"></span><span class="tile-glyph" aria-hidden="true">${tile[0] === state.currentEnd ? "↗" : "·"}</span><span class="tile-side">${habitat(tile[0])}</span><span class="tile-link" aria-hidden="true">→</span><span class="tile-side">${habitat(tile[1])}</span>`;
     button.addEventListener("click", () => choose(index, button));
     return button;
   }
@@ -86,16 +87,19 @@
     const rackNode = $("tileRack"); rackNode.replaceChildren();
     state.rack.forEach((tile, index) => { if (!tile) return; rackNode.append(tileButton(tile, index)); });
   }
+  function setFeedbackState(value) {
+    [$("feedbackArt"), $("resultFeedbackArt")].forEach((node) => { if (node) node.dataset.feedback = value; });
+  }
   function choose(index, button) {
     const tile = state.rack[index]; if (!tile) return;
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
-    if (tile[0] !== state.currentEnd) { button.classList.add("is-wrong"); $("battleStatus").textContent = t("wrong"); $("battleStatus").classList.add("is-wrong"); playTone("wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 380); return; }
-    button.disabled = true; button.classList.add("is-correct"); state.placed.push(tile); state.rack[index] = null; state.currentEnd = tile[1]; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound();
+    if (tile[0] !== state.currentEnd) { button.classList.add("is-wrong"); $("battleStatus").textContent = t("wrong"); $("battleStatus").classList.add("is-wrong"); setFeedbackState("wrong"); playTone("wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 380); return; }
+    button.disabled = true; button.classList.add("is-correct"); state.placed.push(tile); state.rack[index] = null; state.currentEnd = tile[1]; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
     if (state.placed.length === 5) { window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
   }
-  function startRound() { const round = rounds[state.roundIndex]; state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles); $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); renderRound(); }
+  function startRound() { const round = rounds[state.roundIndex]; state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles); $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
   function start() { state.roundIndex = 0; state.picks = 0; state.solved = 0; track("session_started"); showView("battleView"); startRound(); }
-  function finish() { const key = "weightplay-grove-chain-best-picks"; const prior = Number(safeStorage.get(key)); if (!prior || state.picks < prior) safeStorage.set(key, String(state.picks)); $("resultText").textContent = t("finishText", { picks: state.picks }); $("bestValue").textContent = safeStorage.get(key) || String(state.picks); track("session_completed", { picks: state.picks }); showView("resultView"); }
+  function finish() { const key = "weightplay-grove-chain-best-picks"; const prior = Number(safeStorage.get(key)); if (!prior || state.picks < prior) safeStorage.set(key, String(state.picks)); $("resultText").textContent = t("finishText", { picks: state.picks }); $("bestValue").textContent = safeStorage.get(key) || String(state.picks); setFeedbackState("complete"); track("session_completed", { picks: state.picks }); showView("resultView"); }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   function toggleSound() { state.sound = !state.sound; applyLocale(); track("sound_changed", { enabled: state.sound }); }

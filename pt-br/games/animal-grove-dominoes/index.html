@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/animal-grove-dominoes/" />
-
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-grove-dominoes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-grove-dominoes/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-grove-dominoes/" />
@@ -26,9 +25,10 @@
     <meta name="weightplay-game-version" content="v1">
     <meta name="description" content="Combine as pontas dos habitats para fechar três ciclos serenos sob a lua." />
     <title>Corrente do Bosque | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-grove-chain-v1-art4">
     <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-    <script src="locales.js?v=20260901-grove-chain-v1-r2" defer></script>
-    <script src="game.js?v=20260901-grove-chain-v1-r2" defer></script>
+    <script src="locales.js?v=20260902-grove-chain-v1-art4" defer></script>
+    <script src="game.js?v=20260902-grove-chain-v1-art4" defer></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Corrente do Bosque | WeightPlay" />
@@ -44,6 +44,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Corrente do Bosque",
+  "alternateName": "Grove Chain",
   "url": "https://weightplay.com/pt-br/games/animal-grove-dominoes/",
   "image": "https://weightplay.com/games/animal-grove-dominoes/assets/animal-grove-dominoes-cover.webp",
   "description": "Combine as pontas dos habitats para fechar três ciclos serenos sob a lua.",
@@ -60,15 +61,13 @@
     "Logic",
     "Raciocínio Espacial",
     "Família",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "Children and families",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Grove Chain"
+  }
 }
     </script>
   </head>
@@ -85,6 +84,7 @@
           </div>
         </header>
         <section class="hero-grid">
+          <img class="cover" src="assets/animal-grove-dominoes-cover.webp" alt="Imagem do jogo Corrente do Bosque" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="hero-copy">
             <p class="kicker" data-copy="kicker">A calm habitat-chain puzzle</p>
             <h1 id="mainTitle" data-copy="title">Corrente do Bosque</h1>
@@ -92,53 +92,10 @@
             <p class="facts" data-wp-main-progress data-copy="facts">Three short chains · no timer · no lives</p>
             <button id="startBtn" class="primary-btn" data-wp-main-start type="button" data-copy="start">Start the chain</button>
           </div>
-          <img class="cover" src="assets/animal-grove-dominoes-cover.webp" alt="Imagem do jogo Corrente do Bosque" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
         </section>
       </section>
 
-      <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle">
-        <h2 id="guideTitle" data-copy="guideTitle">How to play</h2>
-        <div class="guide-grid">
-          <article><b data-copy="guideOneTitle">1. Read the end</b><p data-copy="guideOne">Look at the habitat shown at the open end of the chain.</p></article>
-          <article><b data-copy="guideTwoTitle">2. Choose a match</b><p data-copy="guideTwo">Tap a tile whose left habitat matches that open end.</p></article>
-          <article><b data-copy="guideThreeTitle">3. Close the loop</b><p data-copy="guideThree">Use all five tiles. A wrong pick is safe and can be tried again.</p></article>
-        </div>
-      </section>
-
-      <section id="battleView" class="screen panel" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-return-only hidden aria-labelledby="battleTitle">
-        <div class="logical-shell">
-          <header class="panel-head">
-            <button id="battleBackBtn" class="back-btn back-button" data-wp-return="battle" type="button" data-copy="back">Back</button>
-            <div><h2 id="battleTitle" data-copy="title">Grove Chain</h2><p id="roundLabel" class="round-label"></p></div>
-            <button id="battleSoundBtn" class="icon-btn battle-utility" data-sound-toggle type="button" aria-label="Sound" aria-pressed="true">♪</button>
-          </header>
-          <div class="battle-content">
-            <div class="status-row"><span id="endLabel"></span><span class="progress-pill"><span data-copy="tilesPlaced">Tiles</span> <b id="placedCount">0</b>/5</span></div>
-            <section class="chain-card" aria-labelledby="chainTitle"><h3 id="chainTitle" class="sr-only" data-copy="chainTitle">Habitat chain</h3><div id="chainTrack" class="chain-track"></div></section>
-            <p id="instruction" class="instruction" data-copy="instruction">Choose a tile that starts with the open habitat.</p>
-            <div id="tileRack" class="tile-rack" aria-label="Habitat tiles"></div>
-            <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-            <button id="leaveBtn" class="text-btn" type="button" data-copy="home">Return home</button>
-          </div>
-        </div>
-        <div class="general-reserve battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
-      </section>
-
-      <section id="resultView" class="screen panel result-screen" data-screen="result" hidden aria-labelledby="resultTitle">
-        <div class="result-card">
-          <div class="result-badge" aria-hidden="true">✦</div>
-          <p class="kicker" data-copy="completeKicker">Grove loop complete</p>
-          <h2 id="resultTitle" data-copy="finishTitle">The grove is connected.</h2>
-          <p id="resultText"></p>
-          <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">—</strong></p>
-          <div class="result-actions"><button id="replayBtn" class="primary-btn" type="button" data-copy="replay">Chain again</button><button id="homeBtn" class="secondary-btn" type="button" data-copy="home">Return home</button></div>
-        </div>
-      </section>
-
-      <footer data-copy="footer">Internal prototype · planned Coming Soon · no public playable route</footer>
-      <p id="appStatus" class="sr-only" aria-live="polite"></p>
-    </main>
-  <section class="game-page-info game-page-info-static" aria-label="Corrente do Bosque informações do jogo">
+      <section class="game-page-info game-page-info-static" aria-label="Corrente do Bosque informações do jogo">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Kids Game Guide</span><h2>Corrente do Bosque</h2><p>Combine as pontas dos habitats para fechar três ciclos serenos sob a lua.</p></div>
@@ -156,7 +113,45 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/pt-br.js?v=20260825-moonlight-arabic-result-v22"></script>
+
+      <section id="battleView" class="screen panel" data-screen="battle" data-wp-battle-return-only hidden aria-labelledby="battleTitle">
+        <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('assets/animal-grove-dominoes-background.png')">
+          <div class="logical-shell">
+          <header class="panel-head">
+            <button id="battleBackBtn" class="back-btn back-button" data-wp-return="battle" type="button" data-copy="back">Back</button>
+            <div><h2 id="battleTitle" data-copy="title">Grove Chain</h2><p id="roundLabel" class="round-label"></p></div>
+            <button id="battleSoundBtn" class="icon-btn battle-utility" data-sound-toggle type="button" aria-label="Sound" aria-pressed="true">♪</button>
+          </header>
+          <div class="battle-content">
+            <div class="status-row"><span id="endLabel"></span><span class="progress-pill"><span data-copy="tilesPlaced">Tiles</span> <b id="placedCount">0</b>/5</span></div>
+            <section class="chain-card" aria-labelledby="chainTitle"><h3 id="chainTitle" class="sr-only" data-copy="chainTitle">Habitat chain</h3><div id="chainTrack" class="chain-track"></div><span id="feedbackArt" class="feedback-art" data-feedback="idle" aria-hidden="true"></span></section>
+            <p id="instruction" class="instruction" data-copy="instruction">Choose a tile that starts with the open habitat.</p>
+            <div id="tileRack" class="tile-rack" aria-label="Habitat tiles"></div>
+            <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
+            <button id="leaveBtn" class="text-btn" type="button" data-copy="home">Return home</button>
+          </div>
+          </div>
+        </div>
+        <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+      </section>
+
+      <section id="resultView" class="screen panel result-screen" data-screen="result" hidden aria-labelledby="resultTitle">
+        <div class="result-card">
+          <div class="result-badge" aria-hidden="true">✦</div>
+          <img id="resultFia" class="result-fia" src="assets/animal-grove-dominoes-fia.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy">
+          <span id="resultFeedbackArt" class="feedback-art result-feedback-art" data-feedback="complete" aria-hidden="true"></span>
+          <p class="kicker" data-copy="completeKicker">Grove loop complete</p>
+          <h2 id="resultTitle" data-copy="finishTitle">The grove is connected.</h2>
+          <p id="resultText"></p>
+          <p class="best-line"><span data-copy="best">Best picks</span>: <strong id="bestValue">—</strong></p>
+          <div class="result-actions"><button id="replayBtn" class="primary-btn" type="button" data-copy="replay">Chain again</button><button id="homeBtn" class="secondary-btn" type="button" data-copy="home">Return home</button></div>
+        </div>
+      </section>
+
+      <footer data-copy="footer">Internal prototype · planned Coming Soon · no public playable route</footer>
+      <p id="appStatus" class="sr-only" aria-live="polite"></p>
+    </main>
+  <script src="/src/runtime-locales/pt-br.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

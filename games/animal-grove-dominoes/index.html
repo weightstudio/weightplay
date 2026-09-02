@@ -24,9 +24,10 @@
     <meta name="weightplay-game-version" content="v1">
     <meta name="description" content="Grove Chain is an internal WeightPlay habitat-chain puzzle prototype.">
     <title>Grove Chain | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260901-grove-chain-v1-r2">
-    <script src="locales.js?v=20260901-grove-chain-v1-r2" defer></script>
-    <script src="game.js?v=20260901-grove-chain-v1-r2" defer></script>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-grove-chain-v1-art4">
+    <link rel="stylesheet" href="style.css?v=20260902-grove-chain-v1-art4">
+    <script src="locales.js?v=20260902-grove-chain-v1-art4" defer></script>
+    <script src="game.js?v=20260902-grove-chain-v1-art4" defer></script>
   </head>
   <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v1" data-screen="main">
     <main id="app" class="app-shell">
@@ -41,6 +42,7 @@
           </div>
         </header>
         <section class="hero-grid">
+          <img class="cover" src="assets/animal-grove-dominoes-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="hero-copy">
             <p class="kicker" data-copy="kicker">A calm habitat-chain puzzle</p>
             <h1 id="mainTitle" data-copy="title">Grove Chain</h1>
@@ -48,11 +50,11 @@
             <p class="facts" data-wp-main-progress data-copy="facts">Three short chains · no timer · no lives</p>
             <button id="startBtn" class="primary-btn" data-wp-main-start type="button" data-copy="start">Start the chain</button>
           </div>
-          <img class="cover" src="assets/animal-grove-dominoes-cover.webp" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
         </section>
       </section>
 
-      <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle">
+      <section class="guide-card game-page-info" data-wp-game-guide aria-labelledby="guideTitle">
+        <img class="guide-fia" src="assets/animal-grove-dominoes-fia.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy">
         <h2 id="guideTitle" data-copy="guideTitle">How to play</h2>
         <div class="guide-grid">
           <article><b data-copy="guideOneTitle">1. Read the end</b><p data-copy="guideOne">Look at the habitat shown at the open end of the chain.</p></article>
@@ -61,8 +63,9 @@
         </div>
       </section>
 
-      <section id="battleView" class="screen panel" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-return-only hidden aria-labelledby="battleTitle">
-        <div class="logical-shell">
+      <section id="battleView" class="screen panel" data-screen="battle" data-wp-battle-return-only hidden aria-labelledby="battleTitle">
+        <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('assets/animal-grove-dominoes-background.png')">
+          <div class="logical-shell">
           <header class="panel-head">
             <button id="battleBackBtn" class="back-btn back-button" data-wp-return="battle" type="button" data-copy="back">Back</button>
             <div><h2 id="battleTitle" data-copy="title">Grove Chain</h2><p id="roundLabel" class="round-label"></p></div>
@@ -70,19 +73,22 @@
           </header>
           <div class="battle-content">
             <div class="status-row"><span id="endLabel"></span><span class="progress-pill"><span data-copy="tilesPlaced">Tiles</span> <b id="placedCount">0</b>/5</span></div>
-            <section class="chain-card" aria-labelledby="chainTitle"><h3 id="chainTitle" class="sr-only" data-copy="chainTitle">Habitat chain</h3><div id="chainTrack" class="chain-track"></div></section>
+            <section class="chain-card" aria-labelledby="chainTitle"><h3 id="chainTitle" class="sr-only" data-copy="chainTitle">Habitat chain</h3><div id="chainTrack" class="chain-track"></div><span id="feedbackArt" class="feedback-art" data-feedback="idle" aria-hidden="true"></span></section>
             <p id="instruction" class="instruction" data-copy="instruction">Choose a tile that starts with the open habitat.</p>
             <div id="tileRack" class="tile-rack" aria-label="Habitat tiles"></div>
             <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
             <button id="leaveBtn" class="text-btn" type="button" data-copy="home">Return home</button>
           </div>
+          </div>
         </div>
-        <div class="general-reserve battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+        <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
       </section>
 
       <section id="resultView" class="screen panel result-screen" data-screen="result" hidden aria-labelledby="resultTitle">
         <div class="result-card">
           <div class="result-badge" aria-hidden="true">✦</div>
+          <img id="resultFia" class="result-fia" src="assets/animal-grove-dominoes-fia.png" alt="" aria-hidden="true" width="1024" height="1536" loading="lazy">
+          <span id="resultFeedbackArt" class="feedback-art result-feedback-art" data-feedback="complete" aria-hidden="true"></span>
           <p class="kicker" data-copy="completeKicker">Grove loop complete</p>
           <h2 id="resultTitle" data-copy="finishTitle">The grove is connected.</h2>
           <p id="resultText"></p>
