@@ -276,6 +276,38 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="casino"] .card-hand .playing-card {
     flex: 0 1 43px;
   }
+  /* Crazy Eights' five-card hand must stay in its own full-width row in the
+     compact landscape Canvas so the hand never shares hit space with the
+     centre table or the action row. */
+  body[data-wp-card-game="crazy-eights"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-game-player {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  body[data-wp-card-game="crazy-eights"] .card-hand .playing-card {
+    flex: 0 1 43px;
+  }
   body[data-wp-card-game="gin-rummy"] .card-game-board {
     grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;

@@ -24,7 +24,7 @@
     skillsLabel: "المهارات المتدرَّبة",
     skills: "التخطيط · التركيز · التعرّف على الأنماط",
     progressLabel: "تقدّم اللعب",
-    progressCopy: "طابق النوع أو الرتبة، ثم استخدم الثمانية لتغيير النوع النشط.",
+    progressCopy: "يد جديدة جاهزة؛ طابق النوع أو الرتبة للبدء.",
     howTo: "طريقة اللعب",
     howToCopy: "عندما لا تكون هناك بطاقة قانونية، اسحب بطاقة. أول لاعب يفرغ يده يفوز.",
     preview: "حالة المعاينة",
@@ -154,7 +154,7 @@
     const label = document.createElement("strong");
     label.textContent = "Play progress";
     const copy = document.createElement("span");
-    copy.textContent = "Match suit or rank, then use an Eight to change the active suit.";
+    copy.textContent = "Fresh hand ready — match suit or rank to begin.";
     progress.append(label, copy);
     mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
   }

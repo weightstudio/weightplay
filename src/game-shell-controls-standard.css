@@ -617,6 +617,12 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
+  /* Crazy Eights' v12 Main uses the same canonical wide-layout poster
+     column, keeping its 844x390 composition at exactly 300px. */
+  body[data-wp-card-game="crazy-eights"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
   .wp-standard-main-poster,
   .wp-standard-main-poster-media,
   .wp-standard-main-poster-media > img,

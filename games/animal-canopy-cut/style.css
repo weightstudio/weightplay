@@ -3,3 +3,47 @@
  .battle-key{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;margin:2px auto 8px;padding:7px 12px;border:1px solid #3b8094;border-radius:12px;background:rgba(7,27,42,.72);color:#e6f4f7;font-size:.88rem}.battle-key-item{display:inline-flex;align-items:center;gap:7px;min-height:28px}.key-swatch{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-size:.9rem;font-weight:900;line-height:1;border:2px solid #e9fbff}.key-swatch-safe{background:linear-gradient(135deg,#ffcf64,#96e6c1);color:#173042}.key-swatch-hazard{background:#25283b;color:#ffb7c1;border-color:#ff9cab}@media(max-width:560px){.battle-key{justify-content:flex-start;gap:6px 12px;font-size:.78rem;padding:6px 9px}}
 @media (orientation:landscape) and (max-height:460px){.battle{padding:4px 10px}.battle-header{min-height:22px;line-height:1;font-size:.78rem}.battle-status{margin:2px 0;line-height:1.15;font-size:.72rem}.battle-key{gap:3px 12px;margin:0 auto 2px;padding:2px 8px;font-size:.7rem}.battle-key-item{gap:4px;min-height:18px}.key-swatch{width:18px;height:18px;font-size:.7rem}.battle canvas{width:min(100%,730px);max-height:none;flex:0 0 auto;border-radius:10px}.touch-hint{margin:0;padding:1px 4px;font-size:.68rem;line-height:1.05}}
 body[data-wp-five-game] .result-actions button{width:100%;min-width:0;max-width:100%;overflow-wrap:anywhere}
+
+/* Canopy has six authored Chapters, so keep the complete map inside the
+   logical Stage Canvas instead of letting the shared single-row rail place
+   enabled controls outside its hit-test surface. Chapter 1 stays centered
+   in the first row while every chapter remains directly selectable. */
+@media (min-width:561px){
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-rows:repeat(2,minmax(0,1fr))!important;
+    grid-template-areas:"chapter-2 chapter-1 chapter-3" "chapter-4 chapter-5 chapter-6"!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+    width:100%!important;
+    max-width:none!important;
+    height:408px!important;
+    min-height:0!important;
+    max-height:408px!important;
+    overflow:hidden!important;
+    padding:12px!important;
+  }
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card{
+    flex:none!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    overflow-wrap:anywhere;
+  }
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(1){grid-area:chapter-1}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(2){grid-area:chapter-2}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(3){grid-area:chapter-3}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(4){grid-area:chapter-4}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(5){grid-area:chapter-5}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(6){grid-area:chapter-6}
+}
+
+@media (min-width:700px) and (max-height:560px){
+  body[data-wp-game-id="animal-canopy-cut"] .wp-standard-main-composition{
+    --wp-main-landscape-poster-size:300px!important;
+  }
+}

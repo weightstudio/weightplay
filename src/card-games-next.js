@@ -1655,19 +1655,19 @@
   };
 
   const CRAZY_EIGHTS_PROGRESS_COPY = {
-    en: { label: "Play progress", copy: "Match suit or rank, then use an Eight to change the active suit." },
-    "zh-Hant": { label: "遊玩進度", copy: "配對花色或點數，再用 8 改變目前花色。" },
-    "zh-Hans": { label: "游玩进度", copy: "配对花色或点数，再用 8 改变当前花色。" },
-    ja: { label: "プレイ進行", copy: "スートかランクを合わせ、8で場のスートを変えます。" },
-    ko: { label: "플레이 진행", copy: "무늬나 랭크를 맞추고 8로 활성 무늬를 바꾸세요." },
-    es: { label: "Progreso de juego", copy: "Combina palo o rango y usa un ocho para cambiar el palo activo." },
-    "pt-BR": { label: "Progresso da partida", copy: "Combine naipe ou valor e use um oito para mudar o naipe ativo." },
-    fr: { label: "Progression de la partie", copy: "Associez couleur ou valeur, puis utilisez un huit pour changer la couleur active." },
-    de: { label: "Spielfortschritt", copy: "Passe Farbe oder Rang an und ändere mit einer Acht die aktive Farbe." },
-    it: { label: "Progresso della partita", copy: "Abbina seme o valore e usa un otto per cambiare il seme attivo." },
-    ru: { label: "Прогресс игры", copy: "Совмещайте масть или ранг, а восьмёркой меняйте активную масть." },
-    hi: { label: "खेल की प्रगति", copy: "सूट या रैंक मिलाएँ और आठ से सक्रिय सूट बदलें।" },
-    ar: { label: "تقدّم اللعب", copy: "طابق النوع أو الرتبة، ثم استخدم الثمانية لتغيير النوع النشط." },
+    en: { label: "Play progress", copy: "Fresh hand ready — match suit or rank to begin." },
+    "zh-Hant": { label: "遊玩進度", copy: "新一局已準備好——先配對花色或點數。" },
+    "zh-Hans": { label: "游玩进度", copy: "新一局已准备好——先配对花色或点数。" },
+    ja: { label: "プレイ進行", copy: "新しい手札の準備完了。まずはスートかランクを合わせます。" },
+    ko: { label: "플레이 진행", copy: "새 패가 준비되었습니다. 먼저 무늬나 랭크를 맞추세요." },
+    es: { label: "Progreso de juego", copy: "Nueva mano lista: combina un palo o un rango para empezar." },
+    "pt-BR": { label: "Progresso da partida", copy: "Nova mão pronta: combine um naipe ou valor para começar." },
+    fr: { label: "Progression de la partie", copy: "Nouvelle main prête : associez une couleur ou une valeur pour commencer." },
+    de: { label: "Spielfortschritt", copy: "Neue Hand bereit: Passe Farbe oder Rang an, um zu beginnen." },
+    it: { label: "Progresso della partita", copy: "Nuova mano pronta: abbina un seme o un valore per iniziare." },
+    ru: { label: "Прогресс игры", copy: "Новая рука готова: начните с совпадения масти или ранга." },
+    hi: { label: "खेल की प्रगति", copy: "नई बाज़ी तैयार है—शुरू करने के लिए सूट या रैंक मिलाएँ।" },
+    ar: { label: "تقدّم اللعب", copy: "يد جديدة جاهزة؛ طابق النوع أو الرتبة للبدء." },
   };
 
   function card(suit, rank, extra = {}) { return { suit, rank, id: `${suit}-${rank}-${Math.random().toString(36).slice(2)}`, ...extra }; }
