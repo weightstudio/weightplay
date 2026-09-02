@@ -50,6 +50,12 @@
     ar: { leaf: "ورقة", sun: "شمس", moon: "قمر", dot: "نقطة", star: "نجمة", droplet: "قطرة", wave: "موجة", diamond: "معين", circle: "دائرة", triangle: "مثلث", flower: "زهرة" },
   };
   Object.entries(translatedTokenNames).forEach(([locale, names]) => Object.assign(PATTERN_PATCH_LOCALES[locale].tokenNames, names));
+  const patternGridCopy = {
+    en: "Pattern grid", "zh-Hant": "圖紋網格", "zh-Hans": "图纹网格", ja: "パターングリッド", ko: "패턴 그리드",
+    es: "Cuadrícula del patrón", "pt-BR": "Grade do padrão", fr: "Grille du motif", de: "Musterraster", it: "Griglia del motivo",
+    ru: "Сетка узора", hi: "पैटर्न ग्रिड", ar: "شبكة النمط"
+  };
+  Object.entries(patternGridCopy).forEach(([locale, value]) => { PATTERN_PATCH_LOCALES[locale].patternGrid = value; });
   Object.defineProperty(PATTERN_PATCH_LOCALES, "__localeKeys", { value: localeKeys, enumerable: false });
   window.PATTERN_PATCH_LOCALES = Object.freeze(PATTERN_PATCH_LOCALES);
 })();

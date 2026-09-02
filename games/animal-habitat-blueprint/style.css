@@ -5,12 +5,13 @@
 body{overflow-x:hidden}
 #app{min-height:100vh}
 .main-screen{padding:12px}
-.main-screen .topbar{margin:0 0 12px}
+.main-screen .topbar{margin:0}
 .main-screen #backBtn{width:58px;height:48px;min-width:58px;min-height:48px;display:flex;align-items:center;justify-content:center;gap:3px;padding:0}
 .main-screen #backBtn img{width:25px;height:25px;object-fit:contain}
 .main-screen .cover-wrap{width:min(420px,100%);margin-inline:auto}
 .main-screen .main-poster{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
 .main-screen h1{margin:0}
+.main-screen .eyebrow{margin:6px 0}
 .main-screen .main-summary{margin:0;max-width:52ch;line-height:1.45}
 .main-progress{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;height:42px;padding:8px 12px;border:1px solid #d1e1ce;border-radius:13px;background:#eef6eb;color:#3e5f63;font-size:.86rem}
 .main-progress strong{font-weight:850}

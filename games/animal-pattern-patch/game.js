@@ -42,6 +42,7 @@
     $("mainSettingsBtn").setAttribute("aria-label", t("settings"));
     $("mainSettingsPopover").setAttribute("aria-label", t("settings"));
     $("homeFromBattle").setAttribute("aria-label", t("home"));
+    $("patternGrid").setAttribute("aria-label", t("patternGrid"));
     $("localeSelect").setAttribute("aria-label", t("language"));
     if (!$('battleView').hidden) renderRound();
   }

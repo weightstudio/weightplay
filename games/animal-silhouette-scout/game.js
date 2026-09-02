@@ -26,4 +26,21 @@
   const placeScoutGuide=(attempt=0)=>{const image=document.querySelector(".scout-guide");const copy=document.querySelector(".wp-standard-main-copy");if(image&&copy&&!copy.contains(image))copy.prepend(image);if((!image||!copy)&&attempt<40)window.setTimeout(()=>placeScoutGuide(attempt+1),50);};
   placeScoutGuide();
   window.__ANIMAL_SILHOUETTE_SCOUT_TEST__={rounds,startRound,check,getState:()=>({...state})};
+  function localizeAccessibility(){
+    const labels=[
+      ["#stageList","aria-label","stageSelector"],
+      [".stage-tabs","aria-label","lookoutSections"],
+      ["#choiceGrid","aria-label","animalChoices"],
+      [".game-page-info","aria-label","gameInfo"],
+    ];
+    labels.forEach(([selector,attribute,key])=>document.querySelector(selector)?.setAttribute(attribute,t(key)));
+    document.querySelector(".cover")?.setAttribute("alt",t("coverAlt"));
+    const guideKicker=document.querySelector(".game-info-kicker");
+    if(guideKicker)guideKicker.textContent=t("originalGuide");
+    const utility=$("battleUtilityBtn");
+    if(utility)utility.title=t("settings");
+    document.title=t("pageTitle");
+  }
+  localizeAccessibility();
+  $("localeSelect")?.addEventListener("change",localizeAccessibility);
 })();
