@@ -23,7 +23,7 @@
     solved: false
   };
   const $ = (id) => document.getElementById(id);
-  const bestKey = (index) => `weightplay:animal-ring-garden:v8:best:${index}`;
+  const bestKey = (index) => `weightplay:animal-ring-garden:v9:best:${index}`;
 
   function t(key) { return (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key; }
   function fmt(value, n) { return value.replace("{n}", String(n)); }
@@ -47,15 +47,20 @@
     $("settings-button").innerHTML = `⚙ <span>${t("settings")}</span>`;
     $("stage-settings").innerHTML = `⚙ <span>${t("settings")}</span>`;
     $("battle-settings").innerHTML = `⚙ <span>${t("settings")}</span>`;
+    $("settings-button").setAttribute("aria-label", t("settings"));
+    $("stage-settings").setAttribute("aria-label", t("settings"));
+    $("battle-settings").setAttribute("aria-label", t("settings"));
     $("settings-title").textContent = t("settings");
     $("language-label").textContent = t("language");
     $("sound-toggle").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("sound-toggle").setAttribute("aria-pressed", String(state.sound));
+    $("settings-dialog").querySelector(".close-button").setAttribute("aria-label", t("close"));
     $("main-eyebrow").textContent = t("eyebrow");
     $("main-title").textContent = t("title");
     $("main-header-title").textContent = t("title");
     $("main-lede").textContent = t("lede");
     $("main-summary").textContent = t("summary");
+    $("main-summary").setAttribute("aria-label", t("summaryLabel"));
     $("mainProgress").textContent = `${t("progress")}: ${Math.min(state.gardenIndex, gardens.length)} / ${gardens.length}`;
     $("guide-title").textContent = t("guideTitle");
     $("guide-one").textContent = t("guideOne");
@@ -64,14 +69,25 @@
     $("fact-one").textContent = t("factOne");
     $("fact-two").textContent = t("factTwo");
     $("fact-three").textContent = t("factThree");
+    $("settings-button").closest(".main-header").querySelector("[data-wp-return='main']")?.setAttribute("aria-label", t("mainBack"));
+    $("mainScreen").querySelector(".main-cover")?.setAttribute("alt", t("mainCoverAlt"));
+    $("mainScreen").querySelector(".main-mimi")?.setAttribute("alt", t("guideAlt"));
+    $("mainScreen").querySelector(".main-summary")?.setAttribute("aria-label", t("summaryLabel"));
+    $("mainScreen").querySelector(".fact-row")?.setAttribute("aria-label", t("factsLabel"));
+    document.querySelector("[data-wp-game-guide]")?.setAttribute("aria-label", t("guideLabel"));
     $("startBtn").textContent = t("start");
     $("stage-back").textContent = t("back");
+    $("stage-back").setAttribute("aria-label", t("back"));
     $("stage-eyebrow").textContent = t("stageEyebrow");
     $("stage-title").textContent = t("stageTitle");
     $("stage-lede").textContent = t("stageLede");
+    $("stageScreen").querySelector(".stage-tabs")?.setAttribute("aria-label", t("stageSections"));
     $("battle-back").textContent = t("gardens");
+    $("battle-back").setAttribute("aria-label", t("gardens"));
     $("battle-eyebrow").textContent = t("battleEyebrow");
     $("target-label").textContent = t("target");
+    $("battleScreen").querySelector(".target-card")?.setAttribute("aria-label", t("battleTargetLabel"));
+    $("battleScreen").querySelector("#ring-board")?.setAttribute("aria-label", t("battleRingsLabel"));
     $("turn-label").textContent = t("turns");
     $("reset-button").textContent = t("reset");
     $("result-eyebrow").textContent = t("complete");
@@ -79,6 +95,7 @@
     $("result-turn-label").textContent = t("turns");
     $("result-best-label").textContent = t("best");
     $("result-main").textContent = t("backToGardens");
+    $("result-panel")?.querySelector(".result-mimi")?.setAttribute("alt", t("resultAlt"));
     $("locale-select").value = locale;
     renderStage();
     if (state.screen === "battle") renderBattle();

@@ -9,7 +9,7 @@
     {name:"patch3",animal:"animal3",initial:[3,2,1,3],tiles:[{edges:["moon","stone","leaf","sun"]},{edges:["sun","water","moon","stone"]},{edges:["leaf","moon","sun","water"]},{edges:["moon","sun","stone","leaf"]}]},
     {name:"patch4",animal:"animal4",initial:[1,3,2,1],tiles:[{edges:["sun","leaf","moon","stone"]},{edges:["water","sun","stone","leaf"]},{edges:["moon","water","sun","sun"]},{edges:["stone","leaf","water","water"]}]}
   ];
-  let locale=storage.get("weightplay-animal-patchwork-paws-locale")||"en";if(!locales[locale])locale="en";
+  const routeLocale=document.documentElement.lang;let locale=locales[routeLocale]?routeLocale:storage.get("weightplay-animal-patchwork-paws-locale")||"en";if(!locales[locale])locale="en";
   let sound=storage.get("weightplay-animal-patchwork-paws-sound")!=="off";
   let patchIndex=0,rotations=[],solved=new Set(),turns=0,sessionTurns=0,feedback="",currentScreen="main";
   const copy=(key,vars={})=>Object.entries(vars).reduce((out,[name,value])=>out.replaceAll(`{${name}}`,String(value)),(locales[locale]||locales.en)[key]||locales.en[key]||key);

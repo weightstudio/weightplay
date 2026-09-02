@@ -143,6 +143,7 @@ h2 { margin-bottom: 10px; font-size: clamp(1.45rem, 3vw, 2.25rem); letter-spacin
 #mainScreen .wp-standard-main-summary { max-width: 620px; }
 #mainScreen .wp-standard-main-start { min-height: 52px; height: 52px; }
 #mainScreen .game-page-info { margin: 16px auto 0; }
+[dir="rtl"] #mainScreen .wp-shell-settings-popover { right: auto; left: 0; }
 
 #battleScreen[data-wp-logical-battle-canvas] { position: fixed; top: 0; left: max(0px, calc((100vw - 920px) / 2)); width: min(100vw, 920px); height: calc(100vh - 56px); min-height: 0; padding: 10px; border: 0; border-radius: 0; overflow: hidden; }
 #battleScreen[data-wp-logical-battle-canvas] .battle-header { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 60px; padding: 0 2px; }

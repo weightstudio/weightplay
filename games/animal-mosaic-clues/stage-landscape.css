@@ -105,6 +105,13 @@ body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab[aria-selecte
   box-shadow: 0 0 0 2px #ffd96b55;
 }
 
+/* v16: the governed wide Main contract reserves a fixed 300px poster slot. */
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="animal-mosaic-clues"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+}
+
 body[data-wp-game-id="animal-mosaic-clues"] #stageScreen .stage-tab:focus-visible,
 body[data-wp-game-id="animal-mosaic-clues"] #battleScreen [data-wp-battle-utility]:focus-visible {
   outline: 3px solid #ffd96b;

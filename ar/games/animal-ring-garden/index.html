@@ -24,7 +24,7 @@
   <meta name="description" content="أدر ثلاث حلقات من البتلات حتى يزهر نمط الحديقة القمرية، ثم أعد المحاولة بعدد لفات أقل." />
   <meta name="weightplay-game-id" content="animal-ring-garden" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v8" />
+  <meta name="weightplay-game-version" content="v9" />
   <meta name="weightplay-interface-version" content="6" />
   <title>حديقة الحلقات | WeightPlay</title>
   <link rel="stylesheet" href="style.css?v=20260901-ring-garden-responsive-v8" />
@@ -38,7 +38,7 @@
     <meta name="twitter:title" content="حديقة الحلقات | WeightPlay" />
     <meta name="twitter:description" content="أدر ثلاث حلقات من البتلات حتى يزهر نمط الحديقة القمرية، ثم أعد المحاولة بعدد لفات أقل." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-ring-garden/assets/animal-ring-garden-cover.svg" />
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-ring-garden-responsive-v8" />
+      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-ring-garden-arabic-v9" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -57,11 +57,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Pattern",
-    "Planning",
-    "العائلة",
-    "Animal"
+    "ألغاز",
+    "أنماط",
+    "تخطيط",
+    "عائلية",
+    "حيوانات"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -71,84 +71,84 @@
 }
     </script>
   </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v8" data-runtime-localize="off">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v9" data-runtime-localize="off">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
-      <p id="loading-copy">Waking the moon garden…</p>
+      <p id="loading-copy">إيقاظ حديقة القمر…</p>
     </section>
 
     <section id="mainScreen" class="screen main-screen" data-screen="main" hidden>
       <header class="topbar main-header">
-        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
-        <strong class="wp-shell-main-title" id="main-header-title">Ring Garden</strong>
+        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="العودة إلى WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
+        <strong class="wp-shell-main-title" id="main-header-title">حديقة الحلقات</strong>
         <div class="topbar-actions">
-          <button id="settings-button" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button>
+          <button id="settings-button" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>الإعدادات</span></button>
         </div>
       </header>
       <div class="main-content">
-        <img class="concept-cover main-cover" src="assets/animal-ring-garden-cover.png" alt="شعار WeightPlay" draggable="false" />
-        <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi, your moon-garden guide" draggable="false" />
-        <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
+        <img class="concept-cover main-cover" src="assets/animal-ring-garden-cover.png" alt="حديقة من البتلات مضاءة بضوء القمر في حديقة الحلقات" draggable="false" />
+        <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="ميمي قفزة قوس قزح، مرشدتك في حديقة القمر" draggable="false" />
+        <p class="eyebrow" id="main-eyebrow">لغز أنماط ضوء القمر</p>
         <h1 id="main-title">حديقة الحلقات</h1>
-        <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
-        <p id="main-summary" class="main-summary" aria-label="Gameplay summary">Turn each ring to match the target petals.</p>
-        <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">Gardens: 0 / 4</p>
-        <div class="fact-row" aria-label="Game facts">
-          <span id="fact-one">3 gardens</span><span id="fact-two">Ring turns</span><span id="fact-three">Calm replay</span>
+        <p class="lede" id="main-lede">أدر ثلاث حلقات من البتلات حتى يزهر نمط حديقة القمر.</p>
+        <p id="main-summary" class="main-summary" aria-label="ملخص طريقة اللعب">أدر كل حلقة لمطابقة البتلات الهدف.</p>
+        <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">تقدم الحدائق: 0 / 4</p>
+        <div class="fact-row" aria-label="معلومات اللعبة">
+          <span id="fact-one">4 حدائق قمرية</span><span id="fact-two">لفات الحلقات</span><span id="fact-three">إعادة هادئة</span>
         </div>
-        <button id="startBtn" data-wp-main-start class="primary-button" type="button">Start Garden</button>
+        <button id="startBtn" data-wp-main-start class="primary-button" type="button">ابدأ الحديقة</button>
       </div>
     </section>
 
-    <section class="guide-card" data-screen="main" data-wp-game-guide aria-label="Ring Garden game guide">
-      <h2 id="guide-title">How to play</h2>
-      <div class="guide-grid"><p id="guide-one">Read the target petals.</p><p id="guide-two">Turn one ring at a time.</p><p id="guide-three">Reset calmly if the pattern misses.</p></div>
+    <section class="guide-card" data-screen="main" data-wp-game-guide aria-label="دليل لعبة حديقة الحلقات">
+      <h2 id="guide-title">طريقة اللعب</h2>
+      <div class="guide-grid"><p id="guide-one">اقرأ البتلات الهدف.</p><p id="guide-two">أدر حلقة واحدة في كل مرة.</p><p id="guide-three">أعد المحاولة بهدوء إذا لم يطابق النمط.</p></div>
     </section>
 
     <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-ring-garden-cover.png')" hidden>
       <header class="topbar stage-header">
-        <button id="stage-back" class="return-link" data-wp-return="stage" type="button">← Main</button>
-        <strong class="stage-header-title">Choose a garden</strong>
-        <div class="topbar-actions"><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button></div>
+        <button id="stage-back" class="return-link" data-wp-return="stage" type="button">← الرئيسية</button>
+        <strong class="stage-header-title">اختر حديقة</strong>
+        <div class="topbar-actions"><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>الإعدادات</span></button></div>
       </header>
       <div class="content-column">
-        <p class="eyebrow" id="stage-eyebrow">CHOOSE A GARDEN</p>
-        <h1 id="stage-title">Where will you bloom?</h1>
-        <p class="lede" id="stage-lede">Each garden has a different three-ring pattern.</p>
+        <p class="eyebrow" id="stage-eyebrow">اختر حديقة</p>
+        <h1 id="stage-title">أي حديقة ستزهر؟</h1>
+        <p class="lede" id="stage-lede">لكل حديقة نمط مختلف من ثلاث حلقات.</p>
         <div id="garden-list" class="garden-list stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Garden sections"><button type="button" role="tab" aria-selected="true">Gardens</button></nav>
+        <nav class="stage-tabs" aria-label="أقسام الحدائق"><button type="button" role="tab" aria-selected="true">الحدائق</button></nav>
       </div>
     </section>
 
     <section id="battleScreen" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas hidden>
       <header class="topbar battle-header">
-        <button id="battle-back" class="return-link" data-wp-return="battle" type="button">← Gardens</button>
-        <strong class="battle-header-title">Moon garden</strong>
-        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility type="button">⚙ <span>Settings</span></button></div>
+        <button id="battle-back" class="return-link" data-wp-return="battle" type="button">← الحدائق</button>
+        <strong class="battle-header-title">حديقة القمر</strong>
+        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility type="button">⚙ <span>الإعدادات</span></button></div>
       </header>
       <div id="play-panel" class="content-column battle-content">
         <div class="battle-heading">
-          <div><p class="eyebrow" id="battle-eyebrow">MOON GARDEN</p><h1 id="battle-title">Garden One</h1></div>
-          <div class="turn-badge"><span id="turn-label">Turns</span> <strong id="turn-count">0</strong></div>
+          <div><p class="eyebrow" id="battle-eyebrow">حديقة القمر</p><h1 id="battle-title">الحديقة الأولى</h1></div>
+          <div class="turn-badge"><span id="turn-label">الدورات</span> <strong id="turn-count">0</strong></div>
         </div>
-        <p id="battle-clue" class="clue-card">Match the three rings to the target petals.</p>
-        <div class="target-card" aria-label="Target pattern">
-          <span id="target-label">Target</span><div id="target-pattern" class="target-pattern"></div>
+        <p id="battle-clue" class="clue-card">طابق الحلقات الثلاث مع البتلات الهدف.</p>
+        <div class="target-card" aria-label="النمط الهدف">
+          <span id="target-label">الهدف</span><div id="target-pattern" class="target-pattern"></div>
         </div>
         <img class="ring-atlas-art" src="assets/animal-ring-garden-ring-atlas.png" alt="" aria-hidden="true" draggable="false" />
-        <div id="ring-board" class="ring-board" aria-label="Three petal rings"></div>
-        <p id="battle-status" class="status" role="status" aria-live="polite">Choose a ring to begin.</p>
-        <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">Reset</button></div>
+        <div id="ring-board" class="ring-board" aria-label="ثلاث حلقات من البتلات"></div>
+        <p id="battle-status" class="status" role="status" aria-live="polite">اختر حلقة للبدء.</p>
+        <div class="battle-actions"><button id="reset-button" class="secondary-button" type="button">إعادة ضبط</button></div>
       </div>
       <div id="result-panel" class="content-column result-panel" hidden>
-        <p class="eyebrow" id="result-eyebrow">GARDEN COMPLETE</p>
-        <img class="mimi-guide result-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi celebrates the blooming garden" draggable="false" />
-        <h1 id="result-title">The petals align!</h1>
-        <p id="result-copy" class="lede">Your moon garden is glowing.</p>
-        <div class="result-card"><span id="result-turn-label">Turns</span><strong id="result-turns">0</strong><span id="result-best-label">Best</span><strong id="result-best">—</strong></div>
+        <p class="eyebrow" id="result-eyebrow">اكتملت الحديقة</p>
+        <img class="mimi-guide result-mimi" src="assets/animal-ring-garden-mimi.png" alt="ميمي قفزة قوس قزح تحتفل بالحديقة المتفتحة" draggable="false" />
+        <h1 id="result-title">تراصفت البتلات!</h1>
+        <p id="result-copy" class="lede">حديقة القمر متوهجة.</p>
+        <div class="result-card"><span id="result-turn-label">الدورات</span><strong id="result-turns">0</strong><span id="result-best-label">الأفضل</span><strong id="result-best">—</strong></div>
         <p id="result-status" class="status" role="status" aria-live="polite"></p>
-        <div class="result-actions"><button id="next-button" class="primary-button" type="button">Next Garden</button><button id="result-main" class="secondary-button" type="button">Back to Gardens</button></div>
+        <div class="result-actions"><button id="next-button" class="primary-button" type="button">الحديقة التالية</button><button id="result-main" class="secondary-button" type="button">العودة إلى الحدائق</button></div>
       </div>
     </section>
     <div class="battle-ad-reserve" data-screen="battle" data-wp-ad-reserve aria-hidden="true"></div>
@@ -156,31 +156,33 @@
 
   <dialog id="settings-dialog" class="settings-dialog wp-shell-settings-popover">
     <form method="dialog" class="settings-card">
-      <div class="settings-head"><h2 id="settings-title">Settings</h2><button class="close-button" value="close" aria-label="Close settings">×</button></div>
-      <label for="locale-select" id="language-label">Language</label>
+      <div class="settings-head"><h2 id="settings-title">الإعدادات</h2><button class="close-button" value="close" aria-label="إغلاق الإعدادات">×</button></div>
+      <label for="locale-select" id="language-label">اللغة</label>
       <select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select>
-      <button id="sound-toggle" class="secondary-button" data-sound-toggle type="button" aria-pressed="true">Sound: On</button>
+      <button id="sound-toggle" class="secondary-button" data-sound-toggle type="button" aria-pressed="true">الصوت: مفعّل</button>
     </form>
   </dialog>
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script>
-  <script src="locales.js?v=20260901-ring-garden-responsive-v8"></script>
-  <script src="game.js?v=20260901-ring-garden-responsive-v8"></script>
+  <script src="locales.js?v=20260902-ring-garden-arabic-v9"></script>
+  <script src="game.js?v=20260902-ring-garden-arabic-v9"></script>
 <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة حديقة الحلقات">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>حديقة الحلقات</h2><p>أدر ثلاث حلقات من البتلات حتى يزهر نمط الحديقة القمرية، ثم أعد المحاولة بعدد لفات أقل.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز تدوير الأنماط</strong></div><div class="game-info-fact"><span>النوع</span><strong>Puzzle · Pattern · Planning · العائلة · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز تدوير الأنماط</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · أنماط · تخطيط · عائلية · حيوانات</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2–5 دقائق</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التعرّف على الأنماط · التخطيط المكاني · التركيز</strong></div></div>
     </div>
     <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تضم حديقة القمر أربع ساحات هادئة، ولكل ساحة نمط مختلف من ثلاث حلقات. اقرأ ترتيب البتلات قبل أن تبدأ، ثم اجعل كل حلقة تقترب من هدفها خطوةً خطوة.</p>
+<p>تتقدم الجولة من بستان اليراعات إلى القصب الفضي. تظل القاعدة واحدة، لكن شكل الهدف يتغير بما يكفي ليمنح كل حديقة قراراً جديداً واضحاً.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>أدر كل حلقة باللمس أو الماوس أو لوحة المفاتيح حتى تتطابق البتلات مع النمط الهدف. تعرض العلامة ↻ الحلقات التي تحتاج إلى دورات إضافية، وتظهر ✓ عند المحاذاة.</p>
+<p>لا توجد عقوبة على الدوران الخاطئ؛ يمكنك إعادة ضبط الحديقة في أي وقت. عند محاذاة الحلقات الثلاث، تُحفظ أفضل نتيجة محلياً وتفتح الحديقة التالية.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ابدأ من الشاشة الرئيسية واختر حديقة من خريطة الحدائق.</li><li>اقرأ النمط الهدف، ثم أدر حلقة واحدة في كل مرة.</li><li>استخدم إعادة الضبط إذا احتجت إلى بداية نظيفة، ثم أكمل الحدائق الأربع.</li><li>أعد اللعب من النتيجة لتحسين عدد الدورات أو عد إلى خريطة الحدائق.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>ابدأ بالحلقة التي تحتاج إلى أقل عدد من الدورات، ثم أعد فحص النمط بعد كل حركة.</li><li>استعمل علامة ↻ لتحديد الحلقة التالية بدلاً من تدوير الحلقات عشوائياً.</li><li>إذا اختلط عليك الترتيب، أعد ضبط الحديقة؛ المحاولة الهادئة أوضح من مطاردة سلسلة طويلة من الحركات.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تبدأ الحدائق الأربع بنمط مرئي ومباشر، ثم تغيّر ترتيب البتلات والهدف تدريجياً. تتعلم القاعدة في الحديقة الأولى، وتستخدم القراءة والتخطيط في الحدائق اللاحقة.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>صُممت حديقة الحلقات كلغز ملاحظة أصلي: النمط الهدف ظاهر، وكل دوران يقدّم نتيجة مرئية، وإعادة الضبط تعيد التجربة من دون ضغط أو مؤقت.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>هذه لعبة متصفح عامة مناسبة للعائلة. لا يلزم حساب أو شراء؛ تُحفظ أفضل النتائج وتفضيل الصوت محلياً في هذا المتصفح فقط.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم، في هذا المتصفح فقط.</dd></div></dl></div>
 
     </div>
   </section>

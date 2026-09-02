@@ -8,11 +8,18 @@
   ];
   const state = { locale: "en", patrol: 0, code: [], checks: 0, sessionChecks: 0, screen: "main" };
   const $ = (id) => document.getElementById(id);
+  let mainMapObserver;
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
   const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen; };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-signal-scout-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
   const saveBest = () => { try { const old = readBest(); if (!old || state.sessionChecks < old) localStorage.setItem("weightplay-animal-signal-scout-best-v1", String(state.sessionChecks)); } catch (_) {} };
   const announce = (key) => { $("battleStatus").textContent = t(key); };
+  const moveMainMapEntry = () => {
+    const map = $("mapBtn");
+    const copy = document.querySelector(".wp-standard-main-copy");
+    if (map && copy && !copy.contains(map)) { copy.append(map); mainMapObserver?.disconnect(); }
+  };
+  const openPatrolMap = () => { show("stage"); renderStages(); };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
@@ -39,9 +46,12 @@
   const chooseSignal = (animal) => { if (state.code.length >= patrols[state.patrol].order.length) return; state.code.push(animal); renderBattle(); announce("codeReady"); };
   const clearCode = () => { state.code = []; renderBattle(); announce("waiting"); };
   const checkCode = () => { const patrol = patrols[state.patrol]; if (state.code.length !== patrol.order.length) { announce("waiting"); return; } state.checks += 1; state.sessionChecks += 1; const correct = JSON.stringify(state.code) === JSON.stringify(patrol.order); if (!correct) { state.code = []; renderBattle(); announce("wrong"); return; } announce("correct"); if (state.patrol === patrols.length - 1) { saveBest(); $("bestValue").textContent = readBest() || t("noBest"); } show("result"); renderResult(); };
-  $("startBtn").addEventListener("click", () => startPatrol(0)); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkCode); $("clearBtn").addEventListener("click", clearCode); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; }); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); });
+  $("startBtn").addEventListener("click", openPatrolMap); $("mapBtn").addEventListener("click", openPatrolMap); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkCode); $("clearBtn").addEventListener("click", clearCode); $("battleUtilityBtn").addEventListener("click", () => { announce("waiting"); $("battleUtilityBtn").setAttribute("aria-pressed", "true"); }); $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; }); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); });
   const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) state.locale = routeLocale;
   try { const saved = localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) state.locale = saved; } catch (_) {}
   applyLocale(); show("main");
+  mainMapObserver = new MutationObserver(moveMainMapEntry);
+  mainMapObserver.observe(document.body, { childList: true, subtree: true });
+  moveMainMapEntry();
   window.__ANIMAL_SIGNAL_SCOUT_TEST__ = { patrols, startPatrol, chooseSignal, checkCode, clearCode, getState: () => ({ ...state, code: [...state.code] }) };
 })();

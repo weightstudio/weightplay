@@ -56,10 +56,10 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Spatial Logic",
-    "家族",
-    "Animal"
+    "パズル",
+    "空間ロジック",
+    "ファミリー",
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -69,7 +69,7 @@
 }
     </script>
   </head>
-  <body data-audience="general" data-wp-game-id="animal-patchwork-paws" data-wp-game-version="v2">
+  <body data-audience="general" data-wp-game-id="animal-patchwork-paws" data-wp-game-version="v2" data-runtime-localize="off">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">✣</div><p data-i18n="loading">Weaving the trail…</p></div>
   <main id="app" hidden>
     <header class="topbar"><a id="mainReturn" class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><button id="backBtn" class="icon-btn back" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-runtime-localize="off">パッチワーク・ポーズ</strong><button id="settingsBtn" class="icon-btn" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
@@ -84,17 +84,17 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パッチワーク・ポーズ</h2><p>4枚の生息地パッチを回して、となり合う道をきれいにつなごう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>生息地の辺合わせパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Spatial Logic · 家族 · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>生息地の辺合わせパズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 空間ロジック · ファミリー · 動物</strong></div></div>
     </div>
     <div class="game-info-sections">
 
 
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>生息地パッチを開き、4つの色付きの辺を観察します。</li><li>パッチをタップして時計回りに回し、つながりを確認します。</li><li>道が合わないときは、落ち着いた再挑戦メッセージかリセットを使います。</li></ol></div>
 
 
 
 
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
 
     </div>
   </section>
@@ -110,10 +110,7 @@
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="result-guide" src="assets/animal-patchwork-paws-cover.svg" alt="" width="720" height="720" aria-hidden="true" /><p class="eyebrow" data-i18n="finished">The trails meet!</p><h2 id="resultTitle" data-i18n="resultTitle">A perfect patch</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next patch</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a patch</button></div></section>
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260901-patchwork-paws-v3-shell"></script><script src="game.js?v=20260901-patchwork-paws-v3-shell"></script>
-<script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="locales.js?v=20260902-patchwork-paws-localization-v5"></script><script src="game.js?v=20260902-patchwork-paws-localization-v5"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パッチワーク・ポーズ";document.title="パッチワーク・ポーズ | WeightPlay";},{once:true});</script>
 </body>
 </html>
