@@ -1,8 +1,33 @@
 /* v3 production art: dawn lookout depth and recognizable animal cards. */
+[hidden]{display:none!important}
 .scout-guide{display:block;width:min(126px,34vw);height:clamp(126px,20vw,186px);object-fit:contain;object-position:center bottom;justify-self:end;filter:drop-shadow(0 12px 18px #0008)}
 #battleScreen{background-image:linear-gradient(180deg,#16373bd9,#fffaf1e8),url("assets/animal-silhouette-scout-lookout-background.png");background-position:center;background-size:cover;background-attachment:fixed}
 #silhouette.scout-art{width:min(100%,420px);height:220px;margin:10px auto 0;background-image:url("assets/animal-silhouette-scout-animal-atlas.png");background-repeat:no-repeat;background-size:300% 200%;background-position:0 100%;background-color:#20303a22;color:transparent;text-indent:-9999px;filter:grayscale(1) contrast(1.45);border-radius:18px}
 #silhouette.scout-art-fox{background-position:0 100%}#silhouette.scout-art-owl{background-position:50% 100%}#silhouette.scout-art-hare{background-position:50% 0}
 .choice-emoji.scout-art-fox,.choice-emoji.scout-art-rabbit,.choice-emoji.scout-art-owl,.choice-emoji.scout-art-deer{display:block;width:100%;height:64px;background-image:url("assets/animal-silhouette-scout-animal-atlas.png");background-repeat:no-repeat;background-size:300% 200%;font-size:0;color:transparent;text-indent:-9999px}.choice-emoji.scout-art-fox{background-position:0 100%}.choice-emoji.scout-art-rabbit{background-position:50% 0}.choice-emoji.scout-art-owl{background-position:50% 100%}.choice-emoji.scout-art-deer{background-position:0 0}
 .scout-result{display:block;width:min(170px,52vw);height:170px;object-fit:contain;margin:-16px auto 2px;filter:drop-shadow(0 12px 18px #0008)}
+.battle-utility{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
 @media(max-width:699px){.scout-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.scout-result{width:145px;height:145px}#silhouette.scout-art{height:180px}}
+@media(max-height:520px) and (orientation:landscape){.wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
+@media (orientation:landscape) and (max-height:560px){
+  body.wp-logical-battle-active #battleScreen .battle-content{box-sizing:border-box;display:grid;grid-template-columns:minmax(220px,.82fr) minmax(340px,1.18fr);grid-template-rows:56px minmax(0,1fr) 44px;gap:8px;width:100%;max-width:none;height:calc(100% - 60px);margin:0;padding:8px;overflow:hidden}
+  body.wp-logical-battle-active #battleScreen .clue{grid-column:1;grid-row:1;margin:0;min-height:0;padding:8px 10px;overflow:hidden}
+  body.wp-logical-battle-active #battleScreen .target-card{grid-column:1;grid-row:2;min-height:0;padding:8px;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr);align-items:center}
+  body.wp-logical-battle-active #battleScreen #silhouette.scout-art{width:100%;height:auto;max-height:138px;margin:4px auto 0;background-size:300% 200%}
+  body.wp-logical-battle-active #battleScreen #choiceGrid{grid-column:2;grid-row:1 / 3;align-content:center;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+  body.wp-logical-battle-active #battleScreen .choice-btn{min-height:100px;padding:8px 4px}
+  body.wp-logical-battle-active #battleScreen #battleStatus{grid-column:1;grid-row:3;display:grid;place-items:center;min-height:0;margin:0;padding:6px 8px;overflow:hidden}
+  body.wp-logical-battle-active #battleScreen #checkBtn,body.wp-logical-battle-active #battleScreen #clearBtn{grid-column:2;grid-row:3;width:calc(50% - 4px);min-height:44px;margin:0}
+  body.wp-logical-battle-active #battleScreen #checkBtn{justify-self:start}
+  body.wp-logical-battle-active #battleScreen #clearBtn{justify-self:end}
+}
+
+.battle-ad-reserve{display:block;width:100%;height:56px}
+body:not(.wp-logical-battle-active) .battle-ad-reserve{display:none}
+#stageScreen[data-wp-standard-stage-screen]{display:grid;grid-template-rows:60px minmax(0,1fr) 48px;gap:8px;box-sizing:border-box;width:100%;height:100%;min-height:0;margin:0;padding:10px;border:0;border-radius:0;background:linear-gradient(180deg,rgba(20,61,59,.88),rgba(255,250,241,.78)),var(--wp-stage-art);background-size:cover;background-position:center;color:var(--ink);overflow:hidden}
+#stageScreen[data-wp-standard-stage-screen] .stage-header{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:10px;min-height:60px;margin:0;padding:0 2px}
+#stageScreen[data-wp-standard-stage-screen] .stage-header>h2{text-align:center;margin:0;font-size:clamp(1.05rem,2.6vw,1.45rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stageScreen[data-wp-standard-stage-screen] .stage-rail{align-self:center;width:100%;min-width:0;max-width:100%;height:auto;min-height:198px!important;padding-inline:12px!important;overflow:visible!important;position:relative;z-index:1}
+#stageScreen[data-wp-standard-stage-screen] .stage-card{position:relative;z-index:2;pointer-events:auto;border-color:#9cc5c0;background:linear-gradient(155deg,#fffdf7,#e4f5ee);box-shadow:0 12px 24px #50746b33}
+#stageScreen[data-wp-standard-stage-screen] .stage-tabs{display:grid;place-items:center;height:48px;min-height:48px;margin:0}
+#stageScreen[data-wp-standard-stage-screen] .stage-tabs button{min-height:44px;padding:8px 16px;border:1px solid #9cc5c0;border-radius:12px;background:#fff;color:var(--accent);font-weight:800}

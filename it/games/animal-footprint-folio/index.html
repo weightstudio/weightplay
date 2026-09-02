@@ -24,7 +24,7 @@
   <title>Logica delle tracce | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <link rel="stylesheet" href="style.css?v=20260902-footprint-folio-interface-v3">
@@ -72,17 +72,17 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v3" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v4" data-screen="main">
   <main class="shell" id="app">
     <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
       <header class="topbar main-header wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">Trail Logic</strong>
+        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">Logica delle tracce</strong>
         <div class="wp-shell-settings">
           <button class="icon-button wp-shell-settings-button" id="settingsButton" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button>
           <div class="settings-popover wp-shell-settings-popover" id="settingsPopover" role="group" hidden>
-            <strong class="wp-shell-settings-title" data-copy="settings">Settings</strong>
-            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">Language</span><select id="locale" aria-label="Language">
+            <strong class="wp-shell-settings-title" data-copy="settings">Impostazioni</strong>
+            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">Lingua</span><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
             <option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
@@ -99,42 +99,28 @@
           <div class="poster-stamp">FIELD NOTE 03</div>
         </div>
         <div class="intro wp-standard-main-copy">
-          <p class="eyebrow" data-copy="eyebrow">FIELD NOTE · 6+</p>
+          <p class="eyebrow" data-copy="eyebrow">TACCUINO · 6+</p>
           <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title">Logica delle tracce</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Complete three visible trail records by choosing the one marker that keeps each clue sequence consistent.</p>
-          <div class="fact-row"><span data-copy="fact1">3 records</span><span data-copy="fact2">Visible clues</span><span data-copy="fact3">Gentle retry</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Three trail records ready</p>
+          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Completa tre schede visibili scegliendo il segno che mantiene coerente ogni sequenza di indizi.</p>
+          <div class="fact-row"><span data-copy="fact1">3 schede</span><span data-copy="fact2">Indizi visibili</span><span data-copy="fact3">Riprova serena</span></div>
+          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Tre schede pronte</p>
           <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Start field note</button>
-            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">How to play</button>
+            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Inizia il taccuino</button>
+            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">Come si gioca</button>
           </div>
         </div>
       </div>
     </section>
-      <section class="game-page-info game-page-info-static" aria-label="Logica delle tracce informazioni sul gioco" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Logica delle tracce</h2><p>Completa tre schede visibili scegliendo il segno che mantiene coerente ogni sequenza di indizi.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Deduzione di sequenze</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Famiglia · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Logica delle tracce game information">
+        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">GUIDA RAPIDA</span><h2 data-copy="title">Logica delle tracce</h2><p data-copy="lede">Completa tre schede visibili scegliendo il segno che mantiene coerente ogni sequenza di indizi.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="fact1">3 schede</span><strong data-copy="fact2">Indizi visibili</strong></div><div class="game-info-fact"><span data-copy="fact3">Riprova serena</span><strong data-copy="guideButton">Come si gioca</strong></div></div></div>
+        <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideEyebrow">GUIDA RAPIDA</h3><p data-copy="guide">Leggi tutti i segni visibili. Scegli quello mancante che mantiene la sequenza e conferma la nota.</p></article><article class="game-info-section"><h3 data-copy="chooseMarker">SCEGLI UN SEGNO</h3><p data-copy="instruction">Leggi da sinistra a destra. Quale segno va nello spazio aperto?</p></article><article class="game-info-section"><h3 data-copy="resultEyebrow">TACCUINO COMPLETO</h3><p data-copy="resultCopy">Il tuo folio di indizi è completo. Ogni sequenza visibile mantiene la sua traccia.</p></article><article class="game-info-section"><h3 data-copy="faq">Domande frequenti</h3><dl><div><dt data-copy="faqQuestion">I progressi vengono salvati?</dt><dd data-copy="faqAnswer">Sì, solo in questo browser.</dd></div></dl></article></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Quante tappe sono incluse?</dt><dd>Ci sono 30 fasi create in sei capitoli di regole. La fase 30 rimane rigiocabile dopo il completamento.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
     <section class="screen battle-screen battle-canvas" id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" aria-labelledby="recordTitle">
       <header class="battle-header">
-        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Back to Main</span></button>
+        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Torna alla schermata principale</span></button>
         <p class="eyebrow" id="recordCount">Record 1 / 3</p>
-        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Solved</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
+        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Risolte</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
       </header>
       <div class="battle-layout">
         <div class="record-panel">
@@ -142,37 +128,37 @@
           <h2 id="recordTitle">Dawn edge</h2>
           <p class="record-instruction" id="recordInstruction">Read left to right. Which marker belongs in the open space?</p>
           <div class="legend" aria-label="Marker legend">
-            <span><i class="legend-dot known"></i><span data-copy="known">Known marker</span></span>
-            <span><i class="legend-dot gap"></i><span data-copy="gap">Your missing note</span></span>
+            <span><i class="legend-dot known"></i><span data-copy="known">Segno noto</span></span>
+            <span><i class="legend-dot gap"></i><span data-copy="gap">Nota mancante</span></span>
           </div>
         </div>
         <div class="board-column">
           <div class="trail-board" id="trailBoard" aria-label="Visible trail sequence"></div>
           <p class="feedback" id="feedback" aria-live="polite"></p>
           <div class="choice-area">
-            <p class="eyebrow" data-copy="chooseMarker">CHOOSE A MARKER</p>
+            <p class="eyebrow" data-copy="chooseMarker">SCEGLI UN SEGNO</p>
             <div class="choices" id="choices"></div>
             <div class="button-row action-row">
-              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Confirm note</button>
-              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Next record</button>
+              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Conferma nota</button>
+              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Scheda successiva</button>
             </div>
           </div>
         </div>
       </div>
       <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <section class="result-card" id="resultCard" hidden aria-labelledby="resultTitle">
-        <p class="eyebrow" data-copy="resultEyebrow">FIELD NOTE COMPLETE</p>
+        <p class="eyebrow" data-copy="resultEyebrow">TACCUINO COMPLETO</p>
         <h2 id="resultTitle">All records resolved</h2>
         <p id="resultCopy">Your clue folio is complete.</p>
         <div class="button-row">
-          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay folio</button>
-          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Field notes home</button>
+          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Ripeti il folio</button>
+          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Home del taccuino</button>
         </div>
       </section>
     </section>
   </main>
-  <script src="locales.js?v=20260902-footprint-folio-interface-v3"></script>
-  <script src="game.js?v=20260902-footprint-folio-interface-v3"></script>
+  <script src="locales.js?v=20260902-footprint-folio-guide-v4"></script>
+  <script src="game.js?v=20260902-footprint-folio-guide-v4"></script>
 <script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

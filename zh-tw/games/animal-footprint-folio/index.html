@@ -24,7 +24,7 @@
   <title>足跡線索 | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <link rel="stylesheet" href="style.css?v=20260902-footprint-folio-interface-v3">
@@ -72,17 +72,17 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v3" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v4" data-screen="main">
   <main class="shell" id="app">
     <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
       <header class="topbar main-header wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">Trail Logic</strong>
+        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">足跡線索</strong>
         <div class="wp-shell-settings">
           <button class="icon-button wp-shell-settings-button" id="settingsButton" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button>
           <div class="settings-popover wp-shell-settings-popover" id="settingsPopover" role="group" hidden>
-            <strong class="wp-shell-settings-title" data-copy="settings">Settings</strong>
-            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">Language</span><select id="locale" aria-label="Language">
+            <strong class="wp-shell-settings-title" data-copy="settings">設定</strong>
+            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">語言</span><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
             <option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
@@ -99,42 +99,28 @@
           <div class="poster-stamp">FIELD NOTE 03</div>
         </div>
         <div class="intro wp-standard-main-copy">
-          <p class="eyebrow" data-copy="eyebrow">FIELD NOTE · 6+</p>
+          <p class="eyebrow" data-copy="eyebrow">野外筆記 · 6+</p>
           <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title">足跡線索</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Complete three visible trail records by choosing the one marker that keeps each clue sequence consistent.</p>
-          <div class="fact-row"><span data-copy="fact1">3 records</span><span data-copy="fact2">Visible clues</span><span data-copy="fact3">Gentle retry</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Three trail records ready</p>
+          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">完成三段可見的足跡紀錄，選出能讓每組線索序列保持一致的標記。</p>
+          <div class="fact-row"><span data-copy="fact1">3 段紀錄</span><span data-copy="fact2">可見線索</span><span data-copy="fact3">平靜重試</span></div>
+          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">三段足跡紀錄已準備好</p>
           <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Start field note</button>
-            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">How to play</button>
+            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">開始野外筆記</button>
+            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">玩法說明</button>
           </div>
         </div>
       </div>
     </section>
-      <section class="game-page-info game-page-info-static" aria-label="足跡線索 遊戲資訊" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>足跡線索</h2><p>從三張可見的足跡紀錄中選出正確標記，完成三段線索序列。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>足跡序列推理</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · Logic · 家庭 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="足跡線索 game information">
+        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">快速指南</span><h2 data-copy="title">足跡線索</h2><p data-copy="lede">完成三段可見的足跡紀錄，選出能讓每組線索序列保持一致的標記。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="fact1">3 段紀錄</span><strong data-copy="fact2">可見線索</strong></div><div class="game-info-fact"><span data-copy="fact3">平靜重試</span><strong data-copy="guideButton">玩法說明</strong></div></div></div>
+        <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideEyebrow">快速指南</h3><p data-copy="guide">讀完所有可見標記，選出能讓序列穩定的缺少標記，再確認你的筆記。</p></article><article class="game-info-section"><h3 data-copy="chooseMarker">選擇標記</h3><p data-copy="instruction">由左至右閱讀。開口位置應該放哪個標記？</p></article><article class="game-info-section"><h3 data-copy="resultEyebrow">野外筆記完成</h3><p data-copy="resultCopy">線索圖鑑完成，每組可見序列都有穩定的足跡。</p></article><article class="game-info-section"><h3 data-copy="faq">常見問題</h3><dl><div><dt data-copy="faqQuestion">進度會保存嗎？</dt><dd data-copy="faqAnswer">會，只保存在這個瀏覽器中。</dd></div></dl></article></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>包括幾個階段？</dt><dd>六個規則章節有 30 個編寫階段。第 30 關在完成後仍然可以重玩。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
     <section class="screen battle-screen battle-canvas" id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" aria-labelledby="recordTitle">
       <header class="battle-header">
-        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Back to Main</span></button>
+        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">返回主畫面</span></button>
         <p class="eyebrow" id="recordCount">Record 1 / 3</p>
-        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Solved</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
+        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">已解決</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
       </header>
       <div class="battle-layout">
         <div class="record-panel">
@@ -142,37 +128,37 @@
           <h2 id="recordTitle">Dawn edge</h2>
           <p class="record-instruction" id="recordInstruction">Read left to right. Which marker belongs in the open space?</p>
           <div class="legend" aria-label="Marker legend">
-            <span><i class="legend-dot known"></i><span data-copy="known">Known marker</span></span>
-            <span><i class="legend-dot gap"></i><span data-copy="gap">Your missing note</span></span>
+            <span><i class="legend-dot known"></i><span data-copy="known">已知標記</span></span>
+            <span><i class="legend-dot gap"></i><span data-copy="gap">缺少的筆記</span></span>
           </div>
         </div>
         <div class="board-column">
           <div class="trail-board" id="trailBoard" aria-label="Visible trail sequence"></div>
           <p class="feedback" id="feedback" aria-live="polite"></p>
           <div class="choice-area">
-            <p class="eyebrow" data-copy="chooseMarker">CHOOSE A MARKER</p>
+            <p class="eyebrow" data-copy="chooseMarker">選擇標記</p>
             <div class="choices" id="choices"></div>
             <div class="button-row action-row">
-              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Confirm note</button>
-              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Next record</button>
+              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>確認筆記</button>
+              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>下一段紀錄</button>
             </div>
           </div>
         </div>
       </div>
       <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <section class="result-card" id="resultCard" hidden aria-labelledby="resultTitle">
-        <p class="eyebrow" data-copy="resultEyebrow">FIELD NOTE COMPLETE</p>
+        <p class="eyebrow" data-copy="resultEyebrow">野外筆記完成</p>
         <h2 id="resultTitle">All records resolved</h2>
         <p id="resultCopy">Your clue folio is complete.</p>
         <div class="button-row">
-          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay folio</button>
-          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Field notes home</button>
+          <button class="primary-button" id="replayButton" type="button" data-copy="replay">重玩圖鑑</button>
+          <button class="secondary-button" id="homeButton" type="button" data-copy="home">返回筆記首頁</button>
         </div>
       </section>
     </section>
   </main>
-  <script src="locales.js?v=20260902-footprint-folio-interface-v3"></script>
-  <script src="game.js?v=20260902-footprint-folio-interface-v3"></script>
+  <script src="locales.js?v=20260902-footprint-folio-guide-v4"></script>
+  <script src="game.js?v=20260902-footprint-folio-guide-v4"></script>
 <script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

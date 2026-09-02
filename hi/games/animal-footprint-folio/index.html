@@ -24,7 +24,7 @@
   <title>पगचिह्न तर्क | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <link rel="stylesheet" href="style.css?v=20260902-footprint-folio-interface-v3">
@@ -72,17 +72,17 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v3" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v4" data-screen="main">
   <main class="shell" id="app">
     <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
       <header class="topbar main-header wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">Trail Logic</strong>
+        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">पगचिह्न तर्क</strong>
         <div class="wp-shell-settings">
           <button class="icon-button wp-shell-settings-button" id="settingsButton" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button>
           <div class="settings-popover wp-shell-settings-popover" id="settingsPopover" role="group" hidden>
-            <strong class="wp-shell-settings-title" data-copy="settings">Settings</strong>
-            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">Language</span><select id="locale" aria-label="Language">
+            <strong class="wp-shell-settings-title" data-copy="settings">सेटिंग्स</strong>
+            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">भाषा</span><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
             <option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
@@ -99,42 +99,28 @@
           <div class="poster-stamp">FIELD NOTE 03</div>
         </div>
         <div class="intro wp-standard-main-copy">
-          <p class="eyebrow" data-copy="eyebrow">FIELD NOTE · 6+</p>
+          <p class="eyebrow" data-copy="eyebrow">मैदानी नोट · 6+</p>
           <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title">पगचिह्न तर्क</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Complete three visible trail records by choosing the one marker that keeps each clue sequence consistent.</p>
-          <div class="fact-row"><span data-copy="fact1">3 records</span><span data-copy="fact2">Visible clues</span><span data-copy="fact3">Gentle retry</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Three trail records ready</p>
+          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">दिखने वाले तीन रिकॉर्ड पूरे करें और वह निशान चुनें जो हर संकेत-क्रम को सही रखता है।</p>
+          <div class="fact-row"><span data-copy="fact1">3 रिकॉर्ड</span><span data-copy="fact2">दिखने वाले संकेत</span><span data-copy="fact3">शांत पुनः प्रयास</span></div>
+          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">तीन रिकॉर्ड तैयार हैं</p>
           <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Start field note</button>
-            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">How to play</button>
+            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">नोट शुरू करें</button>
+            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">कैसे खेलें</button>
           </div>
         </div>
       </div>
     </section>
-      <section class="game-page-info game-page-info-static" aria-label="पगचिह्न तर्क खेल की जानकारी" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>पगचिह्न तर्क</h2><p>दिखने वाले तीन पगचिह्न रिकॉर्ड पूरे करें और हर संकेत-क्रम को सही रखने वाला निशान चुनें।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>तार्किक पगचिह्न क्रम</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · परिवार · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="पगचिह्न तर्क game information">
+        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">त्वरित मार्गदर्शिका</span><h2 data-copy="title">पगचिह्न तर्क</h2><p data-copy="lede">दिखने वाले तीन रिकॉर्ड पूरे करें और वह निशान चुनें जो हर संकेत-क्रम को सही रखता है।</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="fact1">3 रिकॉर्ड</span><strong data-copy="fact2">दिखने वाले संकेत</strong></div><div class="game-info-fact"><span data-copy="fact3">शांत पुनः प्रयास</span><strong data-copy="guideButton">कैसे खेलें</strong></div></div></div>
+        <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideEyebrow">त्वरित मार्गदर्शिका</h3><p data-copy="guide">सभी दिखते निशान पढ़ें। क्रम को स्थिर रखने वाला गायब निशान चुनें और अपना नोट पक्का करें।</p></article><article class="game-info-section"><h3 data-copy="chooseMarker">निशान चुनें</h3><p data-copy="instruction">बाएँ से दाएँ पढ़ें। खुले स्थान में कौन-सा निशान आएगा?</p></article><article class="game-info-section"><h3 data-copy="resultEyebrow">मैदानी नोट पूरा</h3><p data-copy="resultCopy">आपका संकेत फोलियो पूरा है। हर दिखता क्रम अपनी राह बनाए रखता है।</p></article><article class="game-info-section"><h3 data-copy="faq">अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt data-copy="faqQuestion">क्या प्रगति सहेजी जाती है?</dt><dd data-copy="faqAnswer">हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></article></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>कितने चरण शामिल हैं?</dt><dd>छह नियम अध्यायों में 30 लिखित चरण हैं। चरण 30 पूरा होने के बाद पुनः चलाने योग्य रहता है।</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
     <section class="screen battle-screen battle-canvas" id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" aria-labelledby="recordTitle">
       <header class="battle-header">
-        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Back to Main</span></button>
+        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">मुख्य पर लौटें</span></button>
         <p class="eyebrow" id="recordCount">Record 1 / 3</p>
-        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Solved</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
+        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">हल</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
       </header>
       <div class="battle-layout">
         <div class="record-panel">
@@ -142,37 +128,37 @@
           <h2 id="recordTitle">Dawn edge</h2>
           <p class="record-instruction" id="recordInstruction">Read left to right. Which marker belongs in the open space?</p>
           <div class="legend" aria-label="Marker legend">
-            <span><i class="legend-dot known"></i><span data-copy="known">Known marker</span></span>
-            <span><i class="legend-dot gap"></i><span data-copy="gap">Your missing note</span></span>
+            <span><i class="legend-dot known"></i><span data-copy="known">ज्ञात निशान</span></span>
+            <span><i class="legend-dot gap"></i><span data-copy="gap">गायब नोट</span></span>
           </div>
         </div>
         <div class="board-column">
           <div class="trail-board" id="trailBoard" aria-label="Visible trail sequence"></div>
           <p class="feedback" id="feedback" aria-live="polite"></p>
           <div class="choice-area">
-            <p class="eyebrow" data-copy="chooseMarker">CHOOSE A MARKER</p>
+            <p class="eyebrow" data-copy="chooseMarker">निशान चुनें</p>
             <div class="choices" id="choices"></div>
             <div class="button-row action-row">
-              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Confirm note</button>
-              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Next record</button>
+              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>नोट पक्का करें</button>
+              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>अगला रिकॉर्ड</button>
             </div>
           </div>
         </div>
       </div>
       <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <section class="result-card" id="resultCard" hidden aria-labelledby="resultTitle">
-        <p class="eyebrow" data-copy="resultEyebrow">FIELD NOTE COMPLETE</p>
+        <p class="eyebrow" data-copy="resultEyebrow">मैदानी नोट पूरा</p>
         <h2 id="resultTitle">All records resolved</h2>
         <p id="resultCopy">Your clue folio is complete.</p>
         <div class="button-row">
-          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay folio</button>
-          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Field notes home</button>
+          <button class="primary-button" id="replayButton" type="button" data-copy="replay">फोलियो फिर खेलें</button>
+          <button class="secondary-button" id="homeButton" type="button" data-copy="home">नोट होम</button>
         </div>
       </section>
     </section>
   </main>
-  <script src="locales.js?v=20260902-footprint-folio-interface-v3"></script>
-  <script src="game.js?v=20260902-footprint-folio-interface-v3"></script>
+  <script src="locales.js?v=20260902-footprint-folio-guide-v4"></script>
+  <script src="game.js?v=20260902-footprint-folio-guide-v4"></script>
 <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

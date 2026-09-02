@@ -31,7 +31,7 @@
     const marker = MARKERS[key];
     return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
-  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v3", interface_version: 6, ...payload }); }
+  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v4", interface_version: 6, ...payload }); }
   function setScreen(name) {
     $("#mainScreen").classList.toggle("active", name === "main");
     $("#battleScreen").classList.toggle("active", name === "battle");

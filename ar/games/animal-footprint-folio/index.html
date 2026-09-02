@@ -24,7 +24,7 @@
   <title>منطق الآثار | WeightPlay</title>
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-footprint-folio">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <link rel="stylesheet" href="style.css?v=20260902-footprint-folio-interface-v3">
@@ -72,17 +72,17 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v3" data-screen="main">
+<body data-audience="general" data-wp-game-id="animal-footprint-folio" data-wp-game-version="v4" data-screen="main">
   <main class="shell" id="app">
     <section class="screen active main-screen wp-standard-main-screen" id="mainScreen" data-screen="main" aria-labelledby="gameTitle">
       <header class="topbar main-header wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">Trail Logic</strong>
+        <strong class="wp-shell-main-title wp-standard-main-title" data-copy="title">منطق الآثار</strong>
         <div class="wp-shell-settings">
           <button class="icon-button wp-shell-settings-button" id="settingsButton" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button>
           <div class="settings-popover wp-shell-settings-popover" id="settingsPopover" role="group" hidden>
-            <strong class="wp-shell-settings-title" data-copy="settings">Settings</strong>
-            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">Language</span><select id="locale" aria-label="Language">
+            <strong class="wp-shell-settings-title" data-copy="settings">الإعدادات</strong>
+            <label class="wp-shell-settings-row wp-shell-language-row"><span data-copy="language">اللغة</span><select id="locale" aria-label="Language">
             <option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option>
             <option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option>
             <option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option>
@@ -99,42 +99,28 @@
           <div class="poster-stamp">FIELD NOTE 03</div>
         </div>
         <div class="intro wp-standard-main-copy">
-          <p class="eyebrow" data-copy="eyebrow">FIELD NOTE · 6+</p>
+          <p class="eyebrow" data-copy="eyebrow">مذكرة ميدانية · 6+</p>
           <h1 id="gameTitle" class="wp-standard-main-heading" data-copy="title">منطق الآثار</h1>
-          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">Complete three visible trail records by choosing the one marker that keeps each clue sequence consistent.</p>
-          <div class="fact-row"><span data-copy="fact1">3 records</span><span data-copy="fact2">Visible clues</span><span data-copy="fact3">Gentle retry</span></div>
-          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">Three trail records ready</p>
+          <p class="lede main-summary wp-standard-main-summary" data-copy="lede">أكمل ثلاث بطاقات آثار ظاهرة باختيار العلامة التي تحافظ على اتساق كل تسلسل من الدلائل.</p>
+          <div class="fact-row"><span data-copy="fact1">3 بطاقات</span><span data-copy="fact2">دلائل ظاهرة</span><span data-copy="fact3">إعادة هادئة</span></div>
+          <p class="progress-note wp-standard-main-progress" id="mainProgress" data-wp-main-progress data-copy="ready">ثلاث بطاقات جاهزة</p>
           <div class="button-row">
-            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">Start field note</button>
-            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">How to play</button>
+            <button class="primary-button wp-standard-main-start" id="startButton" type="button" data-wp-main-start data-copy="start">ابدأ المذكرة</button>
+            <button class="secondary-button" id="guideButton" type="button" data-copy="guideButton">طريقة اللعب</button>
           </div>
         </div>
       </div>
     </section>
-      <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة منطق الآثار" data-wp-game-guide>
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>منطق الآثار</h2><p>أكمل ثلاث بطاقات آثار ظاهرة باختيار العلامة التي تحافظ على اتساق كل تسلسل من الدلائل.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>استنتاج تسلسل الآثار</strong></div><div class="game-info-fact"><span>النوع</span><strong>Puzzle · Logic · العائلة · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+      <section class="game-page-info game-page-info-static" data-wp-game-guide aria-label="منطق الآثار game information">
+        <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideEyebrow">دليل سريع</span><h2 data-copy="title">منطق الآثار</h2><p data-copy="lede">أكمل ثلاث بطاقات آثار ظاهرة باختيار العلامة التي تحافظ على اتساق كل تسلسل من الدلائل.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="fact1">3 بطاقات</span><strong data-copy="fact2">دلائل ظاهرة</strong></div><div class="game-info-fact"><span data-copy="fact3">إعادة هادئة</span><strong data-copy="guideButton">طريقة اللعب</strong></div></div></div>
+        <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideEyebrow">دليل سريع</h3><p data-copy="guide">اقرأ كل العلامات الظاهرة. اختر العلامة الناقصة التي تحافظ على التسلسل ثم أكّد ملاحظتك.</p></article><article class="game-info-section"><h3 data-copy="chooseMarker">اختر علامة</h3><p data-copy="instruction">اقرأ من اليسار إلى اليمين. أي علامة تناسب المكان المفتوح؟</p></article><article class="game-info-section"><h3 data-copy="resultEyebrow">اكتملت المذكرة</h3><p data-copy="resultCopy">اكتمل سجل الدلائل. كل تسلسل ظاهر يحافظ على أثر واضح.</p></article><article class="game-info-section"><h3 data-copy="faq">الأسئلة الشائعة</h3><dl><div><dt data-copy="faqQuestion">هل يُحفظ التقدم؟</dt><dd data-copy="faqAnswer">نعم، في هذا المتصفح فقط.</dd></div></dl></article></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>كم عدد المراحل المضمنة؟</dt><dd>هناك 30 مرحلة مؤلفة عبر ستة فصول للقواعد. تظل المرحلة 30 قابلة للإعادة بعد الانتهاء.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
     <section class="screen battle-screen battle-canvas" id="battleScreen" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" aria-labelledby="recordTitle">
       <header class="battle-header">
-        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">Back to Main</span></button>
+        <button class="back-button wp-shell-return" id="battleBack" type="button" data-wp-return="battle" aria-label="Back to Main"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><span class="sr-only" data-copy="back">العودة إلى الرئيسية</span></button>
         <p class="eyebrow" id="recordCount">Record 1 / 3</p>
-        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">Solved</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
+        <div class="battle-utility"><div class="score-pill"><span data-copy="solved">تم الحل</span> <strong id="solvedCount">0</strong></div><button class="icon-button battle-settings" id="battleSettingsButton" type="button" data-wp-battle-utility data-wp-settings aria-expanded="false" aria-controls="settingsPopover" aria-label="Settings">⚙</button></div>
       </header>
       <div class="battle-layout">
         <div class="record-panel">
@@ -142,37 +128,37 @@
           <h2 id="recordTitle">Dawn edge</h2>
           <p class="record-instruction" id="recordInstruction">Read left to right. Which marker belongs in the open space?</p>
           <div class="legend" aria-label="Marker legend">
-            <span><i class="legend-dot known"></i><span data-copy="known">Known marker</span></span>
-            <span><i class="legend-dot gap"></i><span data-copy="gap">Your missing note</span></span>
+            <span><i class="legend-dot known"></i><span data-copy="known">علامة معروفة</span></span>
+            <span><i class="legend-dot gap"></i><span data-copy="gap">الملاحظة الناقصة</span></span>
           </div>
         </div>
         <div class="board-column">
           <div class="trail-board" id="trailBoard" aria-label="Visible trail sequence"></div>
           <p class="feedback" id="feedback" aria-live="polite"></p>
           <div class="choice-area">
-            <p class="eyebrow" data-copy="chooseMarker">CHOOSE A MARKER</p>
+            <p class="eyebrow" data-copy="chooseMarker">اختر علامة</p>
             <div class="choices" id="choices"></div>
             <div class="button-row action-row">
-              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>Confirm note</button>
-              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>Next record</button>
+              <button class="primary-button" id="confirmButton" type="button" data-copy="confirm" disabled>أكّد الملاحظة</button>
+              <button class="secondary-button" id="continueButton" type="button" data-copy="continue" hidden>البطاقة التالية</button>
             </div>
           </div>
         </div>
       </div>
       <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <section class="result-card" id="resultCard" hidden aria-labelledby="resultTitle">
-        <p class="eyebrow" data-copy="resultEyebrow">FIELD NOTE COMPLETE</p>
+        <p class="eyebrow" data-copy="resultEyebrow">اكتملت المذكرة</p>
         <h2 id="resultTitle">All records resolved</h2>
         <p id="resultCopy">Your clue folio is complete.</p>
         <div class="button-row">
-          <button class="primary-button" id="replayButton" type="button" data-copy="replay">Replay folio</button>
-          <button class="secondary-button" id="homeButton" type="button" data-copy="home">Field notes home</button>
+          <button class="primary-button" id="replayButton" type="button" data-copy="replay">أعد الفحص</button>
+          <button class="secondary-button" id="homeButton" type="button" data-copy="home">رئيسية المذكرات</button>
         </div>
       </section>
     </section>
   </main>
-  <script src="locales.js?v=20260902-footprint-folio-interface-v3"></script>
-  <script src="game.js?v=20260902-footprint-folio-interface-v3"></script>
+  <script src="locales.js?v=20260902-footprint-folio-guide-v4"></script>
+  <script src="game.js?v=20260902-footprint-folio-guide-v4"></script>
 <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
