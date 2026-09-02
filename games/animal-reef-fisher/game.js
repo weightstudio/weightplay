@@ -822,6 +822,24 @@
 
   let locale = activeI18nLocale() || readStorage(localeKey) || "en";
   if (!text[locale]) locale = "en";
+  const initialShellCopy = {};
+  document.querySelectorAll("[data-ui]").forEach((node) => {
+    const key = node.dataset.ui;
+    if (key && !initialShellCopy[key]) initialShellCopy[key] = node.textContent.trim();
+  });
+  const readAria = (selector) => document.querySelector(selector)?.getAttribute("aria-label") || "";
+  Object.assign(initialShellCopy, {
+    pageTitle: document.title,
+    pageDescription: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+    backToLobby: readAria('.back-btn[data-wp-return="main"]'),
+    back: readAria("#stageBackBtn"),
+    reefZones: readAria("#zoneRow"),
+    gearUpgrades: readAria("#gearGrid"),
+    reefMap: readAria("#mapBtn"),
+    playAreaAria: readAria("#gameCanvas"),
+    tensionLaneAria: readAria("#tensionLane"),
+    soundOn: document.getElementById("menuSoundBtn")?.textContent.trim() || "",
+  });
   const legacyZoneMission = { sunny:"mission-1", kelp:"mission-6", coral:"mission-11", moon:"mission-16", deep:"mission-26" };
   let save = loadSave();
   let selectedZone = legacyZoneMission[save.selectedZone] || save.selectedZone || "mission-1";
@@ -853,7 +871,7 @@
   let preloadPromise = null;
 
   function t(key, vars = {}) {
-    let value = (text[locale] && text[locale][key]) || text.en[key] || key;
+    let value = (text[locale] && text[locale][key]) || (locale !== "en" && initialShellCopy[key]) || text.en[key] || key;
     Object.entries(vars).forEach(([k, v]) => {
       value = value.replace(`{${k}}`, String(v));
     });
@@ -1046,7 +1064,8 @@
   }
 
   function applyLocale() {
-    document.documentElement.lang = locale === "zh-Hant" ? "zh-Hant" : locale === "es" ? "es" : "en";
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.title = t("pageTitle");
     const description = document.querySelector('meta[name="description"]');
     if (description) description.setAttribute("content", t("pageDescription"));

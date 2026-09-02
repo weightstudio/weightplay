@@ -2928,6 +2928,25 @@ const animalConstellationKeeperPlanned = {
   internalTrial: "index.html?trial=1",
   art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png", hideHero: true },
 };
+const animalConstellationKeeperFourMapPhrases = {
+  en: ["three quiet night maps", "four quiet night maps", "3 Night Maps", "4 Night Maps"],
+  "zh-Hant": ["三幅安靜夜空地圖", "四幅安靜夜空地圖", "3 幅夜空地圖", "4 幅夜空地圖"],
+  "zh-Hans": ["三幅安静夜空地图", "四幅安静夜空地图", "3 幅夜空地图", "4 幅夜空地图"],
+  ja: ["3つの夜空地図", "4つの夜空地図", "3つの夜空マップ", "4つの夜空マップ"],
+  ko: ["밤하늘 지도 세 장", "밤하늘 지도 네 장", "밤하늘 지도 3개", "밤하늘 지도 4개"],
+  es: ["tres mapas nocturnos", "cuatro mapas nocturnos", "3 mapas nocturnos", "4 mapas nocturnos"],
+  "pt-BR": ["três mapas noturnos", "quatro mapas noturnos", "3 mapas noturnos", "4 mapas noturnos"],
+  fr: ["trois cartes nocturnes", "quatre cartes nocturnes", "3 cartes nocturnes", "4 cartes nocturnes"],
+  de: ["drei Nachtkarten", "vier Nachtkarten", "3 Nachtkarten", "4 Nachtkarten"],
+  it: ["tre mappe notturne", "quattro mappe notturne", "3 mappe notturne", "4 mappe notturne"],
+  ru: ["три ночные карты", "четыре ночные карты", "3 ночные карты", "4 ночные карты"],
+  hi: ["रात के तीन मानचित्र", "रात के चार मानचित्र", "3 रात के मानचित्र", "4 रात के मानचित्र"],
+  ar: ["ثلاث خرائط ليلية", "أربع خرائط ليلية", "3 خرائط ليلية", "4 خرائط ليلية"]
+};
+for (const [locale, [oldDescription, newDescription, oldMeta, newMeta]] of Object.entries(animalConstellationKeeperFourMapPhrases)) {
+  animalConstellationKeeperPlanned.description[locale] = animalConstellationKeeperPlanned.description[locale].replace(oldDescription, newDescription);
+  animalConstellationKeeperPlanned.meta[locale][0] = animalConstellationKeeperPlanned.meta[locale][0].replace(oldMeta, newMeta);
+}
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalConstellationKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalConstellationKeeperPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalConstellationKeeperPlanned.id);

@@ -33,16 +33,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
   <link rel="stylesheet" href="style.css">
-  <meta name="description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية." />
+  <meta name="description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح أربع خرائط ليلية." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="حارس الكوكبات | WeightPlay" />
-    <meta property="og:description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية." />
+    <meta property="og:description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح أربع خرائط ليلية." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-constellation-keeper/" />
     <meta property="og:image" content="https://weightplay.com/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="حارس الكوكبات | WeightPlay" />
-    <meta name="twitter:description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية." />
+    <meta name="twitter:description" content="اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح أربع خرائط ليلية." />
     <meta name="twitter:image" content="https://weightplay.com/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png" />
     <script type="application/ld+json">
 {
@@ -52,7 +52,7 @@
   "alternateName": "Constellation Keeper",
   "url": "https://weightplay.com/ar/games/animal-constellation-keeper/",
   "image": "https://weightplay.com/games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png",
-  "description": "اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية.",
+  "description": "اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح أربع خرائط ليلية.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -78,9 +78,9 @@
 <body data-audience="general" data-wp-game-id="animal-constellation-keeper" data-wp-game-version="v5" data-screen="main">
   <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite"><span class="loading-star" aria-hidden="true">✦</span><strong data-copy="loading">Preparing the night sky…</strong></div>
   <section id="mainScreen" class="screen main-screen" data-screen="main">
-    <header class="topbar"><a class="return-link" href="/" data-wp-return="main" data-copy-aria="returnMain" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-copy="title">Constellation Keeper</strong></header>
+    <header class="topbar"><a class="return-link" href="/" data-wp-return="main" data-copy-aria="returnMain" aria-label="العودة إلى WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-copy="title">Constellation Keeper</strong></header>
     <div id="settingsPanel" class="settings-panel" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="sound-btn" type="button" data-sound-toggle aria-pressed="true"><span data-copy="sound">Sound</span>: <strong id="soundState">On</strong></button></div>
-    <section class="hero-grid"><img class="cover" src="assets/animal-constellation-keeper-cover.png" width="1254" height="1254" alt="شعار WeightPlay"><div class="hero-copy"><img class="guide-art" src="assets/animal-constellation-keeper-orla.png" width="384" height="384" alt="Moon Cap Orla, the constellation guide"><small data-copy="kicker">A calm relationship-deduction puzzle</small><h1 data-copy="title">حارس الكوكبات</h1><p data-copy="intro">Read two sky rules, choose the only animal constellation that obeys them, and restore the night maps.</p><p class="progress" id="mainProgress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start the first map</button><p class="best-line"><span data-copy="best">Best checks</span>: <strong id="bestValue">Not yet</strong></p></div></section>
+    <section class="hero-grid"><img class="cover" src="assets/animal-constellation-keeper-cover.png" width="1254" height="1254" alt="شعار WeightPlay"><div class="hero-copy"><img class="guide-art" src="assets/animal-constellation-keeper-orla.png" width="384" height="384" alt="Moon Cap Orla, the constellation guide"><small data-copy="kicker">لغز هادئ لاستنتاج العلاقات</small><h1 data-copy="title">حارس الكوكبات</h1><p data-copy="intro">اقرأ قاعدتي السماء، واختر كوكبة الحيوانات الوحيدة التي تلتزم بهما، ثم أصلح الخرائط الليلية.</p><p class="progress" id="mainProgress"></p><button id="startBtn" class="primary-btn" type="button" data-copy="start">ابدأ الخريطة الأولى</button><p class="best-line"><span data-copy="best">أفضل عدد من الفحوصات</span>: <strong id="bestValue">لم تُكملها بعد</strong></p></div></section>
     <section class="guide-card"><h2 data-copy="guideTitle">طريقة اللعب</h2><div class="guide-grid"><article><b data-copy="guideOne">اقرأ قاعدتي العلاقة بين النجوم.</b></article><article><b data-copy="guideTwo">اضغط على خريطة الكوكبة التي توافق القاعدتين.</b></article><article><b data-copy="guideThree">يبقى الاختيار الخاطئ ظاهرًا لتتمكن من المحاولة بهدوء.</b></article></div><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">اختيار خريطة</button></section>
   </section>
   <section id="stageScreen" class="screen panel-screen stage-canvas wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-constellation-keeper-cover.png" style="--wp-stage-art:url('assets/animal-constellation-keeper-cover.png')" hidden><header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy-aria="back" aria-label="Back"><span aria-hidden="true">←</span></button><h2 data-copy="maps">Night maps</h2><span aria-hidden="true"></span></header><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="list"></div><nav class="stage-tabs" data-copy-aria="stageSections" aria-label="Stage sections"><span aria-hidden="true"></span><button id="stageTab" class="stage-tab active" type="button" aria-current="page" data-copy="maps">Night maps</button><span aria-hidden="true"></span></nav><div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
@@ -89,7 +89,7 @@
   <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة حارس الكوكبات">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>حارس الكوكبات</h2><p>اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح ثلاث خرائط ليلية.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>حارس الكوكبات</h2><p>اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح أربع خرائط ليلية.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز استنتاج العلاقات</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · استنتاج العلاقات · عائلية · حيوانات</strong></div></div>
     </div>
     <div class="game-info-sections">

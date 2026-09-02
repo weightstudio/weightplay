@@ -85,6 +85,16 @@
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
             <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="es">Español</option>
+            <option value="pt-BR">Português</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ar">العربية</option>
           </select>
         </label>
       </header>
@@ -100,8 +110,8 @@
       <section id="mainPanel" class="panel menu-panel main-screen" data-screen="main">
         <img class="cover" src="../../assets/animal-reef-fisher-cover.webp" alt="Animal Reef Fisher game artwork" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
-          <span data-ui="menuHint">Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.</span>
+          <strong data-ui="menuTitle">Chart 30 reef missions and land six Guardian fish.</strong>
+          <span data-ui="menuHint">Control changing line-tension rules, document 12 species, earn Reef Notes, and upgrade six tools locally.</span>
           <button id="menuSoundBtn" class="secondary-btn menu-sound-btn" type="button">Sound: On</button>
           <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">Start Game</button>
         </div>
@@ -110,7 +120,7 @@
       <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
         <header class="stage-head">
           <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
-          <strong data-ui="chooseZone">Choose Reef Zone</strong>
+          <strong data-ui="chooseZone">Choose Reef Mission</strong>
         </header>
         <div class="stage-workspace">
           <div class="profile-grid">
@@ -134,7 +144,7 @@
       <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-play-viewport data-no-mobile-immersive="true">
         <div class="battle-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <header class="hud-row">
-          <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Return to reef map">&larr;</button>
+          <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Reef Map">&larr;</button>
           <div><span data-ui="zone">Zone</span><strong id="zoneText">Sunny Shore</strong></div>
           <div><span data-ui="time">Time</span><strong id="timeText">90</strong></div>
           <div><span data-ui="goal">Goal</span><strong id="goalText">0/2</strong></div>
@@ -166,17 +176,15 @@
           <div class="tension-control">
             <div class="tension-head">
               <strong data-ui="tensionTitle">Line Tension</strong>
-              <span id="tensionStatus" data-ui="tensionStatusAim">Cast first, then keep the marker centered.</span>
+              <span id="tensionStatus" data-ui="tensionStatusAim">Step 1: hold the sea to charge, then release to cast.</span>
             </div>
-            <div class="tension-lane" id="tensionLane" role="slider" tabindex="0" aria-label="Line tension lane" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% - Safe">
+            <div class="tension-lane" id="tensionLane" role="slider" tabindex="0" aria-label="Line tension lane. Use Left and Right arrows to adjust." aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% - Safe">
               <span class="lane-label lane-label-left" data-ui="tensionLow">Loose</span>
               <div id="safeBand" class="safe-band"><span data-ui="tensionSafe">Safe</span></div>
               <span class="lane-label lane-label-right" data-ui="tensionHigh">Tight</span>
               <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">Drag</span></div>
             </div>
-            <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">
-              Hold the water to cast. When a fish bites, use the red knob below.
-            </div>
+            <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">Hold the sea or Space to cast. When a fish bites, drag the red knob, slide on the sea, or use Left and Right arrows.</div>
           </div>
           <div id="hintText" class="hint" data-ui="castHint">Hold in the reef to charge, release to cast.</div>
         </div>
@@ -191,7 +199,7 @@
               <div><span data-ui="newAlbum">New Album</span><strong id="newAlbumText">0</strong></div>
             </div>
             <div class="catch-summary">
-              <h3 data-ui="catchSummary">This Expedition's Catch</h3>
+              <h3 data-ui="catchSummary">This Expedition&#39;s Catch</h3>
               <div id="catchList" class="catch-list"></div>
             </div>
             <p id="resultAdviceText" class="result-advice"></p>
@@ -247,7 +255,7 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260825-arabic-guide-runtime-v23"></script>
+  <script src="game.js?v=20260902-locale-shell-fallback-v1"></script>
     <script src="../../src/game-page-info-general-reviewed.js?v=20260825-arabic-guide-runtime-v23"></script>
     <script src="../../src/game-page-info.js?v=20260825-arabic-guide-runtime-v23"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>

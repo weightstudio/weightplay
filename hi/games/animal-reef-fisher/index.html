@@ -74,24 +74,34 @@
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main class="reef-app" data-no-mobile-immersive="true">
       <header class="topbar">
-        <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
+        <a class="back-btn" data-wp-return="main" href="/" aria-label="लॉबी पर लौटें"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
         <div class="brand">
           <span>WeightPlay</span>
-          <h1 data-ui="title">Animal Reef Fisher</h1>
+          <h1 data-ui="title">पशु रीफ फिशर</h1>
         </div>
         <label class="locale">
-          <span data-ui="language">Language</span>
-          <select id="localeSelect" aria-label="Language">
+          <span data-ui="language">भाषा</span>
+          <select id="localeSelect" aria-label="भाषा">
             <option value="en">English</option>
             <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
             <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="es">Español</option>
+            <option value="pt-BR">Português</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="ru">Русский</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ar">العربية</option>
           </select>
         </label>
       </header>
 
       <section id="loadingPanel" class="loading-panel" aria-live="polite">
         <div class="loading-content">
-          <h2 data-ui="title">Animal Reef Fisher</h2>
+          <h2 data-ui="title">पशु रीफ फिशर</h2>
           <div class="loading-bar"><div id="loadingFill" class="loading-fill"></div></div>
           <span id="loadingText" class="loading-percentage">0%</span>
         </div>
@@ -100,32 +110,32 @@
       <section id="mainPanel" class="panel menu-panel main-screen" data-screen="main">
         <img class="cover" src="../../assets/animal-reef-fisher-cover.webp" alt="Animal Reef Fisher game artwork" />
         <div class="menu-copy">
-          <strong data-ui="menuTitle">Cast into the coral reef and build your sea-creature album.</strong>
-          <span data-ui="menuHint">Choose a reef zone, control line tension, earn Reef Notes, and upgrade your gear locally.</span>
-          <button id="menuSoundBtn" class="secondary-btn menu-sound-btn" type="button">Sound: On</button>
-          <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">Start Game</button>
+          <strong data-ui="menuTitle">रीफ के 30 मिशन पूरे करें और छह गार्जियन मछलियाँ पकड़ें।</strong>
+          <span data-ui="menuHint">बदलते लाइन-तनाव नियमों को नियंत्रित करें, 12 प्रजातियाँ दर्ज करें, रीफ नोट्स कमाएँ और छह उपकरण स्थानीय रूप से अपग्रेड करें।</span>
+          <button id="menuSoundBtn" class="secondary-btn menu-sound-btn" type="button">ध्वनि: चालू</button>
+          <button id="startBtn" class="primary-btn" type="button" data-ui="startGame">गेम शुरू करें</button>
         </div>
       </section>
 
       <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
         <header class="stage-head">
-          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
-          <strong data-ui="chooseZone">Choose Reef Zone</strong>
+          <button id="stageBackBtn" class="stage-return" data-wp-return="stage" type="button" aria-label="वापस">&larr;</button>
+          <strong data-ui="chooseZone">रीफ मिशन चुनें</strong>
         </header>
         <div class="stage-workspace">
           <div class="profile-grid">
-            <div><span data-ui="reefNotes">Reef Notes</span><strong id="notesText">0</strong></div>
-            <div><span data-ui="album">Album</span><strong id="albumText">0/12</strong></div>
-            <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
+            <div><span data-ui="reefNotes">रीफ नोट्स</span><strong id="notesText">0</strong></div>
+            <div><span data-ui="album">एल्बम</span><strong id="albumText">0/12</strong></div>
+            <div><span data-ui="diamonds">हीरे</span><strong id="diamondText">0</strong></div>
           </div>
-          <div id="zoneRow" class="zone-row stage-rail" data-wp-stage-rail aria-label="Reef zones"></div>
+          <div id="zoneRow" class="zone-row stage-rail" data-wp-stage-rail aria-label="रीफ क्षेत्र"></div>
           <section class="stage-upgrades" data-wp-stage-management-nav>
-            <strong data-ui="prepareGear">Prepare Gear</strong>
+            <strong data-ui="prepareGear">उपकरण तैयार करें</strong>
           <div class="shop-row">
             <button id="lureBtn" class="secondary-btn" type="button"></button>
             <button id="sonarPrepBtn" class="secondary-btn" type="button"></button>
           </div>
-          <div id="gearGrid" class="gear-grid" aria-label="Gear upgrades"></div>
+          <div id="gearGrid" class="gear-grid" aria-label="उपकरण अपग्रेड"></div>
           </section>
         </div>
         <div class="stage-ad-reserve" aria-hidden="true"></div>
@@ -134,51 +144,49 @@
       <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-play-viewport data-no-mobile-immersive="true">
         <div class="battle-shell" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
         <header class="hud-row">
-          <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="Return to reef map">&larr;</button>
-          <div><span data-ui="zone">Zone</span><strong id="zoneText">Sunny Shore</strong></div>
-          <div><span data-ui="time">Time</span><strong id="timeText">90</strong></div>
-          <div><span data-ui="goal">Goal</span><strong id="goalText">0/2</strong></div>
+          <button id="mapBtn" class="secondary-btn play-return" data-wp-return="battle" type="button" aria-label="रीफ मानचित्र">&larr;</button>
+          <div><span data-ui="zone">क्षेत्र</span><strong id="zoneText">Sunny Shore</strong></div>
+          <div><span data-ui="time">समय</span><strong id="timeText">90</strong></div>
+          <div><span data-ui="goal">लक्ष्य</span><strong id="goalText">0/2</strong></div>
         </header>
         <div class="play-frame">
-          <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="Animal Reef Fisher play area. Hold Space to charge and release to cast; use Left and Right arrows to control tension."></canvas>
+          <canvas id="gameCanvas" width="960" height="540" tabindex="0" aria-label="पशु रीफ फिशर खेल क्षेत्र। चार्ज करने के लिए स्पेस दबाकर रखें और कास्ट करने के लिए छोड़ें; तनाव नियंत्रित करने के लिए बाएँ और दाएँ तीर इस्तेमाल करें।"></canvas>
           <div id="catchToast" class="catch-toast is-hidden" aria-live="polite"></div>
           <div id="castMeter" class="cast-meter" role="progressbar" aria-label="Cast power" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0%"><div id="castFill" class="cast-fill"></div></div>
         </div>
         <div class="catch-hud" aria-live="polite">
           <div>
-            <span data-ui="runScore">Run Score</span>
+            <span data-ui="runScore">स्कोर</span>
             <strong id="runScoreText">0</strong>
           </div>
           <div>
-            <span data-ui="runCatchValue">Reef Notes</span>
+            <span data-ui="runCatchValue">रीफ नोट्स</span>
             <strong id="runValueText">0</strong>
           </div>
           <div class="catch-hud-last">
-            <span data-ui="lastCatch">Last Catch</span>
-            <strong id="lastCatchText" data-ui="noCatchYet">No catch yet</strong>
+            <span data-ui="lastCatch">आखिरी पकड़</span>
+            <strong id="lastCatchText" data-ui="noCatchYet">अभी कुछ नहीं पकड़ा</strong>
           </div>
         </div>
         <div class="tension-panel">
           <button id="sonarBtn" class="icon-btn" type="button" aria-label="Use sonar">
             <img src="../../assets/animal-reef-fisher-diamond-sonar-ping.webp" alt="" />
           </button>
-          <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="Line Tension" aria-controls="tensionCoach" aria-expanded="true">?</button>
+          <button id="battleHelpBtn" class="icon-btn battle-help-btn utility-button" data-wp-battle-utility data-wp-primary-action type="button" aria-label="लाइन तनाव" aria-controls="tensionCoach" aria-expanded="true">?</button>
           <div class="tension-control">
             <div class="tension-head">
-              <strong data-ui="tensionTitle">Line Tension</strong>
-              <span id="tensionStatus" data-ui="tensionStatusAim">Cast first, then keep the marker centered.</span>
+              <strong data-ui="tensionTitle">लाइन तनाव</strong>
+              <span id="tensionStatus" data-ui="tensionStatusAim">चरण 1: चार्ज करने के लिए समुद्र को दबाकर रखें, फिर छोड़कर कास्ट करें।</span>
             </div>
-            <div class="tension-lane" id="tensionLane" role="slider" tabindex="0" aria-label="Line tension lane" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% - Safe">
-              <span class="lane-label lane-label-left" data-ui="tensionLow">Loose</span>
-              <div id="safeBand" class="safe-band"><span data-ui="tensionSafe">Safe</span></div>
-              <span class="lane-label lane-label-right" data-ui="tensionHigh">Tight</span>
-              <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">Drag</span></div>
+            <div class="tension-lane" id="tensionLane" role="slider" tabindex="0" aria-label="लाइन तनाव पथ। बाएँ और दाएँ तीर से समायोजित करें।" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% - Safe">
+              <span class="lane-label lane-label-left" data-ui="tensionLow">ढीला</span>
+              <div id="safeBand" class="safe-band"><span data-ui="tensionSafe">सुरक्षित</span></div>
+              <span class="lane-label lane-label-right" data-ui="tensionHigh">कसा हुआ</span>
+              <div id="tensionMarker" class="tension-marker"><span data-ui="tensionMarker">खींचें</span></div>
             </div>
-            <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">
-              Hold the water to cast. When a fish bites, use the red knob below.
-            </div>
+            <div id="tensionCoach" class="tension-coach" data-ui="tensionCoachAim">कास्ट करने के लिए समुद्र या स्पेस दबाकर रखें। मछली फँसने पर लाल नॉब खींचें, समुद्र पर बाएँ-दाएँ स्वाइप करें या तीर कुंजियाँ इस्तेमाल करें।</div>
           </div>
-          <div id="hintText" class="hint" data-ui="castHint">Hold in the reef to charge, release to cast.</div>
+          <div id="hintText" class="hint" data-ui="castHint">चार्ज करने के लिए रीफ पर दबाकर रखें और कास्ट करने के लिए छोड़ें।</div>
         </div>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultBuildCue resultMissionPreview">
           <img class="result-otter" src="../../assets/animal-reef-fisher-cover.webp" alt="" />
@@ -186,21 +194,21 @@
             <h2 id="resultTitle">Expedition Complete</h2>
             <p id="resultText"></p>
             <div class="score-strip">
-              <div><span data-ui="score">Score</span><strong id="scoreText">0</strong></div>
-              <div><span data-ui="catchValue">Catch Value</span><strong id="catchValueText">0</strong></div>
-              <div><span data-ui="newAlbum">New Album</span><strong id="newAlbumText">0</strong></div>
+              <div><span data-ui="score">स्कोर</span><strong id="scoreText">0</strong></div>
+              <div><span data-ui="catchValue">पकड़ का मूल्य</span><strong id="catchValueText">0</strong></div>
+              <div><span data-ui="newAlbum">नया एल्बम</span><strong id="newAlbumText">0</strong></div>
             </div>
             <div class="catch-summary">
-              <h3 data-ui="catchSummary">This Expedition's Catch</h3>
+              <h3 data-ui="catchSummary">इस अभियान की पकड़</h3>
               <div id="catchList" class="catch-list"></div>
             </div>
             <p id="resultAdviceText" class="result-advice"></p>
             <p id="resultBuildCue" class="result-build-cue" aria-live="polite"></p>
             <p id="resultMissionPreview" class="result-preview is-hidden" aria-live="polite"></p>
             <div class="result-actions">
-              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">Stages</button>
-              <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">Next Stage</button>
-              <button id="retryBtn" class="secondary-btn" type="button" data-ui="replay">Replay</button>
+              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="stages">चरण</button>
+              <button id="nextZoneBtn" class="primary-btn" type="button" data-ui="nextStage">अगला चरण</button>
+              <button id="retryBtn" class="secondary-btn" type="button" data-ui="replay">फिर खेलें</button>
             </div>
           </div>
         </section>
@@ -248,7 +256,7 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/tutorial.js?v=20260708-reef-tension-clarity1"></script>
     <script src="../../src/wallet.js?v=20260706-diamond1"></script>
-  <script src="game.js?v=20260825-arabic-guide-runtime-v23"></script>
+  <script src="game.js?v=20260902-locale-shell-fallback-v1"></script>
     <script src="../../src/game-page-info-general-reviewed.js?v=20260825-arabic-guide-runtime-v23"></script>
     <script src="../../src/game-page-info.js?v=20260825-arabic-guide-runtime-v23"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
