@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Moonbeam Mirrors concept cover</title>
+  <desc id="desc">A quiet night meadow with a moon, a silver beam, and a fox-like animal beside a small den.</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#27345f"/><stop offset="1" stop-color="#56638e"/></linearGradient><radialGradient id="glow"><stop stop-color="#fff8c8" stop-opacity=".8"/><stop offset="1" stop-color="#fff8c8" stop-opacity="0"/></radialGradient></defs>
+  <rect width="900" height="900" rx="80" fill="url(#sky)"/><circle cx="690" cy="190" r="180" fill="url(#glow)"/><circle cx="690" cy="190" r="72" fill="#ffe68b"/><circle cx="712" cy="176" r="72" fill="#27345f"/>
+  <path d="M0 620 Q170 530 330 620 T660 600 T900 620 V900 H0Z" fill="#1c294d"/><path d="M0 710 Q190 620 380 720 T900 700 V900 H0Z" fill="#17213f"/>
+  <path d="M680 256 L480 700 L532 700 L703 280Z" fill="#ffe99b" opacity=".44"/><path d="M690 286 L545 700 L570 700 L709 292Z" fill="#fff6c5" opacity=".35"/>
+  <path d="M320 714 q12-72 73-98 l28-55 31 48 q72 17 81 105Z" fill="#c87854"/><path d="M347 623 l-4-77 56 42 49-44 9 78Z" fill="#d8895d"/><path d="M375 662 q22-23 45 0" fill="none" stroke="#422f4e" stroke-width="10" stroke-linecap="round"/><circle cx="374" cy="641" r="7" fill="#342745"/><circle cx="425" cy="641" r="7" fill="#342745"/><path d="M330 718 q68 26 174 0" fill="none" stroke="#f3bd73" stroke-width="18" stroke-linecap="round"/>
+  <path d="M150 758 q60-120 170-23 q30 27 67 23" fill="none" stroke="#8f6790" stroke-width="34" stroke-linecap="round"/><path d="M155 760 q55-94 157-23" fill="none" stroke="#f0c36c" stroke-width="10" stroke-linecap="round"/><circle cx="190" cy="710" r="7" fill="#ffe99b"/><circle cx="240" cy="671" r="5" fill="#ffe99b"/><circle cx="807" cy="420" r="6" fill="#ffe99b"/><circle cx="111" cy="324" r="5" fill="#ffe99b"/><circle cx="205" cy="240" r="4" fill="#ffe99b"/>
+</svg>

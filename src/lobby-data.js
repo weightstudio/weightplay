@@ -2655,6 +2655,35 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-09-03). Keep Moonbeam Mirrors internal
+// while its concept art, exact Tester, Reviewer, release, and publication
+// gates remain open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-moonbeam-mirrors",
+    audience: "general",
+    status: "planned",
+    internalOnly: true,
+    title: localize(["Moonbeam Mirrors", "月光鏡陣", "月光镜阵", "月光ミラー", "달빛 거울 길", "Espejos de luz lunar", "Espelhos do luar", "Miroirs de lune", "Mondstrahl-Spiegel", "Specchi di luna", "Лунные зеркала", "चाँदनी दर्पण", "مرايا ضوء القمر"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Reflection Logic Puzzle", "反射邏輯益智", "反射逻辑益智", "反射ロジックパズル", "반사 논리 퍼즐", "Puzzle de reflejos", "Quebra-cabeça de reflexos", "Puzzle de réflexion", "Reflexionsrätsel", "Puzzle di riflessi", "Логическая задача с отражениями", "प्रतिबिंब तर्क पहेली", "لغز انعكاس منطقي"]),
+    description: localize(["Turn two-state mirrors so Orla's moonbeam reaches the den.", "轉動雙狀態鏡子，讓歐拉的月光抵達小窩。", "转动双状态镜子，让欧拉的月光抵达小窝。", "2種類の鏡を回して、オルラの月光をねぐらへ届けます。", "두 상태 거울을 돌려 오를라의 달빛을 보금자리로 보내세요.", "Gira espejos de dos posiciones para llevar la luz de Orla a la madriguera.", "Gire espelhos de dois estados para levar o luar de Orla até a toca.", "Tourne des miroirs à deux positions pour guider la lune d’Orla jusqu’au terrier.", "Drehe Spiegel mit zwei Stellungen, damit Orlas Mondstrahl die Höhle erreicht.", "Ruota specchi a due posizioni per portare la luce di Orla nella tana.", "Поворачивайте двухпозиционные зеркала, чтобы лунный луч Орлы достиг норы.", "दो-स्थिति वाले दर्पण घुमाकर ओरला की चाँदनी मांद तक पहुँचाएँ।", "أدر المرايا ذات الوضعين حتى يصل ضوء أورلا إلى المخبأ."]),
+    meta: localize([["3 Moon Paths", "Tap to Turn", "Calm Retry"], ["3 條月光路徑", "點選轉向", "平靜重試"], ["3 条月光路径", "点击转向", "平静重试"], ["3つの月の道", "タップで回転", "穏やかな再挑戦"], ["달빛 길 3개", "탭해서 회전", "차분한 재시도"], ["3 caminos lunares", "Toca para girar", "Reintento sereno"], ["3 caminhos lunares", "Toque para girar", "Nova tentativa calma"], ["3 chemins lunaires", "Touche pour tourner", "Reprise sereine"], ["3 Mondwege", "Tippen zum Drehen", "Ruhiger Versuch"], ["3 percorsi lunari", "Tocca per ruotare", "Riprova calma"], ["3 лунных пути", "Нажмите для поворота", "Спокойная попытка"], ["3 चाँदनी रास्ते", "घुमाने के लिए टैप", "शांत पुनः प्रयास"], ["3 مسارات قمرية", "اضغط للتدوير", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Logic", "Reflection", "Spatial Reasoning", "Family", "Animal"],
+    skills: ["Planning", "Visual Logic", "Spatial Reasoning"],
+    ages: ["9", "family"],
+    ageLabel: localize(Array(13).fill("9+")),
+    href: "games/animal-moonbeam-mirrors/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-moonbeam-mirrors/assets/animal-moonbeam-mirrors-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-09-01). Keep Canopy Compass planned and
 // Coming Soon while its orientation loop remains an internal/noindex slice
 // pending art, Tester, Reviewer, release, and publication gates.

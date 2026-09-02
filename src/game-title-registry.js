@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-moonbeam-mirrors": {
+    "__localizedExact": true,
+    "en": "Moonbeam Mirrors",
+    "zh-Hant": "月光鏡陣",
+    "zh-Hans": "月光镜阵",
+    "ja": "月光ミラー",
+    "ko": "달빛 거울 길",
+    "es": "Espejos de luz lunar",
+    "pt-BR": "Espelhos do luar",
+    "fr": "Miroirs de lune",
+    "de": "Mondstrahl-Spiegel",
+    "it": "Specchi di luna",
+    "ru": "Лунные зеркала",
+    "hi": "चाँदनी दर्पण",
+    "ar": "مرايا ضوء القمر"
+  },
   "animal-canopy-compass": {
     "__localizedExact": true,
     "en": "Canopy Compass",

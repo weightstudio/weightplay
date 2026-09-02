@@ -905,14 +905,37 @@ function quickPickCandidates() {
   const visibleGames = visiblePlayableIds
     .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
     .filter(Boolean);
-  return visibleGames.length
-    ? { games: visibleGames, usedFallback: false }
+  const hasActiveDiscoverySelection =
+    activeFilter !== "all" ||
+    activeTopic !== "all" ||
+    activeSkill !== "all" ||
+    activeLibrary !== "all" ||
+    activeAvailability !== "all" ||
+    Boolean(activeSearch);
+  if (visibleGames.length) return { games: visibleGames, usedFallback: false };
+  // Quick Pick promises to choose from the current filters. Falling back to
+  // the full playable catalog after a filtered empty result silently violated
+  // that promise and could route a player to an unrelated game.
+  return hasActiveDiscoverySelection
+    ? { games: [], usedFallback: false }
     : { games: playableGames(), usedFallback: true };
 }
 
 function openQuickPick() {
   const { games, usedFallback } = quickPickCandidates();
-  if (!games.length) return;
+  if (!games.length) {
+    window.WonderAnalytics?.track("quick_pick_empty", {
+      locale: i18n.locale(),
+      active_filter: activeFilter,
+      active_topic: activeTopic,
+      active_skill: activeSkill,
+      active_library: activeLibrary,
+      active_availability: activeAvailability,
+      has_search: Boolean(activeSearch),
+    });
+    showToast(i18n.t("status.no_games"));
+    return;
+  }
   const game = games[Math.floor(Math.random() * games.length)];
   const title = text(game.title);
   const ageLabel = text(game.ageLabel);
