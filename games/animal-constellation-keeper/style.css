@@ -8,6 +8,18 @@
 .wp-standard-main-poster::after{content:"";position:absolute;right:-4%;bottom:-4%;width:30%;height:30%;background:url("assets/animal-constellation-keeper-orla.png") center/contain no-repeat;filter:drop-shadow(0 10px 14px #0009);pointer-events:none}
 @media(max-width:699px){.wp-standard-main-poster::after{right:-2%;bottom:-2%;width:34%;height:34%}}
 
+/* Keep the shared Main contract's landscape column at the exact 300px
+   acceptance size; the shared wrapper supplies the square poster itself. */
+@media(min-width:700px) and (max-height:560px){body[data-wp-game-id="animal-constellation-keeper"] .wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
+
+/* Keep the public guide's outer frame padded on every viewport. */
+.game-page-info{padding:12px 12px 24px}
+
+/* The four-map selector must keep every card centre inside the logical
+   Canvas on wide screens. A fitted grid preserves all four available maps
+   while avoiding a partially off-Canvas button intercepting its own centre. */
+@media(min-width:700px){body[data-wp-game-id="animal-constellation-keeper"] [data-wp-stage-rail]{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;padding-inline:0!important;overflow:hidden!important}body[data-wp-game-id="animal-constellation-keeper"] [data-wp-stage-rail]>.stage-card{flex:1 1 0!important;width:auto!important;min-width:0!important;max-width:none!important;height:190px!important;min-height:190px!important;max-height:190px!important}}
+
 /* Interface 6 Stage contract: the shared scaler owns the fixed Canvas while
    this game supplies the standard header, rail, three-slot tabs, and art. */
 .stage-canvas{display:grid;grid-template-rows:60px minmax(0,1fr) 56px;gap:8px;min-height:0;padding:14px;overflow:hidden;background:#17243a}

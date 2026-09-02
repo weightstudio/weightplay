@@ -34,3 +34,28 @@
   };
   window.ANIMAL_CONSTELLATION_KEEPER_LOCALES = Object.fromEntries(keys.map((key) => [key, { ...english, ...(variants[key] || {}), ...(map4Translations[key] || {}) }]));
 })();
+
+(() => {
+  const tables = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
+  if (tables.en) Object.assign(tables.en, {
+    gameInfoKicker: "WeightPlay Original Game Guide",
+    guideAria: "Constellation Keeper game information"
+  });
+  if (tables.ar) Object.assign(tables.ar, {
+    gameInfoKicker: "دليل لعبة أصلي من WeightPlay",
+    guideAria: "معلومات لعبة حارس الكوكبات",
+    guideTitle: "طريقة اللعب",
+    guideOne: "اقرأ قاعدتي العلاقة بين النجوم.",
+    guideTwo: "اضغط على خريطة الكوكبة التي توافق القاعدتين.",
+    guideThree: "يبقى الاختيار الخاطئ ظاهرًا لتتمكن من المحاولة بهدوء.",
+    guideSummary: "اقرأ العلاقات الظاهرة بين نجوم الحيوانات، ثم اختر الخريطة الوحيدة التي تلتزم بالقاعدتين.",
+    gameplayFact: "أسلوب اللعب",
+    gameplayValue: "استنتاج العلاقات",
+    genreFact: "النوع",
+    genreValue: "ألغاز · منطق · عائلي · حيوانات",
+    resultGuideTitle: "النتائج والحفظ",
+    resultGuide: "تكوّن أربع خرائط ليلية جلسة قصيرة واحدة. يُحفظ أفضل مجموع من الفحوصات في هذا المتصفح فقط عندما تتوفر مساحة التخزين.",
+    tipsTitle: "نصائح عملية",
+    tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين. تبقى الخرائط ظاهرة، لذا يمكنك التحقق من كل اختيار بعدل."
+  });
+})();
