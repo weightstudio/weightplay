@@ -5,7 +5,7 @@ body { min-width:320px; background:radial-gradient(circle at 18% 5%,#fffaf0 0,va
 button, select { font:inherit; }
 button { cursor:pointer; }
 button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid #f3ad49; outline-offset:3px; }
-.screen[hidden], .game-page-info[hidden] { display:none !important; }
+.screen[hidden], .game-page-info[hidden], .battle-content[hidden] { display:none !important; }
 .main-canvas, .stage-canvas, .battle-canvas { width:min(920px,100%); margin:0 auto; }
 #mainScreen { width:min(920px,100%); margin:0 auto; }
 .stage-canvas, .battle-canvas { width:min(920px,100%); }

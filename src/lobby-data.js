@@ -51,7 +51,7 @@ window.WONDER_LOBBY = {
       "animal-unblock",
       "animal-guard-yard",
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
-      "maze-chase", "space-rocks",
+      "maze-chase", "space-rocks", "animal-tide-tally",
     ],
   },
   games: [
@@ -3538,7 +3538,7 @@ const researchedNextBatchCandidates = [
     meta: { en: ["Two-Lane Sync", "6 Switchyards", "Shared Timing"], "zh-Hant": ["雙線同步", "6 個燈場", "共同時機"], "zh-Hans": ["双线同步", "6 个灯场", "共同时机"], ja: ["2レーン同期", "6つの切替場", "共有タイミング"], ko: ["2레인 동기화", "6개 스위치야드", "공유 타이밍"], es: ["Sincronía de dos carriles", "6 estaciones", "Ritmo compartido"], "pt-BR": ["Sincronia em duas pistas", "6 pátios", "Ritmo compartilhado"], fr: ["Synchronisation à deux voies", "6 relais", "Timing partagé"], de: ["Zwei-Bahnen-Sync", "6 Schaltfelder", "Gemeinsames Timing"], it: ["Sincronia a due corsie", "6 scambi", "Tempismo condiviso"], ru: ["Синхрон двух дорожек", "6 станций", "Общий ритм"], hi: ["दो लेन सिंक", "6 स्विचयार्ड", "साझा समय"], ar: ["تزامن مسارين", "6 ساحات تبديل", "توقيت مشترك"] },
     art: { kind: "image", background: "games/animal-twin-switchyard/cover-v2.webp", hideHero: true },
     previewVideo: "assets/previews/animal-twin-switchyard-battle.webm",
-    categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/",
+    categories: ["Puzzle", "Platform", "Animal"], skills: ["Coordination", "Planning"], ages: ["9", "family"], ageLabel: { en: "9+", "zh-Hant": "9+", "zh-Hans": "9+", ja: "9+", ko: "9+", es: "9+", "pt-BR": "9+", fr: "9+", de: "9+", it: "9+", ru: "9+", hi: "9+", ar: "9+" }, href: "games/animal-twin-switchyard/", internalTrial: "index.html?trial=1",
   },
 ];
 for (const candidate of researchedNextBatchCandidates) {
@@ -3548,8 +3548,9 @@ for (const candidate of researchedNextBatchCandidates) {
     delete candidate.previewVideo;
   }
   if (candidate.id === "animal-twin-switchyard") {
-    candidate.status = "playable";
-    candidate.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
+    candidate.status = "planned";
+    candidate.statusText = { ...ownerPreviewStatusText };
+    delete candidate.previewVideo;
   }
 }
 const researchedComingSoonStatus = ownerPreviewStatusText;
