@@ -3046,7 +3046,7 @@ const animalMagnetMeadowPlanned = {
   ageLabel: animalMagnetMeadowLocalized(Array(13).fill("6+")),
   href: "games/animal-magnet-meadow/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg", hideHero: true },
+  art: { kind: "image", background: "games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMagnetMeadowPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMagnetMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMagnetMeadowPlanned);

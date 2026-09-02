@@ -34,7 +34,7 @@ h2 { margin-bottom:8px; }
 .setting-row { display:flex; justify-content:space-between; align-items:center; gap:18px; padding:11px 0; color:var(--muted); }
 select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); border-radius:10px; padding:9px; }
 .setting-sound { width:100%; margin-top:10px; }
-.stage-canvas, .battle-canvas { width:min(100%, 920px); min-height:calc(100vh - 56px); margin:0 auto; padding:20px 20px 30px; background:radial-gradient(circle at 50% 0,#234a63,#11273f 50%,#0b1b2d); }
+.stage-canvas, .battle-canvas { width:min(100%, 920px); min-height:calc(100vh - 56px); margin:0 auto; padding:20px 20px 30px; background:radial-gradient(circle at 50% 0,rgba(35,74,99,.9),rgba(17,39,63,.94) 50%,rgba(11,27,45,.97)),url("assets/animal-magnet-meadow-battle-background.png") center/cover no-repeat; }
 .panel-head { justify-content:space-between; min-height:48px; }
 .panel-head h2 { flex:1; margin:0; text-align:center; font-size:1.15rem; }
 .panel-utility { min-width:44px; }
