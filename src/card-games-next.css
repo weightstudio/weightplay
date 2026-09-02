@@ -450,6 +450,169 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
     padding: 4px 2px;
     font-size: 12px;
   }
+  /* Go Fish's seven-card hand can wrap into the same compact-landscape
+     vertical band as the full-width Battle quick guide. Give the player panel
+     its own second row and keep the hand single-line so rank controls and the
+     quick guide never share a hit surface. */
+  body[data-wp-card-game="go-fish"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
+    gap: 7px;
+  }
+  body[data-wp-card-game="go-fish"] .card-opponents { grid-area: opponents; }
+  body[data-wp-card-game="go-fish"] .card-table-center {
+    grid-area: table;
+    position: relative;
+    z-index: 2;
+  }
+  body[data-wp-card-game="go-fish"] .card-game-player {
+    grid-column: 1 / -1;
+    grid-area: player;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="go-fish"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="go-fish"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  /* The compact Go Fish table needs to keep its current five-card choices,
+     status, and player controls inside the 334px logical Battle Canvas. Hide
+     unavailable ranks from the choice grid (they are not actionable), and
+     compact the surrounding information instead of letting it paint over a
+     neighboring hit surface. */
+  body[data-wp-card-game="go-fish"] .card-opponents {
+    gap: 4px;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="go-fish"] .opponent-card {
+    min-height: 0;
+    padding: 4px;
+    font-size: 10px;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+  body[data-wp-card-game="go-fish"] .opponent-card span {
+    margin-top: 2px;
+    font-size: 9px;
+  }
+  body[data-wp-card-game="go-fish"] .card-table-center {
+    box-sizing: border-box;
+    min-height: 0;
+    overflow: hidden;
+    padding: 5px;
+    gap: 4px;
+    justify-content: flex-start;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .card-table-label {
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.1;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .table-row {
+    flex: 0 0 auto;
+    min-height: 0;
+    gap: 4px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .table-row .playing-card {
+    width: 43px;
+    height: 52px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .table-row .card-book-progress {
+    min-width: 0;
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-summary {
+    display: none;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-panel button:disabled {
+    display: none;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-panel {
+    flex: 0 0 auto;
+    grid-template-columns: repeat(5, minmax(36px, 44px));
+    grid-template-rows: 36px;
+    justify-content: center;
+    max-height: 36px;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="go-fish"] .card-game-player {
+    padding: 4px;
+  }
+  body[data-wp-card-game="go-fish"] .card-game-player-header {
+    min-height: 14px;
+    margin-bottom: 2px;
+    font-size: 11px;
+    line-height: 1;
+  }
+  body[data-wp-card-game="go-fish"] .card-game-player-header small {
+    font-size: 9px;
+    line-height: 1;
+  }
+  body[data-wp-card-game="go-fish"] .card-hand .playing-card {
+    width: 43px;
+    height: 43px;
+  }
+  body[data-wp-card-game="go-fish"] .card-hand {
+    min-height: 43px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameActions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameActions > .card-game-quick-guide {
+    grid-column: 1;
+    width: auto;
+    min-width: 0;
+    padding: 4px 6px;
+    font-size: 10px;
+    line-height: 1.15;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameActions > .card-choice-panel {
+    grid-column: 2;
+    flex-wrap: nowrap;
+    gap: 3px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameActions > .card-choice-panel button {
+    min-width: 36px;
+    min-height: 44px;
+    padding: 4px;
+  }
+  body[data-wp-card-game="go-fish"] #cardGameActions > .primary-btn {
+    grid-column: 3;
+    justify-self: start;
+    min-width: 0;
+  }
   body[data-wp-card-game="old-maid"] .card-game-board {
     grid-template-columns: 96px 254px minmax(450px, 1fr);
   }

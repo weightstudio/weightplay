@@ -557,6 +557,21 @@ window.WONDER_LOBBY = {
         ru: ["30 рощ", "Пары дают 10", "Без таймера"], hi: ["30 उपवन", "जोड़ों का योग 10", "बिना समय सीमा"],
         ar: ["30 بستانًا", "مجموع الزوج 10", "دون مؤقت"],
       },
+      searchAliases: [
+        "number match", "number pairs", "sum to ten", "make ten", "number puzzle", "number grove",
+        "數字配對", "數字配對遊戲", "湊十", "加起來十", "數字益智", "數字花園",
+        "数字配对", "数字配对游戏", "凑十", "加起来十", "数字益智", "数字花园",
+        "数字合わせ", "数合わせ", "合計10", "10を作る", "数字パズル", "ナンバーグローブ",
+        "숫자 맞추기", "숫자 퍼즐", "합이 10", "10 만들기", "숫자 숲", "넘버 그로브",
+        "parejas de números", "sumar diez", "suma diez", "puzzle de números", "bosque numérico",
+        "pares numéricos", "somar dez", "soma dez", "quebra-cabeça de números", "bosque numérico",
+        "paires de nombres", "faire dix", "somme de dix", "puzzle de nombres", "bosquet numérique",
+        "Zahlenpaare", "zehn ergeben", "Summe zehn", "Zahlenrätsel", "Zahlenhain",
+        "coppie di numeri", "somma dieci", "fare dieci", "puzzle numerico", "boschetto numerico",
+        "пары чисел", "сумма десять", "сложить до десяти", "числовая головоломка", "числовая роща",
+        "संख्या मिलान", "संख्या जोड़ियां", "योग दस", "दस का योग", "नंबर पहेली", "नंबर ग्रोव",
+        "مطابقة الأرقام", "أزواج الأرقام", "مجموع عشرة", "اجعل المجموع عشرة", "لغز الأرقام", "بستان الأرقام",
+      ],
       art: { kind: "image", background: "assets/animal-number-match-cover-general-v3.webp", hideHero: true },
     },
     {
@@ -2654,6 +2669,34 @@ for (const game of window.WONDER_LOBBY.games) {
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
 }
+
+// Weighted General prototype (2026-09-03). Keep Cozy Camp internal while its
+// concept art, exact Tester, Reviewer, release, and publication gates remain open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-cozy-camp",
+    audience: "general",
+    status: "planned",
+    internalOnly: true,
+    title: localize(["Cozy Camp", "暖暖營火", "暖暖营火", "ほっこりキャンプ", "포근한 캠프", "Campamento acogedor", "Acampamento aconchegante", "Camp douillet", "Kuschelcamp", "Campo accogliente", "Уютный лагерь", "आरामदायक कैंप", "مخيم دافئ"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Circular Social Logic", "圓形社交邏輯", "圆形社交逻辑", "円形ソーシャルロジック", "원형 사회 논리", "Lógica social circular", "Lógica social circular", "Logique sociale circulaire", "Kreisförmige Soziallogik", "Logica sociale circolare", "Круговая социальная логика", "गोल सामाजिक तर्क", "منطق اجتماعي دائري"]),
+    description: localize(["Read comfort notes and choose the one campfire seat order that keeps every friend cozy.", "讀懂舒適筆記，選出讓每位朋友都暖呼呼的營火座位順序。", "读懂舒适笔记，选出让每位朋友都暖呼呼的营火座位顺序。", "メモを読み、みんなが心地よい焚き火の席順を選びます。", "편안함 메모를 읽고 모두가 포근한 모닥불 자리 순서를 골라요.", "Lee las notas y elige el orden circular que hace sentir bien a todos.", "Leia as notas e escolha a ordem circular confortável para todos.", "Lis les notes et choisis l’ordre circulaire qui convient à tous.", "Lies die Notizen und wähle die gemütliche Sitzordnung für alle.", "Leggi le note e scegli l’ordine circolare comodo per tutti.", "Прочитайте заметки и выберите уютный порядок у костра.", "नोट पढ़कर सभी के लिए आरामदायक गोल क्रम चुनें।", "اقرأ الملاحظات واختر ترتيب المقاعد الدائري المريح للجميع."]),
+    meta: localize([["3 Camp Circles", "Neighbour Clues", "Calm Retry"], ["3 個營火圈", "鄰座線索", "平靜重試"], ["3 个营火圈", "邻座线索", "平静重试"], ["3つの焚き火", "隣席の手がかり", "穏やかな再挑戦"], ["캠프 원 3개", "이웃 단서", "차분한 재시도"], ["3 círculos", "Pistas vecinas", "Reintento sereno"], ["3 círculos", "Pistas vizinhas", "Nova tentativa calma"], ["3 cercles", "Indices de voisins", "Reprise sereine"], ["3 Kreise", "Nachbar-Hinweise", "Ruhiger Versuch"], ["3 cerchi", "Indizi vicini", "Riprova calma"], ["3 круга", "Соседние подсказки", "Спокойный повтор"], ["3 घेरे", "पड़ोसी संकेत", "शांत पुनः प्रयास"], ["3 دوائر", "تلميحات الجوار", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Social Logic", "Observation", "Family", "Animal"],
+    skills: ["Constraint Reading", "Comparison", "Planning"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-cozy-camp/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-cozy-camp/assets/animal-cozy-camp-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
 
 // Weighted General prototype (2026-09-03). Keep Moonbeam Mirrors internal
 // while its concept art, exact Tester, Reviewer, release, and publication

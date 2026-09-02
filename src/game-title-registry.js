@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-cozy-camp": {
+    "__localizedExact": true,
+    "en": "Cozy Camp",
+    "zh-Hant": "暖暖營火",
+    "zh-Hans": "暖暖营火",
+    "ja": "ほっこりキャンプ",
+    "ko": "포근한 캠프",
+    "es": "Campamento acogedor",
+    "pt-BR": "Acampamento aconchegante",
+    "fr": "Camp douillet",
+    "de": "Kuschelcamp",
+    "it": "Campo accogliente",
+    "ru": "Уютный лагерь",
+    "hi": "आरामदायक कैंप",
+    "ar": "مخيم دافئ"
+  },
   "animal-moonbeam-mirrors": {
     "__localizedExact": true,
     "en": "Moonbeam Mirrors",

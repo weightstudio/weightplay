@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" role="img" aria-labelledby="title desc">
+  <title id="title">Moonlit cozy animal camp</title><desc id="desc">A quiet forest campfire with four friendly animal silhouettes under stars.</desc>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#081c38"/><stop offset="1" stop-color="#1f5b4c"/></linearGradient><radialGradient id="glow"><stop stop-color="#ffe89a" stop-opacity=".9"/><stop offset="1" stop-color="#f28f36" stop-opacity="0"/></radialGradient></defs>
+  <rect width="760" height="520" rx="30" fill="url(#sky)"/><circle cx="600" cy="100" r="48" fill="#fff0b5" opacity=".9"/><circle cx="583" cy="86" r="48" fill="#102b46"/>
+  <path d="M0 340 115 218l78 75 78-112 111 159 96-120 182 120v180H0Z" fill="#0b2d2c"/><path d="M0 420c128-62 212 18 316-30 104-48 179 25 444-45v175H0Z" fill="#123f35"/>
+  <ellipse cx="380" cy="376" rx="185" ry="102" fill="url(#glow)"/><path d="M338 406q42-62 84 0l-19 25h-46Z" fill="#83391c"/><path d="m380 304 30 78h-60Z" fill="#ffcb54"/><path d="m380 320-18 62h36Z" fill="#fff0a1"/>
+  <g fill="#9be0b2"><circle cx="276" cy="395" r="29"/><path d="M245 420q31-45 62 0v29h-62Z"/><circle cx="484" cy="395" r="29"/><path d="M453 420q31-45 62 0v29h-62Z"/></g><g fill="#f4c978"><circle cx="330" cy="440" r="26"/><path d="M302 458q28-39 56 0v25h-56Z"/><circle cx="430" cy="440" r="26"/><path d="M402 458q28-39 56 0v25h-56Z"/></g>
+  <g fill="#ffe7a1"><circle cx="150" cy="110" r="4"/><circle cx="214" cy="76" r="3"/><circle cx="330" cy="126" r="4"/><circle cx="470" cy="70" r="3"/><circle cx="690" cy="188" r="4"/></g>
+</svg>
