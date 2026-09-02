@@ -7,6 +7,7 @@ button, input, select { font: inherit; }
 button { cursor: pointer; }
 .app-shell { width: 100%; min-height: 100dvh; background: radial-gradient(circle at 50% -10%, #1b6077 0, #0a304d 38%, #061d34 80%); }
 .screen { position: relative; width: min(100%, 920px); height: calc(100dvh - 56px); min-height: 0; margin: 0 auto; padding: 10px 20px 16px; overflow: hidden; }
+.battle-screen { background: linear-gradient(rgba(6, 29, 52, .64), rgba(6, 29, 52, .82)), url("assets/animal-tideglass-background.png") center / cover; }
 .main-header, .battle-header { position: relative; z-index: 4; display: grid; grid-template-columns: 58px 1fr 48px; align-items: center; gap: 12px; height: 58px; }
 .header-title { min-width: 0; text-align: center; font-size: clamp(1rem, 2.2vw, 1.18rem); letter-spacing: .01em; }
 .home-link, .back-button, .icon-button, .utility-button { display: inline-grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--line); border-radius: 14px; background: rgba(5, 30, 51, .72); color: var(--ink); }
@@ -47,9 +48,13 @@ h1 { margin-bottom: 12px; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.03
 .vial-card.is-sealed { border-color: rgba(245, 211, 123, .82); background: rgba(78, 68, 44, .46); }
 .vial-card strong, .vial-card small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vial-card small { margin-top: 6px; color: var(--muted); font-size: .74rem; }
-.vial-visual { position: relative; display: block; width: 64px; height: 108px; margin: 0 auto 10px; overflow: hidden; border: 2px solid rgba(232, 255, 251, .8); border-radius: 13px 13px 18px 18px; background: linear-gradient(180deg, rgba(222, 255, 248, .16), rgba(74, 193, 202, .08)); }
-.vial-fill { position: absolute; right: 0; bottom: 0; left: 0; min-height: 2px; background: linear-gradient(180deg, #bff6d7, #44bcd2); transition: height .12s ease; }
-.vial-mark { position: absolute; right: 3px; left: 3px; border-top: 2px dashed var(--gold); }
+.vial-visual { position: relative; display: block; width: min(108px, 100%); aspect-ratio: 1; height: auto; margin: 0 auto 10px; overflow: hidden; background-image: url("assets/animal-tideglass-glass-atlas.png"); background-repeat: no-repeat; background-size: 200% 200%; }
+.vial-state-neutral { background-position: 0 0; }
+.vial-state-active { background-position: 100% 0; }
+.vial-state-miss { background-position: 0 100%; }
+.vial-state-sealed { background-position: 100% 100%; }
+.vial-fill { position: absolute; right: 24%; bottom: 16%; left: 24%; min-height: 2px; border-radius: 5px 5px 12px 12px; background: rgba(102, 221, 224, .5); box-shadow: inset 0 2px 3px rgba(223, 255, 248, .34); transition: height .12s ease; }
+.vial-mark { position: absolute; right: 24%; left: 24%; border-top: 2px dashed var(--gold); }
 .meter-card { margin-top: 16px; padding: 14px 16px 12px; border: 1px solid rgba(176, 240, 224, .2); border-radius: 16px; background: rgba(7, 34, 55, .68); }
 .meter-heading { color: var(--muted); font-size: .9rem; }
 .meter-heading strong { color: var(--mint); font-size: 1.15rem; }
@@ -69,6 +74,7 @@ input[type="range"] { display: block; width: 100%; height: 44px; margin: 8px 0 0
 .leave-dialog p { color: var(--muted); }
 .leave-dialog .result-actions { width: min(100%, 430px); }
 .result-card { width: min(100%, 480px); padding: 26px; border: 1px solid rgba(191, 246, 215, .34); border-radius: 24px; background: linear-gradient(160deg, #134e65, #092c49); text-align: center; box-shadow: 0 20px 50px rgba(0, 0, 0, .3); }
+.result-character { display: block; width: 176px; height: 176px; margin: -2px auto 4px; object-fit: contain; object-position: center 24%; }
 .result-orb { display: grid; place-items: center; width: 78px; height: 78px; margin: 0 auto 12px; border: 2px solid var(--gold); border-radius: 50%; color: var(--gold); font-size: 2.2rem; }
 .result-card h2 { margin-bottom: 10px; font-size: clamp(1.4rem, 4vw, 2rem); }
 .result-card p { color: var(--muted); line-height: 1.45; }
@@ -87,6 +93,7 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display: 
   .main-copy .primary-button { width: 100%; }
   .game-page-info { width: calc(100% - 32px); }
   .battle-content { padding-right: 4px; padding-left: 4px; }
+  .result-character { width: 144px; height: 144px; }
 }
 @media (max-height: 480px) and (min-width: 700px) {
   .hero-card { grid-template-columns: 300px minmax(0, 1fr); gap: 28px; }

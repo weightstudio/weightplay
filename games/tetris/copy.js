@@ -23,6 +23,24 @@
     "pt-BR": ["Como jogar", "O que é salvo?", "Configurações"], fr: ["Comment jouer", "Qu'est-ce qui est enregistré ?", "Réglages"], de: ["Spielanleitung", "Was wird gespeichert?", "Einstellungen"],
     it: ["Come giocare", "Che cosa viene salvato?", "Impostazioni"], ru: ["Как играть", "Что сохраняется?", "Настройки"], hi: ["कैसे खेलें", "क्या सहेजा जाता है?", "सेटिंग"], ar: ["طريقة اللعب", "ما الذي يُحفظ؟", "الإعدادات"],
   };
-  root.WPTetrisCopy = (locale) => ({...Object.fromEntries(keys.map((key,i) => [key, (data[locale] || data.en)[i]])),
-    ...Object.fromEntries(["how","saveQuestion","settings"].map((key,i)=>[key,(labels[locale]||labels.en)[i]]))});
+  const settings = {
+    en: { language: "Language", sound: "Sound", soundOn: "On", soundOff: "Off" },
+    "zh-Hant": { language: "語言", sound: "音效", soundOn: "開啟", soundOff: "關閉" },
+    "zh-Hans": { language: "语言", sound: "音效", soundOn: "开启", soundOff: "关闭" },
+    ja: { language: "言語", sound: "サウンド", soundOn: "オン", soundOff: "オフ" },
+    ko: { language: "언어", sound: "소리", soundOn: "켜기", soundOff: "끄기" },
+    es: { language: "Idioma", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado" },
+    "pt-BR": { language: "Idioma", sound: "Som", soundOn: "Ativado", soundOff: "Desativado" },
+    fr: { language: "Langue", sound: "Son", soundOn: "Activé", soundOff: "Désactivé" },
+    de: { language: "Sprache", sound: "Ton", soundOn: "An", soundOff: "Aus" },
+    it: { language: "Lingua", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato" },
+    ru: { language: "Язык", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл." },
+    hi: { language: "भाषा", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद" },
+    ar: { language: "اللغة", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف" },
+  };
+  root.WPTetrisCopy = (locale) => ({
+    ...Object.fromEntries(keys.map((key,i) => [key, (data[locale] || data.en)[i]])),
+    ...Object.fromEntries(["how","saveQuestion","settings"].map((key,i)=>[key,(labels[locale]||labels.en)[i]])),
+    ...(settings[locale] || settings.en),
+  });
 })(globalThis);

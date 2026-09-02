@@ -1219,6 +1219,17 @@
       document.querySelector("#audioPopover")?.setAttribute("aria-label",ui.settings);
       const settingsTitle = document.querySelector(".settings-title");
       if (settingsTitle) settingsTitle.textContent = ui.settings;
+      const languageLabel = document.querySelector("#languageLabel");
+      if (languageLabel) languageLabel.textContent = ui.language;
+      const localeSelect = document.querySelector("#localeSelect");
+      if (localeSelect) localeSelect.setAttribute("aria-label", ui.language);
+      const soundButton = document.querySelector("#soundBtn[data-sound-toggle]");
+      if (soundButton) {
+        const soundLabel = `${ui.sound}: ${soundButton.getAttribute("aria-pressed") !== "false" ? ui.soundOn : ui.soundOff}`;
+        soundButton.textContent = soundLabel;
+        soundButton.setAttribute("aria-label", soundLabel);
+        soundButton.title = soundLabel;
+      }
       els.round.textContent = `${copy(locale,"score")}: ${state.score} · ${ui.lines}: ${state.lines} · ${ui.level}: ${state.level}`;
       state.message = state.paused ? ui.paused : state.messageKey === "tetrisHint" ? ui.instructions : `${ui.lines}: ${state.lines} · ${ui.level}: ${state.level}`;
       if (!tetrisGrid) {
@@ -1271,7 +1282,11 @@
     tetrisSoundButton?.addEventListener("click", () => {
       const enabled = tetrisSoundButton.getAttribute("aria-pressed") !== "true";
       tetrisSoundButton.setAttribute("aria-pressed", String(enabled));
-      tetrisSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+      const ui = tetrisText();
+      const soundLabel = `${ui.sound}: ${enabled ? ui.soundOn : ui.soundOff}`;
+      tetrisSoundButton.textContent = soundLabel;
+      tetrisSoundButton.setAttribute("aria-label", soundLabel);
+      tetrisSoundButton.title = soundLabel;
     });
     const wordleSettingsButton = game.type === "wordle" ? document.querySelector("#audioMenuBtn") : null;
     const wordleSettingsPopover = game.type === "wordle" ? document.querySelector("#audioPopover") : null;

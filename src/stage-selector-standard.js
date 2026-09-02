@@ -301,6 +301,10 @@
     const button = document.querySelector(mainStartByGame[gameId()] || "[data-wp-main-start]");
     if (!button) return;
     if (button.closest('[data-runtime-localize="off"]')) return;
+    // Classic Logic Lab mounts and localizes these Main CTAs itself. Do not
+    // replace their locale-owned labels with the generic fallback when the
+    // runtime-localizer is intentionally absent on the no-index route.
+    if (["code-breaker", "sliding-15"].includes(gameId())) return;
     button.dataset.wpMainStart = "true";
     const pageLanguage = document.documentElement.lang.toLowerCase();
     const label = pageLanguage.startsWith("zh-hans") || pageLanguage.startsWith("zh-cn")
