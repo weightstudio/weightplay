@@ -23,7 +23,7 @@
     solved: false
   };
   const $ = (id) => document.getElementById(id);
-  const bestKey = (index) => `weightplay:animal-ring-garden:v9:best:${index}`;
+  const bestKey = (index) => `weightplay:animal-ring-garden:v10:best:${index}`;
 
   function t(key) { return (COPY[locale] && COPY[locale][key]) || COPY.en[key] || key; }
   function fmt(value, n) { return value.replace("{n}", String(n)); }

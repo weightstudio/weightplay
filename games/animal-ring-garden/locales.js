@@ -43,6 +43,11 @@
     ar: { turnLeft: "أدر الحلقة {n} إلى اليسار", turnRight: "أدر الحلقة {n} إلى اليمين", gardenOne: "بستان اليراعات", gardenTwo: "بركة الضوء الطحلبي", gardenThree: "سرخس قوس قزح", gardenFour: "القصب الفضي" }
   };
   Object.entries(localizedGardenCopy).forEach(([localeKey, values]) => Object.assign(copy[localeKey], values));
+  Object.assign(copy.ar, {
+    battleTargetLabel: "نمط الهدف",
+    battleRingsLabel: "حلقات البتلات الثلاث",
+    best: "أفضل نتيجة"
+  });
 
   const localizedGardenClues = {
     en: { gardenOneClue: "Follow the warm firefly ring into the quiet centre.", gardenTwoClue: "Let the moss ring rest beneath the silver moon.", gardenThreeClue: "Bring the rainbow petals together for the last bloom.", gardenFourClue: "Set the silver reeds in a gentle moonlit line." },

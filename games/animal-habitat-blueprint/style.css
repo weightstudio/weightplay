@@ -18,7 +18,7 @@ body{overflow-x:hidden}
 .main-screen .main-actions{margin-top:0}
 .main-screen #startBtn{min-height:52px}
 .topbar #settingsBtn{width:48px;height:48px;min-width:48px;min-height:48px;padding:0}
-.main-screen .guide-art{display:none}
+.main-screen .guide-art{display:block}
 .game-page-info{width:min(760px,calc(100% - 24px));margin:0 auto 20px;padding:22px;border:1px solid #d5e3d5;border-radius:24px;background:#fffdf5;box-shadow:0 18px 50px #294a5520}
 .game-info-hero{margin-bottom:14px}
 .game-info-kicker{color:#aa6634;font-size:.76rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
