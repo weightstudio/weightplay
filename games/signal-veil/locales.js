@@ -133,19 +133,19 @@
   };
   for(const [code,value] of Object.entries(routeCueCopy)) localeRegistry[code].routeCue=value;
   const accessibilityCopy={
-    en:{battleBackLabel:"Leave investigation",gameCanvasLabel:"Signal Veil connected action RPG world",touchControlsLabel:"Touch controls"},
-    "zh-Hant":{battleBackLabel:"離開調查",gameCanvasLabel:"訊號帷幕連續動作角色扮演世界",touchControlsLabel:"觸控操作"},
-    "zh-Hans":{battleBackLabel:"离开调查",gameCanvasLabel:"信号帷幕连续动作角色扮演世界",touchControlsLabel:"触控操作"},
-    ja:{battleBackLabel:"調査を離れる",gameCanvasLabel:"シグナル・ヴェールの連続アクションRPGワールド",touchControlsLabel:"タッチ操作"},
-    ko:{battleBackLabel:"조사 나가기",gameCanvasLabel:"시그널 베일 연결형 액션 RPG 세계",touchControlsLabel:"터치 조작"},
-    es:{battleBackLabel:"Salir de la investigación",gameCanvasLabel:"Mundo RPG de acción conectado de Signal Veil",touchControlsLabel:"Controles táctiles"},
-    "pt-BR":{battleBackLabel:"Sair da investigação",gameCanvasLabel:"Mundo de RPG de ação conectado de Signal Veil",touchControlsLabel:"Controles de toque"},
-    fr:{battleBackLabel:"Quitter l’enquête",gameCanvasLabel:"Monde RPG d’action connecté de Signal Veil",touchControlsLabel:"Commandes tactiles"},
-    de:{battleBackLabel:"Untersuchung verlassen",gameCanvasLabel:"Vernetzte Action-RPG-Welt von Signal Veil",touchControlsLabel:"Touch-Steuerung"},
-    it:{battleBackLabel:"Lascia l’indagine",gameCanvasLabel:"Mondo RPG d’azione connesso di Signal Veil",touchControlsLabel:"Comandi touch"},
-    ru:{battleBackLabel:"Покинуть расследование",gameCanvasLabel:"Связанный мир экшен-RPG Signal Veil",touchControlsLabel:"Сенсорное управление"},
-    hi:{battleBackLabel:"जांच छोड़ें",gameCanvasLabel:"Signal Veil की जुड़ी हुई एक्शन RPG दुनिया",touchControlsLabel:"स्पर्श नियंत्रण"},
-    ar:{battleBackLabel:"مغادرة التحقيق",gameCanvasLabel:"عالم Signal Veil المتصل للعبة تقمص أدوار وحركة",touchControlsLabel:"عناصر التحكم باللمس"},
+    en:{mainReturnLabel:"Back to WeightPlay",battleBackLabel:"Leave investigation",gameCanvasLabel:"Signal Veil connected action RPG world",touchControlsLabel:"Touch controls"},
+    "zh-Hant":{mainReturnLabel:"返回 WeightPlay",battleBackLabel:"離開調查",gameCanvasLabel:"訊號帷幕連續動作角色扮演世界",touchControlsLabel:"觸控操作"},
+    "zh-Hans":{mainReturnLabel:"返回 WeightPlay",battleBackLabel:"离开调查",gameCanvasLabel:"信号帷幕连续动作角色扮演世界",touchControlsLabel:"触控操作"},
+    ja:{mainReturnLabel:"WeightPlayへ戻る",battleBackLabel:"調査を離れる",gameCanvasLabel:"シグナル・ヴェールの連続アクションRPGワールド",touchControlsLabel:"タッチ操作"},
+    ko:{mainReturnLabel:"WeightPlay로 돌아가기",battleBackLabel:"조사 나가기",gameCanvasLabel:"시그널 베일 연결형 액션 RPG 세계",touchControlsLabel:"터치 조작"},
+    es:{mainReturnLabel:"Volver a WeightPlay",battleBackLabel:"Salir de la investigación",gameCanvasLabel:"Mundo RPG de acción conectado de Signal Veil",touchControlsLabel:"Controles táctiles"},
+    "pt-BR":{mainReturnLabel:"Voltar ao WeightPlay",battleBackLabel:"Sair da investigação",gameCanvasLabel:"Mundo de RPG de ação conectado de Signal Veil",touchControlsLabel:"Controles de toque"},
+    fr:{mainReturnLabel:"Retour à WeightPlay",battleBackLabel:"Quitter l’enquête",gameCanvasLabel:"Monde RPG d’action connecté de Signal Veil",touchControlsLabel:"Commandes tactiles"},
+    de:{mainReturnLabel:"Zurück zu WeightPlay",battleBackLabel:"Untersuchung verlassen",gameCanvasLabel:"Vernetzte Action-RPG-Welt von Signal Veil",touchControlsLabel:"Touch-Steuerung"},
+    it:{mainReturnLabel:"Torna a WeightPlay",battleBackLabel:"Lascia l’indagine",gameCanvasLabel:"Mondo RPG d’azione connesso di Signal Veil",touchControlsLabel:"Comandi touch"},
+    ru:{mainReturnLabel:"Вернуться в WeightPlay",battleBackLabel:"Покинуть расследование",gameCanvasLabel:"Связанный мир экшен-RPG Signal Veil",touchControlsLabel:"Сенсорное управление"},
+    hi:{mainReturnLabel:"WeightPlay पर वापस जाएँ",battleBackLabel:"जांच छोड़ें",gameCanvasLabel:"Signal Veil की जुड़ी हुई एक्शन RPG दुनिया",touchControlsLabel:"स्पर्श नियंत्रण"},
+    ar:{mainReturnLabel:"العودة إلى WeightPlay",battleBackLabel:"مغادرة التحقيق",gameCanvasLabel:"عالم Signal Veil المتصل للعبة تقمص أدوار وحركة",touchControlsLabel:"عناصر التحكم باللمس"},
   };
   for(const [code,value] of Object.entries(accessibilityCopy)) Object.assign(localeRegistry[code],value);
   for(const [code,value] of Object.entries(visionSkillCopy)){

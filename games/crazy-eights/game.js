@@ -58,6 +58,8 @@
     const list = fact.querySelector(".game-info-tags, .game-info-skills");
     if (!list) return;
     const values = String(value).split(" · ").map((item) => item.trim()).filter(Boolean);
+    const currentValues = [...list.querySelectorAll("span")].map((item) => item.textContent.trim());
+    if (currentValues.length === values.length && currentValues.every((item, index) => item === values[index])) return;
     list.replaceChildren(...values.map((item) => Object.assign(document.createElement("span"), { textContent: item })));
   };
   const syncArabicShell = () => {

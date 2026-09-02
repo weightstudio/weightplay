@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+
+    <base href="/games/animal-tideglass/" />
+
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-tideglass/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-tideglass/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="weightplay-audience" content="general">
+    <meta name="weightplay-game-version" content="v1">
+    <meta name="description" content="滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。" />
+    <title>潮汐玻璃工坊 | WeightPlay</title>
+    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+    <script src="locales.js?v=20260902-tideglass-v1" defer></script>
+    <script src="game.js?v=20260902-tideglass-v1" defer></script>
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="潮汐玻璃工坊 | WeightPlay" />
+    <meta property="og:description" content="滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。" />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-tideglass/" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="潮汐玻璃工坊 | WeightPlay" />
+    <meta name="twitter:description" content="滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover.svg" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "潮汐玻璃工坊",
+  "url": "https://weightplay.com/zh-cn/games/animal-tideglass/",
+  "image": "https://weightplay.com/games/animal-tideglass/assets/animal-tideglass-cover.svg",
+  "description": "滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Puzzle",
+    "定时",
+    "Estimation",
+    "家庭",
+    "Animal",
+    "Browser Game"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players",
+    "suggestedMinAge": 6
+  },
+  "alternateName": "Tideglass Workshop"
+}
+    </script>
+  </head>
+  <body>
+    <main class="app-shell" id="app">
+      <section id="mainView" class="screen main-screen" data-screen="main" aria-labelledby="mainTitle">
+        <header class="main-header wp-main-shell-header">
+          <a class="home-link wp-shell-return" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+          <div class="header-title"><strong data-copy="title">Tideglass Workshop</strong></div>
+          <button id="mainSettingsBtn" class="icon-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="mainSettingsPopover" aria-label="Settings">⚙</button>
+          <div id="mainSettingsPopover" class="wp-shell-settings-popover" role="dialog" aria-label="Settings" hidden>
+            <div class="settings-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"></select></div>
+            <div class="settings-row"><span data-copy="soundLabel">Sound</span><button id="soundToggle" class="sound-switch" data-sound-toggle="true" type="button" role="switch" aria-checked="true" aria-pressed="true"><span class="sound-knob" aria-hidden="true"></span><span class="sr-only" data-copy="soundOn">Sound on</span></button></div>
+          </div>
+        </header>
+        <div class="hero-card">
+          <img class="main-poster" src="assets/animal-tideglass-cover.svg" alt="" aria-hidden="true" width="900" height="900" fetchpriority="high">
+          <div class="main-copy">
+            <p class="eyebrow" data-copy="eyebrow">A calm ocean estimation puzzle</p>
+            <h1 id="mainTitle" data-copy="title">潮汐玻璃工坊</h1>
+            <p class="main-summary" data-copy="subtitle">Slide the waterline to match each tide mark, then seal the glass.</p>
+            <div class="main-progress" data-wp-main-progress data-copy="progress">Three tide marks · gentle retry · no timer</div>
+            <button class="primary-button" id="startBtn" type="button" data-wp-main-start data-copy="start">Start the workshop</button>
+          </div>
+        </div>
+      </section>
+      <details id="gameGuide" class="game-page-info" data-wp-game-guide>
+        <summary data-copy="guideTitle">How to play</summary>
+        <p data-copy="guideBody">Choose a glass, slide its waterline, and tap Seal tide when the surface meets the visible mark. A miss is harmless: adjust and try again.</p>
+      </details>
+      <section id="battleView" class="screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas aria-labelledby="battleTitle" hidden>
+        <header class="battle-header">
+          <button class="back-button" id="homeFromBattle" data-wp-return="battle" type="button" aria-label="Home"><span aria-hidden="true">←</span><span class="sr-only" data-copy="home">Home</span></button>
+          <div class="header-title"><strong id="battleTitle" data-copy="battleTitle">Tideglass bench</strong></div>
+          <button class="utility-button" id="battleSoundToggle" data-wp-battle-utility type="button" aria-label="Sound" aria-pressed="true">♪</button>
+        </header>
+        <div class="battle-content">
+          <div class="status-row"><span id="roundLabel"></span><span><strong id="sealedCount">0</strong> <span data-copy="sealed">sealed</span></span></div>
+          <p id="instruction" class="instruction" data-copy="instruction">Set the active glass to its tide mark.</p>
+          <div id="vialGrid" class="vial-grid" aria-label="Tide glasses"></div>
+          <div class="meter-card">
+            <div class="meter-heading"><span data-copy="waterline">Waterline</span><strong id="valueLabel">0%</strong></div>
+            <input id="waterRange" type="range" min="0" max="100" value="0" step="1" aria-label="Waterline">
+            <div class="meter-scale"><span>0%</span><span id="targetLabel">Target 36%</span><span>100%</span></div>
+          </div>
+          <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+          <div class="battle-actions">
+            <button id="sealBtn" class="primary-button" data-wp-primary-action type="button" data-copy="seal">Seal tide</button>
+            <button id="resetBtn" class="secondary-button" type="button" data-copy="reset">Reset line</button>
+          </div>
+          <button id="leaveBtn" class="text-button" type="button" data-copy="home">Home</button>
+        </div>
+        <section id="leaveDialog" class="leave-dialog" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden>
+          <h2 id="leaveTitle" data-copy="leaveTitle">Leave the bench?</h2>
+          <p data-copy="leaveBody">Your sealed glasses will reset, but your best attempt stays saved.</p>
+          <div class="result-actions"><button id="continueBtn" class="primary-button" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="secondary-button" type="button" data-copy="confirmLeave">Return home</button></div>
+        </section>
+        <section id="resultView" class="result-screen" hidden aria-labelledby="resultTitle">
+          <div class="result-card"><div class="result-orb" aria-hidden="true">◒</div><p class="eyebrow" data-copy="completeEyebrow">Tide set complete</p><h2 id="resultTitle" data-copy="complete">A steady reading for the reef.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best seals</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayBtn" type="button" data-copy="replay">Read again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
+        </section>
+      </section>
+      <div class="general-reserve battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
+      <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
+    </main>
+  <section class="game-page-info game-page-info-static" aria-label="潮汐玻璃工坊 游戏信息">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>潮汐玻璃工坊</h2><p>滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>海洋估读益智</strong></div><div class="game-info-fact"><span>类型</span><strong>Puzzle · 定时 · Estimation · 家庭 · Animal</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+<script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+</body>
+</html>

@@ -1743,6 +1743,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "आवास गिनती",
     "ar": "عدّ المأوى"
   },
+  "animal-tideglass": {
+    "__localizedExact": true,
+    "en": "Tideglass Workshop",
+    "zh-Hant": "潮汐玻璃工坊",
+    "zh-Hans": "潮汐玻璃工坊",
+    "ja": "潮汐グラス工房",
+    "ko": "조수 유리 공방",
+    "es": "Taller de Mareas",
+    "pt-BR": "Oficina das Marés",
+    "fr": "Atelier des Marées",
+    "de": "Gezeiten-Glaswerkstatt",
+    "it": "Officina delle Maree",
+    "ru": "Мастерская приливов",
+    "hi": "ज्वार-काँच कार्यशाला",
+    "ar": "ورشة زجاج المدّ"
+  },
   "animal-cushion-stack": {
     "__localizedExact": true,
     "en": "Cushion Stack",

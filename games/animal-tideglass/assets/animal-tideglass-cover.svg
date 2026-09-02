@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Abstract tideglass concept cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b3550"/><stop offset="1" stop-color="#56b7c5"/></linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8fbf4" stop-opacity=".88"/><stop offset="1" stop-color="#79d1d2" stop-opacity=".5"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="900" height="900" rx="96" fill="url(#bg)"/>
+  <circle cx="680" cy="180" r="120" fill="#e9ffcc" opacity=".25" filter="url(#glow)"/>
+  <path d="M0 690c145-75 235 55 373-11 146-69 261-17 527-92v313H0Z" fill="#092b47" opacity=".72"/>
+  <path d="M0 720c135-50 247 64 386-2 155-74 306-12 514-83" fill="none" stroke="#b4f3df" stroke-width="18" stroke-linecap="round" opacity=".7"/>
+  <path d="M286 192h328l-48 514H334Z" fill="url(#glass)" stroke="#e8fffb" stroke-width="12"/>
+  <path d="M300 430h300v264H324Z" fill="#2ca6c2" opacity=".55"/>
+  <path d="M302 430c91 30 195 30 296 0" fill="none" stroke="#e9ffcf" stroke-width="14"/>
+  <path d="M370 126h160M390 126v66m120-66v66" stroke="#e8fffb" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="408" cy="510" r="22" fill="#f6d27a"/><circle cx="500" cy="584" r="14" fill="#d2f3ff"/><circle cx="536" cy="488" r="10" fill="#f6d27a"/>
+  <path d="M150 260c34-53 74-53 108 0-34-12-74-12-108 0Zm-20 27c47-39 91-32 127 18-45-13-87-4-127-18Z" fill="#c4f5d1" opacity=".9"/>
+</svg>

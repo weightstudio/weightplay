@@ -2739,6 +2739,34 @@ for (const game of window.WONDER_LOBBY.games) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
 })();
 
+// Weighted General prototype (2026-09-02). Keep Tideglass Workshop planned
+// and Coming Soon while its internal prototype remains behind the art, Tester,
+// Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-tideglass",
+    audience: "general",
+    status: "planned",
+    title: localize(["Tideglass Workshop", "潮汐玻璃工坊", "潮汐玻璃工坊", "潮汐グラス工房", "조수 유리 공방", "Taller de Mareas", "Oficina das Marés", "Atelier des Marées", "Gezeiten-Glaswerkstatt", "Officina delle Maree", "Мастерская приливов", "ज्वार-काँच कार्यशाला", "ورشة زجاج المدّ"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Ocean Estimation Puzzle", "海洋估讀益智", "海洋估读益智", "海の読み取りパズル", "바다 읽기 퍼즐", "Puzzle de mareas", "Quebra-cabeça das marés", "Puzzle des marées", "Gezeiten-Lesepuzzle", "Puzzle delle maree", "Пазл о приливах", "समुद्र-पठन पहेली", "لغز قراءة المدّ"]),
+    description: localize(["Slide each waterline to its tide mark, then seal the glass for Nori's reef reading.", "滑動每個水位線對準潮汐刻度，再為諾莉封存礁岩讀數。", "滑动每个水位线对准潮汐刻度，再为诺莉封存礁岩读数。", "水位線を潮目に合わせ、ノリの礁の記録を封印します。", "각 물높이를 조수 눈금에 맞춰 노리의 산호초 기록을 봉인하세요.", "Ajusta cada nivel a su marca de marea y sella la lectura del arrecife de Nori.", "Ajuste cada nível à marca e sele a leitura do recife de Nori.", "Réglez chaque niveau sur le repère et scellez la lecture du récif de Nori.", "Stelle jede Wasserlinie auf die Gezeitenmarke und versiegle Noris Riffmessung.", "Regola ogni livello sulla tacca e sigilla la lettura della barriera di Nori.", "Настройте каждый уровень по отметке и запечатайте измерение рифа Нори.", "हर पानी की रेखा को ज्वार निशान पर रखकर नोरी का रीफ माप सील करें।", "اضبط كل خط ماء على علامة المدّ واختم قراءة الشعاب لنوري."]),
+    meta: localize([["3 Tide Marks", "Slide to Read", "Calm Retry"], ["3 個潮汐刻度", "滑動估讀", "平靜重試"], ["3 个潮汐刻度", "滑动估读", "平静重试"], ["3つの潮目", "滑らかに読む", "穏やかな再挑戦"], ["조수 눈금 3개", "밀어서 읽기", "차분한 재시도"], ["3 mareas", "Desliza para leer", "Reintento sereno"], ["3 marcas", "Deslize para ler", "Nova tentativa calma"], ["3 repères", "Faites glisser", "Reprise sereine"], ["3 Marken", "Schieben und lesen", "Ruhiger Versuch"], ["3 tacche", "Scorri e leggi", "Riprova calma"], ["3 отметки", "Сдвиньте и прочтите", "Спокойная попытка"], ["3 निशान", "सरकाकर पढ़ें", "शांत पुनः प्रयास"], ["3 علامات", "حرّك للقراءة", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Timing", "Estimation", "Family", "Animal"],
+    skills: ["Estimation", "Fine Motor", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-tideglass/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-tideglass/assets/animal-tideglass-cover.svg", hideHero: true },
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-08-31). Keep Cushion Stack planned and
 // Coming Soon while its internal prototype remains behind the art, Tester,
 // Reviewer, release, and publication gates.
