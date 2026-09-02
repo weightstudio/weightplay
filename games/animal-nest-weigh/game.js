@@ -59,11 +59,12 @@
   };
   const trayMarkup = (round, index, mode) => {
     const name = materialName(round.materials[index]);
+    const material = round.materials[index];
     const pairSelected = state.selectedPair.includes(index);
     const targetSelected = state.selectedTarget === index;
     const selected = mode === "pair" ? pairSelected : targetSelected;
     const aria = mode === "pair" ? copy("compareTray", { name }) : copy("answerTray", { name });
-    return `<button type="button" class="tray-card${selected ? " selected" : ""}" data-${mode}-tray="${index}" aria-label="${aria}" aria-pressed="${selected}"><span class="tray-icon" aria-hidden="true"><i></i><i></i><i></i></span><strong>${name}</strong><small>${copy(mode === "pair" ? "tapToCompare" : "tapToChoose")}</small></button>`;
+    return `<button type="button" class="tray-card${selected ? " selected" : ""}" data-${mode}-tray="${index}" aria-label="${aria}" aria-pressed="${selected}"><span class="tray-icon material-${material}" aria-hidden="true"></span><strong>${name}</strong><small>${copy(mode === "pair" ? "tapToCompare" : "tapToChoose")}</small></button>`;
   };
   const comparisonMessage = () => {
     if (!state.comparison) return copy("comparisonEmpty");
@@ -85,6 +86,8 @@
     $("answerBoard").innerHTML = round.materials.map((_material, index) => trayMarkup(round, index, "answer")).join("");
     $("comparisonText").textContent = comparisonMessage();
     $("battleStatus").textContent = state.wrong ? copy("wrong") : state.comparison ? copy("chooseAfterCompare") : copy("ready");
+    $("comparisonText").classList.toggle("has-comparison", Boolean(state.comparison));
+    $("battleStatus").classList.toggle("is-wrong", state.wrong);
     $("compareBtn").disabled = state.selectedPair.length !== 2;
     $("checkBtn").disabled = state.selectedTarget === null;
     $("compareBoard").querySelectorAll("[data-pair-tray]").forEach((button) => button.addEventListener("click", () => {

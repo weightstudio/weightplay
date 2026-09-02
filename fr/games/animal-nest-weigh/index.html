@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-nest-weigh/" />
-
-    <link rel="canonical" href="https://weightplay.com/fr/games/animal-nest-weigh/" />
+  <link rel="canonical" href="https://weightplay.com/fr/games/animal-nest-weigh/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-nest-weigh/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-nest-weigh/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-nest-weigh/" />
@@ -27,7 +26,7 @@
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="Compare les matériaux sur une balance visible, puis choisissez le plateau le plus lourd, léger ou intermédiaire." />
   <title>Pesée du nid | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260830-nest-weigh-v1">
+  <link rel="stylesheet" href="style.css?v=20260902-nest-weigh-v1-art">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pesée du nid | WeightPlay" />
@@ -43,6 +42,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Pesée du nid",
+  "alternateName": "Nest Weigh-In",
   "url": "https://weightplay.com/fr/games/animal-nest-weigh/",
   "image": "https://weightplay.com/games/animal-nest-weigh/assets/animal-nest-weigh-cover.svg",
   "description": "Compare les matériaux sur une balance visible, puis choisissez le plateau le plus lourd, léger ou intermédiaire.",
@@ -59,15 +59,13 @@
     "Logic",
     "Comparison",
     "Famille",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Nest Weigh-In"
+  }
 }
     </script>
   </head>
@@ -81,7 +79,10 @@
           <div class="utilities"><button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button></div>
         </header>
         <section class="hero-card">
-          <img class="cover-art main-poster" src="assets/animal-nest-weigh-cover.svg" alt="" aria-hidden="true">
+          <picture class="cover-art-frame">
+            <source srcset="assets/animal-nest-weigh-cover.webp" type="image/webp">
+            <img class="cover-art main-poster" src="assets/animal-nest-weigh-cover.png" alt="" aria-hidden="true">
+          </picture>
           <div class="hero-copy">
             <h1 data-copy="title">Pesée du nid</h1>
             <p class="intro main-summary" data-copy="intro">Compare two nest materials, then choose the one the nest needs.</p>
@@ -102,7 +103,7 @@
     <section class="game-page-info game-page-info-static" aria-label="Informations sur Pesée du nid">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Pesée du nid</h2><p>Compare les matériaux sur une balance visible, puis choisissez le plateau le plus lourd, léger ou intermédiaire.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Pesée du nid</h2><p>Compare les matériaux sur une balance visible, puis choisissez le plateau le plus lourd, léger ou intermédiaire.</p></div><div class="game-info-character" aria-hidden="true"><picture><source srcset="assets/animal-nest-weigh-taro.webp" type="image/webp"><img src="assets/animal-nest-weigh-taro.png" alt=""></picture></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Puzzle de comparaison par paires</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Comparison · Famille · Animal</strong></div></div>
     </div>
     <div class="game-info-sections">
@@ -118,7 +119,7 @@
     </div>
   </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
-      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-nest-weigh-cover.svg')">
+      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('assets/animal-nest-weigh-cover.png')">
         <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="stages">Nest lessons</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button" type="button" data-copy-aria-label="help">i</button></header>
         <p class="panel-intro" data-copy="mapIntro">Each lesson teaches one comparison and one kind of nest request.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
@@ -127,7 +128,7 @@
       <div class="stage-ad-reserve game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
-      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
+      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('assets/animal-nest-weigh-background.png');--wp-material-atlas:url('assets/animal-nest-weigh-material-atlas.png')">
         <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">NEST REQUEST</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
@@ -136,14 +137,14 @@
           <section class="answer-card" aria-labelledby="answerHeading"><div class="section-heading"><h3 id="answerHeading" data-copy="answerTitle">Choose the nest material</h3><span data-copy="answerHelp">What belongs in the nest?</span></div><div id="answerBoard" class="tray-grid answer-grid" aria-label="Materials to choose"></div><button id="checkBtn" class="primary-btn full-btn" type="button" data-copy="check">Check the nest</button><button id="resetBtn" class="secondary-btn full-btn" type="button" data-copy="reset">Reset this lesson</button></section>
           <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultKicker">NEST RESULT</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Nest lessons</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultKicker">NEST RESULT</p><picture class="result-character" aria-hidden="true"><source srcset="assets/animal-nest-weigh-taro.webp" type="image/webp"><img src="assets/animal-nest-weigh-taro.png" alt=""></picture><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Nest lessons</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
       </div>
       <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260830-nest-weigh-v1"></script>
-  <script src="game.js?v=20260830-nest-weigh-v1"></script>
+  <script src="locales.js?v=20260902-nest-weigh-v1-art"></script>
+  <script src="game.js?v=20260902-nest-weigh-v1-art"></script>
 <script src="/src/runtime-locales/fr.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
