@@ -52,6 +52,90 @@
     stageWin: L("Stage {stage} cleared · progress saved.", "第 {stage} 關完成 · 進度已儲存。", "第 {stage} 关完成 · 进度已保存。", "ステージ {stage} クリア・進行状況を保存しました。", "스테이지 {stage} 클리어 · 진행 상황이 저장되었습니다.", "Fase {stage} superada · progreso guardado.", "Fase {stage} concluída · progresso salvo.", "Étape {stage} réussie · progression enregistrée.", "Stufe {stage} geschafft · Fortschritt gespeichert.", "Fase {stage} completata · progressi salvati.", "Этап {stage} пройден · прогресс сохранён.", "चरण {stage} पूरा · प्रगति सहेजी गई।", "اكتملت المرحلة {stage} · تم حفظ التقدم."),
     stageLoss: L("Stage {stage} is still locked in your progress. Replay to learn the pattern.", "第 {stage} 關尚未完成，重玩以熟悉規律。", "第 {stage} 关尚未完成，重玩以熟悉规律。", "ステージ {stage} は未クリアです。もう一度、規則を読みましょう。", "스테이지 {stage}는 아직 미완료입니다. 다시 하며 패턴을 익히세요.", "La fase {stage} aún no está superada. Repite para aprender el patrón.", "A fase {stage} ainda não foi concluída. Jogue de novo para aprender o padrão.", "L'étape {stage} n'est pas encore réussie. Rejouez pour comprendre le motif.", "Stufe {stage} ist noch nicht geschafft. Spiele erneut, um das Muster zu lernen.", "La fase {stage} non è ancora completata. Rigioca per imparare il modello.", "Этап {stage} ещё не пройден. Повторите, чтобы понять закономерность.", "चरण {stage} अभी पूरा नहीं हुआ। पैटर्न सीखने के लिए फिर खेलें।", "المرحلة {stage} لم تكتمل بعد. أعد اللعب لتتعلم النمط.")
   };
+  const slidingCampaignCopy = {
+    goal: L("Goal", "目標", "目标", "目標", "목표", "Objetivo", "Objetivo", "Objectif", "Ziel", "Obiettivo", "Цель", "लक्ष्य", "الهدف"),
+    standard: L("Classic order", "經典順序", "经典顺序", "クラシック順", "클래식 순서", "Orden clásico", "Ordem clássica", "Ordre classique", "Klassische Ordnung", "Ordine classico", "Классический порядок", "क्लासिक क्रम", "الترتيب الكلاسيكي"),
+    snake: L("Snake rows", "蛇形列", "蛇形行", "蛇行の列", "뱀 모양 행", "Filas serpenteantes", "Linhas em zigue-zague", "Lignes en serpent", "Schlangenreihen", "Righe a serpentina", "Змеиные ряды", "सर्पिल पंक्तियाँ", "صفوف متعرجة"),
+    column: L("Column sweep", "直欄掃描", "直列扫描", "列スイープ", "열 훑기", "Barrido por columnas", "Varredura por colunas", "Balayage par colonnes", "Spaltensuche", "Scansione per colonne", "Сканирование столбцов", "स्तंभ क्रम", "مسح الأعمدة"),
+    spiral: L("Spiral route", "螺旋路線", "螺旋路线", "らせんルート", "나선 경로", "Ruta en espiral", "Rota em espiral", "Route en spirale", "Spiralroute", "Percorso a spirale", "Спиральный маршрут", "Спираल मार्ग", "مسار حلزوني"),
+    anchor: L("Anchor tile {tile} stays fixed", "錨定方塊 {tile} 保持固定", "锚定方块 {tile} 保持固定", "アンカータイル{tile}は固定", "앵커 타일 {tile} 고정", "La ficha ancla {tile} no se mueve", "A peça âncora {tile} fica fixa", "La tuile ancre {tile} reste fixe", "Ankerkachel {tile} bleibt fest", "La tessera ancora {tile} resta fissa", "Якорная плитка {tile} неподвижна", "एंकर टाइल {tile} स्थिर", "تبقى البلاطة المرساة {tile} ثابتة"),
+    noBacktrack: L("No immediate backtracking", "不可立即走回頭路", "不可立即走回头路", "直前の引き返し禁止", "즉시 되돌리기 금지", "Sin retroceso inmediato", "Sem retorno imediato", "Pas de retour immédiat", "Kein sofortiges Zurück", "Niente ritorno immediato", "Без немедленного возврата", "तुरंत वापस नहीं", "لا عودة فورية"),
+    checkpointRule: L("Checkpoint: protect the marked route", "檢查點：守住標記路線", "检查点：守住标记路线", "チェックポイント：印の道を守る", "체크포인트: 표시된 경로 지키기", "Punto de control: protege la ruta marcada", "Checkpoint: proteja a rota marcada", "Point de contrôle : protégez la route marquée", "Checkpoint: Schütze die markierte Route", "Checkpoint: proteggi il percorso segnato", "Контрольная точка: берегите отмеченный маршрут", "चेकपॉइंट: चिह्नित मार्ग बचाएँ", "نقطة تفتيش: احمِ المسار المحدد"),
+    stageTitle: L("Stage {stage} · {arc}", "第 {stage} 關 · {arc}", "第 {stage} 关 · {arc}", "ステージ{stage}・{arc}", "스테이지 {stage} · {arc}", "Fase {stage} · {arc}", "Fase {stage} · {arc}", "Étape {stage} · {arc}", "Stufe {stage} · {arc}", "Fase {stage} · {arc}", "Этап {stage} · {arc}", "चरण {stage} · {arc}", "المرحلة {stage} · {arc}"),
+    progress: L("Stage {stage} / 30 · {cleared} cleared", "第 {stage} / 30 關 · 已通關 {cleared} 關", "第 {stage} / 30 关 · 已通关 {cleared} 关", "ステージ {stage} / 30 ・クリア {cleared}", "스테이지 {stage} / 30 · 클리어 {cleared}", "Fase {stage} / 30 · {cleared} superadas", "Fase {stage} / 30 · {cleared} concluídas", "Étape {stage} / 30 · {cleared} réussies", "Stufe {stage} / 30 · {cleared} geschafft", "Fase {stage} / 30 · {cleared} completate", "Этап {stage} / 30 · пройдено: {cleared}", "चरण {stage} / 30 · {cleared} पूरे", "المرحلة {stage} / 30 · المكتمل {cleared}"),
+    cleared: L("Cleared", "已通關", "已通关", "クリア済み", "클리어", "Superada", "Concluída", "Réussie", "Geschafft", "Completata", "Пройдено", "पूरा", "مكتملة"),
+    locked: L("Locked · clear the previous stage", "鎖定 · 先通關上一關", "锁定 · 先通关上一关", "ロック中・前のステージをクリア", "잠김 · 이전 스테이지를 클리어하세요", "Bloqueada · supera la fase anterior", "Bloqueada · conclua a fase precedente", "Verrouillée · réussissez l'étape précédente", "Gesperrt · schaffe die vorige Stufe", "Bloccata · completa la fase precedente", "Заблокировано · пройдите прошлый этап", "लॉक है · पिछला चरण पूरा करें", "مقفلة · أكمل المرحلة السابقة"),
+    ready: L("Ready for Stage {stage}", "準備挑戰第 {stage} 關", "准备挑战第 {stage} 关", "ステージ{stage}の準備完了", "스테이지 {stage} 준비 완료", "Lista para la fase {stage}", "Pronto para a fase {stage}", "Prêt pour l'étape {stage}", "Bereit für Stufe {stage}", "Pronto per la fase {stage}", "Этап {stage} готов", "चरण {stage} के लिए तैयार", "جاهز للمرحلة {stage}"),
+    saved: L("Progress saved locally", "進度已儲存在本機", "进度已保存在本机", "進行状況を端末に保存しました", "진행 상황이 기기에 저장되었습니다", "Progreso guardado localmente", "Progresso salvo localmente", "Progression enregistrée localement", "Fortschritt lokal gespeichert", "Progressi salvati localmente", "Прогресс сохранён локально", "प्रगति स्थानीय रूप से सहेजी गई", "تم حفظ التقدم محليًا"),
+    noMove: L("That route is blocked by this stage rule.", "這條路線受到本關規則限制。", "这条路线受到本关规则限制。", "このルートはステージのルールで塞がれています。", "이 경로는 스테이지 규칙으로 막혀 있습니다.", "Esta ruta está bloqueada por la regla de la fase.", "Essa rota está bloqueada pela regra da fase.", "Cette route est bloquée par la règle de l'étape.", "Diese Route ist durch die Stufenregel blockiert.", "Questo percorso è bloccato dalla regola della fase.", "Этот путь заблокирован правилом этапа.", "यह मार्ग चरण के नियम से बंद है।", "هذا المسار محظور بقاعدة المرحلة."),
+    stageWin: L("Stage {stage} cleared · progress saved.", "第 {stage} 關完成 · 進度已儲存。", "第 {stage} 关完成 · 进度已保存。", "ステージ{stage}クリア・進行状況を保存しました。", "스테이지 {stage} 클리어 · 진행 상황이 저장되었습니다.", "Fase {stage} superada · progreso guardado.", "Fase {stage} concluída · progresso salvo.", "Étape {stage} réussie · progression enregistrée.", "Stufe {stage} geschafft · Fortschritt gespeichert.", "Fase {stage} completata · progressi salvati.", "Этап {stage} пройден · прогресс сохранён.", "चरण {stage} पूरा · प्रगति सहेजी गई।", "اكتملت المرحلة {stage} · تم حفظ التقدم."),
+    stageLoss: L("Stage {stage} is not complete yet. Replay and find a new route.", "第 {stage} 關尚未完成。重玩並找出新路線。", "第 {stage} 关尚未完成。重玩并找出新路线。", "ステージ{stage}は未完成です。もう一度、新しい道を探しましょう。", "스테이지 {stage}는 아직 완료되지 않았습니다. 다시 하며 새 경로를 찾으세요.", "La fase {stage} aún no está completa. Repite y busca otra ruta.", "A fase {stage} ainda não terminou. Jogue de novo e encontre outra rota.", "L'étape {stage} n'est pas terminée. Rejouez et trouvez une nouvelle route.", "Stufe {stage} ist noch nicht fertig. Spiele erneut und finde eine neue Route.", "La fase {stage} non è completa. Rigioca e trova un nuovo percorso.", "Этап {stage} ещё не завершён. Повторите и найдите новый путь.", "चरण {stage} अभी पूरा नहीं हुआ। फिर खेलें और नया मार्ग खोजें।", "المرحلة {stage} لم تكتمل بعد. أعد اللعب وابحث عن مسار جديد."),
+  };
+  const slidingCampaignArcs = [
+    { key: "corridor", title: L("Open Corridors", "開放走廊", "开放走廊", "オープン回廊", "열린 복도", "Pasillos abiertos", "Corredores abertos", "Couloirs ouverts", "Offene Korridore", "Corridoi aperti", "Открытые коридоры", "खुले गलियारे", "ممرات مفتوحة"), rule: L("Classic order: keep the blank moving around the next target.", "經典順序：讓空位繞到下一個目標周圍。", "经典顺序：让空位绕到下一个目标周围。", "クラシック順：次の目標の周りへ空きを動かします。", "클래식 순서: 다음 목표 주변으로 빈칸을 움직입니다.", "Orden clásico: mueve el hueco alrededor del próximo objetivo.", "Ordem clássica: mova o vazio ao redor do próximo alvo.", "Ordre classique : faites circuler le vide autour de la cible.", "Klassische Ordnung: Führe die Lücke um das nächste Ziel.", "Ordine classico: porta il vuoto attorno al prossimo obiettivo.", "Классический порядок: ведите пустоту вокруг следующей цели.", "क्लासिक क्रम: अगले लक्ष्य के आसपास खाली जगह चलाएँ।", "الترتيب الكلاسيكي: حرّك الفراغ حول الهدف التالي."), index: 0 },
+    { key: "zigzag", title: L("Zigzag Gallery", "鋸齒畫廊", "锯齿画廊", "ジグザグ・ギャラリー", "지그재그 갤러리", "Galería zigzag", "Galeria zigue-zague", "Galerie en zigzag", "Zickzack-Galerie", "Galleria a zigzag", "Зигзагая галерея", "ज़िगज़ैग गैलरी", "معرض متعرج"), rule: L("Snake rows: each row reverses the target direction.", "蛇形列：每一列反轉目標方向。", "蛇形行：每一行反转目标方向。", "蛇行の列：行ごとに目標方向が反転します。", "뱀 모양 행: 행마다 목표 방향이 바뀝니다.", "Filas serpenteantes: cada fila invierte el rumbo.", "Linhas em zigue-zague: cada linha troca a direção.", "Lignes en serpent : chaque ligne inverse le sens.", "Schlangenreihen: Jede Reihe wechselt die Richtung.", "Righe a serpentina: ogni riga inverte la direzione.", "Змеиные ряды: направление цели меняется в каждой строке.", "सर्पिल पंक्तियाँ: हर पंक्ति लक्ष्य दिशा बदलती है।", "صفوف متعرجة: ينعكس اتجاه الهدف في كل صف."), index: 1 },
+    { key: "columns", title: L("Column Workshop", "直欄工坊", "直列工坊", "列の工房", "열 작업장", "Taller de columnas", "Oficina de colunas", "Atelier des colonnes", "Säulenwerkstatt", "Officina delle colonne", "Мастерская столбцов", "स्तंभ कार्यशाला", "ورشة الأعمدة"), rule: L("Column sweep: build the board from top to bottom by columns.", "直欄掃描：按欄由上到下建立盤面。", "直列扫描：按列从上到下建立盘面。", "列スイープ：列ごとに上から下へ組み立てます。", "열 훑기: 열마다 위에서 아래로 만듭니다.", "Barrido por columnas: construye cada columna de arriba abajo.", "Varredura por colunas: monte cada coluna de cima para baixo.", "Balayage par colonnes : construisez chaque colonne de haut en bas.", "Spaltensuche: Baue jede Spalte von oben nach unten.", "Scansione per colonne: costruisci ogni colonna dall'alto in basso.", "Сканирование столбцов: собирайте столбцы сверху вниз.", "स्तंभ क्रम: हर स्तंभ को ऊपर से नीचे बनाएँ।", "مسح الأعمدة: ابنِ كل عمود من الأعلى للأسفل."), index: 2 },
+    { key: "anchors", title: L("Anchor Workshop", "錨點工坊", "锚点工坊", "アンカー工房", "앵커 작업장", "Taller de anclas", "Oficina de âncoras", "Atelier des ancres", "Ankerwerkstatt", "Officina delle ancore", "Мастерская якорей", "एंकर कार्यशाला", "ورشة المراسي"), rule: L("A marked anchor tile cannot be slid; route the blank around it.", "標記的錨定方塊不可滑動；讓空位繞過它。", "标记的锚定方块不能滑动；让空位绕过它。", "印のアンカータイルは動かせません。空きを回り込ませます。", "표시된 앵커 타일은 밀 수 없습니다. 빈칸을 돌아가세요.", "La ficha ancla no se mueve; rodea con el hueco.", "A peça âncora não se move; contorne-a com o vazio.", "La tuile ancre ne bouge pas ; contournez-la avec le vide.", "Die Ankerkachel bewegt sich nicht; führe die Lücke darum.", "La tessera ancora resta ferma; aggira con il vuoto.", "Якорная плитка неподвижна; ведите пустоту вокруг неё.", "एंकर टाइल नहीं चलती; खाली जगह उसके आसपास चलाएँ।", "لا تتحرك بلاطة المرساة؛ حرّك الفراغ حولها."), index: 3 },
+    { key: "detours", title: L("Detour Circuit", "繞行迴路", "绕行回路", "迂回サーキット", "우회 회로", "Circuito de desvíos", "Circuito de desvios", "Circuit des détours", "Umleitungskreislauf", "Circuito di deviazioni", "Контур обходов", "डिटोर सर्किट", "دائرة التحويلات"), rule: L("No immediate backtracking: every move must open a new route.", "不可立即走回頭路：每一步都要開出新路線。", "不可立即走回头路：每一步都要开出新路线。", "直前の引き返しは禁止。毎手で新しい道を開きます。", "즉시 되돌아갈 수 없습니다. 매번 새 길을 여세요.", "Sin retroceso inmediato: cada movimiento abre una ruta nueva.", "Sem retorno imediato: cada movimento abre uma nova rota.", "Pas de retour immédiat : chaque coup ouvre une nouvelle route.", "Kein sofortiges Zurück: Jeder Zug öffnet eine neue Route.", "Niente ritorno immediato: ogni mossa apre un nuovo percorso.", "Без немедленного возврата: каждый ход открывает новый путь.", "तुरंत वापस नहीं: हर चाल नया मार्ग खोलती है।", "لا عودة فورية: كل حركة تفتح مسارًا جديدًا."), index: 4 },
+    { key: "crown", title: L("Crown Circuit", "王冠迴路", "王冠回路", "クラウン・サーキット", "크라운 회로", "Circuito de corona", "Circuito da coroa", "Circuit de la couronne", "Kronenkreislauf", "Circuito della corona", "Королевский контур", "क्राउन सर्किट", "دائرة التاج"), rule: L("Mastery route: spiral goal, fixed anchor, and no immediate backtracking.", "精通路線：螺旋目標、固定錨點與不可立即回頭。", "精通路线：螺旋目标、固定锚点与不可立即回头。", "熟練ルート：らせん目標・固定アンカー・引き返し禁止。", "숙련 경로: 나선 목표, 고정 앵커, 즉시 되돌리기 금지.", "Ruta de dominio: meta espiral, ancla fija y sin retroceso.", "Rota de domínio: meta em espiral, âncora fixa e sem retorno.", "Route de maîtrise : objectif en spirale, ancre fixe et sans retour.", "Meisterroute: Spiralziel, feste Ankerkachel und kein Zurück.", "Percorso maestria: obiettivo a spirale, ancora fissa e niente ritorno.", "Маршрут мастерства: спиральная цель, якорь и запрет возврата.", "मास्टरी मार्ग: सर्पिल लक्ष्य, स्थिर एंकर और वापसी नहीं।", "مسار الإتقان: هدف حلزوني ومرساة ثابتة وبدون عودة."), index: 5 },
+  ];
+  const SLIDING_TOTAL_STAGES = 30;
+  const SLIDING_SAVE_KEY = "sliding15CampaignProgress";
+  function slidingGoal(mode) {
+    if (mode === "snake") return [1, 2, 3, 4, 8, 7, 6, 5, 9, 10, 11, 12, 0, 15, 14, 13];
+    if (mode === "column") return [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 0];
+    if (mode === "spiral") return [1, 2, 3, 4, 12, 13, 14, 5, 11, 0, 15, 6, 10, 9, 8, 7];
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0];
+  }
+  function slidingStageData(stage) {
+    const safeStage = Math.max(1, Math.min(SLIDING_TOTAL_STAGES, Number(stage) || 1));
+    const arcIndex = Math.floor((safeStage - 1) / 5);
+    const arc = slidingCampaignArcs[arcIndex];
+    const mode = arcIndex === 0 ? "standard" : arcIndex === 1 ? "snake" : arcIndex === 2 ? "column" : arcIndex === 3 ? "spiral" : arcIndex === 4 ? (safeStage % 2 ? "snake" : "column") : "spiral";
+    const goal = slidingGoal(mode);
+    const anchorIndex = arcIndex >= 3 ? (arcIndex === 5 ? 1 : 0) : null;
+    const noBacktrack = arcIndex >= 1;
+    const checkpoint = safeStage % 5 === 0;
+    const random = rng(0x15a000 + safeStage * 7919);
+    const tiles = goal.slice();
+    let blank = tiles.indexOf(0);
+    let previousBlank = -1;
+    const reverseSolution = [];
+    const shuffleSteps = 18 + safeStage * 2;
+    for (let step = 0; step < shuffleSteps; step += 1) {
+      const options = neighbours(blank, 4, 4).filter((index) => index !== previousBlank && (anchorIndex === null || (index !== anchorIndex && blank !== anchorIndex)));
+      const next = options[Math.floor(random() * options.length)];
+      reverseSolution.push(blank);
+      [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]];
+      previousBlank = blank;
+      blank = next;
+    }
+    if (tiles.every((value, index) => value === goal[index])) {
+      const next = neighbours(blank, 4, 4).find((index) => anchorIndex === null || (index !== anchorIndex && blank !== anchorIndex));
+      [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]];
+      blank = next;
+    }
+    const modeLabel = slidingCampaignCopy[mode] || slidingCampaignCopy.standard;
+    return { stage: safeStage, arcIndex, arc, mode, goal, start: tiles, anchorIndex, noBacktrack, checkpoint, modeLabel, shuffleSteps, solution: reverseSolution.reverse() };
+  }
+  function readSlidingProgress() {
+    const fallback = { cleared: [], highestUnlocked: 1 };
+    try {
+      const parsed = JSON.parse(localStorage.getItem(SLIDING_SAVE_KEY) || "null");
+      const cleared = Array.isArray(parsed?.cleared) ? [...new Set(parsed.cleared.map(Number).filter((value) => Number.isInteger(value) && value >= 1 && value <= SLIDING_TOTAL_STAGES))].sort((a, b) => a - b) : [];
+      const highest = Math.max(1, Math.min(SLIDING_TOTAL_STAGES, Number(parsed?.highestUnlocked) || (cleared.length ? Math.max(...cleared) + 1 : 1)));
+      return { cleared, highestUnlocked: highest };
+    } catch { return fallback; }
+  }
+  function writeSlidingProgress(progress) { localStorageSafe(SLIDING_SAVE_KEY, JSON.stringify(progress)); }
+  function markSlidingStageCleared(stage) {
+    const progress = readSlidingProgress();
+    if (!progress.cleared.includes(stage)) progress.cleared.push(stage);
+    progress.cleared.sort((a, b) => a - b);
+    progress.highestUnlocked = Math.min(SLIDING_TOTAL_STAGES, Math.max(progress.highestUnlocked, stage + 1));
+    writeSlidingProgress(progress);
+    return progress;
+  }
   const codeCampaignArcs = [
     { key: "signal", title: L("Signal School", "訊號學堂", "信号学堂", "シグナル学舎", "신호 학교", "Escuela de señales", "Escola de sinais", "École des signaux", "Signalschule", "Scuola dei segnali", "Школа сигналов", "सिग्नल स्कूल", "مدرسة الإشارات"), rule: L("Read exact positions and near colors. Repeats are not used.", "讀懂正確位置與顏色提示。本段不使用重複色。", "读懂正确位置与颜色提示。本段不使用重复色。", "位置一致と色一致を読みます。重複色はありません。", "정확한 위치와 색 힌트를 읽습니다. 중복 색은 없습니다.", "Lee posiciones exactas y colores cercanos. No hay repetidos.", "Leia posições exatas e cores próximas. Sem repetições.", "Lisez les positions exactes et les couleurs proches. Sans doublons.", "Lies exakte Positionen und nahe Farben. Keine Wiederholungen.", "Leggi posizioni esatte e colori vicini. Niente ripetizioni.", "Читайте точные позиции и близкие цвета. Повторов нет.", "सही स्थान और पास के रंग पढ़ें। दोहराव नहीं है।", "اقرأ المواضع الدقيقة والألوان القريبة. لا توجد ألوان مكررة."), index: 0 },
     { key: "echo", title: L("Echo Chambers", "回聲密室", "回声密室", "エコー・チャンバー", "에코 챔버", "Cámaras de eco", "Câmaras de eco", "Chambres d'écho", "Echokammern", "Camere d'eco", "Эхо-камеры", "इको चैंबर", "غرف الصدى"), rule: L("Repeated colors can hide in the code. Count near clues carefully.", "重複顏色會藏在密碼裡，仔細計算顏色提示。", "重复颜色会藏在密码里，仔细计算颜色提示。", "重複色がコードに入ります。近い色の数を丁寧に数えます。", "코드에 중복 색이 들어갑니다. 근접 힌트를 세심히 세세요.", "Los colores repetidos pueden aparecer. Cuenta bien las pistas.", "As cores repetidas podem aparecer. Conte as dicas com cuidado.", "Les couleurs peuvent se répéter. Comptez bien les indices.", "Farben können sich wiederholen. Zähle nahe Hinweise genau.", "I colori possono ripetersi. Conta con cura gli indizi.", "Цвета могут повторяться. Внимательно считайте подсказки.", "रंग दोहराए जा सकते हैं। पास के संकेत ध्यान से गिनें।", "قد تتكرر الألوان. احسب تلميحات القرب بعناية."), index: 1 },
@@ -724,7 +808,7 @@
         <section class="logic-battle-screen battle-screen" id="logicBattle" data-screen="battle" data-wp-logical-battle-canvas hidden><header class="logic-battle-header"><button id="battleBack" class="logic-battle-back" data-wp-return="battle" data-wp-battle-utility type="button" aria-label="${esc(t("menu"))}">←</button><h1>${esc(title)}</h1><span id="battleChip" class="logic-status-chip">${esc(t("turn"))}</span></header><div class="logic-battle-wrap"><div id="logicTutorial" class="logic-tutorial"></div><div id="logicStatus" class="logic-status-line" role="status" aria-live="polite">${esc(t("ready"))}</div><div class="logic-board-panel"><div id="logicBoard" class="logic-board-area battle-canvas"></div></div><div class="logic-action-row"><button id="logicHint" class="logic-secondary" type="button">${esc(t("hint"))}</button><button id="logicUndo" class="logic-secondary" type="button">${esc(t("undo"))}</button><button id="logicReset" class="logic-secondary" type="button">${esc(t("reset"))}</button></div></div><div id="logicLeave" class="logic-leave" hidden role="dialog" aria-modal="true" aria-labelledby="logicLeaveTitle"><div class="logic-leave-card"><h2 id="logicLeaveTitle">${esc(text(codeCampaignCopy.stages))}</h2><p>${esc(text(codeCampaignCopy.stageStart))}</p><div class="logic-result-actions"><button id="leaveContinue" class="logic-primary" type="button">${esc(t("continue"))}</button><button id="leaveStages" class="logic-secondary" type="button">${esc(text(codeCampaignCopy.stages))}</button></div></div></div><div class="logic-result" id="logicResult" hidden role="dialog" aria-modal="true" aria-labelledby="logicResultTitle"><div class="logic-result-card"><h2 id="logicResultTitle"></h2><p id="logicResultText"></p><div class="logic-result-actions"><button id="resultStages" class="logic-secondary" type="button" hidden>${esc(text(codeCampaignCopy.stages))}</button><button id="resultNext" class="logic-primary" type="button" hidden>${esc(text(codeCampaignCopy.nextStage))}</button><button id="resultReplay" class="logic-primary" type="button">${esc(t("replay"))}</button><button id="resultMenu" class="logic-secondary" type="button">${esc(t("menu"))}</button><button id="resultClose" class="logic-secondary" type="button">${esc(t("close"))}</button></div></div></div></section>
         <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div></div>`;
     app.main = app.root.querySelector("#logicMain"); app.stage = app.root.querySelector("#logicStage"); app.stageSound = app.root.querySelector("#stageSound"); app.stageRail = app.root.querySelector("#stageRail"); app.stageProgress = app.root.querySelector("#stageProgress"); app.stageStatus = app.root.querySelector("#stageStatus"); app.battle = app.root.querySelector("#logicBattle"); app.board = app.root.querySelector("#logicBoard"); app.tutorial = app.root.querySelector("#logicTutorial"); app.status = app.root.querySelector("#logicStatus"); app.result = app.root.querySelector("#logicResult"); app.resultTitle = app.root.querySelector("#logicResultTitle"); app.resultText = app.root.querySelector("#logicResultText"); app.battleChip = app.root.querySelector("#battleChip"); app.currentStage = null;
-    if (id !== "code-breaker") {
+    if (!(id === "code-breaker" || id === "sliding-15")) {
       app.stage?.removeAttribute("data-screen");
       app.stage?.removeAttribute("data-wp-standard-stage-screen");
       app.stage?.removeAttribute("data-wp-logical-stage-canvas");
@@ -743,16 +827,17 @@
     });
     function updateSoundButton() { const soundButton = app.root.querySelector("#soundButton"); soundButton.textContent = `${t("sound")}: ${soundOn ? t("on") : t("off")}`; soundButton.setAttribute("aria-pressed", String(soundOn)); if (app.stageSound) { app.stageSound.textContent = soundOn ? "🔊" : "🔇"; app.stageSound.setAttribute("aria-pressed", String(soundOn)); } }
     updateSoundButton();
-    app.root.querySelector("#startButton").addEventListener("click", () => id === "code-breaker" ? showStage() : startGame());
+    if (id === "sliding-15") { const progress = readSlidingProgress(); app.root.querySelector("[data-wp-main-progress]").textContent = fillTemplate(text(slidingCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, SLIDING_TOTAL_STAGES), cleared: progress.cleared.length }); }
+    app.root.querySelector("#startButton").addEventListener("click", () => (id === "code-breaker" || id === "sliding-15") ? showStage() : startGame());
     app.root.querySelector("#stageBack").addEventListener("click", showMain);
-    app.root.querySelector("#battleBack").addEventListener("click", () => id === "code-breaker" ? openLeaveDialog() : showMain());
+    app.root.querySelector("#battleBack").addEventListener("click", () => (id === "code-breaker" || id === "sliding-15") ? openLeaveDialog() : showMain());
     app.root.querySelector("#logicHint").addEventListener("click", () => activeGame?.hint?.());
     app.root.querySelector("#logicUndo").addEventListener("click", () => activeGame?.undo?.());
     app.root.querySelector("#logicReset").addEventListener("click", () => activeGame?.reset?.());
     app.root.querySelector("#leaveContinue").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; });
     app.root.querySelector("#leaveStages").addEventListener("click", () => { app.root.querySelector("#logicLeave").hidden = true; showStage(); });
     app.root.querySelector("#resultStages").addEventListener("click", () => { app.result.hidden = true; showStage(); });
-    app.root.querySelector("#resultNext").addEventListener("click", () => { app.result.hidden = true; startGame(Math.min(CODE_BREAKER_TOTAL_STAGES, (app.currentStage || 1) + 1)); });
+    app.root.querySelector("#resultNext").addEventListener("click", () => { app.result.hidden = true; const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; startGame(Math.min(total, (app.currentStage || 1) + 1)); });
     app.root.querySelector("#resultReplay").addEventListener("click", () => { app.result.hidden = true; activeGame?.reset?.(); });
     app.root.querySelector("#resultMenu").addEventListener("click", showMain);
     app.root.querySelector("#resultClose").addEventListener("click", () => { app.result.hidden = true; });
@@ -761,44 +846,47 @@
     return app;
 
     function resetScroll() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
-    function configureStageResult() { const staged = id === "code-breaker"; app.root.querySelector("#resultStages").hidden = !staged; app.root.querySelector("#resultNext").hidden = true; app.root.querySelector("#resultMenu").hidden = staged; app.root.querySelector("#resultClose").hidden = staged; app.root.querySelector("#resultReplay").textContent = staged ? text(codeCampaignCopy.replay) : t("replay"); }
+    function configureStageResult() { const staged = id === "code-breaker" || id === "sliding-15"; app.root.querySelector("#resultStages").hidden = !staged; app.root.querySelector("#resultNext").hidden = true; app.root.querySelector("#resultMenu").hidden = staged; app.root.querySelector("#resultClose").hidden = staged; app.root.querySelector("#resultReplay").textContent = staged ? text(codeCampaignCopy.replay) : t("replay"); }
     function renderStageRail() {
-      if (id !== "code-breaker") return;
-      const progress = readCodeProgress();
-      app.stageProgress.textContent = fillTemplate(text(codeCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, CODE_BREAKER_TOTAL_STAGES), cleared: progress.cleared.length });
+      if (!(id === "code-breaker" || id === "sliding-15")) return;
+      const sliding = id === "sliding-15";
+      const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES;
+      const progress = sliding ? readSlidingProgress() : readCodeProgress();
+      const copy = sliding ? slidingCampaignCopy : codeCampaignCopy;
+      app.stageProgress.textContent = fillTemplate(text(copy.progress), { stage: Math.min(progress.highestUnlocked, total), cleared: progress.cleared.length });
       app.stageRail.replaceChildren();
-      for (let stage = 1; stage <= CODE_BREAKER_TOTAL_STAGES; stage += 1) {
-        const data = codeStageData(stage); const unlocked = stage <= progress.highestUnlocked; const cleared = progress.cleared.includes(stage); const card = document.createElement("button");
-        card.type = "button"; card.className = `stage-card code-breaker-stage-card ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`; card.dataset.stage = String(stage); card.dataset.stageIndex = String(stage - 1); card.dataset.wpStageIndex = String(stage - 1); card.setAttribute("aria-disabled", String(!unlocked)); card.dataset.wpStageTitle = text(data.arc.title);
+      for (let stage = 1; stage <= total; stage += 1) {
+        const data = sliding ? slidingStageData(stage) : codeStageData(stage); const unlocked = stage <= progress.highestUnlocked; const cleared = progress.cleared.includes(stage); const card = document.createElement("button");
+        card.type = "button"; card.className = `stage-card ${sliding ? "sliding-15-stage-card" : "code-breaker-stage-card"} ${unlocked ? "" : "is-locked"} ${cleared ? "is-cleared" : ""}`; card.dataset.stage = String(stage); card.dataset.stageIndex = String(stage - 1); card.dataset.wpStageIndex = String(stage - 1); card.setAttribute("aria-disabled", String(!unlocked)); card.setAttribute("aria-posinset", String(stage)); card.setAttribute("aria-setsize", String(total)); card.setAttribute("aria-current", stage === progress.highestUnlocked ? "true" : "false"); card.dataset.wpStageTitle = text(data.arc.title);
         if (stage === progress.highestUnlocked) { card.dataset.wpStageRecommended = "true"; card.dataset.wpStageRecommendation = "last"; }
         const number = document.createElement("span"); number.className = "stage-number"; number.textContent = String(stage).padStart(2, "0");
-        const heading = document.createElement("strong"); heading.textContent = fillTemplate(text(codeCampaignCopy.stageCard), { stage });
+        const heading = document.createElement("strong"); heading.textContent = sliding ? fillTemplate(text(slidingCampaignCopy.stageTitle), { stage, arc: text(data.arc.title) }) : fillTemplate(text(codeCampaignCopy.stageCard), { stage });
         const arc = document.createElement("span"); arc.className = "stage-card-arc"; arc.textContent = text(data.arc.title);
-        const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = `${text(codeCampaignCopy.objective)} · ${text(data.arc.rule)}`;
-        const state = document.createElement("span"); state.className = "stage-card-state"; state.textContent = cleared ? text(codeCampaignCopy.cleared) : unlocked ? text(codeCampaignCopy.ready).replace("{stage}", String(stage)) : text(codeCampaignCopy.locked);
+        const objective = document.createElement("small"); objective.className = "stage-card-objective"; objective.textContent = sliding ? `${text(slidingCampaignCopy.goal)} · ${text(data.modeLabel)}${data.anchorIndex === null ? "" : ` · ${fillTemplate(text(slidingCampaignCopy.anchor), { tile: data.goal[data.anchorIndex] })}`}` : `${text(codeCampaignCopy.objective)} · ${text(data.arc.rule)}`;
+        const state = document.createElement("span"); state.className = "stage-card-state"; state.textContent = cleared ? text(copy.cleared) : unlocked ? fillTemplate(text(copy.ready), { stage }) : text(copy.locked);
         card.append(number, heading, arc, objective, state);
-        card.addEventListener("click", () => { if (!unlocked) { app.stageStatus.textContent = text(codeCampaignCopy.locked); return; } startGame(stage); });
+        card.addEventListener("click", () => { if (!unlocked) { app.stageStatus.textContent = text(copy.locked); return; } startGame(stage); });
         app.stageRail.append(card);
       }
-      app.stageStatus.textContent = text(codeCampaignCopy.saved);
+      app.stageStatus.textContent = text(copy.saved);
       window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     }
-    function showStage() { if (id !== "code-breaker") return showMain(); resetScroll(); activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.main.hidden = true; app.battle.hidden = true; app.stage.hidden = false; app.result.hidden = true; document.body.classList.remove("logic-playing"); renderStageRail(); resetScroll(); }
+    function showStage() { if (!(id === "code-breaker" || id === "sliding-15")) return showMain(); resetScroll(); activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.main.hidden = true; app.battle.hidden = true; app.stage.hidden = false; app.result.hidden = true; document.body.classList.remove("logic-playing"); renderStageRail(); resetScroll(); }
     function openLeaveDialog() { app.root.querySelector("#logicLeave").hidden = false; }
-    function startGame(stage = null) { resetScroll(); app.currentStage = id === "code-breaker" ? Math.max(1, Math.min(CODE_BREAKER_TOTAL_STAGES, Number(stage) || 1)) : null; app.main.hidden = true; app.stage.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); app.tutorial.textContent = app.currentStage ? `${text(codeStageData(app.currentStage).arc.title)} · ${text(codeStageData(app.currentStage).arc.rule)}` : text(cfg.blurb); app.result.hidden = true; configureStageResult(); activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale, stage: app.currentStage || undefined }); }
-    function showMain() { activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.result.hidden = true; app.root.querySelector("#logicLeave").hidden = true; app.stage.hidden = true; app.battle.hidden = true; app.main.hidden = false; document.body.classList.remove("logic-playing"); resetScroll(); }
+    function startGame(stage = null) { resetScroll(); const staged = id === "code-breaker" || id === "sliding-15"; const total = id === "sliding-15" ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; app.currentStage = staged ? Math.max(1, Math.min(total, Number(stage) || 1)) : null; app.main.hidden = true; app.stage.hidden = true; app.battle.hidden = false; document.body.classList.add("logic-playing"); const data = id === "sliding-15" ? slidingStageData(app.currentStage) : id === "code-breaker" ? codeStageData(app.currentStage) : null; app.tutorial.textContent = app.currentStage ? `${text(data.arc.title)} · ${text(data.arc.rule)}` : text(cfg.blurb); app.result.hidden = true; configureStageResult(); activeGame = cfg.build(app); activeGame.reset(); if (app.status.textContent === t("ready")) announce(t("turn")); resetScroll(); window.WonderAnalytics?.track?.("classic_logic_trial_start", { game_id: id, locale, stage: app.currentStage || undefined }); }
+    function showMain() { activeGame?.stop?.(); activeGame = null; app.currentStage = null; app.result.hidden = true; app.root.querySelector("#logicLeave").hidden = true; app.stage.hidden = true; app.battle.hidden = true; app.main.hidden = false; if (id === "sliding-15") { const progress = readSlidingProgress(); app.root.querySelector("[data-wp-main-progress]").textContent = fillTemplate(text(slidingCampaignCopy.progress), { stage: Math.min(progress.highestUnlocked, SLIDING_TOTAL_STAGES), cleared: progress.cleared.length }); } document.body.classList.remove("logic-playing"); resetScroll(); }
   }
 
   function finish(won, detail = "") {
     if (!app) return;
     beep(won ? "success" : "wrong");
-    const staged = app.id === "code-breaker" && app.currentStage;
+    const staged = (app.id === "code-breaker" || app.id === "sliding-15") && app.currentStage;
     if (staged) {
-      const stage = Number(app.currentStage); const progress = won ? markCodeStageCleared(stage) : readCodeProgress();
-      app.resultTitle.textContent = won ? fillTemplate(text(codeCampaignCopy.stageWin), { stage }) : t("lose");
-      app.resultText.textContent = detail || (won ? fillTemplate(text(codeCampaignCopy.stageWin), { stage }) : fillTemplate(text(codeCampaignCopy.stageLoss), { stage }));
+      const stage = Number(app.currentStage); const sliding = app.id === "sliding-15"; const total = sliding ? SLIDING_TOTAL_STAGES : CODE_BREAKER_TOTAL_STAGES; const campaignCopy = sliding ? slidingCampaignCopy : codeCampaignCopy; const progress = won ? (sliding ? markSlidingStageCleared(stage) : markCodeStageCleared(stage)) : (sliding ? readSlidingProgress() : readCodeProgress());
+      app.resultTitle.textContent = won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : t("lose");
+      app.resultText.textContent = detail || (won ? fillTemplate(text(campaignCopy.stageWin), { stage }) : fillTemplate(text(campaignCopy.stageLoss), { stage }));
       app.root.querySelector("#resultStages").hidden = false;
-      app.root.querySelector("#resultNext").hidden = !(won && stage < CODE_BREAKER_TOTAL_STAGES && stage + 1 <= progress.highestUnlocked);
+      app.root.querySelector("#resultNext").hidden = !(won && stage < total && stage + 1 <= progress.highestUnlocked);
       app.root.querySelector("#resultReplay").hidden = false;
       app.root.querySelector("#resultMenu").hidden = true;
       app.root.querySelector("#resultClose").hidden = true;
@@ -915,12 +1003,46 @@
   }
 
   function buildSliding() {
-    let tiles = [], blank = 15, history = [], hintIndex = -1; const panel = document.createElement("div"); const board = document.createElement("div"); board.className = "logic-sliding-board"; panel.append(board); const label = document.createElement("div"); label.className = "logic-live"; panel.append(label); app.board.replaceChildren(panel);
-    function render() { board.replaceChildren(); tiles.forEach((value, i) => { const b = cell(value === 0 ? "" : String(value), value === 0 ? "blank" : "", value === 0 ? "Empty space" : `Tile ${value}`, () => move(i)); if (i === hintIndex) b.classList.add("is-hint"); board.append(b); }); label.textContent = `${t("moves")}: ${history.length}`; }
-    function move(i) { if (!neighbours(i, 4, 4).includes(blank)) { announce(t("failed")); return; } history.push(tiles.slice()); [tiles[i], tiles[blank]] = [tiles[blank], tiles[i]]; blank = i; hintIndex = -1; render(); if (tiles.every((v, index) => v === (index === 15 ? 0 : index + 1))) finish(true, `${t("solved")} · ${t("moves")}: ${history.length}`); else announce(`${t("turn")} · ${t("moves")}: ${history.length}`); }
-    function reset() { tiles = [...Array(15).keys()].map((n) => n + 1).concat(0); blank = 15; history = []; const random = rng(0x1571); let last = -1; for (let n = 0; n < 35; n += 1) { const options = neighbours(blank, 4, 4).filter((i) => i !== last); const next = options[Math.floor(random() * options.length)]; [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]]; last = blank; blank = next; } hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(t("ready")); }
-    function hint() { const target = neighbours(blank, 4, 4).find((i) => tiles[i] !== i + 1); hintIndex = target ?? -1; render(); announce(t("hint")); }
-    return { reset, hint, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous; blank = tiles.indexOf(0); hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
+    const stage = app.currentStage ? slidingStageData(app.currentStage) : null;
+    let tiles = [], blank = 15, lastBlank = -1, history = [], hintIndex = -1;
+    const panel = document.createElement("div"); panel.className = "logic-sliding-panel";
+    const meta = document.createElement("div"); meta.className = "logic-sliding-stage-meta";
+    const stageTitle = document.createElement("strong"); const stageRule = document.createElement("span"); meta.append(stageTitle, stageRule);
+    const board = document.createElement("div"); board.className = "logic-sliding-board"; panel.append(meta, board);
+    const label = document.createElement("div"); label.className = "logic-live"; panel.append(label); app.board.replaceChildren(panel);
+    function solved() { return stage ? tiles.every((value, index) => value === stage.goal[index]) : tiles.every((value, index) => value === (index === 15 ? 0 : index + 1)); }
+    function render() {
+      board.replaceChildren();
+      tiles.forEach((value, i) => {
+        const anchored = stage?.anchorIndex === i;
+        const b = cell(value === 0 ? "" : String(value), `${value === 0 ? "blank" : ""} ${anchored ? "is-anchored" : ""}`, value === 0 ? "Empty space" : `Tile ${value}${anchored ? ", anchored" : ""}`, () => move(i));
+        if (i === hintIndex) b.classList.add("is-hint");
+        if (anchored) b.dataset.anchor = "true";
+        board.append(b);
+      });
+      stageTitle.textContent = stage ? fillTemplate(text(slidingCampaignCopy.stageTitle), { stage: stage.stage, arc: text(stage.arc.title) }) : "";
+      stageRule.textContent = stage ? `${text(slidingCampaignCopy.goal)}: ${text(stage.modeLabel)}${stage.anchorIndex === null ? "" : ` · ${fillTemplate(text(slidingCampaignCopy.anchor), { tile: stage.goal[stage.anchorIndex] })}`}${stage.noBacktrack ? ` · ${text(slidingCampaignCopy.noBacktrack)}` : ""}${stage.checkpoint ? ` · ${text(slidingCampaignCopy.checkpointRule)}` : ""}` : "";
+      label.textContent = `${t("moves")}: ${history.length}${stage ? ` · ${text(slidingCampaignCopy.goal)}: ${text(stage.modeLabel)}` : ""}`;
+    }
+    function move(i) {
+      if (!neighbours(i, 4, 4).includes(blank)) { announce(t("failed")); return; }
+      if (stage?.anchorIndex !== null && stage?.anchorIndex !== undefined && (i === stage.anchorIndex || blank === stage.anchorIndex)) { announce(text(slidingCampaignCopy.noMove)); return; }
+      if (stage?.noBacktrack && i === lastBlank) { announce(text(slidingCampaignCopy.noMove)); return; }
+      history.push({ tiles: tiles.slice(), blank, lastBlank });
+      [tiles[i], tiles[blank]] = [tiles[blank], tiles[i]];
+      lastBlank = blank; blank = i; hintIndex = -1; render();
+      if (solved()) finish(true, `${t("solved")} · ${t("moves")}: ${history.length}`); else announce(`${t("turn")} · ${t("moves")}: ${history.length}`);
+    }
+    function reset() {
+      tiles = stage ? stage.start.slice() : [...Array(15).keys()].map((n) => n + 1).concat(0); blank = tiles.indexOf(0); lastBlank = -1; history = [];
+      if (!stage) { const random = rng(0x1571); for (let n = 0; n < 35; n += 1) { const options = neighbours(blank, 4, 4); const next = options[Math.floor(random() * options.length)]; [tiles[next], tiles[blank]] = [tiles[blank], tiles[next]]; blank = next; } }
+      hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(stage ? fillTemplate(text(slidingCampaignCopy.ready), { stage: stage.stage }) : t("ready"));
+    }
+    function hint() {
+      const target = neighbours(blank, 4, 4).find((i) => tiles[i] !== stage?.goal?.[i] && !(stage?.anchorIndex !== null && stage?.anchorIndex !== undefined && i === stage.anchorIndex) && !(stage?.noBacktrack && i === lastBlank));
+      hintIndex = target ?? -1; render(); announce(stage ? `${t("hint")} · ${text(stage.modeLabel)}` : t("hint"));
+    }
+    return { reset, hint, undo() { const previous = history.pop(); if (!previous) { hintIndex = -1; render(); announce(t("ready")); return; } tiles = previous.tiles; blank = previous.blank; lastBlank = previous.lastBlank; hintIndex = -1; app.result.hidden = true; setChip(t("turn")); render(); announce(`${t("undo")} · ${t("moves")}: ${history.length}`); } };
   }
 
   function buildCode() {
@@ -1040,4 +1162,12 @@
   }
 
   window.WPClassicLogic = { mount, config: CONFIG };
+  window.__Sliding15Campaign = Object.freeze({
+    totalStages: SLIDING_TOTAL_STAGES,
+    stage: (stage) => {
+      const data = slidingStageData(stage);
+      return { stage: data.stage, arc: data.arc.key, mode: data.mode, checkpoint: data.checkpoint, anchorIndex: data.anchorIndex, noBacktrack: data.noBacktrack, goal: data.goal.slice(), start: data.start.slice(), solution: data.solution.slice() };
+    },
+    progress: () => readSlidingProgress(),
+  });
 }());

@@ -22,6 +22,7 @@
 
 /* Interface 6 production shell: Main, Stage, and Battle share one responsive
    envelope while the orchard art remains the game's visual identity. */
+body.wp-shell-main-active #mainScreen #best{display:block!important}
 body.wp-shell-main-active #mainScreen .cover-wrap{background:#142a3d}
 body.wp-shell-main-active #mainScreen .main-poster{object-fit:cover}
 body.wp-shell-main-active #mainScreen .main-progress{color:#d8edf0;font-weight:800}

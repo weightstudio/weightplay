@@ -1349,7 +1349,7 @@ body[data-game-id="mahjong-solitaire"][data-screen="result"] .game-page-info-sta
   body[data-game-id="mahjong-solitaire"][data-screen="battle"] #battleScreen .tile { min-height: 48px; }
 }
 
-/* Pong v6 shares the repaired General shell. Its five-rally runtime remains
+/* Pong v9 shares the repaired General shell. Its five-rally runtime remains
    unchanged while Main and Battle now expose the governed controls and safe
    canvas envelope at every required viewport. */
 body[data-game-id="pong"] .arcade-header.main-header {
