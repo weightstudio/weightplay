@@ -37,7 +37,7 @@
   const saveBest=checks=>{if(bestChecks!==null&&checks>=bestChecks)return false;try{window.localStorage.setItem(BEST_KEY,String(checks));}catch(_error){}bestChecks=checks;return true;};
   const ROUNDS=ROUND_DATA;
   const $=s=>document.querySelector(s); const canvas=$("#costumeCanvas"),ctx=canvas.getContext("2d"); const requestedLocale=new URLSearchParams(location.search).get("lang"); const state={locale:Object.prototype.hasOwnProperty.call(COPY,requestedLocale)?requestedLocale:"en",round:0,selected:"sun",sound:true,done:0,mode:"classic",order:[0,1,2],checks:0};
-  const t=(k)=>COPY[state.locale][k]||COPY.en[k]||k; const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-costume-workshop",game_version:"v3",interface_version:6,...payload});
+  const t=(k)=>COPY[state.locale][k]||COPY.en[k]||k; const track=(name,payload)=>window.WonderAnalytics?.track?.(name,{game_id:"animal-costume-workshop",game_version:"v4",interface_version:6,...payload});
   const currentRound=()=>ROUND_DATA[state.order[state.round]];
   function updateProgress(){$("#mainProgress").textContent=`${t("ready")} · ${t("bestLabel")}: ${bestChecks===null?t("bestNone"):bestChecks}`;}
   function setupReplayUi(){const progress=$("#mainProgress"),actions=progress.parentElement.querySelector(".actions"),picker=document.createElement("div");picker.className="mode-picker actions";picker.innerHTML='<label for="modeSelect" data-copy="modeLabel">Album mode</label><select id="modeSelect" aria-describedby="modeHelp"><option value="classic" data-copy="classic">Classic album</option><option value="shuffle" data-copy="shuffle">Shuffle album</option></select><p id="modeHelp" class="status" data-copy="modeHelp"></p>';actions.insertAdjacentElement("afterend",picker);}

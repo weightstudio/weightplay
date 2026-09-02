@@ -6,7 +6,7 @@ button, select { font:inherit; }
 button { cursor:pointer; }
 button:focus-visible, select:focus-visible, a:focus-visible { outline:3px solid #f3ad49; outline-offset:3px; }
 .screen[hidden], .game-page-info[hidden] { display:none !important; }
-.main-canvas, .stage-canvas, .battle-canvas { width:min(920px,calc(100% - 28px)); margin:0 auto; }
+.main-canvas, .stage-canvas, .battle-canvas { width:min(920px,100%); margin:0 auto; }
 #mainScreen { width:min(920px,100%); margin:0 auto; }
 .stage-canvas, .battle-canvas { width:min(920px,100%); }
 .topbar, .panel-head { min-height:64px; height:64px; display:grid; grid-template-columns:58px minmax(0,1fr) 48px; gap:8px; align-items:center; }
@@ -94,6 +94,15 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .general-reserve { width:min(920px,100%); height:56px; margin:0 auto; pointer-events:none; }
 [dir="rtl"] .settings-head, [dir="rtl"] .setting-row, [dir="rtl"] .mission-row { direction:rtl; }
 body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
+@media (min-width:701px) {
+  .hero-card { grid-template-columns:420px minmax(0,1fr); padding:24px; }
+  .cover-art { width:420px; max-width:420px; }
+  .battle-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:12px; }
+  .battle-content > .mission-row, .battle-content > .rule-note { grid-column:1 / -1; }
+  .clue-card { margin-bottom:0; }
+  .grid-card { min-width:0; }
+  .battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 120px; }
+}
 @media (max-width:700px) {
   .main-canvas, .guide { width:calc(100% - 20px); }
   .topbar { height:88px; min-height:88px; grid-template-rows:48px 32px; }
@@ -102,7 +111,7 @@ body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
   .topbar .shell-return { grid-column:1; }
   .topbar .icon-btn { grid-column:3; }
   .hero-card { grid-template-columns:1fr; min-height:0; padding:25px 20px; }
-  .cover-art { width:min(100%,340px); height:auto; aspect-ratio:1; }
+  .cover-art { width:100%; max-width:none; height:auto; aspect-ratio:1; }
   .hero-copy { text-align:start; }
   h1 { font-size:36px; }
   .guide-grid, .stage-list { grid-template-columns:1fr; }
@@ -127,4 +136,8 @@ body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
   .feedback { min-height:17px; margin:2px 0 4px; font-size:.7rem; }
   .battle-actions .primary-btn, .battle-actions .secondary-btn { min-height:40px; padding:6px 10px; }
   .rule-note { margin-top:4px; font-size:.65rem; }
+}
+@media (min-width:701px) and (max-height:560px) {
+  .hero-card { grid-template-columns:300px minmax(0,1fr); }
+  .cover-art { width:300px; max-width:300px; }
 }

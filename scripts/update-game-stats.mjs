@@ -89,24 +89,40 @@ async function runReport(accessToken, startDate, { eventName = "page_view", game
       },
     });
   }
-  const response = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${accessToken}`,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      dateRanges: [{ startDate, endDate: "today" }],
-      ...(gamePagesOnly ? { dimensions: [{ name: "pagePath" }] } : {}),
-      metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
-      dimensionFilter: {
-        andGroup: { expressions: filters },
+  const pageSize = 100000;
+  const rows = [];
+  let offset = 0;
+  let mergedReport = null;
+
+  while (true) {
+    const response = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        "content-type": "application/json",
       },
-      limit: 250,
-    }),
-  });
-  if (!response.ok) throw new Error(`GA4 report request failed: ${response.status} ${await response.text()}`);
-  return response.json();
+      body: JSON.stringify({
+        dateRanges: [{ startDate, endDate: "today" }],
+        ...(gamePagesOnly ? { dimensions: [{ name: "pagePath" }] } : {}),
+        metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+        dimensionFilter: {
+          andGroup: { expressions: filters },
+        },
+        limit: pageSize,
+        offset,
+      }),
+    });
+    if (!response.ok) throw new Error(`GA4 report request failed: ${response.status} ${await response.text()}`);
+    const page = await response.json();
+    if (!mergedReport) mergedReport = { ...page, rows };
+    const pageRows = Array.isArray(page.rows) ? page.rows : [];
+    rows.push(...pageRows);
+    offset += pageRows.length;
+    const rowCount = Number(page.rowCount || 0);
+    if (pageRows.length === 0 || offset >= rowCount) break;
+  }
+
+  return mergedReport || { rows: [], rowCount: 0 };
 }
 
 function emptyStats(games, source = "pending") {
@@ -131,6 +147,7 @@ function emptyStats(games, source = "pending") {
           playsTotal: 0,
           users7d: 0,
           rank7d: null,
+          rankTotal: null,
         },
       ]),
     ),
@@ -156,6 +173,12 @@ function rankStats(stats) {
     value.rank7d = value.plays7d > 0 ? index + 1 : null;
     stats.games[id] = value;
   });
+  [...ranked]
+    .sort((a, b) => b[1].playsTotal - a[1].playsTotal || b[1].plays7d - a[1].plays7d || a[0].localeCompare(b[0]))
+    .forEach(([id, value], index) => {
+      value.rankTotal = value.playsTotal > 0 ? index + 1 : null;
+      stats.games[id] = value;
+    });
   stats.totals.plays7d = ranked.reduce((sum, [, value]) => sum + value.plays7d, 0);
   stats.totals.playsTotal = ranked.reduce((sum, [, value]) => sum + value.playsTotal, 0);
   stats.totals.users7d = ranked.reduce((sum, [, value]) => sum + value.users7d, 0);

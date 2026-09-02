@@ -16,7 +16,10 @@
     { title: "record3", sequence: ["arc", "star", null, "star", "arc"], correct: "star", options: ["ripple", "arc", "star"] }
   ];
   const $ = (selector) => document.querySelector(selector);
-  const state = { locale: COPY["en"] ? "en" : LOCALES[0], record: 0, solved: 0, selected: null, accepted: false, sound: true, result: false };
+  const initialLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__ && COPY[window.__WEIGHTPLAY_ROUTE_LOCALE__]
+    ? window.__WEIGHTPLAY_ROUTE_LOCALE__
+    : COPY["en"] ? "en" : LOCALES[0];
+  const state = { locale: initialLocale, record: 0, solved: 0, selected: null, accepted: false, sound: true, result: false };
 
   function t(key, values = {}) {
     const copy = COPY[state.locale] || COPY.en || {};
@@ -28,10 +31,11 @@
     const marker = MARKERS[key];
     return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
-  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v1", interface_version: 6, ...payload }); }
+  function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v2", interface_version: 6, ...payload }); }
   function setScreen(name) {
     $("#mainScreen").classList.toggle("active", name === "main");
     $("#battleScreen").classList.toggle("active", name === "battle");
+    document.body.dataset.screen = name;
     const guide = document.querySelector("[data-wp-game-guide]");
     if (guide) guide.hidden = name !== "main";
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -121,7 +125,9 @@
   $("#confirmButton").addEventListener("click", confirm);
   $("#continueButton").addEventListener("click", nextRecord);
   $("#guideButton").addEventListener("click", () => document.querySelector("[data-wp-game-guide]")?.scrollIntoView({ behavior: "smooth", block: "center" }));
-  $("#settingsButton").addEventListener("click", () => { const popover = $("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; $("#settingsButton").setAttribute("aria-expanded", String(open)); });
+  const toggleSettings = () => { const popover = $("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; $("#settingsButton").setAttribute("aria-expanded", String(open)); $("#battleSettingsButton")?.setAttribute("aria-expanded", String(open)); };
+  $("#settingsButton").addEventListener("click", toggleSettings);
+  $("#battleSettingsButton").addEventListener("click", toggleSettings);
   $("#soundButton").addEventListener("click", () => { state.sound = !state.sound; applyCopy(); });
   $("#locale").value = state.locale;
   $("#locale").addEventListener("change", (event) => { state.locale = event.target.value; applyCopy(); });

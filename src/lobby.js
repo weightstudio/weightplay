@@ -653,11 +653,11 @@ function isRecent(gameId) {
 }
 
 function statFor(game) {
-  return gameStats.games?.[game.id] || { plays7d: 0, playsTotal: 0, users7d: 0, rank7d: null };
+  return gameStats.games?.[game.id] || { plays7d: 0, playsTotal: 0, users7d: 0, rank7d: null, rankTotal: null };
 }
 
 function hasRealStats() {
-  return gameStats.source === "ga4" && Number(gameStats.totals?.plays7d || 0) > 0;
+  return gameStats.source === "ga4" && Number(gameStats.totals?.playsTotal || 0) > 0;
 }
 
 function hasStatsFeed() {
@@ -676,7 +676,7 @@ function playCountText(game) {
 
 function rankLabel(game, fallbackRank) {
   const stats = statFor(game);
-  const rank = hasRealStats() && stats.rank7d ? stats.rank7d : fallbackRank;
+  const rank = hasRealStats() && stats.rankTotal ? stats.rankTotal : fallbackRank;
   return i18n.t("stats.rank_label", { rank });
 }
 
@@ -689,7 +689,7 @@ function popularGames(limit = 3) {
     .sort((a, b) => {
       const aStats = statFor(a);
       const bStats = statFor(b);
-      return (bStats.plays7d || 0) - (aStats.plays7d || 0) || (bStats.playsTotal || 0) - (aStats.playsTotal || 0);
+      return (bStats.playsTotal || 0) - (aStats.playsTotal || 0) || (bStats.plays7d || 0) - (aStats.plays7d || 0);
     })
     .slice(0, limit);
 }
@@ -979,8 +979,8 @@ function createGameCard(game) {
   card.dataset.recentIndex = String(recentGameIds.indexOf(game.id));
   card.dataset.internalTrial = !isPlayable && internalTrialPath(game) ? "true" : "false";
   const stats = statFor(game);
-  card.dataset.rank7d = String(stats.rank7d || 9999);
-  card.dataset.plays7d = String(stats.plays7d || 0);
+  card.dataset.rankTotal = String(stats.rankTotal || 9999);
+  card.dataset.playsTotal = String(stats.playsTotal || 0);
 
   if (isPlayable) {
     card.tabIndex = 0;
@@ -1029,7 +1029,8 @@ function createGameCard(game) {
   const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
   const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
-  const popularBadge = hasRealStats() && stats.rank7d && stats.rank7d <= 5 ? `<span class="popular-card-badge">${rankLabel(game, stats.rank7d)}</span>` : "";
+  const lifetimeRank = hasRealStats() ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1 : 0;
+  const popularBadge = lifetimeRank > 0 ? `<span class="popular-card-badge">${rankLabel(game, lifetimeRank)}</span>` : "";
   const updatedBadge = recentlyUpdatedGameIds.has(game.id) ? `<span class="updated-card-badge">${i18n.t("badge.updated")}</span>` : "";
 
   card.innerHTML = `
@@ -1748,7 +1749,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     if (activeLibrary === "recent" && card.dataset.recentIndex !== "-1") {
       card.style.order = card.dataset.recentIndex;
     } else if (isFiltered && hasRealStats()) {
-      card.style.order = String(Number(card.dataset.rank7d || 9999) * 100000 - Number(card.dataset.plays7d || 0));
+      card.style.order = String(1000000000 - Number(card.dataset.playsTotal || 0));
     } else {
       card.style.order = "";
     }
