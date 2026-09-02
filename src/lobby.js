@@ -972,6 +972,7 @@ function createGameCard(game) {
     ...(game.categories || []),
     ...(game.skills || []).map(skillText),
     ...(game.skills || []),
+    ...(Array.isArray(game.searchAliases) ? game.searchAliases : []),
   ].join(" ");
   card.dataset.search = normalizeSearch(card.dataset.search);
   card.dataset.favorite = favorite ? "true" : "false";

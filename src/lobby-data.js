@@ -3937,6 +3937,15 @@ window.WONDER_LOBBY.games.push(
     href: "games/road-crosser/", previewVideo: "assets/previews/road-crosser-battle.webm",
     description: { en: "Read traffic and river timing, then guide the Star Runner through three original crossings.", "zh-Hant": "讀懂車流與河流時機，帶領星行者完成三段原創穿越。", "zh-Hans": "读懂车流与河流时机，带领星行者完成三段原创穿越。", ja: "車と川のタイミングを読み、スターランナーを3つのオリジナル横断へ導きます。", ko: "차량과 강물의 타이밍을 읽고 별 주자를 세 번의 오리지널 횡단으로 이끄세요.", es: "Lee el tráfico y el río para guiar al Corredor Estelar por tres cruces originales.", "pt-BR": "Leia o trânsito e o rio para guiar o Corredor Estelar por três travessias originais.", fr: "Lis le trafic et la rivière pour guider le Coureur Stellaire à travers trois traversées originales.", de: "Lies Verkehr und Flussrhythmus und führe den Sternläufer durch drei originale Querungen.", it: "Leggi traffico e corrente e guida il Corridore Stellare in tre attraversamenti originali.", ru: "Читай ритм машин и реки и проведи Звёздного бегуна через три оригинальных перехода.", hi: "यातायात और नदी की लय समझकर स्टार रनर को तीन मौलिक पारपथों से ले जाएँ।", ar: "اقرأ توقيت السيارات والنهر وقد الشخصية النجمية عبر ثلاث مراحل أصلية." },
     meta: { en: ["Three Crossings", "Traffic + River", "Timing Play"], "zh-Hant": ["三段穿越", "車流與河流", "時機玩法"], "zh-Hans": ["三段穿越", "车流与河流", "时机玩法"], ja: ["3つの横断", "車と川", "タイミング"], ko: ["세 번의 횡단", "차량과 강물", "타이밍"], es: ["Tres cruces", "Tráfico y río", "Ritmo"], "pt-BR": ["Três travessias", "Trânsito e rio", "Ritmo"], fr: ["Trois traversées", "Trafic et rivière", "Timing"], de: ["Drei Querungen", "Verkehr + Fluss", "Timing"], it: ["Tre attraversamenti", "Traffico e fiume", "Tempismo"], ru: ["Три перехода", "Машины и река", "Ритм"], hi: ["तीन पारपथ", "यातायात और नदी", "समय"], ar: ["ثلاث مراحل", "سيارات ونهر", "توقيت"] },
+    searchAliases: [
+      "cross the road", "crossing", "traffic", "river", "safe gap", "timing arcade", "runner",
+      "過馬路", "过马路", "車流", "车流", "河流", "時機", "时机", "安全空隙", "安全间隙", "節奏", "节奏",
+      "道路横断", "交通", "川", "安全な隙間", "タイミング", "길 건너기", "교통", "강", "안전한 틈", "타이밍",
+      "cruzar la calle", "tráfico", "río", "hueco seguro", "ritmo", "atravessar a rua", "trânsito", "rio", "brecha segura",
+      "traverser la route", "trafic", "rivière", "écart sûr", "Straße überqueren", "Verkehr", "Fluss", "sichere Lücke",
+      "attraversare la strada", "traffico", "fiume", "spazio sicuro", "перейти дорогу", "трафик", "река", "безопасный промежуток",
+      "सड़क पार करना", "यातायात", "नदी", "सुरक्षित जगह", "عبور الطريق", "المرور", "النهر", "فجوة آمنة"
+    ],
     art: { kind: "image", background: "assets/road-crosser-cover.webp", hideHero: true },
   },
   {
