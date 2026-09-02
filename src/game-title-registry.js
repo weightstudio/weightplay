@@ -1695,6 +1695,38 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-hollow-fit": {
+    "__localizedExact": true,
+    "en": "Hollow Fit",
+    "zh-Hant": "洞穴拼合",
+    "zh-Hans": "洞穴拼合",
+    "ja": "ほらあなフィット",
+    "ko": "굴맞춤",
+    "es": "Encaje del refugio",
+    "pt-BR": "Encaixe da toca",
+    "fr": "Forme du terrier",
+    "de": "Höhlenpassform",
+    "it": "Forma della tana",
+    "ru": "Подгонка норы",
+    "hi": "बिल की जोड़",
+    "ar": "ملاءمة الجحر"
+  },
+  "animal-petal-pilot": {
+    "__localizedExact": true,
+    "en": "Petal Pilot",
+    "zh-Hant": "花瓣領航",
+    "zh-Hans": "花瓣领航",
+    "ja": "花びらパイロット",
+    "ko": "꽃잎 파일럿",
+    "es": "Piloto de pétalos",
+    "pt-BR": "Piloto de pétalas",
+    "fr": "Pilote de pétales",
+    "de": "Blütenpilot",
+    "it": "Pilota dei petali",
+    "ru": "Пилот лепестков",
+    "hi": "पंखुड़ी पायलट",
+    "ar": "طيار البتلات"
+  },
   "animal-cozy-camp": {
     "__localizedExact": true,
     "en": "Cozy Camp",

@@ -2670,6 +2670,62 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-09-03). Keep Hollow Fit internal while its
+// concept art, exact Tester, Reviewer, release, and publication gates remain open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-hollow-fit",
+    audience: "general",
+    status: "planned",
+    internalOnly: true,
+    title: localize(["Hollow Fit", "洞穴拼合", "洞穴拼合", "ほらあなフィット", "굴맞춤", "Encaje del refugio", "Encaixe da toca", "Forme du terrier", "Höhlenpassform", "Forma della tana", "Подгонка норы", "बिल की जोड़", "ملاءمة الجحر"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Shelter Shape Logic", "棲地形狀邏輯", "栖地形状逻辑", "巣穴形状ロジック", "보금자리 모양 논리", "Lógica de formas", "Lógica de formas", "Logique des formes", "Formlogik", "Logica delle forme", "Логика форм", "आकार तर्क", "منطق الأشكال"]),
+    description: localize(["Read the burrow opening and choose the one shelter piece that fits its shape.", "讀懂洞穴開口，選出唯一符合形狀的棲地拼片。", "读懂洞穴开口，选出唯一符合形状的栖地拼片。", "巣穴の開口を読み、形に合う住みかのピースを一つ選びます。", "굴 입구를 읽고 모양에 맞는 보금자리 조각을 하나 골라요.", "Lee la entrada y elige la única pieza que encaja.", "Leia a abertura e escolha a única peça que encaixa.", "Lis l’ouverture et choisis la seule pièce adaptée.", "Lies die Öffnung und wähle das passende Stück.", "Leggi l’apertura e scegli l’unico pezzo adatto.", "Прочитайте вход и выберите подходящую деталь.", "बिल का आकार पढ़कर सही टुकड़ा चुनें।", "اقرأ فتحة الجحر واختر القطعة الوحيدة المناسبة."]),
+    meta: localize([["3 Shelter Fits", "Shape Reading", "Calm Retry"], ["3 個棲地拼合", "形狀判讀", "平靜重試"], ["3 个栖地拼合", "形状判读", "平静重试"], ["3つの巣穴", "形を読む", "穏やかな再挑戦"], ["보금자리 3개", "모양 읽기", "차분한 재시도"], ["3 refugios", "Leer formas", "Reintento sereno"], ["3 tocas", "Ler formas", "Nova tentativa calma"], ["3 terriers", "Lecture des formes", "Reprise sereine"], ["3 Höhlen", "Formen lesen", "Ruhiger Versuch"], ["3 tane", "Leggere le forme", "Riprova calma"], ["3 норы", "Чтение форм", "Спокойный повтор"], ["3 बिल", "आकार पढ़ना", "शांत पुनः попытка"], ["3 جحور", "قراءة الأشكال", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Spatial Reasoning", "Observation", "Family", "Animal"],
+    skills: ["Shape Reading", "Comparison", "Planning"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-hollow-fit/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-hollow-fit/assets/animal-hollow-fit-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
+// Weighted General prototype (2026-09-03). Keep Petal Pilot internal while
+// its concept art, exact Tester, Reviewer, release, and publication gates remain open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-petal-pilot",
+    audience: "general",
+    status: "planned",
+    internalOnly: true,
+    title: localize(["Petal Pilot", "花瓣領航", "花瓣领航", "花びらパイロット", "꽃잎 파일럿", "Piloto de pétalos", "Piloto de pétalas", "Pilote de pétales", "Blütenpilot", "Pilota dei petali", "Пилот лепестков", "पंखुड़ी पायलट", "طيار البتلات"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Radial Placement Puzzle", "花瓣放置益智", "花瓣放置益智", "花びら配置パズル", "꽃잎 배치 퍼즐", "Puzzle de colocación radial", "Quebra-cabeça de colocação radial", "Puzzle de placement radial", "Radiales Legerätsel", "Puzzle di posizionamento radiale", "Радиальная головоломка", "Радиअल प्लेसमेंट पहेली", "لغز وضع البتلات"]),
+    description: localize(["Place one petal ring so the pollen trail reaches both nectar marks.", "放好一圈花瓣，讓花粉路徑抵達兩個花蜜標記。", "放好一圈花瓣，让花粉路径抵达两个花蜜标记。", "花びらの輪を置き、花粉の道を2つの蜜の印へ届けます。", "꽃잎 고리를 놓아 꽃가루 길이 두 꿀 표시까지 닿게 해요.", "Coloca un aro de pétalos para llevar el polen a dos marcas de néctar.", "Coloque um aro de pétalas para levar o pólen a duas marcas de néctar.", "Place un anneau de pétales pour guider le pollen vers deux marques de nectar.", "Platziere einen Blütenring, damit der Pollen zwei Nektarmarken erreicht.", "Posiziona un anello di petali per portare il polline a due segni di nettare.", "Разместите кольцо лепестков, чтобы пыльца достигла двух отметок нектара.", "पंखुड़ी की अंगूठी रखें ताकि पराग दो अमृत चिह्नों तक पहुँचे।", "ضع حلقة بتلات ليصل مسار اللقاح إلى علامتي الرحيق."]),
+    meta: localize([["3 Bloom Flights", "Radial Reading", "Calm Retry"], ["3 次花朵領航", "放射判讀", "平靜重試"], ["3 次花朵领航", "放射判读", "平静重试"], ["3つの花", "放射を読む", "穏やかな再挑戦"], ["꽃 3개", "방사형 읽기", "차분한 재시도"], ["3 vuelos", "Lectura radial", "Reintento sereno"], ["3 voos", "Leitura radial", "Nova tentativa calma"], ["3 florais", "Lecture radiale", "Reprise sereine"], ["3 Blüten", "Radial lesen", "Ruhiger Versuch"], ["3 fiori", "Lettura radiale", "Riprova calma"], ["3 цветка", "Чтение радиуса", "Спокойный повтор"], ["3 फूल", "रेडियल पढ़ना", "शांत पुनः प्रयास"], ["3 أزهار", "قراءة شعاعية", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Spatial Reasoning", "Observation", "Family", "Animal"],
+    skills: ["Placement", "Visual Planning", "Comparison"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-petal-pilot/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-petal-pilot/assets/animal-petal-pilot-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-09-03). Keep Cozy Camp internal while its
 // concept art, exact Tester, Reviewer, release, and publication gates remain open.
 (() => {
