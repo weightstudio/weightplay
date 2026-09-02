@@ -425,8 +425,9 @@ function updateTimingCoach(locked=false,failed=false){
 
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
 function resolvedAutoplayPhase(){return Boolean(run&&["lift","return"].includes(run.phase))}
-function openModal(id,focus){focusReturn=document.activeElement;$(id).hidden=false;cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
-function closeModal(id,resume=true){$(id).hidden=true;focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
+function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","pauseBtn","dropBtn","restartBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
+function openModal(id,focus){focusReturn=document.activeElement;syncBattleModalState(id,true);$(id).hidden=false;cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
+function closeModal(id,resume=true){$(id).hidden=true;syncBattleModalState(id,false);focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
 function resumeLoop(){if(!run||run.result||screen!=="battle"||activeModal())return;cancelAnimationFrame(raf);last=performance.now();if(resolvedAutoplayPhase())resolvedWallAnchor=last-run.phaseTime*1000;raf=requestAnimationFrame(loop)}
 function loop(time){raf=0;const dt=Math.min(.04,(time-last)/1000||0);last=time;update(dt,time);draw();if(run&&!run.result&&screen==="battle"&&!activeModal())raf=requestAnimationFrame(loop)}
 function resizeCanvas(){const rect=canvas.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);canvas.width=Math.max(1,Math.round(rect.width*d));canvas.height=Math.max(1,Math.round(rect.height*d));canvas.dataset.dpr=d;draw()}

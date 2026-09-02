@@ -5,3 +5,40 @@
 .layer-art-fern{background-position:0 0}.layer-art-pond{background-position:50% 0}.layer-art-moon{background-position:100% 0}.layer-art-reeds{background-position:0 50%}.layer-art-amber{background-position:50% 50%}.layer-art-creek{background-position:100% 50%}.layer-art-owl{background-position:0 100%}.layer-art-frost{background-position:50% 100%}.layer-art-pine{background-position:100% 100%}
 .layer-glyph{font-size:0}.keeper-result{display:block;width:min(180px,52vw);height:180px;object-fit:contain;margin:-16px auto 2px;filter:drop-shadow(0 12px 18px #0008)}
 @media(max-width:699px){.keeper-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.keeper-result{width:150px;height:150px}}
+
+/* Keep the shared guide and Canvas contracts explicit after the art skin. */
+.game-page-info{padding:12px}
+.stage-canvas,.battle-canvas{width:100%;min-height:100%;box-sizing:border-box}
+.stage-canvas{background:linear-gradient(145deg,#132523,#172d3b)}
+.battle-canvas{position:relative;background:linear-gradient(145deg,#132523e8,#172d3bf2)}
+.battle-tools{display:flex;align-items:center;justify-content:flex-end;gap:4px;min-width:0}
+.battle-tools .icon-btn{width:44px;height:44px;min-width:44px;padding:0}
+.battle-canvas{position:relative}
+.battle-content{padding-bottom:88px}
+.battle-actions{position:absolute;z-index:2;left:14px;right:14px;bottom:10px;padding:4px;border-radius:16px;background:linear-gradient(180deg,#13252300,#132523f2 28%)}
+.stage-tabs{display:flex;justify-content:center;margin:0 0 4px}
+.stage-tab{min-width:180px;min-height:48px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);color:var(--gold);font-weight:850;cursor:pointer}
+body[data-wp-game-id="animal-layer-grove"] .wp-standard-main-composition{--wp-main-landscape-poster-size:300px}
+@media(min-width:700px) and (max-height:560px){body[data-wp-game-id="animal-layer-grove"] .wp-standard-main-poster,body[data-wp-game-id="animal-layer-grove"] .wp-standard-main-poster-media,body[data-wp-game-id="animal-layer-grove"] .wp-standard-main-poster-media>img,body[data-wp-game-id="animal-layer-grove"] .wp-standard-main-poster>img{width:300px!important;min-width:300px!important;max-width:300px!important;height:300px!important;min-height:300px!important;max-height:300px!important}}
+@media(max-width:699px){.battle-actions{left:10px;right:10px;bottom:8px}}
+@media(min-width:700px) and (max-height:560px){
+  .battle-canvas{display:grid;grid-template-rows:60px minmax(0,1fr);gap:0}
+  .battle-content{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);grid-template-rows:36px minmax(0,1fr) 50px;gap:6px;max-width:none;min-height:0;margin:0;padding:6px 12px;box-sizing:border-box}
+  .grove-intro{grid-column:1 / -1;grid-row:1;min-height:0;padding:4px 8px;font-size:12px;line-height:1.2;overflow:hidden}
+  .target-card{grid-column:1;grid-row:2;min-height:0;padding:8px;overflow:hidden}
+  .target-window{min-height:100px;margin-top:4px}
+  .target-emblem{width:44px;height:44px;font-size:1.35rem}
+  .target-caption{margin-top:4px;font-size:12px;line-height:1.2}
+  .layer-card{grid-column:2;grid-row:2;min-height:0;padding:8px;overflow:hidden}
+  .layer-heading h3{font-size:14px;line-height:1.15}
+  .layer-heading span{font-size:11px}
+  .layer-list{gap:4px;margin-top:4px}
+  .layer-row{grid-template-columns:minmax(0,1fr) 40px 40px;gap:4px;padding:2px}
+  .layer-glyph{width:32px;height:32px;font-size:1.3rem}
+  .layer-copy{gap:0}
+  .layer-copy strong,.layer-copy small{font-size:12px;line-height:1.15}
+  .order-btn{width:40px;height:40px}
+  .battle-status{grid-column:1;grid-row:3;min-height:0;padding:6px 8px;font-size:12px;line-height:1.2;overflow:hidden}
+  .battle-actions{position:static;grid-column:2;grid-row:3;min-height:0;gap:6px;padding:0;border-radius:0;background:none}
+  .battle-actions :is(.primary-btn,.secondary-btn){min-height:44px;padding:6px 8px;font-size:12px;line-height:1.1}
+}
