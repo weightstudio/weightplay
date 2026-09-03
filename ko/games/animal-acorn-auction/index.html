@@ -29,10 +29,10 @@
   <meta name="weightplay-interface-version" content="6" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260902-acorn-auction-contract-v4" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260902-acorn-auction-contract-v4" />
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260902-acorn-auction-contract-v4" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-acorn-auction-v5-locale-guide" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260902-acorn-auction-contract-v4" />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
-  <link rel="stylesheet" href="style-v3.css?v=20260902-acorn-auction-v4" />
+  <link rel="stylesheet" href="style.css?v=20260903-acorn-auction-v5-locale-guide" />
+  <link rel="stylesheet" href="style-v3.css?v=20260903-acorn-auction-v5-locale-guide" />
   <meta name="description" content="동물의 요청을 읽고 세 도토리 묶음을 비교해 수량과 예산에 맞는 공정한 선택을 하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -62,11 +62,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Planning",
+    "퍼즐",
+    "논리",
+    "계획",
     "가족",
-    "Animal"
+    "동물"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -88,11 +88,11 @@
       <p id="best" class="best main-progress" data-wp-main-progress role="status" aria-live="polite" data-i18n="best">Best careful picks: —</p>
       <div class="main-actions"><button id="startBtn" class="primary" type="button" data-i18n="start">Open the market</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a round</button></div>
     </section>
-    <section class="game-page-info game-page-info-static" aria-label="도토리 경매 게임 정보">
+    <section class="game-page-info game-page-info-static" aria-label="도토리 경매 게임 정보" data-wp-acorn-auction-guide="true">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>도토리 경매</h2><p>동물의 요청을 읽고 세 도토리 묶음을 비교해 수량과 예산에 맞는 공정한 선택을 하세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>수량과 예산 선택 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Planning · 가족 · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>수량과 예산 선택 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>퍼즐 · 논리 · 계획 · 가족 · 동물</strong></div></div>
     </div>
     <div class="game-info-sections">
 
@@ -102,7 +102,7 @@
 
 
 
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에만 저장됩니다.</dd></div></dl></div>
 
     </div>
   </section>
@@ -120,7 +120,7 @@
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><div class="result-art-wrap"><img class="result-art" src="assets/animal-acorn-auction-guide.png" alt="" width="1024" height="1536" /></div><div class="result-icon">◆</div><p class="eyebrow" data-i18n="finished">Market complete</p><h2 id="resultTitle" data-i18n="resultTitle">Every request is ready!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next request</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a round</button></div></section>
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle wp-shell-sound-row" type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <script src="locales.js?v=20260902-acorn-auction-v4"></script><script src="game.js?v=20260902-acorn-auction-v4"></script>
+  <script src="locales.js?v=20260903-acorn-auction-v5-locale-guide"></script><script src="game.js?v=20260903-acorn-auction-v5-locale-guide"></script>
 <script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

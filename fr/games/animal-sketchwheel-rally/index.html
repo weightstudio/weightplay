@@ -23,14 +23,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Rallye de roues à croquis d'animaux",
+  "name": "Rally Animal des Roues Dessinées",
   "url": "https://weightplay.com/fr/games/animal-sketchwheel-rally/",
   "image": "https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp",
   "genre": [
     "Arcade",
-    "Drawing",
-    "Strategy",
-    "Animal",
+    "Dessin",
+    "Stratégie",
+    "Animaux",
     "Browser Game"
   ],
   "playMode": "SinglePlayer",
@@ -38,7 +38,7 @@
   "operatingSystem": "Any",
   "inLanguage": "fr",
   "isAccessibleForFree": true,
-  "description": "Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish...",
+  "description": "Dessinez le profil d’une roue avant chaque terrain, observez l’effet de sa forme mesurée et adaptez la suivante pour que le coureur animal devance son rival.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -58,7 +58,7 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082a25">
   <link rel="icon" href="../../assets/weightplay-logo.png">
-  <title>Rallye de roues à croquis d&#39;animaux | WeightPlay</title>
+  <title>Rally Animal des Roues Dessinées | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css">
   <link rel="stylesheet" href="../../src/loading-screen.css">
@@ -67,16 +67,16 @@
   <script defer src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <meta name="description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+  <meta name="description" content="Dessinez le profil d’une roue avant chaque terrain, observez l’effet de sa forme mesurée et adaptez la suivante pour que le coureur animal devance son rival." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Rallye de roues à croquis d&#39;animaux | WeightPlay" />
-    <meta property="og:description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+    <meta property="og:title" content="Rally Animal des Roues Dessinées | WeightPlay" />
+    <meta property="og:description" content="Dessinez le profil d’une roue avant chaque terrain, observez l’effet de sa forme mesurée et adaptez la suivante pour que le coureur animal devance son rival." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-sketchwheel-rally/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Rallye de roues à croquis d&#39;animaux | WeightPlay" />
-    <meta name="twitter:description" content="Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish..." />
+    <meta name="twitter:title" content="Rally Animal des Roues Dessinées | WeightPlay" />
+    <meta name="twitter:description" content="Dessinez le profil d’une roue avant chaque terrain, observez l’effet de sa forme mesurée et adaptez la suivante pour que le coureur animal devance son rival." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" />
   </head>
 <body data-screen="loading" data-wp-game-id="animal-sketchwheel-rally" data-wp-combined-sound="true">
@@ -84,33 +84,33 @@
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
-      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Illustration du jeu Rallye de roues à croquis d&#39;animaux"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
+      <header class="main-header"><a class="lobby-return" href="/" aria-label="Return to WeightPlay" data-t-aria="lobbyReturn" data-wp-return="main"><span>←</span><img src="../../assets/weightplay-logo.png" alt="Illustration du jeu Rally Animal des Roues Dessinées"></a><strong data-t="title">Animal Sketchwheel Rally</strong><label><span data-t="language">Language</span><select id="localeSelect" aria-label="Language" data-t-aria="language"></select></label></header>
       <section class="main-hero">
         <img class="poster" src="../../assets/animal-sketchwheel-rally/animal-sketchwheel-rally-cover.webp" data-t-alt="posterAlt" alt="Gear Horn Rux sketches rune wheels for a forest race cart">
-        <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">Rallye de roues à croquis d&#39;animaux</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <div class="main-copy"><small data-t="kicker">DRAW-TO-DRIVE RALLY</small><h1 data-t="title">Rally Animal des Roues Dessinées</h1><p data-t="pitch">Draw Rux a wheel that matches the next terrain. Redraw during the live race before Fia reaches the finish.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Informations sur Rallye de roues à croquis d&#39;animaux">
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur Rally Animal des Roues Dessinées">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Rallye de roues à croquis d&#39;animaux</h2><p>Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish before the rival.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Draw-and-Test Wheel Racing</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Drawing · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>2 à 8 minutes par étape</strong></div><div class="game-info-fact"><span>Compétences</span><strong>Shape Design · Adaptation · Observation</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Rally Animal des Roues Dessinées</h2><p>Dessinez le profil d’une roue avant chaque terrain, observez l’effet de sa forme mesurée et adaptez la suivante pour que le coureur animal devance son rival.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Course de roues dessinées et testées</strong></div><div class="game-info-fact"><span>Genre</span><strong>Arcade · Dessin · Stratégie · Animaux</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à commencer, exigeant à maîtriser</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>2 à 8 minutes par rallye</strong></div><div class="game-info-fact"><span>Compétences</span><strong>Conception de formes · Adaptation · Observation</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Monde et mission</h3><p>Thirty rally courses cross flat road, stairs, mud, tunnels, gaps, ice, and wind. The vehicle moves continuously, but its progress depends on whether the current drawn wheel suits the upcoming terrain.</p>
-<p>Each course uses an authored terrain sequence and obstacle position. The objective is not to draw a pretty circle every time; different sections reward different proportions.</p></div>
-      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Draw the wheel in the visible pad with a pointer or finger. The game measures roundness, height, width, grip, and speed from that shape, then mounts it on the moving vehicle.</p>
-<p>Flat road rewards a round balanced wheel. Stairs favor height, mud and ice need grip, tunnels require a low wide profile, gaps need width and speed, and wind rewards a narrow stable shape.</p>
-<p>A profile that suits the current terrain keeps momentum. A poor match slows, slips, collides, or fails the obstacle while the rival continues.</p>
-<p>Workshop upgrades provide modest speed, tolerance, or control support. They do not turn one universal wheel into the correct answer for every terrain.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choose an unlocked rally and read the terrain sequence.</li><li>Draw a closed wheel shape for the first section.</li><li>Watch the wheel rotate and compare the vehicle&#39;s response with the terrain cue.</li><li>Redraw for later sections when the required profile changes, and reach the finish before the rival.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Use a simple deliberate silhouette because tiny decorative bumps reduce the measured profile.</li><li>For stairs, emphasize vertical height; for a tunnel, lower the top while keeping enough width.</li><li>A wide gap wheel can be poor in wind, so redraw instead of forcing one design through both.</li><li>Observe which measured trait failed and adjust only that trait on the next attempt.</li></ul></div>
-      <div class="game-info-section"><h3>Progression et difficulté</h3><p>The first courses isolate flat road and stairs. Later chapters add mud, ice, wind, tunnels, gaps, and mixed courses that require several redraws.</p>
-<p>Thirty authored sequences change terrain order, obstacle spacing, course shape, and rival pace.</p></div>
-      <div class="game-info-section"><h3>Note de conception</h3><p>The wheel is visibly attached to the vehicle, rotates with travel, meets the ground line, and faces the direction of motion. Draw coordinates and rendered shape share one scale on phone and desktop. L&#39;interface complète utilise une seule mise en page logique centrée, avec une largeur maximale de 920 pixels. Les vues mobile, paysage et bureau redimensionnent ensemble les mêmes commandes, zones de contact, illustrations et coordonnées du jeu au lieu d&#39;étirer des éléments individuels. Le tactile, la souris et le clavier agissent donc sur le même état légal. L&#39;affiche de Main et l&#39;action de démarrer le jeu restent séparées de la gestion de Stage, tandis que la sélection de Stage, Battle, les dialogues et Result conservent leur contenu délimité et leur chemin de retour.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Note aux parents</h3><p>No account, purchase, or public leaderboard is required. Clears, bolts, upgrades, lens state, and local best times stay in this browser. Vous pouvez jouer sans créer de compte. La progression est enregistrée dans le stockage local du profil actuel du navigateur, et non dans un compte en ligne ou une base de données entre appareils. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou passer à un autre appareil peut créer une sauvegarde distincte ou supprimer l&#39;existante. Lorsque le navigateur autorise le stockage, les préférences de langue, de son et de réduction des mouvements suivent les contrôles partagés de WeightPlay. Aucun résultat du guide ne constitue une évaluation médicale, scolaire ou professionnelle.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Should every wheel be a circle?</dt><dd>No. Each terrain rewards a different measured profile.</dd></div><div><dt>Can I redraw during a rally?</dt><dd>Yes, the intended play is to adapt before later terrain sections.</dd></div><div><dt>Why did the vehicle slow on stairs?</dt><dd>The current wheel likely lacked enough height or grip.</dd></div><div><dt>Does the rival use my wheel?</dt><dd>No. The rival provides race pressure while your performance comes from the drawn shape.</dd></div><div><dt>Quels contrôles et quelles tailles d’écran sont pris en charge ?</dt><dd>Lorsque le jeu les prend en charge, le tactile, la souris et le clavier suivent les mêmes règles. L’interface s’adapte comme une seule mise en page logique sur les tailles requises pour mobile, paysage et ordinateur.</dd></div><div><dt>Le progrès est-il transféré automatiquement vers un autre appareil ?</dt><dd>Non. Pour le moment, ce jeu enregistre la progression uniquement dans le stockage local du navigateur ; un autre profil de navigateur ou un autre appareil aura donc une progression locale distincte, sauf si un système de comptes est ajouté plus tard.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>Monde et mission</h3><p>30 rallyes traversent route plate, escaliers, boue, tunnels, brèches, glace et vent latéral. Le véhicule avance sans arrêt, mais sa progression dépend de l’adéquation de la roue au terrain suivant.</p>
+<p>Chaque parcours possède un ordre de terrains et des obstacles conçus à la main. Il ne faut pas dessiner un joli cercle à chaque fois, mais choisir les bonnes proportions pour chaque portion.</p></div>
+      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Dessinez la roue dans le panneau visible avec un doigt ou un pointeur. Le jeu mesure rondeur, hauteur, largeur, adhérence et vitesse, puis monte la forme sur le véhicule en mouvement.</p>
+<p>La route plate aime une roue ronde et équilibrée ; les escaliers demandent de la hauteur ; la boue et la glace de l’adhérence ; les tunnels un profil bas et large ; les brèches de la largeur et de la vitesse ; le vent une forme étroite et stable.</p>
+<p>Une forme adaptée conserve l’élan. Une mauvaise association ralentit, fait glisser, provoque un choc ou bloque devant l’obstacle pendant que le rival avance.</p>
+<p>Les améliorations de l’atelier apportent un soutien modéré en vitesse, tolérance ou contrôle, sans créer une roue universelle adaptée à tout.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un rallye débloqué et lisez l’ordre des terrains.</li><li>Dessinez une roue fermée pour la première portion.</li><li>Observez sa rotation et comparez la réaction du véhicule à l’indice du terrain.</li><li>Redessinez lorsque le besoin change et atteignez l’arrivée avant le rival.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Préférez une silhouette simple et volontaire : les petites bosses décoratives rendent le profil mesuré instable.</li><li>Dans les escaliers, augmentez la hauteur ; dans un tunnel, baissez le sommet en gardant assez de largeur.</li><li>Une roue large pour une brèche peut être mauvaise dans le vent : ne forcez pas le même dessin partout.</li><li>Repérez la caractéristique mesurée qui a échoué et ne modifiez qu’elle au prochain essai.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les premiers rallyes isolent route plate et escaliers. Les chapitres suivants ajoutent boue, glace, vent, tunnels, brèches et parcours mixtes demandant plusieurs dessins.</p>
+<p>Les 30 parcours changent l’ordre des terrains, l’espacement des obstacles, la forme de la route et la vitesse du rival.</p></div>
+      <div class="game-info-section"><h3>Note de conception</h3><p>La roue est visiblement attachée au véhicule, tourne pendant la course, touche la ligne du sol et fait face au mouvement. Téléphone et ordinateur partagent les mêmes coordonnées et la même échelle de dessin.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Note aux parents</h3><p>Aucun compte, achat ou classement public n’est nécessaire. Victoires, boulons, améliorations, état de la lentille et meilleurs temps locaux restent dans ce navigateur.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Chaque roue doit-elle être un cercle ?</dt><dd>Non. Chaque terrain favorise un profil mesuré différent.</dd></div><div><dt>Puis-je redessiner pendant un rallye ?</dt><dd>Oui. S’adapter avant les terrains suivants est le principe du jeu.</dd></div><div><dt>Pourquoi le véhicule a-t-il ralenti dans les escaliers ?</dt><dd>La roue actuelle manquait probablement de hauteur ou d’adhérence.</dd></div><div><dt>Le rival utilise-t-il ma roue ?</dt><dd>Non. Le rival crée la pression de la course ; votre performance vient de votre dessin.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Jeux associés</h3><p>Pour continuer à exercer Conception de formes, essayez aussi :</p><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-prism-breakers/"><img src="/assets/animal-prism-breakers/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rally Animal des Roues Dessinées</strong><span>Déplacez la raquette sous chaque orbe lumineux, contrôlez l’angle avec le point de contact et cassez tous les cristaux cassables avant de perdre les trois orbes.</span></span></a><a class="game-info-related-card" href="/fr/games/animal-bounce-brawl/"><img src="/assets/animal-bounce-brawl-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Baston rebondissant</strong><span>Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.</span></span></a></div></div>
     </div>
   </section>
   </div>
