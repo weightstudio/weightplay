@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
-
+    <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"ja";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-dawn-shutters/" />
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-dawn-shutters/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
@@ -20,15 +20,15 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-game-id" content="animal-dawn-shutters">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="動物の窓を正しい朝の明るさに合わせ、静かな部屋を開こう。" />
   <title>ドーン・シャッター | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260830-dawn-shutters-v2-art1">
+  <link rel="stylesheet" href="style.css?v=20260903-dawn-shutters-v3-depth">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-dawn-shutters-v3-depth">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ドーン・シャッター | WeightPlay" />
@@ -71,47 +71,33 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v2" data-screen="main">
+<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v3" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <header class="topbar main-header">
-        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">Dawn Shutters</strong>
-        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">Settings</span></button></div>
+        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="WeightPlayへ戻る" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
+        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">ドーン・シャッター</strong>
+        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">設定</span></button></div>
       </header>
       <div class="main-content">
         <img class="cover-art main-cover" src="assets/animal-dawn-shutters-cover-v2.png" alt="" aria-hidden="true" draggable="false">
         <div class="main-copy">
-          <p class="eyebrow" data-copy="kicker">Moss Shell Taro's dawn room</p>
+          <p class="eyebrow" data-copy="kicker">モスシェル・タロの朝の部屋</p>
           <h1 data-copy="title">ドーン・シャッター</h1>
-          <p class="lede" data-copy="intro">Tune three shutters until the room catches the requested dawn glow.</p>
-          <p id="mainSummary" class="main-summary" data-copy="summary">Tune each shutter to match the requested glow.</p>
+          <p class="lede" data-copy="intro">3つの窓を調整して、指定された朝の光に合わせます。</p>
+          <p id="mainSummary" class="main-summary" data-copy="summary">6つの朝の弧、30の静かな部屋。一度にひとつの光を決めます。</p>
           <p id="mainProgress" class="main-progress" role="status" aria-live="polite"></p>
-          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a room</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">部屋を始める</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">朝のマップ</button></div>
         </div>
       </div>
-      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div><label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
+      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">設定</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">閉じる</button></div><label class="setting-row"><span data-copy="language">言語</span><select id="languageSelect" data-copy-aria-label="言語" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="ドーン・シャッター ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ドーン・シャッター</h2><p>動物の窓を正しい朝の明るさに合わせ、静かな部屋を開こう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>光量調整パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Calibration · Visual Reasoning · 家族 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="stages">Dawn map</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="help">i</button></header><p class="panel-intro" data-copy="mapIntro">Each room adds one more light decision.</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">A wrong try stays visible, so adjust calmly and try again.</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Dawn map</button><span aria-hidden="true"></span></nav></div></section>
-    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">DAWN ROOM</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">Requested glow</span><div id="targetBars" class="light-bars" aria-label="Target light"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">Tap each shutter to cycle its light level. There is no timer.</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the room</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset shutters</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">ROOM RESULT</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-runtime-localize="off" data-copy-aria="guideAria" aria-label="ドーン・シャッターのゲーム情報">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="gameInfoKicker">WeightPlay オリジナルゲームガイド</span><h2 id="guideHeading" data-copy="title">ドーン・シャッター</h2><p data-copy="guideSummary">指定の光を読み、3つの独立した窓を調整し、6つの5部屋の朝の弧を進みます。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="gameplayFact">ゲームプレイ</span><strong data-copy="gameplayValue">光の調整</strong></div><div class="game-info-fact"><span data-copy="genreFact">ジャンル</span><strong data-copy="genreValue">パズル・視覚推理・ファミリー・動物</strong></div></div></div>
+      <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">遊び方</h3><ol><li data-copy="guideOne">目標の光バーと3つの窓を比べます。</li><li data-copy="guideTwo">窓をタップして閉じる、すき間、開くを切り替えます。</li><li data-copy="guideThree">間違えた結果も残るので、落ち着いて調整できます。</li></ol></article><article class="game-info-section"><h3 data-copy="resultGuideTitle">結果と保存</h3><p data-copy="resultGuide">6つの5部屋の弧で30部屋のキャンペーンを構成します。完了した部屋は次を開き、再プレイできます。進行状況と最少タップ数はこのブラウザだけに保存されます。</p></article><article class="game-info-section"><h3 data-copy="tipsTitle">ヒント</h3><p data-copy="tips">左から右へ3本の光を読みます。各窓は閉じる、すき間、開くを循環し、間違った確認でも試した光は隠れません。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">よくある質問</h3><p data-copy="faqProgress">進行状況は保存されますか？はい。完了した部屋と最少タップ数は、このブラウザでのみ保存されます。</p></article></div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>ステージは何段階まで含まれていますか?</dt><dd>ルールの 6 章にわたって 30 の作成されたステージがあります。ステージ 30 は完了後もリプレイ可能です。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">戻る</button><h2 data-copy="stages">朝のマップ</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="朝のマップの説明">i</button></header><p class="panel-intro" data-copy="mapIntro">6つの朝の弧は、単純な対比から混合パターンへ進みます。部屋を終えると次が開きます。</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">間違えた結果も残るので、落ち着いて調整できます。</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" data-copy-aria-label="朝のマップ" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">朝のマップ</button><span aria-hidden="true"></span></nav></div></section>
+    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">戻る</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="サウンド">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">朝の部屋</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">指定の光</span><div id="targetBars" class="light-bars" data-copy-aria-label="指定の光" aria-label="Requested glow"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" data-copy-aria-label="朝の窓" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">各窓をタップして光量を切り替えます。タイマーはありません。</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">部屋を確認</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">窓をリセット</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">部屋の結果</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">朝のマップ</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">最初へ</button></div></div></div></div></section>
     <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </div>
@@ -119,7 +105,7 @@
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script>
-  <script src="locales.js?v=20260902-dawn-shutters-v2-locale2"></script><script src="game.js?v=20260902-dawn-shutters-v2-locale2"></script>
+  <script src="locales.js?v=20260903-dawn-shutters-v3-depth"></script><script src="game.js?v=20260903-dawn-shutters-v3-depth"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ドーン・シャッター";document.title="ドーン・シャッター | WeightPlay";},{once:true});</script>
 </body>
 </html>

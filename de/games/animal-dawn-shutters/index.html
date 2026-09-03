@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="de">
 <head>
-
+    <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"de";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-dawn-shutters/" />
     <link rel="canonical" href="https://weightplay.com/de/games/animal-dawn-shutters/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
@@ -20,15 +20,15 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-game-id" content="animal-dawn-shutters">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="Stelle jeden Laden auf das richtige Morgenlicht und öffne den ruhigen Raum." />
   <title>Morgenlicht-Läden | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260830-dawn-shutters-v2-art1">
+  <link rel="stylesheet" href="style.css?v=20260903-dawn-shutters-v3-depth">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-dawn-shutters-v3-depth">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Morgenlicht-Läden | WeightPlay" />
@@ -71,53 +71,39 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v2" data-screen="main">
+<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v3" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <header class="topbar main-header">
-        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">Dawn Shutters</strong>
-        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">Settings</span></button></div>
+        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="Zurück zu WeightPlay" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
+        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">Morgenlicht-Läden</strong>
+        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">Einstellungen</span></button></div>
       </header>
       <div class="main-content">
         <img class="cover-art main-cover" src="assets/animal-dawn-shutters-cover-v2.png" alt="" aria-hidden="true" draggable="false">
         <div class="main-copy">
-          <p class="eyebrow" data-copy="kicker">Moss Shell Taro's dawn room</p>
+          <p class="eyebrow" data-copy="kicker">Taros Morgenlicht-Raum</p>
           <h1 data-copy="title">Morgenlicht-Läden</h1>
-          <p class="lede" data-copy="intro">Tune three shutters until the room catches the requested dawn glow.</p>
-          <p id="mainSummary" class="main-summary" data-copy="summary">Tune each shutter to match the requested glow.</p>
+          <p class="lede" data-copy="intro">Stelle drei Läden auf das gewünschte Morgenlicht ein.</p>
+          <p id="mainSummary" class="main-summary" data-copy="summary">Sechs Morgenlicht-Bögen, dreißig ruhige Räume, eine Lichtentscheidung nach der anderen.</p>
           <p id="mainProgress" class="main-progress" role="status" aria-live="polite"></p>
-          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a room</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Raum beginnen</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Morgenkarte</button></div>
         </div>
       </div>
-      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div><label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
+      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Einstellungen</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Schließen</button></div><label class="setting-row"><span data-copy="language">Sprache</span><select id="languageSelect" data-copy-aria-label="Sprache" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Morgenlicht-Läden">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Morgenlicht-Läden</h2><p>Stelle jeden Laden auf das richtige Morgenlicht und öffne den ruhigen Raum.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Lichtkalibrier-Puzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Calibration · Visual Reasoning · Familie · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="stages">Dawn map</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="help">i</button></header><p class="panel-intro" data-copy="mapIntro">Each room adds one more light decision.</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">A wrong try stays visible, so adjust calmly and try again.</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Dawn map</button><span aria-hidden="true"></span></nav></div></section>
-    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">DAWN ROOM</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">Requested glow</span><div id="targetBars" class="light-bars" aria-label="Target light"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">Tap each shutter to cycle its light level. There is no timer.</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the room</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset shutters</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">ROOM RESULT</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-runtime-localize="off" data-copy-aria="guideAria" aria-label="Spielinformationen zu Morgenlicht-Läden">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="gameInfoKicker">Originaler WeightPlay-Spielguide</span><h2 id="guideHeading" data-copy="title">Morgenlicht-Läden</h2><p data-copy="guideSummary">Lies das gewünschte Licht, stelle drei unabhängige Läden ein und spiele sechs Bögen mit je fünf Räumen.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="gameplayFact">Spielweise</span><strong data-copy="gameplayValue">Lichtkalibrierung</strong></div><div class="game-info-fact"><span data-copy="genreFact">Genre</span><strong data-copy="genreValue">Puzzle · Visuelles Denken · Familie · Tier</strong></div></div></div>
+      <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">So wird gespielt</h3><ol><li data-copy="guideOne">Vergleiche die Zielllichtbalken mit den drei Läden.</li><li data-copy="guideTwo">Tippe auf einen Laden, um zwischen geschlossen, Spalt und offen zu wechseln.</li><li data-copy="guideThree">Ein falscher Versuch bleibt sichtbar, damit du ruhig nachjustieren kannst.</li></ol></article><article class="game-info-section"><h3 data-copy="resultGuideTitle">Ergebnisse und Speichern</h3><p data-copy="resultGuide">Sechs Bögen mit je fünf Räumen bilden eine Kampagne aus 30 Räumen. Abgeschlossene Räume öffnen den nächsten und bleiben wiederholbar; der Fortschritt bleibt in diesem Browser.</p></article><article class="game-info-section"><h3 data-copy="tipsTitle">Tipps</h3><p data-copy="tips">Lies die drei Balken von links nach rechts. Jeder Laden wechselt zwischen drei Stufen, und ein falscher Check verbirgt niemals die Einstellung.</p></article><article class="game-info-section"><h3 data-copy="faqTitle">FAQ</h3><p data-copy="faqProgress">Wird der Fortschritt gespeichert? Ja. Abgeschlossene Räume und das beste Ergebnis werden nur in diesem Browser gespeichert.</p></article></div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Wie viele Etappen sind enthalten?</dt><dd>Es gibt 30 verfasste Phasen in sechs Regelkapiteln. Stufe 30 bleibt nach Abschluss wiederspielbar.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">Zurück</button><h2 data-copy="stages">Morgenkarte</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="Hilfe zur Morgenkarte">i</button></header><p class="panel-intro" data-copy="mapIntro">Sechs Bögen führen von einfachen Kontrasten zu gemischten Lichtmustern. Schließe einen Raum ab, um den nächsten zu öffnen.</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">Ein falscher Versuch bleibt sichtbar, damit du ruhig nachjustieren kannst.</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" data-copy-aria-label="Morgenkarte" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Morgenkarte</button><span aria-hidden="true"></span></nav></div></section>
+    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">Zurück</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="Ton">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">MORGENLICHT-RAUM</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">Gewünschtes Licht</span><div id="targetBars" class="light-bars" data-copy-aria-label="Gewünschtes Licht" aria-label="Requested glow"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" data-copy-aria-label="Morgenlicht-Läden" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">Tippe auf jeden Laden, um seine Lichtstufe zu ändern. Es gibt keinen Timer.</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Raum prüfen</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Läden zurücksetzen</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">RAUMERGEBNIS</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Morgenkarte</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Zum Start</button></div></div></div></div></section>
     <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script>
-  <script src="locales.js?v=20260902-dawn-shutters-v2-locale2"></script><script src="game.js?v=20260902-dawn-shutters-v2-locale2"></script>
+  <script src="locales.js?v=20260903-dawn-shutters-v3-depth"></script><script src="game.js?v=20260903-dawn-shutters-v3-depth"></script>
 </body>
 </html>

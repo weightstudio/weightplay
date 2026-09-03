@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="ko">
 <head>
-
+    <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"ko";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-canopy-compass/" />
-
-    <link rel="canonical" href="https://weightplay.com/ko/games/animal-canopy-compass/" />
+  <link rel="canonical" href="https://weightplay.com/ko/games/animal-canopy-compass/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-canopy-compass/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-canopy-compass/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-canopy-compass/" />
@@ -22,11 +21,14 @@
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
-  <meta name="weightplay-game-version" content="v2">
-  <meta name="description" content="단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요." />
+  <meta name="theme-color" content="#eef4f0">
+  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-interface-version" content="6">
   <title>숲관 나침반 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20260903-canopy-compass-v4-interface-repair">
+  <link rel="stylesheet" href="style.css?v=20260903-canopy-compass-v4-interface-repair">
+  <meta name="description" content="단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요." />
+    <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="숲관 나침반 | WeightPlay" />
     <meta property="og:description" content="단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요." />
@@ -41,6 +43,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "숲관 나침반",
+  "alternateName": "Canopy Compass",
   "url": "https://weightplay.com/ko/games/animal-canopy-compass/",
   "image": "https://weightplay.com/games/animal-canopy-compass/assets/animal-canopy-compass-cover.svg",
   "description": "단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요.",
@@ -57,34 +60,46 @@
     "Orientation",
     "Logic",
     "가족",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Canopy Compass"
+  }
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-canopy-compass" data-wp-game-version="v2" data-screen="main">
-  <div id="app">
-    <main id="mainScreen" class="screen" data-wp-standard-main-screen>
-      <div class="canvas">
-        <header class="topbar"><span class="eyebrow" data-copy="kicker">Moon Cap Orla's canopy station</span><button id="settingsBtn" class="icon" type="button" aria-expanded="false" aria-controls="settings" data-copy-aria-label="settings">⚙</button></header>
-        <section class="hero"><div class="hero-art" aria-hidden="true"><span>✦</span><b>◒</b><i>⌖</i></div><div><h1 data-copy="title">숲관 나침반</h1><p class="intro" data-copy="intro">Turn each lookout toward the safe breeze and guide the night animals home.</p><p id="progress" class="progress" role="status" aria-live="polite"></p><div class="actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-copy="start">Start a route</button><button id="mapBtn" class="secondary" type="button" data-copy="map">Canopy map</button></div></div></section>
-        <section class="guide"><h2 data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guide1Title">1. Read the clues</b><p data-copy="guide1">Use the sun and wind notes to find the safe facing.</p></article><article><b data-copy="guide2Title">2. Turn the compass</b><p data-copy="guide2">Tap the dial until its arrow points to the clue.</p></article><article><b data-copy="guide3Title">3. Check the perch</b><p data-copy="guide3">A gentle miss stays visible so you can adjust.</p></article></div></section>
-        <section id="settings" class="settings" hidden aria-labelledby="settingsTitle"><div class="settings-head"><h2 id="settingsTitle" data-copy="settings">Settings</h2><button id="closeSettings" class="text" type="button" data-copy="close">Close</button></div><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Choose a language"></select></label><button id="soundBtn" class="secondary wide" type="button" aria-pressed="true"></button></section>
+<body data-audience="general" data-wp-game-id="animal-canopy-compass" data-wp-game-version="v4" data-wp-interface-version="6" data-screen="main" data-runtime-localize="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Opening the canopy route…</strong></div></section>
+
+  <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen hidden>
+    <header class="topbar wp-main-shell-header">
+      <a class="wp-shell-return return-link" href="/index.html" data-wp-return="main" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="" width="38" height="38"></a>
+      <strong class="wp-shell-main-title" data-copy="title">Canopy Compass</strong>
+      <div class="utilities">
+        <button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
+        <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" aria-label="Settings" hidden>
+          <strong data-copy="settings">Settings</strong>
+          <button id="soundBtn" class="setting-row wp-shell-sound-row" type="button" data-sound-toggle aria-pressed="true" data-copy="soundOn">Sound: on</button>
+          <label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        </div>
       </div>
-    </main>
-    <section id="stageScreen" class="screen" hidden><div class="canvas panel"><header class="panel-head"><button id="stageBack" class="text" type="button" data-copy="back">Back</button><h2 data-copy="map">Canopy map</h2><button id="stageHelp" class="icon" type="button" data-copy-aria-label="help">i</button></header><p class="panel-intro" data-copy="mapIntro">Each lookout adds one more direction decision.</p><div id="stageList" class="stage-list"></div><div class="reserve" aria-hidden="true"></div></div></section>
-    <section id="battleScreen" class="screen" hidden><div class="canvas panel"><header class="panel-head"><button id="battleBack" class="text" type="button" data-copy="back">Back</button><h2 id="roundTitle"></h2><button id="battleSound" class="icon" type="button" aria-pressed="true">♫</button></header><div class="mission"><div><span class="eyebrow" data-copy="routeKicker">CANOPY ROUTE</span><p id="hint" class="panel-intro"></p></div><span id="badge" class="badge"></span></div><div class="clue-card"><strong data-copy="clueTitle">Lookout clues</strong><p id="clueText"></p></div><div class="compass-wrap"><div id="compass" class="compass" tabindex="0" aria-label="Compass dial"><span class="north">N</span><span class="east">E</span><span class="south">S</span><span class="west">W</span><b id="needle">▲</b></div><p id="facing" class="facing"></p></div><div id="directionRack" class="direction-rack"></div><p class="keyboard-hint" data-copy="keyboardHint">Keyboard: use the arrow keys to choose a facing.</p><p id="status" class="feedback" role="status" aria-live="polite"></p><div class="actions"><button id="checkBtn" class="primary" type="button" data-wp-primary-action data-copy="check">Check the perch</button><button id="resetBtn" class="secondary" type="button" data-copy="reset">Reset direction</button></div><div id="result" class="result" hidden><p class="eyebrow" data-copy="resultKicker">ROUTE RESULT</p><h2 id="resultTitle"></h2><p id="resultText"></p><div id="stats" class="stats"></div><div class="actions"><button id="resultPrimary" class="primary" type="button"></button><button id="resultMap" class="secondary" type="button" data-copy="map">Canopy map</button><button id="resultHome" class="text" type="button" data-copy="home">Back to start</button></div></div><div class="reserve" aria-hidden="true"></div></div></section>
-  </div>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260901-canopy-compass-v2-keyboard"></script><script src="game.js?v=20260901-canopy-compass-v2-keyboard"></script>
-<section class="game-page-info game-page-info-static" aria-label="숲관 나침반 게임 정보">
+    </header>
+    <section class="main-hero hero-grid">
+      <div class="main-poster-frame cover-wrap"><img class="main-poster cover" src="assets/animal-canopy-compass-cover.png" alt="" aria-hidden="true" width="1254" height="1254" decoding="async"></div>
+      <div class="hero-copy main-copy">
+        <p class="kicker" data-copy="kicker">Moon Cap Orla's canopy station</p>
+        <h1 class="hero-title" data-copy="title">숲관 나침반</h1>
+        <p class="intro" data-copy="intro">Turn each lookout toward the safe breeze and guide the night animals home.</p>
+        <p class="summary wp-standard-main-summary" data-copy="summary">Read two clues, choose a facing, and align three quiet lookouts.</p>
+        <p id="progress" class="progress wp-standard-main-progress" data-wp-main-progress role="status" aria-live="polite" data-copy="progress">Progress: 0/3 lookouts · no timer</p>
+        <div class="hero-actions"><button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-copy="start">Start a route</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Canopy map</button></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="game-page-info game-page-info-static" aria-label="숲관 나침반 게임 정보">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>숲관 나침반</h2><p>단서를 읽고 나침반을 돌려 밤 동물의 안전한 전망대 세 곳을 맞춰요.</p></div>
@@ -102,7 +117,28 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+
+  <section id="stageScreen" class="screen panel-screen stage-screen" data-screen="stage" hidden aria-labelledby="stageHeading">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-canopy-compass/assets/animal-canopy-compass-cover.png')">
+      <header class="panel-head"><button id="stageBack" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 id="stageHeading" data-copy="map">Canopy map</h2><button id="stageHelp" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-label="Route help" title="Route help">i</button></header>
+      <p class="panel-intro" data-copy="mapIntro">Each lookout adds one more direction decision.</p>
+      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="list"></div>
+      <nav class="stage-tabs" data-copy-aria-label="stageSections" aria-label="Lookout sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="map">Canopy map</button><span aria-hidden="true"></span></nav>
+    </div>
+    <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+  </section>
+
+  <section id="battleScreen" class="screen panel-screen battle-screen" data-screen="battle" hidden aria-labelledby="battleHeading">
+    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('/games/animal-canopy-compass/assets/animal-canopy-compass-background.png')">
+      <header class="panel-head"><button id="battleBack" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><div><h2 id="battleHeading">Canopy Compass</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span id="badge" class="check-pill" aria-live="polite"></span><button id="battleSound" class="icon-btn panel-utility" type="button" data-wp-battle-utility aria-pressed="true" aria-label="Sound">♫</button></div></header>
+      <div class="battle-content"><div class="mission"><div><p class="eyebrow" data-copy="routeKicker">CANOPY ROUTE</p><p id="hint" class="battle-hint"></p></div></div><div class="clue-card"><strong data-copy="clueTitle">Lookout clues</strong><p id="clueText"></p></div><div class="compass-wrap"><div id="compass" class="compass" tabindex="0" aria-label="Compass dial" aria-describedby="clueText keyboardHint"><span class="north">N</span><span class="east">E</span><span class="south">S</span><span class="west">W</span><b id="needle" aria-hidden="true">▲</b></div><p id="facing" class="facing"></p></div><div id="directionRack" class="direction-rack" role="group" aria-label="Direction choices"></div><p id="keyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use Arrow keys to choose a facing, then press Enter or Space to check.</p><p id="status" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the perch</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset direction</button><button id="battleMap" class="text-btn" type="button" data-copy="map">Canopy map</button></div><div id="result" class="result-panel" data-wp-result-audit role="dialog" aria-modal="true" aria-describedby="resultText stats" hidden><div class="result-identity"><img src="assets/animal-canopy-compass-orla-guide.png" alt="" aria-hidden="true" width="1024" height="1536"></div><p class="eyebrow" data-copy="resultKicker">ROUTE RESULT</p><h2 id="resultTitle"></h2><p id="resultText"></p><div id="stats" class="stats"></div><div class="result-actions"><button id="resultPrimary" class="primary-btn" type="button"></button><button id="resultMap" class="secondary-btn" type="button" data-copy="map">Canopy map</button><button id="resultHome" class="text-btn" type="button" data-copy="home">Back to start</button></div></div></div>
+    </div>
+    <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <script src="locales.js?v=20260903-canopy-compass-v4-interface-repair"></script><script src="game.js?v=20260903-canopy-compass-v4-interface-repair"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
-
+    <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"ko";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-dawn-shutters/" />
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-dawn-shutters/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
@@ -20,15 +20,15 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-dawn-shutters/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-game-id" content="animal-dawn-shutters">
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="6">
   <meta name="description" content="동물 창문의 새벽빛을 맞춰 조용한 방을 열어요." />
   <title>새벽 셔터 | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260830-dawn-shutters-v2-art1">
+  <link rel="stylesheet" href="style.css?v=20260903-dawn-shutters-v3-depth">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-dawn-shutters-v3-depth">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="새벽 셔터 | WeightPlay" />
@@ -71,53 +71,39 @@
 }
     </script>
   </head>
-<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v2" data-screen="main">
+<body data-audience="general" data-wp-audience="general" data-runtime-localize="off" data-wp-game-id="animal-dawn-shutters" data-wp-game-version="v3" data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <header class="topbar main-header">
-        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
-        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">Dawn Shutters</strong>
-        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">Settings</span></button></div>
+        <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="WeightPlay로 돌아가기" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
+        <strong class="wp-shell-main-title" id="main-header-title" data-copy="title">새벽 셔터</strong>
+        <div class="topbar-actions"><button id="mainSettingsBtn" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel">⚙ <span data-copy="settings">설정</span></button></div>
       </header>
       <div class="main-content">
         <img class="cover-art main-cover" src="assets/animal-dawn-shutters-cover-v2.png" alt="" aria-hidden="true" draggable="false">
         <div class="main-copy">
-          <p class="eyebrow" data-copy="kicker">Moss Shell Taro's dawn room</p>
+          <p class="eyebrow" data-copy="kicker">모스 셸 타로의 새벽 방</p>
           <h1 data-copy="title">새벽 셔터</h1>
-          <p class="lede" data-copy="intro">Tune three shutters until the room catches the requested dawn glow.</p>
-          <p id="mainSummary" class="main-summary" data-copy="summary">Tune each shutter to match the requested glow.</p>
+          <p class="lede" data-copy="intro">세 셔터를 조절해 방을 알맞은 새벽빛으로 맞춰요.</p>
+          <p id="mainSummary" class="main-summary" data-copy="summary">여섯 새벽 호, 서른 개의 조용한 방. 한 번에 하나의 빛을 결정해요.</p>
           <p id="mainProgress" class="main-progress" role="status" aria-live="polite"></p>
-          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a room</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button></div>
+          <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">방 시작</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">새벽 지도</button></div>
         </div>
       </div>
-      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div><label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
+      <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading"><div class="settings-head"><h2 id="settingsHeading" data-copy="settings">설정</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">닫기</button></div><label class="setting-row"><span data-copy="language">언어</span><select id="languageSelect" data-copy-aria-label="언어" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label><button id="soundBtn" class="secondary-btn setting-sound" data-sound-toggle type="button" aria-pressed="true"></button></section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="새벽 셔터 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>새벽 셔터</h2><p>동물 창문의 새벽빛을 맞춰 조용한 방을 열어요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>빛 조절 퍼즐</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Calibration · Visual Reasoning · 가족 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="stages">Dawn map</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="help">i</button></header><p class="panel-intro" data-copy="mapIntro">Each room adds one more light decision.</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">A wrong try stays visible, so adjust calmly and try again.</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Dawn map</button><span aria-hidden="true"></span></nav></div></section>
-    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">DAWN ROOM</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">Requested glow</span><div id="targetBars" class="light-bars" aria-label="Target light"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">Tap each shutter to cycle its light level. There is no timer.</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the room</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset shutters</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">ROOM RESULT</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Dawn map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div></div></div></section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-screen="main" data-wp-game-guide data-runtime-localize="off" data-copy-aria="guideAria" aria-label="새벽 셔터 게임 정보">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="gameInfoKicker">WeightPlay 오리지널 게임 가이드</span><h2 id="guideHeading" data-copy="title">새벽 셔터</h2><p data-copy="guideSummary">요청된 빛을 읽고 세 개의 독립 셔터를 조절하며 여섯 개의 다섯 방 새벽 호를 진행해요.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="gameplayFact">게임플레이</span><strong data-copy="gameplayValue">빛 조절</strong></div><div class="game-info-fact"><span data-copy="genreFact">장르</span><strong data-copy="genreValue">퍼즐 · 시각 추리 · 가족 · 동물</strong></div></div></div>
+      <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">게임 방법</h3><ol><li data-copy="guideOne">목표 빛 막대와 세 셔터를 비교해요.</li><li data-copy="guideTwo">셔터를 눌러 닫힘, 틈, 열림을 순환해요.</li><li data-copy="guideThree">틀린 시도도 남아 있으니 천천히 다시 조절할 수 있어요.</li></ol></article><article class="game-info-section"><h3 data-copy="resultGuideTitle">결과와 저장</h3><p data-copy="resultGuide">여섯 개의 다섯 방 호가 30방 캠페인을 이뤄요. 완료한 방은 다음 방을 열고 다시 플레이할 수 있어요. 진행과 최소 탭 수는 이 브라우저에만 저장돼요.</p></article><article class="game-info-section"><h3 data-copy="tipsTitle">팁</h3><p data-copy="tips">왼쪽부터 세 빛을 읽어요. 각 셔터는 닫힘, 틈, 열림을 순환하며 틀린 확인도 시도한 빛을 숨기지 않아요.</p></article><article class="game-info-section"><h3 data-copy="faqTitle">자주 묻는 질문</h3><p data-copy="faqProgress">진행이 저장되나요? 네. 완료한 방과 최소 탭 수는 이 브라우저에만 저장돼요.</p></article></div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>몇 단계가 포함되어 있나요?</dt><dd>6개의 규칙 장에 걸쳐 30개의 작성된 단계가 있습니다. 스테이지 30은 완료 후에도 다시 플레이할 수 있습니다.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
+    <section id="stageScreen" class="screen stage-screen" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" hidden><div class="stage-canvas"><header class="panel-head"><button id="stageBackBtn" class="back-btn" data-wp-return="stage" type="button" data-copy="back">뒤로</button><h2 data-copy="stages">새벽 지도</h2><button id="stageInfoBtn" class="utility-button panel-utility" type="button" data-copy-aria-label="새벽 지도 도움말">i</button></header><p class="panel-intro" data-copy="mapIntro">여섯 새벽 호는 단순한 대비에서 혼합 빛 패턴으로 나아가요. 방을 깨우면 다음 방이 열려요.</p><div class="stage-support"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"><p data-copy="guideThree">틀린 시도도 남아 있으니 천천히 다시 조절할 수 있어요.</p></div><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" data-copy-aria-label="새벽 지도" aria-label="Dawn map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">새벽 지도</button><span aria-hidden="true"></span></nav></div></section>
+    <section id="battleScreen" class="screen battle-screen" data-screen="battle" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><div class="battle-canvas"><header class="panel-head"><button id="battleBackBtn" class="back-btn" data-wp-return="battle" type="button" data-copy="back">뒤로</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="utility-button panel-utility" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="소리">♫</button></header><div id="battlePanel"><div class="mission-row"><div><p class="eyebrow" data-copy="roomKicker">새벽 방</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div><div class="target-card"><span data-copy="target">요청된 빛</span><div id="targetBars" class="light-bars" data-copy-aria-label="요청된 빛" aria-label="Requested glow"></div></div><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div id="shutterBoard" class="shutter-board" data-copy-aria-label="새벽 셔터" aria-label="Dawn shutters"></div><p class="move-hint" data-copy="moveHint">각 셔터를 눌러 빛의 단계를 바꿔요. 타이머는 없어요.</p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">방 확인</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">셔터 초기화</button></div></div><div id="resultPanel" class="result-panel" hidden><div class="result-character"><img src="assets/animal-dawn-shutters-taro-guide-v1.png" alt="" aria-hidden="true"></div><p class="eyebrow" data-copy="resultKicker">방 결과</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">새벽 지도</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">처음으로</button></div></div></div></div></section>
     <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE?.localization&&(window.WONDER_SITE.localization.useLocaleRoutes=false);</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script>
-  <script src="locales.js?v=20260902-dawn-shutters-v2-locale2"></script><script src="game.js?v=20260902-dawn-shutters-v2-locale2"></script>
+  <script src="locales.js?v=20260903-dawn-shutters-v3-depth"></script><script src="game.js?v=20260903-dawn-shutters-v3-depth"></script>
 </body>
 </html>

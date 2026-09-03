@@ -10076,7 +10076,7 @@
     title: "Animal Abyss Diver",
     hideSkillsFact: true,
     showRelatedSkill: false,
-    relatedIds: ["bubble-bakery", "animal-color-springs", "animal-guard-yard"],
+    relatedIds: ["animal-bamboo-pipes", "animal-bus-jam", "animal-cratebound"],
     difficulty: "Medium to Challenging",
     time: "5-12 minutes per route",
     gameplay: "Deep-Sea Route Risk Adventure",
