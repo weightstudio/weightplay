@@ -8955,43 +8955,43 @@
   localizedGameplayProfiles["zh-Hans"]["animal-starlight-trails"] = { gameplay: "一笔画逻辑益智", genre: ["益智", "策略", "逻辑", "动物"] };
 
   games["animal-one-line"] = {
-    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"], skills: ["Spatial Reasoning", "Planning", "Sequencing"],
+    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"], skills: ["Spatial Reasoning", "Planning", "Sequencing"], relatedIds: ["animal-cratebound", "animal-sunbeam-garden"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", hideScoreBands: true,
     intro: "One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the entire board with one continuous route without visiting any cell twice.",
     story: ["Mimi is restoring color to dormant puzzle boards in a magical forest workshop. Stone cells block parts of each board, so the route must pass through every open cell exactly once.", "The final five mastery grids combine longer routes, narrow exits, and deceptive early choices. Stage 30 completes the campaign and remains replayable."],
-    systems: ["A valid attempt begins on the glowing paw cell. Each move enters one open cell directly above, below, left, or right; diagonal jumps and repeated cells are not allowed.", "The board is complete only when every open cell is colored. Releasing early, revisiting a cell, or reaching a dead end resets the attempt without spending currency.", "Show Hint highlights the next cell in one possible solution, while Restart clears the current route. Using a hint reduces the best star result for that attempt.", "Clears, unlocked stages, best star ratings, and best times are stored locally in this browser. Completed stages remain available from the horizontal Stage rail."],
-    how: ["Choose an unlocked puzzle from the horizontal Stage rail.", "Press the glowing paw cell and begin dragging.", "Move through open cells that share an edge with the current cell.", "Avoid every cell already colored by the route.", "Fill every open cell before releasing to clear the stage."],
+    systems: ["A valid attempt begins on the glowing paw cell. Each move enters one open cell directly above, below, left, or right; diagonal jumps and repeated cells are not allowed.", "The board is complete only when every open cell is colored. You may release while planning and resume later; move back over the previous cell to undo, or correct a blocked route without spending currency.", "Show Hint highlights the next cell in one possible solution, while Restart clears the current route. Using a hint reduces the best star result for that attempt.", "Clears, unlocked stages, best star ratings, and best times are stored locally in this browser. Completed stages remain available from the horizontal Stage rail."],
+    how: ["Choose an unlocked puzzle from the horizontal Stage rail.", "Press the glowing paw cell and begin dragging.", "Move through open cells that share an edge with the current cell.", "Avoid every cell already colored by the route.", "Fill every open cell, then release to clear the stage; releasing earlier keeps the route for later planning."],
     strategyTips: ["Inspect corners and narrow exits before starting; entering them from the wrong direction can isolate the final cell.", "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.", "Use Show Hint to reveal one next step when stuck; it never costs currency but limits that attempt to two stars.", "Speed is not required. Pause on the current cell and plan the remaining route before moving."],
     progression: ["Stages 1-5 teach orthogonal movement and the no-repeat rule; 6-10 introduce corner planning; 11-15 use stone blocks to divide the board.", "Stages 16-20 extend the routes, 21-25 introduce tighter choices, and 26-30 combine large grids, blocked cells, and narrow exits."],
     designNote: "One Line is a route-planning puzzle rather than a freehand accuracy test. Large cells and interpolated pointer sampling make the same rules practical with a mouse or a finger, while the no-repeat and fill-every-cell conditions keep success focused on reasoning. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.",
     parent: "One Line is recommended for ages 9+ and family play. It requires no account and stores progress only in the current browser. Stars and the Result skill summary are playful feedback, not a formal ability, medical, or school assessment.",
-    faq: [["Can I visit a cell twice?", "No. Re-entering a colored cell ends the current attempt."], ["Can I move diagonally?", "No. Moves connect only open cells that share an edge."], ["Do I have to move quickly?", "No. You may pause on the current cell while planning."], ["What does Show Hint do?", "It highlights the next cell in one possible complete route."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original grid puzzles across six five-stage chapters."]]
+    faq: [["Can I visit a cell twice?", "No. Re-entering a colored cell ends the current attempt."], ["Can I move diagonally?", "No. Moves connect only open cells that share an edge."], ["Can I release before the board is complete?", "Yes. The current route stays on the board, so you can pause and resume planning later."], ["Do I have to move quickly?", "No. You may pause on the current cell while planning."], ["What does Show Hint do?", "It highlights the next cell in one possible complete route."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original grid puzzles across six five-stage chapters."]]
   };
   gameplayProfiles["animal-one-line"] = { gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"] };
   localizedGames["zh-Hant"]["animal-one-line"] = {
     ...games["animal-one-line"], title: "One Line 一筆到底", guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南", noteTitle: "玩家與存檔資訊", difficulty: "簡單至具挑戰性", time: "每關約 1 至 4 分鐘", gameplay: "一筆填滿格子", genre: ["邏輯", "路線規劃", "益智", "動物"], skills: ["Spatial Reasoning", "Planning", "Sequencing"],
     intro: "One Line 一筆到底是由彩虹跳跳米米主演的 30 關格子解謎遊戲。從發光腳印開始，只能走到上下左右相鄰的空格；每格只能走一次，必須用同一條路線填滿全部空格。",
     story: ["米米正在修復魔法森林工坊裡的格子棋盤。每個棋盤都有石塊與開放格，路線必須從發光腳印開始，沿上下左右相鄰格前進，填滿所有可走格。", "最後五座大型棋盤會結合石塊、分岔與窄出口，要求先規劃再移動；完成第 30 關即完成戰役，之後仍可重玩。"],
-    systems: ["有效路線必須從發光腳印開始，只走相鄰格；每一步只能進入共享邊線的空格，不能斜走或跳格。", "途中可以放手思考；重複走進已上色格、提早放開，或在仍有空格時走入死路，都會重設本次嘗試。", "提示會標出其中一種解法的下一格；重新開始與提示都不消耗資源。", "解鎖、星級、完成紀錄與最佳時間只儲存在目前瀏覽器。"],
+    systems: ["有效路線必須從發光腳印開始，只走相鄰格；每一步只能進入共享邊線的空格，不能斜走或跳格。", "途中可以放手思考，已完成的路線會保留；滑回上一格可撤銷，路線走不下去時可修正或重新開始，而且不會消耗資源。", "提示會標出其中一種解法的下一格；重新開始與提示都不消耗資源。", "解鎖、星級、完成紀錄與最佳時間只儲存在目前瀏覽器。"],
     how: ["從橫向關卡列選擇已解鎖棋盤。", "按住發光腳印格開始。", "拖曳到上下左右相鄰的空格。", "避開所有已經上色的格子。", "填滿全部空格後完成關卡。"],
     strategyTips: ["開始前先觀察角落與只有一個出口的區域。", "不要太早封住尚未完成區域的入口。", "卡住時可用提示查看其中一種完整解法的下一步。", "遊戲不要求速度，可以停在目前格子思考。"],
     progression: ["第 1–5 關教學相鄰移動與不可重複；第 6–10 關練習轉角規劃；第 11–15 關加入石塊切割棋盤。", "第 16–20 關延長路線；第 21–25 關增加容易誤判的分岔；第 26–30 關綜合大型棋盤、石塊與窄出口。"],
     designNote: "One Line 與 Starlink 的核心不同：Starlink 是每條連線只能使用一次的圖形邏輯題；One Line 是填滿每個開放格的路線規劃益智遊戲。觸控、滑鼠與鍵盤共用相同的相鄰移動規則；響應式邏輯 Canvas 會填滿 Stage 與 Battle 安全區域，並保留單一縮放比例、穩定錨點與獨立 56px 預留區。",
     parent: "One Line 建議 9 歲以上與家庭玩家遊玩，不需帳號，進度只儲存在目前瀏覽器。星等與結算技能摘要是遊戲鼓勵，不是正式能力、醫療或學校評量。",
-    faq: [["中途可以放開手指嗎？", "不行，必須從起點到腳印門保持同一次按住。"], ["一定要很快嗎？", "不用，可以持續按住並停在安全路段。"], ["碰到邊緣或影子會怎樣？", "只會重置本次嘗試，重新挑戰完全免費。"], ["顯示引導有什麼作用？", "它會顯示通道中央的虛線安全路徑。"], ["進度會保存嗎？", "會，解鎖、星等、過關與最佳時間會儲存在此瀏覽器。"], ["共有幾關？", "共有六個章節、30 條原創路線。"]]
+    faq: [["中途可以放開手指嗎？", "可以，已完成的路線會保留；回到遊戲後可以繼續規劃。"], ["一定要很快嗎？", "不用，可以持續按住並停在安全路段。"], ["碰到邊緣或影子會怎樣？", "只會重置本次嘗試，重新挑戰完全免費。"], ["顯示引導有什麼作用？", "它會顯示通道中央的虛線安全路徑。"], ["進度會保存嗎？", "會，解鎖、星等、過關與最佳時間會儲存在此瀏覽器。"], ["共有幾關？", "共有六個章節、30 條原創路線。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-one-line"] = { gameplay: "一筆填滿格子", genre: ["邏輯", "路線規劃", "益智", "動物"] };
   localizedGames["zh-Hans"]["animal-one-line"] = {
     ...localizedGames["zh-Hant"]["animal-one-line"], title: "One Line 一笔到底", guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南", noteTitle: "玩家与存档信息", difficulty: "简单至具挑战性", time: "每关约 1 至 4 分钟", gameplay: "连续通道描线", genre: ["技巧", "时机", "益智", "动物"],
     intro: "One Line 一笔到底是由彩虹跳跳米米主演的 30 关格子解谜游戏。从发光脚印开始，只能走到上下左右相邻的空格；每格只能走一次，必须用同一条路线填满全部空格。",
     story: ["米米正在修复魔法森林工坊里的格子棋盘。每个棋盘都有石块与开放格，路线必须从发光脚印开始，沿上下左右相邻格前进，填满所有可走格。", "最后五座大型棋盘会结合石块、分岔与窄出口，要求先规划再移动；完成第 30 关即完成战役，之后仍可重玩。"],
-    systems: ["有效路线必须从发光脚印开始，只走相邻格；每一步只能进入共享边线的空格，不能斜走或跳格。", "途中可以松手思考；重复走进已上色格、提前放开，或在仍有空格时走入死路，都会重置本次尝试。", "提示会标出其中一种解法的下一格；重新开始与提示都不消耗资源。", "解锁、星级、完成记录与最佳时间只保存在当前浏览器。"],
+    systems: ["有效路线必须从发光脚印开始，只走相邻格；每一步只能进入共享边线的空格，不能斜走或跳格。", "途中可以放手思考，已完成的路线会保留；滑回上一格可撤销，路线走不下去时可修正或重新开始，而且不会消耗资源。", "提示会标出其中一种解法的下一格；重新开始与提示都不消耗资源。", "解锁、星级、完成记录与最佳时间只保存在当前浏览器。"],
     how: ["从横向关卡列选择已解锁棋盘。", "按住发光脚印格开始。", "拖曳到上下左右相邻的空格。", "避开所有已经上色的格子。", "填满全部空格后完成关卡。"],
     strategyTips: ["开始前先观察角落与只有一个出口的区域。", "不要过早封住尚未完成区域的入口。", "卡住时可用提示查看其中一种完整解法的下一步。", "游戏不要求速度，可以停在当前格子思考。"],
     progression: ["第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。", "第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。"],
     designNote: "One Line 与 Starlink 的核心不同：Starlink 是每条连线只能使用一次的图形逻辑题；One Line 是填满每个开放格的路线规划益智游戏。触控、鼠标与键盘共用相同的相邻移动规则；响应式逻辑 Canvas 会填满 Stage 与 Battle 安全区域，并保留单一缩放比例、稳定锚点与独立 56px 预留区。",
     parent: "One Line 建议 9 岁以上与家庭玩家游玩，不需账号，进度只储存在目前浏览器。星等与结算技能摘要是游戏鼓励，不是正式能力、医疗或学校评量。",
-    faq: [["中途可以放开手指吗？", "不行，必须从起点到脚印门保持同一次按住。"], ["一定要很快吗？", "不用，可以持续按住并停在安全路段。"], ["碰到边缘或影子会怎样？", "只会重置本次尝试，重新挑战完全免费。"], ["显示引导有什么作用？", "它会显示通道中央的虚线安全路径。"], ["进度会保存吗？", "会，解锁、星等、过关与最佳时间会储存在此浏览器。"], ["共有几关？", "共有六个章节、30 条原创路线。"]]
+    faq: [["中途可以放开手指吗？", "可以，已完成的路线会保留；回到游戏后可以继续规划。"], ["一定要很快吗？", "不用，可以停在当前格子思考。"], ["碰到边缘或影子会怎样？", "只会重置本次尝试，重新挑战完全免费。"], ["显示引导有什么作用？", "它会显示通道中央的虚线安全路径。"], ["进度会保存吗？", "会，解锁、星等、过关与最佳时间会储存在此浏览器。"], ["共有几关？", "共有六个章节、30 条原创路线。"]]
   };
   localizedGameplayProfiles["zh-Hans"]["animal-one-line"] = { gameplay: "连续通道描线", genre: ["技巧", "时机", "益智", "动物"] };
 
@@ -9046,16 +9046,39 @@
       ["كم عدد المراحل؟", "هناك 30 لغزاً شبكياً أصلياً موزعة على ستة فصول من خمس مراحل."]
     ]
   };
+  Object.assign(localizedGames["ar"]["animal-one-line"], {
+    systems: [
+      "تبدأ المحاولة الصحيحة من خلية المخلب المتوهج. تقود كل حركة إلى خلية مفتوحة أعلى الخلية الحالية أو أسفلها أو يمينها أو يسارها؛ لا يُسمح بالقفز القطري أو تكرار الخلايا.",
+      "تكتمل اللوحة فقط عند تلوين كل خلية مفتوحة. يمكنك الإفلات أثناء التخطيط والعودة لاحقاً؛ حرّك المسار إلى الخلية السابقة للتراجع، ويمكن تصحيح الطريق المسدود أو إعادة البدء من دون إنفاق عملة.",
+      "يُبرز زر إظهار التلميح الخلية التالية في أحد الحلول الممكنة، بينما يمسح زر إعادة التشغيل المسار الحالي. يقلل استخدام التلميح أفضل نتيجة نجوم لتلك المحاولة.",
+      "تُحفظ المراحل المكتملة والمراحل المفتوحة وأفضل النجوم وأفضل الأوقات محلياً في هذا المتصفح، وتبقى المراحل المكتملة متاحة من شريط المراحل الأفقي."
+    ],
+    how: [
+      "اختر لغزاً مفتوحاً من شريط المراحل الأفقي.",
+      "اضغط على خلية المخلب المتوهج وابدأ السحب.",
+      "تحرك عبر الخلايا المفتوحة التي تشترك مع الخلية الحالية في حافة.",
+      "تجنب كل خلية لوّنها المسار من قبل.",
+      "لوّن كل خلية مفتوحة ثم أفلت لإكمال المرحلة؛ وإذا أفلت مبكراً يبقى المسار على اللوحة للتخطيط لاحقاً."
+    ],
+    faq: [
+      ["هل يمكنني دخول الخلية نفسها مرتين؟", "لا. تؤدي إعادة دخول خلية ملونة إلى إنهاء المحاولة الحالية."],
+      ["هل يمكنني التحرك قطرياً؟", "لا. تصل الحركات فقط بين الخلايا المفتوحة التي تشترك في حافة."],
+      ["هل يمكنني الإفلات قبل اكتمال اللوحة؟", "نعم. يبقى المسار الحالي على اللوحة، ويمكنك العودة لمتابعة التخطيط لاحقاً."],
+      ["ماذا يفعل إظهار التلميح؟", "يبرز الخلية التالية في أحد المسارات الكاملة الممكنة."],
+      ["هل يُحفظ التقدم؟", "نعم. تُحفظ الفتحات والنجوم والإكمال وأفضل الأوقات محلياً في هذا المتصفح."],
+      ["كم عدد المراحل؟", "هناك 30 لغزاً شبكياً أصلياً موزعة على ستة فصول من خمس مراحل."]
+    ]
+  });
   localizedGameplayProfiles["ar"]["animal-one-line"] = { gameplay: "ملء الشبكة بخط واحد", genre: ["منطق", "تخطيط المسار", "ألغاز", "حيوانات"] };
 
   Object.assign(localizedGames["zh-Hant"]["animal-one-line"], {
     gameplay: "一筆填滿格子", genre: ["邏輯", "路線規劃", "益智", "動物"], skills: ["空間推理", "規劃", "順序判斷"],
     intro: "One Line 一筆到底是由彩虹跳跳米米主演的 30 關格子解謎遊戲。從發光腳印開始，只能走到上下左右相鄰的空格；每格只能走一次，必須用同一條路線填滿全部空格。",
-    systems: ["有效路線必須從發光腳印開始，只走相鄰格；每一步只能進入共享邊線的空格，不能斜走或跳格。", "途中可以放手思考；重複走進已上色格、提早放開，或在仍有空格時走入死路，都會重設本次嘗試。", "提示會標出其中一種解法的下一格；重新開始與提示都不消耗資源。", "解鎖、星級、完成紀錄與最佳時間只儲存在目前瀏覽器。"],
+    systems: ["有效路線必須從發光腳印開始，只走相鄰格；每一步只能進入共享邊線的空格，不能斜走或跳格。", "途中可以放手思考，已完成的路線會保留；滑回上一格可撤銷，路線走不下去時可修正或重新開始，而且不會消耗資源。", "提示會標出其中一種解法的下一格；重新開始與提示都不消耗資源。", "解鎖、星級、完成紀錄與最佳時間只儲存在目前瀏覽器。"],
     how: ["從橫向關卡列選擇已解鎖棋盤。", "按住發光腳印格開始。", "拖曳到上下左右相鄰的空格。", "避開所有已經上色的格子。", "填滿全部空格後完成關卡。"],
     strategyTips: ["開始前先觀察角落與只有一個出口的區域。", "不要太早封住尚未完成區域的入口。", "卡住時可用提示查看其中一種完整解法的下一步。", "遊戲不要求速度，可以停在目前格子思考。"],
     progression: ["第 1–5 關教學相鄰移動與不可重複；第 6–10 關練習轉角規劃；第 11–15 關加入石塊切割棋盤。", "第 16–20 關延長路線；第 21–25 關增加容易誤判的分岔；第 26–30 關綜合大型棋盤、石塊與窄出口。"],
-    faq: [["可以重複走同一格嗎？", "不行，重新進入已上色格會結束本次嘗試。"], ["可以斜著走嗎？", "不行，只能走到共享邊線的上下左右相鄰格。"], ["怎樣才算過關？", "所有可走空格都必須被同一條路線填滿。"], ["需要快速拖曳嗎？", "不需要，可以停在目前格子思考。"], ["進度會保存嗎？", "會，資料只保存在目前瀏覽器。"], ["共有幾關？", "共有 30 個原創格子棋盤。"]]
+    faq: [["可以重複走同一格嗎？", "不行，重新進入已上色格會結束本次嘗試。"], ["可以斜著走嗎？", "不行，只能走到共享邊線的上下左右相鄰格。"], ["中途可以放開手指嗎？", "可以，已完成的路線會保留；回到遊戲後可以繼續規劃。"], ["怎樣才算過關？", "所有可走空格都必須被同一條路線填滿。"], ["需要快速拖曳嗎？", "不需要，可以停在目前格子思考。"], ["進度會保存嗎？", "會，資料只保存在目前瀏覽器。"], ["共有幾關？", "共有 30 個原創格子棋盤。"]]
   });
   Object.assign(localizedGames["zh-Hans"]["animal-one-line"], {
     gameplay: "一笔填满格子", genre: ["逻辑", "路线规划", "益智", "动物"], skills: ["空间推理", "规划", "顺序判断"],
@@ -9065,6 +9088,10 @@
     strategyTips: ["开始前先观察角落与只有一个出口的区域。", "不要过早封住尚未完成区域的入口。", "卡住时可用提示查看其中一种完整解法的下一步。", "游戏不要求速度，可以停在当前格子思考。"],
     progression: ["第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。", "第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。"],
     faq: [["可以重复走同一格吗？", "不行，重新进入已上色格会结束本次尝试。"], ["可以斜着走吗？", "不行，只能走到共享边线的上下左右相邻格。"], ["怎样才算过关？", "所有可走空格都必须被同一条路线填满。"], ["需要快速拖动吗？", "不需要，可以停在当前格子思考。"], ["进度会保存吗？", "会，数据只保存在当前浏览器。"], ["共有几关？", "共有 30 个原创格子棋盘。"]]
+  });
+  Object.assign(localizedGames["zh-Hans"]["animal-one-line"], {
+    systems: ["有效路线必须从发光脚印开始，只走相邻格；每一步只能进入共享边线的空格，不能斜走或跳格。", "途中可以放手思考，已完成的路线会保留；滑回上一格可撤销，路线走不下去时可修正或重新开始，而且不会消耗资源。", "提示会标出其中一种解法的下一格；重新开始与提示都不消耗资源。", "解锁、星级、完成记录与最佳时间只保存在当前浏览器。"],
+    faq: [["可以重复走同一格吗？", "不行，重新进入已上色格会结束本次尝试。"], ["可以斜着走吗？", "不行，只能走到共享边线的上下左右相邻格。"], ["中途可以放开手指吗？", "可以，已完成的路线会保留；回到游戏后可以继续规划。"], ["怎样才算过关？", "所有可走空格都必须被同一条路线填满。"], ["需要快速拖动吗？", "不需要，可以停在当前格子思考。"], ["进度会保存吗？", "会，数据只保存在当前浏览器。"], ["共有几关？", "共有 30 个原创格子棋盘。"]]
   });
   localizedGames.ru = {
     ...(localizedGames.ru || {}),
@@ -10564,7 +10591,7 @@
   localizedGames["zh-Hans"]["animal-word-trails"] = { ...localizedGames["zh-Hant"]["animal-word-trails"], title: "动物文字小径", gameplay: "阅读文字路径益智" };
   localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
   games["animal-cratebound"] = {
-    title: "Animal Cratebound", difficulty: "Easy to Challenging", time: "2–8 minutes per warehouse", gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"],
+    title: "Animal Cratebound", difficulty: "Easy to Challenging", time: "2–8 minutes per warehouse", gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"], relatedIds: ["animal-one-line", "animal-sunbeam-garden"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
     intro: "Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.",
     story: ["Rux is restoring a cargo ark one warehouse at a time. Every rune crate must reach a glowing dock before the route can reopen."],

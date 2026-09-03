@@ -37,6 +37,91 @@
 
 (() => {
   const tables = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const namesEn = [
+    "Moon Pine Gate", "Owl's Meridian", "Quiet Ridge Pair", "Dawn Fox Lookout", "Lantern Grove Checkpoint",
+    "Crosswind Meadow", "Twin Comet Turn", "Deerline Pass", "Otter's Axis", "Horizon Keeper Checkpoint",
+    "Diagonal Dawn", "Rabbit's Slant", "Bearglass Trail", "Mothwing Mirror", "Starfold Checkpoint",
+    "Cornerstone Clearing", "Fernbound Corner", "Mossy Angle", "Foxglove Turn", "Four-Corner Checkpoint",
+    "Zigzag Brook", "Hare's Echo", "Split-Pine Path", "Owlstep Bend", "Chainlight Checkpoint",
+    "Northstar Fork", "Silver Diagonal", "Mooncap Corner", "Last Alignment", "Constellation Crown"
+  ];
+  const introsEn = [
+    "Learn the left-and-right sky rule with a clear three-star line.", "Read the vertical neighbours and keep the middle star anchored.", "Pair two horizontal relations without swapping the centre.", "Use the above-and-below rule to settle a quiet lookout.", "Checkpoint: two neighbours guard the lantern grove; read both directions before choosing.",
+    "Crosswind introduces a vertical relation after the first arc.", "Turn from a horizontal clue to its opposite without losing the anchor.", "The pass mixes a top clue with a lower counter-pattern.", "Follow the axis through the middle star and ignore the mirrored decoy.", "Checkpoint: the horizon keeper changes the axis; choose the board that preserves both vertical clues.",
+    "Diagonal Dawn introduces corner-to-corner relationships.", "The rabbit's slant is a diagonal clue, not a row clue.", "A reflected diagonal tests whether you read both positions.", "The mirror board reverses the diagonal order; compare endpoints.", "Checkpoint: the starfold folds both diagonal directions into one readable proof.",
+    "Cornerstone moves the proof to an edge and a shared corner.", "The fern corner keeps the left neighbour at the boundary.", "Use the lower corner as a second anchor instead of the centre.", "Foxglove turns the corner order while the same animals remain visible.", "Checkpoint: four corners compete; follow the two named neighbours, not the brightest star.",
+    "Zigzag Brook introduces a stepped vertical chain.", "The hare's echo keeps the middle anchor while the endpoints shift.", "A split pine hides the chain in a gentle zigzag.", "Owlstep bends the chain and tests the upper clue first.", "Checkpoint: chainlight combines the full zigzag vocabulary into one final proof.",
+    "Northstar Fork begins the mastery arc with a split horizontal proof.", "Silver Diagonal combines the diagonal endpoint rule with late-campaign decoys.", "Mooncap Corner asks you to hold an edge anchor and a vertical clue together.", "Last Alignment mixes the vertical family with a final reflected option.", "Checkpoint: the constellation crown is the distinct finale; read every relation before restoring the sky."
+  ];
+  const namesZh = [
+    "月松林關口", "貓頭鷹子午線", "靜謐山脊雙星", "黎明狐影台", "燈籠林檢查點",
+    "穿風草甸", "雙彗星轉彎", "鹿線通道", "水獺星軸", "地平線守護檢查點",
+    "斜線黎明", "兔子的斜徑", "熊玻璃小徑", "蛾翼映像", "星折檢查點",
+    "基石空地", "蕨葉角落", "苔蘚角度", "狐花轉彎", "四角檢查點",
+    "之字溪流", "野兔回聲", "分岔松徑", "貓頭鷹踏步彎", "鏈光檢查點",
+    "北極星分岔", "銀色斜線", "月帽角落", "最後校準", "星圖皇冠"
+  ];
+  const introsZh = [
+    "先用清楚的三顆星直線學會左右關係。", "閱讀垂直鄰居，讓中央星保持錨定。", "配對兩條水平關係，不要交換中央位置。", "用上下關係安定黎明瞭望台。", "檢查點：兩位鄰居守護燈籠林，選擇前要讀完兩個方向。",
+    "穿風弧線在第一弧後加入垂直關係。", "從水平線索轉向相反方向，同時保留中央錨點。", "通道把上方線索和下方反模式放在一起。", "沿中央星讀完整星軸，忽略鏡像干擾。", "檢查點：地平線守護員改變星軸，選出同時保留兩條垂直關係的星圖。",
+    "斜線黎明加入從角落到角落的關係。", "兔子的斜徑是對角線索，不是同一排。", "反射斜線考驗你是否讀到兩端位置。", "映像星圖反轉斜線順序，請比較兩個端點。", "檢查點：星折把兩個斜向收進一個清楚的推理。",
+    "基石把推理移到邊緣與共享角落。", "蕨葉角落讓左側鄰居停在邊界。", "用下方角落作第二個錨點，而不是依賴中央。", "狐花轉彎改變角落順序，但動物仍然可見。", "檢查點：四個角落互相競爭，跟著兩位指定鄰居，不要只看最亮的星。",
+    "之字溪流加入階梯式垂直鏈。", "野兔回聲保留中央錨點，同時移動兩端。", "分岔松徑把關係藏在溫和的之字形裡。", "貓頭鷹踏步彎先考驗你對上方線索的閱讀。", "檢查點：鏈光把完整之字詞彙合成最後一個推理。",
+    "北極星分岔以分開的水平推理開始熟練弧。", "銀色斜線把斜向端點與後段干擾放在一起。", "月帽角落要求你同時握住邊緣錨點與垂直線索。", "最後校準混合垂直家族與最後的反射選項。", "檢查點：星圖皇冠是獨特終章，讀完每條關係再修復夜空。"
+  ];
+  const namesAr = [
+    "بوابة صنوبر القمر", "خط البومة الأوسط", "ثنائي التلال الهادئة", "مرصد ثعلب الفجر", "نقطة تفتيش بستان الفوانيس",
+    "مرج الريح المتقاطعة", "منعطف المذنبين", "ممر خط الأيل", "محور القندس", "نقطة تفتيش حارس الأفق",
+    "فجر قطري", "ميل الأرنب", "درب زجاج الدب", "مرآة جناح العثة", "نقطة تفتيش طي النجوم",
+    "فسحة حجر الزاوية", "زاوية السرخس", "زاوية الطحلب", "منعطف زهرة الثعلب", "نقطة تفتيش الزوايا الأربع",
+    "جدول متعرج", "صدى الأرنب البري", "درب الصنوبر المنقسم", "منعطف خطوة البومة", "نقطة تفتيش ضوء السلسلة",
+    "تفرع النجم القطبي", "القطر الفضي", "زاوية قبعة القمر", "المحاذاة الأخيرة", "تاج الكوكبة"
+  ];
+  const introsAr = [
+    "تعلّم قاعدة اليمين واليسار بخط واضح من ثلاث نجوم.", "اقرأ الجيران رأسيًا وحافظ على النجم الأوسط ثابتًا.", "طابق علاقتين أفقيتين دون تبديل المركز.", "استخدم قاعدة فوق وتحت لتهدئة المرصد.", "نقطة تفتيش: يحرس جاران البستان؛ اقرأ الاتجاهين قبل الاختيار.",
+    "يضيف المرج علاقة رأسية بعد القوس الأول.", "انتقل من الدليل الأفقي إلى عكسه مع حفظ المرساة.", "يمزج الممر دليلًا علويًا مع نمط مضاد سفلي.", "اتبع المحور عبر النجم الأوسط وتجاهل الخدعة المعكوسة.", "نقطة تفتيش: يغير الحارس المحور؛ اختر الخريطة التي تحفظ العلاقتين الرأسيّتين.",
+    "يضيف الفجر القطري علاقات من زاوية إلى زاوية.", "ميل الأرنب دليل قطري وليس صفًا مستقيمًا.", "يختبر القطر المنعكس قراءتك للموقعين.", "تعكس المرآة ترتيب القطر؛ قارن الطرفين.", "نقطة تفتيش: يضم طي النجوم الاتجاهين القطريين في برهان واحد.",
+    "تنقل فسحة حجر الزاوية البرهان إلى حافة وزاوية مشتركة.", "تحافظ زاوية السرخس على الجار الأيسر عند الحد.", "استخدم الزاوية السفلية كمرساة ثانية بدل المركز.", "يغير المنعطف ترتيب الزاوية مع بقاء الحيوانات ظاهرة.", "نقطة تفتيش: تتنافس أربع زوايا؛ اتبع الجارين المحددين لا ألمع نجمة.",
+    "يضيف الجدول المتعرج سلسلة رأسية متدرجة.", "يحافظ الصدى على المرساة الوسطى مع تحريك الطرفين.", "يخفي الدرب العلاقة في تعرج هادئ.", "يفحص المنعطف قراءة الدليل العلوي أولًا.", "نقطة تفتيش: يجمع ضوء السلسلة مفردات التعرج كلها في البرهان الأخير.",
+    "يبدأ قوس الإتقان ببرهان أفقي منقسم.", "يجمع القطر الفضي قاعدة الطرف القطري مع خدع النهاية.", "تطلب زاوية قبعة القمر تثبيت الحافة والدليل الرأسي معًا.", "تمزج المحاذاة الأخيرة العائلة الرأسية مع خيار منعكس.", "نقطة تفتيش: تاج الكوكبة خاتمة مميزة؛ اقرأ كل علاقة قبل إصلاح السماء."
+  ];
+  const defaults = {
+    arc1Name: "Arc 1 · Direct Neighbours", arc2Name: "Arc 2 · Crossed Axes", arc3Name: "Arc 3 · Diagonal Clues", arc4Name: "Arc 4 · Corner Guardians", arc5Name: "Arc 5 · Chain Signals", arc6Name: "Arc 6 · Mastery Sky",
+    mechanicDirect: "Direct neighbour rules", mechanicCross: "Crossed horizontal and vertical axes", mechanicDiagonal: "Diagonal endpoint clues", mechanicCorner: "Edge and shared-corner anchors", mechanicChain: "Stepped relation chains", mechanicMastery: "Combined relation families",
+    checkpoint: "Checkpoint", checkpoint5: "Lantern Grove Guardian", checkpoint10: "Horizon Keeper", checkpoint15: "Starfold Guardian", checkpoint20: "Four-Corner Guardian", checkpoint25: "Chainlight Guardian", checkpoint30: "Constellation Crown Finale",
+    relationLeft: "{subject} is directly left of {object}.", relationRight: "{subject} is directly right of {object}.", relationAbove: "{subject} is directly above {object}.", relationBelow: "{subject} is directly below {object}.", relationUpperLeft: "{subject} is upper-left of {object}.", relationLowerRight: "{subject} is lower-right of {object}.",
+    boardOption: "Board {slot}", locked: "Locked", faqTitle: "FAQ", faqProgress: "Is progress saved? Yes, cleared maps unlock the next map and remain replayable in this browser.",
+    guideSummary: "Read visible relationships between animal stars, then choose the one constellation that obeys both rules across six five-map arcs.", resultGuideTitle: "Results and saves", resultGuide: "Six five-map arcs form a 30-map campaign. Progress and the best total checks are stored only in this browser when storage is available.", tipsTitle: "Practical tips", tips: "Read each relation literally: above, below, left, right, or diagonal. Each map introduces a visible rule, and the boards stay visible so every choice can be checked fairly."
+  };
+  keys.forEach((key) => Object.assign(tables[key] ||= {}, defaults));
+  const addStageCopy = (locale, names, intros) => {
+    const table = tables[locale] ||= {};
+    names.forEach((name, index) => { table[`stage${index + 1}Name`] = name; table[`stage${index + 1}Intro`] = intros[index]; });
+  };
+  addStageCopy("en", namesEn, introsEn);
+  addStageCopy("zh-Hant", namesZh, introsZh);
+  addStageCopy("ar", namesAr, introsAr);
+  Object.assign(tables["zh-Hant"], {
+    arc1Name: "第一弧・直接鄰居", arc2Name: "第二弧・交叉星軸", arc3Name: "第三弧・斜向線索", arc4Name: "第四弧・角落守護", arc5Name: "第五弧・鏈式訊號", arc6Name: "第六弧・熟練星空",
+    mechanicDirect: "直接鄰居規則", mechanicCross: "水平與垂直交叉星軸", mechanicDiagonal: "斜向端點線索", mechanicCorner: "邊緣與共享角落錨點", mechanicChain: "階梯式關係鏈", mechanicMastery: "綜合關係家族",
+    checkpoint: "檢查點", checkpoint5: "燈籠林守護者", checkpoint10: "地平線守護員", checkpoint15: "星折守護者", checkpoint20: "四角守護者", checkpoint25: "鏈光守護者", checkpoint30: "星圖皇冠終章",
+    relationLeft: "{subject} 就在 {object} 的正左方。", relationRight: "{subject} 就在 {object} 的正右方。", relationAbove: "{subject} 就在 {object} 的正上方。", relationBelow: "{subject} 就在 {object} 的正下方。", relationUpperLeft: "{subject} 在 {object} 的左上方。", relationLowerRight: "{subject} 在 {object} 的右下方。",
+    boardOption: "星圖 {slot}", locked: "尚未開放", faqTitle: "常見問題", faqProgress: "進度會保存嗎？會，修復的地圖會在這個瀏覽器開放下一幅，也能重新遊玩。",
+    guideSummary: "閱讀動物星星之間的可見關係，從六個五關卡弧線中選出同時遵守兩條規則的唯一星圖。", resultGuide: "六個五關卡弧線組成 30 幅地圖的流程。進度與最佳檢查次數只會在可用時保存在本機瀏覽器。", tips: "仔細閱讀上、下、左、右與斜向關係。每幅地圖都會加入可見規則，星圖會保持顯示，讓你公平核對每個選擇。"
+  });
+  Object.assign(tables.ar, {
+    arc1Name: "القوس 1 · الجيران المباشرون", arc2Name: "القوس 2 · المحاور المتقاطعة", arc3Name: "القوس 3 · الأدلة القطرية", arc4Name: "القوس 4 · حراس الزوايا", arc5Name: "القوس 5 · إشارات السلسلة", arc6Name: "القوس 6 · إتقان السماء",
+    mechanicDirect: "قواعد الجار المباشر", mechanicCross: "محاور أفقية ورأسية متقاطعة", mechanicDiagonal: "أدلة الأطراف القطرية", mechanicCorner: "مراسي الحافة والزاوية المشتركة", mechanicChain: "سلاسل علاقات متدرجة", mechanicMastery: "عائلات علاقات مجمعة",
+    checkpoint: "نقطة تفتيش", checkpoint5: "حارس بستان الفوانيس", checkpoint10: "حارس الأفق", checkpoint15: "حارس طي النجوم", checkpoint20: "حارس الزوايا الأربع", checkpoint25: "حارس ضوء السلسلة", checkpoint30: "النهاية: تاج الكوكبة",
+    relationLeft: "{subject} يقع مباشرة إلى يسار {object}.", relationRight: "{subject} يقع مباشرة إلى يمين {object}.", relationAbove: "{subject} يقع مباشرة فوق {object}.", relationBelow: "{subject} يقع مباشرة أسفل {object}.", relationUpperLeft: "{subject} يقع أعلى يسار {object}.", relationLowerRight: "{subject} يقع أسفل يمين {object}.",
+    boardOption: "الخريطة {slot}", locked: "مغلقة", faqTitle: "الأسئلة الشائعة", faqProgress: "هل يُحفظ التقدم؟ نعم، تفتح الخرائط المُصلحة الخريطة التالية وتبقى قابلة لإعادة اللعب في هذا المتصفح.",
+    guideSummary: "اقرأ العلاقات الظاهرة بين نجوم الحيوانات، ثم اختر الكوكبة الوحيدة التي تلتزم بالقاعدتين عبر ستة أقواس من خمس خرائط.", resultGuide: "تتكون الحملة من ستة أقواس، كل منها خمس خرائط، بإجمالي 30 خريطة. يُحفظ التقدم وأفضل عدد من الفحوصات في هذا المتصفح فقط عند توفر التخزين.", tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين أو قطريًا. تضيف كل خريطة قاعدة ظاهرة، وتبقى الخرائط معروضة لتتحقق من كل اختيار بعدل."
+  });
+})();
+
+(() => {
+  const tables = window.ANIMAL_CONSTELLATION_KEEPER_LOCALES || {};
   if (tables.en) Object.assign(tables.en, {
     gameInfoKicker: "WeightPlay Original Game Guide",
     guideAria: "Constellation Keeper game information"
@@ -48,15 +133,15 @@
     guideOne: "اقرأ قاعدتي العلاقة بين النجوم.",
     guideTwo: "اضغط على خريطة الكوكبة التي توافق القاعدتين.",
     guideThree: "يبقى الاختيار الخاطئ ظاهرًا لتتمكن من المحاولة بهدوء.",
-    guideSummary: "اقرأ العلاقات الظاهرة بين نجوم الحيوانات، ثم اختر الخريطة الوحيدة التي تلتزم بالقاعدتين.",
+    guideSummary: "اقرأ العلاقات الظاهرة بين نجوم الحيوانات، ثم اختر الخريطة الوحيدة التي تلتزم بالقاعدتين عبر ستة أقواس من خمس خرائط.",
     gameplayFact: "أسلوب اللعب",
     gameplayValue: "استنتاج العلاقات",
     genreFact: "النوع",
     genreValue: "ألغاز · منطق · عائلي · حيوانات",
     resultGuideTitle: "النتائج والحفظ",
-    resultGuide: "تكوّن أربع خرائط ليلية جلسة قصيرة واحدة. يُحفظ أفضل مجموع من الفحوصات في هذا المتصفح فقط عندما تتوفر مساحة التخزين.",
+    resultGuide: "تتكون الحملة من ستة أقواس، كل منها خمس خرائط، بإجمالي 30 خريطة. يُحفظ التقدم وأفضل عدد من الفحوصات في هذا المتصفح فقط عند توفر التخزين.",
     tipsTitle: "نصائح عملية",
-    tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين. تبقى الخرائط ظاهرة، لذا يمكنك التحقق من كل اختيار بعدل."
+    tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين أو قطريًا. تضيف كل خريطة قاعدة ظاهرة، وتبقى الخرائط معروضة لتتحقق من كل اختيار بعدل."
   });
 })();
 
@@ -123,8 +208,8 @@
     mole: "خلد",
     allMaps: "الخرائط الليلية الأربع مفتوحة.",
     resultGuideTitle: "النتائج والحفظ",
-    resultGuide: "تكوّن أربع خرائط ليلية جلسة قصيرة واحدة. يُحفظ أفضل مجموع من الفحوصات في هذا المتصفح فقط عندما تتوفر مساحة التخزين.",
+    resultGuide: "تتكون الحملة من ستة أقواس، كل منها خمس خرائط، بإجمالي 30 خريطة. يُحفظ التقدم وأفضل عدد من الفحوصات في هذا المتصفح فقط عند توفر التخزين.",
     tipsTitle: "نصائح عملية",
-    tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين. تبقى الخرائط ظاهرة، لذا يمكنك التحقق من كل اختيار بعدل."
+    tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين أو قطريًا. تضيف كل خريطة قاعدة ظاهرة، وتبقى الخرائط معروضة لتتحقق من كل اختيار بعدل."
   });
 })();
