@@ -71,7 +71,7 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" data-wp-game-owned-guide class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">뿌리 금고를 여는 중…</strong></div>
 
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
@@ -101,8 +101,21 @@
         <article><h3 data-t="guideRulesTitle">재료 상호작용</h3><p data-t="guideRules">달물은 잿불을 증기로 식히고, 등껍질 보호막은 타로를 한 번 지키며, 열쇠는 같은 룬 핀을 엽니다.</p></article>
         <article><h3 data-t="guideStrategyTitle">뽑기 전에 관찰</h3><p data-t="guideStrategy">잘못된 경로는 별핵을 가두거나 타로를 위험에 빠뜨립니다. 다시 시작하면 방이 완전히 복원됩니다.</p></article>
         <article><h3 data-t="guideAccessTitle">한 번에 한 동작</h3><p data-t="guideAccess">핀을 고르고 뽑기를 누르거나 포커스 후 Enter/Space를 누르세요. 길게 눌러도 반복되지 않습니다.</p></article>
+        <article><h3 data-t="guideSystemsTitle">작업장과 재료 반응</h3><p data-t="guideSystems">핀을 뽑으면 출발 방의 모든 물체가 목적 방으로 이동합니다. 달물과 잿불은 증기가 되고, 등껍질 보호막은 그림자를 한 번 막으며, 룬 열쇠는 표시된 핀을 엽니다. 씨앗 표식은 계획 도움에만 쓰이고 해법은 바꾸지 않습니다.</p></article>
+        <article><h3 data-t="guideProgressTitle">여섯 장, 서른 방</h3><p data-t="guideProgress">초반 방은 안전한 경로를 가르치고, 증기 정원은 재료 반응을, 그림자 보호막은 방어를, 쌍류 합류는 두 경로를, 룬 자물쇠는 열쇠를 더합니다. 살아 있는 금고에서는 모든 규칙이 합쳐집니다. 방을 완료하면 다음 방이 열리고 씨앗 표식을 받습니다.</p></article>
+        <article><h3 data-t="guidePlayerTitle">플레이어·기기·저장 정보</h3><p data-t="guidePlayer">터치, 마우스, Enter, Space는 같은 한 번의 핀 동작을 사용합니다. 방 해금, 최소 뽑기 수, 씨앗 표식, 강화, 언어와 사운드 설정은 이 브라우저에만 저장됩니다. 계정이나 구매는 필요하지 않습니다.</p></article>
       </div>
-    <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>몇 개의 챔버가 포함되어 있나요?</dt><dd>6개의 물질 규칙 장에 걸쳐 30개의 저작 챔버가 있습니다.</dd></div><div><dt>핀을 부분적으로 당길 수 있나요?</dt><dd>아니요. 각 작업을 수행할 때마다 하나의 완전한 황금 핀이 이동합니다.</dd></div><div><dt>문워터는 무슨 일을 하나요?</dt><dd>Emberlight를 냉각시켜 무해한 증기로 만듭니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에서 로컬로 실행됩니다.</dd></div><div><dt>어떤 조작과 화면 크기를 지원하나요?</dt><dd>터치, 마우스, 키보드는 같은 규칙을 따르며 인터페이스는 휴대폰, 가로 화면, 데스크톱에서 하나의 논리 레이아웃으로 크기가 조정됩니다.</dd></div><div><dt>진행 상황이 다른 기기로 자동 이동하나요?</dt><dd>아니요. 이 게임은 현재 브라우저의 로컬 저장소에만 저장되므로 다른 브라우저나 기기에서는 별도의 진행 상황이 생깁니다.</dd></div></dl></div></section>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">자주 묻는 질문</h3><dl>
+        <div><dt data-t="guideFaq1Question">핀은 무엇을 옮기나요?</dt><dd data-t="guideFaq1Answer">출발 방의 모든 물체를 목적 방으로 옮기고 그곳에서 재료 반응을 처리합니다.</dd></div>
+        <div><dt data-t="guideFaq2Question">룬 핀이 잠긴 이유는 무엇인가요?</dt><dd data-t="guideFaq2Answer">먼저 맞는 룬 열쇠를 경로로 보내세요. 열쇠는 표시된 핀만 열고 방의 해법은 바꾸지 않습니다.</dd></div>
+        <div><dt data-t="guideFaq3Question">방이 실패하는 조건은 무엇인가요?</dt><dd data-t="guideFaq3Answer">타로가 잿불에 들어가거나 보호막 없이 그림자와 만나거나 별핵이 그림자 또는 공허와 만나면 실패합니다.</dd></div>
+        <div><dt data-t="guideFaq4Question">진행 상황이 저장되나요?</dt><dd data-t="guideFaq4Answer">예. 해금, 최소 뽑기 수, 씨앗 표식과 계획 도움 레벨은 이 브라우저에 저장됩니다.</dd></div>
+      </dl></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">관련 게임</h3><p data-t="guideRelatedIntro">움직이기 전에 시스템을 읽는 것을 좋아한다면 다음 WeightPlay 퍼즐을 시도해 보세요.</p><nav class="guide-related-links" aria-label="Related Games">
+        <a data-wp-related-id="animal-orb-fortress" href="/ko/games/animal-orb-fortress/" data-t="guideRelatedOrb">애니멀 오브 요새</a>
+        <a data-wp-related-id="animal-rune-tactics" href="/ko/games/animal-rune-tactics/" data-t="guideRelatedRune">애니멀 룬 택틱스</a>
+      </nav></section>
+    </section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -139,8 +152,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260826-hindi-surface-v12b"></script>
-  <script src="game.js?v=20260831-rootvault-narrow-portrait-v16"></script>
+  <script src="locales.js?v=20260903-public-guide-v17"></script>
+  <script src="game.js?v=20260903-public-guide-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260827-rootvault-spanish-guide-v14b"></script>

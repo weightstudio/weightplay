@@ -71,7 +71,7 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" data-wp-game-owned-guide class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">Ouverture du caveau-racine…</strong></div>
 
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
@@ -101,8 +101,21 @@
         <article><h3 data-t="guideRulesTitle">Les matières interagissent</h3><p data-t="guideRules">L&#39;eau refroidit les Braises. Un Bouclier protège Taro une fois. Les clés ouvrent les goupilles de même rune.</p></article>
         <article><h3 data-t="guideStrategyTitle">Observez avant de tirer</h3><p data-t="guideStrategy">Une mauvaise route peut bloquer le Cœur ou exposer Taro. Recommencer restaure la salle.</p></article>
         <article><h3 data-t="guideAccessTitle">Une action à la fois</h3><p data-t="guideAccess">Choisissez une goupille puis Tirez, ou utilisez Entrée/Espace. Un appui long ne se répète jamais.</p></article>
+        <article><h3 data-t="guideSystemsTitle">Atelier et réactions</h3><p data-t="guideSystems">Une goupille déplace tous les objets de la salle source vers la salle de destination. L&#39;Eau lunaire et la Braise deviennent de la vapeur, la Protection de carapace bloque une Ombre et la Clé runique ouvre les goupilles marquées. Les Marques-graine achètent des aides de planification sans changer la solution.</p></article>
+        <article><h3 data-t="guideProgressTitle">Six chapitres, trente salles</h3><p data-t="guideProgress">Les premières salles enseignent les chemins sûrs ; les Jardins de vapeur ajoutent les réactions ; les Protections d&#39;ombre ajoutent la défense ; les Courants jumeaux exigent deux chemins ; les Serrures runiques ajoutent les clés ; la Racine vivante combine toutes les règles. Finir une salle débloque la suivante et donne des Marques-graine.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Informations joueur, appareil et sauvegarde</h3><p data-t="guidePlayer">Le tactile, la souris, Entrée et Espace utilisent la même action de retrait. Les salles débloquées, meilleurs nombres de retraits, Marques-graine, améliorations, langue et son restent dans ce navigateur. Aucun compte ni achat n&#39;est requis.</p></article>
       </div>
-    <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien de chambres sont incluses ?</dt><dd>Il existe 30 chambres rédigées dans six chapitres sur les règles matérielles.</dd></div><div><dt>Une épingle peut-elle être partiellement retirée ?</dt><dd>Non. Chaque action déplace une épingle dorée complète.</dd></div><div><dt>Que fait Moonwater ?</dt><dd>Il refroidit Emberlight en vapeur inoffensive.</dd></div><div><dt>La progression est-elle sauvegardée ?</dt><dd>Oui, localement dans ce navigateur.</dd></div><div><dt>Quels contrôles et tailles d’écran sont pris en charge ?</dt><dd>Le tactile, la souris et le clavier suivent les mêmes règles ; l’interface se redimensionne comme une seule mise en page logique sur téléphone, écran paysage et ordinateur.</dd></div><div><dt>La progression peut-elle être transférée automatiquement vers un autre appareil ?</dt><dd>Non. Le jeu est enregistré uniquement dans le stockage local du navigateur actuel ; un autre navigateur ou appareil possède donc une progression séparée.</dd></div></dl></div></section>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Questions fréquentes</h3><dl>
+        <div><dt data-t="guideFaq1Question">Que déplace une goupille ?</dt><dd data-t="guideFaq1Answer">Elle déplace tous les objets d&#39;une salle vers la salle de destination, où les réactions sont résolues.</dd></div>
+        <div><dt data-t="guideFaq2Question">Pourquoi une goupille runique est-elle verrouillée ?</dt><dd data-t="guideFaq2Answer">Faites d&#39;abord passer la Clé runique correspondante. Elle ouvre les goupilles marquées sans changer la solution.</dd></div>
+        <div><dt data-t="guideFaq3Question">Qu&#39;est-ce qui fait échouer une salle ?</dt><dd data-t="guideFaq3Answer">Taro peut entrer dans la Braise, rencontrer une Ombre sans protection, ou le Cœur peut toucher une Ombre ou le vide.</dd></div>
+        <div><dt data-t="guideFaq4Question">La progression est-elle sauvegardée ?</dt><dd data-t="guideFaq4Answer">Oui. Déblocages, meilleurs retraits, Marques-graine et niveaux d&#39;aide sont conservés localement dans ce navigateur.</dd></div>
+      </dl></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Jeux associés</h3><p data-t="guideRelatedIntro">Si vous aimez lire les systèmes avant d&#39;agir, essayez ces puzzles WeightPlay.</p><nav class="guide-related-links" aria-label="Related Games">
+        <a data-wp-related-id="animal-orb-fortress" href="/fr/games/animal-orb-fortress/" data-t="guideRelatedOrb">Forteresse de l&#39;orbe animal</a>
+        <a data-wp-related-id="animal-rune-tactics" href="/fr/games/animal-rune-tactics/" data-t="guideRelatedRune">Tactiques des runes animales</a>
+      </nav></section>
+    </section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -139,8 +152,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260826-hindi-surface-v12b"></script>
-  <script src="game.js?v=20260831-rootvault-narrow-portrait-v16"></script>
+  <script src="locales.js?v=20260903-public-guide-v17"></script>
+  <script src="game.js?v=20260903-public-guide-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260827-rootvault-spanish-guide-v14b"></script>

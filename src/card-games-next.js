@@ -155,19 +155,19 @@
   const heartsShellCopy = () => HEARTS_SHELL_COPY[currentLocale()] || null;
 
   const SPADES_COPY = {
-    en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", bidContext: "Choose a bid near the tricks your team can support; 0–13 are all legal.", play: "Follow suit when possible; a spade wins the trick." },
-    "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", bidContext: "可依團隊有把握拿到的墩數叫牌；0–13 都是合法選項。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
-    "zh-Hans": { bid: "叫出你和队友预计能赢的墩数。♠ 永远是王牌。", bidContext: "可以按团队有把握拿到的墩数叫牌；0–13 都是合法选项。", play: "能跟同花色就跟牌；黑桃可以赢得这一墩。" },
-    ja: { bid: "チームで取れると思うトリック数をビッドします。♠は常に切り札です。", bidContext: "チームが取れそうなトリック数を目安に。0～13はすべて合法です。", play: "できるだけ同じスートを出し、♠でトリックを取ります。" },
-    ko: { bid: "팀이 가져갈 트릭 수를 선언하세요. ♠는 항상 으뜸패입니다.", bidContext: "팀이 가져갈 수 있다고 보는 트릭 수를 기준으로 고르세요. 0~13은 모두 허용됩니다.", play: "가능하면 같은 무늬를 내세요. ♠가 트릭을 이깁니다." },
-    es: { bid: "Apuesta las bazas que tu equipo espera ganar. ♠ siempre es triunfo.", bidContext: "Elige según las bazas que tu equipo pueda sostener; 0–13 son legales.", play: "Sigue el palo cuando puedas; una pica gana la baza." },
-    "pt-BR": { bid: "Declare as vazas que sua equipe espera vencer. ♠ sempre é trunfo.", bidContext: "Escolha pensando nas vazas que sua equipe pode cumprir; 0–13 são lances válidos.", play: "Siga o naipe quando puder; uma espada vence a vaza." },
-    fr: { bid: "Annoncez les plis que votre équipe pense remporter. ♠ est toujours l'atout.", bidContext: "Choisissez selon les plis que votre équipe peut soutenir ; 0 à 13 sont permis.", play: "Suivez la couleur si possible ; un ♠ remporte le pli." },
-    de: { bid: "Biete die Stiche, die dein Team voraussichtlich gewinnt. ♠ ist immer Trumpf.", bidContext: "Wähle nach den Stichen, die dein Team schaffen kann; 0–13 sind erlaubt.", play: "Bediene die Farbe, wenn möglich; Pik gewinnt den Stich." },
-    it: { bid: "Dichiara le prese che la tua squadra pensa di vincere. ♠ è sempre briscola.", bidContext: "Scegli in base alle prese che la tua squadra può sostenere: da 0 a 13 sono valide.", play: "Segui il seme quando puoi; una ♠ vince la presa." },
-    ru: { bid: "Закажите число взяток, которое ваша команда рассчитывает взять. ♠ всегда козырь.", bidContext: "Выбирайте число взяток, которое команда может взять: от 0 до 13 разрешены все заявки.", play: "По возможности следуйте масти; ♠ выигрывает взятку." },
-    hi: { bid: "आपकी टीम जितनी बाज़ियाँ लेने की उम्मीद करती है, उतनी बोली लगाएँ। ♠ हमेशा तुरुप है।", bidContext: "अपनी टीम की सम्भावित बाज़ियों को आधार बनाकर चुनें; 0–13 सभी मान्य हैं।", play: "संभव हो तो उसी सूट का पत्ता चलें; ♠ बाज़ी जीतता है।" },
-    ar: { bid: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها. ♠ هي الحكم دائماً.", bidContext: "اختر وفق اللمّات التي يستطيع فريقك تحقيقها؛ كل القيم من 0 إلى 13 مسموحة.", play: "اتبع النوع إن أمكن؛ ♠ تفوز باللّمة." },
+    en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", bidContext: "Choose a bid near the tricks your team can support; 0–13 are all legal.", firstTrick: "First trick: choose a card from your hand.", play: "Follow suit when possible; a spade wins the trick." },
+    "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", bidContext: "可依團隊有把握拿到的墩數叫牌；0–13 都是合法選項。", firstTrick: "第一墩：從你的手牌選一張出牌。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
+    "zh-Hans": { bid: "叫出你和队友预计能赢的墩数。♠ 永远是王牌。", bidContext: "可以按团队有把握拿到的墩数叫牌；0–13 都是合法选项。", firstTrick: "第一墩：从你的手牌选一张出牌。", play: "能跟同花色就跟牌；黑桃可以赢得这一墩。" },
+    ja: { bid: "チームで取れると思うトリック数をビッドします。♠は常に切り札です。", bidContext: "チームが取れそうなトリック数を目安に。0～13はすべて合法です。", firstTrick: "最初のトリック：手札からカードを1枚選びます。", play: "できるだけ同じスートを出し、♠でトリックを取ります。" },
+    ko: { bid: "팀이 가져갈 트릭 수를 선언하세요. ♠는 항상 으뜸패입니다.", bidContext: "팀이 가져갈 수 있다고 보는 트릭 수를 기준으로 고르세요. 0~13은 모두 허용됩니다.", firstTrick: "첫 트릭: 내 패에서 카드를 한 장 고르세요.", play: "가능하면 같은 무늬를 내세요. ♠가 트릭을 이깁니다." },
+    es: { bid: "Apuesta las bazas que tu equipo espera ganar. ♠ siempre es triunfo.", bidContext: "Elige según las bazas que tu equipo pueda sostener; 0–13 son legales.", firstTrick: "Primera baza: elige una carta de tu mano.", play: "Sigue el palo cuando puedas; una pica gana la baza." },
+    "pt-BR": { bid: "Declare as vazas que sua equipe espera vencer. ♠ sempre é trunfo.", bidContext: "Escolha pensando nas vazas que sua equipe pode cumprir; 0–13 são lances válidos.", firstTrick: "Primeira vaza: escolha uma carta da sua mão.", play: "Siga o naipe quando puder; uma espada vence a vaza." },
+    fr: { bid: "Annoncez les plis que votre équipe pense remporter. ♠ est toujours l'atout.", bidContext: "Choisissez selon les plis que votre équipe peut soutenir ; 0 à 13 sont permis.", firstTrick: "Premier pli : choisissez une carte de votre main.", play: "Suivez la couleur si possible ; un ♠ remporte le pli." },
+    de: { bid: "Biete die Stiche, die dein Team voraussichtlich gewinnt. ♠ ist immer Trumpf.", bidContext: "Wähle nach den Stichen, die dein Team schaffen kann; 0–13 sind erlaubt.", firstTrick: "Erster Stich: Wähle eine Karte aus deiner Hand.", play: "Bediene die Farbe, wenn möglich; Pik gewinnt den Stich." },
+    it: { bid: "Dichiara le prese che la tua squadra pensa di vincere. ♠ è sempre briscola.", bidContext: "Scegli in base alle prese che la tua squadra può sostenere: da 0 a 13 sono valide.", firstTrick: "Prima presa: scegli una carta dalla tua mano.", play: "Segui il seme quando puoi; una ♠ vince la presa." },
+    ru: { bid: "Закажите число взяток, которое ваша команда рассчитывает взять. ♠ всегда козырь.", bidContext: "Выбирайте число взяток, которое команда может взять: от 0 до 13 разрешены все заявки.", firstTrick: "Первая взятка: выберите карту из своей руки.", play: "По возможности следуйте масти; ♠ выигрывает взятку." },
+    hi: { bid: "आपकी टीम जितनी बाज़ियाँ लेने की उम्मीद करती है, उतनी बोली लगाएँ। ♠ हमेशा तुरुप है।", bidContext: "अपनी टीम की सम्भावित बाज़ियों को आधार बनाकर चुनें; 0–13 सभी मान्य हैं।", firstTrick: "पहली बाज़ी: अपने हाथ से एक पत्ता चुनें।", play: "संभव हो तो उसी सूट का पत्ता चलें; ♠ बाज़ी जीतता है।" },
+    ar: { bid: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها. ♠ هي الحكم دائماً.", bidContext: "اختر وفق اللمّات التي يستطيع فريقك تحقيقها؛ كل القيم من 0 إلى 13 مسموحة.", firstTrick: "اللّمّة الأولى: اختر بطاقة من يدك.", play: "اتبع النوع إن أمكن؛ ♠ تفوز باللّمة." },
   };
 
   const SPADES_PROGRESS_COPY = {
@@ -2258,6 +2258,7 @@
         const winnerCard = winnerEntry?.card;
         const trickCue = winnerCard ? `<div class="card-spades-trick-cue" data-spades-trick-cue data-trick-phase="${settled ? "settled" : "live"}" data-trick-led-suit="${SYMBOLS[leadSuit] || ""}" data-trick-winner-card="${cardText(winnerCard)}" data-runtime-localize="off" role="status" aria-live="polite">${spadesTrickText(leadSuit, winnerCard, settled)}</div>` : "";
         const bidContext = s.phase === "bid" ? `<p class="card-choice-summary" data-spades-bid-context data-runtime-localize="off" role="note">${spadesText("bidContext")}</p>` : "";
+        const firstTrickCue = s.phase === "play" && s.tricks[0] === 0 && s.turn === 0 && !s.trick.length && !s.lastTrick ? `<p class="card-choice-summary card-spades-first-trick-cue" data-spades-first-trick-cue data-runtime-localize="off" role="note">${spadesText("firstTrick")}</p>` : "";
         const trickHtml = s.trick.length ? s.trick.map((entry) => { const isLed = entry.card.suit === leadSuit; const isWinner = entry === liveWinner; const classes = ["card-spades-trick-card", isLed ? "is-led" : "", isWinner ? "is-winner" : ""].filter(Boolean).join(" "); return `<span class="${classes}" data-trick-led="${isLed}" data-trick-winner="${isWinner}">${cardMarkup(entry.card, 0, { className: isWinner ? "card-spades-winner-card" : "", disabled: true })}</span>`; }).join("") : s.lastTrick ? `<span class="card-spades-trick-card is-settled-winner" data-trick-led="${s.lastTrick.card.suit === leadSuit}" data-trick-winner="true" data-trick-settled="true">${cardMarkup(s.lastTrick.card, 0, { className: "card-spades-winner-card", disabled: true })}</span>` : "";
         return {
           phase: s.phase === "bid" ? t("bid") : `${t("score")}: ${s.scores[0]} / ${s.scores[1]}`,
@@ -2265,7 +2266,7 @@
           help: spadesText(s.phase === "bid" ? "bid" : "play"),
           score: s.scores[0],
           opponents: names.slice(1).map((name, index) => spadesOpponentMarkup(name, s.hands[index + 1].length, s.bids[index + 1] ?? "—")).join(""),
-          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${bidContext}${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}${trickCue}<div class="table-row">${trickHtml || `♠ ${t("waiting")}`}</div>`,
+          center: `<div class="card-table-label">${t("table")} · ${s.tricks[0]} / ${s.tricks[1]}</div>${bidContext}${progress ? `<div class="card-spades-progress" data-progress-state="${progress.state}" data-runtime-localize="off" role="status" aria-live="polite">${progress.text}</div>` : ""}${firstTrickCue}${trickCue}<div class="table-row">${trickHtml || `♠ ${t("waiting")}`}</div>`,
           hand: cardsMarkup(s.hands[0]),
           actions: s.phase === "bid" ? `<div class="card-choice-panel">${bidControls}</div>` : "",
         };

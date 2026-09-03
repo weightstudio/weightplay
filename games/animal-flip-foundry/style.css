@@ -24,3 +24,7 @@ body.wp-stage-select-active .battle-ad-reserve{display:none !important}
 /* Keep the Battle utility in the reserved fourth header slot and large enough
    for the logical 44px interaction target at every responsive scale. */
 .battle-header .battle-reset{box-sizing:border-box;width:48px;min-width:48px;height:48px;min-height:48px;max-height:48px;padding:0;border:1px solid rgba(160,234,242,.36);border-radius:12px;background:#12334d;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden}
+
+/* v14: do not leave enabled Stage cards with a hit centre in the rail's
+   clipped gutter after the shared scaler centres the final chapter. */
+body[data-wp-game-id="animal-flip-foundry"] .stage-list > .wp-stage-card-clipped{visibility:hidden!important;pointer-events:none!important}

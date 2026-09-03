@@ -71,7 +71,7 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" data-wp-game-owned-guide class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">Abrindo o Cofre de Raízes…</strong></div>
 
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
@@ -101,8 +101,21 @@
         <article><h3 data-t="guideRulesTitle">Materiais interagem</h3><p data-t="guideRules">Água esfria Brasa. Um Escudo protege Taro uma vez. Chaves abrem pinos com a mesma runa.</p></article>
         <article><h3 data-t="guideStrategyTitle">Observe antes de puxar</h3><p data-t="guideStrategy">Uma rota errada pode prender o Núcleo ou expor Taro. Reiniciar restaura a câmara.</p></article>
         <article><h3 data-t="guideAccessTitle">Uma ação por vez</h3><p data-t="guideAccess">Selecione um pino e Puxe, ou use Enter/Espaço. Segurar nunca repete.</p></article>
+        <article><h3 data-t="guideSystemsTitle">Oficina e reações</h3><p data-t="guideSystems">Um pino move todos os objetos da câmara de origem para a câmara de destino. Água Lunar e Brasa viram vapor, o Escudo de Casco bloqueia uma Sombra e a Chave Rúnica abre os pinos marcados. Marcas de Semente compram ajudas de planejamento, mas não mudam a solução.</p></article>
+        <article><h3 data-t="guideProgressTitle">Seis capítulos, trinta câmaras</h3><p data-t="guideProgress">As primeiras câmaras ensinam rotas seguras; Jardins de Vapor adiciona reações; Guardas Sombrias adiciona proteção; Correntes Gêmeas exige duas rotas; Fechos Rúnicos adiciona chaves; Cofre-Raiz Vivo combina todas as regras. Cada câmara concluída libera a próxima e dá Marcas de Semente.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Informações de jogador, dispositivo e salvamento</h3><p data-t="guidePlayer">Toque, mouse, Enter e barra de espaço usam a mesma ação de puxar um pino. Desbloqueios, melhor número de puxadas, Marcas de Semente, melhorias, idioma e som ficam somente neste navegador. Não é preciso conta nem compra.</p></article>
       </div>
-    <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas câmaras estão incluídas?</dt><dd>Existem 30 câmaras de autoria em seis capítulos de regras materiais.</dd></div><div><dt>Um alfinete pode ser parcialmente puxado?</dt><dd>Não. Cada ação move um pino dourado completo.</dd></div><div><dt>O que a Água da Lua faz?</dt><dd>Ele resfria Emberlight em vapor inofensivo.</dd></div><div><dt>O progresso é salvo?</dt><dd>Sim, localmente neste navegador.</dd></div><div><dt>Quais controles e tamanhos de tela são compatíveis?</dt><dd>Toque, mouse e teclado seguem as mesmas regras; a interface escala como um único layout lógico em celulares, telas horizontais e desktops.</dd></div><div><dt>O progresso pode passar automaticamente para outro dispositivo?</dt><dd>Não. O jogo é salvo apenas no armazenamento local do navegador atual, então outro navegador ou dispositivo terá um progresso separado.</dd></div></dl></div></section>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Perguntas frequentes</h3><dl>
+        <div><dt data-t="guideFaq1Question">O que um pino move?</dt><dd data-t="guideFaq1Answer">Ele move todos os objetos de uma câmara para a câmara de destino, onde as reações são resolvidas.</dd></div>
+        <div><dt data-t="guideFaq2Question">Por que um pino rúnico está bloqueado?</dt><dd data-t="guideFaq2Answer">Leve primeiro a Chave Rúnica correspondente pela rota. A chave abre os pinos marcados, mas não muda a solução.</dd></div>
+        <div><dt data-t="guideFaq3Question">O que faz uma câmara falhar?</dt><dd data-t="guideFaq3Answer">Taro pode entrar na Brasa, encontrar uma Sombra sem proteção, ou o Núcleo pode tocar uma Sombra ou o vazio.</dd></div>
+        <div><dt data-t="guideFaq4Question">O progresso é salvo?</dt><dd data-t="guideFaq4Answer">Sim. Desbloqueios, melhor número de puxadas, Marcas de Semente e níveis de ajuda ficam salvos localmente neste navegador.</dd></div>
+      </dl></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Jogos relacionados</h3><p data-t="guideRelatedIntro">Se você gosta de ler os sistemas antes de agir, experimente estes quebra-cabeças do WeightPlay.</p><nav class="guide-related-links" aria-label="Related Games">
+        <a data-wp-related-id="animal-orb-fortress" href="/pt-br/games/animal-orb-fortress/" data-t="guideRelatedOrb">Fortaleza do Orbe Animal</a>
+        <a data-wp-related-id="animal-rune-tactics" href="/pt-br/games/animal-rune-tactics/" data-t="guideRelatedRune">Táticas de Runas Animal</a>
+      </nav></section>
+    </section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -139,8 +152,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260826-hindi-surface-v12b"></script>
-  <script src="game.js?v=20260831-rootvault-narrow-portrait-v16"></script>
+  <script src="locales.js?v=20260903-public-guide-v17"></script>
+  <script src="game.js?v=20260903-public-guide-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260827-rootvault-spanish-guide-v14b"></script>

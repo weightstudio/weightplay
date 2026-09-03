@@ -71,7 +71,7 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" data-wp-game-owned-guide class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">Apertura della Cripta delle Radici…</strong></div>
 
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
@@ -101,8 +101,21 @@
         <article><h3 data-t="guideRulesTitle">I materiali interagiscono</h3><p data-t="guideRules">L&#39;acqua raffredda le Braci. Uno Scudo protegge Taro una volta. Le chiavi aprono i perni con la stessa runa.</p></article>
         <article><h3 data-t="guideStrategyTitle">Osserva prima di estrarre</h3><p data-t="guideStrategy">Un percorso errato può bloccare il Nucleo o esporre Taro. Riavvia ripristina la camera.</p></article>
         <article><h3 data-t="guideAccessTitle">Un&#39;azione alla volta</h3><p data-t="guideAccess">Scegli un perno e premi Estrai, oppure usa Invio/Spazio. Tenere premuto non ripete.</p></article>
+        <article><h3 data-t="guideSystemsTitle">Officina e reazioni</h3><p data-t="guideSystems">Un perno sposta tutti gli oggetti dalla camera di origine a quella di destinazione. Acqua Lunare e Brace diventano vapore, la Protezione del Guscio blocca un&#39;Ombra e la Chiave Runica apre i perni segnati. I Marchi Seme acquistano aiuti di pianificazione, senza cambiare la soluzione.</p></article>
+        <article><h3 data-t="guideProgressTitle">Sei capitoli, trenta camere</h3><p data-t="guideProgress">Le prime camere insegnano percorsi sicuri; i Giardini di Vapore aggiungono reazioni; le Protezioni d&#39;Ombra aggiungono difesa; le Correnti Gemelle richiedono due percorsi; le Serrature Runiche introducono chiavi; la Radice Vivente combina tutte le regole. Completare una camera sblocca la successiva e assegna Marchi Seme.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Informazioni su giocatore, dispositivo e salvataggio</h3><p data-t="guidePlayer">Touch, mouse, Invio e Spazio usano la stessa azione di estrazione singola. Camere sbloccate, migliori mosse, Marchi Seme, potenziamenti, lingua e audio restano solo in questo browser. Non servono account o acquisti.</p></article>
       </div>
-    <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante camere sono incluse?</dt><dd>Ci sono 30 camere d&#39;autore suddivise in sei capitoli relativi alle regole materiali.</dd></div><div><dt>È possibile estrarre parzialmente uno spillo?</dt><dd>No. Ogni azione sposta un perno dorato completo.</dd></div><div><dt>Cosa fa Moonwater?</dt><dd>Raffredda Emberlight trasformandolo in vapore innocuo.</dd></div><div><dt>I progressi vengono salvati?</dt><dd>Sì, localmente in questo browser.</dd></div><div><dt>Quali controlli e dimensioni dello schermo sono supportati?</dt><dd>Touch, mouse e tastiera seguono le stesse regole; l’interfaccia si ridimensiona come un unico layout logico su telefono, schermo orizzontale e desktop.</dd></div><div><dt>I progressi possono passare automaticamente a un altro dispositivo?</dt><dd>No. Il gioco viene salvato solo nella memoria locale del browser attuale, quindi un altro browser o dispositivo avrà progressi separati.</dd></div></dl></div></section>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Domande frequenti</h3><dl>
+        <div><dt data-t="guideFaq1Question">Cosa muove un perno?</dt><dd data-t="guideFaq1Answer">Sposta tutti gli oggetti da una camera alla destinazione, dove vengono risolte le reazioni dei materiali.</dd></div>
+        <div><dt data-t="guideFaq2Question">Perché un perno runico è bloccato?</dt><dd data-t="guideFaq2Answer">Porta prima lungo il percorso la Chiave Runica corrispondente. La chiave apre i perni segnati senza cambiare la soluzione.</dd></div>
+        <div><dt data-t="guideFaq3Question">Quando fallisce una camera?</dt><dd data-t="guideFaq3Answer">Taro può entrare nella Brace, incontrare un&#39;Ombra senza protezione, oppure il Nucleo può toccare un&#39;Ombra o il vuoto.</dd></div>
+        <div><dt data-t="guideFaq4Question">I progressi vengono salvati?</dt><dd data-t="guideFaq4Answer">Sì. Sblocchi, migliori mosse, Marchi Seme e livelli degli aiuti sono salvati localmente in questo browser.</dd></div>
+      </dl></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Giochi correlati</h3><p data-t="guideRelatedIntro">Se ti piace leggere i sistemi prima di muoverti, prova questi puzzle WeightPlay.</p><nav class="guide-related-links" aria-label="Related Games">
+        <a data-wp-related-id="animal-orb-fortress" href="/it/games/animal-orb-fortress/" data-t="guideRelatedOrb">Fortezza dell&#39;Orbe Animale</a>
+        <a data-wp-related-id="animal-rune-tactics" href="/it/games/animal-rune-tactics/" data-t="guideRelatedRune">Tattiche delle Rune Animali</a>
+      </nav></section>
+    </section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -139,8 +152,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260826-hindi-surface-v12b"></script>
-  <script src="game.js?v=20260831-rootvault-narrow-portrait-v16"></script>
+  <script src="locales.js?v=20260903-public-guide-v17"></script>
+  <script src="game.js?v=20260903-public-guide-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260827-rootvault-spanish-guide-v14b"></script>

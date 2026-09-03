@@ -5,7 +5,7 @@
   window.__weightplaySpadesAnalyticsInstalled = true;
 
   const GAME_ID = "spades";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v19";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",

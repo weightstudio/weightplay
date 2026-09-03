@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="style.css?v=20260809-result-target-44-v9">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-<body data-screen="main" data-wp-combined-sound="true">
+  <body data-screen="main" data-wp-game-id="animal-spectrum-pulse" data-wp-combined-sound="true" data-wp-game-owned-guide>
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-spectrum-pulse/spectrum-spirit.webp" alt=""><strong data-t="loading">Tuning the spectrum drum…</strong></div>
 
   <div id="mainGroup" class="main-group">
@@ -70,16 +70,21 @@
         <article><h3 data-t="guideLoopTitle">One press, one pulse</h3><p data-t="guideLoop">Tap, click, Space, Enter, or Arrow Up once for one identical lift. Release before pulsing again.</p></article>
         <article><h3 data-t="guideReadTitle">Colour is never the only clue</h3><p data-t="guideRead">Cyan wave, gold sun, violet diamond, and coral paw always keep distinct emblems and textures.</p></article>
         <article><h3 data-t="guideStrategyTitle">Wait on safe checkpoints</h3><p data-t="guideStrategy">A cleared gate becomes a safe resting beat. Watch the scan marker, then commit when your emblem arrives.</p></article>
+        <article><h3 data-t="guideProgressTitle">Six chapters of rising pressure</h3><p data-t="guideProgress">Towers 1–5 teach one rotating ring. Towers 6–10 add counter-rotating pairs; 11–15 add bars and crosses; 16–20 use petal spirals; 21–25 change the tempo; 26–30 combine crowns, petals, and reversals. Each tower keeps its own best time and medal.</p></article>
+        <article><h3 data-t="guideDesignTitle">Designed around one readable beat</h3><p data-t="guideDesign">The spirit always rises by the same pulse, while the gate moves independently. That separation makes the decision visible: read the bottom marker, choose the matching colour and emblem, then commit. Pulse Control, Foresight, and Echo Guard ease recovery without changing the timing rule.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Player and save information</h3><p data-t="guidePlayer">Tap, click, Space, Enter, or Arrow Up use the same pulse action. Tower unlocks, medals, best times, resonance upgrades, language, and the cosmetic trail stay in this browser. No account or purchase is required; the trail is cosmetic only.</p></article>
       </div>
       <section class="guide-related" aria-labelledby="guideRelatedTitle">
-        <h3 id="guideRelatedTitle"></h3>
-        <p id="guideRelatedIntro"></p>
-        <nav id="guideRelatedLinks" class="guide-related-links"></nav>
+        <h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Related Games</h3>
+        <p id="guideRelatedIntro" data-t="guideRelatedIntro">Continue your WeightPlay journey with two games that reward careful reading.</p>
+        <nav id="guideRelatedLinks" class="guide-related-links" aria-label="Related Games"><a data-wp-related-id="animal-rune-reels" href="/en/games/animal-rune-reels/" data-t="guideRelatedReels">Animal Rune Reels</a><a data-wp-related-id="animal-moonlight-heist" href="/en/games/animal-moonlight-heist/" data-t="guideRelatedHeist">Animal Moonlight Heist</a></nav>
       </section>
       <section class="guide-faq" aria-labelledby="guideFaqTitle">
-        <h3 id="guideFaqTitle"></h3>
-        <details><summary id="guideFaqOneQuestion"></summary><p id="guideFaqOneAnswer"></p></details>
-        <details><summary id="guideFaqTwoQuestion"></summary><p id="guideFaqTwoAnswer"></p></details>
+        <h3 id="guideFaqTitle" data-t="guideFaqTitle">FAQ</h3>
+        <details><summary id="guideFaqOneQuestion" data-t="guideFaq1Question">What is the safest way to pulse?</summary><p id="guideFaqOneAnswer" data-t="guideFaq1Answer">Use one short press, release fully, and wait for the scan marker to meet your colour and emblem before pulsing again.</p></details>
+        <details><summary id="guideFaqTwoQuestion" data-t="guideFaq2Question">Do upgrades change the timing rules?</summary><p id="guideFaqTwoAnswer" data-t="guideFaq2Answer">No. Pulse Control, Foresight, and Echo Guard make recovery easier, but every gate still uses the same colour-and-emblem timing rule.</p></details>
+        <details><summary data-t="guideFaq3Question">What happens after a wrong gate?</summary><p data-t="guideFaq3Answer">The run fails unless Echo Guard or the practice beat returns you to a safe checkpoint; the Result explains the next retry.</p></details>
+        <details><summary data-t="guideFaq4Question">Is progress saved?</summary><p data-t="guideFaq4Answer">Tower unlocks, medals, best times, upgrades, and preferences are stored locally in this browser.</p></details>
       </section>
     </section>
   </div>
@@ -135,9 +140,9 @@
   </script>
 
   <script src="../../src/site-config.js"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
-  <script src="locales.js?v=20260816-result-goal-v10"></script>
+  <script src="locales.js?v=20260903-public-guide-v15"></script>
   <script src="../../src/wallet.js"></script>
-  <script src="game.js?v=20260823-arabic-dynamic-copy-v14-3e4c9b1a"></script>
+  <script src="game.js?v=20260903-public-guide-v15"></script>
   <script src="../../src/game-page-info.js?v=20260823-spectrum-guide-v15-4b8f2c71"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>

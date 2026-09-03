@@ -71,7 +71,7 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rootvault-pins/animal-rootvault-pins-cover.webp" />
   </head>
-<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" class="wp-shell-main-active">
+<body data-screen="main" data-sound-toggle="off" data-wp-game-id="animal-rootvault-pins" data-audience="general" data-wp-game-owned-guide class="wp-shell-main-active">
   <div id="loadingPanel" class="loading" role="status"><img src="../../assets/animal-rootvault-pins/animal-rootvault-pins-shadow-wisp.webp" alt=""><strong data-t="loading">Abriendo la cámara raíz…</strong></div>
 
   <div id="mainGroup" class="main-group wp-standard-main-screen" data-screen="main">
@@ -101,8 +101,21 @@
         <article><h3 data-t="guideRulesTitle">Los materiales interactúan</h3><p data-t="guideRules">El agua enfría las Brasas. Un Escudo protege a Taro una vez. Las llaves abren clavijas con la misma runa.</p></article>
         <article><h3 data-t="guideStrategyTitle">Observa antes de sacar</h3><p data-t="guideStrategy">Una ruta errónea puede atrapar el Núcleo o exponer a Taro. Reiniciar restaura la cámara.</p></article>
         <article><h3 data-t="guideAccessTitle">Una acción cada vez</h3><p data-t="guideAccess">Elige una clavija y pulsa Sacar, o usa Enter/Espacio. Mantener pulsado nunca repite.</p></article>
+        <article><h3 data-t="guideSystemsTitle">Taller y reacciones</h3><p data-t="guideSystems">Una clavija mueve todos los objetos de su cámara de origen a la cámara de destino. El Agua Lunar y la Luz de Ascua se convierten en vapor, el Resguardo de Caparazón bloquea un Espectro de Sombra y la Llave Rúnica abre las clavijas marcadas. Las Marcas Semilla compran ayudas de planificación, pero no cambian la solución.</p></article>
+        <article><h3 data-t="guideProgressTitle">Seis capítulos, treinta cámaras</h3><p data-t="guideProgress">Las primeras cámaras enseñan rutas seguras; Jardines de Vapor añade reacciones; Resguardos de Sombra añade protección; Corrientes Gemelas exige dos rutas; Cerraduras Rúnicas añade llaves; Cámara Raíz Viva combina todas las reglas. Cada cámara completada desbloquea la siguiente y otorga Marcas Semilla.</p></article>
+        <article><h3 data-t="guidePlayerTitle">Información de jugador, dispositivo y guardado</h3><p data-t="guidePlayer">El tacto, el ratón, Enter y la barra espaciadora usan la misma acción de sacar una clavija. Desbloqueos, mejores movimientos, Marcas Semilla, mejoras, idioma y sonido solo se guardan en este navegador. No se necesita cuenta ni compra.</p></article>
       </div>
-    <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas cámaras hay?</dt><dd>Hay 30 cámaras diseñadas en seis capítulos de reglas materiales.</dd></div><div><dt>¿Se puede tirar parcialmente de una clavija?</dt><dd>No. Cada acción mueve una clavija dorada completa.</dd></div><div><dt>¿Qué hace el Agua Lunar?</dt><dd>Enfría Emberlight hasta convertirlo en vapor inofensivo.</dd></div><div><dt>¿Qué controles y tamaños de pantalla se admiten?</dt><dd>El tacto, el ratón y el teclado siguen las mismas reglas; la interfaz escala como un solo diseño lógico en móvil, apaisado y escritorio.</dd></div><div><dt>¿El progreso puede pasar automáticamente a otro dispositivo?</dt><dd>No. El juego solo se guarda en el almacenamiento local del navegador actual, así que otro navegador o dispositivo tiene un progreso separado.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>Sí, localmente en este navegador.</dd></div></dl></div></section>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Preguntas frecuentes</h3><dl>
+        <div><dt data-t="guideFaq1Question">¿Qué mueve una clavija?</dt><dd data-t="guideFaq1Answer">Mueve todos los objetos de una cámara a la cámara de destino, donde se resuelven las reacciones.</dd></div>
+        <div><dt data-t="guideFaq2Question">¿Por qué está bloqueada una clavija rúnica?</dt><dd data-t="guideFaq2Answer">Lleva primero la Llave Rúnica correspondiente por su ruta. La llave abre las clavijas marcadas, pero no cambia la solución.</dd></div>
+        <div><dt data-t="guideFaq3Question">¿Qué hace fallar una cámara?</dt><dd data-t="guideFaq3Answer">Taro puede entrar en Luz de Ascua, encontrarse con una Sombra sin protección, o el Núcleo puede tocar una Sombra o el vacío.</dd></div>
+        <div><dt data-t="guideFaq4Question">¿Se guarda el progreso?</dt><dd data-t="guideFaq4Answer">Sí. Desbloqueos, mejores movimientos, Marcas Semilla y niveles de ayuda se guardan localmente en este navegador.</dd></div>
+      </dl></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Juegos relacionados</h3><p data-t="guideRelatedIntro">Si te gusta leer los sistemas antes de actuar, prueba estos rompecabezas de WeightPlay.</p><nav class="guide-related-links" aria-label="Related Games">
+        <a data-wp-related-id="animal-orb-fortress" href="/es/games/animal-orb-fortress/" data-t="guideRelatedOrb">Fortaleza del Orbe Animal</a>
+        <a data-wp-related-id="animal-rune-tactics" href="/es/games/animal-rune-tactics/" data-t="guideRelatedRune">Tácticas de Runas Animal</a>
+      </nav></section>
+    </section>
   </div>
 
   <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
@@ -139,8 +152,8 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260826-hindi-surface-v12b"></script>
-  <script src="game.js?v=20260831-rootvault-narrow-portrait-v16"></script>
+  <script src="locales.js?v=20260903-public-guide-v17"></script>
+  <script src="game.js?v=20260903-public-guide-v17"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260827-rootvault-spanish-guide-v14b"></script>
