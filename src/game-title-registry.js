@@ -1837,7 +1837,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Torre di cuscini",
     "ru": "Башня подушек",
     "hi": "कुशन टावर",
-    "ar": "Башня подушек"
+    "ar": "رصّ الوسائد"
   },
   "animal-burrow-builder": {
     "__localizedExact": true,

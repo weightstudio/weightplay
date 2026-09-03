@@ -2905,7 +2905,7 @@ for (const game of window.WONDER_LOBBY.games) {
     id: "animal-cushion-stack",
     audience: "general",
     status: "planned",
-    title: localize(["Cushion Stack", "軟墊堆堆樂", "软垫堆堆乐", "クッションスタック", "쿠션 쌓기", "Torre de cojines", "Torre de almofadas", "Pile de coussins", "Kissenstapel", "Torre di cuscini", "Башня подушек", "कुशन टावर", "Башня подушек"]),
+    title: localize(["Cushion Stack", "軟墊堆堆樂", "软垫堆堆乐", "クッションスタック", "쿠션 쌓기", "Torre de cojines", "Torre de almofadas", "Pile de coussins", "Kissenstapel", "Torre di cuscini", "Башня подушек", "कुशन टावर", "رصّ الوسائد"]),
     statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
     type: localize(["Stability Stack Puzzle", "穩定堆疊益智", "稳定堆叠益智", "安定スタックパズル", "안정 쌓기 퍼즐", "Puzzle de apilado estable", "Puzzle de empilhar com equilíbrio", "Puzzle de pile stable", "Stapel-Puzzle", "Puzzle della torre stabile", "Пазл устойчивой башни", "स्थिर ढेर पहेली", "لغز التكديس المتوازن"]),
     description: localize(["Choose the next soft block so Taro can build a safe little lookout.", "選出下一塊柔軟積木，幫塔羅蓋好安全的小瞭望台。", "选出下一块柔软积木，帮塔罗盖好安全的小瞭望台。", "次のやわらかブロックを選び、タロの安全な見張り台を作ろう。", "다음 폭신한 블록을 골라 타로의 안전한 전망대를 만들어 보세요.", "Elige el siguiente bloque blando para construir un mirador seguro.", "Escolha o próximo bloco macio para construir um mirante seguro.", "Choisis le prochain bloc doux pour bâtir un belvédère sûr.", "Wähle den nächsten weichen Block für einen sicheren Ausguck.", "Scegli il prossimo blocco morbido per costruire un punto d'osservazione sicuro.", "Выберите следующий мягкий блок для безопасной смотровой площадки.", "अगला मुलायम ब्लॉक चुनकर सुरक्षित चौकी बनाएं।", "اختر الكتلة اللينة التالية لبناء منصة مراقبة آمنة."]),
@@ -3084,25 +3084,42 @@ const animalConstellationKeeperPlanned = {
   internalTrial: "index.html?trial=1",
   art: { kind: "image", background: "games/animal-constellation-keeper/assets/animal-constellation-keeper-cover.png", hideHero: true },
 };
-const animalConstellationKeeperFourMapPhrases = {
-  en: ["three quiet night maps", "four quiet night maps", "3 Night Maps", "4 Night Maps"],
-  "zh-Hant": ["三幅安靜夜空地圖", "四幅安靜夜空地圖", "3 幅夜空地圖", "4 幅夜空地圖"],
-  "zh-Hans": ["三幅安静夜空地图", "四幅安静夜空地图", "3 幅夜空地图", "4 幅夜空地图"],
-  ja: ["3つの夜空地図", "4つの夜空地図", "3つの夜空マップ", "4つの夜空マップ"],
-  ko: ["밤하늘 지도 세 장", "밤하늘 지도 네 장", "밤하늘 지도 3개", "밤하늘 지도 4개"],
-  es: ["tres mapas nocturnos", "cuatro mapas nocturnos", "3 mapas nocturnos", "4 mapas nocturnos"],
-  "pt-BR": ["três mapas noturnos", "quatro mapas noturnos", "3 mapas noturnos", "4 mapas noturnos"],
-  fr: ["trois cartes nocturnes", "quatre cartes nocturnes", "3 cartes nocturnes", "4 cartes nocturnes"],
-  de: ["drei Nachtkarten", "vier Nachtkarten", "3 Nachtkarten", "4 Nachtkarten"],
-  it: ["tre mappe notturne", "quattro mappe notturne", "3 mappe notturne", "4 mappe notturne"],
-  ru: ["три ночные карты", "четыре ночные карты", "3 ночные карты", "4 ночные карты"],
-  hi: ["रात के तीन मानचित्र", "रात के चार मानचित्र", "3 रात के मानचित्र", "4 रात के मानचित्र"],
-  ar: ["ثلاث خرائط ليلية", "أربع خرائط ليلية", "3 خرائط ليلية", "4 خرائط ليلية"]
+const animalConstellationKeeperCampaignDescriptions = {
+  en: "Read two sky rules, choose the only animal constellation that obeys them, and restore six five-map arcs across a 30-map night campaign.",
+  "zh-Hant": "閱讀兩條星空規則，選出唯一符合的動物星圖，修復由六組五幅地圖組成的 30 幅夜空戰役。",
+  "zh-Hans": "阅读两条星空规则，选出唯一符合的动物星图，修复由六组五幅地图组成的 30 幅夜空战役。",
+  ja: "2つの星空ルールを読み、条件に合う動物星座を選んで、5マップずつ6章、全30マップの夜空キャンペーンを直そう。",
+  ko: "두 별자리 규칙을 읽고 조건에 맞는 동물 별자리를 골라 5개 지도씩 6개 장, 총 30개의 밤하늘 캠페인을 복원해요.",
+  es: "Lee dos reglas del cielo, elige la única constelación animal válida y restaura una campaña nocturna de 30 mapas en seis arcos de cinco.",
+  "pt-BR": "Leia duas regras do céu, escolha a única constelação animal correta e restaure uma campanha noturna de 30 mapas em seis arcos de cinco.",
+  fr: "Lis deux règles du ciel, choisis la seule constellation animale correcte et restaure une campagne nocturne de 30 cartes en six arcs de cinq.",
+  de: "Lies zwei Himmelsregeln, wähle das einzige passende Tiersternbild und repariere eine Nachtkampagne mit 30 Karten in sechs Bögen zu je fünf.",
+  it: "Leggi due regole del cielo, scegli l'unica costellazione animale corretta e restaura una campagna notturna di 30 mappe in sei archi da cinque.",
+  ru: "Прочитайте два правила неба, выберите единственное подходящее звериное созвездие и восстановите ночную кампанию из 30 карт в шести арках по пять.",
+  hi: "आकाश के दो नियम पढ़ें, सही पशु नक्षत्र चुनें और छह पाँच-मानचित्र अध्यायों वाली 30-मानचित्र रात की मुहिम बहाल करें।",
+  ar: "اقرأ قاعدتين للسماء، اختر كوكبة الحيوانات الوحيدة المطابقة وأصلح حملة ليلية من 30 خريطة في ستة أقواس، كل منها خمس خرائط.",
 };
-for (const [locale, [oldDescription, newDescription, oldMeta, newMeta]] of Object.entries(animalConstellationKeeperFourMapPhrases)) {
-  animalConstellationKeeperPlanned.description[locale] = animalConstellationKeeperPlanned.description[locale].replace(oldDescription, newDescription);
-  animalConstellationKeeperPlanned.meta[locale][0] = animalConstellationKeeperPlanned.meta[locale][0].replace(oldMeta, newMeta);
+const animalConstellationKeeperCampaignMeta = animalConstellationKeeperLocalized([
+  ["30 Night Maps", "Relationship Clues", "Calm Retry"],
+  ["30 幅夜空地圖", "關係線索", "平靜重試"],
+  ["30 幅夜空地图", "关系线索", "平静重试"],
+  ["30の夜空マップ", "関係の手がかり", "穏やかな再挑戦"],
+  ["밤하늘 지도 30개", "관계 단서", "차분한 재시도"],
+  ["30 mapas nocturnos", "Pistas relacionales", "Reintento sereno"],
+  ["30 mapas noturnos", "Pistas de relação", "Nova tentativa calma"],
+  ["30 cartes nocturnes", "Indices relationnels", "Reprise sereine"],
+  ["30 Nachtkarten", "Beziehungshinweise", "Ruhiger Versuch"],
+  ["30 mappe notturne", "Indizi relazionali", "Riprova calma"],
+  ["30 ночных карт", "Подсказки отношений", "Спокойный повтор"],
+  ["30 रात के मानचित्र", "संबंध संकेत", "शांत पुनः प्रयास"],
+  ["30 خريطة ليلية", "تلميحات العلاقات", "محاولة هادئة"],
+]);
+for (const locale of animalConstellationKeeperLocaleKeys) {
+  animalConstellationKeeperPlanned.description[locale] = animalConstellationKeeperCampaignDescriptions[locale];
+  animalConstellationKeeperPlanned.meta[locale] = animalConstellationKeeperCampaignMeta[locale];
 }
+// v5 owns the complete 30-map campaign copy above; no compatibility rewrite
+// for the retired three/four-map prototype is needed.
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalConstellationKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalConstellationKeeperPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalConstellationKeeperPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalConstellationKeeperPlanned.id);
