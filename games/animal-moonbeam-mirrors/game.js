@@ -27,7 +27,7 @@
     if (!$('battleView').hidden) renderBattle();
   }
   function populateLocales() { const select = $("localeSelect"); localeKeys.forEach((key) => { const option = document.createElement("option"); option.value = key; option.textContent = locales.en.languageNames[key]; select.append(option); }); select.value = state.locale; select.addEventListener("change", () => { state.locale = select.value; safeStorage.set("weightplay-moonbeam-mirrors-locale", state.locale); applyLocale(); }); }
-  function showView(view) { $("mainView").hidden = view !== "main"; $("battleView").hidden = view !== "battle"; $("resultView").hidden = view !== "result"; $("leaveDialog").hidden = true; document.body.dataset.screen = view; window.scrollTo(0, 0); }
+  function showView(view) { $("mainView").hidden = view !== "main"; $("battleView").hidden = view !== "battle"; $("resultView").hidden = view !== "result"; $("leaveDialog").hidden = true; const guide = document.querySelector("[data-wp-game-guide].game-page-info-static"); if (guide) guide.hidden = view !== "main"; document.body.dataset.screen = view; window.scrollTo(0, 0); }
   function cloneRound() { const round = rounds[state.round]; state.orientations = Object.assign({}, round.initial); state.turns = 0; }
   function start() { state.round = 0; state.totalTurns = 0; cloneRound(); emit("moonbeam_start"); showView("battle"); renderBattle(); }
   function trace() {

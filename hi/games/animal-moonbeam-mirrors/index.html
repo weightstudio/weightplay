@@ -27,9 +27,12 @@
     <meta name="weightplay-interface-version" content="6">
     <meta name="description" content="दो-स्थिति वाले दर्पण घुमाकर ओरला की चाँदनी मांद तक पहुँचाएँ।" />
     <title>चाँदनी दर्पण | WeightPlay</title>
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-moonbeam-mirrors-v1" data-wp-game-guide>
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260903-moonbeam-mirrors-v1" data-wp-battle-standard>
     <link rel="stylesheet" href="styles.css?v=20260903-moonbeam-mirrors-v1">
     <script src="locales.js?v=20260903-moonbeam-mirrors-v1" defer></script>
     <script src="game.js?v=20260903-moonbeam-mirrors-v1" defer></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260903-moonbeam-mirrors-v1" data-wp-battle-standard defer></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="चाँदनी दर्पण | WeightPlay" />
@@ -46,7 +49,7 @@
   "@type": "VideoGame",
   "name": "चाँदनी दर्पण",
   "url": "https://weightplay.com/hi/games/animal-moonbeam-mirrors/",
-  "image": "https://weightplay.com/games/animal-moonbeam-mirrors/assets/animal-moonbeam-mirrors-cover.svg",
+  "image": "https://weightplay.com/games/animal-moonbeam-mirrors/assets/animal-moonbeam-mirrors-cover-v2.png",
   "description": "दो-स्थिति वाले दर्पण घुमाकर ओरला की चाँदनी मांद तक पहुँचाएँ।",
   "publisher": {
     "@type": "Organization",
@@ -78,16 +81,16 @@
     <main class="app-shell" id="app" data-wp-game-id="animal-moonbeam-mirrors" data-wp-game-version="v1" data-wp-interface-version="6">
       <section id="mainView" class="screen main-screen" data-screen="main" aria-labelledby="mainTitle">
         <header class="main-header wp-main-shell-header">
-          <a class="home-link wp-shell-return" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><span class="home-mark" aria-hidden="true">✦</span></a>
+          <a class="home-link wp-shell-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"></a>
           <div class="header-title"><strong data-copy="title">Moonbeam Mirrors</strong></div>
-          <button id="settingsBtn" class="icon-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
+          <button id="settingsBtn" class="icon-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
           <div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden>
             <label class="settings-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"></select></label>
-            <div class="settings-row"><span data-copy="soundLabel">Sound</span><button id="soundToggle" class="sound-switch" type="button" role="switch" aria-checked="true" aria-pressed="true"><span class="sound-knob" aria-hidden="true"></span><span class="sr-only" data-copy="soundOn">Sound on</span></button></div>
+            <div class="settings-row wp-shell-sound-row"><span data-copy="soundLabel">Sound</span><button id="soundToggle" class="sound-switch" data-sound-toggle type="button" role="switch" aria-checked="true" aria-pressed="true"><span class="sound-knob" aria-hidden="true"></span><span class="sr-only" data-copy="soundOn">Sound on</span></button></div>
           </div>
         </header>
         <div class="hero-card">
-          <img class="main-poster" src="assets/animal-moonbeam-mirrors-cover.svg" alt="" aria-hidden="true" width="900" height="900">
+          <img class="main-poster" src="assets/animal-moonbeam-mirrors-cover-v2.webp" alt="" aria-hidden="true" width="1254" height="1254">
           <div class="main-copy">
             <p class="eyebrow" data-copy="eyebrow">A calm reflection puzzle</p>
             <h1 id="mainTitle" data-copy="title">चाँदनी दर्पण</h1>
@@ -96,21 +99,13 @@
             <button class="primary-button" id="startBtn" type="button" data-copy="start">Start the moon path</button>
           </div>
         </div>
-        <details class="game-guide" open>
-          <summary data-copy="guideTitle">How to play</summary>
-          <ol>
-            <li data-copy="guideOne">Tap a mirror to turn its beam.</li>
-            <li data-copy="guideTwo">Follow the silver beam through the grid.</li>
-            <li data-copy="guideThree">When it reaches the moon den, check your path.</li>
-          </ol>
-        </details>
       </section>
 
-      <section id="battleView" class="screen battle-screen" data-screen="battle" hidden aria-labelledby="battleTitle">
+      <section id="battleView" class="screen battle-screen battle-canvas" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-landscape-width="844" data-wp-battle-landscape-height="334" hidden aria-labelledby="battleTitle">
         <header class="battle-header">
-          <button id="homeBtn" class="back-button" type="button" aria-label="Home"><span aria-hidden="true">←</span><span class="sr-only" data-copy="home">Home</span></button>
+          <button id="homeBtn" class="back-button wp-shell-return" data-wp-return="battle" type="button" aria-label="Home"><span aria-hidden="true">←</span><span class="sr-only" data-copy="home">Home</span></button>
           <div class="header-title"><strong id="battleTitle" data-copy="battleTitle">Moon path</strong></div>
-          <button id="battleSoundToggle" class="utility-button" type="button" aria-label="Sound" aria-pressed="true">♪</button>
+          <button id="battleSoundToggle" class="utility-button wp-shell-settings-button" data-wp-battle-utility type="button" aria-label="Sound" aria-pressed="true">♪</button>
         </header>
         <div class="battle-content">
           <div class="status-row"><span id="roundLabel"></span><span><strong id="turnCount">0</strong> <span data-copy="turns">turns</span></span></div>
@@ -131,12 +126,12 @@
       </section>
 
       <section id="resultView" class="screen result-screen" hidden aria-labelledby="resultTitle">
-        <div class="result-card"><div class="result-orb" aria-hidden="true">☾</div><p class="eyebrow" data-copy="completeEyebrow">Moon paths complete</p><h2 id="resultTitle" data-copy="complete">The den is glowing.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayBtn" type="button" data-copy="replay">Trace again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
+        <div class="result-card"><div class="result-orb" aria-hidden="true">☾</div><div class="result-visual"><img src="assets/animal-moonbeam-mirrors-orla.webp" alt="" aria-hidden="true" width="1024" height="1536"></div><p class="eyebrow" data-copy="completeEyebrow">Moon paths complete</p><h2 id="resultTitle" data-copy="complete">The den is glowing.</h2><p id="resultSummary"></p><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestCount">—</strong></p><div class="result-actions"><button class="primary-button" id="replayBtn" type="button" data-copy="replay">Trace again</button><button class="secondary-button" id="homeFromResult" type="button" data-copy="home">Home</button></div></div>
       </section>
       <div class="general-reserve battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
       <footer><span data-copy="footer">Internal prototype · no public lobby or sitemap entry</span></footer>
     </main>
-  <section class="game-page-info game-page-info-static" aria-label="चाँदनी दर्पण खेल की जानकारी">
+    <section class="game-page-info game-page-info-static" aria-label="चाँदनी दर्पण खेल की जानकारी">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>चाँदनी दर्पण</h2><p>दो-स्थिति वाले दर्पण घुमाकर ओरला की चाँदनी मांद तक पहुँचाएँ।</p></div>
@@ -154,7 +149,7 @@
 
     </div>
   </section>
-<script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

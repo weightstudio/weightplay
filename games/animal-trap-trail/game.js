@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 10;
+  const GAME_VERSION = 11;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -205,6 +205,8 @@
   function show(name) {
     state.screen = name;
     document.body.dataset.screen = name === "result" ? "battle" : name;
+    const guide = document.querySelector(".game-page-info-static");
+    if (guide) guide.hidden = name !== "main";
     cancelAnimationFrame(state.raf);
     const result = document.querySelector("#result-screen");
     document.querySelectorAll(".screen").forEach((el) => {
