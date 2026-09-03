@@ -1650,6 +1650,7 @@
       gameplay: "Side-Scrolling Action Platformer RPG",
       genre: ["Action", "Platformer", "Animal", "RPG"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      relatedIds: ["animal-prism-breakers", "animal-sketchwheel-rally", "animal-bamboo-pipes"],
       guideKicker: "WeightPlay Original Game Guide",
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
@@ -1865,6 +1866,7 @@
     "animal-bounce-brawl": {
       title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
       gameplay: "Soft Physics Knockback Arena", genre: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction", "Spatial Awareness"],
+      relatedIds: ["animal-sketchwheel-rally", "animal-prism-breakers", "animal-cratebound"],
       intro: "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
       story: ["A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms."],
       systems: ["Arrow keys or visible controls move your character. Space performs the bounce-strike, and the tool buttons change the active foam tool.", "Hits create visible knockback and a brief impact effect. Win by reducing the rival's energy; lose by exhausting your own energy or letting the arena timer run out."],

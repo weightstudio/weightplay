@@ -73,3 +73,5 @@
   #battleScreen #battlePanel>.move-hint{grid-column:2;grid-row:4;}
   #battleScreen #battlePanel>.battle-actions{grid-column:2;grid-row:5;}
 }
+html:has(body[data-screen="stage"]),html:has(body[data-screen="battle"]),body[data-screen="stage"],body[data-screen="battle"]{width:100%;height:100%;min-height:0;overflow:hidden;overscroll-behavior:none;}
+#gameGuide[hidden]{display:none!important;}

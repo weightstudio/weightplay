@@ -24,6 +24,7 @@
     hi: { gameGuideLabel: "बिल बनाने वाले खेल की गाइड", aria: "बिल बनाने वाला खेल की जानकारी", kicker: "WeightPlay मौलिक गेम गाइड", title: "बिल बनाने वाला", intro: "मॉड्यूल चुनकर सही बिल योजना में रखें।", gameplayLabel: "गेमप्ले", gameplay: "निर्माण पहेली", genreLabel: "शैली", genre: "पहेली · निर्माण · स्थानिक योजना · परिवार · पशु", faqTitle: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।" },
     ar: { gameGuideLabel: "دليل لعبة بناء الجحور", aria: "معلومات لعبة بناء الجحور", kicker: "دليل ألعاب WeightPlay الأصلية", title: "بناء الجحور", intro: "اختر وحدة وضعها في مخطط الجحر المناسب.", gameplayLabel: "طريقة اللعب", gameplay: "لغز بناء المأوى", genreLabel: "النوع", genre: "لغز · بناء · تخطيط مكاني · عائلي · حيوانات", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "تبقى أفضل النتائج والتفضيلات في هذا المتصفح فقط." }
   };
+  const a11yCopy = { en: { mainBack: "Back to WeightPlay", blueprint: "Burrow blueprint" }, "zh-Hant": { mainBack: "返回 WeightPlay", blueprint: "地穴藍圖" }, "zh-Hans": { mainBack: "返回 WeightPlay", blueprint: "地穴蓝图" }, ja: { mainBack: "WeightPlayに戻る", blueprint: "地穴の設計図" }, ko: { mainBack: "WeightPlay로 돌아가기", blueprint: "굴 설계도" }, es: { mainBack: "Volver a WeightPlay", blueprint: "Plano de madriguera" }, "pt-BR": { mainBack: "Voltar ao WeightPlay", blueprint: "Plano da toca" }, fr: { mainBack: "Retour à WeightPlay", blueprint: "Plan du terrier" }, de: { mainBack: "Zurück zu WeightPlay", blueprint: "Höhlenplan" }, it: { mainBack: "Torna a WeightPlay", blueprint: "Progetto della tana" }, ru: { mainBack: "Вернуться в WeightPlay", blueprint: "План норы" }, hi: { mainBack: "WeightPlay पर वापस जाएँ", blueprint: "बिल की योजना" }, ar: { mainBack: "العودة إلى WeightPlay", blueprint: "مخطط الجحر" } };
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const state = { locale: "en", sound: true, roundIndex: 0, placements: 0, completed: 0, selected: null, placed: [] };
   const $ = (id) => document.getElementById(id);
@@ -51,9 +52,11 @@
   }
   function applyLocale() {
     const copy = locales[state.locale] || locales.en;
+    const access = a11yCopy[state.locale] || a11yCopy.en;
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale; document.documentElement.dir = copy.direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     applyStaticGuideLocale();
+    $("mainReturn").setAttribute("aria-label", access.mainBack); $("blueprint").setAttribute("aria-label", access.blueprint);
     $("mainSettingsBtn").setAttribute("aria-label", t("settings")); $("mainSettingsPopover").setAttribute("aria-label", t("settings")); $("homeFromBattle").setAttribute("aria-label", t("home")); $("localeSelect").setAttribute("aria-label", t("language"));
     $("soundToggle").setAttribute("aria-pressed", String(state.sound)); $("soundToggle").setAttribute("aria-checked", String(state.sound)); $("battleSoundToggle").setAttribute("aria-pressed", String(state.sound)); $("battleSoundToggle").setAttribute("aria-label", t(state.sound ? "soundOn" : "soundOff")); $("battleSoundToggle").textContent = state.sound ? "♪" : "×";
     if (!$('battleView').hidden) renderRound();
@@ -64,7 +67,7 @@
   function start() { state.roundIndex = 0; state.placements = 0; state.completed = 0; state.selected = null; state.placed = []; showView("battleView"); renderRound(); }
   function renderRound() {
     const round = rounds[state.roundIndex]; $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length }); $("placementCount").textContent = String(state.placements); $("instruction").textContent = t("instruction");
-    const blueprint = $("blueprint"); blueprint.replaceChildren();
+    const blueprint = $("blueprint"); blueprint.setAttribute("aria-label", (a11yCopy[state.locale] || a11yCopy.en).blueprint); blueprint.replaceChildren();
     ["floor", "shelter", "nest"].forEach((slot, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "blueprint-slot"; button.dataset.slot = slot; const token = state.placed[index]; if (token) { button.classList.add("is-filled"); button.innerHTML = `<span class="slot-symbol" aria-hidden="true">${moduleSymbols[token]}</span><span>${name(token)}</span><small>${t("placed")}</small>`; button.disabled = true; } else { button.innerHTML = `<span class="slot-label">${t(slot)}</span><small>${t("missing")}</small>`; button.setAttribute("aria-label", `${t(slot)} — ${t("missing")}`); button.addEventListener("click", () => place(slot, index, button)); } blueprint.append(button); });
     const moduleGrid = $("moduleGrid"); moduleGrid.replaceChildren(...round.options.map((token) => { const button = document.createElement("button"); button.type = "button"; button.className = "module-card"; button.dataset.module = token; button.disabled = state.placed.includes(token); button.setAttribute("aria-label", t("chooseModule", { module: name(token) })); button.innerHTML = `<span class="module-symbol module-${token}" aria-hidden="true"></span><span>${name(token)}</span>`; if (state.selected === token) button.classList.add("is-selected"); button.addEventListener("click", () => select(token)); return button; }));
     $("selectionHint").textContent = state.selected ? t("selected", { module: name(state.selected) }) : "";
