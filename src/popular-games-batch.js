@@ -69,7 +69,7 @@
     hi: "मालिक का प्रीव्यू: 30 ब्रेकआउट चरणों में से चुनें और नियंत्रित शॉट से हर लेन साफ़ करें। गेम अभी सार्वजनिक नहीं है।",
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v12";
+  const BREAKOUT_GAME_VERSION = "v13";
   const TETRIS_GAME_VERSION = "v17";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
@@ -332,21 +332,26 @@
     ar: (column, nextColumn, direction) => `العمود ${column} فارغ — الهدف التالي هو العمود ${nextColumn}. تحرّك نحو ${direction} قبل الإرسال.`,
   };
   const BREAKOUT_RESULT_GOAL_COPY = {
-    en: (shots) => shots > 12 ? `You used ${shots} shots. Rematch goal: clear all 12 bricks in ${shots - 1} shots or fewer.` : "You used 12 shots. Rematch goal: match this clean clear.",
-    "zh-Hant": (shots) => shots > 12 ? `本局用了 ${shots} 次射擊。再玩目標：用不超過 ${shots - 1} 次射擊清除 12 塊磚。` : "本局用了 12 次射擊。再玩目標：再次完成這次乾淨通關。",
-    "zh-Hans": (shots) => shots > 12 ? `本局用了 ${shots} 次射击。重玩目标：用不超过 ${shots - 1} 次射击清除 12 块砖。` : "本局用了 12 次射击。重玩目标：再次完成这次干净通关。",
-    ja: (shots) => shots > 12 ? `今回は${shots}ショットでした。リプレイ目標：${shots - 1}ショット以内で12個すべてを消しましょう。` : "今回は12ショットでした。リプレイ目標：このクリーンなクリアを再現しましょう。",
-    ko: (shots) => shots > 12 ? `이번에는 ${shots}샷을 사용했습니다. 다시 플레이 목표: ${shots - 1}샷 이하로 벽돌 12개를 모두 깨세요.` : "이번에는 12샷을 사용했습니다. 다시 플레이 목표: 이 깔끔한 클리어를 재현하세요.",
-    es: (shots) => shots > 12 ? `Usaste ${shots} tiros. Meta de revancha: rompe los 12 ladrillos en ${shots - 1} tiros o menos.` : "Usaste 12 tiros. Meta de revancha: repite esta limpieza perfecta.",
-    "pt-BR": (shots) => shots > 12 ? `Você usou ${shots} tiros. Meta da revanche: quebre os 12 blocos com ${shots - 1} tiros ou menos.` : "Você usou 12 tiros. Meta da revanche: repita esta limpeza perfeita.",
-    fr: (shots) => shots > 12 ? `Vous avez utilisé ${shots} tirs. Objectif de revanche : cassez les 12 briques en ${shots - 1} tirs ou moins.` : "Vous avez utilisé 12 tirs. Objectif de revanche : reproduisez ce parcours parfait.",
-    de: (shots) => shots > 12 ? `Du hast ${shots} Schüsse gebraucht. Rematch-Ziel: Zerstöre alle 12 Steine mit höchstens ${shots - 1} Schüssen.` : "Du hast 12 Schüsse gebraucht. Rematch-Ziel: Wiederhole diesen sauberen Durchlauf.",
-    it: (shots) => shots > 12 ? `Hai usato ${shots} tiri. Obiettivo rivincita: rompi i 12 mattoni in ${shots - 1} tiri o meno.` : "Hai usato 12 tiri. Obiettivo rivincita: ripeti questa pulizia perfetta.",
-    ru: (shots) => shots > 12 ? `Вы использовали ${shots} выстрелов. Цель реванша: разбейте все 12 блоков за ${shots - 1} выстрелов или меньше.` : "Вы использовали 12 выстрелов. Цель реванша: повторите этот чистый результат.",
-    hi: (shots) => shots > 12 ? `आपने ${shots} शॉट लगाए। दोबारा खेलने का लक्ष्य: 12 ईंटें ${shots - 1} या कम शॉट में तोड़ें।` : "आपने 12 शॉट लगाए। दोबारा खेलने का लक्ष्य: इस साफ़ जीत को दोहराएँ।",
-    ar: (shots) => shots > 12 ? `استخدمت ${shots} تسديدة. هدف الإعادة: حطّم اللبنات الـ12 في ${shots - 1} تسديدة أو أقل.` : "استخدمت 12 تسديدة. هدف الإعادة: كرّر هذا الفوز النظيف.",
+    en: (stage, bricks, shots) => shots > bricks ? `Stage ${stage} cleared. You used ${shots} shots. Rematch goal: clear all ${bricks} bricks in ${shots - 1} shots or fewer.` : `Stage ${stage} cleared. You used ${shots} shots. Rematch goal: clear all ${bricks} bricks in ${shots} shots or fewer.`,
+    "zh-Hant": (stage, bricks, shots) => shots > bricks ? `第 ${stage} 關完成。本局用了 ${shots} 次射擊。再玩目標：用不超過 ${shots - 1} 次射擊清除全部 ${bricks} 塊磚。` : `第 ${stage} 關完成。本局用了 ${shots} 次射擊。再玩目標：用不超過 ${shots} 次射擊清除全部 ${bricks} 塊磚。`,
+    "zh-Hans": (stage, bricks, shots) => shots > bricks ? `第 ${stage} 关完成。本局用了 ${shots} 次射击。重玩目标：用不超过 ${shots - 1} 次射击清除全部 ${bricks} 块砖。` : `第 ${stage} 关完成。本局用了 ${shots} 次射击。重玩目标：用不超过 ${shots} 次射击清除全部 ${bricks} 块砖。`,
+    ja: (stage, bricks, shots) => shots > bricks ? `ステージ${stage}をクリア。${shots}ショットでした。リプレイ目標：${shots - 1}ショット以内で${bricks}個すべてを消しましょう。` : `ステージ${stage}をクリア。${shots}ショットでした。リプレイ目標：${shots}ショット以内で${bricks}個すべてを消しましょう。`,
+    ko: (stage, bricks, shots) => shots > bricks ? `${stage} 스테이지 클리어. ${shots}샷을 사용했습니다. 다시 플레이 목표: ${shots - 1}샷 이하로 벽돌 ${bricks}개를 모두 깨세요.` : `${stage} 스테이지 클리어. ${shots}샷을 사용했습니다. 다시 플레이 목표: ${shots}샷 이하로 벽돌 ${bricks}개를 모두 깨세요.`,
+    es: (stage, bricks, shots) => shots > bricks ? `Fase ${stage} superada. Usaste ${shots} tiros. Meta de revancha: rompe los ${bricks} ladrillos en ${shots - 1} tiros o menos.` : `Fase ${stage} superada. Usaste ${shots} tiros. Meta de revancha: rompe los ${bricks} ladrillos en ${shots} tiros o menos.`,
+    "pt-BR": (stage, bricks, shots) => shots > bricks ? `Fase ${stage} concluída. Você usou ${shots} tiros. Meta da revanche: quebre os ${bricks} blocos com ${shots - 1} tiros ou menos.` : `Fase ${stage} concluída. Você usou ${shots} tiros. Meta da revanche: quebre os ${bricks} blocos com ${shots} tiros ou menos.`,
+    fr: (stage, bricks, shots) => shots > bricks ? `Stage ${stage} réussi. Vous avez utilisé ${shots} tirs. Objectif de revanche : cassez les ${bricks} briques en ${shots - 1} tirs ou moins.` : `Stage ${stage} réussi. Vous avez utilisé ${shots} tirs. Objectif de revanche : cassez les ${bricks} briques en ${shots} tirs ou moins.`,
+    de: (stage, bricks, shots) => shots > bricks ? `Stufe ${stage} geschafft. Du hast ${shots} Schüsse gebraucht. Rematch-Ziel: Zerstöre alle ${bricks} Steine mit höchstens ${shots - 1} Schüssen.` : `Stufe ${stage} geschafft. Du hast ${shots} Schüsse gebraucht. Rematch-Ziel: Zerstöre alle ${bricks} Steine mit höchstens ${shots} Schüssen.`,
+    it: (stage, bricks, shots) => shots > bricks ? `Livello ${stage} completato. Hai usato ${shots} tiri. Obiettivo rivincita: rompi tutti i ${bricks} mattoni in ${shots - 1} tiri o meno.` : `Livello ${stage} completato. Hai usato ${shots} tiri. Obiettivo rivincita: rompi tutti i ${bricks} mattoni in ${shots} tiri o meno.`,
+    ru: (stage, bricks, shots) => shots > bricks ? `Этап ${stage} пройден. Вы использовали ${shots} выстрелов. Цель реванша: разбейте все ${bricks} блоков за ${shots - 1} выстрелов или меньше.` : `Этап ${stage} пройден. Вы использовали ${shots} выстрелов. Цель реванша: разбейте все ${bricks} блоков за ${shots} выстрелов или меньше.`,
+    hi: (stage, bricks, shots) => shots > bricks ? `चरण ${stage} पूरा। आपने ${shots} शॉट लगाए। दोबारा खेलने का लक्ष्य: ${bricks} ईंटें ${shots - 1} या कम शॉट में तोड़ें।` : `चरण ${stage} पूरा। आपने ${shots} शॉट लगाए। दोबारा खेलने का लक्ष्य: ${bricks} ईंटें ${shots} या कम शॉट में तोड़ें।`,
+    ar: (stage, bricks, shots) => shots > bricks ? `اكتملت المرحلة ${stage}. استخدمت ${shots} تسديدة. هدف الإعادة: حطّم كل اللبنات وعددها ${bricks} في ${shots - 1} تسديدة أو أقل.` : `اكتملت المرحلة ${stage}. استخدمت ${shots} تسديدة. هدف الإعادة: حطّم كل اللبنات وعددها ${bricks} في ${shots} تسديدة أو أقل.`,
   };
-  const breakoutResultGoalCopy = (locale, shots, stage = 1) => (BREAKOUT_RESULT_GOAL_COPY[locale] || BREAKOUT_RESULT_GOAL_COPY.en)(Math.max(12, Number(shots) || 12), stage);
+  const breakoutResultGoalCopy = (locale, shots, stage = 1, brickCount = null) => {
+    const renderedBrickCount = brickCount || document.querySelector("#board .brick-board")?.dataset.brickCount;
+    const safeBricks = Math.max(1, Number(renderedBrickCount) || 12);
+    const safeShots = Math.max(safeBricks, Number(shots) || safeBricks);
+    return (BREAKOUT_RESULT_GOAL_COPY[locale] || BREAKOUT_RESULT_GOAL_COPY.en)(Math.max(1, Number(stage) || 1), safeBricks, safeShots);
+  };
   const TETRIS_RESULT_TARGET_COPY = {
     en: (moves) => moves > 8 ? `Next-round mastery target: clear 4 lines in ${moves - 1} moves or fewer.` : "Next-round mastery target: repeat this clean 8-move sprint.",
     "zh-Hant": (moves) => moves > 8 ? `本局用了 ${moves} 步。下一局精進目標：用不超過 ${moves - 1} 步消除 4 行。` : "本局用 8 步完成。下一局精進目標：再次完成這場乾淨的 8 步短局。",
