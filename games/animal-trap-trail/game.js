@@ -219,10 +219,25 @@
     if (name === "battle") result?.setAttribute("hidden", "");
     if (name === "battle") { state.last = performance.now(); state.raf = requestAnimationFrame(frame); }
   }
+  function syncStageCardVisibility() {
+    const rail = $("stage-list");
+    if (!rail || state.screen !== "stage") return;
+    const railRect = rail.getBoundingClientRect();
+    rail.querySelectorAll(".stage-card").forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      const insideRail = rect.width > 1 && rect.height > 1
+        && center >= railRect.left - 1 && center <= railRect.right + 1
+        && rect.bottom >= railRect.top - 1 && rect.top <= railRect.bottom + 1;
+      card.classList.toggle("wp-stage-card-clipped", !insideRail);
+    });
+  }
   function stageCards() {
     const c = copy();
     $("stage-list").innerHTML = [1,2,3,4].map((n) => `<button type="button" class="stage-card" data-chapter="${n}" data-wp-stage-card="${n}" data-wp-enter-battle aria-label="${chapterLabel(n)}: ${c.descriptions[n - 1]}">${chapterLabel(n)}<br><small>${c.descriptions[n - 1]}</small></button>`).join("");
     $("stage-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => startRoom(Number(b.dataset.chapter), 1)));
+    syncStageCardVisibility();
+    window.requestAnimationFrame(syncStageCardVisibility);
   }
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
@@ -353,5 +368,6 @@
   window.addEventListener("keyup", (e) => pressKey(e.code === "Space" ? "Space" : e.code,false));
   document.querySelectorAll("[data-key]").forEach((button) => { const key = button.dataset.key; if (key === "Pulse") { button.addEventListener("pointerdown", (e) => { e.preventDefault(); pulse(); }); return; } const start = (e) => { e.preventDefault(); if (e.pointerId !== undefined && button.setPointerCapture) { try { button.setPointerCapture(e.pointerId); } catch (_) {} } pressKey(key,true); }; const stop = () => pressKey(key,false); button.addEventListener("pointerdown", start); button.addEventListener("touchstart", start, { passive: false }); ["pointerup","pointercancel","pointerleave","lostpointercapture","touchend","touchcancel"].forEach((event) => button.addEventListener(event, stop)); button.addEventListener("click", () => { state.tap = key; }); });
   $("battle-pulse")?.addEventListener("click", pulse);
+  $("stage-list").addEventListener("scroll", syncStageCardVisibility, { passive: true });
   $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle"); }); $("next").addEventListener("click", () => startRoom(state.chapter, state.room >= 3 ? 1 : state.room + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
 })();

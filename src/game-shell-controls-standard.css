@@ -630,6 +630,12 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
+  /* Trap Trail v11 uses the same canonical 300px wide-layout poster column
+     as the card-game compact-landscape contract. */
+  body[data-wp-five-game="animal-trap-trail"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
   .wp-standard-main-poster,
   .wp-standard-main-poster-media,
   .wp-standard-main-poster-media > img,
@@ -645,6 +651,26 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
   .wp-standard-main-copy {
     height: var(--wp-main-landscape-poster-size);
   }
+}
+
+/* Trap Trail has four chapters rather than a long map. Keep every enabled
+   chapter centre inside the owning rail after the recommended final chapter
+   is centred; the rail remains horizontally draggable for the shared Stage
+   contract without leaving an enabled button in its clipped gutter. */
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] .stage-list,
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] .stage-rail {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: 0 !important;
+}
+
+body[data-wp-game-id="animal-trap-trail"].wp-stage-select-active [data-wp-logical-stage-canvas] {
+  padding: 8px !important;
+}
+
+body[data-wp-game-id="animal-trap-trail"] .stage-list > .wp-stage-card-clipped {
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .wp-standard-main-copy > * {

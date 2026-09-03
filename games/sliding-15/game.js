@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v12";
+  const GAME_VERSION = "v13";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const HINT_EXPLANATION = {
     en: "Tile {tile} touches the empty space, so sliding it is a legal move. You still choose whether to move it.",

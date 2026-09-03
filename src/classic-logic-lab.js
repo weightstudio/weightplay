@@ -1031,7 +1031,11 @@
       history.push({ tiles: tiles.slice(), blank, lastBlank });
       [tiles[i], tiles[blank]] = [tiles[blank], tiles[i]];
       lastBlank = blank; blank = i; hintIndex = -1; render();
-      if (solved()) finish(true, `${t("solved")} · ${t("moves")}: ${history.length}`); else announce(`${t("turn")} · ${t("moves")}: ${history.length}`);
+      if (solved()) {
+        const solvedStatus = `${t("solved")} · ${t("moves")}: ${history.length}`;
+        finish(true, solvedStatus);
+        if (app.id === "sliding-15") announce(solvedStatus, "is-good");
+      } else announce(`${t("turn")} · ${t("moves")}: ${history.length}`);
     }
     function reset() {
       tiles = stage ? stage.start.slice() : [...Array(15).keys()].map((n) => n + 1).concat(0); blank = tiles.indexOf(0); lastBlank = -1; history = [];

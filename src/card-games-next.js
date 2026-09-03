@@ -2138,7 +2138,15 @@
     document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { game.reset(); render(); });
     document.querySelector("#battleNewBtn")?.addEventListener("click", () => { game.reset(); render(); });
     audioButton?.addEventListener("click", () => { const next = !sound?.enabled; sound?.setEnabled(next); audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`; });
-    localeSelect?.addEventListener("change", () => { try { localStorage.setItem("weightPlayLocale", localeSelect.value); } catch (_error) {} window.location.reload(); });
+    localeSelect?.addEventListener("change", () => {
+      const nextLocale = localeSelect.value;
+      if (id === "spades" && root.WonderI18n?.setLocale) {
+        root.WonderI18n.setLocale(nextLocale);
+        return;
+      }
+      try { localStorage.setItem("weightPlayLocale", nextLocale); } catch (_error) {}
+      window.location.reload();
+    });
     const ensureMainControls = () => {
       const copy = document.querySelector(".wp-standard-main-copy") || document.querySelector(".main-copy");
       if (!copy || copy.querySelector("[data-card-main-controls]")) return;
