@@ -26,9 +26,9 @@
     .result-goal { margin: 0; padding: 12px 14px; border-left: 3px solid var(--arcade-accent-2); border-radius: 12px; background: rgba(255, 212, 125, .08); line-height: 1.5; }
     @media (max-width: 700px) { .preview-art img { min-height: 140px; } }
   </style>
-  <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260901-main-contract-v17c">
+  <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260903-tetris-guide-locale-v18">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260828-tetris-tetromino-v15">
-  <link rel="stylesheet" href="/games/tetris/game.css?v=20260901-main-contract-v17c">
+  <link rel="stylesheet" href="/games/tetris/game.css?v=20260903-tetris-guide-locale-v18">
   <meta name="description" content="公開前チェックを進めている完成済みのクラシックゲームです。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -78,26 +78,9 @@
     <section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><p id="resultGoal" class="tagline result-goal" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section>
     <footer class="arcade-footer" id="footerText"></footer>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="テトリス ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>テトリス</h2><p>公開前チェックを進めている完成済みのクラシックゲームです。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>クラシックゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Classic · Puzzle · Arcade</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-    <script src="/games/tetris/engine.js?v=20260901-main-contract-v17c"></script><script src="/games/tetris/copy.js?v=20260901-main-contract-v17c"></script>
-    <script src="../../src/popular-games-batch.js?v=20260901-main-contract-v17c"></script><script src="game.js?v=20260901-main-contract-v17c"></script><script src="/games/tetris/analytics-ownership.js?v=20260901-main-contract-v17c"></script>
+  <section class="game-page-info game-page-info-static" data-runtime-localize="off" aria-label="テトリスのゲーム情報"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>テトリス</h2><p>落ちものブロックを最後まで遊べるゲームです。現在リリース確認中です。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>ゲームプレイ</span><strong>クラシックゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック・パズル・アーケード</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>遊び方</h3><p>横一列を埋めて消します。自動で落下し、上端が詰まると終了です。 ← → 移動・↑ 回転・↓ ソフトドロップ・Space 即落下。枠は着地点。10ラインでレベルアップ。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ラウンドはどう終わりますか？</dt><dd>積み上がって上端がふさがり、合法的な着地点がなくなると自然に終了します。</dd></div><div><dt>何が保存されますか？</dt><dd>最高点だけ保存します。盤面は保存しません。</dd></div></dl></div></div></section>
+    <script src="/games/tetris/engine.js?v=20260903-tetris-guide-locale-v18"></script><script src="/games/tetris/copy.js?v=20260903-tetris-guide-locale-v18"></script>
+    <script src="../../src/popular-games-batch.js?v=20260903-tetris-guide-locale-v18"></script><script src="game.js?v=20260903-tetris-guide-locale-v18"></script><script src="/games/tetris/analytics-ownership.js?v=20260903-tetris-guide-locale-v18"></script>
 <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>

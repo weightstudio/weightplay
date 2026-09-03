@@ -70,7 +70,7 @@
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v13";
-  const TETRIS_GAME_VERSION = "v17";
+  const TETRIS_GAME_VERSION = "v18";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
@@ -1139,7 +1139,7 @@
     if (game.type === "mahjong") {
       document.querySelectorAll("[data-wp-battle-physical-reserve]").forEach((node) => node.setAttribute("data-wp-general-reserve", ""));
     }
-    // Tetris v16 is a real continuous run, isolated from the other arcade rules.
+    // Tetris is a real continuous run, isolated from the other arcade rules.
     const tetrisText = () => window.WPTetrisCopy(locale);
     let tetrisTimer = null;
     let tetrisGrid = null;
@@ -1210,14 +1210,41 @@
       els.instruction.textContent = ui.instructions;
       const progress = document.querySelector("[data-wp-main-progress]");
       if (progress) { progress.querySelector("strong").textContent = ui.tagline; progress.querySelector("span").textContent = ui.saved; }
-      const guide = document.querySelector(".game-info-sections .game-info-section p");
+      const guideRoot = document.querySelector(".game-page-info");
+      const guideTitle = guideRoot?.querySelector(".game-info-title h2");
+      const guideKicker = guideRoot?.querySelector(".game-info-kicker");
+      const guideIntro = guideRoot?.querySelector(".game-info-title p");
+      if (guideRoot) guideRoot.setAttribute("aria-label", ui.aria);
+      if (guideKicker) guideKicker.textContent = ui.kicker;
+      if (guideTitle) guideTitle.textContent = els.title.textContent;
+      if (guideIntro) guideIntro.textContent = ui.intro;
+      const facts = [...(guideRoot?.querySelectorAll(".game-info-fact") || [])];
+      [[ui.gameplay, ui.gameplayValue], [ui.genre, ui.genreValue]].forEach(([label, value], index) => {
+        const fact = facts[index];
+        if (!fact) return;
+        fact.querySelector("span")?.replaceChildren(document.createTextNode(label));
+        fact.querySelector("strong")?.replaceChildren(document.createTextNode(value));
+      });
+      const sections = [...(guideRoot?.querySelectorAll(".game-info-sections .game-info-section") || [])];
+      const guideSection = sections[0];
+      const guide = guideSection?.querySelector("p");
+      if (guideSection?.querySelector("h3")) guideSection.querySelector("h3").textContent = ui.how;
       if (guide) guide.textContent = `${ui.objective} ${ui.instructions}`;
-      const faq = document.querySelector(".game-info-sections dd");
-      if (faq) faq.textContent = ui.saved;
-      const faqQuestion = document.querySelector(".game-info-sections dt");
-      if (faqQuestion) faqQuestion.textContent = ui.saveQuestion;
-      const guideHeading = guide?.previousElementSibling;
-      if (guideHeading) guideHeading.textContent = ui.how;
+      const faqSection = sections[sections.length - 1];
+      if (faqSection?.querySelector("h3")) faqSection.querySelector("h3").textContent = ui.faq;
+      const faqList = faqSection?.querySelector("dl");
+      if (faqList) {
+        const entries = [[ui.roundEndQuestion, ui.roundEndAnswer], [ui.saveQuestion, ui.saved]];
+        faqList.replaceChildren(...entries.map(([question, answer]) => {
+          const item = document.createElement("div");
+          const questionNode = document.createElement("dt");
+          const answerNode = document.createElement("dd");
+          questionNode.textContent = question;
+          answerNode.textContent = answer;
+          item.append(questionNode, answerNode);
+          return item;
+        }));
+      }
       document.querySelector("#battleBackBtn")?.setAttribute("aria-label",copy(locale,"home"));
       document.querySelector(".main-return")?.setAttribute("aria-label","← WeightPlay");
       document.querySelector("#audioMenuBtn")?.setAttribute("aria-label",ui.settings);

@@ -414,6 +414,14 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
     height: calc(100svh - 122px);
     min-height: 0;
   }
+  /* Sliding 15 uses the same fixed logical Battle Canvas at tall desktop
+     sizes. Keep its responsive wrap inside that logical height instead of
+     measuring the physical viewport, which otherwise pushes the action row
+     below the clipped Canvas at 1920x1080. */
+  body[data-logic-game="sliding-15"] .logic-battle-wrap {
+    height: calc(100% - 72px);
+    min-height: 0;
+  }
 }
 
 @media (max-height: 560px) and (orientation: landscape) {

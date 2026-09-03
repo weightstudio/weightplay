@@ -26,9 +26,9 @@
     .result-goal { margin: 0; padding: 12px 14px; border-left: 3px solid var(--arcade-accent-2); border-radius: 12px; background: rgba(255, 212, 125, .08); line-height: 1.5; }
     @media (max-width: 700px) { .preview-art img { min-height: 140px; } }
   </style>
-  <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260901-main-contract-v17c">
+  <link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260903-tetris-guide-locale-v18">
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260828-tetris-tetromino-v15">
-  <link rel="stylesheet" href="/games/tetris/game.css?v=20260901-main-contract-v17c">
+  <link rel="stylesheet" href="/games/tetris/game.css?v=20260903-tetris-guide-locale-v18">
   <meta name="description" content="لعبة كلاسيكية مكتملة تُنهي فحوص الإصدار حالياً." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -78,32 +78,9 @@
     <section id="resultScreen" class="screen" hidden><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><p id="resultGoal" class="tagline result-goal" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section>
     <footer class="arcade-footer" id="footerText"></footer>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة تتريس">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>تتريس</h2><p>لعبة كلاسيكية مكتملة تُنهي فحوص الإصدار حالياً.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لعبة كلاسيكية</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · أركيد · استراتيجية</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهل البدء، ثم يزداد تحدياً</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>3–8 دقائق</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التخطيط · التدوير · التوقيت</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تبدأ الجولة بقطعة متساقطة فوق لوحة 10×20. تحافظ كل قطعة على كتلتها بعد الهبوط، وتمنح الصفوف الأفقية المكتملة مساحة جديدة مع بقاء القطعة التالية مرئية.</p>
-<p>لا توجد نهاية محددة بعدد القطع؛ تستمر الجولة ما دام هناك مكان قانوني للهبوط. ينتهي اللعب عندما تغلق الكومة القمة، لذلك تصبح قراءة الفجوات وإبقاء السطح منخفضاً قرارات مستمرة.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>حرّك القطعة يساراً أو يميناً، ودوّرها ثم أسقطها في العمود المختار. تتحول كل حركة قانونية إلى قرار مكاني داخل اللوحة.</p>
-<p>تملأ القطعة الموضوعة خلايا اللوح، ولا تختفي إلا الصفوف الأفقية الممتلئة بالكامل؛ بعدها تهبط الكتل التي فوقها بعدد الصفوف الممسوحة.</p>
-<p>تسقط القطع تلقائياً مع الوقت، ويعرض الإطار موضع الهبوط المتوقع. ترتفع السرعة عند كل 10 صفوف حقيقية، بينما يساعد التلميح على قراءة موضع القطعة الحالية.</p>
-<p>تنتهي الجولة طبيعياً عندما تمنع الكومة ظهور قطعة جديدة عند القمة. لا تُمحى اللوحة عند الخروج أو الخسارة، وتبقى أفضل نتيجة محفوظة في هذا المتصفح.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ابدأ الجولة من القائمة الرئيسية واترك القطعة تهبط تلقائياً؛ راقب الكومة والقطعة التالية قبل اختيار الفجوة.</li><li>حرّك القطعة يساراً أو يميناً ودوّرها عند الحاجة، ثم استخدم الإسقاط السريع عندما تتأكد من موضع الهبوط القانوني.</li><li>ابنِ سطحاً منخفضاً واملأ الصفوف الأفقية بالكامل كي تهبط الكتل فوق الصفوف الممسوحة.</li><li>استخدم التلميح كقراءة اختيارية، وتذكّر أن كل 10 صفوف ترفع المستوى وتزيد سرعة السقوط.</li><li>عندما تغلق الكومة القمة، راجع النتيجة ثم اختر إعادة اللعب أو العودة إلى القائمة الرئيسية.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>اترك أعمدة وفجوات قابلة للوصول للقطع التالية بدلاً من بناء برج مرتفع في جهة واحدة.</li><li>دوّر القطعة قبل الإسقاط، لكن لا تغلق فتحة عميقة لا يمكن إصلاحها بقطعة لاحقة.</li><li>حافظ على سطح منخفض ومستقر؛ تنظيف صف واحد أفضل من مطاردة صف كامل مع كومة غير متوازنة.</li><li>راقب القطعة التالية وغيّر الخطة مبكراً، خصوصاً بعد ارتفاع المستوى وتسارع السقوط.</li><li>بعد النتيجة، استخدم إعادة اللعب لتجربة ترتيب مختلف للفجوات بدلاً من تكرار البناء نفسه.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تبدأ السرعة بهدوء لتتعلم نقل القطع وتدويرها وقراءة المساحات المفتوحة.</p>
-<p>كل 10 صفوف ممسوحة ترفع المستوى وتسرّع السقوط، لذلك يصبح التخطيط للفجوات والقطعة التالية أكثر أهمية.</p>
-<p>لا يحدد عدد القطع نهاية الجولة؛ تستمر حتى لا تعود هناك مساحة قانونية، ثم تعرض النتيجة أفضل ما حققته في هذا المتصفح.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تتريس تجربة أركيد أصلية مستمرة تستخدم لوحة 10×20 واضحة، وسقوطاً تلقائياً، وقطعاً رباعية الخلايا، وتقدماً صادقاً بالصفوف والمستوى، وتحكماً باللمس ولوحة المفاتيح، ومساراً كاملاً من القائمة إلى الجولة ثم النتيجة وإعادة اللعب أو العودة.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تتريس لعبة متصفح عامة مناسبة لعمر 9 سنوات فأكثر وللعب العائلي. لا يلزم حساب أو شراء؛ تُحفظ أفضل نتيجة وتفضيل الصوت محلياً في هذا المتصفح.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف تنتهي الجولة؟</dt><dd>تستمر الجولة مع سقوط القطع تلقائياً وتنتهي عندما تغلق الكومة القمة ولا تعود هناك مساحة قانونية لقطعة جديدة.</dd></div><div><dt>هل يمكن تدوير القطع؟</dt><dd>نعم. دوّر القطعة قبل إسقاطها لتلائم الفجوة وتساعد على إكمال صف.</dd></div><div><dt>متى يرتفع المستوى؟</dt><dd>يرتفع المستوى عند مسح كل 10 صفوف حقيقية، فتزداد سرعة سقوط القطع.</dd></div><div><dt>ماذا يحدث للصف الممتلئ؟</dt><dd>يُمسح الصف الأفقي الممتلئ بالكامل، وتهبط الكتل التي فوقه بعدد الصفوف الممسوحة.</dd></div><div><dt>ماذا يفعل التلميح؟</dt><dd>يعرض التلميح موضعاً مفيداً للقطعة الحالية، ويمكنك تجاهله واختيار موضعك بنفسك.</dd></div><div><dt>هل يمكن إعادة الجولة؟</dt><dd>نعم. تعيد إعادة التشغيل الجولة الحالية، وتتيح شاشة النتيجة اللعب مجدداً أو العودة إلى القائمة.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>تُحفظ أفضل نتيجة وتفضيل الصوت محلياً في هذا المتصفح فقط. لا يلزم حساب.</dd></div><div><dt>هل تعمل اللعبة على الهاتف؟</dt><dd>نعم. استخدم الأزرار الظاهرة للتحريك والتدوير والإسقاط، وتستخدم اللمسة ولوحة المفاتيح القواعد نفسها.</dd></div></dl></div>
-
-    </div>
-  </section>
-    <script src="/games/tetris/engine.js?v=20260901-main-contract-v17c"></script><script src="/games/tetris/copy.js?v=20260901-main-contract-v17c"></script>
-    <script src="../../src/popular-games-batch.js?v=20260901-main-contract-v17c"></script><script src="game.js?v=20260901-main-contract-v17c"></script><script src="/games/tetris/analytics-ownership.js?v=20260901-main-contract-v17c"></script>
+  <section class="game-page-info game-page-info-static" data-runtime-localize="off" aria-label="معلومات لعبة تتريس"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>تتريس</h2><p>لعبة كتل متساقطة كاملة، وتستكمل حالياً فحوصات الإصدار.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>أسلوب اللعب</span><strong>لعبة كلاسيكية</strong></div><div class="game-info-fact"><span>النوع</span><strong>كلاسيكية · ألغاز · أركيد</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>طريقة اللعب</h3><p>املأ صفوفاً أفقية كاملة. تسقط الكتل تلقائياً وتنتهي الجولة عندما تُغلق القمة. ← → تحريك · ↑ تدوير · ↓ سقوط بطيء · مسافة إسقاط سريع. الإطار يبيّن موضع الهبوط. كل 10 صفوف يرتفع المستوى.</p></div><div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كيف تنتهي الجولة؟</dt><dd>تنتهي الجولة طبيعياً عندما تحجب الكومة القمة ولا يبقى موضع هبوط قانوني.</dd></div><div><dt>ما الذي يُحفظ؟</dt><dd>يُحفظ أفضل مجموع فقط، وليس اللوح الحالي.</dd></div></dl></div></div></section>
+    <script src="/games/tetris/engine.js?v=20260903-tetris-guide-locale-v18"></script><script src="/games/tetris/copy.js?v=20260903-tetris-guide-locale-v18"></script>
+    <script src="../../src/popular-games-batch.js?v=20260903-tetris-guide-locale-v18"></script><script src="game.js?v=20260903-tetris-guide-locale-v18"></script><script src="/games/tetris/analytics-ownership.js?v=20260903-tetris-guide-locale-v18"></script>
 <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
