@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 11;
+  const GAME_VERSION = 12;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");

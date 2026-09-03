@@ -70,7 +70,7 @@
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v13";
-  const TETRIS_GAME_VERSION = "v19";
+  const TETRIS_GAME_VERSION = "v20";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
@@ -255,6 +255,21 @@
     ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progress: "30 مرحلة · 6 مسارات.", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
   };
   const breakoutMainCopy = (locale) => BREAKOUT_MAIN_COPY[locale] || BREAKOUT_MAIN_COPY.en;
+  const BREAKOUT_SOUND_COPY = {
+    en: { sound: "Sound", soundOn: "On", soundOff: "Off" },
+    "zh-Hant": { sound: "音效", soundOn: "開啟", soundOff: "關閉" },
+    "zh-Hans": { sound: "音效", soundOn: "开启", soundOff: "关闭" },
+    ja: { sound: "サウンド", soundOn: "オン", soundOff: "オフ" },
+    ko: { sound: "소리", soundOn: "켜기", soundOff: "끄기" },
+    es: { sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado" },
+    "pt-BR": { sound: "Som", soundOn: "Ativado", soundOff: "Desativado" },
+    fr: { sound: "Son", soundOn: "Activé", soundOff: "Désactivé" },
+    de: { sound: "Ton", soundOn: "An", soundOff: "Aus" },
+    it: { sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato" },
+    ru: { sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл." },
+    hi: { sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद" },
+    ar: { sound: "الصوت", soundOn: "تشغيل", soundOff: "إيقاف" },
+  };
   const BREAKOUT_PROMISE = {
     en: "Choose a stage, align the paddle, and clear every brick with deliberate shots.",
     "zh-Hant": "選擇關卡、對準球板，用精準發球清除所有磚塊。",
@@ -1208,6 +1223,8 @@
       els.tagline.textContent = ui.tagline;
       els.objective.textContent = ui.objective;
       els.instruction.textContent = ui.instructions;
+      const poster = document.querySelector("#mainScreen .preview-art img");
+      if (poster) poster.alt = ui.artAlt;
       const progress = document.querySelector("[data-wp-main-progress]");
       if (progress) { progress.querySelector("strong").textContent = ui.tagline; progress.querySelector("span").textContent = ui.saved; }
       const guideRoot = document.querySelector(".game-page-info");
@@ -1372,7 +1389,11 @@
     breakoutSoundButton?.addEventListener("click", () => {
       const enabled = breakoutSoundButton.getAttribute("aria-pressed") !== "true";
       breakoutSoundButton.setAttribute("aria-pressed", String(enabled));
-      breakoutSoundButton.textContent = `${copy(locale, "sound") || "Sound"}: ${enabled ? "On" : "Off"}`;
+      const soundCopy = BREAKOUT_SOUND_COPY[locale] || BREAKOUT_SOUND_COPY.en;
+      const soundLabel = `${soundCopy.sound}: ${enabled ? soundCopy.soundOn : soundCopy.soundOff}`;
+      breakoutSoundButton.textContent = soundLabel;
+      breakoutSoundButton.setAttribute("aria-label", soundLabel);
+      breakoutSoundButton.title = soundLabel;
     });
     const mahjongSettingsButton = game.type === "mahjong" ? document.querySelector("#audioMenuBtn") : null;
     const mahjongSettingsPopover = game.type === "mahjong" ? document.querySelector("#audioPopover") : null;

@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "sliding-15";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v15";
   const INTERFACE_VERSION = "6";
   const EVENTS = new Set([
     "preview_open",

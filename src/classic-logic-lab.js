@@ -3,6 +3,7 @@
 
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
+  const LOCALE_ROUTE_SEGMENTS = Object.fromEntries(Object.entries(ROUTE_LOCALES).map(([segment, locale]) => [locale, segment]));
   const LOCALE_SELECTION_PATH_KEY = "classicLogicLocaleSelectionPath";
   const LOCALE_SELECTION_VALUE_KEY = "classicLogicLocaleSelectionValue";
   const localeLabels = { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" };
@@ -725,6 +726,12 @@
     const segment = window.location.pathname.split("/").filter(Boolean)[0] || "";
     return ROUTE_LOCALES[segment] || (LOCALES.includes(document.documentElement.lang) ? document.documentElement.lang : "");
   }
+  function localizedGamePath(locale) {
+    const segment = LOCALE_ROUTE_SEGMENTS[locale];
+    const match = window.location.pathname.match(/\/games\/[^/]+(?:\/|$)/i);
+    if (!segment || !match || match.index === undefined) return "";
+    return `/${segment}${window.location.pathname.slice(match.index)}`;
+  }
   function currentLocale(id) {
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
     // Localized Lights Out routes must own their locale instead of inheriting
@@ -820,8 +827,13 @@
     picker.addEventListener("change", () => {
       localStorageSafe("weightPlayLocale", picker.value);
       if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi"].includes(id)) {
-        localStorageSafe(LOCALE_SELECTION_PATH_KEY, window.location.pathname);
-        localStorageSafe(LOCALE_SELECTION_VALUE_KEY, picker.value);
+        const nextPath = localizedGamePath(picker.value);
+        if (nextPath && nextPath !== window.location.pathname) {
+          localStorageSafe(LOCALE_SELECTION_PATH_KEY, "");
+          localStorageSafe(LOCALE_SELECTION_VALUE_KEY, "");
+          window.location.assign(`${nextPath}${window.location.search}${window.location.hash}`);
+          return;
+        }
       }
       window.location.reload();
     });

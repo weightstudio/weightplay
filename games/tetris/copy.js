@@ -23,6 +23,21 @@
     "pt-BR": ["Como jogar", "O que é salvo?", "Configurações"], fr: ["Comment jouer", "Qu'est-ce qui est enregistré ?", "Réglages"], de: ["Spielanleitung", "Was wird gespeichert?", "Einstellungen"],
     it: ["Come giocare", "Che cosa viene salvato?", "Impostazioni"], ru: ["Как играть", "Что сохраняется?", "Настройки"], hi: ["कैसे खेलें", "क्या सहेजा जाता है?", "सेटिंग"], ar: ["طريقة اللعب", "ما الذي يُحفظ؟", "الإعدادات"],
   };
+  const artAlt = {
+    en: "Tetris game artwork",
+    "zh-Hant": "《俄羅斯方塊》遊戲圖片",
+    "zh-Hans": "《俄罗斯方块》游戏图片",
+    ja: "テトリスのゲーム画像",
+    ko: "테트리스 게임 이미지",
+    es: "Imagen del juego Tetris",
+    "pt-BR": "Imagem do jogo Tetris",
+    fr: "Illustration du jeu Tetris",
+    de: "Spielgrafik zu Tetris",
+    it: "Immagine del gioco Tetris",
+    ru: "Изображение игры «Тетрис»",
+    hi: "टेट्रिस गेम चित्र",
+    ar: "صورة لعبة تتريس",
+  };
   const guide = {
     en: { aria: "Tetris game information", kicker: "WeightPlay Original Game Guide", intro: "A complete falling-block game currently finishing its release checks.", gameplay: "Gameplay", gameplayValue: "Classic Game", genre: "Genre", genreValue: "Classic · Puzzle · Arcade", how: "How to play", faq: "FAQ", roundEndQuestion: "How does the round end?", roundEndAnswer: "The run ends naturally when the stack blocks the top and no legal landing remains." },
     "zh-Hant": { aria: "俄羅斯方塊遊戲資訊", kicker: "WeightPlay 原創遊戲指南", intro: "完整的落下方塊遊戲，目前正在完成發佈檢查。", gameplay: "玩法", gameplayValue: "經典遊戲", genre: "類型", genreValue: "經典・益智・街機", how: "遊玩方式", faq: "常見問題", roundEndQuestion: "這局如何結束？", roundEndAnswer: "當方塊堆住頂端且沒有合法落點時，遊戲會自然結束。" },
@@ -58,5 +73,6 @@
     ...Object.fromEntries(["how","saveQuestion","settings"].map((key,i)=>[key,(labels[locale]||labels.en)[i]])),
     ...(guide[locale] || guide.en),
     ...(settings[locale] || settings.en),
+    artAlt: artAlt[locale] || artAlt.en,
   });
 })(globalThis);
