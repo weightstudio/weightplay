@@ -5,9 +5,9 @@
   window.__weightplayCribbageAnalyticsInstalled = true;
 
   const GAME_ID = "cribbage";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v17";
   const INTERFACE_VERSION = "6";
-  const SESSION_START_KEY = "weightplay.cribbage.analytics.starts.v13";
+  const SESSION_START_KEY = "weightplay.cribbage.analytics.starts.v17";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
     es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",

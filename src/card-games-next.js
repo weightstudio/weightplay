@@ -2676,7 +2676,7 @@
     };
     const playPeg = (player, item) => {
       if (player === 0) s.resetCue = "";
-      if (!item || s.count + value(item) > 31) { passPeg(player); return; }
+      if (!item || s.count + value(item) > 31) return;
       const hand = player === 0 ? s.hand : s.ai;
       const index = hand.indexOf(item);
       if (index < 0) return;

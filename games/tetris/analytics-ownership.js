@@ -5,7 +5,7 @@
   window.__weightplayTetrisAnalyticsInstalled = true;
 
   const GAME_ID = "tetris";
-  const GAME_VERSION = "v18";
+  const GAME_VERSION = "v19";
   const INTERFACE_VERSION = "7";
   const LOCALE_MAP = {
     en: "en",

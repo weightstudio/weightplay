@@ -70,7 +70,7 @@
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
   const BREAKOUT_GAME_VERSION = "v13";
-  const TETRIS_GAME_VERSION = "v18";
+  const TETRIS_GAME_VERSION = "v19";
   const SNAKE_GAME_VERSION = "v28";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
@@ -1073,10 +1073,10 @@
         preview.append(image);
       }
     }
-    // Snake and Checkers own complete 13-locale shells and guides. Keep the
-    // generic runtime translator from re-translating freshly rendered copy
-    // using the previous route locale during an in-place language switch.
-    if (["snake", "checkers"].includes(game.type)) {
+    // Snake, Checkers, and Tetris own complete 13-locale shells and guides.
+    // Keep the generic runtime translator from re-translating freshly rendered
+    // copy using the previous route locale during an in-place language switch.
+    if (["snake", "checkers", "tetris"].includes(game.type)) {
       root.dataset.runtimeLocalize = "off";
       document.body.dataset.runtimeLocalize = "off";
     }
@@ -1245,8 +1245,11 @@
           return item;
         }));
       }
-      document.querySelector("#battleBackBtn")?.setAttribute("aria-label",copy(locale,"home"));
-      document.querySelector(".main-return")?.setAttribute("aria-label","← WeightPlay");
+      const homeLabel = copy(locale, "home");
+      document.querySelector("#battleBackBtn")?.setAttribute("aria-label",homeLabel);
+      document.querySelector("#battleBackBtn")?.setAttribute("title",homeLabel);
+      document.querySelector(".main-return")?.setAttribute("aria-label",homeLabel);
+      document.querySelector(".main-return")?.setAttribute("title",homeLabel);
       document.querySelector("#audioMenuBtn")?.setAttribute("aria-label",ui.settings);
       document.querySelector("#audioPopover")?.setAttribute("aria-label",ui.settings);
       const settingsTitle = document.querySelector(".settings-title");
@@ -1992,7 +1995,21 @@
     });
     els.stageRail?.addEventListener("scroll", syncBreakoutStageAvailability, { passive: true });
     window.addEventListener("resize", syncBreakoutStageAvailability);
-    const renderShell = () => { shell(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } };
+    const syncTetrisShellChrome = () => {
+      if (game.type !== "tetris") return;
+      const ui = tetrisText();
+      els.eyebrow.textContent = ui.kicker;
+      els.tagline.textContent = ui.tagline;
+      els.objective.textContent = ui.objective;
+      els.instruction.textContent = ui.instructions;
+      const progress = document.querySelector("[data-wp-main-progress]");
+      if (progress) {
+        progress.querySelector("strong").textContent = ui.tagline;
+        progress.querySelector("span").textContent = ui.saved;
+      }
+      document.querySelector("#footerText").textContent = `${title(locale, gameId)} · ${ui.tagline}`;
+    };
+    const renderShell = () => { shell(); syncTetrisShellChrome(); els.start.textContent = copy(locale, "start"); els.hint.textContent = copy(locale, "hint"); els.restart.textContent = copy(locale, "restart"); els.retry.textContent = copy(locale, "retry"); els.home.textContent = copy(locale, "home"); if (els.mastery) els.mastery.textContent = (MAHJONG_MASTERY_COPY[locale] || MAHJONG_MASTERY_COPY.en).button; const progress = document.querySelector("[data-wp-main-progress]"); if (progress && game.type === "mahjong") { const label = progress.querySelector("strong"); const value = progress.querySelector("span"); if (label) label.textContent = copy(locale, "objective"); if (value) value.textContent = copy(locale, game.objective); } if (game.type === "breakout") { const ui = breakoutMainCopy(locale); const value = progress?.querySelector("span"); if (value) value.textContent = ui.progress; } };
     els.start.addEventListener("click", () => game.type === "breakout" ? openBreakoutStages() : start("start")); els.retry.addEventListener("click", () => { trackCheckers("replay", { from: "result" }); if (game.type === "breakout") startBreakoutStage(state.stage || 1); else start("retry"); }); if (els.mastery) els.mastery.addEventListener("click", () => start("mastery")); els.home.addEventListener("click", () => { trackCheckers("main_return", { from: "result" }); stopSnakeTimer(); stopTicResultTimer(); stopCheckersAiTimer(); if (game.type === "breakout") { show("stage"); renderStage(); render(); } else { show("main"); state = makeState(game.type); render(); } }); els.hint.addEventListener("click", hint); els.restart.addEventListener("click", () => game.type === "breakout" ? startBreakoutStage(state.stage || 1) : start("restart"));
     document.addEventListener("keydown", (event) => { if (game.type === "tetris" || document.body.dataset.screen !== "battle") return; if (game.type === "snake" && !state.started && [" ", "Enter"].includes(event.key)) { event.preventDefault(); beginSnake(); return; } const visibleTetrisControl = tetrisFocusedControl?.isConnected && tetrisFocusedControl.getClientRects().length ? tetrisFocusedControl : null; if (game.type === "tetris" && event.key === " " && visibleTetrisControl) { event.preventDefault(); visibleTetrisControl.click(); return; } const map = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down", a: "left", A: "left", d: "right", D: "right", w: "up", W: "up", s: "down", S: "down", " ": "drop" }; if (map[event.key] && ["tetris", "snake", "breakout", "pong"].includes(game.type)) { event.preventDefault(); action(map[event.key]); } });
     const battleBack = document.querySelector('[data-wp-return="battle"]');
