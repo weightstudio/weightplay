@@ -932,15 +932,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "en": "Animal Prism Battalion",
     "zh-Hant": "動物稜光軍團",
     "zh-Hans": "动物棱光军团",
-    "ja": "Animal Prism Battalion",
-    "ko": "Animal Prism Battalion",
-    "es": "Animal Prism Battalion",
+    "ja": "アニマル・プリズム・バタリオン",
+    "ko": "동물 프리즘 대대",
+    "es": "Batallón de Prismas Animales",
     "pt-BR": "Batalhão de Prismas Animal",
-    "fr": "Animal Prism Battalion",
-    "de": "Animal Prism Battalion",
+    "fr": "Bataillon de prismes animaux",
+    "de": "Tierisches Prismabataillon",
     "it": "Battaglione Prismi Animali",
     "ru": "Батальон Животных Призм",
-    "hi": "Animal Prism Battalion",
+    "hi": "पशु प्रिज़्म बटालियन",
     "ar": "كتيبة بريزم الحيوان"
   },
   "animal-skybridge-rivals": {
@@ -972,7 +972,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "de": "Tierischer Himmelsturm-Sturz",
     "it": "Caduta dalla Torre Animale",
     "ru": "Звери: Падение с небесной башни",
-    "hi": "Animal Skyspire Drop",
+    "hi": "पशु स्काईस्पायर ड्रॉप",
     "ar": "هبوط الحيوانات من البرج السماوي"
   },
   "animal-rift-salvage": {

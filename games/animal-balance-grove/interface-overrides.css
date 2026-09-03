@@ -1,5 +1,7 @@
 /* Interface V6 contract overrides for the original compact prototype. */
 .settings-panel[hidden]{display:none!important}
+/* Keep the settings popover inside the phone viewport when the game is RTL. */
+html[dir="rtl"] .settings-panel{right:auto;left:0}
 #mainScreen{position:relative}
 #mainScreen>.guide-card{position:absolute;top:100%;left:0;right:0;margin-top:24px}
 .primary-btn{min-height:52px!important}

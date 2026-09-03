@@ -22,14 +22,14 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Animal Prism Battalion",
+  "name": "アニマル・プリズム・バタリオン",
   "url": "https://weightplay.com/ja/games/animal-prism-battalion/",
   "image": "https://weightplay.com/assets/animal-prism-battalion/cover.webp",
   "genre": [
-    "Arcade",
-    "Strategy",
-    "守備",
-    "Animal",
+    "アーケード",
+    "戦略",
+    "防衛",
+    "動物",
     "Browser Game"
   ],
   "playMode": "SinglePlayer",
@@ -37,7 +37,8 @@
   "operatingSystem": "Any",
   "inLanguage": "ja",
   "isAccessibleForFree": true,
-  "description": "Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away...",
+  "alternateName": "Animal Prism Battalion",
+  "description": "3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -55,8 +56,8 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#07152b">
-  <title>Animal Prism Battalion | WeightPlay</title>
-  <meta name="description" content="Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away..." />
+  <title>アニマル・プリズム・バタリオン | WeightPlay</title>
+  <meta name="description" content="3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。" />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
@@ -64,13 +65,13 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Prism Battalion | WeightPlay" />
-    <meta property="og:description" content="Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away..." />
+    <meta property="og:title" content="アニマル・プリズム・バタリオン | WeightPlay" />
+    <meta property="og:description" content="3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-prism-battalion/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-prism-battalion/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Animal Prism Battalion | WeightPlay" />
-    <meta name="twitter:description" content="Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away..." />
+    <meta name="twitter:title" content="アニマル・プリズム・バタリオン | WeightPlay" />
+    <meta name="twitter:description" content="3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-prism-battalion/cover.webp" />
   </head>
 <body data-screen="loading" data-game-id="animal-prism-battalion" data-sound-toggle="off" data-runtime-localize="off">
@@ -86,31 +87,30 @@
         <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Language" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="Animal Prism Battalionのゲーム画像" data-ta="lanePosterAlt">
-        <div class="main-copy"><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title">Animal Prism Battalion</h1><p data-t="laneGuideIntro">Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <img class="poster" src="../../assets/animal-prism-battalion/cover.webp" alt="アニマル・プリズム・バタリオンのゲーム画像" data-ta="lanePosterAlt">
+        <div class="main-copy"><small data-t="laneKicker">THREE-LANE BATTALION STRATEGY</small><h1 data-t="title">アニマル・プリズム・バタリオン</h1><p data-t="laneGuideIntro">Switch Captain Fia between three lanes while the battalion fires automatically. Break threats, collect power cores, and protect the crystal.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Animal Prism Battalion ゲーム情報">
+    <section class="game-page-info game-page-info-static" aria-label="アニマル・プリズム・バタリオン ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>Animal Prism Battalion</h2><p>Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away from the crystal core.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Three-Lane Automatic Core Defense</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Arcade · Strategy · 守備 · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージあたり2～8分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>優先順位付け · 反応 · 計画力</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>アニマル・プリズム・バタリオン</h2><p>3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>3レーン自動コア防衛</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アーケード · 戦略 · 防衛 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく徐々に難しく</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1回の防衛 2～8分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>優先順位 · 反応 · 計画</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>Thirty defenses protect a prism citadel whose three approaches are attacked at once. The batteries fire automatically, but only the selected lane receives focused fire, so the commander decides which threat must disappear first.</p>
-<p>Every fifth defense ends with a chapter Boss. Earlier waves teach the chapter rule before that Boss combines it with denser formations.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Tap a lane, press Left or Right, or use A and D to move the selected battery. The chosen lane glows and receives the current attack value automatically.</p>
-<p>Most targets are enemies, but a rare glowing power core permanently raises attack for the rest of that run. Later enemy health assumes that core was collected, so ignoring it creates a real strategic cost.</p>
-<p>Shielded formations must lose their shield before taking normal damage. Bombs must be defused before their countdown finishes, champions require sustained focus, and any surviving monster that crosses the bottom line damages the crystal core.</p>
-<p>Shards earned from completed defenses improve firing rate, attack power, or core armor in the laboratory. These upgrades support play but do not replace lane decisions.</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>Choose an unlocked defense from the Stage rail.</li><li>Read the three lanes and select the closest or most dangerous active formation.</li><li>Switch briefly to a power core or bomb when its timing is more urgent than ordinary damage.</li><li>Clear every wave and defeat the chapter Boss before the crystal core reaches zero.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Prioritize distance and special behavior, not only remaining health.</li><li>Finish a nearly defeated formation before switching unless a bomb or breach is imminent.</li><li>Collect a power core as soon as the lane is safe enough because later waves are balanced around its attack increase.</li><li>Use armor upgrades for forgiveness, but use rate and power upgrades when a formation repeatedly survives by a small margin.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>Six five-defense chapters add split packs, shield carriers, timed bombs, champions, converging pressure, and six distinct Boss finales.</p>
-<p>The authored wave layouts change lane timing and priority instead of merely multiplying enemy health.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>The selected lane, incoming distance, special target state, core health, and attack value remain visible together. Switching never moves the pointer target or changes the meaning of the three lanes at another screen size. 完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Main のポスターとゲーム開始操作は Stage 管理から分離され、Stage 選択、Battle、ダイアログ、Result はそれぞれの範囲内の内容と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>No account, purchase, or public leaderboard is required. Unlocks, stars, shards, and laboratory upgrades are saved locally in this browser. アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Does the battery fire by itself?</dt><dd>Yes. You choose the lane; the selected battery attacks automatically.</dd></div><div><dt>Why should I collect a power core?</dt><dd>It raises attack for the current defense, and later formations are balanced around that increase.</dd></div><div><dt>What damages the crystal core?</dt><dd>A monster that reaches the bottom or an unresolved special attack.</dd></div><div><dt>How many defenses are included?</dt><dd>There are 30 authored defenses with a Boss at the end of each five-stage chapter.</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>世界とミッション</h3><p>3つの進路が同時に攻撃されるプリズム要塞を、30回の防衛で守ります。砲台は自動で撃ちますが、集中攻撃されるのは選んだレーンだけなので、どの脅威を先に消すかを決めます。</p>
+<p>5回目の防衛は各章のボス戦です。前のウェーブで章のルールを学び、ボスがそれを密集した編成と組み合わせます。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>レーンをタップするか左右キー、A/Dで選択中の砲台を移動します。選んだレーンが光り、現在の攻撃値で自動攻撃します。</p>
+<p>多くは敵ですが、まれな発光攻撃コアを取るとその防衛中の攻撃力が上がります。後半の敵の体力はコア取得を前提に調整されています。</p>
+<p>シールド編成は先に盾を壊し、爆弾はカウントが終わる前に解除し、チャンピオンには集中攻撃が必要です。敵が底線を越えるか特殊攻撃を残すとコアが傷つきます。</p>
+<p>防衛で得たかけらは研究室で連射速度、攻撃力、コア装甲を強化できますが、レーン判断の代わりにはなりません。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ステージレールから解放済みの防衛を選びます。</li><li>3レーンを読み、近い、または危険な編成を選びます。</li><li>通常攻撃より攻撃コアや爆弾の処理が急ぐときだけ短く切り替えます。</li><li>全ウェーブと章ボスを突破し、クリスタルコアを0にしないようにします。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>残り体力だけでなく距離と特殊行動を優先します。</li><li>もう少しで倒せる編成は、爆弾や突破が迫っていない限り仕留めてから切り替えます。</li><li>安全になったら攻撃コアを集め、装甲はミスの余裕、連射速度と攻撃力は僅差で残る編成への対策に使います。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>6つの5防衛章で、分裂編成、シールド運搬役、時限爆弾、チャンピオン、集中する圧力、6種類のボス戦を順に追加します。難しさは敵の体力だけでなくレーンのタイミングと優先順位で上がります。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>選択レーン、敵までの距離、特殊目標の状態、コアの体力、攻撃値を同時に表示します。切り替えでポインターの対象や3レーンの意味は画面サイズが変わっても変化しません。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>アカウント、購入、公開ランキングは不要です。解放状況、星、かけら、研究室の強化はこのブラウザに保存されます。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>砲台は自動で撃ちますか？</dt><dd>はい。レーンを選ぶと、その砲台が自動で攻撃します。</dd></div><div><dt>攻撃コアを集める理由は？</dt><dd>現在の防衛の攻撃力が上がり、後半の編成もその上昇を前提に調整されています。</dd></div><div><dt>クリスタルコアを傷つけるものは？</dt><dd>敵が底線に到達すること、または特殊攻撃を処理しないことです。</dd></div><div><dt>防衛は何回ありますか？</dt><dd>6章に30回あり、各5回目の防衛の終わりにボスが登場します。</dd></div></dl></div>
+      <div class="game-info-section"><h3>関連ゲーム</h3><p>このゲームでは優先順位を練習するので、こちらもどうぞ：</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-skyspire-drop/"><img src="/assets/animal-skyspire-drop/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>アニマル・スカイスパイア・ドロップ</strong><span>クリスタルのリング塔を回して、フィアを30のスカイスパイアへ導きます。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-spectrum-pulse/"><img src="/assets/animal-spectrum-pulse/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>アニマル・スペクトラムパルス</strong><span>パンクの精霊をパルスで回転紋章ゲートへ導き、設計された30のオーロラ塔を修復しよう。</span></span></a></div></div>
     </div>
   </section>
   </div>
@@ -143,6 +143,6 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260829-stage-battle-a11y-v23"></script><script src="stage-virtualization.js?v=20260804-stage-wave-v11-6e729693"></script><script src="game.js?v=20260829-stage-battle-a11y-v23"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="Animal Prism Battalion";document.title="Animal Prism Battalion | WeightPlay";},{once:true});</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="アニマル・プリズム・バタリオン";document.title="アニマル・プリズム・バタリオン | WeightPlay";},{once:true});</script>
 </body>
 </html>

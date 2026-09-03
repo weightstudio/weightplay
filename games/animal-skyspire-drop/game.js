@@ -42,7 +42,7 @@
   function commonText(source){const translate=window.WeightPlayGameRuntimeLocalizer?.translate;return lang==="en"||!translate?source:translate(source)}
   function ensureCompletePublicGuide(){
     const guide=document.querySelector(".game-page-info");
-    if(!guide)return;
+    if(!guide||guide.hasAttribute("data-wp-preserve-static-guide"))return;
     guide.classList.add("public-guide");
     guide.dataset.wpGuideComplete="true";
     guide.innerHTML=`

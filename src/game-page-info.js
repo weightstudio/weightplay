@@ -10654,6 +10654,7 @@
     progression: ["Thirty authored skyspires span six chapters. Later towers add fragile glass, drifting rings, reversed controls, charge crystals, shield gates, and Crownfall layouts that combine earlier rules."],
     designNote: "Every tower keeps the same direct rotation control while changing ring timing and hazards, so challenge comes from reading the next landing rather than learning a new input scheme.",
     parent: "No account is required. Stars, best times, sky shards, and upgrades are stored locally in this browser. Clearing site storage or switching browsers may create a separate save.",
+    relatedIds: ["animal-prism-battalion", "animal-spectrum-pulse"],
     faq: [["How many skyspires are there?", "There are 30 authored skyspires across six chapters."], ["What charges Comet Break?", "Passing through consecutive openings builds the charge. A full charge can break through one danger."], ["Does progress save?", "Yes. Cleared towers, stars, best times, sky shards, and Comet Forge upgrades save locally."]]
   };
   gameplayProfiles["animal-skyspire-drop"] = { gameplay: "Rotating Tower Arcade", genre: ["Arcade", "Action", "Animal"] };
@@ -10703,10 +10704,154 @@
     progression: ["تمتد 30 برجًا سماويًا مصممًا يدويًا عبر ستة فصول، وتضيف لاحقًا الزجاج الهش والحلقات المنجرفة والتحكم المعكوس وبلورات الشحن وبوابات الدرع."],
     designNote: "يحافظ كل برج على التحكم المباشر نفسه في الدوران ويغيّر توقيت الحلقات والمخاطر، لذلك يأتي التحدي من قراءة الهبوط التالي.",
     parent: "لا يلزم إنشاء حساب. تُحفظ النجوم وأفضل الأوقات وشظايا السماء والترقيات محليًا في هذا المتصفح.",
-    related: ["animal-block-grove"],
+    related: ["animal-prism-battalion", "animal-spectrum-pulse"],
     faq: [["كم عدد الأبراج السماوية؟", "هناك 30 برجًا مصممًا يدويًا عبر ستة فصول."], ["كيف تُشحن ضربة المذنب؟", "يبني المرور عبر فتحات متتالية الشحنة، ويمكن للشحنة الكاملة اختراق خطر واحد."], ["هل يُحفظ التقدم؟", "نعم، تُحفظ الأبراج والنجوم والأوقات والشظايا والترقيات محليًا."]]
   };
   localizedGameplayProfiles["ar"]["animal-skyspire-drop"] = { gameplay: "لعبة البرج الدوّار", genre: ["أركيد", "حركة", "حيوانات"] };
+
+  // Skyspire Drop owns a complete long-form Guide in every supported locale.
+  // Keeping the whole rendered surface here prevents translated headings from
+  // being paired with an English FAQ or parent note on public routes.
+  const skyspireGuideLocaleCopy = {
+    "zh-Hant": {
+      title: "動物天塔墜擊", difficulty: "中等", time: "每次墜降 2–6 分鐘", gameplay: "旋轉高塔街機挑戰", genre: ["街機", "動作", "動物"], skills: ["反應", "專注", "手眼協調"], guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+      intro: "旋轉水晶環塔，引導 Fia 穿越 30 座天塔，對準安全缺口，並在詛咒區域終止墜降前累積彗星破擊。",
+      story: ["Fia 乘著彗星護罩穿越一連串不穩定的天塔；每通過一座塔，就會修復高空路線的一段，離救援之門更近一步。"],
+      systems: ["在高塔上拖曳，或使用左右方向鍵，同時旋轉所有環塔。青綠色平台安全；紫色詛咒區域會結束挑戰，除非護盾或已充能的彗星破擊保護 Fia。", "連續穿過缺口會為彗星破擊充能。完成高塔獲得的天空碎片與星星會儲存在本機，可用於提升操控、護盾和其他彗星工坊升級。"],
+      how: ["從水平天塔軌道選擇已解鎖的關卡。", "旋轉環塔，讓缺口或安全的青綠色平台在下一次落地前移到 Fia 下方。", "維持連續安全墜降來充能彗星破擊，並前往救援之門。"],
+      strategyTips: ["需要時間判讀下一環時，先落在短距離安全平台。", "長距離連續墜降充能較快，但下一次落地也更快；行動前先規劃下一個缺口。", "把護盾或彗星破擊留給擁擠的詛咒區段，而不是簡單的環塔。"],
+      progression: ["30 座手工設計的天塔分為六個章節，後期加入易碎玻璃、漂移環塔、反向控制、充能水晶、護盾閘門與結合多項規則的王冠墜落塔。"],
+      designNote: "每座塔都維持直接的旋轉操作，再透過環塔時機與危險配置改變挑戰；難度來自判讀下一次落地，而非學習新的控制方式。",
+      parent: "不需要帳號。星星、最佳時間、天空碎片與升級都儲存在此瀏覽器；清除網站資料或使用其他瀏覽器可能會建立新的進度。",
+      faq: [["共有多少座天塔？", "六個章節共有 30 座手工設計的天塔。"], ["如何為彗星破擊充能？", "連續穿過缺口即可累積充能；充滿後可突破一次危險。"], ["進度會儲存嗎？", "會。完成的天塔、星星、最佳時間、天空碎片與彗星工坊升級都會儲存在本機。"]]
+    },
+    "zh-Hans": {
+      title: "动物天塔坠击", difficulty: "中等", time: "每次坠落 2–6 分钟", gameplay: "旋转高塔街机挑战", genre: ["街机", "动作", "动物"], skills: ["反应", "专注", "手眼协调"], guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南",
+      intro: "旋转水晶环塔，引导菲亚穿越 30 座天空尖塔，对准安全缺口，并在诅咒区域终止坠落前蓄满彗星破击。",
+      story: ["菲亚乘着彗星护罩穿越一连串不稳定的天空尖塔；每通过一座塔，就会修复高空路线的一段，离救援之门更近一步。"],
+      systems: ["在高塔上拖动，或使用左右方向键，同时旋转所有环塔。青绿色平台安全；紫色诅咒区域会结束挑战，除非护盾或已充能的彗星破击保护菲亚。", "连续穿过缺口会为彗星破击充能。完成高塔获得的天空碎片与星星会保存在本机，可用于提升操控、护盾和其他彗星工坊升级。"],
+      how: ["从水平天塔轨道选择已解锁的关卡。", "旋转环塔，让缺口或安全的青绿色平台在下一次落地前移到菲亚下方。", "保持连续安全坠落来充能彗星破击，并前往救援之门。"],
+      strategyTips: ["需要时间判断下一环时，先落在短距离安全平台。", "长距离连续坠落充能较快，但下一次落地也更快；行动前先规划下一个缺口。", "把护盾或彗星破击留给拥挤的诅咒区段。"],
+      progression: ["30 座手工设计的天空尖塔分为六个章节，后期加入易碎玻璃、漂移环塔、反向控制、充能水晶、护盾闸门和结合多项规则的王冠坠落塔。"],
+      designNote: "每座塔都保持直接的旋转操作，再通过环塔时机和危险配置改变挑战；难度来自判断下一次落地，而不是学习新的控制方式。",
+      parent: "不需要账号。星星、最佳时间、天空碎片和升级都保存在此浏览器；清除网站数据或使用其他浏览器可能会建立新的进度。",
+      faq: [["共有多少座天空尖塔？", "六个章节共有 30 座手工设计的天空尖塔。"], ["如何为彗星破击充能？", "连续穿过缺口即可累积充能；充满后可突破一次危险。"], ["进度会保存吗？", "会。完成的高塔、星星、最佳时间、天空碎片和彗星工坊升级都会保存在本机。"]]
+    },
+    ja: {
+      title: "アニマル・スカイスパイア・ドロップ", difficulty: "中級", time: "1回の降下 2～6分", gameplay: "回転タワー・アーケード", genre: ["アーケード", "アクション", "動物"], skills: ["反応", "集中", "手と目の協調"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド",
+      intro: "クリスタルのリング塔を回して、フィアを30のスカイスパイアへ導きます。安全な開口部をそろえ、呪われた区画に降りる前にコメットブレイクをためましょう。",
+      story: ["フィアは彗星の球体に乗り、不安定な空塔の連なりを進みます。塔を一つ越えるたびに高空ルートが修復され、救助ゲートに近づきます。"],
+      systems: ["塔をドラッグするか左右キーで、すべてのリングを一緒に回します。青緑の足場は安全ですが、紫の呪われた区画はシールドかチャージ済みのコメットブレイクがなければ降下を終わらせます。", "連続して開口部を通るとコメットブレイクがたまります。クリアで得る空のかけらと星はこのブラウザに保存され、操作やシールドなどのコメットフォージ強化に使えます。"],
+      how: ["横長の塔レールから解放済みのスカイスパイアを選びます。", "次の着地までに開口部か安全な青緑の足場がフィアの下へ来るようリングを回します。", "安全な降下を連続させてコメットブレイクを満たし、救助ゲートへ進みます。"],
+      strategyTips: ["次のリングを読む時間が必要なら、短い安全なバウンドを選びます。", "長い落下の連続は早くチャージできますが、次の着地も早まります。次の開口部を先に計画しましょう。", "シールドやコメットブレイクは、簡単なリングではなく呪われた区画の混雑に残します。"],
+      progression: ["30の手作り塔は6章に分かれ、後半で壊れやすいガラス、漂うリング、反転操作、チャージクリスタル、シールドゲート、複合ルールのクラウンフォールが加わります。"],
+      designNote: "各塔は直接的な回転操作を保ちながらリングのタイミングと危険を変えます。難しさは新しい入力ではなく、次の着地を読むことから生まれます。",
+      parent: "アカウントは不要です。星、ベストタイム、空のかけら、強化はこのブラウザに保存されます。サイトデータを消すか別のブラウザを使うと別の進行になる場合があります。",
+      faq: [["スカイスパイアはいくつありますか？", "6章に分かれた手作りの塔が30あります。"], ["コメットブレイクはどうチャージしますか？", "開口部を連続して通るとたまり、満タンなら危険を一度突破できます。"], ["進行状況は保存されますか？", "はい。クリアした塔、星、ベストタイム、かけら、強化はこのブラウザに保存されます。"]]
+    },
+    ko: {
+      title: "동물 스카이스파이어 드롭", difficulty: "보통", time: "하강당 2~6분", gameplay: "회전 타워 아케이드", genre: ["아케이드", "액션", "동물"], skills: ["반응", "집중", "손과 눈의 협응"], guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드",
+      intro: "크리스털 링 타워를 회전해 피아를 30개의 스카이스파이어로 이끄세요. 안전한 틈을 맞추고 저주 구역에 도착하기 전에 코멧 브레이크를 충전하세요.",
+      story: ["피아는 혜성 구체 안에서 불안정한 하늘 첨탑을 지나갑니다. 타워 하나를 통과할 때마다 높은 길이 복구되고 구조 게이트에 가까워집니다."],
+      systems: ["타워를 드래그하거나 왼쪽·오른쪽 키를 사용하면 모든 링이 함께 회전합니다. 청록 플랫폼은 안전하지만 보라색 저주 구역은 실드나 충전된 코멧 브레이크가 없으면 하강을 끝냅니다.", "틈을 연속으로 통과하면 코멧 브레이크가 충전됩니다. 클리어로 얻은 하늘 조각과 별은 이 브라우저에 저장되며 조작과 실드 등의 코멧 포지 강화에 사용할 수 있습니다."],
+      how: ["가로 타워 레일에서 잠금 해제된 스카이스파이어를 선택하세요.", "다음 착지 전에 틈이나 안전한 청록 플랫폼이 피아 아래로 오도록 링을 회전하세요.", "안전한 하강을 이어 코멧 브레이크를 충전하고 구조 게이트로 나아가세요."],
+      strategyTips: ["다음 링을 읽을 시간이 필요하면 짧은 안전 바운스를 선택하세요.", "긴 낙하 연속은 빠르게 충전되지만 다음 착지도 빨라집니다. 다음 틈을 먼저 계획하세요.", "실드나 코멧 브레이크는 쉬운 링보다 복잡한 저주 구역을 위해 남겨 두세요."],
+      progression: ["손으로 만든 스카이스파이어 30개는 6개 챕터로 나뉘며, 후반에 깨지기 쉬운 유리, 떠다니는 링, 반전 조작, 충전 크리스털, 실드 게이트와 복합 규칙의 크라운폴이 추가됩니다."],
+      designNote: "모든 타워는 직접적인 회전 조작을 유지하면서 링 타이밍과 위험을 바꿉니다. 난도는 새 입력이 아니라 다음 착지를 읽는 데서 생깁니다.",
+      parent: "계정이 필요하지 않습니다. 별, 최고 기록, 하늘 조각과 강화는 이 브라우저에 저장됩니다. 사이트 데이터를 지우거나 다른 브라우저를 쓰면 별도 진행이 생길 수 있습니다.",
+      faq: [["스카이스파이어는 몇 개인가요?", "6개 챕터에 걸쳐 손으로 만든 타워 30개가 있습니다."], ["코멧 브레이크는 어떻게 충전하나요?", "틈을 연속으로 통과하면 충전되고, 가득 차면 위험을 한 번 돌파할 수 있습니다."], ["진행 상황이 저장되나요?", "네. 클리어한 타워, 별, 최고 기록, 조각과 강화가 이 브라우저에 저장됩니다."]]
+    },
+    es: {
+      title: "Caída por las Agujas Celestes", difficulty: "Media", time: "2–6 minutos por descenso", gameplay: "Arcade de torres giratorias", genre: ["Arcade", "Acción", "Animales"], skills: ["Reacción", "Atención", "Coordinación mano-ojo"], guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía del juego",
+      intro: "Gira los anillos de cristal para guiar a Fia por 30 agujas celestes, alinea las aberturas seguras y carga el Rompecielos antes de que los sectores malditos terminen el descenso.",
+      story: ["Fia viaja dentro de una esfera de cometa por una cadena de agujas inestables. Cada torre superada repara un tramo de la ruta elevada y acerca la puerta de rescate."],
+      systems: ["Arrastra la torre o usa Izquierda y Derecha para girar todos los anillos juntos. Una plataforma turquesa es segura; un sector violeta maldito termina la partida sin escudo o Rompecielos cargado.", "Atravesar aberturas consecutivas carga el Rompecielos. Las esquirlas celestes y estrellas se guardan en este navegador y sirven para mejorar el control, los escudos y otras mejoras de la Forja del Cometa."],
+      how: ["Elige una aguja celeste desbloqueada en la fila horizontal de torres.", "Gira los anillos para que una abertura o plataforma turquesa segura quede bajo Fia antes del siguiente aterrizaje.", "Mantén descensos seguros consecutivos para cargar el Rompecielos y llegar a la puerta de rescate."],
+      strategyTips: ["Usa un rebote corto y seguro cuando necesites tiempo para leer el siguiente anillo.", "Una cadena larga carga rápido, pero el siguiente aterrizaje llega antes; planea la próxima abertura antes de comprometerte.", "Guarda el escudo o el Rompecielos para un sector maldito abarrotado, no para un anillo sencillo."],
+      progression: ["Las 30 agujas diseñadas a mano recorren seis capítulos; los últimos añaden cristal frágil, anillos flotantes, controles invertidos, cristales de carga, puertas de escudo y trazados Corona Caída que combinan reglas anteriores."],
+      designNote: "Cada torre conserva el control directo de giro y cambia el ritmo de los anillos y los peligros. El reto está en leer el siguiente aterrizaje, no en aprender otra entrada.",
+      parent: "No se necesita cuenta. Las estrellas, mejores tiempos, esquirlas celestes y mejoras se guardan en este navegador; borrar los datos del sitio o cambiar de navegador puede crear otro progreso.",
+      faq: [["¿Cuántas agujas celestes hay?", "Hay 30 torres diseñadas a mano en seis capítulos."], ["¿Cómo se carga el Rompecielos?", "Atravesar aberturas consecutivas acumula la carga; llena, permite atravesar un peligro una vez."], ["¿Se guarda el progreso?", "Sí. Las torres superadas, estrellas, mejores tiempos, esquirlas y mejoras se guardan localmente."]]
+    },
+    "pt-BR": {
+      title: "Queda pelas Torres Celestes", difficulty: "Média", time: "2–6 minutos por descida", gameplay: "Arcade de torres giratórias", genre: ["Arcade", "Ação", "Animais"], skills: ["Reação", "Foco", "Coordenação olho-mão"], guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Gire os anéis de cristal para guiar Fia por 30 torres celestes, alinhe aberturas seguras e carregue o Quebra-Cometa antes que setores amaldiçoados encerrem a descida.",
+      story: ["Fia viaja dentro de uma esfera de cometa por uma cadeia de torres instáveis. Cada torre concluída restaura um trecho da rota elevada e aproxima o portão de resgate."],
+      systems: ["Arraste a torre ou use esquerda e direita para girar todos os anéis juntos. Uma plataforma turquesa é segura; um setor violeta amaldiçoado encerra a rodada sem escudo ou Quebra-Cometa carregado.", "Atravessar aberturas em sequência carrega o Quebra-Cometa. Fragmentos celestes e estrelas ficam salvos neste navegador e podem melhorar controle, escudos e outras melhorias da Forja do Cometa."],
+      how: ["Escolha uma torre celeste desbloqueada na fileira horizontal.", "Gire os anéis para colocar uma abertura ou plataforma turquesa segura sob Fia antes da próxima aterrissagem.", "Mantenha descidas seguras em sequência para carregar o Quebra-Cometa e alcançar o portão de resgate."],
+      strategyTips: ["Use um salto curto e seguro quando precisar de tempo para ler o próximo anel.", "Uma sequência longa carrega rápido, mas a próxima aterrissagem chega antes; planeje a abertura seguinte antes de se comprometer.", "Guarde o escudo ou o Quebra-Cometa para um setor amaldiçoado cheio, não para um anel simples."],
+      progression: ["As 30 torres criadas à mão passam por seis capítulos; as últimas adicionam vidro frágil, anéis flutuantes, controles invertidos, cristais de carga, portões de escudo e layouts de Queda da Coroa que combinam regras anteriores."],
+      designNote: "Cada torre mantém o controle direto de rotação e muda o ritmo dos anéis e dos perigos. O desafio vem de ler a próxima aterrissagem, não de aprender outro comando.",
+      parent: "Não é preciso ter conta. Estrelas, melhores tempos, fragmentos celestes e melhorias ficam salvos neste navegador; limpar os dados do site ou trocar de navegador pode criar outro progresso.",
+      faq: [["Quantas torres celestes existem?", "São 30 torres criadas à mão em seis capítulos."], ["Como carrego o Quebra-Cometa?", "Atravessar aberturas consecutivas acumula a carga; cheia, ela atravessa um perigo uma vez."], ["O progresso é salvo?", "Sim. Torres concluídas, estrelas, melhores tempos, fragmentos e melhorias são salvos localmente."]]
+    },
+    fr: {
+      title: "Chute dans les aiguilles célestes", difficulty: "Moyenne", time: "2 à 6 minutes par descente", gameplay: "Arcade de tours rotatives", genre: ["Arcade", "Action", "Animaux"], skills: ["Réaction", "Concentration", "Coordination œil-main"], guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Faites tourner les anneaux de cristal pour guider Fia dans 30 aiguilles célestes, alignez les ouvertures sûres et chargez la Fracture cométaire avant que les secteurs maudits n’arrêtent la descente.",
+      story: ["Fia traverse une chaîne de tours instables dans une sphère cométaire. Chaque tour franchie répare une partie de la route aérienne et rapproche la porte de secours."],
+      systems: ["Faites glisser la tour ou utilisez Gauche et Droite pour faire tourner tous les anneaux ensemble. Une plateforme turquoise est sûre ; un secteur violet maudit termine la partie sans bouclier ou Fracture cométaire chargée.", "Traverser des ouvertures à la suite charge la Fracture cométaire. Les éclats célestes et les étoiles sont enregistrés dans ce navigateur et améliorent le contrôle, les boucliers et la Forge cométaire."],
+      how: ["Choisissez une aiguille céleste débloquée dans le rail horizontal.", "Tournez les anneaux afin qu’une ouverture ou une plateforme turquoise sûre soit sous Fia avant l’atterrissage suivant.", "Enchaînez les descentes sûres pour charger la Fracture cométaire et rejoindre la porte de secours."],
+      strategyTips: ["Choisissez un rebond court et sûr quand vous avez besoin de temps pour lire l’anneau suivant.", "Une longue chaîne charge vite, mais l’atterrissage suivant arrive plus tôt ; prévoyez l’ouverture suivante avant de vous engager.", "Gardez le bouclier ou la Fracture cométaire pour un secteur maudit encombré, pas pour un anneau simple."],
+      progression: ["Les 30 tours conçues à la main couvrent six chapitres ; les dernières ajoutent verre fragile, anneaux dérivants, commandes inversées, cristaux de charge, portes à bouclier et tracés Crownfall combinant les règles précédentes."],
+      designNote: "Chaque tour conserve une rotation directe et change le rythme des anneaux et des dangers. Le défi vient de la lecture du prochain atterrissage, pas d’une nouvelle commande.",
+      parent: "Aucun compte n’est nécessaire. Étoiles, meilleurs temps, éclats célestes et améliorations sont conservés dans ce navigateur ; effacer les données ou changer de navigateur peut créer une autre sauvegarde.",
+      faq: [["Combien y a-t-il d’aiguilles célestes ?", "Il y a 30 tours conçues à la main en six chapitres."], ["Comment charger la Fracture cométaire ?", "Les ouvertures franchies à la suite remplissent la charge ; pleine, elle traverse un danger une fois."], ["La progression est-elle sauvegardée ?", "Oui. Tours franchies, étoiles, meilleurs temps, éclats et améliorations sont conservés localement."]]
+    },
+    de: {
+      title: "Tierischer Himmelssturz", difficulty: "Mittel", time: "2–6 Minuten pro Abstieg", gameplay: "Rotierendes-Türme-Arcade", genre: ["Arcade", "Action", "Tiere"], skills: ["Reaktion", "Fokus", "Hand-Auge-Koordination"], guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden",
+      intro: "Drehe Kristallringe, führe Fia durch 30 Himmelstürme, richte sichere Öffnungen aus und lade den Kometenbruch, bevor verfluchte Sektoren den Abstieg beenden.",
+      story: ["Fia reist in einer Kometenkugel durch eine Kette instabiler Himmelstürme. Jeder geschaffte Turm repariert einen Abschnitt der Höhenroute und bringt das Rettungstor näher."],
+      systems: ["Ziehe über den Turm oder nutze Links und Rechts, um alle Ringe gemeinsam zu drehen. Eine türkisfarbene Plattform ist sicher; ein violetter Fluchsektor beendet den Lauf ohne Schild oder geladenen Kometenbruch.", "Aufeinanderfolgende Öffnungen laden den Kometenbruch. Himmelsplitter und Sterne werden in diesem Browser gespeichert und können Kontrolle, Schilde und weitere Kometenschmiede-Upgrades verbessern."],
+      how: ["Wähle einen freigeschalteten Himmelsturm aus der waagerechten Turmleiste.", "Drehe die Ringe so, dass vor der nächsten Landung eine Öffnung oder sichere türkisfarbene Plattform unter Fia liegt.", "Halte sichere Abstiege in Folge, um den Kometenbruch zu laden und das Rettungstor zu erreichen."],
+      strategyTips: ["Nutze einen kurzen sicheren Sprung, wenn du Zeit brauchst, um den nächsten Ring zu lesen.", "Eine lange Sprungkette lädt schnell, aber die nächste Landung kommt früher; plane die nächste Öffnung vor dem Fall.", "Spare Schild oder Kometenbruch für einen vollen Fluchsektor auf, nicht für einen einfachen Ring."],
+      progression: ["Die 30 handgestalteten Himmelstürme verteilen sich auf sechs Kapitel. Später kommen zerbrechliches Glas, driftende Ringe, umgekehrte Steuerung, Ladekristalle, Schildtore und Crownfall-Layouts mit kombinierten Regeln hinzu."],
+      designNote: "Jeder Turm behält die direkte Drehsteuerung und verändert Ringtiming und Gefahren. Die Herausforderung entsteht durch das Lesen der nächsten Landung, nicht durch neue Eingaben.",
+      parent: "Ein Konto ist nicht erforderlich. Sterne, Bestzeiten, Himmelsplitter und Upgrades werden in diesem Browser gespeichert; gelöschte Websitedaten oder ein anderer Browser können einen separaten Spielstand erzeugen.",
+      faq: [["Wie viele Himmelstürme gibt es?", "Es gibt 30 handgestaltete Türme in sechs Kapiteln."], ["Wie lädt man den Kometenbruch?", "Aufeinanderfolgende Öffnungen füllen die Ladung; voll kann sie einmal eine Gefahr durchbrechen."], ["Wird der Fortschritt gespeichert?", "Ja. Geschaffte Türme, Sterne, Bestzeiten, Splitter und Upgrades werden lokal gespeichert."]]
+    },
+    it: {
+      title: "Discesa nelle guglie celesti", difficulty: "Media", time: "2–6 minuti per discesa", gameplay: "Arcade delle torri rotanti", genre: ["Arcade", "Azione", "Animali"], skills: ["Reazione", "Concentrazione", "Coordinazione occhio-mano"], guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida al gioco",
+      intro: "Ruota gli anelli di cristallo per guidare Fia attraverso 30 guglie celesti, allinea le aperture sicure e carica la Rottura della Cometa prima che i settori maledetti fermino la discesa.",
+      story: ["Fia viaggia in una sfera cometaria attraverso una catena di guglie instabili. Ogni torre superata ripara un tratto della rotta in quota e avvicina il varco di soccorso."],
+      systems: ["Trascina sulla torre o usa sinistra e destra per ruotare insieme tutti gli anelli. Una piattaforma turchese è sicura; un settore viola maledetto chiude la discesa senza scudo o Rottura della Cometa carica.", "Attraversare aperture consecutive carica la Rottura della Cometa. Frammenti celesti e stelle vengono salvati in questo browser e migliorano controllo, scudi e altri potenziamenti della Forgia della Cometa."],
+      how: ["Scegli una guglia celeste sbloccata dalla barra orizzontale delle torri.", "Ruota gli anelli per portare un’apertura o una piattaforma turchese sicura sotto Fia prima del prossimo atterraggio.", "Mantieni discese sicure consecutive per caricare la Rottura della Cometa e raggiungere il varco di soccorso."],
+      strategyTips: ["Usa un rimbalzo breve e sicuro quando ti serve tempo per leggere l’anello successivo.", "Una lunga catena carica in fretta, ma il prossimo atterraggio arriva prima: pianifica l’apertura seguente.", "Conserva scudo o Rottura della Cometa per un settore maledetto affollato, non per un anello semplice."],
+      progression: ["Le 30 guglie progettate a mano attraversano sei capitoli; più avanti arrivano vetro fragile, anelli fluttuanti, comandi invertiti, cristalli di carica, porte a scudo e tracciati Crownfall che combinano le regole precedenti."],
+      designNote: "Ogni torre conserva il controllo diretto della rotazione e cambia tempi degli anelli e pericoli. La sfida è leggere il prossimo atterraggio, non imparare un nuovo comando.",
+      parent: "Non serve un account. Stelle, tempi migliori, frammenti celesti e potenziamenti restano salvati in questo browser; cancellare i dati del sito o cambiare browser può creare un salvataggio separato.",
+      faq: [["Quante guglie celesti ci sono?", "Ci sono 30 torri progettate a mano in sei capitoli."], ["Come si carica la Rottura della Cometa?", "Le aperture attraversate in successione accumulano la carica; al completo supera un pericolo una volta."], ["I progressi vengono salvati?", "Sì. Torri completate, stelle, tempi migliori, frammenti e potenziamenti sono salvati localmente."]]
+    },
+    ru: {
+      title: "Падение с небесных шпилей", difficulty: "Средняя", time: "2–6 минут на спуск", gameplay: "Аркада с вращающимися башнями", genre: ["Аркада", "Экшен", "Животные"], skills: ["Реакция", "Внимание", "Координация рук и глаз"], guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник",
+      intro: "Вращайте кристальные кольца, проводите Фию через 30 небесных шпилей, совмещайте безопасные проёмы и заряжайте Кометный удар, пока проклятые сектора не остановили спуск.",
+      story: ["Фия путешествует в кометной сфере по цепочке нестабильных небесных башен. Каждая пройденная башня восстанавливает участок высотного пути и приближает спасательные ворота."],
+      systems: ["Перетаскивайте башню или используйте влево и вправо, чтобы вращать все кольца вместе. Бирюзовая платформа безопасна, а фиолетовый проклятый сектор завершает попытку без щита или заряженного Кометного удара.", "Последовательное прохождение проёмов заряжает Кометный удар. Небесные осколки и звёзды сохраняются в этом браузере и улучшают управление, щиты и другие улучшения Кометной кузницы."],
+      how: ["Выберите открытый небесный шпиль на горизонтальной ленте башен.", "Поверните кольца так, чтобы до следующего приземления под Фией оказался проём или безопасная бирюзовая платформа.", "Поддерживайте цепочку безопасных спусков, заряжайте Кометный удар и двигайтесь к спасательным воротам."],
+      strategyTips: ["Если нужно время на чтение следующего кольца, выберите короткий безопасный отскок.", "Длинная цепочка быстро заряжает удар, но следующее приземление наступает раньше; заранее планируйте следующий проём.", "Оставляйте щит или Кометный удар для тесного проклятого сектора, а не для простого кольца."],
+      progression: ["30 созданных вручную шпилей разделены на шесть глав. Позже появляются хрупкое стекло, дрейфующие кольца, обратное управление, кристаллы заряда, щитовые ворота и схемы Crownfall, объединяющие прежние правила."],
+      designNote: "Каждая башня сохраняет прямое вращение, но меняет ритм колец и опасности. Сложность создаёт чтение следующего приземления, а не новые кнопки.",
+      parent: "Аккаунт не нужен. Звёзды, лучшие времена, небесные осколки и улучшения сохраняются в этом браузере; очистка данных сайта или смена браузера может создать отдельное сохранение.",
+      faq: [["Сколько всего небесных шпилей?", "В шести главах есть 30 башен, созданных вручную."], ["Как зарядить Кометный удар?", "Последовательные проёмы накапливают заряд; полный заряд один раз пробивает опасность."], ["Сохраняется ли прогресс?", "Да. Пройденные башни, звёзды, лучшие времена, осколки и улучшения сохраняются локально."]]
+    },
+    hi: {
+      title: "पशु स्काईस्पायर ड्रॉप", difficulty: "मध्यम", time: "हर अवरोहण 2–6 मिनट", gameplay: "घूमते टावर का आर्केड", genre: ["आर्केड", "एक्शन", "पशु"], skills: ["प्रतिक्रिया", "ध्यान", "हाथ-आँख समन्वय"], guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "क्रिस्टल रिंग टावर घुमाकर Fia को 30 स्काईस्पायर से पार ले जाएँ, सुरक्षित खुले हिस्से मिलाएँ और शापित क्षेत्र अवरोहण रोकने से पहले कॉमेट ब्रेक चार्ज करें।",
+      story: ["Fia धूमकेतु के गोले में अस्थिर आकाश-शिखरों की श्रृंखला से गुजरती है। हर पूरा टावर ऊँचे रास्ते का एक हिस्सा ठीक करता है और बचाव द्वार को पास लाता है।"],
+      systems: ["टावर पर खींचें या बाएँ-दाएँ दबाकर सभी रिंग एक साथ घुमाएँ। फ़िरोज़ी प्लेटफ़ॉर्म सुरक्षित है; बैंगनी शापित क्षेत्र बिना शील्ड या चार्ज कॉमेट ब्रेक के प्रयास समाप्त कर देता है।", "लगातार खुले हिस्सों से गुजरने पर कॉमेट ब्रेक चार्ज होता है। पूरे किए टावरों के आकाश-टुकड़े और सितारे इसी ब्राउज़र में सहेजे जाते हैं और नियंत्रण, शील्ड व कॉमेट फोर्ज उन्नयन में काम आते हैं।"],
+      how: ["क्षैतिज टावर पट्टी से अनलॉक किया हुआ स्काईस्पायर चुनें।", "अगली लैंडिंग से पहले Fia के नीचे खुला हिस्सा या सुरक्षित फ़िरोज़ी प्लेटफ़ॉर्म लाने के लिए रिंग घुमाएँ।", "सुरक्षित अवरोहण की श्रृंखला बनाएँ, कॉमेट ब्रेक चार्ज करें और बचाव द्वार तक जाएँ।"],
+      strategyTips: ["अगली रिंग पढ़ने के लिए समय चाहिए तो छोटा सुरक्षित उछाल चुनें।", "लंबी श्रृंखला जल्दी चार्ज करती है, लेकिन अगली लैंडिंग भी जल्दी आती है; अगले खुले हिस्से की पहले योजना बनाएँ।", "शील्ड या कॉमेट ब्रेक को आसान रिंग के बजाय भीड़ वाले शापित क्षेत्र के लिए बचाएँ।"],
+      progression: ["हाथ से बनाए 30 स्काईस्पायर छह अध्यायों में हैं। आगे नाज़ुक काँच, बहती रिंग, उलटे नियंत्रण, चार्ज क्रिस्टल, शील्ड गेट और मिले-जुले नियमों वाले Crownfall लेआउट जुड़ते हैं।"],
+      designNote: "हर टावर सीधा घुमाने वाला नियंत्रण रखता है और रिंग का समय व खतरे बदलता है। चुनौती अगली लैंडिंग पढ़ने से आती है, नए इनपुट सीखने से नहीं।",
+      parent: "खाते की जरूरत नहीं। सितारे, सर्वोत्तम समय, आकाश-टुकड़े और उन्नयन इसी ब्राउज़र में सहेजे जाते हैं; साइट डेटा मिटाने या ब्राउज़र बदलने पर अलग प्रगति बन सकती है।",
+      faq: [["कितने स्काईस्पायर हैं?", "छह अध्यायों में हाथ से बनाए 30 टावर हैं।"], ["कॉमेट ब्रेक कैसे चार्ज होता है?", "लगातार खुले हिस्सों से गुजरने पर चार्ज बढ़ता है; पूरा चार्ज एक खतरे को पार कर सकता है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। पूरे किए टावर, सितारे, सर्वोत्तम समय, टुकड़े और उन्नयन स्थानीय रूप से सहेजे जाते हैं।"]]
+    }
+  };
+  for (const [locale, copy] of Object.entries(skyspireGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGames[locale]["animal-skyspire-drop"] = { ...games["animal-skyspire-drop"], ...copy };
+    localizedGameplayProfiles[locale]["animal-skyspire-drop"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
 
   function registerExpandedGuide(id, data, zhHantTitle, zhHansTitle) {
     games[id] = {
@@ -12194,6 +12339,7 @@
     progression: ["Six five-defense chapters add split packs, shield carriers, timed bombs, champions, converging pressure, and six distinct Boss finales.", "The authored wave layouts change lane timing and priority instead of merely multiplying enemy health."],
     designNote: "The selected lane, incoming distance, special target state, core health, and attack value remain visible together. Switching never moves the pointer target or changes the meaning of the three lanes at another screen size.",
     parent: "No account, purchase, or public leaderboard is required. Unlocks, stars, shards, and laboratory upgrades are saved locally in this browser.",
+    relatedIds: ["animal-skyspire-drop", "animal-spectrum-pulse"],
     faq: [["Does the battery fire by itself?", "Yes. You choose the lane; the selected battery attacks automatically."], ["Why should I collect a power core?", "It raises attack for the current defense, and later formations are balanced around that increase."], ["What damages the crystal core?", "A monster that reaches the bottom or an unresolved special attack."], ["How many defenses are included?", "There are 30 authored defenses with a Boss at the end of each five-stage chapter."]]
   }, "動物稜光軍團", "动物棱光军团");
 
@@ -12240,6 +12386,7 @@
     ],
     designNote: "تبقى الممر المحدد ومسافة الهدف القادم وحالة الهدف الخاص وصحة النواة وقيمة الهجوم ظاهرة معًا. لا يغيّر التبديل موضع الهدف أو معنى الممرات الثلاثة عند تغيير حجم الشاشة.",
     parent: "لا يلزم حساب أو شراء أو لوحة متصدرين عامة. تُحفظ الفتوحات والنجوم والشظايا وترقيات المختبر محليًا في هذا المتصفح.",
+    relatedIds: ["animal-skyspire-drop", "animal-spectrum-pulse"],
     faq: [
       ["هل تطلق البطارية النار تلقائيًا؟", "نعم. تختار الممر، وتهاجم البطارية المحددة تلقائيًا."],
       ["لماذا ينبغي أن أجمع نواة الطاقة؟", "ترفع الهجوم في الدفاع الحالي، وتُوازَن التشكيلات اللاحقة حول هذه الزيادة."],
@@ -12247,6 +12394,150 @@
       ["كم عدد الدفاعات الموجودة؟", "هناك 30 دفاعًا مصممًا بعناية، مع زعيم في نهاية كل فصل من خمسة دفاعات."],
     ],
   };
+
+  // Prism Battalion owns the complete public Guide in all locales. This map
+  // replaces the old title-only locale records that left mechanics and FAQs
+  // in English on indexable routes.
+  const prismBattalionGuideLocaleCopy = {
+    "zh-Hant": {
+      title: "動物稜光軍團", difficulty: "容易上手，逐步挑戰", time: "每次防禦 2–8 分鐘", gameplay: "三路自動核心防禦", genre: ["街機", "策略", "防禦", "動物"], skills: ["判斷優先順序", "反應", "規劃"], guideKicker: "WeightPlay 原創遊戲指南", guideTitleSuffix: "遊戲指南",
+      intro: "在三條路線之間切換一座自動稜光砲台，摧毀來襲編隊，收集稀有攻擊核心，並讓所有存活的怪物遠離水晶核心。",
+      story: ["三條入口同時遭到攻擊，30 次防禦守護著稜光城塞。砲台會自動開火，但只有選定路線能獲得集中火力，因此指揮官必須決定哪個威脅先消失。", "每五次防禦的最後一關都是章節首領，前面的波次會先教會本章規則，再由首領把規則和更密集的編隊結合。"],
+      systems: ["點選路線、按左右鍵或使用 A/D 來移動選定砲台；被選中的路線會發光，並自動獲得目前的攻擊值。", "大多數目標是敵人，但稀有的發光攻擊核心會永久提高本次防禦的攻擊力；後續敵人的生命值以你已收集核心為前提。", "護盾編隊要先破盾，定時炸彈要在倒數結束前拆除，冠軍敵人需要持續集中火力；怪物穿過底線或特殊攻擊未處理都會傷害水晶核心。", "完成防禦取得的碎片可在實驗室提升射速、攻擊力或核心護甲，但升級不能取代路線判斷。"],
+      how: ["從關卡列選擇已解鎖的防禦。", "閱讀三條路線，選擇距離最近或威脅最高的編隊。", "當攻擊核心或炸彈的時機比普通傷害更急迫時，短暫切換到它。", "清除所有波次並擊敗章節首領，讓水晶核心撐到最後。"],
+      strategyTips: ["優先看距離與特殊行為，不要只看剩餘生命值。", "編隊快被擊敗時先完成收尾，除非炸彈或突破已迫在眉睫。", "在路線安全時盡快收集攻擊核心；用護甲升級增加容錯，用射速與攻擊升級處理總是差一點存活的編隊。"],
+      progression: ["六個五關章節依序加入分裂編隊、護盾攜帶者、定時炸彈、冠軍敵人、匯聚壓力與六場不同的首領戰；波次透過路線時機與優先順序提高難度，而不只是增加血量。"],
+      designNote: "選定路線、來襲距離、特殊目標狀態、核心生命與攻擊值會同時保持可見；切換不會移動指標目標，也不會在不同螢幕尺寸改變三路規則。",
+      parent: "不需要帳號、購買或公開排行榜。解鎖、星星、碎片與實驗室升級會儲存在此瀏覽器。",
+      faq: [["砲台會自動開火嗎？", "會。你只選擇路線，該路線的砲台會自動攻擊。"], ["為什麼要收集攻擊核心？", "它會提高本次防禦的攻擊力，後續編隊也以這項提升作為平衡基準。"], ["什麼會傷害水晶核心？", "怪物抵達底線，或特殊攻擊沒有及時處理，都會造成傷害。"], ["共有多少次防禦？", "共有 30 次手工設計的防禦，每五次防禦的章節末都有首領。"]]
+    },
+    "zh-Hans": {
+      title: "动物棱光军团", difficulty: "容易上手，逐步挑战", time: "每次防御 2–8 分钟", gameplay: "三路自动核心防御", genre: ["街机", "策略", "防御", "动物"], skills: ["判断优先级", "反应", "规划"], guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南",
+      intro: "在三条路线之间切换一座自动棱光炮台，摧毁来袭编队，收集稀有攻击核心，并让所有存活的怪物远离水晶核心。",
+      story: ["三条入口同时遭到攻击，30 次防御守护着棱光城塞。炮台会自动开火，但只有选定路线能获得集中火力，因此指挥官必须决定哪个威胁先消失。", "每五次防御的最后一关都是章节首领，前面的波次会先教会本章规则，再由首领把规则和更密集的编队结合。"],
+      systems: ["点击路线、按左右键或使用 A/D 移动选定炮台；被选中的路线会发光，并自动获得当前攻击值。", "大多数目标是敌人，但稀有的发光攻击核心会永久提高本次防御的攻击力；后续敌人的生命值以你已经收集核心为前提。", "护盾编队要先破盾，定时炸弹要在倒计时结束前拆除，冠军敌人需要持续集中火力；怪物穿过底线或特殊攻击未处理都会伤害水晶核心。", "完成防御取得的碎片可在实验室提升射速、攻击力或核心护甲，但升级不能取代路线判断。"],
+      how: ["从关卡列选择已解锁的防御。", "阅读三条路线，选择距离最近或威胁最高的编队。", "当攻击核心或炸弹的时机比普通伤害更紧急时，短暂切换到它。", "清除所有波次并击败章节首领，让水晶核心坚持到最后。"],
+      strategyTips: ["优先看距离和特殊行为，不要只看剩余生命值。", "编队快被击败时先完成收尾，除非炸弹或突破已经迫在眉睫。", "路线安全时尽快收集攻击核心；用护甲升级增加容错，用射速和攻击升级处理总是差一点存活的编队。"],
+      progression: ["六个五关章节依次加入分裂编队、护盾携带者、定时炸弹、冠军敌人、汇聚压力和六场不同的首领战；波次通过路线时机和优先级提高难度，而不只是增加生命值。"],
+      designNote: "选定路线、来袭距离、特殊目标状态、核心生命和攻击值会同时保持可见；切换不会移动指针目标，也不会在不同屏幕尺寸改变三路规则。",
+      parent: "不需要账号、购买或公开排行榜。解锁、星星、碎片和实验室升级会保存在此浏览器。",
+      faq: [["炮台会自动开火吗？", "会。你只选择路线，该路线的炮台会自动攻击。"], ["为什么要收集攻击核心？", "它会提高本次防御的攻击力，后续编队也以这项提升作为平衡基准。"], ["什么会伤害水晶核心？", "怪物抵达底线，或特殊攻击没有及时处理，都会造成伤害。"], ["共有多少次防御？", "共有 30 次手工设计的防御，每五次防御的章节末都有首领。"]]
+    },
+    ja: {
+      title: "アニマル・プリズム・バタリオン", difficulty: "始めやすく徐々に難しく", time: "1回の防衛 2～8分", gameplay: "3レーン自動コア防衛", genre: ["アーケード", "戦略", "防衛", "動物"], skills: ["優先順位", "反応", "計画"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド",
+      intro: "3つのレーンで自動プリズム砲台を切り替え、襲来する編成を破壊し、希少な攻撃コアを集めて、残ったモンスターをクリスタルコアから遠ざけます。",
+      story: ["3つの進路が同時に攻撃されるプリズム要塞を、30回の防衛で守ります。砲台は自動で撃ちますが、集中攻撃されるのは選んだレーンだけなので、どの脅威を先に消すかを決めます。", "5回目の防衛は各章のボス戦です。前のウェーブで章のルールを学び、ボスがそれを密集した編成と組み合わせます。"],
+      systems: ["レーンをタップするか左右キー、A/Dで選択中の砲台を移動します。選んだレーンが光り、現在の攻撃値で自動攻撃します。", "多くは敵ですが、まれな発光攻撃コアを取るとその防衛中の攻撃力が上がります。後半の敵の体力はコア取得を前提に調整されています。", "シールド編成は先に盾を壊し、爆弾はカウントが終わる前に解除し、チャンピオンには集中攻撃が必要です。敵が底線を越えるか特殊攻撃を残すとコアが傷つきます。", "防衛で得たかけらは研究室で連射速度、攻撃力、コア装甲を強化できますが、レーン判断の代わりにはなりません。"],
+      how: ["ステージレールから解放済みの防衛を選びます。", "3レーンを読み、近い、または危険な編成を選びます。", "通常攻撃より攻撃コアや爆弾の処理が急ぐときだけ短く切り替えます。", "全ウェーブと章ボスを突破し、クリスタルコアを0にしないようにします。"],
+      strategyTips: ["残り体力だけでなく距離と特殊行動を優先します。", "もう少しで倒せる編成は、爆弾や突破が迫っていない限り仕留めてから切り替えます。", "安全になったら攻撃コアを集め、装甲はミスの余裕、連射速度と攻撃力は僅差で残る編成への対策に使います。"],
+      progression: ["6つの5防衛章で、分裂編成、シールド運搬役、時限爆弾、チャンピオン、集中する圧力、6種類のボス戦を順に追加します。難しさは敵の体力だけでなくレーンのタイミングと優先順位で上がります。"],
+      designNote: "選択レーン、敵までの距離、特殊目標の状態、コアの体力、攻撃値を同時に表示します。切り替えでポインターの対象や3レーンの意味は画面サイズが変わっても変化しません。",
+      parent: "アカウント、購入、公開ランキングは不要です。解放状況、星、かけら、研究室の強化はこのブラウザに保存されます。",
+      faq: [["砲台は自動で撃ちますか？", "はい。レーンを選ぶと、その砲台が自動で攻撃します。"], ["攻撃コアを集める理由は？", "現在の防衛の攻撃力が上がり、後半の編成もその上昇を前提に調整されています。"], ["クリスタルコアを傷つけるものは？", "敵が底線に到達すること、または特殊攻撃を処理しないことです。"], ["防衛は何回ありますか？", "6章に30回あり、各5回目の防衛の終わりにボスが登場します。"]]
+    },
+    ko: {
+      title: "동물 프리즘 대대", difficulty: "쉽게 시작해 점점 도전적으로", time: "방어당 2~8분", gameplay: "3개 차선 자동 코어 방어", genre: ["아케이드", "전략", "방어", "동물"], skills: ["우선순위 판단", "반응", "계획"], guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드",
+      intro: "세 차선 사이에서 자동 프리즘 포대를 전환하고, 몰려오는 편대를 파괴하며, 희귀 공격 코어를 모아 살아남은 괴물이 크리스털 코어에 닿지 않게 하세요.",
+      story: ["세 진입로가 동시에 공격받는 프리즘 요새를 30번의 방어로 지킵니다. 포대는 자동으로 발사하지만 선택한 차선만 집중 공격하므로 어떤 위협을 먼저 없앨지 결정해야 합니다.", "다섯 번째 방어마다 챕터 보스가 등장합니다. 앞의 웨이브에서 규칙을 익히고 보스가 더 빽빽한 편대와 그 규칙을 결합합니다."],
+      systems: ["차선을 누르거나 왼쪽·오른쪽 키, A/D로 선택한 포대를 움직이세요. 선택한 차선은 빛나며 현재 공격력으로 자동 공격합니다.", "대부분은 적이지만 드문 발광 공격 코어를 모으면 해당 방어의 공격력이 오릅니다. 후반 적 체력은 코어를 모았다는 전제로 조정됩니다.", "실드 편대는 먼저 실드를 깨고, 폭탄은 카운트가 끝나기 전에 해제하며, 챔피언은 계속 집중 공격해야 합니다. 적이 바닥선을 넘거나 특수 공격이 남아 있으면 코어가 피해를 입습니다.", "방어로 얻은 조각은 연구실에서 연사 속도, 공격력, 코어 방어력을 올리지만 차선 판단을 대신하지는 않습니다."],
+      how: ["스테이지 레일에서 잠금 해제된 방어를 선택하세요.", "세 차선을 읽고 가장 가깝거나 위험한 편대를 고르세요.", "일반 피해보다 공격 코어 또는 폭탄 처리가 급할 때만 잠시 전환하세요.", "모든 웨이브와 챕터 보스를 넘기고 크리스털 코어를 0으로 만들지 마세요."],
+      strategyTips: ["남은 체력만 보지 말고 거리와 특수 행동을 우선하세요.", "폭탄이나 돌파가 임박하지 않았다면 거의 쓰러진 편대를 마무리한 뒤 전환하세요.", "차선이 안전해지면 공격 코어를 모으고, 방어력은 실수의 여유로, 연사 속도와 공격력은 조금씩 살아남는 편대를 상대하는 데 사용하세요."],
+      progression: ["6개의 5방어 챕터가 분열 편대, 실드 운반자, 시간 제한 폭탄, 챔피언, 모이는 압박과 6가지 보스전을 차례로 추가합니다. 난도는 체력만이 아니라 차선의 타이밍과 우선순위로 올라갑니다."],
+      designNote: "선택 차선, 적과의 거리, 특수 목표 상태, 코어 체력과 공격력이 함께 보입니다. 화면 크기가 달라도 전환은 포인터 대상이나 세 차선의 의미를 바꾸지 않습니다.",
+      parent: "계정, 구매, 공개 순위표가 필요하지 않습니다. 해금, 별, 조각과 연구실 강화는 이 브라우저에 저장됩니다.",
+      faq: [["포대가 자동으로 발사하나요?", "네. 차선을 고르면 해당 포대가 자동으로 공격합니다."], ["공격 코어를 왜 모아야 하나요?", "현재 방어의 공격력이 올라가며 후반 편대도 그 증가를 기준으로 조정됩니다."], ["크리스털 코어를 해치는 것은 무엇인가요?", "적이 바닥선에 닿거나 특수 공격을 처리하지 못하는 경우입니다."], ["방어는 몇 번 있나요?", "6개 챕터에 총 30번 있으며, 다섯 번째 방어마다 보스가 나옵니다."]]
+    },
+    es: {
+      title: "Batallón de Prismas Animales", difficulty: "Fácil de empezar, desafiante de dominar", time: "2–8 minutos por defensa", gameplay: "Defensa automática del núcleo en tres carriles", genre: ["Arcade", "Estrategia", "Defensa", "Animales"], skills: ["Prioridad", "Reacción", "Planificación"], guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía del juego",
+      intro: "Cambia una batería prismática automática entre tres carriles, destruye cada formación, reúne núcleos de ataque raros y mantén a los monstruos lejos del núcleo de cristal.",
+      story: ["Treinta defensas protegen una ciudadela de prismas atacada por sus tres accesos a la vez. Las baterías disparan solas, pero solo el carril elegido recibe fuego concentrado: tú decides qué amenaza desaparece primero.", "Cada quinta defensa termina con un jefe de capítulo. Las oleadas anteriores enseñan la regla y el jefe la combina con formaciones más densas."],
+      systems: ["Toca un carril o usa Izquierda, Derecha y A/D para mover la batería elegida. El carril seleccionado brilla y ataca automáticamente con el valor actual.", "La mayoría de objetivos son enemigos, pero un núcleo de ataque brillante y poco común aumenta el ataque durante esa defensa. Las formaciones posteriores asumen que lo recogiste.", "Las formaciones con escudo deben perderlo primero; las bombas se desactivan antes de que termine la cuenta atrás; los campeones requieren fuego sostenido. Un monstruo que cruza la línea inferior o un ataque especial sin resolver daña el núcleo.", "Los fragmentos obtenidos mejoran cadencia, potencia o armadura del núcleo en el laboratorio, pero no sustituyen las decisiones de carril."],
+      how: ["Elige una defensa desbloqueada en la fila de fases.", "Lee los tres carriles y selecciona la formación más cercana o peligrosa.", "Cambia un momento al núcleo o a la bomba cuando su tiempo sea más urgente que el daño normal.", "Elimina todas las oleadas y vence al jefe antes de que el núcleo llegue a cero."],
+      strategyTips: ["Prioriza distancia y comportamiento especial, no solo la vida restante.", "Termina una formación casi derrotada salvo que una bomba o una brecha sea inminente.", "Recoge el núcleo cuando el carril sea seguro; usa armadura para tolerar errores y cadencia o potencia cuando una formación sobreviva por poco."],
+      progression: ["Seis capítulos de cinco defensas añaden grupos divididos, portadores de escudo, bombas temporizadas, campeones, presión convergente y seis finales de jefe distintos. La dificultad crece por el ritmo y la prioridad de los carriles, no solo por la vida enemiga."],
+      designNote: "El carril elegido, la distancia entrante, el estado del objetivo especial, la salud del núcleo y el ataque permanecen visibles juntos. Cambiar de carril no mueve el objetivo ni cambia el significado de las tres líneas en otra pantalla.",
+      parent: "No se necesita cuenta, compra ni clasificación pública. Desbloqueos, estrellas, fragmentos y mejoras del laboratorio se guardan en este navegador.",
+      faq: [["¿La batería dispara sola?", "Sí. Tú eliges el carril y la batería seleccionada ataca automáticamente."], ["¿Por qué recoger un núcleo de ataque?", "Aumenta el ataque de la defensa actual y las formaciones posteriores se equilibran contando con esa mejora."], ["¿Qué daña el núcleo de cristal?", "Un monstruo que cruza la línea inferior o un ataque especial sin resolver."], ["¿Cuántas defensas hay?", "Hay 30 defensas diseñadas a mano y un jefe al final de cada capítulo de cinco defensas."]]
+    },
+    "pt-BR": {
+      title: "Batalhão de Prismas Animal", difficulty: "Fácil de começar, difícil de dominar", time: "2–8 minutos por defesa", gameplay: "Defesa automática do núcleo em três faixas", genre: ["Arcade", "Estratégia", "Defesa", "Animais"], skills: ["Priorização", "Reação", "Planejamento"], guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Alterne uma bateria prismática automática entre três faixas, destrua cada formação, colete núcleos de ataque raros e mantenha os monstros sobreviventes longe do núcleo de cristal.",
+      story: ["Trinta defesas protegem uma cidadela prismática atacada pelos três acessos ao mesmo tempo. As baterias atiram sozinhas, mas só a faixa escolhida recebe fogo concentrado; você decide qual ameaça deve sumir primeiro.", "Toda quinta defesa termina com um chefe de capítulo. As ondas anteriores ensinam a regra e o chefe a combina com formações mais densas."],
+      systems: ["Toque em uma faixa ou use esquerda, direita e A/D para mover a bateria selecionada. A faixa escolhida brilha e ataca automaticamente com o valor atual.", "A maioria dos alvos é inimiga, mas um núcleo de ataque brilhante e raro aumenta o ataque durante aquela defesa. As formações seguintes pressupõem que você o coletou.", "Formações com escudo precisam perdê-lo antes; bombas devem ser desarmadas antes do fim da contagem; campeões exigem foco contínuo. Um monstro que cruza a linha inferior ou um ataque especial não resolvido danifica o núcleo.", "Fragmentos das defesas concluídas melhoram cadência, poder ou armadura do núcleo no laboratório, mas não substituem as decisões de faixa."],
+      how: ["Escolha uma defesa desbloqueada na fileira de fases.", "Leia as três faixas e selecione a formação mais próxima ou perigosa.", "Alterne brevemente para um núcleo ou bomba quando o tempo dela for mais urgente que o dano comum.", "Elimine todas as ondas e derrote o chefe antes que o núcleo chegue a zero."],
+      strategyTips: ["Priorize distância e comportamento especial, não apenas a vida restante.", "Finalize uma formação quase derrotada, a menos que uma bomba ou invasão seja iminente.", "Colete o núcleo quando a faixa estiver segura; use armadura para tolerar erros e cadência ou poder quando uma formação sobreviver por pouco."],
+      progression: ["Seis capítulos de cinco defesas acrescentam grupos divididos, portadores de escudo, bombas temporizadas, campeões, pressão convergente e seis finais de chefe distintos. A dificuldade cresce pelo ritmo e pela prioridade das faixas, não apenas pela vida dos inimigos."],
+      designNote: "A faixa selecionada, a distância do alvo, o estado do alvo especial, a vida do núcleo e o ataque permanecem visíveis juntos. Trocar de faixa não move o alvo nem muda o significado das três linhas em outra tela.",
+      parent: "Não é preciso conta, compra ou ranking público. Desbloqueios, estrelas, fragmentos e melhorias do laboratório ficam salvos neste navegador.",
+      faq: [["A bateria atira sozinha?", "Sim. Você escolhe a faixa e a bateria selecionada ataca automaticamente."], ["Por que coletar um núcleo de ataque?", "Ele aumenta o ataque da defesa atual, e as formações seguintes são equilibradas contando com esse aumento."], ["O que danifica o núcleo de cristal?", "Um monstro que cruza a linha inferior ou um ataque especial não resolvido."], ["Quantas defesas existem?", "São 30 defesas criadas à mão, com um chefe no fim de cada capítulo de cinco defesas."]]
+    },
+    fr: {
+      title: "Bataillon de prismes animaux", difficulty: "Facile à prendre en main, exigeant à maîtriser", time: "2 à 8 minutes par défense", gameplay: "Défense automatique du noyau sur trois voies", genre: ["Arcade", "Stratégie", "Défense", "Animaux"], skills: ["Priorités", "Réaction", "Planification"], guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Basculez une batterie prismatique automatique entre trois voies, détruisez chaque formation, récoltez les noyaux d’attaque rares et éloignez les monstres du noyau de cristal.",
+      story: ["Trente défenses protègent une citadelle prismatique attaquée par ses trois accès à la fois. Les batteries tirent automatiquement, mais seule la voie choisie reçoit le feu concentré : à vous de choisir la menace prioritaire.", "Chaque cinquième défense se termine par un boss de chapitre. Les vagues précédentes enseignent la règle avant que le boss ne la combine à des formations plus denses."],
+      systems: ["Touchez une voie ou utilisez Gauche, Droite et A/D pour déplacer la batterie sélectionnée. La voie choisie s’allume et attaque automatiquement avec la valeur actuelle.", "La plupart des cibles sont ennemies, mais un noyau d’attaque lumineux et rare augmente l’attaque pour la défense en cours. Les formations suivantes supposent que vous l’avez pris.", "Les formations protégées doivent perdre leur bouclier, les bombes doivent être désamorcées avant la fin du compte à rebours et les champions demandent un feu continu. Un monstre qui franchit la ligne basse ou une attaque spéciale non résolue blesse le noyau.", "Les éclats gagnés améliorent cadence, puissance ou armure du noyau au laboratoire, sans remplacer les décisions de voie."],
+      how: ["Choisissez une défense débloquée dans le rail des niveaux.", "Lisez les trois voies et sélectionnez la formation la plus proche ou la plus dangereuse.", "Basculez brièvement vers un noyau ou une bombe quand son timing est plus urgent que les dégâts ordinaires.", "Éliminez toutes les vagues et battez le boss avant que le noyau n’atteigne zéro."],
+      strategyTips: ["Priorisez la distance et le comportement spécial, pas seulement les points de vie restants.", "Achevez une formation presque vaincue, sauf si une bombe ou une percée est imminente.", "Prenez le noyau dès que la voie est assez sûre ; utilisez l’armure pour pardonner les erreurs et la cadence ou la puissance contre les formations qui survivent de peu."],
+      progression: ["Six chapitres de cinq défenses ajoutent groupes séparés, porteurs de bouclier, bombes à retardement, champions, pression convergente et six finales de boss distinctes. La difficulté vient du rythme et des priorités de voie, pas seulement de la vie ennemie."],
+      designNote: "La voie choisie, la distance entrante, l’état de la cible spéciale, la santé du noyau et l’attaque restent visibles ensemble. Changer de voie ne déplace pas la cible et ne change pas le sens des trois voies selon l’écran.",
+      parent: "Aucun compte, achat ou classement public n’est nécessaire. Déblocages, étoiles, éclats et améliorations du laboratoire sont enregistrés dans ce navigateur.",
+      faq: [["La batterie tire-t-elle seule ?", "Oui. Vous choisissez la voie et sa batterie attaque automatiquement."], ["Pourquoi prendre un noyau d’attaque ?", "Il augmente l’attaque de la défense en cours, et les formations suivantes sont équilibrées avec ce bonus."], ["Qu’est-ce qui blesse le noyau de cristal ?", "Un monstre qui franchit la ligne basse ou une attaque spéciale non résolue."], ["Combien y a-t-il de défenses ?", "Il y a 30 défenses conçues à la main, avec un boss à la fin de chaque chapitre de cinq défenses."]]
+    },
+    de: {
+      title: "Tierisches Prismabataillon", difficulty: "Leicht zu beginnen, schwer zu meistern", time: "2–8 Minuten pro Verteidigung", gameplay: "Automatische Kernverteidigung auf drei Spuren", genre: ["Arcade", "Strategie", "Verteidigung", "Tiere"], skills: ["Priorisierung", "Reaktion", "Planung"], guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden",
+      intro: "Wechsle eine automatische Prismabatterie zwischen drei Spuren, zerstöre jede Formation, sammle seltene Angriffskerne und halte alle überlebenden Monster vom Kristallkern fern.",
+      story: ["Drei Zugänge werden gleichzeitig angegriffen; 30 Verteidigungen schützen eine Prismaburg. Die Batterien feuern automatisch, aber nur die gewählte Spur erhält konzentriertes Feuer. Du entscheidest, welche Gefahr zuerst verschwindet.", "Jede fünfte Verteidigung endet mit einem Kapitelboss. Die vorherigen Wellen lehren die Regel, bevor der Boss sie mit dichteren Formationen verbindet."],
+      systems: ["Tippe eine Spur an oder nutze Links, Rechts und A/D, um die gewählte Batterie zu bewegen. Die Spur leuchtet und greift automatisch mit dem aktuellen Angriffswert an.", "Die meisten Ziele sind Feinde, doch ein seltener leuchtender Angriffskern erhöht den Angriff für diese Verteidigung. Spätere Formationen setzen voraus, dass du ihn gesammelt hast.", "Schildformationen müssen zuerst ihren Schild verlieren, Bomben vor dem Countdown entschärft werden und Champions brauchen anhaltendes Feuer. Ein Monster hinter der unteren Linie oder ein ungelöster Spezialangriff beschädigt den Kristallkern.", "Splitter aus abgeschlossenen Verteidigungen verbessern Feuerrate, Angriffskraft oder Kernpanzerung im Labor, ersetzen aber keine Spurentscheidungen."],
+      how: ["Wähle eine freigeschaltete Verteidigung aus der Stufenleiste.", "Lies die drei Spuren und wähle die nächste oder gefährlichste Formation.", "Wechsle kurz zu einem Kern oder einer Bombe, wenn ihr Timing dringender ist als gewöhnlicher Schaden.", "Räume alle Wellen und besiege den Kapitelboss, bevor der Kristallkern null erreicht."],
+      strategyTips: ["Achte auf Entfernung und Spezialverhalten, nicht nur auf Restgesundheit.", "Beende eine fast besiegte Formation, außer eine Bombe oder ein Durchbruch steht unmittelbar bevor.", "Sammle den Angriffskern, sobald die Spur sicher genug ist; Rüstung verzeiht Fehler, Feuerrate und Kraft helfen bei Formationen, die knapp überleben."],
+      progression: ["Sechs Kapitel mit je fünf Verteidigungen führen geteilte Gruppen, Schildträger, Zeitbomben, Champions, zusammenlaufenden Druck und sechs eigene Bossfinale ein. Die Schwierigkeit wächst durch Spurrhythmus und Priorität, nicht nur durch mehr Lebenspunkte."],
+      designNote: "Gewählte Spur, ankommende Entfernung, Zustand des Spezialziels, Kernenergie und Angriff bleiben gemeinsam sichtbar. Ein Wechsel verschiebt das Ziel nicht und ändert die Bedeutung der drei Spuren auf anderen Bildschirmen nicht.",
+      parent: "Konto, Kauf und öffentliche Rangliste sind nicht nötig. Freischaltungen, Sterne, Splitter und Labor-Upgrades werden in diesem Browser gespeichert.",
+      faq: [["Feuert die Batterie automatisch?", "Ja. Du wählst die Spur, ihre Batterie greift automatisch an."], ["Warum sollte ich einen Angriffskern sammeln?", "Er erhöht den Angriff der aktuellen Verteidigung; spätere Formationen sind auf diesen Bonus abgestimmt."], ["Was beschädigt den Kristallkern?", "Ein Monster hinter der unteren Linie oder ein ungelöster Spezialangriff."], ["Wie viele Verteidigungen gibt es?", "Es gibt 30 handgestaltete Verteidigungen und am Ende jedes Fünferkapitels einen Boss."]]
+    },
+    it: {
+      title: "Battaglione dei prismi animali", difficulty: "Facile da iniziare, impegnativo da padroneggiare", time: "2–8 minuti per difesa", gameplay: "Difesa automatica del nucleo su tre corsie", genre: ["Arcade", "Strategia", "Difesa", "Animali"], skills: ["Priorità", "Reazione", "Pianificazione"], guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida al gioco",
+      intro: "Sposta una batteria prismatica automatica fra tre corsie, distruggi ogni formazione, raccogli i rari nuclei d’attacco e tieni i mostri sopravvissuti lontani dal nucleo di cristallo.",
+      story: ["Trenta difese proteggono una cittadella prismatica attaccata contemporaneamente dai tre accessi. Le batterie sparano da sole, ma solo la corsia scelta riceve il fuoco concentrato: decidi quale minaccia eliminare per prima.", "Ogni quinta difesa termina con un boss di capitolo. Le ondate precedenti insegnano la regola, che il boss combina con formazioni più dense."],
+      systems: ["Tocca una corsia oppure usa sinistra, destra e A/D per muovere la batteria selezionata. La corsia scelta si illumina e attacca automaticamente con il valore corrente.", "Quasi tutti i bersagli sono nemici, ma un raro nucleo d’attacco luminoso aumenta l’attacco per la difesa in corso. Le formazioni successive presuppongono che tu lo abbia raccolto.", "Le formazioni con scudo devono perderlo prima, le bombe vanno disinnescate prima della fine del conto alla rovescia e i campioni richiedono fuoco continuo. Un mostro oltre la linea inferiore o un attacco speciale irrisolto danneggia il nucleo.", "I frammenti delle difese completate migliorano cadenza, potenza o armatura del nucleo nel laboratorio, ma non sostituiscono le decisioni di corsia."],
+      how: ["Scegli una difesa sbloccata dalla barra delle fasi.", "Leggi le tre corsie e scegli la formazione più vicina o più pericolosa.", "Passa per poco a un nucleo o a una bomba quando il suo tempismo è più urgente del danno normale.", "Sgombera tutte le ondate e sconfiggi il boss prima che il nucleo arrivi a zero."],
+      strategyTips: ["Dai priorità a distanza e comportamento speciale, non solo alla salute rimasta.", "Concludi una formazione quasi sconfitta, a meno che bomba o sfondamento siano imminenti.", "Raccogli il nucleo appena la corsia è sicura; usa l’armatura per perdonare gli errori e cadenza o potenza quando una formazione sopravvive per poco."],
+      progression: ["Sei capitoli da cinque difese aggiungono gruppi divisi, portatori di scudo, bombe a tempo, campioni, pressione convergente e sei finali boss distinti. La difficoltà cresce con ritmo e priorità delle corsie, non solo con i punti vita."],
+      designNote: "Corsia scelta, distanza in arrivo, stato del bersaglio speciale, salute del nucleo e attacco restano visibili insieme. Il cambio non sposta il bersaglio e non cambia il significato delle tre corsie su uno schermo diverso.",
+      parent: "Non servono account, acquisti o classifiche pubbliche. Sblocchi, stelle, frammenti e potenziamenti del laboratorio vengono salvati in questo browser.",
+      faq: [["La batteria spara automaticamente?", "Sì. Scegli la corsia e la batteria selezionata attacca da sola."], ["Perché raccogliere un nucleo d’attacco?", "Aumenta l’attacco della difesa corrente e le formazioni successive sono bilanciate su quel bonus."], ["Cosa danneggia il nucleo di cristallo?", "Un mostro che supera la linea inferiore o un attacco speciale non risolto."], ["Quante difese ci sono?", "Ci sono 30 difese progettate a mano, con un boss alla fine di ogni capitolo di cinque difese."]]
+    },
+    ru: {
+      title: "Животный призматический батальон", difficulty: "От простого старта к серьёзному вызову", time: "2–8 минут на оборону", gameplay: "Автоматическая защита ядра на трёх линиях", genre: ["Аркада", "Стратегия", "Защита", "Животные"], skills: ["Приоритеты", "Реакция", "Планирование"], guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник",
+      intro: "Переключайте автоматическую призматическую батарею между тремя линиями, уничтожайте формации, собирайте редкие атакующие ядра и не подпускайте выживших монстров к кристальному ядру.",
+      story: ["Тридцать оборонительных этапов защищают призматическую цитадель, атакованную сразу с трёх направлений. Батареи стреляют сами, но сосредоточенный огонь получает только выбранная линия, поэтому сначала нужно выбрать главную угрозу.", "Каждая пятая оборона заканчивается боссом главы. Предыдущие волны объясняют правило, а босс соединяет его с более плотными формациями."],
+      systems: ["Нажимайте на линию или используйте влево, вправо и A/D, чтобы двигать выбранную батарею. Выбранная линия светится и автоматически атакует с текущей силой.", "Большинство целей — враги, но редкое светящееся атакующее ядро повышает силу атаки на текущую оборону. Следующие формации рассчитаны на то, что ядро собрано.", "У щитовых формаций сначала нужно снять щит, бомбы обезвредить до конца отсчёта, а чемпионам нужен непрерывный огонь. Монстр за нижней линией или неразрешённая особая атака повреждают кристальное ядро.", "Осколки за завершённые обороны улучшают скорострельность, силу атаки или броню ядра в лаборатории, но не заменяют решения по линиям."],
+      how: ["Выберите открытую оборону на ленте этапов.", "Прочитайте три линии и выберите ближайшую или наиболее опасную формацию.", "Коротко переключитесь на атакующее ядро или бомбу, если их время важнее обычного урона.", "Очистите все волны и победите босса, пока кристальное ядро не достигло нуля."],
+      strategyTips: ["Сначала оценивайте расстояние и особое поведение, а не только оставшееся здоровье.", "Добивайте почти уничтоженную формацию, если только взрыв или прорыв не неизбежны.", "Собирайте ядро, когда линия достаточно безопасна; броня даёт запас ошибки, а скорострельность и сила помогают против формаций, выживающих с небольшим запасом."],
+      progression: ["Шесть глав по пять оборон добавляют разделённые группы, носителей щитов, бомбы с таймером, чемпионов, сходящееся давление и шесть разных финалов с боссами. Сложность растёт за счёт темпа и приоритетов линий, а не только здоровья врагов."],
+      designNote: "Выбранная линия, расстояние цели, состояние особой цели, здоровье ядра и сила атаки видны одновременно. Переключение не переносит цель и не меняет смысл трёх линий на другом экране.",
+      parent: "Аккаунт, покупки и публичный рейтинг не нужны. Открытия, звёзды, осколки и улучшения лаборатории сохраняются в этом браузере.",
+      faq: [["Батарея стреляет автоматически?", "Да. Вы выбираете линию, а её батарея атакует сама."], ["Зачем собирать атакующее ядро?", "Оно повышает атаку текущей обороны, а следующие формации сбалансированы с учётом этого бонуса."], ["Что повреждает кристальное ядро?", "Монстр, пересёкший нижнюю линию, или неразрешённая особая атака."], ["Сколько всего оборон?", "Есть 30 созданных вручную оборон, и в конце каждой главы из пяти этапов появляется босс."]]
+    },
+    hi: {
+      title: "पशु प्रिज़्म बटालियन", difficulty: "शुरू करना आसान, माहिर होना चुनौतीपूर्ण", time: "हर रक्षा 2–8 मिनट", gameplay: "तीन गलियों में स्वचालित कोर रक्षा", genre: ["आर्केड", "रणनीति", "रक्षा", "पशु"], skills: ["प्राथमिकता", "प्रतिक्रिया", "योजना"], guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "तीन गलियों के बीच एक स्वचालित प्रिज़्म बैटरी बदलें, आती हुई संरचनाएँ नष्ट करें, दुर्लभ आक्रमण कोर इकट्ठा करें और बचे हुए राक्षसों को क्रिस्टल कोर से दूर रखें।",
+      story: ["तीस रक्षा चरण एक प्रिज़्म किले की रक्षा करते हैं, जिस पर तीनों रास्तों से एक साथ हमला होता है। बैटरियाँ अपने आप गोली चलाती हैं, लेकिन चुनी हुई गली को ही केंद्रित आग मिलती है; पहले किस खतरे को हटाना है, यह आपको तय करना है।", "हर पाँचवीं रक्षा अध्याय के बॉस पर समाप्त होती है। पिछली लहर नियम सिखाती है और बॉस उसे अधिक घनी संरचनाओं के साथ मिलाता है।"],
+      systems: ["किसी गली को टैप करें या बाएँ-दाएँ और A/D से चुनी हुई बैटरी चलाएँ। चुनी गली चमकती है और वर्तमान आक्रमण शक्ति से अपने आप हमला करती है।", "अधिकांश लक्ष्य शत्रु हैं, लेकिन दुर्लभ चमकता आक्रमण कोर उस रक्षा में आक्रमण बढ़ाता है। बाद की संरचनाएँ मानती हैं कि आपने इसे लिया है।", "शील्ड वाली संरचनाओं की ढाल पहले हटानी होती है, बम को उलटी गिनती खत्म होने से पहले निष्क्रिय करना होता है और चैंपियन पर लगातार ध्यान चाहिए। नीचे की रेखा पार करने वाला राक्षस या अधूरा विशेष हमला कोर को नुकसान देता है।", "पूरी की गई रक्षा से मिले टुकड़े प्रयोगशाला में फायर गति, आक्रमण शक्ति या कोर कवच बढ़ाते हैं, लेकिन गली चुनने के निर्णय की जगह नहीं लेते।"],
+      how: ["स्टेज पट्टी से अनलॉक की हुई रक्षा चुनें।", "तीनों गलियाँ पढ़ें और सबसे पास या सबसे खतरनाक संरचना चुनें।", "जब आक्रमण कोर या बम का समय सामान्य नुकसान से अधिक जरूरी हो, तभी थोड़ी देर उस पर जाएँ।", "सभी लहरें साफ करें और बॉस को हराएँ, इससे पहले कि क्रिस्टल कोर शून्य हो।"],
+      strategyTips: ["केवल बची हुई सेहत नहीं, दूरी और विशेष व्यवहार को प्राथमिकता दें।", "लगभग हारी संरचना को पहले पूरा करें, जब तक बम या सेंध तुरंत आने वाली न हो।", "गली सुरक्षित होते ही आक्रमण कोर लें; कवच गलती की गुंजाइश देता है और फायर गति या शक्ति थोड़े अंतर से बचने वाली संरचनाओं में मदद करती है।"],
+      progression: ["छह अध्यायों में पाँच-पाँच रक्षा चरण हैं। इनमें विभाजित समूह, शील्ड वाहक, समयबद्ध बम, चैंपियन, मिलती हुई दबाव-रेखाएँ और छह अलग बॉस अंत जुड़ते हैं। कठिनाई गली के समय और प्राथमिकता से बढ़ती है, केवल शत्रु की सेहत से नहीं।"],
+      designNote: "चुनी गली, आती दूरी, विशेष लक्ष्य की स्थिति, कोर की सेहत और आक्रमण शक्ति साथ दिखाई देती हैं। बदलने पर लक्ष्य नहीं खिसकता और अलग स्क्रीन पर तीन गलियों का अर्थ नहीं बदलता।",
+      parent: "खाते, खरीद या सार्वजनिक लीडरबोर्ड की जरूरत नहीं। अनलॉक, सितारे, टुकड़े और प्रयोगशाला उन्नयन इसी ब्राउज़र में सहेजे जाते हैं।",
+      faq: [["क्या बैटरी अपने आप गोली चलाती है?", "हाँ। आप गली चुनते हैं और चुनी बैटरी अपने आप हमला करती है।"], ["आक्रमण कोर क्यों लेना चाहिए?", "यह वर्तमान रक्षा का आक्रमण बढ़ाता है और बाद की संरचनाएँ इसी वृद्धि को ध्यान में रखती हैं।"], ["क्रिस्टल कोर को क्या नुकसान पहुँचाता है?", "नीचे की रेखा पार करने वाला राक्षस या अधूरा विशेष हमला।"], ["कुल कितनी रक्षाएँ हैं?", "छह अध्यायों में हाथ से बनाए 30 रक्षा चरण हैं और हर पाँचवें के अंत में बॉस आता है।"]]
+    }
+  };
+  for (const [locale, copy] of Object.entries(prismBattalionGuideLocaleCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGames[locale]["animal-prism-battalion"] = { ...games["animal-prism-battalion"], ...copy };
+    localizedGameplayProfiles[locale]["animal-prism-battalion"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
 
   registerExpandedGuide("animal-prism-breakers", {
     title: "Animal Prism Breakers", gameplay: "Paddle-Angle Crystal Breaker",

@@ -40,6 +40,7 @@
   const bestValue = () => Number(storage.getItem("weightplay-acorn-auction-best-v1") || 0) || "—";
   const announce = (name, data = {}) => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `acorn_auction_${name}`, round: roundIndex + 1, picks, ...data }); };
   const setText = (node, value) => { if (node && node.textContent !== value) node.replaceChildren(document.createTextNode(value)); };
+  const guideElement = () => $("gameGuide") || document.querySelector(".game-page-info[data-wp-acorn-auction-guide]");
   function applyGuideLocale() {
     const guide = document.querySelector(".game-page-info[data-wp-acorn-auction-guide]");
     if (!guide) return;
@@ -58,7 +59,7 @@
     setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
     setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
   }
-  function show(screen) { phase = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = false; $("gameGuide").hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = screen !== "battle"; }
+  function show(screen) { phase = screen; document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); $("settingsPanel").hidden = true; $("backBtn").hidden = false; const guide = guideElement(); if (guide) guide.hidden = screen !== "main"; $("stageReserve").hidden = screen !== "stage"; $("battleReserve").hidden = screen !== "battle"; }
   function renderStatic() {
     const guideCopy = guideInfoCopy[locale] || guideInfoCopy.en;
     document.documentElement.lang = locale;
