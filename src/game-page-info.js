@@ -10897,7 +10897,7 @@
   }
 
   registerExpandedGuide("animal-bamboo-pipes", {
-    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle",
+    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle", relatedIds: ["animal-bus-jam", "animal-one-line"],
     intro: "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
     story: ["Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.", "The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations."],
     systems: ["Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.", "A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.", "The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.", "Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network."],
@@ -11086,7 +11086,7 @@
   }
 
   registerExpandedGuide("animal-bus-jam", {
-    title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy",
+    title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy", relatedIds: ["animal-bamboo-pipes", "animal-cratebound"],
     intro: "Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.",
     story: ["Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.", "Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer."],
     systems: ["Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.", "A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.", "When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.", "If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal."],
