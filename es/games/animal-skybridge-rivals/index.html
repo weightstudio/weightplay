@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-skybridge-rivals/" />
-
-    <link rel="canonical" href="https://weightplay.com/es/games/animal-skybridge-rivals/" />
+  <link rel="canonical" href="https://weightplay.com/es/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-skybridge-rivals/" />
@@ -23,7 +22,7 @@
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Rivales del Puente Aéreo Animal",
+  "name": "Rivales del Puente Celeste",
   "url": "https://weightplay.com/es/games/animal-skybridge-rivals/",
   "image": "https://weightplay.com/assets/animal-skybridge-rivals/cover.webp",
   "genre": [
@@ -38,7 +37,8 @@
   "operatingSystem": "Any",
   "inLanguage": "es",
   "isAccessibleForFree": true,
-  "description": "Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del...",
+  "alternateName": "Animal Skybridge Rivals",
+  "description": "Guía a Fia en 30 carreras, recoge losetas cian y construye un puente antes que tres rivales.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -48,8 +48,7 @@
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 13
-  },
-  "alternateName": "Animal Skybridge Rivals"
+  }
 }
     </script>
   <meta charset="utf-8">
@@ -57,8 +56,8 @@
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082c50">
-  <title>Rivales del Puente Aéreo Animal | WeightPlay</title>
-  <meta name="description" content="Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del..." />
+  <title>Rivales del Puente Celeste | WeightPlay</title>
+  <meta name="description" content="Guía a Fia en 30 carreras, recoge losetas cian y construye un puente antes que tres rivales." />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
@@ -66,82 +65,65 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Rivales del Puente Aéreo Animal | WeightPlay" />
-    <meta property="og:description" content="Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del..." />
+    <meta property="og:title" content="Rivales del Puente Celeste | WeightPlay" />
+    <meta property="og:description" content="Guía a Fia en 30 carreras, recoge losetas cian y construye un puente antes que tres rivales." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-skybridge-rivals/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-skybridge-rivals/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Rivales del Puente Aéreo Animal | WeightPlay" />
-    <meta name="twitter:description" content="Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del..." />
+    <meta name="twitter:title" content="Rivales del Puente Celeste | WeightPlay" />
+    <meta name="twitter:description" content="Guía a Fia en 30 carreras, recoge losetas cian y construye un puente antes que tres rivales." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-skybridge-rivals/cover.webp" />
   </head>
-<body data-screen="loading" data-game-id="animal-skybridge-rivals" data-sound-toggle="off" data-wp-combined-sound="true">
+<body data-screen="loading" data-game-id="animal-skybridge-rivals" data-wp-game-id="animal-skybridge-rivals" data-sound-toggle="off" data-wp-combined-sound="true" data-audience="general" data-wp-game-owned-guide>
   <section id="loading" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">Animal Skybridge Rivals</strong><span data-t="loading">Opening the cloudway…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+    <div class="loading-card"><strong data-t="title">Rivales del Puente Celeste</strong><span data-t="loading">Abriendo la ruta celeste…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
       <header class="main-header">
         <a id="lobbyReturn" class="lobby-return" data-wp-return="main" href="/en/" aria-label="Back to WeightPlay" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-t="title">Animal Skybridge Rivals</strong>
-        <div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" aria-label="Disable sound">🔊</button><label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="Idioma" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
+        <strong data-t="title">Rivales del Puente Celeste</strong>
+        <div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" aria-label="Disable sound">🔊</button><label class="locale-control"><span class="sr-only" data-t="language">Idioma</span><select id="locale" aria-label="Idioma" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-skybridge-rivals/cover.webp" alt="Imagen del juego Rivales del Puente Aéreo Animal" data-ta="posterAlt">
-        <div class="main-copy"><small data-t="kicker">REAL-TIME STACK-AND-BUILD RACING</small><h1 data-t="title">Rivales del Puente Aéreo Animal</h1><p data-t="pitch">Guide Fia across the cloud arena, collect cyan aurora tiles, and spend the stack to finish a bridge before three rivals.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <img class="poster" src="../../assets/animal-skybridge-rivals/cover.webp" alt="Imagen del juego Rivales del Puente Celeste" data-ta="posterAlt">
+        <div class="main-copy"><small data-t="kicker">CARRERA DE APILAR Y CONSTRUIR</small><h1 data-t="title">Rivales del Puente Celeste</h1><p data-t="pitch">Guía a Fia, recoge losetas cian y gasta la pila para terminar un puente antes que tres rivales.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Empezar</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="Información de Rivales del Puente Aéreo Animal">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Rivales del Puente Aéreo Animal</h2><p>Recoge fichas de aurora de tu color, llévalas a uno de tres muelles del puente, deposita la pila automáticamente al acercarte y completa la distancia del puente antes que los rivales.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Carrera de recoger y construir</strong></div><div class="game-info-fact"><span>Género</span><strong>Arcade · Carreras · Estrategia · Animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de empezar, desafiante de dominar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2–8 minutos por etapa</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Planificación de rutas · Gestión del riesgo · Reacción</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Treinta carreras de puentes celestes llevan a constructores animales por arenas flotantes. Cada corredor reúne fichas de colores, vuelve a un muelle y convierte la pila transportada en progreso del puente.</p>
-<p>Los planes de cada circuito cambian las rutas de recogida, el acceso a los muelles, los peligros, el viento, los refuerzos, los impulsos móviles y el comportamiento del campeón, en vez de repetir una arena con números mayores.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Muévete con el puntero, un objetivo táctil, las teclas de dirección o WASD. Tu animal gira y avanza hacia el objetivo elegido.</p>
-<p>Al tocar una ficha de aurora del mismo color, se añade a la pila hasta la capacidad actual. Al entrar en el área marcada de cualquier muelle, una o más fichas se depositan automáticamente; no hace falta alinear píxeles ni tener una fuerza extra.</p>
-<p>Gana el primer corredor que alcance la meta del puente de la etapa. Bombas, monstruos, viento, contacto rival y tramos reforzados pueden frenar o quitar progreso según la regla del capítulo mostrado.</p>
-<p>La energía de impulso permite una aceleración breve. Los objetos de escudo, imán e impulso dan efectos tácticos temporales, mientras que las mejoras de capacidad, velocidad y agarre del taller son apoyo permanente local.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige una carrera desbloqueada y lee su meta, temporizador, ruta y regla de peligro.</li><li>Recoge varias fichas de tu color sin superar una distancia segura de regreso.</li><li>Acércate a cualquier muelle numerado; el depósito comienza automáticamente mientras estés dentro de su zona visible.</li><li>Repite el ciclo de recoger y depositar hasta alcanzar la meta antes que los rivales.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Deposita una pila pequeña cuando un peligro bloquee la ruta larga, en vez de perder toda la carga.</li><li>Elige el muelle seguro más cercano; el número del muelle no impone un orden oculto.</li><li>Usa el imán en una zona con muchas fichas y guarda el impulso para volver o para la carrera final.</li><li>El agarre reduce el desvío del viento, mientras que la capacidad solo ayuda si puedes regresar sin interrupciones.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Seis capítulos de cinco carreras añaden rutas divididas, carriles de viento, secciones reforzadas, anillos de impulso móviles, diseños de asalto y rivales campeones.</p>
-<p>Las treinta carreras diseñadas cambian a la vez sus metas, arenas, recogibles, peligros y comportamiento rival.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>El alcance del muelle, la pila transportada, el progreso del puente, el progreso rival y la confirmación del depósito permanecen visibles. Un depósito cercano válido nunca depende de un ángulo invisible ni de una mejora. La interfaz usa un único diseño lógico centrado de 920 píxeles como máximo y escala juntos controles, zonas de toque, arte y coordenadas en móvil, horizontal y escritorio.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>No se necesita cuenta ni compra. Los desbloqueos, estrellas, fragmentos, mejoras del taller y mejores resultados locales se guardan en este navegador. Borrar los datos del sitio o cambiar de navegador puede crear un guardado separado.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Qué hace falta para depositar fichas?</dt><dd>Lleva al menos una ficha del mismo color y entra en el área visible de depósito de un muelle.</dd></div><div><dt>¿Debo usar los muelles en orden numérico?</dt><dd>No. Puedes elegir cualquier muelle alcanzable.</dd></div><div><dt>¿Por qué no entró una ficha en mi pila?</dt><dd>No coincidía con tu color o la capacidad actual estaba llena.</dd></div><div><dt>¿Cómo se gana?</dt><dd>Alcanza la meta del puente mostrada antes que los equipos rivales.</dd></div><div><dt>¿Qué controles y tamaños de pantalla se admiten?</dt><dd>Las reglas funcionan con toque, ratón y teclado, y la interfaz escala como un solo diseño lógico en móvil, horizontal y escritorio.</dd></div><div><dt>¿El progreso pasa automáticamente a otro dispositivo?</dt><dd>No. Ahora solo se guarda en el navegador; otro perfil o dispositivo tendrá un progreso independiente.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel">
+      <small data-t="guideKicker">UNA CAMPAÑA CELESTE ORIGINAL DE WEIGHTPLAY</small><h2 data-t="guideTitle">Recoge rápido. Elige carril. Construye primero.</h2><p data-t="guideIntro">Las Islas Paso de Nube perdieron sus caminos. Fia participa en el Relevo Aurora para restaurarlos mientras compite con rivales amistosos.</p>
+      <div class="guide-grid"><article><h3 data-t="howTitle">Cómo jugar</h3><ol><li data-t="how1">Toca, arrastra o usa las flechas para mover a Fia.</li><li data-t="how2">Recoge losetas cian y llévalas a cualquier muelle.</li><li data-t="how3">La pila se gasta sola en el muelle. Llega antes que un rival.</li></ol></article><article><h3 data-t="guideSystemsTitle">Construye el puente activo</h3><p data-t="guideSystems">Tu pila es un suministro temporal, no una puntuación. En el muelle se convierte en progreso de ese carril; vuelve por la ruta segura más corta antes de que el viento o un choque disperse las losetas.</p></article><article><h3 data-t="guideStrategyTitle">Elige la ruta con intención</h3><p data-t="guideStrategy">Sigue las losetas cian brillantes, observa el muelle activo y usa un carril que permita depositar a menudo. Si se acerca un rival, terminar el puente importa más que llevar una pila grande.</p></article><article><h3 data-t="guideHazardsTitle">Lee peligros y rivales</h3><p data-t="guideHazards">Los baches sueltan losetas y el viento lateral empuja a todos. Más adelante aparecen losetas móviles, anillos de impulso, bombas, monstruos de nube y rivales campeones. El Impulso relámpago ayuda a recuperarte, no sustituye la ruta.</p></article><article><h3 data-t="campaignTitle">Treinta carreras celestes</h3><p data-t="campaignText">Seis capítulos añaden choques, viento, tramos reforzados, losetas móviles, aros de impulso y campeones.</p></article><article><h3 data-t="guideProgressTitle">Avanza con llegadas limpias</h3><p data-t="guideProgress">Ganar abre la siguiente carrera y da Fragmentos Aurora para mejoras. Las estrellas registran velocidad y si terminaste sin perder losetas; la carrera final queda disponible para dominarla.</p></article><article><h3 data-t="saveTitle">Progreso local</h3><p data-t="saveText">Las estrellas, fragmentos, mejoras y récords quedan en este navegador. No necesitas cuenta.</p></article></div>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">Preguntas frecuentes</h3><details><summary data-t="guideFaq1Question">¿Qué hace un muelle?</summary><p data-t="guideFaq1Answer">Convierte las losetas cian de tu pila en progreso del carril de puente activo. Deposita pronto si se acerca un rival o lleva más cuando la ruta sea segura.</p></details><details><summary data-t="guideFaq2Question">¿Por qué perdí losetas?</summary><p data-t="guideFaq2Answer">Un bache, bomba, monstruo de nube u otro choque puede dispersar parte de la pila. Recupérala desde la ruta segura más cercana y usa el Impulso si ayuda.</p></details><details><summary data-t="guideFaq3Question">¿Qué cambia en las carreras posteriores?</summary><p data-t="guideFaq3Answer">Los seis capítulos añaden presión al circuito, pero mantienen el ciclo de recoger, depositar y llegar. Los peligros ponen a prueba la ruta y el momento, no el objetivo.</p></details><details><summary data-t="guideFaq4Question">¿Se guarda el progreso?</summary><p data-t="guideFaq4Answer">Sí. Carreras desbloqueadas, estrellas, Fragmentos Aurora, mejoras, mejores resultados y preferencias se guardan localmente en este navegador.</p></details></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">Juegos relacionados</h3><p data-t="guideRelatedIntro">Si te gusta construir rutas bajo presión, continúa con estos juegos de WeightPlay.</p><nav class="guide-related-links" aria-label="Related Games"><a data-wp-related-id="animal-rift-salvage" href="/es/games/animal-rift-salvage/" data-t="guideRelatedRift">Rescate de la Grieta Animal</a><a data-wp-related-id="animal-prism-battalion" href="/es/games/animal-prism-battalion/" data-t="guideRelatedPrism">Batallón de Prismas Animal</a></nav></section>
+    </section>
   </div>
 
   <section id="stage" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-skybridge-rivals/arena.webp" style="--wp-stage-art:url('../../assets/animal-skybridge-rivals/arena.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="Volver" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseRace">Choose a sky race</strong><span id="stageProgress"></span></div><div class="fia-portrait" aria-hidden="true"></div></header>
-      <nav class="stage-tabs" aria-label="Race preparation" data-ta="stageTabs"><button class="active" data-tab="races" data-t="races">Races</button><button data-tab="workshop" data-t="workshop">Sky Workshop</button></nav>
-      <section id="racesTab" class="tab-panel races-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-ta="raceRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked race.</p></section>
-      <section id="workshopTab" class="tab-panel workshop-tab" hidden><div class="workshop-intro"><div class="orla-portrait" aria-hidden="true"></div><div><h2 data-t="workshopTitle">Sky Workshop</h2><p data-t="workshopIntro">Spend earned shards on permanent racing upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><div class="champion-card"><div class="panko-portrait" aria-hidden="true"></div><div><strong data-t="championTrail">Champion Aura</strong><p data-t="championDesc">Unlock a permanent violet-gold finish trail.</p></div><button id="diamondUnlock" type="button"></button></div><p id="workshopFeedback" aria-live="polite"></p></section>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="Volver" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseRace">Elige una carrera</strong><span id="stageProgress"></span></div><div class="fia-portrait" aria-hidden="true"></div></header>
+      <nav class="stage-tabs" aria-label="Race preparation" data-ta="stageTabs"><button class="active" data-tab="races" data-t="races">Carreras</button><button data-tab="workshop" data-t="workshop">Taller celeste</button></nav>
+      <section id="racesTab" class="tab-panel races-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-ta="raceRail"></div><p id="stageHint" data-t="stageHint">Arrastra la lista y elige una carrera desbloqueada.</p></section>
+      <section id="workshopTab" class="tab-panel workshop-tab" hidden><div class="workshop-intro"><div class="orla-portrait" aria-hidden="true"></div><div><h2 data-t="workshopTitle">Taller celeste</h2><p data-t="workshopIntro">Gasta fragmentos en mejoras permanentes.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><div class="champion-card"><div class="panko-portrait" aria-hidden="true"></div><div><strong data-t="championTrail">Aura campeona</strong><p data-t="championDesc">Desbloquea una estela violeta y dorada permanente.</p></div><button id="diamondUnlock" type="button"></button></div><p id="workshopFeedback" aria-live="polite"></p></section>
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="battle" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Volver" data-wp-return="battle" data-ta="back">←</button><div class="race-block"><small id="raceLabel"></small><strong id="racePosition">4 / 4</strong></div><div class="battle-status"><span><b data-t="stack">Stack</b><strong id="stackValue">0</strong></span><span><b data-t="time">Time</b><strong id="timeValue">70</strong></span><span><b data-t="bridge">Bridge</b><strong id="bridgeValue">0%</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="Cómo jugar" data-ta="howTitle">?</button></header>
-        <p id="objective" class="objective-row" data-t="objective">Collect cyan tiles and finish a bridge before the rivals.</p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" tabindex="0" aria-label="Skybridge racing arena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown W A S D" data-ta="arenaLabel"></canvas><div class="control-cue" aria-hidden="true" data-t="controlCue">Tap or drag to move</div><button id="dash" type="button"><span data-t="dash">Lightning Dash</span><b id="dashValue">0%</b></button></div>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Volver" data-wp-return="battle" data-ta="back">←</button><div class="race-block"><small id="raceLabel"></small><strong id="racePosition">4 / 4</strong></div><div class="battle-status"><span><b data-t="stack">Pila</b><strong id="stackValue">0</strong></span><span><b data-t="time">Tiempo</b><strong id="timeValue">70</strong></span><span><b data-t="bridge">Puente</b><strong id="bridgeValue">0%</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="Cómo jugar" data-ta="howTitle">?</button></header>
+        <p id="objective" class="objective-row" data-t="objective">Recoge losetas cian y termina un puente antes que los rivales.</p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" tabindex="0" aria-label="Skybridge racing arena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown W A S D" data-ta="arenaLabel"></canvas><div class="control-cue" aria-hidden="true" data-t="controlCue">Toca o arrastra</div><button id="dash" type="button"><span data-t="dash">Impulso relámpago</span><b id="dashValue">0%</b></button></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
-      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this race?</h2><p data-t="leaveText">Continue preserves this exact race. Returning to the race map ends the attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Race Map</button></div></div></section>
-      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Build the cyan bridge</h2><ol><li data-t="tutorial1">Tap or hold-drag anywhere in the arena to guide Fia.</li><li data-t="tutorial2">Collect cyan aurora tiles. Other colors belong to the rivals.</li><li data-t="tutorial3">Move to a bridge dock. Your stack builds that lane automatically.</li></ol><div class="modal-actions one"><button id="tutorialDone" class="primary" data-t="tutorialDone">Start Race</button></div></div></section>
-      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultPurpose" hidden><div class="result-card"><div class="result-racer" aria-hidden="true"></div><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><p id="resultPurpose" class="result-purpose" hidden></p><div class="modal-actions"><button id="resultStage" data-t="returnStage">Race Map</button><button id="nextRace" class="primary" data-t="nextRace">Next Race</button><button id="retry" data-t="retry">Retry</button></div></div></section>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">¿Salir de la carrera?</h2><p data-t="leaveText">Continuar conserva la carrera. Volver al mapa termina el intento.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continuar</button><button id="leaveStage" data-t="returnStage">Mapa de carreras</button></div></div></section>
+      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Construye el puente cian</h2><ol><li data-t="tutorial1">Toca o mantén y arrastra para guiar a Fia.</li><li data-t="tutorial2">Recoge losetas cian. Los otros colores son de los rivales.</li><li data-t="tutorial3">Ve a un muelle. Tu pila construye el carril automáticamente.</li></ol><div class="modal-actions one"><button id="tutorialDone" class="primary" data-t="tutorialDone">Empezar carrera</button></div></div></section>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultPurpose" hidden><div class="result-card"><div class="result-racer" aria-hidden="true"></div><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><p id="resultPurpose" class="result-purpose" hidden></p><div class="modal-actions"><button id="resultStage" data-t="returnStage">Mapa de carreras</button><button id="nextRace" class="primary" data-t="nextRace">Siguiente carrera</button><button id="retry" data-t="retry">Reintentar</button></div></div></section>
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
 <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260826-locale-a11y-v22"></script><script src="game.js?v=20260826-locale-a11y-v22"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260903-public-guide-v18"></script><script src="game.js?v=20260826-locale-a11y-v22"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-glyph-garden/" />
-
-    <meta charset="utf-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
@@ -35,6 +34,18 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260830-glyph-v2" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260830-glyph-v2" />
+  <style data-wp-glyph-garden-issue-fix>
+    @media (min-width:700px) and (max-height:560px) {
+      body[data-wp-game-id="animal-glyph-garden"] .wp-standard-main-composition {
+        --wp-main-landscape-poster-size: 300px;
+      }
+    }
+    #resultScreen[hidden] {
+      display: none !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+  </style>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Glyph Garden | WeightPlay" />
@@ -66,8 +77,7 @@
     "Visual Logic",
     "Shape Matching",
     "Family",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",

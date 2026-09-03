@@ -33,6 +33,18 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260830-glyph-v2" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20260830-glyph-v2" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260830-glyph-v2" />
+  <style data-wp-glyph-garden-issue-fix>
+    @media (min-width:700px) and (max-height:560px) {
+      body[data-wp-game-id="animal-glyph-garden"] .wp-standard-main-composition {
+        --wp-main-landscape-poster-size: 300px;
+      }
+    }
+    #resultScreen[hidden] {
+      display: none !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+  </style>
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-glyph-garden" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Glyph Garden</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>

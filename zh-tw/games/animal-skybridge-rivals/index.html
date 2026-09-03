@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-skybridge-rivals/" />
-
-    <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-skybridge-rivals/" />
+  <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-skybridge-rivals/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-skybridge-rivals/" />
@@ -38,7 +37,8 @@
   "operatingSystem": "Any",
   "inLanguage": "zh-Hant",
   "isAccessibleForFree": true,
-  "description": "收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。",
+  "alternateName": "Animal Skybridge Rivals",
+  "description": "引導菲亞挑戰 30 場雲端競賽，收集青色極光磚、堆疊運送並搶在三名動物對手前完成橋梁。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -48,8 +48,7 @@
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 13
-  },
-  "alternateName": "Animal Skybridge Rivals"
+  }
 }
     </script>
   <meta charset="utf-8">
@@ -58,7 +57,7 @@
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#082c50">
   <title>動物天橋爭霸 | WeightPlay</title>
-  <meta name="description" content="收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。" />
+  <meta name="description" content="引導菲亞挑戰 30 場雲端競賽，收集青色極光磚、堆疊運送並搶在三名動物對手前完成橋梁。" />
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
@@ -67,81 +66,64 @@
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="動物天橋爭霸 | WeightPlay" />
-    <meta property="og:description" content="收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。" />
+    <meta property="og:description" content="引導菲亞挑戰 30 場雲端競賽，收集青色極光磚、堆疊運送並搶在三名動物對手前完成橋梁。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-skybridge-rivals/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-skybridge-rivals/cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="動物天橋爭霸 | WeightPlay" />
-    <meta name="twitter:description" content="收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。" />
+    <meta name="twitter:description" content="引導菲亞挑戰 30 場雲端競賽，收集青色極光磚、堆疊運送並搶在三名動物對手前完成橋梁。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-skybridge-rivals/cover.webp" />
   </head>
-<body data-screen="loading" data-game-id="animal-skybridge-rivals" data-sound-toggle="off" data-wp-combined-sound="true">
+<body data-screen="loading" data-game-id="animal-skybridge-rivals" data-wp-game-id="animal-skybridge-rivals" data-sound-toggle="off" data-wp-combined-sound="true" data-audience="general" data-wp-game-owned-guide>
   <section id="loading" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><strong data-t="title">Animal Skybridge Rivals</strong><span data-t="loading">Opening the cloudway…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
+    <div class="loading-card"><strong data-t="title">動物天橋爭霸</strong><span data-t="loading">正在開啟雲端賽道…</span><div class="loading-track"><i id="loadingFill"></i></div></div>
   </section>
 
   <div id="mainGroup" class="main-group" hidden>
     <main class="main-screen">
       <header class="main-header">
         <a id="lobbyReturn" class="lobby-return" data-wp-return="main" href="/en/" aria-label="Back to WeightPlay" data-ta="backLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-t="title">Animal Skybridge Rivals</strong>
-        <div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" aria-label="Disable sound">🔊</button><label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="locale" aria-label="語言" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
+        <strong data-t="title">動物天橋爭霸</strong>
+        <div class="main-utilities"><button id="soundToggle" class="main-sound-toggle" type="button" aria-label="Disable sound">🔊</button><label class="locale-control"><span class="sr-only" data-t="language">語言</span><select id="locale" aria-label="語言" data-ta="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
       </header>
       <section class="main-hero">
         <img class="poster" src="../../assets/animal-skybridge-rivals/cover.webp" alt="《動物天橋爭霸》遊戲圖片" data-ta="posterAlt">
-        <div class="main-copy"><small data-t="kicker">REAL-TIME STACK-AND-BUILD RACING</small><h1 data-t="title">動物天橋爭霸</h1><p data-t="pitch">Guide Fia across the cloud arena, collect cyan aurora tiles, and spend the stack to finish a bridge before three rivals.</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">Start Game</button></div>
+        <div class="main-copy"><small data-t="kicker">即時堆疊築橋競速</small><h1 data-t="title">動物天橋爭霸</h1><p data-t="pitch">引導菲亞穿越雲端競技場，收集青色極光磚並消耗堆疊，在三名對手之前完成橋梁。</p><span id="mainProgress"></span><button id="start" class="primary" type="button" data-t="start">開始遊戲</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="動物天橋爭霸 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>動物天橋爭霸</h2><p>收集自己顏色的極光方塊，帶到三座天橋碼頭之一，在附近自動提交方塊，並在對手隊伍之前完成指定的天橋距離。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>收集建橋競速</strong></div><div class="game-info-fact"><span>類型</span><strong>街機 · 競速 · 策略 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每站 2–8 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>路線規劃 · 風險管理 · 反應</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>三十場天空天橋競賽讓動物建造者穿越浮空競技場。每位競賽者收集彩色方塊、回到碼頭，再把攜帶的方塊堆轉成天橋進度。</p>
-<p>路線規劃會改變收集路徑、碼頭入口、危險、風向、加固區、移動加速與冠軍對手，不是只把同一座競技場的數字變大。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>使用指標、觸控目標、方向鍵或 WASD 移動；動物會面向並前往選定的目標。</p>
-<p>碰到相符的極光方塊，就會把它加入攜帶堆，直到目前容量已滿。進入任一天橋碼頭的標示區域時，系統會自動提交一個或多個方塊，不需要對準隱藏像素或額外力量條件。</p>
-<p>第一個抵達本關天橋目標的競賽者獲勝。炸彈、怪物、風、對手碰撞與加固橋段，會依畫面顯示的章節規則減慢或扣除進度。</p>
-<p>衝刺能量可提供短暫加速；護盾、磁鐵與衝刺道具帶來短期戰術效果，工坊的容量、速度與抓地升級則提供永久的本機支援。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇已解鎖的競賽，閱讀天橋目標、計時器、路線與危險規則。</li><li>收集幾個自己顏色的方塊，但不要超過能安全返回的距離。</li><li>靠近任一編號天橋碼頭；只要留在可見區域內，提交就會自動開始。</li><li>重複收集與存入的循環，直到天橋在對手之前達到目標。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>長路線被危險阻擋時，先提交小堆方塊，不要冒險損失整堆容量。</li><li>選擇最近且安全的碼頭；碼頭編號不代表隱藏的提交順序。</li><li>在密集方塊區使用磁鐵，把衝刺留給返回路線或最後一場競賽。</li><li>抓地力可降低風的偏移；容量只有在你能安全返回、不被打斷時才真正有用。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個五賽章節會加入分岔路線、風道、加固區、移動加速環、突襲配置與冠軍對手。</p>
-<p>三十場手工設計競賽會一起改變目標、競技場配置、道具、危險與對手行為。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>碼頭範圍、攜帶堆、天橋進度、對手進度與提交回饋都保持可見。有效的近距離提交不會依賴看不見的角度或升級條件。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標，不會個別拉伸。因此觸控、滑鼠與鍵盤都操作同一套合法狀態。主畫面海報與開始遊戲動作獨立於關卡管理，關卡選擇、戰鬥、對話框與結果則各自保有清楚的內容與返回路徑。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號或購買。解鎖、星星、碎片、工坊升級與本機最佳結果都保存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>提交方塊需要什麼條件？</dt><dd>至少攜帶一個相符方塊，並進入碼頭可見的提交區域。</dd></div><div><dt>一定要依碼頭編號順序嗎？</dt><dd>不需要。選擇任何能抵達的碼頭即可。</dd></div><div><dt>為什麼方塊沒有進入攜帶堆？</dt><dd>它的顏色不相符，或目前攜帶容量已滿。</dd></div><div><dt>要怎麼獲勝？</dt><dd>在對手隊伍之前抵達畫面顯示的天橋目標。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>遊戲規則支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。</dd></div><div><dt>進度會自動移到其他裝置嗎？</dt><dd>不會。進度目前只儲存在本機瀏覽器，其他瀏覽器設定檔或裝置會有獨立進度。</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section class="public-guide game-page-info" aria-label="Game guide" data-ta="guideLabel">
+      <small data-t="guideKicker">WEIGHTPLAY 原創雲端競速戰役</small><h2 data-t="guideTitle">快速收集、選擇橋道、搶先完工。</h2><p data-t="guideIntro">踏雲群島失去了彼此相連的道路。電光爪菲亞參加極光接力賽，在友善對手競逐橋梁方案時修復每條航路。</p>
+      <div class="guide-grid"><article><h3 data-t="howTitle">玩法</h3><ol><li data-t="how1">點擊、按住拖曳或使用方向鍵移動菲亞。</li><li data-t="how2">收集青色磚塊並帶到任一橋梁碼頭。</li><li data-t="how3">抵達碼頭後會自動消耗堆疊築橋，搶在對手前抵達終點。</li></ol></article><article><h3 data-t="guideSystemsTitle">建造目前的橋道</h3><p data-t="guideSystems">你的堆疊是暫時的材料，不是分數。到達碼頭後，材料會轉成該航道的橋梁進度；在風或碰撞讓磚塊掉落前，選擇最短的安全回程。</p></article><article><h3 data-t="guideStrategyTitle">有目的地選路</h3><p data-t="guideStrategy">跟著明亮的青色磚塊，留意目前啟用的碼頭，選擇能頻繁存放的航道。對手接近時，完成橋梁比攜帶很大的堆疊更重要。</p></article><article><h3 data-t="guideHazardsTitle">判讀危險與對手</h3><p data-t="guideHazards">顛簸會震落磚塊，側風會推動所有選手；後期還會加入移動磚塊、加速環、炸彈、雲怪與冠軍對手。閃電衝刺是補救工具，不是路線的替代品。</p></article><article><h3 data-t="campaignTitle">三十場雲端競賽</h3><p data-t="campaignText">六個章節逐步加入碰撞、強風、強化橋段、移動磚塊、加速環與冠軍對手。</p></article><article><h3 data-t="guideProgressTitle">用乾淨完工推進</h3><p data-t="guideProgress">贏得競賽會解鎖下一場並獲得極光碎片，用於工坊升級。星星會記錄速度與是否零掉落完工；最後一場仍可反覆挑戰。</p></article><article><h3 data-t="saveTitle">本機進度</h3><p data-t="saveText">星星、極光碎片、工坊升級與最佳成績會保留在此瀏覽器，不需帳號。</p></article></div>
+      <section class="guide-faq" aria-labelledby="guideFaqTitle"><h3 id="guideFaqTitle" data-t="guideFaqTitle">常見問題</h3><details><summary data-t="guideFaq1Question">橋頭有什麼作用？</summary><p data-t="guideFaq1Answer">它會把堆疊中的青色磚塊轉成目前橋道的進度。對手接近時可以提早存放；路線安全時再多帶一些。</p></details><details><summary data-t="guideFaq2Question">為什麼我會掉磚？</summary><p data-t="guideFaq2Answer">顛簸、炸彈、雲怪或其他碰撞都可能讓堆疊掉落一部分。從最近的安全磚塊路線補回，必要時使用閃電衝刺。</p></details><details><summary data-t="guideFaq3Question">後面的競賽會改變什麼？</summary><p data-t="guideFaq3Answer">六個章節會增加賽道壓力，但收集、存放與抵達終點的循環不變。後期危險考驗選路與時機，不會改變目標。</p></details><details><summary data-t="guideFaq4Question">進度會保存嗎？</summary><p data-t="guideFaq4Answer">會。競賽解鎖、星星、極光碎片、工坊升級、最佳成績與偏好設定都會保存在此瀏覽器。</p></details></section>
+      <section class="guide-related" aria-labelledby="guideRelatedTitle"><h3 id="guideRelatedTitle" data-t="guideRelatedTitle">相關遊戲</h3><p data-t="guideRelatedIntro">如果你喜歡在壓力下建造路線，可以接著玩這些 WeightPlay 遊戲。</p><nav class="guide-related-links" aria-label="Related Games"><a data-wp-related-id="animal-rift-salvage" href="/zh-tw/games/animal-rift-salvage/" data-t="guideRelatedRift">動物裂隙回收隊</a><a data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/" data-t="guideRelatedPrism">動物棱晶戰隊</a></nav></section>
+    </section>
   </div>
 
   <section id="stage" class="active-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-skybridge-rivals/arena.webp" style="--wp-stage-art:url('../../assets/animal-skybridge-rivals/arena.webp')">
-      <header class="stage-header"><button id="stageBack" type="button" aria-label="返回" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseRace">Choose a sky race</strong><span id="stageProgress"></span></div><div class="fia-portrait" aria-hidden="true"></div></header>
-      <nav class="stage-tabs" aria-label="Race preparation" data-ta="stageTabs"><button class="active" data-tab="races" data-t="races">Races</button><button data-tab="workshop" data-t="workshop">Sky Workshop</button></nav>
-      <section id="racesTab" class="tab-panel races-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-ta="raceRail"></div><p id="stageHint" data-t="stageHint">Drag the rail and choose an unlocked race.</p></section>
-      <section id="workshopTab" class="tab-panel workshop-tab" hidden><div class="workshop-intro"><div class="orla-portrait" aria-hidden="true"></div><div><h2 data-t="workshopTitle">Sky Workshop</h2><p data-t="workshopIntro">Spend earned shards on permanent racing upgrades.</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><div class="champion-card"><div class="panko-portrait" aria-hidden="true"></div><div><strong data-t="championTrail">Champion Aura</strong><p data-t="championDesc">Unlock a permanent violet-gold finish trail.</p></div><button id="diamondUnlock" type="button"></button></div><p id="workshopFeedback" aria-live="polite"></p></section>
+      <header class="stage-header"><button id="stageBack" type="button" aria-label="返回" data-wp-return="stage" data-ta="back">←</button><div><strong data-t="chooseRace">選擇雲端競賽</strong><span id="stageProgress"></span></div><div class="fia-portrait" aria-hidden="true"></div></header>
+      <nav class="stage-tabs" aria-label="Race preparation" data-ta="stageTabs"><button class="active" data-tab="races" data-t="races">競賽</button><button data-tab="workshop" data-t="workshop">天空工坊</button></nav>
+      <section id="racesTab" class="tab-panel races-tab"><div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" aria-label="Race selector" data-ta="raceRail"></div><p id="stageHint" data-t="stageHint">拖曳選擇列並挑選已解鎖競賽。</p></section>
+      <section id="workshopTab" class="tab-panel workshop-tab" hidden><div class="workshop-intro"><div class="orla-portrait" aria-hidden="true"></div><div><h2 data-t="workshopTitle">天空工坊</h2><p data-t="workshopIntro">使用贏得的碎片購買永久競速升級。</p><strong id="shardCount"></strong></div></div><div id="upgrades" class="upgrades"></div><div class="champion-card"><div class="panko-portrait" aria-hidden="true"></div><div><strong data-t="championTrail">冠軍光跡</strong><p data-t="championDesc">解鎖永久紫金終點光跡。</p></div><button id="diamondUnlock" type="button"></button></div><p id="workshopFeedback" aria-live="polite"></p></section>
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="battle" class="active-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-wp-return="battle" data-ta="back">←</button><div class="race-block"><small id="raceLabel"></small><strong id="racePosition">4 / 4</strong></div><div class="battle-status"><span><b data-t="stack">Stack</b><strong id="stackValue">0</strong></span><span><b data-t="time">Time</b><strong id="timeValue">70</strong></span><span><b data-t="bridge">Bridge</b><strong id="bridgeValue">0%</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="玩法" data-ta="howTitle">?</button></header>
-        <p id="objective" class="objective-row" data-t="objective">Collect cyan tiles and finish a bridge before the rivals.</p>
-        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" tabindex="0" aria-label="Skybridge racing arena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown W A S D" data-ta="arenaLabel"></canvas><div class="control-cue" aria-hidden="true" data-t="controlCue">Tap or drag to move</div><button id="dash" type="button"><span data-t="dash">Lightning Dash</span><b id="dashValue">0%</b></button></div>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-wp-return="battle" data-ta="back">←</button><div class="race-block"><small id="raceLabel"></small><strong id="racePosition">4 / 4</strong></div><div class="battle-status"><span><b data-t="stack">堆疊</b><strong id="stackValue">0</strong></span><span><b data-t="time">時間</b><strong id="timeValue">70</strong></span><span><b data-t="bridge">橋梁</b><strong id="bridgeValue">0%</strong></span></div><button id="battleHelp" class="help-action" type="button" aria-label="玩法" data-ta="howTitle">?</button></header>
+        <p id="objective" class="objective-row" data-t="objective">收集青色磚塊，在對手之前完成橋梁。</p>
+        <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="960" height="640" tabindex="0" aria-label="Skybridge racing arena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown W A S D" data-ta="arenaLabel"></canvas><div class="control-cue" aria-hidden="true" data-t="controlCue">點擊或拖曳移動</div><button id="dash" type="button"><span data-t="dash">閃電衝刺</span><b id="dashValue">0%</b></button></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
-      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">Leave this race?</h2><p data-t="leaveText">Continue preserves this exact race. Returning to the race map ends the attempt.</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">Continue</button><button id="leaveStage" data-t="returnStage">Race Map</button></div></div></section>
-      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">Build the cyan bridge</h2><ol><li data-t="tutorial1">Tap or hold-drag anywhere in the arena to guide Fia.</li><li data-t="tutorial2">Collect cyan aurora tiles. Other colors belong to the rivals.</li><li data-t="tutorial3">Move to a bridge dock. Your stack builds that lane automatically.</li></ol><div class="modal-actions one"><button id="tutorialDone" class="primary" data-t="tutorialDone">Start Race</button></div></div></section>
-      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultPurpose" hidden><div class="result-card"><div class="result-racer" aria-hidden="true"></div><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><p id="resultPurpose" class="result-purpose" hidden></p><div class="modal-actions"><button id="resultStage" data-t="returnStage">Race Map</button><button id="nextRace" class="primary" data-t="nextRace">Next Race</button><button id="retry" data-t="retry">Retry</button></div></div></section>
+      <section id="leave" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card"><h2 id="leaveTitle" data-t="leaveTitle">離開這場競賽？</h2><p data-t="leaveText">繼續會保留目前競賽；返回競賽地圖會結束本次挑戰。</p><div class="modal-actions"><button id="continueBattle" class="primary" data-t="continue">繼續</button><button id="leaveStage" data-t="returnStage">競賽地圖</button></div></div></section>
+      <section id="tutorial" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card"><h2 id="tutorialTitle" data-t="tutorialTitle">建造青色橋梁</h2><ol><li data-t="tutorial1">在場地任意處點擊或按住拖曳，引導菲亞移動。</li><li data-t="tutorial2">收集青色極光磚，其他顏色屬於對手。</li><li data-t="tutorial3">移動到橋梁碼頭，堆疊會自動建造該橋道。</li></ol><div class="modal-actions one"><button id="tutorialDone" class="primary" data-t="tutorialDone">開始競賽</button></div></div></section>
+      <section id="result" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultPurpose" hidden><div class="result-card"><div class="result-racer" aria-hidden="true"></div><small id="resultKicker"></small><h2 id="resultTitle"></h2><p id="resultText"></p><div id="resultStats" class="result-stats"></div><p id="resultPurpose" class="result-purpose" hidden></p><div class="modal-actions"><button id="resultStage" data-t="returnStage">競賽地圖</button><button id="nextRace" class="primary" data-t="nextRace">下一場競賽</button><button id="retry" data-t="retry">再試一次</button></div></div></section>
     </div><div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
 <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260826-locale-a11y-v22"></script><script src="game.js?v=20260826-locale-a11y-v22"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/wallet.js"></script><script src="../../src/analytics.js"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260903-public-guide-v18"></script><script src="game.js?v=20260826-locale-a11y-v22"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260721-landscape-envelope-1" data-wp-battle-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

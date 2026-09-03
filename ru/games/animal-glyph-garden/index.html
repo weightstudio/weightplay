@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-glyph-garden/" />
-
-    <meta charset="utf-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general" />
@@ -35,6 +34,18 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260830-glyph-v2" data-wp-battle-standard />
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260830-glyph-v2" />
+  <style data-wp-glyph-garden-issue-fix>
+    @media (min-width:700px) and (max-height:560px) {
+      body[data-wp-game-id="animal-glyph-garden"] .wp-standard-main-composition {
+        --wp-main-landscape-poster-size: 300px;
+      }
+    }
+    #resultScreen[hidden] {
+      display: none !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+  </style>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Сад глифов | WeightPlay" />
@@ -50,6 +61,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Сад глифов",
+  "alternateName": "Glyph Garden",
   "url": "https://weightplay.com/ru/games/animal-glyph-garden/",
   "image": "https://weightplay.com/games/animal-glyph-garden/assets/animal-glyph-garden-cover.svg",
   "description": "Прочитайте каждую просьбу, выберите глиф с двумя подходящими признаками и засадите три спокойные клумбы.",
@@ -66,15 +78,13 @@
     "Визуальная логика",
     "Сопоставление форм",
     "Семейная",
-    "Животные",
-    "Browser Game"
+    "Животные"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Glyph Garden"
+  }
 }
     </script>
   </head>
@@ -82,7 +92,7 @@
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Сад глифов</strong><span>Loading</span><div class="loading-track"><i></i></div></div></section>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="screen main" data-screen="main">
-      <header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">Glyph Garden</strong><button id="settingsButton" class="settings-button" type="button" data-wp-settings aria-label="Settings">⚙</button></header>
+      <header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><strong data-runtime-localize="off">Сад глифов</strong><button id="settingsButton" class="settings-button" type="button" data-wp-settings aria-label="Settings">⚙</button></header>
       <section class="hero"><div class="poster-frame"><img class="main-poster" src="assets/animal-glyph-garden-cover.svg" width="900" height="900" alt="" /></div><div class="main-copy"><small class="eyebrow" data-i18n="kicker">Mosslight garden</small><h1 data-runtime-localize="off">Сад глифов</h1><p class="summary" data-i18n="intro">Match each garden request by finding the one tile with both the right shape and colour.</p><div class="facts"><span data-i18n="fact1">3 gentle plots</span><span data-i18n="fact2">Shape + colour</span><span data-i18n="fact3">Calm retry</span></div><p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Start Game</button></div></section>
     </main>
     <section class="game-page-info game-page-info-static" aria-label="Сад глифов информация об игре">
