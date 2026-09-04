@@ -559,6 +559,7 @@ const KL_I18N = {
       "ui.hero.copy": "نسخة كلاسيكية من سوليتير كوندايك برسوم متحركة حديثة، تعمل بسلاسة على الهاتف والكمبيوتر.",
       "ui.nav.back_to_lobby": "العودة إلى الردهة",
       "ui.nav.back_to_main": "العودة إلى الشاشة الرئيسية",
+      "ui.board.foundations": "الأساسات",
       "ui.board.empty_stock": "الرّزمة",
       "ui.board.empty_waste": "كومة الهدر",
       "ui.aria.stock": "الرّزمة، {count} أوراق متبقية",

@@ -802,6 +802,26 @@
     ar: { round: "الجولة", go: "جو", ai: "الذكاء الاصطناعي" },
   };
   const cribbageBattleCopy = () => CRIBBAGE_BATTLE_COPY[currentLocale()] || CRIBBAGE_BATTLE_COPY.en;
+  const CRIBBAGE_SOUND_COPY = {
+    en: { on: "On", off: "Off" },
+    "zh-Hant": { on: "開啟", off: "關閉" },
+    "zh-Hans": { on: "开启", off: "关闭" },
+    ja: { on: "オン", off: "オフ" },
+    ko: { on: "켜짐", off: "꺼짐" },
+    es: { on: "Activado", off: "Desactivado" },
+    "pt-BR": { on: "Ativado", off: "Desativado" },
+    fr: { on: "Activé", off: "Désactivé" },
+    de: { on: "An", off: "Aus" },
+    it: { on: "Attivo", off: "Disattivato" },
+    ru: { on: "Вкл.", off: "Выкл." },
+    hi: { on: "चालू", off: "बंद" },
+    ar: { on: "تشغيل", off: "إيقاف" },
+  };
+  const cribbageSoundLabel = (enabled) => {
+    const labels = TEXT[currentLocale()] || TEXT.en;
+    const state = CRIBBAGE_SOUND_COPY[currentLocale()] || CRIBBAGE_SOUND_COPY.en;
+    return `${labels.sound}: ${enabled ? state.on : state.off}`;
+  };
   const cribbageStatsText = (stats) => currentLocale() === "ar"
     ? `${stats.wins} فوز · ${stats.losses} خسارة`
     : `${stats.wins}W · ${stats.losses}L`;
@@ -873,13 +893,16 @@
       ownLocalizedText(document.querySelector("[data-wp-main-progress] strong"), progressCopy.label);
       ownLocalizedText(document.querySelector("[data-wp-main-progress] span"), progressCopy.copy);
       ownLocalizedText(document.querySelector(".settings-title"), labels.settings);
-      ownLocalizedText(document.querySelector("#soundBtn"), `${labels.sound}: On`);
+      const soundButton = document.querySelector("#soundBtn");
+      const soundEnabled = soundButton?.getAttribute("aria-pressed") !== "false";
+      ownLocalizedText(soundButton, cribbageSoundLabel(soundEnabled));
       const settings = document.querySelector("#audioMenuBtn");
       if (settings) settings.setAttribute("aria-label", labels.settings);
       const battleUtility = document.querySelector("[data-wp-battle-utility]");
       if (battleUtility) {
-        battleUtility.setAttribute("aria-label", labels.settings);
-        battleUtility.title = labels.settings;
+        const battleSoundEnabled = battleUtility.getAttribute("aria-pressed") !== "false";
+        battleUtility.setAttribute("aria-label", cribbageSoundLabel(battleSoundEnabled));
+        battleUtility.title = cribbageSoundLabel(battleSoundEnabled);
       }
       const language = document.querySelector("#localeSelect");
       if (language) language.setAttribute("aria-label", labels.language);
@@ -2082,11 +2105,32 @@
     }
     if (loading) { loading.hidden = true; loading.remove(); }
     let sound = root.WPCardEngine?.SoundEngine ? new root.WPCardEngine.SoundEngine("card_games_next_sound_v1") : null;
+    const syncCribbageSoundControls = () => {
+      if (id !== "cribbage") return;
+      const enabled = sound?.enabled !== false;
+      const label = cribbageSoundLabel(enabled);
+      if (audioButton) {
+        audioButton.textContent = label;
+        audioButton.setAttribute("aria-label", label);
+        audioButton.title = label;
+        audioButton.setAttribute("aria-pressed", String(enabled));
+        audioButton.setAttribute("data-runtime-localize", "off");
+      }
+      if (battleUtility) {
+        battleUtility.textContent = enabled ? "⚙" : "🔇";
+        battleUtility.setAttribute("aria-label", label);
+        battleUtility.title = label;
+        battleUtility.setAttribute("aria-pressed", String(enabled));
+        battleUtility.setAttribute("data-runtime-localize", "off");
+      }
+    };
+    syncCribbageSoundControls();
     battleUtility?.addEventListener("click", () => {
       const next = !sound?.enabled;
       sound?.setEnabled(next);
       battleUtility.setAttribute("aria-pressed", String(next));
       battleUtility.textContent = next ? "⚙" : "🔇";
+      syncCribbageSoundControls();
     });
     let resultRecorded = false;
     const statsKey = `weightplay.cardgame.stats.${id}`;
@@ -2155,7 +2199,12 @@
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#battleRestartBtn")?.addEventListener("click", () => { game.reset(); render(); });
     document.querySelector("#battleNewBtn")?.addEventListener("click", () => { game.reset(); render(); });
-    audioButton?.addEventListener("click", () => { const next = !sound?.enabled; sound?.setEnabled(next); audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`; });
+    audioButton?.addEventListener("click", () => {
+      const next = !sound?.enabled;
+      sound?.setEnabled(next);
+      if (id === "cribbage") syncCribbageSoundControls();
+      else audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`;
+    });
     localeSelect?.addEventListener("change", () => {
       const nextLocale = localeSelect.value;
       if (id === "spades" && root.WonderI18n?.setLocale) {

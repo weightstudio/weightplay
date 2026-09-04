@@ -584,6 +584,70 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
   }
 }
 
+/* FreeCell's compact-landscape top row needs the full width for its two
+   four-slot groups. Keep the live capacity coach in a dedicated side rail so
+   it cannot paint over the first tableau row or the action buttons at 844x390.
+   The audience guard keeps this General-only repair out of Kids surfaces. */
+@media (orientation: landscape) and (max-height: 560px) {
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard {
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 22%);
+    grid-template-rows: auto minmax(calc(var(--classic-card-height) + 102px), 1fr) auto;
+    grid-template-areas:
+      "top top"
+      "tableau status"
+      "actions actions";
+    align-content: start;
+    gap: 3px;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .board-top {
+    grid-area: top;
+    min-width: 0;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .board-status {
+    grid-area: status;
+    align-self: stretch;
+    min-width: 0;
+    min-height: 0;
+    padding: 4px 6px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 8px;
+    background: rgba(255,255,255,.06);
+    font-size: 10px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    text-align: start;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .tableau-area.variant-freecell {
+    grid-area: tableau;
+    min-width: 0;
+    min-height: calc(var(--classic-card-height) + 102px);
+    overflow: visible;
+    padding: 1px 0 2px;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .battle-actions {
+    grid-area: actions;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .board-top {
+    gap: 5px;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .board-top .board-label {
+    margin-bottom: 2px;
+    font-size: 8px;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .foundation-board-group #foundationProgress {
+    margin-top: 2px;
+    line-height: 1.15;
+    white-space: normal;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }

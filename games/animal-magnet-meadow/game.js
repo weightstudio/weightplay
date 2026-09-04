@@ -52,7 +52,7 @@
       const done = state.completed.includes(index);
       const unlocked = stageUnlocked(index);
       const disabled = unlocked ? "" : " disabled";
-      return "<button class=\"stage-card" + (done ? " complete" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>" + round.title + "</strong><span>" + copy("stageHint" + (index + 1)) + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
+      return "<button class=\"stage-card" + (done ? " complete" : "") + "\" type=\"button\" data-stage=\"" + index + "\"" + disabled + "><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><strong>" + copy("roundTitle" + (index + 1)) + "</strong><span>" + copy("stageHint" + (index + 1)) + "</span><b>" + (done ? copy("completed") : unlocked ? copy("readyStage") : "—") + "</b></button>";
     }).join("");
     $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage))));
   };
@@ -181,7 +181,10 @@
     $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value));
   };
   const init = () => {
-    const savedLocale = safeGet("weightplay-locale", "en");
+    const routeLocale = document.documentElement.lang;
+    const savedLocale = localeList.includes(routeLocale) && localeMap[routeLocale]
+      ? routeLocale
+      : safeGet("weightplay-locale", "en");
     state.sound = safeGet("weightplay-animal-magnet-meadow-sound", "on") !== "off";
     bind();
     applyLocale(savedLocale);
