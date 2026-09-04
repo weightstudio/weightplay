@@ -3406,6 +3406,62 @@ window.WeightPlayGameInfoLocales.es.gameplayProfiles["animal-one-line"] = { game
   resource.games["shadow-wolf"] = repairShadowWolfSpanish(resource.games["shadow-wolf"]);
 })(window.WeightPlayGameInfoLocales.es);
 
+window.WeightPlayGameInfoLocales.es.games["klondike-solitaire"] = {
+  title: "Solitario Klondike",
+  noteTitle: "Información del jugador y guardado",
+  age: "9+",
+  difficulty: "De fácil a desafiante",
+  time: "2-12 minutos",
+  skills: ["Planificación", "Reconocimiento de patrones", "Concentración"],
+  guideKicker: "Guía de juegos originales de WeightPlay",
+  guideTitleSuffix: "Guía del juego",
+  intro: "Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte.",
+  story: [
+    "En cada partida se reparte un tablero clásico de Klondike. Descubre cartas boca abajo, mantén secuencias descendentes de colores alternos en el cuadro y lleva las series estables hacia cada base.",
+    "Deshacer, Pista y Finalización automática mantienen fluidas las sesiones largas, conservando la reversibilidad completa de los movimientos y la coherencia del tablero."
+  ],
+  systems: [
+    "Toca una carta para seleccionarla. Arrástrala o toca un destino resaltado para moverla.",
+    "Arrastra o toca cartas legales; las cartas individuales y las secuencias válidas del cuadro se mueven juntas según las reglas clásicas de Klondike.",
+    "Puedes cambiar entre Robar 1 y Robar 3 en cualquier momento; el modo de robo se guarda localmente y determina el comportamiento del mazo.",
+    "Pista solo resalta una jugada legal recomendada; nunca mueve cartas automáticamente.",
+    "Finalización automática puede completar movimientos seguros hacia las bases cuando solo quedan jugadas no estratégicas."
+  ],
+  how: [
+    "Usa Nueva partida para un reparto nuevo o Reiniciar partida actual para volver al tablero de la semilla inicial.",
+    "Elige Robar 1 o Robar 3 en la cabecera de la partida y mueve cartas del Mazo al Descarte.",
+    "Toca una carta para seleccionarla. Arrástrala o toca un destino resaltado para moverla.",
+    "Usa Deshacer libremente para retroceder ante una ruta dudosa y continuar con decisiones nuevas.",
+    "Cuando no quede ninguna decisión estratégica, usa Finalización automática para completar las jugadas legales seguras hacia las bases y terminar rápido."
+  ],
+  strategyTips: [
+    "Descubre pronto las cartas boca abajo; cada revelación suele aumentar las opciones legales.",
+    "Da prioridad a liberar Reyes y Ases bloqueados para abrir movimientos más profundos en el cuadro.",
+    "En el modo Robar 3, evita ciclos rápidos sin despejar primero espacio en el cuadro.",
+    "Usa Deshacer solo cuando una jugada reduzca la flexibilidad futura, no después de cada duda.",
+    "Trata Finalización automática como una herramienta de final de partida cuando la disposición del cuadro ya sea estable."
+  ],
+  progression: [
+    "Cada partida es un único desafío clásico de mesa con repeticiones ilimitadas y estadísticas locales.",
+    "Las partidas largas premian secuencias de movimientos más limpias y menos ciclos especulativos del Mazo.",
+    "Las decisiones constantes y una planificación cuidadosa del cuadro mejoran la fiabilidad al completar repartos repetidos."
+  ],
+  designNote: "El juego usa movimiento basado en transformaciones para que las cartas se desplacen de forma legible y fluida, con actualizaciones compactas que permiten sesiones largas tanto en móvil como en escritorio.",
+  parent: "Solitario Klondike es un juego de estrategia con cartas para público general, recomendado a partir de 9 años y para jugar en familia. No requiere cuenta; el progreso y las estadísticas se guardan en este navegador.",
+  related: [],
+  relatedIds: ["klondike-solitaire"],
+  faq: [
+    ["¿Cuántas cartas se usan?", "Solitario Klondike utiliza una baraja estándar de 52 cartas."],
+    ["¿Cuál es la condición de victoria?", "Cada base debe completarse desde el As hasta el Rey en orden de palo."],
+    ["¿Qué son Robar 1 y Robar 3?", "Robar 1 revela una carta por cada extracción del Mazo; Robar 3 revela tres."],
+    ["¿Se pueden mover las cartas una por una?", "Sí, y las secuencias válidas descendentes de colores alternos pueden moverse como grupo."],
+    ["¿Cómo sé si una jugada es legal?", "Pista resalta un destino legal. Usa únicamente coincidencias válidas del cuadro o de las bases."],
+    ["¿Qué hace Finalización automática?", "Solo mueve jugadas legales y seguras hacia las bases cuando ya no quedan movimientos estratégicos en el cuadro."],
+    ["¿Puedo usar Deshacer?", "Sí. Deshacer se puede usar repetidamente y restaura por completo el estado anterior del tablero."],
+    ["¿Qué pasa si no queda ninguna jugada sugerida?", "Pista indica que no hay movimientos disponibles cuando no encuentra ninguna jugada." ]
+  ]
+};
+
 window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
   title: "Solitario Spider",
   noteTitle: "Información del jugador y guardado",

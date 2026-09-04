@@ -8311,7 +8311,7 @@
     if (spanishResourcePromise) return spanishResourcePromise;
     spanishResourcePromise = new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = new URL("game-page-info-es.js?v=20260827-rootvault-spanish-guide-v14b", sharedAssetBase).href;
+      script.src = new URL("game-page-info-es.js?v=20260905-klondike-spanish-guide-v15", sharedAssetBase).href;
       script.dataset.wpGamePageInfoLocale = "es";
       script.onload = () => {
         installSpanishResource();
@@ -13812,7 +13812,21 @@
     },
     es: {
       "klondike-solitaire": { title: "Solitario Klondike", intro: "Clásico juego de 52 cartas: construye cuatro bases del As al Rey mientras administras el cuadro, el mazo y el descarte." },
-      "freecell-solitaire": { title: "Solitario FreeCell", intro: "Las 52 cartas empiezan boca arriba; usa cuatro celdas libres y ocho columnas para completar cuatro bases del As al Rey." },
+      "freecell-solitaire": {
+        title: "Solitario FreeCell",
+        intro: "Las 52 cartas empiezan boca arriba; usa cuatro celdas libres y ocho columnas para completar cuatro bases del As al Rey.",
+        how: [
+          "Inicia un reparto con Iniciar partida, o usa Nueva partida para obtener uno nuevo.",
+          "Mueve las cartas descubiertas entre columnas de colores alternos y usa las celdas libres como espacio temporal.",
+          "Abre una columna del cuadro cuando sea posible para poder mover secuencias más largas.",
+          "Envía cada palo a su base desde el As hasta el Rey.",
+        ],
+        strategyTips: [
+          "Protege las columnas vacías; a menudo valen más que una celda libre adicional.",
+          "Mueve los ases y las cartas bajas hacia la base cuando hacerlo no cierre una ruta necesaria.",
+          "Forma secuencias largas del mismo palo solo cuando expongan cartas útiles o creen espacio.",
+        ],
+      },
     },
     "pt-BR": {
       "klondike-solitaire": { title: "Paciência Klondike", intro: "Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte." },
