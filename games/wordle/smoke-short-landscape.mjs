@@ -42,7 +42,7 @@ try {
   page.on("response", (response) => { if (response.status() >= 400 && !/favicon/iu.test(response.url())) errors.push(`http ${response.status()}: ${response.url()}`); });
   await page.goto(`http://127.0.0.1:${server.address().port}/games/wordle/?preview=1`, { waitUntil: "networkidle" });
   await page.locator("#startBtn").click();
-  assert(await page.locator("body").getAttribute("data-game-version") === "v9", "Wordle runtime identity is not v9");
+  assert(await page.locator("body").getAttribute("data-game-version") === "v11", "Wordle runtime identity is not v11");
   await page.locator("#wordInput").fill("CRANE");
   await page.locator('[data-action="submit"]').click();
   const battle = await page.evaluate(() => {

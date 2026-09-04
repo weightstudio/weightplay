@@ -659,7 +659,7 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .holding-panel .panel-label { display: grid; text-align: center; }
   .holding { min-height: 0; height: calc(100% - 24px); flex-direction: column; gap: 4px; }
   .holding-slot { width: 100%; height: auto; min-height: 20px; }
-  .queue { padding: 3px; gap: 2px; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; }
+  .queue { min-height: 0; padding: 3px; gap: 2px; overflow-x: hidden; overflow-y: auto; scrollbar-width: thin; }
   .queue-label { font-size: .48rem; }
   .passenger { flex: 0 0 32px; min-height: 32px; grid-template-columns: 18px minmax(0, 1fr); font-size: .55rem; padding: 1px 3px; }
   .passenger-art-frame { width: 17px; height: 19px; }

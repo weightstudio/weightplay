@@ -311,9 +311,8 @@
   const reefFisherId = "animal-reef-fisher";
   const reefFisherGuide = {
     ar: {
-      related: [],
-      hideRelatedGames: true,
-      showRelatedSkill: false,
+      relatedIds: ["animal-rift-salvage", "animal-cratebound"],
+      showRelatedSkill: true,
       title: "صياد الشعاب الحيوانية",
       difficulty: "تحدٍّ متدرّج",
       time: "2–4 دقائق لكل مهمة",

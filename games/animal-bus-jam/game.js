@@ -5,7 +5,7 @@
   const palette = ["#ef6b62", "#4da8e8", "#f0bb4d", "#9a7ae9"];
   const routeCodes = ["A", "B", "C", "D"];
   const GAME_ID = "animal-bus-jam";
-  const GAME_VERSION = 13;
+  const GAME_VERSION = 14;
   const INTERFACE_VERSION = 6;
   const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}.webp`);
   const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}.webp`);

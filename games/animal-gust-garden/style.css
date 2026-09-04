@@ -97,6 +97,8 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .stage-intro { min-height: 48px; margin: 0 auto 8px; text-align: center; }
 .stage-canvas > div:nth-child(2) { min-height: 0; overflow: auto; }
 .stage-canvas .stage-list { min-height: 0; margin: 0; padding: 4px 0 10px; }
+.stage-canvas .stage-rail { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; grid-auto-columns: unset !important; grid-auto-flow: row !important; align-items: stretch !important; overflow-y: auto !important; overflow-x: hidden !important; }
+.stage-canvas .stage-rail > .stage-card { flex: 0 1 auto !important; width: 100% !important; min-width: 0 !important; height: 72px !important; min-height: 72px !important; max-height: 72px !important; }
 .stage-canvas .stage-card { min-height: 72px; }
 .stage-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 8px; min-height: 56px; padding: 6px; border-radius: 12px; background: rgb(4 25 29 / 60%); }
 .stage-tabs > button { min-width: 0; min-height: 44px; border: 1px solid var(--line); border-radius: 10px; background: rgb(255 255 255 / 8%); color: var(--text); font-weight: 800; }
@@ -109,7 +111,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .progress-pill { display: inline-block; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .78rem; }
 .battle-head h2 { overflow-wrap: anywhere; }
 .battle-head .icon-button:last-child { justify-self: end; }
-.game-page-info { width: min(100%, 920px); margin: 18px auto 28px; padding: 0 16px 24px; }
+.game-page-info { width: min(100%, 920px); margin: 18px auto 28px; padding: 18px 16px 24px; border: 1px solid var(--line); border-radius: 18px; background: rgb(20 49 58 / 86%); box-shadow: 0 18px 60px rgb(0 0 0 / 25%); }
 .game-info-hero, .game-info-sections { border: 1px solid var(--line); border-radius: 18px; background: rgb(20 49 58 / 86%); }
 .game-info-hero { padding: 18px; }
 .game-info-title h2 { margin: 4px 0; }
@@ -117,5 +119,25 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .game-info-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; padding: 16px; }
 .game-info-section h3 { margin-top: 0; color: var(--text); }
 .game-info-section li { margin-block: 6px; }
+[data-wp-game-guide][hidden] { display: none !important; }
 @media (max-width: 699px) { .main-header { margin-inline: -2px; } .stage-canvas, .battle-canvas { padding-inline: 10px; } .game-info-sections { grid-template-columns: 1fr; } }
-@media (max-height: 520px) and (orientation: landscape) { .stage-canvas { padding-top: 4px; grid-template-rows: 56px minmax(0, 1fr) 56px; } .stage-header { min-height: 52px; } .stage-intro { min-height: 40px; margin-bottom: 4px; } .stage-canvas .stage-card { min-height: 60px; } .battle-canvas { padding-top: 4px; } .battle-head { min-height: 52px; } }
+@media (max-height: 520px) and (orientation: landscape) {
+  #mainScreen .cover-wrap { width: 300px; }
+  .stage-canvas { padding: 4px 10px 0; grid-template-rows: 52px minmax(0, 1fr) 50px; gap: 4px; }
+  .stage-header { min-height: 52px; }
+  .stage-intro { display: none; }
+  .stage-canvas > div:nth-child(2) { overflow: hidden; }
+  .stage-canvas .stage-list { gap: 4px; padding: 0; }
+  .stage-canvas .stage-card { height: 52px !important; min-height: 52px !important; max-height: 52px !important; padding: 4px 10px; }
+  .stage-tabs { min-height: 50px; padding: 3px; gap: 4px; }
+  .stage-tabs > button { min-height: 42px; }
+  .battle-canvas { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); grid-template-rows: 52px 36px 30px 30px 82px 48px; align-content: center; gap: 4px; padding: 4px 10px 8px; overflow: hidden; }
+  .battle-head { grid-column: 1 / -1; grid-row: 1; min-height: 52px; }
+  .battle-canvas > .prompt { grid-column: 2; grid-row: 2; min-height: 0; margin: 0; align-self: center; text-align: center; }
+  .battle-canvas > .grid { grid-column: 1; grid-row: 2 / 7; width: 250px; margin: 0 auto; align-self: center; gap: 4px; }
+  .battle-canvas > .legend { grid-column: 2; grid-row: 3; align-self: center; gap: 8px; }
+  .battle-canvas > .status { grid-column: 2; grid-row: 4; min-height: 0; margin: 0; align-self: center; }
+  .battle-canvas > .direction-panel { grid-column: 2; grid-row: 5; width: min(100%, 250px); margin: 0 auto; align-self: center; }
+  .battle-canvas > .battle-actions { grid-column: 2; grid-row: 6; margin: 0; gap: 6px; align-self: center; }
+  .battle-canvas > .battle-actions > button { min-width: 0; padding-inline: 10px; }
+}

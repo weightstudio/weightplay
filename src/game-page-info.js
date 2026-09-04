@@ -4704,6 +4704,7 @@
     gameplay: "Fishing Tension Campaign",
     genre: ["Fishing", "Collection", "Timing", "Animal"],
     skills: ["Focus", "Reaction", "Problem Solving"],
+    relatedIds: ["animal-rift-salvage", "animal-cratebound"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
@@ -10722,16 +10723,16 @@
   };
   localizedGameplayProfiles["zh-Hant"]["animal-cratebound"] = { gameplay: "推拉貨運解謎", genre: ["益智", "策略", "動物"] };
   const crateboundGuideFacts = {
-    "zh-Hans": { title: "动物方舟搬运队", difficulty: "简单到具挑战性", time: "每座仓库 2–8 分钟", gameplay: "推拉货运解谜", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"] },
-    ja: { title: "アニマル・クレートバウンド", difficulty: "簡単から挑戦的", time: "倉庫1つ 2〜8分", gameplay: "押して引く物流パズル", genre: ["パズル", "戦略", "動物"], skills: ["論理", "計画", "問題解決"] },
-    ko: { title: "애니멀 크레이트바운드", difficulty: "쉬움부터 도전적", time: "창고당 2~8분", gameplay: "밀고 당기는 물류 퍼즐", genre: ["퍼즐", "전략", "동물"], skills: ["논리", "계획", "문제 해결"] },
-    "pt-BR": { title: "Arca de Carga Animal", difficulty: "Fácil a desafiador", time: "2–8 minutos por armazém", gameplay: "Quebra-cabeça logístico de empurrar e puxar", genre: ["Quebra-cabeça", "Estratégia", "Animais"], skills: ["Lógica", "Planejamento", "Resolução de problemas"] },
-    fr: { title: "Cargaison Animale", difficulty: "Facile à exigeant", time: "2 à 8 minutes par entrepôt", gameplay: "Puzzle logistique de poussée et traction", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Planification", "Résolution de problèmes"] },
-    de: { title: "Tierische Fracht", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Lager", gameplay: "Logistik-Puzzle mit Schieben und Ziehen", genre: ["Puzzle", "Strategie", "Tiere"], skills: ["Logik", "Planung", "Problemlösung"] },
-    it: { title: "Carico Animale", difficulty: "Da facile a impegnativo", time: "2–8 minuti per magazzino", gameplay: "Puzzle logistico di spinta e traino", genre: ["Puzzle", "Strategia", "Animali"], skills: ["Logica", "Pianificazione", "Risoluzione dei problemi"] },
-    ru: { title: "Животный груз", difficulty: "От простого к сложному", time: "2–8 минут на склад", gameplay: "Логическая головоломка с толканием и притягиванием", genre: ["Головоломка", "Стратегия", "Животные"], skills: ["Логика", "Планирование", "Решение задач"] },
-    hi: { title: "पशु क्रेटबाउंड", difficulty: "आसान से चुनौतीपूर्ण", time: "हर गोदाम 2–8 मिनट", gameplay: "धक्का-खींच लॉजिस्टिक्स पहेली", genre: ["पहेली", "रणनीति", "पशु"], skills: ["तर्क", "योजना", "समस्या समाधान"] },
-    ar: { title: "مستودع الحيوانات", difficulty: "من السهل إلى التحدي", time: "2–8 دقائق لكل مستودع", gameplay: "لغز الخدمات اللوجستية بالدفع والسحب", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"], faq: [["كم عدد المستودعات المتاحة؟", "هناك 30 مستودعًا مصممًا يدويًا عبر ستة فصول من القواعد."], ["هل يمكن حل كل مرحلة؟", "نعم. لكل مستودع حل تم التحقق منه."], ["ماذا يفعل السحب؟", "يستهلك السحب شحنة مغناطيسية، ويُرجع روكس خطوة إلى الخلف، ويسحب الصندوق المجاور إلى الخانة التي تركها."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ المراحل المكتملة وعمليات الفتح وأفضل النتائج محليًا في هذا المتصفح."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تدعم القواعد نفسها اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة هذه المدخلات. وتتكيف الواجهة كتخطيط منطقي واحد مع أحجام الهاتف والأفقي وسطح المكتب المطلوبة."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. تحفظ اللعبة التقدم في تخزين المتصفح المحلي فقط، لذلك يبدأ متصفح أو جهاز آخر بحفظ محلي منفصل."]] },
+    "zh-Hans": { title: "动物方舟搬运队", intro: "在 30 座手工设计的天空方舟仓库中行走、推拉并运送符文货箱，破解冰轨、号志、磁力与联动货箱。", difficulty: "简单到具挑战性", time: "每座仓库 2–8 分钟", gameplay: "推拉货运解谜", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"] },
+    ja: { title: "アニマル・クレートバウンド", intro: "30の手作り天空倉庫でルーン貨物を押し引きし、氷のレール、信号、磁石、連結箱を攻略します。", difficulty: "簡単から挑戦的", time: "倉庫1つ 2〜8分", gameplay: "押して引く物流パズル", genre: ["パズル", "戦略", "動物"], skills: ["論理", "計画", "問題解決"] },
+    ko: { title: "애니멀 크레이트바운드", intro: "30개의 수제 하늘 창고에서 룬 화물을 밀고 당기며 얼음 레일, 신호, 자석, 연결 상자를 해결하세요.", difficulty: "쉬움부터 도전적", time: "창고당 2~8분", gameplay: "밀고 당기는 물류 퍼즐", genre: ["퍼즐", "전략", "동물"], skills: ["논리", "계획", "문제 해결"] },
+    "pt-BR": { title: "Arca de Carga Animal", intro: "Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.", difficulty: "Fácil a desafiador", time: "2–8 minutos por armazém", gameplay: "Quebra-cabeça logístico de empurrar e puxar", genre: ["Quebra-cabeça", "Estratégia", "Animais"], skills: ["Lógica", "Planejamento", "Resolução de problemas"] },
+    fr: { title: "Cargaison Animale", intro: "Poussez, tirez et acheminez des cargaisons runiques dans 30 entrepôts célestes avec glace, signaux, aimants et caisses liées.", difficulty: "Facile à exigeant", time: "2 à 8 minutes par entrepôt", gameplay: "Puzzle logistique de poussée et traction", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Planification", "Résolution de problèmes"] },
+    de: { title: "Tierische Fracht", intro: "Schiebe, ziehe und leite Runenfracht durch 30 handgebaute Himmelslager mit Eisbahnen, Signalen, Magneten und Koppelkisten.", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Lager", gameplay: "Logistik-Puzzle mit Schieben und Ziehen", genre: ["Puzzle", "Strategie", "Tiere"], skills: ["Logik", "Planung", "Problemlösung"] },
+    it: { title: "Carico Animale", intro: "Spingi, attira e instrada carichi runici in 30 magazzini celesti con ghiaccio, segnali, magneti e casse collegate.", difficulty: "Da facile a impegnativo", time: "2–8 minuti per magazzino", gameplay: "Puzzle logistico di spinta e traino", genre: ["Puzzle", "Strategia", "Animali"], skills: ["Logica", "Pianificazione", "Risoluzione dei problemi"] },
+    ru: { title: "Животный груз", intro: "Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.", difficulty: "От простого к сложному", time: "2–8 минут на склад", gameplay: "Логическая головоломка с толканием и притягиванием", genre: ["Головоломка", "Стратегия", "Животные"], skills: ["Логика", "Планирование", "Решение задач"] },
+    hi: { title: "पशु क्रेटबाउंड", intro: "30 हस्तनिर्मित आकाश-गोदामों में चलें, संदूक धकेलें और खींचें, तथा बर्फीली पटरियों, संकेतों और चुंबकों को सुलझाएँ।", difficulty: "आसान से चुनौतीपूर्ण", time: "हर गोदाम 2–8 मिनट", gameplay: "धक्का-खींच लॉजिस्टिक्स पहेली", genre: ["पहेली", "रणनीति", "पशु"], skills: ["तर्क", "योजना", "समस्या समाधान"] },
+    ar: { title: "مستودع الحيوانات", intro: "تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا مع سكك جليدية وإشارات ومغناطيسات وصناديق مترابطة.", difficulty: "من السهل إلى التحدي", time: "2–8 دقائق لكل مستودع", gameplay: "لغز الخدمات اللوجستية بالدفع والسحب", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"], faq: [["كم عدد المستودعات المتاحة؟", "هناك 30 مستودعًا مصممًا يدويًا عبر ستة فصول من القواعد."], ["هل يمكن حل كل مرحلة؟", "نعم. لكل مستودع حل تم التحقق منه."], ["ماذا يفعل السحب؟", "يستهلك السحب شحنة مغناطيسية، ويُرجع روكس خطوة إلى الخلف، ويسحب الصندوق المجاور إلى الخانة التي تركها."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ المراحل المكتملة وعمليات الفتح وأفضل النتائج محليًا في هذا المتصفح."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تدعم القواعد نفسها اللمس والماوس ولوحة المفاتيح حيث تستخدم اللعبة هذه المدخلات. وتتكيف الواجهة كتخطيط منطقي واحد مع أحجام الهاتف والأفقي وسطح المكتب المطلوبة."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. تحفظ اللعبة التقدم في تخزين المتصفح المحلي فقط، لذلك يبدأ متصفح أو جهاز آخر بحفظ محلي منفصل."]] },
   };
   for (const [localeCode, copy] of Object.entries(crateboundGuideFacts)) {
     localizedGames[localeCode] ||= {};
@@ -15329,7 +15330,7 @@
   // FAQ paragraphs when a generated route is rendered.
   const animalAutoSquadGuideLocaleCopy = {
     ko: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "보통", time: "5~10분", gameplay: "전술 자동 전투",
+      title: "동물 자동 전투 부대", age: "13+", difficulty: "보통", time: "5~10분", gameplay: "전술 자동 전투",
       genre: ["자동 전투", "전략", "동물"], skills: ["논리", "문제 해결", "전략 계획"],
       guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드", noteTitle: "플레이어 및 저장 정보", hideScoreBands: true,
       intro: "Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고, 원정 유물을 하나 고른 뒤 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 30개 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.",
@@ -15377,7 +15378,7 @@
       ]
     },
     "pt-BR": {
-      title: "Animal Auto Squad", age: "13+", difficulty: "Médio", time: "5–10 minutos", gameplay: "Auto-batalha tática",
+      title: "Esquadrão de Animais Automático", age: "13+", difficulty: "Médio", time: "5–10 minutos", gameplay: "Auto-batalha tática",
       genre: ["Auto-batalha", "Estratégia", "Animais"], skills: ["Lógica", "Resolução de problemas", "Planejamento estratégico"],
       guideKicker: "Guia de jogo original da WeightPlay", guideTitleSuffix: "Guia do jogo", noteTitle: "Informações do jogador e do salvamento", hideScoreBands: true,
       intro: "Animal Auto Squad é um jogo de estratégia de formação baseado nas decisões tomadas antes do combate. Desbloqueie e treine heróis animais, coloque até seis deles em duas fileiras, escolha uma relíquia de expedição e observe cada confronto ser resolvido automaticamente. A campanha tem 30 fases em Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Cada fase possui cinco ondas criadas à mão, e as fases 5, 10, 15, 20, 25 e 30 terminam com um chefe regional diferente.",
@@ -15425,7 +15426,7 @@
       ]
     },
     fr: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "Moyenne", time: "5 à 10 minutes", gameplay: "Auto-bataille tactique",
+      title: "Escouade Animale Automatique", age: "13+", difficulty: "Moyenne", time: "5 à 10 minutes", gameplay: "Auto-bataille tactique",
       genre: ["Auto-bataille", "Stratégie", "Animaux"], skills: ["Logique", "Résolution de problèmes", "Planification stratégique"],
       guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu", noteTitle: "Informations du joueur et sauvegarde", hideScoreBands: true,
       intro: "Animal Auto Squad est un jeu de stratégie de formation fondé sur les décisions prises avant le combat. Déverrouillez et entraînez des héros animaux, placez-en jusqu’à six sur deux rangées, choisissez une relique d’expédition, puis observez chaque affrontement se résoudre automatiquement. La campagne compte 30 niveaux dans Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel et Void Crown. Chaque niveau possède cinq vagues conçues à la main, et les niveaux 5, 10, 15, 20, 25 et 30 se terminent par un boss régional différent.",
@@ -15473,7 +15474,7 @@
       ]
     },
     de: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "Mittel", time: "5–10 Minuten", gameplay: "Taktischer Auto-Battler",
+      title: "Tierisches Auto-Team", age: "13+", difficulty: "Mittel", time: "5–10 Minuten", gameplay: "Taktischer Auto-Battler",
       genre: ["Auto-Battler", "Strategie", "Tiere"], skills: ["Logik", "Problemlösung", "Strategische Planung"],
       guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden", noteTitle: "Spieler- und Speicherinformationen", hideScoreBands: true,
       intro: "Animal Auto Squad ist ein Formation-Strategiespiel, in dem die Entscheidungen vor dem Kampf zählen. Schalte Tierhelden frei und trainiere sie, stelle bis zu sechs von ihnen in zwei Reihen auf, wähle ein Expeditionsrelikt und beobachte, wie jeder Kampf automatisch entschieden wird. Die Kampagne umfasst 30 Stufen in Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel und Void Crown. Jede Stufe hat fünf handgefertigte Wellen; die Stufen 5, 10, 15, 20, 25 und 30 enden mit einem eigenen regionalen Boss.",
@@ -15521,7 +15522,7 @@
       ]
     },
     it: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "Media", time: "5–10 minuti", gameplay: "Auto-battler tattico",
+      title: "Squadra Animale Automatica", age: "13+", difficulty: "Media", time: "5–10 minuti", gameplay: "Auto-battler tattico",
       genre: ["Auto-battler", "Strategia", "Animali"], skills: ["Logica", "Risoluzione dei problemi", "Pianificazione strategica"],
       guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida del gioco", noteTitle: "Informazioni del giocatore e salvataggio", hideScoreBands: true,
       intro: "Animal Auto Squad è un gioco di strategia della formazione basato sulle decisioni prese prima del combattimento. Sblocca e allena eroi animali, posizionane fino a sei in due file, scegli una reliquia della spedizione e osserva ogni scontro risolversi automaticamente. La campagna comprende 30 livelli nelle regioni Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Ogni livello ha cinque ondate create a mano; i livelli 5, 10, 15, 20, 25 e 30 terminano con un boss regionale diverso.",
@@ -15569,7 +15570,7 @@
       ]
     },
     ru: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "Средняя", time: "5–10 минут", gameplay: "Тактический автобаттлер",
+      title: "Автоматический звериный отряд", age: "13+", difficulty: "Средняя", time: "5–10 минут", gameplay: "Тактический автобаттлер",
       genre: ["Автобаттлер", "Стратегия", "Животные"], skills: ["Логика", "Решение задач", "Стратегическое планирование"],
       guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник", noteTitle: "Сведения об игроке и сохранении", hideScoreBands: true,
       intro: "Animal Auto Squad — это стратегия построения строя, где главное — решения до начала боя. Открывайте и тренируйте звериных героев, размещайте до шести из них в два ряда, выбирайте одну реликвию экспедиции и наблюдайте, как каждый бой разрешается автоматически. Кампания состоит из 30 этапов в Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel и Void Crown. В каждом этапе пять авторских волн, а этапы 5, 10, 15, 20, 25 и 30 заканчиваются своим региональным боссом.",
@@ -15617,7 +15618,7 @@
       ]
     },
     hi: {
-      title: "Animal Auto Squad", age: "13+", difficulty: "मध्यम", time: "5–10 मिनट", gameplay: "टैक्टिकल ऑटो-बैटलर",
+      title: "पशु ऑटो दस्ता", age: "13+", difficulty: "मध्यम", time: "5–10 मिनट", gameplay: "टैक्टिकल ऑटो-बैटलर",
       genre: ["ऑटो-बैटलर", "रणनीति", "जानवर"], skills: ["तर्क", "समस्या समाधान", "रणनीतिक योजना"],
       guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", hideScoreBands: true,
       intro: "Animal Auto Squad एक फॉर्मेशन रणनीति गेम है जिसमें लड़ाई से पहले लिए गए फैसले सबसे महत्वपूर्ण हैं। जानवर नायकों को अनलॉक और प्रशिक्षित करें, उनमें से अधिकतम छह को दो पंक्तियों में रखें, एक अभियान अवशेष चुनें और हर मुकाबले को अपने-आप सुलझते देखें। अभियान Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel और Void Crown के छह क्षेत्रों में 30 चरणों का है। हर चरण में हाथ से बनाए गए पाँच वेव हैं और चरण 5, 10, 15, 20, 25 और 30 अलग क्षेत्रीय बॉस पर समाप्त होते हैं।",
@@ -15670,6 +15671,25 @@
     localizedGames[locale]["animal-auto-squad"] = { ...games["animal-auto-squad"], ...copy };
     localizedGameplayProfiles[locale] ||= {};
     localizedGameplayProfiles[locale]["animal-auto-squad"] = { gameplay: copy.gameplay, genre: copy.genre };
+  }
+
+  // Keep the Orb Fortress identity locale-owned even where the long Guide
+  // still uses the shared runtime translation path. Without these titles the
+  // generated route metadata and the hydrated Guide header fall back to the
+  // English catalog name.
+  const animalOrbFortressTitleTranslations = {
+    ko: "동물 구슬 요새",
+    "pt-BR": "Fortaleza dos Orbes Animais",
+    ru: "Крепость животных сфер",
+    hi: "पशु ऑर्ब किला",
+    ar: "حصن الكرات الحيوانية",
+  };
+  for (const [locale, title] of Object.entries(animalOrbFortressTitleTranslations)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-orb-fortress"] = {
+      ...(localizedGames[locale]["animal-orb-fortress"] || {}),
+      title,
+    };
   }
 
   // Bounce Brawl's public Guide is game-owned data, so these exact fields must

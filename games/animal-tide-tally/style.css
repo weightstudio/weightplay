@@ -33,7 +33,7 @@
 #mainScreen .main-progress { display:flex; align-items:center; min-height:42px; height:42px; margin:0; padding:8px 12px; border:1px solid var(--line); border-radius:12px; background:#fffdf7e8; color:var(--muted); font-weight:800; line-height:1.2; }
 #mainScreen .main-actions { margin-top:12px; }
 #mainScreen .main-actions .primary { min-height:52px; }
-#mainScreen .wp-shell-settings-popover { z-index:10; }
+#app > .wp-shell-settings-popover { z-index:10; }
 #gameGuide { clear:both; }
 #stageScreen,
 #battleScreen { display:flex; flex-direction:column; width:100%; max-width:none; height:100vh; min-height:0; margin:0; padding:0; }

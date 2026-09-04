@@ -117,6 +117,13 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
 .touch-controls button{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .touch-controls button.is-held{transform:translateY(1px) scale(.96);border-color:var(--gold);box-shadow:0 0 0 2px #ffd47c33}
 
+/* v56 mobile lane feedback: keep held direction and nearest-lane distance
+   above the touch row without covering the Canvas or changing its controls. */
+.battle-lane-feedback{position:absolute;z-index:3;left:50%;bottom:76px;transform:translateX(-50%);width:min(88%,520px);margin:0;padding:7px 10px;border:1px solid #74e6ee33;border-radius:999px;background:#080b20d9;color:var(--cyan);font-size:.72rem;font-weight:750;line-height:1.25;text-align:center;pointer-events:none}
+.battle-stage[data-result-open="true"]>.battle-lane-feedback{visibility:hidden!important}
+@media(max-width:480px){.battle-lane-feedback{bottom:76px;width:calc(100% - 24px);font-size:.68rem}}
+@media(max-height:500px){.battle-lane-feedback{bottom:76px;max-height:32px;overflow:hidden}}
+
 /* v51 HUD readability repair: reserve a wider narrow-screen track for the
    full Firepower label instead of clipping it with the five equal tracks. */
 @media(max-width:480px){.battle-hud>.hud-stats{grid-template-columns:repeat(3,minmax(0,1fr)) minmax(58px,1.2fr) minmax(0,1fr)!important}}
@@ -146,3 +153,38 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
 /* Keep the native Battle sound utility at the governed logical touch target
    on compact phones; the semantic marker is installed before shell startup. */
 .battle-hud [data-wp-battle-utility]{width:44px!important;min-width:44px!important}
+
+/* v55 candidate contract: keep the wide-layout Main poster on the governed
+   300px column in short landscape without changing the portrait surface. */
+@media(max-height:500px) and (orientation:landscape){
+  .hero-card{grid-template-columns:300px minmax(0,1fr)}
+  .main-poster{display:block;width:300px;height:300px;object-fit:cover}
+}
+
+/* The governed short-landscape viewport is 844px wide; keep this explicit
+   width range stable even when browser height/URL-bar reporting varies. */
+@media(min-width:700px) and (max-width:900px){
+  .hero-card{grid-template-columns:300px minmax(0,1fr)}
+  .main-poster{display:block;width:300px;max-width:300px;height:300px;object-fit:cover}
+
+  /* The shared Main shell promotes the native hero into a governed
+     composition and its later rules use !important. Keep the same 300px
+     contract on that promoted surface. */
+  #mainScreen .wp-standard-main-composition{
+    --wp-main-landscape-poster-size:300px!important;
+    grid-template-columns:300px minmax(0,1fr)!important;
+  }
+  #mainScreen .wp-standard-main-poster,
+  #mainScreen .wp-standard-main-poster-media,
+  #mainScreen .wp-standard-main-poster-media>img,
+  #mainScreen .wp-standard-main-poster>img{
+    display:block!important;
+    width:300px!important;
+    min-width:300px!important;
+    max-width:300px!important;
+    height:300px!important;
+    min-height:300px!important;
+    max-height:300px!important;
+    object-fit:cover!important;
+  }
+}

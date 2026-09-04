@@ -329,7 +329,7 @@
   draw=drawResponsive;
   // v8 Growth instrumentation: expose only aggregate, privacy-safe funnel
   // fields; gameplay state, controls, pacing, and authored waves stay intact.
-  const ANALYTICS_GAME_VERSION="55",ANALYTICS_INTERFACE_VERSION="7";
+  const ANALYTICS_GAME_VERSION="56",ANALYTICS_INTERFACE_VERSION="7";
   let sessionHadBattle=false,inputType="unknown";
   function viewportBucket(){const width=window.innerWidth,height=window.innerHeight;if(width<=430&&height>=700)return"phone-portrait";if(width<=700&&height>=700)return"tablet-portrait";if(width>=700&&height<=500)return"short-landscape";return"desktop"}
   function track(eventName,details={}){window.WonderAnalytics?.track?.(eventName,{game_id:"alien-defender",game_version:`v${ANALYTICS_GAME_VERSION}`,interface_version:ANALYTICS_INTERFACE_VERSION,locale,viewport_bucket:viewportBucket(),input_type:details.input_type||inputType,wave:details.wave??wave,result_reason:details.result_reason||"not_applicable"})}
@@ -1106,4 +1106,77 @@
     }
     v55Finish(win);
   };
+  // v56 Planner repair: make held mobile movement and the nearest formation
+  // lane legible without changing steering, shot timing, hit bounds, or the
+  // authored Stage progression. The readout is DOM text so it remains useful
+  // to screen readers and does not compete with the Canvas lane cue.
+  const V56_LANE_FEEDBACK_COPY={
+    en:{idle:"Hold ◀/▶ to line up with a formation lane.",held:"Holding {direction} · {distance} units to nearest lane.",aligned:"Lane aligned · fire when ready.",left:"Left",right:"Right"},
+    "zh-Hant":{idle:"長按 ◀/▶ 對準敵方編隊路線。",held:"長按{direction} · 距離最近路線 {distance}。",aligned:"已對準路線 · 準備好就射擊。",left:"左",right:"右"},
+    "zh-Hans":{idle:"长按 ◀/▶ 对准敌方编队路线。",held:"长按{direction} · 距离最近路线 {distance}。",aligned:"已对准路线 · 准备好就射击。",left:"左",right:"右"},
+    ja:{idle:"◀/▶を長押しして編隊のレーンへ合わせよう。",held:"{direction}を長押し · 最寄りのレーンまで{distance}。",aligned:"レーンを合わせました · 準備ができたら撃とう。",left:"左",right:"右"},
+    ko:{idle:"◀/▶를 길게 눌러 편대 공격선에 맞추세요.",held:"{direction} 길게 누름 · 가장 가까운 공격선까지 {distance}.",aligned:"공격선 정렬 완료 · 준비되면 발사하세요.",left:"왼쪽",right:"오른쪽"},
+    es:{idle:"Mantén ◀/▶ para alinearte con un carril de la formación.",held:"Manteniendo {direction} · {distance} hasta el carril más cercano.",aligned:"Carril alineado · dispara cuando estés listo.",left:"izquierda",right:"derecha"},
+    "pt-BR":{idle:"Segure ◀/▶ para alinhar com uma faixa da formação.",held:"Segurando {direction} · faltam {distance} até a faixa mais próxima.",aligned:"Faixa alinhada · atire quando estiver pronto.",left:"esquerda",right:"direita"},
+    fr:{idle:"Maintiens ◀/▶ pour te placer sur une ligne de la formation.",held:"{direction} maintenue · {distance} jusqu'à la ligne la plus proche.",aligned:"Ligne alignée · tire quand tu es prêt.",left:"gauche",right:"droite"},
+    de:{idle:"Halte ◀/▶, um dich an einer Formationbahn auszurichten.",held:"{direction} gehalten · {distance} bis zur nächsten Bahn.",aligned:"Bahn ausgerichtet · feuere, wenn du bereit bist.",left:"links",right:"rechts"},
+    it:{idle:"Tieni premuto ◀/▶ per allinearti a una corsia della formazione.",held:"{direction} premuto · {distance} dalla corsia più vicina.",aligned:"Corsia allineata · spara quando sei pronto.",left:"sinistra",right:"destra"},
+    ru:{idle:"Удерживайте ◀/▶, чтобы выйти на линию строя.",held:"Удерживается {direction} · до ближайшей линии {distance}.",aligned:"Линия выбрана · стреляйте, когда будете готовы.",left:"влево",right:"вправо"},
+    hi:{idle:"गठन की लेन पर आने के लिए ◀/▶ दबाकर रखें।",held:"{direction} दबा है · पास की लेन तक {distance}।",aligned:"लेन सही है · तैयार हों तो गोली चलाएँ।",left:"बाएँ",right:"दाएँ"},
+    ar:{idle:"اضغط مطولاً على ◀/▶ لمحاذاة مسار التشكيل.",held:"الضغط على {direction} · المسافة إلى أقرب مسار {distance}.",aligned:"تمت محاذاة المسار · أطلق النار عندما تستعد.",left:"اليسار",right:"اليمين"}
+  };
+  const v56LaneFeedback=document.createElement("p");
+  v56LaneFeedback.id="battleLaneFeedback";
+  v56LaneFeedback.className="battle-lane-feedback";
+  v56LaneFeedback.setAttribute("role","status");
+  v56LaneFeedback.setAttribute("aria-live","polite");
+  touchControls?.insertAdjacentElement("afterend",v56LaneFeedback);
+  let v56HeldDirection="",v56LastLaneFeedbackKey="",v56LastLaneFeedbackAt=0;
+  const v56LaneCopy=()=>V56_LANE_FEEDBACK_COPY[locale]||V56_LANE_FEEDBACK_COPY.en;
+  function v56NearestLaneDistance(){
+    const active=world?.enemies?.filter(enemy=>enemy.alive)||[];
+    return active.length&&world?.player?Math.min(...active.map(enemy=>Math.abs(enemy.x-world.player.x))):null;
+  }
+  function v56RenderLaneFeedback(force=false){
+    if(!v56LaneFeedback||screen!=="battle")return;
+    const distance=v56NearestLaneDistance();
+    if(distance===null)return;
+    const roundedDistance=Math.round(distance/5)*5;
+    const aligned=distance<=32;
+    const state=v56HeldDirection?(aligned?"aligned":"held"):"idle";
+    const key=`${state}|${v56HeldDirection}|${roundedDistance}`;
+    const now=performance.now();
+    if(!force&&(key===v56LastLaneFeedbackKey||now-v56LastLaneFeedbackAt<140))return;
+    v56LastLaneFeedbackKey=key;v56LastLaneFeedbackAt=now;
+    const copyForLocale=v56LaneCopy();
+    let message=copyForLocale.idle;
+    if(state==="held")message=copyForLocale.held.replace("{direction}",copyForLocale[v56HeldDirection]).replace("{distance}",String(roundedDistance));
+    if(state==="aligned")message=copyForLocale.aligned;
+    v56LaneFeedback.textContent=message;
+  }
+  const v56SetText=setText;
+  setText=function setTextWithLaneFeedback(){v56SetText();v56RenderLaneFeedback(true)};
+  const v56Start=start;
+  start=function startWithLaneFeedback(stageIndex=selectedStage){
+    v56HeldDirection="";v56LastLaneFeedbackKey="";v56Start(stageIndex);v56RenderLaneFeedback(true);
+  };
+  const v56PressControl=pressControl;
+  pressControl=function pressControlWithLaneFeedback(event,key,button){
+    v56PressControl(event,key,button);
+    if(screen==="battle"&&(key==="left"||key==="right")){v56HeldDirection=key;v56RenderLaneFeedback(true)}
+  };
+  const v56ReleaseControlPointer=releaseControlPointer;
+  releaseControlPointer=function releaseControlPointerWithLaneFeedback(event){
+    const releasedKey=event?.pointerId!==undefined?controlPointers.get(event.pointerId):null;
+    v56ReleaseControlPointer(event);
+    if(releasedKey==="left"||releasedKey==="right"){
+      const remaining=[...controlPointers.values()].filter(key=>key==="left"||key==="right");
+      v56HeldDirection=remaining[remaining.length-1]||"";v56RenderLaneFeedback(true);
+    }
+  };
+  const v56Update=update;
+  update=function updateWithLaneFeedback(dt){v56Update(dt);if(screen==="battle")v56RenderLaneFeedback()};
+  const v56ClearHeldDirection=()=>{v56HeldDirection="";v56RenderLaneFeedback(true)};
+  window.addEventListener("blur",v56ClearHeldDirection);
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)v56ClearHeldDirection()});
 })();

@@ -108,6 +108,20 @@ select { min-height: 44px; max-width: 66%; padding: 8px 28px 8px 10px; border: 1
   .compare-arrow { transform: none; }
   .tile { min-height: 78px; }
 }
+@media (min-width: 700px) and (max-height: 500px) {
+  body[data-wp-game-id="animal-meadow-difference"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+  .hero-card { grid-template-columns: 300px minmax(0, 1fr); }
+  .cover-art.main-poster {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+  }
+}
 @media (max-width: 420px) {
   .app-shell { padding-inline: 12px; }
   .hero-copy { padding-inline: 17px; }
