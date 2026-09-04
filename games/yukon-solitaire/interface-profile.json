@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "gameId": "yukon-solitaire",
+  "interfaceVersion": 6,
+  "audience": "general",
+  "flow": "MAIN_BATTLE",
+  "stage": { "enabled": false },
+  "battle": { "enabled": true },
+  "canonicalRoute": {
+    "mode": "REDIRECT_ONLY",
+    "playableRoute": "/en/games/yukon-solitaire/",
+    "reason": "The planned internal-trial canonical source redirects to locale-owned playable shells; canonical interface validators must report this source route as not applicable."
+  }
+}
