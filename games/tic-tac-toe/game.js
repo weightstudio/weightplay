@@ -6,29 +6,31 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   document.body.dataset.gameVersion = "v15";
 
   const labels = {
-    en: { lobby: "Back to WeightPlay", battle: "Back to main" },
-    "zh-Hant": { lobby: "返回 WeightPlay", battle: "返回主頁" },
-    "zh-Hans": { lobby: "返回 WeightPlay", battle: "返回主页" },
-    ja: { lobby: "WeightPlayへ戻る", battle: "メインへ戻る" },
-    ko: { lobby: "WeightPlay로 돌아가기", battle: "메인으로" },
-    es: { lobby: "Volver a WeightPlay", battle: "Volver al inicio" },
-    "pt-BR": { lobby: "Voltar ao WeightPlay", battle: "Voltar ao início" },
-    fr: { lobby: "Retour à WeightPlay", battle: "Retour à l’accueil" },
-    de: { lobby: "Zurück zu WeightPlay", battle: "Zur Startseite" },
-    it: { lobby: "Torna a WeightPlay", battle: "Torna alla home" },
-    ru: { lobby: "Вернуться в WeightPlay", battle: "На главную" },
-    hi: { lobby: "WeightPlay पर वापस जाएँ", battle: "मुख्य पृष्ठ" },
-    ar: { lobby: "العودة إلى WeightPlay", battle: "العودة إلى الرئيسية" },
+    en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
+    "zh-Hant": { lobby: "返回 WeightPlay", battle: "返回主頁", settings: "設定" },
+    "zh-Hans": { lobby: "返回 WeightPlay", battle: "返回主页", settings: "设置" },
+    ja: { lobby: "WeightPlayへ戻る", battle: "メインへ戻る", settings: "設定" },
+    ko: { lobby: "WeightPlay로 돌아가기", battle: "메인으로", settings: "설정" },
+    es: { lobby: "Volver a WeightPlay", battle: "Volver al inicio", settings: "Configuración" },
+    "pt-BR": { lobby: "Voltar ao WeightPlay", battle: "Voltar ao início", settings: "Configurações" },
+    fr: { lobby: "Retour à WeightPlay", battle: "Retour à l’accueil", settings: "Paramètres" },
+    de: { lobby: "Zurück zu WeightPlay", battle: "Zur Startseite", settings: "Einstellungen" },
+    it: { lobby: "Torna a WeightPlay", battle: "Torna alla home", settings: "Impostazioni" },
+    ru: { lobby: "Вернуться в WeightPlay", battle: "На главную", settings: "Настройки" },
+    hi: { lobby: "WeightPlay पर वापस जाएँ", battle: "मुख्य पृष्ठ", settings: "सेटिंग्स" },
+    ar: { lobby: "العودة إلى WeightPlay", battle: "العودة إلى الرئيسية", settings: "الإعدادات" },
   };
 
   const shell = document.querySelector("#popularArcade");
   const header = document.querySelector(".arcade-header");
+  const mainScreen = document.querySelector("#mainScreen");
+  if (header && mainScreen && !mainScreen.contains(header)) mainScreen.prepend(header);
   const battleTop = document.querySelector("#battleScreen .battle-top");
   const mainReturn = document.createElement("a");
   mainReturn.className = "tic-main-return";
   mainReturn.href = "/";
   mainReturn.dataset.wpReturn = "main";
-  mainReturn.textContent = "← W";
+  mainReturn.innerHTML = '<span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="32" height="32">';
   header?.prepend(mainReturn);
 
   const battleReturn = document.createElement("button");
@@ -39,8 +41,19 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   battleTop?.prepend(battleReturn);
   battleReturn.addEventListener("click", () => document.querySelector("#homeBtn")?.click());
 
+  const battleSettings = document.createElement("button");
+  battleSettings.className = "tic-battle-settings";
+  battleSettings.type = "button";
+  battleSettings.dataset.wpBattleUtility = "true";
+  battleSettings.textContent = "⚙";
+  battleSettings.title = "Settings";
+  battleTop?.append(battleSettings);
+  battleSettings.addEventListener("click", () => {
+    document.querySelector(".wp-shell-settings-button")?.focus({ preventScroll: true });
+  });
+
   const reserve = document.createElement("div");
-  reserve.className = "arcade-ad-reserve tic-ad-reserve";
+  reserve.className = "arcade-ad-reserve battle-ad-reserve tic-ad-reserve";
   reserve.setAttribute("aria-hidden", "true");
   shell?.append(reserve);
 
@@ -48,6 +61,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
     const copy = labels[document.documentElement.lang] || labels.en;
     mainReturn.setAttribute("aria-label", copy.lobby);
     battleReturn.setAttribute("aria-label", copy.battle);
+    battleSettings.setAttribute("aria-label", copy.settings);
+    battleSettings.title = copy.settings;
   };
   applyLabels();
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
@@ -56,7 +71,8 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   style.dataset.ticTacToeV15 = "true";
   style.textContent = `
     .tic-main-return,
-    .tic-battle-return {
+    .tic-battle-return,
+    .tic-battle-settings {
       display: inline-grid;
       place-items: center;
       min-width: 48px;
@@ -68,6 +84,15 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       font-weight: 900;
       text-decoration: none;
       touch-action: manipulation;
+    }
+    .tic-battle-settings {
+      position: absolute;
+      inset-inline-end: 0;
+      top: 0;
+      color: #f7d77b;
+      background: #12334d;
+      font-size: 20px;
+      cursor: pointer;
     }
     .tic-main-return { flex: 0 0 auto; }
     html.popular-tic-tac-toe-active .popular-arcade {
@@ -116,6 +141,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       align-content: stretch;
     }
     html.popular-tic-tac-toe-active #battleScreen .battle-top {
+      position: relative;
       min-width: 0;
       max-width: 100%;
       display: grid;
@@ -144,6 +170,11 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       height: 100%;
       padding: clamp(8px, 2vw, 14px);
       overflow: hidden;
+    }
+    @media (min-width: 700px) and (max-height: 560px) {
+      body[data-game-id='tic-tac-toe'] .wp-standard-main-composition {
+        --wp-main-landscape-poster-size: 300px;
+      }
     }
     html.popular-tic-tac-toe-active #battleScreen .board {
       min-width: 0;

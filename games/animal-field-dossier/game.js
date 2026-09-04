@@ -152,9 +152,14 @@
   const choosePlan = id => {
     if (busy) return;
     const item = CASES[currentCase];
+    const copy = caseText(item);
     if (selectedFacts.length < 2) { setFeedback(t("needFacts"), "wrong"); track("plan_blocked", { caseId: item.id }); renderBattle(); return; }
     const fits = id === item.correct && item.required.every(fact => selectedFacts.includes(fact));
-    if (!fits) { setFeedback(item.text[locale].conflict, "wrong"); track("plan_conflict", { caseId: item.id, planId: id }); renderBattle(); return; }
+    if (!fits) {
+      const planLabel = copy.plans.find(([planId]) => planId === id)?.[1] || id;
+      setFeedback(`${planLabel}: ${item.text[locale].conflict}`, "wrong");
+      track("plan_conflict", { caseId: item.id, planId: id }); renderBattle(); return;
+    }
     busy = true; journal.add(item.id); best = Math.max(best, journal.size); saveProgress(); setFeedback(t("correct"), "good"); track("case_resolved", { caseId: item.id, planId: id, journalPages: journal.size }); renderBattle();
     window.setTimeout(() => {
       busy = false; currentCase += 1; selectedFacts = []; feedbackText = ""; feedbackKey = "";

@@ -13783,6 +13783,62 @@
       localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
     }
   }
+  const spiderRelatedCardLocaleCopy = {
+    "zh-Hant": {
+      "klondike-solitaire": { title: "克朗代克接龍", intro: "經典 52 張牌玩法：把四個花色從 A 排到 K，同時管理牌桌、牌庫與棄牌堆。" },
+      "freecell-solitaire": { title: "空當接龍", intro: "52 張牌全部正面朝上，運用四個空格與八欄牌桌，把四個花色排到 A 至 K。" },
+    },
+    "zh-Hans": {
+      "klondike-solitaire": { title: "克朗代克纸牌", intro: "经典 52 张牌玩法：将四个花色从 A 排到 K，同时管理牌桌、牌库与废牌堆。" },
+      "freecell-solitaire": { title: "空当接龙", intro: "52 张牌全部正面朝上，利用四个空位和八列牌桌，将四个花色排到 A 至 K。" },
+    },
+    ja: {
+      "klondike-solitaire": { title: "クロンダイク・ソリティア", intro: "52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。" },
+      "freecell-solitaire": { title: "フリーセル・ソリティア", intro: "すべて表向きの52枚を、4つのフリーセルと8列の場札で整理し、4つの組札をAからKまで完成させます。" },
+    },
+    ko: {
+      "klondike-solitaire": { title: "클론다이크 솔리테어", intro: "52장 카드로 에이스부터 킹까지 네 기초 더미를 만들며 tableau, 덱과 버림패를 관리하는 클래식 카드 게임입니다." },
+      "freecell-solitaire": { title: "프리셀 솔리테어", intro: "모든 52장 카드가 앞면으로 놓이며, 네 개의 프리 셀과 여덟 열을 활용해 네 기초 더미를 A부터 K까지 완성합니다." },
+    },
+    es: {
+      "klondike-solitaire": { title: "Solitario Klondike", intro: "Clásico juego de 52 cartas: construye cuatro bases del As al Rey mientras administras el cuadro, el mazo y el descarte." },
+      "freecell-solitaire": { title: "Solitario FreeCell", intro: "Las 52 cartas empiezan boca arriba; usa cuatro celdas libres y ocho columnas para completar cuatro bases del As al Rey." },
+    },
+    "pt-BR": {
+      "klondike-solitaire": { title: "Paciência Klondike", intro: "Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte." },
+      "freecell-solitaire": { title: "Paciência FreeCell", intro: "As 52 cartas começam viradas para cima; use quatro células livres e oito colunas para completar quatro fundações do Ás ao Rei." },
+    },
+    fr: {
+      "klondike-solitaire": { title: "Solitaire Klondike", intro: "Jeu classique de 52 cartes : construisez quatre fondations de l’As au Roi tout en gérant le tableau, la pioche et la défausse." },
+      "freecell-solitaire": { title: "Solitaire FreeCell", intro: "Les 52 cartes commencent face visible ; utilisez quatre cellules libres et huit colonnes pour compléter quatre fondations de l’As au Roi." },
+    },
+    de: {
+      "klondike-solitaire": { title: "Klondike-Solitär", intro: "Klassisches Kartenspiel mit 52 Karten: Baue vier Fundamente vom Ass bis zum König und verwalte Tableau, Stapel und Ablage." },
+      "freecell-solitaire": { title: "FreeCell-Solitär", intro: "Alle 52 Karten liegen offen; nutze vier freie Zellen und acht Tableau-Spalten, um vier Fundamente vom Ass bis zum König zu bauen." },
+    },
+    it: {
+      "klondike-solitaire": { title: "Solitario Klondike", intro: "Classico gioco da 52 carte: costruisci quattro basi dall’Asso al Re gestendo tableau, tallone e scarti." },
+      "freecell-solitaire": { title: "Solitario FreeCell", intro: "Tutte le 52 carte iniziano scoperte; usa quattro celle libere e otto colonne per completare quattro basi dall’Asso al Re." },
+    },
+    ru: {
+      "klondike-solitaire": { title: "Пасьянс «Клондайк»", intro: "Классическая игра на 52 карты: соберите четыре основы от туза до короля, управляя раскладом, колодой и сбросом." },
+      "freecell-solitaire": { title: "Пасьянс «Свободная ячейка»", intro: "Все 52 карты лежат лицом вверх; используйте четыре свободные ячейки и восемь колонок, чтобы собрать четыре основы от туза до короля." },
+    },
+    hi: {
+      "klondike-solitaire": { title: "क्लोंडाइक सॉलिटेयर", intro: "52 पत्तों का क्लासिक खेल: टैब्लो, स्टॉक और डिस्कार्ड सँभालते हुए चार फाउंडेशन को इक्के से बादशाह तक बनाएँ।" },
+      "freecell-solitaire": { title: "फ्रीसेल सॉलिटेयर", intro: "सभी 52 पत्ते खुले होते हैं; चार फ्री सेल और आठ कॉलम से चार फाउंडेशन को इक्के से बादशाह तक पूरा करें।" },
+    },
+    ar: {
+      "klondike-solitaire": { title: "كلوندايك سوليتير", intro: "كلوندايك سوليتير لعبة ورق كلاسيكية من 52 بطاقة؛ ابنِ أربع مجموعات أساس من الآس إلى الملك وأدر اللوحة والرزمة وكومة الهدر." },
+      "freecell-solitaire": { title: "سوليتير الخلية الحرة", intro: "تبدأ البطاقات الـ52 مكشوفة؛ استخدم أربع خلايا حرة وثمانية أعمدة لبناء أربع مجموعات أساس من الآس إلى الملك." },
+    },
+  };
+  for (const [localeCode, relatedCards] of Object.entries(spiderRelatedCardLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    for (const [gameId, copy] of Object.entries(relatedCards)) {
+      localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
+    }
+  }
   localizedRelatedCardCopy = {
     "zh-Hant": {
       "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },
