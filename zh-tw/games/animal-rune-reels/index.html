@@ -67,14 +67,15 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="動物符文轉輪 | WeightPlay" />
   <meta name="twitter:description" content="組建最多五名召喚動物英雄的隊伍，旋轉三列向下移動的符文轉輪，組合停下的圖樣，並在三十個守護者任務的每一波攻勢中存活。" />
-  <link rel="stylesheet" href="style.css?v=20260824-rune-first-rift-recap-v66">
+  <link rel="stylesheet" href="style.css?v=20260904-rune-v71-interface-repair-v72">
   <link rel="stylesheet" href="battle-v3.css?v=20260824-rune-tactics-layout-v68">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-rune-v71-interface-repair-v72">
   <style>[hidden]{display:none!important}</style>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <style>body.wp-shell-main-active .main-canvas.wp-standard-main-flow-node{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}body.wp-shell-main-active .main-canvas>.wp-standard-main-composition{height:auto;min-height:0}</style>
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-rune-reels/cover.webp" />
   </head>
-<body data-sound-toggle="off">
+<body data-sound-toggle="off" data-wp-game-id="animal-rune-reels" data-audience="general">
   <div id="loading" class="loading"><div class="loader-orb"></div><strong data-i18n="loading">正在喚醒符文轉輪……</strong><div class="load-track"><i id="loadFill"></i></div></div>
   <main id="app" hidden>
     <section id="mainPage" class="page main-page" data-screen="main">
@@ -107,7 +108,7 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>轉輪固定依可見順序停止，完整符文列會在結算前發光，英雄行動也會與召喚師合併的防禦和治療總量分開呈現。完整介面使用最大寬度 920 像素的置中單一邏輯版面；手機、橫向與桌面會一起縮放相同的控制項、點擊區、美術與遊戲座標。</p></div>
       <div class="game-info-section game-info-parent"><h3>家長說明</h3><p>不需要帳號。英雄名冊、戰役進度、貨幣、材料、符文等級與獎勵領取紀錄都儲存在此瀏覽器。清除網站資料或更換瀏覽器可能會建立獨立存檔。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>相同符文列會做什麼？</dt><dd>三列轉輪全部停止後，相同列會讓該符文能力加倍。</dd></div><div><dt>所有英雄共用一次攻擊嗎？</dt><dd>不會。英雄會分別攻擊；隊伍防禦與治療則會合併給召喚師。</dd></div><div><dt>離開戰鬥會怎樣？</dt><dd>永久背包內容會保留，但目前的戰鬥嘗試會失去。</dd></div><div><dt>活動獎勵總是可以取得嗎？</dt><dd>不一定。活動任務依關卡頁顯示的排程開放。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以單一邏輯版面縮放。</dd></div><div><dt>進度會自動移到其他裝置嗎？</dt><dd>不會。進度目前只儲存在本機瀏覽器，其他設定檔或裝置會有獨立進度。</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/beast-deck/"><img src="/assets/beast-deck-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>獸王牌組：迷霧森林</strong><span>《獸王牌組：迷霧森林》是一套以判讀敵人意圖、安排出牌順序為核心的 30 任務回合制牌組戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>動物符文戰棋</strong><span>《動物符文戰棋》是在 3×4 符文棋盤進行的 30 任務回合制戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-auto-squad/"><img src="/assets/animal-auto-squad-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>動物自走小隊</strong><span>《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。</span></span></a></div></div>
     </div>
   </section>
     </section>
@@ -154,8 +155,8 @@
     <div id="characterModal" class="global-modal" role="dialog" aria-modal="true" aria-labelledby="characterName" hidden><div class="character-card"><button id="characterClose" class="modal-close">×</button><img id="characterArt" alt=""><div id="characterStars" class="character-stars"></div><h2 id="characterName"></h2><p id="characterStats"></p><section class="ultimate-detail"><small data-i18n="specialSkill">Ultimate</small><strong id="characterSpecial"></strong><p id="characterSpecialDesc"></p></section><section id="leaderDetail" class="leader-detail"><small data-i18n="leaderAbility">Leader ability</small><strong id="characterLeader"></strong><p id="characterLeaderDesc"></p></section><div id="duplicateProgress" class="upgrade-progress" role="progressbar" aria-valuemin="0"><span></span><i><b></b></i></div><button id="equipBtn" class="primary"></button><button id="upgradeBtn" class="secondary"></button></div></div>
     <div id="summonResult" class="global-modal" hidden><div class="character-card"><span data-i18n="summonResult">Summon result</span><img id="summonArt" alt=""><h2 id="summonName"></h2><p id="summonCopy"></p><button id="summonClose" class="primary" data-i18n="continue">Continue</button></div></div>
   </main>
-    <script src="../../src/site-config.js"></script><script src="../../src/analytics.js?v=20260810-rune-funnel-v33"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260901-rune-interface-contract-v71"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js?v=20260820-rune-auto-unlock-cue-v60b"></script><script src="locales-v8.js?v=20260824-rune-tactics-layout-v68"></script><script src="locales-v9.js?v=20260820-rune-damage-taken-v56"></script><script src="locales-v10.js?v=20260822-rune-main-locale-v61c"></script><script src="locales-v11.js?v=20260823-rune-first-turn-reroll-cue-v63"></script><script src="locales-v12.js?v=20260824-rune-first-rift-recap-v66"></script><script src="game.js?v=20260901-rune-interface-contract-v71"></script>
+    <script src="../../src/site-config.js"></script><script src="../../src/analytics.js?v=20260810-rune-funnel-v33"></script><script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260904-wp-text-growth-body-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="locales.js?v=20260901-rune-interface-contract-v71"></script><script src="locales-v3.js?v=20260804-rune-copy-v27"></script><script src="locales-v4.js"></script><script src="locales-v5.js"></script><script src="locales-v6.js"></script><script src="locales-v7.js?v=20260820-rune-auto-unlock-cue-v60b"></script><script src="locales-v8.js?v=20260824-rune-tactics-layout-v68"></script><script src="locales-v9.js?v=20260820-rune-damage-taken-v56"></script><script src="locales-v10.js?v=20260822-rune-main-locale-v61c"></script><script src="locales-v11.js?v=20260823-rune-first-turn-reroll-cue-v63"></script><script src="locales-v12.js?v=20260824-rune-first-rift-recap-v66"></script><script src="game.js?v=20260904-rune-v71-interface-repair-v72"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

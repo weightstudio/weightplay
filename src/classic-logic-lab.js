@@ -736,7 +736,7 @@
     const saved = localStorageSafe("weightPlayLocale") || localStorageSafe("weightplayLocale") || "en";
     // Localized Lights Out routes must own their locale instead of inheriting
     // a previously selected language from another route in this shared lab.
-    if (["four-in-a-row", "sliding-15", "sudoku", "lights-out", "code-breaker", "minefield-logic", "tower-of-hanoi"].includes(id)) {
+    if (["four-in-a-row", "sliding-15", "sudoku", "lights-out", "code-breaker", "minefield-logic", "tower-of-hanoi", "reversi"].includes(id)) {
       const selectedPath = localStorageSafe(LOCALE_SELECTION_PATH_KEY);
       const selectedValue = localStorageSafe(LOCALE_SELECTION_VALUE_KEY);
       if (selectedPath === window.location.pathname && LOCALES.includes(selectedValue)) return selectedValue;
@@ -826,7 +826,7 @@
     app.stageSound?.addEventListener("click", () => { soundOn = !soundOn; updateSoundButton(); beep(); });
     picker.addEventListener("change", () => {
       localStorageSafe("weightPlayLocale", picker.value);
-      if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi"].includes(id)) {
+      if (["four-in-a-row", "sliding-15", "sudoku", "tower-of-hanoi", "reversi"].includes(id)) {
         const nextPath = localizedGamePath(picker.value);
         if (nextPath && nextPath !== window.location.pathname) {
           localStorageSafe(LOCALE_SELECTION_PATH_KEY, "");

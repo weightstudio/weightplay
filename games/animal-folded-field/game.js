@@ -52,6 +52,8 @@
   };
   const show = (screen) => {
     state.screen = screen;
+    const loading = $("loadingPanel");
+    if (loading) loading.hidden = true;
     ["main", "stage", "battle", "result"].forEach((name) => {
       const node = $(name + "Screen");
       if (node) node.hidden = name !== screen;
@@ -74,7 +76,6 @@
       const done = state.cleared.includes(index);
       return "<button class=\"stage-card\" type=\"button\" data-stage=\"" + index + "\" aria-label=\"" + copy(round.title) + "\"><span class=\"stage-number\">" + copy("round", { number: index + 1, total: rounds.length }) + "</span><h3>" + copy(round.title) + "</h3><p>" + copy(round.hint) + "</p><span class=\"stage-chip\">" + (done ? copy("badgeComplete") : copy("stageReady")) + "</span></button>";
     }).join("");
-    list.querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage))));
   };
   const patternMarkup = (pattern, target) => pattern.map((value, index) => {
     const label = value ? copy("lifted") : copy("tucked");
@@ -144,6 +145,13 @@
     document.documentElement.lang = state.locale;
     document.documentElement.dir = rtlLocales.has(state.locale) ? "rtl" : "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => setText(node, node.dataset.copy));
+    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
+    const labels = [
+      ["settingsBtn", "settings"], ["settingsPanel", "settings"], ["foldedChoice", "language"],
+      ["stageInfoBtn", "mapIntro"], ["battleInfoBtn", "moveHint"], ["targetPattern", "targetPattern"],
+      ["currentPattern", "currentPattern"], ["flapBoard", "currentPattern"], ["resultBadges", "stages"],
+    ];
+    labels.forEach(([id, key]) => { const node = $(id); if (node) node.setAttribute("aria-label", copy(key)); });
     const sound = $("soundBtn");
     if (sound) sound.textContent = copy(state.sound ? "soundOn" : "soundOff");
     renderMain();
@@ -152,7 +160,12 @@
     if (state.screen === "result") renderResult();
   };
   const bind = () => {
-    $("startBtn").addEventListener("click", () => startRound(0));
+    document.addEventListener("click", (event) => {
+      const card = event.target?.closest?.("#stageList [data-stage]");
+      if (!card || state.screen !== "stage") return;
+      startRound(Number(card.dataset.stage));
+    }, true);
+    $("startBtn").addEventListener("click", () => show("stage"));
     $("mapBtn").addEventListener("click", () => show("stage"));
     $("stageBackBtn").addEventListener("click", () => show("main"));
     $("battleBackBtn").addEventListener("click", () => show("stage"));
@@ -175,7 +188,8 @@
     $("battleInfoBtn").addEventListener("click", () => window.alert(copy("moveHint")));
   };
   const boot = () => {
-    const savedLocale = safeGet("weightplay-locale", "en");
+    const routeLocale = String(window.__WEIGHTPLAY_ROUTE_LOCALE__ || "").trim();
+    const savedLocale = localeList.includes(routeLocale) ? routeLocale : safeGet("weightplay-locale", "en");
     const savedSound = safeGet("weightplay-animal-folded-field-sound", "on");
     state.sound = savedSound !== "off";
     state.cleared = [];

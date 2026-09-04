@@ -642,6 +642,51 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
+  /* Maze Chase uses the shared standard Main composition after its native
+     classic shell is normalized. Keep its compact landscape poster column at
+     the exact Interface 6 acceptance size without changing other chase games. */
+  body[data-game-id="maze-chase"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Snake uses the shared Main composition after the legacy arcade shell is
+     normalized. Keep its compact landscape poster at the exact 300px
+     acceptance size without changing other popular-game posters. */
+  body[data-game-id="snake"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Space Rocks uses the shared Main composition after the legacy arcade
+     shell is normalized. Keep its compact landscape poster at the exact
+     300px acceptance size without changing other chase-game posters. */
+  body[data-game-id="space-rocks"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* TriPeaks v23 keeps the compact-landscape Main poster on the canonical
+     300px column without changing Classic Solitaire's other viewports. */
+  body[data-wp-game-id="tripeaks-solitaire"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Golf Solitaire v20 keeps the compact-landscape Main poster at the
+     exact Interface 6 acceptance size without changing other card games. */
+  body[data-wp-game-id="golf-solitaire"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Gin Rummy v14 keeps the compact-landscape Main poster on the canonical
+     300px column without changing its phone or desktop composition. */
+  body[data-wp-game-id="gin-rummy"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
+  /* Wonder Crash v17 uses the canonical 300px wide-layout poster column for
+     the exact Interface V6 Main repair without changing Stage or Battle. */
+  body[data-wp-game-id="wonder-crash"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
   .wp-standard-main-poster,
   .wp-standard-main-poster-media,
   .wp-standard-main-poster-media > img,

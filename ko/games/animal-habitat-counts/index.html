@@ -56,11 +56,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "공간 추론",
+    "퍼즐",
+    "논리",
+    "공간 계획",
     "가족",
-    "Animal"
+    "동물"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -76,70 +76,64 @@
       <div class="main-canvas" data-wp-logical-main-canvas>
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
-          <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <strong class="shell-title" data-copy="title">서식지 세기</strong>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="설정">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="eyebrow">A calm habitat logic game</p>
+            <p class="eyebrow" data-copy="eyebrow">차분한 서식지 논리 게임</p>
             <h1 data-copy="title">서식지 세기</h1>
-            <p class="intro main-summary" data-copy="intro">Fill the habitat cells so every row and column reaches its clue.</p>
+            <p class="intro main-summary" data-copy="intro">서식지 칸을 채워 모든 행과 열을 힌트 숫자에 맞춰 보세요.</p>
             <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
-            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start counting</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button></div>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">세기 시작</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">서식지 페이지</button></div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">설정</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">닫기</button></div>
+          <label class="setting-row"><span data-copy="language">언어</span><select id="languageSelect" aria-label="Choose a language"></select></label>
           <button id="soundBtn" class="secondary-btn sound-btn" type="button" data-sound-toggle aria-pressed="true"></button>
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="서식지 세기 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>서식지 세기</h2><p>서식지 칸을 채워 행과 열의 수를 맞추세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>행·열 서식지 논리</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · 공간 추론 · 가족 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예, 이 브라우저에만 저장됩니다.</dd></div><div><dt>서식지 페이지는 몇 개인가요?</dt><dd>짧은 서식지 페이지 3개가 있습니다.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="서식지 세기 게임 정보">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 오리지널 게임 가이드</span><h2 id="guideHeading" data-copy="title">서식지 세기</h2><p data-copy="guideIntro">서식지 칸을 채워 모든 행과 열을 힌트 숫자에 맞춰 보세요.</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">게임플레이</span><strong data-copy="guideGameplayValue">서식지 행과 열 논리</strong></div><div class="game-info-fact"><span data-copy="guideGenre">장르</span><strong data-copy="guideGenreValue">퍼즐 · 논리 · 공간 계획 · 가족 · 동물</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">서식지 페이지</h3><ol><li data-copy="guideHow1">각 행 옆과 열 아래의 숫자 힌트를 읽으세요.</li><li data-copy="guideHow2">칸을 눌러 채우거나 비웁니다. 언제든 되돌릴 수 있어요.</li><li data-copy="guideHow3">서식지를 확인하세요. 틀려도 수만 알려 주며 타이머와 벌점은 없습니다.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">결과와 저장</h3><p data-copy="guideResults">짧은 서식지 페이지 3개가 차분한 한 세션을 이룹니다. 최고 기록은 이 브라우저에 남습니다.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">실용적인 팁</h3><p data-copy="guideTips">행과 열의 수를 함께 보고 힌트에 맞지 않는 줄만 조정하세요.</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">자주 묻는 질문</h3><dl><div><dt data-copy="faqProgressQuestion">진행 상황이 저장되나요?</dt><dd data-copy="faqProgressAnswer">예, 이 브라우저에만 저장됩니다.</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">뒤로</button><h2 data-copy="map">서식지 페이지</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="도움말">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">같은 행·열 추리를 새로운 서식지 모양에 적용합니다.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">뒤로</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
-          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
-          <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
+          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">서식지 확인</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">모든 힌트 맞추기</h3><p data-copy="goalHelp">각 행과 열을 표시된 수만큼 정확히 채우세요.</p><div class="clue-legend"><span data-copy="rowClues">행</span><span data-copy="columnClues">열</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">서식지 칸</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">화살표 키로 칸을 이동하고 Space 또는 Enter로 채우거나 비우세요.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">서식지 확인</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">칸 비우기</button></div></section>
+          <p class="rule-note" data-copy="ruleNote">실수도 힌트입니다. 수가 맞지 않는 행이나 열만 조정하세요.</p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
-        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this habitat?</h2><p data-copy="leaveBody">Your current cells will be cleared, but your best result stays saved.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Return to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">서식지 완성</p><h2 data-copy="resultTitle">균형 잡힌 서식지</h2><p data-copy="resultBody">모든 행과 열 힌트에 맞췄습니다.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">서식지 페이지</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">처음으로</button></div></div>
+        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">이 서식지를 나갈까요?</h2><p data-copy="leaveBody">현재 칸은 지워지지만 최고 기록은 저장됩니다.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">계속</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">처음으로 돌아가기</button></div></div>
       </div>
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
   <script src="locales.js?v=20260902-habitat-counts-v4-result-containment"></script>
   <script src="game.js?v=20260902-habitat-counts-v4-result-containment"></script>
-<script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/ko.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

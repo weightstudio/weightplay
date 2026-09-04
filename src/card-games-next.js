@@ -1841,6 +1841,18 @@
       utility.textContent = "⚙";
       topbar.append(utility);
     };
+    const ensureGinRummyBattleUtility = () => {
+      const topbar = battle.querySelector(".card-game-topbar");
+      if (!topbar || topbar.querySelector("[data-wp-battle-utility]")) return;
+      const utility = document.createElement("button");
+      utility.type = "button";
+      utility.className = "battle-utility header-icon-btn";
+      utility.dataset.wpBattleUtility = "true";
+      utility.setAttribute("aria-label", "Settings");
+      utility.title = "Settings";
+      utility.textContent = "⚙";
+      topbar.append(utility);
+    };
     if (id === "go-fish") {
       ensureGoFishMainProgress();
       ensureGoFishBattleUtility();
@@ -1958,7 +1970,13 @@
     }
     if (id === "hearts" || id === "crazy-eights" || id === "gin-rummy" || id === "cribbage") resultText?.setAttribute("data-runtime-localize", "off");
     if (id === "gin-rummy") {
+      ensureGinRummyBattleUtility();
+      battleUtility = document.querySelector("[data-wp-battle-utility]");
       syncGinShell();
+      window.addEventListener("wonder:locale-change", syncGinShell);
+      window.addEventListener("weightplay:shell-sync", syncGinShell);
+      window.setTimeout(syncGinShell, 0);
+      window.setTimeout(syncGinShell, 400);
       statusText?.setAttribute("data-runtime-localize", "off");
       const playerHandLabel = document.querySelector(".card-game-player-header strong");
       if (playerHandLabel) {

@@ -4,11 +4,19 @@
 #battleScreen{background-image:linear-gradient(180deg,#16373bd9,#fffaf1e8),url("assets/animal-silhouette-scout-lookout-background.png");background-position:center;background-size:cover;background-attachment:fixed}
 #silhouette.scout-art{width:min(100%,420px);height:220px;margin:10px auto 0;background-image:url("assets/animal-silhouette-scout-animal-atlas.png");background-repeat:no-repeat;background-size:300% 200%;background-position:0 100%;background-color:#20303a22;color:transparent;text-indent:-9999px;filter:grayscale(1) contrast(1.45);border-radius:18px}
 #silhouette.scout-art-fox{background-position:0 100%}#silhouette.scout-art-owl{background-position:50% 100%}#silhouette.scout-art-hare{background-position:50% 0}
+#silhouette.target-set{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:center;justify-items:center;width:min(100%,520px);min-height:180px;margin:10px auto 0}
+#silhouette.target-set .scout-target-art{display:grid;place-items:center;width:100%;height:170px;border-radius:14px;background-color:#20303a22;filter:grayscale(1) contrast(1.45)}
+#silhouette.target-set .scout-target-art.scout-art{background-image:url("assets/animal-silhouette-scout-animal-atlas.png");background-repeat:no-repeat;background-size:300% 200%;color:transparent;text-indent:-9999px}
+#silhouette.target-set .scout-art-fox{background-position:0 100%}.target-set .scout-art-rabbit{background-position:50% 0}.target-set .scout-art-owl{background-position:50% 100%}.target-set .scout-art-deer{background-position:0 0}
+#silhouette.target-set .scout-target-fallback{font-size:clamp(4rem,12vw,7rem);line-height:1;background:#20303a22;text-shadow:0 4px 0 #20303a}
 .choice-emoji.scout-art-fox,.choice-emoji.scout-art-rabbit,.choice-emoji.scout-art-owl,.choice-emoji.scout-art-deer{display:block;width:100%;height:64px;background-image:url("assets/animal-silhouette-scout-animal-atlas.png");background-repeat:no-repeat;background-size:300% 200%;font-size:0;color:transparent;text-indent:-9999px}.choice-emoji.scout-art-fox{background-position:0 100%}.choice-emoji.scout-art-rabbit{background-position:50% 0}.choice-emoji.scout-art-owl{background-position:50% 100%}.choice-emoji.scout-art-deer{background-position:0 0}
 .scout-result{display:block;width:min(170px,52vw);height:170px;object-fit:contain;margin:-16px auto 2px;filter:drop-shadow(0 12px 18px #0008)}
+#resultScreen{min-height:0;height:100%;box-sizing:border-box;display:grid;place-items:center;overflow:auto;padding:12px}
+#resultScreen .result-card{width:min(100%,600px);max-height:100%;overflow:auto;margin:0;padding:clamp(18px,4vw,36px)}
 .battle-utility{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
-@media(max-width:699px){.scout-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.scout-result{width:145px;height:145px}#silhouette.scout-art{height:180px}}
+@media(max-width:699px){.scout-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.scout-result{width:145px;height:145px}#silhouette.scout-art{height:180px}#silhouette.target-set .scout-target-art{height:130px}}
 @media(max-height:520px) and (orientation:landscape){.wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
+@media(max-height:560px) and (orientation:landscape){#resultScreen{padding:8px}#resultScreen .result-card{display:grid;grid-template-columns:110px minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:14px;align-items:center}#resultScreen .scout-result{grid-row:1 / span 3;width:100px;height:100px;margin:0}#resultScreen .result-card>span{grid-column:2}#resultScreen #resultTitle,#resultScreen #resultText,#resultScreen .result-actions{grid-column:2}#resultScreen .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-self:end;margin-top:8px}#resultScreen .result-actions button{min-width:0;margin:0;padding:8px 6px;font-size:.82rem;line-height:1.1}}
 @media (orientation:landscape) and (max-height:560px){
   body.wp-logical-battle-active #battleScreen .battle-content{box-sizing:border-box;display:grid;grid-template-columns:minmax(220px,.82fr) minmax(340px,1.18fr);grid-template-rows:56px minmax(0,1fr) 44px;gap:8px;width:100%;max-width:none;height:calc(100% - 60px);margin:0;padding:8px;overflow:hidden}
   body.wp-logical-battle-active #battleScreen .clue{grid-column:1;grid-row:1;margin:0;min-height:0;padding:8px 10px;overflow:hidden}
@@ -19,7 +27,33 @@
   body.wp-logical-battle-active #battleScreen #battleStatus{grid-column:1;grid-row:3;display:grid;place-items:center;min-height:0;margin:0;padding:6px 8px;overflow:hidden}
   body.wp-logical-battle-active #battleScreen #checkBtn,body.wp-logical-battle-active #battleScreen #clearBtn{grid-column:2;grid-row:3;width:calc(50% - 4px);min-height:44px;margin:0}
   body.wp-logical-battle-active #battleScreen #checkBtn{justify-self:start}
-  body.wp-logical-battle-active #battleScreen #clearBtn{justify-self:end}
+body.wp-logical-battle-active #battleScreen #clearBtn{justify-self:end}
+}
+
+/* Keep portrait checkpoint decisions inside the 788px logical Battle canvas.
+   The pair/sequence cards need two rows, while the status copy must reserve a
+   stable slot so feedback never moves Check/Clear between frames. */
+@media (max-width:699px) and (orientation:portrait){
+  #battleScreen{padding:10px!important}
+  #battleScreen .panel-head{min-height:48px;gap:8px}
+  #battleScreen .panel-head>div{min-width:0}
+  #battleScreen .battle-content{max-width:none;margin:8px auto 0;padding:0 8px}
+  #battleScreen .clue{margin:0;padding:8px 10px;line-height:1.3}
+  #battleScreen .target-card{padding:8px}
+  #battleScreen #silhouette.scout-art{height:128px;margin:6px auto 0}
+  #battleScreen #silhouette.target-set{height:112px;min-height:112px;gap:6px;margin:6px auto 0}
+  #battleScreen #silhouette.target-set .scout-target-art{height:100px}
+  #battleScreen .choice-grid{gap:6px;margin:8px 0}
+  #battleScreen .choice-btn{height:76px;min-height:76px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;line-height:1.1}
+  #battleScreen .choice-btn strong{line-height:1.1}
+  #battleScreen .choice-emoji{font-size:2rem;line-height:1}
+  #battleScreen .choice-emoji.scout-art-fox,
+  #battleScreen .choice-emoji.scout-art-rabbit,
+  #battleScreen .choice-emoji.scout-art-owl,
+  #battleScreen .choice-emoji.scout-art-deer{height:40px}
+  #battleScreen #battleStatus{box-sizing:border-box;height:48px;min-height:48px;margin:0;line-height:16px;overflow:hidden;display:grid;place-items:center}
+  #battleScreen #checkBtn,
+  #battleScreen #clearBtn{min-height:44px;margin:4px 0}
 }
 
 .battle-ad-reserve{display:block;width:100%;height:56px}

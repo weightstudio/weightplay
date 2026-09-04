@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
-
+    <script data-wp-route-locale-init>(function(){const map={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const segment=window.location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();const locale=map[segment]||"ja";window.__WEIGHTPLAY_ROUTE_LOCALE__=locale;document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";try{localStorage.setItem("wp-locale",locale);localStorage.setItem("weightPlayLocale",locale);}catch{}})();</script>
     <base href="/games/animal-folded-field/" />
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-folded-field/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-folded-field/" />
@@ -20,12 +20,14 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-folded-field/" />
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="theme-color" content="#e8f4ef">
-  <meta name="weightplay-game-version" content="v1">
+  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-interface-version" content="6">
   <title>フォールド・フィールド | WeightPlay</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css?v=20260902-folded-field-art-v2">
+  <link rel="stylesheet" href="/src/game-page-info.css?v=20260904-folded-field-main-settings-v2">
+  <link rel="stylesheet" href="style.css?v=20260904-folded-field-main-settings-v2">
   <meta name="description" content="つながった野原の羽根をタップして動物の道を合わせ、巣を開こう。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -69,102 +71,82 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-folded-field" data-wp-game-version="v1" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-folded-field" data-wp-game-version="v2" data-wp-interface-version="6" data-screen="main">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
-    <div class="loading-card"><span class="loading-mark" aria-hidden="true">◒</span><strong data-copy="loading">Opening the field book…</strong><div class="loading-track"><i></i></div></div>
+    <div class="loading-card"><span class="loading-mark" aria-hidden="true">◒</span><strong data-copy="loading">野帳を開いています…</strong><div class="loading-track"><i></i></div></div>
   </section>
 
-  <main id="mainScreen" class="screen main-screen" data-screen="main" hidden>
-    <header class="topbar">
-      <a class="return-link" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><span class="brand-mark" aria-hidden="true">WP</span></a>
+  <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen hidden>
+    <header class="topbar wp-main-shell-header">
+      <a class="wp-shell-return return-link" href="/index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="" width="38" height="38"></a>
+      <strong class="wp-shell-main-title" data-copy="title">おりたたみ野原</strong>
       <div class="utilities">
-        <button id="settingsBtn" class="icon-btn" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
-        <div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden>
-          <strong data-copy="settings">Settings</strong>
-          <button id="soundBtn" class="setting-row" type="button" data-copy="soundOn">Sound: On</button>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="foldedChoice" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" data-wp-settings data-copy-aria-label="settings" aria-expanded="false" aria-controls="settingsPanel" aria-label="設定">⚙</button>
+        <div id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" aria-label="Settings" hidden>
+          <strong data-copy="settings">設定</strong>
+          <button id="soundBtn" class="setting-row wp-shell-sound-row" type="button" data-sound-toggle aria-pressed="true" data-copy="soundOn">サウンド：オン</button>
+          <label class="setting-row"><span data-copy="language">言語</span><select id="foldedChoice" data-wp-language aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
         </div>
       </div>
     </header>
-    <section class="hero-grid">
-      <div class="field-poster" aria-hidden="true">
-        <img class="field-poster-image" src="assets/animal-folded-field-cover.png" alt="" width="1254" height="1254" decoding="async">
+    <section class="hero-grid main-hero">
+      <div class="field-poster main-poster-frame" aria-hidden="true">
+        <img class="field-poster-image main-poster" src="assets/animal-folded-field-cover.png" alt="" width="1254" height="1254" decoding="async">
       </div>
-      <div class="hero-copy">
-        <p class="kicker" data-copy="kicker">Moss Shell Taro's field puzzle</p>
-        <h1 data-copy="title">フォールド・フィールド</h1>
-        <p class="intro" data-copy="intro">Tap linked field flaps to match the animal trail and open the nest.</p>
-        <p class="summary" data-copy="summary">Plan a few connected folds, read the changing pattern, and retry calmly.</p>
-        <p id="mainProgress" class="progress" role="status" aria-live="polite" data-copy="progress">Progress: 3 field folds · no timer</p>
-        <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a fold</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Field map</button></div>
-        <p class="best-line"><span data-copy="best">Best folds</span>: <strong id="bestValue">Not yet</strong></p>
-      </div>
-    </section>
-    <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle">
-      <h2 id="guideTitle" data-copy="guideTitle">How to play</h2>
-      <div class="guide-grid">
-        <article><b data-copy="guideOneTitle">1. Read the trail</b><p data-copy="guideOne">The target card shows which flaps should be lifted or tucked.</p></article>
-        <article><b data-copy="guideTwoTitle">2. Tap a linked flap</b><p data-copy="guideTwo">Each tap changes that flap and the flap beside it. Watch the pattern settle.</p></article>
-        <article><b data-copy="guideThreeTitle">3. Check and retry</b><p data-copy="guideThree">A wrong pattern stays visible so you can plan another fold. There is no timer.</p></article>
+      <div class="hero-copy main-copy">
+        <p class="kicker" data-copy="kicker">モスシェル・タロウの野原パズル</p>
+        <h1 class="hero-title" data-copy="title">おりたたみ野原</h1>
+        <p class="intro" data-copy="intro">つながった葉っぱをタップして、動物の足あとをそろえよう。</p>
+        <p class="summary wp-standard-main-summary" data-copy="summary">つながりを考えて折り、模様を見ながらゆっくり挑戦。</p>
+        <p id="mainProgress" class="progress wp-standard-main-progress" role="status" aria-live="polite" data-wp-main-progress data-copy="progress">進行：{count} ページ · タイマーなし</p>
+        <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">折りはじめる</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">野原マップ</button></div>
+        <p class="best-line"><span data-copy="best">ベスト</span>: <strong id="bestValue">Not yet</strong></p>
       </div>
     </section>
   </main>
 
-  <section id="stageScreen" class="screen panel-screen" data-screen="stage" hidden aria-labelledby="stageHeading">
-    <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-      <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 id="stageHeading" data-copy="stages">Field map</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" aria-label="Field map help" title="Field map help">i</button></header>
-      <p class="panel-intro" data-copy="mapIntro">Choose a field page. Each page teaches one more linked fold.</p>
-      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
-      <nav class="stage-tabs" aria-label="Field map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Field map</button><span aria-hidden="true"></span></nav>
+  <section id="gameGuide" class="game-page-info game-page-info-static guide-card" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="おりたたみ野原のゲーム情報" aria-labelledby="guideTitle">
+    <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="kicker">モスシェル・タロウの野原パズル</span><h2 id="guideTitle" data-copy="guideTitle">遊び方</h2><p data-copy="summary">つながりを考えて折り、模様を見ながらゆっくり挑戦。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">ゲーム内容</span><strong data-copy="guideGameplayValue">折りたたみパターンパズル</strong></div><div class="game-info-fact"><span data-copy="guideGenre">ジャンル</span><strong data-copy="guideGenreValue">パズル · 空間ロジック · パターン認識 · ファミリー · 動物</strong></div><div class="game-info-fact"><span data-copy="best">ベスト</span><strong data-copy="stages">野原マップ</strong></div><div class="game-info-fact"><span data-copy="language">言語</span><strong data-copy="title">おりたたみ野原</strong></div></div></div>
+    <div class="game-info-sections"><article class="game-info-section"><h3 data-copy="guideTitle">遊び方</h3><ol><li data-copy="guideOne">目標カードで葉っぱの向きを確認します。</li><li data-copy="guideTwo">タップすると、その葉と隣の葉が変わります。</li><li data-copy="guideThree">違う模様は残るので、次の折り方を考えられます。</li></ol></article><article class="game-info-section"><h3 data-copy="resultTitle">ページクリア</h3><p data-copy="summary">つながりを考えて折り、模様を見ながらゆっくり挑戦。</p></article><article class="game-info-section"><h3 data-copy="faqTitle">よくある質問</h3><dl><div><dt data-copy="faqProgressQuestion">進行状況は保存されますか？</dt><dd data-copy="faqProgressAnswer">はい、このブラウザでのみ保存されます。</dd></div></dl></article></div>
+  </section>
+
+  <section id="stageScreen" class="screen panel-screen stage-screen" data-screen="stage" data-wp-standard-stage-screen hidden aria-labelledby="stageHeading" style="--wp-stage-art:url('/games/animal-folded-field/assets/animal-folded-field-cover.png')">
+    <div class="stage-canvas" data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-folded-field/assets/animal-folded-field-cover.png')">
+      <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">戻る</button><h2 id="stageHeading" data-copy="stages">野原マップ</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility data-copy-aria-label="mapIntro" aria-label="野原のページを選びます。ページごとに折り方が増えます。" title="Field map help">i</button></header>
+      <p class="panel-intro" data-copy="mapIntro">野原のページを選びます。ページごとに折り方が増えます。</p>
+      <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail role="list"></div>
+      <nav class="stage-tabs" data-copy-aria-label="stageSections" aria-label="stageSections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">野原マップ</button><span aria-hidden="true"></span></nav>
     </div>
     <div class="stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
   </section>
 
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="battleHeading">
-    <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><div><h2 id="battleHeading">Folded Field</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span class="check-pill"><span data-copy="flips">Flips</span> <b id="flipCount">0</b></span><button id="battleInfoBtn" class="icon-btn panel-utility" type="button" aria-label="Field help" title="Field help">i</button></div></header>
+  <section id="battleScreen" class="screen panel-screen battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden aria-labelledby="battleHeading">
+    <div class="battle-canvas" data-wp-canvas-max-width="920" style="--wp-battle-art:url('/games/animal-folded-field/assets/animal-folded-field-background.png')">
+      <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">戻る</button><div><h2 id="battleHeading" data-copy="title">おりたたみ野原</h2><p id="roundLabel" class="round-label"></p></div><div class="panel-head-actions"><span class="check-pill"><span data-copy="flips">折り数</span> <b id="flipCount">0</b></span><button id="battleInfoBtn" class="icon-btn panel-utility" type="button" data-wp-battle-utility data-copy-aria-label="moveHint" aria-label="タップで二つの葉が変わります。道は画面に残ります。" title="Field help">i</button></div></header>
       <div class="battle-content">
-        <div class="goal-card"><div><span class="eyebrow" data-copy="targetPattern">Target trail</span><h3 id="roundTitle"></h3></div><p id="roundHint"></p></div>
-        <div class="pattern-summary"><span data-copy="targetPattern">Target trail</span><div id="targetPattern" class="pattern-row" role="img" aria-label="Target trail"></div></div>
-        <div class="pattern-summary current-summary"><span data-copy="currentPattern">Your field</span><div id="currentPattern" class="pattern-row" role="img" aria-label="Your field"></div><strong id="alignedCount" class="aligned-count"></strong></div>
+        <div class="goal-card"><div><span class="eyebrow" data-copy="targetPattern">目標の道</span><h3 id="roundTitle"></h3></div><p id="roundHint"></p></div>
+        <div class="pattern-summary"><span data-copy="targetPattern">目標の道</span><div id="targetPattern" class="pattern-row" role="img" aria-label="Target trail"></div></div>
+        <div class="pattern-summary current-summary"><span data-copy="currentPattern">いまの野原</span><div id="currentPattern" class="pattern-row" role="img" aria-label="Your field"></div><strong id="alignedCount" class="aligned-count"></strong></div>
         <div id="flapBoard" class="flap-board" role="group" aria-label="Field flaps"></div>
         <p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the field</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset folds</button></div>
-        <p class="move-hint" data-copy="moveHint">A tap changes two linked panels. The trail stays on screen while you plan.</p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">野原を確認</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">折りをリセット</button></div>
+        <p class="move-hint" data-copy="moveHint">タップで二つの葉が変わります。道は画面に残ります。</p>
       </div>
     </div>
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
 
   <section id="resultScreen" class="screen panel-screen" data-screen="result" hidden aria-labelledby="resultHeading">
-    <div class="result-card"><div class="result-emblem" aria-hidden="true">✦</div><p class="kicker" data-copy="resultKicker">A page in the field book</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultBadges" class="result-badges" aria-label="Cleared field pages"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Field map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
+    <div class="result-card"><div class="result-emblem" aria-hidden="true">✦</div><p class="kicker" data-copy="resultKicker">野帳の一ページ</p><h2 id="resultHeading"></h2><p id="resultText"></p><div id="resultBadges" class="result-badges" aria-label="Cleared field pages"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">野原マップ</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">はじめに戻る</button></div></div>
   </section>
 
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/runtime-locales/ja.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20260830-folded-field-v1"></script>
-  <script src="game.js?v=20260830-folded-field-v1"></script>
-<section class="game-page-info game-page-info-static" aria-label="フォールド・フィールド ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>フォールド・フィールド</h2><p>つながった野原の羽根をタップして動物の道を合わせ、巣を開こう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>折り目模様パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Spatial Logic · Pattern Recognition · 家族 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="locales.js?v=20260904-folded-field-static-guide-v2"></script>
+  <script src="game.js?v=20260904-folded-field-main-settings-v2"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="フォールド・フィールド";document.title="フォールド・フィールド | WeightPlay";},{once:true});</script>
 </body>
 </html>

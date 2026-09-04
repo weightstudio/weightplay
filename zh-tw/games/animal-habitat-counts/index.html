@@ -56,11 +56,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "空間推理",
+    "益智",
+    "邏輯",
+    "空間規劃",
     "家庭",
-    "Animal"
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -76,70 +76,64 @@
       <div class="main-canvas" data-wp-logical-main-canvas>
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
-          <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <strong class="shell-title" data-copy="title">棲地數數</strong>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="設定">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="eyebrow">A calm habitat logic game</p>
+            <p class="eyebrow" data-copy="eyebrow">平靜的棲地邏輯遊戲</p>
             <h1 data-copy="title">棲地數數</h1>
-            <p class="intro main-summary" data-copy="intro">Fill the habitat cells so every row and column reaches its clue.</p>
+            <p class="intro main-summary" data-copy="intro">填入棲地格子，讓每一列與每一欄都符合提示數字。</p>
             <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
-            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start counting</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button></div>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">開始數數</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">棲地頁面</button></div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">設定</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">關閉</button></div>
+          <label class="setting-row"><span data-copy="language">語言</span><select id="languageSelect" aria-label="Choose a language"></select></label>
           <button id="soundBtn" class="secondary-btn sound-btn" type="button" data-sound-toggle aria-pressed="true"></button>
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="棲地數數 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>棲地數數</h2><p>填入棲地格子，讓每列與每欄都符合數量提示。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>列欄棲地邏輯</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · Logic · 空間推理 · 家庭 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度會保存嗎？</dt><dd>會，只保存在這個瀏覽器中。</dd></div><div><dt>共有幾個棲地頁面？</dt><dd>共有三個短棲地頁面。</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="棲地數數遊戲資訊">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 原創遊戲指南</span><h2 id="guideHeading" data-copy="title">棲地數數</h2><p data-copy="guideIntro">填入棲地格子，讓每一列與每一欄都符合提示數字。</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">玩法</span><strong data-copy="guideGameplayValue">棲地列欄邏輯</strong></div><div class="game-info-fact"><span data-copy="guideGenre">類型</span><strong data-copy="guideGenreValue">益智 · 邏輯 · 空間規劃 · 家庭 · 動物</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">棲地頁面</h3><ol><li data-copy="guideHow1">閱讀每列旁與每欄下方的數字提示。</li><li data-copy="guideHow2">切換格子來填入或清除；每個選擇都能反悔。</li><li data-copy="guideHow3">檢查棲地；答錯只會說明數量，沒有計時或懲罰。</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">結果與保存</h3><p data-copy="guideResults">三個短棲地頁面組成一段平靜的遊戲時光。最佳紀錄會保存在這個瀏覽器。</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">實用提示</h3><p data-copy="guideTips">一起使用列欄數量，只調整不符合提示的列或欄。</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">常見問題</h3><dl><div><dt data-copy="faqProgressQuestion">進度會保存嗎？</dt><dd data-copy="faqProgressAnswer">會，只保存在這個瀏覽器中。</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">返回</button><h2 data-copy="map">棲地頁面</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="說明">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">每頁都使用相同的列欄推理，呈現新的棲地形狀。</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">返回</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
-          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
-          <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
+          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">棲地檢查</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">符合所有提示</h3><p data-copy="goalHelp">每列與每欄都填入正確數量的格子。</p><div class="clue-legend"><span data-copy="rowClues">橫列</span><span data-copy="columnClues">直欄</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">棲地格子</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">使用方向鍵移動格子；按空白鍵或 Enter 填入或清除。</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">檢查棲地</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">清除格子</button></div></section>
+          <p class="rule-note" data-copy="ruleNote">每次錯誤都是提示：只調整數量不符的列或欄。</p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
-        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this habitat?</h2><p data-copy="leaveBody">Your current cells will be cleared, but your best result stays saved.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Return to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">棲地完成</p><h2 data-copy="resultTitle">平衡的棲地</h2><p data-copy="resultBody">你符合了每一列與每一欄的提示。</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">棲地頁面</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">返回開始</button></div></div>
+        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">要離開這個棲地嗎？</h2><p data-copy="leaveBody">目前格子會清除，但最佳紀錄會保留。</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">繼續</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">返回開始</button></div></div>
       </div>
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
   <script src="locales.js?v=20260902-habitat-counts-v4-result-containment"></script>
   <script src="game.js?v=20260902-habitat-counts-v4-result-containment"></script>
-<script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/zh-tw.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

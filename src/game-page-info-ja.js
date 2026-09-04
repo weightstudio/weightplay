@@ -235,12 +235,13 @@ window.WeightPlayGameInfoLocales.ja.gameplayProfiles["animal-cafe-rush"] = {
 };
 window.WeightPlayGameInfoLocales.ja.games["animal-number-match"] = {
   title: "パンコのナンバーグローブ",
+  relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
   difficulty: "やさしい〜チャレンジ",
   time: "1ステージ約2〜8分",
   gameplay: "見通しを使う「合計10」数字ペアパズル",
   genre: ["パズル", "ストラテジー", "アニマル"],
   skills: ["論理", "計画", "問題解決"],
-  relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+  relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
   guideKicker: "WeightPlayオリジナルゲームガイド",
   guideTitleSuffix: "ゲームガイド",
   hideScoreBands: true,

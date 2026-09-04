@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v16";
+  const GAME_VERSION = "v18";
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -261,6 +261,14 @@
     ["Abyss Armor","深淵護甲"],["Shell Patrol","甲殼巡行"],["Sunken Pack","沉沒獸群"],["Leviathan Call","巨獸召喚"],["Abyss Throne","深淵王座"],
     ["Crown Mixture","王冠混戰"],["Sixfold Hunt","六相狩獵"],["Sovereign Guard","君王護衛"],["Last Shadow Line","最後暗影線"],["Void Crown Trial","虛空王冠試煉"]
   ];
+  const trialTitlesAr = [
+    "آثار الخطى الأولى", "حلقة الكشافة", "مطاردة العليق", "كمين الجذور", "بوابة المتربص",
+    "أجنحة المنشور", "رياح عرضية للغراب", "حرس الكريستال", "حشد الانكسار", "مرآة البازيليسق",
+    "حوافر الجمر", "تحذير الخنزير", "اندفاعة الفرن", "اندفاعة الرماد", "مسبك الجبار",
+    "قوس القمر", "مسافة الصياد", "وابل مزدوج", "أجنحة الكسوف", "بلاط البومة العظمى",
+    "درع الهاوية", "دورية الصدف", "قطيع غارق", "نداء لوياثان", "عرش الهاوية",
+    "مزيج التاج", "صيد سداسي", "حرس السيّد", "خط الظل الأخير", "محاكمة التاج الفارغ",
+  ];
   const regions = [
     { name:["Rootwood","根木林"], rule:["Chasing packs","追逐獸群"], enemies:["scout"], hero:"Leo" },
     { name:["Prism Ravine","稜晶峽谷"], rule:["Flying and guarded foes","飛行與護盾敵人"], enemies:["raven","armored","scout"], hero:"Orla" },
@@ -268,6 +276,11 @@
     { name:["Moon Range","月影長廊"], rule:["Ranged volleys","遠程齊射"], enemies:["hunter","raven","scout"], hero:"Orla" },
     { name:["Abyss Shell","深淵甲殼"], rule:["Armor and reinforcements","護甲與增援"], enemies:["armored","boar","hunter"], hero:"Taro" },
     { name:["Void Crown","虛空王冠"], rule:["Combined enemy rules","敵人規則組合"], enemies:["scout","raven","boar","hunter","armored"], hero:"Any hero" }
+  ];
+  const regionCopyAr = [
+    ["غابة الجذور", "مطاردة القطعان"], ["وادي المنشور", "أعداء طائرون ومحميون"],
+    ["مسبك الجمر", "اندفاعات مُحذَّر منها"], ["مدى القمر", "وابل بعيد المدى"],
+    ["صدفة الهاوية", "دروع وتعزيزات"], ["تاج الفراغ", "قواعد أعداء مجمّعة"],
   ];
   const bosses = [
     { id:"prowler", name:["Shadow Prowler","暗影潛行者"], asset:"animal-hero-trials-shadow-boss.webp", rule:"shockwave" },
@@ -277,6 +290,10 @@
     { id:"leviathan", name:["Abyss Shell Leviathan","深淵甲殼巨獸"], asset:"animal-auto-squad-boss-abyss-shell-leviathan.webp", rule:"summon" },
     { id:"emperor", name:["Void Crown Emperor","虛空王冠帝"], asset:"animal-auto-squad-boss-void-crown-emperor.webp", rule:"crown" }
   ];
+  const bossNamesAr = [
+    "المتربص الظلي", "بازيليسق المنشور", "جبار ناب الصهارة", "بومة الكسوف العظمى",
+    "لوياثان صدفة الهاوية", "إمبراطور تاج الفراغ",
+  ];
   const enemyProfiles = {
     scout:{ name:["Shadow Scouts","暗影斥候"], asset:"animal-hero-trials-shadow-scout.png", speed:32, damage:4, range:48 },
     raven:{ name:["Prism Ravens","稜晶渡鴉"], asset:"animal-rune-tactics-enemy-raven.webp", speed:42, damage:4, range:62 },
@@ -284,6 +301,7 @@
     hunter:{ name:["Moon Hunters","月影獵手"], asset:"shadow-wolf-enemy-hunter.webp", speed:27, damage:5, range:210 },
     armored:{ name:["Abyss Guards","深淵護衛"], asset:"animal-rune-tactics-enemy-wolf.webp", speed:23, damage:6, range:48, guard:2 }
   };
+  const enemyNamesAr = ["الكشافة الظليون", "غربان المنشور", "خنازير الجمر", "صيادو القمر", "حراس الهاوية"];
   const heroNames = {
     Leo: ["Boom Mane Leo", "爆鬃里歐"],
     Fia: ["Spark Paw Fia", "星爪菲亞"],
@@ -291,6 +309,7 @@
     Taro: ["Moss Shell Taro", "苔甲塔羅"],
     "Any hero": ["Any hero", "任一英雄"],
   };
+  const heroNamesAr = ["ليو عرف الانفجار", "فيا الكفّ اللامع", "أورلا قبعة القمر", "تارو صدفة الطحلب", "أي بطل"];
   const trialRosters = [
     ["scout"], ["scout"], ["scout", "raven"], ["scout", "hunter"], ["scout", "raven"],
     ["raven", "scout"], ["raven", "hunter"], ["armored", "raven"], ["raven", "armored", "scout"], ["armored", "raven"],
@@ -339,19 +358,24 @@
     "Armadura Abisal", "Patrulla de Caparazones", "Manada Sumergida", "Llamada del Leviatán", "Trono Abisal",
     "Mezcla de la Corona", "Cacería Séxtuple", "Guardia del Soberano", "Última Línea Sombría", "Prueba de la Corona Vacía",
   ];
-  trialTitles.forEach((title, index) => title[2] = trialTitlesEs[index]);
+  trialTitles.forEach((title, index) => { title[2] = trialTitlesEs[index]; title[3] = trialTitlesAr[index]; });
   const regionCopyEs = [
     ["Bosque de Raíces", "Manadas perseguidoras"], ["Barranco Prismático", "Enemigos voladores y protegidos"],
     ["Forja de Brasas", "Cargas anunciadas"], ["Campo Lunar", "Descargas a distancia"],
     ["Caparazón Abisal", "Armadura y refuerzos"], ["Corona Vacía", "Reglas enemigas combinadas"],
   ];
-  regions.forEach((region, index) => { region.name[2] = regionCopyEs[index][0]; region.rule[2] = regionCopyEs[index][1]; });
+  regions.forEach((region, index) => {
+    region.name[2] = regionCopyEs[index][0];
+    region.rule[2] = regionCopyEs[index][1];
+    region.name[3] = regionCopyAr[index][0];
+    region.rule[3] = regionCopyAr[index][1];
+  });
   const bossNamesEs = ["Acechador Sombrío", "Basilisco Prismático", "Coloso Colmillo de Magma", "Archibúho del Eclipse", "Leviatán del Caparazón Abisal", "Emperador de la Corona Vacía"];
-  bosses.forEach((boss, index) => boss.name[2] = bossNamesEs[index]);
+  bosses.forEach((boss, index) => { boss.name[2] = bossNamesEs[index]; boss.name[3] = bossNamesAr[index]; });
   const enemyNamesEs = ["Exploradores Sombríos", "Cuervos Prismáticos", "Jabalíes de Brasa", "Cazadores Lunares", "Guardias Abisales"];
-  Object.values(enemyProfiles).forEach((profile, index) => profile.name[2] = enemyNamesEs[index]);
+  Object.values(enemyProfiles).forEach((profile, index) => { profile.name[2] = enemyNamesEs[index]; profile.name[3] = enemyNamesAr[index]; });
   const heroNamesEs = ["Leo Melena Explosiva", "Fia Pata Chispeante", "Orla Sombrero Lunar", "Taro Caparazón Musgoso", "Cualquier héroe"];
-  Object.values(heroNames).forEach((name, index) => name[2] = heroNamesEs[index]);
+  Object.values(heroNames).forEach((name, index) => { name[2] = heroNamesEs[index]; name[3] = heroNamesAr[index]; });
   const trials = Array.from({length:TRIAL_COUNT},(_,index)=>{
     const stage=index+1;
     const region=Math.floor(index/5);
@@ -363,6 +387,7 @@
       titleEn:trialTitles[index][0],
       titleZh:trialTitles[index][1],
       titleEs:trialTitles[index][2],
+      titleAr:trialTitles[index][3],
       checkpoint,
       enemies,
       encounters:buildEncounterPlans(stage,enemies,checkpoint),
@@ -519,10 +544,10 @@
   Object.entries(enemyProfiles).forEach(([id,profile])=>{ images[`enemy-${id}`]=load(profile.asset); });
   bosses.forEach((boss)=>{ images[`boss-${boss.id}`]=load(boss.asset); });
   const heroes = {
-    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼", es: "RUGIDO" } },
-    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺", es: "CARRERA COMETA" } },
-    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記", es: "MARCA LUNAR" } },
-    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護", es: "GUARDIA DEL JARDÍN" } },
+    leo: { image: "leo", asset: "animal-hero-trials-leo.png", hp: 100, speed: 125, attack: 10, range: 76, skill: { en: "ROAR", zh: "怒吼", es: "RUGIDO", ar: "زئير" } },
+    fia: { image: "fia", asset: "animal-hero-trials-fia.webp", hp: 86, speed: 145, attack: 11, range: 72, skill: { en: "DASH", zh: "彗星衝刺", es: "CARRERA COMETA", ar: "اندفاعة" } },
+    orla: { image: "orla", asset: "animal-hero-trials-orla.webp", hp: 82, speed: 112, attack: 8, range: 165, skill: { en: "MARK", zh: "月之印記", es: "MARCA LUNAR", ar: "وسم" } },
+    taro: { image: "taro", asset: "animal-hero-trials-taro.webp", hp: 126, speed: 92, attack: 8, range: 76, skill: { en: "GUARD", zh: "庭園守護", es: "GUARDIA DEL JARDÍN", ar: "حراسة" } },
   };
 
   function load(filename) {
@@ -622,8 +647,8 @@
     if (!run) return;
     const definition = run.definition;
     const region = regions[definition.region];
-    const trialLabel = localizedValue("Trial", "試煉", "Prueba");
-    const title = localizedValue(definition.titleEn, definition.titleZh, definition.titleEs);
+    const trialLabel = localizedValue("Trial", "試煉", "Prueba", "التجربة");
+    const title = localizedValue(definition.titleEn, definition.titleZh, definition.titleEs, definition.titleAr);
     const rule = localizedPair(region.rule);
     $("#battleBriefing").textContent = `${trialLabel} ${definition.stage} · ${title} · ${rule}`;
     $("#battleBriefing").dataset.defaultText = $("#battleBriefing").textContent;
@@ -651,12 +676,20 @@
   function localizedPair(pair) {
     if (locale === "zh-Hant") return pair[1] || pair[0];
     if (locale === "es") return pair[2] || pair[0];
+    if (locale === "ar") return pair[3] || pair[0];
     return runtimeTranslate(pair[0]);
   }
-  function localizedValue(en, zh, es) {
+  function localizedValue(en, zh, es, ar) {
     if (locale === "zh-Hant") return zh;
     if (locale === "es") return es;
+    if (locale === "ar") return ar || runtimeTranslate(en);
     return runtimeTranslate(en);
+  }
+  function localizedSkillName(skill) {
+    if (locale === "zh-Hant") return skill.zh;
+    if (locale === "es") return skill.es;
+    if (locale === "ar") return skill.ar;
+    return runtimeTranslate(skill.en);
   }
   function trialDefinition(stage) { return trials[Math.max(0,Math.min(TRIAL_COUNT-1,Number(stage)-1))] || trials[0]; }
 
@@ -781,7 +814,7 @@
   function localize() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay");
+    document.title = localizedValue("Animal Hero Trials - WeightPlay", "動物英雄試煉 - WeightPlay", "Pruebas de Héroes Animales - WeightPlay", "محاكمات بطل الحيوان - WeightPlay");
     const returnLabel = returnLabels[locale] || returnLabels.en;
     $("#stageBack").setAttribute("aria-label", returnLabel);
     $("#battleBack").setAttribute("aria-label", returnLabel);
@@ -819,10 +852,10 @@
     if (!picker) return;
     const focusedHero = document.activeElement?.closest?.(".hero-option")?.dataset.hero || "";
     const labels = {
-      leo: [localizedPair(heroNames.Leo), localizedValue("Balanced · 100 HP", "均衡 · 100 生命", "Equilibrado · 100 PV"), localizedValue("Close-range stun", "近距離暈眩", "Aturdimiento cercano")],
-      fia: [localizedPair(heroNames.Fia), localizedValue("Fast · 86 HP", "高速 · 86 生命", "Veloz · 86 PV"), localizedValue("Invulnerable dash", "無敵衝刺", "Carrera invulnerable")],
-      orla: [localizedPair(heroNames.Orla), localizedValue("Ranged · 82 HP", "遠程 · 82 生命", "Distancia · 82 PV"), localizedValue("Mark bonus damage", "標記增傷", "Marca de daño adicional")],
-      taro: [localizedPair(heroNames.Taro), localizedValue("Tank · 126 HP", "耐久 · 126 生命", "Defensor · 126 PV"), localizedValue("Damage guard", "守護減傷", "Guardia reductora")],
+      leo: [localizedPair(heroNames.Leo), localizedValue("Balanced · 100 HP", "均衡 · 100 生命", "Equilibrado · 100 PV", "متوازن · 100 صحة"), localizedValue("Close-range stun", "近距離暈眩", "Aturdimiento cercano", "صعق قريب")],
+      fia: [localizedPair(heroNames.Fia), localizedValue("Fast · 86 HP", "高速 · 86 生命", "Veloz · 86 PV", "سريع · 86 صحة"), localizedValue("Invulnerable dash", "無敵衝刺", "Carrera invulnerable", "اندفاعة محصّنة")],
+      orla: [localizedPair(heroNames.Orla), localizedValue("Ranged · 82 HP", "遠程 · 82 生命", "Distancia · 82 PV", "بعيد المدى · 82 صحة"), localizedValue("Mark bonus damage", "標記增傷", "Marca de daño adicional", "ضرر إضافي بالوسم")],
+      taro: [localizedPair(heroNames.Taro), localizedValue("Tank · 126 HP", "耐久 · 126 生命", "Defensor · 126 PV", "مدافع · 126 صحة"), localizedValue("Damage guard", "守護減傷", "Guardia reductora", "حراسة تخفّف الضرر")],
     };
     picker.innerHTML = "";
     Object.entries(heroes).forEach(([id, hero]) => {
@@ -858,10 +891,10 @@
       button.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
       if(locked)button.setAttribute("aria-disabled","true");
       const detail = locked ? t("locked") : interpolate("roomsAndMarks",{marks:definition.reward});
-      const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs);
+      const title=localizedValue(definition.titleEn,definition.titleZh,definition.titleEs,definition.titleAr);
       const rule=localizedPair(region.rule);
       const boss=definition.boss?` · ${localizedPair(definition.boss.name)}`:"";
-      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
+      button.innerHTML = `<img src="${ASSET_ROOT}${definition.boss?.asset || "animal-hero-trials-arena.png"}" alt=""><strong>${localizedValue("Trial", "試煉", "Prueba", "التجربة")} ${stage} · ${title}</strong><span>${detail}<br>${rule}${boss}<br>${interpolate("recommended",{hero:localizedPair(heroNames[definition.recommended])})}</span>`;
       button.tabIndex = stage === Math.min(TRIAL_COUNT, unlocked) ? 0 : -1;
       button.onclick = () => stage <= unlocked && startTrial(stage);
       rail.append(button);
@@ -1029,11 +1062,7 @@
     const showHit = inFirstRoom && run.guidancePhase === "hit" && run.guidanceTimer > 0;
     hint.hidden = !(showControls || showRange || showHit);
     if (showControls) {
-      const skillName = locale === "zh-Hant"
-        ? heroes[run.heroId].skill.zh
-        : locale === "es"
-          ? heroes[run.heroId].skill.es
-          : runtimeTranslate(heroes[run.heroId].skill.en);
+      const skillName = localizedSkillName(heroes[run.heroId].skill);
       hint.textContent = interpolate("controlHint", { skill: skillName });
     } else if (showRange) {
       hint.textContent = t("rangeHint");
@@ -1054,11 +1083,7 @@
     healthBar.setAttribute("aria-valuemax", String(run.maxHp));
     healthBar.setAttribute("aria-valuenow", String(run.hp));
     healthBar.setAttribute("aria-label", `${healthLabel}: ${run.hp} / ${run.maxHp}`);
-    const skillName = locale === "zh-Hant"
-      ? heroes[run.heroId].skill.zh
-      : locale === "es"
-        ? heroes[run.heroId].skill.es
-        : runtimeTranslate(heroes[run.heroId].skill.en);
+    const skillName = localizedSkillName(heroes[run.heroId].skill);
     updateGuidanceHint();
     $("#cooldownText").textContent = run.cool > 0 ? run.cool.toFixed(1) : skillName;
     $("#skillBtn").setAttribute("aria-label", interpolate(run.cool > 0 ? "skillCooldownLabel" : "skillReadyLabel", {
@@ -1230,15 +1255,15 @@
   function blessingPool(rerolled) {
     if (rerolled) {
       return [
-        { id: "power", amount: 2, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Sovereign Courage", "王者勇氣", "Valor Soberano"), copy: localizedValue("Attack power +2", "攻擊威力 +2", "Poder de ataque +2") },
-        { id: "speed", amount: 2, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Tempo", "彗星節奏", "Tempo de Cometa"), copy: localizedValue("Cooldown -1.0s", "冷卻時間 -1.0 秒", "Recarga -1,0 s") },
-        { id: "heal", amount: 2, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Full Moon Recovery", "滿月復甦", "Recuperación de Luna Llena"), copy: localizedValue("Recover 48 HP", "恢復 48 生命", "Recupera 48 PV") },
+        { id: "power", amount: 2, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Sovereign Courage", "王者勇氣", "Valor Soberano", "شجاعة السيّد"), copy: localizedValue("Attack power +2", "攻擊威力 +2", "Poder de ataque +2", "قوة الهجوم +2") },
+        { id: "speed", amount: 2, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Tempo", "彗星節奏", "Tempo de Cometa", "إيقاع المذنب"), copy: localizedValue("Cooldown -1.0s", "冷卻時間 -1.0 秒", "Recarga -1,0 s", "التهدئة -1.0 ثانية") },
+        { id: "heal", amount: 2, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Full Moon Recovery", "滿月復甦", "Recuperación de Luna Llena", "تعافي البدر"), copy: localizedValue("Recover 48 HP", "恢復 48 生命", "Recupera 48 PV", "استعد 48 من الصحة") },
       ];
     }
     return [
-      { id: "power", amount: 1, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Roaring Power", "怒吼之力", "Poder del Rugido"), copy: localizedValue("Attack power +1", "攻擊威力 +1", "Poder de ataque +1") },
-      { id: "speed", amount: 1, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Rhythm", "彗星律動", "Ritmo de Cometa"), copy: localizedValue("Cooldown -0.5s", "冷卻時間 -0.5 秒", "Recarga -0,5 s") },
-      { id: "heal", amount: 1, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Moon Recovery", "月光恢復", "Recuperación Lunar"), copy: localizedValue("Recover 24 HP", "恢復 24 生命", "Recupera 24 PV") },
+      { id: "power", amount: 1, img: "animal-hero-trials-icon-roaring-mane.webp", name: localizedValue("Roaring Power", "怒吼之力", "Poder del Rugido", "قوة الزئير"), copy: localizedValue("Attack power +1", "攻擊威力 +1", "Poder de ataque +1", "قوة الهجوم +1") },
+      { id: "speed", amount: 1, img: "animal-hero-trials-icon-comet-dash.webp", name: localizedValue("Comet Rhythm", "彗星律動", "Ritmo de Cometa", "إيقاع المذنب"), copy: localizedValue("Cooldown -0.5s", "冷卻時間 -0.5 秒", "Recarga -0,5 s", "التهدئة -0.5 ثانية") },
+      { id: "heal", amount: 1, img: "animal-hero-trials-icon-moon-mark.webp", name: localizedValue("Moon Recovery", "月光恢復", "Recuperación Lunar", "تعافي القمر"), copy: localizedValue("Recover 24 HP", "恢復 24 生命", "Recupera 24 PV", "استعد 24 من الصحة") },
     ];
   }
 

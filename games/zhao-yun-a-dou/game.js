@@ -271,7 +271,7 @@
     if (!progress.tutorialSeen && !options?.skipTutorial) {
       progress.tutorialSeen = true;
       saveProgress();
-      window.setTimeout(function () { if (battle && el.tutorial && !el.tutorial.open) el.tutorial.showModal(); }, 80);
+      window.setTimeout(function () { if (battle && el.tutorial && !el.tutorial.open) el.tutorial.show(); }, 80);
     }
     startLoop();
   }
@@ -988,7 +988,7 @@
   el.battleUtility?.addEventListener("click", function () {
     if (!battle || battle.result || !el.tutorial) return;
     if (el.tutorial.open) el.tutorial.close();
-    else el.tutorial.showModal();
+    else el.tutorial.show();
   });
   el.formation.addEventListener("click", function (event) {
     const target = event.target;

@@ -1960,6 +1960,149 @@ body.reef-fisher-stage :is(.topbar, .game-page-info, .wp-tutorial-button, .wp-tu
   background: #062f3d;
 }
 
+/* Keep every enabled gear action inside the logical Stage Canvas. The
+   management list is a six-item control surface, so it uses a compact
+   two-column grid on portrait canvases instead of extending below the
+   clipped Stage root. */
+#stagePanel .stage-upgrades .gear-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  align-content: stretch;
+  overflow: hidden;
+}
+
+#stagePanel .stage-upgrades .gear-card {
+  grid-template-columns: 30px minmax(0, 1fr);
+  grid-template-rows: 30px 44px;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  gap: 3px 5px;
+  padding: 4px;
+}
+
+#stagePanel .stage-upgrades .gear-card img {
+  width: 28px;
+  height: 28px;
+}
+
+#stagePanel .stage-upgrades .gear-card button {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding: 2px 4px;
+  font-size: 10px;
+  line-height: 13px;
+}
+
+#stagePanel .stage-upgrades .gear-card > div {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+@media (min-width: 700px) and (min-height: 561px) {
+  #stagePanel .stage-upgrades .gear-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  #stagePanel .stage-upgrades .gear-card {
+    grid-template-columns: 24px minmax(0, 1fr) 52px;
+    grid-template-rows: 44px;
+    gap: 3px;
+    padding: 3px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card img {
+    width: 22px;
+    height: 22px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card button {
+    grid-column: 3;
+    grid-row: 1;
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    padding: 2px 3px;
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card > div {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
+  #mainPanel.menu-panel {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  #mainPanel .cover {
+    width: 300px;
+    height: 300px;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  #stagePanel .stage-upgrades .gear-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card {
+    grid-template-columns: 24px minmax(0, 1fr) 52px;
+    grid-template-rows: 44px;
+    gap: 3px;
+    padding: 3px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card img {
+    width: 22px;
+    height: 22px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card button {
+    grid-column: 3;
+    grid-row: 1;
+    width: 52px;
+    min-width: 52px;
+    max-width: 52px;
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    padding: 2px 3px;
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card > div {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  #stagePanel .stage-upgrades .gear-card > div :is(strong, span) {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  #stagePanel .stage-upgrades .gear-card > div .gear-effect {
+    display: none;
+  }
+}
+
 body.reef-fisher-playing .battle-shell {
   grid-template-rows: 56px 366px 64px minmax(176px, 1fr);
   background: #083647;
@@ -2129,6 +2272,56 @@ body.reef-fisher-playing .hint {
   #mainPanel .menu-copy {
     width: min(100%, 390px);
     justify-self: center;
+  }
+}
+
+/* The shared Main controller intentionally normalizes adopted screens to a
+   block flow. Reef Fisher owns a real poster-plus-copy composition, so restore
+   that composition after the shared normalization while retaining its shell
+   ownership and transitions. */
+body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  padding: clamp(10px, 1.8vw, 16px) !important;
+}
+
+body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .cover {
+  justify-self: center;
+}
+
+body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .menu-copy {
+  width: min(100%, 390px);
+  justify-self: center;
+}
+
+@media (min-width: 701px) {
+  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
+    grid-template-columns: minmax(280px, 520px) minmax(280px, 420px) !important;
+    gap: 18px !important;
+  }
+
+  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .menu-copy {
+    width: auto;
+  }
+}
+
+@media (min-width: 701px) and (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
+  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
+    grid-template-columns: 300px minmax(0, 1fr) !important;
+  }
+
+  body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .cover {
+    box-sizing: border-box !important;
+    width: 300px !important;
+    min-width: 0 !important;
+    height: 300px !important;
+    min-height: 0 !important;
+    max-width: 300px !important;
+    max-height: 300px !important;
+    aspect-ratio: 1 / 1 !important;
   }
 }
 

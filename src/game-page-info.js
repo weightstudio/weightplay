@@ -152,6 +152,7 @@
       difficulty: "Easy to Challenging",
       time: "2-10 minutes",
       skills: ["Planning", "Spatial Reasoning", "Focus"],
+      relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
       intro: "Block Blast is an original 8 by 8 spatial puzzle with 30 authored terrain missions and an Endless high-score mode. Place every fixed shape from the current set, clear complete rows or columns, and protect enough open space for the shapes still waiting in the tray.",
       story: ["The Campaign is organized as thirty compact puzzle missions rather than thirty copies of one empty board. Dirt, ice, stone, gems, locks, color targets, and set limits combine into different planning problems.", "Endless mode removes the mission target and keeps dealing three-shape sets. Its balanced shape pool includes small connectors, medium corners, long five-cell pieces, larger rectangles, and occasional 3 by 3 squares so a careless board eventually runs out of legal space."],
       systems: ["Shapes keep the orientation shown in the tray and cannot move after placement. Select a shape and tap a legal board cell, or drag it onto the raised landing preview.", "A full row or column clears immediately. Only cleared lines award points; placing a block by itself does not increase the score.", "Using all three shapes deals a new fixed set. Campaign missions can also ask for line, terrain, gem, color, or limited-set objectives. The run ends as soon as none of the unused tray shapes has a legal fit.", "Ice remains visible beneath a placed block until that line clears, while stone and locks block placement. Gem cells open linked locks when covered."],
@@ -214,8 +215,8 @@
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       parent: "Spider Solitaire is a general-audience card strategy game. No account is required; difficulty statistics and preferences stay in this browser.",
-      related: ["klondike-solitaire"],
-      relatedIds: ["klondike-solitaire"],
+      related: ["klondike-solitaire", "freecell-solitaire"],
+      relatedIds: ["klondike-solitaire", "freecell-solitaire"],
       faq: [["How many cards are used?", "Spider Solitaire uses two standard decks: 104 cards, with 54 in the initial tableau and 50 in Stock."], ["How many columns are there?", "There are ten tableau columns; the first four begin with six cards and the other six with five."], ["Can different suits be stacked?", "Yes. Ranks can descend across suits, but only a same-suit descending run can move as a group or be collected."], ["Why is Stock blocked?", "Classic Spider requires all ten columns to contain at least one card before a new row can be dealt."], ["How many sequences are needed to win?", "Eight same-suit King-to-Ace sequences must be collected."], ["What changes between difficulties?", "1 Suit, 2 Suits, and 4 Suits change the suit mix while keeping the same ten-column rules."], ["Can I restart the same deal?", "Yes. Restart Current Game uses the same seed, while New Game shuffles a fresh deal."], ["Does Undo restore a completed sequence?", "Yes. Undo restores the complete prior tableau and collected-set count."]],
     },
     "klondike-solitaire": {
@@ -604,6 +605,26 @@
         ["Is Animal Hero Trials free?", "Yes. Normal trials, blessings, and progression are free to play in the browser."],
         ["What carries between runs?", "Trial Marks, unlocked trials, selected hero, and permanent mastery are saved locally."],
         ["Are diamonds required?", "No. Diamonds only offer one optional blessing reroll per run."],
+      ],
+    },
+    "animal-nest-weigh": {
+      title: "Nest Weigh-In",
+      age: "6+",
+      difficulty: "Easy to Challenging",
+      time: "2-6 minutes per lesson",
+      skills: ["Math", "Focus", "Problem Solving"],
+      intro: "Nest Weigh-In is a 30-lesson comparison puzzle. Read the nest request, weigh selected pairs, and choose the material at the requested rank.",
+      story: ["Moss Shell Taro is rebuilding a nest one careful choice at a time. Six five-lesson arcs move from simple balance reading to decoys, comparison chains, limited comparisons, and a final seven-tray mastery route."],
+      systems: ["Each lesson gives a deterministic set of nest materials with distinct weights. Comparison results remain visible, wrong answers are safe to retry, and completing a lesson unlocks the next one.", "Progress through all 30 lessons and the six checkpoints at lessons 5, 10, 15, 20, 25, and 30 is saved locally in this browser. No timer, account, purchase, or advertising request is required."],
+      how: ["Choose an unlocked lesson and read whether the nest wants the heaviest, lightest, middle, second-heaviest, or second-lightest material.", "Select exactly two trays and weigh the pair. Later lessons require more comparisons before the nest can be checked.", "Select one answer and check the nest. A correct choice unlocks the next lesson; use Retry or the lesson map to practise again."],
+      strategyTips: ["Compare a pair that brackets the requested rank instead of comparing random trays.", "Keep each visible result in mind as you build an order, especially when a lesson has four or more trays.", "At checkpoints, plan the minimum number of comparisons before checking so the final result reflects a deliberate route."],
+      progression: ["Lessons 1–5 teach direct heaviest, lightest, and middle choices with three trays. Lessons 6–10 add a fourth tray and second-rank requests.", "Lessons 11–15 create comparison chains across five trays. Lessons 16–20 vary the rank and tray count, then lessons 21–25 add six-tray pressure with higher comparison requirements.", "Lessons 26–30 form the seven-tray mastery arc and finish with a replayable checkpoint. Every lesson changes the requested rank, material layout, tray count, or minimum comparison threshold."],
+      designNote: "Nest Weigh-In is an internal General-audience campaign slice with authored 30-lesson progression, deterministic data, six checkpoint reviews, local unlock saving, responsive Main/Stage/Battle/Result flow, and no public release claim.",
+      parent: "This internal General puzzle may practise counting, ordering, attention, and explaining a comparison. It is playful feedback rather than a formal ability assessment. Progress and best comparison results stay in this browser; no account, purchase, chat, leaderboard, or advertising request is used.",
+      faq: [
+        ["How many lessons are included?", "There are 30 authored, replayable lessons across six arcs, with checkpoints at lessons 5, 10, 15, 20, 25, and 30."],
+        ["What is different about later lessons?", "The tray count grows from three to seven, requests include second-rank choices, and selected lessons require more visible comparisons before checking."],
+        ["Is progress saved?", "Unlocked lessons and the best comparison result are saved only in this browser."],
       ],
     },
     "animal-gearpack-expedition": {
@@ -1080,6 +1101,8 @@
       ],
       parent:
         "Stage unlocks, clears, best key counts, lifetime keys, Patrol Rank, and optional Crystal Charm ownership stay in this browser. Clearing site storage or switching devices may remove them. The confirmed Crystal Charm purchase is optional and no stage requires it. Result feedback is entertainment and local progress information, not a test or diagnosis.",
+      related: ["beast-tactician", "animal-orb-fortress", "animal-rift-salvage"],
+      relatedIds: ["beast-tactician", "animal-orb-fortress", "animal-rift-salvage"],
       faq: [
         ["How many stages are included?", "There are 30 named stages across six regions, with Boss checkpoints every fifth stage."],
         ["What clears a stage?", "Survive three minutes and meet the printed key target; a checkpoint also requires its Boss to be defeated."],
@@ -1249,6 +1272,7 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      relatedIds: ["animal-rune-tactics", "animal-auto-squad", "animal-relic-hunters"],
       intro: "Beast Deck: The Mist Forest is a 30-mission turn-based deckbuilding campaign built around visible enemy intent and animal-power card combos. Each mission contains three battles and two temporary drafts. Six five-mission regions introduce armor, riposte, Exhaust, marks, regeneration, cleanse, Weak, seals, curses and triad wards. Missions 5, 10, 15, 20, 25 and 30 end with different phase-changing Bosses.",
       story: [
         "The Mist Forest was once divided into six routes used by animal wardens: Mist Trail, Ironroot Works, Amber Hunt, Mirecoil Basin, Moon Archive and Mist Crown. When crown mist began moving against the wind, ordinary animals became corrupted and the routes stopped communicating. Shadow Boars and Vipers occupied the first trail, Ironroot creatures built countering armor, Amber hunters marked anything that crossed their territory, and Mirecoil beasts learned to regenerate through poison. The Moon Archive sealed away whole classes of animal powers, while the final court filled clean draws with Mist Curses.",
@@ -1312,6 +1336,7 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      relatedIds: ["animal-gearpack-expedition", "animal-rift-salvage", "animal-cratebound"],
       intro: "Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire automatically, and steer around enemies whose behavior changes by ruin region. Relic Orbs create temporary level-up choices during a run, while Gold, training, equipment and mission progress remain on this browser. Six five-mission regions end with six different Guardians rather than one repeated enlarged enemy.",
       story: [
         "The Relic Road once connected Moss Gate, Echo Gallery, Crystal Vault, Sunken Shrine, Moon Archive and Crown Court. When the Crown seal failed, its energy did not simply make local beasts stronger. Moss creatures began dividing and charging, gallery sentries attacked from beyond weapon range, crystal keepers formed impact wards, shrine beasts repaired themselves, and archive hunters interrupted relic fire with silence bolts.",
@@ -1375,6 +1400,7 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      relatedIds: ["animal-prism-breakers", "animal-bamboo-pipes", "animal-cratebound"],
       hideSkillsFact: true,
       intro:
         "Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.",
@@ -1596,6 +1622,7 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      relatedIds: ["animal-rune-tactics", "animal-prism-battalion"],
       intro:
         "Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads. Place four ordinary animal soldier roles and seven WeightPlay heroes on a forest grid, keep at least one route open, and protect the crystal core through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.",
       story: [
@@ -2071,6 +2098,7 @@
     "animal-zoo-idle": { gameplay: "Idle Zoo Care", genre: ["Idle", "Simulation", "Animal"] },
     "animal-cafe-rush": { gameplay: "Cafe Queue Matching", genre: ["Time Management", "Matching", "Animal"] },
     "animal-hero-trials": { gameplay: "Hero Action Trials", genre: ["Action", "Roguelite", "Animal"] },
+    "animal-nest-weigh": { gameplay: "Ranked Balance Comparison", genre: ["Puzzle", "Math", "Animal"] },
     "animal-gearpack-expedition": { gameplay: "Spatial Inventory Expedition", genre: ["Strategy", "Roguelite", "Animal"] },
     "animal-moonlight-heist": { gameplay: "Stealth Extraction Adventure", genre: ["Stealth", "Strategy", "Adventure", "Animal"] },
     "animal-rope-rescue": { gameplay: "Vine Physics Puzzle", genre: ["Physics", "Puzzle", "Animal"] },
@@ -2136,6 +2164,10 @@
     "animal-orb-fortress": "animal-orb-fortress-cover.webp",
     "animal-auto-squad": "animal-auto-squad-cover.webp",
     "beast-tactician": "beast-tactician-cover.webp",
+    "animal-prism-battalion": "animal-prism-battalion/cover.webp",
+    "animal-rift-salvage": "animal-rift-salvage/cover.webp",
+    "animal-cratebound": "animal-cratebound/cover.webp",
+    "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
     "shadow-wolf": "shadow-wolf-cover.webp",
   };
 
@@ -2788,6 +2820,36 @@
       "shadow-wolf": zhGuide("影狼傳說", "橫向動作 RPG", ["左右移動並跳過平台陷阱。", "攻擊影獸並收集經驗。", "開啟寶箱、穿戴裝備並挑戰巨獸。"]),
       "animal-hero-trials": zhGuide("動物英雄試煉", "英雄動作試煉", ["選擇一位英雄與已解鎖試煉。", "移動閃避敵人，並掌握英雄技能的使用時機。", "每個房間選擇一項免費祝福，最後擊敗暗影王者。"]),
     },
+  };
+
+  localizedGames["zh-Hant"]["animal-nest-weigh"] = {
+    title: "巢材秤重",
+    gameplay: "排序平衡比較益智",
+    genre: ["益智", "數學", "動物"],
+    skills: ["數學", "專注", "問題解決"],
+    intro: "《巢材秤重》是一款 30 堂比較益智遊戲。讀取巢穴需求、秤量選定的配對，再選出符合指定排序的巢材。",
+    story: ["苔殼塔羅要一步一步重建巢穴。六段、每段五堂課會從直接讀取平衡，逐步加入誘餌、比較鏈、有限比較，最後進入七盤精通路線。"],
+    systems: ["每堂課都有固定且可重玩的巢材與重量。比較結果會保留，答錯不會失去進度；完成一堂課就會解鎖下一堂。", "30 堂課與第 5、10、15、20、25、30 堂檢查點的解鎖進度會保存在目前瀏覽器。沒有計時、帳號、購買或廣告請求。"],
+    how: ["選擇已解鎖課程，讀取巢穴要最重、最輕、中間、第二重或第二輕的巢材。", "選兩個托盤並秤量。後段課程會要求先完成更多次比較，才能檢查巢穴。", "選一個答案並檢查巢穴。答對會解鎖下一堂，也可以用重玩或課程地圖練習。"],
+    strategyTips: ["先比較能夾住指定排序位置的配對，不要隨機比較。", "逐步記住畫面上的比較結果；托盤變多時更要保留清楚的順序。", "在檢查點先規劃最低比較次數，再檢查巢穴，讓結果反映有意識的路線。"],
+    progression: ["第 1–5 堂用三盤練習最重、最輕與中間。第 6–10 堂加入第四盤與第二順位需求。", "第 11–15 堂用五盤建立比較鏈；第 16–20 堂改變排序位置與托盤數；第 21–25 堂加入六盤壓力與較高比較要求。", "第 26–30 堂是七盤精通段落，並以可重玩的檢查點收尾。每堂課都會改變需求位置、材質布局、托盤數或最低比較門檻。"],
+    parent: "這款 General 內部益智遊戲可練習數數、排序、專注與解釋比較結果。回饋是遊戲用途，不是正式能力評估；進度與最佳比較結果只保存在目前瀏覽器。",
+    faq: [["共有幾堂課？", "共有 30 堂具名、可重玩的課程，分成六段；第 5、10、15、20、25、30 堂是檢查點。"], ["後面的課程如何變化？", "托盤會從三個增加到七個，需求加入第二順位，部分課程也要求先完成更多可見比較。"], ["進度會保存嗎？", "已解鎖課程與最佳比較結果只保存在目前瀏覽器。"]],
+  };
+  localizedGames.ar ||= {};
+  localizedGames.ar["animal-nest-weigh"] = {
+    title: "ميزان العش",
+    gameplay: "لغز مقارنة المراتب بالميزان",
+    genre: ["ألغاز", "رياضيات", "حيوانات"],
+    skills: ["الرياضيات", "التركيز", "حل المشكلات"],
+    intro: "ميزان العش لغز مقارنة من 30 درسًا. اقرأ طلب العش، زِن أزواجًا مختارة، ثم اختر المادة التي تحقق المرتبة المطلوبة.",
+    story: ["يعيد تارُو بناء العش باختيار واحد هادئ في كل مرة. تتدرج ستة أقواس من قراءة الميزان المباشرة إلى صواني الطُعم وسلاسل المقارنة والمقارنات المحدودة، ثم مسار إتقان من سبع صوانٍ."],
+    systems: ["يقدم كل درس مواد وأوزانًا ثابتة قابلة لإعادة اللعب. تبقى نتيجة المقارنة ظاهرة، ولا تفقد التقدم عند الخطأ؛ ويؤدي إكمال الدرس إلى فتح الدرس التالي.", "يُحفظ فتح الدروس الثلاثين ونقاط الفحص في الدروس 5 و10 و15 و20 و25 و30 في هذا المتصفح. لا يوجد مؤقت أو حساب أو شراء أو طلب إعلان."],
+    how: ["اختر درسًا مفتوحًا واقرأ هل يريد العش المادة الأثقل أو الأخف أو المتوسطة أو الثانية في الثقل أو الثانية في الخفة.", "اختر صينيتين وزنهما. تتطلب الدروس اللاحقة عددًا أكبر من المقارنات الظاهرة قبل فحص العش.", "اختر إجابة واحدة وافحص العش. يفتح الاختيار الصحيح الدرس التالي، ويمكنك الإعادة أو استخدام خريطة الدروس للتدرب."],
+    strategyTips: ["قارن زوجًا يحدد موضع المرتبة المطلوبة بدل المقارنة العشوائية.", "احتفظ بكل نتيجة ظاهرة في ذاكرتك لبناء ترتيب، خصوصًا عندما يزداد عدد الصواني.", "خطط لأقل عدد من المقارنات عند نقاط الفحص قبل فحص العش، حتى تعكس النتيجة قرارًا مقصودًا."],
+    progression: ["تعلّم الدروس 1–5 اختيارات الأثقل والأخف والمتوسط مع ثلاث صوانٍ. تضيف الدروس 6–10 صينية رابعة وطلبات المرتبة الثانية.", "تبني الدروس 11–15 سلاسل مقارنة من خمس صوانٍ. تغيّر الدروس 16–20 المرتبة وعدد الصواني، ثم تضيف الدروس 21–25 ضغط ست صوانٍ ومتطلبات مقارنة أعلى.", "تكوّن الدروس 26–30 قوس الإتقان ذي السبع صوانٍ وتنتهي بنقطة فحص قابلة للإعادة. يغير كل درس المرتبة المطلوبة أو ترتيب المواد أو عدد الصواني أو حد المقارنات."],
+    parent: "قد يساعد هذا اللغز العام الداخلي على ممارسة العد والترتيب والانتباه وشرح المقارنة. هذه ملاحظات للعب وليست تقييمًا رسميًا للقدرات؛ تبقى الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط.",
+    faq: [["كم عدد الدروس؟", "هناك 30 درسًا مؤلفًا قابلًا لإعادة اللعب في ستة أقواس، مع نقاط فحص في الدروس 5 و10 و15 و20 و25 و30."], ["كيف تختلف الدروس اللاحقة؟", "يزداد عدد الصواني من ثلاث إلى سبع، وتظهر طلبات المرتبة الثانية، وتتطلب دروس محددة مقارنات ظاهرة أكثر قبل الفحص."], ["هل يُحفظ التقدم؟", "تُحفظ الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط."]],
   };
 
   // Hexa Sort owns a complete public FAQ in every generated route. The
@@ -4426,6 +4488,12 @@
     time: "5-12 minutes per expedition",
     gameplay: "Spatial Inventory Expedition",
     genre: ["Strategy", "Spatial Inventory", "Roguelite", "Animal"],
+    relatedIds: ["animal-rift-salvage", "animal-cratebound", "animal-bamboo-pipes"],
+    relatedCoverMap: {
+      "animal-rift-salvage": "animal-rift-salvage/cover.webp",
+      "animal-cratebound": "animal-cratebound/cover.webp",
+      "animal-bamboo-pipes": "animal-bamboo-pipes-cover.webp",
+    },
     skills: ["Planning", "Spatial Reasoning", "Adaptation"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
@@ -4541,6 +4609,7 @@
     gameplay: "Stealth Route Adventure",
     genre: ["Stealth", "Route Planning", "Adventure", "Animal"],
     skills: ["Planning", "Focus", "Risk Assessment"],
+    relatedIds: ["animal-prism-breakers", "animal-sketchwheel-rally", "animal-bamboo-pipes"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
@@ -8931,6 +9000,7 @@
     ],
     designNote: "Starlink uses a responsive logical Canvas that fills the safe Stage and Battle area without stretching individual puzzle elements. Extra space is distributed through stable tracks and anchors, so phones and wide desktop browsers show the same route information and controls. The separate General ad reserve never overlays gameplay or Result actions.",
     parent: "Starlink runs free in the browser and requires no account. Unlocks, best ratings, and times are stored only in this browser; clearing site data or changing browsers may create a separate save. Skill feedback is supportive entertainment and not a formal ability assessment.",
+    relatedIds: ["animal-one-line", "animal-prism-breakers", "animal-cratebound"],
     faq: [
       ["Can I pass through the same star twice?", "Yes. Stars may be revisited, but each connecting trail may be used only once."],
       ["Why can I not use a pink comet trail?", "The arrow on that trail shows its allowed direction. Entering from the opposite end is not legal."],
@@ -9466,12 +9536,42 @@
     noteTitle: "معلومات اللاعب والحفظ", parent: "سوليتير العنكبوت لعبة استراتيجية بالبطاقات للجمهور العام، موصى بها لعمر 9 سنوات فأكثر ومناسبة للعائلة. لا تحتاج إلى حساب؛ تبقى الإحصاءات والتفضيلات في هذا المتصفح.", related: ["klondike-solitaire"], relatedIds: ["klondike-solitaire"],
     faq: [["كم عدد البطاقات؟", "تستخدم مجموعتين قياسيتين، أي 104 بطاقات: 54 في الطاولة الأولى و50 في الرزمة."], ["كم عدد الأعمدة؟", "هناك عشرة أعمدة؛ تبدأ الأعمدة الأربعة الأولى بست بطاقات والباقي بخمس."], ["هل يمكن تكديس أنواع مختلفة؟", "نعم، يمكن خفض الرتب بين الأنواع، لكن السلسلة التي تتحرك أو تُجمع معاً يجب أن تكون من النوع نفسه."], ["لماذا تتوقف الرزمة؟", "تتطلب اللعبة الكلاسيكية بطاقة في كل عمود قبل توزيع صف جديد."], ["كم سلسلة نحتاج للفوز؟", "يجب جمع ثماني سلاسل من النوع نفسه من K إلى A."], ["ما الذي يتغير بين المستويات؟", "تغيّر 1 و2 و4 أنواع مزيج الأنواع، مع بقاء قواعد الأعمدة العشرة نفسها."], ["هل يمكن إعادة التوزيعة نفسها؟", "نعم، تستخدم إعادة البدء التوزيعة نفسها وتخلط اللعبة الجديدة توزيعة جديدة."], ["هل يعيد التراجع السلسلة المكتملة؟", "نعم، يعيد الطاولة السابقة وعدد السلاسل التي جُمعت بالكامل."]],
   });
+  addSpiderGuideCopy("ja", {
+    title: "スパイダーソリティア", age: "9+", difficulty: "簡単から難しい", time: "5～20分", gameplay: "カード戦略ゲーム", genre: ["パズル", "カード", "戦略", "ファミリー"], skills: ["計画", "パターン認識", "集中"],
+    intro: "スパイダーソリティアは10列の場に2組のデッキを使います。降順の列を作り、可能なときは混ざったスートを分け、同じスートのキングからエースまでの8組を完成させて場を空にします。",
+    story: ["スパイダーはおなじみのソリティアのカード操作感を保ちながら、すべての列が次の判断に影響します。山札の各配札は10列に触れ、空いた列は強力ですが、配札の前に埋め直す必要があります。", "1スートは流れを学び、2スートはスート分離を加え、4スートは基本操作を変えずに長期的な計画を求めます。"],
+    systems: ["カードはランクの高い順から下へ並べます。表向きの1枚は次に高いランクへ移せますが、まとめて動くのは表向きで降順かつ同じスートの連続列だけです。", "同じスートのKからAの列を完成させると、分かりやすいアニメーションで回収されます。8組を回収すると勝利です。", "山札は空でない10列それぞれに表向きのカードを1枚配ります。元に戻すは場、表向き状態、山札、配札、スコア、完成列を復元します。", "ヒントは裏向きカードの公開、同じスートの延長、完成列、空き列作りにつながる有効な合法手を優先して示します。"],
+    how: ["Mainで1スート、2スート、4スートのいずれかを選びます。", "表向きのカードまたは有効な同じスートの連続列を、次に高いランクへドラッグします。", "空いた列を使ってカードや有効な列を組み替えます。", "裏向きのカードを公開し、10列すべてにカードがあるときだけ新しい列を配ります。", "同じスートのKからAの8組を完成させて勝利します。"],
+    strategyTips: ["表面だけを変える手より、裏向きのカードを公開する手を優先します。", "同じスートの列はまとめて保ち、混ざったスートの列は一時的な足場として使います。", "空き列を予備スペースとして使い、スートを分けたり裏向きのカードを公開したりします。", "有効な公開や同じスートの結合があるときは、急いで配札しないでください。", "4スートでは最も整った列を守り、元に戻すで候補の移動先を比べます。"],
+    progression: ["1スートは基本の流れ、2スートはスートの衝突、4スートはクラシックな高難度を教えます。", "難易度ごとにプレイ数、勝利数、勝率、ベストタイム、最少手数を分けて保存します。", "リスタートは同じ配札を使い、新しいゲームは新しいシャッフルを作ります。"],
+    designNote: "SpiderはWeightPlayのCard Engine、レスポンシブなBattleキャンバス、ドラッグレイヤー、タッチ入力、アニメーションのリズム、サウンド設定、元に戻すスナップショット、カードのビジュアル言語を共有します。",
+    noteTitle: "プレイヤーと保存情報", parent: "スパイダーソリティアは一般向けのカード戦略ゲームで、9歳以上と家族でのプレイにおすすめです。アカウントは不要で、難易度の統計と設定はこのブラウザに保存されます。", related: ["klondike-solitaire", "freecell-solitaire"], relatedIds: ["klondike-solitaire", "freecell-solitaire"],
+    faq: [["何枚のカードを使いますか？", "標準デッキを2組、合計104枚使います。初期の場に54枚、山札に50枚あります。"], ["列はいくつありますか？", "場には10列あります。最初の4列は6枚、残りの6列は5枚で始まります。"], ["異なるスートを重ねられますか？", "はい。異なるスート間でもランクは下げられますが、まとめて動かしたり回収したりできるのは同じスートの降順列だけです。"], ["山札が使えないのはなぜですか？", "クラシックなスパイダーでは、新しい列を配る前に10列すべてに少なくとも1枚のカードが必要です。"], ["勝つには何組必要ですか？", "同じスートのキングからエースまでの8組を回収する必要があります。"], ["難易度で何が変わりますか？", "1、2、4スートでスートの組み合わせが変わりますが、10列のルールは同じです。"], ["同じ配札をやり直せますか？", "はい。リスタートは同じ配札を使い、新しいゲームは新しい配札を作ります。"], ["元に戻すで完成列も復元されますか？", "はい。直前の場と回収済みの列数を完全に復元します。"]],
+  });
+  addSpiderGuideCopy("de", {
+    title: "Spider-Solitär", age: "9+", difficulty: "Einfach bis schwierig", time: "5–20 Minuten", gameplay: "Kartenspiel mit Strategie", genre: ["Puzzle", "Karten", "Strategie", "Familie"], skills: ["Planung", "Mustererkennung", "Konzentration"],
+    intro: "Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und vollenden Sie acht Reihen derselben Farbe vom König bis zum Ass, um das Tableau zu leeren.",
+    story: ["Spider bewahrt das vertraute Karten-Spielgefühl von Solitär, verändert aber den Entscheidungsraum: Jede Spalte zählt, jede neue Reihe aus dem Stock berührt alle zehn Spalten, und eine leere Spalte ist stark, blockiert aber vorübergehend das Austeilen.", "Eine Farbe lehrt den Rhythmus, zwei Farben fügen die Farbtrennung hinzu, und vier Farben verlangen langfristige Planung, ohne die grundlegende Steuerung zu ändern."],
+    systems: ["Die Karten werden nach Rang absteigend aufgebaut. Eine einzelne offene Karte kann auf den nächsthöheren Rang gelegt werden; gemeinsam bewegt wird nur eine offene, absteigende Folge derselben Farbe.", "Vollenden Sie eine Folge derselben Farbe vom König bis zum Ass; sie wird mit einer klaren Abschlussanimation eingesammelt. Acht gesammelte Folgen gewinnen das Spiel.", "Der Stock gibt jeder der zehn nicht leeren Spalten eine offene Karte. Rückgängig stellt Tableau, offene Karten, Stock, Austeilungen, Punktestand und abgeschlossene Folgen wieder her.", "Der Hinweis hebt einen nützlichen legalen Zug hervor und bevorzugt das Aufdecken verdeckter Karten, das Verlängern derselben Farbe, abgeschlossene Folgen und neue leere Spalten."],
+    how: ["Wählen Sie auf Main 1 Farbe, 2 Farben oder 4 Farben.", "Ziehen Sie eine offene Karte oder eine gültige Folge derselben Farbe auf den nächsthöheren Rang.", "Nutzen Sie leere Spalten, um Karten oder gültige Folgen neu zu ordnen.", "Decken Sie verdeckte Karten auf und teilen Sie eine neue Reihe nur aus, wenn jede Spalte eine Karte enthält.", "Vollenden Sie alle acht Folgen derselben Farbe vom König bis zum Ass, um zu gewinnen."],
+    strategyTips: ["Decken Sie eine verdeckte Karte auf, bevor Sie einen Zug machen, der nur die Oberfläche verändert.", "Halten Sie Folgen derselben Farbe zusammen; gemischte Folgen sind nur ein vorübergehendes Gerüst.", "Behandeln Sie eine leere Spalte als Reserve, um Farben zu trennen oder eine verdeckte Karte freizulegen.", "Teilen Sie nicht automatisch aus, wenn noch ein nützliches Aufdecken oder eine Verbindung derselben Farbe möglich ist.", "Schützen Sie bei vier Farben die sauberste Folge und vergleichen Sie mit Rückgängig mögliche Ziele."],
+    progression: ["Eine Farbe lehrt den Rhythmus, zwei Farben bringen Farbkonflikte, und vier Farben sind der klassische Modus mit hoher Herausforderung.", "Jede Schwierigkeit speichert Spiele, Siege, Siegquote, Bestzeit und wenigste Züge getrennt.", "Neustart verwendet dieselbe Austeilung; Neues Spiel erstellt eine neue Mischung."],
+    designNote: "Spider teilt die WeightPlay Card Engine, die responsive Battle-Fläche, die Ziehebene, Touch-Eingabe, den Animationsrhythmus, die Soundeinstellung, Rückgängig-Schnappschüsse und die visuelle Kartensprache mit Klondike.",
+    noteTitle: "Spieler- und Speicherinformationen", parent: "Spider-Solitär ist ein Kartenspiel mit Strategie für ein allgemeines Publikum, empfohlen ab 9 Jahren und für Familien geeignet. Ein Konto ist nicht erforderlich; Schwierigkeitsstatistiken und Einstellungen bleiben in diesem Browser.", related: ["klondike-solitaire", "freecell-solitaire"], relatedIds: ["klondike-solitaire", "freecell-solitaire"],
+    faq: [["Wie viele Karten werden verwendet?", "Es werden zwei Standarddecks mit insgesamt 104 Karten verwendet: 54 im anfänglichen Tableau und 50 im Stock."], ["Wie viele Spalten gibt es?", "Es gibt zehn Tableau-Spalten; die ersten vier beginnen mit sechs Karten, die anderen sechs mit fünf."], ["Können Karten verschiedener Farben gestapelt werden?", "Ja. Ränge können über verschiedene Farben absteigen, aber nur eine absteigende Folge derselben Farbe kann als Gruppe bewegt oder eingesammelt werden."], ["Warum ist der Stock gesperrt?", "Beim klassischen Spider müssen vor dem Austeilen einer neuen Reihe alle zehn Spalten mindestens eine Karte enthalten."], ["Wie viele Folgen braucht man zum Sieg?", "Acht Folgen derselben Farbe vom König bis zum Ass müssen eingesammelt werden."], ["Was ändert sich zwischen den Schwierigkeitsgraden?", "1, 2 und 4 Farben ändern die Farbmischung, die Regeln der zehn Spalten bleiben gleich."], ["Kann ich dieselbe Austeilung neu starten?", "Ja. Neustart verwendet dieselbe Austeilung, während Neues Spiel eine frische Austeilung mischt."], ["Stellt Rückgängig eine abgeschlossene Folge wieder her?", "Ja. Rückgängig stellt das vollständige vorherige Tableau und die Anzahl der eingesammelten Folgen wieder her."]],
+  });
   for (const [guideLocale, title] of Object.entries(spiderGuideTitles)) {
     localizedGames[guideLocale] = localizedGames[guideLocale] || {};
     localizedGames[guideLocale]["spider-solitaire"] = {
       ...(localizedGames[guideLocale]["spider-solitaire"] || {}),
       title,
     };
+  }
+  for (const guideLocale of ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]) {
+    const spider = localizedGames[guideLocale]?.["spider-solitaire"];
+    if (!spider) continue;
+    spider.related = ["klondike-solitaire", "freecell-solitaire"];
+    spider.relatedIds = ["klondike-solitaire", "freecell-solitaire"];
   }
 
   // Keep Gin Rummy's complete 13-locale guide after legacy locale tables that
@@ -11255,6 +11355,7 @@
 
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
     intro: "Remove pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
     story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by making sums of ten under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
     systems: ["A legal pair contains two values whose sum is ten. Equal values are legal only when both tiles are five.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
@@ -11269,6 +11370,7 @@
   localizedGames["zh-Hant"]["animal-number-match"] = {
     ...games["animal-number-match"],
     title: "胖達數字花園",
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
     difficulty: "簡單至具挑戰性",
     time: "每座花園約 2 至 8 分鐘",
     gameplay: "直線視野數字配對益智",
@@ -11322,7 +11424,7 @@
     gameplay: "Puzzle de paires de nombres et de lignes de vue",
     genre: ["Puzzle", "Stratégie", "Animaux"],
     skills: ["Logique", "Planification", "Résolution de problèmes"],
-    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
     guideKicker: "Guide du jeu original WeightPlay",
     guideTitleSuffix: "Guide du jeu",
     intro: "Choisissez deux nombres qui totalisent dix. Ils doivent se toucher ou se voir sur une même ligne ou colonne à travers des cases déjà vidées.",
@@ -11364,7 +11466,7 @@
 
   const createNumberMatchGuide = (copy) => ({
     ...games["animal-number-match"],
-    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
     ...copy,
   });
 
@@ -11885,7 +11987,7 @@
     time: "1ステージ約2〜8分",
     gameplay: "見通しを使う「合計10」数字ペアパズル",
     genre: ["パズル", "ストラテジー", "アニマル"],
-    relatedIds: ["animal-habitat-mahjong", "garden-tiles", "animal-rope-rescue"],
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
     guideKicker: "WeightPlayオリジナルゲームガイド",
     guideTitleSuffix: "ゲームガイド",
     intro: "合計が10になる2枚を選びます。隣り合うか、消したマスだけを通る縦横の直線で見通せるペアを消し、竹林の盤面をすべて片づけましょう。",
@@ -11991,6 +12093,7 @@
   // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {
     title: "Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
+    relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"],
     intro: "Rotate mirrors on a six-by-six garden board until every visible sunbeam follows a valid path from its source to the sleeping lotus.",
     story: ["Panko is reopening thirty shaded gardens. The opening gardens teach distinct route shapes, Garden 6 introduces two simultaneous suns, and the final chapter combines dense dual-source networks.", "Every animated beam follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches the shared lotus."],
     systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "Each beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A dual-source stage clears only when both independently traced beams enter the lotus cell; a nearby line or one completed route does not count.", "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation."],
@@ -12001,6 +12104,32 @@
     parent: "There is no timer, account, purchase, or public ranking. Cleared gardens and local move records stay in this browser.",
     faq: [["Why did the lotus not wake?", "Every active beam must enter its exact cell; one completed beam is not enough on a dual-source garden."], ["Can light pass through a mirror?", "No, a reached mirror always reflects according to its current state."], ["Can a beam loop?", "Yes; rotate the first mirror that repeats that route."], ["Does Hint finish the board?", "No, it corrects one useful route mirror."]]
   }, "動物陽光花園", "动物阳光花园");
+
+  // Related cards use the runtime guide object after hydration. Keep the
+  // concise card title and intro locale-owned so an otherwise localized page
+  // does not fall back to the English Sunbeam Garden description.
+  const sunbeamRelatedGuideCopy = {
+    en: { title: "Sunbeam Garden", intro: "Rotate mirrors on a six-by-six garden board until every visible sunbeam follows a valid path from its source to the sleeping lotus." },
+    "zh-Hant": { title: "陽光花園", intro: "在六乘六花園中旋轉鏡子，讓每道可見陽光沿著正確路線照到沉睡的蓮花。" },
+    "zh-Hans": { title: "阳光花园", intro: "在六乘六花园中旋转镜子，让每道可见阳光沿着正确路线照到沉睡的莲花。" },
+    ja: { title: "サンビームガーデン", intro: "6×6の庭で鏡を回し、見えているすべての光を正しい道で眠るハスまで届けましょう。" },
+    ko: { title: "선빔 가든", intro: "6×6 정원에서 거울을 돌려 보이는 모든 햇빛을 올바른 길로 잠든 연꽃까지 보내세요." },
+    es: { title: "Jardín de rayos de sol", intro: "Gira los espejos de un jardín de 6×6 hasta llevar todos los rayos visibles por una ruta válida hacia el loto dormido." },
+    "pt-BR": { title: "Jardim Raio de Sol", intro: "Gire os espelhos de um jardim 6×6 até levar todos os raios visíveis por caminhos válidos ao lótus adormecido." },
+    fr: { title: "Jardin rayon de soleil", intro: "Tournez les miroirs d’un jardin de 6×6 afin que chaque rayon visible suive un parcours valide jusqu’au lotus endormi." },
+    de: { title: "Sonnenstrahl-Garten", intro: "Drehe die Spiegel in einem 6×6-Garten, bis alle sichtbaren Strahlen auf gültigen Wegen den schlafenden Lotus erreichen." },
+    it: { title: "Giardino Raggio di Sole", intro: "Ruota gli specchi in un giardino 6×6 finché ogni raggio visibile segue un percorso valido verso il loto addormentato." },
+    ru: { title: "Сад солнечных лучей", intro: "Поворачивайте зеркала в саду 6×6, чтобы каждый видимый луч прошёл по верному пути к спящему лотосу." },
+    hi: { title: "सनबीम गार्डन", intro: "6×6 बगीचे में दर्पण घुमाकर हर दिखाई देने वाली किरण को सही रास्ते से सोए कमल तक पहुँचाएँ।" },
+    ar: { title: "حديقة شعاع الشمس", intro: "أدر المرايا في حديقة 6×6 حتى يسلك كل شعاع ظاهر طريقًا صحيحًا إلى زهرة اللوتس النائمة." },
+  };
+  for (const [localeCode, copy] of Object.entries(sunbeamRelatedGuideCopy)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-sunbeam-garden"] = {
+      ...(localizedGames[localeCode]["animal-sunbeam-garden"] || games["animal-sunbeam-garden"]),
+      ...copy,
+    };
+  }
 
   registerExpandedGuide("animal-triple-match", {
     title: "Animal Triple Match", gameplay: "Layered Object Triple Puzzle",
@@ -12959,6 +13088,7 @@
     skills: ["Team Building", "Probability Management", "Planning"],
     hideSkillsFact: true,
     showRelatedSkill: false,
+    relatedIds: ["beast-deck", "animal-rune-tactics", "animal-auto-squad"],
     intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
     story: ["A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.", "The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress."],
     systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
@@ -15546,17 +15676,83 @@
   // stay locale-owned instead of relying on the shared English fallback.
   const animalBounceBrawlGuideLocaleCopy = {
     "zh-Hant": { title: "彈跳鬥場", gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
-    "zh-Hans": { title: "弹跳斗场", gameplay: "柔和物理击退竞技场", difficulty: "容易到有挑战性", faq: [["进度会保存吗？", "会，仅保存在此浏览器中。"]] },
-    ja: { title: "バウンス乱闘", gameplay: "ソフト物理ノックバックアリーナ", difficulty: "やさしく始めて挑戦的", faq: [["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]] },
+    "zh-Hans": {
+      title: "弹跳斗场", age: "9+", difficulty: "容易到有挑战性", time: "每座竞技场约 2–5 分钟", gameplay: "柔和物理击退竞技场", genre: ["动作", "街机", "动物"], skills: ["时机", "反应", "空间意识"],
+      intro: "掌握弹跳时机，选择泡棉工具，在欢乐的物理竞技场中让对手失去平衡。",
+      story: ["友善的泡棉挑战者在六座玩具竞技场迎战对手。每座竞技场都会改变间距、平台或对手节奏，但目标始终清楚：按照自己的节奏制造碰撞。"],
+      systems: ["使用方向键或画面控制移动角色；按 Space 或画面上的「弹跳」进行弹跳攻击，工具按钮可以切换当前的泡棉工具。", "命中会产生明显的击退和短暂冲击效果。削弱对手能量即可获胜；自己的能量耗尽，或竞技场计时结束前仍未击败对手，就会失败。"],
+      how: ["选择一座竞技场，先观察对手的接近节奏。", "移动来拉开距离，在时机有利时按 Space 或「弹跳」。", "当前间距或平台布局需要不同策略时，再切换泡棉工具。", "查看结果后重试当前竞技场，或继续前往下一座。"],
+      strategyTips: ["不要长时间黏住对手；先退开、读懂反弹，再抓住下一个空档出手。", "善用平台和竞技场边缘，控制对手能够恢复的位置。", "遇到明确的间距问题时再换工具，不要每次弹跳都切换。"],
+      progression: ["六座竞技场会从暖身关卡逐步加入弹簧路线、移动踏板、狭窄转角、更快的对手，以及考验刻意控制间距的最终节奏。"],
+      designNote: "弹跳斗场使用原创的柔和物理美术、清楚的击退反馈、三种不同的泡棉工具和紧凑的竞技场循环，让每次出手都有看得见的结果，同时保持轻松的表现。",
+      noteTitle: "玩家与保存信息", parent: "这款一般向浏览器游戏没有账号、购买、聊天、排行榜或广告流程。竞技场胜场和最佳进度只保存在此浏览器中。",
+      faq: [["如何击中对手？", "靠近到能够接触的距离，在空档按 Space 或画面上的「弹跳」控制。"], ["泡棉工具有什么作用？", "工具会改变当前的泡棉反应，提供不同的时机或间距选择。"], ["怎样会输？", "自己的能量可能耗尽，或竞技场计时结束前仍未击败对手。"], ["进度会保存吗？", "会，仅保存在此浏览器中。"]],
+    },
+    ja: {
+      title: "バウンス乱闘", age: "9+", difficulty: "やさしく始めて挑戦的", time: "アリーナごとに2～5分", gameplay: "ソフト物理ノックバックアリーナ", genre: ["アクション", "アーケード", "動物"], skills: ["タイミング", "反応", "空間認識"],
+      intro: "バウンスのタイミングを読み、フォームツールを選び、楽しい物理アリーナでライバルのバランスを崩します。",
+      story: ["親しみやすいフォームの挑戦者が、6つのおもちゃアリーナでライバルに挑みます。アリーナごとに間隔、足場、ライバルのリズムが変わりますが、目標は明快です。自分のタイミングで接触を作りましょう。"],
+      systems: ["矢印キーまたは画面のコントロールでキャラクターを動かします。Spaceまたは画面の「バウンス」で跳ね返り攻撃を行い、ツールボタンで使うフォームツールを切り替えます。", "命中すると分かりやすいノックバックと短い衝撃エフェクトが起こります。ライバルのエネルギーを減らせば勝利、自分のエネルギーが尽きるか制限時間が切れると敗北です。"],
+      how: ["アリーナを選び、まずライバルの接近リズムを観察します。", "動いて距離を作り、タイミングが良いときにSpaceまたは「バウンス」を押します。", "現在の間隔や足場の配置に別の方法が必要なときだけフォームツールを切り替えます。", "結果を確認したら同じアリーナをリトライするか、次のアリーナへ進みます。"],
+      strategyTips: ["ライバルに長く張り付かず、いったん離れて跳ね返りを読み、次の隙を狙います。", "足場とアリーナの端を使い、ライバルが立て直せる場所をコントロールします。", "明らかに間隔が合わないときだけツールを変え、バウンスごとに切り替えないようにします。"],
+      progression: ["6つのアリーナはウォームアップから始まり、バネのレーン、動く足場、狭い角、速いライバル、意識的な間隔判断を試す最後のリズムへ進みます。"],
+      designNote: "バウンス乱闘は、オリジナルの柔らかな物理表現、見やすいノックバック、3種類のフォームツール、短いアリーナループを使い、強い演出に頼らず一撃ごとの結果を見せます。",
+      noteTitle: "プレイヤーと保存情報", parent: "バウンス乱闘は一般向けのブラウザゲームで、アカウント、購入、チャット、ランキング、広告の流れはありません。アリーナの勝利数と最高進行度はこのブラウザに保存されます。",
+      faq: [["ライバルにどう当てますか？", "接触できる距離まで近づき、隙ができたらSpaceまたは画面の「バウンス」を押します。"], ["フォームツールは何を変えますか？", "現在のフォームの反応を変え、異なるタイミングや間隔の選択肢を作ります。"], ["どうすると負けますか？", "自分のエネルギーが尽きるか、制限時間までにライバルを倒せないと負けです。"], ["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]],
+    },
     ko: { title: "바운스 난투", gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
-    es: { title: "Duelo de rebotes", gameplay: "Arena de retroceso con física suave", difficulty: "De fácil a desafiante", faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]] },
+    es: {
+      title: "Duelo de rebotes", age: "9+", difficulty: "De fácil a desafiante", time: "2–5 minutos por arena", gameplay: "Arena de retroceso con física suave", genre: ["Acción", "Arcade", "Animales"], skills: ["Ritmo", "Reacción", "Percepción espacial"],
+      intro: "Calcula tus rebotes, elige herramientas de espuma y desequilibra al rival en una arena de física juguetona.",
+      story: ["Un simpático retador de espuma se enfrenta a un rival en seis arenas de juguete. Cada arena cambia el espacio, las plataformas o el ritmo del rival, pero mantiene un objetivo claro: provocar el contacto en tus propios términos."],
+      systems: ["Mueve al personaje con las flechas o los controles visibles. Espacio ejecuta el golpe de rebote y los botones de herramientas cambian la herramienta de espuma activa.", "Los impactos producen un retroceso visible y un breve efecto de choque. Ganas al reducir la energía del rival; pierdes si se agota tu energía o el temporizador de la arena llega a cero."],
+      how: ["Elige una arena y observa cómo se acerca el rival.", "Muévete para crear espacio y pulsa Espacio o «REBOTE» cuando el momento sea favorable.", "Cambia de herramienta cuando el espacio o las plataformas pidan otra forma de acercarte.", "Después del resultado, repite la arena o continúa con la siguiente."],
+      strategyTips: ["No mantengas el contacto demasiado tiempo: retrocede, lee el rebote y golpea durante la siguiente apertura.", "Usa las plataformas y los bordes para controlar dónde puede recuperarse el rival.", "Reserva el cambio de herramienta para un problema claro de espacio, en lugar de cambiar después de cada rebote."],
+      progression: ["Las seis arenas avanzan desde un calentamiento hasta carriles con muelles, plataformas móviles, esquinas estrechas, un rival más rápido y un ritmo final que pone a prueba el control deliberado del espacio."],
+      designNote: "Duelo de rebotes usa arte original de cuerpo blando, retroceso legible, tres herramientas de espuma distintas y un ciclo compacto para que cada golpe tenga una consecuencia visible sin una presentación agresiva.",
+      noteTitle: "Información del jugador y guardado", parent: "Este juego de navegador para público general no tiene cuenta, compras, chat, clasificación ni flujo publicitario. Las victorias de arena y el mejor progreso se guardan en este navegador.",
+      faq: [["¿Cómo golpeo al rival?", "Acércate lo suficiente para entrar en contacto y pulsa Espacio o el control visible «REBOTE» durante la apertura."], ["¿Qué hacen las herramientas?", "Cambian la respuesta de la espuma activa y ofrecen otra opción de ritmo o distancia."], ["¿Cómo pierdo?", "Tu energía puede agotarse, o el tiempo de la arena puede terminar antes de derrotar al rival."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
+    },
     "pt-BR": { title: "Briga de Rebotes", gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]] },
-    fr: { title: "Baston rebondissant", gameplay: "Arène de recul à physique douce", difficulty: "Facile à relever, puis exigeant", faq: [["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]] },
-    de: { title: "Hüpfduell", gameplay: "Arena mit sanfter Rückstoßphysik", difficulty: "Leicht bis anspruchsvoll", faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]] },
+    fr: {
+      title: "Baston rebondissant", age: "9+", difficulty: "Facile à relever, puis exigeant", time: "2 à 5 minutes par arène", gameplay: "Arène de recul à physique douce", genre: ["Action", "Arcade", "Animaux"], skills: ["Timing", "Réaction", "Perception de l’espace"],
+      intro: "Calibrez vos rebonds, choisissez vos outils en mousse et déséquilibrez l’adversaire dans une arène physique ludique.",
+      story: ["Un sympathique challenger en mousse affronte un adversaire dans six arènes-jouets. Chaque arène modifie l’espace, les plateformes ou le rythme adverse, tout en gardant un objectif lisible : créer le contact à votre manière."],
+      systems: ["Les flèches ou les commandes visibles déplacent votre personnage. Espace déclenche le coup rebondissant et les boutons d’outils changent l’outil en mousse actif.", "Les impacts produisent un recul visible et un bref effet de choc. Réduisez l’énergie adverse pour gagner ; vous perdez si votre énergie s’épuise ou si le chronomètre de l’arène arrive à zéro."],
+      how: ["Choisissez une arène et observez l’approche de l’adversaire.", "Déplacez-vous pour créer de l’espace, puis appuyez sur Espace ou « REBOND » au bon moment.", "Changez d’outil lorsque l’espace ou la disposition des plateformes demande une autre approche.", "Après le résultat, rejouez l’arène ou passez à la suivante."],
+      strategyTips: ["Ne restez pas au contact indéfiniment : éloignez-vous, lisez le rebond, puis frappez pendant la prochaine ouverture.", "Utilisez les plateformes et les bords de l’arène pour contrôler l’endroit où l’adversaire peut récupérer.", "Gardez le changement d’outil pour un vrai problème d’espace au lieu de changer après chaque rebond."],
+      progression: ["Les six arènes vont d’un échauffement aux couloirs à ressorts, plateformes mobiles, virages serrés, adversaire plus rapide et rythme final qui teste la maîtrise de l’espace."],
+      designNote: "Baston rebondissant utilise des formes originales en mousse, un recul lisible, trois outils distincts et une boucle d’arène courte afin que chaque frappe ait une conséquence visible sans mise en scène agressive.",
+      noteTitle: "Informations du joueur et sauvegarde", parent: "Ce jeu de navigateur grand public ne propose ni compte, ni achat, ni chat, ni classement, ni flux publicitaire. Les victoires d’arène et la meilleure progression restent dans ce navigateur.",
+      faq: [["Comment toucher l’adversaire ?", "Approchez-vous assez pour entrer en contact, puis appuyez sur Espace ou sur la commande visible « REBOND » pendant l’ouverture."], ["À quoi servent les outils ?", "Ils modifient la réaction de la mousse active et proposent une autre option de timing ou d’espace."], ["Comment perdre ?", "Votre énergie peut s’épuiser, ou le temps de l’arène peut finir avant la défaite de l’adversaire."], ["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]],
+    },
+    de: {
+      title: "Hüpfduell", age: "9+", difficulty: "Leicht bis anspruchsvoll", time: "2–5 Minuten pro Arena", gameplay: "Arena mit sanfter Rückstoßphysik", genre: ["Action", "Arcade", "Tiere"], skills: ["Timing", "Reaktion", "Räumliches Denken"],
+      intro: "Planen Sie Ihre Sprünge, wählen Sie Schaumstoff-Werkzeuge und bringen Sie den Rivalen in einer spielerischen Physik-Arena aus dem Gleichgewicht.",
+      story: ["Ein freundlicher Schaumstoff-Herausforderer tritt in sechs Spielzeug-Arenen gegen einen Rivalen an. Jede Arena verändert Abstände, Plattformen oder den Rhythmus des Rivalen, behält aber ein klares Ziel: Kontakt zu Ihren Bedingungen herstellen."],
+      systems: ["Pfeiltasten oder sichtbare Steuerelemente bewegen Ihre Figur. Mit der Leertaste führen Sie den Rückstoßsprung aus; die Werkzeugschaltflächen wechseln das aktive Schaumstoff-Werkzeug.", "Treffer erzeugen einen sichtbaren Rückstoß und einen kurzen Aufpralleffekt. Sie gewinnen, wenn die Energie des Rivalen sinkt; Sie verlieren bei leerer eigener Energie oder wenn die Arena-Zeit abläuft."],
+      how: ["Wählen Sie eine Arena und beobachten Sie, wie der Rivale näher kommt.", "Bewegen Sie sich, um Abstand zu schaffen, und drücken Sie bei gutem Timing die Leertaste oder «HÜPFEN».", "Wechseln Sie das Werkzeug, wenn Abstand oder Plattformen eine andere Vorgehensweise verlangen.", "Nach dem Ergebnis können Sie die Arena wiederholen oder zur nächsten weitergehen."],
+      strategyTips: ["Bleiben Sie nicht dauerhaft in Kontakt: gehen Sie zurück, lesen Sie den Rückprall und greifen Sie in der nächsten Lücke an.", "Nutzen Sie Plattformen und Arenaränder, um zu bestimmen, wo sich der Rivale erholen kann.", "Wechseln Sie das Werkzeug nur bei einem klaren Abstandsproblem und nicht nach jedem Sprung."],
+      progression: ["Die sechs Arenen führen vom Aufwärmen über Federbahnen, bewegliche Plattformen und enge Ecken zu einem schnelleren Rivalen und einem abschließenden Rhythmus, der bewusstes Abstandhalten prüft."],
+      designNote: "Hüpfduell verbindet originale weiche Physik-Optik, gut lesbaren Rückstoß, drei unterschiedliche Schaumstoff-Werkzeuge und kurze Arenarunden, damit jeder Treffer eine sichtbare Folge hat, ohne harte Darstellung.",
+      noteTitle: "Spieler- und Speicherinformationen", parent: "Dieses allgemeine Browser-Spiel hat kein Konto, keine Käufe, keinen Chat, keine Rangliste und keinen Werbeablauf. Arenasiege und der beste Fortschritt bleiben in diesem Browser.",
+      faq: [["Wie treffe ich den Rivalen?", "Gehen Sie nah genug heran, um Kontakt herzustellen, und drücken Sie in der Lücke die Leertaste oder die sichtbare «HÜPFEN»-Schaltfläche."], ["Was bewirken die Werkzeuge?", "Sie verändern die Reaktion des aktiven Schaumstoffs und geben Ihnen eine andere Timing- oder Abstandsoption."], ["Wie verliere ich?", "Ihre Energie kann ausgehen, oder die Arena-Zeit kann enden, bevor der Rivale besiegt ist."], ["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
+    },
     it: { title: "Rissa rimbalzante", gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
     ru: { title: "Прыгучая схватка", gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
     hi: { title: "उछलती भिड़ंत", gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
-    ar: { title: "نزال الارتداد", gameplay: "ساحة ارتداد بفيزياء ناعمة", difficulty: "من السهل إلى التحدي", faq: [["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]] },
+    ar: {
+      title: "نزال الارتداد", age: "9+", difficulty: "من السهل إلى التحدي", time: "2–5 دقائق لكل ساحة", gameplay: "ساحة ارتداد بفيزياء ناعمة", genre: ["حركة", "أركيد", "حيوانات"], skills: ["التوقيت", "رد الفعل", "الإدراك المكاني"],
+      intro: "اضبط توقيت ارتداداتك، واختر أدوات الرغوة، وأخل بتوازن المنافس في ساحة فيزياء مرحة.",
+      story: ["يواجه متحدٍ ودود من الرغوة منافساً في ست ساحات لعب على شكل ألعاب. تغيّر كل ساحة المسافات أو المنصات أو إيقاع المنافس، مع بقاء الهدف واضحاً: اصنع التلامس وفق توقيتك أنت."],
+      systems: ["حرّك شخصيتك بمفاتيح الأسهم أو عناصر التحكم الظاهرة. ينفذ مفتاح المسافة ضربة الارتداد، وتبدّل أزرار الأدوات أداة الرغوة النشطة.", "تنتج الضربات ارتداداً واضحاً وتأثير اصطدام قصيراً. تفوز عندما تخفض طاقة المنافس؛ وتخسر عندما تنفد طاقتك أو ينتهي مؤقت الساحة قبل هزيمته."],
+      how: ["اختر ساحة وراقب اقتراب المنافس.", "تحرك لصنع مساحة، ثم اضغط مفتاح المسافة أو زر «ارتداد» عندما يحين التوقيت المناسب.", "بدّل أدوات الرغوة عندما تتطلب المسافة أو ترتيب المنصات طريقة مختلفة.", "بعد ظهور النتيجة، أعد الساحة أو تابع إلى الساحة التالية."],
+      strategyTips: ["لا تبقَ ملتصقاً بالمنافس طويلاً؛ ابتعد، واقرأ الارتداد، واضرب خلال الفتحة التالية.", "استخدم المنصات وحواف الساحة للتحكم في المكان الذي يستطيع المنافس التعافي فيه.", "احتفظ بتغيير الأداة لمشكلة واضحة في المسافة بدلاً من تبديلها بعد كل ارتداد."],
+      progression: ["تتقدم الساحات الست من الإحماء إلى ممرات النوابض والمنصات المتحركة والزوايا الضيقة ومنافس أسرع وإيقاع نهائي يختبر التحكم المتعمد في المسافة."],
+      designNote: "يستخدم نزال الارتداد رسوماً أصلية بجسم رغوي وفيزياء لطيفة، وارتداداً واضحاً، وثلاث أدوات رغوة مختلفة، وحلقة ساحة قصيرة كي تكون نتيجة كل ضربة مرئية من دون عرض قاسٍ.",
+      noteTitle: "معلومات اللاعب والحفظ", parent: "هذه اللعبة العامة في المتصفح لا تتضمن حساباً أو شراءً أو دردشة أو لوحة متصدرين أو تدفقاً إعلانياً. تبقى انتصارات الساحات وأفضل تقدم في هذا المتصفح.",
+      faq: [["كيف أصيب المنافس؟", "اقترب بما يكفي لحدوث التلامس، ثم اضغط مفتاح المسافة أو زر «ارتداد» الظاهر أثناء الفتحة."], ["ماذا تفعل الأدوات؟", "تغيّر استجابة الرغوة النشطة وتمنحك خياراً مختلفاً في التوقيت أو المسافة."], ["كيف أخسر؟", "قد تنفد طاقتك، أو ينتهي وقت الساحة قبل هزيمة المنافس."], ["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+    },
   };
   for (const [locale, copy] of Object.entries(animalBounceBrawlGuideLocaleCopy)) {
     localizedGames[locale] ||= {};

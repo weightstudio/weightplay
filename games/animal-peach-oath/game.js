@@ -19,6 +19,86 @@
       || localStorage.getItem("weightPlayLocale")
       || "en";
   };
+  const localeCopy = {
+    "zh-Hant": {
+      back: "返回 WeightPlay 大廳", settings: "設定", title: "桃園結義", eyebrow: "三國動物放置 RPG",
+      intro: "率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。", progress: "目前進度", start: "開始遊戲",
+      guideAria: "遊戲說明", guideTitle: "如何遊玩", guideText: "戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。",
+      battleAria: "桃園結義戰場", backMain: "返回主畫面", power: "戰力", auto: "自動", quick: "快捷功能", missions: "任務", achievements: "成就", events: "活動", codex: "圖鑑", shop: "商店",
+      arena: "即時戰鬥區", wave: "Wave", enemies: "敵軍", loot: "戰利品", resources: "資源", mainFunctions: "主要功能", battle: "征戰", heroes: "武將", tavern: "酒館", law: "軍法", campaign: "戰役", close: "關閉",
+      bossIncoming: "Boss 來襲！", enemyIncoming: "敵軍來襲", waveVictory: "Wave {wave} 勝利 · 戰利品已掉落", autoOn: "自動戰鬥已開啟", autoOff: "自動戰鬥已暫停", critical: "暴擊 ",
+      skillCrane: "{name}施放「{skill}」", skillLeo: "桃園盟誓：全隊回復", skillBear: "鐵壁守陣：獲得護盾", skillCobra: "白蛇妖士施放虛弱咒", debuff: "Debuff 虛弱", shield: "Buff 鐵壁", buff: "Buff 仁心",
+      longGoal: "長線目標：{text}", milestone: "戰役里程碑", recovery: "整軍目標", nextChapter: "第 {chapter} 章里程碑：完成第 {end} 關，進入「{next}」。", finalChapter: "最終戰役里程碑：完成第 {end} 關，完成全部 {count} 章征戰。",
+      victoryKicker: "{chapter} · {stage}", defeatKicker: "整軍再戰", victoryTitle: "大捷！", defeatTitle: "戰敗", victoryCopy: "義軍擊破關卡 Boss。獎勵已入帳，下一關的敵軍將更強。", defeatCopy: "進度保留在目前關卡；強化武將、裝備與軍法後再次挑戰。", rewardXp: "主公經驗", rewardMaterials: "Boss 材料", collectLoot: "領取戰利品", strengthen: "強化隊伍", next: "下一關", retry: "再次挑戰",
+      managementHeroes: "武將與隊伍", managementTavern: "酒館招募", managementLaw: "軍法研習", managementCampaign: "資源戰役", managementBattle: "征戰", teamFormation: "隊伍陣型", maxTeam: "最多 3 名上陣", heroGrowth: "武將養成", heroGrowthMeta: "等級、星級、技能、兵種", equipmentBag: "裝備與背包", upgrade: "升級", break: "突破", remove: "下陣", deploy: "上陣", equip: "穿戴", enhance: "強化", salvage: "分解", noEquipment: "背包目前沒有裝備；Boss 與裝備戰役會掉落新裝備。", front: "前排", back: "後排", fragments: "碎片", level: "Lv.", stars: "星", rank: "突破", attack: "攻", health: "血",
+      coachTitle1: "戰鬥會自動進行", coachCopy1: "武將會尋敵、攻擊並施放技能；點擊戰利品可立即收入背包。", coachTitle2: "所有成長都回到戰場", coachCopy2: "使用底部的武將、酒館、軍法與戰役，讓隊伍變強後繼續推關。", coachTitle3: "失敗不會倒退", coachCopy3: "戰敗會停留在目前關卡。調整陣容後點擊再次挑戰即可。", beginCampaign: "開始征戰", nextStep: "下一步",
+      resourceCoins: "銅錢", resourceIngots: "元寶", resourceFood: "軍糧", resourceMaterials: "材料", language: "語言", sound: "音樂與音效", quality: "戰鬥畫質", high: "精緻", low: "省電", damage: "顯示傷害數字", save: "存檔", autoSave: "LocalStorage 自動保存", resetProgress: "重置所有進度", reset: "重置存檔", confirmReset: "再次點擊確認", inventory: "件"
+    },
+    en: {
+      back: "Back to WeightPlay lobby", settings: "Settings", title: "Peach Garden Oath", eyebrow: "Animal Three Kingdoms idle RPG",
+      intro: "Lead an oath-bound animal squad through auto battles, hero growth, equipment, troop counters, and boss stages.", progress: "Current progress", start: "Start game",
+      guideAria: "Game information", guideTitle: "How to play", guideText: "Battles run automatically. Collect drops in the arena, then use the bottom controls to grow heroes, tune your squad, and improve your war laws.",
+      battleAria: "Peach Garden Oath battlefield", backMain: "Back to main", power: "Power", auto: "Auto", quick: "Quick actions", missions: "Missions", achievements: "Achievements", events: "Events", codex: "Codex", shop: "Shop",
+      arena: "Live battle area", wave: "Wave", enemies: "Enemies", loot: "Loot", resources: "Resources", mainFunctions: "Main functions", battle: "Battle", heroes: "Heroes", tavern: "Tavern", law: "War laws", campaign: "Campaign", close: "Close",
+      bossIncoming: "Boss incoming!", enemyIncoming: "Enemies incoming", waveVictory: "Wave {wave} victory · Loot dropped", autoOn: "Auto battle on", autoOff: "Auto battle paused", critical: "Critical ",
+      skillCrane: "{name} casts {skill}", skillLeo: "Peach oath: the squad recovers", skillBear: "Iron wall: shield gained", skillCobra: "White Serpent casts Weaken", debuff: "Debuff Weaken", shield: "Buff Iron Wall", buff: "Buff Benevolence",
+      longGoal: "Long-term goal: {text}", milestone: "Campaign milestone", recovery: "Recovery goal", nextChapter: "Chapter {chapter} milestone: clear stage {end} to enter {next}.", finalChapter: "Final campaign milestone: clear stage {end} to complete all {count} chapters.",
+      victoryKicker: "{chapter} · {stage}", defeatKicker: "Regroup and retry", victoryTitle: "Victory!", defeatTitle: "Defeat", victoryCopy: "The oath-bound squad defeated the stage Boss. Rewards are banked; the next stage is stronger.", defeatCopy: "Progress stays at this stage. Strengthen heroes, equipment, and war laws before trying again.", rewardXp: "Lord XP", rewardMaterials: "Boss materials", collectLoot: "Collect loot", strengthen: "Strengthen team", next: "Next stage", retry: "Retry",
+      managementHeroes: "Heroes and squad", managementTavern: "Recruit at tavern", managementLaw: "War laws", managementCampaign: "Resource campaign", managementBattle: "Battle", teamFormation: "Squad formation", maxTeam: "Up to 3 deployed", heroGrowth: "Hero growth", heroGrowthMeta: "Levels, stars, skills, troops", equipmentBag: "Equipment and bag", upgrade: "Upgrade", break: "Breakthrough", remove: "Remove", deploy: "Deploy", equip: "Equip", enhance: "Enhance", salvage: "Salvage", noEquipment: "Your bag is empty; Bosses and equipment campaigns drop new gear.", front: "Front", back: "Back", fragments: "fragments", level: "Lv.", stars: "stars", rank: "Breakthrough", attack: "ATK", health: "HP",
+      coachTitle1: "Battles run automatically", coachCopy1: "Heroes find targets, attack, and cast skills. Tap the loot to send it to your bag.", coachTitle2: "Growth returns to the battlefield", coachCopy2: "Use Heroes, Tavern, War Laws, and Campaign below to grow stronger and keep pushing.", coachTitle3: "A defeat never rolls you back", coachCopy3: "A defeat keeps the current stage. Adjust your squad, then choose Retry.", beginCampaign: "Start campaign", nextStep: "Next",
+      resourceCoins: "Coins", resourceIngots: "Ingots", resourceFood: "Rations", resourceMaterials: "Materials", language: "Language", sound: "Music and sound", quality: "Battle quality", high: "Detailed", low: "Power saver", damage: "Show damage numbers", save: "Save", autoSave: "Saved automatically in LocalStorage", resetProgress: "Reset all progress", reset: "Reset save", confirmReset: "Click again to confirm", inventory: "items"
+    },
+    ar: {
+      back: "العودة إلى ردهة WeightPlay", settings: "الإعدادات", title: "قسم بستان الخوخ", eyebrow: "لعبة RPG حيوانات خاملة من الممالك الثلاث",
+      intro: "قد فريقًا من الحيوانات المتعاهدين عبر القتال التلقائي وتطوير الأبطال والتجهيزات وتفوق الأنواع ومراحل الزعماء.", progress: "التقدم الحالي", start: "ابدأ اللعبة",
+      guideAria: "معلومات اللعبة", guideTitle: "طريقة اللعب", guideText: "تجري المعارك تلقائيًا. اجمع الغنائم في الساحة، ثم استخدم أدوات الأسفل لتطوير الأبطال وضبط الفريق وتحسين قوانين الحرب.",
+      battleAria: "ساحة معركة قسم بستان الخوخ", backMain: "العودة إلى الرئيسية", power: "القوة", auto: "تلقائي", quick: "إجراءات سريعة", missions: "المهمات", achievements: "الإنجازات", events: "الأحداث", codex: "الموسوعة", shop: "المتجر",
+      arena: "منطقة المعركة المباشرة", wave: "الموجة", enemies: "الأعداء", loot: "الغنائم", resources: "الموارد", mainFunctions: "الوظائف الرئيسية", battle: "المعركة", heroes: "الأبطال", tavern: "الحانة", law: "قوانين الحرب", campaign: "الحملة", close: "إغلاق",
+      bossIncoming: "الزعيم قادم!", enemyIncoming: "الأعداء قادمون", waveVictory: "انتصار الموجة {wave} · سقطت الغنائم", autoOn: "القتال التلقائي مفعّل", autoOff: "أُوقف القتال التلقائي", critical: "ضربة حرجة ",
+      skillCrane: "{name} يستخدم {skill}", skillLeo: "عهد الخوخ: يتعافى الفريق", skillBear: "الجدار الحديدي: اكتسبت درعًا", skillCobra: "الثعبان الأبيض يلقي الإضعاف", debuff: "إضعاف", shield: "درع الجدار الحديدي", buff: "تعزيز الرحمة",
+      longGoal: "الهدف الطويل: {text}", milestone: "محطة الحملة", recovery: "هدف الاستعداد", nextChapter: "محطة الفصل {chapter}: أكمل المرحلة {end} لدخول {next}.", finalChapter: "محطة الحملة الأخيرة: أكمل المرحلة {end} لإتمام الفصول {count} كلها.",
+      victoryKicker: "{chapter} · {stage}", defeatKicker: "أعد التنظيم وحاول", victoryTitle: "انتصار!", defeatTitle: "هزيمة", victoryCopy: "هزم الفريق المتعاهد زعيم المرحلة. أضيفت المكافآت، وستكون المرحلة التالية أقوى.", defeatCopy: "يبقى تقدمك في هذه المرحلة. طوّر الأبطال والتجهيزات وقوانين الحرب ثم حاول مجددًا.", rewardXp: "خبرة القائد", rewardMaterials: "مواد الزعيم", collectLoot: "اجمع الغنائم", strengthen: "طوّر الفريق", next: "المرحلة التالية", retry: "حاول مجددًا",
+      managementHeroes: "الأبطال والفريق", managementTavern: "التجنيد من الحانة", managementLaw: "قوانين الحرب", managementCampaign: "حملة الموارد", managementBattle: "المعركة", teamFormation: "تشكيلة الفريق", maxTeam: "حتى 3 أبطال", heroGrowth: "تطوير الأبطال", heroGrowthMeta: "المستويات والنجوم والمهارات والأنواع", equipmentBag: "التجهيزات والحقيبة", upgrade: "تطوير", break: "اختراق", remove: "إزالة", deploy: "نشر", equip: "تجهيز", enhance: "تعزيز", salvage: "تفكيك", noEquipment: "الحقيبة فارغة؛ تسقط الزعماء وحملات التجهيزات معدات جديدة.", front: "أمامي", back: "خلفي", fragments: "شظايا", level: "مستوى", stars: "نجوم", rank: "اختراق", attack: "هجوم", health: "صحة",
+      coachTitle1: "تجري المعارك تلقائيًا", coachCopy1: "يبحث الأبطال عن الأهداف ويهاجمون ويستخدمون المهارات. اضغط على الغنائم لإضافتها إلى حقيبتك.", coachTitle2: "يعود التطوير إلى ساحة المعركة", coachCopy2: "استخدم الأبطال والحانة وقوانين الحرب والحملة أدناه لتقوية الفريق ومواصلة التقدم.", coachTitle3: "الهزيمة لا تعيدك إلى الخلف", coachCopy3: "تبقي الهزيمة المرحلة الحالية. عدّل فريقك ثم اختر المحاولة مجددًا.", beginCampaign: "ابدأ الحملة", nextStep: "التالي",
+      resourceCoins: "عملات", resourceIngots: "سبائك", resourceFood: "مؤن", resourceMaterials: "مواد", language: "اللغة", sound: "الموسيقى والمؤثرات", quality: "جودة المعركة", high: "تفصيلية", low: "توفير الطاقة", damage: "إظهار أرقام الضرر", save: "الحفظ", autoSave: "حفظ تلقائي في LocalStorage", resetProgress: "إعادة ضبط كل التقدم", reset: "إعادة ضبط الحفظ", confirmReset: "اضغط مرة أخرى للتأكيد", inventory: "عناصر"
+    }
+  };
+  const localeNames = {
+    en: { "桃園起兵": "Peach Garden Muster", "黃巾風雲": "Yellow Turban Rising", "虎牢雄關": "Hulao Pass", "徐州月夜": "Moonlit Xuzhou", "荊州長歌": "Jingzhou Longsong", "赤壁東風": "Red Cliffs East Wind", "漢中爭鋒": "Hanzhong Contest", "五丈星落": "Wuzhang Stars", "玄德獅": "Lion Xuande", "雲長虎": "Tiger Yunchang", "翼德熊": "Bear Yide", "孔明鶴": "Crane Kongming", "子龍狐": "Fox Zilong", "灰狼刀兵": "Gray Wolf Blade", "野豬騎尉": "Boar Rider", "鬣狗弩手": "Hyena Crossbow", "白蛇妖士": "White Serpent", "黑角魔將": "Blackhorn Demon General", "步兵": "Infantry", "騎兵": "Cavalry", "槍兵": "Spearmen", "弓兵": "Archers", "謀士": "Strategist", "傳說": "Legendary", "史詩": "Epic", "稀有": "Rare", "精良": "Fine", "前排均衡": "Balanced front line", "突進爆發": "Burst charge", "前排守護": "Front-line guardian", "群體法術": "Area magic", "遠程連射": "Ranged volley", "仁德劍主": "Lord of Benevolent Blades", "赤膽騎將": "Crimson Cavalier", "鐵壁槍衛": "Ironwall Guard", "羽扇軍師": "Featherfan Strategist", "常勝弓將": "Unbeaten Archer" },
+    ar: { "桃園起兵": "تعبئة بستان الخوخ", "黃巾風雲": "صعود العمائم الصفراء", "虎牢雄關": "بوابة هولاو", "徐州月夜": "ليل شوتشو", "荊州長歌": "أنشودة جينغتشو", "赤壁東風": "رياح المنحدرات الحمراء", "漢中爭鋒": "صراع هانتشونغ", "五丈星落": "سقوط نجوم ووتشانغ", "玄德獅": "أسد شوانده", "雲長虎": "نمر يونتشانغ", "翼德熊": "دب ييده", "孔明鶴": "كركي كونغمينغ", "子龍狐": "ثعلب زيلونغ", "灰狼刀兵": "ذئب رمادي", "野豬騎尉": "فارس الخنزير البري", "鬣狗弩手": "رامي الضبع", "白蛇妖士": "ساحر الثعبان الأبيض", "黑角魔將": "جنرال القرن الأسود", "步兵": "مشاة", "騎兵": "فرسان", "槍兵": "رماة الرمح", "弓兵": "رماة", "謀士": "استراتيجي", "傳說": "أسطوري", "史詩": "ملحمي", "稀有": "نادر", "精良": "جيد", "前排均衡": "خط أمامي متوازن", "突進爆發": "اندفاع قوي", "前排守護": "حارس الخط الأمامي", "群體法術": "سحر جماعي", "遠程連射": "وابل بعيد", "仁德劍主": "سيد السيوف الرحيم", "赤膽騎將": "فارس القلب الأحمر", "鐵壁槍衛": "حارس الجدار الحديدي", "羽扇軍師": "مستشار المروحة", "常勝弓將": "رامي لا يُهزم" }
+  };
+  const localeExtraNames = {
+    en: { "桃園劍陣": "Peach Garden Blade Formation", "青月斬": "Azure Moon Slash", "長坂怒吼": "Changban Roar", "東風星火": "East Wind Starfire", "七進箭雨": "Sevenfold Arrow Rain", "百鍊青銅劍": "Hundred-Forged Bronze Sword", "桃紋明光甲": "Peach-patterned Bright Armor", "踏雲戰靴": "Cloudstep War Boots", "盟誓兵符": "Oathbound War Seal", "武器": "Weapon", "鎧甲": "Armor", "戰靴": "Boots", "寶物": "Relic" },
+    ar: { "桃園劍陣": "تشكيلة سيوف بستان الخوخ", "青月斬": "ضربة القمر الأزرق", "長坂怒吼": "زئير تشانغبان", "東風星火": "شرر ريح الشرق", "七進箭雨": "وابل السهام السباعي", "百鍊青銅劍": "سيف البرونز المصقول", "桃紋明光甲": "درع الضوء بنقش الخوخ", "踏雲戰靴": "حذاء حرب عابر للسحاب", "盟誓兵符": "ختم عهد الحرب", "武器": "سلاح", "鎧甲": "درع", "戰靴": "حذاء", "寶物": "أثر" }
+  };
+  const activeLocale = () => localeOrder.includes(routeLocale()) ? routeLocale() : "en";
+  const copy = (key, values = {}) => {
+    const table = localeCopy[activeLocale()] || localeCopy.en;
+    const fallback = localeCopy["zh-Hant"];
+    const value = table[key] ?? fallback[key] ?? key;
+    return String(value).replace(/\{(\w+)\}/g, (match, name) => values[name] ?? match);
+  };
+  const localizedValue = (value) => (localeNames[activeLocale()] || {})[value] || (localeExtraNames[activeLocale()] || {})[value] || value;
+  function applyLocale() {
+    const locale = activeLocale();
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    document.body.dir = locale === "ar" ? "rtl" : "ltr";
+    const text = (selector, value) => { const node = $(selector); if (node) node.textContent = value; };
+    const attr = (selector, name, value) => { const node = $(selector); if (node) node.setAttribute(name, value); };
+    text("#mainTitle", copy("title")); text(".main-copy .eyebrow", copy("eyebrow")); text(".main-copy p", copy("intro"));
+    text(".main-progress span", copy("progress")); text("#startBtn", copy("start")); text(".guide h2", copy("guideTitle")); text(".guide p", copy("guideText"));
+    attr(".main-return", "aria-label", copy("back")); attr(".shared-header .utility", "aria-label", copy("settings")); attr(".battle-settings", "aria-label", copy("settings"));
+    attr("#battleScene", "aria-label", copy("battleAria")); attr("#battleBack", "aria-label", copy("backMain")); attr(".quick-rail", "aria-label", copy("quick")); attr(".arena-wrap", "aria-label", copy("arena"));
+    ["missions", "achievements", "events", "codex", "shop", "settings"].forEach((key, index) => { const button = $(".quick-rail button:nth-child(" + (index + 1) + ")"); if (button) { const label = key === "settings" ? copy("settings") : copy(key); text(`.quick-rail button:nth-child(${index + 1}) span`, label); button.setAttribute("aria-label", label); } });
+    text("#autoBtn", copy("auto")); attr("#lootPile", "aria-label", copy("collectLoot")); attr(".resource-bar", "aria-label", copy("resources")); attr(".bottom-nav", "aria-label", copy("mainFunctions"));
+    ["battle", "heroes", "tavern", "law", "campaign"].forEach((key, index) => text(`.bottom-nav button:nth-child(${index + 1}) b`, copy(key)));
+    attr("#closeManagement", "aria-label", copy("close")); attr("#modalClose", "aria-label", copy("close"));
+    ["resourceCoins", "resourceIngots", "resourceFood", "resourceMaterials"].forEach((key, index) => { const node = $( `.resource-bar span:nth-child(${index + 1})`); if (node?.firstChild) node.firstChild.nodeValue = `${copy(key)} `; });
+    text("#resultKicker", copy("battleResult")); text("#resultTitle", copy("victoryTitle")); text("#resultManage", copy("strengthen")); text("#resultNext", copy("next")); text("#resultRetry", copy("retry"));
+    text("#coachTitle", copy("coachTitle1")); text("#coachNext", copy("nextStep"));
+    updateHud();
+  }
 
   function defaultState() {
     const heroState = {};
@@ -126,16 +206,16 @@
     const chapterEnd = Math.min((chapter + 1) * C.chapterSize, C.chapters.length * C.chapterSize);
     const nextChapter = C.chapters[chapter + 1];
     return nextChapter
-      ? `第 ${chapter + 1} 章里程碑：完成第 ${chapterEnd} 關，進入「${nextChapter}」。`
-      : `最終戰役里程碑：完成第 ${chapterEnd} 關，完成全部 ${C.chapters.length} 章征戰。`;
+      ? copy("nextChapter", { chapter: chapter + 1, end: chapterEnd, next: localizedValue(nextChapter) })
+      : copy("finalChapter", { end: chapterEnd, count: C.chapters.length });
   }
 
   function renderCampaignMilestone(resultWin = false) {
     const text = campaignMilestoneText();
     const battleGoal = $("#campaignGoal");
     const resultGoal = $("#resultMilestone");
-    if (battleGoal) battleGoal.textContent = `長線目標：${text}`;
-    if (resultGoal) resultGoal.textContent = `${resultWin ? "戰役里程碑" : "整軍目標"}：${text}`;
+    if (battleGoal) battleGoal.textContent = copy("longGoal", { text });
+    if (resultGoal) resultGoal.textContent = `${resultWin ? copy("milestone") : copy("recovery")}：${text}`;
   }
 
   function grant(reward) {
@@ -152,23 +232,23 @@
     while (state.player.xp >= levelGoal(state.player.level)) {
       state.player.xp -= levelGoal(state.player.level);
       state.player.level += 1;
-      toast(`主公等級提升至 Lv.${state.player.level}`);
+      toast(`${copy("level")} ${state.player.level}`);
       tone(620, .08);
     }
   }
 
   function updateHud() {
     $("#playerLevel").textContent = `Lv.${state.player.level}`;
-    $("#playerPower").textContent = `戰力 ${fmt(totalPower())}`;
-    $("#chapterName").textContent = C.chapters[chapterIndex()];
+    $("#playerPower").textContent = `${copy("power")} ${fmt(totalPower())}`;
+    $("#chapterName").textContent = localizedValue(C.chapters[chapterIndex()]);
     $("#stageLabel").textContent = stageCode();
-    $("#mainProgress").textContent = `第 ${state.stage} 關 · ${C.chapters[chapterIndex()]}`;
+    $("#mainProgress").textContent = `${state.stage} · ${localizedValue(C.chapters[chapterIndex()])}`;
     $("#coinValue").textContent = fmt(state.resources.coins);
     $("#ingotValue").textContent = fmt(state.resources.ingots);
     $("#foodValue").textContent = fmt(state.resources.food);
     $("#materialValue").textContent = fmt(state.resources.materials);
-    $("#waveText").textContent = `Wave ${state.wave} / 5`;
-    if (!$("#management").classList.contains("is-hidden")) $("#managementMeta").textContent = `戰力 ${fmt(totalPower())}`;
+    $("#waveText").textContent = `${copy("wave")} ${state.wave} / 5`;
+    if (!$("#management").classList.contains("is-hidden")) $("#managementMeta").textContent = `${copy("power")} ${fmt(totalPower())}`;
     updateDots();
     updateUnlocks();
   }
@@ -177,7 +257,7 @@
     const campaign = $('.bottom-nav [data-tab="campaign"]');
     const locked = state.stage < 2;
     campaign?.classList.toggle("is-locked", locked);
-    if (campaign) campaign.setAttribute("aria-label", locked ? "戰役，第 2 關解鎖" : "戰役");
+    if (campaign) campaign.setAttribute("aria-label", locked ? `${copy("campaign")} · ${state.stage < 2 ? "2" : state.stage} ${copy("next")}` : copy("campaign"));
   }
 
   function progressFor(entry) {
@@ -246,7 +326,7 @@
     battle.heroes = state.team.filter((id) => state.heroes[id]?.owned).map((id, i) => makeUnit(heroData(id), "hero", i));
     battle.enemies = enemyPack();
     $("#resultPanel").classList.add("is-hidden");
-    $("#battleStatus").textContent = state.wave === 5 ? "Boss 來襲！" : "敵軍來襲";
+    $("#battleStatus").textContent = state.wave === 5 ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
     updateHud();
@@ -256,11 +336,11 @@
   function renderUnits() {
     $("#heroLane").innerHTML = battle.heroes.map(unitMarkup).join("");
     $("#enemyLane").innerHTML = battle.enemies.map(unitMarkup).join("");
-    $("#enemyCount").textContent = `敵軍 ${battle.enemies.filter((u) => u.hp > 0).length}`;
+    $("#enemyCount").textContent = `${copy("enemies")} ${battle.enemies.filter((u) => u.hp > 0).length}`;
     const boss = battle.enemies.find((unit) => unit.data.boss);
     $("#bossBar").classList.toggle("is-hidden", !boss);
     if (boss) {
-      $("#bossName").textContent = boss.data.name;
+      $("#bossName").textContent = localizedValue(boss.data.name);
       $("#bossHpFill").style.width = `${clamp(boss.hp / boss.maxHp * 100, 0, 100)}%`;
     }
   }
@@ -269,7 +349,7 @@
     const hp = clamp(unit.hp / unit.maxHp * 100, 0, 100);
     return `<div class="unit" data-unit="${unit.key}">
       <i class="hp"><b style="width:${hp}%"></b></i>${sprites.markup(unit.side, unit.data.id, `battle-${unit.key}`)}
-      <span class="unit-name">${unit.data.name}</span><span class="status-badge is-hidden"></span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
+      <span class="unit-name">${localizedValue(unit.data.name)}</span><span class="status-badge is-hidden"></span>${unit.side === "hero" && unit.attacks >= 4 ? '<i class="skill-ready"></i>' : ''}
     </div>`;
   }
 
@@ -307,20 +387,20 @@
   function applySkill(unit, targets) {
     if (unit.id === "crane") {
       targets.filter((target) => target.hp > 0).forEach((target) => { target.hp = Math.max(0, target.hp - Math.round(unit.atk * .62)); });
-      $("#battleStatus").textContent = `${unit.data.name}施放「${unit.data.skill}」`;
+      $("#battleStatus").textContent = copy("skillCrane", { name: localizedValue(unit.data.name), skill: localizedValue(unit.data.skill) });
     } else if (unit.id === "leo") {
       battle.heroes.filter((hero) => hero.hp > 0).forEach((hero) => { hero.hp = Math.min(hero.maxHp, hero.hp + Math.round(hero.maxHp * .08)); hero.status.buffUntil = Date.now() + 2800; });
-      $("#battleStatus").textContent = "桃園盟誓：全隊回復";
+      $("#battleStatus").textContent = copy("skillLeo");
     } else if (unit.id === "bear") {
       unit.hp = Math.min(unit.maxHp, unit.hp + Math.round(unit.maxHp * .14));
       unit.status.shieldUntil = Date.now() + 3200;
-      $("#battleStatus").textContent = "鐵壁守陣：獲得護盾";
+      $("#battleStatus").textContent = copy("skillBear");
     } else if (unit.id === "cobra") {
       const target = battle.heroes.filter((hero) => hero.hp > 0).sort((a, b) => b.atk - a.atk)[0];
       if (target) target.status.weakenUntil = Date.now() + 3200;
-      $("#battleStatus").textContent = "白蛇妖士施放虛弱咒";
+      $("#battleStatus").textContent = copy("skillCobra");
     } else {
-      $("#battleStatus").textContent = `${unit.data.name}施放「${unit.data.skill}」`;
+      $("#battleStatus").textContent = copy("skillCrane", { name: localizedValue(unit.data.name), skill: localizedValue(unit.data.skill) });
     }
     tone(520, .05);
   }
@@ -335,7 +415,7 @@
     if (state.settings.damage) {
       const hit = document.createElement("span");
       hit.className = `damage${crit ? " crit" : ""}${skill ? " skill" : ""}`;
-      hit.textContent = `${crit ? "暴擊 " : ""}-${damage}`;
+      hit.textContent = `${crit ? copy("critical") : ""}-${damage}`;
       hit.style.setProperty("--x", `${22 + Math.random() * 56}%`);
       hit.style.setProperty("--y", `${target.side === "enemy" ? 16 + Math.random() * 18 : 55 + Math.random() * 15}%`);
       $("#combatFeed").append(hit);
@@ -355,14 +435,14 @@
         const weakened = (unit.status.weakenUntil || 0) > Date.now();
         const shielded = (unit.status.shieldUntil || 0) > Date.now();
         const buffed = (unit.status.buffUntil || 0) > Date.now();
-        badge.textContent = weakened ? "Debuff 虛弱" : shielded ? "Buff 鐵壁" : buffed ? "Buff 仁心" : "";
+        badge.textContent = weakened ? copy("debuff") : shielded ? copy("shield") : buffed ? copy("buff") : "";
         badge.classList.toggle("is-debuff", weakened);
         badge.classList.toggle("is-hidden", !weakened && !shielded && !buffed);
       }
     });
     const boss = battle.enemies.find((unit) => unit.data.boss);
     if (boss) $("#bossHpFill").style.width = `${clamp(boss.hp / boss.maxHp * 100, 0, 100)}%`;
-    $("#enemyCount").textContent = `敵軍 ${battle.enemies.filter((u) => u.hp > 0).length}`;
+    $("#enemyCount").textContent = `${copy("enemies")} ${battle.enemies.filter((u) => u.hp > 0).length}`;
   }
 
   function waveVictory() {
@@ -374,7 +454,7 @@
     battle.pendingLoot.materials += reward.materials;
     if (Math.random() < .18 || state.wave === 5) battle.pendingLoot.gear.push(C.equipment[Math.floor(Math.random() * C.equipment.length)].id);
     $("#lootPile").classList.remove("is-hidden");
-    $("#battleStatus").textContent = `Wave ${state.wave} 勝利 · 戰利品已掉落`;
+    $("#battleStatus").textContent = copy("waveVictory", { wave: state.wave });
     if (state.wave < 5) {
       state.wave += 1;
       save();
@@ -397,10 +477,10 @@
     battle.resultOpen = true;
     clearInterval(battle.tickHandle);
     $("#resultPanel").classList.remove("is-hidden");
-    $("#resultKicker").textContent = win ? `${C.chapters[chapterIndex()]} · ${stageCode()}` : "整軍再戰";
-    $("#resultTitle").textContent = win ? "大捷！" : "戰敗";
-    $("#resultCopy").textContent = win ? "義軍擊破關卡 Boss。獎勵已入帳，下一關的敵軍將更強。" : "進度保留在目前關卡；強化武將、裝備與軍法後再次挑戰。";
-    $("#resultRewards").innerHTML = win ? `<span>主公經驗 +${35 + state.stage * 6}</span><span>Boss 材料 +${reward.materials || 3}</span>` : "";
+    $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
+    $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
+    $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
+    $("#resultRewards").innerHTML = win ? `<span>${copy("rewardXp")} +${35 + state.stage * 6}</span><span>${copy("rewardMaterials")} +${reward.materials || 3}</span>` : "";
     renderCampaignMilestone(win);
     $("#resultNext").classList.toggle("is-hidden", !win);
     $("#resultRetry").classList.toggle("is-hidden", win);
@@ -416,7 +496,7 @@
     state.resources.coins += loot.coins;
     state.resources.materials += loot.materials;
     loot.gear.forEach((itemId) => state.inventory.push({ uid: uid(), itemId, level: 1 }));
-    if (!silent) toast(`獲得銅錢 ${loot.coins}、材料 ${loot.materials}${loot.gear.length ? `、裝備 ${loot.gear.length}` : ""}`);
+    if (!silent) toast(`${copy("resourceCoins")} ${loot.coins} · ${copy("resourceMaterials")} ${loot.materials}${loot.gear.length ? ` · ${copy("equipmentBag")} ${loot.gear.length}` : ""}`);
     battle.pendingLoot = { coins: 0, materials: 0, gear: [] };
     $("#lootPile").classList.add("is-hidden");
     updateHud();
@@ -432,9 +512,9 @@
     closeModal();
     $("#management").classList.remove("is-hidden");
     $$(".bottom-nav button").forEach((button) => button.classList.toggle("is-active", button.dataset.tab === tab));
-    const titles = { heroes: "武將與隊伍", tavern: "酒館招募", law: "軍法研習", campaign: "資源戰役" };
-    $("#managementTitle").textContent = titles[tab] || "征戰";
-    $("#managementMeta").textContent = `戰力 ${fmt(totalPower())}`;
+    const titles = { heroes: copy("managementHeroes"), tavern: copy("managementTavern"), law: copy("managementLaw"), campaign: copy("managementCampaign") };
+    $("#managementTitle").textContent = titles[tab] || copy("managementBattle");
+    $("#managementMeta").textContent = `${copy("power")} ${fmt(totalPower())}`;
     if (tab === "heroes") renderHeroes();
     if (tab === "tavern") renderTavern();
     if (tab === "law") renderLaw();
@@ -452,7 +532,7 @@
   }
 
   function renderHeroes() {
-    const formation = state.team.map((id, index) => `<div class="formation-slot"><span>${index < 2 ? "前排" : "後排"}</span><strong>${heroData(id).name}</strong></div>`).join("");
+    const formation = state.team.map((id, index) => `<div class="formation-slot"><span>${index < 2 ? copy("front") : copy("back")}</span><strong>${localizedValue(heroData(id).name)}</strong></div>`).join("");
     const cards = C.heroes.map((hero) => {
       const p = state.heroes[hero.id];
       const stats = p.owned ? heroStats(hero.id) : null;
@@ -461,21 +541,21 @@
       const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
       return `<article class="hero-card" data-hero="${hero.id}">
         <div class="hero-portrait">${sprites.markup("hero", hero.id, `roster-${hero.id}`)}</div>
-        <div class="hero-card-copy"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3>
-        <p>${p.owned ? `${hero.role} · ${hero.skill}` : `碎片 ${p.fragments}/10`}</p>
-        ${p.owned ? `<div class="mini-stats"><span>Lv.${p.level}</span><span>${p.star} 星</span><span>突破 +${p.rank || 0}</span><span>攻 ${stats.atk}</span><span>血 ${stats.hp}</span></div>
-        <div class="card-actions"><button data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>升級 ${cost}</button><button data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>突破 ${breakCost}</button><button class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? "下陣" : "上陣"}</button></div>` : ""}
+        <div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3>
+        <p>${p.owned ? `${localizedValue(hero.role)} · ${localizedValue(hero.skill)}` : `${copy("fragments")} ${p.fragments}/10`}</p>
+        ${p.owned ? `<div class="mini-stats"><span>${copy("level")}${p.level}</span><span>${p.star} ${copy("stars")}</span><span>${copy("rank")} +${p.rank || 0}</span><span>${copy("attack")} ${stats.atk}</span><span>${copy("health")} ${stats.hp}</span></div>
+        <div class="card-actions"><button data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>${copy("upgrade")} ${cost}</button><button data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>${copy("break")} ${breakCost}</button><button class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy("remove") : copy("deploy")}</button></div>` : ""}
         </div></article>`;
     }).join("");
     const equipment = state.inventory.length ? state.inventory.map((entry) => {
       const def = equipmentData(entry.itemId);
       const holder = Object.keys(state.equipped).find((id) => state.equipped[id] === entry.uid);
       const enhanceCost = 3 + entry.level * 2;
-      return `<div class="equipment-row"><div><strong>${def.name} +${entry.level}</strong><small>${def.slot} · ${def.quality} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${heroData(holder).name}` : ""}</small></div><div class="card-actions"><button data-action="equip" data-uid="${entry.uid}">穿戴</button><button data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>強化 ${enhanceCost}</button><button class="alt" data-action="salvage" data-uid="${entry.uid}">分解</button></div></div>`;
-    }).join("") : "<p>背包目前沒有裝備；Boss 與裝備戰役會掉落新裝備。</p>";
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>隊伍陣型</h3><span>最多 3 名上陣</span></div><div class="formation">${formation}</div>
-      <div class="section-title"><h3>武將養成</h3><span>等級、星級、技能、兵種</span></div><div class="hero-grid">${cards}</div>
-      <div class="section-title"><h3>裝備與背包</h3><span>${state.inventory.length} 件</span></div><div>${equipment}</div>`;
+      return `<div class="equipment-row"><div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div><div class="card-actions"><button data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
+    }).join("") : `<p>${copy("noEquipment")}</p>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>${copy("teamFormation")}</h3><span>${copy("maxTeam")}</span></div><div class="formation">${formation}</div>
+      <div class="section-title"><h3>${copy("heroGrowth")}</h3><span>${copy("heroGrowthMeta")}</span></div><div class="hero-grid">${cards}</div>
+      <div class="section-title"><h3>${copy("equipmentBag")}</h3><span>${state.inventory.length} ${copy("inventory")}</span></div><div>${equipment}</div>`;
   }
 
   function renderTavern() {
@@ -514,7 +594,7 @@
       state.resources.coins -= cost;
       state.heroes[id].level = Math.min(C.heroLevelCap, state.heroes[id].level + 1);
       state.stats.upgrades += 1;
-      toast(`${heroData(id).name}提升至 Lv.${state.heroes[id].level}`);
+      toast(`${localizedValue(heroData(id).name)} · ${copy("upgrade")} ${state.heroes[id].level}`);
       renderHeroes();
     }
     if (action === "break-hero") {
@@ -523,23 +603,23 @@
       if (p.level < ((p.rank || 0) + 1) * 5 || state.resources.materials < cost) return;
       state.resources.materials -= cost;
       p.rank = (p.rank || 0) + 1;
-      toast(`${heroData(id).name}突破成功，基礎成長大幅提升`);
+      toast(`${localizedValue(heroData(id).name)} · ${copy("break")} complete`);
       renderHeroes();
     }
     if (action === "toggle-team") {
       const at = state.team.indexOf(id);
       if (at >= 0) {
-        if (state.team.length === 1) return toast("至少保留一名上陣武將");
+        if (state.team.length === 1) return toast(`${copy("heroes")} · 1`);
         state.team.splice(at, 1);
       } else if (state.team.length < 3) state.team.push(id);
-      else return toast("隊伍最多上陣三名武將");
+      else return toast(copy("maxTeam"));
       renderHeroes();
     }
     if (action === "equip") {
       const target = state.team[0];
       Object.keys(state.equipped).forEach((heroId) => { if (state.equipped[heroId] === itemUid) delete state.equipped[heroId]; });
       state.equipped[target] = itemUid;
-      toast(`${equipmentData(state.inventory.find((entry) => entry.uid === itemUid).itemId).name}已交給${heroData(target).name}`);
+      toast(`${localizedValue(equipmentData(state.inventory.find((entry) => entry.uid === itemUid).itemId).name)} · ${copy("equip")} · ${localizedValue(heroData(target).name)}`);
       renderHeroes();
     }
     if (action === "salvage") {
@@ -548,7 +628,7 @@
       Object.keys(state.equipped).forEach((heroId) => { if (state.equipped[heroId] === itemUid) delete state.equipped[heroId]; });
       state.inventory.splice(index, 1);
       state.resources.materials += 5;
-      toast("裝備已分解，獲得 5 材料");
+      toast(`${copy("salvage")} · ${copy("resourceMaterials")} 5`);
       renderHeroes();
     }
     if (action === "upgrade-equipment") {
@@ -558,7 +638,7 @@
       if (state.resources.materials < cost) return;
       state.resources.materials -= cost;
       item.level += 1;
-      toast(`${equipmentData(item.itemId).name}強化至 +${item.level}`);
+      toast(`${localizedValue(equipmentData(item.itemId).name)} · ${copy("enhance")} +${item.level}`);
       renderHeroes();
     }
     if (action === "summon") summon(Number(button.dataset.count || 1));
@@ -567,7 +647,7 @@
       if (state.resources.materials < cost) return;
       state.resources.materials -= cost;
       state.law[id] += 1;
-      toast("軍法研習成功，全隊永久變強");
+      toast(`${copy("managementLaw")} · ${copy("upgrade")}`);
       renderLaw();
     }
     if (action === "campaign") runCampaign(id);
@@ -665,12 +745,12 @@
   function renderSettings() {
     const locale = localeOrder.includes(routeLocale()) ? routeLocale() : "en";
     const options = localeOrder.map((code) => `<option value="${code}" ${code === locale ? "selected" : ""}>${localeLabels[code]}</option>`).join("");
-    openModal("設定", `<div class="settings-list"><div class="setting-row"><span>語言</span><select id="localeSelect" data-setting="locale" data-wp-language aria-label="語言">${options}</select></div>
-      <div class="setting-row"><span>音樂與音效</span><button class="toggle ${state.settings.sound ? "is-on" : ""}" data-setting="sound" data-sound-toggle aria-pressed="${state.settings.sound}"></button></div>
-      <div class="setting-row"><span>戰鬥畫質</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>精緻</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>省電</option></select></div>
-      <div class="setting-row"><span>顯示傷害數字</span><button class="toggle ${state.settings.damage ? "is-on" : ""}" data-setting="damage" aria-pressed="${state.settings.damage}"></button></div>
-      <div class="setting-row"><span>存檔</span><strong>LocalStorage 自動保存</strong></div>
-      <div class="setting-row"><span>重置所有進度</span><button data-reset="arm">重置存檔</button></div></div>`);
+    openModal(copy("settings"), `<div class="settings-list"><div class="setting-row"><span>${copy("language")}</span><select id="localeSelect" data-setting="locale" data-wp-language aria-label="${copy("language")}">${options}</select></div>
+      <div class="setting-row"><span>${copy("sound")}</span><button class="toggle ${state.settings.sound ? "is-on" : ""}" data-setting="sound" data-sound-toggle aria-pressed="${state.settings.sound}"></button></div>
+      <div class="setting-row"><span>${copy("quality")}</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>${copy("high")}</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>${copy("low")}</option></select></div>
+      <div class="setting-row"><span>${copy("damage")}</span><button class="toggle ${state.settings.damage ? "is-on" : ""}" data-setting="damage" aria-pressed="${state.settings.damage}"></button></div>
+      <div class="setting-row"><span>${copy("save")}</span><strong>${copy("autoSave")}</strong></div>
+      <div class="setting-row"><span>${copy("resetProgress")}</span><button data-reset="arm">${copy("reset")}</button></div></div>`);
   }
 
   function modalAction(event) {
@@ -698,7 +778,7 @@
     }
     const reset = event.target.closest("[data-reset]");
     if (reset) {
-      if (reset.dataset.reset === "arm") { reset.dataset.reset = "confirm"; reset.textContent = "再次點擊確認"; }
+      if (reset.dataset.reset === "arm") { reset.dataset.reset = "confirm"; reset.textContent = copy("confirmReset"); }
       else { localStorage.removeItem(C.saveKey); location.reload(); }
     }
   }
@@ -728,9 +808,9 @@
 
   function showCoach() {
     const steps = [
-      ["戰鬥會自動進行", "武將會尋敵、攻擊並施放技能；點擊戰利品可立即收入背包。"],
-      ["所有成長都回到戰場", "使用底部的武將、酒館、軍法與戰役，讓隊伍變強後繼續推關。"],
-      ["失敗不會倒退", "戰敗會停留在目前關卡。調整陣容後點擊再次挑戰即可。"]
+      [copy("coachTitle1"), copy("coachCopy1")],
+      [copy("coachTitle2"), copy("coachCopy2")],
+      [copy("coachTitle3"), copy("coachCopy3")]
     ];
     let index = 0;
     const coach = $("#coach");
@@ -739,7 +819,7 @@
       $("#coachStep").textContent = `${index + 1} / ${steps.length}`;
       $("#coachTitle").textContent = steps[index][0];
       $("#coachCopy").textContent = steps[index][1];
-      $("#coachNext").textContent = index === steps.length - 1 ? "開始征戰" : "下一步";
+      $("#coachNext").textContent = index === steps.length - 1 ? copy("beginCampaign") : copy("nextStep");
     };
     $("#coachNext").onclick = () => {
       index += 1;
@@ -781,13 +861,13 @@
       battle.auto = !battle.auto;
       $("#autoBtn").classList.toggle("is-on", battle.auto);
       $("#autoBtn").setAttribute("aria-pressed", String(battle.auto));
-      $("#battleStatus").textContent = battle.auto ? "自動戰鬥已開啟" : "自動戰鬥已暫停";
+      $("#battleStatus").textContent = battle.auto ? copy("autoOn") : copy("autoOff");
     });
     $("#speedBtn").addEventListener("click", () => { battle.speed = battle.speed === 1 ? 2 : 1; $("#speedBtn").textContent = `×${battle.speed}`; });
     $("#lootPile").addEventListener("click", () => collectLoot(false));
     $$("[data-open]").forEach((button) => button.addEventListener("click", () => quickOpen(button.dataset.open)));
     $$(".bottom-nav button").forEach((button) => button.addEventListener("click", () => {
-      if (button.dataset.tab === "campaign" && state.stage < 2) return toast("通過第 1 關後解鎖戰役");
+      if (button.dataset.tab === "campaign" && state.stage < 2) return toast(`${copy("campaign")} · ${copy("next")} 2`);
       return button.dataset.tab === "battle" ? closeManagement() : openManagement(button.dataset.tab);
     }));
     $("#closeManagement").addEventListener("click", closeManagement);
@@ -803,6 +883,9 @@
         const target = `/${localeSegments[next]}/games/animal-peach-oath/${location.search}${location.hash}`;
         if (/^https?:$/.test(location.protocol) && location.pathname !== target) { location.assign(target); return; }
         document.documentElement.lang = next;
+        document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
+        document.body.dir = next === "ar" ? "rtl" : "ltr";
+        applyLocale();
         renderSettings();
       }
       if (event.target.dataset.setting === "quality") { state.settings.quality = event.target.value; document.body.dataset.quality = event.target.value; save(); }
@@ -820,6 +903,7 @@
     setInterval(save, 5000);
   }
 
+  applyLocale();
   bind();
   updateHud();
   document.body.dataset.quality = state.settings.quality;

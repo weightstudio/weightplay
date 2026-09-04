@@ -2120,6 +2120,16 @@ body.wp-shell-main-active #menuPanel .standard-main-start {
   flex: 0 0 52px;
 }
 
+/* The governed phone contract treats the whole Main content column as the
+   poster frame. Keep the square cover readable on both phone widths while
+   leaving the compact-landscape and desktop columns to their own rules. */
+@media (max-width: 699px) and (min-height: 471px) {
+  body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .cover {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 @media (min-width: 700px) and (min-height: 471px) {
   body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
     grid-template: none !important;

@@ -15,6 +15,34 @@
   .result-actions{grid-area:actions}
 }
 
+/* Interface V6 Stage contract: keep one visible section tab below the
+   horizontal puzzle rail, and reserve its hit area so the rail cannot cover it. */
+.stage-canvas .stage-rail { bottom: 68px; }
+.stage-canvas .stage-tabs {
+  position: absolute;
+  z-index: 4;
+  left: 18px;
+  right: 18px;
+  bottom: 10px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+.stage-canvas .stage-tabs button {
+  min-width: 168px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid #79f9df;
+  border-radius: 12px;
+  background: #073c40;
+  color: #effffb;
+  font-weight: 900;
+}
+@media(max-height:480px) and (orientation:landscape) {
+  .stage-canvas .stage-rail { bottom: 58px; }
+  .stage-canvas .stage-tabs { bottom: 4px; }
+}
+
 /* Battle keeps the selected chapter lesson visible instead of repeating the
    generic ready cue above and below the board. */
 .objective-row {

@@ -59,6 +59,9 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 .wp-shell-main-title{min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1rem}
 .main-header .topbar-actions{justify-content:flex-end}
 .wp-shell-settings-button{width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
+#mainScreen .wp-shell-settings-button span,
+#stageScreen .wp-shell-settings-button span,
+#battleScreen .utility-button span{display:none}
 .main-content{justify-content:flex-start;padding:8px 0 12px;gap:0}
 .main-cover{width:min(100%,420px);margin:0 auto 8px;aspect-ratio:1}
 .main-mimi{width:min(24vw,120px);height:min(24vw,120px);margin:0 auto 2px}
@@ -88,7 +91,7 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 #battleScreen .battle-content,#battleScreen .result-panel{width:min(100%,700px);margin:0 auto}
 #battleScreen .battle-content{padding:12px 14px 14px;gap:10px}
 #battleScreen .battle-header .topbar-actions{justify-content:flex-end}
-#battleScreen .battle-settings{width:48px;height:48px}
+#battleScreen .battle-settings,#battleScreen [data-wp-battle-utility]{width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
 .battle-ad-reserve{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100vw,920px);height:56px;z-index:9;background:#0b1424ee;border-top:1px solid #49668c;pointer-events:none}
 .battle-ad-reserve[hidden]{display:none!important}
 

@@ -59,7 +59,7 @@
 
   function normalizeLocale(value){const aliases={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR"};const normalized=aliases[String(value).toLowerCase()]||value;return LOCALES.includes(normalized)?normalized:"en"}
   function dictionary(){return window.ANIMAL_PENALTY_LOCALES?.[lang]||window.ANIMAL_PENALTY_LOCALES?.en||{}}
-  function t(key,vars={}){let value=dictionary()[key]??window.ANIMAL_PENALTY_LOCALES?.en?.[key]??key;Object.entries(vars).forEach(([name,item])=>{value=String(value).replaceAll(`{${name}}`,String(item))});return value}
+  function t(key,vars={}){if(key==="loseCopy"&&match?.defendChoice===null)key="lateLossCopy";let value=dictionary()[key]??window.ANIMAL_PENALTY_LOCALES?.en?.[key]??key;Object.entries(vars).forEach(([name,item])=>{value=String(value).replaceAll(`{${name}}`,String(item))});return value}
   function localizedCampaign(key,index){return dictionary()[key]?.[index]??window.ANIMAL_PENALTY_LOCALES.en[key]?.[index]??""}
   function opponentName(index){return lang==="en"?OPPONENTS[index]:t("teamName",{n:index+1})}
   function persist(){safeStorage.set(SAVE_KEY,JSON.stringify(save))}

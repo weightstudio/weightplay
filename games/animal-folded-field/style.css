@@ -152,3 +152,246 @@ h1 { margin-bottom: 16px; font-size: clamp(44px, 7vw, 80px); line-height: .98; l
   .icon-btn { width: 44px; height: 44px; }
   .pattern-cell { font-size: 10px; padding-inline: 5px; }
 }
+
+/* Interface 6 shell contract: keep Main, Stage, and Battle readable at every
+   validator viewport while preserving the authored field-book visual language. */
+html { min-width: 320px; }
+body { min-width: 0; overflow-x: hidden; }
+
+#mainScreen {
+  width: min(100%, 920px);
+  margin: 0 auto;
+  padding: 14px 16px 28px;
+}
+#mainScreen .topbar {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  min-height: 48px;
+}
+#mainScreen .wp-shell-return {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 58px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d8c8a9;
+  border-radius: 14px;
+  background: #fffdf8;
+  color: #29485a;
+  font-size: 1.15rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+#mainScreen .wp-shell-return img { width: 28px; height: 28px; object-fit: contain; flex: 0 0 auto; }
+#mainScreen .wp-shell-main-title {
+  position: absolute;
+  left: 50%;
+  max-width: calc(100% - 150px);
+  overflow: hidden;
+  color: #29485a;
+  font-size: 1.05rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+#mainScreen .utilities { position: relative; justify-self: end; }
+#mainScreen .wp-shell-settings-button {
+  width: 48px !important;
+  height: 48px !important;
+  padding: 0;
+  border: 1px solid #d8c8a9;
+  border-radius: 14px;
+  background: #fffdf8;
+  color: #29485a;
+  font-weight: 900;
+}
+#mainScreen .wp-shell-settings-popover {
+  position: absolute;
+  z-index: 10;
+  top: 54px;
+  right: -4px;
+  width: min(280px, calc(100vw - 24px));
+  padding: 14px;
+  border: 1px solid #d8c8a9;
+  border-radius: 16px;
+  background: #fffdf8;
+  box-shadow: 0 18px 42px rgba(23, 59, 58, .18);
+}
+#mainScreen[dir="rtl"] .wp-shell-settings-popover,
+html[dir="rtl"] #mainScreen .wp-shell-settings-popover {
+  right: auto;
+  left: 0;
+}
+#mainScreen .wp-shell-settings-popover .setting-row { min-height: 44px; padding: 9px 4px; }
+#mainScreen .wp-shell-settings-popover select { min-height: 36px; }
+
+#mainScreen .hero-grid {
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  max-width: none;
+  margin: 16px auto 24px;
+}
+#mainScreen .field-poster { width: 420px; max-width: 420px; border-radius: 24px; }
+#mainScreen .field-poster-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+#mainScreen .hero-copy { min-width: 0; }
+#mainScreen .hero-title { margin-bottom: 12px; font-size: clamp(40px, 6vw, 72px); }
+#mainScreen .wp-standard-main-summary { max-width: 530px; }
+#mainScreen .wp-standard-main-progress {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  height: 42px;
+  margin: 12px 0 0;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f4faf4;
+}
+#mainScreen .hero-actions { margin-top: 16px; }
+#mainScreen #startBtn { min-height: 52px; height: 52px; }
+
+#gameGuide { display: none; }
+body[data-screen="main"] #gameGuide { display: block; }
+#gameGuide.game-page-info {
+  width: min(calc(100% - 36px), 860px);
+  margin: 0 auto 28px;
+  padding: 16px 18px;
+  border: 1px solid #cfe2d8;
+  border-radius: 18px;
+  background: #e8f1ea;
+  box-shadow: 0 12px 30px rgba(27, 71, 61, .1);
+}
+
+#stageScreen, #battleScreen {
+  position: fixed;
+  z-index: 10;
+  inset: 0 0 56px;
+  width: min(100vw, 920px);
+  height: calc(100dvh - 56px);
+  min-height: 0;
+  margin: 0 auto;
+  padding: 14px 18px;
+  overflow: auto;
+  background: #e8f4ef;
+}
+#stageScreen {
+  background-color: #e8f4ef;
+  background-image: linear-gradient(rgba(232, 244, 239, .5), rgba(232, 244, 239, .78)), var(--wp-stage-art, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#stageScreen .stage-canvas, #battleScreen .battle-canvas {
+  width: 100%;
+  min-height: calc(100% - 58px);
+  margin: 0 auto;
+  padding: 14px 16px 24px;
+  overflow: visible;
+  background-color: rgba(255, 253, 247, .78);
+  background-image: linear-gradient(rgba(232, 244, 239, .42), rgba(255, 253, 247, .72)), var(--wp-stage-art, none), var(--wp-battle-art, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#stageScreen .panel-head, #battleScreen .panel-head {
+  display: grid;
+  grid-template-columns: minmax(58px, auto) 1fr minmax(48px, auto);
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+#stageScreen .panel-head .back-btn, #battleScreen .panel-head .back-btn { width: 58px; min-height: 48px; padding: 0; }
+#stageScreen .panel-intro { margin: 18px 0 0; }
+#stageScreen .stage-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 200px;
+  min-height: 198px;
+  max-height: 200px;
+  margin-top: 18px;
+  padding-inline: 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#stageScreen .stage-list::-webkit-scrollbar { display: none; }
+#stageScreen .stage-card {
+  box-sizing: border-box;
+  flex: 0 0 264px;
+  width: 264px;
+  min-width: 264px;
+  max-width: 264px;
+  height: 190px;
+  min-height: 190px;
+  max-height: 190px;
+  scroll-snap-align: center;
+}
+#stageScreen .stage-tabs { margin-top: 18px; }
+#stageScreen .stage-tabs button { min-height: 44px; padding: 10px 16px; }
+#battleScreen .battle-canvas { min-height: calc(100% - 58px); }
+#battleScreen .battle-content { width: min(100%, 780px); margin: 28px auto 0; }
+#battleScreen .battle-actions { justify-content: flex-end; }
+.stage-ad-reserve, .battle-ad-reserve {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 9;
+  width: min(100vw, 920px);
+  height: 56px;
+  transform: translateX(-50%);
+  border-top: 1px solid rgba(255, 255, 255, .2);
+  background: #173b3a;
+  pointer-events: none;
+}
+.stage-ad-reserve[hidden], .battle-ad-reserve[hidden] { display: none !important; }
+
+@media (max-width: 699px) {
+  #mainScreen .hero-grid { grid-template-columns: 1fr; gap: 18px; margin-top: 16px; text-align: center; }
+  #mainScreen .field-poster { width: 100%; max-width: none; }
+  #mainScreen .hero-copy .summary { margin-inline: auto; }
+  #mainScreen .hero-actions { justify-content: center; }
+  #gameGuide.game-page-info { width: calc(100% - 28px); }
+  #gameGuide .game-info-facts, #gameGuide .game-info-sections { grid-template-columns: 1fr; }
+  #stageScreen, #battleScreen { padding-inline: 14px; }
+  #battleScreen .pattern-summary { align-items: flex-start; flex-direction: column; gap: 8px; }
+  #battleScreen .pattern-row { width: 100%; }
+  #battleScreen .pattern-cell { flex: 1; min-width: 0; }
+}
+@media (min-width: 700px) { #mainScreen .field-poster { width: 420px; } }
+@media (orientation: landscape) and (max-height: 560px) {
+  #mainScreen .field-poster { width: 300px; max-width: 300px; }
+  #stageScreen .stage-list { height: 138px; min-height: 138px; max-height: 138px; margin-top: 8px; }
+  #stageScreen .stage-card { height: 138px; min-height: 138px; max-height: 138px; }
+}
+
+@media (min-width: 700px) and (max-height: 760px) {
+  #battleScreen .battle-content { margin-top: 10px; }
+  #battleScreen .goal-card { margin-bottom: 8px; padding: 12px 16px; }
+  #battleScreen .pattern-summary { margin: 6px 0; }
+  #battleScreen .flap-board { margin: 10px 0 8px; }
+  #battleScreen .flap-btn { min-height: 148px; padding-block: 10px; gap: 6px; }
+  #battleScreen .flap-btn .flap-icon { width: 58px; height: 62px; font-size: 30px; }
+  #battleScreen .battle-status { min-height: 24px; margin: 4px 0; }
+  #battleScreen .move-hint { margin-top: 8px; }
+}

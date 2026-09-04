@@ -750,6 +750,9 @@ a:focus-visible {
   padding: 18px;
   background: #031310dc;
 }
+.modal-layer[hidden] {
+  display: none;
+}
 .dialog-card,
 .result-card {
   width: min(100%, 520px);

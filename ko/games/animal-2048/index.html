@@ -3,8 +3,7 @@
 <head>
 
     <base href="/games/animal-2048/" />
-
-    <meta charset="utf-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
@@ -69,12 +68,12 @@
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+  <link rel="stylesheet" href="style.css?v=20260904-animal-2048-interface-v22" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-stage-rtl-settings2">
   <meta name="twitter:image" content="https://weightplay.com/assets/animal-2048-cover.webp" />
   </head>
 <body data-screen="main" data-game-id="animal-2048">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-runtime-localize="off">Animal 2048</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-runtime-localize="off">Animal 2048: Forest Evolution</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
@@ -93,22 +92,22 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>Animal 2048: Forest Evolution</h2><p>애니멀 2048은 Moon Cap Orla가 주최하는 턴제 숲 전략 퍼즐입니다. 모든 방향으로 전체 4x4 보드가 이동하므로 한 번의 스와이프로 공간을 열거나, 여러 진화 체인을 구축하거나, 임무 목표에 필요한 동물을 가둘 수 있습니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>전체 그리드 병합 전략</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Logic · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>임무당 2~6분</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>전체 그리드 병합 전략</strong></div><div class="game-info-fact"><span>장르</span><strong>Puzzle · Strategy · Logic · Animal</strong></div><div class="game-info-fact"><span>난이도</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>임무당 2~6분</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Moon Cap Orla는 일치하는 동물 영혼이 더 강한 형태로 결합되는 달빛 성소를 유지합니다. 30개의 캠페인 임무는 그녀의 현장 수업입니다. 플레이어는 명명된 동물 등급에 도달하거나, 필요한 수의 병합을 완료하거나, 이동 공급품이 소진되기 전에 목표 점수를 획득하여 각 성소 보드를 복원합니다.</p>
+      <div class="game-info-section"><h3>세계와 목표</h3><p>Moon Cap Orla는 일치하는 동물 영혼이 더 강한 형태로 결합되는 달빛 성소를 유지합니다. 30개의 캠페인 임무는 그녀의 현장 수업입니다. 플레이어는 명명된 동물 등급에 도달하거나, 필요한 수의 병합을 완료하거나, 이동 공급품이 소진되기 전에 목표 점수를 획득하여 각 성소 보드를 복원합니다.</p>
 <p>이끼 돌은 중간 장에 나타나며 행이나 열을 별도의 이동 세그먼트로 나눕니다. 이동하거나 병합할 수 없으므로 주변 경로가 중요합니다. 30단계를 완료하면 가치 2048의 Lion Guardian이 생성되고 Grand Evolution 챕터가 완료됩니다. 무한의 숲은 숨겨진 스테이지 31이 아닌 별도의 도전입니다.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>유효한 스와이프는 이동할 수 있는 모든 타일을 최대한 멀리 밀어냅니다. 두 마리의 동등한 동물이 만나 다음 단계가 되지만, 병합으로 생성된 타일은 동일한 이동 중에 다시 병합될 수 없습니다. 아무것도 바꾸지 않는 이동은 거부되며 이동 카운터를 사용하지 않거나 새로운 동물을 생성하지 않습니다.</p>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>유효한 스와이프는 이동할 수 있는 모든 타일을 최대한 멀리 밀어냅니다. 두 마리의 동등한 동물이 만나 다음 단계가 되지만, 병합으로 생성된 타일은 동일한 이동 중에 다시 병합될 수 없습니다. 아무것도 바꾸지 않는 이동은 거부되며 이동 카운터를 사용하지 않거나 새로운 동물을 생성하지 않습니다.</p>
 <p>유효한 이동을 할 때마다 사용 가능한 셀에 낮은 등급의 동물 한 마리가 나타납니다. 이는 빈 공간을 핵심 리소스로 만듭니다. 안정적인 고가치 코너를 유지하는 것이 유용하지만 해당 코너로 향하는 경로를 유지하는 것도 마찬가지로 중요합니다. 숫자 값은 모든 동물 타일에 계속 표시되므로 예술 작품만 인식하지 않고도 진화 사슬을 읽을 수 있습니다.</p>
 <p>캠페인 목표는 타일 도달, 여러 병합 완료, 점수 도달을 번갈아 가며 수행합니다. 각 미션에는 작성된 오프닝 보드, 돌 패턴, 이동 제한 및 결정론적 생성 순서가 있으므로 동일한 미션을 다시 시작하면 동일한 계획 문제가 발생합니다. 실행 취소는 정확한 이전 보드, 점수, 이동 횟수 및 생성 상태를 복원합니다.</p>
 <p>무한의 숲은 무작위의 낮은 등급 동물 2마리로 시작하며, 이동 제한이 없으며, 합법적인 슬라이드나 병합이 남아있지 않을 때만 종료됩니다. 값은 2048년 이후에도 계속되며 최고 점수, 최고 타일, 이동 횟수 및 실행 횟수는 캠페인 별 및 잠금 해제와 별도로 저장됩니다.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>30개의 미션 중 하나에 대한 캠페인을 선택하거나 무한의 숲에 도전하세요.</li><li>보드를 스와이프하거나 4개의 방향 버튼을 사용하거나 화살표 키 또는 WASD를 누르세요.</li><li>열린 세포를 보호하고 이끼 돌 주위로 경로를 지정하면서 동일한 동물을 합치십시오.</li><li>정확한 한 단계를 실행하려면 실행 취소를 사용하고, 작성된 오프닝을 보려면 다시 시작을 사용하고, 방향 제안을 위해서는 힌트를 사용하세요.</li><li>이동 제한 전에 표시된 목표를 완료하거나 이동이 더 이상 남지 않을 때까지 무한의 숲 달리기를 계속하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>가장 큰 동물을 모퉁이 근처에 두되 인접한 가장자리를 비교할 수 없는 낮은 층으로 채우지 마십시오.</li><li>스와이프하기 전에 전체 행이나 열을 읽으세요. 이동은 병합하려는 쌍뿐만 아니라 모든 타일에 영향을 미칩니다.</li><li>이끼 돌 근처에서는 분리된 각 부분을 독립적으로 계획하고 새로운 동물이 나타날 수 있는 위치를 확인합니다.</li><li>점수 매기기 및 병합 임무에서는 희귀 동물 한 마리를 향해 돌진하는 것보다 여러 개의 소규모 제어 체인이 더 안전할 수 있습니다.</li><li>실행 취소는 이동으로 인해 중요한 차선이 닫힌 직후에 가장 유용합니다. 보드뿐만 아니라 정확한 스폰을 복원합니다.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>미션 1~5에서는 전체 보드 슬라이딩 및 단일 병합을 가르칩니다. 미션 6-10에서는 더 긴 체인 계획을 소개합니다. 미션 11-15에는 이동 선을 나누는 이끼 돌이 추가됩니다.</p>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>30개의 미션 중 하나에 대한 캠페인을 선택하거나 무한의 숲에 도전하세요.</li><li>보드를 스와이프하거나 4개의 방향 버튼을 사용하거나 화살표 키 또는 WASD를 누르세요.</li><li>열린 세포를 보호하고 이끼 돌 주위로 경로를 지정하면서 동일한 동물을 합치십시오.</li><li>정확한 한 단계를 실행하려면 실행 취소를 사용하고, 작성된 오프닝을 보려면 다시 시작을 사용하고, 방향 제안을 위해서는 힌트를 사용하세요.</li><li>이동 제한 전에 표시된 목표를 완료하거나 이동이 더 이상 남지 않을 때까지 무한의 숲 달리기를 계속하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>가장 큰 동물을 모퉁이 근처에 두되 인접한 가장자리를 비교할 수 없는 낮은 층으로 채우지 마십시오.</li><li>스와이프하기 전에 전체 행이나 열을 읽으세요. 이동은 병합하려는 쌍뿐만 아니라 모든 타일에 영향을 미칩니다.</li><li>이끼 돌 근처에서는 분리된 각 부분을 독립적으로 계획하고 새로운 동물이 나타날 수 있는 위치를 확인합니다.</li><li>점수 매기기 및 병합 임무에서는 희귀 동물 한 마리를 향해 돌진하는 것보다 여러 개의 소규모 제어 체인이 더 안전할 수 있습니다.</li><li>실행 취소는 이동으로 인해 중요한 차선이 닫힌 직후에 가장 유용합니다. 보드뿐만 아니라 정확한 스폰을 복원합니다.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>미션 1~5에서는 전체 보드 슬라이딩 및 단일 병합을 가르칩니다. 미션 6-10에서는 더 긴 체인 계획을 소개합니다. 미션 11-15에는 이동 선을 나누는 이끼 돌이 추가됩니다.</p>
 <p>미션 16-20은 점수 효율성에 초점을 맞추고, 미션 21-25는 더 조밀한 희귀 동물 둥지에서 시작하며, 미션 26-30은 돌, 엄격한 이동 제한, 점수 및 최대 2048까지의 높은 계층을 결합합니다. Infinite Forest는 이동 예산을 제거하고 동일한 규칙을 개인 지구력 도전으로 바꿉니다.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>이 게임은 짧은 결정론적 임무를 사용하므로 실패한 시도는 다른 무작위 퍼즐 대신 구체적인 계획 교훈이 될 수 있습니다. 전체 그리드 스와이프를 선택한 이유는 각 입력이 휴대폰에서 편안함을 유지하면서 광범위한 결과를 가져오기 때문입니다. 마우스, 터치, 방향버튼, 화살표, WASD 모두 동일한 상태로 동작합니다. 안정적인 타일 요소는 셀 사이에서 미끄러지고 실제 병합만 팝 효과를 받아 보드를 깜박이지 않고도 모션을 읽을 수 있습니다. 진행 상황 및 무한의 숲 기록은 이 브라우저에만 저장됩니다. 계정이 필요하지 않습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>이 게임은 짧은 결정론적 임무를 사용하므로 실패한 시도는 다른 무작위 퍼즐 대신 구체적인 계획 교훈이 될 수 있습니다. 전체 그리드 스와이프를 선택한 이유는 각 입력이 휴대폰에서 편안함을 유지하면서 광범위한 결과를 가져오기 때문입니다. 마우스, 터치, 방향버튼, 화살표, WASD 모두 동일한 상태로 동작합니다. 안정적인 타일 요소는 셀 사이에서 미끄러지고 실제 병합만 팝 효과를 받아 보드를 깜박이지 않고도 모션을 읽을 수 있습니다. 진행 상황 및 무한의 숲 기록은 이 브라우저에만 저장됩니다. 계정이 필요하지 않습니다.</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>계정이 필요하지 않습니다. 캠페인 잠금 해제, 별, 최고 점수, 무한의 숲 기록은 이 브라우저에만 저장됩니다. 사이트 데이터를 삭제하거나 브라우저를 변경하면 별도의 저장이 시작될 수 있습니다.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>스와이프할 때마다 새로운 동물이 생성되나요?</dt><dd>아니요. 보드를 바꾸는 스와이프만 이동을 소비하고 낮은 등급의 동물 한 마리를 추가합니다.</dd></div><div><dt>새로 병합된 타일을 즉시 다시 병합할 수 있나요?</dt><dd>아니요. 각 결과 타일은 단일 이동 중에 한 번만 병합할 수 있습니다.</dd></div><div><dt>이끼돌은 어떤 역할을 하나요?</dt><dd>고정된 상태로 행이나 열을 별도의 이동 세그먼트로 나눕니다.</dd></div><div><dt>What does Undo restore?</dt><dd>이전 보드, 점수, 이동 횟수, 목표 진행 상황 및 결정론적 생성 상태를 복원합니다.</dd></div><div><dt>무한의 숲은 30개 미션의 일부인가요?</dt><dd>아니요. 별도의 무제한 챌린지이며 캠페인 별이나 잠금 해제를 변경하지 않습니다.</dd></div><div><dt>Does progress save?</dt><dd>그렇습니다. 캠페인 진행 상황과 무한의 숲 기록은 현재 브라우저에 로컬로 저장됩니다.</dd></div></dl></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>스와이프할 때마다 새로운 동물이 생성되나요?</dt><dd>아니요. 보드를 바꾸는 스와이프만 이동을 소비하고 낮은 등급의 동물 한 마리를 추가합니다.</dd></div><div><dt>새로 병합된 타일을 즉시 다시 병합할 수 있나요?</dt><dd>아니요. 각 결과 타일은 단일 이동 중에 한 번만 병합할 수 있습니다.</dd></div><div><dt>이끼돌은 어떤 역할을 하나요?</dt><dd>고정된 상태로 행이나 열을 별도의 이동 세그먼트로 나눕니다.</dd></div><div><dt>What does Undo restore?</dt><dd>이전 보드, 점수, 이동 횟수, 목표 진행 상황 및 결정론적 생성 상태를 복원합니다.</dd></div><div><dt>무한의 숲은 30개 미션의 일부인가요?</dt><dd>아니요. 별도의 무제한 챌린지이며 캠페인 별이나 잠금 해제를 변경하지 않습니다.</dd></div><div><dt>Does progress save?</dt><dd>그렇습니다. 캠페인 진행 상황과 무한의 숲 기록은 현재 브라우저에 로컬로 저장됩니다.</dd></div></dl></div>
 
     </div>
   </section>
@@ -117,7 +116,7 @@
   <section id="stageScreen" class="stage-screen" hidden>
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048-cover.webp')">
       <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back">&larr;</button><div><strong data-i18n="chooseStage">Choose Mission</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
-      <nav class="stage-mode-tabs" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+      <nav class="stage-mode-tabs" role="tablist" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" role="tab" aria-selected="true" aria-controls="stageRail" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" role="tab" aria-selected="false" aria-controls="stageRail" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selection" data-i18n-aria="stageRailLabel"></div>
     </div>
@@ -126,7 +125,7 @@
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">Score</small><strong id="scoreValue">0</strong></div></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back">&larr;</button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">Score</small><strong id="scoreValue">0</strong></div><button id="battleSoundBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Sound" data-i18n-aria="sound" aria-pressed="true">♪</button></header>
       <section id="objectiveRow" class="objective-row"></section>
       <section class="board-zone"><div id="gameBoard" class="game-board" role="application" aria-label="Animal 2048 grid" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D U R H" tabindex="0"></div><div id="moveFeedback" class="move-feedback" aria-live="polite"></div></section>
       <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-runtime-localize="off"><span data-i18n="hint">Hint</span><small data-i18n="hintCostShort">Caps run at 2★</small></button></div>
@@ -140,9 +139,9 @@
 
   <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260824-growth-funnel-v19"></script><script src="game.js?v=20260824-stage-snap-v20"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260823-animal2048-arabic-related1"></script>
+  <script src="locales.js?v=20260824-growth-funnel-v19"></script><script src="game.js?v=20260904-interface-v22"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260823-animal2048-arabic-related1"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

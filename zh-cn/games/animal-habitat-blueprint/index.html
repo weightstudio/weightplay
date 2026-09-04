@@ -58,11 +58,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Spatial Planning",
+    "益智",
+    "逻辑",
+    "空间规划",
     "家庭",
-    "Animal"
+    "动物"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -97,27 +97,21 @@
     <div id="battleReserve" class="battle-ad-reserve" data-wp-ad-reserve data-screen="battle" aria-hidden="true"></div>
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" data-sound-toggle aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
-    <section class="game-page-info game-page-info-static" aria-label="栖地蓝图 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>栖地蓝图</h2><p>交换四块栖地拼片，满足所有相邻线索，为动物打造平静又连通的家。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>栖地约束益智</strong></div><div class="game-info-fact"><span>类型</span><strong>Puzzle · Logic · Spatial Planning · 家庭 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="栖地蓝图游戏信息">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 原创游戏指南</span><h2 data-copy="title">栖地蓝图</h2><p data-copy="guideIntro">交换四块栖地砖，满足所有邻接线索，为动物建造平静相连的家园。</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">玩法</span><strong data-copy="guideGameplayValue">栖地约束益智</strong></div><div class="game-info-fact"><span data-copy="guideGenre">类型</span><strong data-copy="guideGenreValue">益智 · 逻辑 · 空间规划 · 家庭 · 动物</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">栖地规划</h3><ol><li data-copy="guideHow1">阅读三则野外笔记。</li><li data-copy="guideHow2">选择两块栖地砖并交换位置。</li><li data-copy="guideHow3">试排不对时，可以安全重置。</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">结果与保存</h3><p data-copy="guideResults">三张短规划组成一段平静的游戏时光。最佳交换次数只保存在此浏览器。</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">实用提示</h3><p data-copy="guideTips">一起使用必须相邻、不可相邻和上下位置线索；每张规划都能安全恢复。</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">常见问题</h3><dl><div><dt data-copy="faqProgressQuestion">进度会保存吗？</dt><dd data-copy="faqProgressAnswer">是，仅保存在此浏览器中。</dd></div></dl></article>
+      </div>
+    </section>
   </main>
   <script src="locales.js?v=20260901-habitat-blueprint-v4-art-pack"></script><script src="game.js?v=20260901-habitat-blueprint-v4-art-pack"></script>
-<script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/zh-cn.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

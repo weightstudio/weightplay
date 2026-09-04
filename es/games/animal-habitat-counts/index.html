@@ -56,11 +56,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Razonamiento espacial",
-    "familia",
-    "Animal"
+    "Puzle",
+    "Lógica",
+    "Planificación espacial",
+    "Familiar",
+    "Animales"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -76,70 +76,64 @@
       <div class="main-canvas" data-wp-logical-main-canvas>
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
-          <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <strong class="shell-title" data-copy="title">Cuenta el hábitat</strong>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="Ajustes">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="eyebrow">A calm habitat logic game</p>
+            <p class="eyebrow" data-copy="eyebrow">Un juego tranquilo de lógica</p>
             <h1 data-copy="title">Cuenta el hábitat</h1>
-            <p class="intro main-summary" data-copy="intro">Fill the habitat cells so every row and column reaches its clue.</p>
+            <p class="intro main-summary" data-copy="intro">Completa las casillas para que cada fila y columna alcance su pista.</p>
             <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
-            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start counting</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button></div>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Empezar a contar</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Páginas del hábitat</button></div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Ajustes</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Cerrar</button></div>
+          <label class="setting-row"><span data-copy="language">Idioma</span><select id="languageSelect" aria-label="Choose a language"></select></label>
           <button id="soundBtn" class="secondary-btn sound-btn" type="button" data-sound-toggle aria-pressed="true"></button>
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="Información de Cuenta el hábitat">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Cuenta el hábitat</h2><p>Rellena las casillas hasta igualar cada fila y columna.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Lógica de filas y columnas</strong></div><div class="game-info-fact"><span>Género</span><strong>Puzzle · Logic · Razonamiento espacial · familia · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Se guarda el progreso?</dt><dd>Sí, solo en este navegador.</dd></div><div><dt>¿Cuántas páginas de hábitat hay?</dt><dd>Hay tres páginas de hábitat cortas.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="Información del juego Cuenta el hábitat">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">Guía de juego original de WeightPlay</span><h2 id="guideHeading" data-copy="title">Cuenta el hábitat</h2><p data-copy="guideIntro">Completa las casillas para que cada fila y columna alcance su pista.</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">Jugabilidad</span><strong data-copy="guideGameplayValue">Lógica de filas y columnas del hábitat</strong></div><div class="game-info-fact"><span data-copy="guideGenre">Género</span><strong data-copy="guideGenreValue">Puzle · Lógica · Planificación espacial · Familiar · Animales</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">Páginas del hábitat</h3><ol><li data-copy="guideHow1">Lee los números junto a cada fila y bajo cada columna.</li><li data-copy="guideHow2">Cambia las casillas para llenarlas o vaciarlas; siempre puedes deshacerlo.</li><li data-copy="guideHow3">Comprueba el hábitat; un error explica los conteos, sin reloj ni penalización.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">Resultados y guardado</h3><p data-copy="guideResults">Tres páginas breves forman una sesión tranquila. El mejor resultado queda en este navegador.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">Consejos prácticos</h3><p data-copy="guideTips">Usa juntos los conteos de filas y columnas, y ajusta solo las líneas que no coincidan.</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">Preguntas frecuentes</h3><dl><div><dt data-copy="faqProgressQuestion">¿Se guarda el progreso?</dt><dd data-copy="faqProgressAnswer">Sí, solo en este navegador.</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Atrás</button><h2 data-copy="map">Páginas del hábitat</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="Ayuda">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">La misma prueba de filas y columnas cambia a una nueva forma de hábitat.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Atrás</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
-          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
-          <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
+          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">COMPROBACIÓN</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Alcanza cada pista</h3><p data-copy="goalHelp">Llena exactamente las casillas indicadas en cada fila y columna.</p><div class="clue-legend"><span data-copy="rowClues">Filas</span><span data-copy="columnClues">Columnas</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Casillas del hábitat</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Usa las flechas para moverte entre casillas. Pulsa Espacio o Enter para llenar o vaciar.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Comprobar hábitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Vaciar casillas</button></div></section>
+          <p class="rule-note" data-copy="ruleNote">Cada error es una pista: ajusta solo las filas o columnas que no coincidan.</p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
-        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this habitat?</h2><p data-copy="leaveBody">Your current cells will be cleared, but your best result stays saved.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Return to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HÁBITAT COMPLETO</p><h2 data-copy="resultTitle">Un hábitat equilibrado</h2><p data-copy="resultBody">Has igualado todas las pistas.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Páginas del hábitat</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Volver al inicio</button></div></div>
+        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">¿Salir de este hábitat?</h2><p data-copy="leaveBody">Tus casillas actuales se borrarán, pero tu mejor resultado se guarda.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continuar</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Volver al inicio</button></div></div>
       </div>
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
   <script src="locales.js?v=20260902-habitat-counts-v4-result-containment"></script>
   <script src="game.js?v=20260902-habitat-counts-v4-result-containment"></script>
-<script src="/src/runtime-locales/es.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/es.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

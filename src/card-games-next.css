@@ -92,6 +92,8 @@ body[data-wp-card-game="hearts"] .game-page-info {
   /* The shared Guide uses content-box sizing; keep Gin's locale-owned Main
      Guide inside the viewport after its mobile padding is applied. */
   body[data-wp-card-game="gin-rummy"] .game-page-info.game-page-info-static,
+  body[data-wp-card-game="gin-rummy"] .game-page-info.classic-guide,
+  body[data-wp-game-id="gin-rummy"] .game-page-info,
   body[data-wp-card-game="cribbage"] .game-page-info.game-page-info-static,
   body[data-wp-card-game="cribbage"] .game-page-info,
   body[data-wp-card-game="go-fish"] .game-page-info.game-page-info-static,

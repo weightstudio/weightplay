@@ -574,6 +574,14 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
     --golf-card-width: clamp(34px, 8.6vh, 50px);
     --classic-pile-step: clamp(12px, 3vh, 16px);
   }
+
+  /* The stock and waste share the short-landscape battle track with the
+     status row. Keep their footprint inside that row so the status cannot
+     cover a playable card while the seven-column tableau remains readable. */
+  body[data-wp-game-id="golf-solitaire"] .board-middle .classic-slot {
+    --classic-card-width: clamp(40px, 12vh, 50px);
+    --classic-card-height: calc(var(--classic-card-width) * 1.42);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

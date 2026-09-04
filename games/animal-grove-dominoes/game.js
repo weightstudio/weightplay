@@ -3,6 +3,7 @@
 
   const locales = window.GROVE_CHAIN_LOCALES;
   const localeKeys = locales.__localeKeys;
+  const GAME_VERSION = "v2";
   const rounds = [
     { start: "den", tiles: [["den", "creek"], ["creek", "moss"], ["moss", "nest"], ["nest", "moon"], ["moon", "den"]] },
     { start: "reef", tiles: [["reef", "tide"], ["tide", "shell"], ["shell", "grove"], ["grove", "den"], ["den", "reef"]] },
@@ -24,7 +25,7 @@
   function t(key, vars = {}) { const value = copy()[key] || locales.en[key] || key; return String(value).replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? "")); }
   function habitat(token) { return copy().tokenNames?.[token] || locales.en.tokenNames[token] || token; }
   function track(name, detail = {}) {
-    const event = { name, gameId: "animal-grove-dominoes", version: "v1", at: Date.now(), ...detail };
+    const event = { name, gameId: "animal-grove-dominoes", version: GAME_VERSION, at: Date.now(), ...detail };
     window.ANIMAL_GROVE_CHAIN_EVENTS = Array.isArray(window.ANIMAL_GROVE_CHAIN_EVENTS) ? window.ANIMAL_GROVE_CHAIN_EVENTS.slice(-39) : [];
     window.ANIMAL_GROVE_CHAIN_EVENTS.push(event);
   }
@@ -36,6 +37,7 @@
     document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
     document.documentElement.dir = copy().direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
+    document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)); });
     $("settingsBtn").setAttribute("aria-label", t("settings"));
     $("settingsPanel").setAttribute("aria-label", t("settings"));
     $("battleSoundBtn").setAttribute("aria-label", state.sound ? t("soundOn") : t("soundOff"));

@@ -7,6 +7,7 @@
 .main-hero{grid-template-columns:420px minmax(0,1fr);align-items:stretch;overflow:visible}
 .main-hero>.poster{width:420px;height:420px;aspect-ratio:1;object-fit:cover}
 .main-copy button{width:100%;height:52px;min-height:52px}
+@media(min-width:700px) and (max-height:560px){body[data-game-id="animal-sanctuary-loop"] .wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
 @media(max-width:699px){
   .main-screen{grid-template-rows:auto auto;padding:7px}
   .main-hero{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:start}

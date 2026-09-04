@@ -76,11 +76,24 @@ body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve
   .battle-actions button,.direction-pad button{min-width:44px;min-height:44px}
 }
 
+@media(min-width:700px) and (max-height:560px) and (orientation:landscape){
+  body[data-game-id="animal-2048"] .wp-standard-main-composition{
+    --wp-main-landscape-poster-size:300px;
+  }
+}
+
 .battle-actions button{display:grid;place-content:center;line-height:1.05}
 .battle-actions button small{margin-top:3px;color:#ffe47a;font-size:11px;font-weight:800;white-space:nowrap}
 
 /* First-session tutorial actions follow the current physical touch minimum. */
 .tutorial-card>button:first-child{width:44px;height:44px}
+
+@media(min-width:701px){
+  body[data-game-id="animal-2048"] .battle-header{grid-template-columns:56px minmax(0,1fr) 84px 98px 48px!important}
+}
+@media(max-width:700px){
+  body[data-game-id="animal-2048"] .battle-header{grid-template-columns:50px minmax(0,1fr) 62px 78px 46px!important}
+}
 
 /* 2048 Main / Stage calibration against the shared shell geometry. */
 .main-header.wp-main-shell-header{

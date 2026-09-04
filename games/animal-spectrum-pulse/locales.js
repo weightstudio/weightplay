@@ -120,6 +120,15 @@ const resultGoalCopy={
   ru:{resultGoalFailWrong:"Ты прошёл {passed}/{total} врат до неверного сегмента. Попробуй ещё раз и прочитай врата {next} с безопасной точки.",resultGoalFailTime:"Ты прошёл {passed}/{total} врат до окончания времени. Попробуй ещё раз и достигни врат {next} до закрытия короны.",resultGoalNext:"Следующая башня добавит новый узор врат. Продолжай, чтобы изучить следующую главу.",resultGoalFinal:"Все 30 башен восстановлены. Вернись к башням, чтобы повторить главу или улучшить резонанс."}
 };
 for(const [code,copy] of Object.entries(resultGoalCopy))Object.assign(catalogs[code],copy);
+const relatedLocaleRepairs={
+  es:{guideRelatedReels:"Carretes de Runas Animales",guideRelatedHeist:"Golpe Animal a la Luz de la Luna"},
+  "pt-BR":{guideRelatedReels:"Roletas de Runas Animal",guideRelatedHeist:"Assalto Animal ao Luar"},
+  fr:{guideRelatedReels:"Roues de runes animales",guideRelatedHeist:"Cambriolage animal au clair de lune"},
+  de:{guideRelatedReels:"Tierische Runenräder",guideRelatedHeist:"Tierischer Beutezug im Mondlicht"},
+  it:{guideRelatedReels:"Rulli di rune animali",guideRelatedHeist:"Colpo animale al chiaro di luna"},
+  ru:{guideRelatedReels:"Животные: рунические барабаны",guideRelatedHeist:"Животные: ограбление при лунном свете"},
+};
+for(const [code,copy] of Object.entries(relatedLocaleRepairs)){Object.assign(catalogs[code],copy);publicCopy[code]={...(publicCopy[code]||{}),...copy};}
 const keys=Object.keys(en);for(const [code,copy] of Object.entries(catalogs)){const missing=keys.filter(key=>!(key in copy));if(missing.length)throw new Error(`Animal Spectrum Pulse locale ${code} missing: ${missing.join(", ")}`)}
 window.SPECTRUM_PULSE_LOCALES=catalogs;
 })();

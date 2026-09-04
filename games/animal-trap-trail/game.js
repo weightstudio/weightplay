@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 12;
+  const GAME_VERSION = 13;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -10,7 +10,7 @@
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
+  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoJumpIntent: 0, roomTwoJumpQueued: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -156,13 +156,28 @@
     if (p.x < t.fake + 52) return "hidden";
     return "clear";
   }
+  function roomTwoTimingKey() {
+    if (state.chapter !== 1 || state.room < 2 || state.room > 3 || !state.player) return "";
+    const t = trapData();
+    const p = state.player;
+    if (p.x < t.gap - 42) return "approach";
+    if (p.x < t.gap + 70) return "gap";
+    if (p.x < t.spike - 42) return state.roomTwoLandingSeen ? (p.grounded ? "landing" : "spike") : "gap";
+    if (p.x < t.spike + 52) return "spike";
+    if (p.x < t.fake + 52) return "hidden";
+    return "clear";
+  }
+  function guidedTimingKey() {
+    return state.chapter === 1 && state.room === 1 ? firstRoomTimingKey() : roomTwoTimingKey();
+  }
   function currentBattleStatus() {
     const c = copy();
     if (state.statusKey === "gap") return c.gapDeath;
     if (state.statusKey === "hazard") return c.hazardDeath;
-    if (state.statusKey === "pulse") return state.chapter === 1 && state.room === 1 ? landingCueCopy[currentLocale()] : c.pulseFeedback;
-    if (state.chapter === 1 && state.room === 1 && state.timingCue && state.timingCue !== "approach") return timingCueCopy[state.timingCue][currentLocale()];
-    if (state.chapter === 1 && state.room === 1) return landingCueCopy[currentLocale()];
+    const guidedRoom = state.chapter === 1 && state.room <= 3;
+    if (state.statusKey === "pulse") return guidedRoom && state.timingCue && state.timingCue !== "approach" ? timingCueCopy[state.timingCue][currentLocale()] : c.pulseFeedback;
+    if (guidedRoom && state.timingCue && state.timingCue !== "approach") return timingCueCopy[state.timingCue][currentLocale()];
+    if (guidedRoom) return landingCueCopy[currentLocale()];
     return c.battleStatus;
   }
   function updateBattleText() {
@@ -242,7 +257,7 @@
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
     state.keys.clear(); state.tap = null;
-    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.timingCue = firstRoomTimingKey();
+    state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; state.roomTwoLandingSeen = false; state.timingCue = guidedTimingKey();
     updateBattleText();
   }
   function startRoom(chapter = 1, room = 1) { state.chapter = chapter; state.room = room; state.statusKey = ""; resetRoom(); show("battle"); }
@@ -259,6 +274,11 @@
     const t = trapData();
     if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) { state.firstRoomJumpIntent = 360; state.firstRoomJumpQueued = true; }
   }
+  function armRoomTwoJumpIntent() {
+    if (state.chapter !== 1 || state.room < 2 || state.room > 3 || !state.player) return;
+    const t = trapData();
+    if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) state.roomTwoJumpIntent = 360;
+  }
   function finish() {
     state.bestRoom = Math.max(state.bestRoom, state.room + (state.chapter - 1) * 3);
     localStorage.setItem("wp-trail-best-room", String(state.bestRoom));
@@ -273,13 +293,16 @@
     const jumpHeld = state.keys.has("Space") || state.keys.has("ArrowUp") || state.keys.has("KeyW");
     const inputStarted = Boolean(state.tap || right || left || jumpHeld);
     const firstRoom = state.chapter === 1 && state.room === 1;
+    const roomTwo = state.chapter === 1 && state.room >= 2 && state.room <= 3;
+    const guidedRoom = firstRoom || roomTwo;
     const jumpTap = state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW";
     const jumpRequested = jumpHeld || jumpTap;
     if (firstRoom && jumpRequested) armFirstRoomJumpIntent();
+    if (roomTwo && jumpRequested) armRoomTwoJumpIntent();
     if (inputStarted && state.statusKey) state.statusKey = "";
     if (state.tap) {
       if (state.tap === "Space" || state.tap === "ArrowUp" || state.tap === "KeyW") {
-        state.jumpBuffer = firstRoom ? 30 : 12;
+        state.jumpBuffer = guidedRoom ? 30 : 12;
       } else {
         const tapRight = state.tap === "ArrowRight" || state.tap === "KeyD";
         if (reversed ? !tapRight : tapRight) p.x += 24; else p.x -= 24;
@@ -287,25 +310,30 @@
       state.tap = null;
     }
     if (right) p.x += 3.2 * dt; if (left) p.x -= 3.2 * dt;
-    if (jumpHeld) state.jumpBuffer = firstRoom ? 30 : 12;
+    if (jumpHeld) state.jumpBuffer = guidedRoom ? 30 : 12;
     if (state.jumpBuffer > 0) state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
     if (state.firstRoomJumpIntent > 0) state.firstRoomJumpIntent = Math.max(0, state.firstRoomJumpIntent - dt);
+    if (state.roomTwoJumpIntent > 0) state.roomTwoJumpIntent = Math.max(0, state.roomTwoJumpIntent - dt);
     p.vy += .46 * dt; p.y += p.vy * dt; p.x = Math.max(30, Math.min(920, p.x));
     const floor = solidAt(p.x) ? 418 : 540;
     if (p.y >= floor - 28) { p.y = floor - 28; p.vy = 0; p.grounded = true; } else p.grounded = false;
     if (state.chapter === 1 && state.room === 1 && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.firstRoomLandingSeen = true; state.firstRoomJumpQueued = true; }
+    if (roomTwo && p.grounded && p.x >= t.gap + 70 && p.x < t.spike - 42) { state.roomTwoLandingSeen = true; state.roomTwoJumpQueued = true; }
+    if (roomTwo && p.grounded && p.x >= t.spike + 52 && p.x < t.fake + 34) state.roomTwoJumpQueued = true;
     const firstRoomAssistReady = firstRoom && p.grounded && (state.firstRoomJumpIntent > 0 || state.firstRoomJumpQueued || state.firstRoomLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
-    if ((state.jumpBuffer > 0 || firstRoomAssistReady) && p.grounded) {
-      p.vy = firstRoom ? -11.5 : -10.5;
+    const roomTwoAssistReady = roomTwo && p.grounded && (state.roomTwoJumpIntent > 0 || state.roomTwoJumpQueued || state.roomTwoLandingSeen) && p.x >= t.gap + 64 && p.x < t.fake + 34;
+    if ((state.jumpBuffer > 0 || firstRoomAssistReady || roomTwoAssistReady) && p.grounded) {
+      p.vy = guidedRoom ? -11.5 : -10.5;
       p.grounded = false;
       state.jumpBuffer = 0;
       if (firstRoomAssistReady && p.x >= t.fake - 42) { state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; }
+      if (roomTwoAssistReady && p.x >= t.fake - 42) { state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; }
     }
     if (p.y > 560) return die("gap");
     if (hazardAt(p.x, p.y) && p.grounded) return die("hazard");
     if (p.x > 870 && p.grounded) { if (state.room < 3) { state.room += 1; resetRoom(); } else finish(); }
     if (state.pulse > 0) state.pulse -= dt;
-    const timingCue = firstRoomTimingKey();
+    const timingCue = guidedTimingKey();
     if (timingCue !== state.timingCue) { state.timingCue = timingCue; updateBattleText(); }
   }
   function draw() {
@@ -314,7 +342,7 @@
     const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
     ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
     ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
-    if (state.chapter === 1 && state.room === 1) {
+    if (state.chapter === 1 && state.room <= 3) {
       const landingStart = t.gap + 78;
       const landingWidth = Math.max(48, Math.min(96, t.spike - 34 - landingStart));
       const landingEnd = landingStart + landingWidth;

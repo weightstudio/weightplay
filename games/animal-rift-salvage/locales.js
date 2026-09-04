@@ -116,6 +116,8 @@ const publicGuideRows={
 };
 const publicCopy=Object.fromEntries(Object.entries(publicGuideRows).map(([code,values])=>[code,Object.fromEntries(publicGuideKeys.map((key,index)=>[key,values[index]]))]));
 for(const [code,copy] of Object.entries(publicCopy))Object.assign(dictionaries[code],copy);
+publicCopy.de.guideRelatedSpectrum="Tierischer Spektrumpuls";
+dictionaries.de.guideRelatedSpectrum="Tierischer Spektrumpuls";
 window.RIFT_SALVAGE_PUBLIC_COPY=publicCopy;
 window.RIFT_SALVAGE_LOCALES=dictionaries;
 })();

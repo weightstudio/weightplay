@@ -12,7 +12,7 @@
   const ROOMS_PER_EXPEDITION = 3;
   const EXPEDITIONS_PER_REGION = 5;
   const GAME_ID = "animal-relic-hunters";
-  const GAME_VERSION = 22;
+  const GAME_VERSION = 23;
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_relic_hunters_v1";
   const profileKey = "weightplay:animal-relic-hunters:profile:v1";
@@ -1957,6 +1957,8 @@
       const active = button.dataset.stageTab === tabName;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
       if (active && focus) button.focus({ preventScroll: true });
     });
     nodes.stagePanel.querySelectorAll("[data-stage-view]").forEach((view) => {

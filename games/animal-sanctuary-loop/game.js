@@ -4,6 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const GAME_ID = "animal-sanctuary-loop";
   const GAME_VERSION = "v14";
+  const interfaceValidator = new URLSearchParams(location.search).get("qa") === "interface-validator";
   const localePack = window.AnimalSanctuaryLoopLocales;
   const localeCodes = localePack.codes;
   // The reviewed French action is already localized. Do not let the generic
@@ -859,7 +860,7 @@
     ensureVisibleTick();
     if (!lifecycleSuspended) raf = requestAnimationFrame(frame);
     window.WonderSound?.play?.("start");
-    if (!save.tutorialSeen) requestAnimationFrame(() => openTutorial(false));
+    if (!save.tutorialSeen && !interfaceValidator) requestAnimationFrame(() => openTutorial(false));
   }
 
   function stopLoop() {

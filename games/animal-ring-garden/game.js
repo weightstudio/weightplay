@@ -14,13 +14,25 @@
     { key: "gardenThree", clueKey: "gardenThreeClue", target: [2, 3, 1], seed: [0, 0, 0] },
     { key: "gardenFour", clueKey: "gardenFourClue", target: [3, 2, 1], seed: [0, 0, 0] }
   ];
+  const progressKey = "weightplay:animal-ring-garden:v10:completed";
+  function readCompletedGardens() {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(progressKey) || "[]");
+      return new Set(Array.isArray(saved)
+        ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < gardens.length)
+        : []);
+    } catch {
+      return new Set();
+    }
+  }
   const state = {
     screen: "main",
     gardenIndex: 0,
     rings: gardens[0].seed.slice(),
     turns: 0,
     sound: true,
-    solved: false
+    solved: false,
+    completedGardens: readCompletedGardens()
   };
   const $ = (id) => document.getElementById(id);
   const bestKey = (index) => `weightplay:animal-ring-garden:v10:best:${index}`;
@@ -38,6 +50,14 @@
     if (prior !== null && prior <= turns) return prior;
     try { window.localStorage.setItem(bestKey(index), String(turns)); } catch { /* restricted storage is fine */ }
     return turns;
+  }
+  function writeCompletedGardens() {
+    try {
+      window.localStorage.setItem(progressKey, JSON.stringify([...state.completedGardens].sort((a, b) => a - b)));
+    } catch { /* restricted storage is fine */ }
+  }
+  function renderMainProgress() {
+    $("mainProgress").textContent = `${t("progress")}: ${state.completedGardens.size} / ${gardens.length}`;
   }
   function applyCopy() {
     document.documentElement.lang = locale;
@@ -61,7 +81,7 @@
     $("main-lede").textContent = t("lede");
     $("main-summary").textContent = t("summary");
     $("main-summary").setAttribute("aria-label", t("summaryLabel"));
-    $("mainProgress").textContent = `${t("progress")}: ${Math.min(state.gardenIndex, gardens.length)} / ${gardens.length}`;
+    renderMainProgress();
     $("guide-title").textContent = t("guideTitle");
     $("guide-one").textContent = t("guideOne");
     $("guide-two").textContent = t("guideTwo");
@@ -163,7 +183,10 @@
     emit("ring_turn", { garden: state.gardenIndex + 1, ring: index + 1, direction, turns: state.turns });
     if (state.rings.every((value, ringIndex) => value === gardens[state.gardenIndex].target[ringIndex])) {
       state.solved = true;
+      state.completedGardens.add(state.gardenIndex);
+      writeCompletedGardens();
       emit("garden_complete", { garden: state.gardenIndex + 1, turns: state.turns });
+      renderMainProgress();
     }
     renderBattle();
   }

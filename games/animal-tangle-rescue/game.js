@@ -10,10 +10,12 @@
     { name: "boardTwo", hint: "boardHint2", target: ["animalBadger", "animalFox", "animalHare", "animalOtter"], start: ["animalHare", "animalOtter", "animalFox", "animalBadger"] },
     { name: "boardThree", hint: "boardHint3", target: ["animalHare", "animalOtter", "animalBadger", "animalFox"], start: ["animalBadger", "animalHare", "animalFox", "animalOtter"] },
   ];
-  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: true, best: {} };
+  const state = { locale: "en", screen: "main", board: 0, current: [], selected: -1, swaps: 0, completed: [], sound: true, best: {}, statusKey: "ready", statusVars: {}, statusError: false };
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
+  const normalizeLocale = (value) => localeList.includes(value) && localeMap[value] ? value : "";
+  const initialLocale = () => normalizeLocale(window.WonderI18n?.actualLocale?.() || window.WonderI18n?.localeFromPath?.() || document.documentElement.lang || safeGet("weightPlayLocale", safeGet("weightplay-locale", "en"))) || "en";
   const copy = (key, vars = {}) => {
     const dictionary = localeMap[state.locale] || localeMap.en || {};
     let value = dictionary[key] || (localeMap.en && localeMap.en[key]) || key;
@@ -25,7 +27,7 @@
   const titleForAnimal = (animalKey) => copy(animalKey);
   const indexForAnimal = (animalKey) => animals.indexOf(animalKey);
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v1", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v2", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
@@ -101,8 +103,8 @@
     $("battleHeading").textContent = copy("round", { number: state.board + 1, total: boards.length });
     $("roundHint").textContent = `${copy(board.name)} · ${copy(board.hint)}`;
     $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length });
-    $("battleStatus").textContent = state.selected >= 0 ? copy("selectSecond") : copy("ready");
-    $("battleStatus").classList.toggle("error", false);
+    $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
+    $("battleStatus").classList.toggle("error", state.statusError);
     renderBoard();
   };
   const renderResult = (moves) => {
@@ -120,12 +122,18 @@
   const selectEndpoint = (row) => {
     if (state.selected < 0) {
       state.selected = row;
+      state.statusKey = "selectSecond";
+      state.statusVars = {};
+      state.statusError = false;
       analytics("tangle_endpoint_selected", { row });
       renderBattle();
       return;
     }
     if (state.selected === row) {
       state.selected = -1;
+      state.statusKey = "ready";
+      state.statusVars = {};
+      state.statusError = false;
       renderBattle();
       return;
     }
@@ -135,9 +143,12 @@
     [state.current[first], state.current[row]] = [state.current[row], state.current[first]];
     state.selected = -1;
     state.swaps += 1;
+    state.statusKey = "swapped";
+    state.statusVars = { first: firstName, second: secondName };
+    state.statusError = false;
     analytics("tangle_endpoint_swapped", { first, second: row, swaps: state.swaps });
     playTone(520);
-    $("battleStatus").textContent = copy("swapped", { first: firstName, second: secondName });
+    $("battleStatus").textContent = copy(state.statusKey, state.statusVars);
     renderBoard();
     $("battleStatus").classList.remove("error");
   };
@@ -152,12 +163,15 @@
       return;
     }
     analytics("tangle_board_checked", { board: state.board, correct: false, swaps: state.swaps });
-    $("battleStatus").textContent = copy("incorrect");
+    state.statusKey = "incorrect";
+    state.statusVars = {};
+    state.statusError = true;
+    $("battleStatus").textContent = copy(state.statusKey);
     $("battleStatus").classList.add("error");
     showToast(copy("incorrect"));
   };
-  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
-  const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
+  const resetBoard = () => { state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_reset", { board: state.board }); renderBattle(); };
+  const startBoard = (index) => { state.board = Math.max(0, Math.min(boards.length - 1, index)); state.current = boards[state.board].start.slice(); state.selected = -1; state.swaps = 0; state.statusKey = "ready"; state.statusVars = {}; state.statusError = false; analytics("tangle_board_started", { board: state.board }); setScreen("battle"); };
   const applyText = () => {
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel)));
@@ -169,7 +183,7 @@
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };
-  const applyLocale = (locale) => { state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en"; safeSet("weightplay-locale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
+  const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
   const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
   const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
   const bind = () => {
@@ -189,13 +203,14 @@
     $("resultMapBtn").addEventListener("click", () => setScreen("stage"));
     $("resultHomeBtn").addEventListener("click", () => setScreen("main"));
     [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-tangle-rescue-sound", state.sound ? "on" : "off"); applyText(); }));
-    $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value));
+    $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
   };
   const init = () => {
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
     state.sound = safeGet("weightplay-animal-tangle-rescue-sound", "on") !== "off";
     bind();
-    applyLocale(safeGet("weightplay-locale", "en"));
+    window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
+    applyLocale(initialLocale());
     window.setTimeout(() => { $("loadingScreen").hidden = true; $("app").hidden = false; setScreen("main"); }, 90);
   };
   init();

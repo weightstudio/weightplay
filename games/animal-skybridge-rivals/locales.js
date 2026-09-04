@@ -118,6 +118,8 @@
   };
   const publicCopy=Object.fromEntries(Object.entries(publicGuideRows).map(([code,values])=>[code,Object.fromEntries(publicGuideKeys.map((key,index)=>[key,values[index]]))]));
   for(const [code,copy] of Object.entries(publicCopy))Object.assign(dictionaries[code],copy);
+  publicCopy.it.guideRelatedRift="Recupero della Fenditura Animale";
+  dictionaries.it.guideRelatedRift="Recupero della Fenditura Animale";
   window.ANIMAL_SKYBRIDGE_RIVALS_PUBLIC_COPY=publicCopy;
   window.AnimalSkybridgeRivalsLocales={codes,dictionaries};
 })();

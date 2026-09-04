@@ -24,13 +24,13 @@
     <meta name="theme-color" content="#31566a" />
     <meta name="weightplay-game-id" content="animal-weather-watch" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v3" />
+    <meta name="weightplay-game-version" content="v4" />
     <title>Observatoire météo | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260831-weather-watch-v3-interface-contract-v1" />
-    <link rel="stylesheet" href="art.css?v=20260831-weather-watch-v3-interface-contract-v1" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260831-weather-watch-v3-interface-contract-v1" />
-    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260831-weather-watch-v3-interface-contract-v1" />
-    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260831-weather-watch-v3-interface-contract-v1" />
+    <link rel="stylesheet" href="style.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
+    <link rel="stylesheet" href="art.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260904-weather-watch-v4-route-locale-overflow-v1" />
   <meta name="description" content="Lis trois signaux, prédis le suivant et guide chaque animal vers un abri calme." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -86,7 +86,7 @@
       <div class="main-copy">
         <div class="cover-wrap"><picture><source srcset="assets/animal-weather-watch-cover-art.webp" type="image/webp" /><img class="main-cover" src="assets/animal-weather-watch-cover-art.png" alt="" width="1254" height="1254" /></picture><span class="cover-badge" data-i18n="kicker">A calm forecast puzzle</span></div>
         <p class="eyebrow" data-i18n="world">Willow weather station</p>
-        <h1 data-runtime-localize="off">Observatoire météo</h1>
+        <h1 data-i18n="title">Observatoire météo</h1>
         <p class="main-summary intro" data-i18n="intro">Read three sky signs, predict the next one, and open a safe shelter window for each animal.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite" data-i18n="progress">Three forecasts · three shelter windows</p>
         <div class="main-actions"><button id="startBtn" class="primary" type="button" data-wp-main-start data-i18n="start">Read the first forecast</button><button id="mapBtn" class="secondary" type="button" data-i18n="choose">Choose a forecast</button></div>
@@ -128,7 +128,7 @@
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" data-sound-toggle type="button" aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
 
-  <section class="game-page-info game-page-info-static" aria-label="Informations sur Observatoire météo">
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Informations sur Observatoire météo">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Observatoire météo</h2><p>Lis trois signaux, prédis le suivant et guide chaque animal vers un abri calme.</p></div>
@@ -147,9 +147,9 @@
     </div>
   </section>
 
-  <script src="locales.js?v=20260831-weather-watch-v3-interface-contract-v1"></script>
-  <script src="game.js?v=20260831-weather-watch-v3-interface-contract-v1"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260831-weather-watch-v3-interface-contract-v1" data-wp-stage-standard></script>
-  <script src="../../src/battle-canvas-standard.js?v=20260831-weather-watch-v3-interface-contract-v1" data-wp-battle-standard></script>
+  <script src="locales.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
+  <script src="game.js?v=20260904-weather-watch-v4-route-locale-overflow-v1"></script>
+  <script src="../../src/stage-selector-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-stage-standard></script>
+  <script src="../../src/battle-canvas-standard.js?v=20260904-weather-watch-v4-route-locale-overflow-v1" data-wp-battle-standard></script>
 </body>
 </html>

@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/block-blast/" />
-
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -54,9 +53,9 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260809-stage-visual1" />
-    <link rel="stylesheet" href="style.css?v=20260826-first-session-tutorial-v36" />
+    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
@@ -88,7 +87,6 @@
     </script>
   </head>
   <body
-    data-screen="main"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -96,7 +94,7 @@
       <div class="loading-card"><strong>方块爆破</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="mainGroup" class="main-group">
-      <main class="main-canvas">
+      <main class="main-canvas" data-screen="main">
         <header class="main-header">
           <a
             class="lobby-return"
@@ -169,11 +167,11 @@
       <div class="game-info-section"><h3>开发设计理念</h3><p>分数与效果只对应真正完成的行列消除。消除光束保持在完成的横列或直行中央，碎片从被消除的格子落下，白色加分提示显示在消除区域，而且玩家立即选取下一个形状时不会重播。</p></div>
       <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>《方块爆破》是适合 9 岁以上与亲子游玩的普通大厅浏览器益智游戏。不需要账号；战役解锁与偏好只保存在这个浏览器，清除网站数据或更换设备可能移除本设备进度。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>形状可以旋转吗？</dt><dd>不可以。每个托盘形状都维持显示时的方向。</dd></div><div><dt>什么时候会增加分数？</dt><dd>只有完成横列或直行才会得分；单纯放置形状不会加分。</dd></div><div><dt>共有多少关？</dt><dd>包含 30 个精心设计的战役任务，以及没有固定终点的无限模式。</dd></div><div><dt>冰块与石头有什么作用？</dt><dd>冰块会留在方块下方，直到该行列消除；石头不能被占用。</dd></div><div><dt>为什么本局结束？</dt><dd>当目前托盘中所有未使用形状都没有合法位置时，本局就会结束。</dd></div><div><dt>进度会保存吗？</dt><dd>战役解锁与偏好会保存在这个浏览器。</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>相关游戏</h3><p>因为这款游戏会练习 规划，也可以试试这些游戏：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖达竹水道</strong><span>旋转完整竹管网络，让水从雕刻泉眼流向开花水池，不留断点、错误分支或错位的管线中心。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-sunbeam-garden/"><img src="/assets/animal-sunbeam-garden-cover-general-v3.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>阳光花园</strong><span>在六乘六花园中旋转镜子，让每道可见阳光沿着正确路线照到沉睡的莲花。</span></span></a></div></div>
     </div>
   </section>
     </div>
-    <section id="stageScreen" class="active-screen" hidden>
+    <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
         <div
           class="stage-canvas"
@@ -200,13 +198,21 @@
             </button>
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
-          <p class="stage-hint" data-i18n="stageHint">
-            Select an unlocked mission.
-          </p>
+          <footer class="stage-footer">
+            <p class="stage-hint" data-i18n="stageHint">
+              Select an unlocked mission.
+            </p>
+            <nav class="stage-tabs" aria-label="Stage navigation">
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
+                Stage Map
+              </button>
+            </nav>
+          </footer>
           <button
             id="enterStage"
             class="primary stage-enter"
             type="button"
+            data-wp-enter-battle
             data-i18n="enter"
           >
             Enter Stage
@@ -215,7 +221,7 @@
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
-    <section id="battleScreen" class="active-screen" hidden>
+    <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
         <div
           id="battleCanvas"
@@ -251,6 +257,7 @@
                 id="battleHelp"
                 class="icon-control"
                 type="button"
+                data-wp-battle-utility
                 aria-label="How to play"
               >
                 ?
@@ -345,7 +352,7 @@
     <script src="../../src/analytics.js"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-    <script src="/src/runtime-locales/zh-cn.js?v=20260825-moonlight-arabic-result-v22"></script>
+    <script src="/src/runtime-locales/zh-cn.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
@@ -354,7 +361,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260826-first-session-tutorial-v36"></script>
+    <script src="game.js?v=20260904-interface-contract-v36"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

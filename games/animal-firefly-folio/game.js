@@ -7,14 +7,33 @@
     { name: "name3", note: "note3", solution: ["west", "south", "east"] },
   ];
   const directions = ["north", "east", "south", "west"];
-  const state = { locale: "en", page: 0, route: [], turns: 0, sessionTurns: 0, screen: "main" };
+  const canonicalLocale = (value) => {
+    const raw = String(value || "").trim();
+    if (locales[raw]) return raw;
+    const match = Object.keys(locales).find((locale) => locale.toLowerCase() === raw.toLowerCase());
+    return match || "en";
+  };
+  const storedLocale = () => {
+    try {
+      return localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || "";
+    } catch (_) {
+      return "";
+    }
+  };
+  const initialLocale = canonicalLocale(
+    window.WonderI18n?.actualLocale?.()
+      || window.WonderI18n?.localeFromPath?.()
+      || document.documentElement.lang
+      || storedLocale(),
+  );
+  const state = { locale: initialLocale, page: 0, route: [], turns: 0, sessionTurns: 0, screen: "main", statusKey: "waiting" };
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => { const table = locales[state.locale] || locales.en || {}; let value = table[key] || locales.en?.[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); }); return value; };
   const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen; };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-firefly-folio-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
   const saveBest = () => { try { const old = readBest(); if (!old || state.sessionTurns < old) localStorage.setItem("weightplay-animal-firefly-folio-best-v1", String(state.sessionTurns)); } catch (_) {} };
-  const announce = (key) => { $("battleStatus").textContent = t(key); };
-  const applyLocale = () => { document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria))); document.querySelectorAll("[data-copy-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.copyAlt))); $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language")); $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.page, pages.length)} / ${pages.length}`; $("bestValue").textContent = readBest() || t("noBest"); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); if (state.screen === "result") renderResult(); };
+  const announce = (key) => { state.statusKey = key; $("battleStatus").textContent = t(key); };
+  const applyLocale = () => { document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria]").forEach((node) => node.setAttribute("aria-label", t(node.dataset.copyAria))); document.querySelectorAll("[data-copy-alt]").forEach((node) => node.setAttribute("alt", t(node.dataset.copyAlt))); $("localeSelect").value = state.locale; $("localeSelect").setAttribute("aria-label", t("language")); $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.page, pages.length)} / ${pages.length}`; $("bestValue").textContent = readBest() || t("noBest"); if (state.screen === "stage") renderStages(); if (state.screen === "battle") { renderBattle(); announce(state.statusKey); } if (state.screen === "result") renderResult(); };
   const renderStages = () => { $("stageList").replaceChildren(...pages.map((page, index) => { const button = document.createElement("button"); button.type = "button"; button.className = "stage-card"; button.setAttribute("role", "listitem"); button.innerHTML = `<strong>${t("round", { n: index + 1, total: pages.length })}</strong><span>${t(page.name)}</span><small>${index < state.page ? t("complete") : t("open")}</small>`; button.addEventListener("click", () => startPage(index)); return button; })); };
   const renderBattle = () => { const page = pages[state.page]; $("roundName").textContent = t(page.name); $("roundLabel").textContent = t("round", { n: state.page + 1, total: pages.length }); $("routeNote").textContent = t(page.note); $("turnCount").textContent = t("turnCount", { n: state.route.length }); $("route").replaceChildren(...state.route.map((direction) => { const chip = document.createElement("span"); chip.className = "route-chip"; chip.textContent = t(direction); return chip; })); $("directionGrid").replaceChildren(...directions.map((direction) => { const button = document.createElement("button"); button.type = "button"; button.className = `direction-btn direction-${direction}`; button.setAttribute("aria-label", t(direction)); button.innerHTML = `<span class="direction-icon" aria-hidden="true"></span><strong>${t(direction)}</strong>`; button.disabled = state.route.length >= 3; button.addEventListener("click", () => chooseDirection(direction)); return button; })); };
   const renderResult = () => { const complete = state.page >= pages.length - 1; $("resultTitle").textContent = complete ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: Math.min(state.page + 1, pages.length), total: pages.length, turns: state.sessionTurns }); $("resultPrimaryBtn").textContent = complete ? t("map") : t("next"); $("resultPrimaryBtn").onclick = complete ? () => { show("stage"); renderStages(); } : () => startPage(state.page + 1); $("resultMapBtn").hidden = complete; };
@@ -22,9 +41,10 @@
   const chooseDirection = (direction) => { if (state.route.length >= 3) return; state.route.push(direction); state.turns += 1; state.sessionTurns += 1; renderBattle(); };
   const clearRoute = () => { state.route = []; renderBattle(); announce("waiting"); };
   const checkRoute = () => { const page = pages[state.page]; const correct = JSON.stringify(state.route) === JSON.stringify(page.solution); if (!correct) { state.route = []; renderBattle(); announce("wrong"); return; } announce("correct"); if (state.page === pages.length - 1) saveBest(); show("result"); renderResult(); };
-  $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkRoute); $("clearBtn").addEventListener("click", clearRoute); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); });
+  $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkRoute); $("clearBtn").addEventListener("click", clearRoute); $("localeSelect").addEventListener("change", (event) => { const requested = canonicalLocale(event.target.value); try { window.WonderI18n?.setLocale?.(requested); } catch (_) {} state.locale = requested; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); });
+  window.addEventListener("wonder:locale-change", (event) => { const requested = canonicalLocale(event.detail?.actualLocale || event.detail?.locale || window.WonderI18n?.actualLocale?.()); if (locales[requested] && requested !== state.locale) { state.locale = requested; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); } });
   $("battleSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; });
-  try { const routeLocale = document.documentElement.lang && document.documentElement.lang !== "en" ? document.documentElement.lang : ""; const saved = localStorage.getItem("weightplayLocale"); if (locales[routeLocale]) state.locale = routeLocale; else if (saved && locales[saved]) state.locale = saved; } catch (_) {}
+
   applyLocale(); show("main");
   window.__ANIMAL_FIREFLY_FOLIO_TEST__ = { pages, startPage, chooseDirection, checkRoute, getState: () => ({ ...state, route: [...state.route] }) };
 })();

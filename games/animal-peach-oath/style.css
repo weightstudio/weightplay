@@ -18,7 +18,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { margin: 0; min-height: 100%; background: #101a27; }
+html, body { width: 100%; max-width: 100%; margin: 0; min-height: 100%; overflow-x: hidden; background: #101a27; }
 body { color: var(--wp-ui-text); }
 html.battle-active, body.battle-active { height: 100%; overflow: hidden; overscroll-behavior: none; }
 button, select { font: inherit; }
@@ -26,8 +26,8 @@ button { cursor: pointer; }
 button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid #8ff4db; outline-offset: 2px; }
 .is-hidden { display: none !important; }
 
-.app { min-height: 100dvh; background: radial-gradient(circle at 50% 0,#69352c 0,#17243a 38%,#0b1420 100%); }
-.scene { width: min(100%,920px); margin: 0 auto; }
+.app { width: 100%; max-width: 100%; min-height: 100dvh; overflow-x: hidden; background: radial-gradient(circle at 50% 0,#69352c 0,#17243a 38%,#0b1420 100%); }
+.scene { width: 100%; max-width: 920px; min-width: 0; margin: 0 auto; }
 .shared-header, .battle-header { position: relative; z-index: 30; display: grid; align-items: center; min-height: 64px; padding: 8px 16px; background: var(--wp-ui-shell); border-bottom: 1px solid var(--wp-ui-border); }
 .shared-header { grid-template-columns: 58px 1fr 58px; }
 .shared-header .utility { justify-self: end; }
@@ -38,9 +38,9 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .utility { width: 48px; }
 
 .main-scene { min-height: 100dvh; overflow-y: auto; padding-bottom: 32px; }
-.main-card { display: grid; grid-template-columns: minmax(0,420px) minmax(260px,1fr); gap: 16px; padding: 16px; }
+.main-card { display: grid; grid-template-columns: minmax(0,420px) minmax(0,1fr); min-width: 0; gap: 16px; padding: 16px; }
 .cover { width: 100%; aspect-ratio: 1; border-radius: 24px; object-fit: cover; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
-.main-copy { align-self: center; display: grid; gap: 16px; padding: 24px; border: 1px solid var(--wp-ui-border); border-radius: 24px; background: var(--wp-ui-surface); }
+.main-copy { align-self: center; display: grid; min-width: 0; max-width: 100%; gap: 16px; padding: 24px; border: 1px solid var(--wp-ui-border); border-radius: 24px; background: var(--wp-ui-surface); }
 .eyebrow { color: #ffb5aa; font-size: 13px; font-weight: 900; letter-spacing: .12em; }
 .main-copy p { margin: 0; color: var(--wp-ui-muted); font-size: 17px; line-height: 1.65; }
 .main-progress { display: flex; justify-content: space-between; padding: 12px 0; border-block: 1px solid var(--wp-ui-border); }

@@ -24,8 +24,24 @@
   const COMPLETE_BODY = {
     en:"You guided all four stations with {n} accurate taps. The parade badge is yours.","zh-Hant":"你用 {n} 次準確點擊帶領四個站點，接力徽章屬於你。","zh-Hans":"你用 {n} 次准确点击带领四个站点，接力徽章属于你。",ja:"正確なタップ {n} 回で4つのステーションを導きました。リレーバッジをどうぞ。",ko:"정확한 탭 {n}번으로 네 스테이션을 이끌었습니다. 릴레이 배지를 받으세요.",es:"Guiaste las cuatro estaciones con {n} toques precisos. La insignia es tuya.","pt-BR":"Você guiou as quatro estações com {n} toques precisos. O distintivo é seu.",fr:"Tu as guidé les quatre stations avec {n} touches précises. Le badge du relais est à toi.",de:"Du hast alle vier Stationen mit {n} genauen Taps geführt. Das Staffelabzeichen gehört dir.",it:"Hai guidato tutte e quattro le stazioni con {n} tocchi precisi. Il distintivo è tuo.",ru:"Вы провели четыре станции {n} точными нажатиями. Эстафетный значок ваш.",hi:"आपने {n} सटीक टैप से चारों स्टेशन पूरे किए। रिले बैज आपका है।",ar:"قدت المحطات الأربع عبر {n} ضغطات دقيقة. شارة التتابع لك."
   };
+  const ACCESSIBLE_LABELS = {
+    en:{settings:"Settings",shellReturn:"Back to WeightPlay",beatStations:"Beat stations"},
+    "zh-Hant":{settings:"設定",shellReturn:"返回 WeightPlay",beatStations:"節拍站點"},
+    "zh-Hans":{settings:"设置",shellReturn:"返回 WeightPlay",beatStations:"节拍站点"},
+    ja:{settings:"設定",shellReturn:"WeightPlayに戻る",beatStations:"ビートステーション"},
+    ko:{settings:"설정",shellReturn:"WeightPlay로 돌아가기",beatStations:"비트 스테이션"},
+    es:{settings:"Ajustes",shellReturn:"Volver a WeightPlay",beatStations:"Estaciones de ritmo"},
+    "pt-BR":{settings:"Configurações",shellReturn:"Voltar ao WeightPlay",beatStations:"Estações de ritmo"},
+    fr:{settings:"Paramètres",shellReturn:"Retourner à WeightPlay",beatStations:"Stations de rythme"},
+    de:{settings:"Einstellungen",shellReturn:"Zurück zu WeightPlay",beatStations:"Rhythmusstationen"},
+    it:{settings:"Impostazioni",shellReturn:"Torna a WeightPlay",beatStations:"Stazioni del ritmo"},
+    ru:{settings:"Настройки",shellReturn:"Вернуться в WeightPlay",beatStations:"Ритмические станции"},
+    hi:{settings:"सेटिंग",shellReturn:"WeightPlay पर लौटें",beatStations:"ताल स्टेशन"},
+    ar:{settings:"الإعدادات",shellReturn:"العودة إلى WeightPlay",beatStations:"محطات الإيقاع"},
+  };
   let locale = "en", station = 0, combo = 0, best = readBest(), startedAt = 0, ticker = 0, sound = true, ready = false;
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
+  const a11y = (key) => (ACCESSIBLE_LABELS[locale] || ACCESSIBLE_LABELS.en)[key];
   const track = (event, details = {}) => {
     const payload = { game_id:"animal-rhythm-relay", game_version:"v5", interface_version:"6", locale, ...details };
     window.WonderAnalytics?.track?.(event, payload);
@@ -39,7 +55,7 @@
   function applyCopy() {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); setSound(sound); renderMainProgress(); renderBattle();
+    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); $("settingsButton").setAttribute("aria-label", a11y("settings")); document.querySelector("[data-wp-return=\"main\"]")?.setAttribute("aria-label", a11y("shellReturn")); $("battleBack").setAttribute("aria-label", t("back")); $("relayField").setAttribute("aria-label", a11y("beatStations")); setSound(sound); renderMainProgress(); renderBattle();
   }
   function renderMainProgress() { $("mainProgress").textContent = best ? t("best", { n: best }) : t("best", { n: 0 }); }
   function renderBattle() {

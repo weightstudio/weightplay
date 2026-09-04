@@ -81,17 +81,50 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
 .game-ad-reserve { width:min(100%,920px); height:56px; margin:0 auto; }
 .toast { position:fixed; left:50%; bottom:76px; z-index:5; transform:translate(-50%,16px); max-width:min(90vw,520px); padding:12px 16px; border:1px solid var(--line); border-radius:999px; background:#102d49; opacity:0; transition:opacity .2s, transform .2s; pointer-events:none; text-align:center; }
 .toast.visible { opacity:1; transform:translate(-50%,0); }
+
+/* WeightPlay v1/I6 shell contract: keep the three governed surfaces inside
+   the same 920px responsive envelope while preserving the meadow's visual
+   language. */
+.main-screen { width:min(100%,920px); margin:0 auto; }
+.main-canvas { width:100%; }
+.main-header { display:grid; grid-template-columns:58px minmax(0,1fr) 48px; align-items:center; gap:14px; min-height:48px; }
+.header-title { min-width:0; text-align:center; }
+.wp-shell-main-title { display:block; overflow:hidden; color:var(--ink); font-size:.88rem; font-weight:900; letter-spacing:.08em; text-overflow:ellipsis; text-transform:uppercase; white-space:nowrap; }
+.home-link { display:flex; align-items:center; justify-content:center; width:58px; height:48px; border:1px solid var(--line); border-radius:14px; background:rgba(129,166,200,.1); color:var(--ink); text-decoration:none; }
+.home-link span { font-size:1.35rem; line-height:1; }
+.home-link img { width:26px; height:26px; margin-left:3px; object-fit:contain; }
+.wp-shell-settings-button { width:48px; height:48px; min-height:48px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+.hero-card { grid-template-columns:minmax(300px,420px) minmax(0,1fr); }
+.main-poster { display:block; width:100%; height:auto; max-height:none; aspect-ratio:1; object-fit:cover; object-position:center; }
+.main-progress { display:flex; align-items:center; min-height:40px; margin-bottom:0; }
+.primary-btn { min-height:52px; }
+.game-page-info { width:min(100% - 32px,920px); margin:28px auto 52px; }
+.stage-canvas, .battle-canvas { height:calc(100svh - 56px); min-height:calc(100svh - 56px); overflow-x:hidden; overflow-y:auto; }
+.stage-ad-reserve, .battle-ad-reserve { width:min(100%,920px); height:56px; min-height:56px; margin:0 auto; }
+.stage-rail { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scroll-snap-type:x proximity; }
+.stage-rail .stage-card { flex:0 0 min(264px,calc(100vw - 48px)); min-height:190px; scroll-snap-align:start; }
+.stage-tabs button { min-height:44px; }
+.moonstone { top:18%; }
+
 @media (max-width:680px) {
   .main-canvas { width:min(100% - 20px, 920px); padding-top:14px; }
   .hero-card { grid-template-columns:1fr; padding:16px; gap:18px; }
   .cover-art { max-height:190px; }
+  .main-poster { max-height:none; }
   .guide-grid { grid-template-columns:1fr; gap:10px; }
   .guide { padding:18px; }
   .stage-canvas, .battle-canvas { padding-left:12px; padding-right:12px; }
   .moonstone { width:54px; height:54px; }
   .target-card { flex-wrap:wrap; }
+  .game-page-info { width:min(100% - 20px,920px); }
+  .main-header { gap:8px; }
 }
 @media (orientation:landscape) and (max-height:520px) {
+  .hero-card { grid-template-columns:300px minmax(0,1fr); }
+  .stage-rail { height:150px !important; min-height:150px !important; max-height:150px !important; }
+  .stage-rail .stage-card { height:150px !important; min-height:150px !important; max-height:150px !important; }
+  .stage-tabs { margin-top:8px; }
+  .moonstone, .moonstone.selected { top:0; transform:translate(-50%,-100%); }
   .stage-canvas, .battle-canvas { padding-top:10px; }
   .magnet-track { height:145px; margin-top:4px; }
   .result-panel { margin-top:4vh; padding:18px; }

@@ -2,7 +2,10 @@
   "use strict";
 
   const id = "animal-sunbeam-garden";
-  const game = (copy) => ({ games: { [id]: { related: [], hideRelatedGames: true, ...copy } } });
+  // Keep the public discovery rail in the reviewed guide. The canonical
+  // related IDs are shared with the English guide so every locale exposes the
+  // same three playable next steps after generation.
+  const game = (copy) => ({ games: { [id]: { relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"], ...copy } } });
 
   window.WeightPlayGeneralReviewedGuides = {
     "zh-Hant": game({

@@ -3510,7 +3510,7 @@ window.WeightPlayGameInfoLocales.es.games["animal-rune-reels"] = {
   gameplay: "Batalla de rol táctica con carretes",
   genre: ["Táctica", "Juego de rol", "Animales"],
   skills: ["Formación de equipos", "Gestión de probabilidades", "Planificación"],
-  relatedIds: ["beast-tactician", "animal-rune-tactics", "animal-hero-trials"],
+  relatedIds: ["beast-deck", "animal-rune-tactics", "animal-auto-squad"],
   intro: "Forma un equipo de hasta cinco héroes animales invocados, gira tres carretes de runas, corrige una vez el resultado y sobrevive a las treinta misiones de guardianes.",
   story: [
     "Un invocador cruza seis regiones de grietas con un grupo de animales cada vez mayor. Cada héroe posee ataque, defensa, curación y una habilidad definitiva distinta, por lo que la formación cambia la resolución de los mismos símbolos.",

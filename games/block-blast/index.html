@@ -52,12 +52,11 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260826-first-session-tutorial-v36" />
+    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Blast","url":"https://weightplay.com/en/games/block-blast/","image":"https://weightplay.com/assets/block-blast/cover.png","description":"Fit fixed block shapes on an 8 by 8 board, clear complete lines, solve 30 terrain missions, and play an endless score challenge.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   </head>
   <body
-    data-screen="main"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -65,7 +64,7 @@
       <div class="loading-card"><strong>Block Blast</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="mainGroup" class="main-group">
-      <main class="main-canvas">
+      <main class="main-canvas" data-screen="main">
         <header class="main-header">
           <a
             class="lobby-return"
@@ -128,7 +127,7 @@
         </div>
       </section>
     </div>
-    <section id="stageScreen" class="active-screen" hidden>
+    <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
         <div
           class="stage-canvas"
@@ -155,13 +154,21 @@
             </button>
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
-          <p class="stage-hint" data-i18n="stageHint">
-            Select an unlocked mission.
-          </p>
+          <footer class="stage-footer">
+            <p class="stage-hint" data-i18n="stageHint">
+              Select an unlocked mission.
+            </p>
+            <nav class="stage-tabs" aria-label="Stage navigation">
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
+                Stage Map
+              </button>
+            </nav>
+          </footer>
           <button
             id="enterStage"
             class="primary stage-enter"
             type="button"
+            data-wp-enter-battle
             data-i18n="enter"
           >
             Enter Stage
@@ -170,7 +177,7 @@
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
-    <section id="battleScreen" class="active-screen" hidden>
+    <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
         <div
           id="battleCanvas"
@@ -206,6 +213,7 @@
                 id="battleHelp"
                 class="icon-control"
                 type="button"
+                data-wp-battle-utility
                 aria-label="How to play"
               >
                 ?
@@ -308,7 +316,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260826-first-session-tutorial-v36"></script>
+    <script src="game.js?v=20260904-interface-contract-v36"></script>
     <script
       src="../../src/stage-selector-standard.js"
       data-wp-stage-standard

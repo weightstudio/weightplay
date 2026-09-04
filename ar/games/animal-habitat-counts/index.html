@@ -56,11 +56,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "الاستدلال المكاني",
-    "العائلة",
-    "Animal"
+    "ألغاز",
+    "منطق",
+    "تخطيط مكاني",
+    "عائلية",
+    "حيوانات"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -76,70 +76,64 @@
       <div class="main-canvas" data-wp-logical-main-canvas>
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
-          <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <strong class="shell-title" data-copy="title">عدّ المأوى</strong>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="الإعدادات">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="eyebrow">A calm habitat logic game</p>
+            <p class="eyebrow" data-copy="eyebrow">لعبة منطق هادئة للمأوى</p>
             <h1 data-copy="title">عدّ المأوى</h1>
-            <p class="intro main-summary" data-copy="intro">Fill the habitat cells so every row and column reaches its clue.</p>
+            <p class="intro main-summary" data-copy="intro">املأ خلايا المأوى حتى يطابق كل صف وعمود رقمه الإرشادي.</p>
             <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
-            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start counting</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button></div>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">ابدأ العدّ</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">صفحات المأوى</button></div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">الإعدادات</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">إغلاق</button></div>
+          <label class="setting-row"><span data-copy="language">اللغة</span><select id="languageSelect" aria-label="Choose a language"></select></label>
           <button id="soundBtn" class="secondary-btn sound-btn" type="button" data-sound-toggle aria-pressed="true"></button>
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="معلومات لعبة عدّ المأوى">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>عدّ المأوى</h2><p>املأ الخلايا حتى يطابق كل صف وعمود عدده.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>منطق صفوف وأعمدة المأوى</strong></div><div class="game-info-fact"><span>النوع</span><strong>Puzzle · Logic · الاستدلال المكاني · العائلة · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم، في هذا المتصفح فقط.</dd></div><div><dt>كم عدد صفحات المأوى؟</dt><dd>توجد ثلاث صفحات قصيرة للمأوى.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="معلومات لعبة عدّ المأوى">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">دليل ألعاب WeightPlay الأصلية</span><h2 id="guideHeading" data-copy="title">عدّ المأوى</h2><p data-copy="guideIntro">املأ خلايا الموطن حتى يطابق كل صف وعمود العدد المطلوب.</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">طريقة اللعب</span><strong data-copy="guideGameplayValue">منطق صفوف وأعمدة الموطن</strong></div><div class="game-info-fact"><span data-copy="guideGenre">النوع</span><strong data-copy="guideGenreValue">ألغاز · منطق · تخطيط مكاني · عائلية · حيوانات</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">صفحات الموطن</h3><ol><li data-copy="guideHow1">اقرأ أعداد التلميحات بجوار كل صف وتحت كل عمود.</li><li data-copy="guideHow2">بدّل حالة الخلايا لملئها أو إفراغها؛ كل اختيار قابل للتراجع.</li><li data-copy="guideHow3">تحقق من الموطن؛ يوضح التحقق الخاطئ الأعداد من دون مؤقت أو عقوبة.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">النتائج والحفظ</h3><p data-copy="guideResults">تشكّل ثلاث صفحات موطن قصيرة جلسة هادئة. تبقى أفضل نتيجة في هذا المتصفح.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">نصائح عملية</h3><p data-copy="guideTips">استخدم أعداد الصفوف والأعمدة معًا، وعدّل فقط الخطوط التي لا تطابق تلميحها.</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">الأسئلة الشائعة</h3><dl><div><dt data-copy="faqProgressQuestion">هل يُحفظ التقدم؟</dt><dd data-copy="faqProgressAnswer">نعم، في هذا المتصفح فقط.</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">رجوع</button><h2 data-copy="map">صفحات المأوى</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="مساعدة">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">استخدم برهان الصفوف والأعمدة نفسه مع شكل مأوى جديد.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">رجوع</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
-          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
-          <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
+          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">فحص المأوى</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">طابق كل إرشاد</h3><p data-copy="goalHelp">املأ العدد المحدد تمامًا في كل صف وعمود.</p><div class="clue-legend"><span data-copy="rowClues">الصفوف</span><span data-copy="columnClues">الأعمدة</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">خلايا المأوى</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">استخدم مفاتيح الأسهم للتنقل بين الخلايا. اضغط Space أو Enter لملء الخلية أو إفراغها.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">افحص المأوى</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">أفرغ الخلايا</button></div></section>
+          <p class="rule-note" data-copy="ruleNote">كل خطأ إرشاد: عدّل الصفوف أو الأعمدة التي لا يطابق عددها فقط.</p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
-        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this habitat?</h2><p data-copy="leaveBody">Your current cells will be cleared, but your best result stays saved.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Return to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">اكتمل المأوى</p><h2 data-copy="resultTitle">مأوى متوازن</h2><p data-copy="resultBody">طابقت كل إرشادات الصفوف والأعمدة.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">صفحات المأوى</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">العودة إلى البداية</button></div></div>
+        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">مغادرة هذا المأوى؟</h2><p data-copy="leaveBody">ستُفرغ الخلايا الحالية، لكن أفضل نتيجة ستبقى محفوظة.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">متابعة</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">العودة إلى البداية</button></div></div>
       </div>
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
   <script src="locales.js?v=20260902-habitat-counts-v4-result-containment"></script>
   <script src="game.js?v=20260902-habitat-counts-v4-result-containment"></script>
-<script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/ar.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

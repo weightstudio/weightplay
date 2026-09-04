@@ -133,6 +133,7 @@ html body .page[hidden]{display:none!important}
 .stage-card .monster-chip{height:42px;padding:0 9px;display:flex;align-items:center;line-height:20px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 
 @media(max-height:520px) and (orientation:landscape){
+  body[data-wp-game-id="animal-rune-reels"] .wp-standard-main-composition{--wp-main-landscape-poster-size:300px}
   .stage-canvas{padding:6px 10px;gap:6px;grid-template-columns:minmax(0,1fr) 310px;grid-template-rows:44px minmax(0,1fr) 48px}
   .stage-canvas .screen-head{grid-column:1/-1;grid-row:1}
   .stage-canvas .progress-card{display:none}

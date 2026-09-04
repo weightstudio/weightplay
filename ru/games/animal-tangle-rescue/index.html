@@ -22,10 +22,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v1">
+  <meta name="weightplay-game-version" content="v2">
   <meta name="description" content="Меняйте местами концы лоз, пока каждый путь спасения не приведёт к нужному убежищу." />
   <title>Спасение из зарослей | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260831-tangle-rescue-art-v2">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-tangle-rescue-feedback-envelope-v2">
+  <link rel="stylesheet" href="style.css?v=20260904-tangle-rescue-locale-state-v3">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Спасение из зарослей | WeightPlay" />
@@ -54,11 +55,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Spatial Logic",
-    "Connection",
-    "Семья",
-    "Animal"
+    "Головоломка",
+    "Пространственная логика",
+    "Соединение",
+    "Семейная",
+    "Животные"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -68,104 +69,88 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v1" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v2" data-screen="main">
   <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
     <div class="loading-mark" aria-hidden="true">✦</div>
-    <p data-copy="loading">Preparing the rescue map…</p>
+    <p data-copy="loading">Подготовка карты спасения…</p>
   </div>
   <div id="app" hidden>
     <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
         <header class="main-header wp-main-shell-header">
-          <a class="home-link wp-shell-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-          <div class="header-title"><strong class="wp-shell-main-title" data-copy="title">Tangle Rescue</strong></div>
-          <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button>
+          <a class="home-link wp-shell-return" data-wp-return="main" href="/" data-copy-aria-label="lobbyBack" aria-label="Вернуться в WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+          <div class="header-title"><strong class="wp-shell-main-title" data-copy="title">Спасение из зарослей</strong></div>
+          <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings" aria-label="Настройки"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Настройки</span></button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-tangle-rescue-cover.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="kicker">Moss Shell Taro’s rescue map</p>
+            <p class="eyebrow" data-copy="kicker">Карта спасения Таро в мшистой раковине</p>
             <h1 data-copy="title">Спасение из зарослей</h1>
-            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">Swap two vine endpoints until every trail reaches its matching shelter.</p>
+            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">Меняйте местами концы лоз, пока каждый путь не приведёт к нужному убежищу.</p>
             <p id="mainProgress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite"></p>
             <div class="hero-actions">
-              <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a rescue</button>
-              <button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Rescue map</button>
+              <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Начать спасение</button>
+              <button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Карта спасения</button>
             </div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Настройки</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Закрыть</button></div>
+          <label class="setting-row"><span data-copy="language">Язык</span><select id="languageSelect" data-copy-aria-label="language" aria-label="Язык"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
           <button id="soundBtn" class="secondary-btn setting-sound" type="button" aria-pressed="true" data-sound-toggle></button>
         </section>
       </div>
     </main>
 
     <details id="guideScreen" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="guideHeading">
-      <summary id="guideHeading" data-copy="guideTitle">How to play</summary>
+      <summary id="guideHeading" data-copy="guideTitle">Как играть</summary>
       <div class="guide-canvas" data-wp-logical-guide-canvas>
         <div class="guide-grid">
-          <article><span class="step-dot">1</span><h3 data-copy="guideOneTitle">Read the shelters</h3><p data-copy="guideOne">The bottom row shows which animal belongs in each shelter.</p></article>
-          <article><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">Swap two endpoints</h3><p data-copy="guideTwo">Tap one vine end, then another. Their animals trade places.</p></article>
-          <article><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">Check the rescue</h3><p data-copy="guideThree">Every correct trail locks in. Wrong tries stay visible and safe.</p></article>
+          <article><span class="step-dot">1</span><h3 data-copy="guideOneTitle">Прочитайте убежища</h3><p data-copy="guideOne">Нижний ряд показывает, какое животное нужно каждому убежищу.</p></article>
+          <article><span class="step-dot">2</span><h3 data-copy="guideTwoTitle">Меняйте концы</h3><p data-copy="guideTwo">Нажмите один конец лозы, затем другой, чтобы поменять животных местами.</p></article>
+          <article><span class="step-dot">3</span><h3 data-copy="guideThreeTitle">Проверьте спасение</h3><p data-copy="guideThree">Верные пути соединяются, а неверные попытки остаются видимыми.</p></article>
         </div>
-        <button id="guideStartBtn" class="primary-btn" type="button" data-copy="start">Start a rescue</button>
+        <button id="guideStartBtn" class="primary-btn" type="button" data-copy="start">Начать спасение</button>
       </div>
     </details>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="map">Rescue map</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button" type="button" data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each board adds one more endpoint decision.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Назад</button><h2 data-copy="map">Карта спасения</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button" type="button" data-copy-aria-label="help" aria-label="Как играть">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">Каждая доска добавляет одно решение о концах лоз.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Rescue map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="map">Rescue map</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" data-copy-aria-label="map" aria-label="Карта спасения"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="map">Карта спасения</button><span aria-hidden="true"></span></nav>
       </div>
       <div class="stage-ad-reserve game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="map">Map</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
-        <div class="mission-row"><div><p class="eyebrow" data-copy="boardKicker">RESCUE BOARD</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-        <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">Vine endpoint board</h3><div class="board-labels"><span data-copy="endpoints">Vine ends</span><span data-copy="shelters">Shelters</span></div><div id="boardDiagram" class="board-diagram"></div></section>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="map">Карта спасения</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Звук">♫</button></header>
+        <div class="mission-row"><div><p class="eyebrow" data-copy="boardKicker">ДОСКА СПАСЕНИЯ</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+        <section class="tangle-board" aria-labelledby="boardTitle"><h3 id="boardTitle" class="sr-only" data-copy="boardTitle">Доска концов лоз</h3><div class="board-labels"><span data-copy="endpoints">Концы лоз</span><span data-copy="shelters">Убежища</span></div><div id="boardDiagram" class="board-diagram"></div></section>
         <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
-        <p class="move-hint" data-copy="moveHint">Select two vine ends to swap them. There is no timer.</p>
-        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the rescue</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset board</button><button id="leaveBtn" class="text-btn" type="button" data-copy="leave">Leave board</button></div>
+        <p class="move-hint" data-copy="moveHint">Выберите два конца для обмена. Таймера нет.</p>
+        <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Проверить спасение</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Сбросить доску</button><button id="leaveBtn" class="text-btn" type="button" data-copy="leave">Покинуть доску</button></div>
       </div>
       <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
 
     <section id="resultScreen" class="screen" data-screen="result" hidden>
       <div class="result-canvas" data-wp-logical-result-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="resultMapBtn" class="back-btn" type="button" data-copy="map">Map</button><h2 data-copy="resultKicker">Rescue result</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
-        <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.png" alt="" width="1024" height="1536"></div><p class="eyebrow" data-copy="successKicker">TRAIL CONNECTED</p><h1 id="resultHeading"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
+        <header class="panel-head"><button id="resultMapBtn" class="back-btn" type="button" data-copy="map">Карта спасения</button><h2 data-copy="resultKicker">Результат</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
+        <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.png" alt="" width="1024" height="1536"></div><p class="eyebrow" data-copy="successKicker">ПУТЬ СОЕДИНЁН</p><h1 id="resultHeading"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">К началу</button></div></div>
       </div>
     </section>
   </div>
-  <div id="leaveDialog" class="dialog-backdrop" hidden><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this board?</h2><p data-copy="leaveText">Your current swaps will be cleared, but completed boards stay saved.</p><div class="dialog-actions"><button id="cancelLeaveBtn" class="secondary-btn" type="button" data-copy="stay">Stay</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="leaveConfirm">Leave board</button></div></div></div>
+  <div id="leaveDialog" class="dialog-backdrop" hidden><div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Покинуть эту доску?</h2><p data-copy="leaveText">Текущие обмены будут очищены, но спасённые доски сохранятся.</p><div class="dialog-actions"><button id="cancelLeaveBtn" class="secondary-btn" type="button" data-copy="stay">Остаться</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="leaveConfirm">Покинуть</button></div></div></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260831-tangle-rescue-v1"></script>
-  <script src="game.js?v=20260831-tangle-rescue-v1"></script>
-<script src="/src/runtime-locales/ru.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/runtime-locales/ru.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Спасение из зарослей информация об игре">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Спасение из зарослей</h2><p>Меняйте местами концы лоз, пока каждый путь спасения не приведёт к нужному убежищу.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Логическая головоломка со сменой концов</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Spatial Logic · Connection · Семья · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="locales.js?v=20260904-tangle-rescue-locale-state-v3"></script>
+  <script src="game.js?v=20260904-tangle-rescue-locale-state-v3"></script>
 </body>
 </html>

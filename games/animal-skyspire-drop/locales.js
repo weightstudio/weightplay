@@ -158,5 +158,17 @@
   Object.assign(it,{landingScan:"Prossimo atterraggio",scanGap:"Varco aperto",scanSafe:"Pietra sicura",scanDanger:"Settore maledetto",scanFragile:"Vetro fragile",scanGapAction:"Avanza",scanSafeAction:"Rimbalzo · reset",scanDangerAction:"Evita",scanFragileAction:"Crepa, poi rompi"});
   Object.assign(ru,{landingScan:"Следующая посадка",scanGap:"Открытый проём",scanSafe:"Безопасный камень",scanDanger:"Проклятый сектор",scanFragile:"Хрупкое стекло",scanGapAction:"Вперёд",scanSafeAction:"Отскок · сброс",scanDangerAction:"Избегай",scanFragileAction:"Треск, затем пробой"});
   Object.assign(ar,{landingScan:"موضع الهبوط التالي",scanGap:"فتحة مفتوحة",scanSafe:"حجر آمن",scanDanger:"قطاع ملعون",scanFragile:"زجاج هش",scanGapAction:"تقدّم",scanSafeAction:"ارتداد · إعادة ضبط",scanDangerAction:"تجنّب",scanFragileAction:"شقّ ثم حطّم"});
+  Object.assign(en,{settings:"Settings",soundOn:"Sound on",soundOff:"Sound off"});
+  Object.assign(zhHant,{settings:"設定",soundOn:"音效開啟",soundOff:"音效關閉"});
+  Object.assign(zhHans,{settings:"设置",soundOn:"音效开启",soundOff:"音效关闭"});
+  Object.assign(ja,{settings:"設定",soundOn:"サウンドオン",soundOff:"サウンドオフ"});
+  Object.assign(ko,{settings:"설정",soundOn:"소리 켜짐",soundOff:"소리 꺼짐"});
+  Object.assign(es,{settings:"Ajustes",soundOn:"Sonido activado",soundOff:"Sonido desactivado"});
+  Object.assign(pt,{settings:"Configurações",soundOn:"Som ligado",soundOff:"Som desligado"});
+  Object.assign(fr,{settings:"Paramètres",soundOn:"Son activé",soundOff:"Son désactivé"});
+  Object.assign(de,{settings:"Einstellungen",soundOn:"Ton an",soundOff:"Ton aus"});
+  Object.assign(it,{settings:"Impostazioni",soundOn:"Audio attivo",soundOff:"Audio disattivato"});
+  Object.assign(ru,{settings:"Настройки",soundOn:"Звук включён",soundOff:"Звук выключен"});
+  Object.assign(ar,{settings:"الإعدادات",soundOn:"الصوت مفعّل",soundOff:"الصوت متوقف"});
   window.SKYDROP_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,ar};
 })();

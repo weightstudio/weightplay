@@ -3,7 +3,6 @@
   <head>
 
     <base href="/games/block-blast/" />
-
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -54,9 +53,9 @@
     />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260809-stage-visual1" />
-    <link rel="stylesheet" href="style.css?v=20260826-first-session-tutorial-v36" />
+    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
-<script type="application/ld+json">
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
@@ -89,7 +88,6 @@
     </script>
   </head>
   <body
-    data-screen="main"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -97,7 +95,7 @@
       <div class="loading-card"><strong>تفجير المكعبات</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
     </section>
     <div id="mainGroup" class="main-group">
-      <main class="main-canvas">
+      <main class="main-canvas" data-screen="main">
         <header class="main-header">
           <a
             class="lobby-return"
@@ -170,11 +168,11 @@
       <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>ترتبط النتيجة والتأثيرات بمسح الخط الفعلي. تبقى حزم المسح متمركزة على الصف أو العمود المكتمل، وتسقط الأجزاء من الخلايا الممسوحة، وتظهر زيادة النتيجة البيضاء فوق المنطقة الممسوحة من دون إعادة تشغيلها عندما يختار اللاعب قطعة الدرج التالية فوراً.</p></div>
       <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>تفجير المكعبات لعبة ألغاز متصفح للجمهور العام، موصى بها للأعمار من 9 سنوات فما فوق وللعب العائلي. لا يلزم حساب أو شراء. تُخزن فتوح الحملة والتفضيلات في هذا المتصفح فقط، لذلك قد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى إزالة التقدم المحلي.</p></div>
       <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكن تدوير الأشكال؟</dt><dd>لا. يحافظ كل شكل في الدرج على اتجاهه المعروض.</dd></div><div><dt>متى تزيد النقاط؟</dt><dd>تمنح الصفوف أو الأعمدة المكتملة فقط نقاطاً؛ أما وضع الشكل وحده فلا يفعل ذلك.</dd></div><div><dt>كم عدد المراحل؟</dt><dd>هناك 30 مهمة حملة مصممة بعناية، بالإضافة إلى جولة لا نهائية غير محدودة.</dd></div><div><dt>ماذا يفعل الجليد والحجر؟</dt><dd>يبقى الجليد ظاهراً تحت المكعب الموضوع حتى يُمسح خطه، ولا يمكن شغل الحجر.</dd></div><div><dt>لماذا انتهت الجولة؟</dt><dd>تنتهي الجولة عندما لا يملك أي شكل غير مستخدم في الدرج الحالي موضعاً قانونياً.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>تُخزن فتوح الحملة والتفضيلات محلياً في هذا المتصفح.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>ألعاب مشابهة</h3><p>تدرّب على التخطيط بطريقة أخرى.</p><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر شبكة الخيزران كاملة لتوصل الماء من النبع المنحوت إلى الحوض المزهر من دون فواصل أو تفرعات زائفة أو مراكز أنابيب منحرفة.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-sunbeam-garden/"><img src="/assets/animal-sunbeam-garden-cover-general-v3.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>حديقة شعاع الشمس</strong><span>أدر المرايا في حديقة 6×6 حتى يسلك كل شعاع ظاهر طريقًا صحيحًا إلى زهرة اللوتس النائمة.</span></span></a></div></div>
     </div>
   </section>
     </div>
-    <section id="stageScreen" class="active-screen" hidden>
+    <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
         <div
           class="stage-canvas"
@@ -201,13 +199,21 @@
             </button>
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
-          <p class="stage-hint" data-i18n="stageHint">
-            Select an unlocked mission.
-          </p>
+          <footer class="stage-footer">
+            <p class="stage-hint" data-i18n="stageHint">
+              Select an unlocked mission.
+            </p>
+            <nav class="stage-tabs" aria-label="Stage navigation">
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
+                Stage Map
+              </button>
+            </nav>
+          </footer>
           <button
             id="enterStage"
             class="primary stage-enter"
             type="button"
+            data-wp-enter-battle
             data-i18n="enter"
           >
             Enter Stage
@@ -216,7 +222,7 @@
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
     </section>
-    <section id="battleScreen" class="active-screen" hidden>
+    <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
       <div class="battle-shell">
         <div
           id="battleCanvas"
@@ -252,6 +258,7 @@
                 id="battleHelp"
                 class="icon-control"
                 type="button"
+                data-wp-battle-utility
                 aria-label="How to play"
               >
                 ?
@@ -346,7 +353,7 @@
     <script src="../../src/analytics.js"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-    <script src="/src/runtime-locales/ar.js?v=20260825-moonlight-arabic-result-v22"></script>
+    <script src="/src/runtime-locales/ar.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260802-block-blast1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
@@ -355,7 +362,7 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260826-first-session-tutorial-v36"></script>
+    <script src="game.js?v=20260904-interface-contract-v36"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

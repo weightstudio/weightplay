@@ -132,7 +132,9 @@ select { min-height: 44px; max-width: 62%; padding: 8px 10px; border: 1px solid 
 .shelter-card { display: flex; align-items: center; justify-content: flex-end; gap: 7px; padding: 7px 10px; border: 1px dashed #aac9b8; color: var(--ink); text-align: right; background: rgb(255 255 255 / 72%); }
 .shelter-icon { font-size: 1.25rem; }
 .board-dot { width: 12px; height: 12px; margin: auto; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 5px rgb(232 184 77 / 18%); }
-.feedback { min-height: 1.5em; margin: 16px 2px 6px; color: var(--mint-strong); font-weight: 900; }
+/* Reserve the feedback envelope before a wrong Check so persistent actions
+   do not move when the message wraps on a narrow screen. */
+.feedback { min-height: 3em; margin: 16px 2px 6px; color: var(--mint-strong); font-weight: 900; }
 .feedback.error { color: var(--berry); }
 .move-hint { margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
 .battle-actions { justify-content: flex-start; }
@@ -170,6 +172,36 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
   .paw-chip { flex-basis: 28px; width: 28px; height: 28px; }
   .shelter-card { gap: 4px; }
   .battle-actions .primary-btn, .battle-actions .secondary-btn { flex: 1 1 140px; }
+}
+
+/* Interface 6 keeps the Main poster column deterministic at the governed
+   wide breakpoints while leaving the narrow stacked composition fluid. */
+@media (min-width: 700px) and (max-width: 1023px) {
+  .hero-card { grid-template-columns: 300px minmax(0, 1fr); }
+  .main-poster { width: 300px; min-width: 300px; max-width: 300px; height: 300px; min-height: 300px; max-height: 300px; }
+  .hero-copy { min-width: 0; }
+}
+
+@media (min-width: 1024px) {
+  .hero-card { grid-template-columns: 420px minmax(0, 1fr); }
+  .main-poster { width: 420px; min-width: 420px; max-width: 420px; height: 420px; min-height: 420px; max-height: 420px; }
+  .hero-copy { min-width: 0; }
+}
+
+/* In short landscape Battle, the fourth endpoint must remain above the
+   independent General reserve so its centre stays hit-testable. */
+@media (min-width: 700px) and (max-width: 1023px) and (orientation: landscape) {
+  #battleScreen .battle-canvas { padding: 0 12px 8px; overflow-y: auto; }
+  #battleScreen .panel-head { min-height: 44px; }
+  #battleScreen .mission-row { margin: 4px 0; }
+  #battleScreen .tangle-board { padding: 8px; }
+  #battleScreen .board-labels { padding-bottom: 4px; }
+  #battleScreen .board-diagram { height: 226px; min-height: 226px; gap: 2px; padding: 2px 0; }
+  #battleScreen .board-row { grid-template-columns: minmax(116px, 1fr) 28px minmax(116px, 1fr); gap: 4px; min-height: 54px; }
+  #battleScreen .endpoint-card, #battleScreen .shelter-card { min-height: 44px; padding: 4px 6px; font-size: .8rem; }
+  #battleScreen .paw-chip { flex-basis: 24px; width: 24px; height: 24px; font-size: .8rem; }
+  #battleScreen .feedback { margin: 6px 2px 4px; }
+  #battleScreen .move-hint { margin-bottom: 6px; font-size: .8rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

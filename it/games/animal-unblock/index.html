@@ -25,13 +25,16 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-game-version" content="v20" />
+    <meta name="weightplay-interface-version" content="6" />
     <title>Libera il sentiero | WeightPlay</title>
     <link
       rel="stylesheet"
       href="../../src/stage-selector-standard.css"
       data-wp-stage-standard
     />
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+    <link rel="stylesheet" href="style.css?v=20260904-animal-unblock-interface-v20" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-animal-unblock-interface-v20" />
     <link rel="stylesheet" href="result-v4.css" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
   <meta name="description" content="Fai scorrere i blocchi orizzontali e verticali lungo il proprio asse finché l’esploratore rosso non ha un percorso libero verso l’uscita." />
@@ -76,7 +79,7 @@
 }
     </script>
   </head>
-  <body data-wp-game-id="animal-unblock" data-wp-combined-sound="true">
+  <body data-wp-game-id="animal-unblock" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
     <main id="main" class="screen main main-screen" data-screen="main">
       <header>
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -166,38 +169,38 @@
     </dialog>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-    <script src="/src/runtime-locales/it.js?v=20260825-moonlight-arabic-result-v22"></script>
+    <script src="/src/runtime-locales/it.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/analytics.js?v=20260829-opening-funnel-v19"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
-    <script src="game.js?v=20260829-opening-funnel-v19"></script>
+    <script src="game.js?v=20260904-animal-unblock-interface-v20"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard
     ></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script src="/src/game-page-info-general-reviewed.js?v=20260826-reviewed-guide-v16"></script>
-  <section class="game-page-info game-page-info-static" aria-label="Libera il sentiero informazioni sul gioco">
+  <section class="game-page-info game-page-info-static" aria-label="Informazioni su Libera il sentiero">
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Libera il sentiero</h2><p>Fai scorrere i blocchi orizzontali e verticali lungo il proprio asse finché l’esploratore rosso non ha un percorso libero verso l’uscita.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Puzzle di uscita con blocchi scorrevoli</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategia · Logica · Animali</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-8 minuti per livello</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Puzzle di uscita con blocchi scorrevoli</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle · Strategia · Logica · Animali</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a impegnativo</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>2-8 minuti per livello</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Panko esplora trenta cancelli della foresta pieni di blocchi. Ogni blocco parte su una griglia fissa e ogni puzzle ha una sequenza verificata che libera l’esploratore contrassegnato.</p>
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Panko esplora trenta cancelli della foresta pieni di blocchi. Ogni blocco parte su una griglia fissa e ogni puzzle ha una sequenza verificata che libera l’esploratore contrassegnato.</p>
 <p>I blocchi non ruotano, non saltano e non escono dal tabellone. La sfida è capire quali mosse temporanee creano lo spazio per lo scorrimento finale.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>I blocchi orizzontali si muovono solo a sinistra e a destra; quelli verticali solo in alto e in basso.</p>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>I blocchi orizzontali si muovono solo a sinistra e a destra; quelli verticali solo in alto e in basso.</p>
 <p>Una mossa si ferma prima del bordo o di un altro blocco; le caselle occupate non possono sovrapporsi.</p>
 <p>Il livello termina quando l’esploratore rosso raggiunge la corsia di uscita indicata.</p>
 <p>Annulla ripristina uno scorrimento, Suggerimento indica un blocco utile e Ricomincia riporta all’esatta disposizione iniziale.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Scegli un sentiero sbloccato.</li><li>Individua tutti i blocchi che attraversano la riga di uscita dell’esploratore.</li><li>Crea spazio lungo l’asse consentito di ogni ostacolo prima di spostarlo.</li><li>Fai scorrere l’esploratore attraverso l’uscita e continua con il sentiero successivo.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Ragiona a ritroso partendo dall’uscita.</li><li>Sposta un ostacolo più lontano del necessario quando deve lasciare spazio a un altro blocco.</li><li>Non riempire l’unica colonna libera con un blocco che servirà più avanti.</li><li>Usa Annulla per un errore recente e Ricomincia quando l’intera sequenza è sbagliata.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>I primi sentieri insegnano i limiti degli assi e gli ostacoli singoli. I capitoli successivi aggiungono pezzi lunghi, spazi stretti, dipendenze annidate, più incroci e tabelloni finali densi.</p>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli un sentiero sbloccato.</li><li>Individua tutti i blocchi che attraversano la riga di uscita dell’esploratore.</li><li>Crea spazio lungo l’asse consentito di ogni ostacolo prima di spostarlo.</li><li>Fai scorrere l’esploratore attraverso l’uscita e continua con il sentiero successivo.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Ragiona a ritroso partendo dall’uscita.</li><li>Sposta un ostacolo più lontano del necessario quando deve lasciare spazio a un altro blocco.</li><li>Non riempire l’unica colonna libera con un blocco che servirà più avanti.</li><li>Usa Annulla per un errore recente e Ricomincia quando l’intera sequenza è sbagliata.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>I primi sentieri insegnano i limiti degli assi e gli ostacoli singoli. I capitoli successivi aggiungono pezzi lunghi, spazi stretti, dipendenze annidate, più incroci e tabelloni finali densi.</p>
 <p>Ogni livello cambia la sequenza spaziale senza introdurre regole di movimento arbitrarie.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Direzione del trascinamento, aggancio alla griglia, collisioni e grafica dei blocchi usano la stessa geometria delle caselle con tocco, mouse e tastiera.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>Non ci sono timer, account, acquisti o punteggi pubblici. Gli sblocchi e i migliori numeri di mosse restano soltanto in questo browser.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>I blocchi possono ruotare?</dt><dd>No. Ogni blocco mantiene l’orientamento iniziale.</dd></div><div><dt>Perché il trascinamento si è fermato?</dt><dd>La casella successiva era occupata o fuori dal tabellone.</dd></div><div><dt>Quale blocco deve uscire?</dt><dd>L’esploratore rosso chiaramente contrassegnato.</dd></div><div><dt>Tutti e trenta i sentieri sono risolvibili?</dt><dd>Sì. Ogni disposizione creata ha una soluzione verificata.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Direzione del trascinamento, aggancio alla griglia, collisioni e grafica dei blocchi usano la stessa geometria delle caselle con tocco, mouse e tastiera.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota per i genitori</h3><p>Non ci sono timer, account, acquisti o punteggi pubblici. Gli sblocchi e i migliori numeri di mosse restano soltanto in questo browser.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>I blocchi possono ruotare?</dt><dd>No. Ogni blocco mantiene l’orientamento iniziale.</dd></div><div><dt>Perché il trascinamento si è fermato?</dt><dd>La casella successiva era occupata o fuori dal tabellone.</dd></div><div><dt>Quale blocco deve uscire?</dt><dd>L’esploratore rosso chiaramente contrassegnato.</dd></div><div><dt>Tutti e trenta i sentieri sono risolvibili?</dt><dd>Sì. Ogni disposizione creata ha una soluzione verificata.</dd></div></dl></div>
 
     </div>
   </section>

@@ -12,8 +12,9 @@
   const localeSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" })[localeSegment] || "en";
   const GAME_ID = "animal-one-line";
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v21";
   const INTERFACE_VERSION = 6;
+  const interfaceValidationRun = new URLSearchParams(location.search).get("qa") === "interface-validator";
   function viewportBucket(){const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth||1),height=Math.max(1,window.innerHeight||document.documentElement.clientHeight||1);if(height<=430)return"short-landscape";if(width<=480)return"phone";if(width<=900)return height>width?"tablet-portrait":"tablet-landscape";return height>width?"desktop-portrait":"desktop-landscape";}
   function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:GAME_ID,game_version:GAME_VERSION,interface_version:INTERFACE_VERSION,locale:window.WonderI18n?.actualLocale?.()||document.documentElement.lang||routeLocale,viewport_bucket:viewportBucket(),stage:stageIndex+1,...details});}catch{/* Anonymous funnel measurement must never interrupt play. */}}
 
@@ -255,7 +256,7 @@
   function resumeForeground(){if(document.hidden||!windowFocused)return;lifecycleSuspended=false;resumeRunClock();resumeHint();}
   dom.board.addEventListener("pointerup",finish);dom.board.addEventListener("pointercancel",e=>cancelDrawing(e.pointerId));dom.board.addEventListener("lostpointercapture",e=>cancelDrawing(e.pointerId));
   window.addEventListener("blur",()=>{windowFocused=false;suspendForeground();});window.addEventListener("focus",()=>{windowFocused=true;resumeForeground();});window.addEventListener("pagehide",suspendForeground);window.addEventListener("pageshow",resumeForeground);document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendForeground();else resumeForeground();});
-  dom.start.addEventListener("click",()=>{showStage(stageIndex,"main_start");if(!readStorage(TUTORIAL_KEY))dom.tutorial.hidden=false;});
+  dom.start.addEventListener("click",()=>{showStage(stageIndex,"main_start");if(!interfaceValidationRun&&!readStorage(TUTORIAL_KEY))dom.tutorial.hidden=false;});
   dom.stageBack.addEventListener("click",()=>{track("return_session",{from_screen:"stage"});showMain();});dom.battleBack.addEventListener("click",openBattleLeave);dom.continuePuzzle.addEventListener("click",continuePuzzle);dom.returnStages.addEventListener("click",returnToStages);dom.leave.addEventListener("keydown",trapBattleLeave);
   dom.rail.addEventListener("click",e=>{const card=e.target.closest(".stage-card.unlocked");if(card)startStage(Number(card.dataset.index),"stage_card");});
   dom.rail.addEventListener("keydown",e=>{if(!["ArrowLeft","ArrowRight","Home","End"].includes(e.key)||!e.target.closest(".stage-card"))return;e.preventDefault();moveStageFocus(e.key);});

@@ -95,6 +95,22 @@
     guideSummary: "Read visible relationships between animal stars, then choose the one constellation that obeys both rules across six five-map arcs.", resultGuideTitle: "Results and saves", resultGuide: "Six five-map arcs form a 30-map campaign. Progress and the best total checks are stored only in this browser when storage is available.", tipsTitle: "Practical tips", tips: "Read each relation literally: above, below, left, right, or diagonal. Each map introduces a visible rule, and the boards stay visible so every choice can be checked fairly."
   };
   keys.forEach((key) => Object.assign(tables[key] ||= {}, defaults));
+  const accessibilityAliases = {
+    en: { returnMain: "Back to WeightPlay", stageSections: "Stage sections", constellationChoices: "Constellation choices", guideAria: "Constellation Keeper game information" },
+    "zh-Hant": { returnMain: "返回 WeightPlay", stageSections: "階段區段", constellationChoices: "星圖選擇", guideAria: "動物星圖守護員遊戲資訊" },
+    "zh-Hans": { returnMain: "返回 WeightPlay", stageSections: "阶段部分", constellationChoices: "星图选项", guideAria: "动物星图守护员游戏信息" },
+    ja: { returnMain: "WeightPlayに戻る", stageSections: "ステージセクション", constellationChoices: "星座の選択肢", guideAria: "どうぶつ星座守りゲーム情報" },
+    ko: { returnMain: "WeightPlay로 돌아가기", stageSections: "스테이지 섹션", constellationChoices: "별자리 선택지", guideAria: "동물 별자리 지킴이 게임 정보" },
+    es: { returnMain: "Volver a WeightPlay", stageSections: "Secciones de fase", constellationChoices: "Opciones de constelación", guideAria: "Información del juego Guardián de Constelaciones" },
+    "pt-BR": { returnMain: "Voltar ao WeightPlay", stageSections: "Seções da fase", constellationChoices: "Opções de constelação", guideAria: "Informações do jogo Guardião das Constelações" },
+    fr: { returnMain: "Retour à WeightPlay", stageSections: "Sections de la phase", constellationChoices: "Choix de constellations", guideAria: "Informations sur le jeu Gardien des constellations" },
+    de: { returnMain: "Zurück zu WeightPlay", stageSections: "Abschnitte der Phase", constellationChoices: "Sternbild-Auswahl", guideAria: "Spielinformationen zum Sternbild-Hüter" },
+    it: { returnMain: "Torna a WeightPlay", stageSections: "Sezioni della fase", constellationChoices: "Scelte della costellazione", guideAria: "Informazioni sul gioco Custode delle costellazioni" },
+    ru: { returnMain: "Вернуться в WeightPlay", stageSections: "Разделы этапа", constellationChoices: "Варианты созвездия", guideAria: "Информация об игре «Хранитель созвездий»" },
+    hi: { returnMain: "WeightPlay पर वापस जाएँ", stageSections: "चरण अनुभाग", constellationChoices: "नक्षत्र विकल्प", guideAria: "नक्षत्र रक्षक खेल जानकारी" },
+    ar: { returnMain: "العودة إلى WeightPlay", stageSections: "أقسام المرحلة", constellationChoices: "اختيارات الكوكبة", guideAria: "معلومات لعبة حارس الكوكبات" },
+  };
+  keys.forEach((key) => Object.assign(tables[key], accessibilityAliases[key] || {}));
   const addStageCopy = (locale, names, intros) => {
     const table = tables[locale] ||= {};
     names.forEach((name, index) => { table[`stage${index + 1}Name`] = name; table[`stage${index + 1}Intro`] = intros[index]; });

@@ -56,11 +56,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "स्थानिक तर्क",
+    "पहेली",
+    "तर्क",
+    "स्थानिक योजना",
     "परिवार",
-    "Animal"
+    "जानवर"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -76,70 +76,64 @@
       <div class="main-canvas" data-wp-logical-main-canvas>
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
-          <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <strong class="shell-title" data-copy="title">आवास गिनती</strong>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="सेटिंग्स">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <p class="eyebrow" data-copy="eyebrow">A calm habitat logic game</p>
+            <p class="eyebrow" data-copy="eyebrow">शांत आवास तर्क खेल</p>
             <h1 data-copy="title">आवास गिनती</h1>
-            <p class="intro main-summary" data-copy="intro">Fill the habitat cells so every row and column reaches its clue.</p>
+            <p class="intro main-summary" data-copy="intro">आवास की कोशिकाएँ भरें ताकि हर पंक्ति और स्तंभ अपना संकेत पूरा करे।</p>
             <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
-            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start counting</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button></div>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">गिनना शुरू करें</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="map">आवास पृष्ठ</button></div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel" role="dialog" hidden aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">सेटिंग्स</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">बंद करें</button></div>
+          <label class="setting-row"><span data-copy="language">भाषा</span><select id="languageSelect" aria-label="Choose a language"></select></label>
           <button id="soundBtn" class="secondary-btn sound-btn" type="button" data-sound-toggle aria-pressed="true"></button>
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="आवास गिनती खेल की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>आवास गिनती</h2><p>कोशिकाएँ भरकर हर पंक्ति और स्तंभ की गिनती मिलाएँ।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>पंक्ति-स्तंभ आवास तर्क</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · स्थानिक तर्क · परिवार · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ, केवल इसी ब्राउज़र में।</dd></div><div><dt>आवास के कितने पृष्ठ हैं?</dt><dd>आवास के तीन छोटे पृष्ठ हैं।</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="आवास गिनती खेल की जानकारी">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay मूल गेम गाइड</span><h2 id="guideHeading" data-copy="title">आवास गिनती</h2><p data-copy="guideIntro">आवास की कोशिकाएँ भरें ताकि हर पंक्ति और स्तंभ अपने संकेत तक पहुँचे।</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">गेमप्ले</span><strong data-copy="guideGameplayValue">आवास की पंक्ति और स्तंभ तर्क</strong></div><div class="game-info-fact"><span data-copy="guideGenre">शैली</span><strong data-copy="guideGenreValue">पहेली · तर्क · स्थानिक योजना · परिवार · जानवर</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">आवास पृष्ठ</h3><ol><li data-copy="guideHow1">हर पंक्ति के पास और हर स्तंभ के नीचे दिए अंक संकेत पढ़ें।</li><li data-copy="guideHow2">कोशिकाएँ भरने या खाली करने के लिए उन्हें बदलें; हर चुनाव वापस किया जा सकता है।</li><li data-copy="guideHow3">आवास जाँचें; गलत जाँच बिना टाइमर या दंड के गिनती समझाती है।</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">परिणाम और सेव</h3><p data-copy="guideResults">तीन छोटे आवास पृष्ठ एक शांत सत्र बनाते हैं। आपका सर्वोत्तम परिणाम इसी ब्राउज़र में रहता है।</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">व्यावहारिक सुझाव</h3><p data-copy="guideTips">पंक्ति और स्तंभ की गिनती साथ में देखें और केवल उन रेखाओं को बदलें जो संकेत से नहीं मिलतीं।</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">अक्सर पूछे गए प्रश्न</h3><dl><div><dt data-copy="faqProgressQuestion">क्या प्रगति सेव होती है?</dt><dd data-copy="faqProgressAnswer">हाँ, केवल इसी ब्राउज़र में।</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
-        <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">वापस</button><h2 data-copy="map">आवास पृष्ठ</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="मदद">i</button></header>
+        <p class="panel-intro" data-copy="mapIntro">पंक्ति और स्तंभ का वही तर्क एक नए आवास आकार पर लागू करें।</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">वापस</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
-          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
-          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
-          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">Habitat cells</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">Use arrow keys to move between cells. Press Space or Enter to fill or clear.</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check habitat</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Clear cells</button></div></section>
-          <p class="rule-note" data-copy="ruleNote">Every mistake is a clue: adjust only the rows or columns that miss their count.</p>
+          <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">आवास जाँच</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
+          <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">हर संकेत पूरा करें</h3><p data-copy="goalHelp">हर पंक्ति और स्तंभ में दिखी संख्या जितनी कोशिकाएँ भरें।</p><div class="clue-legend"><span data-copy="rowClues">पंक्तियाँ</span><span data-copy="columnClues">स्तंभ</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>
+          <section class="grid-card" aria-labelledby="gridHeading"><div class="section-heading"><h3 id="gridHeading" data-copy="gridTitle">आवास कोशिकाएँ</h3><span id="filledCount" class="small-stat"></span></div><div id="habitatGrid" class="habitat-grid" role="grid" aria-describedby="gridKeyboardHint"></div><p id="gridKeyboardHint" class="keyboard-hint" data-copy="keyboardHint">कोशिकाओं के बीच जाने के लिए तीर कुंजियाँ दबाएँ। भरने या खाली करने के लिए Space या Enter दबाएँ।</p><p id="battleStatus" class="feedback" role="status" aria-live="polite"></p><div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">आवास जाँचें</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">कोशिकाएँ खाली करें</button></div></section>
+          <p class="rule-note" data-copy="ruleNote">हर गलती एक संकेत है: केवल गलत पंक्ति या स्तंभ को बदलें।</p>
         </div>
-        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">HABITAT COMPLETE</p><h2 data-copy="resultTitle">A balanced habitat</h2><p data-copy="resultBody">You matched every row and column clue.</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Habitat pages</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div></div>
-        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">Leave this habitat?</h2><p data-copy="leaveBody">Your current cells will be cleared, but your best result stays saved.</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">Continue</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">Return to start</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">आवास पूरा</p><h2 data-copy="resultTitle">संतुलित आवास</h2><p data-copy="resultBody">आपने हर पंक्ति और स्तंभ संकेत पूरा किया।</p><p id="resultStats" class="result-stats"></p><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">आवास पृष्ठ</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">शुरुआत पर लौटें</button></div></div>
+        <div id="leaveDialog" class="leave-dialog" role="dialog" hidden aria-labelledby="leaveTitle"><h2 id="leaveTitle" data-copy="leaveTitle">इस आवास से बाहर निकलें?</h2><p data-copy="leaveBody">मौजूदा कोशिकाएँ साफ होंगी, पर आपका सर्वश्रेष्ठ परिणाम सुरक्षित रहेगा।</p><div class="result-actions"><button id="continueBtn" class="secondary-btn" type="button" data-copy="continue">जारी रखें</button><button id="confirmLeaveBtn" class="primary-btn" type="button" data-copy="confirmLeave">शुरुआत पर लौटें</button></div></div>
       </div>
       <div class="general-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
   </div>
   <script src="locales.js?v=20260902-habitat-counts-v4-result-containment"></script>
   <script src="game.js?v=20260902-habitat-counts-v4-result-containment"></script>
-<script src="/src/runtime-locales/hi.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/hi.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-:root { color-scheme: light; --ink:#143f47; --muted:#53757a; --sea:#dff4f0; --foam:#fffdf7; --accent:#176a73; --accent2:#f19a55; --line:#b7d8d3; font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+:where([hidden]),*[hidden]{display:none!important} :root { color-scheme: light; --ink:#143f47; --muted:#53757a; --sea:#dff4f0; --foam:#fffdf7; --accent:#176a73; --accent2:#f19a55; --line:#b7d8d3; font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
 * { box-sizing:border-box; } body { margin:0; min-height:100vh; background:linear-gradient(145deg,#bde8e0d9,#fff5dfd9),url('assets/animal-tide-tally-background.png') center/cover fixed; color:var(--ink); } button,select { font:inherit; } button { cursor:pointer; }
 .screen { max-width:920px; margin:0 auto; } .loading-screen { min-height:100vh; display:grid; place-content:center; text-align:center; } .loader-mark,.result-icon { font-size:4rem; color:var(--accent); } .topbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem; } .topbar strong { font-size:1.1rem; } .icon-btn,.close-btn { border:0; background:transparent; color:var(--ink); font-size:1.5rem; min-width:44px; min-height:44px; border-radius:12px; } .icon-btn:hover,.close-btn:hover { background:#ffffff8f; }
 .panel { margin:0 auto 1.5rem; padding:1.2rem clamp(1rem,4vw,2.5rem) 2.5rem; } .cover-wrap { position:relative; overflow:hidden; border-radius:24px; background:var(--sea); box-shadow:0 15px 35px #27656a25; } .cover-wrap img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:cover; } .guide-art,.result-guide { display:block; width:min(100%,220px); height:260px; margin:1rem auto 0; object-fit:contain; } .cover-badge { position:absolute; left:1rem; bottom:1rem; padding:.45rem .75rem; background:#fffdf7e8; border-radius:999px; font-weight:700; color:var(--accent); } .eyebrow { margin:.9rem 0 .35rem; text-transform:uppercase; letter-spacing:.1em; font-size:.75rem; font-weight:800; color:var(--muted); } h1,h2,p { margin-top:0; } h1 { font-size:clamp(2rem,6vw,4rem); margin-bottom:.55rem; } h2 { margin-bottom:.6rem; } .intro { max-width:62ch; font-size:1.08rem; line-height:1.55; color:#365d61; } .main-actions,.battle-actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.2rem; } .primary,.secondary,.toggle { border:2px solid var(--accent); border-radius:14px; min-height:48px; padding:.7rem 1rem; font-weight:800; } .primary { background:var(--accent); color:#fff; } .secondary,.toggle { background:#fffdf7; color:var(--accent); } .best { color:var(--muted); font-weight:700; margin-top:1.2rem; }
@@ -6,3 +6,79 @@
 .battle-head { display:flex; justify-content:space-between; align-items:start; gap:1rem; } .pill { border-radius:999px; background:#fffdf7; padding:.4rem .7rem; font-weight:800; white-space:nowrap; } .prompt { font-size:1.2rem; font-weight:800; margin:1.5rem 0 1rem; } .tide-card { padding:1.2rem; border:2px solid var(--line); border-radius:20px; background:#fffdf7e8; text-align:center; } .tide-symbol { display:block; font-size:2.4rem; color:var(--accent2); } .shell-art { display:block; width:96px; height:72px; margin:.35rem auto .5rem; background:url('assets/animal-tide-tally-shell-atlas.png') 0 0/300% 200% no-repeat; } .story { max-width:44ch; margin:.5rem auto; line-height:1.5; } .equation { color:var(--muted); font-weight:700; } .answer-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin-top:1rem; } .answer { min-height:82px; border:2px solid var(--line); border-radius:18px; background:#fffdf7; color:var(--accent); font-size:2rem; font-weight:900; } .answer:hover,.answer:focus-visible { border-color:var(--accent2); transform:translateY(-2px); } .answer.chosen { background:#d5f1e9; border-color:var(--accent); } .status { min-height:2rem; margin:1rem 0 0; font-weight:800; text-align:center; } .status.good { color:#13734f; } .status.try { color:#a3542d; }
 .modal { position:fixed; inset:0; display:grid; place-items:center; padding:1rem; background:#143f4770; } .modal-card { width:min(100%,420px); background:var(--foam); border-radius:20px; padding:1.3rem; box-shadow:0 20px 50px #143f4740; } .close-btn { float:right; } .setting-row { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.8rem 0; border-top:1px solid var(--line); } select { min-height:44px; border:2px solid var(--line); border-radius:10px; padding:.4rem; background:#fff; color:var(--ink); }
 @media (max-width:560px) { .panel { padding-top:.4rem; } .answer { min-height:70px; } .main-actions > * { flex:1 1 100%; } }
+
+/* Interface 6 shell contract: keep the authored tide loop inside the shared
+   Main, Stage, Battle, and General reserve envelopes. */
+#app { width:100%; }
+#mainScreen { width:min(100%,920px); max-width:920px; margin:0 auto; padding:0 18px 32px; }
+#mainScreen .main-canvas { width:min(100%,920px); margin:0 auto; }
+#mainScreen .wp-main-shell-header,
+#stageScreen .panel-head,
+#battleScreen .panel-head { display:grid; grid-template-columns:58px minmax(0,1fr) 48px; align-items:center; gap:8px; min-height:58px; padding:5px 0; }
+#mainScreen .wp-shell-return { display:flex; align-items:center; justify-content:center; width:58px; height:48px; min-height:48px; padding:0; gap:4px; overflow:hidden; color:var(--ink); text-decoration:none; border-radius:12px; }
+#mainScreen .wp-shell-return img { display:block; width:28px; height:28px; object-fit:contain; }
+#mainScreen .wp-shell-main-title,
+#stageScreen .panel-head h2,
+#battleScreen .panel-head h2 { min-width:0; margin:0; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#mainScreen .topbar-actions { display:flex; justify-content:flex-end; }
+#mainScreen .wp-shell-settings-button,
+#stageScreen .panel-head .icon-btn,
+#battleScreen .panel-head .icon-btn { width:48px; height:48px; min-height:48px; padding:0; border:2px solid var(--accent); background:#fffdf7; }
+#mainScreen .hero-card { display:grid; grid-template-columns:minmax(0,420px) minmax(0,1fr); gap:18px 24px; align-items:start; margin:0; padding:12px 0 20px; background:transparent; box-shadow:none; }
+#mainScreen .hero-card > .cover-wrap { grid-column:1; grid-row:1 / span 6; width:100%; aspect-ratio:1; }
+#mainScreen .hero-card > .cover-wrap .main-poster { display:block; width:100%; height:100%; aspect-ratio:1; object-fit:cover; }
+#mainScreen .hero-copy { grid-column:2; min-width:0; padding-top:4px; }
+#mainScreen .hero-copy .eyebrow { margin-top:0; }
+#mainScreen .main-summary { margin-bottom:12px; }
+#mainScreen .main-progress { display:flex; align-items:center; min-height:42px; height:42px; margin:0; padding:8px 12px; border:1px solid var(--line); border-radius:12px; background:#fffdf7e8; color:var(--muted); font-weight:800; line-height:1.2; }
+#mainScreen .main-actions { margin-top:12px; }
+#mainScreen .main-actions .primary { min-height:52px; }
+#mainScreen .wp-shell-settings-popover { z-index:10; }
+#gameGuide { clear:both; }
+#stageScreen,
+#battleScreen { display:flex; flex-direction:column; width:100%; max-width:none; height:100vh; min-height:0; margin:0; padding:0; }
+#stageScreen .stage-canvas,
+#battleScreen .battle-canvas { width:min(100%,920px); height:calc(100vh - 56px); min-height:0; margin:0 auto; padding:14px 18px; overflow:auto; }
+#stageScreen .stage-canvas { background:linear-gradient(145deg,#dff4f0e8,#fff5dfe8),url('assets/animal-tide-tally-background.png') center/cover; }
+#battleScreen .battle-canvas { background:linear-gradient(145deg,#dff4f0e8,#fff5dfe8),url('assets/animal-tide-tally-background.png') center/cover; }
+#stageScreen .panel-head,
+#battleScreen .panel-head { flex:0 0 auto; }
+#stageScreen .back-btn,
+#battleScreen .back-btn { display:flex; align-items:center; justify-content:center; width:58px; height:48px; min-height:48px; padding:0; border:2px solid var(--accent); border-radius:12px; background:#fffdf7; color:var(--accent); font-weight:900; }
+#stageScreen .panel-intro { margin:4px 0 12px; text-align:center; color:var(--muted); }
+#stageScreen .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:0; }
+#stageScreen .stage-tabs { display:grid; place-items:center; min-height:48px; margin-top:12px; }
+#stageScreen .stage-tabs button { min-height:44px; padding:8px 16px; border:1px solid var(--line); border-radius:12px; background:#fffdf7; color:var(--accent); font-weight:800; }
+#stageScreen .stage-choices { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; width:min(100%,680px); margin:14px auto 0; }
+#stageScreen .stage-choice { display:flex; align-items:center; justify-content:space-between; gap:10px; min-width:0; min-height:64px; padding:10px 12px; border:2px solid var(--line); border-radius:14px; background:#fffdf7e8; color:var(--ink); text-align:left; }
+#stageScreen .stage-choice strong,
+#stageScreen .stage-choice small { display:block; }
+#stageScreen .stage-choice small { margin-top:4px; color:var(--muted); line-height:1.3; }
+#battleScreen .battle-body { width:min(100%,680px); margin:0 auto; }
+#battleScreen .battle-head:not(.panel-head) { margin-top:4px; align-items:center; }
+#battleScreen .battle-head h3 { margin:0; }
+#battleScreen .tide-card { margin-top:12px; }
+#battleScreen .answer-grid { margin-top:12px; }
+#battleScreen .battle-actions { margin-top:10px; }
+.stage-ad-reserve,
+.battle-ad-reserve { flex:0 0 56px; width:min(100%,920px); height:56px; min-height:56px; margin:0 auto; background:#143f47; }
+@media (min-width:700px) and (max-height:600px) {
+  #mainScreen { padding-bottom:12px; }
+  #mainScreen .hero-card { grid-template-columns:300px minmax(0,1fr); gap:10px 18px; padding-top:4px; }
+  #mainScreen .hero-card > .cover-wrap { width:300px; height:300px; }
+  #mainScreen .hero-copy { padding-top:0; }
+  #mainScreen .guide-art { height:116px; }
+  #stageScreen .stage-tabs { margin-top:0; }
+  #stageScreen .stage-choices { display:none; }
+}
+@media (max-width:699px) {
+  #mainScreen { padding-inline:16px; }
+  #mainScreen .hero-card { display:flex; flex-direction:column; gap:8px; }
+  #mainScreen .hero-card > .cover-wrap { width:100%; }
+  #mainScreen .hero-copy { width:100%; padding-top:0; }
+  #mainScreen .main-actions > * { flex:1 1 100%; }
+  #stageScreen .stage-list { grid-template-columns:1fr; }
+  #stageScreen .stage-choices { grid-template-columns:1fr; }
+  #stageScreen .stage-canvas,
+  #battleScreen .battle-canvas { padding-inline:12px; }
+}

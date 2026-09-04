@@ -75,6 +75,15 @@ html body[data-wp-game-id="animal-moonlight-heist"] > .wp-stage-physical-reserve
 }
 .modal-actions.leave-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
 
+/* Interface 6 canonical compact-landscape poster column. The shared shell
+   applies its final poster dimensions with !important, so set the governed
+   shell variable on this game's composition rather than fighting the media. */
+@media (min-width:700px) and (max-height:430px) {
+  body[data-wp-game-id="animal-moonlight-heist"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size:300px;
+  }
+}
+
 .gadget-choice{display:grid;grid-template-rows:22px minmax(0,1fr) auto;align-items:center;justify-items:center;overflow:hidden;text-align:center}
 .gadget-choice img{grid-row:1;width:24px;height:24px}
 .gadget-name{display:block;max-width:100%;font-size:8px;font-weight:800;line-height:9px;overflow:hidden;text-overflow:ellipsis;white-space:normal;word-break:break-word}

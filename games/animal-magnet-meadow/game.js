@@ -39,6 +39,8 @@
       element.hidden = name !== screen;
       element.classList.toggle("active", name === screen);
     });
+    const guide = $("guideScreen");
+    if (guide) guide.hidden = screen !== "main";
     if (screen === "main") applyText();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
@@ -163,12 +165,12 @@
     applyText();
   };
   const bind = () => {
-    $("startBtn").addEventListener("click", () => startRound(state.completed.includes(0) ? 0 : 0));
+    $("startBtn").addEventListener("click", () => setScreen("stage"));
     $("mapBtn").addEventListener("click", () => setScreen("stage"));
     $("mainSettingsBtn").addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); });
     $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); });
     $("stageBackBtn").addEventListener("click", () => setScreen("main"));
-    $("stageInfoBtn").addEventListener("click", () => showToast(copy("mapIntro")));
+    $("stageInfoBtn").addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("stageInfoBtn").setAttribute("aria-expanded", String(open)); });
     $("battleBackBtn").addEventListener("click", () => setScreen("stage"));
     $("checkBtn").addEventListener("click", checkRound);
     $("resetBtn").addEventListener("click", resetRound);

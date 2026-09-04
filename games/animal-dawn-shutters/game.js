@@ -52,17 +52,101 @@
   const copy = (key, vars = {}) => { const dictionary = localeMap[state.locale] || localeMap.en || {}; let value = dictionary[key] || localeMap.en[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); }); return value; };
   const bestTotal = () => Number(safeGet("weightplay-animal-dawn-shutters-best", "0")) || 0;
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
-  const applyText = () => { document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel))); $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); $("battleSoundBtn").setAttribute("aria-label", copy("sound")); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); };
+  const applyText = () => { document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel))); $("mainSettingsBtn").setAttribute("aria-label", copy("settings")); $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); $("battleSoundBtn").setAttribute("aria-label", copy("sound")); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); };
   const setScreen = (screen) => { state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") renderStages(); if (screen === "battle") renderBattle(); window.scrollTo(0, 0); };
   const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
-  const renderStages = () => { $("stageList").innerHTML = rounds.map((round, index) => { const done = state.completed.includes(index); const unlocked = stageUnlocked(index); return `<button class="stage-card${done ? " complete" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: rounds.length })}</span><strong>${copy(round.name)}</strong><span>${copy(round.hint)}</span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : copy("lockedStage")}</b></button>`; }).join(""); $("stageList").querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage)))); };
+  const bindStageRail = () => {
+    const rail = $("stageList");
+    if (!rail || rail.dataset.dragGuardBound === "true") return;
+    rail.dataset.dragGuardBound = "true";
+    let pointerId = null;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = false;
+    let suppressNextClick = false;
+    let suppressClickTimer = 0;
+    let previousScrollBehavior = "";
+    let previousSnapType = "";
+    rail.addEventListener("pointerdown", (event) => {
+      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startScroll = rail.scrollLeft;
+      moved = false;
+      rail.dataset.dragging = "false";
+      previousScrollBehavior = rail.style.getPropertyValue("scroll-behavior");
+      previousSnapType = rail.style.getPropertyValue("scroll-snap-type");
+      rail.style.setProperty("scroll-behavior", "auto", "important");
+      rail.style.setProperty("scroll-snap-type", "none", "important");
+    });
+    document.addEventListener("pointermove", (event) => {
+      if (event.pointerId !== pointerId) return;
+      const delta = event.clientX - startX;
+      if (!moved && Math.abs(delta) > 4) {
+        moved = true;
+        rail.dataset.dragging = "true";
+        rail.classList.add("stage-dragging");
+        try { rail.setPointerCapture?.(event.pointerId); } catch (_error) {}
+      }
+      if (!moved) return;
+      if (event.cancelable) event.preventDefault();
+      const railRect = rail.getBoundingClientRect();
+      const coordinateScale = railRect.width > 0 ? rail.clientWidth / railRect.width : 1;
+      const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      rail.scrollLeft = Math.max(0, Math.min(maximum, startScroll - delta * coordinateScale));
+    });
+    const finishPointer = (event = {}) => {
+      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
+      const didMove = moved;
+      pointerId = null;
+      moved = false;
+      rail.dataset.dragging = "false";
+      rail.classList.remove("stage-dragging");
+      try { if (rail.hasPointerCapture?.(event.pointerId)) rail.releasePointerCapture(event.pointerId); } catch (_error) {}
+      if (previousScrollBehavior) rail.style.setProperty("scroll-behavior", previousScrollBehavior);
+      else rail.style.removeProperty("scroll-behavior");
+      if (previousSnapType) rail.style.setProperty("scroll-snap-type", previousSnapType);
+      else rail.style.removeProperty("scroll-snap-type");
+      if (!didMove) return;
+      if (event.cancelable) event.preventDefault();
+      if (rail.contains(document.activeElement)) document.activeElement?.blur?.();
+      suppressNextClick = true;
+      window.clearTimeout(suppressClickTimer);
+      suppressClickTimer = window.setTimeout(() => { suppressNextClick = false; }, 0);
+      const railRect = rail.getBoundingClientRect();
+      const cards = [...rail.querySelectorAll("[data-stage]")];
+      const nearest = cards.reduce((best, card) => {
+        if (!best) return card;
+        const cardDistance = Math.abs((card.getBoundingClientRect().left + card.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2));
+        const bestDistance = Math.abs((best.getBoundingClientRect().left + best.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2));
+        return cardDistance < bestDistance ? card : best;
+      }, null);
+      if (nearest) {
+        const target = rail.scrollLeft + (nearest.getBoundingClientRect().left + nearest.getBoundingClientRect().width / 2) - (railRect.left + railRect.width / 2);
+        const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        rail.scrollTo({ left: Math.max(0, Math.min(maximum, target)), behavior: "smooth" });
+      }
+    };
+    rail.addEventListener("pointerup", finishPointer, true);
+    rail.addEventListener("pointercancel", finishPointer, true);
+    document.addEventListener("pointerup", finishPointer, true);
+    document.addEventListener("pointercancel", finishPointer, true);
+    rail.addEventListener("click", (event) => {
+      if (!suppressNextClick) return;
+      suppressNextClick = false;
+      window.clearTimeout(suppressClickTimer);
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }, true);
+  };
+  const renderStages = () => { const rail = $("stageList"); bindStageRail(); rail.innerHTML = rounds.map((round, index) => { const done = state.completed.includes(index); const unlocked = stageUnlocked(index); return `<button class="stage-card${done ? " complete" : ""}" type="button" data-stage="${index}"${unlocked ? "" : " disabled"}><span class="stage-number">${copy("round", { number: index + 1, total: rounds.length })}</span><strong>${copy(round.name)}</strong><span>${copy(round.hint)}</span><b>${done ? copy("completed") : unlocked ? copy("readyStage") : copy("lockedStage")}</b></button>`; }).join(""); rail.querySelectorAll("[data-stage]").forEach((button) => button.addEventListener("click", () => startRound(Number(button.dataset.stage)))); };
   const levelName = (value) => copy(levels[value]);
   const barMarkup = (value, extra = "") => `<span class="light-bar ${extra} level-${value}" aria-hidden="true"><i></i><i></i><i></i></span>`;
   const renderBattle = () => { const round = rounds[state.round]; $("battleHeading").textContent = copy("round", { number: state.round + 1, total: rounds.length }); $("roundHint").textContent = `${copy(round.name)} · ${copy(round.hint)}`; $("progressBadge").textContent = copy("progressBadge", { count: state.completed.length }); $("targetBars").innerHTML = round.target.map((value) => barMarkup(value)).join(""); $("shutterBoard").innerHTML = state.values.map((value, index) => `<button type="button" class="shutter-card level-${value}" data-shutter="${index}" aria-label="${copy("level", { name: copy("shutter", { number: index + 1 }), level: levelName(value) })}" aria-pressed="${value > 0}"><span class="shutter-window">${barMarkup(value)}</span><strong>${copy("shutter", { number: index + 1 })}</strong><small>${levelName(value)}</small></button>`).join(""); $("shutterBoard").querySelectorAll("[data-shutter]").forEach((button) => button.addEventListener("click", () => { const index = Number(button.dataset.shutter); state.values[index] = (state.values[index] + 1) % levels.length; state.moves += 1; $("battleStatus").textContent = copy("changed", { name: copy("shutter", { number: index + 1 }), level: levelName(state.values[index]) }); renderBattle(); })); $("resultPanel").hidden = true; $("battlePanel").hidden = false; };
   const resetRound = () => { state.values = [0, 0, 0]; state.moves = 0; $("battleStatus").textContent = copy("ready"); renderBattle(); };
   const showResult = () => { const final = state.round === rounds.length - 1; const total = state.moves; const previousBest = bestTotal(); if (final && (!previousBest || total < previousBest)) safeSet("weightplay-animal-dawn-shutters-best", String(total)); if (!state.completed.includes(state.round)) { state.completed.push(state.round); saveCompleted(); } const currentBest = final ? Math.min(total, previousBest || total) : bestTotal(); $("battlePanel").hidden = true; $("resultPanel").hidden = false; $("resultHeading").textContent = copy(final ? "finishTitle" : "resultTitle"); $("resultText").textContent = copy(final ? "finishText" : "resultText"); $("resultStats").textContent = copy("stats", { moves: total, best: final ? copy("best", { count: currentBest }) : bestTotal() ? copy("best", { count: bestTotal() }) : copy("noBest") }); $("resultPrimaryBtn").textContent = copy(final ? "replay" : "next"); $("resultPrimaryBtn").onclick = () => final ? startRound(0) : startRound(state.round + 1); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); };
   const checkRound = () => { if (state.values.every((value, index) => value === rounds[state.round].target[index])) { $("battleStatus").textContent = copy("correct"); showResult(); } else { $("battleStatus").textContent = copy("incorrect"); } };
-  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.values = [0, 0, 0]; state.moves = 0; setScreen("battle"); };
+  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.values = [0, 0, 0]; state.moves = 0; setScreen("battle"); $("battleStatus").textContent = copy("ready"); };
   const applyLocale = (locale) => { state.locale = localeList.includes(locale) && localeMap[locale] ? locale : "en"; safeSet("weightplay-locale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
   const bind = () => { $("startBtn").addEventListener("click", () => setScreen("stage")); $("mapBtn").addEventListener("click", () => setScreen("stage")); $("mainSettingsBtn").addEventListener("click", () => { const open = $("settingsPanel").hidden; $("settingsPanel").hidden = !open; $("mainSettingsBtn").setAttribute("aria-expanded", String(open)); }); $("closeSettingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = true; $("mainSettingsBtn").setAttribute("aria-expanded", "false"); }); $("stageBackBtn").addEventListener("click", () => setScreen("main")); $("stageInfoBtn").addEventListener("click", () => showToast(copy("mapIntro"))); $("battleBackBtn").addEventListener("click", () => setScreen("stage")); $("checkBtn").addEventListener("click", checkRound); $("resetBtn").addEventListener("click", resetRound); $("resultMapBtn").addEventListener("click", () => setScreen("stage")); $("resultHomeBtn").addEventListener("click", () => setScreen("main")); [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-dawn-shutters-sound", state.sound ? "on" : "off"); applyText(); })); $("languageSelect").addEventListener("change", (event) => applyLocale(event.target.value)); };
   const init = () => { state.sound = safeGet("weightplay-animal-dawn-shutters-sound", "on") !== "off"; state.completed = loadCompleted(); bind(); const routeLocale = document.documentElement.lang; const initialLocale = localeList.includes(routeLocale) && localeMap[routeLocale] ? routeLocale : safeGet("weightplay-locale", "en"); applyLocale(initialLocale); resetRound(); setScreen("main"); };

@@ -48,9 +48,25 @@
     hi:"चमकीला बचाव संकेत: {zone}। अभी यही क्षेत्र चुनें।",
     ar:"إشارة التصدي الساطعة: {zone}. اختر هذه المنطقة الآن."
   };
+  const lateLossCopy={
+    en:"The real save cue timed out. Replay, wait for the bright cue, then tap that zone before time runs out.",
+    "zh-Hant":"明亮的真撲救提示已逾時。再玩一次時，等提示亮起，再在時間結束前點選該區。",
+    "zh-Hans":"明亮的真实扑救提示已超时。再玩一次时，等提示亮起，再在时间结束前点击该区域。",
+    ja:"明るい本物のセーブ合図に間に合いませんでした。もう一度では合図を待ち、時間内にその区画を選びましょう。",
+    ko:"밝은 실제 선방 신호를 놓쳤습니다. 다시 플레이할 때 신호를 기다린 뒤 시간 안에 그 구역을 선택하세요.",
+    es:"La señal real de parada se agotó. Al repetir, espera la señal brillante y elige esa zona antes de que termine el tiempo.",
+    "pt-BR":"O sinal real de defesa expirou. Ao repetir, espere o sinal brilhante e escolha essa zona antes que o tempo acabe.",
+    fr:"Le vrai signal de parade a expiré. Rejouez, attendez le signal lumineux et choisissez cette zone avant la fin du temps.",
+    de:"Das echte Parade-Signal ist abgelaufen. Warte beim Wiederholen auf das helle Signal und wähle diese Zone rechtzeitig.",
+    it:"Il segnale reale di parata è scaduto. Riprova, aspetta il segnale luminoso e scegli quella zona prima dello scadere.",
+    ru:"Настоящий сигнал для сейва истёк. При повторе дождитесь яркого сигнала и выберите эту зону до конца времени.",
+    hi:"असली चमकीला बचाव संकेत समय से बाहर हो गया। फिर खेलते समय चमकीले संकेत की प्रतीक्षा करें और समय रहते वही क्षेत्र चुनें।",
+    ar:"انتهت مهلة إشارة التصدي الحقيقية. عند الإعادة، انتظر الإشارة الساطعة واختر منطقتها قبل انتهاء الوقت."
+  };
   const all={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
   for(const [code,copy] of Object.entries(campaign)){all[code].chapterNames=copy[0];all[code].chapterRules=copy[1]}
   for(const [code,name] of Object.entries(teamNames))all[code].teamName=name;
   for(const [code,copy] of Object.entries(defendTarget))all[code].defendTarget=copy;
+  for(const [code,copy] of Object.entries(lateLossCopy))all[code].lateLossCopy=copy;
   root.ANIMAL_PENALTY_LOCALES=all;
 })(window);

@@ -274,5 +274,10 @@
   Object.assign(locales.en,en);
   Object.assign(locales["zh-Hant"],zhHant);
   for(const [code,text] of Object.entries(regional))fillRegional(code,text);
+  for(const code of ["ja","ko"]){
+    const locale=locales[code];
+    if(!locale)continue;
+    for(const key of Object.keys(locale))locale[key]=currentFacts(locale[key]);
+  }
   void routeNames;
 })();

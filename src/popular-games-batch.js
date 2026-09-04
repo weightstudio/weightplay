@@ -69,9 +69,9 @@
     hi: "मालिक का प्रीव्यू: 30 ब्रेकआउट चरणों में से चुनें और नियंत्रित शॉट से हर लेन साफ़ करें। गेम अभी सार्वजनिक नहीं है।",
     ar: "معاينة للمالك: اختر من 30 مرحلة لكسر الطوب ونظّف كل مسار بتسديدات متحكم بها. لم تُنشر اللعبة للعامة بعد.",
   };
-  const BREAKOUT_GAME_VERSION = "v13";
+  const BREAKOUT_GAME_VERSION = "v15";
   const TETRIS_GAME_VERSION = "v20";
-  const SNAKE_GAME_VERSION = "v28";
+  const SNAKE_GAME_VERSION = "v29";
   const WORDLE_GAME_VERSION = "v10";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
@@ -237,8 +237,25 @@
   };
 
   const BREAKOUT_STAGE_TOTAL = 30;
-  const breakoutRowsForStage = (stage) => Math.min(5, 2 + Math.floor((Math.max(1, Number(stage) || 1) - 1) / 8));
-  const breakoutBricksForStage = (stage) => Array.from({ length: breakoutRowsForStage(stage) * 6 }, () => true);
+  const BREAKOUT_STAGE_PATTERNS = ["full", "checker", "staggered", "gate", "zigzag"];
+  const breakoutStageNumber = (stage) => Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+  const breakoutRowsForStage = (stage) => Math.min(5, 2 + Math.floor((breakoutStageNumber(stage) - 1) / 8));
+  const breakoutPatternForStage = (stage) => BREAKOUT_STAGE_PATTERNS[Math.min(BREAKOUT_STAGE_PATTERNS.length - 1, Math.floor((breakoutStageNumber(stage) - 1) / 6))];
+  const breakoutWrappedMask = (start, width) => Array.from({ length: 6 }, (_, column) => ((column - start + 6) % 6) < width).reduce((mask, active, column) => mask | (active ? (1 << column) : 0), 0);
+  const breakoutPatternMaskForRow = (stage, row, rows) => {
+    const phase = (breakoutStageNumber(stage) - 1) % 6;
+    const pattern = breakoutPatternForStage(stage);
+    if (pattern === "full") return 0b111111;
+    if (pattern === "checker") return ((row + phase) % 2) ? 0b010101 : 0b101010;
+    if (pattern === "staggered") return breakoutWrappedMask(phase + row * 2, 4);
+    if (pattern === "gate") return row === 0 || row === rows - 1 ? 0b111111 : breakoutWrappedMask(phase + 1, 4);
+    return breakoutWrappedMask(phase + (row % 2) * 3, 4);
+  };
+  const breakoutBricksForStage = (stage) => {
+    const rows = breakoutRowsForStage(stage);
+    return Array.from({ length: rows }, (_, row) => breakoutPatternMaskForRow(stage, row, rows)).flatMap((mask) => Array.from({ length: 6 }, (_, column) => Boolean(mask & (1 << column))));
+  };
+  const breakoutBrickCountForStage = (stage) => breakoutBricksForStage(stage).filter(Boolean).length;
   const BREAKOUT_MAIN_COPY = {
     en: { summary: "Read the target lane, move the paddle, and serve.", progress: "30 stages · 6 lanes.", stageTitle: "Choose a stage", stageHint: "Select a stage to begin the campaign.", stageLabel: (n) => `Stage ${n}`, stageProgress: (n) => `Stage ${n} of 30`, stages: "Stages", back: "Back to main" },
     "zh-Hant": { summary: "讀取目標路線、移動球板並發球。", progress: "30 關卡・6 路線。", stageTitle: "選擇關卡", stageHint: "選擇關卡開始這段路線。", stageLabel: (n) => `第 ${n} 關`, stageProgress: (n) => `第 ${n} / 30 關`, stages: "關卡", back: "返回主頁" },
@@ -255,6 +272,10 @@
     ar: { summary: "اقرأ المسار المستهدف، حرّك المضرب ثم أرسل.", progress: "30 مرحلة · 6 مسارات.", stageTitle: "اختر مرحلة", stageHint: "اختر مرحلة لبدء الحملة.", stageLabel: (n) => `المرحلة ${n}`, stageProgress: (n) => `المرحلة ${n} من 30`, stages: "المراحل", back: "العودة إلى الرئيسية" },
   };
   const breakoutMainCopy = (locale) => BREAKOUT_MAIN_COPY[locale] || BREAKOUT_MAIN_COPY.en;
+  const BREAKOUT_BRICK_LABEL = {
+    en: "bricks", "zh-Hant": "磚塊", "zh-Hans": "砖块", ja: "ブロック", ko: "벽돌", es: "ladrillos", "pt-BR": "blocos", fr: "briques", de: "Steine", it: "mattoni", ru: "блоков", hi: "ईंटें", ar: "لبنات",
+  };
+  const breakoutBrickLabel = (locale) => BREAKOUT_BRICK_LABEL[locale] || BREAKOUT_BRICK_LABEL.en;
   const BREAKOUT_SOUND_COPY = {
     en: { sound: "Sound", soundOn: "On", soundOff: "Off" },
     "zh-Hant": { sound: "音效", soundOn: "開啟", soundOff: "關閉" },
@@ -901,7 +922,7 @@
     if (type === "mahjong") Object.assign(state, { tiles: [...MAHJONG_LAYOUTS[0].tiles], layoutKey: MAHJONG_LAYOUTS[0].key, selected: -1, matched: 0, targetPairs: 6, depth: "standard", focusTile: -1 });
     if (type === "wordle") Object.assign(state, { guesses: [], target: WORDLE_WORDS[0].target, wordKey: WORDLE_WORDS[0].wordKey });
     if (type === "hangman") Object.assign(state, { target: "PUZZLE", theme: "puzzle", letters: [], misses: 0 });
-    if (type === "breakout") Object.assign(state, { stage: 1, bricks: breakoutBricksForStage(1), shots: 0, paddle: 2 });
+    if (type === "breakout") Object.assign(state, { stage: 1, pattern: breakoutPatternForStage(1), brickCount: breakoutBrickCountForStage(1), bricks: breakoutBricksForStage(1), shots: 0, paddle: 2 });
     if (type === "pong") Object.assign(state, { rallies: 0, paddle: 2, pongTarget: pongTargetForRally(0) });
     return state;
   };
@@ -1611,6 +1632,8 @@
       stopTetrisTimer(); stopSnakeTimer(); stopTicResultTimer(); stopTicReplyTimer(); stopCheckersAiTimer();
       state = makeState("breakout");
       state.stage = Math.max(1, Math.min(BREAKOUT_STAGE_TOTAL, Number(stage) || 1));
+      state.pattern = breakoutPatternForStage(state.stage);
+      state.brickCount = breakoutBrickCountForStage(state.stage);
       state.bricks = breakoutBricksForStage(state.stage);
       show("battle");
       announce(breakoutStateCopy(locale, state), "", "breakoutAim");
@@ -1954,7 +1977,7 @@
       } else if (game.type === "mahjong") { els.board.innerHTML = `<div class="tile-board" data-layout-key="${state.layoutKey}" data-depth="${state.depth}">${state.tiles.map((tile, i) => tile ? `<button class="tile ${state.selected === i ? "selected" : ""}" data-action="tile" data-value="${i}" data-symbol="${tile}" aria-label="${mahjongTileLabel(locale, i, tile, state.selected === i)}" aria-pressed="${state.selected === i}">${tile}</button>` : "").join("")}</div>`; els.controls.innerHTML = `<div class="control-row"><span class="round-label" role="status" aria-live="polite" aria-atomic="true">${copy(locale, "remaining")}: ${state.targetPairs - state.matched}</span></div>`;
       } else if (game.type === "wordle") { const labels = WORDLE_CELL_COPY[locale] || WORDLE_CELL_COPY.en; els.board.innerHTML = `<div class="wordle-board" role="table" aria-label="${wordleEscape(labels.board)}" data-word-key="${state.wordKey}">${Array.from({ length: 6 }, (_, row) => `<div class="wordle-row" role="row" aria-rowindex="${row + 1}">${Array.from({ length: 5 }, (_, col) => { const guess = state.guesses[row] || ""; const letter = guess[col] || ""; const tone = letter && letter === state.target[col] ? "hit" : letter && state.target.includes(letter) ? "near" : letter ? "miss" : ""; const safeLetter = wordleEscape(letter); const ariaLabel = wordleEscape(wordleCellLabel(locale, row + 1, col + 1, letter, tone)); return `<span class="word-cell ${tone}" role="cell" aria-colindex="${col + 1}" aria-label="${ariaLabel}" data-word-state="${tone || "empty"}">${safeLetter}</span>`; }).join("")}</div>`).join("")}</div>`; els.controls.innerHTML = `<div class="word-entry"><input id="wordInput" maxlength="5" aria-label="${copy(locale, "wordle")}" autocomplete="off" /><button class="primary" data-action="submit">${copy(locale, "submit")}</button></div>`;
       } else if (game.type === "hangman") { const word = [...state.target].map((letter) => state.letters.includes(letter) ? letter : "_ ").join(""); els.board.innerHTML = `<div class="hangman-word" data-word-key="${state.theme}" style="font-size:clamp(2rem,8vw,4rem);letter-spacing:.2em;text-align:center">${word}</div><p class="round-label">${copy(locale, "misses")}: ${state.misses}/6</p>`; els.controls.innerHTML = `<div class="letters">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map((letter) => { const used = state.letters.includes(letter); return `<button class="letter ${used ? "used" : ""}" data-action="letter" data-value="${letter}" aria-pressed="${used}" aria-label="${used ? `${letter}, ${hangmanAlreadyUsed(locale)}` : letter}">${letter}</button>`; }).join("")}</div>`;
-      } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = state.paddle; const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state); const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state); els.board.innerHTML = `<div class="brick-board" data-stage="${state.stage || 1}" data-stage-total="${BREAKOUT_STAGE_TOTAL}" data-brick-count="${state.bricks.length}" data-shot-column="${targetColumn + 1}" data-shot-count="${state.shots}" data-lane-state="${targetIndex >= 0 ? "armed" : "clear"}" data-route-target-column="${routeIndex >= 0 ? (routeIndex % 6) + 1 : ""}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
+      } else if (game.type === "breakout") { const targetIndex = breakoutTargetIndex(state); const targetColumn = state.paddle; const aimCopy = targetIndex >= 0 ? breakoutAimCopy(locale, targetColumn + 1) : breakoutStateCopy(locale, state); const routeIndex = targetIndex >= 0 ? -1 : breakoutRouteTargetIndex(state); const brickCount = state.brickCount || breakoutBrickCountForStage(state.stage); els.board.innerHTML = `<div class="brick-board" data-stage="${state.stage || 1}" data-stage-total="${BREAKOUT_STAGE_TOTAL}" data-stage-pattern="${state.pattern || breakoutPatternForStage(state.stage)}" data-brick-count="${brickCount}" data-shot-column="${targetColumn + 1}" data-shot-count="${state.shots}" data-lane-state="${targetIndex >= 0 ? "armed" : "clear"}" data-route-target-column="${routeIndex >= 0 ? (routeIndex % 6) + 1 : ""}">${state.bricks.map((brick, index) => `<span class="brick ${brick ? "" : "cleared"} ${index === targetIndex ? "target" : ""}" data-index="${index}"${index === targetIndex ? ` data-shot-target="true" aria-label="${aimCopy}"` : ""}></span>`).join("")}</div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "right"), "right")}${button(copy(locale, "serve"), "fire", "primary")}</div>`;
       } else if (game.type === "pong") { const targetPosition = pongLanePosition(state.pongTarget); const settledRally = ["pongHit", "pongMiss"].includes(state.messageKey); const visibleRally = settledRally ? state.rallies : Math.min(state.rallies + 1, 5); els.board.innerHTML = `<div class="pong-board" data-pong-rally="${visibleRally}" data-pong-target-lane="${state.pongTarget}" data-pong-paddle-lane="${state.paddle}"><span class="pong-ball" style="left:${targetPosition}%" aria-hidden="true"></span><span class="pong-paddle" style="left:${pongLanePosition(state.paddle)}%" aria-hidden="true"></span></div>`; els.controls.innerHTML = `<div class="control-row">${button(copy(locale, "left"), "left")}${button(copy(locale, "serve"), "serve", "primary")}${button(copy(locale, "right"), "right")}</div>`; }
     };
     const renderStage = () => {
@@ -1968,7 +1991,9 @@
         const stage = index + 1;
         const selected = stage === (state.stage || 1);
         const rows = breakoutRowsForStage(stage);
-        return `<button type="button" class="stage-card${selected ? " is-selected" : ""}" data-action="stage" data-stage-index="${stage}" data-stage="${stage}" data-wp-stage-card="true" aria-current="${selected ? "page" : "false"}" aria-label="${ui.stageLabel(stage)}"><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><small>${rows} × 6</small></button>`;
+        const pattern = breakoutPatternForStage(stage);
+        const brickCount = breakoutBrickCountForStage(stage);
+        return `<button type="button" class="stage-card${selected ? " is-selected" : ""}" data-action="stage" data-stage-index="${stage}" data-stage="${stage}" data-stage-pattern="${pattern}" data-brick-count="${brickCount}" data-wp-stage-card="true" aria-current="${selected ? "page" : "false"}" aria-label="${ui.stageLabel(stage)}"><span class="stage-card-number">${stage}</span><strong>${ui.stageLabel(stage)}</strong><small>${rows} × 6 · ${brickCount} ${breakoutBrickLabel(locale)}</small></button>`;
       }).join("");
       syncBreakoutStageAvailability();
       requestAnimationFrame(syncBreakoutStageAvailability);

@@ -228,6 +228,15 @@ body:not([data-screen="battle"]) #battleAd {
   display: none;
 }
 
+/* v17: keep the governed short-landscape Main poster at the canonical
+   300px column while leaving desktop and phone sizing unchanged. */
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-game-id="animal-hero-trials"] .wp-standard-main-composition,
+  body[data-wp-game-id="animal-hero-trials"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+}
+
 @media (max-width: 699px) {
   .wp-standard-main-poster {
     width: 100%;

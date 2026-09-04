@@ -63,6 +63,13 @@ body.logic-playing .game-page-info-static { display: none !important; }
 .logic-settings h2 { margin: 0 0 10px; font-size: 15px; }
 .logic-setting-row { min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--logic-muted); }
 .logic-setting-row button, .logic-setting-row select { min-height: 38px; border: 1px solid var(--logic-line); border-radius: 10px; background: #173b69; color: var(--logic-text); padding: 5px 9px; }
+/* Reversi's Arabic header places Settings in the physical left grid cell.
+   Anchor only that game/locale popover to the cell's left edge so the
+   280px panel and both controls remain inside phone-width viewports. */
+:dir(rtl) body[data-logic-game="reversi"] .logic-header-tools .logic-settings {
+  right: auto;
+  left: 0;
+}
 
 .logic-hero { width: min(920px, 100%); margin: 10px auto 0; display: grid; grid-template-columns: minmax(260px, 1fr) minmax(280px, .88fr); align-items: center; gap: clamp(18px, 4vw, 48px); }
 .logic-poster { width: 100%; aspect-ratio: 1; overflow: hidden; border: 1px solid var(--logic-line); border-radius: 28px; box-shadow: var(--logic-shadow); background: #102b52; }

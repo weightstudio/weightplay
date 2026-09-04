@@ -72,4 +72,48 @@
     hi: merge({ loading: "मैदानी किताब खुल रही है…", kicker: "मॉस शेल तारो की मैदानी पहेली", title: "मुड़ा हुआ मैदान", intro: "जुड़ी पत्तियों को टैप करके जानवरों के निशान मिलाएँ और घोंसला खोलें।", summary: "कुछ जुड़े मोड़ सोचें, बदलता पैटर्न देखें और शांति से फिर कोशिश करें।", progress: "प्रगति: {count} मैदान पृष्ठ · कोई टाइमर नहीं", start: "मोड़ शुरू करें", stages: "मैदान नक्शा", best: "सबसे कम मोड़", noBest: "अभी नहीं", settings: "सेटिंग्स", soundOn: "ध्वनि: चालू", soundOff: "ध्वनि: बंद", language: "भाषा", guideTitle: "कैसे खेलें", guideOneTitle: "1. निशान पढ़ें", guideOne: "लक्ष्य कार्ड बताता है कि कौन सी पत्तियाँ उठी या नीचे हों।", guideTwoTitle: "2. जुड़ी पत्ती टैप करें", guideTwo: "हर टैप उस पत्ती और उसके पास वाली पत्ती को बदलता है।", guideThreeTitle: "3. जाँचें और फिर कोशिश करें", guideThree: "गलत पैटर्न दिखता रहता है। कोई टाइमर नहीं है।", back: "वापस", mapIntro: "मैदान का पृष्ठ चुनें। हर पृष्ठ एक नया जुड़ा मोड़ सिखाता है।", round: "मैदान पृष्ठ {number}/{total}", stageTitle1: "पहले पदचिह्न", stageHint1: "दो जुड़ी पत्तियों से रास्ता बनाना सीखें।", stageTitle2: "शांत पार", stageHint2: "सूत्र खोए बिना पैटर्न खोलें।", stageTitle3: "काई का मैदान", stageHint3: "चार पैनल पढ़ें और साफ रास्ता पाएँ।", stageReady: "मोड़ने के लिए तैयार", targetPattern: "लक्ष्य निशान", currentPattern: "आपका मैदान", flips: "मोड़", aligned: "{count}/{total} मिले", flap1: "बाईं पत्ती", flap2: "बीच की पत्ती", flap3: "दाईं पत्ती", flap4: "दूर की पत्ती", lifted: "उठी", tucked: "नीचे", check: "मैदान जाँचें", reset: "मोड़ रीसेट करें", moveHint: "एक टैप दो जुड़ी पट्टियाँ बदलता है। निशान स्क्रीन पर रहता है।", incorrect: "अभी नहीं। निशान वहीं है—एक और जुड़ा मोड़ आज़माएँ।", correct: "निशान मिल गया। घोंसला खुल गया।", resultKicker: "मैदानी किताब का एक पृष्ठ", resultTitle: "पृष्ठ पूरा", resultText: "तारो ने मोड़ों के बीच शांत रास्ता ढूँढ लिया।", finishTitle: "मैदानी किताब पूरी", finishText: "तीन छोटे रास्ते ध्यान से खोले गए। आपका श्रेष्ठ मोड़ सहेजा गया।", next: "अगला मैदान पृष्ठ", home: "शुरुआत पर लौटें", badge: "पृष्ठ {number}", badgeComplete: "पूरा" }),
     ar: merge({ loading: "نفتح دفتر الحقل…", kicker: "لغز الحقل الخاص بتارو", title: "الحقل المطوي", intro: "المس الأوراق المترابطة لمطابقة أثر الحيوان وفتح العش.", summary: "خطط لطيّات قليلة، راقب تغيّر النمط، وحاول بهدوء من جديد.", progress: "التقدم: {count} صفحات حقل · بلا مؤقت", start: "ابدأ طيّة", stages: "خريطة الحقل", best: "أفضل عدد طيّات", noBest: "ليس بعد", settings: "الإعدادات", soundOn: "الصوت: تشغيل", soundOff: "الصوت: إيقاف", language: "اللغة", guideTitle: "طريقة اللعب", guideOneTitle: "1. اقرأ الأثر", guideOne: "توضح بطاقة الهدف الأوراق التي يجب رفعها أو طيّها.", guideTwoTitle: "2. المس ورقة مترابطة", guideTwo: "كل لمسة تغيّر هذه الورقة والورقة المجاورة.", guideThreeTitle: "3. تحقّق وحاول مجدداً", guideThree: "يبقى النمط الخاطئ ظاهراً. لا يوجد مؤقت.", back: "رجوع", mapIntro: "اختر صفحة حقل. كل صفحة تعلّمك طيّة مترابطة إضافية.", round: "صفحة الحقل {number} من {total}", stageTitle1: "آثار أولى", stageHint1: "تعلّم صنع أثر بورقتين مترابطتين.", stageTitle2: "عبور هادئ", stageHint2: "افتح النمط دون أن تفقد الخيط.", stageTitle3: "مرج طحلبي", stageHint3: "اقرأ أربع لوحات واعثر على الطريق.", stageReady: "جاهز للطي", targetPattern: "الأثر المستهدف", currentPattern: "حقلك", flips: "الطيّات", aligned: "تمت مطابقة {count}/{total}", flap1: "الورقة اليسرى", flap2: "الورقة الوسطى", flap3: "الورقة اليمنى", flap4: "الورقة البعيدة", lifted: "مرفوعة", tucked: "مطوية", check: "تحقّق من الحقل", reset: "إعادة ضبط الطيّات", moveHint: "تغيّر اللمسة لوحتين مترابطتين. يبقى الأثر على الشاشة.", incorrect: "ليس بعد. الأثر باقٍ—جرّب طيّة مترابطة أخرى.", correct: "تطابق الأثر. انفتح العش.", resultKicker: "صفحة من دفتر الحقل", resultTitle: "اكتملت الصفحة", resultText: "وجد تارو الطريق الهادئ بين الطيّات.", finishTitle: "اكتمل دفتر الحقل", finishText: "فُتحت ثلاثة آثار بعناية. حُفظ أفضل عدد طيّات لك.", next: "صفحة الحقل التالية", home: "العودة للبداية", badge: "الصفحة {number}", badgeComplete: "مكتملة" })
   };
+  const guideCopy = {
+    en: {
+      guideAria: "Folded Field game information", guideGameplay: "Gameplay", guideGameplayValue: "Hinged Pattern Puzzle", guideGenre: "Genre", guideGenreValue: "Puzzle · Spatial Logic · Pattern Recognition · Family · Animal", faqTitle: "Frequently Asked Questions", faqProgressQuestion: "Is progress saved?", faqProgressAnswer: "Yes, only in this browser."
+    },
+    "zh-Hant": {
+      guideAria: "摺葉田遊戲資訊", guideGameplay: "玩法", guideGameplayValue: "摺葉模式謎題", guideGenre: "類型", guideGenreValue: "益智 · 空間邏輯 · 模式辨識 · 家庭 · 動物", faqTitle: "常見問題", faqProgressQuestion: "進度會保存嗎？", faqProgressAnswer: "會，只保存在這個瀏覽器中。"
+    },
+    "zh-Hans": {
+      guideAria: "折叶田游戏信息", guideGameplay: "玩法", guideGameplayValue: "折叶模式谜题", guideGenre: "类型", guideGenreValue: "益智 · 空间逻辑 · 模式识别 · 家庭 · 动物", faqTitle: "常见问题", faqProgressQuestion: "进度会保存吗？", faqProgressAnswer: "是，仅保存在此浏览器中。"
+    },
+    ja: {
+      guideAria: "おりたたみ野原のゲーム情報", guideGameplay: "ゲーム内容", guideGameplayValue: "折りたたみパターンパズル", guideGenre: "ジャンル", guideGenreValue: "パズル · 空間ロジック · パターン認識 · ファミリー · 動物", faqTitle: "よくある質問", faqProgressQuestion: "進行状況は保存されますか？", faqProgressAnswer: "はい、このブラウザでのみ保存されます。"
+    },
+    ko: {
+      guideAria: "접힌 들판 게임 정보", guideGameplay: "게임플레이", guideGameplayValue: "접힌 패턴 퍼즐", guideGenre: "장르", guideGenreValue: "퍼즐 · 공간 논리 · 패턴 인식 · 가족 · 동물", faqTitle: "자주 묻는 질문", faqProgressQuestion: "진행 상황이 저장되나요?", faqProgressAnswer: "예, 이 브라우저에만 저장됩니다."
+    },
+    es: {
+      guideAria: "Información del juego Campo plegado", guideGameplay: "Jugabilidad", guideGameplayValue: "Rompecabezas de patrones plegados", guideGenre: "Género", guideGenreValue: "Puzle · Lógica espacial · Reconocimiento de patrones · Familiar · Animales", faqTitle: "Preguntas frecuentes", faqProgressQuestion: "¿Se guarda el progreso?", faqProgressAnswer: "Sí, solo en este navegador."
+    },
+    "pt-BR": {
+      guideAria: "Informações do jogo Campo dobrado", guideGameplay: "Jogabilidade", guideGameplayValue: "Quebra-cabeça de padrões dobrados", guideGenre: "Gênero", guideGenreValue: "Quebra-cabeça · Lógica espacial · Reconhecimento de padrões · Família · Animais", faqTitle: "Perguntas frequentes", faqProgressQuestion: "O progresso é salvo?", faqProgressAnswer: "Sim, apenas neste navegador."
+    },
+    fr: {
+      guideAria: "Informations sur le jeu Champ plié", guideGameplay: "Jeu", guideGameplayValue: "Puzzle de motifs pliés", guideGenre: "Genre", guideGenreValue: "Puzzle · Logique spatiale · Reconnaissance de formes · Famille · Animaux", faqTitle: "Questions fréquentes", faqProgressQuestion: "La progression est-elle sauvegardée ?", faqProgressAnswer: "Oui, uniquement dans ce navigateur."
+    },
+    de: {
+      guideAria: "Informationen zum Spiel Faltfeld", guideGameplay: "Spielweise", guideGameplayValue: "Faltmuster-Rätsel", guideGenre: "Genre", guideGenreValue: "Rätsel · Raumlogik · Mustererkennung · Familie · Tiere", faqTitle: "Häufige Fragen", faqProgressQuestion: "Wird der Fortschritt gespeichert?", faqProgressAnswer: "Ja, nur in diesem Browser."
+    },
+    it: {
+      guideAria: "Informazioni sul gioco Campo piegato", guideGameplay: "Gioco", guideGameplayValue: "Puzzle di schemi piegati", guideGenre: "Genere", guideGenreValue: "Puzzle · Logica spaziale · Riconoscimento di schemi · Famiglia · Animali", faqTitle: "Domande frequenti", faqProgressQuestion: "I progressi vengono salvati?", faqProgressAnswer: "Sì, solo in questo browser."
+    },
+    ru: {
+      guideAria: "Информация об игре «Складное поле»", guideGameplay: "Геймплей", guideGameplayValue: "Головоломка со складными узорами", guideGenre: "Жанр", guideGenreValue: "Головоломка · Пространственная логика · Распознавание узоров · Семейная · Животные", faqTitle: "Частые вопросы", faqProgressQuestion: "Сохраняется ли прогресс?", faqProgressAnswer: "Да, только в этом браузере."
+    },
+    hi: {
+      guideAria: "मुड़े हुए मैदान गेम जानकारी", guideGameplay: "गेमप्ले", guideGameplayValue: "मुड़े हुए पैटर्न की पहेली", guideGenre: "शैली", guideGenreValue: "पहेली · स्थानिक तर्क · पैटर्न पहचान · परिवार · जानवर", faqTitle: "अक्सर पूछे गए प्रश्न", faqProgressQuestion: "क्या प्रगति सहेजी जाती है?", faqProgressAnswer: "हाँ, केवल इसी ब्राउज़र में।"
+    },
+    ar: {
+      guideAria: "معلومات لعبة الحقل المطوي", guideGameplay: "طريقة اللعب", guideGameplayValue: "لغز الأنماط المطوية", guideGenre: "النوع", guideGenreValue: "لغز · منطق مكاني · التعرّف على الأنماط · عائلي · حيوانات", faqTitle: "الأسئلة الشائعة", faqProgressQuestion: "هل يُحفظ التقدم؟", faqProgressAnswer: "نعم، في هذا المتصفح فقط."
+    }
+  };
+  Object.entries(guideCopy).forEach(([locale, copy]) => {
+    window.FOLDED_FIELD_LOCALES[locale] = Object.assign({}, window.FOLDED_FIELD_LOCALES[locale], copy);
+  });
 })();

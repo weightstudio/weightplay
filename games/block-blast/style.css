@@ -22,6 +22,54 @@
 .main-actions .primary {
   margin: 0;
 }
+.stage-canvas {
+  grid-template-rows: 64px minmax(0, 1fr) auto auto;
+}
+.stage-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+.stage-footer .stage-hint {
+  min-height: 36px;
+  margin: 0;
+  padding-inline: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.35;
+}
+.stage-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stage-tab {
+  min-width: 48px;
+  min-height: 44px;
+  border: 1px solid #738cff88;
+  border-radius: 12px;
+  background: #102b4d;
+  color: #fff;
+  padding: 0 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  body[data-wp-game-id="block-blast"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .stage-canvas {
+    grid-template-rows: 58px minmax(0, 1fr) auto auto;
+  }
+  .stage-footer .stage-hint {
+    visibility: hidden;
+  }
+}
 .wp-standard-main-copy > #endlessBtn {
   box-sizing: border-box;
   display: flex !important;

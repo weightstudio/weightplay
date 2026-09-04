@@ -57,7 +57,7 @@
   "genre": [
     "Puzzle",
     "Logic",
-    "Spatial Reasoning",
+    "Spatial Planning",
     "Family",
     "Animal"
   ],
@@ -76,7 +76,7 @@
         <header class="topbar wp-main-shell-header">
           <a class="shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28"><span class="shell-mark" aria-hidden="true">✦</span></a>
           <strong class="shell-title" data-copy="title">Habitat Counts</strong>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+          <button id="mainSettingsBtn" class="icon-btn" type="button" data-wp-settings aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="Settings">⚙</button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-habitat-counts-cover.svg" alt="" aria-hidden="true">
@@ -95,27 +95,21 @@
         </section>
       </div>
     </main>
-    <section id="guideSection" class="game-page-info game-page-info-static" aria-label="Habitat Counts game information">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Habitat Counts</h2><p>Fill habitat cells until every row and column matches its count.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Row-and-Column Habitat Logic</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Spatial Reasoning · Family · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div><div><dt>How many habitat pages are included?</dt><dd>Three short habitat pages are included.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideSection" class="guide game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="Habitat Counts game information">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay Original Game Guide</span><h2 id="guideHeading" data-copy="title">Habitat Counts</h2><p data-copy="guideIntro">Fill the habitat cells so every row and column reaches its clue.</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">Gameplay</span><strong data-copy="guideGameplayValue">Habitat row and column logic</strong></div><div class="game-info-fact"><span data-copy="guideGenre">Genre</span><strong data-copy="guideGenreValue">Puzzle · Logic · Spatial Planning · Family · Animal</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">Habitat pages</h3><ol><li data-copy="guideHow1">Read the number clues beside each row and column.</li><li data-copy="guideHow2">Toggle cells to fill or clear them; every choice stays reversible.</li><li data-copy="guideHow3">Check the habitat; a wrong check explains the counts without a timer or penalty.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">Results and saves</h3><p data-copy="guideResults">Three short habitat pages form one calm session. Your best result stays in this browser.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">Practical tips</h3><p data-copy="guideTips">Use the row and column counts together, and adjust only the lines that miss their clue.</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">FAQ</h3><dl><div><dt data-copy="faqProgressQuestion">Is progress saved?</dt><dd data-copy="faqProgressAnswer">Yes, only in this browser.</dd></div></dl></article>
+      </div>
+    </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help">i</button></header>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="Help">i</button></header>
         <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
       </div>
@@ -123,7 +117,7 @@
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
           <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
           <section class="clue-card" aria-labelledby="goalHeading"><h3 id="goalHeading" data-copy="goalTitle">Reach every clue</h3><p data-copy="goalHelp">Fill exactly the number of cells shown for each row and column.</p><div class="clue-legend"><span data-copy="rowClues">Rows</span><span data-copy="columnClues">Columns</span></div><div id="rowClues" class="clue-list"></div><div id="columnClues" class="clue-list"></div></section>

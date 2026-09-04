@@ -53,7 +53,7 @@
   cloudhookProps.decoding = "async";
   cloudhookProps.src = "cloudhook-props-v2.webp";
   const stageConfigs = [
-    { wind: 0, anchors: [{x:210,y:300},{x:370,y:230},{x:530,y:330},{x:690,y:210}], parcels: [{x:330,y:170},{x:600,y:150}], spikes: [] },
+    { wind: 0, anchors: [{x:210,y:300},{x:370,y:230},{x:530,y:330},{x:690,y:210}], parcels: [{x:300,y:410},{x:600,y:360}], spikes: [] },
     { wind: 8, anchors: [{x:205,y:290},{x:360,y:190},{x:500,y:315},{x:665,y:180},{x:790,y:300}], parcels: [{x:300,y:150},{x:575,y:190},{x:735,y:130}], spikes: [{x:430,y:430,w:65,h:22}] },
     { wind: -12, anchors: [{x:210,y:300},{x:360,y:170,move:1},{x:510,y:300},{x:650,y:150,move:1},{x:805,y:260}], parcels: [{x:300,y:125},{x:560,y:110},{x:745,y:175}], spikes: [{x:390,y:425,w:72,h:22}] },
     { wind: 16, anchors: [{x:210,y:300},{x:350,y:210},{x:490,y:130},{x:630,y:285},{x:770,y:150},{x:850,y:285}], parcels: [{x:300,y:155},{x:540,y:90},{x:740,y:100}], spikes: [{x:300,y:430,w:72,h:22},{x:600,y:430,w:86,h:22}] },
@@ -159,13 +159,18 @@
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const config = () => stageConfigs[currentStage];
   const resetState = () => {
-    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0, firstAttach:false, swingReady:false, attachedAt:0 };
+    state = { x:105, y:410, vx:180, vy:-20, attached:false, anchor:-1, lastAnchor:-1, targetAnchor:-1, rope:0, time:0, score:0, parcels:0, collected:[], messageKey:"ready", done:false, success:false, flash:0, firstAttach:false, swingReady:false, attachedAt:0 };
     inputAxis = 0;
   };
   const nearestAnchor = () => {
     if (!state) return -1;
+    if (currentStage === 0 && state.targetAnchor >= 0) {
+      const target = anchorPosition(config().anchors[state.targetAnchor], state.time);
+      if (distance(state, target) < 238) return state.targetAnchor;
+    }
     let best = -1; let bestDistance = 204;
     config().anchors.forEach((anchor, index) => {
+      if (currentStage === 0 && index === state.lastAnchor) return;
       const d = distance(state, anchorPosition(anchor, state.time));
       if (d < bestDistance) { best = index; bestDistance = d; }
     });
@@ -179,14 +184,20 @@
     const index = nearestAnchor();
     if (index < 0) { announce("noAnchor"); beep(180); return; }
     const anchor = anchorPosition(config().anchors[index], state.time);
-    state.attached = true; state.anchor = index; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
+    state.attached = true; state.anchor = index; state.lastAnchor = -1; state.targetAnchor = -1; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
     if (!state.firstAttach) { state.firstAttach = true; track("attach"); }
     announce("attached"); beep(620, 0.08); updateTetherLabel();
   };
   const release = () => {
     if (!state || state.done || !state.attached) return;
     const heldFor = Math.max(0, state.time - state.attachedAt);
-    state.attached = false; state.anchor = -1; state.vx += inputAxis * 42; state.vy -= 16;
+    const releasedAnchor = state.anchor;
+    const routeAssistEnabled = currentStage === 0;
+    const nextAnchor = routeAssistEnabled && releasedAnchor + 1 < config().anchors.length ? releasedAnchor + 1 : -1;
+    const target = routeAssistEnabled ? (nextAnchor >= 0 ? anchorPosition(config().anchors[nextAnchor], state.time + 0.15) : { x:875, y:255 }) : state;
+    const targetDistance = Math.max(1, distance(state, target));
+    const releaseBoost = routeAssistEnabled ? (nextAnchor >= 0 ? (state.swingReady ? 240 : 360) : (state.swingReady ? 420 : 360)) : 0;
+    state.attached = false; state.lastAnchor = routeAssistEnabled ? releasedAnchor : -1; state.targetAnchor = routeAssistEnabled ? nextAnchor : -1; state.anchor = -1; state.vx += inputAxis * 42 + (target.x - state.x) / targetDistance * releaseBoost; state.vy += (target.y - state.y) / targetDistance * releaseBoost - 16;
     state.attachedAt = 0; track("release", { hold_bucket: holdBucket(heldFor) });
     announce("released"); beep(840, 0.08); updateTetherLabel();
   };
@@ -222,7 +233,10 @@
     config().parcels.forEach((parcel, index) => { if (!state.collected.includes(index) && distance(state, parcel) < 30) { state.collected.push(index); state.parcels += 1; state.score += 100; state.flash = 0.25; track("parcel_collect", { parcels: state.parcels }); announce("parcel"); beep(720); } });
     if (config().spikes.some((spike) => rectHit(state.x, state.y, spike))) { finish(false); return; }
     const target = { x:875, y:255 };
-    if (state.x > target.x - 30 && state.y > 170 && state.y < 370) { state.score += Math.max(0, 600 - Math.floor(state.time * 22)); finish(true); return; }
+    if (state.x > target.x - 30 && state.y > 170 && state.y < 370) {
+      if (state.parcels < cfg.parcels.length) { state.x = target.x - 32; state.vx = -100; state.vy -= 60; state.flash = 0.18; $("#battleStatus").textContent = parcelObjectiveText(); return; }
+      state.score += Math.max(0, 600 - Math.floor(state.time * 22)); finish(true); return;
+    }
     if (state.y > H + 35 || state.x < -45 || state.x > W + 45) finish(false);
   };
   const drawBackground = () => {
@@ -245,6 +259,11 @@
     drawBackground(); const cfg = config();
     cfg.spikes.forEach((spike) => { if (!drawSheetProp(cloudhookProps, 512, 512, 512, 512, spike.x - 8, spike.y - 24, spike.w + 16, 64)) { ctx.fillStyle = "#ff788e"; ctx.beginPath(); for (let x = spike.x; x <= spike.x + spike.w; x += 14) { ctx.lineTo(x, spike.y + spike.h); ctx.lineTo(x + 7, spike.y); } ctx.lineTo(spike.x + spike.w, spike.y + spike.h); ctx.closePath(); ctx.fill(); } });
     cfg.anchors.forEach((anchor, index) => { const p = anchorPosition(anchor, state?.time || 0); if (!drawSheetProp(cloudhookProps, 0, 0, 512, 512, p.x - 31, p.y - 31, 62, 62)) { ctx.strokeStyle = index === state?.anchor ? "#fff0a6" : "#78e2dc"; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = "#ffffff55"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 29, 0, Math.PI * 2); ctx.stroke(); } });
+    if (state?.attached && currentStage === 0 && state.anchor >= 0) {
+      const next = state.anchor + 1 < cfg.anchors.length ? anchorPosition(cfg.anchors[state.anchor + 1], state.time) : { x:875, y:255 };
+      const dx = next.x - state.x; const dy = next.y - state.y; const length = Math.max(1, Math.hypot(dx, dy));
+      ctx.save(); ctx.strokeStyle = "#fff0a699"; ctx.lineWidth = 2; ctx.setLineDash([8, 8]); ctx.beginPath(); ctx.moveTo(state.x, state.y); ctx.lineTo(next.x, next.y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = "#fff0a6"; ctx.beginPath(); ctx.moveTo(next.x, next.y); ctx.lineTo(next.x - dx / length * 18 - dy / length * 7, next.y - dy / length * 18 + dx / length * 7); ctx.lineTo(next.x - dx / length * 18 + dy / length * 7, next.y - dy / length * 18 - dx / length * 7); ctx.closePath(); ctx.fill(); ctx.restore();
+    }
     cfg.parcels.forEach((parcel, index) => { if (state?.collected.includes(index)) return; if (!drawSheetProp(cloudhookProps, 512, 0, 512, 512, parcel.x - 24, parcel.y - 24, 48, 48)) { ctx.fillStyle = "#ffd277"; ctx.beginPath(); ctx.arc(parcel.x, parcel.y, 9, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#fff3b6"; ctx.fillRect(parcel.x - 2, parcel.y - 16, 4, 32); ctx.fillRect(parcel.x - 16, parcel.y - 2, 32, 4); } });
     if (!drawSheetProp(cloudhookProps, 1024, 0, 512, 512, 835, 215, 80, 80)) { ctx.fillStyle = "#ffd277"; ctx.shadowColor = "#ffd277"; ctx.shadowBlur = 22; ctx.beginPath(); ctx.arc(875, 255, 25, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.fillStyle = "#143650"; ctx.beginPath(); ctx.arc(875, 255, 12, 0, Math.PI * 2); ctx.fill(); }
     if (state?.attached && state.anchor >= 0) { const anchor = anchorPosition(cfg.anchors[state.anchor], state.time); ctx.strokeStyle = "#ffd277"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(anchor.x, anchor.y); ctx.lineTo(state.x, state.y); ctx.stroke(); }

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-magnet-meadow/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-magnet-meadow/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-magnet-meadow/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-magnet-meadow/" />
@@ -25,6 +24,7 @@
   <meta name="weightplay-game-version" content="v1">
   <meta name="description" content="拖曳兩顆月石到草甸停靠點，看著相連月石回應。" />
   <title>磁力草甸 | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -41,8 +41,9 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "磁力草甸",
+  "alternateName": "Magnet Meadow",
   "url": "https://weightplay.com/zh-tw/games/animal-magnet-meadow/",
-  "image": "https://weightplay.com/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover.svg",
+  "image": "https://weightplay.com/games/animal-magnet-meadow/assets/animal-magnet-meadow-cover-v1.png",
   "description": "拖曳兩顆月石到草甸停靠點，看著相連月石回應。",
   "publisher": {
     "@type": "Organization",
@@ -57,67 +58,77 @@
     "空間推理",
     "物理學",
     "家庭",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Magnet Meadow"
+  }
 }
     </script>
   </head>
 <body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-magnet-meadow" data-wp-game-version="v1" data-screen="main">
   <div id="app">
-    <main id="mainScreen" class="screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
-      <div class="main-canvas" data-wp-logical-main-canvas>
-        <header class="topbar">
-          <span class="eyebrow" data-copy="kicker">Moss Shell Taro's meadow puzzle</span>
-          <button id="mainSettingsBtn" class="icon-btn" type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings">⚙</button>
+    <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-main-screen>
+      <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
+        <header class="main-header wp-main-shell-header">
+          <a class="home-link wp-shell-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
+          <div class="header-title"><strong class="wp-shell-main-title" data-copy="title">Magnet Meadow</strong></div>
+          <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button>
         </header>
         <section class="hero-card">
-          <img class="cover-art" src="assets/animal-magnet-meadow-cover.svg" alt="" aria-hidden="true">
+          <img class="cover-art main-poster" src="assets/animal-magnet-meadow-cover-v1.png" alt="" aria-hidden="true">
           <div class="hero-copy">
             <h1 data-copy="title">磁力草甸</h1>
-            <p class="intro" data-copy="intro">Move one moonstone and watch its linked partner respond.</p>
-            <p id="mainProgress" class="progress" role="status" aria-live="polite"></p>
+            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">Move one moonstone and watch its linked partner respond.</p>
+            <p id="mainProgress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite"></p>
             <div class="hero-actions">
               <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a dock</button>
               <button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button>
             </div>
           </div>
         </section>
-        <section class="guide" aria-labelledby="guideHeading">
-          <h2 id="guideHeading" data-copy="guideTitle">How to play</h2>
-          <div class="guide-grid">
-            <article><b data-copy="guideOneTitle">1. Choose a stone</b><p data-copy="guideOne">Tap a moonstone, then drag it toward a dock.</p></article>
-            <article><b data-copy="guideTwoTitle">2. Watch the link</b><p data-copy="guideTwo">The other stone shifts with the same drag, by pull or push.</p></article>
-            <article><b data-copy="guideThreeTitle">3. Check the pair</b><p data-copy="guideThree">Both stones must sit on their glowing docks. A wrong try stays visible.</p></article>
-          </div>
-        </section>
-        <section id="settingsPanel" class="settings-panel" hidden aria-labelledby="settingsHeading">
+        <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden role="dialog" aria-labelledby="settingsHeading">
           <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
           <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
-          <button id="soundBtn" class="secondary-btn setting-sound" type="button" aria-pressed="true"></button>
+          <button id="soundBtn" class="secondary-btn setting-sound wp-shell-sound-row" type="button" aria-pressed="true"></button>
         </section>
       </div>
     </main>
 
+    <section class="game-page-info game-page-info-static" aria-label="磁力草甸 遊戲資訊">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>磁力草甸</h2><p>拖曳兩顆月石到草甸停靠點，看著相連月石回應。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>磁力停靠益智</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · 空間推理 · 物理學 · 家庭 · Animal</strong></div></div>
+    </div>
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
+
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 data-copy="stages">Meadow map</h2><button id="stageInfoBtn" class="icon-btn panel-utility" type="button" data-copy-aria-label="help">i</button></header>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="stages">Meadow map</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button></header>
         <p class="panel-intro" data-copy="mapIntro">Each dock teaches how one move changes the linked pair.</p>
-        <div id="stageList" class="stage-list" data-wp-stage-rail></div>
+        <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
         <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Meadow map</button><span aria-hidden="true"></span></nav>
       </div>
-      <div class="game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
+      <div class="stage-ad-reserve game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility" type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">MEADOW DOCK</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
           <div class="target-card"><span data-copy="target">Dock pattern</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
@@ -138,31 +149,13 @@
           <div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div>
         </div>
       </div>
-      <div class="game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+      <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260830-magnet-meadow-v1"></script>
-  <script src="game.js?v=20260830-magnet-meadow-v1"></script>
-<section class="game-page-info game-page-info-static" aria-label="磁力草甸 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>磁力草甸</h2><p>拖曳兩顆月石到草甸停靠點，看著相連月石回應。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>磁力停靠益智</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · 空間推理 · 物理學 · 家庭 · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
-<script src="/src/runtime-locales/zh-tw.js?v=20260825-moonlight-arabic-result-v22"></script>
+  <script src="locales.js?v=20260904-magnet-meadow-v1-interface"></script>
+  <script src="game.js?v=20260904-magnet-meadow-v1-interface"></script>
+<script src="/src/runtime-locales/zh-tw.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

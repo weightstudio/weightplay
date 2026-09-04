@@ -3103,6 +3103,18 @@ body.relic-playing.relic-result .result-action-shell .result-btn-row button {
   max-width: none !important;
 }
 
+/* Keep the governed short-landscape Main poster at the compact 300px contract
+   while preserving the 420px desktop composition at normal heights. */
+@media (min-width: 760px) and (max-height: 560px) and (orientation: landscape) {
+  #menuPanel .menu-main {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  #menuPanel .menu-cover-box {
+    width: 300px;
+  }
+}
+
 @media (max-height: 560px) and (orientation: landscape) {
   body.relic-stage-select .stage-panel {
     grid-template-rows: 64px minmax(0, 1fr) 56px !important;

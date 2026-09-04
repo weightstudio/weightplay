@@ -58,11 +58,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Puzzle",
-    "Logic",
-    "Spatial Planning",
+    "Rätsel",
+    "Logik",
+    "Raumplanung",
     "Familie",
-    "Animal"
+    "Tiere"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -97,27 +97,21 @@
     <div id="battleReserve" class="battle-ad-reserve" data-wp-ad-reserve data-screen="battle" aria-hidden="true"></div>
     <section id="resultScreen" class="screen panel" data-screen="result" hidden><img class="guide-art result-guide-art" src="assets/animal-habitat-blueprint-guide-v1.webp" alt="" aria-hidden="true" width="1024" height="1536" /><div class="result-icon">⌂</div><p class="eyebrow" data-i18n="finished">Plan settled</p><h2 id="resultTitle" data-i18n="resultTitle">Every habitat fits!</h2><p id="resultText" class="intro"></p><div class="main-actions"><button id="nextBtn" class="primary" type="button" data-i18n="next">Next plan</button><button id="resultMapBtn" class="secondary" type="button" data-i18n="choose">Choose a plan</button></div></section>
     <section id="settingsPanel" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden><div class="modal-card"><button id="closeSettings" class="close-btn" type="button" data-i18n="close" aria-label="Close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row"><span data-i18n="sound">Sound</span><button id="soundBtn" class="toggle" type="button" data-sound-toggle aria-pressed="true">On</button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
-    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Habitat-Bauplan">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Habitat-Bauplan</h2><p>Tausche vier Habitat-Kacheln, erfülle alle Nachbarschaftshinweise und baue ein verbundenes Zuhause.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Habitat-Regelpuzzle</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Logic · Spatial Planning · Familie · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-label="Habitat-Bauplan-Spielinformationen">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">Originaler WeightPlay-Spielguide</span><h2 data-copy="title">Habitat-Bauplan</h2><p data-copy="guideIntro">Tausche vier Habitatplättchen, um alle Nachbarschaftshinweise zu erfüllen und ein ruhiges, verbundenes Zuhause für die Tiere zu bauen.</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">Spielweise</span><strong data-copy="guideGameplayValue">Habitat-Bedingungsrätsel</strong></div><div class="game-info-fact"><span data-copy="guideGenre">Genre</span><strong data-copy="guideGenreValue">Rätsel · Logik · Raumplanung · Familie · Tiere</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guidePlansTitle">Habitatpläne</h3><ol><li data-copy="guideHow1">Lies die drei Feldnotizen.</li><li data-copy="guideHow2">Wähle zwei Plättchen und tausche sie.</li><li data-copy="guideHow3">Setze den Plan sicher zurück, wenn die Anordnung nicht stimmt.</li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">Ergebnisse und Speichern</h3><p data-copy="guideResults">Drei kurze Pläne ergeben eine ruhige Sitzung. Der beste Tauschwert bleibt in diesem Browser.</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">Praktische Tipps</h3><p data-copy="guideTips">Nutze die Hinweise zu Nachbarschaft, Abstand und oben/unten gemeinsam; jeder Plan bleibt wiederherstellbar.</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">Häufige Fragen</h3><dl><div><dt data-copy="faqProgressQuestion">Wird der Fortschritt gespeichert?</dt><dd data-copy="faqProgressAnswer">Ja, nur in diesem Browser.</dd></div></dl></article>
+      </div>
+    </section>
   </main>
   <script src="locales.js?v=20260901-habitat-blueprint-v4-art-pack"></script><script src="game.js?v=20260901-habitat-blueprint-v4-art-pack"></script>
-<script src="/src/runtime-locales/de.js?v=20260825-moonlight-arabic-result-v22"></script>
+<script src="/src/runtime-locales/de.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
 </html>

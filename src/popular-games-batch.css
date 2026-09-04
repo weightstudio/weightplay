@@ -2253,3 +2253,23 @@ body[data-game-id="checkers"][data-screen="result"] .game-page-info-static { dis
   body[data-game-id="checkers"] .checkers-heading .tagline { display: none; }
   body[data-game-id="checkers"] .settings-control { grid-column: 3; }
 }
+
+/* Snake v29 keeps the legacy collection shell on the governed compact-
+   landscape Main and Battle contracts. The Main poster is a fixed 300px
+   column, while the Battle grid is sized to the reduced Canvas above the
+   independent 56px reserve so every cell remains inside its owner. */
+@media (min-width: 700px) and (max-height: 520px) and (orientation: landscape) {
+  body[data-game-id="snake"] #mainScreen .main-panel {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  body[data-game-id="snake"] #mainScreen .preview-art {
+    width: 300px;
+    max-width: 300px;
+    min-height: 300px;
+  }
+  body[data-game-id="snake"][data-screen="battle"] .snake-grid {
+    width: min(100%, 300px);
+    max-width: 300px;
+    height: auto;
+  }
+}

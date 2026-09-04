@@ -13,6 +13,8 @@ body .stage-canvas .stage-header{left:18px!important;right:auto!important;width:
 .battle-header>#battleBackBtn,.battle-header>#pauseBtn{align-self:center!important;justify-self:center!important}
 .sprite{height:150px}
 @media(min-width:701px){.battle-header{padding:6px}}
+.stage-tabs button{min-height:44px;border:0;background:#263a59;color:#fff;font-weight:900;border-top:3px solid #6ff5d3}
+@media(max-height:480px) and (orientation:landscape){.stage-tabs{display:grid!important;height:56px!important}.stage-tabs button{min-height:44px!important}}
 @media(max-width:700px){.battle-header>#battleBackBtn{width:44px!important;height:44px!important}}
 @media(max-width:700px){.battle-header>#pauseBtn{width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important}}
 @media(max-height:480px) and (orientation:landscape){.battle-header>#battleBackBtn{width:44px!important;height:44px!important}}
