@@ -1157,3 +1157,41 @@ button.control-mini {
     --wp-main-landscape-poster-size: 300px;
   }
 }
+
+/* v46 compact-landscape reachability: keep the HUD and stock controls in the
+   fixed Battle envelope while giving the seven-column Tableau its own
+   intentional vertical scroll surface when a deal is taller than the short
+   viewport. The card hit targets and horizontal seven-column composition stay
+   unchanged; only the board region is allowed to scroll. */
+@media (orientation: landscape) and (max-height: 560px) {
+  body[data-wp-game-id="klondike-solitaire"] .board-shell {
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    gap: 0.25rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    overflow: hidden;
+  }
+
+  body[data-wp-game-id="klondike-solitaire"] .foundation-row,
+  body[data-wp-game-id="klondike-solitaire"] .stock-row {
+    margin-bottom: 0;
+  }
+
+  body[data-wp-game-id="klondike-solitaire"] .battle-tip {
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  body[data-wp-game-id="klondike-solitaire"] .tableau-row {
+    min-height: 0;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-block: 2px 4px;
+    align-items: start;
+  }
+}

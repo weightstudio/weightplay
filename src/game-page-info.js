@@ -14565,6 +14565,7 @@
   games["road-crosser"] = {
     title: "Road Crosser", gameplay: "Timing Crossing Arcade", difficulty: "Easy to Challenging", time: "1-4 minutes per run",
     genre: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"],
+    relatedIds: ["animal-skybridge-rivals", "alien-defender", "animal-rift-salvage"],
     intro: "Road Crosser is an original WeightPlay timing arcade game. Guide the Star Runner through traffic lanes, a moving river, and three crossings that tighten the safe windows without copying another game's art, code, or exact presentation.",
     story: ["The Star Runner is carrying a small signal light across a night route. Cars move in readable pulses, river logs follow their own currents, and every safe step reveals the next timing decision."],
     systems: ["The runner moves one lane per input. Cars are hazards, logs carry the runner, water removes an unsupported runner, and rocks block later routes. A complete crossing advances to the next authored stage."],
