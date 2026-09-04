@@ -1803,9 +1803,9 @@
     "gin-rummy": {
       title: "Gin Rummy", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
       gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
-      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood.",
+      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood. Choose each draw carefully, track the discard pile, and decide when a low score is safer than waiting for Gin.",
       how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Player guidance", parent: "This free public General game runs in the browser. Progress is saved only on this device, so clearing site data or switching browsers may start a new round.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "crazy-eights": {
@@ -2877,9 +2877,9 @@
     en: {
       title: "Gin Rummy", difficulty: "Easy to Challenging", time: "5-15 minutes",
       gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
-      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood.",
+      intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood. Choose each draw carefully, track the discard pile, and decide when a low score is safer than waiting for Gin.",
       how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Player guidance", parent: "This free public General game runs in the browser. Progress is saved only on this device, so clearing site data or switching browsers may start a new round.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "zh-Hant": {
@@ -2887,7 +2887,7 @@
       gameplay: "經典組牌卡牌遊戲", genre: ["卡牌", "家庭", "策略"], skills: ["規劃", "專注", "模式辨識"],
       intro: "從同點數牌組成套牌與同花色順子，並降低未組牌的死牌分數。",
       how: ["從牌庫或棄牌堆抽一張，再棄一張牌。以低死牌敲牌，或完成金牌。"],
-      noteTitle: "預覽狀態", parent: "這是擁有者預覽，尚未列入正式公開目錄。",
+      noteTitle: "玩家與存檔說明", parent: "這款免費公開的一般遊戲可直接在瀏覽器遊玩。進度只保存在這台裝置上，清除網站資料或更換瀏覽器可能會開始新的一局。",
       faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]],
     },
     "zh-Hans": {
@@ -2895,7 +2895,7 @@
       gameplay: "经典组合牌类游戏", genre: ["卡牌", "家庭", "策略"], skills: ["规划", "专注", "模式识别"],
       intro: "组成同点数牌组和同花色顺子，同时减少未组合牌的死牌分数。",
       how: ["从牌库或弃牌堆抽一张，再弃一张牌。用较低死牌敲牌，或完成金牌。"],
-      noteTitle: "预览状态", parent: "这是拥有者预览，尚未列入正式公开目录。",
+      noteTitle: "玩家与存档说明", parent: "这款免费公开的一般游戏可直接在浏览器游玩。进度只保存在这台设备上，清除网站数据或更换浏览器可能会开始新的一局。",
       faq: [["进度会保存吗？", "会，只保存在这个浏览器中。"]],
     },
     ja: {
@@ -2903,7 +2903,7 @@
       gameplay: "クラシックなメルドカードゲーム", genre: ["カード", "ファミリー", "戦略"], skills: ["計画", "集中", "パターン認識"],
       intro: "同じランクのセットと同じスートの連続を作り、組み合わせられないカードを減らします。",
       how: ["山札または捨て札から1枚引き、1枚捨てます。残り札を減らしてノックするか、ジンを目指します。"],
-      noteTitle: "プレビュー状態", parent: "この所有者プレビューは正式な公開カタログには含まれていません。",
+      noteTitle: "プレイヤー向け案内", parent: "この無料の一般公開ゲームはブラウザで遊べます。進行状況はこの端末だけに保存されるため、サイトデータの削除やブラウザの変更で新しいラウンドが始まることがあります。",
       faq: [["進行状況は保存されますか？", "はい。このブラウザ内だけに保存されます。"]],
     },
     ko: {
@@ -2911,7 +2911,7 @@
       gameplay: "클래식 멜드 카드 게임", genre: ["카드", "가족", "전략"], skills: ["계획", "집중", "패턴 인식"],
       intro: "같은 숫자의 세트와 같은 무늬의 연속을 만들며 조합되지 않은 데드우드를 줄이세요.",
       how: ["덱이나 버린 카드에서 한 장을 뽑고 한 장을 버리세요. 데드우드를 줄여 노크하거나 진을 완성하세요."],
-      noteTitle: "프리뷰 상태", parent: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다.",
+      noteTitle: "플레이어 안내", parent: "이 무료 공개 일반 게임은 브라우저에서 플레이할 수 있습니다. 진행 상황은 이 기기에만 저장되므로 사이트 데이터를 지우거나 브라우저를 바꾸면 새 라운드가 시작될 수 있습니다.",
       faq: [["진행 상황이 저장되나요?", "네. 이 브라우저에만 저장됩니다."]],
     },
     es: {
@@ -2919,7 +2919,7 @@
       gameplay: "Juego clásico de combinaciones de cartas", genre: ["Cartas", "Familiar", "Estrategia"], skills: ["Planificación", "Concentración", "Reconocimiento de patrones"],
       intro: "Forma grupos del mismo valor y escaleras del mismo palo mientras reduces las cartas sin combinar.",
       how: ["Roba del mazo o del descarte y luego descarta una carta. Golpea con pocas cartas sin combinar o consigue Gin."],
-      noteTitle: "Estado de la vista previa", parent: "Esta vista previa del propietario aún no está en el catálogo público oficial.",
+      noteTitle: "Guía para jugadores", parent: "Este juego público y gratuito para público general funciona en el navegador. El progreso se guarda solo en este dispositivo; al borrar los datos del sitio o cambiar de navegador puede comenzar una ronda nueva.",
       faq: [["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
     },
     "pt-BR": {
@@ -2927,7 +2927,7 @@
       gameplay: "Jogo clássico de combinações de cartas", genre: ["Cartas", "Família", "Estratégia"], skills: ["Planejamento", "Foco", "Reconhecimento de padrões"],
       intro: "Monte conjuntos do mesmo valor e sequências do mesmo naipe enquanto reduz as cartas sem combinação.",
       how: ["Compre do monte ou do descarte e depois descarte uma carta. Bata com poucas cartas sem combinação ou faça Gin."],
-      noteTitle: "Status da prévia", parent: "Esta prévia do proprietário ainda não faz parte do catálogo público oficial.",
+      noteTitle: "Orientação ao jogador", parent: "Este jogo público e gratuito para o público geral funciona no navegador. O progresso é salvo apenas neste dispositivo; limpar os dados do site ou trocar de navegador pode iniciar uma nova rodada.",
       faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]],
     },
     fr: {
@@ -2935,7 +2935,7 @@
       gameplay: "Jeu de cartes classique de combinaisons", genre: ["Cartes", "Famille", "Stratégie"], skills: ["Planification", "Concentration", "Reconnaissance des motifs"],
       intro: "Formez des groupes de même valeur et des suites de même couleur tout en réduisant les cartes non combinées.",
       how: ["Piochez dans la pioche ou la défausse, puis défaussez une carte. Frappez avec peu de cartes non combinées ou faites Gin."],
-      noteTitle: "État de l’aperçu", parent: "Cet aperçu propriétaire ne figure pas encore dans le catalogue public officiel.",
+      noteTitle: "Guide du joueur", parent: "Ce jeu public gratuit pour le grand public se joue dans le navigateur. La progression est enregistrée uniquement sur cet appareil ; effacer les données du site ou changer de navigateur peut commencer une nouvelle manche.",
       faq: [["La progression est-elle sauvegardée ?", "Oui, uniquement dans ce navigateur."]],
     },
     de: {
@@ -2943,7 +2943,7 @@
       gameplay: "Klassisches Meld-Kartenspiel", genre: ["Karten", "Familie", "Strategie"], skills: ["Planung", "Fokus", "Mustererkennung"],
       intro: "Bilde Gruppen gleicher Werte und Folgen gleicher Farbe und verringere dabei nicht kombinierte Karten.",
       how: ["Ziehe vom Stapel oder aus der Ablage und wirf dann eine Karte ab. Klopfe mit wenigen nicht kombinierten Karten oder erreiche Gin."],
-      noteTitle: "Vorschaustatus", parent: "Diese Besitzer-Vorschau gehört noch nicht zum offiziellen öffentlichen Katalog.",
+      noteTitle: "Hinweis für Spieler", parent: "Dieses kostenlose öffentliche Spiel für allgemeine Spieler läuft im Browser. Der Fortschritt wird nur auf diesem Gerät gespeichert; nach dem Löschen der Websitedaten oder einem Browserwechsel kann eine neue Runde beginnen.",
       faq: [["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
     },
     it: {
@@ -2951,7 +2951,7 @@
       gameplay: "Gioco classico di combinazioni di carte", genre: ["Carte", "Famiglia", "Strategia"], skills: ["Pianificazione", "Concentrazione", "Riconoscimento degli schemi"],
       intro: "Crea gruppi dello stesso valore e sequenze dello stesso seme riducendo le carte non combinate.",
       how: ["Pesca dal mazzo o dagli scarti, poi scarta una carta. Batti con poche carte non combinate o realizza Gin."],
-      noteTitle: "Stato anteprima", parent: "Questa anteprima del proprietario non è ancora nel catalogo pubblico ufficiale.",
+      noteTitle: "Indicazioni per il giocatore", parent: "Questo gioco pubblico gratuito per tutti si svolge nel browser. I progressi vengono salvati solo su questo dispositivo; cancellare i dati del sito o cambiare browser può avviare un nuovo round.",
       faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]],
     },
     ru: {
@@ -2959,7 +2959,7 @@
       gameplay: "Классическая карточная игра на комбинации", genre: ["Карты", "Семейная", "Стратегия"], skills: ["Планирование", "Внимание", "Распознавание шаблонов"],
       intro: "Собирайте группы одинакового достоинства и последовательности одной масти, уменьшая число карт вне комбинаций.",
       how: ["Берите карту из колоды или сброса, затем сбрасывайте одну карту. Стучите с малым числом карт вне комбинаций или соберите джин."],
-      noteTitle: "Статус предпросмотра", parent: "Этот предпросмотр владельца ещё не входит в официальный публичный каталог.",
+      noteTitle: "Информация для игрока", parent: "Эта бесплатная общедоступная игра для всех запускается в браузере. Прогресс сохраняется только на этом устройстве; после очистки данных сайта или смены браузера может начаться новый раунд.",
       faq: [["Прогресс сохраняется?", "Да, только в этом браузере."]],
     },
     hi: {
@@ -2967,7 +2967,7 @@
       gameplay: "क्लासिक कार्ड संयोजन खेल", genre: ["कार्ड", "परिवार", "रणनीति"], skills: ["योजना", "ध्यान", "पैटर्न पहचान"],
       intro: "एक ही रैंक के सेट और एक ही सूट के क्रम बनाएँ तथा बिना संयोजन वाले पत्तों को कम करें।",
       how: ["गड्डी या फेंके हुए पत्तों से एक पत्ता लें, फिर एक पत्ता छोड़ें। कम बचे हुए पत्तों पर नॉक करें या जिन बनाएँ।"],
-      noteTitle: "प्रीव्यू स्थिति", parent: "यह मालिक का प्रीव्यू है और आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।",
+      noteTitle: "खिलाड़ी सूचना", parent: "यह मुफ़्त सार्वजनिक सामान्य खेल ब्राउज़र में चलता है। प्रगति केवल इसी डिवाइस पर सहेजी जाती है, इसलिए साइट डेटा मिटाने या ब्राउज़र बदलने पर नया राउंड शुरू हो सकता है।",
       faq: [["क्या प्रगति सेव होती है?", "हाँ, केवल इसी ब्राउज़र में।"]],
     },
     ar: {
@@ -2975,7 +2975,7 @@
       gameplay: "لعبة بطاقات كلاسيكية لتكوين المجموعات", genre: ["بطاقات", "عائلية", "استراتيجية"], skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"],
       intro: "كوّن مجموعات من الرتب نفسها وتسلسلات من النوع نفسه مع خفض البطاقات غير المجمّعة.",
       how: ["اسحب من الرزمة أو من الرمي، ثم ارمِ بطاقة واحدة. استخدم الطرق مع عدد قليل من البطاقات غير المجمّعة أو حقق جين."],
-      noteTitle: "حالة المعاينة", parent: "هذه معاينة للمالك وليست ضمن الكتالوج العام الرسمي بعد.",
+      noteTitle: "إرشادات اللاعب", parent: "هذه لعبة عامة مجانية للاعبين عمومًا وتعمل في المتصفح. يُحفظ التقدم على هذا الجهاز فقط، لذلك قد تبدأ جولة جديدة عند مسح بيانات الموقع أو تغيير المتصفح.",
       faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
     },
   };

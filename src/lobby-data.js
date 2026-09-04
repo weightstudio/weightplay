@@ -4206,6 +4206,17 @@ if (spiderSolitairePublic) {
   delete spiderSolitairePublic.internalTrial;
 }
 
+// Gin Rummy is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so later catalogue
+// edits cannot silently restore the private gate.
+const ginRummyPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "gin-rummy");
+if (ginRummyPublic) {
+  ginRummyPublic.status = "playable";
+  ginRummyPublic.previewVideo = "assets/previews/gin-rummy-battle.webm";
+  delete ginRummyPublic.statusText;
+  delete ginRummyPublic.internalTrial;
+}
+
 const klondikeSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
 if (klondikeSolitairePlanned) {
   klondikeSolitairePlanned.status = "planned";
