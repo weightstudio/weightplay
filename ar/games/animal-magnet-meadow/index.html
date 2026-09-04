@@ -25,7 +25,7 @@
   <meta name="description" content="اسحب حجري القمر إلى مرساهما وراقب استجابة الحجر المرتبط." />
   <title>مرج مغناطيسي | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260905-magnet-meadow-v1-interface-repair-v2">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مرج مغناطيسي | WeightPlay" />
@@ -74,64 +74,54 @@
       <div class="main-canvas" data-wp-standard-main-screen data-wp-logical-main-canvas>
         <header class="main-header wp-main-shell-header">
           <a class="home-link wp-shell-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-          <div class="header-title"><strong class="wp-shell-main-title" data-copy="title">Magnet Meadow</strong></div>
-          <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button>
+          <div class="header-title"><strong class="wp-shell-main-title" data-copy="title">المرج المغناطيسي</strong></div>
+          <button id="mainSettingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" data-wp-settings data-copy-aria-label="settings" aria-label="الإعدادات"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">الإعدادات</span></button>
         </header>
         <section class="hero-card">
           <img class="cover-art main-poster" src="assets/animal-magnet-meadow-cover-v1.png" alt="" aria-hidden="true">
           <div class="hero-copy">
-            <h1 data-copy="title">مرج مغناطيسي</h1>
-            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">Move one moonstone and watch its linked partner respond.</p>
+            <h1 data-copy="title">المرج المغناطيسي</h1>
+            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">حرّك حجر قمر واحداً وراقب استجابة شريكه المرتبط.</p>
             <p id="mainProgress" class="progress main-progress" data-wp-main-progress role="status" aria-live="polite"></p>
             <div class="hero-actions">
-              <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">Start a dock</button>
-              <button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button>
+              <button id="startBtn" class="primary-btn" type="button" data-wp-main-start data-copy="start">ابدأ مرسى</button>
+              <button id="mapBtn" class="secondary-btn" type="button" data-copy="stages">خريطة المرج</button>
             </div>
           </div>
         </section>
         <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" hidden role="dialog" aria-labelledby="settingsHeading">
-          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">Settings</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">Close</button></div>
-          <label class="setting-row"><span data-copy="language">Language</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">الإعدادات</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">إغلاق</button></div>
+          <label class="setting-row"><span data-copy="language">اللغة</span><select id="languageSelect" aria-label="Choose a language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
           <button id="soundBtn" class="secondary-btn setting-sound wp-shell-sound-row" type="button" aria-pressed="true"></button>
         </section>
       </div>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة مرج مغناطيسي">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مرج مغناطيسي</h2><p>اسحب حجري القمر إلى مرساهما وراقب استجابة الحجر المرتبط.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لغز الرسو المغناطيسي</strong></div><div class="game-info-fact"><span>النوع</span><strong>Puzzle · الاستدلال المكاني · الفيزياء · العائلة · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="guideScreen" class="guide game-page-info" data-wp-game-guide hidden aria-labelledby="guideHeading">
+      <h2 id="guideHeading" data-copy="guideTitle">طريقة اللعب</h2>
+      <div class="guide-grid">
+        <article><b data-copy="guideOneTitle">1. Choose a stone</b><p data-copy="guideOne">اختر حجراً واسحبه نحو مرسى.</p></article>
+        <article><b data-copy="guideTwoTitle">2. Watch the link</b><p data-copy="guideTwo">يتحرك الحجر الآخر بالجذب أو الدفع.</p></article>
+        <article><b data-copy="guideThreeTitle">3. Check the pair</b><p data-copy="guideThree">ضع الحجرين في مرسايهما المضيئين.</p></article>
+      </div>
+    </section>
 
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
       <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 data-copy="stages">Meadow map</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">Settings</span></button></header>
+        <header class="panel-head"><button id="stageBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="stage" type="button" data-copy="back">رجوع</button><h2 data-copy="stages">خريطة المرج</h2><button id="stageInfoBtn" class="icon-btn panel-utility utility-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="الإعدادات"><span aria-hidden="true">⚙</span><span class="sr-only" data-copy="settings">الإعدادات</span></button></header>
         <p class="panel-intro" data-copy="mapIntro">Each dock teaches how one move changes the linked pair.</p>
         <div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div>
-        <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">Meadow map</button><span aria-hidden="true"></span></nav>
+        <nav class="stage-tabs" aria-label="Meadow map"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stages">خريطة المرج</button><span aria-hidden="true"></span></nav>
       </div>
       <div class="stage-ad-reserve game-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>
     </section>
 
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
       <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound">♫</button></header>
+        <header class="panel-head"><button id="battleBackBtn" class="back-btn back-button wp-shell-return" data-wp-return="battle" type="button" data-copy="back">رجوع</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn panel-utility utility-button" data-wp-battle-utility type="button" aria-pressed="true" data-copy-aria-label="sound" aria-label="Sound">♫</button></header>
         <div id="battlePanel">
           <div class="mission-row"><div><p class="eyebrow" data-copy="dockKicker">MEADOW DOCK</p><p id="roundHint" class="panel-intro"></p></div><span id="relationBadge" class="relation-badge"></span></div>
-          <div class="target-card"><span data-copy="target">Dock pattern</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
+          <div class="target-card"><span data-copy="target">نمط المرسى</span><strong id="targetText"></strong><span id="moveText" class="move-text"></span></div>
           <p id="battleStatus" class="feedback" role="status" aria-live="polite"></p>
           <div id="magnetTrack" class="magnet-track" aria-label="Magnet meadow board">
             <div id="slotGrid" class="slot-grid"></div>
@@ -139,22 +129,22 @@
           </div>
           <div class="legend"><span class="legend-stone stone-a" data-copy="stoneA">Moonstone A</span><span class="legend-stone stone-b" data-copy="stoneB">Moonstone B</span></div>
           <p class="move-hint" data-copy="moveHint">Drag a stone to a new dock. The linked stone responds automatically.</p>
-          <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">Check the pair</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">Reset positions</button></div>
+          <div class="battle-actions"><button id="checkBtn" class="primary-btn" type="button" data-wp-primary-action data-copy="check">تحقق من الزوج</button><button id="resetBtn" class="secondary-btn" type="button" data-copy="reset">إعادة ضبط المواقع</button></div>
         </div>
         <div id="resultPanel" class="result-panel" hidden>
           <p class="eyebrow" data-copy="resultKicker">MEADOW RESULT</p>
           <h2 id="resultHeading"></h2>
           <p id="resultText"></p>
           <div id="resultStats" class="result-stats"></div>
-          <div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">Meadow map</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">Back to start</button></div>
+          <div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="stages">خريطة المرج</button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">العودة للبداية</button></div>
         </div>
       </div>
       <div class="battle-ad-reserve game-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="locales.js?v=20260904-magnet-meadow-v1-interface"></script>
-  <script src="game.js?v=20260904-magnet-meadow-v1-interface"></script>
+  <script src="locales.js?v=20260905-magnet-meadow-v1-interface-repair-v2"></script>
+  <script src="game.js?v=20260905-magnet-meadow-v1-interface-repair-v2"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260904-wp-text-growth-body-v1"></script>

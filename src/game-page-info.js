@@ -13839,6 +13839,54 @@
       localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
     }
   }
+  const beastGuardianDesignNoteLocaleCopy = {
+    ko: {
+      "beast-tactician": {
+        designNote: "이 게임은 자유 배치를 사용합니다. 핵심 결정은 어떤 타워를 살지뿐 아니라 각 유닛의 배치가 이동 시간, 공격 각도와 차단 위험을 어떻게 바꾸는지에 있습니다. 웨이브 사이의 5초 전환은 짧은 계획 시간을 남기면서 하나의 연속된 방어를 이어가는 느낌을 줍니다. 30개 스테이지는 6개의 기계적 구간으로 구성되어, 단순히 수치만 올리기보다 새로운 대응법과 조합으로 난도가 높아집니다. 터치 플레이어는 마우스 플레이어와 같은 큰 건설 카드와 격자 칸을 사용하고, 키보드로 타일 커서를 이동하고 건설, 선택, 업그레이드, 판매, 유닛 전환, 웨이브 시작을 할 수 있습니다. Animal Auto Squad와 달리 두 게임 모두 준비를 보상하지만, 이 게임은 실시간 웨이브 중 전장을 다시 만들고 대응할 수 있습니다.",
+      },
+    },
+    "pt-BR": {
+      "beast-tactician": {
+        designNote: "O jogo usa posicionamento livre porque a decisão central não é apenas qual torre comprar, mas como a posição de cada unidade altera o tempo de deslocamento, os ângulos de disparo e o risco de bloqueio. A transição de cinco segundos entre as ondas mantém a sensação de uma defesa contínua e deixa uma breve janela para planejar. As 30 fases são organizadas em seis arcos mecânicos, então a dificuldade cresce com novos contra-ataques e combinações antes de simplesmente aumentar os números. Jogadores com toque usam as mesmas cartas grandes de construção e células da grade que jogadores com mouse; o teclado também pode mover o cursor de uma célula, construir, selecionar, aprimorar, vender, alternar unidades e iniciar ondas. Isso diferencia o jogo de Animal Auto Squad: ambos valorizam a preparação, mas este permite remodelar o campo de batalha e reagir durante as ondas em andamento.",
+      },
+    },
+    fr: {
+      "beast-tactician": {
+        designNote: "Le jeu utilise un placement libre, car la décision centrale ne consiste pas seulement à choisir quelle tour acheter : il s’agit de voir comment la position de chaque unité modifie le temps de parcours, les angles de tir et le risque de blocage. La transition de cinq secondes entre les vagues conserve l’impression d’une défense continue tout en laissant un court moment pour planifier. Les 30 étapes sont organisées en six arcs mécaniques : la difficulté progresse grâce à de nouveaux contres et à des combinaisons, avant une simple hausse des valeurs. Les joueurs tactiles utilisent les mêmes grandes cartes de construction et cases de grille que les joueurs à la souris ; le clavier peut aussi déplacer le curseur d’une case, construire, sélectionner, améliorer, vendre, changer d’unité et lancer les vagues. Cela distingue le jeu d’Animal Auto Squad : les deux récompensent la préparation, mais celui-ci permet de remodeler le champ de bataille et de réagir pendant les vagues en cours.",
+      },
+    },
+    de: {
+      "beast-tactician": {
+        designNote: "Das Spiel setzt auf freie Platzierung, weil die zentrale Entscheidung nicht nur lautet, welchen Turm man kauft, sondern wie die Position jeder Einheit Laufzeit, Schusswinkel und Blockierrisiko verändert. Der fünfsekündige Übergang zwischen den Wellen vermittelt weiterhin eine zusammenhängende Verteidigung und lässt zugleich ein kurzes Planungsfenster. Die 30 Stufen sind in sechs Mechanikbögen gegliedert, sodass die Schwierigkeit zuerst durch neue Konter und Kombinationen wächst und nicht nur durch höhere Werte. Touch-Spieler verwenden dieselben großen Baukarten und Rasterfelder wie Mausspieler; mit der Tastatur lassen sich außerdem der Kachelcursor bewegen, bauen, auswählen, verbessern, verkaufen, Einheiten wechseln und Wellen starten. Das unterscheidet das Spiel von Animal Auto Squad: Beide belohnen Vorbereitung, aber hier lässt sich das Schlachtfeld während laufender Wellen umgestalten, sodass man reagieren kann.",
+      },
+    },
+    it: {
+      "beast-tactician": {
+        designNote: "Il gioco usa il posizionamento libero perché la decisione centrale non è soltanto quale torre acquistare, ma come la posizione di ogni unità modifica il tempo di percorrenza, gli angoli di tiro e il rischio di blocco. La transizione di cinque secondi tra le ondate conserva la sensazione di una difesa continua e lascia un breve momento per pianificare. Le 30 fasi sono organizzate in sei archi meccanici: la difficoltà cresce con nuovi contrasti e combinazioni prima di aumentare soltanto i valori. Chi usa il tocco vede le stesse grandi carte di costruzione e celle della griglia di chi usa il mouse; la tastiera permette anche di muovere il cursore sulla cella, costruire, selezionare, potenziare, vendere, cambiare unità e avviare le ondate. Questo distingue il gioco da Animal Auto Squad: entrambi premiano la preparazione, ma qui puoi ridisegnare il campo e reagire durante le ondate attive.",
+      },
+    },
+    ru: {
+      "beast-tactician": {
+        designNote: "В игре используется свободная расстановка, потому что главный выбор — не только то, какую башню купить, но и то, как положение каждого отряда меняет время пути, углы обстрела и риск блокировки. Переход в пять секунд между волнами сохраняет ощущение единой обороны и оставляет короткое окно для планирования. Тридцать этапов разделены на шесть механических арок: сложность растёт благодаря новым контрмерам и сочетаниям, а не только числовым параметрам. Игроки с сенсорным управлением используют те же большие карточки строительства и клетки поля, что и игроки с мышью; клавиатура также позволяет перемещать курсор по клеткам, строить, выбирать, улучшать, продавать, переключать отряды и запускать волны. Это отличает игру от Animal Auto Squad: обе игры поощряют подготовку, но здесь можно менять поле и реагировать во время активных волн.",
+      },
+    },
+    hi: {
+      "beast-tactician": {
+        designNote: "खेल में इकाइयों को स्वतंत्र रूप से रखने दिया जाता है, क्योंकि मुख्य निर्णय केवल यह नहीं है कि कौन-सा टावर खरीदा जाए; यह भी है कि हर इकाई की जगह बदलने से यात्रा समय, हमले के कोण और रास्ता रुकने का जोखिम कैसे बदलता है। लहरों के बीच पाँच सेकंड का बदलाव लगातार चल रही रक्षा का एहसास बनाए रखता है और थोड़ी योजना का समय देता है। 30 स्टेज छह यांत्रिक चरणों में बाँटे गए हैं, इसलिए कठिनाई केवल आँकड़े बढ़ाने के बजाय नए जवाबों और संयोजनों से बढ़ती है। टच खिलाड़ी माउस खिलाड़ियों जैसे ही बड़े निर्माण कार्ड और ग्रिड खाने इस्तेमाल करते हैं; कीबोर्ड से टाइल कर्सर चलाना, बनाना, चुनना, अपग्रेड करना, बेचना, यूनिट बदलना और लहर शुरू करना भी संभव है। यह खेल Animal Auto Squad से अलग है: दोनों तैयारी को महत्व देते हैं, लेकिन यहाँ सक्रिय लहरों के दौरान मैदान को फिर से बनाने और प्रतिक्रिया देने की सुविधा है।",
+      },
+    },
+    ar: {
+      "beast-tactician": {
+        designNote: "تستخدم اللعبة وضعًا حرًا للوحدات، لأن القرار الأساسي لا يقتصر على اختيار البرج الذي ستشتريه، بل يشمل كيفية تغيير موضع كل وحدة لزمن الحركة وزوايا الإطلاق وخطر الحجب. يحافظ الانتقال الذي يستغرق خمس ثوانٍ بين الموجات على إحساس الدفاع المتواصل، مع ترك نافذة قصيرة للتخطيط. تُنظَّم المراحل الثلاثون في ستة أقواس ميكانيكية، فتزداد الصعوبة عبر ردود مضادة وتركيبات جديدة قبل رفع القيم العددية فقط. يستخدم اللاعب باللمس بطاقات البناء الكبيرة وخلايا الشبكة نفسها التي يستخدمها لاعب الفأرة؛ وتتيح لوحة المفاتيح تحريك مؤشر الخلية والبناء والاختيار والترقية والبيع وتبديل الوحدات وبدء الموجات. وهذا يميز اللعبة عن Animal Auto Squad: كلتاهما تكافئان الاستعداد، لكن هذه اللعبة تتيح إعادة تشكيل ساحة المعركة والاستجابة أثناء الموجات الجارية.",
+      },
+    },
+  };
+  for (const [localeCode, gamesCopy] of Object.entries(beastGuardianDesignNoteLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    for (const [gameId, copy] of Object.entries(gamesCopy)) {
+      localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
+    }
+  }
   localizedRelatedCardCopy = {
     "zh-Hant": {
       "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },

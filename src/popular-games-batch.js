@@ -1251,36 +1251,48 @@
       const guideTitle = guideRoot?.querySelector(".game-info-title h2");
       const guideKicker = guideRoot?.querySelector(".game-info-kicker");
       const guideIntro = guideRoot?.querySelector(".game-info-title p");
-      if (guideRoot) guideRoot.setAttribute("aria-label", ui.aria);
-      if (guideKicker) guideKicker.textContent = ui.kicker;
-      if (guideTitle) guideTitle.textContent = els.title.textContent;
-      if (guideIntro) guideIntro.textContent = ui.intro;
-      const facts = [...(guideRoot?.querySelectorAll(".game-info-fact") || [])];
-      [[ui.gameplay, ui.gameplayValue], [ui.genre, ui.genreValue]].forEach(([label, value], index) => {
-        const fact = facts[index];
-        if (!fact) return;
-        fact.querySelector("span")?.replaceChildren(document.createTextNode(label));
-        fact.querySelector("strong")?.replaceChildren(document.createTextNode(value));
-      });
-      const sections = [...(guideRoot?.querySelectorAll(".game-info-sections .game-info-section") || [])];
-      const guideSection = sections[0];
-      const guide = guideSection?.querySelector("p");
-      if (guideSection?.querySelector("h3")) guideSection.querySelector("h3").textContent = ui.how;
-      if (guide) guide.textContent = `${ui.objective} ${ui.instructions}`;
-      const faqSection = sections[sections.length - 1];
-      if (faqSection?.querySelector("h3")) faqSection.querySelector("h3").textContent = ui.faq;
-      const faqList = faqSection?.querySelector("dl");
-      if (faqList) {
-        const entries = [[ui.roundEndQuestion, ui.roundEndAnswer], [ui.saveQuestion, ui.saved]];
-        faqList.replaceChildren(...entries.map(([question, answer]) => {
-          const item = document.createElement("div");
-          const questionNode = document.createElement("dt");
-          const answerNode = document.createElement("dd");
-          questionNode.textContent = question;
-          answerNode.textContent = answer;
-          item.append(questionNode, answerNode);
-          return item;
-        }));
+      const tetrisHasPublicGuide = document.body.dataset.wpPublicRelease === "true"
+        || document.querySelector('meta[name="robots"]')?.content === "index,follow";
+      if (tetrisHasPublicGuide) {
+        // Public routes own their authored static Guide. Keep the reviewed
+        // public copy intact, while replacing the old staging intro on any
+        // locale whose static route still carries the pre-release snapshot.
+        if (guideIntro) {
+          const publicDescription = document.querySelector('meta[name="description"]')?.content?.trim();
+          if (publicDescription) guideIntro.textContent = publicDescription;
+        }
+      } else {
+        if (guideRoot) guideRoot.setAttribute("aria-label", ui.aria);
+        if (guideKicker) guideKicker.textContent = ui.kicker;
+        if (guideTitle) guideTitle.textContent = els.title.textContent;
+        if (guideIntro) guideIntro.textContent = ui.intro;
+        const facts = [...(guideRoot?.querySelectorAll(".game-info-fact") || [])];
+        [[ui.gameplay, ui.gameplayValue], [ui.genre, ui.genreValue]].forEach(([label, value], index) => {
+          const fact = facts[index];
+          if (!fact) return;
+          fact.querySelector("span")?.replaceChildren(document.createTextNode(label));
+          fact.querySelector("strong")?.replaceChildren(document.createTextNode(value));
+        });
+        const sections = [...(guideRoot?.querySelectorAll(".game-info-sections .game-info-section") || [])];
+        const guideSection = sections[0];
+        const guide = guideSection?.querySelector("p");
+        if (guideSection?.querySelector("h3")) guideSection.querySelector("h3").textContent = ui.how;
+        if (guide) guide.textContent = `${ui.objective} ${ui.instructions}`;
+        const faqSection = sections[sections.length - 1];
+        if (faqSection?.querySelector("h3")) faqSection.querySelector("h3").textContent = ui.faq;
+        const faqList = faqSection?.querySelector("dl");
+        if (faqList) {
+          const entries = [[ui.roundEndQuestion, ui.roundEndAnswer], [ui.saveQuestion, ui.saved]];
+          faqList.replaceChildren(...entries.map(([question, answer]) => {
+            const item = document.createElement("div");
+            const questionNode = document.createElement("dt");
+            const answerNode = document.createElement("dd");
+            questionNode.textContent = question;
+            answerNode.textContent = answer;
+            item.append(questionNode, answerNode);
+            return item;
+          }));
+        }
       }
       const homeLabel = copy(locale, "home");
       document.querySelector("#battleBackBtn")?.setAttribute("aria-label",homeLabel);
