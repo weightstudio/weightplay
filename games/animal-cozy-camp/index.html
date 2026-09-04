@@ -25,6 +25,7 @@
   <meta name="weightplay-game-version" content="v1" />
   <meta name="weightplay-interface-version" content="6" />
   <title>Cozy Camp | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-cozy-camp-v1" data-wp-game-guide />
   <link rel="stylesheet" href="styles.css?v=20260903-cozy-camp-v1" />
   <style>
     .app-shell{width:min(100%,920px);margin:auto}
@@ -60,7 +61,7 @@
     <section id="mainScreen" class="screen main-screen" data-view="main" data-screen="main" hidden>
       <header class="topbar wp-main-shell-header"><a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a><strong class="wp-shell-main-title" data-copy="title">Cozy Camp</strong><button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
       <div class="main-content">
-        <img class="concept-cover main-poster" src="assets/animal-cozy-camp-cover.svg" alt="Moonlit animal campfire" draggable="false" />
+        <img class="concept-cover main-poster" src="assets/animal-cozy-camp-cover.png" alt="Moonlit animal campfire with four friendly animals" draggable="false" />
         <p class="eyebrow" data-copy="kicker">CAMPFIRE COMFORT LOGIC</p>
         <h1 data-copy="title">Cozy Camp</h1>
         <p class="lede main-summary" data-copy="intro">Read the animals' comfort notes, then choose the one circular seat order that keeps the campfire cozy.</p>
@@ -74,7 +75,7 @@
       <header class="topbar"><button id="battle-home" class="return-link wp-shell-return" type="button" data-wp-return="battle"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-copy="title">Cozy Camp</strong><button id="battle-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
       <div class="battle-content battle-canvas" data-wp-logical-battle-canvas>
         <div class="battle-heading"><div><p class="eyebrow" data-copy="kicker">CAMPFIRE COMFORT LOGIC</p><h1 id="round-title">Lantern circle</h1></div><div class="round-badge"><span data-copy="round">Circle</span> <strong id="round-count">1/3</strong></div></div>
-        <div class="camp-scene" aria-hidden="true"><div class="campfire">🔥</div><div class="camp-glow"></div><div class="scene-stars">✦　·　✧　·　✦</div></div>
+        <div class="camp-scene" aria-hidden="true"><img class="camp-background" src="assets/animal-cozy-camp-background.png" alt="" draggable="false" /><div class="camp-glow"></div><div class="campfire">🔥</div><div class="scene-stars">✦　·　✧　·　✦</div></div>
         <div class="clue-card"><h2 data-copy="cluesTitle">Comfort notes</h2><ul id="clue-list"></ul></div>
         <div class="choice-heading"><h2 data-copy="layoutTitle">Choose a seat order</h2><p id="selection-note" class="selection-note" role="status" aria-live="polite"></p></div>
         <div id="layout-choices" class="layout-choices" role="list" aria-label="Seat order choices"></div>
@@ -86,7 +87,7 @@
 
     <section id="result-view" class="screen" data-view="result" hidden>
       <header class="topbar"><a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a><strong class="wp-shell-main-title" data-copy="title">Cozy Camp</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
-      <div class="result-content"><p class="eyebrow" data-copy="resultKicker">CAMP COMPLETE</p><h1 data-copy="resultTitle">The animals are cozy.</h1><p id="result-text" class="lede"></p><div class="result-card"><span data-copy="resultChecks">Checks</span><strong id="result-checks">0</strong><span data-copy="best">Best</span><strong id="result-best">—</strong></div><p id="result-status" class="status" role="status" aria-live="polite"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Replay camp</button><button id="home-button" class="secondary-button" type="button" data-copy="home">Back to start</button></div></div>
+      <div class="result-content"><img class="result-guide" src="assets/animal-cozy-camp-orla-guide.png" alt="" aria-hidden="true" draggable="false" /><p class="eyebrow" data-copy="resultKicker">CAMP COMPLETE</p><h1 data-copy="resultTitle">The animals are cozy.</h1><p id="result-text" class="lede"></p><div class="result-card"><span data-copy="resultChecks">Checks</span><strong id="result-checks">0</strong><span data-copy="best">Best</span><strong id="result-best">—</strong></div><p id="result-status" class="status" role="status" aria-live="polite"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Replay camp</button><button id="home-button" class="secondary-button" type="button" data-copy="home">Back to start</button></div></div>
     </section>
 
     <dialog id="guide-dialog" class="modal-dialog"><div class="dialog-card"><div class="dialog-head"><h2 data-copy="guideTitle">How to play</h2><button id="close-guide" class="close-button" type="button" aria-label="Close">×</button></div><p data-copy="guideIntro">Every circle has one comfortable order.</p><ol><li data-copy="guide1">Read both comfort notes.</li><li data-copy="guide2">Compare the three circular seat orders.</li><li data-copy="guide3">Check your choice; a miss stays safe to try again.</li></ol><button id="guide-start" class="primary-button" type="button" data-copy="start">Start the camp</button></div></dialog>

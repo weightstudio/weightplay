@@ -51,6 +51,17 @@ winKicker:"تمت استعادة المنارة",winTitle:"اكتملت المن
 chapters:["الساحة القمرية","حي الساعة","أرصفة المد","سوق المنشور","مسبك المنافس","انهيار التاج"],rules:["تعلم مسارات الحجم وسلاسل القمر.","تتبع التروس وحركة الناقل.","قاوم التيارات الأثيرية بالمراسي.","افتح الحطام المحمي بشظايا المنشور.","تجاوز مسارات حلقات المنافسين.","اهزم العاصفة واستعد آثار التاج."],
 currentHelp:"توضح البوصلة الفيروزية الصغيرة اتجاه التيار. اجمع مرساتين لإلغائه.",gunHelp:"يطلق الحراس الحمر مقذوفات قاتلة. واصل الحركة وتجنب المسارات المضيئة.",backLobby:"العودة إلى WeightPlay",back:"رجوع"
 });
+// Keep the visible Main H1 aligned with the canonical localized lobby title.
+// The compact titleShort values remain available for the header label.
+Object.assign(ja,{title:"アニマル・リフトサルベージ"});
+Object.assign(ko,{title:"동물 균열 회수대"});
+Object.assign(es,{title:"Rescate en la Grieta Animal"});
+Object.assign(pt,{title:"Resgate na Fenda Animal"});
+Object.assign(fr,{title:"Récupération dans la Faille Animale"});
+Object.assign(it,{title:"Recupero nella Faglia Animale"});
+Object.assign(ru,{title:"Звери: Сбор в разломе"});
+Object.assign(hi,{title:"पशु रिफ्ट बचाव दल"});
+Object.assign(ar,{title:"فريق إنقاذ الصدع"});
 const dictionaries={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
 const publicShellCopy={
   en:{mainKicker:"GENERAL · 30-ZONE CAMPAIGN",guideKicker:"PUBLIC GAME GUIDE",guideIntro:"Learn the complete salvage loop, from safe size routes to rescue cores, rivals, and the closing storm."},
