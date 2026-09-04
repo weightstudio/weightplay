@@ -7,7 +7,7 @@
     { title: "Quiet push", hint: "Use a push response.", relation: "push", initial: { a: 4, b: 2 }, target: { a: 5, b: 1 } },
     { title: "Double settle", hint: "Plan two pull moves.", relation: "pull", initial: { a: 0, b: 3 }, target: { a: 2, b: 5 } },
   ];
-  const state = { locale: "en", screen: "main", round: 0, positions: { a: 0, b: 5 }, moves: 0, completed: [], selected: "a", sound: true, drag: null };
+  const state = { locale: "en", screen: "main", round: 0, positions: { a: 0, b: 5 }, moves: 0, completed: [], selected: "a", statusKey: "ready", statusStone: null, sound: true, drag: null };
   const $ = (id) => document.getElementById(id);
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
@@ -16,6 +16,14 @@
     let value = dictionary[key] || (localeMap.en && localeMap.en[key]) || key;
     Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); });
     return value;
+  };
+  const battleStatusText = () => state.statusKey === "moved" || state.statusKey === "selectStone"
+    ? copy(state.statusKey, { stone: stoneLabel(state.statusStone) })
+    : copy(state.statusKey);
+  const setBattleStatus = (key, stoneId = null) => {
+    state.statusKey = key;
+    state.statusStone = stoneId;
+    $("battleStatus").textContent = battleStatusText();
   };
   const samePosition = (first, second) => first.a === second.a && first.b === second.b;
   const currentRound = () => rounds[state.round];
@@ -28,6 +36,7 @@
     $("battleSoundBtn").setAttribute("aria-label", copy("sound"));
     $("battleSoundBtn").setAttribute("aria-pressed", String(state.sound));
     $("mainProgress").textContent = copy("progress", { count: state.completed.length });
+    if (state.screen === "battle") $("battleStatus").textContent = battleStatusText();
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };
@@ -75,7 +84,7 @@
     state.positions[other] = clamp(state.positions[other] + response, 0, 5);
     state.moves += 1;
     state.selected = id;
-    $("battleStatus").textContent = copy("moved", { stone: stoneLabel(id) });
+    setBattleStatus("moved", id);
     renderBattle();
   };
   const renderStones = () => {
@@ -88,7 +97,7 @@
     }).join("");
     layer.querySelectorAll("[data-stone]").forEach((stone) => {
       const id = stone.dataset.stone;
-      stone.addEventListener("click", () => { state.selected = id; $("battleStatus").textContent = copy("selectStone", { stone: stoneLabel(id) }); renderBattle(); });
+      stone.addEventListener("click", () => { state.selected = id; setBattleStatus("selectStone", id); renderBattle(); });
       stone.addEventListener("pointerdown", (event) => {
         event.preventDefault();
         state.selected = id;
@@ -118,13 +127,14 @@
     $("relationBadge").textContent = copy(round.relation === "pull" ? "relationPull" : "relationPush");
     $("targetText").textContent = "A" + (round.target.a + 1) + " · B" + (round.target.b + 1);
     $("moveText").textContent = copy("move", { count: state.moves });
+    $("battleStatus").textContent = battleStatusText();
     $("slotGrid").innerHTML = Array.from({ length: 6 }, (_, index) => "<button class=\"slot\" type=\"button\" data-slot=\"" + index + "\" aria-label=\"" + slotLabel(index) + "\"><span>" + (index + 1) + "</span></button>").join("");
     $("slotGrid").querySelectorAll("[data-slot]").forEach((slot) => slot.addEventListener("click", () => commitMove(state.selected, Number(slot.dataset.slot))));
     renderStones();
     $("resultPanel").hidden = true;
     $("battlePanel").hidden = false;
   };
-  const resetRound = () => { state.positions = { ...currentRound().initial }; state.moves = 0; state.selected = "a"; $("battleStatus").textContent = copy("ready"); renderBattle(); };
+  const resetRound = () => { state.positions = { ...currentRound().initial }; state.moves = 0; state.selected = "a"; setBattleStatus("ready"); renderBattle(); };
   const showResult = () => {
     const final = state.round === rounds.length - 1;
     const total = state.moves;
@@ -143,17 +153,18 @@
   const checkRound = () => {
     if (samePosition(state.positions, currentRound().target)) {
       if (!state.completed.includes(state.round)) state.completed.push(state.round);
-      $("battleStatus").textContent = copy("correct");
+      setBattleStatus("correct");
       showResult();
       return;
     }
-    $("battleStatus").textContent = copy("incorrect");
+    setBattleStatus("incorrect");
   };
   const startRound = (index) => {
     state.round = clamp(index, 0, rounds.length - 1);
     state.positions = { ...rounds[state.round].initial };
     state.moves = 0;
     state.selected = "a";
+    setBattleStatus("ready");
     setScreen("battle");
   };
   const applyLocale = (locale) => {

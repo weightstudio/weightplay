@@ -694,6 +694,13 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
+  /* Speed v13 uses the canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport while preserving its shared 420px
+     desktop column and all other responsive breakpoints. */
+  body[data-wp-card-game="speed"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
   .wp-standard-main-poster,
   .wp-standard-main-poster-media,
   .wp-standard-main-poster-media > img,

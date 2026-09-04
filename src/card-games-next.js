@@ -825,6 +825,9 @@
   const cribbageStatsText = (stats) => currentLocale() === "ar"
     ? `${stats.wins} فوز · ${stats.losses} خسارة`
     : `${stats.wins}W · ${stats.losses}L`;
+  const oldMaidStatsText = (stats) => currentLocale() === "ar"
+    ? `${stats.wins} فوز · ${stats.losses} خسارة`
+    : `${stats.wins}W · ${stats.losses}L`;
   const CRIBBAGE_SELECTION_COPY = {
     en: { status: "Select cards: {count}/2 to the crib.", quickGuide: "How to play", quickGuideCopy: "Pairs, runs, and fifteens score points. The first player to reach 121 wins." },
     "zh-Hant": { status: "選擇牌：{count}/2 張送入 crib。", quickGuide: "玩法說明", quickGuideCopy: "對子、順子和十五都能得分；先到 121 分的玩家獲勝。" },
@@ -1979,6 +1982,7 @@
         utility.setAttribute("aria-label", labels.settings);
         utility.title = labels.settings;
       }
+      ownLocalizedText(document.querySelector(".card-game-player-header strong"), labels.hand);
       document.querySelector(".card-game-quick-guide")?.setAttribute("data-runtime-localize", "off");
     };
     if (id === "speed") {
@@ -2139,10 +2143,10 @@
     const statsContainer = document.querySelector(".card-game-stats");
     const statsNode = document.createElement("div");
     statsNode.className = "card-stat card-stat-history";
-    if (id === "cribbage") statsNode.setAttribute("data-runtime-localize", "off");
+    if (id === "cribbage" || id === "old-maid") statsNode.setAttribute("data-runtime-localize", "off");
     statsNode.setAttribute("aria-label", STAT_LABELS[currentLocale()] || STAT_LABELS.en);
     statsContainer?.append(statsNode);
-    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "cribbage" ? cribbageStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
+    const updateStatsView = (stats = readStats()) => { statsNode.innerHTML = `<small>${STAT_LABELS[currentLocale()] || STAT_LABELS.en}</small><strong>${id === "cribbage" ? cribbageStatsText(stats) : id === "old-maid" ? oldMaidStatsText(stats) : `${stats.wins}W · ${stats.losses}L`}</strong>`; };
     updateStatsView();
     let game;
     const controller = {

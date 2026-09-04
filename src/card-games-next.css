@@ -246,17 +246,33 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="hearts"] .card-hand .playing-card {
     flex: 0 1 43px;
   }
-  /* Casino's four-card hand can wrap into the narrow right column at
-     844x390, where the second row collides with the quick guide. Give the
-     hand its own full-width row so every card remains reachable. */
+  /* Casino owns a compact-landscape composition: keep the table/opponent
+     region, full-width hand, and guide/actions in separate tracks so
+     feedback never pushes an action below the 56px reserve. */
+  body[data-wp-card-game="casino"] .card-table-ui {
+    grid-template-rows: 44px minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 6px 12px;
+  }
   body[data-wp-card-game="casino"] .card-game-board {
     grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
     gap: 7px;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="casino"] .card-opponents {
+    grid-area: opponents;
+    min-width: 0;
+    overflow: hidden;
   }
   body[data-wp-card-game="casino"] .card-game-player {
     grid-column: 1 / -1;
+    grid-area: player;
     min-width: 0;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -264,10 +280,15 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="casino"] .card-game-player-header {
     flex: 0 0 auto;
     min-width: 0;
+    margin-bottom: 3px;
+  }
+  body[data-wp-card-game="casino"] .card-game-player-header small {
+    font-size: 10px;
+    line-height: 1.15;
   }
   body[data-wp-card-game="casino"] .card-hand {
     flex: 0 0 auto;
-    min-height: 66px;
+    min-height: 61px;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: flex-start;
@@ -277,6 +298,43 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   }
   body[data-wp-card-game="casino"] .card-hand .playing-card {
     flex: 0 1 43px;
+    height: 61px;
+  }
+  body[data-wp-card-game="casino"] .card-table-center {
+    grid-area: table;
+    min-width: 0;
+    min-height: 0;
+    padding: 5px;
+    gap: 3px;
+    justify-content: flex-start;
+    overflow: auto;
+  }
+  body[data-wp-card-game="casino"] .card-table-center .table-row {
+    flex: 0 0 auto;
+    min-height: 0;
+    gap: 5px;
+  }
+  body[data-wp-card-game="casino"] .card-table-center .playing-card,
+  body[data-wp-card-game="casino"] .card-table-center .card-build .playing-card {
+    width: 43px;
+    height: 61px;
+  }
+  body[data-wp-card-game="casino"] .card-action-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    align-items: center;
+  }
+  body[data-wp-card-game="casino"] .card-action-row .card-game-quick-guide {
+    grid-column: 1 / -1;
+    width: auto;
+    padding: 5px 8px;
+    font-size: 11px;
+    line-height: 1.2;
+  }
+  body[data-wp-card-game="casino"] .card-action-row button {
+    width: 100%;
+    min-width: 0;
   }
   /* Crazy Eights' five-card hand must stay in its own full-width row in the
      compact landscape Canvas so the hand never shares hit space with the
@@ -435,6 +493,47 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="old-maid"] .card-hand .playing-card {
     width: 48px;
     height: 66px;
+  }
+  /* Speed is a simultaneous scan: in RTL grid auto-placement would otherwise
+     put the player in the 108px opponent column. Keep the hand in its own
+     full-width row so every card remains reachable in compact landscape. */
+  body[data-wp-card-game="speed"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
+    gap: 7px;
+  }
+  body[data-wp-card-game="speed"] .card-opponents { grid-area: opponents; }
+  body[data-wp-card-game="speed"] .card-table-center {
+    grid-area: table;
+    position: relative;
+    z-index: 2;
+  }
+  body[data-wp-card-game="speed"] .card-game-player {
+    grid-column: 1 / -1;
+    grid-area: player;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="speed"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  body[data-wp-card-game="speed"] .card-hand {
+    flex: 0 0 auto;
+    min-height: 66px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
   body[data-wp-card-game="go-fish"] #cardGameCenter > .card-choice-panel {
     display: grid;

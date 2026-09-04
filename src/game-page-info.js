@@ -13911,6 +13911,128 @@
       localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
     }
   }
+  const beastGuardianFullGuideLocaleCopy = {
+    fr: {
+      "beast-tactician": {
+        title: "Gardien des bêtes",
+        difficulty: "Difficile",
+        time: "8 à 15 minutes par étape",
+        gameplay: "Défense de tours héroïque",
+        genre: ["Tower defense", "Stratégie", "Animaux"],
+        skills: ["Logique", "Résolution de problèmes", "Concentration"],
+        guideKicker: "Guide de jeu original WeightPlay",
+        guideTitleSuffix: "Guide du jeu",
+        noteTitle: "Informations sur le joueur et la sauvegarde",
+        intro:
+          "Beast Guardian est une campagne de tower defense héroïque en 30 étapes, fondée sur la construction d’itinéraires plutôt que sur des emplacements de tours fixes. Placez quatre rôles de soldats animaux ordinaires et sept héros WeightPlay sur une grille forestière, gardez au moins un itinéraire ouvert et protégez le noyau de cristal à travers six régions de cinq étapes. Loups, sangliers cuirassés, chauves-souris volantes, meutes régénérantes, coureurs blessés et formations d’éclipse exigent des défenses différentes. Les étapes 5, 10, 15, 20, 25 et 30 se terminent par des Boss qui changent les règles, et non par de simples ennemis dotés d’une barre de vie plus grande.",
+        story: [
+          "Les itinéraires de cristal relient six parties de la Forêt des Gardiens : les premiers chemins de racines, les voies aériennes de cristal, les ateliers d’Écorce-de-Fer, le bois brumeux qui repousse, les remparts de tempête et la route de l’éclipse vers le trône de Voidroot. Les meutes ennemies tentent d’atteindre le noyau à l’autre bout de chaque champ de bataille. Une étape terminée signifie que l’itinéraire reste assez sûr pour permettre aux gardiens d’avancer vers le secteur suivant.",
+          "Vous commandez la défense avant et pendant chaque vague. Les Gardes Gland et Taro Carapace-Mousse tiennent les virages, les Archers éclaireurs et Orla Coiffe-Lunaire couvrent les longues lignes, les Sapeurs runiques ralentissent les attaquants groupés, les Petits soigneurs réparent les bloqueurs blessés et des héros comme Fia Patte-Étincelle infligent des dégâts concentrés. Le plateau n’est pas décoratif : chaque défenseur placé modifie l’itinéraire, sauf lorsqu’il sert de soutien à distance loin du chemin."
+        ],
+        systems: [
+          "Construction d’itinéraire : les défenseurs occupent des cases de terrain normales. Les ennemis recalculent leur chemin autour d’eux, mais un itinéraire entièrement fermé pousse les ennemis terrestres à attaquer le bloqueur le plus proche jusqu’à la réouverture d’un passage. Les chauves-souris volantes ignorent le labyrinthe au sol : un long itinéraire ne suffit donc pas à résoudre chaque vague.",
+          "Rôles de combat : les bloqueurs achètent du temps, les archers et Orla couvrent la distance, les sapeurs infligent des dégâts de zone et ralentissent, les soigneurs restaurent les défenseurs blessés, Fia concentre la pression sur les Boss et Rux Corne-Engrenage renforce les alliés proches. Sélectionner une unité placée affiche son coût d’amélioration et son remboursement en cas de vente.",
+          "Informations de vague : avant chaque vague, le HUD indique les loups, sangliers, chauves-souris, escortes ou Boss qui arrivent. Les vagues qui ne sont pas finales reprennent après un compte à rebours de cinq secondes : vous pouvez donc lire la prochaine composition et utiliser les pièces gagnées avant le retour de la pression.",
+          "Ennemis spéciaux : les étapes d’Écorce-de-Fer donnent aux ennemis une armure protectrice cassable ; ceux du bois brumeux récupèrent des points de vie en avançant ; les ennemis de tempête accélèrent lorsqu’ils passent sous la moitié de leurs points de vie ; les étapes d’éclipse combinent armure, récupération, accélération, routes aériennes et ralentissements moins efficaces.",
+          "Progression permanente : les victoires rapportent des étoiles, des points d’amélioration et des Diamants. Les points d’amélioration augmentent la puissance des héros, la santé des défenseurs ou l’économie de départ. Les Diamants sont facultatifs : ils peuvent confirmer une réanimation du noyau, relancer une récompense de résultat ou débloquer un cadre doré cosmétique ; les déblocages normaux d’étapes n’en demandent pas."
+        ],
+        how: [
+          "Choisissez une étape dans le rail à faire défiler et lisez les indications de menace, de plan et de récompense.",
+          "Dépensez les pièces de l’étape pour placer des soldats ou des héros WeightPlay sur les cases de terrain normales. Utilisez l’aperçu de portée avant de confirmer une position.",
+          "Gardez au moins un chemin ouvert ; sinon, les ennemis bloqués attaqueront le défenseur le plus proche jusqu’à la réouverture de l’itinéraire.",
+          "Lisez les informations de vague, lancez la vague, puis améliorez ou vendez les unités placées lorsque la composition ennemie change. Les vagues non finales terminées reprennent automatiquement après cinq secondes.",
+          "Protégez le cristal pendant toutes les vagues. Le résultat attribue une à trois étoiles selon la santé restante du noyau et propose Étape suivante, Réessayer ou Retour aux étapes.",
+          "Dépensez les points d’amélioration conservés depuis l’écran Étape lorsque la puissance permanente, la santé du rempart ou l’économie de départ doit progresser. Les actions facultatives en Diamants affichent toujours leur coût et demandent une confirmation."
+        ],
+        strategyTips: [
+          "Utilisez les Gardes Gland pour créer deux ou trois virages de tir avant d’investir dans des héros coûteux. Un itinéraire plus long augmente le temps d’attaque utile de chaque unité à distance.",
+          "Ne fermez pas toutes les cases. Un itinéraire scellé transforme le labyrinthe en combat direct contre le bloqueur le plus proche et peut supprimer l’avantage de temps recherché.",
+          "Gardez une couverture à distance près du cristal pendant la Traversée des chauves-souris et les étapes aériennes suivantes, car les chauves-souris contournent les bloqueurs terrestres. Ralentissez les sangliers avant que leur armure ne se brise dans les étapes de tempête, afin de réduire le danger de leur accélération lorsqu’ils sont blessés.",
+          "Contre les ennemis qui se régénèrent, concentrez le feu dans une zone d’élimination au lieu de disperser les dégâts. Contre l’armure, les dégâts soutenus ou de zone doivent retirer la garde avant d’engager le burst d’un héros.",
+          "Gardez une couverture de rôles pour les étapes de Boss. L’Empereur Voidroot change de phase à deux seuils de santé : il invoque d’abord des chauves-souris, puis un soutien terrestre blindé, tout en reconstruisant sa garde."
+        ],
+        progression: [
+          "Les étapes 1 à 5 enseignent les virages d’itinéraire, les voies séparées, la couverture à distance précoce, la pression des sangliers et les conséquences d’un chemin fermé. Shadow Brute attaque les bloqueurs plus vite que les Boss ordinaires : ce premier final vérifie donc que l’itinéraire possède une ancre résistante, et pas seulement des unités offensives.",
+          "Les étapes 6 à 10 introduisent des chauves-souris qui traversent la grille par les airs et des vagues mixtes air-sol. Forest Behemoth invoque des loups et des chauves-souris après avoir perdu une partie de sa santé. Les étapes 11 à 15 ajoutent une armure d’Écorce-de-Fer cassable et se terminent par Ironbark Colossus, qui reconstruit une importante couche de garde au milieu du combat.",
+          "Les étapes 16 à 20 font régénérer les ennemis encore en mouvement ; Verdant Ancient restaure une partie de sa santé et appelle du soutien. Les étapes 21 à 25 ajoutent des accélérations lorsque les ennemis sont blessés et se terminent par Tempest Ravager, qui hâte ses escortes. Les étapes 26 à 30 combinent toutes les règles précédentes avec des ralentissements moins efficaces. Voidroot Emperor change deux fois de phase : l’étape 30 demande donc itinéraires terrestres, couverture aérienne, bris d’armure, dégâts de finition, soins et concentration sur le Boss dans une seule défense."
+        ],
+        parent:
+          "Le navigateur conserve sur cet appareil l’étape débloquée la plus avancée, les étapes terminées, les meilleures étoiles, les niveaux de technologie permanente, les points d’amélioration, le solde de Diamants et les éléments cosmétiques possédés. Aucun compte n’est nécessaire pour jouer normalement ; effacer le stockage du navigateur de ce site peut supprimer cette progression. Les actions en Diamants sont facultatives et ne sont pas nécessaires pour débloquer les 30 étapes de la campagne.",
+        faq: [
+          ["Beast Guardian est-il gratuit ?", "Oui. La campagne complète de 30 étapes fonctionne dans le navigateur sans achat obligatoire ni connexion."],
+          ["Comment commencer une étape ?", "Choisissez une étape débloquée dans le rail à faire défiler, puis lancez la défense. Les vagues non finales terminées démarrent automatiquement après un compte à rebours de cinq secondes."],
+          ["Pourquoi les ennemis attaquent-ils parfois un défenseur ?", "Les ennemis terrestres attaquent un bloqueur proche lorsque tous les itinéraires légaux vers le noyau sont fermés. Vendez ou repositionnez une unité à la tentative suivante, ou concevez un itinéraire avec une voie ouverte."],
+          ["En quoi les six Boss sont-ils différents ?", "Shadow Brute attaque rapidement les bloqueurs, Forest Behemoth invoque des escortes, Ironbark Colossus reconstruit son armure, Verdant Ancient se soigne, Tempest Ravager accélère ses alliés et Voidroot Emperor change deux fois de phase."],
+          ["Que mesurent les étoiles ?", "Les étoiles reflètent la santé du noyau de cristal restante après la victoire. Une victoire de justesse débloque tout de même l’étape suivante ; rejouer avec un itinéraire plus solide peut améliorer la note enregistrée."],
+          ["Beast Guardian sauvegarde-t-il la progression ?", "Oui. Les déblocages, victoires, étoiles, points d’amélioration, technologies permanentes, Diamants et éléments cosmétiques sont sauvegardés localement dans ce navigateur."],
+          ["Que peuvent faire les Diamants ?", "Les Diamants peuvent, en option, confirmer une réanimation du noyau, relancer une récompense de résultat ou débloquer le cadre doré. Ils ne sont pas nécessaires à la progression normale de la campagne."]
+        ]
+      }
+    },
+    de: {
+      "beast-tactician": {
+        title: "Bestienwächter",
+        difficulty: "Schwer",
+        time: "8–15 Minuten pro Stufe",
+        gameplay: "Helden-Turmverteidigung",
+        genre: ["Tower Defense", "Strategie", "Tiere"],
+        skills: ["Logik", "Problemlösung", "Konzentration"],
+        guideKicker: "Originaler WeightPlay-Spielguide",
+        guideTitleSuffix: "Spielguide",
+        noteTitle: "Spieler- und Speicherinformationen",
+        intro:
+          "Beast Guardian ist eine 30-stufige Helden-Tower-Defense-Kampagne, bei der du Wege baust, statt feste Turmplätze zu nutzen. Platziere vier gewöhnliche Tier-Soldatenrollen und sieben WeightPlay-Helden auf einem Waldraster, halte mindestens einen Weg offen und beschütze den Kristallkern in sechs Regionen mit je fünf Stufen. Wölfe, gepanzerte Wildschweine, fliegende Fledermäuse, sich regenerierende Rudel, verwundete Sprinter und Eclipse-Formationen verlangen unterschiedliche Verteidigungen. Die Stufen 5, 10, 15, 20, 25 und 30 enden mit Bossen, die Regeln verändern, statt nur gewöhnliche Gegner mit größeren Lebensbalken zu bringen.",
+        story: [
+          "Die Kristallwege verbinden sechs Bereiche des Wächterwaldes: die ersten Wurzelpfade, die Kristall-Luftwege, die Eisenrinden-Werke, das nachwachsende Nebelgehölz, die Sturmwälle und den Eclipse-Weg zum Thron von Voidroot. Feindliche Rudel wollen auf der anderen Seite jedes Schlachtfelds den Kern erreichen. Eine geschaffte Stufe bedeutet, dass der Weg lange genug sicher ist, damit die Wächter in den nächsten Sektor vorrücken können.",
+          "Du leitest die Verteidigung vor und während jeder Welle. Eichelwachen und Moospanzer Taro halten Kurven, Späher-Bogenschützen und Mondkappe Orla decken lange Winkel ab, Runen-Sappeure verlangsamen geballte Angreifer, Medic Cubs reparieren verletzte Blocker und Helden wie Funkenpfote Fia verursachen konzentrierten Schaden. Das Spielfeld ist keine Dekoration: Jede platzierte Verteidigung verändert den Weg, außer wenn sie abseits des Pfads als Fernkampfunterstützung dient."
+        ],
+        systems: [
+          "Wegebau: Verteidiger belegen normale Bodenfelder. Gegner berechnen ihren Weg um sie herum neu, aber ein vollständig versiegelter Weg lässt Bodengegner den nächsten Blocker angreifen, bis wieder ein Weg offen ist. Fliegende Fledermäuse ignorieren das Bodenlabyrinth, daher löst ein langer Weg allein nicht jede Welle.",
+          "Kampfrollen: Blocker kaufen Zeit, Bogenschützen und Orla decken Entfernung ab, Sappeure verursachen Flächenschaden und verlangsamen, Medics heilen verletzte Verteidiger, Fia bündelt den Boss-Druck und Gear-Horn Rux stärkt nahe Verbündete. Wenn du eine platzierte Einheit auswählst, werden ihre Verbesserungskosten und die Verkaufsrückerstattung angezeigt.",
+          "Welleninformationen: Vor jeder Welle nennt das HUD die ankommenden Wölfe, Wildschweine, Fledermäuse, Begleiter oder Bosse. Nicht finale Wellen setzen sich nach einem fünfsekündigen Countdown fort. So kannst du die nächste Zusammensetzung lesen und verdiente Münzen einsetzen, bevor der Druck zurückkehrt.",
+          "Spezialgegner: Eisenrinden-Stufen geben Gegnern eine zerbrechliche Schutzrüstung; Nebelgehölz-Gegner regenerieren beim Bewegen Lebenspunkte; Sturmgegner werden schneller, sobald sie unter die Hälfte ihrer Lebenspunkte fallen; Eclipse-Stufen verbinden Rüstung, Regeneration, Beschleunigung, Flugwege und eine verringerte Wirksamkeit von Verlangsamungen.",
+          "Dauerhafter Fortschritt: Siege bringen Sterne, Verbesserungspunkte und Diamanten. Verbesserungspunkte erhöhen Heldenstärke, Verteidigergesundheit oder Startwirtschaft. Diamanten sind optional und können eine Kern-Wiederbelebung bestätigen, eine Ergebnisbelohnung neu würfeln oder einen goldenen kosmetischen Verteidigerrahmen freischalten; normale Stufenfreischaltungen benötigen sie nicht."
+        ],
+        how: [
+          "Wähle eine Stufe aus der wischbaren Stufenleiste und lies die Hinweise zu Bedrohung, Plan und Belohnung.",
+          "Gib Stufenmünzen aus, um Soldaten oder WeightPlay-Helden auf normalen Bodenfeldern zu platzieren. Prüfe vor der Bestätigung einer Position die sichtbare Reichweitenvorschau.",
+          "Halte mindestens einen Weg offen. Sonst greifen blockierte Gegner den nächsten Verteidiger an, bis der Weg wieder frei ist.",
+          "Lies die Welleninfo, starte die Welle und verbessere oder verkaufe platzierte Einheiten, wenn sich die Gegnerzusammensetzung ändert. Nicht finale abgeschlossene Wellen starten nach fünf Sekunden automatisch erneut.",
+          "Schütze den Kristall durch alle Wellen. Das Ergebnis vergibt je nach verbleibender Kern-Gesundheit ein bis drei Sterne und bietet Nächste Stufe, Wiederholen oder Zurück zu den Stufen.",
+          "Gib gespeicherte Verbesserungspunkte auf dem Stufenbildschirm aus, wenn permanente Stärke, Wallgesundheit oder Startwirtschaft verbessert werden sollen. Optionale Diamanten-Aktionen zeigen immer ihre Kosten und verlangen eine Bestätigung."
+        ],
+        strategyTips: [
+          "Nutze Eichelwachen, um zwei oder drei Feuerkurven zu bilden, bevor du in teure Helden investierst. Ein längerer Weg erhöht die nutzbare Angriffszeit jeder Fernkampfeinheit.",
+          "Schließe nicht jedes Feld. Ein versiegelter Weg macht aus dem Labyrinth einen direkten Kampf gegen den nächsten Blocker und kann den gewünschten Zeitvorteil beseitigen.",
+          "Halte während Fledermaus-Überquerung und späteren Flugstufen Fernkampfabdeckung nahe am Kristall, denn Fledermäuse umgehen Bodenblocker. Verlangsame Wildschweine in Sturmstufen, bevor ihre Rüstung bricht, damit ihr verletzter Geschwindigkeitsschub weniger gefährlich wird.",
+          "Konzentriere gegen regenerierende Gegner das Feuer in einer Abschusszone, statt den Schaden zu verteilen. Gegen Rüstung sollte anhaltender oder Flächenschaden zuerst die Deckung entfernen, bevor du den Heldenstoß einsetzt.",
+          "Bewahre Rollenabdeckung für Bossstufen. Der finale Voidroot-Kaiser wechselt bei zwei Gesundheitsschwellen die Phase, beschwört zuerst Fledermäuse und danach gepanzerte Bodenunterstützung, während er seine Deckung wieder aufbaut."
+        ],
+        progression: [
+          "Die Stufen 1–5 lehren Wegkurven, geteilte Spuren, frühe Fernkampfabdeckung, Wildschweindruck und die Folgen eines geschlossenen Wegs. Schattenbrut greift Blocker schneller an als gewöhnliche Bosse; das erste Finale prüft daher, ob dein Weg einen widerstandsfähigen Anker statt nur Schadenseinheiten besitzt.",
+          "Die Stufen 6–10 führen Fledermäuse ein, die über das Raster fliegen, sowie gemischte Luft-Boden-Wellen. Waldkoloss beschwört nach einem Teil seines Lebensverlusts Wolf- und Fledermausunterstützung. Die Stufen 11–15 ergänzen zerbrechliche Eisenrindenrüstung und enden mit Eisenrindenkoloss, der in der Mitte des Kampfes eine große Schutzschicht wiederaufbaut.",
+          "In den Stufen 16–20 regenerieren sich nicht besiegte Gegner während der Bewegung; der Grüne Uralte stellt einen Teil seiner Gesundheit wieder her und ruft Unterstützung. Die Stufen 21–25 fügen verletzte Geschwindigkeitsschübe hinzu und enden mit Sturmräuber, der seine Begleiter beschleunigt. Die Stufen 26–30 verbinden alle bisherigen Regeln mit weniger wirksamen Verlangsamungen. Der Voidroot-Kaiser hat zwei Phasenwechsel, daher braucht Stufe 30 in einer Verteidigung Bodenwege, Luftabdeckung, Rüstungsbruch, Abschlusschaden, Heilung und gespeicherten Boss-Fokus."
+        ],
+        parent:
+          "Der Browser speichert auf diesem Gerät die höchste freigeschaltete Stufe, abgeschlossene Stufen, beste Sternebewertungen, permanente Technologiestufen, Verbesserungspunkte, den Diamantenstand und den Besitz kosmetischer Elemente. Für das normale Spielen ist keine Anmeldung nötig; das Löschen des Browser-Speichers dieser Website kann den Fortschritt entfernen. Diamanten-Aktionen sind optional und nicht erforderlich, um die 30 Kampagnenstufen freizuschalten.",
+        faq: [
+          ["Ist Beast Guardian kostenlos spielbar?", "Ja. Die vollständige Kampagne mit 30 Stufen läuft im Browser ohne verpflichtenden Kauf oder Anmeldung."],
+          ["Wie starte ich eine Stufe?", "Wähle eine freigeschaltete Stufe aus der Wischleiste und beginne dann die Verteidigung. Abgeschlossene, nicht finale Wellen starten nach einem fünfsekündigen Countdown automatisch."],
+          ["Warum greifen Gegner manchmal einen Verteidiger an?", "Bodengegner greifen einen nahen Blocker an, wenn alle legalen Wege zum Kern versiegelt sind. Verkaufe oder verschiebe beim nächsten Versuch eine Einheit oder plane einen Weg mit einer offenen Spur."],
+          ["Worin unterscheiden sich die sechs Bosse?", "Schattenbrut greift Blocker schnell an, Waldkoloss beschwört Begleiter, Eisenrindenkoloss baut Rüstung wieder auf, der Grüne Uralte heilt sich, Sturmräuber beschleunigt Verbündete und der Voidroot-Kaiser wechselt zweimal die Phase."],
+          ["Was messen die Sterne?", "Die Sterne zeigen, wie viel Gesundheit der Kristallkern nach dem Sieg noch hat. Auch ein knapper Sieg schaltet die nächste Stufe frei; durch eine Wiederholung mit einem stärkeren Weg kann die gespeicherte Bewertung steigen."],
+          ["Speichert Beast Guardian den Fortschritt?", "Ja. Freischaltungen, Siege, Sterne, Verbesserungspunkte, permanente Technologie, Diamanten und kosmetischer Besitz werden lokal in diesem Browser gespeichert."],
+          ["Was können Diamanten bewirken?", "Diamanten können optional eine Kern-Wiederbelebung bestätigen, eine Ergebnisbelohnung neu würfeln oder den goldenen Rahmen freischalten. Für den normalen Kampagnenfortschritt sind sie nicht nötig."]
+        ]
+      }
+    }
+  };
+  for (const [localeCode, gamesCopy] of Object.entries(beastGuardianFullGuideLocaleCopy)) {
+    localizedGames[localeCode] ||= {};
+    for (const [gameId, copy] of Object.entries(gamesCopy)) {
+      localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
+    }
+  }
   localizedRelatedCardCopy = {
     "zh-Hant": {
       "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },
