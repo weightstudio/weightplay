@@ -25,9 +25,9 @@
   <meta name="weightplay-game-version" content="v1">
   <meta name="weightplay-interface-version" content="6">
   <title>Hollow Fit | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-hollow-fit-v1">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-hollow-fit-art-v2" data-wp-game-guide>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260903-hollow-fit-v1">
-  <link rel="stylesheet" href="style.css?v=20260903-hollow-fit-v1">
+  <link rel="stylesheet" href="style.css?v=20260904-hollow-fit-art-v2">
 </head>
 <body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v1">
   <div class="app-shell">
@@ -38,7 +38,7 @@
         <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button>
       </header>
       <div class="main-content">
-        <img class="main-poster" src="assets/animal-hollow-fit-cover.svg" alt="A moonlit burrow opening with three shelter pieces" width="720" height="720" fetchpriority="high">
+        <img class="main-poster" src="assets/animal-hollow-fit-cover.png" alt="Moonlit woodland burrow with a friendly hedgehog and rabbit" width="1254" height="1254" fetchpriority="high" draggable="false">
         <p class="eyebrow" data-copy="kicker">SHELTER SHAPE LOGIC</p>
         <h1 data-copy="title">Hollow Fit</h1>
         <p class="lede main-summary" data-copy="intro">Read the burrow opening, then choose the one shelter piece that fits its shape.</p>
@@ -47,7 +47,7 @@
       </div>
     </main>
 
-    <section class="game-page-info guide-card" data-view="main" data-wp-game-guide aria-label="Hollow Fit game guide">
+    <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide aria-label="Hollow Fit game guide">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay Original Game Guide</span><h2 data-copy="guideTitle">Read the opening, fit the shelter</h2><p data-copy="guideIntro">Every short set has one shape match and no timer.</p></div></div>
       <div class="game-info-sections">
         <article class="game-info-section"><h3 data-copy="guide1Title">1. Read the opening</h3><p data-copy="guide1">Study the filled cells in the burrow opening.</p></article>
@@ -76,12 +76,12 @@
 
     <section id="resultScreen" class="screen result-screen" data-view="result" data-screen="result" hidden>
       <header class="topbar wp-main-shell-header"><button id="result-home" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-copy="title">Hollow Fit</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
-      <div class="result-content"><p class="eyebrow" data-copy="resultKicker">HOLLOW COMPLETE</p><h1 data-copy="resultTitle">The shelter fits.</h1><p id="result-text" class="lede">All three openings are ready.</p><div class="result-card"><div><span data-copy="checks">Checks</span><strong id="result-checks">0</strong></div><div><span data-copy="best">Best</span><strong id="result-best">—</strong></div></div><p id="result-status" class="status" role="status"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Fit again</button><button id="result-menu" class="secondary-button" type="button" data-copy="home">Back to menu</button></div></div>
+      <div class="result-content"><img class="result-guide" src="assets/animal-hollow-fit-guide.png" alt="" aria-hidden="true" draggable="false"><p class="eyebrow" data-copy="resultKicker">HOLLOW COMPLETE</p><h1 data-copy="resultTitle">The shelter fits.</h1><p id="result-text" class="lede">All three openings are ready.</p><div class="result-card"><div><span data-copy="checks">Checks</span><strong id="result-checks">0</strong></div><div><span data-copy="best">Best</span><strong id="result-best">—</strong></div></div><p id="result-status" class="status" role="status"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Fit again</button><button id="result-menu" class="secondary-button" type="button" data-copy="home">Back to menu</button></div></div>
     </section>
   </div>
 
   <dialog id="settings-dialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" value="close" aria-label="Close">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></dialog>
-  <script src="locales.js?v=20260903-hollow-fit-v1"></script>
-  <script src="game.js?v=20260903-hollow-fit-v1"></script>
+  <script src="locales.js?v=20260904-hollow-fit-art-v1"></script>
+  <script src="game.js?v=20260904-hollow-fit-art-v1"></script>
 </body>
 </html>

@@ -1,0 +1,121 @@
+.battle-screen {
+  background: linear-gradient(180deg, #071525d9 0%, #071525b8 46%, #071525ed 100%),
+    url("assets/animal-petal-pilot-background.png") center / cover no-repeat;
+}
+
+.ring-orbit {
+  border: 1px solid #e99abb;
+  background-color: #122e40;
+  background-image: url("assets/animal-petal-pilot-petals.png");
+  background-repeat: no-repeat;
+  background-size: 300% 100%;
+  background-position: 0 0;
+  box-shadow: inset 0 0 18px #0008, 0 0 14px #8fffd044;
+}
+
+.ring-orbit.ring-atlas-1 { background-position: 50% 0; }
+.ring-orbit.ring-atlas-2 { background-position: 100% 0; }
+.ring-orbit::before,
+.ring-orbit::after,
+.ring-orbit .petal,
+.ring-orbit .seed-core { display: none; }
+
+.guide-art {
+  display: block;
+  width: min(100%, 170px);
+  height: auto;
+  max-height: 240px;
+  object-fit: contain;
+  margin: 0 auto 8px;
+  filter: drop-shadow(0 12px 22px #0008);
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .battle-content {
+    height: 100%;
+    min-height: 0;
+    gap: 4px;
+    grid-template-rows: 28px 64px 18px 64px 18px 44px;
+  }
+
+  .battle-heading h1 {
+    font-size: 24px;
+  }
+
+  .battle-heading .eyebrow {
+    font-size: 10px;
+  }
+
+  .round-badge {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .target-card {
+    height: 64px;
+    grid-template-columns: minmax(0, 1fr) 60px;
+    padding: 4px 8px;
+  }
+
+  .target-card h2,
+  .choice-heading h2 {
+    font-size: 14px;
+  }
+
+  .target-card p {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .target-card .bloom {
+    max-width: 56px;
+  }
+
+  .choice-heading {
+    min-height: 18px;
+    margin: 0;
+  }
+
+  .selection-note {
+    min-height: 18px;
+    font-size: 11px;
+  }
+
+  .ring-options {
+    height: 64px;
+    gap: 6px;
+  }
+
+  .ring-card {
+    height: 64px;
+    min-height: 64px;
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .ring-orbit {
+    width: 44px;
+  }
+
+  .ring-card strong {
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .status {
+    height: 18px;
+    min-height: 18px;
+    margin: 0;
+    font-size: 11px;
+  }
+
+  .battle-actions,
+  .battle-actions button {
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .battle-actions button {
+    padding: 6px 10px;
+  }
+}

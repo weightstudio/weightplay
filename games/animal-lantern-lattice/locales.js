@@ -62,32 +62,32 @@
     turtle: ["Turtle", "烏龜", "乌龟", "カメ", "거북이", "Tortuga", "Tartaruga", "Tortue", "Schildkröte", "Tartaruga", "Черепаха", "कछुआ", "سلحفاة"],
     panda: ["Panda", "熊貓", "熊猫", "パンダ", "판다", "Panda", "Panda", "Panda", "Panda", "Panda", "Панда", "पांडा", "باندا"],
   };
-  const localize = (english, traditional, simplified = traditional) => [english, traditional, simplified, english, english, english, english, english, english, english, english, english, english];
+  const localize = (english, traditional, simplified = traditional, arabic = english) => [english, traditional, simplified, english, english, english, english, english, english, english, english, english, arabic];
   const stageTitles = [
-    ["Mosslight Bend", "苔光彎道"], ["Reed Window", "蘆葦窗"], ["Moonfern Turn", "月蕨轉角"], ["Owl's Quiet Bridge", "貓頭鷹靜橋"], ["Keeper's First Watch", "守燈人的初巡"],
+    ["Mosslight Bend", "苔光彎道", "苔光弯道", "منعطف ضوء الطحلب"], ["Reed Window", "蘆葦窗"], ["Moonfern Turn", "月蕨轉角"], ["Owl's Quiet Bridge", "貓頭鷹靜橋"], ["Keeper's First Watch", "守燈人的初巡"],
     ["Foxglove Fork", "狐花分岔"], ["Pondside Decoy", "池畔誘餌"], ["Turtle's Lantern", "烏龜燈影"], ["Moth at Reed Gate", "蘆葦門的飛蛾"], ["Decoy at Moonrise", "月升時的誘餌"],
     ["Echo in the Hollow", "空谷回聲"], ["Turtle Echo", "烏龜回聲"], ["Otter Echo", "水獺回聲"], ["Panda Echo", "熊貓回聲"], ["The Keeper's Echo", "守燈人的回聲"],
     ["Wind over Foxglove", "狐花上的風"], ["Turtlewind Lane", "龜風小徑"], ["Reedwind Crossing", "蘆風交會"], ["Moonwind Shelf", "月風台地"], ["The Turning Watch", "轉風守望"],
     ["Twin Glow Bend", "雙光彎道"], ["Otter's Double Light", "水獺雙光"], ["Turtle and Moth", "烏龜與飛蛾"], ["Fox's Double Trail", "狐狸雙徑"], ["The Joined Crossing", "相連交會"],
     ["Backward Moonrise", "倒行月升"], ["Five-Light Reversal", "五光逆行"], ["Rabbit's Last Echo", "兔子的終末回聲"], ["Panda Windback", "熊貓回風"], ["Orla's Lattice Finale", "歐拉的連線終章"],
   ];
-  Object.assign(rows, Object.fromEntries(stageTitles.map(([english, traditional], index) => [`stage${index + 1}Title`, localize(english, traditional)])));
+  Object.assign(rows, Object.fromEntries(stageTitles.map(([english, traditional, simplified, arabic], index) => [`stage${index + 1}Title`, localize(english, traditional, simplified, arabic)])));
   Object.assign(rows, {
-    stageRound: localize("Stage {n} of {total}", "第 {n} 關／共 {total} 關", "第 {n} 关／共 {total} 关"),
-    campaignBattleHint: localize("Use the clues to connect {count} lanterns in order.", "依照線索按順序連起 {count} 盞燈。", "按照线索按顺序连起 {count} 盏灯。"),
-    campaignNeedMore: localize("Choose {count} lanterns before checking.", "選 {count} 盞燈後再檢查。", "选 {count} 盏灯后再检查。"),
-    campaignGuideOne: localize("Each of the six arcs adds a new way to read the keeper's lantern clues, from clear links to a final wind-turn.", "六個篇章各自加入新的讀線索方式，從清楚連結一路到最後的風轉規則。", "六个篇章各自加入新的读线索方式，从清楚连接一路到最后的风转规则。"),
-    campaignGuideTwo: localize("Tap lanterns in clue order to build a three-to-six-light chain; echo stages allow one lantern to appear twice.", "依線索順序點亮三到六盞燈；回聲關卡允許同一盞燈出現兩次。", "按线索顺序点亮三到六盏灯；回声关卡允许同一盏灯出现两次。"),
-    campaignGuideThree: localize("A mismatch names the first link to revisit. Avoid the moth decoy and read Wind-turn stages backward. There is no timer or lives.", "不吻合時會指出第一個要回看的連結；避開飛蛾誘餌，風轉關卡要倒著讀。沒有計時或生命。", "不匹配时会指出第一个要回看的连接；避开飞蛾诱饵，风转关卡要倒着读。没有计时或生命。"),
-    straightRule: localize("Keeper order: follow each clue from nest to gate.", "守燈順序：依線索從巢穴走到門口。", "守灯顺序：按线索从巢穴走到门口。"),
+    stageRound: localize("Stage {n} of {total}", "第 {n} 關／共 {total} 關", "第 {n} 关／共 {total} 关", "المرحلة {n} من أصل {total}"),
+    campaignBattleHint: localize("Use the clues to connect {count} lanterns in order.", "依照線索按順序連起 {count} 盞燈。", "按照线索按顺序连起 {count} 盏灯。", "استخدم الأدلة لربط {count} من الفوانيس بالترتيب."),
+    campaignNeedMore: localize("Choose {count} lanterns before checking.", "選 {count} 盞燈後再檢查。", "选 {count} 盏灯后再检查。", "اختر {count} من الفوانيس قبل التحقق."),
+    campaignGuideOne: localize("Each of the six arcs adds a new way to read the keeper's lantern clues, from clear links to a final wind-turn.", "六個篇章各自加入新的讀線索方式，從清楚連結一路到最後的風轉規則。", "六个篇章各自加入新的读线索方式，从清楚连接一路到最后的风转规则。", "يضيف كل فصل من الفصول الستة طريقة جديدة لقراءة أدلة حارس الفوانيس، من الروابط الواضحة إلى انعطاف الريح الأخير."),
+    campaignGuideTwo: localize("Tap lanterns in clue order to build a three-to-six-light chain; echo stages allow one lantern to appear twice.", "依線索順序點亮三到六盞燈；回聲關卡允許同一盞燈出現兩次。", "按线索顺序点亮三到六盏灯；回声关卡允许同一盏灯出现两次。", "اضغط الفوانيس بترتيب الأدلة لبناء سلسلة من ثلاثة إلى ستة أضواء؛ وتسمح مراحل الصدى بظهور فانوس واحد مرتين."),
+    campaignGuideThree: localize("A mismatch names the first link to revisit. Avoid the moth decoy and read Wind-turn stages backward. There is no timer or lives.", "不吻合時會指出第一個要回看的連結；避開飛蛾誘餌，風轉關卡要倒著讀。沒有計時或生命。", "不匹配时会指出第一个要回看的连接；避开飞蛾诱饵，风转关卡要倒着读。没有计时或生命。", "عند عدم التطابق سيُذكر أول رابط يجب مراجعته. تجنب طُعم العثة واقرأ مراحل انعطاف الريح بالعكس. لا يوجد مؤقت أو أرواح."),
+    straightRule: localize("Keeper order: follow each clue from nest to gate.", "守燈順序：依線索從巢穴走到門口。", "守灯顺序：按线索从巢穴走到门口。", "ترتيب الحارس: اتبع كل دليل من العش إلى البوابة."),
     reverseRule: localize("Wind-turn: read the route from the last lantern back to the first.", "風轉：從最後一盞燈倒著讀回第一盞。", "风转：从最后一盏灯倒着读回第一盏。"),
     decoyRule: localize("Moth decoy: leave {decoy} dark while you follow the safe clues.", "飛蛾誘餌：依安全線索前進，讓 {decoy} 保持熄滅。", "飞蛾诱饵：按安全线索前进，让 {decoy} 保持熄灭。"),
     echoRule: localize("Echo glow: {echo} appears twice in this chain; listen for both places.", "回聲亮光：{echo} 在這條連線中出現兩次，要找出兩個位置。", "回声亮光：{echo} 在这条连线中出现两次，要找出两个位置。"),
     decoyEchoRule: localize("Two signals: place the {echo} echo twice and leave the {decoy} moth decoy dark.", "雙重訊號：讓 {echo} 回聲出現兩次，並讓 {decoy} 飛蛾誘餌熄滅。", "双重信号：让 {echo} 回声出现两次，并让 {decoy} 飞蛾诱饵熄灭。"),
     masteryRule: localize("Mastery turn: read backward, echo {echo} twice, and leave {decoy} dark.", "精通風轉：倒著讀，讓 {echo} 回聲出現兩次，並讓 {decoy} 熄滅。", "精通风转：倒着读，让 {echo} 回声出现两次，并让 {decoy} 熄灭。"),
-    clueStart: localize("Start with {name}.", "從 {name} 開始。", "从 {name} 开始。"),
+    clueStart: localize("Start with {name}.", "從 {name} 開始。", "从 {name} 开始。", "ابدأ بـ {name}."),
     reverseClueStart: localize("The wind-turn starts at {name}; work back from there.", "風轉要從 {name} 開始，再往回走。", "风转要从 {name} 开始，再往回走。"),
-    clueFollow: localize("Then follow {name} after {previous}.", "接著讓 {name} 跟在 {previous} 之後。", "接着让 {name} 跟在 {previous} 之后。"),
+    clueFollow: localize("Then follow {name} after {previous}.", "接著讓 {name} 跟在 {previous} 之後。", "接着让 {name} 跟在 {previous} 之后。", "ثم اتبع {name} بعد {previous}."),
     decoyWrong: localize("The moth decoy {name} was lit. Reset and leave it dark.", "你點亮了飛蛾誘餌 {name}。請重設並讓它熄滅。", "你点亮了飞蛾诱饵 {name}。请重设并让它熄灭。"),
     stageClear: localize("Stage {stage} is clear. Stage {next} is now lit.", "第 {stage} 關完成了。第 {next} 關已點亮。", "第 {stage} 关完成了。第 {next} 关已点亮。"),
     checkpointClear: localize("Checkpoint {stage} is clear. {reward} marks the end of this arc; Stage {next} is lit.", "檢查點第 {stage} 關完成！{reward} 標記了本篇章的終點；第 {next} 關已點亮。", "检查点第 {stage} 关完成！{reward} 标记了本篇章的终点；第 {next} 关已点亮。"),

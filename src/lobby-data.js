@@ -2691,7 +2691,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-hollow-fit/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-hollow-fit/assets/animal-hollow-fit-cover.svg", hideHero: true }
+    art: { kind: "image", background: "games/animal-hollow-fit/assets/animal-hollow-fit-cover.png", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -2719,7 +2719,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-petal-pilot/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-petal-pilot/assets/animal-petal-pilot-cover.svg", hideHero: true }
+    art: { kind: "image", background: "games/animal-petal-pilot/assets/animal-petal-pilot-cover.png", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -2727,7 +2727,7 @@ for (const game of window.WONDER_LOBBY.games) {
 })();
 
 // Weighted General prototype (2026-09-03). Keep Cozy Camp internal while its
-// concept art, exact Tester, Reviewer, release, and publication gates remain open.
+// exact Tester, Reviewer, release, and publication gates remain open.
 (() => {
   const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
@@ -2747,7 +2747,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-cozy-camp/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-cozy-camp/assets/animal-cozy-camp-cover.svg", hideHero: true }
+    art: { kind: "image", background: "games/animal-cozy-camp/assets/animal-cozy-camp-cover.png", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);

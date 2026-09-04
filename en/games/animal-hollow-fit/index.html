@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-hollow-fit/" />
-
     <link rel="canonical" href="https://weightplay.com/en/games/animal-hollow-fit/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hollow-fit/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hollow-fit/" />
@@ -27,27 +26,27 @@
   <meta name="weightplay-game-version" content="v1">
   <meta name="weightplay-interface-version" content="6">
   <title>Hollow Fit | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260903-hollow-fit-v1">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-hollow-fit-art-v2" data-wp-game-guide>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260903-hollow-fit-v1">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260904-hollow-fit-art-v2">
   <meta name="description" content="Read the burrow opening and choose the one shelter piece that fits its shape." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Hollow Fit | WeightPlay" />
     <meta property="og:description" content="Read the burrow opening and choose the one shelter piece that fits its shape." />
     <meta property="og:url" content="https://weightplay.com/en/games/animal-hollow-fit/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.svg" />
+    <meta property="og:image" content="https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Hollow Fit | WeightPlay" />
     <meta name="twitter:description" content="Read the burrow opening and choose the one shelter piece that fits its shape." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.svg" />
+    <meta name="twitter:image" content="https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.png" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Hollow Fit",
   "url": "https://weightplay.com/en/games/animal-hollow-fit/",
-  "image": "https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.svg",
+  "image": "https://weightplay.com/games/animal-hollow-fit/assets/animal-hollow-fit-cover.png",
   "description": "Read the burrow opening and choose the one shelter piece that fits its shape.",
   "publisher": {
     "@type": "Organization",
@@ -62,8 +61,7 @@
     "Spatial Reasoning",
     "Observation",
     "Family",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -82,7 +80,7 @@
         <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button>
       </header>
       <div class="main-content">
-        <img class="main-poster" src="assets/animal-hollow-fit-cover.svg" alt="Hollow Fit game artwork" width="720" height="720" fetchpriority="high">
+        <img class="main-poster" src="assets/animal-hollow-fit-cover.png" alt="Hollow Fit game artwork" width="1254" height="1254" fetchpriority="high" draggable="false">
         <p class="eyebrow" data-copy="kicker">SHELTER SHAPE LOGIC</p>
         <h1 data-copy="title">Hollow Fit</h1>
         <p class="lede main-summary" data-copy="intro">Read the burrow opening, then choose the one shelter piece that fits its shape.</p>
@@ -91,24 +89,15 @@
       </div>
     </main>
 
-    <section class="game-page-info game-page-info-static" aria-label="Hollow Fit game information">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Hollow Fit</h2><p>Read the burrow opening and choose the one shelter piece that fits its shape.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Shelter Shape Logic</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Spatial Reasoning · Observation · Family · Animal</strong></div></div>
-    </div>
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="gameGuide" class="game-page-info guide-card" data-view="main" data-wp-game-guide aria-label="Hollow Fit game guide">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay Original Game Guide</span><h2 data-copy="guideTitle">Read the opening, fit the shelter</h2><p data-copy="guideIntro">Every short set has one shape match and no timer.</p></div></div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guide1Title">1. Read the opening</h3><p data-copy="guide1">Study the filled cells in the burrow opening.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide2Title">2. Compare pieces</h3><p data-copy="guide2">Choose the shelter piece with the same outline and orientation.</p></article>
+        <article class="game-info-section"><h3 data-copy="guide3Title">3. Check gently</h3><p data-copy="guide3">A miss stays safe to try again; three fits complete the set.</p></article>
+      </div>
+      <div class="game-info-sections guide-faq"><article class="game-info-section"><h3 data-copy="faqTitle">FAQ</h3><p data-copy="faqText">Solved sets and best checks stay only in this browser.</p></article></div>
+    </section>
 
     <main id="battleScreen" class="screen battle-screen" data-view="battle" data-screen="battle" data-wp-logical-battle-canvas hidden>
       <header class="topbar wp-stage-shell-header">
@@ -129,13 +118,13 @@
 
     <section id="resultScreen" class="screen result-screen" data-view="result" data-screen="result" hidden>
       <header class="topbar wp-main-shell-header"><button id="result-home" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-copy="title">Hollow Fit</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
-      <div class="result-content"><p class="eyebrow" data-copy="resultKicker">HOLLOW COMPLETE</p><h1 data-copy="resultTitle">The shelter fits.</h1><p id="result-text" class="lede">All three openings are ready.</p><div class="result-card"><div><span data-copy="checks">Checks</span><strong id="result-checks">0</strong></div><div><span data-copy="best">Best</span><strong id="result-best">—</strong></div></div><p id="result-status" class="status" role="status"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Fit again</button><button id="result-menu" class="secondary-button" type="button" data-copy="home">Back to menu</button></div></div>
+      <div class="result-content"><img class="result-guide" src="assets/animal-hollow-fit-guide.png" alt="" aria-hidden="true" draggable="false"><p class="eyebrow" data-copy="resultKicker">HOLLOW COMPLETE</p><h1 data-copy="resultTitle">The shelter fits.</h1><p id="result-text" class="lede">All three openings are ready.</p><div class="result-card"><div><span data-copy="checks">Checks</span><strong id="result-checks">0</strong></div><div><span data-copy="best">Best</span><strong id="result-best">—</strong></div></div><p id="result-status" class="status" role="status"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Fit again</button><button id="result-menu" class="secondary-button" type="button" data-copy="home">Back to menu</button></div></div>
     </section>
   </div>
 
   <dialog id="settings-dialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-copy="settings">Settings</h2><button id="close-settings" class="close-button" value="close" aria-label="Close">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></dialog>
-  <script src="locales.js?v=20260903-hollow-fit-v1"></script>
-  <script src="game.js?v=20260903-hollow-fit-v1"></script>
+  <script src="locales.js?v=20260904-hollow-fit-art-v1"></script>
+  <script src="game.js?v=20260904-hollow-fit-art-v1"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>

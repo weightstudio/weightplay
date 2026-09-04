@@ -43,6 +43,8 @@
     $("mainScreen").hidden = view !== "main";
     $("battleScreen").hidden = view !== "battle";
     $("resultScreen").hidden = view !== "result";
+    const guide = document.querySelector("[data-wp-game-guide]");
+    if (guide) guide.hidden = view !== "main";
     document.body.classList.toggle("wp-shell-battle-active", view === "battle");
     document.body.classList.toggle("wp-shell-result-active", view === "result");
     window.scrollTo(0, 0);
@@ -119,7 +121,9 @@
       button.className = `ring-card${state.selected === index ? " is-selected" : ""}`;
       button.setAttribute("role", "listitem");
       button.setAttribute("aria-pressed", String(state.selected === index));
-      button.append(makeBloom(angles, t("ringAlt", { name: t("rings")[index], angles: angles.join("°, ") + "°" }), true));
+      const bloom = makeBloom(angles, t("ringAlt", { name: t("rings")[index], angles: angles.join("°, ") + "°" }), true);
+      bloom.classList.add(`ring-atlas-${index}`);
+      button.append(bloom);
       const label = document.createElement("strong");
       label.textContent = t("rings")[index];
       button.append(label);
@@ -174,9 +178,16 @@
   const closeSettings = () => { const dialog = $("settings-dialog"); if (typeof dialog.close === "function") dialog.close(); else dialog.removeAttribute("open"); };
   const goHome = () => { closeSettings(); state.selected = null; show("main"); applyLocale(); };
   state.locale = (() => {
-    try { const saved = localStorage.getItem("weightplay-animal-petal-pilot-locale"); if (saved && locales[saved]) return saved; } catch (_) {}
     const query = new URLSearchParams(location.search).get("lang");
-    return locales[query] ? query : "en";
+    try { const saved = localStorage.getItem("weightplay-animal-petal-pilot-locale"); if (saved && locales[saved]) return saved; } catch (_) {}
+    const routeLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__;
+    if (locales[query]) return query;
+    if (locales[routeLocale]) return routeLocale;
+    try {
+      const shared = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale") || localStorage.getItem("wp-locale");
+      if (locales[shared]) return shared;
+    } catch (_) {}
+    return "en";
   })();
   document.addEventListener("DOMContentLoaded", () => {
     populateLocales();
