@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="hi">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>एनिमल हनी शील्ड | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "एनिमल हनी शील्ड",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/hi/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "मधुमक्खी लहरों के दौरान नेक्टर रेखाएँ बनाएँ और सुधारें, फिर 30 चरणों में पिप को बचाएँ।",
@@ -64,15 +63,13 @@
     "पशु खेल",
     "Puzzle",
     "रक्षा",
-    "परिवार",
-    "Browser Game"
+    "परिवार"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="एनिमल हनी शील्ड game artwork" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="मधुमक्खियों के पास आने पर चमकती रेखा से सुरक्षित पिप" alt="एनिमल हनी शील्ड game artwork" />
         <div class="main-copy">
           <small data-i18n="eyebrow">क्लोवरलाइट मैदान बचाव पहेलियाँ</small>
           <h1 data-i18n="title">एनिमल हनी शील्ड</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">क्या मधुमक्खियों को चोट लगती है?</dt><dd data-i18n="faq2a">नहीं। नेक्टर दीवार उन्हें धीरे से फूलों की ओर लौटा देती है।</dd></div>
           <div><dt data-i18n="faq3q">इसके बाद क्या खेलूँ?</dt><dd data-i18n="faq3a">सटीक रेखा के लिए One Line या बड़ी रक्षा के लिए Animal Guard Yard खेलें।</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">संबंधित खेल</h3><p data-i18n="relatedIntro">अगर आपको दबाव में रक्षा रेखा बनाना पसंद है, तो ये खेल आज़माएँ:</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/hi/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">पशु प्रिज़्म बटालियन</strong><span data-i18n="relatedPrismDescription">तीन लेन के बीच एक स्वचालित प्रिज़्म बैटरी बदलें और बदलती संरचनाओं से क्रिस्टल कोर की रक्षा करें।</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/hi/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">खुले जंगल का रास्ता बनाएँ, रक्षकों को तैनात करें और छह बॉस नियमों के बीच क्रिस्टल कोर को सुरक्षित रखें।</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="मैदान चरण चयन"></div>
-      <nav class="stage-tabs" aria-label="चरण" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">चरण</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="चरण" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">चरण</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

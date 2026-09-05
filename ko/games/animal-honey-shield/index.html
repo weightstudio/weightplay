@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="ko">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>애니멀 허니 실드 | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/ko/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "애니멀 허니 실드",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/ko/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "실시간 벌 떼를 보며 꿀빛 선을 그리고 고쳐 30개 초원 스테이지에서 강아지 핍을 지키세요.",
@@ -64,15 +63,13 @@
     "동물 게임",
     "Puzzle",
     "방어",
-    "가족",
-    "Browser Game"
+    "가족"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="애니멀 허니 실드 게임 이미지" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="벌이 다가올 때 빛나는 선 뒤에 숨은 핍" alt="애니멀 허니 실드 게임 이미지" />
         <div class="main-copy">
           <small data-i18n="eyebrow">클로버라이트 초원 구조 퍼즐</small>
           <h1 data-i18n="title">애니멀 허니 실드</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">벌이 다치나요?</dt><dd data-i18n="faq2a">아니요. 꽃꿀 방어선은 놀란 벌을 꽃 쪽으로 부드럽게 튕겨 냅니다.</dd></div>
           <div><dt data-i18n="faq3q">다음에는 무엇을 플레이하나요?</dt><dd data-i18n="faq3a">정교한 선 긋기는 애니멀 원 라인, 더 큰 방어는 애니멀 가드 야드를 추천합니다.</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">관련 게임</h3><p data-i18n="relatedIntro">압박 속에서 방어선을 그리는 플레이가 좋다면 다음 게임을 만나 보세요:</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ko/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">동물 프리즘 대대</strong><span data-i18n="relatedPrismDescription">세 레인 사이에서 자동 프리즘 포대를 전환하며 변화하는 적 대형으로부터 크리스털 코어를 지키세요.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ko/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">숲의 길을 열고 방어자를 배치해 여섯 가지 보스 규칙 속에서 크리스털 코어를 지키세요.</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="초원 스테이지 선택"></div>
-      <nav class="stage-tabs" aria-label="스테이지" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">스테이지</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="스테이지" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">스테이지</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

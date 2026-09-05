@@ -4075,8 +4075,9 @@ window.WONDER_LOBBY.games.push(
   {
     id: "road-crosser",
     title: { en: "Road Crosser", "zh-Hant": "星軌過路", "zh-Hans": "星轨过路", ja: "スター・クロッサー", ko: "스타 크로서", es: "Cruce Estelar", "pt-BR": "Travessia Estelar", fr: "Passage Stellaire", de: "Sternenquerung", it: "Attraversamento Stellare", ru: "Звёздный переход", hi: "सितारा पारपथ", ar: "عبور النجمة" },
-    status: "playable",
-    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
+    status: "planned",
+    statusText: { ...ownerPreviewStatusText },
+    internalTrial: "index.html?trial=1",
     type: { en: "Timing Crossing Arcade", "zh-Hant": "時機穿越街機", "zh-Hans": "时机穿越街机", ja: "タイミング横断アーケード", ko: "타이밍 횡단 아케이드", es: "Arcade de cruces y tiempo", "pt-BR": "Arcade de travessia e ritmo", fr: "Arcade de traversée rythmée", de: "Timing-Querungs-Arcade", it: "Arcade di attraversamento", ru: "Аркада перехода по времени", hi: "समय-आधारित पारपथ आर्केड", ar: "أركيد عبور بالتوقيت" },
     categories: ["Classic", "Arcade", "Action"], skills: ["Timing", "Focus", "Adaptation"], ages: ["general"], ageLabel: { en: "General", "zh-Hant": "一般玩家", "zh-Hans": "一般玩家", ja: "一般", ko: "일반", es: "General", "pt-BR": "Geral", fr: "Tout public", de: "Allgemein", it: "Generale", ru: "Для всех", hi: "सामान्य", ar: "عام" },
     href: "games/road-crosser/", previewVideo: "assets/previews/road-crosser-battle.webm",

@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="de">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>Tierischer Honigschild | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/de/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Tierischer Honigschild",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/de/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "Zeichne und repariere Nektarlinien während der Bienenwellen und beschütze Pip in 30 originalen Stufen.",
@@ -64,15 +63,13 @@
     "Tierspiele",
     "Puzzle",
     "Verteidigung",
-    "Familie",
-    "Browser Game"
+    "Familie"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="Spielgrafik zu Tierischer Honigschild" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" alt="Spielgrafik zu Tierischer Honigschild" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Rettungsrätsel auf der Kleelicht-Wiese</small>
           <h1 data-i18n="title">Tierischer Honigschild</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">Werden die Bienen verletzt?</dt><dd data-i18n="faq2a">Nein. Die Barrieren lenken sie sanft zurück zu den Blumen.</dd></div>
           <div><dt data-i18n="faq3q">Was kann ich danach spielen?</dt><dd data-i18n="faq3a">Probiere One Line für genaues Zeichnen oder Animal Guard Yard für größere Verteidigung.</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">Ähnliche Spiele</h3><p data-i18n="relatedIntro">Wenn du gern unter Druck eine Verteidigung zeichnest, probiere diese Spiele:</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/de/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Tierisches Prismabataillon</strong><span data-i18n="relatedPrismDescription">Schalte eine automatische Prismenbatterie zwischen drei Bahnen um und schütze einen Kristallkern vor wechselnden Formationen.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/de/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Öffne einen Waldweg, positioniere Verteidiger und halte einen Kristallkern unter sechs Bossregeln sicher.</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Wiesenstufen wählen"></div>
-      <nav class="stage-tabs" aria-label="Stufen" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Stufen</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="Stufen" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">Stufen</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

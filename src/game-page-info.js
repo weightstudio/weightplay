@@ -177,8 +177,8 @@
       progression: ["Stages 1-5 teach clear rays and removal order.", "Stages 6-15 add interlocking rows and fixed walls.", "Stages 16-25 introduce rotation, matching locks, keys, and ice.", "Stages 26-30 combine portals and one-way gates with the earlier rules."],
       designNote: "Distinct legal arrows respond immediately, so quick players can tap consecutive safe moves without waiting for an earlier flight animation. The board state still resolves deterministically, and duplicate taps on an already removed arrow are ignored.",
       parent: "Arrow Escape is a general-audience browser puzzle recommended for ages 9+ and family play. No account is required. Stage unlocks, language, and sound preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["How many stages are included?", "There are 30 handcrafted stages across six rule chapters, and Stage 30 remains replayable."], ["Does a blocked tap use a move?", "No. It identifies the first blocker and leaves the board unchanged."], ["Does Hint solve the puzzle automatically?", "No. Hint marks and focuses one safe next arrow, but you still choose whether to play it."], ["Can several arrows move at once?", "Yes. Distinct legal arrows can begin their escape animations immediately without a global input cooldown."], ["How do portals work?", "An arrow enters one portal and continues in the same direction immediately beyond the paired exit."], ["Is progress saved?", "Stage unlocks and preferences are stored locally in this browser."]],
     },
     "hexa-sort": {
@@ -14290,8 +14290,8 @@
       progression: ["第 1–5 关教导直线路径与移除顺序。", "第 6–15 关加入互相卡住的排列与固定墙壁。", "第 16–25 关加入旋转、配对锁、钥匙与冰块。", "第 26–30 关把传送门、单向闸门与先前规则结合。"],
       designNote: "不同且合法的箭头会立即响应，因此熟练玩家可以连续快速点击，不必等待前一段飞出动画结束。棋盘状态仍维持固定顺序，同一个已移除箭头的重复输入会被安全忽略。",
       parent: "《箭头大逃亡》是建议 9 岁以上与家庭玩家游玩的浏览器益智游戏，不需要账号。关卡解锁、语言与音效偏好只储存在当前浏览器；清除网站数据或更换设备可能失去本地进度。",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["共有多少关？", "共有 30 个手工设计关卡，分成六个规则章节；第 30 关完成后仍可重玩。"], ["点到受阻箭头会消耗步数吗？", "不会。游戏只会标出第一个障碍，棋盘保持不变。"], ["提示会自动解题吗？", "不会。提示只会标出并聚焦一个安全箭头，是否执行仍由玩家决定。"], ["可以连续快速点多个箭头吗？", "可以。不同的合法箭头能立即开始飞出，不受全局冷却限制。"], ["传送门怎么运作？", "箭头会从一个传送门进入，并从成对出口沿相同方向继续。"], ["进度会保存吗？", "关卡解锁与偏好会保存在当前浏览器。"]],
     },
     ja: {
@@ -14310,8 +14310,8 @@
       progression: ["ステージ1〜5で、空いた道と取り除く順番を学びます。", "ステージ6〜15で、互いにふさがる列と固定壁が登場します。", "ステージ16〜25で、回転、色合わせのロック、鍵、氷を導入します。", "ステージ26〜30で、ポータルと一方通行ゲートを以前のルールと組み合わせます。"],
       designNote: "異なる合法手はすぐに反応するため、前の飛行アニメーションを待たずに安全な手を続けて選べます。盤面の解決順は決定的で、取り除いた矢印への重複入力は安全に無視されます。",
       parent: "『アローエスケープ』は9歳以上と家族でのプレイに向いたブラウザパズルです。アカウントは不要です。ステージ解放、言語、サウンドの設定はこのブラウザだけに保存されるため、サイトデータの削除や端末変更でローカル進行が失われることがあります。",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["ステージはいくつありますか？", "6つのルール章に分かれた、手作りの30ステージがあります。ステージ30も繰り返し遊べます。"], ["ふさがれた矢印を選ぶと手数を使いますか？", "いいえ。最初の障害を示すだけで、盤面は変わりません。"], ["ヒントはパズルを自動で解きますか？", "いいえ。安全な次の矢印を示すだけで、実行するかどうかはプレイヤーが選びます。"], ["複数の矢印を素早く動かせますか？", "はい。別々の合法な矢印は、全体の入力待ちなしですぐに動き始めます。"], ["ポータルはどう動きますか？", "矢印は一方のポータルに入り、対になった出口から同じ方向へ進みます。"], ["進行状況は保存されますか？", "ステージ解放と設定はこのブラウザにローカル保存されます。"]],
     },
     ko: {
@@ -14330,8 +14330,8 @@
       progression: ["1~5 스테이지에서 열린 경로와 제거 순서를 배웁니다.", "6~15 스테이지에서 서로 얽힌 줄과 고정 벽이 추가됩니다.", "16~25 스테이지에서 회전, 짝 잠금, 열쇠와 얼음이 등장합니다.", "26~30 스테이지에서 포털과 일방통행 관문을 앞선 규칙과 조합합니다."],
       designNote: "서로 다른 합법적인 화살표는 즉시 반응하므로 앞선 비행 애니메이션을 기다리지 않고 안전한 수를 연달아 누를 수 있습니다. 보드 해결 순서는 결정적이며 이미 제거한 화살표를 다시 누른 입력은 안전하게 무시됩니다.",
       parent: "화살표 탈출은 9세 이상과 가족 플레이에 맞는 브라우저 퍼즐입니다. 계정은 필요하지 않습니다. 스테이지 해제, 언어와 소리 설정은 이 브라우저에만 저장되므로 사이트 데이터를 지우거나 기기를 바꾸면 로컬 진행이 사라질 수 있습니다.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["스테이지는 몇 개입니까?", "6개 규칙 장으로 나뉜 손수 만든 30개 스테이지가 있으며 30번도 다시 플레이할 수 있습니다."], ["막힌 화살표를 누르면 이동 수를 쓰나요?", "아니요. 첫 장애물만 표시하고 보드는 바꾸지 않습니다."], ["힌트가 퍼즐을 자동으로 풀어 주나요?", "아니요. 안전한 다음 화살표를 표시할 뿐이며 실행 여부는 플레이어가 선택합니다."], ["여러 화살표를 빠르게 움직일 수 있나요?", "네. 서로 다른 합법 화살표는 전체 입력 대기 없이 바로 움직이기 시작합니다."], ["포털은 어떻게 작동하나요?", "화살표가 한 포털로 들어가 짝을 이루는 출구 너머에서 같은 방향으로 계속 갑니다."], ["진행 상황이 저장되나요?", "스테이지 해제와 설정은 이 브라우저에 로컬로 저장됩니다."]],
     },
     "pt-BR": {
@@ -14350,8 +14350,8 @@
       progression: ["As fases 1–5 ensinam caminhos livres e ordem de remoção.", "As fases 6–15 acrescentam fileiras interligadas e paredes fixas.", "As fases 16–25 apresentam rotação, fechaduras combinadas, chaves e gelo.", "As fases 26–30 combinam portais e portões de sentido único com as regras anteriores."],
       designNote: "Flechas legais distintas respondem imediatamente, então jogadores rápidos podem tocar em várias jogadas seguras sem esperar a animação anterior. O estado do tabuleiro continua determinístico, e toques repetidos em uma flecha removida são ignorados com segurança.",
       parent: "Fuga das Flechas é um puzzle de navegador para o público geral, recomendado a partir de 9 anos e para jogar em família. Não exige conta. Fases desbloqueadas, idioma e preferências de som ficam somente neste navegador; limpar os dados do site ou trocar de dispositivo pode remover o progresso local.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["Quantas fases existem?", "São 30 fases feitas à mão em seis capítulos de regras; a fase 30 continua disponível para rejogar."], ["Uma flecha bloqueada gasta uma jogada?", "Não. Ela mostra o primeiro obstáculo e mantém o tabuleiro igual."], ["A Dica resolve o puzzle automaticamente?", "Não. Ela marca e foca uma flecha segura, mas você decide se vai executá-la."], ["Posso mover várias flechas rapidamente?", "Sim. Flechas legais distintas podem começar a sair imediatamente, sem espera global."], ["Como funcionam os portais?", "A flecha entra em um portal e continua na mesma direção além da saída correspondente."], ["O progresso é salvo?", "As fases desbloqueadas e as preferências são salvas localmente neste navegador."]],
     },
     fr: {
@@ -14370,8 +14370,8 @@
       progression: ["Les niveaux 1–5 enseignent les trajets libres et l’ordre de retrait.", "Les niveaux 6–15 ajoutent des rangées imbriquées et des murs fixes.", "Les niveaux 16–25 introduisent rotation, cadenas associés, clés et glace.", "Les niveaux 26–30 combinent portails et portes à sens unique avec les règles précédentes."],
       designNote: "Les flèches légales distinctes réagissent immédiatement : les joueurs rapides peuvent en toucher plusieurs sans attendre l’animation précédente. L’état du plateau reste déterministe et les touches répétées sur une flèche retirée sont ignorées sans danger.",
       parent: "Évasion des flèches est un puzzle de navigateur grand public recommandé dès 9 ans et adapté au jeu en famille. Aucun compte n’est nécessaire. Les niveaux déverrouillés, la langue et le son sont enregistrés uniquement dans ce navigateur ; effacer les données du site ou changer d’appareil peut supprimer la progression locale.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["Combien de niveaux sont inclus ?", "Il y a 30 niveaux conçus à la main dans six chapitres de règles ; le niveau 30 reste rejouable."], ["Une flèche bloquée consomme-t-elle un coup ?", "Non. Elle indique le premier obstacle et ne modifie pas le plateau."], ["L’Indice résout-il le puzzle automatiquement ?", "Non. Il indique et cible une flèche sûre, mais vous choisissez de la jouer."], ["Puis-je déplacer plusieurs flèches rapidement ?", "Oui. Des flèches légales distinctes peuvent partir immédiatement, sans attente globale."], ["Comment fonctionnent les portails ?", "La flèche entre dans un portail et continue dans la même direction après la sortie associée."], ["La progression est-elle enregistrée ?", "Les niveaux déverrouillés et les préférences sont enregistrés localement dans ce navigateur."]],
     },
     de: {
@@ -14390,8 +14390,8 @@
       progression: ["Stufen 1–5 lehren freie Linien und die Reihenfolge des Entfernens.", "Stufen 6–15 ergänzen ineinandergreifende Reihen und feste Wände.", "Stufen 16–25 führen Drehung, passende Schlösser, Schlüssel und Eis ein.", "Stufen 26–30 verbinden Portale und Einweg-Tore mit den früheren Regeln."],
       designNote: "Unterschiedliche erlaubte Pfeile reagieren sofort, sodass schnelle Spieler sichere Züge nacheinander wählen können, ohne die vorige Fluganimation abzuwarten. Der Brettzustand bleibt deterministisch; wiederholte Klicks auf einen entfernten Pfeil werden sicher ignoriert.",
       parent: "Pfeil-Flucht ist ein Browser-Rätsel für die Allgemeinheit, empfohlen ab 9 Jahren und für Familien. Ein Konto ist nicht erforderlich. Freigeschaltete Stufen, Sprache und Toneinstellungen werden nur in diesem Browser gespeichert; das Löschen der Websitedaten oder ein Gerätewechsel kann den lokalen Fortschritt entfernen.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["Wie viele Stufen gibt es?", "Es gibt 30 handgefertigte Stufen in sechs Regelkapiteln; Stufe 30 bleibt wiederholbar."], ["Verbraucht ein blockierter Pfeil einen Zug?", "Nein. Er zeigt das erste Hindernis und lässt das Brett unverändert."], ["Löst der Tipp das Rätsel automatisch?", "Nein. Er markiert einen sicheren Pfeil, aber du entscheidest, ob du ihn spielst."], ["Kann ich mehrere Pfeile schnell bewegen?", "Ja. Unterschiedliche erlaubte Pfeile können ohne globale Wartezeit sofort starten."], ["Wie funktionieren Portale?", "Der Pfeil betritt ein Portal und setzt seinen Weg nach dem passenden Ausgang in derselben Richtung fort."], ["Wird der Fortschritt gespeichert?", "Freigeschaltete Stufen und Einstellungen werden lokal in diesem Browser gespeichert."]],
     },
     it: {
@@ -14410,8 +14410,8 @@
       progression: ["I livelli 1–5 insegnano i percorsi liberi e l’ordine di rimozione.", "I livelli 6–15 aggiungono file intrecciate e muri fissi.", "I livelli 16–25 introducono rotazione, serrature abbinate, chiavi e ghiaccio.", "I livelli 26–30 combinano portali e porte a senso unico con le regole precedenti."],
       designNote: "Le frecce legali diverse rispondono subito, quindi puoi scegliere mosse sicure consecutive senza aspettare l’animazione precedente. Lo stato della plancia resta deterministico e i tocchi ripetuti su una freccia rimossa vengono ignorati in sicurezza.",
       parent: "Fuga delle frecce è un puzzle per browser per il pubblico generale, consigliato dai 9 anni e adatto alle famiglie. Non serve un account. Livelli sbloccati, lingua e audio sono salvati solo in questo browser; cancellare i dati del sito o cambiare dispositivo può rimuovere i progressi locali.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["Quanti livelli sono inclusi?", "Ci sono 30 livelli creati a mano in sei capitoli di regole; il livello 30 resta rigiocabile."], ["Una freccia bloccata consuma una mossa?", "No. Mostra il primo ostacolo e lascia invariata la plancia."], ["Il Suggerimento risolve il puzzle automaticamente?", "No. Indica e mette a fuoco una freccia sicura, ma decidi tu se giocarla."], ["Posso muovere più frecce rapidamente?", "Sì. Frecce legali diverse possono iniziare subito senza un’attesa globale."], ["Come funzionano i portali?", "La freccia entra in un portale e continua nella stessa direzione oltre l’uscita abbinata."], ["I progressi vengono salvati?", "I livelli sbloccati e le preferenze vengono salvati localmente in questo browser."]],
     },
     ru: {
@@ -14430,8 +14430,8 @@
       progression: ["Уровни 1–5 обучают свободным линиям и порядку удаления.", "Уровни 6–15 добавляют переплетённые ряды и неподвижные стены.", "Уровни 16–25 вводят повороты, парные замки, ключи и лёд.", "Уровни 26–30 объединяют порталы и односторонние ворота с прежними правилами."],
       designNote: "Разные разрешённые стрелки реагируют сразу, поэтому можно быстро выбирать безопасные ходы, не дожидаясь предыдущей анимации полёта. Состояние поля остаётся детерминированным, а повторные нажатия на удалённую стрелку безопасно игнорируются.",
       parent: "«Побег стрелок» — браузерная головоломка для широкой аудитории, рекомендованная с 9 лет и подходящая для семейной игры. Учётная запись не нужна. Открытые уровни, язык и звук сохраняются только в этом браузере; очистка данных сайта или смена устройства может удалить локальный прогресс.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["Сколько уровней включено?", "Есть 30 созданных вручную уровней в шести главах правил; уровень 30 можно проходить снова."], ["Заблокированная стрелка тратит ход?", "Нет. Она показывает первое препятствие и оставляет поле без изменений."], ["Подсказка решает головоломку автоматически?", "Нет. Она отмечает безопасную стрелку, но решение сделать ход остаётся за игроком."], ["Можно ли быстро двигать несколько стрелок?", "Да. Разные разрешённые стрелки могут начать движение сразу, без общей задержки."], ["Как работают порталы?", "Стрелка входит в один портал и продолжает движение в том же направлении за парным выходом."], ["Прогресс сохраняется?", "Открытые уровни и настройки сохраняются локально в этом браузере."]],
     },
     hi: {
@@ -14450,8 +14450,8 @@
       progression: ["चरण 1–5 साफ रास्ते और हटाने का क्रम सिखाते हैं।", "चरण 6–15 में जुड़े हुए क्रम और स्थिर दीवारें आती हैं।", "चरण 16–25 में घुमाव, मिलान वाले ताले, चाबियाँ और बर्फ आती है।", "चरण 26–30 पोर्टल और एकतरफा द्वारों को पहले के नियमों से जोड़ते हैं।"],
       designNote: "अलग-अलग सही तीर तुरंत प्रतिक्रिया देते हैं, इसलिए खिलाड़ी पिछली उड़ान का इंतजार किए बिना सुरक्षित चालें लगातार चुन सकते हैं। बोर्ड की स्थिति निश्चित रहती है और हटाए गए तीर पर दोबारा किया गया स्पर्श सुरक्षित रूप से अनदेखा होता है।",
       parent: "तीरों का पलायन 9 वर्ष और उससे अधिक उम्र के खिलाड़ियों तथा परिवार के लिए उपयुक्त ब्राउज़र पहेली है। खाते की जरूरत नहीं है। खुले चरण, भाषा और ध्वनि की पसंद केवल इसी ब्राउज़र में सहेजी जाती हैं; साइट डेटा मिटाने या उपकरण बदलने पर स्थानीय प्रगति हट सकती है।",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["कुल कितने चरण हैं?", "छह नियम अध्यायों में हाथ से बनाए गए 30 चरण हैं; चरण 30 को फिर से खेला जा सकता है।"], ["अटका हुआ तीर चाल खर्च करता है?", "नहीं। वह पहला अवरोध दिखाता है और बोर्ड को नहीं बदलता।"], ["संकेत क्या पहेली अपने आप हल करता है?", "नहीं। वह एक सुरक्षित तीर दिखाता है; उसे चलाना है या नहीं, यह खिलाड़ी चुनता है।"], ["क्या कई तीर जल्दी चलाए जा सकते हैं?", "हाँ। अलग-अलग सही तीर बिना किसी साझा प्रतीक्षा के तुरंत चल सकते हैं।"], ["पोर्टल कैसे काम करते हैं?", "तीर एक पोर्टल में जाता है और जोड़ी वाले निकास के आगे उसी दिशा में चलता है।"], ["क्या प्रगति सहेजी जाती है?", "खुले चरण और पसंद इसी ब्राउज़र में स्थानीय रूप से सहेजे जाते हैं।"]],
     },
     ar: {
@@ -14470,8 +14470,8 @@
       progression: ["تعلمك المراحل 1–5 المسارات الخالية وترتيب الإزالة.", "تضيف المراحل 6–15 صفوفًا متشابكة وجدرانًا ثابتة.", "تقدم المراحل 16–25 الدوران والأقفال المتطابقة والمفاتيح والجليد.", "تجمع المراحل 26–30 البوابات والممرات أحادية الاتجاه مع القواعد السابقة."],
       designNote: "تستجيب الأسهم القانونية المختلفة فورًا، لذلك يمكن للاعب السريع اختيار حركات آمنة متتالية من دون انتظار حركة الطيران السابقة. تظل حالة اللوحة محددة، ويتم تجاهل النقرات المتكررة على سهم أزيل بأمان.",
       parent: "هروب الأسهم لغز متصفح مناسب للجمهور العام وللعب العائلي ابتداءً من عمر 9 سنوات. لا يحتاج إلى حساب. تُحفظ المراحل المفتوحة واللغة وتفضيلات الصوت في هذا المتصفح فقط؛ وقد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى فقدان التقدم المحلي.",
-      related: [],
-      relatedIds: ["arrow-escape"],
+      related: ["block-blast", "animal-rune-tactics"],
+      relatedIds: ["block-blast", "animal-rune-tactics"],
       faq: [["كم عدد المراحل؟", "هناك 30 مرحلة مصممة يدويًا ضمن ستة فصول للقواعد، ويمكن إعادة لعب المرحلة 30."], ["هل يستهلك السهم المحجوب حركة؟", "لا. يحدد أول عائق ويترك اللوحة من دون تغيير."], ["هل يحل التلميح اللغز تلقائيًا؟", "لا. يحدد سهمًا آمنًا ويضع التركيز عليه، لكنك تختار تنفيذ الحركة."], ["هل يمكن تحريك عدة أسهم بسرعة؟", "نعم. يمكن لأسهم قانونية مختلفة بدء حركتها فورًا من دون انتظار عام."], ["كيف تعمل البوابات؟", "يدخل السهم بوابة ويواصل الاتجاه نفسه بعد المخرج المقترن."], ["هل يُحفظ التقدم؟", "تُحفظ المراحل المفتوحة والتفضيلات محليًا في هذا المتصفح."]],
     },
   };
@@ -14720,6 +14720,7 @@
     progression: ["The first spark teaches grid steering. Later sparks lengthen the trail and increase speed, making the final collection a compact survival challenge."],
     designNote: "Snake learns from the broad grid-survival tradition while using WeightPlay's own star-serpent, night-grid palette, food sparks, short-round pacing, copy, and interface.",
     parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
+    relatedIds: ["road-crosser", "animal-prism-battalion"],
     faq: [["What ends a run?", "A wall or the serpent's own trail ends the run."], ["Does the serpent move continuously?", "Yes. It advances on a timed grid and the pace increases during a round."], ["Which controls work?", "Arrow keys, WASD, visible touch controls, and horizontal or vertical swipe."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
   games["tic-tac-toe"] = {

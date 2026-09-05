@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>動物蜂蜜盾 | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "動物蜂蜜盾",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/zh-tw/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。",
@@ -64,15 +63,13 @@
     "動物遊戲",
     "Puzzle",
     "防禦",
-    "家庭",
-    "Browser Game"
+    "家庭"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="《動物蜂蜜盾》遊戲圖片" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="蜜蜂接近時，皮普躲在發光防線後方" alt="《動物蜂蜜盾》遊戲圖片" />
         <div class="main-copy">
           <small data-i18n="eyebrow">苜蓿光原救援解謎</small>
           <h1 data-i18n="title">動物蜂蜜盾</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">蜜蜂會受傷嗎？</dt><dd data-i18n="faq2a">不會。花蜜屏障只會溫柔地把受驚蜂群彈回花朵方向。</dd></div>
           <div><dt data-i18n="faq3q">接著適合玩什麼？</dt><dd data-i18n="faq3a">想練細緻描線可玩《動物一筆畫》，想挑戰大型防守可玩《動物守護庭院》。</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">相關遊戲</h3><p data-i18n="relatedIntro">如果你喜歡在壓力下畫出防線，可以接著挑戰：</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">動物稜光軍團</strong><span data-i18n="relatedPrismDescription">在三條路線間切換自動稜光電池，抵禦變化中的敵陣並保護水晶核心。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/zh-tw/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">獸王守衛</strong><span data-i18n="relatedBeastDescription">建立保持暢通的森林路線、安排防守者，在六種首領規則下守住水晶核心。</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="草原關卡選擇"></div>
-      <nav class="stage-tabs" aria-label="關卡" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">關卡</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="關卡" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">關卡</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

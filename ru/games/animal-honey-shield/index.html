@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="ru">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>Звериный медовый щит | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Звериный медовый щит",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/ru/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "Рисуйте и чините нектарные линии во время пчелиных волн, защищая Пипа на 30 этапах.",
@@ -64,15 +63,13 @@
     "Игры с животными",
     "Puzzle",
     "Оборона",
-    "Семья",
-    "Browser Game"
+    "Семья"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="Изображение игры «Звериный медовый щит»" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Пип под защитой светящейся линии, пока приближаются пчёлы" alt="Изображение игры «Звериный медовый щит»" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Спасательные головоломки Клеверного луга</small>
           <h1 data-i18n="title">Звериный медовый щит</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">Пчёлы получают вред?</dt><dd data-i18n="faq2a">Нет. Преграды мягко направляют их обратно к цветам.</dd></div>
           <div><dt data-i18n="faq3q">Во что сыграть дальше?</dt><dd data-i18n="faq3a">Попробуйте One Line для точного ведения линии или Animal Guard Yard для большой обороны.</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">Похожие игры</h3><p data-i18n="relatedIntro">Если вам нравится рисовать защиту под давлением, попробуйте эти игры:</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ru/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Батальон Животных Призм</strong><span data-i18n="relatedPrismDescription">Переключайте автоматическую призменную батарею между тремя линиями и защищайте кристальное ядро от меняющихся построений.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ru/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Прокладывайте открытый лесной маршрут, расставляйте защитников и берегите кристальное ядро по шести правилам боссов.</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Выбор этапа"></div>
-      <nav class="stage-tabs" aria-label="Этапы" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Этапы</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="Этапы" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">Этапы</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

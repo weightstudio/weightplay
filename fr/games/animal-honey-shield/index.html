@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="fr">
 <head>
-
-    <base href="/games/animal-honey-shield/" />
-
     <title>Bouclier de Miel Animal | WeightPlay</title>
 
+    <base href="/games/animal-honey-shield/" />
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-honey-shield/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-honey-shield/" />
@@ -49,6 +47,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Bouclier de Miel Animal",
+  "alternateName": "Animal Honey Shield",
   "url": "https://weightplay.com/fr/games/animal-honey-shield/",
   "image": "https://weightplay.com/assets/animal-honey-shield-cover.webp",
   "description": "Tracez et réparez des lignes de nectar pendant les vagues d'abeilles afin de protéger Pip dans 30 niveaux.",
@@ -64,15 +63,13 @@
     "Jeux d'animaux",
     "Puzzle",
     "Défense",
-    "Famille",
-    "Browser Game"
+    "Famille"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Animal Honey Shield"
+  }
 }
     </script>
   </head>
@@ -106,7 +103,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip sheltered by a glowing line as bees approach" alt="Illustration du jeu Bouclier de Miel Animal" />
+        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip protégé par une ligne lumineuse à l&#39;approche des abeilles" alt="Illustration du jeu Bouclier de Miel Animal" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Sauvetages de la Prairie Trèfle-Lumière</small>
           <h1 data-i18n="title">Bouclier de Miel Animal</h1>
@@ -138,6 +135,10 @@
           <div><dt data-i18n="faq2q">Les abeilles sont-elles blessées ?</dt><dd data-i18n="faq2a">Non. Les barrières les repoussent doucement vers les fleurs.</dd></div>
           <div><dt data-i18n="faq3q">À quoi jouer ensuite ?</dt><dd data-i18n="faq3a">Essayez One Line pour le tracé précis ou Animal Guard Yard pour une défense plus vaste.</dd></div>
         </dl></article>
+        <article class="game-info-section"><h3 data-i18n="relatedTitle">Jeux associés</h3><p data-i18n="relatedIntro">Si vous aimez dessiner une défense sous pression, essayez ensuite ces jeux :</p><div class="game-info-related">
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/fr/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Bataillon de prismes animaux</strong><span data-i18n="relatedPrismDescription">Basculez une batterie de prismes automatique entre trois voies et protégez un cœur de cristal contre des formations changeantes.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/fr/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Ouvrez une route dans la forêt, placez des défenseurs et protégez un cœur de cristal selon six règles de boss.</span></span></a>
+        </div></article>
       </div>
     </section>
   </div>
@@ -151,7 +152,7 @@
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Sélection des parcours"></div>
-      <nav class="stage-tabs" aria-label="Niveaux" data-i18n-aria="stages"><span></span><span aria-current="page" data-i18n="stages">Niveaux</span><span></span></nav>
+      <nav class="stage-tabs" aria-label="Niveaux" data-i18n-aria="stages"><span></span><button id="stageTabsBtn" type="button" aria-current="page" data-i18n="stages">Niveaux</button><span></span></nav>
     </div>
   </section>
 
@@ -223,7 +224,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="locales.js?v=20260820-result-trust-v49"></script><script src="game.js?v=20260820-result-trust-v49"></script>
+  <script src="locales.js?v=20260904-interface-contract-v50"></script><script src="game.js?v=20260904-interface-contract-v50"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js"></script>

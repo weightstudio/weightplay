@@ -169,6 +169,10 @@ body.has-game-page-info :is(.level-list, .level-grid, .stage-list, .stage-grid, 
   gap: 14px;
 }
 
+.game-info-related-section {
+  grid-column: 1 / -1;
+}
+
 .game-info-section {
   padding: 16px;
   border: 1px solid #d8e0ee;
