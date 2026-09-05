@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Beasts {defeated}/{total}": "野獣 {defeated}/{total}",
   "Bebida azul": "ベビダアズール",
   "Because this game practices {skill}, try these next:": "このゲームは {skill} を練習するため、次のことを試してください:",
+  "Because you like readable lane defense, try these next:": "読みやすいレーン防衛が好きなら、次はこちらをどうぞ：",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "ガーディアンゾーンに入る前に、敵の絵だけを判断するのではなく、現在の体力、攻撃力、酸素、バッテリー、保証される脱出コストを比較してください。",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "狭い分岐に入る前に、別の未使用の小道がルートを主要な星座に戻すことができるかどうかを確認してください。",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "グループを移動する前に、推測するのではなく、両方の空の列を数えて、フリー セルを開きます。",

@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Beasts {defeated}/{total}": "Звери {defeated}/{total}",
   "Bebida azul": "Бебида азул",
   "Because this game practices {skill}, try these next:": "Поскольку в этой игре используется {skill}, попробуйте следующее:",
+  "Because you like readable lane defense, try these next:": "Если вам нравится понятная защита линий, попробуйте дальше:",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "Прежде чем войти в зону охраны, сравните текущее здоровье, атаку, кислород, батарею и гарантированную стоимость побега, а не судите только по картинке врага.",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "Прежде чем войти в узкую ветку, проверьте, сможет ли другая неиспользуемая тропа вернуть маршрут к основному созвездию.",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "Прежде чем перемещать группу, посчитайте оба пустых столбца и откройте свободные ячейки, а не гадайте.",

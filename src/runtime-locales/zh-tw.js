@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Beasts {defeated}/{total}": "獸 {defeated}/{total}",
   "Bebida azul": "藍色貝比達",
   "Because this game practices {skill}, try these next:": "因為這個遊戲練習{skill}，所以接下來試試這些：",
+  "Because you like readable lane defense, try these next:": "如果你喜歡清楚易懂的路線防禦，接下來可以試試：",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "在進入守護區域之前，要比較目前的生命值、攻擊力、氧氣、電池和保證的逃生成本，而不是僅僅判斷敵人的圖片。",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "在進入狹窄的分支之前，檢查是否有另一條未使用的路徑可以將路線帶回主星座。",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "在移動群組之前，計算空列並打開空閒單元，而不是猜測。",

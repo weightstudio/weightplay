@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Beasts {defeated}/{total}": "野兽 {defeated}/{total}",
   "Bebida azul": "蓝色贝比达",
   "Because this game practices {skill}, try these next:": "因为这个游戏练习{skill}，所以接下来尝试这些：",
+  "Because you like readable lane defense, try these next:": "如果你喜欢清晰易懂的路线防御，接下来可以试试：",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "在进入守护区域之前，要比较当前的生命值、攻击力、氧气、电池和保证的逃生成本，而不是仅仅判断敌人的图片。",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "在进入狭窄的分支之前，检查是否有另一条未使用的路径可以将路线带回主星座。",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "在移动组之前，计算空列并打开空闲单元，而不是猜测。",

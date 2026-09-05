@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["es"] = {
   "Beasts {defeated}/{total}": "Bestias {defeated}/{total}",
   "Bebida azul": "bebida azul",
   "Because this game practices {skill}, try these next:": "Debido a que este juego practica {skill}, prueba lo siguiente:",
+  "Because you like readable lane defense, try these next:": "Si te gusta la defensa de carriles clara, prueba estos juegos:",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "Antes de ingresar a una zona de guardián, compare la salud actual, el ataque, el oxígeno, la batería y el costo de escape garantizado en lugar de juzgar solo la imagen del enemigo.",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "Antes de entrar en un ramal estrecho, compruebe si otro sendero no utilizado puede llevar la ruta de regreso a la constelación principal.",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "Antes de mover un grupo, cuente ambas columnas vacías y abra las celdas libres en lugar de adivinar.",

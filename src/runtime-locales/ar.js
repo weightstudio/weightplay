@@ -1227,6 +1227,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Beasts {defeated}/{total}": "الوحوش {defeated}/{total}",
   "Bebida azul": "بيبيدا ازول",
   "Because this game practices {skill}, try these next:": "لأن هذه اللعبة تمارس {skill}، جرب ما يلي:",
+  "Because you like readable lane defense, try these next:": "إذا كنت تحب دفاع الممرات الواضح، فجرّب الألعاب التالية:",
   "Before entering a guardian zone, compare current health, attack, oxygen, battery, and the guaranteed Escape cost rather than judging only the enemy picture.": "قبل الدخول إلى منطقة الحراسة، قارن بين الصحة الحالية والهجوم والأكسجين والبطارية وتكلفة الهروب المضمونة بدلاً من الحكم على صورة العدو فقط.",
   "Before entering a narrow branch, check whether another unused trail can bring the route back to the main constellation.": "قبل الدخول إلى فرع ضيق، تحقق مما إذا كان هناك مسار آخر غير مستخدم يمكنه إعادة المسار إلى الكوكبة الرئيسية.",
   "Before moving a group, count both empty columns and open Free Cells rather than guessing.": "قبل نقل مجموعة، قم بعد الأعمدة الفارغة وافتح الخلايا الحرة بدلاً من التخمين.",

@@ -338,6 +338,8 @@
       difficulty: "Medium",
       time: "5-8 minutes",
       noteTitle: "Player and Save Information",
+      relatedIds: ["animal-prism-battalion", "beast-tactician"],
+      showRelatedSkill: false,
       intro:
         "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
       story: [
@@ -5029,7 +5031,7 @@
   };
 
   Object.assign(games["animal-hero-trials"], {
-    title:"Animal Hero Trials", age:undefined, difficulty:"Medium to Hard", time:"4-9 minutes per trial", gameplay:"Three-Room Hero Action Trials", genre:["Action","Roguelite","Animal"], skills:["Reaction","Focus","Problem Solving"], guideKicker:"WeightPlay Original Game Guide", guideTitleSuffix:"Game Guide", noteTitle:"Player and Save Information", hideScoreBands:true,
+    title:"Animal Hero Trials", age:undefined, difficulty:"Medium to Hard", time:"4-9 minutes per trial", gameplay:"Three-Room Hero Action Trials", genre:["Action","Roguelite","Animal"], skills:["Reaction","Focus","Problem Solving"], showSkills:false, showRelatedSkill:false, relatedIds:["beast-tactician","animal-rune-tactics"], guideKicker:"WeightPlay Original Game Guide", guideTitleSuffix:"Game Guide", noteTitle:"Player and Save Information", hideScoreBands:true,
     intro:"Animal Hero Trials is a 30-trial action campaign starring four WeightPlay heroes with different health, speed, attack range, and active skills. Each trial has three connected rooms, two free blessing choices, and an elite captain or regional Boss finale. Five enemy families introduce flight, charges, ranged fire, and armor. Six checkpoint Bosses require different counters, while saved Trial Marks purchase permanent Heart Mastery.",
     story:["Six shadow gates opened between Rootwood and the Void Crown. Rootwood sends chasing packs, Prism Ravine grants flight and shields, Ember Forge drives warned charges, Moon Range arms distant attackers, Abyss Shell reinforces guards, and the final Crown mixes every surviving rule. A victory stabilizes one road segment and unlocks the next trial.","Boom Mane Leo, Spark Paw Fia, Moon Cap Orla, and Moss Shell Taro enter as a rotating hero team. Every fifth trial is a regional checkpoint. Defeating Void Crown Emperor in Trial 30 closes the final gate; the campaign creates no hidden Trial 31."],
     systems:["Four heroes: Leo is balanced and uses an area roar. Fia is fast and performs an invulnerable damaging dash. Orla attacks from range and marks one target for bonus damage. Taro has the most health and creates a timed damage-reducing guard.","Movement and automatic attack: Move with the joystick, Arrow keys, or WASD. The hero automatically attacks the nearest target inside individual range. The skill button or Space uses the active skill when its cooldown is ready.","Three-room runs: Rooms 1 and 2 contain authored enemy combinations. Clearing each opens a mandatory free choice of Power, Cooldown, or Recovery. Room 3 is an elite captain on ordinary trials and a named Boss on checkpoint trials.","Enemy identities: Scouts chase, Ravens curve through the arena, Boars warn before charging, Hunters keep distance and fire, and Abyss Guards reduce ordinary damage until skills break guard.","Progression: Victories award four to nine Trial Marks and unlock one next trial. Heart Mastery begins at five Marks, costs four more per later level, and gives every hero 12 additional maximum health per level.","Optional reroll: Three free blessings are always available. Three Diamonds replace all choices with stronger versions once per run. The exact balance change appears before a second confirmation; normal progression never requires it."],
@@ -9044,7 +9046,7 @@
           <h3>${escapeHtml(uiLabel("faq"))}</h3>
           <dl>${publicFaq.map(([q, a]) => `<div><dt>${escapeHtml(q)}</dt><dd>${escapeHtml(a)}</dd></div>`).join("")}</dl>
         </div>
-        ${related.length ? `<div class="game-info-section">
+        ${related.length ? `<div class="game-info-section game-info-related-section">
           <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
           ${game.showRelatedSkill === false ? "" : `<p>${escapeHtml(uiLabel("relatedIntro", { skill: localizeSkill(gameSkills[0] || "Focus") }))}</p>`}
           <div class="game-info-related">${related.map(relatedCard).join("")}</div>
@@ -14720,7 +14722,7 @@
     progression: ["The first spark teaches grid steering. Later sparks lengthen the trail and increase speed, making the final collection a compact survival challenge."],
     designNote: "Snake learns from the broad grid-survival tradition while using WeightPlay's own star-serpent, night-grid palette, food sparks, short-round pacing, copy, and interface.",
     parent: "This public game has no account, purchase, chat, leaderboard, or advertising flow. Score and Best stay in the current browser.",
-    relatedIds: ["road-crosser", "animal-prism-battalion"],
+    relatedIds: ["block-blast", "animal-prism-battalion"],
     faq: [["What ends a run?", "A wall or the serpent's own trail ends the run."], ["Does the serpent move continuously?", "Yes. It advances on a timed grid and the pace increases during a round."], ["Which controls work?", "Arrow keys, WASD, visible touch controls, and horizontal or vertical swipe."], ["Is progress saved?", "Only the local Best score is saved in this browser."]]
   };
   games["tic-tac-toe"] = {
