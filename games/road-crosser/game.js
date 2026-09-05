@@ -109,4 +109,60 @@
     const p=world.player,nextLane=Math.max(0,p.y-1),y=laneTop+nextLane*laneH+laneH/2,x=mapX(p.x);
     ctx.save();ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.strokeStyle="#ffd77daa";ctx.lineWidth=3;ctx.setLineDash([8,10]);ctx.strokeRect(8,laneTop+nextLane*laneH+8,logicalW-16,Math.max(1,laneH-16));ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x,y+18);ctx.stroke();ctx.beginPath();ctx.moveTo(x-10,y-7);ctx.lineTo(x,y-18);ctx.lineTo(x+10,y-7);ctx.stroke();ctx.restore();
   };
+  // v18 Art Director integration: replace the prototype geometric road props
+  // with approved original image assets while keeping the authored simulation
+  // coordinates, collision rules, and next-lane cue unchanged.
+  const roadArt={};
+  const roadArtSources={
+    background:"/Assets/road-crosser-battle-background.webp",
+    runner:"/Assets/road-crosser-star-runner.webp",
+    log:"/Assets/road-crosser-log.webp",
+    car:"/Assets/road-crosser-car.webp",
+    rock:"/Assets/road-crosser-rock.webp"
+  };
+  Object.entries(roadArtSources).forEach(([name,src])=>{
+    const image=new Image();
+    image.decoding="async";
+    image.addEventListener("load",()=>{if(screen==="battle")draw()});
+    image.src=src;
+    roadArt[name]=image;
+  });
+  const roadArtReady=()=>Object.values(roadArt).every(image=>image.complete&&image.naturalWidth>0);
+  function drawRoadArt(){
+    if(!world||screen!=="battle")return;
+    if(!roadArtReady()){
+      ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.restore();
+      return;
+    }
+    const baseW=920,baseH=720,cssW=Math.max(1,canvas.clientWidth),cssH=Math.max(1,canvas.clientHeight),dpr=Math.min(2,window.devicePixelRatio||1),targetW=Math.max(1,Math.round(cssW*dpr)),targetH=Math.max(1,Math.round(cssH*dpr));
+    if(canvas.width!==targetW||canvas.height!==targetH){canvas.width=targetW;canvas.height=targetH}
+    const scale=Math.min(cssW/baseW,cssH/baseH)||1,logicalW=cssW/scale,logicalH=cssH/scale,laneTop=56,laneH=Math.max(1,(logicalH-laneTop)/8),mapX=x=>x/baseW*logicalW;
+    ctx.save();
+    ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);
+    const bgScale=Math.max(logicalW/roadArt.background.naturalWidth,logicalH/roadArt.background.naturalHeight),bgW=roadArt.background.naturalWidth*bgScale,bgH=roadArt.background.naturalHeight*bgScale;
+    ctx.drawImage(roadArt.background,(logicalW-bgW)/2,(logicalH-bgH)/2,bgW,bgH);
+    ctx.fillStyle="rgba(4,14,28,.18)";ctx.fillRect(0,0,logicalW,logicalH);
+    ctx.fillStyle="rgba(255,215,125,.10)";ctx.fillRect(0,laneTop,logicalW,laneH);
+    for(let i=0;i<8;i++){ctx.strokeStyle=i===0?"#ffd77d88":"#a6e5e044";ctx.lineWidth=i===0?2:1;ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(0,laneTop+i*laneH);ctx.lineTo(logicalW,laneTop+i*laneH);ctx.stroke()}
+    ctx.setLineDash([]);ctx.fillStyle="#ffe09a";ctx.font="900 22px system-ui";ctx.fillText("★",22,laneTop+34);ctx.fillStyle="#d2e7e9";ctx.font="700 15px system-ui";ctx.fillText(stage<3?"FIND THE STAR GATE":"FINAL CROSSING",54,laneTop+32);
+    for(const item of world.logs){
+      const x=mapX(item.x),y=laneTop+item.lane*laneH+laneH/2,w=item.w+28,h=Math.min(58,laneH*.76);
+      ctx.drawImage(roadArt.log,x-w/2,y-h/2,w,h);
+    }
+    for(const item of world.traffic){
+      const x=mapX(item.x),y=laneTop+item.lane*laneH+laneH/2,w=item.w+24,h=Math.min(54,laneH*.66);
+      ctx.save();ctx.translate(x,y);if(item.s<0)ctx.scale(-1,1);ctx.drawImage(roadArt.car,-w/2,-h/2,w,h);ctx.restore();
+    }
+    for(const item of world.rocks){
+      const x=mapX(item.x),y=laneTop+item.lane*laneH+laneH/2,w=Math.min(86,laneH*.95),h=Math.min(64,laneH*.72);
+      ctx.drawImage(roadArt.rock,x-w/2,y-h/2,w,h);
+    }
+    const p=world.player,px=mapX(p.x),py=laneTop+p.y*laneH+laneH/2,runnerSize=Math.min(92,laneH*.98);
+    ctx.drawImage(roadArt.runner,px-runnerSize/2,py-runnerSize/2,runnerSize,runnerSize);
+    const nextLane=Math.max(0,p.y-1),cueY=laneTop+nextLane*laneH+laneH/2;
+    ctx.strokeStyle="#ffd77daa";ctx.lineWidth=3;ctx.setLineDash([8,10]);ctx.strokeRect(8,laneTop+nextLane*laneH+8,logicalW-16,Math.max(1,laneH-16));ctx.setLineDash([]);ctx.beginPath();ctx.moveTo(px,cueY-18);ctx.lineTo(px,cueY+18);ctx.stroke();ctx.beginPath();ctx.moveTo(px-10,cueY-7);ctx.lineTo(px,cueY-18);ctx.lineTo(px+10,cueY-7);ctx.stroke();
+    ctx.restore();
+  }
+  draw=drawRoadArt;
+  resize=function(){if(screen!=="battle")return;draw()};
 })();

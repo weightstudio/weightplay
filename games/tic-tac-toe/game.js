@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v16";
+  document.body.dataset.gameVersion = "v17";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
@@ -68,7 +68,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
 
   const style = document.createElement("style");
-  style.dataset.ticTacToeV16 = "true";
+  style.dataset.ticTacToeV17 = "true";
   style.textContent = `
     .tic-main-return,
     .tic-battle-return,
@@ -86,9 +86,9 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       touch-action: manipulation;
     }
     .tic-battle-settings {
-      position: absolute;
-      inset-inline-end: 0;
-      top: 0;
+      position: static;
+      width: 48px;
+      min-width: 48px;
       color: #f7d77b;
       background: #12334d;
       font-size: 20px;
@@ -145,23 +145,76 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       min-width: 0;
       max-width: 100%;
       display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) auto;
-      gap: 10px;
+      direction: ltr;
+      grid-template-columns: 48px minmax(0, 1fr) minmax(124px, auto) 48px;
+      gap: 8px;
       align-items: center;
     }
+    html.popular-tic-tac-toe-active #battleScreen .tic-battle-return {
+      grid-column: 1;
+      grid-row: 1;
+    }
     html.popular-tic-tac-toe-active #battleScreen .round-label {
+      grid-column: 2;
+      grid-row: 1;
       min-width: 0;
       max-height: 48px;
-      overflow: hidden;
+      overflow: visible;
       line-height: 1.35;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
     html.popular-tic-tac-toe-active #battleScreen .battle-top .control-row {
-      flex-wrap: nowrap;
+      grid-column: 3;
+      grid-row: 1;
+      min-width: 124px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    html.popular-tic-tac-toe-active #battleScreen .tic-battle-settings {
+      grid-column: 4;
+      grid-row: 1;
     }
     html.popular-tic-tac-toe-active #battleScreen .battle-top .secondary {
-      min-height: 44px;
-      padding: 8px 12px;
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 6px 8px;
       white-space: nowrap;
+    }
+    /* Interface V6 scales the desktop Battle section to the 920px logical
+       shell. Give the physical header controls a 57px logical box so the
+       transformed result remains at least the governed 48px target. */
+    @media (min-width: 1000px) {
+      html.popular-tic-tac-toe-active #battleScreen .battle-top {
+        grid-template-columns: 57px minmax(0, 1fr) minmax(147px, auto) 57px;
+        gap: 10px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .tic-battle-return,
+      html.popular-tic-tac-toe-active #battleScreen .tic-battle-settings {
+        width: 57px;
+        min-width: 57px;
+        min-height: 57px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .wp-generated-battle-header .tic-battle-return {
+        width: 57px !important;
+        min-width: 57px !important;
+        max-width: 57px !important;
+        height: 57px !important;
+        min-height: 57px !important;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .battle-top .control-row {
+        min-width: 147px;
+        gap: 10px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .battle-top .secondary {
+        min-height: 57px;
+      }
     }
     html.popular-tic-tac-toe-active #battleScreen .board-wrap {
       min-width: 0;
@@ -219,30 +272,29 @@ window.WPPopularArcade?.mount("tic-tac-toe");
         gap: 8px;
       }
       html.popular-tic-tac-toe-active #battleScreen .battle-top {
-        grid-template-columns: 48px minmax(0, 1fr);
+        grid-template-columns: 48px minmax(0, 1fr) 48px;
         grid-template-rows: 48px 48px;
         gap: 7px 10px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .tic-battle-return {
+        grid-column: 1;
+        grid-row: 1;
       }
       html.popular-tic-tac-toe-active #battleScreen .round-label {
         grid-column: 2;
         grid-row: 1;
-        max-height: 48px;
         font-size: clamp(.78rem, 3.7vw, .95rem);
-        overflow-wrap: anywhere;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .tic-battle-settings {
+        grid-column: 3;
+        grid-row: 1;
       }
       html.popular-tic-tac-toe-active #battleScreen .battle-top .control-row {
         grid-column: 1 / -1;
         grid-row: 2;
         width: 100%;
         min-width: 0;
-        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-      html.popular-tic-tac-toe-active #battleScreen .battle-top .secondary {
-        width: 100%;
-        min-width: 0;
-        padding-inline: 8px;
       }
       html.popular-tic-tac-toe-active #battleScreen .board-wrap {
         padding: 6px;
@@ -276,7 +328,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       html.popular-tic-tac-toe-active #battleScreen .battle-top {
         grid-column: 2;
         grid-row: 1;
-        padding-inline-end: 80px;
+        padding-inline-end: 0;
       }
       html.popular-tic-tac-toe-active #battleScreen .game-message {
         grid-column: 2;

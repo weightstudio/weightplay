@@ -11137,7 +11137,7 @@
   }
 
   registerExpandedGuide("animal-bamboo-pipes", {
-    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle", relatedIds: ["animal-bus-jam", "animal-one-line"],
+    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle", relatedIds: ["animal-bus-jam", "animal-one-line"], showSkills: false, showRelatedSkill: false,
     intro: "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
     story: ["Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.", "The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations."],
     systems: ["Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.", "A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.", "The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.", "Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network."],
@@ -11491,7 +11491,7 @@
 
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
-    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
+    relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"], showSkills: false, showRelatedSkill: false,
     intro: "Remove pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
     story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by making sums of ten under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
     systems: ["A legal pair contains two values whose sum is ten. Equal values are legal only when both tiles are five.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
@@ -12229,7 +12229,7 @@
   // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {
     title: "Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
-    relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"],
+    relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"], showSkills: false, showRelatedSkill: false,
     intro: "Rotate mirrors on a six-by-six garden board until every visible sunbeam follows a valid path from its source to the sleeping lotus.",
     story: ["Panko is reopening thirty shaded gardens. The opening gardens teach distinct route shapes, Garden 6 introduces two simultaneous suns, and the final chapter combines dense dual-source networks.", "Every animated beam follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches the shared lotus."],
     systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "Each beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A dual-source stage clears only when both independently traced beams enter the lotus cell; a nearby line or one completed route does not count.", "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation."],
