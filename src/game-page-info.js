@@ -1509,6 +1509,8 @@
       gameplay: "Ricochet Fortress Roguelite",
       genre: ["Ricochet", "Action Strategy", "Roguelite", "Animal"],
       skills: ["Logic", "Problem Solving", "Focus"],
+      showSkills: false,
+      showRelatedSkill: false,
       relatedIds: ["animal-prism-breakers", "animal-rift-salvage"],
       guideKicker: "WeightPlay Original Game Guide",
       guideTitleSuffix: "Game Guide",
@@ -1633,6 +1635,7 @@
       genre: ["Tower Defense", "Strategy", "Animal"],
       skills: ["Logic", "Problem Solving", "Focus"],
       showSkills: false,
+      showRelatedSkill: false,
       guideKicker: "WeightPlay Original Game Guide",
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
@@ -12858,7 +12861,7 @@
     progression: ["Stages 1–5 teach rebound control. The next chapters add split orbs, sweeping bands, indestructible mirrors, advancing walls and gravity, then dangerous mines.", "The thirty formations change geometry and timing while preserving the same paddle input."],
     designNote: "The visible paddle, collision point, orb trajectory, and logical arena use one scaled coordinate system, so touch and mouse contacts create the same return angle.",
     parent: "No account or purchase is required. Cleared formations, stars, and local best results remain in this browser.",
-    difficulty: "Easy to Challenging", time: "2–8 minutes per formation", guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    difficulty: "Easy to Challenging", time: "2–8 minutes per formation", guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     relatedIds: ["animal-bounce-brawl", "animal-rift-salvage"],
     faq: [["What controls the return angle?", "The point where the orb touches the paddle."], ["Do mirrors need to be broken?", "No. Permanent mirrors redirect the orb toward protected crystals."], ["Why did the stage fail with an orb still visible?", "A chapter hazard such as a void mine or advancing danger line can also end the attempt."], ["How many orbs do I have?", "Each attempt begins with three, and split effects may create additional active orbs."]]
   }, "動物稜光破磚隊", "动物棱光破砖队");

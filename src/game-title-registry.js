@@ -1695,6 +1695,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "कनेक्ट फोर",
     "ar": "أربع على التوالي"
   },
+  "animal-postcard-crop": {
+    "__localizedExact": true,
+    "en": "Postcard Crop",
+    "zh-Hant": "明信片取景",
+    "zh-Hans": "明信片取景",
+    "ja": "ポストカード・クロップ",
+    "ko": "엽서 프레임",
+    "es": "Recorte de postal",
+    "pt-BR": "Recorte de postal",
+    "fr": "Cadre de carte postale",
+    "de": "Postkarten-Ausschnitt",
+    "it": "Ritaglio da cartolina",
+    "ru": "Кадр открытки",
+    "hi": "पोस्टकार्ड फ्रेम",
+    "ar": "إطار البطاقة البريدية"
+  },
   "animal-hollow-fit": {
     "__localizedExact": true,
     "en": "Hollow Fit",

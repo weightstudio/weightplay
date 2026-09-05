@@ -2670,6 +2670,34 @@ for (const game of window.WONDER_LOBBY.games) {
   delete game.internalTrial;
 }
 
+// Weighted General prototype (2026-09-05). Keep Postcard Crop internal while
+// its concept art, exact Tester, Reviewer, release, and publication gates remain open.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-postcard-crop",
+    audience: "general",
+    status: "planned",
+    internalOnly: true,
+    title: localize(["Postcard Crop", "明信片取景", "明信片取景", "ポストカード・クロップ", "엽서 프레임", "Recorte de postal", "Recorte de postal", "Cadre de carte postale", "Postkarten-Ausschnitt", "Ritaglio da cartolina", "Кадр открытки", "पोस्टकार्ड फ्रेम", "إطار البطاقة البريدية"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Visual Framing Puzzle", "視覺取景益智", "视觉取景益智", "ビジュアル構図パズル", "시각 프레이밍 퍼즐", "Puzzle de encuadre visual", "Quebra-cabeça de enquadramento", "Puzzle de cadrage visuel", "Visuelles Rahmenrätsel", "Puzzle di inquadratura", "Головоломка кадрирования", "दृश्य फ्रेम पहेली", "لغز التأطير البصري"]),
+    description: localize(["Move a small postcard frame until two named landmarks share the same crop, while leaving the decoy outside.", "移動小小明信片框，讓兩個指定地標同框，同時把干擾物留在框外。", "移动小小明信片框，让两个指定地标同框，同时把干扰物留在框外。", "小さなポストカード枠を動かし、2つの目印を同じ画面に入れ、囮は外します。", "엽서 프레임을 움직여 두 랜드마크를 함께 담고 미끼는 밖에 둬요.", "Mueve un marco hasta incluir dos lugares y dejar fuera el señuelo.", "Mova a moldura até incluir dois pontos e deixar a isca fora.", "Déplace le cadre pour réunir deux repères et laisser le leurre dehors.", "Bewege den Rahmen, bis zwei Orte hinein- und der Köder herauspasst.", "Muovi la cornice per includere due punti e lasciare fuori il diversivo.", "Двигайте рамку, чтобы включить два ориентира и оставить приманку снаружи.", "फ्रेम को चलाकर दो निशानों को साथ रखें और बहाने को बाहर रखें।", "حرّك الإطار ليجمع علامتين ويترك الطُعم خارجه."]),
+    meta: localize([["3 Postcards", "Frame Planning", "Calm Retry"], ["3 張明信片", "框線規劃", "平靜重試"], ["3 张明信片", "框线规划", "平静重试"], ["3枚のポストカード", "構図計画", "穏やかな再挑戦"], ["엽서 3장", "프레임 계획", "차분한 재시도"], ["3 postales", "Plan de encuadre", "Reintento sereno"], ["3 postais", "Plano do quadro", "Nova tentativa calma"], ["3 cartes", "Plan du cadre", "Reprise sereine"], ["3 Postkarten", "Rahmenplanung", "Ruhiger Versuch"], ["3 cartoline", "Piano della cornice", "Riprova calma"], ["3 открытки", "План кадра", "Спокойный повтор"], ["3 पोस्टकार्ड", "फ्रेम योजना", "शांत पुनः प्रयास"], ["3 بطاقات", "تخطيط الإطار", "محاولة هادئة"]]),
+    categories: ["Puzzle", "Visual Framing", "Observation", "Family", "Animal"],
+    skills: ["Spatial Planning", "Comparison", "Selective Attention"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-postcard-crop/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
 // Weighted General prototype (2026-09-03). Keep Hollow Fit internal while its
 // concept art, exact Tester, Reviewer, release, and publication gates remain open.
 (() => {
