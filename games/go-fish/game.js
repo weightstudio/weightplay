@@ -3,19 +3,19 @@
 
   const GAME_VERSION = "v21";
   const COPY = {
-    en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players in the preview build." },
-    "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。預覽版可選擇兩人、三人或四人。" },
-    "zh-Hans": { start: "开始游戏", back: "返回", resultNewGame: "新游戏", resultRestart: "重新开始", resultClose: "关闭", heading: "游戏玩法", paragraph: "完成四张同点数牌的组牌。预览版可选择两人、三人或四人。" },
-    ja: { start: "ゲーム開始", back: "戻る", resultNewGame: "新しいゲーム", resultRestart: "リスタート", resultClose: "閉じる", heading: "遊び方", paragraph: "同じランク4枚の組を完成させます。プレビュー版では2〜4人を選べます。" },
-    ko: { start: "게임 시작", back: "돌아가기", resultNewGame: "새 게임", resultRestart: "다시 시작", resultClose: "닫기", heading: "게임 방법", paragraph: "같은 랭크 네 장 세트를 완성하세요. 프리뷰에서는 2·3·4인 게임을 선택할 수 있습니다." },
-    es: { start: "Empezar", back: "Volver", resultNewGame: "Nuevo juego", resultRestart: "Reiniciar", resultClose: "Cerrar", heading: "Cómo jugar", paragraph: "Completa grupos de cuatro cartas del mismo rango. En la vista previa puedes elegir 2, 3 o 4 jugadores." },
-    "pt-BR": { start: "Começar jogo", back: "Voltar", resultNewGame: "Novo jogo", resultRestart: "Reiniciar", resultClose: "Fechar", heading: "Como jogar", paragraph: "Complete grupos de quatro cartas do mesmo valor. A prévia permite escolher 2, 3 ou 4 jogadores." },
-    fr: { start: "Commencer", back: "Retour", resultNewGame: "Nouvelle partie", resultRestart: "Recommencer", resultClose: "Fermer", heading: "Comment jouer", paragraph: "Complétez des familles de quatre cartes du même rang. L’aperçu permet de choisir 2, 3 ou 4 joueurs." },
-    de: { start: "Spiel starten", back: "Zurück", resultNewGame: "Neues Spiel", resultRestart: "Neustart", resultClose: "Schließen", heading: "Spielanleitung", paragraph: "Bilde Vierlinge aus vier Karten desselben Rangs. In der Vorschau kannst du 2, 3 oder 4 Spieler wählen." },
-    it: { start: "Inizia partita", back: "Indietro", resultNewGame: "Nuova partita", resultRestart: "Riavvia", resultClose: "Chiudi", heading: "Come si gioca", paragraph: "Completa combinazioni di quattro carte dello stesso valore. Nell’anteprima puoi scegliere 2, 3 o 4 giocatori." },
-    ru: { start: "Начать игру", back: "Назад", resultNewGame: "Новая игра", resultRestart: "Заново", resultClose: "Закрыть", heading: "Как играть", paragraph: "Соберите четвёрки из четырёх карт одного ранга. В предпросмотре можно выбрать 2, 3 или 4 игроков." },
-    hi: { start: "खेल शुरू करें", back: "वापस", resultNewGame: "नया खेल", resultRestart: "फिर शुरू करें", resultClose: "बंद करें", heading: "कैसे खेलें", paragraph: "एक ही रैंक के चार पत्तों का सेट पूरा करें। प्रीव्यू में 2, 3 या 4 खिलाड़ी चुनें।" },
-    ar: { start: "بدء اللعبة", back: "رجوع", resultNewGame: "لعبة جديدة", resultRestart: "إعادة التشغيل", resultClose: "إغلاق", heading: "طريقة اللعب", paragraph: "أكمل مجموعات من أربع بطاقات من الرتبة نفسها. يمكنك اختيار لاعبين أو ثلاثة أو أربعة في المعاينة." },
+    en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players." },
+    "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。可選擇兩人、三人或四人。" },
+    "zh-Hans": { start: "开始游戏", back: "返回", resultNewGame: "新游戏", resultRestart: "重新开始", resultClose: "关闭", heading: "游戏玩法", paragraph: "完成四张同点数牌的组牌。可选择两人、三人或四人。" },
+    ja: { start: "ゲーム開始", back: "戻る", resultNewGame: "新しいゲーム", resultRestart: "リスタート", resultClose: "閉じる", heading: "遊び方", paragraph: "同じランク4枚の組を完成させます。2〜4人で遊べます。" },
+    ko: { start: "게임 시작", back: "돌아가기", resultNewGame: "새 게임", resultRestart: "다시 시작", resultClose: "닫기", heading: "게임 방법", paragraph: "같은 랭크 네 장 세트를 완성하세요. 2·3·4인 게임으로 플레이할 수 있습니다." },
+    es: { start: "Empezar", back: "Volver", resultNewGame: "Nuevo juego", resultRestart: "Reiniciar", resultClose: "Cerrar", heading: "Cómo jugar", paragraph: "Completa grupos de cuatro cartas del mismo rango. Puedes elegir 2, 3 o 4 jugadores." },
+    "pt-BR": { start: "Começar jogo", back: "Voltar", resultNewGame: "Novo jogo", resultRestart: "Reiniciar", resultClose: "Fechar", heading: "Como jogar", paragraph: "Complete grupos de quatro cartas do mesmo valor. Escolha 2, 3 ou 4 jogadores." },
+    fr: { start: "Commencer", back: "Retour", resultNewGame: "Nouvelle partie", resultRestart: "Recommencer", resultClose: "Fermer", heading: "Comment jouer", paragraph: "Complétez des familles de quatre cartes du même rang. Vous pouvez choisir 2, 3 ou 4 joueurs." },
+    de: { start: "Spiel starten", back: "Zurück", resultNewGame: "Neues Spiel", resultRestart: "Neustart", resultClose: "Schließen", heading: "Spielanleitung", paragraph: "Bilde Vierlinge aus vier Karten desselben Rangs. Wähle 2, 3 oder 4 Spieler." },
+    it: { start: "Inizia partita", back: "Indietro", resultNewGame: "Nuova partita", resultRestart: "Riavvia", resultClose: "Chiudi", heading: "Come si gioca", paragraph: "Completa combinazioni di quattro carte dello stesso valore. Puoi scegliere 2, 3 o 4 giocatori." },
+    ru: { start: "Начать игру", back: "Назад", resultNewGame: "Новая игра", resultRestart: "Заново", resultClose: "Закрыть", heading: "Как играть", paragraph: "Соберите четвёрки из четырёх карт одного ранга. Можно выбрать 2, 3 или 4 игроков." },
+    hi: { start: "खेल शुरू करें", back: "वापस", resultNewGame: "नया खेल", resultRestart: "फिर शुरू करें", resultClose: "बंद करें", heading: "कैसे खेलें", paragraph: "एक ही रैंक के चार पत्तों का सेट पूरा करें। 2, 3 या 4 खिलाड़ी चुनें।" },
+    ar: { start: "بدء اللعبة", back: "رجوع", resultNewGame: "لعبة جديدة", resultRestart: "إعادة التشغيل", resultClose: "إغلاق", heading: "طريقة اللعب", paragraph: "أكمل مجموعات من أربع بطاقات من الرتبة نفسها. يمكنك اختيار لاعبين أو ثلاثة أو أربعة." },
   };
   const RECENT_ASK_COPY = {
     en: "Recent asks: {items}",

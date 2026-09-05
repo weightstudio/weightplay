@@ -4514,6 +4514,36 @@ if (towerOfHanoiPublic) {
   delete towerOfHanoiPublic.internalTrial;
 }
 
+// Go Fish has completed the exact Tester, Gameplay Review, Director, and
+// Release Preflight gates. Keep its public conversion explicit and localized
+// so catalog generation cannot restore the owner-preview boundary.
+const goFishPublic = window.WONDER_LOBBY.games.find((game) => game.id === "go-fish");
+if (goFishPublic) {
+  goFishPublic.status = "playable";
+  goFishPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  goFishPublic.previewVideo = "assets/previews/go-fish-battle.webm";
+  delete goFishPublic.internalTrial;
+}
+
+// FreeCell has completed the exact Tester, Gameplay Review, Director, and
+// Release Preflight gates. Keep its public conversion explicit so the classic
+// solitaire card and all localized routes stay discoverable after generation.
+const freeCellPublic = window.WONDER_LOBBY.games.find((game) => game.id === "freecell-solitaire");
+if (freeCellPublic) {
+  freeCellPublic.status = "playable";
+  freeCellPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  freeCellPublic.previewVideo = "assets/previews/freecell-solitaire-battle.webm";
+  delete freeCellPublic.internalTrial;
+}
+
 for (const id of ["animal-color-springs", "animal-word-trails"]) {
   const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
   if (!game) continue;

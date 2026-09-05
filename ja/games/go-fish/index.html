@@ -2,7 +2,7 @@
 
     <base href="/games/go-fish/" />
 
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><title>ゴーフィッシュ | WeightPlay</title><link rel="canonical" href="https://weightplay.com/ja/games/go-fish/" />
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>ゴーフィッシュ | WeightPlay</title><link rel="canonical" href="https://weightplay.com/ja/games/go-fish/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/go-fish/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/go-fish/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/go-fish/" />
@@ -17,16 +17,16 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/go-fish/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/go-fish/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/go-fish/" />
-    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css?v=20260822-go-fish-landscape-ask-v13">  <meta name="description" content="他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。" />
+    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css?v=20260822-go-fish-landscape-ask-v13">  <meta name="description" content="相手に、自分の手札にあるランクを尋ねます。持っていればそのランクをすべて受け取り、なければ山札から引きます。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ゴーフィッシュ | WeightPlay" />
-    <meta property="og:description" content="他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。" />
+    <meta property="og:description" content="相手に、自分の手札にあるランクを尋ねます。持っていればそのランクをすべて受け取り、なければ山札から引きます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/go-fish/" />
     <meta property="og:image" content="https://weightplay.com/assets/card-games-go-fish-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ゴーフィッシュ | WeightPlay" />
-    <meta name="twitter:description" content="他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。" />
+    <meta name="twitter:description" content="相手に、自分の手札にあるランクを尋ねます。持っていればそのランクをすべて受け取り、なければ山札から引きます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/card-games-go-fish-cover.webp" />
     <script type="application/ld+json">
 {
@@ -35,7 +35,7 @@
   "name": "ゴーフィッシュ",
   "url": "https://weightplay.com/ja/games/go-fish/",
   "image": "https://weightplay.com/assets/card-games-go-fish-cover.webp",
-  "description": "他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。",
+  "description": "相手に、自分の手札にあるランクを尋ねます。持っていればそのランクをすべて受け取り、なければ山札から引きます。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -58,25 +58,28 @@
   "alternateName": "Go Fish"
 }
     </script>
-  </head><body data-screen="main" data-audience="general" data-wp-game-id="go-fish" data-wp-card-game="go-fish" data-wp-game-owned-guide="true"><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">ゴーフィッシュ</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-go-fish-cover.webp" alt="ゴーフィッシュのゲーム画像"></div><article class="main-copy"><small class="eyebrow">Classic Card Game · Owner Preview</small><h1 data-card-title data-runtime-localize="off">ゴーフィッシュ</h1><p data-card-summary>Ask for ranks, collect four-of-a-kind books, and read the table.</p><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section></main><section class="game-page-info game-page-info-static" aria-label="ゴーフィッシュ ゲーム情報" data-wp-preserve-static-guide data-runtime-localize="off">
+  </head><body data-screen="main" data-audience="general" data-wp-game-id="go-fish" data-wp-card-game="go-fish" data-wp-game-owned-guide="true"><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">ゴーフィッシュ</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-go-fish-cover.webp" alt="ゴーフィッシュのゲーム画像"></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-card-title data-runtime-localize="off">ゴーフィッシュ</h1><p data-card-summary>Ask for ranks, collect four-of-a-kind books, and read the table.</p><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section></main><section class="game-page-info game-page-info-static" aria-label="ゴーフィッシュ ゲーム情報" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ゴーフィッシュ</h2><p>他のプレイヤーに自分のランクを尋ねます。彼らがそれを持っている場合、彼らはあなたにそのランクのすべてのカードを与えなければなりません。それ以外の場合は、魚を食べに行きましょう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>クラシック セットコレクション カード ゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>カード · ファミリー · 戦略</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3〜10分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>計画力 · 集中 · Pattern Recognition</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ゴーフィッシュ</h2><p>相手に、自分の手札にあるランクを尋ねます。持っていればそのランクをすべて受け取り、なければ山札から引きます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>クラシック収集カードゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>カード · ファミリー · 戦略</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3〜10分</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>同じランク4枚の組を完成させます。プレビュー版では2〜4人を選べます。</li></ol></div>
-
-
-
-      <div class="game-info-section game-info-parent"><h3>Preview status</h3><p>This owner preview is not in the formal public catalog.</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>世界とミッション</h3><p>ゴーフィッシュは、少ない手札を記憶と観察のテーブルに変えます。答えが「ない」でも、質問はランクの手がかりになります。</p>
+<p>同じランク4枚の組を完成させると記録されて手札から外れ、終盤は推測より完成間近のランクを守る判断が重要になります。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>2〜4人を選び、自分の手札にあるランクだけを相手に尋ねます。</p>
+<p>相手が持っていればそのランクのカードをすべて受け取り、なければ山札から1枚引きます。組が完成すると記録されます。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>人数を選んで開始し、手札のランクを確認します。</li><li>相手と、自分が持っているランクを選んで尋ねます。</li><li>増えた手札と完成した組を見て、次の合法的な質問を決めます。</li><li>4枚組を集め、再スタートまたは新しいゲームで再び遊びます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>相手が尋ねたランクや受け取ったランクを覚え、失敗した質問も情報として使います。</li><li>手がかりが十分なときは、完成に近いランクを優先します。</li><li>別の相手が不足カードを持っていそうなときは、重要なランクを早く明かしすぎないようにします。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>毎回のテーブルは13ランクを集める完全な挑戦で、2〜4人を選べます。アカウント式の進行はありません。</p>
+<p>再プレイでは配札と手がかりの流れが変わるため、質問のタイミングと終盤の組み立てを磨けます。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>ゴーフィッシュは質問、山札、手札、相手人数、選択ランク、完成した組を同じ見やすいテーブルにまとめます。</p></div>
+      <div class="game-info-section game-info-parent"><h3>公開プレイ</h3><p>アカウントや購入なしで、ブラウザから無料でゴーフィッシュを遊べます。テーブル、完成した組、進行状況と設定はこのブラウザに保存されます。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>どうやって尋ねますか？</dt><dd>相手を選び、自分の手札にあるランクを選びます。持っていないランクは尋ねられません。</dd></div><div><dt>質問が当たるとどうなりますか？</dt><dd>相手からそのランクのカードをすべて受け取り、ルールに従ってテーブルを続けます。</dd></div><div><dt>ゴーフィッシュと言われたら？</dt><dd>山札から1枚引きます。そのカードで組が完成すれば記録し、そうでなければ次の番になります。</dd></div><div><dt>組を完成するには？</dt><dd>同じランクの4枚を集めます。完成した組は数えられ、手札から外れます。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>テーブルと設定はこのブラウザだけに保存され、アカウントやクラウド保存は必要ありません。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/gin-rummy/"><img src="/assets/card-games-gin-rummy-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ジン・ラミー</strong><span>同じランクのセットと同じスートの連続を作り、組み合わせられないカードを減らします。</span></span></a><a class="game-info-related-card" href="/ja/games/spades/"><img src="/assets/card-games-spades-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Spades</strong><span>Two teams bid before a trick-taking hand.</span></span></a></div></div>
     </div>
   </section><section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Go Fish</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong>Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" hidden><div class="result-card"><h2 id="resultTitle">Round complete</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div><script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="../../src/i18n.js"></script><script src="/src/runtime-locales/ja.js?v=20260904-wp-text-growth-body-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/card-game-engine.js"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/card-games-next.js?v=20260901-go-fish-arabic-hand-preview-v22"></script><script src="game.js?v=20260901-go-fish-arabic-hand-preview-v22"></script><script src="../../src/battle-canvas-standard.js"></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ゴーフィッシュ";document.title="ゴーフィッシュ | WeightPlay";},{once:true});</script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/card-game-engine.js"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/card-games-next.js?v=20260906-go-fish-public-release-v22"></script><script src="game.js?v=20260906-go-fish-public-release-v22"></script><script src="../../src/battle-canvas-standard.js"></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ゴーフィッシュ";document.title="ゴーフィッシュ | WeightPlay";},{once:true});</script>
 </body></html>

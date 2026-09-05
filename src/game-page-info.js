@@ -1887,11 +1887,16 @@
     },
     "go-fish": {
       title: "Go Fish", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes",
-      gameplay: "Classic Set-Collection Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      gameplay: "Classic Set-Collection Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false, relatedIds: ["gin-rummy", "spades"],
       intro: "Ask another player for a rank you hold. If they have it, they must give you every card of that rank; otherwise, Go Fish.",
-      how: ["Complete four-of-a-kind books. Choose two, three, or four players in the preview build."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
-      faq: [["Is progress saved?", "Yes, only in this browser."]],
+      story: ["Go Fish turns a small hand into a memory-and-information table. Every question reveals something about a rank, even when the answer is no.", "A complete book removes four cards of one rank, so the table gradually shifts from asking for clues to protecting the ranks that are almost complete."],
+      systems: ["Choose two, three, or four players. You may ask an opponent only for a rank that you already hold.", "A successful request transfers every card of that rank. A failed request draws from the Stock and passes the turn when no book is completed.", "When you collect four cards of one rank, the book is recorded and removed from your hand; the table ends when all books are complete."],
+      how: ["Choose the player count, then start the table and inspect the ranks in your hand.", "Select an opponent and ask for a rank you hold. Watch whether the request succeeds or sends you to the Stock.", "Use the updated hand and book count to choose the next legal rank request.", "Complete the four-card books, then use Restart or New Game to replay the table."],
+      strategyTips: ["Track which ranks each opponent has requested or received; a failed request is useful information.", "Ask for a rank that is already close to a book when the table evidence supports it.", "Do not reveal a needed rank too early when another opponent is likely to hold the missing cards."],
+      progression: ["Each table is a complete 13-rank collection challenge with two, three, or four players and no account progression.", "Replay changes the deal and the information trail, so improvement comes from reading requests and timing the final books."],
+      designNote: "Go Fish keeps the classic question-and-draw loop visible: the hand, opponent counts, Stock, selected rank, request result, and completed books share one readable table.",
+      noteTitle: "Public play", parent: "Play Go Fish free in your browser with no account or purchase required. The table, completed books, progress, and preferences stay in this browser.",
+      faq: [["How do I make a request?", "Choose an opponent and a rank already in your hand. The game prevents requests for ranks you do not hold."], ["What happens after a successful request?", "The opponent gives you every card of that rank, and you may continue the table according to the round rules."], ["What happens after Go Fish?", "Draw from the Stock. If the drawn card completes a book, the book is recorded; otherwise the turn advances."], ["How do I complete a book?", "Collect all four cards of one rank. The completed book is counted and removed from your hand."], ["Is progress saved?", "The current table and preferences stay only in this browser; no account or cloud save is required."]],
     },
     war: {
       title: "War", age: "9+", difficulty: "Easy", time: "3-8 minutes",
@@ -9004,6 +9009,9 @@
     if (activeLocale !== "en" || id === "snake") section.dataset.runtimeLocalize = "off";
     section.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
     if (isFreeCell) {
+      const freeCellFaq = activeLocale === "es"
+        ? [["¿Hay cartas ocultas?", "No. Las 52 cartas empiezan boca arriba en el tablero."], ["¿Qué son las celdas libres?", "Son cuatro espacios temporales para una sola carta que ayudan a reorganizar el tablero."], ["¿Se puede mover cualquier secuencia de una vez?", "Solo cuando las celdas libres y las columnas vacías disponibles ofrecen suficiente espacio temporal."], ["¿Cuál es el objetivo?", "Completa las cuatro fundaciones por palo desde el As hasta el Rey."], ["¿Puedo deshacer una jugada?", "Sí. Deshacer restaura el estado completo anterior del tablero."], ["¿Puedo repetir el mismo reparto?", "Sí. Reiniciar vuelve a la semilla actual y Nueva partida crea un reparto nuevo."]]
+        : game.faq;
       section.classList.add("freecell-main-guide");
       section.innerHTML = `
         <div class="game-info-hero">
@@ -9022,9 +9030,18 @@
             <h3>${escapeHtml(uiLabel("strategyTips"))}</h3>
             <ul>${game.strategyTips.slice(0, 3).map((tip) => `<li>${escapeHtml(tip)}</li>`).join("")}</ul>
           </div>
+          <div class="game-info-section">
+            <h3>${escapeHtml(uiLabel("faq"))}</h3>
+            <dl>${freeCellFaq.map(([question, answer]) => `<div><dt>${escapeHtml(question)}</dt><dd>${escapeHtml(answer)}</dd></div>`).join("")}</dl>
+          </div>
+          ${related.length ? `<div class="game-info-section game-info-related-section">
+            <h3>${escapeHtml(uiLabel("relatedGames"))}</h3>
+            <div class="game-info-related">${related.map(relatedCard).join("")}</div>
+          </div>` : ""}
         </div>
       `;
       main.insertAdjacentElement("afterend", section);
+      repairRelatedImages(section);
       return;
     }
     section.innerHTML = `

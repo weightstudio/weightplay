@@ -66,6 +66,8 @@ WeightPlay covers these game and content clusters:
 - Spider Solitaire: https://weightplay.com/en/games/spider-solitaire/
 - Gin Rummy: https://weightplay.com/en/games/gin-rummy/
 - Crazy Eights: https://weightplay.com/en/games/crazy-eights/
+- Go Fish: https://weightplay.com/en/games/go-fish/
+- FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/
 - Space Rocks: https://weightplay.com/en/games/space-rocks/
