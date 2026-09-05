@@ -5,9 +5,9 @@
   window.__weightplayCribbageAnalyticsInstalled = true;
 
   const GAME_ID = "cribbage";
-  const GAME_VERSION = "v17";
+  const GAME_VERSION = "v18";
   const INTERFACE_VERSION = "6";
-  const SESSION_START_KEY = "weightplay.cribbage.analytics.starts.v17";
+  const SESSION_START_KEY = "weightplay.cribbage.analytics.starts.v18";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
     es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",
@@ -17,6 +17,23 @@
   let sessionStarts = readSessionStarts();
   let currentRun = { session_segment: sessionStarts ? "repeat" : "first", session_start_index: Math.min(99, sessionStarts || 1) };
   let resultVisible = Boolean(document.querySelector("#resultOverlay:not([hidden])"));
+  let resetBattleObservation = () => {};
+
+  const MILESTONE_LABELS = {
+    en: { fifteen: "15", pair: "pair", go: "Go" },
+    "zh-Hant": { fifteen: "15", pair: "對子", go: "Go" },
+    "zh-Hans": { fifteen: "15", pair: "对子", go: "Go" },
+    ja: { fifteen: "15", pair: "ペア", go: "Go" },
+    ko: { fifteen: "15", pair: "페어", go: "Go" },
+    es: { fifteen: "15", pair: "pareja", go: "Go" },
+    "pt-BR": { fifteen: "15", pair: "par", go: "Go" },
+    fr: { fifteen: "15", pair: "paire", go: "Go" },
+    de: { fifteen: "15", pair: "Paar", go: "Go" },
+    it: { fifteen: "15", pair: "coppia", go: "Go" },
+    ru: { fifteen: "15", pair: "пара", go: "Go" },
+    hi: { fifteen: "15", pair: "जोड़ी", go: "Go" },
+    ar: { fifteen: "15", pair: "زوج", go: "جو" },
+  };
 
   function readSessionStarts() {
     try {
@@ -62,6 +79,20 @@
     return document.querySelector('#cardGameActions [data-action="send-crib"]') ? "crib_selection" : "pegging";
   };
 
+  const readRound = () => {
+    const label = document.querySelector("#cardGameCenter .card-table-label")?.textContent || "";
+    const value = label.match(/\d+/u)?.[0];
+    return value ? Number(value) : null;
+  };
+
+  const readPegCount = () => {
+    const phaseText = document.querySelector("#cardGamePhase")?.textContent || "";
+    const value = phaseText.match(/(\d+)\s*\/\s*31/u)?.[1];
+    return value ? Number(value) : null;
+  };
+
+  const bounded = (value, max = 99) => Math.max(0, Math.min(max, Number(value) || 0));
+
   const track = (event, details = {}) => {
     try {
       window.WonderAnalytics?.track?.(event, {
@@ -90,13 +121,17 @@
   };
 
   const startFromMain = (event, from) => {
+    resetBattleObservation();
     const run = rememberSessionStart();
     track(event, { from, ...run });
+    track("round_start", { from, outcome: "started", ...run });
   };
 
   const continueFromResult = (event) => {
+    resetBattleObservation();
     track(event, { from: "result" });
-    rememberSessionStart();
+    const run = rememberSessionStart();
+    track("round_start", { from: "result", outcome: "started", ...run });
   };
 
   document.addEventListener("pointerdown", rememberInput, true);
@@ -110,8 +145,122 @@
     if (target.matches("#newGameBtn")) { startFromMain("new_game", "main"); return; }
     if (target.matches("#resultRestart")) { continueFromResult("restart"); return; }
     if (target.matches("#resultNewGame")) { continueFromResult("new_game"); return; }
+    if (target.matches("#battleRestartBtn, #battleNewBtn")) {
+      const eventName = target.matches("#battleRestartBtn") ? "restart" : "new_game";
+      resetBattleObservation();
+      track(eventName, { from: "battle", outcome: eventName });
+      track("round_start", { from: "battle", outcome: "started" });
+      return;
+    }
+    if (target.matches('#cardGameActions button[data-action="send-crib"]')) {
+      track("crib_submit", {
+        from: "battle",
+        outcome: "submitted",
+        round: readRound(),
+        selected_cards: bounded(document.querySelectorAll("#cardGameHand button.is-selected").length, 2),
+      });
+      return;
+    }
+    if (target.matches('#cardGameHand button[data-card-index]') && phase() === "pegging") {
+      track("pegging_card", { from: "battle", outcome: "attempted", round: readRound(), count_before: readPegCount() });
+      return;
+    }
     if (target.matches("#battleBackBtn, .main-return")) track("main_return", { from: target.matches(".main-return") ? "main" : "battle" });
   }, true);
+
+  const observeBattle = () => {
+    const center = document.querySelector("#cardGameCenter");
+    const phaseNode = document.querySelector("#cardGamePhase");
+    const hand = document.querySelector("#cardGameHand");
+    const actions = document.querySelector("#cardGameActions");
+    if (!center || !phaseNode || !hand || !actions) return;
+
+    let observedRound = null;
+    let lastTransition = "";
+    let lastScoreCue = "";
+    let lastResetCue = "";
+    let pendingInitialRound = false;
+    let scheduled = false;
+
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      window.setTimeout(() => {
+        scheduled = false;
+        sync();
+      }, 0);
+    };
+
+    const sync = () => {
+      if (screen() !== "battle") return;
+      const round = readRound();
+      if (!Number.isFinite(round)) return;
+      if (observedRound === null) {
+        observedRound = round;
+        if (pendingInitialRound) pendingInitialRound = false;
+        else track("round_start", { from: "battle", outcome: "started", round });
+      } else if (round !== observedRound) {
+        const settledRound = observedRound;
+        observedRound = round;
+        lastTransition = "";
+        lastScoreCue = "";
+        lastResetCue = "";
+        track("round_settlement", { from: "battle", outcome: "continued", round: settledRound, next_round: round });
+        track("round_start", { from: "battle", outcome: "started", round });
+      }
+
+      const transition = document.querySelector("#cardGameCenter .card-crib-transition")?.textContent?.trim() || "";
+      if (transition && transition !== lastTransition) {
+        lastTransition = transition;
+        track("starter_reveal", { from: "battle", outcome: "revealed", round });
+      }
+
+      const scoreCue = document.querySelector("#cardGameCenter .card-crib-score-cue")?.textContent?.trim() || "";
+      if (scoreCue && scoreCue !== lastScoreCue) {
+        lastScoreCue = scoreCue;
+        const labels = MILESTONE_LABELS[locale()] || MILESTONE_LABELS.en;
+        const reasonText = scoreCue.replace(/\d+\s*\/\s*31\.?\s*$/u, "");
+        ["fifteen", "pair"].forEach((milestone) => {
+          if (labels[milestone] && reasonText.includes(labels[milestone])) {
+            const points = scoreCue.match(/\+\s*(\d+)/u)?.[1];
+            track("pegging_milestone", {
+              from: "battle",
+              outcome: "scored",
+              milestone,
+              round,
+              count: readPegCount(),
+              score_delta: bounded(points, 12),
+            });
+          }
+        });
+      }
+
+      const resetCue = document.querySelector("#cardGameCenter .card-crib-reset")?.textContent?.trim() || "";
+      if (resetCue && resetCue !== lastResetCue) {
+        lastResetCue = resetCue;
+        const labels = MILESTONE_LABELS[locale()] || MILESTONE_LABELS.en;
+        const milestone = resetCue.includes(labels.go) ? "go" : resetCue.includes("31") ? "thirty_one" : null;
+        if (milestone) track("pegging_milestone", { from: "battle", outcome: "reset", milestone, round, count: 0 });
+      }
+    };
+
+    resetBattleObservation = () => {
+      observedRound = null;
+      lastTransition = "";
+      lastScoreCue = "";
+      lastResetCue = "";
+      pendingInitialRound = true;
+      schedule();
+    };
+
+    [center, phaseNode, hand, actions].forEach((node) => new MutationObserver(schedule).observe(node, {
+      attributes: true,
+      childList: true,
+      characterData: true,
+      subtree: true,
+    }));
+    schedule();
+  };
 
   const observeResult = () => {
     const result = document.querySelector("#resultOverlay");
@@ -126,13 +275,19 @@
           from: "battle",
           outcome: result.dataset.outcome || "unknown",
           mastery_target_visible: document.querySelector("#resultText")?.dataset.cribbageResultMastery === "true",
+          round: readRound(),
         };
         if (scores) { details.player_score = Number(scores[1]); details.opponent_score = Number(scores[2]); }
+        track("round_settlement", { from: "battle", outcome: "result", round: details.round });
         track("round_result", details);
       } else if (!visible) resultVisible = false;
     }).observe(result, { attributes: true, attributeFilter: ["hidden"] });
   };
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", observeResult, { once: true });
-  else observeResult();
+  const onReady = () => {
+    observeResult();
+    observeBattle();
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", onReady, { once: true });
+  else onReady();
 })();
