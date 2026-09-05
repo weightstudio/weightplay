@@ -154,6 +154,28 @@
 
   const heartsShellCopy = () => HEARTS_SHELL_COPY[currentLocale()] || null;
 
+  const HEARTS_SOUND_COPY = {
+    en: { on: "On", off: "Off" },
+    "zh-Hant": { on: "開", off: "關" },
+    "zh-Hans": { on: "开", off: "关" },
+    ja: { on: "オン", off: "オフ" },
+    ko: { on: "켜짐", off: "꺼짐" },
+    es: { on: "Activado", off: "Desactivado" },
+    "pt-BR": { on: "Ligado", off: "Desligado" },
+    fr: { on: "Activé", off: "Désactivé" },
+    de: { on: "Ein", off: "Aus" },
+    it: { on: "Attivo", off: "Disattivato" },
+    ru: { on: "Вкл.", off: "Выкл." },
+    hi: { on: "चालू", off: "बंद" },
+    ar: { on: "تشغيل", off: "إيقاف" },
+  };
+
+  const heartsSoundLabel = (enabled) => {
+    const copy = HEARTS_SOUND_COPY[currentLocale()] || HEARTS_SOUND_COPY.en;
+    const label = (TEXT[currentLocale()] || TEXT.en).sound;
+    return `${label}: ${enabled ? copy.on : copy.off}`;
+  };
+
   const SPADES_COPY = {
     en: { bid: "Bid the tricks your team expects to take. ♠ is always trump.", bidContext: "Choose a bid near the tricks your team can support; 0–13 are all legal.", firstTrick: "First trick: choose a card from your hand.", play: "Follow suit when possible; a spade wins the trick." },
     "zh-Hant": { bid: "叫出你和隊友預計能贏的墩數。♠ 永遠是王牌。", bidContext: "可依團隊有把握拿到的墩數叫牌；0–13 都是合法選項。", firstTrick: "第一墩：從你的手牌選一張出牌。", play: "能跟同花色就跟牌；黑桃可以贏得這一墩。" },
@@ -432,7 +454,9 @@
       ownLocalizedText(document.querySelector("#battleBackBtn"), `← ${t("back")}`);
       const battleBack = document.querySelector("#battleBackBtn");
       if (battleBack && battleBack.getAttribute("aria-label") !== t("back")) battleBack.setAttribute("aria-label", t("back"));
-      ownLocalizedText(document.querySelector("#soundBtn"), `${t("sound")}: On`);
+      const soundButton = document.querySelector("#soundBtn");
+      const soundEnabled = soundButton?.getAttribute("aria-pressed") !== "false";
+      ownLocalizedText(soundButton, heartsSoundLabel(soundEnabled));
       const settings = document.querySelector("#audioMenuBtn");
       if (settings && settings.getAttribute("aria-label") !== t("settings")) settings.setAttribute("aria-label", t("settings"));
       const battleUtility = document.querySelector("[data-wp-battle-utility]");
@@ -2208,7 +2232,10 @@
       const next = !sound?.enabled;
       sound?.setEnabled(next);
       if (id === "cribbage") syncCribbageSoundControls();
-      else audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`;
+      else if (id === "hearts") {
+        audioButton.textContent = heartsSoundLabel(next);
+        audioButton.setAttribute("aria-pressed", String(next));
+      } else audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`;
     });
     localeSelect?.addEventListener("change", () => {
       const nextLocale = localeSelect.value;

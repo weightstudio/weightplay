@@ -202,17 +202,32 @@
     updateProgress();
     updateBattleUtility();
     const showResult = view.showResult.bind(view);
+    const resultCard = view.nodes.resultText?.closest(".result-card");
+    const resultBoundary = resultCard ? (() => {
+      const node = document.createElement("p");
+      node.className = "golf-result-boundary";
+      node.dataset.wpGolfResultBoundary = "true";
+      node.setAttribute("aria-live", "polite");
+      const actions = resultCard.querySelector(".result-actions");
+      resultCard.insertBefore(node, actions || null);
+      return node;
+    })() : null;
     view.showResult = () => {
       showResult();
       if (!view.nodes?.resultText) return;
       const locale = view.locale || document.documentElement.lang || "en";
+      let boundary = "";
       if (view.game?.lost) {
         const reason = GOLF_FAILURE_REASON_COPY[locale] || GOLF_FAILURE_REASON_COPY.en;
-        view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${reason}`;
+        boundary = reason;
       }
       if (view.game?.won) {
         const actions = GOLF_RESULT_ACTION_COPY[locale] || GOLF_RESULT_ACTION_COPY.en;
-        view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${actions}`;
+        boundary = actions;
+      }
+      if (resultBoundary) {
+        resultBoundary.textContent = boundary;
+        resultBoundary.hidden = !boundary;
       }
       if (!view.game?.won && !view.game?.lost) return;
       const best = Math.max(0, Number(view.game?.bestCombo) || 0);

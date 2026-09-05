@@ -35,6 +35,13 @@ body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .card-game-player-header { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 8px; }
 .card-game-player-header small { color: #b9d8d3; }
 body[data-wp-card-game="hearts"] .card-game-player-header small { min-width: 0; flex: 1 1 auto; line-height: 1.2; overflow-wrap: anywhere; text-align: right; }
+body[data-wp-card-game="hearts"] .card-game-topbar .battle-back,
+body[data-wp-card-game="hearts"] .card-game-topbar .battle-utility {
+  flex-basis: 52px;
+  width: 52px;
+  min-width: 52px;
+  min-height: 52px;
+}
 .card-hand { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; min-height: 78px; }
 .playing-card { width: 52px; height: 72px; border: 2px solid rgba(25, 45, 63, .22); border-radius: 9px; background: var(--card-face); color: var(--card-ink); box-shadow: 0 5px 10px rgba(0,0,0,.22); font: 700 16px/1 system-ui, sans-serif; cursor: pointer; position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 0; transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
 .playing-card:hover, .playing-card:focus-visible { transform: translateY(-4px); outline: none; box-shadow: 0 8px 14px rgba(0,0,0,.3); }

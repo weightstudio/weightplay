@@ -11,6 +11,9 @@
     "animal-bounce-brawl": ["#battle-screen", 390, 788, 760, 334],
     "animal-frost-maze": ["#battle-screen", 390, 788, 760, 334],
     "animal-flip-foundry": ["#battle-screen", 390, 788, 760, 334],
+    // Chameleon Blend's six color/pattern choices need the full compact-
+    // landscape envelope so the controls retain their touch target size.
+    "animal-chameleon-blend": ["#battle-screen", 390, 788, 760, 334],
     "animal-habitat-builder": ["#battle-screen", 390, 788, 760, 334],
     // Cloudhook owns a native 960x540 playfield; in compact landscape it
     // uses the same wide envelope so its tether controls remain operable.

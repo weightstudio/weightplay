@@ -5,7 +5,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v11";
+  const GAME_VERSION = "v12";
   const INTERFACE_VERSION = 6;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -393,6 +393,14 @@
   function currentQuestText(){
     const active=activeQuest();
     if(!active)return t("questsComingSoon");
+    // The persistent phone HUD must lead with the next action. Long quest
+    // titles otherwise consume the complete one-line surface and hide the
+    // instruction that actually advances the mission.
+    return `${active.index+1}/${QUESTS.length} · ${questObjective(active.quest)}`;
+  }
+  function currentQuestDetailText(){
+    const active=activeQuest();
+    if(!active)return t("questsComingSoon");
     return `${active.index+1}/${QUESTS.length} · ${questTitle(active.quest)} — ${questObjective(active.quest)}`;
   }
   function routeTargetForQuest(){
@@ -535,7 +543,7 @@
     clearTimeout(toastTimer); toastTimer=setTimeout(()=>nodes.toast.classList.remove("show"),duration);
   }
   function showCurrentQuest(){
-    showToast(state.chapter4Complete?t("questsComingSoon"):`${t("currentQuest")} · ${nodes.objective.textContent}`,3400);
+    showToast(state.chapter4Complete?t("questsComingSoon"):`${t("currentQuest")} · ${currentQuestDetailText()}`,3400);
   }
   function setPanel(panel) {
     [nodes.pause,nodes.inventory,nodes.leave,nodes.result].forEach(item => item.hidden=item!==panel);

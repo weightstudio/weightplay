@@ -100,6 +100,10 @@ body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 420px minma
 /* Lights Out uses the same governed wide-layout poster columns so its
    compact landscape and desktop Main surfaces keep a stable visual anchor. */
 body[data-logic-game="lights-out"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
+/* Minefield's v13 Main keeps the poster on the governed 420px desktop
+   column so the first-use summary and Start action do not stretch the
+   artwork beyond the shared Main contract. */
+body[data-logic-game="minefield-logic"] .logic-hero { grid-template-columns: 420px minmax(0, 1fr); }
 .logic-copy { display: grid; gap: 13px; }
 .logic-kicker { margin: 0; color: var(--logic-accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .logic-copy h2 { margin: 0; font-size: clamp(30px, 6vw, 54px); line-height: .98; letter-spacing: -.04em; }
@@ -235,8 +239,11 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="peg-solitaire"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="lights-out"] .logic-hero { grid-template-columns: 1fr; }
+  body[data-logic-game="minefield-logic"] .logic-hero { grid-template-columns: 1fr; }
   body[data-logic-game="lights-out"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
   body[data-logic-game="lights-out"] .logic-return img { display: block; }
+  body[data-logic-game="minefield-logic"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
+  body[data-logic-game="minefield-logic"] .logic-return img { display: block; }
   body[data-logic-game="peg-solitaire"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
   body[data-logic-game="peg-solitaire"] .logic-return img { display: block; }
   body[data-logic-game="reversi"] .logic-return.wp-shell-return { gap: 3px; padding-inline: 4px; }
@@ -268,6 +275,7 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   body[data-logic-game="peg-solitaire"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="reversi"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
   body[data-logic-game="lights-out"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
+  body[data-logic-game="minefield-logic"] .logic-hero { grid-template-columns: 300px minmax(0, 1fr); }
 }
 @media (min-width: 661px) and (max-height: 760px) and (orientation: landscape) {
   .logic-battle-screen { height: calc(100svh - 56px); min-height: 0; max-height: calc(100svh - 56px); overflow: hidden; padding-top: 4px; }
@@ -340,12 +348,20 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
     grid-template-rows: minmax(0, 1fr); align-items: center; gap: 8px;
   }
   .logic-board-area > div:has(.logic-minesweeper-board) .logic-minesweeper-board {
-    grid-column: 1; grid-row: 1; width: min(100%, calc(100svh - 198px));
+    grid-column: 1; grid-row: 1; width: min(100%, calc(100svh - 170px));
     height: auto; aspect-ratio: 1; max-width: 100%; max-height: 100%;
     grid-template-rows: repeat(9, minmax(0, 1fr)); align-self: center; justify-self: center;
   }
   .logic-board-area > div:has(.logic-minesweeper-board) .logic-board-toolbar {
     grid-column: 2; grid-row: 1; width: 100%; align-content: center;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
+  }
+  body[data-logic-game="minefield-logic"] .logic-board-toolbar .logic-select {
+    grid-column: 1 / -1; width: 100%; min-width: 0;
+  }
+  body[data-logic-game="minefield-logic"] .logic-board-toolbar .logic-mini,
+  body[data-logic-game="minefield-logic"] .logic-board-toolbar .logic-status-chip {
+    min-width: 0; width: 100%; justify-content: center; padding-inline: 6px;
   }
   .logic-sudoku-board { width: min(100%, calc(100svh - 208px)); }
   .logic-board-area > div:has(.logic-sudoku-board) { width: 100%; height: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(170px, 240px); grid-template-rows: auto minmax(0, 1fr); align-items: center; gap: 4px; }

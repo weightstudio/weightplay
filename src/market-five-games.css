@@ -39,5 +39,6 @@ body[data-wp-market-game="animal-habitat-builder"] .m5-hint{bottom:8px!important
 body[data-wp-market-game="animal-habitat-atlas"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
 body[data-wp-market-game="animal-habitat-builder"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
 body[data-wp-market-game="animal-moonlight-workshop"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
+body[data-wp-market-game="animal-chameleon-blend"] .m5-battle-header{grid-template-columns:48px minmax(0,1fr) auto 48px}
 .m5-main+.m5-guide{width:min(920px,calc(100% - 24px));margin:16px auto 24px}
 body:not(.wp-shell-main-active) .m5-main+.m5-guide{display:none!important}

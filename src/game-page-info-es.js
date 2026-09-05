@@ -2803,7 +2803,7 @@ window.WeightPlayGameInfoLocales.es = {
       "strategyTips": ["Empieza por las flechas que ya apuntan hacia un borde abierto.", "Sigue la ruta completa después de un portal antes de decidir.", "Con llaves o hielo, anticipa qué rutas cambiarán al retirar el bloque.", "Una elección bloqueada no gasta movimientos; usa el primer obstáculo como información."],
       "progression": ["Los niveles 1-5 enseñan trayectorias libres y orden de retirada.", "Los niveles 6-15 añaden filas entrelazadas y muros fijos.", "Los niveles 16-25 presentan giros, llaves, cerraduras y hielo.", "Los niveles 26-30 combinan portales y puertas de un solo sentido con las reglas anteriores."],
       "designNote": "Las flechas legales responden de inmediato, por lo que puedes tocar varias acciones seguras sin esperar a que termine la animación anterior. El estado sigue siendo determinista y los toques repetidos sobre una flecha ya retirada se ignoran.",
-      "parent": "Escape de Flechas es un puzle de navegador para público general recomendado a partir de 9 años. No requiere cuenta. Los niveles desbloqueados y las preferencias se guardan solo en este navegador.",
+      "parent": "Escape de Flechas es un puzle de navegador para público general. No requiere cuenta. Los niveles desbloqueados y las preferencias se guardan solo en este navegador.",
       "faq": [["¿Cuántos niveles incluye?", "Hay 30 niveles diseñados a mano en seis capítulos; el nivel 30 se puede repetir."], ["¿Una flecha bloqueada gasta un movimiento?", "No. Señala el primer obstáculo y deja el tablero sin cambios."], ["¿Pista resuelve el puzle?", "No. Solo marca una flecha segura; tú decides si la juegas."], ["¿Puedo tocar varias flechas rápidamente?", "Sí. Distintas flechas legales pueden salir de inmediato sin una espera global."], ["¿Cómo funcionan los portales?", "La flecha entra en un portal y continúa en la misma dirección desde la salida emparejada."], ["¿Se guarda el progreso?", "Los niveles y las preferencias se guardan localmente en este navegador."]],
       "related": []
     }
@@ -3500,7 +3500,7 @@ window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
     "Reiniciar usa la misma semilla sin cambiar el reparto; Nueva partida crea una mezcla nueva."
   ],
   designNote: "Spider comparte con Klondike el motor de cartas, el lienzo de batalla adaptable, la capa de arrastre, la entrada táctil, el ritmo de animación, la preferencia de sonido, los estados de Deshacer y el lenguaje visual de las cartas.",
-  parent: "Solitario Spider es un juego de estrategia con cartas para público general, recomendado a partir de 9 años y para jugar en familia. No requiere cuenta; las estadísticas por dificultad y las preferencias se guardan en este navegador.",
+  parent: "Solitario Spider es un juego de estrategia con cartas para público general. No requiere cuenta; las estadísticas por dificultad y las preferencias se guardan en este navegador.",
   related: ["klondike-solitaire"],
   relatedIds: ["klondike-solitaire"],
   faq: [

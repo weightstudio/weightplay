@@ -5,7 +5,7 @@
   window.__weightplayHeartsAnalyticsInstalled = true;
 
   const GAME_ID = "hearts";
-  const GAME_VERSION = "v9";
+  const GAME_VERSION = "v16";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",

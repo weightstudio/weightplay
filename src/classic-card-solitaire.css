@@ -256,6 +256,7 @@ body[data-wp-game-id="yukon-solitaire"] .classic-pile .classic-card { top: calc(
 .result-card { width: min(92vw, 440px); padding: 24px; border: 1px solid rgba(255,255,255,.18); border-radius: 20px; background: linear-gradient(145deg, #123a63, #0a213f); box-shadow: 0 22px 50px rgba(0,0,0,.4); text-align: center; }
 .result-card h2 { margin: 0 0 8px; }
 .result-card p { color: var(--classic-muted); }
+.golf-result-boundary { margin: 12px 0 0; padding: 10px 12px; border: 1px solid rgba(78,205,196,.42); border-left-width: 3px; border-radius: 10px; color: var(--classic-text) !important; background: rgba(78,205,196,.09); font-size: 13px; font-weight: 800; line-height: 1.45; }
 .result-actions { justify-content: center; }
 .battle-ad-reserve { width: min(100%, 920px); height: 56px; margin: 0 auto; flex: 0 0 56px; }
 
@@ -571,8 +572,20 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
 
 @media (orientation: landscape) and (max-height: 560px) {
   body[data-wp-game-id="golf-solitaire"] .tableau-area.variant-golf {
-    --golf-card-width: clamp(34px, 8.6vh, 50px);
+    --golf-card-width: clamp(36px, 9vh, 52px);
     --classic-pile-step: clamp(12px, 3vh, 16px);
+  }
+
+  body[data-wp-game-id="golf-solitaire"] .battle-actions {
+    height: 40px;
+    min-height: 40px;
+    gap: 6px;
+  }
+
+  body[data-wp-game-id="golf-solitaire"] .battle-actions .mini-btn {
+    min-height: 38px;
+    padding-inline: 4px;
+    font-size: 12px;
   }
 
   /* The stock and waste share the short-landscape battle track with the
@@ -582,6 +595,16 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
     --classic-card-width: clamp(40px, 12vh, 50px);
     --classic-card-height: calc(var(--classic-card-width) * 1.42);
   }
+}
+
+body[data-wp-game-id="golf-solitaire"] .battle-actions #battleRestartBtn {
+  border-color: rgba(78,205,196,.7);
+  color: var(--classic-accent);
+}
+
+body[data-wp-game-id="golf-solitaire"] .battle-actions #battleNewBtn {
+  border-color: rgba(255,209,102,.7);
+  color: var(--classic-gold);
 }
 
 /* FreeCell's compact-landscape top row needs the full width for its two

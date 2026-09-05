@@ -205,7 +205,7 @@
       "Recommencer utilise la même graine sans changer la donne ; Nouvelle partie crée un nouveau mélange."
     ],
     designNote: "Spider partage avec Klondike le moteur de cartes, le canevas de bataille adaptatif, la couche de glisser-déposer, l'entrée tactile, le rythme des animations, la préférence sonore, les instantanés d'annulation et le langage visuel des cartes.",
-    parent: "Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public, recommandé dès 9 ans et adapté au jeu en famille. Aucun compte n'est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.",
+    parent: "Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public. Aucun compte n'est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.",
     related: ["klondike-solitaire"],
     relatedIds: ["klondike-solitaire"],
     faq: [
