@@ -4092,7 +4092,7 @@ window.WONDER_LOBBY.games.push(
       "attraversare la strada", "traffico", "fiume", "spazio sicuro", "перейти дорогу", "трафик", "река", "безопасный промежуток",
       "सड़क पार करना", "यातायात", "नदी", "सुरक्षित जगह", "عبور الطريق", "المرور", "النهر", "فجوة آمنة"
     ],
-    art: { kind: "image", background: "assets/road-crosser-cover.webp", hideHero: true },
+    art: { kind: "image", background: "assets/road-crosser-cover-v2.webp", hideHero: true },
   },
   {
     id: "alien-defender",

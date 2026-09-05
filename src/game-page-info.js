@@ -187,6 +187,9 @@
       difficulty: "Easy to Challenging",
       time: "2-10 minutes",
       skills: ["Planning", "Color Matching", "Spatial Reasoning"],
+      showSkills: false,
+      showRelatedSkill: false,
+      hideScoreBands: true,
       intro: "Hexa Sort is a deterministic stack puzzle with 30 handcrafted stages and an Endless score mode. Place one offered stack on an open hex, then watch adjacent matching top colors combine until the board becomes stable.",
       story: ["Every stage begins with an authored arrangement, objective, move budget, and stack offer sequence. The early campaign teaches clean color planning before frozen cells, gems, blocked spaces, rainbow chips, bombs, and mixed objectives appear.", "Endless mode removes the campaign target and keeps increasing color and special-tile pressure until no legal open hex remains."],
       systems: ["Only the contiguous matching run at the top of a stack can move. Lower colors remain hidden until the layers above them leave or clear.", "Automatic movement is deterministic: the resolver favors clears and useful objectives, keeps transfers adjacent, and avoids revisiting the same board state.", "Ten matching chips clear together and reveal the next color. Frozen stacks thaw from adjacent placements, gems are collected from neighboring activity, and special chips resolve inside the same locked turn.", "The tray always offers three stacks. A placement is final, so inspect both visible top colors and the lower layers before choosing a hex."],
@@ -194,7 +197,7 @@
       strategyTips: ["Prefer placements that concentrate one top color without sealing every open hex.", "Count how many matching chips a chain can reveal before committing.", "Keep more than one useful landing area for awkward tray stacks.", "Treat frozen cells, gems, and objectives as part of the same plan instead of chasing only the largest visible stack.", "When two merge directions look equal, consider which lower color will be exposed next."],
       progression: ["Stages 1-10 use ten distinct opening silhouettes and teach placement, top runs, and ten-chip clears.", "Middle stages add frozen cells, stones, gems, rainbow chips, bombs, color objectives, and tighter move limits.", "Stages 26-30 combine several systems under five-color pressure. Endless mode increases pressure continuously and stores the best score in this browser."],
       designNote: "Chip transfers use persistent visible layers and sequential readable motion. The board resolves one deterministic transaction at a time, while the Stage selector recycles nine stable cards so long campaigns remain smooth without building one permanent item per stage.",
-      parent: "Hexa Sort is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required. Campaign unlocks, Endless best score, language, and sound preferences are stored only in this browser.",
+      parent: "Hexa Sort is a general-audience browser puzzle for family play. No account or purchase is required. Campaign unlocks, Endless best score, language, and sound preferences are stored only in this browser.",
       related: ["block-blast", "arrow-escape"],
       relatedIds: ["block-blast", "arrow-escape"],
       faq: [["How many stages are included?", "There are 30 handcrafted campaign stages plus Endless mode."], ["Can I move a stack after placing it?", "No. Choose carefully; the placement is final and matching top runs resolve automatically."], ["Which chips are allowed to move?", "Only one contiguous run of the same color at the top of a stack can move to an adjacent stack."], ["When does a color clear?", "A connected resolved stack clears when it reaches ten matching chips."], ["Is Endless random?", "Offers vary, but the rules and every merge decision are deterministic from the current state."], ["Is progress saved?", "Campaign unlocks, Endless best score, and preferences are stored locally in this browser."]],
@@ -253,7 +256,7 @@
       faq: [["Are cards hidden?", "No. All 52 cards begin face up in the tableau."], ["What are Free Cells?", "They are four temporary single-card spaces that help reorganize the tableau."], ["Can every sequence move at once?", "Only when the available Free Cells and empty columns provide enough working capacity."], ["What is the goal?", "Build all four suit foundations from Ace to King."], ["Can I undo?", "Yes. Undo restores the complete prior board state."], ["Can I replay the same deal?", "Yes. Restart returns to the current seed; New Game creates a fresh deal."]],
     },
     "pyramid-solitaire": {
-      title: "Pyramid Solitaire", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Pattern Recognition", "Planning", "Focus"],
+      title: "Pyramid Solitaire", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Pattern Recognition", "Planning", "Focus"], showSkills: false, showRelatedSkill: false, hideScoreBands: true,
       intro: "Pyramid Solitaire is a classic card puzzle: remove exposed pairs that add to 13, clear the seven-row pyramid, and use the Stock only when the current layout offers no useful pair.",
       story: ["The pyramid is a small visible logic field. Every pair you remove changes which cards are exposed, so the best move is often the one that opens two future routes instead of the easiest pair on the surface.", "Kings are special: a King totals 13 by itself and disappears alone, creating a satisfying new opening in the pyramid."],
       systems: ["The seven-row pyramid uses 28 cards. A card is exposed only when no remaining card covers it.", "Available pairs total 13: Ace with Queen, Two with Jack, Three with Ten, Four with Nine, Five with Eight, or Six with Seven. Kings clear alone.", "The Stock and Waste provide a second visible source. Pair an exposed pyramid card with the Waste card when the ranks total 13.", "Hint identifies a legal pair or a useful Stock action; Undo restores the prior pyramid, Waste, and Stock."],
@@ -261,7 +264,7 @@
       strategyTips: ["Free the bottom row to expose the most cards at once.", "Compare both cards in a possible pair before removing it; one may unlock a more valuable branch.", "Save flexible ranks when several future partners remain covered.", "Do not spend a Stock card just because it is available; use visible pairs first.", "Use Undo to compare whether a pair opens one or two new cards."],
       progression: ["Each deal uses a visible 28-card pyramid and a full supporting Stock.", "Short rounds teach pair recognition before longer rounds demand careful exposure planning.", "Replayable deals make it easy to improve the order of removals without pressure from a timer."],
       designNote: "Pyramid uses the shared Card Engine, one responsive battle canvas, localized tutorial copy, touch and mouse selection, original card visuals, and complete undo snapshots.",
-      parent: "Pyramid Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.",
+      parent: "Pyramid Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
       related: ["tripeaks-solitaire", "golf-solitaire"], relatedIds: ["tripeaks-solitaire", "golf-solitaire"],
       faq: [["Why is a card unavailable?", "A remaining card still covers it, so it is not exposed yet."], ["What makes a pair?", "The two ranks must total 13; a King clears alone."], ["Can I use the Waste?", "Yes. Pair the Waste card with an exposed pyramid card when their ranks total 13."], ["What happens when Stock is empty?", "No more fresh cards are available, so the visible pyramid route must finish the deal."], ["Can I undo?", "Yes. Undo restores the complete prior state."]],
     },
@@ -3385,7 +3388,7 @@
       "تجمع المراحل 26–30 عدة أنظمة تحت ضغط خمسة ألوان. يزيد الوضع اللانهائي الضغط باستمرار ويحفظ أفضل نتيجة في هذا المتصفح.",
     ],
     designNote: "تستخدم حركة الرقائق طبقات مرئية ثابتة وانتقالات متسلسلة سهلة القراءة. تحل اللوحة معاملة حتمية واحدة في كل مرة، بينما يعيد محدد المرحلة تدوير تسع بطاقات ثابتة كي تبقى الحملة الطويلة سلسة. تعمل اللمسة والماوس ولوحة المفاتيح على الحالة القانونية نفسها عبر لوحة منطقية واحدة، وتبقى الشاشة الرئيسية وإدارة المراحل والمعركة والنتيجة ومسارات العودة واضحة ومحدودة.",
-    parent: "هيكسا سورت لعبة ألغاز متصفح للجمهور العام، موصى بها للأعمار من 9 سنوات فما فوق وللعب العائلي. لا يلزم حساب أو شراء. تُحفظ فتحات الحملة وأفضل نتيجة في الوضع اللانهائي واللغة وتفضيلات الصوت محلياً في هذا المتصفح فقط، وقد يؤدي مسح بيانات الموقع أو تغيير المتصفح أو الجهاز إلى إزالة الحفظ الحالي.",
+    parent: "هيكسا سورت لعبة ألغاز متصفح للجمهور العام وللعب العائلي. لا يلزم حساب أو شراء. تُحفظ فتحات الحملة وأفضل نتيجة في الوضع اللانهائي واللغة وتفضيلات الصوت محلياً في هذا المتصفح فقط، وقد يؤدي مسح بيانات الموقع أو تغيير المتصفح أو الجهاز إلى إزالة الحفظ الحالي.",
     faq: [
       ["كم عدد المراحل المتاحة؟", "هناك 30 مرحلة مصممة بعناية في الحملة، بالإضافة إلى الوضع اللانهائي."],
       ["هل يمكن نقل الكومة بعد وضعها؟", "لا. اختر بعناية؛ فالوضع نهائي وتتحد السلاسل العلوية المتطابقة تلقائياً."],
@@ -8892,7 +8895,7 @@
     syncLocalizedMetadata(game, identity);
     const gameSkills = game.skills || [];
     const showSkills = audience === "kids" && game.showSkills !== false;
-    const showRecommendedAge = Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
+    const showRecommendedAge = audience === "kids" && Boolean(baseGame.age) && !/^(12|13)\+$/.test(baseGame.age);
 
     document
       .querySelectorAll(".game-page-info, .public-guide, .game-guide")
@@ -11323,7 +11326,7 @@
   }
 
   registerExpandedGuide("animal-bus-jam", {
-    title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy", relatedIds: ["animal-bamboo-pipes", "animal-cratebound"],
+    title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy", relatedIds: ["animal-bamboo-pipes", "animal-cratebound"], showSkills: false, showRelatedSkill: false,
     intro: "Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.",
     story: ["Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.", "Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer."],
     systems: ["Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.", "A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.", "When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.", "If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal."],
@@ -11483,7 +11486,7 @@
   };
   Object.entries(busJamGuideLocales).forEach(([localeCode, guide]) => {
     localizedGames[localeCode] = localizedGames[localeCode] || {};
-    localizedGames[localeCode]["animal-bus-jam"] = guide;
+    localizedGames[localeCode]["animal-bus-jam"] = { ...guide, showSkills: false, showRelatedSkill: false };
   });
 
   registerExpandedGuide("animal-number-match", {
@@ -14540,8 +14543,8 @@
     strategyTips: ["優先選擇能集中頂層顏色、又不會封死所有開放六角格的位置。", "放置前先估算一條合併鏈可能露出多少個同色晶片。", "為難處理的托盤堆保留不只一個可用落點。", "把冰凍格、寶石與目標視為同一套規劃，不要只追逐眼前最大的堆疊。", "兩個合併方向看似相同時，優先考慮哪一個會先露出更有用的下層顏色。"],
     progression: ["第 1–10 關使用十種不同的開局輪廓，教導放置、頂部連續晶片與十晶片清除。", "中段關卡加入冰凍格、石頭、寶石、彩虹晶片、炸彈、顏色目標與更嚴格的步數限制。", "第 26–30 關在五色壓力下組合多項系統；無盡模式會持續增加壓力，並把最佳分數保存在這個瀏覽器中。"],
     designNote: "晶片搬移使用持續存在的可見圖層，一次處理一筆確定性交易；階段選擇器回收九張穩定卡，讓 30 關長流程維持順暢，不必為每一關建立永久項目。",
-    parent: "《六角排序》是適合一般玩家與家庭遊玩的瀏覽器益智遊戲，建議 9 歲以上。不需要帳號或購買；戰役解鎖、無盡最佳分數、語言與音效偏好只儲存在這個瀏覽器。",
-    related: ["方塊爆破", "箭頭大逃亡"],
+    parent: "《六角排序》是適合一般玩家與家庭遊玩的瀏覽器益智遊戲。不需要帳號或購買；戰役解鎖、無盡最佳分數、語言與音效偏好只儲存在這個瀏覽器。",
+    related: ["block-blast", "arrow-escape"],
     relatedIds: ["block-blast", "arrow-escape"],
     faq: [["共有幾個關卡？", "共有 30 個手工設計的戰役關卡，另有無盡模式。"], ["放置後可以移動堆疊嗎？", "不可以。放置是最終決定，請在落下前確認合併方向與後續空間。"], ["哪些晶片可以移動？", "只有堆疊頂部連續且同色的一段晶片，才能移到相鄰堆疊。"], ["什麼時候會清除顏色？", "連續解析後的同色堆疊達到十個晶片時，就會一起清除。"], ["無盡模式是隨機的嗎？", "供牌會隨盤面變化，但規則與每次合併決策都由目前狀態確定。"], ["進度會保存嗎？", "戰役解鎖、無盡最佳分數與偏好會儲存在目前瀏覽器。"], ["支援哪些操作方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以同一套邏輯版面縮放。"], ["進度會自動轉移到其他裝置嗎？", "不會。目前只儲存在本機瀏覽器，其他瀏覽器設定檔或裝置會有獨立進度。"]],
   };
@@ -14562,8 +14565,8 @@
     strategyTips: ["优先选择能集中顶层颜色、又不会封死所有开放六角格的位置。", "放置前先估算一条合并链可能露出多少个同色晶片。", "为难处理的托盘堆保留不止一个可用落点。", "把冰冻格、宝石与目标视为同一套规划，不要只追逐眼前最大的堆叠。", "两个合并方向看似相同时，优先考虑哪一个会先露出更有用的下层颜色。"],
     progression: ["第 1–10 关使用十种不同的开局轮廓，教导放置、顶部连续晶片与十晶片清除。", "中段关卡加入冰冻格、石头、宝石、彩虹晶片、炸弹、颜色目标与更严格的步数限制。", "第 26–30 关在五色压力下组合多项系统；无尽模式会持续增加压力，并把最佳分数保存在这个浏览器中。"],
     designNote: "晶片搬移使用持续存在的可见图层，一次处理一笔确定性交易；阶段选择器回收九张稳定卡，让 30 关长流程保持顺畅，不必为每一关建立永久项目。",
-    parent: "《六角排序》是适合一般玩家与家庭游玩的浏览器益智游戏，建议 9 岁以上。不需要账号或购买；战役解锁、无尽最佳分数、语言与音效偏好只储存在这个浏览器。",
-    related: ["方块爆破", "箭头大逃亡"],
+    parent: "《六角排序》是适合一般玩家与家庭游玩的浏览器益智游戏。不需要账号或购买；战役解锁、无尽最佳分数、语言与音效偏好只储存在这个浏览器。",
+    related: ["block-blast", "arrow-escape"],
     relatedIds: ["block-blast", "arrow-escape"],
     faq: [["共有几个关卡？", "共有 30 个手工设计的战役关卡，另有无尽模式。"], ["放置后可以移动堆叠吗？", "不可以。放置是最终决定，请在落下前确认合并方向与后续空间。"], ["哪些晶片可以移动？", "只有堆叠顶部连续且同色的一段晶片，才能移到相邻堆叠。"], ["什么时候会清除颜色？", "连续解析后的同色堆叠达到十个晶片时，就会一起清除。"], ["无尽模式是随机的吗？", "供牌会随盘面变化，但规则与每次合并决策都由当前状态确定。"], ["进度会保存吗？", "战役解锁、无尽最佳分数与偏好会保存在当前浏览器。"], ["支持哪些操作方式和屏幕尺寸？", "游戏支持触控、鼠标和键盘；界面会在手机、横向与桌面窗口中以同一套逻辑版面缩放。"], ["进度会自动转移到其他设备吗？", "不会。目前只保存在本地浏览器，其他浏览器配置文件或设备会有独立进度。"]],
   };
@@ -14584,7 +14587,7 @@
     strategyTips: ["優先清理底層，盡量一次露出更多牌。", "移除配對前比較兩張牌各自能打開的路線；其中一張可能帶來更有價值的分支。", "當多個未露出牌仍可能成為後續配對時，保留彈性較高的點數。", "不要只因牌庫可用就立即翻牌，先使用可見的合法配對。", "用復原比較一組配對能打開一張還是兩張新牌，再決定保留哪條路線。"],
     progression: ["每局使用可見的 28 張金字塔牌與完整牌庫。", "短回合先教玩家辨認點數配對，較長回合再要求仔細規劃露牌順序。", "可重玩的牌局讓玩家在沒有計時壓力下，逐步改善移除順序。"],
     designNote: "金字塔接龍使用共用 Card Engine、單一響應式 Battle Canvas、本地化教學、觸控與滑鼠選牌、原創牌面視覺，以及完整的復原快照。",
-    parent: "《金字塔接龍》是適合一般玩家與家庭遊玩的紙牌益智遊戲，建議 9 歲以上。不需要帳號；語言、音效與牌局偏好只儲存在目前瀏覽器。",
+    parent: "《金字塔接龍》是適合一般玩家與家庭遊玩的紙牌益智遊戲。不需要帳號；語言、音效與牌局偏好只儲存在目前瀏覽器。",
     related: ["tripeaks-solitaire", "golf-solitaire"],
     relatedIds: ["tripeaks-solitaire", "golf-solitaire"],
     faq: [["為什麼這張牌不能選？", "仍有其他牌覆蓋它，所以它還沒有露出。"], ["什麼算是一組配對？", "兩張牌的點數總和必須是 13；K 牌可以單獨移除。"], ["可以使用棄牌堆嗎？", "可以。當棄牌堆的牌與已露出金字塔牌點數合計為 13 時，就能配對。"], ["牌庫用完會怎樣？", "沒有更多新牌可翻，剩下的金字塔牌必須靠目前盤面完成。"], ["可以復原嗎？", "可以。復原會恢復完整的上一個牌局狀態。"], ["支援哪些操作方式與螢幕尺寸？", "遊戲支援觸控、滑鼠與鍵盤；介面會在手機、橫向與桌面視窗中以同一套邏輯版面縮放。"], ["進度會自動轉移到其他裝置嗎？", "不會。目前牌局與偏好只儲存在本機瀏覽器，其他瀏覽器設定檔或裝置會有獨立進度。"]],
@@ -14606,7 +14609,7 @@
     strategyTips: ["优先清理底层，尽量一次露出更多牌。", "移除配对前比较两张牌各自能打开的路线；其中一张可能带来更有价值的分支。", "当多个未露出牌仍可能成为后续配对时，保留弹性较高的点数。", "不要只因牌库可用就立即翻牌，先使用可见的合法配对。", "用撤销比较一组配对能打开一张还是两张新牌，再决定保留哪条路线。"],
     progression: ["每局使用可见的 28 张金字塔牌与完整牌库。", "短回合先教玩家辨认点数配对，较长回合再要求仔细规划露牌顺序。", "可重玩的牌局让玩家在没有计时压力下，逐步改善移除顺序。"],
     designNote: "金字塔接龙使用共用 Card Engine、单一响应式 Battle Canvas、本地化教程、触控与鼠标选牌、原创牌面视觉，以及完整的撤销快照。",
-    parent: "《金字塔接龙》是适合一般玩家与家庭游玩的纸牌益智游戏，建议 9 岁以上。不需要账号；语言、音效与牌局偏好只储存在当前浏览器。",
+    parent: "《金字塔接龙》是适合一般玩家与家庭游玩的纸牌益智游戏。不需要账号；语言、音效与牌局偏好只储存在当前浏览器。",
     related: ["tripeaks-solitaire", "golf-solitaire"],
     relatedIds: ["tripeaks-solitaire", "golf-solitaire"],
     faq: [["为什么这张牌不能选？", "仍有其他牌覆盖它，所以它还没有露出。"], ["什么算是一组配对？", "两张牌的点数总和必须是 13；K 牌可以单独移除。"], ["可以使用弃牌堆吗？", "可以。当弃牌堆的牌与已露出金字塔牌点数合计为 13 时，就能配对。"], ["牌库用完会怎样？", "没有更多新牌可翻，剩下的金字塔牌必须靠当前盘面完成。"], ["可以撤销吗？", "可以。撤销会恢复完整的上一个牌局状态。"], ["支持哪些操作方式和屏幕尺寸？", "游戏支持触控、鼠标和键盘；界面会在手机、横向与桌面窗口中以同一套逻辑版面缩放。"], ["进度会自动转移到其他设备吗？", "不会。当前牌局与偏好只保存在本地浏览器，其他浏览器配置文件或设备会有独立进度。"]],

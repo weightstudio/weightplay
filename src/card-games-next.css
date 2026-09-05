@@ -115,6 +115,7 @@ body[data-wp-card-game="hearts"] .game-page-info {
 .card-choice-panel { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 .card-choice-panel button { min-width: 48px; min-height: 44px; }
 .card-choice-summary { max-width: 52ch; margin: 0; padding: 7px 10px; border: 1px solid rgba(215,249,231,.28); border-radius: 10px; color: #e7fff1; background: rgba(7,28,43,.38); font-size: 12px; line-height: 1.35; text-align: center; }
+body[data-wp-card-game="crazy-eights"] .card-crazy-eights-illegal-cue { border-color: rgba(255, 209, 102, .82); color: #fff0b0; background: rgba(95, 62, 15, .46); font-weight: 700; }
 .card-go-fish-book-cue { border-color: rgba(245,200,76,.78); color: #ffefa7; background: rgba(95,62,15,.42); font-weight: 700; }
 .card-war-swing { border-color: rgba(255,209,102,.5); color: #ffe7a0; }
 .card-book-progress { min-width: 132px; padding: 7px 10px; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: rgba(7,28,43,.5); text-align: left; }
