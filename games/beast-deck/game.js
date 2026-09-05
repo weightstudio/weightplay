@@ -3407,11 +3407,25 @@
     const button = nodes.battleUtilityBtn;
     if (!button) return;
     const muted = Boolean(window.WonderSound?.isMuted?.());
-    const legacyToggle = document.querySelector("button[data-sound-toggle]");
-    const label = legacyToggle?.getAttribute("aria-label")
-      || (muted ? "Enable sound" : "Disable sound");
+    const battleSoundLabels = {
+      en: { enable: "Enable sound", disable: "Disable sound" },
+      "zh-Hant": { enable: "開啟音效", disable: "關閉音效" },
+      "zh-Hans": { enable: "开启音效", disable: "关闭音效" },
+      ja: { enable: "サウンドをオン", disable: "サウンドをオフ" },
+      ko: { enable: "소리 켜기", disable: "소리 끄기" },
+      es: { enable: "Activar sonido", disable: "Desactivar sonido" },
+      "pt-BR": { enable: "Ativar som", disable: "Desativar som" },
+      fr: { enable: "Activer le son", disable: "Désactiver le son" },
+      de: { enable: "Ton einschalten", disable: "Ton ausschalten" },
+      it: { enable: "Attiva audio", disable: "Disattiva audio" },
+      ru: { enable: "Включить звук", disable: "Выключить звук" },
+      hi: { enable: "ध्वनि चालू करें", disable: "ध्वनि बंद करें" },
+      ar: { enable: "تشغيل الصوت", disable: "إيقاف الصوت" },
+    };
+    const soundCopy = battleSoundLabels[getLocale()] || battleSoundLabels.en;
+    const label = muted ? soundCopy.enable : soundCopy.disable;
     button.textContent = muted ? "🔇" : "🔊";
-    button.title = legacyToggle?.title || label;
+    button.title = label;
     button.setAttribute("aria-label", label);
     button.setAttribute("aria-pressed", String(!muted));
   }

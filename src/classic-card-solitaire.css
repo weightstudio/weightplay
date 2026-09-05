@@ -590,8 +590,13 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
    The audience guard keeps this General-only repair out of Kids surfaces. */
 @media (orientation: landscape) and (max-height: 560px) {
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
     grid-template-columns: minmax(0, 1fr) minmax(150px, 22%);
-    grid-template-rows: auto minmax(calc(var(--classic-card-height) + 102px), 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr) 32px;
     grid-template-areas:
       "top top"
       "tableau status"
@@ -622,14 +627,29 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
 
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .tableau-area.variant-freecell {
     grid-area: tableau;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
-    min-height: calc(var(--classic-card-height) + 102px);
+    min-height: 0;
+    height: 100%;
     overflow: visible;
     padding: 1px 0 2px;
   }
 
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .battle-actions {
     grid-area: actions;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 32px;
+    min-height: 32px;
+    overflow: hidden;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .battle-actions .mini-btn {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .board-top {
@@ -646,6 +666,34 @@ body[data-wp-game-id="golf-solitaire"] .board-middle .waste-pile .classic-card.s
     line-height: 1.15;
     white-space: normal;
   }
+}
+
+/* Keep the portrait shell and RTL column grid bounded by the logical Canvas.
+   This is intentionally FreeCell-only: other Classic variants retain their
+   stock/waste flow and their own responsive contracts. */
+body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > :is(.board-top, .board-status, .tableau-area, .battle-actions) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .tableau-area.variant-freecell {
+  direction: ltr;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  overflow-x: hidden;
+}
+
+body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .tableau-area.variant-freecell .classic-pile {
+  min-width: 0;
+  max-width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

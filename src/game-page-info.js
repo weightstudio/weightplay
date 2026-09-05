@@ -22,7 +22,7 @@
   }
   if (document.body?.dataset.wpBattleLayout !== "native" && !document.querySelector('script[src*="battle-canvas-standard.js"]')) {
     const script = document.createElement("script");
-    script.src = new URL("battle-canvas-standard.js?v=20260820-wide-envelope-cache-v3", sharedAssetBase).href;
+    script.src = new URL("battle-canvas-standard.js?v=20260905-ttt-responsive-landscape-v16", sharedAssetBase).href;
     script.dataset.wpBattleStandard = "true";
     document.head.appendChild(script);
   }
@@ -1121,6 +1121,7 @@
       time: "5-8 minutes",
       hideSkillsFact: true,
       showRelatedSkill: false,
+      relatedIds: ["animal-prism-battalion", "animal-rune-tactics"],
       skills: ["Logic", "Focus", "Problem Solving"],
       intro:
         "Clover Yard connects six garden regions that share sunlight, seeds, and water. When wild beasts crowd the paths, the player becomes the yard keeper and places Cat, Dog, Owl, and the optional Fox across five lanes. The 30-stage campaign introduces a readable rule in each region: healers restore a beast ahead, burrowers warn before changing lanes, and sun thieves remove 12 unspent sun. Every fifth stage has a separate guardian and counterplay, from Moss Horn Rhino's roar and Prism Shell Tortoise's protected phase to Burrow Badger Chief's lane changes, Ember Mane Boar's announced rush, Gale Wing Eagle's attack delay, and Moon Crown Elk's restoring pulse. Clears, scores, Garden Medals, coins, and training stay in this browser.",
