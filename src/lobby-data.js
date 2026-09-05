@@ -4290,7 +4290,7 @@ if (tetrisPublic) {
     description: { en: "Fill horizontal rows with falling blocks, use the landing outline, and keep the stack low as speed rises.", "zh-Hant": "用落下方塊填滿橫列，參考落點框保持低堆，隨等級提升應對更快速度。", "zh-Hans": "用下落方块填满横行，参考落点框保持低堆，随着等级提升应对更快速度。", ja: "落ちるブロックで横一列を埋め、着地点の枠を見ながら速度上昇に合わせて低く積みます。", ko: "떨어지는 블록으로 가로줄을 채우고 착지 윤곽을 보며 속도가 오를수록 낮게 쌓으세요.", es: "Completa filas con bloques que caen, usa el contorno de aterrizaje y mantén baja la pila mientras sube la velocidad.", "pt-BR": "Complete linhas com blocos que caem, use o contorno de pouso e mantenha a pilha baixa enquanto a velocidade aumenta.", fr: "Remplissez des lignes avec des blocs qui tombent, suivez le contour d’arrivée et gardez la pile basse quand la vitesse augmente.", de: "Fülle Reihen mit fallenden Blöcken, nutze die Landeanzeige und halte den Stapel niedrig, wenn das Tempo steigt.", it: "Completa le righe con blocchi in caduta, usa il contorno di atterraggio e tieni bassa la pila quando aumenta la velocità.", ru: "Заполняйте ряды падающими блоками, смотрите на контур приземления и держите стопку низкой с ростом скорости.", hi: "गिरते ब्लॉकों से पंक्तियाँ भरें, उतरने की रूपरेखा देखें और गति बढ़ने पर ढेर कम रखें।", ar: "املأ الصفوف بالكتل المتساقطة واستخدم إطار الهبوط وأبقِ الكومة منخفضة مع ازدياد السرعة." },
     meta: { en: ["10×20 Board", "Real Line Clears", "Local Best Score"], "zh-Hant": ["10×20 棋盤", "真實消行", "本機最高分"], "zh-Hans": ["10×20 棋盘", "真实消行", "本地最高分"], ja: ["10×20盤面", "実際のライン消去", "ローカル最高点"], ko: ["10×20 보드", "실제 줄 지우기", "로컬 최고 점수"], es: ["Tablero 10×20", "Filas reales", "Récord local"], "pt-BR": ["Tabuleiro 10×20", "Linhas reais", "Recorde local"], fr: ["Grille 10×20", "Lignes réelles", "Record local"], de: ["10×20-Feld", "Echte Reihen", "Lokaler Bestwert"], it: ["Campo 10×20", "Righe reali", "Record locale"], ru: ["Поле 10×20", "Настоящие линии", "Локальный рекорд"], hi: ["10×20 बोर्ड", "वास्तविक पंक्ति सफाई", "स्थानीय सर्वश्रेष्ठ"], ar: ["لوحة 10×20", "مسح صفوف حقيقي", "أفضل نتيجة محلية"] },
     searchAliases: [
-      "tetromino", "tetromino puzzle", "line clear", "clear lines", "falling blocks", "falling block game", "falling tetromino", "block stacking",
+      "tetromino", "tetromino puzzle", "line clear", "clear lines", "falling blocks", "falling block game", "falling block puzzle", "falling tetromino", "block stacking",
       "方塊堆疊", "消行", "消除整行", "落下方塊",
       "方块堆叠", "消行", "消除整行", "下落方块",
       "テトリミノ", "ライン消去", "落ちもの", "ブロック積み",
@@ -4412,6 +4412,35 @@ if (animalBounceBrawlPublic) {
     href: "games/animal-rain-roost/",
     internalTrial: "index.html?trial=1",
     art: { kind: "image", background: "games/animal-rain-roost/assets/animal-rain-roost-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
+
+// Orchard Steward is a weighted General prototype. Keep its canonical
+// identity planned and internal while the first playable slice remains behind
+// art, exact Tester, Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-orchard-steward",
+    audience: "general",
+    internalOnly: true,
+    status: "planned",
+    title: localize(["Orchard Steward", "果園守望", "果园守望", "オーチャード・スチュワード", "과수원 지킴이", "Guardián del Huerto", "Guardião do Pomar", "Gardien du Verger", "Obsthüter", "Custode del Frutteto", "Смотритель сада", "बाग़ का रखवाला", "حارس البستان"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Resource Stewardship Puzzle", "果園資源益智", "果园资源益智", "果樹園リソースパズル", "과수원 자원 퍼즐", "Puzzle de cuidado del huerto", "Quebra-cabeça de cuidado do pomar", "Puzzle de soin du verger", "Obstgarten-Ressourcenpuzzle", "Puzzle della cura del frutteto", "Головоломка ухода за садом", "बाग़ संसाधन पहेली", "لغز إدارة البستان"]),
+    description: localize(["Choose one gentle care action each day to balance sunlight, water, and soil for a small animal orchard.", "每天選一個照料動作，平衡小動物果園的陽光、水分與土壤。", "每天选一个照料动作，平衡小动物果园的阳光、水分与土壤。", "毎日ひとつの世話を選び、小さな動物果樹園の光・水・土を整えます。", "매일 돌봄 하나를 골라 작은 동물 과수원의 햇빛·물·흙을 맞춰요.", "Elige un cuidado diario para equilibrar sol, agua y tierra en un huerto animal.", "Escolha um cuidado por dia para equilibrar sol, água e terra num pomar animal.", "Choisissez un soin par jour pour équilibrer soleil, eau et terre dans un verger animal.", "Wähle jeden Tag eine Pflege, um Sonne, Wasser und Erde im Tiergarten auszugleichen.", "Scegli una cura al giorno per bilanciare sole, acqua e terra nel frutteto animale.", "Каждый день выбирайте заботу, чтобы уравновесить свет, воду и почву в саду животных.", "हर दिन एक देखभाल चुनकर पशु-बाग़ में धूप, पानी और मिट्टी संतुलित करें।", "اختر عناية واحدة كل يوم لموازنة الشمس والماء والتربة في بستان الحيوانات."]),
+    meta: localize([["3 Orchard Days", "Choose One Care", "Calm Strategy"], ["3 天果園", "選一項照料", "平靜策略"], ["3 天果园", "选一项照料", "平静策略"], ["3日間の果樹園", "世話をひとつ選ぶ", "穏やかな戦略"], ["과수원 3일", "돌봄 하나 선택", "차분한 전략"], ["3 días", "Elige un cuidado", "Estrategia serena"], ["3 dias", "Escolha um cuidado", "Estratégia tranquila"], ["3 jours", "Choisissez un soin", "Stratégie sereine"], ["3 Gartentage", "Eine Pflege wählen", "Ruhige Strategie"], ["3 giorni", "Scegli una cura", "Strategia calma"], ["3 дня", "Выберите заботу", "Спокойная стратегия"], ["3 दिन", "एक देखभाल चुनें", "शांत रणनीति"], ["3 أيام", "اختر عناية", "استراتيجية هادئة"]]),
+    categories: ["Puzzle", "Strategy", "Family", "Animal"],
+    skills: ["Planning", "Resource Balance", "Focus"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "../games/animal-orchard-steward/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-orchard-steward/assets/animal-orchard-steward-cover.svg", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);

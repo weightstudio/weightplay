@@ -2751,6 +2751,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "बारिश का घोंसला",
     "ar": "عشّ المطر"
   },
+  "animal-orchard-steward": {
+    "__localizedExact": true,
+    "en": "Orchard Steward",
+    "zh-Hant": "果園守望",
+    "zh-Hans": "果园守望",
+    "ja": "オーチャード・スチュワード",
+    "ko": "과수원 지킴이",
+    "es": "Guardián del Huerto",
+    "pt-BR": "Guardião do Pomar",
+    "fr": "Gardien du Verger",
+    "de": "Obsthüter",
+    "it": "Custode del Frutteto",
+    "ru": "Смотритель сада",
+    "hi": "बाग़ का रखवाला",
+    "ar": "حارس البستان"
+  },
   "animal-grove-dominoes": {
     "__localizedExact": true,
     "en": "Grove Chain",
