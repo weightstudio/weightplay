@@ -11433,6 +11433,85 @@
       genre: copy.genre,
     };
   }
+  const crateboundLongGuideLocales = {
+    "zh-Hans": {
+      guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "游戏指南",
+      title: "动物方舟搬运队", difficulty: "简单到具挑战性", time: "每座仓库 2–8 分钟", gameplay: "推拉货运解谜", genre: ["益智", "策略", "动物"], skills: ["逻辑", "规划", "问题解决"],
+      intro: "在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。",
+      story: ["Rux 正在逐座修复货运方舟。每个符文货箱都必须送到发光码头，货运路线才能重新开放。"],
+      systems: ["每次移动一格；只有货箱后方的格子是空的，才能向前推动。磁力拉取会让 Rux 向后移动，同时把相邻货箱拉进 Rux 刚离开的格子。", "后续章节会加入滑动冰轨、信号门、联动货箱和单向风暴带。每种装置都遵循固定且容易读懂的规则。"],
+      how: ["从关卡列中选择已解锁的仓库。", "第一次推动前先读完整条路线，并为绕到每个货箱后方预留空间。", "让每个符文货箱抵达发光码头，即可完成仓库。"],
+      strategyTips: ["从码头反向思考，先找出最后一次推动的方向。", "除非货箱的码头就在外墙上，否则不要把货箱推到外墙边。", "把磁力拉取留给无法靠普通行走和推动挽回的位置。"],
+      progression: ["30 座仓库分布在六个章节：初次货运、极地冰轨、信号甲板、磁力港湾、联动货箱和风暴方舟。"],
+      designNote: "每座仓库都经过手工设计并确认可以解开。复原和重新开始可以让玩家测试路线，同时不会丢失已完成关卡的进度。",
+      parent: "不需要账号。进度保存在此浏览器中；完成记录、解锁进度和最佳结果不是学校、医疗或能力评量。",
+      faq: [["共有多少座仓库？", "六个规则章节共有 30 座手工设计的仓库。"], ["每个关卡都能解开吗？", "可以。每座仓库都有经过验证的解法。"], ["拉取有什么作用？", "拉取会消耗一次磁力次数，让 Rux 向后移动，并把相邻货箱拉进 Rux 刚离开的格子。"], ["进度会保存吗？", "会。完成记录、解锁进度和最佳结果会保存在此浏览器中。"]]
+    },
+    ja: {
+      guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "ゲームガイド",
+      title: "アニマル・クレートバウンド", difficulty: "簡単から挑戦的", time: "倉庫1つにつき2〜8分", gameplay: "押して引く物流パズル", genre: ["パズル", "戦略", "動物"], skills: ["論理", "計画", "問題解決"],
+      intro: "30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。",
+      story: ["Ruxは貨物アークを倉庫ごとに修復しています。すべてのルーン箱を光るドックへ届けると、航路が再び開きます。"],
+      systems: ["1回に1マスだけ移動し、箱の先のマスが空いているときだけ押せます。Magnetic PullはRuxを後ろへ動かし、隣接する箱をRuxが離れたマスへ引き込みます。", "後半の章では、滑る氷のレール、信号ゲート、連結貨物、一方向の嵐ベルトが登場します。各装置は固定された、読み取りやすいルールで動きます。"],
+      how: ["ステージ列から解放済みの倉庫を選びます。", "最初に押す前にルート全体を読み、各箱の後ろへ回るスペースを残します。", "すべてのルーン箱を光るドックへ合わせると倉庫クリアです。"],
+      strategyTips: ["ドックから逆算して、最後に押す方向を見つけます。", "箱のドックが外壁にない限り、箱を外壁へ押し付けないようにします。", "通常の歩行と押し動作では戻せない位置のために、磁力の引きを温存します。"],
+      progression: ["30の倉庫は6章に分かれています。最初の貨物、極地レール、信号デッキ、マグネットベイ、ツイン貨物、ストームアークの順にルールが広がります。"],
+      designNote: "すべての倉庫は手作りで、解法があることを確認済みです。UndoとRestartでルートを試せ、クリア済みステージの進行は失いません。",
+      parent: "アカウントは不要です。進行状況はこのブラウザに保存され、クリア、解放、ベスト結果は学校・医療・能力の評価ではありません。",
+      faq: [["倉庫はいくつありますか？", "6つのルール章に、手作りの倉庫が30個あります。"], ["すべてのステージを解けますか？", "はい。すべての倉庫に検証済みの解法があります。"], ["Pullは何をしますか？", "磁力チャージを1つ使い、Ruxを後ろへ動かし、隣の箱をRuxがいたマスへ引き込みます。"], ["進行状況は保存されますか？", "はい。クリア、解放、ベスト結果はこのブラウザにローカル保存されます。"]]
+    },
+    fr: {
+      guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      title: "Cargaison Animale", difficulty: "Facile à exigeant", time: "2 à 8 minutes par entrepôt", gameplay: "Puzzle logistique de poussée et traction", genre: ["Puzzle", "Stratégie", "Animaux"], skills: ["Logique", "Planification", "Résolution de problèmes"],
+      intro: "Marchez, poussez et tirez des cargaisons runiques dans 30 entrepôts célestes conçus à la main.",
+      story: ["Rux répare une arche cargo, entrepôt après entrepôt. Chaque caisse runique doit atteindre un quai lumineux pour rouvrir la route."],
+      systems: ["Avancez d'une case à la fois et ne poussez une caisse que si la case suivante est libre. Magnetic Pull fait reculer Rux tout en attirant une caisse voisine dans la case qu'il vient de quitter.", "Les chapitres suivants ajoutent des rails de glace, des portes de signal, des cargaisons liées et des bandes de tempête à sens unique. Chaque dispositif suit une règle fixe et lisible."],
+      how: ["Choisissez un entrepôt déverrouillé dans la barre des étapes.", "Lisez tout le trajet avant la première poussée et gardez assez de place pour passer derrière chaque caisse.", "Alignez chaque caisse runique sur un quai lumineux pour terminer l'entrepôt."],
+      strategyTips: ["Partez des quais et remontez le raisonnement pour trouver la direction de la dernière poussée.", "Évitez de pousser une caisse contre un mur extérieur, sauf si son quai se trouve sur ce mur.", "Gardez les tractions magnétiques pour les positions impossibles à récupérer en marchant et en poussant normalement."],
+      progression: ["Les 30 entrepôts sont répartis en six chapitres : Premier fret, Rails polaires, Pont des signaux, Baie magnétique, Fret jumeau et Arche de la tempête."],
+      designNote: "Chaque entrepôt est conçu à la main et possède une solution vérifiée. Undo et Restart permettent de tester un trajet sans perdre la progression des étapes terminées.",
+      parent: "Aucun compte n'est nécessaire. La progression reste dans ce navigateur ; les réussites, déverrouillages et meilleurs résultats ne constituent pas une évaluation scolaire, médicale ou de capacité.",
+      faq: [["Combien d'entrepôts sont inclus ?", "Il y a 30 entrepôts conçus à la main, répartis sur six chapitres de règles."], ["Chaque étape est-elle soluble ?", "Oui. Chaque entrepôt possède une solution vérifiée."], ["À quoi sert Pull ?", "Pull consomme une charge magnétique, fait reculer Rux et attire la caisse voisine dans la case qu'il vient de quitter."], ["La progression est-elle sauvegardée ?", "Oui. Les réussites, déverrouillages et meilleurs résultats sont enregistrés localement dans ce navigateur."]]
+    },
+    de: {
+      guideKicker: "Originaler WeightPlay-Spielguide", guideTitleSuffix: "Spielguide",
+      title: "Tierische Fracht", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Lager", gameplay: "Logistik-Puzzle mit Schieben und Ziehen", genre: ["Puzzle", "Strategie", "Tiere"], skills: ["Logik", "Planung", "Problemlösung"],
+      intro: "Laufe, schiebe und ziehe Runenfracht durch 30 handgebaute Himmelslager.",
+      story: ["Rux repariert eine Fracht-Arche, Lager für Lager. Jede Runenkiste muss einen leuchtenden Kai erreichen, damit die Route wieder geöffnet werden kann."],
+      systems: ["Bewege dich immer nur ein Feld und schiebe Kisten nur, wenn das Feld dahinter frei ist. Magnetic Pull bewegt Rux rückwärts und zieht eine angrenzende Kiste in das Feld, das Rux verlassen hat.", "Spätere Kapitel führen rutschende Eisbahnen, Signalsperren, verbundene Fracht und Einweg-Sturmbänder ein. Jedes Gerät folgt einer festen, gut lesbaren Regel."],
+      how: ["Wähle ein freigeschaltetes Lager aus der Stufenleiste.", "Lies die gesamte Route vor dem ersten Schieben und lasse genug Platz, um hinter jede Kiste zu gelangen.", "Ordne jede Runenkiste einem leuchtenden Kai zu, um das Lager abzuschließen."],
+      strategyTips: ["Denke von den Kais rückwärts und bestimme die Richtung des letzten Schubs.", "Schiebe Fracht nicht an eine Außenwand, außer der zugehörige Kai liegt an dieser Wand.", "Spare magnetische Züge für Positionen auf, die sich durch normales Laufen und Schieben nicht retten lassen."],
+      progression: ["Die 30 Lager sind auf sechs Kapitel verteilt: Erste Fracht, Polarbahnen, Signaldeck, Magnetbucht, Zwillingsfracht und Sturm-Arche."],
+      designNote: "Jedes Lager ist handgebaut und hat eine verifizierte Lösung. Mit Undo und Restart kannst du eine Route testen, ohne den Fortschritt abgeschlossener Stufen zu verlieren.",
+      parent: "Ein Konto ist nicht erforderlich. Der Fortschritt bleibt in diesem Browser; Abschlüsse, Freischaltungen und Bestwerte sind keine schulische, medizinische oder Leistungsbewertung.",
+      faq: [["Wie viele Lager gibt es?", "Es gibt 30 handgebaute Lager in sechs Regelkapiteln."], ["Kann jede Stufe gelöst werden?", "Ja. Für jedes Lager gibt es eine verifizierte Lösung."], ["Was bewirkt Pull?", "Pull verbraucht eine Magnetladung, bewegt Rux rückwärts und zieht die benachbarte Kiste in das Feld, das Rux verlassen hat."], ["Wird der Fortschritt gespeichert?", "Ja. Abschlüsse, Freischaltungen und Bestwerte werden lokal in diesem Browser gespeichert."]]
+    },
+    ar: {
+      guideKicker: "دليل لعبة WeightPlay الأصلية", guideTitleSuffix: "دليل اللعبة",
+      title: "مستودع الحيوانات", difficulty: "من السهل إلى التحدي", time: "2–8 دقائق لكل مستودع", gameplay: "لغز الخدمات اللوجستية بالدفع والسحب", genre: ["ألغاز", "استراتيجية", "حيوانات"], skills: ["المنطق", "التخطيط", "حل المشكلات"],
+      intro: "تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.",
+      story: ["يُصلح Rux سفينة الشحن مستودعًا تلو الآخر. يجب أن يصل كل صندوق رون إلى رصيف متوهج حتى يُعاد فتح المسار."],
+      systems: ["تحرّك مربعًا واحدًا في كل مرة، وادفع الصناديق فقط عندما تكون الخانة التي أمامها فارغة. تحرّك Magnetic Pull بـRux إلى الخلف وتسحب صندوقًا مجاورًا إلى الخانة التي تركها.", "تضيف الفصول اللاحقة سككًا جليدية منزلقة، وبوابات إشارة، وحمولات مترابطة، وأحزمة عاصفة ذات اتجاه واحد. لكل جهاز قاعدة ثابتة سهلة القراءة."],
+      how: ["اختر مستودعًا مفتوحًا من شريط المراحل.", "اقرأ المسار كاملًا قبل الدفعة الأولى واترك مساحة كافية للوصول خلف كل صندوق.", "طابق كل صندوق رون مع رصيف متوهج لإكمال المستودع."],
+      strategyTips: ["ابدأ من الأرصفة وفكّر عكسيًا لتحديد اتجاه الدفعة الأخيرة.", "تجنب دفع الحمولة إلى جدار خارجي إلا إذا كان رصيفها على ذلك الجدار.", "احتفظ بالسحب المغناطيسي للمواقع التي لا يمكن إنقاذها بالمشي والدفع العاديين."],
+      progression: ["تتوزع المستودعات الثلاثون على ستة فصول: الشحنة الأولى، السكك القطبية، سطح الإشارات، الخليج المغناطيسي، الحمولة المزدوجة، وسفينة العاصفة."],
+      designNote: "صُمم كل مستودع يدويًا وله حل تم التحقق منه. يتيح Undo وRestart اختبار المسار من دون فقدان تقدم المراحل المكتملة.",
+      parent: "لا يلزم إنشاء حساب. يُحفظ التقدم في هذا المتصفح؛ ولا تُعد المراحل المكتملة وعمليات الفتح وأفضل النتائج تقييمًا مدرسيًا أو طبيًا أو للقدرات.",
+      faq: [["كم عدد المستودعات المتاحة؟", "هناك 30 مستودعًا مصممًا يدويًا عبر ستة فصول من القواعد."], ["هل يمكن حل كل مرحلة؟", "نعم. لكل مستودع حل تم التحقق منه."], ["ماذا يفعل السحب؟", "يستهلك السحب شحنة مغناطيسية، ويُرجع Rux إلى الخلف، ويسحب الصندوق المجاور إلى الخانة التي تركها."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ المراحل المكتملة وعمليات الفتح وأفضل النتائج محليًا في هذا المتصفح."]]
+    }
+  };
+  for (const [localeCode, copy] of Object.entries(crateboundLongGuideLocales)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-cratebound"] = {
+      ...(localizedGames[localeCode]["animal-cratebound"] || {}),
+      ...copy,
+    };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["animal-cratebound"] = {
+      gameplay: copy.gameplay,
+      genre: copy.genre,
+    };
+  }
   games["animal-mosaic-clues"] = {
     title: "Animal Mosaic Clues", difficulty: "Easy to Challenging", time: "2-10 minutes per mosaic", gameplay: "Nonogram Mosaic Logic", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Focus", "Deduction"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
