@@ -109,7 +109,11 @@
         while (section.firstChild) details.append(section.firstChild);
         section.append(details);
       }
-      const locale = document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
+      const selectedLocale = document.querySelector("#localeSelect")?.value || "";
+      const documentLocale = document.documentElement.lang || "";
+      const locale = selectedLocale && selectedLocale !== "en"
+        ? selectedLocale
+        : (documentLocale && documentLocale !== "en" ? documentLocale : selectedLocale || documentLocale || "en");
       details.querySelector("summary").textContent = GOLF_GUIDE_TOGGLE_COPY[locale] || GOLF_GUIDE_TOGGLE_COPY.en;
     };
     const guideObserver = new MutationObserver(() => {

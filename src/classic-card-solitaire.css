@@ -725,13 +725,22 @@ body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .tableau-are
    top groups one row and reserves a dedicated 44px action rail below it. */
 @media (orientation: landscape) and (max-height: 560px) {
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard {
+    display: grid !important;
+    position: relative;
     grid-template-columns: minmax(0, 1fr) minmax(86px, 12%) 108px !important;
     grid-template-rows: auto minmax(0, 1fr) !important;
     grid-template-areas:
       "top top top"
-      "tableau status actions" !important;
+      "tableau status ." !important;
     align-content: stretch;
     gap: 3px;
+  }
+
+  /* FreeCell has no stock/waste track. Keep the legacy empty group from
+     creating an implicit grid row, and anchor the recovery rail to the
+     logical Canvas so a stale shell height cannot push it below 844x390. */
+  body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .board-middle {
+    display: none !important;
   }
 
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .board-top {
@@ -769,8 +778,13 @@ body[data-wp-game-id="freecell-solitaire"][data-audience="general"] .tableau-are
   }
 
   body[data-wp-game-id="freecell-solitaire"][data-audience="general"] #classicBoard > .battle-actions {
-    grid-area: actions !important;
-    align-self: center;
+    position: absolute !important;
+    top: 50% !important;
+    right: 5px !important;
+    transform: translateY(-50%) !important;
+    z-index: 8;
+    grid-area: auto !important;
+    align-self: auto;
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     grid-template-rows: repeat(2, 44px) !important;

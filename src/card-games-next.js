@@ -2223,7 +2223,7 @@
     document.querySelector("#battleBackBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("back", { source: "battle" }); controller.openMain(); });
     document.querySelector("#resultNewGame")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "result" }); result.hidden = true; game.reset(); controller.openBattle(); });
     document.querySelector("#resultRestart")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "result" }); resultRecorded = false; result.hidden = true; game.reset(); render(); });
-    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid") { oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { result.hidden = true; render(); } });
+    document.querySelector("#resultClose")?.addEventListener("click", () => { if (id === "old-maid" || id === "hearts") { if (id === "old-maid") oldMaidTrack("back", { source: "result" }); controller.openMain(); } else { result.hidden = true; render(); } });
     document.querySelector("#startBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("old_maid_start", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#restartBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("restart", { source: "main" }); game.reset(); controller.openBattle(); });
     document.querySelector("#newGameBtn")?.addEventListener("click", () => { if (id === "old-maid") oldMaidTrack("new_game", { source: "main" }); game.reset(); controller.openBattle(); });

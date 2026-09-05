@@ -1351,6 +1351,8 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      showSkills: false,
+      showRelatedSkill: false,
       relatedIds: ["animal-gearpack-expedition", "animal-rift-salvage", "animal-cratebound"],
       intro: "Animal Relic Hunters is a 30-expedition room-action campaign. Guide the lion explorer through three connected chambers, let the equipped relic weapon fire automatically, and steer around enemies whose behavior changes by ruin region. Relic Orbs create temporary level-up choices during a run, while Gold, training, equipment and mission progress remain on this browser. Six five-mission regions end with six different Guardians rather than one repeated enlarged enemy.",
       story: [
@@ -9126,6 +9128,8 @@
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
+    showSkills: false,
+    showRelatedSkill: false,
     hideScoreBands: true,
     intro: "Starlink is an original 30-stage route puzzle starring Moon Cap Orla. Trace every constellation trail exactly once while start seals, comet arrows, numbered stars, keys, and gates gradually change which complete routes are valid.",
     story: [
@@ -10853,7 +10857,7 @@
   localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
   games["animal-cratebound"] = {
     title: "Animal Cratebound", difficulty: "Easy to Challenging", time: "2–8 minutes per warehouse", gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"], relatedIds: ["animal-one-line", "animal-sunbeam-garden"],
-    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     intro: "Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.",
     story: ["Rux is restoring a cargo ark one warehouse at a time. Every rune crate must reach a glowing dock before the route can reopen."],
     systems: ["Move one square at a time and push crates only when the cell beyond is open. Magnetic Pull moves Rux backward while drawing an adjacent crate into the space Rux left.", "Later chapters add sliding ice rails, signal gates, linked cargo, and one-way storm belts. Each device follows a fixed, readable rule."],
@@ -10933,7 +10937,7 @@
   localizedGameplayProfiles["zh-Hant"]["animal-mosaic-clues"] = { gameplay: "數織馬賽克推理", genre: ["益智", "策略", "動物"] };
   games["animal-skyspire-drop"] = {
     title: "Animal Skyspire Drop", difficulty: "Moderate", time: "2-6 minutes per descent", gameplay: "Rotating Tower Arcade", genre: ["Arcade", "Action", "Animal"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     intro: "Rotate crystal rings to guide Fia through thirty skyspires, line up safe openings, and build a Comet Break before cursed sectors end the descent.",
     story: ["Fia travels inside a comet sphere through a chain of unstable skyspires. Each cleared tower restores one section of the high-altitude route and brings the rescue gate closer."],
     systems: ["Drag across the tower or use Left and Right to rotate every ring together. A turquoise platform is safe; a violet cursed sector ends the run unless a shield or charged Comet Break protects Fia.", "Consecutive gap descents charge Comet Break. Sky shards and stars from cleared towers save locally and can improve control, shields, and other optional Comet Forge upgrades."],
