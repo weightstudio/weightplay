@@ -62,7 +62,7 @@ try {
 
     await clickMoves(page, [0, 1, 3]);
     const loss = await outcome(page);
-    assert(loss.version === "v17" && loss.outcome === "loss" && loss.winning.length === 3 && loss.winning.every((mark) => mark === "O"), "Tactical rival loss branch failed", { viewport, loss });
+    assert(loss.version === "v18" && loss.outcome === "loss" && loss.winning.length === 3 && loss.winning.every((mark) => mark === "O"), "Tactical rival loss branch failed", { viewport, loss });
 
     await page.locator("#retryBtn").click();
     await clickMoves(page, [0, 1, 6, 5, 7]);
@@ -88,7 +88,7 @@ try {
     evidence.push({ viewport: `${viewport.width}x${viewport.height}`, outcomes: [loss.outcome, draw.outcome, win.outcome], localizedDraw: viewport.width === 390 ? Object.keys(localizedDrawTitles).length : 0 });
     await context.close();
   }
-  console.log(JSON.stringify({ status: "PASS", gameVersion: "v17", evidence }, null, 2));
+  console.log(JSON.stringify({ status: "PASS", gameVersion: "v18", evidence }, null, 2));
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

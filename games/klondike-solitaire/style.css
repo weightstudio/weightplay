@@ -407,6 +407,29 @@ button.mini-btn {
   gap: var(--tableau-gap);
   align-items: start;
   min-height: calc(100% - 250px);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.62) rgba(255, 255, 255, 0.08);
+}
+
+.tableau-row:focus-visible {
+  outline: 2px solid var(--kl-accent);
+  outline-offset: 2px;
+}
+
+.tableau-row::-webkit-scrollbar {
+  width: 10px;
+}
+
+.tableau-row::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.tableau-row::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.62);
+  border: 2px solid rgba(10, 31, 58, 0.84);
+  border-radius: 999px;
 }
 
 .pile {
@@ -1046,7 +1069,7 @@ button.control-mini {
   }
 
   .stock-row .control-row button {
-    min-height: 34px;
+    min-height: 44px;
     padding: 0.3rem 0.45rem;
     font-size: 0.78rem;
   }
@@ -1193,7 +1216,15 @@ button.control-mini {
     overflow-x: hidden;
     overflow-y: auto;
     padding-block: 2px 4px;
+    padding-inline-end: 8px;
+    scrollbar-gutter: stable both-edges;
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+    border-block: 1px solid rgba(255, 255, 255, 0.16);
     align-items: start;
-    overscroll-behavior: contain;
+  }
+
+  body[data-wp-game-id="klondike-solitaire"] .battle-header .control-mini {
+    min-height: 44px;
   }
 }

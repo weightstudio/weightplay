@@ -62,7 +62,7 @@
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260905-klondike-tableau-scroll-fix-v46" />
+  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260905-klondike-tableau-reachability-v47" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -203,7 +203,7 @@
           </div>
         </section>
         <p id="battleTip" class="battle-tip" aria-live="polite">Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</p>
-        <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau"></section>
+        <section id="tableauRow" class="tableau-row" data-klocale-aria="ui.board.tableau" aria-label="Tableau" role="region" tabindex="0"></section>
       </section>
       <div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden>
         <div class="result-card">

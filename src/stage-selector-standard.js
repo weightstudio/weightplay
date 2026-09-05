@@ -21,6 +21,16 @@
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
   const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels"]);
+  // Habitat Builder uses the same wide, short-landscape envelope as its
+  // Battle surface. Keep the Stage header and rail controls at their
+  // authored touch size instead of scaling the portrait shell down to ~20px
+  // controls at 844x390.
+  const stageLandscapeEnvelopeByGame = {
+    "animal-habitat-builder": [788, 334],
+  };
+  const stageLandscapeRatioThresholdByGame = {
+    "animal-habitat-builder": 1.25,
+  };
   const stageRootByGame = {
     "animal-color-link": "#stage",
     "animal-guard-yard": "#menuPanel",
@@ -244,11 +254,13 @@
       : DESKTOP_CANVAS_MAX_WIDTH;
     const availableWidth = Math.max(1, Math.min(width, maximumWidth));
     const availableHeight = Math.max(1, height - reserveHeight);
-    const requestedLandscapeWidth = Number.parseFloat(root.dataset.wpStageLandscapeWidth || "");
-    const requestedLandscapeHeight = Number.parseFloat(root.dataset.wpStageLandscapeHeight || "");
+    const stageLandscapeEnvelope = stageLandscapeEnvelopeByGame[gameId()] || [];
+    const requestedLandscapeWidth = Number.parseFloat(root.dataset.wpStageLandscapeWidth || stageLandscapeEnvelope[0] || "");
+    const requestedLandscapeHeight = Number.parseFloat(root.dataset.wpStageLandscapeHeight || stageLandscapeEnvelope[1] || "");
+    const stageLandscapeRatioThreshold = stageLandscapeRatioThresholdByGame[gameId()] || 1.5;
     const useLandscapeEnvelope = Number.isFinite(requestedLandscapeWidth) && requestedLandscapeWidth > 0
       && Number.isFinite(requestedLandscapeHeight) && requestedLandscapeHeight > 0
-      && availableWidth / availableHeight >= 1.5;
+      && availableWidth / availableHeight >= stageLandscapeRatioThreshold;
     const minimumLogicalWidth = useLandscapeEnvelope ? requestedLandscapeWidth : STAGE_LOGICAL_WIDTH;
     const minimumLogicalHeight = useLandscapeEnvelope ? requestedLandscapeHeight : STAGE_LOGICAL_HEIGHT;
     const scale = Math.max(0.01, Math.min(

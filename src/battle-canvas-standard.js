@@ -133,6 +133,14 @@
     788,
   ];
   const config = games[gameId] || defaultConfig;
+  // Habitat Builder keeps its authored control column in the wide envelope
+  // on 1280x720 as well as short landscape. The 56px General reserve makes
+  // that viewport's safe-area ratio just under the shared 1.5 threshold;
+  // lower it only for this game so its physical controls stay >=44px.
+  const landscapeRatioThresholdByGame = {
+    "animal-habitat-builder": 1.25,
+  };
+  const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";
   const metrics = window.__weightPlayLayoutMetrics ||= {};
   metrics.battleQueued ||= 0;
@@ -285,7 +293,8 @@
     const configuredPortraitHeight = Number.parseFloat(root.dataset.wpBattleMinHeight || "") || config[2];
     const configuredLandscapeWidth = Number.parseFloat(root.dataset.wpBattleLandscapeWidth || "") || config[3];
     const configuredLandscapeHeight = Number.parseFloat(root.dataset.wpBattleLandscapeHeight || "") || config[4];
-    const useLandscapeEnvelope = configuredLandscapeWidth && configuredLandscapeHeight && availableWidth / availableHeight >= 1.5;
+    const useLandscapeEnvelope = configuredLandscapeWidth && configuredLandscapeHeight
+      && availableWidth / availableHeight >= landscapeRatioThreshold;
     const minimumLogicalWidth = useLandscapeEnvelope ? configuredLandscapeWidth : configuredPortraitWidth;
     const minimumLogicalHeight = useLandscapeEnvelope ? configuredLandscapeHeight : configuredPortraitHeight;
     const scale = Math.max(0.01, Math.min(

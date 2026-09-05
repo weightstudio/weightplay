@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v17";
+  document.body.dataset.gameVersion = "v18";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
@@ -26,6 +26,10 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   const mainScreen = document.querySelector("#mainScreen");
   if (header && mainScreen && !mainScreen.contains(header)) mainScreen.prepend(header);
   const battleTop = document.querySelector("#battleScreen .battle-top");
+  const boardWrap = document.querySelector("#battleScreen .board-wrap");
+  boardWrap?.setAttribute("role", "region");
+  boardWrap?.setAttribute("tabindex", "0");
+  boardWrap?.setAttribute("aria-labelledby", "gameTitle");
   const mainReturn = document.createElement("a");
   mainReturn.className = "tic-main-return";
   mainReturn.href = "/";
@@ -68,7 +72,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
 
   const style = document.createElement("style");
-  style.dataset.ticTacToeV17 = "true";
+  style.dataset.ticTacToeV18 = "true";
   style.textContent = `
     .tic-main-return,
     .tic-battle-return,
@@ -224,6 +228,10 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       padding: clamp(8px, 2vw, 14px);
       overflow: hidden;
     }
+    html.popular-tic-tac-toe-active #battleScreen .board-wrap:focus-visible {
+      outline: 3px solid var(--arcade-accent-2);
+      outline-offset: -3px;
+    }
     @media (min-width: 700px) and (max-height: 560px) {
       body[data-game-id='tic-tac-toe'] .wp-standard-main-composition {
         --wp-main-landscape-poster-size: 300px;
@@ -249,6 +257,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
       min-width: 0;
       min-height: 0;
       aspect-ratio: auto;
+      touch-action: manipulation;
     }
     html.popular-tic-tac-toe-active #battleScreen .game-message {
       height: 48px;
@@ -303,6 +312,29 @@ window.WPPopularArcade?.mount("tic-tac-toe");
         width: min(100%, 360px);
       }
     }
+    @media (min-width: 541px) and (max-width: 699px) and (orientation: portrait) {
+      html.popular-tic-tac-toe-active #battleScreen .battle-panel {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: 52px minmax(0, 1fr) 48px;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .board-wrap {
+        overflow: auto;
+        align-items: start;
+        justify-items: center;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable both-edges;
+        touch-action: pan-y;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .board {
+        width: min(100%, 440px);
+        height: auto;
+        min-height: 0;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .tic-board {
+        width: min(100%, 440px);
+        min-width: 0;
+      }
+    }
     @media (orientation: landscape) and (max-height: 430px) {
       html.popular-tic-tac-toe-active body[data-game-id='tic-tac-toe'][data-screen='battle'] .popular-arcade,
       html.popular-tic-tac-toe-active body[data-game-id='tic-tac-toe'][data-screen='result'] .popular-arcade {
@@ -320,10 +352,24 @@ window.WPPopularArcade?.mount("tic-tac-toe");
         grid-column: 1;
         grid-row: 1 / 4;
         padding: 4px;
+        overflow: auto;
+        align-items: start;
+        justify-items: center;
+        overscroll-behavior: contain;
+        scrollbar-gutter: stable both-edges;
+        touch-action: pan-y;
+      }
+      html.popular-tic-tac-toe-active #battleScreen .board {
+        width: min(100%, 350px);
+        height: auto;
+        min-height: 0;
       }
       html.popular-tic-tac-toe-active #battleScreen .tic-board {
-        width: min(100%, calc(100dvh - 76px));
+        width: min(100%, 350px);
+        min-width: 300px;
+        min-height: 300px;
         height: auto;
+        aspect-ratio: 1;
       }
       html.popular-tic-tac-toe-active #battleScreen .battle-top {
         grid-column: 2;

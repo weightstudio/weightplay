@@ -1908,6 +1908,7 @@
     "animal-bounce-brawl": {
       title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
       gameplay: "Soft Physics Knockback Arena", genre: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction", "Spatial Awareness"],
+      showSkills: false, showRelatedSkill: false, hideScoreBands: true,
       relatedIds: ["animal-sketchwheel-rally", "animal-prism-breakers", "animal-cratebound"],
       intro: "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
       story: ["A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms."],
@@ -4753,6 +4754,7 @@
     gameplay: "Stealth Route Adventure",
     genre: ["Stealth", "Route Planning", "Adventure", "Animal"],
     skills: ["Planning", "Focus", "Risk Assessment"],
+    showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     relatedIds: ["animal-prism-breakers", "animal-sketchwheel-rally", "animal-bamboo-pipes"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
