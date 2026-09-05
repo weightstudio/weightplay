@@ -17,16 +17,16 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/crazy-eights/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/crazy-eights/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/crazy-eights/" />
-    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css">  <meta name="description" content="アクティブなスートまたはランクに一致するカードをプレイします。 8 はワイルドで、次のスーツを選択できます。" />
+    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css">  <meta name="description" content="クレイジーエイトは4人対戦のカード出しゲームです。場のスートかランクに合うカードを出し、8で次のスートを選び、3人のAIより先に手札をなくします。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="クレイジーエイト | WeightPlay" />
-    <meta property="og:description" content="アクティブなスートまたはランクに一致するカードをプレイします。 8 はワイルドで、次のスーツを選択できます。" />
+    <meta property="og:description" content="クレイジーエイトは4人対戦のカード出しゲームです。場のスートかランクに合うカードを出し、8で次のスートを選び、3人のAIより先に手札をなくします。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/crazy-eights/" />
     <meta property="og:image" content="https://weightplay.com/assets/card-games-crazy-eights-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="クレイジーエイト | WeightPlay" />
-    <meta name="twitter:description" content="アクティブなスートまたはランクに一致するカードをプレイします。 8 はワイルドで、次のスーツを選択できます。" />
+    <meta name="twitter:description" content="クレイジーエイトは4人対戦のカード出しゲームです。場のスートかランクに合うカードを出し、8で次のスートを選び、3人のAIより先に手札をなくします。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/card-games-crazy-eights-cover.webp" />
     <script type="application/ld+json">
 {
@@ -35,7 +35,7 @@
   "name": "クレイジーエイト",
   "url": "https://weightplay.com/ja/games/crazy-eights/",
   "image": "https://weightplay.com/assets/card-games-crazy-eights-cover.webp",
-  "description": "アクティブなスートまたはランクに一致するカードをプレイします。 8 はワイルドで、次のスーツを選択できます。",
+  "description": "クレイジーエイトは4人対戦のカード出しゲームです。場のスートかランクに合うカードを出し、8で次のスートを選び、3人のAIより先に手札をなくします。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -45,9 +45,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Card",
-    "Family",
-    "Strategy",
+    "カード",
+    "ファミリー",
+    "戦略",
     "Browser Game"
   ],
   "audience": {
@@ -61,20 +61,24 @@
   </head><body data-screen="main" data-audience="general" data-wp-game-id="crazy-eights" data-wp-card-game="crazy-eights"><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">クレイジーエイト</strong><div class="header-utilities settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-controls="audioPopover" aria-label="Settings">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-crazy-eights-cover.webp" alt="クレイジーエイトのゲーム画像"></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-card-title data-runtime-localize="off">クレイジーエイト</h1><p data-card-summary>Match suit or rank, then use an Eight to change the active suit.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>プレイ進行</strong><span>新しい手札の準備完了。まずはスートかランクを合わせます。</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section><section class="game-page-info game-page-info-static" aria-label="クレイジーエイト ゲーム情報">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>クレイジーエイト</h2><p>アクティブなスートまたはランクに一致するカードをプレイします。 8 はワイルドで、次のスーツを選択できます。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>古典的な脱皮カード ゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Card · Family · Strategy</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3〜10分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>計画力 · 集中 · Pattern Recognition</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>クレイジーエイト</h2><p>クレイジーエイトは4人対戦のカード出しゲームです。場のスートかランクに合うカードを出し、8で次のスートを選び、3人のAIより先に手札をなくします。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>クラシックなカード出しゲーム</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>カード · ファミリー · 戦略</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>3〜10分</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>有効なカードがない場合はドローします。最初に手札を空にしたプレイヤーが勝ちです。</li><li>場のスートを見て計画し、安全にターンを変えられるよう柔軟な8を残し、場が変わるたびに相手の手札枚数を確認しましょう。</li></ol></div>
-
-
-
-      <div class="game-info-section game-info-parent"><h3>公開プレイ</h3><p>この無料公開の一般向けゲームは、アカウントや購入なしでブラウザから遊べます。進行状況はこのブラウザにのみ保存されます。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>世界とミッション</h3><p>あなたと3人のAIが小さな手札を持ち、山札と捨て札が次の判断を作ります。各ターンで場のスートと相手の残り枚数が変わります。</p>
+<p>キャンペーンや集める要素はありません。合法な出口を見つけ、使いやすい8を残し、別の手札が先に0枚になる前に終える短い読み合いです。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>捨て札の一番上とランクまたは現在のスートが一致すれば出せます。8はワイルドで、出した後に次のスートを選びます。</p>
+<p>出した後は次のプレイヤーへ進みます。出せるカードがなければ山札から1枚引き、出せるカードならそのままプレイできます。出せなければ次の手番です。</p>
+<p>誰かの手札が0枚になるとラウンド終了です。Resultが勝者を示し、New Gameが新しい配り直しを始めます。不正なタップは手札や手番を変えず、ローカライズされた案内を表示します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>捨て札のランクと表示された現在のスートを確認し、合うカードか8を選びます。</li><li>出せるカードがなければ1枚引きます。引いたカードが合法ならすぐに出され、そうでなければ次の手番です。</li><li>8を出したら、自分の次の選択肢が増えるスート、またはAIが合わせにくいスートを選びます。</li><li>各相手の残り枚数を見ながら手札をなくします。Resultの後はNew Gameで次のラウンドへ進めます。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>8を出せるからといって急いで使わず、スートを逃れる時、場を変える時、最後の一枚を作る時まで温存します。</li><li>複数のカードが出せるなら、次に別のスートやランクへつながるカードを残します。</li><li>手札が最も少ない相手を優先して見ます。相手に簡単な上がり道を与えるカードは慎重に出します。</li><li>8のスートを選ぶ前に自分の枚数を数え、AIが最近避けたスートも観察します。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>キャンペーンや難易度ゲートはありません。新しい配り、捨て札の順番、ワイルド8のタイミング、3人のAIの手札が毎回の挑戦を変えます。</p>
+<p>ラウンドはMainからBattle、Resultへ直接進みます。New Gameは新しい配りを始めるだけで、存在しないステージ進行は作りません。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>クレイジーエイトは「ランクかスートを合わせ、8で状態を変える」というルールを一目で読めるようにしました。不正入力を無害にし、Battle内でドローとワイルドの反応を示し、短いResult–New Gameの循環で再プレイを支えます。</p></div>
+      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>無料の一般向けブラウザーゲームで、アカウントや購入は不要です。現在のラウンドと設定はこのブラウザーだけに保存され、サイトデータ削除やブラウザー変更で消えることがあります。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>どうやってカードを出しますか？</dt><dd>現在のスートまたは捨て札のランクに合うカードを出します。8はいつでも出せるワイルドです。</dd></div><div><dt>8を出すとどうなりますか？</dt><dd>次の手番で有効になるスートを1つ選びます。</dd></div><div><dt>出せるカードがない時は？</dt><dd>1枚引きます。引いたカードが合法ならすぐに出し、出せなければ次へ進みます。</dd></div><div><dt>不正なタップで手札は変わりますか？</dt><dd>いいえ。不正なカードは手札に残り、必要な条件が案内されます。</dd></div><div><dt>ラウンドはどう終わりますか？</dt><dd>最初に手札をなくしたプレイヤーが勝ちます。Resultが結果を示し、New Gameで再開できます。</dd></div><div><dt>キャンペーンや難易度段階はありますか？</dt><dd>ありません。毎回の新しい配りと捨て札の順番が挑戦を作ります。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>設定やラウンド記録はこのブラウザーにだけ残る場合があります。クラウド保存はありません。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/gin-rummy/"><img src="/assets/card-games-gin-rummy-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ジン・ラミー</strong><span>同じランクのセットと同じスートのランを作り、デッドウッドを減らします。</span></span></a><a class="game-info-related-card" href="/ja/games/go-fish/"><img src="/assets/card-games-go-fish-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ゴーフィッシュ</strong><span>ランクを尋ね、同じランク4枚のセットを集め、場を読みます。</span></span></a></div></div>
     </div>
   </section></main><section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Crazy Eights</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong>Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" hidden><div class="result-card"><h2 id="resultTitle">Round complete</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div><script src="../../src/site-config.js"></script><script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="../../src/i18n.js"></script><script src="/src/runtime-locales/ja.js?v=20260904-wp-text-growth-body-v1"></script>

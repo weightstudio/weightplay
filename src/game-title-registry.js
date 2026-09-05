@@ -1435,7 +1435,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Huit fous",
     "de": "Verrückte Achter",
     "it": "Otto pazzi",
-    "ru": "Сумасшедшие восьмерки",
+    "ru": "Сумасшедшие восьмёрки",
     "hi": "पागल आठ",
     "ar": "الثمانيات المجنونة"
   },

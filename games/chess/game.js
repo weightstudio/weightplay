@@ -1,6 +1,6 @@
 window.WPPopularArcade?.mount("chess");
 
-// Chess v13 keeps the target-agency loop while owning the repaired Interface V6
+// Chess v14 keeps the target-agency loop while owning the repaired Interface V6
 // shell contract, so the shared validator sees the same playable flow.
 // The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
@@ -325,7 +325,7 @@ window.WPPopularArcade?.mount("chess");
   };
 
   resetState();
-  document.body.dataset.gameVersion = "v13";
+  document.body.dataset.gameVersion = "v14";
   bindShellControls();
   document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
     event.preventDefault();

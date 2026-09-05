@@ -605,6 +605,7 @@ const KL_I18N = {
       "ui.nav.back_to_lobby": "العودة إلى الردهة",
       "ui.nav.back_to_main": "العودة إلى الشاشة الرئيسية",
       "ui.board.foundations": "الأساسات",
+      "ui.board.tableau": "اللوحة",
       "ui.board.empty_stock": "الرّزمة",
       "ui.board.empty_waste": "كومة الهدر",
       "ui.aria.stock": "الرّزمة، {count} أوراق متبقية",

@@ -199,6 +199,97 @@ body:has([data-screen="stage"]:not(.hidden):not([hidden])) .wp-tutorial-button {
   .wp-tutorial-visual { width: 104px; height: 64px; }
 }
 
+/* Golf's picture tutorial must keep its primary continuation action inside
+   the governed compact-landscape viewport. Three short columns preserve the
+   visual teaching sequence while leaving room for the Start Playing action. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .wp-tutorial-backdrop {
+    padding: calc(8px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) calc(10px + env(safe-area-inset-left));
+  }
+
+  .wp-tutorial-card.golf-tutorial {
+    width: min(96vw, 760px);
+    max-height: calc(100svh - 16px);
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .golf-tutorial .wp-tutorial-head { gap: 8px; }
+  .golf-tutorial .wp-tutorial-head strong { font-size: clamp(1rem, 3.6vw, 1.35rem); }
+  .golf-tutorial .wp-tutorial-close { width: 32px; height: 32px; }
+  .golf-tutorial .wp-tutorial-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .golf-tutorial .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 6px;
+    align-content: center;
+  }
+
+  .golf-tutorial .wp-tutorial-visual {
+    width: 100%;
+    height: 46px;
+  }
+
+  .golf-tutorial .wp-tutorial-copy { text-align: center; }
+  .golf-tutorial .wp-tutorial-copy b { font-size: .78rem; }
+  .golf-tutorial .wp-tutorial-copy span { font-size: .66rem; line-height: 1.12; }
+  .golf-tutorial .wp-tutorial-action { min-height: 40px; }
+
+  /* FreeCell's four-step coach must keep its primary continuation action
+     reachable in the same compact landscape viewport. The four short cards
+     preserve the authored sequence without sending Start Playing below the
+     logical Canvas. */
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-card {
+    width: min(96vw, 760px);
+    max-height: calc(100svh - 16px);
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-head { gap: 8px; }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-head strong {
+    font-size: clamp(1rem, 3.6vw, 1.35rem);
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-close {
+    width: 32px;
+    height: 32px;
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-step {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 6px;
+    align-content: center;
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    font-size: 1rem;
+    justify-self: center;
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-copy { text-align: center; }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-copy b { font-size: .72rem; }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-copy span {
+    font-size: .60rem;
+    line-height: 1.12;
+  }
+  body[data-wp-game-id="freecell-solitaire"] .wp-tutorial-action { min-height: 40px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wp-tutorial-backdrop,
   .wp-tutorial-card {
