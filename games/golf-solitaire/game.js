@@ -75,6 +75,21 @@
     hi: "सर्वश्रेष्ठ चेन: {best} कार्ड · टेबल पर 35 कार्ड",
     ar: "أفضل سلسلة: {best} بطاقة · 35 بطاقة على الطاولة",
   };
+  const GOLF_SETTINGS_COPY = {
+    en: { language: "Language" },
+    "zh-Hant": { language: "語言" },
+    "zh-Hans": { language: "语言" },
+    ja: { language: "言語" },
+    ko: { language: "언어" },
+    es: { language: "Idioma" },
+    "pt-BR": { language: "Idioma" },
+    fr: { language: "Langue" },
+    de: { language: "Sprache" },
+    it: { language: "Lingua" },
+    ru: { language: "Язык" },
+    hi: { language: "भाषा" },
+    ar: { language: "اللغة" },
+  };
   const GOLF_INVALID_SELECTION_COPY = {
     en: "Choose an exposed card one rank above or below Waste.",
     "zh-Hant": "請選擇比棄牌區高一級或低一級的明牌。",
@@ -95,7 +110,7 @@
     .replaceAll("{best}", String(best));
   const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
-    document.body.dataset.gameVersion = "v23";
+    document.body.dataset.gameVersion = "v24";
     const compactGuide = (section = document.querySelector(".game-page-info")) => {
       if (!section || section.dataset.golfGuideCompact === "true") return;
       section.dataset.golfGuideCompact = "true";
@@ -187,6 +202,50 @@
       }
     `;
     document.head.append(invalidStyle);
+    const compactResultStyle = document.createElement("style");
+    compactResultStyle.dataset.wpGolfCompactResult = "true";
+    compactResultStyle.textContent = `
+      @media (orientation: landscape) and (max-height: 560px) {
+        body[data-wp-game-id="golf-solitaire"] .result-overlay {
+          align-items: start;
+          overflow-x: hidden;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          place-items: start center;
+          padding: 4px 8px;
+          touch-action: pan-y;
+        }
+        body[data-wp-game-id="golf-solitaire"] .result-card {
+          width: min(100%, 560px);
+          margin: auto;
+          padding: 12px;
+        }
+        body[data-wp-game-id="golf-solitaire"] .result-card p {
+          margin: 6px 0;
+          font-size: 12px;
+          line-height: 1.35;
+        }
+        body[data-wp-game-id="golf-solitaire"] .golf-result-boundary {
+          margin: 6px 0 0;
+          padding: 6px 8px;
+          font-size: 11px;
+          line-height: 1.25;
+        }
+        body[data-wp-game-id="golf-solitaire"] .result-actions {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 6px;
+          margin-top: 10px;
+        }
+        body[data-wp-game-id="golf-solitaire"] .result-actions > * {
+          min-width: 0;
+          min-height: 38px;
+          padding: 8px 6px;
+          font-size: 12px;
+        }
+      }
+    `;
+    document.head.append(compactResultStyle);
     const baseFeedback = view.feedback.bind(view);
     const showInvalidSelectionCue = () => {
       const locale = view.locale || document.documentElement.lang || "en";
@@ -281,10 +340,20 @@
       }
       battleUtility.dataset.locale = locale;
     };
+    const syncLocaleOwner = () => {
+      const localeSelect = document.querySelector("#localeSelect");
+      if (!localeSelect) return;
+      const locale = view.locale || document.documentElement.lang || "en";
+      const copy = GOLF_SETTINGS_COPY[locale] || GOLF_SETTINGS_COPY.en;
+      localeSelect.setAttribute("aria-label", copy.language);
+    };
+    document.querySelector("#localeSelect")?.addEventListener("change", syncLocaleOwner);
+    window.addEventListener("wonder:locale-change", syncLocaleOwner);
+    syncLocaleOwner();
     const renderMain = view.renderMain?.bind(view);
     if (renderMain) view.renderMain = () => { renderMain(); updateProgress(); };
     const refreshCopy = view.refreshCopy?.bind(view);
-    if (refreshCopy) view.refreshCopy = () => { refreshCopy(); updateProgress(); updateBattleUtility(); };
+    if (refreshCopy) view.refreshCopy = () => { refreshCopy(); updateProgress(); updateBattleUtility(); syncLocaleOwner(); };
     updateProgress();
     updateBattleUtility();
     const showResult = view.showResult.bind(view);

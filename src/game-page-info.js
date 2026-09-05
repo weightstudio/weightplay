@@ -17432,6 +17432,157 @@
     };
   }
 
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-relic-hunters"] = {
+    ...games["animal-relic-hunters"],
+    title: "صيادو الآثار الحيوانية",
+    age: "13+",
+    difficulty: "صعب",
+    time: "6–12 دقيقة لكل رحلة",
+    gameplay: "روجلايت حركة داخل الغرف",
+    genre: ["حركة", "روجلايت", "مغامرة حيوانات"],
+    skills: ["المنطق", "حل المشكلات", "التركيز", "رد الفعل"],
+    guideKicker: "دليل ألعاب WeightPlay الأصلية",
+    guideTitleSuffix: "دليل اللعبة",
+    noteTitle: "معلومات اللاعب والحفظ",
+    hideScoreBands: true,
+    showSkills: false,
+    showRelatedSkill: false,
+    relatedIds: ["animal-gearpack-expedition", "animal-rift-salvage", "animal-cratebound"],
+    intro: "صيادو الآثار الحيوانية حملة حركة داخل الغرف تتكون من 30 رحلة. وجّه الأسد المستكشف عبر ثلاث غرف متصلة، واترك سلاح الآثار المجهز يطلق تلقائيًا، وتجنب أعداء تتغير سلوكياتهم بحسب منطقة الخرائب. تمنح كرات الآثار اختيارات ترقية مؤقتة أثناء الرحلة، بينما تبقى الذهب والتدريب والمعدات وتقدم المهام في هذا المتصفح. تنتهي المناطق الست، التي تضم كل منها خمس رحلات، بحراس مختلفين بدل تكرار عدو أكبر حجمًا.",
+    story: [
+      "كان طريق الآثار يصل بوابة الطحلب ومعرض الصدى وقبو البلور وضريح الغرق وأرشيف القمر وبلاط التاج. عندما انكسر ختم التاج، لم تكتف طاقته بجعل الوحوش المحلية أقوى؛ بدأت مخلوقات الطحلب بالانقسام والاندفاع، وهاجمت حراس المعرض من خارج مدى السلاح، وشكل حماة البلور حواجز للصدمات، وأصلحت وحوش الضريح نفسها، وأوقف صيادو الأرشيف إطلاق الآثار بوابل من صواعق الصمت.",
+      "يقود اللاعب الأسد بوم مان، مستكشفًا ميدانيًا يحمل بؤرة آثار تلقائية. تستعيد كل رحلة جزءًا من الطريق. يحرس النخبة في الغرفتين الأوليين المفاتيح الذهبية؛ ويفتح المفتاح صندوقًا يمكن الاحتفاظ بسلاحه أو درعه أو حذائه في الحقيبة الدائمة. تحدد الغرفة الثالثة سلامة المسار. تقود الرحلات 5 و10 و15 و20 و25 و30 إلى حارس الطحلب وحارس الصدى وعملاق المنشور وهيدرا الدوامة وحارس الأرشيف وملك تاج الآثار. تعني هزيمة الملك أن الأرشيفات الستة تستطيع تبادل الآثار من جديد بدل بقائها معزولة خلف الغرف الفاسدة."
+    ],
+    systems: [
+      "تدفق الرحلة: اختر بطاقة مفتوحة من شريط الرحلات الثلاثين. تبدأ الغرفة 1 بصحة الرحلة الكاملة والمعدات الحالية. اهزم المجموعة والنخبة التي تحمل المفتاح، واجمع مفتاحها، وافتح الصندوق، ثم ادخل البوابة. تستخدم الغرفة 2 مزيجًا أصعب. وتنتهي الغرفة 3 بنخبة حارسة أو، في كل رحلة خامسة، بحارس إقليمي مسمى.",
+      "الحركة والهجمات: انقر على وجهة في الساحة أو واصل السحب لتوجيه المستكشف باستمرار؛ وتظل WASD ومفاتيح الأسهم متاحة. يصوب السلاح تلقائيًا نحو أقرب عدو. يضيف السيف البلوري ضررًا مباشرًا، ويقلل خنجر الآثار الفاصل بين الطلقات، ويضيف الدرع صحة قصوى، وتزيد الأحذية سرعة الحركة. تبقى الوضعية فعل اللاعب الرئيسي: فالدوران حول المطارد، والعبور خلف مطلق النار، ومغادرة الحلقة التي يفضلها المدور تتطلب مسارات مختلفة.",
+      "قواعد التهديد: يتناوب المندفعون بين مطاردة بطيئة وشحنة سريعة؛ ويحافظ الرماة على المسافة ويطلقون صواعق الآثار؛ ويطلق النابضون حلقات شعاعية؛ ويحرر المنقسمون مندفعين عند هزيمتهم؛ وتلغي الحواجز عددًا ثابتًا من إصابات المقذوفات؛ ويتعافى المجددون بعد تجنب الضرر؛ وتبطئ وحوش الإبطاء الحركة عند اللمس؛ ويدور المدورون حول المستكشف؛ ويوقف الصامتون الإطلاق التلقائي مؤقتًا. تجمع المنطقة السادسة هذه القواعد بدل إضافة نسخة أكبر من حيوان أساسي.",
+      "مراحل الحراس: يغير كل زعيم إقليمي سلوكه عند 70 و35 بالمئة من الصحة. يستدعي حارس الطحلب مزيدًا من المندفعين، ويطلق حارس الصدى وابلًا شعاعيًا أكبر، ويعيد العملاق البلوري بناء حاجز عدد الإصابات، وتعالج هيدرا الدوامة نفسها وتستدعي وحوش إبطاء، ويجمع حارس القمر بين الدوران ووابل الصمت، ويضيف التاج الحواجز والوابل والاستدعاءات والتعافي. لذلك تختبر الرحلة الأخيرة قراءة عدة تأثيرات، لا مجرد البقاء أمام شريط صحة أطول.",
+      "نمو الرحلة: تسقط الأعداء المهزومة كرات آثار خضراء. عند امتلاء شريط الخبرة تتوقف الغرفة وتعرض ثلاث ترقيات للآثار، مثل الضرر أو سرعة الهجوم أو الصحة القصوى أو الحركة أو مدى الالتقاط. تتاح إعادة اختيار اختيارية واحدة بثلاث ماسات لكل مسودة. تعود أعداد آثار الرحلة إلى الصفر عند بدء رحلة جديدة، ولذلك يمكن للبناء التالي حل المزيج نفسه بطريقة مختلفة.",
+      "النمو الدائم: تغذي قطع الذهب وتحويل المعدات المكررة ترقيات المعدات. تمنح مستويات الشخصية المحفوظة نقاط تدريب للضرر أو الصحة أو السرعة أو مدى المغناطيس. تسجل الحقيبة المعدات المجموعة والعنصر المجهز في كل من الخانات الثلاث. تميمة الضباب الاختيارية شراء مؤكد لمرة واحدة بالماسات، وترفع صحة البداية من 30 إلى 40؛ ولا تلزم لأي رحلة أو صندوق أو حارس."
+    ],
+    how: [
+      "اسحب شريط المراحل واختر رحلة مفتوحة؛ تظهر بطاقات الحراس في الرحلات 5 و10 و15 و20 و25 و30.",
+      "انقر حيث تريد التحرك، أو واصل السحب لتحديث الوجهة باستمرار. تظل WASD ومفاتيح الأسهم متاحة؛ والتصويب تلقائي، لذلك تتحكم الحركة في المسافة وفي أقرب هدف.",
+      "اهزم التهديدات العادية مع مراقبة الشحنات والصواعق بعيدة المدى والحواجز والتجدد وتأثيرات الإبطاء والصمت.",
+      "اجمع كرات الآثار. عند الترقية اختر واحدة من ثلاث ترقيات مؤقتة أو استخدم إعادة الاختيار الاختيارية الوحيدة.",
+      "اهزم النخبة المتأخرة في الغرفتين 1 و2، واجمع مفتاحها الذهبي، وافتح الصندوق، ثم قرر تجهيز الغرض المسماة أو الاحتفاظ بالتجهيز الحالي.",
+      "ادخل الغرفة 3 بصحة الرحلة وترقياتها التي نجت من الغرف السابقة، ثم اهزم نخبتها أو حارسها الإقليمي.",
+      "استخدم الرحلة التالية بعد الفوز أو عد إلى المهام للتدريب وترقية المعدات واختيار مسار مفتوح آخر."
+    ],
+    strategyTips: [
+      "لا تدُر في كل غرفة بالاتجاه نفسه. اعكس الاتجاه عندما تملأ الصواعق البعيدة المسار الخارجي، واقطع طريق المدور بعد أن يلتزم بقوسه.",
+      "تعني الحلقة الزرقاء أن الحاجز ما زال يلغي الإصابات. واصل الإطلاق فقط إذا كان المسار آمنًا؛ فالحركة والبقاء لا يتطلبان كسره فورًا.",
+      "المس المجدد بما يكفي لمقاطعة نافذة التعافي. قد يكون سلاح أبطأ عالي الضرر أفضل من ضرر منخفض متفرق.",
+      "توقف صواعق الصمت الإطلاق التلقائي لفترة قصيرة. استغل التوقف لتغيير موقعك بدل الوقوف قرب الهدف وانتظار عودة السلاح.",
+      "تنتقل صحة الرحلة إلى الغرفة التالية مع علاج صغير عند البوابة فقط. قد تكون الآثار الدفاعية قبل الغرفة 3 أهم من اختيار ضرر إضافي.",
+      "تُطالب بمعدات الصندوق قبل قرار التجهيز. الاحتفاظ بالتجهيز الحالي لا يرمي الغرض الجديد؛ بل يبقيه في الحقيبة للمقارنة لاحقًا.",
+      "يقلل التدريب الدائم التكرار، لكن مراحل الحراس ما زالت تتطلب الحركة. استخدم المحاولة الأولى لتعلم النمط بدل إنفاق الماسات تلقائيًا."
+    ],
+    progression: [
+      "تؤسس الرحلات 1–5 التصويب على أقرب هدف والمطاردين العاديين والشحنات المؤقتة والأعداء المنقسمين. يستدعي حارس الطحلب مندفعين عند عتبي المرحلتين.",
+      "تحول الرحلات 6–10 المساحة إلى مشكلة تبادل نيران مع الرماة والنابضين الشعاعيين. تجعل وابل حارس الصدى المتسع حافة الغرفة خطرة.",
+      "تقدم الرحلات 11–15 حواجز عدد الإصابات ومجموعات مختلطة محمية. يعيد عملاق المنشور بناء حمايته مرتين، لذلك يهم توقيت الاندفاع.",
+      "تجمع الرحلات 16–20 التجدد واللمس المبطئ والضغط بعيد المدى. تعالج هيدرا الدوامة نفسها وتستدعي وحوش حقول الإبطاء أثناء مراحلها.",
+      "تضيف الرحلات 21–25 مسارات الدوران وصمت الهجوم المؤقت. يطلق حارس الأرشيف وابل صمت متعدد الزوايا بينما يدور حول المستكشف.",
+      "تعيد الرحلات 26–30 مزج كل التهديدات السابقة. محكمة الأختام الستة هي اختبار الأعداء العاديين الكامل؛ ثم يجمع ملك تاج الآثار الحواجز والوابل والاستدعاءات والتعافي."
+    ],
+    designNote: "تتيح الغرف الثلاث لمسودات الآثار ومعدات الصندوق التأثير في الاختبار النهائي من دون تحويل الرحلة إلى جلسة بقاء طويلة. يحافظ الإطلاق التلقائي على تركيز إدخال الهاتف في اختيار المسار بالنقر أو السحب المستمر، بينما يحافظ إدخال لوحة المفاتيح على التحكم الدقيق في سطح المكتب. تبقى الغرفة 3 من الرحلة 30 تحت مقياس أساسي قدره 2.3؛ وتأتي الصعوبة من التحكم بالمسافة والمراحل والسلوكيات المختلطة. بخلاف ساحة Animal Crystal Survivor المفتوحة المحددة بوقت أو تشكيل Animal Auto Squad قبل القتال، يصنع ترتيب الغرف والصحة المحمولة وقرارات المعدات والملاحة الحية رحلة متصلة واحدة.",
+    parent: "يُحفظ تقدم المهام ومستوى الشخصية والخبرة والذهب والتدريب والمعدات المملوكة ومستويات المعدات والخانات المجهزة وملكية تميمة الضباب محليًا في هذا المتصفح. لا يلزم تسجيل الدخول للعب الأساسي، وقد يؤدي مسح بيانات الموقع إلى حذف التقدم. لا تمنح اللعبة ماسات المنصة من القتال. الماسات خيارات إنفاقية اختيارية لتميمة الضباب المؤكدة أو إعادة اختيار مسودة أثر واحدة؛ ويمكن لعب الرحلات الثلاثين والحراس الستة من دونها.",
+    faq: [
+      ["هل صيادو الآثار الحيوانية مجانية؟", "نعم. يمكن لعب الرحلات الثلاثين ومسارات الغرف الثلاث ومعدات الصناديق والحراس الستة في المتصفح دون دفع."],
+      ["كم عدد الرحلات والحراس؟", "هناك 30 رحلة. وتنتهي الرحلات 5 و10 و15 و20 و25 و30 بستة حراس إقليميين مختلفين في الآلية."],
+      ["ما الذي يبقى وما الذي يعاد؟", "تبقى فتحات المهام والمستوى والخبرة والذهب والتدريب والمعدات تقدمًا محليًا دائمًا. وتعود اختيارات الآثار أثناء الرحلة إلى الصفر عند بدء رحلة جديدة."],
+      ["كيف تعمل الحواجز والإبطاء والصمت؟", "تلغي الحواجز عددًا ثابتًا من إصابات المقذوفات، ويقلل الإبطاء الحركة مؤقتًا، ويوقف الصمت الهجمات التلقائية. ولا يلغي أي منها التحكم بالتوجيه."],
+      ["هل أفقد الغرض الجديد إذا أبقيت تجهيزاتي الحالية؟", "لا. يضاف غرض الصندوق الجديد إلى الحقيبة أولًا؛ ويحدد القرار فقط ما إذا كنت ستجهزه الآن."],
+      ["فيم تستخدم الماسات؟", "يمكنها تأكيد تميمة الضباب الدائمة أو إعادة اختيار مسودة أثر واحدة بثلاث ماسات. ولا تفتح المهام أو المعدات أو الحراس."],
+      ["هل يتطلب التقدم حسابًا؟", "لا. يُحفظ التقدم في هذا المتصفح. وقد يؤدي مسح بياناته أو تغيير الجهاز إلى إنشاء حفظ منفصل."],
+      ["هل تدعم اللعبة الهاتف وسطح المكتب؟", "نعم. يدعم الهاتف التحرك بالنقر والتوجيه بالسحب المستمر، ويدعم سطح المكتب حركة المؤشر وWASD ومفاتيح الأسهم."]
+    ]
+  };
+  localizedGameplayProfiles["ar"] ||= {};
+  localizedGameplayProfiles["ar"]["animal-relic-hunters"] = {
+    gameplay: "روجلايت حركة داخل الغرف",
+    genre: ["حركة", "روجلايت", "مغامرة حيوانات"],
+    skills: ["المنطق", "حل المشكلات", "التركيز", "رد الفعل"]
+  };
+
+  localizedGames["pt-BR"] ||= {};
+  localizedGames["pt-BR"]["animal-hero-trials"] = {
+    ...games["animal-hero-trials"],
+    title: "Animal Hero Trials",
+    age: "13+",
+    difficulty: "Médio a difícil",
+    time: "4–9 minutos por teste",
+    gameplay: "Testes de ação de heróis em três salas",
+    genre: ["Ação", "Roguelite", "Animais"],
+    skills: ["Reação", "Foco", "Resolução de problemas"],
+    guideKicker: "Guia de jogos originais WeightPlay",
+    guideTitleSuffix: "Guia do jogo",
+    noteTitle: "Informações do jogador e do salvamento",
+    hideScoreBands: true,
+    showSkills: false,
+    showRelatedSkill: false,
+    relatedIds: ["animal-gearpack-expedition", "animal-rune-tactics", "animal-cratebound"],
+    intro: "Animal Hero Trials é uma campanha de ação com 30 testes e quatro heróis recorrentes da WeightPlay. Cada herói tem movimento, alcance, resistência e habilidade ativa diferentes. Atravesse três salas da floresta, escolha uma bênção depois de cada sala, derrote o Soberano das Sombras e use as Marcas de Teste conquistadas para desenvolver a maestria permanente.",
+    story: [
+      "Seis portais de sombra se abriram entre a Floresta das Raízes e a Coroa do Vazio. A Floresta das Raízes envia grupos de perseguidores, o Vale Prismático traz inimigos voadores e guardiões, o Martelo de Brasa lança investidas avisadas, o Corredor Lunar prepara atacantes de longe, a Carapaça do Abismo fortalece guardiões e a coroa final mistura todas as regras restantes. Vencer estabiliza parte da rota e desbloqueia o teste seguinte.",
+      "Boom Mane Lion, Spark Paw Fia, Moon Cap Orla e Moss Shell Taro formam uma equipe de heróis alternados. Todo quinto teste é um ponto de controle regional. Derrotar o Imperador da Coroa do Vazio no teste 30 fecha o último portal; a campanha não cria um teste 31 oculto."
+    ],
+    systems: [
+      "Os quatro heróis são diferentes: Lion é equilibrado e usa um rugido amplo; Fia é rápida e faz uma investida com invulnerabilidade; Orla ataca de longe e marca um alvo para causar dano extra; Taro tem mais vida e cria um guarda temporário que reduz dano.",
+      "Movimento e ataque automático: mova-se com o joystick virtual, WASD ou as setas. O herói ataca automaticamente o inimigo mais próximo dentro do próprio alcance. Use o botão da habilidade ou a barra de espaço quando o tempo de recarga terminar.",
+      "Testes de três salas: as salas 1 e 2 usam formações de inimigos criadas para a campanha. Ao concluir cada sala, surge uma escolha gratuita obrigatória entre força, recarga menor ou recuperação. A sala 3 é uma elite nos testes comuns e um chefe nomeado nos testes de ponto de controle.",
+      "Famílias de inimigos: batedores perseguem, corvos fazem curvas pela arena, javalis avisam antes de investir, caçadores mantêm distância e atiram, enquanto guardiões do abismo reduzem o dano comum até que as habilidades quebrem sua guarda.",
+      "Progressão: as vitórias concedem de quatro a nove Marcas de Teste e desbloqueiam apenas o teste seguinte. A Maestria do Coração começa com cinco marcas; cada nível posterior custa mais quatro e cada herói ganha 12 pontos de vida máxima por nível.",
+      "Nova escolha opcional: sempre há uma bênção gratuita. Por três Diamonds, todas as opções podem ser trocadas uma vez por teste. A mudança exata aparece antes da segunda confirmação, e a progressão normal não exige esse gasto."
+    ],
+    how: [
+      "Escolha um cartão aberto na trilha de 30 testes, leia a regra da região, o chefe do ponto de controle e o herói sugerido.",
+      "Escolha Lion, Fia, Orla ou Taro; a escolha fica salva para visitas futuras.",
+      "Mova-se para controlar a distância enquanto os ataques automáticos miram o inimigo mais próximo dentro do alcance.",
+      "Use a habilidade ativa no momento certo para separar um grupo, atravessar um aviso, marcar um alvo importante ou absorver um padrão forte.",
+      "Depois das salas 1 e 2, escolha uma bênção gratuita. A nova escolha com Diamonds é opcional.",
+      "Conclua a sala 3 para receber Marcas de Teste e o próximo desbloqueio. Uma derrota oferece Retry sem apagar o progresso permanente."
+    ],
+    strategyTips: [
+      "Junte os batedores no rugido de Lion.",
+      "Use a investida de Fia depois do aviso amarelo para atravessar o perigo com invulnerabilidade.",
+      "Aproveite o alcance e a marca de Orla contra alvos blindados ou com muita vida.",
+      "Use a guarda de Taro contra a saraivada da Coruja do Eclipse e a pressão tardia do Imperador.",
+      "As habilidades quebram a guarda mais rápido do que os ataques automáticos.",
+      "Escolha força para encurtar a luta, recarga menor para usar a habilidade com mais frequência ou recuperação quando sua vida estiver baixa."
+    ],
+    progression: [
+      "Os testes 1–5 ensinam perseguição direta de batedores e terminam com a onda de choque avisada do Perseguidor Sombrio.",
+      "Os testes 6–10 acrescentam corvos curvos e escudos. O Basilisco Prismático alterna entre janelas protegidas e abertas.",
+      "Os testes 11–15 acrescentam investidas de javalis com aviso. O Gigante da Presa de Magma ignora dano até abrir uma brecha durante a investida.",
+      "Os testes 16–20 acrescentam caçadores que mantêm distância e ângulos mistos de aproximação. A Coruja do Eclipse lança uma saraivada com tempo marcado.",
+      "Os testes 21–25 combinam escudo, investida e alcance. O Leviatã da Carapaça do Abismo chama dois reforços quando sua vida chega perto da metade.",
+      "Os testes 26–30 combinam as cinco famílias de inimigos. O Imperador da Coroa do Vazio ganha uma fase intermediária protegida e chama um corvo e um apoio blindado na fase final."
+    ],
+    designNote: "O ritmo constante de três salas permite que uma bênção afete um herói sem transformar o teste em uma longa sessão de resistência. A sala 3 verifica se o herói e a construção escolhidos respondem à regra apresentada. A dificuldade cresce por movimento, alcance, avisos, guardas, reforços e fases de chefe, não apenas por pontos de vida maiores. O Canvas lógico fixo escala proporcionalmente em celular, tablet, desktop e paisagem curta. Toque e teclado compartilham o mesmo estado de movimento e habilidade, a simulação para quando a página fica oculta e o resultado permanece dentro do teste, separado do saldo de Diamonds. Ao contrário de Animal Auto Squad, aqui o jogador controla movimento e o tempo da habilidade em tempo real.",
+    parent: "O navegador salva localmente o melhor teste desbloqueado, as Marcas de Teste, a Maestria do Coração e o herói selecionado. Limpar os dados do site ou trocar de navegador pode criar outro salvamento. Diamonds são uma moeda opcional e servem apenas para trocar as bênçãos uma vez após confirmação. Os 30 testes, as cinco famílias de inimigos, os seis chefes, as bênçãos gratuitas e a maestria permanente continuam disponíveis sem esse gasto. As notas de habilidade são entretenimento, não ranking nem avaliação formal.",
+    faq: [
+      ["Quantos testes e chefes existem?", "São 30 testes de três salas e seis chefes diferentes nos pontos de controle 5, 10, 15, 20, 25 e 30."],
+      ["Todos os heróis jogam da mesma forma?", "Não. Eles têm vida, velocidade, alcance, ataque básico e habilidade ativa diferentes."],
+      ["Por que o inimigo recebe pouco dano?", "Pode haver uma guarda ativa do Guardião do Abismo, do Basilisco Prismático ou do Imperador. Habilidades quebram essa guarda mais rápido que ataques automáticos."],
+      ["O que acontece depois de cada sala?", "Depois das salas 1 e 2, escolha força, recarga menor ou recuperação. A sala 3 encerra o teste."],
+      ["O que passa de uma rodada para outra?", "Desbloqueios, Marcas de Teste, Maestria do Coração e o herói selecionado são salvos localmente; as bênçãos temporárias voltam ao estado inicial."],
+      ["Diamonds são necessários?", "Não. Eles trocam as opções de bênção uma vez; sempre existe uma bênção gratuita."],
+      ["Posso repetir um teste anterior?", "Sim. Todo cartão desbloqueado continua disponível na trilha de testes."],
+      ["O que acontece depois de uma derrota?", "Retry reinicia o mesmo teste sem apagar o progresso permanente."],
+      ["O jogo aceita toque e teclado?", "Sim. Use o joystick virtual e o botão da habilidade, ou WASD, as setas e a barra de espaço."]
+    ]
+  };
+  localizedGameplayProfiles["pt-BR"] ||= {};
+  localizedGameplayProfiles["pt-BR"]["animal-hero-trials"] = {
+    gameplay: "Testes de ação de heróis em três salas",
+    genre: ["Ação", "Roguelite", "Animais"],
+    skills: ["Reação", "Foco", "Resolução de problemas"]
+  };
+
   [
     "block-blast",
     "arrow-escape",
