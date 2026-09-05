@@ -5,6 +5,11 @@ window.WPPopularArcade?.mount("chess");
 // The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
 (function installChessTargetAgency() {
+  // Chess owns its static shell and the route-owned Guide. Keep the generic
+  // runtime translator from repainting those nodes with the previous route
+  // locale during an in-place language switch.
+  document.body.dataset.runtimeLocalize = "off";
+  document.querySelector("#popularArcade")?.setAttribute("data-runtime-localize", "off");
   const ANALYTICS_EVENT = "wp-chess-analytics";
   const INPUT_TYPES = new Set(["mouse", "touch", "pen", "keyboard", "unknown"]);
   const STEPS = [
