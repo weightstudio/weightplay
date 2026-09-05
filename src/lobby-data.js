@@ -4290,7 +4290,7 @@ if (tetrisPublic) {
     description: { en: "Fill horizontal rows with falling blocks, use the landing outline, and keep the stack low as speed rises.", "zh-Hant": "用落下方塊填滿橫列，參考落點框保持低堆，隨等級提升應對更快速度。", "zh-Hans": "用下落方块填满横行，参考落点框保持低堆，随着等级提升应对更快速度。", ja: "落ちるブロックで横一列を埋め、着地点の枠を見ながら速度上昇に合わせて低く積みます。", ko: "떨어지는 블록으로 가로줄을 채우고 착지 윤곽을 보며 속도가 오를수록 낮게 쌓으세요.", es: "Completa filas con bloques que caen, usa el contorno de aterrizaje y mantén baja la pila mientras sube la velocidad.", "pt-BR": "Complete linhas com blocos que caem, use o contorno de pouso e mantenha a pilha baixa enquanto a velocidade aumenta.", fr: "Remplissez des lignes avec des blocs qui tombent, suivez le contour d’arrivée et gardez la pile basse quand la vitesse augmente.", de: "Fülle Reihen mit fallenden Blöcken, nutze die Landeanzeige und halte den Stapel niedrig, wenn das Tempo steigt.", it: "Completa le righe con blocchi in caduta, usa il contorno di atterraggio e tieni bassa la pila quando aumenta la velocità.", ru: "Заполняйте ряды падающими блоками, смотрите на контур приземления и держите стопку низкой с ростом скорости.", hi: "गिरते ब्लॉकों से पंक्तियाँ भरें, उतरने की रूपरेखा देखें और गति बढ़ने पर ढेर कम रखें।", ar: "املأ الصفوف بالكتل المتساقطة واستخدم إطار الهبوط وأبقِ الكومة منخفضة مع ازدياد السرعة." },
     meta: { en: ["10×20 Board", "Real Line Clears", "Local Best Score"], "zh-Hant": ["10×20 棋盤", "真實消行", "本機最高分"], "zh-Hans": ["10×20 棋盘", "真实消行", "本地最高分"], ja: ["10×20盤面", "実際のライン消去", "ローカル最高点"], ko: ["10×20 보드", "실제 줄 지우기", "로컬 최고 점수"], es: ["Tablero 10×20", "Filas reales", "Récord local"], "pt-BR": ["Tabuleiro 10×20", "Linhas reais", "Recorde local"], fr: ["Grille 10×20", "Lignes réelles", "Record local"], de: ["10×20-Feld", "Echte Reihen", "Lokaler Bestwert"], it: ["Campo 10×20", "Righe reali", "Record locale"], ru: ["Поле 10×20", "Настоящие линии", "Локальный рекорд"], hi: ["10×20 बोर्ड", "वास्तविक पंक्ति सफाई", "स्थानीय सर्वश्रेष्ठ"], ar: ["لوحة 10×20", "مسح صفوف حقيقي", "أفضل نتيجة محلية"] },
     searchAliases: [
-      "tetromino", "tetromino puzzle", "line clear", "clear lines", "falling blocks", "falling block game", "block stacking",
+      "tetromino", "tetromino puzzle", "line clear", "clear lines", "falling blocks", "falling block game", "falling tetromino", "block stacking",
       "方塊堆疊", "消行", "消除整行", "落下方塊",
       "方块堆叠", "消行", "消除整行", "下落方块",
       "テトリミノ", "ライン消去", "落ちもの", "ブロック積み",
@@ -4388,6 +4388,35 @@ if (animalBounceBrawlPublic) {
   animalBounceBrawlPublic.previewVideo = "assets/previews/animal-bounce-brawl-battle.webm";
   delete animalBounceBrawlPublic.internalTrial;
 }
+
+// Rain Roost is a weighted General prototype. Keep its canonical identity
+// planned and internal while the first playable slice remains behind art,
+// exact Tester, Reviewer, release, and publication gates.
+(() => {
+  const keys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
+  const localize = (values) => Object.fromEntries(keys.map((key, index) => [key, values[index]]));
+  const planned = {
+    id: "animal-rain-roost",
+    audience: "general",
+    internalOnly: true,
+    status: "planned",
+    title: localize(["Rain Roost", "雨滴棲所", "雨滴栖所", "レイン・ルースト", "빗방울 둥지", "Nido de Lluvia", "Ninho da Chuva", "Nid de Pluie", "Regennest", "Nido di Pioggia", "Дождевое гнездо", "बारिश का घोंसला", "عشّ المطر"]),
+    statusText: localize(["Coming Soon", "敬請期待", "敬请期待", "近日公開", "출시 예정", "Próximamente", "Em breve", "Bientôt disponible", "Demnächst", "Prossimamente", "Скоро", "जल्द आ रहा है", "قريبًا"]),
+    type: localize(["Rain Catching Arcade", "接雨街機益智", "接雨街机益智", "雨つぶキャッチアーケード", "빗방울 받기 아케이드", "Arcade de gotas de lluvia", "Arcade de gotas de chuva", "Arcade des gouttes de pluie", "Regentropfen-Arcade", "Arcade delle gocce di pioggia", "Аркада ловли капель", "Капли дождя — аркада", "أركيد التقاط قطرات المطر"]),
+    description: localize(["Slide Nori's little nest to catch gentle rain while leaves drift past.", "滑動諾里的小巢接住溫柔雨滴，避開飄過的葉片。", "滑动诺里的小巢接住温柔雨滴，避开飘过的叶片。", "ノリの小さな巣を動かし、葉を避けながら雨つぶを受け止めよう。", "노리의 작은 둥지를 움직여 잎을 피하며 빗방울을 받아요.", "Mueve el nido de Nori para atrapar la lluvia y esquivar hojas.", "Mova o ninho da Nori para pegar chuva e desviar das folhas.", "Déplace le petit nid de Nori pour attraper la pluie et éviter les feuilles.", "Bewege Noris kleines Nest, fange Regen und weiche Blättern aus.", "Muovi il piccolo nido di Nori per raccogliere la pioggia ed evitare le foglie.", "Двигайте гнездо Нори, ловите дождь и обходите листья.", "नॉरी का छोटा घोंसला चलाकर बारिश पकड़ें और पत्तों से बचें।", "حرّك عشّ نوري لالتقاط المطر وتجنّب الأوراق."]),
+    meta: localize([["3 Rain Showers", "Drag to Catch", "Calm Retry"], ["3 場雨景", "拖曳接雨", "平靜重試"], ["3 场雨景", "拖曳接雨", "平静重试"], ["3つの雨", "動かして受ける", "穏やかな再挑戦"], ["비 3개", "드래그해서 받기", "차분한 재시도"], ["3 lluvias", "Arrastra para atrapar", "Reintento sereno"], ["3 chuvas", "Arraste para pegar", "Nova tentativa calma"], ["3 pluies", "Glisse pour attraper", "Reprise sereine"], ["3 Regenschauer", "Ziehen und fangen", "Ruhiger Versuch"], ["3 piogge", "Trascina per prendere", "Riprova calma"], ["3 дождя", "Двигайте и ловите", "Спокойная попытка"], ["3 बारिश", "खींचकर पकड़ें", "शांत पुनः попытка"], ["3 زخّات", "اسحب لالتقاطها", "محاولة هادئة"]]),
+    categories: ["Arcade", "Timing", "Focus", "Family", "Animal"],
+    skills: ["Hand-Eye Coordination", "Focus", "Timing"],
+    ages: ["6", "family"],
+    ageLabel: localize(Array(13).fill("6+")),
+    href: "games/animal-rain-roost/",
+    internalTrial: "index.html?trial=1",
+    art: { kind: "image", background: "games/animal-rain-roost/assets/animal-rain-roost-cover.svg", hideHero: true }
+  };
+  for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
+  if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
+  if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(planned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(planned.id);
+})();
 
 // Grove Chain is a weighted General prototype. Keep its canonical identity
 // planned for production-order tooling, but outside public General discovery

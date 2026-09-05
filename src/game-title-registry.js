@@ -2735,6 +2735,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "अंतरिक्ष शिलाखंड",
     "ar": "صخور الفضاء"
   },
+  "animal-rain-roost": {
+    "__localizedExact": true,
+    "en": "Rain Roost",
+    "zh-Hant": "雨滴棲所",
+    "zh-Hans": "雨滴栖所",
+    "ja": "レイン・ルースト",
+    "ko": "빗방울 둥지",
+    "es": "Nido de Lluvia",
+    "pt-BR": "Ninho da Chuva",
+    "fr": "Nid de Pluie",
+    "de": "Regennest",
+    "it": "Nido di Pioggia",
+    "ru": "Дождевое гнездо",
+    "hi": "बारिश का घोंसला",
+    "ar": "عشّ المطر"
+  },
   "animal-grove-dominoes": {
     "__localizedExact": true,
     "en": "Grove Chain",

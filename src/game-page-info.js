@@ -16326,6 +16326,148 @@
       title,
     };
   }
+  const animalRuneTacticsFrenchGermanGuideCopy = {
+    fr: {
+      title: "Tactiques runiques animales",
+      difficulty: "Difficile",
+      time: "8 à 15 minutes par mission",
+      gameplay: "Tactique d'escouade au tour par tour",
+      genre: ["Stratégie", "Tactique", "Aventure animalière"],
+      skills: ["Logique", "Résolution de problèmes", "Concentration", "Planification"],
+      guideKicker: "Guide du jeu original WeightPlay",
+      guideTitleSuffix: "Guide du jeu",
+      noteTitle: "Informations du joueur et de la sauvegarde",
+      hideScoreBands: true,
+      hideSkillsFact: true,
+      intro: "Tactiques runiques animales est une campagne de 30 missions au tour par tour, jouée sur un plateau runique de trois cases sur quatre. Le Gardien Lion, la Mage Hibou et la Tortue Bouclier disposent chacun d'une action avant le tour ennemi : se déplacer, attaquer, garder ou dépenser de l'Énergie pour une compétence distincte. Six chapitres de cinq missions ajoutent des chemins bloqués, des pièges, des courants, du feu, des runes rotatives et des sceaux, ainsi que des ennemis qui ripostent, poussent, réduisent au silence, marquent, drainent l'Énergie ou créent des clones. Les missions 5, 10, 15, 20, 25 et 30 se terminent par six boss différents à plusieurs phases. Les missions débloquées, l'entraînement des héros et les récompenses runiques sont sauvegardés dans ce navigateur.",
+      story: [
+        "Les Routes runiques relient six territoires animaliers aux Archives de la Couronne. Chaque route porte un script de stabilisation : les chemins sylvestres maintiennent les racines vivantes, les marques de forge lient le bois-de-fer, les glyphes de marée régulent les chambres inondées, les cercles de braise évacuent la chaleur, les runes lunaires préservent la mémoire et les sceaux de la Couronne synchronisent les cinq systèmes. Quand la couronne centrale s'est brisée, ces scripts ont commencé à agir sans leurs gardiens : les ponts se sont changés en décombres, les racines ont encerclé les voyageurs, les courants ont déplacé les unités et les sceaux des archives ont protégé les créatures qui les avaient endommagés.",
+        "Le joueur commande trois gardiens chargés de restaurer les routes. Le Gardien Lion combat au corps à corps, la Mage Hibou attaque à deux cases et la Tortue Bouclier protège et soigne le groupe. Terminer une mission signifie que son script est assez stable pour permettre à l'escouade d'avancer. Le Cerf de pierre, le Rhinocéros Racine-de-fer, le Serpent Tourbière, le Lion Crinière-de-braise et le Griffon de l'Éclipse contrôlent chacun un chapitre endommagé. La Chimère de la Couronne runique a absorbé une partie de chaque système ; la vaincre à la mission 30 reconnecte les archives sans inventer une mission 31."
+      ],
+      systems: [
+        "Déroulement d'un tour : sélectionnez un héros vivant, puis choisissez une action. Le déplacement utilise une case légale adjacente ; l'attaque respecte la portée du héros ; Garde réduit de un le prochain coup ennemi. Une compétence dépense une Énergie : le Lion frappe plus fort, le Hibou atteint une cible éloignée et la Tortue protège chaque héros vivant tout en restaurant 1 PV. Après son action, un héros est marqué comme terminé. Quand tous les héros vivants ont agi, ou quand vous appuyez sur Fin du tour, les ennemis exécutent leur comportement et l'Énergie remonte de un jusqu'à trois.",
+        "Les règles ennemies dépendent de la position, pas seulement des statistiques. Les Loups gagnent Croc de meute lorsqu'ils sont adjacents à un autre Loup. Les Corbeaux visent le héros dont le ratio de santé est le plus faible. Le Cerf de pierre restaure l'armure du premier coup. Le Sanglier épineux renvoie un dégât après une attaque de mêlée adjacente qui le touche. Le Renard runique se téléporte derrière le héros le plus faible. La Tortue des marées protège l'allié le plus proche contre un coup, tandis que le Héron relique pousse le héros qu'il frappe. Le Bélier de cendre charge une ligne droite visible au lieu de se déplacer normalement.",
+        "Les ennemis avancés changent la préparation des actions. La Salamandre de braise laisse une case brûlante temporaire quand elle se déplace. Le Papillon de lune réduit au silence la compétence d'un héros pendant le prochain tour du joueur, sans bloquer Déplacement, Attaque ou Garde. Le Hibou des archives marque un héros pour renforcer la prochaine attaque à distance. Le Loup miroir crée un clone adjacent à 1 PV quand l'espace le permet. Le Corbeau du sceau draine 1 Énergie, sans jamais passer sous zéro. Ces traits restent actifs quand la mission 29 combine une menace de cinq chapitres précédents.",
+        "L'état du plateau fait partie de chaque mission conçue. Les décombres ne peuvent pas être occupés. Le Piège racine empêche le prochain choix de déplacement du héros touché. La Marée déplace une unité d'une case légale après le tour ennemi. La Brûlure blesse un héros qui s'y trouve, tandis qu'une Rune de refroidissement à usage unique restaure l'Énergie et efface les cases brûlantes actives. Les Runes orbitales font tourner les unités autour de l'anneau extérieur. Dans les Six sceaux runiques, trois héros doivent occuper des cases de sceau liées pour retirer la protection ennemie ; une attaque à travers cette protection perd 1 dégât.",
+        "Les phases des boss se déclenchent cumulativement à 70 % et 35 % de santé ; un gros coup ne peut donc pas sauter une phase. Le Cerf de pierre rafraîchit son armure et charge sa ligne. Le Rhinocéros Racine-de-fer se protège, frappe une rangée et laisse des décombres. Le Serpent Tourbière ajoute des courants, attire les héros et se régénère sauf si deux héros le frappent pendant le même tour du joueur. Le Lion Crinière-de-braise pose du feu et gagne une action supplémentaire lorsqu'il est blessé. Le Griffon de l'Éclipse alterne immunité aux attaques à distance en vol et balayage au sol. La Chimère de la Couronne runique combine marée, brûlure, décombres, vol et invocation du Loup miroir.",
+        "La croissance permanente comporte trois niveaux. Une victoire de mission donne de l'XP et des Runes ; l'XP augmente le niveau de l'escouade par paliers de 100. Les Runes améliorent le Lion, le Hibou ou la Tortue jusqu'au niveau 6, en augmentant leur santé et leur attaque de départ. La récompense runique post-mission est également sauvegardée : Pouvoir ajoute de l'attaque, la Médaille du gardien ajoute de la santé maximale, le Fragment runique ajoute 35 XP, Concentration ajoute de l'Énergie de départ et le Jeton de résurrection peut ramener automatiquement un héros tombé à la moitié de sa santé. Une relance de récompense à trois Diamants et un Emplacement d'entraînement à 18 Diamants sont optionnels ; aucun ne débloque une mission ou un boss."
+      ],
+      how: [
+        "Faites défiler la barre complète des 30 cartes de mission et sélectionnez une mission débloquée. Chaque cinquième carte est un checkpoint de boss nommé.",
+        "Lisez le nom de la mission, les ennemis, leurs traits, le terrain et le plan tactique avant d'entrer en bataille.",
+        "Sélectionnez le Lion, le Hibou ou la Tortue sur le plateau ou dans la liste d'actions de l'escouade. Choisissez une case adjacente en surbrillance pour vous déplacer, un ennemi en surbrillance pour attaquer, Garde ou Compétence.",
+        "Observez les marqueurs Terminé et le panneau du héros sélectionné. Ne terminez le tour en avance que lorsque préserver la position est plus sûr qu'utiliser toutes les actions.",
+        "Pendant le tour ennemi, lisez les badges de traits et le journal de bataille pour repérer ripostes, gardes, poussées, charges, silence, marques, drains, clones et phases de boss.",
+        "Vainquez tous les ennemis, choisissez une récompense runique permanente et vérifiez l'XP, les Runes, la meilleure mission et l'écart jusqu'à la prochaine amélioration.",
+        "Utilisez Mission suivante lorsqu'elle existe, Réessayer pour rejouer le plateau actuel, ou revenez aux Missions pour entraîner les héros et revisiter toute carte débloquée."
+      ],
+      strategyTips: [
+        "Rompez l'adjacence des Loups avant d'échanger des dégâts. Déplacer un héros peut retirer Croc de meute à deux attaques à la fois.",
+        "N'utilisez pas la portée du Hibou sur le Sanglier épineux depuis une case adjacente. Une attaque à deux cases évite la riposte de mêlée et garde la ligne arrière utile.",
+        "Un héros réduit au silence conserve trois actions utiles. Sortez d'une ligne de charge, faites une attaque normale ou utilisez Garde au lieu d'attendre le retour de la compétence.",
+        "Contre le Serpent Tourbière, deux héros différents doivent le toucher pendant le même tour du joueur. La compétence puissante d'un seul héros n'arrête pas la régénération.",
+        "Le Griffon volant bloque les dégâts à distance du Hibou. Utilisez le Lion pendant son vol, puis écartez les héros avant le balayage de la rangée au sol.",
+        "Laissez une case adjacente légale quand le Loup miroir est présent, puis éliminez son clone à 1 PV avant qu'il ne modifie les lignes de déplacement et de ciblage.",
+        "Les bonus permanents augmentent la marge d'erreur mais ne résolvent pas les règles du plateau. Une escouade de niveau inférieur qui utilise correctement les cases de refroidissement, de sceau et d'orbite peut dépasser une escouade plus forte mal placée."
+      ],
+      progression: [
+        "Les missions 1 à 5 enseignent le déplacement, la concentration du feu, l'adjacence des Loups, le ciblage des Corbeaux et les voies de pont bloquées. L'Épreuve du Cerf de pierre rafraîchit l'armure du premier coup aux deux seuils et punit les héros restés dans sa rangée.",
+        "Les missions 6 à 10 ajoutent les ripostes de mêlée, la téléportation en arrière-garde, le Piège racine et les formations en tenaille. Le Rhinocéros Racine-de-fer transforme les cases sûres en décombres, donc la route disponible change pendant le combat.",
+        "Les missions 11 à 15 déplacent la position après les décisions grâce à la Marée et aux poussées du Héron. Le Serpent Tourbière ajoute l'attraction par colonne et un contrôle de régénération à deux attaquants.",
+        "Les missions 16 à 20 combinent brûlure temporaire, charges en ligne droite et Runes de refroidissement à usage unique. Le Lion Crinière-de-braise alterne feu sur le plateau, pression de groupe et action supplémentaire lorsqu'il est blessé.",
+        "Les missions 21 à 25 limitent le moment d'utiliser les compétences avec le silence et les marques à distance, puis font tourner l'anneau extérieur. Le Griffon de l'Éclipse change le héros capable de le blesser et le moment où une rangée devient dangereuse.",
+        "Les missions 26 à 30 ajoutent clones, drain d'Énergie et sceaux liés avant que le Gantelet de la Couronne ne remixe cinq règles antérieures. La Chimère de la Couronne runique change le terrain à ses deux seuils visibles et invoque un clone pour le dernier test d'ordre des cibles."
+      ],
+      designNote: "Le plateau reste large de trois cases et haut de quatre cases afin que chaque décision sur téléphone reste visible sans panoramique. La profondeur vient des tours à une action : se déplacer pour résoudre un danger actuel signifie renoncer à l'attaque de ce héros, tandis que Garde peut être plus fort que la recherche de dégâts. Les six chapitres de cinq missions introduisent un vocabulaire à la fois, puis demandent au boss du chapitre de le recombiner. Les PV n'augmentent qu'une fois toutes les huit missions et l'attaque une fois toutes les douze ; la pression ultérieure vient donc surtout du terrain, de l'ordre des cibles, du blocage d'actions et des changements de phase. Le pointeur, le toucher et la grille au clavier fléchée utilisent les mêmes cases logiques. Contrairement à la formation avant combat d'Animal Auto Squad ou au déplacement en direct d'Animal Relic Hunters, Tactiques runiques animales fait une pause après chaque décision afin que l'état du plateau soit lui-même le puzzle.",
+      parent: "Le niveau de l'escouade, l'XP, les Runes, la meilleure mission, les missions débloquées, les niveaux des héros, l'Emplacement d'entraînement, les bonus d'attaque, de santé et d'Énergie sauvegardés ainsi que les Jetons de résurrection sont stockés localement dans ce navigateur. Aucun compte n'est nécessaire pour jouer. Effacer les données du site ou changer de navigateur peut créer une sauvegarde séparée. Les Diamants sont une monnaie optionnelle utilisée seulement pour relancer une récompense ou confirmer l'Emplacement d'entraînement ; les 30 missions, les sept systèmes de terrain, les ennemis spéciaux et les six boss restent jouables sans eux.",
+      faq: [
+        ["Tactiques runiques animales est-il gratuit ?", "Oui. Les 30 missions, les ennemis spéciaux, les règles de terrain, la croissance permanente des Runes et les six boss sont jouables dans le navigateur sans paiement."],
+        ["Combien y a-t-il de missions et de boss ?", "Il y a 30 missions conçues à la main. Les missions 5, 10, 15, 20, 25 et 30 utilisent six boss différents, avec leurs propres apparences, comportements et deux phases de santé."],
+        ["Faut-il avoir des réflexes rapides ?", "Non. Le jeu se joue au tour par tour. Rien ne bouge pendant que le joueur choisit un héros, une case, une attaque, Garde ou une compétence."],
+        ["Pourquoi ne puis-je pas utiliser une compétence ?", "Le héros peut manquer d'Énergie, être déjà marqué Terminé ou être réduit au silence par le Papillon de lune. Le silence dure un tour du joueur et ne bloque ni le déplacement, ni les attaques normales, ni Garde."],
+        ["Qu'est-ce qui est réinitialisé après une mission ?", "Le plateau de bataille est réinitialisé. Les déblocages de missions, le niveau de l'escouade, l'XP, les Runes, les niveaux des héros, les récompenses runiques choisies, l'entraînement et les Jetons de résurrection restent dans la progression locale."],
+        ["Que peuvent faire les Diamants ?", "Trois Diamants relancent un ensemble de récompenses et 18 Diamants confirment l'Emplacement d'entraînement permanent. Les Diamants ne débloquent ni missions de campagne, ni héros, ni boss."],
+        ["Puis-je rejouer les missions précédentes ?", "Oui. Chaque mission débloquée reste sélectionnable, y compris les 30 après la victoire finale. La mission 30 ne crée pas une fausse mission 31."],
+        ["La progression nécessite-t-elle un compte ?", "Non. La progression est stockée dans ce navigateur. Effacer ses données ou changer d'appareil peut démarrer un profil local séparé."]
+      ]
+    },
+    de: {
+      title: "Tierische Runentaktik",
+      difficulty: "Schwer",
+      time: "8–15 Minuten pro Mission",
+      gameplay: "Rundenbasierte Truppentaktik",
+      genre: ["Strategie", "Taktik", "Tierabenteuer"],
+      skills: ["Logik", "Problemlösung", "Konzentration", "Planung"],
+      guideKicker: "Originaler WeightPlay-Spielguide",
+      guideTitleSuffix: "Spielguide",
+      noteTitle: "Spieler- und Speicherinformationen",
+      hideScoreBands: true,
+      hideSkillsFact: true,
+      intro: "Tierische Runentaktik ist eine rundenbasierte Kampagne mit 30 Missionen auf einem drei mal vier Felder großen Runenbrett. Löwenwächter, Eulenmagierin und Schildkröten-Schild führen vor dem Feindzug jeweils eine Aktion aus: bewegen, angreifen, schützen oder Energie für eine eigene Fähigkeit ausgeben. Sechs Kapitel mit je fünf Missionen führen blockierte Wege, Fallen, Strömungen, Feuer, drehende Runen und Siegel ein. Dazu kommen Gegner, die kontern, schieben, verstummen lassen, markieren, Energie entziehen oder Klone erzeugen. Die Missionen 5, 10, 15, 20, 25 und 30 enden mit sechs unterschiedlichen Bossen mit mehreren Phasen. Freigeschaltete Missionen, Heldentraining und Runenbelohnungen werden in diesem Browser gespeichert.",
+      story: [
+        "Die Runenstraßen verbinden sechs Tiergebiete mit dem Kronenarchiv. Jede Straße trägt ein stabilisierendes Skript: Waldwege halten lebende Wurzeln an ihrem Platz, Schmiedemarken binden Eisenholz, Gezeitenglyphen regeln überflutete Kammern, Glutkreise leiten Hitze ab, Mondrunen bewahren Erinnerungen und Kronensiegel halten die fünf Systeme synchron. Als die zentrale Krone zerbrach, begannen die Skripte ohne ihre Hüter zu arbeiten: Brücken wurden zu Geröll, Wurzeln schlossen Reisende ein, Strömungen bewegten besetzte Felder und die Archivsiegel schützten ausgerechnet die Wesen, die sie beschädigt hatten.",
+        "Der Spieler führt drei Hüter an, um die Straßen wiederherzustellen. Der Löwenwächter kämpft im Nahbereich, die Eulenmagierin greift aus zwei Feldern Entfernung an und das Schildkröten-Schild schützt und heilt die Gruppe. Eine Mission abzuschließen bedeutet, dass ihr Skript stabil genug für den nächsten Abschnitt ist. Steinhirsch, Eisenwurzel-Nashorn, Sumpfwinderschlange, Glutmähnenlöwe und Eclipse-Greif kontrollieren jeweils ein beschädigtes Kapitel. Die Runenkronen-Chimäre hat Teile jedes Systems aufgenommen; ihr Sieg in Mission 30 verbindet das Archiv wieder, ohne eine erfundene Mission 31 zu behaupten."
+      ],
+      systems: [
+        "Ablauf eines Zuges: Wähle einen lebenden Helden und danach eine Aktion. Bewegen nutzt ein angrenzendes gültiges Feld, Angreifen die Reichweite des Helden und Schützen verringert den nächsten Feindtreffer um 1. Eine Fähigkeit kostet 1 Energie: Der Löwe schlägt stärker zu, die Eule erreicht ein entferntes Ziel und die Schildkröte schützt alle lebenden Helden und heilt 1 Lebenspunkt. Nach seiner Aktion erhält ein Held die Markierung Fertig. Wenn alle lebenden Helden gehandelt haben oder Zug beenden gedrückt wird, führen die Feinde ihr Verhalten aus und die Energie steigt um 1 bis höchstens 3.",
+        "Feindregeln hängen von der Position ab, nicht nur von Zahlen. Wölfe erhalten Rudelzahn neben einem weiteren Wolf. Raben greifen den Helden mit dem niedrigsten Gesundheitsverhältnis an. Der Steinhirsch stellt die Rüstung für den ersten Treffer wieder her. Das Dornschwein verursacht nach einem überlebten angrenzenden Nahkampftreffer 1 Schaden zurück. Der Runenfuchs teleportiert sich hinter den schwächsten Helden. Die Gezeitenschildkröte schützt den nächsten Verbündeten einmal, während der Reliktreiher den getroffenen Helden schiebt. Der Aschenbock stürmt eine sichtbare gerade Linie entlang, statt normal zu laufen.",
+        "Spätere Feinde verändern die Aktionsplanung. Der Glutsalamander hinterlässt beim Bewegen ein vorübergehend brennendes Feld. Die Mondmotte verstummt die Fähigkeit eines Helden für den nächsten Spielerzug, blockiert aber weder Bewegen noch Angreifen noch Schützen. Die Archiv-Eule markiert einen Helden, sodass der nächste Fernkampftreffer mehr Schaden verursacht. Der Spiegelwolf erzeugt bei genügend Platz einen angrenzenden Klon mit 1 Lebenspunkt. Der Siegelrabe entzieht 1 Energie, aber nie unter 0. Diese Eigenschaften bleiben aktiv, wenn Mission 29 eine Bedrohung aus fünf früheren Kapiteln verbindet.",
+        "Brettzustände gehören zu jeder entworfenen Mission. Geröll kann nicht betreten werden. Die Wurzelfalle verhindert die nächste Bewegungswahl des betroffenen Helden. Die Gezeiten verschieben nach dem Feindzug eine Einheit um ein gültiges Feld. Brennen verletzt einen Helden auf dem Feld; eine einmalige Kühlrune stellt Energie wieder her und löscht aktive Brennfelder. Orbitrunen drehen Einheiten um den äußeren Ring. Bei den Sechs-Runen-Siegeln müssen drei Helden verbundene Siegelfelder besetzen, um den Feindschutz zu entfernen; Angriffe durch den Schutz verlieren 1 Schaden.",
+        "Bossphasen werden bei 70 % und 35 % Gesundheit kumulativ ausgelöst, daher kann ein großer Treffer keine Phase überspringen. Der Steinhirsch erneuert seine Rüstung und stürmt seine Spur. Das Eisenwurzel-Nashorn stemmt sich auf, trifft eine Reihe und hinterlässt Geröll. Die Sumpfwinderschlange fügt Strömungen hinzu, zieht Helden an und regeneriert sich, wenn sie im selben Spielerzug nicht von zwei Helden getroffen wird. Der Glutmähnenlöwe legt Feuer und erhält verletzt eine zusätzliche Aktion. Der Eclipse-Greif wechselt zwischen Flugimmunität gegen Fernkampfschaden und einem Bodenschlag. Die Runenkronen-Chimäre verbindet Gezeiten, Brennen, Geröll, Flug und eine Spiegelwolf-Beschwörung.",
+        "Dauerhaftes Wachstum hat drei Ebenen. Ein Missionssieg gibt XP und Runen; XP erhöht die Truppstufe in Schritten von 100. Runen verbessern Löwe, Eule oder Schildkröte bis Stufe 6 und erhöhen ihre Startgesundheit und ihren Angriff. Auch die Runenbelohnung nach einer Mission wird gespeichert: Kraft erhöht den Angriff, die Hütermedaille die maximale Gesundheit, der Runensplitter gibt 35 XP, Konzentration erhöht die Startenergie und ein Wiederbelebungsmarker kann einen gefallenen Helden automatisch mit halber Gesundheit zurückholen. Eine Belohnungsneuwahl für drei Diamanten und ein Trainingsplatz für 18 Diamanten sind optional und schalten weder Missionen noch Bosse frei."
+      ],
+      how: [
+        "Wische durch die vollständige Leiste mit 30 Missionskarten und wähle eine freigeschaltete Mission. Jede fünfte Karte ist ein benannter Boss-Checkpoint.",
+        "Lies vor dem Kampf Missionsname, Gegnerliste, Eigenschaften, Gelände und den taktischen Plan.",
+        "Wähle Löwe, Eule oder Schildkröte auf dem Brett oder in der Truppaktionsliste. Wähle ein hervorgehobenes angrenzendes Feld zum Bewegen, einen hervorgehobenen Gegner zum Angreifen, Schützen oder eine Fähigkeit.",
+        "Beachte Fertig-Markierungen und das Panel des ausgewählten Helden. Beende den Zug nur dann früh, wenn die Positionssicherung sicherer ist als jede weitere Aktion.",
+        "Lies während des Feindzugs Eigenschaftsmarken und Kampflog, um Konter, Schutz, Schieben, Sturmangriffe, Verstummen, Markierungen, Entzug, Klone und Bossphasen zu erkennen.",
+        "Besiege alle Gegner, wähle eine dauerhafte Runenbelohnung und prüfe die gespeicherten XP, Runen, die beste Mission und den Abstand zur nächsten Verbesserung.",
+        "Nutze Nächste Mission, wenn sie verfügbar ist, Erneut versuchen für das aktuelle Brett oder kehre zu Missionen zurück, um Helden zu trainieren und jede freigeschaltete Karte erneut zu spielen."
+      ],
+      strategyTips: [
+        "Trenne Wölfe voneinander, bevor du Schaden tauschst. Das Bewegen eines Helden kann Rudelzahn aus zwei Angriffen gleichzeitig entfernen.",
+        "Verwende die Reichweite der Eule nicht aus einem angrenzenden Feld gegen das Dornschwein. Ein Treffer aus zwei Feldern vermeidet den Nahkampfkonter und hält die hintere Reihe nützlich.",
+        "Ein verstummter Held hat weiterhin drei sinnvolle Aktionen. Verlasse eine Sturmangriffsspur, greife normal an oder nutze Schützen, statt auf die Fähigkeit zu warten.",
+        "Gegen die Sumpfwinderschlange müssen zwei verschiedene Helden im selben Spielerzug treffen. Die starke Fähigkeit eines einzelnen Helden verhindert die Regeneration nicht.",
+        "Der fliegende Greif blockiert den Fernkampfschaden der Eule. Nutze den Löwen während des Flugs und verteile die Helden vor dem Reihenangriff am Boden.",
+        "Lass beim Spiegelwolf ein gültiges angrenzendes Feld frei und entferne danach den Klon mit 1 Lebenspunkt, bevor er Bewegungs- und Ziellinien verändert.",
+        "Dauerhafte Boni vergrößern die Fehlertoleranz, lösen aber keine Brettregeln. Ein niedrigerer Trupp, der Kühl-, Siegel- und Orbitfelder richtig nutzt, kann einen stärkeren Trupp in der falschen Spur übertreffen."
+      ],
+      progression: [
+        "Missionen 1–5 lehren Bewegung, konzentriertes Feuer, Wolfsnachbarschaft, Rabenziele und blockierte Brückenwege. Die Steinhorn-Prüfung erneuert bei beiden Schwellen die Rüstung des ersten Treffers und bestraft Helden in ihrer Reihe.",
+        "Missionen 6–10 fügen Nahkampfkonter, Teleportation in die hintere Reihe, Wurzelfalle und Zangenformationen hinzu. Das Eisenwurzel-Nashorn macht sichere Felder zu Geröll, sodass sich der Weg im Kampf verändert.",
+        "Missionen 11–15 verschieben die Position nach Entscheidungen durch Gezeiten und Reiher-Schieben. Die Sumpfwinderschlange bringt Spaltenzug und eine Regenerationsprüfung mit zwei Angreifern.",
+        "Missionen 16–20 verbinden vorübergehendes Brennen, gerade Sturmangriffe und einmalige Kühlrunen. Der Glutmähnenlöwe wechselt zwischen Brettfeuer, Gruppendruck und einer zusätzlichen Aktion bei Verletzung.",
+        "Missionen 21–25 begrenzen den Einsatzzeitpunkt von Fähigkeiten durch Verstummen und Fernmarkierungen und drehen danach den äußeren Ring. Der Eclipse-Greif verändert, welcher Held ihn verletzen kann und wann eine Reihe gefährlich wird.",
+        "Missionen 26–30 ergänzen Klone, Energieentzug und verbundene Siegel, bevor der Kronen-Gauntlet fünf frühere Regeln neu kombiniert. Die Runenkronen-Chimäre verändert das Gelände an beiden sichtbaren Schwellen und beschwört einen Klon für die abschließende Prüfung der Zielreihenfolge."
+      ],
+      designNote: "Das Brett bleibt drei Felder breit und vier Felder hoch, damit jede Entscheidung auf dem Handy ohne Schwenken sichtbar bleibt. Die Tiefe entsteht durch Züge mit einer Aktion: Wer sich bewegt, um eine aktuelle Gefahr zu lösen, verzichtet auf den Angriff dieses Helden; Schützen kann stärker sein als zusätzlicher Schaden. Die sechs Fünf-Missionen-Kapitel führen jeweils ein Vokabular ein und lassen den Kapitelboss die Regeln neu kombinieren. Gesundheit steigt nur einmal je acht Missionen und Angriff nur einmal je zwölf; der spätere Druck kommt daher vor allem von Gelände, Zielreihenfolge, Aktionsverweigerung und Phasenwechseln. Maus, Touch und ein wanderndes Pfeiltastenraster verwenden dieselben logischen Felder. Anders als die Vor-Kampf-Aufstellung von Animal Auto Squad oder die Echtzeitbewegung von Animal Relic Hunters pausiert Tierische Runentaktik nach jeder Entscheidung, sodass der Brettzustand selbst das Rätsel ist.",
+      parent: "Truppstufe, XP, Runen, beste Mission, freigeschaltete Missionen, Heldenstufen, Trainingsplatz, gespeicherte Angriffs-, Gesundheits- und Energieboni sowie Wiederbelebungsmarker werden lokal in diesem Browser gespeichert. Für das Grundspiel ist kein Konto nötig. Das Löschen von Websitedaten oder ein anderer Browser kann einen getrennten Speicherstand erzeugen. Diamanten sind eine optionale Plattformwährung und werden nur für eine Belohnungsneuwahl oder den bestätigten Trainingsplatz verwendet; alle 30 Missionen, sieben Geländesysteme, Spezialgegner und sechs Bosse bleiben ohne sie spielbar.",
+      faq: [
+        ["Ist Tierische Runentaktik kostenlos?", "Ja. Alle 30 Missionen, Spezialgegner, Geländeregeln, dauerhaften Runenfortschritt und sechs Bosse sind im Browser ohne Zahlung spielbar."],
+        ["Wie viele Missionen und Bosse gibt es?", "Es gibt 30 entworfene Missionen. Die Missionen 5, 10, 15, 20, 25 und 30 verwenden sechs verschiedene Bosse mit eigener Darstellung, eigenem Verhalten und zwei Gesundheitsphasen."],
+        ["Braucht das Spiel schnelle Reaktionen?", "Nein. Es ist rundenbasiert. Nichts bewegt sich, während der Spieler Held, Feld, Angriff, Schützen oder Fähigkeit auswählt."],
+        ["Warum kann ich keine Fähigkeit verwenden?", "Der Held hat möglicherweise keine Energie, ist bereits Fertig oder wurde von der Mondmotte verstummt. Das Verstummen dauert einen Spielerzug und blockiert weder Bewegung noch normale Angriffe noch Schützen."],
+        ["Was wird nach einer Mission zurückgesetzt?", "Das Kampfbrett wird zurückgesetzt. Missionsfreischaltungen, Truppstufe, XP, Runen, Heldenstufen, gewählte Runenbelohnungen, Training und Wiederbelebungsmarker bleiben im lokalen Fortschritt."],
+        ["Was können Diamanten tun?", "Drei Diamanten wählen ein Belohnungsset neu und 18 Diamanten bestätigen den dauerhaften Trainingsplatz. Diamanten schalten keine Kampagnenmissionen, Helden oder Bosse frei."],
+        ["Kann ich frühere Missionen wiederholen?", "Ja. Jede freigeschaltete Mission bleibt auswählbar, auch alle 30 nach dem finalen Sieg. Mission 30 erzeugt keine falsche Mission 31."],
+        ["Braucht der Fortschritt ein Konto?", "Nein. Der Fortschritt wird in diesem Browser gespeichert. Das Löschen der Websitedaten oder ein Gerätewechsel kann ein separates lokales Profil starten."]
+      ]
+    }
+  };
+  for (const [locale, copy] of Object.entries(animalRuneTacticsFrenchGermanGuideCopy)) {
+    localizedGames[locale] ||= {};
+    localizedGames[locale]["animal-rune-tactics"] = {
+      ...(localizedGames[locale]["animal-rune-tactics"] || games["animal-rune-tactics"]),
+      ...copy,
+    };
+    localizedGameplayProfiles[locale] ||= {};
+    localizedGameplayProfiles[locale]["animal-rune-tactics"] = {
+      gameplay: copy.gameplay,
+      genre: copy.genre,
+    };
+  }
   const reviewedGeneralGuides = window.WeightPlayGeneralReviewedGuides || {};
   for (const [code, localeData] of Object.entries(reviewedGeneralGuides)) {
     if (!localizedGames[code]) localizedGames[code] = {};

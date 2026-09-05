@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">Rain Roost</title>
+  <desc id="desc">A small teal nest catches blue raindrops beneath a moonlit cloud.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b5e2f5"/><stop offset="1" stop-color="#eaf8ef"/></linearGradient>
+    <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#70b8a0"/><stop offset="1" stop-color="#2e716f"/></linearGradient>
+  </defs>
+  <rect width="900" height="620" rx="36" fill="url(#sky)"/>
+  <circle cx="735" cy="118" r="55" fill="#fff5bc" opacity=".9"/>
+  <path d="M0 470c120-120 225-105 337-22 101-100 237-108 334-21 85-72 157-65 229-15v208H0Z" fill="url(#hill)"/>
+  <path d="M196 192c26-59 106-69 151-23 47-29 120-2 122 53 56 10 77 78 30 108H164c-63-11-48-110 32-138Z" fill="#fff" opacity=".86"/>
+  <g stroke="#258db0" stroke-width="9" stroke-linecap="round" opacity=".85">
+    <path d="M267 341l-18 47"/><path d="M340 340l-18 47"/><path d="M413 340l-18 47"/><path d="M486 340l-18 47"/><path d="M559 340l-18 47"/>
+  </g>
+  <g transform="translate(284 375)">
+    <path d="M20 90c32-69 240-80 282 0-25 52-255 57-282 0Z" fill="#167f88"/>
+    <path d="M32 92c56-30 205-36 261 0" fill="none" stroke="#f0b64a" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="146" cy="-5" r="56" fill="#6fc4d6"/>
+    <circle cx="125" cy="-18" r="9" fill="#16324f"/><circle cx="167" cy="-18" r="9" fill="#16324f"/>
+    <path d="M130 8q17 16 34 0" fill="none" stroke="#16324f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M90-35q-28-28-42-8M203-35q28-28 42-8" fill="none" stroke="#167f88" stroke-width="17" stroke-linecap="round"/>
+  </g>
+  <g fill="#fff" opacity=".7"><circle cx="98" cy="110" r="8"/><circle cx="124" cy="145" r="5"/><circle cx="808" cy="253" r="7"/></g>
+</svg>
