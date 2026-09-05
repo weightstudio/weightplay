@@ -2691,7 +2691,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-postcard-crop/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover.svg", hideHero: true }
+    art: { kind: "image", background: "games/animal-postcard-crop/assets/animal-postcard-crop-cover.webp", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -4283,6 +4283,21 @@ if (tetrisPublic) {
     type: { en: "Continuous Falling-Block Puzzle", "zh-Hant": "連續落下方塊益智", "zh-Hans": "连续下落方块益智", ja: "連続落下ブロックパズル", ko: "연속 낙하 블록 퍼즐", es: "Puzle de bloques en caída continua", "pt-BR": "Puzzle de blocos em queda contínua", fr: "Puzzle de blocs en chute continue", de: "Puzzle mit fallenden Blöcken", it: "Puzzle di blocchi in caduta continua", ru: "Головоломка с непрерывно падающими блоками", hi: "लगातार गिरते ब्लॉक की पहेली", ar: "لغز كتل متساقطة باستمرار" },
     description: { en: "Fill horizontal rows with falling blocks, use the landing outline, and keep the stack low as speed rises.", "zh-Hant": "用落下方塊填滿橫列，參考落點框保持低堆，隨等級提升應對更快速度。", "zh-Hans": "用下落方块填满横行，参考落点框保持低堆，随着等级提升应对更快速度。", ja: "落ちるブロックで横一列を埋め、着地点の枠を見ながら速度上昇に合わせて低く積みます。", ko: "떨어지는 블록으로 가로줄을 채우고 착지 윤곽을 보며 속도가 오를수록 낮게 쌓으세요.", es: "Completa filas con bloques que caen, usa el contorno de aterrizaje y mantén baja la pila mientras sube la velocidad.", "pt-BR": "Complete linhas com blocos que caem, use o contorno de pouso e mantenha a pilha baixa enquanto a velocidade aumenta.", fr: "Remplissez des lignes avec des blocs qui tombent, suivez le contour d’arrivée et gardez la pile basse quand la vitesse augmente.", de: "Fülle Reihen mit fallenden Blöcken, nutze die Landeanzeige und halte den Stapel niedrig, wenn das Tempo steigt.", it: "Completa le righe con blocchi in caduta, usa il contorno di atterraggio e tieni bassa la pila quando aumenta la velocità.", ru: "Заполняйте ряды падающими блоками, смотрите на контур приземления и держите стопку низкой с ростом скорости.", hi: "गिरते ब्लॉकों से पंक्तियाँ भरें, उतरने की रूपरेखा देखें और गति बढ़ने पर ढेर कम रखें।", ar: "املأ الصفوف بالكتل المتساقطة واستخدم إطار الهبوط وأبقِ الكومة منخفضة مع ازدياد السرعة." },
     meta: { en: ["10×20 Board", "Real Line Clears", "Local Best Score"], "zh-Hant": ["10×20 棋盤", "真實消行", "本機最高分"], "zh-Hans": ["10×20 棋盘", "真实消行", "本地最高分"], ja: ["10×20盤面", "実際のライン消去", "ローカル最高点"], ko: ["10×20 보드", "실제 줄 지우기", "로컬 최고 점수"], es: ["Tablero 10×20", "Filas reales", "Récord local"], "pt-BR": ["Tabuleiro 10×20", "Linhas reais", "Recorde local"], fr: ["Grille 10×20", "Lignes réelles", "Record local"], de: ["10×20-Feld", "Echte Reihen", "Lokaler Bestwert"], it: ["Campo 10×20", "Righe reali", "Record locale"], ru: ["Поле 10×20", "Настоящие линии", "Локальный рекорд"], hi: ["10×20 बोर्ड", "वास्तविक पंक्ति सफाई", "स्थानीय सर्वश्रेष्ठ"], ar: ["لوحة 10×20", "مسح صفوف حقيقي", "أفضل نتيجة محلية"] },
+    searchAliases: [
+      "tetromino", "tetromino puzzle", "line clear", "clear lines", "falling blocks", "block stacking",
+      "方塊堆疊", "消行", "消除整行", "落下方塊",
+      "方块堆叠", "消行", "消除整行", "下落方块",
+      "テトリミノ", "ライン消去", "落ちもの", "ブロック積み",
+      "테트로미노", "줄 지우기", "낙하 블록", "블록 쌓기",
+      "tetrominós", "borrar líneas", "bloques que caen", "apilar bloques",
+      "tetraminós", "limpar linhas", "blocos caindo", "empilhar blocos",
+      "tétrominos", "effacer des lignes", "blocs qui tombent", "empiler des blocs",
+      "Tetrominos", "Reihen löschen", "fallende Blöcke", "Blöcke stapeln",
+      "tetramini", "cancellare righe", "blocchi cadenti", "impilare blocchi",
+      "тетромино", "очищать линии", "падающие блоки", "складывать блоки",
+      "टेट्रोमिनो", "पंक्तियाँ साफ़ करना", "गिरते ब्लॉक", "ब्लॉक जमाना",
+      "تترومينو", "مسح الصفوف", "الكتل المتساقطة", "تكديس الكتل",
+    ],
     previewVideo: "assets/previews/tetris-battle.webm",
   });
   delete tetrisPublic.internalTrial;

@@ -71,6 +71,10 @@
     parent: "9歳以上と家族でのプレイをおすすめします。アカウントは不要で、進行はこのブラウザだけに保存されます。星と結果は正式な能力評価ではありません。",
     faq: [["同じマスを二度通れますか？", "いいえ。色の付いたマスへ戻ると挑戦が終了します。"], ["斜めに移動できますか？", "いいえ。上下左右に辺を共有するマスだけです。"], ["クリア条件は？", "全ての空きマスを同じ一本のルートで塗ります。"], ["速く動く必要がありますか？", "ありません。現在のマスで止まって考えられます。"], ["進行は保存されますか？", "はい。このブラウザに保存されます。"], ["何ステージありますか？", "30個のオリジナル盤面があります。"]]
   };
+  games["animal-auto-squad"] = {
+    ...games["animal-auto-squad"],
+    time: "1ステージ約5〜10分",
+  };
   window.WeightPlayGameInfoLocales = window.WeightPlayGameInfoLocales || {};
   window.WeightPlayGameInfoLocales.ja = { labels, skillLabels, games, gameplayProfiles: {} };
 })();

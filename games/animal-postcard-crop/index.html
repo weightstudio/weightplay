@@ -35,7 +35,7 @@
       <header class="topbar wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
         <strong class="wp-shell-main-title" data-i18n="title">Postcard Crop</strong>
-        <button id="mainSettings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button>
+        <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings" onclick="document.getElementById('settings-dialog').classList.add('is-open')">⚙</button>
       </header>
       <div class="main-content">
         <img class="main-poster" src="assets/animal-postcard-crop-cover.svg" alt="" width="800" height="800" fetchpriority="high" draggable="false">
@@ -67,11 +67,11 @@
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
 
     <section id="resultScreen" class="screen result-screen" data-view="result" data-screen="result" hidden>
-      <header class="topbar wp-main-shell-header"><button id="resultHome" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-i18n="title">Postcard Crop</strong><button id="resultSettings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
+      <header class="topbar wp-main-shell-header"><button id="resultHome" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-i18n="title">Postcard Crop</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings" onclick="document.getElementById('settings-dialog').classList.add('is-open')">⚙</button></header>
       <div class="result-content"><p class="eyebrow" data-i18n="resultKicker">POSTCARDS COMPLETE</p><h1 data-i18n="resultTitle">A thoughtful set of crops.</h1><p id="resultText" class="lede"></p><div class="result-card"><div><span data-i18n="moves">Moves</span><strong id="resultMoves">0</strong></div><div><span data-i18n="best">Best</span><strong id="resultBest">—</strong></div></div><p id="resultStatus" class="status" role="status"></p><div class="result-actions"><button id="replayButton" class="primary-button" type="button" data-i18n="replay">Frame again</button><button id="resultMenu" class="secondary-button" type="button" data-i18n="home">Back to menu</button></div></div>
     </section>
   </div>
-  <dialog id="settingsDialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-i18n="settings">Settings</h2><button id="closeSettings" class="close-button" value="close" aria-label="Close">×</button></div><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect"></select><button id="soundToggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></dialog>
+  <div id="settings-dialog" class="modal-dialog" role="dialog" aria-modal="true"><form class="dialog-card"><div class="dialog-head"><h2 data-i18n="settings">Settings</h2><button id="close-settings" class="close-button" type="button" aria-label="Close">×</button></div><label for="locale-select" data-i18n="language">Language</label><select id="locale-select"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></div>
   <script src="locales.js"></script>
   <script src="game.js"></script>
 </body>

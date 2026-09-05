@@ -1580,6 +1580,8 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      showSkills: false,
+      showRelatedSkill: false,
       intro:
         "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
       story: [
@@ -4647,6 +4649,7 @@
     guideTitleSuffix: "Game Guide",
     noteTitle: "Player and Save Information",
     hideScoreBands: true,
+    showSkills: false,
     showRelatedSkill: false,
     intro: "Animal Gearpack Expedition is a 30-stage spatial-inventory strategy adventure starring Gear Horn Rux. Fit equipment into an eleven-column, seven-row pack, connect Forge, Nature, Crystal, and Moon materials, and survive five encounters per stage. Six regions introduce different packing pressures, and every fifth stage ends with a Guardian whose mechanic changes what a safe build looks like.",
     story: [
@@ -12641,6 +12644,7 @@
     title: "Animal Prism Battalion", gameplay: "Three-Lane Automatic Core Defense",
     genre: ["Arcade", "Strategy", "Defense", "Animal"],
     skills: ["Prioritization", "Reaction", "Planning"],
+    showSkills: false, showRelatedSkill: false,
     intro: "Switch one automatic prism battery between three lanes, destroy each incoming formation, collect rare attack cores, and keep every surviving monster away from the crystal core.",
     story: ["Thirty defenses protect a prism citadel whose three approaches are attacked at once. The batteries fire automatically, but only the selected lane receives focused fire, so the commander decides which threat must disappear first.", "Every fifth defense ends with a chapter Boss. Earlier waves teach the chapter rule before that Boss combines it with denser formations."],
     systems: ["Tap a lane, press Left or Right, or use A and D to move the selected battery. The chosen lane glows and receives the current attack value automatically.", "Most targets are enemies, but a rare glowing power core permanently raises attack for the rest of that run. Later enemy health assumes that core was collected, so ignoring it creates a real strategic cost.", "Shielded formations must lose their shield before taking normal damage. Bombs must be defused before their countdown finishes, champions require sustained focus, and any surviving monster that crosses the bottom line damages the crystal core.", "Shards earned from completed defenses improve firing rate, attack power, or core armor in the laboratory. These upgrades support play but do not replace lane decisions."],
