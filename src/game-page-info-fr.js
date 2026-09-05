@@ -168,6 +168,68 @@
     },
   };
 
+  games["shape-train"] = {
+    title: "Le Train des Formes Animales",
+    age: "3+",
+    difficulty: "Facile",
+    time: "2 à 5 minutes par parcours",
+    gameplay: "Association de formes",
+    genre: ["Puzzle", "Association", "Jeu pour enfants"],
+    skills: ["Reconnaissance des couleurs", "Logique", "Coordination œil-main"],
+    guideKicker: "Guide de jeu WeightPlay pour enfants",
+    guideTitleSuffix: "Guide de jeu",
+    noteTitle: "Informations sur le joueur et la sauvegarde",
+    intro: "Le Train des Formes Animales est un jeu bilingue gratuit d’association pour enfants avec 30 parcours sauvegardés et six Défis du conducteur. Des amis animaux attendent à une gare joyeuse. Le joueur cherche le wagon portant le même cercle, carré, triangle, étoile, losange ou cœur. Les premiers parcours sont des associations directes par l’image. Les chapitres suivants réduisent les couleurs, changent l’ordre des wagons après chaque embarquement, cachent brièvement le passager ou exigent de sélectionner le passager avant de choisir un wagon. Le parcours 30 réunit toutes les règles avec les six wagons. Il n’y a ni compte à rebours, ni vies, ni achat, ni compte, ni publicité, ni pénalité qui termine un parcours.",
+    story: [
+      "La Ligne des Formes relie six petites gares où des amis animaux livrent des colis colorés. Chaque colis porte un symbole clair et chaque wagon orange possède une fenêtre correspondante. Le joueur est le jeune conducteur : il vérifie le symbole et envoie chaque passager dans le bon wagon. Quand tous les amis attendus sont à bord, le train peut quitter le quai.",
+      "Les règles des parcours représentent les parties plus chargées du chemin de fer. Les Wagons en contour traversent un brouillard qui retire presque toutes les couleurs. Les Wagons mobiles arrivent sur des quais en mouvement. Les parcours de Mémoire du passager abaissent brièvement la carte de la gare, tandis que les parcours avec billet exigent de sélectionner le passager avant le wagon. Le parcours 30 termine le dernier Défi du conducteur mélangé."
+    ],
+    systems: [
+      "Chaque parcours contient quatre à huit passagers choisis parmi six formes réelles. Un seul wagon visible correspond au passager actuel.",
+      "Un bon choix affiche une courte célébration, avance la progression et présente le passager suivant. Un mauvais wagon donne un retour bienveillant et laisse le même passager disponible.",
+      "Les Wagons en contour réduisent les couleurs pour que la géométrie compte. Les Wagons mobiles changent d’ordre après chaque embarquement réussi. La Mémoire du passager cache le symbole mais permet de le révéler sans pénalité. Les parcours avec billet demandent de sélectionner le passager en premier.",
+      "Zéro erreur rapporte trois étoiles, quelques erreurs deux et davantage d’erreurs une. Le Bilan des compétences utilise les associations réelles, les premiers essais, les erreurs et les passagers embarqués.",
+      "Les étoiles et le parcours le plus avancé restent dans ce navigateur. Aucun compte, classement, achat, publicité, jauge de vies ou compte à rebours n’est nécessaire.",
+      "Un parcours sur cinq est un Défi du conducteur. Le parcours 30 sauvegarde le dernier résultat et n’expose aucun parcours 31."
+    ],
+    how: [
+      "Appuyez sur Jouer et faites glisser la ligne horizontale vers une carte débloquée.",
+      "Lisez la règle du parcours et observez la forme du passager sur la carte de gare inférieure.",
+      "Touchez le passager, puis choisissez le wagon portant le même symbole. Le glissement, la souris et le clavier sont également pris en charge.",
+      "Sur les parcours de mémoire, rappelez la forme cachée ou touchez le passager pour la révéler à nouveau.",
+      "Embarquez chaque passager pour sauvegarder les étoiles et débloquer exactement le parcours suivant."
+    ],
+    strategyTips: [
+      "Dites le nom de la forme avant de choisir un wagon.",
+      "Comparez les pointes et les bords courbes lorsque les wagons en contour retirent les couleurs.",
+      "Scannez toute la voie après chaque association sur un parcours mobile.",
+      "Pour mémoriser, dites le symbole à voix haute ou dessinez son contour dans l’air.",
+      "Sur les parcours avec billet, sélectionnez le passager avant de toucher un wagon.",
+      "Une mauvaise réponse laisse le parcours ouvert : comparez calmement au lieu de deviner vite."
+    ],
+    progression: [
+      "Les parcours 1 à 5 enseignent l’association directe avec deux à quatre wagons colorés et se terminent par le premier Défi du conducteur.",
+      "Les parcours 6 à 10 utilisent les Wagons en contour : les courbes, les coins et les pointes deviennent plus importants que la couleur.",
+      "Les parcours 11 à 15 utilisent les Wagons mobiles, qui changent d’ordre après une association réussie.",
+      "Les parcours 16 à 20 cachent brièvement le passager ; le toucher révèle à nouveau la même forme sans pénalité.",
+      "Les parcours 21 à 25 ajoutent l’action ordonnée du billet avant l’association de formes.",
+      "Les parcours 26 à 30 combinent les règles précédentes. Le parcours 30 utilise six wagons et huit passagers avec contour, mouvement, mémoire et billet."
+    ],
+    designNote: "La difficulté change ce que le joueur doit observer plutôt que de réduire les contrôles, d’ajouter un chronomètre ou de cacher la bonne zone. L’association directe installe le vocabulaire ; le contour, le mouvement, la mémoire et la sélection ordonnée ajoutent chacun une décision compréhensible. Le canevas logique fixe s’adapte proportionnellement au téléphone, à la tablette, au bureau et au paysage court. Les wagons et jetons illustrés gardent le jeu visuel, tandis que le texte localisé explique seulement la règle actuelle. Les pauses d’association et de mémoire comptent comme temps de jeu, de sorte qu’un changement d’application ne puisse pas avancer silencieusement le parcours. Contrairement à Animal Quiz, aucune lecture factuelle n’est requise : la décision est une équivalence visuelle, pas une intention de soin. Le jeu Kids n’a ni publicité, ni achat, ni compte, ni classement ni visée diagnostique.",
+    parent: "Le Train des Formes Animales peut soutenir des échanges sur les cercles, les coins, les pointes, la comparaison visuelle, la mémoire courte, l’ordre, l’attention et la coordination œil-main. Un adulte peut nommer chaque forme ou demander comment deux contours diffèrent. Les étoiles et le Bilan décrivent seulement cette partie ; ils ne sont ni une note scolaire, ni un score de QI, ni un diagnostic du développement, ni une comparaison avec un autre enfant. La progression reste dans ce navigateur et peut disparaître si les données locales sont effacées. Aucun profil d’enfant n’est nécessaire et la page Kids ne demande pas de publicité.",
+    faq: [
+      ["Combien de parcours sont inclus ?", "Il y a 30 parcours sauvegardés dans six chapitres, avec des Défis du conducteur aux parcours 5, 10, 15, 20, 25 et 30."],
+      ["Quelles formes apparaissent ?", "Le jeu utilise des cercles, des carrés, des triangles, des étoiles, des losanges et des cœurs."],
+      ["Pourquoi le passager a-t-il disparu ?", "Les parcours de Mémoire du passager le cachent brièvement. Touchez-le pour révéler la même forme sans pénalité."],
+      ["Pourquoi les wagons ont-ils bougé ?", "Les Wagons mobiles changent d’ordre après une bonne association pour demander un nouveau balayage visuel."],
+      ["Pourquoi un wagon n’accepte-t-il pas mon choix ?", "Les parcours avec billet exigent de sélectionner le passager avant de choisir un wagon."],
+      ["Que se passe-t-il après une mauvaise association ?", "Le même passager reste disponible avec un retour bienveillant."],
+      ["La progression est-elle sauvegardée ?", "Les étoiles et le parcours le plus avancé sont sauvegardés uniquement dans ce navigateur ; aucun compte n’est requis."],
+      ["Le jeu accepte-t-il les téléphones et les claviers ?", "Oui. Le toucher, le glissement, la souris et le clavier utilisent les mêmes règles d’association."],
+      ["La page Kids contient-elle des publicités ?", "Non. Le Train des Formes Animales n’envoie aucune demande publicitaire et ne réserve aucun emplacement publicitaire."]
+    ],
+  };
+
   games["spider-solitaire"] = {
     title: "Solitaire Spider",
     age: "9+",

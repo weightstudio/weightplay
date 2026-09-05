@@ -896,6 +896,7 @@
       ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
       ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
       ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+      ownLocalizedText(document.querySelector("[data-wp-cribbage-guide-summary]"), copy.howTo);
       const facts = [...document.querySelectorAll(".game-info-fact")];
       [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
         const fact = facts[index];

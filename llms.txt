@@ -65,6 +65,7 @@ WeightPlay covers these game and content clusters:
 - Hexa Sort: https://weightplay.com/en/games/hexa-sort/
 - Spider Solitaire: https://weightplay.com/en/games/spider-solitaire/
 - Gin Rummy: https://weightplay.com/en/games/gin-rummy/
+- Crazy Eights: https://weightplay.com/en/games/crazy-eights/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/
 - Space Rocks: https://weightplay.com/en/games/space-rocks/

@@ -4252,6 +4252,17 @@ if (ginRummyPublic) {
   delete ginRummyPublic.internalTrial;
 }
 
+// Crazy Eights is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so the exact v14
+// candidate remains discoverable with its truthful Battle preview.
+const crazyEightsPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "crazy-eights");
+if (crazyEightsPublic) {
+  crazyEightsPublic.status = "playable";
+  crazyEightsPublic.previewVideo = "assets/previews/crazy-eights-battle.webm";
+  delete crazyEightsPublic.statusText;
+  delete crazyEightsPublic.internalTrial;
+}
+
 const klondikeSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
 if (klondikeSolitairePlanned) {
   klondikeSolitairePlanned.status = "planned";

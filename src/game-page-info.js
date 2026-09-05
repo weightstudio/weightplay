@@ -1838,8 +1838,8 @@
       title: "Crazy Eights", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes",
       gameplay: "Classic Shedding Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
       intro: "Play a card matching the active suit or rank. Eights are wild and let you choose the next suit.",
-      how: ["When no card is legal, draw. The first player to empty their hand wins."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      how: ["When no card is legal, draw. The first player to empty their hand wins.", "Plan around the active suit, save flexible Eights for a safe turn, and watch opponents' card counts as the table changes."],
+      noteTitle: "Public play", parent: "Play this free public General game in your browser with no account or purchase required. Progress is saved only in this browser.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     cribbage: {
@@ -8504,6 +8504,27 @@
     return japaneseResourcePromise;
   }
 
+  const animalHeroTrialsLocaleGuideOverrides = {
+    de: {
+      noteTitle: "Spieler- und Speicherhinweise",
+      systemsProgression: "Fortschritt: Siege bringen vier bis neun Prüfungsmarken und schalten jeweils die nächste Prüfung frei. Die Herzmeisterschaft beginnt bei fünf Marken, kostet für jede weitere Stufe vier zusätzliche Marken und gibt jedem Helden pro Stufe 12 zusätzliche maximale Lebenspunkte.",
+      how: ["Wählen Sie eine freigeschaltete Karte aus der Bühnenleiste mit 30 Prüfungen und lesen Sie Regionsregel, Checkpoint-Boss und vorgeschlagenen Helden.", "Wählen Sie Leo, Fia, Orla oder Taro; die Auswahl bleibt für spätere Besuche gespeichert.", "Bewegen Sie sich, um Abstand zu halten, während automatische Angriffe den nächsten Feind in Reichweite anvisieren.", "Setzen Sie die aktive Fähigkeit gezielt ein, um eine Gruppe zu beseitigen, eine Warnung zu durchqueren, ein vorrangiges Ziel zu markieren oder ein schweres Angriffsmuster abzufangen.", "Nehmen Sie nach Raum 1 und 2 jeweils einen kostenlosen Segen. Die Diamanten-Wiederholung ist optional.", "Räumen Sie Raum 3 für Prüfungsmarken und die nächste Freischaltung. Nach einer Niederlage können Sie Wiederholen wählen, ohne den permanenten Fortschritt zu löschen."],
+      faq: [["Wie viele Prüfungen und Bosse gibt es?", "Es gibt 30 dreiräumige Prüfungen und sechs verschiedene Checkpoint-Bosse bei den Prüfungen 5, 10, 15, 20, 25 und 30."], ["Spielen sich alle Helden gleich?", "Nein. Sie unterscheiden sich in Gesundheit, Geschwindigkeit, Angriffsreichweite, Grundangriff und aktiver Fähigkeit."], ["Warum erleidet ein Feind wenig Schaden?", "Eine Abyss-Wache, ein Prism-Basilisk oder eine Kaiserwache kann aktiv sein. Fähigkeiten entfernen die Abwehr schneller als automatische Angriffe."], ["Was passiert nach jedem Raum?", "Nach Raum 1 und 2 wählen Sie Kraft, Abklingzeit oder Erholung. Raum 3 beendet die Prüfung."], ["Was bleibt zwischen den Läufen erhalten?", "Freigeschaltete Prüfungen, Marken, Herzmeisterschaft und der ausgewählte Held werden lokal gespeichert; vorübergehende Segen werden zurückgesetzt."], ["Sind Diamanten erforderlich?", "Nein. Drei Diamanten ersetzen die Segensauswahl nur einmal; ein kostenloser Segen ist immer verfügbar."], ["Kann ich eine frühere Prüfung wiederholen?", "Ja. Jede freigeschaltete Karte bleibt auf der Bühnenleiste verfügbar."], ["Was passiert nach einer Niederlage?", "Wiederholen startet dieselbe Prüfung neu, ohne den permanenten Fortschritt zu löschen."], ["Unterstützt das Spiel Touch und Tastatur?", "Ja. Verwenden Sie den Joystick und die Fähigkeitstaste oder WASD-/Pfeiltasten und die Leertaste."]],
+    },
+    fr: {
+      noteTitle: "Informations du joueur et sauvegarde",
+      systemsProgression: "Progression : Les victoires rapportent quatre à neuf marques d’épreuve et débloquent l’épreuve suivante. La maîtrise du cœur commence à cinq marques, coûte quatre marques supplémentaires par niveau et confère à chaque héros 12 points de vie maximum supplémentaires par niveau.",
+      how: ["Choisissez une carte débloquée dans le rail des 30 épreuves et lisez la règle de région, le boss de point de contrôle et le héros conseillé.", "Choisissez Leo, Fia, Orla ou Taro ; le choix reste enregistré pour vos prochaines visites.", "Déplacez-vous pour contrôler la distance tandis que les attaques automatiques ciblent l’ennemi le plus proche à portée.", "Utilisez la compétence active au bon moment pour éliminer un groupe, franchir un avertissement, marquer une cible prioritaire ou absorber une attaque lourde.", "Après les salles 1 et 2, choisissez une bénédiction gratuite. La relance avec des diamants est facultative.", "Videz la salle 3 pour obtenir des marques d’épreuve et le prochain déblocage. Après une défaite, Réessayer relance l’épreuve sans supprimer la progression permanente."],
+      faq: [["Combien d’épreuves et de boss sont inclus ?", "Il y a 30 épreuves de trois salles et six boss de point de contrôle différents aux épreuves 5, 10, 15, 20, 25 et 30."], ["Tous les héros se jouent-ils de la même façon ?", "Non. Ils diffèrent par leur santé, leur vitesse, leur portée d’attaque, leur attaque de base et leur compétence active."], ["Pourquoi un ennemi subit-il peu de dégâts ?", "Une garde des Abysses, un basilic prismatique ou une garde de l’Empereur peut être active. Les compétences suppriment la garde plus rapidement que les attaques automatiques."], ["Que se passe-t-il après chaque salle ?", "Après les salles 1 et 2, choisissez Puissance, Temps de recharge ou Récupération. La salle 3 termine l’épreuve."], ["Qu’est-ce qui est conservé entre les épreuves ?", "Les épreuves débloquées, les marques, la maîtrise du cœur et le héros sélectionné sont enregistrés localement ; les bénédictions temporaires sont réinitialisées."], ["Les diamants sont-ils nécessaires ?", "Non. Trois diamants ne remplacent les choix de bénédiction qu’une seule fois ; une bénédiction gratuite est toujours disponible."], ["Puis-je rejouer une épreuve précédente ?", "Oui. Chaque carte débloquée reste disponible sur le rail des épreuves."], ["Que se passe-t-il après une défaite ?", "Réessayer relance la même épreuve sans supprimer la progression permanente."], ["Le jeu prend-il en charge le tactile et le clavier ?", "Oui. Utilisez le joystick et le bouton de compétence, ou les touches WASD/fléchées et la barre d’espace."]],
+    },
+    it: {
+      noteTitle: "Informazioni del giocatore e salvataggio",
+      systemsProgression: "Progressione: le vittorie assegnano da quattro a nove Marchi di prova e sbloccano la prova successiva. La Maestria del cuore inizia a cinque Marchi, richiede quattro Marchi in più per ogni livello successivo e dà a ogni eroe 12 punti di salute massimi aggiuntivi per livello.",
+      how: ["Scegli una carta sbloccata dalla barra delle 30 prove e leggi la regola della regione, il boss del checkpoint e l’eroe consigliato.", "Seleziona Leo, Fia, Orla o Taro; la scelta resta salvata per le visite successive.", "Muoviti per controllare la distanza mentre gli attacchi automatici puntano al nemico più vicino a portata.", "Usa l’abilità attiva al momento giusto per eliminare un gruppo, attraversare un avvertimento, marcare un bersaglio prioritario o assorbire uno schema pesante.", "Dopo le stanze 1 e 2, scegli una benedizione gratuita. Il rilancio con i diamanti è facoltativo.", "Sgombera la stanza 3 per ottenere Marchi di prova e il prossimo sblocco. Dopo una sconfitta, Riprova riavvia la prova senza eliminare i progressi permanenti."],
+      faq: [["Quante prove e boss sono inclusi?", "Ci sono 30 prove a tre stanze e sei diversi boss dei checkpoint nelle prove 5, 10, 15, 20, 25 e 30."], ["Tutti gli eroi si giocano allo stesso modo?", "No. Differiscono per salute, velocità, portata d’attacco, attacco base e abilità attiva."], ["Perché un nemico subisce pochi danni?", "Potrebbe essere attiva una Guardia dell’Abisso, un Basilisco Prismatico o una guardia dell’Imperatore. Le abilità rimuovono la guardia più velocemente degli attacchi automatici."], ["Cosa succede dopo ogni stanza?", "Dopo le stanze 1 e 2, scegli Potenza, Ricarica o Recupero. La stanza 3 conclude la prova."], ["Cosa viene mantenuto tra le prove?", "Gli sblocchi delle prove, i Marchi, la Maestria del cuore e l’eroe selezionato vengono salvati localmente; le benedizioni temporanee vengono ripristinate."], ["I diamanti sono necessari?", "No. Tre Diamanti sostituiscono le scelte di benedizione solo una volta; una benedizione gratuita è sempre disponibile."], ["Posso rigiocare una prova precedente?", "Sì. Ogni carta sbloccata rimane disponibile sulla barra delle prove."], ["Cosa succede dopo una sconfitta?", "Riprova riavvia la stessa prova senza eliminare i progressi permanenti."], ["Supporta il tocco e la tastiera?", "Sì. Usa il joystick e il pulsante dell’abilità, oppure i tasti WASD/freccia e la barra spaziatrice."]],
+    },
+  };
+
   function localizedGame(id) {
     const base = games[id];
     if (!base) return null;
@@ -8603,6 +8624,16 @@
       return value;
     };
     const translated = translateValue(merged);
+    const animalHeroTrialsLocaleOverride = id === "animal-hero-trials"
+      ? animalHeroTrialsLocaleGuideOverrides[activeLocale]
+      : null;
+    if (animalHeroTrialsLocaleOverride) {
+      translated.noteTitle = animalHeroTrialsLocaleOverride.noteTitle;
+      translated.systems = Array.isArray(translated.systems) ? [...translated.systems] : [];
+      translated.systems[4] = animalHeroTrialsLocaleOverride.systemsProgression;
+      translated.how = animalHeroTrialsLocaleOverride.how;
+      translated.faq = animalHeroTrialsLocaleOverride.faq;
+    }
     if (id === "hexa-sort" && hexaSortFaqByLocale[activeLocale]) {
       translated.faq = hexaSortFaqByLocale[activeLocale];
     }

@@ -1,6 +1,6 @@
 window.WPPopularArcade?.mount("chess");
 
-// Chess v11 keeps the target-agency loop while owning the repaired Interface V6
+// Chess v13 keeps the target-agency loop while owning the repaired Interface V6
 // shell contract, so the shared validator sees the same playable flow.
 // The board presents a small, authored agency contract:
 // choose a visible white piece, then choose its visible destination.
@@ -45,10 +45,58 @@ window.WPPopularArcade?.mount("chess");
     ar: "كش مات — ثلاثة قرارات واضحة وختام هادئ."
   };
 
+  const CHESS_SHELL_COPY = {
+    en: { mainBack: "Back to WeightPlay", battleBack: "Back to main", settings: "Settings", sound: "Sound", soundOn: "On", soundOff: "Off", language: "Language", objective: "Objective", start: "Start game", progress: "Complete the three-move Chess sprint.", instruction: "Use visible controls to play a complete short round, then review the Result." },
+    "zh-Hant": { mainBack: "返回 WeightPlay", battleBack: "返回主頁", settings: "設定", sound: "音效", soundOn: "開啟", soundOff: "關閉", language: "語言", objective: "目標", start: "開始遊戲", progress: "完成三步西洋棋衝刺。", instruction: "使用可見控制完成一輪短局，再查看結果。" },
+    "zh-Hans": { mainBack: "返回 WeightPlay", battleBack: "返回主页", settings: "设置", sound: "音效", soundOn: "开启", soundOff: "关闭", language: "语言", objective: "目标", start: "开始游戏", progress: "完成三步国际象棋挑战。", instruction: "使用可见控件完成一轮短局，然后查看结果。" },
+    ja: { mainBack: "WeightPlayへ戻る", battleBack: "メインへ戻る", settings: "設定", sound: "サウンド", soundOn: "オン", soundOff: "オフ", language: "言語", objective: "目標", start: "ゲーム開始", progress: "3手のメイトスプリントを完成させます。", instruction: "見えるコントロールで短いラウンドを完了し、結果を確認します。" },
+    ko: { mainBack: "WeightPlay로 돌아가기", battleBack: "메인으로", settings: "설정", sound: "소리", soundOn: "켜기", soundOff: "끄기", language: "언어", objective: "목표", start: "게임 시작", progress: "세 번의 수로 체크메이트 스프린트를 완료하세요.", instruction: "보이는 컨트롤로 짧은 라운드를 완료한 뒤 결과를 확인하세요." },
+    es: { mainBack: "Volver a WeightPlay", battleBack: "Volver al inicio", settings: "Ajustes", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado", language: "Idioma", objective: "Objetivo", start: "Iniciar partida", progress: "Completa el sprint de jaque mate de tres jugadas.", instruction: "Usa los controles visibles para completar una ronda breve y revisa el resultado." },
+    "pt-BR": { mainBack: "Voltar ao WeightPlay", battleBack: "Voltar ao início", settings: "Configurações", sound: "Som", soundOn: "Ativado", soundOff: "Desativado", language: "Idioma", objective: "Objetivo", start: "Iniciar jogo", progress: "Conclua o sprint de xeque-mate de três jogadas.", instruction: "Use os controles visíveis para concluir uma rodada curta e veja o resultado." },
+    fr: { mainBack: "Retour à WeightPlay", battleBack: "Retour à l’accueil", settings: "Paramètres", sound: "Son", soundOn: "Activé", soundOff: "Désactivé", language: "Langue", objective: "Objectif", start: "Démarrer", progress: "Terminez le sprint de mat en trois coups.", instruction: "Utilisez les contrôles visibles pour terminer une courte manche, puis consultez le résultat." },
+    de: { mainBack: "Zurück zu WeightPlay", battleBack: "Zur Startseite", settings: "Einstellungen", sound: "Ton", soundOn: "An", soundOff: "Aus", language: "Sprache", objective: "Ziel", start: "Spiel starten", progress: "Schließe den Matt-Sprint in drei Zügen ab.", instruction: "Nutze die sichtbaren Steuerelemente für eine kurze Runde und prüfe danach das Ergebnis." },
+    it: { mainBack: "Torna a WeightPlay", battleBack: "Torna alla home", settings: "Impostazioni", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato", language: "Lingua", objective: "Obiettivo", start: "Inizia partita", progress: "Completa lo sprint di scacco matto in tre mosse.", instruction: "Usa i controlli visibili per completare un round breve, poi rivedi il risultato." },
+    ru: { mainBack: "Вернуться в WeightPlay", battleBack: "На главную", settings: "Настройки", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл.", language: "Язык", objective: "Цель", start: "Начать игру", progress: "Завершите спринт с матом за три хода.", instruction: "Используйте видимые элементы управления, завершите короткий раунд и просмотрите результат." },
+    hi: { mainBack: "WeightPlay पर वापस जाएँ", battleBack: "मुख्य पृष्ठ", settings: "सेटिंग", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", language: "भाषा", objective: "लक्ष्य", start: "गेम शुरू करें", progress: "तीन चालों वाला चेकमेट स्प्रिंट पूरा करें।", instruction: "दिखने वाले नियंत्रणों से छोटा राउंड पूरा करें, फिर परिणाम देखें।" },
+    ar: { mainBack: "العودة إلى WeightPlay", battleBack: "العودة إلى الرئيسية", settings: "الإعدادات", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", language: "اللغة", objective: "الهدف", start: "ابدأ اللعبة", progress: "أكمل جولة كش مات من ثلاث نقلات.", instruction: "استخدم عناصر التحكم الظاهرة لإكمال جولة قصيرة، ثم راجع النتيجة." },
+  };
+
   const fallback = LOCALE_COPY.en;
   const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
   const currentLocale = () => document.documentElement.lang || document.querySelector("#localeSelect")?.value || "en";
   const copy = () => LOCALE_COPY[currentLocale()] || fallback;
+  const shellCopy = () => CHESS_SHELL_COPY[currentLocale()] || CHESS_SHELL_COPY.en;
+  const localizeShell = () => {
+    const ui = shellCopy();
+    const sound = document.querySelector("#soundBtn");
+    const setLabel = (selector, label) => {
+      const node = document.querySelector(selector);
+      if (!node) return;
+      node.setAttribute("aria-label", label);
+      node.setAttribute("title", label);
+    };
+    setLabel(".main-return", ui.mainBack);
+    setLabel("#audioMenuBtn", ui.settings);
+    setLabel("#battleBackBtn", ui.battleBack);
+    setLabel("#battleUtilityBtn", ui.settings);
+    document.querySelector("#audioPopover")?.setAttribute("aria-label", ui.settings);
+    document.querySelector(".settings-title")?.replaceChildren(document.createTextNode(ui.settings));
+    document.querySelector("#languageLabel")?.replaceChildren(document.createTextNode(ui.language));
+    document.querySelector("#localeSelect")?.setAttribute("aria-label", ui.language);
+    if (sound) {
+      const enabled = sound.getAttribute("aria-pressed") !== "false";
+      const label = `${ui.sound}: ${enabled ? ui.soundOn : ui.soundOff}`;
+      sound.textContent = label;
+      sound.setAttribute("aria-label", label);
+      sound.setAttribute("title", label);
+    }
+    document.querySelector("#mainInstruction")?.replaceChildren(document.createTextNode(ui.instruction));
+    const progress = document.querySelector("[data-wp-main-progress]");
+    progress?.querySelector("strong")?.replaceChildren(document.createTextNode(ui.objective));
+    progress?.querySelector("span")?.replaceChildren(document.createTextNode(ui.progress));
+    const start = document.querySelector("#startBtn");
+    if (start) start.textContent = ui.start;
+  };
   const isWhite = (piece) => piece === "♙" || piece === "♔";
   const pieceName = (localeCopy, piece) => piece ? localeCopy.pieceNames[piece] || localeCopy.piece : localeCopy.empty;
   const bounded = (value, allowed) => allowed.has(String(value || "unknown")) ? String(value || "unknown") : "unknown";
@@ -217,6 +265,7 @@ window.WPPopularArcade?.mount("chess");
     renderBattle();
   };
   const scheduleShellSync = (fresh = false) => window.setTimeout(() => {
+    localizeShell();
     if (fresh) {
       resetState();
       setMessage(copy().choosePiece, "", "chessAgencyChoosePiece");
@@ -253,7 +302,7 @@ window.WPPopularArcade?.mount("chess");
     sound?.addEventListener("click", () => {
       const enabled = sound.getAttribute("aria-pressed") !== "true";
       sound.setAttribute("aria-pressed", String(enabled));
-      sound.textContent = enabled ? "Sound: On" : "Sound: Off";
+      localizeShell();
     });
     document.addEventListener("click", (event) => {
       const popover = document.querySelector("#audioPopover");
@@ -263,11 +312,15 @@ window.WPPopularArcade?.mount("chess");
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") setSettingsOpen(false);
     });
-    localeSelect?.setAttribute("aria-label", "Language");
+    window.addEventListener("wonder:locale-change", () => {
+      localizeShell();
+      scheduleShellSync();
+    });
+    localizeShell();
   };
 
   resetState();
-  document.body.dataset.gameVersion = "v12";
+  document.body.dataset.gameVersion = "v13";
   bindShellControls();
   document.querySelector("#battleBackBtn")?.addEventListener("click", (event) => {
     event.preventDefault();

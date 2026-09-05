@@ -1,6 +1,12 @@
 (function () {
   "use strict";
 
+  document.body?.setAttribute("data-wp-game-owned-guide", "true");
+  document.documentElement.classList.add("has-game-page-info");
+  document.body?.classList.add("has-game-page-info");
+  const ownedGuide = document.querySelector("#mainScreen > .game-page-info");
+  if (ownedGuide) document.body.append(ownedGuide);
+
   const ARABIC_SHELL = {
     title: "الثمانيات المجنونة",
     back: "رجوع",
@@ -27,8 +33,8 @@
     progressCopy: "يد جديدة جاهزة؛ طابق النوع أو الرتبة للبدء.",
     howTo: "طريقة اللعب",
     howToCopy: "عندما لا تكون هناك بطاقة قانونية، اسحب بطاقة. أول لاعب يفرغ يده يفوز.",
-    preview: "حالة المعاينة",
-    previewCopy: "معاينة المالك هذه غير موجودة في الكتالوج العام الرسمي.",
+    preview: "اللعب العام",
+    previewCopy: "العب Crazy Eights مجانًا في متصفحك دون حساب أو شراء.",
     faq: "الأسئلة الشائعة",
     faqQuestion: "هل يُحفظ التقدم؟",
     faqAnswer: "نعم، في هذا المتصفح فقط.",

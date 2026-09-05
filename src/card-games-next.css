@@ -11,7 +11,9 @@
 body[data-wp-card-game] { margin: 0; background: #0a1f3a; }
 .settings-popover.is-hidden { display: none !important; }
 .card-game-battle { background: radial-gradient(circle at 50% 8%, #1e806e 0, var(--card-table) 38%, var(--card-table-deep) 100%); }
-.card-game-battle .battle-canvas { color: #f8fafc; }
+/* The logical Battle Canvas is the element carrying both classes; keep its
+   inherited copy light so labels/status text stay readable on the dark table. */
+.card-game-battle { color: #f8fafc; }
 .card-table-ui { width: 100%; height: 100%; margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; padding: 12px; box-sizing: border-box; }
 .card-game-topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
 .card-game-topbar .battle-back { flex: 0 0 44px; }
@@ -137,6 +139,29 @@ body[data-wp-card-game="crazy-eights"] .card-crazy-eights-illegal-cue { border-c
 .card-crib-transition { max-width: 52ch; padding: 7px 10px; border: 1px solid rgba(245,200,76,.55); border-radius: 12px; color: #ffefa7; background: rgba(95,62,15,.38); font-size: 12px; line-height: 1.35; text-align: center; }
 .card-crib-choice-plan { display: block; margin-top: 4px; color: #e7fff1; }
 .card-crib-score-cue { max-width: 52ch; padding: 6px 10px; border: 1px solid rgba(99,230,190,.62); border-radius: 10px; color: #e7fff1; background: rgba(10,83,80,.34); font-size: 12px; line-height: 1.35; text-align: center; }
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure {
+  margin-top: 16px;
+  padding: 0 14px 14px;
+  border: 1px solid rgba(215,249,231,.28);
+  border-radius: 14px;
+  background: rgba(7,28,43,.2);
+}
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure > summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  color: #ffefa7;
+  font-weight: 800;
+  list-style: none;
+}
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure > summary::-webkit-details-marker { display: none; }
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure > summary::after { content: "+"; color: #63e6be; font-size: 1.35rem; line-height: 1; }
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure[open] > summary::after { content: "−"; }
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure > summary:focus-visible { outline: 3px solid #f5c84c; outline-offset: 4px; border-radius: 6px; }
+body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure .game-info-sections { margin-top: 2px; }
 @media (max-height: 560px) and (orientation: landscape) {
   .card-crib-choice-plan { display: inline; margin: 0 0 0 4px; }
   body[data-wp-card-game="cribbage"] .card-table-center { gap: 0; padding: 4px; justify-content: flex-start; }

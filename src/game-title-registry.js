@@ -680,7 +680,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ko": "동물 모양 기차",
     "es": "Tren de Formas Animales",
     "pt-BR": "Trem em forma de animal",
-    "fr": "Train en forme d'animal",
+    "fr": "Le Train des Formes Animales",
     "de": "Zug in Tierform",
     "it": "Treno a forma di animale",
     "ru": "Поезд в форме животного",

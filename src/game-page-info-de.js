@@ -157,6 +157,68 @@
     },
   };
 
+  games["shape-train"] = {
+    title: "Zug in Tierform",
+    age: "3+",
+    difficulty: "Einfach",
+    time: "2–5 Minuten pro Route",
+    gameplay: "Formen-Zuordnung",
+    genre: ["Puzzle", "Zuordnung", "Kinder"],
+    skills: ["Farberkennung", "Logik", "Hand-Auge-Koordination"],
+    guideKicker: "WeightPlay-Spielanleitung für Kinder",
+    guideTitleSuffix: "Spielanleitung",
+    noteTitle: "Spieler- und Speicherhinweise",
+    intro: "Zug in Tierform ist ein kostenloses zweisprachiges Zuordnungsspiel für Kinder mit 30 gespeicherten Routen und sechs Schaffner-Checks. Tierfreunde warten an einer fröhlichen Station. Der Spieler findet den Waggon mit demselben Kreis-, Quadrat-, Dreieck-, Stern-, Rauten- oder Herzsymbol. Die ersten Routen sind direkte Bildvergleiche. Spätere Kapitel reduzieren die Farbe, ändern nach jedem Einstieg die Waggonreihenfolge, verstecken den Fahrgast kurz oder verlangen, dass der Fahrgast vor der Waggonwahl ausgewählt wird. Route 30 verbindet alle Regeln mit allen sechs Waggons. Es gibt keinen Countdown, keine Lebensbegrenzung, keinen Kauf, kein Konto, keine Werbung und keine Strafe, die eine Route beendet.",
+    story: [
+      "Die Formenlinie verbindet sechs kleine Stationen, an denen Tierfreunde leuchtende Formpakete ausliefern. Jedes Paket trägt ein klares Symbol, und jeder orange Waggon hat ein passendes Fenster. Der Spieler ist der Junior-Schaffner: Er prüft das Symbol und schickt jeden Fahrgast in den richtigen Waggon. Wenn alle wartenden Freunde sicher eingestiegen sind, kann der Zug den Bahnsteig verlassen.",
+      "Die Routenregeln zeigen anspruchsvollere Teile der Bahn. Umriss-Waggons fahren durch Nebel, der fast alle Farben entfernt. Wechsel-Waggons kommen auf beweglichen Bahnsteigen an. Bei Fahrgast-Merkrouten wird die Stationskarte kurz abgesenkt, während Boarding-Pass-Routen zuerst eine Fahrgastauswahl verlangen. Route 30 schließt den letzten gemischten Schaffner-Check ab."
+    ],
+    systems: [
+      "Jede Route enthält vier bis acht Fahrgäste aus sechs echten Formen. Nur ein sichtbarer Waggon passt zum aktuellen Fahrgast.",
+      "Eine richtige Wahl zeigt eine kurze Feier, macht den Fortschritt weiter und stellt den nächsten Fahrgast vor. Ein falscher Waggon gibt freundliches Feedback; derselbe Fahrgast bleibt verfügbar.",
+      "Umriss-Waggons reduzieren die Farbe, damit die Geometrie zählt. Wechsel-Waggons ordnen sich nach jedem richtigen Einstieg neu. Fahrgast-Merkrouten verstecken das Symbol, erlauben aber eine Aufdeckung ohne Strafe. Boarding-Pass-Routen verlangen zuerst die Auswahl des Fahrgasts.",
+      "Null Fehlversuche geben drei Sterne, wenige Fehlversuche zwei und weitere Fehlversuche einen Stern. Der Ergebnisbericht verwendet echte Treffer, erste Versuche, Fehlversuche und eingestiegene Fahrgäste.",
+      "Sterne und der höchste Freischaltstand bleiben in diesem Browser. Es gibt kein Konto, keine Rangliste, keinen Kauf, keine Werbung, keine Lebensanzeige und keinen Countdown.",
+      "Jede fünfte Route ist ein Schaffner-Check. Route 30 speichert das letzte Ergebnis und zeigt keine Route 31."
+    ],
+    how: [
+      "Drücke Spiel starten und wische auf der waagerechten Routenleiste zu einer freigeschalteten Karte.",
+      "Lies die Routenregel und sieh dir das Formensymbol auf der unteren Stationskarte an.",
+      "Tippe auf den Fahrgast und wähle dann den Waggon mit demselben Symbol. Ziehen, Maus und Tastatur werden ebenfalls unterstützt.",
+      "Rufe auf Merkrouten das verborgene Symbol ab oder tippe auf den Fahrgast, um es erneut anzuzeigen.",
+      "Bringe alle aufgeführten Fahrgäste an Bord, um Sterne zu speichern und genau die nächste Route freizuschalten."
+    ],
+    strategyTips: [
+      "Sage den Namen der Form, bevor du einen Waggon wählst.",
+      "Vergleiche Punkte und gebogene Kanten, wenn Umriss-Waggons die Farbe entfernen.",
+      "Scanne nach jedem Einstieg die ganze Strecke erneut, wenn sich die Waggons bewegen.",
+      "Nenne bei Merkrouten das Symbol laut oder zeichne seinen Umriss in der Luft nach.",
+      "Wähle bei Boarding-Pass-Routen zuerst den Fahrgast aus, bevor du einen Waggon berührst.",
+      "Eine falsche Wahl hält die Route offen. Vergleiche in Ruhe, statt schnell zu raten."
+    ],
+    progression: [
+      "Die Routen 1–5 lehren die direkte Zuordnung mit zwei bis vier leuchtenden Waggons und enden beim ersten Schaffner-Check.",
+      "Die Routen 6–10 verwenden Umriss-Waggons. Kurven, Ecken und Spitzen werden wichtiger als die Farbe.",
+      "Die Routen 11–15 verwenden Wechsel-Waggons, die sich nach einem erfolgreichen Einstieg neu ordnen.",
+      "Die Routen 16–20 verstecken den Fahrgast kurz. Ein Tippen zeigt dieselbe Form ohne Strafe wieder.",
+      "Die Routen 21–25 ergänzen die geordnete Boarding-Pass-Aktion vor dem Formenvergleich.",
+      "Die Routen 26–30 verbinden die bisherigen Regeln. Route 30 nutzt sechs Waggons und acht Fahrgäste mit Umriss-, Bewegungs-, Merk- und Boarding-Pass-Regeln."
+    ],
+    designNote: "Die Schwierigkeit wächst durch veränderte Beobachtungsaufgaben, nicht durch kleinere Bedienelemente, einen Timer oder ein verstecktes Zielfeld. Direkte Zuordnung führt das Vokabular ein; Umriss, Bewegung, Erinnerung und die geordnete Auswahl ergänzen jeweils eine verständliche Entscheidung. Das feste logische Layout skaliert gleichmäßig auf Telefon, Tablet, Desktop und kurzer Queransicht. Bildgestützte Waggons und Fahrgäste halten das Spiel visuell, während lokalisierter Text nur die aktuelle Regel erklärt. Sichtbare Match- und Merkpausen zählen als Spielzeit, sodass ein App-Wechsel die Route nicht unbemerkt voranbringt. Anders als Tierquiz verlangt Zug in Tierform kein Faktenlesen: Die Entscheidung ist visuelle Gleichheit statt Pflegezweck. Das Kids-Spiel enthält keine Werbung, keinen Kauf, kein Konto, keine Rangliste und keine Diagnostik.",
+    parent: "Zug in Tierform kann Gespräche über Kreise, Ecken, Spitzen, visuelles Vergleichen, kurzes Erinnern, Reihenfolgen, Aufmerksamkeit und Hand-Auge-Koordination unterstützen. Ein Erwachsener kann jede Form benennen oder fragen, wie sich zwei Umrisse unterscheiden. Sterne und der Ergebnisbericht beschreiben nur diese Spielrunde. Sie sind keine Schulnote, kein IQ-Wert, keine Entwicklungsdiagnose und kein Vergleich mit einem anderen Kind. Der Fortschritt bleibt in diesem Browser und kann beim Löschen lokaler Daten verschwinden. Ein Kinderprofil ist nicht erforderlich, und die Kids-Seite fordert keine Werbung an.",
+    faq: [
+      ["Wie viele Routen gibt es?", "Es gibt 30 gespeicherte Routen in sechs Kapiteln mit Schaffner-Checks bei 5, 10, 15, 20, 25 und 30."],
+      ["Welche Formen erscheinen?", "Das Spiel verwendet Kreise, Quadrate, Dreiecke, Sterne, Rauten und Herzen."],
+      ["Warum ist der Fahrgast verschwunden?", "Auf Merkrouten wird er kurz versteckt. Tippe auf den Fahrgast, um dieselbe Form ohne Strafe wieder anzuzeigen."],
+      ["Warum haben sich die Waggons bewegt?", "Wechsel-Waggons ordnen sich nach einer richtigen Zuordnung neu, damit der Spieler erneut scannt."],
+      ["Warum nimmt ein Waggon meine Wahl nicht an?", "Boarding-Pass-Routen verlangen, dass der Fahrgast vor der Waggonwahl ausgewählt wird."],
+      ["Was passiert nach einer falschen Zuordnung?", "Der gleiche Fahrgast bleibt mit freundlichem Feedback verfügbar."],
+      ["Wird der Fortschritt gespeichert?", "Sterne und die höchste freigeschaltete Route werden nur in diesem Browser gespeichert; ein Login ist nicht nötig."],
+      ["Unterstützt das Spiel Handys und Tastaturen?", "Ja. Touch, Ziehen, Maus und Tastatur verwenden dieselben Zuordnungsregeln."],
+      ["Enthält die Kids-Seite Werbung?", "Nein. Zug in Tierform sendet keine Werbeanfrage und reserviert keinen Werbeplatz."]
+    ],
+  };
+
   games["spider-solitaire"] = {
     ...(games["spider-solitaire"] || {}),
     title: "Spider-Solitär",
