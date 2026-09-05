@@ -766,4 +766,61 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
     width: 36px;
     height: 50px;
   }
+  /* Old Maid's face-down draw hand is a player decision surface. Keep it in
+     its own full-width compact-landscape row so RTL does not center an
+     over-wide hand into negative x coordinates. Wrapping is intentional for
+     a pre-pair hand; every card remains inside the player panel and can be
+     reached without changing the hidden-card contract. */
+  body[data-wp-card-game="old-maid"] .card-game-board {
+    grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
+    gap: 7px;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="old-maid"] .card-opponents { grid-area: opponents; }
+  body[data-wp-card-game="old-maid"] .card-table-center {
+    grid-area: table;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    padding: 5px;
+  }
+  body[data-wp-card-game="old-maid"] .card-game-player {
+    grid-column: 1 / -1;
+    grid-area: player;
+    min-width: 0;
+    min-height: 0;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="old-maid"] .card-game-player-header {
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-bottom: 3px;
+  }
+  body[data-wp-card-game="old-maid"] .card-hand {
+    flex: 0 1 auto;
+    width: 100%;
+    min-width: 0;
+    min-height: 61px;
+    max-height: 127px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    align-items: flex-start;
+    gap: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  body[data-wp-card-game="old-maid"] .card-hand .playing-card {
+    flex: 0 0 43px;
+    width: 43px;
+    height: 61px;
+  }
 }
