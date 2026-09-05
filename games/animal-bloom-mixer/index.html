@@ -9,7 +9,7 @@
   <meta name="weightplay-game-version" content="v1" />
   <meta name="weightplay-interface-version" content="6" />
   <title>Bloom Mixer | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260830-bloom-mixer-v1" />
+  <link rel="stylesheet" href="style.css?v=20260905-bloom-mixer-v1-art" />
 </head>
 <body data-wp-game-id="animal-bloom-mixer" data-wp-audience="general" data-wp-game-version="v1">
   <main class="app-shell">
@@ -17,37 +17,39 @@
       <div class="loading-mark" aria-hidden="true">✿</div><p data-copy="loading">Warming the mixing table…</p>
     </section>
 
-    <section id="main-screen" class="screen" data-screen="main" hidden>
-      <header class="topbar"><a class="return-link" href="../../index.html" data-copy="back" aria-label="Back to WeightPlay">← W</a><button id="main-settings" class="utility-button" type="button">⚙ <span data-copy="settings">Settings</span></button></header>
+    <section id="mainScreen" class="screen" data-screen="main" hidden>
+      <header class="topbar wp-main-shell-header"><a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a><strong class="wp-shell-main-title" data-copy="title">Bloom Mixer</strong><button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
       <div class="main-content">
-        <img class="concept-cover" src="assets/animal-bloom-mixer-cover.svg" alt="Moonlit meadow flowers" draggable="false" />
+        <img class="concept-cover main-cover" src="assets/animal-bloom-mixer-cover.png" alt="Forest vole mixing glowing petals in a moonlit meadow" draggable="false" />
         <p class="eyebrow" data-copy="eyebrow">MEADOW RECIPE PUZZLE</p><h1 data-copy="title">Bloom Mixer</h1>
-        <p class="lede" data-copy="lede">Choose the three petals that make each keeper's flower recipe.</p>
-        <div class="fact-row"><span data-copy="factOne">3 recipes</span><span data-copy="factTwo">Set selection</span><span data-copy="factThree">Calm retry</span></div>
-        <button id="start-button" class="primary-button" type="button" data-copy="start">Start mixing</button>
+        <p class="lede main-summary" data-copy="lede">Choose the three petals that make each keeper's flower recipe.</p>
+        <strong id="mainProgress" class="main-progress" data-copy="progress">0 / 3 recipes mixed</strong><div class="fact-row"><span data-copy="factOne">3 recipes</span><span data-copy="factTwo">Set selection</span><span data-copy="factThree">Calm retry</span></div>
+        <button id="start-button" class="primary-button" type="button" data-wp-main-start data-copy="start">Start mixing</button>
       </div>
     </section>
 
-    <section id="stage-screen" class="screen" data-screen="stage" hidden>
-      <header class="topbar"><button id="stage-back" class="return-link" type="button" data-copy="backMain">← Main</button><button id="stage-settings" class="utility-button" type="button">⚙ <span data-copy="settings">Settings</span></button></header>
-      <div class="content-column"><p class="eyebrow" data-copy="stageEyebrow">CHOOSE A RECIPE</p><h1 data-copy="stageTitle">Which bloom will you mix?</h1><p class="lede" data-copy="stageLede">Each note needs one exact set of three petals.</p><div id="recipe-list" class="recipe-list"></div></div>
+    <section id="stageScreen" class="screen" data-screen="stage" data-wp-standard-stage-screen data-wp-stage-art="assets/animal-bloom-mixer-cover.png" style="--wp-stage-art:url('assets/animal-bloom-mixer-cover.png')" hidden>
+      <header class="topbar wp-main-shell-header"><button id="stage-back" class="return-link wp-shell-return" type="button" data-wp-return="stage"><span aria-hidden="true">←</span><span data-copy="backMain">Main</span></button><strong class="wp-shell-main-title" data-copy="title">Bloom Mixer</strong><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
+      <div class="content-column"><p class="eyebrow" data-copy="stageEyebrow">CHOOSE A RECIPE</p><h1 data-copy="stageTitle">Which bloom will you mix?</h1><p class="lede" data-copy="stageLede">Each note needs one exact set of three petals.</p><div id="recipe-list" class="recipe-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Recipe sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="stageTitle">Which bloom will you mix?</button><span aria-hidden="true"></span></nav></div>
     </section>
 
-    <section id="battle-screen" class="screen" data-screen="battle" hidden>
-      <header class="topbar"><button id="battle-back" class="return-link" type="button" data-copy="backRecipes">← Recipes</button><button id="battle-settings" class="utility-button" type="button">⚙ <span data-copy="settings">Settings</span></button></header>
+    <section id="battleScreen" class="screen" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-art="assets/animal-bloom-mixer-background.png" style="--wp-battle-art:url('assets/animal-bloom-mixer-background.png')" hidden>
+      <header class="topbar wp-main-shell-header"><button id="battle-back" class="return-link wp-shell-return" type="button" data-wp-return="battle"><span aria-hidden="true">←</span><span data-copy="backRecipes">Recipes</span></button><strong class="wp-shell-main-title" data-copy="title">Bloom Mixer</strong><button id="battle-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙ <span data-copy="settings">Settings</span></button></header>
       <div id="battle-panel" class="content-column battle-content">
         <div class="battle-heading"><div><p class="eyebrow" data-copy="battleEyebrow">MEADOW NOTE</p><h1 id="recipe-title">Moon Bloom</h1></div><div class="pick-badge"><span data-copy="picks">Picks</span> <strong id="pick-count">0</strong><small>/ 3</small></div></div>
         <p id="recipe-note" class="note-card"></p>
-        <div class="target-card"><span data-copy="basket">Your basket</span><div id="basket" class="basket" aria-live="polite"></div></div>
+        <div class="target-card"><span data-copy="basket">Your basket</span><div id="basket" class="basket" aria-live="polite"></div></div><img class="petal-atlas" src="assets/animal-bloom-mixer-petals.png" alt="" aria-hidden="true" draggable="false" />
         <div id="petal-grid" class="petal-grid" role="group" aria-label="Petal choices"></div>
         <p id="battle-status" class="status" role="status" aria-live="polite" data-copy="begin">Choose three petals to begin.</p>
         <div class="battle-actions"><button id="clear-button" class="secondary-button" type="button" data-copy="clear">Clear basket</button><button id="check-button" class="primary-button" type="button" data-copy="check" disabled>Check recipe</button></div>
       </div>
-      <div id="result-panel" class="content-column result-panel" hidden><p class="eyebrow" data-copy="resultEyebrow">RECIPE COMPLETE</p><h1 id="result-title"></h1><p id="result-copy" class="lede"></p><div class="result-card"><span data-copy="picks">Picks</span><strong id="result-picks">0</strong><span data-copy="best">Best</span><strong id="result-best">—</strong></div><p id="result-status" class="status" role="status" aria-live="polite"></p><div class="result-actions"><button id="next-button" class="primary-button" type="button"></button><button id="result-stage" class="secondary-button" type="button" data-copy="backRecipes">Back to recipes</button></div></div>
+      <div id="result-panel" class="content-column result-panel" hidden><img class="result-guide" src="assets/animal-bloom-mixer-pollen.png" alt="" aria-hidden="true" draggable="false" /><p class="eyebrow" data-copy="resultEyebrow">RECIPE COMPLETE</p><h1 id="result-title"></h1><p id="result-copy" class="lede"></p><div class="result-card"><span data-copy="picks">Picks</span><strong id="result-picks">0</strong><span data-copy="best">Best</span><strong id="result-best">—</strong></div><p id="result-status" class="status" role="status" aria-live="polite"></p><div class="result-actions"><button id="next-button" class="primary-button" type="button"></button><button id="result-stage" class="secondary-button" type="button" data-copy="backRecipes">Back to recipes</button></div></div>
     </section>
 
-    <dialog id="settings-dialog" class="settings-dialog"><form method="dialog" class="settings-card"><div class="settings-head"><h2 data-copy="settings">Settings</h2><button class="close-button" value="close" data-copy-aria="close" aria-label="Close settings">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select><button id="sound-toggle" class="secondary-button" type="button" aria-pressed="true"></button></form></dialog>
+    <div class="ad-reserve" data-wp-ad-reserve data-reserve-for="main" aria-hidden="true"></div><div class="ad-reserve" data-wp-ad-reserve data-reserve-for="stage" aria-hidden="true" hidden></div><div class="ad-reserve" data-wp-ad-reserve data-reserve-for="battle" aria-hidden="true" hidden></div>
+    <section id="public-guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-label="Bloom Mixer game guide" hidden><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Bloom Mixer</h2><p>Read each meadow note and mix the exact three petals it requests.</p></div></div><div class="game-info-sections"><div class="game-info-section"><h3>How to Play</h3><ol><li>Open a meadow recipe.</li><li>Choose three different petals from the five visible options.</li><li>Check the blend and reread the note after a gentle miss.</li></ol></div><div class="game-info-section"><h3>Campaign</h3><p>Three authored recipes form a short, calm set-selection session. Progress and your best pick count stay in this browser.</p></div></div></section>
+    <dialog id="settings-dialog" class="settings-dialog" role="dialog"><form method="dialog" class="settings-card"><div class="settings-head"><h2 data-copy="settings">Settings</h2><button class="close-button" value="close" data-copy-aria="close" aria-label="Close settings">×</button></div><label for="locale-select" data-copy="language">Language</label><select id="locale-select"><option value="en">English</option><option value="zh-Hant">繁體中文</option></select><button id="sound-toggle" class="secondary-button" data-sound-toggle type="button" aria-pressed="true"></button></form></dialog>
   </main>
-  <script src="locales.js?v=20260830-bloom-mixer-v1"></script><script src="game.js?v=20260830-bloom-mixer-v1"></script>
+  <script src="locales.js?v=20260905-bloom-mixer-v1-art"></script><script src="game.js?v=20260905-bloom-mixer-v1-art"></script>
 </body>
 </html>

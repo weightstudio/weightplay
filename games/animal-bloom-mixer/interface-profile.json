@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "gameId": "animal-bloom-mixer",
+  "interfaceVersion": 6,
+  "audience": "general",
+  "flow": "MAIN_BATTLE",
+  "stage": { "enabled": false },
+  "battle": { "enabled": true },
+  "result": "BATTLE_SUBSTATE",
+  "reserve": "GENERAL_56PX",
+  "status": "internal-noindex-prototype",
+  "boundary": "INTERNAL_NOINDEX_NOT_IN_LOBBY"
+}
