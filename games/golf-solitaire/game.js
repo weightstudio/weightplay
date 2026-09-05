@@ -1,5 +1,20 @@
 (function () {
   "use strict";
+  const GOLF_GUIDE_TOGGLE_COPY = {
+    en: "Read the full Golf guide",
+    "zh-Hant": "閱讀完整高爾夫紙牌指南",
+    "zh-Hans": "阅读完整高尔夫纸牌指南",
+    ja: "ゴルフソリティアの詳しいガイドを読む",
+    ko: "골프 솔리테어 전체 가이드 보기",
+    es: "Leer la guía completa de Golf",
+    "pt-BR": "Ler o guia completo do Golf",
+    fr: "Lire le guide complet du Golf",
+    de: "Die vollständige Golf-Anleitung lesen",
+    it: "Leggi la guida completa di Golf",
+    ru: "Открыть полное руководство по Golf",
+    hi: "Golf की पूरी गाइड पढ़ें",
+    ar: "اقرأ دليل Golf الكامل",
+  };
   const GOLF_FAILURE_REASON_COPY = {
     en: "No exposed card fits the waste, and the Stock is empty. Restart keeps this deal; New Game offers a fresh layout.",
     "zh-Hant": "沒有可接在棄牌區上的明牌，牌庫也已空。重新開始保留這副牌；新遊戲會提供新的牌局。",
@@ -80,6 +95,36 @@
     .replaceAll("{best}", String(best));
   const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
+    document.body.dataset.gameVersion = "v23";
+    const compactGuide = (section = document.querySelector(".game-page-info")) => {
+      if (!section || section.dataset.golfGuideCompact === "true") return;
+      section.dataset.golfGuideCompact = "true";
+      section.classList.add("golf-guide-compact");
+      let details = section.querySelector("details.golf-guide-details");
+      if (!details) {
+        details = document.createElement("details");
+        details.className = "golf-guide-details";
+        const summary = document.createElement("summary");
+        details.append(summary);
+        while (section.firstChild) details.append(section.firstChild);
+        section.append(details);
+      }
+      const locale = document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
+      details.querySelector("summary").textContent = GOLF_GUIDE_TOGGLE_COPY[locale] || GOLF_GUIDE_TOGGLE_COPY.en;
+    };
+    const guideObserver = new MutationObserver(() => {
+      document.querySelectorAll(".game-page-info").forEach(compactGuide);
+    });
+    guideObserver.observe(document.body, { childList: true, subtree: true });
+    document.querySelectorAll(".game-page-info").forEach(compactGuide);
+    document.querySelector("#localeSelect")?.addEventListener("change", () => {
+      document.querySelectorAll(".game-page-info").forEach((section) => {
+        const summary = section.querySelector("summary");
+        if (!summary) return;
+        const locale = document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
+        summary.textContent = GOLF_GUIDE_TOGGLE_COPY[locale] || GOLF_GUIDE_TOGGLE_COPY.en;
+      });
+    });
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {
       const logo = document.createElement("img");
@@ -98,6 +143,43 @@
         0% { opacity: .45; transform: scale(.96); }
         45% { opacity: 1; transform: scale(1.04); }
         100% { opacity: 1; transform: scale(1); }
+      }
+      .golf-guide-compact {
+        width: min(1040px, calc(100% - 24px));
+        margin: 12px auto calc(24px + env(safe-area-inset-bottom));
+        padding: 14px 16px;
+        border: 1px solid rgba(184, 211, 244, .32);
+        border-radius: 16px;
+        background: rgba(248, 250, 252, .96);
+        box-shadow: 0 8px 20px rgba(8, 17, 31, .12);
+      }
+      .golf-guide-details {
+        color: #0b3f63;
+      }
+      .golf-guide-details > summary {
+        min-height: 48px;
+        padding: 12px 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        cursor: pointer;
+        font-weight: 800;
+        list-style-position: inside;
+      }
+      .golf-guide-details > summary::after {
+        content: "＋";
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+      .golf-guide-details[open] > summary::after { content: "−"; }
+      @media (max-width: 720px) {
+        .golf-guide-compact {
+          width: min(100% - 16px, 1040px);
+          margin-top: 8px;
+          padding: 12px;
+        }
+        .golf-guide-details > summary { padding: 10px 0; }
       }
     `;
     document.head.append(invalidStyle);

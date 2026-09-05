@@ -3,7 +3,7 @@ window.WPPopularArcade?.mount("tic-tac-toe");
 (() => {
   "use strict";
 
-  document.body.dataset.gameVersion = "v18";
+  document.body.dataset.gameVersion = "v19";
 
   const labels = {
     en: { lobby: "Back to WeightPlay", battle: "Back to main", settings: "Settings" },
@@ -24,6 +24,42 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   const shell = document.querySelector("#popularArcade");
   const header = document.querySelector(".arcade-header");
   const mainScreen = document.querySelector("#mainScreen");
+
+  const guideToggleLabels = {
+    en: "Read the full guide",
+    "zh-Hant": "閱讀完整指南",
+    "zh-Hans": "阅读完整指南",
+    ja: "詳しいガイドを読む",
+    ko: "전체 가이드 보기",
+    es: "Leer la guía completa",
+    "pt-BR": "Ler o guia completo",
+    fr: "Lire le guide complet",
+    de: "Vollständige Anleitung lesen",
+    it: "Leggi la guida completa",
+    ru: "Открыть полное руководство",
+    hi: "पूरी गाइड पढ़ें",
+    ar: "اقرأ الدليل الكامل",
+  };
+
+  const compactGuide = (section) => {
+    if (!section || section.dataset.ticTacToeGuideCompact === "true") return;
+    section.dataset.ticTacToeGuideCompact = "true";
+    section.classList.add("tic-tac-toe-guide-compact");
+    const details = document.createElement("details");
+    details.className = "tic-tac-toe-guide-details";
+    const summary = document.createElement("summary");
+    const language = document.documentElement.lang || "en";
+    summary.textContent = guideToggleLabels[language] || guideToggleLabels.en;
+    details.append(summary);
+    while (section.firstChild) details.append(section.firstChild);
+    section.append(details);
+  };
+
+  const guideObserver = new MutationObserver(() => {
+    document.querySelectorAll(".game-page-info").forEach(compactGuide);
+  });
+  guideObserver.observe(document.body, { childList: true, subtree: true });
+  document.querySelectorAll(".game-page-info").forEach(compactGuide);
   if (header && mainScreen && !mainScreen.contains(header)) mainScreen.prepend(header);
   const battleTop = document.querySelector("#battleScreen .battle-top");
   const boardWrap = document.querySelector("#battleScreen .board-wrap");
@@ -72,8 +108,56 @@ window.WPPopularArcade?.mount("tic-tac-toe");
   document.querySelector("#localeSelect")?.addEventListener("change", applyLabels);
 
   const style = document.createElement("style");
-  style.dataset.ticTacToeV18 = "true";
+  style.dataset.ticTacToeV19 = "true";
   style.textContent = `
+    .tic-tac-toe-guide-compact {
+      width: min(1040px, calc(100% - 24px));
+      margin: 12px auto calc(24px + env(safe-area-inset-bottom));
+      padding: 12px;
+      border: 1px solid rgba(184, 211, 244, .32);
+      border-radius: 14px;
+      background: rgba(248, 250, 252, .96);
+      box-shadow: 0 8px 20px rgba(8, 17, 31, .12);
+    }
+    .tic-tac-toe-guide-details {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: #0b3f63;
+      box-shadow: none;
+    }
+    .tic-tac-toe-guide-details > summary {
+      min-height: 48px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      list-style-position: inside;
+    }
+    .tic-tac-toe-guide-details > summary::after {
+      content: "＋";
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .tic-tac-toe-guide-details[open] > summary::after { content: "−"; }
+    .tic-tac-toe-guide-details > :not(summary) {
+      margin-inline: 0;
+    }
+    .tic-tac-toe-guide-details .game-info-hero,
+    .tic-tac-toe-guide-details .game-info-sections {
+      margin-inline: 12px;
+    }
+    @media (max-width: 720px) {
+      .tic-tac-toe-guide-compact {
+        width: min(100% - 16px, 1040px);
+        margin-top: 8px;
+        padding: 12px;
+      }
+      .tic-tac-toe-guide-details > summary { padding: 10px 12px; }
+    }
     .tic-main-return,
     .tic-battle-return,
     .tic-battle-settings {

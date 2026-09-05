@@ -23,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v16">
+  <meta name="weightplay-game-version" content="v17">
   <title>Senderos de Putt Animal | WeightPlay</title>
   <meta name="description" content="Lee cada sendero, elige línea y fuerza, rodea bordes y agua suave hasta la bandera." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -68,7 +68,11 @@
     .secondary { background:var(--mint); color:var(--ink); }
     .progress { min-height:40px; display:flex; align-items:center; color:var(--leaf); font-weight:800; margin:.9rem 0 1.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .guide-card { margin-top:18px; padding:20px 22px; }
-    .guide-card h2 { font-size:1.1rem; }
+    .guide-card summary { cursor:pointer; list-style:none; font-size:1.1rem; font-weight:800; }
+    .guide-card summary::-webkit-details-marker { display:none; }
+    .guide-card summary::after { content:"+"; float:right; color:var(--leaf); font-size:1.35rem; line-height:1; }
+    .guide-card[open] summary::after { content:"−"; }
+    .guide-card summary:focus-visible { outline:3px solid var(--gold); outline-offset:4px; border-radius:6px; }
     .guide-card p { margin:.2rem 0 0; color:var(--muted); }
     body[data-screen="stage"] .guide-card, body[data-screen="battle"] .guide-card { display:none; }
     .stage-card { margin-top:18px; padding:clamp(18px,4vw,34px); }
@@ -192,7 +196,7 @@
           </div>
         </article>
       </section>
-      <section class="guide-card" data-wp-game-guide aria-labelledby="mainGuideTitle"><h2 id="mainGuideTitle" data-copy="howTo">How to play</h2><p data-copy="guide">Drag back from the ball to aim. Release to putt. Short strokes are easier to control; use the banks and stop before the water.</p></section>
+      <details class="guide-card game-guide" data-wp-game-guide aria-labelledby="mainGuideTitle"><summary id="mainGuideTitle" data-copy="howTo">How to play</summary><p data-copy="guide">Drag back from the ball to aim. Release to putt. Short strokes are easier to control; use the banks and stop before the water.</p></details>
 
       <section id="stageScreen" class="screen stage-canvas" data-screen="stage" data-wp-standard-stage-screen hidden>
         <article class="stage-card">
@@ -214,7 +218,7 @@
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260901-arabic-result-guide-v16"></script>
+  <script src="game.js?v=20260905-cold-start-guide-disclosure-v17"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
   <script src="/src/runtime-locales/es.js?v=20260904-wp-text-growth-body-v1"></script>

@@ -1516,6 +1516,8 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      showSkills: false,
+      showRelatedSkill: false,
       intro:
         "Animal Orb Fortress is a 30-route ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases a volley, and protects the crystal core while shadow beasts advance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
       story: [
@@ -1702,6 +1704,8 @@
       guideTitleSuffix: "Game Guide",
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
+      showSkills: false,
+      showRelatedSkill: false,
       intro:
         "Shadow Wolf Legend is a 30-stage side-scrolling action-platform campaign. Guide the explorer wolf across ruined ledges, read visible hazard warnings, fight shadow creatures, collect EXP, and spend two exact attribute points whenever a level is gained. Every fifth stage ends with a regional Boss whose defense or attack pattern requires a different response.",
       story: [
@@ -13298,6 +13302,7 @@
 
   registerExpandedGuide("animal-sketchwheel-rally", {
     title: "Animal Sketchwheel Rally", gameplay: "Draw-and-Test Wheel Racing", difficulty: "Easy to Challenging", time: "2–8 minutes per rally", guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
+    showSkills: false, showRelatedSkill: false,
     genre: ["Arcade", "Drawing", "Strategy", "Animal"],
     skills: ["Shape Design", "Adaptation", "Observation"],
     intro: "Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish before the rival.",
