@@ -278,8 +278,9 @@
       if (previousScreen !== "stage") selectedStageIndex = Math.min(save.unlocked, stages.length) - 1;
       renderStage();
       requestAnimationFrame(() => centerCurrentStage(restoreFocus));
-    } else if (name === "main" && restoreFocus) {
-      restoreMainStartFocus();
+    } else if (name === "main") {
+      renderMainProgress();
+      if (restoreFocus) restoreMainStartFocus();
     }
   }
 

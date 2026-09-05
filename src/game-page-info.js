@@ -1802,7 +1802,7 @@
     },
     "gin-rummy": {
       title: "Gin Rummy", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
-      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, relatedIds: ["spider-solitaire", "block-blast"],
       intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood. Choose each draw carefully, track the discard pile, and decide when a low score is safer than waiting for Gin.",
       how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
       noteTitle: "Player guidance", parent: "This free public General game runs in the browser. Progress is saved only on this device, so clearing site data or switching browsers may start a new round.",
@@ -2989,9 +2989,128 @@
       faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
     },
   };
+  const ginRummyGuideDepth = {
+    en: {
+      story: ["Each hand deals ten cards to you and the AI, then turns one card face up beside the stock. The aim is to turn a loose hand into melds before the other side does.", "Sets use three or more cards of one rank; runs use three or more consecutive cards in one suit. The Result compares your meld-card count and Deadwood with the AI."],
+      systems: ["On your turn, draw one card from the stock or discard, then discard one card. Only one draw is allowed before the discard, so the visible discard pile is both a clue and a resource.", "Deadwood is the value of cards not covered by a detected meld. A hand at 0 Deadwood can finish with Gin; at 10 or less you may Knock. If the stock runs out, the lower Deadwood wins the hand."],
+      how: ["Read the discard before drawing, then take one card from the stock or discard pile.", "Keep cards that can become a same-rank set or a suited run, and discard one card after every draw.", "Knock after drawing when Deadwood is 10 or less, or discard into a 0-Deadwood Gin hand."],
+      strategyTips: ["Take the discard only when it improves a real set or run; revealing your interest can help the AI read you.", "Keep connected cards together while trimming isolated high-value cards.", "A low Deadwood Knock is safer than waiting for Gin when the stock is getting short."],
+      progression: ["There is no campaign ladder: every new hand deals a fresh position against the AI. Replay value comes from reading a different discard sequence, protecting a promising meld, and choosing the right finish."],
+      designNote: ["Gin Rummy makes one small action carry the strategy: every turn asks which card to take, which card to expose to the discard pile, and whether to keep improving or end the hand. The browser version keeps the classic stock/discard rhythm, shows the current meld and Deadwood path in Battle, and gives a factual Result after Gin, Knock, or an empty stock."],
+      faq: [["What counts as a meld?", "A set has at least three cards of the same rank; a run has at least three consecutive cards of one suit."], ["What is Deadwood?", "Deadwood is the value of cards that are not part of a detected meld."], ["When can I Knock?", "After drawing, you may Knock when your Deadwood is 10 or less. A 0-Deadwood hand finishes as Gin."], ["What happens when the stock runs out?", "The hand is settled by comparing your Deadwood with the AI's Deadwood."], ["Is progress saved?", "Only the round score and preferences remain in this browser; the current hand is not a cloud save."]],
+    },
+    "zh-Hant": {
+      story: ["每局會發給你與 AI 各十張牌，再從牌庫旁翻開一張牌。目標是在對手之前，把零散手牌整理成組牌。", "套牌由三張以上同點數牌組成；順子則是同花色的連續點數牌。結算會比較你的組牌張數與死牌分數，以及 AI 的結果。"],
+      systems: ["輪到你時，從牌庫或棄牌堆抽一張，再棄一張。每次棄牌前只能抽一次，因此可見的棄牌堆同時是線索與資源。", "死牌是未被辨識為組牌的牌面值總和。死牌為 0 時可完成金牌；死牌不超過 10 時可以敲牌。牌庫耗盡時，死牌較低的一方贏得本局。"],
+      how: ["先讀取棄牌堆，再從牌庫或棄牌堆抽一張牌。", "保留可能形成同點數套牌或同花色順子的牌，每次抽牌後都要棄一張。", "抽牌後死牌不超過 10 點即可敲牌；死牌為 0 點時會以金牌結束。"],
+      strategyTips: ["只有在棄牌能真正改善套牌或順子時才拿走它；暴露興趣也可能讓 AI 看出你的方向。", "保留相連牌，同時優先清掉孤立的高點數牌。", "牌庫變短時，低死牌敲牌通常比等待金牌更安全。"],
+      progression: ["遊戲沒有戰役階梯；每局都會對 AI 發出新的手牌。重玩價值來自重新閱讀棄牌順序、保護有潛力的組牌，以及判斷何時結束。"],
+      designNote: ["金拉米把策略集中在每回合的一個小決定：要拿哪張牌、要把哪張牌放進棄牌堆，以及要繼續改善還是結束本局。瀏覽器版本保留牌庫與棄牌的經典節奏，Battle 會顯示目前組牌與死牌路徑，並在金牌、敲牌或牌庫耗盡後給出實際結算。"],
+      faq: [["什麼算是組牌？", "套牌至少有三張同點數牌；順子至少有三張同花色連續點數牌。"], ["什麼是死牌？", "死牌是未被辨識為組牌的牌面值總和。"], ["什麼時候可以敲牌？", "抽牌後死牌不超過 10 點即可敲牌；死牌為 0 點時會完成金牌。"], ["牌庫耗盡會怎樣？", "系統會比較你與 AI 的死牌，結算本局。"], ["進度會保存嗎？", "只有本機的回合分數與偏好會留在這個瀏覽器，目前手牌不會雲端保存。"]],
+    },
+    "zh-Hans": {
+      story: ["每局会发给你和 AI 各十张牌，再从牌库旁翻开一张牌。目标是在对手之前，把零散手牌整理成组合。", "组合由三张以上同点数牌组成；顺子则是同花色的连续点数牌。结算会比较你的组合牌数和死牌分数，以及 AI 的结果。"],
+      systems: ["轮到你时，从牌库或弃牌堆抽一张，再弃一张。每次弃牌前只能抽一次，所以可见的弃牌堆既是线索也是资源。", "死牌是未被识别为组合的牌面值总和。死牌为 0 时可以完成金牌；死牌不超过 10 时可以敲牌。牌库耗尽时，死牌较低的一方赢得本局。"],
+      how: ["先观察弃牌堆，再从牌库或弃牌堆抽一张牌。", "保留可能形成同点数组合或同花色顺子的牌，每次抽牌后都要弃一张。", "抽牌后死牌不超过 10 点即可敲牌；死牌为 0 点时会以金牌结束。"],
+      strategyTips: ["只有当弃牌能真正改善组合或顺子时才拿走它；暴露兴趣也可能让 AI 看出你的方向。", "保留相连牌，同时优先清掉孤立的高点数牌。", "牌库变短时，低死牌敲牌通常比等待金牌更安全。"],
+      progression: ["游戏没有战役阶梯；每局都会对 AI 发出新的手牌。重玩价值来自重新阅读弃牌顺序、保护有潜力的组合，以及判断何时结束。"],
+      designNote: ["金拉米把策略集中在每回合的一个小决定：要拿哪张牌、要把哪张牌放进弃牌堆，以及要继续改善还是结束本局。浏览器版本保留牌库与弃牌的经典节奏，Battle 会显示当前组合与死牌路径，并在金牌、敲牌或牌库耗尽后给出实际结算。"],
+      faq: [["什么算是组合？", "组合至少有三张同点数牌；顺子至少有三张同花色连续点数牌。"], ["什么是死牌？", "死牌是未被识别为组合的牌面值总和。"], ["什么时候可以敲牌？", "抽牌后死牌不超过 10 点即可敲牌；死牌为 0 点时会完成金牌。"], ["牌库耗尽会怎样？", "系统会比较你和 AI 的死牌，结算本局。"], ["进度会保存吗？", "只有本机的回合分数和偏好会留在这个浏览器，目前手牌不会云端保存。"]],
+    },
+    ja: {
+      story: ["各ラウンドではあなたと AI に10枚ずつ配り、山札の横に1枚を表向きで置きます。相手より先に、ばらばらの手札をメルドへ整えるのが目的です。", "同じランク3枚以上がセット、同じスートの連続3枚以上がランです。結果画面ではメルド枚数とデッドウッドを AI と比べます。"],
+      systems: ["自分の番は山札か捨て札から1枚引き、1枚捨てます。捨てる前に引けるのは1枚だけなので、見える捨て札は手がかりであり資源です。", "デッドウッドはメルドに入らないカードの値の合計です。0ならジン、10以下ならノックで手を終えられます。山札が尽きたらデッドウッドの少ない側が勝ちます。"],
+      how: ["捨て札を確認してから、山札か捨て札を1枚引きます。", "同じランクのセットや同じスートのランになりそうなカードを残し、毎回1枚捨てます。", "引いた後のデッドウッドが10以下ならノック、0ならジンで終えます。"],
+      strategyTips: ["本当にセットやランを改善する捨て札だけを取り、相手に狙いを読まれないようにします。", "つながるカードを守り、孤立した高いカードから減らします。", "山札が少ないときは、ジンを待つより低いデッドウッドでノックする方が安全です。"],
+      progression: ["キャンペーン階層はなく、毎回 AI と新しい手札で始まります。捨て札の順番を読み、伸びそうなメルドを守り、終わる時機を選ぶことが再プレイの中心です。"],
+      designNote: ["ジン・ラミーは、何を引き、何を捨て、手を伸ばすか終えるかという小さな判断に戦略を集めました。ブラウザー版は山札と捨て札のリズムを保ち、Battle でメルドとデッドウッドの状態を示し、ジン、ノック、山札切れの結果を表示します。"],
+      faq: [["メルドとは何ですか？", "同じランク3枚以上のセット、または同じスートの連続3枚以上のランです。"], ["デッドウッドとは何ですか？", "メルドに入らないカードの値の合計です。"], ["いつノックできますか？", "引いた後のデッドウッドが10以下ならノックできます。0ならジンです。"], ["山札が尽きるとどうなりますか？", "あなたと AI のデッドウッドを比べて手を精算します。"], ["進行状況は保存されますか？", "ラウンドスコアと設定だけがこのブラウザーに残り、現在の手札は保存されません。"]],
+    },
+    ko: {
+      story: ["각 라운드는 나와 AI에게 10장씩 나누고 덱 옆에 한 장을 공개합니다. 상대보다 먼저 흩어진 패를 멜드로 정리하는 것이 목표입니다.", "같은 숫자 3장 이상은 세트, 같은 무늬의 연속 3장 이상은 런입니다. 결과 화면은 멜드 카드 수와 데드우드를 AI와 비교합니다."],
+      systems: ["내 차례에는 덱이나 버린 카드에서 한 장을 뽑고 한 장을 버립니다. 버리기 전에는 한 장만 뽑을 수 있어 공개된 버림패는 단서이자 자원입니다.", "데드우드는 멜드에 들어가지 않은 카드 값의 합입니다. 0이면 진, 10 이하면 노크로 손을 끝낼 수 있습니다. 덱이 다 떨어지면 데드우드가 낮은 쪽이 이깁니다."],
+      how: ["버림패를 살핀 뒤 덱이나 버림패에서 한 장을 뽑습니다.", "같은 숫자 세트나 같은 무늬 런이 될 카드를 지키고, 뽑을 때마다 한 장을 버립니다.", "뽑은 뒤 데드우드가 10 이하이면 노크하고, 0이면 진으로 끝냅니다."],
+      strategyTips: ["실제로 세트나 런을 개선하는 버림패만 가져오고, 상대에게 의도를 읽히지 않게 하세요.", "이어지는 카드를 지키고 고립된 높은 카드부터 줄이세요.", "덱이 짧아지면 진을 기다리기보다 낮은 데드우드로 노크하는 편이 안전합니다."],
+      progression: ["캠페인 단계는 없으며 매번 AI와 새 패로 시작합니다. 버림 순서를 읽고 유망한 멜드를 지키며 끝낼 때를 고르는 것이 반복 플레이의 핵심입니다."],
+      designNote: ["진 러미는 무엇을 뽑고 버릴지, 패를 더 키울지 끝낼지를 매 턴의 작은 판단에 담았습니다. 브라우저 버전은 덱과 버림패의 리듬을 유지하고 Battle에서 멜드와 데드우드 상태를 보여 주며, 진·노크·덱 소진 결과를 알려 줍니다."],
+      faq: [["멜드란 무엇인가요?", "같은 숫자 3장 이상의 세트 또는 같은 무늬의 연속 3장 이상인 런입니다."], ["데드우드란 무엇인가요?", "멜드에 들어가지 않은 카드 값의 합입니다."], ["언제 노크할 수 있나요?", "뽑은 뒤 데드우드가 10 이하이면 노크할 수 있고, 0이면 진입니다."], ["덱이 다 떨어지면 어떻게 되나요?", "나와 AI의 데드우드를 비교해 손을 정산합니다."], ["진행 상황이 저장되나요?", "라운드 점수와 설정만 이 브라우저에 남고 현재 패는 저장되지 않습니다."]],
+    },
+    es: {
+      story: ["Cada ronda reparte diez cartas para ti y la IA y deja una carta boca arriba junto al mazo. El objetivo es convertir una mano suelta en combinaciones antes que el rival.", "Un grupo reúne tres o más cartas del mismo valor; una escalera reúne tres o más cartas consecutivas del mismo palo. El Resultado compara tus cartas combinadas y tu madera muerta con las de la IA."],
+      systems: ["En tu turno roba una carta del mazo o del descarte y después descarta una. Solo puedes robar una vez antes de descartar, así que el descarte visible es pista y recurso.", "La madera muerta es el valor de las cartas que no pertenecen a una combinación detectada. Con 0 puedes hacer Gin; con 10 o menos puedes cerrar. Si se acaba el mazo, gana la mano con menos madera muerta."],
+      how: ["Lee el descarte y roba una carta del mazo o de la pila de descarte.", "Conserva cartas que puedan formar un grupo o una escalera del mismo palo y descarta una después de cada robo.", "Tras robar, cierra con 10 o menos de madera muerta o termina con Gin cuando llegue a 0."],
+      strategyTips: ["Toma el descarte solo si mejora una combinación real; mostrar tu interés también informa a la IA.", "Protege las cartas conectadas y elimina primero las cartas altas aisladas.", "Cuando queden pocas cartas en el mazo, cerrar con poca madera muerta es más seguro que esperar a Gin."],
+      progression: ["No hay una campaña: cada ronda empieza con una mano nueva contra la IA. La rejugabilidad está en leer otro orden de descartes, proteger una combinación prometedora y elegir el momento de terminar."],
+      designNote: ["Gin Rummy concentra la estrategia en una decisión pequeña por turno: qué robar, qué exponer al descarte y si conviene seguir mejorando o terminar. La versión de navegador conserva el ritmo de mazo y descarte, muestra las combinaciones y la madera muerta en Battle y ofrece un Resultado factual tras Gin, cierre o mazo agotado."],
+      faq: [["¿Qué cuenta como combinación?", "Un grupo tiene al menos tres cartas del mismo valor; una escalera tiene al menos tres cartas consecutivas del mismo palo."], ["¿Qué es la madera muerta?", "Es el valor de las cartas que no forman parte de una combinación detectada."], ["¿Cuándo puedo cerrar?", "Después de robar, puedes cerrar con 10 o menos de madera muerta. Con 0 haces Gin."], ["¿Qué ocurre cuando se acaba el mazo?", "La mano compara tu madera muerta con la de la IA."], ["¿Se guarda el progreso?", "Solo la puntuación de la ronda y las preferencias quedan en este navegador; la mano actual no se guarda en la nube."]],
+    },
+    "pt-BR": {
+      story: ["Cada rodada distribui dez cartas para você e para a IA e revela uma carta ao lado do monte. O objetivo é transformar uma mão solta em combinações antes do adversário.", "Um grupo reúne três ou mais cartas do mesmo valor; uma sequência reúne três ou mais cartas consecutivas do mesmo naipe. O Resultado compara suas cartas em combinações e sua madeira morta com as da IA."],
+      systems: ["Na sua vez, compre uma carta do monte ou do descarte e depois descarte uma. Só é permitido comprar uma vez antes de descartar, então o descarte visível é pista e recurso.", "Madeira morta é o valor das cartas que não pertencem a uma combinação detectada. Com 0 você faz Gin; com 10 ou menos pode bater. Se o monte acabar, vence a mão com menos madeira morta."],
+      how: ["Leia o descarte e compre uma carta do monte ou da pilha de descarte.", "Proteja cartas que possam formar um grupo ou sequência do mesmo naipe e descarte uma após cada compra.", "Depois de comprar, bata com 10 ou menos de madeira morta ou termine com Gin ao chegar a 0."],
+      strategyTips: ["Pegue o descarte apenas quando ele melhorar uma combinação real; mostrar seu interesse também informa a IA.", "Proteja cartas conectadas e reduza primeiro as cartas altas isoladas.", "Quando o monte estiver curto, bater com pouca madeira morta é mais seguro do que esperar o Gin."],
+      progression: ["Não há campanha: cada rodada começa com uma nova mão contra a IA. A repetição vem de ler outra ordem de descartes, proteger uma combinação promissora e escolher quando terminar."],
+      designNote: ["Gin Rummy concentra a estratégia em uma decisão pequena por turno: o que comprar, o que expor no descarte e se vale melhorar ou terminar. A versão no navegador preserva o ritmo de monte e descarte, mostra combinações e madeira morta na Battle e apresenta um Resultado factual após Gin, batida ou monte vazio."],
+      faq: [["O que conta como combinação?", "Um grupo tem pelo menos três cartas do mesmo valor; uma sequência tem pelo menos três cartas consecutivas do mesmo naipe."], ["O que é madeira morta?", "É o valor das cartas que não fazem parte de uma combinação detectada."], ["Quando posso bater?", "Depois de comprar, você pode bater com 10 ou menos de madeira morta. Com 0, faz Gin."], ["O que acontece quando o monte acaba?", "A mão compara sua madeira morta com a da IA."], ["O progresso é salvo?", "Apenas a pontuação da rodada e as preferências ficam neste navegador; a mão atual não é salva na nuvem."]],
+    },
+    fr: {
+      story: ["Chaque manche distribue dix cartes à vous et à l’IA, puis retourne une carte près de la pioche. Le but est de transformer une main dispersée en combinaisons avant l’adversaire.", "Un groupe réunit au moins trois cartes de même valeur ; une suite réunit au moins trois cartes consécutives de la même couleur. Le résultat compare vos cartes combinées et votre bois mort à ceux de l’IA."],
+      systems: ["À votre tour, piochez dans la pioche ou la défausse, puis défaussez une carte. Une seule pioche est possible avant la défausse : la défausse visible est donc un indice et une ressource.", "Le bois mort est la valeur des cartes qui ne font pas partie d’une combinaison détectée. À 0, vous faites Gin ; à 10 ou moins, vous pouvez frapper. Si la pioche s’épuise, le bois mort le plus bas gagne la manche."],
+      how: ["Lisez la défausse, puis piochez une carte dans la pioche ou la défausse.", "Gardez les cartes qui peuvent former un groupe ou une suite de même couleur, puis défaussez une carte après chaque pioche.", "Après avoir pioché, frappez avec 10 ou moins de bois mort, ou terminez par Gin à 0."],
+      strategyTips: ["Ne prenez la défausse que si elle améliore une vraie combinaison ; votre intérêt donne aussi une information à l’IA.", "Protégez les cartes connectées et réduisez d’abord les cartes hautes isolées.", "Quand la pioche raccourcit, frapper avec peu de bois mort est plus sûr que d’attendre le Gin."],
+      progression: ["Il n’y a pas de campagne : chaque manche commence avec une nouvelle main contre l’IA. La rejouabilité vient de l’ordre des défausses, de la protection d’une combinaison prometteuse et du choix du moment de finir."],
+      designNote: ["Gin Rummy concentre la stratégie sur une petite décision à chaque tour : que piocher, quoi exposer à la défausse et s’il faut continuer à améliorer ou terminer. La version navigateur conserve le rythme pioche-défausse, montre les combinaisons et le bois mort dans Battle, puis donne un résultat factuel après Gin, frappe ou pioche vide."],
+      faq: [["Qu’est-ce qu’une combinaison ?", "Un groupe contient au moins trois cartes de même valeur ; une suite contient au moins trois cartes consécutives de la même couleur."], ["Qu’est-ce que le bois mort ?", "C’est la valeur des cartes qui ne font pas partie d’une combinaison détectée."], ["Quand puis-je frapper ?", "Après avoir pioché, vous pouvez frapper avec 10 ou moins de bois mort. À 0, vous faites Gin."], ["Que se passe-t-il quand la pioche est vide ?", "La manche compare votre bois mort à celui de l’IA."], ["La progression est-elle sauvegardée ?", "Seuls le score de manche et les préférences restent dans ce navigateur ; la main actuelle n’est pas enregistrée dans le cloud."]],
+    },
+    de: {
+      story: ["Jede Runde gibt dir und der KI zehn Karten und legt eine Karte offen neben den Stapel. Ziel ist, eine lose Hand vor dem Gegner zu Melds zu ordnen.", "Eine Gruppe besteht aus mindestens drei Karten gleichen Werts; eine Folge aus mindestens drei aufeinanderfolgenden Karten derselben Farbe. Das Ergebnis vergleicht deine Meldkarten und dein Totholz mit der KI."],
+      systems: ["Ziehe in deinem Zug eine Karte vom Stapel oder aus der Ablage und wirf danach eine Karte ab. Vor dem Abwerfen ist nur ein Zug erlaubt; die sichtbare Ablage ist deshalb Hinweis und Ressource.", "Totholz ist der Wert der Karten, die nicht zu einer erkannten Meld gehören. Bei 0 erreichst du Gin, bei höchstens 10 kannst du klopfen. Ist der Stapel leer, gewinnt das niedrigere Totholz."],
+      how: ["Lies die Ablage und ziehe eine Karte vom Stapel oder aus der Ablage.", "Behalte Karten für eine Gruppe oder eine Folge derselben Farbe und wirf nach jedem Zug eine Karte ab.", "Klopfe nach dem Ziehen bei höchstens 10 Totholz oder beende die Runde mit Gin bei 0."],
+      strategyTips: ["Nimm die Ablage nur, wenn sie eine echte Meld verbessert; dein Interesse verrät der KI aber ebenfalls etwas.", "Schütze verbundene Karten und entferne zuerst isolierte hohe Karten.", "Wenn der Stapel schrumpft, ist Klopfen mit wenig Totholz sicherer als auf Gin zu warten."],
+      progression: ["Es gibt keine Kampagne: Jede Runde beginnt mit einer neuen Hand gegen die KI. Der Wiederspielwert entsteht durch andere Ablagereihenfolgen, vielversprechende Melds und den richtigen Endzeitpunkt."],
+      designNote: ["Gin Rommé legt die Strategie in eine kleine Entscheidung pro Zug: Was ziehst du, was legst du offen ab und willst du weiter verbessern oder beenden? Die Browserfassung bewahrt den Stapel-Ablage-Rhythmus, zeigt Melds und Totholz im Battle und liefert nach Gin, Klopfen oder leerem Stapel ein sachliches Ergebnis."],
+      faq: [["Was zählt als Meld?", "Eine Gruppe hat mindestens drei Karten gleichen Werts; eine Folge hat mindestens drei aufeinanderfolgende Karten derselben Farbe."], ["Was ist Totholz?", "Totholz ist der Wert der Karten, die nicht zu einer erkannten Meld gehören."], ["Wann kann ich klopfen?", "Nach dem Ziehen kannst du bei höchstens 10 Totholz klopfen. Bei 0 erreichst du Gin."], ["Was passiert bei leerem Stapel?", "Die Runde vergleicht dein Totholz mit dem der KI."], ["Wird der Fortschritt gespeichert?", "Nur Rundenscore und Einstellungen bleiben in diesem Browser; die aktuelle Hand wird nicht in der Cloud gespeichert."]],
+    },
+    it: {
+      story: ["Ogni mano distribuisce dieci carte a te e all’IA e scopre una carta accanto al mazzo. L’obiettivo è trasformare una mano sparsa in combinazioni prima dell’avversario.", "Un gruppo contiene almeno tre carte dello stesso valore; una sequenza contiene almeno tre carte consecutive dello stesso seme. Il risultato confronta le tue carte in combinazione e le carte morte con quelle dell’IA."],
+      systems: ["Nel tuo turno pesca dal mazzo o dagli scarti, poi scarta una carta. Prima dello scarto puoi pescare una sola volta: gli scarti visibili sono indizio e risorsa.", "Le carte morte sono il valore delle carte che non appartengono a una combinazione rilevata. A 0 fai Gin; con 10 o meno puoi battere. Se il mazzo finisce, vince la mano con meno carte morte."],
+      how: ["Leggi gli scarti e pesca una carta dal mazzo o dalla pila degli scarti.", "Conserva le carte che possono formare un gruppo o una sequenza dello stesso seme e scarta una carta dopo ogni pesca.", "Dopo aver pescato, batti con 10 o meno carte morte oppure chiudi con Gin a 0."],
+      strategyTips: ["Prendi uno scarto solo se migliora una vera combinazione; il tuo interesse dà informazioni anche all’IA.", "Proteggi le carte collegate e riduci prima le carte alte isolate.", "Quando il mazzo si accorcia, battere con poche carte morte è più sicuro che aspettare il Gin."],
+      progression: ["Non c’è una campagna: ogni mano inizia con carte nuove contro l’IA. La rigiocabilità nasce dall’ordine degli scarti, dalla protezione di una combinazione promettente e dalla scelta del momento di chiudere."],
+      designNote: ["Gin Rummy concentra la strategia in una piccola scelta a ogni turno: cosa pescare, cosa esporre negli scarti e se continuare a migliorare o chiudere. La versione browser conserva il ritmo mazzo-scarti, mostra combinazioni e carte morte in Battle e offre un risultato concreto dopo Gin, battuta o mazzo vuoto."],
+      faq: [["Cosa conta come combinazione?", "Un gruppo ha almeno tre carte dello stesso valore; una sequenza ha almeno tre carte consecutive dello stesso seme."], ["Cosa sono le carte morte?", "Sono il valore delle carte che non fanno parte di una combinazione rilevata."], ["Quando posso battere?", "Dopo aver pescato puoi battere con 10 o meno carte morte. A 0 realizzi Gin."], ["Cosa succede quando il mazzo finisce?", "La mano confronta le tue carte morte con quelle dell’IA."], ["I progressi vengono salvati?", "Solo il punteggio della mano e le preferenze restano in questo browser; la mano corrente non viene salvata nel cloud."]],
+    },
+    ru: {
+      story: ["В каждом раунде вы и ИИ получаете по десять карт, а рядом с колодой открывается одна карта. Цель — собрать из разрозненной руки комбинации раньше соперника.", "Группа состоит минимум из трёх карт одного достоинства, а последовательность — минимум из трёх соседних карт одной масти. В результате сравниваются ваши карты в комбинациях и дедвуд с результатом ИИ."],
+      systems: ["В свой ход возьмите карту из колоды или сброса, затем сбросьте одну карту. До сброса разрешён только один добор, поэтому видимый сброс — и подсказка, и ресурс.", "Дедвуд — это значение карт, не вошедших в найденную комбинацию. При 0 можно собрать Джин, при 10 или меньше — стучать. Если колода закончилась, выигрывает рука с меньшим дедвудом."],
+      how: ["Изучите сброс и возьмите карту из колоды или стопки сброса.", "Оставляйте карты для группы или последовательности одной масти и после каждого добора сбрасывайте одну карту.", "После добора стучите при дедвуде не больше 10 или завершайте Джином при 0."],
+      strategyTips: ["Берите сброс только тогда, когда он улучшает настоящую комбинацию; ваш интерес также читается ИИ.", "Берегите связанные карты и сначала убирайте одиночные карты высокого достоинства.", "Когда колода сокращается, стучать с малым дедвудом безопаснее, чем ждать Джин."],
+      progression: ["Кампании нет: каждый раунд начинается с новой рукой против ИИ. Повторная игра строится на чтении другого порядка сброса, защите перспективной комбинации и выборе момента завершения."],
+      designNote: ["Джин-рамми помещает стратегию в маленькое решение каждого хода: что взять, что открыть в сбросе и продолжать ли улучшать руку. Браузерная версия сохраняет ритм колоды и сброса, показывает комбинации и дедвуд в Battle и даёт точный результат после Джина, стука или пустой колоды."],
+      faq: [["Что считается комбинацией?", "Группа содержит минимум три карты одного достоинства, а последовательность — минимум три соседние карты одной масти."], ["Что такое дедвуд?", "Это значение карт, не вошедших в найденную комбинацию."], ["Когда можно стучать?", "После добора можно стучать при дедвуде не больше 10. При 0 получается Джин."], ["Что происходит, когда колода заканчивается?", "Раунд сравнивает ваш дедвуд с дедвудом ИИ."], ["Сохраняется ли прогресс?", "В этом браузере остаются только счёт раундов и настройки; текущая рука не сохраняется в облаке."]],
+    },
+    hi: {
+      story: ["हर राउंड में आपको और AI को दस-दस पत्ते मिलते हैं और गड्डी के पास एक पत्ता खुलता है। लक्ष्य है कि विरोधी से पहले बिखरे पत्तों को मेल्ड में बदला जाए।", "सेट में एक ही रैंक के कम से कम तीन पत्ते होते हैं; रन में एक ही सूट के लगातार कम से कम तीन पत्ते होते हैं। Result आपकी मेल्ड गिनती और डेडवुड की तुलना AI से दिखाता है।"],
+      systems: ["अपनी बारी में गड्डी या फेंके हुए पत्तों से एक पत्ता लें, फिर एक पत्ता छोड़ें। छोड़ने से पहले केवल एक पत्ता लिया जा सकता है, इसलिए दिख रहा ढेर संकेत और संसाधन दोनों है।", "डेडवुड उन पत्तों का मूल्य है जो किसी पहचाने गए मेल्ड में नहीं हैं। 0 पर जिन, और 10 या कम पर नॉक किया जा सकता है। गड्डी खत्म होने पर कम डेडवुड वाला हाथ जीतता है।"],
+      how: ["फेंके हुए पत्तों को पढ़ें और गड्डी या उसी ढेर से एक पत्ता लें।", "एक ही रैंक के सेट या एक ही सूट के क्रम बनने वाले पत्ते रखें और हर बार एक पत्ता छोड़ें।", "पत्ता लेने के बाद 10 या कम डेडवुड पर नॉक करें, या 0 पर जिन से राउंड पूरा करें।"],
+      strategyTips: ["फेंका हुआ पत्ता तभी लें जब वह सच में सेट या रन सुधारे; आपका इरादा AI को भी संकेत देता है।", "जुड़े पत्तों को बचाएँ और अलग पड़े ऊँचे पत्तों को पहले घटाएँ।", "गड्डी छोटी हो तो जिन की प्रतीक्षा करने के बजाय कम डेडवुड पर नॉक करना सुरक्षित है।"],
+      progression: ["कोई अभियान नहीं है; हर राउंड AI के विरुद्ध नए हाथ से शुरू होता है। दोबारा खेलने का मूल्य फेंकने का नया क्रम पढ़ने, अच्छे मेल्ड को बचाने और समाप्ति का सही समय चुनने में है।"],
+      designNote: ["जिन रमी हर बारी के छोटे निर्णय में रणनीति रखता है: क्या लेना है, क्या फेंके ढेर में दिखाना है और हाथ सुधारते रहना है या समाप्त करना है। ब्राउज़र संस्करण गड्डी और फेंके ढेर की लय रखता है, Battle में मेल्ड और डेडवुड दिखाता है और जिन, नॉक या खाली गड्डी के बाद स्पष्ट Result देता है।"],
+      faq: [["मेल्ड किसे कहते हैं?", "सेट में एक ही रैंक के कम से कम तीन पत्ते और रन में एक ही सूट के लगातार कम से कम तीन पत्ते होते हैं।"], ["डेडवुड क्या है?", "यह उन पत्तों का मूल्य है जो किसी पहचाने गए मेल्ड का हिस्सा नहीं हैं।"], ["नॉक कब कर सकते हैं?", "पत्ता लेने के बाद 10 या कम डेडवुड पर नॉक कर सकते हैं। 0 पर जिन होता है।"], ["गड्डी खत्म होने पर क्या होता है?", "राउंड आपके और AI के डेडवुड की तुलना करके पूरा होता है।"], ["क्या प्रगति सहेजी जाती है?", "केवल राउंड स्कोर और सेटिंग इस ब्राउज़र में रहते हैं; वर्तमान हाथ क्लाउड में नहीं बचता।"]],
+    },
+    ar: {
+      story: ["توزّع كل جولة عشر بطاقات لك وللذكاء الاصطناعي، ثم تُكشف بطاقة بجانب الرزمة. الهدف هو تحويل اليد المتفرقة إلى مجموعات قبل الخصم.", "تتكوّن المجموعة من ثلاث بطاقات أو أكثر بالرتبة نفسها، بينما يتكوّن التسلسل من ثلاث بطاقات أو أكثر متتالية من النوع نفسه. تقارن النتيجة بطاقات مجموعاتك والخشب الميت بنتيجة الذكاء الاصطناعي."],
+      systems: ["في دورك اسحب بطاقة من الرزمة أو من الرمي، ثم ارمِ بطاقة واحدة. لا يمكنك السحب إلا مرة واحدة قبل الرمي، لذلك فإن الرمي الظاهر دليل ومورد في الوقت نفسه.", "الخشب الميت هو قيمة البطاقات التي لا تدخل في مجموعة مكتشفة. عند 0 تحقق جين، وعند 10 أو أقل يمكنك الطرق. إذا نفدت الرزمة، تفوز اليد ذات الخشب الميت الأقل."],
+      how: ["اقرأ الرمي ثم اسحب بطاقة من الرزمة أو من كومة الرمي.", "احتفظ بالبطاقات التي قد تكوّن مجموعة أو تسلسلاً من النوع نفسه، وارمِ بطاقة بعد كل سحب.", "بعد السحب، استخدم الطرق عند خشب ميت لا يتجاوز 10، أو أنهِ الجولة بجين عند 0."],
+      strategyTips: ["خذ بطاقة الرمي فقط إذا حسّنت مجموعة حقيقية؛ فاهتمامك بها يعطي الذكاء الاصطناعي معلومة أيضاً.", "حافظ على البطاقات المتصلة وخفّض البطاقات العالية المنفردة أولاً.", "عندما تقصر الرزمة يكون الطرق مع خشب ميت قليل أكثر أماناً من انتظار جين."],
+      progression: ["لا توجد حملة مراحل؛ تبدأ كل جولة بيد جديدة ضد الذكاء الاصطناعي. تأتي إعادة اللعب من قراءة ترتيب رمي مختلف، وحماية مجموعة واعدة، واختيار وقت النهاية."],
+      designNote: ["تضع جِن رامي الاستراتيجية في قرار صغير كل دور: ماذا تسحب، وماذا تكشف في الرمي، وهل تواصل التحسين أم تنهي اليد. تحافظ نسخة المتصفح على إيقاع الرزمة والرمي، وتعرض المجموعات والخشب الميت في Battle، ثم تقدم نتيجة واضحة بعد جين أو الطرق أو نفاد الرزمة."],
+      faq: [["ما الذي يُعد مجموعة؟", "تضم المجموعة ثلاث بطاقات على الأقل بالرتبة نفسها، ويضم التسلسل ثلاث بطاقات متتالية على الأقل من النوع نفسه."], ["ما الخشب الميت؟", "هو قيمة البطاقات التي لا تنتمي إلى مجموعة مكتشفة."], ["متى يمكنني استخدام الطرق؟", "بعد السحب يمكنك الطرق عند خشب ميت يساوي 10 أو أقل. عند 0 تحقق جين."], ["ماذا يحدث عند نفاد الرزمة؟", "تقارن الجولة الخشب الميت لديك بالخشب الميت لدى الذكاء الاصطناعي."], ["هل يُحفظ التقدم؟", "تبقى نتيجة الجولة والتفضيلات فقط في هذا المتصفح؛ ولا تُحفظ اليد الحالية سحابياً."]],
+    },
+  };
   Object.entries(ginRummyLocalizedCopy).forEach(([locale, copy]) => {
     localizedGames[locale] ||= {};
-    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy };
+    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy, ...(ginRummyGuideDepth[locale] || {}) };
   });
 
   localizedGames["ar"] ||= {};
@@ -9589,7 +9708,7 @@
   // rebuild a locale object later in this file (notably Simplified Chinese).
   Object.entries(ginRummyLocalizedCopy).forEach(([locale, copy]) => {
     localizedGames[locale] ||= {};
-    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy };
+    localizedGames[locale]["gin-rummy"] = { ...games["gin-rummy"], ...copy, ...(ginRummyGuideDepth[locale] || {}) };
   });
 
   // Shadow Wolf v10 Guide repair: these seven locale-owned records keep the

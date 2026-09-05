@@ -1188,10 +1188,12 @@ button.control-mini {
 
   body[data-wp-game-id="klondike-solitaire"] .tableau-row {
     min-height: 0;
-    height: auto;
+    height: 100%;
+    max-height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     padding-block: 2px 4px;
     align-items: start;
+    overscroll-behavior: contain;
   }
 }
