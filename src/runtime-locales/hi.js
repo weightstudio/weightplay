@@ -3761,7 +3761,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Golf Solitaire | WeightPlay": "गोल्फ सॉलिटेयर | WeightPlay",
   "Golf Solitaire Guide": "गोल्फ सॉलिटेयर गाइड",
   "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.": "गोल्फ सॉलिटेयर एक तेज़ वन-वेस्ट-चेन पहेली है। वेस्ट कार्ड के एक रैंक ऊपर या नीचे खुले कार्ड को खेलकर पांच फेस-अप कार्डों के सात कॉलम साफ़ करें, फिर रूट समाप्त होने पर स्टॉक चालू करें।",
-  "Golf Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.": "गोल्फ सॉलिटेयर एक सामान्य-दर्शक कार्ड पहेली है जिसे 9+ उम्र और पारिवारिक खेल के लिए अनुशंसित किया जाता है। किसी खाते की आवश्यकता नहीं है; प्राथमिकताएँ इस ब्राउज़र में रहती हैं।",
+  "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.": "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
   "Golf uses the shared Card Engine and battle canvas with a compact seven-column layout, original visuals, touch and mouse play, tutorial, Hint, Undo, and sound preference.": "गोल्फ एक कॉम्पैक्ट सात-कॉलम लेआउट, मूल दृश्य, स्पर्श और माउस प्ले, ट्यूटोरियल, संकेत, पूर्ववत और ध्वनि प्राथमिकता के साथ साझा कार्ड इंजन और बैटल कैनवास का उपयोग करता है।",
   "Golpe pesado": "गोलपे पेसाडो",
   "Goma": "गोमा",

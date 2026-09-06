@@ -3761,7 +3761,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Golf Solitaire | WeightPlay": "ゴルフソリティア | WeightPlay",
   "Golf Solitaire Guide": "ゴルフ ソリティア ガイド",
   "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.": "ゴルフ ソリティアは、高速のワンウェイストチェーン パズルです。廃棄カードの 1 ランク上または下の露出したカードをプレイして、5 枚の表向きカードの 7 列をクリアし、ルートが終了したらストックを返します。",
-  "Golf Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.": "ゴルフ ソリティアは、9 歳以上の年齢層と家族でのプレイに推奨される一般向けのカード パズルです。アカウントは必要ありません。設定はこのブラウザーに残ります。",
+  "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.": "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
   "Golf uses the shared Card Engine and battle canvas with a compact seven-column layout, original visuals, touch and mouse play, tutorial, Hint, Undo, and sound preference.": "Golf は、コンパクトな 7 列レイアウト、オリジナルのビジュアル、タッチとマウスのプレイ、チュートリアル、ヒント、元に戻す、サウンド設定を備えた共有カード エンジンとバトル キャンバスを使用します。",
   "Golpe pesado": "ゴルペ ペサード",
   "Goma": "ゴマ",

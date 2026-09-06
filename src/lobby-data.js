@@ -4544,6 +4544,22 @@ if (freeCellPublic) {
   delete freeCellPublic.internalTrial;
 }
 
+// Golf Solitaire has completed the exact Tester, Gameplay Review, Director,
+// and Release Preflight gates. Keep its public conversion explicit so the
+// localized route generator and every lobby surface share the same release
+// state and truthful Battle preview.
+const golfPublic = window.WONDER_LOBBY.games.find((game) => game.id === "golf-solitaire");
+if (golfPublic) {
+  golfPublic.status = "playable";
+  golfPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  golfPublic.previewVideo = "assets/previews/golf-solitaire-battle.webm";
+  delete golfPublic.internalTrial;
+}
+
 for (const id of ["animal-color-springs", "animal-word-trails"]) {
   const game = window.WONDER_LOBBY.games.find((entry) => entry.id === id);
   if (!game) continue;

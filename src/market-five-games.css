@@ -14,6 +14,7 @@ body[data-wp-market-game]{overflow-x:hidden;background:radial-gradient(circle at
 @media(max-height:500px) and (orientation:landscape){body[data-wp-market-game="animal-chameleon-blend"] .m5-main{grid-template-columns:300px minmax(0,1fr)}body[data-wp-market-game="animal-chameleon-blend"] .m5-cover{max-height:300px}}
 @media(max-height:500px) and (orientation:landscape){body[data-wp-market-game="animal-moonlight-workshop"] .m5-main{grid-template-columns:300px minmax(0,1fr)}body[data-wp-market-game="animal-moonlight-workshop"] .m5-cover{max-height:300px}}
 @media(max-height:500px) and (orientation:landscape){body[data-wp-market-game="animal-hoop-league"] .m5-main{grid-template-columns:300px minmax(0,1fr)}body[data-wp-market-game="animal-hoop-league"] .m5-cover{max-height:300px}}
+@media(max-height:500px) and (orientation:landscape){body[data-wp-market-game="animal-habitat-atlas"] .m5-main{grid-template-columns:300px minmax(0,1fr)}body[data-wp-market-game="animal-habitat-atlas"] .m5-cover{max-height:300px}}
 .m5-canvas-wrap canvas{margin:0!important;padding:0!important;border:0!important;box-sizing:border-box!important}
 body[data-wp-market-game="animal-habitat-builder"] .m5-battle{padding:0!important}
 body[data-wp-market-game="animal-habitat-builder"] .m5-canvas-wrap{position:absolute!important;inset:0!important;grid-column:1/-1!important;grid-row:1/-1!important;width:auto!important;height:auto!important;display:block!important;border:0!important;border-radius:0!important;z-index:0}

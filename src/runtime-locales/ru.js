@@ -3761,7 +3761,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Golf Solitaire | WeightPlay": "Гольф-пасьянс | WeightPlay",
   "Golf Solitaire Guide": "Руководство по пасьянсу для гольфа",
   "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.": "«Гольф-пасьянс» — это быстрая головоломка с одной цепочкой отходов. Очистите семь столбцов с пятью открытыми картами, сыграв открытую карту на один ранг выше или ниже карты «Отходы», а затем переверните запас, когда маршрут закончится.",
-  "Golf Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.": "«Гольф-пасьянс» — это карточная головоломка для широкой аудитории, рекомендуемая для детей от 9 лет и для семейной игры. Никакая учетная запись не требуется; настройки остаются в этом браузере.",
+  "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.": "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
   "Golf uses the shared Card Engine and battle canvas with a compact seven-column layout, original visuals, touch and mouse play, tutorial, Hint, Undo, and sound preference.": "В гольфе используется общий карточный движок и боевое полотно с компактным макетом из семи столбцов, оригинальными визуальными эффектами, сенсорным управлением и мышью, обучением, подсказками, отменой и настройками звука.",
   "Golpe pesado": "Гольпе песадо",
   "Goma": "Гома",

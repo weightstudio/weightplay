@@ -3761,7 +3761,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hans"] = {
   "Golf Solitaire | WeightPlay": "高尔夫纸牌 | WeightPlay",
   "Golf Solitaire Guide": "高尔夫纸牌指南",
   "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.": "高尔夫纸牌是一款快速的单废链益智游戏。通过打出比废纸牌高一级或低一级的暴露牌来清除七列五张面朝上的牌，然后在路线结束时翻转股票。",
-  "Golf Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.": "高尔夫纸牌是一款适合普通观众的纸牌拼图，建议 9 岁以上儿童和家庭玩耍。无需帐户；首选项保留在此浏览器中。",
+  "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.": "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
   "Golf uses the shared Card Engine and battle canvas with a compact seven-column layout, original visuals, touch and mouse play, tutorial, Hint, Undo, and sound preference.": "《高尔夫》使用共享卡引擎和战斗画布，具有紧凑的七列布局、原始视觉效果、触摸和鼠标游戏、教程、提示、撤消和声音首选项。",
   "Golpe pesado": "戈尔佩佩萨多",
   "Goma": "戈马",

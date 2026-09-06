@@ -3761,7 +3761,7 @@ window.WeightPlayGameRuntimeLocales["fr"] = {
   "Golf Solitaire | WeightPlay": "Golf Solitaire | WeightPlay",
   "Golf Solitaire Guide": "Guide du solitaire de golf",
   "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.": "Golf Solitaire est un puzzle rapide à une chaîne de déchets. Effacez sept colonnes de cinq cartes face visible en jouant la carte exposée un rang au-dessus ou en dessous de la carte Déchet, puis retournez le Stock à la fin de la route.",
-  "Golf Solitaire is a general-audience card puzzle recommended for ages 9+ and family play. No account is required; preferences stay in this browser.": "Golf Solitaire est un puzzle de cartes grand public recommandé pour les 9 ans et plus et pour le jeu en famille. Aucun compte n'est requis ; les préférences restent dans ce navigateur.",
+  "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.": "Golf Solitaire is a general-audience card puzzle for family play. No account is required; preferences stay in this browser.",
   "Golf uses the shared Card Engine and battle canvas with a compact seven-column layout, original visuals, touch and mouse play, tutorial, Hint, Undo, and sound preference.": "Golf utilise le moteur de cartes partagé et le canevas de combat avec une disposition compacte à sept colonnes, des visuels originaux, un jeu tactile et avec la souris, un didacticiel, des indices, un annulation et des préférences sonores.",
   "Golpe pesado": "Golpe pesado",
   "Goma": "Goma",
