@@ -374,6 +374,25 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
   .logic-sliding-board { grid-template-columns: repeat(4, minmax(30px, 72px)); gap: 4px; }
   .logic-code-board { gap: 4px; }
   .logic-code-slot, .logic-color { width: 34px; height: 34px; }
+  /* The wide logical envelope keeps Code Breaker's touch controls large, but
+     its three-line stage brief still has to share the compact board with the
+     Submit action. Keep the brief legible while reserving the full action
+     button inside the fixed Canvas instead of letting it clip below Battle. */
+  body[data-logic-game="code-breaker"] .logic-code-stage-meta {
+    max-height: 42px;
+    overflow: hidden;
+    gap: 1px;
+    padding: 3px 8px;
+  }
+  body[data-logic-game="code-breaker"] .logic-code-stage-meta strong { font-size: 11px; line-height: 1.05; }
+  body[data-logic-game="code-breaker"] .logic-code-stage-meta span { font-size: 10px; line-height: 1.05; }
+  body[data-logic-game="code-breaker"] .logic-code-legend {
+    min-height: 14px;
+    height: 14px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1;
+  }
   .logic-hanoi-board { gap: 4px; }
   .logic-tower { min-height: 130px; padding: 5px 3px 7px; }
   .logic-reversi-board { grid-template-columns: repeat(8, minmax(20px, 45px)); gap: 2px; padding: 4px; }
@@ -433,6 +452,13 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
    portrait layout. Without this Sudoku's status/action rows extend the
    hidden section by a few pixels and focus scrolling moves the board. */
 @media (min-height: 761px) {
+  /* Code Breaker is mounted in the shared fixed logical Canvas. At tall
+     desktop sizes the old svh-based minimum measured the physical viewport
+     again and placed Hint/Undo/New Puzzle below the clipped Canvas. */
+  body[data-logic-game="code-breaker"] .logic-battle-wrap {
+    height: calc(100% - 72px);
+    min-height: 0;
+  }
   body[data-logic-game="sudoku"] .logic-battle-wrap {
     height: calc(100svh - 122px);
     min-height: 0;

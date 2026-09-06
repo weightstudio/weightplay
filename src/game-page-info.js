@@ -55,6 +55,7 @@
       difficulty: "Easy to Challenging",
       time: "3-8 minutes",
       skills: ["Route Planning", "Reaction", "Risk Reading"],
+      showSkills: false, hideRecommendedAge: true, hideScoreBands: true,
       noteTitle: "Player and Save Information",
       intro: "Maze Chase is an original fixed-maze collection game. Guide Orla through three increasingly fast stages, gather every star mote, read four distinct Wisp chase patterns, and activate Beacons to turn a dangerous corridor into a short counterattack window.",
       story: [

@@ -3,7 +3,15 @@
 
   const $ = id => document.getElementById(id);
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
-  let locale = "en";
+  const storedLocale = (() => {
+    try {
+      const candidate = localStorage.getItem("weightPlayLocale");
+      return LOCALES.includes(candidate) ? candidate : "en";
+    } catch {
+      return "en";
+    }
+  })();
+  let locale = storedLocale;
   let currentCase = 0;
   let selectedFacts = [];
   let feedbackKey = "";
