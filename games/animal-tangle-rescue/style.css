@@ -172,6 +172,13 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
   .paw-chip { flex-basis: 28px; width: 28px; height: 28px; }
   .shelter-card { gap: 4px; }
   .battle-actions .primary-btn, .battle-actions .secondary-btn { flex: 1 1 140px; }
+  .result-character { margin: 0 auto 22px; }
+}
+
+/* In compact landscape the Result card has less vertical room. Keep the
+   character in normal flow so it cannot cover the Result heading. */
+@media (max-height: 560px) {
+  .result-character { margin: 0 auto 22px; }
 }
 
 /* Interface 6 keeps the Main poster column deterministic at the governed

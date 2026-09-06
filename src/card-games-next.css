@@ -217,6 +217,10 @@ body[data-wp-card-game="cribbage"] .cribbage-guide-disclosure .game-info-section
 .card-build small { color: #ffefa7; font-size: 11px; }
 body[data-wp-card-game] > .result-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; box-sizing: border-box; padding: 16px; color: #f8fafc; background: rgba(4, 25, 41, .78); backdrop-filter: blur(4px); }
 body[data-wp-card-game] > .result-overlay[hidden] { display: none; }
+/* The body-level Result modal owns the top layer. Hide War's viewport-fixed
+   action row only while that modal is open so its quick guide cannot cross the
+   compact-landscape Result title or action buttons. */
+body[data-wp-card-game="war"]:has(> .result-overlay:not([hidden])) #battleScreen > #cardGameActions { visibility: hidden; pointer-events: none; }
 body[data-wp-card-game] > .result-overlay .result-card { width: min(100%, 420px); box-sizing: border-box; padding: 24px; border: 1px solid rgba(255,255,255,.18); border-radius: 20px; background: linear-gradient(145deg, #123a63, #0a213f); box-shadow: 0 22px 50px rgba(0,0,0,.4); text-align: center; }
 body[data-wp-card-game] > .result-overlay .result-card h2 { margin: 0 0 8px; }
 body[data-wp-card-game] > .result-overlay .result-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
