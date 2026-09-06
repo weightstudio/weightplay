@@ -954,6 +954,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Animal Star Memory is a 30-stage picture-matching journey through the night sky. Players help six friendly Star Keepers reconnect animal constellations by finding matching cards. Every card stays in the same position for the whole stage, while opening previews, larger boards, move limits, and required animal order increase the challenge. Every fifth stage is a Keeper Check, and Stage 30 combines a full twelve-pair preview with ordered recall.": "《動物之星回憶》是一場穿越夜空的 30 個階段的圖片匹配之旅。玩家透過找到匹配的卡片來幫助六名友好的星星守護者重新連接動物星座。每張卡片在整個舞台上都保持在相同的位置，而打開預覽、更大的板、移動限制和所需的動物順序增加了挑戰。每第五個階段都是守護者檢查，第 30 階段將完整的 12 對預演與有序召回結合在一起。",
   "Animal Star Memory may support visual recall, attention, and following a short sequence. Adults can ask which two positions belong together or why an ordered pair should be found first. The game has no combat, account requirement, public ranking, or advertising request on this Kids page. Stars and the Skill Report are encouraging local game feedback, not an intelligence, school, health, or developmental assessment.": "動物明星記憶可以支持視覺回憶、注意力和遵循簡短的序列。成人可以詢問哪兩個位置屬於同一位置，或者為什麼應該先找到有序對。該遊戲在此兒童頁面上沒有戰鬥、帳戶要求、公開排名或廣告請求。明星和技能報告鼓勵本地遊戲回饋，而不是智力、學校、健康或發展評估。",
   "Animal Variety": "動物品種",
+  "Animal Vine Rescue": "動物藤救援",
   "Animal Vine Rescue - Complete Game Guide": "Animal Vine Rescue - 完整遊戲指南",
   "Animal Vine Rescue - WeightPlay": "動物藤救援 - WeightPlay",
   "Animal Vine Rescue game guide": "動物藤救援遊戲指南",

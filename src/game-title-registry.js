@@ -453,15 +453,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "動物藤蔓救援",
     "zh-Hans": "动物藤蔓救援",
     "ja": "どうぶつつるロープ救出",
-    "ko": "Animal Vine Rescue",
+    "ko": "동물 덩굴 구조",
     "es": "Rescate Animal con Lianas",
-    "pt-BR": "Animal Vine Rescue",
-    "fr": "Animal Vine Rescue",
-    "de": "Animal Vine Rescue",
-    "it": "Animal Vine Rescue",
-    "ru": "Animal Vine Rescue",
-    "hi": "Animal Vine Rescue",
-    "ar": "Animal Vine Rescue"
+    "pt-BR": "Resgate de Videira Animal",
+    "fr": "Sauvetage des animaux de la vigne",
+    "de": "Rettung von Tierreben",
+    "it": "Salvataggio della vite animale",
+    "ru": "Спасение животных",
+    "hi": "पशु बेल बचाव",
+    "ar": "إنقاذ كرمة الحيوانات"
   },
   "animal-zoo-idle": {
     "__localizedExact": true,
