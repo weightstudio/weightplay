@@ -8,9 +8,10 @@
     { name:"Lantern card", target:["Lantern","Bridge"], decoy:"Mushroom", answer:{x:1,y:1}, cells:["Cloud","Daisy","Rock","Hill","Fox","Berry","Pond","Oak","Lantern","Bridge","Nest","Mushroom"] },
     { name:"Garden card", target:["Daisy","Rock"], decoy:"Fox", answer:{x:2,y:0}, cells:["Berry","Cloud","Pond","Oak","Nest","Daisy","Rock","Fox","Lantern","Bridge","Mushroom","Hill"] }
   ];
+  const sceneOrder = rounds[0].cells;
   const state = { view:"main", locale:"en", round:0, x:0, y:0, moves:0, sound:false };
   const t = (key, vars = {}) => { const copy = locales[state.locale] || locales.en || {}; let value = copy[key] ?? (locales.en || {})[key] ?? key; if (Array.isArray(value)) return value; return String(value).replace(/\{(\w+)\}/g, (_, name) => vars[name] ?? `{${name}}`); };
-  const sceneLabel = (name) => { const scenes = t("scenes"); const index = rounds[state.round].cells.indexOf(name); return scenes[index] || name; };
+  const sceneLabel = (name) => { const scenes = t("scenes"); const index = sceneOrder.indexOf(name); return scenes[index] || name; };
   const track = (name, detail = {}) => window.WonderAnalytics?.track?.(`postcard_crop_${name}`, detail);
   const readBest = () => { try { return Number(localStorage.getItem("weightplay-animal-postcard-crop-best")) || 0; } catch (_) { return 0; } };
   const saveBest = () => { const old = readBest(); if (!old || state.moves < old) { try { localStorage.setItem("weightplay-animal-postcard-crop-best", String(state.moves)); } catch (_) {} } };

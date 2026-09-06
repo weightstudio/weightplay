@@ -68,3 +68,16 @@ dialog{border:2px solid #f1ca5f;background:linear-gradient(155deg,#fffff7,#eef8d
     min-width: 44px;
   }
 }
+
+/* Keep the Main poster on the canonical 300px short-landscape column. */
+@media (min-width: 681px) and (max-height: 500px) and (orientation: landscape) {
+  body #main .hero {
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  body #main .hero > img {
+    width: 300px;
+    max-width: 300px;
+  }
+}

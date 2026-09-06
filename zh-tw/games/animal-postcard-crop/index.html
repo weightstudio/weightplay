@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-postcard-crop/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-postcard-crop/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-postcard-crop/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-postcard-crop/" />
@@ -24,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-postcard-crop">
-  <meta name="weightplay-game-version" content="v1">
+  <meta name="weightplay-game-version" content="v3">
   <meta name="weightplay-interface-version" content="6">
   <title>明信片取景 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide>
@@ -46,8 +45,9 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "明信片取景",
+  "alternateName": "Postcard Crop",
   "url": "https://weightplay.com/zh-tw/games/animal-postcard-crop/",
-  "image": "https://weightplay.com/games/animal-postcard-crop/assets/animal-postcard-crop-cover.svg",
+  "image": "https://weightplay.com/games/animal-postcard-crop/assets/animal-postcard-crop-cover.webp",
   "description": "移動小小明信片框，讓兩個指定地標同框，同時把干擾物留在框外。",
   "publisher": {
     "@type": "Organization",
@@ -62,28 +62,26 @@
     "Visual Framing",
     "Observation",
     "Family",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Postcard Crop"
+  }
 }
     </script>
   </head>
-<body data-wp-game-id="animal-postcard-crop" data-wp-audience="general" data-wp-game-version="v1" data-wp-interface-version="6">
+<body data-wp-game-id="animal-postcard-crop" data-wp-audience="general" data-wp-game-version="v3" data-wp-interface-version="6">
   <div class="app-shell">
     <main id="mainScreen" class="screen main-screen" data-view="main" data-screen="main">
       <header class="topbar wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
-        <strong class="wp-shell-main-title" data-runtime-localize="off">Postcard Crop</strong>
-        <button id="mainSettings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button>
+        <strong class="wp-shell-main-title" data-runtime-localize="off">明信片取景</strong>
+        <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings" onclick="document.getElementById('settings-dialog').classList.add('is-open')">⚙</button>
       </header>
       <div class="main-content">
-        <img class="main-poster" src="assets/animal-postcard-crop-cover.svg" alt="" width="800" height="800" fetchpriority="high" draggable="false">
+        <img class="main-poster" src="assets/animal-postcard-crop-cover-v2.webp" alt="" width="1254" height="1254" fetchpriority="high" draggable="false">
         <p class="eyebrow" data-i18n="kicker">VISUAL FRAMING PUZZLE</p>
         <h1 data-runtime-localize="off">明信片取景</h1>
         <p class="lede main-summary" data-i18n="intro">Move the postcard frame until the two named landmarks share the crop and the decoy stays outside.</p>
@@ -113,7 +111,7 @@
   </section>
 
     <main id="battleScreen" class="screen battle-screen" data-view="battle" data-screen="battle" data-wp-logical-battle-canvas hidden>
-      <header class="topbar wp-stage-shell-header"><button id="battleHome" class="return-link wp-shell-return" type="button" data-wp-return="battle" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-runtime-localize="off">Postcard Crop</strong><button id="battleSound" class="utility-button wp-shell-settings-button" type="button" data-wp-battle-utility data-sound-toggle aria-pressed="false" aria-label="Sound">♪</button></header>
+      <header class="topbar wp-stage-shell-header"><button id="battleHome" class="return-link wp-shell-return" type="button" data-wp-return="battle" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button><strong class="wp-shell-main-title" data-runtime-localize="off">明信片取景</strong><button id="battleSound" class="utility-button wp-shell-settings-button" type="button" data-wp-battle-utility data-sound-toggle aria-pressed="false" aria-label="Sound">♪</button></header>
       <div class="battle-content battle-canvas">
         <div class="battle-heading"><div><p class="eyebrow" data-i18n="kicker">VISUAL FRAMING PUZZLE</p><h1 id="roundTitle">Meadow card</h1></div><div class="round-badge"><span data-i18n="round">Card</span> <strong id="roundCount">1/3</strong></div></div>
         <section class="clue-card" aria-labelledby="clueTitle"><h2 id="clueTitle" data-i18n="clueTitle">Frame these landmarks</h2><p id="clueText" class="clue-text"></p><p id="decoyText" class="decoy-text"></p></section>
@@ -126,15 +124,15 @@
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
 
     <section id="resultScreen" class="screen result-screen" data-view="result" data-screen="result" hidden>
-      <header class="topbar wp-main-shell-header"><button id="resultHome" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-runtime-localize="off">Postcard Crop</strong><button id="resultSettings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
-      <div class="result-content"><p class="eyebrow" data-i18n="resultKicker">POSTCARDS COMPLETE</p><h1 data-i18n="resultTitle">A thoughtful set of crops.</h1><p id="resultText" class="lede"></p><div class="result-card"><div><span data-i18n="moves">Moves</span><strong id="resultMoves">0</strong></div><div><span data-i18n="best">Best</span><strong id="resultBest">—</strong></div></div><p id="resultStatus" class="status" role="status"></p><div class="result-actions"><button id="replayButton" class="primary-button" type="button" data-i18n="replay">Frame again</button><button id="resultMenu" class="secondary-button" type="button" data-i18n="home">Back to menu</button></div></div>
+      <header class="topbar wp-main-shell-header"><button id="resultHome" class="return-link wp-shell-return" type="button" data-wp-return="main" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-runtime-localize="off">明信片取景</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button" aria-label="Settings" onclick="document.getElementById('settings-dialog').classList.add('is-open')">⚙</button></header>
+      <div class="result-content"><img class="result-orla" src="assets/animal-postcard-crop-orla-v1.webp" alt="" width="1254" height="1254" loading="lazy" draggable="false"><p class="eyebrow" data-i18n="resultKicker">POSTCARDS COMPLETE</p><h1 data-i18n="resultTitle">A thoughtful set of crops.</h1><p id="resultText" class="lede"></p><div class="result-card"><div><span data-i18n="moves">Moves</span><strong id="resultMoves">0</strong></div><div><span data-i18n="best">Best</span><strong id="resultBest">—</strong></div></div><p id="resultStatus" class="status" role="status"></p><div class="result-actions"><button id="replayButton" class="primary-button" type="button" data-i18n="replay">Frame again</button><button id="resultMenu" class="secondary-button" type="button" data-i18n="home">Back to menu</button></div></div>
     </section>
   </div>
-  <dialog id="settingsDialog" class="modal-dialog" role="dialog"><form method="dialog" class="dialog-card"><div class="dialog-head"><h2 data-i18n="settings">Settings</h2><button id="closeSettings" class="close-button" value="close" aria-label="Close">×</button></div><label for="localeSelect" data-i18n="language">Language</label><select id="localeSelect"></select><button id="soundToggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></dialog>
+  <div id="settings-dialog" class="modal-dialog" role="dialog" aria-modal="true"><form class="dialog-card"><div class="dialog-head"><h2 data-i18n="settings">Settings</h2><button id="close-settings" class="close-button" type="button" aria-label="Close">×</button></div><label for="locale-select" data-i18n="language">Language</label><select id="locale-select"></select><button id="sound-toggle" class="secondary-button" type="button" data-sound-toggle aria-pressed="false">Sound: Off</button></form></div>
   <script src="locales.js"></script>
-  <script src="game.js"></script>
+  <script src="game.js?v=20260906-issue-repair-v3"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>
