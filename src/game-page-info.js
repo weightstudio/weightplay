@@ -101,7 +101,7 @@
       age: "",
       difficulty: "Easy to Challenging",
       time: "3-10 minutes",
-      skills: ["Inertia Control", "Aim", "Risk Timing"],
+      skills: ["Inertia Control", "Aim", "Risk Timing"], hideSkillsFact: true, showRelatedSkill: false,
       relatedIds: ["alien-defender", "road-crosser", "animal-abyss-diver"],
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
@@ -9273,7 +9273,7 @@
   localizedGameplayProfiles["zh-Hans"]["animal-starlight-trails"] = { gameplay: "一笔画逻辑益智", genre: ["益智", "策略", "逻辑", "动物"] };
 
   games["animal-one-line"] = {
-    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"], skills: ["Spatial Reasoning", "Planning", "Sequencing"], relatedIds: ["animal-cratebound", "animal-sunbeam-garden"],
+    title: "One Line", difficulty: "Easy to Challenging", time: "1-4 minutes per stage", gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"], skills: ["Spatial Reasoning", "Planning", "Sequencing"], hideSkillsFact: true, showRelatedSkill: false, relatedIds: ["animal-cratebound", "animal-sunbeam-garden"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", hideScoreBands: true,
     intro: "One Line is an original 30-stage grid puzzle starring Rainbow Hop Mimi. Begin on the glowing paw, move through edge-sharing open cells, and color the entire board with one continuous route without visiting any cell twice.",
     story: ["Mimi is restoring color to dormant puzzle boards in a magical forest workshop. Stone cells block parts of each board, so the route must pass through every open cell exactly once.", "The final five mastery grids combine longer routes, narrow exits, and deceptive early choices. Stage 30 completes the campaign and remains replayable."],
@@ -9282,7 +9282,7 @@
     strategyTips: ["Inspect corners and narrow exits before starting; entering them from the wrong direction can isolate the final cell.", "Clear pockets with only one entrance at the correct moment instead of sealing their entrance too early.", "Use Show Hint to reveal one next step when stuck; it never costs currency but limits that attempt to two stars.", "Speed is not required. Pause on the current cell and plan the remaining route before moving."],
     progression: ["Stages 1-5 teach orthogonal movement and the no-repeat rule; 6-10 introduce corner planning; 11-15 use stone blocks to divide the board.", "Stages 16-20 extend the routes, 21-25 introduce tighter choices, and 26-30 combine large grids, blocked cells, and narrow exits."],
     designNote: "One Line is a route-planning puzzle rather than a freehand accuracy test. Large cells and interpolated pointer sampling make the same rules practical with a mouse or a finger, while the no-repeat and fill-every-cell conditions keep success focused on reasoning. A responsive logical Canvas fills the safe Stage and Battle rectangle while preserving one uniform scale, stable anchors, and the separate 56px General reserve.",
-    parent: "One Line is recommended for ages 9+ and family play. It requires no account and stores progress only in the current browser. Stars and the Result skill summary are playful feedback, not a formal ability, medical, or school assessment.",
+    parent: "One Line is a general-audience route-planning puzzle for family play. It requires no account and stores progress only in the current browser. Stars and the Result summary are playful feedback, not a formal ability, medical, or school assessment.",
     faq: [["Can I visit a cell twice?", "No. Re-entering a colored cell ends the current attempt."], ["Can I move diagonally?", "No. Moves connect only open cells that share an edge."], ["Can I release before the board is complete?", "Yes. The current route stays on the board, so you can pause and resume planning later."], ["Do I have to move quickly?", "No. You may pause on the current cell while planning."], ["What does Show Hint do?", "It highlights the next cell in one possible complete route."], ["Does progress save?", "Yes. Unlocks, stars, clears, and best times are stored locally in this browser."], ["How many stages are included?", "There are 30 original grid puzzles across six five-stage chapters."]]
   };
   gameplayProfiles["animal-one-line"] = { gameplay: "One-Line Grid Filling", genre: ["Logic", "Route Planning", "Puzzle", "Animal"] };
@@ -9295,7 +9295,7 @@
     strategyTips: ["開始前先觀察角落與只有一個出口的區域。", "不要太早封住尚未完成區域的入口。", "卡住時可用提示查看其中一種完整解法的下一步。", "遊戲不要求速度，可以停在目前格子思考。"],
     progression: ["第 1–5 關教學相鄰移動與不可重複；第 6–10 關練習轉角規劃；第 11–15 關加入石塊切割棋盤。", "第 16–20 關延長路線；第 21–25 關增加容易誤判的分岔；第 26–30 關綜合大型棋盤、石塊與窄出口。"],
     designNote: "One Line 與 Starlink 的核心不同：Starlink 是每條連線只能使用一次的圖形邏輯題；One Line 是填滿每個開放格的路線規劃益智遊戲。觸控、滑鼠與鍵盤共用相同的相鄰移動規則；響應式邏輯 Canvas 會填滿 Stage 與 Battle 安全區域，並保留單一縮放比例、穩定錨點與獨立 56px 預留區。",
-    parent: "One Line 建議 9 歲以上與家庭玩家遊玩，不需帳號，進度只儲存在目前瀏覽器。星等與結算技能摘要是遊戲鼓勵，不是正式能力、醫療或學校評量。",
+    parent: "One Line 是適合家庭玩家的路線規劃益智遊戲，不需帳號，進度只儲存在目前瀏覽器。星等與結算摘要是遊戲鼓勵，不是正式能力、醫療或學校評量。",
     faq: [["中途可以放開手指嗎？", "可以，已完成的路線會保留；回到遊戲後可以繼續規劃。"], ["一定要很快嗎？", "不用，可以持續按住並停在安全路段。"], ["碰到邊緣或影子會怎樣？", "只會重置本次嘗試，重新挑戰完全免費。"], ["顯示引導有什麼作用？", "它會顯示通道中央的虛線安全路徑。"], ["進度會保存嗎？", "會，解鎖、星等、過關與最佳時間會儲存在此瀏覽器。"], ["共有幾關？", "共有六個章節、30 條原創路線。"]]
   };
   localizedGameplayProfiles["zh-Hant"]["animal-one-line"] = { gameplay: "一筆填滿格子", genre: ["邏輯", "路線規劃", "益智", "動物"] };
@@ -9308,7 +9308,7 @@
     strategyTips: ["开始前先观察角落与只有一个出口的区域。", "不要过早封住尚未完成区域的入口。", "卡住时可用提示查看其中一种完整解法的下一步。", "游戏不要求速度，可以停在当前格子思考。"],
     progression: ["第 1–5 关教学相邻移动与不可重复；第 6–10 关练习转角规划；第 11–15 关加入石块切割棋盘。", "第 16–20 关延长路线；第 21–25 关增加容易误判的分岔；第 26–30 关综合大型棋盘、石块与窄出口。"],
     designNote: "One Line 与 Starlink 的核心不同：Starlink 是每条连线只能使用一次的图形逻辑题；One Line 是填满每个开放格的路线规划益智游戏。触控、鼠标与键盘共用相同的相邻移动规则；响应式逻辑 Canvas 会填满 Stage 与 Battle 安全区域，并保留单一缩放比例、稳定锚点与独立 56px 预留区。",
-    parent: "One Line 建议 9 岁以上与家庭玩家游玩，不需账号，进度只储存在目前浏览器。星等与结算技能摘要是游戏鼓励，不是正式能力、医疗或学校评量。",
+    parent: "One Line 是适合家庭玩家的路线规划益智游戏，不需账号，进度只储存在当前浏览器。星等与结算摘要是游戏鼓励，不是正式能力、医疗或学校评量。",
     faq: [["中途可以放开手指吗？", "可以，已完成的路线会保留；回到游戏后可以继续规划。"], ["一定要很快吗？", "不用，可以停在当前格子思考。"], ["碰到边缘或影子会怎样？", "只会重置本次尝试，重新挑战完全免费。"], ["显示引导有什么作用？", "它会显示通道中央的虚线安全路径。"], ["进度会保存吗？", "会，解锁、星等、过关与最佳时间会储存在此浏览器。"], ["共有几关？", "共有六个章节、30 条原创路线。"]]
   };
   localizedGameplayProfiles["zh-Hans"]["animal-one-line"] = { gameplay: "连续通道描线", genre: ["技巧", "时机", "益智", "动物"] };
@@ -9354,7 +9354,7 @@
       "تطيل المراحل 16–20 المسارات، وتضيف المراحل 21–25 اختيارات أضيق، ثم تجمع المراحل 26–30 بين اللوحات الكبيرة والخلايا المحجوبة والمخارج الضيقة."
     ],
     designNote: "خط واحد لعبة تخطيط مسار وليست اختباراً لدقة الرسم الحر. تجعل الخلايا الكبيرة وأخذ عينات المؤشر المتتابعة القواعد نفسها عملية بالماوس أو الإصبع، بينما تركز شروط عدم التكرار وملء كل خلية النجاح على التفكير. يملأ Canvas منطقي متجاوب مستطيل Stage وBattle الآمن بمقياس موحد، مع الحفاظ على مساحة General المنفصلة البالغة 56 بكسل.",
-    parent: "يوصى بخط واحد لمن تبلغ أعمارهم 9 سنوات فأكثر وللعب العائلي. لا تتطلب اللعبة حساباً، وتحفظ التقدم في المتصفح الحالي فقط. النجوم وملخص المهارة في النتيجة تغذية راجعة ترفيهية وليست تقييماً رسمياً للقدرة أو تقييماً طبياً أو مدرسياً.",
+    parent: "خط واحد لعبة تخطيط مسار مناسبة للعب العائلي. لا تتطلب اللعبة حساباً، وتحفظ التقدم في المتصفح الحالي فقط. النجوم وملخص النتيجة تغذية راجعة ترفيهية وليست تقييماً رسمياً للقدرة أو تقييماً طبياً أو مدرسياً.",
     faq: [
       ["هل يمكنني دخول الخلية نفسها مرتين؟", "لا. تؤدي إعادة دخول خلية ملونة إلى إنهاء المحاولة الحالية."],
       ["هل يمكنني التحرك قطرياً؟", "لا. تصل الحركات فقط بين الخلايا المفتوحة التي تشترك في حافة."],
@@ -9456,7 +9456,7 @@
       designNote:
         "«Одна линия» проверяет планирование маршрута, а не точность рисования от руки. Крупные клетки и обработка промежуточных точек указателя сохраняют одинаковые правила для мыши и пальца. Запрет повторов и требование заполнить всё поле удерживают внимание на логике. Адаптивная игровая область заполняет безопасное пространство выбора этапа и головоломки, сохраняя единый масштаб, устойчивые опорные точки и отдельный резерв высотой 56 пикселей.",
       parent:
-        "Игра рекомендуется пользователям от 9 лет и семьям. Учётная запись не нужна: прогресс хранится только в текущем браузере. Звёзды и итоговый отчёт о навыках служат игровым поощрением, а не медицинской, школьной или официальной оценкой способностей.",
+        "«Одна линия» — логическая игра с планированием маршрута для семейной игры. Учётная запись не нужна: прогресс хранится только в текущем браузере. Звёзды и итоговый отчёт служат игровым поощрением, а не медицинской, школьной или официальной оценкой способностей.",
       faq: [
         ["Можно ли посетить клетку дважды?", "Нет. Повторный вход в закрашенную клетку недопустим."],
         ["Можно ли двигаться по диагонали?", "Нет. Переходить можно только в свободную клетку с общей стороной."],
@@ -15607,7 +15607,7 @@
   };
   games["snake"] = {
     title: "Snake", gameplay: "Grid Survival Arcade", difficulty: "Easy to Challenging", time: "1-4 minutes per run",
-    genre: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"],
+    genre: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"], hideSkillsFact: true, showRelatedSkill: false,
     intro: "Snake is an original WeightPlay grid survival arcade game. Guide a growing star-serpent through a bounded board, collect six food sparks, and keep a clean route open.",
     story: ["A small star-serpent wakes inside a night grid. Each food spark adds another segment, turning every safe turn into the next spatial decision."],
     systems: ["The serpent moves continuously on a grid. Food increases its length and score, the pace rises during a run, and walls or the serpent's own body end the round."],
