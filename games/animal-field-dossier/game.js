@@ -163,7 +163,7 @@
     busy = true; journal.add(item.id); best = Math.max(best, journal.size); saveProgress(); setFeedback(t("correct"), "good"); track("case_resolved", { caseId: item.id, planId: id, journalPages: journal.size }); renderBattle();
     window.setTimeout(() => {
       busy = false; currentCase += 1; selectedFacts = []; feedbackText = ""; feedbackKey = "";
-      if (currentCase >= CASES.length) showResult(); else renderBattle();
+      if (currentCase >= CASES.length) showResult(); else { screens.battle.scrollTop = 0; renderBattle(); }
     }, 320);
   };
   const showResult = () => {
@@ -173,7 +173,7 @@
     $("resultOverlay").hidden = false; $("leavePrompt").hidden = true; track("dossier_complete", { resolvedCases: journal.size, journalPages: journal.size });
     $("replayButton").focus();
   };
-  const start = () => { currentCase = 0; selectedFacts = []; feedbackText = ""; feedbackKey = ""; busy = false; show("battle"); renderBattle(); track("dossier_start"); window.setTimeout(() => $("evidenceGrid").querySelector("button")?.focus(), 40); };
+  const start = () => { currentCase = 0; selectedFacts = []; feedbackText = ""; feedbackKey = ""; busy = false; show("battle"); screens.battle.scrollTop = 0; renderBattle(); track("dossier_start"); window.setTimeout(() => $("evidenceGrid").querySelector("button")?.focus(), 40); };
   const showMain = () => { $("settingsPopover").hidden = true; $("settingsButton").setAttribute("aria-expanded", "false"); $("helpPopover").hidden = true; $("leavePrompt").hidden = true; $("resultOverlay").hidden = true; show("main"); renderMain(); $("startButton").focus(); track("return_main"); };
   $("startButton").addEventListener("click", start);
   $("replayButton").addEventListener("click", () => { $("resultOverlay").hidden = true; start(); track("result_replay"); });

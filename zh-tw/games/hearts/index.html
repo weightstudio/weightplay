@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-Hant"><head>
 
-    <base href="/games/hearts/" /><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>Hearts | WeightPlay</title><link rel="canonical" href="https://weightplay.com/zh-tw/games/hearts/" />
+    <base href="/games/hearts/" /><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>紅心大戰 | WeightPlay</title><link rel="canonical" href="https://weightplay.com/zh-tw/games/hearts/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/hearts/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/hearts/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/hearts/" />
@@ -16,25 +16,26 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/hearts/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/hearts/" />
     <!-- Shared 13-locale registry: ../../src/i18n.js?v=20260721-locale13-1; Hindi/Arabic runtime loader: ../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1; localized sound labels: ../../src/sound.js?v=20260720-locale11. -->
-    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css?v=20260831-hearts-shell-v13">  <meta name="description" content="四名玩家依序完成十三招。紅心是罰牌，黑桃皇后值 13 點，拿走每張罰牌即可射月。" />
+    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css?v=20260831-hearts-shell-v13">  <meta name="description" content="四位玩家在十三墩中跟牌。紅心是罰分牌，黑桃皇后值 13 分，收下全部罰分牌就能射月。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Hearts | WeightPlay" />
-    <meta property="og:description" content="四名玩家依序完成十三招。紅心是罰牌，黑桃皇后值 13 點，拿走每張罰牌即可射月。" />
+    <meta property="og:title" content="紅心大戰 | WeightPlay" />
+    <meta property="og:description" content="四位玩家在十三墩中跟牌。紅心是罰分牌，黑桃皇后值 13 分，收下全部罰分牌就能射月。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/hearts/" />
     <meta property="og:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Hearts | WeightPlay" />
-    <meta name="twitter:description" content="四名玩家依序完成十三招。紅心是罰牌，黑桃皇后值 13 點，拿走每張罰牌即可射月。" />
+    <meta name="twitter:title" content="紅心大戰 | WeightPlay" />
+    <meta name="twitter:description" content="四位玩家在十三墩中跟牌。紅心是罰分牌，黑桃皇后值 13 分，收下全部罰分牌就能射月。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Hearts",
+  "name": "紅心大戰",
+  "alternateName": "Hearts",
   "url": "https://weightplay.com/zh-tw/games/hearts/",
   "image": "https://weightplay.com/assets/card-games-hearts-cover.webp",
-  "description": "四名玩家依序完成十三招。紅心是罰牌，黑桃皇后值 13 點，拿走每張罰牌即可射月。",
+  "description": "四位玩家在十三墩中跟牌。紅心是罰分牌，黑桃皇后值 13 分，收下全部罰分牌就能射月。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -44,9 +45,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Card",
-    "Family",
-    "Strategy"
+    "卡牌",
+    "家庭",
+    "策略"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -56,24 +57,27 @@
 }
     </script>
   </head><body data-screen="main" data-audience="general" data-wp-game-id="hearts" data-wp-card-game="hearts" data-wp-combined-sound="true">
-<section id="loadingPanel" class="loading-panel"><div class="loading-card"><strong data-card-title data-runtime-localize="off">Hearts</strong><span>Preparing the deck</span><div class="loading-track"><i class="loading-fill"></i></div></div></section>
-<main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">Hearts</strong><div class="header-utilities"><div class="audio-control settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-hearts-cover.webp" alt="《Hearts》遊戲圖片"></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-card-title data-runtime-localize="off">Hearts</h1><p data-card-summary>Avoid penalty cards, follow suit, and decide whether to risk Shooting the Moon.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Round progress</strong><span>Pass three cards, then follow suit and avoid penalty cards.</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section><section class="game-page-info game-page-info-static" aria-label="Hearts 遊戲資訊">
+<section id="loadingPanel" class="loading-panel"><div class="loading-card"><strong data-card-title data-runtime-localize="off">紅心大戰</strong><span>Preparing the deck</span><div class="loading-track"><i class="loading-fill"></i></div></div></section>
+<main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">紅心大戰</strong><div class="header-utilities"><div class="audio-control settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-hearts-cover.webp" alt="《紅心大戰》遊戲圖片"></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-card-title data-runtime-localize="off">紅心大戰</h1><p data-card-summary>Avoid penalty cards, follow suit, and decide whether to risk Shooting the Moon.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Round progress</strong><span>Pass three cards, then follow suit and avoid penalty cards.</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section><section class="game-page-info game-page-info-static" aria-label="紅心大戰 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>Hearts</h2><p>四名玩家依序完成十三招。紅心是罰牌，黑桃皇后值 13 點，拿走每張罰牌即可射月。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>經典躲避技巧</strong></div><div class="game-info-fact"><span>類型</span><strong>Card · Family · Strategy</strong></div><div class="game-info-fact"><span>難度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5-15 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>Planning · 專注 · Pattern Recognition</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>紅心大戰</h2><p>四位玩家在十三墩中跟牌。紅心是罰分牌，黑桃皇后值 13 分，收下全部罰分牌就能射月。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>經典避吃墩牌</strong></div><div class="game-info-fact"><span>類型</span><strong>卡牌 · 家庭 · 策略</strong></div><div class="game-info-fact"><span>難度</span><strong>容易到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5–15 分鐘</strong></div><div class="game-info-fact"><span>練習能力</span><strong>規劃 · 專注 · 圖樣辨識</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇要通過的三張牌，然後從手中打出一張合法牌。第一把戲從梅花二開始；獲勝者領先下一墩。</li></ol></div>
-
-
-
-      <div class="game-info-section game-info-parent"><h3>Public play</h3><p>Play Hearts free in your browser with no account or purchase required. Pass three cards, follow suit, and avoid penalty cards across a complete trick-taking round.</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+      <div class="game-info-section"><h3>世界與任務</h3><p>紅心大戰把一副普通牌變成一張風險桌：每一墩都要判斷能否跟牌、甩掉危險牌，或讓別人拿走分數。</p>
+<p>一局共有十三墩。先傳出三張牌，再觀察明牌與各家缺少的花色，決定要穩定壓低分數，還是冒險追求射月。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>四位玩家各拿十三張牌；能跟牌時必須跟出領出的花色，否則可以丟出任意牌。第一墩必須由梅花 2 領出。</p>
+<p>每張紅心值 1 分，黑桃皇后值 13 分。紅心被打出前不能用來領墩，除非領牌者已沒有安全牌。</p>
+<p>贏得一墩的玩家領下一墩。若一位玩家收下全部 26 分罰分，射月會讓他得到 −26 分，其餘玩家各得 26 分。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選取剛好三張牌並按下傳牌 3；交換後，牌會回到你的手牌中。</li><li>輪到你領第一墩時打出梅花 2；其他墩則在可以跟牌時跟出領出的花色。</li><li>無法跟牌時，判斷要丟紅心、黑桃皇后或較安全的牌。紅心未破前不要領紅心，除非已沒有安全領牌。</li><li>完成十三墩後查看結果分數；主畫面可開始新局，遊戲沒有帳號等級或戰役階梯。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>若傳牌後能降低風險，優先傳出高點數紅心與黑桃皇后；保留低牌幫助跟牌。</li><li>記住每家已經無法跟出的花色；缺花色是下一墩甩出罰分牌的重要線索。</li><li>第一墩要特別小心：它固定由梅花 2 開始，過早拿到罰分可能把領牌權交給想控制節奏的玩家。</li><li>只有在手牌真的能收齊全部罰分時才追射月，否則應以降低自己的分數為目標。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>遊戲沒有帳號等級或戰役進度。每局完整的十三墩都是獨立挑戰，重玩價值來自不同發牌、傳牌選擇，以及更準確地讀出其他玩家的手牌。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>瀏覽器版本以本機四人牌局引擎處理傳牌、跟牌合法性、破紅心、罰分、射月與結果；觸控、滑鼠與鍵盤友善的牌面控制遵循同一套規則。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與保存資訊</h3><p>可在瀏覽器免費遊玩紅心大戰，不需要帳號或購買。牌局與結果只保存在這個瀏覽器；清除網站資料或更換瀏覽器可能會移除本機紀錄。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>為什麼第一墩必須由梅花 2 開始？</dt><dd>它讓開局有固定且清楚的起點，之後才由每墩的贏家控制領牌。</dd></div><div><dt>什麼時候可以打紅心？</dt><dd>能跟牌時必須跟牌；紅心破掉前不能領紅心，除非已沒有非罰分牌可領。</dd></div><div><dt>罰分牌值多少分？</dt><dd>每張紅心值 1 分，黑桃皇后值 13 分。</dd></div><div><dt>什麼是射月？</dt><dd>若一位玩家收下全部 26 分罰分，他得 −26 分，其他玩家各得 26 分。</dd></div><div><dt>誰領下一墩？</dt><dd>領出花色中牌面最大的玩家贏得該墩，並領下一墩。</dd></div><div><dt>進度會保存嗎？</dt><dd>目前牌局與結果只保存在這個瀏覽器，沒有帳號或雲端保存。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><p>因為這款遊戲會練習 規劃，也可以試試這些遊戲：</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/go-fish/"><img src="/assets/card-games-go-fish-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>去釣魚</strong><span>詢問對手手上已有的點數；如果對方有，就交出該點數的全部牌，否則請從牌堆釣牌。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/crazy-eights/"><img src="/assets/card-games-crazy-eights-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>瘋狂八人組</strong><span>《瘋狂八人組》是四人出牌型卡牌對戰。</span></span></a></div></div>
     </div>
   </section></main>
 <section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Hearts</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong id="cardGameHandLabel">Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section>
