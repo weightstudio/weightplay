@@ -3448,8 +3448,8 @@ window.WeightPlayGameInfoLocales.es.games["klondike-solitaire"] = {
   ],
   designNote: "El juego usa movimiento basado en transformaciones para que las cartas se desplacen de forma legible y fluida, con actualizaciones compactas que permiten sesiones largas tanto en móvil como en escritorio.",
   parent: "Solitario Klondike es un juego de estrategia con cartas para público general, recomendado a partir de 9 años y para jugar en familia. No requiere cuenta; el progreso y las estadísticas se guardan en este navegador.",
-  related: [],
-  relatedIds: ["klondike-solitaire"],
+  related: ["spider-solitaire", "freecell-solitaire"],
+  relatedIds: ["spider-solitaire", "freecell-solitaire"],
   faq: [
     ["¿Cuántas cartas se usan?", "Solitario Klondike utiliza una baraja estándar de 52 cartas."],
     ["¿Cuál es la condición de victoria?", "Cada base debe completarse desde el As hasta el Rey en orden de palo."],

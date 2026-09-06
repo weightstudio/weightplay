@@ -237,6 +237,7 @@
       difficulty: "Easy to Challenging",
       time: "2-12 minutes",
       skills: ["Planning", "Pattern Recognition", "Focus"],
+      hideSkillsFact: true, showRelatedSkill: false,
       intro: "Klondike Solitaire is a classic 52-card card game where you build four foundations from Ace to King while controlling tableau, stock, and waste.",
       story: ["A standard Klondike layout is dealt each game. Expose facedown cards, maintain descending alternating-color tableau sequences, and clear stable runs toward each foundation.", "Undo, Hint, and Auto-Finish are designed to keep long sessions fluid while preserving full move reversibility and board consistency."],
       systems: ["Tap a card to select it. Drag it, or tap a highlighted destination, to move it.", "Drag or tap legal cards; single cards and valid tableau runs move together with standard Klondike order rules.", "You can switch Draw 1 and Draw 3 modes any time; draw mode is stored locally and affects stock draw behavior.", "Hint only highlights one recommended legal move; it never performs moves automatically.", "Auto-Finish can complete foundation-safe endgame moves when only non-strategic moves remain."],
@@ -247,8 +248,8 @@
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       parent: "Klondike Solitaire is a general-audience card strategy game. No account is required. Progress and stats are stored in this browser.",
-      related: [],
-      relatedIds: ["klondike-solitaire"],
+      related: ["spider-solitaire", "freecell-solitaire"],
+      relatedIds: ["spider-solitaire", "freecell-solitaire"],
       faq: [["How many cards are used?", "Klondike Solitaire uses one standard deck of 52 cards."], ["What is the win condition?", "Each foundation must be completed from Ace to King in suit order."], ["What are Draw 1 and Draw 3?", "Draw 1 reveals one card per Stock draw; Draw 3 reveals three."], ["Can cards be moved one by one?", "Yes, and valid descending alternating-color runs can be moved as a group."], ["How do I know a move is legal?", "Hint highlights one legal target. Use legal tableau or foundation matches only."], ["What does Auto-Finish do?", "It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted."], ["Can I Undo?", "Yes. Undo supports repeated use and fully restores board state."], ["What if no suggested move exists?", "Hint returns 0 moves available when no move is found."]],
     },
     "freecell-solitaire": {
@@ -317,7 +318,7 @@
       faq: [["How many tableau cards are there?", "Seven columns hold five cards each, for 35 tableau cards."], ["Do suits matter?", "No. Only rank matters for the one-above or one-below rule."], ["Does Ace wrap to King?", "No. This strict classic version keeps Ace and King at the ends."], ["When should I draw Stock?", "Draw when no useful exposed tableau card can continue the Waste chain."], ["Can I undo?", "Yes. Undo restores the full prior board and chain."]],
     },
     "yukon-solitaire": {
-      title: "Yukon Solitaire", age: "9+", difficulty: "Medium to Hard", time: "5-20 minutes", skills: ["Planning", "Spatial Reasoning", "Focus"],
+      title: "Yukon Solitaire", age: "9+", difficulty: "Medium to Hard", time: "5-20 minutes", skills: ["Planning", "Spatial Reasoning", "Focus"], hideSkillsFact: true, showRelatedSkill: false,
       intro: "Yukon Solitaire deals the full deck onto seven tableau columns. Build descending red-black sequences, move any eligible face-up group, and complete four suit foundations without a Stock.",
       story: ["Yukon keeps all 52 cards on the table but loosens the group rule: any face-up card can carry every face-up card below it. That freedom creates dramatic reveals, but it also makes early empty columns precious.", "The game rewards exposing facedown cards quickly while choosing when to use a flexible group move and when to preserve a King landing space."],
       systems: ["The tableau uses seven columns with a facedown section and a face-up section. Build descending alternating-color sequences.", "Unlike FreeCell or Klondike, any face-up card can start a move with all face-up cards below it, even if that group is not a complete sequence.", "Empty columns accept only a King or a group beginning with a King. Foundations build upward by suit from Ace to King.", "There is no Stock. Hint highlights one legal move and Undo restores the complete tableau and foundation state."],
@@ -1820,10 +1821,11 @@
     },
     spades: {
       title: "Spades", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
-      gameplay: "Classic Trump Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      gameplay: "Classic Trump Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false,
       intro: "Two teams bid before a trick-taking hand. Spades are always trump, and bags record overtricks.",
       how: ["Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract."],
       noteTitle: "Public play", parent: "Play Spades free in your browser with no account or purchase required. Bid a team contract, follow suit, and use spades as trump across a complete trick-taking hand.",
+      related: ["gin-rummy", "go-fish"], relatedIds: ["gin-rummy", "go-fish"],
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "gin-rummy": {
@@ -16433,8 +16435,9 @@
     noteTitle: "معلومات اللاعب والحفظ",
     hideScoreBands: true,
     parent: "كلوندايك سوليتير لعبة استراتيجية بالبطاقات للجمهور العام، موصى بها لعمر 9 سنوات فأكثر. لا تحتاج إلى حساب؛ يُحفظ التقدم والإحصاءات في هذا المتصفح.",
-    related: [],
-    relatedIds: ["klondike-solitaire"],
+      hideSkillsFact: true, showRelatedSkill: false,
+      related: ["spider-solitaire", "freecell-solitaire"],
+      relatedIds: ["spider-solitaire", "freecell-solitaire"],
     faq: [
       ["كم عدد البطاقات المستخدمة؟", "تستخدم كلوندايك سوليتير مجموعة قياسية واحدة من 52 بطاقة."],
       ["ما شرط الفوز؟", "يجب إكمال كل مجموعة أساس من الآس إلى الملك بترتيب النوع نفسه."],

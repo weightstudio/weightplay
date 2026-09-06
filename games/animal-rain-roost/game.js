@@ -45,11 +45,13 @@
   const state = { locale: "en", sound: true, round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
   const canvas = $("rainCanvas");
   const ctx = canvas.getContext("2d");
-  const art = { background: new Image(), nori: new Image() };
+  const art = { background: new Image(), nori: new Image(), weather: new Image() };
   art.background.src = "/games/animal-rain-roost/assets/animal-rain-roost-background.png";
   art.nori.src = "/games/animal-rain-roost/assets/animal-rain-roost-nori.png";
+  art.weather.src = "/games/animal-rain-roost/assets/animal-rain-roost-weather-atlas-v2.png";
   art.background.addEventListener("load", () => draw());
   art.nori.addEventListener("load", () => draw());
+  art.weather.addEventListener("load", () => draw());
   const storage = { get(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { localStorage.setItem(key, value); } catch (_) {} } };
   const routeMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
 
@@ -166,6 +168,17 @@
     ctx.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
     return true;
   }
+  function drawWeatherSprite(object, x, y) {
+    if (!art.weather.complete || !art.weather.naturalWidth) return false;
+    const cellWidth = art.weather.naturalWidth / 3;
+    const cellHeight = art.weather.naturalHeight / 2;
+    const cell = Math.min(2, Math.floor(object.x * 3));
+    const sourceX = cell * cellWidth;
+    const sourceY = object.type === "leaf" ? cellHeight : 0;
+    const size = object.type === "leaf" ? 72 : 58;
+    ctx.drawImage(art.weather, sourceX, sourceY, cellWidth, cellHeight, x - size / 2, y - size / 2, size, size);
+    return true;
+  }
   function draw() {
     const rect = canvas.getBoundingClientRect(); const width = rect.width || 1; const height = rect.height || 1;
     ctx.clearRect(0, 0, width, height);
@@ -173,7 +186,7 @@
     if (!hasBackground) { const sky = ctx.createLinearGradient(0, 0, 0, height); sky.addColorStop(0, "#9ed5ee"); sky.addColorStop(.66, "#d9f2ec"); sky.addColorStop(1, "#8bc19c"); ctx.fillStyle = sky; ctx.fillRect(0, 0, width, height); }
     ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.beginPath(); ctx.arc(width * .2, height * .17, 34, 0, Math.PI * 2); ctx.arc(width * .25, height * .14, 45, 0, Math.PI * 2); ctx.arc(width * .31, height * .18, 32, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = "rgba(37,111,100,.32)"; ctx.fillRect(0, height - 30, width, 30);
-    state.objects.forEach((object) => { if (!object.visible || object.done) return; const x = object.x * width; const y = object.y; if (object.type === "rain") { ctx.strokeStyle = "#1d8fba"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(x, y - 13); ctx.lineTo(x - 3, y + 10); ctx.stroke(); ctx.fillStyle = "#d7f8ff"; ctx.beginPath(); ctx.arc(x - 3, y + 10, 4, 0, Math.PI * 2); ctx.fill(); } else { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(state.elapsed * 2 + x) * .3); ctx.fillStyle = "#d18a4e"; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#a86439"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); } });
+    state.objects.forEach((object) => { if (!object.visible || object.done) return; const x = object.x * width; const y = object.y; if (drawWeatherSprite(object, x, y)) return; if (object.type === "rain") { ctx.strokeStyle = "#1d8fba"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(x, y - 13); ctx.lineTo(x - 3, y + 10); ctx.stroke(); ctx.fillStyle = "#d7f8ff"; ctx.beginPath(); ctx.arc(x - 3, y + 10, 4, 0, Math.PI * 2); ctx.fill(); } else { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(state.elapsed * 2 + x) * .3); ctx.fillStyle = "#d18a4e"; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#a86439"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); } });
     const basketX = state.basket * width; const basketWidth = Math.min(112, Math.max(74, width * .16)); const basketY = height - 50;
     if (art.nori.complete && art.nori.naturalWidth) {
       const noriWidth = Math.min(156, Math.max(118, width * .24)); const noriHeight = noriWidth * art.nori.naturalHeight / art.nori.naturalWidth;
