@@ -58,10 +58,15 @@
   function announce(key, good = false) { liveStatusKey = key; liveStatusGood = Boolean(good); $("battleStatus").textContent = t(key); $("battleStatus").style.color = good ? "#ffe59b" : "#fff"; }
   function setSound(next) { sound = Boolean(next); document.querySelectorAll("[data-sound-toggle]").forEach((button) => { button.textContent = t(sound ? "soundOn" : "soundOff"); button.setAttribute("aria-pressed", String(sound)); }); }
   function beep(frequency) { if (!sound) return; try { const audio = new AudioContext(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = frequency; gain.gain.value = .035; oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + .07); oscillator.addEventListener("ended", () => audio.close(), { once:true }); } catch { /* audio is optional */ } }
+  function renderResult() {
+    if ($("resultCard").hidden) return;
+    $("resultTitle").textContent = t("completeTitle");
+    $("resultBody").textContent = t("completeBody", { n: combo });
+  }
   function applyCopy() {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"; document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); $("settingsButton").setAttribute("aria-label", a11y("settings")); document.querySelector("[data-wp-return=\"main\"]")?.setAttribute("aria-label", a11y("shellReturn")); $("battleBack").setAttribute("aria-label", t("back")); $("relayField").setAttribute("aria-label", a11y("beatStations")); setSound(sound); renderMainProgress(); renderBattle(); if (!$("battleScreen").hidden) announce(liveStatusKey, liveStatusGood);
+    $("localeSelect").value = locale; $("localeSelect").setAttribute("aria-label", t("language")); $("settingsButton").setAttribute("aria-label", a11y("settings")); document.querySelector("[data-wp-return=\"main\"]")?.setAttribute("aria-label", a11y("shellReturn")); $("battleBack").setAttribute("aria-label", t("back")); $("relayField").setAttribute("aria-label", a11y("beatStations")); setSound(sound); renderMainProgress(); renderBattle(); renderResult(); if (!$("battleScreen").hidden) announce(liveStatusKey, liveStatusGood);
   }
   function renderMainProgress() { $("mainProgress").textContent = best ? t("best", { n: best }) : t("best", { n: 0 }); }
   function renderBattle() {
@@ -72,7 +77,7 @@
   }
   function showMain(focus = true) { clearInterval(ticker); $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; renderMainProgress(); if (focus) $("startButton").focus(); }
   function startRelay() { if (!ready) return; station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; renderBattle(); announce("timingTip"); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start"); }
-  function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultTitle").textContent = t("completeTitle"); $("resultBody").textContent = t("completeBody", { n: combo }); $("resultCard").hidden = false; $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
+  function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultCard").hidden = false; renderResult(); $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
   function tap(index) {
     if ($("battleScreen").hidden || station >= 4) return;
     if (index !== station) { combo = 0; announce("wrong"); beep(170); renderBattle(); return; }

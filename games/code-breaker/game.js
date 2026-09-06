@@ -58,4 +58,5 @@ window.WPClassicLogic?.mount("code-breaker");
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", syncGuidePanel, { once: true });
   else syncGuidePanel();
+  window.addEventListener("wonder:locale-change", syncGuidePanel);
 })();

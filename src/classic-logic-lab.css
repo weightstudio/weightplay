@@ -393,6 +393,10 @@ body[data-logic-game="minefield-logic"] .logic-battle-wrap { min-height: calc(10
     font-size: 11px;
     line-height: 1;
   }
+  body[data-logic-game="code-breaker"] .logic-action-row button {
+    min-height: 44px;
+    padding-block: 6px;
+  }
   .logic-hanoi-board { gap: 4px; }
   .logic-tower { min-height: 130px; padding: 5px 3px 7px; }
   .logic-reversi-board { grid-template-columns: repeat(8, minmax(20px, 45px)); gap: 2px; padding: 4px; }

@@ -120,10 +120,10 @@
     "war": [".battle-canvas", 390, 788, 760, 334],
     "speed": [".battle-canvas", 390, 788, 760, 334],
     "old-maid": [".battle-canvas", 390, 788, 760, 334],
-    // Code Breaker's compact landscape board needs the wide logical envelope;
-    // the default portrait canvas otherwise scales its touch controls below
-    // an actionable size at 844x390.
-    "code-breaker": ["#logicBattle", 390, 788, 760, 334],
+    // Code Breaker's compact landscape board needs a slightly taller wide
+    // envelope so its 44px utility controls retain a usable physical target
+    // at 844x390 instead of inheriting the compressed default floor.
+    "code-breaker": ["#logicBattle", 390, 788, 760, 350],
     // Tic-Tac-Toe owns a responsive two-column Battle composition in compact
     // landscape. Give its permanent Battle shell the wide envelope so the
     // portrait fallback cannot shrink its controls and 3x3 board below touch
