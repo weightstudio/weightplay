@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-orbit-orchard/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-orbit-orchard/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-orbit-orchard/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-orbit-orchard/" />
@@ -20,9 +19,9 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-orbit-orchard/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orbit-orchard/" />
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v1">
+  <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-id" content="animal-orbit-orchard"><meta name="weightplay-game-version" content="v3"><meta name="weightplay-interface-version" content="6">
   <title>軌道果園 | WeightPlay</title><meta name="description" content="調整月光軌道，在種子抵達相符果園信標時放手。" />
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1"><script src="locales.js?v=20260831-orbit-orchard-v1" defer></script><script src="game.js?v=20260831-orbit-orchard-v1" defer></script>
+  <link rel="stylesheet" href="style.css?v=20260906-orbit-orchard-v3"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260906-orbit-orchard-v3"><script src="locales.js?v=20260906-orbit-orchard-v3" defer></script><script src="game.js?v=20260906-orbit-orchard-v3" defer></script>
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="軌道果園 | WeightPlay" />
@@ -38,6 +37,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "軌道果園",
+  "alternateName": "Orbit Orchard",
   "url": "https://weightplay.com/zh-tw/games/animal-orbit-orchard/",
   "image": "https://weightplay.com/games/animal-orbit-orchard/assets/animal-orbit-orchard-cover.svg",
   "description": "調整月光軌道，在種子抵達相符果園信標時放手。",
@@ -54,52 +54,62 @@
     "Timing",
     "空間推理",
     "Family",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 6
-  },
-  "alternateName": "Orbit Orchard"
+  }
 }
     </script>
   </head>
-<body data-audience="general" data-wp-game-id="animal-orbit-orchard" data-wp-game-version="v1" data-screen="main">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">Waking the moon orchard…</strong><i></i></div></section>
-  <main id="app" class="app-shell" hidden>
-    <section id="mainScreen" class="screen" data-screen="main" aria-labelledby="mainTitle">
-      <header class="topbar wp-main-shell-header"><a class="return-link wp-shell-return" href="../../index.html" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="34" height="34"></a><strong class="header-title" data-copy="title">Orbit Orchard</strong><button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button><div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden><span data-copy="settings">Settings</span><button id="soundBtn" class="setting-row wp-shell-sound-row" data-sound-toggle type="button" data-copy="soundOn">Sound: On</button><label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></header>
-      <section class="hero-grid"><div class="hero-copy"><p class="kicker" data-copy="kicker">A calm moonlit timing puzzle</p><h1 id="mainTitle" data-copy="title">軌道果園</h1><p class="intro main-summary" data-copy="intro">Tune a seed’s orbit, then release it at the matching orchard beacon.</p><p class="facts" data-wp-main-progress data-copy="facts">Three short orbits · no timer · calm retry</p><button id="startBtn" class="primary-btn" type="button" data-copy="start">Start orbiting</button></div><img class="cover" src="assets/animal-orbit-orchard-cover.svg" alt="《軌道果園》遊戲圖片" aria-hidden="true" width="800" height="800"></section>
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-orbit-orchard" data-wp-game-version="v3" data-wp-interface-version="6" data-screen="main">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><span aria-hidden="true">✦</span><strong data-copy="loading">正在喚醒月光果園……</strong><i></i></div></section>
+  <div id="app" class="app-shell" hidden>
+    <main id="mainScreen" class="screen main-screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
+      <div class="main-canvas" data-wp-logical-main-canvas>
+        <header class="topbar wp-main-shell-header">
+          <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" data-copy-aria-label="home" aria-label="回到首頁"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="34" height="34"></a>
+          <strong class="header-title wp-shell-main-title" data-copy="title">軌道果園</strong>
+          <button id="settingsBtn" class="icon-btn wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="settingsPanel" data-copy-aria-label="settings" aria-label="設定">⚙</button>
+        </header>
+        <section class="hero-card">
+          <img class="cover main-poster" src="assets/animal-orbit-orchard-cover.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
+          <div class="hero-copy">
+            <p class="kicker eyebrow" data-copy="kicker">平靜的月光時機益智</p>
+            <h1 id="mainTitle" data-copy="title">軌道果園</h1>
+            <p class="intro main-summary wp-standard-main-summary" data-copy="intro">調整種子的軌道，在它抵達相符果園信標時放手。</p>
+            <p class="facts progress wp-standard-main-progress" data-wp-main-progress role="status" aria-live="polite" data-copy="facts">三條短軌道・沒有計時・平靜重試</p>
+            <div class="hero-actions"><button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-copy="start">開始繞行</button></div>
+          </div>
+        </section>
+        <section id="settingsPanel" class="settings-panel wp-shell-settings-popover" role="dialog" hidden aria-labelledby="settingsHeading">
+          <div class="settings-head"><h2 id="settingsHeading" data-copy="settings">設定</h2><button id="closeSettingsBtn" class="text-btn" type="button" data-copy="close">很接近！種子抵達果園。</button></div>
+          <label class="setting-row"><span data-copy="language">語言</span><select id="localeSelect" data-copy-aria-label="language" aria-label="語言"></select></label>
+          <button id="soundBtn" class="secondary-btn setting-sound" type="button" data-sound-toggle aria-pressed="true" data-copy="soundOn">音效：開</button>
+        </section>
+      </div>
+    </main>
+    <section id="guideSection" class="guide-card game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" data-copy-aria-label="guideAria" aria-labelledby="guideHeading" aria-label="軌道果園遊戲資訊">
+      <div class="game-info-hero">
+        <div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay 原創遊戲指南</span><h2 id="guideHeading" data-copy="guideTitle">玩法說明</h2><p data-copy="guideIntro">調整每顆種子的軌道，在標記對準果園信標時放手。</p></div>
+        <div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">玩法</span><strong data-copy="guideGameplayValue">軌道時機益智</strong></div><div class="game-info-fact"><span data-copy="guideGenre">類型</span><strong data-copy="guideGenreValue">益智 · 時機 · 空間推理 · 家庭 · 動物</strong></div></div>
+      </div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-copy="guideHowTitle">玩法說明</h3><ol><li><strong data-copy="guideOneTitle">1. 調整圓環</strong><span data-copy="guideOne">移動轉盤，讓種子指向發光信標。</span></li><li><strong data-copy="guideTwoTitle">2. 瞄準放手</strong><span data-copy="guideTwo">軌道標記到達信標角度時，點選放手。</span></li><li><strong data-copy="guideThreeTitle">3. 輕鬆再試</strong><span data-copy="guideThree">錯過也能安全重試，沒有計時或生命損失。</span></li></ol></article>
+        <article class="game-info-section"><h3 data-copy="guideResultsTitle">結果與保存</h3><p data-copy="guideResults">三條短軌道組成平靜的一局。最佳放手次數只保存在這個瀏覽器。</p></article>
+        <article class="game-info-section"><h3 data-copy="guideTipsTitle">實用提示</h3><p data-copy="guideTips">先讀取目標角度，接近時一次調整一度。</p></article>
+        <article class="game-info-section"><h3 data-copy="faqTitle">常見問題</h3><dl><div><dt data-copy="faqProgressQuestion">進度會保存嗎？</dt><dd data-copy="faqProgressAnswer">最佳放手次數只保存在這個瀏覽器。</dd></div></dl></article>
+      </div>
     </section>
-    <section class="guide-card" data-wp-game-guide aria-labelledby="guideTitle"><h2 id="guideTitle" data-copy="guideTitle">How to play</h2><div class="guide-grid"><article><b data-copy="guideOneTitle">1. Tune the ring</b><p data-copy="guideOne">Move the dial until the seed points toward the glowing beacon.</p></article><article><b data-copy="guideTwoTitle">2. Release on target</b><p data-copy="guideTwo">Tap Release when the orbit marker reaches the beacon angle.</p></article><article><b data-copy="guideThreeTitle">3. Try again calmly</b><p data-copy="guideThree">A miss is safe to retry. There is no timer or life loss.</p></article></div></section>
-    <section id="stageScreen" class="screen panel" data-screen="stage" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-orbit-orchard-cover.svg')" hidden aria-labelledby="stageTitle"><div class="logical-shell" data-wp-logical-stage-canvas data-wp-canvas-max-width="920"><header class="panel-head"><button id="stageBackBtn" class="back-btn back-button" data-wp-return="stage" type="button" data-copy="back">Back</button><h2 id="stageTitle" data-copy="chooseOrbit">Choose an orbit</h2><button class="icon-btn stage-utility" type="button" data-wp-settings aria-label="Settings">⚙</button></header><div id="orbitList" class="orbit-list" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Orbit sections"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="chooseOrbit">Choose an orbit</button><span aria-hidden="true"></span></nav></div><div class="general-reserve stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
-    <section id="battleScreen" class="screen panel" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-return-only hidden aria-labelledby="battleTitle"><div class="logical-shell" data-wp-canvas-max-width="920"><header class="panel-head"><button id="battleBackBtn" class="back-btn back-button" data-wp-return="battle" type="button" data-copy="back">Back</button><div><h2 id="battleTitle" data-copy="title">Orbit Orchard</h2><p id="roundLabel" class="round-label"></p></div><span class="release-pill"><span data-copy="release">Releases</span> <b id="releaseCount">0</b></span></header><div class="battle-content"><p id="targetLabel" class="target-label"></p><div class="orbit-dial" id="orbitDial" role="img" aria-label="Orbit dial"><div class="beacon" id="beacon"><span aria-hidden="true">✦</span></div><div class="seed" id="seed"><span aria-hidden="true">●</span></div><div class="dial-core" aria-hidden="true">☾</div></div><label class="dial-label" for="angleInput" data-copy="dial">Orbit dial</label><input id="angleInput" type="range" min="0" max="359" value="0" step="1"><p id="angleReadout" class="angle-readout" aria-live="polite">0°</p><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="releaseBtn" class="primary-btn" data-wp-primary-action type="button" data-copy="release">Release seed</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">Reset dial</button><button id="mapBtn" class="text-btn" type="button" data-copy="map">Orbit map</button></div></div></div><div class="general-reserve battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
-    <section id="resultScreen" class="screen panel" data-screen="result" hidden aria-labelledby="resultTitle"><div class="result-card"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultTitle" data-copy="finishTitle">The orchard is glowing</h2><p id="resultText"></p><p class="best-line"><span data-copy="best">Best releases</span>: <strong id="bestValue"></strong></p><div class="result-actions"><button id="replayBtn" class="primary-btn" type="button" data-copy="replay">Orbit again</button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">Orbit map</button><button id="homeBtn" class="text-btn" type="button" data-copy="home">Return home</button></div></div></section>
-    <footer data-copy="footer">Internal prototype · planned Coming Soon · no public playable route</footer>
-  </main>
-<section class="game-page-info game-page-info-static" aria-label="軌道果園 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>軌道果園</h2><p>調整月光軌道，在種子抵達相符果園信標時放手。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>軌道時機益智</strong></div><div class="game-info-fact"><span>類型</span><strong>Puzzle · Timing · 空間推理 · Family · Animal</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
-    </div>
-  </section>
+    <section id="stageScreen" class="screen panel" data-screen="stage" data-wp-standard-stage-screen style="--wp-stage-art:url('assets/animal-orbit-orchard-background.png')" hidden aria-labelledby="stageTitle"><div class="logical-shell" data-wp-logical-stage-canvas data-wp-canvas-max-width="920"><header class="panel-head"><button id="stageBackBtn" class="back-btn back-button" data-wp-return="stage" type="button" data-copy="back">返回</button><h2 id="stageTitle" data-copy="chooseOrbit">選擇軌道</h2><button class="icon-btn stage-utility" type="button" data-wp-settings data-copy-aria-label="settings" aria-label="設定">⚙</button></header><div id="orbitList" class="orbit-list" data-wp-stage-rail></div><nav class="stage-tabs" data-copy-aria-label="map" aria-label="軌道地圖"><span aria-hidden="true"></span><button type="button" aria-current="page" data-copy="chooseOrbit">選擇軌道</button><span aria-hidden="true"></span></nav></div><div class="general-reserve stage-ad-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div></section>
+    <section id="battleScreen" class="screen panel" data-screen="battle" data-wp-logical-battle-canvas data-wp-battle-return-only hidden aria-labelledby="battleTitle"><div class="logical-shell" data-wp-canvas-max-width="920"><header class="panel-head"><button id="battleBackBtn" class="back-btn back-button" data-wp-return="battle" type="button" data-copy="back">返回</button><div><h2 id="battleTitle" data-copy="title">軌道果園</h2><p id="roundLabel" class="round-label"></p></div><span class="release-pill"><span data-copy="release">放手發射種子</span> <b id="releaseCount">0</b></span></header><div class="battle-content"><p id="targetLabel" class="target-label"></p><div class="orbit-dial" id="orbitDial" role="img" data-copy-aria-label="dial" aria-label="軌道轉盤"><div class="beacon" id="beacon"><span aria-hidden="true">✦</span></div><div class="seed" id="seed"><span aria-hidden="true">●</span></div><div class="dial-core" aria-hidden="true">☾</div></div><label class="dial-label" for="angleInput" data-copy="dial">軌道轉盤</label><input id="angleInput" type="range" min="0" max="359" value="0" step="1"><p id="angleReadout" class="angle-readout" aria-live="polite">0°</p><p id="battleStatus" class="battle-status" role="status" aria-live="polite"></p><div class="battle-actions"><button id="releaseBtn" class="primary-btn" data-wp-primary-action type="button" data-copy="release">放手發射種子</button><button id="clearBtn" class="secondary-btn" type="button" data-copy="clear">重設轉盤</button><button id="mapBtn" class="text-btn" type="button" data-copy="map">軌道地圖</button></div></div></div><div class="general-reserve battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section>
+    <section id="resultScreen" class="screen panel" data-screen="result" hidden aria-labelledby="resultTitle"><div class="result-card"><img class="result-guide" src="assets/animal-orbit-orchard-guide.png" alt="" aria-hidden="true" width="1024" height="1536"><span class="result-spark" aria-hidden="true">✦</span><h2 id="resultTitle" data-copy="finishTitle">果園亮起來了</h2><p id="resultText"></p><p class="best-line"><span data-copy="best">最佳放手次數</span>: <strong id="bestValue"></strong></p><div class="result-actions"><button id="replayBtn" class="primary-btn" type="button" data-copy="replay">再繞一次</button><button id="resultMapBtn" class="secondary-btn" type="button" data-copy="map">軌道地圖</button><button id="homeBtn" class="text-btn" type="button" data-copy="home">回到首頁</button></div></div></section>
+    <footer data-copy="footer">內部原型・規劃中・尚未公開遊玩</footer>
+  </div>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body>

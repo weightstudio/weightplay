@@ -1955,6 +1955,26 @@ const essentialLobbyCopy = {
     };
   });
 
+  // Lobby pagination is localized UI, not per-game copy or a catalog limit.
+  const catalogPaginationCopy = {
+    en: ["Show more games", "Showing {shown} of {total} games"],
+    "zh-Hant": ["顯示更多遊戲", "已顯示 {shown}／{total} 款遊戲"],
+    "zh-Hans": ["显示更多游戏", "已显示 {shown}／{total} 款游戏"],
+    ja: ["もっとゲームを表示", "{total} 件中 {shown} 件を表示"],
+    ko: ["게임 더 보기", "전체 {total}개 중 {shown}개 표시"],
+    es: ["Mostrar más juegos", "Mostrando {shown} de {total} juegos"],
+    "pt-BR": ["Mostrar mais jogos", "Exibindo {shown} de {total} jogos"],
+    fr: ["Afficher plus de jeux", "{shown} jeux affichés sur {total}"],
+    de: ["Weitere Spiele anzeigen", "{shown} von {total} Spielen angezeigt"],
+    it: ["Mostra altri giochi", "Visualizzati {shown} giochi su {total}"],
+    ru: ["Показать ещё игры", "Показано игр: {shown} из {total}"],
+    hi: ["और गेम दिखाएँ", "{total} में से {shown} गेम दिखाए गए"],
+    ar: ["عرض المزيد من الألعاب", "عرض {shown} من أصل {total} لعبة"],
+  };
+  Object.entries(catalogPaginationCopy).forEach(([locale, [more, showing]]) => {
+    dictionaries[locale] = { ...(dictionaries[locale] || {}), "catalog.show_more": more, "catalog.showing": showing };
+  });
+
   function simplifyChineseText(value) {
     if (typeof value !== "string" || !value) return value;
     let output = value;

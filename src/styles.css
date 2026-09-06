@@ -8662,3 +8662,37 @@ select,
     transition: none;
   }
 }
+/* Incremental catalog: real hidden controls, no reserved empty button row. */
+.catalog-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 12px;
+  text-align: center;
+  color: inherit;
+}
+.general-lobby-page #catalogPagination { order: 9; }
+.kids-lobby-page #catalogPagination { order: 11; }
+.catalog-pagination[hidden], .catalog-pagination button[hidden] { display: none; }
+.catalog-pagination p { margin: 0; overflow-wrap: anywhere; }
+.catalog-pagination button {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 12px 24px;
+  border: 1px solid #d9a940;
+  border-radius: 12px;
+  background: #ffd36b;
+  color: #251b0b;
+  font: inherit;
+  font-weight: 700;
+  white-space: normal;
+  cursor: pointer;
+}
+.catalog-pagination button:focus-visible { outline: 3px solid #4ba5f5; outline-offset: 3px; }
+#catalogDirectory { padding: 12px; color: inherit; }
+.general-lobby-page #catalogDirectory { order: 10; }
+.kids-lobby-page #catalogDirectory { order: 12; }
+#catalogDirectory summary { min-height: 44px; cursor: pointer; }
+#catalogDirectory nav { display: flex; flex-wrap: wrap; gap: 12px 20px; }
+#catalogDirectory a { color: inherit; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
