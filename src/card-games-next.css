@@ -205,6 +205,56 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-stat { min-width: 62px; padding-inline: 7px; }
   .card-game-status { min-width: 74px; font-size: 11px; }
 }
+/* Arabic Spades keeps the compact-portrait Battle controls inside the logical
+   canvas. RTL flex centering can otherwise anchor an over-wide thirteen-card
+   hand and fourteen-button bid row past the right edge of a 390px viewport. */
+@media (max-width: 560px) and (orientation: portrait) {
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-game-board,
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-game-player,
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-table-center,
+  html[dir="rtl"] body[data-wp-card-game="spades"] #cardGameCenter {
+    min-width: 0;
+    max-width: 100%;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-table-center,
+  html[dir="rtl"] body[data-wp-card-game="spades"] #cardGameCenter {
+    overflow-x: hidden;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] #cardGameCenter {
+    width: 100%;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] #cardGameCenter > .card-choice-panel {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 4px;
+    padding: 2px;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] #cardGameCenter > .card-choice-panel button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding-inline: 2px;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-hand {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    gap: 3px;
+  }
+  html[dir="rtl"] body[data-wp-card-game="spades"] .card-hand .playing-card {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 0;
+    box-sizing: border-box;
+    font-size: 12px;
+  }
+}
 @media (orientation: landscape) and (max-height: 560px) {
   .card-table-ui { grid-template-rows: auto minmax(0, 1fr) auto; }
   .card-game-board { grid-template-columns: minmax(135px, .34fr) minmax(0, 1fr) minmax(160px, .42fr); grid-template-rows: 1fr; align-items: stretch; overflow: hidden; }

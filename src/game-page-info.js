@@ -151,7 +151,7 @@
       age: "9+",
       difficulty: "Easy to Challenging",
       time: "2-10 minutes",
-      skills: ["Planning", "Spatial Reasoning", "Focus"],
+      skills: ["Planning", "Spatial Reasoning", "Focus"], hideSkillsFact: true, showRelatedSkill: false,
       relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
       intro: "Block Blast is an original 8 by 8 spatial puzzle with 30 authored terrain missions and an Endless high-score mode. Place every fixed shape from the current set, clear complete rows or columns, and protect enough open space for the shapes still waiting in the tray.",
       story: ["The Campaign is organized as thirty compact puzzle missions rather than thirty copies of one empty board. Dirt, ice, stone, gems, locks, color targets, and set limits combine into different planning problems.", "Endless mode removes the mission target and keeps dealing three-shape sets. Its balanced shape pool includes small connectors, medium corners, long five-cell pieces, larger rectangles, and occasional 3 by 3 squares so a careless board eventually runs out of legal space."],
@@ -160,7 +160,7 @@
       strategyTips: ["Inspect all three shapes before committing the first placement.", "Preserve several open regions instead of perfectly filling one corner.", "Build intersecting row and column clears when the next shapes make that safe.", "Do not plan around receiving only tiny pieces; long shapes and occasional 3 by 3 squares are deliberately part of Endless mode.", "In terrain missions, distinguish cells that must be cleared from stone cells that can never be occupied."],
       progression: ["Stages 1-5 introduce line goals and clean board planning.", "Later chapters layer dirt, ice, stone, gems, locks, color targets, mixed objectives, and stricter set limits.", "Endless difficulty grows from the board state created by the player's choices, while the shape distribution guarantees regular large-piece pressure without dealing only hard shapes."],
       designNote: "The score and effects are tied to actual line clears. Clear beams stay centered on the completed row or column, fragments fall from cleared cells, and the white score gain appears over the cleared area without replaying when the player immediately selects the next tray piece.",
-      parent: "Block Blast is a general-audience browser puzzle recommended for ages 9+ and family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
+      parent: "Block Blast is a general-audience browser puzzle for family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress.",
       faq: [["Can shapes rotate?", "No. Each tray shape keeps its displayed orientation."], ["When do points increase?", "Only completed rows or columns award points; simply placing a shape does not."], ["How many stages are included?", "There are 30 authored Campaign missions plus an unlimited Endless run."], ["What do ice and stone do?", "Ice remains visible beneath a placed block until its line clears; stone cannot be occupied."], ["Why did the run end?", "The run ends when none of the unused shapes in the current tray has a legal placement."], ["Is progress saved?", "Campaign unlocks and preferences are stored locally in this browser."]],
     },
     "arrow-escape": {
@@ -1828,7 +1828,7 @@
     },
     "gin-rummy": {
       title: "Gin Rummy", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
-      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, relatedIds: ["spider-solitaire", "block-blast"],
+      gameplay: "Classic Meld Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false, relatedIds: ["spider-solitaire", "block-blast"],
       intro: "Build sets of the same rank and suited runs while reducing unmatched Deadwood. Choose each draw carefully, track the discard pile, and decide when a low score is safer than waiting for Gin.",
       how: ["Draw from the stock or discard, then discard one card. Knock with a low Deadwood hand or reach Gin."],
       noteTitle: "Player guidance", parent: "This free public General game runs in the browser. Progress is saved only on this device, so clearing site data or switching browsers may start a new round.",
@@ -3501,7 +3501,7 @@
       "تنمو صعوبة الوضع اللانهائي من حالة اللوحة التي تصنعها اختيارات اللاعب، بينما يضمن توزيع الأشكال ضغطاً منتظماً من القطع الكبيرة دون توزيع القطع الصعبة فقط.",
     ],
     designNote: "ترتبط النتيجة والتأثيرات بمسح الخط الفعلي. تبقى حزم المسح متمركزة على الصف أو العمود المكتمل، وتسقط الأجزاء من الخلايا الممسوحة، وتظهر زيادة النتيجة البيضاء فوق المنطقة الممسوحة من دون إعادة تشغيلها عندما يختار اللاعب قطعة الدرج التالية فوراً.",
-    parent: "تفجير المكعبات لعبة ألغاز متصفح للجمهور العام، موصى بها للأعمار من 9 سنوات فما فوق وللعب العائلي. لا يلزم حساب أو شراء. تُخزن فتوح الحملة والتفضيلات في هذا المتصفح فقط، لذلك قد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى إزالة التقدم المحلي.",
+    parent: "تفجير المكعبات لعبة ألغاز متصفح للجمهور العام وللعب العائلي. لا يلزم حساب أو شراء. تُخزن فتوح الحملة والتفضيلات في هذا المتصفح فقط، لذلك قد يؤدي مسح بيانات الموقع أو تغيير الجهاز إلى إزالة التقدم المحلي.",
     faq: [
       ["هل يمكن تدوير الأشكال؟", "لا. يحافظ كل شكل في الدرج على اتجاهه المعروض."],
       ["متى تزيد النقاط؟", "تمنح الصفوف أو الأعمدة المكتملة فقط نقاطاً؛ أما وضع الشكل وحده فلا يفعل ذلك."],
@@ -15393,7 +15393,7 @@
     strategyTips: ["放下第一個形狀前，先檢查整組三個形狀。", "保留數個開放區域，不要把單一角落填得過滿。", "當後續形狀允許時，規劃互相交會的橫列與直行消除。", "不要假設只會抽到小方塊；長條與偶爾出現的 3×3 方塊刻意構成無限模式的空間壓力。", "在地形任務中，要分辨必須消除的格子與永遠不能放置的石頭格。"],
     progression: ["第 1 至 5 關介紹行列目標與乾淨棋盤的空間規劃。", "後續章節逐步加入泥土、冰塊、石頭、寶石、鎖定格、顏色目標、混合任務與更嚴格的組數限制。", "無限模式的難度由玩家留下的棋盤狀態成長；平衡的形狀分布會定期帶來大型方塊壓力，但不會只提供困難形狀。"],
     designNote: "分數與效果只對應真正完成的行列消除。消除光束保持在完成的橫列或直行中央，碎片從被消除的格子落下，白色加分提示顯示在消除區域，而且玩家立即選取下一個形狀時不會重播。",
-    parent: "《方塊爆破》是適合 9 歲以上與親子遊玩的普通大廳瀏覽器益智遊戲。不需要帳號；戰役解鎖與偏好只儲存在這個瀏覽器，清除網站資料或更換裝置可能移除本機進度。",
+    parent: "《方塊爆破》是適合親子遊玩的普通大廳瀏覽器益智遊戲。不需要帳號；戰役解鎖與偏好只儲存在這個瀏覽器，清除網站資料或更換裝置可能移除本機進度。",
     faq: [["形狀可以旋轉嗎？", "不可以。每個托盤形狀都維持顯示時的方向。"], ["什麼時候會增加分數？", "只有完成橫列或直行才會得分；單純放置形狀不會加分。"], ["共有多少關？", "包含 30 個精心設計的戰役任務，以及沒有固定終點的無限模式。"], ["冰塊與石頭有什麼作用？", "冰塊會留在方塊下方，直到該行列消除；石頭不能被占用。"], ["為什麼本局結束？", "當目前托盤中所有未使用形狀都沒有合法位置時，本局就會結束。"], ["進度會儲存嗎？", "戰役解鎖與偏好會儲存在這個瀏覽器。"]],
   };
   localizedGameplayProfiles["zh-Hant"]["block-blast"] = { gameplay: "8×8 方塊配置益智", genre: ["益智", "策略", "空間推理"] };
@@ -15413,7 +15413,7 @@
     strategyTips: ["放下第一个形状前，先检查整组三个形状。", "保留数个开放区域，不要把单一角落填得过满。", "当后续形状允许时，规划互相交会的横列与直行消除。", "不要假设只会抽到小方块；长条与偶尔出现的 3×3 方块刻意构成无限模式的空间压力。", "在地形任务中，要分辨必须消除的格子与永远不能放置的石头格。"],
     progression: ["第 1 至 5 关介绍行列目标与干净棋盘的空间规划。", "后续章节逐步加入泥土、冰块、石头、宝石、锁定格、颜色目标、混合任务与更严格的组数限制。", "无限模式的难度由玩家留下的棋盘状态成长；平衡的形状分布会定期带来大型方块压力，但不会只提供困难形状。"],
     designNote: "分数与效果只对应真正完成的行列消除。消除光束保持在完成的横列或直行中央，碎片从被消除的格子落下，白色加分提示显示在消除区域，而且玩家立即选取下一个形状时不会重播。",
-    parent: "《方块爆破》是适合 9 岁以上与亲子游玩的普通大厅浏览器益智游戏。不需要账号；战役解锁与偏好只储存在这个浏览器，清除网站数据或更换设备可能移除本机进度。",
+    parent: "《方块爆破》是适合亲子游玩的普通大厅浏览器益智游戏。不需要账号；战役解锁与偏好只储存在这个浏览器，清除网站数据或更换设备可能移除本机进度。",
     faq: [["形状可以旋转吗？", "不可以。每个托盘形状都维持显示时的方向。"], ["什么时候会增加分数？", "只有完成横列或直行才会得分；单纯放置形状不会加分。"], ["共有多少关？", "包含 30 个精心设计的战役任务，以及没有固定终点的无限模式。"], ["冰块与石头有什么作用？", "冰块会留在方块下方，直到该行列消除；石头不能被占用。"], ["为什么本局结束？", "当目前托盘中所有未使用形状都没有合法位置时，本局就会结束。"], ["进度会储存吗？", "战役解锁与偏好会储存在这个浏览器。"]],
   };
   localizedGameplayProfiles["zh-Hans"] ||= {};

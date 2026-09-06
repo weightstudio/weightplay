@@ -259,8 +259,15 @@
     }
 
     const viewport = window.visualViewport;
-    const width = Math.max(1, document.documentElement.clientWidth || 0, innerWidth || 0, viewport?.width || 0);
-    const height = Math.max(1, document.documentElement.clientHeight || 0, innerHeight || 0, viewport?.height || 0);
+    // The CSS layout viewport is the settled coordinate system used by the
+    // Battle media queries. Prefer it over innerWidth/visualViewport: during
+    // an embedded orientation transition either of those secondary surfaces
+    // can briefly retain the previous wide value, and taking the maximum
+    // would preserve a stale logical Canvas after the viewport is compact.
+    const layoutWidth = Number(document.documentElement.clientWidth) || 0;
+    const layoutHeight = Number(document.documentElement.clientHeight) || 0;
+    const width = Math.max(1, layoutWidth || Number(viewport?.width) || Number(innerWidth) || 0);
+    const height = Math.max(1, layoutHeight || Number(viewport?.height) || Number(innerHeight) || 0);
     const reserve = findReserve(root);
     if ((gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || gameId === "cribbage" || gameId === "go-fish" || gameId === "war" || gameId === "speed" || gameId === "old-maid")
       && reserve?.parentElement === root
@@ -373,6 +380,13 @@
       update();
     });
   };
+  const queueSettledUpdate = () => {
+    queueUpdate();
+    // A few embedded surfaces publish the new CSS viewport one frame after
+    // their resize/orientation event. Recheck once after that settled frame;
+    // the idempotent update keeps this bounded and avoids a polling loop.
+    requestAnimationFrame(queueUpdate);
+  };
   // Scene owners that complete their own transaction need a deterministic
   // geometry checkpoint before the next synchronous interaction can inspect
   // the Battle return. Keep the observer/rAF queue for ordinary mutations,
@@ -400,8 +414,19 @@
     attributeFilter: ["class", "hidden", "data-wp-return", "style"],
     childList: true,
   });
-  window.addEventListener("resize", queueUpdate, { passive: true });
-  window.visualViewport?.addEventListener("resize", queueUpdate, { passive: true });
+  window.addEventListener("resize", queueSettledUpdate, { passive: true });
+  window.visualViewport?.addEventListener("resize", queueSettledUpdate, { passive: true });
+  // Some embedded/mobile surfaces update the viewport and orientation without
+  // delivering a second window resize after a wide-to-portrait transition.
+  // Reconcile those settled geometry changes too, so a logical card-game
+  // Canvas never keeps the previous desktop coordinate system on return.
+  window.addEventListener("orientationchange", queueSettledUpdate, { passive: true });
+  window.screen?.orientation?.addEventListener?.("change", queueSettledUpdate, { passive: true });
+  window.addEventListener("pageshow", queueSettledUpdate, { passive: true });
+  const logicalCanvasResizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(() => queueUpdate())
+    : null;
+  logicalCanvasResizeObserver?.observe(document.documentElement);
   document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);
   // Scene signals can arrive in the same task that flips hidden/inert state.
   // Defer one frame so the shared scaler measures the settled Battle root;
