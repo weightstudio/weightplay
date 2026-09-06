@@ -45,6 +45,11 @@
   const state = { locale: "en", sound: true, round: 0, caught: 0, best: 0, basket: .5, objects: [], elapsed: 0, running: false, raf: 0, lastTime: 0 };
   const canvas = $("rainCanvas");
   const ctx = canvas.getContext("2d");
+  const art = { background: new Image(), nori: new Image() };
+  art.background.src = "/games/animal-rain-roost/assets/animal-rain-roost-background.png";
+  art.nori.src = "/games/animal-rain-roost/assets/animal-rain-roost-nori.png";
+  art.background.addEventListener("load", () => draw());
+  art.nori.addEventListener("load", () => draw());
   const storage = { get(key) { try { return localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { localStorage.setItem(key, value); } catch (_) {} } };
   const routeMap = { en: "en", "zh-tw": "zh-Hant", "zh-hant": "zh-Hant", "zh-cn": "zh-Hans", "zh-hans": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
 
@@ -153,16 +158,30 @@
     draw();
     if (pending || state.objects.some((object) => !object.done)) state.raf = requestAnimationFrame(tick); else finishRound();
   }
+  function drawCoverImage(image, width, height) {
+    if (!image.complete || !image.naturalWidth) return false;
+    const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+    const drawWidth = image.naturalWidth * scale;
+    const drawHeight = image.naturalHeight * scale;
+    ctx.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+    return true;
+  }
   function draw() {
     const rect = canvas.getBoundingClientRect(); const width = rect.width || 1; const height = rect.height || 1;
     ctx.clearRect(0, 0, width, height);
-    const sky = ctx.createLinearGradient(0, 0, 0, height); sky.addColorStop(0, "#9ed5ee"); sky.addColorStop(.66, "#d9f2ec"); sky.addColorStop(1, "#8bc19c"); ctx.fillStyle = sky; ctx.fillRect(0, 0, width, height);
+    const hasBackground = drawCoverImage(art.background, width, height);
+    if (!hasBackground) { const sky = ctx.createLinearGradient(0, 0, 0, height); sky.addColorStop(0, "#9ed5ee"); sky.addColorStop(.66, "#d9f2ec"); sky.addColorStop(1, "#8bc19c"); ctx.fillStyle = sky; ctx.fillRect(0, 0, width, height); }
     ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.beginPath(); ctx.arc(width * .2, height * .17, 34, 0, Math.PI * 2); ctx.arc(width * .25, height * .14, 45, 0, Math.PI * 2); ctx.arc(width * .31, height * .18, 32, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = "rgba(37,111,100,.32)"; ctx.fillRect(0, height - 30, width, 30);
     state.objects.forEach((object) => { if (!object.visible || object.done) return; const x = object.x * width; const y = object.y; if (object.type === "rain") { ctx.strokeStyle = "#1d8fba"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(x, y - 13); ctx.lineTo(x - 3, y + 10); ctx.stroke(); ctx.fillStyle = "#d7f8ff"; ctx.beginPath(); ctx.arc(x - 3, y + 10, 4, 0, Math.PI * 2); ctx.fill(); } else { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin(state.elapsed * 2 + x) * .3); ctx.fillStyle = "#d18a4e"; ctx.beginPath(); ctx.ellipse(0, 0, 18, 8, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#a86439"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); } });
     const basketX = state.basket * width; const basketWidth = Math.min(112, Math.max(74, width * .16)); const basketY = height - 50;
-    ctx.fillStyle = "#167f88"; ctx.beginPath(); ctx.roundRect(basketX - basketWidth / 2, basketY, basketWidth, 28, 13); ctx.fill(); ctx.strokeStyle = "#f0b64a"; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(basketX, basketY + 2, basketWidth * .36, Math.PI, 0); ctx.stroke();
-    ctx.fillStyle = "rgba(255,255,255,.72)"; ctx.font = "700 13px system-ui"; ctx.textAlign = "center"; ctx.fillText(state.locale === "ar" ? "نوري" : "Nori", basketX, basketY + 20);
+    if (art.nori.complete && art.nori.naturalWidth) {
+      const noriWidth = Math.min(156, Math.max(118, width * .24)); const noriHeight = noriWidth * art.nori.naturalHeight / art.nori.naturalWidth;
+      ctx.drawImage(art.nori, basketX - noriWidth / 2, height - noriHeight - 3, noriWidth, noriHeight);
+    } else {
+      ctx.fillStyle = "#167f88"; ctx.beginPath(); ctx.roundRect(basketX - basketWidth / 2, basketY, basketWidth, 28, 13); ctx.fill(); ctx.strokeStyle = "#f0b64a"; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(basketX, basketY + 2, basketWidth * .36, Math.PI, 0); ctx.stroke();
+      ctx.fillStyle = "rgba(255,255,255,.72)"; ctx.font = "700 13px system-ui"; ctx.textAlign = "center"; ctx.fillText(state.locale === "ar" ? "نوري" : "Nori", basketX, basketY + 20);
+    }
   }
   function openLeave() { $("leaveDialog").hidden = false; $("continueButton").focus(); }
   function closeLeave() { $("leaveDialog").hidden = true; $("homeFromBattle").focus(); }
