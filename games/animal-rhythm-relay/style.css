@@ -42,7 +42,8 @@ h2 { margin-bottom:8px; font-size:clamp(1.5rem,3vw,2.4rem); }
 .guide-card h2 { font-size:1.15rem; }
 .guide-card p { margin-bottom:0; color:var(--muted); line-height:1.5; }
 body[data-screen="battle"] .guide-card { display:none; }
-.battle-screen { position:fixed; z-index:5; top:0; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 56px); overflow:auto; padding:14px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
+/* Reserve the persistent shell header so Battle utilities cannot intercept it. */
+.battle-screen { position:fixed; z-index:5; top:68px; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 124px); overflow:auto; padding:14px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
 .battle-card { width:min(100%,920px); min-height:100%; margin:0 auto; padding:clamp(12px,3vw,26px); border-radius:28px; background:#173b4a; color:#fff7d0; box-shadow:0 18px 48px rgba(24,55,70,.24); }
 .battle-head { display:grid; grid-template-columns:48px 1fr 110px; align-items:center; gap:12px; }
 .battle-head h2 { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:clamp(1.3rem,3vw,2rem); }
