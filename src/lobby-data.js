@@ -2455,6 +2455,15 @@ const nextClassicCardGames = [
     type: { en: "Wild-card Shedding Game", "zh-Hant": "萬用牌出完遊戲", "zh-Hans": "万能牌出完游戏", ja: "ワイルドカード手札ゲーム", ko: "와일드 카드 털기 게임", es: "Juego de descarte con comodines", "pt-BR": "Jogo de descarte com coringa", fr: "Jeu de défausse avec joker", de: "Ablegespiel mit Wildkarte", it: "Gioco di scarto con matta", ru: "Игра со сбросом и джокером", hi: "वाइल्ड कार्ड छोड़ने का खेल", ar: "لعبة التخلص من البطاقات البرية" },
     description: { en: "Match suit or rank, then use an Eight to change the active suit.", "zh-Hant": "配對花色或點數，使用 8 改變目前花色。", "zh-Hans": "配对花色或点数，使用 8 改变当前花色。", ja: "スートかランクを合わせ、8で場のスートを変える。", ko: "무늬나 랭크를 맞추고 8로 활성 무늬를 바꾸세요.", es: "Combina palo o rango y usa un ocho para cambiar el palo activo.", "pt-BR": "Combine naipe ou valor e use um oito para mudar o naipe ativo.", fr: "Associez couleur ou valeur, puis utilisez un huit pour changer la couleur active.", de: "Passe Farbe oder Rang an und ändere mit einer Acht die aktive Farbe.", it: "Abbina seme o valore e usa un otto per cambiare il seme attivo.", ru: "Совмещайте масть или ранг, а восьмёркой меняйте активную масть.", hi: "सूट या रैंक मिलाएँ और आठ से सक्रिय सूट बदलें।", ar: "طابق النوع أو الرتبة واستخدم الثمانية لتغيير النوع النشط." },
     meta: { en: ["8 is wild", "Match suit or rank", "AI table"], "zh-Hant": ["8 是萬用牌", "花色或點數", "AI 牌桌"] },
+    searchAliases: [
+      "crazy eights", "crazy 8s", "shedding card game", "match suit or rank", "change the suit", "wild card game",
+      "瘋狂八", "八點", "配對花色", "改變花色", "疯狂八", "八点", "配对花色", "改变花色",
+      "クレイジーエイト", "8切り", "カードを出し切るゲーム", "크레이지 에이트", "카드 털기 게임", "무늬 맞추기",
+      "Ochos locos", "juego de ochos", "cambiar el palo", "Oito Maluco", "jogo de oito", "mudar o naipe",
+      "Huit fou", "jeu de huit", "changer la couleur", "Achtenspiel", "Farbe ändern", "Otto pazzo", "gioco degli otto",
+      "Безумные восьмёрки", "игра восьмёрок", "сменить масть", "क्रेज़ी एट्स", "आठ का खेल", "पत्ते उतारने का खेल",
+      "الثمانيات المجنونة", "لعبة الثمانية", "تغيير النوع",
+    ],
     art: { kind: "image", background: "assets/card-games-crazy-eights-cover.webp", hideHero: true },
   },
   {
