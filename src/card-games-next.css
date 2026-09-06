@@ -292,14 +292,46 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   .card-game-player { min-height: 0; overflow: auto; }
   /* Cribbage keeps its six-card decision row in a dedicated bottom track so
      every card and its 44px interaction target stay inside the short Canvas. */
+  body[data-wp-card-game="cribbage"] .card-table-ui {
+    grid-template-rows: 44px minmax(0, 1fr) auto;
+    gap: 4px;
+    padding: 6px 12px;
+  }
   body[data-wp-card-game="cribbage"] .card-game-board {
     grid-template-columns: minmax(120px, .3fr) minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "opponents table"
+      "player player";
     gap: 7px;
+  }
+  body[data-wp-card-game="cribbage"] .card-opponents {
+    grid-area: opponents;
+    min-width: 0;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="cribbage"] .card-table-center {
+    grid-area: table;
+    min-width: 0;
+    min-height: 0;
+    padding: 4px;
+    gap: 2px;
+    justify-content: flex-start;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  body[data-wp-card-game="cribbage"] .card-table-center > #cardGameCenter {
+    min-width: 0;
+    width: 100%;
   }
   body[data-wp-card-game="cribbage"] .card-game-player {
     grid-column: 1 / -1;
+    grid-area: player;
     min-width: 0;
+    position: relative;
+    z-index: 1;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -307,6 +339,8 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   body[data-wp-card-game="cribbage"] .card-game-player-header {
     flex: 0 0 auto;
     min-width: 0;
+    margin-bottom: 3px;
+    line-height: 1.1;
   }
   body[data-wp-card-game="cribbage"] .card-hand {
     flex: 0 0 auto;
@@ -320,6 +354,44 @@ body[data-wp-card-game] > .result-overlay .result-actions button { min-height: 4
   }
   body[data-wp-card-game="cribbage"] .card-hand .playing-card {
     flex: 0 1 43px;
+    height: 61px;
+  }
+  body[data-wp-card-game="cribbage"] .card-peg-board {
+    width: min(100%, 190px);
+    padding: 3px;
+    border-radius: 9px;
+  }
+  body[data-wp-card-game="cribbage"] .card-peg-row {
+    gap: 1px;
+  }
+  body[data-wp-card-game="cribbage"] .card-peg-board .card-game-topbar {
+    min-height: 0;
+    gap: 2px;
+    font-size: 9px;
+    line-height: 1.1;
+  }
+  body[data-wp-card-game="cribbage"] .card-peg-board .card-game-topbar small {
+    font-size: 9px;
+    white-space: nowrap;
+  }
+  body[data-wp-card-game="cribbage"] .card-action-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+    min-width: 0;
+    align-items: center;
+  }
+  body[data-wp-card-game="cribbage"] .card-action-row .card-game-quick-guide {
+    grid-column: auto;
+    width: auto;
+    min-width: 0;
+    padding: 5px 8px;
+    font-size: 10px;
+    line-height: 1.15;
+  }
+  body[data-wp-card-game="cribbage"] .card-action-row button {
+    min-width: 72px;
+    min-height: 44px;
   }
   body[data-wp-card-game="hearts"] .card-game-player {
     min-width: 0;
