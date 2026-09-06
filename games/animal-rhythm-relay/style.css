@@ -9,7 +9,7 @@ button { cursor:pointer; }
 .loading-panel[hidden] { display:none; }
 .loading-panel span { color:#ccebe1; font-size:.9rem; font-weight:700; }
 .shell { width:min(100%,920px); margin:0 auto; padding:14px 18px 28px; }
-.topbar { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; position:relative; }
+.topbar { min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; position:relative; z-index:10; }
 .wp-shell-return { width:58px; height:48px; display:inline-flex; align-items:center; justify-content:center; gap:3px; border:0; border-radius:15px; background:var(--mint); color:var(--ink); text-decoration:none; font-weight:900; overflow:hidden; }
 .wp-shell-return img { width:22px; height:22px; object-fit:contain; }
 .wp-shell-return-arrow { font-size:1.2rem; line-height:1; }
@@ -42,8 +42,9 @@ h2 { margin-bottom:8px; font-size:clamp(1.5rem,3vw,2.4rem); }
 .guide-card h2 { font-size:1.15rem; }
 .guide-card p { margin-bottom:0; color:var(--muted); line-height:1.5; }
 body[data-screen="battle"] .guide-card { display:none; }
-/* Reserve the persistent shell header so Battle utilities cannot intercept it. */
-.battle-screen { position:fixed; z-index:5; top:68px; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 124px); overflow:auto; padding:14px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
+/* Keep the Battle envelope full-height while reserving the persistent shell
+   header inside it, so Battle utilities cannot intercept shell Settings. */
+.battle-screen { position:fixed; z-index:5; top:0; bottom:56px; left:max(0px,calc((100vw - 920px) / 2)); right:max(0px,calc((100vw - 920px) / 2)); width:auto; height:calc(100vh - 56px); overflow:auto; padding:82px 18px 24px; background:linear-gradient(155deg,rgba(231,246,240,.88),rgba(255,249,237,.72) 58%,rgba(248,223,180,.78)),url("assets/animal-rhythm-relay-background.webp") center/cover no-repeat; }
 .battle-card { width:min(100%,920px); min-height:100%; margin:0 auto; padding:clamp(12px,3vw,26px); border-radius:28px; background:#173b4a; color:#fff7d0; box-shadow:0 18px 48px rgba(24,55,70,.24); }
 .battle-head { display:grid; grid-template-columns:48px 1fr 110px; align-items:center; gap:12px; }
 .battle-head h2 { margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:clamp(1.3rem,3vw,2rem); }
@@ -79,7 +80,7 @@ body[data-screen="battle"] .guide-card { display:none; }
   .main-card > div, .main-poster-frame { grid-column:1; grid-row:auto; }
   .main-poster-frame { order:-1; width:min(100%,320px); max-width:320px; }
   h1 { font-size:clamp(2.35rem,12vw,3.8rem); }
-  .battle-screen { padding:10px 10px 20px; }
+  .battle-screen { padding:82px 10px 20px; }
   .battle-head { grid-template-columns:48px 1fr 92px; }
   .sound { padding:8px; font-size:.82rem; }
   .relay-field { gap:8px; padding:30px 8px; }
@@ -90,5 +91,11 @@ body[data-screen="battle"] .guide-card { display:none; }
 @media (min-width:701px) and (max-height:500px) {
   .main-card { grid-template-columns:minmax(0,1fr) 300px; gap:24px; }
   .main-poster-frame { max-width:300px; }
+}
+@media (orientation:landscape) and (max-height:560px) {
+  /* Keep the compact Battle row in the full-height landscape envelope; the
+     shell Settings hit area is reserved horizontally instead. */
+  .battle-screen { padding-top:14px; }
+  .battle-head { padding-right:68px; }
 }
 @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }

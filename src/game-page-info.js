@@ -1997,7 +1997,7 @@
     "animal-bounce-brawl": {
       title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
       gameplay: "Soft Physics Knockback Arena", genre: ["Action", "Arcade", "Animal"], skills: ["Timing", "Reaction", "Spatial Awareness"],
-      showSkills: false, showRelatedSkill: false, hideScoreBands: true,
+      showSkills: false, showRelatedSkill: false, hideScoreBands: true, hideRecommendedAge: true,
       relatedIds: ["animal-sketchwheel-rally", "animal-prism-breakers", "animal-cratebound"],
       intro: "Time your bounces, choose foam tools, and knock the rival off balance in a playful physics arena.",
       story: ["A friendly foam challenger meets a rival in six toy arenas. Each arena changes the spacing, platforms, or rival rhythm while keeping the goal readable: create contact on your terms."],
@@ -2006,6 +2006,7 @@
       strategyTips: ["Do not hold contact forever; step out, read the rebound, and strike during the next opening.", "Use platforms and arena edges to control where the rival can recover.", "Save a tool change for a clear spacing problem rather than switching after every bounce."],
       progression: ["The six arenas progress from a warm-up to spring lanes, moving pads, tight corners, a faster rival, and a final rhythm that tests deliberate spacing."],
       designNote: "Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.",
+      noteTitle: "Player and Save Information",
       parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Arena wins and best progress stay in this browser.",
       faq: [["How do I hit the rival?", "Move close enough for contact and press Space or the visible BOUNCE control during the opening."], ["What do the tools do?", "They change the active foam response, giving you a different timing or spacing option."], ["How do I lose?", "Your energy can run out, or the arena can reach its time limit before the rival is defeated."], ["Is progress saved?", "Only your best arena is saved in this browser."]],
     },
