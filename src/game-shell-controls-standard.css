@@ -701,6 +701,13 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
+  /* War v9 uses the same canonical 300px wide-layout poster column at the
+     governed compact-landscape viewport; keep its Main shell inside the
+     exact Interface 6 canvas without changing other card games. */
+  body[data-wp-game-id="war"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 300px;
+  }
+
   /* Road Crosser v18 uses the canonical 300px wide-layout poster column at
      the governed compact-landscape viewport without changing its desktop or
      phone composition. */

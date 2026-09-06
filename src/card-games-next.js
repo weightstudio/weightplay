@@ -387,6 +387,12 @@
         battleBack.setAttribute("aria-label", labels.back);
         battleBack.setAttribute("data-runtime-localize", "off");
       }
+      const battleUtility = document.querySelector("[data-wp-battle-utility]");
+      if (battleUtility) {
+        battleUtility.setAttribute("aria-label", labels.settings);
+        battleUtility.title = labels.settings;
+        battleUtility.setAttribute("data-runtime-localize", "off");
+      }
       ownLocalizedText(document.querySelector(".card-game-player-header strong"), labels.hand);
       ownLocalizedText(document.querySelector("#resultTitle"), labels.roundOver);
       ownLocalizedText(document.querySelector("#resultNewGame"), labels.newGame);
@@ -1906,6 +1912,20 @@
       utility.textContent = "⚙";
       topbar.append(utility);
     };
+    const ensureWarBattleUtility = () => {
+      const topbar = battle.querySelector(".card-game-topbar");
+      if (!topbar || topbar.querySelector("[data-wp-battle-utility]")) return;
+      const utility = document.createElement("button");
+      utility.id = "battleUtilityBtn";
+      utility.type = "button";
+      utility.className = "battle-utility header-icon-btn";
+      utility.dataset.wpBattleUtility = "true";
+      utility.setAttribute("aria-label", "Settings");
+      utility.setAttribute("aria-pressed", "true");
+      utility.title = "Settings";
+      utility.textContent = "⚙";
+      topbar.append(utility);
+    };
     if (id === "go-fish") {
       ensureGoFishMainProgress();
       ensureGoFishBattleUtility();
@@ -2067,6 +2087,8 @@
     }
     if (id === "war") statusText?.setAttribute("data-runtime-localize", "off");
     if (id === "war") {
+      ensureWarBattleUtility();
+      battleUtility = document.querySelector("[data-wp-battle-utility]");
       syncWarShell();
       window.addEventListener("weightplay:shell-sync", syncWarShell);
     }
@@ -2237,6 +2259,9 @@
       else if (id === "hearts") {
         audioButton.textContent = heartsSoundLabel(next);
         audioButton.setAttribute("aria-pressed", String(next));
+      } else if (id === "war" && battleUtility) {
+        battleUtility.textContent = next ? "⚙" : "🔇";
+        battleUtility.setAttribute("aria-pressed", String(next));
       } else audioButton.textContent = `${t("sound")}: ${next ? "On" : "Off"}`;
     });
     localeSelect?.addEventListener("change", () => {

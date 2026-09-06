@@ -97,6 +97,13 @@ body[data-wp-card-game="hearts"] .game-page-info {
   box-sizing: border-box;
   max-width: 100%;
 }
+/* War's owner-preview Guide uses the shared padded document-flow surface;
+   include that padding in its width so the exact Main overflow contract stays
+   within the viewport at phone and compact-landscape sizes. */
+body[data-wp-card-game="war"] .game-page-info {
+  box-sizing: border-box;
+  max-width: 100%;
+}
 @media (max-width: 720px), (max-height: 560px) and (orientation: landscape) {
   /* The shared Guide uses content-box sizing; keep Gin's locale-owned Main
      Guide inside the viewport after its mobile padding is applied. */

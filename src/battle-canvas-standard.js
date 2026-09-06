@@ -381,6 +381,12 @@
     });
   };
   const queueSettledUpdate = () => {
+    // Resize consumers can inspect control hit targets in the same task that
+    // delivers the viewport change. Apply the settled layout viewport
+    // synchronously before the bounded rAF recheck so a wide-to-portrait
+    // transition cannot expose the previous logical Canvas coordinates for
+    // one interaction.
+    update();
     queueUpdate();
     // A few embedded surfaces publish the new CSS viewport one frame after
     // their resize/orientation event. Recheck once after that settled frame;
