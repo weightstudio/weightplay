@@ -4268,6 +4268,17 @@ if (ginRummyPublic) {
   delete ginRummyPublic.internalTrial;
 }
 
+// Hearts is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so the exact v19/I6
+// candidate is discoverable with its truthful Battle preview.
+const heartsPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "hearts");
+if (heartsPublic) {
+  heartsPublic.status = "playable";
+  heartsPublic.previewVideo = "assets/previews/hearts-battle.webm";
+  delete heartsPublic.statusText;
+  delete heartsPublic.internalTrial;
+}
+
 // Crazy Eights is now an owner-approved public General release. Keep this
 // release-state override after the classic planned batch so the exact v14
 // candidate remains discoverable with its truthful Battle preview.

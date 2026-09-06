@@ -970,7 +970,7 @@
         progress.dataset.wpMainProgress = "";
         progress.setAttribute("role", "status");
         progress.setAttribute("aria-live", "polite");
-        progress.innerHTML = "<strong>Objective</strong><span>Reveal the hidden word before six misses.</span>";
+        progress.innerHTML = "<strong></strong><span></span>";
         (instruction || mainCopy.querySelector("#objective"))?.insertAdjacentElement("afterend", progress);
       }
       const poster = main.querySelector(".preview-art img");

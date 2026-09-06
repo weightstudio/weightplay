@@ -152,20 +152,6 @@
     }
   };
 
-  const mainCopy = document.querySelector("#mainScreen .main-copy");
-  if (mainCopy && !mainCopy.querySelector("[data-wp-main-progress]")) {
-    const progress = document.createElement("div");
-    progress.className = "main-progress";
-    progress.dataset.wpMainProgress = "true";
-    progress.setAttribute("role", "status");
-    progress.setAttribute("aria-live", "polite");
-    const label = document.createElement("strong");
-    label.textContent = "Play progress";
-    const copy = document.createElement("span");
-    copy.textContent = "Fresh hand ready — match suit or rank to begin.";
-    progress.append(label, copy);
-    mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
-  }
   const topbar = document.querySelector("#battleScreen .card-game-topbar");
   if (topbar && !topbar.querySelector("[data-wp-battle-utility]")) {
     const utility = document.createElement("button");

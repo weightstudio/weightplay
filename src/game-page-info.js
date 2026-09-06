@@ -1816,7 +1816,7 @@
       gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
       intro: "Four players follow suit through thirteen tricks. Hearts are penalty cards, the Queen of Spades is worth 13 points, and taking every penalty card enables Shooting the Moon.",
       how: ["Choose three cards to pass, then play a legal card from your hand. The first trick starts with the Two of Clubs; the winner leads the next trick."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Public play", parent: "Play Hearts free in your browser with no account or purchase required. Pass three cards, follow suit, and avoid penalty cards across a complete trick-taking round.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     spades: {
@@ -11365,10 +11365,10 @@
     skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"],
     guideKicker: "دليل ألعاب WeightPlay الأصلية",
     guideTitleSuffix: "دليل اللعبة",
-    noteTitle: "حالة المعاينة",
+    noteTitle: "اللعب العام",
     intro: "اتبع النوع خلال ثلاث عشرة خدعة، وتجنب القلوب وملكة البستوني، وقرر إن كنت ستخاطر بجمع كل بطاقات الجزاء.",
     how: ["اختر ثلاث بطاقات لتمريرها، ثم العب بطاقة قانونية من يدك. تبدأ أول خدعة ببطاقة 2♣؛ والفائز يقود الخدعة التالية."],
-    parent: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.",
+    parent: "العب القلوب مجاناً في متصفحك من دون حساب أو شراء. مرّر ثلاث بطاقات، واتبع النوع، وتجنب بطاقات الجزاء خلال جولة خدع كاملة.",
     faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
     relatedIds: ["spades", "go-fish", "crazy-eights"],
     related: [
