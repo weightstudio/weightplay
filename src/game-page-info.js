@@ -1823,7 +1823,7 @@
       gameplay: "Classic Trump Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
       intro: "Two teams bid before a trick-taking hand. Spades are always trump, and bags record overtricks.",
       how: ["Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Public play", parent: "Play Spades free in your browser with no account or purchase required. Bid a team contract, follow suit, and use spades as trump across a complete trick-taking hand.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "gin-rummy": {

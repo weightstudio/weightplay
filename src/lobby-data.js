@@ -4263,14 +4263,26 @@ if (crazyEightsPublic) {
   delete crazyEightsPublic.internalTrial;
 }
 
-const klondikeSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
-if (klondikeSolitairePlanned) {
-  klondikeSolitairePlanned.status = "planned";
-  klondikeSolitairePlanned.statusText = {
-    en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-    es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
-    ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
-  };
+// Spades is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so the exact v20/I6
+// candidate is discoverable with its truthful Battle preview.
+const spadesPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "spades");
+if (spadesPublic) {
+  spadesPublic.status = "playable";
+  spadesPublic.previewVideo = "assets/previews/spades-battle.webm";
+  delete spadesPublic.statusText;
+  delete spadesPublic.internalTrial;
+}
+
+// Klondike Solitaire is now an owner-approved public General release. Keep
+// this release-state override after the classic planned batch so later
+// catalogue edits cannot silently restore its private trial state.
+const klondikeSolitairePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "klondike-solitaire");
+if (klondikeSolitairePublic) {
+  klondikeSolitairePublic.status = "playable";
+  klondikeSolitairePublic.previewVideo = "assets/previews/klondike-solitaire-battle.webm";
+  delete klondikeSolitairePublic.statusText;
+  delete klondikeSolitairePublic.internalTrial;
 }
 
 const blockBlastPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "block-blast");

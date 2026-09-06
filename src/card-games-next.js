@@ -241,6 +241,25 @@
     ar: { title: "البستوني", summary: "راهن على لمّات فريقك، واستخدم البستوني حكماً، وتعاون مع زميلك من الذكاء الاصطناعي.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "يقدّم فريقان العطاءات قبل جولة اللمّات. البستوني حكم دائماً، وتُسجَّل اللمّات الزائدة كأكياس.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لمّات كلاسيكية بحكم", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "الوقت التقريبي", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "راهن على عدد اللمّات التي يتوقع فريقك الفوز بها، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة للفوز بالعقد.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "راهن على لمّات فريقك، واتبع النوع إن أمكن، واستخدم البستوني في اللحظة المناسبة.", opponents: ["أنت", "الذكاء الاصطناعي شمالاً", "الذكاء الاصطناعي شرقاً", "الذكاء الاصطناعي غرباً"], metaDescription: "راهن مع فريقك، واتبع النوع، واستخدم البستوني حكماً في لعبة البطاقات هذه ضمن معاينة المالك." },
   };
 
+  const SPADES_PUBLIC_RELEASE_COPY = {
+    en: { preview: "Public play", previewCopy: "Play Spades free in your browser with no account or purchase required.", metaDescription: "Play Spades free in your browser: bid team contracts, follow suit, and use spades as trump." },
+    "zh-Hant": { preview: "公開遊玩", previewCopy: "無需帳號或購買，即可在瀏覽器免費遊玩黑桃。", metaDescription: "免費在瀏覽器遊玩黑桃：團隊叫牌、跟花色，並善用黑桃王牌。" },
+    "zh-Hans": { preview: "公开游玩", previewCopy: "无需账号或购买，即可在浏览器免费游玩黑桃。", metaDescription: "免费在浏览器游玩黑桃：团队叫牌、跟花色，并善用黑桃王牌。" },
+    ja: { preview: "公開プレイ", previewCopy: "アカウントや購入なしで、ブラウザからスペードを無料で遊べます。", metaDescription: "ブラウザで無料のスペードを遊び、チームでビッドし、切り札を使いましょう。" },
+    ko: { preview: "공개 플레이", previewCopy: "계정이나 구매 없이 브라우저에서 스페이드를 무료로 플레이하세요.", metaDescription: "브라우저에서 스페이드를 무료로 즐기며 팀 비드와 으뜸패를 사용하세요." },
+    es: { preview: "Juego público", previewCopy: "Juega a Picas gratis en tu navegador, sin cuenta ni compra.", metaDescription: "Juega a Picas gratis en el navegador: apuesta contratos, sigue el palo y usa el triunfo." },
+    "pt-BR": { preview: "Jogo público", previewCopy: "Jogue Espadas grátis no navegador, sem conta nem compra.", metaDescription: "Jogue Espadas grátis no navegador: declare contratos, siga o naipe e use o trunfo." },
+    fr: { preview: "Jeu public", previewCopy: "Jouez gratuitement à Pique dans votre navigateur, sans compte ni achat.", metaDescription: "Jouez à Pique gratuitement : annoncez les contrats, fournissez la couleur et utilisez l'atout." },
+    de: { preview: "Öffentlich spielbar", previewCopy: "Spiele Pik kostenlos im Browser, ohne Konto und ohne Kauf.", metaDescription: "Spiele Pik kostenlos im Browser: Biete Teamkontrakte, bediene die Farbe und nutze Trumpf." },
+    it: { preview: "Gioco pubblico", previewCopy: "Gioca a Picche gratis nel browser, senza account né acquisti.", metaDescription: "Gioca a Picche gratis nel browser: dichiara contratti, segui il seme e usa la briscola." },
+    ru: { preview: "Открытая игра", previewCopy: "Играйте в Пики бесплатно в браузере без аккаунта и покупки.", metaDescription: "Играйте в Пики бесплатно: делайте заявки команды, ходите в масть и используйте козырь." },
+    hi: { preview: "सार्वजनिक खेल", previewCopy: "बिना खाते या खरीद के ब्राउज़र में स्पेड्स मुफ़्त खेलें।", metaDescription: "ब्राउज़र में स्पेड्स मुफ़्त खेलें: टीम बोली लगाएँ, सूट का पालन करें और तुरुप इस्तेमाल करें।" },
+    ar: { preview: "لعب متاح للعامة", previewCopy: "العب البستوني مجاناً في المتصفح من دون حساب أو شراء.", metaDescription: "العب البستوني مجاناً في المتصفح: راهن على عقود الفريق واتبع النوع واستخدم الحكم." },
+  };
+  for (const [locale, copy] of Object.entries(SPADES_PUBLIC_RELEASE_COPY)) {
+    if (SPADES_SHELL_COPY[locale]) Object.assign(SPADES_SHELL_COPY[locale], copy);
+  }
+
   // War's static shell predates the shared card-game runtime and therefore
   // still contains English control labels on the Arabic route. Keep the
   // repair owned by the card-game runtime so Main, Battle, and Result stay in
@@ -1847,6 +1866,19 @@
     const audioButton = document.querySelector("#soundBtn");
     let battleUtility = document.querySelector("[data-wp-battle-utility]");
     const localeSelect = document.querySelector("#localeSelect");
+    // War's single action is a viewport-level touch surface. Keeping the
+    // action row inside the transformed logical Canvas lets a live
+    // wide-to-portrait resize expose the previous Canvas coordinates until
+    // the next geometry checkpoint. Leave a same-sized grid slot in the
+    // Canvas, but mount the real action row outside the transformed root so
+    // CSS reflow keeps Flip/WAR reachable in the same frame as the resize.
+    if (id === "war" && actions && battle) {
+      const actionSlot = document.createElement("div");
+      actionSlot.className = "war-action-slot";
+      actionSlot.setAttribute("aria-hidden", "true");
+      actions.parentElement?.insertBefore(actionSlot, actions);
+      battle.append(actions);
+    }
     const guideContent = () => {
       const heartsShell = id === "hearts" ? heartsShellCopy() : null;
       const warBattle = id === "war" ? warBattleCopy() : null;

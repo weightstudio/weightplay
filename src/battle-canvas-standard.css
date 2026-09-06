@@ -68,6 +68,51 @@ body.wp-logical-battle-active [data-wp-logical-battle-canvas] :is(
   transform: none !important;
 }
 
+/*
+ * Card-game previews also keep a CSS-owned envelope. A browser can coalesce a
+ * resize event while the viewport itself has already changed; these viewport
+ * expressions keep the active table and its controls aligned before the next
+ * synchronous interaction, while the shared script remains authoritative for
+ * every other Battle shell.
+ */
+body.wp-logical-battle-active[data-wp-card-game] [data-wp-logical-battle-canvas] {
+  --wp-card-canvas-width: min(100vw, 920px);
+  --wp-card-canvas-height: calc(100dvh - 56px);
+  --wp-card-canvas-scale: min(
+    calc(var(--wp-card-canvas-width) / 390px),
+    calc(var(--wp-card-canvas-height) / 788px)
+  );
+  left: max(0px, calc((100vw - var(--wp-card-canvas-width)) / 2)) !important;
+  width: calc(var(--wp-card-canvas-width) / var(--wp-card-canvas-scale)) !important;
+  min-width: calc(var(--wp-card-canvas-width) / var(--wp-card-canvas-scale)) !important;
+  max-width: calc(var(--wp-card-canvas-width) / var(--wp-card-canvas-scale)) !important;
+  height: calc(var(--wp-card-canvas-height) / var(--wp-card-canvas-scale)) !important;
+  min-height: calc(var(--wp-card-canvas-height) / var(--wp-card-canvas-scale)) !important;
+  max-height: calc(var(--wp-card-canvas-height) / var(--wp-card-canvas-scale)) !important;
+  transform: scale(var(--wp-card-canvas-scale)) !important;
+}
+
+body.wp-logical-battle-active[data-wp-card-game] :is(
+  .battle-ad-reserve,
+  .battle-ad,
+  .ad-reserve,
+  .result-ad-reserve,
+  #battleAdReserve,
+  #battleAd
+)[data-wp-battle-physical-reserve] {
+  left: max(0px, calc((100vw - min(100vw, 920px)) / 2)) !important;
+  width: min(100vw, 920px) !important;
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  body.wp-logical-battle-active[data-wp-card-game] [data-wp-logical-battle-canvas] {
+    --wp-card-canvas-scale: min(
+      calc(var(--wp-card-canvas-width) / 760px),
+      calc(var(--wp-card-canvas-height) / 334px)
+    );
+  }
+}
+
 /* Keep Garden Tiles on its portrait logical tracks in a short physical viewport. */
 body.wp-logical-battle-active.garden-playing.garden-expanded-canvas .garden-game[data-wp-logical-battle-canvas] {
   padding: 6px !important;

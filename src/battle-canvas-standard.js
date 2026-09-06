@@ -127,6 +127,11 @@
     "tic-tac-toe": ["#battleScreen", 390, 788, 760, 334],
   };
   const gameId = location.pathname.match(/\/games\/([^/]+)/)?.[1] || "";
+  const cssViewportCardGames = new Set([
+    "gin-rummy", "casino", "crazy-eights", "hearts", "spades",
+    "cribbage", "go-fish", "war", "speed", "old-maid",
+  ]);
+  const useCssViewportCardEnvelope = cssViewportCardGames.has(gameId);
   const defaultConfig = [
     "[data-wp-logical-battle-canvas],#battleScreen,#battleView,#battlePage,#battle,[data-screen='battle'],.battle-screen,.battle-shell,.battle-page",
     390,
@@ -188,7 +193,7 @@
   const rootStyleSignature = (node) => node ? ["position", "top", "left", "width", "height", "transform"]
     .map((property) => `${property}:${node.style.getPropertyValue(property)}!${node.style.getPropertyPriority(property)}`)
     .join("|") : "";
-  const rememberAndSet = (node, declarations) => {
+  const rememberAndSet = (node, declarations, priority = "important") => {
     if (!node) return;
     if (!savedStyles.has(node)) {
       const saved = {};
@@ -197,7 +202,7 @@
       });
       savedStyles.set(node, saved);
     }
-    Object.entries(declarations).forEach(([property, value]) => node.style.setProperty(property, value, "important"));
+    Object.entries(declarations).forEach(([property, value]) => node.style.setProperty(property, value, priority));
   };
   const restore = (node) => {
     const saved = savedStyles.get(node);
@@ -344,7 +349,7 @@
       transform: `scale(${scale})`,
       "transform-origin": "top left",
       overflow: "hidden",
-    });
+    }, useCssViewportCardEnvelope ? "" : "important");
     appliedRootStyleSignature = rootStyleSignature(root);
     if (activeReserve && activeReserve !== reserve) restoreReserve(activeReserve);
     activeReserve = reserve;
@@ -366,7 +371,7 @@
         margin: "0",
         transform: "none",
         "pointer-events": "none",
-      });
+      }, useCssViewportCardEnvelope ? "" : "important");
     }
   }
 
@@ -430,7 +435,13 @@
   window.screen?.orientation?.addEventListener?.("change", queueSettledUpdate, { passive: true });
   window.addEventListener("pageshow", queueSettledUpdate, { passive: true });
   const logicalCanvasResizeObserver = typeof ResizeObserver === "function"
-    ? new ResizeObserver(() => queueUpdate())
+    ? new ResizeObserver(() => {
+      // ResizeObserver runs after the layout viewport has committed. Apply
+      // immediately here so a coalesced or late resize event cannot leave the
+      // previous wide logical envelope in place for the next player click.
+      update();
+      queueUpdate();
+    })
     : null;
   logicalCanvasResizeObserver?.observe(document.documentElement);
   document.addEventListener("click", () => window.setTimeout(queueUpdate, 0), true);

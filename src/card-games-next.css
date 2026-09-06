@@ -72,6 +72,24 @@ body[data-wp-card-game="casino"] .card-casino-payoff span { color: #fff8d9; line
 body[data-wp-card-game="casino"] .card-game-player-header small { min-width: 0; flex: 1 1 auto; line-height: 1.2; overflow-wrap: anywhere; text-align: right; }
 .card-action-row { display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; }
 .card-action-row button { min-height: 44px; }
+/* War's action is intentionally outside the transformed logical Canvas. The
+   slot preserves the Canvas's content rhythm while this fixed row follows the
+   real viewport immediately during live resize, before a JS geometry pass. */
+body[data-wp-card-game="war"] .war-action-slot {
+  min-height: 96px;
+}
+body[data-wp-card-game="war"] #battleScreen > #cardGameActions {
+  box-sizing: border-box;
+  position: fixed !important;
+  z-index: 120;
+  inset: auto 0 56px 0 !important;
+  width: 100vw !important;
+  max-width: none !important;
+  min-height: 96px;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, rgba(8, 42, 39, .08), rgba(8, 42, 39, .94) 28%);
+  pointer-events: auto;
+}
 /* War's logical Battle Canvas scales below 1 on desktop. Keep its only
    repeated Flip/WAR action at or above the shared 44px physical target floor
    without widening other card-game action rows. */
