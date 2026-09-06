@@ -46,7 +46,7 @@
   const canvas = $("rainCanvas");
   const ctx = canvas.getContext("2d");
   const art = { background: new Image(), nori: new Image(), weather: new Image() };
-  art.background.src = "/games/animal-rain-roost/assets/animal-rain-roost-background.png";
+  art.background.src = "/games/animal-rain-roost/assets/animal-rain-roost-background-v2.png";
   art.nori.src = "/games/animal-rain-roost/assets/animal-rain-roost-nori.png";
   art.weather.src = "/games/animal-rain-roost/assets/animal-rain-roost-weather-atlas-v2.png";
   art.background.addEventListener("load", () => draw());
@@ -175,8 +175,9 @@
     const cell = Math.min(2, Math.floor(object.x * 3));
     const sourceX = cell * cellWidth;
     const sourceY = object.type === "leaf" ? cellHeight : 0;
+    const sourceHeight = object.type === "leaf" ? cellHeight : cellHeight - 64;
     const size = object.type === "leaf" ? 72 : 58;
-    ctx.drawImage(art.weather, sourceX, sourceY, cellWidth, cellHeight, x - size / 2, y - size / 2, size, size);
+    ctx.drawImage(art.weather, sourceX, sourceY, cellWidth, sourceHeight, x - size / 2, y - size / 2, size, size);
     return true;
   }
   function draw() {
