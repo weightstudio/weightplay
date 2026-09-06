@@ -15840,7 +15840,7 @@
   };
   games["snake"] = {
     title: "Snake", gameplay: "Grid Survival Arcade", difficulty: "Easy to Challenging", time: "1-4 minutes per run",
-    genre: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"], hideSkillsFact: true, showRelatedSkill: false,
+    genre: ["Classic", "Arcade", "Action"], skills: ["Planning", "Reaction", "Space Reading"], hideSkillsFact: true, showRelatedSkill: false, noteTitle: "Player and Save Information",
     intro: "Snake is an original WeightPlay grid survival arcade game. Guide a growing star-serpent through a bounded board, collect six food sparks, and keep a clean route open.",
     story: ["A small star-serpent wakes inside a night grid. Each food spark adds another segment, turning every safe turn into the next spatial decision."],
     systems: ["The serpent moves continuously on a grid. Food increases its length and score, the pace rises during a run, and walls or the serpent's own body end the round."],
@@ -16036,6 +16036,24 @@
   };
   snakeContinuousCopy.de.title = "Schlange";
   snakeContinuousCopy.de.intro = snakeContinuousCopy.de.intro.replace(/^Snake\b/u, "Schlange");
+  const snakeNoteTitles = {
+    en: "Player and Save Information",
+    "zh-Hant": "玩家與存檔資訊",
+    "zh-Hans": "玩家与存档信息",
+    ja: "プレイヤーと保存情報",
+    ko: "플레이어 및 저장 정보",
+    es: "Información del jugador y guardado",
+    "pt-BR": "Informações do jogador e do salvamento",
+    fr: "Informations joueur et sauvegarde",
+    de: "Spieler- und Speicherinformationen",
+    it: "Informazioni sul giocatore e sui salvataggi",
+    ru: "Сведения об игроке и сохранении",
+    hi: "खिलाड़ी और सेव जानकारी",
+    ar: "معلومات اللاعب والحفظ",
+  };
+  for (const [code, title] of Object.entries(snakeNoteTitles)) {
+    if (snakeContinuousCopy[code]) snakeContinuousCopy[code].noteTitle = title;
+  }
   const arcadeGuideLocales = {
     "zh-Hant": {
       "road-crosser": { title: "星軌過路", intro: "星軌過路是 WeightPlay 原創的時機街機遊戲。帶領星行者穿過車流、移動河流與三段逐步收緊的路線。", how: ["桌面使用方向鍵或 WASD；手機使用滑動與方向按鈕。", "一次觀察一條車道，只在下一格安全時移動。", "在河流中踏上移動木頭，順著水流調整位置。", "通過三段路線抵達星門；撞車、落水或被沖出場外會結束本局。"] },
