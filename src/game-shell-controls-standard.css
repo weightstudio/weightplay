@@ -637,10 +637,10 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 420px;
   }
 
-  /* Flip Foundry uses the canonical 300px wide-layout poster column in
+  /* Flip Foundry uses the canonical 420px wide-layout poster column in
      compact landscape, matching the shared Main acceptance contract. */
   body[data-wp-five-game="animal-flip-foundry"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   /* Maze Chase uses the shared standard Main composition after its native

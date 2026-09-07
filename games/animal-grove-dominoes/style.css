@@ -136,4 +136,30 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display:n
   .habitat-tile { min-height:102px; }
   .tile-side { font-size:.68rem; }
 }
+/* Interface 6 short-landscape contract: keep the Main poster at 420px and
+   fit every Battle action inside the 334px Canvas above the 56px reserve. */
+@media (min-width:700px) and (max-height:540px) and (orientation:landscape) {
+  .hero-grid { grid-template-columns:420px minmax(0,1fr); gap:22px; }
+  .cover { width:420px; height:420px; }
+  .battle-canvas { overflow-y:hidden; padding:4px 14px 8px; }
+  .logical-shell { padding:0 0 4px; }
+  .panel-head { min-height:40px; margin-bottom:4px; }
+  .panel-head .back-button,
+  .panel-head .battle-utility { width:40px !important; min-width:40px !important; max-width:40px !important; height:40px !important; min-height:40px !important; max-height:40px !important; padding:4px !important; }
+  body[data-wp-game-id="animal-grove-dominoes"] :is(button, a)[data-wp-return="battle"] { width:64px !important; min-width:64px !important; max-width:64px !important; height:48px !important; min-height:48px !important; max-height:48px !important; padding:10px 4px !important; }
+  .status-row { margin-bottom:4px; }
+  .chain-card { padding:4px 8px; }
+  .chain-track { min-height:42px; gap:4px; }
+  .chain-node { min-width:60px; min-height:34px; padding:4px 6px; font-size:.68rem; }
+  .chain-arrow { font-size:.75rem; }
+  .instruction { margin:4px auto; line-height:1.2; font-size:.78rem; }
+  .tile-rack { gap:4px; }
+  .habitat-tile { min-height:72px; padding:4px 4px 6px; border-radius:10px; gap:1px; }
+  .tile-art { width:24px; height:22px; margin-bottom:0; }
+  .tile-glyph { min-height:13px; font-size:.9rem; line-height:1; }
+  .tile-side, .tile-link { font-size:.62rem; line-height:1.05; }
+  .feedback-art { width:48px; height:28px; margin:3px auto 0; }
+  .battle-status { height:24px; min-height:24px; margin:3px auto 0; font-size:.74rem; line-height:1.15; }
+  .text-btn { height:36px; min-height:36px; margin-top:2px; padding:4px 10px; font-size:.78rem; }
+}
 [dir="rtl"] .status-row { direction:rtl; }

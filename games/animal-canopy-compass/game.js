@@ -99,6 +99,8 @@
   };
   const renderBattle = () => {
     const round = rounds[state.round];
+    const battleCanvas = document.querySelector(".battle-canvas");
+    const preservedScrollTop = battleCanvas?.scrollTop || 0;
     $("battleHeading").textContent = t("title");
     $("roundLabel").textContent = t("round", { number: state.round + 1, total: rounds.length });
     $("hint").textContent = t(round.hint);
@@ -111,12 +113,23 @@
     $("result").hidden = true;
     $("checkBtn").disabled = false;
     $("resetBtn").disabled = false;
+    if (battleCanvas) battleCanvas.scrollTop = preservedScrollTop;
   };
   const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.direction = 0; state.turns = 0; setScreen("battle"); $("status").textContent = t("ready"); };
   const startSession = () => { setScreen("stage"); };
   const check = () => {
     const round = rounds[state.round];
-    if (state.direction !== round.target) { $("status").textContent = t("wrong"); return; }
+    const battleCanvas = document.querySelector(".battle-canvas");
+    const preservedScrollTop = battleCanvas?.scrollTop || 0;
+    if (state.direction !== round.target) {
+      $("status").textContent = t("wrong");
+      if (document.activeElement === $("checkBtn")) $("checkBtn").blur();
+      if (battleCanvas) {
+        battleCanvas.scrollTop = preservedScrollTop;
+        window.requestAnimationFrame(() => { battleCanvas.scrollTop = preservedScrollTop; });
+      }
+      return;
+    }
     state.completed = state.completed.includes(state.round) ? state.completed : [...state.completed, state.round];
     $("progress").textContent = t("progress", { count: state.completed.length });
     $("status").textContent = t("correct");

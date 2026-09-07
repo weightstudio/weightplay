@@ -1,0 +1,25 @@
+/*
+ * Orbit Orchard v5 exact-current Issue repair.
+ * Keep the compact Main poster at the Interface 6 420px landscape contract,
+ * and reserve a stable feedback region so persistent Battle actions do not
+ * move when a miss message wraps.
+ */
+@media (min-width: 700px) and (max-height: 540px) and (orientation: landscape) {
+  .hero-card {
+    grid-template-columns: 420px minmax(0, 1fr);
+  }
+
+  .hero-card .main-poster {
+    width: 420px;
+    height: 420px;
+  }
+}
+
+.battle-status {
+  height: 56px;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.35;
+}

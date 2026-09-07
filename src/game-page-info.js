@@ -2059,10 +2059,17 @@
     casino: {
       title: "Casino", age: "9+", difficulty: "Medium", time: "5-15 minutes",
       gameplay: "Fishing and Capture Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true,
       intro: "Play a card to capture a table card of the same value or several table cards whose values add to it.",
-      how: ["Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
-      faq: [["Is progress saved?", "Yes, only in this browser."]],
+      story: ["Casino is a classic capture game built around a small table, a hand of cards, and the question of when to take a simple card or wait for a stronger combination.", "Each round rewards clear counting: collect table cards, protect useful ranks, and decide when a special bonus is worth changing your plan."],
+      systems: ["On your turn, play one hand card. You may capture one table card of the same value or several table cards whose values add to the played card.", "Captured cards leave the table and count toward your score. If a played card cannot capture, it remains on the table for a later turn.", "Spades are tracked as a suit collection, while the Ten of Diamonds and Two of Spades provide special bonus opportunities when captured.", "The round continues through the dealt hands and table resets; the Result screen reports the final capture score and lets you start a fresh deal."],
+      how: ["Read the table and identify a same-value capture or a sum that matches one card in your hand.", "Select the hand card you want to play, then select the legal table card or combination to capture.", "Keep useful table values available when a larger combination can score more safely on a later turn.", "Track Spades and the two special bonus cards without sacrificing an easy capture that prevents the table from growing.", "After the round, review the capture result and use Restart or New Game to replay the decision loop."],
+      strategyTips: ["Count the table before choosing a card; a matching sum can be more valuable than the first single-card capture you notice.", "Avoid leaving a large, easy sum for the opponent when a low-risk capture keeps the table compact.", "Watch which Spades have already appeared so the suit bonus does not pull you into an unsafe combination.", "Treat the Ten of Diamonds and Two of Spades as opportunities, not obligations; a clean capture is often the better tempo."],
+      progression: ["A deal moves from hand decisions to table cleanup, with each new hand asking you to recompute legal captures rather than follow a fixed script.", "Replay improves planning through different table layouts while keeping the rules stable: capture by value or sum, collect scoring cards, and finish the deal."],
+      designNote: "Casino uses a compact table and transparent capture rules so the strategic value comes from reading combinations, not from hidden upgrades or account-gated rewards.",
+      noteTitle: "Public play", parent: "Play Casino free in your browser with no account or purchase required. Captures, the current deal, and local preferences stay in this browser.",
+      faq: [["How do I capture cards?", "Play a hand card, then choose one table card of the same value or several table cards whose values add to it."], ["What if no capture is available?", "Play a card to the table; it can become a capture target on a later turn."], ["What are the special bonuses?", "The Ten of Diamonds and Two of Spades have special bonus value, and Spades are tracked as a suit collection."], ["Does the game save my deal?", "No account is required; the current deal and local preferences stay only in this browser."], ["How do I replay?", "Use Restart to replay the current format or New Game to begin a fresh deal from the Main screen or Result screen."]],
+      relatedIds: ["spades", "hearts", "gin-rummy"],
     },
     "animal-trap-trail": {
       title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "8-20 minutes for the full trail",
@@ -18057,6 +18064,221 @@
       ...(localizedGames[localeCode].casino || {}),
       faq,
     };
+  }
+
+  // Casino is now a public General route. Keep the complete value-oriented
+  // Guide locale-owned so the public conversion does not expose the old
+  // one-line preview copy or the General-inappropriate Skills Trained fact.
+  const casinoValueLocaleCopies = {
+    en: {
+      story: ["Casino is a classic capture game built around a small table, a hand of cards, and the question of when to take a simple card or wait for a stronger combination.", "Each round rewards clear counting: collect table cards, protect useful ranks, and decide when a special bonus is worth changing your plan."],
+      systems: ["On your turn, play one hand card. You may capture one table card of the same value or several table cards whose values add to the played card.", "Captured cards leave the table and count toward your score. If a played card cannot capture, it remains on the table for a later turn.", "Spades are tracked as a suit collection, while the Ten of Diamonds and Two of Spades provide special bonus opportunities when captured.", "The round continues through the dealt hands and table resets; the Result screen reports the final capture score and lets you start a fresh deal."],
+      how: ["Read the table and identify a same-value capture or a sum that matches one card in your hand.", "Select the hand card you want to play, then select the legal table card or combination to capture.", "Keep useful table values available when a larger combination can score more safely on a later turn.", "Track Spades and the two special bonus cards without sacrificing an easy capture that prevents the table from growing.", "After the round, review the capture result and use Restart or New Game to replay the decision loop."],
+      strategyTips: ["Count the table before choosing a card; a matching sum can be more valuable than the first single-card capture you notice.", "Avoid leaving a large, easy sum for the opponent when a low-risk capture keeps the table compact.", "Watch which Spades have already appeared so the suit bonus does not pull you into an unsafe combination.", "Treat the Ten of Diamonds and Two of Spades as opportunities, not obligations; a clean capture is often the better tempo."],
+      progression: ["A deal moves from hand decisions to table cleanup, with each new hand asking you to recompute legal captures rather than follow a fixed script.", "Replay improves planning through different table layouts while keeping the rules stable: capture by value or sum, collect scoring cards, and finish the deal."],
+      designNote: "Casino uses a compact table and transparent capture rules so the strategic value comes from reading combinations, not from hidden upgrades or account-gated rewards.",
+      noteTitle: "Public play", parent: "Play Casino free in your browser with no account or purchase required. Captures, the current deal, and local preferences stay in this browser.",
+      faq: [["How do I capture cards?", "Play a hand card, then choose one table card of the same value or several table cards whose values add to it."], ["What if no capture is available?", "Play a card to the table; it can become a capture target on a later turn."], ["What are the special bonuses?", "The Ten of Diamonds and Two of Spades have special bonus value, and Spades are tracked as a suit collection."], ["Does the game save my deal?", "No account is required; the current deal and local preferences stay only in this browser."], ["How do I replay?", "Use Restart to replay the current format or New Game to begin a fresh deal from the Main screen or Result screen."]],
+    },
+    "zh-Hant": {
+      story: ["卡西諾是一款經典捕牌遊戲，核心是讀懂小牌桌、手牌，以及何時該先拿單張牌、何時該等待更好的組合。", "每局都獎勵清楚的點數判讀：收集桌牌、保留有用點數，再判斷特殊獎勵是否值得改變原本計畫。"],
+      systems: ["輪到你時出一張手牌，可以捕獲一張相同點數的桌牌，或捕獲數張合計點數等於出牌的桌牌。", "被捕獲的桌牌會離開牌桌並計入分數；若出牌無法捕獲，就會留在桌上，成為之後的捕牌目標。", "黑桃會作為花色收集追蹤，方塊 10 與黑桃 2 被捕獲時則提供特殊獎勵機會。", "牌局會隨著發牌與桌面整理持續進行；結果畫面會顯示最後捕牌分數，並可開始新牌局。"],
+      how: ["先讀桌面，找出相同點數的單張捕獲，或能與手牌相加的合計。", "選擇要出的手牌，再選擇合法的桌牌或桌牌組合完成捕獲。", "當較大的組合能安全得分時，先保留有用點數，不要急著拿走第一個看見的單張。", "追蹤黑桃與兩張特殊獎勵牌，但不要為了獎勵放棄能讓桌面保持精簡的穩定捕獲。", "牌局結束後查看結果，使用重開或新牌局重新練習判讀循環。"],
+      strategyTips: ["出牌前先數桌面；合計捕獲可能比第一個單張捕獲更有價值。", "若低風險捕獲能讓桌面保持精簡，就不要把容易形成的大合計留給對手。", "留意已出現的黑桃，避免為了花色獎勵勉強湊出危險組合。", "把方塊 10 與黑桃 2 視為機會而非義務；乾淨的捕獲通常更能維持節奏。"],
+      progression: ["一局會從手牌決策推進到桌面清理；每次新發牌都要重新計算合法捕獲，而不是照固定腳本行動。", "不同桌面配置讓重玩能持續練習規劃，但規則保持一致：依點數或合計捕獲、收集得分牌並完成牌局。"],
+      designNote: "卡西諾使用精簡牌桌與透明捕牌規則，讓策略價值來自讀懂組合，而不是隱藏升級或帳號限制。",
+      noteTitle: "公開遊玩", parent: "免費在瀏覽器遊玩卡西諾，不需帳號或購買。捕獲紀錄、目前牌局與本機偏好只保存在這個瀏覽器。",
+      faq: [["如何捕獲桌牌？", "出一張手牌，再選擇一張相同點數的桌牌，或選擇合計點數相符的多張桌牌。"], ["如果沒有可捕獲的牌呢？", "把一張手牌放到桌面；它可能在之後成為捕牌目標。"], ["特殊獎勵是什麼？", "方塊 10 與黑桃 2 有特殊分值，黑桃也會以花色收集方式追蹤。"], ["牌局會保存嗎？", "不需要帳號；目前牌局與本機偏好只保存在這個瀏覽器。"], ["如何重玩？", "從主畫面或結果畫面使用重開重玩目前格式，或使用新牌局開始全新的牌局。"]],
+    },
+    "zh-Hans": {
+      story: ["卡西诺是一款经典捕牌游戏，核心是读懂小牌桌、手牌，以及何时先拿单张牌、何时等待更好的组合。", "每局都奖励清楚的点数判断：收集桌牌、保留有用点数，再判断特殊奖励是否值得改变原本计划。"],
+      systems: ["轮到你时出一张手牌，可以捕获一张相同点数的桌牌，或捕获数张合计点数等于出牌的桌牌。", "被捕获的桌牌会离开牌桌并计入分数；如果出牌无法捕获，就会留在桌上，成为之后的捕牌目标。", "黑桃会作为花色收集追踪，方块 10 与黑桃 2 被捕获时则提供特殊奖励机会。", "牌局会随着发牌与桌面整理继续进行；结果画面会显示最后捕牌分数，并可开始新牌局。"],
+      how: ["先读桌面，找出相同点数的单张捕获，或能与手牌相加的合计。", "选择要出的手牌，再选择合法的桌牌或桌牌组合完成捕获。", "当较大的组合能安全得分时，先保留有用点数，不要急着拿走第一个看见的单张。", "追踪黑桃与两张特殊奖励牌，但不要为了奖励放弃能让桌面保持精简的稳定捕获。", "牌局结束后查看结果，使用重开或新牌局重新练习判断循环。"],
+      strategyTips: ["出牌前先数桌面；合计捕获可能比第一个单张捕获更有价值。", "如果低风险捕获能让桌面保持精简，就不要把容易形成的大合计留给对手。", "留意已经出现的黑桃，避免为了花色奖励勉强凑出危险组合。", "把方块 10 与黑桃 2 视为机会而非义务；干净的捕获通常更能保持节奏。"],
+      progression: ["一局会从手牌决策推进到桌面清理；每次新发牌都要重新计算合法捕获，而不是照固定脚本行动。", "不同桌面配置让重玩能持续练习规划，但规则保持一致：按点数或合计捕获、收集得分牌并完成牌局。"],
+      designNote: "卡西诺使用精简牌桌与透明捕牌规则，让策略价值来自读懂组合，而不是隐藏升级或账号限制。",
+      noteTitle: "公开游玩", parent: "免费在浏览器游玩卡西诺，无需账号或购买。捕获记录、当前牌局与本机偏好只保存在此浏览器。",
+      faq: [["如何捕获桌牌？", "出一张手牌，再选择一张相同点数的桌牌，或选择合计点数相符的多张桌牌。"], ["如果没有可捕获的牌呢？", "把一张手牌放到桌面；它可能在之后成为捕牌目标。"], ["特殊奖励是什么？", "方块 10 与黑桃 2 有特殊分值，黑桃也会以花色收集方式追踪。"], ["牌局会保存吗？", "不需要账号；当前牌局与本机偏好只保存在此浏览器。"], ["如何重玩？", "从主画面或结果画面使用重开重玩当前格式，或使用新牌局开始全新的牌局。"]],
+    },
+    ja: {
+      story: ["カシノは、場札と手札を読み、単純な1枚取りを選ぶか、強い組み合わせを待つかを考えるクラシックな獲得カードゲームです。", "各ラウンドでは、場札の数を正確に読み、役立つ値を残し、特別ボーナスのために計画を変える価値があるか判断します。"],
+      systems: ["自分の番では手札を1枚出します。同じ値の場札1枚、または出したカードと合計が一致する複数の場札を獲得できます。", "獲得した場札はテーブルから除かれて得点になります。獲得できないカードは場に残り、後の取り札になります。", "スペードはスートの収集として記録され、ダイヤの10とスペードの2を取ると特別ボーナスの機会が生まれます。", "配られた手札と場の整理を繰り返し、結果画面で最終獲得点を確認して新しいディールを始められます。"],
+      how: ["場札を読み、同じ値の1枚取りか、手札と合計が合う組み合わせを探します。", "出す手札を選び、獲得できる場札または組み合わせを選びます。", "大きな組み合わせを安全に取れるなら、役立つ値を残して先に単純な1枚取りをしないようにします。", "スペードと2枚のボーナスカードを追いながら、場を増やさない安全な獲得も大切にします。", "ラウンド後に結果を確認し、リスタートまたは新しいゲームで判断の流れをもう一度試します。"],
+      strategyTips: ["カードを出す前に場の合計を数えます。最初に見つけた1枚取りより、合計取りの方が価値を持つことがあります。", "低リスクの獲得で場を小さくできるなら、相手に大きな合計を残さないようにします。", "出たスペードを覚え、スートボーナスのために無理な組み合わせを作らないようにします。", "ダイヤの10とスペードの2は機会であり義務ではありません。きれいな獲得がテンポを守ることもあります。"],
+      progression: ["ディールは手札の判断から場の整理へ進み、新しい手札ごとに固定手順ではなく合法的な獲得を計算し直します。", "場の配置が変わるためリプレイで計画力を練習できますが、値または合計で取り、得点札を集めてディールを終えるルールは変わりません。"],
+      designNote: "カシノは小さなテーブルと透明な獲得ルールを使い、隠しアップグレードやアカウント制限ではなく組み合わせの読みで戦略を生みます。",
+      noteTitle: "公開プレイ", parent: "アカウントや購入なしで、ブラウザから無料でカシノを遊べます。獲得記録、現在のディール、ローカル設定はこのブラウザにだけ保存されます。",
+      faq: [["どうやってカードを取りますか？", "手札を1枚出し、同じ値の場札1枚か、合計が一致する複数の場札を選びます。"], ["取れるカードがない場合は？", "手札を場に出します。そのカードは後のターンで獲得対象になります。"], ["特別ボーナスとは？", "ダイヤの10とスペードの2には特別な価値があり、スペードはスート収集として記録されます。"], ["ディールは保存されますか？", "アカウントは不要です。現在のディールとローカル設定だけがこのブラウザに保存されます。"], ["どうやってリプレイしますか？", "メインまたは結果画面でリスタートを選ぶと同じ形式を再挑戦でき、新しいゲームで新しいディールを始められます。"]],
+    },
+    ko: {
+      story: ["카지노는 작은 테이블과 손패를 읽으며 지금 한 장을 가져갈지, 더 강한 조합을 기다릴지 판단하는 클래식 캡처 카드 게임입니다.", "매 라운드는 테이블의 숫자를 정확히 세고, 유용한 값을 남기며, 특별 보너스를 위해 계획을 바꿀지 결정하는 재미를 줍니다."],
+      systems: ["내 차례에는 손패 한 장을 냅니다. 같은 값의 테이블 카드 한 장이나 낸 카드와 합이 맞는 여러 장을 가져올 수 있습니다.", "가져온 카드는 테이블에서 사라지고 점수에 반영됩니다. 가져올 수 없는 카드는 테이블에 남아 다음 차례의 대상이 됩니다.", "스페이드는 무늬 수집으로 기록되며 다이아몬드 10과 스페이드 2를 가져오면 특별 보너스 기회가 생깁니다.", "배분된 손패와 테이블 정리를 반복하고, 결과 화면에서 최종 캡처 점수를 확인한 뒤 새 딜을 시작합니다."],
+      how: ["테이블을 읽고 같은 값의 한 장 캡처나 손패와 합이 맞는 조합을 찾습니다.", "낼 손패를 고른 다음 가져올 수 있는 테이블 카드 또는 조합을 고릅니다.", "큰 조합을 안전하게 만들 수 있다면 유용한 값을 남기고 보이는 한 장을 서둘러 가져가지 않습니다.", "스페이드와 두 보너스 카드를 추적하되 테이블을 작게 유지하는 안전한 캡처를 놓치지 않습니다.", "라운드 뒤 결과를 확인하고 Restart 또는 New Game으로 판단 과정을 다시 연습합니다."],
+      strategyTips: ["카드를 내기 전에 테이블을 세세요. 처음 발견한 한 장보다 합계 캡처가 더 가치 있을 수 있습니다.", "낮은 위험의 캡처로 테이블을 작게 만들 수 있다면 상대에게 큰 합을 남기지 마세요.", "이미 나온 스페이드를 기억해 무늬 보너스 때문에 무리한 조합을 만들지 마세요.", "다이아몬드 10과 스페이드 2는 기회이지 의무가 아닙니다. 깔끔한 캡처가 더 좋은 흐름일 때가 많습니다."],
+      progression: ["한 딜은 손패 판단에서 테이블 정리로 이어지며, 새 손패마다 정해진 순서 대신 가능한 캡처를 다시 계산하게 합니다.", "테이블 배치가 달라져 리플레이로 계획을 연습할 수 있지만 값이나 합으로 캡처하고 점수 카드를 모아 딜을 끝내는 규칙은 같습니다."],
+      designNote: "카지노는 작은 테이블과 투명한 캡처 규칙으로 숨겨진 업그레이드나 계정 보상 없이 조합 읽기에서 전략이 나오도록 설계되었습니다.",
+      noteTitle: "공개 플레이", parent: "계정이나 구매 없이 브라우저에서 카지노를 무료로 플레이하세요. 캡처 기록, 현재 딜, 로컬 설정은 이 브라우저에만 저장됩니다.",
+      faq: [["카드는 어떻게 가져오나요?", "손패 한 장을 내고 같은 값의 테이블 카드 한 장 또는 합이 맞는 여러 장을 선택합니다."], ["가져올 카드가 없으면 어떻게 하나요?", "카드를 테이블에 놓으세요. 다음 차례의 캡처 대상이 될 수 있습니다."], ["특별 보너스는 무엇인가요?", "다이아몬드 10과 스페이드 2에는 특별한 가치가 있고 스페이드는 무늬 수집으로 기록됩니다."], ["딜이 저장되나요?", "계정은 필요하지 않습니다. 현재 딜과 로컬 설정만 이 브라우저에 저장됩니다."], ["다시 플레이하려면 어떻게 하나요?", "메인 또는 결과 화면에서 Restart로 같은 형식을 다시 하고 New Game으로 새 딜을 시작할 수 있습니다."]],
+    },
+    es: {
+      story: ["Casino es un juego clásico de capturas en el que lees la mesa y tu mano para decidir entre tomar una carta sencilla o esperar una combinación mejor.", "Cada ronda premia contar con claridad: recoge cartas de la mesa, conserva valores útiles y decide si un bono especial merece cambiar tu plan."],
+      systems: ["En tu turno juegas una carta de la mano. Puedes capturar una carta de mesa del mismo valor o varias cuya suma coincida con la carta jugada.", "Las cartas capturadas salen de la mesa y cuentan para tu puntuación. Si no puedes capturar, la carta jugada queda en la mesa para otro turno.", "Las picas se siguen como colección de palo, mientras que el 10 de diamantes y el 2 de picas ofrecen oportunidades de bonificación.", "La ronda continúa con las manos repartidas y la limpieza de la mesa; el resultado muestra la captura final y permite iniciar un reparto nuevo."],
+      how: ["Lee la mesa y busca una captura del mismo valor o una suma que coincida con una carta de tu mano.", "Elige la carta de mano que vas a jugar y después la carta o combinación legal que vas a capturar.", "Conserva valores útiles cuando una combinación grande pueda capturarse con seguridad en el turno siguiente.", "Sigue las picas y las dos cartas de bono sin renunciar a una captura limpia que mantenga pequeña la mesa.", "Revisa el resultado y usa Reiniciar o Nueva partida para repetir el ciclo de decisiones."],
+      strategyTips: ["Cuenta la mesa antes de jugar; una captura por suma puede valer más que la primera carta individual que veas.", "No dejes una suma grande y fácil al rival si una captura de bajo riesgo mantiene la mesa controlada.", "Recuerda qué picas ya aparecieron para no forzar una combinación insegura por el bono de palo.", "El 10 de diamantes y el 2 de picas son oportunidades, no obligaciones; una captura limpia puede mantener mejor el ritmo."],
+      progression: ["La partida pasa de decisiones de mano a limpieza de mesa y te pide recalcular las capturas legales con cada reparto.", "Las distintas mesas hacen que repetir ayude a practicar la planificación, mientras las reglas permanecen estables: capturar por valor o suma y completar el reparto."],
+      designNote: "Casino usa una mesa compacta y reglas de captura transparentes para que la estrategia nazca de leer combinaciones, no de mejoras ocultas ni recompensas con cuenta.",
+      noteTitle: "Juego público", parent: "Juega Casino gratis en tu navegador, sin cuenta ni compras. Las capturas, el reparto actual y las preferencias locales permanecen en este navegador.",
+      faq: [["¿Cómo capturo cartas?", "Juega una carta de tu mano y elige una carta de mesa del mismo valor o varias cuya suma coincida."], ["¿Qué hago si no hay captura?", "Juega una carta a la mesa; puede convertirse en objetivo de captura en otro turno."], ["¿Cuáles son los bonos especiales?", "El 10 de diamantes y el 2 de picas tienen valor especial, y las picas se siguen como colección de palo."], ["¿Se guarda el reparto?", "No hace falta una cuenta; el reparto actual y las preferencias locales solo quedan en este navegador."], ["¿Cómo vuelvo a jugar?", "Usa Reiniciar para repetir el formato actual o Nueva partida para comenzar un reparto nuevo desde Main o Resultado."]],
+    },
+    "pt-BR": {
+      story: ["Casino é um jogo clássico de captura em que você lê a mesa e a mão para decidir entre pegar uma carta simples ou esperar uma combinação melhor.", "Cada rodada recompensa a contagem clara: capture cartas da mesa, preserve valores úteis e decida se um bônus especial merece mudar seu plano."],
+      systems: ["Na sua vez, jogue uma carta da mão. Você pode capturar uma carta da mesa com o mesmo valor ou várias cuja soma corresponda à carta jogada.", "As cartas capturadas saem da mesa e entram na pontuação. Se não houver captura, a carta jogada fica na mesa para uma rodada futura.", "As espadas são acompanhadas como uma coleção de naipe, enquanto o 10 de ouros e o 2 de espadas oferecem oportunidades de bônus.", "A rodada segue pelos montes distribuídos e pela limpeza da mesa; o resultado mostra a pontuação final e permite iniciar uma nova distribuição."],
+      how: ["Leia a mesa e encontre uma captura do mesmo valor ou uma soma que combine com uma carta da mão.", "Escolha a carta da mão e depois a carta ou combinação legal que será capturada.", "Guarde valores úteis quando uma combinação maior puder ser capturada com segurança no próximo turno.", "Acompanhe as espadas e as duas cartas de bônus sem abrir mão de uma captura segura que mantenha a mesa pequena.", "Confira o resultado e use Reiniciar ou Novo jogo para repetir o ciclo de decisões."],
+      strategyTips: ["Conte a mesa antes de jogar; uma captura por soma pode valer mais que a primeira captura simples encontrada.", "Não deixe uma soma grande e fácil para o adversário quando uma captura de baixo risco mantém a mesa sob controle.", "Lembre quais espadas já apareceram para não forçar uma combinação ruim pelo bônus de naipe.", "O 10 de ouros e o 2 de espadas são oportunidades, não obrigações; uma captura limpa costuma preservar melhor o ritmo."],
+      progression: ["A distribuição passa de decisões da mão para a limpeza da mesa, exigindo que você recalcule as capturas legais a cada nova mão.", "Mesas diferentes fazem o replay praticar planejamento, mantendo as regras estáveis: capturar por valor ou soma e terminar a distribuição."],
+      designNote: "Casino usa uma mesa compacta e regras transparentes para que a estratégia venha da leitura das combinações, sem melhorias ocultas ou recompensas ligadas a conta.",
+      noteTitle: "Jogo público", parent: "Jogue Casino gratuitamente no navegador, sem conta ou compra. Capturas, a distribuição atual e preferências locais ficam apenas neste navegador.",
+      faq: [["Como capturo cartas?", "Jogue uma carta da mão e escolha uma carta da mesa do mesmo valor ou várias cuja soma corresponda."], ["E se não houver captura?", "Coloque uma carta na mesa; ela pode virar alvo de captura em um turno futuro."], ["Quais são os bônus especiais?", "O 10 de ouros e o 2 de espadas têm valor especial, e as espadas são acompanhadas como coleção de naipe."], ["A distribuição é salva?", "Não é preciso ter conta; a distribuição atual e as preferências locais ficam somente neste navegador."], ["Como jogar novamente?", "Use Reiniciar para repetir o formato atual ou Novo jogo para começar uma nova distribuição na tela Main ou Resultado."]],
+    },
+    fr: {
+      story: ["Casino est un jeu classique de capture où vous lisez la table et votre main pour choisir entre prendre une carte simple ou attendre une combinaison plus forte.", "Chaque manche récompense un comptage clair : récupérez les cartes, gardez les valeurs utiles et décidez si un bonus mérite de changer votre plan."],
+      systems: ["À votre tour, jouez une carte de votre main. Vous pouvez capturer une carte de même valeur ou plusieurs cartes dont la somme correspond à la carte jouée.", "Les cartes capturées quittent la table et comptent pour le score. Si aucune capture n’est possible, la carte jouée reste sur la table pour un tour suivant.", "Les piques sont suivis comme une collection de couleur, tandis que le 10 de carreau et le 2 de pique offrent des occasions de bonus.", "La manche avance avec les mains distribuées et le nettoyage de la table ; le résultat affiche le score final et permet de lancer une nouvelle donne."],
+      how: ["Lisez la table et cherchez une capture de même valeur ou une somme correspondant à une carte de votre main.", "Choisissez la carte à jouer, puis la carte ou la combinaison légale à capturer.", "Gardez les valeurs utiles lorsqu’une grande combinaison pourra être capturée sans risque au tour suivant.", "Suivez les piques et les deux cartes bonus sans sacrifier une capture sûre qui garde la table compacte.", "Consultez le résultat et utilisez Recommencer ou Nouvelle partie pour rejouer la boucle de décision."],
+      strategyTips: ["Comptez la table avant de jouer ; une capture par somme peut valoir plus que la première carte seule repérée.", "Ne laissez pas une grande somme facile à l’adversaire si une capture peu risquée garde la table sous contrôle.", "Retenez les piques déjà sortis pour ne pas forcer une combinaison risquée à cause du bonus de couleur.", "Le 10 de carreau et le 2 de pique sont des occasions, pas des obligations ; une capture nette préserve souvent le rythme."],
+      progression: ["La donne passe des décisions de main au nettoyage de la table et vous demande de recalculer les captures légales à chaque nouvelle main.", "Les configurations changent au rejouage, ce qui entraîne la planification tout en gardant les règles stables : capturer par valeur ou somme et terminer la donne."],
+      designNote: "Casino utilise une table compacte et des règles de capture transparentes afin que la stratégie vienne de la lecture des combinaisons, sans amélioration cachée ni récompense liée à un compte.",
+      noteTitle: "Jeu public", parent: "Jouez gratuitement à Casino dans votre navigateur, sans compte ni achat. Les captures, la donne actuelle et les préférences locales restent dans ce navigateur.",
+      faq: [["Comment capturer une carte ?", "Jouez une carte puis choisissez une carte de même valeur ou plusieurs cartes dont la somme correspond."], ["Que faire sans capture possible ?", "Jouez une carte sur la table ; elle pourra devenir une cible de capture plus tard."], ["Quels sont les bonus spéciaux ?", "Le 10 de carreau et le 2 de pique ont une valeur spéciale, et les piques sont suivis comme collection de couleur."], ["La donne est-elle enregistrée ?", "Aucun compte n’est nécessaire ; la donne actuelle et les préférences locales restent dans ce navigateur."], ["Comment rejouer ?", "Utilisez Recommencer pour rejouer le format actuel ou Nouvelle partie pour lancer une nouvelle donne depuis Main ou Résultat."]],
+    },
+    de: {
+      story: ["Cassino ist ein klassisches Fangspiel, bei dem du Tisch und Hand liest und zwischen einem einfachen Fang und einer stärkeren Kombination abwägst.", "Jede Runde belohnt klares Zählen: Sammle Tischkarten, bewahre nützliche Werte und entscheide, ob ein Sonderbonus deinen Plan ändern soll."],
+      systems: ["Spiele in deinem Zug eine Handkarte. Du darfst eine Tischkarte gleichen Werts oder mehrere Karten mit passender Summe nehmen.", "Genommene Karten verlassen den Tisch und zählen für den Punktestand. Ohne möglichen Fang bleibt die gespielte Karte für einen späteren Zug liegen.", "Pik wird als Farbensammlung verfolgt; Karo 10 und Pik 2 eröffnen beim Nehmen besondere Bonuschancen.", "Die Runde läuft über die ausgeteilten Hände und die Tischbereinigung. Der Ergebnisbildschirm zeigt die Fangpunkte und startet eine neue Ausgabe."],
+      how: ["Lies den Tisch und suche einen Fang gleichen Werts oder eine Summe, die zu einer Handkarte passt.", "Wähle die Handkarte und danach die legale Tischkarte oder Kombination.", "Bewahre nützliche Werte, wenn du eine größere Kombination im nächsten Zug sicher nehmen kannst.", "Verfolge Pik und die beiden Bonuskarten, ohne einen sicheren Fang aufzugeben, der den Tisch klein hält.", "Prüfe das Ergebnis und nutze Neustart oder Neues Spiel, um den Entscheidungsablauf zu wiederholen."],
+      strategyTips: ["Zähle den Tisch vor dem Ausspielen; ein Summenfang kann mehr wert sein als der erste einzelne Fang.", "Lass dem Gegner keine große, leichte Summe, wenn ein risikoarmer Fang den Tisch kontrolliert.", "Merke dir bereits erschienene Pik-Karten, damit der Farbbonus dich nicht zu einer unsicheren Kombination verleitet.", "Karo 10 und Pik 2 sind Chancen, keine Pflicht; ein sauberer Fang hält oft den besseren Rhythmus."],
+      progression: ["Eine Ausgabe führt von Handentscheidungen zur Tischbereinigung. Mit jeder neuen Hand berechnest du legale Fänge neu statt einem festen Skript zu folgen.", "Andere Tischlagen machen Wiederholungen zu einer Planungsübung, während die Regeln gleich bleiben: nach Wert oder Summe fangen und die Ausgabe beenden."],
+      designNote: "Cassino nutzt einen kompakten Tisch und transparente Fangregeln, damit Strategie aus dem Lesen von Kombinationen entsteht und nicht aus versteckten Upgrades oder Konto-Belohnungen.",
+      noteTitle: "Öffentlich spielbar", parent: "Spiele Cassino kostenlos im Browser, ohne Konto oder Kauf. Fänge, die aktuelle Ausgabe und lokale Einstellungen bleiben in diesem Browser.",
+      faq: [["Wie nehme ich Karten?", "Spiele eine Handkarte und wähle eine Tischkarte gleichen Werts oder mehrere Karten mit passender Summe."], ["Was passiert ohne möglichen Fang?", "Lege eine Karte auf den Tisch; sie kann später zum Fangziel werden."], ["Welche Sonderboni gibt es?", "Karo 10 und Pik 2 haben besonderen Wert, und Pik wird als Farbensammlung verfolgt."], ["Wird die Ausgabe gespeichert?", "Ein Konto ist nicht nötig; die aktuelle Ausgabe und lokale Einstellungen bleiben nur in diesem Browser."], ["Wie spiele ich erneut?", "Nutze Neustart für das aktuelle Format oder Neues Spiel für eine neue Ausgabe auf Main oder Ergebnis."]],
+    },
+    it: {
+      story: ["Cassino è un classico gioco di cattura in cui leggi il tavolo e la mano per decidere se prendere una carta semplice o aspettare una combinazione più forte.", "Ogni mano premia il conteggio chiaro: raccogli le carte, conserva i valori utili e valuta se un bonus speciale merita di cambiare piano."],
+      systems: ["Nel tuo turno giochi una carta dalla mano. Puoi catturare una carta dello stesso valore o più carte la cui somma corrisponde alla carta giocata.", "Le carte catturate lasciano il tavolo e valgono per il punteggio. Se non puoi catturare, la carta giocata resta sul tavolo per un turno futuro.", "Le picche vengono tracciate come raccolta del seme, mentre il 10 di quadri e il 2 di picche offrono occasioni di bonus.", "La mano continua tra distribuzioni e pulizia del tavolo; il risultato mostra il punteggio finale e permette di iniziare una nuova distribuzione."],
+      how: ["Leggi il tavolo e cerca una cattura dello stesso valore o una somma che corrisponda a una carta della mano.", "Scegli la carta da giocare e poi la carta o combinazione legale da catturare.", "Conserva i valori utili quando una combinazione più grande può essere catturata in sicurezza al turno successivo.", "Segui le picche e le due carte bonus senza rinunciare a una cattura sicura che mantenga piccolo il tavolo.", "Controlla il risultato e usa Riavvia o Nuova partita per ripetere il ciclo decisionale."],
+      strategyTips: ["Conta il tavolo prima di giocare: una cattura per somma può valere più della prima carta singola che noti.", "Non lasciare all’avversario una somma grande e facile se una cattura a basso rischio mantiene il tavolo sotto controllo.", "Ricorda quali picche sono già uscite per non forzare una combinazione rischiosa per il bonus del seme.", "Il 10 di quadri e il 2 di picche sono opportunità, non obblighi; una cattura pulita spesso mantiene un ritmo migliore."],
+      progression: ["La distribuzione passa dalle decisioni della mano alla pulizia del tavolo e richiede di ricalcolare le catture legali a ogni nuova mano.", "Tavoli diversi rendono il replay un esercizio di pianificazione, mentre le regole restano stabili: catturare per valore o somma e chiudere la distribuzione."],
+      designNote: "Cassino usa un tavolo compatto e regole di cattura trasparenti, così la strategia nasce dalla lettura delle combinazioni e non da potenziamenti nascosti o ricompense legate all’account.",
+      noteTitle: "Gioco pubblico", parent: "Gioca a Cassino gratis nel browser, senza account o acquisti. Catture, distribuzione attuale e preferenze locali restano in questo browser.",
+      faq: [["Come catturo le carte?", "Gioca una carta e scegli una carta dello stesso valore oppure più carte con una somma corrispondente."], ["Cosa faccio se non posso catturare?", "Metti una carta sul tavolo; potrà diventare un bersaglio di cattura più avanti."], ["Quali sono i bonus speciali?", "Il 10 di quadri e il 2 di picche hanno valore speciale, e le picche sono tracciate come raccolta del seme."], ["La distribuzione viene salvata?", "Non serve un account; distribuzione attuale e preferenze locali restano solo in questo browser."], ["Come gioco di nuovo?", "Usa Riavvia per ripetere il formato o Nuova partita per iniziare una nuova distribuzione da Main o Risultato."]],
+    },
+    ru: {
+      story: ["Кассино — классическая игра на сбор карт: нужно читать стол и руку, выбирая между простой картой и более сильной комбинацией.", "Каждый раунд награждает внимательный подсчёт: собирайте карты стола, сохраняйте полезные значения и решайте, стоит ли менять план ради особого бонуса."],
+      systems: ["В свой ход сыграйте одну карту из руки. Можно забрать одну карту стола того же значения или несколько карт с подходящей суммой.", "Забранные карты уходят со стола и учитываются в счёте. Если взять нельзя, сыгранная карта остаётся на столе для будущего хода.", "Пики учитываются как сбор масти, а 10 бубен и 2 пик дают особые возможности для бонуса.", "Раунд продолжается через раздачи и очистку стола; на экране результата показан итоговый счёт и доступна новая раздача."],
+      how: ["Прочитайте стол и найдите карту того же значения или сумму, совпадающую с картой в руке.", "Выберите карту руки, затем допустимую карту стола или комбинацию для взятия.", "Сохраняйте полезные значения, если большую комбинацию можно безопасно забрать следующим ходом.", "Следите за пиками и двумя бонусными картами, но не отказывайтесь от чистого взятия, которое уменьшает стол.", "После раунда изучите результат и используйте Повтор или Новая игра для новой попытки."],
+      strategyTips: ["Считайте стол до хода: взятие по сумме может быть ценнее первой одиночной карты.", "Не оставляйте сопернику большую очевидную сумму, если безопасное взятие удержит стол под контролем.", "Запоминайте вышедшие пики, чтобы бонус масти не заставил вас собирать рискованную комбинацию.", "10 бубен и 2 пик — это возможности, а не обязанность; чистое взятие часто лучше сохраняет темп."],
+      progression: ["Раздача ведёт от решений по руке к очистке стола; с каждой новой рукой нужно заново вычислять допустимые взятия.", "Разные расклады превращают повтор в тренировку планирования, но правила неизменны: брать по значению или сумме и завершать раздачу."],
+      designNote: "Кассино использует компактный стол и прозрачные правила взятия, поэтому стратегия строится на чтении комбинаций, а не на скрытых улучшениях или наградах аккаунта.",
+      noteTitle: "Открытая игра", parent: "Играйте в Кассино бесплатно в браузере, без аккаунта и покупок. Взятые карты, текущая раздача и локальные настройки остаются в этом браузере.",
+      faq: [["Как брать карты?", "Сыграйте карту из руки и выберите карту того же значения или несколько карт с подходящей суммой."], ["Что делать, если взять нельзя?", "Положите карту на стол; позже она может стать целью взятия."], ["Какие есть бонусы?", "10 бубен и 2 пик имеют особую ценность, а пики учитываются как сбор масти."], ["Сохраняется ли раздача?", "Аккаунт не нужен; текущая раздача и локальные настройки остаются только в этом браузере."], ["Как сыграть снова?", "Используйте Повтор для того же формата или Новая игра для новой раздачи с экрана Main или Результат."]],
+    },
+    hi: {
+      story: ["कैसिनो एक क्लासिक कार्ड-कैप्चर खेल है जिसमें आपको टेबल और हाथ को पढ़कर तय करना होता है कि अभी एक पत्ता लें या बेहतर संयोजन की प्रतीक्षा करें।", "हर राउंड साफ़ गिनती को महत्व देता है: टेबल के पत्ते लें, उपयोगी मान बचाएँ और तय करें कि विशेष बोनस के लिए योजना बदलना उचित है या नहीं।"],
+      systems: ["अपनी बारी में हाथ से एक पत्ता चलाएँ। उसी मान वाला एक टेबल पत्ता या ऐसा समूह लें जिसका योग चले हुए पत्ते के बराबर हो।", "लिए गए पत्ते टेबल से हटकर स्कोर में जुड़ते हैं। यदि कोई कैप्चर संभव न हो तो चला हुआ पत्ता अगली बारी के लिए टेबल पर रहता है।", "स्पेड को सूट-संग्रह के रूप में गिना जाता है, जबकि डायमंड 10 और स्पेड 2 विशेष बोनस के अवसर देते हैं।", "राउंड बाँटे गए हाथों और टेबल की सफाई के साथ चलता है; परिणाम स्क्रीन अंतिम कैप्चर स्कोर दिखाती है और नई डील शुरू कराती है।"],
+      how: ["टेबल पढ़कर उसी मान का कैप्चर या हाथ के पत्ते से मेल खाता योग खोजें।", "चलाने वाला हाथ का पत्ता चुनें, फिर कानूनी टेबल पत्ता या संयोजन चुनें।", "जब बड़ा संयोजन सुरक्षित रूप से लिया जा सके तो उपयोगी मान बचाएँ और पहले दिखे एकल पत्ते को जल्दी न लें।", "स्पेड और दोनों बोनस पत्तों पर नज़र रखें, लेकिन टेबल को छोटा रखने वाले सुरक्षित कैप्चर को न छोड़ें।", "राउंड के बाद परिणाम देखें और निर्णय चक्र को दोहराने के लिए Restart या New Game चुनें।"],
+      strategyTips: ["चलने से पहले टेबल गिनें; योग से कैप्चर पहला दिखने वाला एकल कैप्चर से अधिक मूल्यवान हो सकता है।", "यदि कम जोखिम वाला कैप्चर टेबल को छोटा रखता है तो प्रतिद्वंद्वी के लिए बड़ा आसान योग न छोड़ें।", "पहले आ चुके स्पेड याद रखें ताकि सूट बोनस के लिए असुरक्षित संयोजन न बनाना पड़े।", "डायमंड 10 और स्पेड 2 अवसर हैं, मजबूरी नहीं; साफ़ कैप्चर अक्सर बेहतर गति बनाए रखता है।"],
+      progression: ["डील हाथ के निर्णय से टेबल की सफाई तक जाती है और हर नए हाथ में संभावित कैप्चर फिर से गिनने पड़ते हैं।", "अलग-अलग टेबल लेआउट रीप्ले को योजना का अभ्यास बनाते हैं, जबकि नियम वही रहते हैं: मान या योग से कैप्चर करें और डील पूरी करें।"],
+      designNote: "कैसिनो छोटे टेबल और पारदर्शी कैप्चर नियमों से रणनीति को संयोजन पढ़ने पर टिकाता है, छिपे अपग्रेड या खाते से जुड़ी इनाम-व्यवस्था पर नहीं।",
+      noteTitle: "सार्वजनिक खेल", parent: "बिना खाते या खरीदारी के ब्राउज़र में कैसिनो मुफ्त खेलें। कैप्चर, वर्तमान डील और स्थानीय पसंद इसी ब्राउज़र में रहती हैं।",
+      faq: [["पत्ते कैसे लें?", "हाथ से एक पत्ता चलाएँ और उसी मान वाला एक टेबल पत्ता या बराबर योग वाले कई पत्ते चुनें।"], ["यदि कैप्चर न हो तो?", "एक पत्ता टेबल पर रखें; वह आगे चलकर कैप्चर का लक्ष्य बन सकता है।"], ["विशेष बोनस क्या हैं?", "डायमंड 10 और स्पेड 2 का विशेष मूल्य है, और स्पेड को सूट-संग्रह के रूप में गिना जाता है।"], ["क्या डील सेव होती है?", "खाते की आवश्यकता नहीं है; वर्तमान डील और स्थानीय पसंद केवल इसी ब्राउज़र में रहती हैं।"], ["फिर से कैसे खेलें?", "उसी प्रारूप के लिए Restart और नई डील के लिए Main या Result स्क्रीन से New Game चुनें।"]],
+    },
+    ar: {
+      story: ["كاسينو لعبة التقاط بطاقات كلاسيكية تقرأ فيها الطاولة ويدك لتقرر بين أخذ بطاقة بسيطة أو انتظار تركيبة أقوى.", "تكافئ كل جولة العد الواضح: اجمع بطاقات الطاولة، واحتفظ بالقيم المفيدة، وقرر هل يستحق bonus خاص تغيير خطتك."],
+      systems: ["في دورك العب بطاقة من يدك. يمكنك التقاط بطاقة من الطاولة بالقيمة نفسها أو عدة بطاقات يساوي مجموعها قيمة البطاقة الملعوبة.", "تغادر البطاقات الملتقطة الطاولة وتُحسب في النتيجة. إذا لم يكن هناك التقاط قانوني تبقى البطاقة الملعوبة على الطاولة لدور لاحق.", "تُتابع البستوني كمجموعة من النوع، بينما يمنح التقاط 10 الماس و2 البستوني فرص مكافأة خاصة.", "تستمر الجولة عبر الأيدي الموزعة وتنظيف الطاولة؛ تعرض شاشة النتيجة مجموع الالتقاط النهائي وتتيح بدء توزيع جديد."],
+      how: ["اقرأ الطاولة وابحث عن التقاط بالقيمة نفسها أو مجموع يطابق بطاقة في يدك.", "اختر بطاقة اليد التي ستلعبها ثم اختر بطاقة الطاولة أو التركيبة القانونية لالتقاطها.", "احتفظ بالقيم المفيدة عندما يمكنك التقاط تركيبة أكبر بأمان في الدور التالي.", "تابع البستوني وبطاقتي المكافأة من دون التضحية بالتقاط نظيف يبقي الطاولة صغيرة.", "راجع النتيجة بعد الجولة واستخدم إعادة المحاولة أو لعبة جديدة لتكرار دورة القرار."],
+      strategyTips: ["احسب بطاقات الطاولة قبل اللعب؛ قد يكون الالتقاط بالمجموع أفضل من أول بطاقة منفردة تراها.", "لا تترك مجموعًا كبيرًا وسهلًا للمنافس إذا كان الالتقاط منخفض المخاطر سيبقي الطاولة تحت السيطرة.", "تذكر البستوني التي ظهرت كي لا تجبرك مكافأة النوع على تركيبة غير آمنة.", "10 الماس و2 البستوني فرصتان وليسا التزامًا؛ غالبًا يحافظ الالتقاط النظيف على إيقاع أفضل."],
+      progression: ["تنتقل التوزيعة من قرارات اليد إلى تنظيف الطاولة، وعليك إعادة حساب الالتقاطات القانونية مع كل يد جديدة.", "تجعل ترتيبات الطاولة المختلفة الإعادة تمرينًا على التخطيط، بينما تبقى القواعد ثابتة: الالتقاط بالقيمة أو المجموع وإنهاء التوزيعة."],
+      designNote: "تستخدم كاسينو طاولة مدمجة وقواعد التقاط واضحة لتأتي الاستراتيجية من قراءة التركيبات، لا من ترقيات مخفية أو مكافآت مرتبطة بحساب.",
+      noteTitle: "لعب عام", parent: "العب كاسينو مجانًا في المتصفح بلا حساب أو شراء. تبقى الالتقاطات والتوزيعة الحالية والإعدادات المحلية في هذا المتصفح.",
+      faq: [["كيف ألتقط البطاقات؟", "العب بطاقة من يدك ثم اختر بطاقة بالطاولة بالقيمة نفسها أو عدة بطاقات يساوي مجموعها القيمة."], ["ماذا أفعل إذا لم يوجد التقاط؟", "ضع بطاقة على الطاولة؛ قد تصبح هدفًا للالتقاط في دور لاحق."], ["ما المكافآت الخاصة؟", "لـ10 الماس و2 البستوني قيمة خاصة، ويُتابع البستوني كمجموعة من النوع."], ["هل تُحفظ التوزيعة؟", "لا تحتاج إلى حساب؛ تبقى التوزيعة الحالية والإعدادات المحلية في هذا المتصفح فقط."], ["كيف ألعب مرة أخرى؟", "استخدم إعادة المحاولة للتنسيق الحالي أو لعبة جديدة لبدء توزيعة جديدة من الشاشة الرئيسية أو النتيجة."]],
+    },
+  };
+  for (const [localeCode, copy] of Object.entries(casinoValueLocaleCopies)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode].casino = { ...(localizedGames[localeCode].casino || {}), ...copy, showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true, relatedIds: ["spades", "hearts", "gin-rummy"] };
+  }
+
+  const casinoRelatedCardLocaleCopies = {
+    en: {
+      spades: { title: "Spades", intro: "Bid with a partner, follow suit, and use Spades as trump in a complete trick-taking hand." },
+      hearts: { title: "Hearts", intro: "Pass three cards, follow suit, and avoid penalty hearts across thirteen tricks." },
+      "gin-rummy": { title: "Gin Rummy", intro: "Build sets and suited runs while reducing unmatched Deadwood before the opponent knocks." },
+    },
+    "zh-Hant": {
+      spades: { title: "黑桃", intro: "與隊友叫牌、跟牌，並在完整墩戲中使用黑桃作為王牌。" },
+      hearts: { title: "紅心大戰", intro: "傳出三張牌、跟牌，並在十三墩中避開紅心懲罰牌。" },
+      "gin-rummy": { title: "金拉米", intro: "組成同點數套牌與同花色順子，在對手敲牌前降低未組牌的死牌分數。" },
+    },
+    "zh-Hans": {
+      spades: { title: "黑桃", intro: "与队友叫牌、跟牌，并在完整墩戏中使用黑桃作为王牌。" },
+      hearts: { title: "红心大战", intro: "传出三张牌、跟牌，并在十三墩中避开红心惩罚牌。" },
+      "gin-rummy": { title: "金拉米", intro: "组成同点数牌组和同花色顺子，在对手敲牌前减少未组合牌的死牌分数。" },
+    },
+    ja: {
+      spades: { title: "スペード", intro: "パートナーとビッドし、マストフォローし、スペードを切り札にして1ラウンドを戦います。" },
+      hearts: { title: "ハーツ", intro: "3枚をパスし、マストフォローし、13トリックでハートのペナルティカードを避けます。" },
+      "gin-rummy": { title: "ジン・ラミー", intro: "同じランクのセットと同じスートのランを作り、相手がノックする前にデッドウッドを減らします。" },
+    },
+    ko: {
+      spades: { title: "스페이드", intro: "파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다." },
+      hearts: { title: "하트", intro: "카드 세 장을 넘기고 같은 무늬를 따라 내며 13번의 트릭에서 벌점 하트를 피하세요." },
+      "gin-rummy": { title: "진 러미", intro: "같은 숫자의 세트와 같은 무늬의 연속을 만들고 상대가 노크하기 전에 데드우드를 줄이세요." },
+    },
+    es: {
+      spades: { title: "Picas", intro: "Apuesta con tu pareja, sigue el palo y usa las picas como triunfo en una mano completa." },
+      hearts: { title: "Corazones", intro: "Pasa tres cartas, sigue el palo y evita los corazones de penalización durante trece bazas." },
+      "gin-rummy": { title: "Gin Rummy", intro: "Forma grupos y escaleras del mismo palo mientras reduces las cartas sueltas antes del golpe rival." },
+    },
+    "pt-BR": {
+      spades: { title: "Espadas", intro: "Faça lances com sua dupla, siga o naipe e use espadas como trunfo em uma mão completa." },
+      hearts: { title: "Copas", intro: "Passe três cartas, siga o naipe e evite copas de penalidade ao longo de treze vazas." },
+      "gin-rummy": { title: "Gin Rummy", intro: "Monte conjuntos e sequências do mesmo naipe enquanto reduz as cartas soltas antes da batida rival." },
+    },
+    fr: {
+      spades: { title: "Pique", intro: "Enchérissez avec votre partenaire, fournissez la couleur et utilisez le pique comme atout dans une main complète." },
+      hearts: { title: "Cœurs", intro: "Passez trois cartes, fournissez la couleur et évitez les cœurs pénalisants pendant treize plis." },
+      "gin-rummy": { title: "Rami Gin", intro: "Formez des groupes et des suites de même couleur tout en réduisant les cartes isolées avant le knock adverse." },
+    },
+    de: {
+      spades: { title: "Pik", intro: "Reize mit deinem Partner, bediene die Farbe und nutze Pik als Trumpf in einer vollständigen Stichhand." },
+      hearts: { title: "Herz", intro: "Gib drei Karten weiter, bediene die Farbe und meide Strafherzen in dreizehn Stichen." },
+      "gin-rummy": { title: "Gin Rommé", intro: "Bilde gleiche Ränge und Farbfolgen und verringere tote Einzelkarten, bevor der Gegner klopft." },
+    },
+    it: {
+      spades: { title: "Picche", intro: "Fai l’asta con il partner, rispondi al seme e usa le picche come briscola in una mano completa." },
+      hearts: { title: "Cuori", intro: "Passa tre carte, rispondi al seme ed evita i cuori di penalità in tredici prese." },
+      "gin-rummy": { title: "Gin Rummy", intro: "Crea gruppi e scale dello stesso seme riducendo le carte spaiate prima del knock avversario." },
+    },
+    ru: {
+      spades: { title: "Пики", intro: "Делайте заявки с партнёром, ходите в масть и используйте пики как козырь в полной раздаче." },
+      hearts: { title: "Червы", intro: "Передайте три карты, ходите в масть и избегайте штрафных червей в тринадцати взятках." },
+      "gin-rummy": { title: "Джин-рамми", intro: "Собирайте группы и одномастные последовательности, уменьшая лишние карты до стука соперника." },
+    },
+    hi: {
+      spades: { title: "स्पेड्स", intro: "साथी के साथ बोली लगाएँ, रंग का पालन करें और पूरी बाज़ी में स्पेड्स को ट्रम्प की तरह इस्तेमाल करें।" },
+      hearts: { title: "हार्ट्स", intro: "तीन पत्ते पास करें, रंग का पालन करें और तेरह बाज़ियों में दंड वाले हार्ट्स से बचें।" },
+      "gin-rummy": { title: "जिन रमी", intro: "एक जैसे मान के सेट और एक ही सूट की क्रमिक पंक्तियाँ बनाएँ और प्रतिद्वंद्वी के नॉक से पहले डेडवुड घटाएँ।" },
+    },
+    ar: {
+      spades: { title: "البستوني", intro: "راهن مع شريكك، واتبع النوع، واستخدم البستوني حكماً في جولة خدع كاملة." },
+      hearts: { title: "القلوب", intro: "مرّر ثلاث بطاقات، واتبع النوع، وتجنب قلوب العقوبة خلال ثلاث عشرة خدعة." },
+      "gin-rummy": { title: "جِن رامي", intro: "كوّن مجموعات وتسلسلات من النوع نفسه، وخفّض البطاقات غير المجمّعة قبل طرق المنافس." },
+    },
+  };
+  for (const [localeCode, cards] of Object.entries(casinoRelatedCardLocaleCopies)) {
+    localizedGames[localeCode] ||= {};
+    for (const [gameId, copy] of Object.entries(cards)) {
+      localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
+    }
+    localizedRelatedCardCopy[localeCode] = { ...(localizedRelatedCardCopy[localeCode] || {}), ...cards };
   }
 
   // Deep Sea Salvage owns a complete Traditional Chinese Guide so the
