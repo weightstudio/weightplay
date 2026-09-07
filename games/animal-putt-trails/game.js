@@ -37,6 +37,32 @@
     copy[locale].holeTips = [...copy[locale].holeTips, value.tip];
   });
 
+  const campaignCopy = {
+    en: { checkpoint: "Checkpoint", finale: "Finale", completeCopy: "You earned {acorns} acorns across thirty calm stages." },
+    "zh-tw": { checkpoint: "檢查點", finale: "終章", completeCopy: "三十個寧靜關卡一共取得 {acorns} 顆橡果。" },
+    "zh-cn": { checkpoint: "检查点", finale: "终章", completeCopy: "三十个宁静关卡一共取得 {acorns} 颗橡果。" },
+    ja: { checkpoint: "チェックポイント", finale: "フィナーレ", completeCopy: "30の穏やかなステージでどんぐりを {acorns} 個獲得しました。" },
+    ko: { checkpoint: "체크포인트", finale: "피날레", completeCopy: "서른 개의 평온한 스테이지에서 도토리 {acorns}개를 얻었어요." },
+    es: { checkpoint: "Punto de control", finale: "Final", completeCopy: "Conseguiste {acorns} bellotas en treinta senderos tranquilos." },
+    "pt-br": { checkpoint: "Ponto de controle", finale: "Final", completeCopy: "Você ganhou {acorns} bolotas em trinta trilhas tranquilas." },
+    fr: { checkpoint: "Point de contrôle", finale: "Finale", completeCopy: "Tu as gagné {acorns} glands sur trente sentiers calmes." },
+    de: { checkpoint: "Kontrollpunkt", finale: "Finale", completeCopy: "Du hast {acorns} Eicheln auf dreißig ruhigen Pfaden gesammelt." },
+    it: { checkpoint: "Punto di controllo", finale: "Finale", completeCopy: "Hai raccolto {acorns} ghiande in trenta sentieri tranquilli." },
+    ru: { checkpoint: "Контрольная точка", finale: "Финал", completeCopy: "Ты собрал {acorns} желудей на тридцати спокойных тропах." },
+    hi: { checkpoint: "चेकपॉइंट", finale: "अंतिम चरण", completeCopy: "तीस शांत ट्रेल्स में आपने {acorns} बलूत पाए।" },
+    ar: { checkpoint: "نقطة تفتيش", finale: "النهائي", completeCopy: "جمعت {acorns} من ثمار البلوط عبر ثلاثين مساراً هادئاً." },
+  };
+  Object.entries(copy).forEach(([locale, value]) => {
+    const campaign = campaignCopy[locale];
+    value.checkpoint = campaign.checkpoint;
+    value.finale = campaign.finale;
+    value.completeCopy = campaign.completeCopy;
+    for (let stage = value.holeNames.length + 1; stage <= 30; stage += 1) {
+      value.holeNames.push(`${value.trail} ${stage}`);
+      value.holeTips.push(`${value.guide} ${campaign.checkpoint} ${stage}.`);
+    }
+  });
+
   // Localized routes are generated from this canonical source. Resolve the
   // route segment (or the generator's bootstrap marker) before stored locale
   // state so a direct Arabic route starts with its authored Arabic copy.
@@ -65,6 +91,23 @@
     { par: 4, start: [805, 170], cup: [160, 540], water: [385, 280, 175, 100], walls: [[240, 300, 22, 180], [700, 280, 22, 220], [300, 440, 260, 22]], tint: "#d8c79d" },
     { par: 5, start: [145, 540], cup: [820, 180], water: [420, 270, 170, 100], walls: [[220, 200, 270, 22], [520, 390, 270, 22], [700, 135, 22, 210]], tint: "#b9d4b2" },
   ];
+  holes.push(...Array.from({ length: 24 }, (_, offset) => {
+    const stage = offset + 7;
+    const base = holes[offset % 6];
+    const shiftX = ((stage * 37) % 120) - 60;
+    const shiftY = ((stage * 23) % 80) - 40;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const point = (source, x, y) => [clamp(source[0] + x, 90, 870), clamp(source[1] + y, 90, 630)];
+    const water = base.water ? [clamp(base.water[0] + shiftX / 2, 180, 650), clamp(base.water[1] + shiftY / 2, 140, 500), base.water[2], base.water[3]] : [clamp(300 + shiftX, 180, 570), clamp(240 + shiftY, 140, 480), 120 + (stage % 3) * 25, 70 + (stage % 2) * 20];
+    return {
+      par: Math.min(8, base.par + Math.floor((stage - 1) / 10)),
+      start: point(base.start, shiftX / 3, shiftY / 3),
+      cup: point(base.cup, -shiftX / 3, -shiftY / 3),
+      water,
+      walls: base.walls.map((wall, index) => [clamp(wall[0] + (index % 2 ? -shiftX / 3 : shiftX / 3), 70, 760), clamp(wall[1] + (index % 2 ? shiftY / 3 : -shiftY / 3), 60, 600), wall[2], wall[3]]),
+      tint: ["#b5e4a5", "#a6d6be", "#c5d8a5", "#b7d8b1", "#d8c79d", "#b9d4b2"][offset % 6],
+    };
+  }));
   const initialLocale = [routeLocale, queryLocale, storedLocale].find((value) => value && copy[value]) || "en";
   const state = { locale: initialLocale, holeIndex: 0, stagePage: 0, strokes: 0, totalStrokes: 0, totalAcorns: 0, sessionHoles: new Set(), sessionScores: {}, sessionAcorns: {}, ball: { x: 0, y: 0, vx: 0, vy: 0 }, aiming: false, keyboardAim: false, pointer: null, rolling: false, sound: true, progress: loadProgress() };
 
@@ -94,15 +137,19 @@
   }
   function showScreen(name) { Object.entries(screens).forEach(([key, node]) => { const active = key === name; node.classList.toggle("active", active); node.hidden = !active; }); document.body.dataset.screen = name; }
   function renderMainProgress() { const completed = holes.reduce((count, _, index) => count + (Number.isFinite(Number(state.progress[`hole${index + 1}`])) ? 1 : 0), 0); const best = state.progress.bestTotal || "—"; document.querySelector("#mainProgress").textContent = `${t("trail")}: ${completed}/${holes.length} ${t("hole")} · ${t("best")}: ${best} ${t("strokes")}`; }
+  function unlockedHoleCount() { let count = 1; while (count < holes.length && Number.isFinite(Number(state.progress[`hole${count}`]))) count += 1; return count; }
   function renderStageList() {
     const list = document.querySelector("#stageList");
     const pageStart = state.stagePage * 3;
     list.replaceChildren(...holes.slice(pageStart, pageStart + 3).map((hole, pageIndex) => {
       const index = pageStart + pageIndex;
-      const button = document.createElement("button"); button.type = "button"; button.className = "stage-choice"; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", "false"); button.setAttribute("data-wp-stage-card", ""); button.setAttribute("data-wp-enter-battle", "");
+      const available = index < unlockedHoleCount();
+      const checkpoint = (index + 1) % 5 === 0;
+      const marker = index === holes.length - 1 ? ` · ${t("finale")} · ${t("checkpoint")}` : checkpoint ? ` · ${t("checkpoint")}` : "";
+      const button = document.createElement("button"); button.type = "button"; button.className = `stage-choice${available ? "" : " locked"}`; button.setAttribute("role", "tab"); button.setAttribute("aria-selected", "false"); button.setAttribute("data-wp-stage-card", ""); button.setAttribute("aria-disabled", String(!available)); button.disabled = !available; if (available) button.setAttribute("data-wp-enter-battle", "");
       const best = state.progress[`hole${index + 1}`];
-      button.innerHTML = `<strong>${index + 1}. ${t("holeNames")[index]}</strong><span>${t("par")} ${hole.par} · ${t("holeTips")[index]}</span><span>${best ? `${t("best")}: ${best}` : `${t("best")}: —`}</span>`;
-      button.addEventListener("click", () => startHole(index));
+      button.innerHTML = `<strong>${index + 1}. ${t("holeNames")[index]}${marker}</strong><span>${available ? `${t("par")} ${hole.par} · ${t("holeTips")[index]}` : `🔒 ${t("stages")} ${index + 1}`}</span><span>${best ? `${t("best")}: ${best}` : `${t("best")}: —`}</span>`;
+      if (available) button.addEventListener("click", () => startHole(index));
       return button;
     }));
     const pageBack = document.querySelector("#stagePageBack");
@@ -113,8 +160,8 @@
     pageNext.setAttribute("aria-label", `${t("next")} ${t("trail")}`);
     document.querySelector("#stageBest").textContent = state.progress.bestTotal ? `${t("best")}: ${state.progress.bestTotal} ${t("strokes")}` : "";
   }
-  function startHole(index) { state.holeIndex = index; state.stagePage = Math.floor(index / 3); state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; document.querySelector("#resultCard").hidden = true; showScreen("battle"); updateHoleLabels(); updateHelp(); draw(); }
-  function updateHoleLabels() { const hole = holes[state.holeIndex]; document.querySelector("#holeTitle").textContent = t("holeNames")[state.holeIndex]; document.querySelector("#parLabel").textContent = `${t("par")} ${hole.par}`; document.querySelector("#strokeLabel").textContent = `${t("strokes")} ${state.strokes}`; document.querySelector("#acornLabel").textContent = `${t("acorns")} ${Math.max(0, hole.par + 1 - state.strokes)}`; }
+  function startHole(index) { if (index < 0 || index >= holes.length || index >= unlockedHoleCount()) return; state.holeIndex = index; state.stagePage = Math.floor(index / 3); state.strokes = 0; state.rolling = false; state.aiming = false; state.keyboardAim = false; state.pointer = null; state.result = null; const hole = holes[index]; state.ball = { x: hole.start[0], y: hole.start[1], vx: 0, vy: 0 }; document.querySelector("#resultCard").hidden = true; showScreen("battle"); updateHoleLabels(); updateHelp(); draw(); }
+  function updateHoleLabels() { const hole = holes[state.holeIndex]; const stage = state.holeIndex + 1; const marker = stage === holes.length ? ` · ${t("finale")} · ${t("checkpoint")}` : stage % 5 === 0 ? ` · ${t("checkpoint")}` : ""; document.querySelector("#holeTitle").textContent = `${t("holeNames")[state.holeIndex]}${marker}`; document.querySelector("#parLabel").textContent = `${t("par")} ${hole.par}`; document.querySelector("#strokeLabel").textContent = `${t("strokes")} ${state.strokes}`; document.querySelector("#acornLabel").textContent = `${t("acorns")} ${Math.max(0, hole.par + 1 - state.strokes)}`; }
   function updateHelp() { const help = document.querySelector("#battleHelp"); help.textContent = state.rolling ? t("rolling") : state.keyboardAim ? (keyboardAimLabels[state.locale] || keyboardAimLabels.en) : t("aim"); }
   function pointerPosition(event) { const rect = canvas.getBoundingClientRect(); return { x: (event.clientX - rect.left) * canvas.width / rect.width, y: (event.clientY - rect.top) * canvas.height / rect.height }; }
   function beginAim(event) { if (state.rolling || !document.querySelector("#resultCard").hidden) return; const p = pointerPosition(event); if (Math.hypot(p.x - state.ball.x, p.y - state.ball.y) > 48) return; state.aiming = true; state.keyboardAim = false; state.pointer = p; canvas.setPointerCapture?.(event.pointerId); updateHelp(); draw(); }

@@ -80,6 +80,8 @@
         ["Blossom pattern", "花朵圖樣", "花朵图样", "花の模様", "꽃 무늬", "Patrón floral", "Padrão floral", "Motif floral", "Blütenmuster", "Motivo floreale", "Цветочный узор", "फूल पैटर्न", "نمط الأزهار"],
         ["Water pattern", "水波圖樣", "水波图样", "水の模様", "물결 무늬", "Patrón de agua", "Padrão de água", "Motif aquatique", "Wassermuster", "Motivo acqua", "Узор воды", "पानी पैटर्न", "نمط الماء"],
       ],
+      checkpoint: ["Checkpoint", "檢查點", "检查点", "チェックポイント", "체크포인트", "Punto de control", "Ponto de controle", "Point de contrôle", "Kontrollpunkt", "Punto di controllo", "Контрольная точка", "चेकपॉइंट", "نقطة تفتيش"],
+      finale: ["Finale", "終章", "终章", "フィナーレ", "피날레", "Final", "Finale", "Finale", "Finale", "Finale", "Финал", "अंतिम चरण", "النهائي"],
     },
     "animal-habitat-builder": {
       title: ["Habitat Builder", "棲地建造師", "栖地建造师", "ハビタット・ビルダー", "서식지 빌더", "Constructor de Hábitats", "Construtor de Habitats", "Bâtisseur d’Habitats", "Lebensraum-Baumeister", "Costruttore di Habitat", "Строитель среды", "हैबिटैट बिल्डर", "باني المواطن"],
@@ -119,7 +121,7 @@
     if (!localeOrder.includes(next)) return;
     locale = next; localStorage.setItem("weightPlayLocale", locale); localStorage.setItem("weightplayLocale", locale); apply();
   }
-  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), canvas: at(game.canvas || game.title), incorrect: at(game.incorrect || game.guide), correct: at(game.correct || game.guide), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
+  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), canvas: at(game.canvas || game.title), incorrect: at(game.incorrect || game.guide), correct: at(game.correct || game.guide), checkpoint: at(game.checkpoint || ["Checkpoint"]), finale: at(game.finale || ["Finale"]), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
   window.WeightPlayFiveGameLocale = window.WeightPlayMarketFiveLocale;
   window.wpMarketCommon = (index) => c()[index];
   const begin = () => { const select = document.getElementById("localeSelect"); select?.addEventListener("change", (event) => setLocale(event.target.value)); apply(); };

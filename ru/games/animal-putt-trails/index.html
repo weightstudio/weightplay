@@ -23,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-game-version" content="v18">
   <title>Звериные пути для патта | WeightPlay</title>
   <meta name="description" content="Читайте тропу, выбирайте линию и силу, обходите борта и тихую воду до флажка." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -82,6 +82,7 @@
     .back { min-width:48px; min-height:48px; border-radius:15px; background:var(--mint); color:var(--ink); font-size:1.3rem; font-weight:800; }
     .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:22px; }
     .stage-choice { text-align:start; min-height:148px; padding:18px; border-radius:20px; background:#f7f2df; color:var(--ink); border:2px solid transparent; }
+    .stage-choice:disabled { cursor:not-allowed; opacity:.62; background:#e8eadf; }
     .stage-choice:hover, .stage-choice:focus-visible { border-color:var(--leaf); }
     .stage-choice strong { display:block; font-size:1.1rem; margin-bottom:8px; }
     .stage-choice span { display:block; color:var(--muted); font-size:.92rem; }
@@ -153,12 +154,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Sports",
-    "Цель",
-    "Timing",
-    "Spatial Planning",
-    "Family",
-    "Animal"
+    "Спорт",
+    "Тайминг",
+    "Пространственное планирование",
+    "Семейная",
+    "Животные"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -218,7 +218,7 @@
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260905-cold-start-guide-disclosure-v17"></script>
+  <script src="game.js?v=20260907-depth30-arabic-guide-v18"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260904-wp-text-growth-body-v1"></script>
@@ -227,7 +227,7 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Звериные пути для патта</h2><p>Читайте тропу, выбирайте линию и силу, обходите борта и тихую воду до флажка.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Стратегия патта одним пальцем</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Sports · Цель · Timing · Spatial Planning · Family · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Стратегия патта одним пальцем</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Спорт · Тайминг · Пространственное планирование · Семейная · Животные</strong></div></div>
     </div>
 
     <div class="game-info-sections">
@@ -238,7 +238,7 @@
 
 
 
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сохраняется ли прогресс?</dt><dd>Лучшие удары и следующий открытый путь сохраняются только в этом браузере.</dd></div><div><dt>Сколько всего путей?</dt><dd>Доступно тридцать путей, а контрольные точки находятся на 5-м, 10-м, 15-м, 20-м, 25-м и 30-м.</dd></div><div><dt>Можно ли повторить путь?</dt><dd>Да. Пройденные пути остаются на карте, а следующий открывается после прохождения.</dd></div></dl></div>
 
     </div>
   </section>

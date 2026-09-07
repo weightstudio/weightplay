@@ -43,8 +43,17 @@ const continuePlayingTitle = document.querySelector("#continuePlayingTitle");
 const continuePlayingReason = document.querySelector("#continuePlayingReason");
 const gameGrid = document.querySelector("#gameGrid");
 // Limit rendered cards, never the searchable catalog. See the lobby runbook.
-const catalogBatchSize = 24;
-let catalogVisibleLimit = catalogBatchSize;
+let catalogRevealedBatches = 1;
+function catalogBatchSize() {
+  if (isKidsLobby) return 24;
+  const minimum = window.matchMedia("(min-width: 721px)").matches ? 100 : 40;
+  // Computed grid tracks reflect the actual available width, not a guessed
+  // device size. Never create placeholders to fill the final catalog row.
+  const tracks = getComputedStyle(gameGrid).gridTemplateColumns.split(/\s+/)
+    .filter((track) => /^\d+(\.\d+)?px$/.test(track) && parseFloat(track) > 0);
+  const columns = Math.max(1, tracks.length);
+  return Math.ceil(minimum / columns) * columns;
+}
 let catalogFilterSignature = "";
 let catalogSearchIndex = new Map();
 let catalogNeedsRebuild = true;
@@ -64,12 +73,22 @@ catalogDirectory.innerHTML = "<summary></summary><nav></nav>";
 catalogPagination.after(catalogDirectory);
 catalogPagination.querySelector("button").addEventListener("click", () => {
   const firstNewIndex = gameGrid.children.length;
-  catalogVisibleLimit += catalogBatchSize;
+  catalogRevealedBatches += 1;
   applyFilter();
   // Keep keyboard/assistive navigation at the newly revealed games, including
   // the last batch where the More button disappears.
   gameGrid.children[firstNewIndex]?.focus({ preventScroll: true });
 });
+// Recalculate only on width changes; card height changes must not cause a
+// render/observer loop. No polling, new media context or pagination cache.
+let catalogGridWidth = 0;
+const catalogResizeObserver = new ResizeObserver(([entry]) => {
+  const width = entry.contentRect.width;
+  if (Math.abs(width - catalogGridWidth) < 1) return;
+  catalogGridWidth = width;
+  if (catalogFilterSignature) applyFilter();
+});
+catalogResizeObserver.observe(gameGrid);
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
 const upcomingGames = document.querySelector("#upcomingGames");
@@ -1796,7 +1815,7 @@ function matchingCatalogGames(state = currentDiscoveryState()) {
 function renderCatalog(isFiltered) {
   const signature = JSON.stringify([i18n.actualLocale(), currentDiscoveryState()]);
   if (signature !== catalogFilterSignature) {
-    catalogVisibleLimit = catalogBatchSize;
+    catalogRevealedBatches = 1;
     catalogFilterSignature = signature;
   }
   const matches = matchingCatalogGames();
@@ -1807,7 +1826,7 @@ function renderCatalog(isFiltered) {
   } else if (isFiltered && hasRealStats()) {
     matches.sort((a, b) => (statFor(b).playsTotal || 0) - (statFor(a).playsTotal || 0));
   }
-  const shown = matches.slice(0, catalogVisibleLimit);
+  const shown = matches.slice(0, catalogBatchSize() * catalogRevealedBatches);
   const existing = [...gameGrid.children];
   const canAppend = !catalogNeedsRebuild && existing.length <= shown.length
     && existing.every((card, index) => card.dataset.gameId === shown[index].id);

@@ -8392,8 +8392,21 @@ select,
     font-size: 14px;
   }
 
-  .general-lobby-page.has-recent-games #heroGamesSection {
-    display: none;
+  /* Recent play must not remove Popular; only active discovery filters hide
+     the section via .hidden. Keep a compact, localized, identifiable heading. */
+  .general-lobby-page #heroGamesSection .section-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .general-lobby-page #heroGamesSection .section-heading h2 {
+    display: block;
+    order: -1;
+    font-size: 20px;
+    line-height: 1.3;
   }
 
   .general-lobby-page .continue-playing-section {
@@ -8696,3 +8709,22 @@ select,
 #catalogDirectory summary { min-height: 44px; cursor: pointer; }
 #catalogDirectory nav { display: flex; flex-wrap: wrap; gap: 12px 20px; }
 #catalogDirectory a { color: inherit; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+
+/* Canonical General lobby poster geometry, after legacy compact-card rules.
+   Keep the frame in normal flow (Safari); contain preserves the whole asset.
+   Preview video behavior and Kids geometry are intentionally unchanged. */
+.general-lobby-page .game-card .game-card-art.image-art,
+.general-lobby-page .game-card.coming-soon .game-card-art.image-art {
+  position: relative;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+.general-lobby-page .game-card .game-card-art.image-art .game-card-fg,
+.general-lobby-page #heroGames .hero-game-art .hero-game-image {
+  object-fit: contain;
+  object-position: center;
+}
+.general-lobby-page .game-card:hover .game-card-art.image-art .game-card-fg,
+.general-lobby-page .game-card:focus-visible .game-card-art.image-art .game-card-fg {
+  transform: none;
+}

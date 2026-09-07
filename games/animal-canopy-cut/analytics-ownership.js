@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-canopy-cut";
-  const GAME_VERSION = "v11";
+  const GAME_VERSION = "v13";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-canopy-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
@@ -44,6 +44,10 @@
       if (event === "chapter_final_wave") {
         const chapter = Number(detail.chapter);
         payload.chapter = Number.isInteger(chapter) && chapter >= 1 && chapter <= 6 ? chapter : 0;
+      }
+      if (["chapter_open", "wave_start", "safe_hit", "hazard_hit", "wave_result", "chapter_final_wave", "retry", "next_wave", "stage_return"].includes(event)) {
+        const stage = Number(detail.stage);
+        payload.stage = Number.isInteger(stage) && stage >= 1 && stage <= 30 ? stage : 0;
       }
       window.WonderAnalytics?.track(event, payload);
     } catch {

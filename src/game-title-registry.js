@@ -2226,7 +2226,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "animal-canopy-cut": {
     "__localizedExact": true,
     "en": "Canopy Cut",
-    "zh-Hant": "Canopy Cut",
+    "zh-Hant": "樹冠快採",
     "zh-Hans": "Canopy Cut",
     "ja": "Canopy Cut",
     "ko": "Canopy Cut",
@@ -2237,7 +2237,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Canopy Cut",
     "ru": "Canopy Cut",
     "hi": "Canopy Cut",
-    "ar": "قطع مظلة الحيوانات"
+    "ar": "قطع مظلة الأشجار"
   },
   "animal-bounce-brawl": {
     "__localizedExact": true,

@@ -1,0 +1,80 @@
+/*
+ * Arabic RTL compact-landscape Battle envelope for Animal Orbit Orchard v4.
+ * Keep the document and fixed Battle root locked; the action row must fit in
+ * the bounded logical surface instead of relying on page scrolling.
+ */
+@media (max-height: 540px) and (orientation: landscape) {
+  html[dir="rtl"] #battleScreen .logical-shell {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  html[dir="rtl"] #battleScreen .battle-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 0.9fr);
+    grid-template-areas:
+      "dial target"
+      "dial label"
+      "dial input"
+      "dial readout"
+      "dial status"
+      "actions actions";
+    column-gap: 16px;
+    row-gap: 4px;
+    align-items: center;
+    padding: 10px 16px 14px;
+    text-align: start;
+  }
+
+  html[dir="rtl"] #battleScreen #targetLabel {
+    grid-area: target;
+    margin: 0;
+    text-align: center;
+  }
+
+  html[dir="rtl"] #battleScreen #orbitDial {
+    grid-area: dial;
+    width: min(34vh, 160px);
+    margin: 0 auto;
+  }
+
+  html[dir="rtl"] #battleScreen .dial-label {
+    grid-area: label;
+    margin: 0;
+    text-align: center;
+  }
+
+  html[dir="rtl"] #battleScreen #angleInput {
+    grid-area: input;
+    width: 100%;
+    margin: 0;
+  }
+
+  html[dir="rtl"] #battleScreen #angleReadout {
+    grid-area: readout;
+    margin: 0;
+    text-align: center;
+  }
+
+  html[dir="rtl"] #battleScreen #battleStatus {
+    grid-area: status;
+    min-height: 22px;
+    margin: 0;
+    text-align: center;
+  }
+
+  html[dir="rtl"] #battleScreen .battle-actions {
+    grid-area: actions;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  html[dir="rtl"] #battleScreen .battle-actions button {
+    min-height: 44px;
+    padding-inline: 12px;
+  }
+}

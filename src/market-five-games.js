@@ -26,7 +26,7 @@
     "animal-hoop-league": { stages: 6, noun: "Court", hint: "Aim · hold · release", iconCols: 3, hero: [72, 255, 218, 250] },
     "animal-habitat-atlas": { stages: 6, noun: "Expedition", hint: "Reveal clues · choose a habitat", iconCols: 4, hero: [34, 285, 180, 210] },
     "animal-moonlight-workshop": { stages: 6, noun: "Room", hint: "Light switches · key · exit", iconCols: 4, hero: [36, 296, 150, 190] },
-    "animal-chameleon-blend": { stages: 6, noun: "Garden", hint: "Remember · match · lock", iconCols: 4, hero: [50, 294, 160, 205] },
+    "animal-chameleon-blend": { stages: 30, noun: "Garden", hint: "Remember · match · lock", iconCols: 4, hero: [50, 294, 160, 205] },
     "animal-habitat-builder": { stages: 30, noun: "Reserve", hint: "Place tiles · meet every need", iconCols: 4, hero: [35, 290, 170, 210] },
   };
   const cfg = configs[gameId];
@@ -54,13 +54,44 @@
     { badge:"①", start:[0,4], switches:[[2,3],[1,1],[4,3],[6,1]], key:[7,1], exit:[7,4], limit:24, ordered:true, walls:[[0,3],[0,2],[2,2],[3,2],[4,2],[6,2],[3,4],[4,4],[5,4],[6,4]] },
     { badge:"★", start:[0,4], switches:[[2,4],[3,1],[5,3],[6,1]], key:[7,0], exit:[7,4], limit:22, walls:[[0,0],[1,0],[2,0],[4,0],[5,0],[6,0],[1,3],[2,3],[4,3],[6,3],[1,2],[2,2],[4,2],[6,2]], gates:[{x:3,y:3,needs:1},{x:7,y:2,needs:4}], ice:[[1,4],[2,4]], portals:[[[4,1],[5,3]]] },
   ];
-  const blendProfiles = [
+  const blendBaseProfiles = [
     { badge:"◎", rounds:5, need:4, sequence:1, preview:2.8, choose:8, shuffle:false, reverse:false },
     { badge:"⚡", rounds:6, need:5, sequence:1, preview:2.1, choose:6.5, shuffle:false, reverse:false },
     { badge:"↻", rounds:6, need:5, sequence:1, preview:2.4, choose:6.5, shuffle:true, reverse:false },
     { badge:"1·2", rounds:5, need:4, sequence:2, preview:1.65, choose:9, shuffle:false, reverse:false },
     { badge:"2·1", rounds:5, need:4, sequence:2, preview:1.55, choose:9, shuffle:true, reverse:true },
     { badge:"★", rounds:4, need:3, sequence:3, preview:1.35, choose:10, shuffle:true, reverse:false },
+  ];
+  const blendStageNames = [
+    "First Blend", "Twin Tones", "Quiet Pattern", "Memory Garden", "Lantern Checkpoint",
+    "Moving Hues", "Breezy Match", "Reverse Petals", "Long Recall", "Windkeeper Checkpoint",
+    "Shadow Blend", "Soft Decoy", "Twilight Memory", "Mixed Signals", "Twilight Checkpoint",
+    "Weaving Colors", "Branch Sequence", "Narrow Match", "Fast Recall", "Bough Guardian Checkpoint",
+    "Signal Garden", "Pulse Pattern", "Hazard Rhythm", "Last Light Relay", "Signal Checkpoint",
+    "Mastery Blend", "Full Palette", "Storm Recall", "Final Relay", "Grand Blend Finale",
+  ];
+  const blendArcNames = ["First Light", "Windy Boughs", "Twilight Garden", "Moving Canopy", "Signal Orchard", "Mastery Grove"];
+  const blendProfiles = [
+    ...blendBaseProfiles.map((profile, index) => ({ ...profile, arc: Math.floor(index / 5) + 1, checkpoint: index === 4, stageName: blendStageNames[index] })),
+    ...Array.from({ length: 24 }, (_, extraIndex) => {
+      const stage = extraIndex + 7;
+      const base = blendBaseProfiles[extraIndex % blendBaseProfiles.length];
+      const rounds = Math.min(10, base.rounds + Math.floor(extraIndex / 6) + (extraIndex % 3 === 2 ? 1 : 0));
+      return {
+        ...base,
+        badge: `${base.badge}·${stage}`,
+        rounds,
+        need: Math.min(rounds - 1, base.need + 1 + Math.floor(extraIndex / 9)),
+        sequence: Math.min(3, base.sequence + (extraIndex % 5 === 3 ? 1 : 0)),
+        preview: Math.max(1.05, base.preview - Math.floor(extraIndex / 6) * .12),
+        choose: Math.min(12, base.choose + Math.floor(extraIndex / 8)),
+        shuffle: extraIndex % 2 === 0 ? base.shuffle : !base.shuffle,
+        reverse: extraIndex % 4 === 1 ? !base.reverse : base.reverse,
+        arc: Math.floor((stage - 1) / 5) + 1,
+        checkpoint: stage % 5 === 0,
+        stageName: blendStageNames[stage - 1],
+      };
+    }),
   ];
   const builderBaseProfiles = [
     { badge:"◎", need:[2,2,1,1], limit:8 },
@@ -169,7 +200,7 @@
     const unlocked = Math.min(cfg.stages, Math.max(1, state.best + 1));
     $("stage-list").innerHTML = Array.from({ length: cfg.stages }, (_, i) => {
       const n = i + 1, available = n <= unlocked;
-      const detail=gameId==="animal-hoop-league"?`${hoopProfiles[i].badge} · ${window.WeightPlayMarketFiveLocale.game().courts[i]} · ${hoopProfiles[i].shots} 🏀`:gameId==="animal-habitat-atlas"?`${atlasProfiles[i].badge} · ${atlasProfiles[i].targets.length} 🧭`:gameId==="animal-moonlight-workshop"?`${workshopProfiles[i].badge} · ${workshopProfiles[i].switches.length} ✦ · ${workshopProfiles[i].limit} ↟`:gameId==="animal-chameleon-blend"?`${blendProfiles[i].badge} · ${blendProfiles[i].rounds} ◎ · ${blendProfiles[i].sequence}×`:gameId==="animal-habitat-builder"?`${builderProfiles[i].badge} · ${builderProfiles[i].need.reduce((sum,value)=>sum+value,0)} ◇ · ${builderProfiles[i].limit} ↟`:`${cfg.noun} ${n}`;
+      const detail=gameId==="animal-hoop-league"?`${hoopProfiles[i].badge} · ${window.WeightPlayMarketFiveLocale.game().courts[i]} · ${hoopProfiles[i].shots} 🏀`:gameId==="animal-habitat-atlas"?`${atlasProfiles[i].badge} · ${atlasProfiles[i].targets.length} 🧭`:gameId==="animal-moonlight-workshop"?`${workshopProfiles[i].badge} · ${workshopProfiles[i].switches.length} ✦ · ${workshopProfiles[i].limit} ↟`:gameId==="animal-chameleon-blend"?`${blendProfiles[i].stageName} · ${blendArcNames[blendProfiles[i].arc - 1]} · ${blendProfiles[i].badge} · ${blendProfiles[i].rounds} ◎ · ${blendProfiles[i].sequence}×${blendProfiles[i].checkpoint ? " · CHECKPOINT" : ""}`:gameId==="animal-habitat-builder"?`${builderProfiles[i].badge} · ${builderProfiles[i].need.reduce((sum,value)=>sum+value,0)} ◇ · ${builderProfiles[i].limit} ↟`:`${cfg.noun} ${n}`;
       return `<button class="m5-stage-card stage-card${n === unlocked ? " recommended" : ""}" data-stage="${n}"${available ? " data-wp-enter-battle" : ""} aria-disabled="${!available}" ${available ? "" : "disabled"}><span>${common(9)} ${n}</span><small>${available ? detail : "🔒"}</small></button>`;
     }).join("");
     $("stage-list").querySelectorAll("button:not(:disabled)").forEach((button) => button.addEventListener("click", () => start(Number(button.dataset.stage))));
@@ -290,7 +321,7 @@
     document.querySelectorAll("[data-action^='color-'],[data-action^='pattern-']").forEach(b=>{const i=Number(b.dataset.action.slice(-1));b.classList.toggle("selected",(b.dataset.action.startsWith("color-")?g.color:g.pattern)===i);});
     setBlendBrief();
   }
-  function setBlendBrief(){const g=state.game,profile=blendProfiles[state.stage-1],phase=g.phase==="preview"?`👁 ${g.previewIndex+1}/${profile.sequence}`:g.phase==="choose"?`🎨 ${g.entryIndex+1}/${profile.sequence}`:`🔦 ${g.lastCorrect?"✓":"×"}`,brief=`${profile.badge} · ${g.round}/${profile.rounds} ◎ · ${phase} · ${g.wins}/${profile.need} ✓`;setStatus(brief);canvas.setAttribute("aria-label",`${window.WeightPlayMarketFiveLocale.game().title} · ${brief}`);}
+  function setBlendBrief(){const g=state.game,profile=blendProfiles[state.stage-1],text=window.WeightPlayMarketFiveLocale.game(),phase=g.phase==="preview"?`👁 ${g.previewIndex+1}/${profile.sequence}`:g.phase==="choose"?`🎨 ${g.entryIndex+1}/${profile.sequence}`:`🔦 ${g.lastCorrect?"✓":"×"}`,milestone=profile.checkpoint?` · ${text.checkpoint}`:state.stage===cfg.stages?` · ${text.finale}`:"",brief=`${profile.badge} · ${g.round}/${profile.rounds} ◎ · ${phase} · ${g.wins}/${profile.need} ✓${milestone}`;setStatus(brief);canvas.setAttribute("aria-label",`${text.title} · ${brief}`);}
   function builderAct(action) {
     const g=state.game;
     if(action.startsWith("tile-")){g.selected=Number(action.slice(-1));g.feedback="";document.querySelectorAll("[data-action^='tile-']").forEach(b=>b.classList.toggle("selected",Number(b.dataset.action.slice(-1))===g.selected));}

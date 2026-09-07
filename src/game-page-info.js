@@ -2067,17 +2067,17 @@
       faq: [["What happens when I hit a trap?", "Only the current room resets, and the result text identifies the kind of route mistake."], ["Can I play without a keyboard?", "Yes. The visible left, right, jump, and pulse controls are available on touch screens."], ["Is Pulse required?", "No. It is an optional short clue that helps explain the next trap."], ["Is progress saved?", "Only the best room is saved in this browser."]],
     },
     "animal-canopy-cut": {
-      title: "Canopy Cut", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per wave",
+      title: "Canopy Cut", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per stage",
       gameplay: "Swipe Fruit Reaction", genre: ["Action", "Arcade", "Animal"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-      intro: "Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge.",
-      story: ["Fruit arcs through a bright treetop arena in short waves. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes."],
-      systems: ["Drag across fruit in the live arena to collect it; every successful hit raises the score and can extend the chain.", "Dark seed pods are hazards. Three misses end the wave, while a clear wave records its result and opens the next replay choice."],
-      how: ["Enter a chapter and wait for the ready cue to finish.", "Drag across visible safe fruit with one continuous swipe.", "Follow the next arc instead of chasing a target that has already left the arena.", "Avoid dark seed pods and use Retry or Next after the wave settles."],
-      strategyTips: ["Start with the closest fruit, then extend the same stroke only when the next target is clearly safe.", "Leave space around dark pods; a shorter clean swipe is better than a risky chain.", "Watch the score and chain feedback to confirm that your gesture changed the board."],
-      progression: ["Six chapters move from readable arcs to faster fruit, moving pads, tight corners, a fast rival pattern, and a final rhythm. Each wave remains short enough to replay immediately."],
+      intro: "Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign.",
+      story: ["Fruit arcs through a bright treetop arena in 30 short stages across six five-stage arcs. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes."],
+      systems: ["Drag across fruit in the live arena to collect it; every successful hit raises the score and can extend the chain.", "Wind, weaving targets, dark-pod shadows, light signals, and pulse timing introduce distinct reading decisions as the campaign grows.", "Clear stages unlock the next stage, while cleared stages remain replayable. Progress and each stage best are saved locally in this browser.", "Stages 5, 10, 15, 20, 25, and 30 are checkpoint stages with a highlighted checkpoint fruit to mark the arc transition."],
+      how: ["Choose any unlocked stage and wait for the ready cue to finish.", "Drag across visible safe fruit with one continuous swipe.", "Follow the next arc instead of chasing a target that has already left the arena.", "Avoid dark seed pods and adjust to wind, weaving, signal, or rhythm cues.", "Clear the stage to unlock the next one, or use Retry and Stages to replay and route through the campaign."],
+      strategyTips: ["Start with the closest fruit, then extend the same stroke only when the next target is clearly safe.", "Leave space around dark pods; a shorter clean swipe is better than a risky chain.", "Treat the checkpoint fruit as a route-reading test, not a reason to rush.", "Watch the score and chain feedback to confirm that your gesture changed the board."],
+      progression: ["Arc 1 (stages 1-5) teaches readable arcs and ends at the Lantern Checkpoint. Arc 2 (6-10) introduces crosswind and wind switching at the Windkeeper Checkpoint.", "Arc 3 (11-15) teaches twilight shadow reading. Arc 4 (16-20) adds weaving branches and shorter timing windows before the Bough Guardian Checkpoint.", "Arc 5 (21-25) combines active light signals with pulse timing. Arc 6 (26-30) combines wind, weave, signal, rhythm, and hazards for the Grand Canopy Finale. Every cleared stage remains replayable."],
       designNote: "Canopy Cut is an original swipe-first arcade game with its own canopy art, target pacing, hazard language, and direct gesture feedback; the visible fruit response is the core player reward.",
-      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, best wave, and local replay progress stay in this browser.",
-      faq: [["How do I score?", "Swipe across safe fruit while it is visible; successful hits add score and may build a chain."], ["What ends a wave?", "Three misses end the wave. A clear wave ends when its short timer completes."], ["Can I use a mouse?", "Yes. Mouse dragging and touch dragging use the same arena gesture."], ["Is progress saved?", "Only the local best result is saved in this browser."]],
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, stage bests, cleared stages, and local unlock progress stay in this browser.",
+      faq: [["How do I score?", "Swipe across safe fruit while it is visible; successful hits add score and may build a chain."], ["What ends a stage?", "Three misses end the stage. A clear stage ends when its short timer completes."], ["How many stages are there?", "There are 30 stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30."], ["Can I use a mouse?", "Yes. Mouse dragging and touch dragging use the same arena gesture."], ["Is progress saved?", "Cleared stages, the next unlocked stage, and each stage best are saved locally in this browser."]],
     },
     "animal-bounce-brawl": {
       title: "Bounce Brawl", age: "9+", difficulty: "Easy to Challenging", time: "2-5 minutes per arena",
@@ -18395,5 +18395,33 @@
     "animal-twin-switchyard",
     "animal-cloudhook-courier",
   ].forEach(completeGuideStandard);
+  localizedGames["zh-Hant"] ||= {};
+  localizedGames["zh-Hant"]["animal-canopy-cut"] = {
+    title: "樹冠快採", age: "9+", difficulty: "由易到具挑戰性", time: "每關 1–3 分鐘",
+    gameplay: "滑動採果反應遊戲", genre: ["動作", "街機", "動物"], skills: ["反應", "專注", "手眼協調"],
+    intro: "在 30 關樹冠戰役中滑過安全果實、建立連擊，並避開深色種莢。",
+    story: ["明亮樹梢競技場裡共有 30 個短關卡，分成六段各五關的路線。你要快速讀懂果實的動向，乾淨滑動，並在模式改變時重新找回節奏。"],
+    systems: ["在即時競技場滑過果實即可採收；每次成功命中都會增加分數，並可能延長連擊。", "交叉風、移動目標、深色種莢陰影、光訊號與脈衝節奏，會在戰役中帶來不同的判讀決策。", "完成關卡會解鎖下一關，已完成的關卡仍可重玩；進度與每關最佳成績會儲存在此瀏覽器。", "第 5、10、15、20、25、30 關是檢查點，會以高亮檢查點果實標示每段路線的轉折。"],
+    how: ["選擇已解鎖的關卡，等待準備提示結束。", "用一次連續滑動劃過畫面中可見的安全果實。", "跟著下一段弧線走，不要追逐已離開競技場的目標。", "避開深色種莢，並配合風向、移動、訊號或節奏提示調整。", "完成關卡即可解鎖下一關；也可以用重試與關卡頁重玩並選擇路線。"],
+    strategyTips: ["先從最近的果實開始，只有在下一個目標確定安全時才延續滑動。", "為深色種莢留出距離；短而乾淨的滑動比冒險連擊更好。", "把檢查點果實當成路線判讀測試，不要因此急著出手。", "觀察分數與連擊回饋，確認手勢確實改變了場面。"],
+    progression: ["第 1–5 關是初光果園，教你閱讀弧線並在第 5 關抵達燈籠檢查點。第 6–10 關加入交叉風與變向風，在第 10 關抵達守風者檢查點。", "第 11–15 關教你在暮光中分辨安全目標與暗影；第 16–20 關加入穿梭枝間與更短的時機窗口，最後抵達枝冠守護檢查點。", "第 21–25 關結合主動光訊號與脈衝節奏；第 26–30 關綜合風向、移動、訊號、節奏與危險判讀，完成樹冠大結局。所有完成關卡都能重玩。"],
+    designNote: "樹冠快採是原創的滑動街機遊戲，使用 WeightPlay 自有樹冠美術、目標節奏、危險語彙與直接手勢回饋；果實對滑動的可見反應就是核心獎勵。",
+    parent: "這款 General 瀏覽器遊戲沒有帳號、購買、聊天、排行榜或廣告流程。分數、每關最佳成績、完成關卡與本機解鎖進度都留在此瀏覽器。",
+    faq: [["如何得分？", "在安全果實可見時滑過它；成功命中會增加分數，也可能建立連擊。"], ["什麼會結束關卡？", "三次失誤會結束關卡；安全完成後，短計時器結束就會顯示結果。"], ["共有幾關？", "共有 30 關，分成六段各五關的路線；第 5、10、15、20、25、30 關是檢查點。"], ["可以用滑鼠嗎？", "可以。滑鼠拖曳與觸控滑動使用相同的競技場手勢。"], ["進度會保存嗎？", "已完成關卡、下一個解鎖關卡與每關最佳成績會保存在此瀏覽器。"]],
+  };
+  localizedGames["ar"] ||= {};
+  localizedGames["ar"]["animal-canopy-cut"] = {
+    title: "قطع مظلة الأشجار", age: "9+", difficulty: "من السهل إلى التحدي", time: "1–3 دقائق لكل مرحلة",
+    gameplay: "لعبة رد فعل لقطع الثمار", genre: ["حركة", "أركيد", "حيوانات"], skills: ["رد الفعل", "التركيز", "التآزر بين العين واليد"],
+    intro: "مرّر على الثمار الآمنة، وابنِ تتابعًا، وتجنب قرون البذور الداكنة عبر حملة من 30 مرحلة في المظلة.",
+    story: ["تتحرك الثمار في ساحة مشرقة بين الأشجار ضمن 30 مرحلة قصيرة موزعة على ستة أقواس من خمس مراحل. اقرأ الحركة بسرعة، ونفّذ تمريرة نظيفة، واستعد عندما يتغير النمط."],
+    systems: ["مرّر عبر الثمار في الساحة الحية لحصدها؛ تزيد كل إصابة ناجحة النتيجة وقد تمدد التتابع.", "تضيف الرياح والأهداف المتمايلة وظلال قرون البذور وإشارات الضوء وتوقيت النبض قرارات قراءة مختلفة مع تقدم الحملة.", "يفتح اجتياز المرحلة المرحلة التالية، وتبقى المراحل المجتازة قابلة لإعادة اللعب؛ يُحفظ التقدم وأفضل نتيجة لكل مرحلة محليًا في هذا المتصفح.", "المراحل 5 و10 و15 و20 و25 و30 هي نقاط تفتيش، وتظهر فيها ثمرة نقطة تفتيش مضيئة لتحديد انتقال القوس."],
+    how: ["اختر مرحلة مفتوحة وانتظر انتهاء إشارة الاستعداد.", "مرّر بحركة واحدة متصلة عبر الثمار الآمنة الظاهرة.", "اتبع القوس التالي بدل مطاردة هدف غادر الساحة.", "تجنب قرون البذور الداكنة واضبط تمريرتك مع إشارات الريح أو الحركة أو الضوء أو الإيقاع.", "اجتز المرحلة لفتح التالية، أو استخدم إعادة المحاولة وصفحة المراحل لإعادة اللعب واختيار مسارك."],
+    strategyTips: ["ابدأ بالثمرة الأقرب، ثم مدّ الحركة فقط عندما تتأكد أن الهدف التالي آمن.", "اترك مسافة حول القرون الداكنة؛ التمريرة القصيرة النظيفة أفضل من تتابع محفوف بالمخاطر.", "اعتبر ثمرة نقطة التفتيش اختبارًا لقراءة المسار، لا سببًا للاستعجال.", "راقب النتيجة وتغذية التتابع لتتأكد أن إيماءتك غيّرت الساحة."],
+    progression: ["المراحل 1–5 تعلّم الأقواس الواضحة وتنتهي بنقطة تفتيش الفانوس. المراحل 6–10 تضيف الرياح المتقاطعة وتبدّل اتجاه الريح وتنتهي بنقطة حارس الريح.", "المراحل 11–15 تعلّم قراءة الظلال في الشفق. المراحل 16–20 تضيف الأغصان المتمايلة ونوافذ توقيت أقصر قبل نقطة حارس الأغصان.", "المراحل 21–25 تجمع إشارات الضوء النشطة مع توقيت النبض. المراحل 26–30 تجمع الريح والحركة والإشارة والإيقاع وقراءة الخطر في ختام المظلة الكبير. كل مرحلة مجتازة قابلة لإعادة اللعب."],
+    designNote: "قطع مظلة الأشجار لعبة أركيد أصلية تعتمد على السحب، مع فن مظلة خاص بـ WeightPlay وإيقاع أهداف ولغة مخاطر وتغذية راجعة مباشرة للإيماءة؛ استجابة الثمرة المرئية هي مكافأة اللاعب الأساسية.",
+    parent: "هذه لعبة متصفح عامة بلا حساب أو شراء أو دردشة أو قائمة متصدرين أو إعلانات. تبقى النتيجة وأفضل نتيجة لكل مرحلة والمراحل المجتازة والتقدم المحلي للفتح في هذا المتصفح.",
+    faq: [["كيف أحصل على النقاط؟", "مرّر عبر الثمار الآمنة وهي ظاهرة؛ تضيف الإصابات الناجحة نقاطًا وقد تبني تتابعًا."], ["ما الذي ينهي المرحلة؟", "تنتهي المرحلة بعد ثلاث محاولات فائتة؛ وتنتهي عند اكتمال مؤقتها القصير إذا اجتزتها بأمان."], ["كم عدد المراحل؟", "هناك 30 مرحلة في ستة أقواس من خمس مراحل، مع نقاط تفتيش في المراحل 5 و10 و15 و20 و25 و30."], ["هل يمكنني استخدام الفأرة؟", "نعم. يستخدم السحب بالفأرة والسحب باللمس إيماءة الساحة نفسها."], ["هل يُحفظ التقدم؟", "تُحفظ المراحل المجتازة والمرحلة المفتوحة التالية وأفضل نتيجة لكل مرحلة محليًا في هذا المتصفح."]],
+  };
   render();
 })();

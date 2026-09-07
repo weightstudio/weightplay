@@ -21,22 +21,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-canopy-cut" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge." />
+    <meta name="description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <title>Canopy Cut | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,25,35,.28),rgba(7,25,35,.72)),url("assets/animal-canopy-cut-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260829-canopy-v12-arabic-settings"></script>
+    <script defer src="game.js?v=20260907-canopy-v13-campaign-depth"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Canopy Cut | WeightPlay" />
-    <meta property="og:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge." />
+    <meta property="og:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <meta property="og:url" content="https://weightplay.com/en/games/animal-canopy-cut/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-canopy-cut-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Canopy Cut | WeightPlay" />
-    <meta name="twitter:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge." />
+    <meta name="twitter:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-canopy-cut-cover.webp" />
     <script type="application/ld+json">
 {
@@ -45,7 +45,7 @@
   "name": "Canopy Cut",
   "url": "https://weightplay.com/en/games/animal-canopy-cut/",
   "image": "https://weightplay.com/assets/animal-canopy-cut-cover.webp",
-  "description": "Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge.",
+  "description": "Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -80,11 +80,13 @@
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-canopy-cut-background.png" style="--wp-stage-art:url('assets/animal-canopy-cut-background.png')" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Harvest Chapters</h2></header>
+        <p id="stage-progress" class="stage-progress" aria-live="polite"></p>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button class="back" data-back="stage" aria-label="Back to Stages" data-wp-return="battle">←</button><strong id="wave-label">Wave 1 / 5</strong><span id="score-label">0</span><button id="battle-utility" class="utility-button" type="button" data-wp-battle-utility aria-label="Settings" title="Settings">⚙</button></header>
         <p id="battle-status" class="battle-status">Swipe safe fruit.</p>
+        <p id="stage-objective" class="stage-objective" aria-live="polite"></p>
         <div id="battle-key" class="battle-key" role="group" aria-label="Target key">
           <span class="battle-key-item"><span class="key-swatch key-swatch-safe" aria-hidden="true">✦</span><span id="safe-key">Safe fruit</span></span>
           <span class="battle-key-item"><span class="key-swatch key-swatch-hazard" aria-hidden="true">●</span><span id="hazard-key">Dark seed pod</span></span>
@@ -104,27 +106,31 @@
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260902-canopy-v12-stage-occlusion"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260907-canopy-v13-stage-rail"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-    <script src="/src/analytics.js?v=20260829-canopy-v11-main-contract"></script>
-    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260829-canopy-v11-main-contract"></script>
+    <script src="/src/analytics.js?v=20260907-canopy-v13-campaign-depth"></script>
+    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260907-canopy-v13-campaign-depth"></script>
   <section class="game-page-info game-page-info-static" aria-label="Canopy Cut game information" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Canopy Cut</h2><p>Swipe safe fruit, build a chain, and avoid dark seed pods in a fast canopy challenge.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Swipe Fruit Reaction</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>1-3 minutes per wave</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Reaction · Focus · Hand-Eye Coordination</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Canopy Cut</h2><p>Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Swipe Fruit Reaction</strong></div><div class="game-info-fact"><span>Genre</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>1-3 minutes per stage</strong></div><div class="game-info-fact"><span>Skills Trained</span><strong>Reaction · Focus · Hand-Eye Coordination</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Fruit arcs through a bright treetop arena in short waves. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes.</p></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>Fruit arcs through a bright treetop arena in 30 short stages across six five-stage arcs. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes.</p></div>
       <div class="game-info-section"><h3>How the Systems Work</h3><p>Drag across fruit in the live arena to collect it; every successful hit raises the score and can extend the chain.</p>
-<p>Dark seed pods are hazards. Three misses end the wave, while a clear wave records its result and opens the next replay choice.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Enter a chapter and wait for the ready cue to finish.</li><li>Drag across visible safe fruit with one continuous swipe.</li><li>Follow the next arc instead of chasing a target that has already left the arena.</li><li>Avoid dark seed pods and use Retry or Next after the wave settles.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Start with the closest fruit, then extend the same stroke only when the next target is clearly safe.</li><li>Leave space around dark pods; a shorter clean swipe is better than a risky chain.</li><li>Watch the score and chain feedback to confirm that your gesture changed the board.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Six chapters move from readable arcs to faster fruit, moving pads, tight corners, a fast rival pattern, and a final rhythm. Each wave remains short enough to replay immediately.</p></div>
+<p>Wind, weaving targets, dark-pod shadows, light signals, and pulse timing introduce distinct reading decisions as the campaign grows.</p>
+<p>Clear stages unlock the next stage, while cleared stages remain replayable. Progress and each stage best are saved locally in this browser.</p>
+<p>Stages 5, 10, 15, 20, 25, and 30 are checkpoint stages with a highlighted checkpoint fruit to mark the arc transition.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose any unlocked stage and wait for the ready cue to finish.</li><li>Drag across visible safe fruit with one continuous swipe.</li><li>Follow the next arc instead of chasing a target that has already left the arena.</li><li>Avoid dark seed pods and adjust to wind, weaving, signal, or rhythm cues.</li><li>Clear the stage to unlock the next one, or use Retry and Stages to replay and route through the campaign.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Start with the closest fruit, then extend the same stroke only when the next target is clearly safe.</li><li>Leave space around dark pods; a shorter clean swipe is better than a risky chain.</li><li>Treat the checkpoint fruit as a route-reading test, not a reason to rush.</li><li>Watch the score and chain feedback to confirm that your gesture changed the board.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Arc 1 (stages 1-5) teaches readable arcs and ends at the Lantern Checkpoint. Arc 2 (6-10) introduces crosswind and wind switching at the Windkeeper Checkpoint.</p>
+<p>Arc 3 (11-15) teaches twilight shadow reading. Arc 4 (16-20) adds weaving branches and shorter timing windows before the Bough Guardian Checkpoint.</p>
+<p>Arc 5 (21-25) combines active light signals with pulse timing. Arc 6 (26-30) combines wind, weave, signal, rhythm, and hazards for the Grand Canopy Finale. Every cleared stage remains replayable.</p></div>
       <div class="game-info-section"><h3>Developer Design Note</h3><p>Canopy Cut is an original swipe-first arcade game with its own canopy art, target pacing, hazard language, and direct gesture feedback; the visible fruit response is the core player reward.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, best wave, and local replay progress stay in this browser.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How do I score?</dt><dd>Swipe across safe fruit while it is visible; successful hits add score and may build a chain.</dd></div><div><dt>What ends a wave?</dt><dd>Three misses end the wave. A clear wave ends when its short timer completes.</dd></div><div><dt>Can I use a mouse?</dt><dd>Yes. Mouse dragging and touch dragging use the same arena gesture.</dd></div><div><dt>Is progress saved?</dt><dd>Only the local best result is saved in this browser.</dd></div></dl></div>
+      <div class="game-info-section game-info-parent"><h3>Parent Note</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, stage bests, cleared stages, and local unlock progress stay in this browser.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How do I score?</dt><dd>Swipe across safe fruit while it is visible; successful hits add score and may build a chain.</dd></div><div><dt>What ends a stage?</dt><dd>Three misses end the stage. A clear stage ends when its short timer completes.</dd></div><div><dt>How many stages are there?</dt><dd>There are 30 stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>Can I use a mouse?</dt><dd>Yes. Mouse dragging and touch dragging use the same arena gesture.</dd></div><div><dt>Is progress saved?</dt><dd>Cleared stages, the next unlocked stage, and each stage best are saved locally in this browser.</dd></div></dl></div>
 
     </div>
   </section>

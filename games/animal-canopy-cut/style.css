@@ -4,24 +4,22 @@
 @media (orientation:landscape) and (max-height:460px){.battle{padding:4px 10px}.battle-header{min-height:22px;line-height:1;font-size:.78rem}.battle-status{margin:2px 0;line-height:1.15;font-size:.72rem}.battle-key{gap:3px 12px;margin:0 auto 2px;padding:2px 8px;font-size:.7rem}.battle-key-item{gap:4px;min-height:18px}.key-swatch{width:18px;height:18px;font-size:.7rem}.battle canvas{width:min(100%,730px);max-height:none;flex:0 0 auto;border-radius:10px}.touch-hint{margin:0;padding:1px 4px;font-size:.68rem;line-height:1.05}}
 body[data-wp-five-game] .result-actions button{width:100%;min-width:0;max-width:100%;overflow-wrap:anywhere}
 
-/* Canopy has six authored Chapters, so keep the complete map inside the
-   logical Stage Canvas instead of letting the shared single-row rail place
-   enabled controls outside its hit-test surface. Chapter 1 stays centered
-   in the first row while every chapter remains directly selectable. */
+/* The full authored campaign remains inside the logical Stage Canvas. The
+   rail is scrollable so all 30 stages stay directly selectable at every
+   viewport size, with the current unlock frontier brought into view. */
 @media (min-width:561px){
   body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]{
     display:grid!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
-    grid-template-rows:repeat(2,minmax(0,1fr))!important;
-    grid-template-areas:"chapter-2 chapter-1 chapter-3" "chapter-4 chapter-5 chapter-6"!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
     align-items:stretch!important;
     justify-content:stretch!important;
     width:100%!important;
     max-width:none!important;
-    height:408px!important;
+    height:min(68vh,650px)!important;
     min-height:0!important;
-    max-height:408px!important;
-    overflow:hidden!important;
+    max-height:650px!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
     padding:12px!important;
   }
   body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card{
@@ -34,12 +32,22 @@ body[data-wp-five-game] .result-actions button{width:100%;min-width:0;max-width:
     max-height:none!important;
     overflow-wrap:anywhere;
   }
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(1){grid-area:chapter-1}
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(2){grid-area:chapter-2}
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(3){grid-area:chapter-3}
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(4){grid-area:chapter-4}
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(5){grid-area:chapter-5}
-  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card:nth-child(6){grid-area:chapter-6}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]>.stage-card{min-height:116px!important;text-align:start!important}
+}
+
+body[data-wp-game-id="animal-canopy-cut"] .stage-progress,
+body[data-wp-game-id="animal-canopy-cut"] .stage-objective{color:var(--gold);text-align:center;line-height:1.4}
+body[data-wp-game-id="animal-canopy-cut"] .stage-objective{margin:2px auto 8px;max-width:70ch;color:#c8dce7}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card{display:flex;flex-direction:column;gap:4px;text-align:start}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card small{color:var(--mint);font-weight:700}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card span:not(.stage-number){font-size:.78rem;line-height:1.25;color:#c8dce7}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card b{margin-top:auto;color:var(--gold);font-size:.74rem}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card.locked{opacity:.5;cursor:not-allowed}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card.cleared{border-color:var(--mint)}
+body[data-wp-game-id="animal-canopy-cut"] .stage-card.selected{box-shadow:0 0 0 2px var(--gold) inset}
+@media(max-width:560px){
+  body[data-wp-game-id="animal-canopy-cut"] .stage-screen [data-wp-stage-rail]{max-height:calc(100vh - 190px);overflow-y:auto!important;padding:8px!important}
+  body[data-wp-game-id="animal-canopy-cut"] .stage-card{min-height:128px;text-align:start}
 }
 
 @media (min-width:700px) and (max-height:560px){

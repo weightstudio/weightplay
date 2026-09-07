@@ -23,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-putt-trails">
-  <meta name="weightplay-game-version" content="v17">
+  <meta name="weightplay-game-version" content="v18">
   <title>Sentiers de Putt Animal | WeightPlay</title>
   <meta name="description" content="Lis chaque sentier, choisis la ligne et la puissance, puis évite les bordures et l’eau jusqu’au drapeau." />
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -82,6 +82,7 @@
     .back { min-width:48px; min-height:48px; border-radius:15px; background:var(--mint); color:var(--ink); font-size:1.3rem; font-weight:800; }
     .stage-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:22px; }
     .stage-choice { text-align:start; min-height:148px; padding:18px; border-radius:20px; background:#f7f2df; color:var(--ink); border:2px solid transparent; }
+    .stage-choice:disabled { cursor:not-allowed; opacity:.62; background:#e8eadf; }
     .stage-choice:hover, .stage-choice:focus-visible { border-color:var(--leaf); }
     .stage-choice strong { display:block; font-size:1.1rem; margin-bottom:8px; }
     .stage-choice span { display:block; color:var(--muted); font-size:.92rem; }
@@ -153,12 +154,11 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Sports",
-    "Objectif",
+    "Sport",
     "Timing",
-    "Spatial Planning",
-    "Family",
-    "Animal"
+    "Planification spatiale",
+    "Famille",
+    "Animaux"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -218,7 +218,7 @@
       </section>
     </main>
   </div>
-  <script src="game.js?v=20260905-cold-start-guide-disclosure-v17"></script>
+  <script src="game.js?v=20260907-depth30-arabic-guide-v18"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260904-wp-text-growth-body-v1"></script>
@@ -227,7 +227,7 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Sentiers de Putt Animal</h2><p>Lis chaque sentier, choisis la ligne et la puissance, puis évite les bordures et l’eau jusqu’au drapeau.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Stratégie de putt à un doigt</strong></div><div class="game-info-fact"><span>Genre</span><strong>Sports · Objectif · Timing · Spatial Planning · Family · Animal</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Stratégie de putt à un doigt</strong></div><div class="game-info-fact"><span>Genre</span><strong>Sport · Timing · Planification spatiale · Famille · Animaux</strong></div></div>
     </div>
 
     <div class="game-info-sections">
@@ -238,7 +238,7 @@
 
 
 
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>La progression est-elle sauvegardée ?</dt><dd>Les meilleurs coups et le prochain sentier débloqué sont enregistrés uniquement dans ce navigateur.</dd></div><div><dt>Combien y a-t-il de sentiers ?</dt><dd>Il y a trente sentiers sélectionnables, avec des points de contrôle aux 5e, 10e, 15e, 20e, 25e et 30e étapes.</dd></div><div><dt>Puis-je rejouer un sentier ?</dt><dd>Oui. Les sentiers terminés restent sur la carte et le suivant se débloque après une réussite.</dd></div></dl></div>
 
     </div>
   </section>

@@ -21,22 +21,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-canopy-cut" /><meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="在快速的树冠挑战中，刷掉安全的水果，建立链条，并避开深色种子荚。" />
+    <meta name="description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <title>Canopy Cut | WeightPlay</title>
     <link rel="stylesheet" href="style.css" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,25,35,.28),rgba(7,25,35,.72)),url("assets/animal-canopy-cut-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260829-canopy-v12-arabic-settings"></script>
+    <script defer src="game.js?v=20260907-canopy-v13-campaign-depth"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Canopy Cut | WeightPlay" />
-    <meta property="og:description" content="在快速的树冠挑战中，刷掉安全的水果，建立链条，并避开深色种子荚。" />
+    <meta property="og:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-canopy-cut/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-canopy-cut-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Canopy Cut | WeightPlay" />
-    <meta name="twitter:description" content="在快速的树冠挑战中，刷掉安全的水果，建立链条，并避开深色种子荚。" />
+    <meta name="twitter:description" content="Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-canopy-cut-cover.webp" />
     <script type="application/ld+json">
 {
@@ -45,7 +45,7 @@
   "name": "Canopy Cut",
   "url": "https://weightplay.com/zh-cn/games/animal-canopy-cut/",
   "image": "https://weightplay.com/assets/animal-canopy-cut-cover.webp",
-  "description": "在快速的树冠挑战中，刷掉安全的水果，建立链条，并避开深色种子荚。",
+  "description": "Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -80,11 +80,13 @@
       </section>
       <section id="stage-screen" class="screen stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="assets/animal-canopy-cut-background.png" style="--wp-stage-art:url('assets/animal-canopy-cut-background.png')" hidden>
         <header class="stage-header"><button class="back" data-back="main" data-wp-return="stage" aria-label="Back to Main">←</button><h2>Harvest Chapters</h2></header>
+        <p id="stage-progress" class="stage-progress" aria-live="polite"></p>
         <div id="stage-list" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page">Stages</button></nav>
       </section>
       <section id="battle-screen" class="screen battle battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
         <header class="battle-header"><button class="back" data-back="stage" aria-label="Back to Stages" data-wp-return="battle">←</button><strong id="wave-label">Wave 1 / 5</strong><span id="score-label">0</span><button id="battle-utility" class="utility-button" type="button" data-wp-battle-utility aria-label="设置" title="设置">⚙</button></header>
         <p id="battle-status" class="battle-status">Swipe safe fruit.</p>
+        <p id="stage-objective" class="stage-objective" aria-live="polite"></p>
         <div id="battle-key" class="battle-key" role="group" aria-label="Target key">
           <span class="battle-key-item"><span class="key-swatch key-swatch-safe" aria-hidden="true">✦</span><span id="safe-key">Safe fruit</span></span>
           <span class="battle-key-item"><span class="key-swatch key-swatch-hazard" aria-hidden="true">●</span><span id="hazard-key">Dark seed pod</span></span>
@@ -105,27 +107,31 @@
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260902-canopy-v12-stage-occlusion"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260907-canopy-v13-stage-rail"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-    <script src="/src/analytics.js?v=20260829-canopy-v11-main-contract"></script>
-    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260829-canopy-v11-main-contract"></script>
+    <script src="/src/analytics.js?v=20260907-canopy-v13-campaign-depth"></script>
+    <script src="/games/animal-canopy-cut/analytics-ownership.js?v=20260907-canopy-v13-campaign-depth"></script>
   <section class="game-page-info game-page-info-static" aria-label="Canopy Cut 游戏信息" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>Canopy Cut</h2><p>在快速的树冠挑战中，刷掉安全的水果，建立链条，并避开深色种子荚。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>滑动水果反应</strong></div><div class="game-info-fact"><span>类型</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>难度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每波 1-3 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>反应 · 专注 · 手眼协调</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>Canopy Cut</h2><p>Swipe safe fruit, build a chain, and avoid dark seed pods across a 30-stage canopy campaign.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>滑动水果反应</strong></div><div class="game-info-fact"><span>类型</span><strong>Action · Arcade · Animal</strong></div><div class="game-info-fact"><span>难度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>1-3 minutes per stage</strong></div><div class="game-info-fact"><span>练习能力</span><strong>反应 · 专注 · 手眼协调</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>水果以短波的形式穿过明亮的树顶竞技场。目标是快速读取动作，进行干净的滑动，并在模式发生变化时恢复。</p></div>
+      <div class="game-info-section"><h3>世界与任务</h3><p>Fruit arcs through a bright treetop arena in 30 short stages across six five-stage arcs. The goal is to read motion quickly, make a clean swipe, and recover when the pattern changes.</p></div>
       <div class="game-info-section"><h3>游戏系统</h3><p>在现场竞技场中拖动水果来收集它；每一次成功的命中都会提高分数并可以延长链条。</p>
-<p>深色种荚是危险的。三次失误结束该波，而清晰的波记录其结果并打开下一个重播选择。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>输入章节并等待准备提示完成。</li><li>连续滑动即可拖过可见的安全水果。</li><li>跟随下一个弧线，而不是追逐已经离开竞技场的目标。</li><li>避免使用深色种子荚，并在波浪平息后使用“重试”或“下一步”。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>从最近的水果开始，然后仅在下一个目标明显安全时才延长相同的行程。</li><li>在深色豆荚周围留出空间；较短的干净滑动比有风险的连锁要好。</li><li>观察分数和连锁反馈，以确认您的手势改变了棋盘。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>六个章节从可读的弧线到更快的水果、移动垫、紧角、快速对手模式和最终节奏。每波都足够短，可以立即重播。</p></div>
+<p>Wind, weaving targets, dark-pod shadows, light signals, and pulse timing introduce distinct reading decisions as the campaign grows.</p>
+<p>Clear stages unlock the next stage, while cleared stages remain replayable. Progress and each stage best are saved locally in this browser.</p>
+<p>Stages 5, 10, 15, 20, 25, and 30 are checkpoint stages with a highlighted checkpoint fruit to mark the arc transition.</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>Choose any unlocked stage and wait for the ready cue to finish.</li><li>连续滑动即可拖过可见的安全水果。</li><li>跟随下一个弧线，而不是追逐已经离开竞技场的目标。</li><li>Avoid dark seed pods and adjust to wind, weaving, signal, or rhythm cues.</li><li>Clear the stage to unlock the next one, or use Retry and Stages to replay and route through the campaign.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>从最近的水果开始，然后仅在下一个目标明显安全时才延长相同的行程。</li><li>在深色豆荚周围留出空间；较短的干净滑动比有风险的连锁要好。</li><li>Treat the checkpoint fruit as a route-reading test, not a reason to rush.</li><li>观察分数和连锁反馈，以确认您的手势改变了棋盘。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>Arc 1 (stages 1-5) teaches readable arcs and ends at the Lantern Checkpoint. Arc 2 (6-10) introduces crosswind and wind switching at the Windkeeper Checkpoint.</p>
+<p>Arc 3 (11-15) teaches twilight shadow reading. Arc 4 (16-20) adds weaving branches and shorter timing windows before the Bough Guardian Checkpoint.</p>
+<p>Arc 5 (21-25) combines active light signals with pulse timing. Arc 6 (26-30) combines wind, weave, signal, rhythm, and hazards for the Grand Canopy Finale. Every cleared stage remains replayable.</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>Canopy Cut 是一款原创的滑动优先街机游戏，拥有自己的树冠艺术、目标节奏、危险语言和直接手势反馈；可见的水果反应是核心玩家奖励。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>这款通用浏览器游戏没有帐户、购买、聊天、排行榜或广告流程。得分、最佳波次和本地重播进度保留在此浏览器中。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>我如何得分？</dt><dd>在可见的安全水果上滑动；成功的点击会增加分数并可能建立一个链条。</dd></div><div><dt>什么结束了一波？</dt><dd>三次失误结束了这一波。当其短计时器完成时，清晰的波形结束。</dd></div><div><dt>我可以使用鼠标吗？</dt><dd>是的。鼠标拖动和触摸拖动使用相同的竞技场手势。</dd></div><div><dt>Is progress saved?</dt><dd>此浏览器中仅保存本地最佳结果。</dd></div></dl></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Score, stage bests, cleared stages, and local unlock progress stay in this browser.</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>我如何得分？</dt><dd>在可见的安全水果上滑动；成功的点击会增加分数并可能建立一个链条。</dd></div><div><dt>What ends a stage?</dt><dd>Three misses end the stage. A clear stage ends when its short timer completes.</dd></div><div><dt>有多少个阶段？</dt><dd>There are 30 stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30.</dd></div><div><dt>我可以使用鼠标吗？</dt><dd>是的。鼠标拖动和触摸拖动使用相同的竞技场手势。</dd></div><div><dt>Is progress saved?</dt><dd>Cleared stages, the next unlocked stage, and each stage best are saved locally in this browser.</dd></div></dl></div>
 
     </div>
   </section>
