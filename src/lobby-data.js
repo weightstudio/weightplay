@@ -4667,6 +4667,17 @@ if (canopyCutPublic) {
   delete canopyCutPublic.internalTrial;
 }
 
+// Chameleon Blend is now an owner-approved public General release. Keep this
+// conversion after the planned Market Five batch so the exact v5/I6 campaign
+// is discoverable with its truthful Battle preview.
+const chameleonBlendPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-chameleon-blend");
+if (chameleonBlendPublic) {
+  chameleonBlendPublic.status = "playable";
+  chameleonBlendPublic.previewVideo = "assets/previews/animal-chameleon-blend-battle.webm";
+  delete chameleonBlendPublic.statusText;
+  delete chameleonBlendPublic.internalTrial;
+}
+
 // Habitat Atlas is now an owner-approved public General release. Keep this
 // release-state override after the planned Market Five batch so the exact
 // v7/I6 candidate is discoverable with its truthful Battle preview.
