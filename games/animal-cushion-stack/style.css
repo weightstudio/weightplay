@@ -31,3 +31,27 @@ body:not([data-screen="main"])>.game-page-info{display:none!important}
 .stage-canvas:before,.battle-canvas:before{z-index:0!important;pointer-events:none}
 .stage-canvas>* ,.battle-canvas>*{position:relative;z-index:1}
 .choice-name{display:block}
+
+/* Keep the first Battle decision inside short landscape viewports. The
+   canonical 844x390 surface must expose the choices and primary action while
+   preserving the existing 44px touch-target floor. */
+@media (max-height:600px) and (orientation:landscape){
+  #battleScreen .battle-canvas{padding:8px 14px 0}
+  #battleScreen .panel-head{flex-basis:48px;min-height:48px;margin-bottom:4px}
+  #battleScreen .back-btn,#battleScreen .panel-utility{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important}
+  #battleScreen .battle-content{padding:8px 12px}
+  #battleScreen .battle-hint{margin:0 0 6px;font-size:.82rem;line-height:1.2}
+  #battleScreen .tower{min-height:94px;height:94px;margin:0 auto 8px;padding:8px;gap:3px}
+  #battleScreen .tower-block{height:22px;font-size:.7rem}
+  #battleScreen .tower-ground{height:16px;border-width:2px}
+  #battleScreen .choice-head h3{margin-bottom:4px}
+  #battleScreen .choice-tray{gap:6px}
+  #battleScreen .choice-btn{grid-template-columns:28px 1fr;gap:6px;min-height:44px;padding:5px}
+  #battleScreen .choice-icon{width:26px;height:26px;font-size:.7rem}
+  #battleScreen .choice-name{font-size:.72rem}
+  #battleScreen .choice-size{font-size:.65rem}
+  #battleScreen .battle-status{min-height:18px;margin:4px 0 2px;font-size:.75rem}
+  #battleScreen .battle-actions{gap:6px}
+  #battleScreen .battle-actions .primary-btn,#battleScreen .battle-actions .secondary-btn{min-height:44px;padding:0 12px}
+  #battleScreen .battle-actions .text-btn{min-height:36px;padding:0 8px;font-size:.75rem}
+}
