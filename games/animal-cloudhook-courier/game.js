@@ -4,7 +4,7 @@
   const COPY = window.WPCloudhookLocales.locales;
   const LOCALE_ORDER = window.WPCloudhookLocales.order;
   const GAME_ID = "animal-cloudhook-courier";
-  const GAME_VERSION = "v14";
+  const GAME_VERSION = "v15";
   const INTERFACE_VERSION = 6;
   const LEAVE_COPY = {
     en: { title: "Keep this flight?", body: "Continue keeps the current flight. Returning to Stages ends this attempt.", continue: "Continue flight", leave: "Stages" },
@@ -54,7 +54,7 @@
   cloudhookProps.src = "cloudhook-props-v2.webp";
   const authoredStages = [
     { arc: 0, wind: 0, anchors: [[210,300],[370,230],[530,330],[690,210]], parcels: [[300,410],[600,360]], spikes: [] },
-    { arc: 0, wind: 8, anchors: [[205,290],[360,190],[500,315],[665,180],[790,300]], parcels: [[300,150],[575,190],[735,130]], spikes: [[430,430,65,22]] },
+    { arc: 0, wind: 8, anchors: [[205,290],[360,190],[500,315],[665,180],[790,300]], parcels: [[300,150],[575,190],[735,130]], spikes: [] },
     { arc: 0, wind: -12, anchors: [[210,300],[360,170],[510,300],[650,150],[805,260]], parcels: [[300,125],[560,110],[745,175]], spikes: [[390,425,72,22]] },
     { arc: 0, wind: 16, anchors: [[210,300],[350,210],[490,130],[630,285],[770,150],[850,285]], parcels: [[300,155],[540,90],[740,100]], spikes: [[300,430,72,22],[600,430,86,22]] },
     { arc: 0, wind: -18, anchors: [[210,280],[355,165],[500,300],[640,140],[775,275],[865,180]], parcels: [[285,125],[545,105],[720,155],[835,110]], spikes: [[440,430,90,22],[700,430,70,22]], swingGate: true },
@@ -97,7 +97,7 @@
   }));
   const STAGE_META_EN = [
     ["First Lift","Lantern Lesson","Collect both parcels and aim for the lantern.","Hold one ring, build a swing, then release toward the next ring.","The first delivery teaches a clean tether line."],
-    ["First Lift","Low Cloud Turn","Carry the upper parcel before the low turn.","Wind is mild; avoid the floor spike.","Two rings, one deliberate release."],
+    ["First Lift","Low Cloud Turn","Carry the upper parcel before the low turn.","Wind is mild; carry the upper parcel, then settle into the next ring.","A guided parcel line teaches the upper route."],
     ["First Lift","Starboard Gap","Use the middle ring to cross the wide gap.","The safe line sits above the lower cloud.","A wider route rewards patience."],
     ["First Lift","Split Current","Choose a high or low ring before the spike pair.","Keep momentum while changing altitude.","The route now asks for a lane choice."],
     ["First Lift","First Checkpoint","Collect all parcels, then prove a full swing before delivery.","Checkpoint: tether for a complete swing before the lantern.","First checkpoint mastered: control is now part of delivery."],
@@ -129,7 +129,7 @@
   ];
   const STAGE_META_ZH = [
     ["初升航線","燈籠課","收集兩個包裹並瞄準燈籠。","抓住一個光環、累積擺盪，再朝下一個光環放手。","第一趟送達會教你乾淨的繫繩路線。"],
-    ["初升航線","低雲轉彎","先帶走高處包裹，再通過低雲轉彎。","風勢溫和；避開地面尖刺。","兩個光環，一次果斷放手。"],
+    ["初升航線","低雲轉彎","先帶走高處包裹，再通過低雲轉彎。","風勢溫和；先帶走高處包裹，再穩住下一個光環。","引導式包裹路線會教你掌握高線。"],
     ["初升航線","右舷缺口","利用中間光環越過寬闊缺口。","安全路線在低雲之上。","更寬的路線獎勵耐心。"],
     ["初升航線","分流","在尖刺群前選擇高線或低線。","改變高度時保持速度。","路線現在要求你選擇航道。"],
     ["初升航線","第一個檢查點","收集所有包裹，再完成一次完整擺盪後送達。","檢查點：在燈籠前按住繫繩完成擺盪。","第一個檢查點完成：控制也成了送達的一部分。"],
@@ -263,6 +263,7 @@
   const anchorPosition = (anchor, time) => ({ x: anchor.x, y: anchor.y + (anchor.move ? Math.sin(time * 1.8 + anchor.x) * 34 : 0) });
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const config = () => stageConfigs[currentStage];
+  const stage2GuidePoints = [{ x: 300, y: 150 }, { x: 575, y: 190 }, { x: 735, y: 130 }];
   const targetPosition = (time = state?.time || 0) => {
     const cfg = config();
     const drift = cfg.lanternDrift || { x: 0, y: 0 };
@@ -277,13 +278,13 @@
   };
   const nearestAnchor = () => {
     if (!state) return -1;
-    if (currentStage === 0 && state.targetAnchor >= 0) {
+    if (currentStage <= 1 && state.targetAnchor >= 0) {
       const target = anchorPosition(config().anchors[state.targetAnchor], state.time);
       if (distance(state, target) < 238) return state.targetAnchor;
     }
     let best = -1; let bestDistance = 204;
     config().anchors.forEach((anchor, index) => {
-      if (currentStage === 0 && index === state.lastAnchor) return;
+      if (index === state.lastAnchor) return;
       const d = distance(state, anchorPosition(anchor, state.time));
       if (d < bestDistance) { best = index; bestDistance = d; }
     });
@@ -297,7 +298,7 @@
     const index = nearestAnchor();
     if (index < 0) { announce("noAnchor"); beep(180); return; }
     const anchor = anchorPosition(config().anchors[index], state.time);
-    state.attached = true; state.anchor = index; state.lastAnchor = -1; state.targetAnchor = -1; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
+    state.attached = true; state.anchor = index; state.lastAnchor = -1; state.targetAnchor = currentStage <= 1 && index + 1 < config().anchors.length ? index + 1 : -1; state.rope = Math.max(72, Math.min(190, distance(state, anchor))); state.attachedAt = state.time; state.swingReady = false;
     if (!state.firstAttach) { state.firstAttach = true; track("attach"); }
     announce("attached"); beep(620, 0.08); updateTetherLabel();
   };
@@ -305,12 +306,21 @@
     if (!state || state.done || !state.attached) return;
     const heldFor = Math.max(0, state.time - state.attachedAt);
     const releasedAnchor = state.anchor;
-    const routeAssistEnabled = currentStage === 0;
+    const routeAssistEnabled = currentStage <= 1;
     const nextAnchor = routeAssistEnabled && releasedAnchor + 1 < config().anchors.length ? releasedAnchor + 1 : -1;
-    const target = routeAssistEnabled ? (nextAnchor >= 0 ? anchorPosition(config().anchors[nextAnchor], state.time + 0.15) : targetPosition(state.time + 0.15)) : state;
+    const guideTarget = currentStage === 1 && releasedAnchor < stage2GuidePoints.length
+      ? stage2GuidePoints[releasedAnchor]
+      : null;
+    const target = routeAssistEnabled
+      ? (guideTarget || (nextAnchor >= 0 ? anchorPosition(config().anchors[nextAnchor], state.time + 0.15) : targetPosition(state.time + 0.15)))
+      : state;
     const targetDistance = Math.max(1, distance(state, target));
-    const releaseBoost = routeAssistEnabled ? (nextAnchor >= 0 ? (state.swingReady ? 240 : 360) : (state.swingReady ? 420 : 360)) : 0;
-    state.attached = false; state.lastAnchor = routeAssistEnabled ? releasedAnchor : -1; state.targetAnchor = routeAssistEnabled ? nextAnchor : -1; state.anchor = -1; state.vx += inputAxis * 42 + (target.x - state.x) / targetDistance * releaseBoost; state.vy += (target.y - state.y) / targetDistance * releaseBoost - 16;
+    const releaseBoost = routeAssistEnabled
+      ? (nextAnchor >= 0
+        ? (currentStage === 1 ? (state.swingReady ? 360 : 520) : (state.swingReady ? 240 : 360))
+        : (state.swingReady ? 420 : 360))
+      : 0;
+    state.attached = false; state.lastAnchor = releasedAnchor; state.targetAnchor = routeAssistEnabled ? nextAnchor : -1; state.anchor = -1; state.vx += inputAxis * 42 + (target.x - state.x) / targetDistance * releaseBoost; state.vy += (target.y - state.y) / targetDistance * releaseBoost - 16;
     state.attachedAt = 0; track("release", { hold_bucket: holdBucket(heldFor) });
     announce("released"); beep(840, 0.08); updateTetherLabel();
   };
@@ -374,8 +384,10 @@
     drawBackground(); const cfg = config();
     cfg.spikes.forEach((spike) => { if (!drawSheetProp(cloudhookProps, 512, 512, 512, 512, spike.x - 8, spike.y - 24, spike.w + 16, 64)) { ctx.fillStyle = "#ff788e"; ctx.beginPath(); for (let x = spike.x; x <= spike.x + spike.w; x += 14) { ctx.lineTo(x, spike.y + spike.h); ctx.lineTo(x + 7, spike.y); } ctx.lineTo(spike.x + spike.w, spike.y + spike.h); ctx.closePath(); ctx.fill(); } });
     cfg.anchors.forEach((anchor, index) => { const p = anchorPosition(anchor, state?.time || 0); if (!drawSheetProp(cloudhookProps, 0, 0, 512, 512, p.x - 31, p.y - 31, 62, 62)) { ctx.strokeStyle = index === state?.anchor ? "#fff0a6" : "#78e2dc"; ctx.lineWidth = 7; ctx.beginPath(); ctx.arc(p.x, p.y, 19, 0, Math.PI * 2); ctx.stroke(); ctx.strokeStyle = "#ffffff55"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(p.x, p.y, 29, 0, Math.PI * 2); ctx.stroke(); } });
-    if (state?.attached && currentStage === 0 && state.anchor >= 0) {
-      const next = state.anchor + 1 < cfg.anchors.length ? anchorPosition(cfg.anchors[state.anchor + 1], state.time) : targetPosition(state.time);
+    if (state?.attached && currentStage <= 1 && state.anchor >= 0) {
+      const next = currentStage === 1 && state.anchor < stage2GuidePoints.length
+        ? stage2GuidePoints[state.anchor]
+        : (state.anchor + 1 < cfg.anchors.length ? anchorPosition(cfg.anchors[state.anchor + 1], state.time) : targetPosition(state.time));
       const dx = next.x - state.x; const dy = next.y - state.y; const length = Math.max(1, Math.hypot(dx, dy));
       ctx.save(); ctx.strokeStyle = "#fff0a699"; ctx.lineWidth = 2; ctx.setLineDash([8, 8]); ctx.beginPath(); ctx.moveTo(state.x, state.y); ctx.lineTo(next.x, next.y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = "#fff0a6"; ctx.beginPath(); ctx.moveTo(next.x, next.y); ctx.lineTo(next.x - dx / length * 18 - dy / length * 7, next.y - dy / length * 18 + dx / length * 7); ctx.lineTo(next.x - dx / length * 18 + dy / length * 7, next.y - dy / length * 18 - dx / length * 7); ctx.closePath(); ctx.fill(); ctx.restore();
     }

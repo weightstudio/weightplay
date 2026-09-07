@@ -25,8 +25,8 @@
 }
 .wp-stage-header-action { min-width: 0; }
 @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
-  .main-grid { grid-template-columns: 300px minmax(0, 1fr); }
-  .main-grid .poster { width: 300px; }
+  .main-grid { grid-template-columns: 420px minmax(0, 1fr); }
+  .main-grid .poster { width: 420px; }
 }
 
 /* The shared Battle scaler fixes the play surface to the 334px landscape
@@ -47,18 +47,18 @@
    first grid item has a wider intrinsic text minimum. */
 @media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
   .main-grid > :first-child { min-width: 0; }
-  .main-grid .poster { width: 300px; max-width: 300px; }
-  .wp-standard-main-composition { --wp-main-landscape-poster-size: 300px; grid-template-columns: 300px minmax(0, 1fr) !important; }
+  .main-grid .poster { width: 420px; max-width: 420px; }
+  .wp-standard-main-composition { --wp-main-landscape-poster-size: 420px; grid-template-columns: 420px minmax(0, 1fr) !important; }
   .wp-standard-main-poster,
   .wp-standard-main-poster-media,
   .wp-standard-main-poster-media > img,
   .wp-standard-main-poster > img {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
+    width: 420px !important;
+    min-width: 420px !important;
+    max-width: 420px !important;
+    height: 420px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
   }
 }
 

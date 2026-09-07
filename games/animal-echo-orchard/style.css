@@ -50,4 +50,4 @@ body.wp-shell-battle-active .topbar{display:none!important}
 #battleScreen[data-wp-logical-battle-canvas] .status.try{color:#ffd0bd}
 .battle-ad-reserve{height:0;min-height:0;overflow:hidden}
 #battleScreen[data-wp-logical-battle-canvas]:not([hidden]) + .battle-ad-reserve{height:56px;min-height:56px}
-@media (min-width:700px) and (max-height:560px){body[data-wp-game-id="animal-echo-orchard"] .wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
+@media (min-width:700px) and (max-height:560px){body[data-wp-game-id="animal-echo-orchard"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}}

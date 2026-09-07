@@ -294,19 +294,22 @@ body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Chess</h2><p>A complete classic game currently finishing its release checks.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Classic Game</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Board · Strategy</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Classic Game</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Board · Strategy</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2–5 minutes</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-
-
-
-
-
+      <div class="game-info-section"><h3>World and Mission</h3><p>This is a compact decision board rather than a full tournament match. A sixteen-square layout presents a small set of white and black pieces, then asks you to notice which white piece owns the next meaningful choice.</p>
+<p>The three-step route is authored so the player can see the consequence of each decision. Success means completing the visible sequence and understanding why the highlighted target is the legal next move.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Every sprint has three authored moves. The outlined white piece is the source for the current step, and its highlighted destination is the target you must choose next.</p>
+<p>Choosing another piece or destination produces a correction message without changing the board. The move counter and correction count make careful reading more valuable than fast random tapping.</p>
+<p>Hint explains the current source-and-target pair but never plays it for you. Result reports the completed sprint, score, moves, corrections, and a browser-local best result.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Start a sprint and inspect the outlined white piece and highlighted destination.</li><li>Select the marked white piece, then select its visible target.</li><li>Read the legal-move message before choosing the next step.</li><li>Use Hint when you want the current decision explained without auto-play.</li><li>Complete all three moves, review Result, and choose Play again or return to Main.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Read both the source outline and destination highlight before touching the board.</li><li>If a choice is rejected, use the correction message as information; the board has not been damaged.</li><li>Aim for fewer corrections on replay rather than rushing through the three steps.</li><li>Use Hint to confirm what to inspect, then make the decision yourself so the agency loop remains meaningful.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>The first sprint teaches the source-then-target rhythm. Later replays keep the three-step structure but make a clean, low-correction result the practical mastery goal.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Chess uses a small fixed board, explicit target highlighting, and immediate correction feedback to turn a familiar game name into a readable decision exercise. Mouse, touch, and keyboard activation reach the same authored state, while the Result keeps the session short enough to replay.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Best results and sound preference stay in this browser. No account, purchase, cloud save, or online match is required; clearing site data can remove the local result.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Lights Out</strong><span>Lights Out is a classic 5x5 switch puzzle: press a tile and its orthogonal neighbors to turn every light off.</span></span></a><a class="game-info-related-card" href="/en/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Sliding 15</strong><span>Choose from 30 saved stages with classic, snake, column, anchor, and detour goals.</span></span></a></div></div>
     </div>
   </section><script src="../../src/analytics.js?v=20260907-chess-public-release-v15"></script><script src="analytics-ownership.js?v=20260907-chess-public-release-v15"></script><script src="../../src/popular-games-batch.js?v=20260907-chess-public-release-v15"></script><script src="game.js?v=20260907-chess-public-release-v15"></script><script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>

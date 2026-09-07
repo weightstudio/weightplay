@@ -214,3 +214,37 @@ body.wp-shell-battle-active .topbar {
     font-size: 1.35rem;
   }
 }
+
+/* Keep Result reachable in compact landscape while the shared Battle shell
+   continues to lock the document edge. */
+@media (orientation: landscape) and (max-height: 460px) {
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    max-height: 100dvh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 8px !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .result-guide-art {
+    width: min(100%, 120px) !important;
+    max-height: 110px !important;
+    margin-top: 0 !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .result-icon {
+    font-size: 2rem !important;
+  }
+
+  body[data-wp-game-id="animal-river-gates"] #resultScreen:not([hidden]) .main-actions {
+    margin-top: 4px !important;
+  }
+}
