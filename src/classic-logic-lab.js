@@ -808,7 +808,7 @@
       ko: "공개 플레이", es: "Juego público", "pt-BR": "Jogo público", fr: "Jeu public",
       de: "Öffentlich spielbar", it: "Gioco pubblico", ru: "Открытая игра", hi: "सार्वजनिक खेल", ar: "لعب عام",
     };
-    const preview = id === "sudoku"
+    const preview = id === "sudoku" || id === "peg-solitaire" || id === "sliding-15" || id === "lights-out" || id === "four-in-a-row"
       ? (publicPreview[locale] || publicPreview.en)
       : id === "four-in-a-row" ? text(fourPreview) : t("preview");
     app.root.innerHTML = `

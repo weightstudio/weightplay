@@ -1868,7 +1868,7 @@
     },
     hearts: {
       title: "Hearts", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
-      gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"],
+      gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false,
       intro: "Four players follow suit through thirteen tricks. Hearts are penalty cards, the Queen of Spades is worth 13 points, and taking every penalty card enables Shooting the Moon.",
       guideKicker: "WeightPlay Original Game Guide",
       story: [
@@ -12419,7 +12419,7 @@
   }
 
   registerExpandedGuide("animal-bamboo-pipes", {
-    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle", relatedIds: ["animal-bus-jam", "animal-one-line"], showSkills: false, showRelatedSkill: false,
+    title: "Panko's Bamboo Waterway", gameplay: "Rotating Pipe Network Puzzle", relatedIds: ["animal-bus-jam", "animal-one-line"], showSkills: false, showRelatedSkill: false, noteTitle: "Player and Save Information",
     intro: "Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.",
     story: ["Panko is restoring thirty garden waterways whose bamboo joints were twisted by a storm. Every board is a closed engineering problem: the spring, basin, pipe shapes, and correct route are authored before play begins.", "The visible water is more than decoration. It follows the currently connected network from the source, making wrong turns, dead ends, and disconnected sections readable before the player commits more rotations."],
     systems: ["Tap a tile to rotate it clockwise. Straight pipes, elbows, junctions, the spring, and the destination all use the same centered connection points.", "A pipe counts as connected only when both neighboring openings face each other. Touching artwork or a nearby edge is not enough.", "The source begins flowing immediately through every valid branch. A stage clears when the route reaches the destination under the stage rule; the destination itself does not need to rotate.", "Undo restores one rotation, Restart restores the authored board, and Hint identifies a useful next correction without silently solving the network."],
@@ -13906,7 +13906,7 @@
   localizedGames.es["animal-spectrum-pulse"]={...(localizedGames.es["animal-spectrum-pulse"]||{}),title:"Pulso del espectro animal",intro:"Guía el espíritu del espectro de Panko hacia arriba pulsando solo cuando el marcador de escaneo más cercano coincide con el color y el emblema requeridos.",difficulty:"Fácil de desafiar",time:"2–8 minutos por torre",gameplay:"Arcade de precisión con un toque",genre:["Puzle","Estrategia","Animales"],systems:["Pulsa, toca o usa Espacio una vez para un pulso y suelta por completo antes de la siguiente entrada.","El marcador relevante es el próximo punto de escaneo, no una decoración lejana más arriba de la torre.","El pulso solo tiene éxito cuando el color y el emblema se alinean dentro de la ventana de tiempo visible.","Control de Pulso, Previsión y Guardia de Eco mejoran la recuperación o la claridad de la vista previa, pero nunca eliminan la regla de coincidencia."],faq:[["¿Por qué falló un salto?","El marcador más cercano no coincidió con las dos propiedades requeridas dentro de la ventana."],["¿Puedo mantener pulsado el botón?","No, suelta entre pulsos para una entrada fiable."],["¿Las mejoras cambian la regla?","No, solo mejoran la vista previa o la recuperación."],["¿Se pueden superar todas las torres sin mejoras?","Sí, las mejoras son ayudas opcionales."]]};
 
   registerExpandedGuide("animal-prism-battalion", {
-    title: "Animal Prism Battalion", gameplay: "Three-Lane Automatic Core Defense",
+    title: "Animal Prism Battalion", gameplay: "Three-Lane Automatic Core Defense", noteTitle: "Player and Save Information",
     genre: ["Arcade", "Strategy", "Defense", "Animal"],
     skills: ["Prioritization", "Reaction", "Planning"],
     showSkills: false, showRelatedSkill: false,

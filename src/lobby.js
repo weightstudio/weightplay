@@ -284,6 +284,11 @@ function skillText(skill) {
   return i18n.t(`skill.${skill}`);
 }
 
+function discoverySkillText(skill) {
+  const localized = skillText(skill);
+  return localized === `skill.${skill}` ? skill : localized;
+}
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -1009,13 +1014,24 @@ function createGameCard(game) {
   const skillBadges = isKidsLobby && isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
   const skillReason = isKidsLobby && isPlayable ? skillReasonText(game) : "";
   const quickFacts = isPlayable ? [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("") : "";
-  const quickFactValues = isPlayable ? [lobbyGameFacts[game.id]?.difficulty, lobbyGameFacts[game.id]?.time].filter(Boolean) : [];
+  const quickFactValues = isPlayable
+    ? [
+      lobbyGameFacts[game.id]?.difficulty
+        ? `${localizedFactLabel("difficulty")}: ${localizeDifficulty(lobbyGameFacts[game.id].difficulty)}`
+        : "",
+      lobbyGameFacts[game.id]?.time
+        ? `${localizedFactLabel("time")}: ${localizePlayTime(lobbyGameFacts[game.id].time)}`
+        : "",
+    ].filter(Boolean)
+    : [];
   const discoveryLabel = isPlayable
     ? [
       title,
       type,
       stateCopy("playableLabel"),
+      ageLabel,
       ...(game.categories || []).slice(0, 3).map(categoryText),
+      ...(game.skills || []).slice(0, 3).map(discoverySkillText),
       ...quickFactValues,
     ].filter(Boolean).join(". ")
     : "";
