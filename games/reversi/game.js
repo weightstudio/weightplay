@@ -120,7 +120,7 @@ window.WPClassicLogic?.mount("reversi");
     guide.setAttribute("aria-label", copy.aria);
     const title = guide.querySelector(".game-info-title");
     const facts = guide.querySelectorAll(".game-info-fact");
-    const faq = guide.querySelector(".game-info-section");
+    const faq = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector("dt"));
     if (title) {
       title.querySelector(".game-info-kicker").textContent = copy.kicker;
       title.querySelector("h2").textContent = copy.title;

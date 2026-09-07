@@ -138,6 +138,59 @@ body[data-screen="battle"] { overflow:hidden; overscroll-behavior:none; }
   .rule-note { margin-top:4px; font-size:.65rem; }
 }
 @media (min-width:701px) and (max-height:560px) {
-  .hero-card { grid-template-columns:300px minmax(0,1fr); }
-  .cover-art { width:300px; max-width:300px; }
+  .hero-card { grid-template-columns:420px minmax(0,1fr); }
+  .cover-art { width:420px; max-width:420px; }
+}
+
+/* Keep the settlement controls in the first visible mobile Battle frame. */
+@media (max-width:700px) {
+  .battle-content { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:8px; row-gap:0; }
+  .battle-content > .mission-row, .battle-content > .rule-note { grid-column:1 / -1; }
+  .mission-row { gap:8px; margin-bottom:6px; }
+  .mission-row .panel-intro { font-size:.78rem; }
+  .progress-badge, .small-stat { min-height:28px; padding:4px 7px; font-size:.72rem; }
+  .clue-card { margin-bottom:0; padding:10px 7px; }
+  .grid-card { min-width:0; padding:10px 7px; }
+  .clue-card h3, .grid-card h3 { margin-bottom:4px; font-size:.9rem; }
+  .clue-card p { margin-bottom:7px; font-size:.72rem; line-height:1.35; }
+  .clue-legend { gap:4px; margin-bottom:3px; font-size:.6rem; letter-spacing:.04em; }
+  .clue-list { grid-template-columns:1fr; gap:4px; margin-top:4px; }
+  .clue { padding:5px 2px; border-radius:8px; font-size:.68rem; }
+  .section-heading { gap:4px; margin-bottom:5px; }
+  .habitat-grid { width:100%; gap:4px; margin-bottom:6px; }
+  .cell { min-height:0; border-radius:8px; font-size:clamp(1.2rem,7vw,1.7rem); }
+  .keyboard-hint { margin-bottom:5px; font-size:.64rem; line-height:1.25; }
+  .feedback { min-height:24px; margin:2px 0 5px; font-size:.72rem; }
+  .battle-actions { gap:5px; }
+  .battle-actions .primary-btn, .battle-actions .secondary-btn { flex:1 1 100%; min-height:42px; padding:7px 5px; font-size:.78rem; }
+  .rule-note { margin:5px 2px 0; font-size:.68rem; line-height:1.3; }
+}
+
+@media (orientation:landscape) and (max-height:500px) {
+  .battle-content { row-gap:0; }
+  .grid-card { padding:6px; }
+  .section-heading { margin-bottom:3px; }
+  .habitat-grid { width:168px; margin-bottom:2px; }
+  .keyboard-hint { margin-bottom:2px; font-size:.62rem; }
+  .feedback { min-height:13px; margin:0 0 2px; }
+  .battle-actions { gap:4px; }
+  .battle-actions .primary-btn, .battle-actions .secondary-btn { min-height:36px; padding:4px 6px; font-size:.72rem; }
+}
+
+@media (max-width:700px) {
+  .feedback { height:48px; min-height:48px; display:flex; align-items:center; justify-content:center; }
+}
+
+@media (orientation:landscape) and (max-height:500px) {
+  .grid-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:start; column-gap:8px; }
+  .grid-card .section-heading { grid-column:1 / -1; }
+  .grid-card .habitat-grid { grid-column:1; grid-row:2 / span 3; align-self:start; }
+  .grid-card .keyboard-hint { grid-column:2; grid-row:2; align-self:center; margin:0; }
+  .grid-card .feedback { grid-column:2; grid-row:3; align-self:center; height:24px; min-height:24px; margin:2px 0; }
+  .grid-card .battle-actions { grid-column:2; grid-row:4; align-self:start; flex-direction:column; }
+  .grid-card .battle-actions .primary-btn, .grid-card .battle-actions .secondary-btn { flex:1 1 auto; width:100%; }
+}
+
+@media (min-width:701px) and (min-height:501px) {
+  .feedback { height:56px; min-height:56px; display:flex; align-items:center; justify-content:center; }
 }

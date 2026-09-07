@@ -51,3 +51,13 @@ body.wp-shell-battle-active .topbar{display:none!important}
 .battle-ad-reserve{height:0;min-height:0;overflow:hidden}
 #battleScreen[data-wp-logical-battle-canvas]:not([hidden]) + .battle-ad-reserve{height:56px;min-height:56px}
 @media (min-width:700px) and (max-height:560px){body[data-wp-game-id="animal-echo-orchard"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}}
+
+/* Keep the Result recovery actions inside the short landscape viewport. The
+   compact result does not need a second copy of the guide artwork; preserve
+   the same title, outcome, and recovery controls in a denser framed panel. */
+@media (orientation:landscape) and (max-height:560px){
+  #resultScreen[data-screen="result"]{width:calc(100% - 16px);margin:8px auto;padding:12px 18px;min-height:0;max-height:calc(100dvh - 16px);overflow-y:auto}
+  #resultScreen .result-guide{display:none}
+  #resultScreen .result-icon{font-size:2rem}
+  #resultScreen .main-actions{gap:8px;margin-top:10px}
+}
