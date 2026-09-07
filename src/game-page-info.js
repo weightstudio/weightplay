@@ -306,6 +306,59 @@
       related: ["pyramid-solitaire", "tripeaks-solitaire"], relatedIds: ["pyramid-solitaire", "tripeaks-solitaire"],
       faq: [["How many stages are there?", "There are 30 selectable stages across six five-stage arcs, with checkpoints at 5, 10, 15, 20, 25, and 30."], ["What makes a move legal?", "A numbered tile must share an edge with the empty space; diagonal moves and jumps are not allowed."], ["What are anchors and detours?", "An anchor is a marked target tile that cannot slide. Detour and Crown stages also forbid immediately reversing the last blank move."], ["Does Hint solve the puzzle?", "No. Hint marks one legal candidate, and you still decide whether to slide it."], ["Can I undo?", "Yes. Undo restores the previous board and move count."], ["Is progress saved?", "Cleared stages and the next unlocked stage are saved only in this browser; no account or cloud save is required."]],
     },
+    "sudoku": {
+      title: "Sudoku",
+      age: "9+",
+      difficulty: "Easy to Hard",
+      time: "3-15 minutes",
+      skills: ["Deduction", "Pattern Recognition", "Focus"],
+      gameplay: "Number Logic",
+      genre: ["Classic", "Puzzle", "Strategy", "Family"],
+      showSkills: false,
+      showRelatedSkill: false,
+      hideScoreBands: true,
+      noteTitle: "Player and Save Information",
+      intro: "Sudoku is a classic 9x9 deduction puzzle. Fill every row, column, and 3x3 box with numbers 1–9 while using the difficulty selector, Hint, Undo, and a fresh puzzle to control the pace.",
+      story: [
+        "The board starts with a fixed solution and a readable set of given numbers. Every empty cell narrows the next choice through the three overlapping rules: its row, its column, and its 3x3 box.",
+        "Easy, Medium, and Hard change how many cells are given at the start. The same board language remains visible at every level, so progress comes from making safer deductions rather than guessing faster.",
+      ],
+      systems: [
+        "Select an empty cell, then choose a number from 1 to 9. Given cells are locked; editable cells can be filled or cleared without changing the puzzle solution.",
+        "A number is accepted only when it does not already appear in the selected cell's row, column, or 3x3 box. The game immediately explains a conflict instead of silently accepting an illegal move.",
+        "Hint marks one safe next cell but leaves the number choice to you. Undo restores the previous entry, while Restart repeats the current difficulty and New Game creates a fresh puzzle.",
+        "The board is playable with touch, mouse, or keyboard-friendly controls. There is no timer, account, purchase, or required network service.",
+      ],
+      how: [
+        "Choose Easy, Medium, or Hard from the difficulty selector.",
+        "Select an empty cell and inspect the numbers already present in its row, column, and 3x3 box.",
+        "Enter a legal number with the keypad, then use Undo or Clear when you want to compare another route.",
+        "Use Hint for one safe next cell, but make the deduction yourself.",
+        "Fill all 81 cells correctly to complete the puzzle, or choose New Game to begin a fresh board.",
+      ],
+      strategyTips: [
+        "Start with a row, column, or box that has the most given numbers; it usually offers the narrowest candidate set.",
+        "When a number can appear in only one empty cell of a 3x3 box, place it before scanning wider patterns.",
+        "Use Clear and Undo to test a deduction without turning one uncertain guess into a long chain of errors.",
+        "Treat Hint as a next-step marker, not an automatic solution; reading why that cell is safe builds the useful skill.",
+      ],
+      progression: [
+        "Easy leaves more given cells visible, Medium removes more of the starting information, and Hard asks for the longest chain of deductions.",
+        "Each difficulty can be replayed at your own pace. A completed board is the goal; speed is not required for a successful solve.",
+      ],
+      designNote: "Sudoku uses the shared Classic Logic Lab shell, a responsive 9x9 board, direct legality checks, localized feedback, Hint, Clear, Undo, Restart, New Game, and a complete Main-Battle-Result recovery path.",
+      parent: "Sudoku is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required; the current board and preferences remain in this browser.",
+      related: ["cat-color-sudoku"],
+      relatedIds: ["cat-color-sudoku"],
+      faq: [
+        ["What is the goal?", "Fill every row, column, and 3x3 box with the numbers 1 through 9 exactly once."],
+        ["What happens when a number conflicts?", "The game rejects it and explains that the row, column, or 3x3 box already contains that number."],
+        ["What does Hint do?", "Hint marks one safe empty cell. You still choose and enter the number yourself."],
+        ["What changes between Easy, Medium, and Hard?", "The difficulty changes how many cells are given at the start; the 9x9 rules stay the same."],
+        ["Can I undo or restart?", "Yes. Undo removes the previous entry, Restart repeats the current board, and New Game creates a fresh puzzle."],
+        ["Is progress saved?", "The current board and preferences stay only in this browser. No account or cloud save is required."],
+      ],
+    },
     "golf-solitaire": {
       title: "Golf Solitaire", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Pattern Recognition", "Planning", "Focus"],
       intro: "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.", hideSkillsFact: true, showRelatedSkill: false,
@@ -1942,7 +1995,7 @@
       gameplay: "Classic Reveal Card Game", genre: ["Card", "Family", "Strategy"], skills: ["Focus", "Pattern Recognition"],
       intro: "Both players reveal one card. The higher rank wins the pot; tied ranks trigger a War with additional cards.",
       how: ["Press Flip to reveal, then watch the pile move. The player who collects every card wins."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Public play", parent: "This free public General game runs in the browser with no account or purchase required. The current round and local preferences are stored only in this browser; clearing site data or switching browsers may remove them.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     speed: {
@@ -1950,7 +2003,7 @@
       gameplay: "Real-Time Card Race", genre: ["Card", "Family", "Strategy"], skills: ["Focus", "Pattern Recognition", "Reaction"],
       intro: "Both players act at once. Play a card one rank above or below either center card, with Ace and King wrapping.",
       how: ["Tap quickly and keep your hand replenished. There is no waiting for the opponent's turn."],
-      noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog.",
+      noteTitle: "Public play", parent: "Play Speed free in your browser with no account or purchase required. The current round and local preferences are stored only in this browser; clearing site data or switching browsers may remove them.",
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "old-maid": {
@@ -3283,8 +3336,8 @@
     skills: ["التركيز", "التعرّف على الأنماط", "سرعة الاستجابة"],
     intro: "يتحرك اللاعبان في الوقت نفسه. العب بطاقة أعلى أو أدنى بدرجة واحدة من أي بطاقة مركزية، مع التفاف الآس والملك.",
     how: ["انقر بسرعة وحافظ على تجدد يدك. لا تنتظر دور الخصم."],
-    noteTitle: "حالة المعاينة",
-    parent: "هذه معاينة للمالك وليست ضمن الكتالوج العام الرسمي.",
+    noteTitle: "لعب عام",
+    parent: "العب Speed مجانًا في المتصفح بلا حساب أو شراء. نافس الذكاء الاصطناعي بلعب بطاقة أعلى أو أدنى بدرجة من أي بطاقة مركزية، وجدّد يدك وأبقِ المسارين متحركين.",
     faq: [["هل يُحفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
   };
   localizedGames["ar"]["old-maid"] = {
@@ -8599,19 +8652,19 @@
   // record (and the legacy Spanish title casing), which is visible before and
   // after hydration on every localized route.
   const casinoGuideLocaleCopies = {
-    en: { title: "Casino", intro: "Play a card to capture a table card of the same value or several table cards whose values add to it.", gameplay: "Fishing and Capture Card Game", genre: ["Card", "Family", "Strategy"], difficulty: "Medium", time: "5-15 minutes", skills: ["Planning", "Focus", "Pattern Recognition"], how: ["Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses."], noteTitle: "Preview status", parent: "This owner preview is not in the formal public catalog." },
-    "zh-Hant": { title: "卡西諾", intro: "出一張牌，捕獲相同點數的桌面牌，或捕獲合計點數相符的多張桌面牌。", gameplay: "捕魚與捕獲紙牌遊戲", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分鐘", skills: ["規劃", "專注", "圖樣辨識"], how: ["為之後的捕獲建立牌組，收集黑桃，並留意方塊 10 與黑桃 2 的獎勵。"], noteTitle: "預覽狀態", parent: "這是擁有者預覽，尚未列入正式公開目錄。" },
-    "zh-Hans": { title: "卡西诺", intro: "出一张牌，捕获相同点数的桌面牌，或捕获合计点数相符的多张桌面牌。", gameplay: "捕鱼与捕获纸牌游戏", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分钟", skills: ["规划", "专注", "图样识别"], how: ["为之后的捕获建立牌组，收集黑桃，并留意方块 10 与黑桃 2 的奖励。"], noteTitle: "预览状态", parent: "这是拥有者预览，尚未列入正式公开目录。" },
-    ja: { title: "カシノ", intro: "カードを1枚出し、同じ値の場札、または合計が一致する複数の場札を獲得します。", gameplay: "フィッシング＆獲得カードゲーム", genre: ["カード", "ファミリー", "戦略"], difficulty: "中級", time: "5～15分", skills: ["計画", "集中", "パターン認識"], how: ["あとで獲得できるよう組み合わせを作り、スペードを集め、ダイヤの10とスペードの2のボーナスに注目します。"], noteTitle: "プレビューの状態", parent: "これは所有者向けプレビューで、正式な公開カタログには含まれません。" },
-    ko: { title: "카지노", intro: "카드 한 장을 내고 같은 값의 테이블 카드 또는 합이 맞는 여러 테이블 카드를 가져오세요.", gameplay: "피싱·캡처 카드 게임", genre: ["카드", "가족", "전략"], difficulty: "보통", time: "5~15분", skills: ["계획", "집중", "패턴 인식"], how: ["나중에 가져올 수 있도록 조합을 만들고, 스페이드를 모으며 다이아몬드 10과 스페이드 2 보너스를 살펴보세요."], noteTitle: "프리뷰 상태", parent: "이 소유자 프리뷰는 공식 공개 카탈로그에 포함되지 않습니다." },
-    es: { title: "Casino clásico", intro: "Juega una carta para capturar una carta de mesa del mismo valor o varias cuyo total coincida.", gameplay: "Juego de cartas de captura y pesca", genre: ["Cartas", "Familia", "Estrategia"], difficulty: "Media", time: "5-15 minutos", skills: ["Planificación", "Concentración", "Reconocimiento de patrones"], how: ["Forma combinaciones para capturar después, reúne picas y busca las bonificaciones del 10 de diamantes y el 2 de picas."], noteTitle: "Estado de la vista previa", parent: "Esta vista previa del propietario no forma parte del catálogo público oficial." },
-    "pt-BR": { title: "Cassino", intro: "Jogue uma carta para capturar uma carta da mesa do mesmo valor ou várias cujo total corresponda.", gameplay: "Jogo de cartas de pesca e captura", genre: ["Cartas", "Família", "Estratégia"], difficulty: "Média", time: "5–15 minutos", skills: ["Planejamento", "Concentração", "Reconhecimento de padrões"], how: ["Monte combinações para capturar depois, reúna espadas e observe os bônus do 10 de ouros e do 2 de espadas."], noteTitle: "Status da prévia", parent: "Esta prévia do proprietário não faz parte do catálogo público oficial." },
-    fr: { title: "Casino", intro: "Jouez une carte pour capturer une carte de table de même valeur ou plusieurs cartes dont la somme correspond.", gameplay: "Jeu de cartes de pêche et de capture", genre: ["Cartes", "Famille", "Stratégie"], difficulty: "Moyenne", time: "5–15 minutes", skills: ["Planification", "Concentration", "Reconnaissance des motifs"], how: ["Préparez des combinaisons à capturer plus tard, collectionnez les piques et surveillez les bonus du 10 de carreau et du 2 de pique."], noteTitle: "État de l’aperçu", parent: "Cet aperçu du propriétaire ne fait pas partie du catalogue public officiel." },
-    de: { title: "Cassino", intro: "Spiele eine Karte, um eine Tischkarte gleichen Werts oder mehrere Karten mit passender Summe zu nehmen.", gameplay: "Fang- und Sammelkartenspiel", genre: ["Karten", "Familie", "Strategie"], difficulty: "Mittel", time: "5–15 Minuten", skills: ["Planung", "Konzentration", "Mustererkennung"], how: ["Bilde Kombinationen für spätere Züge, sammle Pik und achte auf die Boni der Karo-10 und Pik-2."], noteTitle: "Vorschau-Status", parent: "Diese Besitzer-Vorschau gehört nicht zum offiziellen öffentlichen Katalog." },
-    it: { title: "Cassino", intro: "Gioca una carta per catturare una carta del tavolo dello stesso valore o più carte con una somma corrispondente.", gameplay: "Gioco di carte pesca e cattura", genre: ["Carte", "Famiglia", "Strategia"], difficulty: "Media", time: "5–15 minuti", skills: ["Pianificazione", "Concentrazione", "Riconoscimento dei pattern"], how: ["Prepara combinazioni da catturare in seguito, raccogli le picche e cerca i bonus del 10 di quadri e del 2 di picche."], noteTitle: "Stato dell’anteprima", parent: "Questa anteprima del proprietario non fa parte del catalogo pubblico ufficiale." },
-    ru: { title: "Кассино", intro: "Сыграйте карту, чтобы забрать карту стола того же значения или несколько карт с подходящей суммой.", gameplay: "Карточная игра на сбор и взятие", genre: ["Карты", "Семейная", "Стратегия"], difficulty: "Средняя", time: "5–15 минут", skills: ["Планирование", "Внимание", "Распознавание узоров"], how: ["Составляйте комбинации для последующего взятия, собирайте пики и следите за бонусами 10 бубен и 2 пик."], noteTitle: "Статус предпросмотра", parent: "Этот предпросмотр владельца не входит в официальный публичный каталог." },
-    hi: { title: "कैसिनो", intro: "एक पत्ता चलाकर उसी मान वाला मेज़ का पत्ता या ऐसा संयोजन पकड़ें जिसका योग बराबर हो।", gameplay: "पत्तों का पकड़ और संग्रह खेल", genre: ["कार्ड", "परिवार", "रणनीति"], difficulty: "मध्यम", time: "5–15 मिनट", skills: ["योजना", "एकाग्रता", "पैटर्न पहचान"], how: ["बाद में पकड़ने के लिए संयोजन बनाएँ, स्पेड इकट्ठे करें और डायमंड 10 व स्पेड 2 के बोनस पर ध्यान दें।"], noteTitle: "प्रीव्यू स्थिति", parent: "यह मालिक का प्रीव्यू आधिकारिक सार्वजनिक कैटलॉग में शामिल नहीं है।" },
-    ar: { title: "كاسينو", intro: "العب بطاقة لالتقاط بطاقة من الطاولة بالقيمة نفسها أو عدة بطاقات يساوي مجموعها القيمة.", gameplay: "لعبة بطاقات الصيد والالتقاط", genre: ["بطاقات", "عائلية", "استراتيجية"], difficulty: "متوسطة", time: "5–15 دقيقة", skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"], how: ["كوّن تركيبات لالتقاطها لاحقًا، واجمع البستوني، وانتبه إلى مكافأتي 10 الماس و2 البستوني."], noteTitle: "حالة المعاينة", parent: "هذه معاينة المالك وليست ضمن الكتالوج العام الرسمي." },
+    en: { title: "Casino", intro: "Play a card to capture a table card of the same value or several table cards whose values add to it.", gameplay: "Fishing and Capture Card Game", genre: ["Card", "Family", "Strategy"], difficulty: "Medium", time: "5-15 minutes", skills: ["Planning", "Focus", "Pattern Recognition"], how: ["Build combinations for later capture, collect Spades, and watch for the Ten of Diamonds and Two of Spades bonuses."], noteTitle: "Public play", parent: "Play Casino free in your browser with no account or purchase required. Capture table cards by rank or sum, build combinations, and chase special bonuses." },
+    "zh-Hant": { title: "卡西諾", intro: "出一張牌，捕獲相同點數的桌面牌，或捕獲合計點數相符的多張桌面牌。", gameplay: "捕魚與捕獲紙牌遊戲", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分鐘", skills: ["規劃", "專注", "圖樣辨識"], how: ["為之後的捕獲建立牌組，收集黑桃，並留意方塊 10 與黑桃 2 的獎勵。"], noteTitle: "公開遊玩", parent: "免費在瀏覽器遊玩 Casino，不需帳號或購買。依點數或合計捕獲桌牌、建立組合並追逐特殊獎勵。" },
+    "zh-Hans": { title: "卡西诺", intro: "出一张牌，捕获相同点数的桌面牌，或捕获合计点数相符的多张桌面牌。", gameplay: "捕鱼与捕获纸牌游戏", genre: ["卡牌", "家庭", "策略"], difficulty: "中等", time: "5–15 分钟", skills: ["规划", "专注", "图样识别"], how: ["为之后的捕获建立牌组，收集黑桃，并留意方块 10 与黑桃 2 的奖励。"], noteTitle: "公开游玩", parent: "免费在浏览器游玩 Casino，无需账号或购买。按点数或合计捕获桌牌、建立组合并追逐特殊奖励。" },
+    ja: { title: "カシノ", intro: "カードを1枚出し、同じ値の場札、または合計が一致する複数の場札を獲得します。", gameplay: "フィッシング＆獲得カードゲーム", genre: ["カード", "ファミリー", "戦略"], difficulty: "中級", time: "5～15分", skills: ["計画", "集中", "パターン認識"], how: ["あとで獲得できるよう組み合わせを作り、スペードを集め、ダイヤの10とスペードの2のボーナスに注目します。"], noteTitle: "公開プレイ", parent: "アカウントや購入なしで、ブラウザから無料でCasinoを遊べます。同じ値または合計で場札を取り、組み合わせと特別ボーナスを狙います。" },
+    ko: { title: "카지노", intro: "카드 한 장을 내고 같은 값의 테이블 카드 또는 합이 맞는 여러 테이블 카드를 가져오세요.", gameplay: "피싱·캡처 카드 게임", genre: ["카드", "가족", "전략"], difficulty: "보통", time: "5~15분", skills: ["계획", "집중", "패턴 인식"], how: ["나중에 가져올 수 있도록 조합을 만들고, 스페이드를 모으며 다이아몬드 10과 스페이드 2 보너스를 살펴보세요."], noteTitle: "공개 플레이", parent: "계정이나 구매 없이 브라우저에서 Casino를 무료로 플레이하세요. 같은 값이나 합으로 테이블 카드를 잡고 조합과 특별 보너스를 노리세요." },
+    es: { title: "Casino clásico", intro: "Juega una carta para capturar una carta de mesa del mismo valor o varias cuyo total coincida.", gameplay: "Juego de cartas de captura y pesca", genre: ["Cartas", "Familia", "Estrategia"], difficulty: "Media", time: "5-15 minutos", skills: ["Planificación", "Concentración", "Reconocimiento de patrones"], how: ["Forma combinaciones para capturar después, reúne picas y busca las bonificaciones del 10 de diamantes y el 2 de picas."], noteTitle: "Juego público", parent: "Juega Casino gratis en tu navegador, sin cuenta ni compras. Captura cartas por valor o suma, forma combinaciones y busca bonificaciones especiales." },
+    "pt-BR": { title: "Cassino", intro: "Jogue uma carta para capturar uma carta da mesa do mesmo valor ou várias cujo total corresponda.", gameplay: "Jogo de cartas de pesca e captura", genre: ["Cartas", "Família", "Estratégia"], difficulty: "Média", time: "5–15 minutos", skills: ["Planejamento", "Concentração", "Reconhecimento de padrões"], how: ["Monte combinações para capturar depois, reúna espadas e observe os bônus do 10 de ouros e do 2 de espadas."], noteTitle: "Jogo público", parent: "Jogue Casino gratuitamente no navegador, sem conta ou compra. Capture cartas por valor ou soma, monte combinações e busque bônus especiais." },
+    fr: { title: "Casino", intro: "Jouez une carte pour capturer une carte de table de même valeur ou plusieurs cartes dont la somme correspond.", gameplay: "Jeu de cartes de pêche et de capture", genre: ["Cartes", "Famille", "Stratégie"], difficulty: "Moyenne", time: "5–15 minutes", skills: ["Planification", "Concentration", "Reconnaissance des motifs"], how: ["Préparez des combinaisons à capturer plus tard, collectionnez les piques et surveillez les bonus du 10 de carreau et du 2 de pique."], noteTitle: "Jeu public", parent: "Jouez gratuitement à Casino dans votre navigateur, sans compte ni achat. Capturez par valeur ou somme, créez des combinaisons et visez les bonus spéciaux." },
+    de: { title: "Cassino", intro: "Spiele eine Karte, um eine Tischkarte gleichen Werts oder mehrere Karten mit passender Summe zu nehmen.", gameplay: "Fang- und Sammelkartenspiel", genre: ["Karten", "Familie", "Strategie"], difficulty: "Mittel", time: "5–15 Minuten", skills: ["Planung", "Konzentration", "Mustererkennung"], how: ["Bilde Kombinationen für spätere Züge, sammle Pik und achte auf die Boni der Karo-10 und Pik-2."], noteTitle: "Öffentlich spielbar", parent: "Spiele Casino kostenlos im Browser, ohne Konto oder Kauf. Fange Karten nach Wert oder Summe, bilde Kombinationen und jage Sonderboni." },
+    it: { title: "Cassino", intro: "Gioca una carta per catturare una carta del tavolo dello stesso valore o più carte con una somma corrispondente.", gameplay: "Gioco di carte pesca e cattura", genre: ["Carte", "Famiglia", "Strategia"], difficulty: "Media", time: "5–15 minuti", skills: ["Pianificazione", "Concentrazione", "Riconoscimento dei pattern"], how: ["Prepara combinazioni da catturare in seguito, raccogli le picche e cerca i bonus del 10 di quadri e del 2 di picche."], noteTitle: "Gioco pubblico", parent: "Gioca a Casino gratis nel browser, senza account o acquisti. Cattura per valore o somma, crea combinazioni e cerca bonus speciali." },
+    ru: { title: "Кассино", intro: "Сыграйте карту, чтобы забрать карту стола того же значения или несколько карт с подходящей суммой.", gameplay: "Карточная игра на сбор и взятие", genre: ["Карты", "Семейная", "Стратегия"], difficulty: "Средняя", time: "5–15 минут", skills: ["Планирование", "Внимание", "Распознавание узоров"], how: ["Составляйте комбинации для последующего взятия, собирайте пики и следите за бонусами 10 бубен и 2 пик."], noteTitle: "Открытая игра", parent: "Играйте в Casino бесплатно в браузере, без аккаунта и покупок. Забирайте карты по значению или сумме, создавайте комбинации и охотьтесь за бонусами." },
+    hi: { title: "कैसिनो", intro: "एक पत्ता चलाकर उसी मान वाला मेज़ का पत्ता या ऐसा संयोजन पकड़ें जिसका योग बराबर हो।", gameplay: "पत्तों का पकड़ और संग्रह खेल", genre: ["कार्ड", "परिवार", "रणनीति"], difficulty: "मध्यम", time: "5–15 मिनट", skills: ["योजना", "एकाग्रता", "पैटर्न पहचान"], how: ["बाद में पकड़ने के लिए संयोजन बनाएँ, स्पेड इकट्ठे करें और डायमंड 10 व स्पेड 2 के बोनस पर ध्यान दें।"], noteTitle: "सार्वजनिक खेल", parent: "बिना खाते या खरीदारी के ब्राउज़र में Casino मुफ्त खेलें। मान या योग से पत्ते पकड़ें, संयोजन बनाएँ और विशेष बोनस पाएँ।" },
+    ar: { title: "كاسينو", intro: "العب بطاقة لالتقاط بطاقة من الطاولة بالقيمة نفسها أو عدة بطاقات يساوي مجموعها القيمة.", gameplay: "لعبة بطاقات الصيد والالتقاط", genre: ["بطاقات", "عائلية", "استراتيجية"], difficulty: "متوسطة", time: "5–15 دقيقة", skills: ["التخطيط", "التركيز", "التعرّف على الأنماط"], how: ["كوّن تركيبات لالتقاطها لاحقًا، واجمع البستوني، وانتبه إلى مكافأتي 10 الماس و2 البستوني."], noteTitle: "لعب عام", parent: "العب كاسينو مجانًا في المتصفح بلا حساب أو شراء. التقط بطاقات الطاولة بالقيمة أو بالمجموع، وابنِ التركيبات واسَعَ إلى المكافآت الخاصة." },
   };
   Object.entries(casinoGuideLocaleCopies).forEach(([localeKey, copy]) => {
     localizedGames[localeKey] ||= {};
@@ -13266,7 +13319,7 @@
     guideTitleSuffix: "دليل اللعبة",
     intro: "كلاود هوك للتوصيل لعبة أصلية تعتمد على الزخم. وجّه سمور السحب عبر حلقات الشفق، وتعلّق بالحلقات المتحركة، وسلّم كل طرد إلى هدف الفانوس.",
     story: [
-      "يعبر سمور التوصيل ستة مسارات عاصفة؛ فكل طرد يحتاج إلى تأرجح نظيف، وترك للحبل في الوقت المناسب، وهبوط آمن. يحوّل كل مسار رحلة قصيرة إلى مسألة توقيت واضحة.",
+      "يعبر سمور التوصيل حملة من ثلاثين مرحلة موزعة على ستة فصول من خمسة مسارات: الارتفاع الأول، والرياح المعاكسة، والحلقات المتحركة، وترتيب الطرود، وطقس الفانوس، ثم الإتقان. يحتاج كل طرد إلى تأرجح نظيف وترك للحبل في الوقت المناسب وهبوط آمن.",
     ],
     systems: [
       "اضغط مطولًا على زر التعلّق أو مفتاح المسافة للإمساك بأقرب حلقة ظاهرة، ثم اتركه لتحمل سرعتك إلى القوس التالي. استخدم اليسار واليمين أو زري الدفع لتعديل الرحلة أثناء التعلّق وفي الهواء الطلق.",
@@ -13285,7 +13338,7 @@
       "عند فشل الرحلة، غيّر قرار ترك واحدًا في كل مرة كي تعلّمك الرحلة الجديدة أي جزء من المسار كان غير آمن.",
     ],
     progression: [
-      "تبدأ المراحل الست بحلقات ثابتة وطردين. ثم تضيف المسارات اللاحقة الرياح والحلقات المتحركة والسلاسل الأطول والطرود الإضافية وحقول الأشواك التي تتطلب توقيتًا أدق لترك الحبل.",
+      "تتكون الحملة من ستة فصول، كل فصل منها خمس مراحل، مع نقاط تحقق في المراحل 5 و10 و15 و20 و25 و30. تبدأ الحلقات بالرياح الخفيفة، ثم تضيف هبّات متغيرة، وحلقات متحركة، وترتيبًا إلزاميًا للطرود، وفانوسًا ينجرف، وخلطات إتقان تجمع كل ذلك.",
     ],
     designNote: "يحافظ كلاود هوك للتوصيل على مساحة لعب منطقية واحدة في الهاتف والوضع الأفقي وسطح المكتب. تشترك اللمسة والماوس ولوحة المفاتيح في حالة التعلّق والترك والدفع نفسها، بينما تبقى الواجهة والمرحلة والرحلة والنتيجة شاشات منفصلة ذات عودة مباشرة.",
     parent: "هذه اللعبة العامة في المتصفح لا تحتاج إلى حساب أو شراء أو دردشة أو لوحة متصدرين أو إعلانات. تبقى المراحل المفتوحة وأفضل الأزمنة واللغة والصوت والتفضيلات في ملف المتصفح الحالي، وقد تختفي عند حذف بيانات الموقع.",
@@ -14453,6 +14506,7 @@
     genre: ["Strategy", "Role-Playing", "Animal"],
     skills: ["Team Building", "Probability Management", "Planning"],
     hideSkillsFact: true,
+    noteTitle: "Player and Save Information",
     showRelatedSkill: false,
     relatedIds: ["beast-deck", "animal-rune-tactics", "animal-auto-squad"],
     intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
@@ -14468,6 +14522,7 @@
 
   localizedGames["zh-Hant"]["animal-rune-reels"] = {
     title: "動物符文轉輪", gameplay: "隊伍轉輪角色扮演戰鬥", genre: ["策略", "角色扮演", "動物"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "玩家與存檔資訊",
     difficulty: "容易至具挑戰性", time: "每站 2–8 分鐘", guideKicker: "WeightPlay 原創遊戲指南",
     intro: "組建最多五名召喚動物英雄的隊伍，旋轉三列向下移動的符文轉輪，組合停下的圖樣，並在三十個守護者任務的每一波攻勢中存活。",
     story: ["召喚師穿越六個裂隙區域，身邊的動物名冊也逐步擴張。每名英雄都有攻擊、防禦、治療與獨特終極技，因此隊伍組成會改變同一轉輪結果的結算方式。", "主線戰役包含三十個多波次任務。每日與排程活動任務會提供可選材料，但不會取代戰役進度。"],
@@ -14482,6 +14537,7 @@
   localizedGames["zh-Hans"] ||= {};
   localizedGames["zh-Hans"]["animal-rune-reels"] = {
     title: "动物符文转轮", gameplay: "队伍转轮角色扮演战斗", genre: ["策略", "角色扮演", "动物"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "玩家和保存信息",
     difficulty: "容易至具挑战性", time: "每站 2–8 分钟", guideKicker: "WeightPlay 原创游戏指南",
     intro: "组建最多五名召唤动物英雄的队伍，旋转三列向下移动的符文转轮，组合停下的图样，并在三十个守护者任务的每一波攻势中存活。",
     story: ["召唤师穿越六个裂隙区域，身边的动物名册也逐步扩张。每名英雄都有攻击、防御、治疗与独特终极技，因此队伍组成会改变同一转轮结果的结算方式。", "主线战役包含三十个多波次任务。每日与排程活动任务会提供可选材料，但不会取代战役进度。"],
@@ -14496,6 +14552,7 @@
   localizedGames["ja"] ||= {};
   localizedGames["ja"]["animal-rune-reels"] = {
     title: "アニマルルーンリール", gameplay: "チームリールRPGバトル", genre: ["戦略", "ロールプレイング", "動物"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "プレイヤーと保存情報",
     difficulty: "遊びやすく、挑戦的", time: "1ステージ 2～8分", guideKicker: "WeightPlay オリジナルゲームガイド",
     intro: "召喚した動物ヒーローを最大5体編成し、下へ回る3列のルーンリールを止め、揃ったシンボルを組み合わせて、30の守護者ミッションを生き残ります。",
     story: ["召喚士は6つのリフト地域を進み、動物の仲間を増やします。各ヒーローは攻撃、防御、回復、固有の必殺技を持つため、同じリール結果でもチーム編成によって解決方法が変わります。", "メインキャンペーンには30の複数ウェーブミッションがあります。デイリーと期間イベントは追加素材を提供しますが、キャンペーンの進行を置き換えません。"],
@@ -14871,6 +14928,7 @@
   localizedGames["ko"] ||= {};
   localizedGames["ko"]["animal-rune-reels"] = {
     title: "애니멀 룬 릴", gameplay: "팀 릴 역할수행 전투", genre: ["전략", "롤플레잉", "동물"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "플레이어 및 저장 정보",
     difficulty: "쉽게 시작해 도전적으로", time: "스테이지당 2~8분", guideKicker: "WeightPlay 오리지널 게임 가이드",
     intro: "소환한 동물 영웅을 최대 5명까지 팀으로 꾸리고, 아래로 내려오는 세 룬 릴을 돌려 멈춘 기호를 조합하며 30개 수호자 임무의 모든 웨이브에서 살아남으세요.",
     story: ["소환사는 여섯 균열 지역을 지나며 동물 영웅을 늘립니다. 영웅마다 공격, 방어, 회복과 고유 궁극기가 있어 같은 릴 결과도 팀 구성에 따라 다르게 해결됩니다.", "메인 캠페인은 30개의 다중 웨이브 임무로 구성됩니다. 일일 및 일정 이벤트 임무는 선택 재료를 주지만 캠페인 진행을 대신하지 않습니다."],
@@ -14885,6 +14943,7 @@
   localizedGames["es"] ||= {};
   localizedGames["es"]["animal-rune-reels"] = {
     title: "Ruletas de Runas Animal", gameplay: "Batalla de rol con equipo y ruletas", genre: ["Estrategia", "Rol", "Animales"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Información del jugador y del guardado",
     difficulty: "Fácil de empezar, desafiante de dominar", time: "2–8 minutos por etapa", guideKicker: "Guía de juego original de WeightPlay",
     intro: "Forma un equipo de hasta cinco héroes animales invocados, gira tres ruletas de runas descendentes, combina los símbolos detenidos y sobrevive cada oleada de treinta misiones de guardianes.",
     story: ["Un invocador cruza seis regiones de grietas con un elenco animal cada vez mayor. Cada héroe tiene ataque, defensa, curación y un último poder distinto, así que la composición cambia cómo se resuelve el mismo resultado.", "La campaña principal contiene treinta misiones de varias oleadas. Las misiones diarias y de evento ofrecen materiales opcionales sin sustituir el progreso de campaña."],
@@ -14899,6 +14958,7 @@
   localizedGames["pt-BR"] ||= {};
   localizedGames["pt-BR"]["animal-rune-reels"] = {
     title: "Roletas de Runas Animal", gameplay: "Batalha de RPG com equipe e roletas", genre: ["Estratégia", "RPG", "Animais"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Informações do jogador e do salvamento",
     difficulty: "Fácil de começar, desafiador de dominar", time: "2–8 minutos por fase", guideKicker: "Guia de jogo original da WeightPlay",
     intro: "Monte uma equipe de até cinco heróis animais invocados, gire três roletas de runas descendentes, combine os símbolos parados e sobreviva a cada onda das trinta missões de guardiões.",
     story: ["Um invocador atravessa seis regiões de fendas com um elenco animal em expansão. Cada herói tem ataque, defesa, cura e um último poder distinto, então a equipe muda como o mesmo resultado é resolvido.", "A campanha principal tem trinta missões com várias ondas. Missões diárias e de eventos oferecem materiais opcionais sem substituir o progresso da campanha."],
@@ -14913,6 +14973,7 @@
   localizedGames["fr"] ||= {};
   localizedGames["fr"]["animal-rune-reels"] = {
     title: "Roues de runes animales", gameplay: "Combat RPG d’équipe et de roues", genre: ["Stratégie", "RPG", "Animaux"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Informations sur le joueur et la sauvegarde",
     difficulty: "Facile à commencer, difficile à maîtriser", time: "2 à 8 minutes par étape", guideKicker: "Guide de jeu original WeightPlay",
     intro: "Formez une équipe de cinq héros animaux invoqués au maximum, faites tourner trois roues de runes descendantes, combinez les symboles arrêtés et survivez à chaque vague des trente missions de gardiens.",
     story: ["Un invocateur traverse six régions de failles avec un groupe animal qui s’agrandit. Chaque héros possède attaque, défense, soin et ultime distincts : la composition change donc la résolution d’un même résultat.", "La campagne principale compte trente missions à plusieurs vagues. Les missions quotidiennes et d’événement proposent des matériaux optionnels sans remplacer la progression de campagne."],
@@ -14927,6 +14988,7 @@
   localizedGames["de"] ||= {};
   localizedGames["de"]["animal-rune-reels"] = {
     title: "Tierische Runenräder", gameplay: "Team-RPG-Kampf mit Runenrädern", genre: ["Strategie", "Rollenspiel", "Tiere"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Spieler- und Speicherinformationen",
     difficulty: "Leicht zu beginnen, anspruchsvoll zu meistern", time: "2–8 Minuten pro Abschnitt", guideKicker: "Original-Spielanleitung von WeightPlay",
     intro: "Stelle ein Team aus bis zu fünf beschworenen Tierhelden zusammen, drehe drei nach unten laufende Runenräder, kombiniere die angehaltenen Symbole und überlebe jede Welle der dreißig Wächtermissionen.",
     story: ["Ein Beschwörer durchquert sechs Rissregionen mit einer wachsenden Tiersammlung. Jeder Held besitzt Angriff, Verteidigung, Heilung und eine eigene ultimative Fähigkeit, daher verändert die Teamwahl die Auflösung desselben Radresultats.", "Die Hauptkampagne umfasst dreißig Missionen mit mehreren Wellen. Tages- und Eventmissionen liefern optionale Materialien, ersetzen aber nicht den Kampagnenfortschritt."],
@@ -14941,6 +15003,7 @@
   localizedGames["it"] ||= {};
   localizedGames["it"]["animal-rune-reels"] = {
     title: "Rulli di rune animali", gameplay: "Battaglia RPG con squadra e rulli", genre: ["Strategia", "GDR", "Animali"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Informazioni su giocatore e salvataggio",
     difficulty: "Facile da iniziare, impegnativo da padroneggiare", time: "2–8 minuti per fase", guideKicker: "Guida di gioco originale WeightPlay",
     intro: "Crea una squadra con un massimo di cinque eroi animali evocati, gira tre rulli di rune discendenti, combina i simboli fermati e sopravvivi a ogni ondata delle trenta missioni dei guardiani.",
     story: ["Un evocatore attraversa sei regioni di fratture con un gruppo animale in crescita. Ogni eroe ha attacco, difesa, cura e un’abilità suprema distinta, quindi la squadra cambia la risoluzione dello stesso risultato.", "La campagna principale contiene trenta missioni a più ondate. Le missioni giornaliere e degli eventi offrono materiali opzionali senza sostituire i progressi della campagna."],
@@ -14955,6 +15018,7 @@
   localizedGames["ru"] ||= {};
   localizedGames["ru"]["animal-rune-reels"] = {
     title: "Животные: рунические барабаны", gameplay: "Ролевая битва команды и барабанов", genre: ["Стратегия", "Ролевая игра", "Животные"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "Сведения об игроке и сохранении",
     difficulty: "Легко начать, трудно освоить", time: "2–8 минут на этап", guideKicker: "Оригинальное игровое руководство WeightPlay",
     intro: "Соберите команду до пяти призванных героев-животных, вращайте три рунических барабана вниз, объединяйте остановившиеся символы и переживайте каждую волну тридцати миссий хранителей.",
     story: ["Призыватель проходит шесть регионов разломов, расширяя отряд животных. У каждого героя есть атака, защита, лечение и особая ульта, поэтому состав команды меняет разрешение одного и того же результата барабанов.", "Главная кампания содержит тридцать миссий с несколькими волнами. Ежедневные и событийные миссии дают дополнительные материалы, но не заменяют кампанию."],
@@ -14969,6 +15033,7 @@
   localizedGames["hi"] ||= {};
   localizedGames["hi"]["animal-rune-reels"] = {
     title: "पशु रूण रील", gameplay: "टीम रील भूमिका-युद्ध", genre: ["रणनीति", "भूमिका खेल", "पशु"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "खिलाड़ी और सेव जानकारी",
     difficulty: "शुरू करना आसान, निपुण होना चुनौतीपूर्ण", time: "प्रति चरण 2–8 मिनट", guideKicker: "WeightPlay मौलिक गेम गाइड",
     intro: "अधिकतम पाँच बुलाए गए पशु नायकों की टीम बनाएँ, नीचे आती तीन रूण रील घुमाएँ, रुके हुए प्रतीकों को मिलाएँ और तीस संरक्षक मिशनों की हर लहर में जीवित रहें।",
     story: ["एक बुलाने वाला छह दरार क्षेत्रों से गुजरता है और पशु दल बढ़ाता है। हर नायक के पास हमला, रक्षा, उपचार और अलग अंतिम शक्ति है, इसलिए टीम बनावट उसी रील परिणाम को हल करने का तरीका बदलती है।", "मुख्य अभियान में कई लहरों वाले तीस मिशन हैं। दैनिक और कार्यक्रम मिशन अतिरिक्त सामग्री देते हैं, लेकिन अभियान की प्रगति नहीं बदलते।"],
@@ -14983,6 +15048,7 @@
   localizedGames["ar"] ||= {};
   localizedGames["ar"]["animal-rune-reels"] = {
     title: "بكرات الرون للحيوانات", gameplay: "معركة تقمص أدوار بالفريق والبكرات", genre: ["استراتيجية", "تقمص أدوار", "حيوانات"], hideSkillsFact: true, showRelatedSkill: false,
+    noteTitle: "معلومات اللاعب والحفظ",
     difficulty: "سهل البدء، صعب الإتقان", time: "2–8 دقائق لكل مرحلة", guideKicker: "دليل لعبة WeightPlay الأصلية",
     intro: "كوّن فريقًا من خمسة أبطال حيوانات مستدعاة كحد أقصى، وأدر ثلاث بكرات رون هابطة، واجمع الرموز المتوقفة، واصمد أمام كل موجة من ثلاثين مهمة للحراس.",
     story: ["يعبر المستدعي ست مناطق من الصدوع مع توسع مجموعة الحيوانات. لكل بطل هجوم ودفاع وعلاج وقدرة نهائية مختلفة، لذلك يغيّر تكوين الفريق طريقة حل النتيجة نفسها.", "تضم الحملة الرئيسية ثلاثين مهمة متعددة الموجات. تقدم مهام اليوم والفعاليات مواد اختيارية من دون استبدال تقدم الحملة."],
@@ -16671,11 +16737,11 @@
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
     intro: "Cloudhook Courier is an original momentum platform game. Guide a cloud-marten through aurora rings, attach to moving anchors, and deliver every parcel to the lantern goal.",
-    story: ["A cloud-marten courier crosses six wind routes where every parcel depends on a clean swing, a deliberate release, and a safe landing. Each route turns a short delivery into a readable timing problem."],
-    systems: ["Hold Tether or Space to attach to the nearest visible anchor, then release to carry momentum into the next arc. Left and Right or the nudge controls adjust the flight while attached and in open air.", "Collect every parcel and reach the lantern goal to clear the stage. A spike collision or fall produces a failure Result; clear times and stage unlocks stay in this browser."],
-    how: ["Choose an unlocked stage from Stage and read the anchor path, parcels, and hazard layout before entering Battle.", "Use Left and Right or the touch nudge controls to shape the approach, then hold Tether or Space when an anchor is in range.", "Release at the top or forward side of the swing to carry momentum toward the next ring; reattach only when the next route is readable.", "Collect every parcel and touch the lantern goal. A clean delivery opens Result, while a collision or fall opens a failure Result with Retry."],
-    strategyTips: ["Attach early enough to build a stable arc, but release before the rope pulls you below the next platform line.", "Use short directional taps during a swing; a long hold can overshoot the next anchor or push the courier into a spike.", "Moving anchors reveal their rhythm. Watch one full cycle before committing when a route feels narrow.", "When a run fails, change one release decision at a time so the new flight teaches you which part of the route was unsafe."],
-    progression: ["Six authored stages begin with fixed anchors and two parcels. Later routes add wind, moving anchors, longer chains, more parcels, and spike fields that demand tighter release timing."],
+    story: ["A cloud-marten courier crosses a 30-stage campaign in six five-stage arcs: First Lift, Crosswind, Moving Rings, Parcel Order, Lantern Weather, and Mastery. Every parcel depends on a clean swing, a deliberate release, and a safe landing."],
+    systems: ["Hold Tether or Space to attach to the nearest visible anchor, then release to carry momentum into the next arc. Left and Right or the nudge controls adjust the flight while attached and in open air.", "Collect every parcel and reach the lantern goal to clear the stage. Checkpoints at stages 5, 10, 15, 20, 25, and 30 add a distinct mastery decision; ordered parcels and drifting lanterns change the route rather than only raising numbers."],
+    how: ["Choose an unlocked stage from the 30-card Stage rail and read its arc, objective, warning, and hazard layout before entering Battle.", "Use Left and Right or the touch nudge controls to shape the approach, then hold Tether or Space when an anchor is in range.", "Release at the top or forward side of the swing to carry momentum toward the next ring; reattach only when the next route is readable.", "Collect every parcel and touch the lantern goal. A clean delivery opens Result, while a collision or fall opens a failure Result with Retry."],
+    strategyTips: ["Attach early enough to build a stable arc, but release before the rope pulls you below the next platform line.", "Use short directional taps during a swing; a long hold can overshoot the next anchor or push the courier into a spike.", "Moving anchors and gust pulses reveal their rhythm. Watch one full cycle before committing when a route feels narrow.", "When a run fails, change one release decision at a time; later arcs also require parcel order, swing mastery, and a moving lantern approach."],
+    progression: ["Thirty authored stages form six arcs of five. Stages 5, 10, 15, 20, 25, and 30 are checkpoints that change the decision: complete a swing, read a gust, time moving rings, respect parcel order, forecast lantern drift, and finally combine every mechanic."],
     designNote: "Cloudhook Courier keeps one logical play space across phone, landscape, and desktop. Touch, mouse, and keyboard share the same tether, release, and nudge state, while Main, Stage, Battle, and Result remain separate screens with direct returns.",
     parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Stage clears, best times, language, sound, and preferences stay in the current browser profile and may reset when site data is cleared.",
     faq: [["Can I steer while attached?", "Yes. Left and Right or the nudge controls adjust the courier's horizontal movement while the tether carries the swing."], ["When should I release?", "Release near the top or forward side of the arc when the next anchor, parcel, or lantern line is clear."], ["What causes a failed stage?", "Touching a spike or falling outside the route ends the attempt and opens a failure Result."], ["Does progress save?", "Cleared stages, unlocks, and best times are saved locally in this browser."]]

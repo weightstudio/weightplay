@@ -3740,6 +3740,34 @@ for (const candidate of marketFiveCandidates) {
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
 }
 
+// Habitat Builder is now an owner-approved public General release. Keep this
+// conversion after the market-reference planned batch so the exact v12/I6
+// candidate is discoverable without restoring its private trial boundary.
+const animalHabitatBuilderPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-habitat-builder");
+if (animalHabitatBuilderPublic) {
+  animalHabitatBuilderPublic.status = "playable";
+  animalHabitatBuilderPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  delete animalHabitatBuilderPublic.internalTrial;
+}
+
+// Moonlight Workshop Escape is now an owner-approved public General release.
+// Keep this conversion after the market-reference planned batch so the exact
+// v5/I6 candidate is discoverable without restoring its private trial marker.
+const animalMoonlightWorkshopPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-moonlight-workshop");
+if (animalMoonlightWorkshopPublic) {
+  animalMoonlightWorkshopPublic.status = "playable";
+  animalMoonlightWorkshopPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  delete animalMoonlightWorkshopPublic.internalTrial;
+}
+
 // Researched next-batch builds. Cloudhook Courier remains owner-preview only
 // after the owner usability report; Twin Switchyard is opened only after its
 // exact Tester, Reviewer, Director, and Preflight gates are recorded below.
@@ -4290,6 +4318,54 @@ if (crazyEightsPublic) {
   delete crazyEightsPublic.internalTrial;
 }
 
+// Cribbage is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so the exact v18/I6
+// candidate is discoverable with its truthful Battle preview.
+const cribbagePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "cribbage");
+if (cribbagePublic) {
+  cribbagePublic.status = "playable";
+  cribbagePublic.previewVideo = "assets/previews/cribbage-battle.webm";
+  delete cribbagePublic.statusText;
+  delete cribbagePublic.internalTrial;
+}
+
+// Cat Color Sudoku is now an owner-approved public General release. Keep
+// this release-state override after the classic planned batch so the exact
+// v7/I6 candidate is discoverable with its truthful Battle preview.
+const catColorSudokuPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "cat-color-sudoku");
+if (catColorSudokuPublic) {
+  catColorSudokuPublic.status = "playable";
+  catColorSudokuPublic.previewVideo = "assets/previews/cat-color-sudoku-battle.webm";
+  delete catColorSudokuPublic.statusText;
+  delete catColorSudokuPublic.internalTrial;
+}
+
+// Habitat Atlas is now an owner-approved public General release. Keep this
+// release-state override after the planned Market Five batch so the exact
+// v7/I6 candidate is discoverable with its truthful Battle preview.
+const habitatAtlasPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-habitat-atlas");
+if (habitatAtlasPublic) {
+  habitatAtlasPublic.status = "playable";
+  habitatAtlasPublic.previewVideo = "assets/previews/animal-habitat-atlas-battle.webm";
+  delete habitatAtlasPublic.statusText;
+  delete habitatAtlasPublic.internalTrial;
+}
+
+// Sudoku is now an owner-approved public General release. Keep this
+// conversion after the Classic Logic Lab planned batch so the exact v15/I6
+// puzzle and its localized Battle preview remain discoverable.
+const sudokuPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "sudoku");
+if (sudokuPublic) {
+  sudokuPublic.status = "playable";
+  sudokuPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  sudokuPublic.previewVideo = "assets/previews/sudoku-battle.webm";
+  delete sudokuPublic.internalTrial;
+}
+
 // Spades is now an owner-approved public General release. Keep this
 // release-state override after the classic planned batch so the exact v20/I6
 // candidate is discoverable with its truthful Battle preview.
@@ -4597,6 +4673,36 @@ if (golfPublic) {
   };
   golfPublic.previewVideo = "assets/previews/golf-solitaire-battle.webm";
   delete golfPublic.internalTrial;
+}
+
+// War has completed the exact Tester, Gameplay Review, Director, and Release
+// Preflight gates. Keep its public conversion explicit so the classic card
+// route, localized catalogues, and truthful Battle preview share one state.
+const warPublic = window.WONDER_LOBBY.games.find((game) => game.id === "war");
+if (warPublic) {
+  warPublic.status = "playable";
+  warPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  warPublic.previewVideo = "assets/previews/war-battle.webm";
+  delete warPublic.internalTrial;
+}
+
+// Speed has completed the exact Tester, Gameplay Review, Director, and Release
+// Preflight gates. Keep its public conversion explicit so the simultaneous
+// card-race route, localized catalogues, and Battle preview share one state.
+const speedPublic = window.WONDER_LOBBY.games.find((game) => game.id === "speed");
+if (speedPublic) {
+  speedPublic.status = "playable";
+  speedPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  speedPublic.previewVideo = "assets/previews/speed-battle.webm";
+  delete speedPublic.internalTrial;
 }
 
 for (const id of ["animal-color-springs", "animal-word-trails"]) {

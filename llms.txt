@@ -67,6 +67,9 @@ WeightPlay covers these game and content clusters:
 - Gin Rummy: https://weightplay.com/en/games/gin-rummy/
 - Crazy Eights: https://weightplay.com/en/games/crazy-eights/
 - Go Fish: https://weightplay.com/en/games/go-fish/
+- Cribbage: https://weightplay.com/en/games/cribbage/
+- Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/
+- Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/

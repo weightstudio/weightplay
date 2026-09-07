@@ -803,7 +803,14 @@
     document.title = `${title} | WeightPlay`;
     updateMetadata(id);
     app = { id, cfg, title, root: document.querySelector("#logicApp") || document.body };
-    const preview = id === "four-in-a-row" ? text(fourPreview) : t("preview");
+    const publicPreview = {
+      en: "Public play", "zh-Hant": "公開遊玩", "zh-Hans": "公开游玩", ja: "公開プレイ",
+      ko: "공개 플레이", es: "Juego público", "pt-BR": "Jogo público", fr: "Jeu public",
+      de: "Öffentlich spielbar", it: "Gioco pubblico", ru: "Открытая игра", hi: "सार्वजनिक खेल", ar: "لعب عام",
+    };
+    const preview = id === "sudoku"
+      ? (publicPreview[locale] || publicPreview.en)
+      : id === "four-in-a-row" ? text(fourPreview) : t("preview");
     app.root.innerHTML = `
       <div class="logic-lab">
           <main class="logic-main main-screen" id="logicMain" data-screen="main">

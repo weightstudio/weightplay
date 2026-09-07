@@ -1570,18 +1570,18 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "sudoku": {
     "__localizedExact": true,
     "en": "Sudoku",
-    "zh-Hant": "數獨",
-    "zh-Hans": "数独",
-    "ja": "数独",
-    "ko": "스도쿠",
+    "zh-Hant": "Sudoku",
+    "zh-Hans": "Sudoku",
+    "ja": "Sudoku",
+    "ko": "Sudoku",
     "es": "Sudoku",
     "pt-BR": "Sudoku",
     "fr": "Sudoku",
     "de": "Sudoku",
     "it": "Sudoku",
-    "ru": "Судоку",
-    "hi": "सुडोकू",
-    "ar": "سودوكو"
+    "ru": "Sudoku",
+    "hi": "Sudoku",
+    "ar": "Sudoku"
   },
   "lights-out": {
     "__localizedExact": true,

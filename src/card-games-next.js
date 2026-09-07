@@ -282,8 +282,8 @@
       skills: "التركيز · التعرّف على الأنماط",
       howTo: "طريقة اللعب",
       howToCopy: "اضغط على «اقلب» للكشف، ثم شاهد تحرك الكومة. اللاعب الذي يجمع كل بطاقة يفوز.",
-      preview: "حالة المعاينة",
-      previewCopy: "معاينة المالك هذه غير موجودة في الكتالوج العام الرسمي.",
+      preview: "لعب عام",
+      previewCopy: "تعمل هذه اللعبة العامة المجانية في المتصفح دون الحاجة إلى حساب أو شراء. يتم تخزين الجولة الحالية والتفضيلات المحلية فقط في هذا المتصفح؛ قد يؤدي مسح بيانات الموقع أو تبديل المتصفحات إلى إزالتها.",
       faq: "الأسئلة الشائعة",
       faqQuestion: "هل يُحفظ التقدم؟",
       faqAnswer: "نعم، في هذا المتصفح فقط.",
@@ -1295,19 +1295,19 @@
   };
 
   const CASINO_MAIN_COPY = {
-    en: { summary: "Capture table cards by rank or sum, then score cards and special bonuses.", eyebrow: "Classic Card Game · Owner Preview" },
-    "zh-Hant": { summary: "按點數或合計捕獲桌面牌，再計算牌面與特殊獎勵。", eyebrow: "經典紙牌遊戲 · 擁有者預覽" },
-    "zh-Hans": { summary: "按点数或合计捕获桌面牌，再计算牌面与特殊奖励。", eyebrow: "经典纸牌游戏 · 拥有者预览" },
-    ja: { summary: "同じ値または合計で場札を獲得し、カードと特別ボーナスを得点します。", eyebrow: "クラシックカードゲーム · 所有者プレビュー" },
-    ko: { summary: "같은 값이나 합으로 테이블 카드를 가져온 뒤 카드와 특별 보너스를 계산합니다.", eyebrow: "클래식 카드 게임 · 소유자 프리뷰" },
-    es: { summary: "Captura cartas de mesa por valor o suma y consigue puntos y bonificaciones especiales.", eyebrow: "Juego de cartas clásico · Vista previa del propietario" },
-    "pt-BR": { summary: "Capture cartas da mesa por valor ou soma e marque cartas e bônus especiais.", eyebrow: "Jogo de cartas clássico · Prévia do proprietário" },
-    fr: { summary: "Capturez les cartes de table par valeur ou somme, puis marquez les cartes et bonus spéciaux.", eyebrow: "Jeu de cartes classique · Aperçu du propriétaire" },
-    de: { summary: "Nimm Tischkarten nach Wert oder Summe und sammle Punkte für Karten und Sonderboni.", eyebrow: "Klassisches Kartenspiel · Besitzer-Vorschau" },
-    it: { summary: "Cattura le carte del tavolo per valore o somma, poi ottieni punti e bonus speciali.", eyebrow: "Gioco di carte classico · Anteprima del proprietario" },
-    ru: { summary: "Забирайте карты стола по значению или сумме, затем получайте очки и особые бонусы.", eyebrow: "Классическая карточная игра · Предпросмотр владельца" },
-    hi: { summary: "मान या योग से मेज़ के पत्ते पकड़ें, फिर पत्तों और विशेष बोनस के अंक पाएँ।", eyebrow: "क्लासिक कार्ड गेम · मालिक का प्रीव्यू" },
-    ar: { summary: "التقط بطاقات الطاولة بالقيمة أو بالمجموع، ثم احسب نقاط البطاقات والمكافآت الخاصة.", eyebrow: "لعبة بطاقات كلاسيكية · معاينة المالك" },
+    en: { summary: "Capture table cards by rank or sum, then score cards and special bonuses.", eyebrow: "Classic Card Game" },
+    "zh-Hant": { summary: "按點數或合計捕獲桌面牌，再計算牌面與特殊獎勵。", eyebrow: "經典紙牌遊戲" },
+    "zh-Hans": { summary: "按点数或合计捕获桌面牌，再计算牌面与特殊奖励。", eyebrow: "经典纸牌游戏" },
+    ja: { summary: "同じ値または合計で場札を獲得し、カードと特別ボーナスを得点します。", eyebrow: "クラシックカードゲーム" },
+    ko: { summary: "같은 값이나 합으로 테이블 카드를 가져온 뒤 카드와 특별 보너스를 계산합니다.", eyebrow: "클래식 카드 게임" },
+    es: { summary: "Captura cartas de mesa por valor o suma y consigue puntos y bonificaciones especiales.", eyebrow: "Juego de cartas clásico" },
+    "pt-BR": { summary: "Capture cartas da mesa por valor ou soma e marque cartas e bônus especiais.", eyebrow: "Jogo de cartas clássico" },
+    fr: { summary: "Capturez les cartes de table par valeur ou somme, puis marquez les cartes et bonus spéciaux.", eyebrow: "Jeu de cartes classique" },
+    de: { summary: "Nimm Tischkarten nach Wert oder Summe und sammle Punkte für Karten und Sonderboni.", eyebrow: "Klassisches Kartenspiel" },
+    it: { summary: "Cattura le carte del tavolo per valore o somma, poi ottieni punti e bonus speciali.", eyebrow: "Gioco di carte classico" },
+    ru: { summary: "Забирайте карты стола по значению или сумме, затем получайте очки и особые бонусы.", eyebrow: "Классическая карточная игра" },
+    hi: { summary: "मान या योग से मेज़ के पत्ते पकड़ें, फिर पत्तों और विशेष बोनस के अंक पाएँ।", eyebrow: "क्लासिक कार्ड गेम" },
+    ar: { summary: "التقط بطاقات الطاولة بالقيمة أو بالمجموع، ثم احسب نقاط البطاقات والمكافآت الخاصة.", eyebrow: "لعبة بطاقات كلاسيكية" },
   };
 
   let casinoShellSyncing = false;
