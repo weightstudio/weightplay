@@ -70,6 +70,7 @@ WeightPlay covers these game and content clusters:
 - Cribbage: https://weightplay.com/en/games/cribbage/
 - Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/
+- Animal Hoop League: https://weightplay.com/en/games/animal-hoop-league/
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/

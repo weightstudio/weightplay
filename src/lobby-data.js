@@ -2478,6 +2478,20 @@ const nextClassicCardGames = [
     type: { en: "Pegging Score Card Game", "zh-Hant": "計分與插釘牌戲", "zh-Hans": "计分与插钉牌戏", ja: "ペギング得点カードゲーム", ko: "페깅 점수 카드 게임", es: "Juego de cartas con tablero", "pt-BR": "Jogo de cartas com tabuleiro", fr: "Jeu de cartes à tableau", de: "Kartenspiel mit Zählbrett", it: "Gioco di carte con tabellone", ru: "Карточная игра со счётной доской", hi: "पेगिंग स्कोर कार्ड गेम", ar: "لعبة بطاقات ولوحة تسجيل" },
     description: { en: "Choose a crib, score pairs, runs and fifteens, and peg toward 121.", "zh-Hant": "選擇 Crib，從 Pair、Run、15 等組合得分，插釘前進至 121。", "zh-Hans": "选择 Crib，从 Pair、Run、15 等组合得分，插钉前进至 121。", ja: "クリブを選び、ペア・ラン・15などで得点し、121点を目指してペグを進める。", ko: "크립을 선택하고 페어·런·15 조합으로 점수를 내 121점까지 페그하세요.", es: "Elige la crib, puntúa parejas, escaleras y quinces, y avanza hasta 121.", "pt-BR": "Escolha o crib, marque pares, sequências e quinze, e avance até 121.", fr: "Choisissez le crib, marquez paires, suites et quinze, puis avancez vers 121.", de: "Wähle die Crib, punkte Paare, Folgen und Fünfzehner und ziehe bis 121.", it: "Scegli il crib, segna coppie, scale e quindici e avanza fino a 121.", ru: "Выберите crib, набирайте очки за пары, ряды и пятнадцать и двигайтесь к 121.", hi: "क्रिब चुनें, जोड़े, रन और 15 से अंक पाएँ और 121 तक पेग करें।", ar: "اختر الكريب وسجل للأزواج والتسلسلات و15 وتقدم نحو 121." },
     meta: { en: ["Pegging", "Pairs + runs + 15", "121-point board"], "zh-Hant": ["插釘", "Pair＋Run＋15", "121 分棋盤"] },
+    searchAliases: [
+      "cribbage", "crib board", "cribbage board", "pegging", "pegging card game", "fifteen card game", "pairs runs fifteens", "121 point card game",
+      "克里比奇", "克里比奇牌", "克里比奇棋盤", "插釘", "十五分牌", "配對順子十五", "克里比奇棋盘", "插钉", "十五分牌戏", "配对顺子十五",
+      "クリベッジ", "クリベッジボード", "ペギング", "15点カードゲーム", "121点",
+      "크리비지", "크리비지 보드", "페깅", "15점 카드 게임", "121점",
+      "tablero de cribbage", "juego de pegging", "parejas escaleras y quinces",
+      "tabuleiro de cribbage", "pegging", "pares sequências e quinze",
+      "plateau de cribbage", "jeu de pegging", "paires suites et quinze",
+      "cribbage-brett", "pegging-kartenspiel", "paare folgen und fünfzehn",
+      "tabellone di cribbage", "gioco di pegging", "coppie scale e quindici",
+      "криббедж", "доска криббеджа", "пеггинг", "пары ряды и пятнадцать",
+      "क्रिबेज", "क्रिबेज बोर्ड", "पेगिंग", "जोड़े रन और पंद्रह",
+      "كريبدج", "لوحة كريبدج", "تسجيل كريبدج", "الأزواج والتسلسلات و15",
+    ],
   },
   {
     id: "go-fish", title: { en: "Go Fish", "zh-Hant": "釣魚", "zh-Hans": "钓鱼", ja: "ゴーフィッシュ", ko: "고 피시", es: "A pescar", "pt-BR": "Pescaria", fr: "Va pêcher", de: "Go Fish", it: "Pesca", ru: "Рыбалка", hi: "गो फिश", ar: "اذهب للصيد" },
@@ -3715,6 +3729,15 @@ const marketFiveCandidates = [
     type: marketFiveLocalized(["Switch-and-Key Escape", "開關鑰匙逃脫", "开关钥匙逃脱", "スイッチと鍵の脱出", "스위치·열쇠 탈출", "Escape de interruptores", "Fuga com interruptores", "Évasion à interrupteurs", "Schalter-und-Schlüssel-Flucht", "Fuga con interruttori", "Побег с переключателями", "स्विच और चाबी एस्केप", "هروب بالمفاتيح"]),
     description: marketFiveLocalized(["Route Rux across switches, collect the key, and open the workshop door.", "規劃 Rux 的路線，踩亮開關、取得鑰匙並開門。", "规划 Rux 的路线，踩亮开关、取得钥匙并开门。", "ルクスを導き、スイッチを踏み、鍵を取って扉を開けよう。", "룩스의 길을 계획해 스위치를 켜고 열쇠를 얻어 문을 여세요.", "Guía a Rux por los interruptores, recoge la llave y abre la puerta.", "Guie Rux pelos interruptores, pegue a chave e abra a porta.", "Guide Rux sur les interrupteurs, prends la clé et ouvre la porte.", "Führe Rux über Schalter, hole den Schlüssel und öffne das Tor.", "Guida Rux sugli interruttori, prendi la chiave e apri la porta.", "Проведите Рукса по переключателям, возьмите ключ и откройте дверь.", "रक्स को स्विचों तक ले जाएँ, चाबी लें और दरवाज़ा खोलें।", "وجّه روكس عبر المفاتيح واجمع المفتاح وافتح الباب."]),
     meta: marketFiveLocalized([["6 Rooms", "Persistent Switches", "Move Budget"], ["6 個房間", "持續開關", "步數額度"], ["6 个房间", "持续开关", "步数额度"], ["6部屋", "保持スイッチ", "手数制限"], ["6개 방", "지속 스위치", "이동 제한"], ["6 salas", "Interruptores fijos", "Límite de pasos"], ["6 salas", "Botões persistentes", "Limite de passos"], ["6 salles", "Interrupteurs persistants", "Budget de pas"], ["6 Räume", "Bleibende Schalter", "Zuglimit"], ["6 stanze", "Interruttori persistenti", "Limite mosse"], ["6 комнат", "Постоянные переключатели", "Лимит ходов"], ["6 कमरे", "स्थायी स्विच", "चाल सीमा"], ["6 غرف", "مفاتيح ثابتة", "حد للحركات"]]),
+    searchAliases: [
+      "moonlight workshop", "workshop escape", "switch puzzle", "key and door puzzle", "switch and key escape",
+      "月光工坊", "工坊逃脫", "開關解謎", "鑰匙開門", "開關鑰匙逃脫", "月光工坊", "工坊逃脱", "开关解谜", "钥匙开门", "开关钥匙逃脱",
+      "月明かり工房", "工房脱出", "スイッチパズル", "鍵と扉のパズル", "スイッチと鍵の脱出", "달빛 공방", "공방 탈출", "스위치 퍼즐", "열쇠와 문 퍼즐", "스위치와 열쇠 탈출",
+      "taller lunar", "escape del taller", "rompecabezas de interruptores", "llave y puerta", "escape de interruptores y llave", "oficina lunar", "fuga da oficina", "quebra-cabeça de interruptores", "chave e porta", "fuga com interruptores e chave",
+      "atelier lunaire", "évasion de l'atelier", "puzzle d'interrupteurs", "clé et porte", "évasion avec interrupteurs et clé", "Mondwerkstatt", "Flucht aus der Werkstatt", "Schalterrätsel", "Schlüssel und Tür", "Schalter-und-Schlüssel-Flucht",
+      "officina lunare", "fuga dall'officina", "puzzle di interruttori", "chiave e porta", "fuga con interruttori e chiave", "лунная мастерская", "побег из мастерской", "головоломка с переключателями", "ключ и дверь", "побег с переключателями и ключом",
+      "मूनलाइट वर्कशॉप", "वर्कशॉप एस्केप", "स्विच पहेली", "चाबी और दरवाज़ा", "स्विच और चाबी एस्केप", "ورشة ضوء القمر", "الهروب من الورشة", "لغز المفاتيح", "المفتاح والباب", "هروب بالمفاتيح والباب",
+    ],
     categories: ["Puzzle", "Escape", "Animal"], skills: ["Route Planning", "Logic"], art: { kind: "image", background: "games/animal-moonlight-workshop/assets/animal-moonlight-workshop-cover.webp", hideHero: true }, href: "games/animal-moonlight-workshop/", internalTrial: "index.html?trial=1",
   },
   {
@@ -4349,6 +4372,17 @@ if (habitatAtlasPublic) {
   habitatAtlasPublic.previewVideo = "assets/previews/animal-habitat-atlas-battle.webm";
   delete habitatAtlasPublic.statusText;
   delete habitatAtlasPublic.internalTrial;
+}
+
+// Animal Hoop League is now an owner-approved public General release. Keep
+// this conversion after the planned Market Five batch so the exact v4/I6
+// candidate is discoverable with its truthful Battle preview.
+const animalHoopLeaguePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-hoop-league");
+if (animalHoopLeaguePublic) {
+  animalHoopLeaguePublic.status = "playable";
+  animalHoopLeaguePublic.previewVideo = "assets/previews/animal-hoop-league-battle.webm";
+  delete animalHoopLeaguePublic.statusText;
+  delete animalHoopLeaguePublic.internalTrial;
 }
 
 // Sudoku is now an owner-approved public General release. Keep this
