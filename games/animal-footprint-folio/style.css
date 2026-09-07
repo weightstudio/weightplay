@@ -162,7 +162,97 @@ h2 { margin-bottom: 10px; font-size: clamp(1.45rem, 3vw, 2.25rem); letter-spacin
 @media (min-width: 700px) and (max-height: 600px) {
   /* Trail Logic keeps the shared 420px Main poster in compact landscape so
      the authored cover remains a stable visual anchor beside the copy. */
-  #mainScreen .wp-standard-main-composition { grid-template-columns: 420px minmax(0, 1fr); }
-  #mainScreen .wp-standard-main-poster { width: 420px; max-width: 420px; }
-  #mainScreen .wp-standard-main-poster-media { width: 420px; max-width: 420px; }
+  #mainScreen .wp-standard-main-composition { --wp-main-landscape-poster-size: 420px !important; grid-template-columns: 420px minmax(0, 1fr) !important; }
+  #mainScreen .wp-standard-main-poster { width: 420px !important; min-width: 420px !important; max-width: 420px !important; }
+  #mainScreen .wp-standard-main-poster-media { width: 420px !important; min-width: 420px !important; max-width: 420px !important; height: 420px !important; min-height: 420px !important; max-height: 420px !important; }
+
+  /* The direct Battle is a fixed 334px-high play envelope in compact
+     landscape. Keep the header out of the scroll container and compress the
+     authored board/choice stack so native locator scrolling cannot move the
+     persistent Back and Settings controls off-canvas after feedback rerenders. */
+  #battleScreen[data-wp-logical-battle-canvas] {
+    flex-direction: column;
+    min-height: 0;
+  }
+  #battleScreen[data-wp-logical-battle-canvas]:not(.active) { display: none; }
+  #battleScreen[data-wp-logical-battle-canvas].active { display: flex; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header {
+    flex: 0 0 60px;
+    min-height: 60px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-layout {
+    display: grid;
+    grid-template-columns: minmax(180px, .52fr) minmax(0, 1.48fr);
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .record-panel {
+    min-width: 0;
+    padding: 0;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .record-instruction {
+    font-size: .82rem;
+    line-height: 1.35;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .legend {
+    gap: 4px;
+    margin-top: 12px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .trail-board {
+    gap: 4px;
+    padding: 6px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .trail-card {
+    min-height: 64px;
+    gap: 2px;
+    border-radius: 10px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .trail-card .marker-icon {
+    width: 34px;
+    height: 34px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .trail-card small {
+    font-size: .55rem;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .feedback {
+    min-height: 26px;
+    margin: 4px 2px;
+    font-size: .78rem;
+    line-height: 1.2;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choice-area {
+    padding: 6px;
+    border-radius: 14px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choice-area .eyebrow {
+    margin-bottom: 4px;
+    font-size: .64rem;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choices {
+    gap: 6px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choice {
+    min-height: 56px;
+    gap: 2px;
+    border-radius: 10px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choice .marker-icon {
+    width: 34px;
+    height: 34px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .choice strong {
+    font-size: .65rem;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .action-row {
+    gap: 6px;
+    margin-top: 6px;
+  }
+  #battleScreen[data-wp-logical-battle-canvas] .action-row button {
+    min-height: 44px;
+    padding-inline: 12px;
+  }
 }

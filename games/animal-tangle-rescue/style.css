@@ -184,8 +184,8 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
 /* Interface 6 keeps the Main poster column deterministic at the governed
    wide breakpoints while leaving the narrow stacked composition fluid. */
 @media (min-width: 700px) and (max-width: 1023px) {
-  .hero-card { grid-template-columns: 300px minmax(0, 1fr); }
-  .main-poster { width: 300px; min-width: 300px; max-width: 300px; height: 300px; min-height: 300px; max-height: 300px; }
+  .hero-card { grid-template-columns: 420px minmax(0, 1fr); }
+  .main-poster { width: 420px; min-width: 420px; max-width: 420px; height: 420px; min-height: 420px; max-height: 420px; }
   .hero-copy { min-width: 0; }
 }
 
@@ -198,17 +198,25 @@ body:not([data-screen="main"]) #guideScreen { display: none; }
 /* In short landscape Battle, the fourth endpoint must remain above the
    independent General reserve so its centre stays hit-testable. */
 @media (min-width: 700px) and (max-width: 1023px) and (orientation: landscape) {
-  #battleScreen .battle-canvas { padding: 0 12px 8px; overflow-y: auto; }
+  /* The short-landscape Battle uses a side action track so all four
+     endpoint targets and the persistent actions fit above the reserve. */
+  #battleScreen .battle-canvas { position: relative; padding: 0 12px 8px; overflow: hidden; }
   #battleScreen .panel-head { min-height: 44px; }
+  #battleScreen .mission-row, #battleScreen .tangle-board { width: calc(100% - 262px); }
   #battleScreen .mission-row { margin: 4px 0; }
   #battleScreen .tangle-board { padding: 8px; }
   #battleScreen .board-labels { padding-bottom: 4px; }
-  #battleScreen .board-diagram { height: 226px; min-height: 226px; gap: 2px; padding: 2px 0; }
-  #battleScreen .board-row { grid-template-columns: minmax(116px, 1fr) 28px minmax(116px, 1fr); gap: 4px; min-height: 54px; }
+  #battleScreen .board-diagram { height: 184px; min-height: 184px; gap: 2px; padding: 2px 0; }
+  #battleScreen .board-row { grid-template-columns: minmax(116px, 1fr) 28px minmax(116px, 1fr); gap: 4px; min-height: 44px; }
   #battleScreen .endpoint-card, #battleScreen .shelter-card { min-height: 44px; padding: 4px 6px; font-size: .8rem; }
   #battleScreen .paw-chip { flex-basis: 24px; width: 24px; height: 24px; font-size: .8rem; }
-  #battleScreen .feedback { margin: 6px 2px 4px; }
-  #battleScreen .move-hint { margin-bottom: 6px; font-size: .8rem; }
+  #battleScreen .feedback { position: absolute; top: 52px; right: 12px; width: 238px; margin: 0; }
+  #battleScreen .move-hint { position: absolute; top: 106px; right: 12px; width: 238px; margin: 0; font-size: .8rem; }
+  #battleScreen .battle-actions { position: absolute; top: 164px; right: 12px; width: 238px; display: grid; grid-template-columns: 1fr; gap: 6px; }
+  #battleScreen .battle-actions .primary-btn, #battleScreen .battle-actions .secondary-btn, #battleScreen .battle-actions .text-btn { width: 100%; flex: none; }
+  html[dir="rtl"] #battleScreen .feedback,
+  html[dir="rtl"] #battleScreen .move-hint,
+  html[dir="rtl"] #battleScreen .battle-actions { right: auto; left: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

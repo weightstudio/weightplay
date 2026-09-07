@@ -27,7 +27,7 @@
   const titleForAnimal = (animalKey) => copy(animalKey);
   const indexForAnimal = (animalKey) => animals.indexOf(animalKey);
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v2", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v3", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };

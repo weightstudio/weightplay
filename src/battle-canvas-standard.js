@@ -26,6 +26,10 @@
     // controls and persistent return utilities do not drift when feedback
     // rerenders the record.
     "animal-footprint-folio": ["#battleScreen", 390, 788, 760, 334],
+    // Meadow Difference is a direct Main -> Battle product. Its 3x3 compare
+    // panels need the wide short-landscape envelope so the tile grid and
+    // persistent Home/Sound controls stay inside the owning Canvas.
+    "animal-meadow-difference": ["#battleView", 390, 788, 760, 334],
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],

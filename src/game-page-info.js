@@ -775,6 +775,7 @@
       difficulty: "Easy to Challenging",
       time: "2-8 minutes per stage",
       skills: ["Memory", "Focus", "Problem Solving"],
+      relatedIds: ["garden-tiles", "animal-hidden-safari", "animal-quiz"],
       intro:
         "Animal Star Memory is a 30-stage picture-matching journey through the night sky. Players help six friendly Star Keepers reconnect animal constellations by finding matching cards. Every card stays in the same position for the whole stage, while opening previews, larger boards, move limits, and required animal order increase the challenge. Every fifth stage is a Keeper Check, and Stage 30 combines a full twelve-pair preview with ordered recall.",
       story: [
@@ -817,6 +818,7 @@
       difficulty: "Progressive",
       time: "1-4 minutes",
       skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
+      relatedIds: ["animal-bounce-brawl", "animal-skyspire-drop", "snack-blocks"],
       intro:
         "Safari Dash is a three-lane animal runner with 30 saved routes across six regions. Spark Paw Fox restores guide stars while route cards announce five objective types and the active rules. Star trails, two-lane gates, sticky mud, and authored Guardian patterns make later routes require different reading and recovery decisions instead of only increasing speed.",
       story: [
@@ -18457,6 +18459,375 @@
     parent: "هذه لعبة متصفح عامة بلا حساب أو شراء أو دردشة أو قائمة متصدرين أو إعلانات. تبقى النتيجة وأفضل نتيجة لكل مرحلة والمراحل المجتازة والتقدم المحلي للفتح في هذا المتصفح.",
     faq: [["كيف أحصل على النقاط؟", "مرّر عبر الثمار الآمنة وهي ظاهرة؛ تضيف الإصابات الناجحة نقاطًا وقد تبني تتابعًا."], ["ما الذي ينهي المرحلة؟", "تنتهي المرحلة بعد ثلاث محاولات فائتة؛ وتنتهي عند اكتمال مؤقتها القصير إذا اجتزتها بأمان."], ["كم عدد المراحل؟", "هناك 30 مرحلة في ستة أقواس من خمس مراحل، مع نقاط تفتيش في المراحل 5 و10 و15 و20 و25 و30."], ["هل يمكنني استخدام الفأرة؟", "نعم. يستخدم السحب بالفأرة والسحب باللمس إيماءة الساحة نفسها."], ["هل يُحفظ التقدم؟", "تُحفظ المراحل المجتازة والمرحلة المفتوحة التالية وأفضل نتيجة لكل مرحلة محليًا في هذا المتصفح."]],
   };
+
+  // Animal Star Memory had only partial locale-owned Guide records outside
+  // English, Traditional/Simplified Chinese, Spanish, Japanese, and German;
+  // the remaining public routes were inheriting English systems, facts, and
+  // FAQ copy. Keep the authored 30-stage memory rules while owning each route's
+  // complete public Guide copy.
+  const starMemoryLocaleCopies = {
+    ko: {
+      title: "동물별 메모리", age: "6+ / 가족", difficulty: "쉬움부터 도전까지", time: "스테이지당 2~8분", gameplay: "동물 카드 기억 맞추기", genre: ["기억력", "퍼즐", "동물"], skills: ["기억력", "집중력", "문제 해결"],
+      guideKicker: "WeightPlay Kids 게임 가이드", guideTitleSuffix: "게임 안내",
+      intro: "동물별 메모리는 밤하늘에서 동물 별자리를 다시 잇는 30단계 그림 맞추기 여행입니다. 카드 위치는 한 스테이지 동안 그대로이고, 미리보기, 큰 보드, 이동 제한과 지정 동물 순서가 뒤로 갈수록 도전을 높입니다.",
+      story: ["동물 별지도는 해가 진 뒤 숲, 강, 초원과 극지 동물이 집을 찾도록 도왔습니다. 부드러운 유성우가 각 동물의 빛을 숨은 카드 두 장으로 나누자, 플레이어는 어린 지도 읽는 사람이 되어 짝을 다시 연결합니다.", "고양이, 곰, 부엉이, 사자, 펭귄과 코알라가 각각 다섯 단계의 수업을 맡습니다. 다섯 번째 단계마다 Keeper Check가 열리고, 30단계에서 열두 쌍의 기억을 종합합니다."],
+      systems: ["고정 위치: 미리보기, 오답, 정답 뒤에도 카드는 스테이지가 끝날 때까지 원래 위치에 남습니다.", "미리보기 단계는 입력 전에 보드 전체를 잠깐 보여 준 뒤 모든 카드를 숨깁니다.", "순서 단계는 다음에 맞혀야 할 동물 쌍을 알려 줍니다. 순서가 다른 정답은 잠시 보인 뒤 진행하지 않습니다.", "큰 보드와 촘촘한 이동 제한이 기억한 정보를 지우지 않고 난이도를 높입니다.", "이동, 쌍, 최고 연속 기록, 점수, 별, 해금 단계와 최고 점수는 이 브라우저에만 저장됩니다. 리더보드는 없습니다."],
+      how: ["가로 스테이지 레일에서 열린 단계를 고릅니다.", "카드 두 장을 뒤집고 동물과 위치를 기억합니다.", "짝이 맞으면 열린 상태가 유지되고, 다르면 잠시 보인 뒤 다시 뒤집힙니다.", "규칙 배지를 읽어 미리보기나 다음 동물 순서 조건을 확인합니다.", "이동 제한 안에 모든 쌍을 찾아 다음 단계를 엽니다."],
+      strategyTips: ["미리보기는 한 번에 전부 외우기보다 행이나 작은 구역으로 나누어 살펴보세요.", "카드는 움직이지 않으므로 기억한 위치를 믿으세요.", "순서 단계에서는 요구된 동물을 먼저 찾아보세요.", "큰 보드에서는 한 구역을 끝낸 뒤 다음 구역으로 이동하세요."],
+      progression: ["1~5단계는 기본 위치 맞추기와 첫 미리보기를 가르칩니다. 6~10단계는 미리보기 시간을 줄이고 보드를 키웁니다.", "11~15단계는 6~10쌍의 안정적인 기억을 강화하고, 16~20단계는 동물 순서를 요구합니다.", "21~25단계는 12쌍으로 넓어지고, 26~30단계는 미리보기와 순서를 결합해 12쌍의 최종 단계로 이어집니다."],
+      designNote: "큰 카드와 분명한 상태는 터치와 키보드에서 같은 정보를 전달합니다. 난이도는 시간 압박이 아니라 안정적인 보드, 짧은 미리보기, 이동 제한과 순서 규칙으로 높아집니다.",
+      parent: "별과 Skill Report는 현재 플레이의 진행 피드백일 뿐 기억력, 지능 또는 발달 검사가 아닙니다. Kids 버전에는 전투, 계정, 공개 순위와 광고 요청이 없습니다.",
+      faq: [["몇 단계가 있나요?", "6개 수업에 30개의 단계가 있으며 5, 10, 15, 20, 25, 30단계가 Keeper Check입니다."], ["카드가 움직이나요?", "아니요. 스테이지가 끝나거나 다시 시작될 때까지 동물과 위치가 유지됩니다."], ["왜 맞춘 쌍이 다시 숨었나요?", "순서 단계에서는 현재 요구된 동물 쌍만 진행으로 인정됩니다."], ["진행 상황이 저장되나요?", "예. 열린 단계, 별과 최고 점수가 이 브라우저에 저장됩니다."], ["Skill Report는 시험인가요?", "아니요. 현재 플레이의 쌍, 이동과 연속 기록만 요약합니다."]],
+    },
+    "pt-BR": {
+      title: "Memória de Estrela Animal", age: "6+ / família", difficulty: "Fácil a desafiador", time: "2–8 minutos por fase", gameplay: "Jogo de memória com cartas de animais", genre: ["Memória", "Puzzle", "Animais"], skills: ["Memória", "Concentração", "Resolução de problemas"],
+      guideKicker: "Guia de jogo Kids do WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Memória de Estrela Animal é uma jornada de 30 fases para religar constelações de animais no céu noturno. Cada carta mantém sua posição durante a fase, enquanto prévias, tabuleiros maiores, limites de jogadas e ordens de animais aumentam o desafio.",
+      story: ["O Mapa Estelar Animal ajudava animais da floresta, do rio, do campo e das regiões polares a voltar para casa depois do pôr do sol. Uma chuva de meteoros separou cada luz animal em duas cartas escondidas, e o jogador precisa religar cada par.", "Gato, Urso, Coruja, Leão, Pinguim e Coala acompanham cinco fases cada. Cada quinta fase é uma Keeper Check, e a fase 30 reúne a prévia completa de doze pares com a lembrança em ordem."],
+      systems: ["Posições estáveis: cada animal continua na carta original até o fim da fase, mesmo depois de uma prévia, erro ou acerto.", "Fases de prévia mostram o tabuleiro completo por alguns instantes antes de esconder as cartas.", "Fases ordenadas indicam qual par de animal deve ser concluído em seguida; um par certo fora da ordem aparece e volta a esconder sem avançar.", "Tabuleiros maiores e limites de jogadas mais apertados aumentam a dificuldade sem apagar o que já foi aprendido.", "Jogadas, pares, melhor sequência, pontuação, estrelas, desbloqueios e melhores resultados ficam salvos apenas neste navegador. Não há ranking."],
+      how: ["Escolha uma fase desbloqueada na barra horizontal.", "Vire duas cartas e memorize o animal e a posição de cada uma.", "Um par correto permanece aberto; um erro se fecha depois de uma pausa curta e visível.", "Leia o selo de regra para saber se há prévia ou um animal exigido na ordem.", "Encontre todos os pares dentro do limite de jogadas para desbloquear a próxima fase."],
+      strategyTips: ["Durante a prévia, observe por linhas ou pequenos grupos em vez de tentar memorizar o tabuleiro inteiro.", "Confie nas posições lembradas: as cartas não mudam durante a fase.", "Em fases ordenadas, procure primeiro o animal pedido.", "Em tabuleiros maiores, termine uma região pequena antes de passar à próxima."],
+      progression: ["As fases 1–5 ensinam a combinação clássica e terminam com a primeira prévia. As fases 6–10 encurtam a prévia e ampliam os tabuleiros.", "As fases 11–15 reforçam a memória estável em tabuleiros de seis a dez pares; as fases 16–20 acrescentam a ordem indicada.", "As fases 21–25 chegam a doze pares. As fases 26–30 combinam prévias e ordem, culminando em uma final de doze pares."],
+      designNote: "Cartas grandes e estados claros funcionam por toque, mouse e teclado. A dificuldade vem de tabuleiros estáveis maiores, prévias mais curtas, limites de jogadas e alvos ordenados, não de adivinhação aleatória.",
+      parent: "Estrelas e Skill Report são feedback da partida atual, não um teste de memória, inteligência ou desenvolvimento. A versão Kids não tem combate, conta, ranking público nem solicitação de anúncios.",
+      faq: [["Quantas fases existem?", "São 30 fases em seis lições, com Keeper Checks nas fases 5, 10, 15, 20, 25 e 30."], ["As cartas mudam de lugar?", "Não. Cada carta mantém o mesmo animal e posição até o fim ou reinício da fase."], ["Por que um par correto se escondeu?", "Em uma fase ordenada, somente o animal pedido conta para avançar."], ["O progresso é salvo?", "Sim. Fases desbloqueadas, estrelas e melhores pontuações ficam salvas neste navegador."], ["O Skill Report é um teste?", "Não. Ele apenas resume pares, jogadas e sequência da partida atual."]],
+    },
+    fr: {
+      title: "Mémoire d'étoile animale", age: "6+ / famille", difficulty: "Facile à exigeant", time: "2 à 8 minutes par niveau", gameplay: "Jeu de mémoire avec cartes d'animaux", genre: ["Mémoire", "Puzzle", "Animaux"], skills: ["Mémoire", "Attention", "Résolution de problèmes"],
+      guideKicker: "Guide de jeu Kids WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Mémoire d'étoile animale est un voyage de 30 niveaux pour reconnecter les constellations animales dans le ciel nocturne. Chaque carte garde sa place pendant le niveau ; les aperçus, les grands plateaux, la limite de coups et l'ordre demandé rendent les niveaux suivants plus exigeants.",
+      story: ["La Carte des étoiles animales aidait les animaux de la forêt, de la rivière, des prés et des régions polaires à rentrer après le coucher du soleil. Une douce pluie de météores a séparé chaque lumière animale en deux cartes cachées ; le joueur doit reformer chaque paire.", "Chat, Ours, Chouette, Lion, Pingouin et Koala accompagnent chacun cinq niveaux. Chaque cinquième niveau est un Keeper Check et le niveau 30 rassemble l'aperçu de douze paires et la mémorisation ordonnée."],
+      systems: ["Positions stables : chaque animal reste sur sa carte d'origine jusqu'à la fin du niveau, après un aperçu, une erreur ou une paire réussie.", "Les niveaux d'aperçu montrent brièvement tout le plateau avant de cacher les cartes.", "Les niveaux ordonnés indiquent la paire à réussir ensuite ; une bonne paire trouvée dans le mauvais ordre est montrée puis cachée sans faire avancer le niveau.", "Les plateaux plus grands et les limites de coups plus serrées augmentent le défi sans effacer les informations mémorisées.", "Coups, paires, meilleure série, score, étoiles, niveaux débloqués et meilleurs scores restent dans ce navigateur. Aucun classement n'est utilisé."],
+      how: ["Choisissez un niveau débloqué sur la barre horizontale.", "Retournez deux cartes et mémorisez leur animal et leur position.", "Une paire correcte reste ouverte ; une erreur se referme après une courte pause visible.", "Lisez le badge de règle pour savoir si un aperçu ou un animal précis est demandé.", "Trouvez toutes les paires dans la limite de coups pour débloquer le niveau suivant."],
+      strategyTips: ["Pendant l'aperçu, observez par lignes ou petits groupes plutôt que tout le plateau à la fois.", "Fiez-vous aux positions mémorisées : les cartes ne bougent pas pendant le niveau.", "Dans un niveau ordonné, localisez d'abord l'animal demandé.", "Sur un grand plateau, terminez une petite zone avant de passer à la suivante."],
+      progression: ["Les niveaux 1 à 5 enseignent l'appariement classique et le premier aperçu. Les niveaux 6 à 10 raccourcissent l'aperçu et agrandissent les plateaux.", "Les niveaux 11 à 15 renforcent la mémoire stable sur six à dix paires ; les niveaux 16 à 20 ajoutent l'ordre des animaux.", "Les niveaux 21 à 25 passent à douze paires. Les niveaux 26 à 30 combinent aperçu et ordre jusqu'à la finale de douze paires."],
+      designNote: "Les grandes cartes et les états lisibles fonctionnent au toucher, à la souris et au clavier. La difficulté vient de plateaux stables plus grands, d'aperçus plus courts, de limites de coups et d'objectifs ordonnés, pas de devinettes aléatoires.",
+      parent: "Les étoiles et le Skill Report décrivent seulement la partie en cours ; ce ne sont ni un test de mémoire, ni une évaluation de l'intelligence ou du développement. La version Kids ne demande ni compte, ni classement public, ni publicité.",
+      faq: [["Combien de niveaux y a-t-il ?", "Il y a 30 niveaux dans six leçons, avec des Keeper Checks aux niveaux 5, 10, 15, 20, 25 et 30."], ["Les cartes changent-elles de place ?", "Non. Chaque carte garde le même animal et la même position jusqu'à la fin ou au redémarrage du niveau."], ["Pourquoi une paire correcte s'est-elle cachée ?", "Dans un niveau ordonné, seule la paire de l'animal demandé fait progresser le niveau."], ["La progression est-elle enregistrée ?", "Oui. Les niveaux débloqués, les étoiles et les meilleurs scores sont enregistrés dans ce navigateur."], ["Le Skill Report est-il un test ?", "Non. Il résume seulement les paires, les coups et la série de la partie actuelle."]],
+    },
+    de: {
+      title: "Tierisches Sternengedächtnis", age: "6+ / Familie", difficulty: "Leicht bis anspruchsvoll", time: "2–8 Minuten pro Stufe", gameplay: "Tierkarten-Memory", genre: ["Gedächtnis", "Puzzle", "Tiere"], skills: ["Gedächtnis", "Konzentration", "Problemlösen"],
+      guideKicker: "WeightPlay Kids-Spielguide", guideTitleSuffix: "Spielanleitung",
+      intro: "Tierisches Sternengedächtnis ist eine 30-stufige Bildreise durch den Nachthimmel. Jede Karte bleibt während einer Stufe am selben Ort; Vorschauen, größere Felder, Zugziele und geforderte Tierfolgen steigern die Herausforderung.",
+      story: ["Die Tiersternkarte half Wald-, Fluss-, Wiesen- und Polartieren nach Sonnenuntergang nach Hause. Ein sanfter Meteorschauer teilte jedes Tierlicht in zwei verdeckte Karten. Als junger Kartenleser verbindest du die Paare wieder.", "Katze, Bär, Eule, Löwe, Pinguin und Koala begleiten je fünf Aufgaben. Jede fünfte Aufgabe ist eine Keeper Check; Aufgabe 30 verbindet die Vorschau von zwölf Paaren mit geordneter Erinnerung."],
+      systems: ["Feste Plätze: Jede Tierkarte bleibt nach Vorschau, Fehler oder Treffer bis zum Ende der Aufgabe am ursprünglichen Ort.", "Vorschau-Stufen zeigen kurz das ganze Feld, bevor die Eingabe beginnt.", "Geordnete Stufen nennen das nächste Tierpaar. Ein richtiges Paar in falscher Reihenfolge wird gezeigt und wieder verborgen, ohne voranzugehen.", "Größere Felder und engere Zugziele erhöhen die Schwierigkeit, ohne gelernte Informationen zu löschen.", "Züge, Paare, beste Serie, Punkte, Sterne, Freischaltungen und Bestwerte werden nur in diesem Browser gespeichert. Es gibt keine Rangliste."],
+      how: ["Wähle eine freigeschaltete Stufe auf der horizontalen Leiste.", "Decke zwei Karten auf und merke dir Tier und Position.", "Ein passendes Paar bleibt offen; ein Fehler wird nach einer kurzen sichtbaren Pause wieder verdeckt.", "Lies das Regelzeichen, um Vorschau und geforderte Reihenfolge zu erkennen.", "Finde alle Paare innerhalb des Zugziels, um die nächste Stufe zu öffnen."],
+      strategyTips: ["Teile die Vorschau in Reihen oder kleine Bereiche auf.", "Vertraue auf gemerkte Plätze, denn die Karten bewegen sich nicht.", "Suche in geordneten Stufen zuerst das geforderte Tier.", "Bearbeite auf großen Feldern einen Bereich nach dem anderen."],
+      progression: ["Stufen 1–5 führen klassisches Memory und die erste Vorschau ein. Stufen 6–10 verkürzen die Vorschau und vergrößern die Felder.", "Stufen 11–15 stärken stabile Erinnerung mit sechs bis zehn Paaren; Stufen 16–20 ergänzen die angezeigte Tierfolge.", "Stufen 21–25 erweitern auf zwölf Paare. Stufen 26–30 verbinden Vorschau und Reihenfolge bis zur Zwölf-Paar-Finale."],
+      designNote: "Große Karten und klare Zustände funktionieren per Touch, Maus und Tastatur. Die Schwierigkeit entsteht durch stabile Felder, kürzere Vorschauen, Zugziele und Reihenfolge statt durch blindes Raten.",
+      parent: "Sterne und der Skill Report beschreiben nur die aktuelle Runde und sind kein Gedächtnis-, Intelligenz- oder Entwicklungstest. Die Kids-Version hat keinen Kampf, kein Konto, kein öffentliches Ranking und keine Werbeanfrage.",
+      faq: [["Wie viele Stufen gibt es?", "Es gibt 30 Stufen in sechs Lektionen; die Keeper Checks liegen bei 5, 10, 15, 20, 25 und 30."], ["Bewegen sich die Karten?", "Nein. Tier und Platz jeder Karte bleiben bis zum Ende oder Neustart der Stufe gleich."], ["Warum wurde ein richtiges Paar wieder verdeckt?", "In einer geordneten Stufe zählt nur das gerade geforderte Tier für den Fortschritt."], ["Wird der Fortschritt gespeichert?", "Ja. Freigeschaltete Stufen, Sterne und Bestwerte werden in diesem Browser gespeichert."], ["Ist der Skill Report ein Test?", "Nein. Er fasst nur Paare, Züge und Serie der aktuellen Runde zusammen."]],
+    },
+    it: {
+      title: "Memoria delle stelle animali", age: "6+ / famiglia", difficulty: "Da facile a impegnativo", time: "2–8 minuti per livello", gameplay: "Memory con carte di animali", genre: ["Memoria", "Puzzle", "Animali"], skills: ["Memoria", "Concentrazione", "Risoluzione dei problemi"],
+      guideKicker: "Guida ai giochi Kids di WeightPlay", guideTitleSuffix: "Guida al gioco",
+      intro: "Memoria delle stelle animali è un viaggio di 30 livelli per ricollegare le costellazioni animali nel cielo notturno. Ogni carta conserva la propria posizione nel livello; anteprime, tavole più grandi, limiti di mosse e ordine degli animali rendono la sfida più profonda.",
+      story: ["La Mappa delle stelle animali aiutava gli animali della foresta, del fiume, del prato e delle regioni polari a tornare a casa dopo il tramonto. Una pioggia di meteore ha diviso ogni luce animale in due carte nascoste: il giocatore deve ricomporre le coppie.", "Gatto, Orso, Gufo, Leone, Pinguino e Koala accompagnano cinque livelli ciascuno. Ogni quinto livello è un Keeper Check e il livello 30 unisce l'anteprima di dodici coppie alla memoria ordinata."],
+      systems: ["Posizioni stabili: ogni animale resta sulla carta originale fino alla fine del livello, anche dopo anteprima, errore o abbinamento.", "I livelli con anteprima mostrano per poco l'intero tabellone prima di nascondere le carte.", "I livelli ordinati indicano la coppia da completare dopo; una coppia corretta trovata fuori ordine viene mostrata e poi nascosta senza avanzare.", "Tabelloni più grandi e limiti di mosse più stretti aumentano la difficoltà senza cancellare ciò che hai imparato.", "Mosse, coppie, serie migliore, punteggio, stelle, sblocchi e record restano solo in questo browser. Non c'è classifica."],
+      how: ["Scegli un livello sbloccato dalla barra orizzontale.", "Scopri due carte e ricorda animale e posizione.", "Una coppia corretta resta aperta; un errore si richiude dopo una breve pausa visibile.", "Leggi il simbolo della regola per capire se ci sono anteprima o ordine richiesto.", "Trova tutte le coppie entro il limite di mosse per sbloccare il livello successivo."],
+      strategyTips: ["Durante l'anteprima osserva per righe o piccoli gruppi.", "Fidati delle posizioni ricordate: le carte non si muovono durante il livello.", "Nei livelli ordinati cerca prima l'animale richiesto.", "Su un tabellone grande completa una piccola zona prima di passare alla successiva."],
+      progression: ["I livelli 1–5 insegnano l'abbinamento classico e la prima anteprima. I livelli 6–10 accorciano l'anteprima e ampliano i tabelloni.", "I livelli 11–15 rinforzano la memoria stabile con sei-dieci coppie; i livelli 16–20 aggiungono l'ordine indicato.", "I livelli 21–25 arrivano a dodici coppie. I livelli 26–30 uniscono anteprima e ordine fino alla finale di dodici coppie."],
+      designNote: "Carte grandi e stati chiari funzionano con tocco, mouse e tastiera. La difficoltà nasce da tabelloni stabili più grandi, anteprime più brevi, limiti di mosse e obiettivi ordinati, non da tentativi casuali.",
+      parent: "Stelle e Skill Report descrivono solo la partita attuale; non sono un test di memoria, intelligenza o sviluppo. La versione Kids non richiede account, classifica pubblica né pubblicità.",
+      faq: [["Quanti livelli ci sono?", "Ci sono 30 livelli in sei lezioni, con Keeper Check ai livelli 5, 10, 15, 20, 25 e 30."], ["Le carte cambiano posizione?", "No. Ogni carta mantiene animale e posizione fino alla fine o al riavvio del livello."], ["Perché una coppia corretta si è nascosta?", "Nei livelli ordinati avanza solo l'animale richiesto in quel momento."], ["I progressi vengono salvati?", "Sì. Livelli sbloccati, stelle e record vengono salvati in questo browser."], ["Lo Skill Report è un test?", "No. Riassume solo coppie, mosse e serie della partita attuale."]],
+    },
+    ru: {
+      title: "Звездная память животных", age: "6+ / для семьи", difficulty: "От простого до сложного", time: "2–8 минут на этап", gameplay: "Игра на память с карточками животных", genre: ["Память", "Головоломка", "Животные"], skills: ["Память", "Внимание", "Решение задач"],
+      guideKicker: "Руководство по игре WeightPlay Kids", guideTitleSuffix: "Руководство по игре",
+      intro: "Звездная память животных — это путешествие по 30 этапам, где нужно восстановить созвездия животных на ночном небе. Каждая карта сохраняет место в течение этапа, а предварительный показ, большие поля, лимит ходов и порядок животных постепенно усложняют задачу.",
+      story: ["Звездная карта животных помогала лесным, речным, луговым и полярным животным возвращаться домой после заката. Мягкий метеоритный дождь разделил каждый огонек животного на две скрытые карты, и игрок соединяет пары заново.", "Кот, Медведь, Сова, Лев, Пингвин и Коала сопровождают по пять этапов. Каждый пятый этап — Keeper Check, а этап 30 объединяет показ двенадцати пар и поиск в заданном порядке."],
+      systems: ["Постоянные места: после показа, ошибки или совпадения животное остается на исходной карте до конца этапа.", "На этапах с показом всё поле ненадолго открывается, затем карты скрываются до начала ввода.", "На этапах с порядком указана следующая пара животного; правильная пара не в том порядке показывается и снова скрывается без продвижения.", "Большие поля и более строгий лимит ходов усложняют игру, но не стирают выученные сведения.", "Ходы, пары, лучшая серия, очки, звезды, открытия и лучшие результаты хранятся только в этом браузере. Таблицы лидеров нет."],
+      how: ["Выберите открытый этап на горизонтальной ленте.", "Откройте две карты и запомните животное и место.", "Совпавшая пара остается открытой, а ошибка закрывается после короткой паузы.", "Прочитайте значок правила, чтобы узнать о показе или нужном порядке животных.", "Найдите все пары за отведенное число ходов, чтобы открыть следующий этап."],
+      strategyTips: ["Во время показа делите поле на ряды или небольшие участки.", "Доверяйте запомненным местам: карты не двигаются в течение этапа.", "На этапах с порядком сначала ищите требуемое животное.", "На большом поле завершайте один небольшой участок перед переходом к следующему."],
+      progression: ["Этапы 1–5 знакомят с обычным поиском пар и первым показом. На этапах 6–10 показ короче, а поля больше.", "Этапы 11–15 укрепляют память на полях с шестью-десятью парами; этапы 16–20 добавляют заданный порядок животных.", "Этапы 21–25 расширяются до двенадцати пар. Этапы 26–30 объединяют показ и порядок в финале с двенадцатью парами."],
+      designNote: "Крупные карты и понятные состояния одинаково работают с касанием, мышью и клавиатурой. Сложность строится на стабильных полях, коротких показах, лимите ходов и порядке целей, а не на случайных догадках.",
+      parent: "Звезды и Skill Report описывают только текущую игру и не являются тестом памяти, интеллекта или развития. В версии Kids нет аккаунта, публичного рейтинга и рекламного запроса.",
+      faq: [["Сколько этапов в игре?", "В шести уроках 30 этапов; Keeper Check проходит на этапах 5, 10, 15, 20, 25 и 30."], ["Карты меняют место?", "Нет. Животное и место каждой карты сохраняются до конца или перезапуска этапа."], ["Почему правильная пара снова скрылась?", "На этапе с порядком продвижение дает только указанная сейчас пара животного."], ["Сохраняется ли прогресс?", "Да. Открытые этапы, звезды и лучшие результаты сохраняются в этом браузере."], ["Skill Report — это тест?", "Нет. Он суммирует только пары, ходы и серию текущей игры."]],
+    },
+    hi: {
+      title: "एनिमल स्टार मेमोरी", age: "6+ / परिवार", difficulty: "आसान से चुनौतीपूर्ण", time: "प्रति चरण 2–8 मिनट", gameplay: "पशु कार्ड स्मृति खेल", genre: ["स्मृति", "पहेली", "पशु"], skills: ["याददाश्त", "ध्यान", "समस्या समाधान"],
+      guideKicker: "WeightPlay Kids गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "एनिमल स्टार मेमोरी रात के आकाश में पशु तारामंडलों को फिर से जोड़ने वाला 30 चरणों का चित्र-मिलान सफर है। हर चरण में कार्ड अपनी जगह पर रहते हैं; झलक, बड़े बोर्ड, चाल सीमा और पशु क्रम बाद के चरणों को कठिन बनाते हैं।",
+      story: ["पशु स्टार मानचित्र सूर्यास्त के बाद जंगल, नदी, मैदान और ध्रुवीय पशुओं को घर लौटने में मदद करता था। हल्की उल्का-वर्षा ने हर पशु-रोशनी को दो छिपे कार्डों में बाँट दिया, इसलिए खिलाड़ी हर जोड़ी को फिर से जोड़ता है।", "बिल्ली, भालू, उल्लू, शेर, पेंगुइन और कोआला पाँच-पाँच चरणों का साथ देते हैं। हर पाँचवाँ चरण Keeper Check है और चरण 30 बारह जोड़ियों की झलक तथा क्रमबद्ध याददाश्त को मिलाता है।"],
+      systems: ["स्थिर स्थान: झलक, गलत जोड़ी या सही जोड़ी के बाद भी कार्ड चरण समाप्त होने तक अपनी जगह पर रहता है।", "झलक वाले चरण इनपुट शुरू होने से पहले पूरा बोर्ड थोड़ी देर दिखाते हैं और फिर कार्ड छिपा देते हैं।", "क्रम वाले चरण अगली पशु-जोड़ी बताते हैं; सही लेकिन गलत क्रम की जोड़ी दिखकर फिर छिप जाती है और आगे नहीं बढ़ाती।", "बड़े बोर्ड और कड़ी चाल सीमा सीखी हुई जानकारी मिटाए बिना चुनौती बढ़ाते हैं।", "चालें, जोड़ियाँ, बेहतर क्रम, स्कोर, सितारे, खुले चरण और सर्वश्रेष्ठ स्कोर इसी ब्राउज़र में रहते हैं। कोई लीडरबोर्ड नहीं है।"],
+      how: ["क्षैतिज पट्टी से खुला चरण चुनें।", "दो कार्ड पलटें और पशु तथा स्थान याद रखें।", "सही जोड़ी खुली रहती है; गलत जोड़ी थोड़ी देर बाद फिर छिप जाती है।", "नियम चिन्ह पढ़कर झलक या अगले पशु क्रम की शर्त देखें।", "चाल सीमा में सभी जोड़ियाँ पूरी करके अगला चरण खोलें।"],
+      strategyTips: ["झलक के समय पूरे बोर्ड को एक साथ याद करने के बजाय पंक्तियों या छोटे हिस्सों में देखें।", "याद किए स्थानों पर भरोसा करें क्योंकि कार्ड चरण में नहीं हिलते।", "क्रम वाले चरण में पहले माँगा गया पशु खोजें।", "बड़े बोर्ड पर एक छोटा हिस्सा पूरा करके अगले हिस्से पर जाएँ।"],
+      progression: ["चरण 1–5 सामान्य मिलान और पहली झलक सिखाते हैं। चरण 6–10 झलक छोटी करते और बोर्ड बड़ा करते हैं।", "चरण 11–15 छह से दस जोड़ियों में स्थिर याददाश्त मजबूत करते हैं; चरण 16–20 दिखाए गए पशु क्रम जोड़ते हैं।", "चरण 21–25 बारह जोड़ियों तक पहुँचते हैं। चरण 26–30 झलक और क्रम को मिलाकर बारह जोड़ियों वाले अंतिम चरण तक जाते हैं।"],
+      designNote: "बड़े कार्ड और स्पष्ट स्थिति स्पर्श, माउस और कीबोर्ड पर समान रहती है। चुनौती स्थिर बोर्ड, छोटी झलक, चाल सीमा और क्रम से आती है, अंधे अनुमान से नहीं।",
+      parent: "सितारे और Skill Report केवल मौजूदा खेल का विवरण हैं; वे स्मृति, बुद्धि या विकास की परीक्षा नहीं हैं। Kids संस्करण में खाता, सार्वजनिक रैंकिंग और विज्ञापन अनुरोध नहीं है।",
+      faq: [["कुल कितने चरण हैं?", "छह पाठों में 30 चरण हैं; Keeper Check चरण 5, 10, 15, 20, 25 और 30 पर है।"], ["क्या कार्ड जगह बदलते हैं?", "नहीं। चरण समाप्त या फिर शुरू होने तक हर कार्ड का पशु और स्थान वही रहता है।"], ["सही जोड़ी फिर क्यों छिप गई?", "क्रम वाले चरण में आगे बढ़ने के लिए उसी समय माँगी गई पशु-जोड़ी चाहिए।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। खुले चरण, सितारे और सर्वोत्तम स्कोर इसी ब्राउज़र में सहेजे जाते हैं।"], ["क्या Skill Report परीक्षा है?", "नहीं। यह केवल मौजूदा खेल की जोड़ियाँ, चालें और क्रम बताता है।"]],
+    },
+    ar: {
+      title: "ذاكرة نجم الحيوان", age: "6+ / للعائلة", difficulty: "من السهل إلى التحدي", time: "2–8 دقائق لكل مرحلة", gameplay: "لعبة ذاكرة ببطاقات الحيوانات", genre: ["ذاكرة", "ألغاز", "حيوانات"], skills: ["الذاكرة", "التركيز", "حل المشكلات"],
+      guideKicker: "دليل ألعاب WeightPlay Kids", guideTitleSuffix: "دليل اللعبة",
+      intro: "ذاكرة نجم الحيوان رحلة من 30 مرحلة لإعادة وصل مجموعات الحيوانات في سماء الليل. تبقى كل بطاقة في مكانها طوال المرحلة، بينما تزيد المعاينات واللوحات الأكبر وحدود النقل وترتيب الحيوانات من التحدي تدريجيًا.",
+      story: ["ساعدت خريطة النجوم الحيوانية حيوانات الغابة والنهر والمرج والمناطق القطبية على العودة بعد الغروب. فصل وابل نيزكي لطيف كل ضوء حيوان إلى بطاقتين مخفيتين، وعلى اللاعب إعادة وصل الأزواج.", "يرافق القط والدب والبومة والأسد والبطريق والكوالا خمس مراحل لكل منهم. كل مرحلة خامسة هي Keeper Check، وتجمع المرحلة 30 بين معاينة اثني عشر زوجًا والتذكر المرتب."],
+      systems: ["المواضع ثابتة: يبقى كل حيوان على بطاقته الأصلية حتى نهاية المرحلة بعد المعاينة أو الخطأ أو المطابقة.", "تعرض مراحل المعاينة اللوحة كاملة للحظات ثم تخفي البطاقات قبل بدء الإدخال.", "تحدد المراحل المرتبة زوج الحيوان المطلوب بعد ذلك؛ يظهر الزوج الصحيح خارج الترتيب ثم يختفي دون تقدم.", "تزيد اللوحات الأكبر وحدود النقل الأشد التحدي دون محو المعلومات التي تعلمها اللاعب.", "تُحفظ النقلات والأزواج وأفضل تتابع والنتيجة والنجوم والمراحل المفتوحة وأفضل النتائج في هذا المتصفح فقط. لا توجد لوحة متصدرين."],
+      how: ["اختر مرحلة مفتوحة من شريط المراحل الأفقي.", "اقلب بطاقتين وتذكر الحيوان وموضع كل بطاقة.", "يبقى الزوج المطابق ظاهرًا، ويُخفى الخطأ بعد توقف قصير واضح.", "اقرأ شارة القاعدة لمعرفة وجود المعاينة أو ترتيب الحيوان المطلوب.", "اعثر على كل الأزواج ضمن حد النقل لفتح المرحلة التالية."],
+      strategyTips: ["أثناء المعاينة افحص الصفوف أو مجموعات صغيرة بدل محاولة حفظ اللوحة كلها مرة واحدة.", "ثق بالمواضع التي تذكرتها، فالبطاقات لا تتحرك أثناء المرحلة.", "في المراحل المرتبة ابحث أولًا عن الحيوان المطلوب.", "في اللوحات الكبيرة أنهِ منطقة صغيرة قبل الانتقال إلى التالية."],
+      progression: ["تعلّم المراحل 1–5 المطابقة الأساسية وتنتهي بأول معاينة. تقلل المراحل 6–10 مدة المعاينة وتكبر اللوحات.", "تقوي المراحل 11–15 الذاكرة الثابتة في لوحات من ستة إلى عشرة أزواج، وتضيف المراحل 16–20 ترتيب الحيوان المطلوب.", "تصل المراحل 21–25 إلى اثني عشر زوجًا. وتجمع المراحل 26–30 المعاينة والترتيب حتى المرحلة النهائية ذات الاثني عشر زوجًا."],
+      designNote: "تعمل البطاقات الكبيرة والحالات الواضحة باللمس والفأرة ولوحة المفاتيح. يأتي التحدي من ثبات اللوحة وقصر المعاينة وحد النقل وترتيب الهدف، لا من التخمين العشوائي.",
+      parent: "النجوم وSkill Report ملاحظات عن الجولة الحالية وليسا اختبارًا للذاكرة أو الذكاء أو التطور. لا تتضمن نسخة Kids حسابًا أو تصنيفًا عامًا أو طلب إعلان.",
+      faq: [["كم عدد المراحل؟", "هناك 30 مرحلة في ستة دروس، مع Keeper Check في المراحل 5 و10 و15 و20 و25 و30."], ["هل تتغير مواضع البطاقات؟", "لا. يبقى الحيوان وموضع كل بطاقة ثابتين حتى نهاية المرحلة أو إعادة تشغيلها."], ["لماذا اختفى زوج صحيح؟", "في المرحلة المرتبة لا يحقق التقدم إلا زوج الحيوان المطلوب في تلك اللحظة."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ المراحل المفتوحة والنجوم وأفضل النتائج في هذا المتصفح."], ["هل Skill Report اختبار؟", "لا. يلخص فقط الأزواج والنقلات والتتابع في الجولة الحالية."]],
+    },
+  };
+  for (const [localeCode, copy] of Object.entries(starMemoryLocaleCopies)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["star-memory"] = { ...games["star-memory"], ...copy };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["star-memory"] = { gameplay: copy.gameplay, genre: copy.genre, skills: copy.skills };
+  }
+
+  const starMemoryRelatedCards = {
+    en: {
+      "garden-tiles": { title: "Pet Garden Tiles", intro: "Match animal pictures across 30 calm memory boards with previews, garden rules, and local progress." },
+      "animal-hidden-safari": { title: "Animal Hidden Safari", intro: "Search 30 illustrated habitats for hidden animals without a level timer, using observation instead of card recall." },
+      "animal-quiz": { title: "Animal Quiz", intro: "Use habitat, appearance, and behavior clues to identify animals across six learning chapters." },
+    },
+    "zh-Hant": {
+      "garden-tiles": { title: "寵物花園方塊", intro: "在 30 個安靜的記憶棋盤中配對動物圖片，面對預覽、花園規則與本機進度。" },
+      "animal-hidden-safari": { title: "動物探險找找看", intro: "在 30 個插畫棲地中找出躲藏動物，不設關卡倒數，靠觀察而不是翻牌記憶。" },
+      "animal-quiz": { title: "動物小博士", intro: "從棲地、外觀和行為線索辨認動物，完成六個學習章節。" },
+    },
+    "zh-Hans": {
+      "garden-tiles": { title: "宠物花园方块", intro: "在 30 个安静的记忆棋盘中配对动物图片，面对预览、花园规则与本地进度。" },
+      "animal-hidden-safari": { title: "动物探险找找看", intro: "在 30 个插画栖地中找出隐藏动物，不设关卡倒计时，靠观察而不是翻牌记忆。" },
+      "animal-quiz": { title: "动物小博士", intro: "从栖地、外观和行为线索辨认动物，完成六个学习章节。" },
+    },
+    ja: {
+      "garden-tiles": { title: "ガーデンタイル", intro: "30個の落ち着いた記憶ボードで動物の絵をそろえ、予告と庭のルールを読みながら進めます。" },
+      "animal-hidden-safari": { title: "どうぶつかくれんぼサファリ", intro: "時間制限のない30の生息地で、カードの記憶ではなく観察で隠れた動物を探します。" },
+      "animal-quiz": { title: "どうぶつクイズ", intro: "生息地・見た目・行動の手がかりから動物を当てる、6章の学習ゲームです。" },
+    },
+    ko: {
+      "garden-tiles": { title: "애완동물 정원 타일", intro: "미리보기와 정원 규칙을 읽으며 30개의 차분한 기억 보드에서 동물 그림을 맞추고 진행을 저장합니다." },
+      "animal-hidden-safari": { title: "꼭꼭 숨은 동물 사파리", intro: "카드 기억보다 관찰을 사용해 시간 제한 없이 30개 서식지의 숨은 동물을 찾습니다." },
+      "animal-quiz": { title: "동물 퀴즈", intro: "서식지, 모습과 행동 단서로 동물을 추리하는 여섯 장의 학습 게임입니다." },
+    },
+    es: {
+      "garden-tiles": { title: "Fichas del Jardín Animal", intro: "Empareja imágenes de animales en 30 tableros tranquilos de memoria con vistas previas y progreso local." },
+      "animal-hidden-safari": { title: "Safari Oculto de Animales", intro: "Busca animales ocultos en 30 hábitats ilustrados sin temporizador, usando observación en lugar de recordar cartas." },
+      "animal-quiz": { title: "Cuestionario de Animales", intro: "Identifica animales con pistas de hábitat, aspecto y comportamiento en seis capítulos de aprendizaje." },
+    },
+    "pt-BR": {
+      "garden-tiles": { title: "Azulejos de jardim para animais de estimação", intro: "Combine imagens de animais em 30 tabuleiros calmos de memória com prévias, regras do jardim e progresso local." },
+      "animal-hidden-safari": { title: "Safari Escondido de Animais", intro: "Encontre animais escondidos em 30 habitats ilustrados sem cronômetro, usando observação em vez de lembrar cartas." },
+      "animal-quiz": { title: "Questionário sobre animais", intro: "Identifique animais por pistas de habitat, aparência e comportamento em seis capítulos de aprendizagem." },
+    },
+    fr: {
+      "garden-tiles": { title: "Tuiles de jardin pour animaux de compagnie", intro: "Associez des images d'animaux sur 30 plateaux de mémoire paisibles avec aperçu, règles du jardin et progression locale." },
+      "animal-hidden-safari": { title: "Safari caché avec des animaux", intro: "Cherchez les animaux cachés dans 30 habitats illustrés sans chronomètre, en vous appuyant sur l'observation plutôt que les cartes." },
+      "animal-quiz": { title: "Quiz sur les animaux", intro: "Identifiez les animaux grâce à des indices d'habitat, d'apparence et de comportement dans six chapitres." },
+    },
+    de: {
+      "garden-tiles": { title: "Haustiergartenfliesen", intro: "Ordne Tierbilder auf 30 ruhigen Memory-Feldern mit Vorschauen, Gartenregeln und lokalem Fortschritt zu." },
+      "animal-hidden-safari": { title: "Versteckte Tiersafari", intro: "Finde in 30 bebilderten Lebensräumen versteckte Tiere ohne Stufen-Timer und nutze Beobachtung statt Karten-Memory." },
+      "animal-quiz": { title: "Tierquiz", intro: "Erkenne Tiere anhand von Lebensraum-, Aussehen- und Verhaltenshinweisen in sechs Lernkapiteln." },
+    },
+    it: {
+      "garden-tiles": { title: "Piastrelle da giardino per animali domestici", intro: "Abbina immagini di animali in 30 tabelloni di memoria tranquilli con anteprime, regole del giardino e progressi locali." },
+      "animal-hidden-safari": { title: "Safari nascosto con gli animali", intro: "Cerca animali nascosti in 30 habitat illustrati senza timer, usando l'osservazione invece della memoria delle carte." },
+      "animal-quiz": { title: "Quiz sugli animali", intro: "Riconosci gli animali attraverso indizi su habitat, aspetto e comportamento in sei capitoli didattici." },
+    },
+    ru: {
+      "garden-tiles": { title: "Садовые карточки с питомцами", intro: "Собирайте пары изображений животных на 30 спокойных полях памяти с показом, правилами сада и локальным прогрессом." },
+      "animal-hidden-safari": { title: "Сафари со скрытыми животными", intro: "Ищите животных в 30 иллюстрированных местах без таймера, полагаясь на наблюдение, а не на память карточек." },
+      "animal-quiz": { title: "Викторина о животных", intro: "Определяйте животных по подсказкам о месте обитания, внешности и поведении в шести учебных главах." },
+    },
+    hi: {
+      "garden-tiles": { title: "पालतू बगीचे के जोड़ी कार्ड", intro: "झलक, बगीचे के नियम और स्थानीय प्रगति के साथ 30 शांत स्मृति बोर्डों में पशु चित्रों की जोड़ियाँ मिलाएँ।" },
+      "animal-hidden-safari": { title: "एनिमल हिडन सफ़ारी", intro: "बिना चरण टाइमर के 30 चित्रित आवासों में छिपे पशुओं को खोजें और कार्ड याद करने के बजाय निरीक्षण करें।" },
+      "animal-quiz": { title: "पशु प्रश्नोत्तरी", intro: "छह सीखने वाले अध्यायों में आवास, रूप और व्यवहार के संकेतों से पशुओं की पहचान करें।" },
+    },
+    ar: {
+      "garden-tiles": { title: "بطاقات حديقة الحيوانات المتطابقة", intro: "طابق صور الحيوانات في 30 لوحة ذاكرة هادئة مع معاينات وقواعد حديقة وتقدم محلي." },
+      "animal-hidden-safari": { title: "رحلات السفاري المخفية للحيوانات", intro: "ابحث عن الحيوانات المخفية في 30 موطنًا مصورًا من دون مؤقت للمرحلة، مع الاعتماد على الملاحظة بدل تذكر البطاقات." },
+      "animal-quiz": { title: "مسابقة الحيوان", intro: "تعرّف إلى الحيوانات من خلال أدلة الموطن والمظهر والسلوك عبر ستة فصول تعليمية." },
+    },
+  };
+  for (const [localeCode, cards] of Object.entries(starMemoryRelatedCards)) {
+    localizedRelatedCardCopy[localeCode] = { ...(localizedRelatedCardCopy[localeCode] || {}), ...cards };
+  }
+
+  // Safari Dash also had an Arabic mixed-locale Guide: its authored route
+  // facts were present, but genre, systems, one FAQ, and Related Games still
+  // fell back to English or an unrelated default catalog. Keep its exact
+  // three-lane, six-region campaign while owning the remaining public copies.
+  const campusDashLocaleCopies = {
+    ko: {
+      title: "사파리 대시", age: "9+ / 가족", difficulty: "점진적으로 어려워짐", time: "경로당 1~4분", gameplay: "세 레인 동물 러너", genre: ["러너", "반응", "동물"], skills: ["반응", "집중력", "눈과 손의 협응"], guideKicker: "WeightPlay Kids 게임 가이드", guideTitleSuffix: "게임 안내",
+      intro: "사파리 대시는 여섯 지역에 걸친 30개 저장 경로를 달리는 세 레인 동물 게임입니다. Spark Paw Fox가 안내 별을 되찾고, 경로 카드는 다섯 가지 목표와 활성 규칙을 알려 줍니다.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve와 Crown Safari가 하나의 길망을 이룹니다. 흩어진 장비와 물에 잠긴 표지가 안내 별 사슬을 끊었습니다.", "Spark Paw Fox는 모든 경로에 별을 나르고, 여섯 지역의 수호자들이 각 다섯 경로를 시험합니다. 30번 경로를 끝내면 여섯 지역이 다시 연결됩니다."],
+      systems: ["열린 길은 일반 장애물로 레인 타이밍을 가르치고, Star Trail은 별 수집 줄을 늘립니다. Two-Lane Gate는 읽을 수 있는 탈출 레인을 남기며 Sticky Mud는 충돌 뒤 잠시 이동을 늦춥니다.", "별은 현재 배수의 50배를 더하고, 연속 수집은 배수를 올립니다. 장애물 충돌은 80점을 잃게 하고 다음 별 배수를 x1로 되돌립니다.", "목표는 도착, 별 수집, 최고 콤보, 충돌 제한 또는 목표 점수 중 하나로 달라집니다.", "캠페인 진행과 로컬 Top 5는 이 브라우저에 따로 저장되며 계정은 필요하지 않습니다."],
+      how: ["가로 Stage 레일에서 열린 경로를 고르고 목표와 규칙을 읽습니다.", "왼쪽·오른쪽 탭, 스와이프, A·D 또는 화살표 키로 한 레인씩 이동합니다.", "콘, 가방, 책 더미와 웅덩이를 피하며 별을 모읍니다.", "경로의 도착·별·콤보·클린 런·점수 목표를 달성합니다.", "성공한 경로는 저장되고 다음 경로가 열립니다. Run Again으로 현재 경로를 다시 할 수 있습니다."],
+      strategyTips: ["두 개의 게이트 장애물 사이 빈 레인을 읽으세요. 그 틈이 지시입니다.", "클린 런 경로에서는 충돌 허용을 쓰게 될 별을 과감히 건너뛰세요.", "진흙을 밟은 뒤에는 레인 이동이 느려지므로 일찍 움직이세요.", "첫 Guardian 게이트에서 만든 안전 레인의 리듬을 파악하세요.", "충돌은 다음 배수만 초기화하고 이미 만든 최고 콤보는 지우지 않습니다."],
+      progression: ["1~5번 경로는 일반 장애물, 별길, 게이트와 콤보 타이밍을 가르칩니다.", "6~10번은 Acacia Crossing에서 별 수집과 클린 게이트 선택을 섞습니다. 11~15번은 Sticky Mud를 추가합니다.", "16~25번은 점수, 반복 게이트와 야간 별길을 합치고, 26~30번은 모든 규칙과 15별 목표를 결합합니다."],
+      designNote: "세 레인은 휴대폰에서도 선택을 읽기 쉽게 하며 모든 입력은 정확히 한 레인만 이동시킵니다. 경로의 깊이는 게이트의 공간 읽기, 별길의 위험·보상, 진흙의 회복 타이밍, 목표 변화와 수호자 패턴에서 나옵니다. Kids 버전은 광고가 없습니다.",
+      parent: "Skill Report는 현재 달리기의 레인 변경, 별, 충돌과 최고 콤보만 요약하며 반응 속도나 발달 평가가 아닙니다. Kids 버전에는 광고, 계정과 구매가 없습니다.",
+      faq: [["경로는 몇 개인가요?", "여섯 지역에 30개 경로가 있고 5, 10, 15, 20, 25, 30번에 Guardian Check가 있습니다."], ["모든 경로의 목표가 같은가요?", "아니요. 도착, 별 수집, 콤보, 클린 런과 점수 목표가 달라집니다."], ["Sticky Mud는 무엇을 하나요?", "충돌 뒤 잠시 레인 이동을 늦추지만 진행을 지우지는 않습니다."], ["Two-Lane Gate는 어떻게 통과하나요?", "두 장애물이 함께 오며 하나의 탈출 레인을 남깁니다."], ["진행은 저장되나요?", "열린 경로, 완료 경로와 로컬 Top 5가 이 브라우저에 저장됩니다."], ["휴대폰과 컴퓨터에서 되나요?", "예. 휴대폰은 탭과 스와이프, 데스크톱은 A·D와 화살표 키를 지원합니다."]],
+    },
+    "pt-BR": {
+      title: "Safari Dash", age: "9+ / família", difficulty: "Progressivo", time: "1–4 minutos por rota", gameplay: "Corrida animal de três pistas", genre: ["Corrida", "Reflexos", "Animais"], skills: ["Reação", "Concentração", "Coordenação motora"], guideKicker: "Guia de jogo Kids do WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Safari Dash é um corredor animal de três pistas com 30 rotas salvas em seis regiões. Spark Paw Fox restaura estrelas-guia enquanto as cartas anunciam cinco tipos de objetivo e as regras ativas.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve e Crown Safari compartilham uma rede de trilhas. Equipamentos espalhados e placas alagadas quebraram a cadeia de estrelas.", "Spark Paw Fox leva estrelas por todas as rotas. Seis Guardiões testam uma região de cinco rotas cada; concluir a Rota 30 reconecta as seis regiões."],
+      systems: ["Trilha Aberta ensina o ritmo entre obstáculos. Star Trail aumenta as linhas de estrelas; Two-Lane Gates deixam uma saída legível; Sticky Mud desacelera brevemente após uma colisão.", "Estrelas valem 50 vezes o multiplicador atual. Coletas seguidas aumentam o multiplicador; uma colisão remove 80 pontos e reinicia o próximo multiplicador em x1.", "Os objetivos podem pedir chegada, estrelas, combo, corrida limpa, limite de colisões ou pontuação.", "O progresso da campanha e o Top 5 local ficam separados neste navegador. Não é preciso ter conta."],
+      how: ["Escolha uma rota desbloqueada na barra horizontal e leia objetivo e regras.", "Toque esquerda/direita, deslize ou use A, D e as setas para mudar exatamente uma pista.", "Colete estrelas e combo evitando cones, bolsas, pilhas de livros e poças.", "Alcance o fim e cumpra o objetivo de chegada, estrelas, combo, corrida limpa ou pontuação.", "Uma rota concluída salva o progresso e abre a próxima; Run Again repete a atual."],
+      strategyTips: ["Leia a pista vazia entre dois obstáculos de portão: ela é a instrução.", "Em corridas limpas, ignore estrelas opcionais que consumiriam sua margem de colisão.", "Mude de pista cedo depois da lama, pois a transição fica temporariamente mais lenta.", "Use os primeiros portões de cada Guardião para reconhecer o ritmo seguro.", "Uma colisão reinicia o próximo multiplicador, mas não apaga o melhor combo."],
+      progression: ["As rotas 1–5 ensinam obstáculos, estrelas, portões e combo.", "As rotas 6–15 misturam coleta, portões limpos e Sticky Mud.", "As rotas 16–30 combinam pontuação, portões repetidos, estrelas noturnas, lama e padrões de Guardião, terminando com uma meta de 15 estrelas."],
+      designNote: "Três pistas mantêm as escolhas legíveis no celular e cada entrada move exatamente uma pista. A profundidade vem de mudanças de informação: portões alteram a leitura espacial, estrelas alteram risco e recompensa, lama altera a recuperação e os objetivos alteram o que significa vencer. A versão Kids não solicita anúncios.",
+      parent: "O Skill Report usa apenas evidências da corrida atual: mudanças de pista, estrelas, colisões e melhor combo. Não é diagnóstico, avaliação de desenvolvimento nem comparação. A versão Kids não tem anúncios nem login.",
+      faq: [["Quantas rotas existem?", "São 30 rotas em seis regiões, com Guardian Checks nas rotas 5, 10, 15, 20, 25 e 30."], ["Todas as rotas têm o mesmo objetivo?", "Não. Há objetivos de chegada, estrelas, combo, corrida limpa e pontuação."], ["O que Sticky Mud faz?", "Uma colisão em poça reduz pontos e desacelera brevemente a próxima mudança de pista."], ["Como funcionam os Two-Lane Gates?", "Dois obstáculos chegam juntos e deixam uma pista de fuga; algumas rotas marcam a abertura com uma estrela."], ["O progresso é salvo?", "Rotas abertas e concluídas, a rota escolhida e o Top 5 local ficam neste navegador."], ["Funciona no celular e no computador?", "Sim. Celular usa toques e deslizes; desktop usa A, D e as setas."]],
+    },
+    fr: {
+      title: "Safari Dash", age: "9+ / famille", difficulty: "Progressif", time: "1 à 4 minutes par route", gameplay: "Course animale à trois voies", genre: ["Course", "Réflexes", "Animaux"], skills: ["Réaction", "Attention", "Coordination œil-main"], guideKicker: "Guide de jeu Kids WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Safari Dash est une course animale à trois voies avec 30 routes enregistrées dans six régions. Spark Paw Fox restaure les étoiles-guides tandis que les cartes annoncent cinq objectifs et les règles actives.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve et Crown Safari partagent un réseau balisé. Des équipements dispersés et des repères inondés ont brisé la chaîne d'étoiles.", "Spark Paw Fox transporte des étoiles sur chaque route. Six Gardiens testent chacun une région de cinq routes ; terminer la route 30 reconnecte les six régions."],
+      systems: ["Open Trail apprend le rythme entre les obstacles. Star Trail ajoute des lignes d'étoiles ; Two-Lane Gates laissent une sortie lisible ; Sticky Mud ralentit brièvement les changements après une collision.", "Les étoiles valent 50 fois le multiplicateur courant. Les collectes consécutives augmentent le multiplicateur ; une collision retire 80 points et remet le prochain multiplicateur à x1.", "Les objectifs demandent l'arrivée, des étoiles, un combo, une course propre, une limite de collisions ou un score.", "La campagne et le Top 5 local sont enregistrés séparément dans ce navigateur. Aucun compte n'est nécessaire."],
+      how: ["Choisissez une route débloquée sur la barre horizontale et lisez son objectif et ses règles.", "Touchez gauche/droite, balayez ou utilisez A, D et les flèches pour changer exactement de voie.", "Ramassez les étoiles et le combo en évitant cônes, sacs, piles de livres et flaques.", "Atteignez l'arrivée et respectez l'objectif de route, d'étoiles, de combo, de course propre ou de score.", "Une route réussie est enregistrée et débloque la suivante ; Run Again rejoue la route actuelle."],
+      strategyTips: ["Lisez la voie vide entre deux obstacles de portail : c'est l'instruction.", "Sur une course propre, ignorez une étoile optionnelle si elle consomme votre marge de collision.", "Changez de voie tôt après la boue, car la transition est momentanément plus lente.", "Utilisez les premiers portails du Gardien pour reconnaître le rythme de la voie sûre.", "Une collision remet le prochain multiplicateur à zéro, sans effacer le meilleur combo."],
+      progression: ["Les routes 1 à 5 enseignent obstacles, étoiles, portails et rythme du combo.", "Les routes 6 à 15 combinent collecte, portails propres et Sticky Mud.", "Les routes 16 à 30 réunissent score, portails répétés, étoiles nocturnes, boue et séquences de Gardien, jusqu'à l'objectif final de 15 étoiles."],
+      designNote: "Trois voies gardent les choix lisibles sur téléphone et chaque entrée déplace exactement d'une voie. La profondeur vient des changements d'information : les portails modifient la lecture spatiale, les étoiles le risque et la récompense, la boue la récupération et les objectifs la condition de réussite. La version Kids ne demande pas de publicité.",
+      parent: "Le Skill Report utilise uniquement la course actuelle : changements de voie, étoiles, collisions et meilleur combo. Ce n'est ni un diagnostic, ni une évaluation du développement, ni une comparaison. La version Kids n'a ni publicité ni connexion.",
+      faq: [["Combien de routes y a-t-il ?", "Il y a 30 routes dans six régions, avec des Guardian Checks aux routes 5, 10, 15, 20, 25 et 30."], ["Toutes les routes ont-elles le même objectif ?", "Non. Les objectifs portent sur l'arrivée, les étoiles, le combo, la course propre ou le score."], ["Que fait Sticky Mud ?", "Une collision dans une flaque retire des points et ralentit brièvement le changement de voie suivant."], ["Comment fonctionnent les Two-Lane Gates ?", "Deux obstacles arrivent ensemble et laissent une voie de sortie ; certaines routes signalent l'ouverture par une étoile."], ["La progression est-elle enregistrée ?", "Les routes ouvertes et terminées, la route choisie et le Top 5 local sont enregistrés dans ce navigateur."], ["Le jeu fonctionne-t-il sur téléphone et ordinateur ?", "Oui. Le téléphone utilise toucher et balayage ; l'ordinateur utilise A, D et les flèches."]],
+    },
+    de: {
+      title: "Safari Dash", age: "9+ / Familie", difficulty: "Steigend", time: "1–4 Minuten pro Route", gameplay: "Drei-Spuren-Tierlauf", genre: ["Runner", "Reaktion", "Tiere"], skills: ["Reaktion", "Konzentration", "Auge-Hand-Koordination"], guideKicker: "WeightPlay Kids-Spielguide", guideTitleSuffix: "Spielanleitung",
+      intro: "Safari Dash ist ein dreispuriger Tierlauf mit 30 gespeicherten Routen in sechs Regionen. Spark Paw Fox stellt Wegsterne wieder her, während die Routenkarten fünf Zielarten und die aktiven Regeln anzeigen.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve und Crown Safari teilen ein markiertes Wegenetz. Verstreute Ausrüstung und überflutete Wegweiser haben die Sternenkette unterbrochen.", "Spark Paw Fox trägt Ersatzsterne durch jede Route. Sechs Wächter prüfen jeweils eine Region mit fünf Routen; Route 30 verbindet alle Regionen wieder."],
+      systems: ["Open Trail übt das Timing zwischen normalen Hindernissen. Star Trail erweitert die Sternenlinien; Two-Lane Gates lassen eine lesbare Ausweichspur; Sticky Mud verlangsamt nach einer Pfützenkollision kurz den Spurwechsel.", "Sterne zählen das 50-Fache des aktuellen Multiplikators. Serien erhöhen ihn; eine Kollision nimmt 80 Punkte und setzt den nächsten Sternmultiplikator auf x1.", "Ziele verlangen Ankunft, Sterne, Combo, eine fehlerfreie Route, ein Kollisionslimit oder eine Zielpunktzahl.", "Kampagne und lokales Top 5 werden getrennt in diesem Browser gespeichert. Ein Konto ist nicht nötig."],
+      how: ["Wähle eine freigeschaltete Route auf der horizontalen Leiste und lies Ziel und Regeln.", "Tippe links oder rechts, wische oder nutze A, D und Pfeiltasten, um genau eine Spur zu wechseln.", "Sammle Sterne und Combo und weiche Kegeln, Taschen, Bücherstapeln und Pfützen aus.", "Erreiche das Ziel und erfülle die Ankunfts-, Stern-, Combo-, Clean-Run- oder Punktbedingung.", "Eine erfolgreiche Route wird gespeichert und öffnet die nächste; Run Again startet die aktuelle erneut."],
+      strategyTips: ["Lies die leere Spur zwischen zwei Torhindernissen: Sie ist die Anweisung.", "Lass bei Clean-Run-Routen optionale Sterne aus, wenn sie deine Kollisionsreserve verbrauchen.", "Wechsle nach Schlamm früh die Spur, weil der Übergang kurz langsamer ist.", "Nutze die ersten Wächtertore, um den Rhythmus der sicheren Spur zu erkennen.", "Eine Kollision setzt nur den nächsten Multiplikator zurück, nicht die beste Combo."],
+      progression: ["Routen 1–5 lehren normale Hindernisse, Sterne, Tore und Combo-Timing.", "Routen 6–15 verbinden Sammeln, saubere Tore und Sticky Mud.", "Routen 16–30 kombinieren Punkte, wiederholte Tore, Nachtsterne, Schlamm und Wächterfolgen und enden mit einem 15-Sterne-Ziel."],
+      designNote: "Drei Spuren halten Entscheidungen auf dem Handy lesbar, und jede Eingabe bewegt genau eine Spur. Die Tiefe entsteht durch räumliches Lesen an Toren, Risiko und Belohnung der Sterne, die Erholung nach Schlamm und wechselnde Ziele. Die Kids-Version ist werbefrei.",
+      parent: "Der Skill Report nutzt nur die aktuelle Route: Spurwechsel, Sterne, Kollisionen und beste Combo. Er ist kein Diagnose-, Entwicklungs- oder Vergleichstest. Die Kids-Version hat keine Werbung und kein Konto.",
+      faq: [["Wie viele Routen gibt es?", "Es gibt 30 Routen in sechs Regionen; Guardian Checks liegen bei 5, 10, 15, 20, 25 und 30."], ["Haben alle Routen dasselbe Ziel?", "Nein. Es gibt Ziele für Ankunft, Sterne, Combo, Clean Run und Punkte."], ["Was macht Sticky Mud?", "Eine Pfützenkollision kostet Punkte und verlangsamt kurz den nächsten Spurwechsel."], ["Wie funktionieren Two-Lane Gates?", "Zwei Hindernisse kommen gleichzeitig und lassen eine Ausweichspur frei."], ["Wird der Fortschritt gespeichert?", "Freigeschaltete und abgeschlossene Routen, die gewählte Route und das lokale Top 5 werden in diesem Browser gespeichert."], ["Funktioniert es auf Handy und Computer?", "Ja. Das Handy unterstützt Tippen und Wischen; der Computer A, D und Pfeiltasten."]],
+    },
+    it: {
+      title: "Safari Dash", age: "9+ / famiglia", difficulty: "Progressiva", time: "1–4 minuti per percorso", gameplay: "Runner animale a tre corsie", genre: ["Corsa", "Reazione", "Animali"], skills: ["Reazione", "Concentrazione", "Coordinazione occhio-mano"], guideKicker: "Guida ai giochi Kids di WeightPlay", guideTitleSuffix: "Guida al gioco",
+      intro: "Safari Dash è un runner animale a tre corsie con 30 percorsi salvati in sei regioni. Spark Paw Fox ripristina le stelle guida mentre le carte annunciano cinque obiettivi e le regole attive.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve e Crown Safari condividono una rete di sentieri. Equipaggiamento disperso e segnali allagati hanno spezzato la catena delle stelle.", "Spark Paw Fox trasporta stelle lungo ogni percorso. Sei Guardiani mettono alla prova una regione di cinque percorsi ciascuno; completare il percorso 30 ricollega le sei regioni."],
+      systems: ["Open Trail insegna il ritmo tra gli ostacoli. Star Trail aumenta le file di stelle; Two-Lane Gates lasciano una corsia di fuga leggibile; Sticky Mud rallenta brevemente i cambi dopo una pozzanghera.", "Le stelle valgono 50 volte il moltiplicatore attuale. Le raccolte consecutive lo aumentano; una collisione toglie 80 punti e riporta a x1 il prossimo moltiplicatore.", "Gli obiettivi possono chiedere arrivo, stelle, combo, corsa pulita, limite di collisioni o punteggio.", "Campagna e Top 5 locale vengono salvati separatamente in questo browser. Non serve un account."],
+      how: ["Scegli un percorso sbloccato dalla barra orizzontale e leggi obiettivo e regole.", "Tocca sinistra/destra, scorri o usa A, D e le frecce per cambiare esattamente corsia.", "Raccogli stelle e combo evitando coni, borse, pile di libri e pozzanghere.", "Raggiungi il traguardo e soddisfa l'obiettivo di arrivo, stelle, combo, corsa pulita o punteggio.", "Un percorso riuscito salva il completamento e apre il successivo; Run Again ripete quello attuale."],
+      strategyTips: ["Leggi la corsia vuota tra due ostacoli-portale: è l'istruzione.", "Nelle corse pulite salta una stella opzionale se consumerebbe il margine di collisione.", "Dopo il fango cambia corsia in anticipo, perché il passaggio è temporaneamente più lento.", "Usa i primi portali del Guardiano per capire il ritmo della corsia sicura.", "Una collisione azzera solo il prossimo moltiplicatore, non la combo migliore."],
+      progression: ["I percorsi 1–5 insegnano ostacoli, stelle, portali e ritmo della combo.", "I percorsi 6–15 combinano raccolta, portali puliti e Sticky Mud.", "I percorsi 16–30 uniscono punteggio, portali ripetuti, stelle notturne, fango e sequenze del Guardiano fino all'obiettivo finale di 15 stelle."],
+      designNote: "Tre corsie mantengono leggibili le scelte sul telefono e ogni input muove di una sola corsia. La profondità nasce dalla lettura spaziale dei portali, dal rischio e premio delle stelle, dal recupero nel fango e dagli obiettivi variabili. La versione Kids non richiede pubblicità.",
+      parent: "Lo Skill Report usa solo la corsa attuale: cambi di corsia, stelle, collisioni e combo migliore. Non è una diagnosi, una valutazione dello sviluppo o un confronto. La versione Kids non ha pubblicità né accesso.",
+      faq: [["Quanti percorsi ci sono?", "Ci sono 30 percorsi in sei regioni, con Guardian Check ai percorsi 5, 10, 15, 20, 25 e 30."], ["Tutti i percorsi hanno lo stesso obiettivo?", "No. Gli obiettivi riguardano arrivo, stelle, combo, corsa pulita o punteggio."], ["Cosa fa Sticky Mud?", "Una collisione nella pozzanghera toglie punti e rallenta brevemente il cambio di corsia successivo."], ["Come funzionano i Two-Lane Gates?", "Due ostacoli arrivano insieme e lasciano una corsia di fuga."], ["I progressi vengono salvati?", "Percorsi sbloccati e completati, percorso scelto e Top 5 locale vengono salvati in questo browser."], ["Funziona su telefono e computer?", "Sì. Il telefono usa tocchi e scorrimenti; il computer usa A, D e le frecce."]],
+    },
+    ru: {
+      title: "Сафари Дэш", age: "9+ / для семьи", difficulty: "Постепенно сложнее", time: "1–4 минуты на маршрут", gameplay: "Трёхполосный забег животных", genre: ["Забег", "Реакция", "Животные"], skills: ["Реакция", "Внимание", "Координация глаз и рук"], guideKicker: "Руководство по игре WeightPlay Kids", guideTitleSuffix: "Руководство по игре",
+      intro: "Сафари Дэш — трёхполосный забег животных с 30 сохранёнными маршрутами в шести регионах. Spark Paw Fox возвращает путеводные звёзды, а карточки маршрутов сообщают пять типов целей и активные правила.",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve и Crown Safari объединены сетью троп. Потерянное снаряжение и затопленные знаки разорвали цепочку звёзд.", "Spark Paw Fox несёт звёзды по каждому маршруту. Шесть Хранителей проверяют по одному региону из пяти маршрутов; маршрут 30 снова соединяет регионы."],
+      systems: ["Open Trail учит читать обычные препятствия. Star Trail добавляет линии звёзд; Two-Lane Gates оставляют понятную полосу выхода; Sticky Mud ненадолго замедляет смену полосы после лужи.", "Звёзды дают 50 текущих множителей. Серия сборов повышает множитель; столкновение отнимает 80 очков и сбрасывает следующий множитель до x1.", "Цели могут требовать финиш, звёзды, комбо, чистый забег, лимит столкновений или нужный счёт.", "Прогресс кампании и локальный Top 5 хранятся отдельно в этом браузере. Учётная запись не нужна."],
+      how: ["Выберите открытый маршрут на горизонтальной ленте и прочитайте цель и правила.", "Нажимайте влево или вправо, проводите пальцем или используйте A, D и стрелки для смены ровно одной полосы.", "Собирайте звёзды и комбо, избегая конусов, сумок, стопок книг и луж.", "Достигните финиша и выполните цель маршрута, звёзд, комбо, чистого забега или очков.", "Успешный маршрут сохраняется и открывает следующий; Run Again повторяет текущий."],
+      strategyTips: ["Читайте пустую полосу между двумя воротами: это подсказка.", "На чистом забеге пропускайте необязательную звезду, если она расходует запас столкновений.", "После грязи меняйте полосу заранее, потому что переход временно медленнее.", "Первые ворота Хранителя помогают понять ритм безопасной полосы.", "Столкновение сбрасывает следующий множитель, но не лучшую комбо-серию."],
+      progression: ["Маршруты 1–5 учат препятствиям, звёздам, воротам и ритму комбо.", "Маршруты 6–15 соединяют сбор звёзд, чистые ворота и Sticky Mud.", "Маршруты 16–30 объединяют счёт, повторные ворота, ночные звёзды, грязь и последовательности Хранителей до цели в 15 звёзд."],
+      designNote: "Три полосы сохраняют понятность решений на телефоне, а каждый ввод перемещает ровно на одну полосу. Глубина строится на пространственном чтении ворот, риске и награде звёзд, восстановлении после грязи и разных целях. Версия Kids не создаёт рекламный запрос.",
+      parent: "Skill Report использует только текущий забег: смены полос, звёзды, столкновения и лучшее комбо. Это не диагностика и не оценка развития или сравнение. В версии Kids нет рекламы и входа.",
+      faq: [["Сколько маршрутов?", "Есть 30 маршрутов в шести регионах, а Keeper Check проходит на маршрутах 5, 10, 15, 20, 25 и 30."], ["У всех маршрутов одна цель?", "Нет. Цель может быть связана с финишем, звёздами, комбо, чистым забегом или очками."], ["Что делает Sticky Mud?", "Столкновение с лужей отнимает очки и ненадолго замедляет следующую смену полосы."], ["Как работают Two-Lane Gates?", "Два препятствия приходят вместе и оставляют одну полосу выхода."], ["Сохраняется ли прогресс?", "Открытые и завершённые маршруты, выбранный маршрут и локальный Top 5 сохраняются в этом браузере."], ["Игра работает на телефоне и компьютере?", "Да. На телефоне есть касания и свайпы, на компьютере — A, D и стрелки."]],
+    },
+    hi: {
+      title: "सफ़ारी डैश", age: "9+ / परिवार", difficulty: "धीरे-धीरे कठिन", time: "प्रति मार्ग 1–4 मिनट", gameplay: "तीन लेन वाला पशु रनर", genre: ["रनर", "प्रतिक्रिया", "पशु"], skills: ["प्रतिक्रिया", "ध्यान", "आँख-हाथ समन्वय"], guideKicker: "WeightPlay Kids गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "सफ़ारी डैश छह क्षेत्रों में 30 सहेजे गए मार्गों वाला तीन-लेन पशु रनर है। Spark Paw Fox मार्गदर्शक सितारे लौटाता है और मार्ग कार्ड पाँच प्रकार के लक्ष्य तथा सक्रिय नियम बताते हैं।",
+      story: ["Sunrise Savanna, Acacia Crossing, Marshlight Bend, Red Canyon Run, Moonwater Reserve और Crown Safari एक चिह्नित मार्ग-जाल साझा करते हैं। बिखरे उपकरण और पानी में डूबे संकेतों ने सितारा-श्रृंखला तोड़ दी है।", "Spark Paw Fox हर मार्ग में सितारे ले जाता है। छह Guardian पाँच-पाँच मार्ग वाले क्षेत्रों की परीक्षा लेते हैं; मार्ग 30 पूरा करने पर सभी क्षेत्र फिर जुड़ते हैं।"],
+      systems: ["Open Trail सामान्य बाधाओं के बीच लेन का समय सिखाता है। Star Trail सितारों की पंक्तियाँ बढ़ाता है; Two-Lane Gates एक पढ़ने योग्य बचाव लेन छोड़ते हैं; Sticky Mud टक्कर के बाद लेन बदलना थोड़ी देर धीमा करता है।", "सितारे वर्तमान गुणक के 50 गुना अंक देते हैं। लगातार संग्रह गुणक बढ़ाता है; टक्कर 80 अंक घटाकर अगले गुणक को x1 कर देती है।", "लक्ष्य पहुँचने, सितारे, कॉम्बो, क्लीन रन, टक्कर सीमा या लक्ष्य स्कोर पर आधारित हो सकते हैं।", "अभियान प्रगति और स्थानीय Top 5 इसी ब्राउज़र में अलग-अलग सहेजे जाते हैं। खाते की जरूरत नहीं है।"],
+      how: ["क्षैतिज Stage पट्टी से खुला मार्ग चुनें और लक्ष्य व नियम पढ़ें।", "बाएँ या दाएँ टैप, स्वाइप, A, D या तीर कुंजी से ठीक एक लेन बदलें।", "कोन, बैग, किताबों के ढेर और गड्ढों से बचते हुए सितारे व कॉम्बो लें।", "अंत तक पहुँचकर मार्ग, सितारे, कॉम्बो, क्लीन रन या स्कोर का लक्ष्य पूरा करें।", "सफल मार्ग सहेजा जाता है और अगला खुलता है; Run Again वर्तमान मार्ग दोबारा चलाता है।"],
+      strategyTips: ["दो गेट बाधाओं के बीच खाली लेन पढ़ें; वही निर्देश है।", "क्लीन रन में ऐसी वैकल्पिक सितारा पंक्ति छोड़ें जो टक्कर की गुंजाइश खर्च करे।", "कीचड़ छूने के बाद जल्दी लेन बदलें क्योंकि बदलाव कुछ समय धीमा रहता है।", "पहले Guardian गेट से सुरक्षित लेन की लय पहचानें।", "टक्कर अगले गुणक को रीसेट करती है, पहले का सर्वोत्तम कॉम्बो नहीं मिटाती।"],
+      progression: ["मार्ग 1–5 सामान्य बाधा, सितारा, गेट और कॉम्बो समय सिखाते हैं।", "मार्ग 6–15 संग्रह, साफ गेट और Sticky Mud मिलाते हैं।", "मार्ग 16–30 स्कोर, दोहराए गेट, रात के सितारे, कीचड़ और Guardian क्रम जोड़ते हैं और अंत में 15 सितारों का लक्ष्य देते हैं।"],
+      designNote: "तीन लेन फोन पर चुनाव को पढ़ने योग्य रखते हैं और हर इनपुट ठीक एक लेन बदलता है। गहराई गेट की जगह पढ़ने, सितारों के जोखिम-लाभ, कीचड़ से उबरने और बदलते लक्ष्यों से आती है। Kids संस्करण विज्ञापन नहीं माँगता।",
+      parent: "Skill Report केवल वर्तमान दौड़ की लेन बदलने, सितारे, टक्कर और सर्वोत्तम कॉम्बो बताता है। यह प्रतिक्रिया, विकास या बुद्धि की परीक्षा नहीं है। Kids संस्करण में विज्ञापन और लॉगिन नहीं है।",
+      faq: [["कितने मार्ग हैं?", "छह क्षेत्रों में 30 मार्ग हैं और 5, 10, 15, 20, 25 व 30 पर Guardian Check है।"], ["क्या सभी मार्गों का लक्ष्य समान है?", "नहीं। लक्ष्य पहुँच, सितारे, कॉम्बो, क्लीन रन या स्कोर हो सकता है।"], ["Sticky Mud क्या करता है?", "गड्ढे की टक्कर अंक घटाती और अगला लेन बदलाव थोड़ी देर धीमा करती है।"], ["Two-Lane Gates कैसे काम करते हैं?", "दो बाधाएँ साथ आती हैं और एक बचाव लेन छोड़ती हैं।"], ["क्या प्रगति सहेजी जाती है?", "खुले और पूरे मार्ग, चुना मार्ग और स्थानीय Top 5 इस ब्राउज़र में सहेजे जाते हैं।"], ["क्या यह फोन और कंप्यूटर पर चलता है?", "हाँ। फोन पर टैप और स्वाइप, कंप्यूटर पर A, D और तीर कुंजी चलती हैं।"]],
+    },
+    ar: {
+      title: "سفاري داش", age: "9+ / للعائلة", difficulty: "تدريجي", time: "1–4 دقائق لكل مسار", gameplay: "عداء حيوانات بثلاث حارات", genre: ["عداء", "رد الفعل", "حيوانات"], skills: ["رد الفعل", "التركيز", "التنسيق بين العين واليد"], guideKicker: "دليل ألعاب WeightPlay Kids", guideTitleSuffix: "دليل اللعبة",
+      intro: "سفاري داش لعبة ركض للحيوانات ذات ثلاث حارات تضم 30 مسارًا محفوظًا عبر ست مناطق. تستعيد Spark Paw Fox نجوم الدليل بينما تعلن بطاقات المسار خمسة أنواع من الأهداف والقواعد النشطة.",
+      story: ["تشترك Sunrise Savanna وAcacia Crossing وMarshlight Bend وRed Canyon Run وMoonwater Reserve وCrown Safari في شبكة مسارات. لقد قطعت المعدات المتناثرة والعلامات المغمورة سلسلة النجوم الإرشادية.", "تحمل Spark Paw Fox النجوم عبر كل مسار. يختبر ستة حراس منطقة من خمسة مسارات لكل منهم؛ ويعيد المسار 30 ربط المناطق الست."],
+      systems: ["يعلّم Open Trail توقيت الحارات بين المخاطر العادية. يزيد Star Trail خطوط النجوم؛ وتترك Two-Lane Gates حارة هروب واضحة؛ ويبطئ Sticky Mud الانتقال قليلًا بعد الاصطدام.", "تساوي النجوم 50 ضعف المضاعف الحالي. تزيد المجموعات المتتالية المضاعف؛ ويزيل الاصطدام 80 نقطة ويعيد مضاعف النجمة التالي إلى x1.", "تتغير الأهداف بين الوصول وجمع النجوم وأفضل مجموعة والتشغيل النظيف وحد الاصطدام والنتيجة المطلوبة.", "يُحفظ تقدم الحملة وأفضل 5 محليًا بشكل منفصل في هذا المتصفح، ولا يلزم حساب."],
+      how: ["اختر مسارًا مفتوحًا من شريط Stage الأفقي واقرأ هدفه وقواعده.", "اضغط يسارًا أو يمينًا أو مرر الشاشة أو استخدم A وD ومفاتيح الأسهم لتغيير حارة واحدة فقط.", "اجمع النجوم والمجموعة وتجنب الأقماع والحقائب وأكوام الكتب والبرك.", "صل إلى النهاية وحقق هدف الوصول أو النجوم أو المجموعة أو التشغيل النظيف أو النتيجة.", "يُحفظ المسار الناجح ويفتح التالي؛ يعيد Run Again محاولة المسار الحالي."],
+      strategyTips: ["اقرأ الحارة الفارغة بين خطرَي البوابة؛ إنها التعليمات.", "في التشغيل النظيف تخطَّ النجمة الاختيارية إذا كانت ستستهلك هامش الاصطدام.", "تحرك مبكرًا بعد الطين لأن الانتقال يصبح أبطأ مؤقتًا.", "استخدم بوابات الحارس الأولى لمعرفة إيقاع الحارة الآمنة.", "يعيد الاصطدام ضبط المضاعف التالي ولا يمحو أفضل مجموعة سابقة."],
+      progression: ["تعلّم المسارات 1–5 المخاطر والنجوم والبوابات وتوقيت المجموعة.", "تجمع المسارات 6–15 بين جمع النجوم والبوابات النظيفة وSticky Mud.", "تجمع المسارات 16–30 النتيجة والبوابات المتكررة والنجوم الليلية والطين وتسلسل الحراس، وتنتهي بهدف 15 نجمة."],
+      designNote: "تحافظ ثلاث حارات على وضوح الاختيار في الهاتف، وكل إدخال يحرّك حارة واحدة بالضبط. يأتي العمق من قراءة البوابات مكانيًا، ومخاطر النجوم ومكافآتها، وتوقيت التعافي من الطين، وتغير شروط النجاح. لا تنشئ نسخة Kids طلبًا للإعلانات.",
+      parent: "يستخدم Skill Report أدلة الجولة الحالية فقط: تغييرات الحارة والنجوم والاصطدامات وأفضل مجموعة. ليس تشخيصًا أو تقييمًا للنمو أو مقارنة. لا تحتوي نسخة Kids على إعلانات أو تسجيل دخول.",
+      faq: [["كم عدد المسارات؟", "هناك 30 مسارًا في ست مناطق، مع Guardian Check في المسارات 5 و10 و15 و20 و25 و30."], ["هل تستخدم كل المسارات الهدف نفسه؟", "لا. تتنوع الأهداف بين الوصول والنجوم والمجموعة والتشغيل النظيف والنتيجة."], ["ماذا يفعل Sticky Mud؟", "يخصم اصطدام البركة نقاطًا ويبطئ تغيير الحارة التالية قليلًا."], ["كيف تعمل Two-Lane Gates؟", "يصل خطران معًا ويتركان حارة هروب واحدة."], ["هل يُحفظ التقدم؟", "تُحفظ المسارات المفتوحة والمكتملة والمسار المحدد وأفضل 5 محليًا في هذا المتصفح."], ["هل يعمل على الهاتف والكمبيوتر؟", "نعم. يدعم الهاتف النقر والتمرير ويدعم الكمبيوتر A وD ومفاتيح الأسهم."]],
+    },
+  };
+  for (const [localeCode, copy] of Object.entries(campusDashLocaleCopies)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["campus-dash"] = { ...games["campus-dash"], ...copy };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["campus-dash"] = { gameplay: copy.gameplay, genre: copy.genre, skills: copy.skills };
+  }
+
+  const campusDashRelatedCards = {
+    en: {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Read six authored arenas, steer bounces, and decide when a safe line is worth the risk." },
+      "animal-skyspire-drop": { title: "Animal Skyspire Drop", intro: "Guide changing tower gaps, collect route stars, and time a comet charge across 30 drops." },
+      "snack-blocks": { title: "Animal Snack Blocks", intro: "Plan quick swaps on 30 saved boards where six goal families change the next move." },
+    },
+    "zh-Hant": {
+      "animal-bounce-brawl": { title: "動物彈跳大亂鬥", intro: "閱讀六個原創競技場，控制彈跳路線，判斷安全路線是否值得冒險。" },
+      "animal-skyspire-drop": { title: "動物天塔降落", intro: "引導變化中的高塔空隙，收集路線星星，在 30 次降落中掌握彗星充能。" },
+      "snack-blocks": { title: "動物零食方塊", intro: "在 30 個保存棋盤中規劃快速交換，六種目標會改變下一步。" },
+    },
+    "zh-Hans": {
+      "animal-bounce-brawl": { title: "动物弹跳大乱斗", intro: "阅读六个原创竞技场，控制弹跳路线，判断安全路线是否值得冒险。" },
+      "animal-skyspire-drop": { title: "动物天塔降落", intro: "引导变化中的高塔空隙，收集路线星星，在 30 次降落中掌握彗星充能。" },
+      "snack-blocks": { title: "动物零食方块", intro: "在 30 个保存棋盘中规划快速交换，六种目标会改变下一步。" },
+    },
+    ja: {
+      "animal-bounce-brawl": { title: "どうぶつバウンスバトル", intro: "6つのオリジナルアリーナで跳ね方を読み、安全なルートを選びます。" },
+      "animal-skyspire-drop": { title: "どうぶつスカイスパイア降下", intro: "変わる塔のすき間を通り、30回の降下で星を集めてコメットを充電します。" },
+      "snack-blocks": { title: "どうぶつスナックブロック", intro: "6種類の目標が次の一手を変える、30の保存ボードで素早く入れ替えます。" },
+    },
+    ko: {
+      "animal-bounce-brawl": { title: "동물 바운스 브롤", intro: "6개의 오리지널 경기장을 읽고 튕기는 경로를 조절하며 안전한 길의 위험을 판단합니다." },
+      "animal-skyspire-drop": { title: "동물 스카이스파이어 낙하", intro: "변하는 탑 틈을 통과하고 30번의 낙하에서 별을 모으며 혜성을 충전합니다." },
+      "snack-blocks": { title: "동물 스낵 블록", intro: "6가지 목표가 다음 수를 바꾸는 30개 저장 보드에서 빠른 교환을 계획합니다." },
+    },
+    es: {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Lee seis arenas originales, controla los rebotes y decide cuándo merece la pena una ruta segura." },
+      "animal-skyspire-drop": { title: "Descenso Animal Skyspire", intro: "Guía huecos cambiantes, recoge estrellas y carga un cometa en 30 descensos." },
+      "snack-blocks": { title: "Bloques de Aperitivos", intro: "Planifica intercambios rápidos en 30 tableros guardados con seis familias de objetivos." },
+    },
+    "pt-BR": {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Leia seis arenas criadas à mão, controle os ricochetes e escolha quando uma rota segura vale o risco." },
+      "animal-skyspire-drop": { title: "Descida Animal Skyspire", intro: "Guie vãos que mudam, colete estrelas e carregue um cometa em 30 descidas." },
+      "snack-blocks": { title: "Blocos de Aperitivos", intro: "Planeje trocas rápidas em 30 tabuleiros salvos com seis famílias de objetivos." },
+    },
+    fr: {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Lisez six arènes originales, contrôlez les rebonds et décidez quand une voie sûre vaut le risque." },
+      "animal-skyspire-drop": { title: "Descente Animal Skyspire", intro: "Guidez des ouvertures changeantes, ramassez des étoiles et chargez une comète en 30 descentes." },
+      "snack-blocks": { title: "Blocs de goûter animaux", intro: "Planifiez des échanges rapides sur 30 plateaux enregistrés avec six familles d'objectifs." },
+    },
+    de: {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Lies sechs eigene Arenen, steuere Sprünge und entscheide, wann eine sichere Linie das Risiko wert ist." },
+      "animal-skyspire-drop": { title: "Animal Skyspire Drop", intro: "Führe durch wechselnde Turmlücken, sammle Sterne und lade in 30 Abstiegen einen Kometen." },
+      "snack-blocks": { title: "Tierische Snack-Blöcke", intro: "Plane schnelle Tauschzüge auf 30 gespeicherten Feldern mit sechs Zielarten." },
+    },
+    it: {
+      "animal-bounce-brawl": { title: "Bounce Brawl", intro: "Leggi sei arene originali, controlla i rimbalzi e decidi quando una linea sicura vale il rischio." },
+      "animal-skyspire-drop": { title: "Discesa Animal Skyspire", intro: "Guida tra aperture variabili, raccogli stelle e carica una cometa in 30 discese." },
+      "snack-blocks": { title: "Blocchi di snack animali", intro: "Pianifica scambi rapidi su 30 tabelloni salvati con sei famiglie di obiettivi." },
+    },
+    ru: {
+      "animal-bounce-brawl": { title: "Прыжковая схватка", intro: "Читайте шесть созданных вручную арен, управляйте отскоками и решайте, стоит ли риск безопасного пути." },
+      "animal-skyspire-drop": { title: "Спуск животных с небашни", intro: "Ведите героя через меняющиеся окна, собирайте звёзды и заряжайте комету в 30 спусках." },
+      "snack-blocks": { title: "Перекусочные блоки животных", intro: "Планируйте быстрые обмены на 30 сохранённых полях с шестью типами целей." },
+    },
+    hi: {
+      "animal-bounce-brawl": { title: "एनिमल बाउंस ब्रॉल", intro: "छह बनाए गए अखाड़ों को पढ़ें, उछाल की दिशा सँभालें और सुरक्षित रास्ते का जोखिम तय करें।" },
+      "animal-skyspire-drop": { title: "एनिमल स्काईस्पायर ड्रॉप", intro: "बदलते टावर अंतरालों से मार्गदर्शन करें, सितारे लें और 30 बार गिरते हुए कॉमेट चार्ज करें।" },
+      "snack-blocks": { title: "पशु स्नैक ब्लॉक्स", intro: "छह लक्ष्य परिवारों वाले 30 सहेजे बोर्डों पर तेज़ अदला-बदली की योजना बनाएँ।" },
+    },
+    ar: {
+      "animal-bounce-brawl": { title: "مواجهة قفز الحيوانات", intro: "اقرأ ست ساحات أصلية، تحكم في الارتدادات، وقرر متى يستحق المسار الآمن المخاطرة." },
+      "animal-skyspire-drop": { title: "هبوط الحيوانات من البرج السماوي", intro: "وجّه المرور عبر فتحات برج متغيرة، واجمع النجوم واشحن المذنب خلال 30 هبوطًا." },
+      "snack-blocks": { title: "مكعبات وجبات الحيوانات", intro: "خطط للتبديلات السريعة في 30 لوحة محفوظة تتغير فيها الخطوة التالية عبر ستة أنواع من الأهداف." },
+    },
+  };
+  for (const [localeCode, cards] of Object.entries(campusDashRelatedCards)) {
+    localizedRelatedCardCopy[localeCode] = { ...(localizedRelatedCardCopy[localeCode] || {}), ...cards };
+  }
 
   // Animal Color Springs had complete English, Spanish, Japanese, and
   // Chinese Guide records, but the other required locales were inheriting
