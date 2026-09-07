@@ -55,3 +55,4 @@ html[dir="rtl"] .settings-panel.wp-shell-settings-popover{right:auto;left:14px}
 @media(max-height:500px) and (min-aspect-ratio:3/2){.hero-grid{grid-template-columns:420px 1fr}.cover-wrap{max-width:420px}}
 .hero-grid .guide-mascot{max-height:150px}
 .guide-card[data-wp-game-guide]{display:block}
+@media(max-width:680px) and (min-height:501px){.panel-screen[data-wp-logical-battle-canvas] .stone-tray{flex-basis:64px;height:64px}.panel-screen[data-wp-logical-battle-canvas] .stone-btn{height:64px;min-height:64px;padding:4px;gap:1px;overflow:hidden}.panel-screen[data-wp-logical-battle-canvas] .stone-btn .stone-mark{font-size:1.4rem;line-height:1}.panel-screen[data-wp-logical-battle-canvas] .stone-btn>span:not(.stone-mark){font-size:.78rem;line-height:1.05;white-space:nowrap}.panel-screen[data-wp-logical-battle-canvas] .stone-btn small{font-size:.62rem;line-height:1;white-space:nowrap}}

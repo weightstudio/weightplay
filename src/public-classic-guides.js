@@ -173,163 +173,514 @@
   };
 
   const pong = {
-    en: guide({
-      title: "Pong", intro: "Pong is a short five-rally alignment match: read the highlighted ball lane, place the paddle beneath it, and choose when to Serve.",
-      gameplay: "Deliberate five-rally arcade match", genre: ["Classic", "Arcade", "Action"], difficulty: "Easy to learn, cleaner to master", time: "2–5 minutes",
-      story: ["This is a compact paddle-and-target exercise rather than an endless arcade loop. Each rally gives you a visible ball lane and asks you to make one readable alignment decision.", "A complete match has five rallies. Winning a rally adds a point; a miss settles safely and presents the next target, so the session stays understandable and replayable."],
-      systems: ["The highlighted ball shows the target lane for the current rally. Left and Right move the paddle, while Serve settles the rally.", "A paddle aligned under the ball wins the rally and adds a point. A miss adds no point but does not end the match.", "Hint restates the current target without moving for you. Result reports score and moves, then gives a cleaner rematch goal."],
-      how: ["Start a match and read the highlighted ball lane.", "Use Left and Right to place the paddle under that target.", "Press Serve once you are aligned; one Serve settles one rally.", "Read the next target and repeat until all five rallies are complete.", "Review Result, then choose Play again for a cleaner match or return to Main."],
-      strategyTips: ["Move only as far as needed before Serve; extra moves count toward the Result goal.", "Use Hint when you need the target stated plainly, then keep the final alignment decision yours.", "After a miss, read the next lane instead of repeating the old position.", "Compare Score and Moves on Result to turn a completed match into a small replay challenge."],
-      progression: ["The first match teaches the alignment-and-Serve rhythm. Later matches keep five rallies but reward accurate placement, fewer moves, and a clean five-point result."],
-      designNote: "Pong uses visible lane targeting, a deliberate Serve decision, safe misses, and a short Result goal to turn an arcade familiar into a readable practice loop. Touch, mouse, and keyboard controls reach the same paddle decisions.",
-      noteTitle: "Player, Device, and Save Information", parent: "Best results and sound preference stay in this browser. No account, purchase, cloud save, or online match is required; clearing site data can remove the local result.",
-      faq: [["What does the highlighted ball mean?", "It shows the target lane for the current rally."], ["How do I win a rally?", "Place the paddle under the highlighted ball and press Serve."], ["What happens after a missed Serve?", "The rally settles without a point and the next target appears."], ["Does Hint play for me?", "No. It states the target, but you still align and Serve."], ["Is progress saved?", "Best results and preferences are saved only in this browser."]],
-    }),
-    "zh-Hant": guide({
-      title: "乒乓球", intro: "乒乓球是一場五回合的對準短局：閱讀高亮球的球道，將球拍放到下方，再決定何時發球。",
-      gameplay: "五回合專注對準街機短局", genre: ["經典", "街機", "動作"], difficulty: "容易上手，追求更乾淨的結果", time: "2–5 分鐘",
-      story: ["這是一個緊湊的球拍與目標練習，不是無限循環的街機模式。每個回合都會給你一條可見球道，請你做出清楚的對準決定。", "完整短局包含五個回合。贏得回合會增加分數；失誤會安全結束該回合並顯示下一個目標，因此整段遊玩容易理解，也適合重玩。"],
-      systems: ["高亮球顯示目前回合的目標球道。左右鍵移動球拍，發球會結算回合。", "球拍對準球下方時可贏得回合並增加一分。失誤不加分，但不會結束整場短局。", "提示會重述目前目標，不會替你移動。結果畫面顯示分數與步數，並給出更乾淨的重玩目標。"],
-      how: ["開始短局，閱讀高亮球的球道。", "用左移與右移把球拍放到目標下方。", "對準後按一次發球；一次發球會結算一個回合。", "閱讀下一個目標，重複操作直到五個回合完成。", "查看結果，再選擇再玩一次挑戰更乾淨的短局，或回到主頁。"],
-      strategyTips: ["發球前只移動需要的距離；多餘步數會計入結果目標。", "需要明確目標時使用提示，再自己完成最後的對準決定。", "失誤後請閱讀下一條球道，不要一直停在舊位置。", "在結果畫面比較分數與步數，把完成一局變成小型重玩挑戰。"],
-      progression: ["第一局教你熟悉對準與發球節奏。之後仍是五個回合，但更精準的位置、更少步數與五分全勝會成為熟練目標。"],
-      designNote: "乒乓球使用可見球道目標、由玩家決定的發球、安全失誤與短結果目標，把熟悉的街機題材轉成容易讀懂的練習循環。觸控、滑鼠與鍵盤都會進入相同的球拍決策。",
-      noteTitle: "玩家、裝置與存檔資訊", parent: "最佳成績與音效偏好會留在這個瀏覽器。不需要帳號、購買、雲端存檔或線上對局；清除網站資料可能刪除本機結果。",
-      faq: [["高亮球代表什麼？", "它顯示目前回合的目標球道。"], ["如何贏得回合？", "將球拍放到高亮球下方，再按發球。"], ["發球失誤後會怎樣？", "該回合不加分並安全結束，接著出現下一個目標。"], ["提示會替我遊玩嗎？", "不會。它只說明目標，對準與發球仍由你完成。"], ["進度會保存嗎？", "最佳成績與偏好只保存在這個瀏覽器。"]],
-    }),
-    "zh-Hans": guide({
-      title: "乒乓球", intro: "乒乓球是一场五回合的对准短局：阅读高亮球的球道，将球拍放到下方，再决定何时发球。",
-      gameplay: "五回合专注对准街机短局", genre: ["经典", "街机", "动作"], difficulty: "容易上手，追求更干净的结果", time: "2–5 分钟",
-      story: ["这是一个紧凑的球拍与目标练习，不是无限循环的街机模式。每个回合都会给你一条可见球道，请你做出清楚的对准决定。", "完整短局包含五个回合。赢得回合会增加分数；失误会安全结束该回合并显示下一个目标，因此整段游玩容易理解，也适合重玩。"],
-      systems: ["高亮球显示当前回合的目标球道。左右键移动球拍，发球会结算回合。", "球拍对准球下方时可赢得回合并增加一分。失误不加分，但不会结束整场短局。", "提示会重述当前目标，不会替你移动。结果画面显示分数和步数，并给出更干净的重玩目标。"],
-      how: ["开始短局，阅读高亮球的球道。", "用左移和右移把球拍放到目标下方。", "对准后按一次发球；一次发球会结算一个回合。", "阅读下一个目标，重复操作直到五个回合完成。", "查看结果，再选择再玩一次挑战更干净的短局，或返回主页。"],
-      strategyTips: ["发球前只移动需要的距离；多余步数会计入结果目标。", "需要明确目标时使用提示，再自己完成最后的对准决定。", "失误后请阅读下一条球道，不要一直停在旧位置。", "在结果画面比较分数和步数，把完成一局变成小型重玩挑战。"],
-      progression: ["第一局教你熟悉对准和发球节奏。之后仍是五个回合，但更精准的位置、更少步数和五分全胜会成为熟练目标。"],
-      designNote: "乒乓球使用可见球道目标、由玩家决定的发球、安全失误和短结果目标，把熟悉的街机题材转成容易读懂的练习循环。触控、鼠标和键盘都会进入相同的球拍决策。",
-      noteTitle: "玩家、设备与存档信息", parent: "最佳成绩和音效偏好会留在此浏览器。不需要账号、购买、云端存档或在线对局；清除网站数据可能删除本地结果。",
-      faq: [["高亮球代表什么？", "它显示当前回合的目标球道。"], ["如何赢得回合？", "将球拍放到高亮球下方，再按发球。"], ["发球失误后会怎样？", "该回合不加分并安全结束，接着出现下一个目标。"], ["提示会替我游玩吗？", "不会。它只说明目标，对准和发球仍由你完成。"], ["进度会保存吗？", "最佳成绩和偏好只保存在此浏览器。"]],
-    }),
-    ja: guide({
-      title: "ポン", intro: "ポンは5ラリーの短い位置合わせゲームです。光るボールのレーンを読み、ラケットを下に合わせ、サーブのタイミングを選びます。",
-      gameplay: "5ラリーの意図的なアーケード対戦", genre: ["クラシック", "アーケード", "アクション"], difficulty: "始めやすく、きれいな操作に挑戦", time: "2〜5分",
-      story: ["これは無限に続くアーケードではなく、ラケットと目標を使う短い練習です。各ラリーに見えるボールのレーンがあり、読みやすい位置合わせを一度決めます。", "1試合は5ラリーです。勝てば得点し、ミスしても安全にラリーが終わって次の目標が出るため、短く理解しやすく再挑戦できます。"],
-      systems: ["光るボールが現在のラリーの目標レーンを示します。左右でラケットを動かし、サーブでラリーを確定します。", "ラケットがボールの下に合えば勝って1点です。外しても点は入りませんが、試合は続きます。", "ヒントは目標を言い直しますが、ラケットは動かしません。結果にはスコアと手数が出て、次のきれいな目標も示されます。"],
-      how: ["試合を始め、光るボールのレーンを読みます。", "左右を使ってラケットを目標の下に置きます。", "合ったらサーブを1回押してラリーを確定します。", "次の目標を読み、5ラリーが終わるまで繰り返します。", "結果を見て、もう一度きれいな試合を目指すかメインへ戻ります。"],
-      strategyTips: ["サーブ前は必要な分だけ動かします。余分な手数は結果の目標に影響します。", "目標を確認したいときはヒントを使い、最後の位置合わせは自分で行います。", "ミスの後は次のレーンを読み、前の位置に固執しません。", "結果のスコアと手数を比べ、完走を再挑戦の課題に変えます。"],
-      progression: ["最初の試合で位置合わせとサーブのリズムを学びます。以降も5ラリーですが、正確な位置、少ない手数、5点全勝が上達の目標になります。"],
-      designNote: "ポンは見えるレーン目標、プレイヤーが選ぶサーブ、安全なミス、短い結果目標で、親しみのある題材を読みやすい練習ループにします。タッチ、マウス、キーボードは同じ判断を操作します。",
-      noteTitle: "プレイヤー、端末、保存情報", parent: "ベスト結果とサウンド設定はこのブラウザに保存されます。アカウント、購入、クラウド保存、オンライン対戦は不要です。サイトデータを消すとローカル結果が失われることがあります。",
-      faq: [["光るボールは何ですか？", "現在のラリーの目標レーンです。"], ["ラリーに勝つには？", "ラケットを光るボールの下に合わせ、サーブを押します。"], ["サーブを外すと？", "点なしでラリーが終わり、次の目標が表示されます。"], ["ヒントは代わりに遊びますか？", "いいえ。目標を示すだけで、位置合わせとサーブは自分で行います。"], ["進行は保存されますか？", "ベスト結果と設定はこのブラウザだけに保存されます。"]],
-    }),
-    ko: guide({
-      title: "퐁", intro: "퐁은 다섯 랠리로 진행되는 짧은 정렬 경기입니다. 강조된 공의 레인을 읽고 패들을 아래에 맞춘 뒤 서브 시점을 선택하세요.",
-      gameplay: "다섯 랠리 집중 아케이드 경기", genre: ["클래식", "아케이드", "액션"], difficulty: "배우기 쉽고 깔끔한 플레이는 도전적", time: "2–5분",
-      story: ["끝없이 이어지는 아케이드 루프가 아니라 패들과 목표를 읽는 짧은 연습입니다. 각 랠리에는 보이는 공의 레인이 있고, 한 번의 분명한 정렬 결정을 내립니다.", "한 경기는 다섯 랠리입니다. 이기면 점수를 얻고, 놓쳐도 랠리만 안전하게 끝난 뒤 다음 목표가 나와 이해하기 쉽고 다시 플레이하기 좋습니다."],
-      systems: ["강조된 공이 현재 랠리의 목표 레인을 보여 줍니다. 왼쪽과 오른쪽으로 패들을 움직이고 서브로 랠리를 확정합니다.", "패들이 공 아래에 맞으면 랠리 승리와 1점을 얻습니다. 빗나가도 점수만 얻지 못할 뿐 경기는 계속됩니다.", "힌트는 현재 목표를 다시 말하지만 대신 움직이지 않습니다. 결과에는 점수와 이동 횟수, 더 깔끔한 재도전 목표가 표시됩니다."],
-      how: ["경기를 시작하고 강조된 공의 레인을 읽으세요.", "왼쪽과 오른쪽으로 패들을 목표 아래에 맞추세요.", "맞췄다면 서브를 한 번 눌러 랠리를 확정하세요.", "다음 목표를 읽고 다섯 랠리가 끝날 때까지 반복하세요.", "결과를 확인하고 더 깔끔한 경기를 위해 다시 플레이하거나 메인으로 돌아가세요."],
-      strategyTips: ["서브 전에 필요한 만큼만 움직이세요. 추가 이동은 결과 목표에 반영됩니다.", "목표를 확인하려면 힌트를 쓰되 마지막 정렬 결정은 직접 하세요.", "실수 뒤에는 다음 레인을 읽고 이전 위치를 반복하지 마세요.", "결과의 점수와 이동 횟수를 비교해 완주를 재도전 과제로 바꾸세요."],
-      progression: ["첫 경기에서 정렬과 서브의 리듬을 배웁니다. 이후에도 다섯 랠리 구조는 같지만 정확한 위치, 적은 이동, 5점 전승이 숙련 목표가 됩니다."],
-      designNote: "퐁은 보이는 레인 목표, 플레이어가 결정하는 서브, 안전한 실수와 짧은 결과 목표로 익숙한 아케이드 이름을 읽기 쉬운 연습 루프로 바꿉니다. 터치, 마우스, 키보드는 같은 패들 결정을 조작합니다.",
-      noteTitle: "플레이어, 기기 및 저장 정보", parent: "최고 기록과 사운드 설정은 이 브라우저에 저장됩니다. 계정, 구매, 클라우드 저장, 온라인 경기는 필요하지 않으며 사이트 데이터를 지우면 로컬 결과가 사라질 수 있습니다.",
-      faq: [["강조된 공은 무엇인가요?", "현재 랠리의 목표 레인입니다."], ["랠리에서 이기려면 어떻게 하나요?", "패들을 강조된 공 아래에 맞추고 서브를 누르세요."], ["서브를 놓치면 어떻게 되나요?", "점수 없이 랠리가 끝나고 다음 목표가 나타납니다."], ["힌트가 대신 플레이하나요?", "아니요. 목표만 말해 주며 정렬과 서브는 직접 해야 합니다."], ["진행 상황이 저장되나요?", "최고 기록과 설정은 이 브라우저에만 저장됩니다."]],
-    }),
-    es: guide({
-      title: "Pong", intro: "Pong es un partido corto de cinco rallies: lee el carril de la pelota resaltada, coloca la pala debajo y decide cuándo sacar.",
-      gameplay: "Partido arcade deliberado de cinco rallies", genre: ["Clásico", "Arcade", "Acción"], difficulty: "Fácil de aprender, difícil de limpiar", time: "2–5 minutos",
-      story: ["Es un ejercicio breve de pala y objetivo, no un bucle arcade infinito. Cada rally muestra un carril visible y te pide una decisión clara de alineación.", "Un partido completo tiene cinco rallies. Ganar suma un punto; fallar termina el rally de forma segura y muestra el siguiente objetivo, así que la sesión es clara y rejugable."],
-      systems: ["La pelota resaltada muestra el carril objetivo del rally. Izquierda y Derecha mueven la pala, y Sacar resuelve el rally.", "Una pala alineada bajo la pelota gana el rally y suma un punto. Un fallo no suma, pero el partido continúa.", "Pista repite el objetivo sin mover la pala por ti. Resultado muestra puntos y movimientos y propone una revancha más limpia."],
-      how: ["Inicia el partido y lee el carril de la pelota resaltada.", "Usa Izquierda y Derecha para poner la pala bajo el objetivo.", "Cuando estés alineado, pulsa Sacar una vez; un saque resuelve un rally.", "Lee el siguiente objetivo y repite hasta completar los cinco rallies.", "Revisa Resultado y juega otra vez para mejorar, o vuelve al inicio."],
-      strategyTips: ["Muévete solo lo necesario antes de sacar; los movimientos extra cuentan en el objetivo.", "Usa Pista si necesitas que se repita el objetivo, pero toma tú la decisión final.", "Después de fallar, lee el siguiente carril en vez de repetir la posición anterior.", "Compara Puntuación y Movimientos en Resultado para convertir el partido en un reto de repetición."],
-      progression: ["El primer partido enseña el ritmo de alinear y sacar. Los siguientes mantienen cinco rallies, pero premian la precisión, menos movimientos y cinco puntos limpios."],
-      designNote: "Pong combina carriles visibles, un saque decidido por el jugador, fallos seguros y un objetivo breve de Resultado para convertir un clásico arcade en una práctica legible. Tacto, ratón y teclado controlan las mismas decisiones.",
-      noteTitle: "Información del jugador, dispositivo y guardado", parent: "Las mejores marcas y el sonido se guardan en este navegador. No necesitas cuenta, compra, nube ni partida online; borrar los datos del sitio puede eliminar el resultado local.",
-      faq: [["¿Qué significa la pelota resaltada?", "Muestra el carril objetivo del rally actual."], ["¿Cómo gano un rally?", "Coloca la pala bajo la pelota resaltada y pulsa Sacar."], ["¿Qué ocurre si fallo el saque?", "El rally termina sin punto y aparece el siguiente objetivo."], ["¿Pista juega por mí?", "No. Repite el objetivo, pero tú alineas y sacas."], ["¿Se guarda el progreso?", "Las mejores marcas y preferencias solo se guardan en este navegador."]],
-    }),
-    "pt-BR": guide({
-      title: "Pong", intro: "Pong é uma partida curta de cinco ralis: leia a faixa da bola destacada, posicione a raquete abaixo dela e escolha quando sacar.",
-      gameplay: "Partida arcade deliberada de cinco ralis", genre: ["Clássico", "Arcade", "Ação"], difficulty: "Fácil de aprender, melhor com precisão", time: "2–5 minutos",
-      story: ["É um exercício curto de raquete e alvo, não um loop arcade infinito. Cada rali mostra uma faixa visível e pede uma decisão clara de alinhamento.", "Uma partida completa tem cinco ralis. Vencer soma um ponto; errar encerra o rali com segurança e mostra o próximo alvo, deixando a sessão clara e fácil de repetir."],
-      systems: ["A bola destacada mostra a faixa-alvo do rali. Esquerda e Direita movem a raquete, e Sacar resolve o rali.", "A raquete alinhada sob a bola vence o rali e soma um ponto. Um erro não soma, mas a partida continua.", "Dica repete o alvo sem mover por você. Resultado mostra pontos e movimentos e propõe uma revanche mais limpa."],
-      how: ["Comece a partida e leia a faixa da bola destacada.", "Use Esquerda e Direita para colocar a raquete sob o alvo.", "Quando estiver alinhado, pressione Sacar uma vez; cada saque resolve um rali.", "Leia o próximo alvo e repita até concluir os cinco ralis.", "Veja o Resultado e jogue de novo para melhorar, ou volte ao início."],
-      strategyTips: ["Mova apenas o necessário antes de sacar; movimentos extras contam no objetivo.", "Use Dica para repetir o alvo, mas mantenha sua decisão final.", "Depois de errar, leia a próxima faixa em vez de repetir a posição anterior.", "Compare Pontos e Movimentos no Resultado para transformar a partida em um desafio de replay."],
-      progression: ["A primeira partida ensina o ritmo de alinhar e sacar. As próximas mantêm cinco ralis, mas valorizam precisão, menos movimentos e cinco pontos limpos."],
-      designNote: "Pong combina faixas visíveis, saque decidido pelo jogador, erros seguros e um objetivo curto no Resultado para transformar um clássico arcade em uma prática legível. Toque, mouse e teclado controlam as mesmas decisões.",
-      noteTitle: "Informações do jogador, dispositivo e salvamento", parent: "Melhores resultados e som ficam neste navegador. Não é preciso conta, compra, nuvem ou partida online; limpar os dados do site pode remover o resultado local.",
-      faq: [["O que significa a bola destacada?", "Ela mostra a faixa-alvo do rali atual."], ["Como ganho um rali?", "Coloque a raquete sob a bola destacada e pressione Sacar."], ["O que acontece se eu errar o saque?", "O rali termina sem ponto e o próximo alvo aparece."], ["A Dica joga por mim?", "Não. Ela repete o alvo, mas você alinha e saca."], ["O progresso é salvo?", "Melhores resultados e preferências ficam somente neste navegador."]],
-    }),
-    fr: guide({
-      title: "Pong", intro: "Pong est un match court de cinq échanges : lisez la voie de la balle en surbrillance, placez la raquette dessous et choisissez quand servir.",
-      gameplay: "Match arcade volontaire en cinq échanges", genre: ["Classique", "Arcade", "Action"], difficulty: "Facile à apprendre, précis à maîtriser", time: "2–5 minutes",
-      story: ["C’est un exercice court de raquette et de cible, pas une boucle arcade sans fin. Chaque échange montre une voie visible et demande une décision d’alignement claire.", "Un match complet compte cinq échanges. Une victoire ajoute un point ; un échec termine l’échange sans danger et affiche la cible suivante, pour une partie lisible et rejouable."],
-      systems: ["La balle en surbrillance indique la voie cible de l’échange. Gauche et Droite déplacent la raquette, puis Servir valide l’échange.", "Une raquette alignée sous la balle gagne l’échange et ajoute un point. Un raté ne rapporte rien, mais le match continue.", "Indice répète la cible sans bouger à votre place. Résultat affiche score et mouvements et propose une revanche plus propre."],
-      how: ["Commencez le match et lisez la voie de la balle en surbrillance.", "Utilisez Gauche et Droite pour placer la raquette sous la cible.", "Une fois aligné, appuyez une fois sur Servir ; un service valide un échange.", "Lisez la cible suivante et répétez jusqu’aux cinq échanges.", "Consultez Résultat, rejouez pour améliorer le match ou revenez à l’accueil."],
-      strategyTips: ["Déplacez-vous seulement autant que nécessaire avant de servir ; les mouvements en trop comptent.", "Utilisez Indice pour reformuler la cible, puis gardez la décision finale.", "Après un raté, lisez la voie suivante au lieu de répéter l’ancienne position.", "Comparez Score et Mouvements dans Résultat pour créer un défi de revanche."],
-      progression: ["Le premier match enseigne le rythme alignement-service. Les suivants gardent cinq échanges, mais récompensent la précision, moins de mouvements et cinq points sans faute."],
-      designNote: "Pong associe voie visible, service choisi par le joueur, raté sans danger et objectif court de Résultat pour faire d’un classique arcade un exercice lisible. Le toucher, la souris et le clavier utilisent les mêmes décisions.",
-      noteTitle: "Informations joueur, appareil et sauvegarde", parent: "Les meilleurs résultats et le son restent dans ce navigateur. Aucun compte, achat, cloud ou match en ligne n’est nécessaire ; effacer les données du site peut supprimer le résultat local.",
-      faq: [["Que signifie la balle en surbrillance ?", "Elle indique la voie cible de l’échange actuel."], ["Comment gagner un échange ?", "Placez la raquette sous la balle en surbrillance et appuyez sur Servir."], ["Que se passe-t-il après un service raté ?", "L’échange se termine sans point et la cible suivante apparaît."], ["Indice joue-t-il à ma place ?", "Non. Il énonce la cible, mais vous alignez et servez."], ["La progression est-elle sauvegardée ?", "Les meilleurs résultats et préférences sont conservés uniquement dans ce navigateur."]],
-    }),
-    de: guide({
-      title: "Pong", intro: "Pong ist ein kurzes Match mit fünf Ballwechseln: Lies die markierte Ballbahn, stelle den Schläger darunter und entscheide, wann du aufschlägst.",
-      gameplay: "Bewusstes Arcade-Match mit fünf Ballwechseln", genre: ["Klassik", "Arcade", "Action"], difficulty: "Leicht zu lernen, sauber schwer zu meistern", time: "2–5 Minuten",
-      story: ["Das ist eine kurze Übung mit Schläger und Ziel, keine endlose Arcade-Schleife. Jeder Ballwechsel zeigt eine sichtbare Bahn und verlangt eine klare Ausrichtungsentscheidung.", "Ein Match hat fünf Ballwechsel. Ein Sieg bringt einen Punkt; ein Fehlschlag beendet den Ballwechsel sicher und zeigt das nächste Ziel, sodass die Runde verständlich und wiederholbar bleibt."],
-      systems: ["Der markierte Ball zeigt die Zielbahn des aktuellen Ballwechsels. Links und Rechts bewegen den Schläger, Aufschlag entscheidet den Ballwechsel.", "Steht der Schläger unter dem Ball, gewinnst du den Ballwechsel und erhältst einen Punkt. Ein Fehlschlag gibt keinen Punkt, aber das Match geht weiter.", "Tipp wiederholt das Ziel, bewegt aber nicht für dich. Ergebnis zeigt Punkte und Züge und gibt ein saubereres Rückspielziel."],
-      how: ["Starte das Match und lies die Bahn des markierten Balls.", "Nutze Links und Rechts, um den Schläger unter das Ziel zu stellen.", "Wenn du ausgerichtet bist, drücke einmal Aufschlag; ein Aufschlag entscheidet einen Ballwechsel.", "Lies das nächste Ziel und wiederhole dies bis zu fünf Ballwechseln.", "Prüfe Ergebnis, spiele für ein saubereres Match erneut oder kehre zum Hauptmenü zurück."],
-      strategyTips: ["Bewege dich vor dem Aufschlag nur so weit wie nötig; zusätzliche Züge zählen zum Ergebnisziel.", "Nutze Tipp für eine klare Ansage, aber triff die letzte Ausrichtungsentscheidung selbst.", "Lies nach einem Fehlschlag die nächste Bahn, statt die alte Position zu wiederholen.", "Vergleiche Punkte und Züge im Ergebnis und mache daraus eine kleine Rückspielaufgabe."],
-      progression: ["Das erste Match lehrt den Rhythmus aus Ausrichten und Aufschlag. Später bleiben es fünf Ballwechsel, aber Genauigkeit, wenige Züge und fünf Punkte werden zum Meisterschaftsziel."],
-      designNote: "Pong verbindet sichtbare Bahnen, einen vom Spieler gewählten Aufschlag, sichere Fehlschläge und ein kurzes Ergebnisziel zu einer verständlichen Übung aus einem Arcade-Klassiker. Touch, Maus und Tastatur steuern dieselben Entscheidungen.",
-      noteTitle: "Spieler-, Geräte- und Speicherinformationen", parent: "Bestwerte und Soundeinstellung bleiben in diesem Browser. Konto, Kauf, Cloud-Speicher oder Online-Match sind nicht nötig; das Löschen der Websitedaten kann das lokale Ergebnis entfernen.",
-      faq: [["Was bedeutet der markierte Ball?", "Er zeigt die Zielbahn des aktuellen Ballwechsels."], ["Wie gewinne ich einen Ballwechsel?", "Stelle den Schläger unter den markierten Ball und drücke Aufschlag."], ["Was passiert nach einem Fehlaufschlag?", "Der Ballwechsel endet ohne Punkt und das nächste Ziel erscheint."], ["Spielt Tipp für mich?", "Nein. Er nennt das Ziel, aber du richtest aus und schlägst auf."], ["Wird der Fortschritt gespeichert?", "Bestwerte und Einstellungen werden nur in diesem Browser gespeichert."]],
-    }),
-    it: guide({
-      title: "Pong", intro: "Pong è una partita breve di cinque scambi: leggi la corsia della pallina evidenziata, posiziona la racchetta sotto e scegli quando servire.",
-      gameplay: "Partita arcade intenzionale da cinque scambi", genre: ["Classico", "Arcade", "Azione"], difficulty: "Facile da imparare, precisa da perfezionare", time: "2–5 minuti",
-      story: ["È un esercizio breve con racchetta e obiettivo, non un ciclo arcade infinito. Ogni scambio mostra una corsia visibile e richiede una decisione chiara di allineamento.", "Una partita completa ha cinque scambi. Una vittoria aggiunge un punto; un errore chiude lo scambio senza penalità ulteriore e mostra il prossimo obiettivo, così la sessione resta leggibile e ripetibile."],
-      systems: ["La pallina evidenziata mostra la corsia obiettivo dello scambio. Sinistra e Destra muovono la racchetta, mentre Servi chiude lo scambio.", "Con la racchetta sotto la pallina vinci lo scambio e aggiungi un punto. Un errore non dà punti, ma la partita continua.", "Suggerimento ripete l’obiettivo senza muovere per te. Risultato mostra punti e mosse e propone una rivincita più pulita."],
-      how: ["Inizia la partita e leggi la corsia della pallina evidenziata.", "Usa Sinistra e Destra per mettere la racchetta sotto l’obiettivo.", "Quando sei allineato, premi Servi una volta; ogni servizio chiude uno scambio.", "Leggi il prossimo obiettivo e ripeti fino a cinque scambi.", "Controlla il Risultato, rigioca per migliorare o torna al menu principale."],
-      strategyTips: ["Muoviti solo quanto serve prima di servire; le mosse extra contano nell’obiettivo.", "Usa Suggerimento per ripetere l’obiettivo, ma prendi tu la decisione finale.", "Dopo un errore, leggi la corsia successiva invece di ripetere la posizione precedente.", "Confronta Punti e Mosse nel Risultato per trasformare la partita in una sfida di replay."],
-      progression: ["La prima partita insegna il ritmo allineamento-servizio. Le successive mantengono cinque scambi, ma premiano precisione, meno mosse e cinque punti senza errori."],
-      designNote: "Pong unisce corsie visibili, servizio scelto dal giocatore, errori sicuri e un obiettivo breve nel Risultato per trasformare un classico arcade in un esercizio leggibile. Tocco, mouse e tastiera usano le stesse decisioni.",
-      noteTitle: "Informazioni su giocatore, dispositivo e salvataggio", parent: "Migliori risultati e audio restano in questo browser. Non servono account, acquisti, cloud o partite online; cancellare i dati del sito può rimuovere il risultato locale.",
-      faq: [["Cosa indica la pallina evidenziata?", "La corsia obiettivo dello scambio attuale."], ["Come vinco uno scambio?", "Metti la racchetta sotto la pallina evidenziata e premi Servi."], ["Cosa succede dopo un servizio mancato?", "Lo scambio finisce senza punto e appare il prossimo obiettivo."], ["Suggerimento gioca al posto mio?", "No. Dice l’obiettivo, ma allineamento e servizio restano tuoi."], ["I progressi vengono salvati?", "Migliori risultati e impostazioni restano solo in questo browser."]],
-    }),
-    ru: guide({
-      title: "Понг", intro: "Понг — короткий матч из пяти розыгрышей: прочитайте дорожку подсвеченного мяча, поставьте ракетку под неё и выберите момент подачи.",
-      gameplay: "Осознанный аркадный матч из пяти розыгрышей", genre: ["Классика", "Аркада", "Экшен"], difficulty: "Легко начать, точность требует практики", time: "2–5 минут",
-      story: ["Это короткая тренировка с ракеткой и целью, а не бесконечный аркадный цикл. Каждый розыгрыш показывает видимую дорожку и просит принять понятное решение о выравнивании.", "Полный матч состоит из пяти розыгрышей. Победа даёт очко; промах безопасно завершает розыгрыш и показывает следующую цель, поэтому игру легко понять и повторить."],
-      systems: ["Подсвеченный мяч показывает целевую дорожку текущего розыгрыша. Кнопки влево и вправо двигают ракетку, а Подача завершает розыгрыш.", "Если ракетка под мячом, вы выигрываете розыгрыш и получаете очко. Промах не даёт очка, но матч продолжается.", "Подсказка повторяет цель, но не двигает ракетку за вас. Результат показывает очки и ходы и предлагает более чистую новую попытку."],
-      how: ["Начните матч и прочитайте дорожку подсвеченного мяча.", "Кнопками влево и вправо поставьте ракетку под цель.", "Когда выровнялись, нажмите Подача один раз; одна подача завершает один розыгрыш.", "Прочитайте следующую цель и повторяйте до пяти розыгрышей.", "Откройте Результат, сыграйте снова для улучшения или вернитесь в меню."],
-      strategyTips: ["До подачи двигайте ракетку только на нужное расстояние; лишние ходы входят в цель результата.", "Используйте Подсказку для уточнения цели, но последнее решение принимайте сами.", "После промаха читайте новую дорожку, а не повторяйте старую позицию.", "Сравнивайте очки и ходы в Результате, превращая матч в задачу для повторной попытки."],
-      progression: ["Первый матч учит ритму выравнивания и подачи. В следующих остаются пять розыгрышей, но точность, малое число ходов и пять очков становятся целью мастерства."],
-      designNote: "Понг объединяет видимые дорожки, подачу по решению игрока, безопасные промахи и короткую цель результата, превращая аркадную классику в понятную тренировку. Сенсорный ввод, мышь и клавиатура управляют теми же решениями.",
-      noteTitle: "Сведения об игроке, устройстве и сохранении", parent: "Лучшие результаты и звук сохраняются в этом браузере. Аккаунт, покупка, облако или онлайн-матч не нужны; очистка данных сайта может удалить локальный результат.",
-      faq: [["Что означает подсвеченный мяч?", "Он показывает целевую дорожку текущего розыгрыша."], ["Как выиграть розыгрыш?", "Поставьте ракетку под подсвеченный мяч и нажмите Подача."], ["Что будет после промаха подачи?", "Розыгрыш завершится без очка, появится следующая цель."], ["Подсказка играет за меня?", "Нет. Она называет цель, но выравнивание и подача остаются за вами."], ["Сохраняется ли прогресс?", "Лучшие результаты и настройки сохраняются только в этом браузере."]],
-    }),
-    hi: guide({
-      title: "पोंग", intro: "पोंग पाँच रैलियों का छोटा मैच है: हाइलाइट की गई गेंद की लेन पढ़ें, पैडल को उसके नीचे रखें और सर्व करने का समय चुनें।",
-      gameplay: "सोच-समझकर खेला जाने वाला पाँच-रैली आर्केड मैच", genre: ["क्लासिक", "आर्केड", "एक्शन"], difficulty: "सीखना आसान, साफ खेलना चुनौतीपूर्ण", time: "2–5 मिनट",
-      story: ["यह पैडल और लक्ष्य का छोटा अभ्यास है, अंतहीन आर्केड चक्र नहीं। हर रैली एक दिखती हुई गेंद-लेन देती है और स्पष्ट संरेखण निर्णय मांगती है।", "एक पूरा मैच पाँच रैलियों का है। जीतने पर अंक मिलता है; चूकने पर रैली सुरक्षित रूप से समाप्त होकर अगला लक्ष्य दिखाती है, इसलिए खेल समझने और दोहराने में आसान है।"],
-      systems: ["हाइलाइट की गई गेंद वर्तमान रैली की लक्ष्य लेन दिखाती है। बाएँ और दाएँ पैडल चलाते हैं, और सर्व रैली तय करता है।", "पैडल गेंद के नीचे हो तो रैली जीतकर एक अंक मिलता है। चूक पर अंक नहीं मिलता, लेकिन मैच जारी रहता है।", "संकेत लक्ष्य दोहराता है, आपके लिए पैडल नहीं चलाता। परिणाम में अंक और चालें दिखती हैं और बेहतर रीमैच लक्ष्य मिलता है।"],
-      how: ["मैच शुरू करें और हाइलाइट की गई गेंद की लेन पढ़ें।", "बाएँ और दाएँ से पैडल को लक्ष्य के नीचे रखें।", "संरेखित होने पर एक बार सर्व दबाएँ; एक सर्व एक रैली तय करता है।", "अगला लक्ष्य पढ़ें और पाँच रैलियाँ पूरी होने तक दोहराएँ।", "परिणाम देखें, बेहतर मैच के लिए फिर खेलें या मुख्य पृष्ठ पर लौटें।"],
-      strategyTips: ["सर्व से पहले जितना जरूरी हो उतना ही चलें; अतिरिक्त चालें परिणाम लक्ष्य में गिनी जाती हैं।", "लक्ष्य दोहराने के लिए संकेत लें, लेकिन अंतिम संरेखण निर्णय खुद करें।", "चूक के बाद अगली लेन पढ़ें, पिछली स्थिति दोहराते न रहें।", "परिणाम में अंक और चालें तुलना करके पूरे मैच को रीप्ले चुनौती बनाएं।"],
-      progression: ["पहला मैच संरेखण और सर्व की लय सिखाता है। आगे भी पाँच रैलियाँ रहती हैं, लेकिन सटीक स्थिति, कम चालें और पाँच अंक अभ्यास का लक्ष्य बनते हैं।"],
-      designNote: "पोंग दिखती लेन, खिलाड़ी द्वारा चुना गया सर्व, सुरक्षित चूक और छोटा परिणाम लक्ष्य जोड़ता है, जिससे आर्केड क्लासिक एक पढ़ने योग्य अभ्यास बनता है। टच, माउस और कीबोर्ड समान निर्णय चलाते हैं।",
-      noteTitle: "खिलाड़ी, डिवाइस और सेव जानकारी", parent: "सर्वश्रेष्ठ परिणाम और ध्वनि पसंद इसी ब्राउज़र में रहती हैं। खाते, खरीद, क्लाउड सेव या ऑनलाइन मैच की जरूरत नहीं; साइट डेटा मिटाने पर स्थानीय परिणाम हट सकता है।",
-      faq: [["हाइलाइट की गई गेंद क्या बताती है?", "यह वर्तमान रैली की लक्ष्य लेन दिखाती है।"], ["रैली कैसे जीतें?", "पैडल को हाइलाइट गेंद के नीचे रखें और सर्व दबाएँ।"], ["सर्व चूकने पर क्या होता है?", "रैली बिना अंक के समाप्त होती है और अगला लक्ष्य आता है।"], ["क्या संकेत मेरी जगह खेलता है?", "नहीं। वह लक्ष्य बताता है, संरेखण और सर्व आपको करना है।"], ["क्या प्रगति सहेजी जाती है?", "सर्वश्रेष्ठ परिणाम और सेटिंग केवल इसी ब्राउज़र में रहती हैं।"]],
-    }),
-    ar: guide({
-      title: "بونغ", intro: "بونغ مباراة قصيرة من خمسة تبادلات: اقرأ مسار الكرة المميزة، ضع المضرب أسفلها واختر وقت الإرسال.",
-      gameplay: "مباراة أركيد واعية من خمسة تبادلات", genre: ["كلاسيكية", "أركيد", "حركة"], difficulty: "سهلة التعلم وتتحدى الدقة", time: "2–5 دقائق",
-      story: ["هذه لعبة قصيرة للتدرب على المضرب والهدف، وليست حلقة أركيد لا تنتهي. يعرض كل تبادل مسار كرة واضحاً ويطلب قرار محاذاة مفهوم.", "تتكون المباراة الكاملة من خمسة تبادلات. يضيف الفوز نقطة؛ أما الخطأ فيُنهي التبادل بأمان ويعرض الهدف التالي، فتظل الجلسة واضحة وقابلة للإعادة."],
-      systems: ["توضح الكرة المميزة مسار الهدف في التبادل الحالي. يحرك اليسار واليمين المضرب، ويثبت الإرسال نتيجة التبادل.", "إذا كان المضرب تحت الكرة تفوز بالتبادل وتحصل على نقطة. لا يمنح الخطأ نقطة، لكن المباراة تستمر.", "يعيد التلميح صياغة الهدف من دون تحريك المضرب نيابة عنك. تعرض النتيجة النقاط والحركات وتقترح هدف إعادة أنظف."],
-      how: ["ابدأ المباراة واقرأ مسار الكرة المميزة.", "استخدم اليسار واليمين لوضع المضرب أسفل الهدف.", "بعد المحاذاة اضغط الإرسال مرة واحدة؛ كل إرسال يحسم تبادلاً واحداً.", "اقرأ الهدف التالي وكرر حتى تكتمل التبادلات الخمسة.", "راجع النتيجة والعب مرة أخرى لتحسين المباراة أو عد إلى الرئيسية."],
-      strategyTips: ["حرّك المضرب بالقدر اللازم فقط قبل الإرسال؛ تُحسب الحركات الإضافية في هدف النتيجة.", "استخدم التلميح لتوضيح الهدف، لكن اتخذ قرار المحاذاة الأخير بنفسك.", "بعد الخطأ اقرأ المسار التالي بدلاً من تكرار الموضع السابق.", "قارن النقاط والحركات في النتيجة لتحويل المباراة إلى تحدٍ لإعادة اللعب."],
-      progression: ["تعلمك المباراة الأولى إيقاع المحاذاة والإرسال. تبقى الإعادات من خمسة تبادلات، لكن الدقة والحركات القليلة والفوز بخمس نقاط تصبح هدف الإتقان."],
-      designNote: "يجمع بونغ بين المسار المرئي والإرسال الذي يقرره اللاعب والأخطاء الآمنة وهدف النتيجة القصير لتحويل كلاسيكية الأركيد إلى تمرين واضح. يصل اللمس والفأرة ولوحة المفاتيح إلى القرارات نفسها.",
-      noteTitle: "معلومات اللاعب والجهاز والحفظ", parent: "تبقى أفضل النتائج وتفضيل الصوت في هذا المتصفح. لا يلزم حساب أو شراء أو حفظ سحابي أو مباراة عبر الإنترنت؛ وقد يؤدي مسح بيانات الموقع إلى حذف النتيجة المحلية.",
-      faq: [["ماذا تعني الكرة المميزة؟", "توضح مسار الهدف في التبادل الحالي."], ["كيف أفوز بالتبادل؟", "ضع المضرب أسفل الكرة المميزة واضغط الإرسال."], ["ماذا يحدث بعد إرسال غير موفق؟", "ينتهي التبادل من دون نقطة ويظهر الهدف التالي."], ["هل يلعب التلميح بدلاً مني؟", "لا. يذكر الهدف، لكنك تنفذ المحاذاة والإرسال."], ["هل يُحفظ التقدم؟", "تُحفظ أفضل النتائج والإعدادات في هذا المتصفح فقط."]],
-    }),
-  };
+  "en": {
+    "title": "Pong",
+    "intro": "Move your paddle, return the ball, and beat the computer to 7 points.",
+    "gameplay": "Move your paddle, return the ball, and beat the computer to 7 points.",
+    "genre": [],
+    "difficulty": "Practice / Club / Expert",
+    "story": [
+      "You control the mint paddle at the bottom. Press Serve."
+    ],
+    "systems": [
+      "Drag across the court, move your mouse, or hold ← / → (A / D). Return the moving ball; missing your end gives your opponent one point. First to 7 wins."
+    ],
+    "how": [
+      "Drag across the court, move your mouse, or hold ← / → (A / D). Return the moving ball; missing your end gives your opponent one point. First to 7 wins.",
+      "The centre of your paddle returns straight shots. Hit near the edges to angle the ball past the opponent. Space serves or pauses."
+    ],
+    "strategyTips": [
+      "The centre of your paddle returns straight shots. Hit near the edges to angle the ball past the opponent. Space serves or pauses."
+    ],
+    "progression": [
+      "Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign."
+    ],
+    "designNote": "Follow the ball. Move left or right to return it.",
+    "noteTitle": "Guide",
+    "parent": "Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign.",
+    "faq": [
+      [
+        "Guide",
+        "Drag across the court, move your mouse, or hold ← / → (A / D). Return the moving ball; missing your end gives your opponent one point. First to 7 wins."
+      ],
+      [
+        "Opponent",
+        "Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "zh-Hant": {
+    "title": "乒乓球",
+    "intro": "左右移動球拍接球，比電腦先拿到 7 分。",
+    "gameplay": "左右移動球拍接球，比電腦先拿到 7 分。",
+    "genre": [],
+    "difficulty": "練習 / 俱樂部 / 高手",
+    "story": [
+      "你控制下方綠色球拍。按「發球」開始。"
+    ],
+    "systems": [
+      "在球場左右拖曳、移動滑鼠，或按住 ←／→（A／D）移動球拍。球漏出哪一方的底線，另一方就得 1 分；先到 7 分獲勝。"
+    ],
+    "how": [
+      "在球場左右拖曳、移動滑鼠，或按住 ←／→（A／D）移動球拍。球漏出哪一方的底線，另一方就得 1 分；先到 7 分獲勝。",
+      "用球拍中央接球，回球較直；用邊緣接球，球會斜飛，讓對手來不及接。空白鍵可發球或暫停。"
+    ],
+    "strategyTips": [
+      "用球拍中央接球，回球較直；用邊緣接球，球會斜飛，讓對手來不及接。空白鍵可發球或暫停。"
+    ],
+    "progression": [
+      "各對手的勝場儲存在本機。練習、俱樂部、高手是對戰難度，不是關卡戰役。"
+    ],
+    "designNote": "看球的落點，左右移動接回去。",
+    "noteTitle": "指南",
+    "parent": "各對手的勝場儲存在本機。練習、俱樂部、高手是對戰難度，不是關卡戰役。",
+    "faq": [
+      [
+        "指南",
+        "在球場左右拖曳、移動滑鼠，或按住 ←／→（A／D）移動球拍。球漏出哪一方的底線，另一方就得 1 分；先到 7 分獲勝。"
+      ],
+      [
+        "對手",
+        "各對手的勝場儲存在本機。練習、俱樂部、高手是對戰難度，不是關卡戰役。"
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "zh-Hans": {
+    "title": "乒乓球",
+    "intro": "左右移动球拍接球，比电脑先拿到 7 分。",
+    "gameplay": "左右移动球拍接球，比电脑先拿到 7 分。",
+    "genre": [],
+    "difficulty": "练习 / 俱乐部 / 高手",
+    "story": [
+      "你控制下方绿色球拍。按“发球”开始。"
+    ],
+    "systems": [
+      "在球场左右拖曳、移动鼠标，或按住 ←／→（A／D）移动球拍。球漏出哪一方的底线，另一方就得 1 分；先到 7 分获胜。"
+    ],
+    "how": [
+      "在球场左右拖曳、移动鼠标，或按住 ←／→（A／D）移动球拍。球漏出哪一方的底线，另一方就得 1 分；先到 7 分获胜。",
+      "用球拍中央接球，回球较直；用边缘接球，球会斜飞，让对手来不及接。空格键可发球或暂停。"
+    ],
+    "strategyTips": [
+      "用球拍中央接球，回球较直；用边缘接球，球会斜飞，让对手来不及接。空格键可发球或暂停。"
+    ],
+    "progression": [
+      "各对手的胜场保存在本机。练习、俱乐部、高手是对战难度，不是关卡战役。"
+    ],
+    "designNote": "看球的落点，左右移动接回去。",
+    "noteTitle": "指南",
+    "parent": "各对手的胜场保存在本机。练习、俱乐部、高手是对战难度，不是关卡战役。",
+    "faq": [
+      [
+        "指南",
+        "在球场左右拖曳、移动鼠标，或按住 ←／→（A／D）移动球拍。球漏出哪一方的底线，另一方就得 1 分；先到 7 分获胜。"
+      ],
+      [
+        "对手",
+        "各对手的胜场保存在本机。练习、俱乐部、高手是对战难度，不是关卡战役。"
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "ja": {
+    "title": "卓球",
+    "intro": "ラケットを動かして打ち返し、先に7点を取りましょう。",
+    "gameplay": "ラケットを動かして打ち返し、先に7点を取りましょう。",
+    "genre": [],
+    "difficulty": "練習 / クラブ / 上級",
+    "story": [
+      "下の緑色のラケットを操作します。サーブで開始。"
+    ],
+    "systems": [
+      "コートをドラッグ、マウス移動、または ← / →（A / D）長押しで操作。自分の底線を抜かれると相手に1点。先に7点で勝利。"
+    ],
+    "how": [
+      "コートをドラッグ、マウス移動、または ← / →（A / D）長押しで操作。自分の底線を抜かれると相手に1点。先に7点で勝利。",
+      "中央で受けるとまっすぐ、端で受けると斜めに返ります。スペースでサーブまたは一時停止。"
+    ],
+    "strategyTips": [
+      "中央で受けるとまっすぐ、端で受けると斜めに返ります。スペースでサーブまたは一時停止。"
+    ],
+    "progression": [
+      "相手ごとの勝利数を端末に保存します。3種類は対戦難度で、ステージ制ではありません。"
+    ],
+    "designNote": "ボールの落下位置に合わせて左右に動きましょう。",
+    "noteTitle": "ガイド",
+    "parent": "相手ごとの勝利数を端末に保存します。3種類は対戦難度で、ステージ制ではありません。",
+    "faq": [
+      [
+        "ガイド",
+        "コートをドラッグ、マウス移動、または ← / →（A / D）長押しで操作。自分の底線を抜かれると相手に1点。先に7点で勝利。"
+      ],
+      [
+        "対戦相手",
+        "相手ごとの勝利数を端末に保存します。3種類は対戦難度で、ステージ制ではありません。"
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "ko": {
+    "title": "퐁",
+    "intro": "패들을 움직여 공을 받아치고 먼저 7점을 얻으세요.",
+    "gameplay": "패들을 움직여 공을 받아치고 먼저 7점을 얻으세요.",
+    "genre": [],
+    "difficulty": "연습 / 클럽 / 고수",
+    "story": [
+      "아래 초록색 패들이 내 패들입니다. 서브를 누르세요."
+    ],
+    "systems": [
+      "코트를 드래그하거나 마우스를 움직이거나 ← / → (A / D)를 누르세요. 공이 자기 쪽 끝을 지나면 상대가 1점. 먼저 7점을 얻으면 승리합니다."
+    ],
+    "how": [
+      "코트를 드래그하거나 마우스를 움직이거나 ← / → (A / D)를 누르세요. 공이 자기 쪽 끝을 지나면 상대가 1점. 먼저 7점을 얻으면 승리합니다.",
+      "패들 중앙은 곧은 공, 가장자리는 비스듬한 공을 만듭니다. 스페이스로 서브하거나 일시 정지하세요."
+    ],
+    "strategyTips": [
+      "패들 중앙은 곧은 공, 가장자리는 비스듬한 공을 만듭니다. 스페이스로 서브하거나 일시 정지하세요."
+    ],
+    "progression": [
+      "상대별 승리 수는 이 기기에 저장됩니다. 세 가지 대전 난도이며 스테이지 캠페인이 아닙니다."
+    ],
+    "designNote": "공이 올 위치로 좌우로 움직이세요.",
+    "noteTitle": "가이드",
+    "parent": "상대별 승리 수는 이 기기에 저장됩니다. 세 가지 대전 난도이며 스테이지 캠페인이 아닙니다.",
+    "faq": [
+      [
+        "가이드",
+        "코트를 드래그하거나 마우스를 움직이거나 ← / → (A / D)를 누르세요. 공이 자기 쪽 끝을 지나면 상대가 1점. 먼저 7점을 얻으면 승리합니다."
+      ],
+      [
+        "상대",
+        "상대별 승리 수는 이 기기에 저장됩니다. 세 가지 대전 난도이며 스테이지 캠페인이 아닙니다."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "es": {
+    "title": "Pong",
+    "intro": "Mueve la pala, devuelve la pelota y llega antes a 7 puntos.",
+    "gameplay": "Mueve la pala, devuelve la pelota y llega antes a 7 puntos.",
+    "genre": [],
+    "difficulty": "Práctica / Club / Experto",
+    "story": [
+      "Controlas la pala verde de abajo. Pulsa Sacar."
+    ],
+    "systems": [
+      "Arrastra en la pista, mueve el ratón o mantén ← / → (A / D). Si la pelota sale por tu fondo, el rival gana un punto. Gana quien llega a 7."
+    ],
+    "how": [
+      "Arrastra en la pista, mueve el ratón o mantén ← / → (A / D). Si la pelota sale por tu fondo, el rival gana un punto. Gana quien llega a 7.",
+      "El centro devuelve recto; los bordes cambian el ángulo. Espacio sirve o pausa."
+    ],
+    "strategyTips": [
+      "El centro devuelve recto; los bordes cambian el ángulo. Espacio sirve o pausa."
+    ],
+    "progression": [
+      "Las victorias por rival se guardan en este dispositivo. Son tres dificultades de partido, no una campaña de niveles."
+    ],
+    "designNote": "Muévete hacia donde llegará la pelota.",
+    "noteTitle": "Guía",
+    "parent": "Las victorias por rival se guardan en este dispositivo. Son tres dificultades de partido, no una campaña de niveles.",
+    "faq": [
+      [
+        "Guía",
+        "Arrastra en la pista, mueve el ratón o mantén ← / → (A / D). Si la pelota sale por tu fondo, el rival gana un punto. Gana quien llega a 7."
+      ],
+      [
+        "Rival",
+        "Las victorias por rival se guardan en este dispositivo. Son tres dificultades de partido, no una campaña de niveles."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "pt-BR": {
+    "title": "Pong",
+    "intro": "Mova a raquete, devolva a bola e chegue primeiro a 7 pontos.",
+    "gameplay": "Mova a raquete, devolva a bola e chegue primeiro a 7 pontos.",
+    "genre": [],
+    "difficulty": "Treino / Clube / Especialista",
+    "story": [
+      "Você controla a raquete verde de baixo. Toque em Sacar."
+    ],
+    "systems": [
+      "Arraste na quadra, mova o mouse ou segure ← / → (A / D). Se a bola passar pelo seu fundo, o rival ganha um ponto. Vence quem chegar a 7."
+    ],
+    "how": [
+      "Arraste na quadra, mova o mouse ou segure ← / → (A / D). Se a bola passar pelo seu fundo, o rival ganha um ponto. Vence quem chegar a 7.",
+      "O centro devolve reto; as bordas mudam o ângulo. Espaço saca ou pausa."
+    ],
+    "strategyTips": [
+      "O centro devolve reto; as bordas mudam o ângulo. Espaço saca ou pausa."
+    ],
+    "progression": [
+      "As vitórias por rival ficam neste dispositivo. São três dificuldades de partida, não uma campanha de fases."
+    ],
+    "designNote": "Mova-se para onde a bola vai chegar.",
+    "noteTitle": "Guia",
+    "parent": "As vitórias por rival ficam neste dispositivo. São três dificuldades de partida, não uma campanha de fases.",
+    "faq": [
+      [
+        "Guia",
+        "Arraste na quadra, mova o mouse ou segure ← / → (A / D). Se a bola passar pelo seu fundo, o rival ganha um ponto. Vence quem chegar a 7."
+      ],
+      [
+        "Rival",
+        "As vitórias por rival ficam neste dispositivo. São três dificuldades de partida, não uma campanha de fases."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "fr": {
+    "title": "Pong",
+    "intro": "Déplacez la raquette, renvoyez la balle et atteignez 7 points en premier.",
+    "gameplay": "Déplacez la raquette, renvoyez la balle et atteignez 7 points en premier.",
+    "genre": [],
+    "difficulty": "Entraînement / Club / Expert",
+    "story": [
+      "Vous contrôlez la raquette verte du bas. Appuyez sur Servir."
+    ],
+    "systems": [
+      "Glissez sur le terrain, déplacez la souris ou maintenez ← / → (A / D). Une balle passée derrière votre ligne donne un point au rival. Le premier à 7 gagne."
+    ],
+    "how": [
+      "Glissez sur le terrain, déplacez la souris ou maintenez ← / → (A / D). Une balle passée derrière votre ligne donne un point au rival. Le premier à 7 gagne.",
+      "Le centre renvoie droit ; les bords donnent un angle. Espace sert ou met en pause."
+    ],
+    "strategyTips": [
+      "Le centre renvoie droit ; les bords donnent un angle. Espace sert ou met en pause."
+    ],
+    "progression": [
+      "Les victoires par adversaire sont enregistrées sur cet appareil. Ce sont trois difficultés, pas une campagne de niveaux."
+    ],
+    "designNote": "Placez-vous là où la balle va arriver.",
+    "noteTitle": "Guide",
+    "parent": "Les victoires par adversaire sont enregistrées sur cet appareil. Ce sont trois difficultés, pas une campagne de niveaux.",
+    "faq": [
+      [
+        "Guide",
+        "Glissez sur le terrain, déplacez la souris ou maintenez ← / → (A / D). Une balle passée derrière votre ligne donne un point au rival. Le premier à 7 gagne."
+      ],
+      [
+        "Adversaire",
+        "Les victoires par adversaire sont enregistrées sur cet appareil. Ce sont trois difficultés, pas une campagne de niveaux."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "de": {
+    "title": "Pong",
+    "intro": "Bewege den Schläger, spiele zurück und erreiche zuerst 7 Punkte.",
+    "gameplay": "Bewege den Schläger, spiele zurück und erreiche zuerst 7 Punkte.",
+    "genre": [],
+    "difficulty": "Übung / Club / Experte",
+    "story": [
+      "Du steuerst den grünen Schläger unten. Drücke Aufschlag."
+    ],
+    "systems": [
+      "Ziehe im Spielfeld, bewege die Maus oder halte ← / → (A / D). Verpasst du den Ball an deiner Grundlinie, bekommt der Gegner einen Punkt. Wer zuerst 7 erreicht, gewinnt."
+    ],
+    "how": [
+      "Ziehe im Spielfeld, bewege die Maus oder halte ← / → (A / D). Verpasst du den Ball an deiner Grundlinie, bekommt der Gegner einen Punkt. Wer zuerst 7 erreicht, gewinnt.",
+      "Die Mitte spielt gerade zurück, die Kanten erzeugen Winkel. Leertaste schlägt auf oder pausiert."
+    ],
+    "strategyTips": [
+      "Die Mitte spielt gerade zurück, die Kanten erzeugen Winkel. Leertaste schlägt auf oder pausiert."
+    ],
+    "progression": [
+      "Siege je Gegner werden auf diesem Gerät gespeichert. Es gibt drei Spielstärken, keine Levelkampagne."
+    ],
+    "designNote": "Bewege dich dorthin, wo der Ball ankommt.",
+    "noteTitle": "Anleitung",
+    "parent": "Siege je Gegner werden auf diesem Gerät gespeichert. Es gibt drei Spielstärken, keine Levelkampagne.",
+    "faq": [
+      [
+        "Anleitung",
+        "Ziehe im Spielfeld, bewege die Maus oder halte ← / → (A / D). Verpasst du den Ball an deiner Grundlinie, bekommt der Gegner einen Punkt. Wer zuerst 7 erreicht, gewinnt."
+      ],
+      [
+        "Gegner",
+        "Siege je Gegner werden auf diesem Gerät gespeichert. Es gibt drei Spielstärken, keine Levelkampagne."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "it": {
+    "title": "Pong",
+    "intro": "Muovi la racchetta, rimanda la pallina e arriva per primo a 7 punti.",
+    "gameplay": "Muovi la racchetta, rimanda la pallina e arriva per primo a 7 punti.",
+    "genre": [],
+    "difficulty": "Pratica / Club / Esperto",
+    "story": [
+      "Controlli la racchetta verde in basso. Premi Servi."
+    ],
+    "systems": [
+      "Trascina sul campo, muovi il mouse o tieni ← / → (A / D). Se la pallina supera il tuo fondo, il rivale segna un punto. Vince chi arriva a 7."
+    ],
+    "how": [
+      "Trascina sul campo, muovi il mouse o tieni ← / → (A / D). Se la pallina supera il tuo fondo, il rivale segna un punto. Vince chi arriva a 7.",
+      "Il centro rimanda dritto; i bordi cambiano angolo. Spazio serve o mette in pausa."
+    ],
+    "strategyTips": [
+      "Il centro rimanda dritto; i bordi cambiano angolo. Spazio serve o mette in pausa."
+    ],
+    "progression": [
+      "Le vittorie per avversario restano su questo dispositivo. Sono tre difficoltà, non una campagna a livelli."
+    ],
+    "designNote": "Spostati dove arriverà la pallina.",
+    "noteTitle": "Guida",
+    "parent": "Le vittorie per avversario restano su questo dispositivo. Sono tre difficoltà, non una campagna a livelli.",
+    "faq": [
+      [
+        "Guida",
+        "Trascina sul campo, muovi il mouse o tieni ← / → (A / D). Se la pallina supera il tuo fondo, il rivale segna un punto. Vince chi arriva a 7."
+      ],
+      [
+        "Avversario",
+        "Le vittorie per avversario restano su questo dispositivo. Sono tre difficoltà, non una campagna a livelli."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "ru": {
+    "title": "Понг",
+    "intro": "Двигайте ракетку, отбивайте мяч и первым наберите 7 очков.",
+    "gameplay": "Двигайте ракетку, отбивайте мяч и первым наберите 7 очков.",
+    "genre": [],
+    "difficulty": "Тренировка / Клуб / Эксперт",
+    "story": [
+      "Вы управляете зелёной ракеткой снизу. Нажмите «Подача»."
+    ],
+    "systems": [
+      "Ведите пальцем по полю, двигайте мышь или удерживайте ← / → (A / D). Пропуск за своей линией даёт очко сопернику. Побеждает первый до 7."
+    ],
+    "how": [
+      "Ведите пальцем по полю, двигайте мышь или удерживайте ← / → (A / D). Пропуск за своей линией даёт очко сопернику. Побеждает первый до 7.",
+      "Центр ракетки возвращает прямо, края меняют угол. Пробел — подача или пауза."
+    ],
+    "strategyTips": [
+      "Центр ракетки возвращает прямо, края меняют угол. Пробел — подача или пауза."
+    ],
+    "progression": [
+      "Победы по соперникам сохраняются на этом устройстве. Это три сложности матчей, не кампания уровней."
+    ],
+    "designNote": "Перемещайтесь туда, куда прилетит мяч.",
+    "noteTitle": "Правила",
+    "parent": "Победы по соперникам сохраняются на этом устройстве. Это три сложности матчей, не кампания уровней.",
+    "faq": [
+      [
+        "Правила",
+        "Ведите пальцем по полю, двигайте мышь или удерживайте ← / → (A / D). Пропуск за своей линией даёт очко сопернику. Побеждает первый до 7."
+      ],
+      [
+        "Соперник",
+        "Победы по соперникам сохраняются на этом устройстве. Это три сложности матчей, не кампания уровней."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "hi": {
+    "title": "पोंग",
+    "intro": "पैडल चलाएँ, गेंद लौटाएँ और पहले 7 अंक पाएँ।",
+    "gameplay": "पैडल चलाएँ, गेंद लौटाएँ और पहले 7 अंक पाएँ।",
+    "genre": [],
+    "difficulty": "अभ्यास / क्लब / विशेषज्ञ",
+    "story": [
+      "नीचे का हरा पैडल आपका है। सर्व दबाएँ।"
+    ],
+    "systems": [
+      "मैदान पर उँगली खींचें, माउस चलाएँ या ← / → (A / D) दबाए रखें। अपनी सीमा से गेंद छूटने पर प्रतिद्वंद्वी को एक अंक मिलता है। पहले 7 अंक पर जीत।"
+    ],
+    "how": [
+      "मैदान पर उँगली खींचें, माउस चलाएँ या ← / → (A / D) दबाए रखें। अपनी सीमा से गेंद छूटने पर प्रतिद्वंद्वी को एक अंक मिलता है। पहले 7 अंक पर जीत।",
+      "पैडल के बीच से सीधी और किनारे से तिरछी वापसी होती है। स्पेस से सर्व या विराम करें।"
+    ],
+    "strategyTips": [
+      "पैडल के बीच से सीधी और किनारे से तिरछी वापसी होती है। स्पेस से सर्व या विराम करें।"
+    ],
+    "progression": [
+      "हर प्रतिद्वंद्वी के विरुद्ध जीत इस उपकरण पर सहेजी जाती है। ये तीन मैच कठिनाइयाँ हैं, स्तर अभियान नहीं।"
+    ],
+    "designNote": "जहाँ गेंद आएगी, वहाँ बाएँ या दाएँ जाएँ।",
+    "noteTitle": "निर्देश",
+    "parent": "हर प्रतिद्वंद्वी के विरुद्ध जीत इस उपकरण पर सहेजी जाती है। ये तीन मैच कठिनाइयाँ हैं, स्तर अभियान नहीं।",
+    "faq": [
+      [
+        "निर्देश",
+        "मैदान पर उँगली खींचें, माउस चलाएँ या ← / → (A / D) दबाए रखें। अपनी सीमा से गेंद छूटने पर प्रतिद्वंद्वी को एक अंक मिलता है। पहले 7 अंक पर जीत।"
+      ],
+      [
+        "प्रतिद्वंद्वी",
+        "हर प्रतिद्वंद्वी के विरुद्ध जीत इस उपकरण पर सहेजी जाती है। ये तीन मैच कठिनाइयाँ हैं, स्तर अभियान नहीं।"
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  },
+  "ar": {
+    "title": "بونغ",
+    "intro": "حرّك المضرب وأعد الكرة واسبق الكمبيوتر إلى 7 نقاط.",
+    "gameplay": "حرّك المضرب وأعد الكرة واسبق الكمبيوتر إلى 7 نقاط.",
+    "genre": [],
+    "difficulty": "تدريب / نادٍ / خبير",
+    "story": [
+      "تتحكم بالمضرب الأخضر في الأسفل. اضغط إرسال."
+    ],
+    "systems": [
+      "اسحب على الملعب أو حرّك الفأرة أو اضغط مطولًا ← / → (A / D). إذا تجاوزت الكرة خطك الخلفي يحصل الخصم على نقطة. أول من يصل إلى 7 يفوز."
+    ],
+    "how": [
+      "اسحب على الملعب أو حرّك الفأرة أو اضغط مطولًا ← / → (A / D). إذا تجاوزت الكرة خطك الخلفي يحصل الخصم على نقطة. أول من يصل إلى 7 يفوز.",
+      "وسط المضرب يعيد الكرة مستقيمة، وحوافه تغيّر الزاوية. مفتاح المسافة للإرسال أو الإيقاف المؤقت."
+    ],
+    "strategyTips": [
+      "وسط المضرب يعيد الكرة مستقيمة، وحوافه تغيّر الزاوية. مفتاح المسافة للإرسال أو الإيقاف المؤقت."
+    ],
+    "progression": [
+      "تُحفظ الانتصارات لكل خصم على هذا الجهاز. هذه ثلاث صعوبات للمباراة وليست حملة مراحل."
+    ],
+    "designNote": "تحرك يمينًا أو يسارًا إلى مكان وصول الكرة.",
+    "noteTitle": "الدليل",
+    "parent": "تُحفظ الانتصارات لكل خصم على هذا الجهاز. هذه ثلاث صعوبات للمباراة وليست حملة مراحل.",
+    "faq": [
+      [
+        "الدليل",
+        "اسحب على الملعب أو حرّك الفأرة أو اضغط مطولًا ← / → (A / D). إذا تجاوزت الكرة خطك الخلفي يحصل الخصم على نقطة. أول من يصل إلى 7 يفوز."
+      ],
+      [
+        "الخصم",
+        "تُحفظ الانتصارات لكل خصم على هذا الجهاز. هذه ثلاث صعوبات للمباراة وليست حملة مراحل."
+      ]
+    ],
+    "relatedIds": [],
+    "hideSkillsFact": true,
+    "showRelatedSkill": false
+  }
+};
 
   const peg = {
     en: guide({ title: "Peg Solitaire", intro: "Peg Solitaire is a fixed jump-and-clear puzzle: jump one peg over a neighbor into an empty hole, remove the jumped peg, and aim to leave one.", gameplay: "Fixed jump-and-clear board", genre: ["Classic", "Puzzle", "Strategy"], difficulty: "Easy to learn, challenging to finish", time: "5–8 minutes", story: ["One cross-shaped board starts with pegs around a single empty hole. Each move is a small commitment: a peg crosses a neighbor and lands in an empty hole two spaces away.", "The goal is not simply to make jumps. You must keep future landing holes open until the board can be reduced to one peg."], systems: ["Select a peg, then choose an empty hole two spaces away over one adjacent peg. A legal jump removes the middle peg and leaves the source hole empty.", "Hint marks one safe next idea without playing it. Undo restores the previous board, while New Puzzle resets the fixed setup.", "Result reports the remaining pegs and move count. One peg is a win; more pegs means the route needs another attempt."], how: ["Start the fixed board and inspect the empty holes around the pegs.", "Select a peg that can jump over a neighboring peg.", "Choose the empty landing hole two spaces away in a straight line.", "Use Hint for one safe candidate or Undo when you want to test a different route.", "Finish with one peg, read Result, and replay to search for a cleaner route."], strategyTips: ["Before jumping, look at the landing hole you will need next, not only the peg you remove now.", "Protect open holes near the edge because they can become hard to reach.", "Use Hint as a suggestion, then compare the resulting board yourself.", "When a route leaves several pegs stranded, Undo early instead of spending moves on a dead end."], progression: ["The first attempt teaches source, middle peg, and landing-hole geometry. Replays turn the same fixed board into a planning challenge: protect exits and reduce the final count to one."], designNote: "Peg Solitaire uses one readable board, explicit legal-target feedback, advisory Hint, reversible Undo, and an unambiguous one-peg Result so a classic puzzle remains approachable on touch, mouse, and keyboard.", noteTitle: "Player, Device, and Save Information", parent: "The fixed board, best result, and sound preference stay in this browser. No account, purchase, cloud save, or online match is required; clearing site data may remove the local result.", faq: [["What is a legal jump?", "Select a peg and jump it in a straight line over one adjacent peg into an empty hole two spaces away."], ["What happens to the middle peg?", "It is removed, while the source hole becomes empty."], ["Does Hint solve the board?", "No. Hint marks one safe next idea, but you decide whether to make it."], ["Can I undo?", "Yes. Undo restores the previous board and move count."], ["How do I win?", "Reduce the board to exactly one remaining peg."]] }),
@@ -528,5 +879,533 @@
     }),
   };
 
-  window.WEIGHTPLAY_PUBLIC_CLASSIC_GUIDES = { chess, pong, "peg-solitaire": peg, reversi, "animal-peach-oath": animalPeachOath, wordle };
+  const customGuide = (related, copy) => ({
+    relatedIds: related,
+    hideSkillsFact: true,
+    showRelatedSkill: false,
+    ...copy,
+  });
+
+  const localizedClassic = (related, base, overrides) => Object.fromEntries(
+    Object.entries(overrides).map(([locale, copy]) => [locale, customGuide(related, { ...base, ...copy })]),
+  );
+
+  const cribbageBase = {
+    title: "Cribbage",
+    intro: "Cribbage is a compact card race: choose two cards for the crib, peg without passing 31, and score fifteens, pairs, runs, flushes, and nobs on the way to 121.",
+    gameplay: "Classic pegging card game",
+    genre: ["Card", "Classic", "Strategy"],
+    difficulty: "Easy to learn, challenging to master",
+    time: "5–15 minutes",
+    story: [
+      "Each round deals six cards. You keep four and place exactly two into the shared crib, then use the starter card to shape the scoring possibilities in your hand.",
+      "The short race alternates planning and counting: choose safe pegging cards, watch the running total, then inspect the Result summary after the hand and crib are scored.",
+    ],
+    systems: [
+      "During pegging, play a card only when the running count stays at or below 31. Fifteen and 31 score two points, while pairs and runs can score as soon as they appear.",
+      "When you cannot play without passing 31, call Go. The last legal peg scores one point; a count of 31 resets the sequence. Dealer order alternates between rounds.",
+      "Hand and crib scoring checks combinations to 15, pairs, runs, flushes, and nobs. The first player to reach 121 wins, and the browser keeps the local result for replay.",
+    ],
+    how: [
+      "Start a round and review the six cards in your hand.",
+      "Select exactly two cards for the crib, then confirm the discard.",
+      "During pegging, choose a card that keeps the count at 31 or below; use Go when no legal card remains.",
+      "Read the hand, crib, and pegging totals in Result after the round resolves.",
+      "Choose New Game or Restart to practice a new deal and chase a cleaner route to 121.",
+    ],
+    strategyTips: [
+      "Discard cards that help the crib less while keeping combinations that can reach 15 or form runs.",
+      "Track the running count before every peg; a pair or run can be worth more than the face value of a card.",
+      "Use Go deliberately when holding a card for the next count is safer than forcing a weak play.",
+      "Compare your hand and crib breakdown after each round to learn which combinations are carrying the score.",
+    ],
+    progression: [
+      "The race to 121 is the campaign: dealer position alternates, new deals create different discard decisions, and each Result exposes the scoring pattern to improve on the next hand.",
+      "There is no account skill tree or online match. Replay is the progression, with cleaner pegging and better discard choices as the practical mastery target.",
+    ],
+    designNote: "Cribbage keeps the full decision loop visible in a short browser session: discard, peg, score, and review. It teaches the classic vocabulary through immediate totals without requiring an account or online opponent.",
+    noteTitle: "Player and Save Information",
+    parent: "Results and preferences stay in this browser. No account, purchase, cloud save, or online match is required; clearing site data can remove the local result.",
+    faq: [
+      ["Why do I discard two cards?", "The two selected cards go to the crib, which is scored after the hands and belongs to the dealer for that round."],
+      ["What is Go?", "Call Go when you have no card that can keep the running count at 31 or below. The last legal peg scores one point and the count resets."],
+      ["What combinations score?", "The guide tracks fifteens, pairs, runs, flushes, nobs, and the special two points for a count of 31."],
+      ["How do I win?", "The first player to reach 121 points wins the race."],
+      ["Is progress saved?", "The local result and preferences are saved only in this browser."],
+    ],
+  };
+
+  const cribbage = localizedClassic(["go-fish", "hearts"], cribbageBase, {
+    en: {},
+    "zh-Hant": {
+      title: "克里比奇牌戲", intro: "克里比奇是一場緊湊的紙牌競賽：選兩張牌放入 crib，在不超過 31 的情況下打牌計分，靠十五點、對子、順子、同花與同花 J 向 121 分前進。", gameplay: "經典計分紙牌遊戲", genre: ["紙牌", "經典", "策略"], difficulty: "容易學習，熟練有挑戰", time: "5–15 分鐘",
+      story: ["每輪發六張牌，留下四張並正好選兩張放入共用的 crib，再用 starter 牌觀察手牌的計分可能。", "短局在規劃與數數之間交替：安排安全的出牌、留意目前總數，最後在結果畫面檢查手牌與 crib 的得分。"],
+      systems: ["Pegging 時只能打出讓目前總數不超過 31 的牌。十五點與 31 各得兩分，對子與順子也能在形成時立即計分。", "沒有牌能在不超過 31 的情況下出時喊 Go。最後一張合法出牌得一分；數到 31 會重置序列，莊家每輪交替。", "手牌與 crib 會檢查湊十五、對子、順子、同花與同花 J。先到 121 分者獲勝，瀏覽器會保留本機結果供重玩。"],
+      how: ["開始一輪並查看六張手牌。", "正好選兩張牌放入 crib，再確認棄牌。", "Pegging 時選擇讓總數維持在 31 以下的牌；沒有合法牌時使用 Go。", "本輪結算後在結果畫面閱讀手牌、crib 與 pegging 總分。", "選擇新遊戲或重新開始，練習新的發牌並挑戰更穩定地走到 121。"],
+      strategyTips: ["棄掉較不想送進 crib 的牌，同時保留能湊十五或組成順子的組合。", "每次 pegging 前先追蹤總數；對子或順子可能比牌面數字更有價值。", "適時喊 Go，有時保留一張牌到下一個計數比勉強出弱牌更安全。", "每輪比較手牌與 crib 的得分明細，找出真正帶動分數的組合。"],
+      progression: ["121 分競賽就是本作的進程：莊家輪替，新發牌帶來不同棄牌決策，而每次結果都揭示下一手可改善的計分模式。", "沒有帳號技能樹或線上對局；重玩與更乾淨的 pegging、棄牌選擇就是實際熟練目標。"],
+      designNote: "克里比奇把棄牌、pegging、計分與檢討放在短小的瀏覽器流程中。即時總分教你認識經典術語，不需要帳號或線上對手。", noteTitle: "玩家與存檔資訊", parent: "結果與偏好會留在這個瀏覽器。不需要帳號、購買、雲端存檔或線上對局；清除網站資料可能刪除本機結果。",
+      faq: [["為什麼要棄兩張牌？", "兩張牌會進入 crib，這個區域在手牌之後計分，並歸莊家所有。"], ["什麼是 Go？", "沒有牌能讓總數維持在 31 以下時喊 Go；最後一張合法出牌得一分，之後重置。"], ["哪些組合會得分？", "指南會計算十五點、對子、順子、同花、同花 J，以及數到 31 的兩分。"], ["如何獲勝？", "先到 121 分的玩家贏得競賽。"], ["進度會保存嗎？", "本機結果與偏好只保存在這個瀏覽器。"],],
+    },
+    "zh-Hans": {
+      title: "克里比奇", intro: "克里比奇是一场紧凑的纸牌竞赛：选两张牌放入 crib，在不超过 31 的情况下出牌计分，靠十五点、对子、顺子、同花与同花 J 向 121 分前进。", gameplay: "经典计分纸牌游戏", genre: ["纸牌", "经典", "策略"], difficulty: "容易学习，熟练有挑战", time: "5–15 分钟",
+      story: ["每轮发六张牌，留下四张并正好选两张放入共用的 crib，再用 starter 牌观察手牌的计分可能。", "短局在规划与数数之间交替：安排安全出牌、留意当前总数，最后在结果画面检查手牌与 crib 的得分。"],
+      systems: ["Pegging 时只能打出让当前总数不超过 31 的牌。十五点与 31 各得两分，对子与顺子也能在形成时立即计分。", "没有牌能在不超过 31 的情况下出时喊 Go。最后一张合法出牌得一分；数到 31 会重置序列，庄家每轮交替。", "手牌与 crib 会检查凑十五、对子、顺子、同花与同花 J。先到 121 分者获胜，浏览器会保留本机结果供重玩。"],
+      how: ["开始一轮并查看六张手牌。", "正好选两张牌放入 crib，再确认弃牌。", "Pegging 时选择让总数保持在 31 以下的牌；没有合法牌时使用 Go。", "本轮结算后在结果画面阅读手牌、crib 与 pegging 总分。", "选择新游戏或重新开始，练习新的发牌并挑战更稳定地走到 121。"],
+      strategyTips: ["弃掉较不想送进 crib 的牌，同时保留能凑十五或组成顺子的组合。", "每次 pegging 前先追踪总数；对子或顺子可能比牌面数字更有价值。", "适时喊 Go，有时保留一张牌到下一个计数比勉强出弱牌更安全。", "每轮比较手牌与 crib 的得分明细，找出真正带动分数的组合。"],
+      progression: ["121 分竞赛就是本作的进程：庄家轮替，新发牌带来不同弃牌决策，而每次结果都揭示下一手可改善的计分模式。", "没有账号技能树或在线对局；重玩与更干净的 pegging、弃牌选择就是实际熟练目标。"],
+      designNote: "克里比奇把弃牌、pegging、计分与复盘放在短小的浏览器流程中。即时总分教你认识经典术语，不需要账号或在线对手。", noteTitle: "玩家与存档信息", parent: "结果与偏好会留在此浏览器。不需要账号、购买、云端存档或在线对局；清除网站数据可能删除本地结果。",
+      faq: [["为什么要弃两张牌？", "两张牌会进入 crib，这个区域在手牌之后计分，并归庄家所有。"], ["什么是 Go？", "没有牌能让总数保持在 31 以下时喊 Go；最后一张合法出牌得一分，之后重置。"], ["哪些组合会得分？", "指南会计算十五点、对子、顺子、同花、同花 J，以及数到 31 的两分。"], ["如何获胜？", "先到 121 分的玩家赢得竞赛。"], ["进度会保存吗？", "本机结果与偏好只保存在此浏览器。"],],
+    },
+    ja: {
+      title: "クリベッジ", intro: "クリベッジは短いカード競争です。2枚をクリブへ送り、31を超えないようにペグし、15、ペア、ラン、フラッシュ、ノブで121点を目指します。", gameplay: "クラシックなペグ式カードゲーム", genre: ["カード", "クラシック", "ストラテジー"], difficulty: "覚えやすく、上達に挑戦", time: "5〜15分",
+      story: ["各ラウンドで6枚が配られ、4枚を残して2枚をクリブへ送ります。スターターカードを見て、手札の得点候補を考えます。", "短いラウンドは計画とカウントの繰り返しです。安全なペグを選び、現在の合計を読み、結果画面で手札とクリブの得点を確認します。"],
+      systems: ["ペグでは合計が31以下になるカードだけを出せます。15と31は2点で、ペアやランも成立した時点で得点になります。", "31以下で出せるカードがなければGo。最後の合法ペグは1点、31に達すると流れがリセットされます。ディーラーはラウンドごとに交替します。", "手札とクリブは15、ペア、ラン、フラッシュ、ノブを確認します。先に121点へ到達した側が勝ち、ブラウザにはローカル結果が残ります。"],
+      how: ["ラウンドを始め、6枚の手札を確認します。", "2枚を正確に選んでクリブへ送り、捨て札を確定します。", "ペグでは合計を31以下に保つカードを選び、合法手がなければGoを使います。", "ラウンド後の結果で手札、クリブ、ペグの合計を読みます。", "新しいゲームまたはリスタートで新しい配りを練習し、121点への道を改善します。"],
+      strategyTips: ["クリブを助けにくいカードを捨て、15やランを作れる組み合わせを残します。", "毎回のペグ前に合計を確認し、ペアやランの価値を考えます。", "無理に弱いカードを出すより、Goで次のカウントに備える方が安全な場合があります。", "結果の内訳を比べ、どの組み合わせが得点を支えたかを学びます。"],
+      progression: ["121点レースが進行そのものです。ディーラーが交替し、配り直すたびに捨て札の判断が変わり、結果が次の改善点を示します。", "アカウントのスキルツリーやオンライン対戦はありません。再挑戦してペグと捨て札を磨くことが熟練です。"],
+      designNote: "クリベッジは捨て札、ペグ、得点、振り返りを短いブラウザ体験にまとめます。即時の合計で用語を学べ、アカウントやオンライン相手は不要です。", noteTitle: "プレイヤーと保存情報", parent: "結果と設定はこのブラウザに保存されます。アカウント、購入、クラウド保存、オンライン対戦は不要で、サイトデータを消すとローカル結果が失われる場合があります。",
+      faq: [["なぜ2枚捨てますか？", "2枚はクリブに入り、手札の後に得点され、そのラウンドのディーラーに属します。"], ["Goとは？", "合計を31以下にできるカードがないときに宣言します。最後の合法ペグが1点で、その後リセットされます。"], ["何が得点になりますか？", "15、ペア、ラン、フラッシュ、ノブ、そして31の2点を確認します。"], ["どう勝ちますか？", "先に121点へ到達した側が勝ちです。"], ["進行は保存されますか？", "ローカル結果と設定はこのブラウザだけに保存されます。"],],
+    },
+    ko: {
+      title: "크리비지", intro: "크리비지는 짧은 카드 경주입니다. 두 장을 크립에 보내고 31을 넘지 않게 페그하며 15, 페어, 런, 플러시, 노브로 121점을 향해 갑니다.", gameplay: "클래식 페깅 카드 게임", genre: ["카드", "클래식", "전략"], difficulty: "배우기 쉽고 숙련은 도전적", time: "5–15분",
+      story: ["매 라운드 여섯 장을 받고 네 장을 남긴 뒤 정확히 두 장을 크립에 보냅니다. 스타터 카드를 보고 손패의 점수 조합을 계획하세요.", "짧은 라운드는 계획과 계산을 반복합니다. 안전한 페그를 고르고 현재 합계를 읽은 뒤 결과에서 손패와 크립 점수를 확인합니다."],
+      systems: ["페깅 중에는 합계가 31 이하가 되는 카드만 낼 수 있습니다. 15와 31은 각각 2점이며 페어와 런도 만들어지는 즉시 점수화됩니다.", "31 이하로 낼 카드가 없으면 Go를 외칩니다. 마지막 합법 페그는 1점이고 31에 도달하면 순서가 초기화됩니다. 딜러는 라운드마다 바뀝니다.", "손패와 크립은 15, 페어, 런, 플러시, 노브를 확인합니다. 먼저 121점에 도달한 플레이어가 승리하고 브라우저에 로컬 결과가 남습니다."],
+      how: ["라운드를 시작하고 여섯 장의 손패를 확인하세요.", "정확히 두 장을 골라 크립에 보내고 버리기를 확정하세요.", "페깅에서 합계를 31 이하로 유지하는 카드를 내고, 합법적인 카드가 없으면 Go를 사용하세요.", "라운드가 끝나면 결과에서 손패, 크립, 페깅 합계를 읽으세요.", "새 게임 또는 다시 시작으로 새 딜을 연습하며 121점까지의 경로를 개선하세요."],
+      strategyTips: ["크립에 덜 유리한 카드를 버리고 15나 런을 만들 조합을 남기세요.", "매 페그 전에 합계를 확인하세요. 페어와 런은 카드 숫자보다 큰 가치가 있습니다.", "약한 카드를 억지로 내기보다 Go로 다음 계산을 준비하는 편이 안전할 수 있습니다.", "결과 내역을 비교해 어떤 조합이 점수를 만들었는지 배우세요."],
+      progression: ["121점 경주가 진행 자체입니다. 딜러가 바뀌고 매번 다른 버리기 선택이 생기며 결과가 다음 개선점을 보여 줍니다.", "계정 스킬 트리나 온라인 대전은 없습니다. 재플레이하며 페깅과 버리기를 다듬는 것이 숙련입니다."],
+      designNote: "크리비지는 버리기, 페깅, 점수 계산, 복기를 짧은 브라우저 경험에 담습니다. 즉시 합계를 통해 고전 용어를 배우며 계정이나 온라인 상대가 필요하지 않습니다.", noteTitle: "플레이어 및 저장 정보", parent: "결과와 설정은 이 브라우저에 저장됩니다. 계정, 구매, 클라우드 저장, 온라인 대전은 필요하지 않으며 사이트 데이터를 지우면 로컬 결과가 사라질 수 있습니다.",
+      faq: [["왜 두 장을 버리나요?", "두 장은 크립으로 가며 손패 다음에 점수화되고 해당 라운드의 딜러에게 속합니다."], ["Go가 무엇인가요?", "합계를 31 이하로 유지할 카드가 없을 때 선언합니다. 마지막 합법 페그가 1점이고 이후 초기화됩니다."], ["무엇이 점수인가요?", "15, 페어, 런, 플러시, 노브와 31의 2점을 확인합니다."], ["어떻게 이기나요?", "먼저 121점에 도달한 플레이어가 이깁니다."], ["진행 상황이 저장되나요?", "로컬 결과와 설정은 이 브라우저에만 저장됩니다."],],
+    },
+    es: {
+      title: "Cribbage", intro: "Cribbage es una carrera de cartas compacta: elige dos cartas para el crib, juega sin pasar de 31 y suma por quince, parejas, escaleras, color y nobs hasta llegar a 121.", gameplay: "Juego clásico de cartas y puntuación", genre: ["Cartas", "Clásico", "Estrategia"], difficulty: "Fácil de aprender, difícil de dominar", time: "5–15 minutos",
+      story: ["Cada ronda reparte seis cartas. Conserva cuatro y envía exactamente dos al crib; después usa la carta inicial para valorar las combinaciones de tu mano.", "La carrera alterna planificación y conteo: elige jugadas seguras, vigila el total y revisa en Resultado cómo puntuaron la mano y el crib."],
+      systems: ["Durante el pegging solo puedes jugar si el total queda en 31 o menos. Quince y 31 valen dos puntos, y parejas y escaleras puntúan al aparecer.", "Si no puedes jugar sin superar 31, di Go. La última jugada legal vale un punto y el conteo se reinicia al llegar a 31; el repartidor alterna.", "La mano y el crib revisan combinaciones de quince, parejas, escaleras, color y nobs. Gana quien llega primero a 121 y el navegador conserva el resultado local."],
+      how: ["Inicia una ronda y revisa tus seis cartas.", "Elige exactamente dos cartas para el crib y confirma el descarte.", "Durante el pegging, juega una carta que mantenga el total en 31 o menos; usa Go si no hay jugada legal.", "Cuando termine la ronda, lee en Resultado los totales de mano, crib y pegging.", "Elige Nueva partida o Reiniciar para practicar otro reparto y acercarte mejor a 121."],
+      strategyTips: ["Descarta cartas que ayuden menos al crib y conserva combinaciones de quince o escaleras.", "Comprueba el total antes de cada jugada; una pareja o escalera puede valer más que el número de la carta.", "Usa Go con intención cuando guardar una carta para el siguiente conteo sea más seguro.", "Compara el desglose de cada ronda para descubrir qué combinaciones sostienen tu puntuación."],
+      progression: ["La carrera a 121 es la progresión: el repartidor cambia, cada reparto crea nuevas decisiones de descarte y cada Resultado muestra qué mejorar.", "No hay árbol de habilidades ni partida online. Repetir y limpiar el pegging y el descarte es la maestría práctica."],
+      designNote: "Cribbage deja visible el ciclo de descartar, hacer pegging, puntuar y revisar en una sesión breve. Los totales inmediatos enseñan el vocabulario clásico sin cuenta ni rival online.", noteTitle: "Información del jugador y guardado", parent: "Los resultados y preferencias quedan en este navegador. No hacen falta cuenta, compra, nube ni partida online; borrar los datos del sitio puede eliminar el resultado local.",
+      faq: [["¿Por qué descarto dos cartas?", "Van al crib, que se puntúa después de las manos y pertenece al repartidor de esa ronda."], ["¿Qué es Go?", "Se dice cuando no puedes jugar sin superar 31; la última jugada legal vale un punto y el conteo se reinicia."], ["¿Qué combinaciones puntúan?", "Quince, parejas, escaleras, color, nobs y los dos puntos por llegar a 31."], ["¿Cómo se gana?", "Gana el primer jugador que llega a 121 puntos."], ["¿Se guarda el progreso?", "El resultado local y las preferencias solo se guardan en este navegador."],],
+    },
+    "pt-BR": {
+      title: "Cribbage", intro: "Cribbage é uma corrida compacta de cartas: escolha duas cartas para o crib, faça pegging sem passar de 31 e pontue quinze, pares, sequências, flushes e nobs até chegar a 121.", gameplay: "Jogo clássico de cartas com pontuação", genre: ["Cartas", "Clássico", "Estratégia"], difficulty: "Fácil de aprender, difícil de dominar", time: "5–15 minutos",
+      story: ["Cada rodada distribui seis cartas. Fique com quatro e coloque exatamente duas no crib; depois use a carta inicial para planejar as combinações da sua mão.", "A corrida alterna planejamento e contagem: escolha jogadas seguras, acompanhe o total e confira no Resultado como mão e crib pontuaram."],
+      systems: ["No pegging, só jogue se o total continuar em 31 ou menos. Quinze e 31 valem dois pontos, e pares e sequências pontuam quando aparecem.", "Quando não houver carta legal sem passar de 31, diga Go. O último pegging legal vale um ponto; chegar a 31 reinicia a sequência e o dealer alterna.", "Mão e crib verificam quinze, pares, sequências, flushes e nobs. O primeiro a chegar a 121 vence, e o navegador mantém o resultado local."],
+      how: ["Comece uma rodada e confira as seis cartas.", "Escolha exatamente duas cartas para o crib e confirme o descarte.", "Durante o pegging, escolha uma carta que mantenha o total em 31 ou menos; use Go se não houver jogada legal.", "Depois da rodada, leia no Resultado os totais da mão, do crib e do pegging.", "Escolha Novo jogo ou Reiniciar para praticar outra distribuição e buscar um caminho melhor até 121."],
+      strategyTips: ["Descarte cartas menos úteis para o crib e mantenha combinações que formem quinze ou sequências.", "Confira o total antes de cada pegging; um par ou sequência pode valer mais que o número da carta.", "Use Go de propósito quando guardar uma carta para a próxima contagem for mais seguro.", "Compare os detalhes de cada rodada para descobrir quais combinações sustentam sua pontuação."],
+      progression: ["A corrida até 121 é a progressão: o dealer alterna, cada distribuição cria novos descartes e cada Resultado mostra o próximo ajuste.", "Não há árvore de habilidades nem partida online. Repetir e melhorar pegging e descarte é a maestria prática."],
+      designNote: "Cribbage mantém descarte, pegging, pontuação e revisão visíveis numa sessão curta. Os totais imediatos ensinam os termos clássicos sem conta ou adversário online.", noteTitle: "Informações do jogador e salvamento", parent: "Resultados e preferências ficam neste navegador. Não é preciso conta, compra, nuvem ou partida online; limpar os dados do site pode apagar o resultado local.",
+      faq: [["Por que descarto duas cartas?", "Elas vão para o crib, pontuado depois das mãos e pertencente ao dealer da rodada."], ["O que é Go?", "Use quando não puder jogar sem passar de 31; o último pegging legal vale um ponto e a contagem reinicia."], ["O que pontua?", "Quinze, pares, sequências, flushes, nobs e os dois pontos por chegar a 31."], ["Como vencer?", "Vence o primeiro jogador a alcançar 121 pontos."], ["O progresso é salvo?", "O resultado local e as preferências ficam somente neste navegador."],],
+    },
+    fr: {
+      title: "Cribbage", intro: "Le cribbage est une course de cartes compacte : choisissez deux cartes pour le crib, comptez sans dépasser 31 et marquez avec quinze, paires, suites, couleurs et nobs jusqu’à 121.", gameplay: "Jeu de cartes classique à points", genre: ["Cartes", "Classique", "Stratégie"], difficulty: "Facile à apprendre, exigeant à maîtriser", time: "5–15 minutes",
+      story: ["Chaque manche distribue six cartes. Gardez-en quatre et envoyez exactement deux cartes au crib, puis utilisez la carte de départ pour lire les possibilités de votre main.", "La course alterne planification et comptage : choisissez un pegging sûr, surveillez le total et consultez Résultat après le score de la main et du crib."],
+      systems: ["Pendant le pegging, jouez seulement si le total reste à 31 ou moins. Quinze et 31 valent deux points, tandis que paires et suites marquent dès leur création.", "Si aucune carte ne peut être jouée sans dépasser 31, annoncez Go. Le dernier pegging légal vaut un point et 31 réinitialise la séquence ; le donneur alterne.", "La main et le crib recherchent quinze, paires, suites, couleurs et nobs. Le premier à 121 gagne et le navigateur conserve le résultat local."],
+      how: ["Lancez une manche et examinez vos six cartes.", "Sélectionnez exactement deux cartes pour le crib et confirmez la défausse.", "Pendant le pegging, jouez une carte qui maintient le total à 31 ou moins ; utilisez Go sans carte légale.", "Après la manche, lisez les totaux de la main, du crib et du pegging dans Résultat.", "Choisissez Nouvelle partie ou Recommencer pour pratiquer une nouvelle donne et viser 121 plus proprement."],
+      strategyTips: ["Défaussez des cartes qui aident moins le crib et gardez les combinaisons de quinze ou de suites.", "Vérifiez le total avant chaque pegging : une paire ou une suite peut dépasser la valeur de la carte.", "Utilisez Go quand garder une carte pour le comptage suivant est plus sûr.", "Comparez les détails de chaque manche pour voir quelles combinaisons portent le score."],
+      progression: ["La course à 121 est la progression : le donneur alterne, chaque donne renouvelle les choix de défausse et chaque Résultat indique quoi améliorer.", "Il n’y a ni arbre de compétences ni match en ligne. Rejouer pour affiner le pegging et la défausse est la maîtrise pratique."],
+      designNote: "Cribbage rend visibles défausse, pegging, score et bilan dans une session courte. Les totaux immédiats enseignent les termes classiques sans compte ni adversaire en ligne.", noteTitle: "Informations du joueur et sauvegarde", parent: "Les résultats et préférences restent dans ce navigateur. Aucun compte, achat, cloud ou match en ligne n’est nécessaire ; effacer les données du site peut supprimer le résultat local.",
+      faq: [["Pourquoi défausser deux cartes ?", "Elles vont au crib, compté après les mains et appartenant au donneur de la manche."], ["Qu’est-ce que Go ?", "Annoncez-le quand aucune carte ne peut rester à 31 ou moins ; le dernier pegging légal vaut un point puis le compte repart."], ["Quelles combinaisons marquent ?", "Quinze, paires, suites, couleurs, nobs et les deux points d’un total de 31."], ["Comment gagner ?", "Le premier joueur à atteindre 121 points gagne."], ["La progression est-elle sauvegardée ?", "Le résultat local et les préférences sont sauvegardés uniquement dans ce navigateur."],],
+    },
+    de: {
+      title: "Cribbage", intro: "Cribbage ist ein kompaktes Kartenrennen: Wähle zwei Karten für die Crib, pegle ohne 31 zu überschreiten und sammle Punkte für Fünfzehner, Paare, Reihen, Flushes und Nobs bis 121.", gameplay: "Klassisches Karten- und Zählspiel", genre: ["Karten", "Klassisch", "Strategie"], difficulty: "Leicht zu lernen, schwer zu meistern", time: "5–15 Minuten",
+      story: ["Jede Runde gibt sechs Karten. Behalte vier und lege genau zwei in die gemeinsame Crib; die Startkarte zeigt, welche Kombinationen in deiner Hand möglich sind.", "Das Rennen verbindet Planung und Zählen: Wähle sichere Pegs, beobachte die Summe und prüfe im Ergebnis die Wertung von Hand und Crib."],
+      systems: ["Beim Pegging darf die Summe höchstens 31 sein. Fünfzehn und 31 geben je zwei Punkte; Paare und Reihen zählen sofort, wenn sie entstehen.", "Kannst du ohne Überschreiten von 31 nicht spielen, sag Go. Der letzte gültige Peg gibt einen Punkt; bei 31 beginnt die Folge neu und der Geber wechselt.", "Hand und Crib prüfen Fünfzehner, Paare, Reihen, Flushes und Nobs. Wer zuerst 121 erreicht, gewinnt; der Browser bewahrt das lokale Ergebnis."],
+      how: ["Starte eine Runde und prüfe deine sechs Karten.", "Wähle genau zwei Karten für die Crib und bestätige den Abwurf.", "Wähle beim Pegging eine Karte, die die Summe bei höchstens 31 hält; nutze Go ohne legalen Zug.", "Lies nach der Runde im Ergebnis die Summen von Hand, Crib und Pegging.", "Wähle Neues Spiel oder Neustart, um eine neue Hand zu üben und sauberer auf 121 zu kommen."],
+      strategyTips: ["Wirf Karten ab, die der Crib wenig helfen, und halte Fünfzehner oder Reihen zusammen.", "Prüfe die Summe vor jedem Peg; ein Paar oder eine Reihe kann mehr wert sein als die Kartenhöhe.", "Nutze Go bewusst, wenn eine Karte für die nächste Zählfolge sicherer ist.", "Vergleiche die Rundendetails und erkenne, welche Kombinationen den Punktestand tragen."],
+      progression: ["Das Rennen auf 121 ist die Entwicklung: Der Geber wechselt, jede Hand verändert die Abwurfentscheidung und jedes Ergebnis zeigt den nächsten Lernpunkt.", "Es gibt keinen Account-Fertigkeitsbaum und kein Online-Match. Wiederholen und Pegging sowie Abwurf verbessern ist die praktische Meisterschaft."],
+      designNote: "Cribbage hält Abwurf, Pegging, Wertung und Rückblick in einer kurzen Browserrunde sichtbar. Sofortige Summen erklären die klassischen Begriffe ohne Konto oder Online-Gegner.", noteTitle: "Spieler- und Speicherhinweise", parent: "Ergebnisse und Einstellungen bleiben in diesem Browser. Konto, Kauf, Cloud-Speicher oder Online-Partie sind nicht nötig; gelöschte Websitedaten können das lokale Ergebnis entfernen.",
+      faq: [["Warum zwei Karten abwerfen?", "Sie kommen in die Crib, die nach den Händen gewertet wird und dem Geber der Runde gehört."], ["Was ist Go?", "Sage Go, wenn keine Karte die Summe unter 31 halten kann. Der letzte gültige Peg gibt einen Punkt, danach beginnt die Folge neu."], ["Was gibt Punkte?", "Fünfzehner, Paare, Reihen, Flushes, Nobs und zwei Punkte für genau 31."], ["Wie gewinnt man?", "Wer zuerst 121 Punkte erreicht, gewinnt."], ["Wird der Fortschritt gespeichert?", "Lokales Ergebnis und Einstellungen werden nur in diesem Browser gespeichert."],],
+    },
+    it: {
+      title: "Cribbage", intro: "Cribbage è una corsa di carte compatta: scegli due carte per il crib, fai pegging senza superare 31 e ottieni punti con quindici, coppie, scale, flush e nobs fino a 121.", gameplay: "Gioco classico di carte e punteggio", genre: ["Carte", "Classico", "Strategia"], difficulty: "Facile da imparare, difficile da padroneggiare", time: "5–15 minuti",
+      story: ["Ogni mano distribuisce sei carte. Tienine quattro e manda esattamente due nel crib; poi usa la carta iniziale per leggere le combinazioni possibili.", "La corsa alterna pianificazione e conteggio: scegli pegging sicuri, controlla il totale e leggi nel Risultato il punteggio della mano e del crib."],
+      systems: ["Nel pegging puoi giocare solo se il totale resta a 31 o meno. Quindici e 31 valgono due punti, mentre coppie e scale segnano quando si formano.", "Se non puoi giocare senza superare 31, chiama Go. L’ultimo pegging legale vale un punto; 31 resetta la sequenza e il dealer alterna.", "Mano e crib controllano quindici, coppie, scale, flush e nobs. Chi arriva per primo a 121 vince e il browser conserva il risultato locale."],
+      how: ["Avvia una mano e controlla le sei carte.", "Scegli esattamente due carte per il crib e conferma lo scarto.", "Durante il pegging scegli una carta che lasci il totale a 31 o meno; usa Go se non hai una giocata legale.", "Dopo la mano, leggi nel Risultato i totali di mano, crib e pegging.", "Scegli Nuova partita o Riavvia per allenarti con una nuova distribuzione e puntare meglio a 121."],
+      strategyTips: ["Scarta carte meno utili al crib e conserva combinazioni per quindici o scale.", "Controlla il totale prima di ogni pegging: coppie e scale possono valere più del numero della carta.", "Usa Go con intenzione quando tenere una carta per il conteggio seguente è più sicuro.", "Confronta i dettagli delle mani per capire quali combinazioni sostengono il punteggio."],
+      progression: ["La corsa a 121 è la progressione: il dealer alterna, ogni mano cambia le decisioni di scarto e ogni Risultato mostra cosa migliorare.", "Non ci sono albero abilità dell’account o partite online. La maestria pratica è rigiocare e affinare pegging e scarto."],
+      designNote: "Cribbage rende visibili scarto, pegging, punteggio e revisione in una sessione breve. I totali immediati insegnano il vocabolario classico senza account o avversario online.", noteTitle: "Informazioni del giocatore e salvataggio", parent: "Risultati e preferenze restano in questo browser. Non servono account, acquisti, cloud o partite online; cancellare i dati del sito può rimuovere il risultato locale.",
+      faq: [["Perché scarto due carte?", "Vanno nel crib, conteggiato dopo le mani e appartenente al dealer della mano."], ["Cos’è Go?", "Chiamalo quando nessuna carta può lasciare il totale a 31 o meno; l’ultimo pegging legale vale un punto e poi si resetta."], ["Cosa dà punti?", "Quindici, coppie, scale, flush, nobs e i due punti per arrivare a 31."], ["Come si vince?", "Vince il primo giocatore che raggiunge 121 punti."], ["Il progresso viene salvato?", "Risultato locale e preferenze sono salvati solo in questo browser."],],
+    },
+    ru: {
+      title: "Криббедж", intro: "Криббедж — короткая карточная гонка: выберите две карты для crib, делайте пеггинг не выше 31 и набирайте очки за пятнадцать, пары, ряды, флеши и нобс до 121.", gameplay: "Классическая карточная игра с подсчётом", genre: ["Карты", "Классика", "Стратегия"], difficulty: "Легко начать, сложно освоить", time: "5–15 минут",
+      story: ["В каждом раунде раздаются шесть карт. Оставьте четыре, а ровно две отправьте в общий crib; стартовая карта помогает увидеть варианты очков в руке.", "Гонка чередует планирование и счёт: выбирайте безопасный пеггинг, следите за суммой и проверяйте в результате очки руки и crib."],
+      systems: ["При пеггинге можно играть только так, чтобы сумма оставалась не выше 31. Пятнадцать и 31 дают по два очка, пары и ряды засчитываются сразу.", "Если нельзя сыграть, не превысив 31, объявите Go. Последний допустимый пег даёт одно очко; 31 сбрасывает последовательность, дилер меняется.", "Рука и crib проверяют пятнадцать, пары, ряды, флеши и нобс. Первый игрок на 121 выигрывает, а браузер хранит локальный результат."],
+      how: ["Начните раунд и осмотрите шесть карт.", "Выберите ровно две карты для crib и подтвердите сброс.", "Во время пеггинга выбирайте карту, оставляющую сумму не выше 31; при отсутствии хода используйте Go.", "После раунда прочитайте в результате очки руки, crib и пеггинга.", "Выберите Новую игру или Перезапуск, чтобы тренировать новую раздачу и улучшать путь к 121."],
+      strategyTips: ["Сбрасывайте карты, которые меньше помогают crib, и сохраняйте комбинации на пятнадцать или ряд.", "Проверяйте сумму перед каждым пегом: пара или ряд могут стоить больше номинала карты.", "Используйте Go осознанно, когда сохранить карту для следующего счёта безопаснее.", "Сравнивайте детали раундов и выясняйте, какие комбинации создают результат."],
+      progression: ["Гонка до 121 — это развитие: дилер меняется, каждая раздача создаёт новый выбор сброса, а каждый результат показывает следующую точку улучшения.", "Нет дерева навыков аккаунта и онлайн-матча. Практическая мастерство — повторять и улучшать пеггинг и сброс."],
+      designNote: "Криббедж показывает сброс, пеггинг, счёт и разбор в короткой браузерной сессии. Мгновенные суммы объясняют классические термины без аккаунта и онлайн-соперника.", noteTitle: "Сведения об игроке и сохранении", parent: "Результаты и настройки хранятся только в этом браузере. Аккаунт, покупка, облако и онлайн-матч не нужны; очистка данных сайта может удалить локальный результат.",
+      faq: [["Зачем сбрасывать две карты?", "Они попадают в crib, который считается после рук и принадлежит дилеру раунда."], ["Что такое Go?", "Объявите его, когда нельзя сыграть и остаться не выше 31; последний допустимый пег даёт очко, затем счёт сбрасывается."], ["Что приносит очки?", "Пятнадцать, пары, ряды, флеши, нобс и два очка за точный 31."], ["Как победить?", "Побеждает первый игрок, достигший 121 очка."], ["Прогресс сохраняется?", "Локальный результат и настройки сохраняются только в этом браузере."],],
+    },
+    hi: {
+      title: "क्रिबेज", intro: "क्रिबेज एक छोटा कार्ड रेस है: दो कार्ड क्रिब में रखें, 31 से ऊपर जाए बिना पेग करें और पंद्रह, जोड़ी, रन, फ्लश और नॉब से 121 तक पहुँचें।", gameplay: "क्लासिक स्कोरिंग कार्ड गेम", genre: ["कार्ड", "क्लासिक", "रणनीति"], difficulty: "सीखना आसान, महारत चुनौतीपूर्ण", time: "5–15 मिनट",
+      story: ["हर राउंड में छह कार्ड मिलते हैं। चार रखें और ठीक दो साझा क्रिब में भेजें; फिर स्टार्टर कार्ड से हाथ की संभावित स्कोरिंग पढ़ें।", "रेस योजना और गिनती को मिलाती है: सुरक्षित पेग चुनें, कुल संख्या देखें और परिणाम में हाथ व क्रिब का स्कोर जाँचें।"],
+      systems: ["पेगिंग में वही कार्ड खेलें जिससे कुल 31 या कम रहे। पंद्रह और 31 पर दो-दो अंक मिलते हैं तथा जोड़ी और रन बनते ही स्कोर होते हैं।", "31 पार किए बिना कार्ड न हो तो Go कहें। आखिरी कानूनी पेग एक अंक देता है; 31 पर क्रम रीसेट होता है और डीलर बदलता है।", "हाथ और क्रिब पंद्रह, जोड़ी, रन, फ्लश और नॉब जाँचते हैं। 121 तक पहले पहुँचने वाला जीतता है और ब्राउज़र स्थानीय परिणाम रखता है।"],
+      how: ["राउंड शुरू करें और छह कार्ड देखें।", "ठीक दो कार्ड क्रिब के लिए चुनकर डिस्कार्ड पक्का करें।", "पेगिंग में कुल को 31 या कम रखने वाला कार्ड खेलें; कानूनी चाल न हो तो Go लें।", "राउंड के बाद परिणाम में हाथ, क्रिब और पेगिंग के कुल अंक पढ़ें।", "नया गेम या रीस्टार्ट चुनकर नई डील का अभ्यास करें और 121 तक बेहतर रास्ता खोजें।"],
+      strategyTips: ["क्रिब को कम लाभ देने वाले कार्ड छोड़ें और पंद्रह या रन बनाने वाले संयोजन रखें।", "हर पेग से पहले कुल संख्या देखें; जोड़ी या रन कार्ड के अंक से अधिक मूल्यवान हो सकते हैं।", "जब अगली गिनती के लिए कार्ड बचाना सुरक्षित हो, तब Go जानबूझकर इस्तेमाल करें।", "हर राउंड का विवरण तुलना करके समझें कि कौन से संयोजन स्कोर बना रहे हैं।"],
+      progression: ["121 की रेस ही प्रगति है: डीलर बदलता है, हर डील नया डिस्कार्ड निर्णय देती है और हर परिणाम अगला सुधार दिखाता है।", "खाता कौशल-वृक्ष या ऑनलाइन मैच नहीं है। दोबारा खेलकर पेगिंग और डिस्कार्ड सुधारना ही व्यावहारिक महारत है।"],
+      designNote: "क्रिबेज डिस्कार्ड, पेगिंग, स्कोर और समीक्षा को छोटे ब्राउज़र सत्र में स्पष्ट रखता है। तुरंत मिलने वाले कुल अंक क्लासिक शब्द सिखाते हैं, बिना खाते या ऑनलाइन प्रतिद्वंद्वी के।", noteTitle: "खिलाड़ी और सेव जानकारी", parent: "परिणाम और पसंद केवल इसी ब्राउज़र में रहते हैं। खाते, खरीद, क्लाउड सेव या ऑनलाइन मैच की जरूरत नहीं; साइट डेटा साफ करने से स्थानीय परिणाम मिट सकता है।",
+      faq: [["दो कार्ड क्यों छोड़ते हैं?", "वे क्रिब में जाते हैं, हाथों के बाद स्कोर होते हैं और उस राउंड के डीलर के होते हैं।"], ["Go क्या है?", "जब कोई कार्ड कुल को 31 या कम नहीं रख सकता तब Go कहें; आखिरी कानूनी पेग एक अंक देता है और फिर गिनती रीसेट होती है।"], ["क्या स्कोर होता है?", "पंद्रह, जोड़ी, रन, फ्लश, नॉब और ठीक 31 के दो अंक।"], ["कैसे जीतें?", "121 अंक तक पहले पहुँचने वाला खिलाड़ी जीतता है।"], ["क्या प्रगति सेव होती है?", "स्थानीय परिणाम और पसंद केवल इसी ब्राउज़र में सेव होते हैं।"],],
+    },
+    ar: {
+      title: "كريبج", intro: "كريبج سباق ورق قصير: اختر ورقتين للكريب، والعب من دون تجاوز 31، واجمع نقاط الخمسة عشر والأزواج والتسلسلات والفلاش والنوبس حتى 121.", gameplay: "لعبة ورق كلاسيكية بالنقاط", genre: ["ورق", "كلاسيكية", "استراتيجية"], difficulty: "سهلة التعلم ومتدرجة الإتقان", time: "5–15 دقيقة",
+      story: ["توزع كل جولة ست أوراق. احتفظ بأربع وأرسل ورقتين بالضبط إلى الكريب، ثم استخدم ورقة البداية لقراءة احتمالات نقاط يدك.", "تجمع الجولة القصيرة بين التخطيط والعد: اختر لعبات آمنة، راقب المجموع، ثم راجع في النتيجة نقاط اليد والكريب."],
+      systems: ["أثناء البيغينغ العب ورقة تُبقي المجموع عند 31 أو أقل. الخمسة عشر و31 يمنحان نقطتين، ويُحسب الزوج والتسلسل عند ظهورهما.", "عندما لا توجد ورقة قانونية من دون تجاوز 31 أعلن Go. تمنح آخر لعبة قانونية نقطة، ويعيد 31 التسلسل؛ ويتناوب الموزع.", "تفحص اليد والكريب تركيبات الخمسة عشر والأزواج والتسلسلات والفلاش والنوبس. يفوز أول من يصل إلى 121 ويحفظ المتصفح النتيجة المحلية."],
+      how: ["ابدأ جولة وافحص الأوراق الست.", "اختر ورقتين بالضبط للكريب وأكد التخلص منهما.", "أثناء البيغينغ اختر ورقة تبقي المجموع عند 31 أو أقل؛ استخدم Go عند عدم وجود حركة قانونية.", "بعد انتهاء الجولة اقرأ مجاميع اليد والكريب والبيغينغ في النتيجة.", "اختر لعبة جديدة أو إعادة البدء لتجربة توزيع جديد وتحسين طريقك إلى 121."],
+      strategyTips: ["تخلص من الأوراق الأقل فائدة للكريب واحتفظ بتركيبات الخمسة عشر أو التسلسل.", "افحص المجموع قبل كل بيغ؛ قد تكون قيمة الزوج أو التسلسل أكبر من رقم الورقة.", "استخدم Go بقصد عندما يكون الاحتفاظ بورقة للعد التالي أكثر أمانًا.", "قارن تفاصيل كل جولة لتعرف التركيبات التي تحمل نقاطك."],
+      progression: ["سباق 121 هو التقدم: يتناوب الموزع، ويخلق كل توزيع قرارًا جديدًا للتخلص، وتوضح كل نتيجة ما يمكن تحسينه.", "لا توجد شجرة مهارات للحساب ولا مباراة عبر الإنترنت. إعادة اللعب وصقل البيغ والتخلص هما الإتقان العملي."],
+      designNote: "تجعل كريبج التخلص والبيغ والنقاط والمراجعة واضحة في جلسة متصفح قصيرة. تعلّم المجاميع الفورية المصطلحات الكلاسيكية من دون حساب أو خصم عبر الإنترنت.", noteTitle: "معلومات اللاعب والحفظ", parent: "تبقى النتائج والتفضيلات في هذا المتصفح. لا يلزم حساب أو شراء أو حفظ سحابي أو مباراة عبر الإنترنت؛ وقد يؤدي مسح بيانات الموقع إلى حذف النتيجة المحلية.",
+      faq: [["لماذا أتخلص من ورقتين؟", "تذهبان إلى الكريب الذي يُحسب بعد الأيدي ويكون للموزع في تلك الجولة."], ["ما هو Go؟", "أعلنه عندما لا تستطيع لعب ورقة من دون تجاوز 31؛ تمنح آخر لعبة قانونية نقطة ثم يعاد العد."], ["ما التركيبات التي تمنح نقاطًا؟", "الخمسة عشر والأزواج والتسلسلات والفلاش والنوبس ونقطتا الوصول إلى 31."], ["كيف أفوز؟", "يفوز أول لاعب يصل إلى 121 نقطة."], ["هل يحفظ التقدم؟", "تحفظ النتيجة المحلية والتفضيلات في هذا المتصفح فقط."],],
+    },
+  });
+
+  const hoopBase = {
+    title: "Animal Hoop League",
+    intro: "Read the target arc, tune aim and power, then hold and release Shoot to outscore the rival across six authored animal courts.",
+    gameplay: "Arc-and-power basketball challenge",
+    genre: ["Sports", "Arcade", "Animal"],
+    difficulty: "Easy to learn, tighter by court",
+    time: "3–8 minutes",
+    story: [
+      "Each court turns one basketball shot into a readable decision. The target arc and power window change from court to court, while the rival score gives every shot a clear reason to matter.",
+      "Six stages form a compact league: start with a friendly target, learn to alternate aim and power, then handle tighter windows and authored shot patterns before the final court.",
+    ],
+    systems: [
+      "Move the aim marker left or right, hold Shoot to charge the power meter, and release when the arc and power line up with the current target.",
+      "Every court contains a fixed set of shots with its own tolerance. Made shots, perfect shots, your score, and the rival score update immediately after each release.",
+      "Your best cleared stage unlocks the next court. Result shows the stage summary, then offers Next Stage or Retry; the best stage is stored locally in this browser.",
+    ],
+    how: [
+      "Choose an unlocked court and read the aim, power, and shot brief.",
+      "Use the left and right controls to place the aim marker on the target arc.",
+      "Hold Shoot to charge power, then release inside the target window.",
+      "Read the made, perfect, score, and rival feedback before the next shot.",
+      "Finish the court, review Result, and choose Next Stage or Retry to improve the league run.",
+    ],
+    strategyTips: [
+      "Treat the target arc as the first question and power as the second; changing both at once makes misses harder to diagnose.",
+      "Watch the next-shot tip after a miss and make one controlled correction instead of swinging across the whole arc.",
+      "Perfect shots are useful practice, but a steady made shot is often the safer way to beat the rival score.",
+      "Replay a court after unlocking it to learn its fixed shot pattern before spending attention on the next stage.",
+    ],
+    progression: [
+      "The six courts are the authored progression. Early courts teach aim and hold-release timing; later courts narrow the tolerance and vary the target pattern.",
+      "There is no account ladder or online ranking. Stage unlocks and a better made/perfect balance in this browser are the practical mastery path.",
+    ],
+    designNote: "Animal Hoop League makes a basketball shot legible as aim, power, release, and feedback. Fixed court patterns keep practice meaningful while the rival score and stage unlocks give each short session a clear next goal.",
+    noteTitle: "Player and Save Information",
+    parent: "Best stage progress stays in this browser. No account, purchase, online match, or cloud save is required; clearing site data can remove the local unlock.",
+    faq: [
+      ["How do I make a shot?", "Set the aim marker, hold Shoot to charge power, and release when both values sit inside the current target window."],
+      ["What is a perfect shot?", "It is a made shot that lands inside the tighter perfect window for that authored attempt."],
+      ["How do courts unlock?", "Clear a stage to unlock the next court; the best cleared stage is kept in this browser."],
+      ["What happens after a court?", "Result shows the stage summary and offers Next Stage or Retry."],
+      ["Is progress saved?", "The best stage is saved locally in this browser only."],
+    ],
+  };
+
+  const hoop = localizedClassic(["lights-out", "sliding-15"], hoopBase, {
+    en: {},
+    "zh-Hant": {
+      title: "動物灌籃聯盟", intro: "讀取目標弧線，調整瞄準與力度，按住再放開 Shoot，在六個設計好的動物球場中超過對手。", gameplay: "弧線與力度籃球挑戰", genre: ["運動", "街機", "動物"], difficulty: "容易上手，球場逐步收緊", time: "3–8 分鐘",
+      story: ["每個球場都把一次投籃變成容易理解的決策。目標弧線與力度範圍會逐場改變，而對手分數讓每次出手都有明確目的。", "六個 Stage 組成短小聯盟：先熟悉友善目標，再學會交替控制瞄準與力度，最後處理更窄的範圍與預設投籃模式。"],
+      systems: ["左右移動瞄準標記，按住 Shoot 充入力度條，看到弧線與力度對準目前目標時放開。", "每個球場都有固定投籃組合與自己的容錯。每次放開後，命中、完美命中、你的分數與對手分數都會即時更新。", "通過目前球場就會解鎖下一個。結果畫面顯示球場摘要，並提供下一球場或重試；最佳 Stage 只保存在這個瀏覽器。"],
+      how: ["選擇已解鎖球場，閱讀瞄準、力度與投籃提示。", "用左右控制把瞄準標記放到目標弧線。", "按住 Shoot 充入力度，然後在目標範圍內放開。", "每球後閱讀命中、完美、分數與對手回饋。", "完成球場後查看結果，選擇下一球場或重試來改善聯盟成績。"],
+      strategyTips: ["先把目標弧線當成第一個問題，再調整力度；同時大幅改兩者會難以判斷失誤原因。", "失手後先看下一球提示，只做一次可控修正，不要把瞄準橫掃整條弧線。", "完美投籃適合練習，但穩定命中往往更能安全超過對手分數。", "解鎖後重玩固定投籃模式，再把注意力放到下一個 Stage。"],
+      progression: ["六個球場就是預設進程。前段教你瞄準與按住放開的節奏，後段縮小容錯並改變目標模式。", "沒有帳號階梯或線上排名；在這個瀏覽器解鎖球場、提高命中與完美命中的比例，就是實際熟練路徑。"],
+      designNote: "動物灌籃聯盟把投籃拆成瞄準、力度、放開與回饋。固定球場模式讓練習有意義，對手分數與解鎖進程則為每次短局提供下一個目標。", noteTitle: "玩家與存檔資訊", parent: "最佳 Stage 進度會保留在這個瀏覽器。不需要帳號、購買、線上對局或雲端存檔；清除網站資料可能刪除本機解鎖。",
+      faq: [["怎麼投籃？", "設定瞄準標記，按住 Shoot 充入力度，兩者都在目前目標範圍內時放開。"], ["什麼是完美投籃？", "在該次預設投籃的更窄完美範圍內命中。"], ["如何解鎖球場？", "通過一個 Stage 就能解鎖下一個，最佳通過 Stage 會保留在此瀏覽器。"], ["完成球場後會怎樣？", "結果顯示摘要，並提供下一球場或重試。"], ["進度會保存嗎？", "最佳 Stage 只保存在這個瀏覽器。"],],
+    },
+    "zh-Hans": {
+      title: "动物灌篮联盟", intro: "读取目标弧线，调整瞄准和力度，按住再松开 Shoot，在六个设计好的动物球场中超过对手。", gameplay: "弧线与力度篮球挑战", genre: ["运动", "街机", "动物"], difficulty: "容易上手，球场逐步收紧", time: "3–8 分钟",
+      story: ["每个球场都把一次投篮变成容易理解的决策。目标弧线和力度范围会逐场改变，而对手分数让每次出手都有明确目的。", "六个 Stage 组成短小联赛：先熟悉友善目标，再学会交替控制瞄准和力度，最后处理更窄范围与预设投篮模式。"],
+      systems: ["左右移动瞄准标记，按住 Shoot 充入力度条，看到弧线和力度对准当前目标时松开。", "每个球场都有固定投篮组合和自己的容错。每次松开后，命中、完美命中、你的分数和对手分数都会即时更新。", "通过当前球场会解锁下一个。结果画面显示球场摘要，并提供下一球场或重试；最佳 Stage 只保存在此浏览器。"],
+      how: ["选择已解锁球场，阅读瞄准、力度和投篮提示。", "用左右控制把瞄准标记放到目标弧线。", "按住 Shoot 充入力度，然后在目标范围内松开。", "每球后阅读命中、完美、分数和对手反馈。", "完成球场后查看结果，选择下一球场或重试来改善联赛成绩。"],
+      strategyTips: ["先把目标弧线当作第一个问题，再调整力度；同时大幅修改两者会难以判断失误原因。", "失手后先看下一球提示，只做一次可控修正，不要把瞄准横扫整条弧线。", "完美投篮适合练习，但稳定命中往往更能安全超过对手分数。", "解锁后重玩固定投篮模式，再把注意力放到下一个 Stage。"],
+      progression: ["六个球场就是预设进程。前段教你瞄准和按住松开的节奏，后段缩小容错并改变目标模式。", "没有账号阶梯或在线排名；在此浏览器解锁球场、提高命中与完美命中的比例，就是实际熟练路径。"],
+      designNote: "动物灌篮联盟把投篮拆成瞄准、力度、松开和反馈。固定球场模式让练习有意义，对手分数和解锁进程则为每次短局提供下一个目标。", noteTitle: "玩家与存档信息", parent: "最佳 Stage 进度保留在此浏览器。不需要账号、购买、在线对局或云端存档；清除网站数据可能删除本地解锁。",
+      faq: [["怎么投篮？", "设置瞄准标记，按住 Shoot 充入力度，两者都在当前目标范围内时松开。"], ["什么是完美投篮？", "在该次预设投篮的更窄完美范围内命中。"], ["如何解锁球场？", "通过一个 Stage 就能解锁下一个，最佳通过 Stage 会保留在此浏览器。"], ["完成球场后会怎样？", "结果显示摘要，并提供下一球场或重试。"], ["进度会保存吗？", "最佳 Stage 只保存在此浏览器。"],],
+    },
+    ja: {
+      title: "アニマル・フープ・リーグ", intro: "目標の弧を読み、狙いとパワーを整え、Shootを押して離し、6つの動物コートでライバルを上回ります。", gameplay: "弧とパワーのバスケット挑戦", genre: ["スポーツ", "アーケード", "アニマル"], difficulty: "始めやすくコートごとに厳しくなる", time: "3〜8分",
+      story: ["各コートは1本のシュートを読みやすい判断に変えます。目標の弧とパワー幅が変わり、ライバルの得点が毎回の理由を示します。", "6ステージの短いリーグで、最初は親切な目標、次に狙いとパワーの交互調整、最後に狭い幅と決められたパターンへ進みます。"],
+      systems: ["左右で狙いマーカーを動かし、Shootを長押ししてパワーをため、弧とパワーが目標に合ったら離します。", "各コートには固有の許容幅と固定されたショット列があります。成功、パーフェクト、自分とライバルの得点が離すたびに更新されます。", "コートをクリアすると次が開きます。結果には概要が出て、次のステージかリトライを選べます。最高ステージはブラウザに保存されます。"],
+      how: ["解放済みのコートを選び、狙い・パワー・ショット説明を読みます。", "左右操作で狙いマーカーを目標の弧へ置きます。", "Shootを長押ししてパワーをため、目標幅で離します。", "各ショット後に成功、パーフェクト、得点、ライバルの反応を読みます。", "コートを終え、結果から次のステージかリトライを選びます。"],
+      strategyTips: ["まず目標の弧、次にパワーを合わせます。両方を大きく変えるとミスの原因が分かりにくくなります。", "ミスの後は次のショットのヒントを読み、弧全体を動かさず一度だけ修正します。", "パーフェクトは練習に役立ちますが、安定した成功の方がライバルを抜きやすい場合があります。", "解放後に固定パターンを再挑戦してから次のステージへ進みます。"],
+      progression: ["6コートが作り込まれた進行です。前半は狙いと長押し・離しのリズム、後半は狭い幅と異なる目標パターンを学びます。", "アカウントのリーグやオンライン順位はありません。このブラウザで解放し、成功とパーフェクトの比率を上げるのが熟練です。"],
+      designNote: "アニマル・フープ・リーグはシュートを狙い、パワー、リリース、結果に分けます。固定パターンは練習を意味あるものにし、ライバル得点と解放が次の目標を作ります。", noteTitle: "プレイヤーと保存情報", parent: "最高ステージはこのブラウザに保存されます。アカウント、購入、オンライン対戦、クラウド保存は不要で、サイトデータを消すと解放が失われる場合があります。",
+      faq: [["どうシュートしますか？", "狙いマーカーを置き、Shootを長押ししてパワーをため、両方が目標幅に入ったら離します。"], ["パーフェクトとは？", "そのショットの狭いパーフェクト幅に入った成功です。"], ["コートはどう開きますか？", "ステージをクリアすると次が開き、最高ステージがブラウザに残ります。"], ["コート後は？", "結果に概要が出て、次のステージかリトライを選べます。"], ["進行は保存されますか？", "最高ステージはこのブラウザだけに保存されます。"],],
+    },
+    ko: {
+      title: "애니멀 후프 리그", intro: "목표 아크를 읽고 조준과 파워를 맞춘 뒤 Shoot을 길게 눌렀다 놓아 여섯 동물 코트에서 라이벌을 앞서세요.", gameplay: "아크와 파워 농구 도전", genre: ["스포츠", "아케이드", "동물"], difficulty: "쉽게 시작하고 코트마다 좁아짐", time: "3–8분",
+      story: ["각 코트는 한 번의 슛을 읽기 쉬운 결정으로 바꿉니다. 목표 아크와 파워 범위가 코트마다 달라지고 라이벌 점수가 슛의 이유를 만듭니다.", "여섯 스테이지의 짧은 리그에서 친절한 목표로 시작해 조준과 파워를 번갈아 조절하고, 마지막에는 좁은 범위와 고정 패턴을 다룹니다."],
+      systems: ["좌우로 조준 마커를 옮기고 Shoot을 길게 눌러 파워를 채운 뒤 아크와 파워가 목표에 맞을 때 놓으세요.", "각 코트에는 고유 허용 범위와 고정 슛 구성이 있습니다. 성공, 퍼펙트, 내 점수, 라이벌 점수가 놓을 때마다 즉시 갱신됩니다.", "코트를 통과하면 다음 코트가 열립니다. 결과에서 요약을 보고 다음 스테이지나 재시도를 선택할 수 있으며 최고 스테이지는 브라우저에 저장됩니다."],
+      how: ["잠금 해제된 코트를 선택하고 조준·파워·슛 안내를 읽으세요.", "좌우 조작으로 조준 마커를 목표 아크에 놓으세요.", "Shoot을 길게 눌러 파워를 채우고 목표 범위에서 놓으세요.", "매 슛 뒤 성공, 퍼펙트, 점수, 라이벌 피드백을 읽으세요.", "코트를 끝내고 결과에서 다음 스테이지나 재시도를 고르세요."],
+      strategyTips: ["먼저 목표 아크, 다음 파워를 맞추세요. 둘을 동시에 크게 바꾸면 빗나간 이유를 알기 어렵습니다.", "실패 후 다음 슛 팁을 읽고 아크 전체를 흔들지 말고 한 번만 조절하세요.", "퍼펙트는 연습에 좋지만 안정적인 성공이 라이벌 점수를 넘기에는 더 안전할 수 있습니다.", "잠금 해제 후 고정 패턴을 다시 플레이하고 다음 스테이지에 집중하세요."],
+      progression: ["여섯 코트가 설계된 진행입니다. 앞부분은 조준과 홀드-릴리스 리듬을, 뒷부분은 좁은 범위와 다른 목표 패턴을 가르칩니다.", "계정 리그나 온라인 순위는 없습니다. 이 브라우저에서 코트를 열고 성공·퍼펙트 비율을 높이는 것이 숙련 경로입니다."],
+      designNote: "애니멀 후프 리그는 슛을 조준, 파워, 릴리스, 피드백으로 나눕니다. 고정 패턴은 연습을 의미 있게 하고 라이벌 점수와 잠금 해제가 다음 목표를 만듭니다.", noteTitle: "플레이어 및 저장 정보", parent: "최고 스테이지는 이 브라우저에 저장됩니다. 계정, 구매, 온라인 대전, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 해제가 사라질 수 있습니다.",
+      faq: [["어떻게 슛하나요?", "조준 마커를 놓고 Shoot을 길게 눌러 파워를 채운 뒤 두 값이 목표 범위 안에 있을 때 놓으세요."], ["퍼펙트 슛이 무엇인가요?", "해당 시도의 더 좁은 퍼펙트 범위 안에 들어간 성공입니다."], ["코트는 어떻게 열리나요?", "스테이지를 통과하면 다음 코트가 열리고 최고 스테이지가 브라우저에 남습니다."], ["코트 후에는 무엇을 하나요?", "결과에서 요약을 보고 다음 스테이지나 재시도를 선택합니다."], ["진행이 저장되나요?", "최고 스테이지는 이 브라우저에만 저장됩니다."],],
+    },
+    es: {
+      title: "Liga de Aros Animal", intro: "Lee el arco objetivo, ajusta dirección y potencia, mantén y suelta Shoot para superar al rival en seis pistas animales.", gameplay: "Desafío de baloncesto con arco y potencia", genre: ["Deportes", "Arcade", "Animales"], difficulty: "Fácil de empezar, más estrecho por pista", time: "3–8 minutos",
+      story: ["Cada pista convierte un tiro en una decisión clara: cambian el arco y la ventana de potencia, mientras la puntuación rival explica por qué importa cada lanzamiento.", "Las seis pistas forman una liga breve, desde un objetivo amable hasta patrones fijos y ventanas más estrechas."],
+      systems: ["Mueve el marcador con izquierda y derecha, mantén Shoot para cargar potencia y suéltalo cuando arco y potencia coincidan.", "Cada pista tiene tiros fijos y tolerancia propia. Aciertos, perfectos, tu puntuación y la rival se actualizan tras cada tiro.", "Superar una pista desbloquea la siguiente. Resultado ofrece Siguiente pista o Reintentar y guarda la mejor pista en este navegador."],
+      how: ["Elige una pista desbloqueada y lee el objetivo de dirección, potencia y tiro.", "Coloca el marcador sobre el arco con los controles laterales.", "Mantén Shoot para cargar y suéltalo dentro de la ventana objetivo.", "Lee el acierto, perfecto, puntuación y rival antes del siguiente tiro.", "Revisa Resultado y elige Siguiente pista o Reintentar."],
+      strategyTips: ["Ajusta primero el arco y después la potencia para entender cada fallo.", "Tras fallar, aplica una sola corrección usando la sugerencia del siguiente tiro.", "Un acierto constante suele ser más seguro que buscar perfectos para superar al rival.", "Repite una pista desbloqueada para aprender su patrón fijo."],
+      progression: ["Las seis pistas son la progresión: primero enseñan dirección y soltar, después reducen la tolerancia y cambian el patrón.", "No hay liga de cuenta ni clasificación online; desbloquear pistas y mejorar la proporción de aciertos es la maestría local."],
+      designNote: "Animal Hoop League separa un tiro en dirección, potencia, liberación y respuesta. Los patrones fijos hacen útil la práctica y el rival marca el siguiente objetivo.", noteTitle: "Información del jugador y guardado", parent: "La mejor pista queda en este navegador. No hacen falta cuenta, compra, partida online ni nube; borrar los datos del sitio puede eliminar el desbloqueo local.",
+      faq: [["¿Cómo tiro?", "Coloca el marcador, mantén Shoot para cargar y suelta cuando dirección y potencia estén en la ventana."], ["¿Qué es un tiro perfecto?", "Un acierto dentro de la ventana perfecta más estrecha de ese intento."], ["¿Cómo se desbloquean pistas?", "Supera una pista para abrir la siguiente; la mejor queda en el navegador."], ["¿Qué ocurre al terminar?", "Resultado muestra el resumen y permite avanzar o reintentar."], ["¿Se guarda el progreso?", "Solo se guarda localmente en este navegador."],],
+    },
+    "pt-BR": {
+      title: "Liga Animal de Arremessos", intro: "Leia o arco-alvo, ajuste direção e força, segure e solte Shoot para superar o rival em seis quadras animais.", gameplay: "Desafio de basquete com arco e força", genre: ["Esportes", "Arcade", "Animais"], difficulty: "Fácil de começar, mais apertado por quadra", time: "3–8 minutos",
+      story: ["Cada quadra transforma um arremesso em uma decisão clara: o arco e a janela de força mudam, enquanto a pontuação rival dá motivo a cada tentativa.", "As seis quadras formam uma liga curta, começando com um alvo amigável e terminando com padrões fixos e janelas menores."],
+      systems: ["Mova o marcador com esquerda e direita, segure Shoot para carregar força e solte quando arco e força coincidirem.", "Cada quadra tem arremessos fixos e tolerância própria. Acertos, perfeitos, sua pontuação e a do rival mudam após cada soltura.", "Vencer uma quadra libera a próxima. Resultado oferece Próxima quadra ou Tentar novamente e guarda a melhor quadra neste navegador."],
+      how: ["Escolha uma quadra liberada e leia o resumo de direção, força e arremesso.", "Coloque o marcador no arco-alvo usando os controles laterais.", "Segure Shoot para carregar e solte dentro da janela-alvo.", "Leia acerto, perfeito, pontuação e rival antes do próximo arremesso.", "Veja Resultado e escolha Próxima quadra ou Tentar novamente."],
+      strategyTips: ["Ajuste primeiro o arco e depois a força para entender cada erro.", "Depois de errar, faça uma única correção controlada usando a dica do próximo arremesso.", "Um acerto consistente costuma ser mais seguro que buscar perfeitos para vencer o rival.", "Repita uma quadra liberada para aprender seu padrão fixo."],
+      progression: ["As seis quadras são a progressão: primeiro ensinam direção e soltar; depois estreitam a tolerância e variam o padrão.", "Não há liga de conta nem ranking online; liberar quadras e melhorar a taxa de acertos é a maestria local."],
+      designNote: "Animal Hoop League divide o arremesso em direção, força, soltura e feedback. Padrões fixos dão valor ao treino e a pontuação rival cria o próximo objetivo.", noteTitle: "Informações do jogador e salvamento", parent: "A melhor quadra fica neste navegador. Não é preciso conta, compra, partida online ou nuvem; limpar os dados do site pode apagar a liberação local.",
+      faq: [["Como arremesso?", "Posicione o marcador, segure Shoot para carregar e solte quando direção e força estiverem na janela."], ["O que é um arremesso perfeito?", "Um acerto dentro da janela perfeita mais estreita daquela tentativa."], ["Como liberar quadras?", "Vença uma quadra para abrir a próxima; a melhor fica no navegador."], ["O que acontece ao terminar?", "Resultado mostra o resumo e permite avançar ou tentar novamente."], ["O progresso é salvo?", "Somente localmente neste navegador."],],
+    },
+    fr: {
+      title: "Ligue des Arceaux Animaux", intro: "Lisez l’arc cible, réglez la visée et la puissance, maintenez puis relâchez Shoot pour dépasser l’adversaire sur six terrains animaliers.", gameplay: "Défi de basket d’arc et de puissance", genre: ["Sports", "Arcade", "Animaux"], difficulty: "Facile à commencer, plus serré à chaque terrain", time: "3–8 minutes",
+      story: ["Chaque terrain transforme un tir en décision lisible : l’arc et la fenêtre de puissance changent, tandis que le score adverse donne un enjeu à chaque tir.", "Les six terrains forment une ligue courte, d’une cible accueillante aux motifs fixes et fenêtres plus étroites."],
+      systems: ["Déplacez le marqueur avec gauche et droite, maintenez Shoot pour charger et relâchez quand l’arc et la puissance correspondent.", "Chaque terrain possède une série de tirs fixe et une tolérance propre. Réussites, parfaits, votre score et celui de l’adversaire se mettent à jour à chaque tir.", "Réussir un terrain débloque le suivant. Résultat propose Terrain suivant ou Réessayer et conserve le meilleur terrain dans ce navigateur."],
+      how: ["Choisissez un terrain débloqué et lisez l’objectif de visée, puissance et tir.", "Placez le marqueur sur l’arc avec les commandes latérales.", "Maintenez Shoot pour charger, puis relâchez dans la fenêtre cible.", "Lisez réussite, parfait, score et adversaire avant le tir suivant.", "Consultez Résultat et choisissez Terrain suivant ou Réessayer."],
+      strategyTips: ["Réglez d’abord l’arc puis la puissance afin de comprendre chaque erreur.", "Après un échec, faites une seule correction en suivant l’indication du tir suivant.", "Une réussite régulière est souvent plus sûre qu’un tir parfait pour dépasser l’adversaire.", "Rejouez un terrain débloqué pour apprendre son motif fixe."],
+      progression: ["Les six terrains constituent la progression : ils enseignent d’abord visée et relâchement, puis réduisent la tolérance et changent le motif.", "Il n’y a ni ligue de compte ni classement en ligne ; débloquer et améliorer le taux de réussite est la maîtrise locale."],
+      designNote: "Animal Hoop League sépare un tir en visée, puissance, relâchement et retour. Les motifs fixes rendent l’entraînement utile et le score adverse donne le prochain objectif.", noteTitle: "Informations du joueur et sauvegarde", parent: "Le meilleur terrain reste dans ce navigateur. Aucun compte, achat, match en ligne ou cloud n’est nécessaire ; effacer les données du site peut supprimer le déblocage local.",
+      faq: [["Comment tirer ?", "Placez le marqueur, maintenez Shoot pour charger, puis relâchez quand visée et puissance sont dans la fenêtre."], ["Qu’est-ce qu’un tir parfait ?", "Une réussite dans la fenêtre parfaite, plus étroite, de cet essai."], ["Comment débloquer les terrains ?", "Réussissez un terrain pour ouvrir le suivant ; le meilleur reste dans le navigateur."], ["Que se passe-t-il après ?", "Résultat affiche le bilan et permet d’avancer ou de réessayer."], ["La progression est-elle sauvegardée ?", "Elle est sauvegardée localement dans ce navigateur uniquement."],],
+    },
+    de: {
+      title: "Animal Hoop League", intro: "Lies den Zielbogen, stelle Richtung und Kraft ein, halte Shoot und lasse los, um den Rivalen auf sechs Tierplätzen zu übertreffen.", gameplay: "Basketball-Herausforderung mit Bogen und Kraft", genre: ["Sport", "Arcade", "Tiere"], difficulty: "Leicht zu beginnen, je Platz enger", time: "3–8 Minuten",
+      story: ["Jeder Platz macht aus einem Wurf eine lesbare Entscheidung: Zielbogen und Kraftfenster wechseln, während der Rivalenstand jeden Wurf sinnvoll macht.", "Sechs Plätze bilden eine kurze Liga – vom freundlichen Ziel bis zu festen Mustern und engeren Fenstern."],
+      systems: ["Bewege die Markierung links und rechts, halte Shoot zum Laden und lasse los, wenn Bogen und Kraft passen.", "Jeder Platz hat feste Würfe und eigene Toleranzen. Treffer, perfekte Treffer, dein Stand und der Rivalenstand werden nach jedem Wurf aktualisiert.", "Ein geschaffter Platz schaltet den nächsten frei. Ergebnis bietet Nächster Platz oder Wiederholen und speichert den besten Platz im Browser."],
+      how: ["Wähle einen freigeschalteten Platz und lies Richtung, Kraft und Wurfhinweis.", "Setze die Markierung mit den Seitensteuerungen auf den Zielbogen.", "Halte Shoot zum Laden und lasse innerhalb des Zielfensters los.", "Lies Treffer, Perfekt, Punktestand und Rivalenfeedback.", "Prüfe Ergebnis und wähle Nächster Platz oder Wiederholen."],
+      strategyTips: ["Stelle zuerst den Bogen und dann die Kraft ein, damit Fehler verständlich bleiben.", "Korrigiere nach einem Fehlwurf einmal kontrolliert anhand des nächsten Hinweises.", "Ein sicherer Treffer ist oft besser als ein perfekter Versuch, um den Rivalen zu schlagen.", "Wiederhole einen freigeschalteten Platz und lerne sein festes Muster."],
+      progression: ["Die sechs Plätze sind der Fortschritt: erst Ziel und Loslassen, später engere Toleranzen und wechselnde Muster.", "Es gibt keine Konto-Liga und keine Online-Rangliste; Freischalten und eine bessere Trefferquote sind die lokale Meisterschaft."],
+      designNote: "Animal Hoop League zerlegt den Wurf in Ziel, Kraft, Loslassen und Feedback. Feste Muster machen Übung sinnvoll, der Rivalenstand setzt das nächste Ziel.", noteTitle: "Spieler- und Speicherhinweise", parent: "Der beste Platz bleibt in diesem Browser. Konto, Kauf, Online-Spiel und Cloud sind nicht nötig; gelöschte Websitedaten können die lokale Freischaltung entfernen.",
+      faq: [["Wie werfe ich?", "Setze die Markierung, halte Shoot zum Laden und lasse los, wenn Richtung und Kraft im Fenster liegen."], ["Was ist ein perfekter Wurf?", "Ein Treffer im engeren perfekten Fenster dieses Versuchs."], ["Wie werden Plätze frei?", "Schaffe einen Platz, um den nächsten zu öffnen; der beste bleibt im Browser."], ["Was kommt danach?", "Ergebnis zeigt die Zusammenfassung und erlaubt Weiter oder Wiederholen."], ["Wird der Fortschritt gespeichert?", "Nur lokal in diesem Browser."],],
+    },
+    it: {
+      title: "Animal Hoop League", intro: "Leggi l’arco bersaglio, regola mira e potenza, tieni premuto e rilascia Shoot per superare il rivale in sei campi animali.", gameplay: "Sfida di basket con arco e potenza", genre: ["Sport", "Arcade", "Animali"], difficulty: "Facile da iniziare, più stretto a ogni campo", time: "3–8 minuti",
+      story: ["Ogni campo trasforma un tiro in una decisione chiara: arco e finestra di potenza cambiano, mentre il punteggio rivale dà un motivo a ogni tentativo.", "I sei campi formano una lega breve, da un bersaglio amichevole a schemi fissi e finestre più strette."],
+      systems: ["Sposta il marcatore a destra o sinistra, tieni Shoot per caricare e rilascia quando arco e potenza coincidono.", "Ogni campo ha tiri fissi e tolleranza propria. Canestri, perfetti, il tuo punteggio e quello rivale si aggiornano a ogni rilascio.", "Superare un campo sblocca il successivo. Risultato offre Campo successivo o Riprova e salva il miglior campo nel browser."],
+      how: ["Scegli un campo sbloccato e leggi mira, potenza e indicazione del tiro.", "Posiziona il marcatore sull’arco con i comandi laterali.", "Tieni Shoot per caricare e rilascia nella finestra bersaglio.", "Leggi canestro, perfetto, punteggio e rivale prima del tiro seguente.", "Apri Risultato e scegli Campo successivo o Riprova."],
+      strategyTips: ["Regola prima l’arco e poi la potenza per capire ogni errore.", "Dopo un errore fai una sola correzione controllata seguendo il suggerimento.", "Un canestro costante è spesso più sicuro di un perfetto per battere il rivale.", "Ripeti un campo sbloccato per imparare il suo schema fisso."],
+      progression: ["I sei campi sono la progressione: prima insegnano mira e rilascio, poi restringono la tolleranza e cambiano schema.", "Non ci sono lega dell’account o classifica online; sbloccare campi e migliorare i canestri è la maestria locale."],
+      designNote: "Animal Hoop League divide il tiro in mira, potenza, rilascio e feedback. Gli schemi fissi rendono utile l’allenamento e il punteggio rivale indica il prossimo obiettivo.", noteTitle: "Informazioni del giocatore e salvataggio", parent: "Il miglior campo resta in questo browser. Non servono account, acquisti, partite online o cloud; cancellare i dati del sito può rimuovere lo sblocco locale.",
+      faq: [["Come tiro?", "Posiziona il marcatore, tieni Shoot per caricare e rilascia quando mira e potenza sono nella finestra."], ["Cos’è un tiro perfetto?", "Un canestro dentro la finestra perfetta più stretta di quel tentativo."], ["Come sblocco i campi?", "Supera un campo per aprire il successivo; il migliore resta nel browser."], ["Cosa succede dopo?", "Risultato mostra il riepilogo e permette di continuare o riprovare."], ["Il progresso viene salvato?", "Solo localmente in questo browser."],],
+    },
+    ru: {
+      title: "Звериная лига колец", intro: "Читайте целевую дугу, настраивайте направление и силу, удерживайте и отпускайте Shoot, чтобы обойти соперника на шести площадках.", gameplay: "Баскетбольная задача на дугу и силу", genre: ["Спорт", "Аркада", "Животные"], difficulty: "Легко начать, допуск сужается", time: "3–8 минут",
+      story: ["Каждая площадка превращает бросок в понятное решение: дуга и окно силы меняются, а счёт соперника объясняет важность попытки.", "Шесть площадок образуют короткую лигу — от дружелюбной цели до фиксированных схем и узких окон."],
+      systems: ["Двигайте маркер влево и вправо, удерживайте Shoot для набора силы и отпускайте при совпадении дуги и силы.", "На каждой площадке есть фиксированные броски и собственный допуск. Попадания, идеальные броски и оба счёта обновляются после отпускания.", "Пройденная площадка открывает следующую. Результат предлагает Следующую или Повтор, а лучший этап хранится в браузере."],
+      how: ["Выберите открытую площадку и прочитайте цель направления, силы и броска.", "Поставьте маркер на целевую дугу боковыми кнопками.", "Удерживайте Shoot и отпустите внутри окна цели.", "Читайте попадание, идеальный бросок, свой счёт и счёт соперника.", "Откройте результат и выберите Следующую площадку или Повтор."],
+      strategyTips: ["Сначала настройте дугу, затем силу, чтобы понимать причину промаха.", "После промаха сделайте одну контролируемую правку по подсказке следующего броска.", "Надёжное попадание часто безопаснее идеального для победы над соперником.", "Повторяйте открытую площадку, чтобы запомнить её фиксированную схему."],
+      progression: ["Шесть площадок — это прогресс: сначала цель и отпускание, затем более узкие допуски и новые схемы.", "Нет лиги аккаунта или онлайн-рейтинга; локальное мастерство — открывать площадки и повышать долю попаданий."],
+      designNote: "Звериная лига колец делит бросок на цель, силу, отпускание и обратную связь. Фиксированные схемы делают тренировку осмысленной, а счёт соперника задаёт следующую цель.", noteTitle: "Сведения об игроке и сохранении", parent: "Лучшая площадка хранится в этом браузере. Аккаунт, покупка, онлайн-матч и облако не нужны; очистка данных сайта может удалить локальную разблокировку.",
+      faq: [["Как бросать?", "Поставьте маркер, удерживайте Shoot для силы и отпустите, когда направление и сила попадут в окно."], ["Что такое идеальный бросок?", "Попадание в более узкое идеальное окно этой попытки."], ["Как открыть площадки?", "Пройдите площадку, чтобы открыть следующую; лучший этап остаётся в браузере."], ["Что после площадки?", "Результат показывает итог и позволяет продолжить или повторить."], ["Прогресс сохраняется?", "Только локально в этом браузере."],],
+    },
+    hi: {
+      title: "एनिमल हूप लीग", intro: "लक्ष्य आर्क पढ़ें, निशाना और पावर मिलाएँ, Shoot को दबाकर छोड़ें और छह पशु कोर्ट में प्रतिद्वंद्वी से आगे निकलें।", gameplay: "आर्क और पावर बास्केटबॉल चुनौती", genre: ["खेल", "आर्केड", "पशु"], difficulty: "शुरू करना आसान, हर कोर्ट में कड़ा", time: "3–8 मिनट",
+      story: ["हर कोर्ट एक शॉट को साफ निर्णय में बदलता है। लक्ष्य आर्क और पावर विंडो बदलती है, जबकि प्रतिद्वंद्वी का स्कोर हर शॉट को उद्देश्य देता है।", "छह कोर्ट की छोटी लीग दोस्ताना लक्ष्य से शुरू होकर स्थिर पैटर्न और संकरी विंडो तक जाती है।"],
+      systems: ["बाएँ-दाएँ से निशाना मार्कर चलाएँ, Shoot दबाकर पावर भरें और आर्क व पावर मिलने पर छोड़ें।", "हर कोर्ट में तय शॉट और अलग सहनशीलता है। हिट, परफेक्ट, अपना स्कोर और प्रतिद्वंद्वी स्कोर हर रिलीज़ के बाद बदलते हैं।", "कोर्ट पूरा करने पर अगला खुलता है। Result सारांश और Next या Retry देता है; सर्वोत्तम कोर्ट इसी ब्राउज़र में रहता है।"],
+      how: ["खुले कोर्ट को चुनकर निशाना, पावर और शॉट संकेत पढ़ें।", "साइड कंट्रोल से मार्कर को लक्ष्य आर्क पर रखें।", "Shoot दबाकर पावर भरें और लक्ष्य विंडो में छोड़ें।", "हर शॉट के बाद हिट, परफेक्ट और दोनों स्कोर पढ़ें।", "Result देखें और Next Court या Retry चुनें।"],
+      strategyTips: ["पहले आर्क, फिर पावर बदलें ताकि गलती समझ आए।", "चूक के बाद संकेत के अनुसार एक नियंत्रित सुधार करें।", "प्रतिद्वंद्वी को हराने के लिए स्थिर हिट अक्सर परफेक्ट से सुरक्षित है।", "अगले कोर्ट से पहले खुले कोर्ट का स्थिर पैटर्न दोहराएँ।"],
+      progression: ["छह कोर्ट प्रगति हैं: पहले निशाना और छोड़ने की लय, फिर संकरी विंडो और नए पैटर्न।", "खाता लीग या ऑनलाइन रैंकिंग नहीं है; स्थानीय महारत कोर्ट खोलने और हिट अनुपात बढ़ाने में है।"],
+      designNote: "एनिमल हूप लीग शॉट को निशाना, पावर, रिलीज़ और फीडबैक में बाँटती है। स्थिर पैटर्न अभ्यास को अर्थ देते हैं और प्रतिद्वंद्वी स्कोर अगला लक्ष्य बनाता है।", noteTitle: "खिलाड़ी और सेव जानकारी", parent: "सर्वोत्तम कोर्ट इसी ब्राउज़र में रहता है। खाते, खरीद, ऑनलाइन मैच या क्लाउड की जरूरत नहीं; साइट डेटा साफ करने से स्थानीय अनलॉक मिट सकता है।",
+      faq: [["शॉट कैसे लें?", "मार्कर रखें, Shoot दबाकर पावर भरें और निशाना व पावर विंडो में होने पर छोड़ें।"], ["परफेक्ट शॉट क्या है?", "उस प्रयास की संकरी परफेक्ट विंडो में लगा हुआ शॉट।"], ["कोर्ट कैसे खुलते हैं?", "एक कोर्ट पूरा करने पर अगला खुलता है और सर्वोत्तम कोर्ट ब्राउज़र में रहता है।"], ["कोर्ट के बाद क्या होता है?", "Result सारांश दिखाकर आगे बढ़ने या फिर कोशिश का विकल्प देता है।"], ["क्या प्रगति सेव होती है?", "केवल इसी ब्राउज़र में स्थानीय रूप से।"],],
+    },
+    ar: {
+      title: "دوري الحلقات الحيواني", intro: "اقرأ القوس المستهدف، واضبط الاتجاه والقوة، واضغط Shoot ثم اتركه لتتجاوز المنافس في ست ساحات حيوانية.", gameplay: "تحدي كرة سلة بالقوس والقوة", genre: ["رياضة", "أركيد", "حيوانات"], difficulty: "سهلة البدء وتضيق في كل ساحة", time: "3–8 دقائق",
+      story: ["تحول كل ساحة الرمية إلى قرار واضح: يتغير القوس ونافذة القوة، بينما يمنحك رصيد المنافس سببًا لكل محاولة.", "تشكل الساحات الست دوريًا قصيرًا يبدأ بهدف مريح وينتهي بأنماط ثابتة ونوافذ أضيق."],
+      systems: ["حرّك مؤشر التصويب يمينًا ويسارًا، واضغط Shoot لشحن القوة، ثم اتركه عندما يتطابق القوس والقوة مع الهدف.", "لكل ساحة رميات ثابتة وتسامح خاص. تتحدث الإصابات والرميات المثالية ونتيجتاك ونتيجة المنافس بعد كل ترك.", "يفتح اجتياز الساحة التالية. تعرض النتيجة الملخص وتقدم التالية أو إعادة المحاولة، وتحفظ أفضل ساحة في المتصفح."],
+      how: ["اختر ساحة مفتوحة واقرأ هدف الاتجاه والقوة والرمية.", "ضع المؤشر على القوس باستخدام التحكم الجانبي.", "اضغط Shoot لشحن القوة واتركه داخل نافذة الهدف.", "اقرأ الإصابة والمثالية والنتيجتين قبل الرمية التالية.", "راجع النتيجة واختر الساحة التالية أو إعادة المحاولة."],
+      strategyTips: ["اضبط القوس أولًا ثم القوة كي تفهم سبب كل خطأ.", "بعد الخطأ نفذ تصحيحًا واحدًا مضبوطًا اعتمادًا على تلميح الرمية التالية.", "الإصابة الثابتة غالبًا أكثر أمانًا من مطاردة الرمية المثالية لتجاوز المنافس.", "أعد الساحة المفتوحة لتتعلم نمط رمياتها الثابت."],
+      progression: ["الساحات الست هي مسار التقدم: تعلم الأولى الاتجاه والإفلات، ثم تضيق النوافذ وتتغير الأنماط.", "لا توجد دوري حساب أو قائمة ترتيب عبر الإنترنت؛ الإتقان المحلي هو فتح الساحات وزيادة نسبة الإصابات."],
+      designNote: "يقسم دوري الحلقات الحيواني الرمية إلى تصويب وقوة وإفلات وتغذية راجعة. تجعل الأنماط الثابتة التدريب مفيدًا ويحدد رصيد المنافس الهدف التالي.", noteTitle: "معلومات اللاعب والحفظ", parent: "تبقى أفضل ساحة في هذا المتصفح. لا يلزم حساب أو شراء أو مباراة عبر الإنترنت أو سحابة؛ وقد يؤدي مسح بيانات الموقع إلى حذف الفتح المحلي.",
+      faq: [["كيف أرمي؟", "ضع المؤشر واضغط Shoot لشحن القوة ثم اتركه عندما يكون الاتجاه والقوة داخل النافذة."], ["ما الرمية المثالية؟", "إصابة داخل النافذة المثالية الأضيق للمحاولة."], ["كيف أفتح الساحات؟", "اجتز ساحة لفتح التالية، وتبقى الأفضل في المتصفح."], ["ماذا بعد الساحة؟", "تعرض النتيجة الملخص وتتيح المتابعة أو إعادة المحاولة."], ["هل يحفظ التقدم؟", "يحفظ محليًا في هذا المتصفح فقط."],],
+    },
+  });
+
+  const mahjongBase = {
+    title: "Mahjong Solitaire",
+    intro: "Match open identical tiles, recover from a mismatch, and clear six authored pairs before trying the optional twelve-pair Mastery layout.",
+    gameplay: "Open-tile matching puzzle",
+    genre: ["Classic", "Puzzle", "Strategy"],
+    difficulty: "Easy to start, pattern-focused",
+    time: "3–8 minutes",
+    story: [
+      "Every standard board contains six pairs arranged in an authored layout. A tile is open when it is uncovered and has a free side, so the board asks you to read access as well as symbols.",
+      "The optional Mastery layout doubles the target to twelve pairs. It keeps the same clear loop while asking you to protect future access and spend hints deliberately.",
+    ],
+    systems: [
+      "Select two open tiles with the same symbol to remove a pair. Remaining updates after every match, making the shrinking board easy to follow.",
+      "A mismatch does not remove either tile: the newly selected tile stays visible so you can compare it, while the open rule explains why a blocked tile cannot be used.",
+      "Hint reveals a live pair without autoplay. Clear the six-pair Standard board or choose Mastery for twelve pairs, then review Result and replay locally.",
+    ],
+    how: [
+      "Start Standard or choose the optional Mastery layout.",
+      "Look for an uncovered tile with one free side; those are the open tiles.",
+      "Select two open tiles with identical symbols to match them.",
+      "If the symbols differ, read the feedback and use the next open choice without losing the board.",
+      "Use Hint when needed, clear the target, and choose Replay or return to Main from Result.",
+    ],
+    strategyTips: [
+      "Before matching, notice which tile is blocking future access; an easy pair is not always the best first pair.",
+      "Use the Remaining count and open rule together so you do not waste a selection on a covered tile.",
+      "After a mismatch, remember the symbol and let the selected tile guide the next search.",
+      "Save Hint for a board state with few live pairs, especially in the twelve-pair Mastery layout.",
+    ],
+    progression: [
+      "Six authored Standard layouts teach the open-tile rule and matching rhythm. Mastery expands the target to twelve pairs for a longer access-planning challenge.",
+      "There is no timer, account tree, or online ranking. Replaying layouts with fewer mismatches and hints is the practical mastery path.",
+    ],
+    designNote: "Mahjong Solitaire makes accessibility part of the puzzle: the symbol match is only useful when the tile is open. Clear Remaining feedback, non-destructive mismatches, and an optional Mastery board turn a familiar format into a readable planning exercise.",
+    noteTitle: "Player and Save Information",
+    parent: "Best results and preferences stay in this browser. No account, purchase, online match, or cloud save is required; clearing site data can remove local results.",
+    faq: [
+      ["What makes a tile open?", "It must be uncovered and have a free side. The game shows the rule before you choose."],
+      ["What happens after a mismatch?", "Neither tile is removed; the newly selected tile remains visible so you can compare it."],
+      ["What does Hint do?", "It points to a live matching pair but never removes tiles automatically."],
+      ["What is Mastery?", "It is an optional twelve-pair layout after the six-pair Standard challenge."],
+      ["Is progress saved?", "Local results and preferences are saved only in this browser."],
+    ],
+  };
+
+  const mahjong = localizedClassic(["lights-out", "sliding-15"], mahjongBase, {
+    en: {},
+    "zh-Hant": {
+      title: "麻將接龍", intro: "配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。", gameplay: "可用牌配對益智遊戲", genre: ["經典", "益智", "策略"], difficulty: "容易開始，重視觀察模式", time: "3–8 分鐘",
+      story: ["每個標準棋盤都有六組預設牌。牌面必須未被覆蓋，且至少一側有空位才算可用，因此你要同時閱讀入口與符號。", "可選的 Mastery 版面把目標加倍到十二組，保留相同流程，卻要求你保護未來的可用路徑並有意識地使用提示。"],
+      systems: ["選取兩張可用且符號相同的牌即可消除一組，Remaining 會在每次配對後更新。", "失配不會移除任何牌；新選的牌會保留在畫面上，讓你比較符號，而可用規則也會說明被遮住的牌為何不能選。", "Hint 會指出一組仍可配對的牌，但不會自動遊玩。完成六組 Standard 或選擇十二組 Mastery 後，可在結果畫面重玩。"],
+      how: ["開始 Standard，或選擇可選的 Mastery 版面。", "先找未被覆蓋且至少一側有空位的可用牌。", "選取兩張符號相同的可用牌來配對。", "符號不同時閱讀回饋；新牌會留下，棋盤不會被破壞。", "需要時使用 Hint，清除目標後從結果選擇重玩或回到主頁。"],
+      strategyTips: ["配對前先看哪張牌擋住未來入口；最容易的配對不一定該先做。", "把 Remaining 與可用規則一起看，避免把選擇浪費在被覆蓋的牌上。", "失配後記住符號，讓目前選中的牌帶你搜尋下一張。", "在剩餘配對變少、尤其是十二組 Mastery 時，留給 Hint 一個真正需要的局面。"],
+      progression: ["六個預設 Standard 版面教你可用規則與配對節奏；Mastery 把目標加到十二組，形成更長的入口規劃挑戰。", "沒有計時、帳號技能樹或線上排名；用更少失配與提示重玩版面，就是實際熟練路徑。"],
+      designNote: "麻將接龍把可用性變成謎題的一部分：符號相同只有在牌能被取用時才有意義。Remaining、非破壞失配與可選 Mastery 讓熟悉的格式成為容易閱讀的規劃練習。", noteTitle: "玩家與存檔資訊", parent: "最佳結果與偏好會保留在這個瀏覽器。不需要帳號、購買、線上對局或雲端存檔；清除網站資料可能刪除本機結果。",
+      faq: [["什麼牌算可用？", "牌必須未被覆蓋，並且至少一側有空位；遊戲會在選牌前提示規則。"], ["失配後會怎樣？", "兩張牌都不會移除，新選的牌會留下供你比較。"], ["Hint 做什麼？", "指出一組仍可配對的牌，但不會自動消除。"], ["什麼是 Mastery？", "完成六組 Standard 後可選的十二組版面。"], ["進度會保存嗎？", "本機結果與偏好只保存在這個瀏覽器。"],],
+    },
+    "zh-Hans": {
+      title: "麻将接龙", intro: "配对可用的相同牌，从失配中重新找路，清除六组预设牌，再挑战可选的十二组 Mastery 版面。", gameplay: "可用牌配对益智游戏", genre: ["经典", "益智", "策略"], difficulty: "容易开始，重视观察模式", time: "3–8 分钟",
+      story: ["每个标准棋盘都有六组预设牌。牌面必须未被覆盖，且至少一侧有空位才算可用，因此你要同时阅读入口和符号。", "可选的 Mastery 版面把目标加倍到十二组，保留相同流程，却要求你保护未来的可用路径并有意识地使用提示。"],
+      systems: ["选择两张可用且符号相同的牌即可消除一组，Remaining 会在每次配对后更新。", "失配不会移除任何牌；新选的牌会保留在画面上，让你比较符号，而可用规则也会说明被遮住的牌为何不能选。", "Hint 会指出一组仍可配对的牌，但不会自动游玩。完成六组 Standard 或选择十二组 Mastery 后，可在结果画面重玩。"],
+      how: ["开始 Standard，或选择可选的 Mastery 版面。", "先找未被覆盖且至少一侧有空位的可用牌。", "选择两张符号相同的可用牌进行配对。", "符号不同就阅读反馈；新牌会留下，棋盘不会被破坏。", "需要时使用 Hint，清除目标后从结果选择重玩或返回主页。"],
+      strategyTips: ["配对前先看哪张牌挡住未来入口；最容易的配对不一定应该先做。", "把 Remaining 和可用规则一起看，避免把选择浪费在被覆盖的牌上。", "失配后记住符号，让当前选中的牌带你寻找下一张。", "在剩余配对变少、尤其是十二组 Mastery 时，把 Hint 留给真正需要的局面。"],
+      progression: ["六个预设 Standard 版面教你可用规则和配对节奏；Mastery 把目标加到十二组，形成更长的入口规划挑战。", "没有计时、账号技能树或在线排名；用更少失配和提示重玩版面，就是实际熟练路径。"],
+      designNote: "麻将接龙把可用性变成谜题的一部分：符号相同只有在牌能被取用时才有意义。Remaining、非破坏失配和可选 Mastery 让熟悉的格式成为容易阅读的规划练习。", noteTitle: "玩家与存档信息", parent: "最佳结果和偏好保留在此浏览器。不需要账号、购买、在线对局或云端存档；清除网站数据可能删除本地结果。",
+      faq: [["什么牌算可用？", "牌必须未被覆盖，并且至少一侧有空位；游戏会在选牌前提示规则。"], ["失配后会怎样？", "两张牌都不会移除，新选的牌会留下供你比较。"], ["Hint 做什么？", "指出一组仍可配对的牌，但不会自动消除。"], ["什么是 Mastery？", "完成六组 Standard 后可选的十二组版面。"], ["进度会保存吗？", "本机结果与偏好只保存在此浏览器。"],],
+    },
+    ja: {
+      title: "麻雀ソリティア", intro: "取れる同じ牌をペアにし、間違えても盤面を保ちながら、6組の作り込まれたペアを消します。任意で12組のMasteryにも挑戦できます。", gameplay: "オープンタイルのマッチパズル", genre: ["クラシック", "パズル", "ストラテジー"], difficulty: "始めやすく、配置の読みが中心", time: "3〜8分",
+      story: ["標準盤面には6組のペアがあります。牌は覆われておらず、少なくとも片側が空いているときだけ取れるため、記号とアクセスを同時に読みます。", "任意のMastery盤面は目標を12組に増やします。同じ流れのまま、次のアクセスを守り、ヒントを選んで使う判断が必要です。"],
+      systems: ["取れる牌から同じ記号を2枚選ぶとペアが消え、Remainingが更新されます。", "不一致でも牌は消えません。新しく選んだ牌が残るので比較でき、覆われた牌が取れない理由も表示されます。", "Hintは取れるペアを示しますが自動操作はしません。6組のStandardまたは12組のMasteryを終え、結果からリプレイできます。"],
+      how: ["Standardを始めるか、任意のMasteryを選びます。", "覆われておらず片側が空いた牌を探します。", "同じ記号の取れる牌を2枚選びます。", "違えばフィードバックを読み、新しい牌が残った状態で次を探します。", "必要ならHintを使い、目標を消して結果からリプレイかメインへ戻ります。"],
+      strategyTips: ["取る前に、どの牌が次の入口をふさいでいるか見ます。簡単なペアが常に最善とは限りません。", "Remainingと取れる条件を一緒に読み、覆われた牌を選ばないようにします。", "不一致の記号を覚え、選択中の牌を次の探索の手掛かりにします。", "取れるペアが少ない盤面、特に12組ではHintを温存します。"],
+      progression: ["6つのStandard配置で取れる条件とペアのリズムを学び、Masteryでは12組のアクセス計画に進みます。", "タイマー、アカウントのスキルツリー、オンライン順位はありません。ミスとHintを減らして再挑戦することが熟練です。"],
+      designNote: "麻雀ソリティアはアクセス自体をパズルにします。同じ記号でも取れなければ意味がなく、Remainingと壊れない不一致、任意のMasteryが計画を読みやすくします。", noteTitle: "プレイヤーと保存情報", parent: "ベスト結果と設定はこのブラウザに保存されます。アカウント、購入、オンライン対戦、クラウド保存は不要で、サイトデータを消すと結果が失われる場合があります。",
+      faq: [["取れる牌とは？", "覆われておらず、少なくとも片側が空いている牌です。"], ["不一致だと？", "どちらも消えず、新しく選んだ牌が比較のため残ります。"], ["Hintは何をしますか？", "取れるペアを示しますが自動では消しません。"], ["Masteryとは？", "6組のStandardの後に選べる12組の盤面です。"], ["進行は保存されますか？", "結果と設定はこのブラウザだけに保存されます。"],],
+    },
+    ko: {
+      title: "마작 솔리테어", intro: "열린 같은 타일을 맞추고 불일치 뒤에도 보드를 유지하며 설계된 여섯 쌍을 제거하세요. 선택 사항인 열두 쌍 Mastery도 도전할 수 있습니다.", gameplay: "열린 타일 매칭 퍼즐", genre: ["클래식", "퍼즐", "전략"], difficulty: "시작은 쉽고 패턴 읽기가 핵심", time: "3–8분",
+      story: ["표준 보드에는 여섯 쌍이 정해진 배치로 놓입니다. 타일은 덮이지 않았고 한쪽이 비어 있어야 열리므로 기호와 접근성을 함께 읽어야 합니다.", "선택형 Mastery 보드는 목표를 열두 쌍으로 늘립니다. 같은 흐름을 유지하지만 다음 접근을 보호하고 힌트를 신중히 써야 합니다."],
+      systems: ["열린 타일 중 같은 기호 두 개를 고르면 한 쌍이 사라지고 Remaining이 갱신됩니다.", "불일치해도 타일은 사라지지 않습니다. 새로 고른 타일이 남아 비교할 수 있고, 막힌 타일을 고를 수 없는 이유도 표시됩니다.", "Hint는 가능한 한 쌍을 알려 주지만 자동으로 없애지 않습니다. Standard 여섯 쌍 또는 Mastery 열두 쌍을 끝내고 결과에서 다시 플레이하세요."],
+      how: ["Standard를 시작하거나 선택형 Mastery를 고르세요.", "덮이지 않고 한쪽이 비어 있는 열린 타일을 찾으세요.", "같은 기호의 열린 타일 두 개를 선택하세요.", "다르면 피드백을 읽고 새 타일이 남은 상태에서 다음을 찾으세요.", "필요할 때 Hint를 쓰고 목표를 지운 뒤 결과에서 재플레이나 메인으로 이동하세요."],
+      strategyTips: ["맞추기 전에 어떤 타일이 다음 접근을 막는지 보세요. 쉬운 쌍이 항상 먼저일 필요는 없습니다.", "Remaining과 열린 규칙을 함께 읽어 덮인 타일에 선택을 낭비하지 마세요.", "불일치한 기호를 기억하고 현재 선택 타일을 다음 검색의 단서로 사용하세요.", "특히 열두 쌍 Mastery에서 가능한 쌍이 적을 때 Hint를 아껴 두세요."],
+      progression: ["여섯 Standard 배치가 열린 규칙과 매칭 리듬을 가르치고, Mastery는 열두 쌍의 접근 계획으로 확장합니다.", "타이머, 계정 스킬 트리, 온라인 순위는 없습니다. 불일치와 Hint를 줄이며 재플레이하는 것이 숙련입니다."],
+      designNote: "마작 솔리테어는 접근성을 퍼즐로 만듭니다. 같은 기호도 열려 있지 않으면 쓸 수 없고, Remaining과 보드를 보존하는 불일치, 선택형 Mastery가 계획을 읽기 쉽게 합니다.", noteTitle: "플레이어 및 저장 정보", parent: "최고 기록과 설정은 이 브라우저에 저장됩니다. 계정, 구매, 온라인 대전, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 결과가 사라질 수 있습니다.",
+      faq: [["어떤 타일이 열려 있나요?", "덮이지 않고 최소 한쪽이 비어 있는 타일입니다."], ["불일치하면 어떻게 되나요?", "둘 다 사라지지 않고 새로 고른 타일이 비교를 위해 남습니다."], ["Hint는 무엇을 하나요?", "가능한 매칭 쌍을 알려 주지만 자동 제거는 하지 않습니다."], ["Mastery가 무엇인가요?", "Standard 여섯 쌍 뒤에 선택할 수 있는 열두 쌍 보드입니다."], ["진행이 저장되나요?", "결과와 설정은 이 브라우저에만 저장됩니다."],],
+    },
+    es: {
+      title: "Mahjong Solitaire", intro: "Empareja fichas abiertas idénticas, recupera un fallo sin romper el tablero y elimina seis parejas diseñadas antes de probar el Mastery opcional de doce.", gameplay: "Rompecabezas de parejas abiertas", genre: ["Clásico", "Puzle", "Estrategia"], difficulty: "Fácil de empezar, centrado en patrones", time: "3–8 minutos",
+      story: ["Cada tablero estándar contiene seis parejas en una disposición creada a mano. Una ficha está abierta si no está cubierta y tiene un lado libre, así que debes leer acceso y símbolo.", "Mastery duplica el objetivo a doce parejas y exige proteger accesos futuros y usar Pista con intención."],
+      systems: ["Elige dos fichas abiertas con el mismo símbolo para eliminar una pareja; Restantes se actualiza después de cada acierto.", "Un fallo no elimina fichas. La recién elegida queda visible para comparar y la regla explica por qué una ficha bloqueada no sirve.", "Pista muestra una pareja viva sin jugar por ti. Completa Estándar o Mastery y revisa Resultado para repetir."],
+      how: ["Inicia Estándar o elige Mastery.", "Busca una ficha descubierta con un lado libre.", "Elige dos fichas abiertas con símbolos idénticos.", "Si no coinciden, lee el aviso y continúa con la ficha seleccionada visible.", "Usa Pista cuando haga falta, completa el objetivo y elige Repetir o Inicio desde Resultado."],
+      strategyTips: ["Antes de emparejar, mira qué ficha bloquea el acceso futuro; la pareja más fácil no siempre va primero.", "Usa Restantes y la regla de apertura para no gastar una selección en una ficha cubierta.", "Recuerda el símbolo fallido y úsalo para orientar la siguiente búsqueda.", "Guarda Pista para cuando queden pocas parejas, sobre todo en Mastery."],
+      progression: ["Seis diseños Estándar enseñan la regla de apertura y el ritmo de parejas; Mastery amplía el plan a doce.", "No hay temporizador, árbol de cuenta ni ranking online. Repetir con menos fallos y pistas es la maestría práctica."],
+      designNote: "Mahjong Solitaire convierte el acceso en parte del puzle: un símbolo igual solo sirve si la ficha está abierta. Restantes, fallos no destructivos y Mastery opcional hacen visible la planificación.", noteTitle: "Información del jugador y guardado", parent: "Los resultados y preferencias quedan en este navegador. No hacen falta cuenta, compra, partida online ni nube; borrar los datos puede eliminar el resultado local.",
+      faq: [["¿Qué ficha está abierta?", "Una ficha descubierta con al menos un lado libre."], ["¿Qué pasa si no coinciden?", "Ninguna se elimina y la nueva queda visible para compararla."], ["¿Qué hace Pista?", "Señala una pareja disponible, pero no la elimina automáticamente."], ["¿Qué es Mastery?", "Un diseño opcional de doce parejas después del Estándar de seis."], ["¿Se guarda el progreso?", "Solo localmente en este navegador."],],
+    },
+    "pt-BR": {
+      title: "Mahjong Solitaire", intro: "Combine peças abertas idênticas, recupere um erro sem quebrar o tabuleiro e remova seis pares antes do Mastery opcional de doze pares.", gameplay: "Quebra-cabeça de combinação de peças abertas", genre: ["Clássico", "Puzzle", "Estratégia"], difficulty: "Fácil de começar, focado em padrões", time: "3–8 minutos",
+      story: ["Cada tabuleiro padrão tem seis pares em um layout criado para a partida. A peça precisa estar descoberta e ter um lado livre, então você lê acesso e símbolo.", "Mastery dobra o alvo para doze pares e pede que você proteja acessos futuros e use a Dica com intenção."],
+      systems: ["Escolha duas peças abertas com o mesmo símbolo para remover um par; Restantes atualiza após cada combinação.", "Um erro não remove peças. A peça recém-escolhida fica visível para comparação e a regra explica por que uma peça bloqueada não pode ser usada.", "Dica mostra um par disponível sem jogar por você. Termine Standard ou Mastery e reveja Resultado para jogar novamente."],
+      how: ["Comece Standard ou escolha Mastery.", "Procure uma peça descoberta com um lado livre.", "Escolha duas peças abertas com símbolos iguais.", "Se forem diferentes, leia o feedback e continue com a nova peça visível.", "Use Dica quando precisar, conclua o alvo e escolha Rejogar ou Início no Resultado."],
+      strategyTips: ["Antes de combinar, veja qual peça bloqueia o acesso futuro; o par mais fácil nem sempre deve vir primeiro.", "Leia Restantes junto com a regra de abertura para não gastar seleção em peça coberta.", "Lembre o símbolo que falhou e use a peça selecionada para guiar a próxima busca.", "Guarde Dica para quando houver poucos pares, especialmente no Mastery."],
+      progression: ["Seis layouts Standard ensinam a regra de abertura e o ritmo de combinação; Mastery amplia o planejamento para doze pares.", "Não há cronômetro, árvore de conta ou ranking online. Rejogar com menos erros e dicas é a maestria prática."],
+      designNote: "Mahjong Solitaire transforma acesso em parte do puzzle: um símbolo igual só vale quando a peça está aberta. Restantes, erros não destrutivos e Mastery opcional deixam o planejamento claro.", noteTitle: "Informações do jogador e salvamento", parent: "Resultados e preferências ficam neste navegador. Não é preciso conta, compra, partida online ou nuvem; limpar os dados pode apagar o resultado local.",
+      faq: [["O que é uma peça aberta?", "Uma peça descoberta com pelo menos um lado livre."], ["O que ocorre com uma combinação errada?", "Nenhuma peça é removida e a nova fica visível para comparação."], ["O que a Dica faz?", "Mostra um par disponível, mas não o remove automaticamente."], ["O que é Mastery?", "Um layout opcional de doze pares após o Standard de seis."], ["O progresso é salvo?", "Somente localmente neste navegador."],],
+    },
+    fr: {
+      title: "Mahjong Solitaire", intro: "Associez des tuiles ouvertes identiques, récupérez une erreur sans casser le plateau et retirez six paires avant le Mastery optionnel de douze paires.", gameplay: "Puzzle d’association de tuiles ouvertes", genre: ["Classique", "Puzzle", "Stratégie"], difficulty: "Facile à commencer, centré sur les motifs", time: "3–8 minutes",
+      story: ["Chaque plateau standard contient six paires dans une disposition conçue. Une tuile est ouverte si elle n’est pas couverte et possède un côté libre : il faut lire l’accès et le symbole.", "Mastery double la cible à douze paires et demande de protéger les accès futurs et d’utiliser Indice avec intention."],
+      systems: ["Sélectionnez deux tuiles ouvertes au symbole identique pour retirer une paire ; Restantes se met à jour après chaque association.", "Une erreur ne retire aucune tuile. La tuile nouvellement choisie reste visible pour comparer, et la règle explique pourquoi une tuile bloquée est indisponible.", "Indice montre une paire possible sans jouer à votre place. Terminez Standard ou Mastery, puis consultez Résultat pour rejouer."],
+      how: ["Lancez Standard ou choisissez Mastery.", "Cherchez une tuile découverte avec un côté libre.", "Sélectionnez deux tuiles ouvertes de même symbole.", "Si elles diffèrent, lisez le retour et continuez avec la nouvelle tuile visible.", "Utilisez Indice si nécessaire, atteignez l’objectif et choisissez Rejouer ou Accueil dans Résultat."],
+      strategyTips: ["Avant d’associer, repérez la tuile qui bloque un accès futur ; la paire la plus facile n’est pas toujours prioritaire.", "Lisez Restantes avec la règle d’ouverture pour ne pas sélectionner une tuile couverte.", "Mémorisez le symbole de l’erreur et utilisez la tuile choisie comme piste.", "Gardez Indice pour les états avec peu de paires, surtout en Mastery."],
+      progression: ["Six dispositions Standard enseignent la règle d’ouverture et le rythme ; Mastery étend la planification à douze paires.", "Il n’y a ni chronomètre, arbre de compte ni classement en ligne. Rejouer avec moins d’erreurs et d’indices est la maîtrise."],
+      designNote: "Mahjong Solitaire fait de l’accès une partie du puzzle : un symbole identique ne sert que si la tuile est ouverte. Restantes, erreurs non destructives et Mastery rendent la planification lisible.", noteTitle: "Informations du joueur et sauvegarde", parent: "Résultats et préférences restent dans ce navigateur. Aucun compte, achat, match en ligne ou cloud n’est nécessaire ; effacer les données peut supprimer le résultat local.",
+      faq: [["Qu’est-ce qu’une tuile ouverte ?", "Une tuile découverte avec au moins un côté libre."], ["Que se passe-t-il en cas d’erreur ?", "Aucune tuile ne disparaît et la nouvelle reste visible pour comparaison."], ["Que fait Indice ?", "Il signale une paire disponible sans la retirer automatiquement."], ["Qu’est-ce que Mastery ?", "Une disposition optionnelle de douze paires après le Standard de six."], ["La progression est-elle sauvegardée ?", "Uniquement dans ce navigateur."],],
+    },
+    de: {
+      title: "Mahjong Solitaire", intro: "Finde gleiche offene Steine, erhole dich von einem Fehlpaar und räume sechs gestaltete Paare ab, bevor du das optionale Zwölf-Paar-Mastery probierst.", gameplay: "Puzzle mit offenen Steinpaaren", genre: ["Klassisch", "Puzzle", "Strategie"], difficulty: "Leicht zu beginnen, musterorientiert", time: "3–8 Minuten",
+      story: ["Jedes Standardbrett enthält sechs Paare in einem gestalteten Layout. Ein Stein ist offen, wenn er nicht bedeckt ist und eine freie Seite hat – Symbol und Zugang müssen gelesen werden.", "Mastery verdoppelt das Ziel auf zwölf Paare und verlangt, zukünftige Zugänge zu schützen und Hinweis bewusst einzusetzen."],
+      systems: ["Wähle zwei offene Steine mit gleichem Symbol, um ein Paar zu entfernen; Verbleibend wird nach jedem Treffer aktualisiert.", "Ein Fehlpaar entfernt keinen Stein. Der neue Stein bleibt sichtbar, damit du vergleichst; die Offen-Regel erklärt blockierte Steine.", "Hinweis zeigt ein lebendes Paar, spielt aber nicht automatisch. Schaffe Standard oder Mastery und spiele über Ergebnis erneut."],
+      how: ["Starte Standard oder wähle Mastery.", "Suche einen unbedeckten Stein mit einer freien Seite.", "Wähle zwei offene Steine mit gleichem Symbol.", "Bei einem Fehlpaar lies die Rückmeldung; der neue Stein bleibt sichtbar.", "Nutze Hinweis, wenn nötig, räume das Ziel und wähle in Ergebnis Wiederholen oder Start."],
+      strategyTips: ["Prüfe vor dem Paar, welcher Stein den künftigen Zugang blockiert; das leichteste Paar muss nicht zuerst kommen.", "Lies Verbleibend und Offen-Regel zusammen, damit du keinen bedeckten Stein auswählst.", "Merke dir das Fehlpaar und nutze den gewählten Stein als Suchhinweis.", "Spare Hinweis für wenige mögliche Paare, besonders in Mastery."],
+      progression: ["Sechs Standard-Layouts lehren offene Steine und den Matching-Rhythmus; Mastery erweitert die Zugangsplanung auf zwölf Paare.", "Es gibt keinen Timer, Account-Fertigkeitsbaum oder Online-Rang. Mit weniger Fehlern und Hinweisen erneut zu spielen ist die Meisterschaft."],
+      designNote: "Mahjong Solitaire macht Zugang zum Teil des Puzzles: Ein gleiches Symbol hilft nur, wenn der Stein offen ist. Verbleibend, nicht zerstörerische Fehler und Mastery machen Planung sichtbar.", noteTitle: "Spieler- und Speicherhinweise", parent: "Ergebnisse und Einstellungen bleiben in diesem Browser. Konto, Kauf, Online-Spiel und Cloud sind nicht nötig; gelöschte Websitedaten können das lokale Ergebnis entfernen.",
+      faq: [["Was ist ein offener Stein?", "Ein unbedeckter Stein mit mindestens einer freien Seite."], ["Was passiert bei einem Fehlpaar?", "Kein Stein wird entfernt, der neue bleibt zum Vergleichen sichtbar."], ["Was macht Hinweis?", "Er zeigt ein mögliches Paar, entfernt es aber nicht automatisch."], ["Was ist Mastery?", "Ein optionales Layout mit zwölf Paaren nach Standard mit sechs."], ["Wird Fortschritt gespeichert?", "Nur lokal in diesem Browser."],],
+    },
+    it: {
+      title: "Mahjong Solitaire", intro: "Abbina tessere aperte identiche, recupera un errore senza rovinare il tavolo e rimuovi sei coppie prima del Mastery opzionale da dodici.", gameplay: "Puzzle di abbinamento di tessere aperte", genre: ["Classico", "Puzzle", "Strategia"], difficulty: "Facile da iniziare, basato sui pattern", time: "3–8 minuti",
+      story: ["Ogni tavolo Standard contiene sei coppie in una disposizione progettata. Una tessera è aperta se non è coperta e ha un lato libero: devi leggere accesso e simbolo.", "Mastery raddoppia l’obiettivo a dodici coppie e chiede di proteggere gli accessi futuri e usare Suggerimento con criterio."],
+      systems: ["Scegli due tessere aperte con lo stesso simbolo per rimuovere una coppia; Restanti si aggiorna dopo ogni abbinamento.", "Un errore non rimuove tessere. La tessera appena scelta resta visibile per il confronto e la regola spiega perché una tessera bloccata non è disponibile.", "Suggerimento mostra una coppia attiva senza giocare al posto tuo. Completa Standard o Mastery e usa Risultato per rigiocare."],
+      how: ["Avvia Standard o scegli Mastery.", "Cerca una tessera scoperta con un lato libero.", "Scegli due tessere aperte con simboli uguali.", "Se non coincidono, leggi il feedback e continua con la nuova tessera visibile.", "Usa Suggerimento quando serve, completa l’obiettivo e scegli Rigioca o Home da Risultato."],
+      strategyTips: ["Prima dell’abbinamento osserva quale tessera blocca l’accesso futuro; la coppia facile non è sempre la prima.", "Leggi Restanti e la regola di apertura insieme per non scegliere una tessera coperta.", "Ricorda il simbolo dell’errore e usa la tessera selezionata per guidare la ricerca.", "Conserva Suggerimento quando restano poche coppie, soprattutto in Mastery."],
+      progression: ["Sei layout Standard insegnano regola e ritmo; Mastery estende la pianificazione dell’accesso a dodici coppie.", "Non ci sono timer, albero abilità o classifica online. Rigiocare con meno errori e suggerimenti è la maestria."],
+      designNote: "Mahjong Solitaire rende l’accesso parte del puzzle: un simbolo uguale vale solo se la tessera è aperta. Restanti, errori non distruttivi e Mastery rendono visibile la pianificazione.", noteTitle: "Informazioni del giocatore e salvataggio", parent: "Risultati e preferenze restano in questo browser. Non servono account, acquisti, partite online o cloud; cancellare i dati può rimuovere il risultato locale.",
+      faq: [["Cos’è una tessera aperta?", "È scoperta e ha almeno un lato libero."], ["Cosa succede con un errore?", "Nessuna tessera viene rimossa e la nuova resta visibile per il confronto."], ["Cosa fa Suggerimento?", "Indica una coppia disponibile ma non la elimina automaticamente."], ["Cos’è Mastery?", "Un layout opzionale da dodici coppie dopo lo Standard da sei."], ["Il progresso viene salvato?", "Solo localmente in questo browser."],],
+    },
+    ru: {
+      title: "Маджонг-пасьянс", intro: "Соединяйте одинаковые открытые плитки, исправляйте ошибку без разрушения поля и уберите шесть задуманных пар перед необязательной Mastery на двенадцать пар.", gameplay: "Головоломка открытых пар", genre: ["Классика", "Головоломка", "Стратегия"], difficulty: "Легко начать, важны узоры", time: "3–8 минут",
+      story: ["На стандартном поле шесть пар в авторской раскладке. Плитка открыта, если не закрыта и имеет свободную сторону, поэтому нужно читать и символ, и доступ.", "Mastery увеличивает цель до двенадцати пар и требует беречь будущий доступ и осознанно тратить подсказки."],
+      systems: ["Выберите две открытые плитки с одинаковым символом, чтобы убрать пару; Осталось обновляется после совпадения.", "Ошибка не убирает плитки. Новая выбранная плитка остаётся видимой для сравнения, а правило объясняет, почему закрытая недоступна.", "Подсказка показывает доступную пару, но не играет автоматически. Завершите Standard или Mastery и повторите из результата."],
+      how: ["Начните Standard или выберите Mastery.", "Найдите непокрытую плитку со свободной стороной.", "Выберите две открытые плитки с одинаковыми символами.", "При несовпадении прочитайте сообщение; новая плитка останется видимой.", "Используйте подсказку при необходимости, очистите цель и выберите Повтор или Меню в результате."],
+      strategyTips: ["Перед парой смотрите, какая плитка блокирует будущий доступ; самая лёгкая пара не всегда первая.", "Сверяйте Осталось с правилом открытия, чтобы не выбирать закрытую плитку.", "Запомните символ ошибки и используйте выбранную плитку как ориентир поиска.", "Берегите подсказку для состояния с малым числом пар, особенно в Mastery."],
+      progression: ["Шесть раскладок Standard учат правилу открытия и ритму пар; Mastery расширяет планирование доступа до двенадцати.", "Нет таймера, дерева навыков аккаунта или онлайн-рейтинга. Мастерство — повторять с меньшим числом ошибок и подсказок."],
+      designNote: "Маджонг-пасьянс делает доступ частью головоломки: одинаковый символ полезен только на открытой плитке. Счёт оставшихся, безопасные ошибки и Mastery делают планирование понятным.", noteTitle: "Сведения об игроке и сохранении", parent: "Результаты и настройки хранятся только в этом браузере. Аккаунт, покупка, онлайн-матч и облако не нужны; очистка данных может удалить локальный результат.",
+      faq: [["Что такое открытая плитка?", "Она не закрыта и имеет хотя бы одну свободную сторону."], ["Что при ошибке?", "Плитки не убираются, а новая остаётся для сравнения."], ["Что делает подсказка?", "Показывает доступную пару, но не убирает её автоматически."], ["Что такое Mastery?", "Необязательное поле из двенадцати пар после Standard из шести."], ["Прогресс сохраняется?", "Только локально в этом браузере."],],
+    },
+    hi: {
+      title: "माहजोंग सॉलिटेयर", intro: "खुले समान टाइल मिलाएँ, गलत जोड़ी के बाद बोर्ड बचाएँ और छह बनाई गई जोड़ियाँ हटाएँ, फिर वैकल्पिक बारह-जोड़ी Mastery आज़माएँ।", gameplay: "खुली टाइल मिलान पहेली", genre: ["क्लासिक", "पहेली", "रणनीति"], difficulty: "शुरू करना आसान, पैटर्न पर केंद्रित", time: "3–8 मिनट",
+      story: ["हर Standard बोर्ड में छह जोड़ियाँ तय लेआउट में होती हैं। टाइल ढकी न हो और एक ओर जगह हो तभी खुली है, इसलिए प्रतीक और पहुँच दोनों पढ़ें।", "Mastery लक्ष्य को बारह जोड़ियों तक बढ़ाता है और भविष्य की पहुँच बचाने तथा Hint सोचकर इस्तेमाल करने को कहता है।"],
+      systems: ["एक जैसे प्रतीक वाली दो खुली टाइल चुनकर जोड़ी हटाएँ; हर मिलान के बाद Remaining बदलता है।", "गलत जोड़ी से टाइल नहीं हटती। नई चुनी टाइल तुलना के लिए दिखाई देती है और नियम बताता है कि ढकी टाइल क्यों नहीं चुनी जा सकती।", "Hint उपलब्ध जोड़ी दिखाता है पर अपने आप नहीं खेलता। छह-जोड़ी Standard या बारह-जोड़ी Mastery पूरा करके Result से फिर खेलें।"],
+      how: ["Standard शुरू करें या Mastery चुनें।", "बिना ढकी और एक ओर खाली खुली टाइल खोजें।", "एक जैसे प्रतीक वाली दो खुली टाइल चुनें।", "अलग हों तो फीडबैक पढ़ें; नई टाइल दिखाई देती रहेगी।", "जरूरत पर Hint लें, लक्ष्य साफ करें और Result से फिर खेलें या Main लौटें।"],
+      strategyTips: ["मिलाने से पहले देखें कौन सी टाइल भविष्य की पहुँच रोकती है; आसान जोड़ी हमेशा पहले नहीं होती।", "Remaining और खुले नियम को साथ पढ़कर ढकी टाइल पर चयन न गँवाएँ।", "गलत प्रतीक याद रखें और चुनी टाइल को अगली खोज का संकेत बनाएं।", "कम जोड़ियाँ बचने पर, खासकर Mastery में, Hint बचाकर रखें।"],
+      progression: ["छह Standard लेआउट खुले नियम और मिलान की लय सिखाते हैं; Mastery पहुँच योजना को बारह जोड़ियों तक बढ़ाता है।", "टाइमर, खाता कौशल-वृक्ष या ऑनलाइन रैंक नहीं है। कम गलतियों और Hint के साथ दोबारा खेलना ही महारत है।"],
+      designNote: "माहजोंग सॉलिटेयर पहुँच को पहेली का हिस्सा बनाता है: समान प्रतीक तभी उपयोगी है जब टाइल खुली हो। Remaining, सुरक्षित गलती और वैकल्पिक Mastery योजना को स्पष्ट करते हैं।", noteTitle: "खिलाड़ी और सेव जानकारी", parent: "परिणाम और पसंद इसी ब्राउज़र में रहते हैं। खाते, खरीद, ऑनलाइन मैच या क्लाउड की जरूरत नहीं; साइट डेटा साफ करने से स्थानीय परिणाम मिट सकता है।",
+      faq: [["खुली टाइल क्या है?", "जो ढकी न हो और कम से कम एक ओर खाली जगह रखती हो।"], ["गलत जोड़ी पर क्या होता है?", "कोई टाइल नहीं हटती और नई टाइल तुलना के लिए दिखती रहती है।"], ["Hint क्या करता है?", "उपलब्ध जोड़ी दिखाता है, पर अपने आप नहीं हटाता।"], ["Mastery क्या है?", "छह-जोड़ी Standard के बाद वैकल्पिक बारह-जोड़ी बोर्ड।"], ["क्या प्रगति सेव होती है?", "केवल इसी ब्राउज़र में स्थानीय रूप से।"],],
+    },
+    ar: {
+      title: "ماجونغ سوليتير", intro: "طابق القطع المفتوحة المتطابقة، وتعامل مع الخطأ من دون كسر اللوحة، وأزل ستة أزواج مصممة قبل تجربة Mastery الاختيارية ذات الاثني عشر زوجًا.", gameplay: "لغز مطابقة القطع المفتوحة", genre: ["كلاسيكية", "ألغاز", "استراتيجية"], difficulty: "سهلة البدء ومبنية على قراءة الأنماط", time: "3–8 دقائق",
+      story: ["تحتوي كل لوحة قياسية على ستة أزواج في ترتيب مصمم. تكون القطعة مفتوحة عندما لا تكون مغطاة ولها جانب حر، لذلك اقرأ الوصول والرمز معًا.", "تضاعف Mastery الهدف إلى اثني عشر زوجًا وتطلب حماية الوصول القادم واستخدام التلميح بوعي."],
+      systems: ["اختر قطعتين مفتوحتين تحملان الرمز نفسه لإزالة زوج، ويتحدث المتبقي بعد كل تطابق.", "لا يزيل الخطأ أي قطعة. تبقى القطعة المحددة حديثًا ظاهرة للمقارنة، وتشرح القاعدة سبب عدم إتاحة القطعة المحجوبة.", "يعرض التلميح زوجًا متاحًا من دون لعب تلقائي. أكمل Standard أو Mastery ثم راجع النتيجة لإعادة اللعب."],
+      how: ["ابدأ Standard أو اختر Mastery.", "ابحث عن قطعة غير مغطاة ولها جانب حر.", "اختر قطعتين مفتوحتين بالرمز نفسه.", "إذا اختلفتا اقرأ التغذية الراجعة واترك القطعة الجديدة ظاهرة.", "استخدم التلميح عند الحاجة، ونظف الهدف، واختر إعادة اللعب أو الرئيسية من النتيجة."],
+      strategyTips: ["قبل المطابقة لاحظ أي قطعة تمنع الوصول القادم؛ فالزوج الأسهل ليس دائمًا الأول.", "اقرأ المتبقي مع قاعدة الانفتاح كي لا تهدر اختيارًا على قطعة محجوبة.", "تذكر رمز الخطأ واجعل القطعة المحددة دليل البحث التالي.", "احتفظ بالتلميح للحالات التي تقل فيها الأزواج المتاحة، خصوصًا في Mastery."],
+      progression: ["تعلمك ستة تخطيطات Standard قاعدة الانفتاح وإيقاع المطابقة؛ توسع Mastery التخطيط إلى اثني عشر زوجًا.", "لا يوجد مؤقت أو شجرة مهارات أو ترتيب عبر الإنترنت. إعادة اللعب بأخطاء وتلميحات أقل هي الإتقان العملي."],
+      designNote: "يجعل ماجونغ سوليتير الوصول جزءًا من اللغز: لا يفيد الرمز المتطابق إلا عندما تكون القطعة مفتوحة. يوضح المتبقي والخطأ غير المدمر وMastery الاختيارية التخطيط.", noteTitle: "معلومات اللاعب والحفظ", parent: "تبقى النتائج والتفضيلات في هذا المتصفح. لا يلزم حساب أو شراء أو مباراة عبر الإنترنت أو سحابة؛ وقد يؤدي مسح بيانات الموقع إلى حذف النتيجة المحلية.",
+      faq: [["ما القطعة المفتوحة؟", "قطعة غير مغطاة ولها جانب حر واحد على الأقل."], ["ماذا يحدث عند الخطأ؟", "لا تزال القطعتان ولا تزال الجديدة ظاهرة للمقارنة."], ["ماذا يفعل التلميح؟", "يشير إلى زوج متاح لكنه لا يزيله تلقائيًا."], ["ما هي Mastery؟", "لوحة اختيارية من اثني عشر زوجًا بعد Standard من ستة."], ["هل يحفظ التقدم؟", "يحفظ محليًا في هذا المتصفح فقط."],],
+    },
+  });
+
+  window.WEIGHTPLAY_PUBLIC_CLASSIC_GUIDES = {
+    chess,
+    pong,
+    "peg-solitaire": peg,
+    reversi,
+    "animal-peach-oath": animalPeachOath,
+    wordle,
+    cribbage,
+    "animal-hoop-league": hoop,
+    "mahjong-solitaire": mahjong,
+  };
 })();

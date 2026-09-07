@@ -918,28 +918,30 @@
       document.querySelectorAll("[data-card-title]").forEach((node) => ownLocalizedText(node, copy.title));
       document.querySelectorAll("[data-card-summary]").forEach((node) => ownLocalizedText(node, copy.summary));
       ownLocalizedText(document.querySelector(".main-copy .eyebrow"), copy.guideKicker);
-      ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
-      ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
-      ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
-      ownLocalizedText(document.querySelector("[data-wp-cribbage-guide-summary]"), copy.howTo);
-      const facts = [...document.querySelectorAll(".game-info-fact")];
-      [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
-        const fact = facts[index];
-        if (!fact) return;
-        ownLocalizedText(fact.querySelector("span"), label);
-        ownLocalizedText(fact.querySelector("strong"), value);
-      });
-      const sections = [...document.querySelectorAll(".game-info-section")];
-      const guide = sections.find((section) => section.querySelector("ol"));
-      ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
-      ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
-      const preview = sections.find((section) => section.classList.contains("game-info-parent"));
-      ownLocalizedText(preview?.querySelector("h3"), copy.preview);
-      ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
-      const faq = sections.find((section) => section.querySelector("dl"));
-      ownLocalizedText(faq?.querySelector("h3"), copy.faq);
-      ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
-      ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      if (!document.body?.hasAttribute("data-wp-game-owned-guide")) {
+        ownLocalizedText(document.querySelector(".game-info-kicker"), copy.guideKicker);
+        ownLocalizedText(document.querySelector(".game-info-title h2"), copy.title);
+        ownLocalizedText(document.querySelector(".game-info-title p"), copy.guideSummary);
+        ownLocalizedText(document.querySelector("[data-wp-cribbage-guide-summary]"), copy.howTo);
+        const facts = [...document.querySelectorAll(".game-info-fact")];
+        [[copy.gameplayLabel, copy.gameplay], [copy.genreLabel, copy.genre], [copy.difficultyLabel, copy.difficulty], [copy.timeLabel, copy.time], [copy.skillsLabel, copy.skills]].forEach(([label, value], index) => {
+          const fact = facts[index];
+          if (!fact) return;
+          ownLocalizedText(fact.querySelector("span"), label);
+          ownLocalizedText(fact.querySelector("strong"), value);
+        });
+        const sections = [...document.querySelectorAll(".game-info-section")];
+        const guide = sections.find((section) => section.querySelector("ol"));
+        ownLocalizedText(guide?.querySelector("h3"), copy.howTo);
+        ownLocalizedText(guide?.querySelector("li"), copy.howToCopy);
+        const preview = sections.find((section) => section.classList.contains("game-info-parent"));
+        ownLocalizedText(preview?.querySelector("h3"), copy.preview);
+        ownLocalizedText(preview?.querySelector("p"), copy.previewCopy);
+        const faq = sections.find((section) => section.querySelector("dl"));
+        ownLocalizedText(faq?.querySelector("h3"), copy.faq);
+        ownLocalizedText(faq?.querySelector("dt"), copy.faqQuestion);
+        ownLocalizedText(faq?.querySelector("dd"), copy.faqAnswer);
+      }
       ownLocalizedText(document.querySelector("#startBtn"), labels.start);
       ownLocalizedText(document.querySelector("#restartBtn"), labels.restart);
       ownLocalizedText(document.querySelector("#newGameBtn"), labels.newGame);

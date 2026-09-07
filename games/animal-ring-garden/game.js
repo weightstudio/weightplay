@@ -102,7 +102,7 @@
     $("stage-title").textContent = t("stageTitle");
     $("stage-lede").textContent = t("stageLede");
     $("stageScreen").querySelector(".stage-tabs")?.setAttribute("aria-label", t("stageSections"));
-    $("battle-back").textContent = t("gardens");
+    $("battle-back").innerHTML = '<span aria-hidden="true">←</span>';
     $("battle-back").setAttribute("aria-label", t("gardens"));
     $("battle-eyebrow").textContent = t("battleEyebrow");
     $("target-label").textContent = t("target");

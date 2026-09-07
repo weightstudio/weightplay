@@ -18,77 +18,15 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/pong/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/pong/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/pong/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>Pong | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260907-pong-public-release-v10"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260907-pong-public-release-v10"><style>
-@media (orientation: landscape) and (max-height: 430px) {
-  body[data-game-id="pong"][data-screen="battle"],
-  body[data-game-id="pong"][data-screen="result"] { overflow: hidden; }
-  body[data-game-id="pong"][data-screen="battle"] .popular-arcade,
-  body[data-game-id="pong"][data-screen="result"] .popular-arcade {
-    height: 100dvh;
-    min-height: 0;
-    padding: 6px;
-    gap: 0;
-  }
-  body[data-game-id="pong"][data-screen="battle"] .arcade-header,
-  body[data-game-id="pong"][data-screen="battle"] .arcade-footer,
-  body[data-game-id="pong"][data-screen="result"] .arcade-header,
-  body[data-game-id="pong"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="pong"][data-screen="battle"] #battleScreen {
-    min-height: 0;
-    height: 100%;
-  }
-  body[data-game-id="pong"][data-screen="battle"] .battle-panel {
-    height: 100%;
-    min-height: 0;
-    padding: 7px;
-    gap: 6px 12px;
-    align-content: stretch;
-    grid-template-columns: minmax(360px, 1fr) minmax(250px, .85fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-  }
-  body[data-game-id="pong"][data-screen="battle"] .board-wrap {
-    grid-column: 1;
-    grid-row: 1 / 4;
-    min-height: 0;
-    padding: 5px;
-  }
-  body[data-game-id="pong"][data-screen="battle"] .board {
-    height: 100%;
-    min-height: 0;
-  }
-  body[data-game-id="pong"][data-screen="battle"] .pong-board {
-    width: min(100%, 560px);
-    height: min(250px, 100%);
-  }
-  body[data-game-id="pong"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="pong"][data-screen="battle"] .game-message {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-  }
-  body[data-game-id="pong"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="pong"][data-screen="battle"] #controls .control-row { flex-wrap: nowrap; }
-  body[data-game-id="pong"][data-screen="result"] #resultScreen {
-    min-height: 0;
-    height: 100%;
-  }
-  body[data-game-id="pong"][data-screen="result"] #resultScreen .arcade-panel {
-    min-height: 0;
-    height: 100%;
-    padding: 16px;
-    gap: 10px;
-  }
-}
-</style>  <meta name="description" content="A complete classic game currently finishing its release checks." />
-    <meta property="og:site_name" content="WeightPlay" />
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>Pong | WeightPlay</title><meta name="description" content="Move your paddle, return the ball, and beat the computer to 7 points." /><link rel="stylesheet" href="/games/pong/pong.css?v=20260907-realtime-v10">  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pong | WeightPlay" />
-    <meta property="og:description" content="A complete classic game currently finishing its release checks." />
+    <meta property="og:description" content="Move your paddle, return the ball, and beat the computer to 7 points." />
     <meta property="og:url" content="https://weightplay.com/en/games/pong/" />
     <meta property="og:image" content="https://weightplay.com/assets/pong-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Pong | WeightPlay" />
-    <meta name="twitter:description" content="A complete classic game currently finishing its release checks." />
+    <meta name="twitter:description" content="Move your paddle, return the ball, and beat the computer to 7 points." />
     <meta name="twitter:image" content="https://weightplay.com/assets/pong-cover-v1.webp" />
     <script type="application/ld+json">
 {
@@ -97,7 +35,7 @@
   "name": "Pong",
   "url": "https://weightplay.com/en/games/pong/",
   "image": "https://weightplay.com/assets/pong-cover-v1.webp",
-  "description": "A complete classic game currently finishing its release checks.",
+  "description": "Move your paddle, return the ball, and beat the computer to 7 points.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -119,29 +57,25 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="pong"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Pong</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction">Use visible controls to align each rally, then review the Result.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Win five rallies with deliberate moves.</span></div><button id="startBtn" class="primary">Start game</button></div><div class="preview-art" aria-hidden="true"><img class="cover" src="../../assets/pong-cover-v1.webp" alt="Pong game artwork" width="1254" height="1254" decoding="async" /></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to Main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><p id="resultGoal" class="tagline result-goal" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="Pong game information">
+<body class="pong-realtime" data-game-id="pong" data-wp-game-id="pong" data-audience="general" data-screen="main"><main class="pw-main"><header class="pw-header"><a class="pw-return" href="/en/" aria-label="WeightPlay">←<img src="/assets/weightplay-logo.png" alt=""></a><h1>Pong</h1></header><div class="pw-intro"><img class="pw-poster" src="/assets/pong-cover-v1.webp" width="1254" height="1254" alt="Pong game artwork"><div class="pw-copy"><p>Move your paddle, return the ball, and beat the computer to 7 points.</p></div></div><section class="game-page-info game-page-info-static" aria-label="Pong game information">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Pong</h2><p>A complete classic game currently finishing its release checks.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Classic Game</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Arcade · Action</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to learn, cleaner to master</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2–5 minutes</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Pong</h2><p>Move your paddle, return the ball, and beat the computer to 7 points.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Move your paddle, return the ball, and beat the computer to 7 points.</strong></div><div class="game-info-fact"><span>Genre</span><strong>Classic · Arcade · Action</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Practice / Club / Expert</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>This is a compact paddle-and-target exercise rather than an endless arcade loop. Each rally gives you a visible ball lane and asks you to make one readable alignment decision.</p>
-<p>A complete match has five rallies. Winning a rally adds a point; a miss settles safely and presents the next target, so the session stays understandable and replayable.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>The highlighted ball shows the target lane for the current rally. Left and Right move the paddle, while Serve settles the rally.</p>
-<p>A paddle aligned under the ball wins the rally and adds a point. A miss adds no point but does not end the match.</p>
-<p>Hint restates the current target without moving for you. Result reports score and moves, then gives a cleaner rematch goal.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Start a match and read the highlighted ball lane.</li><li>Use Left and Right to place the paddle under that target.</li><li>Press Serve once you are aligned; one Serve settles one rally.</li><li>Read the next target and repeat until all five rallies are complete.</li><li>Review Result, then choose Play again for a cleaner match or return to Main.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Move only as far as needed before Serve; extra moves count toward the Result goal.</li><li>Use Hint when you need the target stated plainly, then keep the final alignment decision yours.</li><li>After a miss, read the next lane instead of repeating the old position.</li><li>Compare Score and Moves on Result to turn a completed match into a small replay challenge.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>The first match teaches the alignment-and-Serve rhythm. Later matches keep five rallies but reward accurate placement, fewer moves, and a clean five-point result.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Pong uses visible lane targeting, a deliberate Serve decision, safe misses, and a short Result goal to turn an arcade familiar into a readable practice loop. Touch, mouse, and keyboard controls reach the same paddle decisions.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player, Device, and Save Information</h3><p>Best results and sound preference stay in this browser. No account, purchase, cloud save, or online match is required; clearing site data can remove the local result.</p></div>
+      <div class="game-info-section"><h3>World and Mission</h3><p>You control the mint paddle at the bottom. Press Serve.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Drag across the court, move your mouse, or hold ← / → (A / D). Return the moving ball; missing your end gives your opponent one point. First to 7 wins.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Drag across the court, move your mouse, or hold ← / → (A / D). Return the moving ball; missing your end gives your opponent one point. First to 7 wins.</li><li>The centre of your paddle returns straight shots. Hit near the edges to angle the ball past the opponent. Space serves or pauses.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>The centre of your paddle returns straight shots. Hit near the edges to angle the ball past the opponent. Space serves or pauses.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>Follow the ball. Move left or right to return it.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Guide</h3><p>Wins for each opponent are stored on this device. Practice, Club and Expert are match difficulties, not a stage campaign.</p></div>
       <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Is progress saved?</dt><dd>Best results and preferences stay in this browser.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Lights Out</strong><span>Lights Out is a classic 5x5 switch puzzle: press a tile and its orthogonal neighbors to turn every light off.</span></span></a><a class="game-info-related-card" href="/en/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Sliding 15</strong><span>Choose from 30 saved stages with classic, snake, column, anchor, and detour goals.</span></span></a></div></div>
+
     </div>
-  </section><script src="../../src/popular-games-batch.js?v=20260907-pong-public-release-v10"></script><script src="game.js?v=20260907-pong-public-release-v10"></script><script src="/src/site-config.js?v=20260721-locale13-1"></script>
+  </section></main><script src="/games/pong/game.js?v=20260907-realtime-v10"></script><script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
-</body>
-</html>
+</body></html>

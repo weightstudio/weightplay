@@ -21,16 +21,16 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/mahjong-solitaire/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/mahjong-solitaire/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/mahjong-solitaire/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>麻將接龍 | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260828-mahjong-arabic-localization-v10"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260828-mahjong-arabic-localization-v10">  <meta name="description" content="配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。" />
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>麻將接龍 | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260828-mahjong-arabic-localization-v10"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260828-mahjong-arabic-localization-v10">  <meta name="description" content="配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="麻將接龍 | WeightPlay" />
-    <meta property="og:description" content="配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。" />
+    <meta property="og:description" content="配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/mahjong-solitaire/" />
     <meta property="og:image" content="https://weightplay.com/assets/mahjong-solitaire-cover-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="麻將接龍 | WeightPlay" />
-    <meta name="twitter:description" content="配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。" />
+    <meta name="twitter:description" content="配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/mahjong-solitaire-cover-v1.webp" />
     <script type="application/ld+json">
 {
@@ -40,7 +40,7 @@
   "alternateName": "Mahjong Solitaire",
   "url": "https://weightplay.com/zh-tw/games/mahjong-solitaire/",
   "image": "https://weightplay.com/assets/mahjong-solitaire-cover-v1.webp",
-  "description": "配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。",
+  "description": "配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -62,23 +62,27 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="mahjong-solitaire"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">麻將接龍</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="設定" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="設定" hidden><strong class="settings-title">設定</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">音效：開</button><label class="settings-row"><span id="languageLabel">語言</span><select id="localeSelect" aria-label="語言"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline">使用可見控制項配對所有可用牌，再查看結果。</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>目標</strong><span>配對所有可用的牌。</span></div><button id="startBtn" class="primary" data-wp-main-start="true">開始遊戲</button></div><div class="preview-art" aria-hidden="true"><img src="../../assets/mahjong-solitaire-cover-v1.webp" alt="" width="1254" height="1254" decoding="async" /></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="返回主畫面">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="設定" title="設定">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="masteryBtn" class="secondary" hidden></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="麻將接龍 遊戲資訊">
+<body data-screen="main" data-audience="general" data-wp-game-id="mahjong-solitaire" data-wp-game-owned-guide="true"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">麻將接龍</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="設定" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover is-hidden" role="group" aria-label="設定" hidden><strong class="settings-title">設定</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">音效：開</button><label class="settings-row"><span id="languageLabel">語言</span><select id="localeSelect" aria-label="語言"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction" class="tagline">使用可見控制項配對所有可用牌，再查看結果。</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>目標</strong><span>配對所有可用的牌。</span></div><button id="startBtn" class="primary" data-wp-main-start="true">開始遊戲</button></div><div class="preview-art" aria-hidden="true"><img src="../../assets/mahjong-solitaire-cover-v1.webp" alt="" width="1254" height="1254" decoding="async" /></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="返回主畫面">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="設定" title="設定">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="masteryBtn" class="secondary" hidden></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="麻將接龍 遊戲資訊">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>麻將接龍</h2><p>配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>經典遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>經典 · 益智 · 策略</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>麻將接龍</h2><p>配對可用的相同牌，從失配中重新找路，清除六組預設牌，再挑戰可選的十二組 Mastery 版面。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>可用牌配對益智遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>經典 · 益智 · 策略</strong></div><div class="game-info-fact"><span>難度</span><strong>容易開始，重視觀察模式</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>3–8 分鐘</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
+      <div class="game-info-section"><h3>世界與任務</h3><p>每個標準棋盤都有六組預設牌。牌面必須未被覆蓋，且至少一側有空位才算可用，因此你要同時閱讀入口與符號。</p>
+<p>可選的 Mastery 版面把目標加倍到十二組，保留相同流程，卻要求你保護未來的可用路徑並有意識地使用提示。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>選取兩張可用且符號相同的牌即可消除一組，Remaining 會在每次配對後更新。</p>
+<p>失配不會移除任何牌；新選的牌會保留在畫面上，讓你比較符號，而可用規則也會說明被遮住的牌為何不能選。</p>
+<p>Hint 會指出一組仍可配對的牌，但不會自動遊玩。完成六組 Standard 或選擇十二組 Mastery 後，可在結果畫面重玩。</p></div>
       <div class="game-info-section"><h3>玩法說明</h3><ol><li>選取兩張可見且可用、符號相同的牌。</li><li>配對成功後兩張牌會消失，剩餘數量立即更新。</li><li>如果符號不同，保留剛選的牌，再選擇與它配對的牌。</li><li>使用提示取得可用配對建議，但不會自動替你出牌。</li><li>完成六對標準回合後，可選擇 12 對的大師回合，或返回主畫面。</li></ol></div>
-
-
-
-
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>配對前先看哪張牌擋住未來入口；最容易的配對不一定該先做。</li><li>把 Remaining 與可用規則一起看，避免把選擇浪費在被覆蓋的牌上。</li><li>失配後記住符號，讓目前選中的牌帶你搜尋下一張。</li><li>在剩餘配對變少、尤其是十二組 Mastery 時，留給 Hint 一個真正需要的局面。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個預設 Standard 版面教你可用規則與配對節奏；Mastery 把目標加到十二組，形成更長的入口規劃挑戰。</p>
+<p>沒有計時、帳號技能樹或線上排名；用更少失配與提示重玩版面，就是實際熟練路徑。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>麻將接龍把可用性變成謎題的一部分：符號相同只有在牌能被取用時才有意義。Remaining、非破壞失配與可選 Mastery 讓熟悉的格式成為容易閱讀的規劃練習。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>最佳結果與偏好會保留在這個瀏覽器。不需要帳號、購買、線上對局或雲端存檔；清除網站資料可能刪除本機結果。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>進度會保存嗎？</dt><dd>會，只保存在這個瀏覽器中。</dd></div></dl></div>
-
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a></div></div>
     </div>
   </section><script src="/src/site-config.js?v=20260828-mahjong-arabic-localization-v10"></script><script src="../../src/analytics.js?v=20260828-mahjong-arabic-localization-v10"></script><script src="../../src/popular-games-batch.js?v=20260828-mahjong-arabic-localization-v10"></script><script src="analytics-ownership.js?v=20260828-mahjong-arabic-localization-v10"></script><script src="game.js?v=20260828-mahjong-arabic-localization-v10"></script></body>
 </html>

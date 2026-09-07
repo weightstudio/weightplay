@@ -122,7 +122,73 @@ h1{margin:0;font-size:clamp(2rem,7vw,3.4rem);line-height:1.05;letter-spacing:-.0
 }
 
 @media (orientation:landscape) and (max-height:560px){
-  .main-cover{width:min(100%,300px)}
-  #battleScreen .ring-board{align-self:start;transform:translateY(-16px)}
+  .main-cover{width:min(100%,420px)}
+}
+
+/* v11 responsive Battle repair: the active Canvas owns its full height and
+   uses one compact two-column composition wherever three rings can share a
+   row. This keeps the shell and actions stable when the board is re-rendered. */
+#stageScreen,
+#battleScreen{overflow:hidden}
+#battleScreen .battle-content{min-height:0;flex:1}
+
+@media (min-width:700px){
+  #battleScreen .battle-content{
+    width:min(100%,880px);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(240px,280px);
+    grid-template-rows:auto auto minmax(0,1fr) auto auto;
+    align-items:center;
+    column-gap:14px;
+    row-gap:8px;
+    overflow:hidden;
+  }
+  #battleScreen .battle-heading{grid-column:1/-1;grid-row:1}
+  #battleScreen .clue-card{grid-column:2;grid-row:2}
+  #battleScreen .target-card{grid-column:2;grid-row:3}
+  #battleScreen .ring-atlas-art{display:none}
+  #battleScreen .ring-board{grid-column:1;grid-row:2/6;align-self:center;min-height:0}
+  #battleScreen .status{grid-column:2;grid-row:4;min-height:48px}
+  #battleScreen .battle-actions{grid-column:2;grid-row:5}
+}
+
+@media (orientation:landscape) and (max-height:560px){
+  #battleScreen .battle-content{
+    grid-template-columns:minmax(0,1fr) minmax(220px,260px);
+    grid-template-rows:auto auto auto minmax(0,1fr) auto;
+    row-gap:6px;
+    padding:8px 12px 10px;
+  }
   #battleScreen .ring-visual{width:min(100%,120px);margin:4px auto}
+  #battleScreen .ring-unit{padding:6px 5px 8px}
+  #battleScreen .ring-controls{gap:4px}
+  #battleScreen .ring-button{min-height:44px}
+}
+
+/* Battle Return is an icon-only scene control. Keep localized destination
+   copy available to assistive technology while preventing it from widening
+   or clipping the fixed 48px header slot. */
+#battleScreen .battle-header .return-link{
+  font-size:0!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+  background:transparent!important;
+  border-color:transparent!important;
+  color:#176a9d!important;
+}
+#battleScreen .battle-header .return-link::before{
+  content:"←";
+  font:900 22px/1 system-ui,sans-serif;
+}
+#battleScreen .battle-header .return-link > span,
+#battleScreen .battle-header .return-link > img{
+  display:none!important;
+}
+#battleScreen .battle-header .return-link > span[aria-hidden="true"],
+#battleScreen .battle-header .return-link > .wp-shell-return-arrow{
+  font-size:22px!important;
+  line-height:1!important;
+}
+#battleScreen .battle-header .return-link > img{
+  display:none!important;
 }

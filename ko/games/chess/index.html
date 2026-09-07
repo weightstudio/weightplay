@@ -250,16 +250,16 @@ body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34
   body[data-game-id="chess"] #battleScreen #controls { grid-column: 2; grid-row: 3; }
   body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 310px); }
 }
-</style>  <meta name="description" content="출시 전 검사를 마무리 중인 완성된 클래식 게임입니다." />
+</style>  <meta name="description" content="체스는 세 수로 진행되는 짧은 목표 선택 스프린트입니다. 보이는 보드를 읽고 지정된 백색 기물을 선택한 뒤 강조된 목적지를 골라 자동 플레이 없이 순서를 완성하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="체스 | WeightPlay" />
-    <meta property="og:description" content="출시 전 검사를 마무리 중인 완성된 클래식 게임입니다." />
+    <meta property="og:description" content="체스는 세 수로 진행되는 짧은 목표 선택 스프린트입니다. 보이는 보드를 읽고 지정된 백색 기물을 선택한 뒤 강조된 목적지를 골라 자동 플레이 없이 순서를 완성하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/chess/" />
     <meta property="og:image" content="https://weightplay.com/assets/classic-logic-lab-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="체스 | WeightPlay" />
-    <meta name="twitter:description" content="출시 전 검사를 마무리 중인 완성된 클래식 게임입니다." />
+    <meta name="twitter:description" content="체스는 세 수로 진행되는 짧은 목표 선택 스프린트입니다. 보이는 보드를 읽고 지정된 백색 기물을 선택한 뒤 강조된 목적지를 골라 자동 플레이 없이 순서를 완성하세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/classic-logic-lab-cover.webp" />
     <script type="application/ld+json">
 {
@@ -269,7 +269,7 @@ body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34
   "alternateName": "Chess",
   "url": "https://weightplay.com/ko/games/chess/",
   "image": "https://weightplay.com/assets/classic-logic-lab-cover.webp",
-  "description": "출시 전 검사를 마무리 중인 완성된 클래식 게임입니다.",
+  "description": "체스는 세 수로 진행되는 짧은 목표 선택 스프린트입니다. 보이는 보드를 읽고 지정된 백색 기물을 선택한 뒤 강조된 목적지를 골라 자동 플레이 없이 순서를 완성하세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -294,8 +294,8 @@ body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34
 <body data-screen="main" data-audience="general" data-wp-game-id="chess" data-wp-battle-layout="native"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">체스</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="preview-art"><img class="cover" src="../../assets/classic-logic-lab-cover.webp" alt="체스 게임 이미지" width="1254" height="1254" decoding="async"></div><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction">Use visible controls to play a complete short round, then review the Result.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Complete the three-move Chess sprint.</span></div><button id="startBtn" class="primary" data-wp-main-start="true">Start game</button></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to main" title="Back to main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><p id="resultBeat" class="result-beat" role="status" aria-live="polite"></p><div id="resultStats" class="stats"></div><p id="resultTarget" class="result-target" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="체스 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>체스</h2><p>출시 전 검사를 마무리 중인 완성된 클래식 게임입니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>클래식 게임</strong></div><div class="game-info-fact"><span>장르</span><strong>클래식 · 보드 · 전략</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작하고 점점 도전</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>2–5분</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>체스</h2><p>체스는 세 수로 진행되는 짧은 목표 선택 스프린트입니다. 보이는 보드를 읽고 지정된 백색 기물을 선택한 뒤 강조된 목적지를 골라 자동 플레이 없이 순서를 완성하세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>목표 선택 체스 스프린트</strong></div><div class="game-info-fact"><span>장르</span><strong>클래식 · 보드 · 전략</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작하고 점점 도전</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>2–5분</strong></div></div>
     </div>
 
     <div class="game-info-sections">

@@ -1,146 +1,94 @@
-const GAME_VERSION = "v9";
-window.WPPopularArcade?.mount("pong");
-document.body.dataset.gameVersion = GAME_VERSION;
-(() => {
-  "use strict";
-  const HINTS = {
-    en: "Move Left or Right to place the paddle under the highlighted ball before Serve; each Serve settles one rally.",
-    "zh-Hant": "發球前用左移或右移，讓球拍對準高亮球；每次發球結算一回合。",
-    "zh-Hans": "发球前用左移或右移，让球拍对准高亮球；每次发球结算一回合。",
-    ja: "サーブ前に左か右でラケットを光るボールの下に合わせましょう。1回のサーブで1ラリーが決まります。",
-    ko: "서브 전에 왼쪽이나 오른쪽으로 패들을 강조된 공 아래에 맞추세요. 서브 한 번마다 랠리 하나가 결정됩니다.",
-    es: "Mueve la pala a izquierda o derecha para ponerla bajo la pelota resaltada antes del saque; cada saque resuelve un rally.",
-    "pt-BR": "Mova a raquete para a esquerda ou direita até ficar sob a bola destacada antes do saque; cada saque resolve um rali.",
-    fr: "Déplacez la raquette à gauche ou à droite pour la placer sous la balle en surbrillance avant le service ; chaque service règle un échange.",
-    de: "Bewege den Schläger vor dem Aufschlag nach links oder rechts unter den hervorgehobenen Ball; jeder Aufschlag entscheidet einen Ballwechsel.",
-    it: "Sposta la racchetta a sinistra o destra sotto la pallina evidenziata prima del servizio; ogni servizio decide uno scambio.",
-    ru: "Перед подачей двигайте ракетку влево или вправо под подсвеченный мяч; каждая подача завершает один розыгрыш.",
-    hi: "सर्व से पहले पैडल को बाएँ या दाएँ चलाकर हाइलाइट की गई गेंद के नीचे लाएँ; हर सर्व एक रैली तय करता है।",
-    ar: "حرّك المضرب يمينًا أو يسارًا ليضعه أسفل الكرة المميزة قبل الإرسال؛ كل إرسال يحسم تبادلًا واحدًا."
-  };
-  const PONG_TARGET_CUE = {
-    en: (rally) => `Rally ${rally}: place the paddle under the highlighted ball, then Serve.`,
-    "zh-Hant": (rally) => `第 ${rally} 回合：將球拍對準高亮球，再發球。`,
-    "zh-Hans": (rally) => `第 ${rally} 回合：将球拍对准高亮球，再发球。`,
-    ja: (rally) => `ラリー${rally}：ラケットを光るボールの下に合わせてからサーブします。`,
-    ko: (rally) => `랠리 ${rally}: 강조된 공 아래에 패들을 맞춘 뒤 서브하세요.`,
-    es: (rally) => `Rally ${rally}: coloca la pala bajo la pelota resaltada y saca.`,
-    "pt-BR": (rally) => `Rali ${rally}: coloque a raquete sob a bola destacada e saque.`,
-    fr: (rally) => `Échange ${rally} : placez la raquette sous la balle en surbrillance, puis servez.`,
-    de: (rally) => `Ballwechsel ${rally}: Stelle den Schläger unter den hervorgehobenen Ball und schlage auf.`,
-    it: (rally) => `Scambio ${rally}: porta la racchetta sotto la pallina evidenziata, poi servi.`,
-    ru: (rally) => `Розыгрыш ${rally}: поставьте ракетку под подсвеченный мяч и подайте.`,
-    hi: (rally) => `रैली ${rally}: पैडल को हाइलाइट की गई गेंद के नीचे लाएँ, फिर सर्व करें।`,
-    ar: (rally) => `التبادل ${rally}: ضع المضرب أسفل الكرة المميزة ثم أرسل.`
-  };
-  const PONG_HIT_COPY = {
-    en: (rally, score) => `Rally ${rally} won — the paddle met the ball. Score: ${score}.`,
-    "zh-Hant": (rally, score) => `第 ${rally} 回合獲勝——球拍接到球了。分數：${score}。`,
-    "zh-Hans": (rally, score) => `第 ${rally} 回合获胜——球拍接到球了。分数：${score}。`,
-    ja: (rally, score) => `ラリー${rally}勝利——ラケットがボールを捉えました。スコア：${score}。`,
-    ko: (rally, score) => `랠리 ${rally} 승리 — 패들이 공을 맞췄습니다. 점수: ${score}.`,
-    es: (rally, score) => `Rally ${rally} ganado: la pala golpeó la pelota. Puntuación: ${score}.`,
-    "pt-BR": (rally, score) => `Rali ${rally} vencido — a raquete encontrou a bola. Pontuação: ${score}.`,
-    fr: (rally, score) => `Échange ${rally} gagné : la raquette a touché la balle. Score : ${score}.`,
-    de: (rally, score) => `Ballwechsel ${rally} gewonnen – der Schläger traf den Ball. Punktestand: ${score}.`,
-    it: (rally, score) => `Scambio ${rally} vinto: la racchetta ha colpito la pallina. Punteggio: ${score}.`,
-    ru: (rally, score) => `Розыгрыш ${rally} выигран — ракетка попала по мячу. Счёт: ${score}.`,
-    hi: (rally, score) => `रैली ${rally} जीती — पैडल ने गेंद को मारा। स्कोर: ${score}।`,
-    ar: (rally, score) => `فزت بالتبادل ${rally} — لامس المضرب الكرة. النتيجة: ${score}.`,
-  };
-  const PONG_MISS_COPY = {
-    en: (rally, score) => `Rally ${rally} missed — the paddle was not under the ball. Score: ${score}. Align for the next Serve.`,
-    "zh-Hant": (rally, score) => `第 ${rally} 回合失誤——球拍沒有對準球。分數：${score}。對準下一次發球。`,
-    "zh-Hans": (rally, score) => `第 ${rally} 回合失误——球拍没有对准球。分数：${score}。对准下一次发球。`,
-    ja: (rally, score) => `ラリー${rally}失敗——ラケットがボールの下にありませんでした。スコア：${score}。次のサーブに合わせましょう。`,
-    ko: (rally, score) => `랠리 ${rally} 실패 — 패들이 공 아래에 있지 않았습니다. 점수: ${score}. 다음 서브에 맞추세요.`,
-    es: (rally, score) => `Rally ${rally} fallido: la pala no estaba bajo la pelota. Puntuación: ${score}. Alinéala para el próximo saque.`,
-    "pt-BR": (rally, score) => `Rali ${rally} perdido — a raquete não estava sob a bola. Pontuação: ${score}. Alinhe para o próximo saque.`,
-    fr: (rally, score) => `Échange ${rally} manqué : la raquette n’était pas sous la balle. Score : ${score}. Alignez-vous pour le prochain service.`,
-    de: (rally, score) => `Ballwechsel ${rally} verfehlt – der Schläger war nicht unter dem Ball. Punktestand: ${score}. Richte dich für den nächsten Aufschlag aus.`,
-    it: (rally, score) => `Scambio ${rally} perso: la racchetta non era sotto la pallina. Punteggio: ${score}. Allineati per il prossimo servizio.`,
-    ru: (rally, score) => `Розыгрыш ${rally} проигран — ракетка была не под мячом. Счёт: ${score}. Прицельтесь для следующей подачи.`,
-    hi: (rally, score) => `रैली ${rally} चूक गई — पैडल गेंद के नीचे नहीं था। स्कोर: ${score}। अगले सर्व के लिए मिलाएँ।`,
-    ar: (rally, score) => `خسرت التبادل ${rally} — لم يكن المضرب أسفل الكرة. النتيجة: ${score}. حاذِه للإرسال التالي.`,
-  };
-  const PONG_REMATCH_GOAL_COPY = {
-    en: ({ won, score, moves }) => won ? (moves > 5 ? `Next round goal: win all five rallies in fewer than ${moves} moves.` : "Next round goal: keep all five rallies aligned with no extra moves.") : (score > 0 ? `Next round goal: beat ${score} points by aligning one more rally.` : "Next round goal: win one rally and start your score."),
-    "zh-Hant": ({ won, score, moves }) => won ? (moves > 5 ? `下一回合目標：五個回合全勝，並把步數降到 ${moves} 步以下。` : "下一回合目標：維持五回合全勝，不增加多餘步數。") : (score > 0 ? `下一回合目標：多贏一回合，超過 ${score} 分。` : "下一回合目標：先贏下一回合，開始累積分數。"),
-    "zh-Hans": ({ won, score, moves }) => won ? (moves > 5 ? `下一回合目标：五个回合全胜，并把步数降到 ${moves} 步以下。` : "下一回合目标：保持五回合全胜，不增加多余步数。") : (score > 0 ? `下一回合目标：多赢一回合，超过 ${score} 分。` : "下一回合目标：先赢下一回合，开始累积分数。"),
-    ja: ({ won, score, moves }) => won ? (moves > 5 ? `次の目標：5ラリー全勝を、${moves}手未満で達成しましょう。` : "次の目標：余分な手を使わず、5ラリー全勝を目指しましょう。") : (score > 0 ? `次の目標：もう1ラリー勝って、${score}点を超えましょう。` : "次の目標：まず1ラリー勝って、スコアを作りましょう。"),
-    ko: ({ won, score, moves }) => won ? (moves > 5 ? `다음 목표: 다섯 랠리 모두 이기고 ${moves}번보다 적게 움직이세요.` : "다음 목표: 불필요한 이동 없이 다섯 랠리 모두 이기세요.") : (score > 0 ? `다음 목표: 랠리 하나를 더 맞혀 ${score}점을 넘으세요.` : "다음 목표: 먼저 랠리 하나를 이겨 점수를 시작하세요."),
-    es: ({ won, score, moves }) => won ? (moves > 5 ? `Objetivo siguiente: gana los cinco rallies con menos de ${moves} movimientos.` : "Objetivo siguiente: gana los cinco rallies sin movimientos extra.") : (score > 0 ? `Objetivo siguiente: supera ${score} puntos ganando un rally más.` : "Objetivo siguiente: gana un rally para empezar tu puntuación."),
-    "pt-BR": ({ won, score, moves }) => won ? (moves > 5 ? `Próximo objetivo: vença os cinco ralis com menos de ${moves} movimentos.` : "Próximo objetivo: vença os cinco ralis sem movimentos extras.") : (score > 0 ? `Próximo objetivo: passe de ${score} pontos vencendo mais um rali.` : "Próximo objetivo: vença um rali para começar sua pontuação."),
-    fr: ({ won, score, moves }) => won ? (moves > 5 ? `Objectif suivant : gagnez les cinq échanges en moins de ${moves} coups.` : "Objectif suivant : gagnez les cinq échanges sans coups superflus.") : (score > 0 ? `Objectif suivant : dépassez ${score} points en gagnant un échange de plus.` : "Objectif suivant : gagnez un échange pour commencer votre score."),
-    de: ({ won, score, moves }) => won ? (moves > 5 ? `Nächstes Ziel: Gewinne alle fünf Ballwechsel mit weniger als ${moves} Zügen.` : "Nächstes Ziel: Gewinne alle fünf Ballwechsel ohne zusätzliche Züge.") : (score > 0 ? `Nächstes Ziel: Überspringe ${score} Punkte mit einem weiteren gewonnenen Ballwechsel.` : "Nächstes Ziel: Gewinne einen Ballwechsel und starte deine Punktejagd."),
-    it: ({ won, score, moves }) => won ? (moves > 5 ? `Obiettivo successivo: vinci tutti e cinque gli scambi con meno di ${moves} mosse.` : "Obiettivo successivo: vinci tutti e cinque gli scambi senza mosse extra.") : (score > 0 ? `Obiettivo successivo: supera ${score} punti vincendo un altro scambio.` : "Obiettivo successivo: vinci uno scambio per iniziare il punteggio."),
-    ru: ({ won, score, moves }) => won ? (moves > 5 ? `Следующая цель: выиграйте все пять розыгрышей менее чем за ${moves} ходов.` : "Следующая цель: выиграйте все пять розыгрышей без лишних ходов.") : (score > 0 ? `Следующая цель: наберите больше ${score} очков, выиграв ещё один розыгрыш.` : "Следующая цель: выиграйте один розыгрыш и начните набор очков."),
-    hi: ({ won, score, moves }) => won ? (moves > 5 ? `अगला लक्ष्य: सभी पाँच रैलियाँ ${moves} से कम चालों में जीतें।` : "अगला लक्ष्य: बिना अतिरिक्त चालों के सभी पाँच रैलियाँ जीतें।") : (score > 0 ? `अगला लक्ष्य: एक और रैली जीतकर ${score} अंक पार करें।` : "अगला लक्ष्य: एक रैली जीतकर अपना स्कोर शुरू करें।"),
-    ar: ({ won, score, moves }) => won ? (moves > 5 ? `الهدف التالي: اربح التبادلات الخمسة كلها بأقل من ${moves} حركة.` : "الهدف التالي: اربح التبادلات الخمسة كلها من دون حركات إضافية.") : (score > 0 ? `الهدف التالي: تجاوز ${score} نقطة بالفوز بتبادل إضافي.` : "الهدف التالي: اربح تبادلاً واحداً وابدأ تسجيل النقاط.")
-  };
-  let hintVisible = false;
-  const locale = () => document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
-  const pongBoard = () => document.querySelector(".pong-board");
-  const applyPongCue = () => {
-    const message = document.querySelector("#gameMessage");
-    if (!message || document.body.dataset.screen !== "battle") return;
-    const board = pongBoard();
-    const rally = Number(board?.dataset.pongRally || 1);
-    const score = Number((document.querySelector("#roundLabel")?.textContent || "").match(/\d+/)?.[0] || 0);
-    const key = message.dataset.messageKey;
-    if (hintVisible) return;
-    if (key === "pongHit" || key === "pongMiss") {
-      const copy = key === "pongHit" ? PONG_HIT_COPY : PONG_MISS_COPY;
-      const text = (copy[locale()] || copy.en)(Math.max(1, rally), score);
-      if (message.textContent !== text) message.textContent = text;
-      message.dataset.tone = key === "pongHit" ? "good" : "warn";
-      return;
-    }
-    const targetText = (PONG_TARGET_CUE[locale()] || PONG_TARGET_CUE.en)(rally);
-    if (message.textContent !== targetText) message.textContent = targetText;
-    message.dataset.tone = "";
-    message.dataset.messageKey = "pongTarget";
-  };
-  const applyHint = () => {
-    if (!hintVisible) return;
-    const message = document.querySelector("#gameMessage");
-    const text = HINTS[locale()] || HINTS.en;
-    if (message) {
-      if (message.textContent !== text) message.textContent = text;
-      message.dataset.tone = "warn";
-      message.dataset.messageKey = "hint";
-    }
-  };
-  const applyPongRematchGoal = () => {
-    if (document.body.dataset.gameId !== "pong" || document.body.dataset.screen !== "result") return;
-    const stats = [...document.querySelectorAll("#resultStats .stat strong")].map((node) => Number(node.textContent));
-    if (stats.length < 2 || stats.some((value) => !Number.isFinite(value))) return;
-    let goal = document.querySelector("#pongRematchGoal");
-    if (!goal) {
-      goal = document.createElement("p");
-      goal.id = "pongRematchGoal";
-      goal.className = "tagline pong-rematch-goal";
-      goal.setAttribute("role", "note");
-      document.querySelector("#resultCopy")?.after(goal);
-    }
-    const copy = PONG_REMATCH_GOAL_COPY[locale()] || PONG_REMATCH_GOAL_COPY.en;
-    const text = copy({ won: document.querySelector("#resultScreen")?.dataset.outcome === "win", score: stats[0], moves: stats[1] });
-    if (goal.textContent !== text) goal.textContent = text;
-  };
-  const syncMessage = () => {
-    applyHint();
-    applyPongCue();
-    applyPongRematchGoal();
-  };
-  const observer = new MutationObserver(syncMessage);
-  observer.observe(document.body, { childList: true, subtree: true });
-  document.querySelector("#hintBtn")?.addEventListener("click", () => { hintVisible = true; queueMicrotask(applyHint); });
-  document.querySelector("#localeSelect")?.addEventListener("change", () => queueMicrotask(syncMessage));
-  document.addEventListener("click", (event) => {
-    const action = event.target.closest?.("[data-action]");
-    if (action && action.dataset.action !== "hint") hintVisible = false;
-  }, true);
-  document.querySelector("#restartBtn")?.addEventListener("click", () => { hintVisible = false; });
-  document.querySelector("#retryBtn")?.addEventListener("click", () => { hintVisible = false; });
-  document.querySelector("#homeBtn")?.addEventListener("click", () => { hintVisible = false; });
-})();
+/* Independent real-time Pong. The legacy target-alignment batch is not mounted. */
+(async () => {
+  'use strict';
+  const base = new URL('.', document.currentScript.src);
+  const [{ Match, WIDTH, HEIGHT }, { COPY, ROUTES }] = await Promise.all([import(new URL('engine.mjs',base)),import(new URL('locale.mjs',base))]);
+  const asset = name => new URL('../../assets/'+name,base).href;
+  const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=10',base); document.head.append(style);
+  let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
+  if(!COPY[locale]) locale='en';
+  let t=COPY[locale], difficulty=0, sound=true, wins=[0,0,0];
+  try { const save=JSON.parse(localStorage.getItem('wp-pong-realtime-v1')||'{}'); difficulty=[0,1,2].includes(save.difficulty)?save.difficulty:0; sound=save.sound!==false; wins=[0,1,2].map(i=>Number.isInteger(save.wins?.[i])?Math.max(0,Math.min(1000000,save.wins[i])):0); } catch {}
+  const persist=()=>{try{localStorage.setItem('wp-pong-realtime-v1',JSON.stringify({difficulty,wins,sound}));}catch{}};
+  let match=new Match(difficulty), screen='main', frame=0, previous=0, audio=null, lastTone=0;
+  const held=new Set();
+  document.body.classList.add('pong-realtime');
+  Object.assign(document.body.dataset,{gameId:'pong',wpGameId:'pong',gameVersion:'v10',screen:'main',audience:'general'});
+  document.body.innerHTML=`<main id="pongApp">
+  <section id="mainScreen" class="pw-main" data-wp-scene="main">
+    <header class="pw-header"><a class="pw-return" data-wp-return="main" href="/${ROUTES[locale]}/"><span>←</span><img src="${asset('weightplay-logo.png')}" alt=""></a><h1></h1><button id="settingsBtn" class="pw-icon">⚙</button></header>
+    <div class="pw-intro"><img class="pw-poster" src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy"><p id="summary"></p><p id="record"></p><button id="startBtn" class="pw-primary"></button></div></div>
+    <button id="guideBtn" class="pw-guide-link"></button><section id="publicGuide" class="pw-guide"></section>
+  </section>
+  <section id="battleScreen" class="pw-battle" data-wp-scene="battle" hidden>
+    <div class="pw-canvas" data-wp-logical-battle-canvas><div id="livePanel">
+      <header class="pw-hud"><button id="battleBackBtn" class="pw-icon" data-wp-return="battle">←</button><div id="score" class="pw-score" dir="ltr"></div><button id="battleSettingsBtn" class="pw-icon" data-wp-battle-utility="true">⚙</button></header>
+      <div id="courtWrap"><canvas id="court" width="600" height="600" tabindex="0"></canvas><div id="courtCue" class="pw-court-cue"></div></div>
+      <p id="gameMessage" role="status" aria-live="polite"></p><div class="pw-controls"><button id="leftBtn">◀</button><button id="serveBtn" class="pw-primary"></button><button id="rightBtn">▶</button></div>
+    </div><section id="resultPanel" hidden><h2 id="resultTitle"></h2><p id="resultScore" dir="ltr"></p><p id="resultCopy"></p><div class="pw-result-actions"><button id="homeBtn"></button><button id="retryBtn" class="pw-primary"></button></div></section></div>
+    <div class="pw-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+  </section>
+  <dialog id="settings"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn"></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
+  <dialog id="help"><h2></h2><div id="helpCopy"></div><button id="closeHelp" class="pw-primary"></button></dialog></main>`;
+  const $=id=>document.getElementById(id), canvas=$('court'), ctx=canvas.getContext('2d'), set=(id,text)=>{$(id).textContent=text;};
+  const languages={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
+  function localize(){
+    t=COPY[locale]; document.documentElement.lang=locale; document.documentElement.dir=locale==='ar'?'rtl':'ltr'; document.title=`${t.title} | WeightPlay`; document.querySelector('h1').textContent=t.title;
+    set('summary',t.summary);set('record',`${t.difficulty}: ${[t.easy,t.normal,t.hard][difficulty]} · ${t.wins}: ${wins[difficulty]}`);
+    for(const [id,key] of [['startBtn','start'],['guideBtn','guide'],['retryBtn','again'],['homeBtn','home'],['difficultyLabel','difficulty'],['helpInSettings','guide'],['closeSettings','close'],['closeHelp','close']])set(id,t[key]);
+    $('settings').querySelector('h2').textContent=t.settings;$('help').querySelector('h2').textContent=t.guide;set('localeLabel',languages[locale]);
+    $('difficulty').replaceChildren(...[t.easy,t.normal,t.hard].map((name,i)=>new Option(name,i,false,i===difficulty)));
+    $('localeSelect').replaceChildren(...Object.entries(languages).map(([key,name])=>new Option(name,key,false,key===locale)));
+    set('soundBtn',`${t.sound}: ${sound?t.on:t.off}`);
+    for(const [id,label] of [['settingsBtn',t.settings],['battleSettingsBtn',t.settings],['battleBackBtn',t.home],['leftBtn',t.left],['rightBtn',t.right],['court',t.how]])$(id).setAttribute('aria-label',label);
+    const back=document.querySelector('[data-wp-return="main"]');back.href=`/${ROUTES[locale]}/`;back.setAttribute('aria-label','WeightPlay');
+    for(const id of ['helpCopy','publicGuide']){ $(id).replaceChildren();for(const text of [t.how,t.tip,t.save]){const p=document.createElement('p');p.textContent=text;$(id).append(p);} }
+    $('publicGuide').setAttribute('aria-label',t.guide);hud();draw();
+  }
+  function unlockSound(){if(!sound)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(AC){audio ||= new AC();audio.resume().catch(()=>{});}}catch{}}
+  function beep(high=false){
+    if(!sound||audio?.state!=='running'||audio.currentTime-lastTone<.065)return;lastTone=audio.currentTime;
+    const oscillator=audio.createOscillator(),gain=audio.createGain();oscillator.frequency.value=high?690:360;
+    gain.gain.setValueAtTime(.035,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.07);oscillator.connect(gain).connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.08);oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();};
+  }
+  function stop(){cancelAnimationFrame(frame);frame=0;previous=0;held.clear();}
+  function pause(){match.pause();stop();hud();draw();}
+  function hud(){
+    $('score').replaceChildren();for(const [name,value,color] of [[t.you,match.you,'you'],[t.cpu,match.them,'cpu']]){const span=document.createElement('span');span.className=color;span.textContent=`${name} ${value}`;$('score').append(span);}
+    set('serveBtn',match.phase==='playing'?t.pause:match.phase==='paused'?t.resume:t.serve);
+    set('gameMessage',match.phase==='ready'?t.ready:match.phase==='point'?(match.lastPoint==='you'?t.pointYou:t.pointCpu):match.phase==='paused'?t.pause:t.playing);
+    set('courtCue',match.phase==='paused'?t.pause:`${t.serve} · 7`);$('courtCue').hidden=!['ready','paused','point'].includes(match.phase);
+    $('difficulty').disabled=screen!=='main';$('localeSelect').hidden=screen!=='main';$('localeLabel').hidden=screen!=='main';
+  }
+  function draw(){
+    ctx.clearRect(0,0,WIDTH,HEIGHT);ctx.fillStyle='#0a2634';ctx.fillRect(0,0,WIDTH,HEIGHT);ctx.strokeStyle='#336170';ctx.lineWidth=2;ctx.strokeRect(2,2,596,596);
+    ctx.setLineDash([8,10]);ctx.beginPath();ctx.moveTo(0,300);ctx.lineTo(600,300);ctx.stroke();ctx.setLineDash([]);ctx.beginPath();ctx.arc(300,300,58,0,Math.PI*2);ctx.stroke();
+    ctx.font='bold 22px system-ui';ctx.textAlign='center';ctx.fillStyle='#ffb1a5';ctx.fillText(t.cpu,300,28);ctx.fillStyle='#81eed1';ctx.fillText(t.you,300,587);
+    const paddle=(x,y,w,color)=>{ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x-w/2,y,w,15,7);ctx.fill();};paddle(match.cpu,32,match.config.aiWidth,'#ffa89b');paddle(match.player,553,match.config.playerWidth,'#73f4cd');
+    const b=match.ball;ctx.shadowColor='#ffe199';ctx.shadowBlur=14;ctx.fillStyle='#ffe199';ctx.beginPath();ctx.arc(b.x,b.y,9,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+    if(match.phase==='playing'){const speed=Math.hypot(b.vx,b.vy)||1;ctx.strokeStyle='#ffe19988';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(b.x-b.vx/speed*12,b.y-b.vy/speed*12);ctx.lineTo(b.x-b.vx/speed*34,b.y-b.vy/speed*34);ctx.stroke();}canvas.dataset.phase=match.phase;
+  }
+  function finish(){
+    stop();if(match.you===7){wins[difficulty]=Math.min(1000000,wins[difficulty]+1);persist();}
+    $('livePanel').hidden=true;$('livePanel').inert=true;$('resultPanel').hidden=false;document.body.dataset.screen='result';set('resultTitle',match.you===7?t.won:t.lost);set('resultScore',`${match.you} : ${match.them}`);set('resultCopy',`${t.rally}: ${match.bestRally} · ${t.wins}: ${wins[difficulty]}`);$('retryBtn').focus();
+  }
+  function tick(now){
+    frame=0;if(screen!=='battle'||match.phase!=='playing')return;const dt=previous?Math.min((now-previous)/1000,.035):0;previous=now;
+    const direction=(held.has('right')?1:0)-(held.has('left')?1:0);if(direction)match.move(match.aim+direction*760*dt);
+    const events=match.step(dt);if(events.includes('hit'))beep();if(events.includes('point')){beep(true);hud();}draw();if(match.phase==='finished')finish();else if(match.phase==='playing')frame=requestAnimationFrame(tick);
+  }
+  function launch(){if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;unlockSound();if(match.phase==='playing'){pause();return;}if(match.phase==='paused')match.resume();else match.serve();previous=0;hud();draw();if(!frame)frame=requestAnimationFrame(tick);}
+  function start(){stop();match=new Match(difficulty);screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('resultPanel').hidden=true;window.scrollTo(0,0);hud();draw();$('serveBtn').focus();}
+  function home(){pause();screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('battleScreen').hidden=true;localize();$('startBtn').focus();}
+  $('startBtn').onclick=start;$('retryBtn').onclick=start;$('homeBtn').onclick=home;$('battleBackBtn').onclick=home;$('serveBtn').onclick=launch;
+  const openSettings=()=>{pause();$('settings').showModal();};$('settingsBtn').onclick=openSettings;$('battleSettingsBtn').onclick=openSettings;$('closeSettings').onclick=()=>$('settings').close();
+  const openHelp=()=>{pause();if($('settings').open)$('settings').close();$('help').showModal();};$('guideBtn').onclick=openHelp;$('helpInSettings').onclick=openHelp;$('closeHelp').onclick=()=>$('help').close();
+  $('soundBtn').onclick=()=>{sound=!sound;persist();if(sound)unlockSound();else audio?.suspend().catch(()=>{});localize();};
+  $('difficulty').onchange=()=>{if(screen!=='main')return;difficulty=Number($('difficulty').value);persist();localize();};$('localeSelect').onchange=()=>{locale=$('localeSelect').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();};
+  for(const [id,key] of [['leftBtn','left'],['rightBtn','right']]){$(id).onpointerdown=e=>{e.preventDefault();$(id).setPointerCapture(e.pointerId);held.add(key);};for(const event of ['pointerup','pointercancel','lostpointercapture'])$(id).addEventListener(event,()=>held.delete(key));}
+  const aim=e=>{if(screen!=='battle'||$('settings').open||$('help').open)return;const r=canvas.getBoundingClientRect();match.move((e.clientX-r.left)/r.width*WIDTH);};canvas.onpointerdown=e=>{canvas.setPointerCapture(e.pointerId);aim(e);};canvas.onpointermove=e=>{if(e.pointerType==='mouse'||canvas.hasPointerCapture(e.pointerId))aim(e);};
+  window.addEventListener('keydown',e=>{if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;const direction=['ArrowLeft','a','A'].includes(e.key)?'left':['ArrowRight','d','D'].includes(e.key)?'right':null;if(direction){e.preventDefault();held.add(direction);}else if(e.code==='Space'&&!e.repeat){e.preventDefault();launch();}else if(e.key==='Escape'){e.preventDefault();pause();}});
+  window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))held.delete('left');if(['ArrowRight','d','D'].includes(e.key))held.delete('right');});
+  window.addEventListener('blur',pause);document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});window.addEventListener('pagehide',()=>{stop();audio?.close().catch(()=>{});audio=null;});window.addEventListener('resize',()=>{if(screen==='battle')pause();});
+  localize();
+})().catch(error=>console.error('Pong startup failed',error));
