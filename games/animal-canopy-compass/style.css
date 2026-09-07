@@ -289,6 +289,7 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   .intro { margin-bottom: 4px; }
   .wp-standard-main-progress { margin-top: 8px; }
   .hero-actions { margin-top: 8px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { overflow: visible; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { padding: 6px 12px 4px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head { height: 44px; min-height: 44px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions { min-width: 106px; }
