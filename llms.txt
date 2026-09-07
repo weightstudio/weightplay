@@ -80,6 +80,7 @@ WeightPlay covers these game and content clusters:
 - Pong: https://weightplay.com/en/games/pong/
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/
 - Animal Hoop League: https://weightplay.com/en/games/animal-hoop-league/
+- Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/
 - Maze Chase: https://weightplay.com/en/games/maze-chase/

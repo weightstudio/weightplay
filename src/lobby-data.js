@@ -3537,9 +3537,9 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDewlinePlanned.id)) window.WONDER_LOBBY.games.push(animalDewlinePlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDewlinePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDewlinePlanned.id);
 
-// Animal Peach Oath is a real internal prototype, so keep it discoverable in
-// the owner-preview Coming Soon rail without promoting it into the playable
-// catalog or attaching a public gameplay preview.
+// Animal Peach Oath cleared the exact v9/I1 Tester, Reviewer, art, Director,
+// and Release Preflight gates. Keep its localized discovery copy truthful and
+// expose the reviewed candidate through the public playable catalog.
 const animalPeachOathOwnerPreview = {
   id: "animal-peach-oath",
   title: {
@@ -3548,11 +3548,11 @@ const animalPeachOathOwnerPreview = {
     fr: "Serment du Jardin des Pêchers", de: "Schwur im Pfirsichgarten", it: "Giuramento del Giardino dei Peschi",
     ru: "Клятва персикового сада", hi: "आड़ू बाग़ की शपथ", ar: "قسم بستان الخوخ",
   },
-  status: "planned",
+  status: "playable",
   statusText: {
-    en: "Coming Soon", "zh-Hant": "敬請期待", "zh-Hans": "敬请期待", ja: "近日公開", ko: "출시 예정",
-    es: "Próximamente", "pt-BR": "Em breve", fr: "Bientôt disponible", de: "Demnächst", it: "Prossimamente",
-    ru: "Скоро", hi: "जल्द आ रहा है", ar: "قريبًا",
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+    es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+    ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
   },
   type: {
     en: "Vertical Idle Squad RPG", "zh-Hant": "直式放置小隊 RPG", "zh-Hans": "竖式放置小队 RPG", ja: "縦型放置スクワッドRPG",
@@ -3568,7 +3568,6 @@ const animalPeachOathOwnerPreview = {
     fr: "13+", de: "13+", it: "13+", ru: "13+", hi: "13+", ar: "13+",
   },
   href: "games/animal-peach-oath/",
-  internalTrial: "/games/animal-peach-oath/index.html?trial=1",
   description: {
     en: "Lead an oath-bound animal squad through auto battles, hero growth, equipment, troop counters, and boss stages.",
     "zh-Hant": "率領結義動物武將自動迎戰，培養隊伍、整備兵裝、運用兵種克制，挑戰層層 Boss 關卡。",

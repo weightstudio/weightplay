@@ -12708,6 +12708,7 @@
 
   registerExpandedGuide("animal-bus-jam", {
     title: "Panko's Bus Jam", gameplay: "Convoy and Holding-Lane Strategy", relatedIds: ["animal-bamboo-pipes", "animal-cratebound"], showSkills: false, showRelatedSkill: false,
+    noteTitle: "Player and Save Information",
     intro: "Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.",
     story: ["Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.", "Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer."],
     systems: ["Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.", "A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.", "When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.", "If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal."],
@@ -12873,6 +12874,7 @@
   registerExpandedGuide("animal-number-match", {
     title: "Panko's Number Grove", gameplay: "Visible-Line Number Pair Puzzle",
     relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"], showSkills: false, showRelatedSkill: false,
+    noteTitle: "Player and Save Information",
     intro: "Remove pairs that total ten when they touch or can see each other through cleared spaces, opening new sight lines across the board.",
     story: ["Thirty number groves have become crowded with paired rune tiles. Panko clears them by making sums of ten under one consistent visibility rule.", "The board never asks the player to guess a hidden value. Every number and every empty space needed for the next deduction remains visible."],
     systems: ["A legal pair contains two values whose sum is ten. Equal values are legal only when both tiles are five.", "The two tiles must be adjacent in the same row or column, or share a straight line containing only cleared cells.", "Removing a pair creates new empty cells and may expose a longer match that was blocked before.", "Undo restores one pair. Reorder rearranges only remaining values when available, while Restart restores the authored board."],
@@ -14228,6 +14230,7 @@
     strategyTips: ["Watch the downward path rather than chasing the orb after it has already reached the paddle.", "Use a safe center return after a difficult recovery, then create a sharp angle on the following hit.", "In moving formations, aim for the opening the band will reach, not its current position.", "In the final chapter, treat void mines as absolute hazards even when a nearby crystal looks easy."],
     progression: ["Stages 1–5 teach rebound control. The next chapters add split orbs, sweeping bands, indestructible mirrors, advancing walls and gravity, then dangerous mines.", "The thirty formations change geometry and timing while preserving the same paddle input."],
     designNote: "The visible paddle, collision point, orb trajectory, and logical arena use one scaled coordinate system, so touch and mouse contacts create the same return angle.",
+    noteTitle: "Player and Save Information",
     parent: "No account or purchase is required. Cleared formations, stars, and local best results remain in this browser.",
     difficulty: "Easy to Challenging", time: "2–8 minutes per formation", guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     relatedIds: ["animal-bounce-brawl", "animal-rift-salvage"],
@@ -14428,6 +14431,19 @@
   for (const [locale, copy] of Object.entries(prismGuideLocaleCopy)) {
     localizedGames[locale] ||= {};
     localizedGames[locale]["animal-prism-breakers"] = { ...games["animal-prism-breakers"], ...copy };
+  }
+
+  const generalSaveNoteTitles = {
+    en: "Player and Save Information",
+    "zh-Hant": "玩家與存檔資訊", "zh-Hans": "玩家与存档信息", ja: "プレイヤーと保存情報", ko: "플레이어 및 저장 정보",
+    es: "Información del jugador y guardado", "pt-BR": "Informações do jogador e salvamento", fr: "Informations du joueur et sauvegarde",
+    de: "Spieler- und Speicherhinweise", it: "Informazioni del giocatore e salvataggio", ru: "Информация об игроке и сохранении",
+    hi: "खिलाड़ी और सेव जानकारी", ar: "معلومات اللاعب والحفظ",
+  };
+  for (const [locale, noteTitle] of Object.entries(generalSaveNoteTitles)) {
+    for (const id of ["animal-bus-jam", "animal-number-match", "animal-prism-breakers"]) {
+      if (localizedGames[locale]?.[id]) localizedGames[locale][id].noteTitle = noteTitle;
+    }
   }
 
   registerExpandedGuide("animal-rift-salvage", {
