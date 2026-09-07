@@ -630,10 +630,11 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
-  /* Trap Trail v11 uses the same canonical 300px wide-layout poster column
-     as the card-game compact-landscape contract. */
+  /* Trap Trail v15 uses the shared canonical 420px wide-layout poster column
+     at compact landscape so the current Interface 6 contract remains
+     consistent with the standard composition. */
   body[data-wp-five-game="animal-trap-trail"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   /* Flip Foundry uses the canonical 300px wide-layout poster column in

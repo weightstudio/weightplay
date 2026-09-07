@@ -55,7 +55,7 @@ body{overflow-x:hidden}
 }
 
 @media (min-width:700px) and (max-height:520px){
-  .main-screen .cover-wrap{width:300px}
+  .main-screen .cover-wrap{width:420px}
   .stage-canvas,.battle-canvas{padding:4px 12px 4px;gap:4px}
   .stage-canvas .topbar,.battle-canvas .topbar{flex-basis:48px;height:48px;margin:-4px -12px 0}
   .stage-canvas .stage-list{gap:5px}

@@ -153,7 +153,7 @@
       age: "9+",
       difficulty: "Easy to Challenging",
       time: "2-10 minutes",
-      skills: ["Planning", "Spatial Reasoning", "Focus"], hideSkillsFact: true, showRelatedSkill: false,
+      skills: ["Planning", "Spatial Reasoning", "Focus"], hideSkillsFact: true, showRelatedSkill: false, noteTitle: "Player and Save Information",
       relatedIds: ["animal-bamboo-pipes", "animal-sunbeam-garden"],
       intro: "Block Blast is an original 8 by 8 spatial puzzle with 30 authored terrain missions and an Endless high-score mode. Place every fixed shape from the current set, clear complete rows or columns, and protect enough open space for the shapes still waiting in the tray.",
       story: ["The Campaign is organized as thirty compact puzzle missions rather than thirty copies of one empty board. Dirt, ice, stone, gems, locks, color targets, and set limits combine into different planning problems.", "Endless mode removes the mission target and keeps dealing three-shape sets. Its balanced shape pool includes small connectors, medium corners, long five-cell pieces, larger rectangles, and occasional 3 by 3 squares so a careless board eventually runs out of legal space."],
@@ -175,6 +175,7 @@
       genre: ["Puzzle", "Strategy", "Logic"],
       showSkills: false,
       showRelatedSkill: false,
+      noteTitle: "Player and Save Information",
       hideScoreBands: true,
       intro: "Arrow Escape is a 30-stage order puzzle. Read the full path in front of each arrow, remove a block only when that path is clear, and uncover a safe sequence through walls, rotating arrows, matching locks, ice, portals, and one-way gates.",
       story: ["Each stage is a deterministic escape board rather than a random layout. The same stage always begins with the same blocks and always has a verified complete solution.", "Six teaching chapters introduce one rule at a time before combining every mechanic in the final five puzzles."],
@@ -392,7 +393,7 @@
     },
     "golf-solitaire": {
       title: "Golf Solitaire", age: "9+", difficulty: "Easy to Challenging", time: "3-10 minutes", skills: ["Pattern Recognition", "Planning", "Focus"],
-      intro: "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.", hideSkillsFact: true, showRelatedSkill: false,
+      intro: "Golf Solitaire is a fast one-waste-chain puzzle. Clear seven columns of five face-up cards by playing the exposed card one rank above or below the Waste card, then turn Stock when the route ends.", hideSkillsFact: true, showRelatedSkill: false, noteTitle: "Player and Save Information",
       story: ["Golf keeps every tableau card visible but makes the exposed ends matter. The best route is a long run that opens a column before the Stock is needed.", "This strict classic version does not wrap Ace to King, keeping each route readable and making the Stock timing the central decision."],
       systems: ["The tableau has seven columns with five face-up cards each. Only the exposed end card of a column is playable.", "A playable card is exactly one rank above or below the Waste card; suits do not matter.", "Consecutive tableau plays build Combo. Stock cards provide a one-way source of new Waste cards.", "Hint highlights a playable exposed card. Undo restores every column, Waste, Stock, combo, and score."],
       how: ["Use the initial Waste card as the start of the route.", "Tap an exposed column card one rank above or below it.", "Continue the longest useful run to clear columns.", "Turn Stock when no legal tableau card remains.", "Clear all 35 tableau cards before Stock is exhausted."],
@@ -8906,6 +8907,19 @@
     },
   };
 
+  const generalSaveNoteTitles = {
+    en: "Player and Save Information",
+    "zh-Hant": "玩家與存檔資訊", "zh-Hans": "玩家与存档信息", ja: "プレイヤーと保存情報", ko: "플레이어 및 저장 정보",
+    es: "Información del jugador y guardado", "pt-BR": "Informações do jogador e salvamento", fr: "Informations du joueur et sauvegarde",
+    de: "Spieler- und Speicherhinweise", it: "Informazioni del giocatore e salvataggio", ru: "Информация об игроке и сохранении",
+    hi: "खिलाड़ी और सेव जानकारी", ar: "معلومات اللاعب والحفظ",
+  };
+  const generalSaveNoteTitleGameIds = new Set([
+    "animal-bus-jam", "animal-number-match", "animal-prism-breakers",
+    "animal-cratebound", "animal-skyspire-drop", "animal-sunbeam-garden",
+    "arrow-escape", "block-blast", "golf-solitaire",
+  ]);
+
   function localizedGame(id) {
     const base = games[id];
     if (!base) return null;
@@ -8925,6 +8939,9 @@
       skills,
       genre: override.genre || localizedProfile.genre || profile.genre || [],
     };
+    if (generalSaveNoteTitleGameIds.has(id) && generalSaveNoteTitles[activeLocale]) {
+      merged.noteTitle = generalSaveNoteTitles[activeLocale];
+    }
     const catalog = window.WeightPlayGameRuntimeLocales?.[activeLocale];
     // Spanish guide records are fully authored in game-page-info-es.js. Feeding
     // those finished sentences back through the runtime catalog can match
@@ -14433,15 +14450,8 @@
     localizedGames[locale]["animal-prism-breakers"] = { ...games["animal-prism-breakers"], ...copy };
   }
 
-  const generalSaveNoteTitles = {
-    en: "Player and Save Information",
-    "zh-Hant": "玩家與存檔資訊", "zh-Hans": "玩家与存档信息", ja: "プレイヤーと保存情報", ko: "플레이어 및 저장 정보",
-    es: "Información del jugador y guardado", "pt-BR": "Informações do jogador e salvamento", fr: "Informations du joueur et sauvegarde",
-    de: "Spieler- und Speicherhinweise", it: "Informazioni del giocatore e salvataggio", ru: "Информация об игроке и сохранении",
-    hi: "खिलाड़ी और सेव जानकारी", ar: "معلومات اللاعب والحفظ",
-  };
   for (const [locale, noteTitle] of Object.entries(generalSaveNoteTitles)) {
-    for (const id of ["animal-bus-jam", "animal-number-match", "animal-prism-breakers", "animal-cratebound", "animal-skyspire-drop", "animal-sunbeam-garden"]) {
+    for (const id of generalSaveNoteTitleGameIds) {
       if (localizedGames[locale]?.[id]) localizedGames[locale][id].noteTitle = noteTitle;
     }
   }
