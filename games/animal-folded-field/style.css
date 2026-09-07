@@ -405,7 +405,14 @@ body[data-screen="main"] #gameGuide { display: block; }
 }
 
 @media (min-width: 700px) and (orientation: landscape) and (max-height: 560px) {
-  #battleScreen .battle-canvas { padding: 8px 12px 10px; }
+  #battleScreen .battle-canvas {
+    display: grid;
+    grid-template-rows: 48px minmax(0, 1fr);
+    align-content: start;
+    padding: 8px 12px 10px;
+  }
+  #battleScreen .panel-head { min-height: 48px; height: 48px; flex: 0 0 48px; }
+  #battleScreen .battle-content { min-height: 0; overflow: hidden; }
   #battleScreen .battle-content { display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.8fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; margin-top: 4px; }
   #battleScreen .goal-card { grid-column: 1 / -1; align-items: center; flex-direction: row; gap: 12px; margin-bottom: 0; padding: 6px 10px; }
   #battleScreen .goal-card h3 { font-size: 20px; }

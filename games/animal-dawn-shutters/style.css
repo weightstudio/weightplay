@@ -24,7 +24,8 @@
 #gameGuide.game-page-info .guide-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
 #gameGuide.game-page-info .guide-grid article{padding:12px;border:1px solid #c8ddca;border-radius:14px;background:#f8fff8;}
 #gameGuide.game-page-info .guide-grid p{margin:5px 0 0;}
-#mainScreen .settings-panel{width:min(calc(100% - 36px),520px);margin:0 auto 18px;padding:14px;}
+#mainScreen{position:relative;}
+#mainScreen .settings-panel{position:absolute;top:66px;right:18px;z-index:20;width:min(280px,calc(100% - 36px));max-height:calc(100dvh - 78px);margin:0;padding:14px;overflow:auto;}
 #stageScreen,#battleScreen{position:fixed;inset:0 0 56px;width:min(100vw,920px);height:calc(100dvh - 56px);min-height:0;margin:0 auto;padding:env(safe-area-inset-top) 18px 14px;overflow:auto;z-index:10;background:#f5f0e7;}
 #stageScreen{--wp-stage-art:url('assets/animal-dawn-shutters-cover-v2.png');}
 #stageScreen .stage-canvas,#battleScreen .battle-canvas{width:100%;min-height:calc(100% - 58px);margin:0 auto;}
@@ -40,6 +41,7 @@
 #battleScreen .battle-canvas>header{position:relative;z-index:2;}
 #battleScreen #battlePanel,#battleScreen #resultPanel{width:min(100%,700px);margin:0 auto;}
 #battleScreen #battlePanel{padding:12px 14px 14px;border:1px solid #eadfc9;border-radius:24px;background:#fffdf7;box-shadow:0 16px 38px #73552b14;}
+#battleScreen #battlePanel>.feedback{min-height:64px;}
 #battleScreen .battleSoundBtn{width:48px;height:48px;}
 #battleScreen .shutter-board{margin-top:16px;}
 #battleScreen .battle-actions{justify-content:flex-end;}
@@ -57,21 +59,34 @@
   #mainScreen .main-cover{width:420px;}
 }
 @media(orientation:landscape) and (max-height:560px){
-  #mainScreen .main-cover{width:300px;max-width:300px;}
+  #mainScreen .main-cover{width:420px;max-width:420px;}
   #stageScreen .stage-list{grid-template-columns:repeat(3,minmax(0,1fr));}
   #stageScreen .stage-support{display:none;}
   #stageScreen .panel-intro{margin-bottom:4px;}
   #stageScreen .stage-list{height:138px;max-height:138px;margin-top:8px;overflow-y:auto;}
   #stageScreen .stage-card{height:138px;min-height:138px;}
   #stageScreen .stage-tabs{margin-top:4px;}
-  #battleScreen .battle-canvas{min-height:100%;}
-  #battleScreen #battlePanel{display:grid;grid-template-columns:minmax(0,1fr) 240px;grid-template-rows:auto auto minmax(0,1fr) auto;align-items:center;column-gap:14px;}
+  #battleScreen{overflow:hidden;}
+  #battleScreen .battle-canvas{display:flex;flex-direction:column;height:calc(100% - 14px);min-height:0;}
+  #battleScreen .battle-canvas>.panel-head{flex:0 0 58px;}
+  #battleScreen #battlePanel{display:grid;flex:1 1 auto;min-height:0;width:100%;padding:8px 10px;grid-template-columns:minmax(0,1fr) minmax(190px,240px);grid-template-rows:34px 64px minmax(48px,1fr) 15px 49px;align-items:center;column-gap:14px;row-gap:2px;overflow:hidden;}
   #battleScreen #battlePanel>.mission-row{grid-column:1/-1;}
   #battleScreen #battlePanel>.target-card{grid-column:2;grid-row:2;}
-  #battleScreen #battlePanel>.shutter-board{grid-column:1;grid-row:2/5;}
+  #battleScreen #battlePanel>.shutter-board{grid-column:1;grid-row:2/6;height:100%;align-items:center;}
   #battleScreen #battlePanel>.feedback{grid-column:2;grid-row:3;}
   #battleScreen #battlePanel>.move-hint{grid-column:2;grid-row:4;}
-  #battleScreen #battlePanel>.battle-actions{grid-column:2;grid-row:5;}
+  #battleScreen #battlePanel>.battle-actions{grid-column:2;grid-row:5;margin-top:0;}
+  #battleScreen #battlePanel>.mission-row{margin-top:0;min-height:0;}
+  #battleScreen #battlePanel>.target-card{margin-top:0;padding:6px 10px;}
+#battleScreen #battlePanel>.feedback{min-height:0;margin:0;font-size:.72rem;line-height:1.1;}
+  #battleScreen #battlePanel>.move-hint{margin:0;font-size:.72rem;line-height:1.1;}
+  #battleScreen #battlePanel>.shutter-board{margin-top:0;}
+  #battleScreen .shutter-card{padding:8px 6px;gap:3px;}
+  #battleScreen .shutter-card .light-bar{width:36px;height:60px;}
+  #battleScreen .shutter-card .light-bar i{height:12px;}
+  #battleScreen .target-card .light-bars{gap:6px;margin-top:4px;}
+  #battleScreen .target-card .light-bar{width:22px;height:38px;padding:3px;gap:2px;}
+#battleScreen .target-card .light-bar i{height:8px;}
 }
 html:has(body[data-screen="stage"]),html:has(body[data-screen="battle"]),body[data-screen="stage"],body[data-screen="battle"]{width:100%;height:100%;min-height:0;overflow:hidden;overscroll-behavior:none;}
 #gameGuide[hidden]{display:none!important;}

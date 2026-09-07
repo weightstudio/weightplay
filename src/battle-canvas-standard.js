@@ -21,6 +21,11 @@
     // Twin Switchyard keeps its game-local physical fallback controls, while
     // the native 960x540 playfield also needs the complete wide envelope.
     "animal-twin-switchyard": ["#battleScreen", 390, 788, 760, 334],
+    // Trail Logic has a responsive marker/choice column. Keep its compact
+    // landscape play surface in the wide logical envelope so the choice
+    // controls and persistent return utilities do not drift when feedback
+    // rerenders the record.
+    "animal-footprint-folio": ["#battleScreen", 390, 788, 760, 334],
     "arrow-escape": [".battle-canvas", 390, 788, 760, 334],
     "block-blast": [".battle-canvas", 390, 788, 760, 334],
     "hexa-sort": [".battle-canvas", 390, 788, 760, 334],

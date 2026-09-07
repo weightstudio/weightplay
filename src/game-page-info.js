@@ -12098,7 +12098,7 @@
   localizedGameplayProfiles["zh-Hans"]["animal-skyport-dispatch"] = { gameplay: "飞船航线调度", genre: ["策略", "管理", "模拟", "动物"] };
 
   games["animal-color-springs"] = {
-    title: "Animal Color Springs", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"],
+    title: "Animal Color Springs", difficulty: "Easy to Challenging", time: "2-6 minutes per stage", gameplay: "Color Sorting Puzzle", genre: ["Puzzle", "Logic", "Animal"], skills: ["Logic", "Problem Solving", "Focus"], relatedIds: ["animal-block-grove", "animal-screw-workshop", "animal-parking-patrol"],
     guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
     intro: "Animal Color Springs is a 30-stage sorting puzzle about moving colored spring orbs between ornate vessels until every vessel contains one color.",
     story: ["Forest fountains have lost their color, and Moon Cap Orla asks the player to restore each spring by sorting its glowing orbs."],
@@ -18457,5 +18457,193 @@
     parent: "هذه لعبة متصفح عامة بلا حساب أو شراء أو دردشة أو قائمة متصدرين أو إعلانات. تبقى النتيجة وأفضل نتيجة لكل مرحلة والمراحل المجتازة والتقدم المحلي للفتح في هذا المتصفح.",
     faq: [["كيف أحصل على النقاط؟", "مرّر عبر الثمار الآمنة وهي ظاهرة؛ تضيف الإصابات الناجحة نقاطًا وقد تبني تتابعًا."], ["ما الذي ينهي المرحلة؟", "تنتهي المرحلة بعد ثلاث محاولات فائتة؛ وتنتهي عند اكتمال مؤقتها القصير إذا اجتزتها بأمان."], ["كم عدد المراحل؟", "هناك 30 مرحلة في ستة أقواس من خمس مراحل، مع نقاط تفتيش في المراحل 5 و10 و15 و20 و25 و30."], ["هل يمكنني استخدام الفأرة؟", "نعم. يستخدم السحب بالفأرة والسحب باللمس إيماءة الساحة نفسها."], ["هل يُحفظ التقدم؟", "تُحفظ المراحل المجتازة والمرحلة المفتوحة التالية وأفضل نتيجة لكل مرحلة محليًا في هذا المتصفح."]],
   };
+
+  // Animal Color Springs had complete English, Spanish, Japanese, and
+  // Chinese Guide records, but the other required locales were inheriting
+  // English prose for systems, FAQ, and design notes. Keep the same authored
+  // facts while supplying locale-owned public copy for every remaining route.
+  const colorSpringsLocaleCopies = {
+    ko: {
+      title: "애니멀 컬러 스프링스", age: "9+", difficulty: "쉬움부터 도전적", time: "스테이지당 2~6분", gameplay: "색상 분류 퍼즐", genre: ["퍼즐", "논리", "동물"], skills: ["논리", "문제 해결", "집중력"],
+      guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드",
+      intro: "애니멀 컬러 스프링스는 색깔이 섞인 샘 구슬을 장식 용기 사이로 옮겨 모든 용기에 한 가지 색만 남기는 30단계 분류 퍼즐입니다.",
+      story: ["숲의 샘이 색을 잃자 문 캡 오를라가 빛나는 구슬을 정리해 각 샘을 되살려 달라고 부탁합니다."],
+      systems: ["움직일 수 있는 맨 위 구슬이 있는 용기를 고른 다음, 공간이 있는 빈 용기나 맨 위 색이 같은 용기를 고릅니다.", "되돌리기는 정확히 한 번의 이동을 복원하고, 다시 시작은 같은 퍼즐을 되살립니다. 힌트는 유용한 합법 이동을 보여 주며 완료, 별, 해금과 최고 이동 수는 이 브라우저에 저장됩니다."],
+      how: ["가로 스테이지 레일에서 열린 샘을 고릅니다.", "옮기려는 맨 위 구슬이 있는 용기를 고릅니다.", "빈 용기나 맨 위 구슬의 색이 같은 용기를 고릅니다.", "목표 이동 수 안에 모든 색 묶음을 완성합니다."],
+      strategyTips: ["풀이 중간까지 여유 있는 빈 용기를 하나 남겨 두세요.", "아래의 다른 색을 가두지 않을 때만 한 색을 완성하세요.", "긴 묶음을 옮기기 전에 용기의 용량을 확인하세요."],
+      progression: ["1~5단계는 합법 이동과 빈 공간 계획을 가르칩니다. 이후 장에서는 더 많은 색, 고르지 않은 묶음, 용량 변화, 봉인과 좁은 경로가 30단계 전체에 추가됩니다."],
+      designNote: "고정된 시작 배치는 난이도를 무작위 운이 아니라 경로 계획에서 만듭니다. 터치, 마우스, 키보드는 같은 이동 상태를 사용하고 Stage와 Battle은 최대 920px 반응형 폭을 따릅니다.",
+      parent: "계정이 필요하지 않습니다. 진행 상황은 이 브라우저에 저장되며 사이트 저장 공간을 지우면 초기화될 수 있습니다. 별과 이동 요약은 공식 평가가 아닌 게임 피드백입니다.",
+      faq: [["스테이지는 몇 개인가요?", "직접 설계한 분류 스테이지가 30개 있습니다."], ["어떤 이동이 가능한가요?", "목적지에 공간이 있고 비어 있거나 맨 위 색이 같아야 합니다."], ["진행 상황이 저장되나요?", "예. 해금, 별과 최고 이동 수가 로컬에 저장됩니다."]],
+    },
+    "pt-BR": {
+      title: "Fontes de Cores Animais", age: "9+", difficulty: "Fácil a desafiador", time: "2–6 minutos por fase", gameplay: "Puzzle de classificação de cores", genre: ["Puzzle", "Lógica", "Animais"], skills: ["Lógica", "Resolução de problemas", "Concentração"],
+      guideKicker: "Guia de jogo original do WeightPlay", guideTitleSuffix: "Guia do jogo",
+      intro: "Fontes de Cores Animais é um puzzle de classificação com 30 fases. Mova os orbes coloridos das fontes entre vasos decorados até que cada vaso tenha apenas uma cor.",
+      story: ["As fontes da floresta perderam suas cores, e Moon Cap Orla pede que o jogador organize os orbes brilhantes para restaurar cada nascente."],
+      systems: ["Escolha um vaso com um orbe superior móvel e depois um destino compatível com espaço. O destino deve estar vazio ou ter a mesma cor no topo.", "Desfazer restaura uma transferência exata, Reiniciar recria a abertura da fase e Dica aponta uma jogada útil. Fases concluídas, estrelas, desbloqueios e melhores movimentos ficam salvos localmente."],
+      how: ["Escolha uma fonte desbloqueada na barra horizontal de fases.", "Selecione o vaso cujo orbe superior você quer mover.", "Selecione um vaso vazio ou com a mesma cor no topo.", "Complete todos os grupos de cores dentro da meta de movimentos."],
+      strategyTips: ["Mantenha um vaso vazio e flexível até a metade da solução.", "Complete uma cor apenas quando ela não prender outra cor abaixo.", "Confira a capacidade do vaso antes de mover uma pilha longa."],
+      progression: ["As fases 1–5 ensinam transferências válidas e planejamento de espaço. Os capítulos seguintes adicionam mais cores, pilhas irregulares, capacidades diferentes, selos e rotas apertadas ao longo das 30 fases."],
+      designNote: "Aberturas criadas à mão fazem a dificuldade depender do planejamento, não de sorte. Toque, mouse e teclado compartilham o mesmo estado de transferência, e Stage e Battle seguem a largura máxima responsiva de 920px.",
+      parent: "Nenhuma conta é necessária. O progresso fica neste navegador e pode ser reiniciado ao limpar os dados do site. Estrelas e resumos de movimentos são feedback do jogo, não uma avaliação formal.",
+      faq: [["Quantas fases existem?", "Há 30 fases de classificação criadas à mão."], ["Quando uma jogada é válida?", "O destino precisa ter espaço e estar vazio ou mostrar a mesma cor no topo."], ["O progresso é salvo?", "Sim. Desbloqueios, estrelas e melhores movimentos ficam salvos localmente."]],
+    },
+    fr: {
+      title: "Sources de couleurs animales", age: "9+", difficulty: "Facile à exigeant", time: "2 à 6 minutes par niveau", gameplay: "Puzzle de tri des couleurs", genre: ["Puzzle", "Logique", "Animaux"], skills: ["Logique", "Résolution de problèmes", "Concentration"],
+      guideKicker: "Guide de jeu original WeightPlay", guideTitleSuffix: "Guide du jeu",
+      intro: "Sources de couleurs animales est un puzzle de tri en 30 niveaux. Déplacez les orbes colorés des sources entre des récipients décorés jusqu’à ce que chaque récipient ne contienne qu’une seule couleur.",
+      story: ["Les sources de la forêt ont perdu leurs couleurs. Moon Cap Orla demande au joueur de trier les orbes lumineux pour restaurer chaque source."],
+      systems: ["Choisissez un récipient dont l’orbe supérieur peut bouger, puis une destination compatible qui a de la place. La destination doit être vide ou présenter la même couleur au sommet.", "Annuler restaure un transfert exact, Recommencer recrée le départ du niveau et Indice signale un déplacement utile. Les réussites, étoiles, déblocages et meilleurs nombres de coups sont conservés localement."],
+      how: ["Choisissez une source débloquée sur la barre horizontale des niveaux.", "Sélectionnez le récipient dont vous voulez déplacer l’orbe supérieur.", "Sélectionnez un récipient vide ou dont la couleur supérieure correspond.", "Terminez chaque groupe de couleurs dans la limite de coups indiquée."],
+      strategyTips: ["Gardez un récipient vide et flexible jusqu’au milieu de la solution.", "Ne terminez une couleur que si elle ne bloque pas une autre couleur dessous.", "Vérifiez la capacité avant de déplacer une pile longue."],
+      progression: ["Les niveaux 1 à 5 enseignent les transferts légaux et la gestion de l’espace vide. Les chapitres suivants ajoutent des couleurs, des piles irrégulières, des capacités variables, des récipients scellés et des routes plus étroites sur les 30 niveaux."],
+      designNote: "Les départs sont conçus à la main : la difficulté vient de la planification des routes, pas du hasard. Le toucher, la souris et le clavier utilisent le même état de transfert, avec une largeur responsive maximale de 920 px pour Stage et Battle.",
+      parent: "Aucun compte n’est nécessaire. La progression reste dans ce navigateur et peut être effacée avec les données du site. Les étoiles et résumés de coups sont des retours de jeu, pas une évaluation formelle.",
+      faq: [["Combien de niveaux sont inclus ?", "Il y a 30 niveaux de tri conçus à la main."], ["Quand un déplacement est-il légal ?", "La destination doit avoir de la place et être vide ou afficher la même couleur au sommet."], ["La progression est-elle enregistrée ?", "Oui. Les déblocages, étoiles et meilleurs nombres de coups sont conservés localement."]],
+    },
+    de: {
+      title: "Tierische Farbenquellen", age: "9+", difficulty: "Leicht bis anspruchsvoll", time: "2–6 Minuten pro Stufe", gameplay: "Farbsortier-Puzzle", genre: ["Puzzle", "Logik", "Tiere"], skills: ["Logik", "Problemlösen", "Konzentration"],
+      guideKicker: "Originaler WeightPlay-Spielguide", guideTitleSuffix: "Spielanleitung",
+      intro: "Tierische Farbenquellen ist ein Sortier-Puzzle mit 30 Stufen. Verschiebe farbige Quellkugeln zwischen verzierten Gefäßen, bis jedes Gefäß nur noch eine Farbe enthält.",
+      story: ["Die Quellen des Waldes haben ihre Farben verloren. Moon Cap Orla bittet dich, die leuchtenden Kugeln zu sortieren und jede Quelle wiederherzustellen."],
+      systems: ["Wähle ein Gefäß mit einer beweglichen oberen Kugel und danach ein passendes Ziel mit Platz. Das Ziel muss leer sein oder oben dieselbe Farbe zeigen.", "Rückgängig stellt genau einen Transfer wieder her, Neustart baut den festen Levelanfang auf und Tipp zeigt einen nützlichen legalen Zug. Abschlüsse, Sterne, Freischaltungen und beste Zugzahlen werden lokal gespeichert."],
+      how: ["Wähle eine freigeschaltete Quelle auf der horizontalen Stufenleiste.", "Wähle das Gefäß, dessen oberste Kugel du bewegen möchtest.", "Wähle ein leeres Gefäß oder eines mit derselben oberen Farbe.", "Sortiere alle Farbgruppen innerhalb des Zugziels."],
+      strategyTips: ["Lass bis zur Mitte der Lösung ein flexibles leeres Gefäß frei.", "Vervollständige eine Farbe nur, wenn du darunter keine andere Farbe festsetzt.", "Prüfe die Gefäßkapazität, bevor du einen langen Stapel verschiebst."],
+      progression: ["Stufen 1–5 lehren legale Transfers und Planung mit freien Plätzen. Spätere Kapitel bringen mehr Farben, ungleichmäßige Stapel, wechselnde Kapazitäten, versiegelte Gefäße und engere Wege in allen 30 Stufen."],
+      designNote: "Die festen Starts machen die Schwierigkeit zu einer Routenplanung statt zu einem Zufallsspiel. Touch, Maus und Tastatur nutzen denselben Transferzustand; Stage und Battle folgen der responsiven Maximalbreite von 920 px.",
+      parent: "Ein Konto ist nicht erforderlich. Der Fortschritt bleibt in diesem Browser und kann beim Löschen der Websitedaten verschwinden. Sterne und Zugzusammenfassungen sind Spielrückmeldung, keine formelle Bewertung.",
+      faq: [["Wie viele Stufen gibt es?", "Es gibt 30 handgefertigte Sortierstufen."], ["Wann ist ein Zug erlaubt?", "Das Ziel muss Platz haben und leer sein oder oben dieselbe Farbe zeigen."], ["Wird der Fortschritt gespeichert?", "Ja. Freischaltungen, Sterne und beste Zugzahlen werden lokal gespeichert."]],
+    },
+    it: {
+      title: "Sorgenti di colori animali", age: "9+", difficulty: "Da facile a impegnativo", time: "2–6 minuti per livello", gameplay: "Puzzle di ordinamento dei colori", genre: ["Puzzle", "Logica", "Animali"], skills: ["Logica", "Risoluzione dei problemi", "Concentrazione"],
+      guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida al gioco",
+      intro: "Sorgenti di colori animali è un puzzle di ordinamento in 30 livelli. Sposta le sfere colorate delle sorgenti tra recipienti decorati finché ogni recipiente contiene un solo colore.",
+      story: ["Le sorgenti della foresta hanno perso i loro colori. Moon Cap Orla chiede al giocatore di ordinare le sfere luminose e ripristinare ogni sorgente."],
+      systems: ["Scegli un recipiente con una sfera superiore mobile, poi una destinazione compatibile con spazio libero. La destinazione deve essere vuota o avere lo stesso colore in cima.", "Annulla ripristina un trasferimento preciso, Riavvia ricrea l’apertura del livello e Suggerimento indica una mossa utile. Completamenti, stelle, sblocchi e migliori mosse restano salvati localmente."],
+      how: ["Scegli una sorgente sbloccata dalla barra orizzontale dei livelli.", "Seleziona il recipiente con la sfera superiore che vuoi spostare.", "Seleziona un recipiente vuoto o con lo stesso colore in cima.", "Completa tutti i gruppi di colore entro il numero di mosse obiettivo."],
+      strategyTips: ["Conserva un recipiente vuoto e flessibile fino a metà soluzione.", "Completa un colore solo quando non intrappola un altro colore sotto di esso.", "Controlla la capacità del recipiente prima di spostare una pila lunga."],
+      progression: ["I livelli 1–5 insegnano trasferimenti validi e pianificazione dello spazio vuoto. I capitoli successivi aggiungono colori, pile irregolari, capacità diverse, recipienti sigillati e percorsi più stretti nei 30 livelli."],
+      designNote: "Le aperture sono create a mano: la difficoltà nasce dalla pianificazione del percorso, non dalla casualità. Tocco, mouse e tastiera condividono lo stesso stato di trasferimento, con larghezza responsive massima di 920 px per Stage e Battle.",
+      parent: "Non serve alcun account. I progressi restano in questo browser e possono essere cancellati rimuovendo i dati del sito. Stelle e riepiloghi delle mosse sono feedback di gioco, non una valutazione formale.",
+      faq: [["Quanti livelli ci sono?", "Ci sono 30 livelli di ordinamento progettati a mano."], ["Quando una mossa è valida?", "La destinazione deve avere spazio ed essere vuota o mostrare lo stesso colore in cima."], ["I progressi vengono salvati?", "Sì. Sblocchi, stelle e migliori mosse vengono salvati localmente."]],
+    },
+    ru: {
+      title: "Цветные источники животных", age: "9+", difficulty: "От простого до сложного", time: "2–6 минут на этап", gameplay: "Головоломка сортировки цветов", genre: ["Головоломка", "Логика", "Животные"], skills: ["Логика", "Решение задач", "Внимание"],
+      guideKicker: "Оригинальное руководство WeightPlay", guideTitleSuffix: "Руководство по игре",
+      intro: "Цветные источники животных — это головоломка из 30 этапов. Перемещайте цветные шары-источники между украшенными сосудами, пока в каждом сосуде не останется один цвет.",
+      story: ["Лесные источники потеряли свои цвета, и Лунная Шапка Орла просит игрока рассортировать светящиеся шары и восстановить каждый источник."],
+      systems: ["Выберите сосуд с подвижным верхним шаром, затем совместимую цель со свободным местом. Цель должна быть пустой или иметь сверху шар того же цвета.", "Отмена точно возвращает один перенос, Перезапуск восстанавливает заданное начало, а Подсказка показывает полезный допустимый ход. Победы, звёзды, открытия и лучшие числа ходов хранятся локально."],
+      how: ["Выберите открытый источник на горизонтальной ленте этапов.", "Выберите сосуд, верхний шар которого хотите переместить.", "Выберите пустой сосуд или сосуд с совпадающим верхним цветом.", "Соберите все цветовые группы за отведённое число ходов."],
+      strategyTips: ["Оставляйте один гибкий пустой сосуд до середины решения.", "Завершайте цвет только тогда, когда не запираете другой цвет ниже.", "Проверяйте вместимость сосуда перед перемещением длинной стопки."],
+      progression: ["Этапы 1–5 знакомят с допустимыми переносами и планированием свободного места. В следующих главах появляются новые цвета, неровные стопки, разные вместимости, запечатанные сосуды и более узкие маршруты на всех 30 этапах."],
+      designNote: "Начальные позиции созданы вручную, поэтому сложность строится на планировании маршрута, а не на случайности. Сенсорный ввод, мышь и клавиатура используют одно состояние переноса; Stage и Battle следуют адаптивной ширине до 920 px.",
+      parent: "Учётная запись не нужна. Прогресс хранится в этом браузере и может исчезнуть после очистки данных сайта. Звёзды и сводки ходов — игровая обратная связь, а не формальная оценка.",
+      faq: [["Сколько этапов в игре?", "Есть 30 вручную созданных этапов сортировки."], ["Когда перенос разрешён?", "В цели должно быть место, и она должна быть пустой или иметь сверху такой же цвет."], ["Сохраняется ли прогресс?", "Да. Открытия, звёзды и лучшие результаты по ходам сохраняются локально."]],
+    },
+    hi: {
+      title: "पशु रंगीन झरने", age: "9+", difficulty: "आसान से चुनौतीपूर्ण", time: "प्रति चरण 2–6 मिनट", gameplay: "रंग छँटाई पहेली", genre: ["पहेली", "तर्क", "पशु"], skills: ["तर्क", "समस्या समाधान", "ध्यान"],
+      guideKicker: "WeightPlay मूल गेम गाइड", guideTitleSuffix: "गेम गाइड",
+      intro: "पशु रंगीन झरने 30 चरणों वाली छँटाई पहेली है। रंगीन झरना-गोलों को सजावटी पात्रों के बीच ले जाएँ, जब तक हर पात्र में केवल एक रंग न रह जाए।",
+      story: ["जंगल के झरनों ने अपने रंग खो दिए हैं। मून कैप ओर्ला खिलाड़ी से चमकते गोलों को छाँटकर हर झरने को फिर से जगाने को कहती हैं।"],
+      systems: ["ऐसा पात्र चुनें जिसके ऊपर का गोला चल सकता हो, फिर पर्याप्त जगह वाला सही गंतव्य चुनें। गंतव्य खाली होना चाहिए या ऊपर वही रंग होना चाहिए।", "Undo एक सटीक स्थानांतरण लौटाता है, Restart उसी तय शुरुआत को बनाता है और Hint उपयोगी वैध चाल दिखाता है। पूर्ण चरण, सितारे, खुले चरण और सबसे कम चालें स्थानीय रूप से सहेजी जाती हैं।"],
+      how: ["क्षैतिज चरण-पट्टी से खुला हुआ झरना चुनें।", "जिस पात्र के ऊपर का गोला हटाना है उसे चुनें।", "खाली पात्र या ऊपर समान रंग वाले पात्र को चुनें।", "लक्ष्य चालों के भीतर सभी रंग समूह पूरे करें।"],
+      strategyTips: ["समाधान के बीच तक एक खाली और लचीला पात्र बचाकर रखें।", "किसी रंग को तभी पूरा करें जब नीचे का दूसरा रंग फँसे नहीं।", "लंबी ढेरी हटाने से पहले पात्र की क्षमता देखें।"],
+      progression: ["चरण 1–5 वैध स्थानांतरण और खाली जगह की योजना सिखाते हैं। बाद के अध्याय 30 चरणों में अधिक रंग, असमान ढेर, बदलती क्षमता, सील किए पात्र और संकरे रास्ते जोड़ते हैं।"],
+      designNote: "तय की गई शुरुआती स्थितियाँ कठिनाई को संयोग के बजाय रास्ते की योजना पर आधारित रखती हैं। स्पर्श, माउस और कीबोर्ड एक ही स्थानांतरण स्थिति साझा करते हैं और Stage व Battle की responsive चौड़ाई 920px तक रहती है।",
+      parent: "खाते की आवश्यकता नहीं है। प्रगति इसी ब्राउज़र में रहती है और साइट डेटा मिटाने पर रीसेट हो सकती है। सितारे और चालों का सार खेल की प्रतिक्रिया हैं, औपचारिक मूल्यांकन नहीं।",
+      faq: [["कितने चरण हैं?", "हाथ से बनाए गए 30 छँटाई चरण हैं।"], ["कौन-सी चाल वैध है?", "गंतव्य में जगह होनी चाहिए और वह खाली हो या ऊपर वही रंग दिखाए।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। खुले चरण, सितारे और सबसे अच्छी चालें स्थानीय रूप से सहेजी जाती हैं।"]],
+    },
+    ar: {
+      title: "ينابيع الألوان الحيوانية", age: "9+", difficulty: "من السهل إلى التحدي", time: "2–6 دقائق لكل مرحلة", gameplay: "لغز فرز الألوان", genre: ["ألغاز", "منطق", "حيوانات"], skills: ["المنطق", "حل المشكلات", "التركيز"],
+      guideKicker: "دليل ألعاب WeightPlay الأصلي", guideTitleSuffix: "دليل اللعبة",
+      intro: "ينابيع الألوان الحيوانية لغز فرز من 30 مرحلة. انقل كرات الينابيع الملونة بين أوعية مزخرفة حتى يحتوي كل وعاء على لون واحد فقط.",
+      story: ["فقدت ينابيع الغابة ألوانها، وتطلب مون كاب أورلا من اللاعب فرز الكرات المضيئة وإعادة كل نبع إلى الحياة."],
+      systems: ["اختر وعاءً يحوي كرة علوية قابلة للتحريك، ثم اختر وجهة متوافقة فيها مساحة. يجب أن تكون الوجهة فارغة أو أن يظهر اللون نفسه في أعلاها.", "يعيد التراجع نقلة واحدة بدقة، وتعيد إعادة التشغيل بداية المرحلة المصممة، بينما يحدد التلميح نقلة قانونية مفيدة. تُحفظ الإنجازات والنجوم وعمليات الفتح وأفضل عدد من النقلات محليًا."],
+      how: ["اختر نبعًا مفتوحًا من شريط المراحل الأفقي.", "اختر الوعاء الذي تريد تحريك كرته العلوية.", "اختر وعاءً فارغًا أو وعاءً يطابق لونه العلوي.", "أكمل كل مجموعات الألوان ضمن عدد النقلات المستهدف."],
+      strategyTips: ["اترك وعاءً فارغًا ومرنًا حتى منتصف الحل.", "لا تكمل لونًا إلا إذا كنت لن تحاصر لونًا آخر تحته.", "تحقق من سعة الوعاء قبل نقل كومة طويلة."],
+      progression: ["تعلّم المراحل 1–5 النقلات القانونية وتخطيط المساحات الفارغة. تضيف الفصول التالية ألوانًا أكثر وأكوامًا غير متساوية وسعات مختلفة وأوعية مختومة ومسارات أضيق عبر المراحل الثلاثين."],
+      designNote: "صُممت بدايات المراحل يدويًا، لذلك تأتي الصعوبة من تخطيط المسار لا من الحظ العشوائي. يستخدم اللمس والفأرة ولوحة المفاتيح حالة النقل نفسها، وتلتزم Stage وBattle بعرض متجاوب أقصاه 920 بكسل.",
+      parent: "لا يلزم حساب. يبقى التقدم في هذا المتصفح وقد يُحذف عند مسح بيانات الموقع. النجوم وملخصات النقل ملاحظات لعب وليست تقييمًا رسميًا.",
+      faq: [["كم عدد المراحل؟", "هناك 30 مرحلة فرز مصممة يدويًا."], ["متى تكون النقلة قانونية؟", "يجب أن تحتوي الوجهة على مساحة وأن تكون فارغة أو تعرض اللون العلوي نفسه."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ عمليات الفتح والنجوم وأفضل عدد من النقلات محليًا."]],
+    },
+  };
+  for (const [localeCode, copy] of Object.entries(colorSpringsLocaleCopies)) {
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-color-springs"] = { ...games["animal-color-springs"], ...copy };
+    localizedGameplayProfiles[localeCode] ||= {};
+    localizedGameplayProfiles[localeCode]["animal-color-springs"] = { gameplay: copy.gameplay, genre: copy.genre, skills: copy.skills };
+  }
+
+  const colorSpringsRelatedCards = {
+    en: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Place three block groups on an 8×8 board and clear rows or columns to reopen habitat space." },
+      "animal-screw-workshop": { title: "Animal Screw Workshop", intro: "Move brass screws through open holes to release layered animal plates in fixed logic puzzles." },
+      "animal-parking-patrol": { title: "Animal Parking Patrol", intro: "Release directional animal carts in a safe order across thirty authored traffic puzzles." },
+    },
+    "zh-Hant": {
+      "animal-block-grove": { title: "動物方塊森林", intro: "把三組方塊放進 8×8 森林棋盤，填滿橫列或直行以清出棲地空間。" },
+      "animal-screw-workshop": { title: "動物螺絲工坊", intro: "把黃銅螺絲移入空孔，依固定規則拆下交疊的動物木板。" },
+      "animal-parking-patrol": { title: "森林停車疏導隊", intro: "觀察木車方向，依安全順序疏導三十條森林交通路線。" },
+    },
+    "zh-Hans": {
+      "animal-block-grove": { title: "动物方块森林", intro: "把三组方块放进 8×8 森林棋盘，填满横行或竖列以清出栖地空间。" },
+      "animal-screw-workshop": { title: "动物螺丝工坊", intro: "把黄铜螺丝移入空孔，按固定规则拆下重叠的动物木板。" },
+      "animal-parking-patrol": { title: "森林停车疏导队", intro: "观察木车方向，按安全顺序疏导三十条森林交通路线。" },
+    },
+    ja: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "3つのブロックを8×8の森の盤面に置き、行や列をそろえて生息地を開きます。" },
+      "animal-screw-workshop": { title: "どうぶつネジ工房", intro: "真ちゅうのネジを空いた穴へ移し、固定ルールに従って動物板を外します。" },
+      "animal-parking-patrol": { title: "動物駐車パトロール", intro: "木の動物カートの向きを読み、安全な順番で30の交通パズルを解きます。" },
+    },
+    ko: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "세 블록 묶음을 8×8 숲 보드에 배치하고 행과 열을 지워 서식지 공간을 만드세요." },
+      "animal-screw-workshop": { title: "동물 나사 워크숍", intro: "황동 나사를 빈 구멍으로 옮기며 고정된 규칙에 따라 겹친 동물 판을 해제하세요." },
+      "animal-parking-patrol": { title: "동물 주차 순찰", intro: "나무 동물 카트의 방향을 읽고 안전한 순서로 30개 교통 퍼즐을 해결하세요." },
+    },
+    es: {
+      "animal-block-grove": { title: "Bosque de Bloques Animales", intro: "Coloca tres grupos de bloques en un tablero 8×8 y completa filas o columnas para abrir el hábitat." },
+      "animal-screw-workshop": { title: "Taller de Tornillos Animales", intro: "Mueve tornillos de latón por agujeros libres para soltar placas de animales superpuestas." },
+      "animal-parking-patrol": { title: "Patrulla de Aparcamiento Animal", intro: "Lee la dirección de cada carro y libera el tráfico en un orden seguro en 30 rutas." },
+    },
+    "pt-BR": {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Coloque três grupos de blocos em um tabuleiro 8×8 e complete linhas ou colunas para abrir o habitat." },
+      "animal-screw-workshop": { title: "Oficina de Parafusos Animais", intro: "Mova parafusos de latão por furos livres para soltar placas de animais sobrepostas." },
+      "animal-parking-patrol": { title: "Patrulha de estacionamento de animais", intro: "Leia a direção de cada carrinho e libere o trânsito em ordem segura em 30 rotas." },
+    },
+    fr: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Placez trois groupes de blocs sur un plateau 8×8 et complétez des lignes ou colonnes pour ouvrir l’habitat." },
+      "animal-screw-workshop": { title: "Atelier de vis pour animaux", intro: "Déplacez des vis en laiton vers des trous libres pour libérer les plaques d’animaux superposées." },
+      "animal-parking-patrol": { title: "Patrouille de stationnement d’animaux", intro: "Lisez la direction des chariots et libérez la circulation dans un ordre sûr sur 30 routes." },
+    },
+    de: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Setze drei Blockgruppen auf ein 8×8-Brett und fülle Reihen oder Spalten, um Lebensraum zu öffnen." },
+      "animal-screw-workshop": { title: "Werkstatt für Tierschrauben", intro: "Verschiebe Messingschrauben in freie Löcher und löse überlagerte Tierplatten nach festen Regeln." },
+      "animal-parking-patrol": { title: "Tierparkpatrouille", intro: "Lies die Richtung der Tierwagen und löse 30 Verkehrswege in sicherer Reihenfolge." },
+    },
+    it: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Disponi tre gruppi di blocchi su una tavola 8×8 e completa righe o colonne per aprire l’habitat." },
+      "animal-screw-workshop": { title: "Laboratorio di viti per animali", intro: "Sposta le viti di ottone nei fori liberi per liberare le tavole animali sovrapposte." },
+      "animal-parking-patrol": { title: "Pattuglia di parcheggio degli animali", intro: "Leggi la direzione dei carrelli e libera il traffico in ordine sicuro su 30 percorsi." },
+    },
+    ru: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "Разместите три группы блоков на поле 8×8 и заполняйте ряды или столбцы, открывая место для леса." },
+      "animal-screw-workshop": { title: "Мастерская винтов для животных", intro: "Перемещайте латунные винты в свободные отверстия и освобождайте наложенные панели по фиксированным правилам." },
+      "animal-parking-patrol": { title: "Патруль парковки животных", intro: "Читайте направление деревянных тележек и освобождайте движение в безопасном порядке на 30 маршрутах." },
+    },
+    hi: {
+      "animal-block-grove": { title: "Animal Block Grove", intro: "8×8 जंगल बोर्ड पर तीन ब्लॉक समूह रखें और पंक्तियाँ या स्तंभ भरकर आवास की जगह खोलें।" },
+      "animal-screw-workshop": { title: "पशु पेंच कार्यशाला", intro: "पीतल के पेंच खाली छेदों में ले जाकर तय नियमों के अनुसार एक-दूसरे पर लगी पशु पट्टियाँ हटाएँ।" },
+      "animal-parking-patrol": { title: "पशु पार्किंग गश्ती", intro: "गाड़ियों की दिशा पढ़ें और 30 यातायात पहेलियों में सुरक्षित क्रम से रास्ता खोलें।" },
+    },
+    ar: {
+      "animal-block-grove": { title: "بستان الحيوانات المتراصة", intro: "ضع ثلاث مجموعات من القطع على لوحة غابة 8×8 وأكمل الصفوف أو الأعمدة لفتح مساحة الموطن." },
+      "animal-screw-workshop": { title: "ورشة المسمار الحيواني", intro: "انقل البراغي النحاسية إلى الثقوب الفارغة لتحرير ألواح الحيوانات المتراكبة وفق قواعد ثابتة." },
+      "animal-parking-patrol": { title: "دورية وقوف السيارات للحيوانات", intro: "اقرأ اتجاه العربات وأفرج عن حركة المرور بترتيب آمن عبر 30 مسارًا." },
+    },
+  };
+  for (const [localeCode, cards] of Object.entries(colorSpringsRelatedCards)) {
+    localizedRelatedCardCopy[localeCode] = { ...(localizedRelatedCardCopy[localeCode] || {}), ...cards };
+  }
   render();
 })();

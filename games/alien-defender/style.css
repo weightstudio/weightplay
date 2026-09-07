@@ -154,37 +154,39 @@ body.wp-stage-select-active .stage-screen .stage-shell{height:100%!important}
    on compact phones; the semantic marker is installed before shell startup. */
 .battle-hud [data-wp-battle-utility]{width:44px!important;min-width:44px!important}
 
-/* v55 candidate contract: keep the wide-layout Main poster on the governed
-   300px column in short landscape without changing the portrait surface. */
+/* v57 responsive Issue repair: keep the wide-layout Main poster on the
+   canonical 420px column in short landscape without changing the portrait
+   surface. */
 @media(max-height:500px) and (orientation:landscape){
-  .hero-card{grid-template-columns:300px minmax(0,1fr)}
-  .main-poster{display:block;width:300px;height:300px;object-fit:cover}
+  .hero-card{grid-template-columns:420px minmax(0,1fr)}
+  .main-poster{display:block;width:420px;height:420px;object-fit:cover}
 }
 
 /* The governed short-landscape viewport is 844px wide; keep this explicit
    width range stable even when browser height/URL-bar reporting varies. */
 @media(min-width:700px) and (max-width:900px){
-  .hero-card{grid-template-columns:300px minmax(0,1fr)}
-  .main-poster{display:block;width:300px;max-width:300px;height:300px;object-fit:cover}
+  .hero-card{grid-template-columns:420px minmax(0,1fr)}
+  .main-poster{display:block;width:420px;max-width:420px;height:420px;object-fit:cover}
+  #mainScreen .main-summary{font-size:.9rem;line-height:1.4}
 
   /* The shared Main shell promotes the native hero into a governed
-     composition and its later rules use !important. Keep the same 300px
+     composition and its later rules use !important. Keep the same 420px
      contract on that promoted surface. */
   #mainScreen .wp-standard-main-composition{
-    --wp-main-landscape-poster-size:300px!important;
-    grid-template-columns:300px minmax(0,1fr)!important;
+    --wp-main-landscape-poster-size:420px!important;
+    grid-template-columns:420px minmax(0,1fr)!important;
   }
   #mainScreen .wp-standard-main-poster,
   #mainScreen .wp-standard-main-poster-media,
   #mainScreen .wp-standard-main-poster-media>img,
   #mainScreen .wp-standard-main-poster>img{
     display:block!important;
-    width:300px!important;
-    min-width:300px!important;
-    max-width:300px!important;
-    height:300px!important;
-    min-height:300px!important;
-    max-height:300px!important;
+    width:420px!important;
+    min-width:420px!important;
+    max-width:420px!important;
+    height:420px!important;
+    min-height:420px!important;
+    max-height:420px!important;
     object-fit:cover!important;
   }
 }

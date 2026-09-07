@@ -839,13 +839,13 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ja": "どうぶつ彩泉パズル",
     "ko": "애니멀 컬러 스프링스",
     "es": "Resortes de Colores Animales",
-    "pt-BR": "Fontes de cores animais",
+    "pt-BR": "Fontes de Cores Animais",
     "fr": "Sources de couleurs animales",
-    "de": "Federn in Tierfarben",
-    "it": "Molle di colore animale",
-    "ru": "Цветные источники животного происхождения",
-    "hi": "पशु रंग स्प्रिंग्स",
-    "ar": "ينابيع لون الحيوان"
+    "de": "Tierische Farbenquellen",
+    "it": "Sorgenti di colori animali",
+    "ru": "Цветные источники животных",
+    "hi": "पशु रंगीन झरने",
+    "ar": "ينابيع الألوان الحيوانية"
   },
   "animal-rune-reels": {
     "__localizedExact": true,

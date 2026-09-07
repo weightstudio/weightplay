@@ -114,7 +114,106 @@ select { min-height: 48px; max-width: 60%; padding: 8px 12px; border: 1px solid 
 .toast { position: fixed; inset-inline: 16px; bottom: 18px; z-index: 5; padding: 12px 16px; border-radius: 13px; background: var(--ink); color: #fff; text-align: center; opacity: 0; transform: translateY(10px); pointer-events: none; transition: .2s ease; }
 .toast.visible { opacity: 1; transform: translateY(0); }
 button:focus-visible, select:focus-visible { outline: 3px solid #e0a94d; outline-offset: 3px; }
-@media (min-width: 700px) and (max-width: 899px) { .hero-card { grid-template-columns: 300px 1fr; gap: 22px; } }
+@media (min-width: 700px) and (max-width: 899px) { .hero-card { grid-template-columns: minmax(0, 420px) 1fr; gap: 22px; } }
 @media (max-width: 680px) { .screen { padding-inline: 14px; } #stageScreen, #battleScreen { padding-inline: 0; } .hero-card { grid-template-columns: 1fr; gap: 18px; border-radius: 24px; } .hero-copy { text-align: start; } .guide-grid { grid-template-columns: 1fr; } .stage-card { grid-template-columns: auto 1fr; } .stage-card b { grid-column: 2; grid-row: 3; justify-self: start; } .stage-card > span:not(.stage-number) { grid-column: 2; } }
 @media (max-width: 420px) { h1 { font-size: 2.45rem; } .hero-actions > button { width: 100%; } .tray-card { min-height: 104px; } .section-heading { align-items: start; flex-direction: column; gap: 4px; } }
 @media (min-width: 900px) { .screen { padding-top: 32px; } #stageScreen, #battleScreen { padding: 0; } .main-canvas { padding-top: 14px; } }
+
+/* Keep the full first-lesson decision inside the owning Battle Canvas on
+   phone-sized surfaces. The lesson remains fully authored; only its
+   presentation density changes so comparison, answer, and recovery controls
+   stay reachable without shifting the persistent shell. */
+@media (max-width: 699px) {
+  #battleScreen .battle-canvas { padding: 10px 14px 12px; }
+  #battleScreen .panel-head { min-height: 48px; height: 48px; }
+  #battleScreen .mission-row { margin: 6px 0; }
+  #battleScreen .mission-row .panel-intro { margin-top: 3px; font-size: .8rem; line-height: 1.2; }
+  #battleScreen .request-card,
+  #battleScreen .compare-card,
+  #battleScreen .answer-card { margin-top: 6px; padding: 10px; }
+  #battleScreen .request-card strong { margin-top: 4px; font-size: 1.12rem; }
+  #battleScreen .request-card p { margin-top: 4px; font-size: .8rem; line-height: 1.25; }
+  #battleScreen .compare-card > p { margin-bottom: 6px; font-size: .8rem; }
+  #battleScreen .tray-grid { gap: 6px; }
+  #battleScreen .tray-card { min-height: 76px; padding: 6px 4px; gap: 2px; }
+  #battleScreen .tray-card strong { font-size: .82rem; }
+  #battleScreen .tray-card small { display: none; }
+  #battleScreen .tray-icon { width: 44px; height: 34px; }
+  #battleScreen .compare-actions { margin-top: 6px; gap: 6px; }
+  #battleScreen .comparison { min-height: 20px; margin-top: 6px; padding: 6px 8px; font-size: .78rem; }
+  #battleScreen .answer-grid { margin: 6px 0; }
+  #battleScreen .full-btn { min-height: 44px; height: 44px; margin-top: 6px; padding-block: 8px; }
+  #battleScreen .feedback { min-height: 20px; margin-top: 6px; font-size: .82rem; }
+}
+
+/* At desktop widths the two decision surfaces share a row, leaving the
+   complete Battle flow inside the fixed-height Canvas instead of pushing the
+   answer controls below the reserve. */
+@media (min-width: 900px) {
+  #battleScreen .battle-canvas {
+    display: grid;
+    grid-template-rows: 58px minmax(0, 1fr);
+    align-content: start;
+    overflow: hidden;
+  }
+  #battleScreen .panel-head { min-height: 58px; height: 58px; }
+  #battleScreen #battlePanel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    min-height: 0;
+    overflow: visible;
+  }
+  #battleScreen .mission-row { grid-column: 1 / -1; grid-row: 1; margin: 0; }
+  #battleScreen .request-card { grid-column: 1 / -1; grid-row: 2; margin: 0; }
+  #battleScreen .compare-card { grid-column: 1; grid-row: 3; min-height: 0; margin: 0; overflow: hidden; }
+  #battleScreen .answer-card { grid-column: 2; grid-row: 3; min-height: 0; margin: 0; overflow: visible; }
+  #battleScreen .battleStatus { grid-column: 1 / -1; grid-row: 4; margin: 0; }
+}
+
+/* The compact landscape envelope has enough width for three bounded Battle
+   lanes. This keeps the request, comparison, and answer controls visible in
+   one stable row while the shared 56px reserve remains below the Canvas. */
+@media (min-width: 700px) and (orientation: landscape) and (max-height: 560px) {
+  #mainScreen .hero-card { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); }
+  #battleScreen .battle-canvas {
+    display: grid;
+    grid-template-rows: 48px minmax(0, 1fr);
+    align-content: start;
+    padding: 4px 12px 2px;
+    overflow: hidden;
+  }
+  #battleScreen .panel-head { min-height: 48px; height: 48px; }
+  #battleScreen #battlePanel {
+    display: grid;
+    grid-template-columns: minmax(145px, .85fr) minmax(0, 1.15fr) minmax(0, 1.15fr);
+    grid-template-rows: 32px minmax(0, 1fr) 18px;
+    gap: 4px 8px;
+    min-height: 0;
+    overflow: hidden;
+  }
+  #battleScreen .mission-row { grid-column: 1 / -1; grid-row: 1; min-height: 32px; margin: 0; align-items: center; }
+  #battleScreen .mission-row .panel-intro { margin-top: 2px; font-size: .7rem; line-height: 1.1; }
+  #battleScreen .request-card { grid-column: 1; grid-row: 2; min-height: 0; margin: 0; padding: 8px; overflow: hidden; }
+  #battleScreen .compare-card { grid-column: 2; grid-row: 2; min-height: 0; margin: 0; padding: 8px; overflow: hidden; }
+  #battleScreen .answer-card { grid-column: 3; grid-row: 2; min-height: 0; margin: 0; padding: 8px; overflow: hidden; }
+  #battleScreen .battleStatus { grid-column: 1 / -1; grid-row: 3; height: 18px; min-height: 18px; margin: 0; overflow: hidden; font-size: .72rem; line-height: 18px; white-space: nowrap; }
+  #battleScreen .request-card strong { margin-top: 4px; font-size: 1rem; }
+  #battleScreen .request-card p { margin-top: 4px; font-size: .7rem; line-height: 1.15; }
+  #battleScreen .section-heading { gap: 3px; }
+  #battleScreen .section-heading h3 { font-size: .78rem; }
+  #battleScreen .section-heading span { font-size: .64rem; line-height: 1.1; }
+  #battleScreen .compare-card > p { margin: 4px 0; font-size: .68rem; line-height: 1.1; }
+  #battleScreen .tray-grid { gap: 4px; }
+  #battleScreen .tray-card { min-height: 62px; padding: 4px 2px; gap: 2px; border-radius: 12px; }
+  #battleScreen .tray-card strong { font-size: .7rem; }
+  #battleScreen .tray-card small { font-size: .56rem; }
+  #battleScreen .tray-icon { width: 38px; height: 28px; }
+  #battleScreen .compare-actions { flex-wrap: nowrap; gap: 4px; margin-top: 4px; }
+  #battleScreen .compare-actions .primary-btn { min-height: 40px; height: 40px; padding: 6px 8px; font-size: .7rem; }
+  #battleScreen .compare-actions .text-btn { min-height: 40px; height: 40px; padding: 6px 2px; font-size: .66rem; }
+  #battleScreen .comparison { min-height: 18px; margin: 4px 0 0; padding: 4px 6px; font-size: .64rem; line-height: 1.1; overflow: hidden; }
+  #battleScreen .answer-grid { margin: 4px 0; }
+  #battleScreen .full-btn { min-height: 40px; height: 40px; margin-top: 4px; padding: 6px 8px; font-size: .7rem; }
+}
