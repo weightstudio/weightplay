@@ -35,8 +35,11 @@
   };
   if (app) {
     const locale = document.documentElement.lang || "en";
+    const localizedMainReady = mainReadyCopy[locale] || mainReadyCopy.en;
+    const mainProgress = app.root.querySelector(".logic-progress-slot[data-wp-main-progress]");
+    if (mainProgress) mainProgress.textContent = localizedMainReady;
     const mainReady = app.root.querySelector(".logic-guide h3");
-    if (mainReady) mainReady.textContent = mainReadyCopy[locale] || mainReadyCopy.en;
+    if (mainReady) mainReady.textContent = localizedMainReady;
     const mainGuide = app.root.querySelector(".logic-guide h3 + p");
     if (mainGuide) mainGuide.textContent = mainGuideCopy[locale] || mainGuideCopy.en;
 

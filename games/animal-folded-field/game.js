@@ -50,6 +50,23 @@
       window.setTimeout(() => context.close(), 140);
     } catch (error) { /* audio is an optional enhancement */ }
   };
+  const pinViewportTop = (active) => {
+    document.documentElement.style.overflow = active ? "hidden" : "";
+    document.body.style.position = active ? "fixed" : "";
+    document.body.style.inset = active ? "0" : "";
+    document.body.style.width = active ? "100%" : "";
+    document.body.style.overflow = active ? "hidden" : "";
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+    if (active) {
+      window.requestAnimationFrame(() => {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
+      });
+    }
+  };
   const show = (screen) => {
     state.screen = screen;
     const loading = $("loadingPanel");
@@ -59,6 +76,7 @@
       if (node) node.hidden = name !== screen;
     });
     document.body.dataset.screen = screen;
+    pinViewportTop(screen === "stage" || screen === "battle");
     if (screen === "main") renderMain();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();

@@ -3717,6 +3717,57 @@ const pongPublic = window.WONDER_LOBBY.games.find((game) => game.id === "pong");
 if (pongPublic) {
   pongPublic.status = "playable";
   pongPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  pongPublic.type = classicLogicText([
+    "Real-Time Paddle Arcade", "即時球拍街機", "即时球拍街机", "リアルタイム・パドルアーケード", "실시간 패들 아케이드",
+    "Arcade de paletas en tiempo real", "Arcade de raquetes em tempo real", "Arcade de raquettes en temps réel",
+    "Echtzeit-Paddel-Arcade", "Arcade di racchette in tempo reale", "Аркада с ракетками в реальном времени",
+    "रीयल-टाइम पैडल आर्केड", "أركيد المضرب في الوقت الفعلي",
+  ]);
+  pongPublic.description = classicLogicText([
+    "Read the bounce, move your paddle, and win a quick first-to-seven duel against the computer.",
+    "讀準反彈、移動球拍，與電腦進行先得七分的快速對決。",
+    "读准反弹、移动球拍，与电脑进行先得七分的快速对决。",
+    "跳ね返りを読み、パドルを動かして、コンピューターと7点先取の短い対戦を楽しみます。",
+    "반사 방향을 읽고 패들을 움직여 컴퓨터와 7점 선취의 짧은 대결을 펼치세요.",
+    "Lee el rebote, mueve tu paleta y gana un duelo rápido a siete puntos contra el ordenador.",
+    "Leia o quique, mova sua raquete e vença um duelo rápido de sete pontos contra o computador.",
+    "Lisez le rebond, déplacez votre raquette et gagnez un duel rapide en sept points contre l’ordinateur.",
+    "Lies den Abprall, bewege dein Paddel und gewinne ein kurzes Duell gegen den Computer bis sieben.",
+    "Leggi il rimbalzo, muovi la racchetta e vinci un rapido duello a sette punti contro il computer.",
+    "Читайте отскок, двигайте ракеткой и выиграйте быстрый поединок с компьютером до семи очков.",
+    "रिबाउंड पढ़ें, पैडल चलाएँ और कंप्यूटर के खिलाफ सात अंकों का तेज़ द्वंद्व जीतें।",
+    "اقرأ الارتداد وحرك مضربك واربح مواجهة سريعة مع الحاسوب حتى سبع نقاط.",
+  ]);
+  pongPublic.meta = classicLogicMeta([
+    ["Real-time duel", "Paddle control", "First to 7"],
+    ["即時對決", "球拍控制", "先得 7 分"],
+    ["即时对决", "球拍控制", "先得 7 分"],
+    ["リアルタイム対戦", "パドル操作", "7点先取"],
+    ["실시간 대결", "패들 조작", "7점 선취"],
+    ["Duelo en tiempo real", "Control de paleta", "Primero a 7"],
+    ["Duelo em tempo real", "Controle da raquete", "Primeiro a 7"],
+    ["Duel en temps réel", "Contrôle de raquette", "Premier à 7"],
+    ["Echtzeitduell", "Paddelsteuerung", "Wer zuerst 7 hat"],
+    ["Duello in tempo reale", "Controllo della racchetta", "Primo a 7"],
+    ["Дуэль в реальном времени", "Управление ракеткой", "Первым до 7"],
+    ["रीयल-टाइम द्वंद्व", "पैडल नियंत्रण", "पहले 7 अंक"],
+    ["مواجهة فورية", "تحكم بالمضرب", "الأول إلى 7"],
+  ]);
+  pongPublic.searchAliases = [
+    "pong", "paddle ball", "paddle game", "ball and paddle", "real-time paddle duel", "first to seven", "arcade sports",
+    "乒乓球", "球拍遊戲", "球與球拍", "即時球拍對決", "先得七分", "街機運動",
+    "乒乓球", "球拍游戏", "球与球拍", "即时球拍对决", "先得七分", "街机运动",
+    "卓球", "パドルゲーム", "ボールとパドル", "リアルタイム対戦", "7点先取",
+    "퐁", "패들 게임", "공과 패들", "실시간 패들 대결", "7점 선취",
+    "pelota y paleta", "juego de paleta", "duelo de paletas", "primero a siete", "deporte arcade",
+    "bola e raquete", "jogo de raquete", "duelo de raquetes", "primeiro a sete", "esporte arcade",
+    "balle et raquette", "jeu de raquette", "duel de raquettes", "premier à sept", "sport arcade",
+    "Ball und Paddel", "Paddelspiel", "Echtzeit-Paddelduell", "zuerst sieben", "Arcade-Sport",
+    "palla e racchetta", "gioco di racchette", "duello di racchette", "primo a sette", "sport arcade",
+    "мяч и ракетка", "игра с ракетками", "дуэль ракеток", "первым до семи", "аркадный спорт",
+    "गेंद और पैडल", "पैडल गेम", "रीयल-टाइम पैडल द्वंद्व", "पहले सात", "आर्केड खेल",
+    "كرة ومضرب", "لعبة المضرب", "مواجهة مضارب فورية", "الأول إلى سبع", "رياضة أركيد",
+  ];
   delete pongPublic.internalTrial;
 }
 

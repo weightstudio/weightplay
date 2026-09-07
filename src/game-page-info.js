@@ -1050,6 +1050,7 @@
       difficulty: "Easy to Medium",
       time: "3-6 minutes per level",
       skills: ["Focus", "Hand-Eye Coordination", "Problem Solving"],
+      relatedIds: ["bubble-bakery", "animal-rope-rescue"],
       intro: "Animal Bubble Safari is a free bilingual Kids aiming puzzle with 30 saved levels and six Safari Checks. Players launch animal bubbles, connect groups of three, bank shots from walls, and rescue five kinds of safari friends. Later regions add stone, leaf, two-hit honey and row-clearing cloud barriers, east or west wind, moving rows, and Rainbow, Line Clear, Burst and Swap powers. Level 30 combines all four blockers, three rescues, wind, shifting rows and every power without a countdown, account, purchase or advertising request.",
       story: ["A chain of watering holes links six safari regions. Young animals became surrounded by floating clusters, so the player travels with the lion guide and opens safe routes with the bubble launcher. A clear means the matching or rescue goal is complete before prepared bubbles run out.", "Barriers belong to the route rather than an enemy army. Every fifth level is a Safari Check that recombines the region’s skills. Grand Safari Reunion frees the final three animals and ends the authored campaign."],
       systems: ["Current and next previews allow two-color planning. Drag or hold to aim; arrow keys adjust the same logical point and Enter or Space fires.", "Continuous flight checks the visible collision in small steps. A shot attaches beside the bubble it actually touched instead of jumping to a distant hidden cell.", "Three or more connected colors clear. Bank goals count only a group made after touching a wall; rescue goals require one to three marked animal bubbles.", "Leaves fall beside a match, honey needs two direct hits, clouds clear a row, wind bends flight and shifting levels move alternating rows after a shot.", "Rainbow adopts a hit color, Line Clear removes a row, Burst clears an area and blockers, and Swap exchanges colors.", "Stars depend on shots remaining. Unlocks, best stars, scores, album rescues and sound choice stay only in this browser. Kids screens have no ads or reserve."],
@@ -1076,6 +1077,7 @@
       difficulty: "Gentle to Expert",
       time: "4-10 minutes per board",
       skills: ["Logic", "Focus", "Problem Solving"],
+      relatedIds: ["animal-hidden-safari", "animal-quiz"],
       intro:
         "Animal Habitat Mahjong is a free bilingual Kids mahjong-solitaire puzzle with 30 saved boards, ten layered structures, six rule chapters, and Habitat Finales at Boards 5, 10, 15, 20, 25, and 30. Players match identical free animal and habitat tiles, open diamond-key seals, rescue starred families, and follow alternating A/B patrol trails without a countdown failure.",
       story: [
@@ -1113,6 +1115,7 @@
       difficulty: "Easy to Challenging",
       time: "2-6 minutes per habitat",
       skills: ["Focus", "Animal Knowledge", "Problem Solving"],
+      relatedIds: ["animal-quiz", "animal-habitat-mahjong"],
       intro:
         "Animal Hidden Safari is a calm 30-habitat seek-and-find campaign. Six five-stage regions move from open searches to printed search order, animal pairs, deeper camouflage, off-list habitat visitors, and gently moving patrols. Every habitat contains six real picture targets, two limited hints, saved stars, and a local best search time without a countdown failure.",
       story: [

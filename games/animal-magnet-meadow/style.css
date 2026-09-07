@@ -56,7 +56,7 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
 .target-card span { color:var(--muted); }
 .target-card strong { color:var(--gold); }
 .move-text { font-size:.82rem; }
-.feedback { min-height:28px; margin:12px 0 0; color:var(--teal); font-weight:700; }
+.feedback { height:44px; min-height:44px; max-height:44px; display:flex; align-items:center; overflow:hidden; margin:12px 0 0; color:var(--teal); font-weight:700; line-height:1.25; }
 .magnet-track { position:relative; height:190px; margin-top:10px; padding:36px 12px; border:1px solid rgba(110,231,208,.3); border-radius:24px; background:linear-gradient(180deg,rgba(110,231,208,.07),rgba(5,15,28,.35)); overflow:hidden; touch-action:none; }
 .magnet-track::before { content:""; position:absolute; left:7%; right:7%; top:50%; height:4px; background:linear-gradient(90deg,transparent,var(--teal),transparent); opacity:.55; }
 .slot-grid { position:relative; z-index:1; display:grid; grid-template-columns:repeat(6,1fr); gap:8px; height:100%; }
@@ -121,7 +121,7 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
   .main-header { gap:8px; }
 }
 @media (orientation:landscape) and (max-height:520px) {
-  .hero-card { grid-template-columns:300px minmax(0,1fr); }
+  .hero-card { grid-template-columns:420px minmax(0,1fr); }
   .stage-rail { height:150px !important; min-height:150px !important; max-height:150px !important; }
   .stage-rail .stage-card { height:150px !important; min-height:150px !important; max-height:150px !important; }
   .stage-tabs { margin-top:8px; }

@@ -14,7 +14,9 @@
 }
 
 * { box-sizing: border-box; }
+html { overflow-y: auto; overscroll-behavior-y: contain; }
 body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 10% 0%, #f9fff9 0, var(--mint) 48%, #dceee7 100%); }
+body[data-screen="stage"], body[data-screen="battle"] { overflow: hidden; overscroll-behavior: none; }
 button, select { font: inherit; }
 button { color: inherit; }
 .screen { min-height: 100vh; width: 100%; max-width: 1120px; margin: 0 auto; padding: 18px 20px 64px; }
@@ -107,7 +109,7 @@ h1 { margin-bottom: 16px; font-size: clamp(44px, 7vw, 80px); line-height: .98; l
 .flap-btn strong { font-size: 16px; }
 .flap-btn small { color: var(--muted); font-size: 13px; font-weight: 800; }
 .flap-btn .link-dot { position: absolute; top: 12px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
-.battle-status { min-height: 30px; margin: 10px 0; color: var(--green-dark); font-weight: 850; text-align: center; }
+.battle-status { height: 30px; min-height: 30px; margin: 10px 0; overflow: hidden; color: var(--green-dark); font-weight: 850; line-height: 30px; text-align: center; white-space: nowrap; }
 .move-hint { margin: 18px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
 
 .result-card { width: min(680px, 100%); min-height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 44px 26px; border-radius: 30px; text-align: center; }
@@ -275,13 +277,14 @@ body[data-screen="main"] #gameGuide { display: block; }
 #stageScreen, #battleScreen {
   position: fixed;
   z-index: 10;
-  inset: 0 0 56px;
+  inset: 0;
   width: min(100vw, 920px);
   height: calc(100dvh - 56px);
   min-height: 0;
   margin: 0 auto;
   padding: 14px 18px;
-  overflow: auto;
+  overflow: hidden;
+  touch-action: none;
   background: #e8f4ef;
 }
 #stageScreen {
@@ -293,10 +296,11 @@ body[data-screen="main"] #gameGuide { display: block; }
 }
 #stageScreen .stage-canvas, #battleScreen .battle-canvas {
   width: 100%;
-  min-height: calc(100% - 58px);
+  height: 100%;
+  min-height: 0;
   margin: 0 auto;
   padding: 14px 16px 24px;
-  overflow: visible;
+  overflow: hidden;
   background-color: rgba(255, 253, 247, .78);
   background-image: linear-gradient(rgba(232, 244, 239, .42), rgba(255, 253, 247, .72)), var(--wp-stage-art, none), var(--wp-battle-art, none);
   background-position: center;
@@ -312,7 +316,7 @@ body[data-screen="main"] #gameGuide { display: block; }
   padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
-#stageScreen .panel-head .back-btn, #battleScreen .panel-head .back-btn { width: 58px; min-height: 48px; padding: 0; }
+#stageScreen .panel-head .back-btn, #battleScreen .panel-head .back-btn { width: 58px; min-width: 58px; flex: 0 0 58px; min-height: 48px; padding: 0; }
 #stageScreen .panel-intro { margin: 18px 0 0; }
 #stageScreen .stage-list {
   display: flex;
@@ -349,8 +353,8 @@ body[data-screen="main"] #gameGuide { display: block; }
 }
 #stageScreen .stage-tabs { margin-top: 18px; }
 #stageScreen .stage-tabs button { min-height: 44px; padding: 10px 16px; }
-#battleScreen .battle-canvas { min-height: calc(100% - 58px); }
-#battleScreen .battle-content { width: min(100%, 780px); margin: 28px auto 0; }
+#battleScreen .battle-canvas { display: flex; flex-direction: column; touch-action: none; }
+#battleScreen .battle-content { width: min(100%, 780px); min-height: 0; margin: 28px auto 0; }
 #battleScreen .battle-actions { justify-content: flex-end; }
 .stage-ad-reserve, .battle-ad-reserve {
   position: fixed;
@@ -377,10 +381,14 @@ body[data-screen="main"] #gameGuide { display: block; }
   #battleScreen .pattern-summary { align-items: flex-start; flex-direction: column; gap: 8px; }
   #battleScreen .pattern-row { width: 100%; }
   #battleScreen .pattern-cell { flex: 1; min-width: 0; }
+  #battleScreen .battle-content { margin-top: 16px; }
+  #battleScreen .goal-card { margin-bottom: 14px; padding: 16px; }
+  #battleScreen .flap-board { margin: 16px 0 10px; }
+  #battleScreen .flap-btn { min-height: 140px; }
 }
 @media (min-width: 700px) { #mainScreen .field-poster { width: 420px; } }
 @media (orientation: landscape) and (max-height: 560px) {
-  #mainScreen .field-poster { width: 300px; max-width: 300px; }
+  #mainScreen .field-poster { width: 420px; max-width: 420px; }
   #stageScreen .stage-list { height: 138px; min-height: 138px; max-height: 138px; margin-top: 8px; }
   #stageScreen .stage-card { height: 138px; min-height: 138px; max-height: 138px; }
 }
@@ -394,4 +402,28 @@ body[data-screen="main"] #gameGuide { display: block; }
   #battleScreen .flap-btn .flap-icon { width: 58px; height: 62px; font-size: 30px; }
   #battleScreen .battle-status { min-height: 24px; margin: 4px 0; }
   #battleScreen .move-hint { margin-top: 8px; }
+}
+
+@media (min-width: 700px) and (orientation: landscape) and (max-height: 560px) {
+  #battleScreen .battle-canvas { padding: 8px 12px 10px; }
+  #battleScreen .battle-content { display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.8fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; margin-top: 4px; }
+  #battleScreen .goal-card { grid-column: 1 / -1; align-items: center; flex-direction: row; gap: 12px; margin-bottom: 0; padding: 6px 10px; }
+  #battleScreen .goal-card h3 { font-size: 20px; }
+  #battleScreen .goal-card p { max-width: 320px; font-size: 11px; line-height: 1.2; }
+  #battleScreen .pattern-summary { grid-column: 1; gap: 8px; margin: 0; }
+  #battleScreen .pattern-summary:not(.current-summary) { grid-row: 2; }
+  #battleScreen .current-summary { grid-row: 3; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
+  #battleScreen .current-summary .pattern-row { grid-column: 2; }
+  #battleScreen .current-summary .aligned-count { grid-column: 1 / -1; min-width: 0; text-align: start; }
+  #battleScreen .pattern-cell { min-width: 62px; min-height: 28px; padding: 3px 5px; font-size: 10px; }
+  #battleScreen .pattern-cell::before { width: 11px; height: 11px; margin-right: 3px; border-width: 1px; }
+  #battleScreen .flap-board { grid-column: 2; grid-row: 2 / 5; align-self: center; gap: 8px; margin: 0; }
+  #battleScreen .flap-btn { min-height: 78px; padding-block: 4px; gap: 2px; border-radius: 16px 16px 24px 24px; }
+  #battleScreen .flap-btn .flap-icon { width: 38px; height: 42px; font-size: 22px; }
+  #battleScreen .flap-btn strong { font-size: 11px; }
+  #battleScreen .flap-btn small { font-size: 9px; }
+  #battleScreen .battle-status { grid-column: 1; grid-row: 4; width: 100%; height: 16px; min-height: 16px; margin: 0; overflow: hidden; font-size: 11px; line-height: 16px; white-space: nowrap; }
+  #battleScreen .battle-actions { grid-column: 1; grid-row: 5; flex-wrap: nowrap; gap: 6px; }
+  #battleScreen .battle-actions button { min-height: 40px; height: 40px; padding: 8px 12px; font-size: 13px; }
+  #battleScreen .move-hint { display: none; }
 }

@@ -82,8 +82,8 @@
             ["능력 보고서는 시험인가요?", "아니요. 이번 장면에서 한 행동을 친절하게 정리한 것입니다."],
           ],
           related: [
-            related("garden-tiles", "garden-tiles-cover.webp", "동물 정원 짝 카드", "같은 그림을 찾으며 차분하게 위치 기억을 연습합니다."),
-            related("star-memory", "memory-cover.webp", "동물 별빛 기억", "같은 동물 카드를 찾아 위치 기억을 연습합니다."),
+            related("animal-quiz", "quiz-cover.webp", "동물 퀴즈", "그림, 서식지, 특징과 행동 단서로 동물을 추리하는 조사 게임입니다."),
+            related("animal-habitat-mahjong", "animal-habitat-mahjong-cover.webp", "동물 서식지 마작", "열린 동물 타일을 짝지어 봉인과 순찰 규칙을 해결하는 30개 보드 퍼즐입니다."),
           ],
         },
       },
