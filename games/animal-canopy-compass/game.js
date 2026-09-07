@@ -37,6 +37,14 @@
     clearTimeout(showToast.timer);
     showToast.timer = setTimeout(() => toast.classList.remove("visible"), 1600);
   };
+  const revealResultAction = () => {
+    window.requestAnimationFrame(() => {
+      const action = $("resultPrimary");
+      if (!action || $("result").hidden) return;
+      action.focus({ preventScroll: true });
+      action.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "auto" });
+    });
+  };
   const setScreen = (name) => {
     state.screen = name;
     document.body.dataset.screen = name;
@@ -124,6 +132,7 @@
     $("resultPrimary").textContent = t(final ? "replay" : "next");
     $("resultPrimary").onclick = () => final ? startRound(0) : startRound(state.round + 1);
     $("result").hidden = false;
+    revealResultAction();
   };
   $("startBtn").addEventListener("click", startSession);
   $("mapBtn").addEventListener("click", () => setScreen("stage"));

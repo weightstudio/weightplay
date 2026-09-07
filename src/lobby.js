@@ -211,6 +211,7 @@ const lobbyGameFacts = {
   "animal-hero-trials": { difficulty: "Hard", time: "5-8 minutes" },
   "animal-gearpack-expedition": { difficulty: "Hard", time: "5-8 minutes" },
   "animal-moonlight-heist": { difficulty: "Medium", time: "5-8 minutes" },
+  cribbage: { difficulty: "Medium", time: "5-8 minutes" },
 };
 let activeFilter = "all";
 let activeTopic = "all";
@@ -1008,6 +1009,17 @@ function createGameCard(game) {
   const skillBadges = isKidsLobby && isPlayable ? (game.skills || []).slice(0, 3).map((item) => `<span>${skillText(item)}</span>`).join("") : "";
   const skillReason = isKidsLobby && isPlayable ? skillReasonText(game) : "";
   const quickFacts = isPlayable ? [gameInfoText(game.id, "difficulty"), gameInfoText(game.id, "time")].filter(Boolean).join("") : "";
+  const quickFactValues = isPlayable ? [lobbyGameFacts[game.id]?.difficulty, lobbyGameFacts[game.id]?.time].filter(Boolean) : [];
+  const discoveryLabel = isPlayable
+    ? [
+      title,
+      type,
+      stateCopy("playableLabel"),
+      ...(game.categories || []).slice(0, 3).map(categoryText),
+      ...quickFactValues,
+    ].filter(Boolean).join(". ")
+    : "";
+  if (discoveryLabel) card.setAttribute("aria-label", discoveryLabel);
   const cardArt = game.art || {
     kind: "image",
     background: game.cover || "assets/hero.png",

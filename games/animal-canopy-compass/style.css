@@ -147,7 +147,9 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   height: calc(100svh - 56px);
   margin: 0 auto;
   padding: 14px 16px 24px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-padding-block: 12px 24px;
   background-color: #eef4f0;
   background-image: linear-gradient(180deg, #eef4f0e9 0%, #eef4f0f5 66%, #eef4f0 100%), var(--wp-stage-art, none), var(--wp-battle-art, none);
   background-position: center;
@@ -234,12 +236,14 @@ body[data-screen="main"] .game-page-info-static { display: block; }
 .feedback { min-height: 24px; margin: 6px 0 0; color: #bd6533; font-weight: 900; line-height: 1.3; }
 .battle-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; }
 .battle-actions .primary-btn { min-width: 190px; }
-.result-panel { max-width: 560px; margin: 22px auto 0; padding: 22px; border: 1px solid #d9e5db; border-radius: 22px; background: #fffdf8; }
+.result-panel { max-width: 560px; margin: 22px auto 0; padding: 22px; border: 1px solid #d9e5db; border-radius: 22px; background: #fffdf8; scroll-margin-block: 12px 24px; }
 .result-identity { display: flex; justify-content: center; height: 120px; margin: -8px 0 4px; overflow: hidden; }
 .result-identity img { width: auto; height: 100%; max-width: 100%; object-fit: contain; object-position: center bottom; }
 .result-panel h2 { margin: 5px 0 8px; color: #29485a; }
 .result-panel p { color: #647589; }
 .stats { padding: 12px; border-radius: 12px; background: #dceee2; color: #39724f; font-weight: 900; }
+.result-actions { display: grid; gap: 8px; margin-top: 12px; }
+.result-actions > button { width: 100%; }
 .keyboard-hint { margin: 8px 0 0; color: #647589; font-size: .84rem; text-align: center; }
 .compass:focus-visible { outline: 4px solid #d8793b; outline-offset: 5px; }
 .toast { z-index: 20; }
