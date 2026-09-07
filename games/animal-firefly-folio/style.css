@@ -20,3 +20,28 @@
 #battleScreen[data-wp-logical-battle-canvas] .battle-content{height:auto;min-height:0;align-self:center}
 .battle-ad-reserve{position:fixed;top:100vh;left:0;width:100vw;height:56px;min-height:56px;overflow:hidden;pointer-events:none}
 .guide-heading{display:flex;align-items:center;justify-content:space-between;gap:14px}.guide-caption{margin:0;color:var(--muted);font-size:.9rem}.guide-art{width:92px;height:128px;object-fit:cover;object-position:center 18%;border-radius:14px;border:1px solid var(--line);box-shadow:0 10px 24px #0008}.panel-screen[data-screen="battle"]{background:linear-gradient(180deg,rgba(5,15,31,.65),rgba(5,15,31,.92)),url("assets/animal-firefly-folio-background.png") center/cover no-repeat}.battle-content{background:linear-gradient(180deg,rgba(5,15,31,.18),rgba(5,15,31,.28))}.direction-btn{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:5px;text-align:left;padding:7px 9px}.direction-icon{display:block;width:34px;height:34px;border-radius:9px;background-image:url("assets/animal-firefly-folio-direction-atlas-v1.png");background-repeat:no-repeat;background-size:200% 200%;background-blend-mode:screen;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}.direction-north .direction-icon{background-position:0 0}.direction-east .direction-icon{background-position:100% 0}.direction-south .direction-icon{background-position:0 100%}.direction-west .direction-icon{background-position:100% 100%}.result-card{position:relative;overflow:hidden}.result-guide-art{width:108px;height:146px;object-fit:cover;object-position:center 18%;border-radius:14px;border:1px solid var(--line);box-shadow:0 8px 22px #0008;margin:0 auto 8px}.result-card>span{display:block}.result-card h2{position:relative}.result-card p,.result-actions{position:relative}@media(max-width:699px){.guide-heading{align-items:flex-start}.guide-art{width:76px;height:108px}.direction-btn{grid-template-columns:30px minmax(0,1fr);font-size:.9rem}.direction-icon{width:30px;height:30px}.result-guide-art{width:88px;height:120px}}
+
+/* v5 campaign depth and Interface 6 responsive repair. */
+.wp-standard-main-composition{--wp-main-landscape-poster-size:420px}
+#battleScreen[data-wp-logical-battle-canvas] .battle-content{grid-template-rows:minmax(0,auto) minmax(0,auto) auto 48px 48px}
+#battleScreen[data-wp-logical-battle-canvas] .battle-status{height:48px;min-height:48px;max-height:48px;overflow:auto}
+#battleScreen[data-wp-logical-battle-canvas] .battle-actions{height:48px;min-height:48px}
+.battle-ad-reserve{top:calc(100svh - 56px);left:50%;width:min(100vw,920px);transform:translateX(-50%)}
+@media (min-width:700px){
+  .wp-standard-main-composition .wp-standard-main-poster{width:420px;max-width:420px}
+}
+@media (orientation:landscape) and (max-height:560px){
+  body[data-wp-game-id="animal-firefly-folio"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto 44px 48px;align-content:start;gap:6px;padding:6px 10px;overflow:hidden}
+  #battleScreen[data-wp-logical-battle-canvas] .route-note{grid-column:1/-1;min-height:42px;max-height:58px;overflow:hidden;padding:8px}
+  #battleScreen[data-wp-logical-battle-canvas] .route-card{grid-column:1/-1;min-height:52px;padding:6px 10px}
+  #battleScreen[data-wp-logical-battle-canvas] .route-card h3{margin:0 0 2px}
+  #battleScreen[data-wp-logical-battle-canvas] .route{min-height:38px}
+  #battleScreen[data-wp-logical-battle-canvas] .route-chip{padding:5px 8px}
+  #battleScreen[data-wp-logical-battle-canvas] .direction-grid{grid-column:1/-1;grid-row:3;gap:6px}
+  #battleScreen[data-wp-logical-battle-canvas] .direction-btn{height:44px;min-height:44px;padding:4px 6px}
+  #battleScreen[data-wp-logical-battle-canvas] .direction-icon{width:28px;height:28px}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-status{grid-column:1;grid-row:4;align-self:stretch}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions{grid-column:2;grid-row:4;align-self:stretch}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions button{height:48px;min-height:48px;padding:6px}
+}

@@ -23,7 +23,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-firefly-folio">
-  <meta name="weightplay-game-version" content="v4">
+  <meta name="weightplay-game-version" content="v5">
   <meta name="weightplay-interface-version" content="6">
   <meta name="weightplay-scene-controls" content="immutable">
   <title>반딧불 기록장 | WeightPlay</title>
@@ -31,7 +31,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="style.css?v=20260907-firefly-folio-depth-v1">
   <meta name="description" content="세 현장 기록을 읽고 정확한 방향 코드로 반딧불을 집으로 이끄세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -80,7 +80,7 @@
     <header class="topbar main-header"><a class="return-link wp-shell-return" href="/" data-wp-return="main" data-copy-aria="back" aria-label="Back"><span aria-hidden="true">←</span></a><strong data-copy="title">Firefly Folio</strong></header>
     <section class="wp-standard-main-composition">
       <div class="wp-standard-main-poster"><img class="cover" src="assets/animal-firefly-folio-cover.webp" width="900" height="750" data-copy-alt="artworkAlt" alt="반딧불 기록장 게임 이미지"></div>
-      <div class="wp-standard-main-copy"><small data-copy="kicker">A calm route-code puzzle</small><h1 data-copy="title">반딧불 기록장</h1><p class="wp-standard-main-summary" data-copy="intro">Read the field note, then trace the exact three-turn route to the firefly's lantern.</p><p class="progress wp-standard-main-progress" id="mainProgress" data-wp-main-progress role="status" aria-live="polite"></p><button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-copy="start">Open the first folio</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a folio</button><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestValue">Not yet</strong></p></div>
+      <div class="wp-standard-main-copy"><small data-copy="kicker">A calm route-code puzzle</small><h1 data-copy="title">반딧불 기록장</h1><p class="wp-standard-main-summary" data-copy="intro">Read the field note, then trace the exact route to the firefly's lantern.</p><p class="progress wp-standard-main-progress" id="mainProgress" data-wp-main-progress role="status" aria-live="polite"></p><button id="startBtn" class="primary-btn wp-standard-main-start" type="button" data-wp-main-start data-copy="start">Open the first folio</button><button id="mapBtn" class="secondary-btn" type="button" data-copy="choose">Choose a folio</button><p class="best-line"><span data-copy="best">Best turns</span>: <strong id="bestValue">Not yet</strong></p></div>
     </section>
     <section class="guide-card"><div class="guide-heading"><h2 data-copy="guideTitle">How to play</h2><img class="guide-art" src="assets/animal-firefly-folio-mica-guide-v1.png" width="1024" height="1536" alt=""></div><div class="guide-grid"><article><b data-copy="guideOne">Read the destination clue.</b></article><article><b data-copy="guideTwo">Tap the four direction cards to trace the route.</b></article><article><b data-copy="guideThree">A wrong route clears gently; no timer or lives are used.</b></article></div></section>
   </section>
@@ -91,18 +91,18 @@
   <div id="settingsPanel" class="settings-panel" role="group" hidden><strong data-copy="settings">Settings</strong><label><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div>
   <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="반딧불 기록장 게임 정보">
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>반딧불 기록장</h2><p>현장 기록을 읽고 반딧불 등불까지 정확히 세 번의 길을 그려 보세요.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>반딧불 기록장</h2><p>Read the field note, then trace the exact route to the firefly&#39;s lantern.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>게임 방법</span><strong>경로 코드 퍼즐</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐・논리・가족・동물</strong></div></div>
     </div>
     <div class="game-info-sections">
-      <article class="game-info-section"><h3>게임 방법</h3><ol><li>기록 페이지를 열고 목적지 메모를 읽으세요.</li><li>방향 카드 세 장을 누른 다음 경로를 확인하세요.</li><li>맞는 경로는 등불에 닿고, 틀린 경로는 타이머나 목숨 없이 초기화됩니다.</li></ol></article>
-      <article class="game-info-section"><h3>결과와 저장</h3><p>세 페이지가 짧은 한 세션을 이룹니다. 저장할 수 있으면 최고 총 횟수는 이 브라우저에만 저장되며 플레이에 필요하지 않습니다.</p></article>
+      <article class="game-info-section"><h3>게임 방법</h3><ol><li>Open a folio page, read its destination note, and notice the arc rule.</li><li>Choose the available direction cards, then check the route.</li><li>맞는 경로는 등불에 닿고, 틀린 경로는 타이머나 목숨 없이 초기화됩니다.</li></ol></article>
+      <article class="game-info-section"><h3>결과와 저장</h3><p>Thirty pages form six five-page arcs. Clearing a page unlocks the next one; progress and the best total turns stay in this browser when storage is available.</p></article>
       <article class="game-info-section"><h3>실용적인 팁</h3><p>메모를 왼쪽에서 오른쪽으로 읽으세요. 다시 생각하고 싶을 때는 언제든 경로를 지우세요.</p></article>
       <article class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>예. 이 브라우저에만 저장됩니다.</dd></div></dl></article>
     </div>
   </section>
   <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="locales.js?v=20260901-firefly-folio-art-v2"></script><script src="game.js?v=20260906-firefly-folio-return-shell-v5"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script><script src="locales.js?v=20260907-firefly-folio-depth-v1"></script><script src="game.js?v=20260907-firefly-folio-depth-v1"></script>
 </body>
 </html>

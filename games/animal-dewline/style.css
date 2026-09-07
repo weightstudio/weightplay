@@ -137,3 +137,39 @@ body[data-screen="result"] .game-page-info { display: none; }
   #battleScreen[data-wp-logical-battle-canvas] .battle-content { width: 100%; }
   #stageScreen[data-wp-standard-stage-screen] .stage-rail { justify-content: flex-start; }
 }
+
+#battleScreen[data-wp-logical-battle-canvas] { overflow: hidden; gap: 8px; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-header { flex: 0 0 60px; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-content { flex: 1 1 auto; width: min(100%, 760px); height: auto; min-height: 0; margin: 0 auto; padding: 8px; display: grid; grid-template-rows: auto auto auto auto 26px 52px; align-content: start; gap: 8px; overflow: hidden; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-hint { min-height: 18px; margin: 0; overflow: hidden; }
+#battleScreen[data-wp-logical-battle-canvas] .note-card { min-height: 44px; margin: 0; }
+#battleScreen[data-wp-logical-battle-canvas] .valve-grid { margin: 0; }
+#battleScreen[data-wp-logical-battle-canvas] .total-row { min-height: 26px; margin: 0; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-status { height: 26px; min-height: 26px; margin: 0; overflow: hidden; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-actions { width: 100%; height: 52px; min-height: 52px; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+#battleScreen[data-wp-logical-battle-canvas] .battle-actions button { height: 52px; min-height: 52px; }
+
+@media (min-width: 700px) and (max-height: 560px) {
+  body[data-wp-game-id="animal-dewline"] .wp-standard-main-composition { --wp-main-landscape-poster-size: 420px; }
+  .hero-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); }
+  .cover-wrap { max-width: 420px; }
+  #battleScreen[data-wp-logical-battle-canvas] { padding: 10px; gap: 8px; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header { flex-basis: 60px; min-height: 60px; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header h2 { font-size: 1rem; line-height: 1.1; }
+  #battleScreen[data-wp-logical-battle-canvas] .round-label { font-size: .72rem; line-height: 1.1; margin: 0; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-content { padding: 4px 8px; grid-template-rows: 16px 28px 90px 22px 18px 44px; gap: 4px; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-hint { min-height: 16px; height: 16px; font-size: .72rem; line-height: 1.1; white-space: nowrap; }
+  #battleScreen[data-wp-logical-battle-canvas] .note-card { height: 28px; min-height: 28px; padding: 3px 8px; font-size: .75rem; line-height: 1; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-grid { height: 90px; min-height: 90px; gap: 8px; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-card { height: 90px; min-height: 90px; padding: 3px; gap: 2px; border-radius: 10px; overflow: hidden; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-art { height: 26px; min-height: 26px; border-radius: 8px; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-card strong { font-size: .75rem; line-height: 1; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-value { font-size: .7rem; line-height: 1; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-controls { gap: 4px; }
+  #battleScreen[data-wp-logical-battle-canvas] .valve-controls button { height: 34px; min-height: 34px; padding: 0; font-size: 1.2rem; }
+  #battleScreen[data-wp-logical-battle-canvas] .total-row { height: 22px; min-height: 22px; font-size: .75rem; }
+  #battleScreen[data-wp-logical-battle-canvas] .total-row strong { font-size: 1.1rem; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-status { height: 18px; min-height: 18px; font-size: .72rem; line-height: 1; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions { height: 44px; min-height: 44px; gap: 8px; }
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions button { height: 44px; min-height: 44px; padding: 4px 8px; font-size: .82rem; }
+}
