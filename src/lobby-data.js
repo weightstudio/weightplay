@@ -4634,6 +4634,39 @@ if (catColorSudokuPublic) {
   delete catColorSudokuPublic.internalTrial;
 }
 
+// Code Breaker is now an owner-approved public General release. Keep this
+// release-state override after the classic planned batch so the exact v11/I6
+// candidate is discoverable with its truthful Battle preview.
+const codeBreakerPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "code-breaker");
+if (codeBreakerPublic) {
+  codeBreakerPublic.status = "playable";
+  codeBreakerPublic.previewVideo = "assets/previews/code-breaker-battle.webm";
+  delete codeBreakerPublic.statusText;
+  delete codeBreakerPublic.internalTrial;
+}
+
+// Casino is now an owner-approved public General release. Keep this
+// conversion after the classic planned batch so the exact v20/I6 candidate
+// is discoverable with its truthful Battle preview.
+const casinoPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "casino");
+if (casinoPublic) {
+  casinoPublic.status = "playable";
+  casinoPublic.previewVideo = "assets/previews/casino-battle.webm";
+  delete casinoPublic.statusText;
+  delete casinoPublic.internalTrial;
+}
+
+// Canopy Cut is now an owner-approved public General release. Keep this
+// conversion after the classic planned batch so the exact v14/I6 candidate
+// is discoverable with its truthful Battle preview.
+const canopyCutPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-canopy-cut");
+if (canopyCutPublic) {
+  canopyCutPublic.status = "playable";
+  canopyCutPublic.previewVideo = "assets/previews/animal-canopy-cut-battle.webm";
+  delete canopyCutPublic.statusText;
+  delete canopyCutPublic.internalTrial;
+}
+
 // Habitat Atlas is now an owner-approved public General release. Keep this
 // release-state override after the planned Market Five batch so the exact
 // v7/I6 candidate is discoverable with its truthful Battle preview.

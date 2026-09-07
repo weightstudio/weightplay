@@ -297,6 +297,10 @@
       "date": "2026-06-29T22:58:52+08:00",
       "evidence": "git:60ce30d4892136d7a7668c7242412bd1f19757b3"
     },
+    "casino": {
+      "date": "2026-09-07T19:54:12.128Z",
+      "evidence": "canonical-public-catalog"
+    },
     "cat-color-sudoku": {
       "date": "2026-09-07T09:01:53+08:00",
       "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
@@ -308,6 +312,10 @@
     "chess": {
       "date": "2026-09-07T14:32:28+08:00",
       "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "code-breaker": {
+      "date": "2026-09-07T20:17:00.869Z",
+      "evidence": "canonical-public-catalog"
     },
     "color-lunchbox": {
       "date": "2026-06-29T12:55:21+08:00",
