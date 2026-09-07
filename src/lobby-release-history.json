@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 1,
+  "firstPublished": {
+    "alien-defender": {
+      "date": "2026-08-14T10:42:10+08:00",
+      "evidence": "git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"
+    },
+    "animal-2048": {
+      "date": "2026-07-19T22:07:28+08:00",
+      "evidence": "git:b5477af1933785970fb6d8786a974569067690b2"
+    },
+    "animal-abyss-diver": {
+      "date": "2026-07-19T23:11:00+08:00",
+      "evidence": "git:20ac048c5a6a3be9838f3f9e8931269b70b177fb"
+    },
+    "animal-auto-squad": {
+      "date": "2026-07-07T21:29:26+08:00",
+      "evidence": "git:c52fb0fbbdf1ea248e960bb638222b17de19154c"
+    },
+    "animal-bamboo-pipes": {
+      "date": "2026-07-29T23:39:48+08:00",
+      "evidence": "git:e8917977335735d5d888a69bd69d1874fbe1126d"
+    },
+    "animal-block-grove": {
+      "date": "2026-07-20T20:19:04+08:00",
+      "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-bounce-brawl": {
+      "date": "2026-08-16T16:15:05+08:00",
+      "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-bubble-safari": {
+      "date": "2026-07-15T23:32:25+08:00",
+      "evidence": "git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"
+    },
+    "animal-bus-jam": {
+      "date": "2026-07-27T22:34:17+08:00",
+      "evidence": "git:a4b01d4b0120b1737f60bf51a44d4fa3df0c60e7"
+    },
+    "animal-cafe-rush": {
+      "date": "2026-07-11T16:23:08+08:00",
+      "evidence": "git:d276c8a622bf3ffe31d9d02b8701cc6ae2bfb081"
+    },
+    "animal-canopy-cut": {
+      "date": "2026-08-16T16:15:05+08:00",
+      "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-carnival-claw": {
+      "date": "2026-08-01T21:20:08+08:00",
+      "evidence": "git:4ea5624cf58fa6240d4f115588bf71595d9e3adc"
+    },
+    "animal-cloudhook-courier": {
+      "date": "2026-08-16T18:22:05+08:00",
+      "evidence": "git:ad8753d557c12ed81c6c6038d8a93483826286c9"
+    },
+    "animal-color-link": {
+      "date": "2026-07-29T21:13:08+08:00",
+      "evidence": "git:9af3b072c5b0040172a8fd2f56134f0f56b64974"
+    },
+    "animal-color-springs": {
+      "date": "2026-07-21T00:28:03+08:00",
+      "evidence": "git:80fe58d1be86b2d17a1949931a03fea109d8bc26"
+    },
+    "animal-coloring-studio": {
+      "date": "2026-07-20T20:19:04+08:00",
+      "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-cratebound": {
+      "date": "2026-07-26T14:39:48+08:00",
+      "evidence": "git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"
+    },
+    "animal-crystal-survivor": {
+      "date": "2026-07-06T08:33:55+08:00",
+      "evidence": "git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"
+    },
+    "animal-dice-bastion": {
+      "date": "2026-07-31T18:43:34+08:00",
+      "evidence": "git:62569beb5803fce12476561bfaa0241799cbef96"
+    },
+    "animal-flip-foundry": {
+      "date": "2026-08-16T16:15:05+08:00",
+      "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-frost-maze": {
+      "date": "2026-08-16T16:15:05+08:00",
+      "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-gearpack-expedition": {
+      "date": "2026-07-12T07:59:26+08:00",
+      "evidence": "git:9007bf982e3bf8076e584b718328ec785826116e"
+    },
+    "animal-guard-yard": {
+      "date": "2026-07-01T09:20:11+08:00",
+      "evidence": "git:acbe4717fa418382f374a30421d48372c0617366"
+    },
+    "animal-habitat-atlas": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "animal-habitat-builder": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "animal-habitat-mahjong": {
+      "date": "2026-07-15T23:32:25+08:00",
+      "evidence": "git:be690e6616c1c67e92049b2ffe2cbb37ef10c9f8"
+    },
+    "animal-hero-trials": {
+      "date": "2026-07-12T04:37:26+08:00",
+      "evidence": "git:5d5a2cbdbc198e916014ae544ddbf8ad9edaff3a"
+    },
+    "animal-hidden-safari": {
+      "date": "2026-07-01T18:24:07+08:00",
+      "evidence": "git:f8f61b5c2d9c5aca8f2af9bb9d21a0859f8f643a"
+    },
+    "animal-honey-shield": {
+      "date": "2026-08-08T12:32:12+08:00",
+      "evidence": "git:45e3a04413a39588697ff244372f6e18d5ecdd5b"
+    },
+    "animal-hoop-league": {
+      "date": "2026-09-07T10:25:54+08:00",
+      "evidence": "git:c10da82b30ee96fdacb0e997ae952c2383d1991b"
+    },
+    "animal-moonlight-heist": {
+      "date": "2026-07-12T10:06:54+08:00",
+      "evidence": "git:4df4d45b548bb7a304700a05570cb6bffed90bb3"
+    },
+    "animal-moonlight-workshop": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "animal-mosaic-clues": {
+      "date": "2026-07-23T00:39:38+08:00",
+      "evidence": "git:6d94e3e9f732a860412aa735b6524c27c50c3ce5"
+    },
+    "animal-number-match": {
+      "date": "2026-07-29T14:36:22+08:00",
+      "evidence": "git:5b2eba2acfddc059640be47e460ea2e778f8ec31"
+    },
+    "animal-one-line": {
+      "date": "2026-07-19T17:44:26+08:00",
+      "evidence": "git:48a62c205c442a89175566110ceedc49435a0c66"
+    },
+    "animal-orb-fortress": {
+      "date": "2026-07-07T13:36:56+08:00",
+      "evidence": "git:ffab92fd42f64675fbb90b2ed51e1ae43f9e71fa"
+    },
+    "animal-parking-patrol": {
+      "date": "2026-07-20T20:19:04+08:00",
+      "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-peach-oath": {
+      "date": "2026-09-07T16:23:33+08:00",
+      "evidence": "git:8c158de03ea0ec27be738b7d4d04ebabc39a56ef"
+    },
+    "animal-penalty-cup": {
+      "date": "2026-09-06T11:20:00+08:00",
+      "evidence": "git:24bede97af3978f173844b18b9de9816ebf121c1"
+    },
+    "animal-prism-battalion": {
+      "date": "2026-07-23T11:45:49+08:00",
+      "evidence": "git:be7ea7110968774814c6f9cd763a1248559fc088"
+    },
+    "animal-prism-breakers": {
+      "date": "2026-07-29T23:23:04+08:00",
+      "evidence": "git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"
+    },
+    "animal-prism-garden": {
+      "date": "2026-07-30T14:58:54+08:00",
+      "evidence": "git:7ad044e058343a5a4b2c331b9d72f6502b4eed0c"
+    },
+    "animal-quiz": {
+      "date": "2026-06-29T18:20:39+08:00",
+      "evidence": "git:dc8b075b3b2fe3124211990f8b999ed8f6af778f"
+    },
+    "animal-ranger-tactics": {
+      "date": "2026-07-02T14:22:09+08:00",
+      "evidence": "git:5d2db122636491188bb3f60d58762b492a9f5d1b"
+    },
+    "animal-reef-fisher": {
+      "date": "2026-07-07T20:47:00+08:00",
+      "evidence": "git:f01a85c6e80e3f711a038c08bbde10a3c997e450"
+    },
+    "animal-relic-hunters": {
+      "date": "2026-07-06T16:47:07+08:00",
+      "evidence": "git:590953402eb3c369f00c6eb930534e6a9d3956df"
+    },
+    "animal-rescue": {
+      "date": "2026-06-30T07:35:13+08:00",
+      "evidence": "git:2ee56f46792ba42caa86759dc4c565d598b907dd"
+    },
+    "animal-rift-salvage": {
+      "date": "2026-07-23T11:45:49+08:00",
+      "evidence": "git:be7ea7110968774814c6f9cd763a1248559fc088"
+    },
+    "animal-rootvault-pins": {
+      "date": "2026-07-21T18:33:11+08:00",
+      "evidence": "git:c946e40e34c1c12fecbcaa376631196379756da7"
+    },
+    "animal-rope-rescue": {
+      "date": "2026-07-02T15:52:55+08:00",
+      "evidence": "git:06c09a6474db720896369d471c544ac5e9c2d703"
+    },
+    "animal-rune-reels": {
+      "date": "2026-07-23T10:42:45+08:00",
+      "evidence": "git:9017c47f12fa38e6910caaa980f846b19a75e157"
+    },
+    "animal-rune-tactics": {
+      "date": "2026-07-07T10:28:29+08:00",
+      "evidence": "git:3bdb1310588889c268d710c99c506f54ac4a5a84"
+    },
+    "animal-sanctuary-loop": {
+      "date": "2026-07-21T18:33:11+08:00",
+      "evidence": "git:c946e40e34c1c12fecbcaa376631196379756da7"
+    },
+    "animal-screw-workshop": {
+      "date": "2026-07-20T20:19:04+08:00",
+      "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-sketchwheel-rally": {
+      "date": "2026-07-23T11:45:49+08:00",
+      "evidence": "git:be7ea7110968774814c6f9cd763a1248559fc088"
+    },
+    "animal-skybridge-rivals": {
+      "date": "2026-07-23T11:45:49+08:00",
+      "evidence": "git:be7ea7110968774814c6f9cd763a1248559fc088"
+    },
+    "animal-skyport-dispatch": {
+      "date": "2026-07-20T20:19:04+08:00",
+      "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
+    },
+    "animal-skyspire-drop": {
+      "date": "2026-07-23T16:04:21+08:00",
+      "evidence": "git:fc0404ed773867cc913b077f4ac1089cef6caedb"
+    },
+    "animal-spectrum-pulse": {
+      "date": "2026-07-22T21:34:13+08:00",
+      "evidence": "git:ca70a96d756374b7b1e822e06bd806a119bf39d2"
+    },
+    "animal-starlight-trails": {
+      "date": "2026-07-19T15:37:21+08:00",
+      "evidence": "git:57329de1df4d8a3b6c71e5d39025d8395ebf48b4"
+    },
+    "animal-sunbeam-garden": {
+      "date": "2026-07-28T17:29:10+08:00",
+      "evidence": "git:63161e4c3943c1b03b0a14ba6755c94aec034e30"
+    },
+    "animal-tangram": {
+      "date": "2026-07-29T23:23:04+08:00",
+      "evidence": "git:720c6b2b58c524b438c01a336dfd9f8a17258ea9"
+    },
+    "animal-trap-trail": {
+      "date": "2026-08-16T16:15:05+08:00",
+      "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-triple-match": {
+      "date": "2026-07-26T08:55:44+08:00",
+      "evidence": "git:0353b8a9d67113e5b613d590f1de1b093923739c"
+    },
+    "animal-twin-switchyard": {
+      "date": "2026-08-16T18:22:05+08:00",
+      "evidence": "git:ad8753d557c12ed81c6c6038d8a93483826286c9"
+    },
+    "animal-unblock": {
+      "date": "2026-07-28T14:19:40+08:00",
+      "evidence": "git:6a05ae71c10d70ea6a76b78932cb7e6d520fdf20"
+    },
+    "animal-word-trails": {
+      "date": "2026-07-21T00:28:03+08:00",
+      "evidence": "git:80fe58d1be86b2d17a1949931a03fea109d8bc26"
+    },
+    "animal-zoo-idle": {
+      "date": "2026-07-01T23:43:23+08:00",
+      "evidence": "git:b605f8ce6421054b3240081cf10aee20be1dcd55"
+    },
+    "arrow-escape": {
+      "date": "2026-08-01T12:46:15+08:00",
+      "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
+    },
+    "beast-deck": {
+      "date": "2026-07-06T16:47:07+08:00",
+      "evidence": "git:590953402eb3c369f00c6eb930534e6a9d3956df"
+    },
+    "beast-tactician": {
+      "date": "2026-07-06T21:50:28+08:00",
+      "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
+    },
+    "block-blast": {
+      "date": "2026-08-01T12:46:15+08:00",
+      "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
+    },
+    "bubble-bakery": {
+      "date": "2026-07-01T11:15:16+08:00",
+      "evidence": "git:d6894ab4aa79712b9cc80c938fb356f5328f6262"
+    },
+    "campus-dash": {
+      "date": "2026-06-29T22:58:52+08:00",
+      "evidence": "git:60ce30d4892136d7a7668c7242412bd1f19757b3"
+    },
+    "cat-color-sudoku": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "checkers": {
+      "date": "2026-08-27T00:24:12+08:00",
+      "evidence": "git:551c96aabb0a4b4e3d26549d7845b1721ea9ccf2"
+    },
+    "chess": {
+      "date": "2026-09-07T14:32:28+08:00",
+      "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "color-lunchbox": {
+      "date": "2026-06-29T12:55:21+08:00",
+      "evidence": "git:1c265986ae77558669c499aad6790716110b787e"
+    },
+    "crazy-eights": {
+      "date": "2026-09-06T02:23:18+08:00",
+      "evidence": "git:0298605d944c01aae1b57974ef8214a8c1b89470"
+    },
+    "cribbage": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "four-in-a-row": {
+      "date": "2026-09-07T13:23:52+08:00",
+      "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
+    },
+    "freecell-solitaire": {
+      "date": "2026-09-06T07:33:49+08:00",
+      "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
+    },
+    "fruit-merge": {
+      "date": "2026-06-30T19:58:06+08:00",
+      "evidence": "git:c7ed47cc7ba16ad30590b38b58a1026210096cc9"
+    },
+    "garden-tiles": {
+      "date": "2026-06-30T20:09:06+08:00",
+      "evidence": "git:aac6880236f15a35fba53dc5e1bb4d1b5de13a3b"
+    },
+    "gin-rummy": {
+      "date": "2026-09-04T20:21:02+08:00",
+      "evidence": "git:5e8b126c73f51c52d2bbc36360d517b5f08bec80"
+    },
+    "go-fish": {
+      "date": "2026-09-06T07:33:49+08:00",
+      "evidence": "git:e0ffd2a8482850942c1d592c1b2648f13fcec56a"
+    },
+    "golf-solitaire": {
+      "date": "2026-09-06T08:21:14+08:00",
+      "evidence": "git:bb9f3549c258959ec1d6c4877d60e6c0b2e82db7"
+    },
+    "hangman": {
+      "date": "2026-08-31T13:16:25+08:00",
+      "evidence": "git:a714f868a988d5979fbf72411fbc11a87bf0ef38"
+    },
+    "hearts": {
+      "date": "2026-09-06T19:23:08+08:00",
+      "evidence": "git:d8a3c16bca906278c0b46cbb77e0594bb6ecea5a"
+    },
+    "hexa-sort": {
+      "date": "2026-08-01T12:46:15+08:00",
+      "evidence": "git:0ba8d88831cc528b1ace58d8cf06c71e14a45385"
+    },
+    "klondike-solitaire": {
+      "date": "2026-08-08T12:32:12+08:00",
+      "evidence": "git:45e3a04413a39588697ff244372f6e18d5ecdd5b"
+    },
+    "lights-out": {
+      "date": "2026-09-07T13:23:52+08:00",
+      "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
+    },
+    "mahjong-solitaire": {
+      "date": "2026-09-07T14:32:28+08:00",
+      "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "maze-chase": {
+      "date": "2026-08-14T05:29:51+08:00",
+      "evidence": "git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"
+    },
+    "peg-solitaire": {
+      "date": "2026-09-07T13:23:52+08:00",
+      "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
+    },
+    "pong": {
+      "date": "2026-09-07T14:32:28+08:00",
+      "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "pyramid-solitaire": {
+      "date": "2026-08-11T12:08:54+08:00",
+      "evidence": "git:150ba8bdcf566c3dd6a323e0a4bdf9286dbdb012"
+    },
+    "reversi": {
+      "date": "2026-09-07T14:32:28+08:00",
+      "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "road-crosser": {
+      "date": "2026-08-14T10:42:10+08:00",
+      "evidence": "git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"
+    },
+    "shadow-wolf": {
+      "date": "2026-07-06T21:50:28+08:00",
+      "evidence": "git:0bc86363c7aecd54ea6f96b11fbe6efa95af7a1d"
+    },
+    "shape-train": {
+      "date": "2026-06-30T15:10:16+08:00",
+      "evidence": "git:31482792320158cb21f169911efcc8038df03968"
+    },
+    "signal-veil": {
+      "date": "2026-07-28T18:08:11+08:00",
+      "evidence": "git:fd41cc15280bed4ce2ddaf1b5a9f49d48cc74aa0"
+    },
+    "sliding-15": {
+      "date": "2026-09-07T13:23:52+08:00",
+      "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"
+    },
+    "snack-blocks": {
+      "date": "2026-06-30T14:07:51+08:00",
+      "evidence": "git:da6fde81cf8a17fb05f3818e8fa0ede4a2e1cb68"
+    },
+    "snake": {
+      "date": "2026-08-14T10:42:10+08:00",
+      "evidence": "git:97854d4dcada5a01ae4f31d18ee9bc40ed744c1b"
+    },
+    "space-rocks": {
+      "date": "2026-08-14T05:29:51+08:00",
+      "evidence": "git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"
+    },
+    "spades": {
+      "date": "2026-09-06T12:22:21+08:00",
+      "evidence": "git:054a870fb0f2a3775ccc984cc7dda2801302b173"
+    },
+    "speed": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "spider-solitaire": {
+      "date": "2026-08-08T13:00:37+08:00",
+      "evidence": "git:7f6156bd8829937c6aba4904f4b596942ece6842"
+    },
+    "star-memory": {
+      "date": "2026-06-29T21:17:25+08:00",
+      "evidence": "git:aee27c8085ee1502fa9f3698dc30b6b82462b732"
+    },
+    "sudoku": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "tetris": {
+      "date": "2026-09-05T02:17:10+08:00",
+      "evidence": "git:3ec5a0dfe850d98d0940648159cec6470da5d6ef"
+    },
+    "tiny-weather-rescue": {
+      "date": "2026-06-30T16:06:14+08:00",
+      "evidence": "git:346acd6893672262c5918c4702caa6278b5442d3"
+    },
+    "tower-of-hanoi": {
+      "date": "2026-09-01T17:15:15+08:00",
+      "evidence": "git:73500c6261c0110a54ce3ad99c679deee381cf00"
+    },
+    "tripeaks-solitaire": {
+      "date": "2026-08-29T01:12:57+08:00",
+      "evidence": "git:d25602c3e7ef77d6079c609b8d9ec328fb98a14a"
+    },
+    "war": {
+      "date": "2026-09-07T09:01:53+08:00",
+      "evidence": "git:6d610f6ef170ef3369b74620bddc987a0a074cbb"
+    },
+    "wonder-crash": {
+      "date": "2026-06-29T12:55:21+08:00",
+      "evidence": "git:1c265986ae77558669c499aad6790716110b787e"
+    },
+    "wordle": {
+      "date": "2026-09-07T14:32:28+08:00",
+      "evidence": "git:532f250998171934287172eda373ad395d851929"
+    },
+    "yukon-solitaire": {
+      "date": "2026-09-06T11:20:00+08:00",
+      "evidence": "git:24bede97af3978f173844b18b9de9816ebf121c1"
+    },
+    "zhao-yun-a-dou": {
+      "date": "2026-08-12T18:13:26+08:00",
+      "evidence": "git:51565abac8d1759e71815f7c21545b6532e5d250"
+    },
+    "zoo-helper-day": {
+      "date": "2026-06-30T15:00:49+08:00",
+      "evidence": "git:5357799f83bae6b395c87691535c0db9074eee6f"
+    }
+  }
+}

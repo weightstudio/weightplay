@@ -91,6 +91,20 @@ const catalogResizeObserver = new ResizeObserver(([entry]) => {
 catalogResizeObserver.observe(gameGrid);
 const heroGames = document.querySelector("#heroGames");
 const heroGamesSection = document.querySelector("#heroGamesSection");
+const latestGamesSection = document.createElement("section");
+latestGamesSection.id = "latestGamesSection";
+latestGamesSection.className = "hero-games-section hidden";
+latestGamesSection.dataset.runtimeLocalize = "off";
+latestGamesSection.innerHTML = '<div class="section-heading"><h2 id="latestGamesTitle"></h2></div><div id="latestGames" class="hero-games"></div>';
+if (!isKidsLobby) heroGamesSection.before(latestGamesSection);
+const latestGames = latestGamesSection.querySelector("#latestGames");
+let firstPublicDates = {};
+const latestGamesCopy = {
+  en: "Latest releases", "zh-Hant": "最新上架", "zh-Hans": "最新上架",
+  ja: "新着ゲーム", ko: "새로 출시된 게임", es: "Últimos lanzamientos",
+  "pt-BR": "Novos lançamentos", fr: "Nouveautés", de: "Neu erschienen",
+  it: "Ultime uscite", ru: "Новые игры", hi: "नए गेम", ar: "أحدث الألعاب",
+};
 const upcomingGames = document.querySelector("#upcomingGames");
 const upcomingGamesSection = document.querySelector("#upcomingGamesSection");
 const mobilePicks = document.querySelector("#mobilePicks");
@@ -1224,6 +1238,7 @@ function renderLobby() {
 
   renderContinuePlaying();
   renderHeroGames();
+  renderLatestGames();
   renderMobilePicks();
   renderUpcomingGames();
   renderCharacterShowcase();
@@ -1379,8 +1394,8 @@ function renderWallet() {
   `;
 }
 
-function renderHeroGames() {
-  const cards = popularGames(5)
+function discoveryCards(games, { popular = false } = {}) {
+  return games
     .map((game, index) => {
       const isPlayable = game.status === "playable";
       const title = text(game.title);
@@ -1388,9 +1403,10 @@ function renderHeroGames() {
       const ageLabel = text(game.ageLabel);
       // Popular cards are ranked after unavailable games are filtered out, so
       // their visible Top 5 positions must stay consecutive.
-      const rankText = i18n.t("stats.rank_label", { rank: index + 1 });
+      const rankText = popular ? i18n.t("stats.rank_label", { rank: index + 1 }) : "";
       const card = document.createElement(isPlayable ? "a" : "button");
       card.className = `hero-game-card ${isPlayable ? "playable" : "planned"}`;
+      card.dataset.discoveryGameId = game.id;
       card.type = isPlayable ? undefined : "button";
       if (isPlayable) {
         card.href = game.href;
@@ -1400,18 +1416,38 @@ function renderHeroGames() {
       card.innerHTML = `
         <div class="hero-game-art">
           <img class="hero-game-image" ${lobbyImageAttributes(game.art?.background || "assets/hero.png")} alt="" />
-          <span>${rankText}</span>
+          ${popular && isKidsLobby ? `<span>${rankText}</span>` : ""}
         </div>
         <div class="hero-game-copy">
+          ${popular && !isKidsLobby ? `<span class="hero-game-rank">${rankText}</span>` : ""}
           <strong data-runtime-localize="off">${title}</strong>
           <small>${showAgeLabels ? `${type} / ${ageLabel}` : type}</small>
-          <em>${playCountText(game)}</em>
+          ${popular ? `<em>${playCountText(game)}</em>` : ""}
         </div>
       `;
       return card;
     });
+}
 
-  heroGames.replaceChildren(...cards);
+function renderHeroGames() {
+  heroGames.replaceChildren(...discoveryCards(popularGames(5), { popular: true }));
+}
+
+function latestPublicGames() {
+  const now = Date.now();
+  return catalogGames.filter((game) => {
+    const date = Date.parse(firstPublicDates[game.id]?.date);
+    return game.status === "playable" && Number.isFinite(date) && date <= now;
+  }).sort((a, b) => Date.parse(firstPublicDates[b.id].date) - Date.parse(firstPublicDates[a.id].date)
+    || a.id.localeCompare(b.id, "en")).slice(0, 5);
+}
+
+function renderLatestGames() {
+  if (isKidsLobby) return;
+  const title = i18n.getLocalized(latestGamesCopy);
+  latestGamesSection.querySelector("h2").textContent = title;
+  latestGamesSection.setAttribute("aria-label", title);
+  latestGames.replaceChildren(...discoveryCards(latestPublicGames()));
 }
 
 function renderMobilePicks() {
@@ -1889,6 +1925,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
   });
 
   heroGamesSection.classList.toggle("hidden", isFiltered);
+  latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || latestGames.childElementCount === 0);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);
   continuePlayingSection?.classList.toggle("filtered-out", isFiltered);
   mobilePicksSection?.classList.toggle("hidden", isFiltered);
@@ -2229,6 +2266,16 @@ window.addEventListener("popstate", () => {
 restoreDiscoveryFiltersFromUrl();
 renderLobby();
 loadGameStats();
+if (!isKidsLobby) {
+  fetch("src/lobby-release-history.json", { cache: "no-cache" })
+    .then((response) => { if (!response.ok) throw new Error("Release history unavailable"); return response.json(); })
+    .then((history) => {
+      if (history.schemaVersion !== 1 || !history.firstPublished || Array.isArray(history.firstPublished)) return;
+      firstPublicDates = history.firstPublished;
+      renderLatestGames();
+      applyFilter(); // Respect a filter selected while metadata was loading.
+    }).catch(() => { /* No invented dates or retries; the full catalog still works. */ });
+}
 window.WonderAnalytics?.track("lobby_ready", {
   playable_games: lobby.games.filter((game) => game.status === "playable").length,
   total_games: lobby.games.length,

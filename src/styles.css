@@ -8252,28 +8252,26 @@ select,
   }
 }
 
-/* Popular entry art is a full-bleed click surface on desktop. Keep the
-   image layer explicit so card-level sizing or intrinsic image dimensions
-   cannot reintroduce side gutters. `cover` preserves the artwork ratio
-   without stretching it. */
+/* Discovery posters keep their whole composition. Portrait/landscape assets
+   may have gutters inside the square frame; never crop them to fill it. */
 @media (min-width: 721px) {
-  .general-lobby-page #heroGames {
+  .general-lobby-page :is(#heroGames, #latestGames) {
     width: 100%;
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  .general-lobby-page #heroGames .hero-game-card {
+  .general-lobby-page :is(#heroGames, #latestGames) .hero-game-card {
     width: 100%;
     min-width: 0;
   }
 
-  .general-lobby-page #heroGames .hero-game-art {
+  .general-lobby-page :is(#heroGames, #latestGames) .hero-game-art {
     width: 100%;
     min-width: 0;
     aspect-ratio: 1 / 1;
   }
 
-  .general-lobby-page #heroGames .hero-game-image {
+  .general-lobby-page :is(#heroGames, #latestGames) .hero-game-image {
     position: absolute;
     inset: 0;
     display: block;
@@ -8283,7 +8281,7 @@ select,
     min-height: 100%;
     max-width: none;
     max-height: none;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
   }
 }
@@ -8720,11 +8718,40 @@ select,
   aspect-ratio: 1 / 1;
 }
 .general-lobby-page .game-card .game-card-art.image-art .game-card-fg,
-.general-lobby-page #heroGames .hero-game-art .hero-game-image {
+.general-lobby-page :is(#heroGames, #latestGames) .hero-game-art .hero-game-image {
   object-fit: contain;
   object-position: center;
 }
 .general-lobby-page .game-card:hover .game-card-art.image-art .game-card-fg,
 .general-lobby-page .game-card:focus-visible .game-card-art.image-art .game-card-fg {
   transform: none;
+}
+
+/* Hover, touch-sticky hover and keyboard focus must preserve all poster edges. */
+.general-lobby-page :is(#heroGames, #latestGames) .hero-game-image {
+  transform: none;
+}
+.general-lobby-page .hero-game-rank {
+  justify-self: start;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: #ffdb7a;
+  color: #241a08;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+}
+.general-lobby-page #latestGamesSection { order: 8; }
+.general-lobby-page :is(#latestGamesSection, #heroGamesSection) .section-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.general-lobby-page :is(#latestGamesSection, #heroGamesSection) .section-heading h2 {
+  display: block;
+  order: -1;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.3;
 }

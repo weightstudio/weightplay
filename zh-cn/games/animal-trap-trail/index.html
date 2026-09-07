@@ -23,12 +23,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="阅读月光下的欺骗性踪迹，了解陷阱线索，并在不相信每块地砖的情况下到达灯笼。" />
     <title>Moonlit Trap Trail | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260904-animal-trap-trail-room2-reward-v13" />
+    <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-depth-v14" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script defer src="game.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Moonlit Trap Trail | WeightPlay" />
@@ -88,10 +88,10 @@
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
-        <div class="touch-hint">Find the lantern. Traps reset only the current room.</div>
+        <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Chapter</button><button id="retry" class="primary">Retry Room</button></div>
+            <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
+          <div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Stage</button><button id="retry" class="primary">Retry Stage</button></div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -102,7 +102,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/sound.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script src="../../src/sound.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
@@ -110,19 +110,21 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>Moonlit Trap Trail</h2><p>阅读月光下的欺骗性踪迹，了解陷阱线索，并在不相信每块地砖的情况下到达灯笼。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>陷阱阅读平台冒险</strong></div><div class="game-info-fact"><span>类型</span><strong>Action · 平台 · Animal</strong></div><div class="game-info-fact"><span>难度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每章 2-6 分钟</strong></div><div class="game-info-fact"><span>练习能力</span><strong>反应 · 路线阅读 · Timing</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>陷阱阅读平台冒险</strong></div><div class="game-info-fact"><span>类型</span><strong>Action · 平台 · Animal</strong></div><div class="game-info-fact"><span>难度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>8-20 minutes for the full trail</strong></div><div class="game-info-fact"><span>练习能力</span><strong>反应 · 路线阅读 · Timing</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>一条安静的小路蜿蜒穿过四个简短的章节。每个房间都会教授一个可读的警告，然后将提示组合成更紧凑的路线。</p></div>
+      <div class="game-info-section"><h3>世界与任务</h3><p>A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions.</p></div>
       <div class="game-info-section"><h3>游戏系统</h3><p>箭头键或可见的触摸控件使跑步者移动；空间跳跃和脉冲会短暂突出显示下一个陷阱提示。</p>
-<p>间隙或隐藏的危险只会重置当前房间，而灯笼则标志着一个明确的结束。房间通过计时和反馈而不是意外损坏来保持规则可见。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>开始一章并阅读短房间提示。</li><li>向右移动，同时观察地板、间隙和陷阱提示；仅在路线需要时才跳转。</li><li>当您需要确认下一个警告，然后到达灯笼时，请使用脉冲。</li><li>清除后，选择下一个房间或重试当前房间以改善您的路线。</li></ol></div>
+<p>Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.</p>
+<p>A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage.</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>Open Stages and choose the next unlocked stage; read its short route objective.</li><li>向右移动，同时观察地板、间隙和陷阱提示；仅在路线需要时才跳转。</li><li>当您需要确认下一个警告，然后到达灯笼时，请使用脉冲。</li><li>After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>将第一遍视为一次教训：注意哪些地砖移动以及哪些间隙打开。</li><li>保持稳定的方向并进行短距离、有意识的跳跃，而不是惊慌失措。</li><li>在盲目区域之前使用脉冲，而不是在陷阱已经触发之后。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>这四个章节从清晰的故事到延迟的危险、逆转的时间和混合规则的结局。失败的房间会在不重置整个章节的情况下教导提示。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>Moonlit Trap Trail 使用原创的 WeightPlay 轨迹艺术、陷阱计时、触摸控制和房间大小的重试，因此玩家可以从错误中吸取教训，并立即在下一次尝试中采取行动。</p></div>
-      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>这款通用浏览器游戏没有帐户、购买、聊天、排行榜或广告流程。章节清除和最好的房间停留在这个浏览器中。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>当我遇到陷阱时会发生什么？</dt><dd>仅重置当前房间，结果文本标识路线错误的类型。</dd></div><div><dt>没有键盘可以玩吗？</dt><dd>是的。触摸屏上提供可见的左、右、跳跃和脉冲控制。</dd></div><div><dt>是否需要脉冲？</dt><dd>不。这是一个可选的简短线索，有助于解释下一个陷阱。</dd></div><div><dt>Is progress saved?</dt><dd>此浏览器中仅保存最好的房间。</dd></div></dl></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>Arc 1 (stages 1-5) teaches gaps and readable landing windows. Arc 2 (6-10) adds moving traps and crosswind. Arc 3 (11-15) teaches reversed controls and ends at the Mirror Warden Check.</p>
+<p>Arc 4 (16-20) adds low ceilings and double gaps. Arc 5 (21-25) combines storm wind, darkness, and Pulse. Arc 6 (26-30) is the mixed-rule Moon Gate finale. Checkpoints are stages 5, 10, 15, 20, 25, and 30; every cleared stage remains replayable.</p></div>
+      <div class="game-info-section"><h3>开发设计理念</h3><p>Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.</p></div>
+      <div class="game-info-section game-info-parent"><h3>家长说明</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>当我遇到陷阱时会发生什么？</dt><dd>Only the current stage resets, and the result text identifies the kind of route mistake.</dd></div><div><dt>没有键盘可以玩吗？</dt><dd>是的。触摸屏上提供可见的左、右、跳跃和脉冲控制。</dd></div><div><dt>是否需要脉冲？</dt><dd>不。这是一个可选的简短线索，有助于解释下一个陷阱。</dd></div><div><dt>有多少个阶段？</dt><dd>There are 30 authored stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30. Cleared stages remain replayable.</dd></div><div><dt>Is progress saved?</dt><dd>The highest cleared stage and the next unlock are saved locally in this browser.</dd></div></dl></div>
 
     </div>
   </section>

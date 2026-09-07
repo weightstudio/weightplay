@@ -1,7 +1,7 @@
 /* Internal prototype only. Geometry is temporary until the art gate. */
 (() => {
   const $ = (id) => document.getElementById(id);
-  const GAME_VERSION = 13;
+  const GAME_VERSION = 14;
   const loadingPanel = $("loadingPanel");
   if (loadingPanel) { const hideLoading = () => { loadingPanel.hidden = true; loadingPanel.classList.add("hidden"); }; if (document.readyState === "complete") hideLoading(); else window.addEventListener("load", hideLoading, { once: true }); }
   const canvas = $("arena");
@@ -10,7 +10,7 @@
   heroArt.src = "assets/animal-trap-trail-original-assets-v1.png";
   const propArt = new Image();
   propArt.src = "assets/animal-trap-trail-props.png";
-  const state = { chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoJumpIntent: 0, roomTwoJumpQueued: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
+  const state = { stage: 1, chapter: 1, room: 1, screen: "main", deaths: 0, bestRoom: Number(localStorage.getItem("wp-trail-best-stage") || localStorage.getItem("wp-trail-best-room") || 0), keys: new Set(), tap: null, player: null, raf: 0, last: 0, pulse: 0, jumpBuffer: 0, firstRoomJumpIntent: 0, firstRoomJumpQueued: false, firstRoomLandingSeen: false, roomTwoJumpIntent: 0, roomTwoJumpQueued: false, roomTwoLandingSeen: false, timingCue: "", statusKey: "", resultKind: "room" };
   const localeAliases = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const localeCopy = {
     en: { stageTitle: "Trap Chapters", stageSections: "Stages", backMain: "Back to Main", backStages: "Back to Stages", chapter: "Chapter {n}", room: "Room {n}", deaths: "Deaths {n}", battleStatus: "Arrow keys move · Space jumps · E reveals a brief clue.", touchControls: "Touch controls", jump: "JUMP", pulse: "PULSE", touchHint: "Find the lantern. Traps reset only the current room.", canvasAria: "Moonlit Trap Trail play area", chapters: "Chapters", nextRoom: "Next Room", nextChapter: "Next Chapter", replayChapter: "Replay Chapter", retryRoom: "Retry Room", trailClear: "Trail clear", chapterClear: "Chapter clear", roomClear: "Room clear", resultCopy: "Chapter {chapter}, room {room} complete · Deaths {deaths}", gapDeath: "A gap opened — the path resets.", hazardDeath: "A hidden trap sprang — read the cue and retry.", pulseFeedback: "Moon pulse: the next trap cue is highlighted.", readPath: "READ THE PATH", moveLeft: "Move left", moveRight: "Move right", backToWeight: "Back to WeightPlay", loading: "Preparing the moonlit route…", progress: "Best room: {bestRoom} · Deaths: {deaths}", descriptions: ["learn the tells", "watch the delay", "read the reversal", "mixed rule finale"] },
@@ -27,6 +27,55 @@
     hi: { stageTitle: "जाल अध्याय", stageSections: "चरण", backMain: "मुख्य पर लौटें", backStages: "चरणों पर लौटें", chapter: "अध्याय {n}", room: "कमरा {n}", deaths: "मृत्यु {n}", battleStatus: "तीर कुंजियों से चलें · SPACE से कूदें · E से छोटा संकेत दिखाएँ।", touchControls: "टच नियंत्रण", jump: "कूदें", pulse: "पल्स", touchHint: "लालटेन खोजें। जाल केवल वर्तमान कमरे को रीसेट करते हैं।", canvasAria: "चांदनी जाल पथ का खेल क्षेत्र", chapters: "अध्याय", nextRoom: "अगला कमरा", nextChapter: "अगला अध्याय", replayChapter: "अध्याय फिर खेलें", retryRoom: "कमरा फिर आज़माएँ", trailClear: "पथ पूरा", chapterClear: "अध्याय पूरा", roomClear: "कमरा पूरा", resultCopy: "अध्याय {chapter}, कमरा {room} पूरा · मृत्यु {deaths}", gapDeath: "दरार खुल गई — रास्ता रीसेट हो गया।", hazardDeath: "छिपा जाल सक्रिय हुआ — संकेत पढ़कर फिर कोशिश करें।", pulseFeedback: "मून पल्स: अगले जाल का संकेत दिखाया गया है।", readPath: "रास्ता पढ़ें", moveLeft: "बाएँ चलें", moveRight: "दाएँ चलें", backToWeight: "WeightPlay पर लौटें", loading: "चांदनी रास्ता तैयार हो रहा है…", progress: "सर्वश्रेष्ठ कमरा: {bestRoom} · मृत्यु: {deaths}", descriptions: ["संकेत पहचानें", "देरी देखें", "उलटाव पढ़ें", "मिश्रित नियमों का अंत"] },
     ar: { stageTitle: "فصول الفخاخ", stageSections: "المراحل", backMain: "العودة إلى البداية", backStages: "العودة إلى المراحل", chapter: "الفصل {n}", room: "الغرفة {n}", deaths: "الوفيات {n}", battleStatus: "تحرك بالأسهم · اقفز بمفتاح المسافة · يعرض E تلميحاً قصيراً.", touchControls: "عناصر تحكم باللمس", jump: "قفز", pulse: "نبضة", touchHint: "اعثر على المصباح. تعيد الفخاخ ضبط الغرفة الحالية فقط.", canvasAria: "منطقة لعب درب فخاخ ضوء القمر", chapters: "الفصول", nextRoom: "الغرفة التالية", nextChapter: "الفصل التالي", replayChapter: "إعادة الفصل", retryRoom: "إعادة محاولة الغرفة", trailClear: "اكتمل الدرب", chapterClear: "اكتمل الفصل", roomClear: "اكتملت الغرفة", resultCopy: "اكتمل الفصل {chapter}، الغرفة {room} · الوفيات {deaths}", gapDeath: "انفتح شق — تمت إعادة ضبط الطريق.", hazardDeath: "انطلق فخ مخفي — اقرأ التلميح وحاول مجدداً.", pulseFeedback: "نبضة القمر: تم إبراز تلميح الفخ التالي.", readPath: "اقرأ الطريق", moveLeft: "تحرك يساراً", moveRight: "تحرك يميناً", backToWeight: "العودة إلى WeightPlay", loading: "جارٍ تجهيز درب ضوء القمر…", progress: "أفضل غرفة: {bestRoom} · الوفيات: {deaths}", descriptions: ["تعلّم الإشارات", "راقب التأخير", "اقرأ الانعكاس", "نهاية القواعد المختلطة"] },
   };
+  const stageTouchHintCopy = {
+    en: "Find the lantern. Traps reset only the current stage.",
+    "zh-Hant": "尋找燈籠。陷阱只會重置目前關卡。",
+    "zh-Hans": "寻找灯笼。陷阱只会重置当前关卡。",
+    ja: "ランタンを目指そう。罠でリセットされるのは現在のステージだけです。",
+    ko: "랜턴을 찾으세요. 함정은 현재 스테이지만 초기화합니다.",
+    es: "Encuentra el farol. Las trampas solo reinician la fase actual.",
+    "pt-BR": "Encontre a lanterna. As armadilhas reiniciam apenas a fase atual.",
+    fr: "Trouve la lanterne. Les pièges réinitialisent seulement l’étape actuelle.",
+    de: "Finde die Laterne. Fallen setzen nur den aktuellen Abschnitt zurück.",
+    it: "Trova la lanterna. Le trappole azzerano solo la fase attuale.",
+    ru: "Найдите фонарь. Ловушки сбрасывают только текущий этап.",
+    hi: "लालटेन खोजें। जाल केवल वर्तमान चरण को रीसेट करते हैं।",
+    ar: "اعثر على المصباح. تعيد الفخاخ ضبط المرحلة الحالية فقط."
+  };
+  const campaignStages = [
+    { name: "Moonlit Arrival", nameZh: "月影初行", objective: "Read the first lit landing window.", objectiveZh: "讀懂第一個發光落點。", mechanics: ["gap", "pulse"], gap: 320, spike: 520, fake: 690 },
+    { name: "Lantern Footbridge", nameZh: "燈籠木橋", objective: "Clear a narrow gap, then commit to the jump cue.", objectiveZh: "越過窄裂縫，再依線索果斷跳躍。", mechanics: ["gap", "hidden"], gap: 342, spike: 552, fake: 716 },
+    { name: "False Floor", nameZh: "假地板", objective: "Use Pulse to confirm the safe tile before the lantern.", objectiveZh: "在燈籠前用脈衝確認安全地板。", mechanics: ["gap", "pulse", "hidden"], gap: 364, spike: 574, fake: 702 },
+    { name: "Quiet Switchback", nameZh: "靜默折返", objective: "Keep your rhythm through a longer landing window.", objectiveZh: "維持節奏，穿過較長的落點窗口。", mechanics: ["gap", "hidden"], gap: 386, spike: 590, fake: 728 },
+    { name: "Lantern Keeper Check", nameZh: "燈籠守望檢查", objective: "Checkpoint: combine the first arc's gap and trap reads.", objectiveZh: "檢查點：整合第一弧的裂縫與陷阱判讀。", mechanics: ["gap", "pulse", "hidden"], gap: 350, spike: 610, fake: 742 },
+    { name: "Tidal Footfall", nameZh: "潮汐踏步", objective: "Watch a platform drift while you cross.", objectiveZh: "留意平台移動，再完成穿越。", mechanics: ["gap", "moving"], gap: 330, spike: 530, fake: 690, moving: true },
+    { name: "Delayed Spike", nameZh: "延遲尖刺", objective: "Read the spike's delayed sweep instead of rushing.", objectiveZh: "讀懂尖刺延遲掃動，不要急著衝刺。", mechanics: ["moving", "delay"], gap: 356, spike: 552, fake: 720, moving: true },
+    { name: "Windward Ledger", nameZh: "迎風航記", objective: "Counter a soft crosswind with small corrections.", objectiveZh: "用小幅修正抵抗輕微側風。", mechanics: ["moving", "wind"], gap: 374, spike: 574, fake: 704, moving: true, wind: true },
+    { name: "Tideglass Route", nameZh: "潮鏡路線", objective: "Pulse once, then trust the moving landing window.", objectiveZh: "使用一次脈衝，再相信移動中的落點窗口。", mechanics: ["moving", "wind", "pulse"], gap: 398, spike: 596, fake: 736, moving: true, wind: true },
+    { name: "Tide Bell Check", nameZh: "潮鐘檢查", objective: "Checkpoint: cross the tidal arc without losing momentum.", objectiveZh: "檢查點：保持動能穿越潮汐弧段。", mechanics: ["moving", "wind", "hidden"], gap: 344, spike: 620, fake: 748, moving: true, wind: true },
+    { name: "Mirror Step", nameZh: "鏡面步", objective: "Notice the first reversed input before the gap.", objectiveZh: "在裂縫前察覺第一次反轉操作。", mechanics: ["reverse", "gap"], gap: 326, spike: 528, fake: 694, reverse: true },
+    { name: "Echo Route", nameZh: "回聲路線", objective: "Use the same landmark reads with reversed movement.", objectiveZh: "在移動反轉下使用相同地標判讀。", mechanics: ["reverse", "hidden"], gap: 352, spike: 556, fake: 714, reverse: true },
+    { name: "Glass Decoy", nameZh: "玻璃誘餌", objective: "Read a false floor while the controls stay reversed.", objectiveZh: "在操作反轉時讀出假地板。", mechanics: ["reverse", "hidden", "pulse"], gap: 378, spike: 578, fake: 700, reverse: true },
+    { name: "Mirror Current", nameZh: "鏡潮", objective: "Correct direction and timing together.", objectiveZh: "同時修正方向與跳躍時機。", mechanics: ["reverse", "wind"], gap: 402, spike: 602, fake: 734, reverse: true, wind: true },
+    { name: "Mirror Warden Check", nameZh: "鏡衛檢查", objective: "Checkpoint: master the reversal before the vault arc.", objectiveZh: "檢查點：在進入穹頂弧段前掌握反轉。", mechanics: ["reverse", "hidden", "pulse"], gap: 348, spike: 624, fake: 750, reverse: true },
+    { name: "Low Vault", nameZh: "低穹頂", objective: "Jump the floor trap without touching the low ceiling.", objectiveZh: "跳過地面陷阱，同時避開低穹頂。", mechanics: ["ceiling", "gap"], gap: 334, spike: 536, fake: 688, ceiling: true },
+    { name: "Vault Split", nameZh: "穹頂分流", objective: "Choose a clean line through the first double hazard.", objectiveZh: "選擇乾淨路線穿過第一組雙重危險。", mechanics: ["ceiling", "second-gap"], gap: 360, gap2: 748, spike: 560, fake: 706, ceiling: true, secondGap: true },
+    { name: "Stone Breath", nameZh: "石窟吐息", objective: "Time a jump while the ceiling cue narrows the route.", objectiveZh: "在穹頂線索收窄路線時掌握跳躍。", mechanics: ["ceiling", "moving", "second-gap"], gap: 382, gap2: 730, spike: 584, fake: 718, ceiling: true, moving: true, secondGap: true },
+    { name: "Vault Lantern", nameZh: "穹頂燈火", objective: "Keep a low line, then climb only after the final gap.", objectiveZh: "保持低位，越過最後裂縫後才上跳。", mechanics: ["ceiling", "wind", "second-gap"], gap: 404, gap2: 758, spike: 608, fake: 742, ceiling: true, wind: true, secondGap: true },
+    { name: "Vault Seal Check", nameZh: "穹頂封印檢查", objective: "Checkpoint: blend low clearance and double-gap reads.", objectiveZh: "檢查點：整合低空間與雙裂縫判讀。", mechanics: ["ceiling", "wind", "second-gap"], gap: 350, gap2: 742, spike: 626, fake: 754, ceiling: true, wind: true, secondGap: true },
+    { name: "Storm Lantern", nameZh: "風暴燈", objective: "Read the route while wind and darkness hide its edges.", objectiveZh: "在風與黑暗遮住邊緣時讀懂路線。", mechanics: ["wind", "dark", "gap"], gap: 328, spike: 538, fake: 696, wind: true, dark: true },
+    { name: "Rainline", nameZh: "雨線", objective: "Use the pulse reveal to hold a steady landing.", objectiveZh: "使用脈衝揭示，穩定落在安全區。", mechanics: ["wind", "dark", "pulse"], gap: 354, spike: 562, fake: 714, wind: true, dark: true },
+    { name: "Storm Split", nameZh: "風暴分流", objective: "Cross two gaps while the wind changes your drift.", objectiveZh: "在風向改變漂移時越過兩道裂縫。", mechanics: ["wind", "dark", "second-gap"], gap: 376, gap2: 726, spike: 586, fake: 708, wind: true, dark: true, secondGap: true },
+    { name: "Thunder Decoy", nameZh: "雷鳴誘餌", objective: "Ignore the false floor and follow the brief pulse cue.", objectiveZh: "忽略假地板，跟隨短暫脈衝線索。", mechanics: ["wind", "dark", "hidden", "second-gap"], gap: 400, gap2: 748, spike: 610, fake: 738, wind: true, dark: true, secondGap: true },
+    { name: "Storm Lantern Check", nameZh: "風暴燈檢查", objective: "Checkpoint: finish the storm arc with a clean route read.", objectiveZh: "檢查點：以清楚路線判讀完成風暴弧段。", mechanics: ["wind", "dark", "pulse", "second-gap"], gap: 346, gap2: 738, spike: 628, fake: 756, wind: true, dark: true, secondGap: true },
+    { name: "Moon Gate Approach", nameZh: "月門前路", objective: "Combine the gap, reversal, and ceiling lessons.", objectiveZh: "整合裂縫、反轉與穹頂教學。", mechanics: ["gap", "reverse", "ceiling"], gap: 332, spike: 548, fake: 698, reverse: true, ceiling: true },
+    { name: "Moon Gate Crosswind", nameZh: "月門側風", objective: "Hold your line through wind, reversal, and a second gap.", objectiveZh: "在風、反轉與第二道裂縫中維持路線。", mechanics: ["wind", "reverse", "second-gap"], gap: 358, gap2: 730, spike: 574, fake: 718, wind: true, reverse: true, secondGap: true },
+    { name: "Moon Gate Shadow", nameZh: "月門暗影", objective: "Pulse through darkness, then clear the low ceiling.", objectiveZh: "穿過黑暗脈衝，再避開低穹頂。", mechanics: ["dark", "ceiling", "pulse"], gap: 384, spike: 600, fake: 730, dark: true, ceiling: true },
+    { name: "Moon Gate Trial", nameZh: "月門試煉", objective: "Choose deliberate jumps across every mixed-rule cue.", objectiveZh: "依每個混合規則線索做出精準跳躍。", mechanics: ["wind", "reverse", "dark", "second-gap"], gap: 406, gap2: 754, spike: 622, fake: 744, wind: true, reverse: true, dark: true, secondGap: true },
+    { name: "Moon Gate Finale", nameZh: "月門終章", objective: "Final checkpoint: read every rule and reach the moon gate.", objectiveZh: "最終檢查點：讀懂全部規則並抵達月門。", mechanics: ["wind", "reverse", "dark", "ceiling", "second-gap"], gap: 350, gap2: 742, spike: 636, fake: 758, wind: true, reverse: true, dark: true, ceiling: true, secondGap: true },
+  ].map((stage, index) => ({ ...stage, id: index + 1, arc: Math.floor(index / 5) + 1, room: (index % 5) + 1, checkpoint: (index + 1) % 5 === 0 }));
+  const nextStageCopy = { en: "Next Stage", "zh-Hant": "下一關", "zh-Hans": "下一关", ja: "次のステージ", ko: "다음 스테이지", es: "Siguiente fase", "pt-BR": "Próxima fase", fr: "Étape suivante", de: "Nächster Abschnitt", it: "Fase successiva", ru: "Следующий этап", hi: "अगला चरण", ar: "المرحلة التالية" };
+  const retryStageCopy = { en: "Retry Stage", "zh-Hant": "重試關卡", "zh-Hans": "重试关卡", ja: "ステージを再挑戦", ko: "스테이지 다시 시도", es: "Reintentar fase", "pt-BR": "Tentar fase novamente", fr: "Réessayer l’étape", de: "Abschnitt erneut", it: "Riprova la fase", ru: "Повторить этап", hi: "चरण फिर आज़माएँ", ar: "إعادة محاولة المرحلة" };
   const landingCueCopy = {
     en: "Moon pulse: land in the lit window after the gap, then jump the spike.",
     "zh-Hant": "月光脈衝：在裂縫後的發光區落地，再跳過尖刺。",
@@ -140,6 +189,16 @@
     return localeCopy[localeAliases[candidate] || candidate] ? (localeAliases[candidate] || candidate) : "en";
   }
   function copy() { return localeCopy[currentLocale()]; }
+  function stageFor(stageId = state.stage) { return campaignStages[Math.max(0, Math.min(campaignStages.length - 1, stageId - 1))]; }
+  function stageName(stageId = state.stage) {
+    const stage = stageFor(stageId);
+    return currentLocale() === "zh-Hant" ? stage.nameZh : stage.name;
+  }
+  function stageObjective(stageId = state.stage) {
+    const stage = stageFor(stageId);
+    return currentLocale() === "zh-Hant" ? stage.objectiveZh : stage.objective;
+  }
+  function maxUnlockedStage() { return Math.min(campaignStages.length, Math.max(1, state.bestRoom + 1)); }
   function chapterLabel(number) { return format(copy().chapter, { n: number }); }
   function roomLabel(number) { return format(copy().room, { n: number }); }
   function deathLabel(number) { return format(copy().deaths, { n: number }); }
@@ -182,17 +241,18 @@
   }
   function updateBattleText() {
     const c = copy();
-    setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} / 3`);
+    setText("room-label", `${chapterLabel(state.chapter)} · ${roomLabel(state.room)} · ${stageName(state.stage)} (${state.stage}/30)`);
     setText("death-label", deathLabel(state.deaths));
     setText("battle-status", currentBattleStatus());
   }
   function renderResult() {
     const c = copy();
+    const stage = stageFor();
     setText("result-title", state.resultKind === "chapter" ? c.chapterClear : c.roomClear);
     setText("result-copy", format(c.resultCopy, { chapter: state.chapter, room: state.room, deaths: state.deaths }));
     setText("to-stages", c.chapters);
-    setText("next", state.resultKind === "chapter" ? c.replayChapter : c.nextRoom);
-    setText("retry", c.retryRoom);
+    setText("next", state.stage >= campaignStages.length ? c.replayChapter : stage.checkpoint ? c.nextChapter : nextStageCopy[currentLocale()]);
+    setText("retry", retryStageCopy[currentLocale()]);
   }
   function applyCopy() {
     const c = copy();
@@ -210,7 +270,7 @@
     const headerPulse = $("battle-pulse"); if (headerPulse) { headerPulse.textContent = c.pulse; headerPulse.setAttribute("aria-label", c.pulse); }
     const leftButton = document.querySelector('[data-key="ArrowLeft"]'); if (leftButton) leftButton.setAttribute("aria-label", c.moveLeft);
     const rightButton = document.querySelector('[data-key="ArrowRight"]'); if (rightButton) rightButton.setAttribute("aria-label", c.moveRight);
-    const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = c.touchHint;
+    const touchHint = document.querySelector(".touch-hint"); if (touchHint) touchHint.textContent = stageTouchHintCopy[currentLocale()] || c.touchHint;
     const battleStatus = $("battle-status"); if (battleStatus) battleStatus.setAttribute("aria-live", "polite");
     updateMainProgress(); updateBattleText();
     if (state.screen === "stage") stageCards();
@@ -249,10 +309,19 @@
   }
   function stageCards() {
     const c = copy();
-    $("stage-list").innerHTML = [1,2,3,4].map((n) => `<button type="button" class="stage-card" data-chapter="${n}" data-wp-stage-card="${n}" data-wp-enter-battle aria-label="${chapterLabel(n)}: ${c.descriptions[n - 1]}">${chapterLabel(n)}<br><small>${c.descriptions[n - 1]}</small></button>`).join("");
-    $("stage-list").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => startRoom(Number(b.dataset.chapter), 1)));
+    const unlocked = maxUnlockedStage();
+    $("stage-list").innerHTML = campaignStages.map((stage) => {
+      const isLocked = stage.id > unlocked;
+      const arcDescription = c.descriptions[(stage.arc - 1) % c.descriptions.length];
+      const checkpoint = stage.checkpoint ? " · ★" : "";
+      return `<button type="button" class="stage-card${isLocked ? " locked" : ""}" data-stage="${stage.id}" data-chapter="${stage.arc}" data-wp-stage-card="${stage.id}" data-wp-enter-battle aria-label="${stageName(stage.id)}: ${stageObjective(stage.id)}"${isLocked ? " disabled aria-disabled=\"true\"" : ""}><strong>${stage.id}. ${stageName(stage.id)}${checkpoint}</strong><small>${stageObjective(stage.id)}</small><em>${chapterLabel(stage.arc)} · ${arcDescription}</em></button>`;
+    }).join("");
+    $("stage-list").querySelectorAll("button:not([disabled])").forEach((b) => b.addEventListener("click", () => startStage(Number(b.dataset.stage))));
     syncStageCardVisibility();
-    window.requestAnimationFrame(syncStageCardVisibility);
+    window.requestAnimationFrame(() => {
+      syncStageCardVisibility();
+      document.querySelector(`[data-stage="${Math.min(unlocked, campaignStages.length)}"]`)?.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    });
   }
   function resetRoom() {
     state.player = { x: 76, y: 390, vy: 0, grounded: false };
@@ -260,13 +329,30 @@
     state.pulse = 0; state.jumpBuffer = 0; state.firstRoomJumpIntent = 0; state.firstRoomJumpQueued = false; state.firstRoomLandingSeen = false; state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; state.roomTwoLandingSeen = false; state.timingCue = guidedTimingKey();
     updateBattleText();
   }
-  function startRoom(chapter = 1, room = 1) { state.chapter = chapter; state.room = room; state.statusKey = ""; resetRoom(); show("battle"); }
-  function trapData() {
-    const index = (state.chapter - 1) * 3 + state.room - 1;
-    return { index, gap: 330 + (index * 47) % 210, spike: 520 + (index * 61) % 250, fake: 700 - (index * 29) % 130, moving: state.chapter === 2 || state.chapter === 4, reverse: state.chapter === 3 && state.room === 3, ceiling: state.chapter === 4 };
+  function startStage(stageId = 1) {
+    const stage = stageFor(stageId);
+    if (stage.id > maxUnlockedStage()) return;
+    state.stage = stage.id; state.chapter = stage.arc; state.room = stage.room; state.statusKey = ""; resetRoom(); show("battle");
   }
-  function solidAt(x) { const t = trapData(); const gapOpen = x > t.gap && x < t.gap + 66 + (t.moving ? Math.sin(performance.now() / 240) * 10 : 0); return !gapOpen && x < 900; }
-  function hazardAt(x, y) { const t = trapData(); const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; const spike = x > t.spike - 20 + spikeShift && x < t.spike + 38 + spikeShift; const fake = x > t.fake - 18 && x < t.fake + 34 && y > 360; const ceiling = t.ceiling && y < 210 && x > 610 && x < 760; return spike || fake || ceiling; }
+  function trapData() {
+    const stage = stageFor();
+    return { ...stage, index: stage.id - 1 };
+  }
+  function solidAt(x) {
+    const t = trapData();
+    const drift = t.moving ? Math.sin(performance.now() / 240) * 10 : 0;
+    const gapOpen = (x > t.gap + drift && x < t.gap + 66 + drift) || (t.secondGap && x > t.gap2 && x < t.gap2 + 66);
+    return !gapOpen && x < 900;
+  }
+  function hazardAt(x, y) {
+    const t = trapData();
+    const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0;
+    const spike = x > t.spike - 20 + spikeShift && x < t.spike + 38 + spikeShift;
+    const secondSpike = t.secondGap && x > t.gap2 - 52 && x < t.gap2 - 12;
+    const fake = x > t.fake - 18 && x < t.fake + 34 && y > 360;
+    const ceiling = t.ceiling && y < 210 && x > 610 && x < 760;
+    return spike || secondSpike || fake || ceiling;
+  }
   function die(reason) { state.deaths += 1; state.statusKey = reason === "gap" ? "gap" : "hazard"; resetRoom(); }
   function pulse() { if (state.screen !== "battle") return; state.pulse = 60; state.statusKey = "pulse"; updateBattleText(); }
   function armFirstRoomJumpIntent() {
@@ -280,9 +366,10 @@
     if (state.player.x >= t.gap - 54 && state.player.x < t.fake + 34) state.roomTwoJumpIntent = 360;
   }
   function finish() {
-    state.bestRoom = Math.max(state.bestRoom, state.room + (state.chapter - 1) * 3);
+    state.bestRoom = Math.max(state.bestRoom, state.stage);
     localStorage.setItem("wp-trail-best-room", String(state.bestRoom));
-    state.resultKind = state.room >= 3 ? "chapter" : "room";
+    localStorage.setItem("wp-trail-best-stage", String(state.bestRoom));
+    state.resultKind = stageFor().checkpoint || state.stage === campaignStages.length ? "chapter" : "room";
     renderResult();
     show("result");
   }
@@ -310,6 +397,7 @@
       state.tap = null;
     }
     if (right) p.x += 3.2 * dt; if (left) p.x -= 3.2 * dt;
+    if (t.wind) p.x += Math.sin(performance.now() / 320) * 0.55 * dt;
     if (jumpHeld) state.jumpBuffer = guidedRoom ? 30 : 12;
     if (state.jumpBuffer > 0) state.jumpBuffer = Math.max(0, state.jumpBuffer - dt);
     if (state.firstRoomJumpIntent > 0) state.firstRoomJumpIntent = Math.max(0, state.firstRoomJumpIntent - dt);
@@ -330,17 +418,22 @@
       if (roomTwoAssistReady && p.x >= t.fake - 42) { state.roomTwoJumpIntent = 0; state.roomTwoJumpQueued = false; }
     }
     if (p.y > 560) return die("gap");
-    if (hazardAt(p.x, p.y) && p.grounded) return die("hazard");
-    if (p.x > 870 && p.grounded) { if (state.room < 3) { state.room += 1; resetRoom(); } else finish(); }
+    if (hazardAt(p.x, p.y) && (p.grounded || (t.ceiling && p.y < 210))) return die("hazard");
+    if (p.x > 870 && p.grounded) finish();
     if (state.pulse > 0) state.pulse -= dt;
     const timingCue = guidedTimingKey();
     if (timingCue !== state.timingCue) { state.timingCue = timingCue; updateBattleText(); }
   }
   function draw() {
     const t = trapData(); ctx.clearRect(0,0,960,540); const g = ctx.createLinearGradient(0,0,0,540); g.addColorStop(0,"#101933"); g.addColorStop(1,"#070b16"); ctx.fillStyle = g; ctx.fillRect(0,0,960,540);
-    ctx.fillStyle="#172b43"; ctx.fillRect(0,418,960,122); ctx.fillStyle="#263f5c"; ctx.fillRect(t.gap,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(t.gap,418,74,8); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,930,70,420,560,t.gap-8,410,90,118);
+    if (t.dark) { ctx.fillStyle = "#050810aa"; ctx.fillRect(0,0,960,540); }
+    const gapShift = t.moving ? Math.sin(performance.now() / 240) * 10 : 0; const gapX = t.gap + gapShift;
+    ctx.fillStyle="#172b43"; ctx.fillRect(0,418,960,122); ctx.fillStyle="#263f5c"; ctx.fillRect(gapX,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(gapX,418,74,8); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,930,70,420,560,gapX-8,410,90,118);
+    if (t.secondGap) { ctx.fillStyle="#263f5c"; ctx.fillRect(t.gap2,418,74,122); ctx.fillStyle="#0a0e1a"; ctx.fillRect(t.gap2,418,74,8); }
     const spikeShift = t.moving ? Math.sin(performance.now() / 230) * 26 : 0; ctx.fillStyle="#e26b75"; for(let x=t.spike+spikeShift;x<t.spike+42+spikeShift;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,540,80,400,560,t.spike-18+spikeShift,370,74,84);
+    if (t.secondGap) { ctx.fillStyle="#e26b75"; for(let x=t.gap2-52;x<t.gap2-12;x+=14){ctx.beginPath();ctx.moveTo(x,418);ctx.lineTo(x+7,392);ctx.lineTo(x+14,418);ctx.fill();} }
     ctx.fillStyle="#72597d";ctx.fillRect(t.fake,406,38,12); if (t.ceiling) { ctx.fillStyle="#d67b8f"; ctx.fillRect(610,180,150,16); }
+    if (t.wind) { ctx.strokeStyle="#8ac7e866"; ctx.lineWidth=3; for (let x = 90; x < 880; x += 150) { const y = 150 + ((x / 10 + performance.now() / 14) % 120); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 62, y - 12); ctx.stroke(); } }
     ctx.fillStyle="#ffd36b";ctx.fillRect(875,345,12,73);ctx.beginPath();ctx.arc(881,336,25,0,Math.PI*2);ctx.fill();ctx.fillStyle="#fff1a1";ctx.beginPath();ctx.arc(881,336,9,0,Math.PI*2);ctx.fill(); if(propArt.complete&&propArt.naturalWidth)ctx.drawImage(propArt,20,20,500,650,830,300,105,136);
     if (state.chapter === 1 && state.room <= 3) {
       const landingStart = t.gap + 78;
@@ -383,13 +476,13 @@
     } else {
       ctx.save();ctx.translate(p.x,p.y);ctx.fillStyle="#a4ead5";ctx.beginPath();ctx.arc(0,0,22,0,Math.PI*2);ctx.fill();ctx.fillStyle="#162841";ctx.fillRect(-13,-5,26,7);ctx.fillStyle="#ffd36b";ctx.fillRect(-11,7,22,6);ctx.restore();
     }
-    const c = copy(); ctx.fillStyle="#cbd8e8";ctx.font="bold 18px system-ui";ctx.fillText(c.readPath,24,34);ctx.font="15px system-ui";ctx.fillText(`${chapterLabel(state.chapter)} · ${roomLabel(state.room)}`,24,60);
+    const c = copy(); ctx.fillStyle="#cbd8e8";ctx.font="bold 18px system-ui";ctx.fillText(c.readPath,24,34);ctx.font="15px system-ui";ctx.fillText(`${stageName(state.stage)} · ${state.stage}/30`,24,60);
   }
   function frame(now) { if (state.screen !== "battle") return; const dt = Math.min((now - state.last) / 16.67, 2); state.last = now; update(dt); if (state.screen === "battle") { draw(); state.raf = requestAnimationFrame(frame); } }
   function pressKey(key, active) {
     if (active) {
       state.keys.add(key);
-      if (key === "Space" || key === "ArrowUp" || key === "KeyW") armFirstRoomJumpIntent();
+      if (key === "Space" || key === "ArrowUp" || key === "KeyW") { armFirstRoomJumpIntent(); armRoomTwoJumpIntent(); }
     } else state.keys.delete(key);
   }
   window.addEventListener("keydown", (e) => { const key = e.code === "Space" ? "Space" : e.code; if (["ArrowLeft","ArrowRight","ArrowUp","Space","KeyA","KeyD","KeyW","KeyE"].includes(key)) { e.preventDefault(); if (key === "KeyE") pulse(); else pressKey(key,true); } });
@@ -397,5 +490,5 @@
   document.querySelectorAll("[data-key]").forEach((button) => { const key = button.dataset.key; if (key === "Pulse") { button.addEventListener("pointerdown", (e) => { e.preventDefault(); pulse(); }); return; } const start = (e) => { e.preventDefault(); if (e.pointerId !== undefined && button.setPointerCapture) { try { button.setPointerCapture(e.pointerId); } catch (_) {} } pressKey(key,true); }; const stop = () => pressKey(key,false); button.addEventListener("pointerdown", start); button.addEventListener("touchstart", start, { passive: false }); ["pointerup","pointercancel","pointerleave","lostpointercapture","touchend","touchcancel"].forEach((event) => button.addEventListener(event, stop)); button.addEventListener("click", () => { state.tap = key; }); });
   $("battle-pulse")?.addEventListener("click", pulse);
   $("stage-list").addEventListener("scroll", syncStageCardVisibility, { passive: true });
-  $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle"); }); $("next").addEventListener("click", () => startRoom(state.chapter, state.room >= 3 ? 1 : state.room + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
+  $("start-game").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => show(b.dataset.back))); $("retry").addEventListener("click", () => { state.statusKey = ""; resetRoom(); show("battle"); }); $("next").addEventListener("click", () => startStage(state.stage >= campaignStages.length ? campaignStages.length : state.stage + 1)); $("to-stages").addEventListener("click", () => { show("stage"); stageCards(); }); document.querySelectorAll("#localeSelect").forEach((select) => select.addEventListener("change", () => window.setTimeout(applyCopy, 0))); stageCards(); resetRoom(); applyCopy(); show("main");
 })();

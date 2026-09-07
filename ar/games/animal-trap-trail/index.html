@@ -23,12 +23,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية." />
     <title>مسار الفخ القمري | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260904-animal-trap-trail-room2-reward-v13" />
+    <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-depth-v14" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script defer src="game.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مسار الفخ القمري | WeightPlay" />
@@ -89,10 +89,10 @@
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
-        <div class="touch-hint">Find the lantern. Traps reset only the current room.</div>
+        <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Chapter</button><button id="retry" class="primary">Retry Room</button></div>
+            <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
+          <div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Stage</button><button id="retry" class="primary">Retry Stage</button></div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -103,7 +103,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/sound.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script src="../../src/sound.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
@@ -111,18 +111,20 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>مسار الفخ القمري</h2><p>اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>Trap-Reading Platform Adventure</strong></div><div class="game-info-fact"><span>النوع</span><strong>Action · Platform · Animal</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2-6 minutes per chapter</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>رد الفعل · قراءة الطريق · Timing</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>Trap-Reading Platform Adventure</strong></div><div class="game-info-fact"><span>النوع</span><strong>Action · Platform · Animal</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>8-20 minutes for the full trail</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>رد الفعل · قراءة الطريق · Timing</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>A quiet trail winds through four short chapters. Each room teaches one readable warning before combining the cues into a tighter route.</p></div>
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions.</p></div>
       <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.</p>
-<p>A gap or hidden hazard resets only the current room, while the lantern marks a clear finish. Rooms keep the rule visible through timing and feedback rather than surprise damage.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>Start a chapter and read the short room hint.</li><li>Move right while watching the floor, gap, and trap cue; jump only when the route requires it.</li><li>Use Pulse when you need to confirm the next warning, then reach the lantern.</li><li>After a clear, choose the next room or retry the current room to improve your route.</li></ol></div>
+<p>Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.</p>
+<p>A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>Open Stages and choose the next unlocked stage; read its short route objective.</li><li>Move right while watching the floor, gap, and trap cue; jump only when the route requires it.</li><li>Use Pulse when you need to confirm the next warning, then reach the lantern.</li><li>After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>Treat the first pass as a lesson: note which floor tiles move and which gaps open.</li><li>Hold a steady direction and make short, deliberate jumps instead of panic tapping.</li><li>Use Pulse before a blind-looking section, not after the trap has already triggered.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>The four chapters move from clear tells to delayed hazards, reversed timing, and a mixed-rule finale. A failed room teaches the cue without resetting the whole chapter.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>Moonlit Trap Trail uses original WeightPlay trail art, trap timing, touch controls, and room-sized retries so the player can learn from a mistake and immediately act on the next attempt.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Chapter clears and best room stay in this browser.</p></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>Arc 1 (stages 1-5) teaches gaps and readable landing windows. Arc 2 (6-10) adds moving traps and crosswind. Arc 3 (11-15) teaches reversed controls and ends at the Mirror Warden Check.</p>
+<p>Arc 4 (16-20) adds low ceilings and double gaps. Arc 5 (21-25) combines storm wind, darkness, and Pulse. Arc 6 (26-30) is the mixed-rule Moon Gate finale. Checkpoints are stages 5, 10, 15, 20, 25, and 30; every cleared stage remains replayable.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.</p></div>
       <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يُحفظ التقدم؟</dt><dd>يبقى أفضل مستوى محفوظًا في هذا المتصفح فقط.</dd></div></dl></div>
 
     </div>

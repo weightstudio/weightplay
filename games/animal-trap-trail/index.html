@@ -22,12 +22,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Read a deceptive moonlit trail, learn the traps, and reach the lantern." />
     <title>Moonlit Trap Trail | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260904-animal-trap-trail-room2-reward-v13" />
+    <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-depth-v14" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script defer src="game.js?v=20260907-animal-trap-trail-depth-v14"></script>
   </head>
   <body data-wp-five-game="animal-trap-trail" data-wp-game-id="animal-trap-trail" data-runtime-localize="off" data-screen="main">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Moonlit Trap Trail</strong><span>Preparing the moonlit route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
@@ -49,10 +49,10 @@
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
-        <div class="touch-hint">Find the lantern. Traps reset only the current room.</div>
+        <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Chapter</button><button id="retry" class="primary">Retry Room</button></div>
+            <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
+          <div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Stage</button><button id="retry" class="primary">Retry Stage</button></div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -71,7 +71,7 @@
           <div class="game-info-fact"><span>Recommended Age</span><strong>9+</strong></div>
 
           <div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div>
-          <div class="game-info-fact"><span>Estimated Play Time</span><strong>2-6 minutes per chapter</strong></div>
+          <div class="game-info-fact"><span>Estimated Play Time</span><strong>8-20 minutes for the full trail</strong></div>
           <div class="game-info-fact"><span>Skills Trained</span><div class="game-info-skills"><span>Reaction</span><span>Route Reading</span><span>Timing</span></div></div>
 
         </div>
@@ -79,15 +79,15 @@
       <div class="game-info-sections">
         <div class="game-info-section game-info-story">
           <h3>World and Mission</h3>
-          <p>A quiet trail winds through four short chapters. Each room teaches one readable warning before combining the cues into a tighter route.</p>
+          <p>A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions.</p>
         </div>
         <div class="game-info-section game-info-systems">
           <h3>How the Systems Work</h3>
-          <ul><li>Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.</li><li>A gap or hidden hazard resets only the current room, while the lantern marks a clear finish. Rooms keep the rule visible through timing and feedback rather than surprise damage.</li></ul>
+          <ul><li>Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.</li><li>Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.</li><li>A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage.</li></ul>
         </div>
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Start a chapter and read the short room hint.</li><li>Move right while watching the floor, gap, and trap cue; jump only when the route requires it.</li><li>Use Pulse when you need to confirm the next warning, then reach the lantern.</li><li>After a clear, choose the next room or retry the current room to improve your route.</li></ol>
+          <ol><li>Open Stages and choose the next unlocked stage; read its short route objective.</li><li>Move right while watching the floor, gap, and trap cue; jump only when the route requires it.</li><li>Use Pulse when you need to confirm the next warning, then reach the lantern.</li><li>After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
@@ -95,19 +95,19 @@
         </div>
         <div class="game-info-section game-info-campaign">
           <h3>Campaign and Difficulty Growth</h3>
-          <p>The four chapters move from clear tells to delayed hazards, reversed timing, and a mixed-rule finale. A failed room teaches the cue without resetting the whole chapter.</p>
+          <p>The six arcs move from clear landing tells to delayed movement, reversed controls, low ceilings and double gaps, storm wind and darkness, then a mixed-rule Moon Gate finale. Stage 5, 10, 15, 20, 25, and 30 are visible checkpoints; a failed stage teaches the cue without resetting the whole campaign.</p>
         </div>
         <div class="game-info-section game-info-design">
           <h3>Developer Design Note</h3>
-          <p>Moonlit Trap Trail uses original WeightPlay trail art, trap timing, touch controls, and room-sized retries so the player can learn from a mistake and immediately act on the next attempt.</p>
+          <p>Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Parent Note</h3>
-          <p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Chapter clears and best room stay in this browser.</p>
+          <p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>What happens when I hit a trap?</dt><dd>Only the current room resets, and the result text identifies the kind of route mistake.</dd></div><div><dt>Can I play without a keyboard?</dt><dd>Yes. The visible left, right, jump, and pulse controls are available on touch screens.</dd></div><div><dt>Is Pulse required?</dt><dd>No. It is an optional short clue that helps explain the next trap.</dd></div><div><dt>Is progress saved?</dt><dd>Only the best room is saved in this browser.</dd></div></dl>
+          <dl><div><dt>What happens when I hit a trap?</dt><dd>Only the current stage resets, and the result text identifies the kind of route mistake.</dd></div><div><dt>Can I play without a keyboard?</dt><dd>Yes. The visible left, right, jump, and pulse controls are available on touch screens.</dd></div><div><dt>Is Pulse required?</dt><dd>No. It is an optional short clue that helps explain the next trap.</dd></div><div><dt>How many stages are there?</dt><dd>There are 30 authored stages in six five-stage arcs, with checkpoints at 5, 10, 15, 20, 25, and 30. Cleared stages remain replayable.</dd></div><div><dt>Is progress saved?</dt><dd>The highest cleared stage and the next unlock are saved locally in this browser.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -117,8 +117,8 @@
     <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/sound.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script src="../../src/sound.js?v=20260907-animal-trap-trail-depth-v14"></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
   </body>
 </html>

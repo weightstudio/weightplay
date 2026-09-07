@@ -2054,17 +2054,17 @@
       faq: [["Is progress saved?", "Yes, only in this browser."]],
     },
     "animal-trap-trail": {
-      title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "2-6 minutes per chapter",
+      title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "8-20 minutes for the full trail",
       gameplay: "Trap-Reading Platform Adventure", genre: ["Action", "Platform", "Animal"], skills: ["Reaction", "Route Reading", "Timing"],
       intro: "Read a deceptive moonlit trail, learn the trap cues, and reach the lantern without trusting every floor tile.",
-      story: ["A quiet trail winds through four short chapters. Each room teaches one readable warning before combining the cues into a tighter route."],
-      systems: ["Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.", "A gap or hidden hazard resets only the current room, while the lantern marks a clear finish. Rooms keep the rule visible through timing and feedback rather than surprise damage."],
-      how: ["Start a chapter and read the short room hint.", "Move right while watching the floor, gap, and trap cue; jump only when the route requires it.", "Use Pulse when you need to confirm the next warning, then reach the lantern.", "After a clear, choose the next room or retry the current room to improve your route."],
+      story: ["A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions."],
+      systems: ["Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.", "Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.", "A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage."],
+      how: ["Open Stages and choose the next unlocked stage; read its short route objective.", "Move right while watching the floor, gap, and trap cue; jump only when the route requires it.", "Use Pulse when you need to confirm the next warning, then reach the lantern.", "After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route."],
       strategyTips: ["Treat the first pass as a lesson: note which floor tiles move and which gaps open.", "Hold a steady direction and make short, deliberate jumps instead of panic tapping.", "Use Pulse before a blind-looking section, not after the trap has already triggered."],
-      progression: ["The four chapters move from clear tells to delayed hazards, reversed timing, and a mixed-rule finale. A failed room teaches the cue without resetting the whole chapter."],
-      designNote: "Moonlit Trap Trail uses original WeightPlay trail art, trap timing, touch controls, and room-sized retries so the player can learn from a mistake and immediately act on the next attempt.",
-      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Chapter clears and best room stay in this browser.",
-      faq: [["What happens when I hit a trap?", "Only the current room resets, and the result text identifies the kind of route mistake."], ["Can I play without a keyboard?", "Yes. The visible left, right, jump, and pulse controls are available on touch screens."], ["Is Pulse required?", "No. It is an optional short clue that helps explain the next trap."], ["Is progress saved?", "Only the best room is saved in this browser."]],
+      progression: ["Arc 1 (stages 1-5) teaches gaps and readable landing windows. Arc 2 (6-10) adds moving traps and crosswind. Arc 3 (11-15) teaches reversed controls and ends at the Mirror Warden Check.", "Arc 4 (16-20) adds low ceilings and double gaps. Arc 5 (21-25) combines storm wind, darkness, and Pulse. Arc 6 (26-30) is the mixed-rule Moon Gate finale. Checkpoints are stages 5, 10, 15, 20, 25, and 30; every cleared stage remains replayable."],
+      designNote: "Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.",
+      parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.",
+      faq: [["What happens when I hit a trap?", "Only the current stage resets, and the result text identifies the kind of route mistake."], ["Can I play without a keyboard?", "Yes. The visible left, right, jump, and pulse controls are available on touch screens."], ["Is Pulse required?", "No. It is an optional short clue that helps explain the next trap."], ["How many stages are there?", "There are 30 authored stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30. Cleared stages remain replayable."], ["Is progress saved?", "The highest cleared stage and the next unlock are saved locally in this browser."]],
     },
     "animal-canopy-cut": {
       title: "Canopy Cut", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per stage",
@@ -12133,7 +12133,7 @@
   localizedGameplayProfiles["zh-Hans"]["animal-word-trails"] = { gameplay: "阅读文字路径益智", genre: ["文字", "益智", "动物"] };
   games["animal-cratebound"] = {
     title: "Animal Cratebound", difficulty: "Easy to Challenging", time: "2–8 minutes per warehouse", gameplay: "Push-Pull Logistics Puzzle", genre: ["Puzzle", "Strategy", "Animal"], skills: ["Logic", "Planning", "Problem Solving"], relatedIds: ["animal-one-line", "animal-sunbeam-garden"],
-    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     intro: "Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.",
     story: ["Rux is restoring a cargo ark one warehouse at a time. Every rune crate must reach a glowing dock before the route can reopen."],
     systems: ["Move one square at a time and push crates only when the cell beyond is open. Magnetic Pull moves Rux backward while drawing an adjacent crate into the space Rux left.", "Later chapters add sliding ice rails, signal gates, linked cargo, and one-way storm belts. Each device follows a fixed, readable rule."],
@@ -12293,7 +12293,7 @@
   localizedGameplayProfiles["zh-Hant"]["animal-mosaic-clues"] = { gameplay: "數織馬賽克推理", genre: ["益智", "策略", "動物"] };
   games["animal-skyspire-drop"] = {
     title: "Animal Skyspire Drop", difficulty: "Moderate", time: "2-6 minutes per descent", gameplay: "Rotating Tower Arcade", genre: ["Arcade", "Action", "Animal"], skills: ["Reaction", "Focus", "Hand-Eye Coordination"],
-    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
+    guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", noteTitle: "Player and Save Information", showSkills: false, showRelatedSkill: false, hideScoreBands: true,
     intro: "Rotate crystal rings to guide Fia through thirty skyspires, line up safe openings, and build a Comet Break before cursed sectors end the descent.",
     story: ["Fia travels inside a comet sphere through a chain of unstable skyspires. Each cleared tower restores one section of the high-altitude route and brings the rescue gate closer."],
     systems: ["Drag across the tower or use Left and Right to rotate every ring together. A turquoise platform is safe; a violet cursed sector ends the run unless a shield or charged Comet Break protects Fia.", "Consecutive gap descents charge Comet Break. Sky shards and stars from cleared towers save locally and can improve control, shields, and other optional Comet Forge upgrades."],
@@ -13612,7 +13612,7 @@
   // Public guide owner: games["animal-sunbeam-garden"] is populated below.
   registerExpandedGuide("animal-sunbeam-garden", {
     title: "Sunbeam Garden", gameplay: "Mirror Route Logic Puzzle",
-    relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"], showSkills: false, showRelatedSkill: false,
+    relatedIds: ["animal-one-line", "animal-bamboo-pipes", "animal-cratebound"], showSkills: false, showRelatedSkill: false, noteTitle: "Player and Save Information",
     intro: "Rotate mirrors on a six-by-six garden board until every visible sunbeam follows a valid path from its source to the sleeping lotus.",
     story: ["Panko is reopening thirty shaded gardens. The opening gardens teach distinct route shapes, Garden 6 introduces two simultaneous suns, and the final chapter combines dense dual-source networks.", "Every animated beam follows the current board, so it shows exactly where a route turns, loops, leaves the garden, or reaches the shared lotus."],
     systems: ["Tap a mirror to rotate it between its two diagonal reflection states.", "Each beam advances one cell at a time, reflects only from a mirror it actually reaches, and stops at an edge or repeated loop.", "A dual-source stage clears only when both independently traced beams enter the lotus cell; a nearby line or one completed route does not count.", "Hint corrects one route mirror that differs from the authored solution and ignores untouched decoys. Reset restores every starting rotation."],
@@ -14441,7 +14441,7 @@
     hi: "खिलाड़ी और सेव जानकारी", ar: "معلومات اللاعب والحفظ",
   };
   for (const [locale, noteTitle] of Object.entries(generalSaveNoteTitles)) {
-    for (const id of ["animal-bus-jam", "animal-number-match", "animal-prism-breakers"]) {
+    for (const id of ["animal-bus-jam", "animal-number-match", "animal-prism-breakers", "animal-cratebound", "animal-skyspire-drop", "animal-sunbeam-garden"]) {
       if (localizedGames[locale]?.[id]) localizedGames[locale][id].noteTitle = noteTitle;
     }
   }

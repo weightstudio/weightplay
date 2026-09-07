@@ -23,12 +23,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Leia uma trilha enganosa ao luar, aprenda as dicas da armadilha e alcance a lanterna sem confiar em cada piso." />
     <title>Moonlit Trap Trail | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260904-animal-trap-trail-room2-reward-v13" />
+    <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-depth-v14" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script defer src="game.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Moonlit Trap Trail | WeightPlay" />
@@ -88,10 +88,10 @@
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
-        <div class="touch-hint">Find the lantern. Traps reset only the current room.</div>
+        <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Chapter</button><button id="retry" class="primary">Retry Room</button></div>
+            <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
+          <div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Stage</button><button id="retry" class="primary">Retry Stage</button></div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -102,7 +102,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/sound.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script src="../../src/sound.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
@@ -110,19 +110,21 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Moonlit Trap Trail</h2><p>Leia uma trilha enganosa ao luar, aprenda as dicas da armadilha e alcance a lanterna sem confiar em cada piso.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Aventura na plataforma de leitura de armadilhas</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Action · Plataforma · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>2–6 minutos por capítulo</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Reaction · Leitura de rota · Timing</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Aventura na plataforma de leitura de armadilhas</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Action · Plataforma · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>8-20 minutes for the full trail</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Reaction · Leitura de rota · Timing</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Uma trilha tranquila percorre quatro capítulos curtos. Cada sala ensina um aviso legível antes de combinar as dicas em uma rota mais restrita.</p></div>
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions.</p></div>
       <div class="game-info-section"><h3>Sistemas do jogo</h3><p>As teclas de seta ou os controles de toque visíveis movem o corredor; O espaço salta e o Pulse destaca brevemente a próxima dica de armadilha.</p>
-<p>Uma lacuna ou perigo oculto redefine apenas a sala atual, enquanto a lanterna marca um final claro. As salas mantêm a regra visível por meio do tempo e do feedback, em vez de danos surpresa.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Comece um capítulo e leia a pequena dica da sala.</li><li>Mova-se para a direita enquanto observa o chão, a lacuna e a pista de armadilha; pule apenas quando a rota exigir.</li><li>Use o Pulse quando precisar confirmar o próximo aviso e, em seguida, alcance a lanterna.</li><li>Depois de limpar, escolha a próxima sala ou tente novamente a sala atual para melhorar sua rota.</li></ol></div>
+<p>Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.</p>
+<p>A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Open Stages and choose the next unlocked stage; read its short route objective.</li><li>Mova-se para a direita enquanto observa o chão, a lacuna e a pista de armadilha; pule apenas quando a rota exigir.</li><li>Use o Pulse quando precisar confirmar o próximo aviso e, em seguida, alcance a lanterna.</li><li>After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Trate a primeira passagem como uma lição: observe quais ladrilhos se movem e quais lacunas se abrem.</li><li>Mantenha uma direção constante e faça saltos curtos e deliberados em vez de bater em pânico.</li><li>Use Pulse antes de uma seção que parece cega, não depois que a armadilha já tiver sido acionada.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Os quatro capítulos passam de sinais claros a perigos retardados, tempo reverso e um final com regras mistas. Uma sala com falha ensina a deixa sem reiniciar o capítulo inteiro.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>Moonlit Trap Trail usa arte de trilha WeightPlay original, tempo de armadilha, controles de toque e novas tentativas do tamanho de uma sala para que o jogador possa aprender com um erro e agir imediatamente na próxima tentativa.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>Este jogo de navegador geral não possui conta, compra, bate-papo, tabela de classificação ou fluxo de publicidade. O capítulo é limpo e o melhor espaço permanece neste navegador.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O que acontece quando eu caio em uma armadilha?</dt><dd>Apenas a sala atual é redefinida e o texto do resultado identifica o tipo de erro de rota.</dd></div><div><dt>Posso jogar sem teclado?</dt><dd>Sim. Os controles visíveis de esquerda, direita, salto e pulso estão disponíveis em telas sensíveis ao toque.</dd></div><div><dt>O pulso é necessário?</dt><dd>Não. É uma pequena pista opcional que ajuda a explicar a próxima armadilha.</dd></div><div><dt>Is progress saved?</dt><dd>Apenas a melhor sala é salva neste navegador.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Arc 1 (stages 1-5) teaches gaps and readable landing windows. Arc 2 (6-10) adds moving traps and crosswind. Arc 3 (11-15) teaches reversed controls and ends at the Mirror Warden Check.</p>
+<p>Arc 4 (16-20) adds low ceilings and double gaps. Arc 5 (21-25) combines storm wind, darkness, and Pulse. Arc 6 (26-30) is the mixed-rule Moon Gate finale. Checkpoints are stages 5, 10, 15, 20, 25, and 30; every cleared stage remains replayable.</p></div>
+      <div class="game-info-section"><h3>Nota de design</h3><p>Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para famílias</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O que acontece quando eu caio em uma armadilha?</dt><dd>Only the current stage resets, and the result text identifies the kind of route mistake.</dd></div><div><dt>Posso jogar sem teclado?</dt><dd>Sim. Os controles visíveis de esquerda, direita, salto e pulso estão disponíveis em telas sensíveis ao toque.</dd></div><div><dt>O pulso é necessário?</dt><dd>Não. É uma pequena pista opcional que ajuda a explicar a próxima armadilha.</dd></div><div><dt>Quantos estágios existem?</dt><dd>There are 30 authored stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30. Cleared stages remain replayable.</dd></div><div><dt>Is progress saved?</dt><dd>The highest cleared stage and the next unlock are saved locally in this browser.</dd></div></dl></div>
 
     </div>
   </section>

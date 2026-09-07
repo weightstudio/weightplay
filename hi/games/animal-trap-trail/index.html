@@ -23,12 +23,12 @@
     <meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general" /><meta name="weightplay-game-id" content="animal-trap-trail" /><meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="एक भ्रामक चांदनी पथ को पढ़ें, जाल के संकेतों को जानें, और हर फर्श टाइल पर भरोसा किए बिना लालटेन तक पहुंचें।" />
     <title>Moonlit Trap Trail | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260904-animal-trap-trail-room2-reward-v13" />
+    <link rel="stylesheet" href="style.css?v=20260907-animal-trap-trail-depth-v14" />
     <link rel="stylesheet" href="compact-landscape.css?v=20260821-compact-landscape-v6" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(7,11,22,.32),rgba(7,11,22,.78)),url("assets/animal-trap-trail-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen /><link rel="stylesheet" href="../../src/game-page-info.css" data-wp-game-guide /><link rel="stylesheet" href="../../src/play-viewport.css" data-wp-play-viewport /><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard /><link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard /><link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script defer src="game.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Moonlit Trap Trail | WeightPlay" />
@@ -88,10 +88,10 @@
         <p id="battle-status" class="battle-status">Arrow keys move · Space jumps.</p>
         <canvas id="arena" width="960" height="540" aria-label="Moonlit Trap Trail play area"></canvas>
         <div class="touch-controls" aria-label="Touch controls"><button data-key="ArrowLeft">◀</button><button data-key="ArrowRight">▶</button><button data-key="Space" class="jump">JUMP</button><button data-key="Pulse" class="pulse">PULSE</button></div>
-        <div class="touch-hint">Find the lantern. Traps reset only the current room.</div>
+        <div class="touch-hint">Find the lantern. Traps reset only the current stage.</div>
         <section id="result-screen" class="screen result" data-screen="result" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
-          <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
-          <div class="result-actions"><button id="to-stages">Chapters</button><button id="next">Next Chapter</button><button id="retry" class="primary">Retry Room</button></div>
+            <h2 id="result-title">Trail clear</h2><p id="result-copy"></p>
+          <div class="result-actions"><button id="to-stages">Stages</button><button id="next">Next Stage</button><button id="retry" class="primary">Retry Stage</button></div>
         </section>
       </section>
       <div class="battle-ad-reserve" aria-hidden="true"></div>
@@ -102,7 +102,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/five-new-games-locale.js?v=20260814-prototype-locale1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/sound.js?v=20260904-animal-trap-trail-room2-reward-v13"></script>
+    <script src="../../src/sound.js?v=20260907-animal-trap-trail-depth-v14"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
@@ -110,19 +110,21 @@
 
     <div class="game-info-hero">
       <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>Moonlit Trap Trail</h2><p>एक भ्रामक चांदनी पथ को पढ़ें, जाल के संकेतों को जानें, और हर फर्श टाइल पर भरोसा किए बिना लालटेन तक पहुंचें।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>ट्रैप-रीडिंग प्लेटफ़ॉर्म एडवेंचर</strong></div><div class="game-info-fact"><span>शैली</span><strong>Action · प्लैटफ़ॉर्म · Animal</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>अध्याय में 2–6 मिनट</strong></div><div class="game-info-fact"><span>अभ्यास कौशल</span><strong>प्रतिक्रिया · मार्ग पढ़ना · Timing</strong></div></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>ट्रैप-रीडिंग प्लेटफ़ॉर्म एडवेंचर</strong></div><div class="game-info-fact"><span>शैली</span><strong>Action · प्लैटफ़ॉर्म · Animal</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>8-20 minutes for the full trail</strong></div><div class="game-info-fact"><span>अभ्यास कौशल</span><strong>प्रतिक्रिया · मार्ग पढ़ना · Timing</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>एक शांत राह चार छोटे अध्यायों से गुजरती है। प्रत्येक कमरा संकेतों को एक सख्त मार्ग में संयोजित करने से पहले एक पठनीय चेतावनी सिखाता है।</p></div>
+      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions.</p></div>
       <div class="game-info-section"><h3>गेम सिस्टम</h3><p>तीर कुंजियाँ या दृश्यमान स्पर्श नियंत्रण धावक को गति देते हैं; स्पेस जंप और पल्स संक्षेप में अगले ट्रैप क्यू पर प्रकाश डालता है।</p>
-<p>एक अंतराल या छिपा हुआ खतरा केवल वर्तमान कमरे को रीसेट करता है, जबकि लालटेन एक स्पष्ट समाप्ति का प्रतीक है। कमरे आश्चर्यजनक क्षति के बजाय नियम को समय और फीडबैक के माध्यम से दृश्यमान रखते हैं।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>एक अध्याय शुरू करें और छोटे कमरे का संकेत पढ़ें।</li><li>फर्श, गैप और ट्रैप क्यू को देखते हुए दाईं ओर बढ़ें; केवल तभी कूदें जब मार्ग को इसकी आवश्यकता हो।</li><li>जब आपको अगली चेतावनी की पुष्टि करने की आवश्यकता हो तो पल्स का उपयोग करें, फिर लालटेन तक पहुंचें।</li><li>साफ़ होने के बाद, अपने मार्ग को बेहतर बनाने के लिए अगला कमरा चुनें या वर्तमान कमरे का पुनः प्रयास करें।</li></ol></div>
+<p>Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.</p>
+<p>A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage.</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>Open Stages and choose the next unlocked stage; read its short route objective.</li><li>फर्श, गैप और ट्रैप क्यू को देखते हुए दाईं ओर बढ़ें; केवल तभी कूदें जब मार्ग को इसकी आवश्यकता हो।</li><li>जब आपको अगली चेतावनी की पुष्टि करने की आवश्यकता हो तो पल्स का उपयोग करें, फिर लालटेन तक पहुंचें।</li><li>After a clear, use Next Stage to continue, or choose Retry and Stages to replay a mastered route.</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>पहले चरण को एक सबक के रूप में समझें: ध्यान दें कि कौन सी फर्श की टाइलें हिलती हैं और कौन सी जगह खुलती हैं।</li><li>एक स्थिर दिशा बनाए रखें और घबराहट में दोहन करने के बजाय छोटी, जानबूझकर छलांग लगाएं।</li><li>किसी अंध-दिखने वाले भाग से पहले पल्स का उपयोग करें, जाल के सक्रिय होने के बाद नहीं।</li></ul></div>
-      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>चार अध्याय स्पष्ट कथनों से विलंबित खतरों, उलटे समय और मिश्रित-नियम समापन की ओर बढ़ते हैं। एक असफल कमरा पूरे अध्याय को रीसेट किए बिना क्यू सिखाता है।</p></div>
-      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>मूनलाइट ट्रैप ट्रेल मूल WeightPlay ट्रेल कला, ट्रैप टाइमिंग, स्पर्श नियंत्रण और कमरे के आकार के पुनर्प्रयास का उपयोग करता है ताकि खिलाड़ी एक गलती से सीख सके और तुरंत अगले प्रयास पर कार्य कर सके।</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>इस सामान्य ब्राउज़र गेम में कोई खाता, खरीदारी, चैट, लीडरबोर्ड या विज्ञापन प्रवाह नहीं है। इस ब्राउज़र में चैप्टर क्लीयर और सर्वोत्तम रूम स्टे।</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>जब मैं जाल से टकराता हूँ तो क्या होता है?</dt><dd>केवल वर्तमान कक्ष रीसेट होता है, और परिणाम पाठ मार्ग की गलती के प्रकार की पहचान करता है।</dd></div><div><dt>क्या मैं बिना कीबोर्ड के खेल सकता हूँ?</dt><dd>हाँ। दृश्यमान बाएँ, दाएँ, कूद और पल्स नियंत्रण टच स्क्रीन पर उपलब्ध हैं।</dd></div><div><dt>क्या पल्स आवश्यक है?</dt><dd>नहीं, यह एक वैकल्पिक संक्षिप्त सुराग है जो अगले जाल को समझाने में मदद करता है।</dd></div><div><dt>Is progress saved?</dt><dd>इस ब्राउज़र में केवल सबसे अच्छा कमरा ही सहेजा जाता है।</dd></div></dl></div>
+      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>Arc 1 (stages 1-5) teaches gaps and readable landing windows. Arc 2 (6-10) adds moving traps and crosswind. Arc 3 (11-15) teaches reversed controls and ends at the Mirror Warden Check.</p>
+<p>Arc 4 (16-20) adds low ceilings and double gaps. Arc 5 (21-25) combines storm wind, darkness, and Pulse. Arc 6 (26-30) is the mixed-rule Moon Gate finale. Checkpoints are stages 5, 10, 15, 20, 25, and 30; every cleared stage remains replayable.</p></div>
+      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>Moonlit Trap Trail uses original WeightPlay trail art, authored trap timing, touch controls, and stage-sized retries so the player can learn from a mistake and immediately act on the next attempt. Each of the 30 stages has a named purpose and a deliberate mechanic mix.</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>This General browser game has no account, purchase, chat, leaderboard, or advertising flow. The highest cleared stage and unlock progress stay in this browser.</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>जब मैं जाल से टकराता हूँ तो क्या होता है?</dt><dd>Only the current stage resets, and the result text identifies the kind of route mistake.</dd></div><div><dt>क्या मैं बिना कीबोर्ड के खेल सकता हूँ?</dt><dd>हाँ। दृश्यमान बाएँ, दाएँ, कूद और पल्स नियंत्रण टच स्क्रीन पर उपलब्ध हैं।</dd></div><div><dt>क्या पल्स आवश्यक है?</dt><dd>नहीं, यह एक वैकल्पिक संक्षिप्त सुराग है जो अगले जाल को समझाने में मदद करता है।</dd></div><div><dt>कितने चरण हैं?</dt><dd>There are 30 authored stages in six five-stage arcs, with checkpoints at stages 5, 10, 15, 20, 25, and 30. Cleared stages remain replayable.</dd></div><div><dt>Is progress saved?</dt><dd>The highest cleared stage and the next unlock are saved locally in this browser.</dd></div></dl></div>
 
     </div>
   </section>
