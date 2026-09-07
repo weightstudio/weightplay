@@ -70,9 +70,14 @@ WeightPlay covers these game and content clusters:
 - Cribbage: https://weightplay.com/en/games/cribbage/
 - Cat Color Sudoku: https://weightplay.com/en/games/cat-color-sudoku/
 - Peg Solitaire: https://weightplay.com/en/games/peg-solitaire/
+- Reversi: https://weightplay.com/en/games/reversi/
+- Mahjong Solitaire: https://weightplay.com/en/games/mahjong-solitaire/
+- Wordle: https://weightplay.com/en/games/wordle/
 - Sliding 15: https://weightplay.com/en/games/sliding-15/
 - Lights Out: https://weightplay.com/en/games/lights-out/
 - Four in a Row: https://weightplay.com/en/games/four-in-a-row/
+- Chess: https://weightplay.com/en/games/chess/
+- Pong: https://weightplay.com/en/games/pong/
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/
 - Animal Hoop League: https://weightplay.com/en/games/animal-hoop-league/
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/

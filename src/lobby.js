@@ -212,6 +212,7 @@ const lobbyGameFacts = {
   "animal-gearpack-expedition": { difficulty: "Hard", time: "5-8 minutes" },
   "animal-moonlight-heist": { difficulty: "Medium", time: "5-8 minutes" },
   cribbage: { difficulty: "Medium", time: "5-8 minutes" },
+  "peg-solitaire": { difficulty: "Medium", time: "5-8 minutes" },
 };
 let activeFilter = "all";
 let activeTopic = "all";
@@ -1030,6 +1031,7 @@ function createGameCard(game) {
       type,
       stateCopy("playableLabel"),
       ageLabel,
+      text(game.description),
       ...(game.categories || []).slice(0, 3).map(categoryText),
       ...(game.skills || []).slice(0, 3).map(discoverySkillText),
       ...quickFactValues,

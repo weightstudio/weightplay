@@ -2622,6 +2622,16 @@ for (const entry of classicLogicEntries) {
   }
 }
 
+// Reversi v12 cleared the exact Tester, Reviewer, art, Director, and
+// preflight gates. Keep the remaining Classic Logic Lab entries owner-preview
+// staged while exposing this exact General candidate through public routes.
+const reversiPublic = window.WONDER_LOBBY.games.find((game) => game.id === "reversi");
+if (reversiPublic) {
+  reversiPublic.status = "playable";
+  reversiPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  delete reversiPublic.internalTrial;
+}
+
 // Peg Solitaire v13 cleared the exact Tester, Reviewer, art, Director, and
 // preflight gates. Keep the other Classic Logic Lab entries owner-preview
 // staged while exposing this exact General candidate through the public
@@ -3660,6 +3670,76 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);
+}
+
+// Chess v14 cleared the exact Tester, Reviewer, art, Director, and
+// preflight gates. Keep the other classic owner-preview entries staged while
+// exposing this exact General candidate through public routes.
+const chessPublic = window.WONDER_LOBBY.games.find((game) => game.id === "chess");
+if (chessPublic) {
+  chessPublic.status = "playable";
+  chessPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  delete chessPublic.internalTrial;
+}
+
+// Pong v9 cleared the exact Tester, Reviewer, art, Director, and preflight
+// gates. Keep the other classic owner-preview entries staged while exposing
+// this exact General candidate through public routes.
+const pongPublic = window.WONDER_LOBBY.games.find((game) => game.id === "pong");
+if (pongPublic) {
+  pongPublic.status = "playable";
+  pongPublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  delete pongPublic.internalTrial;
+}
+
+// Mahjong Solitaire v10 cleared the exact Tester, Reviewer, art, Director,
+// and preflight gates. Keep other classic owner-preview entries staged while
+// exposing this exact General candidate through public routes.
+const mahjongSolitairePublic = window.WONDER_LOBBY.games.find((game) => game.id === "mahjong-solitaire");
+if (mahjongSolitairePublic) {
+  mahjongSolitairePublic.status = "playable";
+  mahjongSolitairePublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  mahjongSolitairePublic.description = classicLogicText([
+    "Match open identical tiles, recover from a mismatch, and clear a short six-pair board before trying the optional Mastery round.",
+    "配對可用的相同牌，從配對失誤中恢復，完成六對短牌局後再挑戰可選的大師回合。",
+    "配对可用的相同牌，从配对失误中恢复，完成六对短牌局后再挑战可选的大师回合。",
+    "開いている同じ牌を揃え、ミスから立て直し、6ペアの短い盤面を片付けてから任意のマスタリーに挑戦します。",
+    "열린 같은 타일을 맞추고 실수에서 회복한 뒤 짧은 6쌍 보드를 클리어하고 선택형 마스터리 라운드에 도전하세요.",
+    "Empareja fichas idénticas abiertas, recupera los errores y completa un tablero breve de seis parejas antes de probar la ronda opcional de maestría.",
+    "Combine peças idênticas abertas, recupere-se de um erro e conclua um tabuleiro curto de seis pares antes de tentar a rodada opcional de maestria.",
+    "Associez les tuiles identiques ouvertes, rattrapez une erreur et terminez un petit plateau de six paires avant d’essayer la manche optionnelle de maîtrise.",
+    "Finde offene gleiche Steine, erhole dich nach einem Fehler und räume ein kurzes Brett mit sechs Paaren ab, bevor du die optionale Meisterrunde versuchst.",
+    "Abbina le tessere identiche libere, recupera dopo un errore e completa un breve tabellone da sei coppie prima di provare il round Mastery opzionale.",
+    "Сопоставляйте открытые одинаковые плитки, исправляйтесь после ошибки и очистите короткое поле из шести пар, прежде чем пробовать дополнительный раунд мастерства.",
+    "खुली समान टाइलों का मिलान करें, गलती से उबरें और वैकल्पिक मास्टरी राउंड आज़माने से पहले छह जोड़ियों वाला छोटा बोर्ड साफ़ करें।",
+    "طابق البلاطات المتطابقة المفتوحة، وتعافَ من الخطأ، وأكمل لوحة قصيرة من ستة أزواج قبل تجربة جولة الإتقان الاختيارية."
+  ]);
+  delete mahjongSolitairePublic.internalTrial;
+}
+
+// Wordle v11 cleared the exact Tester, Reviewer, art, Director, and preflight
+// gates. Keep the remaining classic owner-preview entries staged while
+// exposing this exact General candidate through public routes.
+const wordlePublic = window.WONDER_LOBBY.games.find((game) => game.id === "wordle");
+if (wordlePublic) {
+  wordlePublic.status = "playable";
+  wordlePublic.statusText = classicLogicText(["Playable", "可遊玩", "可游玩", "プレイ可能", "플레이 가능", "Disponible", "Disponível", "Disponible", "Spielbar", "Disponibile", "Доступно", "खेलने योग्य", "متاحة للعب"]);
+  wordlePublic.description = classicLogicText([
+    "Guess a five-letter word in six tries, use feedback to narrow your next guess, and unlock the next puzzle.",
+    "六次機會猜出五字母單字，利用回饋縮小下一次猜測範圍，解鎖下一題。",
+    "六次机会猜出五字母单词，利用反馈缩小下一次猜测范围，解锁下一题。",
+    "6回で5文字の単語を当て、フィードバックで次の推測を絞り、次のパズルを解きましょう。",
+    "여섯 번 안에 다섯 글자 단어를 맞히고 피드백으로 다음 추측을 좁혀 다음 퍼즐을 여세요.",
+    "Adivina una palabra de cinco letras en seis intentos, usa las pistas para acotar tu próximo intento y desbloquea el siguiente acertijo.",
+    "Adivinhe uma palavra de cinco letras em seis tentativas, use o feedback para refinar o próximo palpite e desbloqueie o próximo puzzle.",
+    "Devinez un mot de cinq lettres en six essais, utilisez les indices pour affiner votre prochain mot et débloquez le puzzle suivant.",
+    "Errate ein Wort mit fünf Buchstaben in sechs Versuchen, nutze das Feedback für den nächsten Tipp und schalte das nächste Rätsel frei.",
+    "Indovina una parola di cinque lettere in sei tentativi, usa i suggerimenti per affinare il prossimo tentativo e sblocca il puzzle seguente.",
+    "Угадайте слово из пяти букв за шесть попыток, используйте подсказки для следующей догадки и откройте следующую головоломку.",
+    "छह कोशिशों में पाँच अक्षरों का शब्द पहचानें, संकेतों से अगला अनुमान बेहतर करें और अगली पहेली खोलें।",
+    "خمن كلمة من خمسة أحرف خلال ست محاولات، واستخدم التلميحات لتحسين تخمينك التالي وافتح اللغز التالي."
+  ]);
+  delete wordlePublic.internalTrial;
 }
 
 // Next-five Mode 2 candidates remain owner-preview only until the exact Tester,

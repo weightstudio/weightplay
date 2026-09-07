@@ -1686,14 +1686,14 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hans": "四子棋",
     "ja": "四目並べ",
     "ko": "사목",
-    "es": "Cuatro en línea",
+    "es": "Cuatro en raya",
     "pt-BR": "Quatro em Linha",
     "fr": "Puissance quatre",
     "de": "Vier gewinnt",
     "it": "Forza quattro",
     "ru": "Четыре в ряд",
-    "hi": "कनेक्ट फोर",
-    "ar": "أربع على التوالي"
+    "hi": "चार की पंक्ति",
+    "ar": "أربع في صف"
   },
   "animal-postcard-crop": {
     "__localizedExact": true,
