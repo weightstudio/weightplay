@@ -423,6 +423,7 @@
       difficulty: "Easy to Challenging",
       time: "2-8 minutes per garden",
       skills: ["Logic", "Spatial Reasoning", "Focus"],
+      relatedIds: ["animal-tangram", "animal-block-grove"],
       intro: "Color Link Garden is an original 30-stage full-board route puzzle starring a red panda garden keeper. Connect each pair of matching flower seeds without crossing paths, then fill every cell so the complete garden can bloom.",
       story: ["Panko tends a garden whose colored flower routes have faded. Each stage restores one garden bed by reconnecting every matching seed.", "The campaign grows from compact 5 by 5 beds with four colors to 7 by 7 beds with six colors. Every authored layout has a verified full-board solution."],
       systems: ["A route may begin at either endpoint and move only up, down, left, or right. Paths cannot cross, share a cell, enter another color's seed, or pass through themselves.", "Undo removes the latest completed path, Hint commits one safe unresolved route, and Reset restores the current garden without affecting saved unlocks.", "Touch, mouse, and keyboard use the same state. Keyboard players select a seed with Enter or Space and extend the route with Arrow keys.", "Completion requires every pair to be connected and every board cell to be filled. Finishing a garden unlocks the next stage in this browser."],
@@ -490,6 +491,7 @@
       difficulty: "Easy",
       time: "1-3 minutes",
       skills: ["Color Recognition", "Focus", "Hand-Eye Coordination"],
+      relatedIds: ["animal-color-link", "animal-block-grove"],
       intro:
         "Animal Color Lunchbox is a gentle picture-led sorting game with 30 five-food levels. Children help six animal Guardians prepare picnic, breakfast, garden, and festival lunchboxes by matching each food to its real color. Later levels add close color choices, harmless empty boxes, picture-only clues, and boxes that settle into new positions only after a correct match. There is no timer, advertising, or losing screen: an incorrect choice simply invites another try.",
       story: [
@@ -11963,7 +11965,7 @@
   games["animal-tangram"] = {
     title: "Panko's Tangram Trail", age: "9+", difficulty: "Easy to Challenging",
     time: "2-6 minutes per shape", gameplay: "Seven-Piece Spatial Puzzle",
-    genre: ["Puzzle", "Spatial", "Animal"], skills: ["Spatial Reasoning", "Visual Planning", "Problem Solving"],
+    genre: ["Puzzle", "Spatial", "Animal"], skills: ["Spatial Reasoning", "Visual Planning", "Problem Solving"], relatedIds: ["animal-color-link", "animal-block-grove"],
     intro: "Panko's Tangram Trail is a thirty-shape spatial puzzle. Drag and rotate all seven classic tangram pieces until each one matches the faint animal silhouette.",
     story: ["Panko is rebuilding a woodland shape album one animal at a time. Every finished turtle, cat, bird, fox, fish, rabbit, and later compact silhouette restores another page of the trail."],
     systems: ["Drag a colored piece over its matching faint target. Tap or keyboard-activate a piece to rotate it in 45-degree steps. A piece snaps only when both its center and angle match the authored target.", "Hint places one unresolved piece correctly. Reset restores the current authored shape, and every completed shape unlocks the next puzzle while keeping earlier shapes replayable."],
