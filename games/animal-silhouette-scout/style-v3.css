@@ -14,8 +14,14 @@
 #resultScreen{min-height:0;height:100%;box-sizing:border-box;display:grid;place-items:center;overflow:auto;padding:12px}
 #resultScreen .result-card{width:min(100%,600px);max-height:100%;overflow:auto;margin:0;padding:clamp(18px,4vw,36px)}
 .battle-utility{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center}
+/* Interface 6 Issue repair: selection feedback keeps the same border box, so
+   the persistent Check/Clear row cannot move when a choice is selected. */
+#battleScreen #choiceGrid .choice-btn{border:3px solid transparent}
+#battleScreen #choiceGrid .choice-btn[aria-pressed="true"]{border-color:var(--accent)}
 @media(max-width:699px){.scout-guide{justify-self:center;width:108px;height:128px;margin-top:-4px}.scout-result{width:145px;height:145px}#silhouette.scout-art{height:180px}#silhouette.target-set .scout-target-art{height:130px}}
-@media(max-height:520px) and (orientation:landscape){.wp-standard-main-composition{--wp-main-landscape-poster-size:300px}}
+/* Interface 6 Issue repair: the compact-landscape General Main contract
+   keeps the Silhouette Scout poster at the shared 420px wide-layout size. */
+@media(max-height:520px) and (orientation:landscape){.wp-standard-main-composition{--wp-main-landscape-poster-size:420px}}
 @media(max-height:560px) and (orientation:landscape){#resultScreen{padding:8px}#resultScreen .result-card{display:grid;grid-template-columns:110px minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:14px;align-items:center}#resultScreen .scout-result{grid-row:1 / span 3;width:100px;height:100px;margin:0}#resultScreen .result-card>span{grid-column:2}#resultScreen #resultTitle,#resultScreen #resultText,#resultScreen .result-actions{grid-column:2}#resultScreen .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;align-self:end;margin-top:8px}#resultScreen .result-actions button{min-width:0;margin:0;padding:8px 6px;font-size:.82rem;line-height:1.1}}
 @media (orientation:landscape) and (max-height:560px){
   body.wp-logical-battle-active #battleScreen .battle-content{box-sizing:border-box;display:grid;grid-template-columns:minmax(220px,.82fr) minmax(340px,1.18fr);grid-template-rows:56px minmax(0,1fr) 44px;gap:8px;width:100%;max-width:none;height:calc(100% - 60px);margin:0;padding:8px;overflow:hidden}

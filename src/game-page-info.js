@@ -540,6 +540,7 @@
       difficulty: "Easy",
       time: "3-5 minutes",
       skills: ["Logic", "Problem Solving", "Focus"],
+      relatedIds: ["animal-block-grove", "animal-color-link"],
       intro:
         "Animal Bubble Bakery is a 30-stage, move-limited matching puzzle led by Panko the Bakery Coach. Players tap connected groups of bunny, whale, chick, frog, or fox bubbles to fill recipe trays. The 7-by-10 board collapses after every clear and drops new bubbles from above. Later stages add minimum batch sizes, ordered queues, two- and three-tray service, large-group goals, and bonus batches. Every fifth stage is a friendly Panko Check, and the Kids version remains permanently ad-free.",
       story: [
@@ -590,6 +591,7 @@
       difficulty: "Easy to Medium",
       time: "2-6 minutes",
       skills: ["Hand-Eye Coordination", "Problem Solving", "Focus"],
+      relatedIds: ["animal-color-link", "animal-tangram"],
       intro:
         "Animal Vine Rescue is a 30-stage animal physics puzzle about cutting a hanging fruit free, steering a leaf trampoline, and landing the fruit in a waiting animal's basket. The campaign is divided into six five-stage rescue lessons. Later routes add moving baskets, upper and lower wind layers, wind that reverses after a bounce, two-bounce deliveries, narrower catch zones, and two- or three-fruit picnic orders. Every fifth stage is a friendly Panko Check that combines the current lesson without adding combat or time pressure.",
       story: [
@@ -641,6 +643,7 @@
       difficulty: "Easy to Medium",
       time: "4-12 minutes per challenge",
       skills: ["Planning", "Focus", "Sequencing", "Animal Care"],
+      relatedIds: ["animal-block-grove", "animal-tangram"],
       intro:
         "Animal Zoo Idle is a gentle park-management game built around 30 saved challenges. Visitors enter the meadow, buy tickets, and fill a ticket box while the player cares for animals, improves the Snack Stand, View Deck, and Keeper Post, expands the gate, and arranges habitats. Twelve animals can eventually live in the park. Every fifth challenge is a friendly review, giving the continuing economy a clear six-part journey from the first ticket collection to the Grand Safari Festival.",
       story: [
