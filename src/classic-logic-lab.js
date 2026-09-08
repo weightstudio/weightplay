@@ -787,7 +787,7 @@
     document.documentElement.style.setProperty("--logic-accent", cfg.accent);
     document.body.dataset.logicGame = id;
     const title = text(titles[id]);
-    const poster = assetPath(id === "naval-battle"
+    const poster = assetPath(id === "reversi" ? "reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "tower-of-hanoi-cover-v1.webp" : id === "naval-battle"
       ? "naval-battle-cover-v1.webp"
       : id === "sliding-15"
       ? "sliding-15-cover-v1.webp"

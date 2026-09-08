@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "chess";
-  const GAME_VERSION = "v10";
+  const GAME_VERSION = "v15";
   const INTERFACE_VERSION = "6";
   const EVENT_NAME = "wp-chess-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);

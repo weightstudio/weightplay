@@ -289,7 +289,7 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   .intro { margin-bottom: 4px; }
   .wp-standard-main-progress { margin-top: 8px; }
   .hero-actions { margin-top: 8px; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { overflow: visible; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { overflow: clip; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas { padding: 6px 12px 4px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head { height: 44px; min-height: 44px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions { min-width: 106px; }
@@ -297,14 +297,14 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .mission { display: none; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .clue-card { margin-top: 4px; padding: 6px 8px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .clue-card p { margin-top: 4px; font-size: .82rem; line-height: 1.2; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .compass-wrap { margin-top: 6px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .compass-wrap { margin-top: 0; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .compass { width: 76px; height: 76px; border-width: 5px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .compass span { font-size: .6rem; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .facing { margin-top: 2px; font-size: .75rem; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .direction-rack { margin-top: 4px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .keyboard-hint { display: none; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .feedback { min-height: 20px; margin-top: 4px; }
-  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .battle-actions { margin-top: 4px; gap: 6px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .battle-actions { margin-top: 3px; gap: 6px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .battle-actions .primary-btn { height: 44px; min-height: 44px; }
 }
 @media (max-width: 699px) {

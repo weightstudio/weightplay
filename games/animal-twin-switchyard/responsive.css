@@ -16,11 +16,11 @@
   .main-screen { min-height: 0; }
   .main-screen .topbar { padding-bottom: 8px; }
   .main-screen .main-grid { align-items: center; gap: 14px; padding: 12px; }
-  .main-screen .poster { width: min(32vw, 270px); margin-inline: auto; }
+  .main-screen .poster { width: min(50vw, 420px); margin-inline: auto; }
   .main-screen .guide,
   .main-screen .main-howto { display: none; }
   body.wp-shell-main-active .wp-standard-main-composition {
-  --wp-main-landscape-poster-size: 300px !important;
+  --wp-main-landscape-poster-size: 420px !important;
   }
   body.wp-shell-main-active .wp-standard-main-poster,
   body.wp-shell-main-active .wp-standard-main-poster-media,

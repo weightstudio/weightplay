@@ -1,2 +1,2 @@
 window.WPPopularArcade?.mount("wordle");
-document.body.dataset.gameVersion = "v11";
+document.body.dataset.gameVersion = "v12";

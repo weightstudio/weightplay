@@ -2639,7 +2639,7 @@ const classicLogicEntries = [
   description: classicLogicText(description),
   meta: classicLogicMetaOverrides[id] || classicLogicMeta(meta),
   ...(Array.isArray(searchAliases) ? { searchAliases } : {}),
-  art: { kind: "image", background: id === "naval-battle" ? "assets/naval-battle-cover-v1.webp" : id === "cat-color-sudoku" ? "assets/cat-color-sudoku-cover-v1.webp" : id === "sudoku" ? "assets/sudoku-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "peg-solitaire" ? "assets/peg-solitaire-cover-v2.webp" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp" : id === "code-breaker" ? "assets/code-breaker-cover-v2.webp" : id === "sliding-15" ? "assets/sliding-15-cover-v1.webp" : id === "four-in-a-row" ? "assets/four-in-a-row-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
+  art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp" : id === "reversi" ? "assets/reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp" : id === "naval-battle" ? "assets/naval-battle-cover-v1.webp" : id === "cat-color-sudoku" ? "assets/cat-color-sudoku-cover-v1.webp" : id === "sudoku" ? "assets/sudoku-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "peg-solitaire" ? "assets/peg-solitaire-cover-v2.webp" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp" : id === "code-breaker" ? "assets/code-breaker-cover-v2.webp" : id === "sliding-15" ? "assets/sliding-15-cover-v1.webp" : id === "four-in-a-row" ? "assets/four-in-a-row-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
 }));
 window.WONDER_LOBBY.games.push(...classicLogicEntries);
 // The Classic Logic Lab owner-preview routes are General-audience games. Keep
@@ -3694,7 +3694,7 @@ for (const [id, titles, categories, skills] of classicOwnerPreviewGames) {
       ageLabel: classicOwnerPreviewLocalized(Array(13).fill("9+")),
       href: `games/${id}/`,
       internalTrial: "index.html?trial=1",
-      art: { kind: "image", background: id === "tetris" ? "assets/tetris-cover.webp" : id === "breakout" ? "assets/breakout-cover-v1.webp" : id === "hangman" ? "assets/hangman-cover-v1.webp" : id === "wordle" ? "assets/wordle-cover-v1.webp" : id === "pong" ? "assets/pong-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
+      art: { kind: "image", background: id === "chess" ? "assets/chess-cover-v1.webp" : id === "reversi" ? "assets/reversi-cover-v1.webp" : id === "tower-of-hanoi" ? "assets/tower-of-hanoi-cover-v1.webp" : id === "tetris" ? "assets/tetris-cover.webp" : id === "breakout" ? "assets/breakout-cover-v1.webp" : id === "hangman" ? "assets/hangman-cover-v1.webp" : id === "wordle" ? "assets/wordle-cover-v1.webp" : id === "pong" ? "assets/pong-cover-v1.webp" : id === "lights-out" ? "assets/lights-out-cover-v2.webp" : id === "mahjong-solitaire" ? "assets/mahjong-solitaire-cover-v1.webp" : "assets/classic-logic-lab-cover.webp", hideHero: true },
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(id)) window.WONDER_LOBBY.audiences.generalGameIds.push(id);

@@ -20,3 +20,5 @@ reconcileTowerGuide();
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", reconcileTowerGuide, { once: true });
 }
+
+document.body.dataset.gameVersion = "v13";

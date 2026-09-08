@@ -1,0 +1,31 @@
+/* Wordle-only: stable board + legend + touch keyboard, outside the ad reserve. */
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #controls { width:100%; min-width:0; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel { gap:6px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-board { width:auto; height:100%; max-width:340px; aspect-ratio:5/6; margin:auto; gap:4px; grid-template-rows:repeat(6,minmax(0,1fr)); }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-row { min-height:0; gap:4px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .word-cell { position:relative; min-height:0; aspect-ratio:auto; font-size:clamp(18px,4vh,30px); border-radius:7px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .word-cell small { position:absolute; right:3px; bottom:0; font-size:10px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .active-guess .word-cell { border:2px solid #f6d779; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-help { text-align:center; font-size:12px; line-height:1.35; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-help p { margin:3px 0 5px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-legend { display:flex; justify-content:center; gap:5px; margin-bottom:6px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-legend span { padding:3px 5px; border-radius:4px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-keyboard { display:grid; gap:4px; max-width:520px; margin:auto; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row { display:flex; justify-content:center; gap:4px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row button { padding:0 2px; border-radius:6px; min-width:0; min-height:36px; flex:1 1 0; max-width:48px; color:#f6f7ff; background:#283d54; border:1px solid #64778c; font:700 15px/1.1 system-ui; touch-action:manipulation; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-command-row button { max-width:none; min-height:38px; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-command-row .primary { background:#f6d779; color:#172336; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen :is(.wordle-key,.wordle-legend span).hit { background:#29765f; color:white; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen :is(.wordle-key,.wordle-legend span).near { background:#e6c36a; color:#192638; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen :is(.wordle-key,.wordle-legend span).miss { background:#354255; color:#e6eaf0; }
+html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessage { margin:0; min-height:34px; height:34px; font-size:12px; line-height:17px; overflow:auto; }
+@media (max-height:650px) and (min-width:700px) {
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); grid-template-rows:auto 34px minmax(0,1fr); }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .board-wrap { grid-column:1; grid-row:1/4; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .battle-top { grid-column:2; grid-row:1; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessage { grid-column:2; grid-row:2; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #controls { grid-column:2; grid-row:3; align-self:end; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-help { font-size:11px; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-help p { display:none; }
+  html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row button { min-height:32px; }
+}

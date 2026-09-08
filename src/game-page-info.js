@@ -4338,6 +4338,8 @@
     difficulty: "Medium",
     time: "3-5 minutes",
     skills: ["Focus", "Reaction", "Problem Solving"],
+    hideSkillsFact: true,
+    showRelatedSkill: false,
     intro:
       "Animal Reef Fisher is an Ocean World fishing, collection, and gear-upgrade game. Players choose reef zones, charge casts, control line tension, discover sea creatures for a local album, and spend Reef Notes on better gear. It is built for older players who want a calm but active timing challenge with local progress and optional Diamond tools.",
     how: [
@@ -5262,6 +5264,8 @@
     gameplay: "Fishing Tension Campaign",
     genre: ["Fishing", "Collection", "Timing", "Animal"],
     skills: ["Focus", "Reaction", "Problem Solving"],
+    hideSkillsFact: true,
+    showRelatedSkill: false,
     relatedIds: ["animal-rift-salvage", "animal-cratebound"],
     guideKicker: "WeightPlay Original Game Guide",
     guideTitleSuffix: "Game Guide",
