@@ -1115,7 +1115,7 @@ function createGameCard(game) {
       ${skillBadges ? `<div class="game-card-skills" aria-label="${i18n.t("aria.skills_trained")}">${skillBadges}</div>` : ""}
       ${skillReason ? `<div class="game-card-skill-reason">${skillReason}</div>` : ""}
       ${quickFacts ? `<div class="game-card-facts" aria-label="${i18n.t("aria.game_quick_facts")}">${quickFacts}</div>` : ""}
-      <div class="game-card-meta">${meta}</div>
+      <div class="game-card-meta"${game.meta?.__localizedExact ? ' data-runtime-localize="off"' : ""}>${meta}</div>
       ${isPlayable ? `<div class="game-card-plays">${playCountText(game)}</div>` : ""}
       ${isKidsLobby ? "" : `
         <div class="game-card-actions">

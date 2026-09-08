@@ -260,6 +260,106 @@
     if (SPADES_SHELL_COPY[locale]) Object.assign(SPADES_SHELL_COPY[locale], copy);
   }
 
+  // Keep the legacy card-game shell aligned with the authored public Guide.
+  // The richer page copy owns the detail; this compact shell still appears
+  // above it on the generated route and must not contradict the live rules.
+  const SPADES_GUIDE_SHELL_COPY = {
+    en: {
+      guideSummary: "A 52-card, four-player hand: bid 0–13, follow suit when possible, and use spades as trump to meet your team contract.",
+      howToCopy: "Each player bids 0–13 tricks. Follow the led suit when possible; if you cannot, any card is legal. The highest spade wins, otherwise the highest card in the led suit wins.",
+      faqQuestion: "How is a team contract scored?",
+      faqAnswer: "Meeting the team bid scores 10 points per bid plus overtricks; missing it subtracts 10 points per bid. Overtricks do not add a separate bag penalty in this game.",
+      quickGuideCopy: "Bid 0–13 tricks, follow suit when possible, and save spades for tricks your team needs to meet its contract.",
+    },
+    "zh-Hant": {
+      guideSummary: "52 張牌、4 位玩家的牌局：叫 0–13 墩，能跟花色時就跟牌，再用黑桃王牌完成團隊合約。",
+      howToCopy: "每位玩家叫 0–13 墩。能跟首引花色時必須跟牌；沒有該花色時可出任意牌。若有黑桃，最高黑桃獲勝，否則由首引花色最高牌獲勝。",
+      faqQuestion: "團隊合約如何計分？",
+      faqAnswer: "完成團隊叫牌時，每叫一墩得 10 分，超墩再加分；未完成則每叫一墩扣 10 分。本遊戲不另加袋分懲罰。",
+      quickGuideCopy: "叫 0–13 墩，能跟花色時就跟牌，並保留黑桃給團隊完成合約所需的關鍵墩。",
+    },
+    "zh-Hans": {
+      guideSummary: "52 张牌、4 位玩家的牌局：叫 0–13 墩，能跟花色时就跟牌，再用黑桃王牌完成团队合约。",
+      howToCopy: "每位玩家叫 0–13 墩。能跟首引花色时必须跟牌；没有该花色时可出任意牌。有黑桃时，最高黑桃获胜，否则由首引花色最高牌获胜。",
+      faqQuestion: "团队合约如何计分？",
+      faqAnswer: "完成团队叫牌时，每叫一墩得 10 分，超墩再加分；未完成则每叫一墩扣 10 分。本游戏不另加袋分惩罚。",
+      quickGuideCopy: "叫 0–13 墩，能跟花色时就跟牌，并保留黑桃给团队完成合约所需的关键墩。",
+    },
+    ja: {
+      guideSummary: "52枚・4人のトリックテイキング：0～13トリックをビッドし、可能なら同じスートを出し、スペードを切り札にしてチームの契約を達成します。",
+      howToCopy: "各プレイヤーが0～13トリックをビッドします。リードされたスートがあれば必ず出し、なければ任意のカードを出せます。スペードがあれば最高位のスペード、なければリードスートの最高位が勝ちます。",
+      faqQuestion: "チームの契約はどう採点されますか？",
+      faqAnswer: "チームのビッドを達成すると、ビッド1トリックにつき10点に超過トリックを加えます。失敗するとビッド1トリックにつき10点減点され、このゲームでは別のバッグ罰はありません。",
+      quickGuideCopy: "0～13トリックをビッドし、可能なら同じスートを出し、契約に必要なトリックのためにスペードを温存します。",
+    },
+    ko: {
+      guideSummary: "52장, 4인 트릭 게임입니다. 0–13개 트릭을 비드하고 가능하면 무늬를 따라 내며 스페이드를 으뜸패로 사용해 팀 계약을 달성하세요.",
+      howToCopy: "각 플레이어가 0–13개 트릭을 비드합니다. 리드된 무늬가 있으면 따라 내야 하고, 없으면 어떤 카드든 낼 수 있습니다. 스페이드가 있으면 가장 높은 스페이드가, 없으면 리드 무늬의 가장 높은 카드가 승리합니다.",
+      faqQuestion: "팀 계약은 어떻게 점수로 계산되나요?",
+      faqAnswer: "팀 비드를 달성하면 비드한 트릭 하나당 10점에 초과 트릭을 더합니다. 실패하면 비드한 트릭 하나당 10점을 잃으며, 이 게임에는 별도의 백 페널티가 없습니다.",
+      quickGuideCopy: "0–13개 트릭을 비드하고 가능하면 무늬를 따라 내며, 계약에 필요한 트릭을 위해 스페이드를 아껴 두세요.",
+    },
+    es: {
+      guideSummary: "Una mano de 52 cartas para cuatro jugadores: apuesta de 0 a 13 bazas, sigue el palo cuando puedas y usa las picas como triunfo para cumplir el contrato de tu equipo.",
+      howToCopy: "Cada jugador apuesta de 0 a 13 bazas. Debes seguir el palo de salida si puedes; si no, cualquier carta es legal. Gana la pica más alta si hay picas; si no, gana la carta más alta del palo de salida.",
+      faqQuestion: "¿Cómo se puntúa el contrato del equipo?",
+      faqAnswer: "Cumplir la apuesta del equipo da 10 puntos por cada baza apostada más las bazas extra; fallarla resta 10 puntos por cada baza apostada. En este juego no hay una penalización adicional por bolsas.",
+      quickGuideCopy: "Apuesta de 0 a 13 bazas, sigue el palo cuando puedas y reserva las picas para las bazas que tu equipo necesita para cumplir el contrato.",
+    },
+    "pt-BR": {
+      guideSummary: "Uma mão de 52 cartas para quatro jogadores: declare de 0 a 13 vazas, siga o naipe quando puder e use espadas como trunfo para cumprir o contrato da equipe.",
+      howToCopy: "Cada jogador declara de 0 a 13 vazas. Siga o naipe de saída quando puder; se não tiver, qualquer carta é válida. A maior espada vence se houver espadas; caso contrário, vence a maior carta do naipe de saída.",
+      faqQuestion: "Como o contrato da equipe é pontuado?",
+      faqAnswer: "Cumprir o lance da equipe vale 10 pontos por vaza declarada mais as vazas extras; falhar tira 10 pontos por vaza declarada. Este jogo não aplica uma penalidade separada por bolsas.",
+      quickGuideCopy: "Declare de 0 a 13 vazas, siga o naipe quando puder e guarde espadas para as vazas que sua equipe precisa para cumprir o contrato.",
+    },
+    fr: {
+      guideSummary: "Une main de 52 cartes à quatre joueurs : annoncez 0 à 13 plis, fournissez la couleur si possible et utilisez le pique comme atout pour réussir le contrat de votre équipe.",
+      howToCopy: "Chaque joueur annonce 0 à 13 plis. Fournissez la couleur demandée si vous le pouvez ; sinon, toute carte est autorisée. Le plus grand pique gagne s'il y en a un, sinon la plus haute carte de la couleur demandée gagne.",
+      faqQuestion: "Comment le contrat de l'équipe est-il compté ?",
+      faqAnswer: "Réussir l'annonce de l'équipe rapporte 10 points par pli annoncé, plus les plis supplémentaires ; l'échec retire 10 points par pli annoncé. Ce jeu n'ajoute pas de pénalité séparée de sacs.",
+      quickGuideCopy: "Annoncez 0 à 13 plis, fournissez la couleur si possible et gardez le pique pour les plis nécessaires à la réussite du contrat.",
+    },
+    de: {
+      guideSummary: "Ein Blatt mit 52 Karten für vier Personen: Biete 0–13 Stiche, bediene möglichst die Farbe und nutze Pik als Trumpf, um den Teamkontrakt zu erfüllen.",
+      howToCopy: "Jede Person bietet 0–13 Stiche. Bediene die angespielte Farbe, wenn möglich; sonst ist jede Karte erlaubt. Der höchste Pik gewinnt, falls Pik gespielt wurde, sonst die höchste Karte der angespielten Farbe.",
+      faqQuestion: "Wie wird der Teamkontrakt gewertet?",
+      faqAnswer: "Ein erfülltes Teamgebot bringt 10 Punkte pro gebotenem Stich plus Überstiche; ein verfehltes Gebot zieht 10 Punkte pro gebotenem Stich ab. Dieses Spiel hat keine zusätzliche Bag-Strafe.",
+      quickGuideCopy: "Biete 0–13 Stiche, bediene möglichst die Farbe und spare Pik für die Stiche, die dein Team zum Erfüllen des Kontrakts braucht.",
+    },
+    it: {
+      guideSummary: "Una mano da 52 carte per quattro giocatori: dichiara da 0 a 13 prese, segui il seme quando puoi e usa le picche come briscola per rispettare il contratto della squadra.",
+      howToCopy: "Ogni giocatore dichiara da 0 a 13 prese. Segui il seme di uscita quando puoi; se non lo hai, puoi giocare qualsiasi carta. Vince la picca più alta se sono state giocate picche; altrimenti vince la carta più alta del seme di uscita.",
+      faqQuestion: "Come si calcola il contratto della squadra?",
+      faqAnswer: "Rispettare la dichiarazione della squadra vale 10 punti per ogni presa dichiarata più le prese extra; fallirla sottrae 10 punti per ogni presa dichiarata. In questo gioco non c'è una penalità separata per i sacchi.",
+      quickGuideCopy: "Dichiara da 0 a 13 prese, segui il seme quando puoi e conserva le picche per le prese necessarie a rispettare il contratto.",
+    },
+    ru: {
+      guideSummary: "Раздача из 52 карт для четырёх игроков: заявляйте от 0 до 13 взяток, ходите в масть и используйте пики как козырь, чтобы выполнить командный контракт.",
+      howToCopy: "Каждый игрок заявляет от 0 до 13 взяток. При наличии масти хода нужно положить её карту; если её нет, разрешена любая карта. При наличии пик выигрывает старшая пика, иначе — старшая карта масти хода.",
+      faqQuestion: "Как считается командный контракт?",
+      faqAnswer: "Выполненная заявка команды приносит 10 очков за каждую заявленную взятку плюс лишние взятки; невыполненная отнимает 10 очков за каждую заявленную взятку. Отдельного штрафа за мешки в этой игре нет.",
+      quickGuideCopy: "Заявляйте от 0 до 13 взяток, ходите в масть и берегите пики для взяток, нужных команде для выполнения контракта.",
+    },
+    hi: {
+      guideSummary: "चार खिलाड़ियों का 52 पत्तों वाला हाथ: 0–13 बाज़ियों की बोली लगाएँ, संभव हो तो सूट का पालन करें और टीम का अनुबंध पूरा करने के लिए स्पेड्स को तुरुप बनाएँ।",
+      howToCopy: "हर खिलाड़ी 0–13 बाज़ियों की बोली लगाता है। संभव हो तो लीड किए गए सूट का पत्ता चलाना ज़रूरी है; न होने पर कोई भी पत्ता चल सकता है। स्पेड्स होने पर सबसे ऊँचा स्पेड जीतता है, वरना लीड सूट का सबसे ऊँचा पत्ता जीतता है।",
+      faqQuestion: "टीम के अनुबंध का स्कोर कैसे बनता है?",
+      faqAnswer: "टीम की बोली पूरी करने पर हर बोली गई बाज़ी के 10 अंक और अतिरिक्त बाज़ियों के अंक मिलते हैं; असफल होने पर हर बोली गई बाज़ी के 10 अंक घटते हैं। इस खेल में बैग की अलग सज़ा नहीं है।",
+      quickGuideCopy: "0–13 बाज़ियों की बोली लगाएँ, संभव हो तो सूट का पालन करें और अनुबंध पूरा करने के लिए ज़रूरी बाज़ियों हेतु स्पेड्स बचाकर रखें।",
+    },
+    ar: {
+      guideSummary: "جولة من 52 بطاقة لأربعة لاعبين: راهنوا على 0–13 لَمّة، واتبعوا النوع إن أمكن، واستخدموا البستوني حكماً لإتمام عقد الفريق.",
+      howToCopy: "يعلن كل لاعب من 0 إلى 13 لَمّة. يجب اتباع النوع المقاد إن أمكن؛ وإذا لم تملكه فكل بطاقة مسموحة. تفوز أعلى بطاقة بستوني إذا ظهر بستوني، وإلا تفوز أعلى بطاقة من النوع المقاد.",
+      faqQuestion: "كيف يُحتسب عقد الفريق؟",
+      faqAnswer: "إتمام رهان الفريق يمنح 10 نقاط لكل لَمّة مُعلنة مع اللمّات الزائدة؛ والفشل يخصم 10 نقاط لكل لَمّة مُعلنة. لا توجد في هذه اللعبة عقوبة منفصلة للأكياس.",
+      quickGuideCopy: "راهنوا على 0–13 لَمّة، واتبعوا النوع إن أمكن، واحتفظوا بالبستوني للّمم التي يحتاجها فريقكم لإتمام العقد.",
+    },
+  };
+  for (const [locale, copy] of Object.entries(SPADES_GUIDE_SHELL_COPY)) {
+    if (SPADES_SHELL_COPY[locale]) Object.assign(SPADES_SHELL_COPY[locale], copy);
+  }
+
   // War's static shell predates the shared card-game runtime and therefore
   // still contains English control labels on the Arabic route. Keep the
   // repair owned by the card-game runtime so Main, Battle, and Result stay in

@@ -385,7 +385,7 @@ window.WONDER_LOBBY = {
       internalTrial: "index.html?trial=1",
       description: { en: "Classic solitaire with a full deck drag-and-drop flow, draw 1/3 modes, auto-finish, and undo support.", "zh-Hant": "經典單人紙牌接龍，提供 1 或 3 張抽牌、拖拉放置、底部自動收尾與還原支援。", "zh-Hans": "经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。", ja: "1枚または3枚取りソリティア。ドラッグ&ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。", ko: "1장 또는 3장 드로우를 지원하는 클래식 솔리테어. 드래그 앤 드롭, 오토 피니시, 되돌리기 기능을 제공합니다.", es: "Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.", "pt-BR": "Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer.", fr: "Solitaire classique avec glisser-déposer complet, modes 1 ou 3 cartes, auto-fini et support d'annulation.", de: "Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.", it: "Solitario classico con drag-and-drop completo, modalità pesca 1/3, auto-finish e supporto annulla.", ru: "Классический пасьянс с перетаскиванием карт, режимами взятия 1/3, автозавершением и отменой хода.", hi: "क्लासिक सोलिटेयर, जिसमें ड्रैग-एंड-ड्रॉप, 1/3 ड्रॉ मोड, ऑटो-फिनिश और अंडू सपोर्ट मौजूद हैं।", ar: "لعبة سوليتير كلاسيكية بنمط السحب 1 أو 3 وبالتحكم بالسحب والإفلات، مع إنهاء تلقائي وإمكانية التراجع." },
       meta: { en: ["One Deck", "Draw 1 or 3", "Undo"], "zh-Hant": ["一副牌", "抽1/3", "還原"], "zh-Hans": ["一副牌", "抽1/3", "撤销"], ja: ["1デッキ", "1枚/3枚", "元に戻す"], ko: ["한 덱", "1장/3장", "되돌리기"], es: ["Un mazo", "Robar 1 o 3", "Deshacer"], "pt-BR": ["Um Baralho", "Compra 1 ou 3", "Desfazer"], fr: ["Un Jeu", "Piocher 1 ou 3", "Annuler"], de: ["Ein Deck", "1 oder 3 ziehen", "Rückgängig"], it: ["Un Mazzo", "Pesca 1 o 3", "Annulla"], ru: ["Колода", "Взять 1 или 3", "Отменить"], hi: ["एक डेक", "1 या 3 खींचें", "पूर्ववत"], ar: ["مجموعة واحدة", "اسحب 1 أو 3", "تراجع"] },
-      art: { kind: "image", background: "assets/klondike-solitaire-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/klondike-solitaire-square-v1.webp", hideHero: true },
     },
     {
       id: "spider-solitaire",
@@ -1430,7 +1430,7 @@ window.WONDER_LOBBY = {
         ar: ["30 معركة", "توقف متتابع", "1–3 وحوش"],
       },
       previewVideo: "assets/previews/animal-rune-reels-battle.webm",
-      art: { kind: "image", background: "assets/animal-rune-reels/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-rune-reels-square-v1.webp", hideHero: true },
     },
     {
       id: "animal-spectrum-pulse",
@@ -1624,7 +1624,7 @@ window.WONDER_LOBBY = {
         ru: ["30 миссий", "Замкните петлю", "Теневые охотники"],
       },
       previewVideo: "assets/previews/animal-sanctuary-loop-battle.webm",
-      art: { kind: "image", background: "assets/animal-sanctuary-loop/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-sanctuary-loop-square-v1.webp", hideHero: true },
     },
     {
       id: "animal-prism-battalion",
@@ -1673,7 +1673,7 @@ window.WONDER_LOBBY = {
         ru: ["30 штурмов", "Ворота-множители", "Призменная перегрузка"],
       },
       previewVideo: "assets/previews/animal-prism-battalion-battle.webm",
-      art: { kind: "image", background: "assets/animal-prism-battalion/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-prism-battalion-square-v1.webp", hideHero: true },
     },
     {
       id: "animal-skybridge-rivals",
@@ -1722,7 +1722,7 @@ window.WONDER_LOBBY = {
         ru: ["30 гонок", "Собирай и складывай", "Выбирай любой путь"],
       },
       previewVideo: "assets/previews/animal-skybridge-rivals-battle.webm",
-      art: { kind: "image", background: "assets/animal-skybridge-rivals/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-skybridge-rivals-square-v1.webp", hideHero: true },
     },
     {
       id: "animal-skyspire-drop",
@@ -1766,7 +1766,7 @@ window.WONDER_LOBBY = {
         ru: ["30 башен", "Вращение и падение", "Кометный пробой"],
       },
       previewVideo: "assets/previews/animal-skyspire-drop-battle.webm",
-      art: { kind: "image", background: "assets/animal-skyspire-drop/cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/lobby-posters/animal-skyspire-drop-square-v1.webp", hideHero: true },
     },
     {
       id: "animal-rift-salvage",
@@ -2153,7 +2153,7 @@ for (const game of window.WONDER_LOBBY.games) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-layer-grove/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-layer-grove/assets/animal-layer-grove-cover.svg", hideHero: true },
+    art: { kind: "image", background: "assets/lobby-posters/animal-layer-grove-square-v1.webp", hideHero: true },
   };
   planned.type = localize(["Habitat depth campaign", "棲地深度篇章益智", "栖地深度篇章益智", "生息地の奥行きキャンペーン", "서식지 깊이 캠페인 퍼즐", "Campaña de profundidad del hábitat", "Campanha de profundidade do habitat", "Campagne de profondeur d’habitat", "Habitat-Tiefenkampagne", "Campagna di profondità dell’habitat", "Кампания глубины среды", "अभयारण्य गहराई अभियान", "حملة عمق الموطن"]);
   planned.description = localize(["Restore 30 authored habitat stages across six arcs with changing layer sets, decoys, wind reading, and echo layers.", "跨越六個篇章修復三十個精心設計的棲地關卡，迎接變化的圖層、誘餌、風向讀法與回聲圖層。", "跨越六个篇章修复三十个精心设计的栖地关卡，迎接变化的图层、诱饵、风向读法与回声图层。", "6つの章、30のステージで、レイヤーの組み合わせやおとり、風向き、エコーを読み解いて生息地を戻そう。", "여섯 아크, 30개 스테이지에서 변화하는 레이어와 미끼, 바람 읽기, 메아리 레이어로 서식지를 복원해요.", "Restaura 30 fases de hábitat en seis arcos con capas cambiantes, señuelos, lectura del viento y ecos.", "Restaure 30 fases de habitat em seis arcos com camadas variáveis, iscas, leitura do vento e ecos.", "Restaurez 30 niveaux d’habitat en six arcs avec couches variables, leurres, lecture du vent et échos.", "Stelle in sechs Bögen 30 gestaltete Habitatstufen mit wechselnden Schichten, Ködern, Windlesen und Echos wieder her.", "Ripristina 30 livelli di habitat in sei archi con strati variabili, esche, lettura del vento ed echi.", "Восстановите 30 сцен среды в шести арках с меняющимися слоями, приманками, чтением ветра и эхом.", "छह अध्यायों में 30 आवास चरणों को बदलती परतों, चारे, हवा-पठन और प्रतिध्वनि से बहाल करें।", "أصلحوا 30 مرحلة للموطن عبر ستة فصول، مع طبقات متغيرة وطُعم وقراءة للرياح وطبقات الصدى."]);
@@ -2501,7 +2501,7 @@ const nextClassicCardGames = [
     id: "cribbage", title: { en: "Cribbage", "zh-Hant": "克里比奇", "zh-Hans": "克里比奇", ja: "クリベッジ", ko: "크리비지", es: "Cribbage", "pt-BR": "Cribbage", fr: "Cribbage", de: "Cribbage", it: "Cribbage", ru: "Криббедж", hi: "क्रिबेज", ar: "كريبدج" },
     type: { en: "Pegging Score Card Game", "zh-Hant": "計分與插釘牌戲", "zh-Hans": "计分与插钉牌戏", ja: "ペギング得点カードゲーム", ko: "페깅 점수 카드 게임", es: "Juego de cartas con tablero", "pt-BR": "Jogo de cartas com tabuleiro", fr: "Jeu de cartes à tableau", de: "Kartenspiel mit Zählbrett", it: "Gioco di carte con tabellone", ru: "Карточная игра со счётной доской", hi: "पेगिंग स्कोर कार्ड गेम", ar: "لعبة بطاقات ولوحة تسجيل" },
     description: { en: "Choose a crib, score pairs, runs and fifteens, and peg toward 121.", "zh-Hant": "選擇 Crib，從 Pair、Run、15 等組合得分，插釘前進至 121。", "zh-Hans": "选择 Crib，从 Pair、Run、15 等组合得分，插钉前进至 121。", ja: "クリブを選び、ペア・ラン・15などで得点し、121点を目指してペグを進める。", ko: "크립을 선택하고 페어·런·15 조합으로 점수를 내 121점까지 페그하세요.", es: "Elige la crib, puntúa parejas, escaleras y quinces, y avanza hasta 121.", "pt-BR": "Escolha o crib, marque pares, sequências e quinze, e avance até 121.", fr: "Choisissez le crib, marquez paires, suites et quinze, puis avancez vers 121.", de: "Wähle die Crib, punkte Paare, Folgen und Fünfzehner und ziehe bis 121.", it: "Scegli il crib, segna coppie, scale e quindici e avanza fino a 121.", ru: "Выберите crib, набирайте очки за пары, ряды и пятнадцать и двигайтесь к 121.", hi: "क्रिब चुनें, जोड़े, रन और 15 से अंक पाएँ और 121 तक पेग करें।", ar: "اختر الكريب وسجل للأزواج والتسلسلات و15 وتقدم نحو 121." },
-    meta: { en: ["Pegging", "Pairs + runs + 15", "121-point board"], "zh-Hant": ["插釘", "Pair＋Run＋15", "121 分棋盤"] },
+    meta: { en: ["Pegging", "Pairs + runs + 15", "121-point board"], "zh-Hant": ["插釘", "Pair＋Run＋15", "121 分棋盤"], "zh-Hans": ["插钉", "配对＋顺子＋十五", "121 分棋盘"], ja: ["ペギング", "ペア＋ラン＋15", "121点ボード"], ko: ["페깅", "페어＋런＋15", "121점 보드"], es: ["Pegging", "Parejas + escaleras + quinces", "Tablero de 121 puntos"], "pt-BR": ["Pegging", "Pares + sequências + quinze", "Tabuleiro de 121 pontos"], fr: ["Pegging", "Paires + suites + quinze", "Plateau de 121 points"], de: ["Pegging", "Paare + Folgen + Fünfzehner", "121-Punkte-Zählbrett"], it: ["Pegging", "Coppie + scale + quindici", "Tabellone da 121 punti"], ru: ["Пеггинг", "Пары + ряды + пятнадцать", "Доска на 121 очко"], hi: ["पेगिंग", "जोड़े + रन + पंद्रह", "121 अंकों का बोर्ड"], ar: ["التسجيل", "أزواج + تسلسلات + خمسة عشر", "لوحة 121 نقطة"], __localizedExact: true },
     searchAliases: [
       "cribbage", "crib board", "cribbage board", "pegging", "pegging card game", "fifteen card game", "pairs runs fifteens", "121 point card game",
       "克里比奇", "克里比奇牌", "克里比奇棋盤", "插釘", "十五分牌", "配對順子十五", "克里比奇棋盘", "插钉", "十五分牌戏", "配对顺子十五",
@@ -3331,7 +3331,7 @@ const animalLanternLatticePlanned = {
   ageLabel: animalLanternLatticeLocalized(Array(13).fill("9+")),
   href: "games/animal-lantern-lattice/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-lantern-lattice/assets/animal-lantern-lattice-cover.svg", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-lantern-lattice-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalLanternLatticePlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalLanternLatticePlanned.id)) window.WONDER_LOBBY.games.push(animalLanternLatticePlanned);
@@ -3433,7 +3433,7 @@ const animalDawnShuttersPlanned = {
   ageLabel: animalDawnShuttersLocalized(Array(13).fill("6+")),
   href: "games/animal-dawn-shutters/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-dawn-shutters/assets/animal-dawn-shutters-cover.svg", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-dawn-shutters-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDawnShuttersPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.games.push(animalDawnShuttersPlanned);
@@ -3484,7 +3484,7 @@ const animalGlyphGardenPlanned = {
   ageLabel: animalGlyphGardenLocalized(Array(13).fill("6+")),
   href: "games/animal-glyph-garden/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-glyph-garden/assets/animal-glyph-garden-cover.svg", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-glyph-garden-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalGlyphGardenPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalGlyphGardenPlanned.id)) window.WONDER_LOBBY.games.push(animalGlyphGardenPlanned);
@@ -3560,7 +3560,7 @@ const animalDewlinePlanned = {
   ageLabel: animalDewlineLocalized(Array(13).fill("9+")),
   href: "games/animal-dewline/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-dewline/assets/animal-dewline-cover.svg", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-dewline-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalDewlinePlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDewlinePlanned.id)) window.WONDER_LOBBY.games.push(animalDewlinePlanned);
@@ -3877,11 +3877,13 @@ const nextFiveGeneralCandidates = [
   {
     id: "animal-flip-foundry",
     title: { en: "Flip Foundry", "zh-Hant": "翻轉工坊", "zh-Hans": "翻转工坊", ja: "フリップ工房", ko: "플립 공방", es: "Taller de giros", "pt-BR": "Oficina do Giro", fr: "Atelier du flip", de: "Flip-Werkstatt", it: "Officina del flip", ru: "Мастерская переворотов", hi: "फ्लिप कार्यशाला", ar: "ورشة القلب" },
+    status: "playable",
+    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Precision Flip Challenge", "zh-Hant": "精準翻轉挑戰", "zh-Hans": "精准翻转挑战", ja: "精密フリップチャレンジ", ko: "정밀 플립 도전", es: "Desafío de giros precisos", "pt-BR": "Desafio de giros precisos", fr: "Défi de flips précis", de: "Präzisions-Flip", it: "Sfida di flip precisi", ru: "Точное испытание переворотов", hi: "सटीक फ्लिप चुनौती", ar: "تحدي القلب الدقيق" },
     description: { en: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.", "zh-Hant": "滑動晶體罐讓它在空中旋轉，並直立落在下一個工坊表面。", "zh-Hans": "滑动晶体罐让它在空中旋转，并直立落在下一个工坊表面。", ja: "クリスタル容器をスワイプし、空中で回転させ、次の工房面に立てて着地させよう。", ko: "크리스털 용기를 스와이프해 공중에서 회전시키고 다음 작업대에 똑바로 착지하세요.", es: "Desliza el recipiente de cristal, hazlo girar y aterrízalo de pie en la siguiente superficie.", "pt-BR": "Deslize o recipiente de cristal, gire-o no ar e pouse em pé na próxima superfície.", fr: "Faites glisser un réservoir en cristal, faites-le pivoter dans les airs et posez-le bien droit sur la prochaine surface de l’atelier.", de: "Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche.", it: "Scorri un contenitore di cristallo, fallo ruotare in aria e fallo atterrare in posizione verticale sulla superficie successiva dell’officina.", ru: "Проведите по хрустальному контейнеру, переверните его в воздухе и посадите вертикально на следующую поверхность мастерской.", hi: "क्रिस्टल कैनिस्टर को स्वाइप करें, उसे हवा में घुमाएँ और अगली कार्यशाला सतह पर सीधा उतारें।", ar: "مرّر على الحاوية الكريستالية، وأدرها في الهواء، ثم هبط بها منتصبة على سطح الورشة التالي." },
-    meta: { en: ["Swipe Force", "6 Chapters", "Perfect Landing"], "zh-Hant": ["滑動力度", "6 個章節", "完美落地"], "zh-Hans": ["滑动力度", "6 个章节", "完美落地"] },
+    meta: { en: ["Swipe Force", "6 Chapters", "Perfect Landing"], "zh-Hant": ["滑動力度", "6 個章節", "完美落地"], "zh-Hans": ["滑动力度", "6 个章节", "完美落地"], ja: ["スワイプの強さ", "6章", "完璧な着地"], ko: ["스와이프 힘", "6개 챕터", "완벽한 착지"], es: ["Fuerza del deslizamiento", "6 capítulos", "Aterrizaje perfecto"], "pt-BR": ["Força do deslize", "6 capítulos", "Pouso perfeito"], fr: ["Force du geste", "6 chapitres", "Atterrissage parfait"], de: ["Wischstärke", "6 Kapitel", "Perfekte Landung"], it: ["Forza dello swipe", "6 capitoli", "Atterraggio perfetto"], ru: ["Сила свайпа", "6 глав", "Идеальная посадка"], hi: ["स्वाइप की ताकत", "6 अध्याय", "परफेक्ट लैंडिंग"], ar: ["قوة السحب", "6 فصول", "هبوط مثالي"], __localizedExact: true },
     art: { kind: "image", background: "assets/animal-flip-foundry-cover.webp", hideHero: true },
-    categories: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision"], ages: ["9", "family"], href: "games/animal-flip-foundry/", internalTrial: "index.html?trial=1",
+    categories: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision"], ages: ["9", "family"], href: "games/animal-flip-foundry/", previewVideo: "assets/previews/animal-flip-foundry-battle.webm",
   },
 ];
 for (const candidate of nextFiveGeneralCandidates) {
@@ -4206,7 +4208,7 @@ const animalKiteKeeperPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-kite-keeper/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-kite-keeper/assets/animal-kite-keeper-cover-v1.webp", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-kite-keeper-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalKiteKeeperPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalKiteKeeperPlanned.id)) window.WONDER_LOBBY.games.push(animalKiteKeeperPlanned);
@@ -4252,7 +4254,7 @@ const animalHabitatBlueprintPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-habitat-blueprint/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-habitat-blueprint/assets/animal-habitat-blueprint-cover-v2.webp", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-habitat-blueprint-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalHabitatBlueprintPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.games.push(animalHabitatBlueprintPlanned);
@@ -4298,7 +4300,7 @@ const animalRiverGatesPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-river-gates/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-river-gates/assets/animal-river-gates-cover-v1.webp", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-river-gates-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalRiverGatesPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalRiverGatesPlanned.id)) window.WONDER_LOBBY.games.push(animalRiverGatesPlanned);
@@ -4390,7 +4392,7 @@ const animalCairnCourierPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-cairn-courier/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-cairn-courier/assets/animal-cairn-courier-cover.webp", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-cairn-courier-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalCairnCourierPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalCairnCourierPlanned.id)) window.WONDER_LOBBY.games.push(animalCairnCourierPlanned);
@@ -4413,7 +4415,7 @@ const animalFireflyFolioPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-firefly-folio/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-firefly-folio/assets/animal-firefly-folio-cover.svg", hideHero: true },
+  art: { kind: "image", background: "assets/lobby-posters/animal-firefly-folio-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalFireflyFolioPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.games.push(animalFireflyFolioPlanned);
@@ -4431,7 +4433,7 @@ const animalSignalScoutPlanned = {
   description: marketFiveLocalized(["Read three scout notes, match each animal to its signal colour, and copy the visible patrol order.", "讀懂三張偵察筆記，把動物配對到訊號顏色，再照著可見巡邏順序點選。", "读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。", "3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。", "세 정찰 기록을 읽고 동물과 신호 색을 맞춘 뒤 보이는 순서대로 누르세요.", "Lee tres notas, relaciona cada animal con su color y copia el orden de patrulla.", "Leia três notas, associe cada animal à sua cor e copie a ordem da patrulha.", "Lis trois notes, associe chaque animal à sa couleur puis copie l’ordre de patrouille.", "Lies drei Notizen, ordne jedem Tier seine Signalfarbe zu und kopiere die sichtbare Reihenfolge.", "Leggi tre note, abbina ogni animale al suo colore e copia l’ordine del giro.", "Прочитайте три заметки, сопоставьте зверей с цветами и повторите порядок патруля.", "तीन नोट पढ़ें, हर जानवर को संकेत रंग से मिलाएँ और गश्त का क्रम दोहराएँ।", "اقرأ ثلاث ملاحظات وطابق كل حيوان مع لون إشارته ثم انسخ ترتيب الدورية."]),
   meta: marketFiveLocalized([["3 Patrol Notes", "Match + Copy", "Calm Retry"], ["3 張巡邏筆記", "配對＋照抄", "平靜重試"], ["3 张巡逻笔记", "配对＋照抄", "平静重试"], ["3つの巡回メモ", "合わせてまねる", "穏やかな再挑戦"], ["정찰 기록 3개", "맞추고 따라하기", "차분한 재시도"], ["3 notas", "Relaciona y copia", "Reintento tranquilo"], ["3 notas", "Associe e copie", "Nova tentativa calma"], ["3 notes", "Associer et copier", "Reprise sereine"], ["3 Notizen", "Zuordnen + Kopieren", "Ruhiger Versuch"], ["3 note", "Abbina e copia", "Riprova calma"], ["3 заметки", "Сопоставь и повтори", "Спокойный повтор"], ["3 नोट", "मिलाएँ और दोहराएँ", "शांत पुनः प्रयास"], ["3 ملاحظات", "طابق وانسخ", "محاولة هادئة"]]),
   categories: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"], skills: ["Observation", "Working Memory", "Focus"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-signal-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-signal-scout/assets/animal-signal-scout-cover.svg", hideHero: true },
+  href: "games/animal-signal-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "assets/lobby-posters/animal-signal-scout-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSignalScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSignalScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSignalScoutPlanned);
@@ -4450,7 +4452,7 @@ const animalSilhouetteScoutPlanned = {
   meta: marketFiveLocalized([["30 Lookouts", "See + Match", "Calm Retry"], ["30 座瞭望台", "觀察＋配對", "平靜重試"], ["30 座瞭望台", "观察＋配对", "平静重试"], ["30の見張り台", "見て合わせる", "穏やかな再挑戦"], ["전망대 30개", "보고 맞추기", "차분한 재시도"], ["30 miradores", "Mira y combina", "Reintento tranquilo"], ["30 mirantes", "Veja e associe", "Nova tentativa calma"], ["30 belvédères", "Observe et associe", "Reprise sereine"], ["30 Ausgucke", "Sehen + Zuordnen", "Ruhiger Versuch"], ["30 vedette", "Guarda e abbina", "Riprova calma"], ["30 вышек", "Смотри и сопоставляй", "Спокойный повтор"], ["30 चौकियाँ", "देखें और मिलाएँ", "शांत पुनः प्रयास"], ["30 نقاط مراقبة", "انظر وطابق", "محاولة هادئة"]]),
   categories: ["Puzzle", "Observation", "Visual Recognition", "Family", "Animal"],
   skills: ["Observation", "Focus", "Visual Reasoning"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-silhouette-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "games/animal-silhouette-scout/assets/animal-silhouette-scout-cover.webp", hideHero: true },
+  href: "games/animal-silhouette-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "assets/lobby-posters/animal-silhouette-scout-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSilhouetteScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSilhouetteScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSilhouetteScoutPlanned);
@@ -4901,7 +4903,7 @@ if (animalBounceBrawlPublic) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "games/animal-rain-roost/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-rain-roost/assets/animal-rain-roost-cover.svg", hideHero: true }
+    art: { kind: "image", background: "assets/lobby-posters/animal-rain-roost-square-v1.webp", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);
@@ -4930,7 +4932,7 @@ if (animalBounceBrawlPublic) {
     ageLabel: localize(Array(13).fill("6+")),
     href: "../games/animal-orchard-steward/",
     internalTrial: "index.html?trial=1",
-    art: { kind: "image", background: "games/animal-orchard-steward/assets/animal-orchard-steward-cover.svg", hideHero: true }
+    art: { kind: "image", background: "assets/lobby-posters/animal-orchard-steward-square-v1.webp", hideHero: true }
   };
   for (const field of ["title", "statusText", "type", "description", "meta", "ageLabel"]) Object.defineProperty(planned[field], "__localizedExact", { value: true, enumerable: false });
   if (!window.WONDER_LOBBY.games.some((game) => game.id === planned.id)) window.WONDER_LOBBY.games.push(planned);

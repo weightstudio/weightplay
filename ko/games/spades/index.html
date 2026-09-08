@@ -16,16 +16,16 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/spades/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/spades/" />
     <!-- Shared 13-locale registry: ../../src/i18n.js?v=20260721-locale13-1; Hindi/Arabic runtime loader: ../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1; localized sound labels: ../../src/sound.js?v=20260720-locale11. -->
-    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css">  <meta name="description" content="파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다." />
+    <link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/play-viewport.css"><link rel="stylesheet" href="../../src/battle-canvas-standard.css"><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="../../src/card-games-next.css">  <meta name="description" content="스페이드는 네 명이 두 팀으로 플레이하는 트릭 게임입니다. 0~13을 선언하고, 가능하면 리드 무늬를 따라 내며, 항상 트럼프인 스페이드로 팀 계약을 달성하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="스페이드 | WeightPlay" />
-    <meta property="og:description" content="파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다." />
+    <meta property="og:description" content="스페이드는 네 명이 두 팀으로 플레이하는 트릭 게임입니다. 0~13을 선언하고, 가능하면 리드 무늬를 따라 내며, 항상 트럼프인 스페이드로 팀 계약을 달성하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/spades/" />
     <meta property="og:image" content="https://weightplay.com/assets/card-games-spades-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="스페이드 | WeightPlay" />
-    <meta name="twitter:description" content="파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다." />
+    <meta name="twitter:description" content="스페이드는 네 명이 두 팀으로 플레이하는 트릭 게임입니다. 0~13을 선언하고, 가능하면 리드 무늬를 따라 내며, 항상 트럼프인 스페이드로 팀 계약을 달성하세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/card-games-spades-cover.webp" />
     <script type="application/ld+json">
 {
@@ -35,7 +35,7 @@
   "alternateName": "Spades",
   "url": "https://weightplay.com/ko/games/spades/",
   "image": "https://weightplay.com/assets/card-games-spades-cover.webp",
-  "description": "파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다.",
+  "description": "스페이드는 네 명이 두 팀으로 플레이하는 트릭 게임입니다. 0~13을 선언하고, 가능하면 리드 무늬를 따라 내며, 항상 트럼프인 스페이드로 팀 계약을 달성하세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -45,9 +45,9 @@
   "isAccessibleForFree": true,
   "operatingSystem": "Any modern web browser",
   "genre": [
-    "Card",
-    "Family",
-    "Strategy"
+    "카드",
+    "가족",
+    "전략"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -59,19 +59,24 @@
   </head><body data-wp-game-owned-guide data-screen="main" data-audience="general" data-wp-game-id="spades" data-wp-card-game="spades" data-runtime-localize="off"><main id="mainScreen" class="main-screen"><header class="main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-card-title data-runtime-localize="off">스페이드</strong><div class="header-utilities"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings">⚙</button><div id="audioPopover" class="settings-popover is-hidden"><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button">Sound: On</button><label class="settings-row"><span>Language</span><select id="localeSelect" aria-label="Language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></div></header><section class="main-hero"><div class="poster-frame"><img class="cover" src="../../assets/card-games-next-batch-cover.svg" alt="스페이드 게임 이미지"></div><article class="main-copy"><small class="eyebrow">Classic Card Game</small><h1 data-card-title data-runtime-localize="off">스페이드</h1><p data-card-summary>Bid your tricks, use spades as trump, and coordinate with an AI teammate.</p><div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Ready to play</strong><span>Bid your team's expected tricks, then follow suit when possible.</span></div><div class="main-actions"><button id="startBtn" class="primary-btn" type="button">Start Game</button><button id="restartBtn" class="secondary-btn" type="button">Restart</button><button id="newGameBtn" class="secondary-btn" type="button">New Game</button></div></article></section></main><section class="game-page-info game-page-info-static" aria-label="스페이드 게임 정보">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스페이드</h2><p>파트너와 입찰하고 같은 무늬를 따라 내며 스페이드를 트럼프로 사용하는 트릭 게임입니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>클래식 트럼프 트릭 테이킹</strong></div><div class="game-info-fact"><span>장르</span><strong>Card · Family · Strategy</strong></div><div class="game-info-fact"><span>난이도</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5-15분</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스페이드</h2><p>스페이드는 네 명이 두 팀으로 플레이하는 트릭 게임입니다. 0~13을 선언하고, 가능하면 리드 무늬를 따라 내며, 항상 트럼프인 스페이드로 팀 계약을 달성하세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>클래식 트럼프 트릭</strong></div><div class="game-info-fact"><span>장르</span><strong>카드 · 가족 · 전략</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 도전적</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>한 판 5~15분</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>Bid the number of tricks your team expects, follow suit when possible, and use spades at the right moment to win the contract.</li></ol></div>
-
-
-
-      <div class="game-info-section game-info-parent"><h3>Public play</h3><p>Play Spades free in your browser with no account or purchase required. Bid a team contract, follow suit, and use spades as trump across a complete trick-taking hand.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+      <div class="game-info-section"><h3>세계와 목표</h3><p>52장 덱을 당신, 맞은편 AI 파트너, 두 명의 AI 상대에게 나눕니다. 각 트릭은 내 패의 힘뿐 아니라 파트너와의 합계를 읽는 결정입니다.</p>
+<p>선언으로 시작해 13트릭을 끝내면 한 판이 끝납니다. 지금 이기는 것보다 계약을 맞추면서 다음 리드를 상대에게 넘기지 않는 것이 중요합니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>각자 13장을 받습니다. 당신의 선언과 맞은편 파트너의 선언을 더한 값이 팀 계약입니다.</p>
+<p>리드 무늬가 있고 그 무늬를 들고 있다면 따라 내야 합니다. 없으면 아무 카드나 낼 수 있습니다. 스페이드가 나오면 가장 높은 스페이드가, 없으면 리드 무늬의 가장 높은 카드가 트릭을 가져갑니다.</p>
+<p>13트릭 뒤 계약을 달성하면 선언 트릭마다 10점과 초과 트릭 1점을 얻고, 실패하면 선언 트릭마다 10점을 잃습니다.</p>
+<p>Restart는 현재 판을 초기화하고 New Game은 새 판을 나눕니다. 계정이나 클라우드 캠페인은 없습니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>AI 세 명의 선언을 보고 0~13을 선택하세요. 이길 카드, 빠져나갈 카드, 스페이드 수를 함께 세세요.</li><li>내 차례에는 손패에서 한 장을 고릅니다. 리드 무늬가 있으면 따르고, 없으면 버리거나 스페이드를 냅니다.</li><li>팀 트릭 수와 진행 표시를 확인하세요. 스페이드를 너무 일찍 쓰면 후반 트럼프가 부족할 수 있습니다.</li><li>13트릭을 마친 뒤 Result에서 계약과 팀 점수를 확인하세요.</li><li>Restart로 같은 형식을 다시 하거나 New Game으로 새 판을 시작하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>내 높은 카드만 보지 말고 파트너와 합쳐 계약을 판단하세요.</li><li>짧은 무늬를 기억하면 그 무늬가 리드될 때 스페이드나 불필요한 카드를 낼 수 있습니다.</li><li>처음 이길 수 있다는 이유로 높은 스페이드를 모두 쓰지 말고 계약에 필요한 순간을 위해 남겨 두세요.</li><li>계약을 이미 넘었다면 추가 1점을 위해 위험을 감수하기보다 다음 리드를 지키세요.</li><li>매 트릭 뒤 진행 문구로 팀이 뒤처졌는지, 계약 중인지, 초과했는지 확인하세요.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>레벨이나 구매 보상은 없습니다. 매번 13트릭이 새로운 문제이며 선언, 짧은 무늬와 스페이드 타이밍이 달라집니다.</p>
+<p>난이도는 보이는 선택에서 생깁니다. 계약을 읽고, 따라 내기 제한을 처리하고, 남은 트릭에서 점수를 지키세요.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>선언, 팀 트릭 수, 리드 무늬, 승리 카드, 계약 진행과 Result 점수를 한 흐름에서 보여 줍니다. 터치, 마우스, 키보드 선택은 같은 규칙을 사용합니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>스페이드는 계정이나 구매가 필요 없는 무료 일반 브라우저 게임입니다. 현재 패는 클라우드에 저장되지 않으며 설정과 플레이 기록은 이 브라우저에만 남을 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>한 판에는 카드와 트릭이 몇 개인가요?</dt><dd>52장을 네 명에게 13장씩 나누고 13트릭을 끝내면 판이 끝납니다.</dd></div><div><dt>어떤 카드를 낼 수 있나요?</dt><dd>리드 무늬가 있으면 따라 내야 하고, 없으면 스페이드를 포함해 아무 카드나 낼 수 있습니다.</dd></div><div><dt>스페이드는 어떻게 이기나요?</dt><dd>스페이드가 나오면 가장 높은 스페이드가 이기고, 없으면 리드 무늬의 가장 높은 카드가 이깁니다.</dd></div><div><dt>계약 점수는 어떻게 계산하나요?</dt><dd>내 선언과 파트너 선언의 합이 계약입니다. 달성하면 선언 트릭마다 10점과 초과분을 얻고, 실패하면 선언 트릭마다 10점을 잃습니다.</dd></div><div><dt>0을 선언할 수 있나요?</dt><dd>네. 0~13 모두 가능하며 0은 트릭을 가져가지 않겠다는 계약입니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>계정이나 클라우드 저장은 없습니다. 설정과 기록은 브라우저에 남을 수 있지만 Restart와 New Game은 현재 판을 초기화합니다.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/gin-rummy/"><img src="/assets/card-games-gin-rummy-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>진 러미</strong><span>같은 숫자의 세트와 같은 무늬의 연속을 만들고 상대가 노크하기 전에 데드우드를 줄이세요.</span></span></a><a class="game-info-related-card" href="/ko/games/go-fish/"><img src="/assets/card-games-go-fish-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>물고기를 잡으러 가세요</strong><span>상대에게 내 손에 있는 랭크를 물어보세요.</span></span></a></div></div>
     </div>
-  </section><section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Spades</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" data-wp-battle-utility type="button" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong>Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" hidden><div class="result-card"><h2 id="resultTitle">Round complete</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div><script src="../../src/site-config.js"></script><script src="../../src/i18n.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/card-game-engine.js"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/card-games-next.js?v=20260906-spades-public-release-v21"></script><script src="game.js"></script><script src="../../src/battle-canvas-standard.js"></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script></body></html>
+  </section><section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Spades</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" data-wp-battle-utility type="button" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong>Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section><div id="resultOverlay" class="result-overlay" role="dialog" aria-modal="true" hidden><div class="result-card"><h2 id="resultTitle">Round complete</h2><p id="resultText"></p><div class="result-actions"><button id="resultNewGame" class="primary-btn" type="button">New Game</button><button id="resultRestart" class="secondary-btn" type="button">Restart</button><button id="resultClose" class="secondary-btn" type="button">Close</button></div></div></div><script src="../../src/site-config.js"></script><script src="../../src/i18n.js"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js"></script><script src="../../src/edge-guard.js"></script><script src="../../src/card-game-engine.js"></script><script src="../../src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/card-games-next.js?v=20260908-spades-guide-shell-v22"></script><script src="game.js"></script><script src="../../src/battle-canvas-standard.js"></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script></body></html>

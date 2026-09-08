@@ -314,6 +314,7 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions .panel-utility { transform: translateX(-15px); }
 }
 html[dir="rtl"] .wp-shell-settings-popover { right: auto; left: -4px; }
+html[dir="rtl"] body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions .panel-utility { transform: none; }
 
 /* stage-selector-standard.css intentionally normalizes every generic rail.
    Canopy Compass uses a compact authored list, so restore its local layout
