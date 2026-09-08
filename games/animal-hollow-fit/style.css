@@ -2,3 +2,29 @@
 @media(min-width:431px) and (max-width:700px){.main-poster{width:100%;max-width:none}}
 .target-card{background:linear-gradient(90deg,#10384b9e 0%,#10384b82 54%,#10384b55 100%),url("assets/animal-hollow-fit-background.png") center 72%/cover}
 .result-guide{display:block;width:min(100%,220px);height:auto;max-height:280px;object-fit:contain;margin:0 auto -18px;filter:drop-shadow(0 18px 24px #0008)}
+
+/* The short landscape viewport is still a full Main canvas: keep the
+   catalog-wide 420px poster and scale the complete Battle owner as one unit
+   so its HUD, choices, feedback, and action track remain reachable. */
+.battle-frame{width:100%;height:100%;}
+@media (min-width:700px){
+  .battle-screen{display:flex;justify-content:center;padding:0;height:calc(100svh - 56px);overflow:hidden;}
+  .battle-frame{display:flex;flex-direction:column;height:100%;}
+  .battle-frame > .topbar{flex:0 0 64px;height:64px;min-height:64px;}
+  .battle-frame > .battle-content{flex:1;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;gap:10px;}
+  .battle-frame > .battle-content > .battle-actions{margin-top:auto;}
+}
+@media (max-height:560px) and (orientation:landscape){
+  .main-content{grid-template-columns:420px minmax(0,1fr);gap:0 18px;max-width:920px;}
+  .main-content .main-poster{width:420px;max-width:420px;margin:0;}
+  .battle-frame{width:calc(100% / var(--hollow-battle-scale, .617));height:calc(100% / var(--hollow-battle-scale, .617));transform:scale(var(--hollow-battle-scale, .617));transform-origin:top center;}
+  .battle-frame > .battle-content{height:auto;flex:1;}
+}
+@media (min-width:700px){
+  .main-content{display:grid;grid-template-columns:420px minmax(0,1fr);gap:0 24px;align-items:center;width:min(100%,920px);max-width:920px;margin:0 auto;text-align:left;}
+  .main-content > :not(.main-poster){grid-column:2;}
+  .main-content .main-poster{grid-column:1;grid-row:1 / span 6;width:420px;max-width:420px;margin:0;}
+  .main-content .lede{font-size:16px;margin:0 0 18px;}
+  .main-content .fact-row{justify-content:flex-start;margin:8px 0 20px;}
+  .main-content .main-actions{width:100%;}
+}

@@ -3821,7 +3821,7 @@ if (wordlePublic) {
   delete wordlePublic.internalTrial;
 }
 
-// Next-five Mode 2 candidates remain owner-preview only until the exact Tester,
+// The remaining Next-five Mode 2 candidates remain owner-preview only until the exact Tester,
 // Gameplay Reviewer, Director, guide, preview, and release gates are complete
 // and the owner confirms the complete player flow is usable.
 const ownerPreviewStatusText = {
@@ -3906,6 +3906,17 @@ if (animalFlipFoundryPublic) {
   animalFlipFoundryPublic.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
   animalFlipFoundryPublic.previewVideo = "assets/previews/animal-flip-foundry-battle.webm";
   delete animalFlipFoundryPublic.internalTrial;
+}
+
+// Moonlit Trap Trail has completed its exact Tester, Gameplay Reviewer,
+// Director, guide, preview, and release gates. Keep the candidate declaration
+// above as the source of localized catalog copy, then expose the canonical
+// General game as a public playable in the same source pass.
+const animalTrapTrailPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-trap-trail");
+if (animalTrapTrailPublic) {
+  animalTrapTrailPublic.status = "playable";
+  animalTrapTrailPublic.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
+  delete animalTrapTrailPublic.internalTrial;
 }
 
 // Original idle-company preview requested by the owner. The card stays

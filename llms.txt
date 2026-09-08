@@ -77,6 +77,7 @@ WeightPlay covers these game and content clusters:
 - Mahjong Solitaire: https://weightplay.com/en/games/mahjong-solitaire/
 - Wordle: https://weightplay.com/en/games/wordle/
 - Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/
+- Moonlit Trap Trail: https://weightplay.com/en/games/animal-trap-trail/
 - Sliding 15: https://weightplay.com/en/games/sliding-15/
 - Lights Out: https://weightplay.com/en/games/lights-out/
 - Four in a Row: https://weightplay.com/en/games/four-in-a-row/

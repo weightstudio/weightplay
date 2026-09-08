@@ -2169,6 +2169,7 @@
     "animal-flip-foundry": {
       title: "Flip Foundry", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per chapter",
       gameplay: "Precision Flip Challenge", genre: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision", "Hand-Eye Coordination"],
+      relatedIds: ["animal-sketchwheel-rally", "animal-bounce-brawl"],
       intro: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.",
       story: ["The foundry turns one careful launch into a route of four surfaces. Shorter swipes stay low, longer swipes travel farther, and every upright landing earns the next decision."],
       systems: ["Drag upward from the canister on the live arena. Swipe force controls the launch distance while the canister rotates during flight.", "A good landing continues the streak and advances the surface. A miss opens a focused result with Retry so the same platform can be learned immediately."],
