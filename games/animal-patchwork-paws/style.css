@@ -63,6 +63,6 @@
   .screen.battle-screen .weave-card{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:minmax(0,176px) minmax(0,1fr);gap:12px;align-self:start;padding:4px;min-width:0}
   .screen.battle-screen .board{grid-column:1;grid-row:1;width:100%;max-width:160px;gap:8px}
   .screen.battle-screen .rule{grid-column:2;grid-row:1;margin:0;max-width:none;line-height:1.2;text-align:left}
-  .screen.battle-screen .status{position:absolute;left:205px;right:16px;bottom:68px;height:24px;min-height:24px;margin:0;line-height:1.15}
-  .screen.battle-screen .battle-actions{position:absolute;left:205px;right:16px;bottom:4px;grid-column:auto;grid-row:auto;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:8px;margin:0}
+  .screen.battle-screen .status{position:absolute;inset-inline-start:205px;inset-inline-end:16px;bottom:68px;height:24px;min-height:24px;margin:0;line-height:1.15}
+  .screen.battle-screen .battle-actions{position:absolute;inset-inline-start:205px;inset-inline-end:16px;bottom:4px;grid-column:auto;grid-row:auto;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:8px;margin:0}
 }

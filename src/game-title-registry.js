@@ -1727,22 +1727,6 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "बिल की जोड़",
     "ar": "ملاءمة الجحر"
   },
-  "animal-petal-pilot": {
-    "__localizedExact": true,
-    "en": "Petal Pilot",
-    "zh-Hant": "花瓣領航",
-    "zh-Hans": "花瓣领航",
-    "ja": "花びらパイロット",
-    "ko": "꽃잎 파일럿",
-    "es": "Piloto de pétalos",
-    "pt-BR": "Piloto de pétalas",
-    "fr": "Pilote de pétales",
-    "de": "Blütenpilot",
-    "it": "Pilota dei petali",
-    "ru": "Пилот лепестков",
-    "hi": "पंखुड़ी पायलट",
-    "ar": "طيار البتلات"
-  },
   "animal-cozy-camp": {
     "__localizedExact": true,
     "en": "Cozy Camp",
@@ -1758,22 +1742,6 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Уютный лагерь",
     "hi": "आरामदायक कैंप",
     "ar": "مخيم دافئ"
-  },
-  "animal-moonbeam-mirrors": {
-    "__localizedExact": true,
-    "en": "Moonbeam Mirrors",
-    "zh-Hant": "月光鏡陣",
-    "zh-Hans": "月光镜阵",
-    "ja": "月光ミラー",
-    "ko": "달빛 거울 길",
-    "es": "Espejos de luz lunar",
-    "pt-BR": "Espelhos do luar",
-    "fr": "Miroirs de lune",
-    "de": "Mondstrahl-Spiegel",
-    "it": "Specchi di luna",
-    "ru": "Лунные зеркала",
-    "hi": "चाँदनी दर्पण",
-    "ar": "مرايا ضوء القمر"
   },
   "animal-canopy-compass": {
     "__localizedExact": true,
@@ -2430,22 +2398,6 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "ru": "Лунный рынок животных",
     "hi": "ऐनिमल मून मार्केट",
     "ar": "سوق الحيوانات القمري"
-  },
-  "animal-mirror-meadow": {
-    "__localizedExact": true,
-    "en": "Mirror Meadow",
-    "zh-Hant": "鏡光草地",
-    "zh-Hans": "镜光草地",
-    "ja": "ミラー・メドウ",
-    "ko": "미러 메도우",
-    "es": "Pradera de Espejos",
-    "pt-BR": "Prado dos Espelhos",
-    "fr": "Prairie des Miroirs",
-    "de": "Spiegelwiese",
-    "it": "Prato degli Specchi",
-    "ru": "Луговые зеркала",
-    "hi": "मिरर मीडो",
-    "ar": "مرج المرايا"
   },
   "animal-putt-trails": {
     "__localizedExact": true,

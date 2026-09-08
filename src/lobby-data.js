@@ -4419,6 +4419,8 @@ const animalPatchworkPawsPlanned = {
 };
 animalPatchworkPawsPlanned.description = marketFiveLocalized(["Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "跨越六個篇章修復 30 個精心設計的棲地關卡，迎接風向、回聲、羅盤、編織與守護封印規則。", "跨越六个篇章修复 30 个精心设计的栖地关卡，迎接风向、回声、罗盘、编织与守护封印规则。", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules."]);
 animalPatchworkPawsPlanned.meta = marketFiveLocalized([["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 關卡", "6 個篇章", "保存解鎖"], ["30 关卡", "6 个篇章", "保存解锁"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"]]);
+animalPatchworkPawsPlanned.description.ar = "رمّم 30 مرحلة مصمّمة عبر ستة فصول، مع قواعد الرياح والصدى والبوصلة والضفيرة وختم الحارس.";
+animalPatchworkPawsPlanned.meta.ar = ["30 مرحلة", "6 فصول", "حفظ المراحل المتاحة"];
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalPatchworkPawsPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.games.push(animalPatchworkPawsPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPatchworkPawsPlanned.id);
@@ -5359,3 +5361,22 @@ for (const game of window.WONDER_LOBBY.games) {
   game.meta["zh-Hant"] = clean.meta;
   delete game.internalTrial;
 }
+
+// BEGIN OWNER CATALOG RETIREMENTS
+window.WONDER_LOBBY.retiredGames = {
+  "animal-mirror-meadow": {
+    "replacementGameId": "animal-sunbeam-garden",
+    "reason": "Owner explicitly requested consolidation of the mirror-reflection game into Sunbeam Garden."
+  },
+  "animal-moonbeam-mirrors": {
+    "replacementGameId": "animal-sunbeam-garden",
+    "reason": "Same slash/backslash reflection, fixed mirrors and light-to-target objective; three 3x3 rounds are a reduced version of the existing thirty-garden mirror campaign."
+  },
+  "animal-petal-pilot": {
+    "replacementGameId": "animal-hollow-fit",
+    "reason": "Both implementations present a visible target and three static shape options, select one and check, repeat three rounds, then minimize check count. Both accept option zero; Petal Pilot has no piloting or simulated pollen routing and changes only the shape presentation."
+  }
+};
+window.WONDER_LOBBY.games = window.WONDER_LOBBY.games.filter(game => !Object.hasOwn(window.WONDER_LOBBY.retiredGames, game.id));
+for (const audience of ["generalGameIds", "kidsGameIds"]) if (window.WONDER_LOBBY.audiences[audience]) window.WONDER_LOBBY.audiences[audience] = window.WONDER_LOBBY.audiences[audience].filter(id => !Object.hasOwn(window.WONDER_LOBBY.retiredGames, id));
+// END OWNER CATALOG RETIREMENTS

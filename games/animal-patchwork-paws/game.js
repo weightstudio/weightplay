@@ -62,6 +62,8 @@
     Object.assign(dictionary,campaignCopy[locale]||campaignCopy.en);
     (stageNames[locale]||stageNames.en).forEach((name,index)=>{dictionary[`stage${index+1}`]=name});
     genericAnimals.forEach((animal,index)=>{dictionary[`animal${index+1}`]=locale==="zh-Hant"?genericAnimalCopy[animal][1]:genericAnimalCopy[animal][0]});
+    // Explicit game-owned campaign translations must win over legacy fallbacks.
+    Object.assign(dictionary,window.ANIMAL_PATCHWORK_PAWS_CAMPAIGN_LOCALES?.[locale]||{});
   });
   const routeLocale=document.documentElement.lang;let locale=locales[routeLocale]?routeLocale:storage.get("weightplay-animal-patchwork-paws-locale")||"en";if(!locales[locale])locale="en";
   let sound=storage.get("weightplay-animal-patchwork-paws-sound")!=="off";
