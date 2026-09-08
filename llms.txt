@@ -76,6 +76,7 @@ WeightPlay covers these game and content clusters:
 - Reversi: https://weightplay.com/en/games/reversi/
 - Mahjong Solitaire: https://weightplay.com/en/games/mahjong-solitaire/
 - Wordle: https://weightplay.com/en/games/wordle/
+- Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/
 - Sliding 15: https://weightplay.com/en/games/sliding-15/
 - Lights Out: https://weightplay.com/en/games/lights-out/
 - Four in a Row: https://weightplay.com/en/games/four-in-a-row/
@@ -83,6 +84,7 @@ WeightPlay covers these game and content clusters:
 - Pong: https://weightplay.com/en/games/pong/
 - Habitat Atlas: https://weightplay.com/en/games/animal-habitat-atlas/
 - Animal Hoop League: https://weightplay.com/en/games/animal-hoop-league/
+- Mirror Meadow: https://weightplay.com/en/games/animal-mirror-meadow/
 - Peach Garden Oath: https://weightplay.com/en/games/animal-peach-oath/
 - FreeCell Solitaire: https://weightplay.com/en/games/freecell-solitaire/
 - TriPeaks Solitaire: https://weightplay.com/en/games/tripeaks-solitaire/

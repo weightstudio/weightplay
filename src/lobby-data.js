@@ -3877,13 +3877,11 @@ const nextFiveGeneralCandidates = [
   {
     id: "animal-flip-foundry",
     title: { en: "Flip Foundry", "zh-Hant": "翻轉工坊", "zh-Hans": "翻转工坊", ja: "フリップ工房", ko: "플립 공방", es: "Taller de giros", "pt-BR": "Oficina do Giro", fr: "Atelier du flip", de: "Flip-Werkstatt", it: "Officina del flip", ru: "Мастерская переворотов", hi: "फ्लिप कार्यशाला", ar: "ورشة القلب" },
-    status: "playable",
-    statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
     type: { en: "Precision Flip Challenge", "zh-Hant": "精準翻轉挑戰", "zh-Hans": "精准翻转挑战", ja: "精密フリップチャレンジ", ko: "정밀 플립 도전", es: "Desafío de giros precisos", "pt-BR": "Desafio de giros precisos", fr: "Défi de flips précis", de: "Präzisions-Flip", it: "Sfida di flip precisi", ru: "Точное испытание переворотов", hi: "सटीक फ्लिप चुनौती", ar: "تحدي القلب الدقيق" },
     description: { en: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.", "zh-Hant": "滑動晶體罐讓它在空中旋轉，並直立落在下一個工坊表面。", "zh-Hans": "滑动晶体罐让它在空中旋转，并直立落在下一个工坊表面。", ja: "クリスタル容器をスワイプし、空中で回転させ、次の工房面に立てて着地させよう。", ko: "크리스털 용기를 스와이프해 공중에서 회전시키고 다음 작업대에 똑바로 착지하세요.", es: "Desliza el recipiente de cristal, hazlo girar y aterrízalo de pie en la siguiente superficie.", "pt-BR": "Deslize o recipiente de cristal, gire-o no ar e pouse em pé na próxima superfície.", fr: "Faites glisser un réservoir en cristal, faites-le pivoter dans les airs et posez-le bien droit sur la prochaine surface de l’atelier.", de: "Wische einen Kristallbehälter, drehe ihn in der Luft und lande aufrecht auf der nächsten Werkstattfläche.", it: "Scorri un contenitore di cristallo, fallo ruotare in aria e fallo atterrare in posizione verticale sulla superficie successiva dell’officina.", ru: "Проведите по хрустальному контейнеру, переверните его в воздухе и посадите вертикально на следующую поверхность мастерской.", hi: "क्रिस्टल कैनिस्टर को स्वाइप करें, उसे हवा में घुमाएँ और अगली कार्यशाला सतह पर सीधा उतारें।", ar: "مرّر على الحاوية الكريستالية، وأدرها في الهواء، ثم هبط بها منتصبة على سطح الورشة التالي." },
     meta: { en: ["Swipe Force", "6 Chapters", "Perfect Landing"], "zh-Hant": ["滑動力度", "6 個章節", "完美落地"], "zh-Hans": ["滑动力度", "6 个章节", "完美落地"], ja: ["スワイプの強さ", "6章", "完璧な着地"], ko: ["스와이프 힘", "6개 챕터", "완벽한 착지"], es: ["Fuerza del deslizamiento", "6 capítulos", "Aterrizaje perfecto"], "pt-BR": ["Força do deslize", "6 capítulos", "Pouso perfeito"], fr: ["Force du geste", "6 chapitres", "Atterrissage parfait"], de: ["Wischstärke", "6 Kapitel", "Perfekte Landung"], it: ["Forza dello swipe", "6 capitoli", "Atterraggio perfetto"], ru: ["Сила свайпа", "6 глав", "Идеальная посадка"], hi: ["स्वाइप की ताकत", "6 अध्याय", "परफेक्ट लैंडिंग"], ar: ["قوة السحب", "6 فصول", "هبوط مثالي"], __localizedExact: true },
     art: { kind: "image", background: "assets/animal-flip-foundry-cover.webp", hideHero: true },
-    categories: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision"], ages: ["9", "family"], href: "games/animal-flip-foundry/", previewVideo: "assets/previews/animal-flip-foundry-battle.webm",
+    categories: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision"], ages: ["9", "family"], href: "games/animal-flip-foundry/", internalTrial: "index.html?trial=1",
   },
 ];
 for (const candidate of nextFiveGeneralCandidates) {
@@ -3897,6 +3895,17 @@ for (const candidate of nextFiveGeneralCandidates) {
     });
   }
   if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(candidate.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(candidate.id);
+}
+
+// Flip Foundry has completed its exact Tester and Gameplay Reviewer gates.
+// Keep the candidate declaration above as the fallback planned entry, then
+// expose the canonical game as a public playable in the same source pass.
+const animalFlipFoundryPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-flip-foundry");
+if (animalFlipFoundryPublic) {
+  animalFlipFoundryPublic.status = "playable";
+  animalFlipFoundryPublic.statusText = { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" };
+  animalFlipFoundryPublic.previewVideo = "assets/previews/animal-flip-foundry-battle.webm";
+  delete animalFlipFoundryPublic.internalTrial;
 }
 
 // Original idle-company preview requested by the owner. The card stays
@@ -4162,11 +4171,25 @@ const animalMirrorMeadowPlanned = {
   ageLabel: marketFiveLocalized(Array(13).fill("9+")),
   href: "games/animal-mirror-meadow/",
   internalTrial: "index.html?trial=1",
-  art: { kind: "image", background: "games/animal-mirror-meadow/assets/animal-mirror-meadow-cover.webp", hideHero: true },
+  art: { kind: "image", background: "games/animal-mirror-meadow/assets/animal-mirror-meadow-cover-v1.png", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalMirrorMeadowPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalMirrorMeadowPlanned.id)) window.WONDER_LOBBY.games.push(animalMirrorMeadowPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalMirrorMeadowPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalMirrorMeadowPlanned.id);
+
+// Mirror Meadow v3/I6 has completed the exact Tester, Gameplay Reviewer, art,
+// Director, and release-preflight gates. It is a poster-only public release;
+// keep the candidate's truthful copy and remove the private trial bridge.
+const animalMirrorMeadowPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-mirror-meadow");
+if (animalMirrorMeadowPublic) {
+  animalMirrorMeadowPublic.status = "playable";
+  animalMirrorMeadowPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  delete animalMirrorMeadowPublic.internalTrial;
+}
 
 // Animal Putt Trails is an active unpublished production row. Keep its
 // owner-preview card planned/non-playable so the canonical Reviewer route can
