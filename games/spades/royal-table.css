@@ -1,0 +1,80 @@
+body.spades-royal-table .card-game-battle {
+  background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
+}
+body.spades-royal-table .card-table-center {
+  background: #003a2b50;
+  border: 1px solid #dab96b99;
+  box-shadow: inset 0 0 24px #001c1680, 0 0 0 3px #052a2266;
+}
+body.spades-royal-table .opponent-card {
+  background: linear-gradient(145deg,#143f38ee,#06271fee);
+  border-color: #c8b07977;
+  box-shadow: inset 0 1px #ffedc933, 0 3px 8px #00191166;
+}
+body.spades-royal-table .opponent-card strong { color: #ffe4a2; }
+body.spades-royal-table .card-game-player { background:#05281fe6; border-color:#d8ba6d88; }
+body.spades-royal-table .playing-card { --classic-card-width:52px; font-family:Georgia,'Times New Roman',serif; }
+body.spades-royal-table .playing-card .rank {font-size:10px;line-height:1;}
+body.spades-royal-table .playing-card .deck-center {inset:17% 12%;}
+body.spades-royal-table .playing-card .deck-pip {font-size:8px;}
+body.spades-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:18px;}
+body.spades-royal-table .playing-card .deck-court {inset:16% auto auto 19%;}
+body.spades-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-shadow:0 0 0 2px #ffdd87,0 6px 10px #001a14aa;}
+body.spades-royal-table .playing-card.spades-card-arrival {animation:spades-card-arrival 180ms ease-out;}
+@keyframes spades-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){body.spades-royal-table .playing-card {animation:none!important;transition:none!important;}}
+
+body.spades-royal-table #cardGameActions [data-action="bid"] {
+  border:1px solid #d5b569; border-radius:10px;
+  background:linear-gradient(160deg,#173d46,#071e2d); color:#ffe6ae;
+  font:700 16px/1 Georgia,serif; box-shadow:inset 0 1px #fff3,0 3px 6px #0004;
+}
+body.spades-royal-table #cardGameActions [data-action="bid"]:hover,
+body.spades-royal-table #cardGameActions [data-action="bid"]:focus-visible {
+  outline:2px solid #ffe6ae; outline-offset:-3px; background:#24505a;
+}
+/* Native localization appends a text arrow after the shell icon. Keep the
+   accessible label and one visible canonical icon, without another observer. */
+body.spades-royal-table #battleBackBtn {font-size:0!important;}
+body.spades-royal-table #battleBackBtn .wp-shell-return-arrow {font-size:28px;}
+body.spades-royal-table #resultOverlay .result-card {
+  background:radial-gradient(ellipse at top,#20443d,#071d21 85%);
+  border:1px solid #d6b56e;border-radius:22px;
+  box-shadow:inset 0 0 0 4px #d6b56e18,0 20px 60px #0009;
+}
+body.spades-royal-table .result-card h2 {color:#ffe6ab;text-shadow:0 2px 12px #eab65233;}
+body.spades-royal-table .result-actions button,
+body.spades-royal-table .main-actions button {
+  border:1px solid #c7aa68;border-radius:12px;padding:12px 16px;
+  background:linear-gradient(160deg,#21453f,#0c2529);color:#fff2d5;
+  font:700 15px/1.3 system-ui,sans-serif;min-height:44px;
+  box-shadow:inset 0 1px #fff2,0 3px 8px #0004;
+}
+body.spades-royal-table .result-actions .primary-btn,
+body.spades-royal-table .main-actions .primary-btn {
+  background:linear-gradient(135deg,#ffe7a1,#e3b951);color:#182e28;
+}
+body.spades-royal-table .result-actions button:focus-visible,
+body.spades-royal-table .main-actions button:focus-visible {outline:3px solid #fff1bd;outline-offset:2px;}
+@media(orientation:landscape) and (max-height:560px) {
+  body.spades-royal-table[data-wp-card-game] .card-game-board {
+    grid-template-rows:28px minmax(96px,1fr) minmax(82px,1fr);
+  }
+  body.spades-royal-table[data-wp-card-game] #cardGameTable {
+    min-height:96px;padding:2px 8px;
+  }
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter {
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,40%);
+    grid-auto-rows:minmax(0,auto);gap:2px 8px;align-items:center;
+  }
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter > :not(.table-row) {grid-column:1;}
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter .table-row {
+    grid-column:2;grid-row:1 / span 4;min-height:46px;gap:8px;flex-wrap:nowrap;
+  }
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter .playing-card {
+    width:30px;height:42px;min-width:30px;min-height:42px;
+  }
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter .playing-card .rank {font-size:7px;}
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter .deck-pip {font-size:5px;}
+  body.spades-royal-table[data-wp-card-game] #cardGameCenter [data-deck-rank='A'] .deck-pip {font-size:13px;}
+}

@@ -1154,8 +1154,9 @@
 
   const ginResultText = (key, values = {}) => {
     const dictionary = GIN_RESULT_COPY[currentLocale()] || GIN_RESULT_COPY.en;
-    const apply = (template) => template.replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? ""));
-    return apply(dictionary.breakdown.replace("{reason}", apply(dictionary[key] || dictionary.stock)));
+    const apply = (template, fields = values) => template.replace(/\{(\w+)\}/g, (_, name) => String(fields[name] ?? ""));
+    const reason = apply(dictionary[key] || dictionary.stock, { ...values, deadwood: values.knockDeadwood ?? values.deadwood });
+    return apply(dictionary.breakdown.replace("{reason}", reason));
   };
 
   const CRIB_TRANSITION = {
@@ -2837,15 +2838,45 @@
   function makeGinRummyFixed(controller) {
     const s = { player: [], ai: [], stock: [], discard: [], turn: 0, drawn: false, selected: new Set(), score: [0, 0], over: false };
     const meldStats = (hand) => {
-      const used = new Set();
-      const byRank = new Map();
-      hand.forEach((item, index) => { const list = byRank.get(item.rank) || []; list.push(index); byRank.set(item.rank, list); });
-      byRank.forEach((indices) => { if (indices.length >= 3) indices.forEach((index) => used.add(index)); });
-      SUITS.forEach((suit) => { const indices = hand.map((item, index) => ({ item, index })).filter(({ item }) => item.suit === suit).sort((a, b) => a.item.rank - b.item.rank); let run = []; indices.forEach((entry) => { if (run.length && entry.item.rank !== run.at(-1).item.rank + 1) run = []; run.push(entry); if (run.length >= 3) run.forEach((part) => used.add(part.index)); }); });
-      const deadwood = hand.reduce((total, item, index) => total + (used.has(index) ? 0 : value(item)), 0);
-      return { deadwood, meldCards: used.size };
+      // A card can belong to one meld only. Enumerate valid sets/runs, then
+      // choose the disjoint combination leaving the least deadwood.
+      const melds = new Set();
+      const ranks = new Map();
+      hand.forEach((card, i) => { const group = ranks.get(card.rank) || []; group.push(i); ranks.set(card.rank, group); });
+      ranks.forEach(group => {
+        if (group.length < 3) return;
+        for (let mask = 1; mask < (1 << group.length); mask += 1) {
+          const members = group.filter((_, i) => mask & (1 << i));
+          if (members.length >= 3) melds.add(members.reduce((bits, i) => bits | (1 << i), 0));
+        }
+      });
+      SUITS.forEach(suit => {
+        const cards = hand.map((card, i) => ({card, i})).filter(entry => entry.card.suit === suit).sort((a, b) => a.card.rank - b.card.rank);
+        for (let start = 0; start < cards.length; start += 1) {
+          let bits = 0;
+          for (let end = start; end < cards.length; end += 1) {
+            if (end > start && cards[end].card.rank !== cards[end - 1].card.rank + 1) break;
+            bits |= 1 << cards[end].i;
+            if (end - start >= 2) melds.add(bits);
+          }
+        }
+      });
+      const memo = new Map();
+      const solve = remaining => {
+        if (memo.has(remaining)) return memo.get(remaining);
+        let best = {deadwood: 0, meldCards: 0};
+        hand.forEach((card, i) => { if (remaining & (1 << i)) best.deadwood += value(card); else best.meldCards += 1; });
+        for (const meld of melds) {
+          if ((remaining & meld) !== meld) continue;
+          const candidate = solve(remaining ^ meld);
+          if (candidate.deadwood < best.deadwood || (candidate.deadwood === best.deadwood && candidate.meldCards > best.meldCards)) best = candidate;
+        }
+        memo.set(remaining, best);
+        return best;
+      };
+      return solve((1 << hand.length) - 1);
     };
-    const finish = (winner, reasonKey) => {
+    const finish = (winner, reasonKey, knocker = 0) => {
       s.over = true;
       s.score[winner] += 1;
       const playerStats = meldStats(s.player);
@@ -2854,13 +2885,14 @@
         meldCards: playerStats.meldCards,
         deadwood: playerStats.deadwood,
         aiDeadwood: aiStats.deadwood,
+        knockDeadwood: knocker === 1 ? aiStats.deadwood : playerStats.deadwood,
         playerScore: s.score[0],
         aiScore: s.score[1],
       }));
     };
     const drawCard = (fromDiscard) => { const item = fromDiscard ? s.discard.pop() : s.stock.pop(); if (item) { s.player.push(item); s.drawn = true; } };
-    const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = -1; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood > bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
-    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, "gin"); else if (stats.deadwood <= 10) finish(1, "knock"); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, "stock"); } else { s.turn = 0; s.drawn = false; } };
+    const chooseAiDiscard = () => { let bestIndex = 0; let bestDeadwood = Infinity; s.ai.forEach((_, index) => { const candidate = s.ai.filter((__, itemIndex) => itemIndex !== index); const deadwood = meldStats(candidate).deadwood; if (deadwood < bestDeadwood) { bestDeadwood = deadwood; bestIndex = index; } }); return bestIndex; };
+    const aiTurn = () => { if (s.turn !== 1 || s.over) return; if (s.discard.length && Math.random() > .45) s.ai.push(s.discard.pop()); else if (s.stock.length) s.ai.push(s.stock.pop()); const discardIndex = chooseAiDiscard(); const discarded = s.ai.splice(discardIndex, 1)[0]; if (discarded) s.discard.push(discarded); const stats = meldStats(s.ai); if (stats.deadwood === 0) finish(1, "gin"); else if (stats.deadwood <= 10) finish(1, "knock", 1); else if (!s.stock.length) { const playerStats = meldStats(s.player); finish(playerStats.deadwood <= stats.deadwood ? 0 : 1, "stock"); } else { s.turn = 0; s.drawn = false; } };
     const discardMarkup = () => s.discard.at(-1)
       ? cardMarkup(s.discard.at(-1), 0, { runtimeLocalizeOff: true })
       : `<span class="card-empty-slot" data-runtime-localize="off" role="status">${ginBattleText("emptyDiscard")}</span>`;

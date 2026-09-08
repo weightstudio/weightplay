@@ -119,7 +119,7 @@ export class Crystal3D {
         this.scene.add(border);
       }
       this.hero = this.character('hero');
-      this.hero.scale.setScalar(2.15);
+      this.hero.scale.setScalar(2.35);
       this.scene.add(this.hero);
       this.key = this.makeKey();
       this.scene.add(this.key);
@@ -408,8 +408,16 @@ export class Crystal3D {
     if (this.disposed || this.contextLost) return false;
     const resized = this.canvas.width !== width || this.canvas.height !== height;
     if (resized) this.renderer.setSize(width, height, false);
-    const cx = WIDTH / UNIT / 2;
-    const cz = HEIGHT / UNIT / 2;
+    const targetX = WIDTH / UNIT / 2 * .3 + state.player.x / UNIT * .7;
+    const targetZ = HEIGHT / UNIT / 2 * .3 + state.player.y / UNIT * .7;
+    const dt = Math.min(.05, Math.max(0, (now - (this.focusTime ?? now)) / 1000));
+    if (!this.focus) this.focus = { x: targetX, z: targetZ };
+    const blend = 1 - Math.exp(-7 * dt);
+    this.focus.x += (targetX - this.focus.x) * blend;
+    this.focus.z += (targetZ - this.focus.z) * blend;
+    this.focusTime = now;
+    const cx = this.focus.x;
+    const cz = this.focus.z;
     this.landscape = width > height;
     const azimuth = .55 + (this.landscape ? Math.PI / 2 : 0);
     if (this.azimuth !== azimuth) this.renderer.shadowMap.needsUpdate = true;
@@ -421,7 +429,7 @@ export class Crystal3D {
     const c = Math.abs(Math.cos(this.azimuth)), s = Math.abs(Math.sin(this.azimuth));
     const baseWidth = (WIDTH * c + HEIGHT * s) / UNIT + 3;
     const baseHeight = (WIDTH * s + HEIGHT * c) / UNIT * groundCosine + 4;
-    const fittedHeight = Math.max(baseHeight, baseWidth / aspect);
+    const fittedHeight = Math.max(baseHeight, baseWidth / aspect) / 1.35;
     if (resized || !this.bounds) {
       this.camera.left = -fittedHeight * aspect / 2;
       this.camera.right = fittedHeight * aspect / 2;

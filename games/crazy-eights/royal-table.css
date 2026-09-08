@@ -1,0 +1,59 @@
+body.crazy-eights-royal-table .card-game-battle {
+  background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
+}
+body.crazy-eights-royal-table .card-table-center {
+  background: #003a2b50;
+  border: 1px solid #dab96b99;
+  box-shadow: inset 0 0 24px #001c1680, 0 0 0 3px #052a2266;
+}
+body.crazy-eights-royal-table .opponent-card {
+  background: linear-gradient(145deg,#143f38ee,#06271fee);
+  border-color: #c8b07977;
+  box-shadow: inset 0 1px #ffedc933, 0 3px 8px #00191166;
+}
+body.crazy-eights-royal-table .opponent-card strong { color: #ffe4a2; }
+body.crazy-eights-royal-table .card-game-player { background:#05281fe6; border-color:#d8ba6d88; }
+body.crazy-eights-royal-table .playing-card { --classic-card-width:52px; font-family:Georgia,'Times New Roman',serif; }
+body.crazy-eights-royal-table .playing-card .rank {font-size:10px;line-height:1;}
+body.crazy-eights-royal-table .playing-card .deck-center {inset:17% 12%;}
+body.crazy-eights-royal-table .playing-card .deck-pip {font-size:8px;}
+body.crazy-eights-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:18px;}
+body.crazy-eights-royal-table .playing-card .deck-court {inset:16% auto auto 19%;}
+body.crazy-eights-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-shadow:0 0 0 2px #ffdd87,0 6px 10px #001a14aa;}
+body.crazy-eights-royal-table .playing-card.crazy-eights-card-arrival {animation:crazy-eights-card-arrival 180ms ease-out;}
+@keyframes crazy-eights-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){body.crazy-eights-royal-table .playing-card {animation:none!important;transition:none!important;}}
+
+body.crazy-eights-royal-table .playing-card.is-face-down {background:#092c26 url('../../assets/klondike-solitaire-card-back.webp') center/100% 100%;border-color:#d7bd75;}
+body.crazy-eights-royal-table .playing-card.is-face-down::after {content:none;}
+body.crazy-eights-royal-table .card-choice-panel button,
+body.crazy-eights-royal-table #cardGameActions button,
+body.crazy-eights-royal-table .main-actions button,
+body.crazy-eights-royal-table .result-actions button {background:linear-gradient(135deg,#20493d,#082c2c);border:1px solid #d8bd77;border-radius:12px;color:#fff2d4;min-width:44px;min-height:44px;padding:10px 14px;font:700 15px/1.2 system-ui,sans-serif;}
+body.crazy-eights-royal-table button.primary-btn {background:linear-gradient(135deg,#ffe7a3,#e3b956);color:#153128;}
+body.crazy-eights-royal-table .card-choice-panel button {font-size:26px;}
+body.crazy-eights-royal-table .card-choice-panel [data-value='hearts'],body.crazy-eights-royal-table .card-choice-panel [data-value='diamonds'] {color:#ffb4aa;}
+body.crazy-eights-royal-table button:disabled {opacity:.42;}
+body.crazy-eights-royal-table button:focus-visible {outline:2px solid #fff1ad;outline-offset:2px;}
+body.crazy-eights-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#285142,#071d20);border-color:#d8bd77;}
+body.crazy-eights-royal-table #resultOverlay h2 {color:#ffe5a4;}
+body.crazy-eights-royal-table #cardGameTable:has([data-action='suit']) {border-color:#f6d37b;box-shadow:inset 0 0 24px #c1a64b18,0 0 0 2px #d6b36544;}
+body.crazy-eights-royal-table #cardGameHand [data-deck-rank='8'] {border-color:#e6be63;box-shadow:inset 0 0 0 1px #e5bc5f,0 3px 10px #e5bc5f33;}
+@media(orientation:landscape) and (max-height:560px){
+ body.crazy-eights-royal-table .card-table-ui {row-gap:4px;}
+ body.crazy-eights-royal-table .card-game-board {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:28px minmax(0,1fr);}
+ body.crazy-eights-royal-table #cardGameOpponents {display:grid;grid-column:1;grid-row:1;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;overflow:visible;}
+ body.crazy-eights-royal-table .opponent-card {box-sizing:border-box;height:28px;padding:2px 4px;min-height:0;font-size:10px;line-height:11px;}
+ body.crazy-eights-royal-table .opponent-card span {margin:0;font-size:9px;}
+ body.crazy-eights-royal-table #cardGameTable {grid-column:1;grid-row:2;min-height:0;padding:4px;}
+ body.crazy-eights-royal-table #cardGameCenter {width:100%;display:grid;grid-template-columns:1fr 1fr;gap:3px;align-items:center;}
+ body.crazy-eights-royal-table #cardGameCenter > :not(.table-row):not(.card-choice-panel) {grid-column:2;font-size:10px;line-height:1.1;padding:2px;margin:0;}
+ body.crazy-eights-royal-table #cardGameCenter .table-row {grid-column:1;grid-row:1/span 2;min-height:54px;gap:5px;}
+ body.crazy-eights-royal-table #cardGameCenter .playing-card {width:38px;height:52px;min-height:52px;}
+ body.crazy-eights-royal-table #cardGameCenter .card-choice-panel {grid-column:1/span 2;display:flex;justify-content:center;gap:6px;}
+ body.crazy-eights-royal-table #cardGameCenter .card-choice-panel button {padding:4px 10px;}
+ body.crazy-eights-royal-table .card-game-player {grid-column:2;grid-row:1/span 2;padding:6px;display:flex;flex-direction:column;justify-content:center;}
+ body.crazy-eights-royal-table .card-game-player-header {font-size:12px;}
+ body.crazy-eights-royal-table .playing-card .rank {font-size:8px;}
+ body.crazy-eights-royal-table .playing-card .deck-pip {font-size:6px;}
+}

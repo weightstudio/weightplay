@@ -73,7 +73,8 @@
     syncing = true;
     try {
       document.documentElement.dir = "rtl";
-      document.title = `${ARABIC_SHELL.title} | WeightPlay`;
+      const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.['crazy-eights']?.ar || ARABIC_SHELL.title;
+      if (document.title !== `${officialTitle} | WeightPlay`) document.title = `${officialTitle} | WeightPlay`;
       const mainReturn = document.querySelector(".main-return");
       if (mainReturn) mainReturn.setAttribute("aria-label", ARABIC_SHELL.back);
       const settings = document.querySelector("#audioMenuBtn");
@@ -122,7 +123,7 @@
 
       const battleBack = document.querySelector("#battleBackBtn");
       if (battleBack) {
-        setText(battleBack, `← ${ARABIC_SHELL.back}`);
+        // The shared shell owns its icon children; localization owns its label.
         battleBack.setAttribute("aria-label", ARABIC_SHELL.back);
         battleBack.setAttribute("data-runtime-localize", "off");
       }
@@ -170,5 +171,13 @@
   window.addEventListener("weightplay:shell-sync", syncArabicShell);
   window.addEventListener("weightplay:battle-open", syncArabicShell);
   window.addEventListener("weightplay:battle-sync", syncArabicShell);
-  new MutationObserver(syncArabicShell).observe(document.body, { childList: true, subtree: true, characterData: true });
+  const shellRoots = ['.card-game-topbar', '#cardGameOpponents', '#cardGameActions', '#resultOverlay'].map(selector => document.querySelector(selector)).filter(Boolean);
+  const observer = new MutationObserver(() => {
+    observer.disconnect();
+    try { syncArabicShell(); } finally { connect(); }
+  });
+  const connect = () => shellRoots.forEach(root => observer.observe(root, { childList: true, subtree: true, characterData: true }));
+  connect();
+  window.addEventListener('pagehide', () => observer.disconnect());
+  window.addEventListener('pageshow', event => { if (event.persisted) connect(); });
 })();

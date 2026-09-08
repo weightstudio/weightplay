@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-courtyard-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-close-camera-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -2836,12 +2836,20 @@
     ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
     state.enemies.forEach(enemy => {
       if (!crystal3D.inView(enemy.x, enemy.y)) return;
-      const p = point(enemy.x, enemy.y, enemy.isBoss ? 2.7 : 1.6);
-      const width = enemy.isBoss ? 64 : 28;
-      ctx.fillStyle = "#153438";
-      ctx.fillRect(p.x - width / 2, p.y - 12, width, 9);
-      ctx.fillStyle = enemy.hit > 0 ? "#ffffff" : "#9eedad";
-      ctx.fillRect(p.x - width / 2, p.y - 12, width * Math.max(0, enemy.hp / enemy.maxHp), 9);
+      if (!enemy.isBoss && enemy.hp >= enemy.maxHp) return;
+      const p = point(enemy.x, enemy.y, (enemy.size || 64) / 64 * 1.55);
+      const width = enemy.isBoss ? 72 : 28, height = enemy.isBoss ? 6 : 4;
+      const x = p.x - width / 2, y = p.y - 6;
+      const health = Math.min(1, Math.max(0, enemy.hp / enemy.maxHp));
+      ctx.fillStyle = "rgba(12,19,22,.9)";
+      ctx.strokeStyle = enemy.isBoss ? "#b9a27a" : "#807761";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(x - 1, y - 1, width + 2, height + 2, 2);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = health <= .3 ? "#be745f" : "#b2a374";
+      ctx.fillRect(x, y, width * health, height);
+      ctx.fillStyle = "rgba(245,229,187,.3)";
+      ctx.fillRect(x, y, width * health, 1);
     });
     state.floaters.forEach(floater => {
       const p = point(floater.x, floater.y, .5);

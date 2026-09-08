@@ -661,6 +661,12 @@
       replay.className="secondary";
     }
     [$("menuBtn"),$("nextBtn"),replay].forEach(button=>actions.append(button));
+    if(!$("resultSummary")){
+      const summary=document.createElement("div");
+      summary.id="resultSummary";
+      [$("resultTitle"),$("resultCopy"),$("resultCompletionHint"),$("resultRewards")].forEach(node=>summary.append(node));
+      $("result").insertBefore(summary,actions);
+    }
     return replay;
   }
   function commitResultDecision(action){if(resultDecisionCommitted||$("result").classList.contains("hidden"))return;resultDecisionCommitted=true;action();}
@@ -674,7 +680,7 @@
   function setResultOwnership(active){resultBackgroundNodes().forEach(node=>{node.inert=active;if(active)node.setAttribute("aria-hidden","true");else node.removeAttribute("aria-hidden");});if(active)sceneFrame("battle",()=>{if(!$('result').classList.contains('hidden'))resultPrimaryAction?.focus({preventScroll:true});});}
   function syncSoundToggle(activeViewport){const toggle=document.querySelector("button[data-sound-toggle]");if(toggle)toggle.style.setProperty("display",activeViewport?"none":"grid","important");}
   function syncSceneNode(id,visible){const node=$(id);if(!node)return;node.classList.toggle("hidden",!visible);node.hidden=!visible;if(visible)node.removeAttribute("aria-hidden");else node.setAttribute("aria-hidden","true");}
-  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));}
+  function show(id){const resultActive=id==="result",scene=id==="mainScreen"?"main":id==="stageScreen"?"stage":"battle",activeViewport=scene!=="main";if(scene!==activeScene){activeScene=scene;sceneGeneration+=1;}document.body.dataset.screen=scene;for(const name of ["main","stage","battle"])document.body.classList.toggle(`wp-shell-${name}-active`,name===scene);document.body.classList.toggle("wp-mobile-game-mode",activeViewport);document.documentElement.classList.toggle("wp-mobile-game-mode",activeViewport);syncSoundToggle(activeViewport);syncSceneNode("mainGroup",scene==="main");syncSceneNode("mainHeader",scene==="main");syncSceneNode("mainScreen",scene==="main");syncSceneNode("stageScreen",scene==="stage");syncSceneNode("battleShell",scene==="battle");syncSceneNode("result",resultActive);setResultOwnership(resultActive);dispatchEvent(new CustomEvent("weightplay:shell-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:stage-sync",{detail:{screen:scene,generation:sceneGeneration}}));dispatchEvent(new CustomEvent("weightplay:battle-sync",{detail:{screen:scene,generation:sceneGeneration}}));window.WeightPlayBattleCanvas?.sync?.();}
   function focusMain(){sceneFrame("main",()=>$('startBtn').focus({preventScroll:true}));}
   function focusCurrentDiveDecision(){
     const candidates=state.fishActive?[$("dodgeLeftBtn"),$("pulseBtn")]:[$("leftGate"),$("rightGate"),$("surfaceBtn")];
@@ -714,11 +720,12 @@
     else if(resume)focusCurrentDiveDecision();
   }
   function leaveDive(){
+    const returnRoute=$("result").classList.contains("hidden")?state.route:save.unlocked;
     setQuit(false);
     cancelDiveAsync();
     show("stageScreen");
     renderRoutes();
-    focusRoute();
+    selectRoute(returnRoute,{center:true,focus:true});
   }
   function renderRoutes(){if(!routeCardPool.length)buildRoutePool();selectRoute(selectedRoute,{center:true});}
   function routeConfig(){return routes[state.route-1];}
@@ -970,7 +977,7 @@
     renderBattle();
     focusCurrentDiveDecision();
   }
-  function renderMainProgress(){$("progress").textContent=`${t("route",{n:save.unlocked})} / ${routes.length}`;$("routesTab").textContent=t("stage");}
+  function renderMainProgress(){$("progress").textContent=`${t("route",{n:save.unlocked})} / ${routes.length}`;$("routesTab").textContent=t("routeSelect");}
   function localize(){document.documentElement.lang=locale;document.documentElement.dir=locale==="ar"?"rtl":"ltr";document.title=`${t("title")} - WeightPlay`;$("title").textContent=t("title");$("languageLabel").textContent=t("language");$("localeSelect").value=locale;$("headline").textContent=t("headline");$("intro").textContent=t("intro");$("guideTitle").textContent=t("guideTitle");$("guideCopy").textContent=t("guideCopy");$("startBtn").textContent=t("start");$("stageTitle").textContent=t("stage");$("stageHint").textContent=t("stageHint");$("leftBtn").textContent=t("left");$("rightBtn").textContent=t("right");$("sonarBtn").textContent=t("sonarPowered");$("shieldBtn").textContent=t("shield");$("surfaceBtn").textContent=t("surface");$("coachTitle").textContent=t("coachTitle");$("coachStart").textContent=t("coachStart");renderCoach();$("helpBtn").ariaLabel=t("help");$("stageBack").ariaLabel=t("back");$("battleBack").ariaLabel=t("back");renderMainProgress();renderRoutes();if(state.route){renderBattle();if(state.fishActive)renderFish();if(!$("upgradePanel").classList.contains("hidden"))renderUpgrade();}}
   $("startBtn").onclick=()=>{show("stageScreen");renderRoutes();};$("stageBack").onclick=()=>show("mainScreen");$("battleBack").onclick=()=>{cancelDiveAsync();show("stageScreen");renderRoutes();};$("menuBtn").onclick=leaveDive;$("leftBtn").onclick=()=>move("left");$("rightBtn").onclick=()=>move("right");$("dodgeLeftBtn").onclick=attackFish;$("pulseBtn").onclick=escapeFish;$("helpBtn").onclick=()=>setCoach(true);$("coachStart").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("coachStart").onclick=()=>{save.tutorialDone=true;persist();setCoach(false);setFeedback(`${icon("sonar")}<b>?</b>`,t("objectiveScan"));};$("sonarBtn").onclick=()=>{if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<2){setFeedback(`${icon("power")}<b>0</b>`,t("sonarNeed"));return;}state.battery-=2;state.sonar=true;setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};$("shieldBtn").onclick=()=>{if(state.shieldArmed)return;if(state.battery<1){setFeedback(`${icon("power")}<b>0</b>`,t("shieldNeed"));return;}state.battery-=1;state.shieldArmed=true;setFeedback(`${icon("shield")}<b>✓</b>`,t("shieldArmed"));renderBattle();focusCurrentDiveDecision();};$("surfaceBtn").onclick=()=>finish("surface");$("beaconBtn").addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();});$("beaconBtn").onclick=useBeacon;["upgradeHp","upgradeAttack","upgradeOxygen"].forEach(id=>$(id).addEventListener("keydown",event=>{if(event.repeat&&(event.key==="Enter"||event.key===" "))event.preventDefault();}));$("upgradeHp").onclick=()=>allocateStat("hp");$("upgradeAttack").onclick=()=>allocateStat("attack");$("upgradeOxygen").onclick=()=>allocateStat("oxygen");$("upgradeDone").onclick=()=>{setUpgradeModal(false);renderBattle();};$("localeSelect").onchange=(event)=>{locale=event.target.value;writeStorage("weightPlayLocale",locale);localize();};
   $("sonarBtn").onclick=()=>{const config=routeConfig(),cost=config.sonarCost??2;if(config.jammedZones?.includes(state.zone)){setFeedback(`${icon("sonar")}<b>×</b>`,routeText(config,"rule"));return;}if(state.sonar){setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());return;}if(state.battery<cost){setFeedback(`${icon("power")}<b>${state.battery}</b>`,t("sonarNeed").replace("2",String(cost)));return;}state.battery-=cost;state.sonar=true;track("sonar_used",{...routeEventPayload(config),cost,power_after:state.battery});setFeedback(`${icon("sonar")}<b>✓</b>`,sonarMessage());renderBattle();};
