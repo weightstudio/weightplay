@@ -10,7 +10,7 @@
   const $ = (id) => document.getElementById(id);
   const t = (key, vars = {}) => {
     const table = copy[state.locale] || copy.en || {};
-    let value = table[key] || copy.en?.[key] || key;
+    let value = (key === 'title' && window.WEIGHTPLAY_GAME_TITLES?.['animal-dewline']?.[state.locale]) || table[key] || copy.en?.[key] || key;
     Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
@@ -106,6 +106,9 @@
   $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });
   $("localeSelect").addEventListener("change", (event) => { state.locale = copy[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); });
   try { const saved = localStorage.getItem("weightplayLocale"); if (saved && copy[saved]) state.locale = saved; } catch (_) {}
+  const routeSegment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
+  const routeLocale = {'zh-tw':'zh-Hant','zh-cn':'zh-Hans','pt-br':'pt-BR'}[routeSegment] || routeSegment;
+  if (copy[routeLocale]) state.locale = routeLocale;
   window.setTimeout(() => { $("loadingPanel").hidden = true; show("main"); applyLocale(); track("main_ready"); }, 260);
   window.__ANIMAL_DEWLINE_TEST__ = { meadows, startSession, startMeadow, changeValve, checkFlow, getState: () => ({ ...state, values: [...state.values] }) };
 })();

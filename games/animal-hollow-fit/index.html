@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-hollow-fit/"+location.search+location.hash)}catch{location.replace("/en/games/animal-hollow-fit/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-hollow-fit/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-hollow-fit/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-hollow-fit/" />
@@ -22,25 +23,26 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-game-id" content="animal-hollow-fit">
-  <meta name="weightplay-game-version" content="v2">
+  <meta name="weightplay-game-version" content="v4">
   <meta name="weightplay-interface-version" content="6">
-  <title>Hollow Fit | WeightPlay</title>
+  <title>Burrow Shape Match | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-hollow-fit-art-v2" data-wp-game-guide>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260903-hollow-fit-v1">
-  <link rel="stylesheet" href="style.css?v=20260908-hollow-fit-responsive-v2">
+  <link rel="stylesheet" href="style.css?v=20260908-hollow-fit-responsive-v2"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v2">
+<body data-wp-game-id="animal-hollow-fit" data-wp-audience="general" data-wp-game-version="v4">
   <div class="app-shell">
     <main id="mainScreen" class="screen main-screen" data-view="main" data-screen="main">
       <header class="topbar wp-main-shell-header">
         <a class="return-link wp-shell-return" href="../../index.html" data-wp-return="main" data-copy-aria="mainBack" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></a>
-        <strong class="wp-shell-main-title" data-copy="title">Hollow Fit</strong>
+        <strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</strong>
         <button id="main-settings" class="utility-button wp-shell-settings-button" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button>
       </header>
       <div class="main-content">
         <img class="main-poster" src="assets/animal-hollow-fit-cover.png" data-copy-alt="coverAlt" alt="Moonlit woodland burrow with a friendly hedgehog and rabbit" width="1254" height="1254" fetchpriority="high" draggable="false">
         <p class="eyebrow" data-copy="kicker">SHELTER SHAPE LOGIC</p>
-        <h1 data-copy="title">Hollow Fit</h1>
+        <h1 data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</h1>
         <p class="lede main-summary" data-copy="intro">Read the burrow opening, then choose the one shelter piece that fits its shape.</p>
         <div class="fact-row"><span data-copy="factOne">3 shelter fits</span><span data-copy="factTwo">Shape reading</span><span data-copy="factThree">Calm retry</span></div>
         <div class="main-actions"><button id="start-button" class="primary-button" type="button" data-wp-main-start data-copy="start">Start Game</button><button id="guide-button" class="secondary-button" type="button" data-copy="guide">How to play</button></div>
@@ -61,7 +63,7 @@
       <div id="battleFrame" class="battle-frame">
       <header class="topbar wp-stage-shell-header">
         <button id="battle-home" class="return-link wp-shell-return" type="button" data-wp-return="battle" data-copy-aria="battleBack" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span></button>
-        <strong class="wp-shell-main-title" data-copy="title">Hollow Fit</strong>
+        <strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</strong>
         <button id="battle-sound" class="utility-button wp-shell-settings-button" type="button" data-wp-battle-utility data-sound-toggle data-copy-aria="sound" aria-pressed="false" aria-label="Sound">♪</button>
       </header>
       <div class="battle-content battle-canvas">
@@ -77,7 +79,7 @@
     <div class="battle-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
 
     <section id="resultScreen" class="screen result-screen" data-view="result" data-screen="result" hidden>
-      <header class="topbar wp-main-shell-header"><button id="result-home" class="return-link wp-shell-return" type="button" data-wp-return="main" data-copy-aria="battleBack" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-copy="title">Hollow Fit</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button></header>
+      <header class="topbar wp-main-shell-header"><button id="result-home" class="return-link wp-shell-return" type="button" data-wp-return="main" data-copy-aria="battleBack" aria-label="Back to menu"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" draggable="false"></button><strong class="wp-shell-main-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Burrow Shape Match</strong><button id="result-settings" class="utility-button wp-shell-settings-button" data-wp-settings data-copy-aria="settings" type="button" aria-label="Settings">⚙</button></header>
       <div class="result-content"><img class="result-guide" src="assets/animal-hollow-fit-guide.png" alt="" aria-hidden="true" draggable="false"><p class="eyebrow" data-copy="resultKicker">HOLLOW COMPLETE</p><h1 data-copy="resultTitle">The shelter fits.</h1><p id="result-text" class="lede">All three openings are ready.</p><div class="result-card"><div><span data-copy="checks">Checks</span><strong id="result-checks">0</strong></div><div><span data-copy="best">Best</span><strong id="result-best">—</strong></div></div><p id="result-status" class="status" role="status"></p><div class="result-actions"><button id="replay-button" class="primary-button" type="button" data-copy="replay">Fit again</button><button id="result-menu" class="secondary-button" type="button" data-copy="home">Back to menu</button></div></div>
     </section>
   </div>

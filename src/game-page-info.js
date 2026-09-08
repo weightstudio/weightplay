@@ -9047,6 +9047,12 @@
   ]);
 
   function localizedGame(id) {
+    const game = localizedGameContent(id);
+    const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
+    return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
+  }
+
+  function localizedGameContent(id) {
     const base = games[id];
     if (!base) return null;
     const activeLocale = locale();
@@ -9403,7 +9409,7 @@
     const localizedTitle = activeLocale === "es"
       ? String(game.title).replace("Escuadrón animales Automático", "Escuadrón Animal Automático")
       : game.title;
-    const title = `${localizedTitle} - ${identity.suffix} | WeightPlay`;
+    const title = document.documentElement.hasAttribute('data-wp-official-name') ? `${localizedTitle} | WeightPlay` : `${localizedTitle} - ${identity.suffix} | WeightPlay`;
     const description = compactMetaDescription(game.intro);
     document.documentElement.lang = activeLocale;
     if (activeLocale !== "en") document.querySelector("title")?.setAttribute("data-runtime-localize", "off");

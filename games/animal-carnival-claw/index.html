@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-carnival-claw/"+location.search+location.hash)}catch{location.replace("/en/games/animal-carnival-claw/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -22,14 +23,15 @@
   <meta name="robots" content="index,follow">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#062c34">
-  <title>Animal Carnival Claw | WeightPlay</title>
+  <title>Carnival Claw | WeightPlay</title>
   <meta name="description" content="Aim, time and stabilize a skill claw to collect WeightPlay memory charms through thirty original carnival missions.">
   <link rel="stylesheet" href="../../src/loading-screen.css">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
@@ -46,7 +48,7 @@
         <a class="main-return" href="/" data-wp-return="main" data-i18n-aria="backLobby" aria-label="Back to WeightPlay">
           <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="">
         </a>
-        <strong data-i18n="title">Animal Carnival Claw</strong>
+        <strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Carnival Claw</strong>
         <label class="locale-control">
           <span class="sr-only" data-i18n="language">Language</span>
           <select id="localeSelect" data-i18n-aria="language">
@@ -64,7 +66,7 @@
         <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="Nori and Rux operating a teal carnival claw machine">
         <div class="main-copy">
           <small data-i18n="eyebrow">Starbell skill arcade</small>
-          <h1 data-i18n="title">Animal Carnival Claw</h1>
+          <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Carnival Claw</h1>
           <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
@@ -107,7 +109,7 @@
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
-        <div><strong data-i18n="title" data-runtime-localize="off">Animal Carnival Claw</strong><span id="stageSummary"></span></div>
+        <div><strong data-i18n="title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Carnival Claw</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
@@ -184,7 +186,6 @@
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
   <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

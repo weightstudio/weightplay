@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-penalty-cup/"+location.search+location.hash)}catch{location.replace("/en/games/animal-penalty-cup/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-penalty-cup/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-penalty-cup/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-penalty-cup/" />
@@ -23,12 +24,13 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-penalty-cup" />
   <meta name="weightplay-scene-controls" content="immutable" />
-  <title>Animal Penalty Cup | WeightPlay</title>
+  <title>Penalty Cup | WeightPlay</title>
   <meta name="description" content="Take every shot, read every striker, and lead an original animal club through 30 penalty-cup matches." />
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3" />
-  <link rel="stylesheet" href="style.css?v=20260905-penalty-cue-wrap-v9" />
+  <link rel="stylesheet" href="style.css?v=20260905-penalty-cue-wrap-v9" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-game-id="animal-penalty-cup" data-wp-game-id="animal-penalty-cup" data-screen="main" data-wp-combined-sound="true" data-runtime-localize="off" data-wp-game-owned-guide="true">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
@@ -39,7 +41,7 @@
     <main id="mainScreen" class="main-screen" data-screen="main">
       <header class="shared-header main-header">
         <a class="home-link wp-shell-return" data-wp-return="main" data-wp-return-normalized="true" href="/" data-i18n-aria="backWeightPlay" aria-label="Back to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong class="header-title" data-i18n="title" data-wp-game-title data-runtime-localize="off">Animal Penalty Cup</strong>
+        <strong class="header-title" data-i18n="title" data-wp-game-title data-runtime-localize="off">Penalty Cup</strong>
         <section id="mainSettings" hidden>
           <label class="settings-row"><span data-i18n="language">Language</span><select id="localeSelect" data-i18n-aria="language" aria-label="Language"></select></label>
         </section>
@@ -49,7 +51,7 @@
         <div class="main-copy">
           <small data-i18n="eyebrow">FIREFLY FOREST LEAGUE</small>
           <p class="coming" data-i18n="comingSoon">Coming Soon · Internal Trial</p>
-          <h1 data-i18n="title" data-runtime-localize="off">Animal Penalty Cup</h1>
+          <h1 data-i18n="title" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Penalty Cup</h1>
           <p data-i18n="pitch">Place every shot, read every striker, and lift the Acorn Cup.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button>
@@ -77,7 +79,7 @@
     <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="/games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp" style="--wp-stage-art:url('/games/animal-penalty-cup/assets/animal-penalty-cup-cover-v1.webp')">
       <header class="shared-header stage-header">
         <button id="stageBackBtn" class="back-button stage-fixed-back wp-shell-return" data-wp-return="stage" data-wp-return-normalized="true" type="button" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
-        <strong class="header-title" data-i18n="title" data-wp-game-title data-runtime-localize="off">Animal Penalty Cup</strong>
+        <strong class="header-title" data-i18n="title" data-wp-game-title data-runtime-localize="off">Penalty Cup</strong>
       </header>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-total="30" data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="330" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Match selection"></div>
@@ -129,7 +131,6 @@
   <script src="game.js?v=20260905-penalty-cue-wrap-v9"></script>
   <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js?v=20260819-penalty-v1" data-wp-battle-standard></script>
-  <script src="/src/game-title-registry.js?v=20260819-penalty-v1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260817-wide-envelope-cache-v2"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

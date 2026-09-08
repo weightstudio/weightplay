@@ -449,7 +449,7 @@
       if (copy) {
         const guideRoot = document.querySelector(".game-page-info");
         if (guideRoot) guideRoot.setAttribute("data-runtime-localize", "off");
-        const pageTitle = `${copy.title} - دليل اللعبة | WeightPlay`;
+        const pageTitle = document.documentElement.hasAttribute('data-wp-official-name') ? `${copy.title} | WeightPlay` : `${copy.title} - دليل اللعبة | WeightPlay`;
         if (document.title !== pageTitle) document.title = pageTitle;
         const summary = document.querySelector('meta[name="description"]');
         if (summary && summary.content !== copy.metaDescription) summary.content = copy.metaDescription;

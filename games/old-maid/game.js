@@ -72,7 +72,31 @@
     topbar.append(utility);
   }
 
+  // Old Maid pairs automatically: only face-down opponent cards are inputs.
+  // The shared card renderer also serves games where the player's hand is
+  // selectable, so keep this rule local instead of changing those games.
+  const hand = document.querySelector("#cardGameHand");
+  const makeHandReadOnly = () => {
+    hand?.querySelectorAll("button[data-card-index]").forEach((button) => {
+      const card = document.createElement("span");
+      card.className = button.className;
+      card.setAttribute("role", "img");
+      card.setAttribute("aria-label", button.getAttribute("aria-label") || button.textContent);
+      card.setAttribute("data-runtime-localize", "off");
+      card.textContent = button.textContent;
+      button.replaceWith(card);
+    });
+  };
+  if (hand) {
+    // Guard the interval before MutationObserver runs after each render too.
+    hand.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+    new MutationObserver(makeHandReadOnly).observe(hand, { childList: true });
+  }
   window.WPCardGamesNext?.mount({ id: "old-maid" });
+  makeHandReadOnly();
   syncHandLabel();
   window.setTimeout(syncHandLabel, 0);
   window.setTimeout(syncHandLabel, 400);

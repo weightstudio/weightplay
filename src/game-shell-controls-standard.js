@@ -348,6 +348,7 @@
   }
 
   function officialGameTitle() {
+    if (window.WeightPlayOfficialName) return window.WeightPlayOfficialName.title();
     const gameId = document.body?.dataset.wpGameId;
     // Spades owns its localized title through card-games-next.js. Do not let
     // the shared official-title registry race that owner during shell-sync;
@@ -362,6 +363,10 @@
     if (document.body?.dataset.wpFiveGame && window.WeightPlayFiveGameLocale) return;
     const localizedTitle = officialGameTitle();
     if (!localizedTitle) return;
+    if (document.documentElement.hasAttribute('data-wp-official-name')) {
+      const pageTitle = `${localizedTitle} | WeightPlay`;
+      if (document.title !== pageTitle) document.title = pageTitle;
+    }
     document.querySelectorAll(OFFICIAL_TITLE_SELECTORS).forEach((node) => {
       node.dataset.runtimeLocalize = "off";
       if (node.textContent?.trim() !== localizedTitle) node.textContent = localizedTitle;
@@ -1273,6 +1278,28 @@
 
   let initialized = false;
   let beginAttempts = 0;
+  function bindOfficialDocumentTitle() {
+    if (window.WeightPlayOfficialName) return;
+    if (!document.documentElement.hasAttribute('data-wp-official-name')) return;
+    const titleNode = document.querySelector('title');
+    if (!titleNode) return;
+    titleNode.dataset.runtimeLocalize = 'off';
+    const sync = () => {
+      const id = document.body?.dataset.wpGameId || location.pathname.match(/\/games\/([^/]+)/)?.[1];
+      const name = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[localeCode()];
+      if (name && document.title !== `${name} | WeightPlay`) document.title = `${name} | WeightPlay`;
+    };
+    // Observe only the one title and locale attribute, not the full page.
+    const observer = new MutationObserver(sync);
+    const connect = () => {
+      observer.observe(titleNode, {childList:true,characterData:true,subtree:true});
+      observer.observe(document.documentElement, {attributes:true,attributeFilter:['lang']});
+      sync();
+    };
+    connect();
+    window.addEventListener('pagehide', () => observer.disconnect());
+    window.addEventListener('pageshow', connect);
+  }
   function begin() {
     window.__weightPlayShellControlsPhase = "begin";
     if (initialized) return;
@@ -1282,6 +1309,7 @@
       return;
     }
     initialized = true;
+    bindOfficialDocumentTitle();
     init();
   }
   if (document.readyState === "loading") {

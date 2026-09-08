@@ -109,5 +109,35 @@
     checkpointReward5: localize("Joined Signals star", "雙重訊號星章", "双重信号星章", "نجمة الإشارتين المتصلتين"),
     checkpointReward6: localize("Moonlit Lattice badge", "月光連線徽章", "月光连线徽章", "شارة الشبكة المضيئة بالقمر"),
   });
+  // Campaign additions must supply Arabic explicitly; the seed-stage copy
+  // cannot cover all thirty stage titles, six arcs and later rule states.
+  const arabicStageTitles = [
+    "منعطف ضوء الطحلب", "نافذة القصب", "منعطف سرخس القمر", "جسر البومة الهادئ", "نوبة الحارس الأولى",
+    "مفترق زهور الكشتبان", "الطُعم بجانب البركة", "فانوس السلحفاة", "عثة عند بوابة القصب", "الطُعم عند طلوع القمر",
+    "صدى في الوادي", "صدى السلحفاة", "صدى القضاعة", "صدى الباندا", "صدى الحارس",
+    "الريح فوق زهور الكشتبان", "درب ريح السلحفاة", "معبر ريح القصب", "مصطبة ريح القمر", "نوبة انعطاف الريح",
+    "منعطف التوهج المزدوج", "ضوء القضاعة المزدوج", "السلحفاة والعثة", "مسار الثعلب المزدوج", "المعبر المتصل",
+    "طلوع القمر بالعكس", "انعكاس الأضواء الخمسة", "صدى الأرنب الأخير", "عودة ريح الباندا", "ختام شبكة أورلا",
+  ];
+  arabicStageTitles.forEach((title, index) => { rows[`stage${index + 1}Title`][12] = title; });
+  const arabicCampaign = {
+    campaignFinishText: "اكتملت ثلاثون مساراً ليلياً عبر ستة فصول في {n} عملية تحقق. أفضل نتيجة لك هي {best}. وقد حصلت على {reward}.",
+    reverseRule: "انعطاف الريح: اقرأ المسار من الفانوس الأخير عائداً إلى الأول.",
+    decoyRule: "طُعم العثة: أبقِ {decoy} مظلماً واتبع الأدلة الآمنة.",
+    echoRule: "توهج الصدى: يظهر {echo} مرتين في هذه السلسلة؛ ابحث عن الموضعين.",
+    decoyEchoRule: "إشارتان: ضع صدى {echo} مرتين وأبقِ طُعم العثة {decoy} مظلماً.",
+    masteryRule: "انعطاف الإتقان: اقرأ بالعكس، وكرر صدى {echo} مرتين، وأبقِ {decoy} مظلماً.",
+    reverseClueStart: "يبدأ انعطاف الريح عند {name}؛ عُد من هناك بالعكس.",
+    decoyWrong: "أُضيء طُعم العثة {name}. أعد ضبط السلسلة وأبقِه مظلماً.",
+    checkpoint: "نقطة تحقق",
+    locked: "مقفلة",
+    arc1: "التوهج الأول",
+    arc2: "طُعم العثة",
+    arc3: "وادي الصدى",
+    arc4: "انعطاف الريح",
+    arc5: "الإشارتان المتصلتان",
+    arc6: "إتقان الشبكة",
+  };
+  Object.entries(arabicCampaign).forEach(([key, value]) => { rows[key][12] = value; });
   window.ANIMAL_LANTERN_LATTICE_LOCALES = Object.fromEntries(keys.map((locale, index) => [locale, Object.fromEntries(Object.entries(rows).map(([key, values]) => [key, values[index]]))]));
 })();

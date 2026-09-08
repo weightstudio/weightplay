@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/fruit-merge/"+location.search+location.hash)}catch{location.replace("/en/games/fruit-merge/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="kids" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -13,12 +14,12 @@
     <meta name="description" content="Clear 30 saved Animal Merge Tower challenges with changing aim windows, river wind, gravity, fixed queues, and six Festival Checkpoints." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Merge Tower - Animal Merge Game" />
+    <meta property="og:title" content="Merge Tower | WeightPlay" />
     <meta property="og:description" content="Plan physics merges across 30 saved challenges, five executable rule families, and six Festival Checkpoints." />
     <meta property="og:url" content="https://weightplay.com/games/fruit-merge/" />
     <meta property="og:image" content="https://weightplay.com/assets/fruit-merge-cover.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Animal Merge Tower - WeightPlay</title>
+    <title>Merge Tower | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/en/games/fruit-merge/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/fruit-merge/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/fruit-merge/" />
@@ -37,50 +38,13 @@
     <link rel="stylesheet" href="style.css?v=20260729-interface-v4-1" data-wp-battle-standard />
     <script data-wp-battle-standard>/* Animal Merge Tower owns its native Kids Battle Canvas. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <script type="application/ld+json">
-{
-              "@context": "https://schema.org",
-              "@type": "VideoGame",
-              "name": "Animal Merge Tower",
-              "alternateName": "\u52d5\u7269\u5408\u6210\u5854",
-              "url": "https://weightplay.com/games/fruit-merge/",
-              "image": "https://weightplay.com/assets/fruit-merge-cover.png",
-              "description": "Clear 30 saved Animal Merge Tower challenges with changing aim windows, river wind, gravity, fixed queues, and six Festival Checkpoints.",
-              "applicationCategory": "Game",
-              "operatingSystem": "Web browser",
-              "publisher": {
-                      "@type": "Organization",
-                      "name": "WeightStudio"
-              },
-              "inLanguage": [
-                      "en",
-                      "zh-Hant",
-                      "zh-Hans",
-                      "es"
-              ],
-              "isAccessibleForFree": true,
-              "genre": [
-                      "Score Puzzle",
-                      "Animal Games",
-                      "Puzzle",
-                      "Family",
-                      "Animal Game",
-                      "Family Browser Game"
-              ],
-              "audience": {
-                      "@type": "Audience",
-                      "audienceType": "Kids and families",
-                      "suggestedMinAge": 6
-              },
-              "learningResourceType": "Skill practice through play",
-              "educationalUse": "Practice Logic, Problem Solving, Hand-Eye Coordination through family-friendly browser gameplay."
-      }
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Merge Tower","alternateName":"動物合成塔","url":"https://weightplay.com/games/fruit-merge/","image":"https://weightplay.com/assets/fruit-merge-cover.png","description":"Clear 30 saved Animal Merge Tower challenges with changing aim windows, river wind, gravity, fixed queues, and six Festival Checkpoints.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":["en","zh-Hant","zh-Hans","es"],"isAccessibleForFree":true,"genre":["Score Puzzle","Animal Games","Puzzle","Family","Animal Game","Family Browser Game"],"audience":{"@type":"Audience","audienceType":"Kids and families","suggestedMinAge":6},"learningResourceType":"Skill practice through play","educationalUse":"Practice Logic, Problem Solving, Hand-Eye Coordination through family-friendly browser gameplay."}</script>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body>
     <main class="fruit-game" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="360">
@@ -88,7 +52,7 @@
         <a class="home-link" data-wp-return="main" href="/kids/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
-          <h1 id="titleText">Animal Merge Tower</h1>
+          <h1 id="titleText" data-wp-game-title data-runtime-localize="off">Merge Tower</h1>
         </div>
         <label class="language-picker">
           <span id="languageLabel">Language</span>
@@ -325,7 +289,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

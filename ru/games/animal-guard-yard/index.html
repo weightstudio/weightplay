@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-wp-official-name>
   <head>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-guard-yard/" />
     <meta charset="UTF-8" />
@@ -41,55 +42,24 @@
     <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
     <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "Animal Guard Yard",
-  "alternateName": "動物守衛庭院",
-  "url": "https://weightplay.com/ru/games/animal-guard-yard/",
-  "image": "https://weightplay.com/assets/animal-guard-yard-poster.png",
-  "description": "Клеверный двор соединяет шесть садовых зон, которые разделяют солнечный свет, семена и воду. Когда на тропинках толпятся дикие звери, игрок становится...",
-  "genre": [
-    "Strategy",
-    "Башня обороны",
-    "Животное",
-    "Browser Game"
-  ],
-  "gamePlatform": "Web browser",
-  "playMode": "SinglePlayer",
-  "keywords": "animal games, lane defense game, strategy game, browser game, animal tower defense",
-  "audience": {
-    "@type": "Audience",
-    "audienceType": "General players and families",
-    "suggestedMinAge": 6
-  },
-  "applicationCategory": "Game",
-  "operatingSystem": "Web browser",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio"
-  },
-  "inLanguage": "ru",
-  "isAccessibleForFree": true
-}
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Guard Yard","alternateName":"動物守衛庭院","url":"https://weightplay.com/ru/games/animal-guard-yard/","image":"https://weightplay.com/assets/animal-guard-yard-poster.png","description":"Клеверный двор соединяет шесть садовых зон, которые разделяют солнечный свет, семена и воду. Когда на тропинках толпятся дикие звери, игрок становится...","genre":["Strategy","Башня обороны","Животное","Browser Game"],"gamePlatform":"Web browser","playMode":"SinglePlayer","keywords":"animal games, lane defense game, strategy game, browser game, animal tower defense","audience":{"@type":"Audience","audienceType":"General players and families","suggestedMinAge":6},"applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ru","isAccessibleForFree":true}</script>
     <meta name="weightplay-scene-controls" content="immutable" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-<link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260729-return-owner1">
-  <meta name="twitter:title" content="Animal Guard Yard | WeightPlay" />
+<link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260729-return-owner1"><meta name="twitter:title" content="Animal Guard Yard | WeightPlay" />
     <meta name="twitter:description" content="Клеверный двор соединяет шесть садовых зон, которые разделяют солнечный свет, семена и воду. Когда на тропинках толпятся дикие звери, игрок становится..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-guard-yard-poster.webp" />
-  </head>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+</head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
     <main class="yard-game main-screen" data-no-mobile-immersive="true">
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Вернуться в лобби"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
           <p>WeightPlay</p>
-          <h1 data-ui="gameTitle">Animal Guard Yard</h1>
+          <h1 data-ui="gameTitle" data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h1>
         </div>
         <label class="language-picker">
           <span data-ui="language">Язык</span>
@@ -113,7 +83,7 @@
 
       <section id="mainPanel" class="main-entry-panel main-screen" data-screen="main" data-wp-standard-main-screen>
         <img class="main-cover" src="../../assets/animal-guard-yard-poster.webp" data-fallback-src="../../assets/animal-guard-yard-poster.png" alt="" />
-        <div class="main-entry-copy"><strong data-ui="gameTitle">Animal Guard Yard</strong><span data-ui="menuHint">Разместите защитников-животных и остановите диких зверей.</span></div>
+        <div class="main-entry-copy"><strong data-ui="gameTitle" data-wp-game-title data-runtime-localize="off">Animal Guard Yard</strong><span data-ui="menuHint">Разместите защитников-животных и остановите диких зверей.</span></div>
         <button id="startGameBtn" class="main-start-btn" type="button" data-ui="chooseStage">Выбрать этап</button>
       </section>
 
@@ -266,12 +236,11 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-<script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 <section class="game-page-info game-page-info-static" aria-label="Информация об игре Animal Guard Yard">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Animal Guard Yard</h2><p>Клеверный двор соединяет шесть садовых зон, которые разделяют солнечный свет, семена и воду. Когда на тропинках толпятся дикие звери, игрок становится дворником и размещает Кота, Собаку, Сову и необязательную Лису на пяти дорожках. Кампания, состоящая из 30 этапов, вводит читаемое правило в каждом регионе: целители восстанавливают зверя впереди, роющие предупреждают перед сменой полосы движения, а солнечные воры убирают 12 неизрасходованных солнц. На каждом пятом этапе есть отдельный страж и контригра: от рева Мохового Рогового Носорога и защищенной фазы Призменной Панцирной Черепахи до смены полос Вождя Норного Барсука, объявленного натиска Углегривого Кабана, задержки атаки Бурекрылого Орла и восстанавливающего пульса Лунного Коронованного Лося. Зачистки, очки, садовые медали, монеты и тренировки остаются в этом браузере.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h2><p>Клеверный двор соединяет шесть садовых зон, которые разделяют солнечный свет, семена и воду. Когда на тропинках толпятся дикие звери, игрок становится дворником и размещает Кота, Собаку, Сову и необязательную Лису на пяти дорожках. Кампания, состоящая из 30 этапов, вводит читаемое правило в каждом регионе: целители восстанавливают зверя впереди, роющие предупреждают перед сменой полосы движения, а солнечные воры убирают 12 неизрасходованных солнц. На каждом пятом этапе есть отдельный страж и контригра: от рева Мохового Рогового Носорога и защищенной фазы Призменной Панцирной Черепахи до смены полос Вождя Норного Барсука, объявленного натиска Углегривого Кабана, задержки атаки Бурекрылого Орла и восстанавливающего пульса Лунного Коронованного Лося. Зачистки, очки, садовые медали, монеты и тренировки остаются в этом браузере.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Лейн обороны</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Strategy · Башня обороны · Животное</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Medium</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>5-8 минут</strong></div></div>
     </div>
 

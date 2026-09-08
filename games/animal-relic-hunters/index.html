@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-relic-hunters/"+location.search+location.hash)}catch{location.replace("/en/games/animal-relic-hunters/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title data-ui="title">Animal Relic Hunters: Ruin Exploration</title>
@@ -10,7 +11,7 @@
     <meta name="description" content="Clear 30 three-room animal relic expeditions, master ten special enemy behaviors, collect gear, and defeat six phase-changing ruin Guardians." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Animal Relic Hunters: Ruin Exploration" />
+    <meta property="og:title" content="Relic Hunters | WeightPlay" />
     <meta property="og:description" content="Explore six ruin regions across 30 missions, build relic gear, counter special threats, and defeat six distinct Guardians." />
     <meta property="og:url" content="https://weightplay.com/games/animal-relic-hunters/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-relic-hunters-cover.png" />
@@ -39,35 +40,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <!-- Google Tag JSON-LD Schema -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        "name": "Animal Relic Hunters",
-        "alternateName": "\u52d5\u7269\u907a\u8de1\u7375\u4eba",
-        "url": "https://weightplay.com/games/animal-relic-hunters/",
-        "image": "https://weightplay.com/assets/animal-relic-hunters-cover.png",
-        "description": "Clear 30 three-room expeditions across six ruin regions, counter ten special enemy behaviors, collect and upgrade relic gear, and defeat six phase-changing Guardians.",
-        "genre": ["Action Game", "Roguelite", "Survival", "Animal Games"],
-        "gamePlatform": "Web browser",
-        "operatingSystem": "Any",
-        "playMode": "SinglePlayer",
-        "keywords": "animal relic hunters, relic hunters, room roguelite, action survivor, equip gear, animal browser game",
-        "audience": {
-          "@type": "Audience",
-          "audienceType": "General players",
-          "suggestedMinAge": 13
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "WeightStudio",
-          "url": "https://weightplay.com/"
-        },
-        "inLanguage": ["en", "zh-Hant", "zh-Hans"],
-        "isAccessibleForFree": true
-      }
-    </script>
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Relic Hunters","alternateName":"動物遺跡獵人","url":"https://weightplay.com/games/animal-relic-hunters/","image":"https://weightplay.com/assets/animal-relic-hunters-cover.png","description":"Clear 30 three-room expeditions across six ruin regions, counter ten special enemy behaviors, collect and upgrade relic gear, and defeat six phase-changing Guardians.","genre":["Action Game","Roguelite","Survival","Animal Games"],"gamePlatform":"Web browser","operatingSystem":"Any","playMode":"SinglePlayer","keywords":"animal relic hunters, relic hunters, room roguelite, action survivor, equip gear, animal browser game","audience":{"@type":"Audience","audienceType":"General players","suggestedMinAge":13},"publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":["en","zh-Hant","zh-Hans"],"isAccessibleForFree":true}</script>
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-game-id="animal-relic-hunters" data-audience="general" data-screen="main" class="wp-shell-main-active">
     <!-- Top Nav bar -->
@@ -77,7 +52,7 @@
           <span class="icon" aria-hidden="true">&larr;</span>
           <img src="../../assets/weightplay-logo.png" alt="" draggable="false">
         </a>
-        <h2 class="game-brand" data-ui="title">Animal Relic Hunters</h2>
+        <h2 class="game-brand" data-ui="title" data-wp-game-title data-runtime-localize="off">Relic Hunters</h2>
       </div>
       <div class="top-nav-right">
         <div class="locale-picker">
@@ -105,7 +80,7 @@
       <!-- Loading screen -->
       <section id="loadingPanel" class="loading-panel" aria-live="polite">
         <div class="loading-content">
-          <h1 data-ui="title">Animal Relic Hunters</h1>
+          <h1 data-ui="title" data-wp-game-title data-runtime-localize="off">Relic Hunters</h1>
           <div class="loading-bar">
             <div id="loadingFill" class="loading-fill" style="width: 0%"></div>
           </div>
@@ -171,7 +146,7 @@
       <section id="stagePanel" class="panel stage-panel hidden" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageTitle">
         <div class="stage-panel-head">
           <button id="stageBackBtn" class="play-return stage-return" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
-          <strong id="stageTitle">Animal Relic Hunters</strong>
+          <strong id="stageTitle" data-wp-game-title data-runtime-localize="off">Relic Hunters</strong>
         </div>
         <div id="stageWorkspace" class="stage-workspace">
           <section class="stage-view is-active" data-stage-view="stages" aria-labelledby="stageTabStages">
@@ -408,11 +383,10 @@
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
-    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
     <script src="../../src/wallet.js?v=20260706-relic-v1"></script>
     <script src="../../src/tutorial.js?v=20260706-relic-v1"></script>
     <script src="game.js?v=20260904-interface-v23"></script>
-    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

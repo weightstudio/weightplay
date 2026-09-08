@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-tideglass/"+location.search+location.hash)}catch{location.replace("/en/games/animal-tideglass/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-tideglass/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-tideglass/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-tideglass/" />
@@ -21,19 +22,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="robots" content="noindex,nofollow,noarchive">
     <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v1">
+    <meta name="weightplay-game-version" content="v2">
     <meta name="description" content="Tideglass Workshop is an internal WeightPlay ocean estimation prototype.">
-    <title>Tideglass Workshop | WeightPlay</title>
+    <title>Tide Level Calibration | WeightPlay</title>
     <link rel="stylesheet" href="style.css?v=20260902-tideglass-v1">
     <script src="locales.js?v=20260902-tideglass-v1" defer></script>
-    <script src="game.js?v=20260902-tideglass-v1" defer></script>
-  </head>
+    <script src="game.js?v=20260902-tideglass-v1" defer></script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+</head>
   <body>
     <main class="app-shell" id="app">
       <section id="mainView" class="screen main-screen" data-screen="main" aria-labelledby="mainTitle">
         <header class="main-header wp-main-shell-header">
           <a class="home-link wp-shell-return" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a>
-          <div class="header-title"><strong data-copy="title">Tideglass Workshop</strong></div>
+          <div class="header-title"><strong data-copy="title" data-wp-game-title data-runtime-localize="off">Tide Level Calibration</strong></div>
           <button id="mainSettingsBtn" class="icon-button wp-shell-settings-button" data-wp-settings type="button" aria-expanded="false" aria-controls="mainSettingsPopover" aria-label="Settings">⚙</button>
           <div id="mainSettingsPopover" class="wp-shell-settings-popover" role="dialog" aria-label="Settings" hidden>
             <div class="settings-row"><span data-copy="language">Language</span><select id="localeSelect" aria-label="Language"></select></div>
@@ -44,7 +46,7 @@
           <img class="main-poster" src="assets/animal-tideglass-cover-v2.png" alt="" aria-hidden="true" width="1254" height="1254" fetchpriority="high">
           <div class="main-copy">
             <p class="eyebrow" data-copy="eyebrow">A calm ocean estimation puzzle</p>
-            <h1 id="mainTitle" data-copy="title">Tideglass Workshop</h1>
+            <h1 id="mainTitle" data-copy="title" data-wp-game-title data-runtime-localize="off">Tide Level Calibration</h1>
             <p class="main-summary" data-copy="subtitle">Slide the waterline to match each tide mark, then seal the glass.</p>
             <div class="main-progress" data-wp-main-progress data-copy="progress">Three tide marks · gentle retry · no timer</div>
             <button class="primary-button" id="startBtn" type="button" data-wp-main-start data-copy="start">Start the workshop</button>

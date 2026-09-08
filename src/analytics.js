@@ -1,6 +1,14 @@
 (function () {
   const config = window.WONDER_SITE?.analytics || {};
   const gaMeasurementId = config.gaMeasurementId || "";
+  // Test/preview visits must never enter the production GA4 property.
+  const productionHost = ["weightplay.com", "www.weightplay.com"].includes(
+    String(location.hostname || "").toLowerCase().replace(/\.$/, ""),
+  );
+  const googleAnalyticsEnabled = Boolean(gaMeasurementId) && productionHost;
+  if (gaMeasurementId && !productionHost) {
+    window[`ga-disable-${gaMeasurementId}`] = true;
+  }
   const debug = config.debug !== false;
   const sessionKey = "wonderSessionId";
   const countKey = "wonderAnalyticsCounts";
@@ -58,7 +66,7 @@
   function emit(name, payload) {
     saveLocalCount(name);
 
-    if (window.gtag) {
+    if (googleAnalyticsEnabled && window.gtag) {
       window.gtag("event", name, payload);
     }
 
@@ -68,7 +76,7 @@
   }
 
   function loadGoogleAnalytics() {
-    if (!gaMeasurementId || document.querySelector("[data-wonder-ga]")) return;
+    if (!googleAnalyticsEnabled || document.querySelector("[data-wonder-ga]")) return;
 
     const script = document.createElement("script");
     script.async = true;
@@ -118,7 +126,7 @@
     track,
     trackPrivacySafe,
     counts: loadCounts,
-    hasGoogleAnalytics: () => Boolean(gaMeasurementId),
+    hasGoogleAnalytics: () => googleAnalyticsEnabled,
   };
 
   track("page_view");

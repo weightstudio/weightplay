@@ -99,7 +99,10 @@ h1 { margin-bottom: 16px; font-size: clamp(44px, 7vw, 80px); line-height: .98; l
 .pattern-cell.is-lifted::before { border-radius: 50% 50% 8px 8px; background: #9dceb0; }
 .current-summary { padding-bottom: 6px; border-bottom: 1px solid var(--line); }
 .aligned-count { min-width: 82px; color: var(--green); text-align: end; }
-.flap-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0 16px; }
+/* Four stable slots cover the largest authored page without a second row.
+   Three-flap pages leave the last slot empty; controls do not grow on removal. */
+.flap-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 24px 0 16px; }
+.flap-btn { min-width: 0; overflow-wrap: anywhere; }
 .flap-btn { position: relative; min-height: 176px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; padding: 16px 10px; border: 2px solid #b6d2c3; border-radius: 24px 24px 36px 36px; background: #f7fcf6; transition: transform .15s ease, background .15s ease, border-color .15s ease; }
 .flap-btn:hover { transform: translateY(-3px); }
 .flap-btn.is-lifted { border-color: #609d7b; background: #e1f1e3; }
@@ -354,7 +357,7 @@ body[data-screen="main"] #gameGuide { display: block; }
 #stageScreen .stage-tabs { margin-top: 18px; }
 #stageScreen .stage-tabs button { min-height: 44px; padding: 10px 16px; }
 #battleScreen .battle-canvas { display: flex; flex-direction: column; touch-action: none; }
-#battleScreen .battle-content { width: min(100%, 780px); min-height: 0; margin: 28px auto 0; }
+#battleScreen .battle-content { width: min(100%, 780px); min-height: 0; flex: 1; margin: 28px auto 0; overflow-y: auto; overscroll-behavior-y: contain; touch-action: pan-y; }
 #battleScreen .battle-actions { justify-content: flex-end; }
 .stage-ad-reserve, .battle-ad-reserve {
   position: fixed;
@@ -412,6 +415,8 @@ body[data-screen="main"] #gameGuide { display: block; }
     padding: 8px 12px 10px;
   }
   #battleScreen .panel-head { min-height: 48px; height: 48px; flex: 0 0 48px; }
+  #battleScreen .panel-head h2 { font-size: 20px; line-height: 24px; }
+  #battleScreen .round-label { margin: 0; font-size: 12px; line-height: 16px; }
   #battleScreen .battle-content { min-height: 0; overflow: hidden; }
   #battleScreen .battle-content { display: grid; grid-template-columns: minmax(300px, .9fr) minmax(0, 1.8fr); grid-template-rows: auto auto auto minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; margin-top: 4px; }
   #battleScreen .goal-card { grid-column: 1 / -1; align-items: center; flex-direction: row; gap: 12px; margin-bottom: 0; padding: 6px 10px; }
@@ -422,7 +427,8 @@ body[data-screen="main"] #gameGuide { display: block; }
   #battleScreen .current-summary { grid-row: 3; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; }
   #battleScreen .current-summary .pattern-row { grid-column: 2; }
   #battleScreen .current-summary .aligned-count { grid-column: 1 / -1; min-width: 0; text-align: start; }
-  #battleScreen .pattern-cell { min-width: 62px; min-height: 28px; padding: 3px 5px; font-size: 10px; }
+  #battleScreen .pattern-row { min-width: 0; flex: 1; }
+  #battleScreen .pattern-cell { min-width: 0; flex: 1; min-height: 28px; padding: 3px 5px; font-size: 10px; }
   #battleScreen .pattern-cell::before { width: 11px; height: 11px; margin-right: 3px; border-width: 1px; }
   #battleScreen .flap-board { grid-column: 2; grid-row: 2 / 5; align-self: center; gap: 8px; margin: 0; }
   #battleScreen .flap-btn { min-height: 78px; padding-block: 4px; gap: 2px; border-radius: 16px 16px 24px 24px; }

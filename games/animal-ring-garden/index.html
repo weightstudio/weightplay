@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-wp-official-name>
 <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-ring-garden/"+location.search+location.hash)}catch{location.replace("/en/games/animal-ring-garden/"+location.search+location.hash)}})();</script>
+<script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-ring-garden/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-ring-garden/" />
@@ -23,12 +24,13 @@
   <meta name="description" content="Ring Garden is an internal WeightPlay pattern-rotation prototype with four moon gardens." />
   <meta name="weightplay-game-id" content="animal-ring-garden" />
   <meta name="weightplay-audience" content="general" />
-  <meta name="weightplay-game-version" content="v11" />
+  <meta name="weightplay-game-version" content="v12" />
   <meta name="weightplay-interface-version" content="6" />
-  <title>Ring Garden | WeightPlay</title>
-  <link rel="stylesheet" href="style.css?v=20260907-ring-garden-responsive-v11" />
+  <title>Rotating Ring Puzzles | WeightPlay</title>
+  <link rel="stylesheet" href="style.css?v=20260907-ring-garden-responsive-v11" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v11" data-runtime-localize="off">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v12" data-runtime-localize="off">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
@@ -38,7 +40,7 @@
     <section id="mainScreen" class="screen main-screen" data-screen="main" hidden>
       <header class="topbar main-header">
         <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
-        <strong class="wp-shell-main-title" id="main-header-title">Ring Garden</strong>
+        <strong class="wp-shell-main-title" id="main-header-title" data-wp-game-title data-runtime-localize="off">Rotating Ring Puzzles</strong>
         <div class="topbar-actions">
           <button id="settings-button" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button>
         </div>
@@ -47,7 +49,7 @@
         <img class="concept-cover main-cover" src="assets/animal-ring-garden-cover.png" alt="Ring Garden moonlit petal garden" draggable="false" />
         <img class="mimi-guide main-mimi" src="assets/animal-ring-garden-mimi.png" alt="Rainbow Hop Mimi, your moon-garden guide" draggable="false" />
         <p class="eyebrow" id="main-eyebrow">MOONLIGHT PATTERN PUZZLE</p>
-        <h1 id="main-title">Ring Garden</h1>
+        <h1 id="main-title" data-wp-game-title data-runtime-localize="off">Rotating Ring Puzzles</h1>
         <p class="lede" id="main-lede">Turn three petal rings until the moon-garden pattern blooms.</p>
         <p id="main-summary" class="main-summary" aria-label="Gameplay summary">Turn each ring to match the target petals.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress aria-live="polite">Gardens: 0 / 4</p>
