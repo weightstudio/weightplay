@@ -37,17 +37,20 @@ body.beast-deck-playing .enemy-container .beast-avatar::before {
 /* A real compact composition, in the shared canvas's uniform logical units.
    The arena and hand own flexible columns; playing a card never changes them. */
 @media (orientation:landscape) and (max-height:560px) {
- body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {
+ body.wp-logical-battle-active.beast-deck-playing .beast-deck-app #gamePanel.game-panel {
   grid-template-columns: minmax(210px,.8fr) minmax(0,1.8fr) !important;
   grid-template-rows:56px minmax(0,1fr) !important;gap:8px !important;padding:8px !important;
  }
  body.wp-logical-battle-active.beast-deck-playing #gamePanel .hud-row {
   grid-column:1/-1 !important;grid-row:1 !important;
-  grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+  grid-template-columns:repeat(6,minmax(0,1fr)) !important;grid-template-rows:48px !important;
   padding:4px 58px !important;gap:4px !important;font-size:13px;
  }
  body.beast-deck-playing #gamePanel .hud-row span {font-size:12px;}
  body.beast-deck-playing #gamePanel .hud-row b {font-size:17px;}
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel .hud-row .soft-btn {
+  width:48px !important;min-width:48px !important;height:48px !important;min-height:48px !important;
+ }
  body.wp-logical-battle-active.beast-deck-playing #gamePanel .battlefield {
   grid-column:1 !important;grid-row:2 !important;
   grid-template-rows:minmax(0,1fr) 48px 20px !important;padding:4px !important;gap:5px !important;
@@ -74,6 +77,7 @@ body.beast-deck-playing .enemy-container .beast-avatar::before {
   flex:0 0 164px;width:164px;height:100%;padding:8px;gap:5px;
   display:grid;grid-template-rows:62px 36px minmax(0,1fr);
  }
+ body.beast-deck-playing #gamePanel .hand-row .card-header {position:absolute;top:6px;inset-inline-start:6px;z-index:2;}
  body.beast-deck-playing #gamePanel .hand-row .card-icon {height:62px;}
  body.beast-deck-playing #gamePanel .hand-row .card-name {font-size:15px;line-height:18px;}
  body.beast-deck-playing #gamePanel .hand-row .card-desc {
