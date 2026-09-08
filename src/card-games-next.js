@@ -429,7 +429,7 @@
     ar: "دليل لعبة البستوني",
   };
 
-  const spadesShellCopy = () => SPADES_SHELL_COPY[currentLocale()] || SPADES_SHELL_COPY.en;
+  const spadesShellCopy = () => ({ ...(SPADES_SHELL_COPY[currentLocale()] || SPADES_SHELL_COPY.en), title: window.WEIGHTPLAY_GAME_TITLES?.spades?.[currentLocale()] || (SPADES_SHELL_COPY[currentLocale()] || SPADES_SHELL_COPY.en).title });
   const spadesOpponentNames = () => spadesShellCopy().opponents;
   const ownLocalizedText = (node, value) => {
     if (!node) return;
@@ -437,7 +437,7 @@
     if (node.textContent !== text) node.textContent = text;
     if (node.getAttribute("data-runtime-localize") !== "off") node.setAttribute("data-runtime-localize", "off");
   };
-  const warShellCopy = () => WAR_SHELL_COPY[currentLocale()] || null;
+  const warShellCopy = () => WAR_SHELL_COPY[currentLocale()] ? { ...WAR_SHELL_COPY[currentLocale()], title: window.WEIGHTPLAY_GAME_TITLES?.war?.[currentLocale()] || WAR_SHELL_COPY[currentLocale()].title } : null;
   const warBattleCopy = () => WAR_BATTLE_COPY[currentLocale()] || WAR_BATTLE_COPY.en;
   let warShellSyncing = false;
   const syncWarShell = () => {
@@ -2243,7 +2243,7 @@
       statusText?.setAttribute("aria-atomic", "true");
     }
     rootElement.dataset.wpCardGame = id;
-    const title = TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
+    const title = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[currentLocale()] || TITLES[id]?.[currentLocale()] || TITLES[id]?.en || id;
     document.querySelectorAll("img.cover").forEach((image) => {
       image.src = `../../assets/card-games-${id}-cover.webp`;
       image.alt = title;

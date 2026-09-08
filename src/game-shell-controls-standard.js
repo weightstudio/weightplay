@@ -371,6 +371,7 @@
   const OFFICIAL_TITLE_SELECTORS = [
       '[data-t="title"]',
       '[data-ui="title"]',
+      '[data-copy="title"]',
       "[data-wp-game-title]",
       ".wp-generated-main-title",
       ".wp-shell-main-title",

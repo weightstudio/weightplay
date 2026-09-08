@@ -170,7 +170,11 @@
   const gameId = document.body?.dataset.wpFiveGame || document.querySelector("[data-wp-five-game]")?.dataset.wpFiveGame || "";
   let locale = readLocale();
   const sourceToTranslation = new Map();
-  function currentCopy() { return gameCopy[gameId]?.[locale] || gameCopy[gameId]?.en || [gameId, "", ""]; }
+  function currentCopy() {
+    const copy = [...(gameCopy[gameId]?.[locale] || gameCopy[gameId]?.en || [gameId, "", ""])];
+    copy[0] = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || copy[0];
+    return copy;
+  }
   function rebuildMap() {
     sourceToTranslation.clear();
     const values = common[locale] || common.en;

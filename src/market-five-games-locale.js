@@ -105,8 +105,9 @@
   function apply() {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
-    document.title = `${at(game.title)} | WeightPlay`;
-    document.querySelectorAll("[data-m5-title]").forEach((node) => { node.textContent = at(game.title); });
+    const title = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale] || at(game.title);
+    document.title = `${title} | WeightPlay`;
+    document.querySelectorAll("[data-m5-title]").forEach((node) => { node.textContent = title; node.setAttribute("data-runtime-localize", "off"); });
     document.querySelectorAll("[data-m5-lede]").forEach((node) => { node.textContent = at(game.lede); });
     document.querySelectorAll("[data-m5-guide]").forEach((node) => { node.textContent = at(game.guide); });
     const map = { start: 1, stages: 2, backMain: 3, backStages: 4, retry: 5, next: 6, howTo: 7, choose: 12 };
