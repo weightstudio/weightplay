@@ -1,0 +1,25 @@
+/* Presentation is opt-in; the native peak/deck geometry and rules remain owned by TriPeaks. */
+body.wp-premium-table[data-wp-game-id='tripeaks-solitaire'] .stock-pile {
+  background: #083e30 url('../../assets/klondike-solitaire-card-back.webp') center / contain no-repeat;
+  border: 1px solid #d4be80;
+  border-radius: 6px;
+  box-shadow: 0 2px 0 #9e8853, 0 4px 8px #001a1660;
+}
+.wp-premium-table .classic-card .deck-center { inset: 15% 12%; }
+.wp-premium-table .classic-card .deck-pip { font-size: calc(var(--classic-card-width) * .18); }
+.wp-premium-table .classic-card[data-deck-rank='A'] .deck-pip { font-size: calc(var(--classic-card-width) * .42); }
+.wp-premium-table .classic-card.covered { background: #dce4d6; border-color: #9bab93; }
+.wp-premium-table .classic-card.covered .deck-center { opacity: .45; }
+.wp-premium-table .classic-card.available { border-color: #f1cf80; }
+.wp-premium-table .board-status { color: #fff0bd; text-shadow: 0 1px 2px #001b13; }
+.wp-premium-table .board-shell:has(.board-status[data-state='success']) .waste-pile,
+.wp-premium-table .board-shell:has(.board-status[data-state='peak']) .waste-pile {
+  animation: tripeaks-royal-transfer 500ms ease-out;
+}
+@keyframes tripeaks-royal-transfer {
+  from { box-shadow: 0 0 0 3px #ffe39a, 0 0 24px #f9ce5680; }
+  to { box-shadow: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-premium-table .waste-pile { animation: none !important; }
+}

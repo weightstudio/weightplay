@@ -2074,6 +2074,48 @@ body.crystal-playing #gamePanel:has(#resultPanel:not(.hidden)) #menuBtn {
   white-space: normal;
 }
 
+/* Rain Court: restrained weathered metal UI around the physical courtyard. */
+html { background: #141d21; }
+html body { background: radial-gradient(ellipse at 50% 0, #303a3c, #131c20 70%) !important; }
+html body #menuPanel .cover { border: 1px solid #8b8066; box-shadow: 0 12px 35px #0008; }
+html body #menuPanel, html body #stagePanel, html body #gamePanel,
+html body .upgrade-card-wrap, html body .result-card, html body .settings-popover {
+  background-color: #182226 !important;
+  color: #d8d5c7;
+}
+html body .hud-row > div, html body .stage-card, html body .upgrade-card,
+html body .result-card, html body .crystal-render-error, html body .menu-copy {
+  border: 1px solid #82775b !important;
+  border-radius: 3px !important;
+  background-image: linear-gradient(155deg, #283236, #141d21) !important;
+  box-shadow: inset 0 0 0 3px #0d171b77, 0 5px 18px #0006 !important;
+}
+html body #stagePanel { background-image: linear-gradient(#142025e8,#101b20f7), url('../../assets/animal-crystal-survivor-courtyard-v26.png') !important; }
+html body .hud-row b, html body .hud-row strong, html body #upgradeTitle, html body .result-card h2 {
+  color: #dfd1a9 !important;
+  text-shadow: 0 1px 2px #000;
+}
+html body .hud-row span, html body .xp-row { color: #b5b8ae !important; }
+html body #startBtn, html body #retryBtn, html body #nextStageBtn,
+html body #resultMenuBtn, html body .stage-tab.is-active {
+  background: linear-gradient(#465054, #273237) !important;
+  border: 1px solid #b5a17a !important;
+  border-radius: 3px !important;
+  color: #f0e1b8 !important;
+  box-shadow: inset 0 1px 0 #c8b99144, 0 3px 9px #0005 !important;
+}
+html body #menuBtn, html body #stageBackBtn {
+  background: #253238 !important;
+  border: 1px solid #998d71 !important;
+  border-radius: 3px !important;
+  color: #ddd1b1 !important;
+}
+html body #hintText, html body .xp-row { background: #182226 !important; color: #d4cfbc; }
+html body #xpFill { background: linear-gradient(90deg,#617c80,#b3c4bb); box-shadow: none; }
+html body .upgrade-icon img { filter: saturate(.5); }
+html body .result-ranger-art { display: none !important; }
+html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
+
 /* Short landscape gives the HUD its own side track so the 3D world keeps
    useful height. World meshes retain the same uniform projection. */
 @media (max-height: 560px) and (orientation: landscape) {

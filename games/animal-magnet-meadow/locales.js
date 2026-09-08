@@ -74,6 +74,39 @@
     hi: merge({ title: "चुंबकीय मैदान", intro: "एक चंद्र-पत्थर खिसकाएँ और जुड़े साथी की प्रतिक्रिया देखें।", start: "घाट शुरू करें", stages: "मैदान मानचित्र", settings: "सेटिंग", close: "बंद करें", language: "भाषा", back: "वापस", guideTitle: "कैसे खेलें", guideOne: "एक पत्थर चुनें और उसे घाट तक खींचें।", guideTwo: "दूसरा पत्थर खिंचाव या धकेल से चलता है।", guideThree: "दोनों पत्थरों को चमकते घाटों पर रखें।", target: "घाट पैटर्न", relationPull: "खींचने वाला लिंक", relationPush: "धकेलने वाला लिंक", check: "जोड़ी जाँचें", reset: "स्थिति रीसेट करें", incorrect: "अभी सही नहीं। एक और चाल आज़माएँ।", correct: "दोनों चंद्र-पत्थर घर पहुँच गए।", resultTitle: "घाट सही हुआ", finishTitle: "मैदान पुस्तक पूरी", next: "अगला घाट", home: "शुरुआत पर लौटें" }),
     ar: merge({ loading: "يفتح دفتر المرج…", kicker: "لغز المرج مع تارو صدفة الطحلب", title: "المرج المغناطيسي", intro: "حرّك حجر قمر واحداً وراقب استجابة شريكه المرتبط.", progress: "التقدم: {count}/3 مراسٍ · بلا مؤقت", start: "ابدأ مرسى", stages: "خريطة المرج", settings: "الإعدادات", close: "إغلاق", language: "اللغة", soundOn: "الصوت: تشغيل", soundOff: "الصوت: إيقاف", back: "رجوع", help: "مساعدة خريطة المرج", sound: "الصوت", guideTitle: "طريقة اللعب", guideOneTitle: "1. اختر حجراً", guideOne: "اختر حجراً واسحبه نحو مرسى.", guideTwoTitle: "2. راقب الرابط", guideTwo: "يتحرك الحجر الآخر بالجذب أو الدفع.", guideThreeTitle: "3. تحقق من الزوج", guideThree: "ضع الحجرين في مرسايهما المضيئين.", mapIntro: "كل مرسى يعلّمك كيف تغيّر حركة واحدة الزوج المرتبط.", round: "المرسى {number} من {total}", roundTitle1: "الجذب الأول", roundTitle2: "الدفع الهادئ", roundTitle3: "الاستقرار المزدوج", dockKicker: "مرسى المرج", target: "نمط المرسى", relationPull: "رابط جذب", relationPush: "رابط دفع", stoneA: "حجر القمر A", stoneB: "حجر القمر B", slot: "المرسى {number}", move: "الحركات: {count}", moveHint: "اسحب حجراً إلى مرسى جديد. سيستجيب الحجر المرتبط تلقائياً.", check: "تحقق من الزوج", reset: "إعادة ضبط المواقع", selectStone: "تم اختيار {stone}", ready: "اختر حجراً قمرياً للبدء.", moved: "تحرك {stone}. استجاب الحجر المرتبط.", incorrect: "لم يتطابق بعد. جرّب حركة أخرى.", correct: "عاد حجرا القمر إلى مكانهما.", resultKicker: "نتيجة المرج", resultTitle: "تطابق المرسى", resultText: "راقب تارو الحجرين المرتبطين وهما يستقران في زوج آمن بالمرج.", finishTitle: "اكتمل دفتر المرج", finishText: "اكتملت خطط المراسي الثلاث الهادئة. حُفظ أفضل مجموع لك هنا.", next: "المرسى التالي", replay: "أعد تجربة هذا المرسى", stats: "{moves} حركات · {best}", best: "أفضل مجموع: {count}", noBest: "لم تكتمل جولة كاملة بعد", home: "العودة للبداية", completed: "مكتمل", readyStage: "جاهز للرسو", stageHint1: "تعلّم استجابة جذب واحدة.", stageHint2: "استخدم استجابة دفع واحدة.", stageHint3: "خطط لحركتي جذب." }),
   };
+  // Complete the two locale entry paths returned by the v6 acceptance Issue.
+  Object.assign(window.MAGNET_MEADOW_LOCALES.it, {
+    loading: "Apertura del libro del prato…", kicker: "Il rompicapo del prato di Taro",
+    progress: "Progresso: {count}/3 attracchi · senza tempo limite",
+    soundOn: "Audio: attivo", soundOff: "Audio: disattivato", sound: "Audio", help: "Aiuto per la mappa del prato",
+    guideOneTitle: "1. Scegli una pietra", guideTwoTitle: "2. Osserva il legame", guideThreeTitle: "3. Controlla la coppia",
+    mapIntro: "Ogni attracco insegna come una mossa cambia la coppia collegata.",
+    round: "Attracco {number} di {total}", dockKicker: "ATTRACCO DEL PRATO",
+    stoneA: "Pietra lunare A", stoneB: "Pietra lunare B", slot: "Attracco {number}", move: "Mosse: {count}",
+    moveHint: "Trascina una pietra verso un nuovo attracco. La compagna reagisce automaticamente.",
+    selectStone: "Selezionata: {stone}", ready: "Scegli una pietra lunare per iniziare.",
+    moved: "{stone} spostata. La compagna collegata ha reagito.",
+    resultKicker: "RISULTATO DEL PRATO", resultText: "Taro osserva le pietre collegate sistemarsi al sicuro nel prato.",
+    finishText: "Hai completato tre piani di attracco. Il tuo miglior totale è salvato qui.",
+    replay: "Riprova questo attracco", stats: "{moves} mosse · {best}", best: "Miglior totale: {count}", noBest: "Nessun percorso completo",
+    completed: "Completato", readyStage: "Pronto per l’attracco", stageHint1: "Impara una risposta di attrazione.", stageHint2: "Usa una risposta di repulsione.", stageHint3: "Pianifica due mosse di attrazione."
+  });
+  Object.assign(window.MAGNET_MEADOW_LOCALES["pt-BR"], {
+    loading: "Abrindo o livro do prado…", kicker: "O quebra-cabeça do prado de Taro",
+    progress: "Progresso: {count}/3 encaixes · sem limite de tempo",
+    soundOn: "Som: ligado", soundOff: "Som: desligado", sound: "Som", help: "Ajuda do mapa do prado",
+    guideOneTitle: "1. Escolha uma pedra", guideTwoTitle: "2. Observe a ligação", guideThreeTitle: "3. Confira o par",
+    mapIntro: "Cada encaixe ensina como uma jogada altera o par conectado.",
+    round: "Encaixe {number} de {total}", dockKicker: "ENCAIXE DO PRADO",
+    stoneA: "Pedra lunar A", stoneB: "Pedra lunar B", slot: "Encaixe {number}", move: "Jogadas: {count}",
+    moveHint: "Arraste uma pedra até um novo encaixe. A parceira reage automaticamente.",
+    selectStone: "Selecionada: {stone}", ready: "Escolha uma pedra lunar para começar.",
+    moved: "{stone} movida. A parceira conectada reagiu.",
+    resultKicker: "RESULTADO DO PRADO", resultText: "Taro observa as pedras conectadas se acomodarem em segurança no prado.",
+    finishText: "Três planos de encaixe concluídos. Seu melhor total está salvo aqui.",
+    replay: "Tentar este encaixe novamente", stats: "{moves} jogadas · {best}", best: "Melhor total: {count}", noBest: "Nenhuma rodada completa",
+    completed: "Concluído", readyStage: "Pronto para encaixar", stageHint1: "Aprenda uma resposta de atração.", stageHint2: "Use uma resposta de repulsão.", stageHint3: "Planeje duas jogadas de atração."
+  });
   const stageTitles = {
     en: { roundTitle1: "First pull", roundTitle2: "Quiet push", roundTitle3: "Double settle" },
     "zh-Hant": { roundTitle1: "第一次拉力", roundTitle2: "安靜推力", roundTitle3: "雙重安置" },

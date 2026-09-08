@@ -1,0 +1,14 @@
+/* Pyramid retains the existing seven-row geometry and card-hit ownership. */
+.wp-premium-table .classic-card .deck-center { inset: 15% 12%; }
+.wp-premium-table .classic-card .deck-pip { font-size: calc(var(--classic-card-width) * .18); }
+.wp-premium-table .classic-card[data-deck-rank='A'] .deck-pip { font-size: calc(var(--classic-card-width) * .42); }
+.wp-premium-table .classic-card.covered .deck-center { opacity: .45; }
+.wp-premium-table .classic-card.covered { border-color: #a8ae98; background: #dce4d6; }
+.wp-premium-table .classic-card.available { border-color: #f4d992; box-shadow: 0 2px 0 #b99f64, 0 4px 8px #001c1660; }
+.wp-premium-table .classic-card.selected { border-color: #fff3bb; box-shadow: 0 0 0 2px #ffe190, 0 0 14px #ffc64e90; }
+.wp-premium-table .board-status { color: #f1e4bf; }
+.wp-premium-table .board-status[data-state='pair'] { color: #fff2b5; animation: pyramid-pair-confirm 440ms ease-out; }
+@keyframes pyramid-pair-confirm { from { text-shadow: 0 0 16px #ffd36c; } to { text-shadow: 0 1px 2px #001a12; } }
+@media (prefers-reduced-motion: reduce) {
+  .wp-premium-table .board-status[data-state='pair'] { animation: none; }
+}

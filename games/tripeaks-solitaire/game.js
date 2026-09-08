@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v23";
+  document.body.dataset.gameVersion = "v25";
   const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const TRIPEAKS_DYNAMIC_COPY = Object.freeze({
     en: { start: "Start Game", restart: "Restart", newGame: "New Game", moves: "Moves", score: "Score", combo: "Combo", back: "Back", ariaCard: "{rank} of {suit}", suits: { spades: "spades", hearts: "hearts", clubs: "clubs", diamonds: "diamonds" } },
@@ -165,6 +165,7 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "tripeaks", id: "tripeaks-solitaire" });
     if (!view) return;
+    window.WPCardTablePresentation?.install(view);
     const dynamicCopy = () => TRIPEAKS_DYNAMIC_COPY[view.locale] || TRIPEAKS_DYNAMIC_COPY.en;
     const markGameOwned = (node) => node?.setAttribute("data-runtime-localize", "off");
     const ensureMainProgress = () => {

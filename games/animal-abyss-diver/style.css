@@ -66,3 +66,26 @@ body[data-screen="battle"] #stageScreen{display:none!important}
 
 .completion-hint,.result-completion-hint{margin:0;padding:4px 8px;border-radius:8px;background:#153f50;color:#ffe79a;font-size:.75rem;font-weight:800;text-align:center}
 .completion-hint.hidden,.result-completion-hint.hidden{display:none!important}
+
+/* One shared logical Stage and its existing bounded rail/input owner. */
+body[data-game-id="animal-abyss-diver"] #stageScreen {
+  grid-template-rows: 56px 44px minmax(0,1fr) 56px !important;
+  gap: 0;
+  padding: 0;
+}
+#stageHint { margin:0; padding:4px 12px; line-height:1.2; }
+#stageScreen .stage-tabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); align-items:center; padding:4px 8px; background:#071d2eee; }
+#routesTab { grid-column:2; min-height:48px; border:1px solid #f1cd60; border-radius:8px; background:#10354a; color:#fff; font:inherit; font-weight:700; }
+#battleShell #helpBtn { position:static; flex:0 0 44px; width:44px; height:44px; min-width:44px; min-height:44px; }
+#battleShell .dive-coach { overflow:auto; align-items:center; }
+#battleShell .coach-card { max-height:100%; overflow:auto; }
+@media(min-width:700px) {
+  body[data-game-id="animal-abyss-diver"] .wp-standard-main-composition { --wp-main-landscape-poster-size:420px; }
+}
+@media(max-height:500px) and (orientation:landscape) {
+  #battleShell .dive-coach { padding:8px; }
+  #battleShell .coach-card { width:min(100%,760px); grid-template-columns:1fr auto; gap:8px; padding:12px; }
+  #battleShell .coach-card h2 { grid-column:1/-1; }
+  #battleShell .coach-card ol { margin:0; }
+  #battleShell #coachStart { align-self:center; min-height:48px; }
+}

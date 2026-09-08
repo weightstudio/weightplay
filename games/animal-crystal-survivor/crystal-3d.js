@@ -25,6 +25,10 @@ export class Crystal3D {
     try {
       this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: false });
       this.renderer.setPixelRatio(1);
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      this.renderer.shadowMap.autoUpdate = false;
+      this.renderer.shadowMap.needsUpdate = true;
       this.renderer.localClippingEnabled = true;
       // The camera's actual viewport is the visibility boundary. Never cut
       // approaching enemies at an invisible rectangle inside that viewport.
@@ -33,24 +37,37 @@ export class Crystal3D {
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       this.renderer.toneMappingExposure = .95;
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color('#153f41');
+      this.scene.background = new THREE.Color('#202a2b');
       this.camera = new THREE.OrthographicCamera(-VIEW_W / 2, VIEW_W / 2, VIEW_H / 2, -VIEW_H / 2, .1, 100);
       this.raycaster = new THREE.Raycaster();
       this.groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       this.vector = new THREE.Vector3();
       this.pointer = new THREE.Vector2();
-      this.scene.add(new THREE.HemisphereLight(0xd4ffff, 0x193930, 1.7));
-      const sun = new THREE.DirectionalLight(0xffdfac, 2.2);
-      sun.position.set(-8, 18, 12);
+      this.scene.add(new THREE.HemisphereLight(0xa9b8c0, 0x262522, 1.35));
+      const sun = new THREE.DirectionalLight(0xffe2b9, 2.5);
+      sun.position.set(-6, 24, 24);
+      sun.target.position.set(8, 0, 14);
+      sun.castShadow = true;
+      sun.shadow.mapSize.set(1024, 1024);
+      Object.assign(sun.shadow.camera, { left: -25, right: 25, top: 25, bottom: -25, near: 1, far: 75 });
+      sun.shadow.bias = -.0006;
+      sun.shadow.normalBias = .035;
+      this.sun = sun;
+      this.scene.add(sun.target);
       this.scene.add(sun);
-      const rim = new THREE.DirectionalLight(0x64dbff, 1.5);
+      const rim = new THREE.DirectionalLight(0x718f9c, .7);
       rim.position.set(10, 6, -8);
       this.scene.add(rim);
+      const blockShape = new THREE.Shape();
+      blockShape.moveTo(-.46, -.46); blockShape.lineTo(.46, -.46);
+      blockShape.lineTo(.46, .46); blockShape.lineTo(-.46, .46); blockShape.closePath();
+      const stoneBlock = new THREE.ExtrudeGeometry(blockShape, { depth: .92, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: .04, bevelThickness: .04 });
+      stoneBlock.translate(0, 0, -.46);
       this.geo = {
         ball: this.own(new THREE.SphereGeometry(1, 12, 8)),
         cone: this.own(new THREE.ConeGeometry(1, 1, 6)),
         crystal: this.own(new THREE.OctahedronGeometry(1)),
-        box: this.own(new THREE.BoxGeometry(1, 1, 1)),
+        box: this.own(stoneBlock),
         rod: this.own(new THREE.CylinderGeometry(1, 1, 1, 8)),
         ring: this.own(new THREE.TorusGeometry(1, .045, 4, 40)),
         disc: this.own(new THREE.CircleGeometry(1, 40)),
@@ -59,16 +76,17 @@ export class Crystal3D {
         outsideZone: this.own(new THREE.RingGeometry(1, 50, 64)),
       };
       this.mat = {};
-      const colors = { fur: 0xdb8527, cream: 0xffe2a0, mane: 0xa64a1a,
-        cloth: 0x16736b, pants: 0x283c39, leather: 0x986638, eye: 0x192724,
-        cyan: 0x49eeff, gold: 0xffc343, violet: 0x7562c7, pink: 0xc254ab,
-        dark: 0x334563, grass: 0x386b52, leaf: 0x327955, bark: 0x604939,
+      const colors = { fur: 0x947a54, cream: 0xccbd9e, mane: 0x554535,
+        cloth: 0x34464b, pants: 0x292c2e, leather: 0x514138, eye: 0x13191d,
+        cyan: 0x7bb5c1, gold: 0xc09b61, violet: 0x696d88, pink: 0x826879,
+        dark: 0x303c41, grass: 0x4e5547, leaf: 0x414d42, bark: 0x645e50,
+        stone: 0x817b6d, paleStone: 0xaaa18c, iron: 0x30393b, ember: 0xffb15b,
         white: 0xfff5cb, danger: 0xff704e, safe: 0x85ffc3 };
       for (const [name, color] of Object.entries(colors)) {
         this.mat[name] = this.own(new THREE.MeshStandardMaterial({ color, roughness: .72,
-          metalness: ['gold', 'cyan'].includes(name) ? .35 : .02,
-          emissive: ['cyan', 'gold'].includes(name) ? color : 0,
-          emissiveIntensity: .22 }));
+          metalness: ['gold', 'iron'].includes(name) ? .6 : .02,
+          emissive: ['cyan', 'ember'].includes(name) ? color : 0,
+          emissiveIntensity: name === 'ember' ? 2 : .2 }));
       }
       this.shadow = this.own(new THREE.MeshBasicMaterial({ color: 0x102f30, transparent: true, opacity: .25, depthWrite: false }));
       this.warning = this.own(new THREE.MeshBasicMaterial({ color: 0xff735d, transparent: true, opacity: .3, depthWrite: false, side: THREE.DoubleSide }));
@@ -78,17 +96,30 @@ export class Crystal3D {
       if (floorImage?.complete && floorImage.naturalWidth) {
         const floorTexture = this.own(new THREE.Texture(floorImage));
         floorTexture.colorSpace = THREE.SRGBColorSpace;
-        // Reuse only the painted meadow surface. Scenery is authored in 3D,
-        // rather than projecting illustrated trees sideways onto the ground.
-        floorTexture.repeat.set(.36, .48);
-        floorTexture.offset.set(.32, .27);
+        floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set(14, 18);
+        floorTexture.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
         floorTexture.needsUpdate = true;
-        const floorMaterial = this.own(new THREE.MeshBasicMaterial({ map: floorTexture }));
+        const masonryTexture = this.own(floorTexture.clone());
+        masonryTexture.repeat.set(.25, .15);
+        masonryTexture.offset.set(.35, .1);
+        masonryTexture.needsUpdate = true;
+        this.mat.stone.map = this.mat.paleStone.map = masonryTexture;
+        const floorMaterial = this.own(new THREE.MeshStandardMaterial({ map: floorTexture, color: 0xc6c0b1, roughness: .57, metalness: .12 }));
         const floor = this.mesh('plane', floorMaterial, this.scene, WIDTH / UNIT / 2, -.015, HEIGHT / UNIT / 2, 70, 90, 1);
         floor.rotation.x = -Math.PI / 2;
+        const exterior = new THREE.Shape();
+        exterior.moveTo(-35, -45); exterior.lineTo(35, -45); exterior.lineTo(35, 45); exterior.lineTo(-35, 45); exterior.closePath();
+        const opening = new THREE.Path();
+        opening.moveTo(-8.6, -14.35); opening.lineTo(-8.6, 14.35); opening.lineTo(8.6, 14.35); opening.lineTo(8.6, -14.35); opening.closePath();
+        exterior.holes.push(opening);
+        const border = new THREE.Mesh(this.own(new THREE.ShapeGeometry(exterior)), this.own(new THREE.MeshBasicMaterial({ color: 0x101e25, transparent: true, opacity: .48, depthWrite: false })));
+        border.rotation.x = -Math.PI / 2;
+        border.position.set(WIDTH / UNIT / 2, -.01, HEIGHT / UNIT / 2);
+        this.scene.add(border);
       }
       this.hero = this.character('hero');
-      this.hero.scale.setScalar(1.8);
+      this.hero.scale.setScalar(2.15);
       this.scene.add(this.hero);
       this.key = this.makeKey();
       this.scene.add(this.key);
@@ -121,74 +152,90 @@ export class Crystal3D {
   }
 
   buildGarden(texturedFloor = false) {
-    const garden = new THREE.Group();
-    this.scene.add(garden);
-    const terrain = this.own(new THREE.PlaneGeometry(180, 180, 48, 48));
-    terrain.rotateX(-Math.PI / 2);
-    const positions = terrain.attributes.position;
-    const colors = new Float32Array(positions.count * 3);
-    const color = new THREE.Color();
-    for (let i = 0; i < positions.count; i++) {
-      const x = positions.getX(i), z = positions.getZ(i);
-      const patch = (Math.sin(x * .72 + Math.cos(z * .41)) + Math.cos(z * .83 - x * .17)) / 4 + .5;
-      positions.setY(i, -.22 + Math.sin(x * .3) * Math.cos(z * .4) * .12);
-      color.setHSL(.24 + patch * .04, .32, .17 + patch * .13);
-      color.toArray(colors, i * 3);
-    }
-    terrain.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    terrain.computeVertexNormals();
-    const terrainMaterial = this.own(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95 }));
-    const ground = new THREE.Mesh(terrain, terrainMaterial);
-    ground.position.set(WIDTH / UNIT / 2, 0, HEIGHT / UNIT / 2);
-    garden.add(ground);
-    // Authored perimeter: layered mossy stone, foliage and crystal clusters.
-    // These are scenery only and never introduce unannounced collisions.
-    for (let i = 0; i < 72; i++) {
-      const side = i % 4, along = Math.floor(i / 4) / 17;
-      const irregular = .25 + (Math.sin(i * 2.37) + 1) * .45;
-      const x = side < 2 ? (side ? WIDTH / UNIT + irregular : -irregular) : along * WIDTH / UNIT;
-      const z = side < 2 ? along * HEIGHT / UNIT : (side === 2 ? -irregular : HEIGHT / UNIT + irregular);
-      const rock = this.mesh('crystal', i % 3 ? 'bark' : 'dark', garden, x, .12, z, .35 + i % 3 * .08, .3, .45);
-      rock.rotation.set(.1, i * .79, .2);
-      this.mesh('ball', 'leaf', garden, x + .12, .3, z, .28, .13, .3);
-      if (i % 5 === 0) {
-        for (let j = 0; j < 3; j++) {
-          const gem = this.mesh('crystal', j === 1 ? 'violet' : 'cyan', garden, x + (j - 1) * .2, .25 + j * .08, z + .15, .13, .4 + j * .12, .14);
-          gem.rotation.z = (j - 1) * .3;
+    const court = new THREE.Group();
+    this.scene.add(court);
+    this.courtyardWalls = [];
+    this.mesh('box', 'dark', court, 8, -.3, 13.75, 180, .4, 180);
+    for (const side of [0, 1, 2, 3]) {
+      const wall = new THREE.Group();
+      const vertical = side < 2;
+      const length = vertical ? HEIGHT / UNIT : WIDTH / UNIT;
+      wall.position.set(vertical ? (side ? WIDTH / UNIT + .65 : -.65) : WIDTH / UNIT / 2, 0, vertical ? HEIGHT / UNIT / 2 : (side === 2 ? -.65 : HEIGHT / UNIT + .65));
+      if (vertical) wall.rotation.y = Math.PI / 2;
+      wall.userData = { normalX: vertical ? (side ? 1 : -1) : 0, normalZ: vertical ? 0 : (side === 2 ? -1 : 1) };
+      court.add(wall); this.courtyardWalls.push(wall);
+      this.mesh('box', 'dark', wall, 0, .15, 0, length + 1.5, .3, 1.5);
+      const count = Math.ceil(length / 1.2);
+      for (let row = 0; row < 5; row++) {
+        for (let i = 0; i < count; i++) {
+          const x = -length / 2 + (i + .5) * length / count;
+          const stone = this.mesh('box', (i + row * 3) % 5 === 0 ? 'paleStone' : 'stone', wall, x, .45 + row * .46, 0, length / count - .055, .42, .87 + Math.sin(i * 1.7 + row) * .06);
+          stone.rotation.z = Math.sin(i * 13 + row * 3) * .008;
+        }
+      }
+      this.mesh('box', 'paleStone', wall, 0, 2.62, 0, length + .3, .18, 1.15);
+      for (let i = 0; i <= count; i += 3) {
+        const x = -length / 2 + i * length / count;
+        this.mesh('box', 'dark', wall, x, 1.4, 0, .58, 2.8, 1.25);
+        this.mesh('box', 'stone', wall, x, 2.87, 0, .85, .2, 1.48);
+        this.mesh('box', 'paleStone', wall, x, 3.1, 0, .66, .3, 1.2);
+        if (i % 2 === 0) {
+          const outside = (side === 0 || side === 2) ? -1 : 1;
+          this.mesh('box', 'stone', wall, x, 1.45, outside * 2.2, 2.6, 2.9, 2.5);
+          this.mesh('box', 'dark', wall, x, 2.98, outside * 2.2, 2.85, .18, 2.8);
+          this.mesh('box', 'paleStone', wall, x, 3.14, outside * 2.2, 2.6, .12, 2.5);
+          for (let r = -1; r <= 1; r++) this.mesh('box', 'iron', wall, x + r * .76, 3.25, outside * 2.2, .05, .12, 2.65);
         }
       }
     }
-    // Deterministic decoration never collides and stays outside the playable field.
-    for (let i = 0; i < 34; i++) {
-      const side = i % 2;
-      const z = .3 + Math.floor(i / 2) * 1.65 + Math.sin(i * 3.7) * .25;
-      const setback = .9 + (1 + Math.sin(i * 2.1)) * .7;
-      const x = side ? WIDTH / UNIT + setback : -setback;
-      const tree = new THREE.Group();
-      tree.position.set(x, 0, z);
-      tree.scale.setScalar(.85 + (1 + Math.sin(i * 3.1)) * .3);
-      garden.add(tree);
-      this.mesh('rod', 'bark', tree, 0, .5, 0, .12, 1, .12);
-      for (let tier = 0; tier < 3; tier++) {
-        const crown = this.mesh('cone', 'leaf', tree, 0, .8 + tier * .38, 0, .65 - tier * .13, .9, .65 - tier * .13);
-        crown.rotation.y = i * .8;
-      }
-      this.mesh('ball', 'grass', tree, .3, 1.15, .12, .55, .4, .52);
+    // Gatehouse stays outside the simulated arena; layered lintels and door.
+    const gate = new THREE.Group(); gate.position.set(8, 0, -2.6); court.add(gate);
+    gate.userData = { normalX: 0, normalZ: -1 };
+    this.courtyardWalls.push(gate);
+    this.mesh('box', 'dark', gate, 0, 1.7, 0, 6.2, 3.4, 2.5);
+    this.mesh('box', 'iron', gate, 0, 1.3, 1.28, 2.7, 2.6, .15);
+    for (let i = -2; i <= 2; i++) this.mesh('box', 'bark', gate, i * .49, 1.3, 1.39, .43, 2.4, .1);
+    for (const x of [-1.9, 1.9]) {
+      this.mesh('box', 'stone', gate, x, 1.6, 1.2, .65, 3.2, .8);
+      this.mesh('box', 'paleStone', gate, x, 3.3, 1.2, .95, .24, 1);
     }
-    for (const [x, z] of [[.4,.4], [WIDTH / UNIT - .4,.4], [.4,HEIGHT / UNIT - .4], [WIDTH / UNIT - .4,HEIGHT / UNIT - .4]]) {
-      const shrine = new THREE.Group(); shrine.position.set(x, 0, z); garden.add(shrine);
-      this.mesh('box', 'dark', shrine, 0, .1, 0, .65, .2, .65);
-      this.mesh('rod', 'bark', shrine, 0, .5, 0, .2, .75, .2);
-      this.mesh('box', 'gold', shrine, 0, .85, 0, .48, .08, .48);
-      this.mesh('crystal', 'cyan', shrine, 0, 1.2, 0, .24, .4, .24);
-      this.mesh('ring', 'gold', shrine, 0, 1.2, 0, .34).rotation.x = Math.PI / 2;
+    this.mesh('box', 'paleStone', gate, 0, 3.6, 0, 6.8, .35, 3.1);
+    this.mesh('box', 'stone', gate, 0, 3.85, 0, 5.9, .2, 2.5);
+    for (let i = 0; i < 7; i++) this.mesh('box', 'dark', gate, -2.7 + i * .9, 4.15, 0, .65, .55, 2.3);
+    for (const [x, z] of [[1,1], [15,1], [1,26.5], [15,26.5]]) {
+      const lamp = new THREE.Group(); lamp.position.set(x,0,z); court.add(lamp);
+      this.mesh('box', 'stone', lamp, 0,.15,0,.7,.3,.7);
+      this.mesh('rod', 'iron', lamp, 0,.9,0,.09,1.4,.09);
+      this.mesh('box', 'iron', lamp, 0,1.7,0,.45,.1,.45);
+      this.mesh('crystal', 'ember', lamp, 0,1.9,0,.15,.3,.15);
+      this.mesh('cone', 'iron', lamp, 0,2.2,0,.35,.25,.35);
+      const light = new THREE.PointLight(0xffa34c, 7, 7, 2);
+      light.position.set(x, 2.1, z); this.scene.add(light);
     }
-    // Sparse inlaid stones give motion and scale cues without false obstacles.
-    for (let i = 0; i < (texturedFloor ? 0 : 40); i++) {
-      const x = .8 + ((i * 137) % 930) / UNIT;
-      const z = .8 + ((i * 263) % 1650) / UNIT;
-      this.mesh('rod', i % 3 ? 'leaf' : 'cloth', garden, x, -.025, z, .23, .025, .15).rotation.y = i;
+    for (let i = 0; i < 36; i++) {
+      const side = i % 2, z = .6 + Math.floor(i / 2) * 1.5;
+      const x = side ? WIDTH / UNIT + 1.5 : -1.5;
+      this.mesh('box', i % 3 ? 'stone' : 'paleStone', court, x + Math.sin(i) * .3, .12, z, .35 + i % 3 * .1, .2, .6).rotation.y = i * 1.31;
+      if (i % 4 === 0) this.mesh('ball', 'leaf', court, x, .28, z, .4, .18, .35);
     }
+    // Thin worn threshold slabs give the playable floor a physical scale cue.
+    for (let i = 0; i < 12; i++) {
+      const x = 2 + i % 6 * 2.4, z = i < 6 ? .2 : HEIGHT / UNIT - .2;
+      this.mesh('box', 'stone', court, x, -.005, z, 2.32, .04, .55);
+    }
+    const damp = this.own(new THREE.MeshBasicMaterial({ color: 0x18242d, transparent: true, opacity: .16, depthWrite: false }));
+    const dampGeometry = this.own(new THREE.CircleGeometry(1, 16));
+    const dampVertices = dampGeometry.attributes.position;
+    for (let i = 1; i < dampVertices.count; i++) {
+      const radius = .8 + Math.sin((i % 16) * 2.4) * .17;
+      dampVertices.setXY(i, dampVertices.getX(i) * radius, dampVertices.getY(i) * radius);
+    }
+    for (let i = 0; i < 9; i++) {
+      const puddle = this.mesh('disc', damp, court, 2 + (i * 3.77) % 12, .012, 2 + (i * 5.31) % 23, .7 + i % 3 * .3, .35 + i % 2 * .2, 1);
+      puddle.geometry = dampGeometry;
+      puddle.rotation.x = -Math.PI / 2; puddle.rotation.z = i * 1.73;
+    }
+    court.traverse(object => { if (object.isMesh && !object.material.transparent) object.userData.staticShadow = true; });
   }
 
   character(type) {
@@ -215,6 +262,9 @@ export class Crystal3D {
     this.mesh('ball', hero ? 'leather' : color, rig, 0, .63, 0, tank ? .43 : .29, .38, .23);
     if (hero) {
       this.mesh('ball', 'cloth', rig, 0, .8, -.17, .32, .25, .09);
+      this.mesh('cone', 'cloth', rig, 0, .55, -.26, .38, .95, .13);
+      this.mesh('ball', 'iron', rig, 0, 1.26, .02, .34, .23, .28);
+      this.mesh('box', 'iron', rig, 0, 1.15, .33, .56, .11, .1);
       this.mesh('ball', 'gold', rig, 0, .57, .235, .075, .065, .035);
       for (const sign of [-1, 1]) {
         this.mesh('crystal', 'gold', rig, sign * .29, .82, .08, .12, .09, .16);
@@ -231,8 +281,8 @@ export class Crystal3D {
       const ear = this.mesh('cone', color, rig, sign * .26, 1.38, 0, .15, .32, .12);
       ear.rotation.z = -sign * .25;
       this.mesh('ball', 'cream', rig, sign * .25, 1.4, .08, .07, .1, .025);
-      this.mesh('ball', 'white', rig, sign * .135, 1.15, .292, .085, .1, .035);
-      this.mesh('ball', 'eye', rig, sign * .128, 1.15, .322, .044, .067, .02);
+      this.mesh('ball', hero ? 'iron' : 'white', rig, sign * .135, 1.15, .292, .085, .1, .035);
+      this.mesh('ball', hero ? 'cyan' : 'eye', rig, sign * .128, 1.15, .392, hero ? .025 : .044, hero ? .02 : .067, .02);
       const arm = this.mesh('ball', color, rig, sign * .35, .67, .015, .11, .24, .13);
       arm.rotation.z = sign * .25;
     }
@@ -361,12 +411,16 @@ export class Crystal3D {
     const cx = WIDTH / UNIT / 2;
     const cz = HEIGHT / UNIT / 2;
     this.landscape = width > height;
-    this.camera.position.set(cx + (this.landscape ? 12 : 0), 30, cz + (this.landscape ? 0 : 12));
+    const azimuth = .55 + (this.landscape ? Math.PI / 2 : 0);
+    if (this.azimuth !== azimuth) this.renderer.shadowMap.needsUpdate = true;
+    this.azimuth = azimuth;
+    this.camera.position.set(cx + Math.sin(this.azimuth) * 22, 30, cz + Math.cos(this.azimuth) * 22);
     this.camera.lookAt(cx, 0, cz);
     const aspect = width / height;
-    const groundCosine = 30 / Math.hypot(30, 12);
-    const baseWidth = (this.landscape ? HEIGHT : WIDTH) / UNIT + 2;
-    const baseHeight = ((this.landscape ? WIDTH : HEIGHT) / UNIT + 2) * groundCosine;
+    const groundCosine = 30 / Math.hypot(30, 22);
+    const c = Math.abs(Math.cos(this.azimuth)), s = Math.abs(Math.sin(this.azimuth));
+    const baseWidth = (WIDTH * c + HEIGHT * s) / UNIT + 3;
+    const baseHeight = (WIDTH * s + HEIGHT * c) / UNIT * groundCosine + 4;
     const fittedHeight = Math.max(baseHeight, baseWidth / aspect);
     if (resized || !this.bounds) {
       this.camera.left = -fittedHeight * aspect / 2;
@@ -377,6 +431,10 @@ export class Crystal3D {
     }
     this.bounds = { left: 0, right: WIDTH / UNIT, top: 0, bottom: HEIGHT / UNIT };
     this.camera.updateMatrixWorld();
+    this.courtyardWalls?.forEach(wall => {
+      const facing = wall.userData.normalX * Math.sin(this.azimuth) + wall.userData.normalZ * Math.cos(this.azimuth);
+      wall.scale.y = facing > .1 ? .2 : 1;
+    });
     this.setPosition(this.hero, state.player);
     this.setPosition(this.range, state.player, .035);
     this.range.scale.setScalar((state.player.range || 180) / UNIT);
@@ -480,7 +538,7 @@ export class Crystal3D {
     this.scene.traverseVisible(object => {
       if (!object.isMesh || object.isInstancedMesh) return;
       object.layers.set(1);
-      const key = `${object.geometry.uuid}:${object.material.uuid}`;
+      const key = `${object.geometry.uuid}:${object.material.uuid}:${Boolean(object.userData.staticShadow)}`;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(object);
     });
@@ -493,6 +551,8 @@ export class Crystal3D {
         batch = new THREE.InstancedMesh(objects[0].geometry, objects[0].material, capacity);
         batch.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
         batch.frustumCulled = false;
+        batch.castShadow = Boolean(objects[0].userData.staticShadow);
+        batch.receiveShadow = true;
         this.scene.add(batch);
         this.batches.set(key, batch);
       }
@@ -509,6 +569,11 @@ export class Crystal3D {
     return { x: Math.max(this.bounds.left * UNIT, Math.min(this.bounds.right * UNIT, this.vector.x * UNIT)), y: Math.max(this.bounds.top * UNIT, Math.min(this.bounds.bottom * UNIT, this.vector.z * UNIT)) };
   }
 
+  movementVector(x, y) {
+    const angle = this.azimuth || 0;
+    return { x: x * Math.cos(angle) + y * Math.sin(angle), y: -x * Math.sin(angle) + y * Math.cos(angle) };
+  }
+
   inView(x, y) { const p = this.project(x, y); return p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1; }
 
   project(x, y, elevation = 0) {
@@ -520,6 +585,8 @@ export class Crystal3D {
     return { disposed: this.disposed, contextLost: this.contextLost,
       geometries: this.renderer?.info.memory.geometries || 0,
       textures: this.renderer?.info.memory.textures || 0,
+      ownedTextureObjects: [...this.owned].filter(resource => resource.isTexture).length,
+      shadowMap: Boolean(this.sun?.shadow.map),
       calls: this.renderer?.info.render.calls || 0,
       triangles: this.renderer?.info.render.triangles || 0,
       pools: Object.fromEntries([...this.pools].map(([key, values]) => [key, values.length])) };
@@ -530,6 +597,9 @@ export class Crystal3D {
     this.disposed = true;
     this.canvas.removeEventListener('webglcontextlost', this.onLost);
     this.scene?.clear();
+    this.sun?.shadow.map?.dispose();
+    this.sun?.shadow.mapPass?.dispose();
+    if (this.sun) { this.sun.shadow.map = null; this.sun.shadow.mapPass = null; }
     for (const resource of this.owned) resource.dispose();
     this.owned.clear();
     this.pools.clear();

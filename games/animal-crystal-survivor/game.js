@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-3d-polish-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-courtyard-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -34,6 +34,10 @@
   };
 
   function releaseRenderer() {
+    clearTimeout(upgradeRevealTimer);
+    upgradeRevealTimer = null;
+    upgradeReady = false;
+    upgradePointerChoice = null;
     rendererRequest += 1;
     crystal3D?.dispose();
     crystal3D = null;
@@ -740,7 +744,7 @@
   });
 
   const assetPaths = {
-    arena: "../../assets/animal-crystal-survivor-forest-arena.webp",
+    arena: "../../assets/animal-crystal-survivor-courtyard-v26.png",
     hero: "../../assets/animal-crystal-survivor-ranger.webp",
     basic: "../../assets/animal-crystal-survivor-shadow-fox-v2.webp",
     runner: "../../assets/animal-crystal-survivor-shadow-panther-v2.webp",
@@ -1778,7 +1782,7 @@
     let timeout;
     try {
       const module = await Promise.race([
-        import(rendererModuleUrl),
+        Promise.all([import(rendererModuleUrl), images.arena.decode ? images.arena.decode() : Promise.resolve()]).then(([module]) => module),
         new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error("3D load timeout")), 12000); }),
       ]);
       if (request !== rendererRequest) return;
@@ -2037,7 +2041,7 @@
     if (keys.has("arrowright") || keys.has("d")) dx += 1;
     if (keys.has("arrowup") || keys.has("w")) dy -= 1;
     if (keys.has("arrowdown") || keys.has("s")) dy += 1;
-    if (crystal3D?.landscape) [dx, dy] = [dy, -dx];
+    if (crystal3D?.movementVector) ({ x: dx, y: dy } = crystal3D.movementVector(dx, dy));
     if (dx || dy) {
       const len = Math.hypot(dx, dy) || 1;
       p.x += (dx / len) * moveSpeed * dt;
@@ -2239,6 +2243,8 @@
     state.level += 1;
     state.mode = "upgrade";
     clearInput();
+    state.player.tx = state.player.x;
+    state.player.ty = state.player.y;
     upgradeReady = false;
     upgradePointerChoice = null;
     renderUpgradeCards();
@@ -3062,7 +3068,7 @@
     releaseRenderer();
   });
   window.addEventListener("pageshow", () => {
-    if (state.mode === "running" && !crystal3D) { showStageSelection(true); return; }
+    if (["running", "upgrade", "paused", "render-error", "loading-3d"].includes(state.mode) && !crystal3D) { showStageSelection(true); return; }
     battleSuspended = false;
     resetFrameClock();
   });

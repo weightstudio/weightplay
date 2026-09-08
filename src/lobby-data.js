@@ -6747,6 +6747,21 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "ar": "الإنقاذ من المتاهة الجليدية",
     "zh-Hant": "冰原迷宮救援",
     "zh-Hans": "冰原迷宫救援"
+  },
+  "pyramid-solitaire": {
+    "en": "Pyramid Solitaire",
+    "zh-Hant": "金字塔接龍",
+    "zh-Hans": "金字塔接龙",
+    "ja": "ピラミッドソリティア",
+    "ko": "피라미드 솔리테어",
+    "es": "Solitario Pirámide",
+    "pt-BR": "Paciência Pirâmide",
+    "fr": "Solitaire Pyramide",
+    "de": "Pyramiden-Solitär",
+    "it": "Solitario Piramide",
+    "ru": "Пасьянс «Пирамида»",
+    "hi": "पिरामिड सॉलिटेयर",
+    "ar": "سوليتير الهرم"
   }
 };
 for (const game of window.WONDER_LOBBY.games) if (window.WONDER_LOBBY.officialTitleOverrides[game.id]) game.title = {__localizedExact:true,...window.WONDER_LOBBY.officialTitleOverrides[game.id]};

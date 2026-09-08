@@ -1,0 +1,25 @@
+body.hearts-royal-table .card-game-battle {
+  background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
+}
+body.hearts-royal-table .card-table-center {
+  background: #003a2b50;
+  border: 1px solid #dab96b99;
+  box-shadow: inset 0 0 24px #001c1680, 0 0 0 3px #052a2266;
+}
+body.hearts-royal-table .opponent-card {
+  background: linear-gradient(145deg,#143f38ee,#06271fee);
+  border-color: #c8b07977;
+  box-shadow: inset 0 1px #ffedc933, 0 3px 8px #00191166;
+}
+body.hearts-royal-table .opponent-card strong { color: #ffe4a2; }
+body.hearts-royal-table .card-game-player { background:#05281fe6; border-color:#d8ba6d88; }
+body.hearts-royal-table .playing-card { --classic-card-width:52px; font-family:Georgia,'Times New Roman',serif; }
+body.hearts-royal-table .playing-card .rank {font-size:10px;line-height:1;}
+body.hearts-royal-table .playing-card .deck-center {inset:17% 12%;}
+body.hearts-royal-table .playing-card .deck-pip {font-size:8px;}
+body.hearts-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:18px;}
+body.hearts-royal-table .playing-card .deck-court {inset:16% auto auto 19%;}
+body.hearts-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-shadow:0 0 0 2px #ffdd87,0 6px 10px #001a14aa;}
+body.hearts-royal-table .playing-card.hearts-card-arrival {animation:hearts-card-arrival 180ms ease-out;}
+@keyframes hearts-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){body.hearts-royal-table .playing-card {animation:none!important;transition:none!important;}}

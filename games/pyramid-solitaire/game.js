@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v24";
+  document.body.dataset.gameVersion = "v25";
   const PYRAMID_PROGRESS_COPY = Object.freeze({
     en: { label: "Pyramid", text: "{label}: {remaining} cards left", aria: "Pyramid cards remaining: {remaining} of 28" },
     "zh-Hant": { label: "金字塔", text: "{label}：剩餘 {remaining} 張", aria: "金字塔剩餘 {remaining} 張，共 28 張" },
@@ -52,6 +52,7 @@
   const formatSummary = (template, values) => template.replace(/\{(score|combo|stock|remaining)\}/gu, (_, key) => String(values[key]));
   const view = window.WPClassicSolitaire?.mount({ variant: "pyramid", id: "pyramid-solitaire" });
   if (!view) return;
+  window.WPCardTablePresentation?.install(view);
   const markGameOwned = (node) => node?.setAttribute("data-runtime-localize", "off");
   const ensureMainProgress = () => {
     const mainCopy = document.querySelector(".main-copy");
