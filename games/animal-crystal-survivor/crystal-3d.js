@@ -363,11 +363,21 @@ export class Crystal3D {
     this.mesh('heroBall', 'ivory', rig, -.31, .58, -.67, .18, .17, .23);
     this.mesh('rod', 'bark', rig, .47, .66, .15, .04, 1.25, .04);
     this.mesh('rod', 'gold', rig, .47, 1.18, .15, .07, .2, .07);
-    const muzzle = this.mesh('heroBall', this.magicCore, rig, .47, 1.4, .15, .125, .125, .125);
-    this.mesh('ring', 'gold', rig, .47, 1.4, .15, .19, .19, .19).rotation.y = .5;
-    const castGlow = this.mesh('heroBall', this.magicGlow, rig, .47, 1.4, .15, .18, .18, .18);
+    const dragon = new THREE.Group();
+    dragon.position.set(.47, 1.4, .15);
+    rig.add(dragon);
+    this.mesh('ball', 'velvet', dragon, 0, .035, -.055, .19, .15, .23);
+    this.mesh('ball', 'gold', dragon, 0, -.055, .13, .16, .055, .21);
+    for (const sign of [-1, 1]) {
+      this.mesh('cone', 'gold', dragon, sign * .13, .21, -.17, .055, .25, .065).rotation.x = -.3;
+      this.mesh('crystal', this.magicImpact, dragon, sign * .155, .09, .06, .035, .04, .055);
+    }
+    this.mesh('crystal', 'gold', dragon, 0, .19, -.09, .045, .12, .16);
+    const muzzle = this.mesh('heroBall', this.magicCore, dragon, 0, .015, .28, .11, .11, .11);
+    this.mesh('ring', 'gold', dragon, 0, .015, .28, .15, .15, .15);
+    const castGlow = this.mesh('heroBall', this.magicGlow, dragon, 0, .015, .28, .18, .18, .18);
     const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.visible = false;
-    root.userData = { rig, legs, muzzle, castGlow, shield };
+    root.userData = { rig, legs, muzzle, castGlow, shield, dragon };
     return root;
   }
 
@@ -516,9 +526,13 @@ export class Crystal3D {
     const moving = previous && Math.hypot(state.player.x - previous.x, state.player.y - previous.y) > .05;
     if (moving) this.hero.userData.rig.rotation.y = Math.atan2(state.player.x - previous.x, state.player.y - previous.y);
     if (!moving && !previous) this.hero.userData.rig.rotation.y = this.azimuth;
-    if (state.shots.length) {
-      const target = state.shots[0].target;
-      this.hero.userData.rig.rotation.y = Math.atan2(target.x - state.player.x, target.y - state.player.y);
+    // Locomotion owns body facing. Only the dragon staff head tracks attacks.
+    const target = state.shots[state.shots.length - 1]?.target || this.hero.userData.aimTarget;
+    if (target) {
+      this.hero.updateMatrixWorld(true);
+      const pivot = this.hero.userData.dragon.getWorldPosition(new THREE.Vector3());
+      this.hero.userData.dragon.rotation.y = Math.atan2(target.x / UNIT - pivot.x, target.y / UNIT - pivot.z) - this.hero.userData.rig.rotation.y;
+      this.hero.userData.aimTarget = state.enemies.includes(target) ? target : null;
     }
     this.hero.userData.previous = { x: state.player.x, y: state.player.y };
     this.hero.userData.legs.forEach((leg, i) => { leg.rotation.x = moving ? Math.sin(t * 13 + i * Math.PI) * .6 : 0; });
