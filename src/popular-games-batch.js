@@ -1096,7 +1096,7 @@
     if (game.type === "breakout") document.body.dataset.gameVersion = BREAKOUT_GAME_VERSION;
     if (game.type === "tic") document.body.dataset.gameVersion = TIC_TAC_TOE_GAME_VERSION;
     if (game.type === "hangman") document.body.dataset.gameVersion = "v10";
-    if (game.type === "mahjong") document.body.dataset.gameVersion = "v11";
+    if (game.type === "mahjong") document.body.dataset.gameVersion = window.WPMahjong.gameVersion;
     if (game.type === "checkers") document.body.dataset.gameVersion = CHECKERS_GAME_VERSION;
     if (game.type === "wordle") document.body.dataset.gameVersion = WORDLE_GAME_VERSION;
     if (game.type === "pong") document.body.dataset.gameVersion = "v9";

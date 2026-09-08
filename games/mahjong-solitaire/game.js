@@ -2,10 +2,11 @@
   const base = document.currentScript.src;
   const style = document.createElement('link');
   style.rel = 'stylesheet';
-  style.href = new URL('style.css?v=20260908-mahjong-rules-v11', base).href;
+  style.href = new URL('style.css?v=20260909-mahjong-art-v12', base).href;
   document.head.append(style);
-  import(new URL('rules.mjs?v=20260908-mahjong-rules-v11', base).href).then(({ default: rules }) => {
+  Promise.all([import(new URL('rules.mjs?v=20260909-mahjong-art-v12', base).href),import(new URL('art.mjs?v=20260909-mahjong-art-v12', base).href)]).then(([{ default: rules },{installMahjongArt}]) => {
     window.WPMahjong = rules;
+    installMahjongArt();
     window.WPPopularArcade?.mount('mahjong-solitaire');
   }).catch(error => {
     console.error('Mahjong rules could not load', error);

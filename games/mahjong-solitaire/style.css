@@ -13,3 +13,41 @@ body[data-wp-game-id="mahjong-solitaire"] [data-wp-main-progress] {display:flex;
 .mj-example svg {width:33px;height:42px;padding:3px;background:#fff3d6;border-radius:5px}
 body[data-wp-game-id="mahjong-solitaire"] .game-message {font-size:14px;line-height:1.45;min-height:3em}
 @media(max-height:500px) and (min-width:600px){body[data-wp-game-id="mahjong-solitaire"] .game-message{min-height:0;font-size:12px;margin:4px 0}}
+
+/* Lacquered jade table and ivory inlay. Geometry above remains authoritative. */
+body[data-wp-game-id="mahjong-solitaire"] .board-wrap{
+ position:relative;isolation:isolate;
+ background:
+  radial-gradient(ellipse at 50% 36%,#29685c66,transparent 72%),
+  repeating-linear-gradient(0deg,#ffffff03 0 1px,transparent 1px 3px),
+  repeating-linear-gradient(90deg,#00000009 0 1px,transparent 1px 3px),#123c35;
+ border-color:#8b7046;
+ box-shadow:inset 0 0 0 3px #302b21,inset 0 0 0 5px #a68a50,inset 0 0 0 7px #162d26,inset 0 0 48px #0009,0 12px 28px #0004;
+}
+body[data-wp-game-id="mahjong-solitaire"] .board-wrap::before{
+ content:"";position:absolute;inset:16px;pointer-events:none;z-index:0;border:1px solid #c5ab6933;border-radius:16px;
+ background:radial-gradient(ellipse at center,transparent 44%,#081e211c 80%);
+}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered{z-index:1}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile,
+body[data-wp-game-id="mahjong-solitaire"] .mj-match-ghost{
+ border:1px solid #d4c298;border-radius:9px;
+ background:linear-gradient(120deg,#ffffff80,transparent 32%),linear-gradient(165deg,#fffef1 0%,#f3e8ca 76%,#e2ce9a);
+ color:#253f36;
+ box-shadow:inset 0 0 0 2px #fff9e5,inset 0 0 0 3px #c9b37c66,inset 0 -3px 3px #ab8b4940,0 2px 0 #b09a69,0 4px 0 #476f58,0 6px 0 #193e34,1px 9px 9px #001a16a6;
+}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile svg{filter:drop-shadow(0 1px 0 #fff9)}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile[aria-disabled="true"]{
+ background:linear-gradient(145deg,#d9dac3,#a5b09c);border-color:#859881;
+ box-shadow:inset 0 0 0 2px #e4e5cd66,inset 0 0 0 3px #708f7944,0 2px 0 #818c68,0 4px 0 #335543,0 6px 0 #143e30,1px 8px 9px #001a1677;
+}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile[aria-disabled="true"] svg{opacity:.8;filter:saturate(.65)}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile.selected{
+ background:linear-gradient(145deg,#fff9dd,#f4d889);outline:3px solid #f2c461;outline-offset:1px;
+ box-shadow:inset 0 0 0 2px #fffbe7,inset 0 0 0 3px #c4a45d,0 2px 0 #a68c4b,0 4px 0 #426448,0 6px 0 #183e2b,0 0 18px #ffc95c88;
+}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile.mj-hint{outline:2px solid #8bf4d6;outline-offset:2px}
+body[data-wp-game-id="mahjong-solitaire"] .mj-lock{font-size:14px;line-height:17px;width:17px;height:17px;border-radius:50%;background:#264d40dd;color:#eef2de;text-align:center;bottom:5px;inset-inline-end:4px}
+body[data-wp-game-id="mahjong-solitaire"] .mj-match-ghost{position:absolute;box-sizing:border-box;padding:4px;pointer-events:none;z-index:40}
+body[data-wp-game-id="mahjong-solitaire"] .mj-match-ghost svg{width:100%;height:100%}
+@media(prefers-reduced-motion:reduce){body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile{transition:none}}

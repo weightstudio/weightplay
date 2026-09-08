@@ -143,6 +143,14 @@ export class ChessBoard3D {
   };this.render();this.animation=requestAnimationFrame(frame);
  }
  render(){if(!this.disposed)this.renderer.render(this.scene,this.camera);}
+ snapshot(){
+  if(this.disposed)return null;
+  const source=this.renderer.domElement,canvas=document.createElement('canvas');
+  const scale=Math.min(1,640/Math.max(source.width,source.height));
+  canvas.width=Math.max(1,Math.round(source.width*scale));canvas.height=Math.max(1,Math.round(source.height*scale));
+  try{this.render();canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/webp',.85);}
+  finally{canvas.width=canvas.height=1;}
+ }
  stats(){return {geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,pieces:this.pieces.children.length,studio:Boolean(this.environmentTarget)};}
  dispose(){
   if(this.disposed)return;this.finishAnimation();this.disposed=true;this.resizeObserver?.disconnect();

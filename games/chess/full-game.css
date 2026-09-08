@@ -41,7 +41,10 @@ header{max-width:920px}
 #exit img{width:28px;height:28px;object-fit:contain}
 #matchModes{display:flex;gap:8px;align-items:center;min-width:0}
 #matchModes button{height:44px;font-size:14px;font-weight:600;padding:8px 12px;white-space:nowrap}
-#stages{grid-template-rows:52px minmax(0,1fr) 52px 50px 56px}
+#stages{padding:0;grid-template-rows:64px minmax(0,1fr) 52px 56px}
+#stages #stageList,#stages #matchModes{margin-inline:12px}
+#stages #stageReserve{margin:0}
+@media(max-width:699px) and (orientation:portrait){#stages{grid-template-rows:88px minmax(0,1fr) 52px 56px}}
 body:has(#main[hidden])>#rulesReference{display:none}
 html:has(#main:not([hidden])),body:has(#main:not([hidden])){overflow-y:auto;touch-action:pan-y;overscroll-behavior-y:contain}
 @media(min-width:700px){
@@ -51,3 +54,40 @@ html:has(#main:not([hidden])),body:has(#main:not([hidden])){overflow-y:auto;touc
  #rulesReference{padding:24px}
  .piece-reference{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Settlement stays inside the mounted Battle and its single physical reserve. */
+#battle.is-result{display:block}
+#battle.is-result>.reserve{position:absolute;inset:auto 0 0;height:56px}
+#battle #result{position:absolute;inset:0 0 56px;max-width:none;margin:0;padding:0;display:grid;grid-template-rows:minmax(0,1fr) auto;text-align:start;background:radial-gradient(ellipse at 50% 0,#354b4b,#0c252e 65%);overflow:hidden}
+#result .result-content{overflow:auto;min-height:0;padding:20px;overscroll-behavior:contain}
+#result .result-heading{border-top:3px solid #c4a765;padding-top:16px;margin-bottom:16px}
+#result #outcome{font-size:clamp(24px,3vw,34px);line-height:1.2;margin:0 0 10px;color:#ffe4a4;outline:none}
+#result #resultReason{font-size:15px;line-height:1.5;margin:0;color:#d8e6e1;overflow-wrap:anywhere}
+#result #resultBoard{display:block;width:100%;height:min(38vh,360px);object-fit:contain;border:1px solid #b99c5b70;border-radius:18px;background:#061920;margin:0 0 16px}
+#result #resultStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+#resultStats>div{min-width:0;border:1px solid #a6c1bd38;border-radius:14px;background:#172d36;padding:12px 8px}
+#resultStats dt{font-size:12px;line-height:1.4;color:#c9d8d5;overflow-wrap:anywhere}
+#resultStats dd{font-size:22px;font-weight:800;line-height:1.3;margin:6px 0 0;color:#fff1cc;overflow-wrap:anywhere;direction:ltr}
+#result .result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px;background:#0b202a;border-top:1px solid #d6bd7738}
+#result .result-actions button{min-width:0;width:100%;height:64px;min-height:64px;margin:0;padding:8px;font-size:14px;line-height:1.3;font-weight:750;white-space:normal;border-radius:14px;background:#f8fafc;color:#176a9d;border:1px solid #ffffff29}
+#result .result-actions #nextChallenge{background:#f5c84c;color:#1f2937}
+#result .result-actions button:disabled{background:#263b43!important;color:#92a5a8!important;opacity:1}
+#result[data-outcome="tryAgain"] .result-heading,#result[data-outcome="lose"] .result-heading{border-color:#8ca6a9}
+#result:not([hidden]) .result-content{animation:chess-result-in .28s ease-out both}
+@keyframes chess-result-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(min-width:700px){
+ #result .result-content{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:16px;align-content:start}
+ #result .result-heading{grid-column:2;grid-row:1;margin:0}
+ #result #resultBoard{grid-column:1;grid-row:1/3;align-self:start;height:min(65vh,600px);margin:0}
+ #result #resultStats{grid-column:2;grid-row:2;align-self:start}
+}
+@media(orientation:landscape) and (max-height:500px){
+ #result .result-content{padding:12px;gap:12px}
+ #result #resultBoard{height:100%;max-height:220px}
+ #result #outcome{font-size:23px}#result .result-heading{padding-top:8px}
+ #result #resultReason{font-size:13px}#resultStats>div{padding:8px 6px}
+ #result .result-actions{padding:8px 12px}#result .result-actions button{height:48px;min-height:48px}
+}
+@media(prefers-reduced-motion:reduce){#result:not([hidden]) .result-content{animation:none}}
+#confirmation #confirmNo{background:#f6cd64;color:#102e35;font-weight:700}
+#confirmation #confirmNo:focus-visible{outline:3px solid #fff1ba;outline-offset:3px}

@@ -63,7 +63,7 @@ export function symbolSvg(value) {
  if(n<4)for(let i=0;i<rank;i++){const x=rank===1?24:15+i%2*18,y=rank<3?26:16+Math.floor(i/2)*20;content+=`<circle cx="${x}" cy="${y}" r="7" fill="none" stroke="#b84734" stroke-width="3"/><circle cx="${x}" cy="${y}" r="2" fill="#b84734"/>`;}
  else if(n<8)for(let i=0;i<rank;i++)content+=`<path d="M${12+i*8} 12v30m-3-21h6m-6 12h6" stroke="#17735f" stroke-width="4" stroke-linecap="round"/>`;
  else content=`<text x="24" y="37" text-anchor="middle" font-size="34" font-weight="700" fill="#24508a">${['東','南','西','北'][n-8]}</text>`;
- return `<svg viewBox="0 0 48 54" aria-hidden="true">${content}</svg>`;
+ return `<svg viewBox="0 0 48 54" aria-hidden="true"><path d="M4 10V5h5M39 5h5v5M44 44v5h-5M9 49H4v-5" fill="none" stroke="#ad9259" stroke-opacity=".5" stroke-width=".7"/>${content}</svg>`;
 }
 function tileName(symbol,t){const n=Number(symbol)-1;return `${t.tile} ${n<4?`${n+1} ${t.dots}`:n<8?`${n-3} ${t.bamboo}`:`${t.wind} ${['東','南','西','北'][n-8]}`}`;}
 export function render(s,locale) {
@@ -81,4 +81,5 @@ export function decorate(els,locale){
  const guide=document.querySelector('[data-wp-game-guide]');if(guide)guide.innerHTML=guideHtml(locale);
  for(const node of [els.objective,progress,guide])if(node)node.dataset.runtimeLocalize='off';
 }
-export default {create,isOpen,pairs,select,render,copy,decorate,guideHtml};
+export const gameVersion='v12';
+export default {gameVersion,create,isOpen,pairs,select,render,copy,decorate,guideHtml};
