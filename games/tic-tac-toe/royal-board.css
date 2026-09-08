@@ -1,0 +1,41 @@
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .board-wrap {
+ container-type:size;display:grid;place-items:center;overflow:hidden;padding:10px;
+ background:#08352e url('../../assets/card-table/emerald-table-v1.webp') center/cover;
+ border:1px solid #c9ab70;box-shadow:inset 0 0 24px #001b17aa;
+}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .board {width:100%;height:100%;min-width:0;min-height:0;display:grid;place-items:center;}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-board {
+ width:min(100cqw,100cqh,500px);height:min(100cqw,100cqh,500px);min-width:0;min-height:0;max-height:100%;
+ box-sizing:border-box;padding:9px;gap:8px;aspect-ratio:1;
+ background:linear-gradient(135deg,#b89552,#644626 45%,#d2ab64);border:1px solid #edcf8e;border-radius:14px;
+ box-shadow:0 8px 0 #35291a,0 14px 22px #00170fb3,inset 0 1px #fff2bc;
+}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell {
+ position:relative;container-type:size;min-width:0;min-height:0;width:100%;height:100%;padding:0;border-radius:8px;border:1px solid #624624;
+ background:radial-gradient(ellipse at 40% 20%,#254a40,#0a2825);box-shadow:inset 0 3px 9px #001911bb,inset 0 -1px #ffffce38;
+ color:transparent;text-shadow:none;font-size:0;opacity:1;transform:none;
+}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell:not(:disabled):hover {background:radial-gradient(ellipse,#356658,#14352d);}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell:focus-visible {outline:3px solid #fff0ac;outline-offset:-5px;}
+body.tic-royal-board .tic-cell[data-piece='X']::before,
+body.tic-royal-board .tic-cell[data-piece='X']::after {
+ content:'';position:absolute;left:43%;top:16%;width:14%;height:68%;border-radius:4px;
+ background:linear-gradient(90deg,#bd7730,#ffe6a0 40%,#fff1be 56%,#e9ad46);border:1px solid #f4d38a;box-shadow:2px 3px 0 #80521d,4px 5px 5px #0007;transform:rotate(45deg);pointer-events:none;
+}
+body.tic-royal-board .tic-cell[data-piece='X']::after {transform:rotate(-45deg);}
+body.tic-royal-board .tic-cell[data-piece='O']::before {
+ content:'';position:absolute;inset:20%;border:9cqw solid #59ccdf;border-top-color:#b5f6ff;border-left-color:#86e5ef;border-bottom-color:#239bb6;
+ border-radius:50%;box-shadow:1px 4px 0 #12607a,3px 6px 8px #0008,inset 0 2px 0 #063d53;pointer-events:none;
+}
+html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-cell.winning {background:#385640;outline:3px solid #ffe5a0;outline-offset:-4px;box-shadow:inset 0 0 22px #efc66688;}
+body.tic-royal-board .tic-piece-arrival::before,body.tic-royal-board .tic-piece-arrival::after {animation:tic-piece-arrival 180ms ease-out;}
+@keyframes tic-piece-arrival {from{opacity:.2;filter:brightness(1.7);}to{opacity:1;filter:none;}}
+body.tic-royal-board #resultScreen .arcade-panel {background:radial-gradient(ellipse at top,#254c41,#092327);border-color:#d0b675;}
+@media(orientation:landscape) and (max-height:430px){
+ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .battle-panel {grid-template-rows:104px minmax(0,1fr) 44px;}
+ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .battle-top {grid-template-columns:minmax(0,1fr) 48px;grid-template-rows:48px 48px;gap:6px;}
+ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .round-label {grid-column:1;grid-row:1;}
+ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .tic-battle-settings {grid-column:2;grid-row:1;}
+ html.popular-tic-tac-toe-active body.tic-royal-board #battleScreen .battle-top .control-row {grid-column:1/-1;grid-row:2;width:100%;min-width:0;}
+}
+@media(prefers-reduced-motion:reduce){body.tic-royal-board .tic-cell::before,body.tic-royal-board .tic-cell::after {animation:none!important;transition:none!important;}}

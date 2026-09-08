@@ -1,0 +1,37 @@
+body.casino-royal-table .card-game-battle {background:#06392e url('../../assets/card-table/emerald-table-v1.webp') center/cover no-repeat;}
+body.casino-royal-table .card-table-center {background:#032b2266;border:1px solid #d6b776aa;box-shadow:inset 0 0 30px #001b1580;}
+body.casino-royal-table .opponent-card,
+body.casino-royal-table .card-game-player {background:linear-gradient(145deg,#154237ee,#06291fee);border-color:#c3a77099;box-shadow:inset 0 1px #ffedc933;}
+body.casino-royal-table .playing-card {width:56px;min-width:56px;height:79px;flex:0 0 56px;position:relative;font-family:Georgia,serif;}
+body.casino-royal-table .playing-card .rank {font-size:11px;line-height:1;}
+body.casino-royal-table .playing-card .deck-pip {font-size:9px;}
+body.casino-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:22px;}
+body.casino-royal-table .playing-card.is-selected {transform:none;border-color:#ffe5a1;outline:2px solid #ffe5a1;outline-offset:-3px;box-shadow:0 0 12px #edbd6080;}
+body.casino-royal-table .playing-card.is-capture-candidate:not(.is-selected) {outline:2px solid #85e9c4;outline-offset:-3px;}
+body.casino-royal-table .playing-card:focus-visible {outline:3px solid #ffe9ae;outline-offset:-3px;}
+body.casino-royal-table .table-row {gap:8px;}
+body.casino-royal-table .card-build {border:1px solid #d4b674;background:#153e32;border-radius:9px;padding:4px;}
+body.casino-royal-table .card-build small {color:#ffedb6;font-weight:800;}
+body.casino-royal-table #cardGameActions button {min-height:44px;border:1px solid #cbb376;border-radius:10px;background:linear-gradient(140deg,#20483b,#08271f);color:#fff0ca;padding:8px 12px;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;}
+body.casino-royal-table #cardGameActions button.primary-btn {background:linear-gradient(135deg,#ffe4a0,#e6bc5b);color:#183329;}
+body.casino-royal-table #cardGameActions button:disabled {opacity:.45;cursor:default;}
+body.casino-royal-table .card-choice-summary {border-color:#b99b60;background:#0b342c;color:#fff0cf;}
+body.casino-royal-table .casino-card-arrival {animation:casino-card-arrival 180ms ease-out;}
+body.casino-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
+@keyframes casino-card-arrival {from{opacity:.4;filter:brightness(1.6);}to{opacity:1;filter:none;}}
+@media(orientation:landscape) and (max-height:560px){
+ body.casino-royal-table #cardGameBoard {grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:32px minmax(0,1fr);grid-template-areas:'opponents opponents' 'table player';gap:4px;}
+ body.casino-royal-table #cardGameOpponents {grid-area:opponents;}
+ body.casino-royal-table .opponent-card {height:32px;min-height:0;box-sizing:border-box;padding:3px 8px;display:flex;align-items:center;gap:10px;}
+ body.casino-royal-table #cardGameTable {grid-area:table;}
+ body.casino-royal-table .card-game-player {grid-area:player;justify-content:center;}
+ body.casino-royal-table #cardGameCenter {display:flex;flex-direction:column;gap:3px;}
+ body.casino-royal-table #cardGameCenter .table-row {order:-1;}
+ body.casino-royal-table #cardGameCenter > .card-table-label {display:none;}
+ body.casino-royal-table .playing-card {width:44px;min-width:44px;height:62px;flex-basis:44px;}
+ body.casino-royal-table .playing-card .rank {font-size:9px;}
+ body.casino-royal-table .playing-card .deck-pip {font-size:7px;}
+ body.casino-royal-table .table-row {gap:4px;}
+ body.casino-royal-table #cardGameActions button {padding:4px 6px;font-size:11px;}
+}
+@media(prefers-reduced-motion:reduce){body.casino-royal-table .playing-card {animation:none!important;transition:none!important;}}

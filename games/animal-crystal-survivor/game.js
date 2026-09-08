@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-magic-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-builds-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -767,7 +767,31 @@
     bossEclipse: "../../assets/animal-crystal-survivor-boss-eclipse-colossus.webp",
   };
 
+  Object.entries({
+    en: ["Chain lightning", "Every 3 hits: lightning jumps to 1–3 nearby enemies. Automatic; ranks add jumps.", "Frost crystal", "Hits slow enemies by 40% (bosses 15%). Ranks extend the chill. Automatic.", "Crystal burst", "Every 4 hits: an area blast. Ranks increase damage and radius; chilled targets trigger stronger shatter. Automatic."],
+    "zh-Hant": ["連鎖雷電", "每命中 3 次，自動跳電至附近 1～3 隻敵人；升階增加跳躍次數。", "寒霜水晶", "命中自動緩速 40%（首領 15%）；升階延長寒霜時間。", "水晶爆裂", "每命中 4 次自動範圍爆炸；升階增加傷害和範圍。擊中寒霜敵人時，觸發更強碎冰。"],
+    "zh-Hans": ["连锁雷电", "每命中 3 次，自动跳电至附近 1～3 只敌人；升阶增加跳跃次数。", "寒霜水晶", "命中自动减速 40%（首领 15%）；升阶延长寒霜时间。", "水晶爆裂", "每命中 4 次自动范围爆炸；升阶增加伤害和范围。击中寒霜敌人时，触发更强碎冰。"],
+    ja: ["連鎖雷", "3回命中ごとに近くの敵1～3体へ自動連鎖。強化で連鎖数が増加。", "氷霜水晶", "命中で敵を40%減速（ボス15%）。強化で持続時間が延長。自動発動。", "水晶爆裂", "4回命中ごとに自動範囲爆発。強化で威力と範囲が増加。冷えた敵への爆発はさらに強力。"],
+    ko: ["연쇄 번개", "3회 적중마다 주변 적 1~3마리에게 자동 연쇄. 강화하면 연쇄 횟수 증가.", "서리 수정", "적중 시 40% 감속(보스 15%). 강화하면 지속 시간 증가. 자동 발동.", "수정 폭발", "4회 적중마다 자동 범위 폭발. 강화하면 피해와 범위 증가. 냉각된 적에게는 더 강한 쇄빙 발동."],
+    es: ["Rayo encadenado", "Cada 3 impactos salta automáticamente a 1–3 enemigos cercanos. Mejorar añade saltos.", "Cristal de escarcha", "Los impactos ralentizan un 40% (jefes 15%). Mejorar prolonga el frío. Automático.", "Estallido de cristal", "Explosión automática cada 4 impactos. Mejorar aumenta daño y radio. Un blanco helado provoca una ruptura más fuerte."],
+    pt: ["Raio em cadeia", "A cada 3 acertos, salta automaticamente para 1–3 inimigos próximos. Melhorias adicionam saltos.", "Cristal de gelo", "Acertos desaceleram 40% (chefes 15%). Melhorias prolongam o frio. Automático.", "Explosão de cristal", "Explosão automática a cada 4 acertos. Melhorias aumentam dano e alcance. Um alvo gelado causa estilhaços mais fortes."],
+    fr: ["Éclair en chaîne", "Tous les 3 impacts, touche automatiquement 1 à 3 ennemis proches. Les rangs ajoutent des rebonds.", "Cristal de givre", "Les impacts ralentissent de 40 % (boss 15 %). Les rangs prolongent le froid. Automatique.", "Explosion de cristal", "Explosion automatique tous les 4 impacts. Les rangs augmentent dégâts et rayon. Une cible glacée déclenche un éclatement renforcé."],
+    de: ["Kettenblitz", "Alle 3 Treffer springt der Blitz automatisch auf 1–3 nahe Gegner. Ränge erhöhen die Sprungzahl.", "Frostkristall", "Treffer verlangsamen um 40 % (Bosse 15 %). Ränge verlängern die Kälte. Automatisch.", "Kristallexplosion", "Alle 4 Treffer eine automatische Explosion. Ränge erhöhen Schaden und Radius. Gekühlte Ziele lösen stärkere Splitter aus."],
+    it: ["Fulmine a catena", "Ogni 3 colpi salta automaticamente su 1–3 nemici vicini. I gradi aggiungono salti.", "Cristallo di gelo", "I colpi rallentano del 40% (boss 15%). I gradi prolungano il gelo. Automatico.", "Esplosione di cristallo", "Esplosione automatica ogni 4 colpi. I gradi aumentano danno e raggio. Un bersaglio gelato provoca una frantumazione più forte."],
+    ru: ["Цепная молния", "Каждые 3 попадания автоматически поражает 1–3 ближайших врагов. Ранги добавляют переходы.", "Кристалл мороза", "Попадания замедляют на 40% (боссов на 15%). Ранги продлевают холод. Автоматически.", "Взрыв кристалла", "Автоматический взрыв каждые 4 попадания. Ранги увеличивают урон и радиус. Охлаждённая цель усиливает осколочный взрыв."],
+    hi: ["श्रृंखला बिजली", "हर 3 वार पर बिजली अपने आप 1–3 पास के शत्रुओं तक जाती है। उन्नयन से छलाँगें बढ़ती हैं।", "हिम क्रिस्टल", "वार से शत्रु 40% धीमे होते हैं (बॉस 15%)। उन्नयन से ठंड की अवधि बढ़ती है। स्वचालित।", "क्रिस्टल विस्फोट", "हर 4 वार पर स्वचालित क्षेत्र विस्फोट। उन्नयन से क्षति और दायरा बढ़ता है। ठंडे लक्ष्य पर अधिक शक्तिशाली बर्फ विस्फोट होता है।"],
+    ar: ["برق متسلسل", "كل 3 إصابات ينتقل تلقائيًا إلى 1–3 أعداء قريبين. الترقيات تزيد القفزات.", "بلورة الصقيع", "الإصابات تبطئ الأعداء 40٪ (الزعماء 15٪). الترقيات تطيل البرودة. تلقائي.", "انفجار البلور", "انفجار تلقائي كل 4 إصابات. الترقيات تزيد الضرر والنطاق. الهدف المبرد يطلق تحطمًا أقوى."],
+  }).forEach(([code, labels]) => {
+    ["magicChain", "magicChainDesc", "magicFrost", "magicFrostDesc", "magicBurst", "magicBurstDesc"].forEach((key, i) => {
+      text[code][key] = labels[i];
+      if (code === "pt") text["pt-BR"][key] = labels[i];
+    });
+  });
+
   const upgrades = [
+    { id: "chain", icon: "upgradeCooldown", name: "magicChain", desc: "magicChainDesc" },
+    { id: "frost", icon: "upgradeRange", name: "magicFrost", desc: "magicFrostDesc" },
+    { id: "burst", icon: "upgradeAttack", name: "magicBurst", desc: "magicBurstDesc" },
     { id: "attack", icon: "upgradeAttack", name: "upgradeAttack", desc: "upgradeAttackDesc" },
     { id: "range", icon: "upgradeRange", name: "upgradeRange", desc: "upgradeRangeDesc" },
     { id: "speed", icon: "upgradeSpeed", name: "upgradeSpeed", desc: "upgradeSpeedDesc" },
@@ -1207,6 +1231,7 @@
       damage: 1,
       cooldown: 0.78,
       shotTimer: 0,
+      chain: 0, frost: 0, burst: 0, magicHits: 0,
       pickup: hasCharm ? 68 : 54,
     };
   }
@@ -2112,11 +2137,24 @@
       const dist = Math.hypot(dx, dy) || 1;
       if (!enemy.isBoss && chargingEnemies) {
         enemy.chargeTimer -= dt;
+        if (enemy.chargeTimer <= .65 && !enemy.chargeAim) enemy.chargeAim = { x: dx / dist, y: dy / dist };
         enemy.speed = enemy.chargeTimer <= 0 ? (enemy.baseSpeed || enemy.speed) * 2.8 : (enemy.baseSpeed || enemy.speed);
-        if (enemy.chargeTimer <= -0.55) enemy.chargeTimer = 3.1 + Math.random() * 1.6;
+        if (enemy.chargeTimer > 0 && enemy.chargeTimer <= .65) enemy.speed *= .2;
+        if (enemy.chargeTimer <= -0.55) {
+          enemy.chargeTimer = 3.1 + Math.random() * 1.6;
+          enemy.chargeAim = null;
+          enemy.speed = enemy.baseSpeed || enemy.speed;
+        }
       }
-      enemy.x += (dx / dist) * enemy.speed * dt;
-      enemy.y += (dy / dist) * enemy.speed * dt;
+      enemy.chill = Math.max(0, (enemy.chill || 0) - dt);
+      const chillSpeed = enemy.chill > 0 ? (enemy.isBoss ? .85 : .6) : 1;
+      const chargingAim = !enemy.isBoss && chargingEnemies && enemy.chargeTimer <= 0 ? enemy.chargeAim : null;
+      enemy.x += (chargingAim?.x ?? dx / dist) * enemy.speed * chillSpeed * dt;
+      enemy.y += (chargingAim?.y ?? dy / dist) * enemy.speed * chillSpeed * dt;
+      if (chargingAim) {
+        enemy.x = Math.max(24, Math.min(W - 24, enemy.x));
+        enemy.y = Math.max(24, Math.min(H - 24, enemy.y));
+      }
       enemy.hit = Math.max(0, enemy.hit - dt);
       enemy.touch = Math.max(0, enemy.touch - dt);
       if (dist < (enemy.size + 42) * 0.42 && enemy.touch <= 0) {
@@ -2160,7 +2198,8 @@
       shot.x += (dx / dist) * step;
       shot.y += (dy / dist) * step;
       if (dist <= 24) {
-        damageEnemy(shot.target, shot.damage);
+        const hit = damageEnemy(shot.target, shot.damage);
+        if (!hit.blocked) triggerMagic(shot.target, shot.damage);
         shot.target.hit = 0.16;
         addSpark(shot.target.x, shot.target.y, "#67e8f9", { kind: "magicHit", height: (shot.target.size || 64) / 64 * 0.8 });
         return false;
@@ -2184,6 +2223,37 @@
     state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
     state.enemies = state.enemies.filter((item) => item !== enemy);
     if (state.stageConfig?.modifier === "emberTrail") addHazard("circle", { x: enemy.x, y: enemy.y, r: 78, warn: 0.15, life: 2.5, color: "#f97316", damage: 0.45 });
+  }
+
+  function triggerMagic(target, damage) {
+    const p = state.player;
+    p.magicHits += 1;
+    const frozen = (target.chill || 0) > 0;
+    if (p.frost && target.hp > 0) target.chill = .8 + p.frost * .4;
+    // Secondary hits never recurse; all damage still respects existing shields.
+    if (p.chain && p.magicHits % 3 === 0) {
+      let from = target;
+      const visited = new Set([target]);
+      for (let jump = 0; jump < p.chain; jump++) {
+        const next = state.enemies.filter(e => e.hp > 0 && !visited.has(e) && Math.hypot(e.x - from.x, e.y - from.y) <= 170)
+          .sort((a, b) => Math.hypot(a.x - from.x, a.y - from.y) - Math.hypot(b.x - from.x, b.y - from.y))[0];
+        if (!next) break;
+        addSpark(next.x, next.y, "#b8a4ff", { kind: "magicHit", element: "chain", height: (next.size || 64) / 64 * .8, fromX: from.x, fromY: from.y, fromHeight: (from.size || 64) / 64 * .8 });
+        damageEnemy(next, damage * .6);
+        visited.add(next);
+        from = next;
+      }
+    }
+    if (p.burst && p.magicHits % 4 === 0) {
+      const radius = 95 + p.burst * 15;
+      addSpark(target.x, target.y, "#ffb864", { kind: "magicHit", element: frozen ? "shatter" : "burst", height: .12, radius: radius / 64 });
+      [...state.enemies].forEach(enemy => {
+        if (enemy.hp > 0 && Math.hypot(enemy.x - target.x, enemy.y - target.y) <= radius) {
+          damageEnemy(enemy, damage * (.45 + p.burst * .15 + (frozen ? .35 : 0)));
+          enemy.hit = .16;
+        }
+      });
+    }
   }
 
   function damageEnemy(enemy, damage) {
@@ -2268,7 +2338,13 @@
   }
 
   function renderUpgradeCards() {
-    const options = [...upgrades].sort(() => Math.random() - 0.5).slice(0, 3);
+    const available = upgrades.filter(item => !["chain", "frost", "burst"].includes(item.id) || state.player[item.id] < 3);
+    for (let i = available.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [available[i], available[j]] = [available[j], available[i]];
+    }
+    const magic = available.find(item => ["chain", "frost", "burst"].includes(item.id));
+    const options = magic ? [magic, ...available.filter(item => item !== magic).slice(0, 2)] : available.slice(0, 3);
     nodes.upgradeCards.innerHTML = options
       .map((item) => `
         <button class="upgrade-card" type="button" data-upgrade="${item.id}">
@@ -2307,6 +2383,7 @@
 
   function upgradePreview(id) {
     const p = state.player;
+    if (["chain", "frost", "burst"].includes(id)) return `${p[id]} → ${Math.min(3, p[id] + 1)} / 3`;
     const previews = {
       attack: ["statDamage", p.damage, p.damage + 0.55, ""],
       range: ["statRange", p.range, p.range + 48, "px"],
@@ -2326,6 +2403,7 @@
   function applyUpgrade(id) {
     if (state.mode !== "upgrade") return;
     const p = state.player;
+    if (["chain", "frost", "burst"].includes(id)) p[id] = Math.min(3, p[id] + 1);
     if (id === "attack") p.damage += 0.55;
     if (id === "range") p.range += 48;
     if (id === "speed") p.speed += 32;
@@ -2489,9 +2567,11 @@
           image: enemy.image,
           isBoss: Boolean(enemy.isBoss),
           shielded: Boolean(enemy.shielded),
+          chill: enemy.chill || 0,
           danger: Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y) <= 170,
         })),
         shots: state.shots.map((shot) => ({ x: shot.x, y: shot.y, px: shot.px, py: shot.py, damage: shot.damage, image: shot.image })),
+        sparks: state.sparks.map(spark => ({ ...spark })),
         xpDrops: state.xpDrops.map((drop) => ({ x: drop.x, y: drop.y, value: drop.value })),
         floaters: state.floaters.map((floater) => ({ text: floater.text, x: floater.x, y: floater.y, life: floater.life })),
         resultScore: nodes.resultScore.textContent,

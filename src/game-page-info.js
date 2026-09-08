@@ -9356,6 +9356,10 @@
       ".wonder-main-cover", "img.cover", "img[class*='poster']", "img[class*='cover']",
     ].join(",");
     let queued = false;
+    // Explicit scene owners can finish this existing writer before returning
+    // from navigation. Observer-driven games retain their scheduled path.
+    window.WeightPlayStageArtwork ||= {};
+    window.WeightPlayStageArtwork.sync = syncStageArtwork;
     const queueSync = () => {
       if (queued) return;
       queued = true;

@@ -47,6 +47,27 @@ button { -webkit-tap-highlight-color: transparent; }
   margin-bottom: 10px;
 }
 
+/* Main's modal owns input above the shared navigation/settings layer. */
+.wp-tutorial-backdrop { z-index: 1000; }
+
+/* RTL Stage settings undo Canvas scale around the inward-facing left edge. */
+html:dir(rtl) body.squad-stage-select #stagePanel .wp-stage-shell-header
+  > .wp-shell-settings > .wp-shell-settings-popover {
+  right: auto !important;
+  left: 0 !important;
+  transform-origin: top left !important;
+}
+
+/* This permanent return is inside the scaled Battle, unlike a fixed overlay. */
+body.squad-active #gamePanel .wp-generated-battle-header > #quitRunBtn {
+  width: var(--squad-battle-return-logical-size, 48px) !important;
+  min-width: var(--squad-battle-return-logical-size, 48px) !important;
+  max-width: var(--squad-battle-return-logical-size, 48px) !important;
+  height: var(--squad-battle-return-logical-size, 48px) !important;
+  min-height: var(--squad-battle-return-logical-size, 48px) !important;
+  max-height: var(--squad-battle-return-logical-size, 48px) !important;
+}
+
 .back-btn {
   width: 58px;
   min-height: 48px;
@@ -716,6 +737,9 @@ body.squad-active button.battle-external-return {
   /* Keep the Main poster at the shared 420px wide-layout contract even when
      the compact landscape grid's stretch rules are loaded after this file's
      general Main styles. */
+  .squad-app .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
   body:not(.squad-stage-select):not(.squad-active) .menu-panel {
     grid-template-columns: 420px minmax(0, 1fr) !important;
   }

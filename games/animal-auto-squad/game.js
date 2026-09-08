@@ -4,9 +4,14 @@
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
   });
   document.getElementById("stagePanel")?.setAttribute("data-wp-standard-stage-screen", "true");
+  // Mount the shared Battle header once, not when the first expedition opens.
+  const battleHeader = document.createElement("header");
+  battleHeader.className = "wp-generated-battle-header";
+  battleHeader.append(document.getElementById("quitRunBtn"));
+  document.getElementById("gamePanel").prepend(battleHeader);
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v30";
+  const GAME_VERSION = "v32";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -2834,6 +2839,15 @@
     }
   }
 
+  function syncSceneOwners() {
+    // Commit shared geometry in the same navigation transaction, before paint.
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+    window.WeightPlayBattleCanvas?.sync?.();
+    window.WeightPlayStageArtwork?.sync?.();
+    window.scrollTo(0, 0);
+  }
+
   function renderMenu() {
     closeQuitDecision(false);
     closeStallDecision(false);
@@ -2866,6 +2880,7 @@
     renderStageSelector();
     renderTrainingRoster();
     updatePageMeta();
+    syncSceneOwners();
   }
 
   function showStageSelection() {
@@ -2885,6 +2900,7 @@
     save = loadSave();
     setStageTab("stages");
     renderStageSelector();
+    syncSceneOwners();
     requestAnimationFrame(() => {
       nodes.stageRail.querySelector(".stage-card.is-browsed")?.focus({ preventScroll: true });
     });
@@ -3822,6 +3838,7 @@
     stallDecisionOpen = false;
 
     // Initial Relic draft
+    syncSceneOwners();
     openRelicDraft();
     window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
   }
@@ -6376,6 +6393,7 @@
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
     // The external return needs both a physical target floor and the enlarged Canvas size.
     document.documentElement.style.setProperty("--squad-battle-return-size", `${48 * Math.max(1, battleScale)}px`);
+    document.documentElement.style.setProperty("--squad-battle-return-logical-size", `${Math.max(48, Math.ceil(44 / battleScale))}px`);
     updateTrainingStageCanvas();
     pinMainSoundToggle();
   }

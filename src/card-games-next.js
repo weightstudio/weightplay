@@ -2626,7 +2626,11 @@
 
   function makeWarFixed(controller) {
     const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 };
-    const finish = (playerWins) => controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length} · ${warResultText(s.warCount, s.largestPot)}`);
+    const finish = (playerWins) => {
+      if (s.phase === "finished") return;
+      s.phase = "finished";
+      controller.result(playerWins, `${t("cards")}: ${s.player.length} / ${s.ai.length} · ${warResultText(s.warCount, s.largestPot)}`);
+    };
     const settle = () => {
       const playerWins = s.playerCard.rank > s.aiCard.rank;
       s.largestPot = Math.max(s.largestPot, s.pot.length);
@@ -2661,7 +2665,7 @@
       reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
-      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip">${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
 
@@ -2700,6 +2704,34 @@
       return { rankMatches, sumCombos, candidates };
     };
     const canCapture = (item) => { const options = captureOptions(item); return Boolean(item && (options.rankMatches.length || options.sumCombos.length)); };
+    const validCaptureSelection = (item, indices) => {
+      if (!item || !indices.length || indices.some((index) => !s.table[index])) return false;
+      const target = value(item);
+      const values = indices.map((index) => tableValue(s.table[index])).sort((a, b) => b - a);
+      if (values.some((number) => number > target || number <= 0) || values.reduce((a, b) => a + b, 0) % target) return false;
+      const failed = new Set();
+      const partition = (remaining) => {
+        if (!remaining.length) return true;
+        const key = remaining.join(',');
+        if (failed.has(key)) return false;
+        const group = [0];
+        const fill = (start, sum) => {
+          if (sum === target) return partition(remaining.filter((_, index) => !group.includes(index)));
+          let previous = null;
+          for (let index = start; index < remaining.length; index += 1) {
+            const number = remaining[index];
+            if (number === previous || sum + number > target) continue;
+            previous = number; group.push(index);
+            if (fill(index + 1, sum + number)) return true;
+            group.pop();
+          }
+          return false;
+        };
+        if (fill(1, remaining[0])) return true;
+        failed.add(key); return false;
+      };
+      return partition(values);
+    };
     const immediateBonus = (cards) => cards.reduce((total, item) => total + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0);
     const specialBonusSummary = (cards) => {
       const parts = [];
@@ -2734,7 +2766,7 @@
         if (action === "capture" && s.selectedCard !== null) {
           const indices = [...s.selectedTable];
           const item = s.player[s.selectedCard];
-          const valid = indices.length && (indices.some((index) => tableValue(s.table[index]) === value(item)) || combinations(s.table, value(item)).some((combo) => combo.length === indices.length && combo.every((index) => indices.includes(index))));
+          const valid = validCaptureSelection(item, indices);
           if (valid) capture(indices, s.selectedCard);
         }
         if (action === "trail" && s.selectedCard !== null) trail(s.selectedCard);
@@ -2794,7 +2826,7 @@
           opponents: opponentMarkup("AI", s.ai.length, `${t("cards")}: ${s.captured[1].length}`),
           center: `<div class="card-table-label">${t("table")}</div>${captureHint}${selectedBuildCue}${buildPreview}${buildUnavailable}${payoffCue}<div class="table-row">${tableMarkup}</div>`,
           hand: cardsMarkup(s.player, { selected: new Set(s.selectedCard === null ? [] : [s.selectedCard]) }),
-          actions: `<button class="primary-btn" data-action="capture" ${s.selectedCard === null || !s.selectedTable.size ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size || selectedBuildValue > 10 ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>`
+          actions: `<button class="primary-btn" data-action="capture" ${!validCaptureSelection(selectedItem, [...s.selectedTable]) ? "disabled" : ""}>${t("capture")}</button><button class="secondary-btn" data-action="build" ${s.selectedCard === null || !s.selectedTable.size || selectedBuildValue > 10 ? "disabled" : ""}>${t("build")}</button><button class="secondary-btn" data-action="trail" ${!trailReady ? "disabled" : ""}>${casinoText("trail")}</button><button class="secondary-btn" data-action="clear-selection">${t("close")}</button>`
         };
       }
     };
@@ -3085,7 +3117,7 @@
     const finishIfDone = () => { const playerEmpty = !s.hand.length && !s.stock.length; const aiEmpty = !s.aiHand.length && !s.aiStock.length; if (playerEmpty || aiEmpty) { s.over = true; clearTimeout(s.timer); controller.result(playerEmpty, `${t("cards")}: ${s.hand.length + s.stock.length} / ${s.aiHand.length + s.aiStock.length}`); } };
     const aiLoop = () => {
       if (s.over || !controller.isBattleActive()) return;
-      const candidates = s.aiHand.flatMap((item, index) => s.centers.map((centerCard, centerIndex) => canPlay(item, centerCard) ? { index, centerIndex, item } : []));
+      const candidates = s.aiHand.flatMap((item, index) => s.centers.flatMap((centerCard, centerIndex) => canPlay(item, centerCard) ? [{ index, centerIndex, item }] : []));
       if (candidates.length) {
         const playerIsActive = Date.now() - s.lastPlayerAt < 1500;
         const playerCanPlay = s.hand.some((item) => s.centers.some((centerCard) => canPlay(item, centerCard)));

@@ -79,6 +79,12 @@ export class Crystal3D {
       this.magicCore = this.own(new THREE.MeshBasicMaterial({ color: 0xe6ffff, toneMapped: false }));
       this.magicGlow = this.own(new THREE.MeshBasicMaterial({ color: 0x38d9ff, transparent: true, opacity: .36, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
       this.magicImpact = this.own(new THREE.MeshBasicMaterial({ color: 0x8ff5ff, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false, toneMapped: false }));
+      this.elementMaterials = { shatter: this.magicImpact };
+      for (const [element, color] of [['chain', 0xc3a1ff], ['burst', 0xffb05c]]) {
+        const material = this.own(this.magicImpact.clone());
+        material.color.setHex(color);
+        this.elementMaterials[element] = material;
+      }
       this.shotVisuals = new WeakMap();
       const colors = { fur: 0x947a54, cream: 0xccbd9e, mane: 0x554535,
         cloth: 0x34464b, pants: 0x292c2e, leather: 0x514138, eye: 0x13191d,
@@ -123,7 +129,7 @@ export class Crystal3D {
         this.scene.add(border);
       }
       this.hero = this.character('hero');
-      this.hero.scale.setScalar(2.35);
+      this.hero.scale.setScalar(1.75);
       this.scene.add(this.hero);
       this.key = this.makeKey();
       this.scene.add(this.key);
@@ -435,7 +441,7 @@ export class Crystal3D {
     const c = Math.abs(Math.cos(this.azimuth)), s = Math.abs(Math.sin(this.azimuth));
     const baseWidth = (WIDTH * c + HEIGHT * s) / UNIT + 3;
     const baseHeight = (WIDTH * s + HEIGHT * c) / UNIT * groundCosine + 4;
-    const fittedHeight = Math.max(baseHeight, baseWidth / aspect) / 1.35;
+    const fittedHeight = Math.max(baseHeight, baseWidth / aspect) / 1.6;
     if (resized || !this.bounds) {
       this.camera.left = -fittedHeight * aspect / 2;
       this.camera.right = fittedHeight * aspect / 2;
@@ -484,14 +490,24 @@ export class Crystal3D {
     const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
     const charging = state.enemies.filter(e => (e.isBoss ? ['bossBriar', 'bossTempest'].includes(e.image) : chargingStage) && e.chargeTimer <= .65);
     this.pool('chargeCues', charging.length, () => {
-      const cue = new THREE.Mesh(this.geo.fineRing, this.mat.danger);
-      cue.rotation.x = -Math.PI / 2;
+      const cue = new THREE.Group();
+      this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
+      this.mesh('box', this.warning, cue, 0, 0, 1.6, .18, .02, 3.2);
       return cue;
     }, (cue, i) => {
-      this.setPosition(cue, charging[i], .06);
-      cue.material = charging[i].chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
-      cue.scale.setScalar(charging[i].size / UNIT * .7);
+      const enemy = charging[i];
+      this.setPosition(cue, enemy, .06);
+      cue.children[0].material = enemy.chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
+      cue.children[0].scale.setScalar(enemy.size / UNIT * .7);
+      cue.children[1].visible = Boolean(enemy.chargeAim);
+      cue.rotation.y = enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;
     }, 19);
+    const chilled = state.enemies.filter(e => e.chill > 0);
+    this.pool('chilled', chilled.length, () => new THREE.Mesh(this.geo.ring, this.magicGlow), (object, i) => {
+      this.setPosition(object, chilled[i], .12);
+      object.rotation.x = -Math.PI / 2;
+      object.scale.setScalar((chilled[i].size || 64) / UNIT * .65);
+    }, 55);
     this.pool('xp', state.xpDrops.length, () => new THREE.Mesh(this.geo.crystal, this.mat.cyan), (object, i) => {
       this.setPosition(object, state.xpDrops[i], .16);
       object.scale.set(.09, .16, .09);
@@ -536,6 +552,7 @@ export class Crystal3D {
       this.mesh('crystal', 'gold', group);
       this.mesh('ring', this.magicImpact, group);
       for (let j = 0; j < 8; j++) this.mesh('crystal', this.magicImpact, group);
+      this.mesh('rod', this.elementMaterials.chain, group);
       return group;
     }, (object, i) => {
       const spark = state.sparks[i];
@@ -543,10 +560,21 @@ export class Crystal3D {
       const age = 1 - spark.life / .45;
       this.setPosition(object, spark, magic ? spark.height : .35 + age * .5);
       object.children.forEach((child, j) => { child.visible = magic ? j > 0 : j === 0; });
+      const effectMaterial = this.elementMaterials[spark.element] || this.magicImpact;
+      object.children.slice(1, 10).forEach(child => { child.material = effectMaterial; });
       object.children[0].scale.setScalar(Math.max(.02, (1 - age) * .22));
       const ring = object.children[1];
       ring.quaternion.copy(this.camera.quaternion);
-      ring.scale.setScalar(.2 + age * (this.reducedMotion ? .45 : 1.1));
+      if (spark.radius) ring.rotation.set(-Math.PI / 2, 0, 0);
+      ring.scale.setScalar(.2 + age * (spark.radius || (this.reducedMotion ? .45 : 1.1)));
+      const bolt = object.children[10];
+      bolt.visible = magic && Number.isFinite(spark.fromX);
+      if (bolt.visible) {
+        const delta = new THREE.Vector3((spark.fromX - spark.x) / UNIT, spark.fromHeight - spark.height, (spark.fromY - spark.y) / UNIT);
+        bolt.position.copy(delta).multiplyScalar(.5);
+        bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.clone().normalize());
+        bolt.scale.set(.025 * (1 - age), delta.length(), .025 * (1 - age));
+      }
       for (let j = 0; j < 8; j++) {
         const shard = object.children[j + 2], angle = j * Math.PI / 4;
         const radius = .12 + age * (this.reducedMotion ? .4 : 1.25);

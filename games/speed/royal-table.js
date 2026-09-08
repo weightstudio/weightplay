@@ -3,8 +3,8 @@
   'use strict';
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
-  document.body.classList.add('wp-premium-table','war-royal-table');
-  document.body.dataset.gameVersion='v12';
+  document.body.classList.add('wp-premium-table','speed-royal-table');
+  document.body.dataset.gameVersion='v17';
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');
@@ -17,7 +17,7 @@
       if(!match)return; // Unknown/localized content is preserved, never guessed.
       const [,rank,suit]=match;
       card.classList.add('classic-card','front');
-      if(changed&&!priorLabels.has(card.getAttribute('aria-label')))card.classList.add('war-card-arrival');
+      if(changed&&!priorLabels.has(card.getAttribute('aria-label')))card.classList.add('speed-card-arrival');
       const corners=['top','bottom'].map(position=>{
         const node=document.createElement('span');node.className='rank '+position;node.textContent=rank;return node;
       });
