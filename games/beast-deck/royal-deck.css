@@ -1,0 +1,85 @@
+/* Owned presentation: no changes to rules, hand order, resource costs or hit boxes. */
+.beast-deck-app button.card {
+  --foil:#5eb7cb;
+  background:linear-gradient(145deg,#244455,#0c1a2b 58%,#152d3c);
+  border-color:var(--foil);
+  box-shadow:inset 0 0 0 2px #091320,inset 0 0 0 3px #a5d4d044,0 3px 0 #06101a,0 6px 12px #0006;
+}
+.beast-deck-app button.card.defense {--foil:#88b698;background:linear-gradient(145deg,#294c41,#0e2928 58%,#17362e);}
+.beast-deck-app button.card.utility {--foil:#b593d2;background:linear-gradient(145deg,#493754,#251a39 58%,#352945);}
+.beast-deck-app button.card.curse {--foil:#cb83a8;background:linear-gradient(145deg,#573044,#2c1633 58%,#45203e);}
+.beast-deck-app button.card .card-icon {position:relative;min-height:0;border:1px solid #cce9d433;background:radial-gradient(ellipse at 50% 85%,#aac7b333,transparent 70%),#050f1b55;}
+.beast-deck-app button.card .card-icon img {position:absolute;inset:0;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;}
+.beast-deck-app button.card .card-cost {border:1px solid #fff8;box-shadow:inset 0 1px 2px #fff9,0 2px 0 #0007;}
+.beast-deck-app button.card .card-desc {color:#d4dedf;}
+.beast-deck-app button.card.disabled {opacity:.72;filter:saturate(.55);}
+.beast-deck-app button.card.drafted-card::after {content:'★';}
+body.beast-deck-playing .enemy-container {
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto auto auto;
+  justify-items:center;align-content:stretch;min-height:0;height:100%;
+}
+body.beast-deck-playing .enemy-container .beast-avatar,
+body.beast-deck-playing .enemy-container .beast-avatar.is-boss {
+  position:relative;isolation:isolate;width:100%;height:100%;min-height:0;max-width:300px;
+}
+body.beast-deck-playing .enemy-container .beast-avatar img {width:100%;height:100%;min-height:0;object-fit:contain;z-index:1;}
+body.beast-deck-playing .enemy-container .beast-avatar::before {
+  content:'';position:absolute;bottom:8%;left:20%;width:60%;height:12%;border-radius:50%;
+  background:radial-gradient(ellipse,#07151bcc,#244c5144 55%,transparent 75%);pointer-events:none;
+}
+@media(orientation:landscape) and (max-height:560px){
+ body.beast-deck-playing .enemy-container{grid-template-columns:minmax(70px,.8fr) minmax(0,1.2fr);grid-template-rows:repeat(4,auto);column-gap:8px;align-content:center;}
+ body.beast-deck-playing .enemy-container .beast-avatar{grid-column:1;grid-row:1/5;max-height:170px;}
+ body.beast-deck-playing .enemy-container>:not(.beast-avatar){grid-column:2;}
+}
+@media(prefers-reduced-motion:reduce){.beast-deck-app .beast-avatar.hurt,.beast-deck-app .beast-avatar.attack,.beast-deck-app .combat-feedback{animation:none}.beast-deck-app button.card{transition:none}}
+
+/* A real compact composition, in the shared canvas's uniform logical units.
+   The arena and hand own flexible columns; playing a card never changes them. */
+@media (orientation:landscape) and (max-height:560px) {
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel.game-panel {
+  grid-template-columns: minmax(210px,.8fr) minmax(0,1.8fr) !important;
+  grid-template-rows:56px minmax(0,1fr) !important;gap:8px !important;padding:8px !important;
+ }
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel .hud-row {
+  grid-column:1/-1 !important;grid-row:1 !important;
+  grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+  padding:4px 58px !important;gap:4px !important;font-size:13px;
+ }
+ body.beast-deck-playing #gamePanel .hud-row span {font-size:12px;}
+ body.beast-deck-playing #gamePanel .hud-row b {font-size:17px;}
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel .battlefield {
+  grid-column:1 !important;grid-row:2 !important;
+  grid-template-rows:minmax(0,1fr) 48px 20px !important;padding:4px !important;gap:5px !important;
+ }
+ body.beast-deck-playing #gamePanel .enemy-container {
+  grid-template-columns:minmax(70px,1fr) minmax(0,1fr);gap:4px;
+ }
+ body.beast-deck-playing #gamePanel .enemy-container .beast-avatar {max-height:none;}
+ body.beast-deck-playing #gamePanel #enemyName {font-size:16px;}
+ body.beast-deck-playing #gamePanel .enemy-intent,
+ body.beast-deck-playing #gamePanel .status-badge {font-size:13px;}
+ body.beast-deck-playing #gamePanel .battle-log {height:48px;min-height:48px;max-height:48px;font-size:12px;line-height:1.35;}
+ body.beast-deck-playing #gamePanel .hp-text {font-size:12px;}
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel .action-area {
+  grid-column:2 !important;grid-row:2 !important;display:grid;
+  grid-template-rows:minmax(0,1fr) 44px !important;
+  height:100% !important;min-height:0 !important;gap:8px !important;
+ }
+ body.wp-logical-battle-active.beast-deck-playing #gamePanel .hand-row {
+  height:100% !important;min-height:0 !important;max-height:none !important;
+  align-items:stretch;gap:10px;padding:4px;
+ }
+ body.beast-deck-playing #gamePanel .hand-row .card {
+  flex:0 0 164px;width:164px;height:100%;padding:8px;gap:5px;
+  display:grid;grid-template-rows:62px 36px minmax(0,1fr);
+ }
+ body.beast-deck-playing #gamePanel .hand-row .card-icon {height:62px;}
+ body.beast-deck-playing #gamePanel .hand-row .card-name {font-size:15px;line-height:18px;}
+ body.beast-deck-playing #gamePanel .hand-row .card-desc {
+  font-size:14px;line-height:18px;margin:0;overflow:auto;align-items:start;
+ }
+ body.beast-deck-playing #gamePanel .hand-row .card-cost {font-size:14px;width:24px;height:24px;}
+ body.beast-deck-playing #gamePanel .control-row {min-height:0;}
+ body.beast-deck-playing #gamePanel .control-row .action-btn {min-height:44px;font-size:16px;padding:6px 16px;}
+}

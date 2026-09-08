@@ -1,6 +1,8 @@
 ﻿(() => {
   document.querySelector(".beast-deck-app")?.setAttribute("data-wp-canvas-max-width", "920");
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-battle-landscape-width", "780");
+  document.getElementById("gamePanel")?.setAttribute("data-wp-battle-landscape-height", "334");
   const resultDialog = document.getElementById("resultPanel");
   resultDialog?.setAttribute("role", "dialog");
   resultDialog?.setAttribute("aria-modal", "true");
@@ -8,6 +10,7 @@
   resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock");
 
   const GAME_ID = "beast-deck";
+  document.body.dataset.gameVersion = 'v16';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();
@@ -3258,15 +3261,9 @@
     nextDecision?.focus({ preventScroll: true });
     if (!nextCard) return;
 
-    const cardLeft = nextCard.offsetLeft;
-    const cardRight = cardLeft + nextCard.offsetWidth;
-    const visibleLeft = nodes.handRow.scrollLeft;
-    const visibleRight = visibleLeft + nodes.handRow.clientWidth;
-    if (cardLeft < visibleLeft) {
-      nodes.handRow.scrollLeft = cardLeft;
-    } else if (cardRight > visibleRight) {
-      nodes.handRow.scrollLeft = cardRight - nodes.handRow.clientWidth;
-    }
+    // The browser owns RTL scrollLeft conventions and transformed-canvas
+    // geometry. Offset coordinates are not the hand's visible scroll origin.
+    nextCard.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
   }
 
   function syncResultPrimaryAction(won, canContinue) {

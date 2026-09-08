@@ -163,3 +163,22 @@ body[data-screen="battle"] footer, body[data-screen="result"] footer { display:n
   .text-btn { height:36px; min-height:36px; margin-top:2px; padding:4px 10px; font-size:.78rem; }
 }
 [dir="rtl"] .status-row { direction:rtl; }
+
+/* Ivory domino bodies; the two illustrated ends are the actual matching data. */
+.habitat-tile {
+  background:linear-gradient(105deg,#fffdf1,#ecdfbb);border:1px solid #bda36c;
+  box-shadow:inset 0 1px 1px #fff,0 3px 0 #b09a68,0 5px 0 #665739,0 9px 13px #233a2933;
+  grid-template-rows:1fr 1fr;gap:0;padding:4px 5px;
+}
+.domino-half {display:grid;justify-items:center;align-content:center;gap:2px;min-width:0;padding:3px 0;}
+.domino-half + .domino-half {border-top:1px solid #ae945c;box-shadow:inset 0 1px #fffc;}
+.domino-half .tile-art {width:34px;height:38px;margin:0;border-radius:5px;}
+.domino-slot {border:1px dashed #8c987366;border-radius:12px;background:#b6c5a41a;min-height:102px;}
+.habitat-tile:hover:not(:disabled){background:linear-gradient(105deg,#fffbe9,#ead2a1);transform:none;}
+.habitat-tile:focus-visible {outline:3px solid #8c6329;outline-offset:2px;}
+@media(min-width:700px) and (max-height:540px) and (orientation:landscape){
+ .domino-half{padding:0;gap:0;}
+ .domino-half .tile-art{width:21px;height:23px;}
+ .domino-slot{min-height:72px;}
+}
+@media(prefers-reduced-motion:reduce){.habitat-tile.is-wrong{animation:none}}

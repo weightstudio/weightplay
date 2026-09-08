@@ -3,7 +3,10 @@
 
   const locales = window.GROVE_CHAIN_LOCALES;
   const localeKeys = locales.__localeKeys;
-  const GAME_VERSION = "v2";
+  const GAME_VERSION = "v5";
+  let advanceTimer = null;
+  const cancelAdvance = () => { clearTimeout(advanceTimer); advanceTimer = null; };
+  window.addEventListener('pagehide', cancelAdvance);
   const rounds = [
     { start: "den", tiles: [["den", "creek"], ["creek", "moss"], ["moss", "nest"], ["nest", "moon"], ["moon", "den"]] },
     { start: "reef", tiles: [["reef", "tide"], ["tide", "shell"], ["shell", "grove"], ["grove", "den"], ["den", "reef"]] },
@@ -34,7 +37,8 @@
     try { const AudioCtor = window.AudioContext || window.webkitAudioContext; const audio = new AudioCtor(); const oscillator = audio.createOscillator(); const gain = audio.createGain(); oscillator.frequency.value = kind === "success" ? 620 : 210; gain.gain.setValueAtTime(0.0001, audio.currentTime); gain.gain.exponentialRampToValueAtTime(0.03, audio.currentTime + 0.01); gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13); oscillator.connect(gain).connect(audio.destination); oscillator.start(); oscillator.stop(audio.currentTime + 0.14); oscillator.addEventListener("ended", () => audio.close(), { once: true }); } catch (_) {}
   }
   function applyLocale() {
-    document.documentElement.lang = state.locale === "zh-Hant" ? "zh-TW" : state.locale === "zh-Hans" ? "zh-CN" : state.locale;
+    document.documentElement.lang = state.locale;
+    document.body.dataset.gameVersion = GAME_VERSION;
     document.documentElement.dir = copy().direction || "ltr";
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
     document.querySelectorAll("[data-copy-aria-label]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.copyAriaLabel)); });
@@ -54,6 +58,7 @@
     select.addEventListener("change", () => { state.locale = select.value; safeStorage.set(localeStorageKey, state.locale); applyLocale(); track("locale_changed", { locale: state.locale }); });
   }
   function showView(id) {
+    cancelAdvance();
     const main = id === "mainView";
     const result = id === "resultView";
     $("mainView").hidden = !main;
@@ -70,7 +75,15 @@
   function tileButton(tile, index) {
     const button = document.createElement("button");
     button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.dataset.habitat = tile[0]; button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
-    button.innerHTML = `<span class="tile-art" aria-hidden="true"></span><span class="tile-glyph" aria-hidden="true">${tile[0] === state.currentEnd ? "↗" : "·"}</span><span class="tile-side">${habitat(tile[0])}</span><span class="tile-link" aria-hidden="true">→</span><span class="tile-side">${habitat(tile[1])}</span>`;
+    const tokens = ['den','creek','moss','nest','moon','reef','tide','shell','grove','pine','snow','burrow','pond','meadow'];
+    for (const token of tile) {
+      const half = document.createElement('span'); half.className = 'domino-half';
+      const art = document.createElement('span'); art.className = 'tile-art'; art.setAttribute('aria-hidden','true');
+      const position = tokens.indexOf(token);
+      art.style.backgroundPosition = `${position % 5 * 25}% ${Math.floor(position / 5) * 50}%`;
+      const label = document.createElement('span'); label.className = 'tile-side'; label.textContent = habitat(token);
+      half.append(art,label);button.append(half);
+    }
     button.addEventListener("click", () => choose(index, button));
     return button;
   }
@@ -87,7 +100,10 @@
     $("instruction").textContent = t("instruction");
     renderChain();
     const rackNode = $("tileRack"); rackNode.replaceChildren();
-    state.rack.forEach((tile, index) => { if (!tile) return; rackNode.append(tileButton(tile, index)); });
+    state.rack.forEach((tile, index) => {
+      if (tile) rackNode.append(tileButton(tile, index));
+      else { const slot=document.createElement('span');slot.className='domino-slot';slot.setAttribute('aria-hidden','true');rackNode.append(slot); }
+    });
   }
   function setFeedbackState(value) {
     [$("feedbackArt"), $("resultFeedbackArt")].forEach((node) => { if (node) node.dataset.feedback = value; });
@@ -97,9 +113,9 @@
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
     if (tile[0] !== state.currentEnd) { button.classList.add("is-wrong"); $("battleStatus").textContent = t("wrong"); $("battleStatus").classList.add("is-wrong"); setFeedbackState("wrong"); playTone("wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 380); return; }
     button.disabled = true; button.classList.add("is-correct"); state.placed.push(tile); state.rack[index] = null; state.currentEnd = tile[1]; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
-    if (state.placed.length === 5) { window.setTimeout(() => { if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
+    if (state.placed.length === 5) { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
   }
-  function startRound() { const round = rounds[state.roundIndex]; state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles); $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
+  function startRound() { cancelAdvance(); const round = rounds[state.roundIndex]; state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles); $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
   function start() { state.roundIndex = 0; state.picks = 0; state.solved = 0; track("session_started"); showView("battleView"); startRound(); }
   function finish() { const key = "weightplay-grove-chain-best-picks"; const prior = Number(safeStorage.get(key)); if (!prior || state.picks < prior) safeStorage.set(key, String(state.picks)); $("resultText").textContent = t("finishText", { picks: state.picks }); $("bestValue").textContent = safeStorage.get(key) || String(state.picks); setFeedbackState("complete"); track("session_completed", { picks: state.picks }); showView("resultView"); }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
