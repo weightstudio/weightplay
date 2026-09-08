@@ -21,3 +21,33 @@ body:has(#battle:not([hidden]))>header{visibility:hidden}
 @media(orientation:landscape) and (max-height:500px){#stages{padding-top:0}#stages h2{margin:4px 0;font-size:18px}#stageList{padding-bottom:10px}#stageList .stage-card{flex-basis:190px;min-height:220px}#stageList .stage-card img{height:130px;object-fit:contain}.stage-goal{padding:8px;font-size:12px}.stage-clear{padding:4px 8px 8px}}
 #stages{position:fixed;inset:0;width:min(100%,920px);height:100dvh;padding:0 18px;margin:auto;display:grid;grid-template-rows:52px minmax(0,1fr) 50px 56px;background:#071c23;z-index:2;overflow:hidden}
 #stageTitle{margin:0;align-self:center;font-size:22px}#stageList{min-height:0;align-items:center;padding:8px 4px;overflow-y:hidden}#stageList .stage-card{height:min(100%,430px);min-height:0;max-height:100%}#stageList .stage-card img{flex:1 1 180px;min-height:40px;height:0;aspect-ratio:auto;object-fit:contain}#stageList .stage-goal{flex:0 0 auto}#stageBack{justify-self:start;align-self:center}#stageReserve{height:56px;margin-inline:-18px;background:#061720}body:has(#stages:not([hidden]))>header{visibility:hidden}html:has(#stages:not([hidden])),body:has(#stages:not([hidden])){overflow:hidden;overscroll-behavior:none}
+
+/* Permanent Main-owned rules reference: ordinary document scrolling, no modal. */
+header{max-width:920px}
+#main{max-width:920px;padding:12px 12px 16px}
+#main .poster{max-width:100%;aspect-ratio:1;object-fit:contain}
+#rulesReference{max-width:920px;margin:16px auto 32px;padding:16px;border:1px solid #ffffff29;border-radius:20px;background:#0f1d31;color:#f8fafc;line-height:1.7}
+#rulesReference h2{margin:0 0 24px;font-size:24px;line-height:1.3}
+#rulesReference h3{font-size:19px;line-height:1.4;margin:0 0 12px;color:#f5d895}
+#rulesReference section+section{margin-top:28px}
+#rulesReference p{max-width:72ch;margin:0 0 12px;overflow-wrap:anywhere}
+.piece-reference{display:grid;gap:12px;margin:0}
+.piece-reference>div{padding:16px;border:1px solid #ffffff29;border-inline-start:3px solid #bfa36a;border-radius:14px;background:#17243a;min-width:0}
+.piece-reference dt{font-weight:750;font-size:18px;color:#f5d895;margin-bottom:8px}
+.piece-reference dd{margin:0;overflow-wrap:anywhere}
+#main #challenges{height:52px;min-height:52px;margin:12px 0 0;background:#f5c84c;color:#1f2937;font-size:16px;font-weight:800;line-height:1.2;border-radius:14px;display:grid;place-items:center}
+#main #campaignProgress{margin:8px 0 0;min-height:24px;max-height:44px;font-size:14px;color:#cbd5e1}
+#exit{width:58px;height:48px;flex:0 0 58px;display:grid;grid-template-columns:16px 28px;gap:4px;align-items:center;justify-content:center;padding:4px;background:#f8fafc;color:#176a9d;border-radius:14px;text-decoration:none;font-size:22px;line-height:1;overflow:hidden}
+#exit img{width:28px;height:28px;object-fit:contain}
+#matchModes{display:flex;gap:8px;align-items:center;min-width:0}
+#matchModes button{height:44px;font-size:14px;font-weight:600;padding:8px 12px;white-space:nowrap}
+#stages{grid-template-rows:52px minmax(0,1fr) 52px 50px 56px}
+body:has(#main[hidden])>#rulesReference{display:none}
+html:has(#main:not([hidden])),body:has(#main:not([hidden])){overflow-y:auto;touch-action:pan-y;overscroll-behavior-y:contain}
+@media(min-width:700px){
+ #main{padding:12px 16px 16px;display:grid;grid-template-columns:420px minmax(0,1fr);gap:12px 24px;align-items:start}
+ #main .poster{grid-column:1;grid-row:1 / span 5;width:420px;height:420px}
+ #main p,#main button{grid-column:2;min-width:0;margin:0}
+ #rulesReference{padding:24px}
+ .piece-reference{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
