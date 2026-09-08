@@ -12,7 +12,9 @@ export class ChessBoard3D {
   this.materials.detail=new THREE.MeshStandardMaterial({color:0x152328,roughness:.4});this.addWoodGrain();this.addStoneGrain();
   this.materials.ivory.envMapIntensity=.65;this.materials.dark.envMapIntensity=.85;
   const mesh=(g,m,x,y,z)=>{const a=new THREE.Mesh(g,m);a.position.set(x,y,z);a.receiveShadow=true;this.scene.add(a);return a;};
-  mesh(this.beveledSlab(8.55,.26),this.materials.wood,0,-.2,0);mesh(new THREE.BoxGeometry(8.35,.12,8.35),this.materials.gold,0,-.04,0);
+  const plinth=mesh(this.beveledSlab(8.55,.26),this.materials.wood,0,-.2,0);plinth.castShadow=true;
+  mesh(new THREE.BoxGeometry(8.35,.12,8.35),this.materials.gold,0,-.04,0);
+  this.addTable();
   const tile=new THREE.BoxGeometry(.99,.08,.99);for(let r=0;r<8;r++)for(let c=0;c<8;c++)mesh(tile,(r+c)%2?this.materials.darkTile:this.materials.lightTile,c-3.5,.04,r-3.5);
   this.focusMarks=new THREE.Group();this.scene.add(this.focusMarks);
   this.materials.focus=new THREE.MeshBasicMaterial({color:0x64eaff,depthTest:false});
@@ -53,7 +55,7 @@ export class ChessBoard3D {
  addStoneGrain(){
   // World-space veins continue naturally across the inlaid stone squares.
   // Bounded analytic surface detail: no texture downloads or animation loop.
-  for(const [key,strength] of [['lightTile',.10],['darkTile',.18]]){
+  for(const [key,strength] of [['lightTile',.065],['darkTile',.11]]){
    const material=this.materials[key];
    material.roughness=.38;material.envMapIntensity=.45;
    material.onBeforeCompile=shader=>{
@@ -62,14 +64,35 @@ export class ChessBoard3D {
     shader.fragmentShader='varying vec3 stonePosition;\n'+shader.fragmentShader;
     shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
      vec2 stone=stonePosition.xz;
-     float bend=sin(stone.y*2.1+sin(stone.x*1.3)*1.4);
-     float vein=pow(0.5+0.5*sin(stone.x*8.0+stone.y*3.0+bend*3.0),12.0);
-     float fine=sin(stone.x*43.0+stone.y*27.0+bend)*sin(stone.y*39.0-stone.x*19.0);
-     diffuseColor.rgb*=1.0-${strength}*vein+0.012*fine;
+     float bend=sin(stone.y*3.1+sin(stone.x*2.3))*0.65;
+     float vein=pow(0.5+0.5*sin(stone.x*17.0+stone.y*9.0+bend*2.0),28.0);
+     float fine=sin(stone.x*93.0+stone.y*47.0+bend)*sin(stone.y*89.0-stone.x*61.0);
+     diffuseColor.rgb*=1.0-${strength}*vein+0.006*fine;
     `);
    };
-   material.customProgramCacheKey=()=>`chess-stone-v1-${key}`;
+   material.customProgramCacheKey=()=>`chess-stone-v2-${key}`;
   }
+ }
+ addTable(){
+  // A static woven playing surface grounds the board without loading a large
+  // texture or keeping a background animation alive between moves.
+  const material=new THREE.MeshStandardMaterial({color:0x143b38,roughness:.96,metalness:0});
+  this.materials.table=material;
+  material.onBeforeCompile=shader=>{
+   shader.vertexShader='varying vec3 tablePosition;\n'+shader.vertexShader;
+   shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\ntablePosition=(modelMatrix*vec4(position,1.0)).xyz;');
+   shader.fragmentShader='varying vec3 tablePosition;\n'+shader.fragmentShader;
+   shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+    vec2 cloth=tablePosition.xz;
+    float weave=sin(cloth.x*160.0)*sin(cloth.y*160.0);
+    float vignette=1.0-smoothstep(3.5,15.0,length(cloth))*0.65;
+    diffuseColor.rgb*=vignette*(0.96+0.025*weave);
+   `);
+  };
+  material.customProgramCacheKey=()=> 'chess-table-v1';
+  const table=new THREE.Mesh(new THREE.PlaneGeometry(200,200),material);
+  table.rotation.x=-Math.PI/2;table.position.y=-.39;table.receiveShadow=true;
+  this.scene.add(table);this.table=table;
  }
  addCoordinates(){
   const glyphs='abcdefgh12345678';
@@ -146,9 +169,16 @@ export class ChessBoard3D {
  snapshot(){
   if(this.disposed)return null;
   const source=this.renderer.domElement,canvas=document.createElement('canvas');
-  const scale=Math.min(1,640/Math.max(source.width,source.height));
-  canvas.width=Math.max(1,Math.round(source.width*scale));canvas.height=Math.max(1,Math.round(source.height*scale));
-  try{this.render();canvas.getContext('2d').drawImage(source,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/webp',.85);}
+  // Frame the actual board, crowns and coordinate labels, not the tall phone
+  // viewport's empty felt. The infinite table must never enter these bounds.
+  const corners=[];for(const x of [-4.5,4.5])for(const y of [-.45,1.6])for(const z of [-4.5,4.5])corners.push(new THREE.Vector3(x,y,z).project(this.camera));
+  const left=Math.max(0,Math.floor((Math.min(...corners.map(p=>p.x))+1)*source.width/2));
+  const top=Math.max(0,Math.floor((1-Math.max(...corners.map(p=>p.y)))*source.height/2));
+  const right=Math.min(source.width,Math.ceil((Math.max(...corners.map(p=>p.x))+1)*source.width/2));
+  const bottom=Math.min(source.height,Math.ceil((1-Math.min(...corners.map(p=>p.y)))*source.height/2));
+  const width=Math.max(1,right-left),height=Math.max(1,bottom-top),scale=Math.min(1,640/Math.max(width,height));
+  canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));
+  try{this.render();canvas.getContext('2d').drawImage(source,left,top,width,height,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/webp',.85);}
   finally{canvas.width=canvas.height=1;}
  }
  stats(){return {geometries:this.renderer.info.memory.geometries,textures:this.renderer.info.memory.textures,calls:this.renderer.info.render.calls,triangles:this.renderer.info.render.triangles,pieces:this.pieces.children.length,studio:Boolean(this.environmentTarget)};}

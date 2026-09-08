@@ -49,6 +49,9 @@
     if (!rail || rail.dataset.wpStageVirtualizationInstalled === "true") return null;
 
     const selector = options.cardSelector || CARD_SELECTOR;
+    // Data-backed clients retain a fixed pool, not one hidden source DOM per
+    // stage. The legacy DOM adapter remains available to existing games.
+    const dataBacked = typeof options.bind === "function";
     const poolSize = Math.max(1, Number(options.poolSize) || DEFAULT_POOL_SIZE);
     let sources = [];
     let pool = [];
@@ -69,11 +72,18 @@
     let rebuildQueued = false;
     let previousScrollBehavior = "";
     let previousSnapType = "";
+    let tapIndex = null;
+    let destroyed = false;
+    let clickTimer = 0;
+    const lifecycle = new AbortController();
+    const listen = (target, type, handler, config = {}) => target.addEventListener(type, handler,
+      { ...(typeof config === "boolean" ? { capture: config } : config), signal: lifecycle.signal });
+    const ignoreClick = () => { suppressClick = true;clearTimeout(clickTimer);clickTimer = setTimeout(() => { suppressClick = false; }, 0); };
     const sourceStore = document.createElement("div");
     sourceStore.hidden = true;
     sourceStore.setAttribute("aria-hidden", "true");
     sourceStore.dataset.wpStageSourceStore = "true";
-    document.body.append(sourceStore);
+    if (!dataBacked) document.body.append(sourceStore);
 
     const stageTotal = () => Number(
       typeof options.total === "function" ? options.total() : options.total ?? sources.length,
@@ -127,6 +137,16 @@
     function bindPool() {
       pool.forEach((card, offset) => {
         const index = windowStart + offset;
+        if (dataBacked) {
+          options.bind(card, index);
+          card.dataset.wpStageVirtualIndex = String(index);
+          card.dataset.stageIndex = String(index);
+          card.setAttribute("aria-posinset", String(index + 1));
+          card.setAttribute("aria-setsize", String(total));
+          card.setAttribute("aria-keyshortcuts", "ArrowLeft ArrowRight Home End");
+          card.disabled = false;
+          return;
+        }
         const source = sources[index];
         if (!source) return;
         copyCard(source, card, index, total, String(offset + 1));
@@ -201,7 +221,8 @@
         // target card's desired offset instead of adding the full fraction on
         // every move; repeated absolute additions make the rail accelerate.
         const currentOffset = cardRect.left + cardRect.width / 2 - (railRect.left + railRect.width / 2);
-        const desiredOffset = -fraction * step;
+        const direction = dataBacked && getComputedStyle(rail).direction === "rtl" ? -1 : 1;
+        const desiredOffset = -fraction * step * direction;
         rail.scrollLeft += (currentOffset - desiredOffset) / coordinateScale;
         if (!Number.isFinite(rail.scrollLeft)) {
           rail.scrollLeft = 0;
@@ -222,6 +243,25 @@
     }
 
     function collectCards() {
+      if (dataBacked) {
+        total = stageTotal();
+        if (!Number.isSafeInteger(total) || total < 1) return false;
+        const count = Math.min(poolSize, total);
+        while (pool.length < count) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.dataset.wpStagePoolNode = String(pool.length + 1);
+          pool.push(card);rail.append(card);
+        }
+        while (pool.length > count) pool.pop().remove();
+        logical = clamp(Number(options.initialIndex?.() ?? 0), 0, total - 1);
+        windowStart = clamp(Math.round(logical) - Math.floor(count / 2), 0, Math.max(0, total - count));
+        rail.style.setProperty("overflow-x", "hidden", "important");
+        rail.dataset.wpStageCenterObserver = "manual";
+        rail.dataset.wpStageRecycleCount ||= "0";
+        bindPool();position(logical);
+        return true;
+      }
       const cards = [...rail.querySelectorAll(`:scope > ${selector}`)].filter((card) => !card.dataset.wpStagePoolNode);
       const next = cards.map((card, index) => ({ card, index: logicalIndex(card, index, options) }))
         .sort((a, b) => a.index - b.index)
@@ -289,12 +329,14 @@
       position(logical);
       if (restoreFocus) {
         requestAnimationFrame(() => {
+          if (destroyed) return;
           const focusedTarget = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === focusedSourceIndex);
           focusedTarget?.focus({ preventScroll: true });
         });
       }
       const anchoredLogical = logical;
       requestAnimationFrame(() => {
+        if (destroyed) return;
         if (pointerId === null && rail.getClientRects().length) position(anchoredLogical);
       });
       clearTimeout(anchorTimer);
@@ -306,11 +348,12 @@
     }
 
     function queueRebuild() {
+      if (dataBacked || destroyed) return;
       if (rebuilding || rebuildQueued) return;
       rebuildQueued = true;
       requestAnimationFrame(() => {
         rebuildQueued = false;
-        if (rebuilding) return;
+        if (rebuilding || destroyed) return;
         const cards = [...rail.querySelectorAll(`:scope > ${selector}`)].filter((card) => !card.dataset.wpStagePoolNode);
         if (cards.length >= 2) collectCards();
       });
@@ -324,11 +367,15 @@
       touchFallbackUsed = false;
       if (!moved) {
         restoreRailStyles();
+        if (dataBacked && event.type === "pointerup" && tapIndex !== null) {
+          const index = tapIndex;tapIndex = null;ignoreClick();
+          const card = pool.find(node => Number(node.dataset.wpStageVirtualIndex) === index);
+          if (card && card.getAttribute("aria-disabled") !== "true") options.activate?.(index, null, card, event);
+        }
         return;
       }
       moved = false;
-      suppressClick = true;
-      setTimeout(() => { suppressClick = false; }, 0);
+      ignoreClick();tapIndex = null;
       const from = logical;
       const target = Math.round(from);
       const started = performance.now();
@@ -353,11 +400,16 @@
       event.stopImmediatePropagation?.();
     }
 
-    rail.addEventListener("pointerdown", (event) => {
+    listen(rail, "pointerdown", (event) => {
       if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
       cancelAnimationFrame(settlingFrame);
       settlingFrame = 0;
       pointerId = event.pointerId;
+      tapIndex = Number(event.target.closest?.("[data-wp-stage-virtual-index]")?.dataset.wpStageVirtualIndex);
+      if (!Number.isFinite(tapIndex)) tapIndex = null;
+      if (dataBacked) {
+        try { rail.setPointerCapture?.(event.pointerId); } catch { /* Cancelled pointer: document listeners still settle it. */ }
+      }
       pointerStart = lastPointer = event.clientX;
       pointerMoveObserved = false;
       touchFallbackUsed = false;
@@ -384,16 +436,17 @@
       }
       if (!moved) return;
       if (event.cancelable) event.preventDefault();
-      position(logical - delta / cardPitch());
+      const direction = dataBacked && getComputedStyle(rail).direction === "rtl" ? -1 : 1;
+      position(logical - direction * delta / cardPitch());
       event.stopImmediatePropagation?.();
     };
-    document.addEventListener("pointermove", (event) => {
+    listen(document, "pointermove", (event) => {
       if (event.pointerId !== pointerId) return;
       if (touchFallbackUsed) return;
       pointerMoveObserved = true;
       applyDragDelta(event.clientX, event);
     }, true);
-    rail.addEventListener("touchstart", (event) => {
+    listen(rail, "touchstart", (event) => {
       if (event.touches.length !== 1) return;
       const touch = event.touches[0];
       touchIdentifier = touch.identifier;
@@ -415,7 +468,7 @@
       rail.classList.add("wp-stage-drag-ready");
       event.stopImmediatePropagation();
     }, { capture: true, passive: false });
-    document.addEventListener("touchmove", (event) => {
+    listen(document, "touchmove", (event) => {
       if (touchIdentifier === null || event.touches.length !== 1 || pointerMoveObserved) return;
       const touch = [...event.touches].find((candidate) => candidate.identifier === touchIdentifier);
       if (!touch) return;
@@ -428,11 +481,11 @@
       if (!ownsTouch) return;
       finishPointer(event);
     };
-    document.addEventListener("touchend", finishTouch, { capture: true, passive: false });
-    document.addEventListener("touchcancel", finishTouch, { capture: true, passive: false });
-    document.addEventListener("pointerup", finishPointer, true);
-    document.addEventListener("pointercancel", finishPointer, true);
-    rail.addEventListener("click", (event) => {
+    listen(document, "touchend", finishTouch, { capture: true, passive: false });
+    listen(document, "touchcancel", finishTouch, { capture: true, passive: false });
+    listen(document, "pointerup", finishPointer, true);
+    listen(document, "pointercancel", finishPointer, true);
+    listen(rail, "click", (event) => {
       if (suppressClick) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -450,7 +503,7 @@
         sources[index]?.click();
       }
     }, true);
-    rail.addEventListener("keydown", (event) => {
+    listen(rail, "keydown", (event) => {
       const card = event.target.closest?.(`[data-wp-stage-pool-node]`);
       if (!card || card.parentElement !== rail) return;
       const direction = getComputedStyle(rail).direction === "rtl" ? -1 : 1;
@@ -470,12 +523,23 @@
     });
     observer.observe(rail, { childList: true, subtree: false });
     if (!collectCards()) {
+      lifecycle.abort();
       observer.disconnect();
       sourceStore.remove();
       return null;
     }
     rail.dataset.wpStageVirtualizationInstalled = "true";
-    return { rail, destroy: () => { observer.disconnect(); sourceStore.remove(); } };
+    return {
+      rail,
+      refresh: () => { if(destroyed)return false;cancelAnimationFrame(settlingFrame);settlingFrame=0;return collectCards(); },
+      center: (index = logical) => destroyed ? null : position(index),
+      destroy: () => {
+        destroyed = true;lifecycle.abort();observer.disconnect();
+        clearTimeout(anchorTimer);clearTimeout(clickTimer);cancelAnimationFrame(settlingFrame);
+        if (pointerId !== null && rail.hasPointerCapture?.(pointerId)) rail.releasePointerCapture(pointerId);
+        sourceStore.remove();delete rail.dataset.wpStageVirtualizationInstalled;
+      },
+    };
   }
 
   const autoScanSelector = "[data-wp-stage-v6-auto]";

@@ -15,7 +15,7 @@ body:has(#battle:not([hidden]))>header{visibility:hidden}
 
 #keyboard{position:absolute;inset:auto 8px 5px;width:auto;height:auto;max-height:3em;padding:4px 8px;clip-path:none;background:#071c23e8;border-radius:8px;font-size:12px;line-height:1.4;overflow:auto;pointer-events:none}
 /* Permanent physical top-left Battle return; text length/RTL cannot move it. */
-#battle #back{position:absolute;left:12px;top:8px;z-index:4;display:grid;place-items:center;width:48px;min-width:48px;height:48px;min-height:48px;padding:0;background:#f8fafc;color:#176a9d;border:1px solid #ffffff29;border-radius:14px;font-size:26px;font-weight:800;line-height:1;direction:ltr}
+#battle #back{position:absolute;left:12px;top:8px;z-index:4;display:grid!important;place-items:center;width:48px!important;min-width:48px!important;height:48px;min-height:48px;padding:0;background:#f8fafc;color:#176a9d;border:1px solid #ffffff29;border-radius:14px;font-size:26px;font-weight:800;line-height:1;direction:ltr}
 #battle #back>span{color:inherit;pointer-events:none}
 #battle nav{height:64px;min-height:64px;padding-inline:72px}
 @media(orientation:landscape) and (max-height:500px){#battle nav{height:auto;min-height:0;padding:8px}}
@@ -96,3 +96,27 @@ html:has(#main:not([hidden])),body:has(#main:not([hidden])){overflow-y:auto;touc
 @media(prefers-reduced-motion:reduce){#result:not([hidden]) .result-content{animation:none}}
 #confirmation #confirmNo{background:#f6cd64;color:#102e35;font-weight:700}
 #confirmation #confirmNo:focus-visible{outline:3px solid #fff1ba;outline-offset:3px}
+
+/* Owned Chess art stays behind opaque controls; status never relies on dimming. */
+#stages{background-color:#17243a;background-image:linear-gradient(#17243aea,#17243ae8),url('../../assets/chess-cover-v1.webp');background-size:cover;background-position:center 38%}
+#stages>header,#stages #matchModes{background:#17243aeb}
+#stages #stageReserve{background:#17243a}
+#stageList .stage-card{background:#102d37f5}
+#stageList .stage-card:disabled{opacity:1;filter:none}
+#stageList .stage-card[data-state="locked"]{border-color:#748591;box-shadow:0 8px 20px #0005}
+#stageList .stage-card[data-state="locked"] img{filter:saturate(.45)}
+#stageList .stage-card:disabled:hover{outline:none;background:#102d37f5}
+#stageList .stage-number{inset-inline-start:8px;inset-inline-end:auto}
+#stageList .stage-state{flex:0 0 auto;align-self:flex-start;margin:0 12px 12px;padding:3px 9px;border-radius:8px;border:1px solid #c6d4d44d;background:#233e48;color:#e4edf0;font-size:12px;line-height:1.4;font-weight:650}
+#stageList [data-state="ready"] .stage-state{background:#e2c27b;color:#182e35;border-color:#f9df9c}
+#stageList [data-state="cleared"] .stage-state{background:#234d40;color:#bcf0d1;border-color:#74b88c}
+#matchModes button{white-space:normal;line-height:1.2;min-width:0}
+/* One shared pointer owner; locked cards stay drag surfaces, not native-disabled. */
+#stages #stageList{margin-inline:0;padding-inline:calc(50% - 118px);scroll-snap-type:none;scroll-behavior:auto;touch-action:pan-y;scrollbar-width:none;user-select:none}
+#stageList::-webkit-scrollbar{display:none}
+#stageList .stage-card{flex-shrink:0;scroll-snap-align:none}
+#stageList .stage-card[aria-disabled="true"]{cursor:default}
+#stageList .stage-card:hover{outline:none}
+#stageList .stage-card.centered{border:2px solid #ffe2a0;box-shadow:0 0 0 2px #ffe2a033,0 0 22px #e5b95c70}
+#stageList .stage-card:focus-visible{outline:2px solid #f8fafc;outline-offset:3px}
+@media(orientation:landscape) and (max-height:500px){#stages #stageList{padding-inline:calc(50% - 95px)}}

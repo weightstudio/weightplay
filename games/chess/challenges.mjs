@@ -1,4 +1,4 @@
-// Authored foundation of the challenge campaign, not the completed 30-stage set.
+// Thirty authored positions; campaign count alone does not grant release approval.
 // Solutions are audit evidence only; runtime judges chess state, not matching clicks.
 export const challenges=[
  {id:1,kind:'rookCapture',fen:'7k/q7/8/8/8/8/8/R6K w - - 0 1',example:['Rxa7'],goal:{capture:'q',piece:'r'}},
@@ -20,21 +20,37 @@ export const challenges=[
  {id:17,kind:'rookSkewer',computer:true,maxMoves:2,fen:'q3k3/8/8/8/8/8/8/6KR w - - 0 1',example:['Rh8+','Kd7','Rxa8'],goal:{capture:'q',piece:'r'}},
  {id:18,kind:'bishopSkewer',computer:true,maxMoves:2,fen:'7q/8/8/4k3/8/B7/8/6K1 w - - 0 1',example:['Bb2+','Kd5','Bxh8'],goal:{capture:'q',piece:'b'}},
  {id:19,kind:'rookPromotion',fen:'8/k1P5/2K5/8/8/8/8/8 w - - 0 1',example:['c8=R'],goal:{promotion:'r'}},
- {id:20,kind:'kingSupport',computer:true,maxMoves:2,fen:'7k/1R6/5K2/8/8/8/8/8 w - - 0 1',example:['Kg6','Kg8','Rb8#'],goal:{mate:true}}
+ {id:20,kind:'kingSupport',computer:true,maxMoves:2,fen:'7k/1R6/5K2/8/8/8/8/8 w - - 0 1',example:['Kg6','Kg8','Rb8#'],goal:{mate:true}},
+ {id:21,kind:'smotheredMate',fen:'6rk/6pp/8/6N1/8/8/8/K7 w - - 0 1',example:['Nf7#'],goal:{mate:true,matePiece:'n'}},
+ {id:22,kind:'doubleCheck',fen:'4k3/8/8/8/8/8/4B3/K3R3 w - - 0 1',example:['Bb5+'],goal:{doubleCheck:true}},
+ {id:23,kind:'queenSacrifice',computer:true,maxMoves:2,fen:'4Qrk1/5ppp/8/1B6/8/8/8/4R1K1 w - - 0 1',example:['Qxf8+','Kxf8','Re8#'],goal:{mate:true}},
+ {id:24,kind:'supportedPawn',computer:true,maxMoves:3,fen:'3k4/8/4PK2/8/8/8/8/8 w - - 0 1',example:['Kf7','Kc7','e7','Kd7','e8=Q+'],goal:{promotion:true}},
+ {id:25,kind:'bishopNet',fen:'7k/8/6K1/6B1/2B5/8/8/8 w - - 0 1',example:['Bf6#'],goal:{mate:true,matePiece:'b'}},
+ {id:26,kind:'enPassantDiscovery',fen:'8/8/8/4RPpk/8/8/8/K7 w - g6 0 1',example:['fxg6+'],goal:{enPassant:true,checkBy:'r'}},
+ {id:27,kind:'castlingMate',fen:'4rkr1/4p1p1/8/8/8/8/8/4K2R w K - 0 1',example:['O-O#'],goal:{castle:'k',mate:true}},
+ {id:28,kind:'pawnFork',computer:true,maxMoves:2,fen:'7k/8/2r1r3/8/3P4/8/6PP/6RK w - - 0 1',example:['d5','Rc5','dxe6'],goal:{capture:'r',piece:'p'}},
+ {id:29,kind:'promotionMate',fen:'3r2k1/2P2ppp/8/8/8/8/8/K7 w - - 0 1',example:['cxd8=Q#'],goal:{capture:'r',piece:'p',promotion:true,mate:true}},
+ {id:30,kind:'ladderFinale',computer:true,maxMoves:3,fen:'8/8/6k1/5ppp/8/8/8/RR5K w - - 0 1',example:['Ra6+','Kf7','Rb7+','Kf8','Ra8#'],goal:{mate:true}}
 ];
 export function challengePassed(challenge,game,move){
  if(!move||move.color!=='w')return false;const goal=challenge.goal;
- if(goal.capture){
-  const capture=move.captured===goal.capture&&move.piece===goal.piece;
-  if(!goal.checkBy)return capture;
+ if(goal.promotion&&(!['q','r','b','n'].includes(move.promotion)||(goal.promotion!==true&&move.promotion!==goal.promotion)||goal.check&&!game.isCheck()||goal.attack&&!game.attackers(goal.attack,'w').includes(move.to)))return false;
+ if(goal.mate&&(!game.isCheckmate()||(goal.matePiece&&move.piece!==goal.matePiece)))return false;
+ if(goal.checkBy||goal.doubleCheck){
   const king=game.board().flat().find(p=>p?.type==='k'&&p.color==='b');
-  return capture&&Boolean(king)&&game.attackers(king.square,'w').some(square=>square!==move.to&&game.get(square)?.type===goal.checkBy);
+  if(!king)return false;
+  const attackers=game.attackers(king.square,'w');
+  if(goal.checkBy&&!attackers.some(square=>square!==move.to&&game.get(square)?.type===goal.checkBy))return false;
+  if(goal.doubleCheck)return attackers.length>=2;
+ }
+ if(goal.capture){
+  return move.captured===goal.capture&&move.piece===goal.piece;
  }
  if(goal.castle)return move.piece==='k'&&move.flags.includes(goal.castle);
  if(goal.enPassant)return move.flags.includes('e');
  if(goal.fork)return move.piece==='n'&&game.isCheck()&&game.attackers(goal.fork,'w').includes(move.to);
  if(goal.block)return move.piece==='r'&&move.to[0]==='e'&&move.from[0]!=='e'&&!move.captured;
- if(goal.promotion)return ['q','r','b','n'].includes(move.promotion)&&(goal.promotion===true||move.promotion===goal.promotion)&&(!goal.check||game.isCheck())&&(!goal.attack||game.attackers(goal.attack,'w').includes(move.to));
+ if(goal.promotion)return true;
  if(goal.mate)return game.isCheckmate();return false;
 }
 // null means play continues, not a failed attempt. Opponent moves cannot earn a clear.
