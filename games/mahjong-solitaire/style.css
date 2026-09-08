@@ -1,0 +1,15 @@
+body[data-wp-game-id="mahjong-solitaire"] #board {width:100%;height:100%;min-width:0;min-height:0;display:flex;align-items:center;justify-content:center}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered {display:block!important;position:relative;direction:ltr;width:min(100%,640px);height:auto!important;padding:0!important;aspect-ratio:calc(var(--cols) / (var(--rows) * 1.28));margin:auto}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile {position:absolute;box-sizing:border-box;left:calc(var(--x) / var(--cols) * 100%);top:calc(var(--y) / var(--rows) * 100%);width:calc(100% / var(--cols) - 2px);height:calc(100% / var(--rows) - 4px);min-width:0;min-height:0;margin:0;padding:4px;z-index:calc(2 + var(--z));border:2px solid #e9d3a5;border-radius:8px;background:linear-gradient(#fffbed,#efdfb9);color:#263e50;box-shadow:0 5px 0 #ae9566,0 7px 7px #0009;transform:translateY(calc(var(--z) * -3px));transition:background .15s}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile svg {width:100%;height:100%;pointer-events:none}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile[aria-disabled="true"] {background:#8f968e;border-color:#707e78;box-shadow:0 5px 0 #485950;cursor:help}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile[aria-disabled="true"] svg {opacity:.45}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile.mj-hint {outline:3px solid #67ecd1;outline-offset:1px}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile.selected {background:#c1fae8;outline:3px solid #ffce64;outline-offset:1px}
+body[data-wp-game-id="mahjong-solitaire"] .mj-layered .tile:focus-visible {outline:3px solid #ffce64;outline-offset:2px}
+.mj-lock {position:absolute;inset-inline-end:3px;bottom:0;color:#243f36;font-size:20px;font-weight:bold}
+body[data-wp-game-id="mahjong-solitaire"] [data-wp-main-progress] {display:flex;flex-direction:column;gap:9px;line-height:1.5}
+.mj-example {display:flex;align-items:center;justify-content:center;gap:12px;color:#a8ecd9;font-size:23px;direction:ltr}
+.mj-example svg {width:33px;height:42px;padding:3px;background:#fff3d6;border-radius:5px}
+body[data-wp-game-id="mahjong-solitaire"] .game-message {font-size:14px;line-height:1.45;min-height:3em}
+@media(max-height:500px) and (min-width:600px){body[data-wp-game-id="mahjong-solitaire"] .game-message{min-height:0;font-size:12px;margin:4px 0}}

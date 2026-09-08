@@ -25,9 +25,9 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
+    <meta name="description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <title>Rescate del Laberinto Helado | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260905-ar-canvas-cue-v12" />
+    <link rel="stylesheet" href="style.css?v=20260908-mastery-v15" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen />
@@ -36,21 +36,22 @@
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260908-landscape-poster-v13"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="mastery.js?v=20260908-mastery-v15"></script>
+    <script defer src="game.js?v=20260908-mastery-v15"></script><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rescate del Laberinto Helado | WeightPlay" />
-    <meta property="og:description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
+    <meta property="og:description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-frost-maze/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Rescate del Laberinto Helado | WeightPlay" />
-    <meta name="twitter:description" content="Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve." />
+    <meta name="twitter:description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rescate del Laberinto Helado","alternateName":"Frost Maze Rescue","url":"https://weightplay.com/es/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","description":"Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"es","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Acción","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rescate del Laberinto Helado","alternateName":"Frost Maze Rescue","url":"https://weightplay.com/es/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","description":"Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"es","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Action","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-screen="main" data-runtime-localize="off">
+  <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>Rescate del Laberinto Helado</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
@@ -80,32 +81,35 @@
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
     <script src="../../src/site-config.js"></script>
-    <script src="../../src/analytics.js?v=20260905-ar-canvas-cue-v12"></script>
-    <script src="analytics-ownership.js?v=20260905-ar-canvas-cue-v12"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+    <script src="../../src/analytics.js?v=20260908-landscape-poster-v13"></script>
+    <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
+    <!-- Frost owns all 13 runtime locales; no shared DOM retranslation loop. -->
     <script src="../../src/five-new-games-locale.js?v=20260908-approved-game-names1"></script>
-    <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Información de Rescate del Laberinto Helado">
+    <section class="game-page-info game-page-info-static" aria-label="Información de Rescate del Laberinto Helado" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Rescate del Laberinto Helado</h2><p>Abre la ruta helada, recoge todas las bayas y mantente un paso por delante del vagabundo de nieve.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Laberinto de hielo cambiable</strong></div><div class="game-info-fact"><span>Género</span><strong>Puzzle · Acción · Animal</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil a desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>1-4 minutos por sala</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Planificación de ruta · Ritmo · Resolución de problemas</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Rescate del Laberinto Helado</h2><p>Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Changeable Ice Maze</strong></div><div class="game-info-fact"><span>Género</span><strong>Puzzle · Action · Animal</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>1-4 minutes per room</strong></div><div class="game-info-fact"><span>Habilidades</span><strong>Route Planning · Ritmo · Resolución de problemas</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Una pequeña ruta de rescate está sellada por paredes de hielo azul. Recoge cada baya, cambia solo las barreras que importan y sigue moviéndote antes de que el ventisquero cierre la brecha.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Las teclas de flecha, WASD o los controles de dirección visibles mueven una celda de la cuadrícula a la vez. El espacio rompe el hielo que hay delante y F construye un muro corto.</p>
-<p>El enemigo avanza después de repetidos movimientos. Una habitación se despeja cuando se recogen todas las bayas; El contacto bloquea la ruta y lo envía a un reintento enfocado.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elija un capítulo y lea el recuento de bayas y la sugerencia de ruta.</li><li>Mueve una celda a la vez y usa Break Ice cuando una pared azul cierre el siguiente carril útil.</li><li>Usa Build Ice para crear una barrera corta cuando sea necesario retrasar al enemigo.</li><li>Recoge todas las bayas, luego elige Siguiente habitación, Reintentar o regresa a los Capítulos después del resultado.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Planifica las siguientes dos celdas antes de romper una pared para que la abertura cree una ruta real.</li><li>Mantén al enemigo al otro lado de una barrera mientras recolectas primero la baya expuesta.</li><li>Si la ruta se cierra, vuelve a intentarlo rápidamente y cambia el orden de tus descansos en lugar de repetir el mismo camino.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Seis capítulos y 30 salas pasan desde un primer deshielo hasta rutas divididas, presión de deriva y un derretimiento final. La ruta cambia a través de hielo rompible y construible en lugar de cambios ocultos en las reglas.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>Frostline Rescue es un original rompecabezas de rescate en cuadrícula con ediciones directas de las paredes, salas cortas deterministas, presión enemiga visible y controles sensibles tanto en el tacto como en el escritorio.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>Este juego de navegador general no tiene cuenta, compra, chat, tabla de clasificación ni flujo publicitario. Las salas despejadas y el mejor progreso permanecen en este navegador.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Qué colecciono?</dt><dd>Recoge todas las bayas que se muestran en la habitación para limpiarlas.</dd></div><div><dt>¿Cuándo debo romper el hielo?</dt><dd>Rompe la pared azul que bloquea la siguiente ruta útil y luego vuelve a evaluar la posición enemiga.</dd></div><div><dt>¿Qué hace Build Ice?</dt><dd>Agrega una pared corta que puede retrasar al quitanieves y brindarle una ruta más segura.</dd></div><div><dt>¿Se guarda el progreso?</dt><dd>En este navegador solo se guarda la mejor habitación.</dd></div></dl></div>
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>A small rescue route is sealed by blue ice walls. Collect every berry, change only the barriers that matter, and keep moving before the snow drifter closes the gap.</p></div>
+      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Arrow keys, WASD, or the visible direction controls move one grid cell at a time. Space breaks the ice ahead and F builds a short wall.</p>
+<p>El enemigo avanza después de repetidos movimientos. Una habitación se despeja cuando se recogen todas las bayas; El contacto bloquea la ruta y lo envía a un reintento enfocado.</p>
+<p>21–30: Cada cambio de hielo mueve al errante. 26–30: Tras la última baya, vuelve a la casilla inicial.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Choose a chapter and read the berry count and route hint.</li><li>Move one cell at a time and use Break Ice when a blue wall closes the next useful lane.</li><li>Use Build Ice to create a short barrier when the enemy needs to be delayed.</li><li>Collect every berry, then choose Next Room, Retry, or return to Chapters after the result.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Plan the next two cells before breaking a wall so the opening creates a real route.</li><li>Keep the enemy on the far side of a barrier while collecting the exposed berry first.</li><li>If the route closes, retry quickly and change the order of your breaks instead of repeating the same path.</li></ul></div>
+      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Seis capítulos y 30 salas pasan desde un primer deshielo hasta rutas divididas, presión de deriva y un derretimiento final. La ruta cambia a través de hielo rompible y construible en lugar de cambios ocultos en las reglas.</p>
+<p>21–25: hielo resonante. 26–30: rescate de regreso. Completa: ★. Gana otra ★ por cada objetivo logrado. Ediciones ≤ 2; Pasos ≤ 46–62.</p></div>
+      <div class="game-info-section"><h3>Nota de diseño</h3><p>Rescate del Laberinto Helado es un original rompecabezas de rescate en cuadrícula con ediciones directas de las paredes, salas cortas deterministas, presión enemiga visible y controles sensibles tanto en el tacto como en el escritorio.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Nota para familias</h3><p>La mejor sala completada y las mejores estrellas por sala se guardan en este navegador. Borrar los datos del sitio elimina los registros.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>What do I collect?</dt><dd>Recoge todas las bayas que se muestran en la habitación para limpiarlas. 26–30: Tras la última baya, vuelve a la casilla inicial.</dd></div><div><dt>When should I break ice?</dt><dd>Break the blue wall that blocks the next useful route, then reassess the enemy position.</dd></div><div><dt>What does Build Ice do?</dt><dd>Agrega una pared corta que puede retrasar al quitanieves y brindarle una ruta más segura.</dd></div><div><dt>Is progress saved?</dt><dd>La mejor sala completada y las mejores estrellas por sala se guardan en este navegador. Borrar los datos del sitio elimina los registros.</dd></div></dl></div>
 
     </div>
   </section>
-</body>
+<script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+    <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
+  </body>
 </html>

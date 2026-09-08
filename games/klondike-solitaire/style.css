@@ -527,7 +527,6 @@ button.mini-btn {
   touch-action: none;
   pointer-events: auto;
   transform-style: preserve-3d;
-  will-change: transform, opacity, top, left;
   transition: top 130ms cubic-bezier(.2,.8,.2,1), left 130ms cubic-bezier(.2,.8,.2,1), transform 130ms cubic-bezier(.2,.8,.2,1), box-shadow 130ms ease, opacity 130ms ease;
 }
 
@@ -603,10 +602,13 @@ button.mini-btn {
 }
 
 .card.back .card-back-pattern {
-  width: 76%;
-  height: 76%;
-  border-radius: 7px;
-  background: url("../../assets/klondike-solitaire-card-back.webp") center / cover no-repeat;
+  /* A percentage-height grid child collapsed against the card's auto track.
+     Anchor the artwork to the aspect-ratio card, without changing hit geometry. */
+  position: absolute;
+  inset: 2px;
+  border-radius: max(2px, calc(var(--kl-card-radius) - 2px));
+  pointer-events: none;
+  background: url("../../assets/klondike-solitaire-card-back.webp") center / contain no-repeat;
 }
 
 .card-deal {

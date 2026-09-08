@@ -154,6 +154,7 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "golf", id: "golf-solitaire" });
     if (!view || typeof view.showResult !== "function") return;
+    window.WPCardTablePresentation?.install(view);
     const invalidStyle = document.createElement("style");
     invalidStyle.dataset.wpGolfInvalidFeedback = "true";
     invalidStyle.textContent = `

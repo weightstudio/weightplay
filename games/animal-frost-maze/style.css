@@ -45,6 +45,14 @@ body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stag
 
 .battle-status[data-state="cracked"],.battle-status[data-state="built"],.battle-status[data-state="berry"],.battle-status[data-state="berryClear"]{color:var(--gold);font-weight:800}.battle-status.frost-beat{animation:frost-battle-beat 420ms cubic-bezier(.2,.8,.3,1)}@keyframes frost-battle-beat{0%{transform:scale(.98);opacity:.65}45%{transform:scale(1.035);opacity:1}100%{transform:scale(1);opacity:1}}@media(prefers-reduced-motion:reduce){.battle-status.frost-beat{animation:none}}
 .battle-header .utility-button{width:48px;min-width:48px;height:48px;min-height:48px;padding:0;display:grid;place-items:center;border-radius:12px}
+#result-copy{white-space:pre-line;line-height:1.35;overflow-wrap:anywhere}
+#result-screen{overflow-y:auto;overscroll-behavior:contain}
+#result-screen button:disabled{opacity:.45;cursor:default}
+body[data-wp-five-game="animal-frost-maze"] #result-screen{width:auto;min-height:0;max-height:calc(100% - 24px)}
+body[data-wp-five-game="animal-frost-maze"] #result-screen .result-actions button{min-width:0;width:100%;padding:10px 6px;overflow-wrap:anywhere}
+.mastery-badge{color:var(--gold)}
+/* Preserve the intrinsic board and sprite aspect inside the shared Battle slot. */
+body[data-wp-five-game="animal-frost-maze"] #arena{object-fit:contain}
 @media (orientation: landscape) and (max-height: 560px){
   body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .battle canvas{
     width:min(100%,640px) !important;
@@ -59,4 +67,12 @@ body[data-wp-five-game="animal-frost-maze"] [data-wp-logical-stage-canvas] .stag
   body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .battle-status{margin:4px 8px;line-height:1.2}
   body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-controls{padding-top:4px;gap:4px}
   body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-hint{padding:4px;line-height:1.2}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] #battle-screen{display:grid;grid-template-columns:minmax(0,1fr) 270px;grid-template-rows:64px 38px minmax(0,1fr) auto;gap:4px;padding:8px}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .battle-header{grid-column:1/-1;grid-row:1}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] #arena{grid-column:1;grid-row:2/5;width:100% !important;height:100% !important;min-height:0 !important;aspect-ratio:auto !important}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .battle-status{grid-column:2;grid-row:2;margin:0;font-size:12px}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-controls{grid-column:2;grid-row:3;align-content:center;padding:0}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-controls button{min-width:46px;min-height:44px;padding:7px;font-size:14px}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-controls .break{min-width:120px}
+  body.wp-logical-battle-active[data-wp-five-game="animal-frost-maze"] .touch-hint{grid-column:2;grid-row:4;margin:0;font-size:12px}
 }

@@ -25,9 +25,9 @@
     <meta name="weightplay-audience" content="general" />
     <meta name="weightplay-game-id" content="animal-frost-maze" />
     <meta name="weightplay-scene-controls" content="immutable" />
-    <meta name="description" content="凍ったルートを開き、すべてのベリーを集めて、スノードリフターの一歩先を進みましょう。" />
+    <meta name="description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <title>氷原迷路の救出 | WeightPlay</title>
-    <link rel="stylesheet" href="style.css?v=20260905-ar-canvas-cue-v12" />
+    <link rel="stylesheet" href="style.css?v=20260908-mastery-v15" />
     <style>.battle{background-image:linear-gradient(180deg,rgba(6,27,44,.20),rgba(6,27,44,.70)),url("assets/animal-frost-maze-background.png");background-size:cover;background-position:center}</style>
     <link rel="stylesheet" href="../../src/five-new-games-locale.css?v=20260814-prototype-locale1" />
     <link rel="stylesheet" href="../../src/loading-screen.css" data-wp-loading-screen />
@@ -36,21 +36,22 @@
     <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" data-wp-shell-standard />
-    <script defer src="game.js?v=20260908-landscape-poster-v13"></script><meta property="og:site_name" content="WeightPlay" />
+    <script defer src="mastery.js?v=20260908-mastery-v15"></script>
+    <script defer src="game.js?v=20260908-mastery-v15"></script><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="氷原迷路の救出 | WeightPlay" />
-    <meta property="og:description" content="凍ったルートを開き、すべてのベリーを集めて、スノードリフターの一歩先を進みましょう。" />
+    <meta property="og:description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-frost-maze/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="氷原迷路の救出 | WeightPlay" />
-    <meta name="twitter:description" content="凍ったルートを開き、すべてのベリーを集めて、スノードリフターの一歩先を進みましょう。" />
+    <meta name="twitter:description" content="Open the frozen route, collect every berry, and stay one step ahead of the snow drifter." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-frost-maze-cover.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"氷原迷路の救出","alternateName":"Frost Maze Rescue","url":"https://weightplay.com/ja/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","description":"凍ったルートを開き、すべてのベリーを集めて、スノードリフターの一歩先を進みましょう。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","アクション","動物"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"氷原迷路の救出","alternateName":"Frost Maze Rescue","url":"https://weightplay.com/ja/games/animal-frost-maze/","image":"https://weightplay.com/assets/animal-frost-maze-cover.webp","description":"Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Action","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-screen="main" data-runtime-localize="off">
+  <body data-wp-five-game="animal-frost-maze" data-wp-game-id="animal-frost-maze" data-screen="main" data-wp-game-owned-guide data-runtime-localize="off">
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-game-title>氷原迷路の救出</strong><span>Preparing the ice route…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
     <main id="app" data-game="animal-frost-maze" data-audience="general">
       <section id="main-screen" class="screen main-screen active" data-screen="main">
@@ -80,34 +81,36 @@
       <div class="battle-ad-reserve" aria-hidden="true"></div>
     </main>
     <script src="../../src/site-config.js"></script>
-    <script src="../../src/analytics.js?v=20260905-ar-canvas-cue-v12"></script>
-    <script src="analytics-ownership.js?v=20260905-ar-canvas-cue-v12"></script>
-    <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+    <script src="../../src/analytics.js?v=20260908-landscape-poster-v13"></script>
+    <script src="analytics-ownership.js?v=20260908-mastery-v15"></script>
+    <!-- Frost owns all 13 runtime locales; no shared DOM retranslation loop. -->
     <script src="../../src/five-new-games-locale.js?v=20260908-approved-game-names1"></script>
-    <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="氷原迷路の救出 ゲーム情報">
+    <section class="game-page-info game-page-info-static" aria-label="氷原迷路の救出 ゲーム情報" data-wp-preserve-static-guide data-runtime-localize="off">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">氷原迷路の救出</h2><p>凍ったルートを開き、すべてのベリーを集めて、スノードリフターの一歩先を進みましょう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>変更可能な氷の迷路</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · アクション · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>簡単から挑戦的</strong></div><div class="game-info-fact"><span>目安時間</span><strong>ルームごとに1～4分</strong></div><div class="game-info-fact"><span>身につく力</span><strong>ルート計画 · タイミング · 問題解決</strong></div></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">氷原迷路の救出</h2><p>Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Changeable Ice Maze</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Action · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1-4 分 per room</strong></div><div class="game-info-fact"><span>身につく力</span><strong>Route Planning · Timing · 問題解決</strong></div></div>
     </div>
 
     <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>小さな救出ルートは青い氷の壁で封鎖されている。すべてのベリーを集め、重要な障壁だけを変更し、スノードリフターが隙間を埋める前に動き続けます。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>矢印キー、WASD、または表示される方向コントロールは、一度に 1 つのグリッド セルを移動します。スペースが前方の氷を破壊し、F が短い壁を構築します。</p>
-<p>移動を繰り返すと敵は前進する。すべてのベリーを集めると部屋がクリアになります。連絡先がルートをブロックし、集中的な再試行が行われます。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>章を選択し、ベリーの数とルートのヒントを読んでください。</li><li>一度に 1 つのセルを移動し、青い壁が次の有効なレーンを閉じたら、Break Ice を使用します。</li><li>敵を遅らせる必要がある場合は、Build Ice を使用して短いバリアを作成します。</li><li>すべてのベリーを集めてから、次の部屋を選択するか、再試行するか、結果後にチャプターに戻ります。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>壁を壊す前に次の 2 つのセルを計画し、開口部が実際のルートを作成するようにします。</li><li>最初に露出したベリーを収集しながら、敵をバリアの向こう側に保ちます。</li><li>ルートが閉鎖されている場合は、同じ道を繰り返すのではなく、すぐに再試行して休憩の順序を変更してください。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>6 つの章と 30 の部屋は、最初の雪解けからルートの分岐、ドリフターの圧力、そして最後の雪解けまで進みます。ルートは、隠されたルールの変更ではなく、壊れたり組み立てたりできる氷によって変更されます。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>Frostline Rescue は、壁の直接編集、確定的なショート ルーム、目に見える敵の圧力、タッチとデスクトップの両方での応答性の高いコントロールを備えたオリジナルのグリッド レスキュー パズルです。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>この一般的なブラウザ ゲームには、アカウント、購入、チャット、リーダーボード、広告フローはありません。クリアされた部屋と最高の進行状況はこのブラウザに残ります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>何を集めますか?</dt><dd>部屋に表示されているベリーをすべて集めてクリアします。</dd></div><div><dt>アイスブレイクはいつ行うべきですか?</dt><dd>次の有効なルートを阻む青い壁を破壊し、敵の位置を再確認します。</dd></div><div><dt>ビルドアイスって何をするの？</dt><dd>短い壁が追加され、雪の漂流者を遅らせ、より安全なルートを提供します。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>このブラウザには最良の部屋のみが保存されます。</dd></div></dl></div>
+      <div class="game-info-section"><h3>世界とミッション</h3><p>A small rescue route is sealed by blue ice walls. Collect every berry, change only the barriers that matter, and keep moving before the snow drifter closes the gap.</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Arrow keys, WASD, or the visible direction controls move one grid cell at a time. Space breaks the ice ahead and F builds a short wall.</p>
+<p>移動を繰り返すと敵は前進する。すべてのベリーを集めると部屋がクリアになります。連絡先がルートをブロックし、集中的な再試行が行われます。</p>
+<p>21–30: 氷を変えるたびに漂流者が動きます。 26–30: 最後のベリーを集めたら開始マスへ戻りましょう。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>Choose a chapter and read the berry count and route hint.</li><li>Move one cell at a time and use Break Ice when a blue wall closes the next useful lane.</li><li>Use Build Ice to create a short barrier when the enemy needs to be delayed.</li><li>Collect every berry, then choose Next Room, Retry, or return to Chapters after the result.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Plan the next two cells before breaking a wall so the opening creates a real route.</li><li>Keep the enemy on the far side of a barrier while collecting the exposed berry first.</li><li>If the route closes, retry quickly and change the order of your breaks instead of repeating the same path.</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>6 つの章と 30 の部屋は、最初の雪解けからルートの分岐、ドリフターの圧力、そして最後の雪解けまで進みます。ルートは、隠されたルールの変更ではなく、壊れたり組み立てたりできる氷によって変更されます。</p>
+<p>21–25: こだまの氷原. 26–30: 帰還の救出. クリアで★。目標を達成するごとに★を追加。 氷の編集 ≤ 2; 歩数 ≤ 46–62.</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>氷原迷路の救出 は、壁の直接編集、確定的なショート ルーム、目に見える敵の圧力、タッチとデスクトップの両方での応答性の高いコントロールを備えたオリジナルのグリッド レスキュー パズルです。</p></div>
+      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>最高クリアルームと各ルームの最高評価はこのブラウザーに保存されます。サイトデータを消すと失われます。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>What do I collect?</dt><dd>部屋に表示されているベリーをすべて集めてクリアします。 26–30: 最後のベリーを集めたら開始マスへ戻りましょう。</dd></div><div><dt>When should I break ice?</dt><dd>Break the blue wall that blocks the next useful route, then reassess the enemy position.</dd></div><div><dt>What does Build Ice do?</dt><dd>短い壁が追加され、雪の漂流者を遅らせ、より安全なルートを提供します。</dd></div><div><dt>Is progress saved?</dt><dd>最高クリアルームと各ルームの最高評価はこのブラウザーに保存されます。サイトデータを消すと失われます。</dd></div></dl></div>
 
     </div>
   </section>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="氷原迷路の救出";document.title="氷原迷路の救出 | WeightPlay";},{once:true});</script>
+<script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+    <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
+    <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260815-five-games-shell1" data-wp-battle-standard></script>
+    <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="氷原迷路の救出";document.title="氷原迷路の救出 | WeightPlay";},{once:true});</script>
 </body>
 </html>

@@ -752,11 +752,29 @@ const KL_I18N = {
       "ui.feature.performance_title": "الأداء", "ui.feature.performance_text": "تحريك البطاقات باستخدام transform فقط، وتقليل إعادة الرسم، وضبط الرسوم المتحركة باستمرار.",
     },
   };
+  const soundCopy = {
+    en: ['Sound: On', 'Sound: Off', 'Sound on', 'Sound off'],
+    'zh-Hant': ['音效：開', '音效：關', '音效已開啟', '音效已關閉'],
+    'zh-Hans': ['音效：开', '音效：关', '音效已开启', '音效已关闭'],
+    ja: ['音：オン', '音：オフ', '音声オン', '音声オフ'],
+    ko: ['소리: 켜짐', '소리: 꺼짐', '소리 켜짐', '소리 꺼짐'],
+    es: ['Sonido: sí', 'Sonido: no', 'Sonido activado', 'Sonido desactivado'],
+    'pt-BR': ['Som: ligado', 'Som: desligado', 'Som ativado', 'Som desativado'],
+    fr: ['Son : oui', 'Son : non', 'Son activé', 'Son désactivé'],
+    de: ['Ton: an', 'Ton: aus', 'Ton eingeschaltet', 'Ton ausgeschaltet'],
+    it: ['Audio: sì', 'Audio: no', 'Audio attivato', 'Audio disattivato'],
+    ru: ['Звук: вкл.', 'Звук: выкл.', 'Звук включён', 'Звук выключен'],
+    hi: ['ध्वनि: चालू', 'ध्वनि: बंद', 'ध्वनि चालू है', 'ध्वनि बंद है'],
+    ar: ['الصوت: مفعّل', 'الصوت: مغلق', 'الصوت مفعّل', 'الصوت مغلق'],
+  };
   SUPPORTED_LOCALES.forEach((locale) => {
     const baseLocale = KL_I18N.en;
     const localeOverrides = LOCALE_I18N_OVERRIDES[locale] || {};
     const existingLocale = KL_I18N[locale];
     KL_I18N[locale] = Object.assign({}, baseLocale, existingLocale, localeOverrides, KL_RUNTIME_HEADER_OVERRIDES[locale] || {}, KL_UI_LABEL_OVERRIDES[locale] || {});
+    ['ui.sound.on', 'ui.sound.off', 'ui.sound.aria_on', 'ui.sound.aria_off'].forEach((key, index) => {
+      KL_I18N[locale][key] = soundCopy[locale][index];
+    });
     if (!KL_I18N[locale]["ui.meta.keywords"]) {
       KL_I18N[locale]["ui.meta.keywords"] = DEFAULT_META_KEYWORDS;
     }
@@ -1918,7 +1936,16 @@ const KL_I18N = {
 
     const baseStep = getBaseLayoutStep();
     const compression = Math.max(0, maxCardCount - 9) * 1.8;
-    const fittedStep = Math.max(MIN_TABLEAU_REVEAL_STEP, baseStep - compression);
+    // Fit against the rendered safe canvas, not only the number of cards.
+    // Translated controls can wrap and consume additional vertical space.
+    const scale = Math.max(getCanvasScale(), 0.01);
+    const canvasStyle = window.getComputedStyle(canvas);
+    const bottomPadding = Number.parseFloat(canvasStyle.paddingBottom) || 0;
+    const availableHeight = (canvas.getBoundingClientRect().bottom - tableauRow.getBoundingClientRect().top) / scale
+      - bottomPadding - getTableauSelectionGutter();
+    const availableStep = (availableHeight - getCardLayoutHeight(firstCard)) / (maxCardCount - 1);
+    const fittedStep = Math.min(baseStep, Math.max(Math.min(MIN_TABLEAU_REVEAL_STEP, baseStep),
+      Math.min(baseStep - compression, availableStep)));
     if (fittedStep >= baseStep - 0.1) {
       canvas.style.removeProperty("--card-step");
     } else {

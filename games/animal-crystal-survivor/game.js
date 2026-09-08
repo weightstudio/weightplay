@@ -8,7 +8,109 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v24";
+  const GAME_VERSION = "v26";
+  const rendererModuleUrl = new URL("crystal-3d.js", document.currentScript.src).href;
+  let crystal3D = null;
+  let rendererRequest = 0;
+  let rendererDialog = null;
+  let annotationScale = 1;
+  const rendererFailureText = {
+    en: "The 3D scene could not continue. Retry this stage or return to Stages. Saved campaign progress is safe.",
+    "zh-Hant": "3D 場景無法繼續。請重試本關或返回關卡；已儲存的關卡進度不會遺失。",
+    "zh-Hans": "3D 场景无法继续。请重试本关或返回关卡；已保存的关卡进度不会丢失。",
+    ja: "3Dシーンを続行できません。このステージをやり直すか、ステージ選択に戻ってください。保存済みの進行状況は失われません。",
+    ko: "3D 장면을 계속할 수 없습니다. 이 스테이지를 다시 시도하거나 스테이지 선택으로 돌아가세요. 저장된 진행 상황은 유지됩니다.",
+    es: "La escena 3D no pudo continuar. Reintenta esta etapa o vuelve a Etapas. El progreso guardado se conserva.",
+    "pt-BR": "A cena 3D não pôde continuar. Tente esta fase novamente ou volte às fases. O progresso salvo será mantido.",
+    fr: "La scène 3D ne peut pas continuer. Réessayez ce niveau ou revenez aux niveaux. Votre progression sauvegardée est conservée.",
+    de: "Die 3D-Szene konnte nicht fortgesetzt werden. Versuche diese Stufe erneut oder kehre zur Stufenauswahl zurück. Gespeicherter Fortschritt bleibt erhalten.",
+    it: "La scena 3D non può continuare. Riprova questa fase o torna alle fasi. I progressi salvati sono al sicuro.",
+    ru: "Не удалось продолжить 3D-сцену. Повторите этап или вернитесь к выбору этапов. Сохранённый прогресс не потерян.",
+    hi: "3D दृश्य जारी नहीं रह सका। इस चरण को फिर आज़माएँ या चरण चयन पर लौटें। सहेजी गई प्रगति सुरक्षित है।",
+    ar: "تعذر استمرار المشهد ثلاثي الأبعاد. أعد محاولة هذه المرحلة أو ارجع إلى المراحل. تقدمك المحفوظ آمن.",
+  };
+
+  function releaseRenderer() {
+    rendererRequest += 1;
+    crystal3D?.dispose();
+    crystal3D = null;
+    rendererDialog?.remove();
+    rendererDialog = null;
+    nodes.loadingPanel.classList.add("hidden");
+  }
+
+  const leaveText = {
+    en: ["Leaving ends this run and its temporary upgrades. Saved campaign progress stays.", "Continue playing"],
+    "zh-Hant": ["返回會結束本次挑戰並清除本次強化；已儲存的關卡進度會保留。", "繼續遊玩"],
+    "zh-Hans": ["返回会结束本次挑战并清除本次强化；已保存的关卡进度会保留。", "继续游玩"],
+    ja: ["戻ると今回の挑戦と一時的な強化が終了します。保存済みの進行状況は残ります。", "プレイを続ける"],
+    ko: ["돌아가면 이번 도전과 임시 강화가 종료됩니다. 저장된 진행 상황은 유지됩니다.", "계속 플레이"],
+    es: ["Al salir termina esta partida y sus mejoras temporales. El progreso guardado se conserva.", "Seguir jugando"],
+    "pt-BR": ["Sair encerra esta tentativa e suas melhorias temporárias. O progresso salvo permanece.", "Continuar jogando"],
+    fr: ["Quitter termine cette partie et ses améliorations temporaires. La progression sauvegardée est conservée.", "Continuer à jouer"],
+    de: ["Beim Verlassen enden dieser Versuch und seine vorübergehenden Verbesserungen. Gespeicherter Fortschritt bleibt erhalten.", "Weiterspielen"],
+    it: ["Uscire termina questa partita e i suoi potenziamenti temporanei. I progressi salvati restano.", "Continua a giocare"],
+    ru: ["Выход завершит эту попытку и её временные улучшения. Сохранённый прогресс останется.", "Продолжить игру"],
+    hi: ["लौटने पर यह प्रयास और इसके अस्थायी सुधार समाप्त होंगे। सहेजी गई प्रगति बनी रहेगी।", "खेलना जारी रखें"],
+    ar: ["الرجوع ينهي هذه المحاولة وترقياتها المؤقتة. يبقى التقدم المحفوظ.", "متابعة اللعب"],
+  };
+
+  function confirmBattleLeave() {
+    if (state.mode !== "running") return;
+    const [explanation, continueLabel] = leaveText[locale] || leaveText.en;
+    clearInput();
+    state.mode = "paused";
+    runToken += 1;
+    const dialog = document.createElement("dialog");
+    dialog.className = "crystal-render-error crystal-leave-dialog";
+    dialog.dataset.runtimeLocalize = "off";
+    const description = document.createElement("p");
+    description.id = "crystalLeaveDescription";
+    description.textContent = `${t("stage")} ${state.stage} · ${explanation}`;
+    dialog.setAttribute("aria-labelledby", description.id);
+    dialog.append(description);
+    const resume = () => {
+      if (state.mode !== "paused") return;
+      dialog.remove(); rendererDialog = null;
+      state.mode = "running";
+      clearInput(); resetFrameClock(); scheduleLoop();
+      nodes.menuBtn.focus({ preventScroll: true });
+    };
+    for (const [text, action] of [[continueLabel, resume], [t("backToStages"), () => showStageSelection(true)]]) {
+      const button = document.createElement("button");
+      button.type = "button"; button.textContent = text;
+      button.addEventListener("click", action, { once: true });
+      dialog.append(button);
+    }
+    dialog.addEventListener("cancel", event => { event.preventDefault(); resume(); });
+    nodes.gamePanel.append(dialog); rendererDialog = dialog; dialog.showModal();
+  }
+
+  function showRendererFailure() {
+    clearInput();
+    state.mode = "render-error";
+    runToken += 1;
+    rendererDialog?.remove();
+    const dialog = document.createElement("dialog");
+    dialog.className = "crystal-render-error";
+    const message = document.createElement("p");
+    message.id = "crystalRendererFailure";
+    message.textContent = rendererFailureText[locale] || rendererFailureText.en;
+    dialog.setAttribute("aria-labelledby", message.id);
+    dialog.dataset.runtimeLocalize = "off";
+    dialog.append(message);
+    for (const [label, action] of [["tryAgain", () => startRun("renderer_retry")], ["backToStages", () => showStageSelection(true)]]) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = t(label);
+      button.addEventListener("click", action, { once: true });
+      dialog.append(button);
+    }
+    dialog.addEventListener("cancel", event => { event.preventDefault(); showStageSelection(true); });
+    (nodes.gamePanel.classList.contains("hidden") ? nodes.stagePanel : nodes.gamePanel).append(dialog);
+    rendererDialog = dialog;
+    dialog.showModal();
+  }
   const INTERFACE_VERSION = 6;
   const saveKey = "weightplay_animal_crystal_survivor_v1";
   const localeKey = "weightPlayLocale";
@@ -524,19 +626,19 @@
   text["zh-Hant"].mainStart = "\u958b\u59cb\u904a\u6232";
   text.es.mainStart = "Comenzar juego";
   Object.assign(text, {
-    en: { ...text.en, hintFirstKey: "Tap or drag inside the playfield toward the glowing golden key; rotate to portrait for a larger touch field.", hintNextKey: "The next golden key is marked by the arrow; cross the open lane and leave warning rings before they close." },
-    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "點按或拖曳遊戲區，朝發光的金鑰移動；轉為直向可獲得更大的觸控範圍。", hintNextKey: "下一把金鑰會由箭頭標出；穿過安全路線，並在警示圈關閉前離開。" },
-    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "点按或拖曳游戏区，朝发光的金钥匙移动；转为竖向可获得更大的触控范围。", hintNextKey: "箭头会标出下一把金钥匙；穿过安全路线，并在警示圈关闭前离开。" },
-    ja: { ...text.ja, hintFirstKey: "プレイフィールドをタップまたはドラッグして光る金の鍵へ移動。縦向きにするとタッチ範囲が広がります。", hintNextKey: "次の金の鍵は矢印で示されます。安全な道を進み、警告リングが閉じる前に離れましょう。" },
-    ko: { ...text.ko, hintFirstKey: "플레이 영역을 탭하거나 드래그해 빛나는 황금 열쇠로 이동하세요. 세로 화면이면 터치 영역이 더 넓어집니다.", hintNextKey: "화살표가 다음 황금 열쇠를 가리킵니다. 열린 길을 지나고 경고 고리가 닫히기 전에 벗어나세요." },
-    es: { ...text.es, hintFirstKey: "Toca o arrastra dentro del campo hacia la llave dorada brillante; gira a vertical para tener más espacio táctil.", hintNextKey: "La flecha marca la siguiente llave dorada; cruza la ruta abierta y sal de los anillos de peligro antes de que se cierren." },
-    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Toque ou arraste dentro do campo até a chave dourada brilhante; vire para retrato para ter mais área de toque.", hintNextKey: "A seta marca a próxima chave dourada; atravesse a rota aberta e saia dos anéis de alerta antes que fechem." },
-    fr: { ...text.fr, hintFirstKey: "Touchez ou faites glisser dans l’aire de jeu vers la clé dorée lumineuse ; passez en portrait pour agrandir la zone tactile.", hintNextKey: "La flèche indique la prochaine clé dorée ; traversez la voie ouverte et quittez les anneaux d’alerte avant leur fermeture." },
-    de: { ...text.de, hintFirstKey: "Tippe oder ziehe im Spielfeld zum leuchtenden Goldschlüssel; im Hochformat ist die Touchfläche größer.", hintNextKey: "Der Pfeil zeigt den nächsten Goldschlüssel; quere die offene Route und verlasse Warnringe, bevor sie sich schließen." },
-    it: { ...text.it, hintFirstKey: "Tocca o trascina nell’area di gioco verso la chiave dorata luminosa; passa al ritratto per una zona touch più ampia.", hintNextKey: "La freccia indica la prossima chiave dorata; attraversa la rotta aperta e lascia gli anelli d’allerta prima che si chiudano." },
-    ru: { ...text.ru, hintFirstKey: "Коснитесь или перетащите внутри игрового поля к сияющему золотому ключу; портретная ориентация расширит зону касания.", hintNextKey: "Стрелка указывает на следующий золотой ключ; двигайтесь по открытому пути и покиньте кольца опасности до их закрытия." },
-    hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ; बड़े टच क्षेत्र के लिए पोर्ट्रेट मोड करें।", hintNextKey: "तीर अगली सुनहरी चाबी दिखाता है; खुले रास्ते से जाएँ और चेतावनी छल्ले बंद होने से पहले उनसे बाहर निकलें।" },
-    ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج؛ حوّل الشاشة للوضع الطولي لتكبير مساحة اللمس.", hintNextKey: "يشير السهم إلى المفتاح الذهبي التالي؛ اعبر المسار المفتوح وغادر حلقات التحذير قبل أن تنغلق." },
+    en: { ...text.en, hintFirstKey: "Tap or drag inside the playfield toward the glowing golden key.", hintNextKey: "The next golden key is marked by the arrow; cross the open lane and leave warning rings before they close." },
+    "zh-Hant": { ...text["zh-Hant"], hintFirstKey: "點按或拖曳遊戲區，朝發光的金鑰移動。", hintNextKey: "下一把金鑰會由箭頭標出；穿過安全路線，並在警示圈關閉前離開。" },
+    "zh-Hans": { ...text["zh-Hans"], hintFirstKey: "点按或拖曳游戏区，朝发光的金钥匙移动。", hintNextKey: "箭头会标出下一把金钥匙；穿过安全路线，并在警示圈关闭前离开。" },
+    ja: { ...text.ja, hintFirstKey: "プレイフィールドをタップまたはドラッグして光る金の鍵へ移動。", hintNextKey: "次の金の鍵は矢印で示されます。安全な道を進み、警告リングが閉じる前に離れましょう。" },
+    ko: { ...text.ko, hintFirstKey: "플레이 영역을 탭하거나 드래그해 빛나는 황금 열쇠로 이동하세요.", hintNextKey: "화살표가 다음 황금 열쇠를 가리킵니다. 열린 길을 지나고 경고 고리가 닫히기 전에 벗어나세요." },
+    es: { ...text.es, hintFirstKey: "Toca o arrastra dentro del campo hacia la llave dorada brillante.", hintNextKey: "La flecha marca la siguiente llave dorada; cruza la ruta abierta y sal de los anillos de peligro antes de que se cierren." },
+    "pt-BR": { ...text["pt-BR"], hintFirstKey: "Toque ou arraste dentro do campo até a chave dourada brilhante.", hintNextKey: "A seta marca a próxima chave dourada; atravesse a rota aberta e saia dos anéis de alerta antes que fechem." },
+    fr: { ...text.fr, hintFirstKey: "Touchez ou faites glisser dans l’aire de jeu vers la clé dorée lumineuse.", hintNextKey: "La flèche indique la prochaine clé dorée ; traversez la voie ouverte et quittez les anneaux d’alerte avant leur fermeture." },
+    de: { ...text.de, hintFirstKey: "Tippe oder ziehe im Spielfeld zum leuchtenden Goldschlüssel.", hintNextKey: "Der Pfeil zeigt den nächsten Goldschlüssel; quere die offene Route und verlasse Warnringe, bevor sie sich schließen." },
+    it: { ...text.it, hintFirstKey: "Tocca o trascina nell’area di gioco verso la chiave dorata luminosa.", hintNextKey: "La freccia indica la prossima chiave dorata; attraversa la rotta aperta e lascia gli anelli d’allerta prima che si chiudano." },
+    ru: { ...text.ru, hintFirstKey: "Коснитесь или перетащите внутри игрового поля к сияющему золотому ключу.", hintNextKey: "Стрелка указывает на следующий золотой ключ; двигайтесь по открытому пути и покиньте кольца опасности до их закрытия." },
+    hi: { ...text.hi, hintFirstKey: "प्लेफ़ील्ड के अंदर टैप या ड्रैग करके चमकती सुनहरी चाबी की ओर जाएँ.", hintNextKey: "तीर अगली सुनहरी चाबी दिखाता है; खुले रास्ते से जाएँ और चेतावनी छल्ले बंद होने से पहले उनसे बाहर निकलें।" },
+    ar: { ...text.ar, hintFirstKey: "المس أو اسحب داخل ساحة اللعب نحو المفتاح الذهبي المتوهج.", hintNextKey: "يشير السهم إلى المفتاح الذهبي التالي؛ اعبر المسار المفتوح وغادر حلقات التحذير قبل أن تنغلق." },
   });
   Object.entries({
     "zh-Hans": ["收集 {keys} 把金钥匙 · 生存 3:00{boss}", " · 击败首领"],
@@ -1328,6 +1430,7 @@
   }
 
   function show(panel) {
+    if (panel === nodes.menuPanel || panel === nodes.stagePanel) releaseRenderer();
     if (panel !== nodes.stagePanel) cancelStageMotion();
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
     const resultOpen = panel === nodes.resultPanel;
@@ -1381,6 +1484,22 @@
     if (!document.body?.classList.contains("crystal-playing")) return false;
     const rect = canvas.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return false;
+    if (crystal3D) {
+      const ratio = Math.min(1.5, window.devicePixelRatio || 1, Math.sqrt(MAX_BACKING_PIXELS / (rect.width * rect.height)));
+      const width = Math.max(1, Math.round(rect.width * ratio));
+      const height = Math.max(1, Math.round(rect.height * ratio));
+      annotationScale = width / rect.width;
+      if (!force && canvas.width === width && canvas.height === height) return false;
+      canvas.width = renderCanvas.width = width;
+      canvas.height = renderCanvas.height = height;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      backingScale = ratio;
+      if (["upgrade", "paused", "result"].includes(state.mode)) {
+        const view = crystal3D;
+        requestAnimationFrame(() => { if (view === crystal3D && !view.disposed) draw(); });
+      }
+      return true;
+    }
     const deviceScale = Math.min(2, Math.max(1, Number(window.devicePixelRatio) || 1));
     const displayScale = Math.min(rect.width / W, rect.height / H) * deviceScale;
     const pixelBudgetScale = Math.sqrt(MAX_BACKING_PIXELS / (W * H));
@@ -1637,15 +1756,37 @@
     let pointerId = null, startX = 0, lastX = 0, dragLogical = 0, moved = false, suppressClick = false;
     const restore = () => { const active = pointerId; pointerId = null; moved = false; if (active !== null && rail.hasPointerCapture?.(active)) rail.releasePointerCapture(active); rail.style.removeProperty("scroll-behavior"); rail.style.removeProperty("scroll-snap-type"); delete rail.dataset.wpStageSettling; delete rail.dataset.wpDragDown; rail.classList.remove("wp-stage-dragging"); };
     restoreStageRailInteraction = restore;
-    rail.addEventListener("pointerdown", (event) => { if (event.isPrimary === false || (event.button ?? 0) !== 0) return; cancelAnimationFrame(stageSettleFrame); pointerId = event.pointerId; rail.setPointerCapture?.(event.pointerId); rail.dataset.wpDragDown = "1"; startX = lastX = event.clientX; dragLogical = currentStageLogicalPosition(); moved = false; rail.style.setProperty("scroll-behavior", "auto", "important"); rail.style.setProperty("scroll-snap-type", "none", "important"); event.stopImmediatePropagation(); }, true);
-    document.addEventListener("pointermove", (event) => { if (event.pointerId !== pointerId) return; const delta = event.clientX - lastX; lastX = event.clientX; if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.classList.add("wp-stage-dragging"); } if (moved) { if (event.cancelable) event.preventDefault(); dragLogical = positionStageRail(dragLogical - delta / stageRailGeometry().pitch); } event.stopImmediatePropagation(); }, true);
-    const finish = (event) => { if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return; pointerId = null; if (moved) { if (event.cancelable) event.preventDefault(); const from = dragLogical, index = clampStageIndex(Math.round(from)), start = performance.now(), duration = 280; stageBrowseStage = index + 1; syncStageCards(); rail.dataset.wpStageSettling = "true"; const settle = (now) => { const progress = Math.max(0, Math.min(1, (now - start) / duration)), eased = progress * progress * (3 - 2 * progress); positionStageRail(from + (index - from) * eased); if (progress < 1) stageSettleFrame = requestAnimationFrame(settle); else { stageSettleFrame = 0; positionStageRail(index); syncStageCards(); rail.querySelector(`[data-stage="${stageBrowseStage}"]`)?.focus({ preventScroll: true }); restore(); } }; stageSettleFrame = requestAnimationFrame(settle); suppressClick = true; setTimeout(() => { suppressClick = false; }, 0); } else restore(); moved = false; event.stopImmediatePropagation(); };
+    rail.addEventListener("pointerdown", (event) => { if (event.isPrimary === false || (event.button ?? 0) !== 0) return; cancelAnimationFrame(stageSettleFrame); pointerId = event.pointerId; rail.dataset.wpDragDown = "1"; startX = lastX = event.clientX; dragLogical = currentStageLogicalPosition(); moved = false; rail.style.setProperty("scroll-behavior", "auto", "important"); rail.style.setProperty("scroll-snap-type", "none", "important"); event.stopImmediatePropagation(); }, true);
+    document.addEventListener("pointermove", (event) => { if (event.pointerId !== pointerId) return; const delta = event.clientX - lastX; lastX = event.clientX; if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.setPointerCapture?.(event.pointerId); rail.classList.add("wp-stage-dragging"); } if (moved) { if (event.cancelable) event.preventDefault(); dragLogical = positionStageRail(dragLogical - delta / stageRailGeometry().pitch); } event.stopImmediatePropagation(); }, true);
+    const finish = (event) => { if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return; const finishedPointer = pointerId; if (rail.hasPointerCapture?.(finishedPointer)) rail.releasePointerCapture(finishedPointer); pointerId = null; if (event.type === "pointercancel") { restore(); return; } if (moved) { if (event.cancelable) event.preventDefault(); const from = dragLogical, index = clampStageIndex(Math.round(from)), start = performance.now(), duration = 280; stageBrowseStage = index + 1; syncStageCards(); rail.dataset.wpStageSettling = "true"; const settle = (now) => { const progress = Math.max(0, Math.min(1, (now - start) / duration)), eased = progress * progress * (3 - 2 * progress); positionStageRail(from + (index - from) * eased); if (progress < 1) stageSettleFrame = requestAnimationFrame(settle); else { stageSettleFrame = 0; positionStageRail(index); syncStageCards(); rail.querySelector(`[data-stage="${stageBrowseStage}"]`)?.focus({ preventScroll: true }); restore(); } }; stageSettleFrame = requestAnimationFrame(settle); suppressClick = true; setTimeout(() => { suppressClick = false; }, 0); } else restore(); moved = false; event.stopImmediatePropagation(); };
     document.addEventListener("pointerup", finish, true);
     document.addEventListener("pointercancel", finish, true);
     rail.addEventListener("click", (event) => { if (!suppressClick) return; suppressClick = false; event.preventDefault(); event.stopImmediatePropagation(); }, true);
   }
 
-  function startRun(entry = "stage_select") {
+  async function startRun(entry = "stage_select") {
+    releaseRenderer();
+    const request = rendererRequest;
+    clearInput();
+    state.mode = "loading-3d";
+    nodes.loadingText.textContent = `${t("loading")} 3D`;
+    nodes.loadingPanel.classList.remove("hidden");
+    runToken += 1;
+    let timeout;
+    try {
+      const module = await Promise.race([
+        import(rendererModuleUrl),
+        new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error("3D load timeout")), 12000); }),
+      ]);
+      if (request !== rendererRequest) return;
+      crystal3D = new module.Crystal3D({ onContextLost: showRendererFailure, floorImage: images.arena });
+    } catch (error) {
+      if (request === rendererRequest) showRendererFailure();
+      return;
+    } finally {
+      clearTimeout(timeout);
+      if (request === rendererRequest) nodes.loadingPanel.classList.add("hidden");
+    }
     clearCharmConfirmation();
     setUpgradeModalOpen(false, false);
     runToken += 1;
@@ -1893,6 +2034,7 @@
     if (keys.has("arrowright") || keys.has("d")) dx += 1;
     if (keys.has("arrowup") || keys.has("w")) dy -= 1;
     if (keys.has("arrowdown") || keys.has("s")) dy += 1;
+    if (crystal3D?.landscape) [dx, dy] = [dy, -dx];
     if (dx || dy) {
       const len = Math.hypot(dx, dy) || 1;
       p.x += (dx / len) * moveSpeed * dt;
@@ -2281,6 +2423,9 @@
   function installSmokeHooks() {
     if (!window.location?.search?.includes("smoke=1")) return;
     window.__animalCrystalSurvivorSmoke = {
+      render3D: () => crystal3D?.metrics() || null,
+      project3D: (x, y) => crystal3D?.project(x, y) || null,
+      lose3DContextForTest: () => crystal3D?.renderer.getContext().getExtension("WEBGL_lose_context")?.loseContext(),
       snapshot: () => ({
         mode: state.mode,
         stage: state.stage,
@@ -2602,6 +2747,17 @@
   }
 
   function draw() {
+    if (crystal3D) {
+      if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(crystal3D.canvas, 0, 0);
+      ctx.restore();
+      draw3DAnnotations();
+      displayCtx.drawImage(renderCanvas, 0, 0);
+      return;
+    }
+    if (["running", "upgrade", "loading-3d", "render-error"].includes(state.mode)) return;
     const frameNow = performance.now();
     ensureArenaLayer();
     ctx.save();
@@ -2637,6 +2793,45 @@
     state.floaters.forEach(drawFloater);
     ctx.restore();
     displayCtx.drawImage(renderCanvas, 0, 0);
+  }
+
+  function draw3DAnnotations() {
+    const point = (x, y, elevation = 0) => {
+      const projected = crystal3D.project(x, y, elevation);
+      return { x: projected.x * renderCanvas.width / annotationScale, y: projected.y * renderCanvas.height / annotationScale };
+    };
+    ctx.save();
+    ctx.setTransform(annotationScale, 0, 0, annotationScale, 0, 0);
+    state.enemies.forEach(enemy => {
+      if (!crystal3D.inView(enemy.x, enemy.y)) return;
+      const p = point(enemy.x, enemy.y, enemy.isBoss ? 2.7 : 1.6);
+      const width = enemy.isBoss ? 64 : 28;
+      ctx.fillStyle = "#153438";
+      ctx.fillRect(p.x - width / 2, p.y - 12, width, 9);
+      ctx.fillStyle = enemy.hit > 0 ? "#ffffff" : "#9eedad";
+      ctx.fillRect(p.x - width / 2, p.y - 12, width * Math.max(0, enemy.hp / enemy.maxHp), 9);
+    });
+    state.floaters.forEach(floater => {
+      const p = point(floater.x, floater.y, .5);
+      ctx.globalAlpha = Math.min(1, Math.max(0, floater.life));
+      ctx.font = "bold 14px system-ui";
+      ctx.textAlign = "center";
+      ctx.fillStyle = floater.color || "#ffffff";
+      ctx.fillText(floater.text, p.x, p.y);
+    });
+    ctx.globalAlpha = 1;
+    if (firstKeyCueVisible() || state.nextKeyCueUntil > state.survived) {
+      const p = point(state.player.x, state.player.y);
+      const key = point(state.key.x, state.key.y);
+      const angle = Math.atan2(key.y - p.y, key.x - p.x);
+      ctx.translate(p.x + Math.cos(angle) * 38, p.y + Math.sin(angle) * 38);
+      ctx.rotate(angle);
+      ctx.fillStyle = "#ffe789";
+      ctx.beginPath();
+      ctx.moveTo(12, 0); ctx.lineTo(-6, -6); ctx.lineTo(-3, 0); ctx.lineTo(-6, 6);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
   }
 
   function drawStageHazards(frameNow) {
@@ -2791,6 +2986,7 @@
   function canvasPoint(event) {
     const rect = canvas.getBoundingClientRect();
     const client = event.touches?.[0] || event;
+    if (crystal3D) return crystal3D.pick((client.clientX - rect.left) / rect.width, (client.clientY - rect.top) / rect.height) || { x: state.player.x, y: state.player.y };
     return {
       x: Math.max(0, Math.min(W, state.camera.x + (((client.clientX - rect.left) / rect.width) * W) / CAMERA_ZOOM)),
       y: Math.max(0, Math.min(H, state.camera.y + (((client.clientY - rect.top) / rect.height) * H) / CAMERA_ZOOM)),
@@ -2837,8 +3033,10 @@
     clearInput();
     battleSuspended = true;
     resetFrameClock();
+    releaseRenderer();
   });
   window.addEventListener("pageshow", () => {
+    if (state.mode === "running" && !crystal3D) { showStageSelection(true); return; }
     battleSuspended = false;
     resetFrameClock();
   });
@@ -2912,7 +3110,7 @@
     track("result_action", { action: "next", outcome: "complete", to_stage: Math.min(save.unlockedStage, state.stage + 1) });
     save.selectedStage = Math.min(save.unlockedStage, state.stage + 1);
     persist();
-    showStageSelection(true);
+    startRun("next_stage");
   });
   nodes.resultPanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
@@ -2930,11 +3128,14 @@
     }
   });
   nodes.menuBtn.addEventListener("click", () => {
-    runToken += 1;
-    clearInput();
-    state.mode = "stage";
     playSound("click", 0.1);
-    showStageSelection(true);
+    confirmBattleLeave();
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && state.mode === "running") {
+      event.preventDefault();
+      confirmBattleLeave();
+    }
   });
   nodes.resultMenuBtn.addEventListener("click", () => {
     if (!claimResultAction()) return;

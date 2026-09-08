@@ -145,3 +145,19 @@ select { color:var(--ink); background:#0b1b2d; border:1px solid var(--line); bor
    contract stronger than the shared Guide presentation rules. */
 [hidden] { display:none !important; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Result scrolls inside the remaining Battle rectangle, never its header. */
+.battle-canvas:has(#resultPanel:not([hidden])) {
+  display:flex;
+  flex-direction:column;
+  overflow:clip;
+}
+.battle-canvas:has(#resultPanel:not([hidden])) > .panel-head { flex:0 0 48px; }
+.battle-canvas #resultPanel:not([hidden]) {
+  flex:1 1 auto;
+  min-height:0;
+  width:min(100%,560px);
+  margin:12px auto 0;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}

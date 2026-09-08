@@ -2,7 +2,7 @@
   "use strict";
 
   const GAME_ID = "mahjong-solitaire";
-  const GAME_VERSION = "v9";
+  const GAME_VERSION = "v11";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
@@ -95,7 +95,7 @@
       track("main_return", { from: "result", input_type });
       return;
     }
-    if (!target.matches(".tile") || screen !== "battle") return;
+    if (!target.matches(".tile") || target.getAttribute("aria-disabled") === "true" || screen !== "battle") return;
 
     const selectedBefore = document.querySelector(".tile.selected");
     const selectionPhase = selectedBefore ? "second" : "first";

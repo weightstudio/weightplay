@@ -1933,7 +1933,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel .hint-text {
    logical envelope cannot be reduced to a 32/55 inner column. */
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
   grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 54px 30px minmax(0, 1fr) 34px !important;
+  grid-template-rows: 54px 30px minmax(0, 1fr) 58px !important;
   align-content: stretch !important;
 }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
@@ -1962,8 +1962,15 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
   grid-column: 1 !important;
   grid-row: 1 !important;
-  grid-template-columns: 40px repeat(5, minmax(0, 1fr)) !important;
+  grid-template-columns: 48px repeat(5, minmax(0, 1fr)) !important;
   grid-template-rows: minmax(0, 1fr) !important;
+}
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1;
+  width: 48px;
+  height: 48px;
 }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .xp-row {
   grid-column: 1 !important;
@@ -1973,8 +1980,8 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .xp-row
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-text {
   grid-column: 1 !important;
   grid-row: 4 !important;
-  height: 34px !important;
-  min-height: 34px !important;
+  height: 58px !important;
+  min-height: 58px !important;
   margin: 0 !important;
   overflow: hidden !important;
 }
@@ -1982,5 +1989,68 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
     width: calc(100% + 12px) !important;
     margin-inline: -6px !important;
+  }
+}
+
+.crystal-render-error {
+  box-sizing: border-box;
+  max-width: min(360px, 90%);
+  max-height: 85%;
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid #b5dac4;
+  border-radius: 16px;
+  background: #102e2a;
+  color: #f2ffe9;
+  font: 16px/1.5 system-ui, sans-serif;
+}
+.crystal-render-error::backdrop { background: #061f24bb; }
+body.crystal-playing #gamePanel:has(#resultPanel:not(.hidden)) #menuBtn {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+.crystal-render-error button {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 12px;
+  white-space: normal;
+}
+
+/* Short landscape gives the HUD its own side track so the 3D world keeps
+   useful height. World meshes retain the same uniform projection. */
+@media (max-height: 560px) and (orientation: landscape) {
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+    grid-template-rows: 24px minmax(0, 1fr) 58px !important;
+  }
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
+    grid-column: 1 !important;
+    grid-row: 1 / -1 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 48px repeat(5, minmax(0, 1fr)) !important;
+    height: 100% !important;
+  }
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {
+    /* The shared header owns the detached Back button. Reserve its track. */
+    content: "";
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .xp-row {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+  }
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-text {
+    grid-column: 2 !important;
+    grid-row: 3 !important;
   }
 }

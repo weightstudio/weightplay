@@ -1,0 +1,48 @@
+/* Opt-in deck/table skin; legacy consumers remain untouched. */
+.wp-premium-table { --classic-red: #ac2338; --classic-accent: #aee4c1; --classic-gold: #f5d991; }
+.wp-premium-table .board-shell {
+  background: #064632 url('../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
+  border-color: #b69a59;
+  box-shadow: inset 0 0 0 2px #3d3020, inset 0 0 30px #001c1780, 0 14px 32px #0005;
+}
+.wp-premium-table .board-label { color: #f0dfaf; text-shadow: 0 1px 2px #001a12; }
+.wp-premium-table .classic-pile { border-color: transparent; background: transparent; }
+.wp-premium-table .classic-card.front {
+  background: #fff9ea;
+  border: 1px solid #dbcdb1;
+  border-radius: 6px;
+  box-shadow: 0 2px 0 #c4b99c, 0 5px 8px #001a1660;
+}
+.wp-premium-table .classic-card .rank { position: relative; z-index: 2; font-family: Georgia, 'Times New Roman', serif; }
+.wp-premium-table .classic-card .rank.top { position: absolute; top: 3px; left: 3px; text-align: center; }
+.wp-premium-table .classic-card .rank.bottom { position: absolute; bottom: 3px; right: 3px; text-align: center; }
+.wp-premium-table .classic-card .rank::after { content: attr(data-suit); display: block; font-size: .8em; line-height: .85; }
+.wp-premium-table .classic-card[data-deck-rank] > .suit { visibility: hidden; }
+.wp-premium-table .deck-center { position: absolute; inset: 15% 22%; pointer-events: none; }
+.wp-premium-table .deck-pip { position: absolute; transform: translate(-50%,-50%); font-size: clamp(8px,1.2vw,15px); line-height: 1; }
+.wp-premium-table .deck-pip.inverted { transform: translate(-50%,-50%) rotate(180deg); }
+.wp-premium-table [data-deck-rank='A'] .deck-pip { font-size: clamp(18px,3vw,32px); }
+.wp-premium-table .deck-court { inset: 15% auto auto 19%; width: 62%; aspect-ratio: 2 / 3; background: url('../assets/card-table/royal-courts-v1.webp') 0 center / 300% 100% no-repeat; border-radius: 3px; }
+.wp-premium-table .classic-card.covered { opacity: 1; filter: none; }
+.wp-premium-table [data-deck-rank='Q'] .deck-court { background-position-x: 50%; }
+.wp-premium-table [data-deck-rank='J'] .deck-court { background-position-x: 100%; }
+.wp-premium-table .stock-pile { background: #083e30 url('../assets/klondike-solitaire-card-back.webp') center / contain no-repeat; border: 1px solid #d4be80; }
+.wp-premium-table .stock-back { visibility: hidden; }
+.wp-premium-table .stock-pile b { background: #fff0be; color: #193b2b; box-shadow: 0 1px 5px #0008; }
+.wp-premium-table .waste-pile { border-color: #e8d29a88; }
+.wp-premium-table .battle-actions .mini-btn { background: #072b24ed; border-color: #ddc78480; color: #fff4d7; box-shadow: inset 0 1px 0 #fff2; }
+.wp-premium-table .classic-card.available:hover,
+.wp-premium-table .classic-card.selected { box-shadow: 0 0 0 2px #fff0b0, 0 7px 12px #001a16aa; }
+.wp-premium-table .board-status[data-state='golf-combo'] { text-shadow: 0 0 8px #f5d99188; }
+.wp-premium-table .board-shell:has(.board-status[data-state='golf-combo']) .waste-pile { animation: royal-transfer 440ms ease-out; }
+@keyframes royal-transfer { from { box-shadow: 0 0 0 3px #ffe5a6, 0 0 22px #ffe5a680; } to { box-shadow: none; } }
+body.wp-premium-table[data-wp-game-id='golf-solitaire'] { --golf-card-width: clamp(46px,12vw,86px); }
+body.wp-premium-table[data-wp-game-id='golf-solitaire'] .tableau-area .classic-pile .classic-card { width: min(calc(100% - 2px),var(--classic-card-width)); height: auto; aspect-ratio: 63 / 88; }
+body.wp-premium-table[data-wp-game-id='golf-solitaire'] .tableau-area.variant-golf { --classic-pile-step: clamp(22px,5vh,48px); }
+@media (max-height: 500px) {
+  body.wp-premium-table[data-wp-game-id='golf-solitaire'] .tableau-area.variant-golf { --classic-pile-step: clamp(12px,3vh,16px); }
+  .wp-premium-table .deck-center { inset-block: 12%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-premium-table .classic-card, .wp-premium-table .board-status, .wp-premium-table .waste-pile { animation: none !important; transition: none !important; }
+}
