@@ -2191,12 +2191,10 @@ body[data-game-id="checkers"] #mainScreen .preview-art {
 }
 
 @media (min-width: 700px) and (max-height: 520px) and (orientation: landscape) {
-  body[data-game-id="hangman"] #mainScreen .main-panel,
-  body[data-game-id="checkers"] #mainScreen .main-panel {
+  body[data-game-id="hangman"] #mainScreen .main-panel {
     grid-template-columns: 300px minmax(0, 1fr);
   }
-  body[data-game-id="hangman"] #mainScreen .preview-art,
-  body[data-game-id="checkers"] #mainScreen .preview-art { width: 300px; }
+  body[data-game-id="hangman"] #mainScreen .preview-art { width: 300px; }
 }
 
 body[data-game-id="checkers"][data-screen="battle"] .popular-arcade {

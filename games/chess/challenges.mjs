@@ -17,7 +17,10 @@ export const challenges=[
  {id:14,kind:'backRank',fen:'6k1/r4ppp/8/8/8/8/8/4R2K w - - 0 1',example:['Re8#'],goal:{mate:true}},
  {id:15,kind:'castleQueen',fen:'r3k2r/8/8/8/2b5/8/PPP2PPP/R3K2R w KQkq - 0 1',example:['O-O-O'],goal:{castle:'q'}},
  {id:16,kind:'rookLadder',computer:true,maxMoves:2,fen:'6k1/8/8/8/8/8/1R6/R6K w - - 0 1',example:['Rb7','Kf8','Ra8#'],goal:{mate:true}},
- {id:17,kind:'rookSkewer',computer:true,maxMoves:2,fen:'q3k3/8/8/8/8/8/8/6KR w - - 0 1',example:['Rh8+','Kd7','Rxa8'],goal:{capture:'q',piece:'r'}}
+ {id:17,kind:'rookSkewer',computer:true,maxMoves:2,fen:'q3k3/8/8/8/8/8/8/6KR w - - 0 1',example:['Rh8+','Kd7','Rxa8'],goal:{capture:'q',piece:'r'}},
+ {id:18,kind:'bishopSkewer',computer:true,maxMoves:2,fen:'7q/8/8/4k3/8/B7/8/6K1 w - - 0 1',example:['Bb2+','Kd5','Bxh8'],goal:{capture:'q',piece:'b'}},
+ {id:19,kind:'rookPromotion',fen:'8/k1P5/2K5/8/8/8/8/8 w - - 0 1',example:['c8=R'],goal:{promotion:'r'}},
+ {id:20,kind:'kingSupport',computer:true,maxMoves:2,fen:'7k/1R6/5K2/8/8/8/8/8 w - - 0 1',example:['Kg6','Kg8','Rb8#'],goal:{mate:true}}
 ];
 export function challengePassed(challenge,game,move){
  if(!move||move.color!=='w')return false;const goal=challenge.goal;

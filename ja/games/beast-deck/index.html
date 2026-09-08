@@ -36,7 +36,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/beast-deck/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/beast-deck/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/beast-deck/" />
-    <link rel="stylesheet" href="style.css?v=20260909-beast-deck-readable-v16" />
+    <link rel="stylesheet" href="style.css?v=20260909-beast-deck-result-v17" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -277,6 +277,7 @@
 
         <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRewards resultUnlock" aria-live="polite">
           <div class="result-card">
+            <div class="result-summary">
             <strong id="resultTitle">Mission Complete</strong>
             <div id="resultScore" class="result-score">0</div>
             <small class="result-score-label" data-ui="resultScoreLabel">Mission Progress</small>
@@ -288,6 +289,7 @@
               <span id="resultUnlock"></span>
             </div>
 
+            </div>
             <div class="result-actions">
               <button id="resultMenuBtn" type="button">Stages</button>
               <button id="nextMissionBtn" class="action-btn" type="button">Next Stage</button>
@@ -317,7 +319,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-beast-economy1"></script>
-    <script src="game.js?v=20260909-beast-deck-readable-v16"></script>
+    <script src="game.js?v=20260909-beast-deck-result-v17"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
       (() => {

@@ -35,7 +35,21 @@ const sound=name=>{if(!document.hidden)window.WonderSound?.play(name);};
 function saved(){try{const data=localStorage.getItem(saveKey);return data?ChessSession.restore(JSON.parse(data)):null;}catch{return null;}}
 function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);$('campaignProgress').textContent=`${copy.progress} · ${progress.cleared.length} / ${challenges.length}`;}
 function persist(){if(currentChallenge){$('saved').textContent='';return;}try{localStorage.setItem(saveKey,JSON.stringify(session.serialize()));$('saved').textContent=text('saved');}catch{$('saved').textContent='';}}
-function localize(){for(const button of $('promoteChoices').children)button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[button.dataset.piece]);if($('saved').textContent)$('saved').textContent=text('saved');$('locale').setAttribute('aria-label',boardLocales[locale].language);document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'guide',back:'back',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);$('arena').setAttribute('aria-label',`${text('title')}. ${text('help')}`);document.title=text('title');renderRulesReference($('guide'),locale);updateMain();nextButton.textContent=text('next');$('stageTitle').textContent=text('title');$('stageBack').setAttribute('aria-label',text('back'));$('stageList').setAttribute('aria-label',text('select'));if(!$('stages').hidden)renderStages();if(!$('result').hidden&&outcomeKey){$('outcome').textContent=text(outcomeKey);$('again').textContent=text(currentChallenge?'retry':'start');}if(active)render();}
+function localize(){
+ for(const button of $('promoteChoices').children)button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[button.dataset.piece]);
+ if($('saved').textContent)$('saved').textContent=text('saved');
+ $('locale').setAttribute('aria-label',boardLocales[locale].language);
+ document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
+ for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'guide',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);
+ // Return artwork is permanent. Localization owns its accessible name only.
+ $('back').setAttribute('aria-label',text('back'));$('back').setAttribute('title',text('back'));
+ $('arena').setAttribute('aria-label',`${text('title')}. ${text('help')}`);
+ document.title=text('title');renderRulesReference($('guide'),locale);updateMain();nextButton.textContent=text('next');
+ $('stageTitle').textContent=text('title');$('stageBack').setAttribute('aria-label',text('back'));$('stageList').setAttribute('aria-label',text('select'));
+ if(!$('stages').hidden)renderStages();
+ if(!$('result').hidden&&outcomeKey){$('outcome').textContent=text(outcomeKey);$('again').textContent=text(currentChallenge?'retry':'start');}
+ if(active)render();
+}
 const languageNames={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
 for(const key of Object.keys(chessLocales)){const o=document.createElement('option');o.value=key;o.textContent=languageNames[key];$('locale').append(o);}$('locale').value=locale;$('locale').onchange=()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();window.dispatchEvent(new CustomEvent('wonder:locale-change'));window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));};
 function stop(){epoch++;ai.cancel();busy=false;selected=null;promotion=null;for(const button of $('controls').querySelectorAll('button'))button.disabled=false;if($('promotion').open)$('promotion').close();view?.dispose();view=null;}
@@ -75,7 +89,7 @@ function updateResult(){
  const copy=resultLocales[locale],history=session.game.history({verbose:true}),white=history.filter(m=>m.color==='w');
  $('outcome').textContent=text(outcomeKey);$('result').dataset.outcome=outcomeKey;
  const reason={CHECKMATE:'checkmate',STALEMATE:'stalemate',REPETITION:'repetition',INSUFFICIENT_MATERIAL:'material',FIFTY_MOVES:'fifty'}[session.status().reason];
- $('resultReason').textContent=currentChallenge?`${currentChallenge.id}. ${text(currentChallenge.kind)}`:copy[reason]||'';
+ $('resultReason').textContent=currentChallenge?[`${currentChallenge.id}. ${text(currentChallenge.kind)}`,copy[reason]].filter(Boolean).join(' · '):copy[reason]||'';
  $('resultBoard').alt=copy.position;$('resultStats').replaceChildren();
  for(const [label,value] of [[copy.moves,white.length],[copy.captures,white.filter(m=>m.captured).length],[copy.lastMove,history.at(-1)?.san||'—']]){
   const cell=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=String(value);cell.append(dt,dd);$('resultStats').append(cell);

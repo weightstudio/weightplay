@@ -14,6 +14,11 @@ body:has(#battle:not([hidden]))>header{visibility:hidden}
 }
 
 #keyboard{position:absolute;inset:auto 8px 5px;width:auto;height:auto;max-height:3em;padding:4px 8px;clip-path:none;background:#071c23e8;border-radius:8px;font-size:12px;line-height:1.4;overflow:auto;pointer-events:none}
+/* Permanent physical top-left Battle return; text length/RTL cannot move it. */
+#battle #back{position:absolute;left:12px;top:8px;z-index:4;display:grid;place-items:center;width:48px;min-width:48px;height:48px;min-height:48px;padding:0;background:#f8fafc;color:#176a9d;border:1px solid #ffffff29;border-radius:14px;font-size:26px;font-weight:800;line-height:1;direction:ltr}
+#battle #back>span{color:inherit;pointer-events:none}
+#battle nav{height:64px;min-height:64px;padding-inline:72px}
+@media(orientation:landscape) and (max-height:500px){#battle nav{height:auto;min-height:0;padding:8px}}
 #stageList .stage-card{position:relative;display:flex;flex-direction:column;align-items:stretch;flex-basis:236px;padding:0;overflow:hidden;text-align:start;background:linear-gradient(145deg,#21464a,#0b252e);border:1px solid #967747;box-shadow:0 8px 20px #0005;min-height:330px}
 #stageList .stage-card img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#081c24}
 .stage-number{position:absolute;inset:8px auto auto 8px;display:grid;place-items:center;min-width:30px;min-height:30px;border-radius:50%;background:#102c32e8;border:1px solid #d8bb78;color:#ffe9b5;font-size:15px}

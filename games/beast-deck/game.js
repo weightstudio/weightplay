@@ -10,7 +10,7 @@
   resultDialog?.setAttribute("aria-describedby", "resultText resultRewards resultUnlock");
 
   const GAME_ID = "beast-deck";
-  document.body.dataset.gameVersion = 'v16';
+  document.body.dataset.gameVersion = 'v17';
   const saveKey = "weightplay_beast_deck_v1";
   const localeKey = "weightPlayLocale";
   const storageSession = new Map();

@@ -30,3 +30,24 @@ const combinations={
  ar:['سُلّم الرخين: كش مات خلال دورين','سيخ الرخ: اربح الوزير خلال دورين']
 };
 for(const [locale,[rookLadder,rookSkewer]] of Object.entries(combinations))Object.assign(campaignLocales[locale],{rookLadder,rookSkewer});
+
+const endgames={
+ en:['Bishop skewer: win the queen within 2 turns','Avoid stalemate: promote to a rook, not a queen','King support: close the escape route and mate within 2 turns'],
+ 'zh-Hant':['主教串擊：兩回合內贏得皇后','避免逼和：升變城堡，不要升變皇后','國王助攻：封住退路，兩回合內將死'],
+ 'zh-Hans':['象串击：两回合内赢得后','避免逼和：升变车，不要升变后','王的助攻：封住退路，两回合内将死'],
+ ja:['ビショップの串刺し：２手以内にクイーンを取る','ステイルメイトを避け、クイーンではなくルークへ昇格','キングの支援：逃げ道を塞ぎ、２手以内にチェックメイト'],
+ ko:['비숍 스큐어: 2턴 안에 퀸 잡기','스테일메이트 방지: 퀸 대신 룩으로 승격','킹의 지원: 탈출로를 막고 2턴 안에 체크메이트'],
+ es:['Enfilada de alfil: gana la dama en 2 turnos','Evita el ahogado: promociona a torre, no a dama','Apoyo del rey: cierra la salida y da mate en 2 turnos'],
+ 'pt-BR':['Espeto de bispo: ganhe a dama em 2 turnos','Evite o afogamento: promova a torre, não a dama','Apoio do rei: feche a saída e dê mate em 2 turnos'],
+ fr:['Enfilade de fou : gagnez la dame en 2 tours','Évitez le pat : promouvez en tour, pas en dame','Soutien du roi : fermez la fuite et faites mat en 2 tours'],
+ de:['Läuferspieß: Gewinne die Dame in 2 Zügen','Vermeide Patt: Wandle in einen Turm statt in eine Dame um','Königsunterstützung: Sperre den Fluchtweg und setze in 2 Zügen matt'],
+ it:['Infilata di alfiere: vinci la donna entro 2 turni','Evita lo stallo: promuovi a torre, non a donna','Sostegno del re: chiudi la fuga e dai matto entro 2 turni'],
+ ru:['Сквозной удар слона: выиграйте ферзя за 2 хода','Избегите пата: превратите пешку в ладью, а не в ферзя','Поддержка короля: перекройте отход и поставьте мат за 2 хода'],
+ hi:['ऊँट का आर-पार हमला: 2 चालों में वज़ीर जीतें','गतिरोध से बचें: वज़ीर के बजाय हाथी में बदलें','राजा का सहयोग: भागने का रास्ता रोककर 2 चालों में मात दें'],
+ ar:['سيخ الفيل: اربح الوزير خلال دورين','تجنب التعادل بالخنق: رقّ إلى رخ لا وزير','دعم الملك: أغلق طريق الهرب وحقق المات خلال دورين']
+};
+for(const [locale,row] of Object.entries(endgames)){
+ if(row.length!==3||row.some(value=>!value))throw Error('Incomplete endgame locale: '+locale);
+ const [bishopSkewer,rookPromotion,kingSupport]=row;
+ Object.assign(campaignLocales[locale],{bishopSkewer,rookPromotion,kingSupport});
+}

@@ -53,7 +53,7 @@ body.beast-deck-playing .enemy-container .beast-avatar::before {
  }
  body.wp-logical-battle-active.beast-deck-playing #gamePanel .battlefield {
   grid-column:1 !important;grid-row:2 !important;
-  grid-template-rows:minmax(0,1fr) 48px 20px !important;padding:4px !important;gap:5px !important;
+  grid-template-rows:minmax(0,1fr) 48px 44px !important;padding:4px !important;gap:5px !important;
  }
  body.beast-deck-playing #gamePanel .enemy-container {
   grid-template-columns:minmax(70px,1fr) minmax(0,1fr);gap:4px;
@@ -64,6 +64,10 @@ body.beast-deck-playing .enemy-container .beast-avatar::before {
  body.beast-deck-playing #gamePanel .status-badge {font-size:13px;}
  body.beast-deck-playing #gamePanel .battle-log {height:48px;min-height:48px;max-height:48px;font-size:12px;line-height:1.35;}
  body.beast-deck-playing #gamePanel .hp-text {font-size:12px;}
+ body.beast-deck-playing #gamePanel .player-container {display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:20px 18px;gap:3px;}
+ body.beast-deck-playing #gamePanel #playerStatusRow {grid-column:1;grid-row:1;min-height:0;}
+ body.beast-deck-playing #gamePanel .player-hp {grid-column:1/-1;grid-row:2;width:100%;height:18px;min-height:18px;}
+ body.beast-deck-playing #gamePanel .shield-display {position:static;grid-column:2;grid-row:1;white-space:nowrap;font-size:12px;}
  body.wp-logical-battle-active.beast-deck-playing #gamePanel .action-area {
   grid-column:2 !important;grid-row:2 !important;display:grid;
   grid-template-rows:minmax(0,1fr) 44px !important;
@@ -86,4 +90,36 @@ body.beast-deck-playing .enemy-container .beast-avatar::before {
  body.beast-deck-playing #gamePanel .hand-row .card-cost {font-size:14px;width:24px;height:24px;}
  body.beast-deck-playing #gamePanel .control-row {min-height:0;}
  body.beast-deck-playing #gamePanel .control-row .action-btn {min-height:44px;font-size:16px;padding:6px 16px;}
+}
+
+/* Settlement keeps recovery actions outside the scrollable reward summary. */
+body.beast-deck-playing #gamePanel #resultPanel {padding:12px;align-items:center;overflow:hidden;}
+body.beast-deck-playing #resultPanel .result-card {
+ display:grid;grid-template-rows:minmax(0,1fr) 52px;gap:12px;
+ height:min(calc(var(--wp-battle-logical-height,780px) - 24px),560px);max-height:100%;max-width:800px;padding:16px;
+ border-color:#a8ccb344;background:radial-gradient(ellipse at 50% 0,#25484188,transparent 70%),#0e1c2a;
+ box-shadow:inset 0 0 0 3px #071420,0 12px 32px #0008;
+}
+body.beast-deck-playing #resultPanel .result-summary {
+ display:flex;flex-direction:column;gap:12px;min-height:0;overflow-y:auto;
+ padding:4px;overscroll-behavior:contain;
+}
+body.beast-deck-playing #resultPanel .result-summary>* {flex-shrink:0;}
+body.beast-deck-playing #resultPanel .result-progress {text-align:start;}
+body.beast-deck-playing #resultPanel .result-actions {margin:0;height:52px;}
+body.beast-deck-playing #resultPanel .result-actions button {
+ height:52px;min-height:52px;padding:8px;font-size:16px;white-space:normal;
+ transform:none;transition:background-color .15s,box-shadow .15s;
+}
+@media (orientation:landscape) and (max-height:560px) {
+ body.beast-deck-playing #resultPanel .result-card {padding:12px;gap:8px;}
+ body.beast-deck-playing #resultPanel .result-summary {
+  display:grid;grid-template-columns:150px minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);
+  gap:8px 20px;align-content:start;
+ }
+ body.beast-deck-playing #resultPanel #resultTitle {grid-column:2;grid-row:1;font-size:22px;line-height:1.2;}
+ body.beast-deck-playing #resultPanel .result-score {grid-column:1;grid-row:1/3;align-self:center;font-size:48px;}
+ body.beast-deck-playing #resultPanel .result-score-label {grid-column:1;grid-row:3;align-self:start;font-size:12px;}
+ body.beast-deck-playing #resultPanel #resultText {grid-column:2;grid-row:2;font-size:14px;line-height:1.4;margin:0;}
+ body.beast-deck-playing #resultPanel .result-progress {grid-column:2;grid-row:3;font-size:13px;line-height:1.4;padding:10px;gap:4px;align-self:start;}
 }
