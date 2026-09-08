@@ -206,6 +206,10 @@
     $("battleInfoBtn").addEventListener("click", () => window.alert(copy("moveHint")));
   };
   const boot = () => {
+    // Keep persistent actions outside the independently scrolling field.
+    const canvas = document.querySelector("#battleScreen .battle-canvas");
+    const actions = canvas.querySelector(".battle-actions");
+    canvas.append(actions);
     const routeLocale = String(window.__WEIGHTPLAY_ROUTE_LOCALE__ || "").trim();
     const savedLocale = localeList.includes(routeLocale) ? routeLocale : safeGet("weightplay-locale", "en");
     const savedSound = safeGet("weightplay-animal-folded-field-sound", "on");

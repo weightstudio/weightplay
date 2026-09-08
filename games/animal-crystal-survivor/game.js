@@ -9,11 +9,14 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-3d-polish-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
   let annotationScale = 1;
+  let upgradeRevealTimer = null;
+  let upgradeReady = false;
+  let upgradePointerChoice = null;
   const rendererFailureText = {
     en: "The 3D scene could not continue. Retry this stage or return to Stages. Saved campaign progress is safe.",
     "zh-Hant": "3D 場景無法繼續。請重試本關或返回關卡；已儲存的關卡進度不會遺失。",
@@ -2235,8 +2238,21 @@
     state.xpNeed = Math.ceil(state.xpNeed * 1.28 + 2);
     state.level += 1;
     state.mode = "upgrade";
+    clearInput();
+    upgradeReady = false;
+    upgradePointerChoice = null;
     renderUpgradeCards();
     setUpgradeModalOpen(true);
+    nodes.upgradePanel.classList.add("crystal-upgrade-reveal");
+    nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = true; });
+    upgradeRevealTimer = setTimeout(() => {
+      upgradeRevealTimer = null;
+      if (state.mode !== "upgrade") return;
+      upgradeReady = true;
+      nodes.upgradePanel.classList.remove("crystal-upgrade-reveal");
+      nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = false; });
+      nodes.upgradeCards.querySelector("button")?.focus({ preventScroll: true });
+    }, 1100);
     playSound("upgrade", 0.2);
     track("upgrade_open", { level: state.level, option_count: 3 });
     track("game_level_up", { level: state.level, prototype: true });
@@ -2257,6 +2273,13 @@
   }
 
   function setUpgradeModalOpen(open, restoreFocus = true) {
+    if (!open) {
+      clearTimeout(upgradeRevealTimer);
+      upgradeRevealTimer = null;
+      upgradeReady = false;
+      upgradePointerChoice = null;
+      nodes.upgradePanel.classList.remove("crystal-upgrade-reveal");
+    }
     nodes.upgradePanel.classList[open ? "remove" : "add"]("hidden");
     nodes.gamePanel.inert = open;
     if (open) {
@@ -2748,6 +2771,9 @@
 
   function draw() {
     if (crystal3D) {
+      // The shared shell can finish its transform after the window resize.
+      // Measure the displayed arena; allocate only when its pixel size changes.
+      syncCanvasBackingStore();
       if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
       ctx.save();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -3148,8 +3174,16 @@
   });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const card = event.target.closest("[data-upgrade]");
-    if (card) applyUpgrade(card.dataset.upgrade);
+    if (!card || !upgradeReady || card.disabled) return;
+    if (event.detail > 0 && upgradePointerChoice !== card.dataset.upgrade) return;
+    upgradePointerChoice = null;
+    applyUpgrade(card.dataset.upgrade);
   });
+  nodes.upgradeCards.addEventListener("pointerdown", event => {
+    const card = event.target.closest("[data-upgrade]");
+    upgradePointerChoice = upgradeReady && card && !card.disabled ? card.dataset.upgrade : null;
+  });
+  nodes.upgradeCards.addEventListener("pointercancel", () => { upgradePointerChoice = null; });
   nodes.upgradePanel.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();

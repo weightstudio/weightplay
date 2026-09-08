@@ -1,0 +1,32 @@
+/* Yukon-specific backs and destination feedback; native layout/hit proxies stay intact. */
+.wp-premium-table .classic-card.back {
+  background: #092e33 url('../../assets/klondike-solitaire-card-back.webp') center / cover no-repeat;
+  border: 1px solid #d5bd77;
+  box-shadow: 0 2px 4px #00181280;
+}
+.wp-premium-table .back-mark { visibility: hidden; }
+.wp-premium-table .foundation-slot {
+  border-color: #d3be8170;
+  background: #002e2480;
+  box-shadow: inset 0 0 16px #001d2160;
+}
+.wp-premium-table .classic-pile.valid-target {
+  border: 2px solid #f8df8c;
+  box-shadow: 0 0 12px #edda8750;
+}
+.wp-premium-table .board-status[data-state='yukon-reveal'] { color: #fff0b6; }
+@media (orientation: landscape) and (max-height: 560px) {
+  body.wp-premium-table .board-shell {
+    display: grid;
+    grid-template-columns: 76px minmax(0,1fr);
+    grid-template-rows: minmax(0,1fr) auto auto;
+    gap: 4px 8px;
+  }
+  body.wp-premium-table .board-top { grid-column: 1; grid-row: 1; display: block; }
+  body.wp-premium-table #foundationArea { grid-template-columns: 1fr; gap: 3px; }
+  body.wp-premium-table #foundationArea .classic-slot { min-height: 40px; }
+  body.wp-premium-table #tableauArea { grid-column: 2; grid-row: 1; min-height: 0; }
+  body.wp-premium-table[data-wp-game-id='yukon-solitaire'] .tableau-area.variant-yukon { --classic-pile-step: 15px; }
+  body.wp-premium-table .board-status { grid-column: 1 / -1; grid-row: 2; }
+  body.wp-premium-table .battle-actions { grid-column: 1 / -1; grid-row: 3; }
+}

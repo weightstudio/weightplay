@@ -440,3 +440,21 @@ body[data-screen="main"] #gameGuide { display: block; }
   #battleScreen .battle-actions button { min-height: 40px; height: 40px; padding: 8px 12px; font-size: 13px; }
   #battleScreen .move-hint { display: none; }
 }
+
+/* Stable footer: content may scroll, but primary controls never do. */
+#battleScreen .battle-canvas {
+  display:grid;
+  grid-template-rows:48px minmax(0,1fr) 52px;
+  row-gap:8px;
+}
+#battleScreen .battle-canvas > .battle-actions {
+  grid-column:1;
+  grid-row:3;
+  margin:0;
+  align-items:stretch;
+  flex-wrap:nowrap;
+}
+#battleScreen .battle-canvas > .battle-actions button {
+  height:52px;
+  min-height:52px;
+}

@@ -845,6 +845,11 @@
     node.setAttribute("role", "img");
     node.setAttribute("aria-label", card.faceUp ? t("card_face", { rank: card.rankLabel, suit: suitLabel(card.suit) }) : t("card_face_down"));
     node.innerHTML = card.faceUp ? `<span class="rank-top" aria-hidden="true">${card.rankLabel}</span><span class="suit" aria-hidden="true">${SUIT_SYMBOLS[card.suit]}</span><span class="rank-bottom" aria-hidden="true">${card.rankLabel}</span>` : `<span class="card-back-pattern" aria-hidden="true"></span>`;
+    if (card.faceUp) {
+      window.WPCardTablePresentation?.decorateCard(node, card.rankLabel, SUIT_SYMBOLS[card.suit], '.rank-top, .rank-bottom');
+    } else {
+      delete node.dataset.deckRank;
+    }
     node.style.top = `calc(${row} * var(--spider-step))`;
     node.style.zIndex = String(row + 1);
     node.onpointerdown = card.faceUp ? beginDrag : null;

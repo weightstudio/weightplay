@@ -267,7 +267,12 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
     padding-top: .35rem;
   }
   .foundation-row { margin-bottom: .2rem; }
-  .stock-row { min-height: calc(var(--card-height) * .72); margin-bottom: .2rem; }
+  /* These are HUD tracks, not playing cards. Card-dependent track heights
+     feed back into fitTableau's available-height calculation and can clip
+     the opening six-card pile after the shared Canvas scale settles. */
+  .foundation-slot { min-height: 18px; height: 18px; }
+  .stock-row { min-height: 36px; margin-bottom: .2rem; }
+  .pile.stock { min-height: 36px; height: 36px; }
   .tableau-row { gap: .15rem; }
   .card .rank-top, .card .rank-bottom { font-size: clamp(.46rem, 1.1vw, .72rem); }
   .card .suit { font-size: clamp(.64rem, 1.7vw, 1rem); }

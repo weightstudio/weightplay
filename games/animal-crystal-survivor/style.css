@@ -2005,6 +2005,63 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
   font: 16px/1.5 system-ui, sans-serif;
 }
 .crystal-render-error::backdrop { background: #061f24bb; }
+
+/* Crystal Grove: carved dark jade, warm brass and luminous crystal inlays. */
+#menuPanel, #stagePanel, #gamePanel, .result-card, .upgrade-box, .settings-popover {
+  color: #fff1cd;
+  background-color: #112e2c;
+}
+.hud-row > div, .stage-card, .upgrade-card, .result-card, .crystal-render-error {
+  border-color: #a88e53 !important;
+  background-image: linear-gradient(145deg, #254b45, #102b2b 72%) !important;
+  box-shadow: inset 0 1px 0 #f3d69255, inset 0 0 0 3px #071e2144, 0 5px 16px #03151866;
+}
+.hud-row > div { border-radius: 9px; }
+.hud-row b, .hud-row strong, #upgradeTitle, .result-card h2 {
+  color: #ffe3a0;
+  text-shadow: 0 2px 2px #081a20;
+}
+#startBtn, #retryBtn, #nextStageBtn, #resultMenuBtn, .stage-tab.is-active {
+  border: 1px solid #ebce85;
+  background: linear-gradient(#eed79b, #bc8f48) !important;
+  color: #1c302d !important;
+  box-shadow: inset 0 2px 0 #fff0bd, 0 3px 0 #634d2e, 0 6px 14px #061c2355;
+}
+.xp-row { color: #bcf6ea; }
+#xpFill { background: linear-gradient(90deg, #46afa4, #adfff0); box-shadow: 0 0 10px #73fff099; }
+#hintText { background: #122f2e; border-top: 1px solid #ba9d6055; }
+.upgrade-panel { background: #041819cf !important; backdrop-filter: blur(5px); }
+.upgrade-card { border-radius: 16px; transition: transform .2s, border-color .2s, opacity .3s; }
+.upgrade-card:focus-visible, .upgrade-card:hover:not(:disabled) {
+  border-color: #ffe1a2 !important;
+  outline: 2px solid #96eedd;
+  outline-offset: 3px;
+}
+.upgrade-icon { filter: drop-shadow(0 5px 8px #061e21); }
+.crystal-upgrade-reveal #upgradeCards { pointer-events: none; }
+.crystal-upgrade-reveal .upgrade-card { visibility: hidden; opacity: 0; transform: translateY(24px) scale(.92); }
+#upgradeTitle { position: relative; }
+.crystal-upgrade-reveal #upgradeTitle::after {
+  content: "✦";
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 12px auto;
+  color: #cefff1;
+  font-size: 72px;
+  line-height: 80px;
+  text-shadow: 0 0 15px #75f7cb, 0 0 35px #dfb76c;
+  animation: crystal-awaken 1.1s ease-out both;
+}
+@keyframes crystal-awaken {
+  0% { opacity: 0; transform: scale(.3) rotate(-30deg); }
+  40% { opacity: 1; transform: scale(1.15) rotate(0); }
+  100% { opacity: .9; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crystal-upgrade-reveal #upgradeTitle::after { animation: none; }
+  .upgrade-card { transition: none; }
+}
 body.crystal-playing #gamePanel:has(#resultPanel:not(.hidden)) #menuBtn {
   visibility: hidden !important;
   pointer-events: none !important;

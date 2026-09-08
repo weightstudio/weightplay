@@ -60,6 +60,17 @@
   }
 
   const topbar = document.querySelector("#battleScreen .card-game-topbar");
+  // Localized static routes may still contain a translated back label. Establish
+  // the same single shared arrow node before shell or runtime localization runs.
+  const battleReturn = document.querySelector("#battleBackBtn");
+  if (battleReturn) {
+    const arrow = document.createElement("span");
+    arrow.className = "wp-shell-return-arrow";
+    arrow.textContent = "←";
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.setAttribute("data-runtime-localize", "off");
+    battleReturn.replaceChildren(arrow);
+  }
   if (topbar && !topbar.querySelector("[data-wp-battle-utility]")) {
     const utility = document.createElement("button");
     utility.id = "battleUtilityBtn";
@@ -95,7 +106,70 @@
     }, true);
     new MutationObserver(makeHandReadOnly).observe(hand, { childList: true });
   }
-  window.WPCardGamesNext?.mount({ id: "old-maid" });
+  const leaveCopy = {
+    en: ["Leave this round?", "This round's cards and pairs will be discarded. Saved win/loss totals stay unchanged.", "Continue playing", "Return to Main"],
+    "zh-Hant": ["離開這局？", "本局手牌與配對進度將捨棄，已儲存的勝負紀錄不變。", "繼續遊戲", "返回主畫面"],
+    "zh-Hans": ["离开这局？", "本局手牌与配对进度将舍弃，已保存的胜负记录不变。", "继续游戏", "返回主画面"],
+    ja: ["この対局を終了しますか？", "今回の手札とペアの進行状況は失われます。保存済みの勝敗記録は変わりません。", "対局を続ける", "メインに戻る"],
+    ko: ["이번 판을 나갈까요?", "이번 판의 손패와 짝 맞추기 진행은 사라집니다. 저장된 승패 기록은 유지됩니다.", "계속 플레이", "메인으로 돌아가기"],
+    es: ["¿Salir de esta ronda?", "Se descartarán las cartas y parejas de esta ronda. El historial guardado de victorias y derrotas no cambiará.", "Seguir jugando", "Volver al inicio"],
+    "pt-BR": ["Sair desta rodada?", "As cartas e os pares desta rodada serão descartados. O histórico salvo de vitórias e derrotas não mudará.", "Continuar jogando", "Voltar ao início"],
+    fr: ["Quitter cette manche ?", "Les cartes et les paires de cette manche seront perdues. Le bilan enregistré des victoires et défaites restera inchangé.", "Continuer à jouer", "Revenir à l’accueil"],
+    de: ["Diese Runde verlassen?", "Die Karten und Paare dieser Runde gehen verloren. Gespeicherte Siege und Niederlagen bleiben unverändert.", "Weiterspielen", "Zur Startseite"],
+    it: ["Uscire da questa mano?", "Le carte e le coppie di questa mano andranno perse. Le vittorie e le sconfitte salvate resteranno invariate.", "Continua a giocare", "Torna all’inizio"],
+    ru: ["Выйти из раунда?", "Карты и пары текущего раунда будут потеряны. Сохранённые победы и поражения не изменятся.", "Продолжить игру", "На главный экран"],
+    hi: ["इस राउंड से बाहर जाएँ?", "इस राउंड के पत्ते और जोड़े हटा दिए जाएँगे। सहेजे गए जीत और हार के रिकॉर्ड नहीं बदलेंगे।", "खेलते रहें", "मुख्य स्क्रीन पर लौटें"],
+    ar: ["مغادرة هذه الجولة؟", "ستُحذف بطاقات هذه الجولة وأزواجها. سيبقى سجل الفوز والخسارة المحفوظ دون تغيير.", "متابعة اللعب", "العودة إلى الرئيسية"],
+  };
+  const canvas = document.querySelector("#battleScreen .battle-canvas");
+  const table = canvas.querySelector(".card-table-ui");
+  const panel = document.createElement("section");
+  panel.id = "oldMaidLeavePanel";
+  panel.hidden = true;
+  panel.setAttribute("role", "dialog");
+  panel.setAttribute("aria-modal", "true");
+  panel.setAttribute("aria-labelledby", "oldMaidLeaveTitle");
+  panel.setAttribute("aria-describedby", "oldMaidLeaveMessage");
+  panel.setAttribute("data-runtime-localize", "off");
+  panel.innerHTML = '<h2 id="oldMaidLeaveTitle"></h2><p id="oldMaidLeaveMessage"></p><div><button id="oldMaidContinue" class="primary-btn" type="button"></button><button id="oldMaidLeave" class="secondary-btn" type="button"></button></div>';
+  canvas.append(panel);
+  const continueButton = panel.querySelector("#oldMaidContinue");
+  const leaveButton = panel.querySelector("#oldMaidLeave");
+  let pendingReturn = null;
+  const settleReturn = (leave) => {
+    if (!pendingReturn) return;
+    const pending = pendingReturn;
+    pendingReturn = null;
+    panel.hidden = true;
+    table.inert = false;
+    if (leave) pending.leave();
+    else {
+      pending.resume();
+      document.querySelector("#battleBackBtn").focus({ preventScroll: true });
+    }
+  };
+  continueButton.addEventListener("click", () => settleReturn(false));
+  leaveButton.addEventListener("click", () => settleReturn(true));
+  panel.addEventListener("keydown", (event) => {
+    if (event.repeat && ["Enter", " "].includes(event.key)) event.preventDefault();
+    if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); settleReturn(false); }
+    if (event.key === "Tab") {
+      event.preventDefault();
+      (document.activeElement === continueButton ? leaveButton : continueButton).focus({ preventScroll: true });
+    }
+  });
+  window.WPCardGamesNext?.mount({ id: "old-maid", requestReturn(callbacks) {
+    if (pendingReturn) return;
+    pendingReturn = callbacks;
+    const copy = leaveCopy[document.documentElement.lang] || leaveCopy.en;
+    panel.querySelector("h2").textContent = copy[0];
+    panel.querySelector("p").textContent = copy[1];
+    continueButton.textContent = copy[2];
+    leaveButton.textContent = copy[3];
+    table.inert = true;
+    panel.hidden = false;
+    continueButton.focus({ preventScroll: true });
+  } });
   makeHandReadOnly();
   syncHandLabel();
   window.setTimeout(syncHandLabel, 0);

@@ -6,6 +6,44 @@
 }
 
 /* Blind-draw inputs remain touch-sized even in the compact shared card layout. */
+#oldMaidLeavePanel:not([hidden]) {
+  position: absolute;
+  z-index: 30;
+  inset: 8px;
+  box-sizing: border-box;
+  padding: 20px;
+  overflow-y: auto;
+  color: #f8fafc;
+  background: #0b2929;
+  border: 1px solid #8aa7a5;
+  border-radius: 16px;
+}
+#oldMaidLeavePanel h2 { margin: 0 0 12px; }
+#oldMaidLeavePanel p { line-height: 1.5; }
+#oldMaidLeavePanel > div { display: grid; gap: 12px; }
+#oldMaidLeavePanel button,
+body[data-wp-card-game="old-maid"] .result-actions button {
+  min-height: 52px;
+  width: 100%;
+  white-space: normal;
+  border: 1px solid var(--wp-ui-border, rgba(255,255,255,.16));
+  border-radius: 14px;
+  background: var(--wp-ui-control, #f8fafc);
+  color: var(--wp-ui-control-text, #176a9d);
+  font: 800 16px/1.25 system-ui, sans-serif;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+#oldMaidLeavePanel .primary-btn,
+body[data-wp-card-game="old-maid"] .result-actions .primary-btn {
+  background: var(--wp-ui-primary, #f5c84c);
+  color: var(--wp-ui-primary-text, #1f2937);
+}
+#oldMaidLeavePanel button:focus-visible,
+body[data-wp-card-game="old-maid"] .result-actions button:focus-visible {
+  outline: 3px solid #63e6be;
+  outline-offset: 2px;
+}
 body[data-wp-card-game="old-maid"] #cardGameCenter .playing-card.is-face-down {
   min-width: 44px;
   min-height: 44px;

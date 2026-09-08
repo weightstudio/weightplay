@@ -9,7 +9,8 @@
       mainReturn.append(logo);
     }
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
-    window.WPClassicSolitaire?.mount({ variant: "yukon", id: "yukon-solitaire" });
+    const view = window.WPClassicSolitaire?.mount({ variant: "yukon", id: "yukon-solitaire" });
+    window.WPCardTablePresentation?.install(view);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });
   else mount();

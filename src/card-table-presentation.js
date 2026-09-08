@@ -11,13 +11,12 @@
     9: [[24,12],[76,12],[24,37],[76,37],[50,50],[24,63],[76,63],[24,88],[76,88]],
     10: [[24,12],[76,12],[50,26],[24,37],[76,37],[24,63],[76,63],[50,74],[24,88],[76,88]],
   };
-  function decorate(root) {
-    root.querySelectorAll('.classic-card.front:not([data-deck-rank])').forEach(card => {
-      const rank = card.querySelector('.rank.top')?.textContent.trim();
-      const suit = card.querySelector('.suit')?.textContent.trim();
-      if (!rank || !['♠','♥','♣','♦'].includes(suit)) return;
+  function decorateCard(card, rank, suit, cornerSelector = '.rank') {
+      if (!card || !rank || !['♠','♥','♣','♦'].includes(suit)) return;
+      // Pooled renderers may replace children while retaining the element.
+      card.querySelectorAll(':scope > .deck-center').forEach(node => node.remove());
       card.dataset.deckRank = rank;
-      card.querySelectorAll('.rank').forEach(corner => {
+      card.querySelectorAll(cornerSelector).forEach(corner => {
         corner.setAttribute('aria-hidden', 'true');
         corner.dataset.suit = suit;
       });
@@ -37,9 +36,15 @@
         }
       }
       card.append(center);
+  }
+  function decorate(root) {
+    root.querySelectorAll('.classic-card.front:not([data-deck-rank])').forEach(card => {
+      decorateCard(card, card.querySelector('.rank.top')?.textContent.trim(),
+        card.querySelector('.suit')?.textContent.trim());
     });
   }
   window.WPCardTablePresentation = Object.freeze({
+    decorateCard,
     install(view) {
       if (!view || view.premiumTableInstalled) return;
       const root = document.getElementById('classicBoard');

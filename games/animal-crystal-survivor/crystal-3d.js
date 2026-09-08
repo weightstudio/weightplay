@@ -26,10 +26,12 @@ export class Crystal3D {
       this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: false });
       this.renderer.setPixelRatio(1);
       this.renderer.localClippingEnabled = true;
-      this.viewPlanes = [new THREE.Plane(new THREE.Vector3(1, 0, 0)), new THREE.Plane(new THREE.Vector3(-1, 0, 0)), new THREE.Plane(new THREE.Vector3(0, 0, 1)), new THREE.Plane(new THREE.Vector3(0, 0, -1))];
+      // The camera's actual viewport is the visibility boundary. Never cut
+      // approaching enemies at an invisible rectangle inside that viewport.
+      this.viewPlanes = [];
       this.renderer.outputColorSpace = THREE.SRGBColorSpace;
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.18;
+      this.renderer.toneMappingExposure = .95;
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color('#153f41');
       this.camera = new THREE.OrthographicCamera(-VIEW_W / 2, VIEW_W / 2, VIEW_H / 2, -VIEW_H / 2, .1, 100);
@@ -37,8 +39,8 @@ export class Crystal3D {
       this.groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       this.vector = new THREE.Vector3();
       this.pointer = new THREE.Vector2();
-      this.scene.add(new THREE.HemisphereLight(0xd4ffff, 0x193930, 2.3));
-      const sun = new THREE.DirectionalLight(0xffdfac, 3.1);
+      this.scene.add(new THREE.HemisphereLight(0xd4ffff, 0x193930, 1.7));
+      const sun = new THREE.DirectionalLight(0xffdfac, 2.2);
       sun.position.set(-8, 18, 12);
       this.scene.add(sun);
       const rim = new THREE.DirectionalLight(0x64dbff, 1.5);
@@ -54,6 +56,7 @@ export class Crystal3D {
         disc: this.own(new THREE.CircleGeometry(1, 40)),
         plane: this.own(new THREE.PlaneGeometry(1, 1)),
         fineRing: this.own(new THREE.TorusGeometry(1, .008, 4, 64)),
+        outsideZone: this.own(new THREE.RingGeometry(1, 50, 64)),
       };
       this.mat = {};
       const colors = { fur: 0xdb8527, cream: 0xffe2a0, mane: 0xa64a1a,
@@ -75,21 +78,27 @@ export class Crystal3D {
       if (floorImage?.complete && floorImage.naturalWidth) {
         const floorTexture = this.own(new THREE.Texture(floorImage));
         floorTexture.colorSpace = THREE.SRGBColorSpace;
-        floorTexture.repeat.x = WIDTH / HEIGHT;
-        floorTexture.offset.x = (1 - WIDTH / HEIGHT) / 2;
+        // Reuse only the painted meadow surface. Scenery is authored in 3D,
+        // rather than projecting illustrated trees sideways onto the ground.
+        floorTexture.repeat.set(.36, .48);
+        floorTexture.offset.set(.32, .27);
         floorTexture.needsUpdate = true;
         const floorMaterial = this.own(new THREE.MeshBasicMaterial({ map: floorTexture }));
-        const floor = this.mesh('plane', floorMaterial, this.scene, WIDTH / UNIT / 2, -.015, HEIGHT / UNIT / 2, WIDTH / UNIT, HEIGHT / UNIT, 1);
+        const floor = this.mesh('plane', floorMaterial, this.scene, WIDTH / UNIT / 2, -.015, HEIGHT / UNIT / 2, 70, 90, 1);
         floor.rotation.x = -Math.PI / 2;
       }
       this.hero = this.character('hero');
-      this.hero.scale.setScalar(1.5);
+      this.hero.scale.setScalar(1.8);
       this.scene.add(this.hero);
       this.key = this.makeKey();
       this.scene.add(this.key);
       this.safe = this.mesh('ring', 'safe', this.scene, 0, .025, 0);
       this.safe.rotation.x = -Math.PI / 2;
       this.safe.visible = false;
+      const darkness = this.own(new THREE.MeshBasicMaterial({ color: 0x160e32, transparent: true, opacity: .38, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: this.viewPlanes }));
+      this.outsideZone = this.mesh('outsideZone', darkness, this.scene, 0, .03, 0);
+      this.outsideZone.rotation.x = -Math.PI / 2;
+      this.outsideZone.visible = false;
       const rangeMaterial = this.own(new THREE.MeshBasicMaterial({ color: 0xb9f7d4, transparent: true, opacity: .5, depthWrite: false }));
       this.range = this.mesh('fineRing', rangeMaterial, this.scene, 0, .025, 0);
       this.range.rotation.x = -Math.PI / 2;
@@ -114,20 +123,65 @@ export class Crystal3D {
   buildGarden(texturedFloor = false) {
     const garden = new THREE.Group();
     this.scene.add(garden);
-    this.mesh('box', 'grass', garden, WIDTH / UNIT / 2, -.2, HEIGHT / UNIT / 2, WIDTH / UNIT + 2, .3, HEIGHT / UNIT + 2);
+    const terrain = this.own(new THREE.PlaneGeometry(180, 180, 48, 48));
+    terrain.rotateX(-Math.PI / 2);
+    const positions = terrain.attributes.position;
+    const colors = new Float32Array(positions.count * 3);
+    const color = new THREE.Color();
+    for (let i = 0; i < positions.count; i++) {
+      const x = positions.getX(i), z = positions.getZ(i);
+      const patch = (Math.sin(x * .72 + Math.cos(z * .41)) + Math.cos(z * .83 - x * .17)) / 4 + .5;
+      positions.setY(i, -.22 + Math.sin(x * .3) * Math.cos(z * .4) * .12);
+      color.setHSL(.24 + patch * .04, .32, .17 + patch * .13);
+      color.toArray(colors, i * 3);
+    }
+    terrain.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    terrain.computeVertexNormals();
+    const terrainMaterial = this.own(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .95 }));
+    const ground = new THREE.Mesh(terrain, terrainMaterial);
+    ground.position.set(WIDTH / UNIT / 2, 0, HEIGHT / UNIT / 2);
+    garden.add(ground);
+    // Authored perimeter: layered mossy stone, foliage and crystal clusters.
+    // These are scenery only and never introduce unannounced collisions.
+    for (let i = 0; i < 72; i++) {
+      const side = i % 4, along = Math.floor(i / 4) / 17;
+      const irregular = .25 + (Math.sin(i * 2.37) + 1) * .45;
+      const x = side < 2 ? (side ? WIDTH / UNIT + irregular : -irregular) : along * WIDTH / UNIT;
+      const z = side < 2 ? along * HEIGHT / UNIT : (side === 2 ? -irregular : HEIGHT / UNIT + irregular);
+      const rock = this.mesh('crystal', i % 3 ? 'bark' : 'dark', garden, x, .12, z, .35 + i % 3 * .08, .3, .45);
+      rock.rotation.set(.1, i * .79, .2);
+      this.mesh('ball', 'leaf', garden, x + .12, .3, z, .28, .13, .3);
+      if (i % 5 === 0) {
+        for (let j = 0; j < 3; j++) {
+          const gem = this.mesh('crystal', j === 1 ? 'violet' : 'cyan', garden, x + (j - 1) * .2, .25 + j * .08, z + .15, .13, .4 + j * .12, .14);
+          gem.rotation.z = (j - 1) * .3;
+        }
+      }
+    }
     // Deterministic decoration never collides and stays outside the playable field.
     for (let i = 0; i < 34; i++) {
       const side = i % 2;
-      const z = .3 + Math.floor(i / 2) * 1.65;
-      const x = side ? WIDTH / UNIT + .4 : -.4;
+      const z = .3 + Math.floor(i / 2) * 1.65 + Math.sin(i * 3.7) * .25;
+      const setback = .9 + (1 + Math.sin(i * 2.1)) * .7;
+      const x = side ? WIDTH / UNIT + setback : -setback;
       const tree = new THREE.Group();
       tree.position.set(x, 0, z);
+      tree.scale.setScalar(.85 + (1 + Math.sin(i * 3.1)) * .3);
       garden.add(tree);
       this.mesh('rod', 'bark', tree, 0, .5, 0, .12, 1, .12);
       for (let tier = 0; tier < 3; tier++) {
         const crown = this.mesh('cone', 'leaf', tree, 0, .8 + tier * .38, 0, .65 - tier * .13, .9, .65 - tier * .13);
         crown.rotation.y = i * .8;
       }
+      this.mesh('ball', 'grass', tree, .3, 1.15, .12, .55, .4, .52);
+    }
+    for (const [x, z] of [[.4,.4], [WIDTH / UNIT - .4,.4], [.4,HEIGHT / UNIT - .4], [WIDTH / UNIT - .4,HEIGHT / UNIT - .4]]) {
+      const shrine = new THREE.Group(); shrine.position.set(x, 0, z); garden.add(shrine);
+      this.mesh('box', 'dark', shrine, 0, .1, 0, .65, .2, .65);
+      this.mesh('rod', 'bark', shrine, 0, .5, 0, .2, .75, .2);
+      this.mesh('box', 'gold', shrine, 0, .85, 0, .48, .08, .48);
+      this.mesh('crystal', 'cyan', shrine, 0, 1.2, 0, .24, .4, .24);
+      this.mesh('ring', 'gold', shrine, 0, 1.2, 0, .34).rotation.x = Math.PI / 2;
     }
     // Sparse inlaid stones give motion and scale cues without false obstacles.
     for (let i = 0; i < (texturedFloor ? 0 : 40); i++) {
@@ -162,6 +216,12 @@ export class Crystal3D {
     if (hero) {
       this.mesh('ball', 'cloth', rig, 0, .8, -.17, .32, .25, .09);
       this.mesh('ball', 'gold', rig, 0, .57, .235, .075, .065, .035);
+      for (const sign of [-1, 1]) {
+        this.mesh('crystal', 'gold', rig, sign * .29, .82, .08, .12, .09, .16);
+        this.mesh('crystal', 'cyan', rig, sign * .29, .88, .08, .065, .07, .075);
+        this.mesh('rod', 'gold', rig, sign * .19, .7, .22, .018, .27, .018).rotation.z = sign * .2;
+      }
+      this.mesh('crystal', 'cyan', rig, 0, .77, .26, .075, .11, .035);
     }
     this.mesh('ball', hero ? 'mane' : color, rig, 0, 1.05, -.025, .4, .37, .29);
     this.mesh('ball', color, rig, 0, 1.08, .09, .32, .28, .25);
@@ -205,20 +265,10 @@ export class Crystal3D {
   }
 
   boss(type) {
+    if (type === 'bossPrism' || type === 'bossTempest') return this.flyingBoss(type);
     const root = this.character(type === 'bossCinder' ? 'runner' : 'tank');
     const rig = root.userData.rig;
-    if (type === 'bossPrism' || type === 'bossTempest') {
-      const wings = [];
-      for (const sign of [-1, 1]) {
-        const wing = new THREE.Group(); wing.position.set(sign * .25, .8, -.12); rig.add(wing);
-        for (let i = 0; i < 4; i++) {
-          const feather = this.mesh('crystal', type === 'bossPrism' ? 'violet' : 'cyan', wing, sign * (.3 + i * .16), -.04 * i, i * .08, .22, .12, .55 - i * .06);
-          feather.rotation.y = sign * (.3 + i * .15);
-        }
-        wings.push(wing);
-      }
-      root.userData.wings = wings;
-    } else if (type === 'bossRoot') {
+    if (type === 'bossRoot') {
       for (const sign of [-1, 1]) {
         const branch = this.mesh('rod', 'bark', rig, sign * .4, 1.5, -.04, .07, .9, .07);
         branch.rotation.z = -sign * .4;
@@ -233,6 +283,57 @@ export class Crystal3D {
     } else {
       for (let i = 0; i < 5; i++) this.mesh('cone', 'gold', rig, (i - 2) * .13, 1.5, .04, .07, .25 + (i % 2) * .1, .07);
     }
+    return root;
+  }
+
+  flyingBoss(type) {
+    const moth = type === 'bossPrism';
+    const root = new THREE.Group();
+    const rig = new THREE.Group();
+    root.add(rig);
+    root.userData = { rig, legs: [], wings: [] };
+    this.mesh('ball', moth ? 'dark' : 'cyan', rig, 0, .85, 0, .22, .24, .52);
+    this.mesh('ball', moth ? 'violet' : 'white', rig, 0, 1.02, .4, .23, .23, .23);
+    for (const sign of [-1, 1]) {
+      this.mesh('ball', 'cyan', rig, sign * .14, 1.08, .58, .07);
+      if (moth) {
+        const antenna = this.mesh('rod', 'gold', rig, sign * .19, 1.32, .43, .022, .45, .022);
+        antenna.rotation.z = -sign * .4;
+        this.mesh('crystal', 'pink', rig, sign * .28, 1.55, .43, .065, .1, .065);
+      } else {
+        this.mesh('cone', 'gold', rig, sign * .14, .48, .1, .05, .24, .05).rotation.x = Math.PI;
+      }
+      const wing = new THREE.Group();
+      wing.position.set(sign * .16, .92, 0);
+      rig.add(wing);
+      if (moth) {
+        for (const [z, size] of [[.25, .65], [-.4, .48]]) {
+          const lobe = this.mesh('ball', 'violet', wing, sign * .53, 0, z, size, .07, size * .75);
+          lobe.rotation.y = sign * .35;
+          this.mesh('crystal', 'pink', wing, sign * .6, .075, z, size * .48, .035, size * .48);
+          this.mesh('ball', 'cyan', wing, sign * .7, .11, z, .1, .025, .13);
+        }
+      } else {
+        for (let i = 0; i < 6; i++) {
+          const feather = this.mesh('crystal', i % 2 ? 'white' : 'cyan', wing, sign * (.2 + i * .15), 0, -.04 - i * .08, .15, .055, .55 - i * .045);
+          feather.rotation.y = -sign * (.2 + i * .12);
+        }
+      }
+      root.userData.wings.push(wing);
+    }
+    if (!moth) {
+      this.mesh('cone', 'gold', rig, 0, .98, .67, .12, .35, .12).rotation.x = Math.PI / 2;
+      for (let i = -1; i <= 1; i++) {
+        this.mesh('crystal', 'cyan', rig, i * .1, 1.26, .32, .09, .27, .09);
+        this.mesh('crystal', 'cyan', rig, i * .14, .8, -.63, .12, .055, .4).rotation.y = i * .2;
+      }
+    }
+    const contact = this.mesh('disc', this.shadow, root, 0, .015, 0, .55);
+    contact.rotation.x = -Math.PI / 2;
+    const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .8);
+    shield.rotation.x = -Math.PI / 2;
+    shield.visible = false;
+    root.userData.shield = shield;
     return root;
   }
 
@@ -255,28 +356,26 @@ export class Crystal3D {
 
   render(state, width, height, now = 0) {
     if (this.disposed || this.contextLost) return false;
-    if (this.canvas.width !== width || this.canvas.height !== height) this.renderer.setSize(width, height, false);
-    const cx = (state.camera.x + WIDTH / 1.6 / 2) / UNIT;
-    const verticalHalf = VIEW_H / (30 / Math.hypot(30, 12)) / 2;
-    const cz = Math.max(verticalHalf, Math.min(HEIGHT / UNIT - verticalHalf, (state.camera.y + HEIGHT / 1.6 / 2) / UNIT));
+    const resized = this.canvas.width !== width || this.canvas.height !== height;
+    if (resized) this.renderer.setSize(width, height, false);
+    const cx = WIDTH / UNIT / 2;
+    const cz = HEIGHT / UNIT / 2;
     this.landscape = width > height;
     this.camera.position.set(cx + (this.landscape ? 12 : 0), 30, cz + (this.landscape ? 0 : 12));
     this.camera.lookAt(cx, 0, cz);
     const aspect = width / height;
     const groundCosine = 30 / Math.hypot(30, 12);
-    const baseWidth = this.landscape ? VIEW_H / groundCosine : VIEW_W;
-    const baseHeight = this.landscape ? VIEW_W * groundCosine : VIEW_H;
+    const baseWidth = (this.landscape ? HEIGHT : WIDTH) / UNIT + 2;
+    const baseHeight = ((this.landscape ? WIDTH : HEIGHT) / UNIT + 2) * groundCosine;
     const fittedHeight = Math.max(baseHeight, baseWidth / aspect);
-    this.camera.left = -fittedHeight * aspect / 2;
-    this.camera.right = fittedHeight * aspect / 2;
-    this.camera.top = fittedHeight / 2;
-    this.camera.bottom = -fittedHeight / 2;
-    this.camera.updateProjectionMatrix();
-    this.bounds = { left: cx - VIEW_W / 2, right: cx + VIEW_W / 2, top: cz - verticalHalf, bottom: cz + verticalHalf };
-    this.viewPlanes[0].constant = -this.bounds.left;
-    this.viewPlanes[1].constant = this.bounds.right;
-    this.viewPlanes[2].constant = -this.bounds.top;
-    this.viewPlanes[3].constant = this.bounds.bottom;
+    if (resized || !this.bounds) {
+      this.camera.left = -fittedHeight * aspect / 2;
+      this.camera.right = fittedHeight * aspect / 2;
+      this.camera.top = fittedHeight / 2;
+      this.camera.bottom = -fittedHeight / 2;
+      this.camera.updateProjectionMatrix();
+    }
+    this.bounds = { left: 0, right: WIDTH / UNIT, top: 0, bottom: HEIGHT / UNIT };
     this.camera.updateMatrixWorld();
     this.setPosition(this.hero, state.player);
     this.setPosition(this.range, state.player, .035);
@@ -310,6 +409,17 @@ export class Crystal3D {
         object.userData.wings?.forEach((wing, j) => { wing.rotation.z = Math.sin(t * 4) * .18 * (j ? 1 : -1); });
       }, 1);
     }
+    const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
+    const charging = state.enemies.filter(e => (e.isBoss ? ['bossBriar', 'bossTempest'].includes(e.image) : chargingStage) && e.chargeTimer <= .65);
+    this.pool('chargeCues', charging.length, () => {
+      const cue = new THREE.Mesh(this.geo.fineRing, this.mat.danger);
+      cue.rotation.x = -Math.PI / 2;
+      return cue;
+    }, (cue, i) => {
+      this.setPosition(cue, charging[i], .06);
+      cue.material = charging[i].chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
+      cue.scale.setScalar(charging[i].size / UNIT * .7);
+    }, 19);
     this.pool('xp', state.xpDrops.length, () => new THREE.Mesh(this.geo.crystal, this.mat.cyan), (object, i) => {
       this.setPosition(object, state.xpDrops[i], .16);
       object.scale.set(.09, .16, .09);
@@ -350,9 +460,12 @@ export class Crystal3D {
       lane.scale.set((hazard.width || 1) / UNIT, .025, (hazard.height || 1) / UNIT);
     }, 64);
     this.safe.visible = Boolean(state.safeZone);
+    this.outsideZone.visible = Boolean(state.safeZone);
     if (state.safeZone) {
       this.setPosition(this.safe, state.safeZone, .04);
       this.safe.scale.setScalar(state.safeZone.r / UNIT);
+      this.setPosition(this.outsideZone, state.safeZone, .03);
+      this.outsideZone.scale.setScalar(state.safeZone.r / UNIT);
     }
     this.syncInstances();
     this.renderer.render(this.scene, this.camera);
@@ -396,7 +509,7 @@ export class Crystal3D {
     return { x: Math.max(this.bounds.left * UNIT, Math.min(this.bounds.right * UNIT, this.vector.x * UNIT)), y: Math.max(this.bounds.top * UNIT, Math.min(this.bounds.bottom * UNIT, this.vector.z * UNIT)) };
   }
 
-  inView(x, y) { return !this.bounds || (x / UNIT >= this.bounds.left && x / UNIT <= this.bounds.right && y / UNIT >= this.bounds.top && y / UNIT <= this.bounds.bottom); }
+  inView(x, y) { const p = this.project(x, y); return p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1; }
 
   project(x, y, elevation = 0) {
     this.vector.set(x / UNIT, elevation, y / UNIT).project(this.camera);

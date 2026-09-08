@@ -1,0 +1,21 @@
+/* Keep workspace and home stacks visibly distinct without changing hit geometry. */
+.wp-premium-table .free-slot {
+  border: 1px dashed #b4e8d7;
+  background: #042e2cc9;
+  box-shadow: inset 0 0 14px #00181180;
+}
+.wp-premium-table .free-slot > span { color: #ccebdc; }
+.wp-premium-table .foundation-slot {
+  border: 1px solid #d4b879;
+  background: #40391c70;
+  box-shadow: inset 0 0 14px #24130040;
+}
+.wp-premium-table .foundation-slot > span { color: #ffe1a0; }
+.wp-premium-table .free-slot.valid-target,
+.wp-premium-table .foundation-slot.valid-target { box-shadow: 0 0 0 2px #ffe6a4, 0 0 14px #ffdd8650; }
+.wp-premium-table .tableau-area.variant-freecell .classic-pile::after { border-color: #c9dfb333; }
+.wp-premium-table .tableau-area.variant-freecell .classic-pile.valid-target::after { border-color: #ffe7a4; }
+.wp-premium-table .board-status[data-state='freecell-capacity'] { color: #deead7; }
+/* Buried cards expose their rank/suit header, not a noisy sliver of court art.
+   The full face returns automatically when native rendering exposes the card. */
+.wp-premium-table .classic-card.stacked .deck-center { visibility: hidden; }
