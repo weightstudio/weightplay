@@ -76,6 +76,10 @@ export class Crystal3D {
         outsideZone: this.own(new THREE.RingGeometry(1, 50, 64)),
       };
       this.mat = {};
+      this.magicCore = this.own(new THREE.MeshBasicMaterial({ color: 0xe6ffff, toneMapped: false }));
+      this.magicGlow = this.own(new THREE.MeshBasicMaterial({ color: 0x38d9ff, transparent: true, opacity: .36, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+      this.magicImpact = this.own(new THREE.MeshBasicMaterial({ color: 0x8ff5ff, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false, toneMapped: false }));
+      this.shotVisuals = new WeakMap();
       const colors = { fur: 0x947a54, cream: 0xccbd9e, mane: 0x554535,
         cloth: 0x34464b, pants: 0x292c2e, leather: 0x514138, eye: 0x13191d,
         cyan: 0x7bb5c1, gold: 0xc09b61, violet: 0x696d88, pink: 0x826879,
@@ -292,6 +296,8 @@ export class Crystal3D {
     if (hero) {
       this.mesh('rod', 'bark', rig, .45, .62, .13, .035, 1.05, .035);
       const gem = this.mesh('crystal', 'cyan', rig, .45, 1.24, .13, .14, .24, .14);
+      root.userData.muzzle = gem;
+      root.userData.castGlow = this.mesh('ball', this.magicGlow, rig, .45, 1.24, .13, .01, .01, .01);
       gem.rotation.z = .15;
       this.mesh('crystal', 'cyan', rig, 0, 1.4, .18, .08, .15, .06);
     } else if (tank) {
@@ -491,16 +497,63 @@ export class Crystal3D {
       object.scale.set(.09, .16, .09);
       object.rotation.y = t + i;
     }, 100);
-    this.pool('shots', state.shots.length, () => new THREE.Mesh(this.geo.crystal, this.mat.gold), (object, i) => {
-      this.setPosition(object, state.shots[i], .55);
-      object.scale.set(.06, .08, .16);
-      object.rotation.y = Math.atan2(state.shots[i].target.x - state.shots[i].x, state.shots[i].target.y - state.shots[i].y);
+    this.hero.userData.castGlow.scale.setScalar(.11 + .16 * (state.player.castPulse || 0) / .18);
+    this.hero.updateMatrixWorld(true);
+    this.pool('shots', state.shots.length, () => {
+      const group = new THREE.Group();
+      this.mesh('crystal', this.magicCore, group, 0, 0, 0, .12, .12, .23);
+      this.mesh('ball', this.magicGlow, group, 0, 0, 0, .23, .23, .32);
+      for (let j = 0; j < 5; j++) this.mesh('crystal', this.magicGlow, group);
+      return group;
+    }, (object, i) => {
+      const shot = state.shots[i];
+      let visual = this.shotVisuals.get(shot);
+      if (!visual) {
+        visual = { muzzle: this.hero.userData.muzzle.getWorldPosition(new THREE.Vector3()) };
+        this.shotVisuals.set(shot, visual);
+      }
+      // Keep authoritative homing/damage unchanged; move its visible origin to
+      // the actual transformed staff crystal, converging on the enemy's torso.
+      const traveled = Math.hypot(shot.x - (shot.originX ?? shot.px), shot.y - (shot.originY ?? shot.py));
+      const remaining = Math.hypot(shot.target.x - shot.x, shot.target.y - shot.y);
+      const progress = traveled / Math.max(1, traveled + remaining);
+      const originX = (shot.originX ?? shot.px) / UNIT;
+      const originZ = (shot.originY ?? shot.py) / UNIT;
+      const position = new THREE.Vector3(shot.x / UNIT + (visual.muzzle.x - originX) * (1 - progress),
+        visual.muzzle.y * (1 - progress) + (shot.target.size || 64) / UNIT * .8 * progress,
+        shot.y / UNIT + (visual.muzzle.z - originZ) * (1 - progress));
+      object.position.copy(position);
+      object.lookAt(shot.target.x / UNIT, (shot.target.size || 64) / UNIT * .8, shot.target.y / UNIT);
+      const length = Math.min(1.35, position.distanceTo(visual.muzzle));
+      for (let j = 0; j < 5; j++) {
+        const tail = object.children[j + 2];
+        tail.position.set(0, 0, -length * (j + 1) / 5);
+        tail.scale.setScalar(.17 * (1 - j / 6));
+      }
     }, 160);
-    this.pool('sparks', (state.sparks || []).length, () => new THREE.Mesh(this.geo.crystal, this.mat.gold), (object, i) => {
+    this.pool('sparks', (state.sparks || []).length, () => {
+      const group = new THREE.Group();
+      this.mesh('crystal', 'gold', group);
+      this.mesh('ring', this.magicImpact, group);
+      for (let j = 0; j < 8; j++) this.mesh('crystal', this.magicImpact, group);
+      return group;
+    }, (object, i) => {
       const spark = state.sparks[i];
-      this.setPosition(object, spark, .35 + (1 - spark.life / .45) * .5);
-      object.scale.setScalar(Math.max(.02, spark.life / .45 * .22));
-      object.rotation.set(t * 4, t * 5, 0);
+      const magic = spark.kind === 'magicHit';
+      const age = 1 - spark.life / .45;
+      this.setPosition(object, spark, magic ? spark.height : .35 + age * .5);
+      object.children.forEach((child, j) => { child.visible = magic ? j > 0 : j === 0; });
+      object.children[0].scale.setScalar(Math.max(.02, (1 - age) * .22));
+      const ring = object.children[1];
+      ring.quaternion.copy(this.camera.quaternion);
+      ring.scale.setScalar(.2 + age * (this.reducedMotion ? .45 : 1.1));
+      for (let j = 0; j < 8; j++) {
+        const shard = object.children[j + 2], angle = j * Math.PI / 4;
+        const radius = .12 + age * (this.reducedMotion ? .4 : 1.25);
+        shard.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius * .7, Math.sin(angle * 3) * radius * .5);
+        shard.scale.setScalar(Math.max(.001, (1 - age) * .14));
+        shard.rotation.set(angle, age * 4, angle);
+      }
     }, 64);
     this.pool('hazards', state.hazards.length, () => {
       const group = new THREE.Group();

@@ -42,6 +42,8 @@ body #stage{grid-template-rows:76px minmax(0,1fr) 62px}
 dialog>div:last-child{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 dialog>div:last-child button{min-width:0;padding-inline:8px}
 dialog button:disabled{opacity:.45;cursor:not-allowed}
+/* Top-layer dialogs still belong to the Battle area above its physical reserve. */
+body[data-screen="battle"] dialog{inset-block-end:56px;max-height:calc(100svh - 72px);overflow-y:auto}
 @keyframes beamPulse{to{stroke-width:7;filter:drop-shadow(0 0 7px #fff)}}
 
 @media(max-width:680px){

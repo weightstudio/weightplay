@@ -1,0 +1,66 @@
+body.go-fish-royal-table .card-game-battle {
+  background: #073d30 url('../../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
+}
+body.go-fish-royal-table .card-table-center {
+  background: #003a2b50;
+  border: 1px solid #dab96b99;
+  box-shadow: inset 0 0 24px #001c1680, 0 0 0 3px #052a2266;
+}
+body.go-fish-royal-table .opponent-card {
+  background: linear-gradient(145deg,#143f38ee,#06271fee);
+  border-color: #c8b07977;
+  box-shadow: inset 0 1px #ffedc933, 0 3px 8px #00191166;
+}
+body.go-fish-royal-table .opponent-card strong { color: #ffe4a2; }
+body.go-fish-royal-table .card-game-player { background:#05281fe6; border-color:#d8ba6d88; }
+body.go-fish-royal-table .playing-card { --classic-card-width:52px; font-family:Georgia,'Times New Roman',serif; }
+body.go-fish-royal-table .playing-card .rank {font-size:10px;line-height:1;}
+body.go-fish-royal-table .playing-card .deck-center {inset:17% 12%;}
+body.go-fish-royal-table .playing-card .deck-pip {font-size:8px;}
+body.go-fish-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:18px;}
+body.go-fish-royal-table .playing-card .deck-court {inset:16% auto auto 19%;}
+body.go-fish-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-shadow:0 0 0 2px #ffdd87,0 6px 10px #001a14aa;}
+body.go-fish-royal-table .playing-card.is-selected {transform:none;outline:2px solid #ffe6a0;outline-offset:-3px;}
+body.go-fish-royal-table .playing-card.go-fish-card-arrival {animation:go-fish-card-arrival 180ms ease-out;}
+@keyframes go-fish-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){body.go-fish-royal-table .playing-card {animation:none!important;transition:none!important;}}
+
+body.go-fish-royal-table .playing-card.is-face-down {background:#082d26 url('../../assets/klondike-solitaire-card-back.webp') center/100% 100%;border-color:#d4b56b;}
+body.go-fish-royal-table .playing-card.is-face-down::after {content:none;}
+body.go-fish-royal-table #cardGameActions button,
+body.go-fish-royal-table .main-actions button,
+body.go-fish-royal-table .result-actions button {
+ border:1px solid #cbb376;border-radius:12px;padding:10px 12px;min-height:44px;
+ background:linear-gradient(140deg,#20423b,#092727);color:#fff1cf;font:700 14px/1.3 system-ui,sans-serif;
+ box-shadow:inset 0 1px #fff3,0 3px 8px #0004;
+}
+body.go-fish-royal-table button.primary-btn {background:linear-gradient(135deg,#ffe4a0,#e6bc5b);color:#123028;}
+body.go-fish-royal-table button:disabled {opacity:.42;cursor:default;}
+body.go-fish-royal-table .opponent-card {color:#fff1d4;cursor:pointer;min-height:44px;}
+body.go-fish-royal-table .opponent-card:hover,body.go-fish-royal-table .opponent-card:focus-visible {border-color:#f3d184;box-shadow:0 0 0 2px #f3d184;}
+body.go-fish-royal-table .card-choice-panel button {border:1px solid #cbb376;border-radius:9px;min-width:44px;min-height:44px;padding:6px;background:linear-gradient(145deg,#244b40,#082c25);color:#fff2d7;font:700 16px/1.2 system-ui,sans-serif;}
+body.go-fish-royal-table .card-choice-panel button.is-selected {background:linear-gradient(145deg,#ffe8aa,#e2b958);color:#18372b;box-shadow:0 0 0 2px #ffe7a2;}
+body.go-fish-royal-table button:focus-visible {outline:2px solid #ffe6a3;outline-offset:2px;}
+body.go-fish-royal-table .card-book-progress {border:1px solid #cfad70;background:linear-gradient(145deg,#254c3b,#092c27);box-shadow:inset 0 1px #fff3;border-radius:12px;color:#fff2d7;}
+body.go-fish-royal-table .card-choice-summary {background:#092c25df;border-color:#bfac7080;color:#fff2d7;}
+body.go-fish-royal-table #resultOverlay .result-card {background:radial-gradient(ellipse at top,#254d42,#071e22);border-color:#d7b96f;}
+body.go-fish-royal-table #cardGameHand {flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;padding:5px;}
+body.go-fish-royal-table .card-game-board,
+body.go-fish-royal-table #cardGameTable,
+body.go-fish-royal-table .card-game-player,
+body.go-fish-royal-table #cardGameCenter,
+body.go-fish-royal-table #cardGameHand {min-width:0;max-width:100%;box-sizing:border-box;}
+body.go-fish-royal-table #cardGameCenter > .card-choice-panel {display:grid;grid-template-columns:repeat(auto-fit,minmax(44px,1fr));gap:5px;}
+body.go-fish-royal-table #cardGameHand .playing-card {flex:0 0 43px;height:61px;min-height:61px;}
+@media(orientation:landscape) and (max-height:560px){
+ body.go-fish-royal-table .card-table-ui {row-gap:4px;}
+ body.go-fish-royal-table .card-game-board {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:44px minmax(0,1fr);gap:5px;}
+ body.go-fish-royal-table #cardGameOpponents {grid-column:1/-1;grid-row:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;overflow:visible;}
+ body.go-fish-royal-table .opponent-card {height:44px;padding:3px 6px;font-size:12px;line-height:1.1;}
+ body.go-fish-royal-table #cardGameTable {grid-column:1;grid-row:2;padding:4px;}
+ body.go-fish-royal-table .card-game-player {grid-column:2;grid-row:2;justify-content:center;padding:5px;}
+ body.go-fish-royal-table #cardGameHand {min-height:72px;}
+ body.go-fish-royal-table #cardGameCenter > .card-choice-panel {display:flex;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;max-height:none;height:48px;min-height:48px;padding:2px;}
+ body.go-fish-royal-table #cardGameCenter > .card-choice-panel button {flex:0 0 44px;min-height:44px;}
+ body.go-fish-royal-table #cardGameActions button {padding:5px 8px;}
+}

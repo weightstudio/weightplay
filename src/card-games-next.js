@@ -932,7 +932,10 @@
     ar: { title: "كريبدج", summary: "أرسل بطاقتين إلى الكريب، والعب من دون تجاوز 31، ثم احسب نقاط اليد باستخدام التركيبات الكلاسيكية.", guideKicker: "دليل ألعاب WeightPlay الأصلية", guideSummary: "أرسل بطاقتين إلى الكريب، والعب من دون تجاوز 31، ثم احسب نقاط اليد باستخدام التركيبات الكلاسيكية.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة بطاقات كلاسيكية للعدّ", genreLabel: "النوع", genre: "بطاقات · عائلية · استراتيجية", difficultyLabel: "الصعوبة", difficulty: "من السهل إلى التحدي", timeLabel: "وقت اللعب المقدر", time: "5–15 دقيقة", skillsLabel: "المهارات المتدرَّبة", skills: "التخطيط · التركيز · التعرّف على الأنماط", howTo: "كيفية اللعب", howToCopy: "تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121.", preview: "حالة المعاينة", previewCopy: "هذه معاينة المالك غير موجودة في الكتالوج العام الرسمي.", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", quickGuide: "كيفية اللعب", quickGuideCopy: "تمنح الأزواج والتتابعات و15 نقاطًا. يفوز أول لاعب يصل إلى 121.", metaDescription: "أرسل بطاقتين إلى الكريب، والعب نحو 31، واحسب نقاط التركيبات الكلاسيكية في لعبة كريبدج ضمن معاينة المالك." },
   };
 
-  const cribbageShellCopy = () => CRIBBAGE_SHELL_COPY[currentLocale()] || CRIBBAGE_SHELL_COPY.en;
+  const cribbageShellCopy = () => {
+    const copy = CRIBBAGE_SHELL_COPY[currentLocale()] || CRIBBAGE_SHELL_COPY.en;
+    return { ...copy, title: window.WEIGHTPLAY_GAME_TITLES?.cribbage?.[currentLocale()] || copy.title };
+  };
   const CRIBBAGE_PROGRESS_COPY = {
     en: { label: "Race to 121", copy: "First player to reach 121 wins." },
     "zh-Hant": { label: "121 分競賽", copy: "先到 121 分的玩家獲勝。" },
@@ -950,6 +953,17 @@
   };
   const CRIBBAGE_BATTLE_COPY = {
     en: { round: "Round", go: "Go", ai: "AI" },
+    "zh-Hant": { round: "回合", go: "讓過", ai: "電腦" },
+    "zh-Hans": { round: "回合", go: "让过", ai: "电脑" },
+    ja: { round: "ラウンド", go: "ゴー", ai: "コンピューター" },
+    ko: { round: "라운드", go: "고", ai: "컴퓨터" },
+    es: { round: "Ronda", go: "Paso", ai: "Ordenador" },
+    "pt-BR": { round: "Rodada", go: "Passo", ai: "Computador" },
+    fr: { round: "Manche", go: "Passe", ai: "Ordinateur" },
+    de: { round: "Runde", go: "Passe", ai: "Computer" },
+    it: { round: "Mano", go: "Passo", ai: "Computer" },
+    ru: { round: "Раунд", go: "Пас", ai: "Компьютер" },
+    hi: { round: "दौर", go: "पास", ai: "कंप्यूटर" },
     ar: { round: "الجولة", go: "جو", ai: "الذكاء الاصطناعي" },
   };
   const cribbageBattleCopy = () => CRIBBAGE_BATTLE_COPY[currentLocale()] || CRIBBAGE_BATTLE_COPY.en;
@@ -1910,8 +1924,14 @@
   }
   function spadesOpponentMarkup(name, count, bid) { return `<div class="opponent-card"><strong>${name}</strong><span>${count} ${t("cards")} · <span class="spades-bid-label" data-runtime-localize="off">${t("bid")}: ${bid}</span></span></div>`; }
   function makePegBoard(player, ai) {
-    const cells = Array.from({ length: 61 }, (_, index) => `<span class="card-peg ${index === Math.min(player, 60) ? "is-current is-player" : index < player ? "is-player" : ""} ${index === Math.min(ai, 60) ? "is-current is-ai" : index < ai ? "is-ai" : ""}"></span>`).join("");
-    return `<div class="card-peg-board" aria-label="${t("score")}"><div class="card-peg-row">${cells}</div><div class="card-game-topbar"><small>${t("score")}: ${player}</small><small>${t("target")}: 121</small><small>${t("score")}: ${ai}</small></div></div>`;
+    // Independent complete tracks: equal scores must not conceal either peg,
+    // and the second half of the 121-point race must continue moving.
+    const track = (score, lane) => {
+      const position = Math.max(0, Math.min(121, Math.floor(score)));
+      const cells = Array.from({ length: 122 }, (_, index) => `<span aria-hidden="true" data-peg-point="${index}" class="card-peg ${index === position ? `is-current is-${lane}` : ""}"></span>`).join("");
+      return `<div class="card-peg-row" data-peg-lane="${lane}" data-peg-score="${score}">${cells}</div>`;
+    };
+    return `<div class="card-peg-board" aria-label="${t("score")}">${track(player, "player")}${track(ai, "ai")}<div class="card-game-topbar"><small>${t("score")}: ${player}</small><small>${t("target")}: 121</small><small>${t("score")}: ${ai}</small></div></div>`;
   }
 
   function countMelds(hand) {
@@ -2212,10 +2232,14 @@
       const shellTitle = document.querySelector(".main-header [data-card-title]");
       if (shellTitle && !shellTitle.dataset.cribbageShellObserver) {
         shellTitle.dataset.cribbageShellObserver = "true";
-        new MutationObserver(() => {
+        const titleObserver = new MutationObserver(() => {
           const copy = cribbageShellCopy();
           if (shellTitle.textContent !== copy.title) ownLocalizedText(shellTitle, copy.title);
-        }).observe(shellTitle, { childList: true, characterData: true, subtree: true });
+        });
+        const observeTitle = () => titleObserver.observe(shellTitle, { childList: true, characterData: true, subtree: true });
+        observeTitle();
+        window.addEventListener('pagehide', () => titleObserver.disconnect());
+        window.addEventListener('pageshow', event => { if (event.persisted) observeTitle(); });
       }
       window.setTimeout(syncCribbageShell, 0);
       window.setTimeout(syncCribbageShell, 400);
@@ -3022,14 +3046,29 @@
     const s = { players: [[], [], [], []], stock: [], turn: 0, selectedOpponent: 1, selectedRank: null, books: [0, 0, 0, 0], bookRanks: [[], [], [], []], bookCue: "", playerCount: 4 };
     const names = ["You", "Otter", "Fox", "Panda"];
     const removeBooks = (player) => { const completedRanks = []; for (let rank = 1; rank <= 13; rank += 1) { if (s.players[player].filter((item) => item.rank === rank).length === 4) { s.players[player] = s.players[player].filter((item) => item.rank !== rank); s.books[player] += 1; if (!s.bookRanks[player].includes(rank)) { s.bookRanks[player].push(rank); completedRanks.push(rank); } } } if (player === 0 && completedRanks.length) s.bookCue = completedRanks.map(rankText).join(" · "); };
-    const refillEmptyHand = (player) => { const handSize = s.playerCount === 2 ? 7 : 5; if (!s.players[player].length) while (s.stock.length && s.players[player].length < handSize) s.players[player].push(s.stock.pop()); };
+    const refillEmptyHand = (player) => {
+      const handSize = s.playerCount === 2 ? 7 : 5;
+      while (!s.players[player].length && s.stock.length) {
+        while (s.stock.length && s.players[player].length < handSize) s.players[player].push(s.stock.pop());
+        removeBooks(player);
+      }
+    };
     const resultTargetText = () => { const missing = Array.from({ length: 13 }, (_, index) => index + 1).filter((rank) => !s.bookRanks[0].includes(rank)); if (!missing.length) return goFishText("fullTarget"); const counts = new Map(); s.players[0].forEach((item) => counts.set(item.rank, (counts.get(item.rank) || 0) + 1)); const [rank, count] = missing.map((value) => [value, counts.get(value) || 0]).sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]; return goFishText("target", { rank: rankText(rank), count }); };
     const finish = () => { for (let player = 0; player < s.playerCount; player += 1) removeBooks(player); const winner = s.books.slice(0, s.playerCount).indexOf(Math.max(...s.books.slice(0, s.playerCount))); const completed = s.bookRanks[0].length ? s.bookRanks[0].map(rankText).join(" · ") : "—"; const resultSummary = goFishText("result", { books: s.books.slice(0, s.playerCount).join(" / "), completed }); controller.result(winner === 0, `${resultSummary} · ${resultTargetText()}`); };
     const deal = () => { s.players = [[], [], [], []]; s.stock = deck(); s.turn = 0; s.selectedOpponent = s.playerCount === 2 ? 1 : Math.min(s.selectedOpponent, s.playerCount - 1); s.selectedRank = null; s.books = [0, 0, 0, 0]; s.bookRanks = [[], [], [], []]; s.bookCue = ""; const handSize = s.playerCount === 2 ? 7 : 5; for (let i = 0; i < handSize; i += 1) for (let player = 0; player < s.playerCount; player += 1) s.players[player].push(s.stock.pop()); for (let player = 0; player < s.playerCount; player += 1) { removeBooks(player); refillEmptyHand(player); } s.bookCue = ""; };
-    const next = () => { s.turn = (s.turn + 1) % s.playerCount; refillEmptyHand(s.turn); if (s.turn !== 0) setTimeout(aiTurn, 300); };
-    const terminal = () => !s.stock.length && s.players.slice(0, s.playerCount).some((cards) => !cards.length);
-    const ask = (target, rank) => { s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); s.selectedRank = null; } if (terminal()) finish(); else if (!matching.length) next(); };
-    const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) finish(); else next(); };
+    const next = () => {
+      // A player with no cards and no stock is finished, not the whole match.
+      for (let checked = 0; checked < s.playerCount; checked += 1) {
+        s.turn = (s.turn + 1) % s.playerCount;
+        refillEmptyHand(s.turn);
+        if (s.players[s.turn].length) break;
+      }
+      if (terminal()) { finish(); return; }
+      if (s.turn !== 0) setTimeout(aiTurn, 300);
+    };
+    const terminal = () => !s.stock.length && s.players.slice(0, s.playerCount).every((cards) => !cards.length);
+    const ask = (target, rank) => { s.bookCue = ""; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[target] = s.players[target].filter((item) => item.rank !== rank); s.players[0].push(...matching); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } else { if (s.stock.length) s.players[0].push(s.stock.pop()); removeBooks(0); refillEmptyHand(0); s.selectedRank = null; } if (terminal()) finish(); else if (!matching.length || !s.players[0].length) next(); };
+    const aiTurn = () => { if (!controller.isBattleActive() || s.turn === 0) return; refillEmptyHand(s.turn); const ranks = [...new Set(s.players[s.turn].map((item) => item.rank))]; if (!ranks.length) { if (terminal()) finish(); else next(); return; } const targets = Array.from({ length: s.playerCount }, (_, index) => index).filter((index) => index !== s.turn && (s.stock.length || s.players[index].length)); const target = targets[Math.floor(Math.random() * targets.length)]; const rank = ranks[Math.floor(Math.random() * ranks.length)]; const matching = s.players[target].filter((item) => item.rank === rank); if (matching.length) { s.players[s.turn].push(...matching); s.players[target] = s.players[target].filter((item) => item.rank !== rank); removeBooks(s.turn); refillEmptyHand(s.turn); } else if (s.stock.length) s.players[s.turn].push(s.stock.pop()); removeBooks(s.turn); if (terminal()) finish(); else if (matching.length) setTimeout(aiTurn, 300); else next(); };
     return {
       reset() { deal(); },
       card(index) { if (s.turn === 0 && s.players[0][index]) s.selectedRank = s.players[0][index].rank; },

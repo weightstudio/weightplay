@@ -210,7 +210,7 @@ body.squad-stage-select .stage-panel { border: 0 !important; outline: 0; isolati
 /* General-audience reserve is a separate physical sibling. */
 .battle-ad-reserve,
 .wp-stage-physical-reserve[data-wp-stage-reserve-active],
-.wp-stage-physical-reserve[data-auto-squad-training-reserve] { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 56px; min-height: 56px; border: 0; background: #071a14; pointer-events: none; }
+.wp-stage-physical-reserve[data-auto-squad-training-reserve] { position: fixed; left: var(--squad-canvas-left, 0px); right: auto; bottom: 0; width: min(100%, 920px); height: 56px; min-height: 56px; border: 0; background: #071a14; pointer-events: none; }
 .wp-stage-physical-reserve[data-auto-squad-training-reserve] { display: block !important; }
 body:not(.squad-active) .battle-ad-reserve { display: none; }
 
@@ -381,9 +381,9 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
 }
 
 @media (min-width: 700px) and (max-height: 560px) {
-  /* Keep the wide-layout Main poster on the shared 300px column contract. */
-  .menu-panel { grid-template-columns: 300px minmax(0, 1fr); }
-  .menu-panel .cover { width: 300px; height: 300px; }
+  /* Keep the wide-layout Main poster on the shared 420px column contract. */
+  .menu-panel { grid-template-columns: 420px minmax(0, 1fr); }
+  .menu-panel .cover { width: 420px; height: 420px; }
 }
 
 @media (orientation: landscape) and (max-height: 480px) {
@@ -414,13 +414,13 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
 
 @media (min-width: 700px) and (max-height: 560px) {
   /* The compact landscape shell above keeps the Main poster square and on
-     the canonical 300px column after its broad grid rule is applied. */
+     the canonical 420px column after its broad grid rule is applied. */
   body:not(.squad-stage-select):not(.squad-active) .menu-panel {
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: 420px minmax(0, 1fr);
   }
   body:not(.squad-stage-select):not(.squad-active) .menu-panel .cover {
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
     aspect-ratio: 1;
   }
 }
@@ -446,9 +446,7 @@ body.squad-active #gamePanel * {
   pointer-events: auto !important;
 }
 
-/* The shared return contract uses !important sizing. Mirror the logical
-   Battle scale here so the external slot remains a 48px control in Canvas
-   units at wide desktop viewports. */
+/* The external return keeps a physical 48px floor and scales up with the Canvas. */
 body.squad-active button.battle-external-return {
   width: var(--squad-battle-return-size, 48px) !important;
   min-width: var(--squad-battle-return-size, 48px) !important;
@@ -715,19 +713,19 @@ body.squad-active button.battle-external-return {
 }
 
 @media (min-width: 700px) and (max-height: 560px) {
-  /* Keep the Main poster at the shared 300px wide-layout contract even when
+  /* Keep the Main poster at the shared 420px wide-layout contract even when
      the compact landscape grid's stretch rules are loaded after this file's
      general Main styles. */
   body:not(.squad-stage-select):not(.squad-active) .menu-panel {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
   }
   body:not(.squad-stage-select):not(.squad-active) .menu-panel .cover {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
+    width: 420px !important;
+    min-width: 420px !important;
+    max-width: 420px !important;
+    height: 420px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
     aspect-ratio: 1 !important;
     justify-self: start;
   }

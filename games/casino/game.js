@@ -19,9 +19,7 @@
     progress.setAttribute("role", "status");
     progress.setAttribute("aria-live", "polite");
     const label = document.createElement("strong");
-    label.textContent = "Capture progress";
     const copy = document.createElement("span");
-    copy.textContent = "Capture table cards by rank or sum.";
     progress.append(label, copy);
     mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
   }

@@ -3,6 +3,7 @@
   ["stagePanel", "gamePanel"].forEach((id) => {
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
   });
+  document.getElementById("stagePanel")?.setAttribute("data-wp-standard-stage-screen", "true");
 
   const GAME_ID = "animal-auto-squad";
   const GAME_VERSION = "v30";
@@ -2950,8 +2951,8 @@
 
     const reserve = trainingStageReserve();
     const reserveDeclarations = {
-      position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: "0px",
-      width: `${width}px`, "min-width": "0", "max-width": "none", height: "56px", "min-height": "56px", transform: "none",
+      position: "fixed", inset: "auto", top: `${availableHeight}px`, right: "auto", bottom: "auto", left: `${canvasLeft}px`,
+      width: `${physicalWidth}px`, "min-width": "0", "max-width": "920px", height: "56px", "min-height": "56px", transform: "none",
     };
     Object.entries(reserveDeclarations).forEach(([property, value]) => reserve.style.setProperty(property, value, "important"));
     reserve.setAttribute("data-auto-squad-training-reserve", "true");
@@ -6373,7 +6374,8 @@
     document.documentElement.style.setProperty("--squad-battle-width", `${battleLogicalWidth}px`);
     document.documentElement.style.setProperty("--squad-battle-height", `${battleLogicalHeight}px`);
     document.documentElement.style.setProperty("--squad-battle-scale", String(battleScale));
-    document.documentElement.style.setProperty("--squad-battle-return-size", `${48 * battleScale}px`);
+    // The external return needs both a physical target floor and the enlarged Canvas size.
+    document.documentElement.style.setProperty("--squad-battle-return-size", `${48 * Math.max(1, battleScale)}px`);
     updateTrainingStageCanvas();
     pinMainSoundToggle();
   }

@@ -1,7 +1,27 @@
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v25";
+  const ownedObservers = [];
+  let observersSuspended = false;
+  function observeOwned(node, callback, options) {
+    if (!node) return;
+    const observer = new MutationObserver(() => {
+      observer.disconnect();
+      try { callback(); } finally { if (!observersSuspended) observer.observe(node, options); }
+    });
+    observer.observe(node, options);
+    ownedObservers.push({ observer, node, options });
+  }
+  window.addEventListener('pagehide', () => {
+    observersSuspended = true;
+    ownedObservers.forEach(({ observer }) => observer.disconnect());
+  });
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) return;
+    observersSuspended = false;
+    ownedObservers.forEach(({ observer, node, options }) => observer.observe(node, options));
+  });
   const COPY = {
     en: { start: "Start Game", back: "Back", resultNewGame: "New Game", resultRestart: "Restart", resultClose: "Close", heading: "How to play", paragraph: "Complete four-of-a-kind books. Choose two, three, or four players." },
     "zh-Hant": { start: "開始遊戲", back: "返回", resultNewGame: "新遊戲", resultRestart: "重新開始", resultClose: "關閉", heading: "遊戲玩法", paragraph: "完成四張同點數牌的組牌。可選擇兩人、三人或四人。" },
@@ -161,9 +181,9 @@
 
   function observeReplayGoal() {
     const center = document.querySelector("#cardGameCenter");
-    if (center) new MutationObserver(syncReplayGoalSurface).observe(center, { childList: true, subtree: true });
+    observeOwned(center, syncReplayGoalSurface, { childList: true, subtree: true });
     const overlay = document.querySelector("#resultOverlay");
-    if (overlay) new MutationObserver(syncReplayGoalSurface).observe(overlay, { attributes: true, attributeFilter: ["hidden"], childList: true, subtree: true });
+    observeOwned(overlay, syncReplayGoalSurface, { attributes: true, attributeFilter: ["hidden"], childList: true, subtree: true });
     syncReplayGoalSurface();
   }
 
@@ -198,7 +218,7 @@
   function observeBattleRecord() {
     const center = document.querySelector("#cardGameCenter");
     if (!center) return;
-    new MutationObserver(syncRecentAskRecord).observe(center, { childList: true, subtree: true });
+    observeOwned(center, syncRecentAskRecord, { childList: true, subtree: true });
     syncRecentAskRecord();
   }
 

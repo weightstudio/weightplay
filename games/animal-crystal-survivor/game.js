@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-close-camera-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-magic-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -2141,12 +2141,15 @@
       }
     });
     if (!target) return;
-    state.shots.push({ x: p.x, y: p.y - 22, px: p.x, py: p.y - 22, target, speed: 620, damage: p.damage, image: p.damage > 1.45 ? "blade" : "seed" });
+    state.shots.push({ x: p.x, y: p.y - 22, px: p.x, py: p.y - 22, originX: p.x, originY: p.y - 22, age: 0, target, speed: 620, damage: p.damage, image: p.damage > 1.45 ? "blade" : "seed" });
+    p.castPulse = 0.18;
     p.shotTimer = p.cooldown;
   }
 
   function updateShots(dt) {
+    state.player.castPulse = Math.max(0, (state.player.castPulse || 0) - dt);
     state.shots = state.shots.filter((shot) => {
+      shot.age = (shot.age || 0) + dt;
       if (!state.enemies.includes(shot.target) || shot.target.hp <= 0) return false;
       const dx = shot.target.x - shot.x;
       const dy = shot.target.y - shot.y;
@@ -2159,14 +2162,14 @@
       if (dist <= 24) {
         damageEnemy(shot.target, shot.damage);
         shot.target.hit = 0.16;
-        addSpark(shot.target.x, shot.target.y, "#67e8f9");
+        addSpark(shot.target.x, shot.target.y, "#67e8f9", { kind: "magicHit", height: (shot.target.size || 64) / 64 * 0.8 });
         return false;
       }
       return true;
     });
     state.sparks = state.sparks.filter((spark) => {
       spark.life -= dt;
-      spark.y -= dt * 44;
+      if (spark.kind !== "magicHit") spark.y -= dt * 44;
       return spark.life > 0;
     });
   }
@@ -2341,8 +2344,8 @@
     scheduleLoop();
   }
 
-  function addSpark(x, y, color) {
-    state.sparks.push({ x, y, color, life: 0.45 });
+  function addSpark(x, y, color, effect = {}) {
+    state.sparks.push({ x, y, color, life: 0.45, ...effect });
   }
 
   function addFloater(textValue, x, y, color) {
