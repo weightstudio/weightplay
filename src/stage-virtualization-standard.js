@@ -47,6 +47,7 @@
 
   function install(rail, options = {}) {
     if (!rail || rail.dataset.wpStageVirtualizationInstalled === "true") return null;
+    delete rail.dataset.wpStageVirtualizationDestroyed;
 
     const selector = options.cardSelector || CARD_SELECTOR;
     // Data-backed clients retain a fixed pool, not one hidden source DOM per
@@ -90,6 +91,17 @@
     );
     const stageWindowLimit = () => Math.max(0, total - pool.length);
     const selectedIndex = () => Math.round(logical);
+    const coordinateScaleFor = (rect) => {
+      let width = rail.clientWidth;
+      if (dataBacked) {
+        const style = getComputedStyle(rail);
+        width = parseFloat(style.width);
+        if (style.boxSizing !== "border-box") {
+          for (const key of ["paddingLeft", "paddingRight", "borderLeftWidth", "borderRightWidth"]) width += parseFloat(style[key]) || 0;
+        }
+      }
+      return width > 0 && rect.width > 0 ? rect.width / width : 1;
+    };
     const cardPitch = () => {
       const first = pool[0]?.getBoundingClientRect();
       const second = pool[1]?.getBoundingClientRect();
@@ -170,9 +182,7 @@
         pool.push(pool.shift());
         const after = anchor?.getBoundingClientRect().left;
         const railRect = rail.getBoundingClientRect();
-        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
-          ? railRect.width / rail.clientWidth
-          : 1;
+        const coordinateScale = coordinateScaleFor(railRect);
         if (Number.isFinite(before) && Number.isFinite(after)) {
           rail.scrollLeft += (after - before) / coordinateScale;
         }
@@ -187,9 +197,7 @@
         pool.unshift(pool.pop());
         const after = anchor?.getBoundingClientRect().left;
         const railRect = rail.getBoundingClientRect();
-        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
-          ? railRect.width / rail.clientWidth
-          : 1;
+        const coordinateScale = coordinateScaleFor(railRect);
         if (Number.isFinite(before) && Number.isFinite(after)) {
           rail.scrollLeft += (after - before) / coordinateScale;
         }
@@ -208,9 +216,7 @@
       if (center && target) {
         const railRect = rail.getBoundingClientRect();
         const cardRect = target.getBoundingClientRect();
-        const coordinateScale = rail.clientWidth > 0 && railRect.width > 0
-          ? railRect.width / rail.clientWidth
-          : 1;
+        const coordinateScale = coordinateScaleFor(railRect);
         const fraction = logical - targetIndex;
         const neighbor = pool.find((card) => Number(card.dataset.wpStageVirtualIndex) === targetIndex + (fraction < 0 ? -1 : 1));
         const neighborRect = neighbor?.getBoundingClientRect();
@@ -522,29 +528,29 @@
       if (!rebuilding) queueRebuild();
     });
     observer.observe(rail, { childList: true, subtree: false });
-    if (!collectCards()) {
-      lifecycle.abort();
-      observer.disconnect();
-      sourceStore.remove();
-      return null;
-    }
+    const dispose = () => {
+      destroyed = true;lifecycle.abort();observer.disconnect();
+      clearTimeout(anchorTimer);clearTimeout(clickTimer);cancelAnimationFrame(settlingFrame);
+      if (pointerId !== null && rail.hasPointerCapture?.(pointerId)) rail.releasePointerCapture(pointerId);
+      sourceStore.remove();delete rail.dataset.wpStageVirtualizationInstalled;
+      // Auto-discovery must not revive an explicitly disposed or invalid rail.
+      rail.dataset.wpStageVirtualizationDestroyed = "true";
+    };
+    try { if (!collectCards()) { dispose();return null; } }
+    catch (error) { dispose();throw error; }
     rail.dataset.wpStageVirtualizationInstalled = "true";
     return {
       rail,
       refresh: () => { if(destroyed)return false;cancelAnimationFrame(settlingFrame);settlingFrame=0;return collectCards(); },
       center: (index = logical) => destroyed ? null : position(index),
-      destroy: () => {
-        destroyed = true;lifecycle.abort();observer.disconnect();
-        clearTimeout(anchorTimer);clearTimeout(clickTimer);cancelAnimationFrame(settlingFrame);
-        if (pointerId !== null && rail.hasPointerCapture?.(pointerId)) rail.releasePointerCapture(pointerId);
-        sourceStore.remove();delete rail.dataset.wpStageVirtualizationInstalled;
-      },
+      destroy: dispose,
     };
   }
 
   const autoScanSelector = "[data-wp-stage-v6-auto]";
   const autoScan = () => {
     document.querySelectorAll(autoScanSelector).forEach((rail) => {
+      if (rail.dataset.wpStageVirtualizationDestroyed === "true") return;
       if (rail.dataset.wpStageVirtualizationInstalled === "true") return;
       const cards = rail.querySelectorAll(CARD_SELECTOR);
       if (cards.length < 2) return;

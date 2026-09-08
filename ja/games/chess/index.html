@@ -1,322 +1,39 @@
-<!doctype html>
-<html lang="ja">
-<head>
-
-    <base href="/games/chess/" />
-    <link rel="canonical" href="https://weightplay.com/ja/games/chess/" />
-    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/chess/" />
-    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/chess/" />
-    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/chess/" />
-    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/chess/" />
-    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/chess/" />
-    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/chess/" />
-    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/chess/" />
-    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/chess/" />
-    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/chess/" />
-    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/chess/" />
-    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/chess/" />
-    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/chess/" />
-    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/chess/" />
-    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/chess/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v14"><title>チェス | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260908-chess-poster-v15"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260908-chess-poster-v15"><style>
-html.popular-chess-active, html.popular-chess-active body { overflow: hidden; overscroll-behavior: none; }
-html.popular-chess-active body { height: 100dvh; min-height: 0; touch-action: none; }
-@media (orientation: landscape) and (max-height: 430px) {
-  body[data-game-id="chess"][data-screen="battle"], body[data-game-id="chess"][data-screen="result"] { overflow: hidden; }
-  body[data-game-id="chess"][data-screen="battle"] .popular-arcade, body[data-game-id="chess"][data-screen="result"] .popular-arcade { height: 100dvh; min-height: 0; padding: 6px; gap: 0; }
-  body[data-game-id="chess"][data-screen="battle"] .arcade-header, body[data-game-id="chess"][data-screen="battle"] .arcade-footer, body[data-game-id="chess"][data-screen="result"] .arcade-header, body[data-game-id="chess"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="chess"][data-screen="battle"] #battleScreen, body[data-game-id="chess"][data-screen="result"] #resultScreen { min-height: 0; height: 100%; }
-  body[data-game-id="chess"][data-screen="battle"] .battle-panel { height: 100%; min-height: 0; padding: 7px; gap: 6px 12px; align-content: stretch; grid-template-columns: minmax(360px, 1fr) minmax(250px, .85fr); grid-template-rows: auto minmax(0, 1fr) auto; }
-  body[data-game-id="chess"][data-screen="battle"] .board-wrap { grid-column: 1; grid-row: 1 / 4; min-height: 0; padding: 5px; }
-  body[data-game-id="chess"][data-screen="battle"] .board { height: 100%; min-height: 0; }
-  body[data-game-id="chess"][data-screen="battle"] .chess-board { width: min(100%, 360px); max-height: none; }
-  body[data-game-id="chess"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="chess"][data-screen="battle"] .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="chess"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="chess"][data-screen="battle"] #controls .control-row { flex-wrap: nowrap; }
-  body[data-game-id="chess"][data-screen="result"] #resultScreen .arcade-panel { min-height: 0; height: 100%; padding: 16px; gap: 10px; }
-}
-@media (min-width: 921px) and (max-height: 760px) {
-  body[data-game-id="chess"][data-screen="battle"], body[data-game-id="chess"][data-screen="result"] { overflow: hidden; }
-  body[data-game-id="chess"][data-screen="battle"] .popular-arcade, body[data-game-id="chess"][data-screen="result"] .popular-arcade { height: 100dvh; min-height: 0; padding: 10px 32px 0; gap: 10px; }
-  body[data-game-id="chess"][data-screen="battle"] .arcade-header, body[data-game-id="chess"][data-screen="battle"] .arcade-footer, body[data-game-id="chess"][data-screen="result"] .arcade-header, body[data-game-id="chess"][data-screen="result"] .arcade-footer { display: none; }
-  body[data-game-id="chess"][data-screen="battle"] #battleScreen, body[data-game-id="chess"][data-screen="result"] #resultScreen { min-height: 0; height: 100%; }
-  body[data-game-id="chess"][data-screen="battle"] .battle-panel { height: 100%; min-height: 0; padding: 8px; gap: 8px 12px; align-content: stretch; grid-template-columns: minmax(300px, 1fr) minmax(220px, .72fr); grid-template-rows: auto minmax(0, 1fr) auto; }
-  body[data-game-id="chess"][data-screen="battle"] .board-wrap { grid-column: 1; grid-row: 1 / 4; min-height: 0; padding: 5px; }
-  body[data-game-id="chess"][data-screen="battle"] .board { height: 100%; min-height: 0; }
-  body[data-game-id="chess"][data-screen="battle"] .chess-board { width: min(100%, 310px); max-height: 100%; }
-  body[data-game-id="chess"][data-screen="battle"] .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="chess"][data-screen="battle"] .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="chess"][data-screen="battle"] #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="chess"][data-screen="battle"] #controls .control-row { flex-wrap: nowrap; }
-  body[data-game-id="chess"][data-screen="result"] #resultScreen .arcade-panel { min-height: 0; height: 100%; padding: 14px; gap: 8px; }
-}
-@media (max-width: 920px) and (orientation: portrait) {
-  html.popular-chess-active, html.popular-chess-active body { overflow: hidden; overscroll-behavior: none; }
-  html.popular-chess-active body { height: 100dvh; min-height: 0; touch-action: none; }
-  html.popular-chess-active .popular-arcade { height: 100dvh; min-height: 0; padding: 12px 14px 16px; gap: 0; }
-  html.popular-chess-active .arcade-header, html.popular-chess-active .arcade-footer { display: none; }
-  html.popular-chess-active #battleScreen, html.popular-chess-active #resultScreen { min-height: 0; height: 100%; }
-  html.popular-chess-active #battleScreen .battle-panel { height: 100%; min-height: 0; padding: 14px; gap: 10px; align-content: stretch; grid-template-rows: auto minmax(220px, 1fr) auto auto; }
-  html.popular-chess-active #battleScreen .board-wrap { min-height: 0; overflow: hidden; padding: 8px; }
-  html.popular-chess-active #battleScreen .board { height: 100%; min-height: 0; }
-  html.popular-chess-active #battleScreen .chess-board { width: min(100%, 360px); max-height: 100%; }
-  html.popular-chess-active #resultScreen .arcade-panel { height: 100%; min-height: 0; padding: 18px; gap: 10px; }
-}
-body[data-game-id="chess"] .chess-board {
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  min-height: 0;
-}
-body[data-game-id="chess"] .chess-cell {
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-}
-body[data-game-id="chess"] .chess-cell.agency-source {
-  outline: 3px dashed var(--arcade-accent-2);
-  outline-offset: -6px;
-}
-body[data-game-id="chess"] .chess-cell.agency-selected {
-  background: color-mix(in srgb, var(--arcade-accent-2) 28%, var(--arcade-panel));
-  box-shadow: inset 0 0 0 4px var(--arcade-accent-2);
-}
-body[data-game-id="chess"] .chess-cell.target {
-  box-shadow: inset 0 0 0 4px var(--arcade-accent), 0 0 0 2px color-mix(in srgb, var(--arcade-accent) 45%, transparent);
-}
-body[data-game-id="chess"] .game-message[data-message-key^="chessAgencyWrong"],
-body[data-game-id="chess"] .game-message[data-message-key="chessAgencyTargetFirst"] {
-  color: var(--arcade-danger);
-  font-weight: 800;
-}
-body[data-game-id="chess"] .result-target {
-  margin: 0;
-  padding: 10px 12px;
-  border: 1px solid color-mix(in srgb, var(--arcade-accent-2) 70%, transparent);
-  border-radius: 10px;
-  color: var(--arcade-accent-2);
-  font-weight: 800;
-  line-height: 1.35;
-}
-body[data-game-id="chess"] .result-beat {
-  margin: 0;
-  padding: 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--arcade-accent) 70%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--arcade-accent) 12%, transparent);
-  color: var(--arcade-accent);
-  font-weight: 900;
-  line-height: 1.35;
-}
-body[data-game-id="chess"] .preview-art { overflow: hidden; aspect-ratio: 1; min-height: 0; background: url("../../assets/chess-cover-v1.webp") center/cover no-repeat; font-size: 0; }
-@media (prefers-reduced-motion: reduce) {
-  body[data-game-id="chess"] .chess-cell,
-  body[data-game-id="chess"] .game-message { transition: none !important; animation: none !important; }
-}
-
-/* Interface V6 shell ownership: keep Main chrome and the logical Battle
-   canvas separate so the physical reserve never steals gameplay space. */
-body[data-game-id="chess"] .arcade-header.main-header {
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 58px;
-  align-items: center;
-  min-height: 76px;
-}
-body[data-game-id="chess"] .main-header-copy { min-width: 0; text-align: center; }
-body[data-game-id="chess"] .main-header-copy h1,
-body[data-game-id="chess"] .main-header-copy p { max-width: 100%; overflow-wrap: anywhere; }
-body[data-game-id="chess"] .main-return,
-body[data-game-id="chess"] .header-icon-btn,
-body[data-game-id="chess"] .battle-back,
-body[data-game-id="chess"] .battle-utility {
-  width: 48px; min-width: 48px; height: 48px; min-height: 48px;
-}
-body[data-game-id="chess"] .main-return { width: 58px; min-width: 58px; }
-body[data-game-id="chess"] .main-return img { width: 30px; height: 30px; object-fit: contain; }
-body[data-game-id="chess"] .settings-control { position: relative; display: grid; justify-items: end; }
-body[data-game-id="chess"] .settings-popover {
-  position: absolute; z-index: 20; top: calc(100% + 8px); right: 0;
-  width: min(260px, calc(100vw - 28px)); display: grid; gap: 8px; padding: 12px;
-  border: 1px solid var(--arcade-border); border-radius: 12px; background: var(--arcade-panel);
-  box-shadow: 0 14px 32px rgba(0,0,0,.28); color: var(--arcade-text);
-}
-/* In RTL the header grid places Settings in the physical left slot. Anchor
-   the popover to that slot's left edge so its full 260px panel stays inside
-   narrow phone envelopes instead of extending past the viewport. */
-:dir(rtl) body[data-game-id="chess"] .settings-popover {
-  right: auto;
-  left: 0;
-}
-body[data-game-id="chess"] .settings-popover[hidden] { display: none; }
-body[data-game-id="chess"] .settings-title { font-size: .85rem; }
-body[data-game-id="chess"] .settings-row {
-  min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-}
-body[data-game-id="chess"] .settings-row select { min-height: 38px; max-width: 145px; }
-body[data-game-id="chess"] .main-panel {
-  grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
-  grid-template-areas: "cover copy";
-  align-items: center;
-  gap: clamp(18px, 4vw, 32px);
-}
-body[data-game-id="chess"] .main-copy { grid-area: copy; min-width: 0; }
-body[data-game-id="chess"] #mainInstruction { margin: 0; }
-body[data-game-id="chess"] .main-progress {
-  min-height: 40px; display: grid; align-content: center; gap: 2px; padding: 8px 10px;
-  border: 1px solid color-mix(in srgb, var(--arcade-accent) 55%, transparent); border-radius: 10px;
-  background: color-mix(in srgb, var(--arcade-accent) 9%, transparent);
-}
-body[data-game-id="chess"] .main-progress strong { font-size: .78rem; }
-body[data-game-id="chess"] #startBtn { width: 100%; min-height: 52px; height: 52px; }
-body[data-game-id="chess"] .preview-art {
-  grid-area: cover;
-  width: 100%; max-width: 420px; justify-self: center;
-  aspect-ratio: 1; min-height: 0; overflow: hidden;
-}
-body[data-game-id="chess"] .preview-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
-body[data-game-id="chess"] #battleScreen,
-body[data-game-id="chess"] #resultScreen { min-height: 0; height: 100%; display: flex; flex-direction: column; }
-body[data-game-id="chess"] #battleScreen[hidden],
-body[data-game-id="chess"] #resultScreen[hidden] { display: none !important; }
-html.popular-chess-active body[data-game-id="chess"] .popular-arcade {
-  width: min(100%, 920px); height: 100dvh; min-height: 0; padding: 0; gap: 0;
-}
-html.popular-chess-active body[data-game-id="chess"] .arcade-header,
-html.popular-chess-active body[data-game-id="chess"] .arcade-footer { display: none; }
-body[data-game-id="chess"] #battleScreen .battle-canvas,
-body[data-game-id="chess"] #resultScreen .battle-canvas {
-  flex: 1 1 auto; min-height: 0; width: 100%; height: auto; overflow: hidden; border-radius: 0;
-}
-body[data-game-id="chess"] #battleScreen .battle-ad-reserve,
-body[data-game-id="chess"] #resultScreen .battle-ad-reserve {
-  display: block; flex: 0 0 56px; width: 100%; height: 56px; min-height: 56px; pointer-events: none;
-}
-body[data-game-id="chess"] #battleScreen .battle-panel,
-body[data-game-id="chess"] #resultScreen .arcade-panel {
-  width: 100%; height: 100%; min-height: 0; border-radius: 0; box-shadow: none;
-}
-body[data-game-id="chess"] #battleScreen .battle-panel {
-  grid-template-rows: auto minmax(220px, 1fr) auto auto; align-content: stretch;
-}
-body[data-game-id="chess"] #battleScreen .battle-top {
-  display: grid; grid-template-columns: 48px minmax(0, 1fr) auto 48px; align-items: center; gap: 8px;
-}
-body[data-game-id="chess"] #battleScreen .battle-top > .round-label { min-width: 0; overflow-wrap: anywhere; }
-body[data-game-id="chess"] #battleScreen .battle-top > .control-row { grid-column: 3; }
-body[data-game-id="chess"] #battleScreen .board-wrap { min-height: 0; overflow: hidden; display: grid; place-items: center; }
-body[data-game-id="chess"] #battleScreen .board { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; }
-body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 360px); height: auto; max-height: 100%; aspect-ratio: 1; }
-body[data-game-id="chess"] #battleScreen .game-message { min-height: 34px; margin: 0; }
-body[data-game-id="chess"] #battleScreen #controls { min-height: 0; }
-body[data-game-id="chess"] #battleScreen #controls .control-row { min-height: 34px; }
-@media (max-width: 620px) {
-  body[data-game-id="chess"] .main-panel {
-    grid-template-columns: 1fr;
-    grid-template-areas: "cover" "copy";
-    padding: 18px;
-  }
-  body[data-game-id="chess"] .preview-art { width: 100%; max-width: none; justify-self: stretch; }
-  body[data-game-id="chess"] #battleScreen .battle-panel { padding: 10px; gap: 8px; }
-  body[data-game-id="chess"] #battleScreen .battle-top { grid-template-columns: 48px minmax(0, 1fr) 48px; }
-  body[data-game-id="chess"] #battleScreen .battle-top > .control-row { grid-column: 2; grid-row: 2; justify-self: stretch; }
-  body[data-game-id="chess"] #battleScreen .battle-top > .battle-utility { grid-column: 3; grid-row: 1; }
-  body[data-game-id="chess"] #battleScreen .battle-top > .round-label { grid-column: 2; grid-row: 1; }
-}
-@media (orientation: landscape) and (max-height: 430px) {
-  body[data-game-id="chess"] #mainScreen .main-panel {
-    grid-template-columns: 300px minmax(0, 1fr);
-    grid-template-areas: "cover copy";
-    gap: 18px;
-    padding: 20px;
-  }
-  body[data-game-id="chess"] #mainScreen .preview-art { width: 300px; max-width: 300px; }
-  body[data-game-id="chess"] #battleScreen .battle-panel {
-    grid-template-columns: minmax(280px, 1fr) minmax(220px, .8fr);
-    grid-template-rows: auto minmax(0, 1fr) auto; padding: 8px; gap: 6px 12px;
-  }
-  body[data-game-id="chess"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / 4; }
-  body[data-game-id="chess"] #battleScreen .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="chess"] #battleScreen .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="chess"] #battleScreen #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 320px); }
-}
-@media (min-width: 921px) and (max-height: 760px) {
-  body[data-game-id="chess"] #battleScreen .battle-panel {
-    grid-template-columns: minmax(300px, 1fr) minmax(220px, .72fr);
-    grid-template-rows: auto minmax(0, 1fr) auto; padding: 8px; gap: 8px 12px;
-  }
-  body[data-game-id="chess"] #battleScreen .board-wrap { grid-column: 1; grid-row: 1 / 4; }
-  body[data-game-id="chess"] #battleScreen .battle-top { grid-column: 2; grid-row: 1; }
-  body[data-game-id="chess"] #battleScreen .game-message { grid-column: 2; grid-row: 2; align-self: start; }
-  body[data-game-id="chess"] #battleScreen #controls { grid-column: 2; grid-row: 3; }
-  body[data-game-id="chess"] #battleScreen .chess-board { width: min(100%, 310px); }
-}
-</style>  <meta name="description" content="チェスは3手で進む短い目標判断スプリントです。見える盤面を読み、指定された白駒を選び、強調された行き先を選んで、自動プレイに任せず手順を完了します。" />
-    <meta property="og:site_name" content="WeightPlay" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="チェス | WeightPlay" />
-    <meta property="og:description" content="チェスは3手で進む短い目標判断スプリントです。見える盤面を読み、指定された白駒を選び、強調された行き先を選んで、自動プレイに任せず手順を完了します。" />
-    <meta property="og:url" content="https://weightplay.com/ja/games/chess/" />
-    <meta property="og:image" content="https://weightplay.com/assets/chess-cover-v1.webp" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="チェス | WeightPlay" />
-    <meta name="twitter:description" content="チェスは3手で進む短い目標判断スプリントです。見える盤面を読み、指定された白駒を選び、強調された行き先を選んで、自動プレイに任せず手順を完了します。" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/chess-cover-v1.webp" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoGame",
-  "name": "チェス",
-  "alternateName": "Chess",
-  "url": "https://weightplay.com/ja/games/chess/",
-  "image": "https://weightplay.com/assets/chess-cover-v1.webp",
-  "description": "チェスは3手で進む短い目標判断スプリントです。見える盤面を読み、指定された白駒を選び、強調された行き先を選んで、自動プレイに任せず手順を完了します。",
-  "publisher": {
-    "@type": "Organization",
-    "name": "WeightStudio",
-    "url": "https://weightplay.com"
-  },
-  "inLanguage": "ja",
-  "isAccessibleForFree": true,
-  "operatingSystem": "Any modern web browser",
-  "genre": [
-    "クラシック",
-    "ボード",
-    "戦略"
-  ],
-  "audience": {
-    "@type": "PeopleAudience",
-    "audienceType": "General players",
-    "suggestedMinAge": 9
-  }
-}
-    </script>
-  </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="chess" data-wp-battle-layout="native"><main id="popularArcade" class="popular-arcade"><header class="arcade-header main-header"><a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><div class="main-header-copy"><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">チェス</h1><p id="gameTagline" class="tagline"></p></div><div class="settings-control"><button id="audioMenuBtn" class="header-icon-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="audioPopover">⚙</button><div id="audioPopover" class="settings-popover" role="group" aria-label="Settings" hidden><strong class="settings-title">Settings</strong><button id="soundBtn" class="settings-row" type="button" data-sound-toggle="true" aria-pressed="true">Sound: On</button><label class="settings-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label></div></div></header><section id="mainScreen" class="screen main-screen"><div class="arcade-panel main-panel"><div class="preview-art"><img class="cover" src="../../assets/chess-cover-v1.webp" alt="チェスのゲーム画像" width="1254" height="1254" decoding="async"></div><div class="main-copy"><p id="objective" class="objective"></p><p id="mainInstruction">Use visible controls to play a complete short round, then review the Result.</p><div class="main-progress" data-wp-main-progress role="status" aria-live="polite"><strong>Objective</strong><span>Complete the three-move Chess sprint.</span></div><button id="startBtn" class="primary" data-wp-main-start="true">Start game</button></div></div></section><section id="battleScreen" class="screen battle-screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><div class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to main" title="Back to main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><section id="resultScreen" class="screen" hidden><div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><p id="resultBeat" class="result-beat" role="status" aria-live="polite"></p><div id="resultStats" class="stats"></div><p id="resultTarget" class="result-target" aria-live="polite"></p><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></section><footer class="arcade-footer" id="footerText"></footer></main><section class="game-page-info game-page-info-static" aria-label="チェス ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>チェス</h2><p>チェスは3手で進む短い目標判断スプリントです。見える盤面を読み、指定された白駒を選び、強調された行き先を選んで、自動プレイに任せず手順を完了します。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>目標判断チェススプリント</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>クラシック · ボード · 戦略</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、上達に挑戦</strong></div><div class="game-info-fact"><span>目安時間</span><strong>2〜5分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>これは大会形式のフル対局ではなく、短い判断ボードです。16マスの盤面に少数の駒が置かれ、次に意味のある選択をする白駒を見つけます。</p>
-<p>3手のルートは作り込まれているため、選択の結果を確認できます。見える手順を終え、強調された行き先が次の手になる理由を理解すれば成功です。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各スプリントは3つの決められた手で構成されます。輪郭のある白駒が現在の出発点で、強調された行き先が次に選ぶ目標です。</p>
-<p>別の駒や行き先を選ぶと訂正メッセージが出ますが、盤面は変わりません。手数と訂正数が、速い連打より観察を重視させます。</p>
-<p>ヒントは現在の出発点と目標を説明しますが、代わりに指してはくれません。結果にはスコア、手数、訂正数、ブラウザ内のベストが表示されます。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>スプリントを開始し、輪郭のある白駒と強調された行き先を確認します。</li><li>印のある白駒を選び、次に見える目標を選びます。</li><li>合法手のメッセージを読んでから次の手へ進みます。</li><li>判断を確認したいときはヒントを使いますが、自分で選びます。</li><li>3手を終え、結果を見て、もう一度遊ぶかメインへ戻ります。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>盤面を押す前に、出発点の輪郭と行き先の強調を両方読みます。</li><li>拒否された選択は訂正メッセージを手掛かりにし、盤面が無傷だと覚えておきます。</li><li>再挑戦では急ぐより訂正を減らして終えることを目指します。</li><li>ヒントで見る場所を確認し、実際の判断は自分で行います。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>最初のスプリントで出発点を選び、次に目標を選ぶリズムを学びます。再挑戦では3手の構造を保ったまま、少ない訂正でのクリアが熟練の目標になります。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>チェスは小さな固定盤、明確な目標表示、即時の訂正フィードバックで、親しみのある題材を読みやすい判断練習に変えます。マウス、タッチ、キーボードは同じ状態を操作し、結果画面は短い再挑戦を支えます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>ベスト結果とサウンド設定はこのブラウザに保存されます。アカウント、購入、クラウド保存、オンライン対局は不要です。サイトデータを消すとローカル結果が失われることがあります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
-    </div>
-  </section><script src="../../src/analytics.js?v=20260908-chess-poster-v15"></script><script src="analytics-ownership.js?v=20260908-chess-poster-v15"></script><script src="../../src/popular-games-batch.js?v=20260908-chess-poster-v15"></script><script src="game.js?v=20260908-chess-poster-v15"></script><script src="/src/site-config.js?v=20260721-locale13-1"></script>
-  <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/runtime-locales/ja.js?v=20260904-wp-text-growth-body-v1"></script>
-  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="チェス";document.title="チェス | WeightPlay";},{once:true});</script>
-</body>
-</html>
+<!doctype html><html lang="ja" dir="ltr"><head><base href="/games/chess/">
+    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/chess/"+location.search+location.hash)}catch{location.replace("/en/games/chess/"+location.search+location.hash)}})();</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="weightplay-scene-controls" content="immutable"><title>チェス</title><link rel="stylesheet" href="../../src/game-shell-controls-standard.css"><link rel="stylesheet" href="full-game.css"><link rel="stylesheet" href="../../src/game-shell-header-layout.css"><meta name="weightplay-game-version" content="v16"><meta name="weightplay-audience" content="general">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <meta name="description" content="駒を動かしてチェックメイト。戦術課題か通常対局を選びましょう。"><link rel="canonical" href="https://weightplay.com/ja/games/chess/"><link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/chess/"><link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/chess/"><link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/chess/"><link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/chess/"><link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/chess/"><link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/chess/"><link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/chess/"><link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/chess/"><link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/chess/"><link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/chess/"><link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/chess/"><link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/chess/"><link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/chess/"><meta property="og:title" content="チェス"><meta property="og:description" content="駒を動かしてチェックメイト。戦術課題か通常対局を選びましょう。"><meta property="og:url" content="https://weightplay.com/ja/games/chess/"><meta property="og:image" content="https://weightplay.com/assets/chess-cover-v1.webp"></head><body data-wp-game-version="v16" data-screen="main" data-wp-game-id="chess" data-wp-battle-layout="native" data-wp-game-owned-guide data-sound-toggle="off">
+<div id="mainScene" data-screen="main" class="wp-standard-main-screen" data-wp-chess-full-game>
+<header class="wp-shell-header-layout"><a id="exit" href="/ja/" data-wp-return="main" aria-label="ロビーに戻る"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false"></a><h1 id="title">チェス</h1><select id="locale" aria-label="Language"></select></header>
+<main id="main"><img class="poster main-poster" src="../../assets/chess-cover-v1.webp" width="1254" height="1254" alt=""><p id="intro" class="main-summary">駒を動かしてチェックメイト。戦術課題か通常対局を選びましょう。</p><p id="campaignProgress" data-wp-main-progress></p><button id="challenges" data-wp-main-start>ゲーム開始</button></main>
+<article id="rulesReference" data-wp-game-guide aria-labelledby="guideTitle"><h2 id="guideTitle">遊び方</h2><div id="guide" class="game-info-sections"><section class="game-info-section"><h3>対局の目標</h3><p>あなたは白、コンピューターは黒です。交互に一手ずつ指します。相手のキングを攻撃し、どの合法手でも救えなくするとチェックメイトで勝利です。キングを取るゲームではありません。</p></section><section class="game-info-section"><h3>駒の動かし方</h3><dl class="piece-reference"><div data-piece="p"><dt>ポーン</dt><dd>空いた前方のマスへ一つ進みます。初期位置からは途中も空いていれば二つ進めます。相手の駒を取るときだけ斜め前へ一つ進みます。</dd></div><div data-piece="r"><dt>ルーク</dt><dd>縦横に何マスでも進めます。他の駒は飛び越せません。</dd></div><div data-piece="bPiece"><dt>ビショップ</dt><dd>斜めに何マスでも進めます。他の駒は飛び越せません。</dd></div><div data-piece="n"><dt>ナイト</dt><dd>一方向へ二マス、直角方向へ一マスの L 字に動きます。他の駒を飛び越せます。</dd></div><div data-piece="q"><dt>クイーン</dt><dd>ルークとビショップを合わせた動きで、縦横斜めに進めます。飛び越しはできません。</dd></div><div data-piece="k"><dt>キング</dt><dd>どの方向にも一マス進めますが、攻撃されるマスには入れません。二つのキングは隣り合えません。</dd></div></dl></section><section class="game-info-section"><h3>特別な手</h3><p>キャスリング：キングを選び、印のある二マス先を選びます。ルークも動きます。両方が未移動で間が空いており、キングがチェック中でなく、通過先と到着先も攻撃されていない必要があります。</p><p>アンパッサン：敵のポーンが二マス進んで自分のポーンの横に来た直後だけ、一マス進んだものとして斜めに取れます。次の手番まで待つと権利を失います。</p><p>昇格：ポーンが最奥の段に着くと、クイーン、ルーク、ビショップ、ナイトから選びます。その駒が先に取られている必要はありません。</p></section><section class="game-info-section"><h3>チェック・メイト・引き分け</h3><p>赤い輪はチェック中のキングです。キングを逃がす、攻撃駒を取る、可能なら間に駒を置くことで防ぎます。自分のキングを攻撃にさらす手は指せません。チェックでないのに合法手がないとステイルメイトです。このゲームでは同一局面三回、メイトに必要な駒不足、双方五十手ずつポーン移動も駒取りもない場合も自動で引き分けです。</p></section><section class="game-info-section"><h3>操作・チャレンジ・保存</h3><p>白い駒と印のあるマスを順に選びます。印は合法手であり安全の保証ではありません。ヒントは駒を選ぶだけで、行き先は自分で決めます。戻すと前の手番に戻ります。チャレンジは表示された目標と手数制限で進み、クリアすると次が開きます。通常対局はメイトか引き分けまで続きます。保存が許可されたブラウザーに対局とクリア記録を別々に保存し、閲覧データを消すと失われます。</p><p>矢印キーで移動、Enterで選択・着手、Escapeで選択解除。</p></section></div></article>
+</div>
+<section id="stages" data-screen="stage" hidden>
+ <div id="stageCanvas">
+  <header class="wp-shell-header-layout"><button id="stageBack" data-wp-return="stage"><span aria-hidden="true">←</span></button><h2 id="stageTitle">チェス</h2></header>
+  <div id="stageWorkspace" role="tabpanel" aria-labelledby="stageTab"><div id="stageList"></div><p id="stageDescription"></p><div id="matchModes"><button id="start"></button><button id="resume" hidden></button></div></div>
+  <nav id="stageTabs" role="tablist"><span aria-hidden="true"></span><button id="stageTab" role="tab" aria-selected="true" aria-controls="stageWorkspace"></button><span aria-hidden="true"></span></nav>
+ </div>
+ <div id="stageReserve" aria-hidden="true"></div>
+</section>
+<script src="../../src/stage-virtualization-standard.js"></script>
+<section id="battle" data-screen="battle" hidden><nav class="topbar"><button id="back" class="play-return" type="button" data-wp-return="battle"><span aria-hidden="true">←</span></button><span id="status" role="status" aria-live="polite"></span></nav><div id="arena" role="application" tabindex="0" aria-label="Chess board"><span id="keyboard" class="sr" aria-live="polite"></span></div><div id="controls"><button id="undo"></button><button id="hint"></button><button id="restart"></button></div><p id="saved"></p>
+<section id="result" data-wp-result-screen aria-labelledby="outcome" hidden>
+ <div class="result-content"><div class="result-heading"><h2 id="outcome" tabindex="-1"></h2><p id="resultReason"></p></div>
+ <img id="resultBoard" alt="" hidden><dl id="resultStats"></dl></div>
+ <div class="result-actions"><button id="resultBack"></button><button id="nextChallenge" disabled></button><button id="again"></button></div>
+</section><dialog id="confirmation" aria-describedby="confirmText"><p id="confirmText"></p><button id="confirmNo" autofocus></button><button id="confirmYes"></button></dialog><div class="reserve" aria-hidden="true"></div></section>
+<dialog id="promotion"><h2 id="promoteTitle"></h2><div id="promoteChoices"></div></dialog>
+<dialog id="error"><p id="errorText"></p><button id="errorRetry"></button><button id="errorBack"></button></dialog>
+<script src="../../src/game-title-registry.js"></script><script src="../../src/sound.js"></script><script src="../../src/game-shell-controls-standard.js"></script><script type="module" src="full-game.mjs"></script></body></html>

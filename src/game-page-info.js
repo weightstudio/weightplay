@@ -2154,6 +2154,8 @@
     "animal-trap-trail": {
       title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "8-20 minutes for the full trail",
       gameplay: "Trap-Reading Platform Adventure", genre: ["Action", "Platform", "Animal"], skills: ["Reaction", "Route Reading", "Timing"],
+      showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true,
+      noteTitle: "Player and Save Information",
       relatedIds: ["animal-canopy-cut", "animal-cratebound"],
       intro: "Read a deceptive moonlit trail, learn the trap cues, and reach the lantern without trusting every floor tile.",
       story: ["A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions."],
@@ -2213,6 +2215,8 @@
     "animal-flip-foundry": {
       title: "Flip Foundry", age: "9+", difficulty: "Easy to Challenging", time: "1-3 minutes per chapter",
       gameplay: "Precision Flip Challenge", genre: ["Arcade", "Physics", "Animal"], skills: ["Timing", "Precision", "Hand-Eye Coordination"],
+      showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true,
+      noteTitle: "Player and Save Information",
       relatedIds: ["animal-sketchwheel-rally", "animal-bounce-brawl"],
       intro: "Swipe a crystal canister, rotate it in the air, and land upright on the next workshop surface.",
       story: ["The foundry turns one careful launch into a route of four surfaces. Shorter swipes stay low, longer swipes travel farther, and every upright landing earns the next decision."],

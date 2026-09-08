@@ -13,15 +13,16 @@ import {mainLocales} from './main-locales.mjs';
 import {resultLocales} from './result-locales.mjs';
 import {leaveLocales} from './leave-locales.mjs';
 import {stageLocales} from './stage-locales.mjs';
+import {entryLocale,lobbyHref} from './locale-entry.mjs';
 const $=id=>document.getElementById(id),saveKey='weightplay_chess_complete_v1';
 let savedLocale;try{savedLocale=localStorage.getItem('weightPlayLocale');}catch{}
-let locale=new URL(location.href).searchParams.get('lang')||savedLocale||document.documentElement.lang; if(!chessLocales[locale])locale='en';
+let locale=entryLocale(location.href,savedLocale,document.documentElement.lang);
 let session=new ChessSession(),view=null,selected=null,active=false,busy=false,focused='e2',epoch=0,promotion=null,currentChallenge=null,progress,outcomeKey=null;
 try{progress=loadChallengeProgress(localStorage);}catch{progress={cleared:[]};}const ai=new ChessAI();
-const text=key=>chessLocales[locale][key]??challengeLocales[locale][key]??campaignLocales[locale][key]??tacticsLocales[locale][key];
+const text=key=>key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.chess?.[locale]??chessLocales[locale].title):chessLocales[locale][key]??challengeLocales[locale][key]??campaignLocales[locale][key]??tacticsLocales[locale][key];
 const challengeButton=$('challenges');
 const nextButton=$('nextChallenge');
-let stageRail=null;
+let stageRail=null,stagePreviewMap=null;
 function showScene(name){
  const result=name==='result',scene=result?'battle':name;
  for(const [type,id] of Object.entries({main:'mainScene',stage:'stages',battle:'battle'})){
@@ -35,13 +36,15 @@ function showScene(name){
 }
 const sound=name=>{if(!document.hidden)window.WonderSound?.play(name);};
 function saved(){try{const data=localStorage.getItem(saveKey);return data?ChessSession.restore(JSON.parse(data)):null;}catch{return null;}}
-function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);$('campaignProgress').textContent=`${copy.progress} · ${progress.cleared.length} / ${challenges.length}`;}
+function updateMain(){const copy=mainLocales[locale];challengeButton.textContent=copy.start;$('intro').textContent=copy.intro;$('exit').setAttribute('aria-label',copy.back);const count=document.createElement('bdi');count.dir='ltr';count.textContent=`${progress.cleared.length} / ${challenges.length}`;$('campaignProgress').replaceChildren(document.createTextNode(copy.progress+' · '),count);}
 function persist(){if(currentChallenge){$('saved').textContent='';return;}try{localStorage.setItem(saveKey,JSON.stringify(session.serialize()));$('saved').textContent=text('saved');}catch{$('saved').textContent='';}}
 function localize(){
  for(const button of $('promoteChoices').children)button.textContent=text({q:'queen',r:'rook',b:'bishop',n:'knight'}[button.dataset.piece]);
  if($('saved').textContent)$('saved').textContent=text('saved');
  $('locale').setAttribute('aria-label',boardLocales[locale].language);
  document.documentElement.lang=locale;document.documentElement.dir=locale==='ar'?'rtl':'ltr';
+ $('exit').href=lobbyHref(locale,location.href);
+ for(const id of ['title','stageTitle'])$(id).dataset.runtimeLocalize='off';
  for(const [id,key] of Object.entries({title:'title',start:'start',resume:'resume',intro:'intro',guideTitle:'guide',undo:'undo',restart:'restart',hint:'hint',again:'start',resultBack:'back',promoteTitle:'promote',confirmText:'confirm',confirmYes:'start',confirmNo:'cancel',errorText:'unavailable',errorRetry:'retry',errorBack:'back'}))$(id).textContent=text(key);
  // Return artwork is permanent. Localization owns its accessible name only.
  $('back').setAttribute('aria-label',text('back'));$('back').setAttribute('title',text('back'));
@@ -56,12 +59,12 @@ const languageNames={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中�
 for(const key of Object.keys(chessLocales)){const o=document.createElement('option');o.value=key;o.textContent=languageNames[key];$('locale').append(o);}$('locale').value=locale;$('locale').onchange=()=>{locale=$('locale').value;try{localStorage.setItem('weightPlayLocale',locale);}catch{}localize();window.dispatchEvent(new CustomEvent('wonder:locale-change'));window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));};
 function stop(){epoch++;ai.cancel();busy=false;selected=null;promotion=null;for(const button of $('controls').querySelectorAll('button'))button.disabled=false;if($('promotion').open)$('promotion').close();view?.dispose();view=null;}
 function renderStages(){
- const list=$('stageList');let previews;
- try{previews=stagePreviews(challenges);list.dataset.previewError='';}catch{list.dataset.previewError='PREVIEW_UNAVAILABLE';}
+ const list=$('stageList');
+ try{stagePreviewMap=stagePreviews(challenges);list.dataset.previewError='';}catch{stagePreviewMap=null;list.dataset.previewError='PREVIEW_UNAVAILABLE';}
  const bind=(b,index)=>{const c=challenges[index];
   if(!b.children.length){const img=document.createElement('img');img.width=256;img.height=256;img.alt='';img.draggable=false;const number=document.createElement('strong');number.className='stage-number';const label=document.createElement('span');label.className='stage-goal';const badge=document.createElement('small');badge.className='stage-state';b.append(img,number,label,badge);}
   b.className='stage-card';b.querySelector('.stage-number').textContent=String(c.id);
-  const image=previews?.get(c.fen),img=b.querySelector('img');img.hidden=!image;if(image&&img.getAttribute('src')!==image)img.src=image;
+  const image=stagePreviewMap?.get(c.fen),img=b.querySelector('img');img.hidden=!image;if(image&&img.getAttribute('src')!==image)img.src=image;
   b.querySelector('.stage-goal').textContent=text(c.kind);
   const cleared=progress.cleared.includes(c.id),unlocked=unlockChallenge(progress,c.id),state=cleared?'cleared':unlocked?'ready':'locked',copy=stageLocales[locale];
   b.dataset.stage=String(c.id);b.dataset.cleared=String(cleared);b.dataset.state=state;
@@ -71,11 +74,24 @@ function renderStages(){
  };
  if(!stageRail)stageRail=window.WeightPlayStageV6.install(list,{total:challenges.length,poolSize:9,bind,
   initialIndex:()=>Math.min(challenges.length-1,Math.max(0,...progress.cleared)),
+  onChange:(index,{pool})=>{const label=pool.find(card=>Number(card.dataset.stageIndex)===index)?.querySelector('.stage-goal');const clipped=label&&label.scrollHeight>label.clientHeight+1;const description=clipped?text(challenges[index].kind):'';if($('stageDescription').textContent!==description){$('stageDescription').textContent=description;$('stageDescription').scrollTop=0;}$('stageDescription').hidden=!clipped;},
   activate:index=>{if(unlockChallenge(progress,index+1))begin(false,index+1);}});
  else stageRail.refresh();
+ $('stageTab').textContent=resultLocales[locale].stages;
  list.dataset.previewCount=String(stagePreviewStats().count);list.dataset.previewBytes=String(stagePreviewStats().encodedBytes);
 }
-function stages(){$('resume').hidden=!saved();active=false;stop();showScene('stage');renderStages();}
+function fitStage(){
+ if($('stages').hidden)return;
+ const root=$('stages'),canvas=$('stageCanvas'),vv=window.visualViewport,css=getComputedStyle(root);
+ const inset=edge=>parseFloat(css.getPropertyValue(`--safe-${edge}`))||0;
+ const width=Math.min(920,Math.max(1,(vv?.width||innerWidth)-inset('left')-inset('right')));
+ const height=Math.max(57,(vv?.height||innerHeight)-inset('top')-inset('bottom'));
+ const scale=Math.min(width/390,(height-56)/480);
+ Object.assign(root.style,{width:`${width}px`,height:`${height}px`,left:`${(vv?.offsetLeft||0)+inset('left')+((vv?.width||innerWidth)-inset('left')-inset('right')-width)/2}px`,top:`${(vv?.offsetTop||0)+inset('top')}px`});
+ Object.assign(canvas.style,{width:`${width/scale}px`,height:`${(height-56)/scale}px`,transform:`scale(${scale})`});
+ root.dataset.scale=String(scale);stageRail?.center();
+}
+function stages(){$('resume').hidden=!saved();active=false;stop();showScene('stage');fitStage();renderStages();}
 function settleChallenge(move){
  const passed=challengeOutcome(currentChallenge,session.game,move);if(passed===null)return false;
  if(passed){try{progress=recordChallengeClear(localStorage,progress,currentChallenge.id);}catch{progress={cleared:[...new Set([...progress.cleared,currentChallenge.id])]};}}
@@ -182,7 +198,7 @@ function leaveRecovery(){$('error').close();currentChallenge?stages():main();}
 $('errorRetry').onclick=recover;$('errorBack').onclick=leaveRecovery;
 $('error').addEventListener('cancel',event=>{event.preventDefault();leaveRecovery();});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active){epoch++;ai.cancel();busy=false;}else if(!document.hidden&&active){render();reply();}});
-window.addEventListener('pagehide',()=>{active=false;stop();stageRail?.destroy();stageRail=null;clearStagePreviews();$('stageList').replaceChildren();});window.addEventListener('pageshow',e=>{if(e.persisted)main();});
-window.addEventListener('resize',()=>{if(!$('stages').hidden)stageRail?.center();});
+window.addEventListener('pagehide',()=>{active=false;stop();stageRail?.destroy();stageRail=null;stagePreviewMap=null;clearStagePreviews();$('stageList').replaceChildren();});window.addEventListener('pageshow',e=>{if(e.persisted)main();});
+window.addEventListener('resize',fitStage);window.visualViewport?.addEventListener('resize',fitStage);window.visualViewport?.addEventListener('scroll',fitStage);
 challengeButton.onclick=stages;$('stageBack').onclick=main;nextButton.onclick=()=>begin(false,currentChallenge.id+1);
 localize();main();
