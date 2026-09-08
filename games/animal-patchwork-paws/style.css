@@ -36,6 +36,12 @@
 @media(min-width:700px) and (max-height:500px) and (min-aspect-ratio:3/2){.main-screen .cover-wrap{width:300px;max-width:300px}}
 @media(max-width:699px){.screen.stage-screen .stage-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;justify-content:stretch!important;gap:12px!important;padding:0!important;min-width:0!important;height:auto!important;min-height:392px!important;overflow:hidden!important}.screen.stage-screen .stage-card{width:auto!important;min-width:0!important;max-width:none!important;flex:none!important;height:190px!important;min-height:190px!important}}
 @media(min-width:700px){.screen.stage-screen .stage-list{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important;justify-content:stretch!important;gap:12px!important;padding:0!important;min-width:0!important;height:190px!important;min-height:190px!important;overflow:hidden!important}.screen.stage-screen .stage-card{width:auto!important;min-width:0!important;max-width:none!important;flex:none!important;height:190px!important;min-height:190px!important}}
+
+/* The campaign rail keeps all 30 authored stages selectable without turning
+   the Battle canvas into a long page. The selected unlocked stage is centered
+   by game.js when the map opens. */
+@media(max-width:699px){.screen.stage-screen .stage-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-height:58svh!important;min-height:0!important;height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;padding-right:4px!important}.screen.stage-screen .stage-card{height:auto!important;min-height:96px!important}}
+@media(min-width:700px){.screen.stage-screen .stage-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-height:52svh!important;min-height:0!important;height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;padding-right:4px!important}.screen.stage-screen .stage-card{height:auto!important;min-height:108px!important}}
 @media(min-width:700px) and (max-height:500px) and (min-aspect-ratio:3/2){.screen.stage-screen{padding:8px 16px!important}.screen.stage-screen>.eyebrow{display:none}.screen.stage-screen>h2{margin:0 0 8px}.screen.stage-screen .stage-tabs{margin-top:8px}}
 
 /* v3 responsive issue repair: keep Main media on the shared wide-layout

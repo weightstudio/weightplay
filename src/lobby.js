@@ -1083,7 +1083,11 @@ function createGameCard(game) {
       : `<div class="game-card-art ${cardArt.className || ""}">${showAgeLabels ? `<span>${ageLabel}</span>` : ""}${comingSoonBadge}</div>`;
   const favoriteAction = i18n.t(favorite ? "action.remove_favorite" : "action.add_favorite");
   const favoriteLabel = i18n.t(favorite ? "action.remove_favorite_title" : "action.add_favorite_title", { title });
-  const primaryAction = isPlayable ? i18n.t(recent ? "action.continue" : "action.play") : i18n.t("action.coming_soon");
+  const primaryAction = isPlayable
+    ? i18n.t(recent ? "action.continue" : "action.play")
+    : ownerPreviewMode && internalTrialPath(game)
+      ? `${stateCopy("previewLabel")} · ${i18n.t("action.play")}`
+      : i18n.t("action.coming_soon");
   const ageOverlay = isKidsLobby && showAgeLabels ? `<span class="game-card-age-overlay">${ageLabel}</span>` : "";
   const continueBadge = isPlayable && recent ? `<span class="continue-badge">${i18n.t("action.continue")}</span>` : "";
   const lifetimeRank = hasRealStats() ? popularGames(5).findIndex((popularGame) => popularGame.id === game.id) + 1 : 0;

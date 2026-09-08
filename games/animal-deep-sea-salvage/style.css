@@ -70,6 +70,8 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 }
 
 [hidden] { display: none !important; }
+body.deep-sea-game-started #mainLanding { display: none !important; }
+body:not(.deep-sea-game-started) #gameDashboard { display: none !important; }
 
 .topbar > .locale-control { display: none; }
 .wp-shell-settings .locale-control { display: block; }

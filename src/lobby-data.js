@@ -4398,9 +4398,9 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.games.push(animalAcornAuctionPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalAcornAuctionPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalAcornAuctionPlanned.id);
 
-// Patchwork Paws is a planned General identity for a bounded edge-matching
-// prototype. Keep its card Coming Soon until exact Tester, review, release,
-// art, and owner-opening gates are complete.
+// Patchwork Paws is a planned General identity for the six-arc campaign.
+// Keep its card Coming Soon until exact Tester, review, release, art, and
+// owner-opening gates are complete.
 const animalPatchworkPawsPlanned = {
   id: "animal-patchwork-paws",
   title: marketFiveLocalized(["Patchwork Paws", "動物拼布爪印", "动物拼布爪印", "パッチワーク・ポーズ", "패치워크 포즈", "Huellas de Mosaico", "Patas em Retalhos", "Pattes en Patchwork", "Pfoten-Patchwork", "Zampe a Patchwork", "Лапки в лоскутках", "पंजों की पैचवर्क", "رقع آثار الحيوانات"]),
@@ -4417,6 +4417,8 @@ const animalPatchworkPawsPlanned = {
   internalTrial: "index.html?trial=1",
   art: { kind: "image", background: "games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg", hideHero: true },
 };
+animalPatchworkPawsPlanned.description = marketFiveLocalized(["Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "跨越六個篇章修復 30 個精心設計的棲地關卡，迎接風向、回聲、羅盤、編織與守護封印規則。", "跨越六个篇章修复 30 个精心设计的栖地关卡，迎接风向、回声、罗盘、编织与守护封印规则。", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules.", "Restore 30 authored habitat stages across six arcs with wind, echo, compass, braid, and guardian rules."]);
+animalPatchworkPawsPlanned.meta = marketFiveLocalized([["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 關卡", "6 個篇章", "保存解鎖"], ["30 关卡", "6 个篇章", "保存解锁"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"], ["30 Stages", "6 Arcs", "Saved Unlocks"]]);
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalPatchworkPawsPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.games.push(animalPatchworkPawsPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalPatchworkPawsPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalPatchworkPawsPlanned.id);

@@ -185,7 +185,7 @@
   document.querySelector("#soundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
   document.querySelector("#settingsButton").addEventListener("click", () => { const button = document.querySelector("#settingsButton"); const popover = document.querySelector("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; button.setAttribute("aria-expanded", String(open)); });
   document.querySelector("#settingsSoundButton").addEventListener("click", () => { state.sound = !state.sound; syncSoundControls(); });
-  document.querySelector("#aimAction").addEventListener("click", () => { canvas.focus?.(); updateHelp(); });
+  document.querySelector("#aimAction").addEventListener("click", () => { canvas.focus?.({ preventScroll: true }); updateHelp(); });
   localeSelect.addEventListener("change", () => setLocale(localeSelect.value));
   canvas.addEventListener("pointerdown", beginAim); canvas.addEventListener("pointermove", updateAim); canvas.addEventListener("pointerup", releaseAim); canvas.addEventListener("pointercancel", () => { state.aiming = false; state.keyboardAim = false; state.pointer = null; updateHelp(); draw(); }); canvas.addEventListener("keydown", handleKeyboardAim);
   window.addEventListener("keydown", (event) => { if (event.key === "Escape" && !state.rolling && !state.aiming) showScreen("stage"); });

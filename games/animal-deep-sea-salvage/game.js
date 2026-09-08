@@ -153,7 +153,7 @@
     research: 0, prestigeCount: 0, techLevels: Object.fromEntries(CONFIG.techUpgrades.map((upgrade) => [upgrade.id, 0])),
     totalDives: 0, totalSold: 0, totalValue: 0, totalWeight: 0, rareFound: 0, totalEvents: 0, lastEvent: null,
     dailyProgress: { dives: 0, sold: 0, events: 0 },
-    settings: { sound: true, music: true, motion: true }, diveFocus: "balanced",
+    settings: { sound: true, music: true, motion: true }, diveFocus: "balanced", started: false,
     lastSavedAt: Date.now(), currentDive: null, pendingOffline: 0,
   });
 
@@ -183,6 +183,7 @@
     for (const key of Object.keys(state.dailyProgress)) state.dailyProgress[key] = Math.max(0, Number(state.dailyProgress[key]) || 0);
     state.lastEvent = raw.lastEvent && typeof raw.lastEvent === "object" ? raw.lastEvent : null;
     state.diveFocus = Object.prototype.hasOwnProperty.call(DIVE_FOCUSES, raw.diveFocus) ? raw.diveFocus : "balanced";
+    state.started = raw.started === true;
     state.settings = { ...state.settings, ...(raw.settings && typeof raw.settings === "object" ? raw.settings : {}) };
     for (const key of Object.keys(state.settings)) state.settings[key] = state.settings[key] !== false;
     state.coins = Math.max(0, state.coins); state.maxDepth = clamp(state.maxDepth, 120, 2200);
@@ -733,7 +734,16 @@
     }));
   };
 
+  const syncSceneVisibility = () => {
+    const started = state.started === true;
+    if (els.landing) els.landing.hidden = started;
+    if (els.dashboard) els.dashboard.hidden = !started;
+    document.body.classList.toggle("deep-sea-game-started", started);
+    document.body.dataset.gameStarted = String(started);
+  };
+
   const render = (now = Date.now()) => {
+    syncSceneVisibility();
     ensureDailyState();
     const dive = state.currentDive || makeDive(now);
     if (!state.currentDive) state.currentDive = dive;
@@ -846,9 +856,8 @@
 
   const bind = () => {
     els.startGame?.addEventListener("click", () => {
-      if (els.landing) els.landing.hidden = true;
-      if (els.dashboard) els.dashboard.hidden = false;
-      document.body.dataset.gameStarted = "true";
+      state.started = true;
+      save();
       els.dispatch?.focus?.({ preventScroll: true });
       render();
     });
@@ -891,6 +900,7 @@
       const research = state.research + 1;
       const prestigeCount = state.prestigeCount + 1;
       state = freshState();
+      state.started = true;
       state.museum = museum; state.museumMilestonesClaimed = museumMilestonesClaimed; state.museumValueBonus = museumValueBonus;
       state.achievementsClaimed = achievementsClaimed; state.techLevels = techLevels;
       state.research = research; state.prestigeCount = prestigeCount; state.dailyKey = localDateKey();

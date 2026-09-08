@@ -1,5 +1,5 @@
 import {LEVELS,trace,solve,normalizeSave} from './meadow-engine.js';
-import {COPY,RULES,NAMES,LOCALE_NAMES} from './meadow-copy.js';
+import {COPY,RULES,TIPS,NAMES,LOCALE_NAMES} from './meadow-copy.js';
 import {Meadow3D} from './meadow-3d.js';
 
 const $=id=>document.getElementById(id),SAVE='weightplay-mirror-meadow-v4';
@@ -21,7 +21,7 @@ function fit(){
   if(scene==='main')return;
   const r=$('playEnvelope').getBoundingClientRect(),scale=Math.min(r.width/390,r.height/640);
   if(!scale)return;
-  for(const id of ['stageScreen','battleScreen']){const s=$(id).style;s.setProperty('--scale',scale);s.setProperty('--lw',`${r.width/scale}px`);s.setProperty('--lh',`${r.height/scale}px`);}
+  for(const id of ['stageScreen','battleScreen']){const s=$(id).style;s.setProperty('--scale',scale);s.setProperty(id==='stageScreen'?'--wp-stage-canvas-scale':'--wp-battle-canvas-scale',scale);s.setProperty('--lw',`${r.width/scale}px`);s.setProperty('--lh',`${r.height/scale}px`);}
   view?.resize();positionLabels();
 }
 function releaseView(){if(view){view.dispose();lastStats=view.stats();view=null;}audio?.close().catch(()=>{});audio=null;}
@@ -83,7 +83,7 @@ function createView(){
 function label(text,x,y,cls,height=.8){const el=document.createElement('span');el.className=`piece-label ${cls}`;el.textContent=text;el.dataset.x=x;el.dataset.y=y;el.dataset.height=height;$('pieceLabels').append(el);return el;}
 function buildLabels(){
   const l=LEVELS[index];$('pieceLabels').replaceChildren();
-  l.mirrors.forEach((m,i)=>{const b=document.createElement('button');b.type='button';b.className=`mirror-hit${l.prisms.includes(i)?' prism':''}`;b.dataset.mirror=i;b.dataset.x=m.x;b.dataset.y=m.y;b.dataset.height=-.65;b.textContent=i+1;b.setAttribute('aria-label',`${l.prisms.includes(i)?t('splitter'):t('rotate')} ${i+1}`);b.onclick=()=>turn(i);$('pieceLabels').append(b);});
+  l.mirrors.forEach((m,i)=>{const b=document.createElement('button');b.type='button';b.id=`mirror-control-${i}`;b.dataset.wpPrimaryAction='mirror';b.className=`mirror-hit${l.prisms.includes(i)?' prism':''}`;b.dataset.mirror=i;b.dataset.x=m.x;b.dataset.y=m.y;b.dataset.height=-.65;b.textContent=i+1;b.setAttribute('aria-label',`${l.prisms.includes(i)?t('splitter'):t('rotate')} ${i+1}`);b.onclick=()=>turn(i);$('pieceLabels').append(b);});
   l.targets.forEach(([x,y],i)=>{const el=label(`◇ ${i+1}`,x,y,'target',.95);el.dataset.target=i;});
   label(t('light'),l.source[0],l.source[1],'source',.8);
   l.gates.forEach((pair,p)=>pair.forEach(([x,y])=>label(`↔ ${p+1}`,x,y,'portal',.42)));
@@ -95,7 +95,8 @@ function update(){
   $('targetCount').textContent=`${t('targets')} ${result.lit.length} / ${LEVELS[index].targets.length}`;
   $('moveCount').textContent=`${t('moves')} ${moves}`;$('undoButton').disabled=!history.length;
   $('finishButton').disabled=!result.won;$('hintButton').disabled=result.won;
-  $('instruction').textContent=result.won?t('clear'):t('ready');
+  const level=LEVELS[index],tip=level.gates.length?(level.prisms.length?3:2):level.prisms.length?1:0;
+  $('instruction').textContent=result.won?t('clear'):TIPS[locale][tip];
   $('pieceLabels').querySelectorAll('[data-target]').forEach(el=>{const lit=result.lit.includes(+el.dataset.target);el.classList.toggle('lit',lit);el.textContent=`${lit?'✓':'◇'} ${+el.dataset.target+1}`;});
   $('pieceLabels').querySelectorAll('[data-mirror]').forEach(el=>{const i=+el.dataset.mirror;el.textContent=`${i+1}${angles[i]?'＼':'／'}`;el.setAttribute('aria-label',`${LEVELS[index].prisms.includes(i)?t('splitter'):t('rotate')} ${i+1} ${angles[i]?'＼':'／'}`);el.classList.remove('hinted');});
 }

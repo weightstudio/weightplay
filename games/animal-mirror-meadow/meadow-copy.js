@@ -33,5 +33,20 @@ hi:['दर्पण छूकर / और \\ बदलें। किरण �
 ar:['المس المرآة للتبديل بين / و \\. يتغير الشعاع فوراً دون رمز سري.','أضئ كل الفوانيس معاً. يمر الضوء عبرها لكن الجدران توقفه.','المقسّمات البنفسجية تمرر الضوء وتعكسه معاً. البوابات المرتبطة تحافظ على اتجاهه.','التلميح يحدد مرآة فقط. التراجع والإعادة مجانيان. الفوز يحفظ التقدم ويفتح المرحلة التالية.'],
 };
 export const RULES=rules;
+export const TIPS={
+en:['Bend the light into every ◇ lantern. Tap a mirror.','Purple mirrors split light: straight + reflected.','Matching gates move light without turning it.','Keep every lantern lit at the same time.'],
+'zh-Hant':['點鏡子讓光轉彎，照到所有 ◇ 燈塔。','紫色分光鏡：光會同時直行、轉彎。','相同編號的傳送門互通，光的方向不變。','分配光路，讓所有燈塔同時亮起。'],
+'zh-Hans':['点镜子让光转弯，照到所有 ◇ 灯塔。','紫色分光镜：光会同时直行、转弯。','相同编号的传送门互通，光的方向不变。','分配光路，让所有灯塔同时亮起。'],
+ja:['鏡をタップして、すべての◇に光を届けよう。','紫の鏡は光を直進と反射に分けます。','同じ番号のゲートでは光の方向を保ちます。','すべての灯りを同時にともそう。'],
+ko:['거울을 눌러 모든 ◇ 등불로 빛을 보내세요.','보라색 거울은 빛을 직진과 반사로 나눕니다.','같은 번호 문은 빛의 방향을 유지합니다.','모든 등불을 동시에 켜세요.'],
+es:['Toca espejos: dirige luz a cada farol ◇.','Los espejos morados transmiten y reflejan.','Los portales del mismo número conservan la dirección.','Mantén todos los faroles encendidos a la vez.'],
+'pt-BR':['Toque nos espelhos e ilumine cada lanterna ◇.','Espelhos roxos transmitem e refletem a luz.','Portais de mesmo número mantêm a direção.','Acenda todas as lanternas ao mesmo tempo.'],
+fr:['Touchez les miroirs : éclairez chaque lanterne ◇.','Les miroirs violets transmettent et réfléchissent.','Les portails de même numéro gardent la direction.','Gardez toutes les lanternes allumées ensemble.'],
+de:['Tippe Spiegel an und beleuchte jede Laterne ◇.','Violette Spiegel teilen: geradeaus + um die Ecke.','Portale mit gleicher Nummer behalten die Richtung.','Alle Laternen müssen gleichzeitig leuchten.'],
+it:['Tocca gli specchi e illumina ogni lanterna ◇.','Gli specchi viola trasmettono e riflettono.','I portali con lo stesso numero mantengono la direzione.','Accendi tutte le lanterne contemporaneamente.'],
+ru:['Нажимайте зеркала и осветите каждый фонарь ◇.','Фиолетовые зеркала пропускают и отражают луч.','Порталы одного номера сохраняют направление.','Все фонари должны гореть одновременно.'],
+hi:['दर्पण छूकर हर ◇ लालटेन तक प्रकाश पहुँचाएँ।','बैंगनी दर्पण प्रकाश सीधा और मोड़कर भेजते हैं।','एक अंक के द्वार प्रकाश की दिशा नहीं बदलते।','सभी लालटेन एक साथ जलती रखें।'],
+ar:['المس المرايا لتوجيه الضوء إلى كل فانوس ◇.','المرايا البنفسجية تمرر الضوء وتعكسه معاً.','البوابات ذات الرقم نفسه تحافظ على الاتجاه.','أبقِ كل الفوانيس مضاءة في الوقت نفسه.'],
+};
 export const NAMES={en:['First light','Around the corner','Lantern chain','The reverse path','Keeper’s crossing','Two beams','Branch garden','Moon gate','The return path','Light festival'],'zh-Hant':['第一束月光','轉過彎角','燈塔接力','回望的光','守園者的交叉路','一光分兩路','枝葉花園','月光之門','回流的光','月光祭典'],'zh-Hans':['第一束月光','转过弯角','灯塔接力','回望的光','守园者的交叉路','一光分两路','枝叶花园','月光之门','回流的光','月光祭典']};
 export const LOCALE_NAMES={'en':'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
