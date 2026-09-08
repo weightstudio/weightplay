@@ -734,6 +734,49 @@
         ["Is progress saved?", "Unlocked lessons and the best comparison result are saved only in this browser."],
       ],
     },
+    "animal-balance-grove": {
+      title: "Balance Grove",
+      age: "6+",
+      difficulty: "Easy to Challenging",
+      time: "2-6 minutes per grove",
+      skills: ["Math", "Planning", "Focus"],
+      gameplay: "Balance Subset Puzzle",
+      genre: ["Puzzle", "Balance", "Logic", "Family", "Animal"],
+      relatedIds: ["animal-canopy-cut", "animal-cratebound"],
+      intro: "Balance Grove is a calm three-grove puzzle about choosing named stones to steady forest bridges. Read the target, compare the visible weights, and make a careful subset before Taro checks the scale.",
+      story: [
+        "Moss Shell Taro is repairing three quiet bridges in a forest grove. Each bridge presents a small, authored set of stones with memorable names and a clear target. The goal is not speed: it is to notice relationships, make a plan, and choose a stable combination that leaves the bridge balanced.",
+        "The short campaign keeps the same friendly rules while changing the target, stone set, and useful combinations. Later groves ask for more deliberate comparison and make decoy stones more tempting, so players learn to check the whole tray rather than grabbing the first plausible answer.",
+      ],
+      systems: [
+        "Select stones from the tray to place them on the right pan, then choose Check balance. The left pan shows the fixed bridge weight and the right pan shows the selected subset. A wrong combination is safe to clear and try again.",
+        "There is no timer, account, purchase, or advertising request. Progress and best checks stay in this browser. The same readable Main, Stage, Battle, and Result flow works with touch, mouse, and keyboard input.",
+      ],
+      how: [
+        "Start a round and read the target shown for the current grove.",
+        "Inspect the names and weights on every stone before selecting one.",
+        "Choose a subset whose total matches the bridge target, then check the balance.",
+        "Clear the pan and try another combination when the result is not steady.",
+      ],
+      strategyTips: [
+        "Look for pairs that add up to the target before testing larger combinations.",
+        "Use the displayed weights to eliminate stones that are already too heavy or too light.",
+        "Keep the remaining tray in view; a decoy that helps one partial total may block the final subset.",
+        "Treat each grove as a short lesson in subset planning rather than a race against a clock.",
+      ],
+      progression: [
+        "The first grove introduces the scale, named stones, and direct target matching. The second grove adds more tempting alternatives and asks for a clearer comparison plan.",
+        "The third grove combines the earlier choices into a compact mastery check. Every grove remains replayable, and a calm retry helps players understand why a subset succeeds or fails.",
+      ],
+      designNote: "Balance Grove uses deterministic authored targets, visible arithmetic, responsive Main/Stage/Battle/Result screens, localized controls, and gentle retry feedback. Its puzzle feedback is for play and local progress, not a formal ability assessment.",
+      parent: "This general-audience puzzle may practise counting, comparison, planning, and explaining a choice. It is playful feedback rather than a school, medical, or intelligence assessment. Progress and best checks are stored only in this browser; no account or purchase is required.",
+      faq: [
+        ["How do I steady a bridge?", "Select stones whose combined weight matches the displayed target, then choose Check balance."],
+        ["Can I retry a wrong answer?", "Yes. A wrong combination is safe to clear, and the current grove can be tried again without losing progress."],
+        ["Is there a timer?", "No. The three groves are designed for calm comparison and subset planning."],
+        ["Is progress saved?", "Unlocked progress and best checks are saved only in this browser."],
+      ],
+    },
     "animal-gearpack-expedition": {
       title: "Animal Gearpack Expedition",
       age: "13+",
@@ -2111,6 +2154,7 @@
     "animal-trap-trail": {
       title: "Moonlit Trap Trail", age: "9+", difficulty: "Easy to Challenging", time: "8-20 minutes for the full trail",
       gameplay: "Trap-Reading Platform Adventure", genre: ["Action", "Platform", "Animal"], skills: ["Reaction", "Route Reading", "Timing"],
+      relatedIds: ["animal-canopy-cut", "animal-cratebound"],
       intro: "Read a deceptive moonlit trail, learn the trap cues, and reach the lantern without trusting every floor tile.",
       story: ["A quiet trail winds through six five-stage arcs. Every stage has one authored route lesson, and checkpoint stages at 5, 10, 15, 20, 25, and 30 mark the arc transitions."],
       systems: ["Arrow keys or the visible touch controls move the runner; Space jumps and Pulse briefly highlights the next trap cue.", "Six authored mechanic families—gaps, moving traps, reversed controls, low ceilings, crosswind, and darkness—arrive in readable combinations rather than random layouts.", "A gap or hidden hazard resets only the current stage, while the lantern marks a clear finish. The Result screen offers Retry, Stages, and the next unlocked stage."],
@@ -3171,6 +3215,26 @@
     parent: "قد يساعد هذا اللغز العام الداخلي على ممارسة العد والترتيب والانتباه وشرح المقارنة. هذه ملاحظات للعب وليست تقييمًا رسميًا للقدرات؛ تبقى الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط.",
     faq: [["كم عدد الدروس؟", "هناك 30 درسًا مؤلفًا قابلًا لإعادة اللعب في ستة أقواس، مع نقاط فحص في الدروس 5 و10 و15 و20 و25 و30."], ["كيف تختلف الدروس اللاحقة؟", "يزداد عدد الصواني من ثلاث إلى سبع، وتظهر طلبات المرتبة الثانية، وتتطلب دروس محددة مقارنات ظاهرة أكثر قبل الفحص."], ["هل يُحفظ التقدم؟", "تُحفظ الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط."]],
   };
+
+  const balanceGroveLocaleGuideCopy = {
+    en: { title: "Balance Grove", intro: "Balance Grove is a calm three-grove puzzle about choosing named stones to steady forest bridges. Read the target, compare the visible weights, and make a careful subset before Taro checks the scale.", gameplay: "Balance Subset Puzzle", genre: ["Puzzle", "Balance", "Logic", "Family", "Animal"], skills: ["Math", "Planning", "Focus"] },
+    "zh-Hant": { title: "平衡林地", intro: "《平衡林地》是一款平靜的三座森林小橋益智遊戲，透過選擇有名字的石頭讓橋保持穩定。讀取目標、比較可見重量，先規劃組合再檢查磅秤。", gameplay: "平衡子集合益智", genre: ["益智", "平衡", "邏輯", "家庭", "動物"], skills: ["數學", "規劃", "專注"] },
+    "zh-Hans": { title: "平衡林地", intro: "《平衡林地》是一款平静的三座森林小桥益智游戏，通过选择有名字的石头让桥保持稳定。读出目标、比较可见重量，先规划组合再检查秤盘。", gameplay: "平衡子集益智", genre: ["益智", "平衡", "逻辑", "家庭", "动物"], skills: ["数学", "规划", "专注"] },
+    ja: { title: "バランス・グローブ", intro: "『バランス・グローブ』は、名前の付いた石を選んで森の橋を安定させる、穏やかな3つの森のパズルです。目標を読み、見える重さを比べ、タロが秤を確認する前に組み合わせを考えます。", gameplay: "バランス組み合わせパズル", genre: ["パズル", "バランス", "ロジック", "ファミリー", "動物"], skills: ["算数", "計画", "集中"] },
+    ko: { title: "밸런스 그로브", intro: "밸런스 그로브는 이름이 붙은 돌을 골라 숲의 다리를 안정시키는 차분한 세 숲 퍼즐입니다. 목표를 읽고 보이는 무게를 비교한 뒤 타로가 저울을 확인하기 전에 조합을 계획하세요.", gameplay: "균형 부분집합 퍼즐", genre: ["퍼즐", "균형", "논리", "가족", "동물"], skills: ["수학", "계획", "집중"] },
+    es: { title: "Arboleda del Equilibrio", intro: "Arboleda del Equilibrio es un rompecabezas tranquilo de tres bosques en el que eliges piedras con nombre para estabilizar puentes. Lee el objetivo, compara los pesos visibles y prepara un conjunto antes de que Taro revise la balanza.", gameplay: "Rompecabezas de subconjuntos y equilibrio", genre: ["Puzle", "Equilibrio", "Lógica", "Familia", "Animales"], skills: ["Matemáticas", "Planificación", "Concentración"] },
+    "pt-BR": { title: "Bosque do Equilíbrio", intro: "Bosque do Equilíbrio é um quebra-cabeça calmo com três bosques, no qual você escolhe pedras nomeadas para estabilizar pontes. Leia o alvo, compare os pesos visíveis e planeje um conjunto antes de Taro verificar a balança.", gameplay: "Quebra-cabeça de subconjunto e equilíbrio", genre: ["Puzzle", "Equilíbrio", "Lógica", "Família", "Animais"], skills: ["Matemática", "Planejamento", "Foco"] },
+    fr: { title: "Bosquet d’Équilibre", intro: "Bosquet d’Équilibre est un puzzle calme en trois bosquets où vous choisissez des pierres nommées pour stabiliser des ponts. Lisez la cible, comparez les poids visibles et préparez un ensemble avant que Taro ne vérifie la balance.", gameplay: "Puzzle de sous-ensembles et d’équilibre", genre: ["Puzzle", "Équilibre", "Logique", "Famille", "Animaux"], skills: ["Mathématiques", "Planification", "Concentration"] },
+    de: { title: "Balance-Hain", intro: "Balance-Hain ist ein ruhiges Puzzle in drei Waldhainen. Wähle benannte Steine, um Brücken zu stabilisieren, lies das Ziel, vergleiche die sichtbaren Gewichte und plane eine passende Auswahl, bevor Taro die Waage prüft.", gameplay: "Balance-Teilmenge-Puzzle", genre: ["Puzzle", "Balance", "Logik", "Familie", "Tiere"], skills: ["Mathematik", "Planung", "Konzentration"] },
+    it: { title: "Bosco dell’Equilibrio", intro: "Bosco dell’Equilibrio è un puzzle tranquillo in tre boschi: scegli pietre nominate per stabilizzare i ponti, leggi il bersaglio, confronta i pesi visibili e prepara un insieme prima che Taro controlli la bilancia.", gameplay: "Puzzle di equilibrio e sottoinsiemi", genre: ["Puzzle", "Equilibrio", "Logica", "Famiglia", "Animali"], skills: ["Matematica", "Pianificazione", "Concentrazione"] },
+    ru: { title: "Роща равновесия", intro: "«Роща равновесия» — спокойная головоломка о трёх лесных мостах. Выбирайте камни с именами, читайте цель, сравнивайте видимый вес и планируйте набор до того, как Таро проверит чаши весов.", gameplay: "Пазл о равновесии и подмножествах", genre: ["Головоломка", "Равновесие", "Логика", "Семейная", "Животные"], skills: ["Математика", "Планирование", "Внимание"] },
+    hi: { title: "संतुलन उपवन", intro: "संतुलन उपवन तीन शांत वन-पुलों की पहेली है, जिसमें नाम वाले पत्थर चुनकर पुलों को स्थिर किया जाता है। लक्ष्य पढ़ें, दिखाई देने वाले भारों की तुलना करें और तारो के तराजू जाँचने से पहले सही समूह बनाएँ।", gameplay: "संतुलन उपसमुच्चय पहेली", genre: ["पहेली", "संतुलन", "तर्क", "परिवार", "जानवर"], skills: ["गणित", "योजना", "ध्यान"] },
+    ar: { title: "بستان التوازن", intro: "بستان التوازن لغز هادئ من ثلاث غابات، تختار فيه أحجارًا مسمّاة لتثبيت الجسور. اقرأ الهدف، وقارن الأوزان الظاهرة، وخطط للمجموعة المناسبة قبل أن يفحص تارُو الميزان.", gameplay: "لغز التوازن والمجموعات الجزئية", genre: ["ألغاز", "توازن", "منطق", "عائلية", "حيوانات"], skills: ["الرياضيات", "التخطيط", "التركيز"] },
+  };
+  for (const [localeKey, copy] of Object.entries(balanceGroveLocaleGuideCopy)) {
+    localizedGames[localeKey] ||= {};
+    localizedGames[localeKey]["animal-balance-grove"] = copy;
+  }
 
   // Reapply the compact General copy after the larger locale catalog above;
   // several locale blocks are assigned later in this file and would otherwise
@@ -15393,7 +15457,7 @@
           ["هل يُحفظ التقدم؟", "تُحفظ أفضل نتيجة محلية فقط في هذا المتصفح."],
         ],
       },
-      "animal-trap-trail": { title: "مسار الفخ القمري", intro: "اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية.", difficulty: "من السهل إلى التحدي", faq: [["هل يُحفظ التقدم؟", "يبقى أفضل مستوى محفوظًا في هذا المتصفح فقط."]] }
+      "animal-trap-trail": { title: "مسار الفخ القمري", intro: "اقرأ مسارًا خادعًا تحت ضوء القمر، وتعلم إشارات الفخ، ووصل إلى الفانوس دون الوثوق بكل بلاطة أرضية.", difficulty: "من السهل إلى التحدي" }
     }
   };
   for (const [localeCode, relatedCards] of Object.entries(runeRelatedCardLocaleCopy)) {

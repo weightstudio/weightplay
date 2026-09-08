@@ -3541,6 +3541,20 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.games.push(animalBalanceGrovePlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalBalanceGrovePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalBalanceGrovePlanned.id);
 
+// Balance Grove cleared the exact v4/I6 Tester, Reviewer, art, Director, and
+// Release Preflight gates. Expose the reviewed candidate through the public
+// playable catalog without restoring its private trial marker.
+const animalBalanceGrovePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-balance-grove");
+if (animalBalanceGrovePublic) {
+  animalBalanceGrovePublic.status = "playable";
+  animalBalanceGrovePublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  delete animalBalanceGrovePublic.internalTrial;
+}
+
 // Weighted General prototype (2026-08-30). Keep the card planned and the
 // playable route private until art, Tester, Reviewer, and release gates pass.
 const animalDewlineLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
@@ -4294,14 +4308,13 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.games.push(animalHabitatBlueprintPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalHabitatBlueprintPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalHabitatBlueprintPlanned.id);
 
-// Weather Watch is a planned General identity for a bounded forecast-pattern
-// prototype. Keep its card Coming Soon until exact Tester, Gameplay Review,
-// release, art, and owner-opening gates are complete.
+// Weather Watch is a public General game after exact Tester, Gameplay Review,
+// art, Director, and release gates completed for v5/I6.
 const animalWeatherWatchPlanned = {
   id: "animal-weather-watch",
   title: marketFiveLocalized(["Weather Watch", "天氣觀察站", "天气观察站", "ウェザー・ウォッチ", "날씨 관측소", "Observatorio del Tiempo", "Observatório do Tempo", "Observatoire météo", "Wetterwarte", "Osservatorio del Tempo", "Метеопост", "मौसम चौकी", "مرصد الطقس"]),
-  status: "planned",
-  statusText: { ...ownerPreviewStatusText },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
   type: marketFiveLocalized(["Forecast Pattern Puzzle", "預報規律益智", "预报规律益智", "天気予報パターンパズル", "예보 패턴 퍼즐", "Puzle de patrones del tiempo", "Puzzle de padrões do tempo", "Puzzle de motifs météo", "Wetter-Musterpuzzle", "Puzzle di schemi meteo", "Пазл погодных узоров", "मौसम पैटर्न पहेली", "لغز أنماط الطقس"]),
   description: marketFiveLocalized(["Read three weather signs, predict the next one, and guide each animal to a calm shelter window.", "讀懂三個天氣訊號，預測下一個變化，帶動物走進平靜的避風時段。", "读懂三个天气信号，预测下一次变化，带动物走进平静的避风时段。", "3つの天気サインを読み、次を予測して動物を穏やかな避難時間へ導こう。", "세 가지 날씨 신호를 읽고 다음 신호를 예측해 동물을 평온한 대피 시간으로 이끄세요.", "Lee tres señales, predice la siguiente y lleva a cada animal a un refugio tranquilo.", "Leia três sinais, preveja o próximo e leve cada animal a uma janela de abrigo calma.", "Lis trois signaux, prédis le suivant et guide chaque animal vers un abri calme.", "Lies drei Wettersignale, sage das nächste voraus und führe jedes Tier zum ruhigen Schutzfenster.", "Leggi tre segnali, prevedi il prossimo e guida ogni animale verso un rifugio calmo.", "Читайте три сигнала погоды, предскажите следующий и приведите животных в спокойное укрытие.", "तीन मौसम संकेत पढ़ें, अगला अनुमान लगाएँ और हर जानवर को शांत आश्रय तक पहुँचाएँ।", "اقرأ ثلاث إشارات للطقس وتنبأ بالتالية وقد كل حيوان إلى مأوى هادئ."]),
   meta: marketFiveLocalized([["3 Forecasts", "Next-Sign Logic", "Calm Retry"], ["3 次預報", "下一訊號邏輯", "平靜重試"], ["3 次预报", "下一信号逻辑", "平静重试"], ["3つの予報", "次のサイン", "穏やかな再挑戦"], ["3 예보", "다음 신호 논리", "차분한 재시도"], ["3 pronósticos", "Lógica de señales", "Reintento amable"], ["3 previsões", "Lógica de sinais", "Nova tentativa calma"], ["3 prévisions", "Logique des signaux", "Reprise douce"], ["3 Vorhersagen", "Nächstes Signal", "Ruhiger Neustart"], ["3 previsioni", "Logica del segnale", "Riprova calma"], ["3 прогноза", "Логика сигналов", "Спокойный повтор"], ["3 पूर्वानुमान", "अगला संकेत तर्क", "शांत पुनःप्रयास"], ["3 توقعات", "منطق الإشارة التالية", "إعادة هادئة"]]),
@@ -4310,7 +4323,6 @@ const animalWeatherWatchPlanned = {
   ages: ["6", "family"],
   ageLabel: marketFiveLocalized(Array(13).fill("6+")),
   href: "games/animal-weather-watch/",
-  internalTrial: "index.html?trial=1",
   art: { kind: "image", background: "games/animal-weather-watch/assets/animal-weather-watch-cover-art.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalWeatherWatchPlanned[field], "__localizedExact", { value: true, enumerable: false });

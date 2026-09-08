@@ -17,6 +17,10 @@
       "date": "2026-07-07T21:29:26+08:00",
       "evidence": "git:c52fb0fbbdf1ea248e960bb638222b17de19154c"
     },
+    "animal-balance-grove": {
+      "date": "2026-09-08T03:36:38.620Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-bamboo-pipes": {
       "date": "2026-07-29T23:39:48+08:00",
       "evidence": "git:e8917977335735d5d888a69bd69d1874fbe1126d"
@@ -272,6 +276,10 @@
     "animal-unblock": {
       "date": "2026-07-28T14:19:40+08:00",
       "evidence": "git:6a05ae71c10d70ea6a76b78932cb7e6d520fdf20"
+    },
+    "animal-weather-watch": {
+      "date": "2026-09-08T04:17:14.305Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-word-trails": {
       "date": "2026-07-21T00:28:03+08:00",

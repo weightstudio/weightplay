@@ -61,3 +61,27 @@ body.wp-shell-battle-active .topbar{display:none!important}
   #resultScreen .result-icon{font-size:2rem}
   #resultScreen .main-actions{gap:8px;margin-top:10px}
 }
+
+/* v6 suggestion repair: keep Battle recovery controls readable in the
+   844x390 landscape contract while preserving the large fruit targets. */
+@media (orientation:landscape) and (max-height:560px){
+  #battleScreen[data-wp-logical-battle-canvas]{gap:7px;padding:8px 12px}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header{min-height:48px;gap:8px}
+  /* Interface 6 scales the logical Battle canvas to the physical viewport;
+     these logical values render as approximately 44px at 844x390. */
+  #battleScreen[data-wp-logical-battle-canvas] .wp-shell-return{width:104px!important;min-width:104px!important;max-width:104px!important;height:104px!important;min-height:104px!important;max-height:104px!important}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-header .icon-btn,
+  #battleScreen[data-wp-logical-battle-canvas] .battle-utility .icon-btn{min-width:104px;min-height:104px;font-size:2.5rem}
+  #battleScreen[data-wp-logical-battle-canvas] .prompt{margin:0 0 2px;line-height:1.25;font-size:1.8rem}
+  #battleScreen[data-wp-logical-battle-canvas] .pattern-slots{min-height:72px;margin:3px 0}
+  #battleScreen[data-wp-logical-battle-canvas] .pattern-slot{width:72px;height:72px;font-size:2.2rem}
+  #battleScreen[data-wp-logical-battle-canvas] .orchard-buttons{gap:8px;margin:4px 0}
+  #battleScreen[data-wp-logical-battle-canvas] .fruit-button{min-height:112px;padding:7px 6px}
+  #battleScreen[data-wp-logical-battle-canvas] .fruit-icon{width:50px;height:50px}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions{gap:8px;margin-top:2px}
+  #battleScreen[data-wp-logical-battle-canvas] .battle-actions>*{min-height:104px;padding:8px 12px;font-size:2rem}
+  #battleScreen[data-wp-logical-battle-canvas] .status{min-height:48px;margin:2px 0 0;font-size:1.5rem}
+}
+
+.stage-card.is-locked{opacity:.66;cursor:not-allowed;background:#dce5df!important}
+.stage-card.is-locked .arrow{font-size:1rem}

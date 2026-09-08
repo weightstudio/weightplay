@@ -3,22 +3,41 @@
 .target-card{background:linear-gradient(90deg,#10384b9e 0%,#10384b82 54%,#10384b55 100%),url("assets/animal-hollow-fit-background.png") center 72%/cover}
 .result-guide{display:block;width:min(100%,220px);height:auto;max-height:280px;object-fit:contain;margin:0 auto -18px;filter:drop-shadow(0 18px 24px #0008)}
 
+/* The Battle utility keeps its full localized state in aria-label/pressed
+   state while presenting the compact sound glyph in the fixed 48px shell
+   control. This prevents translated "Sound: ..." copy from clipping. */
+.battle-frame > .topbar [data-sound-toggle]{display:grid;place-items:center;font-size:0;}
+.battle-frame > .topbar [data-sound-toggle]::after{content:"♪";font-size:20px;line-height:1;}
+
 /* The short landscape viewport is still a full Main canvas: keep the
    catalog-wide 420px poster and scale the complete Battle owner as one unit
    so its HUD, choices, feedback, and action track remain reachable. */
 .battle-frame{width:100%;height:100%;}
 @media (min-width:700px){
-  .battle-screen{display:flex;justify-content:center;padding:0;height:calc(100svh - 56px);overflow:hidden;}
+  .battle-screen{display:flex;justify-content:center;padding:0;min-height:0;height:calc(100svh - 56px);overflow:hidden;}
   .battle-frame{display:flex;flex-direction:column;height:100%;}
   .battle-frame > .topbar{flex:0 0 64px;height:64px;min-height:64px;}
-  .battle-frame > .battle-content{flex:1;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;gap:10px;}
+  .battle-frame > .battle-content{flex:1;min-height:0;width:100%;max-width:none;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
   .battle-frame > .battle-content > .battle-actions{margin-top:auto;}
+  .piece-card{min-height:148px;}
 }
 @media (max-height:560px) and (orientation:landscape){
   .main-content{grid-template-columns:420px minmax(0,1fr);gap:0 18px;max-width:920px;}
   .main-content .main-poster{width:420px;max-width:420px;margin:0;}
-  .battle-frame{width:calc(100% / var(--hollow-battle-scale, .617));height:calc(100% / var(--hollow-battle-scale, .617));transform:scale(var(--hollow-battle-scale, .617));transform-origin:top center;}
-  .battle-frame > .battle-content{height:auto;flex:1;}
+  .battle-frame{width:100%;height:100%;transform:none;}
+  .battle-frame > .battle-content{height:auto;flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:40px minmax(0,1fr) 22px 44px;gap:6px 12px;align-content:stretch;}
+  .battle-frame > .battle-content > .battle-heading{grid-column:1 / -1;grid-row:1;align-items:center;margin:0;min-width:0;}
+  .battle-frame > .battle-content > .target-card{grid-column:1;grid-row:2;min-height:0;height:100%;grid-template-columns:minmax(0,1fr) 86px;gap:6px;padding:8px;}
+  .battle-frame > .battle-content > .target-card .target-grid{max-width:86px;}
+  .battle-frame > .battle-content > .choice-heading{grid-column:2;grid-row:2;align-self:start;min-width:0;margin:0;padding:0 2px;}
+  .battle-frame > .battle-content > .choice-heading h2{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .battle-frame > .battle-content > .choice-heading .selection-note{font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .battle-frame > .battle-content > .piece-options{grid-column:2;grid-row:2;align-self:end;min-height:0;padding-top:28px;gap:4px;}
+  .battle-frame > .battle-content > .piece-options .piece-card{min-height:92px;padding:6px 4px;gap:3px;font-size:12px;}
+  .battle-frame > .battle-content > .piece-options .piece-card .shape-grid{width:62px;max-width:62px;}
+  .battle-frame > .battle-content > .status{grid-column:1 / -1;grid-row:3;min-height:22px;margin:0;font-size:12px;line-height:1.2;}
+  .battle-frame > .battle-content > .battle-actions{grid-column:1 / -1;grid-row:4;width:100%;margin:0;gap:8px;}
+  .battle-frame > .battle-content > .battle-actions button{min-height:44px;height:44px;}
 }
 @media (min-width:700px){
   .main-content{display:grid;grid-template-columns:420px minmax(0,1fr);gap:0 24px;align-items:center;width:min(100%,920px);max-width:920px;margin:0 auto;text-align:left;}
