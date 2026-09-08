@@ -65,6 +65,8 @@ export class Crystal3D {
       stoneBlock.translate(0, 0, -.46);
       this.geo = {
         ball: this.own(new THREE.SphereGeometry(1, 12, 8)),
+        heroBall: this.own(new THREE.SphereGeometry(1, 20, 12)),
+        heroCone: this.own(new THREE.ConeGeometry(1, 1, 24)),
         cone: this.own(new THREE.ConeGeometry(1, 1, 6)),
         crystal: this.own(new THREE.OctahedronGeometry(1)),
         box: this.own(stoneBlock),
@@ -91,7 +93,8 @@ export class Crystal3D {
         cyan: 0x7bb5c1, gold: 0xc09b61, violet: 0x696d88, pink: 0x826879,
         dark: 0x303c41, grass: 0x4e5547, leaf: 0x414d42, bark: 0x645e50,
         stone: 0x817b6d, paleStone: 0xaaa18c, iron: 0x30393b, ember: 0xffb15b,
-        white: 0xfff5cb, danger: 0xff704e, safe: 0x85ffc3 };
+        white: 0xfff5cb, danger: 0xff704e, safe: 0x85ffc3,
+        fox: 0xd99a61, ivory: 0xffe4be, robe: 0x345e70, velvet: 0x234354 };
       for (const [name, color] of Object.entries(colors)) {
         this.mat[name] = this.own(new THREE.MeshStandardMaterial({ color, roughness: .72,
           metalness: ['gold', 'iron'].includes(name) ? .6 : .02,
@@ -249,6 +252,7 @@ export class Crystal3D {
   }
 
   character(type) {
+    if (type === 'hero') return this.ranger();
     const root = new THREE.Group();
     const hero = type === 'hero';
     const tank = type === 'tank';
@@ -315,6 +319,55 @@ export class Crystal3D {
     shield.rotation.x = -Math.PI / 2;
     shield.visible = false;
     root.userData.shield = shield;
+    return root;
+  }
+
+  ranger() {
+    const root = new THREE.Group(), rig = new THREE.Group();
+    root.add(rig);
+    const contact = this.mesh('disc', this.shadow, root, 0, .02, 0, .48);
+    contact.rotation.x = -Math.PI / 2;
+    const legs = [];
+    for (const sign of [-1, 1]) {
+      const leg = new THREE.Group(); leg.position.set(sign * .16, .24, .01); rig.add(leg);
+      this.mesh('heroBall', 'velvet', leg, 0, 0, 0, .12, .22, .12);
+      this.mesh('heroBall', 'leather', leg, 0, -.12, .09, .15, .1, .22);
+      legs.push(leg);
+      this.mesh('heroBall', 'robe', rig, sign * .33, .66, .03, .14, .24, .16).rotation.z = sign * .3;
+      this.mesh('heroBall', 'fox', rig, sign * .37, .48, .13, .105, .115, .1);
+    }
+    this.mesh('heroCone', 'robe', rig, 0, .57, 0, .36, .7, .29);
+    this.mesh('heroBall', 'velvet', rig, 0, .74, -.17, .39, .35, .2);
+    this.mesh('ring', 'gold', rig, 0, .34, 0, .31, .31, .26).rotation.x = Math.PI / 2;
+    this.mesh('heroBall', 'ivory', rig, 0, .8, .17, .3, .11, .18);
+    this.mesh('crystal', 'cyan', rig, 0, .78, .33, .07, .11, .05);
+    // Large smooth cheeks, raised ears and readable eyes define the silhouette.
+    this.mesh('heroBall', 'fox', rig, 0, 1.15, .01, .42, .39, .34);
+    for (const sign of [-1, 1]) {
+      const ear = this.mesh('heroCone', 'fox', rig, sign * .29, 1.53, -.015, .18, .46, .15);
+      ear.rotation.z = -sign * .19;
+      this.mesh('heroCone', 'ivory', rig, sign * .29, 1.55, .085, .105, .29, .055).rotation.z = -sign * .19;
+      this.mesh('heroBall', 'ivory', rig, sign * .2, 1.03, .27, .205, .19, .13);
+      this.mesh('heroBall', 'eye', rig, sign * .155, 1.19, .318, .082, .115, .045);
+      this.mesh('heroBall', 'cyan', rig, sign * .151, 1.18, .357, .038, .058, .017);
+      this.mesh('heroBall', 'white', rig, sign * .15 - .018, 1.218, .373, .022, .028, .013);
+      this.mesh('heroBall', 'fox', rig, sign * .16, 1.325, .285, .105, .035, .045).rotation.z = sign * .13;
+    }
+    this.mesh('heroBall', 'ivory', rig, 0, 1.015, .37, .17, .105, .1);
+    this.mesh('heroBall', 'eye', rig, 0, 1.067, .453, .055, .037, .025);
+    this.mesh('heroBall', 'velvet', rig, 0, 1.47, -.17, .27, .13, .24);
+    this.mesh('heroCone', 'robe', rig, .04, 1.64, -.19, .2, .38, .2).rotation.z = -.28;
+    this.mesh('crystal', 'gold', rig, .08, 1.76, -.12, .055, .08, .04);
+    const tail = this.mesh('heroBall', 'fox', rig, -.27, .44, -.36, .22, .24, .48);
+    tail.rotation.z = -.35;
+    this.mesh('heroBall', 'ivory', rig, -.31, .58, -.67, .18, .17, .23);
+    this.mesh('rod', 'bark', rig, .47, .66, .15, .04, 1.25, .04);
+    this.mesh('rod', 'gold', rig, .47, 1.18, .15, .07, .2, .07);
+    const muzzle = this.mesh('heroBall', this.magicCore, rig, .47, 1.4, .15, .125, .125, .125);
+    this.mesh('ring', 'gold', rig, .47, 1.4, .15, .19, .19, .19).rotation.y = .5;
+    const castGlow = this.mesh('heroBall', this.magicGlow, rig, .47, 1.4, .15, .18, .18, .18);
+    const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.visible = false;
+    root.userData = { rig, legs, muzzle, castGlow, shield };
     return root;
   }
 
@@ -462,6 +515,11 @@ export class Crystal3D {
     const previous = this.hero.userData.previous;
     const moving = previous && Math.hypot(state.player.x - previous.x, state.player.y - previous.y) > .05;
     if (moving) this.hero.userData.rig.rotation.y = Math.atan2(state.player.x - previous.x, state.player.y - previous.y);
+    if (!moving && !previous) this.hero.userData.rig.rotation.y = this.azimuth;
+    if (state.shots.length) {
+      const target = state.shots[0].target;
+      this.hero.userData.rig.rotation.y = Math.atan2(target.x - state.player.x, target.y - state.player.y);
+    }
     this.hero.userData.previous = { x: state.player.x, y: state.player.y };
     this.hero.userData.legs.forEach((leg, i) => { leg.rotation.x = moving ? Math.sin(t * 13 + i * Math.PI) * .6 : 0; });
     this.setPosition(this.key, state.key, Math.sin(t * 2) * .06);
@@ -553,6 +611,10 @@ export class Crystal3D {
       this.mesh('ring', this.magicImpact, group);
       for (let j = 0; j < 8; j++) this.mesh('crystal', this.magicImpact, group);
       this.mesh('rod', this.elementMaterials.chain, group);
+      for (let j = 0; j < 8; j++) {
+        this.mesh('rod', this.elementMaterials.chain, group);
+        this.mesh('rod', this.magicImpact, group);
+      }
       return group;
     }, (object, i) => {
       const spark = state.sparks[i];
@@ -566,20 +628,37 @@ export class Crystal3D {
       const ring = object.children[1];
       ring.quaternion.copy(this.camera.quaternion);
       if (spark.radius) ring.rotation.set(-Math.PI / 2, 0, 0);
-      ring.scale.setScalar(.2 + age * (spark.radius || (this.reducedMotion ? .45 : 1.1)));
+      ring.scale.setScalar(.3 + (1 - Math.pow(1 - age, 3)) * (spark.radius || (this.reducedMotion ? .5 : 1.4)));
       const bolt = object.children[10];
       bolt.visible = magic && Number.isFinite(spark.fromX);
+      const boltDelta = spark.fromPlayer ? this.hero.userData.muzzle.getWorldPosition(new THREE.Vector3()).sub(object.position)
+        : new THREE.Vector3((spark.fromX - spark.x) / UNIT, spark.fromHeight - spark.height, (spark.fromY - spark.y) / UNIT);
       if (bolt.visible) {
-        const delta = new THREE.Vector3((spark.fromX - spark.x) / UNIT, spark.fromHeight - spark.height, (spark.fromY - spark.y) / UNIT);
+        const delta = boltDelta;
         bolt.position.copy(delta).multiplyScalar(.5);
         bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.clone().normalize());
-        bolt.scale.set(.025 * (1 - age), delta.length(), .025 * (1 - age));
+        bolt.scale.set(.065 * (1 - age), delta.length(), .065 * (1 - age));
+      }
+      for (let j = 0; j < 8; j++) {
+        const glow = object.children[11 + j * 2], core = object.children[12 + j * 2];
+        glow.visible = core.visible = bolt.visible;
+        if (!bolt.visible) continue;
+        const delta = boltDelta;
+        const offset = new THREE.Vector3(-delta.z, .6, delta.x).normalize();
+        const a = delta.clone().multiplyScalar(j / 8).addScaledVector(offset, j === 0 ? 0 : (j % 2 ? .26 : -.26));
+        const b = delta.clone().multiplyScalar((j + 1) / 8).addScaledVector(offset, j === 7 ? 0 : (j % 2 ? -.26 : .26));
+        const direction = b.clone().sub(a);
+        for (const [part, radius] of [[glow, .12], [core, .04]]) {
+          part.position.copy(a).add(b).multiplyScalar(.5);
+          part.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize());
+          part.scale.set(radius * (1 - age * .6), direction.length(), radius * (1 - age * .6));
+        }
       }
       for (let j = 0; j < 8; j++) {
         const shard = object.children[j + 2], angle = j * Math.PI / 4;
         const radius = .12 + age * (this.reducedMotion ? .4 : 1.25);
         shard.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius * .7, Math.sin(angle * 3) * radius * .5);
-        shard.scale.setScalar(Math.max(.001, (1 - age) * .14));
+        shard.scale.setScalar(Math.max(.001, (1 - age) * (spark.element ? .23 : .14)));
         shard.rotation.set(angle, age * 4, angle);
       }
     }, 64);

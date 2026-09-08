@@ -3,7 +3,7 @@ window.WPClassicLogic?.mount("reversi");
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v14";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const CELL_LABELS = {
@@ -174,6 +174,7 @@ window.WPClassicLogic?.mount("reversi");
     syncCellLabels();
     const scenario = SCENARIOS[scenarioIndex % SCENARIOS.length];
     const copy = scenario.copy[locale()] || scenario.copy.en;
+    tutorial.setAttribute("data-runtime-localize", "off");
     if (tutorial.dataset.reversiScenario === scenario.key && tutorial.textContent === copy) return;
     tutorial.textContent = copy;
     tutorial.dataset.reversiScenario = scenario.key;

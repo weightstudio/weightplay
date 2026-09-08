@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-builds-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260908-crystal-modes-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -788,6 +788,22 @@
     });
   });
 
+  Object.entries({
+    en: "Choose survival, 3/5 waves or a boss. Move to dodge; magic fires automatically. Keys are bonus rewards.",
+    "zh-Hant": "挑戰生存、3／5 波敵人或首領。移動閃避，魔法自動施放；金鑰匙是額外獎勵。",
+    "zh-Hans": "挑战生存、3／5 波敌人或首领。移动闪避，魔法自动施放；金钥匙是额外奖励。",
+    ja: "生存、3／5ウェーブ、ボスに挑戦。移動で回避し、魔法は自動発射。鍵は追加報酬です。",
+    ko: "생존, 3/5웨이브 또는 보스에 도전하세요. 이동으로 피하고 마법은 자동 발사됩니다. 열쇠는 추가 보상입니다.",
+    es: "Elige supervivencia, 3/5 oleadas o un jefe. Muévete para esquivar; la magia es automática. Las llaves son recompensas extra.",
+    "pt-BR": "Escolha sobrevivência, 3/5 ondas ou um chefe. Mova-se para desviar; a magia é automática. Chaves são recompensas extras.",
+    fr: "Survie, 3/5 vagues ou boss : esquivez en vous déplaçant, la magie est automatique. Les clés sont des bonus.",
+    de: "Überleben, 3/5 Wellen oder Boss: Weiche durch Bewegung aus, Magie wirkt automatisch. Schlüssel sind Bonusbelohnungen.",
+    it: "Scegli sopravvivenza, 3/5 ondate o un boss. Muoviti per schivare; la magia è automatica. Le chiavi sono premi extra.",
+    ru: "Выберите выживание, 3/5 волн или босса. Двигайтесь и уклоняйтесь; магия срабатывает сама. Ключи — бонусные награды.",
+    hi: "जीवित रहने, 3/5 लहरों या बॉस की चुनौती चुनें। चलकर बचें; जादू अपने आप चलता है। चाबियाँ अतिरिक्त पुरस्कार हैं।",
+    ar: "اختر البقاء أو 3/5 موجات أو زعيمًا. تحرك للتفادي؛ السحر تلقائي. المفاتيح مكافآت إضافية.",
+  }).forEach(([code, copy]) => { text[code].menuHint = copy; text[code].playHint = copy; });
+
   const upgrades = [
     { id: "chain", icon: "upgradeCooldown", name: "magicChain", desc: "magicChainDesc" },
     { id: "frost", icon: "upgradeRange", name: "magicFrost", desc: "magicFrostDesc" },
@@ -851,6 +867,9 @@
     ruleZh: row[3],
     modifier: row[4],
     bossImage: row[5] || null,
+    mode: row[5] ? "boss" : index % 5 === 1 || index % 5 === 3 ? "waves" : "survival",
+    waveGoal: index % 5 === 3 ? 5 : 3,
+    duration: index % 5 === 1 || index % 5 === 3 ? 300 : RUN_SECONDS,
     targetKeys: 2 + Math.floor(index / 6),
   }));
   const spanishRegionNames = ["Arboleda de Cristal","Fragmentos Lunares","Laberinto de Zarzas","Grieta de Brasas","Corona de Tormenta","Corazón del Eclipse"];
@@ -1216,6 +1235,33 @@
     document.querySelector?.('meta[property="og:description"]')?.setAttribute("content", ogDescription);
   }
 
+  function modeLabels() {
+    return ({
+      en: ["Survival", "Waves", "Boss", "Survive 3:00", "Clear {n} waves · within 5:00", "Defeat the boss · within 3:00"],
+      "zh-Hant": ["生存試煉", "波次防衛", "首領討伐", "生存 3 分鐘", "清除 {n} 波敵人 · 限時 5 分鐘", "擊敗首領即通關 · 限時 3 分鐘"],
+      "zh-Hans": ["生存试炼", "波次防卫", "首领讨伐", "生存 3 分钟", "清除 {n} 波敌人 · 限时 5 分钟", "击败首领即通关 · 限时 3 分钟"],
+      ja: ["サバイバル", "ウェーブ", "ボス討伐", "3分間生き残る", "5分以内に{n}ウェーブ撃破", "3分以内にボスを倒す"],
+      ko: ["생존", "웨이브", "보스 토벌", "3분 생존", "5분 안에 {n}웨이브 격파", "3분 안에 보스 격파"],
+      es: ["Supervivencia", "Oleadas", "Jefe", "Sobrevive 3:00", "Supera {n} oleadas en 5:00", "Derrota al jefe en 3:00"],
+      "pt-BR": ["Sobrevivência", "Ondas", "Chefe", "Sobreviva por 3:00", "Vença {n} ondas em 5:00", "Derrote o chefe em 3:00"],
+      fr: ["Survie", "Vagues", "Boss", "Survivez 3:00", "Éliminez {n} vagues en 5:00", "Battez le boss en 3:00"],
+      de: ["Überleben", "Wellen", "Boss", "Überlebe 3:00", "Besiege {n} Wellen in 5:00", "Besiege den Boss in 3:00"],
+      it: ["Sopravvivenza", "Ondate", "Boss", "Sopravvivi per 3:00", "Supera {n} ondate in 5:00", "Sconfiggi il boss in 3:00"],
+      ru: ["Выживание", "Волны", "Босс", "Продержитесь 3:00", "Победите {n} волн за 5:00", "Победите босса за 3:00"],
+      hi: ["जीवित रहें", "लहरें", "बॉस", "3:00 तक जीवित रहें", "5:00 में {n} लहरें हराएँ", "3:00 में बॉस को हराएँ"],
+      ar: ["البقاء", "موجات", "زعيم", "ابقَ حيًا 3:00", "اهزم {n} موجات خلال 5:00", "اهزم الزعيم خلال 3:00"],
+    })[locale] || ["Survival", "Waves", "Boss", "Survive 3:00", "Clear {n} waves · within 5:00", "Defeat the boss · within 3:00"];
+  }
+
+  function modeObjective(config) {
+    return modeLabels()[config.mode === "waves" ? 4 : config.mode === "boss" ? 5 : 3].replace("{n}", config.waveGoal);
+  }
+
+  function objectiveComplete() {
+    return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
+      : state.stageConfig.mode === "boss" ? state.bossDefeated : state.timeLeft <= 0;
+  }
+
   function makePlayer() {
     const hasCharm = Boolean(save.crystalCharm);
     const maxHp = hasCharm ? 8 : 7;
@@ -1244,7 +1290,9 @@
       mode: "menu",
       stage: stageNumber,
       stageConfig: stages[stageNumber - 1],
-      timeLeft: RUN_SECONDS,
+      timeLeft: stages[stageNumber - 1].duration,
+      duration: stages[stageNumber - 1].duration,
+      wave: 0, waveCleared: 0, waveRemaining: 0, waveBreak: 1.2,
       player,
       camera: cameraTargetFor(player),
       level: 1,
@@ -1651,8 +1699,9 @@
     card.style.setProperty("--stage-overlay", region.color);
     const regionName = localeRegionNames[locale]?.[config.region] || (locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : locale === "ar" ? region.ar : region.en);
     const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
-    const objective = t("objective", { keys: config.targetKeys, boss: config.bossImage ? t("bossObjective") : "" });
-    card.innerHTML = `<em>${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
+    const objective = modeObjective(config);
+    card.dataset.mode = config.mode;
+    card.innerHTML = `<em>${modeLabels()[config.mode === "waves" ? 1 : config.mode === "boss" ? 2 : 0]} · ${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
     card.setAttribute("aria-label", `${regionName}. ${stageName(config)}. ${stageRule(config)}. ${objective}. ${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}`);
   }
 
@@ -1897,7 +1946,7 @@
 
   function update(dt, elapsedDt = dt) {
     state.timeLeft = Math.max(0, state.timeLeft - elapsedDt);
-    state.survived = RUN_SECONDS - state.timeLeft;
+    state.survived = state.duration - state.timeLeft;
     movePlayer(dt);
     updateCamera(dt);
     updateStageMechanics(dt);
@@ -1908,8 +1957,9 @@
     updateKey();
     updateFloaters(dt);
     renderHud();
-    if (state.timeLeft <= 0) endRun("time");
     if (state.player.hp <= 0) endRun("fail");
+    else if (objectiveComplete()) endRun("complete");
+    else if (state.timeLeft <= 0) endRun("time");
   }
 
   function addHazard(kind, options = {}) {
@@ -1956,7 +2006,7 @@
 
   function updateStageMechanics(dt) {
     const config = state.stageConfig || stages[0];
-    if (config.bossImage && state.survived >= 18 && !state.bossSpawned) spawnBoss();
+    if (config.bossImage && state.survived >= 2 && !state.bossSpawned) spawnBoss();
     state.mechanicTimer -= dt;
     state.hazardDamageTimer = Math.max(0, state.hazardDamageTimer - dt);
     const interval = Math.max(2.1, 5.2 - config.region * 0.38);
@@ -2090,14 +2140,28 @@
   }
 
   function spawnEnemies(dt) {
+    const config = state.stageConfig || stages[0];
+    if (config.mode === "waves") {
+      if (state.waveRemaining === 0 && state.enemies.length === 0) {
+        state.waveCleared = state.wave;
+        if (state.waveCleared >= config.waveGoal) return;
+        state.waveBreak -= dt;
+        if (state.waveBreak > 0) return;
+        state.wave += 1;
+        state.waveRemaining = 5 + config.region + state.wave * 2;
+        state.waveBreak = 4;
+        state.spawnTimer = 0;
+        addFloater(`${modeLabels()[1]} ${state.wave}/${config.waveGoal}`, state.player.x, state.player.y - 90, "#ffe6a1");
+      }
+      if (state.waveRemaining <= 0) return;
+    }
     state.spawnTimer -= dt;
     if (state.spawnTimer > 0) return;
     if (state.enemies.length >= 18) {
       state.spawnTimer = 0.6;
       return;
     }
-    const elapsed = RUN_SECONDS - state.timeLeft;
-    const config = state.stageConfig || stages[0];
+    const elapsed = state.survived;
     const runnerChance = ["runnerRush", "blink", "cinder", "stormLanes"].includes(config.modifier) ? 0.58 : 0.26 + config.region * 0.035;
     const tankChance = ["tankRing", "charge", "chargeRoots", "briar", "convergence"].includes(config.modifier) ? 0.5 : 0.16 + config.region * 0.025;
     const type = ["basic", "drift"].includes(config.modifier)
@@ -2112,6 +2176,17 @@
     if (edge === 1) pos.x = W + 54;
     if (edge === 2) pos.y = H + 54;
     if (edge === 3) pos.x = -54;
+    if (config.mode === "waves") {
+      const angle = Math.random() * Math.PI * 2;
+      pos.x = Math.max(30, Math.min(W - 30, state.player.x + Math.cos(angle) * 450));
+      pos.y = Math.max(30, Math.min(H - 30, state.player.y + Math.sin(angle) * 450));
+      if (Math.hypot(pos.x - state.player.x, pos.y - state.player.y) < 300) {
+        const inwardX = W / 2 - state.player.x, inwardY = H / 2 - state.player.y;
+        const distance = Math.hypot(inwardX, inwardY) || 1;
+        pos.x = state.player.x + inwardX / distance * 450;
+        pos.y = state.player.y + inwardY / distance * 450;
+      }
+    }
     const stageHp = 1 + Math.floor((state.stage - 1) / 10) * 0.35;
     const stats = {
       basic: { hp: 2, speed: 68, size: 62, damage: 0.32, image: "basic" },
@@ -2124,6 +2199,8 @@
     const damage = stats.damage * (state.stage === 1 ? 0.4 : 1);
     state.enemies.push({ ...pos, ...stats, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2 });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
+    if (config.mode === "waves") { state.waveRemaining -= 1; state.spawnTimer = .85; }
+    if (config.mode === "boss") state.spawnTimer = 4.5;
   }
 
   const chargingEnemyModifiers = new Set(["charge", "chargeRoots", "briar", "convergence"]);
@@ -2232,6 +2309,8 @@
     if (p.frost && target.hp > 0) target.chill = .8 + p.frost * .4;
     // Secondary hits never recurse; all damage still respects existing shields.
     if (p.chain && p.magicHits % 3 === 0) {
+      addSpark(target.x, target.y, "#b8a4ff", { kind: "magicHit", element: "chain", height: (target.size || 64) / 64 * .8, fromX: p.x, fromY: p.y, fromHeight: 2.45, fromPlayer: true });
+      playSound("hit", .12);
       let from = target;
       const visited = new Set([target]);
       for (let jump = 0; jump < p.chain; jump++) {
@@ -2440,13 +2519,12 @@
 
   function endRun(reason) {
     if (state.mode === "result") return;
+    setUpgradeModalOpen(false, false);
     state.mode = "result";
     const previousBestKeys = save.bestKeys || 0;
     const previousRank = patrolRankFor(save.totalKeys);
     const improved = state.keys > previousBestKeys;
-    const stageCleared = reason === "time"
-      && state.keys >= state.stageConfig.targetKeys
-      && (!state.stageConfig.bossImage || state.bossDefeated);
+    const stageCleared = reason !== "fail" && state.player.hp > 0 && objectiveComplete();
     resultStageCleared = stageCleared;
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
@@ -2493,10 +2571,11 @@
     const survived = Math.round(state.survived);
     const best = Math.max(previousBestKeys || 0, state.keys);
     nodes.resultTitle.textContent = stageCleared ? t("stageClear") : reason === "time" ? t("objectiveMissed") : t("runFailed");
-    nodes.resultScore.textContent = String(state.keys);
-    nodes.resultScoreLabel.textContent = t("resultRunObjective");
+    nodes.resultScore.textContent = state.stageConfig.mode === "waves" ? `${state.waveCleared}/${state.stageConfig.waveGoal}`
+      : state.stageConfig.mode === "boss" ? `${state.bossDefeated ? 1 : 0}/1` : formatTime(state.survived);
+    nodes.resultScoreLabel.textContent = modeObjective(state.stageConfig);
     const objectiveLine = !stageCleared && reason === "time"
-      ? t("objectiveMissedLine", { keys: state.stageConfig.targetKeys, boss: state.stageConfig.bossImage ? t("bossStillActive") : "" })
+      ? modeObjective(state.stageConfig)
       : improved ? t("improved") : t("keepGoing");
     nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${objectiveLine}`;
     nodes.nextStageBtn.classList.remove("hidden");
@@ -2523,7 +2602,7 @@
     const nextStage = stages[state.stage];
     if (!nextStage) return "";
     const boss = Math.ceil(nextStage.number / 5) * 5;
-    return `${t("resultNextStage", {
+    return `${modeObjective(nextStage)} · ${t("resultNextStage", {
       stage: nextStage.number,
       stageName: stageName(nextStage),
       rule: stageRule(nextStage),
@@ -2555,6 +2634,7 @@
         xp: state.xp,
         xpNeed: state.xpNeed,
         timeLeft: state.timeLeft,
+        stageMode: state.stageConfig.mode, wave: state.wave, waveCleared: state.waveCleared, waveRemaining: state.waveRemaining,
         calmed: state.calmed,
         enemies: state.enemies.map((enemy) => ({
           x: enemy.x,
@@ -2636,6 +2716,8 @@
       },
       finishRunForTest: (keys = state.keys) => {
         state.keys = Math.max(0, Number(keys) || 0);
+        state.timeLeft = 0;
+        state.survived = state.duration;
         endRun("time");
       },
       applyUpgradeForTest: (id) => {
@@ -2683,6 +2765,25 @@
   }
 
   function renderHud(force = false) {
+    const hpRatio = Math.max(0, state.player.hp / state.player.maxHp);
+    const hpMeter = document.getElementById("healthMeter");
+    if (hpMeter && hpMeter.dataset.value !== `${locale}|${state.player.hp}|${state.player.maxHp}`) {
+      hpMeter.dataset.value = `${locale}|${state.player.hp}|${state.player.maxHp}`;
+      hpMeter.style.setProperty("--health", `${hpRatio * 100}%`);
+      hpMeter.classList.toggle("critical", hpRatio <= .3);
+      hpMeter.setAttribute("aria-label", `${t("hp")} ${Math.ceil(state.player.hp)}/${state.player.maxHp}`);
+      hpMeter.setAttribute("aria-valuenow", String(Math.ceil(state.player.hp)));
+      hpMeter.setAttribute("aria-valuemax", String(state.player.maxHp));
+    }
+    const modeText = document.getElementById("modeText");
+    const modeFill = document.getElementById("modeFill");
+    if (modeText && modeFill) {
+      const config = state.stageConfig;
+      const boss = state.enemies.find(enemy => enemy.isBoss);
+      const progress = config.mode === "waves" ? state.waveCleared / config.waveGoal : config.mode === "boss" ? (state.bossDefeated ? 1 : boss ? 1 - boss.hp / boss.maxHp : 0) : state.survived / state.duration;
+      writeHudValue("modeText", modeText, config.mode === "waves" ? `${modeLabels()[1]} ${Math.min(config.waveGoal, state.wave || 1)} / ${config.waveGoal} · ${state.enemies.length + state.waveRemaining} ◈` : modeObjective(config));
+      writeHudValue("modeProgress", modeFill.style, `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`, "width");
+    }
     const time = formatTime(state.timeLeft);
     const hp = Math.max(0, Math.ceil(state.player.hp));
     if (force) hudValues = Object.create(null);
@@ -2695,17 +2796,7 @@
     const playfieldSignature = [locale, state.stage, time, state.keys, hp, state.player.maxHp, state.level, state.stageConfig?.modifier].join("|");
     if (playfieldSignature !== playfieldLabelSignature) {
       playfieldLabelSignature = playfieldSignature;
-      canvas.setAttribute("aria-label", t("playfieldState", {
-        stage: state.stage,
-        stageCount: STAGE_COUNT,
-        time,
-        keys: state.keys,
-        target: state.stageConfig?.targetKeys || 0,
-        hp,
-        maxHp: state.player.maxHp,
-        level: state.level,
-        rule: stageRule(state.stageConfig || stages[0]),
-      }));
+      canvas.setAttribute("aria-label", `${t("stage")} ${state.stage}/${STAGE_COUNT}. ${modeObjective(state.stageConfig)}. ${t("time")} ${time}. ${t("hp")} ${hp}/${state.player.maxHp}. ${t("keys")} ${state.keys}. ${t("level")} ${state.level}. ${t("controlMove")}. ${t("controlAttack")}. ${stageRule(state.stageConfig)}.`);
     }
     renderActionHint(force);
   }

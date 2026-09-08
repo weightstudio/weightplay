@@ -2112,7 +2112,22 @@ html body #menuBtn, html body #stageBackBtn {
 }
 html body #hintText, html body .xp-row { background: #182226 !important; color: #d4cfbc; }
 html body #xpFill { background: linear-gradient(90deg,#617c80,#b3c4bb); box-shadow: none; }
-html body .upgrade-icon img { filter: saturate(.5); }
+html body .upgrade-icon img { filter: saturate(.95); }
+.play-area { position: relative; }
+.battle-objective { position: absolute; z-index: 3; top: 10px; left: 14px; right: 14px; padding: 9px 12px; border: 1px solid #a48b5b88; border-radius: 8px; background: linear-gradient(100deg,#101e25ed,#1c3540c9); box-shadow: 0 3px 14px #0005; pointer-events: none; }
+.battle-objective strong { color: #f3e4b9; font-size: clamp(11px,2.6vw,14px); display: block; letter-spacing: .025em; }
+.mode-track { height: 4px; margin-top: 6px; background: #070f15; border-radius: 4px; overflow: hidden; }
+.mode-track i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,#69c9d8,#faf0bb); transition: width .2s; }
+.health-meter { --health: 100%; position: absolute; z-index: 3; bottom: 14px; left: 16px; display: flex; align-items: center; gap: 8px; width: min(45%,210px); padding: 8px 11px; background: #101e25ed; border: 1px solid #b89468; border-radius: 8px; pointer-events: none; box-shadow: 0 3px 14px #0006; }
+.health-meter > span { color: #ffb7ae; font-size: 22px; line-height: 1; }
+.health-track { flex: 1; height: 12px; overflow: hidden; border-radius: 8px; background: #321f2a; box-shadow: inset 0 1px 4px #0009; }
+.health-track i { display: block; width: var(--health); height: 100%; border-top: 2px solid #ffffff66; background: linear-gradient(90deg,#c3545a,#f69586); transition: width .18s ease-out; }
+.health-meter.critical { border-color: #ff7669; box-shadow: 0 0 14px #ed4e4444; }
+.health-meter.critical .health-track i { background: #ff504d; }
+.stage-card[data-mode="waves"] { border-color: #759da8 !important; }
+.stage-card[data-mode="boss"] { border-color: #bd8b65 !important; }
+@media (prefers-reduced-motion: reduce) { .health-track i, .mode-track i { transition: none; } }
+@media (max-height:560px) and (orientation:landscape) { .battle-objective { top: 4px; padding: 4px 8px; } .health-meter { bottom: 6px; padding: 4px 8px; max-width: 160px; } }
 html body .result-ranger-art { display: none !important; }
 html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
 

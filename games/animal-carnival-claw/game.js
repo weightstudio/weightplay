@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v34",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v39",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -82,6 +82,14 @@ function show(next){
   $("mainGroup").hidden=next!=="main";$("stageScreen").hidden=next!=="stage";$("battleScreen").hidden=next!=="battle";
   if(next==="main")renderMain();
   if(next==="stage"){selected=clamp(save.unlocked-1,0,levels.length-1);renderStage();requestAnimationFrame(()=>centerSelected(false))}
+  // Settle the existing shared owners in this navigation transaction. Waiting
+  // for their observers leaves Battle classes on the first returned Stage frame.
+  window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+  window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
+  window.WeightPlayBattleCanvas?.sync?.();
+  window.WeightPlayStageArtwork?.sync?.();
+  if(next==="stage")centerSelected(false);
+  window.scrollTo(0,0);
   if(next==="battle"&&run)resumeLoop();
 }
 function renderMain(){
@@ -238,7 +246,16 @@ function selectStage(index,center){
   $("enterBtn").disabled=selected>=save.unlocked;
   if(center)centerSelected();
 }
-function centerSelected(){ensureStageWindow(selected);positionStageRail(selected);selectStage(selected,false)}
+function centerSelected(){
+  const rail=$("stageRail"),properties=["scroll-behavior","scroll-snap-type"];
+  const previous=properties.map(key=>[key,rail.style.getPropertyValue(key),rail.style.getPropertyPriority(key)]);
+  // Entry/return restoration is immediate, not the shared smooth user scroll.
+  // Otherwise the correction below reads a moving rail and leaves a first-frame offset.
+  rail.style.setProperty("scroll-behavior","auto","important");
+  rail.style.setProperty("scroll-snap-type","none","important");
+  try{ensureStageWindow(selected);positionStageRail(selected);selectStage(selected,false)}
+  finally{for(const [key,value,priority] of previous){if(value)rail.style.setProperty(key,value,priority);else rail.style.removeProperty(key)}}
+}
 function renderCabinet(){
   $("cabinetSummary").textContent=t("progress",{cleared:save.medals.filter(Boolean).length,charms:save.cabinet.filter(Boolean).length});
   $("cabinetGrid").innerHTML=Array.from({length:8},(_,kind)=>{
