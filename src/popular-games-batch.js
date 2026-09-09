@@ -111,7 +111,7 @@
   };
   const BREAKOUT_GAME_VERSION = "v15";
   const TETRIS_GAME_VERSION = "v20";
-  const SNAKE_GAME_VERSION = "v29";
+  const SNAKE_GAME_VERSION = "v30";
   const WORDLE_GAME_VERSION = "v12";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
@@ -609,7 +609,7 @@
     return [0, 1, 2].map((step) => head - (dx * step) - (dy * SNAKE_GRID_SIZE * step));
   };
   const SNAKE_INSTRUCTION = {
-    en: "Tap the board or choose a direction to start. Then steer to food, wrap across the edges, and avoid your tail and obstacle cells.",
+    en: "Choose a direction, steer to food, wrap at the edges, and avoid your tail and obstacles.",
     "zh-Hant": "點擊棋盤或選擇方向開始，再轉向吃食物，從邊界穿到對面並避開自己的身體與障礙格。",
     "zh-Hans": "点击棋盘或选择方向开始，再转向吃食物，从边界穿到对面并避开自己的身体与障碍格。",
     ja: "盤面をタップするか方向を選んで開始し、食べ物へ曲がり、端から反対側へ回って体と障害物を避けましょう。",

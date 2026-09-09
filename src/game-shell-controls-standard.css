@@ -661,10 +661,10 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
   }
 
   /* Snake uses the shared Main composition after the legacy arcade shell is
-     normalized. Keep its compact landscape poster at the exact 300px
-     acceptance size without changing other popular-game posters. */
+     normalized. Keep its compact landscape poster at the canonical 420px
+     wide-layout size without changing other popular-game posters. */
   body[data-game-id="snake"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   /* Space Rocks uses the shared Main composition after the legacy arcade

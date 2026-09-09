@@ -29,8 +29,8 @@
     </div><section id="resultPanel" hidden><h2 id="resultTitle"></h2><p id="resultScore" dir="ltr"></p><p id="resultCopy"></p><div class="pw-result-actions"><button id="homeBtn"></button><button id="retryBtn" class="pw-primary"></button></div></section></div>
     <div class="pw-reserve battle-ad-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
   </section>
-  <dialog id="settings"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn" data-sound-toggle></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
-  <dialog id="help"><h2></h2><div id="helpCopy"></div><button id="closeHelp" class="pw-primary"></button></dialog></main>`;
+  <dialog id="settings" role="dialog" aria-modal="true"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn" data-sound-toggle></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
+  <dialog id="help" role="dialog" aria-modal="true"><h2></h2><div id="helpCopy"></div><button id="closeHelp" class="pw-primary"></button></dialog></main>`;
   const $=id=>document.getElementById(id), canvas=$('court'), ctx=canvas.getContext('2d'), set=(id,text)=>{$(id).textContent=text;};
   const languages={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
   function localize(){
