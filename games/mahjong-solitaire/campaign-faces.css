@@ -1,5 +1,6 @@
 /* These sprites keep a square aspect at every display size. No face is
-   stretched to fill a tall tile, cropped by cover, or re-created with emoji. */
+   stretched to fill a tall tile, cropped by cover, or re-created with emoji.
+   Central 90% cell sampling trims only the sprite gutter/neighbor artifacts. */
 .mjc-face {
  display:block;
  width:100%;
@@ -7,7 +8,7 @@
  flex:none;
  background-color:#f5edd8;
  background-repeat:no-repeat;
- background-size:400% 400%;
+ background-size:444.444444% 444.444444%;
  pointer-events:none;
  border-radius:4px;
 }

@@ -37,13 +37,13 @@ export class Crystal3D {
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
       this.renderer.toneMappingExposure = 1.1;
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color('#202a2b');
+      this.scene.background = new THREE.Color('#142538');
       this.camera = new THREE.OrthographicCamera(-VIEW_W / 2, VIEW_W / 2, VIEW_H / 2, -VIEW_H / 2, .1, 100);
       this.raycaster = new THREE.Raycaster();
       this.groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
       this.vector = new THREE.Vector3();
       this.pointer = new THREE.Vector2();
-      this.scene.add(new THREE.HemisphereLight(0xa9b8c0, 0x262522, 1.35));
+      this.scene.add(new THREE.HemisphereLight(0xa9d8ff, 0x364051, 1.65));
       const sun = new THREE.DirectionalLight(0xffe2b9, 2.5);
       sun.position.set(-6, 24, 24);
       sun.target.position.set(8, 0, 14);
@@ -55,7 +55,7 @@ export class Crystal3D {
       this.sun = sun;
       this.scene.add(sun.target);
       this.scene.add(sun);
-      const rim = new THREE.DirectionalLight(0x718f9c, .7);
+      const rim = new THREE.DirectionalLight(0x639eff, 1.15);
       rim.position.set(10, 6, -8);
       this.scene.add(rim);
       const blockShape = new THREE.Shape();
@@ -66,6 +66,7 @@ export class Crystal3D {
       this.geo = {
         ball: this.own(new THREE.SphereGeometry(1, 12, 8)),
         heroBall: this.own(new THREE.SphereGeometry(1, 20, 12)),
+        voxel: this.own(new THREE.BoxGeometry(1, 1, 1)),
         heroCone: this.own(new THREE.ConeGeometry(1, 1, 24)),
         cone: this.own(new THREE.ConeGeometry(1, 1, 6)),
         crystal: this.own(new THREE.OctahedronGeometry(1)),
@@ -90,9 +91,9 @@ export class Crystal3D {
       this.shotVisuals = new WeakMap();
       const colors = { fur: 0x947a54, cream: 0xccbd9e, mane: 0x554535,
         cloth: 0x34464b, pants: 0x292c2e, leather: 0x514138, eye: 0x13191d,
-        cyan: 0x7bb5c1, gold: 0xc09b61, violet: 0x696d88, pink: 0x826879,
-        dark: 0x303c41, grass: 0x4e5547, leaf: 0x414d42, bark: 0x645e50,
-        stone: 0x758795, paleStone: 0x9facb5, bone: 0xf5e6c6, iron: 0x30393b, ember: 0xffb15b,
+        cyan: 0x7bb5c1, gold: 0xe3b34f, violet: 0x696d88, pink: 0x826879,
+        dark: 0x303c41, grass: 0x4e5547, leaf: 0x437647, bark: 0x645e50,
+        stone: 0x566f94, paleStone: 0x8aa5c5, bone: 0xf5e6c6, iron: 0x30393b, ember: 0xffb15b,
         white: 0xfff5cb, danger: 0xff704e, safe: 0x85ffc3,
         fox: 0xd99a61, ivory: 0xffe4be, robe: 0x345e70, velvet: 0x234354 };
       for (const [name, color] of Object.entries(colors)) {
@@ -107,7 +108,8 @@ export class Crystal3D {
       this.hazardPalette = new Map(['#60a5fa', '#65a30d', '#c084fc', '#f97316', '#fb923c', '#84cc16', '#f59e0b'].map(color => [color, [.28, .7, 1].map(opacity => this.own(new THREE.MeshBasicMaterial({ color, transparent: true, opacity, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: this.viewPlanes })))]));
       this.buildGarden(Boolean(floorImage?.complete && floorImage.naturalWidth));
       if (floorImage?.complete && floorImage.naturalWidth) {
-        const floorTexture = this.own(new THREE.Texture(floorImage));
+        const floorTexture = this.own(new THREE.DataTexture(new Uint8Array([235,243,255,255, 210,226,248,255, 224,236,252,255, 245,248,255,255]), 2, 2));
+        floorTexture.magFilter = THREE.NearestFilter;
         floorTexture.colorSpace = THREE.SRGBColorSpace;
         floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
         floorTexture.repeat.set(14, 18);
@@ -168,11 +170,11 @@ export class Crystal3D {
     const court = new THREE.Group();
     this.scene.add(court);
     this.courtyardWalls = [];
-    this.mesh('box', 'dark', court, 8, -.3, 13.75, 180, .4, 180);
-    const tiles = [0x8798a2, 0x788d9b].map(color => this.own(new THREE.MeshStandardMaterial({ color, roughness: .88, metalness: .02 })));
+    this.mesh('voxel', 'dark', court, 8, -.3, 13.75, 180, .4, 180);
+    const tiles = [0x647e9e, 0x718ba8, 0x587492].map(color => this.own(new THREE.MeshStandardMaterial({ color, roughness: .62, metalness: .08 })));
     for (let x = 0; x < 12; x++) for (let z = 0; z < 20; z++) {
-      this.mesh('plane', tiles[(x + z) % 2], court, (x + .5) * WIDTH / UNIT / 12, .005, (z + .5) * HEIGHT / UNIT / 20,
-        WIDTH / UNIT / 12 - .035, HEIGHT / UNIT / 20 - .035, 1).rotation.x = -Math.PI / 2;
+      this.mesh('voxel', tiles[(x * 7 + z * 11 + (x*z)%5) % 3], court, (x + .5) * WIDTH / UNIT / 12, -.065, (z + .5) * HEIGHT / UNIT / 20,
+        WIDTH / UNIT / 12 - .045, .13, HEIGHT / UNIT / 20 - .045);
     }
     for (const side of [0, 1, 2, 3]) {
       const wall = new THREE.Group();
@@ -182,86 +184,100 @@ export class Crystal3D {
       if (vertical) wall.rotation.y = Math.PI / 2;
       wall.userData = { normalX: vertical ? (side ? 1 : -1) : 0, normalZ: vertical ? 0 : (side === 2 ? -1 : 1) };
       court.add(wall); this.courtyardWalls.push(wall);
-      this.mesh('box', 'dark', wall, 0, .15, 0, length + 1.5, .3, 1.5);
+      this.mesh('voxel', 'dark', wall, 0, .15, 0, length + 1.5, .3, 1.5);
       const count = Math.ceil(length / 1.2);
       for (let row = 0; row < 5; row++) {
         for (let i = 0; i < count; i++) {
           const x = -length / 2 + (i + .5) * length / count;
-          const stone = this.mesh('box', (i + row * 3) % 5 === 0 ? 'paleStone' : 'stone', wall, x, .45 + row * .46, 0, length / count - .055, .42, .87 + Math.sin(i * 1.7 + row) * .06);
-          stone.rotation.z = Math.sin(i * 13 + row * 3) * .008;
+          const stone = this.mesh('voxel', (i + row * 3) % 5 === 0 ? 'paleStone' : 'stone', wall, x, .45 + row * .46, 0, length / count - .055, .42, .87 + Math.sin(i * 1.7 + row) * .06);
+          stone.rotation.z = 0;
         }
       }
-      this.mesh('box', 'paleStone', wall, 0, 2.62, 0, length + .3, .18, 1.15);
+      this.mesh('voxel', 'paleStone', wall, 0, 2.62, 0, length + .3, .18, 1.15);
+      for (let i = 0; i < count; i += 2) {
+        this.mesh('voxel', 'stone', wall, -length / 2 + (i + .5) * length / count, 3.03, 0, .68, .64, 1.0);
+      }
       for (let i = 0; i <= count; i += 3) {
         const x = -length / 2 + i * length / count;
-        this.mesh('box', 'dark', wall, x, 1.4, 0, .58, 2.8, 1.25);
-        this.mesh('box', 'stone', wall, x, 2.87, 0, .85, .2, 1.48);
-        this.mesh('box', 'paleStone', wall, x, 3.1, 0, .66, .3, 1.2);
+        this.mesh('voxel', 'dark', wall, x, 1.4, 0, .58, 2.8, 1.25);
+        this.mesh('voxel', 'stone', wall, x, 2.87, 0, .85, .2, 1.48);
+        this.mesh('voxel', 'paleStone', wall, x, 3.1, 0, .66, .3, 1.2);
         if (i % 2 === 0) {
           const outside = (side === 0 || side === 2) ? -1 : 1;
-          this.mesh('box', 'stone', wall, x, 1.45, outside * 2.2, 2.6, 2.9, 2.5);
-          this.mesh('box', 'dark', wall, x, 2.98, outside * 2.2, 2.85, .18, 2.8);
-          this.mesh('box', 'paleStone', wall, x, 3.14, outside * 2.2, 2.6, .12, 2.5);
-          for (let r = -1; r <= 1; r++) this.mesh('box', 'iron', wall, x + r * .76, 3.25, outside * 2.2, .05, .12, 2.65);
+          this.mesh('voxel', 'stone', wall, x, 1.45, outside * 2.2, 2.6, 2.9, 2.5);
+          this.mesh('voxel', 'dark', wall, x, 2.98, outside * 2.2, 2.85, .18, 2.8);
+          this.mesh('voxel', 'paleStone', wall, x, 3.14, outside * 2.2, 2.6, .12, 2.5);
+          for (const edge of [-1,1]) for (const offset of [-.85,0,.85])
+            this.mesh('voxel', 'stone', wall, x + offset, 3.47, outside * 2.2 + edge * 1.1, .55, .6, .5);
         }
+      }
+    }
+    for (const wall of this.courtyardWalls) {
+      for (const x of [-3.4,3.4]) {
+        this.mesh('voxel', 'velvet', wall, x, 1.75, -.47, .68, 1.12, .035);
+        this.mesh('voxel', 'gold', wall, x, 2.34, -.49, .85, .08, .065);
+        this.mesh('voxel', 'cyan', wall, x, 1.86, -.50, .16, .32, .045);
       }
     }
     // Gatehouse stays outside the simulated arena; layered lintels and door.
     const gate = new THREE.Group(); gate.position.set(8, 0, -2.6); court.add(gate);
     gate.userData = { normalX: 0, normalZ: -1 };
     this.courtyardWalls.push(gate);
-    this.mesh('box', 'dark', gate, 0, 1.7, 0, 6.2, 3.4, 2.5);
-    this.mesh('box', 'iron', gate, 0, 1.3, 1.28, 2.7, 2.6, .15);
-    for (let i = -2; i <= 2; i++) this.mesh('box', 'bark', gate, i * .49, 1.3, 1.39, .43, 2.4, .1);
-    this.mesh('ball', 'bone', gate, 0, 2.1, 1.54, .4, .34, .11);
-    for (const sign of [-1, 1]) this.mesh('ball', 'eye', gate, sign * .15, 2.13, 1.645, .11, .13, .025);
-    this.mesh('box', 'bone', gate, 0, 1.82, 1.59, .3, .14, .1);
+    this.mesh('voxel', 'dark', gate, 0, 1.7, 0, 6.2, 3.4, 2.5);
+    this.mesh('voxel', 'iron', gate, 0, 1.3, 1.28, 2.7, 2.6, .15);
+    for (let i = -2; i <= 2; i++) this.mesh('voxel', 'bark', gate, i * .49, 1.3, 1.39, .43, 2.4, .1);
+    this.mesh('voxel', 'bone', gate, 0, 2.1, 1.54, .8, .68, .22);
+    for (const sign of [-1, 1]) this.mesh('voxel', 'eye', gate, sign * .15, 2.13, 1.665, .20, .23, .04);
+    this.mesh('voxel', 'bone', gate, 0, 1.82, 1.59, .3, .14, .1);
     for (const x of [-1.9, 1.9]) {
-      this.mesh('box', 'stone', gate, x, 1.6, 1.2, .65, 3.2, .8);
-      this.mesh('box', 'paleStone', gate, x, 3.3, 1.2, .95, .24, 1);
+      this.mesh('voxel', 'stone', gate, x, 1.6, 1.2, .65, 3.2, .8);
+      this.mesh('voxel', 'paleStone', gate, x, 3.3, 1.2, .95, .24, 1);
     }
-    this.mesh('box', 'paleStone', gate, 0, 3.6, 0, 6.8, .35, 3.1);
-    this.mesh('box', 'stone', gate, 0, 3.85, 0, 5.9, .2, 2.5);
-    for (let i = 0; i < 7; i++) this.mesh('box', 'dark', gate, -2.7 + i * .9, 4.15, 0, .65, .55, 2.3);
+    this.mesh('voxel', 'paleStone', gate, 0, 3.6, 0, 6.8, .35, 3.1);
+    this.mesh('voxel', 'stone', gate, 0, 3.85, 0, 5.9, .2, 2.5);
+    for (let i = 0; i < 7; i++) this.mesh('voxel', 'dark', gate, -2.7 + i * .9, 4.15, 0, .65, .55, 2.3);
     for (const [x, z] of [[1,1], [15,1], [1,26.5], [15,26.5]]) {
       const lamp = new THREE.Group(); lamp.position.set(x,0,z); court.add(lamp);
-      this.mesh('box', 'stone', lamp, 0,.15,0,.7,.3,.7);
-      this.mesh('rod', 'iron', lamp, 0,.9,0,.09,1.4,.09);
-      this.mesh('box', 'iron', lamp, 0,1.7,0,.45,.1,.45);
-      this.mesh('crystal', 'ember', lamp, 0,1.9,0,.15,.3,.15);
-      this.mesh('cone', 'ember', lamp, 0,2.17,0,.18,.5,.18);
-      this.mesh('crystal', 'white', lamp, 0,2.13,0,.07,.2,.07);
-      const light = new THREE.PointLight(0xffa34c, 7, 7, 2);
+      this.mesh('voxel', 'stone', lamp, 0,.15,0,.7,.3,.7);
+      this.mesh('voxel', 'bark', lamp, 0,.9,0,.16,1.4,.16);
+      this.mesh('voxel', 'iron', lamp, 0,1.7,0,.45,.1,.45);
+      this.mesh('voxel', 'gold', lamp, 0,1.85,0,.36,.25,.36);
+      this.mesh('voxel', 'ember', lamp, 0,2.13,0,.24,.48,.24);
+      this.mesh('voxel', 'ember', lamp, .06,2.43,0,.12,.22,.12);
+      this.mesh('voxel', 'white', lamp, 0,2.14,.125,.10,.25,.03);
+      const light = new THREE.PointLight(0xffa34c, 14, 8, 2);
       light.position.set(x, 2.1, z); this.scene.add(light);
     }
     for (let i = 0; i < 36; i++) {
       const side = i % 2, z = .6 + Math.floor(i / 2) * 1.5;
       const x = side ? WIDTH / UNIT + 1.5 : -1.5;
-      this.mesh('box', i % 3 ? 'stone' : 'paleStone', court, x + Math.sin(i) * .3, .12, z, .35 + i % 3 * .1, .2, .6).rotation.y = i * 1.31;
-      if (i % 4 === 0) this.mesh('ball', 'leaf', court, x, .28, z, .4, .18, .35);
+      this.mesh('voxel', i % 3 ? 'stone' : 'paleStone', court, x + Math.sin(i) * .3, .12, z, .35 + i % 3 * .1, .2, .6).rotation.y = i * 1.31;
+      if (i % 6 === 0) {
+        this.mesh('voxel', 'dark', court, x, .14, z, .9, .25, .8);
+        for (let j = -1; j <= 1; j++) this.mesh('voxel', 'cyan', court, x + j*.22, .48 + (j===0?.25:0), z, .18, j===0?.8:.45, .22).rotation.z = j*.25;
+      }
     }
     // Thin worn threshold slabs give the playable floor a physical scale cue.
     for (let i = 0; i < 12; i++) {
       const x = 2 + i % 6 * 2.4, z = i < 6 ? .2 : HEIGHT / UNIT - .2;
-      this.mesh('box', 'stone', court, x, -.005, z, 2.32, .04, .55);
+      this.mesh('voxel', 'stone', court, x, -.005, z, 2.32, .04, .55);
     }
     const damp = this.own(new THREE.MeshBasicMaterial({ color: 0x18242d, transparent: true, opacity: .16, depthWrite: false }));
-    const dampGeometry = this.own(new THREE.CircleGeometry(1, 16));
-    const dampVertices = dampGeometry.attributes.position;
-    for (let i = 1; i < dampVertices.count; i++) {
-      const radius = .8 + Math.sin((i % 16) * 2.4) * .17;
-      dampVertices.setXY(i, dampVertices.getX(i) * radius, dampVertices.getY(i) * radius);
-    }
+    const dampGeometry = this.geo.plane;
     for (let i = 0; i < 9; i++) {
       const puddle = this.mesh('disc', damp, court, 2 + (i * 3.77) % 12, .012, 2 + (i * 5.31) % 23, .7 + i % 3 * .3, .35 + i % 2 * .2, 1);
       puddle.geometry = dampGeometry;
-      puddle.rotation.x = -Math.PI / 2; puddle.rotation.z = i * 1.73;
+      puddle.rotation.x = -Math.PI / 2; puddle.rotation.z = 0;
     }
     court.traverse(object => { if (object.isMesh && !object.material.transparent) object.userData.staticShadow = true; });
   }
 
   character(type) {
     if (type === 'hero') return this.ranger();
+    const block = (shape, material, parent, x, y, z, sx, sy = sx, sz = sx) => {
+      const radial = shape === 'ball' || shape === 'crystal';
+      return this.mesh('voxel', material, parent, x, y, z, sx * (shape === 'box' ? 1 : 2), sy * (radial ? 2 : 1), sz * (shape === 'box' ? 1 : 2));
+    };
     const root = new THREE.Group(), rig = new THREE.Group();
     root.add(rig);
     const tank = type === 'tank', archer = type === 'archer';
@@ -271,44 +287,57 @@ export class Crystal3D {
     const legs = [];
     for (const sign of [-1, 1]) {
       const leg = new THREE.Group(); leg.position.set(sign * .14, .25, 0); rig.add(leg);
-      this.mesh('rod', 'bone', leg, 0, 0, 0, .055, .34, .055);
-      this.mesh('ball', 'bone', leg, 0, -.15, .085, .1, .065, .17);
+      block('rod', 'bone', leg, 0, 0, 0, .055, .34, .055);
+      block('ball', 'bone', leg, 0, -.15, .085, .1, .065, .17);
       legs.push(leg);
-      this.mesh('ball', 'bone', rig, sign * .25, .74, 0, .09, .09, .09);
-      this.mesh('rod', 'bone', rig, sign * .3, .58, .03, .047, .29, .047).rotation.z = sign * .3;
-      this.mesh('ball', 'bone', rig, sign * .34, .45, .09, .075, .08, .07);
+      block('ball', 'bone', rig, sign * .25, .74, 0, .09, .09, .09);
+      block('rod', 'bone', rig, sign * .3, .58, .03, .047, .29, .047).rotation.z = sign * .3;
+      block('ball', 'bone', rig, sign * .34, .45, .09, .075, .08, .07);
     }
-    this.mesh('ball', trim, rig, 0, .57, -.025, tank ? .28 : .2, .26, .15);
-    this.mesh('rod', 'bone', rig, 0, .59, .13, .045, .4, .045);
-    for (let i = 0; i < 3; i++) this.mesh('rod', 'bone', rig, 0, .53 + i * .085, .17, .025, .31 - i * .025, .025).rotation.z = Math.PI / 2;
-    this.mesh('box', trim, rig, 0, .34, 0, .33, .11, .2);
-    // Oversized ivory skull, deep sockets and small separated teeth.
-    this.mesh('ball', 'bone', rig, 0, 1.12, .015, .35, .34, .29);
-    this.mesh('ball', 'bone', rig, 0, .91, .15, .25, .13, .2);
+    block('ball', trim, rig, 0, .57, -.025, tank ? .28 : .2, .26, .15);
+    block('rod', 'bone', rig, 0, .59, .13, .045, .4, .045);
+    for (let i = 0; i < 3; i++) block('rod', 'bone', rig, 0, .53 + i * .085, .17, .025, .31 - i * .025, .025).rotation.z = Math.PI / 2;
+    block('box', trim, rig, 0, .34, 0, .33, .11, .2);
+    // Square ivory skull, pixel sockets and separated block teeth.
+    block('ball', 'bone', rig, 0, 1.12, .015, .35, .34, .29);
+    block('ball', 'bone', rig, 0, .91, .15, .25, .13, .2);
     for (const sign of [-1, 1]) {
-      this.mesh('ball', 'eye', rig, sign * .135, 1.14, .277, .108, .125, .034);
-      this.mesh('crystal', tank ? 'ember' : 'cyan', rig, sign * .135, 1.14, .309, .028, .036, .016);
+      block('ball', 'eye', rig, sign * .135, 1.14, .277, .108, .125, .034);
+      block('crystal', tank ? 'ember' : 'cyan', rig, sign * .135, 1.14, .309, .028, .036, .016);
     }
-    this.mesh('cone', 'eye', rig, 0, 1.015, .31, .038, .08, .02).rotation.z = Math.PI;
-    this.mesh('box', 'eye', rig, 0, .9, .319, .22, .055, .015);
-    for (let i = -1; i <= 1; i++) this.mesh('box', 'bone', rig, i * .062, .911, .337, .045, .045, .02);
+    block('cone', 'eye', rig, 0, 1.015, .31, .038, .08, .02).rotation.z = Math.PI;
+    block('box', 'eye', rig, 0, .9, .319, .22, .055, .015);
+    for (let i = -1; i <= 1; i++) block('box', 'bone', rig, i * .062, .911, .337, .045, .045, .02);
     if (archer) {
-      this.mesh('cone', 'leaf', rig, 0, 1.44, -.04, .34, .25, .27);
-      this.mesh('ring', 'gold', rig, .4, .69, .19, .2, .36, .2).rotation.y = Math.PI / 2;
-      this.mesh('rod', 'bone', rig, .4, .69, .19, .014, .7, .014);
+      block('box', 'leaf', rig, 0, 1.44, -.04, .72, .16, .58);
+      block('box', 'leaf', rig, 0, 1.57, -.10, .48, .12, .38);
+      for (const [y, z] of [[.39,.15],[.49,.24],[.69,.30],[.89,.24],[.99,.15]])
+        block('box', 'bark', rig, .4, y, z, .055, .17, .075);
+      block('rod', 'bone', rig, .4, .69, .19, .014, .7, .014);
     } else {
-      this.mesh('rod', 'bark', rig, .34, .53, .14, .035, .24, .035);
-      this.mesh('box', 'gold', rig, .34, .65, .14, .22, .045, .09);
-      this.mesh('crystal', 'paleStone', rig, .34, .87, .14, .06, .26, .035);
+      block('rod', 'bark', rig, .34, .53, .14, .035, .24, .035);
+      block('box', 'gold', rig, .34, .65, .14, .22, .045, .09);
+      block('crystal', 'paleStone', rig, .34, .87, .14, .06, .26, .035);
     }
     if (tank) {
-      this.mesh('ball', 'iron', rig, 0, 1.35, -.035, .36, .15, .28);
-      this.mesh('box', 'iron', rig, -.37, .65, .2, .28, .43, .1);
-      this.mesh('crystal', 'gold', rig, -.37, .66, .275, .07, .1, .025);
+      block('ball', 'iron', rig, 0, 1.35, -.035, .36, .15, .28);
+      block('box', 'iron', rig, -.37, .65, .2, .28, .43, .1);
+      block('crystal', 'gold', rig, -.37, .66, .275, .07, .1, .025);
+    }
+    for (const sign of [-1,1]) {
+      block('box', 'bone', rig, sign*.13, .66, .18, .045, .30, .045);
+      if (tank) {
+        block('box','iron',rig,sign*.28,.82,0,.24,.13,.30);
+        block('box','gold',rig,sign*.28,.9,.01,.16,.04,.25);
+      }
+    }
+    if (tank) {
+      for (const sign of [-1,1]) block('box','gold',rig,-.37+sign*.135,.65,.265,.035,.45,.035);
+      block('box','gold',rig,-.37,.85,.265,.28,.035,.035);
     }
     const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64);
     shield.rotation.x = -Math.PI / 2; shield.visible = false;
-    const chargeCrest = this.mesh('crystal', 'ember', rig, 0, 1.46, .08, .11, .24, .14);
+    const chargeCrest = block('crystal', 'ember', rig, 0, 1.46, .08, .11, .24, .14);
     chargeCrest.visible = false;
     root.userData = { rig, legs, shield, chargeCrest, skeleton: true };
     return root;
@@ -320,64 +349,74 @@ export class Crystal3D {
     const contact = this.mesh('disc', this.shadow, root, 0, .02, 0, .48);
     contact.rotation.x = -Math.PI / 2;
     const legs = [];
+    // Original voxel adventurer: straight limbs, square face and layered tunic.
     for (const sign of [-1, 1]) {
-      const leg = new THREE.Group(); leg.position.set(sign * .16, .24, .01); rig.add(leg);
-      this.mesh('heroBall', 'velvet', leg, 0, 0, 0, .12, .22, .12);
-      this.mesh('heroBall', 'leather', leg, 0, -.12, .09, .15, .1, .22);
+      const leg = new THREE.Group(); leg.position.set(sign * .12, .56, 0); rig.add(leg);
+      this.mesh('voxel', 'velvet', leg, 0, -.23, 0, .21, .46, .23);
+      this.mesh('voxel', 'leather', leg, 0, -.48, .025, .215, .13, .28);
       legs.push(leg);
-      this.mesh('heroBall', 'robe', rig, sign * .33, .66, .03, .14, .24, .16).rotation.z = sign * .3;
-      this.mesh('heroBall', 'fox', rig, sign * .37, .48, .13, .105, .115, .1);
+      this.mesh('voxel', 'robe', rig, sign * .34, .95, 0, .20, .24, .26);
+      this.mesh('voxel', 'fox', rig, sign * .34, .67, 0, .18, .33, .22);
+      this.mesh('voxel', 'leather', rig, sign * .34, .51, .01, .19, .075, .235);
     }
-    this.mesh('heroCone', 'robe', rig, 0, .57, 0, .36, .7, .29);
-    this.mesh('heroBall', 'velvet', rig, 0, .74, -.17, .39, .35, .2);
-    this.mesh('ring', 'gold', rig, 0, .34, 0, .31, .31, .26).rotation.x = Math.PI / 2;
-    this.mesh('heroBall', 'ivory', rig, 0, .8, .17, .3, .11, .18);
-    this.mesh('crystal', 'cyan', rig, 0, .78, .33, .07, .11, .05);
-    // Large smooth cheeks, raised ears and readable eyes define the silhouette.
-    this.mesh('heroBall', 'fox', rig, 0, 1.15, .01, .42, .39, .34);
+    this.mesh('voxel', 'robe', rig, 0, .81, 0, .46, .54, .25);
+    this.mesh('voxel', 'velvet', rig, 0, .78, -.15, .40, .57, .055);
+    this.mesh('voxel', 'leather', rig, 0, .58, .005, .47, .075, .27);
+    this.mesh('voxel', 'gold', rig, 0, .58, .15, .09, .065, .025);
     for (const sign of [-1, 1]) {
-      const ear = this.mesh('heroCone', 'fox', rig, sign * .29, 1.53, -.015, .18, .46, .15);
-      ear.rotation.z = -sign * .19;
-      this.mesh('heroCone', 'ivory', rig, sign * .29, 1.55, .085, .105, .29, .055).rotation.z = -sign * .19;
-      this.mesh('heroBall', 'ivory', rig, sign * .17, 1.055, .29, .16, .12, .105);
-      this.mesh('heroBall', 'eye', rig, sign * .145, 1.205, .323, .075, .095, .038);
-      this.mesh('heroBall', 'cyan', rig, sign * .14, 1.197, .358, .042, .056, .018);
-      this.mesh('heroBall', 'white', rig, sign * .14 - .02, 1.231, .377, .025, .029, .012);
+      this.mesh('voxel', 'ivory', rig, sign * .09, 1.01, .137, .075, .08, .025);
+      this.mesh('voxel', 'gold', rig, sign * .19, .84, .139, .025, .37, .025);
     }
-    this.mesh('heroBall', 'ivory', rig, 0, 1.035, .35, .125, .075, .09);
-    this.mesh('heroBall', 'eye', rig, 0, 1.073, .423, .036, .026, .019);
-    this.mesh('heroBall', 'velvet', rig, 0, 1.47, -.12, .31, .075, .27);
-    this.mesh('heroCone', 'robe', rig, .035, 1.7, -.14, .235, .54, .215).rotation.z = -.28;
-    this.mesh('crystal', 'gold', rig, .085, 1.91, -.09, .07, .095, .045);
-    const tail = this.mesh('heroBall', 'fox', rig, -.25, .44, -.35, .18, .2, .4);
-    tail.rotation.z = -.35;
-    this.mesh('heroBall', 'ivory', rig, -.29, .55, -.62, .15, .14, .2);
-    this.mesh('rod', 'bark', rig, .47, .66, .15, .04, 1.25, .04);
-    this.mesh('rod', 'gold', rig, .47, 1.18, .15, .07, .2, .07);
+    for (const sign of [-1,1]) {
+      this.mesh('voxel', 'robe', rig, sign*.15, .48, .02, .20, .22, .30);
+      this.mesh('voxel', 'gold', rig, sign*.15, .38, .185, .20, .035, .025);
+      this.mesh('voxel', 'gold', rig, sign*.40, 1.065, .02, .065, .04, .28);
+      this.mesh('voxel', 'leather', rig, sign*.24, .61, .12, .08, .13, .12);
+    }
+    for (let i=0;i<4;i++) this.mesh('voxel','bark',rig,-.17+i*.105,1.65+(i%2)*.018,-.03,.105,.035,.32);
+    this.mesh('voxel', 'cyan', rig, 0, .94, .15, .065, .065, .025);
+    this.mesh('voxel', 'fox', rig, 0, 1.35, 0, .48, .48, .43);
+    this.mesh('voxel', 'bark', rig, 0, 1.59, -.015, .50, .10, .46);
+    this.mesh('voxel', 'bark', rig, 0, 1.36, -.205, .49, .40, .06);
+    for (const sign of [-1, 1]) {
+      this.mesh('voxel', 'bark', rig, sign * .22, 1.46, 0, .065, .20, .43);
+      this.mesh('voxel', 'ivory', rig, sign * .115, 1.36, .219, .11, .055, .016);
+      this.mesh('voxel', 'eye', rig, sign * .10, 1.36, .23, .043, .055, .018);
+      this.mesh('voxel', 'bark', rig, sign * .115, 1.43, .222, .11, .025, .015);
+    }
+    this.mesh('voxel', 'leather', rig, 0, 1.285, .23, .065, .055, .035);
+    this.mesh('voxel', 'bark', rig, 0, 1.215, .22, .10, .025, .016);
+    // Asymmetric pixel fringe avoids a helmet-like solid hairline.
+    this.mesh('voxel', 'bark', rig, -.07, 1.515, .215, .19, .07, .035);
+    this.mesh('voxel', 'bark', rig, .055, 1.48, .215, .06, .14, .035);
+    this.mesh('voxel', 'bark', rig, .43, .93, .15, .065, 1.80, .065);
+    this.mesh('voxel', 'gold', rig, .43, 1.72, .15, .11, .18, .11);
     const dragon = new THREE.Group();
-    dragon.position.set(.47, 1.4, .15);
+    dragon.position.set(.43, 1.95, .15);
     rig.add(dragon);
-    this.mesh('ball', 'velvet', dragon, 0, .035, -.055, .19, .15, .23);
-    this.mesh('ball', 'gold', dragon, 0, -.055, .13, .16, .055, .21);
+    this.mesh('voxel', 'velvet', dragon, 0, .035, -.055, .30, .25, .32);
+    this.mesh('voxel', 'velvet', dragon, 0, .005, .16, .24, .15, .23);
+    this.mesh('voxel', 'gold', dragon, 0, -.085, .13, .25, .045, .29);
     for (const sign of [-1, 1]) {
-      this.mesh('cone', 'gold', dragon, sign * .13, .21, -.17, .055, .25, .065).rotation.x = -.3;
-      this.mesh('crystal', this.magicImpact, dragon, sign * .155, .09, .06, .035, .04, .055);
+      this.mesh('voxel', 'gold', dragon, sign * .11, .22, -.15, .075, .20, .075);
+      this.mesh('voxel', 'gold', dragon, sign * .16, .34, -.17, .14, .065, .07);
+      this.mesh('voxel', 'robe', dragon, sign * .19, .025, -.09, .08, .16, .13);
+      this.mesh('voxel', this.magicImpact, dragon, sign * .156, .08, .015, .018, .05, .07);
+      this.mesh('voxel', 'ivory', dragon, sign * .075, -.06, .23, .035, .055, .035);
     }
-    this.mesh('crystal', 'gold', dragon, 0, .19, -.09, .045, .12, .16);
-    const muzzle = this.mesh('heroBall', this.magicCore, dragon, 0, .015, .28, .11, .11, .11);
-    this.mesh('ring', 'gold', dragon, 0, .015, .28, .15, .15, .15);
-    const castGlow = this.mesh('heroBall', this.magicGlow, dragon, 0, .015, .28, .18, .18, .18);
+    const muzzle = this.mesh('crystal', this.magicCore, dragon, 0, .015, .34, .105, .105, .105);
+    const castGlow = this.mesh('crystal', this.magicGlow, dragon, 0, .015, .34, .17, .17, .17);
     const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.visible = false;
     // Hero-only palette and gentle material fill: dungeon lighting is unchanged.
-    const palette = { fox: 0xffdfa8, ivory: 0xfffcf1, robe: 0x83d7f0,
-      velvet: 0x349fd0, leather: 0xdba86b, gold: 0xffd86c,
-      bark: 0xecd4a3, eye: 0x17314d, cyan: 0x75f3ff };
+    const palette = { fox: 0xe9be96, ivory: 0xf0e9d9, robe: 0x238f9a,
+      velvet: 0x244965, leather: 0x9f7957, gold: 0xe2b456,
+      bark: 0x68472e, eye: 0x17314d, cyan: 0x8dc9d5 };
     const replacements = new Map();
     for (const [name, color] of Object.entries(palette)) {
       const material = this.own(this.mat[name].clone());
       material.color.setHex(color);
       material.emissive.setHex(color);
-      material.emissiveIntensity = name === 'eye' ? .025 : .24;
+      material.emissiveIntensity = name === 'eye' ? 0 : .055;
       material.roughness = .52;
       material.metalness = name === 'gold' ? .3 : .03;
       replacements.set(this.mat[name], material);
@@ -406,7 +445,7 @@ export class Crystal3D {
       for (const sign of [-1, 1]) {
         const wing = new THREE.Group(); wing.position.set(sign * .2, .8, -.12); rig.add(wing);
         for (let i = 0; i < 4; i++) {
-          const rib = this.mesh('rod', 'bone', wing, sign * (.2 + i * .12), .2, -i * .11, .03, .7 - i * .1, .03);
+          const rib = this.mesh('voxel', 'bone', wing, sign * (.2 + i * .12), .2, -i * .11, .03, .7 - i * .1, .03);
           rib.rotation.z = -sign * (.5 + i * .18);
         }
         root.userData.wings.push(wing);
@@ -414,18 +453,20 @@ export class Crystal3D {
     }
     if (type === 'bossRoot') {
       for (const sign of [-1, 1]) {
-        const branch = this.mesh('rod', 'bark', rig, sign * .4, 1.5, -.04, .07, .9, .07);
+        const branch = this.mesh('voxel', 'bark', rig, sign * .4, 1.5, -.04, .07, .9, .07);
         branch.rotation.z = -sign * .4;
-        this.mesh('cone', 'leaf', rig, sign * .6, 1.95, -.04, .22, .35, .2);
+        this.mesh('voxel', 'leaf', rig, sign * .6, 1.95, -.04, .22, .35, .2);
       }
     } else if (type === 'bossCinder') {
-      for (let i = 0; i < 5; i++) this.mesh('crystal', 'gold', rig, (i - 2) * .16, 1.35, -.1, .11, .3 + (i % 2) * .12, .1);
+      for (let i = 0; i < 5; i++) this.mesh('voxel', 'gold', rig, (i - 2) * .16, 1.35, -.1, .11, .3 + (i % 2) * .12, .1);
     } else if (type === 'bossEclipse') {
-      const halo = this.mesh('ring', 'gold', rig, 0, 1.6, -.07, .6);
-      halo.rotation.x = Math.PI / 2;
-      this.mesh('crystal', 'cyan', rig, 0, .65, .3, .2, .3, .12);
+      for (const sign of [-1, 1]) {
+        this.mesh('voxel', 'gold', rig, sign * .57, 1.6, -.07, .06, .06, 1.2);
+        this.mesh('voxel', 'gold', rig, 0, 1.6, -.07 + sign * .57, 1.2, .06, .06);
+      }
+      this.mesh('voxel', 'cyan', rig, 0, .65, .3, .2, .3, .12);
     } else {
-      for (let i = 0; i < 5; i++) this.mesh('cone', 'gold', rig, (i - 2) * .13, 1.5, .04, .07, .25 + (i % 2) * .1, .07);
+      for (let i = 0; i < 5; i++) this.mesh('voxel', 'gold', rig, (i - 2) * .13, 1.5, .04, .07, .25 + (i % 2) * .1, .07);
     }
     return root;
   }
@@ -481,6 +522,16 @@ export class Crystal3D {
     return root;
   }
 
+  hitFeedback(object, enemy) {
+    const hit = Math.max(0, Math.min(1, (enemy.hit || 0) / .16));
+    object.userData.rig.traverse(part => {
+      if (!part.isMesh) return;
+      part.userData.restMaterial ||= part.material;
+      part.material = hit > .5 ? this.mat.white : part.userData.restMaterial;
+    });
+    object.userData.rig.scale.set(1 + hit * .07, 1 - hit * .06, 1 + hit * .07);
+  }
+
   pool(name, count, make, update, limit) {
     let pool = this.pools.get(name);
     if (!pool) this.pools.set(name, pool = []);
@@ -518,6 +569,13 @@ export class Crystal3D {
     this.azimuth = azimuth;
     this.camera.position.set(cx + Math.sin(this.azimuth) * 22, 30, cz + Math.cos(this.azimuth) * 22);
     this.camera.lookAt(cx, 0, cz);
+    // Brief world-space camera impulse; never changes simulation or input state.
+    const punch = this.reducedMotion ? 0 : Math.max(0, ...(state.sparks || []).map(effect =>
+      (effect.punch || 0) * Math.max(0, 1 - ((effect.duration || .45) - effect.life) / .16)));
+    if (punch) {
+      const offset = new THREE.Vector3(Math.sin(now * .11) * punch, Math.cos(now * .14) * punch * .45, 0);
+      this.camera.position.add(offset);
+    }
     const aspect = width / height;
     const groundCosine = 30 / Math.hypot(30, 22);
     const c = Math.abs(Math.cos(this.azimuth)), s = Math.abs(Math.sin(this.azimuth));
@@ -562,6 +620,7 @@ export class Crystal3D {
       this.pool(type, enemies.length, () => this.character(type), (object, i) => {
         const e = enemies[i];
         this.setPosition(object, e);
+        this.hitFeedback(object, e);
         object.scale.setScalar(e.size / 64);
         object.userData.rig.rotation.y = e.bowAim ? Math.atan2(e.bowAim.x, e.bowAim.y) : Math.atan2(state.player.x - e.x, state.player.y - e.y);
         object.userData.legs.forEach((leg, j) => { leg.rotation.x = Math.sin(t * (type === 'runner' ? 15 : 9) + j * Math.PI + i) * .5; });
@@ -573,6 +632,7 @@ export class Crystal3D {
       const bosses = state.enemies.filter(e => e.isBoss && e.image === type);
       this.pool(type, bosses.length, () => this.boss(type), (object, i) => {
         this.setPosition(object, bosses[i]);
+        this.hitFeedback(object, bosses[i]);
         object.scale.setScalar(bosses[i].size / 64);
         object.userData.rig.rotation.y = Math.atan2(state.player.x - bosses[i].x, state.player.y - bosses[i].y);
         object.userData.shield.visible = Boolean(bosses[i].shielded);
@@ -649,6 +709,25 @@ export class Crystal3D {
         tail.scale.setScalar(.17 * (1 - j / 6));
       }
     }, 160);
+    const deaths = (state.sparks || []).filter(effect => effect.kind === 'voxelDeath').slice(-12);
+    this.pool('debris', deaths.length, () => {
+      const group = new THREE.Group();
+      for (let j = 0; j < 10; j++) this.mesh('voxel', j < 7 ? 'bone' : 'iron', group);
+      return group;
+    }, (object, i) => {
+      const effect = deaths[i], age = Math.max(0, 1 - effect.life / .7);
+      object.position.set(effect.x / UNIT, 0, effect.y / UNIT);
+      const spread = (effect.boss ? 1.65 : 1) * (this.reducedMotion ? .35 : 1);
+      for (let j = 0; j < 10; j++) {
+        const part = object.children[j], angle = j * 2.39996 + effect.x * .01;
+        const radius = .12 + age * (1.0 + j % 3 * .3) * spread;
+        const lift = effect.height + (1.8 + j % 4 * .28) * age - 4.5 * age * age;
+        part.position.set(Math.cos(angle) * radius, Math.max(.06, lift), Math.sin(angle) * radius);
+        const size = (j === 0 ? .32 : .10 + (j % 3) * .035) * (effect.boss ? 1.4 : 1);
+        part.scale.setScalar(size * Math.max(.001, Math.min(1, (1 - age) * 4)));
+        part.rotation.set(age * (j + 2), angle + age * 5, age * 4);
+      }
+    }, 12);
     this.pool('sparks', (state.sparks || []).length, () => {
       const group = new THREE.Group();
       this.mesh('crystal', 'gold', group);
@@ -662,11 +741,12 @@ export class Crystal3D {
       return group;
     }, (object, i) => {
       const spark = state.sparks[i];
+      if (spark.kind === 'voxelDeath') { object.visible = false; return; }
       const magic = spark.kind === 'magicHit';
       const age = 1 - spark.life / .45;
       this.setPosition(object, spark, magic ? spark.height : .35 + age * .5);
       object.children.forEach((child, j) => { child.visible = magic ? j > 0 : j === 0; });
-      const effectMaterial = this.elementMaterials[spark.element] || this.magicImpact;
+      const effectMaterial = spark.element === 'critical' ? this.mat.gold : this.elementMaterials[spark.element] || this.magicImpact;
       object.children.slice(1, 10).forEach(child => { child.material = effectMaterial; });
       object.children[0].scale.setScalar(Math.max(.02, (1 - age) * .22));
       const ring = object.children[1];
@@ -692,7 +772,7 @@ export class Crystal3D {
         const a = delta.clone().multiplyScalar(j / 8).addScaledVector(offset, j === 0 ? 0 : (j % 2 ? .26 : -.26));
         const b = delta.clone().multiplyScalar((j + 1) / 8).addScaledVector(offset, j === 7 ? 0 : (j % 2 ? -.26 : .26));
         const direction = b.clone().sub(a);
-        for (const [part, radius] of [[glow, .12], [core, .04]]) {
+        for (const [part, radius] of [[glow, .17], [core, .055]]) {
           part.position.copy(a).add(b).multiplyScalar(.5);
           part.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize());
           part.scale.set(radius * (1 - age * .6), direction.length(), radius * (1 - age * .6));

@@ -1096,7 +1096,7 @@ window.WONDER_LOBBY = {
       },
       art: {
         kind: "image",
-        background: "assets/animal-crystal-survivor-cover.webp",
+        background: "assets/animal-crystal-survivor-voxel-cover-v26.webp",
         hideHero: true,
       },
     },

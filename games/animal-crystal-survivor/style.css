@@ -2168,3 +2168,58 @@ html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
     grid-row: 3 !important;
   }
 }
+/* Rune drafting and permanent build workshop share the voxel palette. */
+html body #upgradePanel .upgrade-card-wrap { width: min(880px,100%); border: 2px solid #829eac; background: linear-gradient(145deg,#162938,#10202c) !important; padding: clamp(14px,3vw,28px); border-radius: 12px; box-sizing: border-box; }
+html body #upgradeTitle { display:block; color:#f1e4b8!important; font-size:clamp(20px,4vw,28px); }
+html body #upgradePanel .upgrade-cards { gap:12px; }
+html body #upgradePanel .upgrade-card { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:10px; padding:18px; text-align:start; border:2px solid var(--rune-color,#7894a4)!important; border-radius:8px!important; background:linear-gradient(155deg,#294451,#152834)!important; color:#f1f6fa; min-width:0; }
+html body #upgradePanel .upgrade-card[data-school=chain],html body #upgradePanel .upgrade-card[data-school=ricochet] { --rune-color:#bfa1f2; }
+html body #upgradePanel .upgrade-card[data-school=frost],html body #upgradePanel .upgrade-card[data-school=orbit] { --rune-color:#7ed9e8; }
+html body #upgradePanel .upgrade-card[data-school=burst],html body #upgradePanel .upgrade-card[data-school=rhythm] { --rune-color:#f0bb78; }
+html body #upgradePanel .upgrade-card b { font-size:18px; line-height:1.3; }
+html body #upgradePanel .upgrade-card small { color:#c4d4dc; font-size:13px; line-height:1.6; white-space:normal; }
+html body #upgradePanel .upgrade-card em { color:#ffe5a7; font-size:14px; }
+html body #upgradePanel .rune-icon { display:grid; place-items:center; width:50px; height:50px; border:2px solid var(--rune-color,#7894a4); border-radius:3px; background:#11212d; color:var(--rune-color,#c5e8ef); font-size:34px; box-shadow:4px 4px 0 #08141c; }
+.rune-tag { color:var(--rune-color,#b3d1db); font-size:11px; letter-spacing:.06em; }
+.rune-build { color:#bad1dc; font-size:13px; line-height:1.7; margin:10px 0 18px; }
+.rune-pips { display:flex; gap:5px; margin-top:auto; }
+.rune-pips i { display:block; width:22px; height:5px; background:#0a1721; }
+.rune-pips i.on { background:var(--rune-color,#e8c791); }
+.rune-combo { padding:5px 7px; color:#b8f1cc; background:#1c443f; font-size:11px; border:1px solid #578f80; }
+html body .rune-reroll { display:block; margin:16px auto 0; padding:10px 24px; min-height:44px; color:#e6d7aa; background:#263e4d; border:1px solid #a69a77; border-radius:5px; }
+html body .equipment-page { overflow-y:auto; overscroll-behavior:contain; }
+.talent-workshop { background:linear-gradient(140deg,#1c3444,#112330); border:1px solid #7495a6; border-radius:8px; padding:16px; color:#e5eff2; }
+.talent-workshop header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.talent-workshop header div { order:2; color:#eac580; display:flex; align-items:center; gap:8px; }
+.talent-workshop header strong { font-size:26px; }
+.talent-workshop h2 { margin:0; font-size:22px; }
+.talent-workshop > p,.talent-refund { font-size:12px; color:#b6cbd5; line-height:1.65; }
+.talent-loadout { background:#0e202b; border:1px solid #527789; padding:10px; margin:12px 0; font-size:13px; color:#b4eee3; }
+.talent-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.talent-node { position:relative; padding:12px; border:1px solid #466578; background:#203745; border-radius:5px; }
+.talent-node.equipped { border-color:#8ed9c5; box-shadow:inset 3px 0 #8ed9c5; }
+.talent-symbol { color:#e6c68c; font-size:24px; }
+.talent-node h3 { font-size:16px; margin:6px 0; }
+.talent-node p { min-height:3.5em; font-size:12px; line-height:1.6; color:#c3d6dd; }
+.rune-rank { position:absolute; top:12px; inset-inline-end:12px; color:#b4c9d3; font-size:12px; }
+.talent-actions { display:flex; flex-wrap:wrap; gap:6px; }
+html body .talent-workshop button { min-height:44px; padding:8px 10px; border:1px solid #738f9c; border-radius:4px; color:#e9f3ef; background:#345968; font-size:12px; }
+html body .talent-workshop button:disabled,html body .rune-reroll:disabled { opacity:.4; cursor:default; }
+html body .talent-workshop button:focus-visible { outline:3px solid #e8c88a; outline-offset:2px; }
+.talent-workshop > button { margin-top:12px; }
+.talent-refund { display:block; margin-top:8px; }
+@media(max-width:600px) and (orientation:portrait) {
+  html body #upgradePanel .upgrade-cards { grid-template-columns:1fr!important; }
+  html body #upgradePanel .upgrade-card { display:grid; grid-template-columns:48px 1fr; gap:5px 12px; padding:12px; }
+  html body #upgradePanel .rune-icon { grid-column:1; grid-row:1 / 5; width:42px; height:42px; font-size:28px; align-self:center; }
+  html body #upgradePanel .upgrade-card > :not(.rune-icon) { grid-column:2; }
+  html body #upgradePanel .upgrade-card b { font-size:16px; }
+  html body #upgradePanel .upgrade-card small { font-size:12px; }
+  .talent-grid { grid-template-columns:1fr; }
+}
+@media(max-height:560px) and (orientation:landscape) {
+  html body #upgradePanel .upgrade-card { padding:10px; gap:5px; }
+  html body #upgradePanel .rune-icon { width:30px; height:30px; font-size:22px; }
+  html body #upgradePanel .upgrade-card small { font-size:11px; }
+  .rune-build { margin:4px 0 8px; }
+}

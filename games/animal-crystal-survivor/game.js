@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-bright-hero-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-poster-world-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -804,7 +804,16 @@
     ar: "اختر البقاء أو 3/5 موجات أو زعيمًا. تحرك للتفادي؛ السحر تلقائي. المفاتيح مكافآت إضافية.",
   }).forEach(([code, copy]) => { text[code].menuHint = copy; text[code].playHint = copy; });
 
+  const talentData = window.CrystalTalents;
+  const talentIds = ['echo', 'harvest', 'stride', 'alchemy'];
+  const runeIds = ['chain', 'frost', 'burst', 'ricochet', 'orbit', 'rhythm'];
+  const runeCopy = () => talentData.copy(locale);
+  const runeCap = id => id === 'rhythm' ? 2 : 3;
+  const runeName = id => runeCopy().names[id] || t(upgrades.find(item => item.id === id)?.name || id);
   const upgrades = [
+    { id: "ricochet", icon: "upgradeRange" },
+    { id: "orbit", icon: "upgradeMaxHp" },
+    { id: "rhythm", icon: "upgradeCooldown" },
     { id: "chain", icon: "upgradeCooldown", name: "magicChain", desc: "magicChainDesc" },
     { id: "frost", icon: "upgradeRange", name: "magicFrost", desc: "magicFrostDesc" },
     { id: "burst", icon: "upgradeAttack", name: "magicBurst", desc: "magicBurstDesc" },
@@ -1143,6 +1152,10 @@
         playCount: wholeNumber(source.playCount, 0),
         totalKeys: wholeNumber(source.totalKeys, 0),
         crystalCharm: source.crystalCharm === true,
+        runeDust: Math.min(99999, wholeNumber(source.runeDust, 4)),
+        talents: Object.fromEntries(talentIds.map(id => [id, Math.min(2, wholeNumber(source.talents?.[id], 0))])),
+        equippedTalents: [...new Set(Array.isArray(source.equippedTalents) ? source.equippedTalents : [])]
+          .filter(id => talentIds.includes(id) && wholeNumber(source.talents?.[id], 0) > 0).slice(0, 2),
         unlockedStage,
         selectedStage,
         completedStages: Array.isArray(source.completedStages)
@@ -1151,8 +1164,53 @@
         stageBestKeys: source.stageBestKeys && typeof source.stageBestKeys === "object" ? { ...source.stageBestKeys } : {},
       };
     } catch {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
+      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, runeDust: 4, talents: {}, equippedTalents: [], unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
     }
+  }
+
+  function renderTalents(message = "") {
+    const host = document.getElementById("talentWorkshop");
+    if (!host) return;
+    const copy = runeCopy(), equipped = save.equippedTalents || [];
+    const spent = talentIds.reduce((sum,id,i) => sum + (save.talents?.[id] ? talentData.costs[i] : 0) + (save.talents?.[id] === 2 ? talentData.costs[i] + 6 : 0), 0);
+    host.innerHTML = `<header><div><small>◆ ${copy.dust}</small><strong>${save.runeDust}</strong></div><h2>${copy.workshop}</h2></header>
+      <p>${copy.hint}</p><div class="talent-loadout">${copy.slots} ${equipped.length}/2 · ${equipped.map(runeName).join(" + ") || "—"}</div>
+      <div class="talent-grid">${talentIds.map((id,i) => {
+        const rank = save.talents?.[id] || 0, active = equipped.includes(id), cost = talentData.costs[i] + rank * 6;
+        return `<article class="talent-node ${active ? "equipped" : ""}">
+          <span class="talent-symbol" aria-hidden="true">${talentData.icons[i]}</span><h3>${copy.names[id]}</h3><span class="rune-rank">${rank}/2</span>
+          <p>${copy.descriptions[id]}</p><div class="talent-actions">
+          <button type="button" data-talent-buy="${id}" ${rank >= 2 || save.runeDust < cost ? "disabled" : ""}>${rank >= 2 ? copy.max : rank ? copy.rankup : copy.learn}${rank < 2 ? ` · ◆ ${cost}` : ""}</button>
+          <button type="button" data-talent-equip="${id}" aria-pressed="${active}" ${!rank || !active && equipped.length >= 2 ? "disabled" : ""}>${active ? copy.unequip : copy.equip}</button></div></article>`;
+      }).join("")}</div><button type="button" data-talent-reset ${spent ? "" : "disabled"}>${copy.reset} · +◆ ${spent}</button>
+      <small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
+  }
+
+  function changeTalent(action, id) {
+    if (state.mode !== "stage") return;
+    const next = JSON.parse(JSON.stringify(save));
+    next.talents ||= {}; next.equippedTalents ||= [];
+    const index = talentIds.indexOf(id), rank = next.talents[id] || 0;
+    if (action === "buy") {
+      if (index < 0 || rank >= 2) return;
+      const cost = talentData.costs[index] + rank * 6;
+      if (next.runeDust < cost) return;
+      next.runeDust -= cost; next.talents[id] = rank + 1;
+      if (!next.equippedTalents.includes(id) && next.equippedTalents.length < 2) next.equippedTalents.push(id);
+    } else if (action === "equip") {
+      if (index < 0 || !rank) return;
+      if (next.equippedTalents.includes(id)) next.equippedTalents = next.equippedTalents.filter(item => item !== id);
+      else if (next.equippedTalents.length < 2) next.equippedTalents.push(id);
+      else return;
+    } else if (action === "reset") {
+      talentIds.forEach((key,i) => { const r = next.talents[key] || 0; next.runeDust += (r ? talentData.costs[i] : 0) + (r === 2 ? talentData.costs[i] + 6 : 0); });
+      next.talents = {}; next.equippedTalents = [];
+    } else return;
+    if (!writeStorage(saveKey, JSON.stringify(next))) { renderTalents(runeCopy().saveError); return; }
+    save = next;
+    renderTalents();
+    playSound("upgrade", .15);
+    document.getElementById("talentWorkshop")?.querySelector(action === "reset" ? "[data-talent-reset]" : `[data-talent-${action}="${id}"]`)?.focus();
   }
 
   function persist() {
@@ -1195,9 +1253,10 @@
     nodes.stageTabBtn?.setAttribute("aria-pressed", String(!equipmentOpen));
     nodes.equipmentTabBtn?.setAttribute("aria-pressed", String(equipmentOpen));
     if (equipmentOpen) {
-      nodes.stageSelectTitle.textContent = t("equipmentTab");
+      nodes.stageSelectTitle.textContent = runeCopy().workshop;
       renderExpeditionRecord();
       updateDiamondShop();
+      renderTalents();
     } else {
       renderStageSelector(false);
     }
@@ -1299,7 +1358,9 @@
       damage: 1,
       cooldown: 0.78,
       shotTimer: 0,
-      chain: 0, frost: 0, burst: 0, magicHits: 0,
+      chain: 0, frost: 0, burst: 0, ricochet: 0, orbit: 0, rhythm: 0, magicHits: 0,
+      talents: Object.fromEntries(talentIds.map(id => [id, save.equippedTalents?.includes(id) ? save.talents?.[id] || 0 : 0])),
+      strideDistance: 0, orbitTimer: 4,
       pickup: hasCharm ? 68 : 54,
     };
   }
@@ -1317,7 +1378,7 @@
       wave: 0, waveCleared: 0, waveRemaining: 0, waveBreak: 1.2,
       player,
       camera: cameraTargetFor(player),
-      level: 1,
+      level: 1, rerolls: 1,
       xp: 0,
       xpNeed: 4,
       keys: 0,
@@ -1416,10 +1477,12 @@
     nodes.stageBackBtn?.setAttribute("aria-label", t("backToMenu"));
     nodes.settingsBtn?.setAttribute("aria-label", t("audioSettings"));
     nodes.settingsPopover?.setAttribute("aria-label", t("audioSettings"));
+    if (nodes.equipmentTabBtn) nodes.equipmentTabBtn.textContent = runeCopy().workshop;
     updatePageMeta();
     nodes.localeSelect.value = requested;
     renderMainProgress();
     renderExpeditionRecord();
+    renderTalents();
     renderHud(true);
     updateDiamondShop();
     updateMenuSound();
@@ -2145,6 +2208,7 @@
 
   function movePlayer(dt) {
     const p = state.player;
+    const beforeX = p.x, beforeY = p.y;
     const rooted = state.hazards.some((hazard) => hazard.warn <= 0 && hazard.color === "#65a30d" && Math.hypot(p.x - hazard.x, p.y - hazard.y) <= hazard.r);
     const moveSpeed = p.speed * (rooted ? 0.55 : 1);
     let dx = 0;
@@ -2172,6 +2236,14 @@
     }
     p.x = Math.max(42, Math.min(W - 42, p.x));
     p.y = Math.max(42, Math.min(H - 42, p.y));
+    p.strideDistance += Math.hypot(p.x - beforeX, p.y - beforeY);
+    if (p.talents.stride && p.strideDistance >= (p.talents.stride === 2 ? 450 : 650)) {
+      p.strideDistance = 0; runePulse(p.x, p.y, 125, .25, true);
+    }
+    if (p.orbit) {
+      p.orbitTimer -= dt;
+      if (p.orbitTimer <= 0) { p.orbitTimer = 4; runePulse(p.x, p.y, 100 + p.orbit * 30, .25 + p.orbit * .2); }
+    }
     p.shotTimer -= dt;
     if (p.shotTimer <= 0) shootNearest();
   }
@@ -2336,8 +2408,28 @@
       shot.x += (dx / dist) * step;
       shot.y += (dy / dist) * step;
       if (dist <= 24) {
-        const hit = damageEnemy(shot.target, shot.damage);
-        if (!hit.blocked) triggerMagic(shot.target, shot.damage);
+        // Rhythm shortens the default five-hit cadence; blocked hits never advance it.
+        const critical = ((state.player.impactHits || 0) + 1) % (5 - state.player.rhythm) === 0;
+        const impactDamage = shot.damage * (critical ? 1.6 : 1);
+        const hit = damageEnemy(shot.target, impactDamage);
+        if (!hit.blocked) {
+          state.player.impactHits = (state.player.impactHits || 0) + 1;
+          addFloater(critical ? `✦ ${Number(impactDamage.toFixed(1))} ×1.6` : `${Number(impactDamage.toFixed(1))}`,
+            shot.target.x, shot.target.y - 52, critical ? "#ffe083" : "#edfaff");
+          if (critical) {
+            addSpark(shot.target.x, shot.target.y, "#ffe083", { kind: "magicHit", element: "critical", height: (shot.target.size || 64) / 64 * .8, punch: .13 });
+            playSound("hit", .18);
+          }
+          triggerMagic(shot.target, shot.damage);
+          const repeats = state.player.ricochet + (critical ? state.player.talents.echo : 0);
+          [...state.enemies].filter(e => e !== shot.target && e.hp > 0 && Math.hypot(e.x - shot.target.x, e.y - shot.target.y) <= 220)
+            .sort((a,b) => Math.hypot(a.x-shot.target.x,a.y-shot.target.y)-Math.hypot(b.x-shot.target.x,b.y-shot.target.y))
+            .slice(0, repeats).forEach(enemy => {
+              addSpark(enemy.x, enemy.y, "#91eaff", { kind: "magicHit", element: "chain", height: .8,
+                fromX: shot.target.x, fromY: shot.target.y, fromHeight: .8 });
+              damageEnemy(enemy, shot.damage * .35);
+            });
+        }
         shot.target.hit = 0.16;
         addSpark(shot.target.x, shot.target.y, "#67e8f9", { kind: "magicHit", height: (shot.target.size || 64) / 64 * 0.8 });
         return false;
@@ -2346,13 +2438,21 @@
     });
     state.sparks = state.sparks.filter((spark) => {
       spark.life -= dt;
-      if (spark.kind !== "magicHit") spark.y -= dt * 44;
+      if (spark.kind !== "magicHit" && spark.kind !== "voxelDeath") spark.y -= dt * 44;
       return spark.life > 0;
     });
   }
 
   function calmEnemy(enemy) {
+    addSpark(enemy.x, enemy.y, "#f5e6c6", { kind: "voxelDeath", life: .7, duration: .7,
+      height: (enemy.size || 64) / 64 * .7, boss: !!enemy.isBoss, punch: enemy.isBoss ? .16 : 0 });
     state.calmed += 1;
+    const harvest = state.player.talents.harvest;
+    if (harvest && state.calmed % (harvest === 2 ? 4 : 6) === 0) {
+      state.xpDrops.filter(drop => Math.hypot(drop.x - state.player.x, drop.y - state.player.y) < 500)
+        .forEach(drop => { drop.x = state.player.x; drop.y = state.player.y; });
+      addSpark(state.player.x, state.player.y, "#b8f7b1", { kind: "magicHit", height: .1, radius: 1.5 });
+    }
     if (enemy.isBoss) {
       state.bossDefeated = true;
       state.keys += 2;
@@ -2361,6 +2461,16 @@
     state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
     state.enemies = state.enemies.filter((item) => item !== enemy);
     if (state.stageConfig?.modifier === "emberTrail") addHazard("circle", { x: enemy.x, y: enemy.y, r: 78, warn: 0.15, life: 2.5, color: "#f97316", damage: 0.45 });
+  }
+
+  function runePulse(x, y, radius, factor, frost = false) {
+    addSpark(x, y, frost ? "#a5efff" : "#ffb864", { kind: "magicHit", element: frost ? "shatter" : "burst", height: .12, radius: radius / 64 });
+    [...state.enemies].forEach(enemy => {
+      if (enemy.hp > 0 && Math.hypot(enemy.x-x, enemy.y-y) <= radius) {
+        const hit = damageEnemy(enemy, state.player.damage * factor);
+        if (frost && !hit.blocked && enemy.hp > 0) enemy.chill = 1.6;
+      }
+    });
   }
 
   function triggerMagic(target, damage) {
@@ -2386,7 +2496,7 @@
     }
     if (p.burst && p.magicHits % 4 === 0) {
       const radius = 95 + p.burst * 15;
-      addSpark(target.x, target.y, "#ffb864", { kind: "magicHit", element: frozen ? "shatter" : "burst", height: .12, radius: radius / 64 });
+      addSpark(target.x, target.y, "#ffb864", { kind: "magicHit", element: frozen ? "shatter" : "burst", height: .12, radius: radius / 64, punch: frozen ? .10 : .065 });
       [...state.enemies].forEach(enemy => {
         if (enemy.hp > 0 && Math.hypot(enemy.x - target.x, enemy.y - target.y) <= radius) {
           damageEnemy(enemy, damage * (.45 + p.burst * .15 + (frozen ? .35 : 0)));
@@ -2406,6 +2516,7 @@
       addFloater(locale === "zh-Hant" ? "\u8b77\u76fe" : locale === "es" ? "ESCUDO" : "SHIELD", enemy.x, enemy.y - 58, "#c4b5fd");
       return { blocked: true, hp: enemy.hp };
     }
+    enemy.hit = .16;
     enemy.hp -= damage;
     if (enemy.hp <= 0) calmEnemy(enemy);
     return { blocked: false, hp: Math.max(0, enemy.hp) };
@@ -2425,7 +2536,7 @@
         addSpark(drop.x, drop.y, "#fef08a");
         addFloater(`+${drop.value}`, drop.x, drop.y - 18, "#fef08a");
         playSound("coin", 0.12);
-        if (state.xp >= state.xpNeed) levelUp();
+        if (state.mode === "running" && state.xp >= state.xpNeed) levelUp();
         return false;
       }
       if (dist < p.pickup * 2.2) {
@@ -2440,6 +2551,7 @@
     const p = state.player;
     if (Math.hypot(state.key.x - p.x, state.key.y - p.y) < p.pickup + 8) {
       state.keys += 1;
+      if (p.talents.alchemy) runePulse(p.x, p.y, p.talents.alchemy === 2 ? 210 : 150, 1.2);
       state.key = randomPoint(120);
       state.nextKeyCueUntil = state.keys < (state.stageConfig?.targetKeys || 0) ? state.survived + 10 : 0;
       addSpark(p.x, p.y - 52, "#ffe76c");
@@ -2461,6 +2573,7 @@
     upgradeReady = false;
     upgradePointerChoice = null;
     renderUpgradeCards();
+    if (document.getElementById("runeReroll")) document.getElementById("runeReroll").disabled = true;
     setUpgradeModalOpen(true);
     nodes.upgradePanel.classList.add("crystal-upgrade-reveal");
     nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = true; });
@@ -2468,6 +2581,7 @@
       upgradeRevealTimer = null;
       if (state.mode !== "upgrade") return;
       upgradeReady = true;
+      if (document.getElementById("runeReroll")) document.getElementById("runeReroll").disabled = !state.rerolls;
       nodes.upgradePanel.classList.remove("crystal-upgrade-reveal");
       nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = false; });
       nodes.upgradeCards.querySelector("button")?.focus({ preventScroll: true });
@@ -2478,23 +2592,32 @@
   }
 
   function renderUpgradeCards() {
-    const available = upgrades.filter(item => !["chain", "frost", "burst"].includes(item.id) || state.player[item.id] < 3);
+    const available = upgrades.filter(item => !runeIds.includes(item.id) || state.player[item.id] < runeCap(item.id));
     for (let i = available.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [available[i], available[j]] = [available[j], available[i]];
+      const j = Math.floor(Math.random() * (i + 1)); [available[i], available[j]] = [available[j], available[i]];
     }
-    const magic = available.find(item => ["chain", "frost", "burst"].includes(item.id));
-    const options = magic ? [magic, ...available.filter(item => item !== magic).slice(0, 2)] : available.slice(0, 3);
-    nodes.upgradeCards.innerHTML = options
-      .map((item) => `
-        <button class="upgrade-card" type="button" data-upgrade="${item.id}">
-          <span class="upgrade-icon"><img src="${assetPaths[item.icon]}" alt="" /></span>
-          <b>${t(item.name)}</b>
-          <em>${upgradePreview(item.id)}</em>
-          <small>${t(item.desc)}</small>
-        </button>
-      `)
-      .join("");
+    const magic = available.filter(item => runeIds.includes(item.id)).slice(0,2);
+    const options = [...magic, ...available.filter(item => !magic.includes(item))].slice(0,3);
+    const copy = runeCopy();
+    document.getElementById("upgradeTitle").textContent = copy.choose;
+    const build = document.getElementById("runeBuild");
+    if (build) build.textContent = `${copy.build} · ${[...runeIds.filter(id => state.player[id]).map(id => `${runeName(id)} ${state.player[id]}`), ...talentIds.filter(id => state.player.talents[id]).map(runeName)].join(" / ") || "—"}`;
+    const reroll = document.getElementById("runeReroll");
+    if (reroll) { reroll.textContent = `↻ ${copy.reroll} · ${state.rerolls}/1`; reroll.setAttribute("aria-label", reroll.textContent); reroll.disabled = !state.rerolls; }
+    nodes.upgradeCards.innerHTML = options.map(item => {
+      const magical = runeIds.includes(item.id), rank = state.player[item.id] || 0;
+      const combo = item.id === "burst" && state.player.frost ? "frost" : item.id === "frost" && state.player.burst ? "burst"
+        : item.id === "rhythm" && state.player.talents.echo ? "echo" : item.id === "ricochet" && state.player.chain ? "chain" : null;
+      const symbol = ({chain:"ϟ",frost:"❄",burst:"✹",ricochet:"↗",orbit:"◎",rhythm:"✧"})[item.id] || "◆";
+      return `<button class="upgrade-card" type="button" data-upgrade="${item.id}" data-school="${item.id}">
+        <span class="rune-tag">${magical ? rank ? copy.rankup : copy.fresh : t("chooseUpgrade")}</span>
+        <span class="upgrade-icon rune-icon" aria-hidden="true">${symbol}</span>
+        <b>${runeName(item.id)}</b><em>${upgradePreview(item.id)}</em>
+        <small>${copy.descriptions[item.id] || t(item.desc)}</small>
+        ${magical ? `<span class="rune-pips" aria-hidden="true">${Array.from({length:runeCap(item.id)},(_,i) => `<i class="${i <= rank ? "on" : ""}"></i>`).join("")}</span>` : ""}
+        ${combo ? `<span class="rune-combo">${copy.synergy} · ${runeName(combo)}</span>` : ""}
+      </button>`;
+    }).join("");
   }
 
   function setUpgradeModalOpen(open, restoreFocus = true) {
@@ -2523,7 +2646,7 @@
 
   function upgradePreview(id) {
     const p = state.player;
-    if (["chain", "frost", "burst"].includes(id)) return `${p[id]} → ${Math.min(3, p[id] + 1)} / 3`;
+    if (runeIds.includes(id)) return `${p[id]} → ${Math.min(runeCap(id), p[id] + 1)} / ${runeCap(id)}`;
     const previews = {
       attack: ["statDamage", p.damage, p.damage + 0.55, ""],
       range: ["statRange", p.range, p.range + 48, "px"],
@@ -2543,7 +2666,7 @@
   function applyUpgrade(id) {
     if (state.mode !== "upgrade") return;
     const p = state.player;
-    if (["chain", "frost", "burst"].includes(id)) p[id] = Math.min(3, p[id] + 1);
+    if (runeIds.includes(id)) p[id] = Math.min(runeCap(id), p[id] + 1);
     if (id === "attack") p.damage += 0.55;
     if (id === "range") p.range += 48;
     if (id === "speed") p.speed += 32;
@@ -2558,12 +2681,14 @@
     playSound("click", 0.1);
     track("upgrade_select", { upgrade: id, level: state.level });
     track("game_upgrade_choice", { upgrade: id, level: state.level, prototype: true });
+    if (state.xp >= state.xpNeed) { levelUp(); return; }
     lastFrame = performance.now();
     scheduleLoop();
   }
 
   function addSpark(x, y, color, effect = {}) {
     state.sparks.push({ x, y, color, life: 0.45, ...effect });
+    if (state.sparks.length > 64) state.sparks.splice(0, state.sparks.length - 64);
   }
 
   function addFloater(textValue, x, y, color) {
@@ -2587,6 +2712,8 @@
     const improved = state.keys > previousBestKeys;
     const stageCleared = reason !== "fail" && state.player.hp > 0 && objectiveComplete();
     resultStageCleared = stageCleared;
+    state.dustEarned = Math.min(14, Math.floor(state.calmed / 5) + Math.floor(state.survived / 15) + (stageCleared ? 3 : 0) + (stageCleared && !save.completedStages.includes(state.stage) ? 3 : 0));
+    save.runeDust = Math.min(99999, save.runeDust + state.dustEarned);
     save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
     save.totalKeys = Math.max(0, Number(save.totalKeys) || 0) + Math.max(0, state.keys);
@@ -2649,7 +2776,7 @@
         : t("patrolRankComplete", { current: rank.total });
     nodes.resultRankText.textContent = `${t("resultLifetimeRank")}: ${rankText}`;
     nodes.resultProgressText.textContent = `${t("resultCampaignUnlock")}: ${t("mainProgress", { cleared: save.completedStages.length })}`;
-    nodes.resultPlanText.textContent = resultPlan(reason);
+    nodes.resultPlanText.textContent = `◆ +${state.dustEarned || 0} ${runeCopy().reward} · ${runeCopy().dust}: ${save.runeDust}. ${resultPlan(reason)}`;
     nodes.resultNextStageText.textContent = stageCleared && state.stage < STAGE_COUNT ? nextStageCheckpointPlan() : "";
   }
 
@@ -3432,6 +3559,25 @@
     playSound("click", 0.1);
     showStageSelection(true);
   });
+  document.getElementById("talentWorkshop")?.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button || button.disabled) return;
+    if (button.hasAttribute("data-talent-buy")) changeTalent("buy", button.dataset.talentBuy);
+    else if (button.hasAttribute("data-talent-equip")) changeTalent("equip", button.dataset.talentEquip);
+    else if (button.hasAttribute("data-talent-reset")) changeTalent("reset");
+  });
+  document.getElementById("runeReroll")?.addEventListener("click", () => {
+    if (state.mode !== "upgrade" || !upgradeReady || !state.rerolls) return;
+    state.rerolls--; upgradeReady = false; upgradePointerChoice = null;
+    renderUpgradeCards();
+    nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = true; });
+    upgradeRevealTimer = setTimeout(() => {
+      if (state.mode !== "upgrade") return;
+      upgradeReady = true;
+      nodes.upgradeCards.querySelectorAll("button").forEach(button => { button.disabled = false; });
+      nodes.upgradeCards.querySelector("button")?.focus({preventScroll:true});
+    }, 600);
+  });
   nodes.upgradeCards.addEventListener("click", (event) => {
     const card = event.target.closest("[data-upgrade]");
     if (!card || !upgradeReady || card.disabled) return;
@@ -3450,7 +3596,7 @@
       return;
     }
     if (event.key !== "Tab" || nodes.upgradePanel.classList.contains("hidden")) return;
-    const actions = [...nodes.upgradeCards.querySelectorAll(".upgrade-card:not(:disabled)")];
+    const actions = [...nodes.upgradePanel.querySelectorAll("button:not(:disabled)")];
     if (!actions.length) return;
     if (event.shiftKey && document.activeElement === actions[0]) {
       event.preventDefault();

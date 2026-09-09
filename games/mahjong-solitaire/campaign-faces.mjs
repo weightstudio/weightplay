@@ -10,7 +10,11 @@ export const MAHJONG_FACE_ATLAS = new URL('../../assets/mahjong-solitaire-campai
 export function facePosition(face) {
  const index=MAHJONG_FACE_IDS.indexOf(face);
  if(index<0)throw new Error('Unknown Mahjong campaign face');
- return {key:MAHJONG_FACE_KEYS[index],x:(index%4)*100/3,y:Math.floor(index/4)*100/3};
+ // The generator's symbol silhouettes have an ivory margin, but neighboring
+ // tips may enter the outer 5% of an equal atlas cell. Sample the central 90%
+ // of each cell (all intended silhouettes remain inside), not the next cell.
+ // CSS background-position is relative to image minus visible crop size.
+ return {key:MAHJONG_FACE_KEYS[index],x:((index%4)+.05)*100/3.1,y:(Math.floor(index/4)+.05)*100/3.1};
 }
 
 export function createFaceElement(face,doc=document) {

@@ -1,16 +1,13 @@
 (() => {
   const base = document.currentScript.src;
-  const style = document.createElement('link');
-  style.rel = 'stylesheet';
-  style.href = new URL('style.css?v=20260909-mahjong-main-v13', base).href;
-  document.head.append(style);
-  Promise.all([import(new URL('rules.mjs?v=20260909-mahjong-main-v13', base).href),import(new URL('art.mjs?v=20260909-mahjong-main-v13', base).href)]).then(([{ default: rules },{installMahjongArt}]) => {
-    window.WPMahjong = rules;
-    installMahjongArt();
-    window.WPPopularArcade?.mount('mahjong-solitaire');
+  import(new URL('campaign-entry.mjs?v=20260909-mahjong-campaign-v14',base).href).then(({mountMahjongEntry}) => {
+    const container=document.querySelector('#mahjongCampaign'),placeholder=container?.querySelector('[data-mjc-static]');
+    if(!container||!placeholder)throw new Error('Campaign locale shell missing');
+    let storage;try{storage=window.localStorage}catch{storage={getItem(){throw Error('Unavailable')},setItem(){throw Error('Unavailable')}}}
+    const fragment=document.createDocumentFragment();fragment.append(placeholder);
+    try{mountMahjongEntry({container,locale:document.documentElement.lang,storage,titles:window.WEIGHTPLAY_GAME_TITLES['mahjong-solitaire']});document.body.dataset.campaignReady='true';}
+    catch(error){container.replaceChildren(fragment);throw error;}
   }).catch(error => {
-    console.error('Mahjong rules could not load', error);
-    const button = document.querySelector('#startBtn');
-    if (button) button.disabled = true;
+    document.body.dataset.campaignReady='failed';console.error('Mahjong campaign initialization failed',error);
   });
 })();

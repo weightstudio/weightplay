@@ -1,0 +1,18 @@
+.mjc-result[hidden]{display:none!important}
+.mjc-result{position:absolute;inset:0;z-index:20;display:grid;grid-template-rows:minmax(0,1fr) 76px;gap:12px;padding:20px;background:linear-gradient(#092a25f2,#071c23fc);color:#fff4d6;font-family:system-ui;box-sizing:border-box}
+.mjc-result-content{min-height:0;overflow:auto;overscroll-behavior:contain;text-align:center;padding:16px;border:1px solid #b99d6970;border-radius:22px;background:linear-gradient(#103d35e8,#0d292fc9),url('../../assets/mahjong-solitaire-cover-v1.webp') center 65%/cover}
+.mjc-result-medal{font-size:64px;line-height:1.1;color:#efce82;text-shadow:0 0 25px #edd19455}
+.mjc-result h2{font-size:28px;line-height:1.2;margin:12px 0}
+.mjc-result-stage{font-size:16px;margin:10px 0;color:#d3dfd0}
+.mjc-result-stars{font-size:36px;letter-spacing:8px;color:#ffdc88;direction:ltr}
+.mjc-result dl{display:flex;justify-content:center;gap:16px;margin:20px 0}
+.mjc-result dl>div{flex:1;max-width:180px;padding:12px;background:#72978618;border:1px solid #719e8555;border-radius:12px}
+.mjc-result dt{font-size:14px;color:#c7d9cd}.mjc-result dd{font-size:28px;margin:6px 0 0;font-weight:700}
+.mjc-result-storage{font-size:14px;line-height:1.5;color:#f6cd8f;min-height:21px}
+.mjc-result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;direction:ltr}
+.mjc-result-actions button{min-width:0;height:76px;padding:8px;border:1px solid #9cbaab;border-radius:14px;background:#234b46;color:#fff;font:700 15px/1.25 system-ui;overflow-wrap:anywhere}
+.mjc-result-actions button:nth-child(2){background:linear-gradient(#ffdf8f,#eac066);border-color:#ffe9ab;color:#20382e}
+.mjc-result-actions button:disabled{opacity:.45;cursor:default}
+.mjc-result-actions button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){.mjc-result:not([hidden]) .mjc-result-medal{animation:mjc-result-reveal .45s ease-out both}}
+@keyframes mjc-result-reveal{from{opacity:0;transform:translateY(10px) scale(.9)}to{opacity:1;transform:none}}

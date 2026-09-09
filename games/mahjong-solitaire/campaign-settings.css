@@ -1,0 +1,13 @@
+.mjc-settings{position:relative;width:48px;height:48px;z-index:60;font-family:system-ui}
+.mjc-settings-toggle{display:grid;place-items:center;width:48px;height:48px;padding:0;border:1px solid #829b90;border-radius:12px;background:#213e43;color:#f4edd8;cursor:pointer}
+.mjc-settings-panel[hidden]{display:none!important}
+.mjc-settings-panel{position:absolute;top:56px;right:0;width:260px;max-width:280px;padding:14px;border:1px solid #b6a779;border-radius:14px;background:#18363f;color:#f6f0df;box-shadow:0 12px 28px #020c13b0;z-index:70}
+.mjc-settings-panel>label,.mjc-settings-sound{display:grid;grid-template-columns:minmax(0,1fr) 125px;gap:10px;align-items:center;min-height:48px;font-size:13px;line-height:1.2;text-align:start}
+.mjc-settings-panel>label{margin-bottom:8px}
+.mjc-settings-panel select{width:125px;min-width:0;height:44px;border:1px solid #9daf99;border-radius:8px;background:#294b4d;color:#fff;padding:5px;font:13px system-ui}
+.mjc-settings-panel [role=switch]{justify-self:end;width:64px;height:44px;min-height:44px;border:1px solid #859990;border-radius:24px;background:#4a5e64;padding:5px;cursor:pointer;direction:ltr}
+.mjc-settings-panel [role=switch]>span{display:block;width:32px;height:32px;border-radius:50%;background:#f9f0d9}
+.mjc-settings-panel [role=switch][aria-checked=true]{background:#31835c}
+.mjc-settings-panel [role=switch][aria-checked=true]>span{transform:translateX(21px)}
+.mjc-settings button:focus-visible,.mjc-settings select:focus-visible{outline:3px solid #ffe094;outline-offset:2px}
+.mjc-settings[dir=rtl] .mjc-settings-panel{left:0;right:auto}

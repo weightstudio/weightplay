@@ -1,0 +1,18 @@
+@import './campaign-faces.css';
+.mjc-main[hidden],.mjc-guide[hidden]{display:none!important}
+.mjc-main,.mjc-guide{width:min(100%,920px);margin:0 auto;color:#f1ecd7;font-family:system-ui;box-sizing:border-box}
+.mjc-main *,.mjc-guide *{box-sizing:border-box}
+.mjc-main{padding:12px;background:linear-gradient(#17383ff5,#0e2a32f5);border:1px solid #b9ac7355;border-radius:24px}
+.mjc-main header{height:64px;display:grid;grid-template-columns:58px minmax(0,1fr) 48px;gap:10px;align-items:center;margin-bottom:12px;position:relative;z-index:30}
+.mjc-main header a{display:flex;align-items:center;justify-content:center;gap:2px;width:58px;height:48px;border-radius:12px;background:linear-gradient(#ffefb4,#e7bc66);color:#246786;text-decoration:none;font:700 24px system-ui}
+.mjc-main header a img{width:27px;height:27px;object-fit:contain}
+.mjc-main h1{font-size:21px;line-height:1.2;text-align:center;margin:0;overflow-wrap:anywhere}
+.mjc-main-poster{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;object-position:center;border-radius:20px;border:2px solid #d4bc74}
+.mjc-main-summary{font-size:16px;line-height:1.5;margin:16px 0 12px}
+.mjc-main-progress{font-size:15px;line-height:24px;margin:0;color:#a8e1c4;font-weight:700}
+.mjc-main-copy>button{display:block;width:100%;height:52px;margin-top:12px;padding:0 16px;border:1px solid #ffecb0;border-radius:13px;background:linear-gradient(#ffe9a4,#efc66b);color:#203a31;font:800 16px/1.2 system-ui}
+.mjc-guide{padding:20px 12px 32px}.mjc-guide>h2{font-size:23px;margin:0 0 14px}
+.mjc-guide>section{display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:14px;padding:16px;margin-bottom:12px;border:1px solid #56786a;border-radius:16px;background:#153b39}
+.mjc-guide .mjc-face{width:48px;height:48px;border-radius:7px;grid-row:1/3}
+.mjc-guide h3{font-size:17px;margin:0 0 8px;color:#efcf89}.mjc-guide p{font-size:15px;line-height:1.6;margin:0}
+@media(min-width:700px){.mjc-main-content{display:grid;grid-template-columns:420px minmax(0,1fr);gap:24px}.mjc-main-poster{width:420px;height:420px}.mjc-main-copy{display:flex;flex-direction:column;justify-content:center}.mjc-main h1{font-size:25px}.mjc-main-summary{margin-top:0}}
