@@ -1,0 +1,13 @@
+/* These sprites keep a square aspect at every display size. No face is
+   stretched to fill a tall tile, cropped by cover, or re-created with emoji. */
+.mjc-face {
+ display:block;
+ width:100%;
+ aspect-ratio:1;
+ flex:none;
+ background-color:#f5edd8;
+ background-repeat:no-repeat;
+ background-size:400% 400%;
+ pointer-events:none;
+ border-radius:4px;
+}

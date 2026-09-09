@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-threats-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-bright-hero-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -1667,7 +1667,12 @@
   }
 
   function stageRule(config) {
-    return config.ruleLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn);
+    const rule = config.ruleLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn);
+    if (locale === "zh-Hant") return rule.replace(/普通影狐|影獸|黑豹|野豬|飛蛾/g, "骷髏戰士");
+    if (locale === "zh-Hans") return rule.replace(/普通影狐|影兽|黑豹|野猪|飞蛾/g, "骷髅战士");
+    if (locale === "en") return rule.replace(/\b(?:shadow foxes|shadows|panthers|boars)\b/gi, "skeletons");
+    if (locale === "es") return rule.replace(/\b(?:zorros de sombra|panteras|jabalíes|sombras)\b/gi, "esqueletos");
+    return rule;
   }
 
   function showStageSelection(shouldScroll = true) {

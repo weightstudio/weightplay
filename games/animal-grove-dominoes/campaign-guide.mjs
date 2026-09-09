@@ -1,6 +1,6 @@
 // Complete rule explanations shared by runtime and static route generation.
 // Do not describe prototype-only three-chain/five-tile rules as this campaign.
-import {campaignCopy} from './campaign-copy.mjs';
+import {campaignCopy} from './campaign-copy.mjs?v=20260909-grove-campaign-v6';
 const rows={
  en:[
   'Plan a habitat route, use every required domino and reach the moon after completing the stage objectives.',
@@ -94,6 +94,17 @@ const rows={
   'تُحفظ المراحل المكتملة وأفضل النتائج في هذا المتصفح. إذا تعذر التخزين، يبقى التقدم فقط ما دامت الصفحة مفتوحة.'
  ]
 };
-export const campaignGuide=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,[intro,rule,resource,recovery,save]])=>[locale,Object.freeze({intro,guideIntro:intro,guideOne:rule,guideTwo:resource,guideThree:recovery,faqProgressAnswer:save,
+const shortIntro={en:'Plan a route. Use the required dominoes and reach the moon.',
+ 'zh-Hant':'規劃路線，用完必用骨牌，抵達月地。','zh-Hans':'规划路线，用完必用骨牌，抵达月地。',
+ ja:'道を考え、必須の牌を使って月の地へ進もう。',ko:'경로를 계획하고 필수 패를 사용해 달에 도착하세요.',
+ es:'Planea la ruta y llega a la luna usando las fichas obligatorias.',
+ 'pt-BR':'Planeje a rota e chegue à lua usando as peças obrigatórias.',
+ fr:'Tracez un chemin vers la lune avec les dominos obligatoires.',
+ de:'Plane den Weg zum Mond und nutze alle Pflichtsteine.',
+ it:'Trova la via per la luna usando tutti i domino obbligatori.',
+ ru:'Проложите путь к луне, используя обязательные плитки.',
+ hi:'रास्ता बनाएँ और अनिवार्य टाइलों से चाँद तक पहुँचें।',
+ ar:'خطط للطريق إلى القمر باستخدام القطع الإلزامية.'};
+export const campaignGuide=Object.freeze(Object.fromEntries(Object.entries(rows).map(([locale,[intro,rule,resource,recovery,save]])=>[locale,Object.freeze({intro:shortIntro[locale],guideIntro:intro,guideOne:rule,guideTwo:resource,guideThree:recovery,faqProgressAnswer:save,
  facts:campaignCopy[locale].summary,completeKicker:campaignCopy[locale].win,
  guideOneTitle:campaignCopy[locale].required,guideTwoTitle:campaignCopy[locale].bridges+' / '+campaignCopy[locale].flips,guideThreeTitle:campaignCopy[locale].stages})])));

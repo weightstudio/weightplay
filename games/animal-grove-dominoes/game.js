@@ -3,20 +3,23 @@
 
   const locales = window.GROVE_CHAIN_LOCALES;
   const localeKeys = locales.__localeKeys;
-  const GAME_VERSION = "v5";
+  const GAME_VERSION = "v6";
   let advanceTimer = null;
+  let viewportResetFrame = 0;
   const cancelAdvance = () => { clearTimeout(advanceTimer); advanceTimer = null; };
   window.addEventListener('pagehide', cancelAdvance);
-  const {createChain,play,undo,outcome}=await import('./chain-engine.mjs');
-  const {recoveryCopy}=await import('./chain-copy.mjs');
-  const {campaign}=await import('./campaign.mjs');
-  const {campaignCopy}=await import('./campaign-copy.mjs');
-  const {campaignGuide}=await import('./campaign-guide.mjs');
+  window.addEventListener('pagehide',()=>cancelAnimationFrame(viewportResetFrame));
+  const {createChain,play,undo,outcome}=await import('./chain-engine.mjs?v=20260909-grove-campaign-v6');
+  const {recoveryCopy}=await import('./chain-copy.mjs?v=20260909-grove-campaign-v6');
+  const {campaign}=await import('./campaign.mjs?v=20260909-grove-campaign-v6');
+  const {campaignCopy}=await import('./campaign-copy.mjs?v=20260909-grove-campaign-v6');
+  const {campaignGuide}=await import('./campaign-guide.mjs?v=20260909-grove-campaign-v6');
   for(const [locale,guide] of Object.entries(campaignGuide))Object.assign(locales[locale],guide);
-  const {PROGRESS_KEY,normalizeProgress,completeStage}=await import('./progress.mjs');
-  const {createStageView}=await import('./stage-view.mjs');
+  const {PROGRESS_KEY,normalizeProgress,completeStage}=await import('./progress.mjs?v=20260909-grove-campaign-v6');
+  const {createStageView}=await import('./stage-view.mjs?v=20260909-grove-campaign-v6');
+  const {createHabitatArt}=await import('./habitat-art.mjs?v=20260909-grove-campaign-v6');
   const rounds=campaign.map(p=>({...p,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],tile))}));
-  let stageView,progress,flipMode=false,fitBattle=()=>{};
+  let stageView,progress,flipMode=false,fitBattle=()=>{},completionReceipt=null;
   const cc=()=>campaignCopy[state.locale]||campaignCopy.en;
   let chainState=null,rackOrder=[];
   const state = { locale: "en", sound: true, roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
@@ -72,6 +75,7 @@
   }
   function showView(id) {
     cancelAdvance();
+    cancelAnimationFrame(viewportResetFrame);
     const main = id === "mainView";
     const result = id === "resultView";
     const stage=id==='stageView';
@@ -86,6 +90,11 @@
     $("settingsPanel").hidden = true;
     $("settingsBtn").setAttribute("aria-expanded", "false");
     window.scrollTo(0, 0);
+    if(!main)viewportResetFrame=requestAnimationFrame(()=>{
+      viewportResetFrame=0;
+      document.documentElement.scrollTop=0;document.body.scrollTop=0;
+      window.scrollTo({left:0,top:0,behavior:'instant'});
+    });
     if(!main&&!stage)fitBattle();
   }
   function shuffle(items) { return [...items].sort((a, b) => (a[0].charCodeAt(0) + a[1].charCodeAt(0)) - (b[0].charCodeAt(0) + b[1].charCodeAt(0))); }
@@ -95,13 +104,10 @@
     const button = document.createElement("button");
     button.dataset.tileId=tile.id;
     button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.dataset.habitat = tile[0]; button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
-    const tokens = ['den','creek','moss','nest','moon','reef','tide','shell','grove','pine','snow','burrow','pond','meadow'];
     button.setAttribute('aria-label',`${t('chooseTile',{left:habitat(shown[0]),right:habitat(shown[1])})}; ${tile.required?cc().required:cc().optional}${tile.bridge?`; ${cc().bridges}: ${tile.bridge}`:''}${tile.reversible?`; ${cc().flip}`:''}`);
     for (const token of shown) {
       const half = document.createElement('span'); half.className = 'domino-half';
-      const art = document.createElement('span'); art.className = 'tile-art'; art.setAttribute('aria-hidden','true');
-      const position = tokens.indexOf(token);
-      art.style.backgroundPosition = `${position % 5 * 25}% ${Math.floor(position / 5) * 50}%`;
+      const art = createHabitatArt(token);
       const label = document.createElement('span'); label.className = 'tile-side'; label.textContent = habitat(token);
       half.append(art,label);button.append(half);
     }
@@ -148,7 +154,7 @@
     chainState=result.state;
     button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
     if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
-    if (outcome(chainState)==='complete') { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; finish(); }, 420); }
+    if (outcome(chainState)==='complete') { recordCompletion();cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; finish(); }, 420); }
   }
   function startRound() { cancelAdvance();flipMode=false; const round = rounds[state.roundIndex];chainState=createChain(campaign[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
   function undoChoice(){
@@ -157,14 +163,22 @@
     state.rack=rackOrder.map(tile=>chainState.path.includes(tile.id)?null:tile);
     $('battleStatus').textContent='';setFeedbackState('idle');renderRound();
   }
-  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1}); showView("battleView"); startRound(); }
-  function openStages(){showView('stageView');stageView.refresh();}
-  function finish() {
+  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;completionReceipt=null;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1}); showView("battleView"); startRound(); }
+  function openStages(){showView('stageView');stageView.refresh({resetSelection:true});}
+  function recordCompletion(){
+    if(completionReceipt)return completionReceipt;
+    if(outcome(chainState)!=='complete')throw new Error('Incomplete route cannot earn progress');
     progress=completeStage(progress,state.roundIndex+1,state.picks);
     const saved=safeStorage.set(PROGRESS_KEY,JSON.stringify(progress));
-    $('resultTitle').textContent=cc().win;$('resultText').textContent=`${cc().stages} ${state.roundIndex+1} / ${campaign.length}${saved?'':' · '+cc().saveError}`;
+    completionReceipt={stage:state.roundIndex+1,picks:state.picks,saved};
+    track('stage_completed',{stage:completionReceipt.stage,picks:completionReceipt.picks});
+    return completionReceipt;
+  }
+  function finish() {
+    const receipt=recordCompletion();
+    $('resultTitle').textContent=cc().win;$('resultText').textContent=`${cc().stages} ${state.roundIndex+1} / ${campaign.length}${receipt.saved?'':' · '+cc().saveError}`;
     $('bestValue').textContent=String(progress.best[state.roundIndex+1]);$('nextStage').hidden=state.roundIndex>=campaign.length-1;
-    setFeedbackState('complete');track('stage_completed',{stage:state.roundIndex+1,picks:state.picks});showView('resultView');
+    setFeedbackState('complete');showView('resultView');
   }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
@@ -191,7 +205,7 @@
       canvas.style.height=height+'px';frame.style.width=width/scale+'px';frame.style.height=height/scale+'px';frame.style.transform=`scale(${scale})`;
     };
     const resizeLifecycle=new AbortController();window.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.visualViewport?.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.addEventListener('pagehide',()=>resizeLifecycle.abort(),{once:true});
-    stageView=createStageView({campaign,copy:cc,locale:()=>state.locale,progress:()=>progress,activate:start,home:goHome});
+    stageView=createStageView({campaign,copy:cc,locale:()=>state.locale,progress:()=>progress,activate:start,home:goHome,sound:()=>state.sound,soundLabel:()=>t(state.sound?'soundOn':'soundOff'),toggleSound});
     populateLocales();applyLocale();$('startBtn').addEventListener('click',openStages);$('replayBtn').addEventListener('click',()=>start(state.roundIndex));$('homeBtn').addEventListener('click',openStages);$('battleBackBtn').addEventListener('click',openStages);$('leaveBtn').addEventListener('click',openStages);$('settingsBtn').addEventListener('click',toggleSettings);$('soundBtn').addEventListener('click',toggleSound);$('battleSoundBtn').addEventListener('click',toggleSound);
     // Decode the two-ended domino art before the first entry. Text labels
     // remain a usable fallback if an asset request fails; no retry loop.

@@ -19,7 +19,7 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
 .stage-header.wp-stage-shell-header{width:auto!important}
 .stage-header.wp-stage-shell-header>img{display:none!important}
 .stage-header.wp-stage-shell-header>div:not(.wp-shell-settings){display:none!important}
-.stage-header.wp-stage-shell-header>.wp-shell-settings{top:50%;right:4px;transform:translateY(-50%)}
+.stage-header.wp-stage-shell-header>.wp-shell-settings{top:auto;right:0;transform:none}
 .wp-stage-art-shell .stage-header :is(strong,span){text-shadow:none!important}
 .wp-stage-art-shell .stage-header .wp-shell-return-arrow{color:#117baa!important}
 
