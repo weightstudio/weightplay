@@ -7,13 +7,22 @@
   let advanceTimer = null;
   const cancelAdvance = () => { clearTimeout(advanceTimer); advanceTimer = null; };
   window.addEventListener('pagehide', cancelAdvance);
-  const {createChain,play,undo,outcome,proofPuzzles}=await import('./chain-engine.mjs');
+  const {createChain,play,undo,outcome}=await import('./chain-engine.mjs');
   const {recoveryCopy}=await import('./chain-copy.mjs');
-  const rounds=proofPuzzles.map(p=>({start:p.start,goal:p.goal,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],{id:tile.id}))}));
+  const {campaign}=await import('./campaign.mjs');
+  const {campaignCopy}=await import('./campaign-copy.mjs');
+  const {campaignGuide}=await import('./campaign-guide.mjs');
+  for(const [locale,guide] of Object.entries(campaignGuide))Object.assign(locales[locale],guide);
+  const {PROGRESS_KEY,normalizeProgress,completeStage}=await import('./progress.mjs');
+  const {createStageView}=await import('./stage-view.mjs');
+  const rounds=campaign.map(p=>({...p,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],tile))}));
+  let stageView,progress,flipMode=false,fitBattle=()=>{};
+  const cc=()=>campaignCopy[state.locale]||campaignCopy.en;
   let chainState=null,rackOrder=[];
   const state = { locale: "en", sound: true, roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
   const $ = (id) => document.getElementById(id);
-  const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) {} } };
+  const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value);return true; } catch (_) {return false;} } };
+  progress=normalizeProgress(safeStorage.get(PROGRESS_KEY));
   const routeLocaleMap = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const localeStorageKey = "weightplay-grove-chain-locale";
 
@@ -48,6 +57,11 @@
     $("battleSoundBtn").textContent = state.sound ? "♪" : "×";
     $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("soundBtn").setAttribute("aria-pressed", String(state.sound));
+    document.querySelectorAll('[data-copy="facts"]').forEach(node=>node.textContent=cc().summary);
+    $('flipChain').textContent=cc().flip;
+    $('battleBackBtn').textContent='←';$('battleBackBtn').setAttribute('aria-label',cc().backStages);
+    $('leaveBtn').textContent=cc().backStages;$('homeBtn').textContent=cc().backStages;$('nextStage').textContent=cc().next;
+    if(stageView&&!stageView.root.hidden)stageView.refresh();
     if (!$('battleView').hidden) renderRound();
   }
   function populateLocales() {
@@ -60,23 +74,30 @@
     cancelAdvance();
     const main = id === "mainView";
     const result = id === "resultView";
+    const stage=id==='stageView';
+    if(stageView)stageView.root.hidden=!stage;
     $("mainView").hidden = !main;
     const guide = document.querySelector(".guide-card, [data-wp-game-guide], .game-page-info-static");
     if (guide) guide.hidden = !main;
-    $("battleView").hidden = main || result;
+    $("battleView").hidden = main || stage;
+    document.querySelector('#battleView .logical-shell').hidden=result;
     $("resultView").hidden = !result;
-    document.body.dataset.screen = main ? "main" : result ? "result" : "battle";
+    document.body.dataset.screen = main ? "main" : stage?'stage':result ? "result" : "battle";
     $("settingsPanel").hidden = true;
     $("settingsBtn").setAttribute("aria-expanded", "false");
     window.scrollTo(0, 0);
+    if(!main&&!stage)fitBattle();
   }
   function shuffle(items) { return [...items].sort((a, b) => (a[0].charCodeAt(0) + a[1].charCodeAt(0)) - (b[0].charCodeAt(0) + b[1].charCodeAt(0))); }
   function tileButton(tile, index) {
+    const reversed=flipMode&&tile.reversible;
+    const shown=reversed?[tile[1],tile[0]]:tile;
     const button = document.createElement("button");
     button.dataset.tileId=tile.id;
     button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.dataset.habitat = tile[0]; button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
     const tokens = ['den','creek','moss','nest','moon','reef','tide','shell','grove','pine','snow','burrow','pond','meadow'];
-    for (const token of tile) {
+    button.setAttribute('aria-label',`${t('chooseTile',{left:habitat(shown[0]),right:habitat(shown[1])})}; ${tile.required?cc().required:cc().optional}${tile.bridge?`; ${cc().bridges}: ${tile.bridge}`:''}${tile.reversible?`; ${cc().flip}`:''}`);
+    for (const token of shown) {
       const half = document.createElement('span'); half.className = 'domino-half';
       const art = document.createElement('span'); art.className = 'tile-art'; art.setAttribute('aria-hidden','true');
       const position = tokens.indexOf(token);
@@ -84,6 +105,7 @@
       const label = document.createElement('span'); label.className = 'tile-side'; label.textContent = habitat(token);
       half.append(art,label);button.append(half);
     }
+    const badge=document.createElement('span');badge.className='domino-rule';badge.textContent=`${tile.required?cc().required:cc().optional}${tile.bridge?' • '+cc().bridges+' 1':''}${tile.reversible?' ↕':''}`;button.append(badge);
     button.addEventListener("click", () => choose(index, button));
     return button;
   }
@@ -98,7 +120,14 @@
     $("endLabel").textContent = t("end", { habitat: habitat(state.currentEnd) });
     $("placedCount").textContent = String(state.placed.length);
     const words=recoveryCopy[state.locale]||recoveryCopy.en;
-    $("instruction").textContent = `${words[2]} ${habitat(round.goal)}.`;
+    const c=cc();
+    const rules=[`${c.goal}: ${habitat(round.goal)}`,`${c.required}: ${chainState.tiles.filter(tile=>tile.required&&!chainState.path.includes(tile.id)).length}`];
+    if(round.visits?.length)rules.push(`${c.visits}: ${round.visits.map(h=>`${chainState.visited.includes(h)?'✓ ':''}${habitat(h)}`).join(' · ')}`);
+    if(round.bridges!==undefined)rules.push(`${c.bridges}: ${chainState.bridgesLeft}`);
+    if(round.flips!==undefined)rules.push(`${c.flips}: ${chainState.flipsLeft}`);
+    if(round.deliveries?.length)rules.push(`${c.deliveries}: ${round.deliveries.map((h,i)=>`${i<chainState.deliveryIndex?'✓ ':''}${habitat(h)}`).join(' → ')}`);
+    $("instruction").textContent=rules.join(' • ');
+    $('flipChain').disabled=!round.tiles.some(tile=>tile.reversible);$('flipChain').setAttribute('aria-pressed',String(flipMode));
     $('placedCount').parentElement.lastChild.textContent=`/${round.tiles.length}`;
     if($('undoChain')){$('undoChain').textContent=words[0];$('undoChain').disabled=!chainState?.path.length;}
     renderChain();
@@ -114,26 +143,62 @@
   function choose(index, button) {
     const tile = state.rack[index]; if (!tile) return;
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
-    if (tile[0] !== state.currentEnd) { button.classList.add("is-wrong"); $("battleStatus").textContent = t("wrong"); $("battleStatus").classList.add("is-wrong"); setFeedbackState("wrong"); playTone("wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 380); return; }
-    const result=play(chainState,tile.id);if(!result.accepted)return;chainState=result.state;
-    button.disabled = true; button.classList.add("is-correct"); state.placed.push(tile); state.rack[index] = null; state.currentEnd = tile[1]; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
+    const reversed=flipMode&&tile.reversible,result=play(chainState,tile.id,{reverse:reversed});
+    if(!result.accepted){button.classList.add('is-wrong');$('battleStatus').textContent=t('wrong');setFeedbackState('wrong');playTone('wrong');return;}
+    chainState=result.state;
+    button.disabled = true; button.classList.add("is-correct"); state.placed.push(reversed?[tile[1],tile[0]]:tile); state.rack[index] = null; state.currentEnd = chainState.end; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
     if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
-    if (outcome(chainState)==='complete') { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
+    if (outcome(chainState)==='complete') { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; finish(); }, 420); }
   }
-  function startRound() { cancelAdvance(); const round = rounds[state.roundIndex];chainState=createChain(proofPuzzles[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
+  function startRound() { cancelAdvance();flipMode=false; const round = rounds[state.roundIndex];chainState=createChain(campaign[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
   function undoChoice(){
     if(!chainState?.path.length)return;cancelAdvance();chainState=undo(chainState);
     state.placed.pop();state.solved=Math.max(0,state.solved-1);state.currentEnd=chainState.end;
     state.rack=rackOrder.map(tile=>chainState.path.includes(tile.id)?null:tile);
     $('battleStatus').textContent='';setFeedbackState('idle');renderRound();
   }
-  function start() { state.roundIndex = 0; state.picks = 0; state.solved = 0; track("session_started"); showView("battleView"); startRound(); }
-  function finish() { const key = "weightplay-grove-chain-best-picks"; const prior = Number(safeStorage.get(key)); if (!prior || state.picks < prior) safeStorage.set(key, String(state.picks)); $("resultText").textContent = t("finishText", { picks: state.picks }); $("bestValue").textContent = safeStorage.get(key) || String(state.picks); setFeedbackState("complete"); track("session_completed", { picks: state.picks }); showView("resultView"); }
+  function start(index=0) {if(!Number.isInteger(index)||index<0||index>=progress.unlocked)return;state.roundIndex=index; state.picks = 0; state.solved = 0; track("session_started",{stage:index+1}); showView("battleView"); startRound(); }
+  function openStages(){showView('stageView');stageView.refresh();}
+  function finish() {
+    progress=completeStage(progress,state.roundIndex+1,state.picks);
+    const saved=safeStorage.set(PROGRESS_KEY,JSON.stringify(progress));
+    $('resultTitle').textContent=cc().win;$('resultText').textContent=`${cc().stages} ${state.roundIndex+1} / ${campaign.length}${saved?'':' · '+cc().saveError}`;
+    $('bestValue').textContent=String(progress.best[state.roundIndex+1]);$('nextStage').hidden=state.roundIndex>=campaign.length-1;
+    setFeedbackState('complete');track('stage_completed',{stage:state.roundIndex+1,picks:state.picks});showView('resultView');
+  }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   function toggleSound() { state.sound = !state.sound; applyLocale(); track("sound_changed", { enabled: state.sound }); }
   state.locale = queryLocale();
-  const initialize = () => { const undoButton=document.createElement("button"); undoButton.id="undoChain"; undoButton.type="button"; undoButton.className="secondary-btn"; undoButton.addEventListener("click",undoChoice); $("leaveBtn").before(undoButton); populateLocales(); applyLocale(); $("startBtn").addEventListener("click", start); $("replayBtn").addEventListener("click", start); $("homeBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", goHome); $("leaveBtn").addEventListener("click", goHome); $("settingsBtn").addEventListener("click", toggleSettings); $("soundBtn").addEventListener("click", toggleSound); $("battleSoundBtn").addEventListener("click", toggleSound); };
+  const initialize = () => {
+    const actions=document.createElement('div');actions.className='grove-battle-actions';$('leaveBtn').before(actions);
+    const undoButton=document.createElement('button');undoButton.id='undoChain';undoButton.type='button';undoButton.className='secondary-btn';undoButton.addEventListener('click',undoChoice);
+    const flip=document.createElement('button');flip.id='flipChain';flip.type='button';flip.className='secondary-btn';flip.addEventListener('click',()=>{flipMode=!flipMode;renderRound();});
+    actions.append(undoButton,flip,$('leaveBtn'));
+    const routePanel=document.createElement('div');routePanel.className='grove-route-panel';
+    document.querySelector('.chain-card').before(routePanel);routePanel.append(document.querySelector('.chain-card'),$('instruction'),$('battleStatus'));
+    const next=document.createElement('button');next.id='nextStage';next.type='button';next.className='primary-btn';next.addEventListener('click',()=>start(state.roundIndex+1));$('replayBtn').before(next);
+    const canvas=document.querySelector('#battleView .battle-canvas'),frame=document.createElement('div');frame.className='grove-battle-frame';
+    frame.append(document.querySelector('#battleView .logical-shell'),$('resultView'));canvas.append(frame);
+    fitBattle=()=>{
+      if($('battleView').hidden)return;
+      const width=Math.min(920,document.documentElement.clientWidth),height=Math.max(1,(window.visualViewport?.height||innerHeight)-56);
+      const wide=width>=680&&width>height*1.3;
+      // Recompose route and rack tracks on viewport changes; domino, label
+      // and action dimensions stay identical in both layouts.
+      frame.dataset.layout=wide?'wide':'tall';
+      const scale=Math.min(width/(wide?740:390),height/(wide?354:620));
+      canvas.style.height=height+'px';frame.style.width=width/scale+'px';frame.style.height=height/scale+'px';frame.style.transform=`scale(${scale})`;
+    };
+    const resizeLifecycle=new AbortController();window.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.visualViewport?.addEventListener('resize',fitBattle,{signal:resizeLifecycle.signal});window.addEventListener('pagehide',()=>resizeLifecycle.abort(),{once:true});
+    stageView=createStageView({campaign,copy:cc,locale:()=>state.locale,progress:()=>progress,activate:start,home:goHome});
+    populateLocales();applyLocale();$('startBtn').addEventListener('click',openStages);$('replayBtn').addEventListener('click',()=>start(state.roundIndex));$('homeBtn').addEventListener('click',openStages);$('battleBackBtn').addEventListener('click',openStages);$('leaveBtn').addEventListener('click',openStages);$('settingsBtn').addEventListener('click',toggleSettings);$('soundBtn').addEventListener('click',toggleSound);$('battleSoundBtn').addEventListener('click',toggleSound);
+    // Decode the two-ended domino art before the first entry. Text labels
+    // remain a usable fallback if an asset request fails; no retry loop.
+    $('startBtn').disabled=true;$('startBtn').setAttribute('aria-busy','true');
+    const atlas=new Image();atlas.src='/games/animal-grove-dominoes/assets/animal-grove-dominoes-habitat-atlas.png';
+    atlas.decode().catch(()=>{}).finally(()=>{$('startBtn').disabled=false;$('startBtn').removeAttribute('aria-busy');});
+  };
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();
   window.GROVE_CHAIN_TEST = { rounds, start, choose, state };
 })();

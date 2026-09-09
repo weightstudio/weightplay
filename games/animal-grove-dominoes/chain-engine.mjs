@@ -1,30 +1,49 @@
 // Deterministic directed-domino puzzle rules. No DOM, timers or storage.
 export function createChain(puzzle) {
   if (!puzzle || !Array.isArray(puzzle.tiles) || puzzle.tiles.length > 20 || !puzzle.tiles.length) throw new Error('Invalid puzzle');
+  if (!puzzle.start || !puzzle.goal) throw new Error('Missing route endpoints');
+  const limit=(value)=>{if(value!==undefined&&(!Number.isInteger(value)||value<0))throw new Error('Invalid resource budget');return value??20;};
   const ids = new Set();
   const tiles = puzzle.tiles.map(tile => {
     if (!tile.id || ids.has(tile.id) || !tile.from || !tile.to) throw new Error('Invalid tile identity');
+    if(tile.bridge!==undefined&&(!Number.isInteger(tile.bridge)||tile.bridge<0))throw new Error('Invalid bridge cost');
     ids.add(tile.id); return Object.freeze({...tile});
   });
-  return Object.freeze({start:puzzle.start, goal:puzzle.goal, tiles:Object.freeze(tiles), path:Object.freeze([]), end:puzzle.start});
+  const visits=Object.freeze([...(puzzle.visits||[])]),deliveries=Object.freeze([...(puzzle.deliveries||[])]);
+  if([...visits,...deliveries].some(x=>typeof x!=='string'||!x))throw new Error('Invalid habitat requirement');
+  return Object.freeze({start:puzzle.start, goal:puzzle.goal, tiles:Object.freeze(tiles), path:Object.freeze([]), end:puzzle.start,
+    visits,deliveries,visited:Object.freeze([puzzle.start]),deliveryIndex:0,
+    bridgesLeft:limit(puzzle.bridges),flipsLeft:limit(puzzle.flips),previous:null});
 }
 export function available(state) {
+  if(state.deliveryIndex<0)return [];
   const used = new Set(state.path);
-  return state.tiles.filter(tile => !used.has(tile.id) && tile.from === state.end);
+  return state.tiles.filter(tile=>!used.has(tile.id)&&(tile.bridge||0)<=state.bridgesLeft).flatMap(tile=>{
+    const moves=[];
+    if(tile.from===state.end)moves.push({...tile,reversed:false});
+    if(tile.reversible&&tile.to===state.end&&tile.from!==tile.to&&state.flipsLeft>0)moves.push({...tile,from:tile.to,to:tile.from,reversed:true});
+    return moves;
+  });
 }
-export function play(state, id) {
-  const tile = available(state).find(tile => tile.id === id);
+export function play(state, id, {reverse=false}={}) {
+  if(outcome(state)==='complete')return {state,accepted:false};
+  const tile = available(state).find(tile => tile.id === id&&tile.reversed===reverse);
   if (!tile) return {state, accepted:false};
-  return {accepted:true,state:Object.freeze({...state,path:Object.freeze([...state.path,id]),end:tile.to})};
+  let deliveryIndex=state.deliveryIndex;
+  if(state.deliveries[deliveryIndex]===tile.to)deliveryIndex++;
+  else if(state.deliveries.slice(deliveryIndex+1).includes(tile.to))deliveryIndex=-1;
+  return {accepted:true,state:Object.freeze({...state,path:Object.freeze([...state.path,id]),end:tile.to,
+    visited:Object.freeze([...new Set([...state.visited,tile.to])]),deliveryIndex,
+    bridgesLeft:state.bridgesLeft-(tile.bridge||0),flipsLeft:state.flipsLeft-Number(reverse),previous:state})};
 }
 export function undo(state) {
-  if (!state.path.length) return state;
-  const path = state.path.slice(0,-1);
-  const previous = state.tiles.find(tile => tile.id === path.at(-1));
-  return Object.freeze({...state,path:Object.freeze(path),end:previous?.to || state.start});
+  return state.previous||state;
 }
 export function outcome(state) {
-  if (state.path.length === state.tiles.length) return state.end === state.goal ? 'complete' : 'dead-end';
+  if(state.deliveryIndex<0)return 'dead-end';
+  const required=state.tiles.filter(tile=>tile.required!==false);
+  if(required.every(tile=>state.path.includes(tile.id))&&state.end===state.goal&&
+     state.visits.every(habitat=>state.visited.includes(habitat))&&state.deliveryIndex===state.deliveries.length)return 'complete';
   return available(state).length ? 'playing' : 'dead-end';
 }
 // A bounded, exact solver supports authored-puzzle checks and truthful hints.
@@ -34,17 +53,17 @@ export function solve(state, budget=50000) {
   const search=current=>{
     if (++visited>budget) return undefined;
     if (outcome(current)==='complete') return [];
-    const key=current.end+'|'+[...current.path].sort().join(',');
+    const key=JSON.stringify([current.end,[...current.path].sort(),current.deliveryIndex,current.bridgesLeft,current.flipsLeft,[...current.visited].sort()]);
     if(rejected.has(key))return null;
     for(const tile of available(current)){
-      const tail=search(play(current,tile.id).state);
+      const tail=search(play(current,tile.id,{reverse:tile.reversed}).state);
       if(tail===undefined)return undefined;
-      if(tail!==null)return [tile.id,...tail];
+      if(tail!==null)return [{id:tile.id,reverse:tile.reversed},...tail];
     }
     rejected.add(key);return null;
   };
   const path=search(state);
-  return {status:path===undefined?'unknown':path===null?'unsolvable':'solved',path:path??null,visited};
+  return {status:path===undefined?'unknown':path===null?'unsolvable':'solved',path:path?.map(move=>move.id)??null,moves:path??null,visited};
 }
 
 // Proof set: the similar-looking exit is safe only after its detour is used.
