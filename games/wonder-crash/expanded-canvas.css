@@ -143,7 +143,7 @@ body.wonder-stage-select:not(.wonder-playing) .game-shell {
   transform: scale(var(--wonder-shell-scale, 1)) !important;
   transform-origin: top left !important;
   border-radius: 0;
-  background: #111a2d url("../../assets/wonder-crash-cover.webp") center / cover no-repeat;
+  background: #111a2d url("../../assets/wonder-crash-cover-block-v1.webp") center / cover no-repeat;
 }
 
 body.wonder-stage-select #overlay {

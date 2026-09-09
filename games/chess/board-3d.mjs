@@ -126,8 +126,34 @@ export class ChessBoard3D {
   if(type==='q'){add('queen-crown',()=>new THREE.CylinderGeometry(.26,.16,.19,24),1.06);for(let i=0;i<8;i++){const a=i*Math.PI/4;add('queen-tip',()=>new THREE.SphereGeometry(.047,10,8),1.19,m,Math.sin(a)*.2,Math.cos(a)*.2);}add('queen-orb',()=>new THREE.SphereGeometry(.075,12,8),1.24);}
   if(type==='k'){add('king-crown',()=>new THREE.CylinderGeometry(.22,.16,.15,40),1.15);add('king-cross-v',()=>this.softenedBox(.075,.3,.075),1.36);add('king-cross-h',()=>this.softenedBox(.25,.075,.075),1.42);}
   if(type==='n'){
-   const s=new THREE.Shape();s.moveTo(-.19,0);s.lineTo(-.2,.32);s.lineTo(-.1,.65);s.lineTo(-.13,.85);s.lineTo(.02,.78);s.lineTo(.2,.68);s.lineTo(.3,.4);s.lineTo(.17,.35);s.lineTo(.06,.46);s.lineTo(.03,.28);s.lineTo(.18,.03);s.closePath();
-   const head=add('knight-head',()=>new THREE.ExtrudeGeometry(s,{depth:.19,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.035,bevelThickness:.03}),.32);head.position.z=-.095;for(const side of [-1,1])add('knight-eye',()=>new THREE.SphereGeometry(.024,10,6),.93,this.materials.detail,.13,side*.133);if(color==='b')g.rotation.y=Math.PI;
+   // Carved Staunton profile: arched neck, separate ear, brow and rounded
+   // muzzle. Geometry remains inside the original square/picking envelope.
+   const s=new THREE.Shape();s.moveTo(-.20,.01);
+   s.bezierCurveTo(-.23,.21,-.22,.42,-.13,.61);
+   s.quadraticCurveTo(-.09,.71,-.12,.84);
+   s.quadraticCurveTo(-.01,.83,.035,.72);
+   s.quadraticCurveTo(.14,.71,.20,.63);
+   s.bezierCurveTo(.24,.57,.31,.51,.31,.43);
+   s.quadraticCurveTo(.30,.36,.22,.37);
+   s.quadraticCurveTo(.16,.40,.105,.47);
+   s.quadraticCurveTo(.07,.40,.075,.29);
+   s.bezierCurveTo(.075,.18,.15,.10,.19,.025);s.closePath();
+   const head=add('knight-head-sculpted',()=>{
+    const geometry=new THREE.ExtrudeGeometry(s,{depth:.24,curveSegments:8,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.042,bevelThickness:.045});
+    // Sculpt cheek volume into the owned mesh rather than allocating another
+    // pair of draw calls per knight. Preserve rim and silhouette vertices.
+    const positions=geometry.attributes.position;
+    for(let i=0;i<positions.count;i++){
+     const x=positions.getX(i),y=positions.getY(i),z=positions.getZ(i);
+     const cheek=.035*Math.exp(-((x-.07)**2/.012+(y-.54)**2/.025));
+     if(z>=.239)positions.setZ(i,z+cheek);else if(z<=.001)positions.setZ(i,z-cheek);
+    }
+    geometry.computeVertexNormals();return geometry;
+   },.32);head.position.z=-.12;
+   for(const side of [-1,1]){
+    add('knight-eye',()=>new THREE.SphereGeometry(.023,10,6),.97,this.materials.detail,.145,side*.157);
+   }
+   if(color==='b')g.rotation.y=Math.PI;
   }
   return g;
  }

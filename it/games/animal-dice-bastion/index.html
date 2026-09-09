@@ -171,7 +171,7 @@
             <div id="board" class="guardian-board" role="grid" tabindex="0" data-i18n-aria="boardLabel" aria-label="Tabellone di fusione dei guardiani" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space S R 1 2 Escape"></div>
             <div class="command-stack">
               <div class="charge-meter"><span data-i18n="charge">Carica</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
-              <button id="summonBtn" class="summon-button" type="button"><span data-i18n="summon">Evoca</span><b id="summonCost">10</b></button>
+              <button id="summonBtn" class="summon-button" type="button" data-wp-primary-action><span data-i18n="summon">Evoca</span><b id="summonCost">10</b></button>
               <div class="orders">
                 <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">Ordine di battaglia</strong><em data-i18n="rallyHint">Velocità di tutti ×1,72 · 6 s</em></span><small id="rallyState"></small></button>
                 <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">Esplosione runica</strong><em data-i18n="burstHint">Colpisce e rallenta i primi 5</em></span><small id="burstState"></small></button>
@@ -198,7 +198,7 @@
           <article><img src="../../assets/animal-dice-bastion/guardian-forge.webp" alt=""><b data-i18n="forge">Forgia</b><small data-i18n="forgeRole">Rompe l’armatura</small></article>
           <article><img src="../../assets/animal-dice-bastion/guardian-tide.webp" alt=""><b data-i18n="tide">Marea</b><small data-i18n="tideRole">Danno ad area</small></article>
         </div>
-        <button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Custodisci il bastione</button>
+        <button id="tutorialStartBtn" class="primary-action" type="button" data-wp-primary-action data-i18n="tutorialStart">Custodisci il bastione</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-i18n="leaveTitle">Abbandonare questa difesa?</h2><p data-i18n="leaveText">Continua mantiene congelata questa battaglia esatta. Il ritorno a Stages pone fine solo a questo tentativo.</p>
@@ -228,7 +228,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
   <script src="locales.js?v=20260731-public16"></script>
-  <script src="game.js?v=20260820-pointer-merge-v27"></script>
+  <script src="game.js?v=20260909-interface-repair-v29"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

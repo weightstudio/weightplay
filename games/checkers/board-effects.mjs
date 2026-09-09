@@ -19,9 +19,17 @@ export function installBoardEffects(host){
   }
   previous=next;
  };
- const observer=new MutationObserver(read);observer.observe(host,{childList:true});read();
+ const observer=new MutationObserver(read);
+ const connect=()=>{if(disposed)return;previous=null;observer.observe(host,{childList:true});read();};
+ connect();
  const visibility=()=>{if(document.hidden)clear();};
  document.addEventListener('visibilitychange',visibility);
- const dispose=()=>{if(disposed)return;disposed=true;clear();observer.disconnect();document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pagehide',dispose);};
- window.addEventListener('pagehide',dispose,{once:true});return dispose;
+ const pagehide=event=>{
+  if(event.persisted){clear();observer.disconnect();previous=null;}
+  else dispose();
+ };
+ const pageshow=event=>{if(event.persisted)connect();};
+ const dispose=()=>{if(disposed)return;disposed=true;clear();observer.disconnect();document.removeEventListener('visibilitychange',visibility);window.removeEventListener('pagehide',pagehide);window.removeEventListener('pageshow',pageshow);};
+ window.addEventListener('pagehide',pagehide);
+ window.addEventListener('pageshow',pageshow);return dispose;
 }

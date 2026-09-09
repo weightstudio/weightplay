@@ -1,4 +1,26 @@
 /* Native board/input geometry remains authoritative. Presentation only. */
+@media (min-width:700px) {
+  body[data-logic-game='four-in-a-row'] .logic-hero {
+    grid-template-columns:420px minmax(0,1fr);
+  }
+  body[data-logic-game='four-in-a-row'] .logic-poster,
+  body[data-logic-game='four-in-a-row'] .logic-poster img {
+    width:420px; height:420px; max-width:none;
+  }
+}
+/* Measure inside the fixed logical Canvas, not again against physical svh. */
+body[data-logic-game='four-in-a-row'] #logicBattle:not([hidden]) {
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+body[data-logic-game='four-in-a-row'] .logic-battle-header { flex-shrink:0; }
+body[data-logic-game='four-in-a-row'] .logic-battle-wrap {
+  flex:1;
+  min-height:0;
+  height:auto;
+  width:100%;
+}
 body[data-logic-game='four-in-a-row'] .logic-connect-board {
   background: linear-gradient(135deg,#173b60ef,#071a2ff2),url('/assets/card-table/emerald-table-v1.webp') center/cover;
   border: 2px solid #c5a46c;

@@ -1,4 +1,4 @@
-import {ChessBoard3D} from './board-3d.mjs';
+import {ChessBoard3D} from './board-3d.mjs?v=20260909-knight-v17';
 import {ChessSession} from './full-rules.mjs';
 
 // Bounded, session-only thumbnails. Never retain a live renderer on Stage.

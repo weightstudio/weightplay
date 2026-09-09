@@ -221,7 +221,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Solitario FreeCell",
     "ru": "Пасьянс «Свободная ячейка»",
     "hi": "फ्रीसेल सॉलिटेयर",
-    "ar": "سوليتير الخلية الحرة"
+    "ar": "سوليتير الخلايا الحرة"
   },
   "pyramid-solitaire": {
     "__localizedExact": true,
@@ -1693,7 +1693,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Forza quattro",
     "ru": "Четыре в ряд",
     "hi": "चार की पंक्ति",
-    "ar": "أربع في صف"
+    "ar": "أربع على التوالي"
   },
   "animal-postcard-crop": {
     "__localizedExact": true,

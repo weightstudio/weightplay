@@ -2502,7 +2502,7 @@
     "spider-solitaire": "spider-solitaire-cover.png",
     "tripeaks-solitaire": "tripeaks-solitaire-cover-v2.webp",
     "yukon-solitaire": "yukon-solitaire-cover.svg",
-    "wonder-crash": "wonder-crash-cover.webp",
+    "wonder-crash": "wonder-crash-cover-block-v1.webp",
     "color-lunchbox": "lunchbox-cover.webp",
     "bubble-bakery": "bubble-bakery-cover.webp",
     "animal-zoo-idle": "animal-zoo-idle-cover.webp",

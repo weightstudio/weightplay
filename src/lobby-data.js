@@ -837,7 +837,7 @@ window.WONDER_LOBBY = {
       },
       meta: { en: ["Four Formations", "Six Bosses", "30 Stages"], "zh-Hant": ["四種編隊", "六位王", "30 關"] },
       previewVideo: "assets/previews/wonder-crash-battle.webm",
-      art: { kind: "image", background: "assets/wonder-crash-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/wonder-crash-cover-block-v1.webp", hideHero: true },
     },
     {
       id: "color-lunchbox",

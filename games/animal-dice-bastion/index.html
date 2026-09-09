@@ -30,7 +30,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-    <link rel="stylesheet" href="style.css?v=20260815-poster-v24"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <link rel="stylesheet" href="style.css?v=20260909-interface-repair-v29"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-dice-bastion" data-wp-combined-sound="true" data-runtime-localize="off">
@@ -159,7 +159,7 @@
             <div id="board" class="guardian-board" role="grid" tabindex="0" data-i18n-aria="boardLabel" aria-label="Guardian merge board" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space S R 1 2 Escape"></div>
             <div class="command-stack">
               <div class="charge-meter"><span data-i18n="charge">Charge</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
-              <button id="summonBtn" class="summon-button" type="button"><span data-i18n="summon">Summon</span><b id="summonCost">10</b></button>
+              <button id="summonBtn" class="summon-button" type="button" data-wp-primary-action><span data-i18n="summon">Summon</span><b id="summonCost">10</b></button>
               <div class="orders">
                 <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">Battle Rally</strong><em data-i18n="rallyHint">All attack speed ×1.72 · 6s</em></span><small id="rallyState"></small></button>
                 <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">Rune Burst</strong><em data-i18n="burstHint">Hit and slow the front 5</em></span><small id="burstState"></small></button>
@@ -186,7 +186,7 @@
           <article><img src="../../assets/animal-dice-bastion/guardian-forge.webp" alt=""><b data-i18n="forge">Forge</b><small data-i18n="forgeRole">Breaks enemy armor</small></article>
           <article><img src="../../assets/animal-dice-bastion/guardian-tide.webp" alt=""><b data-i18n="tide">Tide</b><small data-i18n="tideRole">Splash damage to groups</small></article>
         </div>
-        <button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Guard the bastion</button>
+        <button id="tutorialStartBtn" class="primary-action" type="button" data-wp-primary-action data-i18n="tutorialStart">Guard the bastion</button>
       </div></section>
       <section id="leavePanel" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
         <h2 id="leaveTitle" data-i18n="leaveTitle">Leave this defense?</h2><p data-i18n="leaveText">Continue keeps this exact Battle frozen. Returning to Stages ends only this attempt.</p>
@@ -215,7 +215,7 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
   <script src="locales.js?v=20260731-public16"></script>
-  <script src="game.js?v=20260820-pointer-merge-v27"></script>
+  <script src="game.js?v=20260909-interface-repair-v29"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>

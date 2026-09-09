@@ -1,9 +1,9 @@
 window.WPClassicLogic?.mount("four-in-a-row");
 (() => {
-  document.body.dataset.gameVersion = 'v8';
+  document.body.dataset.gameVersion = 'v9';
   const skin = document.createElement('link');
   skin.rel = 'stylesheet';
-  skin.href = '/games/four-in-a-row/royal-board.css?v=20260909-v8';
+  skin.href = '/games/four-in-a-row/royal-board.css?v=20260909-v9';
   document.head.append(skin);
   const host = document.querySelector('#logicBoard');
   if (!host) return;

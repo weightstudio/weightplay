@@ -2,21 +2,21 @@ window.WONDER_DATA = {
   assets: {
     images: {
       bg: "assets/battle-bg.webp",
-      hero: "assets/weightplay-character-boom-mane-lion-cutout.webp",
+      hero: "assets/weightplay-character-boom-mane-lion-block-v1.webp",
       wall: "assets/wall.webp",
       eraser: "assets/eraser-v2.webp",
       pencil: "assets/weapon-pencil-v2.webp",
       ruler: "assets/weapon-ruler-v2.webp"
     },
     enemies: [
-"assets/wonder-beast-boar.png",
-"assets/wonder-beast-hyena.png",
-"assets/wonder-beast-rhino.png",
-"assets/wonder-beast-buffalo.png",
-"assets/wonder-beast-hawk.png",
-"assets/wonder-beast-bear.png",
-"assets/wonder-beast-tiger.png",
-"assets/wonder-beast-crocodile.png"
+"assets/wonder-beast-boar-block-v1.webp",
+"assets/wonder-beast-hyena-block-v1.webp",
+"assets/wonder-beast-rhino-block-v1.webp",
+"assets/wonder-beast-buffalo-block-v1.webp",
+"assets/wonder-beast-hawk-block-v1.webp",
+"assets/wonder-beast-bear-block-v1.webp",
+"assets/wonder-beast-tiger-block-v1.webp",
+"assets/wonder-beast-crocodile-block-v1.webp"
     ]
   },
   enemyTypes: [

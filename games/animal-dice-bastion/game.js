@@ -17,7 +17,7 @@
     set(key, value) { memory[key] = String(value); try { localStorage.setItem(key, String(value)); } catch {} }
   };
   let locale = canonicalLocale(routeLocale || window.WonderI18n?.actualLocale?.() || storage.get("weightPlayLocale") || storage.get("wonderLocale") || navigator.language);
-  const DICE_GAME_VERSION = "v27";
+  const DICE_GAME_VERSION = "v29";
   const DICE_INTERFACE_VERSION = "V6";
   const DICE_EVENT_FIELDS = ["stage", "chapter", "wave", "outcome", "return_to", "source", "input_class", "unlocked"];
   function diceViewportBucket() {

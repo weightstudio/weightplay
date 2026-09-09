@@ -227,19 +227,19 @@ body.wp-shell-main-active #mainPanel.main-screen {
   body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-composition {
     height: calc(var(--guard-yard-vh, 100dvh) - 72px);
     min-height: 0;
-    grid-template-columns: 300px minmax(0, 1fr) !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
     gap: 18px;
     padding: 8px 20px !important;
   }
 
   body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-poster {
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
   }
 
   body:not(.guard-yard-stage):not(.guard-yard-playing) .wp-standard-main-copy {
     width: 100%;
-    height: 300px;
+    height: 420px;
   }
 
   body:not(.guard-yard-stage):not(.guard-yard-playing) :is(
@@ -247,12 +247,12 @@ body.wp-shell-main-active #mainPanel.main-screen {
     .wp-standard-main-poster-media > img,
     .wp-standard-main-poster > img
   ) {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
+    width: 420px !important;
+    min-width: 420px !important;
+    max-width: 420px !important;
+    height: 420px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
   }
 }
 .stage-screen-head { min-height: 46px; display: grid; grid-template-columns: 46px minmax(0, 1fr); align-items: center; gap: 10px; }

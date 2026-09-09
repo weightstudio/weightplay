@@ -228,12 +228,12 @@ body:not([data-screen="battle"]) #battleAd {
   display: none;
 }
 
-/* v17: keep the governed short-landscape Main poster at the canonical
-   300px column while leaving desktop and phone sizing unchanged. */
+/* v20: the governed wide-layout Main poster stays at the canonical 420px
+   column even in short landscape. Phone sizing remains fluid and square. */
 @media (min-width: 700px) and (max-height: 560px) {
   body[data-game-id="animal-hero-trials"] .wp-standard-main-composition,
   body[data-wp-game-id="animal-hero-trials"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 }
 

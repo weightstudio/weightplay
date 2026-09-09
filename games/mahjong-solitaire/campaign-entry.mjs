@@ -16,7 +16,7 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
  document.addEventListener('keydown',()=>{inputType='keyboard'},{capture:true,signal:lifetime.signal});
  const onEvent=(name,details)=>{
   const width=innerWidth,height=innerHeight,viewport=height<=430?'short-landscape':width<=480?'phone':width<=900?(height>width?'tablet-portrait':'tablet-landscape'):(height>width?'desktop-portrait':'desktop-landscape');
-  window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v14',interface_version:'6',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
+  window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v15',interface_version:'6',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
  };
  const setLocale=l=>{
   if(!CAMPAIGN_LOCALES.includes(l))throw new Error('Unsupported locale');const changed=currentLocale!==l;currentLocale=l;
