@@ -58,6 +58,28 @@ body[data-wp-card-game="old-maid"] #cardGameHand .playing-card {
   body[data-wp-card-game="old-maid"] #cardGameBoard {
     grid-template-columns: 135px minmax(0, 1fr);
   }
+  /* All three opponent summaries are strategic state, not decorative overflow.
+     Fit the complete stack into the fixed short-landscape row so neither RTL
+     nor LTR players need to scroll before choosing a hidden card. */
+  body[data-wp-card-game="old-maid"] .card-opponents {
+    display: grid;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 3px;
+    overflow: hidden;
+  }
+  body[data-wp-card-game="old-maid"] .opponent-card {
+    box-sizing: border-box;
+    min-height: 0;
+    padding: 3px 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.1;
+  }
+  body[data-wp-card-game="old-maid"] .opponent-card span {
+    margin-top: 1px;
+    font-size: 11px;
+  }
   body[data-wp-card-game="old-maid"] #cardGameTable {
     justify-content: flex-start;
   }
