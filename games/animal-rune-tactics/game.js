@@ -6,8 +6,8 @@
   function writeStorage(key, value) { try { localStorage.setItem(key, value); return true; } catch { return false; } }
   const trainingCost = 18;
   const rerollCost = 3;
-  const cols = 3;
-  const rows = 4;
+  let cols = 4;
+  let rows = 5;
   const MISSION_COUNT = 30;
   const CHAPTER_SIZE = 5;
   const STAGE_CARD_POOL_SIZE = 9;
@@ -1491,6 +1491,27 @@
     mission(29, "Crown Gauntlet", "王冠連戰", ["boar", "heron", "ram", "moth", "mirrorWolf"], "Answer five earlier mechanics without losing formation control.", "在不失去陣形控制下處理五種先前機制。"),
     mission(30, "Rune Crown Chimera", "符冠奇美拉", ["chimeraBoss", "sealRaven", "mirrorWolf"], "Adapt as every visible Boss phase changes the board rule.", "每個可見首領階段改變棋盤規則時立即調整。", [tile(1,0,"seal"),tile(1,3,"cooling")], "chimera"),
   ];
+  // Authored arena envelopes: room to flank, bounded at 36 cells.
+  const arenaSizes = [[4,5],[4,5],[5,5],[5,5],[5,5], [5,5],[4,6],[5,6],[5,5],[6,6], [5,6],[5,5],[4,6],[5,6],[6,6], [5,5],[6,5],[5,6],[6,5],[6,6], [5,6],[6,5],[6,6],[5,6],[6,6], [5,5],[5,6],[6,6],[6,6],[6,6]];
+  const arenaReinforcements = {6:["wolf"],7:["raven"],8:["wolf"],9:["boar"],10:["runeFox"],11:["wolf"],12:["heron"],13:["raven"],14:["wolf"],15:["tideTurtle"],16:["raven"],17:["wolf"],18:["ram"],19:["raven"],20:["salamander"],21:["wolf"],22:["raven"],23:["moth","raven"],24:["heron"],25:["archiveOwl"],26:["raven"],27:["runeFox"],28:["tideTurtle"],30:["archiveOwl"]};
+  missionDefs.forEach((m, i) => {
+    m.enemies.push(...(arenaReinforcements[m.id] || []));
+    [m.cols, m.rows] = arenaSizes[i];
+    m.par = m.bossId ? 10 : m.enemies.length > 3 ? 9 : 6 + Math.floor(i / 10);
+    const cx = Math.floor(m.cols / 2);
+    m.terrain = m.terrain.map(cell => ({...cell, x: cell.x === 0 ? 0 : cell.x === 2 ? m.cols - 1 : cx, y: Math.round(cell.y * (m.rows - 1) / 3)}));
+    if (m.id === 3) m.terrain = [tile(2,1,"rubble"),tile(2,2,"rubble"),tile(2,3,"rubble")];
+    if ([4,7,9,12,14,17,19,22,24,27,29].includes(m.id)) {
+      m.terrain.push(tile(cx,1,"rubble"),tile(cx,m.rows-2,"rubble"));
+    }
+    if (m.id > 2 && !m.terrain.some(cell => cell.type === "cooling")) m.terrain.push(tile(cx,m.rows-1,"cooling"));
+    if ([23,25].includes(m.id)) {
+      m.terrain = m.terrain.filter(cell => cell.type !== "orbit");
+      for(let x=0;x<m.cols;x++) m.terrain.push(tile(x,0,"orbit"),tile(x,m.rows-1,"orbit"));
+      for(let y=1;y<m.rows-1;y++) m.terrain.push(tile(0,y,"orbit"),tile(m.cols-1,y,"orbit"));
+    }
+  });
+
   const missionCopyEs = [
     ["Primeras Huellas", "Rompe la proximidad de los Lobos antes de concentrarte en un objetivo."],
     ["Línea de Visión del Cuervo", "Mantén al héroe más débil fuera del alcance del Cuervo."],
@@ -1717,6 +1738,91 @@
     mirrorCloned: "A Divisão Espelhada criou um clone com 1 ponto de Vida.",
     bossPhase: "{boss} entrou na fase {phase}.",
     boardLabel: "Tabuleiro de táticas rúnicas",
+  });
+
+  const arenaCopy = {
+  "en": [
+    "Stars: clear, all heroes survive, ≤{turns} turns. Each new star grants 4 Runes.",
+    "Move Lion up to 3 cells; Owl and Turtle 2. Flank an enemy from opposite sides for +1 damage.",
+    "Strike within 3 cells; splash 2 damage to enemies beside the target.",
+    "Strike within 3 cells; chain 2 damage to two enemies within 2 cells of the target."
+  ],
+  "zh-Hant": [
+    "星級：通關、全員存活、{turns} 回合內完成。每顆新星獎勵 4 符文。",
+    "獅王可走 3 格，貓頭鷹與烏龜 2 格；站在敵人兩側夾擊，傷害 +1。",
+    "攻擊 3 格內敵人，並對目標相鄰敵人造成 2 點波及傷害。",
+    "攻擊 3 格內敵人，連鎖至目標 2 格內另兩名敵人，各造成 2 點傷害。"
+  ],
+  "zh-Hans": [
+    "星级：通关、全员存活、{turns} 回合内完成。每颗新星奖励 4 符文。",
+    "狮王可走 3 格，猫头鹰与乌龟 2 格；站在敌人两侧夹击，伤害 +1。",
+    "攻击 3 格内敌人，并对目标相邻敌人造成 2 点波及伤害。",
+    "攻击 3 格内敌人，连锁至目标 2 格内另两名敌人，各造成 2 点伤害。"
+  ],
+  "es": [
+    "Estrellas: vencer, todos vivos, ≤{turns} turnos. Cada estrella nueva da 4 Runas.",
+    "León mueve 3 casillas; Búho y Tortuga 2. Rodear por lados opuestos: +1 daño.",
+    "Ataca a 3 casillas e inflige 2 de daño a los enemigos junto al objetivo.",
+    "Ataca a 3 casillas; encadena 2 de daño a otros dos enemigos a 2 casillas del objetivo."
+  ],
+  "ja": [
+    "星：クリア、全員生存、{turns}ターン以内。新しい星ごとにルーン4個。",
+    "ライオンは3マス、フクロウとカメは2マス移動。敵を両側から挟むとダメージ+1。",
+    "3マス以内を攻撃。標的に隣接する敵にも2ダメージ。",
+    "3マス以内を攻撃。標的から2マス以内の別の敵2体にも2ダメージ。"
+  ],
+  "ko": [
+    "별: 승리, 전원 생존, {turns}턴 이내. 새 별마다 룬 4개.",
+    "사자는 3칸, 부엉이와 거북이는 2칸 이동. 양쪽에서 포위하면 피해 +1.",
+    "3칸 내 적을 공격하고 대상에 인접한 적에게 피해 2.",
+    "3칸 내 적을 공격하고 대상의 2칸 내 다른 적 둘에게 연쇄 피해 2."
+  ],
+  "pt-BR": [
+    "Estrelas: vencer, todos vivos, até {turns} turnos. Cada estrela nova dá 4 Runas.",
+    "Leão move 3 casas; Coruja e Tartaruga 2. Cercar por lados opostos: +1 de dano.",
+    "Ataca a 3 casas e causa 2 de dano aos inimigos junto do alvo.",
+    "Ataca a 3 casas; encadeia 2 de dano a dois outros inimigos a 2 casas do alvo."
+  ],
+  "fr": [
+    "Étoiles : victoire, tous vivants, ≤{turns} tours. Chaque nouvelle étoile donne 4 Runes.",
+    "Lion avance de 3 cases, Hibou et Tortue de 2. Encercler de côtés opposés : +1 dégât.",
+    "Frappe à 3 cases et inflige 2 dégâts aux ennemis voisins de la cible.",
+    "Frappe à 3 cases ; inflige 2 dégâts à deux autres ennemis à 2 cases de la cible."
+  ],
+  "de": [
+    "Sterne: Sieg, alle überleben, höchstens {turns} Züge. Jeder neue Stern gibt 4 Runen.",
+    "Löwe zieht 3 Felder, Eule und Schildkröte 2. Von gegenüberliegenden Seiten flankieren: +1 Schaden.",
+    "Trifft auf 3 Felder und fügt Gegnern neben dem Ziel 2 Schaden zu.",
+    "Trifft auf 3 Felder; Kette trifft zwei weitere Gegner im Umkreis von 2 Feldern für 2 Schaden."
+  ],
+  "it": [
+    "Stelle: vittoria, tutti vivi, entro {turns} turni. Ogni nuova stella dà 4 Rune.",
+    "Leone si muove di 3 caselle, Gufo e Tartaruga di 2. Accerchiare da lati opposti: +1 danno.",
+    "Colpisce entro 3 caselle e infligge 2 danni ai nemici accanto al bersaglio.",
+    "Colpisce entro 3 caselle; infligge 2 danni ad altri due nemici entro 2 caselle dal bersaglio."
+  ],
+  "ru": [
+    "Звёзды: победа, все живы, не более {turns} ходов. Каждая новая звезда даёт 4 руны.",
+    "Лев ходит на 3 клетки, Сова и Черепаха на 2. Окружение с противоположных сторон: +1 урон.",
+    "Удар в пределах 3 клеток и 2 урона врагам рядом с целью.",
+    "Удар в пределах 3 клеток; ещё два врага в пределах 2 клеток от цели получают 2 урона."
+  ],
+  "hi": [
+    "सितारे: जीत, सभी जीवित, {turns} चालों के भीतर। हर नया सितारा 4 रून देता है।",
+    "शेर 3 खाने चलता है; उल्लू और कछुआ 2। विपरीत ओर से घेरने पर +1 क्षति।",
+    "3 खानों के भीतर हमला; लक्ष्य के पास के शत्रुओं को 2 क्षति।",
+    "3 खानों के भीतर हमला; लक्ष्य से 2 खानों के भीतर दो अन्य शत्रुओं को 2 क्षति।"
+  ],
+  "ar": [
+    "النجوم: الفوز، بقاء الجميع، خلال {turns} أدوار. كل نجمة جديدة تمنح 4 رونات.",
+    "يتحرك الأسد 3 خانات والبومة والسلحفاة خانتين. التطويق من جهتين متقابلتين يزيد الضرر 1.",
+    "يضرب ضمن 3 خانات ويسبب ضررين للأعداء المجاورين للهدف.",
+    "يضرب ضمن 3 خانات، ثم يسبب ضررين لعدوين آخرين ضمن خانتين من الهدف."
+  ]
+};
+  Object.entries(arenaCopy).forEach(([key, copy]) => {
+    text[key] ||= {};
+    Object.assign(text[key], {arenaMastery:copy[0], arenaMovement:copy[1], skillLionDesc:copy[2],skillOwlDesc:copy[3]});
   });
 
   const routeLocale = ({
@@ -2046,6 +2152,7 @@
         bonusHp: wholeNumber(source.bonusHp, 0),
         bonusEnergy: wholeNumber(source.bonusEnergy, 0),
         reviveTokens: wholeNumber(source.reviveTokens, 0),
+        stars: Object.fromEntries(missionDefs.map(m => [m.id, wholeNumber(source.stars?.[m.id], 0, 0, 3)])),
       };
     } catch {
       return defaultProfile();
@@ -2065,6 +2172,7 @@
       bonusHp: 0,
       bonusEnergy: 0,
       reviveTokens: 0,
+      stars: {},
     };
   }
 
@@ -2270,7 +2378,7 @@
     btn.tabIndex = centered ? 0 : -1;
     if (centered) btn.setAttribute("aria-current", "true"); else btn.removeAttribute("aria-current");
     btn.setAttribute("aria-label", `${t("missionCard", { n: mission.id })}. ${name}. ${locked ? t("locked") : t("missionGoal", { enemies })}. ${t("missionPlan", { plan: tactic })}`);
-    btn.innerHTML = `<span class="mission-card__top"><strong>${t("missionCard", { n: mission.id })} · ${name}</strong><b>${locked ? t("locked") : active ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b></span><small>${t("missionRewardLabel")}: ${locked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small><span>${t("missionGoal", { enemies })}</span><em>${t("missionPlan", { plan: tactic })}<b class="mission-card__traits">${t("enemyTraits", { traits })}</b></em>`;
+    btn.innerHTML = `<span class="mission-card__top"><strong>${t("missionCard", { n: mission.id })} · ${name}</strong><b>${locked ? t("locked") : active ? t("missionStatusCurrent") : t("missionStatusUnlocked")}</b></span><small>${mission.cols} × ${mission.rows} · ${"★".repeat(profile.stars?.[mission.id] || 0)}${"☆".repeat(3-(profile.stars?.[mission.id] || 0))} · ${t("missionRewardLabel")}: ${locked ? t("locked") : t("missionReward", { xp: mission.xp, runes: mission.runes })}</small><span>${t("missionGoal", { enemies })}</span><em>${t("missionPlan", { plan: tactic })}<b class="mission-card__traits">${t("enemyTraits", { traits })}</b></em>`;
   }
 
   function createMissionCard() {
@@ -2434,8 +2542,8 @@
     nodes.missionBriefing.innerHTML = `
       <div class="mission-briefing__head"><strong>${t("battlePreview")}</strong><em>${t("missionCard", { n: mission.id })} · ${missionName}</em></div>
       <div class="mission-briefing__enemies">${enemies}</div>
-      <p><b>${t("squadRule")}</b>${t("moveThenActHint")} ${t("runeChainReady")}</p>
-      <p>${missionTactic}</p>`;
+      <p><b>${t("squadRule")}</b>${t("arenaMovement")} ${t("runeChainReady")}</p>
+      <p><b>${mission.cols} × ${mission.rows} · ${"★".repeat(profile.stars?.[mission.id] || 0)}${"☆".repeat(3-(profile.stars?.[mission.id] || 0))}</b> ${t("arenaMastery", {turns:mission.par})}<br>${missionTactic}</p>`;
   }
 
   function focusSelectedMission() {
@@ -2721,6 +2829,14 @@
     const hpBonus = profile.bonusHp || 0;
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
     resetMovementAnimationTracking();
+    gridCursor = {x:0,y:1};
+    cols = missionDef.cols;
+    rows = missionDef.rows;
+    nodes.grid.style.setProperty("--board-cols", cols);
+    nodes.grid.style.setProperty("--board-rows", rows);
+    nodes.grid.setAttribute("aria-colcount", cols);
+    nodes.grid.setAttribute("aria-rowcount", rows);
+    document.querySelector(".battle-shell").style.setProperty("--board-ratio", cols / rows);
     state = {
       mission,
       missionDef,
@@ -2742,7 +2858,7 @@
           ...h,
           level,
           x: 0,
-          y: idx,
+          y: idx + 1,
           maxHp,
           hp: maxHp,
           atk: h.atk + (profile.bonusAtk || 0) + Math.floor(level / 2),
@@ -2769,13 +2885,7 @@
 
   function makeEnemies(mission) {
     const missionDef = missionDefs.find((item) => item.id === mission) || missionDefs[0];
-    const formation = [
-      { x: 2, y: 0 },
-      { x: 2, y: 1 },
-      { x: 2, y: 2 },
-      { x: 2, y: 3 },
-      { x: 1, y: 3 },
-    ];
+    const formation = Array.from({length: missionDef.rows}, (_, y) => ({x: missionDef.cols - 1, y: (y + 1) % missionDef.rows}));
     return missionDef.enemies.map((id, index) => {
       const base = enemyDefs.find((enemy) => enemy.id === id) || enemyDefs[0];
       const { x, y } = formation[index] || formation[formation.length - 1];
@@ -2848,7 +2958,7 @@
     gridCursor.x = Math.max(0, Math.min(cols - 1, gridCursor.x));
     gridCursor.y = Math.max(0, Math.min(rows - 1, gridCursor.y));
     nodes.missionText.textContent = state.mission;
-    nodes.turnText.textContent = state.turn;
+    nodes.turnText.textContent = `${state.turn} / ${state.missionDef.par} ★`;
     nodes.enemyCountText.textContent = `${livingEnemies().length}/${state.enemies.length}`;
     nodes.grid.innerHTML = "";
     const movable = validMoves();
@@ -2986,15 +3096,18 @@
       <strong>${t(hero.name)} ${t("heroLevel", { level: hero.level })} · ${status}</strong>
       <span>${t("chooseTarget", { hero: t(hero.name), hp: hero.hp, maxHp: hero.maxHp, energy: hero.energy })}</span>
       <div class="enemy-trait-guide" role="note"><b></b><span></span></div>
-      <small>${t("moveThenActHint")}</small>`;
+      <small>${t("arenaMovement")}</small>`;
     nodes.selectedCard.querySelector("strong").textContent = `${t(hero.name)} ${t("heroLevel", { level: hero.level })} / ${status}`;
     const traitGuideNode = nodes.selectedCard.querySelector(".enemy-trait-guide");
     traitGuideNode.hidden = !enemyTraitGuideText;
+    nodes.selectedCard.querySelector("strong").title = t("arenaMovement");
+    nodes.selectedCard.tabIndex = 0;
     traitGuideNode.querySelector("b").textContent = t("battleTraitGuide");
     traitGuideNode.querySelector("span").textContent = enemyTraitGuideText;
     const skillHelp = nodes.selectedCard.querySelector("small");
     skillHelp.className = "skill-help";
-    skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${attackUnavailable ? t("attackRangeHint") : chainHint}</i>`;
+    skillHelp.innerHTML = `<b>${t(hero.skillName)}</b><span>${t(hero.skillDesc)}</span><i>${t("arenaMovement")} ${attackUnavailable ? t("attackRangeHint") : chainHint}</i>`;
+    nodes.selectedCard.appendChild(traitGuideNode);
     nodes.skillBtn.title = t("skillInfo", { skill: t(hero.skillName), desc: t(hero.skillDesc) });
   }
 
@@ -3031,14 +3144,14 @@
     const targets = hero ? validTargets() : [];
     const attackTarget = targets[0];
     const attackUnavailable = Boolean(hero && canAct && !targets.length);
-    const skillTarget = hero && hero.id !== "turtle" ? attackTarget || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0] : null;
+    const skillTarget = hero && hero.id !== "turtle" ? skillTargets().sort((a,b) => distance(hero,a)-distance(hero,b))[0] : null;
     const attackBonus = attackTarget ? chainBonusFor(attackTarget) : 0;
     const skillBonus = skillTarget ? chainBonusFor(skillTarget) : 0;
-    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk + attackBonus }) : t("attack");
+    nodes.attackBtn.textContent = hero ? t("attackValue", { value: hero.atk + attackBonus + (attackTarget ? flankBonusFor(hero, attackTarget) : 0) }) : t("attack");
     nodes.guardBtn.textContent = hero ? t("guardValue") : t("guard");
     nodes.skillBtn.textContent = hero ? t("skillValue", { value: hero.id === "turtle" ? "+1" : hero.atk + 2 + skillBonus }) : t("skill");
     nodes.attackBtn.setAttribute("aria-label", attackTarget
-      ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus, target: t(attackTarget.name) })
+      ? t("actionTarget", { action: t("attack"), value: hero.atk + attackBonus + (attackTarget ? flankBonusFor(hero, attackTarget) : 0), target: t(attackTarget.name) })
       : attackUnavailable
         ? `${t("attack")}. ${t("attackRangeHint")}`
         : t("attack"));
@@ -3059,7 +3172,7 @@
     }
     nodes.attackBtn.disabled = !canAct || !targets.length;
     nodes.guardBtn.disabled = !canAct;
-    nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced;
+    nodes.skillBtn.disabled = !canAct || hero.energy <= 0 || hero.silenced || (hero.id !== "turtle" && !skillTarget);
     nodes.endTurnBtn.disabled = state.phase !== "player" || movementAnimationActive;
     const readyHeroNames = state.heroes
       .filter((candidate) => candidate.hp > 0 && !state.acted.has(candidate.id))
@@ -3098,13 +3211,36 @@
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
   }
 
+  // Breadth-first routes avoid pieces and rubble; hazard entry ends a move.
+  function reachableCells(unit, budget, stopAtHazards = false) {
+    const queue = [{x:unit.x,y:unit.y,steps:0}], seen = new Set([`${unit.x},${unit.y}`]), result = [];
+    for (let i=0;i<queue.length;i++) {
+      const from=queue[i];
+      if(from.steps >= budget || (stopAtHazards && from.steps && ["snare","burn","cooling"].includes(terrainAt(from.x,from.y)?.type))) continue;
+      for(const [dx,dy] of [[1,0],[0,1],[-1,0],[0,-1]]) {
+        const cell={x:from.x+dx,y:from.y+dy,steps:from.steps+1};
+        const key=`${cell.x},${cell.y}`;
+        if(seen.has(key) || !canOccupy(cell.x,cell.y,unit)) continue;
+        seen.add(key); cell.first=from.first || {x:cell.x,y:cell.y};
+        result.push(cell);queue.push(cell);
+      }
+    }
+    return result;
+  }
+
   function validMoves() {
     const hero = selectedHero();
     if (!hero || state.acted.has(hero.id) || state.moved.has(hero.id) || hero.snared) return [];
-    const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-    return dirs
-      .map(([dx, dy]) => ({ x: hero.x + dx, y: hero.y + dy }))
-      .filter((p) => canOccupy(p.x, p.y, hero));
+    return reachableCells(hero, hero.id === "lion" ? 3 : 2, true);
+  }
+
+  function flankBonusFor(hero, enemy) {
+    return distance(hero,enemy) === 1 && livingHeroes().some(ally => ally !== hero && distance(ally,enemy) === 1 && (ally.x-enemy.x)*(hero.x-enemy.x)+(ally.y-enemy.y)*(hero.y-enemy.y) === -1) ? 1 : 0;
+  }
+
+  function skillTargets() {
+    const hero=selectedHero();
+    return hero ? livingEnemies().filter(enemy => distance(hero,enemy) <= 3) : [];
   }
 
   function validTargets() {
@@ -3149,7 +3285,7 @@
 
   function attack(hero, enemy, isSkill) {
     const chainBonus = chainBonusFor(enemy);
-    let damage = hero.atk + (isSkill ? 2 : 0) + chainBonus;
+    let damage = hero.atk + (isSkill ? 2 : 0) + chainBonus + flankBonusFor(hero, enemy);
     const blockedByStoneHide = (enemy.id === "stag" || enemy.id === "rhinoBoss") && enemy.armorReady;
     const blockedByAllyGuard = enemy.allyGuard;
     const blockedByFlight = enemy.id === "griffinBoss" && enemy.flying && (hero.range || 1) > 1;
@@ -3194,6 +3330,17 @@
       tryAutoRevive(hero);
     }
     resolveBossPhases(enemy);
+    if (isSkill) {
+      const secondary = livingEnemies().filter(other => other !== enemy && distance(other, enemy) <= (hero.id === "owl" ? 2 : 1)).slice(0, hero.id === "owl" ? 2 : 3);
+      secondary.forEach(other => {
+        const damage = 2;
+        other.hp = Math.max(0, other.hp - damage);
+        other.hitsThisTurn = (other.hitsThisTurn || 0) + 1;
+        if(hero.id === "owl") playChainLink(enemy, other);
+        playFx("rune-burst", other.x, other.y, {value:-damage,chain:true});
+        resolveBossPhases(other);
+      });
+    }
     render();
     checkEnd();
   }
@@ -3208,8 +3355,8 @@
   function guard() {
     const hero = selectedHero();
     if (!hero || state.acted.has(hero.id)) return;
-    hero.guard = true;
     markActed(hero);
+    hero.guard = true;
     playFx("guard-shield", hero.x, hero.y);
     playCue("upgrade");
     log("guarded", { hero: t(hero.name) });
@@ -3226,6 +3373,7 @@
       render();
       return;
     }
+    if (hero.id !== "turtle" && !skillTargets().length) return;
     hero.energy -= 1;
     if (hero.id === "turtle") {
       livingHeroes().forEach((h) => {
@@ -3235,13 +3383,14 @@
         playFx("healing-swirl", h.x, h.y, { value: h.hp > before ? 1 : null });
       });
       markActed(hero);
+      hero.guard = true;
       playCue("success");
       log("skillUsed", { hero: t(hero.name) });
       render();
       checkEnd();
       return;
     }
-    const target = validTargets()[0] || livingEnemies().sort((a, b) => distance(hero, a) - distance(hero, b))[0];
+    const target = skillTargets().sort((a,b) => distance(hero,a)-distance(hero,b))[0];
     if (target) attack(hero, target, true);
   }
 
@@ -3372,11 +3521,10 @@
 
   function moveEnemyToward(enemy, target) {
     const old = { x: enemy.x, y: enemy.y };
-    const dx = Math.sign(target.x - enemy.x);
-    const dy = Math.sign(target.y - enemy.y);
-    const options = [{ x: enemy.x + dx, y: enemy.y }, { x: enemy.x, y: enemy.y + dy }];
-    const move = options.find((cell) => canOccupy(cell.x, cell.y, enemy));
-    if (!move) return false;
+    const routes = reachableCells(enemy, cols * rows);
+    const best = routes.sort((a,b) => Math.max(0,distance(a,target)-(enemy.range||1)) - Math.max(0,distance(b,target)-(enemy.range||1)) || a.steps-b.steps)[0];
+    if (!best) return false;
+    const move = best.first;
     enemy.x = move.x;
     enemy.y = move.y;
     if (enemy.id === "salamander") addTerrain(old.x, old.y, "burn", { expires: state.turn + 1 });
@@ -3417,7 +3565,8 @@
       if (enemy.id === "archiveOwl") { target.marked = true; log("owlMarked", { hero: t(target.name) }); }
       if (enemy.id === "sealRaven") { target.energy = Math.max(0, target.energy - 1); log("ravenDrained", { hero: t(target.name) }); }
     } else {
-      moveEnemyToward(enemy, target);
+      const steps = ["wolf", "runeFox", "mirrorWolf"].includes(enemy.id) ? 2 : 1;
+      for (let step=0;step<steps && distance(enemy,target)>range;step++) if(!moveEnemyToward(enemy,target)) break;
     }
     if (enemy.id === "runeFox" && target.hp > 0) {
       const candidates = [{ x: Math.max(0, target.x - 1), y: target.y }, { x: target.x, y: Math.min(rows - 1, target.y + 1) }];
@@ -3427,20 +3576,29 @@
   }
 
   function applyTideAndOrbit() {
+    const tideMoved = new Set();
     state.terrain.filter((terrain) => terrain.type === "tide").forEach((terrain) => {
       const unit = unitAt(terrain.x, terrain.y);
-      if (!unit) return;
+      if (!unit || tideMoved.has(unit)) return;
+      tideMoved.add(unit);
       const next = { x: unit.x + (terrain.dx || 0), y: unit.y + (terrain.dy || 0) };
       if (canOccupy(next.x, next.y, unit)) { unit.x = next.x; unit.y = next.y; }
     });
-    const ring = [[0,0],[1,0],[2,0],[2,1],[2,2],[2,3],[1,3],[0,3],[0,2],[0,1]];
+    const ring = [];
+    for(let x=0;x<cols;x++) ring.push([x,0]);
+    for(let y=1;y<rows;y++) ring.push([cols-1,y]);
+    for(let x=cols-2;x>=0;x--) ring.push([x,rows-1]);
+    for(let y=rows-2;y>0;y--) ring.push([0,y]);
     if (!state.terrain.some((terrain) => terrain.type === "orbit")) return;
     const movers = ring.map(([x,y], index) => ({ unit: unitAt(x,y), from:{x,y}, to:{x:ring[(index + 1) % ring.length][0],y:ring[(index + 1) % ring.length][1]} })).filter((item) => item.unit);
-    const movingUnits = new Set(movers.map((item) => item.unit));
-    movers.forEach((item) => {
-      const blocker = unitAt(item.to.x, item.to.y);
-      if ((!blocker || movingUnits.has(blocker)) && !terrainAt(item.to.x, item.to.y, "rubble")) { item.unit.x = item.to.x; item.unit.y = item.to.y; }
-    });
+    let allowed = movers.filter(item => !terrainAt(item.to.x,item.to.y,"rubble"));
+    let changed=true;
+    while(changed) {
+      const moving=new Set(allowed.map(item=>item.unit));
+      const next=allowed.filter(item => { const blocker=unitAt(item.to.x,item.to.y);return !blocker || moving.has(blocker); });
+      changed=next.length!==allowed.length;allowed=next;
+    }
+    allowed.forEach(item => {item.unit.x=item.to.x;item.unit.y=item.to.y;});
   }
 
   function enemyTurn() {
@@ -3496,7 +3654,7 @@
       scheduleTurnTransition(() => showResult(false), 450);
       return true;
     }
-    if (state.phase === "player" && state.acted.size >= livingHeroes().length) scheduleTurnTransition(endTurn, 450);
+    if (state.phase === "player" && livingHeroes().every(hero => state.acted.has(hero.id))) scheduleTurnTransition(endTurn, 450);
     return false;
   }
 
@@ -3568,7 +3726,11 @@
     setPauseActionAvailable(false);
     const missionDef = missionDefs.find((item) => item.id === state.mission) || missionDefs[0];
     const xp = win ? missionDef.xp : 12;
-    const runes = win ? missionDef.runes : 3;
+    const stars = win ? 1 + Number(livingHeroes().length === 3) + Number(state.turn <= missionDef.par) : 0;
+    const extraRunes = Math.max(0, stars - (profile.stars?.[state.mission] || 0)) * 4;
+    profile.stars ||= {};
+    profile.stars[state.mission] = Math.max(stars, profile.stars[state.mission] || 0);
+    const runes = (win ? missionDef.runes : 3) + extraRunes;
     profile.xp += xp;
     profile.runes = (profile.runes || 0) + runes;
     while (profile.xp >= 100) {
@@ -3582,7 +3744,7 @@
       selectedMission = Math.min(missionDefs.length, state.mission + 1);
     }
     saveProfile();
-    nodes.resultTitle.textContent = t(win ? "missionClear" : "missionFailed");
+    nodes.resultTitle.textContent = t(win ? "missionClear" : "missionFailed") + (win ? ` ${"★".repeat(stars)}${"☆".repeat(3-stars)}` : "");
     nodes.resultText.textContent = t(win ? "resultWin" : "resultLose", { mission: state.mission, xp, runes });
     const claimedReward = rewardPool.find((reward) => reward.id === claimedRewardId);
     nodes.resultRewardText.textContent = claimedReward
@@ -3646,13 +3808,25 @@
     window.WonderSound?.play?.(name);
   }
 
+  function playChainLink(from, to) {
+    const a=nodes.grid.querySelector(`.tile[data-x="${from.x}"][data-y="${from.y}"]`);
+    const b=nodes.grid.querySelector(`.tile[data-x="${to.x}"][data-y="${to.y}"]`);
+    if(!a || !b) return;
+    const dx=b.offsetLeft-a.offsetLeft,dy=b.offsetTop-a.offsetTop;
+    const beam=document.createElement("i");beam.className="rune-chain-link";
+    Object.assign(beam.style,{left:`${nodes.grid.offsetLeft+a.offsetLeft+a.offsetWidth/2}px`,top:`${nodes.grid.offsetTop+a.offsetTop+a.offsetHeight/2}px`,width:`${Math.hypot(dx,dy)}px`,transform:`rotate(${Math.atan2(dy,dx)}rad)`});
+    nodes.fxLayer.append(beam);
+    beam.addEventListener("animationend",()=>beam.remove(),{once:true});
+  }
+
   function playFx(name, x, y, options = {}) {
     const fx = document.createElement("img");
     fx.className = `fx fx-${name}`;
     fx.src = asset(`animal-rune-tactics-fx-${name}.webp`);
     fx.alt = "";
-    const left = `${((x + 0.5) / cols) * 84 + 8}%`;
-    const top = `${((y + 0.5) / rows) * 84 + 8}%`;
+    const cell = nodes.grid.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+    const left = `${nodes.grid.offsetLeft + (cell ? cell.offsetLeft + cell.offsetWidth / 2 : 0)}px`;
+    const top = `${nodes.grid.offsetTop + (cell ? cell.offsetTop + cell.offsetHeight / 2 : 0)}px`;
     fx.style.left = left;
     fx.style.top = top;
     nodes.fxLayer.appendChild(fx);
@@ -3725,6 +3899,7 @@
           missions: missionDefs.map((missionDef) => ({
             id: missionDef.id,
             chapter: missionDef.chapter,
+            cols: missionDef.cols, rows: missionDef.rows, par: missionDef.par,
             nameEn: missionDef.nameEn,
             nameZht: missionDef.nameZht,
             enemies: [...missionDef.enemies],
@@ -3742,6 +3917,7 @@
         if (!state) return null;
         return {
           turn: state.turn,
+          cols, rows,
           phase: state.phase,
           moved: [...state.moved],
           acted: [...state.acted],

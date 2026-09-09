@@ -1,6 +1,7 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
+defenseModuleUrl.search = '?v=21-block-props';
 defenseModuleUrl.search = 'v=20260909-wonder-crash-v20-complete-block-art';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
@@ -1296,6 +1297,7 @@ function fireProjectile(entry, xOffset, yOffset, vx) {
     hitEnemies: [],
     rotation: 0,
     spin: 9,
+    kind: weapon.projectile,
     image: images[weapon.projectile] || images.eraser,
   });
 }
@@ -1651,7 +1653,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
   const dropItems = drops.map((item) => renderRewardItem(item)).join("");
   const diamondItem = diamondReward > 0 ? renderDiamondReward(diamondReward) : "";
   const coinItem = state.coins > 0
-    ? `<div class="reward-item coin-reward" data-settlement-reward="coins"><img src="assets/coin.png" alt="" /><span>x${state.coins}</span></div>`
+    ? `<div class="reward-item coin-reward" data-settlement-reward="coins"><img src="assets/wonder-prop-coin-block-v1.png" alt="" /><span>x${state.coins}</span></div>`
     : "";
   const unlockItem = wasChallenge && state.levelIndex + 1 < LEVELS.length
     ? `<div class="reward-item progress-reward" data-settlement-reward="unlock"><span>${t("settlement_unlocked", { id: state.level.id + 1 })}</span></div>`
@@ -1675,7 +1677,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
 function renderDiamondReward(amount) {
   return `
     <div class="reward-item diamond-reward">
-      <img src="assets/weightplay-diamond.svg" alt="" />
+      <img src="assets/wonder-prop-diamond-block-v1.png" alt="" />
       <span>${t("settlement_diamond_reward")} x${amount}</span>
     </div>
   `;
@@ -1717,7 +1719,7 @@ function renderRewardItem(item) {
   const level = Math.max(1, Number(item.level) || 1);
   return `
     <div class="reward-item ${getWeaponTierClass(level)}">
-      <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />
+      <img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/wonder-prop-eraser-block-v1.png'" />
       <span>${t("weapon_" + item.id)}${level > 1 ? ` x${level}` : ""}</span>
     </div>
   `;
@@ -2738,12 +2740,12 @@ function renderProfilePanel(tab = activeMenuTab) {
           <img src="assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" />
           <div><strong>${t("hero_title", { lvl: getHeroTotalLevel() })}</strong><span>${t("hero_subtitle")}</span></div>
         </div>
-        ${renderUpgradeRow("heroCoin", "assets/coin.png", t("heroCoin_title", { lvl: profile.heroCoinLevel }), getUpgradePreview("heroCoin"))}
-        ${renderUpgradeRow("heroAttack", "assets/upgrade-damage.png", t("heroAttack_title", { lvl: profile.heroAttackLevel }), getUpgradePreview("heroAttack"))}
-        ${renderUpgradeRow("heroCrit", "assets/weightplay-character-boom-mane-lion-block-v1.webp", t("heroCrit_title", { lvl: profile.heroCritLevel }), getUpgradePreview("heroCrit"))}
-        ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", t("heroCritDamage_title", { lvl: profile.heroCritDamageLevel }), getUpgradePreview("heroCritDamage"))}
-        ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", t("heroSpeed_title", { lvl: profile.heroSpeedLevel }), getUpgradePreview("heroSpeed"))}
-        ${renderUpgradeRow("diamondPower", "assets/upgrade-damage.png", t("diamondPower_title", { lvl: profile.diamondPowerLevel }), getUpgradePreview("diamondPower"), "diamond")}
+        ${renderUpgradeRow("heroCoin", "assets/wonder-prop-coin-block-v1.png", t("heroCoin_title", { lvl: profile.heroCoinLevel }), getUpgradePreview("heroCoin"))}
+        ${renderUpgradeRow("heroAttack", "assets/wonder-prop-damage-block-v1.png", t("heroAttack_title", { lvl: profile.heroAttackLevel }), getUpgradePreview("heroAttack"))}
+        ${renderUpgradeRow("heroCrit", "assets/wonder-prop-crit-block-v1.png", t("heroCrit_title", { lvl: profile.heroCritLevel }), getUpgradePreview("heroCrit"))}
+        ${renderUpgradeRow("heroCritDamage", "assets/wonder-prop-size-block-v1.png", t("heroCritDamage_title", { lvl: profile.heroCritDamageLevel }), getUpgradePreview("heroCritDamage"))}
+        ${renderUpgradeRow("heroSpeed", "assets/wonder-prop-cooldown-block-v1.png", t("heroSpeed_title", { lvl: profile.heroSpeedLevel }), getUpgradePreview("heroSpeed"))}
+        ${renderUpgradeRow("diamondPower", "assets/wonder-prop-damage-block-v1.png", t("diamondPower_title", { lvl: profile.diamondPowerLevel }), getUpgradePreview("diamondPower"), "diamond")}
       </div>
     `;
     return;
@@ -2763,20 +2765,20 @@ function renderProfilePanel(tab = activeMenuTab) {
 
   if (tab === "wall") {
     profilePanel.innerHTML = `
-      ${renderUpgradeRow("wallHp", "assets/upgrade-wall.png", t("wallHp_title", { lvl: profile.wallHpLevel }), getUpgradePreview("wallHp"))}
-      ${renderUpgradeRow("wallGuard", "assets/upgrade-repair.png", t("wallGuard_title", { lvl: profile.wallGuardLevel }), getUpgradePreview("wallGuard"))}
-      ${renderUpgradeRow("wallRegen", "assets/upgrade-cooldown.png", t("wallRegen_title", { lvl: profile.wallRegenLevel }), getUpgradePreview("wallRegen"))}
+      ${renderUpgradeRow("wallHp", "assets/wonder-prop-wall-block-v1.png", t("wallHp_title", { lvl: profile.wallHpLevel }), getUpgradePreview("wallHp"))}
+      ${renderUpgradeRow("wallGuard", "assets/wonder-prop-repair-block-v1.png", t("wallGuard_title", { lvl: profile.wallGuardLevel }), getUpgradePreview("wallGuard"))}
+      ${renderUpgradeRow("wallRegen", "assets/wonder-prop-cooldown-block-v1.png", t("wallRegen_title", { lvl: profile.wallRegenLevel }), getUpgradePreview("wallRegen"))}
     `;
     return;
   }
 
   profilePanel.innerHTML = `
     <div class="profile-row">
-      <img class="profile-row-icon" src="assets/menu-settings.png" alt="" />
+      <img class="profile-row-icon" src="assets/wonder-prop-settings-block-v1.png" alt="" />
       <div><strong>${t("settings_progress")}</strong><span>${t("settings_unlocked_stages", { count: Math.min(highestUnlocked, LEVELS.length) })}</span></div>
     </div>
     <div class="profile-row setting-row">
-      <img class="profile-row-icon" src="assets/menu-settings.png" alt="" style="filter: hue-rotate(140deg);" />
+      <img class="profile-row-icon" src="assets/wonder-prop-settings-block-v1.png" alt="" style="filter: hue-rotate(140deg);" />
       <div><strong>${t("language")}</strong><span>${t("language_desc")}</span></div>
       <div class="setting-control">
         <select id="localeSelect" class="settings-select" aria-label="Language">
@@ -2808,8 +2810,8 @@ function renderUpgradeRow(type, icon, title, desc, currency = "coin") {
   const canBuy = currency === "diamond" ? readWallet().diamonds >= cost : profile.coins >= cost;
   const costIcon =
     currency === "diamond"
-      ? `<img class="cost-diamond" src="assets/weightplay-diamond.svg" alt="" />`
-      : `<img class="cost-coin" src="assets/coin.png" alt="" />`;
+      ? `<img class="cost-diamond" src="assets/wonder-prop-diamond-block-v1.png" alt="" />`
+      : `<img class="cost-coin" src="assets/wonder-prop-coin-block-v1.png" alt="" />`;
   return `
     <div class="profile-row">
       <img class="profile-row-icon" src="${icon}" alt="" />
@@ -2878,7 +2880,7 @@ function renderEquipmentSlots() {
     .map((slot, index) => {
       const weapon = getWeapon(slot?.id);
       const level = Math.max(1, Number(slot?.level) || 1);
-      const content = weapon ? `<img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
+      const content = weapon ? `<img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/wonder-prop-eraser-block-v1.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}` : "";
       const selected = selectedWeaponInfo?.source === "equip" && selectedWeaponInfo.index === index ? "selected" : "";
       return `<button type="button" draggable="${weapon ? "true" : "false"}" class="equip-slot ${weapon ? getWeaponTierClass(level) : "empty"} ${selected}" data-equip-slot="${index}">${content}</button>`;
     })
@@ -2892,7 +2894,7 @@ function renderBackpackItems() {
       const level = Math.max(1, Number(item?.level) || 1);
       if (!weapon) return "";
       const selected = selectedWeaponInfo?.source === "bag" && selectedWeaponInfo.index === index ? "selected" : "";
-      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
+      return `<button type="button" class="backpack-item ${getWeaponTierClass(level)} ${selected}" draggable="true" data-backpack-index="${index}" data-backpack-weapon="${weapon.id}"><img src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/wonder-prop-eraser-block-v1.png'" />${level > 1 ? `<span class="equip-level">x${level}</span>` : ""}</button>`;
     })
     .filter(Boolean);
   while (items.length < 20) {
@@ -2921,7 +2923,7 @@ function renderSelectedWeaponInfo() {
   return `
     <div class="weapon-info-panel">
       <div class="weapon-info-head">
-        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/eraser-v2.webp'" />
+        <img class="weapon-info-icon ${getWeaponTierClass(item.level)}" src="${getWeaponIconSrc(weapon)}" alt="" onerror="this.onerror=null;this.src='assets/wonder-prop-eraser-block-v1.png'" />
         <div><strong>${t("weapon_" + weapon.id)} ${item.level > 1 ? `x${item.level}` : ""}</strong><span>${t("weapon_upgrade_tip")}</span></div>
       </div>
       <div class="weapon-info-stats">
@@ -3145,7 +3147,7 @@ function getWeapon(id) {
 }
 
 function getWeaponIconSrc(weapon) {
-  return weapon?.icon || "assets/eraser-v2.webp";
+  return weapon?.icon || "assets/wonder-prop-eraser-block-v1.png";
 }
 
 function getWeaponDamage(entry) {

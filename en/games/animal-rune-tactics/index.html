@@ -10,16 +10,16 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#11251f" />
-    <meta name="description" content="Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta name="description" content="Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rune Tactics | WeightPlay" />
-    <meta property="og:description" content="Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta property="og:description" content="Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take..." />
     <meta property="og:url" content="https://weightplay.com/en/games/animal-rune-tactics/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Rune Tactics | WeightPlay" />
-    <meta name="twitter:description" content="Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one..." />
+    <meta name="twitter:description" content="Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-rune-tactics-cover.webp" />
     <title>Rune Tactics | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-rune-tactics/" />
@@ -37,12 +37,12 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-rune-tactics/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-rune-tactics/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-rune-tactics/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rune Tactics","alternateName":"動物符文戰棋","url":"https://weightplay.com/en/games/animal-rune-tactics/","image":"https://weightplay.com/assets/animal-rune-tactics-cover.png","description":"Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Strategy","Tactics","Animal","Browser Game"],"audience":{"@type":"PeopleAudience","suggestedMinAge":13}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Rune Tactics","alternateName":"動物符文戰棋","url":"https://weightplay.com/en/games/animal-rune-tactics/","image":"https://weightplay.com/assets/animal-rune-tactics-cover.png","description":"Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Strategy","Tactics","Animal","Browser Game"],"audience":{"@type":"PeopleAudience","suggestedMinAge":13}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1" />
+    <link rel="stylesheet" href="style.css?v=20260909-tactical-arenas-v22" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -197,7 +197,7 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260701-wallet1"></script>
-<script src="game.js?v=20260909-block-animals-v21-f3964f75"></script>
+<script src="game.js?v=20260909-tactical-arenas-v22-75b31933"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1"></script>
     <script>
       (() => {
@@ -224,14 +224,14 @@
 <section class="game-page-info game-page-info-static" aria-label="Rune Tactics game information">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Rune Tactics</h2><p>Animal Rune Tactics is a 30-mission turn-based campaign played on a three-by-four rune board. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Rune Tactics</h2><p>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards. The Lion Guardian, Owl Mage and Turtle Shield each take one action before the enemy turn: move, attack, guard or spend Energy on a distinct Skill. Six five-mission chapters introduce blocked routes, snares, currents, fire, rotating runes and seals, together with enemies that counter, push, silence, mark, drain Energy or create clones. Missions 5, 10, 15, 20, 25 and 30 end with six different phased Bosses. Mission unlocks, hero training and Rune Rewards are saved in this browser.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Turn-Based Squad Tactics</strong></div><div class="game-info-fact"><span>Genre</span><strong>Strategy · Tactics · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Hard</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>8-15 minutes per mission</strong></div></div>
     </div>
 
     <div class="game-info-sections">
       <div class="game-info-section"><h3>World and Mission</h3><p>The Rune Roads connect six animal territories to the Crown Archive. Each road carries a different kind of stabilizing script: woodland paths hold living roots in place, forge marks bind ironwood, tide glyphs regulate flooded chambers, ember circles vent heat, moon runes preserve memory, and the Crown seals keep all five systems synchronized. When the central crown fractured, those scripts began acting without their keepers. Bridges hardened into rubble, roots closed around travelers, currents moved occupied stones, and archive seals protected the very creatures that had damaged them.</p>
 <p>The player commands three keepers sent to restore the roads. Lion Guardian is the close-range front fighter, Owl Mage attacks from two cells away, and Turtle Shield guards and heals the group. Clearing a mission means its script is stable enough for the squad to advance. The Stone Stag, Ironroot Rhino, Mirecoil Serpent, Embermane Lion and Eclipse Griffin each control one damaged chapter. Rune Crown Chimera has absorbed parts of every system; defeating it in Mission 30 reconnects the archive without pretending there is an endless Mission 31.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>Turn flow: select a living hero, then choose one action. Moving uses an adjacent legal cell. Attack requires the hero&#39;s range. Guard reduces the next enemy hit by one. A Skill spends one Energy: Lion strikes harder, Owl reaches a distant target, and Turtle guards every living hero while healing one HP. A hero is marked Done after acting. When every living hero has acted, or End Turn is pressed, all living enemies resolve their behavior and Energy returns by one up to three.</p>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Turn flow: select a living hero, then choose one action. Move once along an open route: Lion up to 3 cells; Owl and Turtle up to 2. Then take one combat action. Attack requires the hero&#39;s range. Guard reduces the next enemy hit by one. A Skill spends one Energy: Lion strikes within 3 cells with adjacent splash damage; Owl strikes within 3 cells and chains to two nearby enemies; and Turtle guards every living hero while healing one HP. A hero is marked Done after acting. When every living hero has acted, or End Turn is pressed, all living enemies resolve their behavior and Energy returns by one up to three. Move Lion up to 3 cells; Owl and Turtle 2. Flank an enemy from opposite sides for +1 damage. Stars: clear, all heroes survive, ≤6–10 turns. Each new star grants 4 Runes.</p>
 <p>Enemy rules are positional, not just statistical. Wolves gain Pack Fang while adjacent to another Wolf. Ravens target the hero with the lowest health ratio. Stone Stag restores first-hit armor. Thorn Boar returns one damage after a surviving adjacent melee hit. Rune Fox teleports behind the weakest hero. Tide Turtle gives the nearest ally a one-hit guard, while Relic Heron pushes the hero it strikes. Cinder Ram charges a visible straight line instead of walking normally.</p>
 <p>Later enemies change action planning. Ember Salamander leaves a temporary burn tile when it moves. Moon Moth silences one hero&#39;s Skill for the next player turn without removing Move, Attack or Guard. Archive Owl marks a hero so the next ranged hit gains damage. Mirror Wolf creates one adjacent one-HP clone when space permits. Seal Raven drains one Energy but never below zero. These traits remain active when Mission 29 combines one threat from five earlier chapters.</p>
 <p>Board states are part of each authored mission. Rubble cannot be occupied. Root Snare prevents the affected hero&#39;s next movement choice. Tide moves a unit one legal cell after the enemy turn. Burn damages a hero standing on it, while a one-use Cooling Rune restores Energy and clears active burn tiles. Orbit Runes rotate units around the outer ring. In Six-Rune Locks, three heroes must occupy linked Seal cells to remove the enemy ward; attacking through the ward loses one damage.</p>

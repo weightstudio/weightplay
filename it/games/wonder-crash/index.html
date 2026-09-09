@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v20" />
+    <meta name="weightplay-game-version" content="v21" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,8 +73,8 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260904-wonder-crash-v17-landscape-poster" />
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260904-wonder-crash-v17-landscape-poster">
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260909-wonder-crash-v21-block-props" />
+    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="Fantasy Lion Defense | WeightPlay" />
     <meta name="twitter:description" content="Fantasy Lion Defense è un gioco di difesa degli animali in 30 fasi con protagonista Boom Mane Leo. Il leone si muove lungo un muro fantastico mentre..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-cover-block-v1.webp" />
@@ -100,20 +100,20 @@
       </button>
 
       <div id="battleHud" class="hud battle-hud hidden" data-screen="battle" data-wp-battle-return-only>
-        <div class="battle-primary"><img src="../../assets/coin.png" alt="" /> <span id="coinText">0</span></div>
+        <div class="battle-primary"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="coinText">0</span></div>
         <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
       </div>
 
       <!-- Internal pause safety trigger; the duplicate Battle Settings control is not exposed. -->
-      <button id="settingsBtn" type="button" class="settings-btn hidden" data-wp-battle-utility aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/menu-settings.png" alt="" draggable="false" /></button>
+      <button id="settingsBtn" type="button" class="settings-btn hidden" data-wp-battle-utility aria-label="Settings" data-i18n-aria="menu_settings"><img src="assets/wonder-prop-settings-block-v1.png" alt="" draggable="false" /></button>
 
       <!-- Main Game Overlays / Menus -->
       <div id="overlay" class="overlay" data-wp-standard-stage-screen data-screen="stage">
         <button id="wonderStageBack" class="wonder-stage-back" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
         <h1 class="hidden" data-i18n="game_title">Fantasy Lion Defense</h1>
         <div id="menuCoinLine" class="menu-coin-line">
-          <span class="menu-wallet-item"><img src="../../assets/coin.png" alt="" /> <span id="menuCoinText">0</span></span>
-          <span class="menu-wallet-item diamond-wallet"><img src="assets/weightplay-diamond.svg" alt="" /> <span id="menuDiamondText">0</span></span>
+          <span class="menu-wallet-item"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="menuCoinText">0</span></span>
+          <span class="menu-wallet-item diamond-wallet"><img src="assets/wonder-prop-diamond-block-v1.png" alt="" /> <span id="menuDiamondText">0</span></span>
         </div>
         <label class="language-picker wonder-language-picker">
           <span data-i18n="language">Lingua</span>
@@ -150,10 +150,10 @@
         <!-- Navigation Menu Tabs -->
         <nav id="menuTabs" class="menu-tabs" data-wp-stage-management-nav>
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
-          <button type="button" data-menu-tab="equipment"><img src="../../assets/menu-equipment.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
-          <button type="button" data-menu-tab="battle"><img src="../../assets/menu-battle.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/menu-wall.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
-          <button type="button" data-menu-tab="settings"><img src="../../assets/menu-settings.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
+          <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
+          <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
+          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
 
@@ -189,8 +189,8 @@
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
     <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
-    <script src="src/game-data.js?v=20260822-dynamic-locale-v12"></script>
-    <script src="src/game.js?v=20260909-wonder-crash-v20-complete-block-art-deca1b19"></script>
+    <script src="src/game-data.js?v=20260909-wonder-crash-v21-block-props"></script>
+    <script src="src/game.js?v=20260909-wonder-crash-v21-block-props"></script>
     <script src="games/wonder-crash/expanded-canvas.js?v=20260909-wonder-crash-v20-block-stable-stage"></script>
     <section class="game-page-info game-page-info-static" aria-label="Informazioni su Fantasy Lion Defense">
 

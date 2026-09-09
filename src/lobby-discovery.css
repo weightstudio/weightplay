@@ -52,9 +52,9 @@ body.general-lobby-page .lobby-topbar .brand-lockup { display: flex; align-items
 body.general-lobby-page .lobby-topbar .brand-logo { display: block; width: 38px; height: 38px; object-fit: contain; }
 body.general-lobby-page .lobby-topbar h1 { margin: 0; font-size: 27px; line-height: 1; letter-spacing: -1px; color: var(--lobby-ink); text-shadow: none; }
 body.general-lobby-page .lobby-topbar .brand-byline { display: block; margin: 5px 0 0; font-size: 9px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--lobby-muted); }
-body.general-lobby-page .lobby-topbar .language-picker { position: static; align-self: center; width: auto; padding: 0; display: block; border: 0; background: none; box-shadow: none; }
+body.general-lobby-page .lobby-topbar .language-picker { position: static; align-self: center; flex: 0 0 auto; width: auto; min-height: 44px; padding: 0; display: block; overflow: visible; border: 0; background: none; box-shadow: none; }
 body.general-lobby-page .lobby-topbar .language-picker > span { display: none; }
-body.general-lobby-page .lobby-topbar select { min-height: 44px; max-width: 155px; padding: 8px 12px; border: 1px solid var(--lobby-line); border-radius: 10px; background: var(--lobby-paper); color: var(--lobby-ink); box-shadow: none; }
+body.general-lobby-page .lobby-topbar select { box-sizing: border-box; height: 44px; min-height: 44px; max-width: 155px; padding-block: 0; padding-inline: 12px 34px; overflow: visible; border: 1px solid var(--lobby-line); border-radius: 10px; background: var(--lobby-paper); color: var(--lobby-ink); font-size: 14px; line-height: normal; box-shadow: none; }
 
 /* The original block-animal scene stays legible, with one compact game entry. */
 body.general-lobby-page .lobby-hero {
@@ -83,7 +83,7 @@ body.general-lobby-page .spotlight-game h3 { margin: 5px 0; font-size: 16px; lin
 body.general-lobby-page .spotlight-game p { display: none; }
 body.general-lobby-page .spotlight-game span { margin: 0; padding: 0; border: 0; background: none; color: #d8ebd9; font-size: 11px; }
 body.general-lobby-page .lobby-hero .sound-toggle { inset: auto auto 14px 20px; width: 36px; height: 36px; min-height: 36px; background: #143e35cc; border: 1px solid #83a594; }
-body.general-lobby-page .weightplay-version-badge { display: none !important; }
+body.general-lobby-page .weightplay-version-badge { display: block !important; }
 
 /* One discovery path. On desktop the persistent topic rail complements the
    same three library tabs; mobile uses the compact horizontal topic row. */
@@ -218,7 +218,7 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
   body.general-lobby-page .lobby-topbar h1 { font-size: 22px; letter-spacing: -.8px; }
   body.general-lobby-page .lobby-topbar .brand-logo { width: 30px; height: 30px; }
   body.general-lobby-page .lobby-topbar .brand-byline { font-size: 7px; margin-top: 4px; }
-  body.general-lobby-page .lobby-topbar select { width: 108px; max-width: 108px; font-size: 11px; padding: 8px; }
+  body.general-lobby-page .lobby-topbar select { width: 116px; max-width: 36vw; height: 44px; min-height: 44px; padding-block: 0; padding-inline: 10px 30px; font-size: 13px; line-height: normal; }
   body.general-lobby-page .lobby-hero { height: auto; min-height: 192px; border-radius: 14px; margin-bottom: 14px; }
   body.general-lobby-page .general-hero-scene { object-position: 64% center; }
   body.general-lobby-page .lobby-hero-copy { position: relative; inset: auto; width: 52%; margin: 17px 17px 12px; }

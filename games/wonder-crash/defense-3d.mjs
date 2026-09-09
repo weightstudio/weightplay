@@ -1,4 +1,5 @@
 import * as THREE from '../animal-skyspire-drop/vendor/three/three.module.min.js';
+import {propParts} from './block-props.mjs?v=1';
 
 // Pinned r180. Simulation coordinates remain authoritative; this renderer has
 // no timers, input, saves, collisions or independent animation loop.
@@ -82,6 +83,11 @@ export class LionDefense3D {
     if(kind==='crocodile')for(let i=0;i<4;i++)box(0,-.36-i*.08,-.06-i*.07,.19-i*.03,.15,.16,'#396e55');
     const geometry=this.geometry(parts);this.models.set(kind,geometry);return geometry;
   }
+  propModel(kind){
+    const key='prop:'+kind;
+    if(!this.models.has(key))this.models.set(key,this.geometry(propParts(kind)));
+    return this.models.get(key);
+  }
   makeArena(w,h,wall){
     if(this.arena){this.scene.remove(this.arena);this.arena.geometry.dispose();this.resources.delete(this.arena.geometry);}
     const p=[[w/2,-h/2,-90,w,h,45,'#102e39']];
@@ -120,8 +126,12 @@ export class LionDefense3D {
     for(const [key,actor] of this.actors)if(!live.has(key)){this.scene.remove(actor);this.actors.delete(key);}
     let index=0;
     for(const [items,material] of [[state.projectiles,this.gold],[state.bossProjectiles,this.red]])for(const shot of items){
-      if(index>=this.shotPool.length)break;const mesh=this.shotPool[index++];mesh.visible=true;mesh.material=material;
-      mesh.position.set(shot.x,-shot.y,45);const s=Math.max(9,shot.size*.65);mesh.scale.set(s,s*1.7,s);mesh.rotation.z=shot.rotation||0;
+      if(index>=this.shotPool.length)break;const mesh=this.shotPool[index++];mesh.visible=true;
+      const friendly=items===state.projectiles;
+      mesh.geometry=friendly?this.propModel(shot.kind||'eraser'):this.unit;
+      mesh.material=friendly?this.material:material;
+      mesh.position.set(shot.x,-shot.y,45);const s=Math.max(9,shot.size*(friendly?1.2:.65));
+      mesh.scale.set(s,friendly?s:s*1.7,s);mesh.rotation.set(friendly?.4:0,friendly?-.32:0,shot.rotation||0);
     }
     for(;index<this.shotPool.length;index++)this.shotPool[index].visible=false;
     index=0;

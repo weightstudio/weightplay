@@ -1,12 +1,12 @@
 window.WONDER_DATA = {
   assets: {
     images: {
-      bg: "assets/battle-bg.webp",
+      bg: "assets/wonder-crash-cover-block-v1.webp",
       hero: "assets/weightplay-character-boom-mane-lion-block-v1.webp",
-      wall: "assets/wall.webp",
-      eraser: "assets/eraser-v2.webp",
-      pencil: "assets/weapon-pencil-v2.webp",
-      ruler: "assets/weapon-ruler-v2.webp"
+      wall: "assets/wonder-prop-wall-block-v1.png",
+      eraser: "assets/wonder-prop-eraser-block-v1.png",
+      pencil: "assets/wonder-prop-pencil-block-v1.png",
+      ruler: "assets/wonder-prop-ruler-block-v1.png"
     },
     enemies: [
 "assets/wonder-beast-boar-block-v1.webp",
@@ -121,7 +121,7 @@ window.WONDER_DATA = {
 {
       id: "eraser",
       name: "橡皮擦",
-      icon: "assets/eraser-v2.webp",
+      icon: "assets/wonder-prop-eraser-block-v1.png",
       projectile: "eraser",
       cooldown: 1.35,
       damageScale: 1,
@@ -131,7 +131,7 @@ window.WONDER_DATA = {
 {
       id: "pencil",
       name: "鉛筆",
-      icon: "assets/weapon-pencil-v2.webp",
+      icon: "assets/wonder-prop-pencil-block-v1.png",
       projectile: "pencil",
       cooldown: 1.05,
       damageScale: 0.78,
@@ -141,7 +141,7 @@ window.WONDER_DATA = {
 {
       id: "ruler",
       name: "尺",
-      icon: "assets/weapon-ruler-v2.webp",
+      icon: "assets/wonder-prop-ruler-block-v1.png",
       projectile: "ruler",
       cooldown: 1.75,
       damageScale: 1.65,
@@ -154,7 +154,7 @@ window.WONDER_DATA = {
       id: "damage",
       name: "銳利橡皮擦",
       desc: "武器傷害 +1",
-      icon: "assets/upgrade-damage.png",
+      icon: "assets/wonder-prop-damage-block-v1.png",
       effect: {
         projectileDamage: 1
       }
@@ -163,7 +163,7 @@ window.WONDER_DATA = {
       id: "cooldown",
       name: "快速出手",
       desc: "武器冷卻 -15%",
-      icon: "assets/upgrade-cooldown.png",
+      icon: "assets/wonder-prop-cooldown-block-v1.png",
       effect: {
         cooldownMultiplier: 0.85,
         minCooldownMultiplier: 0.55
@@ -173,7 +173,7 @@ window.WONDER_DATA = {
       id: "double",
       name: "雙重投擲",
       desc: "每次多丟 1 個",
-      icon: "assets/upgrade-double.png",
+      icon: "assets/wonder-prop-double-block-v1.png",
       effect: {
         projectileCount: 1
       }
@@ -182,7 +182,7 @@ window.WONDER_DATA = {
       id: "sideShot",
       name: "左右斜射",
       desc: "正面攻擊時額外往左右各丟 1 個",
-      icon: "assets/upgrade-double.png",
+      icon: "assets/wonder-prop-double-block-v1.png",
       effect: {
         sideShots: 1
       }
@@ -191,7 +191,7 @@ window.WONDER_DATA = {
       id: "burst",
       name: "連續投擲",
       desc: "每次出手追加 1 波連射",
-      icon: "assets/upgrade-cooldown.png",
+      icon: "assets/wonder-prop-cooldown-block-v1.png",
       effect: {
         burstCount: 1
       }
@@ -200,7 +200,7 @@ window.WONDER_DATA = {
       id: "size",
       name: "大型文具",
       desc: "武器變大 20%",
-      icon: "assets/upgrade-size.png",
+      icon: "assets/wonder-prop-size-block-v1.png",
       effect: {
         projectileSizeMultiplier: 0.2,
         maxProjectileSizeMultiplier: 1.8
@@ -210,7 +210,7 @@ window.WONDER_DATA = {
       id: "wallHp",
       name: "修補城牆",
       desc: "立即回復 25 點城牆血量",
-      icon: "assets/upgrade-repair.png",
+      icon: "assets/wonder-prop-repair-block-v1.png",
       effect: {
         wallHp: 25,
         maxWallHp: 100
@@ -220,7 +220,7 @@ window.WONDER_DATA = {
       id: "coinMultiplier",
       name: "金幣磁鐵",
       desc: "之後擊敗野獸金幣 +30%",
-      icon: "assets/upgrade-coin.png",
+      icon: "assets/wonder-prop-coin-block-v1.png",
       effect: {
         coinMultiplier: 0.3
       }
@@ -229,7 +229,7 @@ window.WONDER_DATA = {
       id: "pierce",
       name: "穿透投擲",
       desc: "武器可多穿透 1 隻敵人",
-      icon: "assets/upgrade-double.png",
+      icon: "assets/wonder-prop-double-block-v1.png",
       effect: {
         pierceCount: 1
       }
@@ -238,7 +238,7 @@ window.WONDER_DATA = {
       id: "explode",
       name: "爆裂文具",
       desc: "命中時對附近敵人造成濺射傷害",
-      icon: "assets/upgrade-size.png",
+      icon: "assets/wonder-prop-size-block-v1.png",
       effect: {
         splashDamage: 0.35,
         splashRadius: 145
@@ -248,7 +248,7 @@ window.WONDER_DATA = {
       id: "lifeSteal",
       name: "守城回復",
       desc: "擊敗敵人時回復 3 點牆血量",
-      icon: "assets/upgrade-repair.png",
+      icon: "assets/wonder-prop-repair-block-v1.png",
       effect: {
         killHeal: 3
       }

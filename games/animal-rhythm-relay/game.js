@@ -49,7 +49,7 @@
   const t = (key, vars = {}) => { const source = key === "completeBody" ? (COMPLETE_BODY[locale] || COMPLETE_BODY.en) : ((COPY[locale] || COPY.en)[key] || COPY.en[key] || key); const normalized = source.replaceAll(" / 4", " / 4"); return Object.entries(vars).reduce((value, [name, replacement]) => value.replaceAll(`{${name}}`, replacement), normalized); };
   const a11y = (key) => (ACCESSIBLE_LABELS[locale] || ACCESSIBLE_LABELS.en)[key];
   const track = (event, details = {}) => {
-    const payload = { game_id:"animal-rhythm-relay", game_version:"v5", interface_version:"6", locale, ...details };
+    const payload = { game_id:"animal-rhythm-relay", game_version:"v6", interface_version:"6", locale, ...details };
     window.WonderAnalytics?.track?.(event, payload);
     window.dispatchEvent(new CustomEvent("weightplay:analytics", { detail: { event, ...payload } }));
   };
@@ -75,8 +75,8 @@
     document.querySelectorAll("[data-station]").forEach((button) => { const index = Number(button.dataset.station); const name = (STATIONS[locale] || STATIONS.en)[index]; button.classList.toggle("is-target", index === station && station < 4); button.setAttribute("aria-label", `${name} — ${t("tapHere")}`); const label = button.querySelector("[data-station-name]"); if (label) label.textContent = name; });
     if (station < 4) $("battleTip").textContent = t("timingTip");
   }
-  function showMain(focus = true) { clearInterval(ticker); $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; renderMainProgress(); if (focus) $("startButton").focus(); }
-  function startRelay() { if (!ready) return; station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; renderBattle(); announce("timingTip"); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start"); }
+  function showMain(focus = true) { clearInterval(ticker); $("mainScreen").hidden = false; $("battleScreen").hidden = true; $("resultCard").hidden = true; document.body.dataset.screen = "main"; renderMainProgress(); if (focus) $("startButton").focus({ preventScroll:true }); window.scrollTo(0, 0); }
+  function startRelay() { if (!ready) return; station = 0; combo = 0; startedAt = performance.now(); $("mainScreen").hidden = true; $("battleScreen").hidden = false; $("resultCard").hidden = true; document.body.dataset.screen = "battle"; window.scrollTo(0, 0); renderBattle(); announce("timingTip"); ticker = window.setInterval(renderBattle, 120); window.dispatchEvent(new CustomEvent("weightplay:battle-open")); track("game_start"); }
   function finishRelay() { clearInterval(ticker); best = Math.max(best, combo); saveBest(best); $("resultCard").hidden = false; renderResult(); $("badgeLabel").textContent = t("badge", { n: 1 }); $("retryButton").focus(); track("game_complete", { combo, best }); }
   function tap(index) {
     if ($("battleScreen").hidden || station >= 4) return;
