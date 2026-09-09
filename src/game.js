@@ -1,5 +1,53 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
+const defenseModule = import(new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src).href).catch(() => null);
+let Defense3D, defense3D = null, animationFrame = 0;
+const movementKeys = new Set();
+const roarButton = document.createElement('button');
+roarButton.id = 'wonderRoar';
+roarButton.type = 'button';
+roarButton.hidden = true;
+roarButton.dataset.runtimeLocalize = 'off';
+document.querySelector('.game-shell').append(roarButton);
+const defenseCopy = {
+  en:['Lion roar','Drag to aim · automatic fire · roar pushes enemies back','3D unavailable. Return to stages and retry.'],
+  'zh-TW':['獅吼擊退','拖曳瞄準・自動射擊・獅吼擊退逼近城牆的敵人','3D 暫時無法使用，請返回關卡後重試。'],
+  'zh-CN':['狮吼击退','拖动瞄准・自动射击・狮吼击退逼近城墙的敌人','3D 暂时无法使用，请返回关卡后重试。'],
+  ja:['獅子の咆哮','ドラッグで照準・自動射撃・咆哮で敵を押し戻す','3Dを使用できません。ステージに戻って再試行してください。'],
+  ko:['사자 포효','드래그 조준 · 자동 사격 · 포효로 적 밀어내기','3D를 사용할 수 없습니다. 스테이지로 돌아가 다시 시도하세요.'],
+  fr:['Rugissement','Glissez pour viser · tir automatique · rugissez pour repousser','3D indisponible. Revenez aux niveaux et réessayez.'],
+  de:['Löwenbrüllen','Ziehen zum Zielen · automatisches Feuer · Brüllen stößt zurück','3D nicht verfügbar. Zurück zur Stufenauswahl und erneut versuchen.'],
+  es:['Rugido','Arrastra para apuntar · disparo automático · ruge para repeler','3D no disponible. Vuelve a los niveles e inténtalo de nuevo.'],
+  it:['Ruggito','Trascina per mirare · fuoco automatico · ruggisci per respingere','3D non disponibile. Torna ai livelli e riprova.'],
+  'pt-BR':['Rugido','Arraste para mirar · tiro automático · ruja para repelir','3D indisponível. Volte às fases e tente novamente.'],
+  ru:['Рёв льва','Тяните для прицеливания · автоогонь · рёв отталкивает врагов','3D недоступно. Вернитесь к этапам и повторите попытку.'],
+  ar:['زئير الأسد','اسحب للتصويب · إطلاق تلقائي · الزئير يدفع الأعداء للخلف','العرض ثلاثي الأبعاد غير متاح. ارجع إلى المراحل وحاول مجدداً.'],
+  hi:['शेर की दहाड़','निशाना लगाने के लिए खींचें · स्वतः गोलीबारी · दहाड़ से दुश्मन पीछे धकेलें','3D उपलब्ध नहीं है। चरणों पर लौटकर फिर कोशिश करें।']
+};
+function defenseText(index) {
+  const segment=location.pathname.match(/\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/wonder-crash(?:\/|$)/)?.[1];
+  const current=segment ? ({'zh-tw':'zh-TW','zh-cn':'zh-CN','pt-br':'pt-BR'}[segment]||segment) : ({'zh-Hant':'zh-TW','zh-Hans':'zh-CN'}[locale()]||locale());
+  return (defenseCopy[current] || defenseCopy.en)[index];
+}
+function disposeDefense() {
+  if (typeof drag !== 'undefined') stopDrag({pointerId:drag.pointerId});
+  movementKeys.clear(); defense3D?.dispose(); defense3D = null;
+  canvas.dataset.renderer = 'released';
+}
+function prepareDefense() {
+  try { if (!Defense3D) throw Error('3D module unavailable'); if (!defense3D || defense3D.contextLost) { disposeDefense(); defense3D = new Defense3D(); } canvas.dataset.renderer = 'three'; return true; }
+  catch { disposeDefense(); showFloatingMessage(defenseText(2)); return false; }
+}
+function roar() {
+  if (!state.running || state.roarCooldown > 0) return;
+  state.roarCooldown = 8; state.roarPulse = .5;
+  for (const enemy of state.enemies) if (Math.abs(enemy.x-state.hero.x) < W*.34 && enemy.y > wallY-H*.3) {
+    enemy.y -= enemy.isBoss ? H*.035 : H*.12;
+    enemy.slowTimer = 1.5; enemy.slowMultiplier = .45;
+  }
+  window.WonderSound?.play('start');
+}
+roarButton.addEventListener('click', roar);
 const battleHud = document.querySelector("#battleHud");
 const coinText = document.querySelector("#coinText");
 const menuCoinLine = document.querySelector("#menuCoinLine");
@@ -29,6 +77,10 @@ const leaveBtn = document.querySelector("#leaveBtn");
 const pauseLocaleSelect = document.querySelector("#pauseLocaleSelect");
 const wonderMain = document.querySelector("#wonderMain");
 const wonderMainStart = document.querySelector("#wonderMainStart");
+const defenseHelp = document.createElement('p');
+defenseHelp.className = 'wonder-defense-help';
+defenseHelp.dataset.runtimeLocalize = 'off';
+wonderMainStart.before(defenseHelp);
 const wonderStageBack = document.querySelector("#wonderStageBack");
 const wonderMainLocaleSelect = document.querySelector("#wonderMainLocaleSelect");
 const weaponModal = document.querySelector("#weaponModal");
@@ -666,7 +718,7 @@ dictionary.ar = {
 let W = canvas.width;
 let H = canvas.height;
 let wallY = H * (1200 / 1688);
-let heroY = H * (1432 / 1688);
+let heroY = H * .82;
 const DATA = window.WONDER_DATA;
 const enemyFiles = DATA.assets.enemies;
 const imageSources = DATA.assets.images;
@@ -764,6 +816,8 @@ function makeState(levelIndex) {
     maxWallHp: getMaxWallHp(),
     wallHp: getMaxWallHp(),
     time: 0,
+    roarCooldown: 0,
+    roarPulse: 0,
     spawnTimer: 0.7,
     waveIndex: 0,
     waveSpawnRemaining: level.waves[0].count,
@@ -793,8 +847,8 @@ function makeState(levelIndex) {
     hero: {
       x: W / 2,
       y: heroY,
-      width: 138,
-      height: 138,
+      width: Math.min(138, H*.085),
+      height: Math.min(138, H*.085),
     },
     enemies: [],
     projectiles: [],
@@ -830,11 +884,12 @@ async function preload() {
     images[key] = loadedImages[index];
   });
   enemyImages = await Promise.all(enemyFiles.map(loadWithProgress));
+  Defense3D = (await defenseModule)?.LionDefense3D;
   loaded = true;
   loadingPanel?.classList.add("hidden");
   window.WonderAnalytics?.track("game_ready", { game_id: "wonder-crash" });
   showWonderMain();
-  requestAnimationFrame(loop);
+  animationFrame = requestAnimationFrame(loop);
 }
 
 function setLoadingProgress(progress) {
@@ -868,6 +923,8 @@ function syncBattleCanvasOrientation(shortLandscape) {
     if (!point) return;
     if (Number.isFinite(point.x)) point.x = point.x / oldWidth * nextWidth;
     if (Number.isFinite(point.y)) point.y = point.y / oldHeight * nextHeight;
+    for (const key of ['baseX','targetX','vx']) if (Number.isFinite(point[key])) point[key] *= nextWidth/oldWidth;
+    if (Number.isFinite(point.speed)) point.speed *= nextHeight/oldHeight;
   };
   scalePoint(state?.hero);
   for (const key of ["enemies", "projectiles", "bossProjectiles", "hits", "damageTexts"]) {
@@ -878,8 +935,8 @@ function syncBattleCanvasOrientation(shortLandscape) {
   W = nextWidth;
   H = nextHeight;
   wallY = H * (1200 / 1688);
-  heroY = H * (1432 / 1688);
-  if (state?.hero) state.hero.y = heroY;
+  heroY = H * .82;
+  if (state?.hero) { state.hero.y = heroY; state.hero.width = state.hero.height = Math.min(138,H*.085); }
   canvas.dataset.orientation = shortLandscape ? "landscape" : "portrait";
 }
 
@@ -928,6 +985,8 @@ function startLevel(levelIndex) {
     return;
   }
   clearFloatingMessage();
+  if (!prepareDefense()) return;
+  movementKeys.clear();
   pauseReturnIntent = false;
   state = makeState(levelIndex);
   state.running = true;
@@ -952,13 +1011,18 @@ function startLevel(levelIndex) {
 }
 
 window.addEventListener("keydown", (event) => {
-  if (state.running && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+  if (state.running && ['ArrowLeft','ArrowRight','KeyA','KeyD'].includes(event.code)) {
     event.preventDefault();
-    moveHeroTo(state.hero.x + (event.key === "ArrowLeft" ? -72 : 72));
+    movementKeys.add(event.code);
     return;
   }
-  if (event.code === "Space" && !state.running) restart();
+  if (event.code === 'Space' && state.running) { event.preventDefault(); if (!event.repeat) roar(); }
 });
+window.addEventListener('keyup', event => movementKeys.delete(event.code));
+window.addEventListener('blur', () => { movementKeys.clear(); if (state.running) showPauseMenu(); });
+document.addEventListener('visibilitychange', () => { movementKeys.clear(); if (document.hidden && state.running) showPauseMenu(); lastTime = performance.now(); });
+window.addEventListener('pagehide', () => { cancelAnimationFrame(animationFrame); animationFrame = 0; disposeDefense(); });
+window.addEventListener('pageshow', event => { if (event.persisted && loaded && !animationFrame) { if (state.running) showPauseMenu(); lastTime=performance.now(); animationFrame=requestAnimationFrame(loop); } });
 
 startBtn.addEventListener("click", () => {
   if (state.won && state.levelIndex + 1 < LEVELS.length) {
@@ -1080,13 +1144,18 @@ function loop(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.033);
   lastTime = now;
 
-  if (loaded && state.running) update(dt);
-  draw();
-  requestAnimationFrame(loop);
+  defenseHelp.textContent = defenseText(1);
+  if (loaded && state.running && !document.hidden) { update(dt); draw(); }
+  else roarButton.hidden = true;
+  animationFrame = requestAnimationFrame(loop);
 }
 
 function update(dt) {
   state.time += dt;
+  const direction = Number(movementKeys.has('ArrowRight') || movementKeys.has('KeyD')) - Number(movementKeys.has('ArrowLeft') || movementKeys.has('KeyA'));
+  if (direction) moveHeroTo(state.hero.x + direction * W * .8 * dt);
+  state.roarCooldown = Math.max(0, state.roarCooldown-dt);
+  state.roarPulse = Math.max(0, state.roarPulse-dt);
 
   updateWeaponCooldowns(dt);
   updateWallRegen(dt);
@@ -1217,7 +1286,7 @@ function fireProjectile(entry, xOffset, yOffset, vx) {
     y: state.hero.y - 72 + yOffset,
     vx,
     size: getWeaponSize(entry) * state.projectileSizeMultiplier,
-    speed: getWeaponSpeed(entry),
+    speed: getWeaponSpeed(entry) * H/1688,
     damage: damageRoll.damage,
     crit: damageRoll.crit,
     pierceLeft: state.pierceCount,
@@ -1346,7 +1415,7 @@ function addEnemy(type, wave, isBoss, authoredX = null) {
     bossAttackInterval: bossScale?.attackInterval || 2.8,
     bossBallDamage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.ballDamage || 1.2))),
     bossPattern: isBoss ? wave.bossPattern || "pursuit" : "",
-    speed: (isBoss ? wave.speedMin * 0.42 : random(wave.speedMin, wave.speedMax)) * type.speedScale * DIFFICULTY.enemySpeed * (bossScale?.speed || 1),
+    speed: (isBoss ? wave.speedMin * 0.42 : random(wave.speedMin, wave.speedMax)) * type.speedScale * DIFFICULTY.enemySpeed * (bossScale?.speed || 1) * H/1688,
     damage: Math.max(1, Math.ceil(wave.damage * type.damageScale * DIFFICULTY.enemyDamage * (bossScale?.damage || 1))),
     coinReward: Math.max(1, Math.ceil(wave.coinReward * type.coinScale * (bossScale?.coin || 1))),
     armorUsed: false,
@@ -1421,7 +1490,7 @@ function throwBossBall(enemy, options = {}) {
   const startY = enemy.y + enemy.size * 0.22;
   const jitter = options.jitter ?? 65;
   const targetX = clamp(options.targetX ?? state.hero.x + (options.targetOffset || 0) + random(-jitter, jitter), 70, W - 70);
-  const speed = (440 + state.level.id * 5) * (options.speedScale || 1);
+  const speed = (440 + state.level.id * 5) * (options.speedScale || 1) * H/1688;
   const travelTime = Math.max(0.45, (wallY - startY) / speed);
   const dx = clamp((targetX - startX) / travelTime, -520, 520);
   const size = Math.max(28, Math.min(94, enemy.size * 0.18 * (options.sizeScale || 1)));
@@ -1854,6 +1923,11 @@ function damageWall() {
 }
 
 function draw() {
+  roarButton.hidden = !state.running;
+  roarButton.disabled = state.roarCooldown > 0;
+  const roarLabel = defenseText(0) + (state.roarCooldown > 0 ? ` · ${Math.ceil(state.roarCooldown)}s` : '');
+  if (roarButton.textContent !== roarLabel) roarButton.textContent = roarLabel;
+  roarButton.title = defenseText(1);
   // A pointer/compositor cancellation must not carry transient canvas state
   // into the next frame. The battle scene is always rebuilt from this baseline.
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1872,13 +1946,18 @@ function draw() {
     ctx.drawImage(images.bg, 0, 0, W, H);
   }
 
-  drawPlayAreaShade();
-  drawWall();
+  if (defense3D) {
+    try {
+      const rect = canvas.getBoundingClientRect();
+      ctx.drawImage(defense3D.render(state,W,H,wallY,rect.width,rect.height),0,0,W,H);
+    } catch { showPauseMenu(); disposeDefense(); showFloatingMessage(defenseText(2)); }
+  } else {
+    drawPlayAreaShade();
+    drawWall();
+  }
   drawWallHp();
   drawEnemies();
-  drawProjectiles();
-  drawBossProjectiles();
-  drawHero();
+  if (!defense3D) { drawProjectiles(); drawBossProjectiles(); drawHero(); }
   drawHits();
   drawDamageTexts();
   drawBossUi();
@@ -1905,9 +1984,9 @@ function drawWall() {
 
 function drawWallHp() {
   const width = W * 0.78;
-  const height = 22;
+  const height = Math.min(22,H*.022);
   const x = (W - width) / 2;
-  const y = wallY + 108;
+  const y = wallY + H*.02;
   drawHpBar(x, y, width, height, state.wallHp / state.maxWallHp, 6);
 }
 
@@ -1928,7 +2007,7 @@ function drawEnemies() {
     ctx.shadowColor = "rgba(0, 0, 0, 0.32)";
     ctx.shadowBlur = 12;
     ctx.shadowOffsetY = 8;
-    ctx.drawImage(enemy.image, x - enemy.size / 2, enemy.y - enemy.size / 2, enemy.size, enemy.size);
+    if (!defense3D) ctx.drawImage(enemy.image, x - enemy.size / 2, enemy.y - enemy.size / 2, enemy.size, enemy.size);
     ctx.restore();
 
     if (enemy.slowTimer > 0) {
@@ -2065,9 +2144,9 @@ function drawDamageTexts() {
 function drawWeaponHud() {
   const slotCount = 8;
   const gap = 8;
-  const margin = 24;
-  const slotSize = (W - margin * 2 - gap * (slotCount - 1)) / slotCount;
-  const y = H - slotSize - 28;
+  const slotSize = Math.min((W - 48 - gap * (slotCount - 1)) / slotCount, H*.095);
+  const margin = (W - slotSize*slotCount-gap*(slotCount-1))/2;
+  const y = H - slotSize - H*.012;
 
   ctx.save();
   ctx.fillStyle = "rgba(8, 10, 14, 0.5)";
@@ -2186,6 +2265,7 @@ function updateHud() {
 }
 
 function showMainMenu(tab = activeMenuTab) {
+  disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
   activeMenuTab = tab;
@@ -2220,6 +2300,7 @@ function showMainMenu(tab = activeMenuTab) {
 }
 
 function showWonderMain() {
+  disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
   state.running = false;
@@ -2593,6 +2674,8 @@ function chooseUpgrade(id) {
 }
 
 function showPauseMenu(returnIntent = false) {
+  movementKeys.clear();
+  stopDrag({pointerId:drag.pointerId});
   if (!state.running) return;
   pauseReturnIntent = returnIntent;
   overlay.classList.remove("equipment-screen", "settlement-screen");
@@ -2619,6 +2702,7 @@ function showPauseMenu(returnIntent = false) {
 }
 
 function resumeBattle() {
+  if (!prepareDefense()) return;
   pauseReturnIntent = false;
   setPauseBattleAccessibility(false);
   pausePanel.classList.add("hidden");

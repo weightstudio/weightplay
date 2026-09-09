@@ -321,3 +321,102 @@
     subtree: true,
   });
 })();
+
+// Presentation only: compare the native board before/after a click. The game
+// commits its legal move immediately; animations never own rules or inputs.
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const active = new Set();
+  let layer = null, arrival = null, revision = 0, disposed = false, frame = 0;
+  const clear = () => {
+    revision++;
+    cancelAnimationFrame(frame); frame = 0;
+    for (const animation of active) animation.cancel();
+    active.clear();
+    arrival?.classList.remove('peg-arriving');
+    arrival = null;
+    layer?.remove(); layer = null;
+  };
+  const snapshot = board => [...board.children].map(cell => ({
+    peg: cell.classList.contains('peg'), rect: cell.getBoundingClientRect(),
+  }));
+  const effect = (kind, rect, frames, duration) => {
+    const token = revision;
+    const node = document.createElement('i');
+    node.className = `peg-jump-fx ${kind}`;
+    Object.assign(node.style, {left:`${rect.left + rect.width * .09}px`,
+      top:`${rect.top + rect.height * .09}px`, width:`${rect.width * .82}px`, height:`${rect.height * .82}px`});
+    layer.append(node);
+    const animation = node.animate(frames, {duration, easing:'cubic-bezier(.2,.65,.3,1)', fill:'both'});
+    active.add(animation);
+    const finish = () => {
+      active.delete(animation); node.remove();
+      if (kind === 'peg-traveller' && token === revision) {
+        arrival?.classList.remove('peg-arriving'); arrival = null;
+      }
+      if (!active.size) {
+        arrival?.classList.remove('peg-arriving'); arrival = null;
+        layer?.remove(); layer = null;
+      }
+    };
+    animation.finished.then(finish, finish);
+  };
+  const onClick = event => {
+    clear();
+    const board = event.target.closest?.('.logic-peg-board');
+    if (!board || reduced.matches || disposed || typeof Element.prototype.animate !== 'function') return;
+    const before = snapshot(board), token = revision;
+    // One cancellable frame, not a loop. A microtask in a capture listener can
+    // run before the native target listener has committed its move.
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (disposed || token !== revision || !board.isConnected || !board.getClientRects().length
+          || !document.querySelector('#logicResult')?.hidden) return;
+      const after = snapshot(board), removed = [], added = [];
+      if (before.length !== 49 || after.length !== 49) return;
+      before.forEach((cell, i) => {
+        if (cell.peg && !after[i].peg) removed.push(i);
+        if (!cell.peg && after[i].peg) added.push(i);
+      });
+      if (removed.length !== 2 || added.length !== 1) return;
+      const to = added[0];
+      const from = removed.find(i => removed.includes((i + to) / 2)
+        && (Math.floor(i / 7) === Math.floor(to / 7) || i % 7 === to % 7));
+      if (from === undefined) return;
+      const mid = (from + to) / 2, start = before[from].rect, end = after[to].rect;
+      if (start.width <= 0 || end.width <= 0) return;
+      layer = document.createElement('div'); layer.className = 'peg-feedback-layer';
+      layer.setAttribute('aria-hidden', 'true'); document.body.append(layer);
+      arrival = board.children[to]; arrival.classList.add('peg-arriving');
+      const dx = end.left - start.left, dy = end.top - start.top;
+      effect('peg-traveller', start, [
+        {transform:'translate(0,0) scale(1)'},
+        {transform:`translate(${dx * .5}px,${dy * .5 - start.height * .35}px) scale(1.12)`,offset:.5},
+        {transform:`translate(${dx}px,${dy}px) scale(1)`},
+      ], 240);
+      effect('peg-captured', before[mid].rect, [
+        {opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.35)'},
+      ], 180);
+      effect('peg-landing-ring', end, [
+        {opacity:0,transform:'scale(.8)'},{opacity:.8,offset:.6},{opacity:0,transform:'scale(1.35)'},
+      ], 280);
+    });
+  };
+  const onVisibility = () => { if (document.hidden) clear(); };
+  const onHide = event => {
+    clear();
+    if (!event.persisted) {
+      disposed = true;
+      document.removeEventListener('click', onClick, true);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('resize', clear);
+      window.removeEventListener('pagehide', onHide);
+      reduced.removeEventListener('change', clear);
+    }
+  };
+  document.addEventListener('click', onClick, true);
+  document.addEventListener('visibilitychange', onVisibility);
+  window.addEventListener('resize', clear);
+  window.addEventListener('pagehide', onHide);
+  reduced.addEventListener('change', clear);
+})();

@@ -39,3 +39,15 @@ body.wp-stage-select-active #stageBackBtn{width:54px!important;min-width:54px!im
   .anchor-example svg{height:20px}
   .anchor-example span{font-size:8px}
 }
+
+@media (min-width:700px) and (max-height:480px) and (orientation:landscape){
+  body .main-screen .wp-standard-main-composition>.wp-standard-main-poster{
+    width:420px!important;
+    min-width:420px!important;
+    max-width:420px!important;
+    height:420px!important;
+    min-height:420px!important;
+    max-height:420px!important;
+    align-self:center;
+  }
+}

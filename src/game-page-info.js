@@ -1,4 +1,21 @@
 (function () {
+  // Localized entry generation already resolves related artwork from the lobby
+  // catalog. Preserve it before Guide hydration replaces the static cards;
+  // otherwise the legacy fallback map below can resurrect retired artwork.
+  const entryRelatedArtwork = new Map();
+  document.querySelectorAll('.game-info-related-card[href] img[src]').forEach((image) => {
+    const link = image.closest('a');
+    try {
+      const target = new URL(link.href, location.href);
+      const asset = new URL(image.getAttribute('src'), document.baseURI);
+      const id = target.pathname.match(/\/games\/([^/]+)\/?$/u)?.[1];
+      if (id && target.origin === location.origin && asset.origin === location.origin
+          && /\/(?:assets)\//u.test(asset.pathname)
+          && !/\/(?:weightplay-logo|hero)\./u.test(asset.pathname)) {
+        entryRelatedArtwork.set(id, asset.href);
+      }
+    } catch (_) { /* Invalid legacy markup retains the existing fallback. */ }
+  });
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
   if (!document.querySelector('link[href*="stage-selector-standard.css"]')) {
     const link = document.createElement("link");
@@ -9569,17 +9586,19 @@
     const game = localizedGame(gameId);
     if (!game) return "";
     const cardCopy = localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
+    const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
     const imageName = coverImages[gameId] || "weightplay-logo.png";
-    const fallbackName = imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
+    const entryImage = entryRelatedArtwork.get(gameId);
+    const fallbackName = !entryImage && imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
     const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"${
       fallbackName ? ` data-fallback-src="${escapeHtml(assetHref(fallbackName))}"` : ""
     }`;
     return `
       <a class="game-info-related-card" href="${escapeHtml(gameHref(gameId))}">
-        <img src="${escapeHtml(assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="eager" decoding="async" />
+        <img src="${escapeHtml(entryImage || assetHref(imageName))}"${fallbackAttrs} alt="" width="320" height="320" loading="eager" decoding="async" />
         <span class="game-info-related-copy">
-          <strong>${escapeHtml(cardCopy.title || game.title)}</strong>
+          <strong data-runtime-localize="off">${escapeHtml(officialTitle || cardCopy.title || game.title)}</strong>
           <span>${escapeHtml(shortDescription(cardGame))}</span>
         </span>
       </a>

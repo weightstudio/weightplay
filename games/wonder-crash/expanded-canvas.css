@@ -484,6 +484,14 @@ body.wonder-playing .battle-hud {
   left: 64px;
 }
 
+/* Stable tactical control: never inserts a row into the arena or weapon HUD. */
+#wonderRoar { position:absolute; top:76px; right:12px; z-index:24; min-width:112px; max-width:45%; min-height:44px; padding:8px 12px; border:2px solid #8feaf7; border-radius:12px; background:#153e52; color:#fff0b7; font:800 14px/1.2 system-ui,sans-serif; box-shadow:0 3px 0 #08232e; transform:none; }
+#wonderRoar[hidden] { display:none !important; }
+#wonderRoar:disabled { opacity:.7; }
+#wonderRoar:focus-visible { outline:3px solid #ffdc70; outline-offset:2px; }
+.wonder-defense-help { margin:8px 0; color:#d8eeef; font:500 14px/1.4 system-ui,sans-serif; text-align:center; }
+body.wonder-playing #wonderRoar { min-height:calc(46px / var(--wonder-battle-scale, 1)); font-size:calc(14px / var(--wonder-battle-scale, 1)); }
+
 body.wonder-playing .overlay.settlement-screen {
   gap: 10px;
   padding: 18px 16px;
