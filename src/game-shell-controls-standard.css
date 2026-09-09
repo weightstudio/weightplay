@@ -682,10 +682,10 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 300px;
   }
 
-  /* Wonder Crash v17 uses the canonical 300px wide-layout poster column for
-     the exact Interface V6 Main repair without changing Stage or Battle. */
+  /* Wonder Crash v19 follows the current width-based 420px Main contract;
+     short landscape scrolls rather than shrinking its poster. */
   body[data-wp-game-id="wonder-crash"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   /* Hearts v14 fixes the exact Main poster column measured at 310px in the

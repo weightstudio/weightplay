@@ -65,8 +65,8 @@
   .main-header{grid-template-columns:52px minmax(0,1fr) 160px;padding:4px 8px;gap:8px;border-radius:16px}
   .main-header>strong{font-size:22px}
   .main-return{width:44px;height:44px;border-radius:12px;font-size:22px}
-  .main-hero{height:auto;min-height:0;grid-template-columns:300px minmax(0,1fr);padding:6px;gap:12px}
-  .main-poster{width:300px;height:300px;aspect-ratio:1;margin:auto}
+  .main-hero{height:auto;min-height:0;grid-template-columns:420px minmax(0,1fr);padding:6px;gap:12px}
+  .main-poster{width:420px;height:420px;aspect-ratio:1;margin:auto}
   .main-copy{min-height:0;gap:5px}
   .main-copy h1{font-size:30px;line-height:1}
   .main-copy p{font-size:14px;line-height:1.3}
@@ -84,10 +84,10 @@
 
 @media(max-height:480px) and (orientation:landscape){
   body[data-screen="main"] .main-screen.wp-standard-main-screen{height:100svh!important;min-height:0!important;padding:4px!important}
-  .main-screen.wp-standard-main-screen .wp-standard-main-composition{grid-template-columns:300px minmax(0,1fr)!important;padding:6px!important;gap:12px}
-  .main-screen.wp-standard-main-screen .wp-standard-main-poster{width:300px!important;height:300px!important}
-  .main-poster.wp-standard-main-poster-media{width:300px!important;min-width:300px!important;max-width:300px!important;height:300px!important;min-height:300px!important;max-height:300px!important;margin:auto!important}
-  .wp-standard-main-composition .wp-standard-main-copy{height:300px!important;min-height:0!important;gap:5px!important}
+  .main-screen.wp-standard-main-screen .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important;grid-template-columns:420px minmax(0,1fr)!important;padding:6px!important;gap:12px}
+  .main-screen.wp-standard-main-screen .wp-standard-main-poster{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
+  .main-poster.wp-standard-main-poster-media{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important;margin:auto!important}
+  .wp-standard-main-composition .wp-standard-main-copy{height:420px!important;min-height:0!important;gap:5px!important}
   .wp-standard-main-composition .wp-standard-main-copy>small{font-size:11px!important;line-height:1.1!important}
   .wp-standard-main-composition .wp-standard-main-copy h1{font-size:26px!important;line-height:1!important}
   .wp-standard-main-composition .wp-standard-main-copy p{font-size:12px!important;line-height:1.2!important}
@@ -127,5 +127,18 @@
   .stage-canvas[data-wp-stage-landscape-width] #stageRail{
     min-width:0!important;
     max-width:none!important;
+  }
+}
+
+/* The portrait Stage canvas is scaled from a logical surface. Keep the
+   inverse-scaled Settings panel a small physical distance inside the viewport
+   so fractional canvas scaling cannot leave its outer edge off-screen. */
+@media(max-width:700px) and (orientation:portrait){
+  body.wp-stage-select-active
+    [data-wp-logical-stage-canvas]
+    .wp-stage-shell-header
+    > .wp-shell-settings
+    > .wp-shell-settings-popover{
+    inset-inline-end:8px!important;
   }
 }

@@ -12,7 +12,7 @@
   const localeSegment = location.pathname.split("/").filter(Boolean)[0] || "en";
   const routeLocale = ({ en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" })[localeSegment] || "en";
   const GAME_ID = "animal-one-line";
-  const GAME_VERSION = "v21";
+  const GAME_VERSION = "v22";
   const INTERFACE_VERSION = 6;
   const interfaceValidationRun = new URLSearchParams(location.search).get("qa") === "interface-validator";
   function viewportBucket(){const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth||1),height=Math.max(1,window.innerHeight||document.documentElement.clientHeight||1);if(height<=430)return"short-landscape";if(width<=480)return"phone";if(width<=900)return height>width?"tablet-portrait":"tablet-landscape";return height>width?"desktop-portrait":"desktop-landscape";}

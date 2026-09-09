@@ -88,6 +88,7 @@ export class Crystal3D {
       this.groundGlow = this.own(this.magicImpact.clone());
       this.groundGlow.depthTest = true;
       this.groundGlow.clippingPlanes = this.viewPlanes;
+      this.friendlyFire=this.own(new THREE.MeshBasicMaterial({color:0xffb54c,transparent:true,opacity:.22,depthWrite:false,side:THREE.DoubleSide,clippingPlanes:this.viewPlanes}));
       this.elementMaterials = { shatter: this.magicImpact };
       for (const [element, color] of [['chain', 0xc3a1ff], ['burst', 0xffb05c]]) {
         const material = this.own(this.magicImpact.clone());
@@ -423,7 +424,7 @@ export class Crystal3D {
     }
     const muzzle = this.mesh('crystal', this.magicCore, dragon, 0, .015, .34, .105, .105, .105);
     const castGlow = this.mesh('crystal', this.magicGlow, dragon, 0, .015, .34, .17, .17, .17);
-    const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.visible = false;
+    const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.rotation.x=-Math.PI/2; shield.visible = false;
     // Hero-only palette and gentle material fill: dungeon lighting is unchanged.
     const palette = { fox: 0xa96a3f, ivory: 0xf5e4bd, robe: 0x199ead,
       velvet: 0x244965, leather: 0x9f7957, gold: 0xe2b456,
@@ -608,6 +609,10 @@ export class Crystal3D {
     this.setPosition(this.hero, state.player);
     this.setPosition(this.range, state.player, .035);
     this.range.scale.setScalar((state.player.range || 180) / UNIT);
+    this.hero.userData.shield.visible=Boolean(state.player.talents?.iceArmor&&state.player.armorReady);
+    this.pool('friendlyZones',state.friendlyZones?.length||0,()=>{
+      const group=new THREE.Group();this.mesh('disc',this.friendlyFire,group).rotation.x=-Math.PI/2;return group;
+    },(object,i)=>{const zone=state.friendlyZones[i];this.setPosition(object,zone,.05);object.scale.setScalar((70+zone.rank*15)/UNIT);},6);
     const petTime = now / 1000;
     const finale = state.presentation;
     if (finale?.kind === 'victory') this.hero.position.y += this.reducedMotion ? 0 : Math.abs(Math.sin(finale.elapsed * 5)) * .32;

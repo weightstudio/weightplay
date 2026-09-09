@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-companion-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -809,10 +809,13 @@
 
   const talentData = window.CrystalTalents;
   const talentIconBase = new URL("icons/", document.currentScript.src).href;
-  const talentParents = { alchemy:"fire", petFire:"alchemy", stride:"harvest", petIce:"stride", storm:"echo", petStorm:"storm" };
-  const talentBranches = [["fire","alchemy","petFire"],["harvest","stride","petIce"],["echo","storm","petStorm"]];
+  const talentBranches = [["fire","alchemy","emberTrail","fireNova","combust","phoenix","petFire"],["harvest","stride","iceArmor","iceNova","shatter","winter","petIce"],["echo","storm","staticCharge","stormOrbit","conduct","surge","petStorm"]];
+  const talentParents=Object.fromEntries(talentBranches.flatMap(branch=>branch.slice(1).map((id,i)=>[id,branch[i]])));
   const branchOf = id => talentBranches.findIndex(branch => branch.includes(id));
-  const talentCost = id => [4,10,18][talentBranches[branchOf(id)].indexOf(id)];
+  const MAX_ADVENTURE_LEVEL=30;
+  function adventureProgress(xp=save.adventureXp||0){let level=1,remaining=Math.max(0,xp);while(level<MAX_ADVENTURE_LEVEL&&remaining>=80+(level-1)*24){remaining-=80+(level-1)*24;level++;}return {level,xp:remaining,need:80+(level-1)*24};}
+  const spentPoints=talents=>Object.values(talents||{}).reduce((sum,rank)=>sum+(Number(rank)||0),0);
+  const availablePoints=()=>Math.max(0,adventureProgress().level-spentPoints(save.talents));
   let selectedTalent = "echo";
   const talentIds = talentBranches.flat();
   const runeIds = ['chain', 'frost', 'burst', 'ricochet', 'orbit', 'rhythm'];
@@ -1153,18 +1156,21 @@
         const parsed = Number(value);
         return Number.isFinite(parsed) ? Math.max(minimum, Math.floor(parsed)) : fallback;
       };
-      if (source.treeVersion !== 2) {
-        const legacyCosts = {echo:4,harvest:6,stride:8,alchemy:10};
-        source.runeDust = wholeNumber(source.runeDust,4) + Object.entries(legacyCosts).reduce((sum,[id,cost]) => {
-          const rank = Math.min(2,wholeNumber(source.talents?.[id],0));
-          return sum + (rank ? cost : 0) + (rank === 2 ? cost+6 : 0);
-        },0);
-        source.talents = {}; source.equippedTalents = [];
+      if(source.treeVersion!==4){
+        const legacyCosts=source.treeVersion===2?{fire:4,alchemy:10,petFire:18,harvest:4,stride:10,petIce:18,echo:4,storm:10,petStorm:18}:{echo:4,harvest:6,stride:8,alchemy:10};
+        const invested=Object.entries(legacyCosts).reduce((sum,[id,cost])=>{const rank=Math.min(2,wholeNumber(source.talents?.[id],0));return sum+(rank?cost:0)+(rank===2?cost+6:0);},0);
+        source.adventureXp=Math.max(0,(wholeNumber(source.runeDust,4)+invested-4)*8,(source.completedStages?.length||0)*70+wholeNumber(source.totalDefeats,0)*2);
+        // Existing companion owners receive enough levels to restore that path without re-grinding.
+        const petRank=Math.max(...['petFire','petIce','petStorm'].map(id=>Math.min(2,wholeNumber(source.talents?.[id],0))));
+        if(petRank){const levels=11+petRank;source.adventureXp=Math.max(source.adventureXp,levels*80+12*levels*(levels-1));}
+        source.talents={};source.equippedTalents=[];source.equippedPet=null;
       }
       const unlockedStage = Math.min(STAGE_COUNT, wholeNumber(source.unlockedStage, 1, 1));
       const selectedStage = Math.min(unlockedStage, wholeNumber(source.selectedStage, unlockedStage, 1));
       return {
-        treeVersion: 2,
+        treeVersion: 4,
+        adventureXp: Math.min(20000,wholeNumber(source.adventureXp,0)),
+        equippedPet: ["petFire","petIce","petStorm"].includes(source.equippedPet)?source.equippedPet:null,
         bestKeys: wholeNumber(source.bestKeys, 0),
         bestDefeats: wholeNumber(source.bestDefeats, 0),
         totalDefeats: wholeNumber(source.totalDefeats, 0),
@@ -1172,10 +1178,10 @@
         playCount: wholeNumber(source.playCount, 0),
         totalKeys: wholeNumber(source.totalKeys, 0),
         crystalCharm: source.crystalCharm === true,
-        runeDust: Math.min(99999, wholeNumber(source.runeDust, 4)),
+        runeDust: 0,
         talents: Object.fromEntries(talentIds.map(id => [id, Math.min(2, wholeNumber(source.talents?.[id], 0))])),
         equippedTalents: [...new Set(Array.isArray(source.equippedTalents) ? source.equippedTalents : [])]
-          .filter(id => talentIds.includes(id) && wholeNumber(source.talents?.[id], 0) > 0).slice(0, 3),
+          .filter(id => talentIds.includes(id) && wholeNumber(source.talents?.[id], 0) > 0).slice(0, 21),
         unlockedStage,
         selectedStage,
         completedStages: Array.isArray(source.completedStages)
@@ -1184,48 +1190,56 @@
         stageBestKeys: source.stageBestKeys && typeof source.stageBestKeys === "object" ? { ...source.stageBestKeys } : {},
       };
     } catch {
-      return { treeVersion:2, bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, runeDust: 4, talents: {}, equippedTalents: [], unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
+      return { treeVersion:4, adventureXp:0, equippedPet:null, bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, runeDust: 4, talents: {}, equippedTalents: [], unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
     }
   }
 
-  const talentIcon = id => ({fire:"alchemy",storm:"echo",petFire:"pet",petIce:"pet",petStorm:"pet"}[id] || id);
-  function treeBranch(talents) { return talentBranches.findIndex(branch => branch.some(id => talents?.[id] > 0)); }
-  function talentLocked(id, talents) {
-    const branch = treeBranch(talents), parent = talentParents[id];
-    return (branch >= 0 && branch !== branchOf(id)) || Boolean(parent && (talents?.[parent] || 0) < 2);
+  const talentIcon=id=>({fire:"alchemy",storm:"echo",petFire:"pet",petIce:"pet",petStorm:"pet"}[id]||id);
+  let talentDialog;
+  function closeTalentDialog(){talentDialog?.close();}
+  function talentLocked(id,talents){
+    const parent=talentParents[id],chosen=talentBranches.filter(branch=>branch.some(node=>talents?.[node]>0));
+    const own=talentBranches[branchOf(id)].some(node=>talents?.[node]>0),allowed=1+Math.floor((adventureProgress().level-1)/10);
+    return (!own&&chosen.length>=allowed)||Boolean(parent&&(talents?.[parent]||0)<2);
   }
-  function renderTalents(message = "") {
-    const host = document.getElementById("talentWorkshop"); if (!host) return;
-    host.dataset.runtimeLocalize = "off";
-    const copy = runeCopy(), chosen = talentIds.includes(selectedTalent) ? selectedTalent : "fire";
-    const rank = save.talents?.[chosen] || 0, parent = talentParents[chosen];
-    const locked = talentLocked(chosen,save.talents), cost=talentCost(chosen)+rank*6;
-    const spent=talentIds.reduce((sum,id)=>sum+((save.talents[id]||0)>0?talentCost(id):0)+(save.talents[id]===2?talentCost(id)+6:0),0);
-    host.innerHTML = `<header><div><small>◆ ${copy.dust}</small><strong>${save.runeDust}</strong></div><h2>${copy.workshop}</h2></header>
-      <p class="talent-route-hint">${copy.routeHint}</p><div class="talent-tree element-tree">
-      ${talentBranches.map((branch,col)=>`<section class="element-branch branch-${col}">${branch.map((id,row)=>{
-        const r=save.talents[id]||0,closed=talentLocked(id,save.talents);
-        return `${row?`<span class="route-link ${save.talents[branch[row-1]]===2?'open':''}" aria-hidden="true">↓</span>`:''}<button type="button" class="talent-tree-node ${r?'equipped':''} ${closed?'locked':''}" data-talent-inspect="${id}" aria-pressed="${chosen===id}" aria-label="${copy.names[id]} ${r}/2"><img src="${talentIconBase}${talentIcon(id)}.svg" alt=""/><strong>${copy.names[id]}</strong><small>${closed?'⌑ ':''}${r}/2</small></button>`;
-      }).join('')}</section>`).join('')}</div>
-      <article class="talent-detail" aria-live="polite"><img src="${talentIconBase}${talentIcon(chosen)}.svg" alt="" width="56" height="56"/><div><h3>${copy.names[chosen]} <small>${rank}/2</small></h3><p>${copy.descriptions[chosen]}</p>
-      ${locked?`<p class="talent-prerequisite">${parent?`${runeName(parent)} 2/2 → `:''}${copy.routeHint}</p>`:''}
-      <div class="talent-actions"><button type="button" data-talent-buy="${chosen}" ${locked||rank>=2||save.runeDust<cost?'disabled':''}>${rank>=2?copy.max:rank?copy.rankup:copy.learn}${rank<2?` · ◆ ${cost}`:''}</button></div></div></article>
-      <button type="button" data-talent-reset ${spent?'':'disabled'}>${copy.reset} · +◆ ${spent}</button><small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
+  function talentDetail(){
+    const c=runeCopy(),id=selectedTalent,rank=save.talents[id]||0,locked=talentLocked(id,save.talents),parent=talentParents[id];
+    return `<button type="button" class="talent-dialog-close" data-tree-close aria-label="${c.treeClose}">×</button><img src="${talentIconBase}${talentIcon(id)}.svg" alt="" width="64" height="64"/><h2 id="talentDialogTitle">${runeName(id)} ${rank}/2</h2><p>${c.descriptions[id]}</p>${locked?`<p class="talent-prerequisite">${parent?`${runeName(parent)} 2/2 → `:''}${c.routeHint}</p>`:''}<p>◆ ${c.points}: ${availablePoints()}</p><button type="button" data-talent-buy="${id}" ${locked||rank>=2||!availablePoints()?'disabled':''}>${rank>=2?c.max:rank?c.rankup:c.learn}${rank<2?' · ◆ 1':''}</button>${id.startsWith('pet')&&rank?`<button type="button" data-tree-pet="${id}" ${save.equippedPet===id?'disabled':''}>${save.equippedPet===id?c.petActive:c.equip}</button>`:''}`;
   }
-  function changeTalent(action,id) {
+  function renderTalentDialog(){if(!talentDialog?.open)return;talentDialog.innerHTML=talentDetail();talentDialog.querySelector('[data-tree-close]').focus({preventScroll:true});}
+  function inspectTalent(id){
+    selectedTalent=id;
+    if(!talentDialog){
+      talentDialog=document.createElement('dialog');talentDialog.className='talent-info-dialog';talentDialog.setAttribute('aria-labelledby','talentDialogTitle');talentDialog.dataset.runtimeLocalize='off';nodes.stagePanel.append(talentDialog);
+      talentDialog.addEventListener('click',event=>{const button=event.target.closest('button');if(event.target===talentDialog||button?.hasAttribute('data-tree-close'))closeTalentDialog();else if(button?.dataset.talentBuy)changeTalent('buy',button.dataset.talentBuy);else if(button?.dataset.treePet)changeTalent('pet',button.dataset.treePet);});
+      talentDialog.addEventListener('close',()=>document.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({preventScroll:true}));
+      talentDialog.addEventListener('keydown',event=>{
+        if(event.key!=='Tab')return;
+        const items=[...talentDialog.querySelectorAll('button:not(:disabled)')],first=items[0],last=items.at(-1);
+        if(!items.includes(document.activeElement)||(event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){event.preventDefault();(event.shiftKey?last:first)?.focus();}
+      });
+    }
+    talentDialog.innerHTML=talentDetail();talentDialog.showModal();talentDialog.querySelector('[data-tree-close]').focus({preventScroll:true});
+  }
+  function renderTalents(message=""){
+    const host=document.getElementById('talentWorkshop');if(!host)return;host.dataset.runtimeLocalize='off';
+    const c=runeCopy(),progress=adventureProgress();
+    host.innerHTML=`<header><div><small>${c.adventureLevel}</small><strong>${progress.level} / ${MAX_ADVENTURE_LEVEL}</strong></div><h2>${c.workshop}</h2></header><div class="adventure-progress"><progress max="${progress.need}" value="${progress.level===MAX_ADVENTURE_LEVEL?progress.need:progress.xp}"></progress><span>${progress.level===MAX_ADVENTURE_LEVEL?c.max:`${progress.xp} / ${progress.need} XP`}</span><strong>◆ ${c.points}: ${availablePoints()}</strong></div><p class="talent-route-hint">${c.routeHint}</p><div class="talent-tree element-tree">${talentBranches.map((branch,col)=>`<section class="element-branch branch-${col}">${branch.map((id,row)=>{const rank=save.talents[id]||0,locked=talentLocked(id,save.talents);return `${row?`<span class="route-link ${save.talents[branch[row-1]]===2?'open':''}" aria-hidden="true">↓</span>`:''}<button type="button" class="talent-tree-node ${rank?'equipped':''} ${locked?'locked':''}" data-talent-inspect="${id}" aria-label="${runeName(id)} ${rank}/2"><img src="${talentIconBase}${talentIcon(id)}.svg" alt=""/><strong>${runeName(id)}</strong><small>${locked?'⌑ ':''}${rank}/2</small></button>`;}).join('')}</section>`).join('')}</div><button type="button" data-talent-reset ${spentPoints(save.talents)?'':'disabled'}>${c.reset} · +◆ ${spentPoints(save.talents)}</button><small class="talent-refund">${c.pointRefund}</small><p role="status">${message}</p>`;
+    renderTalentDialog();
+  }
+  function changeTalent(action,id){
     if(state.mode!=="stage")return;
-    const next=JSON.parse(JSON.stringify(save)); next.treeVersion=2;next.talents||={};
-    if(action==="buy") {
-      if(!talentIds.includes(id)||talentLocked(id,next.talents))return;
-      const rank=next.talents[id]||0,cost=talentCost(id)+rank*6;
-      if(rank>=2||next.runeDust<cost)return;
-      next.runeDust-=cost;next.talents[id]=rank+1;
-    } else if(action==="reset") {
-      talentIds.forEach(id=>{const r=next.talents[id]||0;next.runeDust+=(r?talentCost(id):0)+(r===2?talentCost(id)+6:0);});next.talents={};
-    } else return;
+    const next=JSON.parse(JSON.stringify(save));next.treeVersion=4;next.talents||={};
+    if(action==='buy'){
+      if(!talentIds.includes(id)||talentLocked(id,next.talents)||(next.talents[id]||0)>=2||!availablePoints())return;
+      next.talents[id]=(next.talents[id]||0)+1;
+      if(id.startsWith('pet')&&!next.equippedPet)next.equippedPet=id;
+    }else if(action==='reset'){next.talents={};next.equippedPet=null;}
+    else if(action==='pet'){if(!id?.startsWith('pet')||!next.talents[id])return;next.equippedPet=id;}
+    else return;
     next.equippedTalents=talentIds.filter(id=>next.talents[id]>0);
     if(!writeStorage(saveKey,JSON.stringify(next))){renderTalents(runeCopy().saveError);return;}
-    save=next;renderTalents();playSound("upgrade",.15);
+    save=next;renderTalents();playSound('upgrade',.15);
   }
 
   function persist() {
@@ -1384,7 +1398,7 @@
       shotTimer: 0,
       chain: 0, frost: 0, burst: 0, ricochet: 0, orbit: 0, rhythm: 0, magicHits: 0,
       talents: Object.fromEntries(talentIds.map(id => [id, save.equippedTalents?.includes(id) ? save.talents?.[id] || 0 : 0])),
-      strideDistance: 0, orbitTimer: 4, crystalCharge: 0, petTimer: .5,
+      strideDistance: 0, orbitTimer: 4, crystalCharge: 0, petTimer: .5, petId:save.equippedPet, armorTimer:0, armorReady:true, phoenixUsed:false, winterTimer:8, stormTimer:6, surgeTimer:0, trailDistance:0, staticDistance:0,
       pickup: hasCharm ? 68 : 54,
     };
   }
@@ -1610,6 +1624,7 @@
   }
 
   function show(panel) {
+    closeTalentDialog();
     if (panel === nodes.menuPanel || panel === nodes.stagePanel) releaseRenderer();
     if (panel !== nodes.stagePanel) cancelStageMotion();
     [nodes.menuPanel, nodes.stagePanel, nodes.gamePanel, nodes.resultPanel, nodes.upgradePanel].forEach((node) => node.classList.add("hidden"));
@@ -2069,6 +2084,7 @@
     updateCamera(dt);
     updateStageMechanics(dt);
     if(state.mode!=="running")return;
+    updateAdvancedTalents(dt);
     updateCompanion(dt);
     spawnEnemies(dt);
     updateEnemies(dt);
@@ -2154,10 +2170,10 @@
       if (hazard.kind === "arrow") {
         const dx = hazard.x - previousX, dy = hazard.y - previousY;
         const along = Math.max(0, Math.min(1, ((p.x - previousX) * dx + (p.y - previousY) * dy) / (dx * dx + dy * dy || 1)));
-        inside = Math.hypot(p.x - previousX - dx * along, p.y - previousY - dy * along) <= hazard.r;
+        inside = Math.hypot(p.x - previousX - dx * along, p.y - previousY - dy * along) <= hazard.r + 18;
       }
       if (active && inside && hazard.tick <= 0 && state.hazardDamageTimer <= 0) {
-        p.hp = Math.max(0, p.hp - hazard.damage);
+        hurtPlayer(hazard.damage);
         state.hazardDamageTimer = .2;
         hazard.tick = 0.82;
         addSpark(p.x, p.y, hazard.color);
@@ -2174,7 +2190,7 @@
       if (state.safeZone.pulse <= 0) {
         state.safeZone.pulse = 2.4;
         if (Math.hypot(p.x - state.safeZone.x, p.y - state.safeZone.y) > state.safeZone.r) {
-          p.hp = Math.max(0, p.hp - 0.8);
+          hurtPlayer(.8);
           addFloater("-1", p.x, p.y - 60, "#d8b4fe");
           playSound("hit", 0.3);
         }
@@ -2297,7 +2313,9 @@
     }
     p.x = Math.max(42, Math.min(W - 42, p.x));
     p.y = Math.max(42, Math.min(H - 42, p.y));
-    p.strideDistance += Math.hypot(p.x - beforeX, p.y - beforeY);
+    p.previousX=beforeX;p.previousY=beforeY;
+    const travelled=Math.hypot(p.x-beforeX,p.y-beforeY);
+    p.strideDistance += travelled; p.trailDistance+=travelled;p.staticDistance+=travelled;
     if (p.talents.stride && p.strideDistance >= (p.talents.stride === 2 ? 450 : 650)) {
       p.strideDistance = 0; runePulse(p.x, p.y, 125, .25, true);
     }
@@ -2305,7 +2323,7 @@
       p.orbitTimer -= dt;
       if (p.orbitTimer <= 0) { p.orbitTimer = 4; runePulse(p.x, p.y, 100 + p.orbit * 30, .25 + p.orbit * .2); }
     }
-    p.shotTimer -= dt;
+    p.shotTimer -= dt*(p.surgeTimer>0?1.5+p.talents.surge*.25:1);
     if (p.shotTimer <= 0) shootNearest();
   }
 
@@ -2361,17 +2379,18 @@
         pos.y = state.player.y + inwardY / distance * 450;
       }
     }
-    const stageHp = 1 + Math.floor((state.stage - 1) / 10) * 0.35;
+    const stageHp = 1 + Math.min(1.4, (state.stage - 1) * .05);
     const stats = {
-      basic: { hp: 2, speed: 68, size: 62, damage: 0.32, image: "basic" },
-      runner: { hp: 1.5, speed: 102, size: 58, damage: 0.28, image: "runner" },
-      tank: { hp: 5, speed: 44, size: 82, damage: 0.55, image: "tank" },
-      archer: { hp: 2.5, speed: 72, size: 64, damage: .35, image: "archer" },
+      basic: { hp: 2, speed: 112, size: 62, damage: 0.32, image: "basic" },
+      runner: { hp: 1.5, speed: 162, size: 58, damage: 0.28, image: "runner" },
+      tank: { hp: 5, speed: 78, size: 82, damage: 0.55, image: "tank" },
+      archer: { hp: 2.5, speed: 100, size: 64, damage: .35, image: "archer" },
     }[type];
     state.spawnCount += 1;
     const hp = stats.hp * stageHp;
     const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
-    const damage = stats.damage * (state.stage === 1 ? 0.4 : 1);
+    const damage = stats.damage * (state.stage === 1 ? .75 : 1.25);
+    stats.speed*=1+Math.min(.22,(state.stage-1)*.008);
     state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2, shotTimer: 1.2 });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
     if (config.mode === "waves") { state.waveRemaining -= 1; state.spawnTimer = .85; }
@@ -2384,6 +2403,7 @@
     const p = state.player;
     const chargingEnemies = chargingEnemyModifiers.has(state.stageConfig?.modifier);
     state.enemies.forEach((enemy) => {
+      const previousEnemyX=enemy.x,previousEnemyY=enemy.y;
       const dx = p.x - enemy.x;
       const dy = p.y - enemy.y;
       const dist = Math.hypot(dx, dy) || 1;
@@ -2412,7 +2432,7 @@
           moveX = moveY = 0;
           enemy.bowWindup -= dt;
           if (enemy.bowWindup <= 0) {
-            addHazard("arrow", { x: enemy.x, y: enemy.y, vx: enemy.bowAim.x * (300 + state.stageConfig.region * 22), vy: enemy.bowAim.y * (300 + state.stageConfig.region * 22), warn: 0, life: 2.5, r: 23, damage: .65, color: "#f59e0b" });
+            addHazard("arrow", { x: enemy.x, y: enemy.y, vx: enemy.bowAim.x * (380 + state.stageConfig.region * 22), vy: enemy.bowAim.y * (380 + state.stageConfig.region * 22), warn: 0, life: 2.5, r: 23, damage: .65, color: "#f59e0b" });
             enemy.bowAim = null; enemy.shotTimer = Math.max(2.8, 4.4 - state.stageConfig.region * .25);
           }
         } else {
@@ -2428,11 +2448,17 @@
       }
       enemy.hit = Math.max(0, enemy.hit - dt);
       enemy.touch = Math.max(0, enemy.touch - dt);
-      if (dist < (enemy.size + 42) * 0.42 && enemy.touch <= 0) {
-        p.hp = Math.max(0, p.hp - enemy.damage);
+      const startX=previousEnemyX-(p.previousX??p.x),startY=previousEnemyY-(p.previousY??p.y);
+      const sweepX=enemy.x-p.x-startX,sweepY=enemy.y-p.y-startY;
+      const along=Math.max(0,Math.min(1,-(startX*sweepX+startY*sweepY)/(sweepX*sweepX+sweepY*sweepY||1)));
+      const contact=Math.hypot(startX+sweepX*along,startY+sweepY*along)<=enemy.size*.4+24;
+      if (contact && enemy.touch <= 0) {
+        const healthBefore=p.hp;
+        hurtPlayer(enemy.damage);
         enemy.touch = 1.05;
-        addSpark(p.x, p.y - 34, "#ff7b7b");
-        addFloater(`-${Math.ceil(enemy.damage)}`, p.x, p.y - 74, "#ffb4b4");
+        const received=Math.max(0,healthBefore-p.hp);
+        addSpark(p.x, p.y - 34, received?"#ff7b7b":"#8de6ef");
+        addFloater(received?`-${Number(received.toFixed(1))}`:"◇", p.x, p.y - 74, received?"#ffb4b4":"#8de6ef");
         playSound("hit", 0.35);
       }
     });
@@ -2455,8 +2481,25 @@
     p.shotTimer = p.cooldown;
   }
 
+  function hurtPlayer(damage){
+    const p=state.player;
+    if(p.reviveGrace>0)return;
+    if(p.talents.iceArmor&&p.armorReady){p.armorReady=false;p.armorTimer=p.talents.iceArmor===2?12:18;runePulse(p.x,p.y,95,0,true);return;}
+    p.hp=Math.max(0,p.hp-damage);
+    if(p.hp<=0&&p.talents.phoenix&&!p.phoenixUsed){p.phoenixUsed=true;p.reviveGrace=1.2;p.hp=p.talents.phoenix===2?5:3;runePulse(p.x,p.y,220,1.2);}
+  }
+  function updateAdvancedTalents(dt){
+    const p=state.player;p.surgeTimer=Math.max(0,p.surgeTimer-dt);p.reviveGrace=Math.max(0,(p.reviveGrace||0)-dt);
+    if(p.talents.iceArmor&&!p.armorReady){p.armorTimer-=dt;if(p.armorTimer<=0)p.armorReady=true;}
+    if(p.talents.emberTrail&&p.trailDistance>=180){p.trailDistance=0;(state.friendlyZones||=[]).push({x:p.x,y:p.y,life:3,tick:0,rank:p.talents.emberTrail});if(state.friendlyZones.length>6)state.friendlyZones.shift();}
+    state.friendlyZones=(state.friendlyZones||[]).filter(zone=>{zone.life-=dt;zone.tick-=dt;if(zone.tick<=0){zone.tick=.7;runePulse(zone.x,zone.y,70+zone.rank*15,.3);}return zone.life>0;});
+    if(p.talents.staticCharge&&p.staticDistance>=(p.talents.staticCharge===2?350:500)){p.staticDistance=0;const e=state.enemies.find(e=>Math.hypot(e.x-p.x,e.y-p.y)<300);if(e){addSpark(e.x,e.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:p.x,fromY:p.y,fromHeight:1,height:1});damageEnemy(e,p.damage);}}
+    if(p.talents.winter){p.winterTimer-=dt;if(p.winterTimer<=0){p.winterTimer=8;runePulse(p.x,p.y,160+p.talents.winter*25,.3,true);}}
+    if(p.talents.stormOrbit){p.stormTimer-=dt;if(p.stormTimer<=0){p.stormTimer=6;[...state.enemies].filter(e=>Math.hypot(e.x-p.x,e.y-p.y)<260).slice(0,2+p.talents.stormOrbit).forEach(e=>{addSpark(e.x,e.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:p.x,fromY:p.y,fromHeight:1,height:1});damageEnemy(e,p.damage*.6);});}}
+    for(const e of [...state.enemies])if(e.burn){e.burn.life-=dt;e.burn.tick-=dt;if(e.burn.tick<=0){e.burn.tick=.6;addSpark(e.x,e.y,"#ffad64",{kind:"magicHit",element:"burst",height:.7,radius:.3});damageEnemy(e,e.burn.damage);}if(e.burn.life<=0)e.burn=null;}
+  }
   function updateCompanion(dt) {
-    const p=state.player,id=["petFire","petIce","petStorm"].find(id=>p.talents[id]);
+    const p=state.player,id=p.petId&&p.talents[p.petId]?p.petId:["petFire","petIce","petStorm"].find(id=>p.talents[id]);
     if(!id){state.pet=null;return;}
     const element={petFire:"fire",petIce:"ice",petStorm:"storm"}[id];
     state.pet ||= {x:p.x-65,y:p.y+55,element,vx:0,vy:0,decisionTimer:0,phase:2.4,behavior:"roam"};
@@ -2527,6 +2570,7 @@
           addFloater(critical ? `✦ ${Number(impactDamage.toFixed(1))} ×1.6` : `${Number(impactDamage.toFixed(1))}`,
             shot.target.x, shot.target.y - 52, critical ? "#ffe083" : "#edfaff");
           if (critical) {
+            if(state.player.talents.surge)state.player.surgeTimer=1.5;
             addSpark(shot.target.x, shot.target.y, "#ffe083", { kind: "magicHit", element: "critical", height: (shot.target.size || 64) / 64 * .8, punch: .13 });
             playSound("hit", .18);
           }
@@ -2597,11 +2641,17 @@
     const p = state.player;
     p.magicHits += 1;
     const frozen = (target.chill || 0) > 0;
+    if(p.talents.combust&&target.hp>0)target.burn={life:3,tick:target.burn?.tick??.6,damage:.3*p.talents.combust*p.damage};
+    if(p.talents.fireNova&&p.magicHits%6===0)runePulse(target.x,target.y,130+p.talents.fireNova*25,.8);
+    if(p.talents.iceNova&&p.magicHits%6===0)runePulse(target.x,target.y,130+p.talents.iceNova*25,.4,true);
+    if(p.talents.shatter&&frozen&&p.magicHits%3===0)runePulse(target.x,target.y,100+p.talents.shatter*20,.7,true);
+
     if ((p.frost || p.talents.harvest) && target.hp > 0) target.chill = .8 + Math.max(p.frost,p.talents.harvest) * .4;
     if(p.talents.fire && p.magicHits%3===0) runePulse(target.x,target.y,80+p.talents.fire*25,.6);
     if(p.talents.storm && p.magicHits%3===0) {
       const next=state.enemies.find(e=>e!==target&&e.hp>0&&Math.hypot(e.x-target.x,e.y-target.y)<260);
-      if(next){addSpark(next.x,next.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:target.x,fromY:target.y,fromHeight:1,height:1});damageEnemy(next,damage*p.talents.storm*.7);}
+      if(next){addSpark(next.x,next.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:target.x,fromY:target.y,fromHeight:1,height:1});damageEnemy(next,damage*p.talents.storm*.7);
+      if(p.talents.conduct)[...state.enemies].filter(e=>e!==target&&e!==next&&e.hp>0&&Math.hypot(e.x-next.x,e.y-next.y)<220).slice(0,p.talents.conduct).forEach(e=>{addSpark(e.x,e.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:next.x,fromY:next.y,fromHeight:1,height:1});damageEnemy(e,damage*.5);});}
     }
     // Secondary hits never recurse; all damage still respects existing shields.
     if (p.chain && p.magicHits % 3 === 0) {
@@ -2850,8 +2900,8 @@
     const improved = state.calmed > previousBestKeys;
     const stageCleared = reason !== "fail" && state.player.hp > 0 && objectiveComplete();
     resultStageCleared = stageCleared;
-    state.dustEarned = Math.min(14, Math.floor(state.calmed / 5) + Math.floor(state.survived / 15) + (stageCleared ? 3 : 0) + (stageCleared && !save.completedStages.includes(state.stage) ? 3 : 0));
-    save.runeDust = Math.min(99999, save.runeDust + state.dustEarned);
+    state.xpEarned=Math.floor(state.calmed*2+state.survived*.5)+(stageCleared?20:0)+(stageCleared&&!save.completedStages.includes(state.stage)?40:0);
+    save.adventureXp=Math.min(20000,(save.adventureXp||0)+state.xpEarned);
     save.bestDefeats = Math.max(save.bestDefeats || 0, state.calmed);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
     save.totalDefeats = Math.max(0, Number(save.totalDefeats) || 0) + state.calmed;
@@ -2916,7 +2966,7 @@
         : t("patrolRankComplete", { current: rank.total });
     nodes.resultRankText.textContent = `${t("resultLifetimeRank")}: ${rankText}`;
     nodes.resultProgressText.textContent = `${t("resultCampaignUnlock")}: ${t("mainProgress", { cleared: save.completedStages.length })}`;
-    nodes.resultPlanText.textContent = `◆ +${state.dustEarned || 0} ${runeCopy().reward} · ${runeCopy().dust}: ${save.runeDust}. ${resultPlan(reason)}`;
+    nodes.resultPlanText.textContent = `+${state.xpEarned||0} XP · ${runeCopy().adventureLevel} ${adventureProgress().level} · ◆ ${availablePoints()} ${runeCopy().points}. ${resultPlan(reason)}`;
     nodes.resultNextStageText.textContent = stageCleared && state.stage < STAGE_COUNT ? nextStageCheckpointPlan() : "";
   }
 
@@ -2947,6 +2997,8 @@
       project3D: (x, y) => crystal3D?.project(x, y) || null,
       lose3DContextForTest: () => crystal3D?.renderer.getContext().getExtension("WEBGL_lose_context")?.loseContext(),
       snapshot: () => ({
+        adventure: {...adventureProgress(),available:availablePoints(),spent:spentPoints(save.talents)},
+        friendlyZones:(state.friendlyZones||[]).map(zone=>({...zone})),
         mode: state.mode,
         pet: state.pet ? {...state.pet} : null,
         presentation: state.presentation ? {...state.presentation} : null,
@@ -3052,12 +3104,12 @@
         const boss = state.enemies.find(enemy => enemy.isBoss);
         if (!boss) return;
         Object.assign(boss,{x:512,y:650,abilityTimer:0});
-        Object.assign(state.player,{x:512,y:880,tx:512,ty:880,hp:7});
+        Object.assign(state.player,{x:512,y:880,tx:512,ty:880,previousX:512,previousY:880,hp:7});
         state.hazardDamageTimer = 0; state.spawnTimer = 999;
         updateBossMechanics(.016); draw();
       },
       stepBossForTest: (seconds, position) => {
-        if (position) Object.assign(state.player,{x:position.x,y:position.y,tx:position.x,ty:position.y});
+        if (position) Object.assign(state.player,{x:position.x,y:position.y,tx:position.x,ty:position.y,previousX:position.x,previousY:position.y});
         for (let time=0;time<seconds;time+=.016) { updateStageMechanics(.016); updateEnemies(.016); }
         draw(); renderHud();
       },
@@ -3077,6 +3129,30 @@
         state.mode="paused";state.presentation=null;document.getElementById("dungeonPresentation")?.remove();
         state.hazards=[];addHazard("lane",{x:state.player.x,y:state.player.y,width:105,height:H,warn:2,color:"#60a5fa"});
         state.xpDrops=[{x:state.player.x+12,y:state.player.y+12,value:1}];draw();
+      },
+      talentFixtureForTest: (talents={}) => {
+        state.mode="paused";state.presentation=null;state.enemies=[];state.shots=[];state.hazards=[];state.sparks=[];state.friendlyZones=[];
+        Object.assign(state.player,{x:512,y:880,previousX:512,previousY:880,hp:7,damage:1,magicHits:0,phoenixUsed:false,reviveGrace:0,armorReady:true,armorTimer:0,trailDistance:0,staticDistance:0,winterTimer:8,stormTimer:6,surgeTimer:0,talents:Object.fromEntries(talentIds.map(id=>[id,talents[id]||0]))});
+        for(let i=0;i<6;i++)state.enemies.push({x:512+i*20,y:920,hp:100,maxHp:100,speed:0,size:62,damage:.5,image:"basic",hit:0,touch:0,chill:0});
+      },
+      talentStepForTest:(seconds=0,travel=0,hits=0)=>{
+        state.player.trailDistance+=travel;state.player.staticDistance+=travel;
+        for(let i=0;i<hits;i++)triggerMagic(state.enemies[0],1);
+        for(let time=0;time<seconds;time+=.033)updateAdvancedTalents(.033);
+        draw();
+      },
+      hurtForTest:damage=>{hurtPlayer(damage);renderHud(true);},
+      surgeForTest:()=>{
+        const p=state.player,target=state.enemies[0];p.impactHits=4;p.rhythm=0;p.shotTimer=2;p.tx=p.x;p.ty=p.y;
+        state.shots=[{x:target.x,y:target.y,px:target.x,py:target.y,originX:p.x,originY:p.y,target,speed:620,damage:1,age:0}];
+        updateShots(.01);movePlayer(.1);return {timer:p.surgeTimer,shotTimer:p.shotTimer};
+      },
+      collisionForTest:(offset=0,arrow=false)=>{
+        state.player.hp=7;state.player.talents={};state.player.x=512;state.player.y=880;state.player.previousX=512;state.player.previousY=880;
+        state.hazards=[];state.hazardDamageTimer=0;state.enemies=[];
+        if(arrow){addHazard("arrow",{x:480,y:880+offset,vx:1200,vy:0,warn:0,life:1,r:23,damage:1});updateStageMechanics(.05);}
+        else{state.enemies=[{x:452,y:880+offset,hp:10,maxHp:10,speed:1200,size:62,damage:1,image:"runner",isBoss:true,chargeAim:{x:1,y:0},chargeTimer:-.1,touch:0,hit:0}];updateEnemies(.1);}
+        return state.player.hp;
       },
       applyUpgradeForTest: (id) => {
         state.mode = "upgrade";
@@ -3139,8 +3215,8 @@
       hpMeter.dataset.value = `${locale}|${state.player.hp}|${state.player.maxHp}`;
       hpMeter.style.setProperty("--health", `${hpRatio * 100}%`);
       hpMeter.classList.toggle("critical", hpRatio <= .3);
-      hpMeter.setAttribute("aria-label", `${t("hp")} ${Math.ceil(state.player.hp)}/${state.player.maxHp}`);
-      hpMeter.setAttribute("aria-valuenow", String(Math.ceil(state.player.hp)));
+      hpMeter.setAttribute("aria-label", `${t("hp")} ${Number(state.player.hp.toFixed(1))}/${state.player.maxHp}`);
+      hpMeter.setAttribute("aria-valuenow", String(Number(state.player.hp.toFixed(1))));
       hpMeter.setAttribute("aria-valuemax", String(state.player.maxHp));
     }
     const modeText = document.getElementById("modeText");
@@ -3153,7 +3229,7 @@
       writeHudValue("modeProgress", modeFill.style, `${Math.round(Math.max(0, Math.min(1, progress)) * 100)}%`, "width");
     }
     const time = formatTime(state.timeLeft);
-    const hp = Math.max(0, Math.ceil(state.player.hp));
+    const hp = Math.max(0, Number(state.player.hp.toFixed(1)));
     if (force) hudValues = Object.create(null);
     writeHudValue("stage", nodes.stageText, `${state.stage}/${STAGE_COUNT}`);
     writeHudValue("time", nodes.timeText, time);
@@ -3658,7 +3734,7 @@
   document.getElementById("talentWorkshop")?.addEventListener("click", event => {
     const button = event.target.closest("button");
     if (!button || button.disabled) return;
-    if (button.hasAttribute("data-talent-inspect")) { selectedTalent = button.dataset.talentInspect; renderTalents(); document.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({preventScroll:true}); }
+    if (button.hasAttribute("data-talent-inspect")) { inspectTalent(button.dataset.talentInspect); }
     else if (button.hasAttribute("data-talent-buy")) changeTalent("buy", button.dataset.talentBuy);
     else if (button.hasAttribute("data-talent-equip")) changeTalent("equip", button.dataset.talentEquip);
     else if (button.hasAttribute("data-talent-reset")) changeTalent("reset");

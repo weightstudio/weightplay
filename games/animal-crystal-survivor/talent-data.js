@@ -271,3 +271,485 @@
  const base=window.CrystalTalents.copy;
  window.CrystalTalents.copy=locale=>{ const c=base(locale),r=rows[locale]||rows.en; return {...c,routeHint:r[7],bossWarning:r[15],settling:r[16],names:{...c.names,fire:r[0],harvest:r[1],echo:r[2],storm:r[3],petFire:r[4],petIce:r[5],petStorm:r[6]},descriptions:{...c.descriptions,fire:r[8],harvest:r[9],storm:r[10],petFire:r[11]+" "+r[12],petIce:r[11]+" "+r[13],petStorm:r[11]+" "+r[14]}}; };
 })();
+
+// Adventure-level expansion: gameplay-independent localized copy.
+(()=>{
+const ids=["emberTrail", "fireNova", "combust", "phoenix", "iceArmor", "iceNova", "shatter", "winter", "staticCharge", "stormOrbit", "conduct", "surge"];
+const names={
+  "en": [
+    "Ember Footprints",
+    "Fire Nova",
+    "Kindling",
+    "Phoenix Return",
+    "Ice Armor",
+    "Frost Nova",
+    "Shatter",
+    "Deep Winter",
+    "Static Steps",
+    "Storm Ring",
+    "Conduction",
+    "Overdrive"
+  ],
+  "zh-Hant": [
+    "餘燼足跡",
+    "烈焰新星",
+    "燃燒烙印",
+    "浴火重生",
+    "冰晶護甲",
+    "冰霜新星",
+    "碎冰連爆",
+    "凜冬領域",
+    "蓄電步伐",
+    "雷暴環流",
+    "電流擴散",
+    "雷霆加速"
+  ],
+  "zh-Hans": [
+    "余烬足迹",
+    "烈焰新星",
+    "燃烧烙印",
+    "浴火重生",
+    "冰晶护甲",
+    "冰霜新星",
+    "碎冰连爆",
+    "凛冬领域",
+    "蓄电步伐",
+    "雷暴环流",
+    "电流扩散",
+    "雷霆加速"
+  ],
+  "ja": [
+    "残り火の足跡",
+    "炎の新星",
+    "火印",
+    "不死鳥の帰還",
+    "氷の鎧",
+    "霜の新星",
+    "砕氷",
+    "厳冬の領域",
+    "帯電歩行",
+    "嵐の輪",
+    "伝導",
+    "雷の加速"
+  ],
+  "ko": [
+    "불씨 발자국",
+    "화염 신성",
+    "불꽃 낙인",
+    "불사조 귀환",
+    "얼음 갑옷",
+    "서리 신성",
+    "얼음 파쇄",
+    "혹한 영역",
+    "충전 걸음",
+    "폭풍 고리",
+    "전류 확산",
+    "번개 가속"
+  ],
+  "es": [
+    "Huellas de brasas",
+    "Nova ígnea",
+    "Marca ardiente",
+    "Renacer del fénix",
+    "Armadura de hielo",
+    "Nova helada",
+    "Fragmentación",
+    "Invierno profundo",
+    "Pasos estáticos",
+    "Anillo de tormenta",
+    "Conducción",
+    "Sobrecarga"
+  ],
+  "pt-BR": [
+    "Pegadas de brasas",
+    "Nova ígnea",
+    "Marca ardente",
+    "Retorno da fênix",
+    "Armadura de gelo",
+    "Nova de gelo",
+    "Estilhaçar",
+    "Inverno profundo",
+    "Passos estáticos",
+    "Anel da tempestade",
+    "Condução",
+    "Sobrecarga"
+  ],
+  "fr": [
+    "Traces de braises",
+    "Nova ardente",
+    "Marque brûlante",
+    "Retour du phénix",
+    "Armure de glace",
+    "Nova de givre",
+    "Fracas de glace",
+    "Hiver profond",
+    "Pas statiques",
+    "Anneau de tempête",
+    "Conduction",
+    "Survoltage"
+  ],
+  "de": [
+    "Glutspuren",
+    "Feuernova",
+    "Brandmal",
+    "Phönixkehr",
+    "Eisrüstung",
+    "Frostnova",
+    "Eissplitter",
+    "Tiefwinter",
+    "Statische Schritte",
+    "Sturmring",
+    "Leitung",
+    "Überladung"
+  ],
+  "it": [
+    "Orme di brace",
+    "Nova di fuoco",
+    "Marchio ardente",
+    "Ritorno della fenice",
+    "Armatura di ghiaccio",
+    "Nova gelida",
+    "Frantumazione",
+    "Inverno profondo",
+    "Passi statici",
+    "Anello di tempesta",
+    "Conduzione",
+    "Sovraccarico"
+  ],
+  "ru": [
+    "Угольные следы",
+    "Огненная вспышка",
+    "Огненная метка",
+    "Возрождение феникса",
+    "Ледяная броня",
+    "Морозная вспышка",
+    "Раскол льда",
+    "Глубокая зима",
+    "Заряженные шаги",
+    "Кольцо бури",
+    "Проводимость",
+    "Разгон"
+  ],
+  "hi": [
+    "अंगारे के पदचिह्न",
+    "अग्नि विस्फोट",
+    "जलती छाप",
+    "फीनिक्स वापसी",
+    "हिम कवच",
+    "हिम विस्फोट",
+    "हिम विखंडन",
+    "भीषण शीत",
+    "आवेशित कदम",
+    "तूफ़ान घेरा",
+    "विद्युत प्रसार",
+    "तीव्र वेग"
+  ],
+  "ar": [
+    "آثار الجمر",
+    "انفجار ناري",
+    "وسم مشتعل",
+    "عودة العنقاء",
+    "درع الجليد",
+    "انفجار الصقيع",
+    "تحطيم الجليد",
+    "شتاء عميق",
+    "خطوات مشحونة",
+    "حلقة العاصفة",
+    "توصيل",
+    "تسارع الرعد"
+  ]
+};
+const descriptions={
+  "en": [
+    "Every 180 movement leaves a fire patch for 3s; higher rank widens it.",
+    "Every sixth hit explodes in a larger area.",
+    "Hits burn enemies for 3s; rank doubles burn damage.",
+    "Once per run, a fatal hit restores 3 → 5 health and erupts.",
+    "Absorb one hit, then recharge for 18 → 12s.",
+    "Every sixth hit releases an area frost blast.",
+    "Every third hit on a chilled target releases a shattering blast.",
+    "Every 8s, slow enemies in a wider frost field.",
+    "Move 500 → 350 distance to release a lightning strike.",
+    "Every 6s, strike 3 → 4 nearby enemies.",
+    "Your third-hit arc spreads to 1 → 2 more enemies.",
+    "Critical hits accelerate automatic fire for 1.5s; rank increases speed."
+  ],
+  "zh-Hant": [
+    "每移動 180 距離留下燃燒區 3 秒；升階擴大範圍。",
+    "每第六次命中引爆大片範圍；升階擴大爆炸。",
+    "命中讓敵人燃燒 3 秒；升階加倍灼燒傷害。",
+    "每局一次，致命傷害後恢復 3 → 5 生命並爆破周圍。",
+    "抵擋一次傷害，18 → 12 秒後重新生成冰盾。",
+    "每第六次命中釋放範圍冰爆；升階擴大範圍。",
+    "每第三次命中緩速敵人時引發碎冰範圍爆炸。",
+    "每 8 秒展開冰霜領域緩速周圍；升階擴大範圍。",
+    "移動累積 500 → 350 距離，自動釋放落雷。",
+    "每 6 秒自動電擊附近 3 → 4 隻敵人。",
+    "每第三次命中的電弧，再擴散至 1 → 2 隻敵人。",
+    "爆擊後 1.5 秒內自動施法加速；升階提高速度。"
+  ],
+  "zh-Hans": [
+    "每移动 180 距离留下燃烧区 3 秒；升阶扩大范围。",
+    "每第六次命中引爆大片范围；升阶扩大爆炸。",
+    "命中让敌人燃烧 3 秒；升阶加倍灼烧伤害。",
+    "每局一次，致命伤害后恢复 3 → 5 生命并爆破周围。",
+    "抵挡一次伤害，18 → 12 秒后重新生成冰盾。",
+    "每第六次命中释放范围冰爆；升阶扩大范围。",
+    "每第三次命中减速敌人时引发碎冰范围爆炸。",
+    "每 8 秒展开冰霜领域减速周围；升阶扩大范围。",
+    "移动累计 500 → 350 距离，自动释放落雷。",
+    "每 6 秒自动电击附近 3 → 4 只敌人。",
+    "每第三次命中的电弧，再扩散至 1 → 2 只敌人。",
+    "暴击后 1.5 秒内自动施法加速；升阶提高速度。"
+  ],
+  "ja": [
+    "180移動ごとに3秒の炎。ランクで範囲拡大。",
+    "6回命中ごとに大爆発。ランクで範囲拡大。",
+    "命中で3秒燃焼。ランクで燃焼ダメージ倍増。",
+    "各戦闘1回、致命傷で体力3→5回復し爆発。",
+    "1回防御し18→12秒で再生成。",
+    "6回命中ごとに範囲氷爆。ランクで範囲拡大。",
+    "減速した敵への3回目の命中で砕氷爆発。",
+    "8秒ごとに周囲を減速。ランクで範囲拡大。",
+    "500→350移動で自動落雷。",
+    "6秒ごとに近くの3→4体へ雷。",
+    "3回目の命中の雷がさらに1→2体に伝わる。",
+    "クリティカル後1.5秒、連射加速。ランクで速度増加。"
+  ],
+  "ko": [
+    "180 이동마다 3초 불길. 등급에 따라 범위 증가.",
+    "여섯 번째 명중마다 광역 폭발. 등급에 따라 범위 증가.",
+    "명중 시 3초 연소. 등급 상승 시 연소 피해 두 배.",
+    "전투당 한 번, 치명상 시 체력 3→5 회복 및 폭발.",
+    "공격 1회 방어, 18→12초 후 충전.",
+    "여섯 번째 명중마다 광역 얼음 폭발. 등급에 따라 범위 증가.",
+    "느려진 적에게 세 번째 명중 시 얼음 폭발.",
+    "8초마다 주변 감속. 등급에 따라 범위 증가.",
+    "500→350 이동마다 자동 낙뢰.",
+    "6초마다 근처 적 3→4명 감전.",
+    "세 번째 명중의 번개가 1→2명에게 더 확산.",
+    "치명타 후 1.5초 자동 공격 가속. 등급에 따라 속도 증가."
+  ],
+  "es": [
+    "Cada 180 de movimiento deja fuego durante 3s. El rango amplía el área.",
+    "Cada sexto impacto causa una gran explosión. El rango amplía el área.",
+    "Los impactos queman 3s. El rango duplica el daño de quemadura.",
+    "Una vez por partida, un golpe mortal restaura 3→5 de salud y explota.",
+    "Absorbe un golpe; recarga en 18→12s.",
+    "Cada sexto impacto provoca una explosión helada más amplia.",
+    "Cada tercer impacto en un enemigo ralentizado causa una explosión de hielo.",
+    "Cada 8s ralentiza alrededor. El rango amplía el área.",
+    "Moverse 500→350 provoca un rayo automático.",
+    "Cada 6s golpea a 3→4 enemigos cercanos.",
+    "El arco del tercer impacto alcanza 1→2 enemigos más.",
+    "Los críticos aceleran el fuego automático durante 1,5s. El rango aumenta la velocidad."
+  ],
+  "pt-BR": [
+    "A cada 180 de movimento, deixa fogo por 3s. A patente amplia a área.",
+    "Cada sexto acerto causa uma grande explosão. A patente amplia a área.",
+    "Acertos queimam por 3s. A patente dobra o dano de queimadura.",
+    "Uma vez por partida, um golpe fatal restaura 3→5 de vida e explode.",
+    "Absorve um golpe; recarga em 18→12s.",
+    "Cada sexto acerto causa uma explosão de gelo mais ampla.",
+    "Cada terceiro acerto num alvo lento causa uma explosão de gelo.",
+    "A cada 8s desacelera ao redor. A patente amplia a área.",
+    "Mover 500→350 causa um raio automático.",
+    "A cada 6s atinge 3→4 inimigos próximos.",
+    "O arco do terceiro acerto atinge mais 1→2 inimigos.",
+    "Críticos aceleram o disparo automático por 1,5s. A patente aumenta a velocidade."
+  ],
+  "fr": [
+    "Tous les 180 de déplacement, laisse du feu 3s. Le rang agrandit la zone.",
+    "Chaque sixième impact provoque une grande explosion. Le rang agrandit la zone.",
+    "Les impacts brûlent 3s. Le rang double les brûlures.",
+    "Une fois par partie, un coup fatal rend 3→5 PV et provoque une explosion.",
+    "Absorbe un coup ; recharge en 18→12s.",
+    "Chaque sixième impact provoque une explosion de givre plus large.",
+    "Chaque troisième impact sur une cible ralentie provoque un fracas de glace.",
+    "Toutes les 8s, ralentit autour. Le rang agrandit la zone.",
+    "Parcourir 500→350 déclenche un éclair.",
+    "Toutes les 6s, frappe 3→4 ennemis proches.",
+    "L’arc du troisième impact touche 1→2 ennemis supplémentaires.",
+    "Les critiques accélèrent les tirs 1,5s. Le rang augmente la vitesse."
+  ],
+  "de": [
+    "Je 180 Bewegung bleibt 3s Feuer. Ränge vergrößern die Fläche.",
+    "Jeder sechste Treffer explodiert großflächig. Ränge vergrößern die Fläche.",
+    "Treffer verbrennen 3s. Der Rang verdoppelt Brandschaden.",
+    "Einmal pro Runde heilt ein tödlicher Treffer 3→5 Leben und löst eine Explosion aus.",
+    "Blockiert einen Treffer; lädt in 18→12s nach.",
+    "Jeder sechste Treffer löst eine größere Frostexplosion aus.",
+    "Jeder dritte Treffer auf ein verlangsamtes Ziel erzeugt eine Eisexplosion.",
+    "Alle 8s werden Gegner verlangsamt. Ränge vergrößern die Fläche.",
+    "Nach 500→350 Bewegung schlägt ein Blitz ein.",
+    "Alle 6s werden 3→4 nahe Gegner getroffen.",
+    "Der dritte Treffer springt auf 1→2 weitere Gegner.",
+    "Kritische Treffer beschleunigen das Feuer 1,5s. Ränge erhöhen das Tempo."
+  ],
+  "it": [
+    "Ogni 180 di movimento lascia fuoco per 3s. Il grado amplia l’area.",
+    "Ogni sesto colpo provoca una grande esplosione. Il grado amplia l’area.",
+    "I colpi bruciano per 3s. Il grado raddoppia il danno da bruciatura.",
+    "Una volta per partita, un colpo fatale ripristina 3→5 salute ed esplode.",
+    "Assorbe un colpo; ricarica in 18→12s.",
+    "Ogni sesto colpo scatena un’esplosione gelida più ampia.",
+    "Ogni terzo colpo su un bersaglio rallentato causa un’esplosione di ghiaccio.",
+    "Ogni 8s rallenta intorno. Il grado amplia l’area.",
+    "Muoversi per 500→350 scatena un fulmine automatico.",
+    "Ogni 6s colpisce 3→4 nemici vicini.",
+    "L’arco del terzo colpo raggiunge altri 1→2 nemici.",
+    "I critici accelerano il fuoco automatico per 1,5s. Il grado aumenta la velocità."
+  ],
+  "ru": [
+    "Каждые 180 движения оставляют огонь на 3с. Ранг увеличивает радиус.",
+    "Каждое шестое попадание вызывает большой взрыв. Ранг увеличивает радиус.",
+    "Попадания поджигают на 3с. Ранг удваивает урон горения.",
+    "Раз за бой смертельный удар восстанавливает 3→5 здоровья и вызывает взрыв.",
+    "Поглощает удар; перезарядка 18→12с.",
+    "Каждое шестое попадание вызывает широкий ледяной взрыв.",
+    "Каждое третье попадание по замедленной цели раскалывает лёд вокруг.",
+    "Каждые 8с замедляет врагов вокруг. Ранг увеличивает радиус.",
+    "После 500→350 движения автоматически бьёт молния.",
+    "Каждые 6с поражает 3→4 ближайших врагов.",
+    "Дуга третьего попадания задевает ещё 1→2 врагов.",
+    "Критические удары ускоряют стрельбу на 1,5с. Ранг увеличивает скорость."
+  ],
+  "hi": [
+    "हर 180 दूरी पर 3 सेकंड आग। स्तर से क्षेत्र बढ़ता है।",
+    "हर छठी चोट पर बड़ा विस्फोट। स्तर से क्षेत्र बढ़ता है।",
+    "चोट 3 सेकंड जलाती है। स्तर से जलन क्षति दुगुनी।",
+    "हर खेल में एक बार घातक चोट पर 3→5 जीवन लौटता और विस्फोट होता है।",
+    "एक चोट रोकता है; 18→12 सेकंड में फिर तैयार।",
+    "हर छठी चोट पर बड़ा हिम विस्फोट।",
+    "धीमे दुश्मन पर हर तीसरी चोट हिम विस्फोट करती है।",
+    "हर 8 सेकंड आसपास धीमा करता है। स्तर से क्षेत्र बढ़ता है।",
+    "500→350 दूरी चलने पर अपने आप बिजली गिरती है।",
+    "हर 6 सेकंड पास के 3→4 दुश्मनों को बिजली लगती है।",
+    "तीसरी चोट की बिजली 1→2 और दुश्मनों तक जाती है।",
+    "क्रिटिकल के बाद 1.5 सेकंड तेज स्वचालित हमला। स्तर से गति बढ़ती है।"
+  ],
+  "ar": [
+    "كل 180 حركة تترك نارًا 3 ثوان. تزيد الرتبة المساحة.",
+    "كل إصابة سادسة تسبب انفجارًا واسعًا. تزيد الرتبة المساحة.",
+    "الإصابات تحرق 3 ثوان. تضاعف الرتبة ضرر الحرق.",
+    "مرة في الجولة، تعيد الضربة القاتلة 3→5 صحة وتسبب انفجارًا.",
+    "يمتص ضربة؛ يعاد شحنه خلال 18→12 ثانية.",
+    "كل إصابة سادسة تسبب انفجار صقيع أوسع.",
+    "كل إصابة ثالثة لهدف بطيء تسبب انفجار جليد.",
+    "كل 8 ثوان يبطئ المحيط. تزيد الرتبة المساحة.",
+    "بعد حركة 500→350 يطلق برقًا تلقائيًا.",
+    "كل 6 ثوان يصيب 3→4 أعداء قريبين.",
+    "قوس الإصابة الثالثة يمتد إلى 1→2 عدو إضافي.",
+    "الضربات الحرجة تسرع الإطلاق 1.5 ثانية. تزيد الرتبة السرعة."
+  ]
+};
+const ui={
+  "en": [
+    "Adventure level",
+    "Talent points",
+    "Close",
+    "Companion equipped",
+    "One point per adventure level. Max each parent to continue. New element paths open at levels 11 and 21. Equip one pet.",
+    "Free reset returns all talent points."
+  ],
+  "zh-Hant": [
+    "冒險等級",
+    "天賦點",
+    "關閉",
+    "已攜帶寵物",
+    "冒險每升一級獲得 1 點；前置升滿才能繼續。11、21 級開放更多元素路線，可混搭能力。最多攜帶一隻寵物。",
+    "免費重置，全額退還天賦點。"
+  ],
+  "zh-Hans": [
+    "冒险等级",
+    "天赋点",
+    "关闭",
+    "已携带宠物",
+    "冒险每升一级获得 1 点；前置升满才能继续。11、21 级开放更多元素路线，可混搭能力。最多携带一只宠物。",
+    "免费重置，全额退还天赋点。"
+  ],
+  "ja": [
+    "冒険レベル",
+    "才能ポイント",
+    "閉じる",
+    "ペット装備中",
+    "冒険レベルごとに1ポイント。前提を最大にして進みます。レベル11と21で別の属性を解放。ペットは1体。",
+    "無料リセットで全ポイント返還。"
+  ],
+  "ko": [
+    "모험 레벨",
+    "특성 포인트",
+    "닫기",
+    "펫 장착됨",
+    "모험 레벨마다 1포인트. 이전 능력을 최대로 올려 진행하세요. 11, 21레벨에 새 원소 경로가 열립니다. 펫은 1마리.",
+    "무료 초기화로 모든 포인트 반환."
+  ],
+  "es": [
+    "Nivel de aventura",
+    "Puntos de talento",
+    "Cerrar",
+    "Mascota equipada",
+    "Un punto por nivel de aventura. Completa cada requisito. Nuevas rutas elementales en los niveles 11 y 21. Una mascota equipada.",
+    "Reinicio gratis: se devuelven todos los puntos."
+  ],
+  "pt-BR": [
+    "Nível de aventura",
+    "Pontos de talento",
+    "Fechar",
+    "Pet equipado",
+    "Um ponto por nível de aventura. Maximize os requisitos. Novas rotas nos níveis 11 e 21. Equipe um pet.",
+    "Redefinição grátis devolve todos os pontos."
+  ],
+  "fr": [
+    "Niveau d’aventure",
+    "Points de talent",
+    "Fermer",
+    "Compagnon équipé",
+    "Un point par niveau d’aventure. Maximisez les prérequis. Nouvelles voies aux niveaux 11 et 21. Un seul compagnon équipé.",
+    "La réinitialisation gratuite rend tous les points."
+  ],
+  "de": [
+    "Abenteuerstufe",
+    "Talentpunkte",
+    "Schließen",
+    "Begleiter ausgerüstet",
+    "Ein Punkt je Abenteuerstufe. Voraussetzungen maximieren. Neue Elementpfade auf Stufe 11 und 21. Ein Begleiter ausrüstbar.",
+    "Kostenloses Zurücksetzen erstattet alle Punkte."
+  ],
+  "it": [
+    "Livello avventura",
+    "Punti talento",
+    "Chiudi",
+    "Compagno equipaggiato",
+    "Un punto per livello avventura. Massimizza i requisiti. Nuovi percorsi ai livelli 11 e 21. Un solo compagno equipaggiato.",
+    "Il ripristino gratuito restituisce tutti i punti."
+  ],
+  "ru": [
+    "Уровень приключения",
+    "Очки талантов",
+    "Закрыть",
+    "Спутник выбран",
+    "Одно очко за уровень приключения. Улучшайте предыдущий узел до предела. Новые пути на уровнях 11 и 21. Один спутник.",
+    "Бесплатный сброс возвращает все очки."
+  ],
+  "hi": [
+    "साहसिक स्तर",
+    "प्रतिभा अंक",
+    "बंद करें",
+    "साथी सुसज्जित",
+    "हर साहसिक स्तर पर एक अंक। पिछला कौशल पूरा बढ़ाएँ। स्तर 11 और 21 पर नए तत्व मार्ग। एक साथी रख सकते हैं।",
+    "मुफ्त रीसेट से सभी अंक वापस मिलते हैं।"
+  ],
+  "ar": [
+    "مستوى المغامرة",
+    "نقاط المواهب",
+    "إغلاق",
+    "الرفيق مجهز",
+    "نقطة لكل مستوى مغامرة. أكمل رتبة المتطلب السابق. مسارات جديدة في المستويين 11 و21. رفيق واحد فقط.",
+    "إعادة الضبط المجانية تعيد كل النقاط."
+  ]
+};
+const base=window.CrystalTalents.copy;window.CrystalTalents.copy=locale=>{const c=base(locale),code=ui[locale]?locale:"en",r=ui[code];return {...c,adventureLevel:r[0],points:r[1],treeClose:r[2],petActive:r[3],routeHint:r[4],pointRefund:r[5],names:{...c.names,...Object.fromEntries(ids.map((id,i)=>[id,names[code][i]]))},descriptions:{...c.descriptions,...Object.fromEntries(ids.map((id,i)=>[id,descriptions[code][i]]))}};};
+})();
+
+(()=>{const notes={"en": "Adventure XP is awarded after battle; this level persists between runs.", "zh-Hant": "冒險經驗於戰鬥結算時取得；冒險等級會永久保留，與局內升級分開。", "zh-Hans": "冒险经验在战斗结算时获得；冒险等级永久保留，与局内升级分开。", "ja": "冒険経験値は戦闘終了時に獲得し、レベルは次の戦闘にも引き継ぎます。", "ko": "모험 경험치는 전투 정산 때 받으며 모험 레벨은 다음 전투에도 유지됩니다.", "es": "La experiencia de aventura se obtiene al terminar y su nivel se conserva entre partidas.", "pt-BR": "A experiência de aventura é recebida ao concluir a batalha e seu nível persiste entre partidas.", "fr": "L’expérience d’aventure est gagnée en fin de combat ; ce niveau persiste entre les parties.", "de": "Abenteuer-EP gibt es am Kampfende. Diese Stufe bleibt zwischen Runden erhalten.", "it": "L’esperienza avventura si ottiene a fine battaglia; questo livello resta tra le partite.", "ru": "Опыт приключения начисляется после боя. Этот уровень сохраняется между боями.", "hi": "साहसिक अनुभव लड़ाई के अंत में मिलता है। यह स्तर अगले खेल में भी बना रहता है।", "ar": "تُمنح خبرة المغامرة بعد المعركة ويُحفظ هذا المستوى بين الجولات."};const base=window.CrystalTalents.copy;window.CrystalTalents.copy=locale=>{const c=base(locale);return {...c,routeHint:c.routeHint+" "+(notes[locale]||notes.en)}}})();

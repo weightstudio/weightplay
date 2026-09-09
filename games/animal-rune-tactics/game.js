@@ -23,9 +23,9 @@
     resultSquadArt.setAttribute("aria-hidden", "true");
     [
       ["result-clear-fx", "animal-rune-tactics-fx-mission-clear.webp"],
-      ["result-hero result-hero-lion", "animal-rune-tactics-hero-lion.webp"],
-      ["result-hero result-hero-owl", "animal-rune-tactics-hero-owl.webp"],
-      ["result-hero result-hero-turtle", "animal-rune-tactics-hero-turtle.webp"],
+      ["result-hero result-hero-lion", "animal-rune-tactics-hero-lion-block-v1.webp"],
+      ["result-hero result-hero-owl", "animal-rune-tactics-hero-owl-block-v1.webp"],
+      ["result-hero result-hero-turtle", "animal-rune-tactics-hero-turtle-block-v1.webp"],
     ].forEach(([className, source]) => {
       const image = document.createElement("img");
       image.className = className;
@@ -1420,30 +1420,30 @@
   });
 
   const heroDefs = [
-    { id: "lion", name: "lion", role: "lionRole", img: "weightplay-boom-mane-lion.png", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
-    { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl.png", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
-    { id: "turtle", name: "turtle", role: "turtleRole", img: "animal-rune-tactics-hero-turtle.png", hp: 9, atk: 1, skillName: "skillTurtle", skillDesc: "skillTurtleDesc", skill: "animal-rune-tactics-skill-turtle-guard.webp" },
+    { id: "lion", name: "lion", role: "lionRole", img: "animal-rune-tactics-hero-lion-block-v1.webp", hp: 7, atk: 3, skillName: "skillLion", skillDesc: "skillLionDesc", skill: "animal-rune-tactics-skill-lion-strike.webp" },
+    { id: "owl", name: "owl", role: "owlRole", img: "animal-rune-tactics-hero-owl-block-v1.webp", hp: 5, atk: 2, range: 2, skillName: "skillOwl", skillDesc: "skillOwlDesc", skill: "animal-rune-tactics-skill-owl-rune-bolt.webp" },
+    { id: "turtle", name: "turtle", role: "turtleRole", img: "animal-rune-tactics-hero-turtle-block-v1.webp", hp: 9, atk: 1, skillName: "skillTurtle", skillDesc: "skillTurtleDesc", skill: "animal-rune-tactics-skill-turtle-guard.webp" },
   ];
 
   const enemyDefs = [
-    { id: "wolf", name: "wolf", img: "animal-rune-tactics-enemy-wolf.png", hp: 5, atk: 2, trait: "traitWolf" },
-    { id: "raven", name: "raven", img: "animal-rune-tactics-enemy-raven.png", hp: 4, atk: 2, range: 2, trait: "traitRaven" },
-    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag.png", hp: 12, atk: 3, trait: "traitStag", bossKit: "stag" },
-    { id: "boar", name: "boar", img: "animal-gearpack-expedition-enemy-armored-boar.webp", hp: 7, atk: 2, trait: "traitBoar" },
-    { id: "runeFox", name: "runeFox", img: "animal-gearpack-expedition-enemy-fox-scout.webp", hp: 5, atk: 2, trait: "traitRuneFox" },
-    { id: "tideTurtle", name: "tideTurtle", img: "animal-rune-tactics-hero-turtle.png", hp: 8, atk: 1, trait: "traitTideTurtle" },
-    { id: "heron", name: "heron", img: "animal-rune-tactics-enemy-raven.png", hp: 5, atk: 2, range: 2, trait: "traitHeron" },
-    { id: "salamander", name: "salamander", img: "shadow-wolf-enemy-bat.webp", hp: 6, atk: 2, trait: "traitSalamander" },
-    { id: "ram", name: "ram", img: "weightplay-character-gear-horn-rhino.png", hp: 8, atk: 3, trait: "traitRam" },
-    { id: "moth", name: "moth", img: "weightplay-character-moon-cap-owl-cutout.webp", hp: 5, atk: 1, range: 2, trait: "traitMoth" },
-    { id: "archiveOwl", name: "archiveOwl", img: "animal-auto-squad-boss-eclipse-archowl.webp", hp: 7, atk: 2, range: 2, trait: "traitArchiveOwl" },
-    { id: "mirrorWolf", name: "mirrorWolf", img: "animal-crystal-survivor-shadow-fox-v2.webp", hp: 6, atk: 2, trait: "traitMirrorWolf" },
-    { id: "sealRaven", name: "sealRaven", img: "animal-rune-tactics-enemy-raven.png", hp: 6, atk: 2, range: 2, trait: "traitSealRaven" },
-    { id: "rhinoBoss", name: "rhinoBoss", img: "animal-rune-tactics-boss-ironroot-rhino.png", hp: 18, atk: 3, trait: "traitRhinoBoss", bossKit: "rhino" },
-    { id: "serpentBoss", name: "serpentBoss", img: "animal-rune-tactics-boss-mirecoil-serpent.png", hp: 20, atk: 3, range: 2, trait: "traitSerpentBoss", bossKit: "serpent" },
-    { id: "emberLionBoss", name: "emberLionBoss", img: "animal-rune-tactics-boss-embermane-lion.png", hp: 22, atk: 4, trait: "traitEmberLionBoss", bossKit: "emberLion" },
-    { id: "griffinBoss", name: "griffinBoss", img: "animal-rune-tactics-boss-eclipse-griffin.png", hp: 24, atk: 4, range: 2, trait: "traitGriffinBoss", bossKit: "griffin" },
-    { id: "chimeraBoss", name: "chimeraBoss", img: "animal-rune-tactics-boss-rune-crown-chimera.png", hp: 28, atk: 4, trait: "traitChimeraBoss", bossKit: "chimera" },
+    { id: "wolf", name: "wolf", img: "animal-rune-tactics-enemy-wolf-block-v1.webp", hp: 5, atk: 2, trait: "traitWolf" },
+    { id: "raven", name: "raven", img: "animal-rune-tactics-enemy-raven-block-v1.webp", hp: 4, atk: 2, range: 2, trait: "traitRaven" },
+    { id: "stag", name: "stag", img: "animal-rune-tactics-boss-stag-block-v1.webp", hp: 12, atk: 3, trait: "traitStag", bossKit: "stag" },
+    { id: "boar", name: "boar", img: "animal-rune-tactics-enemy-boar-block-v1.webp", hp: 7, atk: 2, trait: "traitBoar" },
+    { id: "runeFox", name: "runeFox", img: "animal-rune-tactics-enemy-rune-fox-block-v1.webp", hp: 5, atk: 2, trait: "traitRuneFox" },
+    { id: "tideTurtle", name: "tideTurtle", img: "animal-rune-tactics-hero-turtle-block-v1.webp", hp: 8, atk: 1, trait: "traitTideTurtle" },
+    { id: "heron", name: "heron", img: "animal-rune-tactics-enemy-heron-block-v1.webp", hp: 5, atk: 2, range: 2, trait: "traitHeron" },
+    { id: "salamander", name: "salamander", img: "animal-rune-tactics-enemy-salamander-block-v1.webp", hp: 6, atk: 2, trait: "traitSalamander" },
+    { id: "ram", name: "ram", img: "animal-rune-tactics-enemy-ram-block-v1.webp", hp: 8, atk: 3, trait: "traitRam" },
+    { id: "moth", name: "moth", img: "animal-rune-tactics-enemy-moth-block-v1.webp", hp: 5, atk: 1, range: 2, trait: "traitMoth" },
+    { id: "archiveOwl", name: "archiveOwl", img: "animal-rune-tactics-enemy-archive-owl-block-v1.webp", hp: 7, atk: 2, range: 2, trait: "traitArchiveOwl" },
+    { id: "mirrorWolf", name: "mirrorWolf", img: "animal-rune-tactics-enemy-mirror-wolf-block-v1.webp", hp: 6, atk: 2, trait: "traitMirrorWolf" },
+    { id: "sealRaven", name: "sealRaven", img: "animal-rune-tactics-enemy-raven-block-v1.webp", hp: 6, atk: 2, range: 2, trait: "traitSealRaven" },
+    { id: "rhinoBoss", name: "rhinoBoss", img: "animal-rune-tactics-boss-ironroot-rhino-block-v1.webp", hp: 18, atk: 3, trait: "traitRhinoBoss", bossKit: "rhino" },
+    { id: "serpentBoss", name: "serpentBoss", img: "animal-rune-tactics-boss-mirecoil-serpent-block-v1.webp", hp: 20, atk: 3, range: 2, trait: "traitSerpentBoss", bossKit: "serpent" },
+    { id: "emberLionBoss", name: "emberLionBoss", img: "animal-rune-tactics-boss-embermane-lion-block-v1.webp", hp: 22, atk: 4, trait: "traitEmberLionBoss", bossKit: "emberLion" },
+    { id: "griffinBoss", name: "griffinBoss", img: "animal-rune-tactics-boss-eclipse-griffin-block-v1.webp", hp: 24, atk: 4, range: 2, trait: "traitGriffinBoss", bossKit: "griffin" },
+    { id: "chimeraBoss", name: "chimeraBoss", img: "animal-rune-tactics-boss-rune-crown-chimera-block-v1.webp", hp: 28, atk: 4, trait: "traitChimeraBoss", bossKit: "chimera" },
   ];
 
   const rewardPool = [
