@@ -4,7 +4,7 @@
   const base = new URL('.', document.currentScript.src);
   const [{ Match, WIDTH, HEIGHT }, { COPY, ROUTES }] = await Promise.all([import(new URL('engine.mjs',base)),import(new URL('locale.mjs',base))]);
   const asset = name => new URL('../../assets/'+name,base).href;
-  const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=10',base); document.head.append(style);
+  const style=document.createElement('link'); style.rel='stylesheet'; style.href=new URL('pong.css?v=11',base); document.head.append(style);
   let locale=Object.keys(ROUTES).find(key=>location.pathname.startsWith('/'+ROUTES[key]+'/'))||document.documentElement.lang;
   if(!COPY[locale]) locale='en';
   let t=COPY[locale], difficulty=0, sound=true, wins=[0,0,0];
@@ -13,22 +13,23 @@
   let match=new Match(difficulty), screen='main', frame=0, previous=0, audio=null, lastTone=0;
   const held=new Set();
   document.body.classList.add('pong-realtime');
-  Object.assign(document.body.dataset,{gameId:'pong',wpGameId:'pong',gameVersion:'v10',screen:'main',audience:'general'});
+  Object.assign(document.body.dataset,{gameId:'pong',wpGameId:'pong',gameVersion:'v11',screen:'main',audience:'general',runtimeLocalize:'off'});
   document.body.innerHTML=`<main id="pongApp">
   <section id="mainScreen" class="pw-main" data-wp-scene="main">
-    <header class="pw-header"><a class="pw-return" data-wp-return="main" href="/${ROUTES[locale]}/"><span>←</span><img src="${asset('weightplay-logo.png')}" alt=""></a><h1></h1><button id="settingsBtn" class="pw-icon">⚙</button></header>
-    <div class="pw-intro"><img class="pw-poster" src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy"><p id="summary"></p><p id="record"></p><button id="startBtn" class="pw-primary"></button></div></div>
-    <button id="guideBtn" class="pw-guide-link"></button><section id="publicGuide" class="pw-guide"></section>
+    <header class="pw-header"><a class="pw-return" data-wp-return="main" href="/${ROUTES[locale]}/"><span>←</span><img src="${asset('weightplay-logo.png')}" alt=""></a><h1></h1><button id="settingsBtn" class="pw-icon" data-wp-settings>⚙</button></header>
+    <div class="pw-intro"><img class="pw-poster main-poster" src="${asset('pong-cover-v1.webp')}" width="1254" height="1254" alt=""><div class="pw-copy"><p id="summary" class="main-summary"></p><p id="record"></p><button id="startBtn" class="pw-primary" data-wp-main-start></button></div></div>
+    <button id="guideBtn" class="pw-guide-link"></button>
   </section>
+  <section id="publicGuide" class="pw-main pw-guide game-page-info" data-wp-game-guide></section>
   <section id="battleScreen" class="pw-battle" data-wp-scene="battle" hidden>
     <div class="pw-canvas" data-wp-logical-battle-canvas><div id="livePanel">
       <header class="pw-hud"><button id="battleBackBtn" class="pw-icon" data-wp-return="battle">←</button><div id="score" class="pw-score" dir="ltr"></div><button id="battleSettingsBtn" class="pw-icon" data-wp-battle-utility="true">⚙</button></header>
       <div id="courtWrap"><canvas id="court" width="600" height="600" tabindex="0"></canvas><div id="courtCue" class="pw-court-cue"></div></div>
-      <p id="gameMessage" role="status" aria-live="polite"></p><div class="pw-controls"><button id="leftBtn">◀</button><button id="serveBtn" class="pw-primary"></button><button id="rightBtn">▶</button></div>
+      <p id="gameMessage" role="status" aria-live="polite"></p><div class="pw-controls"><button id="leftBtn">◀</button><button id="serveBtn" class="pw-primary" data-wp-primary-action></button><button id="rightBtn">▶</button></div>
     </div><section id="resultPanel" hidden><h2 id="resultTitle"></h2><p id="resultScore" dir="ltr"></p><p id="resultCopy"></p><div class="pw-result-actions"><button id="homeBtn"></button><button id="retryBtn" class="pw-primary"></button></div></section></div>
-    <div class="pw-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
+    <div class="pw-reserve battle-ad-reserve" data-wp-battle-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
   </section>
-  <dialog id="settings"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn"></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
+  <dialog id="settings"><h2></h2><label id="difficultyLabel" for="difficulty"></label><select id="difficulty"></select><label id="localeLabel" for="localeSelect"></label><select id="localeSelect"></select><button id="soundBtn" data-sound-toggle></button><button id="helpInSettings"></button><button id="closeSettings" class="pw-primary"></button></dialog>
   <dialog id="help"><h2></h2><div id="helpCopy"></div><button id="closeHelp" class="pw-primary"></button></dialog></main>`;
   const $=id=>document.getElementById(id), canvas=$('court'), ctx=canvas.getContext('2d'), set=(id,text)=>{$(id).textContent=text;};
   const languages={en:'English','zh-Hant':'繁體中文','zh-Hans':'简体中文',ja:'日本語',ko:'한국어',es:'Español','pt-BR':'Português',fr:'Français',de:'Deutsch',it:'Italiano',ru:'Русский',hi:'हिन्दी',ar:'العربية'};
@@ -78,8 +79,8 @@
     const events=match.step(dt);if(events.includes('hit'))beep();if(events.includes('point')){beep(true);hud();}draw();if(match.phase==='finished')finish();else if(match.phase==='playing')frame=requestAnimationFrame(tick);
   }
   function launch(){if(screen!=='battle'||$('settings').open||$('help').open||match.phase==='finished')return;unlockSound();if(match.phase==='playing'){pause();return;}if(match.phase==='paused')match.resume();else match.serve();previous=0;hud();draw();if(!frame)frame=requestAnimationFrame(tick);}
-  function start(){stop();match=new Match(difficulty);screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('resultPanel').hidden=true;window.scrollTo(0,0);hud();draw();$('serveBtn').focus();}
-  function home(){pause();screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('battleScreen').hidden=true;localize();$('startBtn').focus();}
+  function start(){stop();match=new Match(difficulty);screen='battle';document.body.dataset.screen='battle';document.documentElement.classList.add('pw-active');$('mainScreen').hidden=true;$('publicGuide').hidden=true;$('battleScreen').hidden=false;$('livePanel').hidden=false;$('livePanel').inert=false;$('resultPanel').hidden=true;window.scrollTo(0,0);hud();draw();$('serveBtn').focus();}
+  function home(){pause();screen='main';document.body.dataset.screen='main';document.documentElement.classList.remove('pw-active');$('mainScreen').hidden=false;$('publicGuide').hidden=false;$('battleScreen').hidden=true;localize();$('startBtn').focus();}
   $('startBtn').onclick=start;$('retryBtn').onclick=start;$('homeBtn').onclick=home;$('battleBackBtn').onclick=home;$('serveBtn').onclick=launch;
   const openSettings=()=>{pause();$('settings').showModal();};$('settingsBtn').onclick=openSettings;$('battleSettingsBtn').onclick=openSettings;$('closeSettings').onclick=()=>$('settings').close();
   const openHelp=()=>{pause();if($('settings').open)$('settings').close();$('help').showModal();};$('guideBtn').onclick=openHelp;$('helpInSettings').onclick=openHelp;$('closeHelp').onclick=()=>$('help').close();

@@ -1,5 +1,7 @@
 import * as THREE from '../animal-skyspire-drop/vendor/three/three.module.min.js';
 import {propParts} from './block-props.mjs?v=1';
+// Display only: 70% of the former 1.25 multiplier. Keep simulation geometry.
+export const HERO_VISUAL_SCALE = 0.875;
 
 // Pinned r180. Simulation coordinates remain authoritative; this renderer has
 // no timers, input, saves, collisions or independent animation loop.
@@ -113,7 +115,7 @@ export class LionDefense3D {
     const scale=Math.min(devicePixelRatio||1,1.5,1200/Math.max(cssWidth,cssHeight));
     const rw=Math.max(1,Math.round(cssWidth*scale)),rh=Math.max(1,Math.round(cssHeight*scale));
     if(rw!==this.rw||rh!==this.rh){this.rw=rw;this.rh=rh;this.renderer.setSize(rw,rh,false);}
-    const records=[{key:'hero',kind:'lion',x:state.hero.x,y:state.hero.y,size:state.hero.width*1.25,hp:1,maxHp:1},...state.enemies.filter(e=>e.hp>0).map(e=>({key:e,kind:e.type.id,...e}))];
+    const records=[{key:'hero',kind:'lion',x:state.hero.x,y:state.hero.y,size:state.hero.width*HERO_VISUAL_SCALE,hp:1,maxHp:1},...state.enemies.filter(e=>e.hp>0).map(e=>({key:e,kind:e.type.id,...e}))];
     const live=new Set();
     for(const record of records){
       live.add(record.key);let actor=this.actors.get(record.key);

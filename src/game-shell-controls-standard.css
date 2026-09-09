@@ -643,6 +643,16 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 420px;
   }
 
+  /* Spectrum Pulse v17 keeps the governed compact-landscape Main poster on
+     the canonical 420px column instead of the height-derived 310px clamp. */
+  body[data-wp-game-id="animal-spectrum-pulse"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
+  body[data-wp-game-id="animal-spectrum-pulse"] .stage-canvas {
+    grid-template-rows: 58px 44px minmax(0, 1fr) !important;
+  }
+
   /* Maze Chase uses the shared standard Main composition after its native
      classic shell is normalized. Keep its compact landscape poster column at
      the exact Interface 6 acceptance size without changing other chase games. */

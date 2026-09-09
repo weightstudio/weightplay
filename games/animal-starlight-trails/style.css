@@ -83,12 +83,12 @@ body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle
   .main-progress strong{font-size:15px}
   .main-progress span{font-size:11px}
   .main-copy .primary-action{min-height:48px}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-composition{grid-template-columns:300px minmax(0,1fr)!important;gap:14px;padding:6px 10px!important}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster{width:300px!important;height:300px!important}
+  body[data-game-id="animal-starlight-trails"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px;grid-template-columns:420px minmax(0,1fr)!important;gap:14px;padding:6px 10px!important}
+  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster{width:420px!important;height:420px!important}
   body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster-media,
   body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster-media>img,
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster>img{width:300px!important;min-width:300px!important;max-width:300px!important;height:300px!important;min-height:300px!important;max-height:300px!important}
-  body[data-game-id="animal-starlight-trails"] .wp-standard-main-copy{height:300px!important;gap:6px}
+  body[data-game-id="animal-starlight-trails"] .wp-standard-main-poster>img{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
+  body[data-game-id="animal-starlight-trails"] .wp-standard-main-copy{height:420px!important;gap:6px}
   .stage-canvas{grid-template-rows:120px minmax(0,1fr) 198px}
   body[data-game-id="animal-starlight-trails"] .stage-header{grid-template-columns:104px minmax(0,1fr) 104px!important}
   body[data-game-id="animal-starlight-trails"] .stage-header>button:first-child,

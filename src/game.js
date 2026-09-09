@@ -1,8 +1,7 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
-defenseModuleUrl.search = '?v=21-block-props';
-defenseModuleUrl.search = 'v=20260909-wonder-crash-v20-complete-block-art';
+defenseModuleUrl.search = '?v=22-hero-size';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
