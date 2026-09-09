@@ -137,7 +137,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
 .ad-reserve {
   width: min(100%, 920px);
   height: 56px;
-  margin: auto;
+  margin: 0 auto;
   background: #030912;
 }
 .scene-header {
@@ -383,7 +383,7 @@ body:not([data-screen="main"]) > .game-page-info { display: none !important; }
 .queues {
   min-height: 0;
   width: min(100%, 760px);
-  margin: auto;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -622,25 +622,25 @@ dialog button:disabled { opacity: .42; cursor: not-allowed; }
   .stage-card { top: -3%; }
 
   .wp-standard-main-composition {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
     gap: 16px !important;
     padding: 4px 14px !important;
   }
   .wp-standard-main-poster {
-    width: 300px !important;
-    height: 300px !important;
+    width: 420px !important;
+    height: 420px !important;
   }
   #main .wp-standard-main-poster-media,
   #main .wp-standard-main-poster-media > img,
   #main .wp-standard-main-poster > img {
-    width: 300px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    height: 300px !important;
-    min-height: 300px !important;
-    max-height: 300px !important;
+    width: 420px !important;
+    min-width: 420px !important;
+    max-width: 420px !important;
+    height: 420px !important;
+    min-height: 420px !important;
+    max-height: 420px !important;
   }
-  .wp-standard-main-copy { height: 300px !important; gap: 8px !important; }
+  .wp-standard-main-copy { height: 420px !important; gap: 8px !important; }
   .canvas { min-height: 0; }
   .scene-header { height: 60px; padding: 6px 12px; }
   .stage { grid-template-rows: 60px minmax(0, 1fr) 56px; }

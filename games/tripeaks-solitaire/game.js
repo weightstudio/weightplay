@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v26";
+  document.body.dataset.gameVersion = "v27";
   document.body.dataset.cardDeck = 'klondike';
   const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const TRIPEAKS_DYNAMIC_COPY = Object.freeze({

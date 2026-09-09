@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-paths-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-companion-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -2459,12 +2459,49 @@
     const p=state.player,id=["petFire","petIce","petStorm"].find(id=>p.talents[id]);
     if(!id){state.pet=null;return;}
     const element={petFire:"fire",petIce:"ice",petStorm:"storm"}[id];
-    state.pet ||= {x:p.x-65,y:p.y+55,element};
-    const pet=state.pet,followX=Math.max(24,Math.min(W-24,p.x-65)),followY=Math.max(24,Math.min(H-24,p.y+55));
-    pet.x+=(followX-pet.x)*Math.min(1,dt*5);pet.y+=(followY-pet.y)*Math.min(1,dt*5);
+    state.pet ||= {x:p.x-65,y:p.y+55,element,vx:0,vy:0,decisionTimer:0,phase:2.4,behavior:"roam"};
+    const pet=state.pet;
+    const bound=(value,max)=>Math.max(24,Math.min(max-24,value));
+    const playerDistance=Math.hypot(p.x-pet.x,p.y-pet.y);
+    // A hysteretic leash lets the companion linger and explore without stranding it.
+    if(playerDistance>240)pet.behavior="return";
+    else if(pet.behavior==="return"&&playerDistance<115){pet.behavior="roam";pet.decisionTimer=0;}
+    let target=null,best=340;
+    for(const enemy of state.enemies){
+      const distance=Math.hypot(enemy.x-pet.x,enemy.y-pet.y);
+      if(enemy.hp>0&&distance<best){target=enemy;best=distance;}
+    }
+    pet.decisionTimer-=dt;
+    if(pet.behavior==="return"){
+      pet.goalX=bound(p.x-45,W);pet.goalY=bound(p.y+35,H);
+    } else if(pet.decisionTimer<=0){
+      pet.phase+=2.399963;
+      pet.decisionTimer=1.5+(Math.sin(pet.phase)+1)*.4;
+      if(target){
+        pet.behavior="engage";
+        const angle=Math.atan2(p.y-target.y,p.x-target.x)+Math.sin(pet.phase)*.7;
+        pet.goalX=target.x+Math.cos(angle)*155;pet.goalY=target.y+Math.sin(angle)*155;
+      } else {
+        pet.behavior="roam";
+        const radius=85+(Math.sin(pet.phase*.7)+1)*30;
+        pet.goalX=p.x+Math.cos(pet.phase)*radius;pet.goalY=p.y+Math.sin(pet.phase)*radius;
+      }
+      // Combat curiosity stays near the owner; goals remain fixed between decisions.
+      const dx=pet.goalX-p.x,dy=pet.goalY-p.y,length=Math.hypot(dx,dy)||1;
+      if(length>200){pet.goalX=p.x+dx/length*200;pet.goalY=p.y+dy/length*200;}
+      pet.goalX=bound(pet.goalX,W);pet.goalY=bound(pet.goalY,H);
+    }
+    const dx=pet.goalX-pet.x,dy=pet.goalY-pet.y,distance=Math.hypot(dx,dy)||1;
+    const speed=pet.behavior==="return"?350:pet.behavior==="engage"?195:145;
+    const desiredSpeed=distance<12?0:Math.min(speed,distance*4);
+    const steering=Math.min(1,dt*7);
+    pet.vx+=(dx/distance*desiredSpeed-pet.vx)*steering;
+    pet.vy+=(dy/distance*desiredSpeed-pet.vy)*steering;
+    pet.x=bound(pet.x+pet.vx*dt,W);pet.y=bound(pet.y+pet.vy*dt,H);
     p.petTimer-=dt;
-    const target=state.enemies.filter(e=>e.hp>0&&Math.hypot(e.x-pet.x,e.y-pet.y)<340).sort((a,b)=>Math.hypot(a.x-pet.x,a.y-pet.y)-Math.hypot(b.x-pet.x,b.y-pet.y))[0];
-    if(!target)return;pet.aimX=target.x;pet.aimY=target.y;
+    if(target){pet.aimX=target.x;pet.aimY=target.y;}
+    else if(Math.hypot(pet.vx,pet.vy)>8){pet.aimX=pet.x+pet.vx;pet.aimY=pet.y+pet.vy;}
+    if(!target)return;
     if(p.petTimer<=0){p.petTimer=p.talents[id]===2?1.2:1.8;state.shots.push({x:pet.x,y:pet.y,px:pet.x,py:pet.y,originX:pet.x,originY:pet.y,age:0,target,speed:460,damage:p.damage*.75,pet:element});}
   }
   function updateShots(dt) {

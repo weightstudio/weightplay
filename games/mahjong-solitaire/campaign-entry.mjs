@@ -38,6 +38,8 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
  setLocale(currentLocale);main.refresh();
  document.addEventListener('visibilitychange',()=>{if(document.hidden)sound.stop()},{signal:lifetime.signal});
  async function dispose(){if(disposed)return;disposed=true;lifetime.abort();app.dispose();main.dispose();await sound.dispose();}
- window.addEventListener('pagehide',dispose,{once:true,signal:lifetime.signal});
+ // A cached document is frozen, not destroyed. Close transient audio without
+ // discarding the mounted session; its next input can create a new voice.
+ window.addEventListener('pagehide',event=>{if(event.persisted)sound.stop();else dispose()},{signal:lifetime.signal});
  return Object.freeze({dispose});
 }

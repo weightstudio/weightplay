@@ -1,5 +1,7 @@
 (function () {
   "use strict";
+  document.body.dataset.gameVersion = 'v39';
+  document.body.dataset.cardDeck = 'klondike';
 
   const {
     SUITS,

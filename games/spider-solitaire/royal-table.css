@@ -1,25 +1,20 @@
 /* Presentation only. Keep Spider's native geometry, pooling and drag ownership. */
-body[data-wp-game-id="spider-solitaire"] { --sp-red: #aa2438; }
+body[data-wp-game-id="spider-solitaire"] { --sp-red: #d9534f; }
 body[data-wp-game-id="spider-solitaire"] .board-shell {
   background: #064632 url('/assets/card-table/emerald-table-v1.webp') center / cover no-repeat;
   border-color: #bba36b;
   box-shadow: inset 0 0 0 2px #42321e, inset 0 0 35px #001c1780, 0 14px 30px #0005;
 }
-.card.front { background: #fff9ea; border-color: #d7c8a5; border-radius: 6px; }
+.card.front { background: linear-gradient(145deg,#fffefaec,#fff8e9ed), url('/assets/klondike-solitaire-cards.webp') center/cover; border-color: #d7c8a5; border-radius: 6px; }
 .card.back { background: #083e30 url('/assets/klondike-solitaire-card-back.webp') center / 100% 100% no-repeat; border-color: #d4be80; border-radius: 6px; }
 .card-back-pattern { visibility: hidden; }
-.card .rank-top, .card .rank-bottom { position: absolute; z-index: 2; font-family: Georgia, 'Times New Roman', serif; }
+.card .rank-top, .card .rank-bottom { position: absolute; z-index: 2; font-family: system-ui, sans-serif; }
 .card .rank-top { top: 3px; left: 3px; }
 .card .rank-bottom { bottom: 3px; right: 3px; }
 .card .rank-top::after, .card .rank-bottom::after { content: attr(data-suit); display: inline; margin-left: 1px; font-size: .85em; }
 .card[data-deck-rank] > .suit { visibility: hidden; }
-.card .deck-center { position: absolute; inset: 20% 23%; pointer-events: none; }
-.card .deck-pip { position: absolute; transform: translate(-50%, -50%); line-height: 1; font-size: calc(var(--card-width) * .17); }
-.card .deck-pip.inverted { transform: translate(-50%, -50%) rotate(180deg); }
-.card[data-deck-rank="A"] .deck-pip { font-size: calc(var(--card-width) * .42); }
-.card .deck-court { inset: 20% auto auto 20%; width: 60%; aspect-ratio: 2 / 3; border-radius: 2px; background: url('/assets/card-table/royal-courts-v1.webp') 0 center / 300% 100% no-repeat; }
-.card[data-deck-rank="Q"] .deck-court { background-position-x: 50%; }
-.card[data-deck-rank="J"] .deck-court { background-position-x: 100%; }
+.card .deck-center { position: absolute; inset: 20%; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+.card .deck-pip { line-height: 1; font-size: clamp(14px,calc(var(--card-width) * .42),24px); }
 /* Rank and suit remain visible; artwork must not clutter covered headers. */
 .tableau-pile > .card:not(:last-child) .deck-center { visibility: hidden; }
 .foundation-slot { border: 1px solid #dfc98e80; border-radius: 5px; background-color: #002c2080; }

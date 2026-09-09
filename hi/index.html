@@ -4,7 +4,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#f6f7f2" />
+    <meta name="theme-color" content="#0b202b" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -318,20 +318,6 @@
         <h2 data-i18n="general.play.title">Choose your next game</h2>
       </div>
 
-      <section class="vibe-strip" aria-labelledby="vibeTitle">
-        <h3 id="vibeTitle" data-i18n="filter.all_topics">All Topics</h3>
-        <div class="vibe-options">
-          <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
-          <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
-          <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-          <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
-          <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
-          <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
-          <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-          <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
-        </div>
-      </section>
-
       <div class="lobby-search-row" id="lobbySearchControls">
         <label class="lobby-search" for="gameSearch">
           <span data-i18n="search.label">Search games</span>
@@ -344,6 +330,20 @@
         <button class="active" type="button" data-library-tab="all" data-i18n="library.all_games">All Games</button>
         <button type="button" data-library-tab="recent" data-i18n="library.recent">Recent</button>
         <button type="button" data-library-tab="favorites" data-i18n="library.favorites">Favorites</button>
+      </section>
+
+      <section class="vibe-strip" aria-labelledby="vibeTitle">
+        <h3 id="vibeTitle" data-i18n="filter.all_topics">All Topics</h3>
+        <div class="vibe-options">
+          <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
+          <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
+          <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
+          <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
+          <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
+          <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
+          <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
+          <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
+        </div>
       </section>
 
       <details id="advancedFilters" class="advanced-filters">
@@ -426,7 +426,7 @@
         <div id="recommendations" class="recommendations"></div>
       </section>
 
-      <div class="catalog-heading"><h2 data-i18n="library.all_games">All Games</h2><span id="catalogHallLabel"></span></div>
+      <div class="catalog-heading" id="catalogHeading" tabindex="-1"><h2 data-i18n="library.all_games">All Games</h2><span id="catalogHallLabel"></span></div>
       <section id="gameGrid" class="lobby-grid" aria-label="Game list">
         <!-- adsense-static-catalog:start -->
 <article class="game-card game-card-static playable" data-game-id="animal-peach-oath">

@@ -100,7 +100,7 @@ const latestGamesSection = document.createElement("section");
 latestGamesSection.id = "latestGamesSection";
 latestGamesSection.className = "hero-games-section hidden";
 latestGamesSection.dataset.runtimeLocalize = "off";
-latestGamesSection.innerHTML = '<div class="section-heading"><h2 id="latestGamesTitle"></h2></div><div id="latestGames" class="hero-games"></div>';
+latestGamesSection.innerHTML = '<div class="section-heading"><h2 id="latestGamesTitle"></h2><a class="catalog-jump" href="#catalogHeading"></a></div><div id="latestGames" class="hero-games"></div>';
 if (!isKidsLobby) heroGamesSection.before(latestGamesSection);
 const latestGames = latestGamesSection.querySelector("#latestGames");
 // Owner-selected General spotlight; keeps existing Kids portal and catalog order.
@@ -116,7 +116,7 @@ function renderSpotlight() {
   spotlightSection.hidden = false;
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
-    <div><small>WEIGHTPLAY</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
+    <div><small>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
 }
 
 let firstPublicDates = {};
@@ -1512,6 +1512,7 @@ function renderLatestGames() {
   if (isKidsLobby) return;
   const title = i18n.getLocalized(latestGamesCopy);
   latestGamesSection.querySelector("h2").textContent = title;
+  latestGamesSection.querySelector(".catalog-jump").textContent = `${i18n.t("library.all_games")} →`;
   latestGamesSection.setAttribute("aria-label", title);
   latestGames.replaceChildren(...discoveryCards(latestPublicGames()));
 }
@@ -1998,6 +1999,10 @@ function applyFilter({ historyMode = "replace" } = {}) {
   });
 
   document.body.classList.toggle("discovery-filtered", isFiltered);
+  const catalogHeading = document.querySelector(".catalog-heading h2");
+  if (catalogHeading) catalogHeading.textContent = i18n.t(
+    activeLibrary === "recent" ? "library.recent" : activeLibrary === "favorites" ? "library.favorites" : "library.all_games"
+  );
   heroGamesSection.classList.toggle("hidden", isFiltered);
   latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || latestGames.childElementCount === 0);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);

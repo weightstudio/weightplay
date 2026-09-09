@@ -51,6 +51,8 @@ export function createCampaignBattleView({session,locale,onStages,sound}) {
  dialog.addEventListener('cancel',e=>{e.preventDefault();resume()},{signal:lifetime.signal});
  for(const [action,method] of [['hint','requestHint'],['undo','undo']])root.querySelector(`[data-action=${action}]`).addEventListener('click',()=>{session[method]();render()},{signal:lifetime.signal});
  function dispose(){if(disposed)return;disposed=true;lifetime.abort();dialog.close();boardView?.dispose();result.dispose();root.remove();}
- window.addEventListener('resize',fit,{signal:lifetime.signal});window.visualViewport?.addEventListener('resize',fit,{signal:lifetime.signal});window.addEventListener('pagehide',dispose,{once:true,signal:lifetime.signal});
+ window.addEventListener('resize',fit,{signal:lifetime.signal});window.visualViewport?.addEventListener('resize',fit,{signal:lifetime.signal});
+ window.addEventListener('pagehide',event=>{if(!event.persisted)dispose()},{signal:lifetime.signal});
+ window.addEventListener('pageshow',event=>{if(event.persisted)fit()},{signal:lifetime.signal});
  return {root,render,dispose};
 }

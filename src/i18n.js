@@ -1867,19 +1867,19 @@ const essentialLobbyCopy = {
   });
 
   const discoveryHeroCopy = {
-    "en": "Small breaks. Big adventures.",
-    "zh-Hant": "休息一下，展開大冒險。",
-    "zh-Hans": "休息一下，展开大冒险。",
-    "ja": "ひと休みに、大きな冒険を。",
-    "ko": "잠깐의 휴식, 커다란 모험.",
-    "es": "Una pausa. Una gran aventura.",
-    "pt-BR": "Uma pausa. Grandes aventuras.",
-    "fr": "Petite pause. Grande aventure.",
-    "de": "Kleine Pause. Große Abenteuer.",
-    "it": "Una pausa. Grandi avventure.",
-    "ru": "Короткий отдых. Большие приключения.",
-    "hi": "छोटा सा विराम। बड़ा रोमांच।",
-    "ar": "استراحة قصيرة. مغامرات كبيرة."
+    "en": "Small breaks.\nBig adventures.",
+    "zh-Hant": "休息一下，\n展開大冒險。",
+    "zh-Hans": "休息一下，\n展开大冒险。",
+    "ja": "ひと休みに、\n大きな冒険を。",
+    "ko": "잠깐의 휴식,\n커다란 모험.",
+    "es": "Una pausa.\nUna gran aventura.",
+    "pt-BR": "Uma pausa.\nGrandes aventuras.",
+    "fr": "Petite pause.\nGrande aventure.",
+    "de": "Kleine Pause.\nGroße Abenteuer.",
+    "it": "Una pausa.\nGrandi avventure.",
+    "ru": "Короткий отдых.\nБольшие приключения.",
+    "hi": "छोटा सा विराम।\nबड़ा रोमांच।",
+    "ar": "استراحة قصيرة.\nمغامرات كبيرة."
 };
   Object.entries(discoveryHeroCopy).forEach(([locale, title]) => {
     dictionaries[locale]["discovery.hero_title"] = title;

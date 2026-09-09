@@ -672,11 +672,11 @@ export class Crystal3D {
       }, 1);
     }
     const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
-    const charging = state.enemies.filter(e => (e.isBoss ? ['bossBriar', 'bossTempest'].includes(e.image) : e.role !== 'archer' && (chargingStage || e.role === 'charger')) && e.chargeTimer <= .65);
+    const charging = state.enemies.filter(e => e.chargeAim && e.chargeTimer > 0 && (e.isBoss ? e.image === 'bossBriar' : e.role !== 'archer' && (chargingStage || e.role === 'charger')));
     this.pool('chargeCues', charging.length, () => {
       const cue = new THREE.Group();
       this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
-      this.mesh('voxel', this.magicImpact, cue, 0, 0, 1.6, .18, .02, 3.2);
+      this.mesh('voxel', this.groundGlow, cue, 0, 0, 1.6, .18, .02, 3.2);
       return cue;
     }, (cue, i) => {
       const enemy = charging[i];

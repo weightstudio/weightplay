@@ -1,11 +1,9 @@
 <!doctype html>
 <html lang="ru">
 <head>
-
-    <base href="/games/spider-solitaire/" />
-
     <title>Пасьянс Паук | WeightPlay</title>
 
+    <base href="/games/spider-solitaire/" />
     <link rel="canonical" href="https://weightplay.com/ru/games/spider-solitaire/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/spider-solitaire/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/spider-solitaire/" />
@@ -63,7 +61,7 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
   <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-repair-v38" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
   <meta name="description" content="В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь..." />
     <meta property="og:title" content="Пасьянс Паук | WeightPlay" />
     <meta property="og:description" content="В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь..." />
@@ -75,6 +73,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Пасьянс Паук",
+  "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/ru/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/spider-solitaire-cover.webp",
   "description": "В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь...",
@@ -90,15 +89,13 @@
     "Головоломка",
     "Карты",
     "Стратегия",
-    "Семейная",
-    "Browser Game"
+    "Семейная"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Spider Solitaire"
+  }
 }
     </script>
   </head>
@@ -138,7 +135,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" data-screen="stage" hidden>
-    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
+    <div class="stage-canvas" data-wp-logical-stage-canvas data-wp-standard-stage-screen data-wp-canvas-max-width="920">
       <header class="stage-header">
         <button id="stageBackBtn" class="stage-back" type="button" data-wp-return="stage" data-sl-aria="back"><span aria-hidden="true">&larr;</span></button>
         <div class="stage-title-group">
@@ -149,24 +146,28 @@
       </header>
       <div class="stage-content">
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
-        <div class="difficulty-picker" role="group" data-sl-aria="difficulty_label" aria-label="Difficulty">
+        <div class="difficulty-picker stage-rail" role="group" data-wp-stage-rail data-sl-aria="difficulty_label" aria-label="Difficulty">
           <button type="button" class="difficulty-btn" data-difficulty="1"><span data-sl="one_suit">1 Suit</span><small data-sl="easy">Easy</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="2"><span data-sl="two_suits">2 Suits</span><small data-sl="medium">Medium</small></button>
           <button type="button" class="difficulty-btn" data-difficulty="4"><span data-sl="four_suits">4 Suits</span><small data-sl="hard">Hard</small></button>
         </div>
         <div class="stage-actions">
-          <button id="stageStartBtn" class="primary-btn" type="button" data-sl="start">Start Game</button>
+          <button id="stageStartBtn" class="primary-btn" type="button" data-wp-enter-battle data-sl="start">Start Game</button>
           <button id="restartBtn" class="secondary-btn" type="button" data-sl="restart">Restart Current Game</button>
           <button id="newGameBtn" class="secondary-btn" type="button" data-sl="new_game">New Game</button>
         </div>
+        <nav class="stage-tabs" role="tablist" aria-label="Stage navigation">
+          <button type="button" role="tab" aria-selected="true" data-sl="difficulty_label">Difficulty</button>
+        </nav>
       </div>
     </div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+    <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
       <header class="battle-header">
         <button id="battleBackBtn" type="button" data-wp-return="battle" data-sl-aria="back">&larr;</button>
+        <button id="battleSoundBtn" class="battle-utility" type="button" data-wp-battle-utility aria-pressed="true" data-sl-aria="sound">♫</button>
         <div class="header-stat"><small data-sl="moves">Moves</small><strong id="moveCount">0</strong></div>
         <div class="header-stat"><small data-sl="time">Time</small><strong id="timeValue">00:00</strong></div>
         <div class="header-stat"><small data-sl="score">Score</small><strong id="scoreValue">500</strong></div>
@@ -187,16 +188,16 @@
   </section>
 
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
-  <script src="/src/card-table-presentation.js?v=20260908-royal-v2"></script>
-  <script src="game.js?v=20260908-spider-royal-v37"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-v38"></script>
+  <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
+  <script src="game.js?v=20260909-spider-deck-v39"></script>
+  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
   <section class="game-page-info game-page-info-static" aria-label="Информация об игре Пасьянс Паук">
 
@@ -223,7 +224,7 @@
       <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/klondike-solitaire/"><img src="/assets/lobby-posters/klondike-solitaire-square-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Пасьянс «Клондайк»</strong><span>Классическая игра на 52 карты: соберите четыре основы от туза до короля, управляя раскладом, колодой и сбросом.</span></span></a><a class="game-info-related-card" href="/ru/games/freecell-solitaire/"><img src="/assets/lobby-posters/freecell-library-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Пасьянс «Свободная ячейка»</strong><span>Все 52 карты лежат лицом вверх; используйте четыре свободные ячейки и восемь колонок, чтобы собрать четыре основы от туза до короля.</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260809-card-guide1"></script>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

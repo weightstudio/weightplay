@@ -32,6 +32,6 @@ export function mountMahjongCampaign({main,guide,startButton,locale,storage,main
  }
  const openStages=()=>{session.stages();show();};startButton.addEventListener('click',openStages,{signal:lifetime.signal});
  function dispose(){if(disposed)return;disposed=true;win.cancelAnimationFrame(frame);lifetime.abort();stageView.dispose();battleView.dispose();mainSettings?.dispose();restore();main.hidden=original.mainHidden;guide.hidden=original.guideHidden;if(original.screen===undefined)delete body.dataset.screen;else body.dataset.screen=original.screen;}
- win.addEventListener('pagehide',dispose,{once:true,signal:lifetime.signal});
+ win.addEventListener('pagehide',event=>{if(event.persisted){win.cancelAnimationFrame(frame);frame=0;sound?.stop?.();}else dispose()},{signal:lifetime.signal});
  show();return Object.freeze({session,show,openStages,dispose});
 }

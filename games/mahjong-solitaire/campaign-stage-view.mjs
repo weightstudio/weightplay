@@ -43,6 +43,7 @@ export function createCampaignStageView({locale,progress,activate,home,settings}
  }
  function dispose(){if(disposed)return;disposed=true;lifetime.abort();controller?.destroy();settings?.dispose();root.remove();}
  window.addEventListener('resize',fit,{signal:lifetime.signal});window.visualViewport?.addEventListener('resize',fit,{signal:lifetime.signal});
- window.addEventListener('pagehide',dispose,{once:true,signal:lifetime.signal});
+ window.addEventListener('pagehide',event=>{if(!event.persisted)dispose()},{signal:lifetime.signal});
+ window.addEventListener('pageshow',event=>{if(event.persisted)fit()},{signal:lifetime.signal});
  return {root,refresh,dispose};
 }

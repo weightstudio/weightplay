@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" fill="none">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#6acfb7" stroke-opacity=".07"/>
+      <path d="M0 0H4V4H0Z" fill="#82dbbd" fill-opacity=".13"/>
+    </pattern>
+    <g id="cube">
+      <path d="M0 16 28 0 56 16 28 32Z" fill="currentColor"/>
+      <path d="M0 16 28 32V64L0 48Z" fill="currentColor" opacity=".55"/>
+      <path d="M28 32 56 16V48L28 64Z" fill="currentColor" opacity=".3"/>
+      <path d="m2 17 26 15 26-15M28 33V61" stroke="#d1fff3" stroke-opacity=".28"/>
+    </g>
+  </defs>
+  <path fill="url(#grid)" d="M0 0H1440V960H0Z"/>
+  <g opacity=".26">
+    <use href="#cube" x="28" y="112" color="#48cbb2"/>
+    <use href="#cube" x="84" y="144" color="#34a995"/>
+    <use href="#cube" x="56" y="192" color="#5bd5b9"/>
+    <use href="#cube" x="1312" y="340" color="#efbd62"/>
+    <use href="#cube" x="1368" y="372" color="#f79c63"/>
+    <use href="#cube" x="1284" y="388" color="#db9763"/>
+    <use href="#cube" x="20" y="700" color="#6a9cdc"/>
+    <use href="#cube" x="76" y="732" color="#8cb0e7"/>
+    <use href="#cube" x="1320" y="812" color="#4cc4b2"/>
+  </g>
+  <g fill="#69e0bb" opacity=".17">
+    <path d="M198 79h10v10h-10zM1234 130h8v8h-8zM204 585h6v6h-6zM1167 694h10v10h-10z"/>
+    <path d="M116 477h8v8h-8zM1358 77h6v6h-6zM1210 850h8v8h-8z" fill="#ffd071"/>
+  </g>
+</svg>

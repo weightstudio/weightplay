@@ -70,7 +70,7 @@ body.general-lobby-page .general-hero-scene { object-position: 70% 48%; opacity:
 body.general-lobby-page .lobby-hero::after { background: linear-gradient(90deg, #103c32 0%, rgba(16,60,50,.91) 23%, rgba(16,60,50,.18) 65%, rgba(16,60,50,.08)); }
 body.general-lobby-page .lobby-hero-copy { inset: 29px auto auto 30px; width: 46%; max-width: 490px; text-shadow: none; }
 body.general-lobby-page .hero-eyebrow { display: block; color: #efcf83; font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-bottom: 13px; }
-body.general-lobby-page .lobby-hero-copy h2 { margin: 0; color: #fffef4; font-size: clamp(26px, 3.1vw, 43px); font-weight: 800; line-height: 1.12; letter-spacing: -1px; text-wrap: balance; }
+body.general-lobby-page .lobby-hero-copy h2 { margin: 0; color: #fffef4; font-size: clamp(26px, 3.1vw, 43px); font-weight: 800; line-height: 1.12; letter-spacing: -1px; white-space: pre-line; text-wrap: balance; }
 body.general-lobby-page .lobby-subtitle { margin: 13px 0 0; max-width: 350px; color: #d3e4d9; font-size: 13px; font-weight: 450; line-height: 1.6; }
 body.general-lobby-page #spotlightGameSection { position: absolute; inset: auto 20px 20px auto; width: min(39%, 310px); margin: 0; }
 body.general-lobby-page #spotlightGameSection[hidden] { display: none; }
@@ -118,7 +118,7 @@ body.general-lobby-page #filterStatus { order: 5; color: var(--lobby-ink); margi
 body.general-lobby-page #filterStatus:not(.results-active) { display: none; }
 body.general-lobby-page #filterStatus.results-active { padding: 18px; margin: 2px 0 18px; border: 1px solid var(--lobby-line); border-radius: 12px; background: var(--lobby-paper); }
 body.general-lobby-page #filterStatus button { min-height: 44px; background: #e6eee1; border: 1px solid #bdcdb9; color: #214733; border-radius: 8px; }
-body.general-lobby-page.discovery-filtered .lobby-hero { display: none; }
+body.general-lobby-page .filter-status-chips span { color: #436143; border-color: #d3dec9; background: #edf2e8; }
 
 /* Spacious but compact poster shelves. Complete image composition survives
    hover/focus; no new video source is allocated by this stylesheet. */
@@ -129,6 +129,9 @@ body.general-lobby-page #heroGamesSection { order: 8; }
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0 0 12px; }
 body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading h2 { display: block; order: -1; color: var(--lobby-ink); font-size: 20px; font-weight: 750; line-height: 1.25; }
 body.general-lobby-page .section-heading span { color: #718272; font-size: 11px; font-weight: 500; }
+body.general-lobby-page .catalog-jump { display: inline-flex; min-height: 44px; align-items: center; gap: 6px; color: #3c6548; font-size: 12px; font-weight: 650; text-decoration: none; }
+body.general-lobby-page .catalog-jump:hover { color: #173b32; text-decoration: underline; }
+body.general-lobby-page #catalogHeading { scroll-margin-top: 20px; }
 body.general-lobby-page :is(#latestGames,#heroGames) { gap: 14px; }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: auto 48px; border: 1px solid #d8e0d3; border-radius: 12px; background: var(--lobby-paper); box-shadow: none; color: var(--lobby-ink); }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-copy { width: 100%; max-width: none; }
@@ -139,8 +142,9 @@ body.general-lobby-page .hero-game-art { background: #e4e9df; border-radius: 0; 
 body.general-lobby-page .hero-game-copy { position: relative; display: grid; grid-template-columns: minmax(0,1fr); align-content: center; min-height: 47px; padding: 9px 10px; gap: 0; background: var(--lobby-paper); color: var(--lobby-ink); }
 body.general-lobby-page .hero-game-copy strong { font-size: 13px; line-height: 1.3; font-weight: 700; color: var(--lobby-ink); text-align: start; }
 body.general-lobby-page .hero-game-copy :is(small,em) { display: none; }
-body.general-lobby-page #heroGames .hero-game-copy { padding-inline-start: 43px; }
-body.general-lobby-page .hero-game-rank { position: absolute; inset: 50% auto auto 8px; transform: translateY(-50%); padding: 0; background: none; color: #7a6842; font-size: 12px; }
+body.general-lobby-page #heroGames .hero-game-card { grid-template-rows: auto minmax(64px,auto); }
+body.general-lobby-page #heroGames .hero-game-copy { min-height: 64px; padding: 8px 10px; gap: 4px; }
+body.general-lobby-page .hero-game-rank { position: static; inset: auto; transform: none; order: -1; justify-self: start; max-width: 100%; padding: 0; background: none; color: #7a6842; font-size: 11px; line-height: 1.2; overflow-wrap: anywhere; }
 body.general-lobby-page .hero-game-card:hover { border-color: #6b8e72; box-shadow: 0 6px 14px #24483216; transform: translateY(-2px); }
 body.general-lobby-page .catalog-heading { order: 9; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 20px 0 14px; padding-top: 22px; border-top: 1px solid var(--lobby-line); }
 body.general-lobby-page .catalog-heading h2 { margin: 0; font-size: 22px; color: var(--lobby-ink); }
@@ -162,6 +166,10 @@ body.general-lobby-page :is(#freshUpdatesSection,#recommendationsSection,#challe
 body.general-lobby-page :is(#freshUpdatesSection,#recommendationsSection,#challengeSpotlightSection,#mobilePicksSection,#characterShowcaseSection,#skillPathsSection) :is(h2,h3,strong,p,small,span) { color: var(--lobby-ink); }
 body.general-lobby-page .fresh-update-card { background: var(--lobby-paper); border-color: var(--lobby-line); box-shadow: none; }
 body.general-lobby-page :is(#lobbyAccountStrip,#dailyReward,#lobbyStats) { order: 16; }
+body.general-lobby-page :is(#lobbyAccountStrip,#dailyReward) { border-color: var(--lobby-line); background: var(--lobby-paper); color: var(--lobby-ink); box-shadow: none; }
+body.general-lobby-page :is(#lobbyAccountStrip,#dailyReward) :is(strong,small,span,b) { color: var(--lobby-ink); }
+body.general-lobby-page :is(.daily-day,.lobby-account-strip .lobby-wallet) { background: #edf1e8; border-color: var(--lobby-line); color: var(--lobby-ink); }
+body.general-lobby-page .daily-day.claimable { background: #f8dfa0; border-color: #e2ba58; }
 body.general-lobby-page #upcomingGamesSection h2 { color: var(--lobby-ink); }
 body.general-lobby-page .upcoming-game-card { background: var(--lobby-paper); border-color: var(--lobby-line); color: var(--lobby-ink); box-shadow: none; }
 body.general-lobby-page .upcoming-game-copy :is(h3,p) { color: var(--lobby-ink); }
@@ -211,13 +219,13 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
   body.general-lobby-page .lobby-topbar .brand-logo { width: 30px; height: 30px; }
   body.general-lobby-page .lobby-topbar .brand-byline { font-size: 7px; margin-top: 4px; }
   body.general-lobby-page .lobby-topbar select { width: 108px; max-width: 108px; font-size: 11px; padding: 8px; }
-  body.general-lobby-page .lobby-hero { height: 192px; border-radius: 14px; margin-bottom: 14px; }
+  body.general-lobby-page .lobby-hero { height: auto; min-height: 192px; border-radius: 14px; margin-bottom: 14px; }
   body.general-lobby-page .general-hero-scene { object-position: 64% center; }
-  body.general-lobby-page .lobby-hero-copy { inset: 17px auto auto 17px; width: 52%; }
+  body.general-lobby-page .lobby-hero-copy { position: relative; inset: auto; width: 52%; margin: 17px 17px 12px; }
   body.general-lobby-page .hero-eyebrow { font-size: 7px; letter-spacing: 1px; margin-bottom: 9px; }
   body.general-lobby-page .lobby-hero-copy h2 { font-size: 24px; line-height: 1.15; letter-spacing: -.5px; }
   body.general-lobby-page .lobby-subtitle { display: none; }
-  body.general-lobby-page #spotlightGameSection { inset: auto 10px 10px auto; width: 64%; max-width: 265px; }
+  body.general-lobby-page #spotlightGameSection { position: relative; inset: auto; width: 64%; max-width: 265px; margin: 0 10px 10px auto; }
   body.general-lobby-page .spotlight-game { grid-template-columns: 44px minmax(0,1fr); gap: 8px; padding: 6px; border-radius: 9px; }
   body.general-lobby-page .spotlight-game > img { width: 44px; height: 44px; border-radius: 5px; }
   body.general-lobby-page .spotlight-game h3 { font-size: 12px; margin: 3px 0; }
@@ -242,30 +250,159 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
   body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-art { width: 100%; height: auto; aspect-ratio: 1; }
   body.general-lobby-page .hero-game-copy { min-height: 45px; padding: 8px; }
   body.general-lobby-page .hero-game-copy strong { font-size: 12px; }
-  body.general-lobby-page #heroGames .hero-game-copy { padding-inline-start: 36px; }
+  body.general-lobby-page #heroGames .hero-game-copy { padding: 8px; }
   body.general-lobby-page .hero-game-rank { font-size: 10px; }
   body.general-lobby-page #gameGrid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
   body.general-lobby-page .game-card-body { background: var(--lobby-paper); color: var(--lobby-ink); }
+  body.general-lobby-page .game-card .favorite-toggle { min-width: 44px; min-height: 44px; }
   body.general-lobby-page .game-card h2 { color: var(--lobby-ink); text-shadow: none; font-size: 13px; }
   body.general-lobby-page .catalog-heading { margin-top: 10px; padding-top: 16px; }
   body.general-lobby-page .catalog-heading h2 { font-size: 20px; }
   body.general-lobby-page .lobby-kids-gateway { padding: 14px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  body.general-lobby-page *, body.general-lobby-page *::before { scroll-behavior: auto; transition: none; animation: none; }
+@media (max-width: 360px) {
+  body.general-lobby-page .lobby-hero { min-height: 166px; }
+  body.general-lobby-page .lobby-hero-copy h2 { font-size: 21px; }
+  body.general-lobby-page .hero-eyebrow { font-size: 6px; letter-spacing: .8px; }
+  body.general-lobby-page .game-hall-switch span { font-size: 12px; }
 }
 html[dir="rtl"] body.general-lobby-page .lobby-hero-copy { left: auto; right: 30px; }
 html[dir="rtl"] body.general-lobby-page .lobby-hero::after { transform: scaleX(-1); }
 html[dir="rtl"] body.general-lobby-page #spotlightGameSection { right: auto; left: 20px; }
+/* Override sound.js's injected physical-edge !important placement in RTL. */
+html[dir="rtl"] body.general-lobby-page .lobby-hero .sound-toggle { left: auto !important; right: 20px !important; }
 html[dir="rtl"] body.general-lobby-page .game-hall-switch button { padding-inline-start: 58px; padding-inline-end: 18px; }
 html[dir="rtl"] body.general-lobby-page .game-hall-switch button::before { left: auto; right: 18px; }
-html[dir="rtl"] body.general-lobby-page .hero-game-rank { left: auto; right: 8px; }
 @media (min-width: 1120px) {
   html[dir="rtl"] body.general-lobby-page .desktop-filter-rail { left: auto; right: max(24px, calc((100vw - 1480px) / 2)); padding: 0 0 18px 16px; }
 }
 @media (max-width: 720px) {
-  html[dir="rtl"] body.general-lobby-page .lobby-hero-copy { right: 17px; }
-  html[dir="rtl"] body.general-lobby-page #spotlightGameSection { left: 10px; }
+  html[dir="rtl"] body.general-lobby-page .lobby-hero-copy { right: auto; }
+  html[dir="rtl"] body.general-lobby-page #spotlightGameSection { left: auto; margin: 0 auto 10px 10px; }
+  html[dir="rtl"] body.general-lobby-page .lobby-hero .sound-toggle { right: 12px !important; }
   html[dir="rtl"] body.general-lobby-page .game-hall-switch button { padding-inline-start: 34px; padding-inline-end: 7px; }
   html[dir="rtl"] body.general-lobby-page .game-hall-switch button::before { right: 10px; }
+}
+
+/* Owner-directed Block Arcade skin. Geometric scenery, extruded controls and
+   poster frames use original CSS/SVG geometry; no new runtime or animation. */
+body.general-lobby-page {
+  --lobby-ink: #f1f7eb;
+  --lobby-muted: #a4bdb9;
+  --lobby-line: #365b62;
+  --lobby-paper: #18343c;
+  --lobby-accent: #67e3ac;
+  color-scheme: dark;
+  background-color: #0b202b;
+  background-image: url("../assets/lobby-block-atmosphere.svg"), radial-gradient(ellipse at 50% 0, #204d4c 0, #0b202b 70%);
+  background-size: 1440px 960px, 100% 1200px;
+  background-position: center top;
+  background-repeat: repeat-y, no-repeat;
+}
+body.general-lobby-page .lobby-topbar { border-bottom: 2px solid #3c6368; margin-bottom: 18px; }
+body.general-lobby-page .lobby-topbar h1 { color: #fff4ce; text-shadow: 2px 3px 0 #07181e; letter-spacing: -.6px; }
+body.general-lobby-page .lobby-topbar .brand-byline { color: #7ec4b5; }
+body.general-lobby-page .lobby-topbar select { border: 2px solid #5d8688; border-radius: 2px; background: #163440; color: #f5e9c4; box-shadow: 0 4px 0 #061820, inset 0 2px 0 #30535d; }
+body.general-lobby-page .lobby-hero { border: 3px solid #d8ad59; border-radius: 3px; box-shadow: 0 6px 0 #77562c, 0 9px 0 #06151d; margin-bottom: 24px; }
+body.general-lobby-page .general-hero-scene { opacity: 1; }
+body.general-lobby-page .lobby-hero::after { background: linear-gradient(90deg,#112f3bec,#153f46cc 24%,#10324322 69%); }
+body.general-lobby-page .hero-eyebrow { color: #ffe18c; text-shadow: 1px 2px #09242f; }
+body.general-lobby-page .lobby-hero-copy h2 { color: #fff8dd; text-shadow: 3px 3px 0 #0b202b; }
+body.general-lobby-page .lobby-subtitle { color: #dbefdb; }
+body.general-lobby-page .spotlight-game { border: 2px solid #e1b75c; border-radius: 2px; background: #112f3ef5; box-shadow: 0 4px 0 #061922; }
+body.general-lobby-page .spotlight-game > img { border-radius: 0; }
+body.general-lobby-page .spotlight-game h3 { color: #fff5d9; }
+body.general-lobby-page .spotlight-game small { color: #ffcf66; }
+body.general-lobby-page .spotlight-game span { color: #b9e4cf; }
+body.general-lobby-page .lobby-hero .sound-toggle { border-radius: 3px; background: #112c39ed; border: 2px solid #739594; box-shadow: 0 3px 0 #061820; }
+
+/* Hall entrances are chunky physical tiles, with a cube and a board mark. */
+body.general-lobby-page .game-hall-switch { gap: 14px; margin-bottom: 19px; }
+body.general-lobby-page .game-hall-switch button { border: 2px solid #486977; border-radius: 3px; background: #213e4a; color: #e1ede2; box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923; transition: transform 120ms ease, box-shadow 120ms ease; }
+body.general-lobby-page .game-hall-switch button.active { border-color: #8ef0b7; background: #2c705d; color: #f7ffe6; box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22; }
+body.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active { border-color: #ffda83; background: #936132; color: #fff7d2; box-shadow: inset 0 3px 0 #ce9852, 0 5px 0 #513b28, 0 7px 0 #081c23; }
+body.general-lobby-page .game-hall-switch button:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #698e81, 0 2px 0 #071923; }
+body.general-lobby-page .game-hall-switch small { color: #aec9c6; }
+body.general-lobby-page .game-hall-switch button.active small { color: #d6f0d3; }
+body.general-lobby-page .game-hall-switch button::before { content: ""; width: 26px; height: 30px; top: 19px; background: conic-gradient(from 0deg at 50% 48%,#83e1bd 0deg 120deg,#307c72 120deg 240deg,#d1f3bf 240deg); clip-path: polygon(50% 0,100% 24%,100% 76%,50% 100%,0 76%,0 24%); }
+body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::before { content: ""; height: 26px; top: 21px; background: conic-gradient(#f7d69c 25%,#846044 0 50%,#f7d69c 0 75%,#846044 0) 0 0 / 13px 13px; clip-path: none; border: 2px solid #f1be68; box-shadow: 2px 3px 0 #0b202a; }
+
+body.general-lobby-page .lobby-search-row { margin-bottom: 17px; }
+body.general-lobby-page .lobby-search input { border: 2px solid #4c747a; border-radius: 2px; background: #0d2935; color: #eef4df; box-shadow: inset 0 3px 0 #061b25; }
+body.general-lobby-page .lobby-search input::placeholder { color: #abc3bd; }
+body.general-lobby-page .quick-pick-btn { border: 2px solid #ffe59a; border-radius: 2px; background: #edb74e; color: #322a17; box-shadow: inset 0 3px 0 #ffd982, 0 5px 0 #92642b, 0 7px 0 #061b25; font-weight: 800; }
+body.general-lobby-page .quick-pick-btn:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #ffd982, 0 2px 0 #92642b; }
+body.general-lobby-page .lobby-shell > .library-tabs { gap: 5px; padding: 5px; border: 2px solid #34565d; border-radius: 2px; background: #0b2632; box-shadow: inset 0 2px 0 #061d28; }
+body.general-lobby-page .lobby-shell > .library-tabs button { border: 1px solid transparent; border-radius: 1px; background: #163640; color: #a7c7bd; }
+body.general-lobby-page .lobby-shell > .library-tabs button.active { border-color: #8dd8a9; background: #367663; color: #fff3cb; box-shadow: inset 0 3px 0 #5b9c7a, 0 3px 0 #142f30; }
+body.general-lobby-page .vibe-options { padding-bottom: 8px; scrollbar-color: #5e9486 #102a35; }
+body.general-lobby-page .vibe-options button { border: 2px solid #45646b; border-radius: 2px; background: #1b3b46; color: #c9ded2; box-shadow: 0 3px 0 #061923; }
+body.general-lobby-page .vibe-options button.active { border-color: #f0ca76; background: #655638; color: #fff0ba; box-shadow: inset 0 2px 0 #9c824a, 0 3px 0 #09202a; }
+body.general-lobby-page #filterStatus.results-active { border: 2px solid #47777b; border-radius: 2px; background: #14333e; box-shadow: 0 4px 0 #061d27; color: #f3f3d9; }
+body.general-lobby-page .filter-status-chips span { border: 1px solid #6aa68e; border-radius: 2px; background: #244d48; color: #d7f1d4; }
+body.general-lobby-page #filterStatus button { border: 2px solid #9bb994; border-radius: 2px; background: #3c735c; color: #fff1cc; }
+
+/* Framed game shelves: the artwork stays complete, with readable title plates. */
+body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading { min-height: 40px; border-bottom: 2px solid #375d62; padding-bottom: 8px; }
+body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading h2,
+body.general-lobby-page .catalog-heading h2 { color: #fff1c8; text-shadow: 2px 2px #061c27; }
+body.general-lobby-page :is(#continuePlayingSection,#latestGamesSection,#heroGamesSection) .section-heading h2::before,
+body.general-lobby-page .catalog-heading h2::before { content: ""; display: inline-block; width: 11px; height: 11px; margin-inline-end: 13px; background: #edc164; box-shadow: 3px 3px 0 #966134,-2px -2px 0 #ffe9a4; vertical-align: 2px; }
+body.general-lobby-page #heroGamesSection .section-heading h2::before { background: #ee9364; box-shadow: 3px 3px 0 #a6503c,-2px -2px 0 #ffd0a0; }
+body.general-lobby-page .section-heading span { color: #a7c1b5; }
+body.general-lobby-page .catalog-jump { color: #a5e5b8; }
+body.general-lobby-page .catalog-jump:hover { color: #ffe29b; }
+body.general-lobby-page :is(#latestGames,#heroGames) { gap: 14px; padding-bottom: 9px; }
+body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card,
+body.general-lobby-page .game-card { border: 2px solid #597775; border-radius: 3px; background: #14323d; box-shadow: 0 5px 0 #061820; }
+body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card:hover,
+body.general-lobby-page .game-card:hover { border-color: #ffd27c; box-shadow: 0 6px 0 #061820; }
+body.general-lobby-page .hero-game-art,
+body.general-lobby-page .game-card-art { background: #112b36; }
+body.general-lobby-page .hero-game-copy { background: #193b46; border-top: 2px solid #486c70; }
+body.general-lobby-page .hero-game-copy strong { color: #f1f3d7; }
+body.general-lobby-page .hero-game-rank { color: #ffe091; }
+body.general-lobby-page .catalog-heading { border-color: #41676b; }
+body.general-lobby-page #catalogHallLabel { color: #b8cfb8; }
+body.general-lobby-page #catalogPagination { color: #bbd2bf; }
+body.general-lobby-page #catalogPagination button { border: 2px solid #ffe394; border-radius: 2px; background: #eabd61; color: #302717; box-shadow: 0 4px 0 #725832; }
+body.general-lobby-page .continue-playing-card { border: 2px solid #5b7974; border-radius: 3px; background: #16383f; box-shadow: 0 4px 0 #071c23; }
+body.general-lobby-page .continue-playing-card:is(:hover,:focus,:active) { background: #254f4e; color: #f4f3d9; }
+body.general-lobby-page .continue-playing-card:is(:hover,:focus,:active) :is(strong,small) { color: #f4f3d9; }
+body.general-lobby-page .favorite-toggle::before { border-radius: 3px; }
+
+body.general-lobby-page .lobby-kids-gateway { border: 2px solid #7fbe83; border-radius: 3px; background: #285d4d; color: #f3f4cc; box-shadow: 0 5px 0 #102d2e; }
+body.general-lobby-page .lobby-kids-gateway :is(span,strong) { color: #eff4d6; }
+body.general-lobby-page .lobby-kids-gateway img { border-radius: 2px; }
+body.general-lobby-page :is(.upcoming-game-card,.fresh-update-card,#lobbyAccountStrip,#dailyReward,.general-trust-strip) { border: 2px solid #4a7472; border-radius: 3px; background: #173a42; color: #eaf2dc; box-shadow: 0 4px 0 #071b24; }
+body.general-lobby-page :is(.daily-day,.lobby-account-strip .lobby-wallet) { border-radius: 2px; border-color: #416569; background: #102e39; color: #e8f1d9; }
+body.general-lobby-page .daily-day.claimable { background: #765832; border-color: #f2c56e; }
+body.general-lobby-page .publisher-story { border-top: 2px solid #37585d; }
+body.general-lobby-page .publisher-story :is(h2,h3) { color: #d9eacf; }
+body.general-lobby-page :is(#catalogDirectory,.site-footer,.site-footer a) { color: #9ebbb2; border-color: #35545c; }
+
+@media (min-width: 1120px) {
+  body.general-lobby-page .desktop-filter-rail { top: 104px; padding: 18px 12px; border: 2px solid #46696d; border-top: 5px solid #d6b665; border-radius: 2px; background: #14333ee8; box-shadow: 4px 5px 0 #061a2466, inset 0 2px 0 #608079; }
+  body.general-lobby-page .desktop-filter-rail-heading h2 { color: #f2efd5; }
+  body.general-lobby-page .desktop-filter-rail-heading span,
+  body.general-lobby-page .desktop-filter-group h3 { color: #a4c3b3; }
+  body.general-lobby-page .desktop-filter-rail .topic-filter button { border: 1px solid #355a61; border-radius: 2px; background: #1d414a; color: #b9d6c8; box-shadow: 0 3px 0 #09252e; }
+  body.general-lobby-page .desktop-filter-rail .topic-filter button.active { border-color: #99ddb0; background: #36745e; color: #fff1be; box-shadow: inset 0 2px 0 #619982, 0 3px 0 #09252e; }
+  body.general-lobby-page .desktop-filter-rail .filter-count { color: #a4c7b5; }
+  body.general-lobby-page .desktop-filter-rail button.active .filter-count { border-radius: 2px; background: #153e38; color: #ffde88; }
+  body.general-lobby-page .desktop-filter-reset { border: 1px solid #456f6f; border-radius: 2px; background: #0e2a36; color: #b7cabb; }
+}
+@media (max-width: 720px) {
+  body.general-lobby-page .lobby-topbar { margin-bottom: 12px; }
+  body.general-lobby-page .lobby-hero { border-width: 2px; margin-bottom: 20px; }
+  body.general-lobby-page .game-hall-switch { gap: 10px; margin-bottom: 16px; }
+  body.general-lobby-page .game-hall-switch button::before { top: 14px; width: 19px; height: 23px; }
+  body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::before { top: 15px; width: 19px; height: 19px; background-size: 10px 10px; }
+  body.general-lobby-page :is(#latestGames,#heroGames) { gap: 10px; }
+  body.general-lobby-page .game-card-body { background: #193b46; border-top: 2px solid #486c70; }
+  body.general-lobby-page .game-card h2 { color: #f0f3db; }
+  body.general-lobby-page .favorite-toggle { border-radius: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.general-lobby-page *, body.general-lobby-page *::before { scroll-behavior: auto; transition: none !important; animation: none !important; }
 }

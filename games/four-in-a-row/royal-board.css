@@ -1,0 +1,40 @@
+/* Native board/input geometry remains authoritative. Presentation only. */
+body[data-logic-game='four-in-a-row'] .logic-connect-board {
+  background: linear-gradient(135deg,#173b60ef,#071a2ff2),url('/assets/card-table/emerald-table-v1.webp') center/cover;
+  border: 2px solid #c5a46c;
+  box-shadow: inset 0 0 0 2px #081525,inset 0 1px 15px #95bee533,0 7px 0 #55432b,0 15px 25px #0007;
+}
+body[data-logic-game='four-in-a-row'] .logic-connect-board .logic-cell {
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 68%,#17364a,#030c15 75%);
+  border: 1px solid #7891a552;
+  box-shadow: inset 0 3px 6px #000c,0 1px 0 #abc2d449;
+  overflow: visible;
+}
+body[data-logic-game='four-in-a-row'] .logic-battle-header h1 {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  body[data-logic-game='four-in-a-row'] .logic-battle-header {
+    display: grid;
+    grid-template-columns: 48px minmax(0,1fr) auto;
+    gap: 8px;
+  }
+  body[data-logic-game='four-in-a-row'] .logic-battle-header h1 { font-size: 16px; }
+  body[data-logic-game='four-in-a-row'] .logic-status-chip { font-size: 11px; }
+}
+body[data-logic-game='four-in-a-row'] .logic-connect-board .disc {
+  width: 83%; height: 83%; position: relative; pointer-events: none;
+  box-shadow: inset 0 2px 2px #fff8,inset 0 -4px 4px #0005,0 3px 3px #0008;
+}
+body[data-logic-game='four-in-a-row'] .red .disc { background: radial-gradient(circle at 33% 25%,#ffd2bd,#ef7657 35%,#ad352f 85%); }
+body[data-logic-game='four-in-a-row'] .yellow .disc { background: radial-gradient(circle at 33% 25%,#fff7c3,#ebc25e 40%,#a46e1c 90%); }
+body[data-logic-game='four-in-a-row'] .disc::after { content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid #fff6;box-shadow:0 1px 1px #0005,inset 0 1px 2px #0003; }
+body[data-logic-game='four-in-a-row'] .winning-disc { outline:2px solid #fff2b0;outline-offset:-2px;box-shadow:0 0 14px #ffe19f99; }
+body[data-logic-game='four-in-a-row'] .disc-arrived .disc { animation:four-disc-drop 220ms cubic-bezier(.2,.7,.3,1); }
+@keyframes four-disc-drop { from {transform:translateY(var(--drop-distance));opacity:.35;} 75% {transform:translateY(2px);} to {transform:translateY(0);opacity:1;} }
+@media (prefers-reduced-motion:reduce) { body[data-logic-game='four-in-a-row'] .disc-arrived .disc {animation:none;} }
