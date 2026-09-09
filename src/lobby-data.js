@@ -3894,7 +3894,7 @@ const nextFiveGeneralCandidates = [
     description: { en: "Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.", "zh-Hant": "打開冰封路線，收集所有莓果，並永遠比雪地漂行者快一步。", "zh-Hans": "打开冰封路线，收集所有莓果，始终领先雪地漂行者一步。", ja: "凍った道を開き、すべてのベリーを集め、雪の漂流者より一歩先へ進もう。", ko: "얼어붙은 길을 열고 모든 베리를 모으며 눈의 방랑자보다 한발 앞서세요.", es: "Abre la ruta helada, recoge todas las bayas y adelántate al errante de nieve.", "pt-BR": "Abra a rota congelada, pegue todas as frutas e fique à frente do andarilho da neve.", fr: "Ouvre la route glacée, ramasse toutes les baies et garde une longueur d'avance sur le rôdeur.", de: "Öffne den gefrorenen Weg, sammle alle Beeren und bleibe dem Schneewanderer voraus.", it: "Apri il percorso ghiacciato, raccogli tutte le bacche e resta avanti al vagabondo della neve.", ru: "Откройте замёрзший путь, соберите все ягоды и опередите снежного странника.", hi: "जमी हुई राह खोलें, सभी बेरियाँ इकट्ठी करें और बर्फीले भटकने वाले से आगे रहें।", ar: "افتح الطريق المتجمد واجمع كل التوت وابق متقدماً على المتجول الثلجي." },
     meta: { en: ["Build / Break Ice", "4 Chapters", "Enemy Routes"], "zh-Hant": ["建造／破壞冰牆", "4 個章節", "敵人路線"], "zh-Hans": ["建造／破坏冰墙", "4 个章节", "敌人路线"] },
     art: { kind: "image", background: "assets/animal-frost-maze-cover.webp", hideHero: true },
-    categories: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing"], ages: ["9", "family"], href: "games/animal-frost-maze/", internalTrial: "index.html?trial=1",
+    categories: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing"], ages: ["9", "family"], href: "games/animal-frost-maze/",
   },
   {
     id: "animal-flip-foundry",
@@ -4633,6 +4633,17 @@ for (const [id, copy] of Object.entries(newPuzzlePlannedCopy)) {
     Object.defineProperty(game[field], "__localizedExact", { value: true, enumerable: false });
   }
   delete game.previewVideo;
+}
+
+// Frost Maze Rescue is now an approved public General release. Keep this
+// override after the planned puzzle batch so later catalog regeneration cannot
+// silently restore its private trial state.
+const animalFrostMazePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-frost-maze");
+if (animalFrostMazePublic) {
+  animalFrostMazePublic.status = "playable";
+  animalFrostMazePublic.previewVideo = "assets/previews/animal-frost-maze-battle.webm";
+  delete animalFrostMazePublic.statusText;
+  delete animalFrostMazePublic.internalTrial;
 }
 
 const spiderSolitairePlanned = window.WONDER_LOBBY.games.find((entry) => entry.id === "spider-solitaire");

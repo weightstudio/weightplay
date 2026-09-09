@@ -2229,6 +2229,8 @@
     "animal-frost-maze": {
       title: "Frostline Rescue", age: "9+", difficulty: "Easy to Challenging", time: "1-4 minutes per room",
       gameplay: "Changeable Ice Maze", genre: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing", "Problem Solving"],
+      showSkills: false, showRelatedSkill: false, hideSkillsFact: true, hideRecommendedAge: true, hideScoreBands: true,
+      noteTitle: "Player and Save Information",
       intro: "Open the frozen route, collect every berry, and stay one step ahead of the snow drifter.",
       story: ["A small rescue route is sealed by blue ice walls. Collect every berry, change only the barriers that matter, and keep moving before the snow drifter closes the gap."],
       systems: ["Arrow keys, WASD, or the visible direction controls move one grid cell at a time. Space breaks the ice ahead and F builds a short wall.", "The enemy advances after repeated movement. A room clears when all berries are collected; contact blocks the route and sends you to a focused retry."],

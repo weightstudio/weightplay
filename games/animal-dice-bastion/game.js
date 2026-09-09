@@ -207,6 +207,7 @@
     if (name === "main") {
       $("mainScreen").classList.add("wp-standard-main-flow-owner");
       if (mainFlowMinHeight) $("mainScreen").style.setProperty("--wp-main-flow-min-height", mainFlowMinHeight);
+      renderMainProgress();
       trackDiceFunnel("main_open", {source: previousScreen === "loading" ? "bootstrap" : previousScreen});
     }
     if (name !== "battle") stopLoop();
