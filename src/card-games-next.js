@@ -2348,7 +2348,7 @@
     let resultRecorded = false;
     const statsKey = `weightplay.cardgame.stats.${id}`;
     const readStats = () => { try { return JSON.parse(localStorage.getItem(statsKey) || "{\"played\":0,\"wins\":0,\"losses\":0}"); } catch (_error) { return { played: 0, wins: 0, losses: 0 }; } };
-    const writeStats = (won) => { const stats = readStats(); stats.played += 1; stats[won ? "wins" : "losses"] += 1; try { localStorage.setItem(statsKey, JSON.stringify(stats)); } catch (_error) {} return stats; };
+    const writeStats = (won) => { const stats = readStats(); stats.played += 1; if (won !== null) stats[won ? "wins" : "losses"] += 1; try { localStorage.setItem(statsKey, JSON.stringify(stats)); } catch (_error) {} return stats; };
     const statsContainer = document.querySelector(".card-game-stats");
     const statsNode = document.createElement("div");
     statsNode.className = "card-stat card-stat-history";
@@ -2366,14 +2366,16 @@
       result(won, message = "") {
         if (!resultRecorded) { resultRecorded = true; updateStatsView(writeStats(won)); }
         if (id === "old-maid") oldMaidTrack("result", { outcome: won ? "win" : "loss" });
-        resultTitle.textContent = id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
+        const drawTitles = { en: "Draw", "zh-Hant": "平手", "zh-Hans": "平局", ja: "引き分け", ko: "무승부", es: "Empate", "pt-BR": "Empate", fr: "Égalité", de: "Unentschieden", it: "Pareggio", ru: "Ничья", hi: "बराबरी", ar: "تعادل" };
+        resultTitle.textContent = won === null ? (drawTitles[currentLocale()] || drawTitles.en) : id === "gin-rummy" ? ginShellText(won ? "winner" : "loser") : (won ? t("winner") : t("loser"));
+        if (won === null) resultTitle.setAttribute('data-runtime-localize', 'off');
         resultText.textContent = message || (id === "gin-rummy" ? ginShellText("resultTitle") : t("roundOver"));
         if (id === "cribbage") {
           result.dataset.outcome = won ? "win" : "loss";
           resultText.dataset.cribbageResultMastery = message ? "true" : "false";
         }
         result.hidden = false;
-        sound?.[won ? "win" : "reject"]?.();
+        sound?.[won === null ? "place" : won ? "win" : "reject"]?.();
       },
       beep(name = "place") { sound?.[name]?.(); },
     };
@@ -2746,7 +2748,7 @@
     const trail = (cardIndex) => { const item = s.player[cardIndex]; if (!item || s.selectedTable.size || canCapture(item)) return; s.player.splice(cardIndex, 1); s.table.push({ card: item }); s.selectedCard = null; s.selectedTable.clear(); aiTurn(); };
     const scoreCasino = (cards) => cards.reduce((score, item) => score + (item.suit === "spades" ? 1 : 0) + (item.suit === "diamonds" && item.rank === 10 ? 2 : 0) + (item.suit === "spades" && item.rank === 2 ? 2 : 0), 0) + (cards.length >= 27 ? 3 : 0);
     const resultBreakdown = (cards) => casinoText("resultBreakdown", { cards: cards.length, immediate: immediateBonus(cards), majority: cards.length >= 27 ? "+3" : "—", score: scoreCasino(cards) });
-    const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore >= aiScore, `${t("score")}: ${playerScore} / ${aiScore} · ${resultBreakdown(s.captured[0])}`); };
+    const finish = () => { const playerScore = scoreCasino(s.captured[0]); const aiScore = scoreCasino(s.captured[1]); controller.result(playerScore === aiScore ? null : playerScore > aiScore, `${t("score")}: ${playerScore} / ${aiScore} · ${resultBreakdown(s.captured[0])}`); };
     const dealNextHand = () => { for (let i = 0; i < 4 && s.stock.length; i += 1) { s.player.push(s.stock.pop()); if (s.stock.length) s.ai.push(s.stock.pop()); } };
     const aiTurn = () => { if (!s.ai.length) { if (s.stock.length) dealNextHand(); else { finish(); return; } } const aiCard = s.ai.pop(); const same = s.table.map((entry, index) => ({ entry, index })).filter(({ entry }) => tableValue(entry) === value(aiCard)); const combo = combinations(s.table, value(aiCard))[0]; if (same.length || combo) { const indices = same.length ? same.map((entry) => entry.index) : combo; s.captured[1].push(aiCard, ...indices.flatMap((index) => entryCards(s.table[index]))); s.table = s.table.filter((_, index) => !indices.includes(index)); } else s.table.push({ card: aiCard }); if (!s.ai.length && s.stock.length) dealNextHand(); if (!s.stock.length && (!s.ai.length || !s.player.length)) finish(); };
     return {

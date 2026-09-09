@@ -4884,6 +4884,94 @@ body.general-lobby-page {
   display: none;
 }
 
+.general-lobby-page .game-hall-switch {
+  order: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0 8px;
+}
+
+.general-lobby-page .game-hall-switch button {
+  display: grid;
+  min-width: 0;
+  min-height: 64px;
+  padding: 10px 14px;
+  align-content: center;
+  gap: 3px;
+  border: 1px solid #354154;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #182230, #111821);
+  color: #dbe3ee;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.3);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.general-lobby-page .game-hall-switch button:hover,
+.general-lobby-page .game-hall-switch button:focus-visible {
+  border-color: #8d7cff;
+  background: #202a3a;
+}
+
+.general-lobby-page .game-hall-switch button:focus-visible {
+  outline: 3px solid #b7aaff;
+  outline-offset: 3px;
+}
+
+.general-lobby-page .game-hall-switch button.active {
+  border-color: #a997ff;
+  background: linear-gradient(135deg, #715ce0, #3e6ecf);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(154, 137, 255, 0.18), 0 8px 22px rgba(76, 65, 176, 0.36);
+}
+
+.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active {
+  border-color: #ffd776;
+  background: linear-gradient(135deg, #9a5a22, #c2832f);
+  box-shadow: 0 0 0 1px rgba(255, 215, 118, 0.2), 0 8px 22px rgba(151, 91, 26, 0.34);
+}
+
+.general-lobby-page .game-hall-switch span {
+  overflow-wrap: anywhere;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+
+.general-lobby-page .game-hall-switch small {
+  overflow-wrap: anywhere;
+  color: #9facbd;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.general-lobby-page .game-hall-switch button.active small {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+@media (max-width: 620px) {
+  .general-lobby-page .game-hall-switch {
+    gap: 8px;
+    margin-block: 7px 5px;
+  }
+
+  .general-lobby-page .game-hall-switch button {
+    min-height: 48px;
+    padding: 8px 9px;
+    text-align: center;
+  }
+
+  .general-lobby-page .game-hall-switch span {
+    font-size: 15px;
+  }
+
+  .general-lobby-page .game-hall-switch small {
+    display: none;
+  }
+}
+
 .general-lobby-page #advancedFilters {
   order: 5;
   border-color: #aebdb8;

@@ -53,6 +53,14 @@ window.WONDER_LOBBY = {
       "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
       "maze-chase", "space-rocks", "animal-tide-tally",
     ],
+    // Player-facing lobby grouping. These remain General-audience games and
+    // keep the same Planner, Tester, Reviewer, and release workflow.
+    tabletopGameIds: [
+      "klondike-solitaire", "spider-solitaire", "freecell-solitaire", "pyramid-solitaire",
+      "tripeaks-solitaire", "golf-solitaire", "yukon-solitaire",
+      "hearts", "spades", "gin-rummy", "crazy-eights", "cribbage", "go-fish", "war", "speed", "old-maid", "casino",
+      "checkers", "tic-tac-toe", "peg-solitaire", "reversi", "four-in-a-row", "chess", "mahjong-solitaire",
+    ],
   },
   games: [
     {
@@ -1096,7 +1104,7 @@ window.WONDER_LOBBY = {
       },
       art: {
         kind: "image",
-        background: "assets/animal-crystal-survivor-voxel-cover-v26.webp",
+        background: "assets/animal-crystal-survivor-otter-cover-v26.webp",
         hideHero: true,
       },
     },
@@ -5382,6 +5390,19 @@ for (const audience of ["generalGameIds", "kidsGameIds"]) if (window.WONDER_LOBB
 // END OWNER CATALOG RETIREMENTS
 
 // BEGIN OWNER OFFICIAL GAME NAMES
+// Board games previously inherited the broad Classic/Puzzle labels, which
+// made them disappear from board-game discovery. Keep Board as a category;
+// the separate tabletopGameIds registry owns the higher-level hall placement.
+const lobbyBoardGameIds = new Set([
+  "checkers", "tic-tac-toe", "peg-solitaire", "reversi",
+  "four-in-a-row", "chess", "mahjong-solitaire",
+]);
+for (const game of window.WONDER_LOBBY.games) {
+  if (lobbyBoardGameIds.has(game.id) && !game.categories?.includes("Board")) {
+    game.categories = [...(game.categories || []), "Board"];
+  }
+}
+
 window.WONDER_LOBBY.officialTitleOverrides = {
   "animal-sunbeam-garden": {
     "en": "Sunbeam Garden: Mirror Paths",
@@ -5609,19 +5630,19 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "zh-Hans": "守卫庭院"
   },
   "animal-crystal-survivor": {
-    "en": "Crystal Survivor",
-    "ja": "クリスタルサバイバー",
-    "ko": "크리스털 서바이버",
-    "es": "Superviviente del Cristal",
-    "pt-BR": "Sobrevivente do Cristal",
-    "fr": "Survivant du cristal",
-    "de": "Kristall-Überlebenskampf",
-    "it": "Sopravvissuto del Cristallo",
-    "ru": "Хрустальный выживший: животные",
-    "hi": "क्रिस्टल सर्वाइवर",
-    "ar": "الناجي من الكريستال الحيواني",
-    "zh-Hant": "水晶生存戰",
-    "zh-Hans": "水晶生存战"
+    "en": "Dungeon Venture",
+    "zh-Hant": "勇闖地監",
+    "zh-Hans": "勇闯地牢",
+    "ja": "ダンジョンアドベンチャー",
+    "ko": "던전 모험",
+    "es": "Aventura en la mazmorra",
+    "pt-BR": "Aventura na Masmorra",
+    "fr": "Aventure au donjon",
+    "de": "Verliesabenteuer",
+    "it": "Avventura nel dungeon",
+    "ru": "Приключение в подземелье",
+    "hi": "कालकोठरी का रोमांच",
+    "ar": "مغامرة الزنزانة"
   },
   "animal-quiz": {
     "en": "Quiz",

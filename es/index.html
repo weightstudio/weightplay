@@ -216,10 +216,11 @@
             <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
             <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
             <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-i18n="topic.card">Card Games</button>
+            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
+            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
+            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
             <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
           </div>
         </section>
 
@@ -262,6 +263,17 @@
           </div>
         </a>
       </header>
+
+      <nav class="game-hall-switch" aria-label="Game sections" data-i18n-aria-label="hall.label">
+        <button class="active" type="button" data-hall-tab="games" aria-pressed="true">
+          <span data-i18n="hall.games">Game World</span>
+          <small data-i18n="hall.games_note">Adventures, puzzles and action</small>
+        </button>
+        <button type="button" data-hall-tab="tabletop" aria-pressed="false">
+          <span data-i18n="hall.tabletop">Cards &amp; Board</span>
+          <small data-i18n="hall.tabletop_note">Solitaire, card and board games</small>
+        </button>
+      </nav>
 
       <section id="lobbyAccountStrip" class="lobby-account-strip" aria-label="Player status">
         <div class="lobby-player-summary">
@@ -312,10 +324,11 @@
         <div class="vibe-options">
           <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
           <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-          <button type="button" data-topic-filter="Block" data-i18n="topic.block">Block Puzzles</button>
-          <button type="button" data-topic-filter="Card" data-i18n="topic.card">Card Games</button>
+          <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
+          <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
+          <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
           <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-          <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+          <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
         </div>
       </section>
 
@@ -343,10 +356,11 @@
             <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
             <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
             <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
-            <button type="button" data-topic-filter="Block" data-i18n="topic.block">Block Puzzles</button>
-            <button type="button" data-topic-filter="Card" data-i18n="topic.card">Card Games</button>
+            <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
+            <button type="button" data-topic-filter="Card" data-hall-only="tabletop" data-i18n="topic.card">Card Games</button>
+            <button type="button" data-topic-filter="Board" data-hall-only="tabletop" data-i18n="topic.board">Board Games</button>
             <button type="button" data-topic-filter="Strategy" data-i18n="topic.strategy">Strategy</button>
-            <button type="button" data-topic-filter="Arcade" data-i18n="topic.arcade">Arcade</button>
+            <button type="button" data-topic-filter="Arcade" data-hall-only="games" data-i18n="topic.arcade">Arcade</button>
           </section>
 
         </div>
@@ -676,9 +690,9 @@
 </article>
 <article class="game-card game-card-static playable" data-game-id="animal-crystal-survivor">
   <a class="game-card-static-link" href="/es/games/animal-crystal-survivor/">
-    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__animal-crystal-survivor-voxel-cover-v26.webp" alt="Superviviente del Cristal juego de navegador" loading="lazy" decoding="async" width="480" height="480" /></div>
+    <div class="game-card-art image-art"><img class="game-card-fg" src="assets/lobby-thumbs/w480/assets__animal-crystal-survivor-otter-cover-v26.webp" alt="Aventura en la mazmorra juego de navegador" loading="lazy" decoding="async" width="480" height="480" /></div>
     <div class="game-card-body">
-      <h2 data-runtime-localize="off">Superviviente del Cristal</h2>
+      <h2 data-runtime-localize="off">Aventura en la mazmorra</h2>
       <p>Patrulla 30 rutas de Crystal Grove de tres minutos, recoge las llaves de cada niveles, elige mejoras, lee los peligros cambiantes y derrota a seis jefes animales originales.</p>
 
     </div>

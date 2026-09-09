@@ -350,46 +350,59 @@ export class Crystal3D {
     const contact = this.mesh('disc', this.shadow, root, 0, .02, 0, .48);
     contact.rotation.x = -Math.PI / 2;
     const legs = [];
-    // Original voxel adventurer: straight limbs, square face and layered tunic.
+    // Bubble Fin Otter: cream block muzzle, goggles, teal jacket and stepped tail.
     for (const sign of [-1, 1]) {
-      const leg = new THREE.Group(); leg.position.set(sign * .12, .56, 0); rig.add(leg);
-      this.mesh('voxel', 'velvet', leg, 0, -.23, 0, .21, .46, .23);
-      this.mesh('voxel', 'leather', leg, 0, -.48, .025, .215, .13, .28);
+      const leg = new THREE.Group(); leg.position.set(sign * .13, .56, 0); rig.add(leg);
+      this.mesh('voxel', 'bark', leg, 0, -.23, 0, .22, .46, .25);
+      this.mesh('voxel', 'bark', leg, 0, -.48, .075, .24, .13, .34);
+      for (let toe=0;toe<2;toe++) this.mesh('voxel','leather',leg,-.06+toe*.12,-.48,.247,.09,.105,.025);
       legs.push(leg);
-      this.mesh('voxel', 'robe', rig, sign * .34, .95, 0, .20, .24, .26);
-      this.mesh('voxel', 'fox', rig, sign * .34, .67, 0, .18, .33, .22);
-      this.mesh('voxel', 'leather', rig, sign * .34, .51, .01, .19, .075, .235);
+      this.mesh('voxel', 'robe', rig, sign*.34, .90, 0, .24, .35, .29);
+      this.mesh('voxel', 'ivory', rig, sign*.34, .745, .005, .245, .055, .30);
+      this.mesh('voxel', 'bark', rig, sign*.34, .63, .015, .19, .18, .22);
+      this.mesh('voxel', 'bark', rig, sign*.34, .515, .04, .21, .10, .24);
+      this.mesh('voxel', 'robe', rig, sign*.14, .47, .025, .21, .24, .31);
+      this.mesh('voxel', 'ivory', rig, sign*.14, .365, .187, .21, .035, .025);
     }
-    this.mesh('voxel', 'robe', rig, 0, .81, 0, .46, .54, .25);
-    this.mesh('voxel', 'velvet', rig, 0, .78, -.15, .40, .57, .055);
-    this.mesh('voxel', 'leather', rig, 0, .58, .005, .47, .075, .27);
-    this.mesh('voxel', 'gold', rig, 0, .58, .15, .09, .065, .025);
-    for (const sign of [-1, 1]) {
-      this.mesh('voxel', 'ivory', rig, sign * .09, 1.01, .137, .075, .08, .025);
-      this.mesh('voxel', 'gold', rig, sign * .19, .84, .139, .025, .37, .025);
+    this.mesh('voxel', 'robe', rig, 0, .81, 0, .46, .54, .29);
+    this.mesh('voxel', 'ivory', rig, 0, .62, .16, .19, .44, .035);
+    this.mesh('voxel', 'ivory', rig, -.15, .84, .16, .035, .46, .03).rotation.z=-.12;
+    this.mesh('voxel', 'ivory', rig, .15, .84, .16, .035, .46, .03).rotation.z=.12;
+    this.mesh('voxel', 'leather', rig, 0, .82, .195, .072, .60, .035).rotation.z=.65;
+    this.mesh('voxel', 'gold', rig, -.065, .925, .22, .105, .10, .035).rotation.z=.7;
+    this.mesh('voxel', 'bark', rig, .255, .575, -.005, .14, .20, .25);
+    this.mesh('voxel', 'leather', rig, .255, .66, .13, .145, .05, .04);
+    // Coral charm and stepped pale trim retain the otter's explorer identity.
+    this.mesh('voxel', 'pink', rig, -.075, .755, .23, .035, .16, .035);
+    this.mesh('voxel', 'pink', rig, -.075, .79, .23, .11, .035, .035);
+    this.mesh('voxel', 'pink', rig, -.105, .815, .23, .028, .06, .035);
+    const tail = new THREE.Group(); tail.position.set(0,.43,-.18); rig.add(tail);
+    for(let i=0;i<4;i++) this.mesh('voxel',i===3?'robe':'bark',tail,0,-.12+Math.max(0,i-1)*.08,-.12-i*.19,.22-i*.025,.21,.23);
+    this.mesh('voxel','ivory',tail,0,.105,-.69,.12,.06,.22);
+    // Distinct square otter head; all facial details face rig +Z.
+    this.mesh('voxel','bark',rig,0,1.36,0,.58,.51,.47);
+    this.mesh('voxel','bark',rig,0,1.625,-.04,.36,.05,.30);
+    for(const sign of [-1,1]) {
+      this.mesh('voxel','bark',rig,sign*.34,1.48,-.02,.16,.19,.18);
+      this.mesh('voxel','leather',rig,sign*.35,1.49,.083,.085,.10,.025);
+      this.mesh('voxel','ivory',rig,sign*.255,1.205,.255,.14,.20,.15);
+      this.mesh('voxel','ivory',rig,sign*.12,1.225,.32,.24,.20,.18);
+      this.mesh('voxel','ivory',rig,sign*.143,1.425,.243,.135,.17,.025);
+      this.mesh('voxel','eye',rig,sign*.138,1.425,.260,.082,.12,.025);
+      this.mesh('voxel','cyan',rig,sign*.138,1.39,.277,.057,.045,.012);
+      this.mesh('voxel','ivory',rig,sign*.138-.017,1.459,.28,.030,.033,.015);
+      this.mesh('voxel','robe',rig,sign*.30,1.565,0,.025,.075,.50);
+      // Gold-framed lenses rest on the forehead instead of hiding the eyes.
+      this.mesh('voxel','gold',rig,sign*.155,1.605,.242,.265,.205,.085);
+      this.mesh('voxel','cyan',rig,sign*.155,1.605,.290,.19,.135,.025);
+      this.mesh('voxel','ivory',rig,sign*.155-.05,1.643,.307,.055,.04,.012);
     }
-    for (const sign of [-1,1]) {
-      this.mesh('voxel', 'robe', rig, sign*.15, .48, .02, .20, .22, .30);
-      this.mesh('voxel', 'gold', rig, sign*.15, .38, .185, .20, .035, .025);
-      this.mesh('voxel', 'gold', rig, sign*.40, 1.065, .02, .065, .04, .28);
-      this.mesh('voxel', 'leather', rig, sign*.24, .61, .12, .08, .13, .12);
-    }
-    for (let i=0;i<4;i++) this.mesh('voxel','bark',rig,-.17+i*.105,1.65+(i%2)*.018,-.03,.105,.035,.32);
-    this.mesh('voxel', 'cyan', rig, 0, .94, .15, .065, .065, .025);
-    this.mesh('voxel', 'fox', rig, 0, 1.35, 0, .48, .48, .43);
-    this.mesh('voxel', 'bark', rig, 0, 1.59, -.015, .50, .10, .46);
-    this.mesh('voxel', 'bark', rig, 0, 1.36, -.205, .49, .40, .06);
-    for (const sign of [-1, 1]) {
-      this.mesh('voxel', 'bark', rig, sign * .22, 1.46, 0, .065, .20, .43);
-      this.mesh('voxel', 'ivory', rig, sign * .115, 1.36, .219, .11, .055, .016);
-      this.mesh('voxel', 'eye', rig, sign * .10, 1.36, .23, .043, .055, .018);
-      this.mesh('voxel', 'bark', rig, sign * .115, 1.43, .222, .11, .025, .015);
-    }
-    this.mesh('voxel', 'leather', rig, 0, 1.285, .23, .065, .055, .035);
-    this.mesh('voxel', 'bark', rig, 0, 1.215, .22, .10, .025, .016);
-    // Asymmetric pixel fringe avoids a helmet-like solid hairline.
-    this.mesh('voxel', 'bark', rig, -.07, 1.515, .215, .19, .07, .035);
-    this.mesh('voxel', 'bark', rig, .055, 1.48, .215, .06, .14, .035);
+    this.mesh('voxel','robe',rig,0,1.58,-.248,.60,.075,.025);
+    this.mesh('voxel','gold',rig,0,1.61,.26,.055,.055,.06);
+    this.mesh('voxel','eye',rig,0,1.327,.432,.13,.075,.065);
+    this.mesh('voxel','eye',rig,0,1.11,.34,.14,.075,.025);
+    this.mesh('voxel','pink',rig,0,1.092,.36,.075,.036,.03);
+    this.mesh('voxel','ivory',rig,0,1.146,.36,.055,.027,.025);
     this.mesh('voxel', 'bark', rig, .43, .93, .15, .065, 1.80, .065);
     this.mesh('voxel', 'gold', rig, .43, 1.72, .15, .11, .18, .11);
     const dragon = new THREE.Group();
@@ -409,9 +422,9 @@ export class Crystal3D {
     const castGlow = this.mesh('crystal', this.magicGlow, dragon, 0, .015, .34, .17, .17, .17);
     const shield = this.mesh('ring', 'cyan', root, 0, .08, 0, .64); shield.visible = false;
     // Hero-only palette and gentle material fill: dungeon lighting is unchanged.
-    const palette = { fox: 0xe9be96, ivory: 0xf0e9d9, robe: 0x238f9a,
+    const palette = { fox: 0xa96a3f, ivory: 0xf5e4bd, robe: 0x199ead,
       velvet: 0x244965, leather: 0x9f7957, gold: 0xe2b456,
-      bark: 0x68472e, eye: 0x17314d, cyan: 0x8dc9d5 };
+      bark: 0x9b613c, eye: 0x192528, cyan: 0x55d9ef, pink: 0xef8869 };
     const replacements = new Map();
     for (const [name, color] of Object.entries(palette)) {
       const material = this.own(this.mat[name].clone());

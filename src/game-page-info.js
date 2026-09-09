@@ -2520,7 +2520,7 @@
     "animal-bubble-safari": "animal-bubble-safari-cover.webp",
     "animal-habitat-mahjong": "animal-habitat-mahjong-cover.webp",
     "animal-hidden-safari": "animal-hidden-safari-cover.webp",
-    "animal-crystal-survivor": "animal-crystal-survivor-voxel-cover-v26.webp",
+    "animal-crystal-survivor": "animal-crystal-survivor-otter-cover-v26.webp",
     "animal-guard-yard": "animal-guard-yard-poster.webp",
     "animal-quiz": "quiz-cover.webp",
     "zoo-helper-day": "zoo-helper-day-cover.webp",

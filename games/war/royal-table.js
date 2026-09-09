@@ -4,7 +4,8 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','war-royal-table');
-  document.body.dataset.gameVersion='v13';
+  document.body.dataset.cardDeck='klondike';
+  document.body.dataset.gameVersion='v14';
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');

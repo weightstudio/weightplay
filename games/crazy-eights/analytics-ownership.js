@@ -5,7 +5,7 @@
   window.__weightplayCrazyEightsAnalyticsInstalled = true;
 
   const GAME_ID = "crazy-eights";
-  const GAME_VERSION = "v8";
+  const GAME_VERSION = "v18";
   const INTERFACE_VERSION = "6";
   const LOCALE_MAP = {
     en: "en",
@@ -40,7 +40,7 @@
   const phase = () => {
     if (screen() === "result") return "result";
     if (screen() !== "battle") return "main";
-    if (document.querySelector('#cardGameActions [data-action="suit"]')) return "suit_choice";
+    if (document.querySelector('#cardGameActions [data-action="suit"], #cardGameCenter [data-action="suit"]')) return "suit_choice";
     return "play";
   };
 

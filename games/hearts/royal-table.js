@@ -4,7 +4,8 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','hearts-royal-table');
-  document.body.dataset.gameVersion='v20';
+  document.body.dataset.cardDeck='klondike';
+  document.body.dataset.gameVersion='v21';
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');
@@ -21,6 +22,12 @@
       });
       card.replaceChildren(...corners);
       window.WPCardTablePresentation.decorateCard(card,rank,suit);
+      const penalty=suit==='♥'?1:suit==='♠'&&rank==='Q'?13:0;
+      if(penalty){
+        const badge=document.createElement('span');badge.className='hearts-penalty-badge';
+        badge.textContent='+'+penalty;badge.setAttribute('aria-hidden','true');
+        card.append(badge);
+      }
     });
   }
   // The existing engine replaces these two roots on its native render cycle.

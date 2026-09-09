@@ -4,7 +4,8 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','go-fish-royal-table');
-  document.body.dataset.gameVersion='v25';
+  document.body.dataset.gameVersion='v26';
+  document.body.dataset.cardDeck='klondike';
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');

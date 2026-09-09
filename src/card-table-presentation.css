@@ -1,4 +1,22 @@
 /* Opt-in deck/table skin; legacy consumers remain untouched. */
+/* Owner-selected canonical deck: the existing Klondike artwork, not another
+   per-game card asset. Migrate owned games explicitly; preserve card geometry. */
+.wp-premium-table[data-card-deck='klondike'] .classic-card.front {
+ background-color:#f6efde;
+ background-image:linear-gradient(180deg,#f5f2e9,#f6efde),url('../assets/klondike-solitaire-cards.webp');
+ background-size:100% 120%,cover;background-position:center;
+ color:#132437;
+}
+.wp-premium-table[data-card-deck='klondike'] .classic-card.front:is(.is-red,.red) {color:#d9534f;}
+.wp-premium-table[data-card-deck='klondike'] .classic-card .deck-center {
+ inset:20% 20%!important;display:flex;align-items:center;justify-content:center;
+ background:none!important;width:auto;aspect-ratio:auto;
+}
+.wp-premium-table[data-card-deck='klondike'] .classic-card .deck-pip {
+ position:static;transform:none;font-size:24px!important;line-height:1;
+}
+.wp-premium-table[data-card-deck='klondike'] .classic-card .rank::after {content:none;}
+.wp-premium-table[data-card-deck='klondike'] .classic-card .rank {font-family:system-ui,sans-serif;}
 .wp-premium-table { --classic-red: #ac2338; --classic-accent: #aee4c1; --classic-gold: #f5d991; }
 .wp-premium-table .board-shell {
   background: #064632 url('../assets/card-table/emerald-table-v1.webp') center / cover no-repeat;

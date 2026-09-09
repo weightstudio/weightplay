@@ -246,6 +246,7 @@
     ar: "انقل العمود {source} كاملًا إلى العمود {destination} لفتح مساحة وزيادة سعة النقل.",
   };
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
+  document.body.dataset.cardDeck = 'klondike';
   window.WPCardTablePresentation?.install(view);
   const battleSoundToggle = document.getElementById("soundToggleBattle");
   const refreshFreecellHeaderCopy = () => {

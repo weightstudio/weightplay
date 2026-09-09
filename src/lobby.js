@@ -7,6 +7,7 @@ let activeGamePreview = null;
 const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
 const audienceMode = document.body?.dataset.audience === "kids" ? "kids" : "general";
 const generalGameIds = new Set(lobby.audiences?.generalGameIds || []);
+const tabletopGameIds = new Set(lobby.audiences?.tabletopGameIds || []);
 const isKidsLobby = audienceMode === "kids";
 const allLobbyGames = [...lobby.games];
 // GENERATED GAMEPLAY REVIEW PASSES START
@@ -22,6 +23,7 @@ const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
   : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
 const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-hero-trials";
+const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
 lobby.featuredGameId = modeFeaturedGameId;
@@ -30,12 +32,15 @@ if (ownerPreviewMode) {
   document.documentElement.dataset.ownerPreview = "true";
 }
 const filterButtons = document.querySelectorAll("[data-age-filter]");
+const gameHallSwitch = document.querySelector(".game-hall-switch");
+const hallButtons = document.querySelectorAll("[data-hall-tab]");
 const topicButtons = document.querySelectorAll("[data-topic-filter]");
 const skillButtons = document.querySelectorAll("[data-skill-filter]");
 const libraryButtons = document.querySelectorAll("[data-library-tab]");
 const availabilityButtons = document.querySelectorAll("[data-availability-filter]");
 const advancedFilters = document.querySelector("#advancedFilters");
 const advancedFilterCount = document.querySelector("#advancedFilterCount");
+const generalPlayTitle = document.querySelector(".general-play-heading h2");
 const discoverySnapshot = document.querySelector("#discoverySnapshot");
 const continuePlaying = document.querySelector("#continuePlaying");
 const continuePlayingSection = document.querySelector("#continuePlayingSection");
@@ -107,7 +112,7 @@ if (!isKidsLobby) latestGamesSection.before(spotlightSection);
 function renderSpotlight() {
   if (isKidsLobby) return;
   const game = lobby.games.find(item => item.id === "animal-crystal-survivor");
-  if (!game) { spotlightSection.hidden = true; return; }
+  if (!game || !gameMatchesHall(game)) { spotlightSection.hidden = true; return; }
   spotlightSection.hidden = false;
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
     <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
@@ -263,6 +268,7 @@ const lobbyGameFacts = {
   cribbage: { difficulty: "Medium", time: "5-8 minutes" },
   "peg-solitaire": { difficulty: "Medium", time: "5-8 minutes" },
 };
+let activeHall = "games";
 let activeFilter = "all";
 let activeTopic = "all";
 let activeSkill = "all";
@@ -286,6 +292,18 @@ let gameStats = {
   },
   games: {},
 };
+
+function gameHall(game) {
+  return tabletopGameIds.has(game?.id) ? "tabletop" : "games";
+}
+
+function gameMatchesHall(game, hall = activeHall) {
+  return isKidsLobby || gameHall(game) === hall;
+}
+
+function gamesInHall(hall = activeHall) {
+  return isKidsLobby ? [...lobby.games] : lobby.games.filter((game) => gameMatchesHall(game, hall));
+}
 
 function text(value) {
   const localized = i18n.getLocalized(value);
@@ -353,10 +371,26 @@ function selectedFilterValue(buttons, datasetKey, value) {
   return [...buttons].some((button) => button.dataset[datasetKey] === value) ? value : "all";
 }
 
+function syncHallPresentation() {
+  if (isKidsLobby) return;
+  document.body.dataset.gameHall = activeHall;
+  gameHallSwitch?.setAttribute("aria-label", i18n.t("hall.label"));
+  setActiveButtons(hallButtons, "hallTab", activeHall);
+  document.querySelectorAll("[data-hall-only]").forEach((element) => {
+    element.hidden = element.dataset.hallOnly !== activeHall;
+  });
+  if (generalPlayTitle) {
+    generalPlayTitle.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop_title" : "general.play.title");
+  }
+}
+
 function restoreDiscoveryFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search);
+  activeHall = isKidsLobby ? "games" : selectedFilterValue(hallButtons, "hallTab", params.get("hall") || "games");
   activeFilter = selectedFilterValue(filterButtons, "ageFilter", params.get("age") || "all");
   activeTopic = selectedFilterValue(topicButtons, "topicFilter", params.get("topic") || "all");
+  const activeTopicButton = [...topicButtons].find((button) => button.dataset.topicFilter === activeTopic);
+  if (activeTopicButton?.dataset.hallOnly && activeTopicButton.dataset.hallOnly !== activeHall) activeTopic = "all";
   activeSkill = selectedFilterValue(skillButtons, "skillFilter", params.get("skill") || "all");
   if (activeTopic !== "all" && activeSkill !== "all") activeTopic = "all";
   activeLibrary = selectedFilterValue(libraryButtons, "libraryTab", params.get("library") || "all");
@@ -365,6 +399,7 @@ function restoreDiscoveryFiltersFromUrl() {
   activeSearch = normalizeSearch(query);
   if (gameSearch) gameSearch.value = query;
 
+  setActiveButtons(hallButtons, "hallTab", activeHall);
   setActiveButtons(filterButtons, "ageFilter", activeFilter);
   setActiveButtons(topicButtons, "topicFilter", activeTopic);
   setActiveButtons(skillButtons, "skillFilter", activeSkill);
@@ -375,6 +410,7 @@ function restoreDiscoveryFiltersFromUrl() {
 function syncDiscoveryFiltersToUrl(historyMode = "replace") {
   const url = new URL(window.location.href);
   const values = {
+    hall: isKidsLobby || activeHall === "games" ? "all" : activeHall,
     age: activeFilter,
     topic: activeTopic,
     skill: activeSkill,
@@ -437,8 +473,9 @@ function renderFilterStatusSummary(visibleCount, labels) {
 
 function renderDiscoverySnapshot() {
   if (!discoverySnapshot) return;
-  const playableCount = lobby.games.filter((game) => game.status === "playable").length;
-  const previewCount = lobby.games.filter((game) => game.status === "planned").length;
+  const currentHallGames = gamesInHall();
+  const playableCount = currentHallGames.filter((game) => game.status === "playable").length;
+  const previewCount = currentHallGames.filter((game) => game.status === "planned").length;
   const phonePickCount = mobileFriendlyGames(99).length;
   discoverySnapshot.innerHTML = `
     <button type="button" data-snapshot-filter="playable">
@@ -732,9 +769,10 @@ function rankLabel(game, fallbackRank) {
 }
 
 function popularGames(limit = 3) {
-  const playableGames = lobby.games.filter((game) => game.status === "playable");
+  const playableGames = gamesInHall().filter((game) => game.status === "playable");
   if (!hasRealStats()) {
-    return lobby.heroGameIds.map((id) => playableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
+    const heroIds = !isKidsLobby && activeHall === "tabletop" ? tabletopHeroGameIds : lobby.heroGameIds;
+    return heroIds.map((id) => playableGames.find((game) => game.id === id)).filter(Boolean).slice(0, limit);
   }
   return [...playableGames]
     .sort((a, b) => {
@@ -746,19 +784,19 @@ function popularGames(limit = 3) {
 }
 
 function playableGames() {
-  return lobby.games.filter((game) => game.status === "playable");
+  return gamesInHall().filter((game) => game.status === "playable");
 }
 
 function recentPlayableGames(limit = 4) {
   return recentGameIds
-    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable" && gameMatchesHall(game)))
     .filter(Boolean)
     .slice(0, limit);
 }
 
 function recentlyUpdatedGames(limit = 4) {
   return [...recentlyUpdatedGameIds]
-    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable" && gameMatchesHall(game)))
     .filter(Boolean)
     .slice(0, limit);
 }
@@ -770,6 +808,8 @@ function upcomingPreviewGames(limit = Number.POSITIVE_INFINITY) {
   return allLobbyGames
     .filter((game) =>
       game.status === "planned"
+      && (isKidsLobby ? !generalGameIds.has(game.id) : generalGameIds.has(game.id))
+      && gameMatchesHall(game)
       && (game.art?.background || game.art?.hero))
     .slice(0, limit);
 }
@@ -787,7 +827,7 @@ function challengeSpotlightGames(limit = 4) {
 
 function mobileFriendlyGames(limit = 4) {
   const pinned = mobilePickGameIds
-    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable"))
+    .map((id) => lobby.games.find((game) => game.id === id && game.status === "playable" && gameMatchesHall(game)))
     .filter(Boolean);
   const pinnedIds = new Set(pinned.map((game) => game.id));
   const extras = playableGames()
@@ -802,7 +842,7 @@ function mobileFriendlyGames(limit = 4) {
 
 function recommendationSeeds() {
   const seedIds = [...recentGameIds, ...favoriteGameIds].filter((id, index, list) => id && list.indexOf(id) === index);
-  return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable")).filter(Boolean);
+  return seedIds.map((id) => lobby.games.find((game) => game.id === id && game.status === "playable" && gameMatchesHall(game))).filter(Boolean);
 }
 
 function recommendationAgeCompatible(game, seeds) {
@@ -936,6 +976,7 @@ function cardMatchesFilterState(card, state) {
   const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
   const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
   return (
+    (isKidsLobby || state.hall === "all" || card.dataset.hall === state.hall) &&
     matchesAgeFilter(ages, state.age) &&
     (state.topic === "all" || topics.includes(state.topic)) &&
     (state.skill === "all" || skills.includes(state.skill)) &&
@@ -1018,6 +1059,7 @@ function createGameCard(game) {
   const favorite = isFavorite(game.id);
   const recent = isRecent(game.id);
   card.className = `game-card ${isPlayable ? "playable" : "coming-soon"}`;
+  card.dataset.hall = gameHall(game);
   card.dataset.age = (game.ages || []).join(" ");
   card.dataset.topic = (game.categories || []).join("|");
   card.dataset.skill = (game.skills || []).join("|");
@@ -1221,16 +1263,17 @@ function createGameCard(game) {
   return card;
 }
 
-function renderLobby() {
+function renderLobby({ historyMode = "replace" } = {}) {
   catalogSearchIndex.clear();
   catalogNeedsRebuild = true;
   applyStaticTranslations();
+  syncHallPresentation();
   renderCatalogDirectory();
   platformTitle.textContent = isKidsLobby ? "WeightPlay Kids" : lobby.platform.name;
   platformSubtitle.textContent = i18n.t(isKidsLobby ? "kids.site.subtitle" : "general.site.subtitle");
   renderWallet();
 
-  const totalGameCount = lobby.games.length;
+  const totalGameCount = gamesInHall().length;
   const lobbyVisitsTotal = Number(gameStats.totals?.lobbyVisitsTotal);
   const hasLobbyVisitTotal = hasStatsFeed() && gameStats.totals?.lobbyVisitsTotal !== null && Number.isFinite(lobbyVisitsTotal) && lobbyVisitsTotal >= 0;
   lobbyStats.innerHTML = `
@@ -1267,7 +1310,7 @@ function renderLobby() {
   renderChallengeSpotlight();
   renderRecommendations();
   renderSkillPaths();
-  applyFilter();
+  applyFilter({ historyMode });
 }
 
 function renderContinuePlaying() {
@@ -1458,7 +1501,7 @@ function latestPublicGames() {
   const now = Date.now();
   return catalogGames.filter((game) => {
     const date = Date.parse(firstPublicDates[game.id]?.date);
-    return game.status === "playable" && Number.isFinite(date) && date <= now;
+    return game.status === "playable" && gameMatchesHall(game) && Number.isFinite(date) && date <= now;
   }).sort((a, b) => Date.parse(firstPublicDates[b.id].date) - Date.parse(firstPublicDates[a.id].date)
     || a.id.localeCompare(b.id, "en")).slice(0, 5);
 }
@@ -1522,6 +1565,7 @@ function renderUpcomingGames() {
     card.className = "upcoming-game-card";
     card.type = "button";
     card.dataset.gameId = game.id;
+    card.dataset.hall = gameHall(game);
     card.dataset.age = (game.ages || []).join(" ");
     card.dataset.topic = (game.categories || []).join("|");
     card.dataset.skill = (game.skills || []).join("|");
@@ -1806,7 +1850,7 @@ function selectCharacterPath(character) {
   showToast(i18n.t("character_showcase.toast", { name, skill }));
 }
 
-function resetDiscoveryFilters() {
+function clearDiscoverySelections() {
   activeFilter = "all";
   activeTopic = "all";
   activeSkill = "all";
@@ -1819,13 +1863,17 @@ function resetDiscoveryFilters() {
   setActiveButtons(skillButtons, "skillFilter", "all");
   setActiveButtons(libraryButtons, "libraryTab", "all");
   setActiveButtons(availabilityButtons, "availabilityFilter", "all");
+}
+
+function resetDiscoveryFilters() {
+  clearDiscoverySelections();
   window.WonderSound?.play("click");
   window.WonderAnalytics?.track("clear_lobby_filters", { locale: i18n.locale() });
   applyFilter({ historyMode: "push" });
 }
 
 function currentDiscoveryState() {
-  return { age: activeFilter, topic: activeTopic, skill: activeSkill,
+  return { hall: isKidsLobby ? "all" : activeHall, age: activeFilter, topic: activeTopic, skill: activeSkill,
     library: activeLibrary, availability: activeAvailability, search: activeSearch };
 }
 
@@ -1862,6 +1910,7 @@ function catalogSearchText(game) {
 function matchingCatalogGames(state = currentDiscoveryState()) {
   // Filtering and counts must not depend on how many DOM cards were revealed.
   return lobby.games.filter((game) => cardMatchesFilterState({ dataset: {
+    hall: gameHall(game),
     age: (game.ages || []).join(" "), topic: (game.categories || []).join("|"),
     skill: (game.skills || []).join("|"), status: game.status,
     search: catalogSearchText(game), favorite: String(isFavorite(game.id)),
@@ -1918,6 +1967,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     const ages = card.dataset.age.split(" ");
     const topics = card.dataset.topic ? card.dataset.topic.split("|") : [];
     const skills = card.dataset.skill ? card.dataset.skill.split("|") : [];
+    const matchesHall = isKidsLobby || card.dataset.hall === activeHall;
     const matchesAge = matchesAgeFilter(ages, activeFilter);
     const matchesTopic = activeTopic === "all" || topics.includes(activeTopic);
     const matchesSkill = activeSkill === "all" || skills.includes(activeSkill);
@@ -1930,7 +1980,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
       activeAvailability === "all" ||
       (activeAvailability === "playable" && card.dataset.status === "playable") ||
       (activeAvailability === "preview" && card.dataset.status === "planned");
-    const isVisible = matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary && matchesAvailability;
+    const isVisible = matchesHall && matchesAge && matchesTopic && matchesSkill && matchesSearch && matchesLibrary && matchesAvailability;
     card.classList.toggle("hidden", !isVisible);
     if (activeLibrary === "recent" && card.dataset.recentIndex !== "-1") {
       card.style.order = card.dataset.recentIndex;
@@ -2195,6 +2245,18 @@ function handleHiddenTrialGate(game) {
   return true;
 }
 
+hallButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const nextHall = button.dataset.hallTab;
+    if (nextHall === activeHall) return;
+    activeHall = nextHall;
+    clearDiscoverySelections();
+    window.WonderSound?.play("click");
+    window.WonderAnalytics?.track("lobby_hall_switch", { lobby_hall: activeHall, locale: i18n.locale() });
+    renderLobby({ historyMode: "push" });
+  });
+});
+
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.ageFilter;
@@ -2300,6 +2362,7 @@ if (!isKidsLobby) {
 window.WonderAnalytics?.track("lobby_ready", {
   playable_games: lobby.games.filter((game) => game.status === "playable").length,
   total_games: lobby.games.length,
+  lobby_hall: isKidsLobby ? "kids" : activeHall,
   platform: lobby.platform.name,
   locale: i18n.locale(),
 });

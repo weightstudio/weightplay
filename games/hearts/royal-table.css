@@ -20,6 +20,32 @@ body.hearts-royal-table .playing-card .deck-pip {font-size:8px;}
 body.hearts-royal-table .playing-card[data-deck-rank='A'] .deck-pip {font-size:18px;}
 body.hearts-royal-table .playing-card .deck-court {inset:16% auto auto 19%;}
 body.hearts-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-shadow:0 0 0 2px #ffdd87,0 6px 10px #001a14aa;}
+body.hearts-royal-table #cardGameCenter {width:100%;max-width:420px;min-width:0;}
+body.hearts-royal-table #cardGameCenter .table-row {
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;
+}
+body.hearts-royal-table #cardGameCenter .table-row>div {
+ display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;
+ font:600 12px/1.2 system-ui,sans-serif;overflow-wrap:anywhere;text-align:center;
+}
+body.hearts-royal-table #cardGameCenter .table-row>span {grid-column:1/-1;}
+body.hearts-royal-table #cardGameCenter .playing-card {
+ width:min(100%,80px);min-width:0;height:auto;min-height:0;aspect-ratio:5/7;
+ flex:none;border-radius:8px;box-shadow:0 5px 12px #001c18aa;
+}
+body.hearts-royal-table #cardGameCenter .playing-card .rank {font-size:14px;}
+body.hearts-royal-table #cardGameCenter .playing-card .deck-pip {font-size:12px;}
+body.hearts-royal-table .hearts-penalty-badge {
+ position:absolute;z-index:3;inset:3px 3px auto auto;pointer-events:none;
+ padding:2px 3px;border-radius:4px;background:#8a2434;color:#fff4cf;
+ border:1px solid #f0c888;font:700 10px/1 system-ui,sans-serif;
+}
+@media(orientation:landscape) and (max-height:560px){
+ body.hearts-royal-table #cardGameCenter .playing-card {width:44px;}
+ body.hearts-royal-table #cardGameCenter .playing-card .rank {font-size:10px;}
+ body.hearts-royal-table #cardGameCenter .playing-card .deck-pip {font-size:8px;}
+ body.hearts-royal-table #cardGameCenter .table-row>div {gap:3px;font-size:10px;}
+}
 body.hearts-royal-table .playing-card.hearts-card-arrival {animation:hearts-card-arrival 180ms ease-out;}
 @keyframes hearts-card-arrival {from{opacity:.55;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 @media(prefers-reduced-motion:reduce){body.hearts-royal-table .playing-card {animation:none!important;transition:none!important;}}

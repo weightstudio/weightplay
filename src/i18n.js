@@ -1840,27 +1840,56 @@ const essentialLobbyCopy = {
   });
 
   const extendedTopicCopy = {
-    en: ["Card Games", "Block Puzzles"],
-    "zh-Hant": ["棋牌", "方塊"],
-    "zh-Hans": ["棋牌", "方块"],
-    ja: ["カードゲーム", "ブロックパズル"],
-    ko: ["카드 게임", "블록 퍼즐"],
-    es: ["Juegos de cartas", "Puzles de bloques"],
-    "pt-BR": ["Jogos de cartas", "Quebra-cabeças de blocos"],
-    fr: ["Jeux de cartes", "Puzzles de blocs"],
-    de: ["Kartenspiele", "Blockpuzzles"],
-    it: ["Giochi di carte", "Puzzle a blocchi"],
-    ru: ["Карточные игры", "Головоломки с блоками"],
-    hi: ["कार्ड गेम", "ब्लॉक पहेलियाँ"],
-    ar: ["ألعاب البطاقات", "ألغاز الكتل"],
+    en: ["Card Games", "Block Puzzles", "Board Games"],
+    "zh-Hant": ["紙牌遊戲", "方塊", "棋盤遊戲"],
+    "zh-Hans": ["纸牌游戏", "方块", "棋盘游戏"],
+    ja: ["カードゲーム", "ブロックパズル", "ボードゲーム"],
+    ko: ["카드 게임", "블록 퍼즐", "보드게임"],
+    es: ["Juegos de cartas", "Puzles de bloques", "Juegos de mesa"],
+    "pt-BR": ["Jogos de cartas", "Quebra-cabeças de blocos", "Jogos de tabuleiro"],
+    fr: ["Jeux de cartes", "Puzzles de blocs", "Jeux de plateau"],
+    de: ["Kartenspiele", "Blockpuzzles", "Brettspiele"],
+    it: ["Giochi di carte", "Puzzle a blocchi", "Giochi da tavolo"],
+    ru: ["Карточные игры", "Головоломки с блоками", "Настольные игры"],
+    hi: ["कार्ड गेम", "ब्लॉक पहेलियाँ", "बोर्ड गेम"],
+    ar: ["ألعاب البطاقات", "ألغاز الكتل", "ألعاب الطاولة"],
   };
-  Object.entries(extendedTopicCopy).forEach(([locale, [card, block]]) => {
+  Object.entries(extendedTopicCopy).forEach(([locale, [card, block, board]]) => {
     dictionaries[locale] = {
       ...(dictionaries[locale] || {}),
       "topic.card": card,
       "topic.block": block,
+      "topic.board": board,
       "category.Card": card,
       "category.Block": block,
+      "category.Board": board,
+    };
+  });
+
+  const gameHallCopy = {
+    en: ["Game sections", "Game World", "Adventures, puzzles and action", "Cards & Board", "Solitaire, card and board games", "Choose a card or board game"],
+    "zh-Hant": ["遊戲館別", "遊戲世界", "冒險、益智與動作", "棋牌館", "接龍、紙牌與棋盤遊戲", "挑選一款棋牌遊戲"],
+    "zh-Hans": ["游戏馆别", "游戏世界", "冒险、益智与动作", "棋牌馆", "接龙、纸牌与棋盘游戏", "挑选一款棋牌游戏"],
+    ja: ["ゲームセクション", "ゲームワールド", "冒険・パズル・アクション", "カード＆ボード", "ソリティア・カード・ボードゲーム", "カードやボードゲームを選ぼう"],
+    ko: ["게임 구역", "게임 월드", "모험, 퍼즐, 액션", "카드 & 보드", "솔리테어, 카드, 보드게임", "카드나 보드게임을 골라 보세요"],
+    es: ["Secciones de juegos", "Mundo de juegos", "Aventuras, puzles y acción", "Cartas y mesa", "Solitarios, cartas y juegos de mesa", "Elige un juego de cartas o de mesa"],
+    "pt-BR": ["Seções de jogos", "Mundo dos jogos", "Aventuras, quebra-cabeças e ação", "Cartas e tabuleiro", "Paciência, cartas e jogos de tabuleiro", "Escolha um jogo de cartas ou tabuleiro"],
+    fr: ["Espaces de jeux", "Monde des jeux", "Aventures, puzzles et action", "Cartes et plateau", "Patiences, cartes et jeux de plateau", "Choisissez un jeu de cartes ou de plateau"],
+    de: ["Spielbereiche", "Spielewelt", "Abenteuer, Rätsel und Action", "Karten & Brett", "Solitär-, Karten- und Brettspiele", "Wähle ein Karten- oder Brettspiel"],
+    it: ["Sezioni di gioco", "Mondo dei giochi", "Avventure, puzzle e azione", "Carte e tavolo", "Solitari, carte e giochi da tavolo", "Scegli un gioco di carte o da tavolo"],
+    ru: ["Разделы игр", "Мир игр", "Приключения, головоломки и экшен", "Карты и доска", "Пасьянсы, карточные и настольные игры", "Выберите карточную или настольную игру"],
+    hi: ["गेम अनुभाग", "गेम वर्ल्ड", "रोमांच, पहेलियाँ और एक्शन", "कार्ड और बोर्ड", "सॉलिटेयर, कार्ड और बोर्ड गेम", "कार्ड या बोर्ड गेम चुनें"],
+    ar: ["أقسام الألعاب", "عالم الألعاب", "مغامرات وألغاز وأكشن", "البطاقات والطاولة", "سوليتير وبطاقات وألعاب طاولة", "اختر لعبة بطاقات أو لعبة طاولة"],
+  };
+  Object.entries(gameHallCopy).forEach(([locale, [label, games, gamesNote, tabletop, tabletopNote, tabletopTitle]]) => {
+    dictionaries[locale] = {
+      ...(dictionaries[locale] || {}),
+      "hall.label": label,
+      "hall.games": games,
+      "hall.games_note": gamesNote,
+      "hall.tabletop": tabletop,
+      "hall.tabletop_note": tabletopNote,
+      "hall.tabletop_title": tabletopTitle,
     };
   });
 

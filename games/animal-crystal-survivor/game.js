@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-boss-xp-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-otter-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -1237,7 +1237,7 @@
   function t(key, data = {}) {
     if (combatTextLocale !== locale) {
       const copy = window.CrystalTalents.combat(locale);
-      combatTextOverrides = { menuHint:copy.intro, playHint:copy.intro, pageDescription:copy.intro, ogDescription:copy.intro,
+      combatTextOverrides = { title: window.WEIGHTPLAY_GAME_TITLES?.[GAME_ID]?.[locale], menuHint:copy.intro, playHint:copy.intro, pageDescription:copy.intro, ogDescription:copy.intro,
       resultLine:copy.result, expeditionRecordText:copy.record, resultPlanStrong:copy.intro,
       improved:`${copy.defeats} ↑`,
       patrolRankProgress:`${copy.defeats} {current} / {target}`, patrolRankComplete:`${copy.defeats} {current}`,

@@ -24,7 +24,11 @@
       center.className = 'deck-center';
       center.setAttribute('aria-hidden', 'true');
       center.dataset.runtimeLocalize = 'off';
-      if (['J','Q','K'].includes(rank)) {
+      if (document.body.dataset.cardDeck === 'klondike') {
+        const pip = document.createElement('span');
+        pip.className = 'deck-pip'; pip.textContent = suit;
+        center.append(pip);
+      } else if (['J','Q','K'].includes(rank)) {
         center.classList.add('deck-court');
       } else {
         for (const [x,y] of positions[rank === 'A' ? 1 : Number(rank)] || []) {

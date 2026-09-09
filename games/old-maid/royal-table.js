@@ -4,7 +4,8 @@
   const hand=document.getElementById('cardGameHand');
   if(!hand||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','old-maid-royal-table');
-  document.body.dataset.gameVersion='v24';
+  document.body.dataset.gameVersion='v25';
+  document.body.dataset.cardDeck='klondike';
   let previous=new Set();
   function decorate(){
     const cards=[...hand.querySelectorAll('.playing-card')];
