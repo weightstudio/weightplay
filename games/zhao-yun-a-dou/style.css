@@ -1253,19 +1253,18 @@ body.wp-shell-battle-active #generalReserve {
 
 @media (min-width: 700px) and (max-height: 500px) {
   .hero {
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: 420px minmax(0, 1fr);
   }
 
-  /* The shared Main shell moves the poster into its canonical composition.
-     Set that shell's responsive token too, so compact landscape keeps the
-     actual inspected poster at the 300px wide-layout contract. */
+  /* Keep the game-local composition aligned with the shared wide-layout
+     Main contract at compact-landscape heights. */
   body[data-wp-game-id="zhao-yun-a-dou"] .wp-standard-main-composition {
-    --wp-main-landscape-poster-size: 300px;
+    --wp-main-landscape-poster-size: 420px;
   }
 
   .ink-poster {
     box-sizing: border-box;
-    width: 300px;
+    width: 420px;
     justify-self: start;
   }
 

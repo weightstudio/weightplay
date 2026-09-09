@@ -29,3 +29,16 @@ html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessag
   html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-help p { display:none; }
   html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row button { min-height:32px; }
 }
+
+/* Wordle v14 restores the canonical compact-landscape Main poster column.
+   This game-local override intentionally outranks the older shared 300px
+   compatibility rule without changing Battle or sibling Popular Games. */
+@media (min-width:700px) and (max-height:520px) and (orientation:landscape) {
+  html body[data-game-id="wordle"] #mainScreen .main-panel {
+    grid-template-columns:420px minmax(0,1fr);
+  }
+  html body[data-game-id="wordle"] #mainScreen .preview-art {
+    width:420px;
+    max-width:420px;
+  }
+}
