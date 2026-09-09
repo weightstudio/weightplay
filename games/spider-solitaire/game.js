@@ -664,7 +664,13 @@
   }
 
   function updateDifficultyButtons() {
-    document.querySelectorAll("[data-difficulty]").forEach((button) => button.classList.toggle("is-selected", Number(button.dataset.difficulty) === state.difficulty));
+    document.querySelectorAll("[data-difficulty]").forEach((button) => {
+      const selected = Number(button.dataset.difficulty) === state.difficulty;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+      if (selected) button.dataset.wpStageRecommended = "true";
+      else delete button.dataset.wpStageRecommended;
+    });
   }
 
   function syncTableauPileHeights(canvas) {
@@ -1764,6 +1770,27 @@
   }
 
   function init() {
+    // Localized entry shells must use the same Stage controller as canonical.
+    // Keep one input owner; the shared rail installs its own drag handling.
+    const stageCanvas = ui.stageScreen.querySelector('.stage-canvas');
+    const difficultyRail = ui.stageScreen.querySelector('.difficulty-picker');
+    stageCanvas.dataset.wpStandardStageScreen = '';
+    difficultyRail.classList.add('stage-rail');
+    difficultyRail.dataset.wpStageRail = '';
+    // Dialogs share the board's scaled envelope, never the viewport/ad band.
+    const battleCanvas = ui.battleScreen.querySelector('.battle-canvas');
+    for (const overlay of [ui.tutorialOverlay, ui.confirmOverlay, ui.resultOverlay]) {
+      if (battleCanvas && overlay) battleCanvas.append(overlay);
+    }
+    const tutorialCard = ui.tutorialOverlay.querySelector('.tutorial-card');
+    if (!tutorialCard.querySelector('.tutorial-body')) {
+      const body = document.createElement('div');
+      body.className = 'tutorial-body';
+      for (const child of [...tutorialCard.children]) {
+        if (!child.classList.contains('dialog-actions')) body.append(child);
+      }
+      tutorialCard.prepend(body);
+    }
     syncLocale();
     setSoundButton();
     updateDifficultyButtons();

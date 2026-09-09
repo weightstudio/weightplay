@@ -319,6 +319,13 @@ export class Crystal3D {
     shield.rotation.x = -Math.PI / 2;
     shield.visible = false;
     root.userData.shield = shield;
+    root.userData.chargeCrest = this.mesh('crystal', 'ember', rig, 0, 1.46, .08, .11, .24, .14);
+    root.userData.chargeCrest.visible = false;
+    if (type === 'archer') {
+      this.mesh('cone', 'leaf', rig, 0, 1.4, -.04, .36, .35, .3);
+      this.mesh('ring', 'gold', rig, .42, .78, .19, .2, .4, .2).rotation.y = Math.PI / 2;
+      this.mesh('rod', 'cream', rig, .42, .78, .19, .015, .76, .015);
+    }
     return root;
   }
 
@@ -538,15 +545,16 @@ export class Crystal3D {
     this.hero.userData.legs.forEach((leg, i) => { leg.rotation.x = moving ? Math.sin(t * 13 + i * Math.PI) * .6 : 0; });
     this.setPosition(this.key, state.key, Math.sin(t * 2) * .06);
     this.key.rotation.y = t * .8;
-    for (const type of ['basic', 'runner', 'tank']) {
-      const enemies = state.enemies.filter(e => !e.isBoss && (e.image === type || (type === 'basic' && !['runner', 'tank'].includes(e.image))));
+    for (const type of ['basic', 'runner', 'tank', 'archer']) {
+      const enemies = state.enemies.filter(e => !e.isBoss && (e.image === type || (type === 'basic' && !['runner', 'tank', 'archer'].includes(e.image))));
       this.pool(type, enemies.length, () => this.character(type), (object, i) => {
         const e = enemies[i];
         this.setPosition(object, e);
         object.scale.setScalar(e.size / 64);
-        object.userData.rig.rotation.y = Math.atan2(state.player.x - e.x, state.player.y - e.y);
+        object.userData.rig.rotation.y = e.bowAim ? Math.atan2(e.bowAim.x, e.bowAim.y) : Math.atan2(state.player.x - e.x, state.player.y - e.y);
         object.userData.legs.forEach((leg, j) => { leg.rotation.x = Math.sin(t * (type === 'runner' ? 15 : 9) + j * Math.PI + i) * .5; });
         object.userData.shield.visible = Boolean(e.shielded);
+        object.userData.chargeCrest.visible = e.role === 'charger';
       }, 18);
     }
     for (const type of ['bossRoot', 'bossPrism', 'bossBriar', 'bossCinder', 'bossTempest', 'bossEclipse']) {
@@ -560,7 +568,7 @@ export class Crystal3D {
       }, 1);
     }
     const chargingStage = ['charge', 'chargeRoots', 'briar', 'convergence'].includes(state.stageConfig?.modifier);
-    const charging = state.enemies.filter(e => (e.isBoss ? ['bossBriar', 'bossTempest'].includes(e.image) : chargingStage) && e.chargeTimer <= .65);
+    const charging = state.enemies.filter(e => (e.isBoss ? ['bossBriar', 'bossTempest'].includes(e.image) : e.role !== 'archer' && (chargingStage || e.role === 'charger')) && e.chargeTimer <= .65);
     this.pool('chargeCues', charging.length, () => {
       const cue = new THREE.Group();
       this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
@@ -574,6 +582,16 @@ export class Crystal3D {
       cue.children[1].visible = Boolean(enemy.chargeAim);
       cue.rotation.y = enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;
     }, 19);
+    const archers = state.enemies.filter(e => e.bowAim);
+    this.pool('bowCues', archers.length, () => {
+      const group = new THREE.Group();
+      this.mesh('box', this.warning, group, 0, .04, 4, .13, .025, 8);
+      this.mesh('crystal', 'gold', group, 0, .07, 7.8, .13, .06, .25);
+      return group;
+    }, (object, i) => {
+      this.setPosition(object, archers[i]);
+      object.rotation.y = Math.atan2(archers[i].bowAim.x, archers[i].bowAim.y);
+    }, 5);
     const chilled = state.enemies.filter(e => e.chill > 0);
     this.pool('chilled', chilled.length, () => new THREE.Mesh(this.geo.ring, this.magicGlow), (object, i) => {
       this.setPosition(object, chilled[i], .12);
@@ -683,14 +701,19 @@ export class Crystal3D {
       const outline = this.mesh('ring', 'danger', group, 0, .04, 0);
       outline.rotation.x = -Math.PI / 2;
       circle.rotation.x = -Math.PI / 2;
-      group.userData = { circle, lane, outline };
+      const arrow = new THREE.Group(); group.add(arrow);
+      this.mesh('rod', 'gold', arrow, 0, .7, 0, .035, .7, .035).rotation.x = Math.PI / 2;
+      this.mesh('crystal', this.magicImpact, arrow, 0, .7, .37, .09, .05, .18);
+      group.userData = { circle, lane, outline, arrow };
       return group;
     }, (object, i) => {
       const hazard = state.hazards[i];
       this.setPosition(object, hazard);
-      const { circle, lane, outline } = object.userData;
-      circle.visible = hazard.kind !== 'lane';
-      lane.visible = !circle.visible;
+      const { circle, lane, outline, arrow } = object.userData;
+      arrow.visible = hazard.kind === 'arrow';
+      arrow.rotation.y = Math.atan2(hazard.vx || 0, hazard.vy || 0);
+      circle.visible = hazard.kind !== 'lane' && !arrow.visible;
+      lane.visible = hazard.kind === 'lane';
       circle.scale.setScalar((hazard.r || 1) / UNIT);
       outline.visible = circle.visible;
       outline.scale.setScalar((hazard.r || 1) / UNIT);

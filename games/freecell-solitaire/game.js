@@ -277,21 +277,8 @@
     refreshFreecellHeaderCopy();
     refreshFreecellOutcomeCopy();
   });
-  const normalizeFreecellLandscapePoster = () => {
-    if (window.innerWidth < 700 || !window.matchMedia("(orientation: landscape) and (max-height: 700px)").matches) return;
-    document.querySelectorAll(".poster-frame img,.wp-standard-main-poster img,.wp-standard-main-poster-media").forEach((node) => {
-      node.style.setProperty("width", "300px", "important");
-      node.style.setProperty("height", "300px", "important");
-      node.style.setProperty("min-height", "0", "important");
-      node.style.setProperty("max-width", "300px", "important");
-      node.style.setProperty("min-width", "0", "important");
-    });
-  };
-  window.addEventListener("resize", normalizeFreecellLandscapePoster);
-  window.setTimeout(normalizeFreecellLandscapePoster, 0);
-  window.setTimeout(normalizeFreecellLandscapePoster, 120);
-  const landscapePosterTimer = window.setInterval(normalizeFreecellLandscapePoster, 80);
-  window.setTimeout(() => window.clearInterval(landscapePosterTimer), 3200);
+  // The shared Main composition and owned stylesheet size the poster.
+  // Do not poll or leave inline dimensions behind after viewport rotation.
   refreshFreecellHeaderCopy();
   const hintCueState = { active: false, moves: 0, timer: 0 };
   const ANALYTICS_EVENT = "wp-freecell-analytics";

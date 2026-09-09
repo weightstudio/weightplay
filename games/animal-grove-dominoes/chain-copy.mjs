@@ -1,0 +1,15 @@
+export const recoveryCopy={
+ en:['Undo','No route remains. Undo and try the other branch.','Use every tile, then reach'],
+ 'zh-Hant':['還原','路線已堵住。還原後試試另一條分支。','用完所有骨牌，最後抵達'],
+ 'zh-Hans':['撤销','路线已堵住。撤销后试试另一条分支。','用完所有骨牌，最后抵达'],
+ ja:['元に戻す','行き止まりです。戻して別の分岐を試しましょう。','すべての牌を使って最後に到達：'],
+ ko:['되돌리기','길이 막혔어요. 되돌리고 다른 갈림길을 선택하세요.','모든 패를 사용한 뒤 도착:'],
+ es:['Deshacer','No queda ninguna ruta. Deshaz y prueba la otra rama.','Usa todas las fichas y termina en'],
+ 'pt-BR':['Desfazer','Não há caminho. Desfaça e tente a outra ramificação.','Use todas as peças e termine em'],
+ fr:['Annuler','Le chemin est bloqué. Annulez et essayez une autre branche.','Utilisez toutes les pièces et terminez à'],
+ de:['Rückgängig','Der Weg ist blockiert. Gehe zurück und wähle den anderen Zweig.','Nutze alle Steine und erreiche zuletzt'],
+ it:['Annulla','Il percorso è bloccato. Annulla e prova l’altro ramo.','Usa tutte le tessere e termina a'],
+ ru:['Отменить','Путь закрыт. Отмените ход и выберите другую ветку.','Используйте все костяшки и завершите путь здесь:'],
+ hi:['वापस लें','रास्ता बंद है। चाल वापस लें और दूसरी शाखा चुनें।','सभी गोटियाँ लगाकर अंत में यहाँ पहुँचें:'],
+ ar:['تراجع','الطريق مسدود. تراجع وجرب الفرع الآخر.','استخدم كل القطع ثم صل إلى'],
+};

@@ -183,6 +183,11 @@ body[data-wp-game-id="spider-solitaire"] .game-page-info {
 .dialog-card h2, .result-card h2 { margin-top: 0; }
 .dialog-card li { margin: .55rem 0; color: var(--sp-muted); }
 .tutorial-card { max-height: min(88vh, 620px); overflow: auto; }
+.battle-canvas > .dialog-overlay, .battle-canvas > .result-overlay { position: absolute; min-height: 0; overflow: hidden; }
+.battle-canvas > .dialog-overlay > .dialog-card, .battle-canvas > .result-overlay > .result-card { width: min(100%, 460px); max-height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+.battle-canvas > .dialog-overlay > .tutorial-card { display: flex; flex-direction: column; overflow: hidden; }
+.tutorial-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.tutorial-card > .dialog-actions { flex: 0 0 auto; padding-top: 10px; }
 .tutorial-visual { display: grid; gap: .45rem; margin: .7rem 0 .9rem; padding: .7rem; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; background: linear-gradient(145deg,rgba(78,205,196,.13),rgba(255,209,102,.08)); }
 .tutorial-visual-row { display: flex; min-height: 32px; align-items: center; justify-content: center; gap: .35rem; }
 .tutorial-mini-card, .tutorial-drop-zone { display: inline-grid; width: 27px; height: 36px; place-items: center; border: 1px solid rgba(19,36,55,.18); border-radius: 5px; color: #132437; background: #f6efde; box-shadow: 0 3px 6px rgba(0,0,0,.24); font-size: .72rem; font-weight: 900; }

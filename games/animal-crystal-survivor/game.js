@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-dragon-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-threats-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -869,7 +869,9 @@
     bossImage: row[5] || null,
     mode: row[5] ? "boss" : index % 5 === 1 || index % 5 === 3 ? "waves" : "survival",
     waveGoal: index % 5 === 3 ? 5 : 3,
-    duration: index % 5 === 1 || index % 5 === 3 ? 300 : RUN_SECONDS,
+    duration: Math.min(180, row[5] ? 90 + Math.floor(index / 5) * 18
+      : index % 5 === 1 || index % 5 === 3 ? 90 + Math.floor(index / 5) * 15 + (index % 5 === 3 ? 20 : 0)
+      : 45 + Math.floor(index / 5) * 25 + (index % 5 === 2 ? 15 : 0)),
     targetKeys: 2 + Math.floor(index / 6),
   }));
   const spanishRegionNames = ["Arboleda de Cristal","Fragmentos Lunares","Laberinto de Zarzas","Grieta de Brasas","Corona de Tormenta","Corazón del Eclipse"];
@@ -1254,12 +1256,32 @@
   }
 
   function modeObjective(config) {
-    return modeLabels()[config.mode === "waves" ? 4 : config.mode === "boss" ? 5 : 3].replace("{n}", config.waveGoal);
+    return modeLabels()[config.mode === "waves" ? 4 : config.mode === "boss" ? 5 : 3].replace("{n}", config.waveGoal)
+      .replace(/3:00|5:00|3 分鐘|5 分鐘|3 分钟|5 分钟|3分間|5分以内|3分以内|3분|5분/g, match => match.includes("以内") ? `${formatTime(config.duration)}以内` : formatTime(config.duration));
   }
 
   function objectiveComplete() {
     return state.stageConfig.mode === "waves" ? state.waveCleared >= state.stageConfig.waveGoal
       : state.stageConfig.mode === "boss" ? state.bossDefeated : state.timeLeft <= 0;
+  }
+
+  function enemyLesson(config) {
+    const lessons = ({
+      en: ["Warm-up: movement and automatic magic", "Learn to clear small waves", "Archers: leave the aim line", "Chargers: dodge sideways", "Crossfire: archers + chargers"],
+      "zh-Hant": ["暖身：移動與自動魔法", "練習清除小型波次", "弓箭手：離開瞄準線", "突進怪：向左右閃避", "交叉攻勢：弓箭手＋突進怪"],
+      "zh-Hans": ["热身：移动与自动魔法", "练习清除小型波次", "弓箭手：离开瞄准线", "突进怪：向左右闪避", "交叉攻势：弓箭手＋突进怪"],
+      ja: ["移動と自動魔法の練習", "小さなウェーブを撃破", "弓兵：照準線から離れる", "突進：横に回避", "弓兵と突進の連携"],
+      ko: ["이동과 자동 마법 연습", "소규모 웨이브 연습", "궁수: 조준선 피하기", "돌진: 옆으로 피하기", "궁수와 돌진의 협공"],
+      es: ["Práctica de movimiento y magia automática", "Supera pequeñas oleadas", "Arqueros: sal de la línea", "Cargadores: esquiva de lado", "Fuego cruzado y cargas"],
+      "pt-BR": ["Treino de movimento e magia automática", "Vença ondas pequenas", "Arqueiros: saia da mira", "Investidas: desvie para o lado", "Fogo cruzado e investidas"],
+      fr: ["Déplacement et magie automatique", "Petites vagues d’entraînement", "Archers : quittez la ligne", "Charges : esquivez de côté", "Tirs croisés et charges"],
+      de: ["Bewegung und automatische Magie üben", "Kleine Wellen besiegen", "Bogenschützen: Ziellinie verlassen", "Ansturm: seitlich ausweichen", "Kreuzfeuer und Anstürme"],
+      it: ["Prova movimento e magia automatica", "Supera piccole ondate", "Arcieri: esci dalla mira", "Cariche: schiva di lato", "Fuoco incrociato e cariche"],
+      ru: ["Движение и автоматическая магия", "Тренировка на малых волнах", "Лучники: уйдите с линии", "Рывки: уклоняйтесь вбок", "Перекрёстный огонь и рывки"],
+      hi: ["चलने और स्वचालित जादू का अभ्यास", "छोटी लहरों का अभ्यास", "तीरंदाज: निशाने की रेखा से हटें", "धावा: बगल में बचें", "तीरों और धावों का संयुक्त हमला"],
+      ar: ["تدريب الحركة والسحر التلقائي", "تدرب على موجات صغيرة", "الرماة: ابتعد عن خط التصويب", "الاندفاع: تفادَ جانبًا", "نيران متقاطعة واندفاعات"],
+    })[locale];
+    return (lessons || ["Warm-up", "Small waves", "Dodge arrows", "Sidestep charges", "Crossfire"])[Math.min(4, config.number - 1)];
   }
 
   function makePlayer() {
@@ -1698,7 +1720,7 @@
     if (selected) card.setAttribute("aria-current", "true"); else card.removeAttribute("aria-current");
     card.style.setProperty("--stage-overlay", region.color);
     const regionName = localeRegionNames[locale]?.[config.region] || (locale === "zh-Hant" ? region.zh : locale === "es" ? region.es : locale === "ar" ? region.ar : region.en);
-    const bossText = config.bossImage ? `<small>${t("bossCheckpoint")}</small>` : "";
+    const bossText = `<small>${enemyLesson(config)}</small>`;
     const objective = modeObjective(config);
     card.dataset.mode = config.mode;
     card.innerHTML = `<em>${modeLabels()[config.mode === "waves" ? 1 : config.mode === "boss" ? 2 : 0]} · ${regionName}</em><strong>${locale === "zh-Hant" ? `\u7b2c ${config.number} \u95dc` : `${t("stage")} ${config.number}`}</strong><span>${stageName(config)}</span><small>${stageRule(config)}</small>${bossText}<small>${objective}</small><small>${locked ? t("stageLocked") : cleared ? t("stageCleared") : t("stageReady")}</small>`;
@@ -1975,6 +1997,8 @@
       damage: options.damage ?? 0.75,
       color: options.color || "#f59e0b",
       tick: 0,
+      vx: options.vx || 0,
+      vy: options.vy || 0,
     });
   }
 
@@ -2021,14 +2045,22 @@
       hazard.life -= dt;
       hazard.tick = Math.max(0, hazard.tick - dt);
       const active = hazard.warn <= 0;
-      const inside = hazard.kind === "lane"
+      const previousX = hazard.x, previousY = hazard.y;
+      if (hazard.kind === "arrow" && active) { hazard.x += hazard.vx * dt; hazard.y += hazard.vy * dt; }
+      let inside = hazard.kind === "lane"
         ? Math.abs(p.x - hazard.x) <= hazard.width / 2 && Math.abs(p.y - hazard.y) <= hazard.height / 2
         : Math.hypot(p.x - hazard.x, p.y - hazard.y) <= hazard.r;
+      if (hazard.kind === "arrow") {
+        const dx = hazard.x - previousX, dy = hazard.y - previousY;
+        const along = Math.max(0, Math.min(1, ((p.x - previousX) * dx + (p.y - previousY) * dy) / (dx * dx + dy * dy || 1)));
+        inside = Math.hypot(p.x - previousX - dx * along, p.y - previousY - dy * along) <= hazard.r;
+      }
       if (active && inside && hazard.tick <= 0) {
         p.hp = Math.max(0, p.hp - hazard.damage);
         hazard.tick = 0.82;
         addSpark(p.x, p.y, hazard.color);
         playSound("hit", 0.3);
+        if (hazard.kind === "arrow") hazard.life = 0;
       }
       return hazard.life > 0;
     });
@@ -2148,7 +2180,7 @@
         state.waveBreak -= dt;
         if (state.waveBreak > 0) return;
         state.wave += 1;
-        state.waveRemaining = 5 + config.region + state.wave * 2;
+        state.waveRemaining = 3 + config.region + state.wave * 2;
         state.waveBreak = 4;
         state.spawnTimer = 0;
         addFloater(`${modeLabels()[1]} ${state.wave}/${config.waveGoal}`, state.player.x, state.player.y - 90, "#ffe6a1");
@@ -2164,12 +2196,16 @@
     const elapsed = state.survived;
     const runnerChance = ["runnerRush", "blink", "cinder", "stormLanes"].includes(config.modifier) ? 0.58 : 0.26 + config.region * 0.035;
     const tankChance = ["tankRing", "charge", "chargeRoots", "briar", "convergence"].includes(config.modifier) ? 0.5 : 0.16 + config.region * 0.025;
-    const type = ["basic", "drift"].includes(config.modifier)
+    let type = ["basic", "drift"].includes(config.modifier)
       ? elapsed > 65 && Math.random() < 0.23 ? "tank" : elapsed > 35 && Math.random() < 0.34 ? "runner" : "basic"
       : (() => {
           const roll = Math.random();
           return elapsed > 42 && roll < tankChance ? "tank" : elapsed > 22 && roll < tankChance + runnerChance ? "runner" : "basic";
         })();
+    let role = "melee";
+    if (state.stage >= 3 && state.spawnCount % (state.stage >= 11 ? 4 : 5) === 1 && state.enemies.filter(e => e.role === "archer").length < Math.min(5, 1 + Math.floor(state.stage / 5))) {
+      type = "archer"; role = "archer";
+    } else if (state.stage >= 4 && state.spawnCount % 6 === 3) { type = "runner"; role = "charger"; }
     const edge = Math.floor(Math.random() * 4);
     const pos = randomPoint(0);
     if (edge === 0) pos.y = -54;
@@ -2192,12 +2228,13 @@
       basic: { hp: 2, speed: 68, size: 62, damage: 0.32, image: "basic" },
       runner: { hp: 1.5, speed: 102, size: 58, damage: 0.28, image: "runner" },
       tank: { hp: 5, speed: 44, size: 82, damage: 0.55, image: "tank" },
+      archer: { hp: 2.5, speed: 72, size: 64, damage: .35, image: "archer" },
     }[type];
     state.spawnCount += 1;
     const hp = stats.hp * stageHp;
     const shielded = ["shielded", "convergence"].includes(config.modifier) && state.spawnCount % 3 === 0;
     const damage = stats.damage * (state.stage === 1 ? 0.4 : 1);
-    state.enemies.push({ ...pos, ...stats, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2 });
+    state.enemies.push({ ...pos, ...stats, role, hp, maxHp: hp, damage, baseSpeed: stats.speed, hit: 0, touch: 0, shielded, shieldHp: shielded ? 1.5 + config.region * 0.4 : 0, chargeTimer: Math.random() * 2 + 1.2, shotTimer: 1.2 });
     state.spawnTimer = Math.max(0.72, 1.9 - elapsed * 0.0035 - config.region * 0.06);
     if (config.mode === "waves") { state.waveRemaining -= 1; state.spawnTimer = .85; }
     if (config.mode === "boss") state.spawnTimer = 4.5;
@@ -2212,10 +2249,11 @@
       const dx = p.x - enemy.x;
       const dy = p.y - enemy.y;
       const dist = Math.hypot(dx, dy) || 1;
-      if (!enemy.isBoss && chargingEnemies) {
+      const canCharge = !enemy.isBoss && enemy.role !== "archer" && (chargingEnemies || enemy.role === "charger");
+      if (canCharge) {
         enemy.chargeTimer -= dt;
         if (enemy.chargeTimer <= .65 && !enemy.chargeAim) enemy.chargeAim = { x: dx / dist, y: dy / dist };
-        enemy.speed = enemy.chargeTimer <= 0 ? (enemy.baseSpeed || enemy.speed) * 2.8 : (enemy.baseSpeed || enemy.speed);
+        enemy.speed = enemy.chargeTimer <= 0 ? Math.max(330, (enemy.baseSpeed || enemy.speed) * 2.8) : (enemy.baseSpeed || enemy.speed);
         if (enemy.chargeTimer > 0 && enemy.chargeTimer <= .65) enemy.speed *= .2;
         if (enemy.chargeTimer <= -0.55) {
           enemy.chargeTimer = 3.1 + Math.random() * 1.6;
@@ -2225,9 +2263,27 @@
       }
       enemy.chill = Math.max(0, (enemy.chill || 0) - dt);
       const chillSpeed = enemy.chill > 0 ? (enemy.isBoss ? .85 : .6) : 1;
-      const chargingAim = !enemy.isBoss && chargingEnemies && enemy.chargeTimer <= 0 ? enemy.chargeAim : null;
-      enemy.x += (chargingAim?.x ?? dx / dist) * enemy.speed * chillSpeed * dt;
-      enemy.y += (chargingAim?.y ?? dy / dist) * enemy.speed * chillSpeed * dt;
+      const chargingAim = canCharge && enemy.chargeTimer <= 0 ? enemy.chargeAim : null;
+      let moveX = chargingAim?.x ?? dx / dist, moveY = chargingAim?.y ?? dy / dist;
+      if (enemy.role === "archer") {
+        enemy.shotTimer = (enemy.shotTimer ?? 1.2) - dt;
+        if (!enemy.bowAim && enemy.shotTimer <= 0 && dist < 540) {
+          enemy.bowAim = { x: dx / dist, y: dy / dist }; enemy.bowWindup = .85;
+        }
+        if (enemy.bowAim) {
+          moveX = moveY = 0;
+          enemy.bowWindup -= dt;
+          if (enemy.bowWindup <= 0) {
+            addHazard("arrow", { x: enemy.x, y: enemy.y, vx: enemy.bowAim.x * (300 + state.stageConfig.region * 22), vy: enemy.bowAim.y * (300 + state.stageConfig.region * 22), warn: 0, life: 2.5, r: 23, damage: .65, color: "#f59e0b" });
+            enemy.bowAim = null; enemy.shotTimer = Math.max(2.8, 4.4 - state.stageConfig.region * .25);
+          }
+        } else {
+          const approach = dist > 340 ? 1 : dist < 180 ? -.6 : 0;
+          moveX = dx / dist * approach; moveY = dy / dist * approach;
+        }
+      }
+      enemy.x += moveX * enemy.speed * chillSpeed * dt;
+      enemy.y += moveY * enemy.speed * chillSpeed * dt;
       if (chargingAim) {
         enemy.x = Math.max(24, Math.min(W - 24, enemy.x));
         enemy.y = Math.max(24, Math.min(H - 24, enemy.y));
@@ -2648,6 +2704,7 @@
           isBoss: Boolean(enemy.isBoss),
           shielded: Boolean(enemy.shielded),
           chill: enemy.chill || 0,
+          role: enemy.role, bowAim: enemy.bowAim ? { ...enemy.bowAim } : null, bowWindup: enemy.bowWindup,
           danger: Math.hypot(enemy.x - state.player.x, enemy.y - state.player.y) <= 170,
         })),
         shots: state.shots.map((shot) => ({ x: shot.x, y: shot.y, px: shot.px, py: shot.py, damage: shot.damage, image: shot.image })),
@@ -2667,7 +2724,7 @@
         patrolRankProgressText: nodes.patrolRankProgressText?.textContent || "",
         patrolRankProgressPercent: Math.round(patrolRankFor(save.totalKeys).progress * 100),
         resultRankText: nodes.resultRankText?.textContent || "",
-        hazards: state.hazards.map((hazard) => ({ kind: hazard.kind, x: hazard.x, y: hazard.y, warn: hazard.warn, life: hazard.life, color: hazard.color })),
+        hazards: state.hazards.map((hazard) => ({ kind: hazard.kind, x: hazard.x, y: hazard.y, vx: hazard.vx, vy: hazard.vy, warn: hazard.warn, life: hazard.life, color: hazard.color })),
         safeZone: state.safeZone ? { ...state.safeZone } : null,
         bossSpawned: state.bossSpawned,
         bossDefeated: state.bossDefeated,
@@ -2747,6 +2804,8 @@
           size: options.size ?? 62,
           damage: options.damage ?? 0.55,
           image: options.image || "basic",
+          role: options.role || "melee",
+          shotTimer: options.shotTimer ?? 1.2,
           maxHp: options.maxHp ?? options.hp ?? 1,
           hit: 0,
           touch: 0,
@@ -2812,6 +2871,14 @@
     }
 
     const p = state.player;
+    if (state.enemies.some(enemy => enemy.bowAim)) {
+      writeBattleBriefing(enemyLesson(stages[2]));
+      return;
+    }
+    if (state.enemies.some(enemy => enemy.chargeAim && enemy.chargeTimer > 0)) {
+      writeBattleBriefing(enemyLesson(stages[3]));
+      return;
+    }
     const keyDistance = Math.hypot(state.key.x - p.x, state.key.y - p.y);
     const hasCloseEnemy = state.enemies.some((enemy) => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
     const nextHint =

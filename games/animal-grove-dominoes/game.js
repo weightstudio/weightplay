@@ -1,4 +1,4 @@
-(function () {
+(async function () {
   "use strict";
 
   const locales = window.GROVE_CHAIN_LOCALES;
@@ -7,11 +7,10 @@
   let advanceTimer = null;
   const cancelAdvance = () => { clearTimeout(advanceTimer); advanceTimer = null; };
   window.addEventListener('pagehide', cancelAdvance);
-  const rounds = [
-    { start: "den", tiles: [["den", "creek"], ["creek", "moss"], ["moss", "nest"], ["nest", "moon"], ["moon", "den"]] },
-    { start: "reef", tiles: [["reef", "tide"], ["tide", "shell"], ["shell", "grove"], ["grove", "den"], ["den", "reef"]] },
-    { start: "pine", tiles: [["pine", "snow"], ["snow", "burrow"], ["burrow", "pond"], ["pond", "meadow"], ["meadow", "pine"]] },
-  ];
+  const {createChain,play,undo,outcome,proofPuzzles}=await import('./chain-engine.mjs');
+  const {recoveryCopy}=await import('./chain-copy.mjs');
+  const rounds=proofPuzzles.map(p=>({start:p.start,goal:p.goal,tiles:p.tiles.map(tile=>Object.assign([tile.from,tile.to],{id:tile.id}))}));
+  let chainState=null,rackOrder=[];
   const state = { locale: "en", sound: true, roundIndex: 0, currentEnd: "", picks: 0, placed: [], rack: [], solved: 0 };
   const $ = (id) => document.getElementById(id);
   const safeStorage = { get(key) { try { return window.localStorage.getItem(key); } catch (_) { return null; } }, set(key, value) { try { window.localStorage.setItem(key, value); } catch (_) {} } };
@@ -74,6 +73,7 @@
   function shuffle(items) { return [...items].sort((a, b) => (a[0].charCodeAt(0) + a[1].charCodeAt(0)) - (b[0].charCodeAt(0) + b[1].charCodeAt(0))); }
   function tileButton(tile, index) {
     const button = document.createElement("button");
+    button.dataset.tileId=tile.id;
     button.type = "button"; button.className = "habitat-tile"; button.dataset.index = String(index); button.dataset.habitat = tile[0]; button.setAttribute("aria-label", t("chooseTile", { left: habitat(tile[0]), right: habitat(tile[1]) }));
     const tokens = ['den','creek','moss','nest','moon','reef','tide','shell','grove','pine','snow','burrow','pond','meadow'];
     for (const token of tile) {
@@ -97,7 +97,10 @@
     $("roundLabel").textContent = t("round", { current: state.roundIndex + 1, total: rounds.length });
     $("endLabel").textContent = t("end", { habitat: habitat(state.currentEnd) });
     $("placedCount").textContent = String(state.placed.length);
-    $("instruction").textContent = t("instruction");
+    const words=recoveryCopy[state.locale]||recoveryCopy.en;
+    $("instruction").textContent = `${words[2]} ${habitat(round.goal)}.`;
+    $('placedCount').parentElement.lastChild.textContent=`/${round.tiles.length}`;
+    if($('undoChain')){$('undoChain').textContent=words[0];$('undoChain').disabled=!chainState?.path.length;}
     renderChain();
     const rackNode = $("tileRack"); rackNode.replaceChildren();
     state.rack.forEach((tile, index) => {
@@ -112,16 +115,25 @@
     const tile = state.rack[index]; if (!tile) return;
     state.picks += 1; track("tile_selected", { round: state.roundIndex + 1, left: tile[0], right: tile[1], correct: tile[0] === state.currentEnd });
     if (tile[0] !== state.currentEnd) { button.classList.add("is-wrong"); $("battleStatus").textContent = t("wrong"); $("battleStatus").classList.add("is-wrong"); setFeedbackState("wrong"); playTone("wrong"); window.setTimeout(() => button.classList.remove("is-wrong"), 380); return; }
+    const result=play(chainState,tile.id);if(!result.accepted)return;chainState=result.state;
     button.disabled = true; button.classList.add("is-correct"); state.placed.push(tile); state.rack[index] = null; state.currentEnd = tile[1]; state.solved += 1; $("battleStatus").textContent = t("right"); $("battleStatus").classList.remove("is-wrong"); $("appStatus").textContent = t("right"); playTone("success"); renderRound(); setFeedbackState("matched");
-    if (state.placed.length === 5) { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
+    if(outcome(chainState)==='dead-end'){$('battleStatus').textContent=(recoveryCopy[state.locale]||recoveryCopy.en)[1];setFeedbackState('wrong');}
+    if (outcome(chainState)==='complete') { cancelAdvance(); advanceTimer = window.setTimeout(() => { advanceTimer=null; if ($('battleView').hidden) return; if (state.roundIndex < rounds.length - 1) { state.roundIndex += 1; startRound(); } else finish(); }, 420); }
   }
-  function startRound() { cancelAdvance(); const round = rounds[state.roundIndex]; state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles); $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
+  function startRound() { cancelAdvance(); const round = rounds[state.roundIndex];chainState=createChain(proofPuzzles[state.roundIndex]); state.currentEnd = round.start; state.placed = []; state.rack = shuffle(round.tiles);rackOrder=[...state.rack]; $("battleStatus").textContent = ""; $("battleStatus").classList.remove("is-wrong"); setFeedbackState("idle"); renderRound(); }
+  function undoChoice(){
+    if(!chainState?.path.length)return;cancelAdvance();chainState=undo(chainState);
+    state.placed.pop();state.solved=Math.max(0,state.solved-1);state.currentEnd=chainState.end;
+    state.rack=rackOrder.map(tile=>chainState.path.includes(tile.id)?null:tile);
+    $('battleStatus').textContent='';setFeedbackState('idle');renderRound();
+  }
   function start() { state.roundIndex = 0; state.picks = 0; state.solved = 0; track("session_started"); showView("battleView"); startRound(); }
   function finish() { const key = "weightplay-grove-chain-best-picks"; const prior = Number(safeStorage.get(key)); if (!prior || state.picks < prior) safeStorage.set(key, String(state.picks)); $("resultText").textContent = t("finishText", { picks: state.picks }); $("bestValue").textContent = safeStorage.get(key) || String(state.picks); setFeedbackState("complete"); track("session_completed", { picks: state.picks }); showView("resultView"); }
   function goHome() { track("session_abandoned", { round: state.roundIndex + 1 }); showView("mainView"); applyLocale(); }
   function toggleSettings() { const panel = $("settingsPanel"); const open = panel.hidden; panel.hidden = !open; $("settingsBtn").setAttribute("aria-expanded", String(open)); }
   function toggleSound() { state.sound = !state.sound; applyLocale(); track("sound_changed", { enabled: state.sound }); }
   state.locale = queryLocale();
-  document.addEventListener("DOMContentLoaded", () => { populateLocales(); applyLocale(); $("startBtn").addEventListener("click", start); $("replayBtn").addEventListener("click", start); $("homeBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", goHome); $("leaveBtn").addEventListener("click", goHome); $("settingsBtn").addEventListener("click", toggleSettings); $("soundBtn").addEventListener("click", toggleSound); $("battleSoundBtn").addEventListener("click", toggleSound); });
+  const initialize = () => { const undoButton=document.createElement("button"); undoButton.id="undoChain"; undoButton.type="button"; undoButton.className="secondary-btn"; undoButton.addEventListener("click",undoChoice); $("leaveBtn").before(undoButton); populateLocales(); applyLocale(); $("startBtn").addEventListener("click", start); $("replayBtn").addEventListener("click", start); $("homeBtn").addEventListener("click", goHome); $("battleBackBtn").addEventListener("click", goHome); $("leaveBtn").addEventListener("click", goHome); $("settingsBtn").addEventListener("click", toggleSettings); $("soundBtn").addEventListener("click", toggleSound); $("battleSoundBtn").addEventListener("click", toggleSound); };
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initialize,{once:true});else initialize();
   window.GROVE_CHAIN_TEST = { rounds, start, choose, state };
 })();

@@ -3464,6 +3464,8 @@ window.WeightPlayGameInfoLocales.es.games["klondike-solitaire"] = {
 
 window.WeightPlayGameInfoLocales.es.games["spider-solitaire"] = {
   title: "Solitario Spider",
+  gameplay: "Solitario de varios palos",
+  genre: ["Rompecabezas", "Cartas", "Estrategia"],
   noteTitle: "Información del jugador y guardado",
   age: "9+",
   difficulty: "De fácil a difícil",

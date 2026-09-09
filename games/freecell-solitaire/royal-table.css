@@ -1,4 +1,9 @@
 /* Keep workspace and home stacks visibly distinct without changing hit geometry. */
+@media(min-width:700px){
+ body[data-wp-game-id="freecell-solitaire"] .wp-standard-main-composition{
+  --wp-main-landscape-poster-size:420px;
+ }
+}
 .wp-premium-table .free-slot {
   border: 1px dashed #b4e8d7;
   background: #042e2cc9;
