@@ -6,6 +6,7 @@ html[dir="rtl"] .settings-panel{right:auto;left:0}
 #mainScreen>.guide-card{position:absolute;top:100%;left:0;right:0;margin-top:24px}
 .primary-btn{min-height:52px!important}
 .panel-screen{width:100%;height:100vh;min-height:0;margin:0;padding:0;overflow:hidden}
+html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-behavior:none}
 .stage-canvas,.battle-canvas{width:min(920px,100%);height:calc(100vh - 56px);margin:0 auto;padding:clamp(18px,4vw,40px);overflow:hidden}
 .stage-canvas{position:relative;background:linear-gradient(180deg,rgba(32,86,76,.9),rgba(111,166,118,.34)),var(--wp-stage-art) center/cover}
 .panel-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
@@ -22,29 +23,55 @@ html[dir="rtl"] .settings-panel{right:auto;left:0}
 #battleScreen .battle-actions{position:relative;z-index:3;pointer-events:auto}
 @media(min-width:721px){
   #battleScreen .panel-head{margin-bottom:16px}
-  #battleScreen .battle-content{padding:12px 24px}
+  #battleScreen .battle-content{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto auto;gap:8px 16px;align-items:start;height:calc(100% - 64px);padding:12px 24px}
+  #battleScreen .battle-hint{grid-column:1;grid-row:1}
+  #battleScreen .goal-row{grid-column:1;grid-row:2}
+  #battleScreen .scale{grid-column:1;grid-row:3/6;align-self:stretch;margin-bottom:0}
+  #battleScreen .choice-head{grid-column:2;grid-row:1}
+  #battleScreen .token-tray{grid-column:2;grid-row:2/4;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #battleScreen .battle-status{grid-column:2;grid-row:4}
+  #battleScreen .battle-actions{grid-column:2;grid-row:5}
 }
 .taro-guide{display:block;width:clamp(100px,18vw,180px);height:auto;max-height:180px;margin:4px 0 -18px auto;object-fit:contain}
 .result-taro{display:block;width:min(200px,46vw);height:auto;margin:-18px 0 -8px;object-fit:contain}
 .token-icon,.placed-token{color:transparent!important;background-color:transparent!important;background-image:url('assets/animal-balance-grove-stones.png')!important;background-repeat:no-repeat!important;background-size:600% 100%!important}
 .token-icon-0,.placed-token-0{background-position:0 50%!important}.token-icon-1,.placed-token-1{background-position:20% 50%!important}.token-icon-2,.placed-token-2{background-position:40% 50%!important}.token-icon-3,.placed-token-3{background-position:60% 50%!important}.token-icon-4,.placed-token-4{background-position:80% 50%!important}.token-icon-5,.placed-token-5{background-position:100% 50%!important}
 @media(max-height:520px) and (orientation:landscape){
-  #mainScreen .hero-grid{grid-template-columns:300px minmax(0,1fr)}
-  #mainScreen .cover-wrap{width:300px}
+  #mainScreen .hero-grid{grid-template-columns:420px minmax(0,1fr)}
+  #mainScreen .cover-wrap{width:420px}
+  #mainScreen .main-progress{display:flex;align-items:center;height:42px;min-height:42px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   .stage-canvas,.battle-canvas{padding:10px 16px}
   .panel-head{margin-bottom:10px}
   .stage-rail{max-height:calc(100% - 76px)}
-  .battle-content{padding:12px;max-width:none}
+  #battleScreen .battle-content{position:absolute;inset:58px 16px 10px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto 18px auto;gap:4px 12px;align-items:start;height:auto;margin:0;padding:8px 12px;max-width:none}
+  #battleScreen .battle-hint{grid-column:1;grid-row:1}
+  #battleScreen .goal-row{grid-column:1;grid-row:2}
+  #battleScreen .scale{grid-column:1;grid-row:3/5;align-self:stretch}
+  #battleScreen .choice-head{grid-column:2;grid-row:1}
+  #battleScreen .token-tray{grid-column:2;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  #battleScreen .battle-status{grid-column:2;grid-row:3}
+  #battleScreen .battle-actions{grid-column:2;grid-row:4}
   .battle-hint{margin-bottom:6px}
-  .scale{min-height:104px;margin-bottom:8px}
+  .scale{min-height:0;margin-bottom:0}
   .pan{min-height:78px;padding:8px}
-  .scale-post{height:105px}
+  .scale-post{height:100%}
   .pan-items{min-height:36px}
   .fixed-weight,.placed-token{width:30px;height:30px}
-  .choice-head h3{margin-bottom:4px}
-  .token-btn{min-height:42px}
+  .choice-head h3{margin:0}
+  .token-btn{grid-template-columns:28px minmax(0,1fr);height:58px;min-height:58px;padding:4px 6px;line-height:1.05}
+  .token-icon{width:26px;height:26px}
+  .token-name{font-size:.72rem}
+  .token-value{font-size:.68rem}
   .battle-status{min-height:18px;margin:5px 0 2px}
-  .primary-btn,.secondary-btn{min-height:44px}
+  .primary-btn,.secondary-btn{min-height:44px!important}
+  #resultScreen{height:100vh}
+  #resultScreen .result-card{grid-template-columns:120px minmax(0,1fr);grid-template-rows:auto auto auto;align-content:center;column-gap:20px;height:100%;min-height:0;padding:10px 16px}
+  #resultScreen .result-taro{grid-column:1;grid-row:1/4;width:120px;margin:0}
+  #resultScreen .result-spark{display:none}
+  #resultScreen .result-card h2{grid-column:2;grid-row:1;margin:0 0 4px;font-size:2rem}
+  #resultScreen .result-card p{grid-column:2;grid-row:2;margin:0 0 10px}
+  #resultScreen .result-actions{grid-column:2;grid-row:3}
+  #resultScreen .result-actions .primary-btn,#resultScreen .result-actions .secondary-btn,#resultScreen .result-actions .text-btn{width:auto;min-height:44px}
 }
 @media(min-width:421px) and (max-width:720px){
   #mainScreen .hero-grid{grid-template-columns:1fr}

@@ -1,4 +1,8 @@
 @import './campaign-faces.css';
+.mjc-main header{grid-template-columns:58px minmax(0,1fr) 58px!important}
+.mjc-main-settings{justify-self:end}
+.mjc-main-progress{min-height:40px;display:flex;align-items:center}
+.mjc-guide{border:1px solid #56786a;border-radius:20px;background:linear-gradient(#102d32,#0b242a);margin-top:16px!important}
 .mjc-main[hidden],.mjc-guide[hidden]{display:none!important}
 .mjc-main,.mjc-guide{width:min(100%,920px);margin:0 auto;color:#f1ecd7;font-family:system-ui;box-sizing:border-box}
 .mjc-main *,.mjc-guide *{box-sizing:border-box}

@@ -36,7 +36,7 @@ export function mountCampaignBoard(host,initial,{onTile,faceLabel,blockLabel,ord
   clearEffects();board.replaceChildren();nodes.clear();geometry=campaignBoardGeometry(next.tiles);
   for(const tile of next.tiles){
    const p=geometry.points.find(p=>p.id===tile.id),node=doc.createElement('button');
-   node.type='button';node.className='mjc-tile';node.dataset.tileId=tile.id;node.dataset.face=tile.face;
+   node.type='button';node.className='mjc-tile';node.dataset.tileId=tile.id;node.dataset.tile=tile.id;node.dataset.face=tile.face;
    node.style.left=`${p.x}px`;node.style.top=`${p.y}px`;node.style.zIndex=String(tile.z+1);
    node.append(createFaceElement(tile.face,doc));
    const seal=doc.createElement('span');seal.className='mjc-seal';seal.setAttribute('aria-hidden','true');node.append(seal);

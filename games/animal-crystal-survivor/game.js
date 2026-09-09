@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-poster-world-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-tree-hud-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -805,6 +805,9 @@
   }).forEach(([code, copy]) => { text[code].menuHint = copy; text[code].playHint = copy; });
 
   const talentData = window.CrystalTalents;
+  const talentIconBase = new URL("icons/", document.currentScript.src).href;
+  const talentParents = { alchemy: "echo", stride: "harvest" };
+  let selectedTalent = "echo";
   const talentIds = ['echo', 'harvest', 'stride', 'alchemy'];
   const runeIds = ['chain', 'frost', 'burst', 'ricochet', 'orbit', 'rhythm'];
   const runeCopy = () => talentData.copy(locale);
@@ -1173,17 +1176,27 @@
     if (!host) return;
     const copy = runeCopy(), equipped = save.equippedTalents || [];
     const spent = talentIds.reduce((sum,id,i) => sum + (save.talents?.[id] ? talentData.costs[i] : 0) + (save.talents?.[id] === 2 ? talentData.costs[i] + 6 : 0), 0);
+    const chosen = talentIds.includes(selectedTalent) ? selectedTalent : "echo";
+    const rank = save.talents?.[chosen] || 0, active = equipped.includes(chosen), index = talentIds.indexOf(chosen);
+    const cost = talentData.costs[index] + rank * 6, parent = talentParents[chosen];
+    const locked = !rank && parent && !save.talents?.[parent];
     host.innerHTML = `<header><div><small>◆ ${copy.dust}</small><strong>${save.runeDust}</strong></div><h2>${copy.workshop}</h2></header>
-      <p>${copy.hint}</p><div class="talent-loadout">${copy.slots} ${equipped.length}/2 · ${equipped.map(runeName).join(" + ") || "—"}</div>
-      <div class="talent-grid">${talentIds.map((id,i) => {
-        const rank = save.talents?.[id] || 0, active = equipped.includes(id), cost = talentData.costs[i] + rank * 6;
-        return `<article class="talent-node ${active ? "equipped" : ""}">
-          <span class="talent-symbol" aria-hidden="true">${talentData.icons[i]}</span><h3>${copy.names[id]}</h3><span class="rune-rank">${rank}/2</span>
-          <p>${copy.descriptions[id]}</p><div class="talent-actions">
-          <button type="button" data-talent-buy="${id}" ${rank >= 2 || save.runeDust < cost ? "disabled" : ""}>${rank >= 2 ? copy.max : rank ? copy.rankup : copy.learn}${rank < 2 ? ` · ◆ ${cost}` : ""}</button>
-          <button type="button" data-talent-equip="${id}" aria-pressed="${active}" ${!rank || !active && equipped.length >= 2 ? "disabled" : ""}>${active ? copy.unequip : copy.equip}</button></div></article>`;
-      }).join("")}</div><button type="button" data-talent-reset ${spent ? "" : "disabled"}>${copy.reset} · +◆ ${spent}</button>
-      <small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
+      <div class="talent-loadout">${copy.slots} ${equipped.length}/2 · ${equipped.map(runeName).join(" + ") || "—"}</div>
+      <div class="talent-tree">
+        <svg class="talent-links" viewBox="0 0 400 280" preserveAspectRatio="none" aria-hidden="true"><path d="M200 25V55H90V100M200 55H310V100M90 145V215M310 145V215" fill="none" stroke="#638b9b" stroke-width="3"/></svg>
+        <div class="talent-root" aria-hidden="true">◆</div>
+        ${["echo","harvest","alchemy","stride"].map((id,i) => {
+          const r = save.talents?.[id] || 0, prerequisite = talentParents[id], closed = !r && prerequisite && !save.talents?.[prerequisite];
+          return `<button type="button" class="talent-tree-node ${equipped.includes(id) ? "equipped" : ""} ${closed ? "locked" : ""}" style="--node-column:${i%2+1};--node-row:${Math.floor(i/2)+2}" data-talent-inspect="${id}" aria-pressed="${chosen===id}" aria-label="${copy.names[id]} ${r}/2">
+            <img src="${talentIconBase}${id}.svg" alt="" width="64" height="64"/><strong>${copy.names[id]}</strong><small>${closed ? "⌑ " : ""}${r}/2</small></button>`;
+        }).join("")}
+      </div>
+      <article class="talent-detail" aria-live="polite"><img src="${talentIconBase}${chosen}.svg" alt="" width="56" height="56"/>
+        <div><h3>${copy.names[chosen]} <small>${rank}/2</small></h3><p>${copy.descriptions[chosen]}</p>
+        ${locked ? `<p class="talent-prerequisite">${copy.learn}: ${runeName(parent)} → ${runeName(chosen)}</p>` : ""}
+        <div class="talent-actions"><button type="button" data-talent-buy="${chosen}" ${locked || rank>=2 || save.runeDust<cost ? "disabled" : ""}>${rank>=2 ? copy.max : rank ? copy.rankup : copy.learn}${rank<2 ? ` · ◆ ${cost}` : ""}</button>
+        <button type="button" data-talent-equip="${chosen}" aria-pressed="${active}" ${!rank || !active&&equipped.length>=2 ? "disabled" : ""}>${active?copy.unequip:copy.equip}</button></div></div></article>
+      <p>${copy.hint}</p><button type="button" data-talent-reset ${spent?"":"disabled"}>${copy.reset} · +◆ ${spent}</button><small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
   }
 
   function changeTalent(action, id) {
@@ -1192,7 +1205,7 @@
     next.talents ||= {}; next.equippedTalents ||= [];
     const index = talentIds.indexOf(id), rank = next.talents[id] || 0;
     if (action === "buy") {
-      if (index < 0 || rank >= 2) return;
+      if (index < 0 || rank >= 2 || !rank && talentParents[id] && !next.talents[talentParents[id]]) return;
       const cost = talentData.costs[index] + rank * 6;
       if (next.runeDust < cost) return;
       next.runeDust -= cost; next.talents[id] = rank + 1;
@@ -1210,7 +1223,7 @@
     save = next;
     renderTalents();
     playSound("upgrade", .15);
-    document.getElementById("talentWorkshop")?.querySelector(action === "reset" ? "[data-talent-reset]" : `[data-talent-${action}="${id}"]`)?.focus();
+    document.getElementById("talentWorkshop")?.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({ preventScroll: true });
   }
 
   function persist() {
@@ -3562,7 +3575,8 @@
   document.getElementById("talentWorkshop")?.addEventListener("click", event => {
     const button = event.target.closest("button");
     if (!button || button.disabled) return;
-    if (button.hasAttribute("data-talent-buy")) changeTalent("buy", button.dataset.talentBuy);
+    if (button.hasAttribute("data-talent-inspect")) { selectedTalent = button.dataset.talentInspect; renderTalents(); document.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({preventScroll:true}); }
+    else if (button.hasAttribute("data-talent-buy")) changeTalent("buy", button.dataset.talentBuy);
     else if (button.hasAttribute("data-talent-equip")) changeTalent("equip", button.dataset.talentEquip);
     else if (button.hasAttribute("data-talent-reset")) changeTalent("reset");
   });

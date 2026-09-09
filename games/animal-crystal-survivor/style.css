@@ -1962,7 +1962,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
   grid-column: 1 !important;
   grid-row: 1 !important;
-  grid-template-columns: 48px repeat(5, minmax(0, 1fr)) !important;
+  grid-template-columns: 48px repeat(4, minmax(0, 1fr)) !important;
   grid-template-rows: minmax(0, 1fr) !important;
 }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {
@@ -2142,7 +2142,7 @@ html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
     grid-column: 1 !important;
     grid-row: 1 / -1 !important;
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: 48px repeat(5, minmax(0, 1fr)) !important;
+    grid-template-rows: 48px repeat(4, minmax(0, 1fr)) !important;
     height: 100% !important;
   }
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {
@@ -2223,3 +2223,22 @@ html body .talent-workshop button:focus-visible { outline:3px solid #e8c88a; out
   html body #upgradePanel .upgrade-card small { font-size:11px; }
   .rune-build { margin:4px 0 8px; }
 }
+/* Branch selection replaces the permanent-upgrade catalog. */
+.talent-tree { position:relative; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:42px 105px 105px; gap:14px 40px; padding:4px 16px 18px; margin:6px 0 12px; background:radial-gradient(ellipse at center,#2d536055,transparent 70%); }
+.talent-links { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.talent-root { grid-column:1 / -1; place-self:center; color:#f3cd80; font-size:28px; z-index:1; }
+html body .talent-workshop button.talent-tree-node { grid-column:var(--node-column); grid-row:var(--node-row); display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; border:0; background:transparent; padding:0; min-width:0; }
+.talent-tree-node img { width:60px; height:60px; border:2px solid #7695a6; border-radius:10px; box-shadow:0 5px 0 #081a25; }
+.talent-tree-node strong { font-size:12px; margin-top:7px; padding:2px 5px; background:#102733; }
+.talent-tree-node small { color:#c8d9df; }
+.talent-tree-node[aria-pressed=true] img { border-color:#f4d389; box-shadow:0 0 18px #e0b76355,0 4px #081a25; }
+.talent-tree-node.equipped img { background:#1b6359; }
+.talent-tree-node.locked img { filter:saturate(.25); opacity:.65; }
+.talent-detail { display:flex; gap:12px; border:1px solid #7998a8; background:#1e3b4b; border-radius:8px; padding:12px; }
+.talent-detail > img { flex:0 0 48px; width:48px; height:48px; }
+.talent-detail h3 { font-size:16px; margin:0 0 7px; }
+.talent-detail h3 small { color:#c8d9df; font-size:12px; }
+.talent-detail p { font-size:12px; color:#c9dce2; line-height:1.6; margin:5px 0 10px; }
+.talent-prerequisite { color:#f1cf8a!important; }
+html body .health-track { position:relative; height:18px; }
+#healthMeter #hpText { position:absolute; inset:0; display:grid; place-items:center; font-size:12px; font-weight:800; color:white; text-shadow:0 1px 3px #000,1px 0 #000; line-height:18px; }

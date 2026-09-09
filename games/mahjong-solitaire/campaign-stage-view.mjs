@@ -2,13 +2,14 @@ import '../../src/stage-virtualization-standard.js';
 import {MAHJONG_CAMPAIGN} from './campaign-stages.mjs';
 import {campaignCopy} from './campaign-copy.mjs';
 import {mahjongStageName} from './campaign-names.mjs';
-import {createFaceElement} from './campaign-faces.mjs';
+import {createCampaignStagePreview} from './campaign-stage-preview.mjs';
 
 // Data binding only: the shared controller exclusively owns drag, recycling,
 // keyboard focus and activation. Progress remains owned by the campaign app.
 export function createCampaignStageView({locale,progress,activate,home,settings}) {
  const root=document.createElement('section');root.className='mjc-stage';root.hidden=true;root.dataset.screen='stage';
  root.innerHTML='<div class="mjc-stage-canvas" data-wp-standard-stage-screen><div class="mjc-stage-logical"><header><button type="button" data-wp-return="stage">←</button><h2></h2><span></span></header><div class="mjc-stage-workspace"><div class="mjc-stage-rail stage-rail" data-wp-stage-selector></div></div><nav class="mjc-stage-tabs"><span></span><button type="button" aria-current="page"></button><span></span></nav></div></div><div class="mjc-stage-reserve" data-wp-stage-physical-reserve aria-hidden="true"></div>';
+ root.querySelector('nav').classList.add('stage-tabs');
  if(settings)root.querySelector('header>span').append(settings.root);
  const canvas=root.querySelector('.mjc-stage-canvas'),logical=root.querySelector('.mjc-stage-logical'),rail=root.querySelector('.mjc-stage-rail');
  const lifetime=new AbortController();let controller,disposed=false;
@@ -27,9 +28,7 @@ export function createCampaignStageView({locale,progress,activate,home,settings}
   card.className='mjc-stage-card stage-card';card.dataset.stage=String(stage.id);card.dir=locale()==='ar'?'rtl':'ltr';
   card.setAttribute('aria-disabled',String(locked));card.replaceChildren();
   const number=document.createElement('span');number.textContent=`${c.stage} ${stage.id} / ${MAHJONG_CAMPAIGN.length}`;
-  const preview=document.createElement('span');preview.className='mjc-stage-preview';preview.setAttribute('aria-hidden','true');
-  const faces=[...new Set(stage.definition.tiles.map(t=>t.face))].slice(0,3);
-  for(const face of faces)preview.append(createFaceElement(face));
+  const preview=createCampaignStagePreview(stage.definition,card.ownerDocument);
   const name=document.createElement('strong');name.textContent=mahjongStageName(locale(),stage.id);
   const status=document.createElement('span');status.textContent=locked?c.locked:p.best[stage.id]?`${c.cleared} · ${'★'.repeat(p.best[stage.id].stars)}`:c.available;
   card.append(number,preview,name,status);

@@ -8771,3 +8771,14 @@ select,
   object-position: center;
   transform: none;
 }
+#spotlightGameSection { margin:26px 0; }
+#spotlightGameSection > h2 { margin:0 0 14px; font-size:clamp(22px,3vw,30px); }
+.spotlight-game { display:grid; grid-template-columns:minmax(280px,420px) 1fr; gap:clamp(20px,4vw,54px); align-items:center; padding:18px; border:1px solid #5a859b; border-radius:22px; background:linear-gradient(125deg,#173445,#0d202f); color:#f3f6f8; text-decoration:none; overflow:hidden; }
+.spotlight-game > img { display:block; width:100%; height:auto; aspect-ratio:1; object-fit:contain; border-radius:12px; transform:none!important; }
+.spotlight-game > div { padding:14px; }
+.spotlight-game small { color:#98d2df; letter-spacing:.15em; font-size:12px; }
+.spotlight-game h3 { font-size:clamp(26px,4vw,44px); line-height:1.25; margin:12px 0; }
+.spotlight-game p { color:#c2d7df; font-size:16px; }
+.spotlight-game span { display:inline-block; margin-top:18px; padding:13px 24px; border-radius:8px; background:#e8c785; color:#152735; font-weight:800; }
+.spotlight-game:focus-visible { outline:4px solid #e8c785; outline-offset:4px; }
+@media(max-width:650px) { .spotlight-game { grid-template-columns:1fr; gap:6px; padding:12px; } .spotlight-game > div {padding:10px;} .spotlight-game span {margin-top:5px;} }

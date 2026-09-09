@@ -9,7 +9,8 @@ export function createCampaignSettings({locale,setLocale,sound,allowLanguage=tru
  const root=document.createElement('div');root.className='mjc-settings';
  root.innerHTML='<button type="button" class="mjc-settings-toggle" aria-expanded="false"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 3 1-1h4l1 3 3 1 3 3-1 3 1 3-3 3-3 1-1 3h-4l-1-3-3-1-3-3 1-3-1-3 3-3 3-1Z"/><circle cx="12" cy="12" r="3.5"/></svg></button><div class="mjc-settings-panel" role="group" hidden><label class="mjc-settings-language"><span></span><select></select></label><div class="mjc-settings-sound"><span></span><button type="button" role="switch"><span aria-hidden="true"></span></button></div></div>';
  const toggle=root.querySelector('.mjc-settings-toggle'),panel=root.querySelector('.mjc-settings-panel'),select=root.querySelector('select'),control=root.querySelector('[role=switch]'),lifetime=new AbortController();let disposed=false;
- panel.id=`mjc-settings-${++sequence}`;toggle.setAttribute('aria-controls',panel.id);
+ panel.id=`mjc-settings-${++sequence}`;toggle.setAttribute('aria-controls',panel.id);toggle.dataset.wpSettings='';
+ panel.setAttribute('role','dialog');control.dataset.soundToggle='';
  if(allowLanguage)for(const [i,code] of CAMPAIGN_LOCALES.entries()){const option=document.createElement('option');option.value=code;option.textContent=names[i];select.append(option);}
  else root.querySelector('.mjc-settings-language').remove();
  function close({focus=false}={}){panel.hidden=true;toggle.setAttribute('aria-expanded','false');if(focus)toggle.focus({preventScroll:true});}

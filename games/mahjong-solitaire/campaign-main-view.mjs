@@ -5,8 +5,11 @@ import {createFaceElement} from './campaign-faces.mjs';
 // The settings component is supplied by the owning entry; this view does not
 // create an independent audio preference or a second language controller.
 export function createCampaignMainView({locale,title,lobbyHref,progress,settings}) {
- const root=document.createElement('main');root.className='mjc-main';
+ const root=document.createElement('main');root.className='mjc-main';root.id='mainScreen';
  root.innerHTML='<header><a data-wp-return="main"><span aria-hidden="true">←</span><img alt="" draggable="false"></a><h1 data-runtime-localize="off"></h1><div class="mjc-main-settings"></div></header><div class="mjc-main-content"><img class="mjc-main-poster" width="1254" height="1254" alt=""><div class="mjc-main-copy"><p class="mjc-main-summary"></p><p class="mjc-main-progress"></p><button type="button" data-wp-main-start="true"></button></div></div>';
+ root.querySelector('.mjc-main-poster').classList.add('main-poster');
+ root.querySelector('.mjc-main-summary').classList.add('main-summary');
+ root.querySelector('.mjc-main-progress').dataset.wpMainProgress='';
  root.querySelector('a img').src=new URL('../../assets/weightplay-logo.png',import.meta.url).href;
  root.querySelector('.mjc-main-poster').src=new URL('../../assets/mahjong-solitaire-cover-v1.webp',import.meta.url).href;
  if(settings)root.querySelector('.mjc-main-settings').append(settings);

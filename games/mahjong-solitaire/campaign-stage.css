@@ -13,8 +13,12 @@
 .mjc-stage-card>span:first-child{font-size:12px;color:#d8e7de}
 .mjc-stage-card strong{font-size:17px;line-height:1.25;height:44px;display:flex;align-items:center;justify-content:center;text-align:center}
 .mjc-stage-card>span:last-child{font-size:12px;color:#f0d78e}
-.mjc-stage-preview{display:flex;gap:12px;height:55px;direction:ltr}
-.mjc-stage-preview .mjc-face{width:48px;height:48px;border:2px solid #eee4c7;border-radius:7px;box-shadow:0 4px #bbaa7e,0 6px 8px #071f28}
+.mjc-stage-preview{display:flex;align-items:center;justify-content:center;flex:0 0 72px;width:172px;height:72px;direction:ltr;border-radius:10px;background:radial-gradient(ellipse,#43776870,#0a252f90);box-shadow:inset 0 0 0 1px #9eb49d44;pointer-events:none}
+.mjc-stage-miniature{display:block;position:relative}
+.mjc-preview-tile{display:block;position:absolute;border-radius:2px;background:#f5ebcd;box-shadow:0 1px #679380,0 2px 2px #031c27bb;border:.5px solid #c6b582}
+.mjc-preview-tile[data-layer]:not([data-layer="0"]){box-shadow:0 1px #efd58e,0 2px 3px #031c27}
+.mjc-preview-tile[data-sealed=true]{outline:1px solid #65cdb5;outline-offset:-1px}
+.mjc-stage-preview .mjc-face{position:absolute;inset:1px;width:calc(100% - 2px);height:calc(100% - 2px);border-radius:1px}
 .mjc-stage-card[aria-disabled=true] .mjc-stage-preview{filter:saturate(.35);opacity:.7}
 .mjc-stage-card[aria-current=true]{border-color:#ffe39c;box-shadow:0 0 7px #ffdc91,0 0 17px #cfad4d66,inset 0 0 20px #efce8020}
 .mjc-stage-card:focus-visible{outline:3px solid #fff;outline-offset:2px}

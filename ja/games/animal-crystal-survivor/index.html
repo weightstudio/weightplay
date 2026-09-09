@@ -160,13 +160,13 @@
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
           <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>
-          <div><span data-ui="hp">HP</span><b id="hpText">5/5</b></div>
+
         </div>
         <div class="xp-row">
           <span data-ui="crystals">Crystals</span>
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
-        <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i></div></div>
+        <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i><b id="hpText">7/7</b></div></div>
           <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="どうぶつクリスタルサバイバーのプレイフィールド" data-aria-ui="playfield"></canvas>
         </div>
         <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">目標：3:00までに金の鍵を集める。クリスタルを拾ってレベルアップし、カードが出たら強化を選びます。</p>
@@ -224,8 +224,8 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="talent-data.js?v=20260909-crystal-poster-world-v26"></script>
-    <script src="game.js?v=20260909-crystal-poster-world-v26"></script>
+    <script src="talent-data.js?v=20260909-crystal-tree-hud-v26"></script>
+    <script src="game.js?v=20260909-crystal-tree-hud-v26"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
     <script>

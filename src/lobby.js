@@ -98,6 +98,22 @@ latestGamesSection.dataset.runtimeLocalize = "off";
 latestGamesSection.innerHTML = '<div class="section-heading"><h2 id="latestGamesTitle"></h2></div><div id="latestGames" class="hero-games"></div>';
 if (!isKidsLobby) heroGamesSection.before(latestGamesSection);
 const latestGames = latestGamesSection.querySelector("#latestGames");
+// Owner-selected General spotlight; keeps existing Kids portal and catalog order.
+const spotlightSection = document.createElement("section");
+const spotlightCopy = { en:"Spotlight game", "zh-Hant":"主打遊戲", "zh-Hans":"主打游戏", ja:"注目のゲーム", ko:"추천 게임", es:"Juego destacado", "pt-BR":"Jogo em destaque", fr:"Jeu à la une", de:"Spiel im Fokus", it:"Gioco in primo piano", ru:"Игра в центре внимания", hi:"खास गेम", ar:"اللعبة المميزة" };
+spotlightSection.id = "spotlightGameSection";
+spotlightSection.dataset.runtimeLocalize = "off";
+if (!isKidsLobby) latestGamesSection.before(spotlightSection);
+function renderSpotlight() {
+  if (isKidsLobby) return;
+  const game = lobby.games.find(item => item.id === "animal-crystal-survivor");
+  if (!game) { spotlightSection.hidden = true; return; }
+  spotlightSection.hidden = false;
+  spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">
+    <img ${lobbyImageAttributes(primaryArt(game), {priority:true})} alt="" width="480" height="480"/>
+    <div><small>WEIGHTPLAY</small><h3>${text(game.title)}</h3><p>${text(game.type)}</p><span>${i18n.t("game.start")} →</span></div></a>`;
+}
+
 let firstPublicDates = {};
 const latestGamesCopy = {
   en: "Latest releases", "zh-Hant": "最新上架", "zh-Hans": "最新上架",
@@ -1241,6 +1257,7 @@ function renderLobby() {
   }
 
   renderContinuePlaying();
+  renderSpotlight();
   renderHeroGames();
   renderLatestGames();
   renderMobilePicks();

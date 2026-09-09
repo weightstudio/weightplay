@@ -48,7 +48,15 @@
   };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-balance-grove-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (error) { state.storage = false; return null; } };
   const writeBest = (value) => { try { const current = readBest(); if (!current || value < current) localStorage.setItem("weightplay-animal-balance-grove-best-v1", String(value)); } catch (error) { state.storage = false; } };
-  const show = (name) => Object.keys(screens).forEach((key) => { screens[key].hidden = key !== name; });
+  const show = (name) => {
+    Object.keys(screens).forEach((key) => { screens[key].hidden = key !== name; });
+    const scene = name === "stages" ? "stage" : name;
+    const activePlay = scene === "stage" || scene === "battle";
+    document.body.dataset.screen = scene;
+    document.documentElement.classList.toggle("wp-active-play", activePlay);
+    document.body.classList.toggle("wp-active-play", activePlay);
+    if (activePlay) window.scrollTo(0, 0);
+  };
   const applyLocale = () => {
     const guideCopy = guideInfoCopy[state.locale] || guideInfoCopy.en;
     document.documentElement.lang = state.locale;

@@ -6,11 +6,11 @@ export function createCampaignResultView({locale,stages,next,replay}) {
  const root=document.createElement('section');root.className='mjc-result';root.hidden=true;
  root.setAttribute('role','region');root.setAttribute('aria-live','polite');
  root.innerHTML='<div class="mjc-result-content"><div class="mjc-result-medal" aria-hidden="true">✦</div><h2></h2><p class="mjc-result-stage"></p><div class="mjc-result-stars"></div><dl></dl><p class="mjc-result-storage"></p></div><div class="mjc-result-actions"><button type="button"></button><button type="button"></button><button type="button"></button></div>';
- const buttons=[...root.querySelectorAll('button')],lifetime=new AbortController();let disposed=false;
+ const buttons=[...root.querySelectorAll('button')],lifetime=new AbortController();let disposed=false,wasComplete=false;
  for(const [i,action] of [stages,next,replay].entries())buttons[i].addEventListener('click',action,{signal:lifetime.signal});
  function render(state){
   if(disposed)throw new Error('Result view disposed');
-  const complete=state.screen==='battle'&&state.outcome==='complete';root.hidden=!complete;if(!complete)return;
+  const complete=state.screen==='battle'&&state.outcome==='complete',entering=complete&&!wasComplete;wasComplete=complete;root.hidden=!complete;if(!complete)return;
   const c=campaignCopy(locale());root.dir=locale()==='ar'?'rtl':'ltr';root.setAttribute('aria-label',c.won);
   root.querySelector('h2').textContent=c.won;root.querySelector('.mjc-result-stage').textContent=`${c.stage} ${state.stage} · ${mahjongStageName(locale(),state.stage)}`;
   const stars=root.querySelector('.mjc-result-stars');stars.textContent='★'.repeat(state.stars)+'☆'.repeat(3-state.stars);stars.setAttribute('aria-label',`${c.stars}: ${state.stars} / 3`);
@@ -19,6 +19,9 @@ export function createCampaignResultView({locale,stages,next,replay}) {
   root.querySelector('.mjc-result-storage').textContent=state.persistent?'':c.storage;
   for(const [i,label] of [c.stages,c.next,c.replay].entries())buttons[i].textContent=label;
   buttons[1].disabled=!state.canNext;
+  // The last tile disappears at settlement. Transfer keyboard focus once to
+  // a usable continuation, never leave it on the hidden board or disabled Next.
+  if(entering)buttons[state.canNext?1:2].focus({preventScroll:true});
  }
  function dispose(){if(disposed)return;disposed=true;lifetime.abort();root.remove();}
  return {root,render,dispose};

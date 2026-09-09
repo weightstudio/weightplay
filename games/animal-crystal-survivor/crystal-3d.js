@@ -581,7 +581,7 @@ export class Crystal3D {
     const c = Math.abs(Math.cos(this.azimuth)), s = Math.abs(Math.sin(this.azimuth));
     const baseWidth = (WIDTH * c + HEIGHT * s) / UNIT + 3;
     const baseHeight = (WIDTH * s + HEIGHT * c) / UNIT * groundCosine + 4;
-    const fittedHeight = Math.max(baseHeight, baseWidth / aspect) / 1.6;
+    const fittedHeight = Math.max(baseHeight, baseWidth / aspect) / 1.85;
     if (resized || !this.bounds) {
       this.camera.left = -fittedHeight * aspect / 2;
       this.camera.right = fittedHeight * aspect / 2;
