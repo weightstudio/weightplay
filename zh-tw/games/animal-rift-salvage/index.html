@@ -28,6 +28,7 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <title>裂隙回收隊 | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-rift-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260823-arabic-runtime-v12">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta name="description" content="引導奧拉的月輪挑戰 30 個星界區域，先回收小型殘骸成長，再救援核心、超越對手並收回王冠遺物。" />
     <meta property="og:site_name" content="WeightPlay" />
@@ -54,7 +55,7 @@
         <label class="locale-control"><span class="sr-only" data-t="language">語言</span><select id="localeSelect" aria-label="語言" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rift-salvage/cover.webp" alt="月帽貓頭鷹奧菈引導月環回收場" data-t-alt="posterAlt">
+        <img class="poster main-poster" src="../../assets/animal-rift-salvage/cover.webp" alt="月帽貓頭鷹奧菈引導月環回收場" data-t-alt="posterAlt">
         <div class="main-copy">
           <small data-t="mainKicker">一般 · 30 區域戰役</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">裂隙回收隊</h1>
@@ -65,7 +66,7 @@
         </div>
       </section>
     </main>
-    <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="public-guide game-page-info game-page-info-static" aria-labelledby="guideTitle" data-wp-game-guide>
       <small data-t="guideKicker">公開遊戲指南</small><h2 id="guideTitle" data-t="guideTitle">修復破碎的天空鑄造廠</h2><p data-t="guideIntro">了解完整回收流程，從安全尺寸路線到救援核心、競爭裂隙與收縮風暴。</p>
       <div class="guide-grid">
         <article><h3 data-t="guideWorldTitle">月環回收任務</h3><p data-t="guideWorld">月帽貓頭鷹奧菈使用可控月環移除受污染的非生物殘骸，找出受困的救援核心。</p></article>
@@ -98,7 +99,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">回收</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">尺寸</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">穩定</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="遊玩說明" data-t-aria="help">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">回收</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">尺寸</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">穩定</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="遊玩說明" data-t-aria="help" data-wp-battle-utility>?</button></header>
         <p id="objective" class="objective-row"></p>
         <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="星界回收場" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">回收</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">月鏈</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">按住或拖曳引導月環 · 方向鍵／WASD</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>

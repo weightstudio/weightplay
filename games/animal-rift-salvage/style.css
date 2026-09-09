@@ -31,3 +31,14 @@ body.wp-stage-select-active #stageSummary{display:none}
 .chain-badge{min-width:118px}
 .chain-badge strong{line-height:1}
 .chain-hint{display:block;max-width:120px;margin-top:2px;color:#c8f8ff;font-size:10px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Game v15: restore the governed Main, Stage, Guide, and Battle utility
+   geometry on the exact Interface I6 shell. */
+.main-copy>span{min-height:40px;max-height:44px;display:flex;align-items:center}
+.public-guide{margin:12px auto;border:1px solid #bddede;border-radius:20px;box-shadow:0 14px 38px #0005}
+.stage-tabs button{min-height:44px}
+@media(max-height:500px) and (min-aspect-ratio:3/2){
+  .main-hero{grid-template-columns:420px minmax(0,1fr)}
+  .poster{width:420px;height:420px}
+  .stage-canvas{grid-template-rows:58px 44px minmax(0,1fr)}
+}

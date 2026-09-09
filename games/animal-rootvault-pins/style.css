@@ -1093,12 +1093,12 @@ a:focus-visible {
   .main-hero {
     height: auto;
     min-height: 0;
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: 420px minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr);
   }
   .poster {
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    height: 420px;
     aspect-ratio: 1;
     justify-self: start;
   }

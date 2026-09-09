@@ -28,6 +28,7 @@
   <meta name="weightplay-scene-controls" content="immutable">
   <title>Rissbergung | WeightPlay</title>
   <link rel="icon" href="../../assets/weightplay-logo.png">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-rift-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260823-arabic-runtime-v12">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta name="description" content="Lenke Orlas Mondring durch dreißig Zonen, sammle kleine Trümmer zum Wachsen, rette Kerne und überhole Rivalen." />
     <meta property="og:site_name" content="WeightPlay" />
@@ -54,7 +55,7 @@
         <label class="locale-control"><span class="sr-only" data-t="language">Sprache</span><select id="localeSelect" aria-label="Sprache" data-t-aria="language"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-rift-salvage/cover.webp" alt="Mondkappe Orla führt den Bergungsring" data-t-alt="posterAlt">
+        <img class="poster main-poster" src="../../assets/animal-rift-salvage/cover.webp" alt="Mondkappe Orla führt den Bergungsring" data-t-alt="posterAlt">
         <div class="main-copy">
           <small data-t="mainKicker">ALLGEMEIN · KAMPAGNE MIT 30 ZONEN</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">Rissbergung</h1>
@@ -65,7 +66,7 @@
         </div>
       </section>
     </main>
-    <section class="public-guide game-page-info" aria-labelledby="guideTitle">
+    <section class="public-guide game-page-info game-page-info-static" aria-labelledby="guideTitle" data-wp-game-guide>
       <small data-t="guideKicker">ÖFFENTLICHER SPIELFÜHRER</small><h2 id="guideTitle" data-t="guideTitle">Repariere die Himmelsschmiede</h2><p data-t="guideIntro">Lerne den gesamten Bergungsablauf mit Größenrouten, Rettungskernen, Rivalen und Sturm.</p>
       <div class="guide-grid">
         <article><h3 data-t="guideWorldTitle">Die Mondbergung</h3><p data-t="guideWorld">Orla entfernt mit einem kontrollierten Ring verdorbene leblose Trümmer und legt Rettungskerne frei.</p></article>
@@ -98,7 +99,7 @@
   <section id="battleScreen" class="active-screen" data-screen="battle" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
-        <header class="battle-header"><button id="battleBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">Bergung</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">Größe</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">Stabilität</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="Spielanleitung" data-t-aria="help">?</button></header>
+        <header class="battle-header"><button id="battleBack" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="battle">←</button><div class="zone-block"><small id="zoneLabel"></small><strong id="timerValue">0:00</strong></div><div class="battle-status"><span><b data-t="salvage">Bergung</b><strong id="scoreValue">0/0</strong></span><span><b data-t="size">Größe</b><strong id="sizeValue">1</strong></span><span><b data-t="stability">Stabilität</b><strong id="stabilityValue">3</strong></span></div><button id="battleHelp" type="button" aria-label="Spielanleitung" data-t-aria="help" data-wp-battle-utility>?</button></header>
         <p id="objective" class="objective-row"></p>
         <div id="arenaWrap" class="arena-wrap"><canvas id="arena" width="900" height="900" tabindex="0" aria-label="Astrale Bergungsarena" aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown w a s d" data-t-aria="arenaLabel"></canvas><div id="salvageProgress" class="salvage-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span data-t="salvage">Bergung</span><b id="salvageProgressValue">0 / 0</b><i aria-hidden="true"><em id="salvageProgressFill"></em></i></div><div id="chainBadge" class="chain-badge" role="status" aria-live="polite" aria-atomic="true"><span data-t="moonChain">Mondkette</span><strong id="chainValue">×1</strong></div><div class="control-cue" data-t="controlCue">Halten/ziehen zum Führen · Pfeile/WASD</div></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
