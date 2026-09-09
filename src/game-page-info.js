@@ -9063,11 +9063,11 @@
     "story": [],
     "systems": [
       "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Move with touch, mouse, WASD or arrow keys. Collect crystals for spell choices. Choose two permanent talents; refund and try another branch freely."
+      "Move with touch, mouse, WASD or arrow keys. Choose one path. Max each parent (2/2) to continue. All learned nodes activate automatically. Reset freely to switch. Ember Drake / Frost Drake / Storm Drake: Automatically follows and shoots; rank 2 fires faster."
     ],
     "how": [
       "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
-      "Move with touch, mouse, WASD or arrow keys. Collect crystals for spell choices. Choose two permanent talents; refund and try another branch freely."
+      "Move with touch, mouse, WASD or arrow keys. Choose one path. Max each parent (2/2) to continue. All learned nodes activate automatically. Reset freely to switch. Ember Drake / Frost Drake / Storm Drake: Automatically follows and shoots; rank 2 fires faster."
     ],
     "tips": [
       "Root prison: leave the three green circles.",
@@ -9087,11 +9087,11 @@
     "story": [],
     "systems": [
       "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "觸控、滑鼠、WASD 或方向鍵移動。收集水晶選擇魔法升級；可裝備兩個永久天賦，免費重置並嘗試不同分支。"
+      "觸控、滑鼠、WASD 或方向鍵移動。 選定一條路線，前置升滿 2/2 才能往下走。已學能力自動生效；免費重置可換路線。 餘燼幼龍 / 霜晶幼龍 / 雷翼幼龍: 自動跟隨、發射魔法；升至二階攻擊更快."
     ],
     "how": [
       "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
-      "觸控、滑鼠、WASD 或方向鍵移動。收集水晶選擇魔法升級；可裝備兩個永久天賦，免費重置並嘗試不同分支。"
+      "觸控、滑鼠、WASD 或方向鍵移動。 選定一條路線，前置升滿 2/2 才能往下走。已學能力自動生效；免費重置可換路線。 餘燼幼龍 / 霜晶幼龍 / 雷翼幼龍: 自動跟隨、發射魔法；升至二階攻擊更快."
     ],
     "tips": [
       "根牢：離開三個綠色根圈。",
@@ -9111,11 +9111,11 @@
     "story": [],
     "systems": [
       "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "触控、鼠标、WASD 或方向键移动。收集水晶选择魔法升级；可装备两个永久天赋，免费重置并尝试不同分支。"
+      "触控、鼠标、WASD 或方向键移动。 选定一条路线，前置升满 2/2 才能继续。已学能力自动生效；免费重置可换路线。 余烬幼龙 / 霜晶幼龙 / 雷翼幼龙: 自动跟随、发射魔法；二阶攻击更快."
     ],
     "how": [
       "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
-      "触控、鼠标、WASD 或方向键移动。收集水晶选择魔法升级；可装备两个永久天赋，免费重置并尝试不同分支。"
+      "触控、鼠标、WASD 或方向键移动。 选定一条路线，前置升满 2/2 才能继续。已学能力自动生效；免费重置可换路线。 余烬幼龙 / 霜晶幼龙 / 雷翼幼龙: 自动跟随、发射魔法；二阶攻击更快."
     ],
     "tips": [
       "根牢：离开三个绿色根圈。",
@@ -9135,11 +9135,11 @@
     "story": [],
     "systems": [
       "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "タッチ、マウス、WASD、矢印キーで移動。結晶で魔法を強化。永続才能は2つ装備でき、無料リセットで別の分岐を試せます。"
+      "タッチ、マウス、WASD、矢印キーで移動。 道は1つ。前提を2/2にすると先へ進めます。習得能力は自動発動。無料リセットで変更可能。 炎の幼竜 / 氷の幼竜 / 雷の幼竜: 自動追従して魔法を発射."
     ],
     "how": [
       "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
-      "タッチ、マウス、WASD、矢印キーで移動。結晶で魔法を強化。永続才能は2つ装備でき、無料リセットで別の分岐を試せます。"
+      "タッチ、マウス、WASD、矢印キーで移動。 道は1つ。前提を2/2にすると先へ進めます。習得能力は自動発動。無料リセットで変更可能。 炎の幼竜 / 氷の幼竜 / 雷の幼竜: 自動追従して魔法を発射."
     ],
     "tips": [
       "根の牢：3つの緑の円から離れる。",
@@ -9159,11 +9159,11 @@
     "story": [],
     "systems": [
       "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "터치, 마우스, WASD나 방향키로 이동하세요. 수정으로 마법을 강화하고 영구 특성 두 개를 장착하세요. 무료 초기화로 다른 분기를 시험할 수 있습니다."
+      "터치, 마우스, WASD나 방향키로 이동하세요. 한 경로를 선택하세요. 이전 능력 2/2가 필요합니다. 배운 능력은 자동 발동하며 무료 초기화로 변경할 수 있습니다. 불꽃 아기용 / 서리 아기용 / 천둥 아기용: 자동으로 따라오며 마법 발사."
     ],
     "how": [
       "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
-      "터치, 마우스, WASD나 방향키로 이동하세요. 수정으로 마법을 강화하고 영구 특성 두 개를 장착하세요. 무료 초기화로 다른 분기를 시험할 수 있습니다."
+      "터치, 마우스, WASD나 방향키로 이동하세요. 한 경로를 선택하세요. 이전 능력 2/2가 필요합니다. 배운 능력은 자동 발동하며 무료 초기화로 변경할 수 있습니다. 불꽃 아기용 / 서리 아기용 / 천둥 아기용: 자동으로 따라오며 마법 발사."
     ],
     "tips": [
       "뿌리 감옥: 초록 원 세 개에서 벗어나세요.",
@@ -9183,11 +9183,11 @@
     "story": [],
     "systems": [
       "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Muévete con toque, ratón, WASD o flechas. Los cristales mejoran hechizos. Equipa dos talentos permanentes y reinícialos gratis para probar otra rama."
+      "Muévete con toque, ratón, WASD o flechas. Elige una ruta. Completa cada requisito a 2/2. Los talentos aprendidos se activan solos. Reinicia gratis para cambiar. Dragón de brasas / Dragón de hielo / Dragón de tormenta: Te sigue y dispara automáticamente."
     ],
     "how": [
       "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
-      "Muévete con toque, ratón, WASD o flechas. Los cristales mejoran hechizos. Equipa dos talentos permanentes y reinícialos gratis para probar otra rama."
+      "Muévete con toque, ratón, WASD o flechas. Elige una ruta. Completa cada requisito a 2/2. Los talentos aprendidos se activan solos. Reinicia gratis para cambiar. Dragón de brasas / Dragón de hielo / Dragón de tormenta: Te sigue y dispara automáticamente."
     ],
     "tips": [
       "Prisión de raíces: sal de los tres círculos verdes.",
@@ -9207,11 +9207,11 @@
     "story": [],
     "systems": [
       "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Mova-se por toque, mouse, WASD ou setas. Cristais melhoram magias. Equipe dois talentos permanentes e redefina grátis para testar outro ramo."
+      "Mova-se por toque, mouse, WASD ou setas. Escolha uma rota. Complete cada requisito em 2/2. Talentos aprendidos são automáticos. Redefina grátis para trocar. Dragão de brasas / Dragão de gelo / Dragão da tempestade: Segue e dispara automaticamente."
     ],
     "how": [
       "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
-      "Mova-se por toque, mouse, WASD ou setas. Cristais melhoram magias. Equipe dois talentos permanentes e redefina grátis para testar outro ramo."
+      "Mova-se por toque, mouse, WASD ou setas. Escolha uma rota. Complete cada requisito em 2/2. Talentos aprendidos são automáticos. Redefina grátis para trocar. Dragão de brasas / Dragão de gelo / Dragão da tempestade: Segue e dispara automaticamente."
     ],
     "tips": [
       "Prisão de raízes: saia dos três círculos verdes.",
@@ -9231,11 +9231,11 @@
     "story": [],
     "systems": [
       "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Les cristaux améliorent les sorts. Équipez deux talents permanents et réinitialisez gratuitement pour changer de branche."
+      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Choisissez une voie. Chaque prérequis doit atteindre 2/2. Les talents appris sont automatiques. Réinitialisation gratuite. Dragon des braises / Dragon de givre / Dragon de tempête: Suit et tire automatiquement."
     ],
     "how": [
       "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
-      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Les cristaux améliorent les sorts. Équipez deux talents permanents et réinitialisez gratuitement pour changer de branche."
+      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Choisissez une voie. Chaque prérequis doit atteindre 2/2. Les talents appris sont automatiques. Réinitialisation gratuite. Dragon des braises / Dragon de givre / Dragon de tempête: Suit et tire automatiquement."
     ],
     "tips": [
       "Prison de racines : sortez des trois cercles verts.",
@@ -9255,11 +9255,11 @@
     "story": [],
     "systems": [
       "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Kristalle verbessern Zauber. Rüste zwei dauerhafte Talente aus; kostenloses Zurücksetzen erlaubt andere Zweige."
+      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Wähle einen Pfad. Jede Voraussetzung braucht 2/2. Gelernte Talente wirken automatisch. Kostenlos zurücksetzen und wechseln. Glutdrache / Frostdrache / Sturmdrache: Folgt und schießt automatisch."
     ],
     "how": [
       "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
-      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Kristalle verbessern Zauber. Rüste zwei dauerhafte Talente aus; kostenloses Zurücksetzen erlaubt andere Zweige."
+      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Wähle einen Pfad. Jede Voraussetzung braucht 2/2. Gelernte Talente wirken automatisch. Kostenlos zurücksetzen und wechseln. Glutdrache / Frostdrache / Sturmdrache: Folgt und schießt automatisch."
     ],
     "tips": [
       "Wurzelgefängnis: Verlasse die drei grünen Kreise.",
@@ -9279,11 +9279,11 @@
     "story": [],
     "systems": [
       "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Muoviti con tocco, mouse, WASD o frecce. I cristalli potenziano le magie. Equipaggia due talenti permanenti e azzerali gratis per provare un altro ramo."
+      "Muoviti con tocco, mouse, WASD o frecce. Scegli un percorso. Ogni requisito deve arrivare a 2/2. I talenti appresi sono automatici. Ripristino gratuito per cambiare. Drago di brace / Drago di gelo / Drago di tempesta: Segue e spara automaticamente."
     ],
     "how": [
       "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
-      "Muoviti con tocco, mouse, WASD o frecce. I cristalli potenziano le magie. Equipaggia due talenti permanenti e azzerali gratis per provare un altro ramo."
+      "Muoviti con tocco, mouse, WASD o frecce. Scegli un percorso. Ogni requisito deve arrivare a 2/2. I talenti appresi sono automatici. Ripristino gratuito per cambiare. Drago di brace / Drago di gelo / Drago di tempesta: Segue e spara automaticamente."
     ],
     "tips": [
       "Prigione di radici: esci dai tre cerchi verdi.",
@@ -9303,11 +9303,11 @@
     "story": [],
     "systems": [
       "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Двигайтесь касанием, мышью, WASD или стрелками. Кристаллы улучшают магию. Выберите два постоянных таланта; бесплатный сброс позволяет сменить ветку."
+      "Двигайтесь касанием, мышью, WASD или стрелками. Выберите один путь. Каждый предыдущий узел требует 2/2. Изученные таланты действуют автоматически. Сброс бесплатный. Угольный дракончик / Морозный дракончик / Грозовой дракончик: Автоматически следует и стреляет."
     ],
     "how": [
       "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
-      "Двигайтесь касанием, мышью, WASD или стрелками. Кристаллы улучшают магию. Выберите два постоянных таланта; бесплатный сброс позволяет сменить ветку."
+      "Двигайтесь касанием, мышью, WASD или стрелками. Выберите один путь. Каждый предыдущий узел требует 2/2. Изученные таланты действуют автоматически. Сброс бесплатный. Угольный дракончик / Морозный дракончик / Грозовой дракончик: Автоматически следует и стреляет."
     ],
     "tips": [
       "Корневая тюрьма: выйдите из трёх зелёных кругов.",
@@ -9327,11 +9327,11 @@
     "story": [],
     "systems": [
       "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। क्रिस्टल से जादू बढ़ाएँ। दो स्थायी प्रतिभाएँ लगाएँ; मुफ्त रीसेट से दूसरी शाखा आजमाएँ।"
+      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। एक मार्ग चुनें। हर पिछला कौशल 2/2 होना चाहिए। सीखे कौशल अपने आप चलते हैं। मुफ्त रीसेट से मार्ग बदलें। अंगारा ड्रैगन / हिम ड्रैगन / तूफ़ान ड्रैगन: अपने आप साथ चलता और जादू चलाता है."
     ],
     "how": [
       "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
-      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। क्रिस्टल से जादू बढ़ाएँ। दो स्थायी प्रतिभाएँ लगाएँ; मुफ्त रीसेट से दूसरी शाखा आजमाएँ।"
+      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। एक मार्ग चुनें। हर पिछला कौशल 2/2 होना चाहिए। सीखे कौशल अपने आप चलते हैं। मुफ्त रीसेट से मार्ग बदलें। अंगारा ड्रैगन / हिम ड्रैगन / तूफ़ान ड्रैगन: अपने आप साथ चलता और जादू चलाता है."
     ],
     "tips": [
       "जड़ कैद: तीन हरे घेरों से निकलें।",
@@ -9351,11 +9351,11 @@
     "story": [],
     "systems": [
       "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. البلورات تطور السحر. جهز موهبتين دائمتين وأعد ضبطهما مجانًا لتجربة فرع آخر."
+      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. اختر مسارًا واحدًا. يجب بلوغ 2/2 في كل متطلب سابق. المواهب المكتسبة تلقائية. أعد الضبط مجانًا لتغيير المسار. تنين الجمر / تنين الصقيع / تنين العاصفة: يتبعك ويطلق السحر تلقائيًا."
     ],
     "how": [
       "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
-      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. البلورات تطور السحر. جهز موهبتين دائمتين وأعد ضبطهما مجانًا لتجربة فرع آخر."
+      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. اختر مسارًا واحدًا. يجب بلوغ 2/2 في كل متطلب سابق. المواهب المكتسبة تلقائية. أعد الضبط مجانًا لتغيير المسار. تنين الجمر / تنين الصقيع / تنين العاصفة: يتبعك ويطلق السحر تلقائيًا."
     ],
     "tips": [
       "سجن الجذور: اخرج من الدوائر الخضراء الثلاث.",

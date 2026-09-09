@@ -15,7 +15,10 @@
   box-shadow: 0 0 12px #edda8750;
 }
 .wp-premium-table .board-status[data-state='yukon-reveal'] { color: #fff0b6; }
+/* Feedback floats above the action row without moving or intercepting it. */
+.wp-premium-table .classic-toast { bottom:64px; pointer-events:none; }
 @media (orientation: landscape) and (max-height: 560px) {
+  .wp-premium-table .classic-toast { bottom:48px; }
   body.wp-premium-table .board-shell {
     display: grid;
     grid-template-columns: 76px minmax(0,1fr);

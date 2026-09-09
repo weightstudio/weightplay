@@ -1866,6 +1866,25 @@ const essentialLobbyCopy = {
     };
   });
 
+  const discoveryHeroCopy = {
+    "en": "Small breaks. Big adventures.",
+    "zh-Hant": "休息一下，展開大冒險。",
+    "zh-Hans": "休息一下，展开大冒险。",
+    "ja": "ひと休みに、大きな冒険を。",
+    "ko": "잠깐의 휴식, 커다란 모험.",
+    "es": "Una pausa. Una gran aventura.",
+    "pt-BR": "Uma pausa. Grandes aventuras.",
+    "fr": "Petite pause. Grande aventure.",
+    "de": "Kleine Pause. Große Abenteuer.",
+    "it": "Una pausa. Grandi avventure.",
+    "ru": "Короткий отдых. Большие приключения.",
+    "hi": "छोटा सा विराम। बड़ा रोमांच।",
+    "ar": "استراحة قصيرة. مغامرات كبيرة."
+};
+  Object.entries(discoveryHeroCopy).forEach(([locale, title]) => {
+    dictionaries[locale]["discovery.hero_title"] = title;
+  });
+
   const gameHallCopy = {
     en: ["Game sections", "Game World", "Adventures, puzzles and action", "Cards & Board", "Solitaire, card and board games", "Choose a card or board game"],
     "zh-Hant": ["遊戲館別", "遊戲世界", "冒險、益智與動作", "棋牌館", "接龍、紙牌與棋盤遊戲", "挑選一款棋牌遊戲"],

@@ -4,7 +4,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#151923" />
+    <meta name="theme-color" content="#f6f7f2" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -42,6 +42,7 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20260702-logo1" />
     <link rel="manifest" href="manifest.webmanifest?v=20260702-logo1" />
     <link rel="stylesheet" href="src/styles.css?v=20260906-lobby-pagination1" />
+    <link rel="stylesheet" href="src/lobby-discovery.css?v=20260909-discovery1" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5576470284985485" crossorigin="anonymous"></script>
     <script type="application/ld+json">
       {
@@ -197,7 +198,27 @@
     </script>
   </head>
   <body class="lobby-page general-lobby-page" data-audience="general">
+    <a class="lobby-skip-link" href="#gameSearch" data-i18n="search.label">Search games</a>
     <main class="lobby-shell">
+      <div class="lobby-topbar">
+          <div class="brand-lockup" aria-label="WeightPlay by WeightStudio">
+            <img class="brand-logo" src="assets/weightplay-logo.png?v=20260702-logo1" alt="" decoding="async" />
+            <div class="brand-copy">
+              <h1 id="platformTitle">WeightPlay</h1>
+              <p class="brand-byline">by WeightStudio</p>
+            </div>
+          </div>
+        <label class="language-picker">
+          <span id="languageLabel">Language</span>
+          <select id="localeSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
+            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
+            <option value="es">Español</option>
+            <option value="ja">日本語</option>
+          </select>
+        </label>
+      </div>
       <aside class="desktop-filter-rail" aria-label="Game filters">
         <div class="desktop-filter-rail-heading">
           <span data-i18n="general.play.kicker">Ready when you are</span>
@@ -231,13 +252,8 @@
       <header class="lobby-hero">
         <img class="general-hero-scene" src="assets/lobby-thumbs/w960/assets__weightplay-general-lobby-block-animals-hero-v1.webp" alt="" decoding="async" fetchpriority="high" width="960" height="320" />
         <div class="lobby-hero-copy">
-          <div class="brand-lockup" aria-label="WeightPlay by WeightStudio">
-            <img class="brand-logo" src="assets/weightplay-logo.png?v=20260702-logo1" alt="" decoding="async" />
-            <div class="brand-copy">
-              <h1 id="platformTitle">WeightPlay</h1>
-              <p class="brand-byline">by WeightStudio</p>
-            </div>
-          </div>
+          <span class="hero-eyebrow">WEIGHTPLAY BLOCK ANIMALS</span>
+          <h2 data-i18n="discovery.hero_title">Small breaks. Big adventures.</h2>
           <p id="platformSubtitle" class="lobby-subtitle"></p>
         </div>
         <div class="lobby-mascot" aria-hidden="true">
@@ -245,23 +261,6 @@
           <img class="lobby-mascot-side lobby-mascot-fia" src="assets/lobby-thumbs/w480/assets__weightplay-character-spark-paw-fox-block-v1.webp" alt="" loading="lazy" decoding="async" />
           <img class="lobby-mascot-side lobby-mascot-nori" src="assets/lobby-thumbs/w480/assets__weightplay-character-bubble-fin-otter-block-v1.webp" alt="" loading="lazy" decoding="async" />
         </div>
-        <label class="language-picker">
-          <span id="languageLabel">Language</span>
-          <select id="localeSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
-            <option value="zh-Hans">&#31616;&#20307;&#20013;&#25991;</option>
-            <option value="es">Español</option>
-            <option value="ja">日本語</option>
-          </select>
-        </label>
-        <a id="featuredGame" class="lobby-feature lobby-kids-gateway" href="kids/">
-          <img src="assets/lobby-thumbs/w480/assets__animal-zoo-idle-cover.webp" alt="" loading="lazy" decoding="async" width="480" height="480" />
-          <div>
-            <span id="featuredLabel">For younger players</span>
-            <strong>WeightPlay Kids</strong>
-          </div>
-        </a>
       </header>
 
       <nav class="game-hall-switch" aria-label="Game sections" data-i18n-aria-label="hall.label">
@@ -322,6 +321,7 @@
       <section class="vibe-strip" aria-labelledby="vibeTitle">
         <h3 id="vibeTitle" data-i18n="filter.all_topics">All Topics</h3>
         <div class="vibe-options">
+          <button class="active" type="button" data-topic-filter="all" data-i18n="filter.all_topics">All Topics</button>
           <button type="button" data-topic-filter="Featured" data-i18n="topic.featured">Featured</button>
           <button type="button" data-topic-filter="Puzzle" data-i18n="topic.puzzle">Puzzle</button>
           <button type="button" data-topic-filter="Block" data-hall-only="games" data-i18n="topic.block">Block Puzzles</button>
@@ -332,7 +332,7 @@
         </div>
       </section>
 
-      <div class="lobby-search-row">
+      <div class="lobby-search-row" id="lobbySearchControls">
         <label class="lobby-search" for="gameSearch">
           <span data-i18n="search.label">Search games</span>
           <input id="gameSearch" type="search" autocomplete="off" data-i18n-placeholder="search.placeholder" placeholder="Search animal, puzzle, memory..." />
@@ -426,6 +426,7 @@
         <div id="recommendations" class="recommendations"></div>
       </section>
 
+      <div class="catalog-heading"><h2 data-i18n="library.all_games">All Games</h2><span id="catalogHallLabel"></span></div>
       <section id="gameGrid" class="lobby-grid" aria-label="Game list">
         <!-- adsense-static-catalog:start -->
 <article class="game-card game-card-static playable" data-game-id="animal-peach-oath">
@@ -1350,6 +1351,14 @@
 </article>
         <!-- adsense-static-catalog:end -->
       </section>
+
+        <a id="featuredGame" class="lobby-feature lobby-kids-gateway" href="kids/">
+          <img src="assets/lobby-thumbs/w480/assets__animal-zoo-idle-cover.webp" alt="" loading="lazy" decoding="async" width="480" height="480" />
+          <div>
+            <span id="featuredLabel">For younger players</span>
+            <strong>WeightPlay Kids</strong>
+          </div>
+        </a>
 
       <section id="upcomingGamesSection" class="upcoming-games-section hidden" aria-label="Coming Soon" hidden>
         <div class="section-heading">

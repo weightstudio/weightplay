@@ -6,6 +6,9 @@
 /* Short landscape cards must retain clear separation between pip and ranks. */
 @media (orientation:landscape) and (max-height:560px) {
   .wp-premium-table[data-card-deck='klondike'] .classic-card .deck-pip { font-size:14px!important; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank { font-size:9px; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank.top { top:1px; left:1px; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank.bottom { bottom:1px; right:1px; }
 }
 .wp-premium-table .classic-card.covered { border-color: #a8ae98; background: #dce4d6; }
 .wp-premium-table .classic-card.available { border-color: #f4d992; box-shadow: 0 2px 0 #b99f64, 0 4px 8px #001c1660; }

@@ -108,7 +108,7 @@ const spotlightSection = document.createElement("section");
 const spotlightCopy = { en:"Spotlight game", "zh-Hant":"主打遊戲", "zh-Hans":"主打游戏", ja:"注目のゲーム", ko:"추천 게임", es:"Juego destacado", "pt-BR":"Jogo em destaque", fr:"Jeu à la une", de:"Spiel im Fokus", it:"Gioco in primo piano", ru:"Игра в центре внимания", hi:"खास गेम", ar:"اللعبة المميزة" };
 spotlightSection.id = "spotlightGameSection";
 spotlightSection.dataset.runtimeLocalize = "off";
-if (!isKidsLobby) latestGamesSection.before(spotlightSection);
+if (!isKidsLobby) document.querySelector(".lobby-hero").append(spotlightSection);
 function renderSpotlight() {
   if (isKidsLobby) return;
   const game = lobby.games.find(item => item.id === "animal-crystal-survivor");
@@ -379,6 +379,8 @@ function syncHallPresentation() {
   document.querySelectorAll("[data-hall-only]").forEach((element) => {
     element.hidden = element.dataset.hallOnly !== activeHall;
   });
+  const catalogHallLabel = document.querySelector("#catalogHallLabel");
+  if (catalogHallLabel) catalogHallLabel.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop" : "hall.games");
   if (generalPlayTitle) {
     generalPlayTitle.textContent = i18n.t(activeHall === "tabletop" ? "hall.tabletop_title" : "general.play.title");
   }
@@ -1995,6 +1997,7 @@ function applyFilter({ historyMode = "replace" } = {}) {
     }
   });
 
+  document.body.classList.toggle("discovery-filtered", isFiltered);
   heroGamesSection.classList.toggle("hidden", isFiltered);
   latestGamesSection.classList.toggle("hidden", isFiltered || isKidsLobby || latestGames.childElementCount === 0);
   discoverySnapshot?.classList.toggle("hidden", isFiltered);

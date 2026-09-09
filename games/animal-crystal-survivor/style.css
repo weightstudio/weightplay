@@ -2242,3 +2242,27 @@ html body .talent-workshop button.talent-tree-node { grid-column:var(--node-colu
 .talent-prerequisite { color:#f1cf8a!important; }
 html body .health-track { position:relative; height:18px; }
 #healthMeter #hpText { position:absolute; inset:0; display:grid; place-items:center; font-size:12px; font-weight:800; color:white; text-shadow:0 1px 3px #000,1px 0 #000; line-height:18px; }
+
+/* Elemental routes share the existing Stage envelope. */
+.talent-tree.element-tree {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto;gap:12px;padding:12px 2px;background:none;}
+.element-branch {display:flex;flex-direction:column;align-items:center;border-radius:12px;background:linear-gradient(#85482244,#152733);padding:12px 3px;min-width:0;}
+.element-branch.branch-1 {background:linear-gradient(#319bb344,#152733);}
+.element-branch.branch-2 {background:linear-gradient(#8557bc55,#152733);}
+html body .element-branch .talent-tree-node {width:100%;min-height:96px;}
+.element-branch .talent-tree-node strong {font-size:12px;overflow-wrap:anywhere;text-align:center;}
+.element-branch .talent-tree-node img {width:52px;height:52px;}
+.element-branch.branch-0 img {filter:sepia(.6) saturate(1.4);}
+.element-branch.branch-2 img {filter:hue-rotate(55deg);}
+.element-branch .talent-tree-node.locked {opacity:.45;}
+.route-link {font-size:24px;height:32px;line-height:32px;color:#5a717e;}
+.route-link.open {color:#ffe3a2;text-shadow:0 0 12px #ffcc66;}
+.talent-route-hint {font-size:13px;line-height:1.65;color:#dfd9bc;}
+.dungeon-presentation {position:absolute;inset:0;z-index:65;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:36px;background:linear-gradient(transparent,#09172499,transparent);pointer-events:auto;touch-action:none;color:#ffdf91;isolation:isolate;}
+.dungeon-presentation strong {font-size:30px;line-height:1.4;letter-spacing:2px;text-shadow:0 4px 0 #15222c,0 0 24px #ffb95580;animation:dungeon-arrival .45s ease-out both;}
+.dungeon-presentation p {max-width:440px;padding:10px 18px;border-top:1px solid currentColor;background:#0c1b2ee8;font-size:14px;line-height:1.6;}
+.presentation-symbol {font-size:70px;line-height:1.4;animation:dungeon-arrival .55s ease-out both;}
+.dungeon-presentation.boss {color:#ffae87;box-shadow:inset 0 0 65px #ff4b3055;}
+.dungeon-presentation.defeat {color:#bbcbd9;background:#111e2c77;}
+.dungeon-presentation.victory {background:radial-gradient(ellipse,#ffc85522,transparent 65%);}
+@keyframes dungeon-arrival {from {opacity:0;transform:scale(.7) translateY(18px)}to {opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.dungeon-presentation * {animation:none!important;}}

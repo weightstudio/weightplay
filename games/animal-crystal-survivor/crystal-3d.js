@@ -85,6 +85,9 @@ export class Crystal3D {
       this.xpMaterial = this.own(new THREE.MeshStandardMaterial({ color:0x58ffd5, emissive:0x29dba3, emissiveIntensity:.8, roughness:.4 }));
       this.magicGlow = this.own(new THREE.MeshBasicMaterial({ color: 0x38d9ff, transparent: true, opacity: .36, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
       this.magicImpact = this.own(new THREE.MeshBasicMaterial({ color: 0x8ff5ff, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false, toneMapped: false }));
+      this.groundGlow = this.own(this.magicImpact.clone());
+      this.groundGlow.depthTest = true;
+      this.groundGlow.clippingPlanes = this.viewPlanes;
       this.elementMaterials = { shatter: this.magicImpact };
       for (const [element, color] of [['chain', 0xc3a1ff], ['burst', 0xffb05c]]) {
         const material = this.own(this.magicImpact.clone());
@@ -137,7 +140,7 @@ export class Crystal3D {
         this.scene.add(border);
       }
       this.hero = this.character('hero');
-      this.hero.scale.setScalar(1.75);
+      this.hero.scale.setScalar(1.22);
       this.scene.add(this.hero);
       this.safe = this.mesh('ring', 'safe', this.scene, 0, .025, 0);
       this.safe.rotation.x = -Math.PI / 2;
@@ -605,6 +608,30 @@ export class Crystal3D {
     this.setPosition(this.hero, state.player);
     this.setPosition(this.range, state.player, .035);
     this.range.scale.setScalar((state.player.range || 180) / UNIT);
+    const petTime = now / 1000;
+    const finale = state.presentation;
+    if (finale?.kind === 'victory') this.hero.position.y += this.reducedMotion ? 0 : Math.abs(Math.sin(finale.elapsed * 5)) * .32;
+    if (finale?.kind === 'defeat') this.hero.rotation.z = Math.min(1, finale.elapsed / .7) * -.42;
+    else this.hero.rotation.z = 0;
+    this.pool('pet', state.pet ? 1 : 0, () => {
+      const group = new THREE.Group();
+      this.mesh('voxel','cyan',group,0,.6,0,.42,.35,.55);
+      this.mesh('voxel','cyan',group,0,.86,.24,.46,.38,.38);
+      this.mesh('voxel','ivory',group,0,.76,.46,.28,.16,.15);
+      for (const x of [-.14,.14]) {
+        this.mesh('voxel','eye',group,x,.92,.435,.09,.10,.025);
+        this.mesh('voxel','gold',group,x,1.1,.19,.09,.20,.09);
+        this.mesh('voxel','cyan',group,x*2.7,.67,-.02,.33,.09,.37);
+      }
+      this.mesh('voxel','gold',group,0,.54,-.39,.18,.16,.4);
+      return group;
+    }, object => {
+      this.setPosition(object,state.pet,.15 + (this.reducedMotion ? 0 : Math.sin(petTime*5)*.08));
+      object.rotation.y = Math.atan2((state.pet.aimX || state.player.x)-state.pet.x,(state.pet.aimY || state.player.y)-state.pet.y);
+      const material = this.mat[state.pet.element === 'fire' ? 'gold' : state.pet.element === 'ice' ? 'cyan' : 'violet'];
+      object.children.forEach(part => { if (part.userData.petBody || part.material === this.mat.cyan) { part.userData.petBody = true; part.material = material; } });
+    },1);
+
     const t = this.reducedMotion ? 0 : now / 1000;
     const previous = this.hero.userData.previous;
     const moving = previous && Math.hypot(state.player.x - previous.x, state.player.y - previous.y) > .05;
@@ -681,7 +708,7 @@ export class Crystal3D {
     this.pool('xp', state.xpDrops.length, () => {
       const group = new THREE.Group();
       this.mesh('crystal', this.xpMaterial, group, 0, .55, 0, .30, .50, .30);
-      this.mesh('xpRing', this.magicImpact, group, 0, .045, 0, .38).rotation.x = -Math.PI / 2;
+      this.mesh('xpRing', this.groundGlow, group, 0, .045, 0, .38).rotation.x = -Math.PI / 2;
       return group;
     }, (object, i) => {
       this.setPosition(object, state.xpDrops[i], 0);
@@ -701,7 +728,7 @@ export class Crystal3D {
       const shot = state.shots[i];
       let visual = this.shotVisuals.get(shot);
       if (!visual) {
-        visual = { muzzle: this.hero.userData.muzzle.getWorldPosition(new THREE.Vector3()) };
+        visual = { muzzle: shot.pet ? new THREE.Vector3(shot.originX / UNIT, .8, shot.originY / UNIT) : this.hero.userData.muzzle.getWorldPosition(new THREE.Vector3()) };
         this.shotVisuals.set(shot, visual);
       }
       // Keep authoritative homing/damage unchanged; move its visible origin to
@@ -810,9 +837,9 @@ export class Crystal3D {
       const arrow = new THREE.Group(); group.add(arrow);
       this.mesh('rod', 'gold', arrow, 0, .7, 0, .035, .7, .035).rotation.x = Math.PI / 2;
       this.mesh('crystal', this.magicImpact, arrow, 0, .7, .37, .09, .05, .18);
-      const aimLine = this.mesh('voxel', this.magicImpact, arrow, 0, .06, 3.5, .12, .025, 7);
+      const aimLine = this.mesh('voxel', this.groundGlow, arrow, 0, .06, 3.5, .12, .025, 7);
       const laneEdges = new THREE.Group(); group.add(laneEdges);
-      for (let edge=0;edge<4;edge++) this.mesh('voxel',this.magicImpact,laneEdges);
+      for (let edge=0;edge<4;edge++) this.mesh('voxel',this.groundGlow,laneEdges);
       group.userData = { circle, lane, outline, arrow, aimLine, laneEdges };
       return group;
     }, (object, i) => {

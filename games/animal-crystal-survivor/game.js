@@ -9,7 +9,7 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-otter-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-paths-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
@@ -36,6 +36,8 @@
   };
 
   function releaseRenderer() {
+    state.presentation = null;
+    document.getElementById("dungeonPresentation")?.remove();
     clearTimeout(upgradeRevealTimer);
     upgradeRevealTimer = null;
     upgradeReady = false;
@@ -807,9 +809,12 @@
 
   const talentData = window.CrystalTalents;
   const talentIconBase = new URL("icons/", document.currentScript.src).href;
-  const talentParents = { alchemy: "echo", stride: "harvest" };
+  const talentParents = { alchemy:"fire", petFire:"alchemy", stride:"harvest", petIce:"stride", storm:"echo", petStorm:"storm" };
+  const talentBranches = [["fire","alchemy","petFire"],["harvest","stride","petIce"],["echo","storm","petStorm"]];
+  const branchOf = id => talentBranches.findIndex(branch => branch.includes(id));
+  const talentCost = id => [4,10,18][talentBranches[branchOf(id)].indexOf(id)];
   let selectedTalent = "echo";
-  const talentIds = ['echo', 'harvest', 'stride', 'alchemy'];
+  const talentIds = talentBranches.flat();
   const runeIds = ['chain', 'frost', 'burst', 'ricochet', 'orbit', 'rhythm'];
   const runeCopy = () => talentData.copy(locale);
   const runeCap = id => id === 'rhythm' ? 2 : 3;
@@ -1148,9 +1153,18 @@
         const parsed = Number(value);
         return Number.isFinite(parsed) ? Math.max(minimum, Math.floor(parsed)) : fallback;
       };
+      if (source.treeVersion !== 2) {
+        const legacyCosts = {echo:4,harvest:6,stride:8,alchemy:10};
+        source.runeDust = wholeNumber(source.runeDust,4) + Object.entries(legacyCosts).reduce((sum,[id,cost]) => {
+          const rank = Math.min(2,wholeNumber(source.talents?.[id],0));
+          return sum + (rank ? cost : 0) + (rank === 2 ? cost+6 : 0);
+        },0);
+        source.talents = {}; source.equippedTalents = [];
+      }
       const unlockedStage = Math.min(STAGE_COUNT, wholeNumber(source.unlockedStage, 1, 1));
       const selectedStage = Math.min(unlockedStage, wholeNumber(source.selectedStage, unlockedStage, 1));
       return {
+        treeVersion: 2,
         bestKeys: wholeNumber(source.bestKeys, 0),
         bestDefeats: wholeNumber(source.bestDefeats, 0),
         totalDefeats: wholeNumber(source.totalDefeats, 0),
@@ -1161,7 +1175,7 @@
         runeDust: Math.min(99999, wholeNumber(source.runeDust, 4)),
         talents: Object.fromEntries(talentIds.map(id => [id, Math.min(2, wholeNumber(source.talents?.[id], 0))])),
         equippedTalents: [...new Set(Array.isArray(source.equippedTalents) ? source.equippedTalents : [])]
-          .filter(id => talentIds.includes(id) && wholeNumber(source.talents?.[id], 0) > 0).slice(0, 2),
+          .filter(id => talentIds.includes(id) && wholeNumber(source.talents?.[id], 0) > 0).slice(0, 3),
         unlockedStage,
         selectedStage,
         completedStages: Array.isArray(source.completedStages)
@@ -1170,64 +1184,48 @@
         stageBestKeys: source.stageBestKeys && typeof source.stageBestKeys === "object" ? { ...source.stageBestKeys } : {},
       };
     } catch {
-      return { bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, runeDust: 4, talents: {}, equippedTalents: [], unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
+      return { treeVersion:2, bestKeys: 0, bestLevel: 1, playCount: 0, totalKeys: 0, crystalCharm: false, runeDust: 4, talents: {}, equippedTalents: [], unlockedStage: 1, selectedStage: 1, completedStages: [], stageBestKeys: {} };
     }
   }
 
-  function renderTalents(message = "") {
-    const host = document.getElementById("talentWorkshop");
-    if (!host) return;
-    host.dataset.runtimeLocalize = "off";
-    const copy = runeCopy(), equipped = save.equippedTalents || [];
-    const spent = talentIds.reduce((sum,id,i) => sum + (save.talents?.[id] ? talentData.costs[i] : 0) + (save.talents?.[id] === 2 ? talentData.costs[i] + 6 : 0), 0);
-    const chosen = talentIds.includes(selectedTalent) ? selectedTalent : "echo";
-    const rank = save.talents?.[chosen] || 0, active = equipped.includes(chosen), index = talentIds.indexOf(chosen);
-    const cost = talentData.costs[index] + rank * 6, parent = talentParents[chosen];
-    const locked = !rank && parent && !save.talents?.[parent];
-    host.innerHTML = `<header><div><small>◆ ${copy.dust}</small><strong>${save.runeDust}</strong></div><h2>${copy.workshop}</h2></header>
-      <div class="talent-loadout">${copy.slots} ${equipped.length}/2 · ${equipped.map(runeName).join(" + ") || "—"}</div>
-      <div class="talent-tree">
-        <svg class="talent-links" viewBox="0 0 400 280" preserveAspectRatio="none" aria-hidden="true"><path d="M200 25V55H90V100M200 55H310V100M90 145V215M310 145V215" fill="none" stroke="#638b9b" stroke-width="3"/></svg>
-        <div class="talent-root" aria-hidden="true">◆</div>
-        ${["echo","harvest","alchemy","stride"].map((id,i) => {
-          const r = save.talents?.[id] || 0, prerequisite = talentParents[id], closed = !r && prerequisite && !save.talents?.[prerequisite];
-          return `<button type="button" class="talent-tree-node ${equipped.includes(id) ? "equipped" : ""} ${closed ? "locked" : ""}" style="--node-column:${i%2+1};--node-row:${Math.floor(i/2)+2}" data-talent-inspect="${id}" aria-pressed="${chosen===id}" aria-label="${copy.names[id]} ${r}/2">
-            <img src="${talentIconBase}${id}.svg" alt="" width="64" height="64"/><strong>${copy.names[id]}</strong><small>${closed ? "⌑ " : ""}${r}/2</small></button>`;
-        }).join("")}
-      </div>
-      <article class="talent-detail" aria-live="polite"><img src="${talentIconBase}${chosen}.svg" alt="" width="56" height="56"/>
-        <div><h3>${copy.names[chosen]} <small>${rank}/2</small></h3><p>${copy.descriptions[chosen]}</p>
-        ${locked ? `<p class="talent-prerequisite">${copy.learn}: ${runeName(parent)} → ${runeName(chosen)}</p>` : ""}
-        <div class="talent-actions"><button type="button" data-talent-buy="${chosen}" ${locked || rank>=2 || save.runeDust<cost ? "disabled" : ""}>${rank>=2 ? copy.max : rank ? copy.rankup : copy.learn}${rank<2 ? ` · ◆ ${cost}` : ""}</button>
-        <button type="button" data-talent-equip="${chosen}" aria-pressed="${active}" ${!rank || !active&&equipped.length>=2 ? "disabled" : ""}>${active?copy.unequip:copy.equip}</button></div></div></article>
-      <p>${copy.hint}</p><button type="button" data-talent-reset ${spent?"":"disabled"}>${copy.reset} · +◆ ${spent}</button><small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
+  const talentIcon = id => ({fire:"alchemy",storm:"echo",petFire:"pet",petIce:"pet",petStorm:"pet"}[id] || id);
+  function treeBranch(talents) { return talentBranches.findIndex(branch => branch.some(id => talents?.[id] > 0)); }
+  function talentLocked(id, talents) {
+    const branch = treeBranch(talents), parent = talentParents[id];
+    return (branch >= 0 && branch !== branchOf(id)) || Boolean(parent && (talents?.[parent] || 0) < 2);
   }
-
-  function changeTalent(action, id) {
-    if (state.mode !== "stage") return;
-    const next = JSON.parse(JSON.stringify(save));
-    next.talents ||= {}; next.equippedTalents ||= [];
-    const index = talentIds.indexOf(id), rank = next.talents[id] || 0;
-    if (action === "buy") {
-      if (index < 0 || rank >= 2 || !rank && talentParents[id] && !next.talents[talentParents[id]]) return;
-      const cost = talentData.costs[index] + rank * 6;
-      if (next.runeDust < cost) return;
-      next.runeDust -= cost; next.talents[id] = rank + 1;
-      if (!next.equippedTalents.includes(id) && next.equippedTalents.length < 2) next.equippedTalents.push(id);
-    } else if (action === "equip") {
-      if (index < 0 || !rank) return;
-      if (next.equippedTalents.includes(id)) next.equippedTalents = next.equippedTalents.filter(item => item !== id);
-      else if (next.equippedTalents.length < 2) next.equippedTalents.push(id);
-      else return;
-    } else if (action === "reset") {
-      talentIds.forEach((key,i) => { const r = next.talents[key] || 0; next.runeDust += (r ? talentData.costs[i] : 0) + (r === 2 ? talentData.costs[i] + 6 : 0); });
-      next.talents = {}; next.equippedTalents = [];
+  function renderTalents(message = "") {
+    const host = document.getElementById("talentWorkshop"); if (!host) return;
+    host.dataset.runtimeLocalize = "off";
+    const copy = runeCopy(), chosen = talentIds.includes(selectedTalent) ? selectedTalent : "fire";
+    const rank = save.talents?.[chosen] || 0, parent = talentParents[chosen];
+    const locked = talentLocked(chosen,save.talents), cost=talentCost(chosen)+rank*6;
+    const spent=talentIds.reduce((sum,id)=>sum+((save.talents[id]||0)>0?talentCost(id):0)+(save.talents[id]===2?talentCost(id)+6:0),0);
+    host.innerHTML = `<header><div><small>◆ ${copy.dust}</small><strong>${save.runeDust}</strong></div><h2>${copy.workshop}</h2></header>
+      <p class="talent-route-hint">${copy.routeHint}</p><div class="talent-tree element-tree">
+      ${talentBranches.map((branch,col)=>`<section class="element-branch branch-${col}">${branch.map((id,row)=>{
+        const r=save.talents[id]||0,closed=talentLocked(id,save.talents);
+        return `${row?`<span class="route-link ${save.talents[branch[row-1]]===2?'open':''}" aria-hidden="true">↓</span>`:''}<button type="button" class="talent-tree-node ${r?'equipped':''} ${closed?'locked':''}" data-talent-inspect="${id}" aria-pressed="${chosen===id}" aria-label="${copy.names[id]} ${r}/2"><img src="${talentIconBase}${talentIcon(id)}.svg" alt=""/><strong>${copy.names[id]}</strong><small>${closed?'⌑ ':''}${r}/2</small></button>`;
+      }).join('')}</section>`).join('')}</div>
+      <article class="talent-detail" aria-live="polite"><img src="${talentIconBase}${talentIcon(chosen)}.svg" alt="" width="56" height="56"/><div><h3>${copy.names[chosen]} <small>${rank}/2</small></h3><p>${copy.descriptions[chosen]}</p>
+      ${locked?`<p class="talent-prerequisite">${parent?`${runeName(parent)} 2/2 → `:''}${copy.routeHint}</p>`:''}
+      <div class="talent-actions"><button type="button" data-talent-buy="${chosen}" ${locked||rank>=2||save.runeDust<cost?'disabled':''}>${rank>=2?copy.max:rank?copy.rankup:copy.learn}${rank<2?` · ◆ ${cost}`:''}</button></div></div></article>
+      <button type="button" data-talent-reset ${spent?'':'disabled'}>${copy.reset} · +◆ ${spent}</button><small class="talent-refund">${copy.refund}</small><p role="status">${message}</p>`;
+  }
+  function changeTalent(action,id) {
+    if(state.mode!=="stage")return;
+    const next=JSON.parse(JSON.stringify(save)); next.treeVersion=2;next.talents||={};
+    if(action==="buy") {
+      if(!talentIds.includes(id)||talentLocked(id,next.talents))return;
+      const rank=next.talents[id]||0,cost=talentCost(id)+rank*6;
+      if(rank>=2||next.runeDust<cost)return;
+      next.runeDust-=cost;next.talents[id]=rank+1;
+    } else if(action==="reset") {
+      talentIds.forEach(id=>{const r=next.talents[id]||0;next.runeDust+=(r?talentCost(id):0)+(r===2?talentCost(id)+6:0);});next.talents={};
     } else return;
-    if (!writeStorage(saveKey, JSON.stringify(next))) { renderTalents(runeCopy().saveError); return; }
-    save = next;
-    renderTalents();
-    playSound("upgrade", .15);
-    document.getElementById("talentWorkshop")?.querySelector(`[data-talent-inspect="${selectedTalent}"]`)?.focus({ preventScroll: true });
+    next.equippedTalents=talentIds.filter(id=>next.talents[id]>0);
+    if(!writeStorage(saveKey,JSON.stringify(next))){renderTalents(runeCopy().saveError);return;}
+    save=next;renderTalents();playSound("upgrade",.15);
   }
 
   function persist() {
@@ -1386,7 +1384,7 @@
       shotTimer: 0,
       chain: 0, frost: 0, burst: 0, ricochet: 0, orbit: 0, rhythm: 0, magicHits: 0,
       talents: Object.fromEntries(talentIds.map(id => [id, save.equippedTalents?.includes(id) ? save.talents?.[id] || 0 : 0])),
-      strideDistance: 0, orbitTimer: 4, crystalCharge: 0,
+      strideDistance: 0, orbitTimer: 4, crystalCharge: 0, petTimer: .5,
       pickup: hasCharm ? 68 : 54,
     };
   }
@@ -2047,9 +2045,21 @@
     const elapsedDt = Math.max(0, (now - lastFrame) / 1000 || 0);
     const physicsDt = Math.min(0.033, elapsedDt);
     lastFrame = now;
-    if (state.mode === "running" && !battleSuspended) update(physicsDt, elapsedDt);
+    if (!battleSuspended) {
+      if (state.mode === "running") update(physicsDt, elapsedDt);
+      else if (state.presentation) {
+        state.presentation.elapsed += physicsDt;
+        updateFloaters(physicsDt);
+        if (state.presentation.elapsed >= state.presentation.duration) {
+          const presentation=state.presentation; state.presentation=null;
+          document.getElementById("dungeonPresentation")?.remove();clearInput();
+          if(presentation.kind==="boss")state.mode="running";
+          else settleRun(presentation.reason);
+        }
+      }
+    }
     draw();
-    if (state.mode === "running") scheduleLoop(token);
+    if (state.mode === "running" || state.presentation) scheduleLoop(token);
   }
 
   function update(dt, elapsedDt = dt) {
@@ -2058,6 +2068,8 @@
     movePlayer(dt);
     updateCamera(dt);
     updateStageMechanics(dt);
+    if(state.mode!=="running")return;
+    updateCompanion(dt);
     spawnEnemies(dt);
     updateEnemies(dt);
     updateShots(dt);
@@ -2112,7 +2124,7 @@
       abilityTimer: 2.2,
       chargeTimer: 2.8,
     });
-    addFloater(locale === "zh-Hant" ? "\u9996\u9818\u73fe\u8eab" : locale === "es" ? "LLEGA EL JEFE" : "BOSS ARRIVES", W / 2, 130, "#ffe76c");
+    presentBattle("boss",runeCopy().bossWarning,bossLesson(config),1.9);
   }
 
   function updateStageMechanics(dt) {
@@ -2443,6 +2455,18 @@
     p.shotTimer = p.cooldown;
   }
 
+  function updateCompanion(dt) {
+    const p=state.player,id=["petFire","petIce","petStorm"].find(id=>p.talents[id]);
+    if(!id){state.pet=null;return;}
+    const element={petFire:"fire",petIce:"ice",petStorm:"storm"}[id];
+    state.pet ||= {x:p.x-65,y:p.y+55,element};
+    const pet=state.pet,followX=Math.max(24,Math.min(W-24,p.x-65)),followY=Math.max(24,Math.min(H-24,p.y+55));
+    pet.x+=(followX-pet.x)*Math.min(1,dt*5);pet.y+=(followY-pet.y)*Math.min(1,dt*5);
+    p.petTimer-=dt;
+    const target=state.enemies.filter(e=>e.hp>0&&Math.hypot(e.x-pet.x,e.y-pet.y)<340).sort((a,b)=>Math.hypot(a.x-pet.x,a.y-pet.y)-Math.hypot(b.x-pet.x,b.y-pet.y))[0];
+    if(!target)return;pet.aimX=target.x;pet.aimY=target.y;
+    if(p.petTimer<=0){p.petTimer=p.talents[id]===2?1.2:1.8;state.shots.push({x:pet.x,y:pet.y,px:pet.x,py:pet.y,originX:pet.x,originY:pet.y,age:0,target,speed:460,damage:p.damage*.75,pet:element});}
+  }
   function updateShots(dt) {
     state.player.castPulse = Math.max(0, (state.player.castPulse || 0) - dt);
     state.shots = state.shots.filter((shot) => {
@@ -2458,19 +2482,25 @@
       shot.y += (dy / dist) * step;
       if (dist <= 24) {
         // Rhythm shortens the default five-hit cadence; blocked hits never advance it.
-        const critical = ((state.player.impactHits || 0) + 1) % (5 - state.player.rhythm) === 0;
+        const critical = !shot.pet && ((state.player.impactHits || 0) + 1) % (5 - state.player.rhythm) === 0;
         const impactDamage = shot.damage * (critical ? 1.6 : 1);
         const hit = damageEnemy(shot.target, impactDamage);
         if (!hit.blocked) {
-          state.player.impactHits = (state.player.impactHits || 0) + 1;
+          if (!shot.pet) state.player.impactHits = (state.player.impactHits || 0) + 1;
           addFloater(critical ? `✦ ${Number(impactDamage.toFixed(1))} ×1.6` : `${Number(impactDamage.toFixed(1))}`,
             shot.target.x, shot.target.y - 52, critical ? "#ffe083" : "#edfaff");
           if (critical) {
             addSpark(shot.target.x, shot.target.y, "#ffe083", { kind: "magicHit", element: "critical", height: (shot.target.size || 64) / 64 * .8, punch: .13 });
             playSound("hit", .18);
           }
-          triggerMagic(shot.target, shot.damage);
-          const repeats = state.player.ricochet + (critical ? state.player.talents.echo : 0);
+          if (!shot.pet) triggerMagic(shot.target, shot.damage);
+          else if (shot.pet === "ice" && shot.target.hp > 0) shot.target.chill = 2.4;
+          else if (shot.pet === "fire") runePulse(shot.target.x, shot.target.y, 115, .35);
+          else if (shot.pet === "storm") {
+            const next = state.enemies.find(e => e !== shot.target && e.hp > 0 && Math.hypot(e.x-shot.target.x,e.y-shot.target.y)<220);
+            if(next){addSpark(next.x,next.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:shot.target.x,fromY:shot.target.y,fromHeight:1,height:1});damageEnemy(next,shot.damage*.6);}
+          }
+          const repeats = shot.pet ? 0 : state.player.ricochet + (critical ? state.player.talents.echo : 0);
           [...state.enemies].filter(e => e !== shot.target && e.hp > 0 && Math.hypot(e.x - shot.target.x, e.y - shot.target.y) <= 220)
             .sort((a,b) => Math.hypot(a.x-shot.target.x,a.y-shot.target.y)-Math.hypot(b.x-shot.target.x,b.y-shot.target.y))
             .slice(0, repeats).forEach(enemy => {
@@ -2530,7 +2560,12 @@
     const p = state.player;
     p.magicHits += 1;
     const frozen = (target.chill || 0) > 0;
-    if (p.frost && target.hp > 0) target.chill = .8 + p.frost * .4;
+    if ((p.frost || p.talents.harvest) && target.hp > 0) target.chill = .8 + Math.max(p.frost,p.talents.harvest) * .4;
+    if(p.talents.fire && p.magicHits%3===0) runePulse(target.x,target.y,80+p.talents.fire*25,.6);
+    if(p.talents.storm && p.magicHits%3===0) {
+      const next=state.enemies.find(e=>e!==target&&e.hp>0&&Math.hypot(e.x-target.x,e.y-target.y)<260);
+      if(next){addSpark(next.x,next.y,"#c3a1ff",{kind:"magicHit",element:"chain",fromX:target.x,fromY:target.y,fromHeight:1,height:1});damageEnemy(next,damage*p.talents.storm*.7);}
+    }
     // Secondary hits never recurse; all damage still respects existing shields.
     if (p.chain && p.magicHits % 3 === 0) {
       addSpark(target.x, target.y, "#b8a4ff", { kind: "magicHit", element: "chain", height: (target.size || 64) / 64 * .8, fromX: p.x, fromY: p.y, fromHeight: 2.45, fromPlayer: true });
@@ -2749,7 +2784,27 @@
     });
   }
 
+  function presentBattle(kind,title,detail,duration,reason) {
+    clearInput();state.mode=kind==="boss"?"boss-intro":"ending";
+    state.presentation={kind,elapsed:0,duration,reason};
+    document.getElementById("dungeonPresentation")?.remove();
+    const overlay=document.createElement("div");overlay.id="dungeonPresentation";
+    overlay.className=`dungeon-presentation ${kind}`;overlay.setAttribute("role","status");
+    const symbol=document.createElement("span");symbol.className="presentation-symbol";symbol.textContent=kind==="boss"?"⚠":kind==="victory"?"✦":"◆";
+    const heading=document.createElement("strong");heading.textContent=title;
+    const subtitle=document.createElement("p");subtitle.textContent=detail;
+    overlay.append(symbol,heading,subtitle);nodes.gamePanel.append(overlay);
+    playSound(kind==="victory"?"win":"wrong",.4);
+    lastFrame=performance.now();
+  }
   function endRun(reason) {
+    if(state.mode==="result"||state.mode==="ending")return;
+    setUpgradeModalOpen(false,false);
+    renderHud(true);
+    const win=reason!=="fail"&&state.player.hp>0&&objectiveComplete();
+    presentBattle(win?"victory":"defeat",t(win?"stageClear":"runFailed"),runeCopy().settling,2,reason);
+  }
+  function settleRun(reason) {
     if (state.mode === "result") return;
     setUpgradeModalOpen(false, false);
     state.mode = "result";
@@ -2772,6 +2827,7 @@
     renderExpeditionRecord();
     renderResult(reason, previousBestKeys, improved, previousRank.index, stageCleared);
     resultActionClaimed = false;
+    resultReadyAt = performance.now() + 450;
     if (document.body) battlePanelMetrics = measureBattlePanel();
     show(nodes.resultPanel);
     const primaryAction = stageCleared && state.stage < STAGE_COUNT
@@ -2794,7 +2850,9 @@
     track("game_complete", { reason, keys: state.keys, level: state.level, stage_cleared: stageCleared, prototype: true });
   }
 
+  let resultReadyAt = 0;
   function claimResultAction() {
+    if(performance.now()<resultReadyAt)return false;
     if (resultActionClaimed || nodes.resultPanel.classList.contains("hidden")) return false;
     resultActionClaimed = true;
     return true;
@@ -2846,10 +2904,15 @@
     if (!window.location?.search?.includes("smoke=1")) return;
     window.__animalCrystalSurvivorSmoke = {
       render3D: () => crystal3D?.metrics() || null,
+      groundDepthForTest: () => ({heroScale:crystal3D?.hero.scale.x, depthTest:crystal3D?.groundGlow.depthTest,
+        xp:crystal3D?.pools.get('xp')?.[0]?.children[1]?.material.depthTest,
+        lane:crystal3D?.pools.get('hazards')?.find(h=>h.userData.laneEdges.visible)?.userData.laneEdges.children[0].material.depthTest}),
       project3D: (x, y) => crystal3D?.project(x, y) || null,
       lose3DContextForTest: () => crystal3D?.renderer.getContext().getExtension("WEBGL_lose_context")?.loseContext(),
       snapshot: () => ({
         mode: state.mode,
+        pet: state.pet ? {...state.pet} : null,
+        presentation: state.presentation ? {...state.presentation} : null,
         stage: state.stage,
         stageName: stageName(state.stageConfig),
         stageModifier: state.stageConfig.modifier,
@@ -2925,7 +2988,7 @@
         save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, Number(stageNumber) || 1));
         save.selectedStage = Math.max(1, Math.min(save.unlockedStage, Number(stageNumber) || 1));
         persist();
-        startRun();
+        return startRun();
       },
       triggerMechanicForTest: () => {
         state.mechanicStep += 1;
@@ -2948,6 +3011,7 @@
         state.mode = "paused"; // Freeze the fixture for reproducible warning screenshots.
         state.enemies = []; state.hazards = []; state.shots = []; state.safeZone = null;
         state.bossSpawned = false; spawnBoss();
+        state.presentation=null;state.mode="paused";document.getElementById("dungeonPresentation")?.remove();
         const boss = state.enemies.find(enemy => enemy.isBoss);
         if (!boss) return;
         Object.assign(boss,{x:512,y:650,abilityTimer:0});
@@ -2970,6 +3034,12 @@
         state.timeLeft = 0;
         state.survived = state.duration;
         endRun("time");
+      },
+      failRunForTest: () => {state.player.hp=0;endRun("fail");},
+      groundFixtureForTest: () => {
+        state.mode="paused";state.presentation=null;document.getElementById("dungeonPresentation")?.remove();
+        state.hazards=[];addHazard("lane",{x:state.player.x,y:state.player.y,width:105,height:H,warn:2,color:"#60a5fa"});
+        state.xpDrops=[{x:state.player.x+12,y:state.player.y+12,value:1}];draw();
       },
       applyUpgradeForTest: (id) => {
         state.mode = "upgrade";
@@ -3418,6 +3488,9 @@
   canvas.addEventListener("pointerleave", releasePointer);
   canvas.addEventListener("lostpointercapture", releasePointer);
   window.addEventListener("keydown", (event) => {
+    if ((state.presentation || state.mode === "result") && event.repeat && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();return;
+    }
     const key = event.key.toLowerCase();
     if (movementKeys.has(key)) {
       event.preventDefault();
@@ -3435,7 +3508,7 @@
     releaseRenderer();
   });
   window.addEventListener("pageshow", () => {
-    if (["running", "upgrade", "paused", "render-error", "loading-3d"].includes(state.mode) && !crystal3D) { showStageSelection(true); return; }
+    if (["running", "upgrade", "paused", "ending", "boss-intro", "render-error", "loading-3d"].includes(state.mode) && !crystal3D) { state.presentation=null; showStageSelection(true); return; }
     battleSuspended = false;
     resetFrameClock();
   });

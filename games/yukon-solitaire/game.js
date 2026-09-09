@@ -1,6 +1,8 @@
 (function () {
   "use strict";
   const mount = () => {
+    document.body.dataset.gameVersion = 'v21';
+    document.body.dataset.cardDeck = 'klondike';
     const mainReturn = document.querySelector(".main-return");
     if (mainReturn && !mainReturn.querySelector("img")) {
       const logo = document.createElement("img");

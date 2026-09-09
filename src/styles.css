@@ -4951,6 +4951,10 @@ body.general-lobby-page {
   color: rgba(255, 255, 255, 0.86);
 }
 
+.general-lobby-page [data-hall-only][hidden] {
+  display: none !important;
+}
+
 @media (max-width: 620px) {
   .general-lobby-page .game-hall-switch {
     gap: 8px;

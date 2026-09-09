@@ -110,7 +110,8 @@
     .replaceAll("{best}", String(best));
   const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
-    document.body.dataset.gameVersion = "v24";
+    document.body.dataset.gameVersion = "v27";
+    document.body.dataset.cardDeck = 'klondike';
     const compactGuide = (section = document.querySelector(".game-page-info")) => {
       if (!section || section.dataset.golfGuideCompact === "true") return;
       section.dataset.golfGuideCompact = "true";

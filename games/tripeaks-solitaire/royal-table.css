@@ -1,4 +1,20 @@
 /* Presentation is opt-in; the native peak/deck geometry and rules remain owned by TriPeaks. */
+@media (min-width: 700px) {
+  body[data-wp-game-id='tripeaks-solitaire'] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px !important;
+  }
+}
+body[data-wp-game-id='tripeaks-solitaire'] .classic-toast {
+  bottom: 64px;
+  pointer-events: none;
+}
+@media (max-height: 560px) {
+  body[data-wp-game-id='tripeaks-solitaire'] .classic-toast { bottom: 48px; }
+  body[data-card-deck='klondike'] .classic-card .deck-pip { font-size: 14px !important; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank { font-size: 9px; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank.top { top: 1px; left: 1px; }
+  .wp-premium-table[data-card-deck='klondike'] .classic-card .rank.bottom { bottom: 1px; right: 1px; }
+}
 body.wp-premium-table[data-wp-game-id='tripeaks-solitaire'] .stock-pile {
   background: #083e30 url('../../assets/klondike-solitaire-card-back.webp') center / contain no-repeat;
   border: 1px solid #d4be80;
