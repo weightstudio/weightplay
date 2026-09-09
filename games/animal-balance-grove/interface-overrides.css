@@ -63,7 +63,7 @@ html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-b
   .token-name{font-size:.72rem}
   .token-value{font-size:.68rem}
   .battle-status{min-height:18px;margin:5px 0 2px}
-  .primary-btn,.secondary-btn{min-height:44px!important}
+  #battleScreen .primary-btn,#battleScreen .secondary-btn{min-height:44px!important}
   #resultScreen{height:100vh}
   #resultScreen .result-card{grid-template-columns:120px minmax(0,1fr);grid-template-rows:auto auto auto;align-content:center;column-gap:20px;height:100%;min-height:0;padding:10px 16px}
   #resultScreen .result-taro{grid-column:1;grid-row:1/4;width:120px;margin:0}
