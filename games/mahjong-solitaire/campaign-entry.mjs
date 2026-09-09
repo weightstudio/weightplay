@@ -3,6 +3,7 @@ import {createCampaignMainView} from './campaign-main-view.mjs';
 import {createCampaignSettings} from './campaign-settings.mjs';
 import {createCampaignAudio} from './campaign-audio.mjs';
 import {CAMPAIGN_LOCALES} from './campaign-copy.mjs';
+import {applyCampaignMetadata} from './campaign-metadata.mjs';
 const segments=['en','zh-tw','zh-cn','ja','ko','es','pt-br','fr','de','it','ru','hi','ar'];
 
 // Sole replacement bootstrap. Call after the locale shell/styles are loaded,
@@ -18,8 +19,16 @@ export function mountMahjongEntry({container,locale,storage,titles}) {
   window.WonderAnalytics?.track?.(name,{...details,game_id:'mahjong-solitaire',game_version:'v14',interface_version:'6',locale:currentLocale,viewport_bucket:viewport,input_type:inputType});
  };
  const setLocale=l=>{
-  if(!CAMPAIGN_LOCALES.includes(l))throw new Error('Unsupported locale');currentLocale=l;
-  document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';document.title=`${titles[l]} | WeightPlay`;
+  if(!CAMPAIGN_LOCALES.includes(l))throw new Error('Unsupported locale');const changed=currentLocale!==l;currentLocale=l;
+  document.documentElement.lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  const metadata=applyCampaignMetadata(document,l,titles[l]);
+  // Keep refresh/share in the chosen language on actual game routes. Never
+  // rewrite another host/path (including embedding fixtures), navigate to
+  // production, reset progress, or add a new browser history entry.
+  if(changed&&/^\/(?:(?:en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/)?games\/mahjong-solitaire\/(?:index\.html)?$/.test(location.pathname)){
+   const suffix=location.pathname.endsWith('index.html')?'index.html':'';
+   try{history.replaceState(history.state,'',metadata.pathname+suffix+location.search+location.hash)}catch{/* Restricted history still permits session-local language changes. */}
+  }
   try{storage.setItem('weightPlayLocale',l)}catch{}main?.refresh();
  };
  const mainSettings=createCampaignSettings({locale:()=>currentLocale,setLocale,sound}),stageSettings=createCampaignSettings({locale:()=>currentLocale,sound,allowLanguage:false});
