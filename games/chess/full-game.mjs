@@ -23,6 +23,25 @@ const text=key=>key==='title'?(window.WEIGHTPLAY_GAME_TITLES?.chess?.[locale]??c
 const challengeButton=$('challenges');
 const nextButton=$('nextChallenge');
 let stageRail=null,stagePreviewMap=null;
+// Keep the physical advertisement boundary outside the uniformly scaled play
+// surface. Result remains a substate of this same mounted Canvas.
+const battleCanvas=document.createElement('div');battleCanvas.id='battleCanvas';
+battleCanvas.dataset.wpLogicalBattleCanvas='';battleCanvas.dataset.wpBattleReturnOnly='';
+const battleReserve=$('battle').querySelector('.reserve');battleReserve.dataset.wpAdReserve='';
+for(const node of [...$('battle').children])if(node!==battleReserve)battleCanvas.append(node);
+$('battle').insertBefore(battleCanvas,battleReserve);
+$('hint').dataset.wpPrimaryAction='';
+function fitBattle(){
+ if($('battle').hidden)return;
+ const vv=window.visualViewport,css=getComputedStyle($('battle'));
+ const inset=edge=>parseFloat(css.getPropertyValue(`--safe-${edge}`))||0;
+ const safeWidth=Math.max(1,(vv?.width||innerWidth)-inset('left')-inset('right'));
+ const width=Math.min(920,safeWidth),height=Math.max(57,(vv?.height||innerHeight)-inset('top')-inset('bottom'));
+ const scale=Math.min(width/390,Math.max(1,height-56)/480);
+ Object.assign($('battle').style,{width:`${width}px`,height:`${height}px`,left:`${(vv?.offsetLeft||0)+inset('left')+(safeWidth-width)/2}px`,top:`${(vv?.offsetTop||0)+inset('top')}px`});
+ Object.assign(battleCanvas.style,{width:`${width/scale}px`,height:`${Math.max(1,height-56)/scale}px`,transform:`scale(${scale})`});
+ battleCanvas.style.setProperty('--wp-battle-canvas-scale',String(scale));
+}
 function showScene(name){
  const result=name==='result',scene=result?'battle':name;
  for(const [type,id] of Object.entries({main:'mainScene',stage:'stages',battle:'battle'})){
@@ -32,6 +51,7 @@ function showScene(name){
  $('result').hidden=!result;$('result').inert=!result;$('battle').classList.toggle('is-result',result);
  if(!result){$('resultBoard').removeAttribute('src');$('resultBoard').hidden=true;}
  $('main').hidden=scene!=='main';document.body.dataset.screen=scene;
+ if(scene==='battle')fitBattle();
  window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));
 }
 const sound=name=>{if(!document.hidden)window.WonderSound?.play(name);};
@@ -89,6 +109,9 @@ function fitStage(){
  const scale=Math.min(width/390,(height-56)/480);
  Object.assign(root.style,{width:`${width}px`,height:`${height}px`,left:`${(vv?.offsetLeft||0)+inset('left')+((vv?.width||innerWidth)-inset('left')-inset('right')-width)/2}px`,top:`${(vv?.offsetTop||0)+inset('top')}px`});
  Object.assign(canvas.style,{width:`${width/scale}px`,height:`${(height-56)/scale}px`,transform:`scale(${scale})`});
+ canvas.dataset.wpLogicalStageCanvas='';
+ canvas.style.setProperty('--wp-stage-canvas-scale',String(scale));
+ $('stageReserve').dataset.wpAdReserve='';
  root.dataset.scale=String(scale);stageRail?.center();
 }
 function stages(){$('resume').hidden=!saved();active=false;stop();showScene('stage');fitStage();renderStages();}
@@ -200,5 +223,6 @@ $('error').addEventListener('cancel',event=>{event.preventDefault();leaveRecover
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&active){epoch++;ai.cancel();busy=false;}else if(!document.hidden&&active){render();reply();}});
 window.addEventListener('pagehide',()=>{active=false;stop();stageRail?.destroy();stageRail=null;stagePreviewMap=null;clearStagePreviews();$('stageList').replaceChildren();});window.addEventListener('pageshow',e=>{if(e.persisted)main();});
 window.addEventListener('resize',fitStage);window.visualViewport?.addEventListener('resize',fitStage);window.visualViewport?.addEventListener('scroll',fitStage);
+window.addEventListener('resize',fitBattle);window.visualViewport?.addEventListener('resize',fitBattle);window.visualViewport?.addEventListener('scroll',fitBattle);
 challengeButton.onclick=stages;$('stageBack').onclick=main;nextButton.onclick=()=>begin(false,currentChallenge.id+1);
 localize();main();

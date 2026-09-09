@@ -81,5 +81,5 @@ export function decorate(els,locale){
  const guide=document.querySelector('[data-wp-game-guide]');if(guide)guide.innerHTML=guideHtml(locale);
  for(const node of [els.objective,progress,guide])if(node)node.dataset.runtimeLocalize='off';
 }
-export const gameVersion='v12';
+export const gameVersion='v13';
 export default {gameVersion,create,isOpen,pairs,select,render,copy,decorate,guideHtml};

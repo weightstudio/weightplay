@@ -1,27 +1,42 @@
 /* Game-owned physical board treatment; all inputs and labels remain native. */
-.logic-peg-board {
- width:min(100%,440px);aspect-ratio:1;box-sizing:border-box;
+@media(min-width:700px){
+ body[data-logic-game="peg-solitaire"] .logic-hero{grid-template-columns:420px minmax(0,1fr)}
+}
+/* Size the play rows from the owning envelope, not a second viewport height.
+   Header, padding and reserve must not be counted twice. */
+body[data-logic-game="peg-solitaire"] .logic-battle-screen:not([hidden]){
+ display:flex;flex-direction:column;
+}
+body[data-logic-game="peg-solitaire"] .logic-battle-header{flex:none}
+body[data-logic-game="peg-solitaire"] .logic-battle-wrap{
+ flex:1;min-height:0;height:auto;padding-bottom:8px;box-sizing:border-box;
+}
+body[data-logic-game="peg-solitaire"] .logic-peg-board {
+ width:min(100%,440px);aspect-ratio:1;box-sizing:border-box;flex-shrink:0;
  grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(7,minmax(0,1fr));
  gap:5px;padding:12px;border:3px solid #c4a568;border-radius:24px;
  background:radial-gradient(ellipse at top,#31564877,transparent 65%),#102f2c url('../../assets/card-table/emerald-table-v1.webp') center/cover;
  box-shadow:inset 0 0 0 3px #573f25,inset 0 0 20px #00140f,0 4px 0 #503b22,0 8px 18px #0005;
 }
-.logic-peg-board .logic-cell {
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell {
  position:relative;min-width:0;min-height:0;padding:0;width:100%;height:100%;
  font-size:0;color:transparent;border-radius:50%;border:1px solid #b39a61;
  background:radial-gradient(circle at 55% 65%,#265044,#071b1c 68%);box-shadow:inset 0 3px 6px #000c,0 1px 0 #d0c09388;
  transform:none;isolation:isolate;
 }
-.logic-peg-board .peg::before {
+body[data-logic-game="peg-solitaire"] .logic-peg-board .peg::before {
  content:'';position:absolute;inset:9%;border-radius:50%;pointer-events:none;
  background:radial-gradient(circle at 29% 23%,#f2ffdf 0%,#ace5c5 12%,#408f7c 34%,#144b48 73%,#082c33);
  border:1px solid #b1e2c5aa;box-shadow:inset 0 -3px 2px #052e39,0 4px 5px #0009;
 }
-.logic-peg-board .logic-cell:hover {transform:none;border-color:#ffe6a5;}
-.logic-peg-board .logic-cell.is-selected {outline:3px solid #ffe2a1;outline-offset:1px;box-shadow:0 0 14px #e9c27388;}
-.logic-peg-board .logic-cell.is-selected::before {transform:translateY(-2px);}
-.logic-peg-board .logic-cell:focus-visible {outline:3px solid #fff5c2;outline-offset:1px;}
-.logic-peg-board .logic-cell.is-hint {border-color:#ffe2a1;box-shadow:0 0 0 2px #ffd37d;animation:peg-hint 650ms ease-in-out 2;}
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell:hover {transform:none;border-color:#ffe6a5;}
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell.is-selected {outline:3px solid #ffe2a1;outline-offset:1px;box-shadow:0 0 14px #e9c27388;}
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell.is-selected::before {transform:translateY(-2px);}
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell:focus-visible {outline:3px solid #fff5c2;outline-offset:1px;}
+body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell.is-hint {border-color:#ffe2a1;box-shadow:0 0 0 2px #ffd37d;animation:peg-hint 650ms ease-in-out 2;}
 @keyframes peg-hint {50%{filter:brightness(1.3);}}
-@media(orientation:landscape) and (max-height:430px){.logic-peg-board{width:min(100%,calc(100svh - 162px));padding:6px;gap:3px;border-radius:18px;}}
-@media(prefers-reduced-motion:reduce){.logic-peg-board .logic-cell{animation:none!important;transition:none!important;}}
+@media(orientation:landscape) and (max-height:430px){
+ #logicBoard .logic-peg-board{width:min(100%,calc(100svh - 186px));height:calc(100svh - 186px);max-height:none}
+}
+@media(orientation:landscape) and (max-height:430px){body[data-logic-game="peg-solitaire"] .logic-peg-board{width:min(100%,calc(100svh - 186px));padding:6px;gap:3px;border-radius:18px;}}
+@media(prefers-reduced-motion:reduce){body[data-logic-game="peg-solitaire"] .logic-peg-board .logic-cell{animation:none!important;transition:none!important;}}

@@ -4,7 +4,7 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','cribbage-royal-table');
-  document.body.dataset.gameVersion='v19';
+  document.body.dataset.gameVersion='v20';
   const signatures=new WeakMap();
   function decorate(root) {
     if(root.id==='cardGameCenter'){

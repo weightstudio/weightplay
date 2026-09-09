@@ -68,3 +68,7 @@ body.cribbage-royal-table .playing-card.is-selected {border-color:#ffe3a0;box-sh
  body.cribbage-royal-table .card-peg-board .card-game-topbar small {font-size:9px;}
  body.cribbage-royal-table #cardGameActions button {padding:6px 10px;}
 }
+/* Main uses the shared 420px wide-layout contract at every desktop height. */
+@media(min-width:700px){
+ body[data-wp-card-game="cribbage"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px}
+}

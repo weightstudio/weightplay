@@ -380,8 +380,8 @@
       ],
       designNote: "Sudoku uses the shared Classic Logic Lab shell, a responsive 9x9 board, direct legality checks, localized feedback, Hint, Clear, Undo, Restart, New Game, and a complete Main-Battle-Result recovery path.",
       parent: "Sudoku is a general-audience browser puzzle recommended for ages 9+ and family play. No account or purchase is required; the current board and preferences remain in this browser.",
-      related: ["cat-color-sudoku"],
-      relatedIds: ["cat-color-sudoku"],
+      related: ["lights-out", "sliding-15"],
+      relatedIds: ["lights-out", "sliding-15"],
       faq: [
         ["What is the goal?", "Fill every row, column, and 3x3 box with the numbers 1 through 9 exactly once."],
         ["What happens when a number conflicts?", "The game rejects it and explains that the row, column, or 3x3 box already contains that number."],
