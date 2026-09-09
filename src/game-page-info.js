@@ -457,6 +457,10 @@
       time: "5-8 minutes",
       noteTitle: "Player and Save Information",
       relatedIds: ["animal-prism-battalion", "beast-tactician"],
+      relatedCoverMap: {
+        "animal-prism-battalion": "wonder-crash-related-prism-battalion-cover-block-v1.webp",
+        "beast-tactician": "wonder-crash-related-beast-tactician-cover-block-v1.webp",
+      },
       showRelatedSkill: false,
       intro:
         "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
@@ -9588,7 +9592,7 @@
     const cardCopy = localizedRelatedCardCopy?.[locale()]?.[gameId] || {};
     const officialTitle = window.WEIGHTPLAY_GAME_TITLES?.[gameId]?.[locale()];
     const cardGame = cardCopy.intro ? { ...game, intro: cardCopy.intro } : game;
-    const imageName = coverImages[gameId] || "weightplay-logo.png";
+    const imageName = games[currentGameId()]?.relatedCoverMap?.[gameId] || coverImages[gameId] || "weightplay-logo.png";
     const entryImage = entryRelatedArtwork.get(gameId);
     const fallbackName = !entryImage && imageName.endsWith(".webp") ? imageName.replace(/\.webp$/u, ".png") : "";
     const fallbackAttrs = ` data-final-src="${escapeHtml(assetHref("weightplay-logo.png"))}"${

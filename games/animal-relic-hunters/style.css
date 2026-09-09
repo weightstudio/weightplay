@@ -3103,15 +3103,16 @@ body.relic-playing.relic-result .result-action-shell .result-btn-row button {
   max-width: none !important;
 }
 
-/* Keep the governed short-landscape Main poster at the compact 300px contract
-   while preserving the 420px desktop composition at normal heights. */
+/* Keep the governed 420px wide-layout poster contract in short landscape too;
+   the Main document may scroll vertically, but the canonical composition does
+   not shrink its authored visual anchor below the shared interface token. */
 @media (min-width: 760px) and (max-height: 560px) and (orientation: landscape) {
   #menuPanel .menu-main {
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: 420px minmax(0, 1fr);
   }
 
   #menuPanel .menu-cover-box {
-    width: 300px;
+    width: 420px;
   }
 }
 
