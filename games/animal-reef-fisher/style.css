@@ -2310,17 +2310,17 @@ body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .menu-co
 
 @media (min-width: 701px) and (max-height: 560px) and (min-aspect-ratio: 3 / 2) {
   body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel {
-    grid-template-columns: 300px minmax(0, 1fr) !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
   }
 
   body.wp-shell-main-active #mainPanel.wp-standard-main-screen.menu-panel .cover {
     box-sizing: border-box !important;
-    width: 300px !important;
+    width: 420px !important;
     min-width: 0 !important;
-    height: 300px !important;
+    height: 420px !important;
     min-height: 0 !important;
-    max-width: 300px !important;
-    max-height: 300px !important;
+    max-width: 420px !important;
+    max-height: 420px !important;
     aspect-ratio: 1 / 1 !important;
   }
 }

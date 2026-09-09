@@ -112,9 +112,10 @@ export class LionDefense3D {
     for(const record of records){
       live.add(record.key);let actor=this.actors.get(record.key);
       if(!actor){actor=new THREE.Group();const model=new THREE.Mesh(this.model(record.kind),this.material);model.rotation.set(.38,-.38,0);actor.add(model);const shadow=new THREE.Mesh(this.shadowGeometry,this.shadowMaterial);shadow.position.set(.12,-.25,-.4);shadow.scale.set(1.15,.7,1);actor.add(shadow);this.actors.set(record.key,actor);this.scene.add(actor);}
-      const bob=state.running?Math.sin(state.time*7+record.x)*record.size*.018:0;
+      const isHero=record.key==='hero';
+      const bob=state.running&&!isHero?Math.sin(state.time*7+record.x)*record.size*.018:0;
       actor.position.set(record.x,-record.y+bob,10);actor.scale.setScalar(record.size*1.02);actor.rotation.x=0;
-      actor.rotation.z=record.isBoss?0:Math.sin(state.time*6+record.x)*.035;
+      actor.rotation.z=isHero||record.isBoss?0:Math.sin(state.time*6+record.x)*.035;
     }
     for(const [key,actor] of this.actors)if(!live.has(key)){this.scene.remove(actor);this.actors.delete(key);}
     let index=0;

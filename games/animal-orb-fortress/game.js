@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v23";
+  const GAME_VERSION = "v25";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -1533,7 +1533,15 @@
     card.setAttribute("aria-keyshortcuts", STAGE_KEYBOARD_SHORTCUTS);
     card.setAttribute("aria-posinset", String(raid.tier));
     card.setAttribute("aria-setsize", String(MAX_RAID_TIER));
+    applyCompactLandscapeCardEnvelope(card);
     card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${WAVES_PER_RAID}</span> <span>${t("waves")}</span>`}</em>`;
+  }
+  function applyCompactLandscapeCardEnvelope(card) {
+    const compactLandscape = window.innerWidth <= 900 && window.innerWidth > window.innerHeight;
+    ["height", "min-height", "max-height"].forEach((property) => {
+      if (compactLandscape) card.style.setProperty(property, "110px", "important");
+      else card.style.removeProperty(property);
+    });
   }
   function createStageCard(poolIndex) {
     const card = document.createElement("button");
@@ -1668,6 +1676,7 @@
     if (centeredStageFrame) return;
     centeredStageFrame = window.requestAnimationFrame(() => {
       centeredStageFrame = 0;
+      nodes.stageRail.querySelectorAll(".raid-card").forEach(applyCompactLandscapeCardEnvelope);
       updateCenteredStage();
     });
   }

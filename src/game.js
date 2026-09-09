@@ -1,6 +1,8 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
-const defenseModule = import(new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src).href).catch(() => null);
+const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
+defenseModuleUrl.search = 'v=20260909-wonder-crash-v20-complete-block-art';
+const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
 const roarButton = document.createElement('button');
@@ -747,7 +749,7 @@ function registerWonderCombatUpgrades() {
     id: "slow",
     name: "Lion Roar",
     desc: "Hits can slow beasts for a short time",
-    icon: "assets/weightplay-character-boom-mane-lion-cutout.webp",
+    icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp",
     effect: {
       slowChance: 0.32,
       slowDuration: 1.8,
@@ -2733,12 +2735,12 @@ function renderProfilePanel(tab = activeMenuTab) {
     profilePanel.innerHTML = `
       <div class="character-panel">
         <div class="character-card">
-          <img src="assets/upgrade-character.png" alt="" />
+          <img src="assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" />
           <div><strong>${t("hero_title", { lvl: getHeroTotalLevel() })}</strong><span>${t("hero_subtitle")}</span></div>
         </div>
         ${renderUpgradeRow("heroCoin", "assets/coin.png", t("heroCoin_title", { lvl: profile.heroCoinLevel }), getUpgradePreview("heroCoin"))}
         ${renderUpgradeRow("heroAttack", "assets/upgrade-damage.png", t("heroAttack_title", { lvl: profile.heroAttackLevel }), getUpgradePreview("heroAttack"))}
-        ${renderUpgradeRow("heroCrit", "assets/upgrade-character.png", t("heroCrit_title", { lvl: profile.heroCritLevel }), getUpgradePreview("heroCrit"))}
+        ${renderUpgradeRow("heroCrit", "assets/weightplay-character-boom-mane-lion-block-v1.webp", t("heroCrit_title", { lvl: profile.heroCritLevel }), getUpgradePreview("heroCrit"))}
         ${renderUpgradeRow("heroCritDamage", "assets/upgrade-size.png", t("heroCritDamage_title", { lvl: profile.heroCritDamageLevel }), getUpgradePreview("heroCritDamage"))}
         ${renderUpgradeRow("heroSpeed", "assets/upgrade-cooldown.png", t("heroSpeed_title", { lvl: profile.heroSpeedLevel }), getUpgradePreview("heroSpeed"))}
         ${renderUpgradeRow("diamondPower", "assets/upgrade-damage.png", t("diamondPower_title", { lvl: profile.diamondPowerLevel }), getUpgradePreview("diamondPower"), "diamond")}

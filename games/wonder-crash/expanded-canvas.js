@@ -459,7 +459,7 @@
       if (!virtualStagePointer || event.pointerId !== virtualStagePointer.pointerId) return;
       const delta = event.clientX - virtualStagePointer.lastX;
       virtualStagePointer.lastX = event.clientX;
-      if (Math.abs(delta) > 0.5) virtualStagePointer.moved = true;
+      if (Math.abs(delta) > 6) virtualStagePointer.moved = true;
       if (!virtualStagePointer.moved) return;
       if (event.cancelable) event.preventDefault();
       const rtl = getComputedStyle(stageRail).direction === "rtl" || document.documentElement.dir === "rtl";
