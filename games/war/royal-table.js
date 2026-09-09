@@ -4,7 +4,7 @@
   const roots=['cardGameHand','cardGameCenter'].map(id=>document.getElementById(id)).filter(Boolean);
   if(roots.length!==2||!window.WPCardTablePresentation)return;
   document.body.classList.add('wp-premium-table','war-royal-table');
-  document.body.dataset.gameVersion='v12';
+  document.body.dataset.gameVersion='v13';
   const signatures=new WeakMap();
   function decorate(root) {
     const signature=[...root.querySelectorAll('.playing-card')].map(card=>card.getAttribute('aria-label')).join('|');
@@ -24,6 +24,15 @@
       card.replaceChildren(...corners);
       window.WPCardTablePresentation.decorateCard(card,rank,suit);
     });
+    if(root.id==='cardGameCenter'){
+      const row=root.querySelector('[data-war-outcome]');
+      const cards=[...root.querySelectorAll('.playing-card')];
+      const outcome=row?.dataset.warOutcome;
+      cards.forEach((card,index)=>{
+        card.classList.toggle('war-showdown-winner',outcome===(index===0?'player':'ai'));
+        card.classList.toggle('war-showdown-tie',outcome==='tie');
+      });
+    }
   }
   // The existing engine replaces these two roots on its native render cycle.
   // Observe their direct child lists only, not card descendants or the document.

@@ -34,7 +34,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-crystal-survivor/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-crystal-survivor/" />
-    <link rel="stylesheet" href="style.css?v=20260909-crystal-tree-hud-v26" />
+    <link rel="stylesheet" href="style.css?v=20260909-crystal-boss-xp-v26" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -90,7 +90,7 @@
         <img class="cover" src="../../assets/animal-crystal-survivor-voxel-cover-v26.webp" alt="" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <span data-ui="menuHint">Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
           <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
         </div>
@@ -117,10 +117,10 @@
             <section id="talentWorkshop" class="talent-workshop"></section>
             <div class="expedition-record" aria-label="Expedition Record" data-aria-ui="expeditionRecordTitle">
               <b data-ui="expeditionRecordTitle">Expedition Record</b>
-              <span id="expeditionRecordText">Best 0 keys · Highest level 1 · 0 runs</span>
+              <span id="expeditionRecordText">Best 0 defeats · Level 1 · 0 runs</span>
               <div class="patrol-rank-row">
                 <span id="patrolRankText">Crystal Scout</span>
-                <span id="patrolRankProgressText">0 / 10 keys</span>
+                <span id="patrolRankProgressText">Defeats 0 / 10</span>
               </div>
               <div class="patrol-rank-track" aria-hidden="true"><i id="patrolRankFill"></i></div>
             </div>
@@ -153,7 +153,6 @@
           <button id="menuBtn" class="soft-btn play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
           <div><span data-ui="stage">Stage</span><b id="stageText">1/30</b></div>
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
-          <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>
 
         </div>
@@ -164,7 +163,7 @@
         <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i><b id="hpText">7/7</b></div></div>
           <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -209,88 +208,15 @@
       </div>
     </main>
     <!-- adsense-static-guide:start -->
-    <section class="game-page-info game-page-info-static" aria-label="Animal Crystal Survivor game guide">
-      <div class="game-info-hero">
-        <div class="game-info-title">
-          <span class="game-info-kicker">WeightPlay Original Game Guide</span>
-          <h2>Animal Crystal Survivor: 30-Stage Campaign Guide</h2>
-          <p>Animal Crystal Survivor is a real-time patrol campaign about movement, automatic attacks, upgrades, and readable hazards. Each of its 30 stages lasts up to three minutes. The Crystal Ranger gathers golden keys, calms shadow beasts, collects their crystals, and adapts to the current region. The six fifth-stage checkpoints are full Boss encounters with their own art, warnings, and counterplay rather than enlarged ordinary enemies.</p>
-        </div>
-      </div>
-      <div class="game-info-sections">
-        <div class="game-info-section">
-          <h3>Story and the Crystal Grove</h3>
-          <p>The Crystal Grove is a living reserve whose paths are held open by six connected crystal beacons. Golden keys tune those beacons. When the Eclipse Heart beneath the grove begins sending dark pulses through the root network, familiar animals become shadow beasts and the keys scatter across routes that no longer stay safe. The Crystal Ranger is the only patrol member able to carry a tuning key while calming an affected beast without harming it.</p>
-          <p>Each stage is one patrol route. Collecting the required keys proves that its beacon can still be reached; surviving until the timer ends keeps the route stable long enough for the key signal to settle. At Stages 5, 10, 15, 20, 25, and 30, a guardian blocks the connection between regions. Defeating Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc, and Eclipse Colossus restores the next part of the network. Clearing Stage 30 means the six beacons are synchronized and the grove is no longer feeding shadow energy back into itself.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>How a Patrol Works</h3>
-          <ol>
-            <li>Choose an unlocked stage from the horizontal route rail. Its card names the region rule, key target, and whether a Boss is waiting.</li>
-            <li>Move with a tap, drag, WASD, or the arrow keys. The Ranger automatically fires at the nearest shadow beast inside the pale attack circle.</li>
-            <li>Guide the Ranger through golden keys. A stage requires its displayed key total; a Boss checkpoint also requires the guardian to be calmed.</li>
-            <li>Defeated enemies leave XP crystals. Filling the XP bar pauses the patrol and offers three of the six available upgrades.</li>
-            <li>Read dashed warning shapes before they become solid danger zones. Roots, flame, lightning, lanes, and the Eclipse safe ring all communicate where the next hit will occur.</li>
-            <li>When three minutes expire, the stage clears only if its key and Boss objectives are complete. Losing all HP or missing an objective leaves the stage available for another attempt.</li>
-          </ol>
-        </div>
-        <div class="game-info-section">
-          <h3>Keys, XP, Health, and Upgrades</h3>
-          <p>Golden keys serve two purposes. The current-stage count is the clear objective, while lifetime keys fill the Patrol Rank record on Main. XP crystals are temporary and belong only to the current attempt. They raise the current level and open upgrade choices; they are not a currency and cannot be saved for another stage. Health also resets at the beginning of each patrol.</p>
-          <ul>
-            <li><strong>Crystal Power:</strong> adds projectile damage and is especially useful against shielded targets and checkpoint Bosses.</li>
-            <li><strong>Longer Range:</strong> lets auto-attack begin sooner, giving the Ranger more room to move around a warning zone.</li>
-            <li><strong>Fleet Paws:</strong> raises movement speed for escaping charges, crossing lanes, and following the moving Eclipse ring.</li>
-            <li><strong>Guardian Heart:</strong> increases maximum HP and restores part of the missing health immediately.</li>
-            <li><strong>Quick Seeds:</strong> shortens the interval between automatic shots, improving sustained damage when several enemies remain in range.</li>
-            <li><strong>Crystal Magnet:</strong> widens pickup distance for keys and XP, reducing the need to enter a crowded drop location.</li>
-          </ul>
-        </div>
-        <div class="game-info-section">
-          <h3>Thirty Stages and Six Region Rules</h3>
-          <p><strong>Stages 1-5, Crystal Grove:</strong> the opening patrol teaches key routing, XP collection, panther rushes, and pressure from opposite-edge boars. Root Stalker finishes the region by placing green root circles at the Ranger&#39;s position. The warning gives time to leave; remaining inside slows movement and causes repeated damage.</p>
-          <p><strong>Stages 6-10, Moon Shards:</strong> mirrored warning circles and rotating shard zones make a straight path unreliable. Some enemies enter with a crystal shield that must be broken before HP is reduced. Prism Moth Queen alternates a visible shield with vulnerable periods and casts paired prism circles, so attacking continuously is less important than using the open window safely.</p>
-          <p><strong>Stages 11-15, Briar Maze:</strong> root patches return alongside alternating thorn lanes. Boars pause and then accelerate during a charge, giving the player a readable moment to move sideways. Briar Boar King combines long charges with the green root zones it leaves around the patrol path.</p>
-          <p><strong>Stages 16-20, Ember Rift:</strong> orange circles ignite after a delay, hot edges reduce usable space, and defeated ember enemies can leave temporary scorch ground. Cinder Panther teleports across the arena and burns each landing location. Following it too closely is dangerous even when it is the nearest auto-attack target.</p>
-          <p><strong>Stages 21-25, Storm Crown:</strong> blue circles announce lightning, wind shifts loose XP crystals, and later routes chain a player-centered strike into mirrored positions. Tempest Roc uses three lightning zones and a burst-speed dive. The safe answer is to leave the marked lane before trying to collect a nearby key.</p>
-          <p><strong>Stages 26-30, Eclipse Heart:</strong> a gold-edged safe ring moves around the arena while darkness pulses outside it. Root, scorch, and lightning warnings rotate rather than appearing together without explanation. Shielded enemies and chargers return in combined waves. Eclipse Colossus controls the moving ring and cycles the three learned hazard families, making the final stage a review of movement, warning recognition, and damage timing.</p>
-        </div>
-        <div class="game-info-section game-info-strategy">
-          <h3>Strategy Tips</h3>
-          <ul>
-            <li>Read the stage card before entering. Its one-sentence rule tells you which upgrade or movement habit is likely to matter.</li>
-            <li>Collect the first XP crystals before committing to a distant key. One early upgrade changes the rest of the patrol.</li>
-            <li>Use the pale attack range as a spacing tool. Keeping one target barely inside the circle is safer than standing beside it.</li>
-            <li>Move out of dashed warnings before they turn solid. A nearby key remains available after the strike; lost HP does not return automatically.</li>
-            <li>Against charges, move across the attacker&#39;s path rather than directly away from it.</li>
-            <li>Against Prism Moth Queen, survive the shielded phase and attack during the visible opening instead of circling near her body.</li>
-            <li>Inside the Eclipse Heart, follow the safe ring first and treat keys outside it as optional until the next pulse passes.</li>
-          </ul>
-        </div>
-        <div class="game-info-section">
-          <h3>Development and Design</h3>
-          <p>The three-minute timer is long enough for several upgrade decisions but short enough for one failed route to be replayed without losing a large campaign session. Automatic targeting removes tiny aim controls from the phone screen. The player still makes continuous decisions about distance, collection order, escape direction, and when a Boss is safe to approach. Touch dragging and keyboard movement therefore share the same game rules instead of creating separate easy and hard versions.</p>
-          <p>Six five-stage chapters introduce, combine, and test new pressure with a named Boss. Difficulty grows through telegraphed circles, lanes, charges, shields, drifting resources, and a moving safe zone—not enemy HP alone. The finale recombines earlier rules so different upgrade builds and cleaner routes remain useful.</p>
-        </div>
-        <div class="game-info-section game-info-parent">
-          <h3>Player and Save Information</h3>
-          <p>Animal Crystal Survivor is free to play in a modern phone or desktop browser and does not require an account for the basic campaign. Unlocked stages, completed stages, per-stage best key counts, lifetime keys, Patrol Rank, and the optional Crystal Charm are stored in this browser. Clearing browser data or switching devices can remove that local save. The Crystal Charm is a confirmed optional Diamond purchase that adds one starting HP and a wider pickup radius; it is not required to unlock or clear any stage. Result feedback is entertainment and local progress information, not an ability test or diagnosis.</p>
-        </div>
-        <div class="game-info-section">
-          <h3>Frequently Asked Questions</h3>
-          <dl>
-            <div><dt>How many stages are in Animal Crystal Survivor?</dt><dd>There are 30 authored stages across six regions. Stages 5, 10, 15, 20, 25, and 30 are named Boss checkpoints.</dd></div>
-            <div><dt>What is required to clear a stage?</dt><dd>Survive until the three-minute timer ends and collect the key target printed on the stage card. A checkpoint also requires its Boss to be defeated.</dd></div>
-            <div><dt>Do I aim the Ranger&#39;s projectiles?</dt><dd>No. The Ranger targets the nearest enemy inside the pale range circle. You control movement, spacing, pickup routes, and upgrade choices.</dd></div>
-            <div><dt>Why did my shot not damage Prism Moth Queen?</dt><dd>Her visible prism shield blocks hits during one phase. Keep moving through the warning circles and attack when the shield disappears.</dd></div>
-            <div><dt>What happens when I miss the key objective?</dt><dd>The run records its keys and lifetime progress, but the stage does not unlock the next route. You can immediately try the same stage again.</dd></div>
-            <div><dt>Is progress saved?</dt><dd>Yes. Stage unlocks, clears, best counts, Patrol Rank, and Crystal Charm ownership are saved locally in the current browser.</dd></div>
-            <div><dt>Does the game work on phones and computers?</dt><dd>Yes. Phones support tap and drag movement; desktop players can also use WASD or the arrow keys. Combat rules and stage objectives are identical.</dd></div>
-            <div><dt>Is the Crystal Charm required?</dt><dd>No. It is an optional confirmed Diamond purchase that changes starting HP from seven to eight and pickup radius from 54 to 68. Every stage remains playable without it.</dd></div>
-          </dl>
-        </div>
-      </div>
+    <section class="game-page-info game-page-info-static">
+      <div class="game-info-hero"><div class="game-info-title"><h2>Animal Crystal Survivor: 30-Stage Campaign Guide</h2>
+        <p>Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.</p>
+        <p>30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.</p>
+        <p>Move with touch, mouse, WASD or arrow keys. Collect crystals for spell choices. Choose two permanent talents; refund and try another branch freely.</p>
+      </div></div><div class="game-info-sections"><div class="game-info-section"><ul><li>Root prison: leave the three green circles.</li><li>Prism fan: sidestep the five aimed bolts; attack after the shield fades.</li><li>Briar charge: leave the fixed charge line before the rush.</li><li>Meteor barrage: dodge three staggered fire impacts.</li><li>Thunder cross: move diagonally out of both blue lanes.</li><li>Eclipse wave: escape the expanding purple ring.</li></ul><p>Progress and talents are saved in this browser. Clearing browser data removes that save.</p></div></div>
     </section>
+
+
     <!-- adsense-static-guide:end -->
 
     <script src="../../src/site-config.js?v=20260710-crystal-mobile-shell1"></script>
@@ -302,8 +228,8 @@
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="talent-data.js?v=20260909-crystal-tree-hud-v26"></script>
-    <script src="game.js?v=20260909-crystal-tree-hud-v26"></script>
+    <script src="talent-data.js?v=20260909-crystal-boss-xp-v26"></script>
+    <script src="game.js?v=20260909-crystal-boss-xp-v26"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
     <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
     <script>
@@ -312,7 +238,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.src = "../../src/game-page-info.js?v=20260909-crystal-boss-xp-v26";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);

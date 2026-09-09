@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-@import url('./royal-deck.css?v=20260909-beast-deck-result-v17');
+@import url('./royal-deck.css?v=20260909-beast-deck-forest-v18');
 
 :root {
   --bg-color: #080c14;
@@ -753,14 +753,14 @@ body {
   font-weight: bold;
   cursor: pointer;
   box-shadow: var(--shadow-glow);
-  transition: all 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s;
   outline: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 #startBtn:hover, .action-btn:hover {
-  transform: translateY(-2px);
+  transform: none;
   box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
 }
 
@@ -2131,7 +2131,7 @@ body.wp-shell-main-active #menuPanel .standard-main-start {
   }
 }
 
-@media (min-width: 700px) and (min-height: 471px) {
+@media (min-width: 700px) {
   body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
     grid-template: none !important;
     grid-template-columns: 420px minmax(0, 1fr) !important;
@@ -2159,32 +2159,32 @@ body.wp-shell-main-active #menuPanel .standard-main-start {
 
 @media (max-height: 470px) and (orientation: landscape) {
   body.wp-shell-main-active #menuPanel.wp-standard-main-screen {
-    height: calc(100dvh - 57px) !important;
+    height: auto !important;
     min-height: 0;
     grid-template: none !important;
-    grid-template-columns: 302px minmax(0, 1fr) !important;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
     align-items: start;
     gap: 18px;
     padding: 12px 22px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .cover {
-    width: 302px;
-    min-width: 302px;
-    max-width: 302px;
-    height: 302px;
-    min-height: 302px;
-    max-height: 302px;
+    width: 420px;
+    min-width: 420px;
+    max-width: 420px;
+    height: 420px;
+    min-height: 420px;
+    max-height: 420px;
   }
 
   body.wp-shell-main-active #menuPanel.wp-standard-main-screen > .menu-copy {
     width: 100%;
     max-width: none;
-    height: 302px;
-    min-height: 302px;
-    max-height: 302px;
-    overflow: hidden;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
     gap: 8px;
   }
 

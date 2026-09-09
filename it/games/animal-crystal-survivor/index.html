@@ -122,10 +122,10 @@
             <section id="talentWorkshop" class="talent-workshop"></section>
             <div class="expedition-record" aria-label="Expedition Record" data-aria-ui="expeditionRecordTitle">
               <b data-ui="expeditionRecordTitle">Expedition Record</b>
-              <span id="expeditionRecordText">Best 0 keys · Highest level 1 · 0 runs</span>
+              <span id="expeditionRecordText">Best 0 defeats · Level 1 · 0 runs</span>
               <div class="patrol-rank-row">
                 <span id="patrolRankText">Crystal Scout</span>
-                <span id="patrolRankProgressText">0 / 10 keys</span>
+                <span id="patrolRankProgressText">Defeats 0 / 10</span>
               </div>
               <div class="patrol-rank-track" aria-hidden="true"><i id="patrolRankFill"></i></div>
             </div>
@@ -158,7 +158,6 @@
           <button id="menuBtn" class="soft-btn play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
           <div><span data-ui="stage">Stage</span><b id="stageText">1/30</b></div>
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
-          <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>
 
         </div>
@@ -223,8 +222,8 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="talent-data.js?v=20260909-crystal-tree-hud-v26"></script>
-    <script src="game.js?v=20260909-crystal-tree-hud-v26"></script>
+    <script src="talent-data.js?v=20260909-crystal-boss-xp-v26"></script>
+    <script src="game.js?v=20260909-crystal-boss-xp-v26"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
     <script>
@@ -233,7 +232,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260801-crystal-guide3";
+          script.src = "../../src/game-page-info.js?v=20260909-crystal-boss-xp-v26";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -280,5 +279,6 @@
       <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Beast Guardian</strong><span>Beast Guardian è una campagna di difesa della torre di eroi in 30 fasi costruita attorno alla costruzione di percorsi piuttosto che a piattaforme fisse di torri.</span></span></a><a class="game-info-related-card" href="/it/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fortezza delle Sfere</strong><span>Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi con 30 percorsi, in cui bisogna analizzare l&#39;arena prima di lanciare una sfera spirituale.</span></span></a><a class="game-info-related-card" href="/it/games/animal-rift-salvage/"><img src="/assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Recupero nella Faglia</strong><span>Guida l&#39;anello lunare di Orla in trenta zone, recupera piccoli detriti per crescere, salva i nuclei e supera i rivali.</span></span></a></div></div>
     </div>
   </section>
+
 </body>
 </html>

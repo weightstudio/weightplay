@@ -1142,10 +1142,25 @@
     const cancelAi = () => { clearTimeout(aiTimer); aiTimer = null; };
     const scheduleAi = () => { cancelAi(); aiTimer = setTimeout(() => { aiTimer = null; if (panel.isConnected && !app.battle.hidden) aiTurn(); }, 240); };
     let boardState = [], player = 1, difficulty = "easy", locked = false, playerPayoff = null; const panel = document.createElement("div"); const toolbar = document.createElement("div"); toolbar.className = "logic-board-toolbar"; const select = selectDifficulty(); toolbar.append(select); const policy = document.createElement("p"); policy.className = "logic-live logic-reversi-policy"; const reply = document.createElement("p"); reply.className = "logic-live logic-reversi-reply"; reply.setAttribute("aria-live", "polite"); const board = document.createElement("div"); board.className = "logic-reversi-board"; panel.append(toolbar, policy, board, reply); app.board.replaceChildren(panel);
+    // Both messages come from complete locale dictionaries, not English fallback.
+    policy.setAttribute("data-runtime-localize", "off");
+    reply.setAttribute("data-runtime-localize", "off");
     function legal(color) { const moves = []; for (let i = 0; i < 64; i += 1) if (!boardState[i] && flips(i, color).length) moves.push(i); return moves; }
     function flips(i, color) { const found = []; const r = Math.floor(i / 8), c = i % 8; for (const [dr, dc] of [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]) { const line = []; let rr = r + dr, cc = c + dc; while (rr >= 0 && rr < 8 && cc >= 0 && cc < 8 && boardState[rr * 8 + cc] === 3 - color) { line.push(rr * 8 + cc); rr += dr; cc += dc; } if (line.length && rr >= 0 && rr < 8 && cc >= 0 && cc < 8 && boardState[rr * 8 + cc] === color) found.push(...line); } return found; }
     const corners = new Set([0, 7, 56, 63]); const edges = new Set([...Array(8).keys(), ...Array(8).keys()].flatMap((n) => [n, 56 + n, n * 8, n * 8 + 7])); const cornerTraps = new Map([[9, 0], [14, 7], [49, 56], [54, 63], [1, 0], [8, 0], [6, 7], [15, 7], [48, 56], [57, 56], [55, 63], [62, 63]]);
-    function formatPayoff(move) { if (!move) return ""; if (corners.has(move.index)) return text(reversiPayoff.corner); const corner = cornerTraps.get(move.index); if (corner !== undefined && move.cornerOpen) return text(reversiPayoff.cornerAdjacent); if (edges.has(move.index)) return text(reversiPayoff.edge); if (move.afterMoves > move.beforeMoves) return fillTemplate(text(reversiPayoff.mobilityUp), { count: move.afterMoves }); if (move.afterMoves < move.beforeMoves) return fillTemplate(text(reversiPayoff.mobilityDown), { count: move.afterMoves }); return fillTemplate(text(reversiPayoff.mobilitySteady), { count: move.afterMoves }); }
+    function formatPayoff(move) {
+      if (!move) return "";
+      if (corners.has(move.index)) return text(reversiPayoff.corner);
+      const corner = cornerTraps.get(move.index);
+      if (corner !== undefined && move.cornerOpen) return text(reversiPayoff.cornerAdjacent);
+      if (edges.has(move.index)) return text(reversiPayoff.edge);
+      // Feedback is displayed after the rival replies. Count that same board
+      // which render() marks, not the obsolete intermediate player position.
+      const currentMoves = legal(player).length;
+      const key = currentMoves > move.beforeMoves ? "mobilityUp"
+        : currentMoves < move.beforeMoves ? "mobilityDown" : "mobilitySteady";
+      return fillTemplate(text(reversiPayoff[key]), { count: currentMoves });
+    }
     function render() { board.replaceChildren(); const moves = new Set(legal(player)); for (let i = 0; i < 64; i += 1) { const b = cell("", `${boardState[i] === 1 ? "black" : boardState[i] === 2 ? "white" : ""} ${moves.has(i) && !locked ? "legal" : ""}`, `Row ${Math.floor(i / 8) + 1}, Column ${(i % 8) + 1}`, () => play(i)); if (boardState[i]) { const disc = document.createElement("span"); disc.className = "disc"; b.append(disc); } board.append(b); } setChip(`${t("player")}: ${boardState.filter((v) => v === 1).length} · ${t("opponent")}: ${boardState.filter((v) => v === 2).length}`); }
     function play(i) { if (locked || !legal(player).includes(i)) return; const beforeMoves = legal(player).length; boardState[i] = 1; flips(i, 1).forEach((n) => { boardState[n] = 1; }); const corner = cornerTraps.get(i); playerPayoff = { index: i, beforeMoves, afterMoves: legal(player).length, cornerOpen: corner !== undefined && boardState[corner] === 0 }; locked = true; render(); scheduleAi(); }
     function hardScore(i) { const row = Math.floor(i / 8), col = i % 8; let score = flips(i, 2).length * 4 + 12 - Math.abs(row - 3.5) - Math.abs(col - 3.5); if (corners.has(i)) score += 1000; else if (edges.has(i)) score += 120; const corner = cornerTraps.get(i); if (corner !== undefined && !boardState[corner]) score -= 240; return score; }

@@ -105,6 +105,13 @@ body.beast-deck-playing #resultPanel .result-summary {
  padding:4px;overscroll-behavior:contain;
 }
 body.beast-deck-playing #resultPanel .result-summary>* {flex-shrink:0;}
+/* Decorative, text-free expedition art never owns a control or reward claim. */
+body.beast-deck-playing #resultPanel .result-summary::after {
+ content:'';display:block;flex:0 0 auto;order:-1;
+ width:100%;aspect-ratio:3/2;max-height:200px;
+ background:url('../../assets/beast-deck-settlement-forest-v1.png') center/contain no-repeat;
+ border-radius:12px;pointer-events:none;
+}
 body.beast-deck-playing #resultPanel .result-progress {text-align:start;}
 body.beast-deck-playing #resultPanel .result-actions {margin:0;height:52px;}
 body.beast-deck-playing #resultPanel .result-actions button {
@@ -122,4 +129,7 @@ body.beast-deck-playing #resultPanel .result-actions button {
  body.beast-deck-playing #resultPanel .result-score-label {grid-column:1;grid-row:3;align-self:start;font-size:12px;}
  body.beast-deck-playing #resultPanel #resultText {grid-column:2;grid-row:2;font-size:14px;line-height:1.4;margin:0;}
  body.beast-deck-playing #resultPanel .result-progress {grid-column:2;grid-row:3;font-size:13px;line-height:1.4;padding:10px;gap:4px;align-self:start;}
+ body.beast-deck-playing #resultPanel .result-summary::after {
+  grid-column:1;grid-row:4;width:100%;max-height:100px;align-self:start;
+ }
 }

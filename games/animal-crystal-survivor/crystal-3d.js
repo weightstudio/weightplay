@@ -74,12 +74,15 @@ export class Crystal3D {
         rod: this.own(new THREE.CylinderGeometry(1, 1, 1, 8)),
         ring: this.own(new THREE.TorusGeometry(1, .045, 4, 40)),
         disc: this.own(new THREE.CircleGeometry(1, 40)),
+        shockRing: this.own(new THREE.RingGeometry(.8, 1, 48)),
+        xpRing: this.own(new THREE.RingGeometry(.85, 1, 16)),
         plane: this.own(new THREE.PlaneGeometry(1, 1)),
         fineRing: this.own(new THREE.TorusGeometry(1, .008, 4, 64)),
         outsideZone: this.own(new THREE.RingGeometry(1, 50, 64)),
       };
       this.mat = {};
       this.magicCore = this.own(new THREE.MeshBasicMaterial({ color: 0xe6ffff, toneMapped: false }));
+      this.xpMaterial = this.own(new THREE.MeshStandardMaterial({ color:0x58ffd5, emissive:0x29dba3, emissiveIntensity:.8, roughness:.4 }));
       this.magicGlow = this.own(new THREE.MeshBasicMaterial({ color: 0x38d9ff, transparent: true, opacity: .36, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
       this.magicImpact = this.own(new THREE.MeshBasicMaterial({ color: 0x8ff5ff, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthTest: false, depthWrite: false, toneMapped: false }));
       this.elementMaterials = { shatter: this.magicImpact };
@@ -105,7 +108,7 @@ export class Crystal3D {
       this.shadow = this.own(new THREE.MeshBasicMaterial({ color: 0x102f30, transparent: true, opacity: .25, depthWrite: false }));
       this.warning = this.own(new THREE.MeshBasicMaterial({ color: 0xff735d, transparent: true, opacity: .3, depthWrite: false, side: THREE.DoubleSide }));
       this.activeHazard = this.own(new THREE.MeshBasicMaterial({ color: 0xff482c, transparent: true, opacity: .65, depthWrite: false, side: THREE.DoubleSide }));
-      this.hazardPalette = new Map(['#60a5fa', '#65a30d', '#c084fc', '#f97316', '#fb923c', '#84cc16', '#f59e0b'].map(color => [color, [.28, .7, 1].map(opacity => this.own(new THREE.MeshBasicMaterial({ color, transparent: true, opacity, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: this.viewPlanes })))]));
+      this.hazardPalette = new Map(['#60a5fa', '#65a30d', '#c084fc', '#a78bfa', '#f97316', '#fb923c', '#84cc16', '#f59e0b'].map(color => [color, [.4, .7, 1].map(opacity => this.own(new THREE.MeshBasicMaterial({ color, transparent: true, opacity, toneMapped:false, depthWrite: false, side: THREE.DoubleSide, clippingPlanes: this.viewPlanes })))]));
       this.buildGarden(Boolean(floorImage?.complete && floorImage.naturalWidth));
       if (floorImage?.complete && floorImage.naturalWidth) {
         const floorTexture = this.own(new THREE.DataTexture(new Uint8Array([235,243,255,255, 210,226,248,255, 224,236,252,255, 245,248,255,255]), 2, 2));
@@ -136,8 +139,6 @@ export class Crystal3D {
       this.hero = this.character('hero');
       this.hero.scale.setScalar(1.75);
       this.scene.add(this.hero);
-      this.key = this.makeKey();
-      this.scene.add(this.key);
       this.safe = this.mesh('ring', 'safe', this.scene, 0, .025, 0);
       this.safe.rotation.x = -Math.PI / 2;
       this.safe.visible = false;
@@ -167,7 +168,7 @@ export class Crystal3D {
   }
 
   buildGarden(texturedFloor = false) {
-    const court = new THREE.Group();
+    const court = this.staticCourt = new THREE.Group();
     this.scene.add(court);
     this.courtyardWalls = [];
     this.mesh('voxel', 'dark', court, 8, -.3, 13.75, 180, .4, 180);
@@ -428,13 +429,6 @@ export class Crystal3D {
     return root;
   }
 
-  makeKey() {
-    const key = new THREE.Group();
-    this.mesh('ring', 'gold', key, 0, .6, 0, .19);
-    this.mesh('rod', 'gold', key, 0, .29, 0, .045, .4, .045);
-    this.mesh('box', 'gold', key, .07, .15, 0, .15, .07, .07);
-    return key;
-  }
 
   boss(type) {
     // All six guardians share the skeleton rig; crowns and wings identify patterns.
@@ -565,7 +559,7 @@ export class Crystal3D {
     const cz = this.focus.z;
     this.landscape = width > height;
     const azimuth = .55 + (this.landscape ? Math.PI / 2 : 0);
-    if (this.azimuth !== azimuth) this.renderer.shadowMap.needsUpdate = true;
+    if (this.azimuth !== azimuth) { this.renderer.shadowMap.needsUpdate = true; this.staticDirty = true; }
     this.azimuth = azimuth;
     this.camera.position.set(cx + Math.sin(this.azimuth) * 22, 30, cz + Math.cos(this.azimuth) * 22);
     this.camera.lookAt(cx, 0, cz);
@@ -613,8 +607,6 @@ export class Crystal3D {
     }
     this.hero.userData.previous = { x: state.player.x, y: state.player.y };
     this.hero.userData.legs.forEach((leg, i) => { leg.rotation.x = moving ? Math.sin(t * 13 + i * Math.PI) * .6 : 0; });
-    this.setPosition(this.key, state.key, Math.sin(t * 2) * .06);
-    this.key.rotation.y = t * .8;
     for (const type of ['basic', 'runner', 'tank', 'archer']) {
       const enemies = state.enemies.filter(e => !e.isBoss && (e.image === type || (type === 'basic' && !['runner', 'tank', 'archer'].includes(e.image))));
       this.pool(type, enemies.length, () => this.character(type), (object, i) => {
@@ -644,7 +636,7 @@ export class Crystal3D {
     this.pool('chargeCues', charging.length, () => {
       const cue = new THREE.Group();
       this.mesh('fineRing', 'danger', cue).rotation.x = -Math.PI / 2;
-      this.mesh('box', this.warning, cue, 0, 0, 1.6, .18, .02, 3.2);
+      this.mesh('voxel', this.magicImpact, cue, 0, 0, 1.6, .18, .02, 3.2);
       return cue;
     }, (cue, i) => {
       const enemy = charging[i];
@@ -652,6 +644,9 @@ export class Crystal3D {
       cue.children[0].material = enemy.chargeTimer <= 0 ? this.mat.danger : this.mat.gold;
       cue.children[0].scale.setScalar(enemy.size / UNIT * .7);
       cue.children[1].visible = Boolean(enemy.chargeAim);
+      const chargeLength = enemy.isBoss ? 6 : 3.2;
+      cue.children[1].scale.z = chargeLength;
+      cue.children[1].position.z = chargeLength / 2;
       cue.rotation.y = enemy.chargeAim ? Math.atan2(enemy.chargeAim.x, enemy.chargeAim.y) : 0;
     }, 19);
     const archers = state.enemies.filter(e => e.bowAim);
@@ -670,9 +665,15 @@ export class Crystal3D {
       object.rotation.x = -Math.PI / 2;
       object.scale.setScalar((chilled[i].size || 64) / UNIT * .65);
     }, 55);
-    this.pool('xp', state.xpDrops.length, () => new THREE.Mesh(this.geo.crystal, this.mat.cyan), (object, i) => {
-      this.setPosition(object, state.xpDrops[i], .16);
-      object.scale.set(.09, .16, .09);
+    this.pool('xp', state.xpDrops.length, () => {
+      const group = new THREE.Group();
+      this.mesh('crystal', this.xpMaterial, group, 0, .55, 0, .30, .50, .30);
+      this.mesh('xpRing', this.magicImpact, group, 0, .045, 0, .38).rotation.x = -Math.PI / 2;
+      return group;
+    }, (object, i) => {
+      this.setPosition(object, state.xpDrops[i], 0);
+      object.children[0].position.y = .55 + Math.sin(t * 2.5 + i) * .055;
+      object.scale.setScalar(state.xpDrops[i].value > 1 ? 1.3 : 1);
       object.rotation.y = t + i;
     }, 100);
     this.hero.userData.castGlow.scale.setScalar(.11 + .16 * (state.player.castPulse || 0) / .18);
@@ -796,15 +797,20 @@ export class Crystal3D {
       const arrow = new THREE.Group(); group.add(arrow);
       this.mesh('rod', 'gold', arrow, 0, .7, 0, .035, .7, .035).rotation.x = Math.PI / 2;
       this.mesh('crystal', this.magicImpact, arrow, 0, .7, .37, .09, .05, .18);
-      group.userData = { circle, lane, outline, arrow };
+      const aimLine = this.mesh('voxel', this.magicImpact, arrow, 0, .06, 3.5, .12, .025, 7);
+      const laneEdges = new THREE.Group(); group.add(laneEdges);
+      for (let edge=0;edge<4;edge++) this.mesh('voxel',this.magicImpact,laneEdges);
+      group.userData = { circle, lane, outline, arrow, aimLine, laneEdges };
       return group;
     }, (object, i) => {
       const hazard = state.hazards[i];
       this.setPosition(object, hazard);
-      const { circle, lane, outline, arrow } = object.userData;
+      const { circle, lane, outline, arrow, aimLine, laneEdges } = object.userData;
       arrow.visible = hazard.kind === 'arrow';
+      aimLine.visible = hazard.warn > 0;
       arrow.rotation.y = Math.atan2(hazard.vx || 0, hazard.vy || 0);
       circle.visible = hazard.kind !== 'lane' && !arrow.visible;
+      circle.geometry = hazard.kind === 'ring' ? this.geo.shockRing : this.geo.disc;
       lane.visible = hazard.kind === 'lane';
       circle.scale.setScalar((hazard.r || 1) / UNIT);
       outline.visible = circle.visible;
@@ -813,6 +819,12 @@ export class Crystal3D {
       circle.material = lane.material = palette[hazard.warn > 0 ? 0 : 1];
       outline.material = palette[2];
       lane.scale.set((hazard.width || 1) / UNIT, .025, (hazard.height || 1) / UNIT);
+      laneEdges.visible = lane.visible;
+      if (lane.visible) laneEdges.children.forEach((edge,j) => {
+        const width=(hazard.width || 1)/UNIT, length=(hazard.height || 1)/UNIT;
+        edge.position.set(j<2 ? (j ? 1 : -1)*width/2 : 0,.08,j>=2 ? (j===2 ? 1 : -1)*length/2 : 0);
+        edge.scale.set(j<2 ? .075 : width,.025,j<2 ? length : .075);
+      });
     }, 64);
     this.safe.visible = Boolean(state.safeZone);
     this.outsideZone.visible = Boolean(state.safeZone);
@@ -830,8 +842,26 @@ export class Crystal3D {
   syncInstances() {
     // One draw per shared geometry/material rather than per limb or leaf.
     // Logical meshes retain rig transforms but only instance batches render.
+    if (this.staticDirty && this.staticCourt) {
+      this.staticCourt.updateMatrixWorld(true);
+      const lights = [];
+      this.staticCourt.traverse(object => { if (object.isLight) lights.push(object); });
+      lights.forEach(light => this.scene.attach(light));
+      const staticGroups = new Map();
+      this.staticCourt.traverseVisible(object => {
+        if (!object.isMesh) return;
+        const key = `static:${object.geometry.uuid}:${object.material.uuid}:${Boolean(object.userData.staticShadow)}`;
+        if (!staticGroups.has(key)) staticGroups.set(key, []);
+        staticGroups.get(key).push(object);
+      });
+      this.writeInstances(staticGroups);
+      this.scene.remove(this.staticCourt);
+      this.staticDirty = false;
+      this.staticUploads = (this.staticUploads || 0) + 1;
+    }
     this.scene.updateMatrixWorld(true);
-    const groups = new Map();
+    const groups = this.instanceGroups ||= new Map();
+    for (const objects of groups.values()) objects.length = 0;
     this.scene.traverseVisible(object => {
       if (!object.isMesh || object.isInstancedMesh) return;
       object.layers.set(1);
@@ -839,8 +869,13 @@ export class Crystal3D {
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(object);
     });
-    for (const batch of this.batches.values()) batch.count = 0;
+    for (const [key, batch] of this.batches) if (!key.startsWith('static:')) batch.count = 0;
+    this.writeInstances(groups);
+  }
+
+  writeInstances(groups) {
     for (const [key, objects] of groups) {
+      if (!objects.length) continue;
       let batch = this.batches.get(key);
       if (!batch || batch.instanceMatrix.count < objects.length) {
         if (batch) { this.scene.remove(batch); batch.dispose(); }
@@ -884,6 +919,7 @@ export class Crystal3D {
       textures: this.renderer?.info.memory.textures || 0,
       ownedTextureObjects: [...this.owned].filter(resource => resource.isTexture).length,
       shadowMap: Boolean(this.sun?.shadow.map),
+      staticUploads: this.staticUploads || 0,
       calls: this.renderer?.info.render.calls || 0,
       triangles: this.renderer?.info.render.triangles || 0,
       pools: Object.fromEntries([...this.pools].map(([key, values]) => [key, values.length])) };

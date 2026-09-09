@@ -9,11 +9,13 @@
 
   const GAME_ID = "animal-crystal-survivor";
   const GAME_VERSION = "v26";
-  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-tree-hud-v26", document.currentScript.src).href;
+  const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-crystal-boss-xp-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
   let rendererDialog = null;
   let annotationScale = 1;
+  let combatTextLocale;
+  let combatTextOverrides;
   let upgradeRevealTimer = null;
   let upgradeReady = false;
   let upgradePointerChoice = null;
@@ -750,7 +752,6 @@
     runner: "../../assets/animal-crystal-survivor-shadow-panther-v2.webp",
     tank: "../../assets/animal-crystal-survivor-crystal-boar-v2.webp",
     xp: "../../assets/animal-crystal-survivor-xp-crystal.webp",
-    key: "../../assets/animal-crystal-survivor-golden-key.webp",
     seed: "../../assets/animal-crystal-survivor-crystal-seed-shot-v2.webp",
     blade: "../../assets/animal-crystal-survivor-leaf-blade-shot-v2.webp",
     upgradeAttack: "../../assets/animal-crystal-survivor-upgrade-attack.png",
@@ -884,7 +885,7 @@
     duration: Math.min(180, row[5] ? 90 + Math.floor(index / 5) * 18
       : index % 5 === 1 || index % 5 === 3 ? 90 + Math.floor(index / 5) * 15 + (index % 5 === 3 ? 20 : 0)
       : 45 + Math.floor(index / 5) * 25 + (index % 5 === 2 ? 15 : 0)),
-    targetKeys: 2 + Math.floor(index / 6),
+    targetKeys: 0, // Compatibility with historical QA snapshots; never a clear condition.
   }));
   const spanishRegionNames = ["Arboleda de Cristal","Fragmentos Lunares","Laberinto de Zarzas","Grieta de Brasas","Corona de Tormenta","Corazón del Eclipse"];
   regions.forEach((region,index)=>{region.es=spanishRegionNames[index];});
@@ -1151,6 +1152,8 @@
       const selectedStage = Math.min(unlockedStage, wholeNumber(source.selectedStage, unlockedStage, 1));
       return {
         bestKeys: wholeNumber(source.bestKeys, 0),
+        bestDefeats: wholeNumber(source.bestDefeats, 0),
+        totalDefeats: wholeNumber(source.totalDefeats, 0),
         bestLevel: wholeNumber(source.bestLevel, 1, 1),
         playCount: wholeNumber(source.playCount, 0),
         totalKeys: wholeNumber(source.totalKeys, 0),
@@ -1174,6 +1177,7 @@
   function renderTalents(message = "") {
     const host = document.getElementById("talentWorkshop");
     if (!host) return;
+    host.dataset.runtimeLocalize = "off";
     const copy = runeCopy(), equipped = save.equippedTalents || [];
     const spent = talentIds.reduce((sum,id,i) => sum + (save.talents?.[id] ? talentData.costs[i] : 0) + (save.talents?.[id] === 2 ? talentData.costs[i] + 6 : 0), 0);
     const chosen = talentIds.includes(selectedTalent) ? selectedTalent : "echo";
@@ -1231,7 +1235,16 @@
   }
 
   function t(key, data = {}) {
-    const value = text[locale]?.[key] || text.en[key] || key;
+    if (combatTextLocale !== locale) {
+      const copy = window.CrystalTalents.combat(locale);
+      combatTextOverrides = { menuHint:copy.intro, playHint:copy.intro, pageDescription:copy.intro, ogDescription:copy.intro,
+      resultLine:copy.result, expeditionRecordText:copy.record, resultPlanStrong:copy.intro,
+      improved:`${copy.defeats} ↑`,
+      patrolRankProgress:`${copy.defeats} {current} / {target}`, patrolRankComplete:`${copy.defeats} {current}`,
+      patrolRankNext:`${copy.defeats} {current} / {target} · {rank}` };
+      combatTextLocale = locale;
+    }
+    const value = combatTextOverrides[key] || text[locale]?.[key] || text.en[key] || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
@@ -1245,7 +1258,7 @@
   function renderExpeditionRecord() {
     if (!nodes.expeditionRecordText) return;
     nodes.expeditionRecordText.textContent = t("expeditionRecordText", {
-      keys: Math.max(0, Number(save.bestKeys) || 0),
+      keys: Math.max(0, Number(save.bestDefeats) || 0),
       level: Math.max(1, Number(save.bestLevel) || 1),
       runs: Math.max(0, Number(save.playCount) || 0),
     });
@@ -1291,7 +1304,7 @@
 
   function renderPatrolRank() {
     if (!nodes.patrolRankText || !nodes.patrolRankProgressText || !nodes.patrolRankFill) return;
-    const rank = patrolRankFor(save.totalKeys);
+    const rank = patrolRankFor(save.totalDefeats);
     nodes.patrolRankText.textContent = t("patrolRankTitle", { rank: t(rank.current.name) });
     nodes.patrolRankProgressText.textContent = rank.next
       ? t("patrolRankProgress", { current: rank.total, target: rank.next.threshold })
@@ -1373,7 +1386,7 @@
       shotTimer: 0,
       chain: 0, frost: 0, burst: 0, ricochet: 0, orbit: 0, rhythm: 0, magicHits: 0,
       talents: Object.fromEntries(talentIds.map(id => [id, save.equippedTalents?.includes(id) ? save.talents?.[id] || 0 : 0])),
-      strideDistance: 0, orbitTimer: 4,
+      strideDistance: 0, orbitTimer: 4, crystalCharge: 0,
       pickup: hasCharm ? 68 : 54,
     };
   }
@@ -1381,7 +1394,6 @@
   function makeState() {
     const stageNumber = Math.max(1, Math.min(STAGE_COUNT, Number(save?.selectedStage) || 1));
     const player = makePlayer();
-    const randomKey = randomPoint(120);
     return {
       mode: "menu",
       stage: stageNumber,
@@ -1399,7 +1411,7 @@
       survived: 0,
       spawnTimer: 0.95,
       spawnCount: 0,
-      key: stageNumber === 1 ? firstKeyPoint(player, randomKey) : randomKey,
+      key: null, // Retired pickup; old save counters remain migration-only.
       nextKeyCueUntil: 0,
       enemies: [],
       xpDrops: [],
@@ -1417,15 +1429,6 @@
 
   function randomPoint(pad = 70) {
     return { x: pad + Math.random() * (W - pad * 2), y: pad + Math.random() * (H - pad * 2) };
-  }
-
-  function firstKeyPoint(player, candidate) {
-    const camera = cameraTargetFor(player);
-    const padding = 90;
-    return {
-      x: Math.min(camera.x + CAMERA_VIEW_WIDTH - padding, Math.max(camera.x + padding, candidate.x)),
-      y: Math.min(camera.y + CAMERA_VIEW_HEIGHT - padding, Math.max(camera.y + padding, candidate.y)),
-    };
   }
 
   function image(src) {
@@ -1478,6 +1481,7 @@
     writeStorage(localeKey, requested);
     document.documentElement.lang = requested;
     document.querySelectorAll("[data-ui]").forEach((node) => {
+      node.dataset.runtimeLocalize = "off";
       node.textContent = t(node.dataset.ui);
     });
     syncOwnedTitle();
@@ -1743,6 +1747,8 @@
   }
 
   function stageRule(config) {
+    if (config.bossImage) return bossLesson(config);
+    if (config.number === 1) return enemyLesson(config);
     const rule = config.ruleLocaleOwned?.[locale] || (locale === "zh-Hant" ? config.ruleZh : locale === "es" ? config.ruleEs : config.ruleEn);
     if (locale === "zh-Hant") return rule.replace(/普通影狐|影獸|黑豹|野豬|飛蛾/g, "骷髏戰士");
     if (locale === "zh-Hans") return rule.replace(/普通影狐|影兽|黑豹|野猪|飞蛾/g, "骷髅战士");
@@ -2004,7 +2010,7 @@
     });
     lastFrame = performance.now();
     playSound("start", 0.2);
-    track("stage_start", { entry, target_keys: state.stageConfig.targetKeys, boss_stage: Boolean(state.stageConfig.bossImage) });
+    track("stage_start", { entry, mode: state.stageConfig.mode, boss_stage: Boolean(state.stageConfig.bossImage) });
     track("game_start", { entry, prototype: true });
     scheduleLoop();
   }
@@ -2022,7 +2028,6 @@
     if (!search.includes("smoke=1") || !search.includes("combatdemo=1")) return;
     const p = state.player;
     state.spawnTimer = 999;
-    state.key = { x: p.x - 170, y: p.y - 28 };
     state.enemies.push({
       x: p.x + 136,
       y: p.y + 6,
@@ -2057,7 +2062,6 @@
     updateEnemies(dt);
     updateShots(dt);
     updateDrops();
-    updateKey();
     updateFloaters(dt);
     renderHud();
     if (state.player.hp <= 0) endRun("fail");
@@ -2068,6 +2072,8 @@
   function addHazard(kind, options = {}) {
     state.hazards.push({
       kind,
+      bossSkill: options.bossSkill || null,
+      growth: options.growth || 0,
       x: options.x ?? state.player.x,
       y: options.y ?? state.player.y,
       r: options.r ?? 100,
@@ -2118,7 +2124,7 @@
     if (state.mechanicTimer <= 0) {
       state.mechanicTimer = interval;
       state.mechanicStep += 1;
-      triggerStageMechanic(config.modifier);
+      if (!config.bossImage) triggerStageMechanic(config.modifier);
     }
     const p = state.player;
     state.hazards = state.hazards.filter((hazard) => {
@@ -2127,17 +2133,20 @@
       hazard.tick = Math.max(0, hazard.tick - dt);
       const active = hazard.warn <= 0;
       const previousX = hazard.x, previousY = hazard.y;
+      if (hazard.kind === "ring" && active) hazard.r += hazard.growth * dt;
       if (hazard.kind === "arrow" && active) { hazard.x += hazard.vx * dt; hazard.y += hazard.vy * dt; }
       let inside = hazard.kind === "lane"
         ? Math.abs(p.x - hazard.x) <= hazard.width / 2 && Math.abs(p.y - hazard.y) <= hazard.height / 2
         : Math.hypot(p.x - hazard.x, p.y - hazard.y) <= hazard.r;
+      if (hazard.kind === "ring") inside = inside && Math.hypot(p.x - hazard.x, p.y - hazard.y) >= hazard.r * .8;
       if (hazard.kind === "arrow") {
         const dx = hazard.x - previousX, dy = hazard.y - previousY;
         const along = Math.max(0, Math.min(1, ((p.x - previousX) * dx + (p.y - previousY) * dy) / (dx * dx + dy * dy || 1)));
         inside = Math.hypot(p.x - previousX - dx * along, p.y - previousY - dy * along) <= hazard.r;
       }
-      if (active && inside && hazard.tick <= 0) {
+      if (active && inside && hazard.tick <= 0 && state.hazardDamageTimer <= 0) {
         p.hp = Math.max(0, p.hp - hazard.damage);
+        state.hazardDamageTimer = .2;
         hazard.tick = 0.82;
         addSpark(p.x, p.y, hazard.color);
         playSound("hit", 0.3);
@@ -2201,22 +2210,49 @@
     }
   }
 
+  function bossLesson(config) {
+    return talentData.combat(locale).bosses[config.region];
+  }
+
   function updateBossMechanics(dt) {
-    const boss = state.enemies.find((enemy) => enemy.isBoss);
+    const boss = state.enemies.find(enemy => enemy.isBoss && enemy.hp > 0);
     if (!boss) return;
     boss.abilityTimer -= dt;
-    boss.chargeTimer -= dt;
-    if (state.stageConfig.modifier === "prism") boss.shielded = Math.floor(state.survived / 3) % 2 === 0;
-    if (["briar", "tempest"].includes(state.stageConfig.modifier)) {
-      boss.speed = boss.chargeTimer <= 0 ? boss.baseSpeed * 4.2 : boss.baseSpeed;
-      if (boss.chargeTimer <= -0.75) boss.chargeTimer = 4.6;
+    boss.castTime = Math.max(0, (boss.castTime || 0) - dt);
+    boss.shielded = boss.image === "bossPrism" && boss.castTime > 0;
+    if (boss.chargeAim) {
+      boss.chargeTimer -= dt;
+      boss.speed = boss.chargeTimer > 0 ? 0 : 590;
+      if (boss.chargeTimer <= -.65) { boss.chargeAim = null; boss.speed = boss.baseSpeed; }
     }
-    if (["cinder", "blink"].includes(state.stageConfig.modifier) && boss.abilityTimer <= 0) {
-      addHazard("circle", { x: boss.x, y: boss.y, r: 112, color: "#f97316", warn: 0.7, life: 3.6 });
-      boss.x = Math.max(100, Math.min(W - 100, state.player.x + (Math.random() < 0.5 ? -210 : 210)));
-      boss.y = Math.max(120, Math.min(H - 120, state.player.y + (Math.random() < 0.5 ? -230 : 230)));
-      boss.abilityTimer = 5.4;
+    if (boss.abilityTimer > 0 || boss.x < 32 || boss.x > W - 32 || boss.y < 32 || boss.y > H - 32) return;
+    const p = state.player, skill = boss.image;
+    const aim = Math.atan2(p.y - boss.y, p.x - boss.x);
+    boss.castTime = 1.2;
+    boss.castCount = (boss.castCount || 0) + 1;
+    boss.abilityTimer = skill === "bossRoot" ? 6.2 : 5.5;
+    const hazard = (kind, options) => addHazard(kind, { bossSkill: skill, ...options });
+    if (skill === "bossRoot") {
+      // Three rooted columns lock the position at cast time, leaving space between them.
+      for (const offset of [-190, 0, 190]) hazard("circle", { x: Math.max(90, Math.min(W-90,p.x+offset)), y:p.y, r:78, warn:1.25, life:3.6, damage:.6, color:"#65a30d" });
+    } else if (skill === "bossPrism") {
+      for (const offset of [-.64,-.32,0,.32,.64]) hazard("arrow", {x:boss.x,y:boss.y,vx:Math.cos(aim+offset)*245,vy:Math.sin(aim+offset)*245,r:22,warn:1.2,life:4.7,damage:.75,color:"#a78bfa"});
+    } else if (skill === "bossBriar") {
+      boss.chargeAim = {x:Math.cos(aim),y:Math.sin(aim)};
+      boss.chargeTimer = 1.2; boss.speed = 0;
+    } else if (skill === "bossCinder") {
+      for (let i=0;i<3;i++) {
+        const angle=aim+i*Math.PI*2/3;
+        const spread = i === 0 ? 0 : 170;
+        hazard("circle", {x:Math.max(100,Math.min(W-100,p.x+Math.cos(angle)*spread)),y:Math.max(100,Math.min(H-100,p.y+Math.sin(angle)*spread)),r:100,warn:1.2+i*.35,life:3.2+i*.35,damage:.8,color:"#f97316"});
+      }
+    } else if (skill === "bossTempest") {
+      hazard("lane", {x:p.x,y:H/2,width:105,height:H,warn:1.4,life:1.8,damage:1,color:"#60a5fa"});
+      hazard("lane", {x:W/2,y:p.y,width:W,height:105,warn:1.4,life:1.8,damage:1,color:"#60a5fa"});
+    } else if (skill === "bossEclipse") {
+      hazard("ring", {x:boss.x,y:boss.y,r:100,growth:150,warn:1.5,life:5.5,damage:1,color:"#a78bfa"});
     }
+    addSpark(boss.x,boss.y,"#e0bfff",{kind:"magicHit",height:1.4,radius:1.2});
   }
 
   function movePlayer(dt) {
@@ -2353,7 +2389,7 @@
       }
       enemy.chill = Math.max(0, (enemy.chill || 0) - dt);
       const chillSpeed = enemy.chill > 0 ? (enemy.isBoss ? .85 : .6) : 1;
-      const chargingAim = canCharge && enemy.chargeTimer <= 0 ? enemy.chargeAim : null;
+      const chargingAim = (canCharge || enemy.isBoss) && enemy.chargeTimer <= 0 ? enemy.chargeAim : null;
       let moveX = chargingAim?.x ?? dx / dist, moveY = chargingAim?.y ?? dy / dist;
       if (enemy.role === "archer") {
         enemy.shotTimer = (enemy.shotTimer ?? 1.2) - dt;
@@ -2468,10 +2504,14 @@
     }
     if (enemy.isBoss) {
       state.bossDefeated = true;
-      state.keys += 2;
       addFloater(locale === "zh-Hant" ? "\u9996\u9818\u64ca\u7834 +2" : locale === "es" ? "JEFE CALMADO +2" : "BOSS CALMED +2", enemy.x, enemy.y - 80, "#ffe76c");
     }
-    state.xpDrops.push({ x: enemy.x, y: enemy.y, value: enemy.isBoss ? 4 : 1 });
+    const xpValue = enemy.isBoss ? 4 : 1;
+    if (state.xpDrops.length >= 90) {
+      const distance = drop => (drop.x-enemy.x)**2 + (drop.y-enemy.y)**2;
+      const nearest = state.xpDrops.reduce((best,drop) => distance(drop)<distance(best) ? drop : best);
+      nearest.value += xpValue;
+    } else state.xpDrops.push({ x: enemy.x, y: enemy.y, value: xpValue });
     state.enemies = state.enemies.filter((item) => item !== enemy);
     if (state.stageConfig?.modifier === "emberTrail") addHazard("circle", { x: enemy.x, y: enemy.y, r: 78, warn: 0.15, life: 2.5, color: "#f97316", damage: 0.45 });
   }
@@ -2537,6 +2577,7 @@
 
   function updateDrops() {
     const p = state.player;
+    let collected = 0;
     state.xpDrops = state.xpDrops.filter((drop) => {
       if (state.stageConfig?.modifier === "drift" && state.enemies.length) {
         const target = state.enemies.reduce((best, enemy) => Math.hypot(enemy.x - drop.x, enemy.y - drop.y) < Math.hypot(best.x - drop.x, best.y - drop.y) ? enemy : best, state.enemies[0]);
@@ -2546,6 +2587,7 @@
       const dist = Math.hypot(drop.x - p.x, drop.y - p.y);
       if (dist < p.pickup) {
         state.xp += drop.value;
+        collected += drop.value;
         addSpark(drop.x, drop.y, "#fef08a");
         addFloater(`+${drop.value}`, drop.x, drop.y - 18, "#fef08a");
         playSound("coin", 0.12);
@@ -2558,20 +2600,11 @@
       }
       return true;
     });
-  }
-
-  function updateKey() {
-    const p = state.player;
-    if (Math.hypot(state.key.x - p.x, state.key.y - p.y) < p.pickup + 8) {
-      state.keys += 1;
-      if (p.talents.alchemy) runePulse(p.x, p.y, p.talents.alchemy === 2 ? 210 : 150, 1.2);
-      state.key = randomPoint(120);
-      state.nextKeyCueUntil = state.keys < (state.stageConfig?.targetKeys || 0) ? state.survived + 10 : 0;
-      addSpark(p.x, p.y - 52, "#ffe76c");
-      addFloater("+1", p.x, p.y - 90, "#ffe76c");
-      playSound("success", 0.12);
-      if (state.keys === 1) track("first_key_collect", { elapsed_seconds: Math.round(state.survived) });
-      track("game_key_collect", { keys: state.keys, prototype: true });
+    // Resolve after filtering so blast-created drops survive this transaction.
+    p.crystalCharge += collected;
+    if (p.talents.alchemy && p.crystalCharge >= 5) {
+      p.crystalCharge %= 5;
+      runePulse(p.x, p.y, p.talents.alchemy === 2 ? 210 : 150, 1.2);
     }
   }
 
@@ -2720,17 +2753,16 @@
     if (state.mode === "result") return;
     setUpgradeModalOpen(false, false);
     state.mode = "result";
-    const previousBestKeys = save.bestKeys || 0;
-    const previousRank = patrolRankFor(save.totalKeys);
-    const improved = state.keys > previousBestKeys;
+    const previousBestKeys = save.bestDefeats || 0;
+    const previousRank = patrolRankFor(save.totalDefeats);
+    const improved = state.calmed > previousBestKeys;
     const stageCleared = reason !== "fail" && state.player.hp > 0 && objectiveComplete();
     resultStageCleared = stageCleared;
     state.dustEarned = Math.min(14, Math.floor(state.calmed / 5) + Math.floor(state.survived / 15) + (stageCleared ? 3 : 0) + (stageCleared && !save.completedStages.includes(state.stage) ? 3 : 0));
     save.runeDust = Math.min(99999, save.runeDust + state.dustEarned);
-    save.bestKeys = Math.max(save.bestKeys || 0, state.keys);
+    save.bestDefeats = Math.max(save.bestDefeats || 0, state.calmed);
     save.bestLevel = Math.max(save.bestLevel || 1, state.level);
-    save.totalKeys = Math.max(0, Number(save.totalKeys) || 0) + Math.max(0, state.keys);
-    save.stageBestKeys[state.stage] = Math.max(Number(save.stageBestKeys[state.stage]) || 0, state.keys);
+    save.totalDefeats = Math.max(0, Number(save.totalDefeats) || 0) + state.calmed;
     if (stageCleared) {
       if (!save.completedStages.includes(state.stage)) save.completedStages.push(state.stage);
       save.completedStages.sort((a, b) => a - b);
@@ -2755,7 +2787,7 @@
     track(stageCleared ? "stage_complete" : "stage_fail", {
       reason,
       keys: state.keys,
-      target_keys: state.stageConfig.targetKeys,
+      mode: state.stageConfig.mode,
       level: state.level,
       survived_seconds: Math.round(state.survived),
     });
@@ -2770,7 +2802,7 @@
 
   function renderResult(reason, previousBestKeys, improved, previousRankIndex, stageCleared = false) {
     const survived = Math.round(state.survived);
-    const best = Math.max(previousBestKeys || 0, state.keys);
+    const best = Math.max(previousBestKeys || 0, state.calmed);
     nodes.resultTitle.textContent = stageCleared ? t("stageClear") : reason === "time" ? t("objectiveMissed") : t("runFailed");
     nodes.resultScore.textContent = state.stageConfig.mode === "waves" ? `${state.waveCleared}/${state.stageConfig.waveGoal}`
       : state.stageConfig.mode === "boss" ? `${state.bossDefeated ? 1 : 0}/1` : formatTime(state.survived);
@@ -2778,10 +2810,10 @@
     const objectiveLine = !stageCleared && reason === "time"
       ? modeObjective(state.stageConfig)
       : improved ? t("improved") : t("keepGoing");
-    nodes.resultText.textContent = `${t("resultLine", { keys: state.keys, level: state.level, time: survived, best })} ${objectiveLine}`;
+    nodes.resultText.textContent = `${t("resultLine", { keys: state.calmed, level: state.level, time: survived, best })} ${objectiveLine}`;
     nodes.nextStageBtn.classList.remove("hidden");
     nodes.nextStageBtn.disabled = !stageCleared || state.stage >= STAGE_COUNT;
-    const rank = patrolRankFor(save.totalKeys);
+    const rank = patrolRankFor(save.totalDefeats);
     const rankText = rank.index > previousRankIndex
       ? t("patrolRankUp", { rank: t(rank.current.name) })
       : rank.next
@@ -2794,8 +2826,8 @@
   }
 
   function resultPlan(reason) {
-    if (reason === "time" || state.keys >= state.stageConfig.targetKeys) return t("resultPlanStrong");
-    if (state.level >= 3 || state.keys >= 1) return t("resultPlanUpgrade");
+    if (reason === "time" || resultStageCleared) return t("resultPlanStrong");
+    if (state.level >= 3 || state.calmed >= 1) return t("resultPlanUpgrade");
     return t("resultPlanRecover");
   }
 
@@ -2823,7 +2855,7 @@
         stageModifier: state.stageConfig.modifier,
         firstKeyCue: firstKeyCueVisible(),
         keys: state.keys,
-        key: { ...state.key },
+        key: null,
         player: { ...state.player },
         camera: {
           ...state.camera,
@@ -2847,6 +2879,8 @@
           size: enemy.size,
           image: enemy.image,
           isBoss: Boolean(enemy.isBoss),
+          castCount: enemy.castCount || 0, castTime: enemy.castTime || 0,
+          chargeAim: enemy.chargeAim ? {...enemy.chargeAim} : null, chargeTimer: enemy.chargeTimer,
           shielded: Boolean(enemy.shielded),
           chill: enemy.chill || 0,
           role: enemy.role, bowAim: enemy.bowAim ? { ...enemy.bowAim } : null, bowWindup: enemy.bowWindup,
@@ -2864,12 +2898,12 @@
         crystalCharm: Boolean(save.crystalCharm),
         diamondBalance: diamondBalance(),
         totalKeys: Math.max(0, Number(save.totalKeys) || 0),
-        patrolRank: patrolRankFor(save.totalKeys).index,
+        patrolRank: patrolRankFor(save.totalDefeats).index,
         patrolRankText: nodes.patrolRankText?.textContent || "",
         patrolRankProgressText: nodes.patrolRankProgressText?.textContent || "",
-        patrolRankProgressPercent: Math.round(patrolRankFor(save.totalKeys).progress * 100),
+        patrolRankProgressPercent: Math.round(patrolRankFor(save.totalDefeats).progress * 100),
         resultRankText: nodes.resultRankText?.textContent || "",
-        hazards: state.hazards.map((hazard) => ({ kind: hazard.kind, x: hazard.x, y: hazard.y, vx: hazard.vx, vy: hazard.vy, warn: hazard.warn, life: hazard.life, color: hazard.color })),
+        hazards: state.hazards.map(hazard => ({...hazard})),
         safeZone: state.safeZone ? { ...state.safeZone } : null,
         bossSpawned: state.bossSpawned,
         bossDefeated: state.bossDefeated,
@@ -2885,7 +2919,7 @@
         save.totalKeys = Math.max(0, Number(total) || 0);
         persist();
         renderPatrolRank();
-        return patrolRankFor(save.totalKeys);
+        return patrolRankFor(save.totalDefeats);
       },
       startStageForTest: (stageNumber = 1) => {
         save.unlockedStage = Math.max(save.unlockedStage, Math.min(STAGE_COUNT, Number(stageNumber) || 1));
@@ -2907,9 +2941,24 @@
         return boss ? damageEnemy(boss, Number(damage) || 0) : null;
       },
       collectKeyAtPlayer: () => {
-        state.key = { x: state.player.x, y: state.player.y };
-        updateKey();
+        // Retired smoke API remains a no-op for downstream compatibility.
         renderHud();
+      },
+      bossAttackForTest: () => {
+        state.mode = "paused"; // Freeze the fixture for reproducible warning screenshots.
+        state.enemies = []; state.hazards = []; state.shots = []; state.safeZone = null;
+        state.bossSpawned = false; spawnBoss();
+        const boss = state.enemies.find(enemy => enemy.isBoss);
+        if (!boss) return;
+        Object.assign(boss,{x:512,y:650,abilityTimer:0});
+        Object.assign(state.player,{x:512,y:880,tx:512,ty:880,hp:7});
+        state.hazardDamageTimer = 0; state.spawnTimer = 999;
+        updateBossMechanics(.016); draw();
+      },
+      stepBossForTest: (seconds, position) => {
+        if (position) Object.assign(state.player,{x:position.x,y:position.y,tx:position.x,ty:position.y});
+        for (let time=0;time<seconds;time+=.016) { updateStageMechanics(.016); updateEnemies(.016); }
+        draw(); renderHud();
       },
       collectXpAtPlayer: (value = state.xpNeed) => {
         state.xpDrops.push({ x: state.player.x, y: state.player.y, value });
@@ -2935,6 +2984,14 @@
         state.floaters = [];
         state.player.shotTimer = 0;
         renderHud();
+      },
+      defeatWaveForTest: (count = 120) => {
+        for (let i=0;i<Math.min(150,count);i++) {
+          const enemy={x:100+i%10*70,y:250+Math.floor(i/10)*70,size:64,hp:0,image:"basic"};
+          state.enemies.push(enemy); calmEnemy(enemy);
+        }
+        draw();
+        return {drops:state.xpDrops.length,xp:state.xpDrops.reduce((sum,drop)=>sum+drop.value,0)};
       },
       setSpawnTimerForTest: (value) => {
         state.spawnTimer = value;
@@ -2993,14 +3050,13 @@
     if (force) hudValues = Object.create(null);
     writeHudValue("stage", nodes.stageText, `${state.stage}/${STAGE_COUNT}`);
     writeHudValue("time", nodes.timeText, time);
-    writeHudValue("keys", nodes.keyText, String(state.keys));
     writeHudValue("level", nodes.levelText, String(state.level));
     writeHudValue("hp", nodes.hpText, `${hp}/${state.player.maxHp}`);
     writeHudValue("xp", nodes.xpFill.style, `${Math.min(100, (state.xp / state.xpNeed) * 100)}%`, "width");
     const playfieldSignature = [locale, state.stage, time, state.keys, hp, state.player.maxHp, state.level, state.stageConfig?.modifier].join("|");
     if (playfieldSignature !== playfieldLabelSignature) {
       playfieldLabelSignature = playfieldSignature;
-      canvas.setAttribute("aria-label", `${t("stage")} ${state.stage}/${STAGE_COUNT}. ${modeObjective(state.stageConfig)}. ${t("time")} ${time}. ${t("hp")} ${hp}/${state.player.maxHp}. ${t("keys")} ${state.keys}. ${t("level")} ${state.level}. ${t("controlMove")}. ${t("controlAttack")}. ${stageRule(state.stageConfig)}.`);
+      canvas.setAttribute("aria-label", `${t("stage")} ${state.stage}/${STAGE_COUNT}. ${modeObjective(state.stageConfig)}. ${t("time")} ${time}. ${t("hp")} ${hp}/${state.player.maxHp}. ${t("level")} ${state.level}. ${t("controlMove")}. ${t("controlAttack")}. ${stageRule(state.stageConfig)}.`);
     }
     renderActionHint(force);
   }
@@ -3024,22 +3080,11 @@
       writeBattleBriefing(enemyLesson(stages[3]));
       return;
     }
-    const keyDistance = Math.hypot(state.key.x - p.x, state.key.y - p.y);
-    const hasCloseEnemy = state.enemies.some((enemy) => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
-    const nextHint =
-      state.stage === 1 && state.keys === 0 && state.survived < 12
-        ? "hintFirstKey"
-        : nextKeyCueVisible()
-          ? "hintNextKey"
-        : state.xpNeed - state.xp <= 1 && state.xpDrops.length > 0
-        ? "hintUpgradeSoon"
-        : keyDistance <= 220
-          ? "hintKeyClose"
-          : state.xpDrops.length > 0
-            ? "hintCrystal"
-            : hasCloseEnemy
-              ? "hintCombat"
-              : "playHint";
+    const boss = state.enemies.find(enemy => enemy.isBoss);
+    if (boss) { writeBattleBriefing(bossLesson(state.stageConfig)); return; }
+    const hasCloseEnemy = state.enemies.some(enemy => Math.hypot(enemy.x - p.x, enemy.y - p.y) <= p.range);
+    const nextHint = state.xpNeed - state.xp <= 1 && state.xpDrops.length ? "hintUpgradeSoon"
+      : state.xpDrops.length ? "hintCrystal" : hasCloseEnemy ? "hintCombat" : "playHint";
 
     const value = t(nextHint);
     writeBattleBriefing(value);
@@ -3067,54 +3112,9 @@
     }
   }
 
-  function firstKeyCueVisible() {
-    return state.mode === "running" && state.stage === 1 && state.keys === 0 && state.survived < 12;
-  }
-
-  function nextKeyCueVisible() {
-    return state.mode === "running"
-      && state.stage === 1
-      && state.keys > 0
-      && state.keys < (state.stageConfig?.targetKeys || 0)
-      && state.survived < state.nextKeyCueUntil;
-  }
-
-  function drawFirstKeyRouteCue(frameNow) {
-    if (!firstKeyCueVisible() && !nextKeyCueVisible()) return;
-    const dx = state.key.x - state.player.x;
-    const dy = state.key.y - state.player.y;
-    const distance = Math.hypot(dx, dy);
-    if (distance < 78) return;
-    const angle = Math.atan2(dy, dx);
-    const ux = dx / distance;
-    const uy = dy / distance;
-    const endDistance = Math.min(distance - 26, 250);
-    const pulse = 0.58 + Math.sin(frameNow / 170) * 0.16;
-    ctx.save();
-    ctx.globalAlpha = pulse;
-    ctx.strokeStyle = "#ffe76c";
-    ctx.fillStyle = "#fff6ae";
-    ctx.lineWidth = 8;
-    ctx.setLineDash([22, 16]);
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(state.player.x + ux * 62, state.player.y + uy * 62);
-    ctx.lineTo(state.player.x + ux * endDistance, state.player.y + uy * endDistance);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    const tipX = state.player.x + ux * endDistance;
-    const tipY = state.player.y + uy * endDistance;
-    ctx.translate(tipX, tipY);
-    ctx.rotate(angle);
-    ctx.beginPath();
-    ctx.moveTo(22, 0);
-    ctx.lineTo(-14, -18);
-    ctx.lineTo(-8, 0);
-    ctx.lineTo(-14, 18);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-  }
+  function firstKeyCueVisible() { return false; }
+  function nextKeyCueVisible() { return false; }
+  function drawFirstKeyRouteCue() {}
 
   function formatTime(value) {
     const total = Math.max(0, Math.ceil(value));
@@ -3167,12 +3167,8 @@
       // Measure the displayed arena; allocate only when its pixel size changes.
       syncCanvasBackingStore();
       if (!crystal3D.render(state, renderCanvas.width, renderCanvas.height, performance.now())) return;
-      ctx.save();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.drawImage(crystal3D.canvas, 0, 0);
-      ctx.restore();
+      displayCtx.drawImage(crystal3D.canvas, 0, 0);
       draw3DAnnotations();
-      displayCtx.drawImage(renderCanvas, 0, 0);
       return;
     }
     if (["running", "upgrade", "loading-3d", "render-error"].includes(state.mode)) return;
@@ -3188,7 +3184,6 @@
       renderMetrics.fallbackFrameClears += 1;
     }
     drawStageHazards(frameNow);
-    drawKey(frameNow);
     drawFirstKeyRouteCue(frameNow);
     state.xpDrops.forEach((drop) => drawImageCentered(images.xp, drop.x, drop.y, 34));
     state.enemies.forEach((enemy) => drawEnemy(enemy, frameNow));
@@ -3213,7 +3208,7 @@
     displayCtx.drawImage(renderCanvas, 0, 0);
   }
 
-  function draw3DAnnotations() {
+  function draw3DAnnotations(ctx = displayCtx) {
     const point = (x, y, elevation = 0) => {
       const projected = crystal3D.project(x, y, elevation);
       return { x: projected.x * renderCanvas.width / annotationScale, y: projected.y * renderCanvas.height / annotationScale };
@@ -3246,17 +3241,6 @@
       ctx.fillText(floater.text, p.x, p.y);
     });
     ctx.globalAlpha = 1;
-    if (firstKeyCueVisible() || state.nextKeyCueUntil > state.survived) {
-      const p = point(state.player.x, state.player.y);
-      const key = point(state.key.x, state.key.y);
-      const angle = Math.atan2(key.y - p.y, key.x - p.x);
-      ctx.translate(p.x + Math.cos(angle) * 38, p.y + Math.sin(angle) * 38);
-      ctx.rotate(angle);
-      ctx.fillStyle = "#ffe789";
-      ctx.beginPath();
-      ctx.moveTo(12, 0); ctx.lineTo(-6, -6); ctx.lineTo(-3, 0); ctx.lineTo(-6, 6);
-      ctx.closePath(); ctx.fill();
-    }
     ctx.restore();
   }
 
@@ -3356,17 +3340,6 @@
     ctx.lineTo(shot.x, shot.y);
     ctx.stroke();
     ctx.restore();
-  }
-
-  function drawKey(frameNow) {
-    ctx.save();
-    ctx.globalAlpha = 0.32;
-    ctx.fillStyle = "#fff7ad";
-    ctx.beginPath();
-    ctx.arc(state.key.x, state.key.y, 44 + Math.sin(frameNow / 180) * 4, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-    drawImageCentered(images.key, state.key.x, state.key.y, 54);
   }
 
   function drawEnemy(enemy, frameNow) {

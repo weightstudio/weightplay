@@ -1962,7 +1962,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
   grid-column: 1 !important;
   grid-row: 1 !important;
-  grid-template-columns: 48px repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: 48px repeat(3, minmax(0, 1fr)) !important;
   grid-template-rows: minmax(0, 1fr) !important;
 }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {
@@ -2142,7 +2142,7 @@ html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
     grid-column: 1 !important;
     grid-row: 1 / -1 !important;
     grid-template-columns: minmax(0, 1fr) !important;
-    grid-template-rows: 48px repeat(4, minmax(0, 1fr)) !important;
+    grid-template-rows: 48px repeat(3, minmax(0, 1fr)) !important;
     height: 100% !important;
   }
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before {

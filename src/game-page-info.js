@@ -9056,8 +9056,324 @@
     "arrow-escape", "block-blast", "golf-solitaire",
   ]);
 
+  const crystalCombatGuides = {
+  "en": {
+    "intro": "Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
+      "Move with touch, mouse, WASD or arrow keys. Collect crystals for spell choices. Choose two permanent talents; refund and try another branch freely."
+    ],
+    "how": [
+      "30 stages: the first survival lasts 45 seconds; all stages cap at 3 minutes. Survive the timer, clear 3/5 waves, or defeat the boss before the deadline.",
+      "Move with touch, mouse, WASD or arrow keys. Collect crystals for spell choices. Choose two permanent talents; refund and try another branch freely."
+    ],
+    "tips": [
+      "Root prison: leave the three green circles.",
+      "Prism fan: sidestep the five aimed bolts; attack after the shield fades.",
+      "Briar charge: leave the fixed charge line before the rush.",
+      "Meteor barrage: dodge three staggered fire impacts.",
+      "Thunder cross: move diagonally out of both blue lanes.",
+      "Eclipse wave: escape the expanding purple ring."
+    ],
+    "faq": [],
+    "note": "Progress and talents are saved in this browser. Clearing browser data removes that save.",
+    "hideScoreBands": true
+  },
+  "zh-Hant": {
+    "intro": "挑戰生存、波次或首領。收集經驗水晶升級，魔法自動施放。",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
+      "觸控、滑鼠、WASD 或方向鍵移動。收集水晶選擇魔法升級；可裝備兩個永久天賦，免費重置並嘗試不同分支。"
+    ],
+    "how": [
+      "共 30 關，第一關生存 45 秒，每關最長 3 分鐘。依關卡模式撐到倒數結束、清除 3／5 波，或在時限前擊敗首領。",
+      "觸控、滑鼠、WASD 或方向鍵移動。收集水晶選擇魔法升級；可裝備兩個永久天賦，免費重置並嘗試不同分支。"
+    ],
+    "tips": [
+      "根牢：離開三個綠色根圈。",
+      "稜鏡扇射：閃開五發定向魔彈，護盾消失後反擊。",
+      "荊棘衝鋒：看準固定衝刺線，向左右閃開。",
+      "隕火連轟：閃避三次錯開時間的落火。",
+      "雷霆十字：斜向離開兩條藍色雷擊線。",
+      "日蝕震波：避開向外擴散的紫色環形震波。"
+    ],
+    "faq": [],
+    "note": "關卡與天賦儲存在目前瀏覽器；清除瀏覽器資料會移除存檔。",
+    "hideScoreBands": true
+  },
+  "zh-Hans": {
+    "intro": "挑战生存、波次或首领。收集经验水晶升级，魔法自动施放。",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
+      "触控、鼠标、WASD 或方向键移动。收集水晶选择魔法升级；可装备两个永久天赋，免费重置并尝试不同分支。"
+    ],
+    "how": [
+      "共 30 关，第一关生存 45 秒，每关最长 3 分钟。按模式撑到倒数结束、清除 3／5 波，或在时限前击败首领。",
+      "触控、鼠标、WASD 或方向键移动。收集水晶选择魔法升级；可装备两个永久天赋，免费重置并尝试不同分支。"
+    ],
+    "tips": [
+      "根牢：离开三个绿色根圈。",
+      "棱镜扇射：闪开五发定向魔弹，护盾消失后反击。",
+      "荆棘冲锋：看准固定冲刺线，向左右闪开。",
+      "陨火连轰：闪避三次错开时间的落火。",
+      "雷霆十字：斜向离开两条蓝色雷击线。",
+      "日蚀震波：避开向外扩散的紫色环形震波。"
+    ],
+    "faq": [],
+    "note": "关卡与天赋保存在当前浏览器；清除浏览器数据会移除存档。",
+    "hideScoreBands": true
+  },
+  "ja": {
+    "intro": "生存、ウェーブ、ボスに挑戦。経験結晶で強化し、魔法は自動発射。",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
+      "タッチ、マウス、WASD、矢印キーで移動。結晶で魔法を強化。永続才能は2つ装備でき、無料リセットで別の分岐を試せます。"
+    ],
+    "how": [
+      "全30ステージ。最初は45秒生存、上限は各3分。時間まで生存、3／5ウェーブ撃破、または制限時間内にボスを撃破。",
+      "タッチ、マウス、WASD、矢印キーで移動。結晶で魔法を強化。永続才能は2つ装備でき、無料リセットで別の分岐を試せます。"
+    ],
+    "tips": [
+      "根の牢：3つの緑の円から離れる。",
+      "プリズム扇射：5発を横に回避し、盾が消えたら攻撃。",
+      "茨の突進：固定された突進線から横に回避。",
+      "流星連撃：時間差で落ちる3つの炎を回避。",
+      "雷の十字：2本の青い線から斜めに離れる。",
+      "日食波：広がる紫の輪を避ける。"
+    ],
+    "faq": [],
+    "note": "進行と才能はこのブラウザーに保存されます。ブラウザーデータを消すと保存も消えます。",
+    "hideScoreBands": true
+  },
+  "ko": {
+    "intro": "생존, 웨이브, 보스에 도전하세요. 경험 수정으로 강화하며 마법은 자동 발사됩니다.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
+      "터치, 마우스, WASD나 방향키로 이동하세요. 수정으로 마법을 강화하고 영구 특성 두 개를 장착하세요. 무료 초기화로 다른 분기를 시험할 수 있습니다."
+    ],
+    "how": [
+      "총 30단계. 첫 생존은 45초, 각 단계 최대 3분입니다. 제한 시간 생존, 3/5웨이브 격파 또는 시간 내 보스 처치가 목표입니다.",
+      "터치, 마우스, WASD나 방향키로 이동하세요. 수정으로 마법을 강화하고 영구 특성 두 개를 장착하세요. 무료 초기화로 다른 분기를 시험할 수 있습니다."
+    ],
+    "tips": [
+      "뿌리 감옥: 초록 원 세 개에서 벗어나세요.",
+      "프리즘 부채탄: 다섯 발을 옆으로 피하고 방패가 사라지면 공격하세요.",
+      "가시 돌진: 고정된 돌진선에서 옆으로 피하세요.",
+      "유성 연사: 시간차로 떨어지는 불 세 개를 피하세요.",
+      "십자 번개: 파란 선 두 개에서 대각선으로 벗어나세요.",
+      "일식 파동: 퍼지는 보라색 고리를 피하세요."
+    ],
+    "faq": [],
+    "note": "진행과 특성은 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면 저장도 삭제됩니다.",
+    "hideScoreBands": true
+  },
+  "es": {
+    "intro": "Sobrevive, supera oleadas o vence al jefe. Recoge cristales de XP; la magia es automática.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
+      "Muévete con toque, ratón, WASD o flechas. Los cristales mejoran hechizos. Equipa dos talentos permanentes y reinícialos gratis para probar otra rama."
+    ],
+    "how": [
+      "30 etapas: la primera dura 45 segundos y el máximo es 3 minutos. Sobrevive al reloj, supera 3/5 oleadas o derrota al jefe antes del límite.",
+      "Muévete con toque, ratón, WASD o flechas. Los cristales mejoran hechizos. Equipa dos talentos permanentes y reinícialos gratis para probar otra rama."
+    ],
+    "tips": [
+      "Prisión de raíces: sal de los tres círculos verdes.",
+      "Abanico prisma: esquiva cinco proyectiles y ataca cuando caiga el escudo.",
+      "Carga espinosa: esquiva de lado la línea fija.",
+      "Lluvia de meteoros: evita tres impactos escalonados.",
+      "Cruz de rayos: sal en diagonal de ambas líneas azules.",
+      "Onda eclipse: evita el anillo morado que se expande."
+    ],
+    "faq": [],
+    "note": "El progreso y los talentos se guardan en este navegador. Borrar sus datos elimina la partida.",
+    "hideScoreBands": true
+  },
+  "pt-BR": {
+    "intro": "Sobreviva, vença ondas ou derrote o chefe. Colete cristais de XP; a magia é automática.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
+      "Mova-se por toque, mouse, WASD ou setas. Cristais melhoram magias. Equipe dois talentos permanentes e redefina grátis para testar outro ramo."
+    ],
+    "how": [
+      "30 fases: a primeira dura 45 segundos, com limite de 3 minutos por fase. Sobreviva, vença 3/5 ondas ou derrote o chefe antes do prazo.",
+      "Mova-se por toque, mouse, WASD ou setas. Cristais melhoram magias. Equipe dois talentos permanentes e redefina grátis para testar outro ramo."
+    ],
+    "tips": [
+      "Prisão de raízes: saia dos três círculos verdes.",
+      "Leque prisma: desvie dos cinco tiros e ataque sem o escudo.",
+      "Investida espinhosa: desvie de lado da linha fixa.",
+      "Chuva de meteoros: evite três impactos em sequência.",
+      "Cruz de raios: saia na diagonal das duas linhas azuis.",
+      "Onda eclipse: evite o anel roxo em expansão."
+    ],
+    "faq": [],
+    "note": "Progresso e talentos ficam neste navegador. Apagar seus dados remove o salvamento.",
+    "hideScoreBands": true
+  },
+  "fr": {
+    "intro": "Survivez, terminez les vagues ou battez le boss. Ramassez les cristaux XP ; la magie est automatique.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
+      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Les cristaux améliorent les sorts. Équipez deux talents permanents et réinitialisez gratuitement pour changer de branche."
+    ],
+    "how": [
+      "30 niveaux : 45 secondes au premier, 3 minutes maximum chacun. Survivez au chrono, terminez 3/5 vagues ou battez le boss avant la limite.",
+      "Déplacez-vous au toucher, à la souris, avec WASD ou les flèches. Les cristaux améliorent les sorts. Équipez deux talents permanents et réinitialisez gratuitement pour changer de branche."
+    ],
+    "tips": [
+      "Prison de racines : sortez des trois cercles verts.",
+      "Éventail prisme : esquivez cinq tirs, puis attaquez sans bouclier.",
+      "Charge épineuse : esquivez latéralement la ligne fixe.",
+      "Pluie de météores : évitez trois impacts décalés.",
+      "Croix de foudre : quittez les deux lignes bleues en diagonale.",
+      "Onde éclipse : évitez l’anneau violet en expansion."
+    ],
+    "faq": [],
+    "note": "La progression et les talents sont sauvegardés dans ce navigateur. Effacer ses données supprime la sauvegarde.",
+    "hideScoreBands": true
+  },
+  "de": {
+    "intro": "Überlebe, schaffe Wellen oder besiege den Boss. Sammle EP-Kristalle; Magie feuert automatisch.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
+      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Kristalle verbessern Zauber. Rüste zwei dauerhafte Talente aus; kostenloses Zurücksetzen erlaubt andere Zweige."
+    ],
+    "how": [
+      "30 Stufen: zuerst 45 Sekunden, höchstens 3 Minuten pro Stufe. Überlebe, besiege 3/5 Wellen oder den Boss vor Ablauf der Zeit.",
+      "Bewege dich per Touch, Maus, WASD oder Pfeiltasten. Kristalle verbessern Zauber. Rüste zwei dauerhafte Talente aus; kostenloses Zurücksetzen erlaubt andere Zweige."
+    ],
+    "tips": [
+      "Wurzelgefängnis: Verlasse die drei grünen Kreise.",
+      "Prismafächer: Weiche fünf Schüssen aus; greife ohne Schild an.",
+      "Dornenansturm: Weiche der festen Linie seitlich aus.",
+      "Meteorhagel: Meide drei versetzte Einschläge.",
+      "Blitzkreuz: Verlasse beide blauen Linien diagonal.",
+      "Finsterniswelle: Meide den wachsenden violetten Ring."
+    ],
+    "faq": [],
+    "note": "Fortschritt und Talente werden in diesem Browser gespeichert. Beim Löschen der Browserdaten geht der Spielstand verloren.",
+    "hideScoreBands": true
+  },
+  "it": {
+    "intro": "Sopravvivi, supera ondate o sconfiggi il boss. Raccogli cristalli XP; la magia è automatica.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
+      "Muoviti con tocco, mouse, WASD o frecce. I cristalli potenziano le magie. Equipaggia due talenti permanenti e azzerali gratis per provare un altro ramo."
+    ],
+    "how": [
+      "30 livelli: il primo dura 45 secondi, massimo 3 minuti ciascuno. Sopravvivi, supera 3/5 ondate o batti il boss entro il limite.",
+      "Muoviti con tocco, mouse, WASD o frecce. I cristalli potenziano le magie. Equipaggia due talenti permanenti e azzerali gratis per provare un altro ramo."
+    ],
+    "tips": [
+      "Prigione di radici: esci dai tre cerchi verdi.",
+      "Ventaglio prisma: schiva cinque colpi e attacca senza scudo.",
+      "Carica spinosa: schiva lateralmente la linea fissa.",
+      "Pioggia di meteore: evita tre impatti sfalsati.",
+      "Croce di fulmini: esci in diagonale dalle due linee blu.",
+      "Onda eclisse: evita l’anello viola in espansione."
+    ],
+    "faq": [],
+    "note": "Progressi e talenti sono salvati in questo browser. Cancellarne i dati elimina il salvataggio.",
+    "hideScoreBands": true
+  },
+  "ru": {
+    "intro": "Выживите, пройдите волны или победите босса. Собирайте кристаллы опыта; магия автоматическая.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
+      "Двигайтесь касанием, мышью, WASD или стрелками. Кристаллы улучшают магию. Выберите два постоянных таланта; бесплатный сброс позволяет сменить ветку."
+    ],
+    "how": [
+      "30 этапов: первый длится 45 секунд, максимум — 3 минуты. Выживите, пройдите 3/5 волн или победите босса до конца времени.",
+      "Двигайтесь касанием, мышью, WASD или стрелками. Кристаллы улучшают магию. Выберите два постоянных таланта; бесплатный сброс позволяет сменить ветку."
+    ],
+    "tips": [
+      "Корневая тюрьма: выйдите из трёх зелёных кругов.",
+      "Призма: уклонитесь от пяти снарядов и атакуйте после щита.",
+      "Колючий рывок: уйдите вбок с фиксированной линии.",
+      "Метеорный залп: избегайте трёх последовательных ударов.",
+      "Крест молний: выйдите по диагонали с двух синих линий.",
+      "Волна затмения: избегайте расширяющегося фиолетового кольца."
+    ],
+    "faq": [],
+    "note": "Прогресс и таланты сохраняются в этом браузере. Очистка данных браузера удаляет сохранение.",
+    "hideScoreBands": true
+  },
+  "hi": {
+    "intro": "जीवित रहें, लहरें पार करें या बॉस हराएँ। XP क्रिस्टल लें; जादू अपने आप चलता है।",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
+      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। क्रिस्टल से जादू बढ़ाएँ। दो स्थायी प्रतिभाएँ लगाएँ; मुफ्त रीसेट से दूसरी शाखा आजमाएँ।"
+    ],
+    "how": [
+      "30 चरण: पहला 45 सेकंड, हर चरण अधिकतम 3 मिनट। समय तक बचें, 3/5 लहरें पार करें या समय सीमा में बॉस हराएँ।",
+      "स्पर्श, माउस, WASD या तीर कुंजियों से चलें। क्रिस्टल से जादू बढ़ाएँ। दो स्थायी प्रतिभाएँ लगाएँ; मुफ्त रीसेट से दूसरी शाखा आजमाएँ।"
+    ],
+    "tips": [
+      "जड़ कैद: तीन हरे घेरों से निकलें।",
+      "प्रिज्म पंखा: पाँच गोलों से बचें, ढाल हटने पर प्रहार करें।",
+      "काँटेदार धावा: तय रेखा से बगल में हटें।",
+      "उल्का वर्षा: अलग समय पर गिरती तीन आगों से बचें।",
+      "बिजली क्रॉस: दोनों नीली रेखाओं से तिरछे निकलें।",
+      "ग्रहण लहर: फैलते बैंगनी घेरे से बचें।"
+    ],
+    "faq": [],
+    "note": "प्रगति और प्रतिभाएँ इस ब्राउज़र में रहती हैं। ब्राउज़र का डेटा मिटाने से सेव हट जाता है।",
+    "hideScoreBands": true
+  },
+  "ar": {
+    "intro": "اصمد أو أكمل الموجات أو اهزم الزعيم. اجمع بلورات الخبرة؛ السحر تلقائي.",
+    "time": "45–180 s",
+    "story": [],
+    "systems": [
+      "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
+      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. البلورات تطور السحر. جهز موهبتين دائمتين وأعد ضبطهما مجانًا لتجربة فرع آخر."
+    ],
+    "how": [
+      "30 مرحلة: الأولى 45 ثانية، والحد الأقصى 3 دقائق لكل مرحلة. اصمد أو أكمل 3/5 موجات أو اهزم الزعيم قبل انتهاء الوقت.",
+      "تحرك باللمس أو الفأرة أو WASD أو الأسهم. البلورات تطور السحر. جهز موهبتين دائمتين وأعد ضبطهما مجانًا لتجربة فرع آخر."
+    ],
+    "tips": [
+      "سجن الجذور: اخرج من الدوائر الخضراء الثلاث.",
+      "مروحة المنشور: تفادَ خمس قذائف وهاجم بعد زوال الدرع.",
+      "اندفاع الأشواك: تفادَ الخط الثابت جانبًا.",
+      "وابل النيازك: تفادَ ثلاث ضربات نارية متعاقبة.",
+      "صليب الرعد: اخرج قطريًا من الخطين الأزرقين.",
+      "موجة الكسوف: تفادَ الحلقة البنفسجية المتسعة."
+    ],
+    "faq": [],
+    "note": "يحفظ التقدم والمواهب في هذا المتصفح. مسح بيانات المتصفح يزيل الحفظ.",
+    "hideScoreBands": true
+  }
+};
+
   function localizedGame(id) {
-    const game = localizedGameContent(id);
+    let game = localizedGameContent(id);
+    if (id === "animal-crystal-survivor" && game) game = { ...game, ...(crystalCombatGuides[locale()] || crystalCombatGuides.en) };
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
     return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
   }

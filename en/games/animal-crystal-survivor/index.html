@@ -95,7 +95,7 @@
         <img class="cover" src="../../assets/animal-crystal-survivor-voxel-cover-v26.webp" alt="Crystal Survivor game artwork" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Survive the Crystal Grove.</strong>
-          <span data-ui="menuHint">Goal: collect golden keys before 3:00. Crystals give XP, and upgrades help the ranger survive longer.</span>
+          <span data-ui="menuHint">Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.</span>
           <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
           <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Start Game</button>
         </div>
@@ -122,10 +122,10 @@
             <section id="talentWorkshop" class="talent-workshop"></section>
             <div class="expedition-record" aria-label="Expedition Record" data-aria-ui="expeditionRecordTitle">
               <b data-ui="expeditionRecordTitle">Expedition Record</b>
-              <span id="expeditionRecordText">Best 0 keys · Highest level 1 · 0 runs</span>
+              <span id="expeditionRecordText">Best 0 defeats · Level 1 · 0 runs</span>
               <div class="patrol-rank-row">
                 <span id="patrolRankText">Crystal Scout</span>
-                <span id="patrolRankProgressText">0 / 10 keys</span>
+                <span id="patrolRankProgressText">Defeats 0 / 10</span>
               </div>
               <div class="patrol-rank-track" aria-hidden="true"><i id="patrolRankFill"></i></div>
             </div>
@@ -158,7 +158,6 @@
           <button id="menuBtn" class="soft-btn play-return" data-wp-return="battle" type="button" aria-label="Back to menu">&larr;</button>
           <div><span data-ui="stage">Stage</span><b id="stageText">1/30</b></div>
           <div><span data-ui="time">Time</span><b id="timeText">3:00</b></div>
-          <div><span data-ui="keys">Keys</span><b id="keyText">0</b></div>
           <div><span data-ui="level">Level</span><b id="levelText">1</b></div>
 
         </div>
@@ -169,7 +168,7 @@
         <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i><b id="hpText">7/7</b></div></div>
           <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="Animal Crystal Survivor playfield" data-aria-ui="playfield"></canvas>
         </div>
-        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Goal: collect golden keys before 3:00. Grab crystals to level up, then choose upgrades when the cards appear.</p>
+        <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">Survive, clear waves or defeat the boss. Collect XP crystals; magic fires automatically.</p>
         </div>
         <div id="resultHost" class="result-host">
           <section id="resultPanel" class="result-panel hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText resultRankText resultProgressText resultPlanText resultNextStageText">
@@ -222,8 +221,8 @@
     <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="talent-data.js?v=20260909-crystal-tree-hud-v26"></script>
-    <script src="game.js?v=20260909-crystal-tree-hud-v26"></script>
+    <script src="talent-data.js?v=20260909-crystal-boss-xp-v26"></script>
+    <script src="game.js?v=20260909-crystal-boss-xp-v26"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
     <script>
@@ -232,7 +231,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260801-crystal-guide3";
+          script.src = "../../src/game-page-info.js?v=20260909-crystal-boss-xp-v26";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -279,5 +278,6 @@
       <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Beast Guardian</strong><span>Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads.</span></span></a><a class="game-info-related-card" href="/en/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Orb Fortress</strong><span>Animal Orb Fortress is a 30-route ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" href="/en/games/animal-rift-salvage/"><img src="/assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Rift Salvage</strong><span>Guide Orla&#39;s lunar recovery ring through thirty astral zones, collect small debris to grow, rescue cores, outpace rivals, and reclaim crown wreckage.</span></span></a></div></div>
     </div>
   </section>
+
 </body>
 </html>

@@ -1,13 +1,13 @@
 window.WPClassicLogic?.mount("reversi");
 
-import(new URL('disc-effects.mjs?v=20260909-reversi-v15', document.currentScript.src))
+import(new URL('disc-effects.mjs?v=20260909-reversi-v16', document.currentScript.src))
   .then(({installDiscEffects}) => installDiscEffects(document.querySelector('#logicBoard')))
   .catch(error => console.warn('Reversi visual feedback unavailable', error));
 
 (() => {
   "use strict";
 
-  const GAME_VERSION = "v15";
+  const GAME_VERSION = "v16";
   const LOCALES = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const ROUTE_LOCALES = { en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko", es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const CELL_LABELS = {
@@ -31,20 +31,26 @@ import(new URL('disc-effects.mjs?v=20260909-reversi-v15', document.currentScript
     hi: { aria: "रिवर्सी खेल की जानकारी", kicker: "WeightPlay मौलिक गेम गाइड", title: "रिवर्सी", description: "प्रतिद्वंद्वी की गोटियों को घेरें; अंत में अधिक गोटियाँ जीतती हैं।", gameplayLabel: "कैसे खेलें", gameplay: "रणनीति बोर्ड गेम", genreLabel: "शैली", genre: "क्लासिक · पहेली · रणनीति · परिवार", faqTitle: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी गई है?", faqAnswer: "हाँ, केवल इस ब्राउज़र में." },
     ar: { aria: "دليل لعبة ريفيرسي", kicker: "دليل ألعاب WeightPlay الأصلية", title: "ريفيرسي", description: "أحط قطع الخصم واقلبها؛ يفوز من يملك قطعًا أكثر.", gameplayLabel: "طريقة اللعب", gameplay: "لعبة لوحية استراتيجية", genreLabel: "النوع", genre: "كلاسيكي · ألغاز · استراتيجية · عائلي", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يتم حفظ التقدم؟", faqAnswer: "نعم، فقط في هذا المتصفح." }
   };
+  const RESET_COPY = {
+    en: "New Match", "zh-Hant": "重新開局", "zh-Hans": "重新开局",
+    ja: "新しい対局", ko: "새 대국", es: "Nueva partida", "pt-BR": "Nova partida",
+    fr: "Nouvelle partie", de: "Neue Partie", it: "Nuova partita",
+    ru: "Новая партия", hi: "नई बाज़ी", ar: "مباراة جديدة"
+  };
   const GUIDE_QUICK_START = {
-    en: "Choose a difficulty, read the rule, then use Hint to inspect a safe next move. Replay or New Puzzle resets the board for a fresh round.",
-    "zh-Hant": "選擇難度、閱讀規則，再用提示查看安全的下一步。使用再玩一次或新謎題即可重新設定棋盤。",
-    "zh-Hans": "选择难度、阅读规则，再用提示查看安全的下一步。使用再玩一次或新谜题即可重新设置棋盘。",
-    ja: "難易度を選び、ルールを読んでから、ヒントで安全な次の手を確認しましょう。リプレイまたは新しいパズルで盤面をリセットできます。",
-    ko: "난이도를 고르고 규칙을 읽은 뒤 힌트로 안전한 다음 수를 확인하세요. 다시 하기 또는 새 퍼즐로 보드를 초기화할 수 있습니다.",
-    es: "Elige una dificultad, lee la regla y usa Pista para ver una jugada segura. Repetir o Nuevo puzzle reinicia el tablero.",
-    "pt-BR": "Escolha uma dificuldade, leia a regra e use Dica para ver uma jogada segura. Jogar de novo ou Novo quebra-cabeça reinicia o tabuleiro.",
-    fr: "Choisissez une difficulté, lisez la règle, puis utilisez Indice pour voir un coup sûr. Rejouer ou Nouveau puzzle réinitialise le plateau.",
-    de: "Wähle eine Schwierigkeit, lies die Regel und nutze Tipp für einen sicheren nächsten Zug. Nochmal oder Neues Rätsel setzt das Brett zurück.",
-    it: "Scegli una difficoltà, leggi la regola e usa Suggerimento per vedere una mossa sicura. Rigioca o Nuovo puzzle reimposta la tavola.",
-    ru: "Выберите сложность, прочитайте правило и используйте подсказку, чтобы увидеть безопасный следующий ход. Кнопка «Снова» или «Новая задача» сбрасывает поле.",
-    hi: "कठिनाई चुनें, नियम पढ़ें और सुरक्षित अगली चाल देखने के लिए संकेत का उपयोग करें। फिर खेलें या नई पहेली से बोर्ड रीसेट होता है।",
-    ar: "اختر مستوى الصعوبة واقرأ القاعدة، ثم استخدم التلميح لمعرفة خطوة آمنة تالية. يعيد «العب مجددًا» أو «لغز جديد» ضبط اللوحة."
+    en: "Choose a difficulty. Hint marks a legal move, not necessarily the strongest move. New Match resets the current board.",
+    "zh-Hant": "選擇難度。提示會標示合法走法，不保證是最佳走法。重新開局會重設目前棋盤。",
+    "zh-Hans": "选择难度。提示会标示合法走法，不保证是最佳走法。重新开局会重置当前棋盘。",
+    ja: "難易度を選びます。ヒントは合法手を示しますが、最善手とは限りません。「新しい対局」で盤面をリセットします。",
+    ko: "난이도를 선택하세요. 힌트는 가능한 수를 표시하지만 최선의 수는 아닐 수 있습니다. 새 대국은 현재 보드를 초기화합니다.",
+    es: "Elige la dificultad. Pista marca una jugada legal, no necesariamente la mejor. Nueva partida reinicia el tablero actual.",
+    "pt-BR": "Escolha a dificuldade. Dica marca uma jogada válida, não necessariamente a melhor. Nova partida reinicia o tabuleiro atual.",
+    fr: "Choisissez la difficulté. Indice marque un coup légal, pas forcément le meilleur. Nouvelle partie réinitialise le plateau actuel.",
+    de: "Wähle die Schwierigkeit. Tipp zeigt einen legalen, nicht unbedingt den besten Zug. Neue Partie setzt das aktuelle Brett zurück.",
+    it: "Scegli la difficoltà. Suggerimento indica una mossa legale, non necessariamente la migliore. Nuova partita azzera la scacchiera attuale.",
+    ru: "Выберите сложность. Подсказка показывает допустимый, но не обязательно лучший ход. «Новая партия» сбрасывает текущую доску.",
+    hi: "कठिनाई चुनें। संकेत एक वैध चाल दिखाता है, ज़रूरी नहीं कि वह सबसे अच्छी हो। नई बाज़ी से वर्तमान बोर्ड रीसेट होता है।",
+    ar: "اختر الصعوبة. يحدد التلميح حركة قانونية، وليست بالضرورة الأفضل. تعيد «مباراة جديدة» ضبط اللوحة الحالية."
   };
   const SCENARIOS = [
     {
@@ -115,8 +121,17 @@ import(new URL('disc-effects.mjs?v=20260909-reversi-v15', document.currentScript
   };
 
   const syncGuide = () => {
+    const reset = document.querySelector("#logicReset");
+    if (reset) {
+      reset.setAttribute("data-runtime-localize", "off");
+      reset.textContent = RESET_COPY[locale()] || RESET_COPY.en;
+    }
     const quickStart = document.querySelector(".logic-guide p:last-child");
-    if (quickStart) quickStart.textContent = GUIDE_QUICK_START[locale()] || GUIDE_QUICK_START.en;
+    if (quickStart) {
+      // This copy is already localized; a second translation can corrupt it.
+      quickStart.setAttribute("data-runtime-localize", "off");
+      quickStart.textContent = GUIDE_QUICK_START[locale()] || GUIDE_QUICK_START.en;
+    }
     const guide = document.querySelector(".game-page-info-static");
     if (!guide) return;
     const copy = GUIDE_COPY[locale()] || GUIDE_COPY.en;

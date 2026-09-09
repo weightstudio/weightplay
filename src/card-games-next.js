@@ -2625,7 +2625,7 @@
   }
 
   function makeWarFixed(controller) {
-    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 };
+    const s = { player: [], ai: [], pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", winner: null, warCount: 0, largestPot: 0 };
     const finish = (playerWins) => {
       if (s.phase === "finished") return;
       s.phase = "finished";
@@ -2634,14 +2634,15 @@
     const settle = () => {
       const playerWins = s.playerCard.rank > s.aiCard.rank;
       s.largestPot = Math.max(s.largestPot, s.pot.length);
-      s.swingCue = warSwingText(playerWins ? "player" : "ai", s.pot.length);
+      s.winner = playerWins ? "player" : "ai";
+      s.swingCue = warSwingText(s.winner, s.pot.length);
       (playerWins ? s.player : s.ai).push(...s.pot.sort(() => Math.random() - 0.5));
       s.pot = [];
       s.phase = "ready";
       if (!s.player.length || !s.ai.length) finish(playerWins);
     };
     const reveal = () => {
-      s.swingCue = "";
+      s.swingCue = ""; s.winner = null;
       if (!s.player.length || !s.ai.length) { finish(Boolean(s.player.length)); return; }
       s.playerCard = s.player.shift();
       s.aiCard = s.ai.shift();
@@ -2662,10 +2663,10 @@
       reveal();
     };
     return {
-      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", warCount: 0, largestPot: 0 }); },
+      reset() { const cards = deck(); Object.assign(s, { player: cards.slice(0, 26), ai: cards.slice(26), pot: [], phase: "ready", playerCard: null, aiCard: null, swingCue: "", winner: null, warCount: 0, largestPot: 0 }); },
       card() {},
       action(action) { if (action === "flip" && s.phase === "ready") reveal(); else if (action === "flip" && s.phase === "war") continueWar(); },
-      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
+      view() { const swingCue = s.swingCue ? `<p class="card-choice-summary card-war-swing" role="status" aria-live="polite">${s.swingCue}</p>` : ""; return { phase: s.phase === "war" ? t("war") : t("flip"), status: t("yourTurn"), help: warGuidanceText(s.phase === "war" ? "war" : "flip"), score: s.player.length, opponents: opponentMarkup("AI", s.ai.length), center: `<div class="card-table-label">${t("war")}</div>${swingCue}<div data-war-outcome="${s.phase === "war" ? "tie" : s.winner || "ready"}" class="table-row ${s.phase === "war" ? "card-war-flash" : ""}">${s.playerCard ? cardMarkup(s.playerCard, 0) : ""}${s.aiCard ? cardMarkup(s.aiCard, 0) : ""}</div><div>${t("cards")}: ${s.pot.length}</div>`, hand: `<div class="card-help">${s.player.length} ${t("cards")}</div>`, actions: `<button class="primary-btn" data-action="flip" ${s.phase === "finished" ? "disabled" : ""}>${s.phase === "war" ? t("war") : t("flip")}</button>` }; }
     };
   }
 
