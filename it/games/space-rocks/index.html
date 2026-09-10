@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="it">
+<head>
+
+    <base href="/games/space-rocks/" />
+    <link rel="canonical" href="https://weightplay.com/it/games/space-rocks/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/space-rocks/" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/space-rocks/" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/space-rocks/" />
+    <link rel="alternate" hreflang="ja" href="https://weightplay.com/ja/games/space-rocks/" />
+    <link rel="alternate" hreflang="ko" href="https://weightplay.com/ko/games/space-rocks/" />
+    <link rel="alternate" hreflang="es" href="https://weightplay.com/es/games/space-rocks/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://weightplay.com/pt-br/games/space-rocks/" />
+    <link rel="alternate" hreflang="fr" href="https://weightplay.com/fr/games/space-rocks/" />
+    <link rel="alternate" hreflang="de" href="https://weightplay.com/de/games/space-rocks/" />
+    <link rel="alternate" hreflang="it" href="https://weightplay.com/it/games/space-rocks/" />
+    <link rel="alternate" hreflang="ru" href="https://weightplay.com/ru/games/space-rocks/" />
+    <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/space-rocks/" />
+    <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/space-rocks/" />
+    <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/space-rocks/" />
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="index,follow" />
+  <meta name="weightplay-audience" content="general">
+  <title>Rocce Spaziali | WeightPlay</title>
+  <link rel="stylesheet" href="../../src/classic-chase-rocks.css?v=20260905-space-score-reserve-v19">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260802-title-parity3">
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260905-space-score-reserve-v19">
+  <style data-space-rocks-result-occlusion-fix>
+    /* Result owns its own Main recovery action; the generated Battle return
+       overlay must not cover the Result title on narrow screens. */
+    body.is-game-playing #battleScreen:has(#resultScreen:not([hidden])) .wp-generated-battle-header { display: none !important; }
+    @media (min-width: 650px) and (max-height: 500px) {
+      body.is-game-playing #battleScreen:not(:has(#resultScreen:not([hidden]))) .wp-generated-battle-header {
+        transform: scale(calc(1 / var(--wp-battle-canvas-scale, 1))) !important;
+        transform-origin: top left !important;
+      }
+    }
+  </style>
+  <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="../../src/analytics.js?v=20260905-space-score-reserve-v19"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
+  <meta name="description" content="Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano." />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Rocce Spaziali | WeightPlay" />
+    <meta property="og:description" content="Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano." />
+    <meta property="og:url" content="https://weightplay.com/it/games/space-rocks/" />
+    <meta property="og:image" content="https://weightplay.com/assets/space-rocks-cover.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rocce Spaziali | WeightPlay" />
+    <meta name="twitter:description" content="Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/space-rocks-cover.webp" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Rocce Spaziali",
+  "alternateName": "Space Rocks",
+  "url": "https://weightplay.com/it/games/space-rocks/",
+  "image": "https://weightplay.com/assets/space-rocks-cover.webp",
+  "description": "Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "it",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Arcade",
+    "Sparatutto spaziale",
+    "Azione"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  </head>
+<body data-game-id="space-rocks">
+  <main id="classicArcade" class="classic-arcade" data-runtime-localize="off">
+    <header class="arcade-header">
+      <div><div id="eyebrow" class="eyebrow"></div><h1 id="gameTitle">Rocce Spaziali</h1><p id="gameTagline" class="tagline"></p></div>
+      <label class="locale-picker"><span id="languageLabel"></span><select id="localeSelect"></select></label>
+    </header>
+    <section id="mainScreen" class="screen">
+      <div class="arcade-panel main-panel">
+        <div class="main-copy"><p id="objective" class="objective"></p><p id="mainProgress" class="main-progress" data-wp-main-progress></p><p id="guideCopy" class="guide-copy"></p><section id="wavePlan" class="wave-plan" aria-labelledby="wavePlanTitle"><div class="wave-plan-header"><span id="wavePlanKicker" class="wave-plan-kicker"></span><h2 id="wavePlanTitle"></h2></div><p id="wavePlanIntro" class="wave-plan-intro"></p><ol id="wavePlanList" class="wave-plan-list"></ol></section><button id="startBtn" class="primary"></button></div>
+        <div class="preview-art"><img id="coverArt" class="main-poster" alt=""></div>
+      </div>
+    </section>
+    <section id="battleScreen" class="screen battle-screen" data-wp-logical-battle-canvas hidden>
+      <div class="arcade-panel battle-panel">
+        <div class="battle-topline"><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="backBtn" class="secondary icon-button" data-wp-return="battle"></button><button id="soundBtn" class="secondary icon-button" data-wp-battle-utility></button><button id="restartBtn" class="secondary"></button></div></div>
+        <div class="hud"><div class="hud-item"><span id="scoreLabel" class="hud-label"></span><strong id="scoreValue" class="hud-value">0</strong></div><div class="hud-item"><span id="bestLabel" class="hud-label"></span><strong id="bestValue" class="hud-value">0</strong></div><div class="hud-item"><span id="levelLabel" class="hud-label"></span><strong id="levelValue" class="hud-value">1</strong></div><div class="hud-item"><span id="powerLabel" class="hud-label"></span><strong id="powerValue" class="hud-value">—</strong></div></div>
+        <div id="backConfirm" class="confirm-back" hidden><p id="backConfirmCopy"></p><div class="control-row"><button id="backStayBtn" class="secondary"></button><button id="backLeaveBtn" class="primary"></button></div></div>
+        <div class="canvas-wrap space"><canvas id="gameCanvas" tabindex="0"></canvas></div><p id="gameMessage" class="game-message" aria-live="polite"></p>
+        <div id="touchControls" class="touch-controls space-controls" aria-label=""></div><p id="controlHint" class="control-hint"></p>
+        <section id="resultScreen" class="screen" hidden><div class="arcade-panel result-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline result-copy"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></section>
+      </div>
+    </section>
+    <div class="general-reserve battle-ad-reserve" aria-hidden="true"></div><footer id="footerText" class="arcade-footer"></footer>
+  </main>
+    <script src="../../src/battle-canvas-standard.js?v=20260808-play-lock1" data-wp-battle-standard></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <section class="game-page-info game-page-info-static" aria-label="Informazioni su Rocce Spaziali">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Rocce Spaziali</h2><p>Pilota Rux in tre ondate, dividi le rocce cristalline da grandi a piccole e conserva lo scudo per il nucleo guardiano.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Shooter spaziale a inerzia</strong></div><div class="game-info-fact"><span>Genere</span><strong>Arcade · Sparatutto spaziale · Azione</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Facile da iniziare, difficile da padroneggiare</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>3–10 minuti</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Il campo di battaglia è uno spazio aperto con bordi collegati, non una serie di corsie fisse. Una spinta breve cambia la traiettoria futura della nave, quindi mirare significa anche decidere dove scivolerà dopo.</p>
+<p>Le rocce grandi si dividono prima in frammenti medi e poi piccoli. Le ondate successive aggiungono un UFO in movimento, Fuoco rapido e maggiore pressione; il nucleo guardiano offre un bersaglio chiaro.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Ruota a sinistra e a destra, accelera con la freccia su o W e spara con la barra spaziatrice. Shift o il pulsante dello scudo usa una carica limitata; i comandi touch svolgono le stesse azioni.</p>
+<p>Una roccia grande diventa due rocce medie e ogni roccia media diventa piccoli frammenti; liberare la catena aumenta punteggio, combo e contatore dei frammenti.</p>
+<p>Il Fuoco rapido riduce temporaneamente l’intervallo tra i colpi. Lo scudo assorbe una collisione ravvicinata, ma ha capacità limitata e serve nello scontro con il nucleo.</p>
+<p>La terza ondata aggiunge un nucleo guardiano arancione. Una collisione riporta la nave nel campo e consuma un colpo; dopo cinque colpi la partita termina.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Inizia dalla schermata principale e premi la spinta una volta per vedere il segnale iniziale della deriva prima di tenerla premuta.</li><li>Ruota verso la roccia grande più vicina e spara a brevi raffiche, lasciando che l’inerzia porti la nave intorno al campo.</li><li>Osserva i frammenti dopo ogni colpo: una roccia grande è liberata solo dopo aver gestito i frammenti più piccoli.</li><li>Raccogli il Fuoco rapido quando appare, ma conserva lo scudo per un passaggio ravvicinato o per la zona affollata del nucleo.</li><li>Libera le tre ondate oppure usa Riavvia per azzerare il round e allenarti sulla prima orbita.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Usa spinte brevi invece di tenere l’accelerazione continua; ruota e pianifica l’arco successivo per controllare la velocità.</li><li>Spara prima che la roccia entri nella traiettoria della nave e ruota lontano dai frammenti invece di restare fermo.</li><li>Liberare in sequenza rocce grandi, medie e piccole mantiene il bonus combo, ma sopravvivere conta più di un colpo ravvicinato rischioso.</li><li>Usa lo scudo come strumento di tempismo per attraversare una zona pericolosa, non come armatura permanente.</li><li>Nella terza ondata muoviti intorno al guardiano e dai priorità al nucleo arancione.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>La prima ondata insegna rotazione, spinta, deriva inerziale e la catena che divide una roccia grande.</p>
+<p>La seconda aggiunge più rocce, un UFO mobile e la pressione del Fuoco rapido, richiedendo di coordinare mira e movimento.</p>
+<p>La terza aggiunge il nucleo guardiano e più frammenti, mettendo alla prova il tempismo dello scudo e le orbite controllate.</p></div>
+      <div class="game-info-section"><h3>Nota di design</h3><p>Rocce Spaziali usa un campo Canvas originale, nave, rocce cristalline, UFO, guardiano, particelle e suoni. Offre un canvas logico responsivo, comandi da tastiera e touch, segnali localizzati, punteggio e record, oltre a percorsi completi per successo, fallimento, rigioca, riavvia e ritorno alla schermata principale.</p></div>
+      <div class="game-info-section game-info-save"><h3>Informazioni sul giocatore e sul salvataggio</h3><p>Il record e la preferenza audio vengono salvati in questo browser. Non servono account o acquisti; cancellare i dati del browser può eliminare questo record locale.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Come funziona l’inerzia?</dt><dd>La spinta aumenta la velocità e la nave continua a scivolare. Ruota e usa spinte brevi per preparare l’orbita successiva.</dd></div><div><dt>Cosa succede quando colpisco una roccia grande?</dt><dd>Si divide in rocce medie e poi in frammenti piccoli. Liberare l’intera catena assegna punti e frammenti.</dd></div><div><dt>Che cos’è il Fuoco rapido?</dt><dd>È un potenziamento temporaneo che riduce il tempo tra i colpi e aiuta a liberare un campo pieno di frammenti.</dd></div><div><dt>Come uso lo scudo?</dt><dd>Usalo per attraversare un pericolo o avvicinarti al guardiano. La capacità è limitata e cinque collisioni senza protezione terminano il round.</dd></div><div><dt>Cosa cambia nella terza ondata?</dt><dd>Compare un nucleo guardiano arancione e la pressione aumenta; diventano importanti il segnale del nucleo e il tempismo dello scudo.</dd></div><div><dt>I progressi vengono salvati?</dt><dd>Record e preferenza audio vengono salvati localmente in questo browser, senza bisogno di un account.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/alien-defender/"><img src="/assets/alien-defender-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Difensore Alieno</strong><span>Difensore Alieno è uno shooter originale a schermo fisso con 30 livelli.</span></span></a><a class="game-info-related-card" href="/it/games/road-crosser/"><img src="/assets/road-crosser-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Attraversa Strada e Fiume</strong><span>Attraversamento Stellare è un&#39;arcade di tempismo originale WeightPlay.</span></span></a><a class="game-info-related-card" href="/it/games/animal-abyss-diver/"><img src="/assets/animal-abyss-diver-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Animal Abyss Diver</strong><span>Animal Abyss Diver is a thirty-route underwater strategy adventure starring Bubble Fin Nori.</span></span></a></div></div>
+    </div>
+  </section>
+<script src="../../src/game-page-info.js?v=20260905-space-score-reserve-v19" data-wp-game-info-static></script>
+  <script src="/games/space-rocks/analytics-ownership.js?v=20260905-space-score-reserve-v19"></script><script src="../../src/classic-chase-rocks.js?v=20260905-space-score-reserve-v19"></script>
+</body>
+</html>
