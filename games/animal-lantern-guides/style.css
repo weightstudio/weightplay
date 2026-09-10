@@ -53,9 +53,10 @@ body { overflow-x:hidden; }
 .wp-shell-settings-popover { position:fixed; top:76px; right:max(14px,calc((100vw - 920px)/2 + 14px)); z-index:20; }
 .setting-row { min-height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid var(--line); border-radius:12px; padding:8px 10px; background:#fff; color:var(--ink); font-weight:800; }
 .setting-row select { min-width:120px; min-height:34px; border:1px solid var(--line); border-radius:8px; padding:0 5px; background:#fff; color:var(--ink); }
-.main-progress { min-height:56px; display:grid; gap:4px; margin:18px 0; padding:12px 14px; border:1px solid rgba(82,120,109,.22); border-radius:16px; background:#eff8f2; color:var(--ink); }
+.main-progress { height:42px; min-height:42px; display:flex; align-items:center; gap:8px; margin:18px 0; padding:5px 10px; overflow:hidden; border:1px solid rgba(82,120,109,.22); border-radius:14px; background:#eff8f2; color:var(--ink); }
 .main-progress strong { color:#52786d; }
-.main-progress span { color:var(--muted); font-size:.92rem; line-height:1.35; }
+.main-progress strong,.main-progress span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.main-progress span { color:var(--muted); font-size:.86rem; line-height:1.2; }
 .main-poster { object-fit:cover; }
 .game-page-info { width:min(920px,calc(100% - 28px)); margin:14px auto 0; }
 body[data-screen="battle"] .game-page-info,
@@ -76,15 +77,17 @@ body[data-screen="result"] .game-page-info { display:none; }
 .handoff-prompt { max-width:680px; margin:0 auto 24px; padding:12px 16px; border:2px solid rgba(228,163,78,.48); border-radius:14px; background:#fff8e9; color:#7a5526; line-height:1.35; font-weight:900; }
 .battle-ad-reserve { box-sizing:border-box; width:min(100%,920px); height:56px; margin:0 auto; background:#dfe9e3; pointer-events:none; }
 .text-button { min-height:44px; }
-.stage-screen { width:min(920px,calc(100% - 28px)); margin:0 auto; padding:18px 0 32px; }
+.stage-screen { --wp-stage-art:url("assets/animal-lantern-guides-cover-v1.webp"); position:relative; width:min(100%,920px); height:calc(100vh - 56px); margin:0 auto; padding:14px; overflow:hidden; background:linear-gradient(rgba(245,240,229,.9),rgba(232,241,238,.94)),var(--wp-stage-art) center/cover; }
 .stage-head { min-height:48px; display:grid; grid-template-columns:110px 1fr 48px; align-items:center; gap:12px; }
 .stage-head h2 { margin:0; text-align:center; font-size:clamp(24px,4vw,36px); }
 .stage-head .eyebrow { text-align:center; }
 .stage-summary { display:grid; gap:3px; margin:16px 0; padding:12px 16px; border:1px solid rgba(82,120,109,.24); border-radius:16px; background:#eff8f2; }
 .stage-summary strong { color:#52786d; }
 .stage-summary span { color:var(--muted); font-size:14px; }
-.chapter-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.chapter-card { padding:16px; border:1px solid rgba(82,120,109,.22); border-radius:18px; background:rgba(255,255,255,.88); box-shadow:0 8px 22px rgba(70,82,63,.09); }
+.stage-tabs { display:flex; margin:10px 0; }
+.stage-tabs button { min-height:44px; padding:0 16px; border:1px solid rgba(82,120,109,.28); border-radius:999px; background:#fff; color:#52786d; font-weight:900; }
+.chapter-map { display:flex; gap:12px; max-height:calc(100% - 178px); padding:2px 2px 10px; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; overscroll-behavior-x:contain; }
+.chapter-card { flex:0 0 min(330px,calc(100vw - 48px)); align-self:flex-start; padding:16px; border:1px solid rgba(82,120,109,.22); border-radius:18px; background:rgba(255,255,255,.9); box-shadow:0 8px 22px rgba(70,82,63,.09); scroll-snap-align:center; }
 .chapter-card h3 { margin:0 0 4px; color:#52786d; font-size:17px; }
 .chapter-card > p { min-height:38px; margin:0 0 12px; color:var(--muted); font-size:12px; line-height:1.35; }
 .stage-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
@@ -94,6 +97,8 @@ body[data-screen="result"] .game-page-info { display:none; }
 .stage-button span { font-size:10px; font-weight:800; }
 .stage-button:not(:disabled):hover,.stage-button:not(:disabled):focus-visible { border-color:var(--gold); outline:3px solid rgba(228,163,78,.18); }
 .stage-button:disabled { cursor:not-allowed; opacity:.43; background:#edf0ed; }
+.stage-ad-reserve { display:none; box-sizing:border-box; width:min(100%,920px); height:56px; margin:0 auto; background:#dfe9e3; pointer-events:none; }
+body[data-screen="stage"] .stage-ad-reserve { display:block; }
 .guide-rule { min-height:54px; margin:10px 0 0 !important; padding:9px 11px; border-radius:12px; background:#e8f5ed; color:#335f51 !important; font-size:13px; font-weight:900; }
 .pass-button { width:100%; margin-top:9px; }
 .reveal-button { grid-column:1 / -1; }
@@ -106,9 +111,8 @@ body[data-screen="result"] .game-page-info { display:none; }
   .panel-head { grid-template-columns:58px 1fr auto; gap:6px; }
   .battle-header-tools { gap:3px; }
   .meter-pill { max-width:80px; overflow:hidden; text-overflow:ellipsis; }
-  .stage-screen { width:min(100% - 20px,560px); padding-top:10px; }
+  .stage-screen { width:min(100%,920px); padding:10px; }
   .stage-head { grid-template-columns:76px 1fr 48px; gap:6px; }
-  .chapter-map { grid-template-columns:1fr; }
   .chapter-card { padding:13px; }
   .battle-canvas #leaveBtn { position:static; width:100%; margin:10px 0 0; }
   .handoff-prompt { margin-bottom:12px; }
@@ -117,7 +121,8 @@ body[data-screen="result"] .game-page-info { display:none; }
 @media (max-width:430px) {
   .battle-header-tools .meter-pill { display:none; }
   .battle-header-tools .utility-button { display:grid; }
-  .main-progress { margin:10px 0; padding:6px 10px; gap:2px; }
+  .main-progress { margin:10px 0; padding:5px 8px; gap:6px; }
+  .main-progress span { display:none; }
 }
 
 /* Keep the full-width poster requirement while preserving the first phone

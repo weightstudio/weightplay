@@ -71,15 +71,17 @@
     <label class="setting-row"><span id="languageLabel">Language</span><select id="localeSelect" aria-label="Language"></select></label>
   </div>
 
-  <section id="stageScreen" class="screen stage-screen panel-screen" data-screen="stage" hidden aria-labelledby="stageTitle">
+  <section id="stageScreen" class="screen stage-screen panel-screen" data-screen="stage" data-wp-logical-stage-canvas hidden aria-labelledby="stageTitle">
     <header class="stage-head">
-      <button id="stageBackBtn" class="back-btn" type="button"><span aria-hidden="true">←</span><span id="stageBackLabel">Back</span></button>
+      <button id="stageBackBtn" class="back-btn back-button" type="button" data-wp-return="stage"><span aria-hidden="true">←</span><span id="stageBackLabel">Back</span></button>
       <div><p class="eyebrow" id="stageBadge">Lantern atlas</p><h2 id="stageTitle">Choose a trail</h2></div>
       <button id="stageSettingsBtn" class="utility-button" type="button" aria-label="Settings">⚙</button>
     </header>
     <div class="stage-summary" role="status" aria-live="polite"><strong id="stageProgress"></strong><span id="stageHelp"></span></div>
-    <div id="chapterMap" class="chapter-map"></div>
+    <div class="stage-tabs" role="tablist" aria-label="Trail map view"><button id="stageOverviewTab" type="button" role="tab" aria-selected="true">Choose a trail</button></div>
+    <div id="chapterMap" class="chapter-map" data-wp-stage-rail></div>
   </section>
+  <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
 
   <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="sceneTitle">
     <div class="battle-canvas" data-wp-logical-battle-canvas>

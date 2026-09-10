@@ -101,7 +101,7 @@
     setText("guideBadge", text("guideBadge")); setText("mainHeading", text("mainHeading")); setText("mainBody", text("mainBody")); setText("progressTitle", text("progressTitle")); setText("progressBody", text("progressBody")); setText("startBtn", text("start")); setText("soloNote", text("soloNote"));
     setText("promiseOneTitle", text("scout")); setText("promiseOneBody", text("scoutPromise")); setText("promiseTwoTitle", text("guide")); setText("promiseTwoBody", text("guidePromise")); setText("promiseThreeTitle", text("together")); setText("promiseThreeBody", text("togetherPromise"));
     setText("howTo", text("howTo")); setText("howToBody", text("howToBody")); setText("stageBadge", text("stageBadge")); setText("stageTitle", text("stageTitle")); setText("stageHelp", text("stageHelp"));
-    setText("sceneBadge", text("sceneBadge")); setText("scoutRole", text("scoutRole")); setText("scoutHeading", text("scoutHeading")); setText("scoutTask", text("scoutTask")); setText("guideRole", text("guideRole")); setText("guideHeading", text("guideHeading")); setText("guideTask", text("guideTask")); setText("passBtn", text("passClue")); setText("leaveBtn", text("leave")); setText("footer", text("footer")); setText("resultBadge", text("resultBadge")); setText("replayBtn", text("replay")); setText("homeBtn", text("stageMap")); setText("nextBtn", text("nextStage"));
+    setText("stageOverviewTab", text("stageTitle")); setText("sceneBadge", text("sceneBadge")); setText("scoutRole", text("scoutRole")); setText("scoutHeading", text("scoutHeading")); setText("scoutTask", text("scoutTask")); setText("guideRole", text("guideRole")); setText("guideHeading", text("guideHeading")); setText("guideTask", text("guideTask")); setText("passBtn", text("passClue")); setText("leaveBtn", text("leave")); setText("footer", text("footer")); setText("resultBadge", text("resultBadge")); setText("replayBtn", text("replay")); setText("homeBtn", text("stageMap")); setText("nextBtn", text("nextStage"));
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", text("language"));
     $("scoutChoices").setAttribute("aria-label", text("scoutChoicesLabel"));
@@ -132,7 +132,7 @@
       const grid = document.createElement("div"); grid.className = "stage-grid";
       STAGES.filter(stage => stage.chapter === chapterIndex).forEach(stage => {
         const button = document.createElement("button");
-        button.type = "button"; button.className = "stage-button"; button.disabled = stage.number > unlocked; button.dataset.stage = String(stage.number);
+        button.type = "button"; button.className = "stage-button"; button.disabled = stage.number > unlocked; button.dataset.stage = String(stage.number); button.dataset.wpStageCard = ""; button.setAttribute("aria-disabled", String(button.disabled));
         button.innerHTML = `<strong>${stage.checkpoint ? "✦ " : ""}${stage.number}</strong><span>${stage.checkpoint ? text("checkpoint") : text("trail")}</span>`;
         button.setAttribute("aria-label", `${stageTitle(stage)}${button.disabled ? ` — ${text("locked")}` : ""}`);
         button.addEventListener("click", () => startStage(stage.number - 1)); grid.appendChild(button);
