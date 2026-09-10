@@ -160,6 +160,13 @@ body.orb-fortress-playing .game-page-info {
   line-height: 1.5;
 }
 
+.result-rewards {
+  margin: 8px 0;
+  color: #fff0a9;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
 .stage-panel {
   display: grid;
   grid-template-rows: 62px minmax(0, 1fr) 48px;

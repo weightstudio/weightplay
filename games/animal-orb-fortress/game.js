@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v30";
+  const GAME_VERSION = "v31";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -54,6 +54,7 @@
     rerollBtn: $("rerollBtn"),
     resultTitle: $("resultTitle"),
     resultText: $("resultText"),
+    resultRewards: $("resultRewards"),
     raidPlanText: $("raidPlanText"),
   };
   const gameShell = window.WeightPlayGameShell?.mount({
@@ -1047,15 +1048,37 @@
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
     const english = text.en[key];
-    const sharedShellLabel = key === "bounce" ? {
-      en: "Bounce", "zh-Hant": "反彈", "zh-Hans": "反弹", ja: "反射", ko: "반사",
-      es: "Rebote", "pt-BR": "Quique", fr: "Rebond", de: "Abprall", it: "Rimbalzo",
-      ru: "Отскок", hi: "उछाल", ar: "ارتداد",
-    }[actualLocale] : "";
+    const sharedRuntimeLabel = {
+      bounce: {
+        en: "Bounce", "zh-Hant": "反彈", "zh-Hans": "反弹", ja: "反射", ko: "반사",
+        es: "Rebote", "pt-BR": "Quique", fr: "Rebond", de: "Abprall", it: "Rimbalzo",
+        ru: "Отскок", hi: "उछाल", ar: "ارتداد",
+      },
+      resultWaveStones: {
+        en: "Wave rewards +{stones}", "zh-Hant": "波次獎勵 +{stones}", "zh-Hans": "波次奖励 +{stones}", ja: "ウェーブ報酬 +{stones}", ko: "웨이브 보상 +{stones}",
+        es: "Recompensas de oleada +{stones}", "pt-BR": "Recompensas das ondas +{stones}", fr: "Récompenses de vagues +{stones}", de: "Wellenbelohnungen +{stones}", it: "Ricompense ondate +{stones}",
+        ru: "Награда за волны +{stones}", hi: "लहर इनाम +{stones}", ar: "مكافآت الموجات +{stones}",
+      },
+      resultEndStones: {
+        en: "Raid settlement +{stones}", "zh-Hant": "結算獎勵 +{stones}", "zh-Hans": "结算奖励 +{stones}", ja: "レイド精算 +{stones}", ko: "레이드 정산 +{stones}",
+        es: "Cierre de incursión +{stones}", "pt-BR": "Fechamento da incursão +{stones}", fr: "Bilan d'assaut +{stones}", de: "Überfall-Abschluss +{stones}", it: "Chiusura incursione +{stones}",
+        ru: "Итог рейда +{stones}", hi: "छापे का निपटान +{stones}", ar: "تسوية الغارة +{stones}",
+      },
+      resultMagnetStones: {
+        en: "Scout Magnet +{stones}", "zh-Hant": "偵查磁力 +{stones}", "zh-Hans": "侦查磁力 +{stones}", ja: "偵察マグネット +{stones}", ko: "정찰 자석 +{stones}",
+        es: "Imán explorador +{stones}", "pt-BR": "Ímã de exploração +{stones}", fr: "Aimant éclaireur +{stones}", de: "Spähermagnet +{stones}", it: "Magnete esploratore +{stones}",
+        ru: "Магнит разведчика +{stones}", hi: "स्काउट चुंबक +{stones}", ar: "مغناطيس الاستكشاف +{stones}",
+      },
+      resultTotalStones: {
+        en: "Total earned {stones}", "zh-Hant": "本場共獲得 {stones}", "zh-Hans": "本局共获得 {stones}", ja: "今回の獲得 {stones}", ko: "이번 획득 {stones}",
+        es: "Total obtenido {stones}", "pt-BR": "Total ganho {stones}", fr: "Total obtenu {stones}", de: "Insgesamt erhalten {stones}", it: "Totale ottenuto {stones}",
+        ru: "Всего получено {stones}", hi: "कुल प्राप्त {stones}", ar: "إجمالي المكتسب {stones}",
+      },
+    }[key]?.[actualLocale] || "";
     const runtimeValue = actualLocale === "ar" && english
       ? window.WeightPlayGameRuntimeLocales?.ar?.[english]
       : "";
-    const value = text[actualLocale]?.[key] || runtimeValue || sharedShellLabel || text[locale]?.[key] || english || key;
+    const value = text[actualLocale]?.[key] || runtimeValue || sharedRuntimeLabel || text[locale]?.[key] || english || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
@@ -2866,7 +2889,7 @@
     if (id === "shield") state.core = Math.min(state.maxCore, state.core + 4);
     if (id === "magnet") {
       state.magnetLevel += 1;
-      state.bonusStones += 2 + state.magnetLevel;
+      state.bonusStones += 2;
     }
     if (id === "chain") state.chainLevel += 1;
     state.wave += 1;
@@ -2919,7 +2942,10 @@
     resultDecisionCommitted = false;
     backgroundSuspended = false;
     cancelAnimationFrame(raf);
-    const stones = Math.max(1, state.stonesEarned + state.bonusStones + (win ? 5 : 1));
+    const waveStones = state.stonesEarned;
+    const settlementStones = win ? 5 : 1;
+    const magnetStones = state.bonusStones;
+    const stones = Math.max(1, waveStones + magnetStones + settlementStones);
     save.starStones += stones;
     if (win) save.bestRaid = Math.max(1, Math.min(MAX_RAID_TIER, Math.max(save.bestRaid || 1, state.raidTier + 1)));
     persist();
@@ -2935,6 +2961,12 @@
       total: save.starStones,
       best: Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1)),
     })}`;
+    nodes.resultRewards.textContent = [
+      t("resultWaveStones", { stones: waveStones }),
+      t("resultEndStones", { stones: settlementStones }),
+      magnetStones ? t("resultMagnetStones", { stones: magnetStones }) : "",
+      t("resultTotalStones", { stones }),
+    ].filter(Boolean).join(" · ");
     const hasNextStage = win && state.raidTier < MAX_RAID_TIER;
     const shieldLevel = save.rooms.shield || 0;
     const shieldCost = roomCost("shield");

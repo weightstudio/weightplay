@@ -1755,7 +1755,7 @@
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
+        "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
       story: [
         "The expedition follows a chain of routes occupied by shadow animals, crystal creatures, armored guardians, rune beasts, and eclipse hunters. The squad begins on Thornwood's Mossy Trail, then pushes through the Prism Heart, Sunken Crown, Caldera King, Midnight Court, and the broken approaches to Void Crown. Each region introduces a different enemy mix and final encounter; clearing all six means breaking the complete chain of regional blockades.",
         "You act as the squad commander rather than a fighter on the field. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle, and the other unlockable heroes each bring a specific targeting or support rule. Your job is to decide which six travel together and whether they belong in the front or back row before the automated clash begins.",
@@ -1763,7 +1763,7 @@
       systems: [
         "Formation: the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.",
         "Animal roles and squad links: attackers, healers, shields, team buffers, and faint effects resolve automatically. Matching roles activate a Voxel Squad Link that grants a small automatic battle bonus. Connected hits build a combo; every fourth connected hit is shown as a Critical Linked Hit and breaks a block, while Boss waves open with a visible warning. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.",
-        "Expedition relics: choose Maple Shield, Oak Seed, Shadow Claw, or Clover Leaf for a run-wide rule. A relic choice is free; spending 3 optional Diamonds only rerolls the offered choices.",
+        "Run planning: review the five-wave route, then reserve Supplies for the roles you want to carry through every wave.",
         "Temporary Supplies: each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.",
         "Permanent growth: cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold."
       ],
@@ -1771,7 +1771,7 @@
         "Choose an unlocked stage from the horizontal campaign rail; every fifth stage is marked as a Boss stage.",
         "Open Training when you want to spend saved Training Gold, unlock another normal hero, or inspect the permanent Team Level bonus.",
         "At deployment, tap an owned animal in the vertical backpack and then tap one of the six formation slots. Tap a placed animal to move or replace it.",
-        "Choose one expedition relic, then spend the run's Supplies on temporary upgrades for the animals you intend to field.",
+        "Spend the run's Supplies on temporary upgrades for the animals you intend to field.",
         "Press Start Battle. Attacks, healing, shields, row targeting, and faint abilities resolve automatically according to the chosen formation.",
         "A winning squad immediately meets the next wave. A loss costs one Heart and reopens preparation; reaching zero Hearts ends the run unless the optional revive is accepted.",
         "Clear the fifth wave to save the stage, Team XP, Training Gold, and the next unlocked stage. Use Next Stage, Retry, or Back to Stages from the Result panel."
@@ -1788,16 +1788,16 @@
         "Stages 26-30 use the full Void Crown roster. Stage 29 can field six enemies at once, matching the player's maximum squad size. The final wave of Stage 30 places the Void Crown Emperor beside rune, eclipse, and shadow escorts, testing row coverage, recovery, damage, and permanent training earned across the campaign."
       ],
       designNote:
-        "The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, relic selection, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay's turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.",
+        "The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay's turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.",
       parent:
         "Later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, the last deployed formation and slot positions, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.",
       faq: [
         ["Is Animal Auto Squad free to play?", "Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login."],
         ["What is the goal of each stage?", "Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss."],
-        ["Do I control attacks during battle?", "No. You control the roster, two-row positions, relic, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically."],
+        ["Do I control attacks during battle?", "No. You control the roster, two-row positions, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically."],
         ["Can I rearrange the squad between every wave?", "Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern."],
         ["What happens when I lose a wave?", "The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive."],
-        ["What do Diamonds do?", "Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them."],
+        ["What do Diamonds do?", "Diamonds are optional. They can revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them."],
         ["What progress is saved?", "The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."],
         ["What do Squad Links and battle warnings mean?", "Matching roles activate a Voxel Squad Link and a small automatic battle bonus. Connected hits build a combo; every fourth connected hit appears as a Critical Linked Hit and breaks a block. Boss waves begin with a visible warning."]
       ],
@@ -4400,7 +4400,7 @@
     noteTitle: "玩家與存檔說明",
     hideScoreBands: true,
     intro:
-      "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，選擇一件遠征聖物，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
+      "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
     story: [
       "遠征路線被影之獸、水晶生物、重甲守衛、符文獸與月蝕獵手分段占據。小隊從荊棘林的苔蘚小徑出發，接著深入棱晶之心、沉沒王冠、火山口之王、子夜王庭，最後沿著破碎天路抵達虛空王冠。每區都有不同的敵人組合與最終首領；完成六區代表解除整條遠征路線的封鎖。",
       "玩家扮演的是小隊指揮者，不是在戰鬥中直接操作某一名角色。星爪狐、泡泡鰭水獺、鼓肚熊貓、月帽貓頭鷹、苔殼烏龜與其他可解鎖英雄，都有明確的攻擊、治療、護盾或倒下效果。真正的任務是在交戰前決定由哪六名角色同行，以及誰應站在前排或後排。",
@@ -4408,7 +4408,7 @@
     systems: [
       "陣形：上方三格是前排，下方三格是後排。攻擊目標會受到站位影響；部分角色攻擊最前方敵人，月帽貓頭鷹會追擊後排，爆鬃獅則能橫掃整排。",
       "角色定位：攻擊、治療、護盾、全隊增益與倒下效果都會自動觸發。泡泡鰭水獺和彩虹跳兔會照顧受傷隊友，鼓肚熊貓與苔殼烏龜則能提高全隊承受傷害的能力。",
-      "遠征聖物：楓葉盾、橡樹種子、影爪與幸運草會改變整場遠征的規則。正常選擇免費；花費 3 顆鑽石只會重新抽選目前提供的聖物。",
+      "戰前規劃：先讀懂五波敵人與目標，再保留物資給想要一路帶到最後的角色定位。",
       "臨時物資：每場遠征以 12 點物資開始。在準備階段選取已擁有角色，可以購買只在本場有效的等級，增加攻擊與生命；戰鬥中取得的物資會保留在這場遠征內。",
       "永久成長：通過波次可獲得團隊經驗與訓練金幣。團隊等級會提供全員攻擊與生命加成；一般英雄使用訓練金幣解鎖與升級，最高 20 級，另有兩名進階英雄使用可選鑽石解鎖。"
     ],
@@ -4416,7 +4416,7 @@
       "在橫向滑動的關卡列選擇已解鎖關卡；每五關會標示一場 Boss 戰。",
       "需要永久強化時，進入訓練分頁使用訓練金幣、解鎖一般英雄，並查看團隊等級提供的全隊加成。",
       "出征後，先點角色背包中的動物，再點六個上場格之一完成配置；也可以點已上場角色重新移動或替換。",
-      "選擇一件遠征聖物，並把本場物資用在準備上場的角色，購買臨時攻擊與生命提升。",
+      "把本場物資用在準備上場的角色，購買臨時攻擊與生命提升。",
       "按下開始戰鬥後，攻擊、治療、護盾、整排攻擊與倒下能力會依照陣形自動結算。",
       "勝利後會直接出現下一波；失敗會扣一點生命並重新開放準備。生命歸零且不復活時，本場遠征結束。",
       "通過第五波後，系統會保存關卡、團隊經驗、訓練金幣與下一個解鎖關卡；結果畫面可選下一關、再試一次或回到關卡。"
@@ -4433,16 +4433,16 @@
       "第 26-30 關會使用完整的虛空王冠敵人陣容。第 29 關最多同時出現六名敵人，與玩家的最大編隊相同；第 30 關最後一波讓虛空王冠獅皇與符文、月蝕及暗影護衛同場，檢驗整排輸出、恢復、傷害與整段戰役累積的永久訓練。"
     ],
     designNote:
-      "自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標、聖物選擇與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。",
+      "自動戰鬥是刻意的設計選擇：戰鬥執行保持精簡，讓主要思考集中在陣形、定位互補、攻擊目標與永久訓練。勝利後直接銜接下一波，是為了讓五波像一場完整遠征，而不是五次反覆進出選單；失敗後重新開放準備，則讓玩家能回應問題，不必一直觀看同一套失敗配置。手機採點選角色再點格子的方式，桌面也能使用相同卡片操作。相較於回合制的《動物符文戰棋》或需要即時移動的《動物水晶生存者》，本作要求玩家先完成計畫，再從自動戰鬥結果判斷計畫是否有效。",
     parent:
       "後期關卡會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、上次出場陣容與位置、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。",
     faq: [
       ["動物自走小隊可以免費玩嗎？", "可以。30 關戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。"],
       ["每一關的目標是什麼？", "配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。"],
-      ["戰鬥時需要手動攻擊嗎？", "不用。玩家在戰前決定角色、前後排、聖物與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。"],
+      ["戰鬥時需要手動攻擊嗎？", "不用。玩家在戰前決定角色、前後排與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。"],
       ["每波之間都能重新排隊嗎？", "勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。"],
       ["輸掉一波會怎樣？", "本場會失去一點生命。生命尚未歸零時，可以調整陣容後再挑戰同一波；生命歸零時可結束遠征，或使用可選的 5 顆鑽石復活。"],
-      ["鑽石可以做什麼？", "鑽石只提供可選功能，包括重抽聖物、遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。"],
+      ["鑽石可以做什麼？", "鑽石只提供可選功能，包括遠征復活、解鎖兩名進階英雄與黃金外觀；一般關卡進度不需要鑽石。"],
       ["哪些進度會保存？", "瀏覽器會在本機保存已解鎖與完成關卡、上次出場陣容與位置、團隊等級與經驗、訓練金幣、已解鎖角色、角色永久等級、遠征紀錄與外觀選擇。"]
     ]
   };
@@ -7840,7 +7840,7 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，选择一件远征圣物，再观看小队依照站位与能力自动交战。战役共有 30 关，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第 5、10、15、20、25、30 关则各有一名专属区域 Boss。",
+    "intro": "《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，再观看小队依照站位与能力自动交战。战役共有 30 关，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第 5、10、15、20、25、30 关则各有一名专属区域 Boss。",
     "story": [
       "远征路线被影之兽、水晶生物、重甲守卫、符文兽与月蚀猎手分段占据。小队从荆棘林的苔藓小径出发，接著深入棱晶之心、沉没王冠、火山口之王、子夜王庭，最后沿著破碎天路抵达虚空王冠。每区都有不同的敌人组合与最终首领；完成六区代表解除整条远征路线的封锁。",
       "玩家扮演的是小队指挥者，不是在战斗中直接操作某一名角色。星爪狐、泡泡鳍水獭、鼓肚熊猫、月帽猫头鹰、苔壳乌龟与其他可解锁英雄，都有明确的攻击、治疗、护盾或倒下效果。真正的任务是在交战前决定由哪六名角色同行，以及谁应站在前排或后排。"
@@ -7848,7 +7848,7 @@
     "systems": [
       "阵形：上方三格是前排，下方三格是后排。攻击目标会受到站位影响；部分角色攻击最前方敌人，月帽猫头鹰会追击后排，爆鬃狮则能横扫整排。",
       "角色定位：攻击、治疗、护盾、全队增益与倒下效果都会自动触发。泡泡鳍水獭和彩虹跳兔会照顾受伤队友，鼓肚熊猫与苔壳乌龟则能提高全队承受伤害的能力。",
-      "远征圣物：枫叶盾、橡树种子、影爪与幸运草会改变整场远征的规则。正常选择免费；花费 3 颗钻石只会重新抽选目前提供的圣物。",
+      "战前规划：先读懂五波敌人与目标，再保留物资给想要一路带到最后的角色定位。",
       "临时物资：每场远征以 12 点物资开始。在准备阶段选取已拥有角色，可以购买只在本场有效的等级，增加攻击与生命；战斗中取得的物资会保留在这场远征内。",
       "永久成长：通过波次可获得团队经验与训练金币。团队等级会提供全员攻击与生命加成；一般英雄使用训练金币解锁与升级，最高 20 级，另有两名进阶英雄使用可选钻石解锁。"
     ],
@@ -7856,7 +7856,7 @@
       "在横向滑动的关卡列选择已解锁关卡；每五关会标示一场 Boss 战。",
       "需要永久强化时，进入训练分页使用训练金币、解锁一般英雄，并查看团队等级提供的全队加成。",
       "出征后，先点角色背包中的动物，再点六个上场格之一完成配置；也可以点已上场角色重新移动或替换。",
-      "选择一件远征圣物，并把本场物资用在准备上场的角色，购买临时攻击与生命提升。",
+      "把本场物资用在准备上场的角色，购买临时攻击与生命提升。",
       "按下开始战斗后，攻击、治疗、护盾、整排攻击与倒下能力会依照阵形自动结算。",
       "胜利后会直接出现下一波；失败会扣一点生命并重新开放准备。生命归零且不复活时，本场远征结束。",
       "通过第五波后，系统会保存关卡、团队经验、训练金币与下一个解锁关卡；结果画面可选下一关、再试一次或回到关卡。"
@@ -7872,7 +7872,7 @@
       "第 16-25 关增加同时上场的敌人数与能力组合。烬火峰会混合冲锋野猪、黑曜重兽、裂隙迅兽与符文狼；月光城塞则加入夜影黑豹、月蚀蝙蝠、符文乌鸦与暗影美洲豹。Boss 波还带有护卫，因此不能只处理中央首领。",
       "第 26-30 关会使用完整的虚空王冠敌人阵容。第 29 关最多同时出现六名敌人，与玩家的最大编队相同；第 30 关最后一波让虚空王冠狮皇与符文、月蚀及暗影护卫同场，检验整排输出、恢复、伤害与整段战役累积的永久训练。"
     ],
-    "designNote": "自动战斗是刻意的设计选择：战斗执行保持精简，让主要思考集中在阵形、定位互补、攻击目标、圣物选择与永久训练。胜利后直接衔接下一波，是为了让五波像一场完整远征，而不是五次反复进出选单；失败后重新开放准备，则让玩家能回应问题，不必一直观看同一套失败配置。手机采点选角色再点格子的方式，桌面也能使用相同卡片操作。相较于回合制的《动物符文战棋》或需要即时移动的《动物水晶生存者》，本作要求玩家先完成计划，再从自动战斗结果判断计划是否有效。",
+    "designNote": "自动战斗是刻意的设计选择：战斗执行保持精简，让主要思考集中在阵形、定位互补、攻击目标与永久训练。胜利后直接衔接下一波，是为了让五波像一场完整远征，而不是五次反复进出选单；失败后重新开放准备，则让玩家能回应问题，不必一直观看同一套失败配置。手机采点选角色再点格子的方式，桌面也能使用相同卡片操作。相较于回合制的《动物符文战棋》或需要即时移动的《动物水晶生存者》，本作要求玩家先完成计划，再从自动战斗结果判断计划是否有效。",
     "parent": "后期关卡会同时组合六人阵形、特殊攻击目标、永久升级、战斗失败压力、Boss 能力与可选钻石决策。关卡进度、上次出场阵容与位置、训练金币、团队等级、已解锁角色、角色永久等级、已完成关卡与外观选择，都会储存在目前浏览器本机；基本游玩不需要登入。清除本站的浏览器储存资料可能会移除这些本机进度。",
     "faq": [
       [
@@ -7885,7 +7885,7 @@
       ],
       [
         "战斗时需要手动攻击吗？",
-        "不用。玩家在战前决定角色、前后排、圣物与临时升级，之后动物会依照能力自动攻击、治疗、加盾与触发效果。"
+        "不用。玩家在战前决定角色、前后排与临时升级，之后动物会依照能力自动攻击、治疗、加盾与触发效果。"
       ],
       [
         "每波之间都能重新排队吗？",
@@ -7897,7 +7897,7 @@
       ],
       [
         "钻石可以做什么？",
-        "钻石只提供可选功能，包括重抽圣物、远征复活、解锁两名进阶英雄与黄金外观；一般关卡进度不需要钻石。"
+        "钻石只提供可选功能，包括远征复活、解锁两名进阶英雄与黄金外观；一般关卡进度不需要钻石。"
       ],
       [
         "哪些进度会保存？",
@@ -12152,7 +12152,7 @@
     guideKicker: "دليل ألعاب WeightPlay الأصلية",
     guideTitleSuffix: "دليل اللعبة",
     noteTitle: "معلومات اللاعب والحفظ",
-    intro: "فرقة الحيوانات الآلية لعبة استراتيجية لتشكيل الفريق، وتدور حول القرارات التي تتخذها قبل القتال. درّب عشرة أبطال من الحيوانات، وضع ما يصل إلى ستة منهم في صفين، واختر أثرًا للرحلة، ثم شاهد التشكيلة تحسم كل مواجهة تلقائيًا. تضم الحملة 30 مرحلة عبر غابة الشوك والكهوف البلورية والآثار الغارقة وقمة الجمر وقلعة ضوء القمر وتاج الفراغ. لكل مرحلة خمس موجات من تصميمنا، وتنتهي المراحل 5 و10 و15 و20 و25 و30 بزعيم إقليمي مختلف.",
+    intro: "فرقة الحيوانات الآلية لعبة استراتيجية لتشكيل الفريق، وتدور حول القرارات التي تتخذها قبل القتال. درّب عشرة أبطال من الحيوانات، وضع ما يصل إلى ستة منهم في صفين، ثم شاهد التشكيلة تحسم كل مواجهة تلقائيًا. تضم الحملة 30 مرحلة عبر غابة الشوك والكهوف البلورية والآثار الغارقة وقمة الجمر وقلعة ضوء القمر وتاج الفراغ. لكل مرحلة خمس موجات من تصميمنا، وتنتهي المراحل 5 و10 و15 و20 و25 و30 بزعيم إقليمي مختلف.",
     story: [
       "تتبع الرحلة سلسلة من المسارات التي تحتلها حيوانات الظل ومخلوقات البلور والحراس المدرعون ووحوش الرون وصيادو الكسوف. تبدأ الفرقة من درب الطحلب في غابة الشوك، ثم تعبر قلب المنشور والتاج الغارق وملك الكالديرا ومحكمة منتصف الليل والطرق المحطمة المؤدية إلى تاج الفراغ. لكل منطقة مزيج أعداء ومواجهة نهائية مختلفة؛ وإكمال المناطق الست يعني كسر سلسلة الحواجز الإقليمية كاملة.",
       "أنت قائد الفرقة ولست مقاتلًا في الميدان. لكل بطل قابل للفتح قاعدة استهداف أو دعم خاصة. مهمتك أن تقرر أي ستة سيسافرون معًا، وهل ينتمون إلى الصف الأمامي أم الخلفي قبل بدء الاشتباك الآلي."
@@ -12160,7 +12160,7 @@
     systems: [
       "التشكيل: الخانات الثلاث العلوية للصف الأمامي والخانات الثلاث السفلية للصف الخلفي. يهم الاستهداف لأن بعض الوحدات تهاجم العدو المتصدر، ويطارد بوم ماني ليون الصف الخلفي، ويمسح صفًا كاملًا.",
       "أدوار الحيوانات: يطبّق المهاجمون والمعالجون والحماة وداعمو الفريق وتأثيرات السقوط تلقائيًا. يحمي Bubble Fin Otter وRainbow Hop Rabbit الحلفاء الضعفاء، بينما يزيد Drum Belly Panda وMoss Shell Turtle متانة الفريق.",
-      "آثار الرحلة: اختر Maple Shield أو Oak Seed أو Shadow Claw أو Clover Leaf لقاعدة تستمر طوال الرحلة. اختيار الأثر مجاني، وإعادة العروض بثلاثة ألماسات اختيارية فقط.",
+      "التخطيط قبل المعركة: راجع موجات الأعداء الخمس واحتفظ بالإمدادات للأدوار التي تريد الحفاظ عليها حتى النهاية.",
       "الإمدادات المؤقتة: تبدأ كل رحلة بـ12 إمدادًا. اختر حيوانًا تملكه أثناء التحضير لشراء مستوى مؤقت يضيف الهجوم والصحة لهذه الرحلة، وتبقى الإمدادات المكتسبة في القتال جزءًا من الجولة الحالية.",
       "النمو الدائم: تمنح الموجات المكتملة خبرة الفريق وذهب التدريب. تضيف مستويات الفريق مكافآت هجوم وصحة مشتركة، ويفتح ذهب التدريب الأبطال العاديين ويطوّرهم حتى المستوى 20. يستخدم بطلا النخبة الألماسات الاختيارية بدل ذهب التدريب."
     ],
@@ -12168,7 +12168,7 @@
       "اختر مرحلة مفتوحة من شريط الحملة الأفقي؛ كل مرحلة خامسة تحمل علامة زعيم.",
       "افتح التدريب عندما تريد إنفاق ذهب التدريب المحفوظ أو فتح بطل عادي آخر أو فحص مكافأة مستوى الفريق الدائمة.",
       "أثناء النشر، اضغط حيوانًا تملكه في الحقيبة العمودية ثم اضغط إحدى خانات التشكيل الست. اضغط الحيوان الموضوع لنقله أو استبداله.",
-      "اختر أثر رحلة واحدًا، ثم أنفق إمدادات الجولة على ترقيات مؤقتة للحيوانات التي تنوي استخدامها.",
+      "أنفق إمدادات الجولة على ترقيات مؤقتة للحيوانات التي تنوي استخدامها.",
       "اضغط بدء القتال. تُحسم الهجمات والعلاج والحواجز واستهداف الصف وتأثيرات السقوط تلقائيًا وفق التشكيل المختار.",
       "تواجه الفرقة الفائزة الموجة التالية فورًا. تخسر الخسارة قلبًا واحدًا وتعيد فتح التحضير؛ وعند وصول القلوب إلى الصفر تنتهي الجولة ما لم تقبل الإحياء الاختياري.",
       "أكمل الموجة الخامسة لحفظ المرحلة وخبرة الفريق وذهب التدريب وفتح المرحلة التالية. استخدم المرحلة التالية أو أعد المحاولة أو العودة إلى المراحل من لوحة النتيجة."
@@ -12184,15 +12184,15 @@
       "تضيف المراحل 6–15 أعداء الكهوف البلورية والآثار الغارقة الذين يهاجمون الصف الخلفي أو يستنزفون الصحة أو يمسحون الصفوف أو يختبئون خلف حراس متينين.",
       "تستخدم المراحل 16–30 تشكيلات كاملة وتداخلًا أكبر بين القدرات، وتختبر تغطية الصفوف والتعافي والضرر والتدريب الدائم مع أعداء وزعماء مؤلفين."
     ],
-    designNote: "القتال الآلي مقصود: التنفيذ قصير حتى يتركز العمل المهم على التشكيل وتغطية الأدوار وترتيب الأهداف واختيار الأثر والتدريب طويل الأمد. تنتقل الموجة الناجحة مباشرة إلى التالية لتشعر المرحلة ذات الموجات الخمس كرحلة واحدة، بينما يعيد الفشل فتح التحضير كي تستجيب بدل مشاهدة الإعداد نفسه يفشل. يدعم الاختيار باللمس اللعب على الهاتف، وتبقى البطاقات قابلة للاستخدام بالماوس على الحاسوب.",
+    designNote: "القتال الآلي مقصود: التنفيذ قصير حتى يتركز العمل المهم على التشكيل وتغطية الأدوار وترتيب الأهداف والتدريب طويل الأمد. تنتقل الموجة الناجحة مباشرة إلى التالية لتشعر المرحلة ذات الموجات الخمس كرحلة واحدة، بينما يعيد الفشل فتح التحضير كي تستجيب بدل مشاهدة الإعداد نفسه يفشل. يدعم الاختيار باللمس اللعب على الهاتف، وتبقى البطاقات قابلة للاستخدام بالماوس على الحاسوب.",
     parent: "تُحفظ الحملة والتشكيل الأخير ومواضع الخانات وذهب التدريب ومستوى الفريق والحيوانات المفتوحة ومستوياتها الدائمة والمراحل المكتملة والاختيار التجميلي محليًا في هذا المتصفح؛ لا يلزم تسجيل الدخول للعب الأساسي. قد يؤدي مسح تخزين المتصفح إلى إزالة التقدم المحلي.",
     faq: [
       ["هل فرقة الحيوانات الآلية مجانية؟", "نعم. تعمل حملة المراحل الثلاثين في متصفح WeightPlay من دون شراء أو تسجيل دخول إلزامي."],
       ["ما هدف كل مرحلة؟", "كوّن فرقة تصمد أمام خمس موجات متصلة. حفظ الموجة الخامسة المرحلة ويفتح التالية، وتنتهي كل مرحلة خامسة بزعيم إقليمي."],
-      ["هل أتحكم في الهجمات أثناء القتال؟", "لا. تتحكم في الأبطال والصفين والأثر والترقيات المؤقتة قبل القتال، ثم تهاجم الحيوانات وتعالج وتحمي وتطلق قدراتها تلقائيًا."],
+      ["هل أتحكم في الهجمات أثناء القتال؟", "لا. تتحكم في الأبطال والصفين والترقيات المؤقتة قبل القتال، ثم تهاجم الحيوانات وتعالج وتحمي وتطلق قدراتها تلقائيًا."],
       ["هل يمكنني إعادة ترتيب الفرقة بين كل موجة؟", "تنتقل الجولة الفائزة مباشرة إلى الموجة التالية. يعاد فتح التحضير بعد الخسارة أو التعادل ما دامت القلوب متبقية."],
       ["ماذا يحدث عند خسارة موجة؟", "تخسر الجولة قلبًا واحدًا. مع بقاء القلوب يمكنك تعديل الفرقة وإعادة المحاولة؛ وعند الصفر يمكنك إنهاء الجولة أو استخدام إحياء اختياري بخمسة ألماسات."],
-      ["ماذا تفعل الألماسات؟", "الألماسات اختيارية. يمكنها إعادة عروض الآثار أو إحياء رحلة فاشلة أو فتح بطلي نخبة أو مظهر ذهبي؛ ولا تحتاج إليها لتقدم المراحل العادية."],
+      ["ماذا تفعل الألماسات؟", "الألماسات اختيارية. يمكنها إحياء رحلة فاشلة أو فتح بطلي نخبة أو مظهر ذهبي؛ ولا تحتاج إليها لتقدم المراحل العادية."],
       ["ما التقدم المحفوظ؟", "يحفظ المتصفح المراحل المفتوحة والمكتملة والتشكيل الأخير ومستوى الفريق وخبرته وذهب التدريب والحيوانات المفتوحة ومستوياتها الدائمة وسجلات الرحلات والاختيار التجميلي على هذا الجهاز."]
     ],
     skills: ["المنطق", "حل المشكلات", "التخطيط الاستراتيجي"],
