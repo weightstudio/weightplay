@@ -63,6 +63,7 @@ body[data-wp-card-game="old-maid"] #cardGameHand .playing-card {
      nor LTR players need to scroll before choosing a hidden card. */
   body[data-wp-card-game="old-maid"] .card-opponents {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: repeat(3, minmax(0, 1fr));
     gap: 3px;
     overflow: hidden;
@@ -74,11 +75,17 @@ body[data-wp-card-game="old-maid"] #cardGameHand .playing-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    line-height: 1.1;
+    line-height: 1.05;
+  }
+  body[data-wp-card-game="old-maid"] .opponent-card strong {
+    font-size: 12px;
+    line-height: 1.05;
   }
   body[data-wp-card-game="old-maid"] .opponent-card span {
     margin-top: 1px;
     font-size: 11px;
+    line-height: 1.05;
+    white-space: nowrap;
   }
   body[data-wp-card-game="old-maid"] #cardGameTable {
     justify-content: flex-start;
