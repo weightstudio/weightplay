@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-orb-fortress/" />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
@@ -15,11 +14,11 @@
     <meta property="og:title" content="Forteresse des Orbes | WeightPlay" />
     <meta property="og:description" content="Forteresse des Orbes Animales est une campagne de défense par ricochets composée de 30 parcours. Il faut lire l&#39;arène avant de lancer un orbe spirituel...." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-orb-fortress/" />
-    <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Forteresse des Orbes | WeightPlay" />
     <meta name="twitter:description" content="Forteresse des Orbes Animales est une campagne de défense par ricochets composée de 30 parcours. Il faut lire l&#39;arène avant de lancer un orbe spirituel...." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <title>Forteresse des Orbes | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-orb-fortress/" />
@@ -36,12 +35,12 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orb-fortress/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Forteresse des Orbes","alternateName":"動物星珠要塞","url":"https://weightplay.com/fr/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover.png","description":"Forteresse des Orbes Animales est une campagne de défense par ricochets composée de 30 parcours. Il faut lire l'arène avant de lancer un orbe spirituel....","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Ricochets","Stratégie d'action","Roguelite","Animaux","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Forteresse des Orbes","alternateName":"動物星珠要塞","url":"https://weightplay.com/fr/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp","description":"Forteresse des Orbes Animales est une campagne de défense par ricochets composée de 30 parcours. Il faut lire l'arène avant de lancer un orbe spirituel....","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Ricochets","Stratégie d'action","Roguelite","Animaux","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="style.css?v=20260909-orb-screen-contract-v25" />
+    <link rel="stylesheet" href="style.css?v=20260910-orb-block-v26-combat1" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
@@ -74,7 +73,7 @@
       </section>
 
       <section id="menuPanel" class="panel menu-panel" data-screen="main">
-        <img class="cover" src="../../assets/animal-orb-fortress-cover-block-v1.png" alt="Illustration du jeu Forteresse des Orbes" />
+        <img class="cover" src="../../assets/animal-orb-fortress-cover-block-v1.webp" alt="Illustration du jeu Forteresse des Orbes" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
           <span data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
@@ -82,7 +81,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../../assets/animal-orb-fortress-arena-block-v2.png')" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-label="Raid map" aria-hidden="true" inert hidden>
+      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-orb-fortress-arena-block-v2.png')" aria-label="Raid map" aria-hidden="true" inert hidden>
         <header class="stage-header">
           <button id="stageBackBtn" class="secondary-btn play-return" type="button" data-wp-return="stage" aria-label="Return to main">&larr;</button>
           <div>
@@ -96,10 +95,19 @@
             <div><span data-ui="starStones">Star Stones</span><strong id="starStoneText">0</strong></div>
             <div><span data-ui="diamonds">Diamonds</span><strong id="diamondText">0</strong></div>
           </div>
-          <div id="stageRail" class="stage-rail" aria-label="Raid tiers" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep"></div>
-          <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
-          <div id="roomGrid" class="room-grid" aria-label="Fortress rooms"></div>
-        </div><nav class="stage-tabs" aria-label="Raid map sections"><button type="button" role="tab" aria-selected="true" data-ui="raidMap">Raid Map</button></nav></section>
+          <section id="stageRaidView" class="stage-view-panel stage-view-panel-raid is-active" data-stage-view-panel="raid" role="tabpanel" aria-labelledby="stageRaidTab">
+            <div id="stageRail" class="stage-rail" aria-label="Raid tiers" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep"></div>
+          </section>
+          <section id="stageWorkshopView" class="stage-view-panel stage-view-panel-workshop" data-stage-view-panel="workshop" role="tabpanel" aria-labelledby="stageWorkshopTab" hidden aria-hidden="true" inert>
+            <strong class="workshop-title" data-ui="fortressWorkshop">Fortress Workshop</strong>
+            <div id="roomGrid" class="room-grid" aria-label="Fortress rooms"></div>
+          </section>
+        </div>
+        <nav class="stage-tabs" role="tablist" aria-label="Raid map sections">
+          <button id="stageRaidTab" type="button" role="tab" aria-selected="true" aria-controls="stageRaidView" tabindex="0" data-stage-view="raid" data-ui="raidMap">Raid Map</button>
+          <button id="stageWorkshopTab" type="button" role="tab" aria-selected="false" aria-controls="stageWorkshopView" tabindex="-1" data-stage-view="workshop" data-ui="fortressWorkshop">Fortress Workshop</button>
+        </nav>
+      </section>
 
       <section id="gamePanel" class="panel game-panel battle-screen is-hidden" data-screen="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-play-viewport aria-hidden="true" inert hidden>
         <div id="battleLive" class="battle-live">
@@ -107,11 +115,11 @@
           <button id="battleBackBtn" class="secondary-btn play-return" type="button" data-wp-return="battle" aria-label="Return to raid map">&larr;</button>
           <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
           <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
-          <div class="shots-stat"><span data-ui="shots">Shots</span><strong id="shotText">0</strong><em id="comboText" class="combo-text" aria-live="polite">×1</em></div>
+          <div class="shots-stat" id="orbStat"><div class="shot-line"><span data-ui="shots">Shots</span><strong id="shotText">0</strong><em id="comboText" class="combo-text" aria-live="polite">×1</em></div><div class="orb-line"><span data-ui="orbCount">Orbs</span><strong id="orbCountText">0/4</strong></div><div id="orbPips" class="orb-pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
           <button id="assistBtn" class="secondary-btn aim-assist-btn" type="button" aria-pressed="true" data-ui="aimAssistShort">AIM+</button>
           <button id="pauseBtn" class="secondary-btn pause-btn" type="button" aria-label="Pause">&#10074;&#10074;</button>
         </div>
-        <canvas id="gameCanvas" data-wp-primary-action width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText" aria-keyshortcuts="ArrowLeft ArrowRight Space Enter"></canvas>
+        <canvas id="gameCanvas" width="960" height="540" tabindex="0" data-wp-primary-action aria-label="Animal Orb Fortress arena" aria-describedby="hintText" aria-keyshortcuts="ArrowLeft ArrowRight Space Enter"></canvas>
         <div id="hintText" class="hint" data-ui="aimHint" aria-live="polite">Drag from the launcher, preview the bounce path, then release.</div>
         </div>
         <section id="upgradePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="upgradeTitle" aria-describedby="upgradeStatus" aria-hidden="true" inert hidden>
@@ -150,14 +158,14 @@
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
-    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-orb-fortress", game_version: "v25", locale: document.documentElement.lang || "en", viewport_bucket: (innerWidth || 0) <= 480 ? "phone" : (innerWidth || 0) <= 900 ? "tablet" : "desktop", release_state: "playable_release_candidate" });</script>
+    <script>window.WonderAnalytics?.track("game_view", { game_id: "animal-orb-fortress", game_version: "v26", locale: document.documentElement.lang || "en", viewport_bucket: (innerWidth || 0) <= 480 ? "phone" : (innerWidth || 0) <= 900 ? "tablet" : "desktop", release_state: "playable_release_candidate" });</script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/fr.js?v=20260904-wp-text-growth-body-v1"></script>
+    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/fr.js?v=20260904-wp-text-growth-body-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-<script src="game.js?v=20260910-orb-block-v25-block2"></script>
+<script src="game.js?v=20260910-orb-block-v26-combat1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
       (() => {

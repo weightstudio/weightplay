@@ -167,7 +167,7 @@ body[data-screen="stage"] .stage-ad-reserve { display:block; }
   .stage-summary { gap:0; margin:6px 0; padding:5px 10px; }
   .stage-summary span { font-size:11px; line-height:1.2; }
   .stage-tabs { margin:4px 0; }
-  .stage-tabs button { min-height:40px; }
+  .stage-tabs button { min-height:44px; }
   .chapter-map { max-height:calc(100% - 142px); }
   .chapter-card { padding:8px; }
   .chapter-card > p { min-height:0; margin-bottom:5px; font-size:11px; }

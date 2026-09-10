@@ -156,6 +156,14 @@
       actionCritical: "CRITICAL",
       actionCombo: "LINKED HIT",
       blockBreak: "BLOCK BREAK",
+      tacticBalanced: "Balanced",
+      tacticFocus: "Focus fire",
+      tacticGuard: "Guard line",
+      tacticAria: "Change auto-battle tactic",
+      tacticNotice: "Tactic: {tactic}",
+      hitShort: "HIT",
+      blockedShort: "BLOCK",
+      koShort: "KO",
       savedProgress: "Saved Progress",
       resultXpEarned: "Team XP +{earned} · Lv.{level} · XP {xp}/{goal}",
       resultGoldEarned: "Training Gold +{earned} · Total {total}",
@@ -646,6 +654,22 @@
     }
   };
   Object.entries(paceCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
+
+  const tacticCopy = {
+    en: { tacticBalanced: "Balanced", tacticFocus: "Focus fire", tacticGuard: "Guard line", tacticAria: "Change auto-battle tactic", tacticNotice: "Tactic: {tactic}" },
+    "zh-Hant": { tacticBalanced: "平衡", tacticFocus: "集火", tacticGuard: "防守", tacticAria: "切換自動戰鬥策略", tacticNotice: "策略：{tactic}" },
+    "zh-Hans": { tacticBalanced: "平衡", tacticFocus: "集火", tacticGuard: "防守", tacticAria: "切换自动战斗策略", tacticNotice: "策略：{tactic}" },
+    ja: { tacticBalanced: "バランス", tacticFocus: "集中攻撃", tacticGuard: "守備", tacticAria: "自動戦闘の戦術を変更", tacticNotice: "戦術：{tactic}" },
+    ko: { tacticBalanced: "균형", tacticFocus: "집중 공격", tacticGuard: "수비선", tacticAria: "자동 전투 전술 변경", tacticNotice: "전술: {tactic}" },
+    es: { tacticBalanced: "Equilibrado", tacticFocus: "Fuego concentrado", tacticGuard: "Línea defensiva", tacticAria: "Cambiar táctica automática", tacticNotice: "Táctica: {tactic}" },
+    fr: { tacticBalanced: "Équilibre", tacticFocus: "Concentration", tacticGuard: "Ligne défensive", tacticAria: "Changer la tactique automatique", tacticNotice: "Tactique : {tactic}" },
+    de: { tacticBalanced: "Ausgeglichen", tacticFocus: "Fokusfeuer", tacticGuard: "Schutzlinie", tacticAria: "Auto-Kampftaktik ändern", tacticNotice: "Taktik: {tactic}" },
+    it: { tacticBalanced: "Equilibrata", tacticFocus: "Fuoco concentrato", tacticGuard: "Linea difensiva", tacticAria: "Cambia tattica automatica", tacticNotice: "Tattica: {tactic}" },
+    ru: { tacticBalanced: "Баланс", tacticFocus: "Фокус", tacticGuard: "Оборона", tacticAria: "Сменить тактику автобоя", tacticNotice: "Тактика: {tactic}" },
+    hi: { tacticBalanced: "संतुलित", tacticFocus: "एक लक्ष्य", tacticGuard: "रक्षा पंक्ति", tacticAria: "स्वचालित युद्ध रणनीति बदलें", tacticNotice: "रणनीति: {tactic}" },
+    ar: { tacticBalanced: "متوازن", tacticFocus: "تركيز الهجوم", tacticGuard: "خط دفاعي", tacticAria: "تغيير تكتيك القتال التلقائي", tacticNotice: "التكتيك: {tactic}" },
+  };
+  Object.entries(tacticCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
 
   const stallRecoveryCopy = {
     en: {
@@ -1460,6 +1484,7 @@
     combatStatusText: $("combatStatusText"),
     combatSummary: $("combatSummary"),
     combatPaceBtn: $("combatPaceBtn"),
+    combatTacticBtn: $("combatTacticBtn"),
     combatPaceHint: $("combatPaceHint"),
     foodGuide: $("foodGuide"),
     prepNotice: $("prepNotice"),
@@ -1498,9 +1523,12 @@
   // damage and Otter healing for both new and existing saves.
   const STARTER_ANIMAL_IDS = [0, 1, 3];
   const PREMIUM_ANIMAL_IDS = [8, 9];
-  const COMBAT_HEALTH_BAR_HEIGHT = 28;
-  const COMBAT_HEALTH_FONT_SIZE = 20;
-  const COMBAT_SWIFT_PACE_MULTIPLIER = 1.75;
+  const COMBAT_HEALTH_BAR_HEIGHT = 24;
+  const COMBAT_HEALTH_FONT_SIZE = 17;
+  const COMBAT_SWIFT_PACE_MULTIPLIER = 1.55;
+  const COMBAT_STEP_INTERVAL_FRAMES = 42;
+  const COMBAT_HIT_STOP_FRAMES = 5;
+  const COMBAT_EFFECT_LIMIT = 80;
   const ANIMAL_UNLOCK_COSTS = {
     2: 25,
     3: 30,
@@ -1612,6 +1640,14 @@
     actionCritical: "暴擊",
     actionCombo: "連攜命中",
     blockBreak: "方塊破裂",
+    tacticBalanced: "平衡",
+    tacticFocus: "集火",
+    tacticGuard: "防守",
+    tacticAria: "切換自動戰鬥策略",
+    tacticNotice: "策略：{tactic}",
+    hitShort: "命中",
+    blockedShort: "格擋",
+    koShort: "擊倒",
     owned: "\u5df2\u64c1\u6709",
     deployed: "\u5df2\u4e0a\u9663",
     locked: "\u672a\u89e3\u9396",
@@ -2349,10 +2385,12 @@
         status: "",
         animating: false,
         pace: "standard",
+        tactic: "balanced",
         ending: false,
         resolved: false,
         runId: 0,
         timer: 0,
+        hitStopFrames: 0,
         playerActiveIndex: 0,
         enemyActiveIndex: 0,
         shakeFrames: 0,
@@ -2370,7 +2408,8 @@
         noProgressSteps: 0,
         progressSignature: "",
         stallEnded: false,
-        effects: [] // visual particle FX
+        effects: [], // visual particle FX
+        impactPulse: 0
       },
       earnedTeamXp: 0,
       earnedTrainingCoins: 0
@@ -2771,39 +2810,39 @@
 
   // Preloading required sheets
   const assetsToLoad = {
-    cover: "../../assets/animal-auto-squad-cover-block-v2.png",
-    bg: "../../assets/animal-auto-squad-arena-block-v1.png",
+    cover: "../../assets/animal-auto-squad-cover-block-v2.webp",
+    bg: "../../assets/animal-auto-squad-arena-block-v1.webp",
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
     fxV2: "../../assets/animal-auto-squad-fx-v2.webp",
-    sparkFox: "../../assets/weightplay-character-spark-paw-fox-block-v1.png",
-    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-block-v1.png",
-    drumPanda: "../../assets/weightplay-character-drum-belly-panda-block-v1.png",
-    moonOwl: "../../assets/weightplay-character-moon-cap-owl-block-v1.png",
-    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-block-v1.png",
-    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit-block-v1.png",
-    gearRhino: "../../assets/weightplay-character-gear-horn-rhino-block-v1.png",
-    boomLion: "../../assets/weightplay-character-boom-mane-lion-block-v1.png",
+    sparkFox: "../../assets/weightplay-character-spark-paw-fox-block-v1.webp",
+    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-block-v1.webp",
+    drumPanda: "../../assets/weightplay-character-drum-belly-panda-block-v1.webp",
+    moonOwl: "../../assets/weightplay-character-moon-cap-owl-block-v1.webp",
+    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-block-v1.webp",
+    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp",
+    gearRhino: "../../assets/weightplay-character-gear-horn-rhino-block-v1.webp",
+    boomLion: "../../assets/weightplay-character-boom-mane-lion-block-v1.webp",
     sparkCaptain: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
     rhinoGuardian: "../../assets/weightplay-character-rhino-guardian-cutout.webp",
-    enemyFoxScout: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyCrystalCrow: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyArmoredBoar: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyRootGuardian: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyShadowBasic: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyShadowRunner: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyShadowTank: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyShadowPanther: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyRuneWolf: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyRuneRaven: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyEclipseBat: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    enemyShadowJaguar: "../../assets/animal-auto-squad-enemy-block-v1.png",
-    bossThornwood: "../../assets/animal-auto-squad-boss-block-v1.png",
-    bossPrism: "../../assets/animal-auto-squad-boss-block-v1.png",
-    bossAbyss: "../../assets/animal-auto-squad-boss-block-v1.png",
-    bossMagma: "../../assets/animal-auto-squad-boss-block-v1.png",
-    bossEclipse: "../../assets/animal-auto-squad-boss-block-v1.png",
-    bossVoid: "../../assets/animal-auto-squad-boss-block-v1.png",
+    enemyFoxScout: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyCrystalCrow: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyArmoredBoar: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyRootGuardian: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyShadowBasic: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyShadowRunner: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyShadowTank: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyShadowPanther: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyRuneWolf: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyRuneRaven: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyEclipseBat: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    enemyShadowJaguar: "../../assets/animal-auto-squad-enemy-block-v1.webp",
+    bossThornwood: "../../assets/animal-auto-squad-boss-block-v1.webp",
+    bossPrism: "../../assets/animal-auto-squad-boss-block-v1.webp",
+    bossAbyss: "../../assets/animal-auto-squad-boss-block-v1.webp",
+    bossMagma: "../../assets/animal-auto-squad-boss-block-v1.webp",
+    bossEclipse: "../../assets/animal-auto-squad-boss-block-v1.webp",
+    bossVoid: "../../assets/animal-auto-squad-boss-block-v1.webp",
     foodApple: "assets/food-apple.svg",
     foodHoney: "assets/food-honey.svg",
     foodMelon: "assets/food-melon.svg",

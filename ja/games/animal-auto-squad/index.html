@@ -36,7 +36,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"オート分隊","alternateName":"動物自走小隊","url":"https://weightplay.com/ja/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.png","description":"オート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Auto-Battler","Strategy","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"オート分隊","alternateName":"動物自走小隊","url":"https://weightplay.com/ja/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.webp","description":"オート分隊は、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略を楽しめるWeightPlayオリジナル作品です。画面に出る手がかりを読み、自分で次の一手を決めながら進めます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Auto-Battler","Strategy","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -75,7 +75,7 @@
 
       <!-- Menu / Start Section -->
       <section id="menuPanel" class="panel menu-panel">
-        <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="オート分隊のゲーム画像" />
+        <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.webp" alt="オート分隊のゲーム画像" />
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
@@ -208,7 +208,7 @@
 
         <!-- Final Run Result Screen: bounded Battle substate -->
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
-          <img class="result-lion" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="Result Lion Mascot" />
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover-block-v2.webp" alt="Result Lion Mascot" />
           <div class="result-copy">
             <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
             <p id="resultText" class="result-desc"></p>
@@ -244,7 +244,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260910-auto-squad-block-v33"></script>
+  <script src="game.js?v=20260910-auto-squad-combat-v34"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -271,7 +271,7 @@
       <div class="game-info-section"><h3>世界とミッション</h3><p>この冒険では、プレイヤーが動物の仲間を助ける案内役になります。目的を達成するには、目の前の状況を観察し、急がずに選択の結果を確かめることが大切です。</p>
 <p>各ステージや場面には新しい条件が加わります。成功はただ先へ進むことではなく、仲間の世界を安全に整え、次の挑戦へつながる記録を残すことを意味します。</p></div>
       <div class="game-info-section"><h3>ゲームの仕組み</h3><p>1回のプレイでは、役割の異なる仲間を前後に置き、波ごとに編成を磨く自走チーム戦略。表示される目標、残りの機会、相手や障害物の動きを確認してから操作してください。</p>
-<p>進行すると新しい組み合わせ、道具、敵、またはルールが現れます。結果画面では達成内容を確認して、次へ進むか同じ課題をもう一度試せます。</p>
+<p>役割とリンク：攻撃、回復、シールド、全体強化、戦闘不能効果は自動で解決します。同じ役割をそろえるとヴォクセル部隊リンクが発動し、小さな自動戦闘ボーナスを得ます。リンクしたヒットはコンボになり、4回目ごとにクリティカルリンクヒットとして表示されてブロックを壊します。ボスのウェーブ開始時には警告が表示されます。</p>
 <p>保存される進行はこのブラウザ内だけに残ります。ログインは必要ありません。</p></div>
       <div class="game-info-section"><h3>遊び方</h3><ol><li>メイン画面でスタートを選びます。</li><li>ステージがある作品では、開放済みのカードから挑戦を選びます。</li><li>画面のヒントと目標を読んで、タップ、ドラッグ、またはキーボードで操作します。</li><li>結果を確認し、次の挑戦またはリトライを選びます。</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初に目標と失敗条件を確認してから動きましょう。</li><li>一度に多くを急がず、手がかりが変わった場面で次の選択を考えましょう。</li><li>うまくいかなかった時は、直前の選択を見直して別の順番や位置を試しましょう。</li></ul></div>
@@ -279,8 +279,8 @@
 <p>数字だけを大きくするのではなく、観察、位置、順番、タイミングを使い分けるほど安定して進める構成です。</p></div>
       <div class="game-info-section"><h3>開発者メモ</h3><p>短いセッションでも、プレイヤー自身の判断が結果につながるよう設計しました。タッチ、マウス、キーボードで同じ目的に取り組め、画面の読みやすさと再挑戦のしやすさを大切にしています。</p></div>
       <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>このゲームはブラウザで遊べ、基本プレイにログインは必要ありません。進行やスコアはこの端末のブラウザに保存されます。表示される記録はゲーム内の振り返りであり、能力、医療、学習の正式な評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>星珠要塞は、狙いを定めて星珠を発射し、迫る敵の列を押し返す要塞防衛を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>無料で遊べますか？</dt><dd>はい。ブラウザで基本プレイを始められ、ログインは必要ありません。</dd></div><div><dt>進行は保存されますか？</dt><dd>対応する進行はこのブラウザにローカル保存されます。ブラウザのデータを消すと失われる場合があります。</dd></div><div><dt>スマートフォンでも遊べますか？</dt><dd>はい。タップとドラッグを使える画面に対応しています。</dd></div><div><dt>うまく進めない時は？</dt><dd>目標とヒントを確認し、位置、順番、またはタイミングを変えて再挑戦してください。</dd></div><div><dt>ゲームの記録は正式な能力テストですか？</dt><dd>いいえ。楽しむためのゲーム内記録であり、正式な評価ではありません。</dd></div><div><dt>アカウントは必要ですか？</dt><dd>いいえ。通常のプレイにアカウントは必要ありません。</dd></div><div><dt>リンクと戦闘警告は何を意味しますか？</dt><dd>同じ役割をそろえるとヴォクセル部隊リンクが発動して自動戦闘に小さなボーナスが付きます。リンクしたヒットはコンボになり、4回目ごとにクリティカルリンクヒットとしてブロックを壊します。ボスのウェーブ開始時には警告が表示されます。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>星珠要塞は、狙いを定めて星珠を発射し、迫る敵の列を押し返す要塞防衛を楽しめるWeightPlayオリジナル作品です。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
     </div>
   </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="オート分隊";document.title="オート分隊 | WeightPlay";},{once:true});</script>

@@ -36,7 +36,7 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"自走小队","alternateName":"動物自走小隊","url":"https://weightplay.com/zh-cn/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.png","description":"《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，选择一件远征圣物，再观看小队依照站位与能力自动交战。战役共有 30 关，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["自走战斗","编成策略","角色成长","动物","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"自走小队","alternateName":"動物自走小隊","url":"https://weightplay.com/zh-cn/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.webp","description":"《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，选择一件远征圣物，再观看小队依照站位与能力自动交战。战役共有 30 关，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"zh-Hans","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["自走战斗","编成策略","角色成长","动物","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -75,7 +75,7 @@
 
       <!-- Menu / Start Section -->
       <section id="menuPanel" class="panel menu-panel">
-        <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="《自走小队》游戏图片" />
+        <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.webp" alt="《自走小队》游戏图片" />
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
@@ -208,7 +208,7 @@
 
         <!-- Final Run Result Screen: bounded Battle substate -->
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-live="polite">
-          <img class="result-lion" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="Result Lion Mascot" />
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover-block-v2.webp" alt="Result Lion Mascot" />
           <div class="result-copy">
             <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
             <p id="resultText" class="result-desc"></p>
@@ -243,7 +243,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260910-auto-squad-block-v33"></script>
+  <script src="game.js?v=20260910-auto-squad-combat-v34"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -270,7 +270,7 @@
       <div class="game-info-section"><h3>世界与任务</h3><p>远征路线被影之兽、水晶生物、重甲守卫、符文兽与月蚀猎手分段占据。小队从荆棘林的苔藓小径出发，接着深入棱晶之心、沉没王冠、火山口之王、子夜王庭，最后沿着破碎天路抵达虚空王冠。每区都有不同的敌人组合与最终首领；完成六区代表解除整条远征路线的封锁。</p>
 <p>玩家扮演的是小队指挥者，不是在战斗中直接操作某一名角色。星爪狐、泡泡鳍水獭、鼓肚熊猫、月帽猫头鹰、苔壳乌龟与其他可解锁英雄，都有明确的攻击、治疗、护盾或倒下效果。真正的任务是在交战前决定由哪六名角色同行，以及谁应站在前排或后排。</p></div>
       <div class="game-info-section"><h3>游戏系统</h3><p>阵形：上方三格是前排，下方三格是后排。攻击目标会受到站位影响；部分角色攻击最前方敌人，月帽猫头鹰会追击后排，爆鬃狮则能横扫整排。</p>
-<p>角色定位：攻击、治疗、护盾、全队增益与倒下效果都会自动触发。泡泡鳍水獭和彩虹跳兔会照顾受伤队友，鼓肚熊猫与苔壳乌龟则能提高全队承受伤害的能力。</p>
+<p>角色与羁绊：攻击、治疗、护盾、全队增益与倒下效果会自动触发；凑齐相同定位可启动方块小队羁绊，提供小幅自动战斗加成。战斗中连携命中会累积，连续命中达到第 4 次时会显示暴击并破坏方块；首领波开始时会出现警示。泡泡鳍水獭和彩虹跳兔会照顾受伤队友，鼓肚熊猫与苔壳乌龟则能提高全队承受伤害的能力。</p>
 <p>远征圣物：枫叶盾、橡树种子、影爪与幸运草会改变整场远征的规则。正常选择免费；花费 3 颗钻石只会重新抽选目前提供的圣物。</p>
 <p>临时物资：每场远征以 12 点物资开始。在准备阶段选取已拥有角色，可以购买只在本场有效的等级，增加攻击与生命；战斗中获得的物资会保留在这场远征内。</p>
 <p>永久成长：通过波次可获得团队经验与训练金币。团队等级会提供全员攻击与生命加成；一般英雄使用训练金币解锁与升级，最高 20 级，另有两名进阶英雄使用可选钻石解锁。</p></div>
@@ -281,8 +281,8 @@
 <p>第 26-30 关会使用完整的虚空王冠敌人阵容。第 29 关最多同时出现六名敌人，与玩家的最大编队相同；第 30 关最后一波让虚空王冠狮皇与符文、月蚀及暗影护卫同场，检验整排输出、恢复、伤害与整段战役累积的永久训练。</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>自动战斗是刻意的设计选择：战斗执行保持精简，让主要思考集中在阵形、定位互补、攻击目标、圣物选择与永久训练。胜利后直接衔接下一波，是为了让五波像一场完整远征，而不是五次反复进出菜单；失败后重新开放准备，则让玩家能回应问题，不必一直观看同一套失败配置。手机采点选角色再点格子的方式，桌面也能使用相同卡片操作。相较于回合制的《动物符文战棋》或需要即时移动的《动物水晶生存者》，本作要求玩家先完成计划，再从自动战斗结果判断计划是否有效。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家与存档说明</h3><p>后期关卡会同时组合六人阵形、特殊攻击目标、永久升级、战斗失败压力、Boss 能力与可选钻石决策。关卡进度、上次出场阵容与位置、训练金币、团队等级、已解锁角色、角色永久等级、已完成关卡与外观选择，都会保存在目前浏览器本设备；基本游玩不需要登录。清除本站的浏览器保存数据可能会移除这些本设备进度。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>动物自走小队可以免费玩吗？</dt><dd>可以。30 关战役能直接在 WeightPlay 浏览器页面游玩，不要求购买或登录。</dd></div><div><dt>每一关的目标是什么？</dt><dd>配置能撑过五波连续敌人的小队。通过第五波便会保存关卡并解锁下一关；每五关的最后一波都有区域 Boss。</dd></div><div><dt>战斗时需要手动攻击吗？</dt><dd>不用。玩家在战前决定角色、前后排、圣物与临时升级，之后动物会依照能力自动攻击、治疗、加盾与触发效果。</dd></div><div><dt>每波之间都能重新排队吗？</dt><dd>胜利会直接进入下一波。只有失败或平手且仍有生命时，才会回到准备画面，因此初始阵容要能面对不只一种敌人排列。</dd></div><div><dt>输掉一波会怎样？</dt><dd>本场会失去一点生命。生命尚未归零时，可以调整阵容后再挑战同一波；生命归零时可结束远征，或使用可选的 5 颗钻石复活。</dd></div><div><dt>钻石可以做什么？</dt><dd>钻石只提供可选功能，包括重抽圣物、远征复活、解锁两名进阶英雄与黄金外观；一般关卡进度不需要钻石。</dd></div><div><dt>哪些进度会保存？</dt><dd>浏览器会在本设备保存已解锁与完成关卡、上次出场阵容与位置、团队等级与经验、训练金币、已解锁角色、角色永久等级、远征记录与外观选择。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的 30 关防守战役。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a></div></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>动物自走小队可以免费玩吗？</dt><dd>可以。30 关战役能直接在 WeightPlay 浏览器页面游玩，不要求购买或登录。</dd></div><div><dt>每一关的目标是什么？</dt><dd>配置能撑过五波连续敌人的小队。通过第五波便会保存关卡并解锁下一关；每五关的最后一波都有区域 Boss。</dd></div><div><dt>战斗时需要手动攻击吗？</dt><dd>不用。玩家在战前决定角色、前后排、圣物与临时升级，之后动物会依照能力自动攻击、治疗、加盾与触发效果。</dd></div><div><dt>每波之间都能重新排队吗？</dt><dd>胜利会直接进入下一波。只有失败或平手且仍有生命时，才会回到准备画面，因此初始阵容要能面对不只一种敌人排列。</dd></div><div><dt>输掉一波会怎样？</dt><dd>本场会失去一点生命。生命尚未归零时，可以调整阵容后再挑战同一波；生命归零时可结束远征，或使用可选的 5 颗钻石复活。</dd></div><div><dt>钻石可以做什么？</dt><dd>钻石只提供可选功能，包括重抽圣物、远征复活、解锁两名进阶英雄与黄金外观；一般关卡进度不需要钻石。</dd></div><div><dt>哪些进度会保存？</dt><dd>浏览器会在本设备保存已解锁与完成关卡、上次出场阵容与位置、团队等级与经验、训练金币、已解锁角色、角色永久等级、远征记录与外观选择。</dd></div><div><dt>羁绊与战斗提示代表什么？</dt><dd>凑齐相同定位可启动方块小队羁绊并获得小幅自动战斗加成；连携命中会累积，连续命中达到第 4 次时显示暴击并破坏方块。首领波开始时会先显示警示。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的 30 关防守战役。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬运队</strong><span>在 30 座手工设计的天空方舟仓库中行走、推动与拉回符文货箱。</span></span></a></div></div>
     </div>
   </section>
 </body>

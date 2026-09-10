@@ -1789,3 +1789,191 @@ body {
     font-size: 0.68rem;
   }
 }
+
+/* v26 voxel combat and focused Stage views. Keep the shared Interface 6
+   envelope, but let each Stage tab own the full content area. */
+:root {
+  --voxel-blue: #73edff;
+  --voxel-purple: #c48cff;
+  --voxel-shadow: rgba(3, 16, 33, 0.78);
+}
+
+.panel,
+.stage-tabs button,
+.profile-grid div,
+.room-card,
+.hud-row > div,
+.hud-row > button,
+.hint {
+  border-radius: 8px;
+}
+
+.panel {
+  border-width: 2px;
+  box-shadow: 0 7px 0 var(--voxel-shadow), 0 18px 34px rgba(1, 10, 22, 0.32);
+}
+
+.menu-panel {
+  background:
+    linear-gradient(135deg, rgba(84, 172, 191, 0.18), transparent 46%),
+    linear-gradient(160deg, rgba(34, 92, 113, 0.98), rgba(9, 31, 52, 0.99));
+}
+
+.cover {
+  image-rendering: auto;
+  box-shadow: 0 8px 0 var(--voxel-shadow), inset 0 0 0 3px rgba(255, 255, 255, 0.16);
+}
+
+.stage-panel {
+  grid-template-rows: 62px minmax(0, 1fr) 56px;
+  background-image:
+    linear-gradient(rgba(12, 43, 60, 0.22), rgba(6, 20, 38, 0.76)),
+    url("../../assets/animal-orb-fortress-arena-block-v2.png");
+}
+
+.stage-content {
+  grid-template-rows: 58px minmax(0, 1fr);
+}
+
+.stage-view-panel {
+  min-height: 0;
+}
+
+.stage-view-panel.is-active {
+  display: contents;
+}
+
+.stage-view-panel-raid.is-active .stage-rail {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+}
+
+.stage-view-panel-workshop.is-active .workshop-title {
+  grid-column: 1;
+  grid-row: 2;
+  z-index: 2;
+  align-self: start;
+  margin: 2px 4px 0;
+  padding: 5px 8px;
+  width: fit-content;
+  border: 2px solid rgba(255, 226, 122, 0.65);
+  border-radius: 6px;
+  background: rgba(8, 28, 43, 0.9);
+  box-shadow: 0 4px 0 rgba(5, 17, 31, 0.62);
+}
+
+.stage-view-panel-workshop.is-active .room-grid {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+  padding-top: 36px;
+}
+
+.stage-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.stage-tabs button {
+  min-height: 48px;
+  border-color: rgba(115, 237, 255, 0.64);
+  background: linear-gradient(180deg, rgba(17, 64, 83, 0.96), rgba(7, 28, 48, 0.98));
+  box-shadow: 0 5px 0 var(--voxel-shadow);
+}
+
+.stage-tabs button.is-active,
+.stage-tabs button[aria-selected="true"] {
+  color: #071c2c;
+  border-color: #fff09a;
+  background: linear-gradient(180deg, #fff2a1, #f2b94c);
+  box-shadow: 0 5px 0 #7a4d1b, 0 0 18px rgba(255, 221, 105, 0.42);
+}
+
+.shots-stat {
+  display: grid !important;
+  grid-template-rows: auto auto auto;
+  align-content: center;
+  gap: 1px;
+  min-width: 0;
+}
+
+.shot-line,
+.orb-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.shots-stat .shot-line span,
+.shots-stat .orb-line span {
+  display: inline;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shots-stat .shot-line strong {
+  font-size: 0.82rem;
+}
+
+.shots-stat .orb-line strong {
+  color: #fff0a4;
+  font-size: 1.05rem;
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(255, 224, 105, 0.48);
+}
+
+.orb-pips {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  min-height: 7px;
+}
+
+.orb-pips i {
+  display: block;
+  width: 9px;
+  height: 6px;
+  border: 1px solid rgba(155, 232, 255, 0.32);
+  background: rgba(25, 71, 90, 0.72);
+  box-shadow: inset 0 0 0 1px rgba(3, 18, 31, 0.3);
+}
+
+.orb-pips i.is-available {
+  border-color: rgba(121, 237, 255, 0.8);
+}
+
+.orb-pips i.is-active {
+  background: #7df1ff;
+  box-shadow: 0 0 9px rgba(91, 236, 255, 0.95);
+}
+
+#gameCanvas {
+  border-color: rgba(115, 237, 255, 0.9);
+  box-shadow: 0 7px 0 var(--voxel-shadow), 0 0 34px rgba(57, 218, 255, 0.34);
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  body.orb-fortress-playing #stagePanel .stage-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  body.orb-fortress-playing #stagePanel .stage-view-panel-raid.is-active .stage-rail,
+  body.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .workshop-title,
+  body.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-grid {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  body.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding-top: 30px !important;
+  }
+}

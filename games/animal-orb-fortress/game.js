@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v25";
+  const GAME_VERSION = "v26";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -25,6 +25,10 @@
     startBtn: $("startBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageRail: $("stageRail"),
+    stageTabs: [...document.querySelectorAll(".stage-tabs [data-stage-view]")],
+    stageViewPanels: [...document.querySelectorAll("[data-stage-view-panel]")],
+    stageRaidView: $("stageRaidView"),
+    stageWorkshopView: $("stageWorkshopView"),
     stageProgressText: $("stageProgressText"),
     mapBtn: $("battleBackBtn"),
     pauseBtn: $("pauseBtn"),
@@ -40,6 +44,9 @@
     waveText: $("waveText"),
     coreText: $("coreText"),
     shotText: $("shotText"),
+    orbStat: $("orbStat"),
+    orbCountText: $("orbCountText"),
+    orbPips: $("orbPips"),
     comboText: $("comboText"),
     assistBtn: $("assistBtn"),
     hintText: $("hintText"),
@@ -126,6 +133,9 @@
       waves: "waves",
       core: "Core",
       shots: "Shots",
+      orbCount: "Orbs",
+      hit: "HIT",
+      blocked: "BLOCK",
       combo: "Combo",
       aimAssistShort: "AIM+",
       aimAssistOn: "Smart aim on",
@@ -269,6 +279,9 @@
       waves: "波次",
       core: "核心",
       shots: "射擊",
+      orbCount: "星珠",
+      hit: "命中",
+      blocked: "格擋",
       combo: "連擊",
       aimAssistShort: "輔瞄",
       aimAssistOn: "智慧瞄準：開",
@@ -609,6 +622,9 @@
   // falling back to English here prevents a missing key from leaking into a
   // live card or button during a locale switch.
   const combatCopy = {
+    orbCount: "Orbs",
+    hit: "HIT",
+    blocked: "BLOCK",
     combo: "Combo",
     aimAssistShort: "AIM+",
     aimAssistOn: "Smart aim on",
@@ -620,6 +636,9 @@
   };
   Object.keys(text).forEach((key) => Object.assign(text[key], combatCopy));
   Object.assign(text["zh-Hant"], {
+    orbCount: "星珠",
+    hit: "命中",
+    blocked: "格擋",
     combo: "連擊",
     aimAssistShort: "輔瞄",
     aimAssistOn: "智慧瞄準：開",
@@ -630,6 +649,9 @@
     upgradeChainDesc: "每 4 次命中會跳向附近影獸，造成 40% 傷害。",
   });
   Object.assign(text["zh-Hans"], {
+    orbCount: "星珠",
+    hit: "命中",
+    blocked: "格挡",
     combo: "连击",
     aimAssistShort: "辅瞄",
     aimAssistOn: "智能瞄准：开",
@@ -941,6 +963,7 @@
   let centeredStageFrame = 0;
   const STAGE_POOL_SIZE = 9;
   let stagePool = [], stageWindowStart = 1, stageBrowseLogical = 1, stageSettleFrame = 0;
+  let stageView = "raid";
   let cancelStagePointer = () => {};
   let state = makeState();
   let lastFrame = 0;
@@ -950,6 +973,7 @@
   let pointer = { active: false, id: null, x: 0, y: 0 };
   let keyboardAimDeg = -90;
   let arenaControlSignature = "";
+  let orbHudSignature = "";
   let soundAt = {};
   let preloadFinished = false;
   let pauseFocusOwner = null;
@@ -1280,7 +1304,7 @@
     }
     queueOrbArenaFit();
     if (panel === nodes.stagePanel) {
-      if (nodes.stageRail.children.length) {
+      if (stageView === "raid" && nodes.stageRail.children.length) {
         centerUnlockedStage();
         focusUnlockedStage();
       }
@@ -1550,6 +1574,33 @@
     return `${current} ${t("companionNext", { damage: companionDamage(level + 1) })}`;
   }
 
+  function setStageView(view = "raid", focus = false) {
+    const next = view === "workshop" ? "workshop" : "raid";
+    stageView = next;
+    nodes.stagePanel.dataset.stageView = next;
+    nodes.stageTabs.forEach((tab) => {
+      const active = tab.dataset.stageView === next;
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      tab.classList.toggle("is-active", active);
+    });
+    nodes.stageViewPanels.forEach((panel) => {
+      const active = panel.dataset.stageViewPanel === next;
+      panel.hidden = !active;
+      panel.inert = !active;
+      panel.classList.toggle("is-active", active);
+      panel.setAttribute("aria-hidden", String(!active));
+    });
+    if (next === "raid") {
+      centerUnlockedStage();
+      if (focus) focusUnlockedStage();
+    } else if (focus) {
+      window.requestAnimationFrame(() => {
+        nodes.roomGrid.querySelector("button:not(:disabled)")?.focus({ preventScroll: true });
+      });
+    }
+  }
+
   function renderMenu() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
     nodes.bestRaidText.textContent = String(unlocked);
@@ -1587,9 +1638,12 @@
           </div>`;
       })
       .join("");
+    setStageView(stageView, false);
     if (!nodes.stagePanel.classList.contains("is-hidden")) {
-      centerUnlockedStage();
-      focusUnlockedStage();
+      if (stageView === "raid") {
+        centerUnlockedStage();
+        focusUnlockedStage();
+      }
     }
   }
 
@@ -1976,6 +2030,7 @@
       coreMeter.setAttribute("aria-valuetext", `${t("core")} ${currentCore}/${state.maxCore}`);
     }
     nodes.shotText.textContent = String(state.shotCount);
+    renderOrbCounter();
     if (nodes.comboText) {
       nodes.comboText.textContent = state.combo > 1 ? `×${state.combo}` : "×1";
       nodes.comboText.classList.toggle("is-hot", state.combo >= 3);
@@ -1988,6 +2043,25 @@
       nodes.assistBtn.setAttribute("aria-label", enabled ? t("aimAssistOn") : t("aimAssistOff"));
       nodes.assistBtn.classList.toggle("is-active", enabled);
     }
+  }
+
+  function renderOrbCounter() {
+    if (!nodes.orbCountText) return;
+    const active = Math.max(0, state.orbs?.length || 0);
+    const limit = Math.max(1, activeOrbLimit());
+    const signature = `${active}/${limit}`;
+    if (signature !== orbHudSignature) {
+      nodes.orbCountText.textContent = signature;
+      nodes.orbStat?.setAttribute("aria-label", `${t("orbCount")} ${signature}`);
+      nodes.orbStat?.setAttribute("role", "status");
+      nodes.orbPips?.querySelectorAll("i").forEach((pip, index) => {
+        pip.classList.toggle("is-active", index < active);
+        pip.classList.toggle("is-available", index < limit);
+        pip.hidden = index >= limit;
+      });
+      orbHudSignature = signature;
+    }
+    nodes.orbCountText.setAttribute("aria-label", `${t("orbCount")} ${signature}`);
   }
 
   function canvasPoint(event) {
@@ -2309,6 +2383,7 @@
 
     state.orbs.forEach((orb) => updateOrb(orb, dt));
     state.orbs = state.orbs.filter((orb) => orb.life > 0);
+    renderOrbCounter();
     if (state.firstShotPending && !state.orbs.some((orb) => orb.firstShot)) {
       state.firstShotPending = false;
       state.firstShotCueUntil = performance.now() + 900;
@@ -2603,18 +2678,19 @@
           ? copy.bankTarget.replace("{bounces}", String(orb.bounces)).replace("{target}", copy.target).replace("{amount}", String(amount))
           : `${copy[kind]}${amount ? ` −${amount}` : ""}`;
         const popLabel = critical ? `${t("crit")} ${label}` : chainTarget ? `${t("chain")} ${label}` : label;
-        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, chainDamage, critical, label: popLabel };
+        const shortLabel = critical ? t("crit") : chainTarget ? t("chain") : blocked ? t("blocked") : "";
+        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, chainDamage, critical, label: popLabel, shortLabel };
         const isFirstShot = Boolean(orb.firstShot);
         if (state.firstShotPending && isFirstShot) {
           state.firstShotPending = false;
           state.firstShotCueUntil = performance.now() + 900;
         }
-        nodes.hintText.textContent = popLabel;
+        nodes.hintText.textContent = shortLabel || (blocked ? t("blocked") : t("hit"));
         track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
-        state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label: popLabel, banked: orb.bounces > 0, effectIndex: critical ? 1 : 0 });
+        state.sparks.push({ kind: "impact", x: enemy.x, y: enemy.y, life: 0.52, maxLife: 0.52, label: shortLabel, blocked, critical, chain: Boolean(chainTarget), banked: orb.bounces > 0, effectIndex: critical ? 1 : chainTarget ? 2 : blocked ? 4 : 0 });
         if (critical || (shieldBefore > 0 && enemy.shield === 0) || enemy.hp <= 0) {
           state.sparks.push({ kind: "block-break", x: enemy.x, y: enemy.y, life: 0.56, maxLife: 0.56, effectIndex: critical ? 1 : 4, label: critical ? t("crit") : "" });
         }
@@ -2902,7 +2978,27 @@
 
     drawPylons();
     state.enemies.forEach(drawEnemy);
-    state.orbs.forEach((orb) => drawAtlas(images.orbs, orb.skin || 0, 5, orb.x, orb.y, 48));
+    state.orbs.forEach((orb) => {
+      ctx.save();
+      const speed = Math.max(1, Math.hypot(orb.vx, orb.vy));
+      const trail = Math.min(42, 12 + speed * 0.06);
+      ctx.strokeStyle = "rgba(119, 246, 255, 0.72)";
+      ctx.lineWidth = 8;
+      ctx.shadowColor = "#4ce8ff";
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.moveTo(orb.x - (orb.vx / speed) * trail, orb.y - (orb.vy / speed) * trail);
+      ctx.lineTo(orb.x, orb.y);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(196, 255, 255, 0.32)";
+      ctx.fillRect(orb.x - 25, orb.y - 25, 50, 50);
+      ctx.strokeStyle = "#d9ffff";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(orb.x - 25, orb.y - 25, 50, 50);
+      drawAtlas(images.orbs, orb.skin || 0, 5, orb.x, orb.y, 56);
+      ctx.restore();
+    });
     state.sparks.forEach((spark) => {
       const maxLife = spark.maxLife || 0.25;
       ctx.globalAlpha = Math.max(0, spark.life / maxLife);
@@ -2937,30 +3033,45 @@
       if (spark.kind === "block-break") {
         ctx.save();
         ctx.fillStyle = spark.effectIndex === 1 ? "#ffe56e" : "#8be6ff";
-        for (let piece = 0; piece < 7; piece += 1) {
-          const angle = piece * 0.9;
-          const distance = 14 + (1 - spark.life / maxLife) * 36;
-          const size = 5 + (piece % 3) * 3;
-          ctx.fillRect(spark.x + Math.cos(angle) * distance, spark.y + Math.sin(angle) * distance, size, size);
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.shadowBlur = 16;
+        for (let piece = 0; piece < 14; piece += 1) {
+          const angle = piece * 0.45;
+          const distance = 12 + (1 - spark.life / maxLife) * (42 + (piece % 3) * 7);
+          const size = 4 + (piece % 4) * 2;
+          const px = spark.x + Math.cos(angle) * distance;
+          const py = spark.y + Math.sin(angle) * distance;
+          ctx.fillRect(px, py, size, size);
         }
         ctx.restore();
       }
-      if (spark.kind === "shot-feedback") {
+      if (spark.kind === "impact") {
         ctx.save();
-        ctx.font = "700 24px system-ui, sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        const width = Math.min(300, ctx.measureText(spark.label).width + 34);
-        const y = Math.max(64, spark.y - 58 - (1 - spark.life / maxLife) * 24);
-        ctx.fillStyle = spark.banked ? "rgba(83, 58, 8, 0.94)" : "rgba(5, 55, 72, 0.94)";
-        ctx.strokeStyle = spark.banked ? "#ffe570" : "#80f5ff";
-        ctx.lineWidth = 3;
+        const progress = 1 - spark.life / maxLife;
+        const radius = 18 + progress * 48;
+        const tone = spark.critical ? "#ffe56f" : spark.chain ? "#d79bff" : spark.blocked ? "#9bb9c8" : "#74f7ff";
+        ctx.strokeStyle = tone;
+        ctx.lineWidth = spark.critical ? 9 : 6;
+        ctx.shadowColor = tone;
+        ctx.shadowBlur = spark.critical ? 28 : 18;
         ctx.beginPath();
-        ctx.roundRect(spark.x - width / 2, y - 22, width, 44, 14);
-        ctx.fill();
+        ctx.arc(spark.x, spark.y, radius, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(spark.label, spark.x, y);
+        ctx.shadowBlur = 0;
+        if (spark.label) {
+          ctx.font = "1000 18px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          const width = Math.min(132, ctx.measureText(spark.label).width + 26);
+          const y = Math.max(64, spark.y - 54 - progress * 16);
+          ctx.fillStyle = "rgba(5, 24, 38, 0.94)";
+          ctx.strokeStyle = tone;
+          ctx.lineWidth = 3;
+          ctx.fillRect(spark.x - width / 2, y - 16, width, 32);
+          ctx.strokeRect(spark.x - width / 2, y - 16, width, 32);
+          ctx.fillStyle = "#ffffff";
+          ctx.fillText(spark.label, spark.x, y);
+        }
         ctx.restore();
       }
       drawAtlas(images.fx, spark.effectIndex ?? (spark.kind === "companion" ? 3 : spark.kind === "chain" ? 2 : 1), 5, spark.x, spark.y, spark.kind === "block-break" ? 92 : 70);
@@ -3036,6 +3147,14 @@
     ctx.beginPath();
     ctx.arc(enemy.x, enemy.y, size * 0.9, 0, Math.PI * 2);
     ctx.fill();
+    const blockHalf = size * 0.38;
+    ctx.shadowColor = shadow;
+    ctx.shadowBlur = enemy.hitTimer > 0 ? 34 : 20;
+    ctx.fillStyle = enemy.kind === "boss" ? "rgba(53, 16, 49, 0.82)" : "rgba(11, 28, 45, 0.86)";
+    ctx.fillRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
+    ctx.strokeStyle = aura;
+    ctx.lineWidth = enemy.kind === "boss" ? 7 : 4;
+    ctx.strokeRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
     ctx.shadowColor = shadow;
     ctx.shadowBlur = enemy.hitTimer > 0 ? 46 : 32;
     ctx.fillStyle = enemy.kind === "boss" ? "rgba(69, 19, 51, 0.82)" : "rgba(18, 37, 54, 0.78)";
@@ -3234,6 +3353,7 @@
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", () => {
+    setStageView("raid");
     show(nodes.stagePanel);
     renderMenu();
   });
@@ -3243,6 +3363,20 @@
   nodes.stageBackBtn.addEventListener("click", () => {
     track("return_session", { from: "stage" });
     show(nodes.menuPanel);
+  });
+  nodes.stageTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => {
+      setStageView(tab.dataset.stageView, true);
+    });
+    tab.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const direction = event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
+      const nextIndex = event.key === "Home" ? 0 : event.key === "End" ? nodes.stageTabs.length - 1 : (index + direction + nodes.stageTabs.length) % nodes.stageTabs.length;
+      const next = nodes.stageTabs[nextIndex];
+      setStageView(next.dataset.stageView, false);
+      next.focus({ preventScroll: true });
+    });
   });
   nodes.stageRail.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ") && event.target.closest(".raid-card")) event.preventDefault();
@@ -3298,6 +3432,7 @@
     state.mode = "stage";
     nodes.pausePanel.classList.add("is-hidden");
     setSceneOwnership(nodes.pausePanel, false);
+    setStageView("raid");
     show(nodes.stagePanel);
     renderMenu();
   });
@@ -3324,6 +3459,7 @@
     commitResultDecision(() => {
       track("map_return", { from: "result", tier: state.raidTier, wave: state.wave });
       state.mode = "stage";
+      setStageView("raid");
       show(nodes.stagePanel);
       renderMenu();
     });

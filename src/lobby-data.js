@@ -1250,7 +1250,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "\u7784\u6e96\u52d5\u7269\u661f\u73e0\u7a7f\u8d8a\u6c34\u6676\u8981\u585e\u623f\u9593\uff0c\u898f\u5283\u53cd\u5f48\u8def\u7dda\uff0c\u5347\u7d1a\u57fa\u5730\uff0c\u4e26\u6e96\u5099\u8fce\u6230 Boss \u6ce2\u6b21\u3002",
       },
       meta: { en: ["Orb Bounces", "Fortress Growth", "Boss Waves"], "zh-Hant": ["\u661f\u73e0\u53cd\u5f48", "\u8981\u585e\u6210\u9577", "Boss \u6ce2\u6b21"] },
-      art: { kind: "image", background: "assets/animal-orb-fortress-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-orb-fortress-cover-block-v1.webp", hideHero: true },
     },
     {
       id: "animal-auto-squad",

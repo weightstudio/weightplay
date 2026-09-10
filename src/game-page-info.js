@@ -1762,7 +1762,7 @@
       ],
       systems: [
         "Formation: the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.",
-        "Animal roles: attackers, healers, shields, team buffers, and faint effects resolve automatically. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.",
+        "Animal roles and squad links: attackers, healers, shields, team buffers, and faint effects resolve automatically. Matching roles activate a Voxel Squad Link that grants a small automatic battle bonus. Connected hits build a combo; every fourth connected hit is shown as a Critical Linked Hit and breaks a block, while Boss waves open with a visible warning. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.",
         "Expedition relics: choose Maple Shield, Oak Seed, Shadow Claw, or Clover Leaf for a run-wide rule. A relic choice is free; spending 3 optional Diamonds only rerolls the offered choices.",
         "Temporary Supplies: each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.",
         "Permanent growth: cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold."
@@ -1798,7 +1798,8 @@
         ["Can I rearrange the squad between every wave?", "Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern."],
         ["What happens when I lose a wave?", "The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive."],
         ["What do Diamonds do?", "Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them."],
-        ["What progress is saved?", "The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."]
+        ["What progress is saved?", "The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device."],
+        ["What do Squad Links and battle warnings mean?", "Matching roles activate a Voxel Squad Link and a small automatic battle bonus. Connected hits build a combo; every fourth connected hit appears as a Critical Linked Hit and breaks a block. Boss waves begin with a visible warning."]
       ],
     },
     "beast-tactician": {
@@ -2552,7 +2553,7 @@
     "beast-deck": "beast-deck-cover.webp",
     "animal-relic-hunters": "animal-relic-hunters-cover.webp",
     "animal-rune-tactics": "animal-rune-tactics-cover.webp",
-    "animal-orb-fortress": "animal-orb-fortress-cover.webp",
+    "animal-orb-fortress": "animal-orb-fortress-cover-block-v1.webp",
     "animal-auto-squad": "animal-auto-squad-cover.webp",
     "beast-tactician": "beast-tactician-cover.webp",
     "animal-prism-battalion": "animal-prism-battalion/cover.webp",
