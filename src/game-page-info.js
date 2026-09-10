@@ -16130,6 +16130,94 @@
       localizedGames[localeCode][gameId] = { ...(localizedGames[localeCode][gameId] || {}), ...copy };
     }
   }
+  const beastGuardianRallyGuideLocaleCopy = {
+    en: {
+      systems: "Rally: each wave gives one Rally charge. Select a living defender during an active wave, then press Rally or R for a six-second burst: +32% damage, faster attacks, and stronger healing. The charge is spent only when you commit it, so save it for a choke point or Boss.",
+      how: "During an active wave, select a living defender and press Rally (or R) when its gold button is ready. Use the six-second burst on a high-value choke point or Boss.",
+      strategyTips: "Treat Rally as a timing tool, not a start-of-wave tax: hold the charge until a Boss, a crowded bend, or a wounded anchor can turn six seconds of pressure into a safe reset.",
+      faq: ["What does Rally do?", "Rally spends one charge to empower a selected living defender for six seconds, increasing damage, attack speed, and healing received. One charge returns at the start of each wave."]
+    },
+    "zh-Hant": {
+      systems: "集結：每波提供 1 次集結。戰鬥中選取存活的防禦者，按「集結」或鍵盤 R，可在 6 秒內提高 32% 傷害、縮短攻擊間隔，並讓治療更強。只有按下確認後才會消耗，留給瓶頸或 Boss。",
+      how: "戰鬥中選取存活的防禦者，等金色「集結」按鈕可用後按下它，或按鍵盤 R。把這段 6 秒爆發留給高價值轉角或 Boss。",
+      strategyTips: "把集結當成時機工具，不是每波開場必交的按鈕：等 Boss、擁擠轉角或受傷的主坦出現，再用 6 秒壓力換取安全的喘息。",
+      faq: ["集結有什麼作用？", "集結會消耗 1 次充能，讓選定的存活防禦者強化 6 秒，提高傷害、攻擊速度與受到的治療量；每波開始會補回 1 次。"]
+    },
+    "zh-Hans": {
+      systems: "集结：每波提供 1 次集结。战斗中选取存活的防御者，按「集结」或键盘 R，可在 6 秒内提高 32% 伤害、缩短攻击间隔，并让治疗更强。只有按下确认后才会消耗，留给瓶颈或 Boss。",
+      how: "战斗中选取存活的防御者，等金色「集结」按钮可用后按下它，或按键盘 R。把这段 6 秒爆发留给高价值转角或 Boss。",
+      strategyTips: "把集结当成时机工具，而不是每波开场必交的按钮：等 Boss、拥挤转角或受伤的主坦出现，再用 6 秒压力换取安全的喘息。",
+      faq: ["集结有什么作用？", "集结会消耗 1 次充能，让选定的存活防御者强化 6 秒，提高伤害、攻击速度与受到的治疗量；每波开始会补回 1 次。"]
+    },
+    ja: {
+      systems: "集結：各ウェーブで1回分のチャージを得ます。進行中のウェーブで生存中の守備者を選び、「集結」またはRキーを押すと6秒間、ダメージが32%上がり、攻撃間隔が短くなり、回復効果も強まります。チャージは使うまで残るので、要所やボスに温存しましょう。",
+      how: "ウェーブ中に生存中の守備者を選び、金色の「集結」ボタンが使えるときに押します（Rキーでも可）。6秒の強化を重要な曲がり角やボスに合わせましょう。",
+      strategyTips: "集結はウェーブ開始時に必ず使うものではなく、タイミングの道具です。ボス、敵が密集する曲がり角、傷ついた壁役に合わせて6秒の圧力を安全な立て直しへ変えましょう。",
+      faq: ["集結は何をしますか？", "集結はチャージ1回を使い、選んだ生存中の守備者を6秒間強化します。ダメージ、攻撃速度、受ける回復量が上がり、各ウェーブ開始時に1回分が戻ります。"]
+    },
+    ko: {
+      systems: "집결: 웨이브마다 집결 충전 1회를 얻습니다. 진행 중인 웨이브에서 살아 있는 방어자를 선택한 뒤 집결 또는 R을 누르면 6초 동안 피해량이 32% 증가하고 공격 간격이 짧아지며 회복 효과도 강해집니다. 충전은 사용할 때까지 남으므로 요충지나 보스에 아껴 쓰세요.",
+      how: "웨이브 중 살아 있는 방어자를 선택하고 금색 집결 버튼이 준비되면 누르세요. R 키로도 사용할 수 있으며, 6초 강화는 중요한 굽이나 보스에 맞추는 것이 좋습니다.",
+      strategyTips: "집결은 웨이브 시작 때 자동으로 써야 하는 버튼이 아니라 타이밍 도구입니다. 보스, 적이 몰린 굽이, 부상당한 전열 방어자에게 맞춰 6초의 압박을 안전한 재정비로 바꾸세요.",
+      faq: ["집결은 무엇을 하나요?", "집결은 충전 1회를 사용해 선택한 생존 방어자를 6초 동안 강화합니다. 피해량, 공격 속도, 받는 회복량이 증가하고 웨이브 시작마다 1회가 충전됩니다."]
+    },
+    es: {
+      systems: "Reunir: cada oleada otorga una carga de Reunir. Selecciona un defensor vivo durante una oleada activa y pulsa Reunir o R para obtener durante seis segundos un 32 % más de daño, ataques más rápidos y curación más potente. La carga se conserva hasta que la comprometes, así que guárdala para un cuello de botella o un Boss.",
+      how: "Durante una oleada activa, selecciona un defensor vivo y pulsa Reunir cuando el botón dorado esté listo; también puedes usar R. Reserva el impulso de seis segundos para una curva importante o un Boss.",
+      strategyTips: "Usa Reunir como una herramienta de ritmo, no como un impuesto al inicio de cada oleada: espera al Boss, una curva abarrotada o un ancla herida y convierte seis segundos de presión en una recuperación segura.",
+      faq: ["¿Qué hace Reunir?", "Reunir consume una carga para potenciar durante seis segundos al defensor vivo seleccionado: aumenta el daño, la velocidad de ataque y la curación recibida. Al comenzar cada oleada vuelve una carga."]
+    },
+    "pt-BR": {
+      systems: "Reunir: cada onda concede uma carga de Reunir. Selecione um defensor vivo durante uma onda ativa e pressione Reunir ou R para obter por seis segundos 32% a mais de dano, ataques mais rápidos e cura mais forte. A carga fica guardada até ser usada, então reserve-a para um gargalo ou Boss.",
+      how: "Durante uma onda ativa, selecione um defensor vivo e pressione Reunir quando o botão dourado estiver pronto; R também funciona. Use o impulso de seis segundos em uma curva importante ou contra um Boss.",
+      strategyTips: "Trate Reunir como uma ferramenta de ritmo, não como um imposto no começo da onda: espere o Boss, uma curva cheia ou um defensor ferido e transforme seis segundos de pressão em uma recuperação segura.",
+      faq: ["O que Reunir faz?", "Reunir gasta uma carga para fortalecer o defensor vivo selecionado por seis segundos, aumentando dano, velocidade de ataque e cura recebida. Uma carga volta no início de cada onda."]
+    },
+    fr: {
+      systems: "Ralliement : chaque vague accorde une charge de Ralliement. Sélectionnez un défenseur vivant pendant une vague active, puis appuyez sur Ralliement ou R pour obtenir pendant six secondes 32 % de dégâts en plus, des attaques plus rapides et des soins renforcés. La charge reste disponible jusqu’à son utilisation : gardez-la pour un goulet ou un Boss.",
+      how: "Pendant une vague active, sélectionnez un défenseur vivant et appuyez sur Ralliement lorsque le bouton doré est prêt ; la touche R fonctionne aussi. Réservez le bonus de six secondes à un virage important ou à un Boss.",
+      strategyTips: "Considérez Ralliement comme un outil de rythme, pas comme une dépense obligatoire au début de chaque vague : attendez un Boss, un virage encombré ou une ancre blessée pour transformer six secondes de pression en reprise sûre.",
+      faq: ["Que fait Ralliement ?", "Ralliement dépense une charge pour renforcer pendant six secondes le défenseur vivant sélectionné : dégâts, vitesse d’attaque et soins reçus augmentent. Une charge revient au début de chaque vague."]
+    },
+    de: {
+      systems: "Sammeln: Jede Welle gibt eine Sammeln-Ladung. Wähle während einer laufenden Welle einen lebenden Verteidiger und drücke Sammeln oder R, um sechs Sekunden lang 32 % mehr Schaden, schnellere Angriffe und stärkere Heilung zu erhalten. Die Ladung bleibt erhalten, bis du sie einsetzt – spare sie für einen Engpass oder Boss.",
+      how: "Wähle während einer laufenden Welle einen lebenden Verteidiger und drücke Sammeln, sobald die goldene Schaltfläche bereit ist; R funktioniert ebenfalls. Setze den sechssekündigen Schub an einer wichtigen Kurve oder gegen einen Boss ein.",
+      strategyTips: "Behandle Sammeln als Timing-Werkzeug, nicht als Pflichtausgabe zu Wellenbeginn: Warte auf einen Boss, eine überfüllte Kurve oder einen verletzten Anker und verwandle sechs Sekunden Druck in eine sichere Erholung.",
+      faq: ["Was bewirkt Sammeln?", "Sammeln verbraucht eine Ladung und stärkt den ausgewählten lebenden Verteidiger sechs Sekunden lang. Schaden, Angriffstempo und erhaltene Heilung steigen; zu Beginn jeder Welle kommt eine Ladung zurück."]
+    },
+    it: {
+      systems: "Raduno: ogni ondata fornisce una carica Raduno. Seleziona un difensore vivo durante un’ondata attiva e premi Raduno o R per sei secondi di danni aumentati del 32%, attacchi più rapidi e cure più efficaci. La carica resta disponibile finché non la usi: conservala per un punto critico o un Boss.",
+      how: "Durante un’ondata attiva, seleziona un difensore vivo e premi Raduno quando il pulsante dorato è pronto; puoi usare anche R. Riserva il potenziamento di sei secondi a una curva importante o a un Boss.",
+      strategyTips: "Usa Raduno come strumento di tempismo, non come tassa a inizio ondata: aspetta un Boss, una curva affollata o un’ancora ferita e trasforma sei secondi di pressione in un recupero sicuro.",
+      faq: ["Cosa fa Raduno?", "Raduno consuma una carica e potenzia per sei secondi il difensore vivo selezionato: aumentano danni, velocità d’attacco e cure ricevute. Una carica torna all’inizio di ogni ondata."]
+    },
+    ru: {
+      systems: "Сбор: каждая волна даёт один заряд Сбора. Во время активной волны выберите живого защитника и нажмите «Сбор» или R, чтобы на шесть секунд получить на 32% больше урона, более быстрые атаки и усиленное лечение. Заряд сохраняется до применения — берегите его для узкого места или Босса.",
+      how: "Во время активной волны выберите живого защитника и нажмите «Сбор», когда золотая кнопка готова; также можно нажать R. Направьте шестисекундное усиление на важный поворот или Босса.",
+      strategyTips: "Считайте «Сбор» инструментом тайминга, а не обязательной тратой в начале волны: дождитесь Босса, переполненного поворота или раненого якоря и превратите шесть секунд давления в безопасное восстановление.",
+      faq: ["Что делает «Сбор»?", "«Сбор» тратит один заряд и на шесть секунд усиливает выбранного живого защитника: повышает урон, скорость атак и получаемое лечение. В начале каждой волны возвращается один заряд."]
+    },
+    hi: {
+      systems: "एकत्र करें: हर वेव में एक Rally चार्ज मिलता है। सक्रिय वेव में किसी जीवित रक्षक को चुनकर Rally या R दबाएँ; छह सेकंड तक डैमेज 32% बढ़ता है, हमले तेज होते हैं और उपचार मजबूत होता है। चार्ज उपयोग तक बचा रहता है, इसलिए इसे मोड़ या बॉस के लिए रखें।",
+      how: "सक्रिय वेव में जीवित रक्षक चुनें और सुनहरा Rally बटन तैयार होने पर दबाएँ; R भी काम करता है। छह सेकंड का बूस्ट किसी अहम मोड़ या बॉस पर लगाएँ।",
+      strategyTips: "Rally को हर वेव की शुरुआत में खर्च करने के बजाय समय साधने का साधन मानें: बॉस, भीड़भरे मोड़ या घायल एंकर का इंतज़ार करें और छह सेकंड का दबाव सुरक्षित संभलने में बदलें।",
+      faq: ["Rally क्या करता है?", "Rally एक चार्ज खर्च करके चुने हुए जीवित रक्षक को छह सेकंड तक मजबूत करता है: डैमेज, हमले की गति और मिलने वाला उपचार बढ़ता है। हर वेव की शुरुआत में एक चार्ज लौटता है।"]
+    },
+    ar: {
+      systems: "التجمّع: تمنح كل موجة شحنة تجمّع واحدة. اختر مدافعًا حيًا أثناء موجة نشطة ثم اضغط «تجمّع» أو R لتحصل لست ثوانٍ على ضرر أعلى بنسبة 32% وهجمات أسرع وعلاج أقوى. تبقى الشحنة حتى تستخدمها، فاحتفظ بها لنقطة اختناق أو لزعيم.",
+      how: "أثناء موجة نشطة اختر مدافعًا حيًا واضغط «تجمّع» عندما يصبح الزر الذهبي جاهزًا؛ ويمكنك استخدام R أيضًا. وجّه التعزيز الذي يدوم ست ثوانٍ إلى منعطف مهم أو إلى زعيم.",
+      strategyTips: "تعامل مع التجمّع كأداة توقيت لا كضريبة في بداية كل موجة: انتظر الزعيم أو منعطفًا مزدحمًا أو مدافعًا مصابًا، وحوّل ست ثوانٍ من الضغط إلى استعادة آمنة.",
+      faq: ["ماذا يفعل التجمّع؟", "يستهلك التجمّع شحنة واحدة ويقوّي المدافع الحي المحدد لست ثوانٍ، فيزيد الضرر وسرعة الهجوم والعلاج المستلم. تعود شحنة واحدة مع بداية كل موجة."]
+    },
+  };
+  for (const [localeCode, copy] of Object.entries(beastGuardianRallyGuideLocaleCopy)) {
+    const guide = localeCode === "en" ? games["beast-tactician"] : localizedGames[localeCode]?.["beast-tactician"];
+    if (!guide) continue;
+    guide.systems = [...(guide.systems || []), copy.systems];
+    guide.how = [...(guide.how || []), copy.how];
+    guide.strategyTips = [...(guide.strategyTips || []), copy.strategyTips];
+    guide.faq = [...(guide.faq || []), copy.faq];
+  }
   localizedRelatedCardCopy = {
     "zh-Hant": {
       "maze-chase": { title: "星徑迷宮", intro: "在固定迷宮中引導奧拉收集星塵，讀懂四種光靈追逐模式，並用信標把危險走廊變成短暫的反擊窗口。" },

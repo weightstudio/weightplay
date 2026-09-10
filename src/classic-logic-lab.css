@@ -534,6 +534,26 @@ body[data-logic-game="sliding-15"] .logic-status-line {
     max-height: 32px;
     line-height: 1;
   }
+
+  /* The shared wide Canvas renders at up to 0.91× on an 844×390 viewport.
+     Keep every Sliding 15 tile and direct Battle control above 44 physical
+     pixels after that transform, without changing other Logic Lab games. */
+  body[data-logic-game="sliding-15"] .logic-sliding-board {
+    width: min(100%, 244px);
+    grid-template-columns: repeat(4, minmax(50px, 1fr));
+  }
+  body[data-logic-game="sliding-15"] .logic-sliding-board .logic-cell {
+    min-width: 50px;
+    min-height: 50px;
+  }
+  body[data-logic-game="sliding-15"] .logic-battle-back {
+    min-width: 58px;
+    min-height: 58px;
+  }
+  body[data-logic-game="sliding-15"] .logic-battle-wrap:has(.logic-sliding-board) > .logic-action-row button {
+    min-width: 58px !important;
+    min-height: 58px !important;
+  }
 }
 /* Sudoku Hint re-renders one cell. The shared cell pulse scales the hinted
    cell, which can expand the centered panel's scrollable overflow and move

@@ -2634,3 +2634,199 @@ body.guardian-stage .settings-popover {
     top: 94px;
   }
 }
+
+/* v14: authored Stage ownership and block-forward combat language. */
+body.guardian-stage .guardian-topbar {
+  display: none !important;
+}
+
+body.guardian-stage .stage-panel:has(> .stage-header) {
+  grid-template-rows: 64px minmax(0, 1fr) 56px !important;
+  gap: 8px !important;
+  padding: 8px 12px 0 !important;
+  background:
+    linear-gradient(rgba(9, 20, 35, .76), rgba(9, 20, 35, .9)),
+    url("../../assets/wonder-crash-related-beast-tactician-cover-block-v1.webp") center / cover no-repeat,
+    var(--wp-ui-shell);
+}
+
+body.guardian-stage .stage-header[data-wp-shell-header="stage"] {
+  width: 100%;
+  height: 64px;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  border: 1px solid var(--wp-ui-border);
+  border-radius: 14px;
+  background: rgba(15, 29, 49, .88);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+}
+
+body.guardian-stage .stage-header .play-return {
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 12px;
+  color: var(--wp-ui-control-text);
+  background: var(--wp-ui-control);
+}
+
+body.guardian-stage .stage-header-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  align-content: center;
+}
+
+body.guardian-stage .stage-header-copy strong {
+  overflow: hidden;
+  color: var(--wp-ui-text);
+  font-size: clamp(17px, 2.4vw, 22px);
+  font-weight: 950;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.guardian-stage .stage-header-copy span {
+  color: var(--wp-ui-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+body.guardian-stage .stage-workspace[data-wp-stage-workspace] {
+  min-width: 0;
+  min-height: 0;
+}
+
+body.guardian-playing .rally-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 209, 102, .58);
+  border-radius: 999px;
+  color: #fff0ad;
+  background: rgba(255, 209, 102, .12);
+  font-weight: 900;
+}
+
+body.guardian-playing #rallyBtn {
+  border-color: rgba(255, 209, 102, .62);
+  color: #fff0ad;
+  background: linear-gradient(180deg, rgba(119, 82, 37, .92), rgba(58, 42, 30, .96));
+}
+
+body.guardian-playing #rallyBtn:not(:disabled):hover,
+body.guardian-playing #rallyBtn.is-rallying {
+  border-color: #ffe59a;
+  background: linear-gradient(180deg, rgba(184, 132, 49, .98), rgba(101, 64, 31, .98));
+  box-shadow: 0 0 0 2px rgba(255, 209, 102, .18), 0 6px 16px rgba(255, 170, 55, .2);
+}
+
+body.guardian-playing .build-card img,
+body.guardian-playing .result-card > img {
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .14), rgba(0, 0, 0, .18));
+  object-fit: contain;
+}
+
+body:not(.guardian-playing):not(.guardian-stage) .cover {
+  object-fit: cover;
+  image-rendering: auto;
+}
+
+/* v14 short-landscape composition: keep the shared 760x334 envelope fully
+   playable by putting the arena beside the compact build rail. */
+@media (orientation: landscape) and (max-height: 560px) {
+  html body.wp-logical-battle-active.guardian-playing #gamePanel.game-panel {
+    grid-template-rows: 72px minmax(0, 1fr) 48px !important;
+    gap: 5px !important;
+    padding: 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .hud-row {
+    grid-template-columns: 48px repeat(4, minmax(42px, 1fr)) 44px !important;
+    grid-template-rows: 34px 28px !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+    grid-template-columns: minmax(0, 1fr) 248px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 6px !important;
+    min-height: 0 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    grid-template-rows: auto minmax(0, 1fr) 52px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-cards {
+    grid-auto-columns: 104px !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    gap: 5px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card {
+    min-height: 68px !important;
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card img {
+    width: 32px !important;
+    height: 34px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .build-card span {
+    font-size: 0.58rem !important;
+    line-height: 1.1 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .selected-info {
+    min-height: 0 !important;
+    max-height: 52px !important;
+    margin-top: 4px !important;
+    padding: 4px 6px !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .selected-info span {
+    font-size: 0.58rem !important;
+    line-height: 1.15 !important;
+  }
+
+  html body.wp-logical-battle-active.guardian-playing #gamePanel .command-row {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    width: 366px !important;
+    max-width: 100% !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 3px !important;
+  }
+}

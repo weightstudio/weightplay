@@ -2379,3 +2379,94 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battle
   font-style: normal;
   font-weight: 900;
 }
+
+/* v36: Orb Fortress uses the shared 48px scene utility contract. These final
+   game selectors retire the older 54/96/104px Battle return variants, which
+   otherwise win on compact phones because of their higher specificity. */
+.orb-app .topbar > .back-btn {
+  grid-template-columns: 18px 19px !important;
+  gap: 2px !important;
+  place-items: center !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .34) !important;
+  border-radius: 12px !important;
+  background: #071426 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .34) !important;
+}
+
+.orb-app .topbar > .back-btn > img {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+.orb-app .topbar > .back-btn > span,
+.orb-app .topbar > .back-btn > .wp-shell-return-arrow {
+  color: #fff !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+.orb-app #stagePanel > .stage-header > #stageBackBtn {
+  display: grid !important;
+  place-items: center !important;
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .34) !important;
+  border-radius: 12px !important;
+  background: #071426 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .34) !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+.orb-app #stagePanel > .stage-header > #stageBackBtn > .wp-shell-return-arrow {
+  color: #fff !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+body.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+
+body.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return,
+body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row > #battleBackBtn.wp-shell-return {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, .34) !important;
+  border-radius: 12px !important;
+  background: #071426 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .34) !important;
+  font-size: 22px !important;
+}
+
+body.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header #battleBackBtn.wp-shell-return .wp-shell-return-arrow,
+body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row > #battleBackBtn.wp-shell-return .wp-shell-return-arrow {
+  color: #fff !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}

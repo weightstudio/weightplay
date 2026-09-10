@@ -3,7 +3,14 @@
   ["stagePanel", "gamePanel"].forEach((id) => {
     document.getElementById(id)?.setAttribute("data-wp-canvas-max-width", "920");
   });
-  document.getElementById("stagePanel")?.setAttribute("data-wp-standard-stage-screen", "true");
+  const stagePanel = document.getElementById("stagePanel");
+  const gamePanel = document.getElementById("gamePanel");
+  stagePanel?.setAttribute("data-wp-standard-stage-screen", "true");
+  stagePanel?.setAttribute("data-wp-stage-workspace", "true");
+  stagePanel?.setAttribute("data-wp-logical-stage-canvas", "true");
+  stagePanel?.setAttribute("data-wp-stage-landscape-width", "760");
+  stagePanel?.setAttribute("data-wp-stage-landscape-height", "334");
+  gamePanel?.setAttribute("data-wp-logical-battle-canvas", "true");
   // Mount the shared Battle header once, not when the first expedition opens.
   const battleHeader = document.createElement("header");
   battleHeader.className = "wp-generated-battle-header";

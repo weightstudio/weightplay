@@ -137,6 +137,10 @@
     // envelope so its 44px utility controls retain a usable physical target
     // at 844x390 instead of inheriting the compressed default floor.
     "code-breaker": ["#logicBattle", 390, 788, 760, 350],
+    // Sliding 15 uses the same short-landscape control column. Keep its
+    // 4×4 board and the three utility actions in a wide envelope instead of
+    // scaling the portrait Canvas below the physical 44px touch-target floor.
+    "sliding-15": ["#logicBattle", 390, 788, 760, 350],
     // Tic-Tac-Toe owns a responsive two-column Battle composition in compact
     // landscape. Give its permanent Battle shell the wide envelope so the
     // portrait fallback cannot shrink its controls and 3x3 board below touch

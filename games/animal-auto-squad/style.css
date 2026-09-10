@@ -1097,3 +1097,297 @@ body.squad-active button.battle-external-return {
     justify-self: start;
   }
 }
+
+/* Interface 6 shared block skin.
+ * Auto Squad and Orb Fortress keep different game content, but their Main,
+ * Stage, Battle and Result surfaces should read as one WeightPlay product.
+ * Keep the authored arena art and squad cards while sharing the same teal
+ * stone palette, square corners and raised voxel controls. */
+:root {
+  --bg: #0b202b;
+  --panel: #14323d;
+  --panel-2: #1b3b46;
+  --line: #597775;
+  --gold: #ffe091;
+  --mint: #8ef0b7;
+  --danger: #ff7688;
+  --text: #f1f7eb;
+  --muted: #b8cfb8;
+  --accent: #8dc6ff;
+}
+
+html { background: #0b202b; }
+
+body {
+  background-color: #0b202b;
+  background-image:
+    url("../../assets/lobby-block-atmosphere.svg"),
+    radial-gradient(ellipse at 50% 0, #204d4c 0, #0b202b 70%);
+  background-position: center top;
+  background-repeat: repeat-y, no-repeat;
+  background-size: 1440px 960px, 100% 1200px;
+}
+
+.topbar {
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3c6368;
+}
+
+.back-btn {
+  border: 2px solid #5d8688;
+  border-radius: 3px;
+  color: #f5e9c4;
+  background: #163440;
+  box-shadow: inset 0 2px 0 #30535d, 0 4px 0 #061820;
+}
+
+.locale select {
+  border: 2px solid #5d8688;
+  border-radius: 2px;
+  color: #f5e9c4;
+  background: #163440;
+  box-shadow: inset 0 2px 0 #30535d, 0 3px 0 #061820;
+}
+
+.panel {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background: #14323d;
+  box-shadow: 0 5px 0 #061820, 0 14px 28px rgba(1, 14, 23, .36);
+}
+
+.menu-panel,
+.stage-panel,
+.game-panel,
+.result-panel {
+  background:
+    linear-gradient(135deg, rgba(8, 32, 42, .92), rgba(20, 58, 65, .82)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover;
+}
+
+.cover {
+  border: 2px solid #d8ad59;
+  border-radius: 3px;
+  box-shadow: 0 5px 0 #77562c, 0 8px 0 #061820;
+}
+
+.menu-copy > strong {
+  color: #fff5d9;
+  text-shadow: 2px 2px 0 #071c27;
+}
+
+.menu-copy > span,
+.stage-setup-text,
+.stage-legend,
+.training-hint {
+  color: #d4e6d5;
+}
+
+.primary-btn,
+.secondary-btn,
+.shop-action-btn,
+.store-btn,
+.stage-tab {
+  border-width: 2px;
+  border-radius: 2px;
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, .16), 0 5px 0 #071923;
+}
+
+.primary-btn {
+  border-color: #ffe59a;
+  color: #322a17;
+  background: #edb74e;
+  box-shadow: inset 0 3px 0 #ffd982, 0 5px 0 #92642b, 0 7px 0 #061b25;
+}
+
+.secondary-btn,
+.shop-action-btn,
+.store-btn,
+.stage-tab {
+  border-color: #486977;
+  color: #dcebe0;
+  background: #213e4a;
+  box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923;
+}
+
+.stage-tab.is-active {
+  border-color: #8ef0b7;
+  color: #f7ffe6;
+  background: #2c705d;
+  box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22;
+}
+
+.profile-grid > div,
+.training-meta > div,
+.stage-panel-head,
+.stage-setup-text,
+.stage-legend,
+.training-card,
+.team-bonus-note,
+.cosmetic-store,
+.training-store,
+.squad-section,
+.shop-section,
+.selected-ability-panel {
+  border-color: #597775;
+  border-radius: 3px;
+  background: rgba(20, 50, 61, .94);
+  box-shadow: 0 4px 0 #061820;
+}
+
+.profile-grid strong,
+.training-meta strong,
+.stage-panel-head span,
+.training-header strong,
+.team-bonus-note strong {
+  color: #ffe091;
+}
+
+body.squad-active::before {
+  background:
+    linear-gradient(rgba(9, 32, 31, .46), rgba(3, 22, 18, .92)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover;
+}
+
+body.squad-stage-select .stage-panel {
+  border: 2px solid #597775 !important;
+  border-radius: 3px;
+  background: #14323d;
+  box-shadow: 0 5px 0 #061820, 0 14px 28px rgba(1, 14, 23, .36);
+}
+
+body.squad-stage-select .wp-stage-shell-header {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.stage-panel-head {
+  background: rgba(13, 41, 53, .94);
+}
+
+.stage-card {
+  border-color: #597775;
+  border-radius: 3px;
+  box-shadow: 0 5px 0 #061820;
+}
+
+.stage-card.is-browsed {
+  border-color: #ffd27c;
+  box-shadow: inset 0 3px 0 rgba(255, 228, 148, .42), 0 5px 0 #77562c, 0 0 0 2px rgba(255, 210, 124, .3);
+}
+
+.hud-row,
+.combat-summary,
+.combat-pace-control {
+  border: 2px solid #486977 !important;
+  border-radius: 2px !important;
+  background: rgba(13, 41, 53, .94) !important;
+  box-shadow: inset 0 2px 0 #193c47, 0 3px 0 #061820 !important;
+}
+
+.hud-row > div {
+  border: 2px solid #486977;
+  border-radius: 2px;
+  background: rgba(13, 41, 53, .94);
+  box-shadow: inset 0 2px 0 #193c47, 0 3px 0 #061820;
+}
+
+.hud-row span,
+.combat-summary span,
+.combat-pace-hint {
+  color: #b8cfb8;
+}
+
+.hud-row strong,
+.combat-summary strong {
+  color: #ffe091;
+}
+
+.game-panel,
+body.squad-active #gamePanel.game-panel {
+  border: 0 !important;
+  border-radius: 3px;
+  background: radial-gradient(circle at center, rgba(38, 104, 88, .72), rgba(3, 22, 18, .96));
+}
+
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-area {
+  border: 2px solid #597775 !important;
+  border-radius: 3px !important;
+  background:
+    linear-gradient(rgba(8, 32, 42, .2), rgba(8, 32, 42, .34)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover !important;
+  box-shadow: 0 5px 0 #061820 !important;
+}
+
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row span,
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span,
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-hint {
+  color: #b8cfb8 !important;
+}
+
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row strong,
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong {
+  color: #ffe091 !important;
+}
+
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-status {
+  border: 2px solid #597775 !important;
+  border-radius: 2px !important;
+  color: #ffe091 !important;
+  background: rgba(13, 41, 53, .94) !important;
+  box-shadow: 0 3px 0 #061820 !important;
+}
+
+body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button {
+  border: 2px solid #486977 !important;
+  border-radius: 2px !important;
+  color: #dcebe0 !important;
+  background: #213e4a !important;
+  box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923 !important;
+}
+
+.combat-area {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background:
+    linear-gradient(rgba(8, 32, 42, .2), rgba(8, 32, 42, .34)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover;
+}
+
+#gameCanvas {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background: transparent;
+  box-shadow: 0 5px 0 #061820;
+}
+
+.card-item {
+  border-color: #486977;
+  border-radius: 3px;
+  background: linear-gradient(145deg, rgba(33, 94, 114, .96), rgba(5, 29, 49, .98));
+  box-shadow: 0 5px 0 #061820, inset 0 0 0 1px rgba(255, 255, 255, .08);
+}
+
+.card-item:hover,
+.card-item:focus-visible {
+  border-color: #ffd27c;
+  box-shadow: inset 0 3px 0 rgba(255, 225, 141, .3), 0 5px 0 #77562c;
+}
+
+.modal-panel,
+.result-panel {
+  border-color: #597775;
+  border-radius: 3px;
+  background: #14323d;
+  box-shadow: 0 6px 0 #061820, 0 18px 42px rgba(1, 12, 20, .42);
+}
+
+.combat-status,
+.action-notice {
+  border-color: #597775;
+  border-radius: 2px;
+  background: rgba(13, 41, 53, .94);
+  box-shadow: 0 3px 0 #061820;
+}

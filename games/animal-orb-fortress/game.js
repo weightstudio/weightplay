@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v33";
+  const GAME_VERSION = "v36";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -29,6 +29,7 @@
     stageViewPanels: [...document.querySelectorAll("[data-stage-view-panel]")],
     stageRaidView: $("stageRaidView"),
     stageWorkshopView: $("stageWorkshopView"),
+    stageHeading: document.querySelector(".stage-header [data-ui='raidMap']"),
     stageProgressText: $("stageProgressText"),
     mapBtn: $("battleBackBtn"),
     resumeBtn: $("resumeBtn"),
@@ -197,8 +198,8 @@
       raidPlanLose: "Next raid: aim before the front line closes and use wall banks to strike more than one beast.",
       upgradeDamage: "Bigger Orb",
       upgradeDamageDesc: "+1 orb damage.",
-      upgradeSplit: "Focused Star Orb",
-      upgradeSplitDesc: "One brighter orb deals 25% more damage.",
+      upgradeSplit: "Star Orb Capacity",
+      upgradeSplitDesc: "+1 Star Orb you can hold in the arena.",
       upgradePierce: "Piercing Shine",
       upgradePierceDesc: "The orb can hit the same beast again sooner.",
       upgradeRecharge: "Faster Recharge",
@@ -345,8 +346,8 @@
       raidPlanLose: "下次突襲：在前線逼近前先瞄準，利用牆面反彈一次擊中多隻影獸。",
       upgradeDamage: "巨大星珠",
       upgradeDamageDesc: "星珠傷害 +1。",
-      upgradeSplit: "凝聚星珠",
-      upgradeSplitDesc: "維持單一軌跡，星珠傷害提高 25%。",
+      upgradeSplit: "星珠擴容",
+      upgradeSplitDesc: "場上可同時持有的星珠 +1。",
       upgradePierce: "穿透星芒",
       upgradePierceDesc: "星珠可以更快再次命中同一隻影獸。",
       upgradeRecharge: "快速充能",
@@ -437,8 +438,8 @@
     keyboardAim: "瞄准偏移 {angle}°。左右方向键调整，按空格键或 Enter 发射。",
     orbFlying: "星珠正在飞行。观察反弹路线，准备下一次瞄准。",
     orbReturning: "星珠正飞回守护狮子身边。观察下一次反弹角度。",
-    upgradeSplit: "凝聚星珠",
-    upgradeSplitDesc: "保持单一轨迹，星珠伤害提高 25%。",
+    upgradeSplit: "星珠扩容",
+    upgradeSplitDesc: "场上可同时持有的星珠 +1。",
     fortressHit: "影兽撞到核心了。更早瞄准，或改用更宽的反弹角度。",
     waveClear: "波次完成。选择一个祝福后进入下一波。",
     arenaControlLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。使用左右方向键调整，按空格键或 Enter 发射。",
@@ -631,23 +632,22 @@
     raidPlanLose: "الغارة التالية: صوب قبل انغلاق خط المواجهة واستخدم الجدران لإصابة عدة وحوش.",
   });
 
-  // Keep every locale aligned with the one-orb combat rule. Several older
-  // full dictionaries still described an echo projectile, so these focused
-  // overrides replace that retired upgrade copy without changing locale
-  // fallback behavior elsewhere.
-  const focusedOrbCopy = {
-    es: { upgradeSplit: "Orbe concentrado", upgradeSplitDesc: "Un solo orbe brillante inflige un 25% más de daño.", orbReturning: "El orbe estelar regresa al guardián." },
-    fr: { upgradeSplit: "Orbe concentré", upgradeSplitDesc: "Un seul orbe lumineux inflige 25 % de dégâts supplémentaires.", orbReturning: "L'orbe étoile revient au gardien." },
-    de: { upgradeSplit: "Fokuskugel", upgradeSplitDesc: "Eine helle Kugel verursacht 25 % mehr Schaden.", orbReturning: "Die Sternkugel kehrt zum Hüter zurück." },
-    it: { upgradeSplit: "Sfera concentrata", upgradeSplitDesc: "Una sola sfera luminosa infligge il 25% di danni in più.", orbReturning: "La sfera stellare torna dal custode." },
-    ja: { upgradeSplit: "集中オーブ", upgradeSplitDesc: "1個の明るいオーブが与えるダメージを25%上げます。", orbReturning: "星のオーブが守り手へ戻ります。" },
-    ko: { upgradeSplit: "집중 별 구슬", upgradeSplitDesc: "더 밝은 별 구슬 하나가 피해를 25% 더 줍니다.", orbReturning: "별 구슬이 수호자에게 돌아옵니다." },
-    "pt-BR": { upgradeSplit: "Orbe Estelar Focado", upgradeSplitDesc: "Um único orbe brilhante causa 25% a mais de dano.", orbReturning: "O orbe estelar está voltando ao guardião." },
-    ru: { upgradeSplit: "Сфокусированный звёздный шар", upgradeSplitDesc: "Один яркий шар наносит на 25% больше урона.", orbReturning: "Звёздный шар возвращается к хранителю." },
-    hi: { upgradeSplit: "केंद्रित तारा गोला", upgradeSplitDesc: "एक चमकीला गोला 25% अधिक नुकसान करता है।", orbReturning: "तारा गोला रक्षक के पास लौट रहा है।" },
-    ar: { upgradeSplit: "كرة نجمية مركزة", upgradeSplitDesc: "كرة مضيئة واحدة تسبب ضررًا أعلى بنسبة 25٪.", orbReturning: "تعود الكرة النجمية إلى الحارس." },
+  // Capacity is a player-earned tactical resource. The first battle has one
+  // readable orb; each selection opens one more in-flight slot, while every
+  // individual input still releases only the orb in the keeper's hand.
+  const orbCapacityCopy = {
+    es: { upgradeSplit: "Capacidad estelar", upgradeSplitDesc: "+1 orbe estelar que puedes mantener en la arena.", orbReturning: "El orbe estelar regresa al guardián." },
+    fr: { upgradeSplit: "Capacité d'orbes", upgradeSplitDesc: "+1 orbe étoile que vous pouvez garder dans l'arène.", orbReturning: "L'orbe étoile revient au gardien." },
+    de: { upgradeSplit: "Sternkugel-Kapazität", upgradeSplitDesc: "+1 Sternkugel gleichzeitig in der Arena.", orbReturning: "Die Sternkugel kehrt zum Hüter zurück." },
+    it: { upgradeSplit: "Capacità sfere", upgradeSplitDesc: "+1 sfera stellare che puoi tenere nell'arena.", orbReturning: "La sfera stellare torna dal custode." },
+    ja: { upgradeSplit: "星珠容量", upgradeSplitDesc: "アリーナで同時に保持できる星珠が1個増加。", orbReturning: "星のオーブが守り手へ戻ります。" },
+    ko: { upgradeSplit: "별 구슬 용량", upgradeSplitDesc: "아레나에 동시에 유지할 수 있는 별 구슬 +1.", orbReturning: "별 구슬이 수호자에게 돌아옵니다." },
+    "pt-BR": { upgradeSplit: "Capacidade de orbes", upgradeSplitDesc: "+1 orbe estelar que pode ficar na arena.", orbReturning: "O orbe estelar está voltando ao guardião." },
+    ru: { upgradeSplit: "Вместимость звёздных шаров", upgradeSplitDesc: "+1 звёздный шар, который можно держать на арене.", orbReturning: "Звёздный шар возвращается к хранителю." },
+    hi: { upgradeSplit: "तारा गोला क्षमता", upgradeSplitDesc: "मैदान में एक साथ रखने के लिए +1 तारा गोला।", orbReturning: "तारा गोला रक्षक के पास लौट रहा है।" },
+    ar: { upgradeSplit: "سعة الكرات النجمية", upgradeSplitDesc: "+1 كرة نجمية يمكنك الاحتفاظ بها في الساحة.", orbReturning: "تعود الكرة النجمية إلى الحارس." },
   };
-  Object.entries(focusedOrbCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
+  Object.entries(orbCapacityCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
 
   // New combat labels are deliberately short so every supported locale keeps
   // the same compact HUD. Full locale dictionaries can extend these later;
@@ -1270,7 +1270,7 @@
       maxCore: 20 + shieldLevel * 4 + openingCoreBonus,
       baseDamage: 2 + forgeLevel + (openingRoute ? 1 : 0),
       orbScale: 1,
-      focusLevel: 0,
+      orbCapacityLevel: 0,
       pierceLevel: 0,
       chainLevel: 0,
       magnetLevel: 0,
@@ -1641,6 +1641,13 @@
     const next = view === "workshop" ? "workshop" : "raid";
     stageView = next;
     nodes.stagePanel.dataset.stageView = next;
+    const titleKey = next === "workshop" ? "fortressWorkshop" : "raidMap";
+    if (nodes.stageHeading) {
+      nodes.stageHeading.dataset.ui = titleKey;
+      nodes.stageHeading.textContent = t(titleKey);
+      nodes.stageHeading.setAttribute("aria-label", t(titleKey));
+    }
+    nodes.stagePanel.setAttribute("aria-label", t(titleKey));
     nodes.stageTabs.forEach((tab) => {
       const active = tab.dataset.stageView === next;
       tab.setAttribute("aria-selected", String(active));
@@ -2136,9 +2143,14 @@
     }
   }
 
+  function launcherOrbPoint() {
+    return { x: state.launcher.x + 17, y: state.launcher.y - 17 };
+  }
+
   function aimVector(x, y) {
-    const dx = x - state.launcher.x;
-    const dy = y - state.launcher.y;
+    const launcher = launcherOrbPoint();
+    const dx = x - launcher.x;
+    const dy = y - launcher.y;
     const len = Math.max(1, Math.hypot(dx, dy));
     const power = 520 * (H / 540);
     return { vx: (dx / len) * power, vy: (dy / len) * power };
@@ -2180,8 +2192,9 @@
 
   function previewPath(x, y) {
     const v = aimVector(x, y);
-    let px = state.launcher.x;
-    let py = state.launcher.y;
+    const launcher = launcherOrbPoint();
+    let px = launcher.x;
+    let py = launcher.y;
     let vx = v.vx;
     let vy = v.vy;
     const points = [{ x: px, y: py }];
@@ -2278,51 +2291,54 @@
       state.firstShotCueUntil = 0;
     }
     const v = aimVector(x, y);
-    // A shot is one readable star orb. Earlier volleys launched several
-    // different angles from one tap, which made the player's chosen line hard
-    // to follow. Focus blessings strengthen the held orb, but
-    // but never creates an unexpected second trajectory.
+    const capacity = activeOrbLimit();
+    // One input always launches exactly one orb from the keeper's hand. A
+    // capacity upgrade only opens another active slot, so the player chooses
+    // the second (and third) aim instead of receiving an automatic barrage.
     const orb = makeOrb(v.vx, v.vy, state.shotCount % 5);
     orb.firstShot = firstShot;
+    orb.capacity = capacity;
     state.orbs.push(orb);
     state.preview = [];
     state.aimTarget = null;
     state.shotCount += 1;
-    state.readyTimer = state.orbCooldown;
+    // A spare hand-light can be fired almost immediately; once every slot is
+    // occupied, the normal recharge rhythm remains in control.
+    state.readyTimer = state.orbs.length < capacity ? Math.min(0.08, state.orbCooldown) : state.orbCooldown;
     nodes.hintText.textContent = t("orbFlying");
     updateArenaControlLabel(true);
     playSound("shoot", 0.08);
-    track("shot_fired", { wave: state.wave, focused_level: state.focusLevel, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
-    trackGrowth("shot_fired", { wave: state.wave, focused_level: state.focusLevel, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
+    const shotAngle = Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90);
+    track("shot_fired", { wave: state.wave, orb_capacity: capacity, active_orbs: state.orbs.length, first_shot: firstShot, angle: shotAngle });
+    trackGrowth("shot_fired", { wave: state.wave, orb_capacity: capacity, active_orbs: state.orbs.length, first_shot: firstShot, angle: shotAngle });
     renderHud();
   }
 
   function makeOrb(vx, vy, skin) {
     return {
-      x: state.launcher.x,
-      y: state.launcher.y,
+      ...launcherOrbPoint(),
       vx,
       vy,
       r: Math.round(22 * state.orbScale),
       // A launched star never disappears in the field: it completes one
       // authored rebound, then visibly flies back to the keeper.
       life: 1,
-      damage: Math.max(1, Math.round(state.baseDamage * (1 + state.focusLevel * 0.25))),
+      damage: Math.max(1, state.baseDamage),
       skin,
       hits: new Map(),
       bounces: 0,
       maxBounces: 1,
-      focusLevel: state.focusLevel,
       pierceLevel: state.pierceLevel,
+      capacity: activeOrbLimit(),
       returning: false,
       returnTimer: 0,
     };
   }
 
   function activeOrbLimit() {
-    // The opening battle needs room for a follow-up shot, but every input still
-    // creates exactly one orb. This avoids the old multi-direction burst.
-    return 2;
+    // One orb is the opening lesson. Capacity grows to two, then three active
+    // slots; an upgrade never changes an individual click into a multi-shot.
+    return 1 + Math.min(2, state.orbCapacityLevel || 0);
   }
 
   function canFireOrb() {
@@ -2619,15 +2635,16 @@
 
   function updateOrb(orb, dt) {
     if (orb.returning) {
-      const dx = state.launcher.x - orb.x;
-      const dy = state.launcher.y - orb.y;
+      const launcher = launcherOrbPoint();
+      const dx = launcher.x - orb.x;
+      const dy = launcher.y - orb.y;
       const distance = Math.max(1, Math.hypot(dx, dy));
       const returnSpeed = Math.max(520, distance * 7.5);
       orb.x += (dx / distance) * returnSpeed * dt;
       orb.y += (dy / distance) * returnSpeed * dt;
       if (distance < 26) {
         orb.life = 0;
-        state.sparks.push({ kind: "block-break", x: state.launcher.x, y: state.launcher.y - 18, life: 0.28, maxLife: 0.28, effectIndex: 0 });
+        state.sparks.push({ kind: "block-break", x: launcher.x, y: launcher.y, life: 0.28, maxLife: 0.28, effectIndex: 0 });
       }
       return;
     }
@@ -2637,7 +2654,7 @@
       orb.vx *= -1;
       orb.bounces += 1;
       orb.x = Math.max(38, Math.min(W - 38, orb.x));
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
       playSound("click", 0.08);
       if (orb.bounces >= orb.maxBounces) {
         startOrbReturn(orb);
@@ -2648,7 +2665,7 @@
       orb.vy *= -1;
       orb.bounces += 1;
       orb.y = Math.max(38, Math.min(H - 38, orb.y));
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
       playSound("click", 0.08);
       if (orb.bounces >= orb.maxBounces) {
         startOrbReturn(orb);
@@ -2675,7 +2692,7 @@
       orb.y = pylon.y + ny * (orb.r + pylon.r + 2);
       orb.pylonHits.set(pylon, 0.16);
       orb.bounces += 1;
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
       state.mechanicEvents.push("pylon_bounce");
       playSound("click", 0.06);
       if (orb.bounces >= orb.maxBounces) {
@@ -2841,7 +2858,7 @@
 
   function upgradeLevel(id) {
     if (id === "damage") return Math.round((state.orbScale - 1) / 0.12);
-    if (id === "split") return state.focusLevel;
+    if (id === "split") return state.orbCapacityLevel;
     if (id === "pierce") return state.pierceLevel;
     if (id === "chain") return state.chainLevel;
     if (id === "magnet") return state.magnetLevel;
@@ -2885,7 +2902,7 @@
       state.baseDamage += 1;
       state.orbScale += 0.12;
     }
-    if (id === "split") state.focusLevel += 1;
+    if (id === "split") state.orbCapacityLevel = Math.min(2, state.orbCapacityLevel + 1);
     if (id === "pierce") state.pierceLevel += 1;
     if (id === "recharge") state.orbCooldown = Math.max(0.25, state.orbCooldown - 0.16);
     if (id === "shield") state.core = Math.min(state.maxCore, state.core + 4);
@@ -3078,7 +3095,7 @@
       const speed = Math.max(1, Math.hypot(orb.vx, orb.vy));
       const trail = orb.returning ? 18 : Math.min(34, 10 + speed * 0.045);
       const heading = orb.returning
-        ? Math.atan2(state.launcher.y - orb.y, state.launcher.x - orb.x)
+        ? Math.atan2(launcherOrbPoint().y - orb.y, launcherOrbPoint().x - orb.x)
         : Math.atan2(orb.vy, orb.vx);
       ctx.strokeStyle = orb.returning ? "rgba(255, 229, 115, 0.7)" : "rgba(79, 231, 255, 0.64)";
       ctx.lineWidth = orb.returning ? 6 : 7;
@@ -3092,18 +3109,7 @@
       ctx.translate(orb.x, orb.y);
       ctx.rotate(heading);
       ctx.globalAlpha = orb.returning ? 0.82 : 1;
-      if (orb.focusLevel > 0 && !orb.returning) {
-        const pulse = 1 + Math.sin(performance.now() / 110) * 0.08;
-        const ring = 52 * orb.orbScale * pulse;
-        ctx.strokeStyle = "rgba(255, 230, 105, 0.92)";
-        ctx.lineWidth = 5;
-        ctx.shadowColor = "#ffe56f";
-        ctx.shadowBlur = 20;
-        ctx.strokeRect(-ring / 2, -ring / 2, ring, ring);
-        ctx.shadowBlur = 0;
-      }
-      const visualSize = (orb.returning ? 76 : 104) * orb.orbScale;
-      drawAtlas(images.orb, 0, 1, 0, 0, visualSize);
+      drawStarOrb(orb);
       ctx.restore();
     });
     state.sparks.forEach((spark) => {
@@ -3176,6 +3182,71 @@
 
     drawCore();
     drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 82);
+    drawLauncherOrb();
+    ctx.restore();
+  }
+
+  function drawStarOrb(orb) {
+    const pulse = 1 + Math.sin(performance.now() / 105 + orb.skin) * 0.06;
+    const radius = (orb.returning ? 21 : 25) * (orb.r / 22) * pulse;
+    const hue = orb.returning ? "#ffe67b" : orb.capacity > 1 ? "#b78cff" : "#64ecff";
+    const aura = ctx.createRadialGradient(-radius * 0.18, -radius * 0.2, radius * 0.08, 0, 0, radius * 1.5);
+    aura.addColorStop(0, "rgba(255,255,255,0.96)");
+    aura.addColorStop(0.24, orb.returning ? "rgba(255,239,155,0.96)" : orb.capacity > 1 ? "rgba(207,173,255,0.96)" : "rgba(143,247,255,0.98)");
+    aura.addColorStop(0.58, orb.returning ? "rgba(255,180,72,0.78)" : orb.capacity > 1 ? "rgba(109,80,242,0.82)" : "rgba(25,142,220,0.84)");
+    aura.addColorStop(1, "rgba(7,27,71,0)");
+    ctx.fillStyle = aura;
+    ctx.shadowColor = hue;
+    ctx.shadowBlur = 24;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 1.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "rgba(8,31,82,0.76)";
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.72, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = aura;
+    ctx.beginPath();
+    ctx.arc(-radius * 0.1, -radius * 0.1, radius * 0.58, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.beginPath();
+    ctx.arc(-radius * 0.26, -radius * 0.29, radius * 0.17, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = hue;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius * 0.79, -0.35, Math.PI * 1.32);
+    ctx.stroke();
+  }
+
+  function drawLauncherOrb() {
+    const { x, y } = launcherOrbPoint();
+    const ready = state.mode === "running" && canFireOrb();
+    const active = state.orbs.length > 0;
+    const pulse = 1 + Math.sin(performance.now() / 170) * 0.08;
+    const radius = (ready ? 14 : active ? 8 : 11) * pulse;
+    ctx.save();
+    const halo = ctx.createRadialGradient(x, y, 1, x, y, 34);
+    halo.addColorStop(0, ready ? "rgba(255,249,188,0.96)" : "rgba(126,234,255,0.72)");
+    halo.addColorStop(0.35, ready ? "rgba(114,242,255,0.76)" : "rgba(83,164,255,0.48)");
+    halo.addColorStop(1, "rgba(18,83,188,0)");
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(x, y, 34, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowColor = ready ? "#baf7ff" : "#65d9ff";
+    ctx.shadowBlur = 18;
+    ctx.fillStyle = ready ? "#dffcff" : "#73d9ff";
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "rgba(255,255,255,0.88)";
+    ctx.beginPath();
+    ctx.arc(x - radius * 0.25, y - radius * 0.28, Math.max(2, radius * 0.22), 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
   }
 

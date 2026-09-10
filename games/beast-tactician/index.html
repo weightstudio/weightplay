@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-wp-official-name>
   <head>
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/beast-tactician/"+location.search+location.hash)}catch{location.replace("/en/games/beast-tactician/"+location.search+location.hash)}})();</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Shape enemy routes and command animal soldiers and WeightPlay heroes across 30 tower-defense stages, six regions, and six rule-changing Boss battles." />
     <link rel="canonical" href="https://weightplay.com/en/games/beast-tactician/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
@@ -26,21 +28,24 @@
     <meta property="og:title" content="Beast Guardian - Free Hero Tower Defense | WeightPlay" />
     <meta property="og:description" content="Build routes, counter flying, armored, regenerating, and surging enemies, and defend the crystal through 30 stages and six Bosses." />
     <meta property="og:url" content="https://weightplay.com/games/beast-tactician/" />
-    <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Beast Guardian - Free Hero Tower Defense | WeightPlay</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
-    <link rel="stylesheet" href="defense.css?v=20260825-beast-arabic-guide-v13" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
+    <link rel="stylesheet" href="../../src/game-screen-shell.css?v=20260910-beast-rally-block-v14" />
+    <link rel="stylesheet" href="defense.css?v=20260910-beast-rally-block-v14" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "VideoGame",
         "name": "Beast Guardian",
         "url": "https://weightplay.com/games/beast-tactician/",
-        "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
+        "image": "https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp",
         "description": "Shape enemy routes and command animal soldiers and WeightPlay heroes across 30 tower-defense stages, six regions, and six rule-changing Boss battles.",
         "publisher": {
           "@type": "Organization",
@@ -60,11 +65,10 @@
     </script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
 </head>
-  <body data-game-id="beast-tactician" data-wp-combined-sound="true">
-    <main class="guardian-app" data-runtime-localize="off">
-      <header class="guardian-topbar">
+  <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-screen="main" data-wp-combined-sound="true">
+    <main class="guardian-app" data-runtime-localize="off" data-wp-game-shell-root>
+      <header class="guardian-topbar" data-wp-shell-header="main">
         <a class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="Back" hidden>&larr;</button>
         <div class="brand-lockup">
           <h1 id="gameTitle">Beast Guardian</h1>
         </div>
@@ -99,9 +103,9 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="menuPanel" class="menu-panel" data-screen="main" data-wp-shell-slot="main">
         <div class="poster-frame">
-          <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian cover" />
+          <img class="cover" src="../../assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="Beast Guardian cover" />
         </div>
         <div class="menu-copy">
           <p id="releaseBadge" class="release-badge">Playable Now</p>
@@ -115,11 +119,18 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="stage-panel is-hidden">
-        <div class="stage-workspace">
+      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
+        <header class="stage-header" data-wp-shell-header="stage">
+          <button id="stageBackBtn" class="secondary-btn play-return" data-wp-return="stage" type="button" aria-label="Back to main" hidden>&larr;</button>
+          <div class="stage-header-copy">
+            <strong id="stageTitle">Stages</strong>
+            <span id="stageProgressText">1 / 30</span>
+          </div>
+        </header>
+        <div class="stage-workspace" data-wp-stage-workspace>
           <section id="stagePage" class="stage-page" aria-labelledby="stageTabBtn">
             <div class="stage-progress"><span id="bestStageLabel">Best Stage</span><strong id="bestStageText">1 / 30</strong></div>
-            <div id="stageRail" class="stage-rail" aria-label="Stage selector"></div>
+            <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-easing="smoothstep" aria-label="Stage selector"></div>
           </section>
           <section id="techPanel" class="stage-page equipment-page is-hidden" aria-labelledby="equipmentTabBtn" aria-live="polite">
             <div class="equipment-summary">
@@ -137,8 +148,8 @@
         </nav>
       </section>
 
-      <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
-        <div class="hud-row">
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-play-viewport>
+        <div class="hud-row" data-wp-shell-header="battle">
           <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Back to stages">&larr;</button>
           <div><span id="stageHudLabel">Stage</span><strong id="stageHudText">1</strong></div>
           <div><span id="coreHudLabel">Core</span><strong id="coreText">100</strong></div>
@@ -166,18 +177,19 @@
             <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
           </aside>
           <div class="canvas-shell">
-            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape" aria-label="Beast Guardian tower defense board"></canvas>
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape" aria-label="Beast Guardian tower defense board"></canvas>
             <div id="toast" class="toast is-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
         <div class="command-row">
           <button id="waveBtn" class="primary-btn" type="button">Start Wave</button>
           <button id="upgradeBtn" class="secondary-btn" type="button">Upgrade</button>
+          <button id="rallyBtn" class="secondary-btn" type="button" aria-label="Rally selected defender">Rally</button>
           <button id="sellBtn" class="secondary-btn" type="button">Sell</button>
         </div>
         <section id="resultPanel" class="modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
           <div class="modal-card result-card">
-            <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="Boom Mane Leo" />
+            <img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="Boom Mane Leo" />
             <div>
               <h2 id="resultTitle">Victory</h2>
               <p id="resultText"></p>
@@ -210,7 +222,7 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Beast Guardian - Game Guide</h2>
-          <p>Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads. Each stage changes both the enemy entry and crystal position, so the same wall pattern cannot solve every map. Build from eight clear animal roles, keep at least one route open, and protect the crystal through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.</p>
+          <p>Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads. Each stage changes both the enemy entry and crystal position, so the same wall pattern cannot solve every map. Build from eight clear animal roles, keep at least one route open, and spend one Rally order per wave to turn a key defender into a six-second power spike. Protect the crystal through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.</p>
         </div>
         <div class="game-info-facts">
           <div class="game-info-fact"><span>Gameplay</span><strong>Hero Tower Defense</strong></div>
@@ -227,15 +239,15 @@
         </div>
         <div class="game-info-section game-info-systems">
           <h3>How the Systems Work</h3>
-          <ul><li>Route building: defenders occupy normal ground cells. Enemies recalculate a path around them, but a completely sealed route makes ground enemies attack the nearest blocker until a route opens again. Flying bats ignore the ground maze, so a long route alone cannot solve every wave.</li><li>Combat roles: Guards buy time; Archers win long lanes; Sappers deliver splash and slows; Taro anchors a choke; Orla chains into nearby packs; Fia specializes in Boss damage; and Rux makes a close formation stronger. Selecting a placed unit shows its upgrade cost and sell refund.</li><li>Wave information: before each wave, the HUD names the incoming wolves, boars, bats, escorts, or Boss. Non-final waves continue after a five-second countdown, so the player can read the next composition and use earned coins before pressure resumes.</li><li>Special enemies: Ironbark stages give enemies breakable guard armor; mistwood enemies recover health while moving; storm enemies accelerate after falling below half health; eclipse stages combine armor, recovery, surge behavior, flying routes, and reduced slow effectiveness.</li><li>Permanent progress: victories award stars, upgrade points, and Diamonds. Upgrade points improve hero power, defender health, or starting economy. Diamonds are optional and can confirm a core revive, reroll a result reward, or unlock a cosmetic golden defender frame; normal stage unlocks do not require them.</li></ul>
+          <ul><li>Route building: defenders occupy normal ground cells. Enemies recalculate a path around them, but a completely sealed route makes ground enemies attack the nearest blocker until a route opens again. Flying bats ignore the ground maze, so a long route alone cannot solve every wave.</li><li>Combat roles: Guards buy time; Archers win long lanes; Sappers deliver splash and slows; Taro anchors a choke; Orla chains into nearby packs; Fia specializes in Boss damage; and Rux makes a close formation stronger. Selecting a placed unit shows its upgrade cost and sell refund.</li><li>Rally order: select a living defender during an active wave and press Rally (or R). It consumes the wave's single charge and grants six seconds of 32% more damage plus faster attacks; Medic-style healing also improves, so save it for a Boss entry or a collapsing lane.</li><li>Wave information: before each wave, the HUD names the incoming wolves, boars, bats, escorts, or Boss. Non-final waves continue after a five-second countdown, so the player can read the next composition and use earned coins before pressure resumes.</li><li>Special enemies: Ironbark stages give enemies breakable guard armor; mistwood enemies recover health while moving; storm enemies accelerate after falling below half health; eclipse stages combine armor, recovery, surge behavior, flying routes, and reduced slow effectiveness.</li><li>Permanent progress: victories award stars, upgrade points, and Diamonds. Upgrade points improve hero power, defender health, or starting economy. Diamonds are optional and can confirm a core revive, reroll a result reward, or unlock a cosmetic golden defender frame; normal stage unlocks do not require them.</li></ul>
         </div>
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.</li><li>Spend stage coins to place soldiers or WeightPlay heroes on normal ground tiles. Use the visible range preview before confirming a position.</li><li>Keep at least one path open, or blocked enemies will attack the nearest defender until the route reopens.</li><li>Read Wave Intel, start the wave, then upgrade or sell placed units as the enemy mix changes. Non-final cleared waves resume automatically after five seconds.</li><li>Protect the crystal through every wave. Result awards one to three stars according to remaining core health and offers Next Stage, Retry, or Back to Stages.</li><li>Spend saved upgrade points from Stage when permanent power, bulwark health, or starting economy needs improvement. Optional Diamond actions always show their cost and require confirmation.</li></ol>
+          <ol><li>Choose a stage from the swipe stage rail and read the threat, plan, and reward notes.</li><li>Spend stage coins to place soldiers or WeightPlay heroes on normal ground tiles. Use the visible range preview before confirming a position.</li><li>Keep at least one path open, or blocked enemies will attack the nearest defender until the route reopens.</li><li>Read Wave Intel, start the wave, then select a defender and use Rally when a six-second burst can swing the fight. Upgrade or sell placed units as the enemy mix changes; non-final cleared waves resume automatically after five seconds.</li><li>Protect the crystal through every wave. Result awards one to three stars according to remaining core health and offers Next Stage, Retry, or Back to Stages.</li><li>Spend saved upgrade points from Stage when permanent power, bulwark health, or starting economy needs improvement. Optional Diamond actions always show their cost and require confirmation.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
-          <ul><li>Use Acorn Guards to make two or three firing bends before investing in expensive heroes. A longer route increases every ranged unit&#39;s useful attack time.</li><li>Do not close every cell. A sealed route turns the maze into a direct fight against the nearest blocker and can remove the timing advantage you were trying to create.</li><li>Keep ranged coverage near the crystal during Bat Crossing and later flying stages because bats bypass ground blockers. Slow boars before their armor breaks on storm stages so their wounded speed surge is less dangerous.</li><li>Against regenerating enemies, concentrate fire inside one kill zone instead of spreading damage. Against armor, sustained or splash damage should remove the guard before hero burst is committed.</li><li>Save role coverage for Boss stages. The final Voidroot Emperor changes phase at two health thresholds, summoning bats first and then armored ground support while rebuilding guard.</li></ul>
+          <ul><li>Use Acorn Guards to make two or three firing bends before investing in expensive heroes. A longer route increases every ranged unit&#39;s useful attack time.</li><li>Do not close every cell. A sealed route turns the maze into a direct fight against the nearest blocker and can remove the timing advantage you were trying to create.</li><li>Keep ranged coverage near the crystal during Bat Crossing and later flying stages because bats bypass ground blockers. Slow boars before their armor breaks on storm stages so their wounded speed surge is less dangerous.</li><li>Against regenerating enemies, concentrate fire inside one kill zone instead of spreading damage. Against armor, sustained or splash damage should remove the guard before hero burst is committed.</li><li>Spend Rally on the defender already covering the most valuable lane. One well-timed six-second spike is stronger than activating it as soon as the wave begins.</li><li>Save role coverage for Boss stages. The final Voidroot Emperor changes phase at two health thresholds, summoning bats first and then armored ground support while rebuilding guard.</li></ul>
         </div>
         <div class="game-info-section game-info-campaign">
           <h3>Campaign and Difficulty Growth</h3>
@@ -262,7 +274,10 @@
     <script src="../../src/i18n.js?v=20260721-locale13-1"></script><script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="game.js?v=20260825-beast-arabic-guide-v13"></script>
+    <script src="../../src/game-screen-shell.js?v=20260910-beast-rally-block-v14"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
+    <script src="game.js?v=20260910-beast-rally-block-v14"></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>

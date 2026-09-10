@@ -167,6 +167,8 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     techHint: $("techHint"),
     techGrid: $("techGrid"),
     stageBackBtn: $("stageBackBtn"),
+    stageTitle: $("stageTitle"),
+    stageProgressText: $("stageProgressText"),
     stagePage: $("stagePage"),
     stageTabs: $("stageTabs"),
     stageTabBtn: $("stageTabBtn"),
@@ -190,6 +192,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     speedBtn: $("speedBtn"),
     waveBtn: $("waveBtn"),
     upgradeBtn: $("upgradeBtn"),
+    rallyBtn: $("rallyBtn"),
     sellBtn: $("sellBtn"),
     reviveBtn: $("reviveBtn"),
     bossPanel: $("bossPanel"),
@@ -221,9 +224,16 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
   nodes.canvas.tabIndex = 0;
   nodes.canvas.setAttribute(
     "aria-keyshortcuts",
-    "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape",
+    "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape",
   );
   const ctx = nodes.canvas.getContext("2d");
+  const gameShell = window.WeightPlayGameShell?.mount({
+    gameId: GAME_ID,
+    root: document.querySelector("[data-wp-game-shell-root]"),
+    main: nodes.menuPanel,
+    stage: nodes.stagePanel,
+    battle: nodes.gamePanel,
+  });
 
   const text = {
     en: {
@@ -400,12 +410,12 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
 
   const assetSources = {
     bg: "../../assets/beast-tactician-battle-bg.webp",
-    leo: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
-    taro: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
-    orla: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
-    fia: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    rux: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
-    panko: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
+    leo: "../../assets/weightplay-character-boom-mane-lion-block-v1.webp",
+    taro: "../../assets/weightplay-character-moss-shell-turtle-block-v1.webp",
+    orla: "../../assets/weightplay-character-moon-cap-owl-block-v1.webp",
+    fia: "../../assets/weightplay-character-spark-paw-fox-block-v1.webp",
+    rux: "../../assets/weightplay-character-gear-horn-rhino-block-v1.webp",
+    panko: "../../assets/weightplay-character-drum-belly-panda-block-v1.webp",
     bear: "../../assets/beast-tactician-hero-bear.webp",
     tiger: "../../assets/beast-tactician-hero-tiger.webp",
     deer: "../../assets/beast-tactician-hero-deer.webp",
@@ -839,6 +849,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
   let stageCardPool = [];
   let stageBrowseId = 0;
   let stageSettleFrame = 0;
+  let stageScrollRecycleLock = false;
 
   function clampStage(value, minimum = 1, maximum = STAGE_COUNT) {
     return Math.max(minimum, Math.min(maximum, Number(value) || minimum));
@@ -1576,6 +1587,124 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     text[locale] = { ...(text[locale] || {}), ...overrides };
   }
 
+  // Rally is a game-owned tactical verb rather than a shared shell label.
+  // Keep its short HUD copy complete in every supported locale so the new
+  // action never falls back to an untranslated English button mid-battle.
+  const tacticalCopy = {
+    en: {
+      rallyReady: "Rally · {charges}",
+      rallyEmpty: "Rally · 0",
+      rallyLabel: "Rally the selected defender for 6 seconds. {charges} charge remaining.",
+      rallyNeedSelection: "Select a living defender during a wave to Rally it.",
+      rallyUsed: "{name} is rallied!",
+      rallyActive: "Rally active · {seconds}s",
+    },
+    "zh-Hant": {
+      rallyReady: "集結 · {charges}",
+      rallyEmpty: "集結 · 0",
+      rallyLabel: "集結選取的防禦者 6 秒。剩餘 {charges} 次。",
+      rallyNeedSelection: "請在波次中選取存活的防禦者，才能使用集結。",
+      rallyUsed: "{name} 集結！",
+      rallyActive: "集結中 · {seconds} 秒",
+    },
+    "zh-Hans": {
+      rallyReady: "集结 · {charges}",
+      rallyEmpty: "集结 · 0",
+      rallyLabel: "集结选中的防御者 6 秒。剩余 {charges} 次。",
+      rallyNeedSelection: "请在波次中选中存活的防御者，才能使用集结。",
+      rallyUsed: "{name} 集结！",
+      rallyActive: "集结中 · {seconds} 秒",
+    },
+    ja: {
+      rallyReady: "集結 · {charges}",
+      rallyEmpty: "集結 · 0",
+      rallyLabel: "選択中の防衛者を6秒間集結させます。残り{charges}回。",
+      rallyNeedSelection: "ウェーブ中に生存中の防衛者を選択すると集結できます。",
+      rallyUsed: "{name}が集結！",
+      rallyActive: "集結中・{seconds}秒",
+    },
+    ko: {
+      rallyReady: "집결 · {charges}",
+      rallyEmpty: "집결 · 0",
+      rallyLabel: "선택한 방어자를 6초 동안 집결시킵니다. 남은 횟수 {charges}회.",
+      rallyNeedSelection: "웨이브 중 살아 있는 방어자를 선택해야 집결할 수 있습니다.",
+      rallyUsed: "{name} 집결!",
+      rallyActive: "집결 중 · {seconds}초",
+    },
+    es: {
+      rallyReady: "Reagrupa · {charges}",
+      rallyEmpty: "Reagrupa · 0",
+      rallyLabel: "Reagrupa al defensor seleccionado durante 6 s. Quedan {charges} cargas.",
+      rallyNeedSelection: "Selecciona un defensor vivo durante una oleada para reagruparlo.",
+      rallyUsed: "¡{name} reagrupado!",
+      rallyActive: "Reagrupando · {seconds}s",
+    },
+    "pt-BR": {
+      rallyReady: "Reunir · {charges}",
+      rallyEmpty: "Reunir · 0",
+      rallyLabel: "Reúna o defensor selecionado por 6 s. Restam {charges} cargas.",
+      rallyNeedSelection: "Selecione um defensor vivo durante uma onda para reuni-lo.",
+      rallyUsed: "{name} reunido!",
+      rallyActive: "Reunindo · {seconds}s",
+    },
+    fr: {
+      rallyReady: "Ralliement · {charges}",
+      rallyEmpty: "Ralliement · 0",
+      rallyLabel: "Ralliez le défenseur sélectionné pendant 6 s. Charges restantes : {charges}.",
+      rallyNeedSelection: "Sélectionnez un défenseur vivant pendant une vague pour le rallier.",
+      rallyUsed: "{name} est rallié !",
+      rallyActive: "Ralliement actif · {seconds}s",
+    },
+    de: {
+      rallyReady: "Sammeln · {charges}",
+      rallyEmpty: "Sammeln · 0",
+      rallyLabel: "Stärke den gewählten Verteidiger 6 Sekunden. Verbleibende Ladungen: {charges}.",
+      rallyNeedSelection: "Wähle während einer Welle einen lebenden Verteidiger, um ihn zu sammeln.",
+      rallyUsed: "{name} sammelt sich!",
+      rallyActive: "Sammeln aktiv · {seconds}s",
+    },
+    it: {
+      rallyReady: "Raduno · {charges}",
+      rallyEmpty: "Raduno · 0",
+      rallyLabel: "Raduna il difensore selezionato per 6 s. Cariche rimaste: {charges}.",
+      rallyNeedSelection: "Seleziona un difensore vivo durante un'ondata per radunarlo.",
+      rallyUsed: "{name} è radunato!",
+      rallyActive: "Raduno attivo · {seconds}s",
+    },
+    ru: {
+      rallyReady: "Сбор · {charges}",
+      rallyEmpty: "Сбор · 0",
+      rallyLabel: "Усильте выбранного защитника на 6 сек. Осталось зарядов: {charges}.",
+      rallyNeedSelection: "Выберите живого защитника во время волны, чтобы применить сбор.",
+      rallyUsed: "{name} собран!",
+      rallyActive: "Сбор активен · {seconds} с",
+    },
+    hi: {
+      rallyReady: "जुटान · {charges}",
+      rallyEmpty: "जुटान · 0",
+      rallyLabel: "चुने हुए रक्षक को 6 सेकंड जुटाएँ। बाकी चार्ज: {charges}।",
+      rallyNeedSelection: "लहर के दौरान जुटान के लिए किसी जीवित रक्षक को चुनें।",
+      rallyUsed: "{name} जुट गया!",
+      rallyActive: "जुटान सक्रिय · {seconds} सेकंड",
+    },
+    ar: {
+      rallyReady: "حشد · {charges}",
+      rallyEmpty: "حشد · 0",
+      rallyLabel: "احشد المدافع المحدد لمدة 6 ثوانٍ. الشحنات المتبقية: {charges}.",
+      rallyNeedSelection: "حدد مدافعًا حيًا أثناء الموجة لاستخدام الحشد.",
+      rallyUsed: "تم حشد {name}!",
+      rallyActive: "الحشد نشط · {seconds} ث",
+    },
+  };
+
+  function tacticalText(key, values = {}) {
+    let value = tacticalCopy[state.locale]?.[key] || tacticalCopy.en[key] || key;
+    Object.entries(values).forEach(([name, replacement]) => {
+      value = value.replaceAll(`{${name}}`, replacement);
+    });
+    return value;
+  }
+
   const state = {
     locale: "en",
     screen: "loading",
@@ -1595,6 +1724,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     waveToSpawn: 0,
     spawnTimer: 0,
     nextWaveTimer: 0,
+    rallyCharges: 0,
     defenders: [],
     enemies: [],
     shots: [],
@@ -1917,6 +2047,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
 
   function setStagePage(page, focusPanel = false) {
     const equipment = page === "equipment";
+    if (nodes.stageTitle) nodes.stageTitle.textContent = t(equipment ? "equipmentTab" : "stagesTab");
     nodes.stagePage?.classList.toggle("is-hidden", equipment);
     nodes.techPanel?.classList.toggle("is-hidden", !equipment);
     nodes.stageTabBtn?.classList.toggle("is-active", !equipment);
@@ -2111,13 +2242,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
 
   function restoreStageReturnOwnership() {
     if (state.screen !== "stages" && state.screen !== "tech") return;
-    const stageHeader = nodes.stagePanel?.querySelector(
-      ".wp-stage-shell-header,.wp-generated-stage-header",
-    );
-    if (!stageHeader || !nodes.stageBackBtn) return;
-    if (nodes.stageBackBtn.parentElement !== stageHeader) {
-      stageHeader.prepend(nodes.stageBackBtn);
-    }
+    if (!nodes.stageBackBtn) return;
     nodes.stageBackBtn.hidden = false;
     nodes.stageBackBtn.classList.remove("hidden", "is-hidden", "wp-shell-legacy-control");
     nodes.stageBackBtn.removeAttribute("aria-hidden");
@@ -2132,6 +2257,8 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     state.screen = screen;
     const resultActive = screen === "result";
     const stageActive = screen === "stages" || screen === "tech";
+    const shellScreen = screen === "menu" ? "main" : stageActive ? "stage" : "battle";
+    document.body.dataset.screen = shellScreen;
     document.body.classList.toggle("guardian-playing", screen === "game" || screen === "result");
     document.body.classList.toggle("guardian-result", resultActive);
     document.body.classList.toggle("guardian-stage", stageActive);
@@ -2146,9 +2273,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     if (stageActive) {
       nodes.stagePanel.classList.remove("is-hidden");
       setStagePage(screen === "tech" ? "equipment" : "stages");
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(restoreStageReturnOwnership);
-      });
+      restoreStageReturnOwnership();
     }
     if (screen === "game") nodes.gamePanel.classList.remove("is-hidden");
     if (resultActive) {
@@ -2158,6 +2283,10 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
         syncResultActionHierarchy()?.focus({ preventScroll: true });
       });
     }
+    gameShell?.activate(shellScreen);
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
+    window.dispatchEvent(new Event("weightplay:battle-sync"));
     updateBattleShell();
     syncBattleLoop();
   }
@@ -2198,6 +2327,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     nodes.startBtn.textContent = t("start");
     nodes.stageTabBtn.textContent = t("stagesTab");
     nodes.equipmentTabBtn.textContent = t("equipmentTab");
+    if (nodes.stageTitle) nodes.stageTitle.textContent = t(state.screen === "tech" ? "equipmentTab" : "stagesTab");
     nodes.stageBackBtn.textContent = "\u2190";
     nodes.menuBtn.textContent = "\u2190";
     nodes.buildTitle.textContent = t("build");
@@ -2230,6 +2360,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
   function updateProfile() {
     const progress = `${state.save.bestStage} / ${STAGE_COUNT}`;
     nodes.bestStageText.textContent = progress;
+    if (nodes.stageProgressText) nodes.stageProgressText.textContent = progress;
     if (nodes.mainProgress) nodes.mainProgress.textContent = `${t("bestStage")} ${progress}`;
     nodes.upgradePointText.textContent = state.save.upgradePoints;
     nodes.diamondText.textContent = state.save.diamonds;
@@ -2382,6 +2513,32 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     return recycledCount;
   }
 
+  // The shared Stage controller owns the pointer gesture. This small adapter
+  // only keeps the nine-card DOM window continuous when native scrolling
+  // reaches either edge of the bounded pool.
+  function recycleStageWindowFromScroll() {
+    const rail = nodes.stageRail;
+    if (!rail || stageScrollRecycleLock || rail.dataset.wpStageSettling === "true") return;
+    const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    if (maxScroll <= 0) return;
+    const { pitch } = stageRailGeometry();
+    const threshold = Math.max(rail.clientWidth * 0.28, pitch * 0.72);
+    const atStart = rail.scrollLeft <= threshold;
+    const atEnd = rail.scrollLeft >= maxScroll - threshold;
+    const target = atEnd
+      ? Math.min(stageWindowLimit(), stageWindowStart + 1)
+      : atStart
+        ? Math.max(0, stageWindowStart - 1)
+        : stageWindowStart;
+    if (target === stageWindowStart) return;
+    stageScrollRecycleLock = true;
+    try {
+      moveStageWindow(target);
+    } finally {
+      stageScrollRecycleLock = false;
+    }
+  }
+
   function ensureStageWindow(stageId) {
     if (!stageCardPool.length || stageCardPool.some((card) => !card.isConnected)) buildStageCardPool();
     moveStageWindow(desiredStageWindow(stageId));
@@ -2498,73 +2655,6 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
   function snapStageRailToNearest(behavior = "smooth") {
     const logical = currentStageLogicalPosition();
     settleStageRail(logical, Math.round(logical) + 1, behavior === "auto");
-  }
-
-  function installVirtualStageDrag() {
-    const rail = nodes.stageRail;
-    if (!rail || rail.dataset.wpStageVirtualDrag === "true") return;
-    rail.dataset.wpStageVirtualDrag = "true";
-    let pointerId = null;
-    let startX = 0;
-    let lastX = 0;
-    let dragLogical = 0;
-    let moved = false;
-    let suppressClick = false;
-    rail.addEventListener("pointerdown", (event) => {
-      if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      cancelStageSettlement();
-      pointerId = event.pointerId;
-      startX = lastX = event.clientX;
-      dragLogical = currentStageLogicalPosition();
-      moved = false;
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-      rail.dataset.wpDragDown = "1";
-      event.stopImmediatePropagation();
-    }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastX;
-      lastX = event.clientX;
-      if (!moved && Math.abs(event.clientX - startX) > 4) {
-        moved = true;
-        rail.classList.add("wp-stage-dragging");
-      }
-      if (moved) {
-        const rect = rail.getBoundingClientRect();
-        const scale = rect.width ? rail.clientWidth / rect.width : 1;
-        const pitch = stageRailGeometry().pitch;
-        if (event.cancelable) event.preventDefault();
-        dragLogical = positionStageRail(dragLogical - delta * scale / pitch);
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    const finish = (event) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      pointerId = null;
-      rail.dataset.wpDragDown = "0";
-      rail.classList.remove("wp-stage-dragging");
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        const from = dragLogical;
-        settleStageRail(from, Math.round(from) + 1);
-        suppressClick = true;
-        setTimeout(() => { suppressClick = false; }, 0);
-      } else {
-        rail.style.removeProperty("scroll-behavior");
-        rail.style.removeProperty("scroll-snap-type");
-      }
-      moved = false;
-      event.stopImmediatePropagation();
-    };
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
-    rail.addEventListener("click", (event) => {
-      if (!suppressClick) return;
-      suppressClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
   }
 
   function unitRoleText(unit) {
@@ -2731,7 +2821,10 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       const d = state.selectedDefender;
       const unit = unitTypes.find((item) => item.id === d.type);
       const traits = unitTraitText(unit);
-      nodes.selectedInfo.innerHTML = `${cueMarkup}<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${battleLevelText(d.level)} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span><span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
+      const rallyStatus = d.rallyTimer > 0
+        ? `<span class="rally-status">${tacticalText("rallyActive", { seconds: Math.ceil(d.rallyTimer) })}</span>`
+        : "";
+      nodes.selectedInfo.innerHTML = `${cueMarkup}<strong>${d.name}</strong><span>${t("roleLabel")}: ${unitRoleText(unit)}</span>${traits ? `<span>${t("traitLabel")}: ${traits}</span>` : ""}<span>${battleLevelText(d.level)} | ${t("hp")}: ${Math.ceil(d.hp)}/${d.maxHp}</span><span>${t("damage")}: ${Math.ceil(d.damage)} | ${t("range")}: ${d.range} | ${t("attackSpeed")}: ${formatUnitTempo(unit || d)}</span>${rallyStatus}<span>${t("selectedActionInfo", { upgrade: upgradeCost(d), sell: sellRefund(d) })}</span>`;
       updateCommandButtons();
       return;
     }
@@ -2882,6 +2975,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     state.waveToSpawn = 0;
     state.spawnTimer = 0;
     state.nextWaveTimer = 0;
+    state.rallyCharges = 1;
     state.resultReward = null;
     state.defenders = [];
     state.enemies = [];
@@ -3127,6 +3221,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       range: unit.range,
       cooldown: unit.cooldown,
       cd: 0,
+      rallyTimer: 0,
       level: 1,
       cost: unit.cost,
       slow: unit.slow || 0,
@@ -3204,8 +3299,42 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     return Math.round(defender.cost * 0.55 * defender.level);
   }
 
+  function useRally() {
+    const defender = state.selectedDefender;
+    const usable = Boolean(
+      state.stage
+      && state.runningWave
+      && !state.gameOver
+      && !state.paused
+      && defender
+      && defender.hp > 0
+      && !(defender.rallyTimer > 0)
+      && state.rallyCharges > 0,
+    );
+    if (!usable) {
+      showToast(tacticalText("rallyNeedSelection"));
+      return false;
+    }
+    state.rallyCharges -= 1;
+    defender.rallyTimer = 6;
+    const point = tileToPoint(defender.tile);
+    addSkillEffect(point, skillFxFrames.gear, 1.3, 0.72);
+    addFloatingText(point, tacticalText("rallyUsed", { name: defender.name }), "#fef08a");
+    showToast(tacticalText("rallyUsed", { name: defender.name }));
+    playSfx("upgrade");
+    triggerImpactFeedback(6, 0.22, "255, 209, 102");
+    track("game_rally_order", {
+      stage: state.currentStage,
+      wave: state.wave,
+      unit: defender.type,
+      charges_remaining: state.rallyCharges,
+    });
+    updateHud();
+    return true;
+  }
+
   function updateCommandButtons() {
-    if (!nodes.upgradeBtn || !nodes.sellBtn) return;
+    if (!nodes.upgradeBtn || !nodes.sellBtn || !nodes.rallyBtn) return;
     const d = state.selectedDefender;
     const hasSelection = Boolean(d && !state.gameOver);
     const cost = hasSelection ? upgradeCost(d) : 0;
@@ -3214,6 +3343,27 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     nodes.sellBtn.disabled = !hasSelection;
     nodes.upgradeBtn.textContent = hasSelection ? t("upgradeAction", { coins: cost }) : t("upgrade");
     nodes.sellBtn.textContent = hasSelection ? t("sellAction", { coins: refund }) : t("sell");
+    const rallyActive = Boolean(d?.rallyTimer > 0);
+    const rallyReady = Boolean(
+      d
+      && d.hp > 0
+      && state.runningWave
+      && !state.gameOver
+      && !state.paused
+      && state.rallyCharges > 0
+      && !rallyActive,
+    );
+    nodes.rallyBtn.disabled = !rallyReady;
+    nodes.rallyBtn.textContent = rallyActive
+      ? tacticalText("rallyActive", { seconds: Math.ceil(d.rallyTimer) })
+      : state.rallyCharges > 0
+        ? tacticalText("rallyReady", { charges: state.rallyCharges })
+        : tacticalText("rallyEmpty");
+    nodes.rallyBtn.setAttribute(
+      "aria-label",
+      tacticalText("rallyLabel", { charges: state.rallyCharges }),
+    );
+    nodes.rallyBtn.classList.toggle("is-rallying", rallyActive);
   }
 
   function startWave() {
@@ -3221,6 +3371,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     state.nextWaveTimer = 0;
     state.wave += 1;
     state.runningWave = true;
+    state.rallyCharges = 1;
     state.waveSpawned = 0;
     state.waveToSpawn = waveEnemyCount(state.stage, state.wave);
     state.spawnTimer = 0;
@@ -3683,13 +3834,15 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       d.animTime = (d.animTime || 0) + dt;
       d.actionPulse = Math.max(0, (d.actionPulse || 0) - dt);
       d.hitPulse = Math.max(0, (d.hitPulse || 0) - dt);
+      d.rallyTimer = Math.max(0, (d.rallyTimer || 0) - dt);
+      const rallied = d.rallyTimer > 0;
       d.cd -= dt;
       if (d.heal && d.cd <= 0) {
         const ally = state.defenders.filter((item) => item.hp > 0 && item.hp < item.maxHp).sort((a, b) => a.hp / a.maxHp - b.hp / b.maxHp)[0];
         if (ally && tileDistance(d.tile, ally.tile) <= d.range + 0.6) {
-          const healAmount = Math.min(ally.maxHp - ally.hp, d.heal * d.level);
+          const healAmount = Math.min(ally.maxHp - ally.hp, d.heal * d.level * (rallied ? 1.25 : 1));
           ally.hp = Math.min(ally.maxHp, ally.hp + healAmount);
-          d.cd = d.cooldown;
+          d.cd = defenderCooldown(d, rallied);
           d.actionPulse = 0.32;
           d.actionFrame = 3;
           addSkillEffect(tileToPoint(ally.tile), skillFxFrames.heal, 1.1, 0.56);
@@ -3702,7 +3855,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
         .sort((a, b) => (b.boss ? 1 : 0) - (a.boss ? 1 : 0) || a.hp - b.hp)[0];
       if (!target || d.cd > 0) return;
       if (d.damage <= 0) return;
-      let damage = d.damage * (1 + (nearbyRuxBuff(d) || 0));
+      let damage = d.damage * (rallied ? 1.32 : 1) * (1 + (nearbyRuxBuff(d) || 0));
       if (target.boss && d.bossDamage) damage *= 1 + d.bossDamage;
       const healthDamage = damageEnemy(target, damage);
       target.hitPulse = Math.max(target.hitPulse || 0, target.boss ? 0.28 : 0.22);
@@ -3755,13 +3908,18 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       addSkillEffect(target.pos, fxFrame, target.boss ? 1.35 : 0.92, target.boss ? 0.62 : 0.46);
       d.actionPulse = 0.32;
       d.actionFrame = 3;
-      d.cd = Math.max(0.22, d.cooldown - d.level * 0.035);
+      d.cd = defenderCooldown(d, rallied);
       if (target.hp <= 0) {
         state.coins += target.boss ? 95 : 13 + state.currentStage;
         addSkillEffect(target.pos, target.boss ? skillFxFrames.bossPortal : skillFxFrames.heroStrike, target.boss ? 1.55 : 1, target.boss ? 0.72 : 0.5);
       }
     });
     state.enemies = state.enemies.filter((e) => e.hp > 0);
+  }
+
+  function defenderCooldown(defender, rallied = defender.rallyTimer > 0) {
+    const base = Math.max(0.22, defender.cooldown - defender.level * 0.035);
+    return rallied ? Math.max(0.18, base * 0.58) : base;
   }
 
   function nearbyRuxBuff(defender) {
@@ -4240,6 +4398,83 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     }
   }
 
+  function blockTilePath(x, y, width, height, cut = Math.min(width, height) * 0.1) {
+    const safeCut = Math.max(2, Math.min(cut, width * 0.28, height * 0.28));
+    ctx.beginPath();
+    ctx.moveTo(x + safeCut, y);
+    ctx.lineTo(x + width - safeCut, y);
+    ctx.lineTo(x + width, y + safeCut);
+    ctx.lineTo(x + width, y + height - safeCut);
+    ctx.lineTo(x + width - safeCut, y + height);
+    ctx.lineTo(x + safeCut, y + height);
+    ctx.lineTo(x, y + height - safeCut);
+    ctx.lineTo(x, y + safeCut);
+    ctx.closePath();
+  }
+
+  function drawBlockTile(x, y, width, height, kind = "ground") {
+    const palettes = {
+      ground: {
+        top: "rgba(132, 226, 231, 0.18)",
+        bottom: "rgba(28, 88, 107, 0.38)",
+        edge: "rgba(191, 246, 242, 0.34)",
+        inset: "rgba(53, 147, 164, 0.28)",
+      },
+      gate: {
+        top: "rgba(143, 221, 135, 0.34)",
+        bottom: "rgba(36, 93, 63, 0.5)",
+        edge: "rgba(217, 249, 157, 0.72)",
+        inset: "rgba(113, 205, 120, 0.42)",
+      },
+      core: {
+        top: "rgba(255, 231, 145, 0.46)",
+        bottom: "rgba(146, 88, 33, 0.54)",
+        edge: "rgba(255, 240, 170, 0.86)",
+        inset: "rgba(255, 209, 102, 0.5)",
+      },
+    };
+    const palette = palettes[kind] || palettes.ground;
+    const cut = Math.min(width, height) * 0.1;
+    ctx.save();
+    const gradient = ctx.createLinearGradient(x, y, x + width, y + height);
+    gradient.addColorStop(0, palette.top);
+    gradient.addColorStop(0.48, palette.top);
+    gradient.addColorStop(1, palette.bottom);
+    blockTilePath(x, y, width, height, cut);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.strokeStyle = palette.edge;
+    ctx.lineWidth = Math.max(1.5, Math.min(width, height) * 0.025);
+    ctx.stroke();
+
+    ctx.globalAlpha = 0.82;
+    ctx.fillStyle = palette.top;
+    ctx.beginPath();
+    ctx.moveTo(x + cut, y + 1);
+    ctx.lineTo(x + width - cut, y + 1);
+    ctx.lineTo(x + width - cut * 2, y + cut);
+    ctx.lineTo(x + cut * 2, y + cut);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.globalAlpha = 0.74;
+    ctx.fillStyle = palette.bottom;
+    ctx.beginPath();
+    ctx.moveTo(x + cut * 2, y + height - cut);
+    ctx.lineTo(x + width - cut * 2, y + height - cut);
+    ctx.lineTo(x + width - cut, y + height - 1);
+    ctx.lineTo(x + cut, y + height - 1);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.globalAlpha = 0.76;
+    ctx.strokeStyle = palette.inset;
+    ctx.lineWidth = Math.max(1, Math.min(width, height) * 0.018);
+    blockTilePath(x + Math.max(3, width * 0.11), y + Math.max(3, height * 0.11), width * 0.78, height * 0.78, cut * 0.55);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   function drawGrid(board) {
     const start = currentStartTile();
     const core = currentCoreTile();
@@ -4247,11 +4482,12 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       for (let x = 0; x < grid.cols; x += 1) {
         const px = board.x + x * board.cell;
         const py = board.y + y * board.cell;
-        const special = (x === start.x && y === start.y) || (x === core.x && y === core.y);
-        ctx.fillStyle = special ? "rgba(255, 209, 102, 0.26)" : "rgba(116, 215, 255, 0.08)";
-        ctx.fillRect(px + 2, py + 2, board.cell - 4, board.cell - 4);
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
-        ctx.strokeRect(px + 2, py + 2, board.cell - 4, board.cell - 4);
+        const kind = x === start.x && y === start.y
+          ? "gate"
+          : x === core.x && y === core.y
+            ? "core"
+            : "ground";
+        drawBlockTile(px + 2, py + 2, board.cell - 4, board.cell - 4, kind);
       }
     }
     drawRouteEndpointIcon(tileToPoint(start), "gate", board);
@@ -4381,8 +4617,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = `rgba(${color}, 0.16)`;
-    ctx.fillRect(px + 3, py + 3, board.cell - 6, board.cell - 6);
+    drawBlockTile(px + 3, py + 3, board.cell - 6, board.cell - 6, preview.ok ? "core" : "gate");
     ctx.strokeStyle = `rgba(${color}, 0.96)`;
     ctx.lineWidth = Math.max(3, board.cell * 0.045);
     ctx.strokeRect(px + 4, py + 4, board.cell - 8, board.cell - 8);
@@ -4530,6 +4765,35 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     ctx.restore();
   }
 
+  function drawRallyAura(p, size, board) {
+    const reducedMotion = prefersReducedMotion();
+    const pulse = reducedMotion ? 0.5 : 0.5 + Math.sin(performance.now() / 105) * 0.5;
+    const radius = size * (0.62 + pulse * 0.06);
+    ctx.save();
+    ctx.strokeStyle = `rgba(255, 209, 102, ${0.62 + pulse * 0.25})`;
+    ctx.fillStyle = `rgba(255, 209, 102, ${0.06 + pulse * 0.05})`;
+    ctx.lineWidth = Math.max(3, board.cell * 0.04);
+    ctx.shadowColor = "rgba(255, 209, 102, 0.72)";
+    ctx.shadowBlur = Math.max(8, board.cell * 0.16);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    const blockSize = Math.max(4, board.cell * 0.1);
+    const orbit = size * 0.68;
+    [0, Math.PI / 2, Math.PI, Math.PI * 1.5].forEach((angle) => {
+      const x = p.x + Math.cos(angle + pulse * 0.08) * orbit - blockSize / 2;
+      const y = p.y + Math.sin(angle + pulse * 0.08) * orbit - blockSize / 2;
+      ctx.fillStyle = "#ffe59a";
+      ctx.fillRect(x, y, blockSize, blockSize);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, blockSize, blockSize);
+    });
+    ctx.restore();
+  }
+
   function drawDefender(d, board) {
     const p = tileToPoint(d.tile);
     const size = board.cell * (d.kind === "hero" ? 0.9 : 0.78);
@@ -4541,6 +4805,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       ctx.arc(p.x, p.y, board.cell * d.range, 0, Math.PI * 2);
       ctx.stroke();
     }
+    if (d.rallyTimer > 0) drawRallyAura(p, size, board);
     if (state.save.cosmetics?.goldenFrame) {
       ctx.strokeStyle = "rgba(255, 209, 102, 0.92)";
       ctx.lineWidth = Math.max(3, board.cell * 0.055);
@@ -4869,10 +5134,10 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
   function onCanvasKeydown(event) {
     if (state.screen !== "game" || state.gameOver) return;
     const key = event.key;
-    const handled = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " ", "w", "W", "u", "U", "s", "S", "q", "Q", "e", "E", "Escape"].includes(key) || /^[1-9]$/.test(key);
+    const handled = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", " ", "w", "W", "u", "U", "s", "S", "r", "R", "q", "Q", "e", "E", "Escape"].includes(key) || /^[1-9]$/.test(key);
     if (!handled) return;
     event.preventDefault();
-    const commitsTransaction = ["Enter", " ", "w", "W", "u", "U", "s", "S"].includes(key);
+    const commitsTransaction = ["Enter", " ", "w", "W", "u", "U", "s", "S", "r", "R"].includes(key);
     if (event.repeat && commitsTransaction) return;
     if (key === "ArrowUp") moveKeyboardTile(0, -1);
     else if (key === "ArrowDown") moveKeyboardTile(0, 1);
@@ -4885,6 +5150,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     else if (key === "w" || key === "W") startWave();
     else if (key === "u" || key === "U") upgradeSelected();
     else if (key === "s" || key === "S") sellSelected();
+    else if (key === "r" || key === "R") useRally();
     else if (key === "Escape") {
       state.selectedDefender = null;
       renderSelectedInfo();
@@ -5032,6 +5298,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
     });
     nodes.upgradeBtn.addEventListener("click", upgradeSelected);
+    nodes.rallyBtn.addEventListener("click", useRally);
     nodes.sellBtn.addEventListener("click", sellSelected);
     nodes.reviveBtn.addEventListener("click", reviveCore);
     nodes.speedBtn.addEventListener("keydown", (event) => {
@@ -5149,7 +5416,10 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     // here makes touch compatibility events fight that controller mid-gesture.
     let stageCenteredTimer = 0;
     nodes.stageRail.addEventListener("scroll", () => {
-      if (nodes.stageRail.dataset.wpStageVirtualized === "bounded-recycle") return;
+      if (nodes.stageRail.dataset.wpStageVirtualized === "bounded-recycle") {
+        recycleStageWindowFromScroll();
+        return;
+      }
       window.clearTimeout(stageCenteredTimer);
       stageCenteredTimer = window.setTimeout(syncCenteredStageCard, 120);
     }, { passive: true });
@@ -5161,8 +5431,6 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       const from = currentStageLogicalPosition();
       settleStageRail(from, Math.round(from) + (delta > 0 ? 2 : 0));
     }, { passive: false });
-    installVirtualStageDrag();
-
     let buildDrag = null;
     let ignoreBuildClick = false;
     nodes.buildCards.addEventListener("wheel", (event) => {
@@ -6415,6 +6683,69 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     return result;
   }
 
+  function runRallyScenario() {
+    state.manualSimulation = true;
+    state.save = {
+      bestStage: 10,
+      diamonds: 20,
+      upgradePoints: 8,
+      tech: { power: 1, bulwark: 1, economy: 1 },
+      cosmetics: { goldenFrame: false },
+      clears: {},
+      stars: {},
+    };
+    startStage(1);
+    state.coins = 999;
+    buildSimulationUnits([{ id: "guard", tile: { x: 4, y: 3 } }]);
+    const defender = state.defenders[0];
+    state.selectedDefender = defender;
+    startWave();
+    const before = {
+      charges: state.rallyCharges,
+      timer: defender?.rallyTimer || 0,
+      buttonDisabled: nodes.rallyBtn.disabled,
+    };
+    const used = useRally();
+    const activeEnemy = {
+      type: "wolf",
+      tile: { x: 5, y: 3 },
+      pos: tileToPoint({ x: 5, y: 3 }),
+      hp: 1000,
+      maxHp: 1000,
+      boss: false,
+      slow: 0,
+    };
+    state.enemies = [activeEnemy];
+    defender.cd = 0;
+    updateDefenders(0.05);
+    const ralliedDamage = Math.round(1000 - activeEnemy.hp);
+    const ralliedCooldown = Number(defender.cd.toFixed(3));
+    const active = {
+      charges: state.rallyCharges,
+      timer: Number(defender.rallyTimer.toFixed(2)),
+      buttonDisabled: nodes.rallyBtn.disabled,
+      buttonText: nodes.rallyBtn.textContent,
+      selectedInfo: nodes.selectedInfo.textContent,
+    };
+    defender.rallyTimer = 0;
+    defender.cd = 0;
+    activeEnemy.hp = 1000;
+    updateDefenders(0.05);
+    const normalDamage = Math.round(1000 - activeEnemy.hp);
+    updateHud();
+    state.manualSimulation = false;
+    return {
+      used,
+      before,
+      active,
+      ralliedDamage,
+      normalDamage,
+      ralliedCooldown,
+      rallyImprovesDamage: ralliedDamage > normalDamage,
+      rallyShortensCooldown: ralliedCooldown < defender.cooldown,
+    };
+  }
+
   function runPlacementPreviewScenario() {
     state.manualSimulation = true;
     state.save = {
@@ -7412,6 +7743,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
       runNextStageResultScenario,
       runWaveIntelScenario,
       runKeyboardControlScenario,
+      runRallyScenario,
       runPlacementPreviewScenario,
       runBuildAffordabilityScenario,
       runSelectedActionStateScenario,

@@ -42,8 +42,9 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-combat-v35" />
+  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-shared-shell-v38" />
     <link rel="stylesheet" href="../../src/game-screen-shell.css?v=20260910-lobby-shell-pilot2" />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -90,7 +91,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-canvas-max-width="920" aria-labelledby="stageSelectTitle">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-labelledby="stageSelectTitle">
         <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
@@ -130,7 +131,7 @@
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
 
         <!-- HUD Line -->
         <div class="hud-row">
@@ -169,7 +170,7 @@
 
         <!-- Combat Canvas Area (Animate Battle step by step) -->
         <div id="combatArea" class="combat-area is-hidden">
-          <canvas id="gameCanvas" width="720" height="1280" aria-label="Animal Auto Squad Arena"></canvas>
+          <canvas id="gameCanvas" width="720" height="1280" data-wp-primary-action aria-label="Animal Auto Squad Arena"></canvas>
           <div id="combatStatusText" class="combat-status" data-ui="combatIntro">Prepare for Battle!</div>
           <div class="combat-pace-control" role="group" aria-label="Combat controls">
             <button id="combatPaceBtn" class="secondary-btn" type="button" aria-pressed="false">Standard pace</button>
@@ -251,13 +252,13 @@
     <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script src="../../src/game-screen-shell.js?v=20260910-lobby-shell-pilot1"></script>
-  <script src="game.js?v=20260910-auto-squad-combat-v35"></script>
+  <script src="game.js?v=20260910-auto-squad-shared-shell-v38"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260910-auto-squad-combat-v35";
+          script.src = "../../src/game-page-info.js?v=20260910-auto-squad-shared-shell-v38";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
