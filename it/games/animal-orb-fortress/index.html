@@ -74,7 +74,7 @@
       </section>
 
       <section id="menuPanel" class="panel menu-panel" data-screen="main">
-        <img class="cover" src="../../assets/animal-orb-fortress-cover.webp" alt="Immagine del gioco Fortezza delle Sfere" />
+        <img class="cover" src="../../assets/animal-orb-fortress-cover-block-v1.png" alt="Immagine del gioco Fortezza delle Sfere" />
         <div class="menu-copy">
           <strong data-ui="menuTitle">Aim the spirit orb through the crystal fortress.</strong>
           <span data-ui="menuHint">Choose a raid route, plan ricochet shots, and protect the fortress core.</span>
@@ -82,7 +82,7 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../../assets/animal-orb-fortress-arena-bg.webp')" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-label="Raid map" aria-hidden="true" inert hidden>
+      <section id="stagePanel" class="panel stage-panel stage-screen is-hidden" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('../../../assets/animal-orb-fortress-arena-block-v2.png')" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" aria-label="Raid map" aria-hidden="true" inert hidden>
         <header class="stage-header">
           <button id="stageBackBtn" class="secondary-btn play-return" type="button" data-wp-return="stage" aria-label="Return to main">&larr;</button>
           <div>
@@ -107,7 +107,8 @@
           <button id="battleBackBtn" class="secondary-btn play-return" type="button" data-wp-return="battle" aria-label="Return to raid map">&larr;</button>
           <div><span data-ui="wave">Wave</span><strong id="waveText">1/3</strong></div>
           <div><span data-ui="core">Core</span><strong id="coreText">20/20</strong></div>
-          <div><span data-ui="shots">Shots</span><strong id="shotText">0</strong></div>
+          <div class="shots-stat"><span data-ui="shots">Shots</span><strong id="shotText">0</strong><em id="comboText" class="combo-text" aria-live="polite">×1</em></div>
+          <button id="assistBtn" class="secondary-btn aim-assist-btn" type="button" aria-pressed="true" data-ui="aimAssistShort">AIM+</button>
           <button id="pauseBtn" class="secondary-btn pause-btn" type="button" aria-label="Pause">&#10074;&#10074;</button>
         </div>
         <canvas id="gameCanvas" data-wp-primary-action width="960" height="540" tabindex="0" aria-label="Animal Orb Fortress arena" aria-describedby="hintText" aria-keyshortcuts="ArrowLeft ArrowRight Space Enter"></canvas>
@@ -130,7 +131,7 @@
           </div>
         </section>
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText raidPlanText" aria-hidden="true" inert hidden>
-          <img class="result-lion" src="../../assets/weightplay-boom-mane-lion.png" alt="" />
+          <img class="result-lion" src="../../assets/animal-orb-fortress-hero-lion-block-v2.png" alt="" />
           <div>
             <h2 id="resultTitle">Raid Clear</h2>
             <p id="resultText"></p>
@@ -156,7 +157,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-<script src="game.js?v=20260909-orb-screen-contract-v25"></script>
+<script src="game.js?v=20260910-orb-block-v25-block2"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
       (() => {

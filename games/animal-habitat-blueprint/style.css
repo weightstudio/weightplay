@@ -48,6 +48,13 @@ body{overflow-x:hidden}
 .battle-canvas .habitat-grid{margin:0}
 .battle-canvas .battle-actions{margin:0}
 .battle-canvas .status{margin:0}
+.stage-card:disabled{cursor:not-allowed;opacity:.58;filter:saturate(.7)}
+.stage-card.checkpoint{border-color:#c4863d;background:#fff5d8}
+.habitat-tile.locked{cursor:not-allowed;opacity:.66;border-style:dashed}
+
+@media (min-width:700px) and (min-height:521px){
+  .stage-canvas .stage-list{grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}
+}
 
 @media (max-width:699px){
   .main-screen .cover-wrap{width:100%}

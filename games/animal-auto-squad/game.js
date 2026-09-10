@@ -11,7 +11,7 @@
   document.getElementById("gamePanel").prepend(battleHeader);
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v32";
+  const GAME_VERSION = "v33";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -145,6 +145,17 @@
       teamBonusTitle: "Permanent team bonus",
       teamBonusValue: "All owned animals enter expeditions with +{atk} ATK and +{hp} HP from Team Level.",
       teamBonusNext: "Next team level in {remaining} XP.",
+      synergyTitle: "Voxel Squad Link",
+      synergyHint: "Match roles to unlock a small automatic battle bonus.",
+      synergyGuardian: "Guardian link",
+      synergyStriker: "Striker link",
+      synergySupport: "Support link",
+      synergyReady: "Lv.{level} · {count} linked",
+      synergyNone: "No link yet · add two matching roles",
+      bossWarning: "BOSS APPROACHING",
+      actionCritical: "CRITICAL",
+      actionCombo: "LINKED HIT",
+      blockBreak: "BLOCK BREAK",
       savedProgress: "Saved Progress",
       resultXpEarned: "Team XP +{earned} · Lv.{level} · XP {xp}/{goal}",
       resultGoldEarned: "Training Gold +{earned} · Total {total}",
@@ -928,6 +939,14 @@
     { id: 9, nameEn: "Rhino Guardian", nameZht: "\u7280\u725b\u5b88\u885b", imageKey: "rhinoGuardian", tier: 5, atk: 6, hp: 6, roleEn: "Last Stand", roleZht: "\u6700\u5f8c\u9632\u7dda", descEn: "Attacks normally. Faint: deals 4 x Lv damage to the lead enemy.", descZht: "\u9032\u884c\u666e\u901a\u653b\u64ca\uff1b\u5012\u4e0b\u6642\u5c0d\u6700\u524d\u65b9\u6575\u4eba\u9020\u6210 4 x \u7b49\u7d1a\u50b7\u5bb3\u3002" }
   ];
 
+  // Voxel Squad Links are intentionally derived from the existing roster so
+  // old saves, unlocks, and card ids remain valid. They add readable strategy
+  // without introducing another manual combat control.
+  const ANIMAL_ROLE_TAGS = {
+    0: "striker", 1: "support", 2: "guardian", 3: "striker", 4: "guardian",
+    5: "support", 6: "guardian", 7: "striker", 8: "striker", 9: "guardian"
+  };
+
   const ITEM_METADATA = [
     { id: 0, nameEn: "Apple", nameZht: "\u860b\u679c", imageKey: "foodApple", descEn: "+1/+1 stats.", descZht: "+1/+1 \u5c6c\u6027\u3002" },
     { id: 1, nameEn: "Honey", nameZht: "\u8702\u871c", imageKey: "foodHoney", descEn: "+2 HP. Buy: +1 Gold.", descZht: "+2 \u751f\u547d\uff0c\u8cfc\u8cb7\u5f8c\u56de 1 \u91d1\u5e63\u3002" },
@@ -1582,6 +1601,17 @@
     healthShort: "\u751f",
     trainingTitle: "\u5c0f\u968a\u8a13\u7df4",
     trainingGold: "\u8a13\u7df4\u91d1\u5e63",
+    synergyTitle: "方塊小隊羈絆",
+    synergyHint: "湊齊相同定位即可啟動自動戰鬥加成。",
+    synergyGuardian: "守護羈絆",
+    synergyStriker: "輸出羈絆",
+    synergySupport: "支援羈絆",
+    synergyReady: "{count} 名連結 · 等級 {level}",
+    synergyNone: "尚未形成羈絆 · 湊齊兩名相同定位",
+    bossWarning: "首領即將出現",
+    actionCritical: "暴擊",
+    actionCombo: "連攜命中",
+    blockBreak: "方塊破裂",
     owned: "\u5df2\u64c1\u6709",
     deployed: "\u5df2\u4e0a\u9663",
     locked: "\u672a\u89e3\u9396",
@@ -1738,6 +1768,33 @@
       atk: Math.floor((level - 1) / 3),
       hp: Math.floor((level - 1) / 2)
     };
+  }
+
+  function squadSynergy(cards = state.squad.filter(Boolean)) {
+    const counts = { guardian: 0, striker: 0, support: 0 };
+    cards.filter(Boolean).forEach((card) => {
+      const tag = ANIMAL_ROLE_TAGS[Number(card.id)];
+      if (tag && counts[tag] !== undefined) counts[tag] += 1;
+    });
+    const links = Object.entries(counts)
+      .filter(([, count]) => count >= 2)
+      .map(([tag, count]) => ({ tag, count, level: count >= 3 ? 2 : 1 }));
+    const best = links.reduce((winner, link) => (link.level > (winner?.level || 0) || link.count > (winner?.count || 0) ? link : winner), null);
+    return {
+      counts,
+      links,
+      primary: best?.tag || "",
+      level: best?.level || 0,
+      atk: Math.min(2, links.find((link) => link.tag === "striker")?.level || 0),
+      hp: Math.min(2, links.find((link) => link.tag === "guardian")?.level || 0),
+      healBoost: Math.min(2, links.find((link) => link.tag === "support")?.level || 0)
+    };
+  }
+
+  function synergyLabel(synergy) {
+    if (!synergy?.primary) return t("synergyNone");
+    const nameKey = `synergy${synergy.primary[0].toUpperCase()}${synergy.primary.slice(1)}`;
+    return `${t(nameKey)} · ${t("synergyReady", { level: synergy.level, count: synergy.counts[synergy.primary] })}`;
   }
 
   function addTeamXp(amount) {
@@ -2304,6 +2361,11 @@
         activeActors: [],
         lastAction: "",
         waveInsight: "",
+        synergy: squadSynergy([]),
+        combo: 0,
+        comboBest: 0,
+        comboTimer: 0,
+        bossWarningUntil: 0,
         lastDefeatEvent: null,
         noProgressSteps: 0,
         progressSignature: "",
@@ -2709,39 +2771,39 @@
 
   // Preloading required sheets
   const assetsToLoad = {
-    cover: "../../assets/animal-auto-squad-cover.webp",
-    bg: "../../assets/animal-auto-squad-bg.webp",
+    cover: "../../assets/animal-auto-squad-cover-block-v2.png",
+    bg: "../../assets/animal-auto-squad-arena-block-v1.png",
     enemies: "../../assets/animal-auto-squad-enemies.webp",
     items: "../../assets/animal-auto-squad-items.webp",
     fxV2: "../../assets/animal-auto-squad-fx-v2.webp",
-    sparkFox: "../../assets/weightplay-character-spark-paw-fox-cutout.webp",
-    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-cutout.webp",
-    drumPanda: "../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp",
-    moonOwl: "../../assets/weightplay-character-moon-cap-owl-cutout.webp",
-    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-cutout.webp",
-    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-mimi-clean-cutout.webp",
-    gearRhino: "../../assets/weightplay-character-gear-horn-rhino-cutout.webp",
-    boomLion: "../../assets/weightplay-character-boom-mane-lion-cutout.webp",
+    sparkFox: "../../assets/weightplay-character-spark-paw-fox-block-v1.png",
+    bubbleOtter: "../../assets/weightplay-character-bubble-fin-otter-block-v1.png",
+    drumPanda: "../../assets/weightplay-character-drum-belly-panda-block-v1.png",
+    moonOwl: "../../assets/weightplay-character-moon-cap-owl-block-v1.png",
+    mossTurtle: "../../assets/weightplay-character-moss-shell-turtle-block-v1.png",
+    rainbowRabbit: "../../assets/weightplay-character-rainbow-hop-rabbit-block-v1.png",
+    gearRhino: "../../assets/weightplay-character-gear-horn-rhino-block-v1.png",
+    boomLion: "../../assets/weightplay-character-boom-mane-lion-block-v1.png",
     sparkCaptain: "../../assets/weightplay-character-spark-paw-captain-cutout.webp",
     rhinoGuardian: "../../assets/weightplay-character-rhino-guardian-cutout.webp",
-    enemyFoxScout: "../../assets/animal-gearpack-expedition-enemy-fox-scout.webp",
-    enemyCrystalCrow: "../../assets/animal-gearpack-expedition-enemy-crystal-crow.webp",
-    enemyArmoredBoar: "../../assets/animal-gearpack-expedition-enemy-armored-boar.webp",
-    enemyRootGuardian: "../../assets/animal-gearpack-expedition-enemy-root-guardian.webp",
-    enemyShadowBasic: "../../assets/animal-crystal-survivor-shadow-basic.webp",
-    enemyShadowRunner: "../../assets/animal-crystal-survivor-shadow-runner.webp",
-    enemyShadowTank: "../../assets/animal-crystal-survivor-shadow-tank.webp",
-    enemyShadowPanther: "../../assets/animal-crystal-survivor-shadow-panther-v2.webp",
-    enemyRuneWolf: "../../assets/animal-rune-tactics-enemy-wolf.webp",
-    enemyRuneRaven: "../../assets/animal-rune-tactics-enemy-raven.webp",
-    enemyEclipseBat: "../../assets/shadow-wolf-enemy-bat-cutout.webp",
-    enemyShadowJaguar: "../../assets/animal-relic-hunters-shadow-jaguar.webp",
-    bossThornwood: "../../assets/animal-auto-squad-boss-thornwood-alpha.webp",
-    bossPrism: "../../assets/animal-auto-squad-boss-prism-basilisk.webp",
-    bossAbyss: "../../assets/animal-auto-squad-boss-abyss-shell-leviathan.webp",
-    bossMagma: "../../assets/animal-auto-squad-boss-magma-tusk-colossus.webp",
-    bossEclipse: "../../assets/animal-auto-squad-boss-eclipse-archowl.webp",
-    bossVoid: "../../assets/animal-auto-squad-boss-void-crown-emperor.webp",
+    enemyFoxScout: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyCrystalCrow: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyArmoredBoar: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyRootGuardian: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyShadowBasic: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyShadowRunner: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyShadowTank: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyShadowPanther: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyRuneWolf: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyRuneRaven: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyEclipseBat: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    enemyShadowJaguar: "../../assets/animal-auto-squad-enemy-block-v1.png",
+    bossThornwood: "../../assets/animal-auto-squad-boss-block-v1.png",
+    bossPrism: "../../assets/animal-auto-squad-boss-block-v1.png",
+    bossAbyss: "../../assets/animal-auto-squad-boss-block-v1.png",
+    bossMagma: "../../assets/animal-auto-squad-boss-block-v1.png",
+    bossEclipse: "../../assets/animal-auto-squad-boss-block-v1.png",
+    bossVoid: "../../assets/animal-auto-squad-boss-block-v1.png",
     foodApple: "assets/food-apple.svg",
     foodHoney: "assets/food-honey.svg",
     foodMelon: "assets/food-melon.svg",
@@ -4073,9 +4135,10 @@
   function renderFoodGuide() {
     if (!nodes.foodGuide) return;
     const preview = buildFirstWavePreview();
+    const synergy = squadSynergy(state.squad.filter(Boolean));
     const backpackGuidance = t("backpackHint").split(/[.!?。！？]/u)[0];
     nodes.foodGuide.setAttribute("data-runtime-localize", "off");
-    nodes.foodGuide.innerHTML = `<strong>${preview.title}</strong><span>${backpackGuidance} · ${preview.body}</span><em class="food-guide-coverage" data-role="threat-coverage">${preview.coverage}</em>`;
+    nodes.foodGuide.innerHTML = `<strong>${preview.title}</strong><span>${backpackGuidance} · ${preview.body}</span><em class="food-guide-coverage" data-role="threat-coverage">${preview.coverage}</em><em class="synergy-badge ${synergy.primary ? "is-ready" : ""}" data-role="squad-synergy"><b>${t("synergyTitle")}</b><span>${synergyLabel(synergy)}</span></em>`;
     nodes.foodGuide.setAttribute("aria-label", `${preview.title}: ${t("backpackHint")} ${preview.body} ${preview.coverage}`);
   }
 
@@ -4692,7 +4755,7 @@
   }
 
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
-    const maxLife = type === "starfall" ? 28 : type === "buff" ? 24 : 18;
+    const maxLife = type === "starfall" ? 28 : type === "combo" ? 34 : type === "block-break" ? 28 : type === "buff" ? 24 : 18;
     state.combat.effects.push({ type, x, y, life: maxLife, maxLife, text, textColor });
   }
 
@@ -4774,10 +4837,12 @@
   function healWeakestAlly(squad, amount, team = "player") {
     const target = squad.filter((unit) => unit.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0];
     if (!target) return;
-    target.hp = Math.min(target.maxHp, target.hp + amount);
+    const synergyBoost = team === "player" ? Number(state.combat.synergy?.healBoost) || 0 : 0;
+    const total = Math.max(1, Math.round(amount) + synergyBoost);
+    target.hp = Math.min(target.maxHp, target.hp + total);
     const idx = Math.max(0, squad.indexOf(target));
     const point = combatPoint(team, idx);
-    addCombatEffect("heal", point.x, point.y, `+${amount}`, "#82ffd1");
+    addCombatEffect("heal", point.x, point.y, `+${total}`, "#82ffd1");
   }
 
   function addUnitShield(unit, amount, team = "player", index = 0) {
@@ -4805,7 +4870,16 @@
     }
     if (damage > 0) {
       unit.hp -= damage;
-      addCombatEffect("hit", x, y, `-${damage}`, "yellow");
+      state.combat.combo = Math.min(99, (state.combat.combo || 0) + 1);
+      state.combat.comboBest = Math.max(state.combat.comboBest || 0, state.combat.combo);
+      state.combat.comboTimer = 150;
+      const linked = state.combat.combo > 1 && state.combat.combo % 4 === 0;
+      addCombatEffect(linked ? "combo" : "hit", x, y, linked ? `${t("actionCritical")} · -${damage}` : `-${damage}`, linked ? "#ffe477" : "yellow");
+      if (linked) {
+        state.combat.shakeFrames = Math.max(state.combat.shakeFrames, 14);
+        state.combat.shakeTarget = state.combat.enemySquad.includes(unit) ? "enemy" : "player";
+        addCombatEffect("block-break", x, y, t("blockBreak"), "#ffe477");
+      }
     }
   }
 
@@ -4867,12 +4941,14 @@
 
     // Prepare combatants (deep clone to not alter permanent state)
     const bonus = teamBonus();
+    const synergy = squadSynergy(activeSquad.map(({ card }) => card));
+    state.combat.synergy = synergy;
     state.combat.playerSquad = activeSquad.map(({ card, formationSlot }) => ({
       ...card,
       formationSlot,
-      hp: card.currentHp + bonus.hp,
-      maxHp: card.maxHp + bonus.hp,
-      atk: card.currentAtk + bonus.atk,
+      hp: card.currentHp + bonus.hp + synergy.hp,
+      maxHp: card.maxHp + bonus.hp + synergy.hp,
+      atk: card.currentAtk + bonus.atk + synergy.atk,
       shield: card.hasShield,
       shieldHp: card.hasShield ? Math.max(1, Math.ceil(card.currentHp * 0.35)) : 0
     }));
@@ -4917,6 +4993,11 @@
     state.combat.activeActors = [];
     state.combat.lastAction = "";
     state.combat.waveInsight = "";
+    state.combat.combo = 0;
+    state.combat.comboBest = 0;
+    state.combat.comboTimer = 0;
+    const openingBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
+    state.combat.bossWarningUntil = openingBoss ? performance.now() + 1600 : 0;
     state.combat.lastDefeatEvent = null;
     state.combat.noProgressSteps = 0;
     state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
@@ -4924,8 +5005,7 @@
     state.combat.effects = [];
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
-    const openingBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
-    combatLog(openingBoss ? t("bossIncoming", { boss: combatUnitName(openingBoss) }) : t("combatIntro"));
+    combatLog(openingBoss ? `${t("bossWarning")} · ${t("bossIncoming", { boss: combatUnitName(openingBoss) })}` : t("combatIntro"));
     updateCombatSummary();
     
     // Start animation loop
@@ -5142,6 +5222,11 @@
 
     const canvasWidth = syncCombatCanvasSize();
 
+    if (state.combat.comboTimer > 0) {
+      state.combat.comboTimer -= 1;
+      if (state.combat.comboTimer <= 0) state.combat.combo = 0;
+    }
+
     // Clear Canvas
     canvasCtx.clearRect(0, 0, canvasWidth, 1280);
 
@@ -5173,6 +5258,25 @@
       canvasCtx.fillRect(0, 0, canvasWidth, 1280);
     }
 
+    if (state.combat.bossWarningUntil > performance.now()) {
+      const remaining = Math.max(0, Math.min(1, (state.combat.bossWarningUntil - performance.now()) / 1600));
+      canvasCtx.save();
+      canvasCtx.globalAlpha = 0.72 + remaining * 0.28;
+      canvasCtx.fillStyle = "rgba(91, 22, 47, .92)";
+      canvasCtx.strokeStyle = "#ffe477";
+      canvasCtx.lineWidth = 4;
+      canvasCtx.beginPath();
+      canvasCtx.roundRect(canvasWidth * .08, 42, canvasWidth * .84, 66, 18);
+      canvasCtx.fill();
+      canvasCtx.stroke();
+      canvasCtx.font = "900 30px Outfit, system-ui";
+      canvasCtx.textAlign = "center";
+      canvasCtx.textBaseline = "middle";
+      canvasCtx.fillStyle = "#fff2b3";
+      canvasCtx.fillText(t("bossWarning"), canvasWidth / 2, 74);
+      canvasCtx.restore();
+    }
+
     canvasCtx.save();
     canvasCtx.textAlign = "center";
     canvasCtx.font = "900 24px Outfit, system-ui";
@@ -5183,7 +5287,7 @@
     canvasCtx.strokeText(playerLabel, canvasWidth / 2, 1210);
     canvasCtx.fillText(playerLabel, canvasWidth / 2, 1210);
     canvasCtx.font = "900 28px Outfit, system-ui";
-    canvasCtx.fillStyle = "#ffd666";
+    canvasCtx.fillStyle = "#ffe477";
     canvasCtx.strokeText("VS", canvasWidth / 2, 640);
     canvasCtx.fillText("VS", canvasWidth / 2, 640);
     canvasCtx.restore();
@@ -5276,6 +5380,12 @@
       canvasCtx.roundRect(x, y, drawW, drawH, 10);
       canvasCtx.fill();
       canvasCtx.stroke();
+      canvasCtx.fillStyle = isPlayer ? "rgba(117, 241, 210, .88)" : unit.isBoss ? "rgba(255, 224, 119, .92)" : "rgba(255, 113, 128, .86)";
+      const corner = unit.isBoss ? 14 : 10;
+      canvasCtx.fillRect(x + 3, y + 3, corner, 4);
+      canvasCtx.fillRect(x + 3, y + 3, 4, corner);
+      canvasCtx.fillRect(x + drawW - corner - 3, y + drawH - 7, corner, 4);
+      canvasCtx.fillRect(x + drawW - 7, y + drawH - corner - 3, 4, corner);
       if (isActing) {
         canvasCtx.strokeStyle = actor.style === "cast" ? "#8ff7ff" : "#ffd666";
         canvasCtx.lineWidth = 4;
@@ -5389,13 +5499,19 @@
     const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
     const front = t("combatFront", { player: playerName, enemy: enemyRole ? `${enemyName} - ${enemyRole}` : enemyName });
     const insight = state.combat.lastAction || state.combat.waveInsight;
-    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>${insight ? `<span data-combat-insight>${insight}</span>` : ""}`;
+    const combo = state.combat.comboTimer > 0 && state.combat.combo > 1
+      ? `<span class="combat-combo" data-combat-combo>${t("actionCombo")} ×${state.combat.combo}</span>`
+      : "";
+    const synergy = state.combat.synergy?.primary
+      ? `<span class="combat-synergy" data-combat-synergy>${t("synergyTitle")}: ${synergyLabel(state.combat.synergy)}</span>`
+      : "";
+    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>${synergy}${combo}${insight ? `<span data-combat-insight>${insight}</span>` : ""}`;
   }
 
   function drawEffectSprite(fx, progress, radius) {
     const sheet = imageCache.fxV2;
     if (!sheet?.naturalWidth || !sheet?.naturalHeight) return;
-    const spriteIndex = { hit: 0, shield: 1, heal: 2, buff: 3, smoke: 4, starfall: 5 }[fx.type] ?? 0;
+    const spriteIndex = { hit: 0, combo: 0, "block-break": 0, shield: 1, heal: 2, buff: 3, smoke: 4, starfall: 5 }[fx.type] ?? 0;
     const columns = 3;
     const sourceWidth = sheet.naturalWidth / columns;
     const sourceHeight = sheet.naturalHeight / 2;
@@ -5423,12 +5539,13 @@
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
         canvasCtx.globalAlpha = 1;
-        canvasCtx.font = "bold 20px Outfit, system-ui";
+        canvasCtx.font = fx.type === "combo" || fx.type === "block-break" ? "900 28px Outfit, system-ui" : "bold 20px Outfit, system-ui";
         canvasCtx.fillStyle = fx.textColor || "white";
         canvasCtx.strokeStyle = "black";
-        canvasCtx.lineWidth = 3;
-        canvasCtx.strokeText(fx.text, fx.x - 10, fx.y - 20 - progress * 18);
-        canvasCtx.fillText(fx.text, fx.x - 10, fx.y - 20 - progress * 18);
+        canvasCtx.lineWidth = fx.type === "combo" || fx.type === "block-break" ? 5 : 3;
+        canvasCtx.textAlign = "center";
+        canvasCtx.strokeText(fx.text, fx.x, fx.y - 20 - progress * 18);
+        canvasCtx.fillText(fx.text, fx.x, fx.y - 20 - progress * 18);
       }
 
       canvasCtx.restore();
@@ -5850,6 +5967,9 @@
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
+    state.combat.combo = 0;
+    state.combat.comboTimer = 0;
+    state.combat.bossWarningUntil = 0;
     state.combat.lastDefeatEvent = null;
     state.combat.noProgressSteps = 0;
     state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
@@ -5860,7 +5980,8 @@
     nodes.combatSummary?.classList.remove("is-hidden");
     updateHUD();
     const nextBoss = state.combat.enemySquad.find((unit) => unit.isBoss);
-    combatLog(nextBoss ? t("bossIncoming", { boss: combatUnitName(nextBoss) }) : t("nextWaveCombat", { round: state.round, total: WAVES_PER_STAGE }));
+    state.combat.bossWarningUntil = nextBoss ? performance.now() + 1600 : 0;
+    combatLog(nextBoss ? `${t("bossWarning")} · ${t("bossIncoming", { boss: combatUnitName(nextBoss) })}` : t("nextWaveCombat", { round: state.round, total: WAVES_PER_STAGE }));
     updateCombatSummary();
     ensureCombatProgressTimer();
     runCombatAnimation();

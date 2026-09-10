@@ -5,7 +5,7 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="weightplay-game-version" content="v32" />
+    <meta name="weightplay-game-version" content="v33" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0d1b15" />
     <meta name="description" content="Auto Squad is a tactical auto-battler with 30 stages, six regions, varied enemy formations, and six unique animal bosses." />
@@ -14,11 +14,11 @@
     <meta property="og:title" content="Auto Squad | WeightPlay" />
     <meta property="og:description" content="Train and position a six-animal squad across 30 five-wave stages, six regions, varied enemy formations, and six unique bosses." />
     <meta property="og:url" content="https://weightplay.com/games/animal-auto-squad/" />
-    <meta property="og:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-auto-squad-cover-block-v2.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Auto Squad | WeightPlay" />
     <meta name="twitter:description" content="Build a two-row animal formation, train ten heroes, and defeat six regional bosses across a 30-stage auto-battler campaign." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/animal-auto-squad-cover.png" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-auto-squad-cover-block-v2.png" />
     <title>Auto Squad | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/en/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-auto-squad/" />
@@ -35,13 +35,13 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-auto-squad/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-auto-squad/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Auto Squad","alternateName":"動物自走小隊","url":"https://weightplay.com/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover.png","description":"Auto Squad is a free formation auto-battler where players unlock, train, and position ten animal heroes to clear 30 five-wave stages and six regional bosses with local progress.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":["en","zh-Hant","zh-Hans"],"isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Auto-Battler","Strategy","RPG","Animal Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Auto Squad","alternateName":"自走小隊","url":"https://weightplay.com/games/animal-auto-squad/","image":"https://weightplay.com/assets/animal-auto-squad-cover-block-v2.png","description":"Auto Squad is a free voxel formation auto-battler where players unlock, train, and position ten animal heroes to clear 30 five-wave stages and six regional bosses with local progress.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":["en","zh-Hant","zh-Hans"],"isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Auto-Battler","Strategy","RPG","Animal Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260825-auto-squad-return-v28" />
+  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-block-v33" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
@@ -74,7 +74,7 @@
 
       <!-- Menu / Start Section -->
       <section id="menuPanel" class="panel menu-panel" data-screen="main">
-        <img class="cover" src="../../assets/animal-auto-squad-cover.webp" alt="Animal Auto Squad Cover" />
+        <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="Animal Auto Squad block adventure cover" />
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
           <span id="menuSubText" data-ui="menuHint">Build your permanent squad and conquer 30 five-wave stages across six regions.</span>
@@ -217,7 +217,7 @@
 
         <!-- Final Run Result Screen: bounded Battle substate -->
         <section id="resultPanel" class="panel result-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultDecisionText resultText" aria-live="polite">
-          <img class="result-lion" src="../../assets/animal-auto-squad-cover.webp" alt="Result Lion Mascot" />
+          <img class="result-lion" src="../../assets/animal-auto-squad-cover-block-v2.png" alt="Voxel squad result artwork" />
           <div class="result-copy">
             <h2 id="resultTitle" class="result-heading">Expedition Complete!</h2>
             <p id="resultDecisionText" class="result-decision" aria-live="polite"></p>
@@ -307,7 +307,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260827-auto-squad-skill-locales-v30"></script>
+  <script src="game.js?v=20260910-auto-squad-block-v33"></script>
     <script>
       (() => {
         const loadGameInfo = () => {

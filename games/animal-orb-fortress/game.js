@@ -40,6 +40,8 @@
     waveText: $("waveText"),
     coreText: $("coreText"),
     shotText: $("shotText"),
+    comboText: $("comboText"),
+    assistBtn: $("assistBtn"),
     hintText: $("hintText"),
     upgradeCards: $("upgradeCards"),
     upgradeStatus: $("upgradeStatus"),
@@ -124,6 +126,12 @@
       waves: "waves",
       core: "Core",
       shots: "Shots",
+      combo: "Combo",
+      aimAssistShort: "AIM+",
+      aimAssistOn: "Smart aim on",
+      aimAssistOff: "Smart aim off",
+      crit: "CRIT!",
+      chain: "CHAIN!",
       aimHint: "Drag from the launcher, preview the bounce path, then release.",
       keyboardAim: "Aim {angle}° from center. Left/Right adjust; Space or Enter fires.",
       arenaControlLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. Use Left and Right arrows to adjust; Space or Enter to fire.",
@@ -180,6 +188,8 @@
       upgradeShieldDesc: "Restore 4 core HP.",
       upgradeMagnet: "Scout Magnet",
       upgradeMagnetDesc: "+2 Star Stones after the raid.",
+      upgradeChain: "Prism Chain",
+      upgradeChainDesc: "Every fourth hit arcs to a nearby shadow beast for 40% damage.",
       roomForge: "Orb Forge",
       roomForgeDesc: "+1 base orb damage per level.",
       roomShield: "Core Shield",
@@ -198,11 +208,11 @@
       maxed: "Max",
     },
     "zh-Hant": {
-      title: "動物星珠要塞",
+      title: "星珠要塞",
       language: "語言",
       backToLobby: "返回大廳",
       fortressRooms: "要塞房間",
-      arenaLabel: "動物星珠要塞競技場",
+      arenaLabel: "星珠要塞競技場",
       menuTitle: "瞄準星珠，穿越水晶要塞。",
       menuHint: "選擇突襲路線、規劃反彈射擊，守住要塞核心。",
       bestRaid: "最佳突襲",
@@ -259,6 +269,12 @@
       waves: "波次",
       core: "核心",
       shots: "射擊",
+      combo: "連擊",
+      aimAssistShort: "輔瞄",
+      aimAssistOn: "智慧瞄準：開",
+      aimAssistOff: "智慧瞄準：關",
+      crit: "爆擊！",
+      chain: "連鎖！",
       aimHint: "從發射器拖曳瞄準，預覽反彈路線後放開。",
       keyboardAim: "瞄準偏移 {angle}°。左右方向鍵調整，空白鍵或 Enter 發射。",
       arenaControlLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。使用左右方向鍵調整，空白鍵或 Enter 發射。",
@@ -315,6 +331,8 @@
       upgradeShieldDesc: "恢復 4 點核心生命。",
       upgradeMagnet: "偵查磁力",
       upgradeMagnetDesc: "突襲結束後額外 +2 星石。",
+      upgradeChain: "稜晶連鎖",
+      upgradeChainDesc: "每 4 次命中會跳向附近影獸，造成 40% 傷害。",
       roomForge: "星珠鍛造室",
       roomForgeDesc: "每級提高基礎星珠傷害。",
       roomShield: "核心護盾室",
@@ -586,6 +604,42 @@
     raidPlanLose: "الغارة التالية: صوب قبل انغلاق خط المواجهة واستخدم الجدران لإصابة عدة وحوش.",
   });
 
+  // New combat labels are deliberately short so every supported locale keeps
+  // the same compact HUD. Full locale dictionaries can extend these later;
+  // falling back to English here prevents a missing key from leaking into a
+  // live card or button during a locale switch.
+  const combatCopy = {
+    combo: "Combo",
+    aimAssistShort: "AIM+",
+    aimAssistOn: "Smart aim on",
+    aimAssistOff: "Smart aim off",
+    crit: "CRIT!",
+    chain: "CHAIN!",
+    upgradeChain: "Prism Chain",
+    upgradeChainDesc: "Every fourth hit arcs to a nearby shadow beast for 40% damage.",
+  };
+  Object.keys(text).forEach((key) => Object.assign(text[key], combatCopy));
+  Object.assign(text["zh-Hant"], {
+    combo: "連擊",
+    aimAssistShort: "輔瞄",
+    aimAssistOn: "智慧瞄準：開",
+    aimAssistOff: "智慧瞄準：關",
+    crit: "爆擊！",
+    chain: "連鎖！",
+    upgradeChain: "稜晶連鎖",
+    upgradeChainDesc: "每 4 次命中會跳向附近影獸，造成 40% 傷害。",
+  });
+  Object.assign(text["zh-Hans"], {
+    combo: "连击",
+    aimAssistShort: "辅瞄",
+    aimAssistOn: "智能瞄准：开",
+    aimAssistOff: "智能瞄准：关",
+    crit: "暴击！",
+    chain: "连锁！",
+    upgradeChain: "棱晶连锁",
+    upgradeChainDesc: "每 4 次命中会跳向附近影兽，造成 40% 伤害。",
+  });
+
   const shotFeedbackCopy = {
     en: { direct: "Direct hit", bank: "Bank hit", bankTarget: "Bank hit ×{bounces} → {target} −{amount}", target: "shadow beast", blocked: "Blocked" },
     "zh-Hant": { direct: "直接命中", bank: "反彈命中", bankTarget: "反彈命中 ×{bounces} → {target} −{amount}", target: "影獸", blocked: "攻擊無效" },
@@ -656,10 +710,10 @@
   };
 
   const assets = {
-    bg: "../../assets/animal-orb-fortress-arena-bg.webp",
-    lion: "../../assets/weightplay-boom-mane-lion.png",
+    bg: "../../assets/animal-orb-fortress-arena-block-v2.png",
+    lion: "../../assets/animal-orb-fortress-hero-lion-block-v2.png",
     orbs: "../../assets/animal-orb-fortress-orb-set.webp",
-    beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
+    beasts: "../../assets/animal-orb-fortress-shadow-beasts-block-v2.png",
     bossRootbound: "../../assets/animal-orb-fortress-boss-golem.webp",
     bossBrambleback: "../../assets/animal-orb-fortress-boss-brambleback.webp",
     bossLunarWisp: "../../assets/animal-orb-fortress-boss-lunar-wisp.webp",
@@ -667,7 +721,7 @@
     bossTempestHorn: "../../assets/animal-orb-fortress-boss-tempest-horn.webp",
     bossVoidcore: "../../assets/animal-orb-fortress-boss-voidcore-emperor.webp",
     revive: "../../assets/animal-orb-fortress-diamond-revive.webp",
-    fx: "../../assets/animal-orb-fortress-fx.webp",
+    fx: "../../assets/animal-orb-fortress-fx-block-v2.png",
   };
 
   const pageMeta = {
@@ -684,7 +738,7 @@
       twitterDescription: "Protect the crystal core through 30 authored ricochet routes, six regions, special enemies, and six distinct Boss battles.",
     },
     "zh-Hant": {
-      title: "動物星珠要塞 - 免費動物反彈 Roguelite",
+      title: "星珠要塞 - 免費方塊反彈 Roguelite",
       description: "瞄準星珠挑戰 30 關反彈防守路線，反制特殊敵人與移動鏡面柱，擊敗六名獨特首領，並累積本機要塞成長。",
       ogDescription: "規劃牆面與鏡柱反彈，穿越六區 30 關，對抗護甲、相位、分裂與衝鋒敵人，再擊敗六名規則不同的首領。",
       twitterDescription: "守住水晶核心，完成 30 條特製反彈路線、六個區域、特殊敵人與六場不同首領戰。",
@@ -870,6 +924,7 @@
     { id: "recharge", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-4.webp", name: "upgradeRecharge", desc: "upgradeRechargeDesc" },
     { id: "shield", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-5.webp", name: "upgradeShield", desc: "upgradeShieldDesc" },
     { id: "magnet", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-6.webp", name: "upgradeMagnet", desc: "upgradeMagnetDesc" },
+    { id: "chain", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-3.webp", name: "upgradeChain", desc: "upgradeChainDesc" },
   ];
 
   const images = {};
@@ -1084,15 +1139,26 @@
       const number = Number(value);
       return Number.isFinite(number) ? Math.max(minimum, Math.min(maximum, Math.floor(number))) : fallback;
     };
-    const defaults = { bestRaid: 1, starStones: 0, playCount: 0, rooms: { forge: 0, shield: 0, den: 0, tower: 0 } };
+    const defaults = {
+      schemaVersion: 2,
+      bestRaid: 1,
+      starStones: 0,
+      playCount: 0,
+      aimAssist: true,
+      comboBest: 0,
+      rooms: { forge: 0, shield: 0, den: 0, tower: 0 },
+    };
     try {
       const parsed = JSON.parse(readStorage(saveKey) || "{}");
       const source = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
       const roomsSource = source.rooms && typeof source.rooms === "object" && !Array.isArray(source.rooms) ? source.rooms : {};
       const normalized = {
+        schemaVersion: 2,
         bestRaid: boundedInteger(source.bestRaid, 1, 1, MAX_RAID_TIER),
         starStones: boundedInteger(source.starStones, 0, 0),
         playCount: boundedInteger(source.playCount, 0, 0),
+        aimAssist: source.aimAssist !== false,
+        comboBest: boundedInteger(source.comboBest, 0, 0, 999),
         rooms: Object.fromEntries(Object.keys(defaults.rooms).map((id) => [id, boundedInteger(roomsSource[id], 0, 0, 5)])),
       };
       writeStorage(saveKey, JSON.stringify(normalized));
@@ -1121,8 +1187,16 @@
       shotCount: 0,
       stonesEarned: 0,
       bonusStones: 0,
+      aimAssist: save.aimAssist !== false,
+      combo: 0,
+      comboBest: save.comboBest || 0,
+      comboTimer: 0,
+      screenShake: 0,
+      chain: false,
       rerolled: false,
       rerollPending: false,
+      upgradeReadyAt: 0,
+      resultReadyAt: 0,
       readyTimer: 0,
       orbCooldown: 0.48,
       split: false,
@@ -1141,6 +1215,7 @@
       mechanicEvents: [],
       preview: [],
       launcher: { x: W / 2, y: H - 64 },
+      aimTarget: null,
     };
   }
 
@@ -1901,6 +1976,18 @@
       coreMeter.setAttribute("aria-valuetext", `${t("core")} ${currentCore}/${state.maxCore}`);
     }
     nodes.shotText.textContent = String(state.shotCount);
+    if (nodes.comboText) {
+      nodes.comboText.textContent = state.combo > 1 ? `×${state.combo}` : "×1";
+      nodes.comboText.classList.toggle("is-hot", state.combo >= 3);
+      nodes.comboText.setAttribute("aria-label", `${t("combo")} ${state.combo}`);
+    }
+    if (nodes.assistBtn) {
+      const enabled = state.aimAssist !== false;
+      nodes.assistBtn.textContent = t("aimAssistShort");
+      nodes.assistBtn.setAttribute("aria-pressed", String(enabled));
+      nodes.assistBtn.setAttribute("aria-label", enabled ? t("aimAssistOn") : t("aimAssistOff"));
+      nodes.assistBtn.classList.toggle("is-active", enabled);
+    }
   }
 
   function canvasPoint(event) {
@@ -1923,7 +2010,8 @@
     canvas.setPointerCapture?.(event.pointerId);
     Object.assign(pointer, canvasPoint(event));
     trackAimChange(pointer.x, pointer.y, "pointer");
-    state.preview = previewPath(pointer.x, pointer.y);
+    const aim = assistedAimPoint(pointer.x, pointer.y);
+    state.preview = previewPath(aim.x, aim.y);
   }
 
   function onPointerMove(event) {
@@ -1931,7 +2019,8 @@
     event.preventDefault();
     Object.assign(pointer, canvasPoint(event));
     trackAimChange(pointer.x, pointer.y, "drag");
-    state.preview = previewPath(pointer.x, pointer.y);
+    const aim = assistedAimPoint(pointer.x, pointer.y);
+    state.preview = previewPath(aim.x, aim.y);
   }
 
   function onPointerEnd(event) {
@@ -1963,6 +2052,40 @@
     const len = Math.max(1, Math.hypot(dx, dy));
     const power = 520 * (H / 540);
     return { vx: (dx / len) * power, vy: (dy / len) * power };
+  }
+
+  function angleDistance(a, b) {
+    let delta = Math.abs(a - b) % (Math.PI * 2);
+    return delta > Math.PI ? Math.PI * 2 - delta : delta;
+  }
+
+  function assistedAimPoint(x, y) {
+    state.aimTarget = null;
+    if (state.aimAssist === false || !state.enemies?.length) return { x, y };
+    const requestedAngle = Math.atan2(y - state.launcher.y, x - state.launcher.x);
+    const candidates = state.enemies
+      .filter((enemy) => enemy.hp > 0 && canDamageEnemy(enemy))
+      .map((enemy) => {
+        const angle = Math.atan2(enemy.y - state.launcher.y, enemy.x - state.launcher.x);
+        return {
+          enemy,
+          distance: Math.hypot(enemy.x - x, enemy.y - y),
+          angleDelta: angleDistance(requestedAngle, angle),
+          coreDistance: Math.hypot(enemy.x - state.launcher.x, enemy.y - state.launcher.y),
+        };
+      })
+      .sort((a, b) => (a.angleDelta * 240 + a.distance * 0.32 + a.coreDistance * 0.02) - (b.angleDelta * 240 + b.distance * 0.32 + b.coreDistance * 0.02));
+    const candidate = candidates[0];
+    if (!candidate || (candidate.angleDelta > 0.24 && candidate.distance > 150)) return { x, y };
+    state.aimTarget = candidate.enemy;
+    const dx = candidate.enemy.x - state.launcher.x;
+    const dy = candidate.enemy.y - state.launcher.y;
+    const length = Math.max(1, Math.hypot(dx, dy));
+    const distance = Math.max(W, H);
+    return {
+      x: state.launcher.x + (dx / length) * distance,
+      y: state.launcher.y + (dy / length) * distance,
+    };
   }
 
   function previewPath(x, y) {
@@ -1999,7 +2122,8 @@
 
   function updateKeyboardAimPreview() {
     if (state.mode !== "running") return;
-    const target = keyboardAimPoint();
+    const rawTarget = keyboardAimPoint();
+    const target = assistedAimPoint(rawTarget.x, rawTarget.y);
     const angle = Math.round(keyboardAimDeg + 90);
     state.preview = previewPath(target.x, target.y);
     const priority = state.mode === "running" && state.wave === 1 && state.shotCount === 0 ? ` ${firstWavePriorityText()}` : "";
@@ -2055,6 +2179,9 @@
 
   function releaseOrb(x, y) {
     if (!canFireOrb()) return;
+    const assisted = assistedAimPoint(x, y);
+    x = assisted.x;
+    y = assisted.y;
     const firstShot = state.shotCount === 0;
     if (firstShot) {
       state.firstShotPending = true;
@@ -2075,6 +2202,7 @@
       }
     });
     state.preview = [];
+    state.aimTarget = null;
     state.shotCount += 1;
     state.readyTimer = state.orbCooldown;
     nodes.hintText.textContent = t("orbFlying");
@@ -2148,6 +2276,12 @@
 
   function update(dt) {
     state.readyTimer = Math.max(0, state.readyTimer - dt);
+    state.comboTimer = Math.max(0, state.comboTimer - dt);
+    if (state.comboTimer === 0 && state.combo !== 0) {
+      state.combo = 0;
+      renderHud();
+    }
+    state.screenShake = Math.max(0, state.screenShake - dt * 7);
     updatePylons(dt);
     state.enemies.forEach((enemy) => {
       updateEnemyBehavior(enemy, dt);
@@ -2187,7 +2321,7 @@
     resolveEnemyDeaths();
     state.enemies = state.enemies.filter((enemy) => enemy.hp > 0);
     state.sparks.forEach((spark) => (spark.life -= dt));
-    state.sparks = state.sparks.filter((spark) => spark.life > 0);
+    state.sparks = state.sparks.filter((spark) => spark.life > 0).slice(-90);
 
     if (state.core <= 0) finishRaid(false);
     else if (state.enemies.length === 0) {
@@ -2363,6 +2497,12 @@
     playSound("hit", 0.08);
   }
 
+  function nearestChainTarget(source) {
+    return state.enemies
+      .filter((enemy) => enemy !== source && enemy.hp > 0 && canDamageEnemy(enemy))
+      .sort((a, b) => Math.hypot(a.x - source.x, a.y - source.y) - Math.hypot(b.x - source.x, b.y - source.y))[0] || null;
+  }
+
   function updateOrb(orb, dt) {
     orb.life -= dt;
     orb.x += orb.vx * dt;
@@ -2412,15 +2552,49 @@
       if (Math.hypot(orb.x - enemy.x, orb.y - enemy.y) < orb.r + enemyVisualRadius) {
         const hpBefore = enemy.hp;
         const shieldBefore = enemy.shield;
+        const canHit = canDamageEnemy(enemy);
+        const critical = canHit && enemy.shield <= 0 && (state.combo + 1) % 4 === 0;
         if (canDamageEnemy(enemy)) {
           if (enemy.shield > 0) enemy.shield -= 1;
-          else enemy.hp -= orb.damage;
+          else enemy.hp -= orb.damage * (critical ? 2 : 1);
         } else {
           state.mechanicEvents.push(enemy.phased ? "phase_block" : enemy.bossId === "prism" ? "prism_block" : "charge_block");
         }
         const damage = Math.max(0, hpBefore - enemy.hp);
         const shieldDamage = Math.max(0, shieldBefore - enemy.shield);
         const blocked = damage === 0 && shieldDamage === 0;
+        let chainDamage = 0;
+        let chainTarget = null;
+        if (!blocked && state.chain && damage > 0 && (state.combo + 1) % 4 === 0) {
+          chainTarget = nearestChainTarget(enemy);
+          if (chainTarget) {
+            const chainBefore = chainTarget.hp;
+            if (chainTarget.shield > 0) chainTarget.shield -= 1;
+            else chainTarget.hp -= Math.max(1, Math.round(orb.damage * 0.4));
+            chainDamage = Math.max(0, chainBefore - chainTarget.hp);
+            chainTarget.hitTimer = 0.22;
+            state.sparks.push({
+              kind: "chain",
+              x: chainTarget.x,
+              y: chainTarget.y,
+              fromX: enemy.x,
+              fromY: enemy.y,
+              life: 0.42,
+              maxLife: 0.42,
+              effectIndex: 2,
+              label: t("chain"),
+            });
+            state.screenShake = Math.max(state.screenShake, 5);
+          }
+        }
+        if (!blocked) {
+          state.combo = Math.min(99, state.combo + 1);
+          state.comboTimer = 2.35;
+          state.comboBest = Math.max(state.comboBest, state.combo);
+          save.comboBest = Math.max(save.comboBest || 0, state.comboBest);
+          if (damage > 0) state.screenShake = Math.max(state.screenShake, critical ? 12 : 4);
+          renderHud();
+        }
         const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
         const copy = shotFeedbackCopy[actualLocale] || shotFeedbackCopy.en;
         const kind = blocked ? "blocked" : orb.bounces > 0 ? "bank" : "direct";
@@ -2428,18 +2602,22 @@
         const label = kind === "bank"
           ? copy.bankTarget.replace("{bounces}", String(orb.bounces)).replace("{target}", copy.target).replace("{amount}", String(amount))
           : `${copy[kind]}${amount ? ` −${amount}` : ""}`;
-        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, label };
+        const popLabel = critical ? `${t("crit")} ${label}` : chainTarget ? `${t("chain")} ${label}` : label;
+        state.lastShotFeedback = { kind, bounces: orb.bounces, damage, shieldDamage, chainDamage, critical, label: popLabel };
         const isFirstShot = Boolean(orb.firstShot);
         if (state.firstShotPending && isFirstShot) {
           state.firstShotPending = false;
           state.firstShotCueUntil = performance.now() + 900;
         }
-        nodes.hintText.textContent = label;
-        track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage });
-        trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage });
+        nodes.hintText.textContent = popLabel;
+        track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
+        trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         enemy.hitTimer = 0.16;
         orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
-        state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label, banked: orb.bounces > 0 });
+        state.sparks.push({ kind: "shot-feedback", x: enemy.x, y: enemy.y, life: 0.72, maxLife: 0.72, label: popLabel, banked: orb.bounces > 0, effectIndex: critical ? 1 : 0 });
+        if (critical || (shieldBefore > 0 && enemy.shield === 0) || enemy.hp <= 0) {
+          state.sparks.push({ kind: "block-break", x: enemy.x, y: enemy.y, life: 0.56, maxLife: 0.56, effectIndex: critical ? 1 : 4, label: critical ? t("crit") : "" });
+        }
         playSound("hit", 0.06);
       }
     });
@@ -2455,11 +2633,17 @@
   function showUpgrade() {
     state.mode = "upgrade";
     cancelAnimationFrame(raf);
+    state.upgradeReadyAt = performance.now() + 720;
     state.stonesEarned += 3 + state.wave + (save.rooms.tower || 0);
     nodes.hintText.textContent = t("waveClear");
     renderUpgradeCards();
     show(nodes.upgradePanel);
-    window.requestAnimationFrame(() => nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true }));
+    nodes.upgradePanel.classList.add("is-revealing");
+    window.setTimeout(() => {
+      if (state.mode !== "upgrade") return;
+      nodes.upgradePanel.classList.remove("is-revealing");
+      nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true });
+    }, 720);
     track("wave_clear", { wave: state.wave });
     trackGrowth("wave_clear", { wave: state.wave });
   }
@@ -2539,7 +2723,7 @@
   }
 
   function chooseUpgrade(id) {
-    if (state.mode !== "upgrade") return;
+    if (state.mode !== "upgrade" || performance.now() < state.upgradeReadyAt) return;
     clearRerollConfirmation();
     if (id === "damage") state.baseDamage += 1;
     if (id === "split") state.split = true;
@@ -2547,6 +2731,7 @@
     if (id === "recharge") state.orbCooldown = Math.max(0.25, state.orbCooldown - 0.16);
     if (id === "shield") state.core = Math.min(state.maxCore, state.core + 4);
     if (id === "magnet") state.bonusStones += 2;
+    if (id === "chain") state.chain = true;
     state.wave += 1;
     state.rerolled = false;
     spawnWave();
@@ -2564,7 +2749,7 @@
   }
 
   function rerollChoices() {
-    if (state.mode !== "upgrade" || state.rerolled) return;
+    if (state.mode !== "upgrade" || state.rerolled || performance.now() < state.upgradeReadyAt) return;
     const balance = walletDiamonds();
     if (balance < rerollCost) {
       clearRerollConfirmation();
@@ -2636,8 +2821,18 @@
     nodes.resultMenuBtn.classList.toggle("secondary-btn", !menuIsPrimary);
     nodes.retryBtn.classList.toggle("primary-btn", !win);
     nodes.retryBtn.classList.toggle("secondary-btn", win);
-    show(nodes.resultPanel);
-    (hasNextStage ? nodes.nextStageBtn : win ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
+    state.resultReadyAt = performance.now() + 760;
+    nodes.resultPanel.classList.add("is-hidden");
+    setSceneOwnership(nodes.resultPanel, false);
+    window.setTimeout(() => {
+      if (state.mode !== "result") return;
+      show(nodes.resultPanel);
+      nodes.resultPanel.classList.add("is-revealing");
+      window.setTimeout(() => {
+        nodes.resultPanel.classList.remove("is-revealing");
+        (hasNextStage ? nodes.nextStageBtn : win ? nodes.resultMenuBtn : nodes.retryBtn).focus({ preventScroll: true });
+      }, 760);
+    }, 760);
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
     track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
@@ -2659,15 +2854,20 @@
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    if (state.screenShake > 0) {
+      const magnitude = Math.min(7, state.screenShake * 0.45);
+      ctx.translate((Math.random() - 0.5) * magnitude, (Math.random() - 0.5) * magnitude);
+    }
     if (images.bg?.complete) drawImageCover(images.bg, 0, 0, W, H);
-    ctx.fillStyle = "rgba(3, 10, 28, 0.34)";
+    ctx.fillStyle = "rgba(18, 42, 48, 0.10)";
     ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = raidProfile(state.raidTier).tint;
     ctx.fillRect(0, 0, W, H);
     const contrastGlow = ctx.createRadialGradient(W * 0.5, H * 0.35, 80, W * 0.5, H * 0.45, W * 0.7);
-    contrastGlow.addColorStop(0, "rgba(24, 41, 84, 0.18)");
-    contrastGlow.addColorStop(0.62, "rgba(8, 18, 42, 0.24)");
-    contrastGlow.addColorStop(1, "rgba(3, 9, 24, 0.46)");
+    contrastGlow.addColorStop(0, "rgba(255, 249, 214, 0.10)");
+    contrastGlow.addColorStop(0.62, "rgba(7, 29, 48, 0.08)");
+    contrastGlow.addColorStop(1, "rgba(4, 18, 34, 0.22)");
     ctx.fillStyle = contrastGlow;
     ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = "rgba(126, 255, 202, 0.6)";
@@ -2683,6 +2883,21 @@
       state.preview.slice(1).forEach((p) => ctx.lineTo(p.x, p.y));
       ctx.stroke();
       ctx.setLineDash([]);
+    }
+    if (state.aimTarget && state.aimTarget.hp > 0 && state.aimAssist !== false) {
+      const target = state.aimTarget;
+      const reticle = target.kind === "boss" ? 94 : Math.max(34, target.size * 1.45);
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 235, 111, 0.95)";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([8, 7]);
+      ctx.strokeRect(target.x - reticle / 2, target.y - reticle / 2, reticle, reticle);
+      ctx.setLineDash([]);
+      ctx.fillStyle = "#fff5a4";
+      ctx.font = "800 14px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(t("aimAssistShort"), target.x, target.y - reticle / 2 - 8);
+      ctx.restore();
     }
 
     drawPylons();
@@ -2702,6 +2917,34 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
       }
+      if (spark.kind === "chain") {
+        ctx.save();
+        ctx.strokeStyle = "#cf8cff";
+        ctx.lineWidth = 7;
+        ctx.shadowColor = "#a958ff";
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.moveTo(spark.fromX, spark.fromY);
+        const midX = (spark.fromX + spark.x) / 2;
+        const midY = (spark.fromY + spark.y) / 2;
+        ctx.lineTo(midX - 12, midY + 10);
+        ctx.lineTo(midX + 14, midY - 12);
+        ctx.lineTo(spark.x, spark.y);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.restore();
+      }
+      if (spark.kind === "block-break") {
+        ctx.save();
+        ctx.fillStyle = spark.effectIndex === 1 ? "#ffe56e" : "#8be6ff";
+        for (let piece = 0; piece < 7; piece += 1) {
+          const angle = piece * 0.9;
+          const distance = 14 + (1 - spark.life / maxLife) * 36;
+          const size = 5 + (piece % 3) * 3;
+          ctx.fillRect(spark.x + Math.cos(angle) * distance, spark.y + Math.sin(angle) * distance, size, size);
+        }
+        ctx.restore();
+      }
       if (spark.kind === "shot-feedback") {
         ctx.save();
         ctx.font = "700 24px system-ui, sans-serif";
@@ -2720,12 +2963,13 @@
         ctx.fillText(spark.label, spark.x, y);
         ctx.restore();
       }
-      drawAtlas(images.fx, 1, 4, spark.x, spark.y, 70);
+      drawAtlas(images.fx, spark.effectIndex ?? (spark.kind === "companion" ? 3 : spark.kind === "chain" ? 2 : 1), 5, spark.x, spark.y, spark.kind === "block-break" ? 92 : 70);
       ctx.globalAlpha = 1;
     });
 
     drawCore();
-    drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 86);
+    drawAtlas(images.lion, 0, 1, state.launcher.x, state.launcher.y + 8, 82);
+    ctx.restore();
   }
 
   function drawImageCover(image, x, y, width, height) {
@@ -2794,7 +3038,7 @@
     ctx.fill();
     ctx.shadowColor = shadow;
     ctx.shadowBlur = enemy.hitTimer > 0 ? 46 : 32;
-    ctx.fillStyle = enemy.kind === "boss" ? "rgba(45, 4, 35, 0.96)" : "rgba(1, 7, 26, 0.94)";
+    ctx.fillStyle = enemy.kind === "boss" ? "rgba(69, 19, 51, 0.82)" : "rgba(18, 37, 54, 0.78)";
     ctx.beginPath();
     ctx.ellipse(enemy.x, enemy.y + size * 0.1, size * 0.74, size * 0.58, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -2841,11 +3085,16 @@
     }
     if (enemy.chargeState === "marked") {
       ctx.strokeStyle = "rgba(255, 224, 92, 0.94)";
-      ctx.lineWidth = 9;
-      ctx.setLineDash([18, 12]);
+      ctx.lineWidth = 6;
+      ctx.setLineDash([16, 12]);
+      const dx = state.launcher.x - enemy.x;
+      const dy = state.launcher.y - 56 - enemy.y;
+      const distance = Math.max(1, Math.hypot(dx, dy));
+      const nx = dx / distance;
+      const ny = dy / distance;
       ctx.beginPath();
-      ctx.moveTo(enemy.x, enemy.y + size * 0.45);
-      ctx.lineTo(state.launcher.x, state.launcher.y - 56);
+      ctx.moveTo(enemy.x + nx * (size * 0.7), enemy.y + ny * (size * 0.7));
+      ctx.lineTo(state.launcher.x - nx * 22, state.launcher.y - 56 - ny * 22);
       ctx.stroke();
       ctx.setLineDash([]);
     }
@@ -2880,15 +3129,32 @@
 
   function drawCore() {
     const pct = Math.max(0, state.core / state.maxCore);
-    ctx.fillStyle = "rgba(4, 20, 18, 0.34)";
+    const x = state.launcher.x;
+    const y = state.launcher.y;
+    ctx.save();
+    ctx.fillStyle = "rgba(11, 33, 51, 0.72)";
+    ctx.strokeStyle = "#d8fbff";
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.arc(state.launcher.x, state.launcher.y, 42, 0, Math.PI * 2);
+    ctx.roundRect(x - 42, y - 42, 84, 84, 14);
     ctx.fill();
-    ctx.strokeStyle = pct > 0.35 ? "#7dffd0" : "#ff6878";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.arc(state.launcher.x, state.launcher.y, 49, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
     ctx.stroke();
+    ctx.fillStyle = pct > 0.35 ? "#7cf7d1" : "#ff6878";
+    ctx.beginPath();
+    ctx.moveTo(x, y - 27);
+    ctx.lineTo(x + 22, y);
+    ctx.lineTo(x, y + 27);
+    ctx.lineTo(x - 22, y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.86)";
+    ctx.stroke();
+    ctx.strokeStyle = pct > 0.35 ? "#7dffd0" : "#ff6878";
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.arc(x, y, 49, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+    ctx.stroke();
+    ctx.restore();
   }
 
   function maybeSmokeStart() {
@@ -3015,6 +3281,16 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.pauseBtn.addEventListener("click", () => setPaused(true, nodes.pauseBtn));
+  nodes.assistBtn?.addEventListener("click", () => {
+    if (state.mode !== "running" && state.mode !== "paused") return;
+    state.aimAssist = state.aimAssist === false;
+    save.aimAssist = state.aimAssist;
+    persist();
+    state.aimTarget = null;
+    renderHud();
+    nodes.hintText.textContent = state.aimAssist ? t("aimAssistOn") : t("aimAssistOff");
+    track("aim_assist_toggle", { enabled: state.aimAssist });
+  });
   nodes.resumeBtn.addEventListener("click", () => setPaused(false));
   nodes.pauseMapBtn.addEventListener("click", () => {
     pauseFocusOwner = null;

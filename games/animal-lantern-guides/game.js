@@ -129,7 +129,10 @@
       const card = document.createElement("article"); card.className = "chapter-card";
       const heading = document.createElement("h3"); heading.textContent = text(chapter.key);
       const rule = document.createElement("p"); rule.textContent = text(chapter.ruleKey);
-      const grid = document.createElement("div"); grid.className = "stage-grid";
+      // This five-button chapter grid is intentionally not the shared horizontal
+      // Stage rail.  Its old generic class was picked up by the shared rail CSS,
+      // pushing Trail 1 off the phone viewport.
+      const grid = document.createElement("div"); grid.className = "lantern-stage-grid";
       STAGES.filter(stage => stage.chapter === chapterIndex).forEach(stage => {
         const button = document.createElement("button");
         button.type = "button"; button.className = "stage-button"; button.disabled = stage.number > unlocked; button.dataset.stage = String(stage.number); button.dataset.wpStageCard = ""; button.setAttribute("aria-disabled", String(button.disabled));

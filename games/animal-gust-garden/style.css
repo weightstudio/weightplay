@@ -123,7 +123,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .game-info-section dt { color: var(--text); }
 .game-info-section dd,
 .game-info-section p { color: var(--muted); }
-.game-info-section li { margin-block: 6px; }
+.game-info-section li { margin-block: 6px; color: var(--muted); }
 [data-wp-game-guide][hidden] { display: none !important; }
 @media (max-width: 699px) { .main-header { margin-inline: -2px; } .stage-canvas, .battle-canvas { padding-inline: 10px; } .game-info-sections { grid-template-columns: 1fr; } }
 @media (max-height: 900px) and (orientation: landscape) {
