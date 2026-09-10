@@ -288,7 +288,6 @@ a {
 .language-picker,
 .hud-row > div,
 .soft-btn,
-.menu-copy,
 .result-card,
 .upgrade-card-wrap {
   border: 1px solid rgba(255, 249, 196, 0.42);
@@ -361,8 +360,6 @@ body:not(.crystal-playing) .language-picker select {
   visibility: visible !important;
   min-width: 88px;
 }
-
-.menu-panel,
 .game-panel,
 .stage-panel {
   min-height: 0;
@@ -410,38 +407,11 @@ body.crystal-stage-select .game-page-info,body.crystal-stage-select .wp-tutorial
 body.crystal-stage-select #stagePanel { grid-row:1; width:min(100%,612px); height:min(100%,788px); margin:0; }
 body.crystal-stage-select #stageAdReserve { grid-row:2; display:block; width:min(100%,612px); height:56px; min-height:56px; border-top:1px solid rgba(255,255,255,.18); background:rgba(7,34,31,.7); }
 body:not(.crystal-stage-select) #stageAdReserve { display:none; }
-
-.menu-panel {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 12px;
-}
-
-.cover {
-  width: 100%;
-  min-height: 0;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.26);
-}
-
-.menu-copy {
-  display: grid;
-  gap: 10px;
-  padding: 14px;
-  overflow: hidden;
-}
-
-.menu-copy strong,
 .upgrade-card-wrap strong,
 .result-card strong {
   font-size: clamp(20px, 5vw, 30px);
   line-height: 1.08;
 }
-
-.menu-copy span,
 .hint-text,
 .result-card p {
   color: #e9fbdc;
@@ -1288,19 +1258,6 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
     overflow: visible;
   }
 
-  body:not(.crystal-playing) .menu-panel {
-    grid-template-rows: 320px auto;
-    overflow: visible;
-  }
-
-  body:not(.crystal-playing) .cover {
-    height: 320px;
-  }
-
-  body:not(.crystal-playing) .menu-copy {
-    overflow: visible;
-  }
-
   body.crystal-playing #gamePanel.game-panel {     }
   body.crystal-playing .hud-row { grid-column: 1; grid-row: 1 / -1; grid-template-columns: 1fr; grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 4px; }
   body.crystal-playing .hud-row .play-return { width: 100%; min-width: 0; min-height: 0; }
@@ -1465,47 +1422,6 @@ body:not(.crystal-playing):not(.crystal-stage-select) .crystal-app {
   overflow: visible;
 }
 
-body:not(.crystal-playing):not(.crystal-stage-select) .menu-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
-  grid-template-rows: auto;
-  align-items: stretch;
-  gap: 16px;
-  overflow: visible;
-}
-
-body:not(.crystal-playing):not(.crystal-stage-select) .cover {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1;
-  object-fit: cover;
-}
-
-body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
-  align-content: center;
-  gap: 16px;
-  min-height: 0;
-  padding: 24px;
-  overflow: visible;
-}
-
-.main-progress {
-  display: grid;
-  place-items: center;
-  min-height: 44px;
-  border: 1px solid rgba(183, 244, 215, 0.34);
-  border-radius: 10px;
-  color: #fff9c4;
-  background: rgba(4, 24, 22, 0.56);
-  font-size: 14px;
-  font-weight: 1000;
-}
-
-#startBtn {
-  height: 52px;
-  min-height: 52px;
-}
-
 .game-page-info {
   width: min(calc(100% - 24px), 920px) !important;
   max-width: 920px !important;
@@ -1555,46 +1471,11 @@ body.crystal-stage-select .wp-shell-settings-row > span:first-child {
   font-size: 13.25px !important;
 }
 
-.stage-tabs {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  min-height: 56px;
-}
-
-.stage-tab {
-  min-width: 0;
-  min-height: 52px;
-  color: #d9f8e7;
-  border: 1px solid rgba(183, 244, 215, 0.28);
-  background: rgba(4, 22, 20, 0.92);
-}
-
-.stage-tab.is-active {
-  color: #183a2c;
-  border-color: #67e8a5;
-  background: linear-gradient(180deg, #a7f3d0, #67e8a5);
-  box-shadow: 0 0 0 2px rgba(103, 232, 165, 0.2);
-}
-
 body.crystal-stage-select #stagePanel {
   width: min(100%, 920px);
 }
 
 @media (max-width: 699px) {
-  body:not(.crystal-playing):not(.crystal-stage-select) .menu-panel {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
-    gap: 10px;
-    padding: 14px;
-  }
-
-  body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy strong {
-    font-size: 22px;
-  }
 }
 
 @media (orientation: landscape) {
@@ -1870,7 +1751,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
 .crystal-render-error::backdrop { background: #061f24bb; }
 
 /* Crystal Grove: carved dark jade, warm brass and luminous crystal inlays. */
-#menuPanel, #stagePanel, #gamePanel, .result-card, .upgrade-box{
+.result-card, .upgrade-box{
   color: #fff1cd;
   background-color: #112e2c;
 }
@@ -1884,7 +1765,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
   color: #ffe3a0;
   text-shadow: 0 2px 2px #081a20;
 }
-#startBtn, #retryBtn, #nextStageBtn, #resultMenuBtn, .stage-tab.is-active {
+#retryBtn, #nextStageBtn, #resultMenuBtn {
   border: 1px solid #ebce85;
   background: linear-gradient(#eed79b, #bc8f48) !important;
   color: #1c302d !important;
@@ -1935,29 +1816,24 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
 }
 
 /* Rain Court: restrained weathered metal UI around the physical courtyard. */
-html { background: #141d21; }
-html body { background: radial-gradient(ellipse at 50% 0, #303a3c, #131c20 70%) !important; }
-html body #menuPanel .cover { border: 1px solid #8b8066; box-shadow: 0 12px 35px #0008; }
-html body #menuPanel, html body #stagePanel, html body #gamePanel,
 html body .upgrade-card-wrap, html body .result-card{
   background-color: #182226 !important;
   color: #d8d5c7;
 }
 html body .hud-row > div, html body .stage-card, html body .upgrade-card,
-html body .result-card, html body .crystal-render-error, html body .menu-copy {
+html body .result-card, html body .crystal-render-error {
   border: 1px solid #82775b !important;
   border-radius: 3px !important;
   background-image: linear-gradient(155deg, #283236, #141d21) !important;
   box-shadow: inset 0 0 0 3px #0d171b77, 0 5px 18px #0006 !important;
 }
-html body #stagePanel { background-image: linear-gradient(#142025e8,#101b20f7), url('../../assets/animal-crystal-survivor-courtyard-v26.png') !important; }
 html body .hud-row b, html body .hud-row strong, html body #upgradeTitle, html body .result-card h2 {
   color: #dfd1a9 !important;
   text-shadow: 0 1px 2px #000;
 }
 html body .hud-row span, html body .xp-row { color: #b5b8ae !important; }
-html body #startBtn, html body #retryBtn, html body #nextStageBtn,
-html body #resultMenuBtn, html body .stage-tab.is-active {
+html body #retryBtn, html body #nextStageBtn,
+html body #resultMenuBtn {
   background: linear-gradient(#465054, #273237) !important;
   border: 1px solid #b5a17a !important;
   border-radius: 3px !important;

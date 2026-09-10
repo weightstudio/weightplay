@@ -1138,6 +1138,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "Battle Deck full": "बैटल डेक फुल",
   "Battle paused. Resume when ready.": "लड़ाई रुकी. तैयार होने पर फिर से शुरू करें.",
   "Battle Performance": "युद्ध प्रदर्शन",
+  "Battle speed settings": "लड़ाई की गति सेटिंग्स",
   "Battle started against {enemy}.": "{enemy} के ख़िलाफ़ लड़ाई शुरू हुई.",
   "Battle started. Draw your cards.": "लड़ाई शुरू हो गई. अपने कार्ड बनाएं.",
   "Battle status": "लड़ाई की स्थिति",

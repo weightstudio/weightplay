@@ -1,59 +1,69 @@
-/* v2: shared protected geometry. Game CSS is limited to content slots. */
-[data-wp-frame="2"] .wp-frame-header {
-  box-sizing:border-box; display:grid; position:relative; z-index:100;
-  grid-template-columns:58px minmax(0,1fr) 58px; grid-template-rows:48px;
-  align-items:center; gap:8px; width:100%; min-height:64px; margin:0;
-  padding:8px 12px; background:#17243a; color:#f8fafc; direction:ltr;
-  overflow:visible; isolation:isolate; border-radius:14px;
+@import url('./game-ui-theme.css');
+/* The guide is outside the play canvas, but belongs to the same shared skin. */
+html body:has([data-wp-frame="2"]) .game-page-info {background:var(--wp-ui-surface);color:var(--wp-ui-text);border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card) {background:var(--wp-ui-background);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+html body:has([data-wp-frame="2"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)}
+/* One protected frame. Game CSS may style content, never these shared slots. */
+html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat-y var(--wp-ui-background)!important; color:var(--wp-ui-text); }
+html body [data-wp-frame="2"] .wp-frame-header {
+ box-sizing:border-box!important; display:grid!important; position:relative!important; z-index:100; isolation:isolate;
+ grid-template-columns:var(--wp-frame-lobby-return-width) minmax(0,1fr) var(--wp-frame-lobby-return-width)!important;
+ grid-template-rows:var(--wp-frame-control-size)!important; align-items:center!important; gap:var(--wp-frame-header-gap)!important;
+ width:100%!important; height:var(--wp-frame-header-height)!important; min-height:var(--wp-frame-header-height)!important;
+ margin:0!important; padding:8px var(--wp-frame-header-inset)!important; direction:ltr!important;
+ background:var(--wp-ui-header-image)!important; color:var(--wp-ui-text)!important;
+ border:0!important; border-radius:var(--wp-ui-radius)!important; overflow:visible!important;
+ box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;
 }
-[data-wp-frame="2"] .wp-frame-header[hidden] { display:none!important; }
-[data-wp-frame="2"] .wp-frame-return,
-[data-wp-frame="2"] .wp-frame-settings {
-  box-sizing:border-box; display:flex; align-items:center; justify-content:center;
-  flex:none; position:static; transform:none; width:48px; min-width:48px;
-  height:48px; min-height:48px; padding:0; gap:3px; border:1px solid #ffffff29;
-  border-radius:14px; background:#f8fafc; color:#176a9d; box-shadow:none;
-  font:800 22px/1 system-ui; text-decoration:none; cursor:pointer; touch-action:manipulation;
+html body [data-wp-frame="2"] .wp-frame-header[hidden] {display:none!important}
+html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings) {
+ box-sizing:border-box!important; display:flex!important; align-items:center!important; justify-content:center!important; flex:none!important;
+ position:static!important; transform:none!important; margin:0!important; width:var(--wp-frame-control-size)!important;
+ min-width:var(--wp-frame-control-size)!important; max-width:none!important; height:var(--wp-frame-control-size)!important;
+ min-height:var(--wp-frame-control-size)!important; max-height:none!important; padding:0!important; gap:3px!important;
+ border:2px solid var(--wp-ui-line)!important; border-radius:var(--wp-ui-radius)!important; background:var(--wp-ui-button-image)!important;
+ color:var(--wp-ui-text)!important; box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;
+ font:800 20px/1 system-ui!important; text-decoration:none!important; cursor:pointer; touch-action:manipulation;
 }
-[data-wp-frame="2"] .wp-frame-return[data-wp-return="main"] { width:58px; min-width:58px; }
-[data-wp-frame="2"] .wp-frame-return img { width:24px; height:24px; object-fit:contain; }
-[data-wp-frame="2"] [data-wp-frame-title] {
-  grid-column:2; grid-row:1; margin:0; min-width:0; width:100%;
-  font:800 22px/1.2 system-ui; text-align:center; color:#f8fafc;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+html body [data-wp-frame="2"] .wp-frame-return[data-wp-return="main"] {width:var(--wp-frame-lobby-return-width)!important;min-width:var(--wp-frame-lobby-return-width)!important}
+html body [data-wp-frame="2"] :is(.wp-frame-back-icon,.wp-frame-settings-icon) {display:block!important;flex:none;width:24px!important;height:24px!important;background:var(--wp-ui-text)!important;mask:var(--wp-ui-back-image) center/contain no-repeat}
+html body [data-wp-frame="2"] .wp-frame-settings-icon {mask-image:var(--wp-ui-settings-image)}
+html body [data-wp-frame="2"] .wp-frame-return img {width:24px!important;height:24px!important;object-fit:contain;content:var(--wp-ui-logo-image)}
+html body [data-wp-frame="2"] [data-wp-frame-title] {
+ grid-column:2!important;grid-row:1!important;align-self:center!important;position:static!important;transform:none!important;
+ margin:0!important;padding:0!important;min-width:0!important;width:100%!important;height:auto!important;
+ font:800 var(--wp-frame-title-size)/1.2 system-ui,sans-serif!important;text-align:center!important;
+ color:var(--wp-ui-text)!important;text-shadow:none!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
 }
-[data-wp-frame="2"] .wp-frame-return { grid-column:1; grid-row:1; }
-[data-wp-frame="2"] .wp-frame-utility { grid-column:3; grid-row:1; justify-self:end; position:relative; }
-[data-wp-frame="2"] .wp-frame-settings svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; }
-[data-wp-frame="2"] .wp-frame-popover {
-  position:absolute; right:0; top:56px; width:min(280px,calc(100vw - 32px));
-  padding:12px; box-sizing:border-box; border:1px solid #ffffff40; border-radius:14px;
-  background:#0f1d31; color:#f8fafc; box-shadow:0 8px 24px #0009; direction:initial;
-}
-[data-wp-frame="2"] .wp-frame-popover[hidden],
-[data-wp-frame="2"] .wp-frame-popover > [hidden] { display:none!important; }
-[data-wp-frame="2"] .wp-frame-popover > :is(label,div) { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:48px; }
-[data-wp-frame="2"] .wp-frame-popover span { font:600 14px/1.2 system-ui; color:#f8fafc; white-space:nowrap; }
-[data-wp-frame="2"] .wp-frame-popover select { min-width:0; max-width:160px; height:44px; font-size:14px; }
-[data-wp-frame="2"] .wp-frame-sound { width:52px; height:44px; border:0; border-radius:22px; background:#475569; padding:8px; }
-[data-wp-frame="2"] .wp-frame-sound::after { content:''; display:block; width:24px; height:24px; background:white; border-radius:50%; }
-[data-wp-frame="2"] .wp-frame-sound[aria-checked="true"] { background:#176a9d; }
-[data-wp-frame="2"] .wp-frame-sound[aria-checked="true"]::after { margin-left:auto; }
-[data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound):focus-visible { outline:3px solid #f5c84c; outline-offset:2px; }
-[data-wp-frame-content] { min-width:0; min-height:0; }
-[data-wp-frame="2"] [data-wp-frame-scene="stage"],
-[data-wp-frame="2"] [data-wp-frame-scene="battle"] {
-  --wp-frame-rows:64px minmax(0,1fr);
-  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:64px minmax(0,1fr);
-  gap:8px; padding:8px; box-sizing:border-box;
-}
-[data-wp-frame="2"] [data-wp-frame-scene="stage"] { --wp-frame-rows:64px minmax(0,1fr) 56px; grid-template-rows:var(--wp-frame-rows); }
-[data-wp-frame="2"] [data-wp-frame-content="stage"],
-[data-wp-frame="2"] [data-wp-frame-content="battle"] { grid-row:2; grid-column:1; }
-[data-wp-frame="2"] [data-wp-frame-scene="stage"] > nav { grid-row:3; }
-[data-wp-frame="2"] [data-wp-frame-scene].hidden { display:none!important; }
-@media(max-width:699px) and (orientation:portrait) {
-  [data-wp-frame="2"] [data-wp-frame-scene="stage"] { --wp-frame-rows:88px minmax(0,1fr) 56px; }
-  [data-wp-frame="2"] .wp-frame-header:not([data-wp-frame-header="battle"]) { grid-template-rows:48px 32px; padding:0 12px; min-height:88px; }
-  [data-wp-frame="2"] .wp-frame-header:not([data-wp-frame-header="battle"]) [data-wp-frame-title] { grid-row:2; grid-column:1/-1; font-size:20px; }
-}
+html body [data-wp-frame="2"] .wp-frame-return {grid-column:1!important;grid-row:1!important;justify-self:start}
+html body [data-wp-frame="2"] .wp-frame-utility {grid-column:3;grid-row:1;justify-self:end;position:relative}
+html body [data-wp-frame="2"] .wp-frame-popover {position:absolute;right:0;top:56px;width:min(280px,calc(100vw - 40px));box-sizing:border-box;padding:12px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);box-shadow:0 5px 0 var(--wp-ui-shadow);direction:initial}
+html body [data-wp-frame="2"] .wp-frame-popover[hidden],html body [data-wp-frame="2"] .wp-frame-popover > [hidden] {display:none!important}
+html body [data-wp-frame="2"] .wp-frame-popover > :is(label,div) {display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px}
+html body [data-wp-frame="2"] .wp-frame-popover span {font:600 14px/1.2 system-ui;color:var(--wp-ui-text);white-space:nowrap}
+html body [data-wp-frame="2"] .wp-frame-popover select {min-width:0;max-width:160px;height:44px;font-size:14px;color:var(--wp-ui-text);background:var(--wp-ui-header)}
+html body [data-wp-frame="2"] .wp-frame-sound {width:52px;height:44px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);padding:6px}
+html body [data-wp-frame="2"] .wp-frame-sound::after {content:'';display:block;width:22px;height:22px;background:var(--wp-ui-text)}
+html body [data-wp-frame="2"] .wp-frame-sound[aria-checked="true"] {background:var(--wp-ui-active)}
+html body [data-wp-frame="2"] .wp-frame-sound[aria-checked="true"]::after {margin-left:auto}
+html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):hover {filter:brightness(1.12)}
+html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
+html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
+html body [data-wp-frame="2"] [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:920px!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important}
+html body [data-wp-frame="2"] [data-wp-frame-content] {min-width:0;min-height:0}
+html body [data-wp-frame="2"] [data-wp-frame-content="main"] {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+html body [data-wp-frame="2"] [data-wp-frame-poster] {width:100%!important;height:auto!important;aspect-ratio:1;object-fit:contain;margin:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;box-shadow:none!important;box-sizing:border-box}
+html body [data-wp-frame="2"] [data-wp-frame-copy] {display:flex!important;flex-direction:column!important;justify-content:center;gap:12px;padding:4px!important;min-width:0;border:0!important;background:none!important;box-shadow:none!important}
+html body [data-wp-frame="2"] [data-wp-frame-summary] {font:600 16px/1.5 system-ui!important;color:var(--wp-ui-text)!important}
+html body [data-wp-frame="2"] [data-wp-frame-progress] {display:grid;place-items:center;min-height:36px!important;margin:0!important;padding:4px!important;border:1px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;font:600 14px/1.2 system-ui!important;color:var(--wp-ui-muted)!important;background:var(--wp-ui-background)!important}
+html body [data-wp-frame="2"] [data-wp-frame-action] {display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box;min-height:44px!important;height:44px!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;font:700 14px/1.2 system-ui!important;padding:0 10px!important;box-shadow:inset 0 2px 0 var(--wp-ui-highlight),0 3px 0 var(--wp-ui-shadow)!important;cursor:pointer}
+html body [data-wp-frame="2"] [data-wp-frame-action="primary"] {width:100%!important;height:52px!important;min-height:52px!important;background:var(--wp-ui-gold)!important;color:#302717!important;font-size:16px!important}
+html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-pressed="true"] {background:var(--wp-ui-active)!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene="stage"],html body [data-wp-frame="2"] [data-wp-frame-scene="battle"] {--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:var(--wp-frame-rows);gap:8px!important;padding:8px!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene="stage"] {--wp-frame-rows:var(--wp-frame-header-height) minmax(0,1fr) 56px}
+html body [data-wp-frame="2"] [data-wp-frame-content="stage"],html body [data-wp-frame="2"] [data-wp-frame-content="battle"] {grid-row:2;grid-column:1}
+html body [data-wp-frame="2"] [data-wp-frame-nav] {grid-row:3!important;display:flex!important;align-items:center!important;gap:12px!important;padding:4px!important;margin:0!important;border:0!important;background:var(--wp-ui-surface)!important}
+html body [data-wp-frame="2"] [data-wp-frame-nav] > * {flex:1!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene].hidden {display:none!important}
+@media(min-width:700px) {html body [data-wp-frame="2"] [data-wp-frame-content="main"] {grid-template-columns:420px minmax(0,1fr)}}

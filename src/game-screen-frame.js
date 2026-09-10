@@ -11,7 +11,6 @@
     ru: ['Настройки', 'Язык', 'Звук'], hi: ['सेटिंग्स', 'भाषा', 'ध्वनि'],
     ar: ['الإعدادات', 'اللغة', 'الصوت'],
   };
-  const gear = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 2h6l1 3 3 1 3 5-2 2-1 3-3 1-1 3H9l-1-3-3-1-2-5 2-2 1-3 3-1Z"/><circle cx="12" cy="11" r="3"/></svg>';
   function mount({ root, scenes, localeSelect }) {
     if (mounts.has(root)) return mounts.get(root);
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
@@ -27,6 +26,12 @@
       header.className = 'wp-frame-header';
       header.dataset.wpFrameHeader = name;
       back.className = 'wp-frame-return';
+      // Keep the permanent control and its navigation listener. Artwork is
+      // created once; the shared skin owns the actual replaceable image.
+      let arrow = back.querySelector('span');
+      if (!arrow) { back.textContent = ''; arrow = document.createElement('span'); back.append(arrow); }
+      arrow.className = 'wp-frame-back-icon'; arrow.setAttribute('aria-hidden','true');
+      arrow.textContent = '';
       scene.root.dataset.wpFrameScene = name;
       scene.content.dataset.wpFrameContent = name;
       if (name !== 'main') {
@@ -41,7 +46,9 @@
       utility.className = 'wp-frame-utility';
       const button = document.createElement('button');
       button.type = 'button'; button.className = 'wp-frame-settings'; button.dataset.wpSettings = 'true';
-      button.innerHTML = gear;
+      const gear = document.createElement('span');
+      gear.className = 'wp-frame-settings-icon'; gear.setAttribute('aria-hidden','true');
+      button.append(gear);
       const panel = document.createElement('div');
       panel.className = 'wp-frame-popover'; panel.hidden = true; panel.setAttribute('role', 'group');
       panel.id = `wp-frame-${name}-settings`;
@@ -51,7 +58,7 @@
       const select = document.createElement('select');
       for (const option of localeSelect?.options || []) select.add(option.cloneNode(true));
       language.append(languageText, select);
-      language.hidden = name === 'battle' || !localeSelect;
+      language.hidden = name !== 'main' || !localeSelect;
       const soundRow = document.createElement('div');
       const soundText = document.createElement('span');
       const sound = document.createElement('button');

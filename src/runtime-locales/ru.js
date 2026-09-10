@@ -1138,6 +1138,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "Battle Deck full": "Боевая колода заполнена",
   "Battle paused. Resume when ready.": "Бой остановился. Возобновите работу, когда будете готовы.",
   "Battle Performance": "Боевое выступление",
+  "Battle speed settings": "Настройки скорости боя",
   "Battle started against {enemy}.": "Битва началась против {enemy}.",
   "Battle started. Draw your cards.": "Битва началась. Нарисуйте свои карты.",
   "Battle status": "Статус боя",

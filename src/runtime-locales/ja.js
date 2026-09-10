@@ -1138,6 +1138,7 @@ window.WeightPlayGameRuntimeLocales["ja"] = {
   "Battle Deck full": "バトルデッキがいっぱい",
   "Battle paused. Resume when ready.": "戦闘が一時停止されました。準備ができたら再開します。",
   "Battle Performance": "戦闘パフォーマンス",
+  "Battle speed settings": "戦闘速度の設定",
   "Battle started against {enemy}.": "{enemy}との戦いが始まりました。",
   "Battle started. Draw your cards.": "戦闘が始まりました。カードを引きます。",
   "Battle status": "戦闘状況",

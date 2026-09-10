@@ -71,6 +71,16 @@
 }
     </script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
+    <style data-beast-interface-v15>
+      body:not(.guardian-playing):not(.guardian-stage) .guardian-app { width:min(920px, calc(100% - 24px)); margin-inline:auto; }
+      body:not(.guardian-playing):not(.guardian-stage) .menu-panel { width:100%; max-width:920px; margin-inline:auto; }
+      body:not(.guardian-playing):not(.guardian-stage) .game-page-info-static { position:relative; clear:both; margin-top:28px; }
+      .back-btn[data-wp-return="main"] { width:58px!important; min-width:58px!important; max-width:58px!important; height:48px!important; min-height:48px!important; padding:4px!important; justify-content:center; }
+      .back-btn[data-wp-return="main"] img { display:block; width:25px; height:25px; object-fit:contain; }
+      #gamePanel .battle-layout, #gamePanel .command-row { max-width:920px; width:100%; margin-inline:auto; }
+      #gamePanel .build-panel, #gamePanel .canvas-shell, #gamePanel .command-row { min-width:0; max-width:100%; }
+      @media (orientation:landscape) and (max-width:900px) { body:not(.guardian-playing):not(.guardian-stage) .poster-frame { width:420px!important; max-width:calc(100vw - 24px); } }
+    </style>
   <meta name="twitter:title" content="Guardián de Bestias | WeightPlay" />
     <meta name="twitter:description" content="Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
@@ -178,7 +188,7 @@
             <span id="waveIntelLabel">Informe de oleada</span>
             <strong id="waveIntelText">Explora la ruta antes de comenzar.</strong>
           </div>
-          <button id="speedBtn" class="secondary-btn" type="button">1x</button>
+          <button id="speedBtn" class="secondary-btn" data-wp-battle-utility type="button" aria-label="Battle speed settings">1x</button>
         </div>
         <div id="bossPanel" class="boss-panel is-hidden" aria-live="polite">
           <div>
@@ -275,5 +285,15 @@
 <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <style data-beast-interface-v14-final>
+    html body .guardian-app { width:min(920px, calc(100% - 24px))!important; max-width:920px!important; margin-inline:auto!important; }
+    html body .guardian-topbar .back-btn[data-wp-return="main"] { width:58px!important; min-width:58px!important; max-width:58px!important; height:48px!important; min-height:48px!important; }
+    html body .poster-frame { width:420px!important; max-width:calc(100vw - 24px)!important; }
+    html body .game-page-info-static { clear:both!important; position:relative!important; margin-top:28px!important; }
+    html body #gamePanel [data-wp-battle-utility] { min-width:44px!important; width:44px!important; min-height:44px!important; height:44px!important; }
+    html body #gamePanel .battle-layout { display:flex!important; flex-wrap:wrap!important; width:100%!important; max-width:920px!important; overflow:hidden!important; }
+    html body #gamePanel .build-panel { min-width:0!important; max-width:100%!important; overflow:hidden!important; }
+    @media (orientation:landscape) and (max-width:900px) { html body #gamePanel .battle-layout { display:block!important; } html body #gamePanel .build-panel { width:100%!important; } }
+  </style>
 </body>
 </html>

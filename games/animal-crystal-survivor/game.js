@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v27";
+  const GAME_VERSION = "v28";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -218,7 +218,7 @@
     root: document.querySelector('[data-wp-frame-root]'),
     localeSelect: nodes.localeSelect,
     scenes: {
-      main: { root: nodes.menuPanel, header: $('mainFrameHeader'), content: nodes.menuPanel },
+      main: { root: nodes.menuPanel, header: $('mainFrameHeader'), content: $('mainContent') },
       stage: { root: nodes.stagePanel, header: $('stageFrameHeader'), content: document.querySelector('[data-wp-stage-content]') },
       battle: { root: nodes.gamePanel, header: $('battleFrameHeader'), content: $('battleLive') },
     },
@@ -1301,7 +1301,7 @@
     nodes.stageTabBtn?.setAttribute("aria-pressed", String(!equipmentOpen));
     nodes.equipmentTabBtn?.setAttribute("aria-pressed", String(equipmentOpen));
     if (equipmentOpen) {
-      nodes.stageSelectTitle.textContent = runeCopy().workshop;
+      nodes.stageSelectTitle.textContent = t("title");
       renderExpeditionRecord();
       updateDiamondShop();
       renderTalents();
@@ -1940,13 +1940,7 @@
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
-    nodes.stageSelectTitle.textContent = locale === "zh-Hant"
-      ? "\u9078\u64c7\u6c34\u6676\u8def\u7dda"
-      : locale === "es"
-        ? "Elige una ruta de cristal"
-        : locale === "ar"
-          ? "اختر مساراً كريستالياً"
-          : "Choose a Crystal Route";
+    nodes.stageSelectTitle.textContent = t("title");
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked: save.unlockedStage });
     nodes.stageSetupText.textContent = t("stageSetup");
     updateStageCheckpoint();

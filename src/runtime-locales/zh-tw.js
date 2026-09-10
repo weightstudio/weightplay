@@ -1138,6 +1138,7 @@ window.WeightPlayGameRuntimeLocales["zh-Hant"] = {
   "Battle Deck full": "戰鬥甲板已滿",
   "Battle paused. Resume when ready.": "戰鬥暫停了。準備好後繼續。",
   "Battle Performance": "戰鬥表現",
+  "Battle speed settings": "戰鬥速度設定",
   "Battle started against {enemy}.": "與 {enemy} 的戰鬥開始。",
   "Battle started. Draw your cards.": "戰鬥開始了。抽出你的牌。",
   "Battle status": "戰鬥狀態",

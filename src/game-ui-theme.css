@@ -1,0 +1,26 @@
+/* WeightPlay Block Arcade: shared lobby/game skin. Edit here, not in games. */
+:root {
+  --wp-ui-background:#0b202b;
+  --wp-ui-surface:#14323d;
+  --wp-ui-header:#163440;
+  --wp-ui-line:#597775;
+  --wp-ui-text:#f6f2dd;
+  --wp-ui-muted:#a4bdb9;
+  --wp-ui-gold:#edb74e;
+  --wp-ui-active:#2c705d;
+  --wp-ui-highlight:#41606b;
+  --wp-ui-shadow:#061820;
+  --wp-ui-radius:3px;
+  --wp-ui-background-image:url('../assets/lobby-block-atmosphere.svg');
+  --wp-ui-header-image:linear-gradient(#1f4550,#14323d);
+  --wp-ui-button-image:linear-gradient(#244a55,#163440);
+  --wp-ui-back-image:url('../assets/ui/frame-back.svg');
+  --wp-ui-settings-image:url('../assets/ui/frame-settings.svg');
+  --wp-ui-logo-image:url('../assets/weightplay-logo.png');
+  --wp-frame-header-height:64px;
+  --wp-frame-control-size:48px;
+  --wp-frame-lobby-return-width:58px;
+  --wp-frame-header-inset:12px;
+  --wp-frame-header-gap:8px;
+  --wp-frame-title-size:20px;
+}

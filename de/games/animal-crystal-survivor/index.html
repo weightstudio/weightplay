@@ -47,15 +47,12 @@
     <meta name="twitter:title" content="Verliesabenteuer | WeightPlay" />
     <meta name="twitter:description" content="Der tierische Kristall-Überlebenskampf ist eine Echtzeit-Patrouillenkampagne mit 30 Stufen und legt den Schwerpunkt auf Bewegung, Auto-Angriffe,..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.webp" /><link rel="stylesheet" href="/src/stage-selector-standard.css" />
-<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260910-frame2" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260910-block-frame2" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
     <main data-wp-frame-root class="crystal-app" data-play-viewport data-no-mobile-immersive="true">
-      <header class="topbar" id="mainFrameHeader">
-        <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <h1 data-ui="title" data-wp-game-title data-runtime-localize="off" data-wp-frame-title>Verliesabenteuer</h1>
-        </header>
+
       <div hidden data-wp-frame-locale-source><select id="localeSelect" aria-label="Language" data-aria-ui="language">
                 <option value="en">English</option>
                 <option value="zh-Hant">&#32321;&#39636;&#20013;&#25991;</option>
@@ -73,19 +70,25 @@
               </select></div>
 
       <section id="menuPanel" data-screen="main" data-wp-main-content class="menu-panel">
-        <img class="cover" src="../../assets/animal-crystal-survivor-otter-cover-v26.webp" alt="Spielgrafik zu Verliesabenteuer" />
-        <div class="menu-copy">
-          <strong data-ui="menuTitle">Überlebe im Kristallhain.</strong>
-          <span data-ui="menuHint">Ziel: Sammle goldene Schlüssel vor 3:00. Kristalle geben Erfahrung, Verbesserungen helfen dem Ranger beim Überleben.</span>
-          <div id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
-          <button id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Spiel starten</button>
+      <header class="topbar" id="mainFrameHeader">
+        <a class="icon-btn home-link" data-wp-return="main" href="/" aria-label="Back to lobby" data-aria-ui="backToLobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
+        <h1 data-ui="title" data-wp-game-title data-runtime-localize="off" data-wp-frame-title>Verliesabenteuer</h1>
+        </header>
+<div id="mainContent">
+        <img data-wp-frame-poster class="cover" src="../../assets/animal-crystal-survivor-otter-cover-v26.webp" alt="Spielgrafik zu Verliesabenteuer" />
+        <div data-wp-frame-copy class="menu-copy">
+
+          <span data-wp-frame-summary data-ui="menuHint">Ziel: Sammle goldene Schlüssel vor 3:00. Kristalle geben Erfahrung, Verbesserungen helfen dem Ranger beim Überleben.</span>
+          <div data-wp-frame-progress id="mainProgress" class="main-progress" aria-live="polite">Stage 1 / 30</div>
+          <button data-wp-frame-action="primary" id="startBtn" type="button" data-wp-main-start data-ui="mainStart">Spiel starten</button>
         </div>
-      </section>
+      </div>
+</section>
 
       <section id="stagePanel" data-screen="stage" data-wp-stage-workspace class="stage-panel hidden" data-wp-canvas-max-width="920" aria-labelledby="stageSelectTitle">
         <header class="stage-panel-head" id="stageFrameHeader">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
-          <strong id="stageSelectTitle" data-wp-frame-title>Choose a Crystal Route</strong></header>
+          <strong id="stageSelectTitle" data-ui="title" data-wp-game-title data-wp-frame-title>Verliesabenteuer</strong></header>
         <div class="stage-workspace" data-wp-stage-content><span id="stageProgressText" class="visually-hidden"></span>
           <div id="stagePage" class="stage-page">
             <div class="stage-intro">
@@ -122,10 +125,9 @@
             </div>
           </div>
         </div>
-        <nav class="stage-tabs" aria-label="Stage sections">
-          <span aria-hidden="true"></span>
-          <button id="stageTabBtn" class="stage-tab is-active" type="button" aria-pressed="true" data-ui="stageTab">Stages</button>
-          <button id="equipmentTabBtn" class="stage-tab" type="button" aria-pressed="false" data-ui="equipmentTab">Equipment</button>
+        <nav data-wp-frame-nav class="stage-tabs" aria-label="Stage sections">
+          <button data-wp-frame-action="tab" id="stageTabBtn" class="stage-tab is-active" type="button" aria-pressed="true" data-ui="stageTab">Stages</button>
+          <button data-wp-frame-action="tab" id="equipmentTabBtn" class="stage-tab" type="button" aria-pressed="false" data-ui="equipmentTab">Equipment</button>
         </nav>
       </section>
 
@@ -200,8 +202,8 @@
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
-    <script src="/src/game-screen-frame.js?v=20260910-frame2"></script>
-<script src="game.js?v=20260910-shared-frame-v27"></script>
+    <script src="/src/game-screen-frame.js?v=20260910-block-frame2"></script>
+<script src="game.js?v=20260910-block-frame-v28"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
   <script src="/src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
 

@@ -1,3 +1,4 @@
+@import url('./game-ui-theme.css');
 /* General lobby storefront. Loaded only by General entrypoints; gameplay and
    Kids retain the shared stylesheet. See specialist-lobby-discovery.md. */
 body.general-lobby-page {
@@ -299,8 +300,8 @@ body.general-lobby-page {
   --lobby-paper: #18343c;
   --lobby-accent: #67e3ac;
   color-scheme: dark;
-  background-color: #0b202b;
-  background-image: url("../assets/lobby-block-atmosphere.svg"), radial-gradient(ellipse at 50% 0, #204d4c 0, #0b202b 70%);
+  background-color: var(--wp-ui-background);
+  background-image: var(--wp-ui-background-image), radial-gradient(ellipse at 50% 0, #204d4c 0, var(--wp-ui-background) 70%);
   background-size: 1440px 960px, 100% 1200px;
   background-position: center top;
   background-repeat: repeat-y, no-repeat;
@@ -308,24 +309,24 @@ body.general-lobby-page {
 body.general-lobby-page .lobby-topbar { border-bottom: 2px solid #3c6368; margin-bottom: 18px; }
 body.general-lobby-page .lobby-topbar h1 { color: #fff4ce; text-shadow: 2px 3px 0 #07181e; letter-spacing: -.6px; }
 body.general-lobby-page .lobby-topbar .brand-byline { color: #7ec4b5; }
-body.general-lobby-page .lobby-topbar select { border: 2px solid #5d8688; border-radius: 2px; background: #163440; color: #f5e9c4; box-shadow: 0 4px 0 #061820, inset 0 2px 0 #30535d; }
+body.general-lobby-page .lobby-topbar select { border: 2px solid #5d8688; border-radius: 2px; background: #163440; color: #f5e9c4; box-shadow: 0 4px 0 var(--wp-ui-shadow), inset 0 2px 0 #30535d; }
 body.general-lobby-page .lobby-hero { border: 3px solid #d8ad59; border-radius: 3px; box-shadow: 0 6px 0 #77562c, 0 9px 0 #06151d; margin-bottom: 24px; }
 body.general-lobby-page .general-hero-scene { opacity: 1; }
 body.general-lobby-page .lobby-hero::after { background: linear-gradient(90deg,#112f3bec,#153f46cc 24%,#10324322 69%); }
 body.general-lobby-page .hero-eyebrow { color: #ffe18c; text-shadow: 1px 2px #09242f; }
-body.general-lobby-page .lobby-hero-copy h2 { color: #fff8dd; text-shadow: 3px 3px 0 #0b202b; }
+body.general-lobby-page .lobby-hero-copy h2 { color: #fff8dd; text-shadow: 3px 3px 0 var(--wp-ui-background); }
 body.general-lobby-page .lobby-subtitle { color: #dbefdb; }
 body.general-lobby-page .spotlight-game { border: 2px solid #e1b75c; border-radius: 2px; background: #112f3ef5; box-shadow: 0 4px 0 #061922; }
 body.general-lobby-page .spotlight-game > img { border-radius: 0; }
 body.general-lobby-page .spotlight-game h3 { color: #fff5d9; }
 body.general-lobby-page .spotlight-game small { color: #ffcf66; }
 body.general-lobby-page .spotlight-game span { color: #b9e4cf; }
-body.general-lobby-page .lobby-hero .sound-toggle { border-radius: 3px; background: #112c39ed; border: 2px solid #739594; box-shadow: 0 3px 0 #061820; }
+body.general-lobby-page .lobby-hero .sound-toggle { border-radius: 3px; background: #112c39ed; border: 2px solid #739594; box-shadow: 0 3px 0 var(--wp-ui-shadow); }
 
 /* Hall entrances are chunky physical tiles, with a cube and a board mark. */
 body.general-lobby-page .game-hall-switch { gap: 14px; margin-bottom: 19px; }
 body.general-lobby-page .game-hall-switch button { border: 2px solid #486977; border-radius: 3px; background: #213e4a; color: #e1ede2; box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923; transition: transform 120ms ease, box-shadow 120ms ease; }
-body.general-lobby-page .game-hall-switch button.active { border-color: #8ef0b7; background: #2c705d; color: #f7ffe6; box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22; }
+body.general-lobby-page .game-hall-switch button.active { border-color: #8ef0b7; background: var(--wp-ui-active); color: #f7ffe6; box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22; }
 body.general-lobby-page[data-game-hall="tabletop"] .game-hall-switch button.active { border-color: #ffda83; background: #936132; color: #fff7d2; box-shadow: inset 0 3px 0 #ce9852, 0 5px 0 #513b28, 0 7px 0 #081c23; }
 body.general-lobby-page .game-hall-switch button:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #698e81, 0 2px 0 #071923; }
 body.general-lobby-page .game-hall-switch small { color: #aec9c6; }
@@ -336,7 +337,7 @@ body.general-lobby-page .game-hall-switch button[data-hall-tab="tabletop"]::befo
 body.general-lobby-page .lobby-search-row { margin-bottom: 17px; }
 body.general-lobby-page .lobby-search input { border: 2px solid #4c747a; border-radius: 2px; background: #0d2935; color: #eef4df; box-shadow: inset 0 3px 0 #061b25; }
 body.general-lobby-page .lobby-search input::placeholder { color: #abc3bd; }
-body.general-lobby-page .quick-pick-btn { border: 2px solid #ffe59a; border-radius: 2px; background: #edb74e; color: #322a17; box-shadow: inset 0 3px 0 #ffd982, 0 5px 0 #92642b, 0 7px 0 #061b25; font-weight: 800; }
+body.general-lobby-page .quick-pick-btn { border: 2px solid #ffe59a; border-radius: 2px; background: var(--wp-ui-gold); color: #322a17; box-shadow: inset 0 3px 0 #ffd982, 0 5px 0 #92642b, 0 7px 0 #061b25; font-weight: 800; }
 body.general-lobby-page .quick-pick-btn:active { transform: translateY(3px); box-shadow: inset 0 2px 0 #ffd982, 0 2px 0 #92642b; }
 body.general-lobby-page .lobby-shell > .library-tabs { gap: 5px; padding: 5px; border: 2px solid #34565d; border-radius: 2px; background: #0b2632; box-shadow: inset 0 2px 0 #061d28; }
 body.general-lobby-page .lobby-shell > .library-tabs button { border: 1px solid transparent; border-radius: 1px; background: #163640; color: #a7c7bd; }
@@ -360,9 +361,9 @@ body.general-lobby-page .catalog-jump { color: #a5e5b8; }
 body.general-lobby-page .catalog-jump:hover { color: #ffe29b; }
 body.general-lobby-page :is(#latestGames,#heroGames) { gap: 14px; padding-bottom: 9px; }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card,
-body.general-lobby-page .game-card { border: 2px solid #597775; border-radius: 3px; background: #14323d; box-shadow: 0 5px 0 #061820; }
+body.general-lobby-page .game-card { border: 2px solid var(--wp-ui-line); border-radius: 3px; background: var(--wp-ui-surface); box-shadow: 0 5px 0 var(--wp-ui-shadow); }
 body.general-lobby-page :is(#latestGames,#heroGames) .hero-game-card:hover,
-body.general-lobby-page .game-card:hover { border-color: #ffd27c; box-shadow: 0 6px 0 #061820; }
+body.general-lobby-page .game-card:hover { border-color: #ffd27c; box-shadow: 0 6px 0 var(--wp-ui-shadow); }
 body.general-lobby-page .hero-game-art,
 body.general-lobby-page .game-card-art { background: #112b36; }
 body.general-lobby-page .hero-game-copy { background: #193b46; border-top: 2px solid #486c70; }

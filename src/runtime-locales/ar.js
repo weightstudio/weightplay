@@ -1138,6 +1138,7 @@ window.WeightPlayGameRuntimeLocales["ar"] = {
   "Battle Deck full": "مجموعة المعركة كاملة",
   "Battle paused. Resume when ready.": "توقفت المعركة مؤقتا. استئناف عندما تصبح جاهزة.",
   "Battle Performance": "أداء المعركة",
+  "Battle speed settings": "إعدادات سرعة المعركة",
   "Battle started against {enemy}.": "بدأت المعركة ضد {enemy}.",
   "Battle started. Draw your cards.": "بدأت المعركة. ارسم بطاقاتك.",
   "Battle status": "حالة المعركة",
