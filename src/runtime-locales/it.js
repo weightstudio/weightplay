@@ -271,6 +271,7 @@ window.WeightPlayGameRuntimeLocales["it"] = {
   "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc": "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc",
   "03D-mirror-0": "03D-specchio-0",
   "0407a3f1feefffb7f8fc1f0f4": "0407a3f1feefffb7f8fc1f0f4",
+  "1 / 30 unlocked": "1/30 sbloccato",
   "1 couleur": "1 colore",
   "1 Drag to the same-color shadow. 2 Tap to turn.": "1 Trascinare sull'ombra dello stesso colore. 2 Tocca per girare.",
   "1 Elige equipo 2 Toca una celda verde 3 Empieza el encuentro": "1 Elige equipo 2 Toca una celda verde 3 Empieza el encuentro",

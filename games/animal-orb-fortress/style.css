@@ -2318,7 +2318,7 @@ body {
 
 body:not(.orb-fortress-playing) .game-page-info {
   border: 2px solid #597775;
-  border-radius: 3px;
+  border-radius: 16px;
   color: #e8f1df;
   background: #14323d;
   box-shadow: 0 5px 0 #061820;
@@ -2334,7 +2334,7 @@ body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title p, .game-in
 
 body:not(.orb-fortress-playing) .game-page-info :is(.game-info-fact, .game-info-section, .game-info-band, .game-info-related-card) {
   border-color: #486977;
-  border-radius: 3px;
+  border-radius: 16px;
   background: #102e39;
 }
 
@@ -2387,9 +2387,9 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battle
   grid-template-columns: 18px 19px !important;
   gap: 2px !important;
   place-items: center !important;
-  width: 48px !important;
-  min-width: 48px !important;
-  max-width: 48px !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
   height: 48px !important;
   min-height: 48px !important;
   max-height: 48px !important;
@@ -2469,4 +2469,20 @@ body.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row > #battleBa
   color: #fff !important;
   font-size: 22px !important;
   line-height: 1 !important;
+}
+
+/* v39: retain the canonical framed Guide hierarchy and make the existing
+   aim toggle an independently reachable Battle utility. */
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #assistBtn[data-wp-battle-utility] {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+}
+
+html[dir="rtl"] body.wp-shell-battle-active.orb-fortress-playing #gamePanel.game-panel > .wp-generated-battle-header {
+  inset: 6px auto auto 6px !important;
+  left: 6px !important;
+  right: auto !important;
+  direction: ltr !important;
 }

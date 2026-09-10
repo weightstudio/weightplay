@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-  const GAME_VERSION = "v26";
+  const GAME_VERSION = "v27";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -214,6 +214,16 @@
     resultRankText: $("resultRankText"),
   };
 
+  const screenFrame = window.WeightPlayScreenFrame.mount({
+    root: document.querySelector('[data-wp-frame-root]'),
+    localeSelect: nodes.localeSelect,
+    scenes: {
+      main: { root: nodes.menuPanel, header: $('mainFrameHeader'), content: nodes.menuPanel },
+      stage: { root: nodes.stagePanel, header: $('stageFrameHeader'), content: document.querySelector('[data-wp-stage-content]') },
+      battle: { root: nodes.gamePanel, header: $('battleFrameHeader'), content: $('battleLive') },
+    },
+  });
+  screenFrame.activate('main');
   nodes.hintText?.setAttribute("role", "status");
   nodes.hintText?.setAttribute("aria-live", "polite");
   nodes.hintText?.setAttribute("aria-atomic", "true");
@@ -1555,10 +1565,7 @@
   }
 
   function setSettingsOpen(open, restoreFocus = false) {
-    const nextOpen = Boolean(open);
-    nodes.settingsPopover?.classList.toggle("hidden", !nextOpen);
-    nodes.settingsBtn?.setAttribute("aria-expanded", String(nextOpen));
-    if (!nextOpen && restoreFocus) nodes.settingsBtn?.focus({ preventScroll: true });
+    if (!open) screenFrame.close();
   }
 
   function updateDiamondShop(message = "") {
@@ -1637,8 +1644,7 @@
     else battleLive.removeAttribute("aria-hidden");
     const stageOpen = panel === nodes.stagePanel;
     setSettingsOpen(false);
-    if (stageOpen) nodes.stagePanelHead?.append(nodes.settingsControl);
-    else nodes.topbar?.append(nodes.settingsControl);
+    screenFrame.activate(panel === nodes.menuPanel ? 'main' : stageOpen ? 'stage' : 'battle', { covered: resultOpen });
     document.body?.classList.toggle("crystal-stage-select", stageOpen);
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
     document.body?.classList.toggle("wp-shell-stage-active", stageOpen);
@@ -3633,21 +3639,6 @@
   });
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
-  nodes.settingsBtn?.addEventListener("click", () => {
-    const open = nodes.settingsBtn.getAttribute("aria-expanded") !== "true";
-    setSettingsOpen(open);
-    if (open) window.requestAnimationFrame(() => nodes.menuSoundBtn?.focus({ preventScroll: true }));
-  });
-  document.addEventListener("pointerdown", (event) => {
-    if (nodes.settingsPopover?.classList.contains("hidden")) return;
-    if (event.target.closest(".settings-control")) return;
-    setSettingsOpen(false);
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || nodes.settingsPopover?.classList.contains("hidden")) return;
-    event.preventDefault();
-    setSettingsOpen(false, true);
-  });
   nodes.startBtn.addEventListener("keydown", (event) => {
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
@@ -3718,7 +3709,7 @@
     confirmBattleLeave();
   });
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape" && state.mode === "running") {
+    if (event.key === "Escape" && !event.defaultPrevented && state.mode === "running") {
       event.preventDefault();
       confirmBattleLeave();
     }

@@ -8,10 +8,10 @@
 @media (max-width: 640px) and (pointer: coarse) {
   html:has(body.crystal-playing), body.crystal-playing { overflow: hidden !important; touch-action: none; }
   body.crystal-playing .crystal-app { width: 100vw; height: var(--wp-mobile-vh, 100svh); min-height: 0; padding: 7px 9px; grid-template-rows: 48px minmax(0, 1fr); gap: 6px; }
-  body.crystal-playing .topbar { grid-template-columns: 44px minmax(0, 1fr); }
-  body.crystal-playing .brand-title p, body.crystal-playing .language-picker, body.crystal-playing .game-page-info { display: none !important; }
-  body.crystal-playing .brand-title h1 { font-size: 1.1rem; }
-  body.crystal-playing .game-panel { min-height: 0; gap: 6px; }
+
+   body.crystal-playing .language-picker, body.crystal-playing .game-page-info { display: none !important; }
+
+  body.crystal-playing .game-panel { min-height: 0;  }
 body.crystal-playing .hud-row { grid-template-columns: 40px repeat(5, minmax(0, 1fr)); gap: 3px; }
   body.crystal-playing .hud-row > div, body.crystal-playing .soft-btn { min-height: 40px; padding: 4px; }
   body.crystal-playing .hud-row span { font-size: 0.58rem; }
@@ -46,7 +46,7 @@ body.crystal-playing .crystal-app {
   transform: none;
 }
 
-body.crystal-playing .topbar,
+
 body.crystal-playing .game-page-info,
 body.crystal-playing .tutorial-button {
   display: none !important;
@@ -70,10 +70,10 @@ body.crystal-playing #resultPanel.result-panel {
 }
 
 body.crystal-playing #gamePanel.game-panel {
-  display: grid;
-  grid-template-rows: 54px 30px minmax(0, 1fr) 34px;
-  gap: 6px;
-  padding: 8px;
+
+
+
+
 }
 
 body.crystal-playing #resultPanel.result-panel {
@@ -118,7 +118,7 @@ body.crystal-playing .crystal-app {
   overflow: hidden;
 }
 
-body.crystal-playing .topbar,
+
 body.crystal-playing .game-page-info,
 body.crystal-playing .tutorial-button,
 body.crystal-playing .wp-tutorial-button,
@@ -141,10 +141,10 @@ body.crystal-playing #resultPanel.result-panel {
 }
 
 body.crystal-playing #gamePanel.game-panel {
-  display: grid;
-  grid-template-rows: 54px 30px minmax(0, 1fr) 34px;
-  gap: 6px;
-  padding: 8px;
+
+
+
+
 }
 
 body.crystal-playing .canvas-wrap {
@@ -198,10 +198,10 @@ body.crystal-playing .upgrade-card-wrap {
 
 @media (max-height: 560px) and (pointer: coarse) {
   body.crystal-playing #gamePanel.game-panel {
-    grid-template-columns: 150px minmax(0, 1fr) 190px;
-    grid-template-rows: 34px minmax(0, 1fr);
-    gap: 6px;
-    padding: 6px;
+
+
+
+
   }
 
   body.crystal-playing .hud-row {
@@ -282,14 +282,7 @@ a {
   overflow: hidden;
 }
 
-.topbar {
-  position: relative;
-  z-index: 30;
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) minmax(132px, 160px);
-  gap: 10px;
-  align-items: center;
-}
+
 
 .icon-btn,
 .language-picker,
@@ -316,19 +309,9 @@ a {
   text-decoration: none;
 }
 
-.home-link {
-  grid-template-columns: 16px 28px;
-  gap: 4px;
-  width: 58px;
-  min-width: 58px;
-  padding: 4px;
-}
 
-.home-link img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
+
+
 
 .soft-btn {
   min-height: 46px;
@@ -336,12 +319,9 @@ a {
   cursor: pointer;
 }
 
-.brand-title {
-  min-width: 0;
-  overflow: hidden;
-}
 
-.brand-title p,
+
+
 .language-picker span,
 .hud-row span,
 .xp-row span {
@@ -351,14 +331,7 @@ a {
   font-weight: 1000;
 }
 
-.brand-title h1 {
-  overflow: hidden;
-  margin: 2px 0 0;
-  font-size: clamp(22px, 5vw, 34px);
-  line-height: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+
 
 .language-picker {
   display: grid;
@@ -397,31 +370,22 @@ body:not(.crystal-playing) .language-picker select {
 }
 
 .stage-panel {
-  display: grid;
-  grid-template-rows: 56px 62px minmax(0, 1fr) 38px;
-  gap: 8px;
-  padding: 10px;
+
+
+
+
   border: 1px solid rgba(183, 244, 215, 0.42);
   border-radius: 16px;
   background: linear-gradient(rgba(7, 31, 29, .88), rgba(7, 31, 29, .96)), url("../../assets/animal-crystal-survivor-forest-arena.webp") center/cover;
   box-shadow: 0 18px 42px rgba(0,0,0,.35);
 }
 
-.stage-panel-head {
-  display: grid;
-  grid-template-columns: 48px minmax(0,1fr);
-  align-items: center;
-  gap: 10px;
-  padding-right: 8px;
-  border: 1px solid rgba(183,244,215,.28);
-  border-radius: 12px;
-  background: rgba(4,22,20,.9);
-}
 
-.stage-panel-head > div { min-width:0; display:grid; gap:2px; }
-.stage-panel-head strong { overflow:hidden; font-size:1.08rem; text-overflow:ellipsis; white-space:nowrap; }
-.stage-panel-head span { color:#b7f4d7; font-size:.72rem; font-weight:900; }
-.stage-back-btn { display:grid; place-items:center; width:48px; height:48px; padding:0; border:0; border-radius:11px; color:#176db3; background:#f8fafc; font-size:1.7rem; font-weight:1000; }
+
+
+
+
+
 .stage-setup-text { margin:0; padding:9px 11px; border-radius:11px; color:#e9fbdc; background:rgba(4,22,20,.84); font-size:.75rem; font-weight:800; line-height:1.35; }
 .stage-intro { display:grid; gap:5px; min-width:0; }
 .stage-checkpoint-text { margin:0; padding:6px 11px; overflow:hidden; border:1px solid rgba(255,231,108,.34); border-radius:10px; color:#fff6a6; background:rgba(63,46,7,.76); font-size:.7rem; font-weight:1000; line-height:1.25; text-overflow:ellipsis; white-space:nowrap; }
@@ -442,7 +406,7 @@ body:not(.crystal-playing) .language-picker select {
 body.crystal-stage-select,
 html:has(body.crystal-stage-select) { width:100%; height:var(--crystal-vh,100dvh); overflow:hidden !important; overscroll-behavior:none; }
 body.crystal-stage-select .crystal-app { position:fixed; inset:0; display:grid; grid-template-rows:minmax(0,1fr) 56px; place-items:center; width:var(--crystal-vw,100vw); max-width:none; height:var(--crystal-vh,100dvh); padding:4px; overflow:hidden; }
-body.crystal-stage-select .topbar,body.crystal-stage-select .game-page-info,body.crystal-stage-select .wp-tutorial-button { display:none !important; }
+body.crystal-stage-select .game-page-info,body.crystal-stage-select .wp-tutorial-button { display:none !important; }
 body.crystal-stage-select #stagePanel { grid-row:1; width:min(100%,612px); height:min(100%,788px); margin:0; }
 body.crystal-stage-select #stageAdReserve { grid-row:2; display:block; width:min(100%,612px); height:56px; min-height:56px; border-top:1px solid rgba(255,255,255,.18); background:rgba(7,34,31,.7); }
 body:not(.crystal-stage-select) #stageAdReserve { display:none; }
@@ -674,9 +638,9 @@ button {
 }
 
 .game-panel {
-  display: grid;
-  grid-template-rows: 54px 34px minmax(0, 1fr) 34px 56px;
-  gap: 8px;
+
+
+
 }
 
 .hud-row {
@@ -971,19 +935,11 @@ canvas {
     padding-inline: 8px;
   }
 
-  .topbar {
-    grid-template-columns: 58px minmax(0, 1fr);
-    grid-template-rows: 46px 42px;
-    gap: 6px;
-  }
 
-  .brand-title p {
-    font-size: 10px;
-  }
 
-  .brand-title h1 {
-    font-size: clamp(18px, 5.1vw, 22px);
-  }
+
+
+
 
   .icon-btn,
   .language-picker {
@@ -1009,8 +965,8 @@ canvas {
   }
 
   .game-panel {
-    grid-template-rows: auto 28px minmax(0, 1fr) 54px;
-    gap: 6px;
+
+
   }
 
   .hud-row {
@@ -1132,16 +1088,16 @@ canvas {
     overflow: hidden;
   }
 
-  body.crystal-playing .topbar,
+
   body.crystal-playing .game-page-info,
   body.crystal-playing .tutorial-button {
     display: none !important;
   }
 
   body.crystal-playing #gamePanel.game-panel {
-    display: grid;
-    grid-template-rows: 54px 30px minmax(0, 1fr) 34px 56px;
-    gap: 6px;
+
+
+
     width: calc(100vw - 16px);
     max-width: calc(100vw - 16px);
     height: calc(var(--wp-mobile-vh, 100svh) - 4px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -1263,8 +1219,8 @@ body.crystal-playing #resultPanel.result-panel {
 }
 
 body.crystal-playing #gamePanel.game-panel {
-  grid-template-rows: 54px 30px minmax(0, 1fr) 34px;
-  padding: 8px;
+
+
 }
 
 body.crystal-playing .canvas-wrap {
@@ -1295,9 +1251,9 @@ body.crystal-playing #battleAdReserve {
 /* Final Expanded Canvas override. */
 html:has(body.crystal-playing), body.crystal-playing { width: 100%; height: var(--crystal-vh, 100dvh); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body.crystal-playing .crystal-app { width: var(--crystal-vw, 100vw); height: var(--crystal-vh, 100dvh); padding: 4px; display: grid; grid-template-rows: minmax(0, 1fr) 56px; gap: 0; place-items: center; overflow: hidden; }
-body.crystal-playing .topbar, body.crystal-playing .game-page-info, body.crystal-playing .tutorial-button, body.crystal-playing .wp-tutorial-button, body.crystal-playing .wp-tutorial-backdrop { display: none !important; }
+ body.crystal-playing .game-page-info, body.crystal-playing .tutorial-button, body.crystal-playing .wp-tutorial-button, body.crystal-playing .wp-tutorial-backdrop { display: none !important; }
 body.crystal-playing #gamePanel.game-panel, body.crystal-playing #resultPanel.result-panel { position: relative; inset: auto; grid-row: 1; width: min(100%, 612px); height: min(100%, 788px); min-height: 0; max-height: none; margin: 0; transform: none; overflow: hidden; }
-body.crystal-playing #gamePanel.game-panel { display: grid; grid-template-rows: 54px 30px minmax(0, 1fr) 34px; gap: 6px; padding: 8px; align-content: stretch; }
+body.crystal-playing #gamePanel.game-panel {      }
 body.crystal-playing .canvas-wrap { width: min(100%, 366px); max-width: 100%; height: auto; max-height: 100%; justify-self: center; align-self: center; aspect-ratio: 32 / 55; }
 body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
   width: min(100%, 366px) !important;
@@ -1345,7 +1301,7 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
     overflow: visible;
   }
 
-  body.crystal-playing #gamePanel.game-panel { grid-template-columns: 150px minmax(0, 1fr) 190px; grid-template-rows: 34px minmax(0, 1fr); gap: 6px; padding: 6px; }
+  body.crystal-playing #gamePanel.game-panel {     }
   body.crystal-playing .hud-row { grid-column: 1; grid-row: 1 / -1; grid-template-columns: 1fr; grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 4px; }
   body.crystal-playing .hud-row .play-return { width: 100%; min-width: 0; min-height: 0; }
   body.crystal-playing .canvas-wrap { grid-column: 2; grid-row: 1 / -1; width: auto; max-width: 100%; height: 100%; max-height: 100%; }
@@ -1355,86 +1311,39 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
 }
 
 /* Shared Main/Stage utility: one stable Settings control opposite Return. */
-.topbar {
-  grid-template-columns: 58px minmax(0, 1fr) 58px;
-}
 
-.topbar .home-link {
-  box-sizing: border-box;
-  width: 58px;
-  height: 48px;
-  min-height: 48px;
-  max-height: 48px;
-  box-shadow: inset 0 -3px 0 #9d5626 !important;
-}
 
-.brand-title {
-  text-align: center;
-}
 
-.brand-title p,
+
+
+
+
 .weightplay-version-badge {
   display: none !important;
 }
 
-.settings-control {
-  position: relative;
-  z-index: 80;
-  width: 48px;
-  min-width: 48px;
-}
 
-.settings-btn {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  padding: 11px;
-  border: 1px solid rgba(255, 249, 196, 0.42);
-  border-radius: 14px;
-  background: rgba(17, 42, 39, 0.92);
-  color: #fff8c7;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
-  cursor: pointer;
-}
 
-.settings-btn svg,
+
+
+
 .audio-setting-row svg {
   width: 100%;
   height: 100%;
   fill: currentColor;
 }
 
-.settings-btn:focus-visible,
-.audio-setting-row:focus-visible,
-.settings-popover .language-picker select:focus-visible {
+
+.audio-setting-row:focus-visible{
   outline: 2px solid #63e6be;
   outline-offset: 2px;
 }
 
-.settings-popover {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  z-index: 100;
-  display: grid;
-  width: min(280px, calc(100vw - 24px));
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid rgba(255, 249, 196, 0.42);
-  border-radius: 14px;
-  background: rgba(8, 29, 28, 0.98);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42);
-}
 
-.settings-popover.hidden {
-  display: none !important;
-}
 
-.settings-popover > strong {
-  color: #fffce9;
-  font-size: 16px;
-}
+
+
+
 
 .audio-setting-row {
   display: grid;
@@ -1461,13 +1370,9 @@ body.crystal-playing .upgrade-card-wrap { max-height: 100%; overflow-y: auto; }
   text-overflow: ellipsis;
 }
 
-html[dir="rtl"] .topbar {
-  direction: ltr;
-}
 
-html[dir="rtl"] .settings-popover {
-  direction: rtl;
-}
+
+
 
 .audio-setting-row svg {
   width: 24px;
@@ -1504,18 +1409,9 @@ html[dir="rtl"] .settings-popover {
   transform: translateX(20px);
 }
 
-.settings-popover .language-picker {
-  display: grid !important;
-  min-height: 44px;
-  padding: 7px 9px;
-  visibility: visible !important;
-}
 
-.settings-popover .language-picker select {
-  display: block !important;
-  min-width: 0;
-  visibility: visible !important;
-}
+
+
 
 .visually-hidden {
   position: absolute !important;
@@ -1529,58 +1425,26 @@ html[dir="rtl"] .settings-popover {
   border: 0 !important;
 }
 
-.stage-panel-head {
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
-}
 
-.stage-panel-head > .settings-control {
-  display: block;
-  min-width: 48px;
-  gap: 0;
-}
 
-.crystal-stage-select .settings-popover .language-picker {
-  display: none !important;
-}
 
-body.crystal-playing .settings-control {
-  display: none !important;
-}
+
+
+
+
 
 @media (max-width: 520px) {
-  .topbar {
-    grid-template-columns: 58px minmax(0, 1fr) 58px;
-    grid-template-rows: 48px;
-    gap: 6px;
-  }
 
-  .topbar .home-link {
-    grid-column: 1;
-    grid-row: 1;
-  }
 
-  .topbar > .settings-control {
-    grid-column: 3;
-    grid-row: 1;
-  }
 
-  .topbar .brand-title {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: center;
-    min-width: 0;
-  }
 
-  .topbar .brand-title p {
-    display: none;
-  }
 
-  .topbar .brand-title h1 {
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+
+
+
+
+
+
 }
 
 /* Canonical Main: one 920px ownership boundary, square poster, concise copy. */
@@ -1650,7 +1514,7 @@ body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
 
 /* Stage owns campaign records and equipment; Main never exposes run internals. */
 .stage-panel {
-  grid-template-rows: 56px minmax(0, 1fr) 56px;
+
 }
 
 .stage-workspace,
@@ -1684,9 +1548,7 @@ body:not(.crystal-playing):not(.crystal-stage-select) .menu-copy {
 
 /* Interface V6: the shared shell owns Main/Stage Settings; keep the legacy
    game-local control alive for its state bridge without rendering a duplicate. */
-#settingsControl {
-  display: none !important;
-}
+
 
 body.crystal-stage-select .wp-shell-settings-row,
 body.crystal-stage-select .wp-shell-settings-row > span:first-child {
@@ -1897,10 +1759,10 @@ body.crystal-playing #gamePanel .hud-row {
 
 @media (max-height: 560px) {
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
-    grid-template-columns: 150px minmax(0, 1fr) 190px !important;
-    grid-template-rows: 34px minmax(0, 1fr) !important;
-    gap: 6px !important;
-    padding: 6px !important;
+
+
+
+
   }
 
   html body.wp-logical-battle-active.crystal-playing #gamePanel .hud-row {
@@ -1933,9 +1795,9 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel .hint-text {
    Keep this game-local rule after the legacy portrait fallbacks so the shared
    logical envelope cannot be reduced to a 32/55 inner column. */
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
-  grid-template-columns: minmax(0, 1fr) !important;
-  grid-template-rows: 54px 30px minmax(0, 1fr) 58px !important;
-  align-content: stretch !important;
+
+
+
 }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
   grid-column: 1 !important;
@@ -1981,10 +1843,10 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .xp-row
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-text {
   grid-column: 1 !important;
   grid-row: 4 !important;
-  height: 58px !important;
-  min-height: 58px !important;
+  height: 100% !important;
+  min-height: 0 !important;
   margin: 0 !important;
-  overflow: hidden !important;
+  overflow-y: auto !important;
 }
 @media (max-height: 560px) {
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .canvas-wrap {
@@ -2008,7 +1870,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
 .crystal-render-error::backdrop { background: #061f24bb; }
 
 /* Crystal Grove: carved dark jade, warm brass and luminous crystal inlays. */
-#menuPanel, #stagePanel, #gamePanel, .result-card, .upgrade-box, .settings-popover {
+#menuPanel, #stagePanel, #gamePanel, .result-card, .upgrade-box{
   color: #fff1cd;
   background-color: #112e2c;
 }
@@ -2063,10 +1925,7 @@ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hint-t
   .crystal-upgrade-reveal #upgradeTitle::after { animation: none; }
   .upgrade-card { transition: none; }
 }
-body.crystal-playing #gamePanel:has(#resultPanel:not(.hidden)) #menuBtn {
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
+
 .crystal-render-error button {
   display: block;
   width: 100%;
@@ -2080,7 +1939,7 @@ html { background: #141d21; }
 html body { background: radial-gradient(ellipse at 50% 0, #303a3c, #131c20 70%) !important; }
 html body #menuPanel .cover { border: 1px solid #8b8066; box-shadow: 0 12px 35px #0008; }
 html body #menuPanel, html body #stagePanel, html body #gamePanel,
-html body .upgrade-card-wrap, html body .result-card, html body .settings-popover {
+html body .upgrade-card-wrap, html body .result-card{
   background-color: #182226 !important;
   color: #d8d5c7;
 }
@@ -2105,12 +1964,7 @@ html body #resultMenuBtn, html body .stage-tab.is-active {
   color: #f0e1b8 !important;
   box-shadow: inset 0 1px 0 #c8b99144, 0 3px 9px #0005 !important;
 }
-html body #menuBtn, html body #stageBackBtn {
-  background: #253238 !important;
-  border: 1px solid #998d71 !important;
-  border-radius: 3px !important;
-  color: #ddd1b1 !important;
-}
+
 html body #hintText, html body .xp-row { background: #182226 !important; color: #d4cfbc; }
 html body #xpFill { background: linear-gradient(90deg,#617c80,#b3c4bb); box-shadow: none; }
 html body .upgrade-icon img { filter: saturate(.95); }
@@ -2136,8 +1990,8 @@ html body .upgrade-card:focus-visible { outline-color: #ddc18a; }
    useful height. World meshes retain the same uniform projection. */
 @media (max-height: 560px) and (orientation: landscape) {
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel {
-    grid-template-columns: 112px minmax(0, 1fr) !important;
-    grid-template-rows: 24px minmax(0, 1fr) 58px !important;
+
+
   }
   html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row {
     grid-column: 1 !important;
@@ -2280,3 +2134,12 @@ html body .element-branch .talent-tree-node {width:100%;min-height:96px;}
 .talent-info-dialog button[data-tree-pet] {display:block;width:100%;margin-top:10px;}
 .talent-info-dialog .talent-dialog-close {position:absolute;inset-inline-end:10px;top:10px;width:44px;padding:0;background:#142c37;border-color:#668493;font-size:26px;}
 .talent-info-dialog .talent-prerequisite {font-size:13px;color:#efce86;}
+
+/* Only the game-owned content track controls HUD and playfield placement. */
+[data-wp-frame-content="battle"] { display:grid!important; grid-template-columns:minmax(0,1fr); grid-template-rows:48px 24px minmax(0,1fr) 42px; gap:6px; overflow:hidden; }
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row { grid-template-columns:repeat(3,minmax(0,1fr))!important; grid-template-rows:1fr!important; }
+html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before { display:none!important; }
+@media(max-height:560px) and (orientation:landscape) {
+ [data-wp-frame-content="battle"] { grid-template-columns:112px minmax(0,1fr); grid-template-rows:24px minmax(0,1fr) 42px; }
+ html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row { grid-template-columns:1fr!important; grid-template-rows:repeat(3,minmax(0,1fr))!important; }
+}

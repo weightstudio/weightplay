@@ -271,6 +271,7 @@ window.WeightPlayGameRuntimeLocales["ru"] = {
   "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc": "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc",
   "03D-mirror-0": "03D-зеркало-0",
   "0407a3f1feefffb7f8fc1f0f4": "0407a3f1feefffb7f8fc1f0f4",
+  "1 / 30 unlocked": "1/30 разблокировано",
   "1 couleur": "1 кулер",
   "1 Drag to the same-color shadow. 2 Tap to turn.": "1 Перетащите курсор к тени того же цвета. 2 Коснитесь, чтобы повернуть.",
   "1 Elige equipo 2 Toca una celda verde 3 Empieza el encuentro": "1 Elige Equipment 2 Toca una celda verde 3 Empieza el encuentro",

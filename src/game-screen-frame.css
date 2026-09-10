@@ -1,0 +1,59 @@
+/* v2: shared protected geometry. Game CSS is limited to content slots. */
+[data-wp-frame="2"] .wp-frame-header {
+  box-sizing:border-box; display:grid; position:relative; z-index:100;
+  grid-template-columns:58px minmax(0,1fr) 58px; grid-template-rows:48px;
+  align-items:center; gap:8px; width:100%; min-height:64px; margin:0;
+  padding:8px 12px; background:#17243a; color:#f8fafc; direction:ltr;
+  overflow:visible; isolation:isolate; border-radius:14px;
+}
+[data-wp-frame="2"] .wp-frame-header[hidden] { display:none!important; }
+[data-wp-frame="2"] .wp-frame-return,
+[data-wp-frame="2"] .wp-frame-settings {
+  box-sizing:border-box; display:flex; align-items:center; justify-content:center;
+  flex:none; position:static; transform:none; width:48px; min-width:48px;
+  height:48px; min-height:48px; padding:0; gap:3px; border:1px solid #ffffff29;
+  border-radius:14px; background:#f8fafc; color:#176a9d; box-shadow:none;
+  font:800 22px/1 system-ui; text-decoration:none; cursor:pointer; touch-action:manipulation;
+}
+[data-wp-frame="2"] .wp-frame-return[data-wp-return="main"] { width:58px; min-width:58px; }
+[data-wp-frame="2"] .wp-frame-return img { width:24px; height:24px; object-fit:contain; }
+[data-wp-frame="2"] [data-wp-frame-title] {
+  grid-column:2; grid-row:1; margin:0; min-width:0; width:100%;
+  font:800 22px/1.2 system-ui; text-align:center; color:#f8fafc;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+[data-wp-frame="2"] .wp-frame-return { grid-column:1; grid-row:1; }
+[data-wp-frame="2"] .wp-frame-utility { grid-column:3; grid-row:1; justify-self:end; position:relative; }
+[data-wp-frame="2"] .wp-frame-settings svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; }
+[data-wp-frame="2"] .wp-frame-popover {
+  position:absolute; right:0; top:56px; width:min(280px,calc(100vw - 32px));
+  padding:12px; box-sizing:border-box; border:1px solid #ffffff40; border-radius:14px;
+  background:#0f1d31; color:#f8fafc; box-shadow:0 8px 24px #0009; direction:initial;
+}
+[data-wp-frame="2"] .wp-frame-popover[hidden],
+[data-wp-frame="2"] .wp-frame-popover > [hidden] { display:none!important; }
+[data-wp-frame="2"] .wp-frame-popover > :is(label,div) { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:48px; }
+[data-wp-frame="2"] .wp-frame-popover span { font:600 14px/1.2 system-ui; color:#f8fafc; white-space:nowrap; }
+[data-wp-frame="2"] .wp-frame-popover select { min-width:0; max-width:160px; height:44px; font-size:14px; }
+[data-wp-frame="2"] .wp-frame-sound { width:52px; height:44px; border:0; border-radius:22px; background:#475569; padding:8px; }
+[data-wp-frame="2"] .wp-frame-sound::after { content:''; display:block; width:24px; height:24px; background:white; border-radius:50%; }
+[data-wp-frame="2"] .wp-frame-sound[aria-checked="true"] { background:#176a9d; }
+[data-wp-frame="2"] .wp-frame-sound[aria-checked="true"]::after { margin-left:auto; }
+[data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound):focus-visible { outline:3px solid #f5c84c; outline-offset:2px; }
+[data-wp-frame-content] { min-width:0; min-height:0; }
+[data-wp-frame="2"] [data-wp-frame-scene="stage"],
+[data-wp-frame="2"] [data-wp-frame-scene="battle"] {
+  --wp-frame-rows:64px minmax(0,1fr);
+  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:64px minmax(0,1fr);
+  gap:8px; padding:8px; box-sizing:border-box;
+}
+[data-wp-frame="2"] [data-wp-frame-scene="stage"] { --wp-frame-rows:64px minmax(0,1fr) 56px; grid-template-rows:var(--wp-frame-rows); }
+[data-wp-frame="2"] [data-wp-frame-content="stage"],
+[data-wp-frame="2"] [data-wp-frame-content="battle"] { grid-row:2; grid-column:1; }
+[data-wp-frame="2"] [data-wp-frame-scene="stage"] > nav { grid-row:3; }
+[data-wp-frame="2"] [data-wp-frame-scene].hidden { display:none!important; }
+@media(max-width:699px) and (orientation:portrait) {
+  [data-wp-frame="2"] [data-wp-frame-scene="stage"] { --wp-frame-rows:88px minmax(0,1fr) 56px; }
+  [data-wp-frame="2"] .wp-frame-header:not([data-wp-frame-header="battle"]) { grid-template-rows:48px 32px; padding:0 12px; min-height:88px; }
+  [data-wp-frame="2"] .wp-frame-header:not([data-wp-frame-header="battle"]) [data-wp-frame-title] { grid-row:2; grid-column:1/-1; font-size:20px; }
+}

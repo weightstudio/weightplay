@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v36";
+  const GAME_VERSION = "v38";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -765,17 +765,16 @@
 
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-block-v2.png",
-    lion: "../../assets/weightplay-boom-mane-lion.png",
-    orb: "../../assets/animal-orb-fortress-orb-set.webp",
-    beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
+    lion: "../../assets/animal-orb-fortress-hero-lion-block-v2.png",
+    beastWolf: "../../assets/animal-rune-tactics-enemy-wolf-block-v1.webp",
+    beastArmored: "../../assets/animal-rune-tactics-enemy-boar-block-v1.webp",
+    beastWisp: "../../assets/animal-rune-tactics-enemy-moth-block-v1.webp",
     bossRootbound: "../../assets/animal-orb-fortress-boss-golem.webp",
     bossBrambleback: "../../assets/animal-orb-fortress-boss-brambleback.webp",
     bossLunarWisp: "../../assets/animal-orb-fortress-boss-lunar-wisp.webp",
     bossPrismShell: "../../assets/animal-orb-fortress-boss-prism-shell.webp",
     bossTempestHorn: "../../assets/animal-orb-fortress-boss-tempest-horn.webp",
     bossVoidcore: "../../assets/animal-orb-fortress-boss-voidcore-emperor.webp",
-    revive: "../../assets/animal-orb-fortress-diamond-revive.webp",
-    fx: "../../assets/animal-orb-fortress-fx.webp",
   };
 
   const pageMeta = {
@@ -3176,7 +3175,23 @@
         ctx.shadowBlur = 0;
         ctx.restore();
       }
-      drawAtlas(images.fx, spark.effectIndex ?? (spark.kind === "companion" ? 3 : spark.kind === "chain" ? 2 : 1), 5, spark.x, spark.y, spark.kind === "block-break" ? 92 : 70);
+      if (spark.kind === "return") {
+        ctx.save();
+        const progress = 1 - spark.life / maxLife;
+        const radius = 12 + progress * 28;
+        ctx.strokeStyle = "#ffe77d";
+        ctx.lineWidth = Math.max(3, 8 - progress * 5);
+        ctx.shadowColor = "#59e9ff";
+        ctx.shadowBlur = 18;
+        ctx.strokeRect(spark.x - radius, spark.y - radius, radius * 2, radius * 2);
+        for (let piece = 0; piece < 8; piece += 1) {
+          const angle = piece * Math.PI / 4;
+          const distance = radius + 8;
+          ctx.fillStyle = piece % 2 ? "#ffe77d" : "#72efff";
+          ctx.fillRect(spark.x + Math.cos(angle) * distance - 3, spark.y + Math.sin(angle) * distance - 3, 6, 6);
+        }
+        ctx.restore();
+      }
       ctx.globalAlpha = 1;
     });
 
@@ -3295,10 +3310,10 @@
     });
   }
 
-  function enemySpriteIndex(kind) {
-    if (["thorn", "armored", "anchor", "charger"].includes(kind)) return 1;
-    if (["wisp", "phase"].includes(kind)) return 2;
-    return 0;
+  function enemySprite(kind) {
+    if (["thorn", "armored", "anchor", "charger"].includes(kind)) return images.beastArmored;
+    if (["wisp", "phase"].includes(kind)) return images.beastWisp;
+    return images.beastWolf;
   }
 
   function drawEnemy(enemy) {
@@ -3317,7 +3332,7 @@
     ctx.shadowBlur = enemy.hitTimer > 0 ? 34 : 20;
     ctx.globalAlpha = enemy.phased ? 0.4 : enemy.hitTimer > 0 ? 1 : 0.9;
     if (enemy.kind === "boss") drawAtlas(images[enemy.imageKey] || images.bossRootbound, 0, 1, enemy.x, enemy.y, size);
-    else drawAtlas(images.beasts, enemySpriteIndex(enemy.kind), 3, enemy.x, enemy.y, size);
+    else drawAtlas(enemySprite(enemy.kind), 0, 1, enemy.x, enemy.y, size * 0.92);
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
     if (enemy.elite) {

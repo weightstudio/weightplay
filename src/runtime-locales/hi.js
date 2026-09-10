@@ -271,6 +271,7 @@ window.WeightPlayGameRuntimeLocales["hi"] = {
   "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc": "0200f41f8bfc77eff7fff7fe2fc3ec3fd3fc",
   "03D-mirror-0": "03डी-दर्पण-0",
   "0407a3f1feefffb7f8fc1f0f4": "0407a3f1feeffffb7f8fc1f0f4",
+  "1 / 30 unlocked": "1/30 अनलॉक किया गया",
   "1 couleur": "1 कूलूर",
   "1 Drag to the same-color shadow. 2 Tap to turn.": "1 समान रंग की छाया तक खींचें. 2 मुड़ने के लिए टैप करें.",
   "1 Elige equipo 2 Toca una celda verde 3 Empieza el encuentro": "1 एलीगे इक्विपो 2 टोका ऊना सेल्डा वर्दे 3 एम्पीज़ा एल एन्कुएंट्रो",

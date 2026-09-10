@@ -3,10 +3,11 @@
   <head>
 
     <base href="/games/beast-tactician/" />
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
+    <meta name="weightplay-audience" content="general" />
+    <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="description" content="Beast Guardian은 고정 타워 패드가 아닌 경로 건설을 중심으로 구축된 30단계 영웅 타워 방어 캠페인입니다. 일반 동물병사 역할 4개와 WeightPlay 영웅 7명을 숲 그리드에 배치하고, 최소 하나의 경로를 열어두고, 6개의 5단계 지역을 통해 크리스탈 코어를..." />
     <link rel="canonical" href="https://weightplay.com/ko/games/beast-tactician/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/beast-tactician/" />
@@ -35,6 +36,9 @@
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
+    <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
+    <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
+    <link rel="stylesheet" href="../../src/game-screen-shell.css?v=20260910-beast-rally-block-v14" />
     <link rel="stylesheet" href="defense.css?v=20260910-beast-rally-block-v14" />
     <script type="application/ld+json">
 {
@@ -42,7 +46,7 @@
   "@type": "VideoGame",
   "name": "Beast Guardian",
   "url": "https://weightplay.com/ko/games/beast-tactician/",
-  "image": "https://weightplay.com/assets/beast-tactician-cover.webp",
+  "image": "https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp",
   "description": "Beast Guardian은 고정 타워 패드가 아닌 경로 건설을 중심으로 구축된 30단계 영웅 타워 방어 캠페인입니다. 일반 동물병사 역할 4개와 WeightPlay 영웅 7명을 숲 그리드에 배치하고, 최소 하나의 경로를 열어두고, 6개의 5단계 지역을 통해 크리스탈 코어를...",
   "publisher": {
     "@type": "Organization",
@@ -70,11 +74,10 @@
     <meta name="twitter:description" content="Beast Guardian은 고정 타워 패드가 아닌 경로 건설을 중심으로 구축된 30단계 영웅 타워 방어 캠페인입니다. 일반 동물병사 역할 4개와 WeightPlay 영웅 7명을 숲 그리드에 배치하고, 최소 하나의 경로를 열어두고, 6개의 5단계 지역을 통해 크리스탈 코어를..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
   </head>
-  <body data-game-id="beast-tactician" data-wp-combined-sound="true">
-    <main class="guardian-app" data-runtime-localize="off">
-      <header class="guardian-topbar">
+  <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-screen="main" data-wp-combined-sound="true">
+    <main class="guardian-app" data-wp-game-shell-root data-runtime-localize="off">
+      <header class="guardian-topbar" data-wp-shell-header="main">
         <a class="back-btn" data-wp-return="main" href="/" aria-label="WeightPlay 일반 게임으로 돌아가기"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
-        <button id="stageBackBtn" class="stage-return secondary-btn is-hidden" data-wp-return="stage" type="button" aria-label="메인으로 돌아가기" hidden>&larr;</button>
         <div class="brand-lockup">
           <h1 id="gameTitle">Beast Guardian</h1>
         </div>
@@ -118,9 +121,9 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="menu-panel">
+      <section id="menuPanel" class="menu-panel" data-screen="main" data-wp-shell-slot="main">
         <div class="poster-frame">
-          <img class="cover" src="../../assets/beast-tactician-cover.webp" alt="Beast Guardian 게임 이미지" />
+          <img class="cover" src="../../assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="Beast Guardian 게임 이미지" />
         </div>
         <div class="menu-copy">
           <p id="releaseBadge" class="release-badge">지금 플레이 가능</p>
@@ -134,11 +137,18 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="stage-panel is-hidden">
-        <div class="stage-workspace">
+      <section id="stagePanel" class="stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-standard-stage-screen data-wp-stage-workspace data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334">
+        <header class="stage-header" data-wp-shell-header="stage">
+          <button id="stageBackBtn" class="secondary-btn play-return" data-wp-return="stage" type="button" aria-label="메인으로 돌아가기" hidden>&larr;</button>
+          <div class="stage-header-copy">
+            <strong id="stageTitle">스테이지</strong>
+            <span id="stageProgressText">1 / 30</span>
+          </div>
+        </header>
+        <div class="stage-workspace" data-wp-stage-workspace>
           <section id="stagePage" class="stage-page" aria-labelledby="stageTabBtn">
             <div class="stage-progress"><span id="bestStageLabel">최고 스테이지</span><strong id="bestStageText">1 / 30</strong></div>
-            <div id="stageRail" class="stage-rail" aria-label="스테이지 선택"></div>
+            <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-easing="smoothstep" aria-label="스테이지 선택"></div>
           </section>
           <section id="techPanel" class="stage-page equipment-page is-hidden" aria-labelledby="equipmentTabBtn" aria-live="polite">
             <div class="equipment-summary">
@@ -156,8 +166,8 @@
         </nav>
       </section>
 
-      <section id="gamePanel" class="game-panel play-area is-hidden" data-play-viewport>
-        <div class="hud-row">
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-play-viewport>
+        <div class="hud-row" data-wp-shell-header="battle">
           <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="스테이지로 돌아가기">&larr;</button>
           <div><span id="stageHudLabel">스테이지</span><strong id="stageHudText">1</strong></div>
           <div><span id="coreHudLabel">코어</span><strong id="coreText">100</strong></div>
@@ -185,18 +195,19 @@
             <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
           </aside>
           <div class="canvas-shell">
-            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S Escape" aria-label="비스트 가디언 타워 디펜스 보드"></canvas>
+            <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape" aria-label="비스트 가디언 타워 디펜스 보드"></canvas>
             <div id="toast" class="toast is-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
         <div class="command-row">
           <button id="waveBtn" class="primary-btn" type="button">웨이브 시작</button>
           <button id="upgradeBtn" class="secondary-btn" type="button">업그레이드</button>
+          <button id="rallyBtn" class="secondary-btn" type="button" aria-label="Rally selected defender">집결 · 1</button>
           <button id="sellBtn" class="secondary-btn" type="button">판매</button>
         </div>
         <section id="resultPanel" class="modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="resultTitle" aria-describedby="resultText" aria-live="polite">
           <div class="modal-card result-card">
-            <img src="../../assets/weightplay-character-boom-mane-lion-cutout.webp" alt="Boom Mane Leo" />
+            <img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="Boom Mane Leo" />
             <div>
               <h2 id="resultTitle">Victory</h2>
               <p id="resultText"></p>
@@ -226,10 +237,13 @@
     <script src="/src/site-config.js?v=20260721-locale13-1"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
+    <script src="../../src/game-screen-shell.js?v=20260910-beast-rally-block-v14"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260910-beast-rally-block-v14"></script>
     <section class="game-page-info game-page-info-static" aria-label="Beast Guardian 게임 정보">
 
@@ -253,7 +267,7 @@
       <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>룬 전술</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-prism-battalion/"><img src="/assets/lobby-posters/animal-prism-battalion-square-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>프리즘 대대</strong><span>세 차선 사이에서 자동 프리즘 포대를 전환하고, 몰려오는 편대를 파괴하며, 희귀 공격 코어를 모아 살아남은 괴물이 크리스털 코어에 닿지 않게 하세요.</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260825-beast-arabic-guide-v13"></script>
+<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
