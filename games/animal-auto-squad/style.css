@@ -407,6 +407,228 @@ body:not(.squad-stage-select):not(.squad-active) .sound-toggle {
   .menu-panel .cover { width: 420px; height: 420px; }
 }
 
+/* v34 combat pass: the battlefield owns the space, while controls stay
+   compact and readable on both phone portrait and short desktop windows. */
+:root {
+  --squad-voxel-blue: #7de7ff;
+  --squad-voxel-purple: #9e8bff;
+  --squad-voxel-ink: #071326;
+}
+
+body.squad-active .game-panel {
+  grid-template-rows: 58px minmax(0, 1fr) !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 6px;
+  padding: 7px;
+  background: linear-gradient(160deg, #10264a, #081024 58%, #170e34);
+}
+
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row {
+  grid-column: 1;
+  grid-row: 1;
+  grid-template-columns: 42px repeat(4, minmax(0, 1fr)) minmax(76px, 1.35fr);
+  gap: 4px;
+  height: 58px;
+  padding: 3px;
+  border: 2px solid rgba(125, 231, 255, .4);
+  border-radius: 8px;
+  background: rgba(5, 14, 33, .9);
+  box-shadow: 0 4px 0 rgba(3, 7, 18, .78), inset 0 0 18px rgba(97, 104, 255, .12);
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row > div { min-width: 0; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row span,
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row span { color: #aac9e8; font-size: .52rem; line-height: 1.2; padding-block: 1px; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row strong { color: #f6fbff; font-size: .68rem; line-height: 1.1; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row #goldText { color: #ffe477; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row #heartText { color: #ff8a9d; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row .relic-badge { color: #c7d5ff !important; background: rgba(158, 139, 255, .22); font-size: .48rem; letter-spacing: -.035em; }
+
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary {
+  position: absolute;
+  z-index: 3;
+  top: 61px;
+  left: 10px;
+  right: 10px;
+  width: auto;
+  height: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 3px 8px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 231, 255, .4);
+  border-radius: 7px;
+  background: rgba(5, 14, 33, .86);
+  box-shadow: 0 3px 0 rgba(3, 7, 18, .72);
+  pointer-events: none;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong,
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  padding-block: 1px;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong { color: #f6fbff; font-size: .63rem; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span { color: #b9d8ef; font-size: .55rem; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary .combat-tactic-readout { color: #d8c8ff; font-weight: 950; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary .combat-combo { color: #ffe477; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary .combat-synergy { color: #80f5d9; }
+
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-area {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+  border: 1px solid rgba(125, 231, 255, .46);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #132d58, #120c2d);
+  box-shadow: 0 6px 0 rgba(3, 7, 18, .8), inset 0 0 24px rgba(125, 231, 255, .1);
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) #gameCanvas { width: 100%; height: 100%; image-rendering: auto; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-status {
+  top: 9px;
+  width: min(76%, 280px);
+  max-height: 24px;
+  padding: 4px 8px;
+  border: 1px solid rgba(255, 228, 119, .62);
+  border-radius: 6px;
+  color: #fff4bd;
+  background: rgba(8, 16, 38, .9);
+  font-size: .62rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-status-a11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control {
+  bottom: 8px;
+  width: min(94%, 420px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid rgba(125, 231, 255, .44);
+  border-radius: 7px;
+  background: rgba(5, 14, 33, .9);
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button {
+  min-width: 0;
+  min-height: 34px;
+  padding: 5px 7px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 231, 255, .36);
+  border-radius: 5px;
+  color: #eaf7ff;
+  background: rgba(20, 39, 75, .92);
+  font-size: .61rem;
+  font-weight: 950;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button[aria-pressed="true"] {
+  border-color: #ffe477;
+  color: #2d1a04;
+  background: linear-gradient(180deg, #ffe477, #e8a93c);
+}
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control .combat-tactic-btn[data-tactic="focus"] { border-color: #ff9ec2; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control .combat-tactic-btn[data-tactic="guard"] { border-color: #8ff7ff; }
+#gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-hint {
+  grid-column: 1 / -1;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #91b1d3;
+  font-size: .48rem;
+  line-height: 1;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#gamePanel.is-result #resultPanel {
+  inset: 7px;
+  grid-template-columns: minmax(130px, 34%) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 9px;
+  padding: 9px;
+  overflow: hidden;
+  border: 2px solid rgba(125, 231, 255, .46);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #132d58, #120c2d);
+}
+#gamePanel.is-result .result-lion { width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: 6px; }
+#gamePanel.is-result .result-copy { min-width: 0; gap: 6px; overflow-y: auto; }
+#gamePanel.is-result .result-heading { font-size: 1rem; line-height: 1.1; }
+#gamePanel.is-result .result-decision,
+#gamePanel.is-result .result-desc,
+#gamePanel.is-result .skill-report,
+#gamePanel.is-result .result-progress { font-size: .65rem; line-height: 1.25; }
+#gamePanel.is-result .result-decision { padding: 7px 8px; }
+#gamePanel.is-result .result-actions { gap: 5px; margin-top: auto; }
+#gamePanel.is-result .result-actions button { min-height: 52px; padding: 5px; font-size: .75rem; line-height: 1.1; }
+#gamePanel.is-result .result-decision,
+#gamePanel.is-result .result-desc,
+#gamePanel.is-result .skill-report,
+#gamePanel.is-result .result-progress { font-size: .72rem; }
+
+@media (max-width: 560px) {
+  body.squad-active .game-panel { padding: 5px; gap: 5px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row { grid-template-columns: 36px repeat(4, minmax(0, 1fr)) minmax(58px, 1.2fr); height: 58px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row span { font-size: .46rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row strong { font-size: .6rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary { top: 56px; left: 7px; right: 7px; height: 44px; min-height: 44px; gap: 4px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong { font-size: .55rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span { font-size: .47rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-status { width: min(78%, 230px); font-size: .55rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control { width: min(92%, 300px); }
+  #gamePanel.is-result #resultPanel { grid-template-columns: 112px minmax(0, 1fr); gap: 6px; padding: 6px; }
+  #gamePanel.is-result .result-heading { font-size: .82rem; }
+  #gamePanel.is-result .result-decision,
+  #gamePanel.is-result .result-desc,
+  #gamePanel.is-result .skill-report,
+  #gamePanel.is-result .result-progress { font-size: .72rem; }
+  #gamePanel.is-result .result-actions button { min-height: 52px; font-size: .75rem; }
+}
+
+@media (max-height: 470px) and (orientation: landscape) {
+  body.squad-active .game-panel:has(#combatArea:not(.is-hidden)) {
+    grid-template-columns: minmax(250px, 34%) minmax(0, 1fr) !important;
+    grid-template-rows: 120px minmax(0, 1fr) !important;
+    padding: 5px;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row { grid-column: 1 / -1; grid-row: 1; height: 120px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary { position: static; grid-column: 1; grid-row: 2; width: auto; height: auto; min-height: 0; align-content: start; padding: 12px 10px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-area { grid-column: 2; grid-row: 2; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control { bottom: 4px; width: min(70%, 380px); padding: 3px; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button { min-height: 28px; font-size: .55rem; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-hint { display: none; }
+  #gamePanel.is-result #resultPanel { inset: 4px; padding: 5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button { transition: none; }
+}
+
 /* v33 block-adventure art direction: keep the Interface 6 geometry while
    moving every player-facing surface onto the same bright voxel material set. */
 :root {
@@ -850,6 +1072,29 @@ body.squad-active button.battle-external-return {
 .synergy-badge.is-ready { border-color: rgba(255, 224, 110, .72); background: linear-gradient(90deg, rgba(93, 67, 10, .78), rgba(5, 53, 66, .82)); box-shadow: inset 0 0 14px rgba(255, 218, 91, .1); }
 .combat-summary .combat-combo { color: #ffe477; font-weight: 950; text-shadow: 0 2px 0 #3b2605; }
 .combat-summary .combat-synergy { color: #80f5d9; font-weight: 900; }
+
+/* Keep every combat readout visible in short landscape layouts. The summary
+   has enough vertical room there, so stack the compact tokens instead of
+   squeezing them into one ellipsized line. */
+@media (max-height: 470px) and (orientation: landscape) {
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary {
+    display: grid !important;
+    align-content: center;
+    justify-items: start;
+    gap: 5px;
+    padding: 10px !important;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong,
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span {
+    max-width: 100%;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+    line-height: 1.2;
+  }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary strong { font-size: .62rem !important; }
+  #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary span { font-size: .55rem !important; }
+}
 
 @media (min-width: 700px) and (max-height: 560px) {
   /* Keep the Main poster at the shared 420px wide-layout contract even when

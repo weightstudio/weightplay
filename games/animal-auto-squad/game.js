@@ -11,7 +11,7 @@
   document.getElementById("gamePanel").prepend(battleHeader);
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v33";
+  const GAME_VERSION = "v34";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -103,6 +103,7 @@
       nextWaveCombat: "Wave {round}/{total}: new enemies incoming!",
       bossIncoming: "BOSS: {boss}",
       combatSummary: "Squad HP {playerHp}/{playerMax} | Enemy HP {enemyHp}/{enemyMax}",
+      combatCompact: "Squad HP {playerHp}/{playerMax} · Enemy HP {enemyHp}/{enemyMax}",
       combatFront: "Front: {player} vs {enemy}",
       foodGuideTitle: "Food effects",
       guideHint: "Tap an owned animal, then tap a squad slot. Scroll the backpack vertically to browse every character.",
@@ -156,6 +157,7 @@
       actionCritical: "CRITICAL",
       actionCombo: "LINKED HIT",
       blockBreak: "BLOCK BREAK",
+      breakShort: "BREAK",
       tacticBalanced: "Balanced",
       tacticFocus: "Focus fire",
       tacticGuard: "Guard line",
@@ -1523,8 +1525,8 @@
   // damage and Otter healing for both new and existing saves.
   const STARTER_ANIMAL_IDS = [0, 1, 3];
   const PREMIUM_ANIMAL_IDS = [8, 9];
-  const COMBAT_HEALTH_BAR_HEIGHT = 24;
-  const COMBAT_HEALTH_FONT_SIZE = 17;
+  const COMBAT_HEALTH_BAR_HEIGHT = 28;
+  const COMBAT_HEALTH_FONT_SIZE = 20;
   const COMBAT_SWIFT_PACE_MULTIPLIER = 1.55;
   const COMBAT_STEP_INTERVAL_FRAMES = 42;
   const COMBAT_HIT_STOP_FRAMES = 5;
@@ -1568,6 +1570,7 @@
   const combatStepTimers = new Set();
   let combatProgressTimer = null;
   let combatLastProgressAt = 0;
+  let combatSummarySignature = "";
   let stallDecisionOpen = false;
   let combatSuspendedForBackground = false;
   let windowFocused = true;
@@ -1589,6 +1592,7 @@
 
   const zhRuntimeText = {
     combatSummary: "小隊生命 {playerHp}/{playerMax}｜敵方生命 {enemyHp}/{enemyMax}",
+    combatCompact: "我方 {playerHp}/{playerMax} · 敵方 {enemyHp}/{enemyMax}",
     combatFront: "前排：{player} 對 {enemy}",
     foodGuideTitle: "食物效果"
   };
@@ -1640,6 +1644,7 @@
     actionCritical: "暴擊",
     actionCombo: "連攜命中",
     blockBreak: "方塊破裂",
+    breakShort: "破防",
     tacticBalanced: "平衡",
     tacticFocus: "集火",
     tacticGuard: "防守",
@@ -2284,6 +2289,10 @@
         enemyCount: state.combat.enemySquad.length,
         playerHp: state.combat.playerSquad.reduce((total, unit) => total + Math.max(0, unit.hp || 0), 0),
         timer: state.combat.timer,
+        tactic: state.combat.tactic,
+        lastActionShort: state.combat.lastActionShort,
+        effectCount: state.combat.effects.length,
+        hitStopFrames: state.combat.hitStopFrames,
         animating: state.combat.animating,
         ending: state.combat.ending,
         resolved: state.combat.resolved,
@@ -2398,6 +2407,7 @@
         activeActor: null,
         activeActors: [],
         lastAction: "",
+        lastActionShort: "",
         waveInsight: "",
         synergy: squadSynergy([]),
         combo: 0,
@@ -3865,6 +3875,7 @@
     nodes.relicText.previousElementSibling.textContent = t("activeRelic");
     if (!state.relic) nodes.relicText.textContent = t("none");
     renderCombatPaceControl();
+    renderCombatTactic();
 
     // Prep labels
     document.querySelector(".squad-section h3").textContent = t("yourSquadLabel");
@@ -4768,8 +4779,8 @@
 
   function combatLayoutMetrics(team = "player") {
     return team === "player"
-      ? { width: 174, height: 214 }
-      : { width: 160, height: 198 };
+      ? { width: 168, height: 206 }
+      : { width: 154, height: 190 };
   }
 
   function syncCombatCanvasSize() {
@@ -4796,6 +4807,12 @@
   function addCombatEffect(type, x, y, text = "", textColor = "white") {
     const maxLife = type === "starfall" ? 28 : type === "combo" ? 34 : type === "block-break" ? 28 : type === "buff" ? 24 : 18;
     state.combat.effects.push({ type, x, y, life: maxLife, maxLife, text, textColor });
+    if (state.combat.effects.length > COMBAT_EFFECT_LIMIT) {
+      state.combat.effects.splice(0, state.combat.effects.length - COMBAT_EFFECT_LIMIT);
+    }
+    if (type === "hit" || type === "combo" || type === "block-break" || type === "shield") {
+      state.combat.impactPulse = Math.max(Number(state.combat.impactPulse) || 0, type === "combo" ? 14 : 7);
+    }
   }
 
   function markActing(team, index, style = "attack") {
@@ -4869,6 +4886,31 @@
     return formationTargets(squad, mode)[0] || null;
   }
 
+  const COMBAT_TACTIC_ORDER = ["balanced", "focus", "guard"];
+
+  function tacticTextKey(tactic = state.combat?.tactic) {
+    if (tactic === "focus") return "tacticFocus";
+    if (tactic === "guard") return "tacticGuard";
+    return "tacticBalanced";
+  }
+
+  function tacticLabel(tactic = state.combat?.tactic) {
+    return t(tacticTextKey(tactic));
+  }
+
+  function combatTarget(squad, mode = "front", team = "player") {
+    const candidates = formationTargets(squad, mode);
+    if (!candidates.length) return null;
+    if (team !== "player" || state.combat?.tactic !== "focus") return candidates[0];
+    // Focus fire keeps the enemy formation rules, then finishes the weakest
+    // visible block so a linked attack feels like a deliberate choice.
+    return [...candidates].sort((a, b) => {
+      const ratioA = (Number(a.hp) || 0) / Math.max(1, Number(a.maxHp) || 1);
+      const ratioB = (Number(b.hp) || 0) / Math.max(1, Number(b.maxHp) || 1);
+      return ratioA - ratioB || (Number(a.hp) || 0) - (Number(b.hp) || 0);
+    })[0];
+  }
+
   function formationTargetPoint(team, squad, unit) {
     return combatPoint(team, Math.max(0, squad.indexOf(unit)));
   }
@@ -4895,17 +4937,25 @@
   function damageTarget(unit, amount, x, y) {
     if (!unit || amount <= 0) return;
     let damage = Math.max(0, Math.round(amount));
+    const isPlayerTarget = (state.combat.playerSquad || []).includes(unit);
+    if (isPlayerTarget && state.combat.tactic === "guard") {
+      // Guard line is a readable, low-input defensive choice. Keep one-point
+      // hits meaningful while shaving larger incoming attacks slightly.
+      damage = Math.max(1, Math.round(damage * 0.88));
+    }
     const shieldHp = Math.max(0, Math.round(unit.shieldHp || 0));
     if (shieldHp > 0) {
       const absorbed = Math.min(shieldHp, damage);
       unit.shieldHp = shieldHp - absorbed;
       unit.shield = unit.shieldHp > 0;
       damage -= absorbed;
-      addCombatEffect("shield", x, y, `-${absorbed}`, "#8fb7ff");
+      state.combat.lastActionShort = t("blockedShort");
+      addCombatEffect("shield", x, y, damage > 0 ? "" : t("blockedShort"), "#8fb7ff");
     } else if (unit.shield) {
       unit.shield = false;
       damage = 0;
-      addCombatEffect("shield", x, y, "Block", "#8fb7ff");
+      state.combat.lastActionShort = t("blockedShort");
+      addCombatEffect("shield", x, y, t("blockedShort"), "#8fb7ff");
     }
     if (damage > 0) {
       unit.hp -= damage;
@@ -4913,11 +4963,17 @@
       state.combat.comboBest = Math.max(state.combat.comboBest || 0, state.combat.combo);
       state.combat.comboTimer = 150;
       const linked = state.combat.combo > 1 && state.combat.combo % 4 === 0;
-      addCombatEffect(linked ? "combo" : "hit", x, y, linked ? `${t("actionCritical")} · -${damage}` : `-${damage}`, linked ? "#ffe477" : "yellow");
+      state.combat.lastActionShort = linked ? t("actionCritical") : t("hitShort");
+      state.combat.hitStopFrames = Math.max(Number(state.combat.hitStopFrames) || 0, linked ? COMBAT_HIT_STOP_FRAMES + 2 : COMBAT_HIT_STOP_FRAMES);
+      addCombatEffect(linked ? "combo" : "hit", x, y, linked ? t("actionCritical") : "", linked ? "#ffe477" : "#fff6a6");
       if (linked) {
         state.combat.shakeFrames = Math.max(state.combat.shakeFrames, 14);
         state.combat.shakeTarget = state.combat.enemySquad.includes(unit) ? "enemy" : "player";
-        addCombatEffect("block-break", x, y, t("blockBreak"), "#ffe477");
+        addCombatEffect("block-break", x, y, t("breakShort"), "#ffe477");
+      }
+      if (unit.hp <= 0) {
+        state.combat.lastActionShort = t("koShort");
+        addCombatEffect("ko", x, y, t("koShort"), "#ffffff");
       }
     }
   }
@@ -5027,10 +5083,13 @@
     state.combat.runId = runId;
     state.combat.timer = 0;
     resetCombatPace();
+    state.combat.tactic = "balanced";
+    state.combat.hitStopFrames = 0;
     combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
+    state.combat.lastActionShort = "";
     state.combat.waveInsight = "";
     state.combat.combo = 0;
     state.combat.comboBest = 0;
@@ -5042,6 +5101,9 @@
     state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
     state.combat.stallEnded = false;
     state.combat.effects = [];
+    state.combat.impactPulse = 0;
+    combatSummarySignature = "";
+    renderCombatTactic();
     
     canvasCtx = nodes.gameCanvas.getContext("2d");
     combatLog(openingBoss ? `${t("bossWarning")} · ${t("bossIncoming", { boss: combatUnitName(openingBoss) })}` : t("combatIntro"));
@@ -5113,7 +5175,33 @@
 
   function combatLog(message) {
     state.combat.status = message;
-    nodes.combatStatusText.textContent = message;
+    const raw = String(message || "");
+    const bossToken = t("bossWarning");
+    const isBossMessage = raw.includes(bossToken);
+    const semanticMessages = [
+      t("combatIntro"),
+      t("winText"),
+      t("failText"),
+      t("drawText"),
+      t("paceSwiftNotice"),
+      t("paceStandardNotice")
+    ];
+    const isSemanticMessage = semanticMessages.some((entry) => entry && raw === entry)
+      || raw.startsWith(t("nextWaveCombat", { round: state.round, total: WAVES_PER_STAGE }).split(":")[0]);
+    const visible = isBossMessage || isSemanticMessage ? (isBossMessage ? bossToken : raw) : state.combat.lastActionShort || raw;
+    nodes.combatStatusText.replaceChildren();
+    const visibleNode = document.createElement("span");
+    visibleNode.textContent = visible;
+    nodes.combatStatusText.append(visibleNode);
+    if (isBossMessage) {
+      const fullNode = document.createElement("span");
+      fullNode.className = "combat-status-a11y";
+      fullNode.textContent = raw;
+      nodes.combatStatusText.append(fullNode);
+      nodes.combatStatusText.setAttribute("aria-label", raw);
+    } else {
+      nodes.combatStatusText.removeAttribute("aria-label");
+    }
   }
 
   function renderCombatPaceControl() {
@@ -5124,6 +5212,15 @@
     nodes.combatPaceBtn.setAttribute("aria-pressed", String(swift));
     nodes.combatPaceBtn.setAttribute("aria-label", t(swift ? "paceSwiftAria" : "paceStandardAria"));
     nodes.combatPaceHint.textContent = t("paceHint");
+  }
+
+  function renderCombatTactic() {
+    if (!nodes.combatTacticBtn) return;
+    const tactic = state.combat.tactic || "balanced";
+    nodes.combatTacticBtn.textContent = tacticLabel(tactic);
+    nodes.combatTacticBtn.setAttribute("aria-label", t("tacticAria"));
+    nodes.combatTacticBtn.setAttribute("aria-pressed", String(tactic !== "balanced"));
+    nodes.combatTacticBtn.dataset.tactic = tactic;
   }
 
   function resetCombatPace() {
@@ -5137,6 +5234,18 @@
     state.combat.pace = state.combat.pace === "swift" ? "standard" : "swift";
     renderCombatPaceControl();
     combatLog(t(state.combat.pace === "swift" ? "paceSwiftNotice" : "paceStandardNotice"));
+    updateCombatSummary();
+    playSynth("click");
+  }
+
+  function toggleCombatTactic() {
+    if (!state.combat.animating || state.combat.ending || state.combat.resolved) return;
+    initAudio();
+    const currentIndex = COMBAT_TACTIC_ORDER.indexOf(state.combat.tactic || "balanced");
+    state.combat.tactic = COMBAT_TACTIC_ORDER[(currentIndex + 1) % COMBAT_TACTIC_ORDER.length];
+    state.combat.lastActionShort = tacticLabel();
+    renderCombatTactic();
+    combatLog(t("tacticNotice", { tactic: tacticLabel() }));
     updateCombatSummary();
     playSynth("click");
   }
@@ -5233,10 +5342,14 @@
     }
     const elapsed = Math.min(1000, Math.max(0, now - combatLastProgressAt));
     combatLastProgressAt = now;
+    if (state.combat.hitStopFrames > 0) {
+      state.combat.hitStopFrames = Math.max(0, state.combat.hitStopFrames - 1);
+      return;
+    }
     const paceMultiplier = state.combat.pace === "swift" ? COMBAT_SWIFT_PACE_MULTIPLIER : 1;
     state.combat.timer += (elapsed * paceMultiplier) / (1000 / 60);
-    if (state.combat.timer >= 90) {
-      state.combat.timer %= 90;
+    if (state.combat.timer >= COMBAT_STEP_INTERVAL_FRAMES) {
+      state.combat.timer %= COMBAT_STEP_INTERVAL_FRAMES;
       resolveCombatStep();
     }
   }
@@ -5265,6 +5378,7 @@
       state.combat.comboTimer -= 1;
       if (state.combat.comboTimer <= 0) state.combat.combo = 0;
     }
+    if (state.combat.impactPulse > 0) state.combat.impactPulse -= 1;
 
     // Clear Canvas
     canvasCtx.clearRect(0, 0, canvasWidth, 1280);
@@ -5297,6 +5411,34 @@
       canvasCtx.fillRect(0, 0, canvasWidth, 1280);
     }
 
+    // A readable voxel grid keeps the arena lively even when the background
+    // art is dark, while the pulse makes connected hits land with weight.
+    canvasCtx.save();
+    canvasCtx.globalAlpha = 0.2;
+    canvasCtx.strokeStyle = "#84dfff";
+    canvasCtx.lineWidth = 2;
+    const tile = 48;
+    for (let x = 0; x <= canvasWidth; x += tile) {
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(x, 112);
+      canvasCtx.lineTo(x, 1170);
+      canvasCtx.stroke();
+    }
+    for (let y = 112; y <= 1170; y += tile) {
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(0, y);
+      canvasCtx.lineTo(canvasWidth, y);
+      canvasCtx.stroke();
+    }
+    canvasCtx.restore();
+    if (state.combat.impactPulse > 0) {
+      canvasCtx.save();
+      canvasCtx.globalAlpha = Math.min(0.16, state.combat.impactPulse / 70);
+      canvasCtx.fillStyle = state.combat.impactPulse > 8 ? "#ffe477" : "#8ff7ff";
+      canvasCtx.fillRect(0, 112, canvasWidth, 1058);
+      canvasCtx.restore();
+    }
+
     if (state.combat.bossWarningUntil > performance.now()) {
       const remaining = Math.max(0, Math.min(1, (state.combat.bossWarningUntil - performance.now()) / 1600));
       canvasCtx.save();
@@ -5318,17 +5460,26 @@
 
     canvasCtx.save();
     canvasCtx.textAlign = "center";
-    canvasCtx.font = "900 24px Outfit, system-ui";
-    canvasCtx.fillStyle = "rgba(255,255,255,.92)";
-    canvasCtx.strokeStyle = "rgba(0,0,0,.75)";
-    canvasCtx.lineWidth = 5;
-    const playerLabel = localizedPhrase("YOUR SQUAD", "\u4f60\u7684\u5c0f\u968a", "TU ESCUADRÓN");
-    canvasCtx.strokeText(playerLabel, canvasWidth / 2, 1210);
-    canvasCtx.fillText(playerLabel, canvasWidth / 2, 1210);
-    canvasCtx.font = "900 28px Outfit, system-ui";
+    canvasCtx.font = "900 22px Outfit, system-ui";
     canvasCtx.fillStyle = "#ffe477";
-    canvasCtx.strokeText("VS", canvasWidth / 2, 640);
-    canvasCtx.fillText("VS", canvasWidth / 2, 640);
+    canvasCtx.strokeStyle = "rgba(2, 12, 23, .92)";
+    canvasCtx.lineWidth = 5;
+    canvasCtx.beginPath();
+    canvasCtx.rect(canvasWidth / 2 - 34, 625, 68, 34);
+    canvasCtx.fillStyle = "rgba(8, 31, 50, .96)";
+    canvasCtx.fill();
+    canvasCtx.stroke();
+    canvasCtx.fillStyle = "#ffe477";
+    canvasCtx.strokeText("VS", canvasWidth / 2, 648);
+    canvasCtx.fillText("VS", canvasWidth / 2, 648);
+    canvasCtx.strokeStyle = "rgba(255, 228, 119, .56)";
+    canvasCtx.lineWidth = 3;
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(36, 642);
+    canvasCtx.lineTo(canvasWidth / 2 - 46, 642);
+    canvasCtx.moveTo(canvasWidth / 2 + 46, 642);
+    canvasCtx.lineTo(canvasWidth - 36, 642);
+    canvasCtx.stroke();
     canvasCtx.restore();
 
     updateCombatSummary();
@@ -5384,7 +5535,7 @@
       // Draw card frame
       canvasCtx.save();
       canvasCtx.shadowColor = "black";
-      canvasCtx.shadowBlur = 10;
+      canvasCtx.shadowBlur = 7;
       
       // Apply shake frame offsets if shaking
       let shakeX = 0;
@@ -5406,17 +5557,17 @@
       const y = centerY - (h * scale) / 2;
       const drawW = w * scale;
       const drawH = h * scale;
-      const imageBox = { x: x + 10, y: y + 44, w: w - 20, h: h - 78 };
+      const imageBox = { x: x + 6, y: y + 38, w: w - 12, h: h - 66 };
       state.combat.layout?.push({ team, index: idx, formationSlot: formation.slot, formationRow: formation.row, enemyId: isPlayer ? null : unit.id, imageKey: unit.imageKey || "", isBoss: Boolean(unit.isBoss), x, y, w: drawW, h: drawH, imageBox });
 
       // Draw backdrop
-      canvasCtx.fillStyle = isPlayer ? "rgba(10, 30, 24, 0.9)" : unit.isBoss ? "rgba(45, 25, 8, 0.96)" : "rgba(35, 12, 12, 0.9)";
-      canvasCtx.strokeStyle = isPlayer ? "var(--mint)" : unit.isBoss ? "#ffd666" : "var(--danger)";
+      canvasCtx.fillStyle = isPlayer ? "rgba(10, 38, 51, 0.94)" : unit.isBoss ? "rgba(62, 34, 10, 0.96)" : "rgba(44, 17, 38, 0.94)";
+      canvasCtx.strokeStyle = isPlayer ? "#7cf6d3" : unit.isBoss ? "#ffd666" : "#ff7180";
       canvasCtx.lineWidth = unit.isBoss ? 4 : 2;
-      
-      // Draw rounded rectangle
+
+      // Square card edges and corner pixels reinforce the voxel read.
       canvasCtx.beginPath();
-      canvasCtx.roundRect(x, y, drawW, drawH, 10);
+      canvasCtx.rect(x, y, drawW, drawH);
       canvasCtx.fill();
       canvasCtx.stroke();
       canvasCtx.fillStyle = isPlayer ? "rgba(117, 241, 210, .88)" : unit.isBoss ? "rgba(255, 224, 119, .92)" : "rgba(255, 113, 128, .86)";
@@ -5430,7 +5581,7 @@
         canvasCtx.lineWidth = 4;
         canvasCtx.globalAlpha = 0.82;
         canvasCtx.beginPath();
-        canvasCtx.roundRect(x - 3, y - 3, drawW + 6, drawH + 6, 12);
+        canvasCtx.rect(x - 3, y - 3, drawW + 6, drawH + 6);
         canvasCtx.stroke();
         canvasCtx.globalAlpha = 1;
       }
@@ -5469,12 +5620,9 @@
         canvasCtx.arc(x + drawW/2, y + drawH/2 - 10, drawW/2 - 2, 0, Math.PI * 2);
         canvasCtx.stroke();
         if (unit.shieldHp > 0) {
-          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 23, y + drawH - 52, "#9cc8ff");
+          drawStatPill(`S${Math.round(unit.shieldHp)}`, x + drawW / 2 - 23, y + drawH - 30, "#9cc8ff");
         }
       }
-
-      drawStatPill(`A${unit.atk}`, x + 5, y + drawH - 31, "#ffd666");
-      drawStatPill(`H${Math.max(0, Math.round(unit.hp))}`, x + drawW - 51, y + drawH - 31, "#ff7081");
 
       // Level star indicator for player units
       if (false && isPlayer && unit.level > 1) {
@@ -5530,27 +5678,25 @@
     const playerMax = sumMax(state.combat.playerSquad);
     const enemyHp = sumHp(state.combat.enemySquad);
     const enemyMax = sumMax(state.combat.enemySquad);
-    const playerFront = formationTarget(state.combat.playerSquad, "front");
-    const enemyFront = formationTarget(state.combat.enemySquad, "front");
-    const playerName = playerFront ? localizedField(playerFront, "name") : "-";
-    const enemyName = enemyFront ? localizedField(enemyFront, "name") : "-";
-    const enemyRole = enemyFront ? localizedField(enemyFront, "role") : "";
-    const summary = t("combatSummary", { playerHp, playerMax, enemyHp, enemyMax });
-    const front = t("combatFront", { player: playerName, enemy: enemyRole ? `${enemyName} - ${enemyRole}` : enemyName });
-    const insight = state.combat.lastAction || state.combat.waveInsight;
+    const summary = t("combatCompact", { playerHp, playerMax, enemyHp, enemyMax });
     const combo = state.combat.comboTimer > 0 && state.combat.combo > 1
       ? `<span class="combat-combo" data-combat-combo>${t("actionCombo")} ×${state.combat.combo}</span>`
       : "";
     const synergy = state.combat.synergy?.primary
       ? `<span class="combat-synergy" data-combat-synergy>${t("synergyTitle")}: ${synergyLabel(state.combat.synergy)}</span>`
       : "";
-    nodes.combatSummary.innerHTML = `<strong>${summary}</strong><span>${front}</span>${synergy}${combo}${insight ? `<span data-combat-insight>${insight}</span>` : ""}`;
+    const tactic = `<span class="combat-tactic-readout" data-combat-tactic>${tacticLabel()}</span>`;
+    const insight = state.combat.lastActionShort || state.combat.waveInsight || t("hitShort");
+    const signature = [playerHp, playerMax, enemyHp, enemyMax, state.combat.tactic, state.combat.combo, insight, Boolean(synergy)].join("|");
+    if (signature === combatSummarySignature) return;
+    combatSummarySignature = signature;
+    nodes.combatSummary.innerHTML = `<strong>${summary}</strong>${tactic}${synergy}${combo}<span data-combat-insight>${insight}</span>`;
   }
 
   function drawEffectSprite(fx, progress, radius) {
     const sheet = imageCache.fxV2;
     if (!sheet?.naturalWidth || !sheet?.naturalHeight) return;
-    const spriteIndex = { hit: 0, combo: 0, "block-break": 0, shield: 1, heal: 2, buff: 3, smoke: 4, starfall: 5 }[fx.type] ?? 0;
+    const spriteIndex = { hit: 0, combo: 0, ko: 0, "block-break": 0, shield: 1, heal: 2, buff: 3, smoke: 4, starfall: 5 }[fx.type] ?? 0;
     const columns = 3;
     const sourceWidth = sheet.naturalWidth / columns;
     const sourceHeight = sheet.naturalHeight / 2;
@@ -5577,14 +5723,17 @@
       
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
+        const maxX = Math.max(16, (nodes.gameCanvas.width || 720) - 16);
+        const textX = Math.max(16, Math.min(maxX, Number(fx.x) || 0));
+        const textY = Math.max(120, Math.min(1160, (Number(fx.y) || 0) - 20 - progress * 18));
         canvasCtx.globalAlpha = 1;
-        canvasCtx.font = fx.type === "combo" || fx.type === "block-break" ? "900 28px Outfit, system-ui" : "bold 20px Outfit, system-ui";
+        canvasCtx.font = fx.type === "combo" || fx.type === "block-break" || fx.type === "ko" ? "900 24px Outfit, system-ui" : "900 17px Outfit, system-ui";
         canvasCtx.fillStyle = fx.textColor || "white";
         canvasCtx.strokeStyle = "black";
-        canvasCtx.lineWidth = fx.type === "combo" || fx.type === "block-break" ? 5 : 3;
+        canvasCtx.lineWidth = fx.type === "combo" || fx.type === "block-break" || fx.type === "ko" ? 4 : 3;
         canvasCtx.textAlign = "center";
-        canvasCtx.strokeText(fx.text, fx.x, fx.y - 20 - progress * 18);
-        canvasCtx.fillText(fx.text, fx.x, fx.y - 20 - progress * 18);
+        canvasCtx.strokeText(String(fx.text).slice(0, 12), textX, textY);
+        canvasCtx.fillText(String(fx.text).slice(0, 12), textX, textY);
       }
 
       canvasCtx.restore();
@@ -5720,6 +5869,7 @@
     const slot = state.combat.step % 6;
     state.combat.step++;
     playSynth("hit");
+    state.combat.lastActionShort = "";
 
     const actions = [];
     const playerUnit = unitAtFormationSlot(playerSquad, slot);
@@ -5733,6 +5883,7 @@
     }
     const actionText = actions.filter(Boolean).join("  |  ") || `${localizedPhrase("Slot", "\u7b2c", "Espacio")} ${slot + 1}`;
     state.combat.lastAction = actionText;
+    state.combat.lastActionShort = state.combat.lastActionShort || t("hitShort");
     combatLog(actionText);
     const shouldOpenStallRecovery = noteCombatProgress(playerSquad, enemySquad);
 
@@ -5758,6 +5909,7 @@
     const ePoint = combatPoint("enemy", 0);
     if (!guardText) damageTarget(pUnit, enemyAttackDamage(eUnit), pPoint.x, pPoint.y);
     damageTarget(eUnit, pUnit.atk, ePoint.x, ePoint.y);
+    state.combat.lastActionShort = guardText ? t("blockedShort") : t("hitShort");
     combatLog(guardText || enemyAttackText(eUnit, `${combatUnitName(pUnit)} ${localizedPhrase("clashes with", "\u8207", "choca con")} ${combatUnitName(eUnit)}`));
   }
 
@@ -5931,7 +6083,7 @@
       return `${combatUnitName(unit)} ${localizedPhrase("rallies allies", "\u5f37\u5316\u968a\u53cb", "anima a los aliados")}`;
     }
 
-    const target = formationTarget(enemies, unit.targetMode || "front");
+    const target = combatTarget(enemies, unit.targetMode || "front", team);
     const point = formationTargetPoint(enemyTeam, enemies, target);
     if (unit.id === 0) {
       damageTarget(target, level, point.x, point.y);
@@ -6002,10 +6154,13 @@
     state.combat.runId = runId;
     state.combat.timer = 0;
     resetCombatPace();
+    state.combat.tactic = "balanced";
+    state.combat.hitStopFrames = 0;
     combatLastProgressAt = performance.now();
     state.combat.activeActor = null;
     state.combat.activeActors = [];
     state.combat.lastAction = "";
+    state.combat.lastActionShort = "";
     state.combat.combo = 0;
     state.combat.comboTimer = 0;
     state.combat.bossWarningUntil = 0;
@@ -6014,6 +6169,9 @@
     state.combat.progressSignature = combatProgressSignature(state.combat.playerSquad, state.combat.enemySquad);
     state.combat.stallEnded = false;
     state.combat.effects = [];
+    state.combat.impactPulse = 0;
+    combatSummarySignature = "";
+    renderCombatTactic();
     nodes.prepPhaseArea.classList.add("is-hidden");
     nodes.combatArea.classList.remove("is-hidden");
     nodes.combatSummary?.classList.remove("is-hidden");
@@ -6436,6 +6594,7 @@
     });
     nodes.startBattleBtn.addEventListener("click", startBattle);
     nodes.combatPaceBtn?.addEventListener("click", toggleCombatPace);
+    nodes.combatTacticBtn?.addEventListener("click", toggleCombatTactic);
     nodes.gamePanel.addEventListener("pointerdown", reclaimVisibleForeground, true);
     nodes.gamePanel.addEventListener("keydown", reclaimVisibleForeground, true);
     nodes.quitRunBtn.addEventListener("click", openQuitDecision);

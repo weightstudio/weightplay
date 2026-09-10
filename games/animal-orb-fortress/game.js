@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v26";
+  const GAME_VERSION = "v27";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -31,7 +31,6 @@
     stageWorkshopView: $("stageWorkshopView"),
     stageProgressText: $("stageProgressText"),
     mapBtn: $("battleBackBtn"),
-    pauseBtn: $("pauseBtn"),
     resumeBtn: $("resumeBtn"),
     pauseMapBtn: $("pauseMapBtn"),
     retryBtn: $("retryBtn"),
@@ -150,6 +149,7 @@
       arenaControlLimitLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. {active}/{limit} spirit orbs are flying, the active limit; Space or Enter cannot fire yet.",
       orbReady: "Orb ready. Bank shots into shadow beasts before they reach the core.",
       orbFlying: "Spirit orb is flying. Watch the bounce route and prepare the next aim.",
+      orbReturning: "The spirit orb is returning to the keeper. Read the next bounce angle.",
       fortressHit: "A shadow beast hit the core. Aim earlier or use wider angles.",
       waveClear: "Wave clear. Choose one blessing before the next wave.",
       chooseUpgrade: "Choose a fortress blessing",
@@ -188,8 +188,8 @@
       raidPlanLose: "Next raid: aim before the front line closes and use wall banks to strike more than one beast.",
       upgradeDamage: "Bigger Orb",
       upgradeDamageDesc: "+1 orb damage.",
-      upgradeSplit: "Split Orb",
-      upgradeSplitDesc: "Add a third echo orb to each release.",
+      upgradeSplit: "Focused Star Orb",
+      upgradeSplitDesc: "One brighter orb deals 25% more damage.",
       upgradePierce: "Piercing Shine",
       upgradePierceDesc: "The orb can hit the same beast again sooner.",
       upgradeRecharge: "Faster Recharge",
@@ -296,6 +296,7 @@
       arenaControlLimitLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。目前有 {active}/{limit} 顆星珠飛行中，已達飛行上限；空白鍵或 Enter 尚無法發射。",
       orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
+      orbReturning: "星珠正飛回守護獅子身邊。觀察下一次反彈角度。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
       waveClear: "波次完成。選擇一個祝福後進入下一波。",
       chooseUpgrade: "選擇一個要塞祝福",
@@ -334,8 +335,8 @@
       raidPlanLose: "下次突襲：在前線逼近前先瞄準，利用牆面反彈一次擊中多隻影獸。",
       upgradeDamage: "巨大星珠",
       upgradeDamageDesc: "星珠傷害 +1。",
-      upgradeSplit: "分裂星珠",
-      upgradeSplitDesc: "發射後額外射出一顆較弱星珠。",
+      upgradeSplit: "凝聚星珠",
+      upgradeSplitDesc: "維持單一軌跡，星珠傷害提高 25%。",
       upgradePierce: "穿透星芒",
       upgradePierceDesc: "星珠可以更快再次命中同一隻影獸。",
       upgradeRecharge: "快速充能",
@@ -425,6 +426,9 @@
     aimHint: "从发射器拖曳瞄准，预览反弹路线后放开。",
     keyboardAim: "瞄准偏移 {angle}°。左右方向键调整，按空格键或 Enter 发射。",
     orbFlying: "星珠正在飞行。观察反弹路线，准备下一次瞄准。",
+    orbReturning: "星珠正飞回守护狮子身边。观察下一次反弹角度。",
+    upgradeSplit: "凝聚星珠",
+    upgradeSplitDesc: "保持单一轨迹，星珠伤害提高 25%。",
     fortressHit: "影兽撞到核心了。更早瞄准，或改用更宽的反弹角度。",
     waveClear: "波次完成。选择一个祝福后进入下一波。",
     arenaControlLabel: "动物星珠要塞竞技场。瞄准偏移 {angle} 度。使用左右方向键调整，按空格键或 Enter 发射。",
@@ -617,6 +621,24 @@
     raidPlanLose: "الغارة التالية: صوب قبل انغلاق خط المواجهة واستخدم الجدران لإصابة عدة وحوش.",
   });
 
+  // Keep every locale aligned with the one-orb combat rule. Several older
+  // full dictionaries still described an echo projectile, so these focused
+  // overrides replace that retired upgrade copy without changing locale
+  // fallback behavior elsewhere.
+  const focusedOrbCopy = {
+    es: { upgradeSplit: "Orbe concentrado", upgradeSplitDesc: "Un solo orbe brillante inflige un 25% más de daño.", orbReturning: "El orbe estelar regresa al guardián." },
+    fr: { upgradeSplit: "Orbe concentré", upgradeSplitDesc: "Un seul orbe lumineux inflige 25 % de dégâts supplémentaires.", orbReturning: "L'orbe étoile revient au gardien." },
+    de: { upgradeSplit: "Fokuskugel", upgradeSplitDesc: "Eine helle Kugel verursacht 25 % mehr Schaden.", orbReturning: "Die Sternkugel kehrt zum Hüter zurück." },
+    it: { upgradeSplit: "Sfera concentrata", upgradeSplitDesc: "Una sola sfera luminosa infligge il 25% di danni in più.", orbReturning: "La sfera stellare torna dal custode." },
+    ja: { upgradeSplit: "集中オーブ", upgradeSplitDesc: "1個の明るいオーブが与えるダメージを25%上げます。", orbReturning: "星のオーブが守り手へ戻ります。" },
+    ko: { upgradeSplit: "집중 별 구슬", upgradeSplitDesc: "더 밝은 별 구슬 하나가 피해를 25% 더 줍니다.", orbReturning: "별 구슬이 수호자에게 돌아옵니다." },
+    "pt-BR": { upgradeSplit: "Orbe Estelar Focado", upgradeSplitDesc: "Um único orbe brilhante causa 25% a mais de dano.", orbReturning: "O orbe estelar está voltando ao guardião." },
+    ru: { upgradeSplit: "Сфокусированный звёздный шар", upgradeSplitDesc: "Один яркий шар наносит на 25% больше урона.", orbReturning: "Звёздный шар возвращается к хранителю." },
+    hi: { upgradeSplit: "केंद्रित तारा गोला", upgradeSplitDesc: "एक चमकीला गोला 25% अधिक नुकसान करता है।", orbReturning: "तारा गोला रक्षक के पास लौट रहा है।" },
+    ar: { upgradeSplit: "كرة نجمية مركزة", upgradeSplitDesc: "كرة مضيئة واحدة تسبب ضررًا أعلى بنسبة 25٪.", orbReturning: "تعود الكرة النجمية إلى الحارس." },
+  };
+  Object.entries(focusedOrbCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
+
   // New combat labels are deliberately short so every supported locale keeps
   // the same compact HUD. Full locale dictionaries can extend these later;
   // falling back to English here prevents a missing key from leaking into a
@@ -734,7 +756,7 @@
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-block-v2.png",
     lion: "../../assets/animal-orb-fortress-hero-lion-block-v2.png",
-    orbs: "../../assets/animal-orb-fortress-orb-set.webp",
+    orb: "../../assets/animal-orb-fortress-orb-block-v1.png",
     beasts: "../../assets/animal-orb-fortress-shadow-beasts-block-v2.png",
     bossRootbound: "../../assets/animal-orb-fortress-boss-golem.webp",
     bossBrambleback: "../../assets/animal-orb-fortress-boss-brambleback.webp",
@@ -1503,7 +1525,6 @@
     nodes.stageBackBtn.setAttribute("aria-label", t("returnMain"));
     updateArenaControlLabel(true);
     nodes.mapBtn.setAttribute("aria-label", t("battleReturnDecision"));
-    nodes.pauseBtn.setAttribute("aria-label", t("pause"));
     nodes.resultMenuBtn.setAttribute("aria-label", t("raidMap"));
     updatePageMeta();
     nodes.localeSelect.value = requested;
@@ -2262,19 +2283,13 @@
       state.firstShotCueUntil = 0;
     }
     const v = aimVector(x, y);
-    const limit = activeOrbLimit();
-    const volley = [
-      { vx: v.vx, vy: v.vy, skin: state.shotCount % 5, scale: 1 },
-      { vx: v.vx * 0.86 - 68, vy: v.vy * 0.9, skin: (state.shotCount + 1) % 5, scale: 0.72 },
-    ];
-    if (state.split) volley.push({ vx: v.vx * 0.82 + 74, vy: v.vy * 0.88, skin: (state.shotCount + 2) % 5, scale: 0.62 });
-    volley.forEach((shot) => {
-      if (state.orbs.length < limit) {
-        const orb = makeOrb(shot.vx, shot.vy, shot.skin, shot.scale);
-        orb.firstShot = firstShot;
-        state.orbs.push(orb);
-      }
-    });
+    // A shot is one readable star orb. Earlier volleys launched several
+    // different angles from one tap, which made the player's chosen line hard
+    // to follow. The Split blessing still improves the held orb's hit power,
+    // but never creates an unexpected second trajectory.
+    const orb = makeOrb(v.vx, v.vy, state.shotCount % 5, state.split ? 1.25 : 1);
+    orb.firstShot = firstShot;
+    state.orbs.push(orb);
     state.preview = [];
     state.aimTarget = null;
     state.shotCount += 1;
@@ -2288,11 +2303,24 @@
   }
 
   function makeOrb(vx, vy, skin, damageScale = 1) {
-    return { x: state.launcher.x, y: state.launcher.y, vx, vy, r: 20, life: 5.2, damage: Math.max(1, Math.round(state.baseDamage * damageScale)), skin, hits: new Map(), bounces: 0 };
+    return {
+      x: state.launcher.x,
+      y: state.launcher.y,
+      vx,
+      vy,
+      r: 22,
+      life: 4.8,
+      damage: Math.max(1, Math.round(state.baseDamage * damageScale)),
+      skin,
+      hits: new Map(),
+      bounces: 0,
+      returning: false,
+      returnTimer: 0,
+    };
   }
 
   function activeOrbLimit() {
-    return state.split ? 6 : 4;
+    return 1;
   }
 
   function canFireOrb() {
@@ -2578,7 +2606,31 @@
       .sort((a, b) => Math.hypot(a.x - source.x, a.y - source.y) - Math.hypot(b.x - source.x, b.y - source.y))[0] || null;
   }
 
+  function startOrbReturn(orb) {
+    if (orb.returning) return;
+    orb.returning = true;
+    orb.returnTimer = 0.72;
+    orb.hits.clear();
+    nodes.hintText.textContent = t("orbReturning");
+    state.sparks.push({ kind: "return", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: 3 });
+    playSound("click", 0.08);
+  }
+
   function updateOrb(orb, dt) {
+    if (orb.returning) {
+      const dx = state.launcher.x - orb.x;
+      const dy = state.launcher.y - orb.y;
+      const distance = Math.max(1, Math.hypot(dx, dy));
+      const returnSpeed = Math.max(520, distance * 7.5);
+      orb.x += (dx / distance) * returnSpeed * dt;
+      orb.y += (dy / distance) * returnSpeed * dt;
+      orb.returnTimer -= dt;
+      if (distance < 26 || orb.returnTimer <= 0) {
+        orb.life = 0;
+        state.sparks.push({ kind: "block-break", x: state.launcher.x, y: state.launcher.y - 18, life: 0.28, maxLife: 0.28, effectIndex: 0 });
+      }
+      return;
+    }
     orb.life -= dt;
     orb.x += orb.vx * dt;
     orb.y += orb.vy * dt;
@@ -2617,6 +2669,10 @@
       state.mechanicEvents.push("pylon_bounce");
       playSound("click", 0.06);
     });
+    if (orb.life <= 0 || orb.bounces >= 4) {
+      startOrbReturn(orb);
+      return;
+    }
     state.enemies.forEach((enemy) => {
       const recent = orb.hits.get(enemy) || 0;
       if (recent > 0) {
@@ -2981,22 +3037,23 @@
     state.orbs.forEach((orb) => {
       ctx.save();
       const speed = Math.max(1, Math.hypot(orb.vx, orb.vy));
-      const trail = Math.min(42, 12 + speed * 0.06);
-      ctx.strokeStyle = "rgba(119, 246, 255, 0.72)";
-      ctx.lineWidth = 8;
+      const trail = orb.returning ? 18 : Math.min(34, 10 + speed * 0.045);
+      const heading = orb.returning
+        ? Math.atan2(state.launcher.y - orb.y, state.launcher.x - orb.x)
+        : Math.atan2(orb.vy, orb.vx);
+      ctx.strokeStyle = orb.returning ? "rgba(255, 229, 115, 0.7)" : "rgba(79, 231, 255, 0.64)";
+      ctx.lineWidth = orb.returning ? 6 : 7;
       ctx.shadowColor = "#4ce8ff";
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = 14;
       ctx.beginPath();
-      ctx.moveTo(orb.x - (orb.vx / speed) * trail, orb.y - (orb.vy / speed) * trail);
+      ctx.moveTo(orb.x - Math.cos(heading) * trail, orb.y - Math.sin(heading) * trail);
       ctx.lineTo(orb.x, orb.y);
       ctx.stroke();
       ctx.shadowBlur = 0;
-      ctx.fillStyle = "rgba(196, 255, 255, 0.32)";
-      ctx.fillRect(orb.x - 25, orb.y - 25, 50, 50);
-      ctx.strokeStyle = "#d9ffff";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(orb.x - 25, orb.y - 25, 50, 50);
-      drawAtlas(images.orbs, orb.skin || 0, 5, orb.x, orb.y, 56);
+      ctx.translate(orb.x, orb.y);
+      ctx.rotate(heading);
+      ctx.globalAlpha = orb.returning ? 0.82 : 1;
+      drawAtlas(images.orb, 0, 1, 0, 0, orb.returning ? 76 : 104);
       ctx.restore();
     });
     state.sparks.forEach((spark) => {
@@ -3048,30 +3105,19 @@
       if (spark.kind === "impact") {
         ctx.save();
         const progress = 1 - spark.life / maxLife;
-        const radius = 18 + progress * 48;
+        const reach = 18 + progress * 38;
         const tone = spark.critical ? "#ffe56f" : spark.chain ? "#d79bff" : spark.blocked ? "#9bb9c8" : "#74f7ff";
-        ctx.strokeStyle = tone;
-        ctx.lineWidth = spark.critical ? 9 : 6;
+        ctx.fillStyle = tone;
         ctx.shadowColor = tone;
         ctx.shadowBlur = spark.critical ? 28 : 18;
-        ctx.beginPath();
-        ctx.arc(spark.x, spark.y, radius, 0, Math.PI * 2);
-        ctx.stroke();
+        const thickness = spark.critical ? 9 : 6;
+        ctx.fillRect(spark.x - reach, spark.y - thickness / 2, reach * 2, thickness);
+        ctx.fillRect(spark.x - thickness / 2, spark.y - reach, thickness, reach * 2);
+        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([dx, dy]) => {
+          const size = spark.critical ? 10 : 7;
+          ctx.fillRect(spark.x + dx * reach * 0.68 - size / 2, spark.y + dy * reach * 0.68 - size / 2, size, size);
+        });
         ctx.shadowBlur = 0;
-        if (spark.label) {
-          ctx.font = "1000 18px system-ui, sans-serif";
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          const width = Math.min(132, ctx.measureText(spark.label).width + 26);
-          const y = Math.max(64, spark.y - 54 - progress * 16);
-          ctx.fillStyle = "rgba(5, 24, 38, 0.94)";
-          ctx.strokeStyle = tone;
-          ctx.lineWidth = 3;
-          ctx.fillRect(spark.x - width / 2, y - 16, width, 32);
-          ctx.strokeRect(spark.x - width / 2, y - 16, width, 32);
-          ctx.fillStyle = "#ffffff";
-          ctx.fillText(spark.label, spark.x, y);
-        }
         ctx.restore();
       }
       drawAtlas(images.fx, spark.effectIndex ?? (spark.kind === "companion" ? 3 : spark.kind === "chain" ? 2 : 1), 5, spark.x, spark.y, spark.kind === "block-break" ? 92 : 70);
@@ -3139,67 +3185,40 @@
     ctx.save();
     const aura = enemy.kind === "anchor" ? "#8fff9a" : enemy.kind === "charger" ? "#68c8ff" : enemy.kind === "splitter" ? "#d6a1ff" : enemy.kind === "thorn" || enemy.kind === "armored" ? "#ffd56a" : enemy.kind === "boss" ? "#ff8fcb" : "#8ee7ff";
     const shadow = enemy.kind === "thorn" || enemy.kind === "armored" ? "rgba(255, 202, 86, 0.9)" : enemy.kind === "boss" ? "rgba(255, 105, 190, 0.9)" : "rgba(132, 210, 255, 0.88)";
-    const halo = ctx.createRadialGradient(enemy.x, enemy.y, size * 0.14, enemy.x, enemy.y, size * 0.9);
-    halo.addColorStop(0, "rgba(3, 10, 30, 0.18)");
-    halo.addColorStop(0.58, "rgba(3, 10, 30, 0.5)");
-    halo.addColorStop(1, "rgba(3, 10, 30, 0)");
-    ctx.fillStyle = halo;
-    ctx.beginPath();
-    ctx.arc(enemy.x, enemy.y, size * 0.9, 0, Math.PI * 2);
-    ctx.fill();
     const blockHalf = size * 0.38;
     ctx.shadowColor = shadow;
-    ctx.shadowBlur = enemy.hitTimer > 0 ? 34 : 20;
+    ctx.shadowBlur = enemy.hitTimer > 0 ? 24 : 13;
     ctx.fillStyle = enemy.kind === "boss" ? "rgba(53, 16, 49, 0.82)" : "rgba(11, 28, 45, 0.86)";
     ctx.fillRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
+    ctx.fillStyle = enemy.kind === "boss" ? "rgba(106, 31, 78, 0.52)" : "rgba(26, 68, 84, 0.56)";
+    ctx.fillRect(enemy.x - blockHalf * 1.22, enemy.y + blockHalf * 0.42, blockHalf * 0.48, blockHalf * 0.34);
+    ctx.fillRect(enemy.x + blockHalf * 0.74, enemy.y - blockHalf * 0.76, blockHalf * 0.48, blockHalf * 0.34);
     ctx.strokeStyle = aura;
     ctx.lineWidth = enemy.kind === "boss" ? 7 : 4;
     ctx.strokeRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
-    ctx.shadowColor = shadow;
-    ctx.shadowBlur = enemy.hitTimer > 0 ? 46 : 32;
-    ctx.fillStyle = enemy.kind === "boss" ? "rgba(69, 19, 51, 0.82)" : "rgba(18, 37, 54, 0.78)";
-    ctx.beginPath();
-    ctx.ellipse(enemy.x, enemy.y + size * 0.1, size * 0.74, size * 0.58, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = aura;
-    ctx.lineWidth = enemy.kind === "boss" ? 8 : 5;
     ctx.globalAlpha = enemy.phased ? 0.4 : enemy.hitTimer > 0 ? 1 : 0.9;
-    ctx.stroke();
     if (enemy.kind === "boss") drawAtlas(images[enemy.imageKey] || images.bossRootbound, 0, 1, enemy.x, enemy.y, size);
     else drawAtlas(images.beasts, enemySpriteIndex(enemy.kind), 3, enemy.x, enemy.y, size);
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
-    ctx.strokeStyle = enemy.hitTimer > 0 ? "#fff7a8" : "rgba(244, 255, 236, 0.98)";
-    ctx.lineWidth = enemy.kind === "boss" ? 4.5 : 3;
-    ctx.beginPath();
-    ctx.ellipse(enemy.x, enemy.y + size * 0.08, size * 0.54, size * 0.44, 0, 0, Math.PI * 2);
-    ctx.stroke();
     if (enemy.elite) {
       ctx.strokeStyle = "#ffd86b";
-      ctx.lineWidth = 7;
-      ctx.setLineDash([12, 8]);
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, size * 0.68, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
+      ctx.lineWidth = 5;
+      ctx.strokeRect(enemy.x - size * 0.59, enemy.y - size * 0.55, size * 1.18, size * 1.1);
     }
     if (enemy.shield > 0) {
       ctx.strokeStyle = "rgba(126, 233, 255, 0.96)";
-      ctx.lineWidth = 6;
+      ctx.lineWidth = 5;
       ctx.shadowColor = "#7de9ff";
-      ctx.shadowBlur = 18;
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, size * 0.76, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.shadowBlur = 12;
+      ctx.strokeRect(enemy.x - size * 0.7, enemy.y - size * 0.64, size * 1.4, size * 1.24);
       ctx.shadowBlur = 0;
     }
     if (enemy.phased) {
       ctx.strokeStyle = "rgba(170, 238, 255, 0.95)";
-      ctx.lineWidth = 5;
+      ctx.lineWidth = 4;
       ctx.setLineDash([16, 10]);
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, size * 0.83, 0, Math.PI * 2);
-      ctx.stroke();
+      ctx.strokeRect(enemy.x - size * 0.76, enemy.y - size * 0.69, size * 1.52, size * 1.36);
       ctx.setLineDash([]);
     }
     if (enemy.chargeState === "marked") {
@@ -3218,11 +3237,8 @@
       ctx.setLineDash([]);
     }
     if (enemy.bossId === "prism") {
-      ctx.strokeStyle = enemy.weakOpen ? "#ffe56b" : "#71dfff";
-      ctx.lineWidth = 10;
-      ctx.beginPath();
-      ctx.arc(enemy.x, enemy.y, size * 0.86, -0.55, 0.55);
-      ctx.stroke();
+      ctx.fillStyle = enemy.weakOpen ? "#ffe56b" : "#71dfff";
+      ctx.fillRect(enemy.x - size * 0.43, enemy.y - size * 0.78, size * 0.86, 9);
     }
     ctx.restore();
     const barW = Math.max(48, size * 0.58);
@@ -3251,13 +3267,17 @@
     const x = state.launcher.x;
     const y = state.launcher.y;
     ctx.save();
-    ctx.fillStyle = "rgba(11, 33, 51, 0.72)";
-    ctx.strokeStyle = "#d8fbff";
+    // The core is a stepped block plinth, not a white-outlined halo around
+    // the keeper. Its health indicator is a compact block bar below it.
+    ctx.fillStyle = "rgba(5, 22, 38, 0.9)";
+    ctx.fillRect(x - 48, y - 44, 96, 86);
+    ctx.fillStyle = "rgba(28, 92, 112, 0.92)";
+    ctx.fillRect(x - 42, y - 38, 84, 66);
+    ctx.fillStyle = "rgba(64, 159, 170, 0.74)";
+    ctx.fillRect(x - 34, y - 34, 68, 12);
+    ctx.strokeStyle = "#276f8e";
     ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.roundRect(x - 42, y - 42, 84, 84, 14);
-    ctx.fill();
-    ctx.stroke();
+    ctx.strokeRect(x - 48, y - 44, 96, 86);
     ctx.fillStyle = pct > 0.35 ? "#7cf7d1" : "#ff6878";
     ctx.beginPath();
     ctx.moveTo(x, y - 27);
@@ -3266,13 +3286,13 @@
     ctx.lineTo(x - 22, y);
     ctx.closePath();
     ctx.fill();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.86)";
+    ctx.strokeStyle = "#1a6c86";
+    ctx.lineWidth = 4;
     ctx.stroke();
-    ctx.strokeStyle = pct > 0.35 ? "#7dffd0" : "#ff6878";
-    ctx.lineWidth = 7;
-    ctx.beginPath();
-    ctx.arc(x, y, 49, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
-    ctx.stroke();
+    ctx.fillStyle = "rgba(3, 15, 28, 0.92)";
+    ctx.fillRect(x - 48, y + 49, 96, 11);
+    ctx.fillStyle = pct > 0.35 ? "#7dffd0" : "#ff6878";
+    ctx.fillRect(x - 45, y + 52, 90 * pct, 5);
     ctx.restore();
   }
 
@@ -3411,10 +3431,6 @@
     if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
   });
   nodes.mapBtn.addEventListener("click", () => setPaused(true, nodes.mapBtn));
-  nodes.pauseBtn.addEventListener("keydown", (event) => {
-    if (event.repeat && (event.key === "Enter" || event.key === " ")) event.preventDefault();
-  });
-  nodes.pauseBtn.addEventListener("click", () => setPaused(true, nodes.pauseBtn));
   nodes.assistBtn?.addEventListener("click", () => {
     if (state.mode !== "running" && state.mode !== "paused") return;
     state.aimAssist = state.aimAssist === false;

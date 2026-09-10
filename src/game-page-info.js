@@ -15180,7 +15180,7 @@
 
   registerExpandedGuide("animal-sketchwheel-rally", {
     title: "Animal Sketchwheel Rally", gameplay: "Draw-and-Test Wheel Racing", difficulty: "Easy to Challenging", time: "2–8 minutes per rally", guideKicker: "WeightPlay Original Game Guide", guideTitleSuffix: "Game Guide", hideScoreBands: true,
-    showSkills: false, showRelatedSkill: false,
+    showSkills: false, showRelatedSkill: false, noteTitle: "Player and Save Information",
     genre: ["Arcade", "Drawing", "Strategy", "Animal"],
     skills: ["Shape Design", "Adaptation", "Observation"],
     intro: "Draw a wheel profile before each terrain section, watch how its measured shape performs, and adapt the next wheel so the animal racer reaches the finish before the rival.",

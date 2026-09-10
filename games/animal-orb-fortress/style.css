@@ -1977,3 +1977,365 @@ body {
     padding-top: 30px !important;
   }
 }
+
+/* v27: Stage tabs share one complete Canvas. In compact desktop landscape the
+   Workshop used to survive beside the Raid rail as a narrow second column;
+   changing tabs now changes only the content inside the same Stage envelope. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel.stage-panel {
+    grid-template-rows: 60px minmax(0, 1fr) 44px !important;
+    gap: 4px !important;
+    padding: 6px 8px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-content {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: 48px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .profile-grid {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-raid.is-active .stage-rail,
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .workshop-title,
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-grid {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    padding-top: 34px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card {
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) 40px !important;
+    padding: 7px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card img {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card button {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    min-height: 40px !important;
+  }
+}
+
+/* One Return control opens the existing pause/exit decision. The secondary
+   Pause button was a duplicate action and made the HUD feel like a settings
+   bar instead of a battle surface. */
+.hud-row {
+  grid-template-columns: minmax(72px, 1fr) repeat(3, minmax(64px, 1fr)) 52px;
+}
+
+@media (max-width: 640px) {
+  .hud-row {
+    grid-template-columns: 42px repeat(3, minmax(44px, 1fr)) 46px;
+  }
+}
+
+/* At a very short landscape height, the active bottom tab already names the
+   Workshop. Use the recovered Stage width for four compact, legible upgrade
+   rows instead of letting the title overlap the first pair of cards. */
+@media (max-height: 560px) and (orientation: landscape) {
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .workshop-title {
+    display: none !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-grid {
+    padding-top: 0 !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card {
+    grid-template-columns: 30px minmax(0, 1fr) 94px !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    gap: 5px !important;
+    padding: 4px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card > div {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    align-self: center !important;
+    overflow: hidden !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card span {
+    display: none !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card strong {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+
+  body.wp-stage-select-active.orb-fortress-playing #stagePanel .stage-view-panel-workshop.is-active .room-card button {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    min-height: 34px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Lobby skin preview: reuse the General lobby's block-arcade palette and
+   physical card language locally, while preserving Orb Fortress's arena art
+   and its existing Main / Stage / Battle structure. */
+:root {
+  --bg: #0b202b;
+  --panel: #14323d;
+  --panel-2: #1b3b46;
+  --line: #597775;
+  --gold: #ffe091;
+  --mint: #8ef0b7;
+  --text: #f1f7eb;
+  --muted: #b8cfb8;
+  --voxel-shadow: #061820;
+}
+
+body {
+  background-color: #0b202b;
+  background-image:
+    url("../../assets/lobby-block-atmosphere.svg"),
+    radial-gradient(ellipse at 50% 0, #204d4c 0, #0b202b 70%);
+  background-position: center top;
+  background-repeat: repeat-y, no-repeat;
+  background-size: 1440px 960px, 100% 1200px;
+}
+
+.orb-app {
+  width: min(100%, 920px);
+}
+
+.topbar {
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3c6368;
+}
+
+.back-btn {
+  border: 2px solid #5d8688;
+  border-radius: 3px;
+  color: #f5e9c4;
+  background: #163440;
+  box-shadow: inset 0 2px 0 #30535d, 0 4px 0 #061820;
+}
+
+.back-btn:active {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 #30535d, 0 1px 0 #061820;
+}
+
+.brand span,
+.locale span,
+.hud-row span,
+.profile-grid span,
+.room-card span {
+  color: #a7c1b5;
+}
+
+.brand h1 {
+  color: #fff4ce;
+  text-shadow: 2px 3px 0 #07181e;
+}
+
+.locale select {
+  border: 2px solid #5d8688;
+  border-radius: 2px;
+  color: #f5e9c4;
+  background: #163440;
+  box-shadow: inset 0 2px 0 #30535d, 0 3px 0 #061820;
+}
+
+.panel {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background: #14323d;
+  box-shadow: 0 5px 0 #061820, 0 14px 28px rgba(1, 14, 23, 0.36);
+}
+
+.menu-panel,
+.stage-panel,
+.game-panel,
+.result-panel {
+  background:
+    linear-gradient(135deg, rgba(8, 32, 42, 0.92), rgba(20, 58, 65, 0.82)),
+    url("../../assets/animal-orb-fortress-arena-block-v2.png") center / cover;
+}
+
+.menu-panel::before,
+.stage-panel::before,
+.game-panel::before {
+  background-image: linear-gradient(90deg, rgba(159, 220, 191, 0.07) 1px, transparent 1px), linear-gradient(rgba(159, 220, 191, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.72;
+}
+
+.cover {
+  border: 2px solid #d8ad59;
+  border-radius: 3px;
+  box-shadow: 0 5px 0 #77562c, 0 8px 0 #061820;
+}
+
+.menu-copy strong {
+  color: #fff5d9;
+  text-shadow: 2px 2px 0 #071c27;
+}
+
+.menu-copy > span,
+.status-line,
+.raid-plan {
+  color: #d4e6d5;
+}
+
+.primary-btn,
+.room-card button {
+  border: 2px solid #ffe59a;
+  border-radius: 2px;
+  color: #322a17;
+  background: #edb74e;
+  box-shadow: inset 0 3px 0 #ffd982, 0 5px 0 #92642b, 0 7px 0 #061b25;
+}
+
+.secondary-btn,
+.stage-tabs button {
+  border: 2px solid #486977;
+  border-radius: 2px;
+  color: #dcebe0;
+  background: #213e4a;
+  box-shadow: inset 0 3px 0 #41606b, 0 5px 0 #071923;
+}
+
+.stage-tabs button.is-active,
+.stage-tabs button[aria-selected="true"] {
+  border-color: #8ef0b7;
+  color: #f7ffe6;
+  background: #2c705d;
+  box-shadow: inset 0 3px 0 #61a783, 0 5px 0 #133e36, 0 7px 0 #061c22;
+}
+
+.primary-btn:active,
+.secondary-btn:active,
+.room-card button:active,
+.stage-tabs button:active {
+  transform: translateY(3px);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.26), 0 2px 0 #061820;
+}
+
+.profile-grid div,
+.room-card {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background: rgba(20, 50, 61, 0.94);
+  box-shadow: 0 4px 0 #061820;
+}
+
+.profile-grid strong,
+.stage-header strong {
+  color: #ffe091;
+}
+
+.raid-card {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background:
+    linear-gradient(145deg, rgba(9, 34, 43, 0.52), rgba(8, 26, 38, 0.92)),
+    url("../../assets/animal-orb-fortress-arena-block-v2.png") center / cover;
+  box-shadow: 0 5px 0 #061820;
+}
+
+.raid-card.is-centered {
+  border-color: #ffd27c;
+  box-shadow: inset 0 3px 0 rgba(255, 228, 148, 0.42), 0 5px 0 #77562c, 0 0 0 2px rgba(255, 210, 124, 0.3);
+}
+
+.hud-row > div,
+.hud-row > button,
+.hint {
+  border: 2px solid #486977;
+  border-radius: 2px;
+  background: rgba(13, 41, 53, 0.94);
+  box-shadow: inset 0 2px 0 #193c47, 0 3px 0 #061820;
+}
+
+.hud-row strong,
+.combo-text {
+  color: #ffe091;
+}
+
+.aim-assist-btn.is-active {
+  border-color: #ffe59a;
+  color: #322a17;
+  background: #edb74e;
+  box-shadow: inset 0 3px 0 #ffd982, 0 3px 0 #92642b;
+}
+
+#gameCanvas {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  box-shadow: 0 5px 0 #061820;
+}
+
+.hint {
+  color: #eaf3d8;
+}
+
+.pause-panel {
+  background: rgba(5, 20, 29, 0.84);
+}
+
+.pause-card,
+.upgrade-card,
+.result-panel {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  background: #14323d;
+  box-shadow: 0 6px 0 #061820, 0 18px 42px rgba(1, 12, 20, 0.42);
+}
+
+.upgrade-card:hover,
+.upgrade-card:focus-visible {
+  border-color: #ffd27c;
+  box-shadow: inset 0 3px 0 rgba(255, 225, 141, 0.3), 0 6px 0 #77562c;
+}
+
+body:not(.orb-fortress-playing) .game-page-info {
+  border: 2px solid #597775;
+  border-radius: 3px;
+  color: #e8f1df;
+  background: #14323d;
+  box-shadow: 0 5px 0 #061820;
+}
+
+body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title h2, .game-info-section h3, .game-info-fact strong, .game-info-section dt, .game-info-related-copy strong) {
+  color: #fff1c8;
+}
+
+body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title p, .game-info-section p, .game-info-section li, .game-info-section dd, .game-info-fact span, .game-info-band span) {
+  color: #c1d5c7;
+}
+
+body:not(.orb-fortress-playing) .game-page-info :is(.game-info-fact, .game-info-section, .game-info-band, .game-info-related-card) {
+  border-color: #486977;
+  border-radius: 3px;
+  background: #102e39;
+}
+
+body:not(.orb-fortress-playing) .game-page-info :is(.game-info-kicker, .game-info-section li::marker, .game-info-band strong) {
+  color: #ffe091;
+}
