@@ -191,7 +191,11 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
 @media (min-width: 1120px) {
   body.general-lobby-page .lobby-shell { padding-inline-start: 220px; }
   body.general-lobby-page .lobby-topbar { margin-inline-start: -220px; }
-  body.general-lobby-page .lobby-topbar .brand-lockup { position: fixed; z-index: 22; inset-block-start: 18px; inset-inline-start: max(24px, calc((100vw - 1480px) / 2)); box-sizing: border-box; width: 192px; min-height: 72px; padding: 10px 12px; }
+  body.general-lobby-page .lobby-topbar .brand-lockup { position: fixed; z-index: 22; inset-block-start: 18px; inset-inline-start: max(24px, calc((100vw - 1480px) / 2)); box-sizing: border-box; width: 192px; min-height: 72px; padding: 10px 12px; gap: 8px; overflow: hidden; }
+  body.general-lobby-page .lobby-topbar .brand-logo { flex: 0 0 32px; width: 32px; height: 32px; }
+  body.general-lobby-page .lobby-topbar .brand-copy { min-width: 0; }
+  body.general-lobby-page .lobby-topbar h1 { max-width: 100%; font-size: 22px; letter-spacing: -0.7px; }
+  body.general-lobby-page .lobby-topbar .brand-byline { font-size: 7px; letter-spacing: 1.25px; }
   body.general-lobby-page .lobby-topbar .language-picker { margin-inline-start: auto; }
   body.general-lobby-page .desktop-filter-rail { position: fixed; inset: 94px auto 24px max(24px, calc((100vw - 1480px) / 2)); display: flex; width: 192px; gap: 22px; padding: 0 16px 18px 0; border: 0; border-inline-end: 1px solid var(--lobby-line); border-radius: 0; background: transparent; box-shadow: none; }
   body.general-lobby-page .desktop-filter-rail-heading span { color: #7a8d79; font-size: 10px; letter-spacing: 1px; }

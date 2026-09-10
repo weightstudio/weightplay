@@ -15123,13 +15123,13 @@
     relatedIds: ["beast-deck", "animal-rune-tactics", "animal-auto-squad"],
     intro: "Build a team of up to five summoned animal heroes, spin three downward rune reels, combine the stopped symbols, and survive every wave of thirty guardian missions.",
     story: ["A summoner crosses six rift regions with an expanding animal roster. Each hero has attack, defense, healing, and a distinct ultimate, so team composition changes how the same reel result resolves.", "The main campaign contains thirty multi-wave missions. Separate daily and scheduled event missions provide optional materials without replacing campaign progress."],
-    systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
+    systems: ["Press Spin to stop three downward reels one by one. Every visible rune contributes its effect, and a completed line of matching runes doubles that ability.", "Claw runes make each active hero attack. Shield and Heart runes combine the team's total defense or healing for the summoner. Wild completes another line but has no effect alone; Coin, Ultimate, Focus, Echo, Luck, and Dormant runes have their stated specialized effects.", "Enemies act after the rune result resolves. The summoner's health, shield, total defense, total healing, wave count, and enemy intent remain visible throughout Battle.", "After each set of reels stops, enter Tactics: select one reel and once per turn choose Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared and repeats valid spins without choosing a team or upgrade. Summoning unlocks heroes; duplicate cards support level upgrades. Rune Dust, Sun Shards, Moon Crystals, and Guardian Cores improve rune levels. Permanent cards, materials, coins, and diamonds remain safe if a battle is abandoned, but the current wave resets."],
     how: ["Open Stage, choose Main, Daily, or Event, and select an available mission.", "Use Team to place at least one and up to five owned heroes in the active formation.", "Review Backpack, Summon, and Runes when an upgrade is needed, then enter Battle.", "Spin, read the completed lines, and continue until every wave and guardian is defeated."],
     strategyTips: ["Balance damage with enough combined defense or healing to survive the next visible enemy intent.", "A Wild rune is valuable only when it completes a useful line; do not count it as a standalone effect.", "Use Ultimate runes with heroes whose special effects solve the current wave, not merely the team with the highest level.", "Auto mode repeats valid spins but does not choose a better team or rune upgrade for you."],
     progression: ["The six five-stage campaign chapters increase wave length and guardian combinations. Daily missions emphasize coins or materials, while events rotate on their shown schedule.", "Roster and rune growth expand strategic options without changing the readable three-reel resolution order."],
     designNote: "Reels stop in a fixed visual order, completed lines glow before resolving, and hero actions remain separate from the combined summoner defense and healing totals.",
     parent: "No account is required. Roster, campaign progress, currencies, materials, rune levels, and reward claims are stored locally in this browser.",
-    faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."]]
+    faq: [["What does a matching line do?", "It doubles that rune ability after all three reels stop."], ["Do heroes share one attack?", "No. Heroes attack separately; team defense and healing are combined for the summoner."], ["What happens if I leave Battle?", "Permanent inventory remains, but the current battle attempt is lost."], ["Are event rewards always available?", "No. Event missions follow the schedule displayed in Stage."], ["What happens after a spin?", "Choose one reel, then once per turn use Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared."]]
   }, "動物符文轉輪", "动物符文转轮");
 
   localizedGames["zh-Hant"]["animal-rune-reels"] = {
@@ -15672,6 +15672,68 @@
     parent: "لا يلزم حساب. تُحفظ الأبطال والحملة والعملات والمواد ومستويات الرون والمكافآت في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تغيير المتصفح إلى إنشاء حفظ منفصل.",
     faq: [["ماذا يفعل صف الرونات المتطابقة؟", "يضاعف قدرة الرون بعد توقف البكرات الثلاث."], ["هل يشترك الأبطال في هجوم واحد؟", "لا. يهاجم كل بطل منفردًا، ويُجمع دفاع الفريق وعلاجه للمستدعي."], ["ماذا يحدث إذا غادرت المعركة؟", "تبقى محتويات الحقيبة الدائمة، لكن محاولة المعركة الحالية تضيع."], ["هل مكافآت الفعاليات متاحة دائمًا؟", "لا. تتبع مهام الفعاليات الجدول المعروض في المراحل."], ["ما طرق التحكم وأحجام الشاشة المدعومة؟", "تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها، ويتكيف التخطيط المنطقي مع الهاتف والوضع الأفقي وسطح المكتب."], ["هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟", "لا. يُحفظ حاليًا في المتصفح فقط، لذلك يملك الملف أو الجهاز الآخر تقدمًا منفصلًا."]]
   };
+  const runeReelsTacticalAdditions = {
+    en: {
+      system: "After each set of reels stops, enter Tactics: select one reel and once per turn choose Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared and repeats valid spins without choosing a team or upgrade.",
+      faq: ["What happens after a spin?", "Choose one reel, then once per turn use Reroll, Hold, or Leader before Resolve. AUTO unlocks after the Rift is cleared."]
+    },
+    "zh-Hant": {
+      system: "每組轉輪停止後會進入戰術階段：選擇一列轉輪，每回合可在「重轉」、「保留」或「隊長戰術」中選一項，再按下「結算」。完成裂隙後會解鎖自動模式；自動模式會重複合法旋轉，但不會替你選隊伍或升級。",
+      faq: ["轉輪停止後可以做什麼？", "選擇一列轉輪，每回合在「重轉」、「保留」或「隊長戰術」中選一項，再按下「結算」。完成裂隙後會解鎖自動模式。"]
+    },
+    "zh-Hans": {
+      system: "每组转轮停止后会进入战术阶段：选择一列转轮，每回合可在重转、保留或队长战术中选一项，再按下结算。完成裂隙后会解锁自动模式；自动模式会重复合法旋转，但不会替你选队伍或升级。",
+      faq: ["转轮停止后可以做什么？", "选择一列转轮，每回合在重转、保留或队长战术中选一项，再按下结算。完成裂隙后会解锁自动模式。"]
+    },
+    ja: {
+      system: "各リールが止まった後は戦術フェーズに入り、1列を選んで毎ターン1回だけリロール、保持、リーダーのいずれかを使ってから解決します。リフトをクリアするとAUTOが解放され、チームや強化を選ばず有効なスピンを繰り返します。",
+      faq: ["リールが止まった後は何をしますか？", "1列を選び、毎ターン1回だけリロール、保持、リーダーのいずれかを使ってから解決します。リフトをクリアするとAUTOが解放されます。"]
+    },
+    ko: {
+      system: "릴이 모두 멈추면 전술 단계가 열립니다. 릴 하나를 고른 뒤 매 턴 다시 굴리기, 보류, 리더 전술 중 하나를 한 번 사용하고 해결을 누릅니다. 균열을 클리어하면 AUTO가 해금되며 팀이나 업그레이드를 대신 고르지는 않습니다.",
+      faq: ["릴이 멈춘 뒤에는 무엇을 하나요?", "릴 하나를 고르고 매 턴 다시 굴리기, 보류, 리더 전술 중 하나를 한 번 사용한 뒤 해결을 누릅니다. 균열을 클리어하면 AUTO가 해금됩니다."]
+    },
+    es: {
+      system: "Después de cada giro aparece la fase táctica: elige un carrete y usa una sola corrección por turno, como repetir, conservar o la táctica del líder, antes de resolver. AUTO se desbloquea al superar la grieta y no elige equipo ni mejoras.",
+      faq: ["¿Qué ocurre después de cada giro?", "En la fase táctica eliges un carrete y usas una sola corrección por turno antes de resolver. AUTO se desbloquea al superar la grieta."]
+    },
+    "pt-BR": {
+      system: "Depois que cada conjunto de rolos para, começa a fase tática: escolha um rolo e use uma vez por turno Girar de novo, Segurar ou Líder antes de Resolver. AUTO é desbloqueado após concluir a fenda e não escolhe equipe nem melhoria.",
+      faq: ["O que acontece depois de cada giro?", "Na fase tática, escolha um rolo e use uma vez por turno Girar de novo, Segurar ou Líder antes de Resolver. AUTO é desbloqueado ao concluir a fenda."]
+    },
+    fr: {
+      system: "Après l’arrêt des rouleaux, la phase tactique permet de choisir un rouleau et d’utiliser une fois par tour Relancer, Garder ou Leader avant de Résoudre. AUTO se débloque après la faille et ne choisit ni équipe ni amélioration.",
+      faq: ["Que se passe-t-il après l’arrêt des rouleaux ?", "Pendant la phase tactique, choisissez un rouleau et utilisez une fois par tour Relancer, Garder ou Leader avant de Résoudre. AUTO se débloque après la faille."]
+    },
+    de: {
+      system: "Nach dem Anhalten der Walzen beginnt die Taktikphase: Wähle eine Walze und einmal pro Runde Erneut, Halten oder Anführer, bevor du Auflösen drückst. AUTO wird nach dem Abschluss des Spalts freigeschaltet und wählt weder Team noch Verbesserung.",
+      faq: ["Was passiert nach dem Anhalten der Walzen?", "Wähle in der Taktikphase eine Walze und einmal pro Runde Erneut, Halten oder Anführer, bevor du Auflösen drückst. AUTO wird nach dem Spalt freigeschaltet."]
+    },
+    it: {
+      system: "Dopo che i rulli si fermano, la fase tattica permette di scegliere un rullo e usare una volta per turno Rilancia, Mantieni o Leader prima di Risolvi. AUTO si sblocca dopo aver completato la frattura e non sceglie squadra o potenziamenti.",
+      faq: ["Cosa succede dopo che i rulli si fermano?", "Nella fase tattica scegli un rullo e usa una volta per turno Rilancia, Mantieni o Leader prima di Risolvi. AUTO si sblocca dopo la frattura."]
+    },
+    ru: {
+      system: "После остановки барабанов начинается тактическая фаза: выберите один барабан и один раз за ход используйте Переброс, Удержание или Лидера, затем нажмите Решение. AUTO откроется после прохождения разлома и не будет выбирать команду или улучшение.",
+      faq: ["Что происходит после остановки барабанов?", "В тактической фазе выберите один барабан и один раз за ход используйте Переброс, Удержание или Лидера перед Решением. AUTO откроется после разлома."]
+    },
+    hi: {
+      system: "रील रुकने के बाद रणनीति चरण खुलता है: एक रील चुनें और हर टर्न में रिज़ॉल्व से पहले रीरोल, होल्ड या लीडर में से एक विकल्प एक बार इस्तेमाल करें। दरार पूरी करने के बाद AUTO खुलता है और टीम या अपग्रेड आपके लिए नहीं चुनता।",
+      faq: ["रील रुकने के बाद क्या होता है?", "रणनीति चरण में एक रील चुनें और हर टर्न रिज़ॉल्व से पहले रीरोल, होल्ड या लीडर में से एक विकल्प एक बार इस्तेमाल करें। दरार पूरी करने के बाद AUTO खुलता है।"]
+    },
+    ar: {
+      system: "بعد توقف البكرات تبدأ المرحلة التكتيكية: اختر بكرة واحدة واستخدم مرة واحدة في كل دور إعادة الدوران أو الاحتفاظ أو تكتيك القائد قبل الحل. يُفتح الوضع التلقائي بعد إكمال الصدع، ولا يختار الفريق أو الترقية بدلًا منك.",
+      faq: ["ماذا يحدث بعد توقف البكرات؟", "في المرحلة التكتيكية اختر بكرة واحدة واستخدم مرة في كل دور إعادة الدوران أو الاحتفاظ أو تكتيك القائد قبل الحل. يُفتح الوضع التلقائي بعد إكمال الصدع."]
+    }
+  };
+  for (const [locale, addition] of Object.entries(runeReelsTacticalAdditions)) {
+    if (locale === "en") continue;
+    const guide = locale === "en" ? games["animal-rune-reels"] : localizedGames[locale]?.["animal-rune-reels"];
+    if (!guide) continue;
+    guide.systems = (guide.systems || []).map((entry, index) => index === 3 ? addition.system : entry);
+    guide.faq = [...(guide.faq || []), addition.faq];
+  }
+
   localizedGames["ar"]["beast-tactician"] = {
     gameplay: "دفاع أبراج الأبطال",
     genre: ["دفاع الأبراج", "استراتيجية", "حيوانات"],
