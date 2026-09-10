@@ -191,7 +191,9 @@ body.general-lobby-page .desktop-filter-rail { display: none; }
 @media (min-width: 1120px) {
   body.general-lobby-page .lobby-shell { padding-inline-start: 220px; }
   body.general-lobby-page .lobby-topbar { margin-inline-start: -220px; }
-  body.general-lobby-page .desktop-filter-rail { position: fixed; inset: 100px auto 24px max(24px, calc((100vw - 1480px) / 2)); display: flex; width: 192px; gap: 22px; padding: 0 16px 18px 0; border: 0; border-inline-end: 1px solid var(--lobby-line); border-radius: 0; background: transparent; box-shadow: none; }
+  body.general-lobby-page .lobby-topbar .brand-lockup { position: fixed; z-index: 22; inset-block-start: 18px; inset-inline-start: max(24px, calc((100vw - 1480px) / 2)); box-sizing: border-box; width: 192px; min-height: 72px; padding: 10px 12px; }
+  body.general-lobby-page .lobby-topbar .language-picker { margin-inline-start: auto; }
+  body.general-lobby-page .desktop-filter-rail { position: fixed; inset: 94px auto 24px max(24px, calc((100vw - 1480px) / 2)); display: flex; width: 192px; gap: 22px; padding: 0 16px 18px 0; border: 0; border-inline-end: 1px solid var(--lobby-line); border-radius: 0; background: transparent; box-shadow: none; }
   body.general-lobby-page .desktop-filter-rail-heading span { color: #7a8d79; font-size: 10px; letter-spacing: 1px; }
   body.general-lobby-page .desktop-filter-rail-heading h2 { color: var(--lobby-ink); font-size: 20px; font-weight: 750; line-height: 1.35; margin-top: 8px; }
   body.general-lobby-page .desktop-filter-rail .rail-library { display: none; }
@@ -382,7 +384,8 @@ body.general-lobby-page .publisher-story :is(h2,h3) { color: #d9eacf; }
 body.general-lobby-page :is(#catalogDirectory,.site-footer,.site-footer a) { color: #9ebbb2; border-color: #35545c; }
 
 @media (min-width: 1120px) {
-  body.general-lobby-page .desktop-filter-rail { top: 104px; padding: 18px 12px; border: 2px solid #46696d; border-top: 5px solid #d6b665; border-radius: 2px; background: #14333ee8; box-shadow: 4px 5px 0 #061a2466, inset 0 2px 0 #608079; }
+  body.general-lobby-page .lobby-topbar .brand-lockup { border: 2px solid #46696d; border-bottom: 0; border-radius: 2px 2px 0 0; background: #14333ef2; box-shadow: 4px 0 0 #061a2466, inset 0 2px 0 #608079; }
+  body.general-lobby-page .desktop-filter-rail { top: 94px; padding: 18px 12px; border: 2px solid #46696d; border-top: 5px solid #d6b665; border-radius: 0 0 2px 2px; background: #14333ee8; box-shadow: 4px 5px 0 #061a2466, inset 0 2px 0 #608079; }
   body.general-lobby-page .desktop-filter-rail-heading h2 { color: #f2efd5; }
   body.general-lobby-page .desktop-filter-rail-heading span,
   body.general-lobby-page .desktop-filter-group h3 { color: #a4c3b3; }
