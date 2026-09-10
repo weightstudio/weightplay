@@ -14,9 +14,8 @@
   --wp-ui-background-image:url('../assets/lobby-block-atmosphere.svg');
   --wp-ui-header-image:linear-gradient(#1f4550,#14323d);
   --wp-ui-button-image:linear-gradient(#244a55,#163440);
-  --wp-ui-back-image:url('../assets/ui/frame-back.svg');
-  --wp-ui-settings-image:url('../assets/ui/frame-settings.svg');
-  --wp-ui-logo-image:url('../assets/weightplay-logo.png');
+  --wp-ui-back-image:url('../assets/ui/frame-back.svg?v=20260911-orb-controls');
+  --wp-ui-settings-image:url('../assets/ui/frame-settings.svg?v=20260911-orb-controls');
   --wp-frame-header-height:64px;
   --wp-frame-control-size:48px;
   --wp-frame-lobby-return-width:58px;

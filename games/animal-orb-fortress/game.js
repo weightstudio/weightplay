@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v39";
+const GAME_VERSION = "v40";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -58,7 +58,7 @@
     resultRewards: $("resultRewards"),
     raidPlanText: $("raidPlanText"),
   };
-  const gameShell = window.WeightPlayGameShell?.mount({
+  const gameShell = window.WeightPlayScreenFrame.mountSlots({
     gameId: GAME_ID,
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
@@ -1396,8 +1396,8 @@
     // above the physical reserve. Match the bitmap to that logical envelope
     // so artwork and hit geometry keep one common scale instead of stretching.
     if (document.body.classList.contains("wp-logical-battle-active")) {
-      const logicalWidth = nodes.gamePanel.clientWidth;
-      const logicalHeight = nodes.gamePanel.clientHeight;
+      const logicalWidth = $("battleLive").clientWidth;
+      const logicalHeight = $("battleLive").clientHeight;
       if (logicalWidth > 0 && logicalHeight > 0) {
         resizeOrbCoordinateSystem(logicalWidth, logicalHeight);
         canvas.style.setProperty("width", `${logicalWidth}px`, "important");

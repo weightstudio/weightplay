@@ -1,7 +1,8 @@
-/* Opt-in v2 shell. No game IDs, visibility inference, polling or legacy repair. */
+/* One shared frame. No game IDs, polling or parallel skin implementations. */
 (() => {
   'use strict';
   const mounts = new WeakMap();
+  const slotMounts = new WeakMap();
   const copy = {
     en: ['Settings', 'Language', 'Sound'], 'zh-Hant': ['設定', '語言', '聲音'],
     'zh-Hans': ['设置', '语言', '声音'], ja: ['設定', '言語', 'サウンド'],
@@ -32,6 +33,7 @@
       if (!arrow) { back.textContent = ''; arrow = document.createElement('span'); back.append(arrow); }
       arrow.className = 'wp-frame-back-icon'; arrow.setAttribute('aria-hidden','true');
       arrow.textContent = '';
+      back.querySelectorAll('img').forEach(image => image.remove());
       scene.root.dataset.wpFrameScene = name;
       scene.content.dataset.wpFrameContent = name;
       if (name !== 'main') {
@@ -79,6 +81,7 @@
       const locale = window.WonderI18n?.locale?.() || document.documentElement.lang;
       const labels = copy[locale] || copy.en;
       for (const entry of Object.values(entries)) {
+        if (entry.titleFromMain) entry.header.querySelector('[data-wp-frame-title]').textContent = scenes.main.header.querySelector('[data-wp-frame-title]').textContent;
         entry.button.setAttribute('aria-label', labels[0]); entry.panel.setAttribute('aria-label', labels[0]);
         entry.languageText.textContent = labels[1]; entry.select.setAttribute('aria-label', labels[1]);
         entry.select.value = localeSelect?.value || locale;
@@ -89,7 +92,7 @@
     const close = () => Object.values(entries).forEach(entry => entry.close());
     listen(document, 'pointerdown', event => Object.values(entries).forEach(entry => { if (!entry.utility.contains(event.target)) entry.close(); }));
     listen(document, 'keydown', event => { if (event.key === 'Escape') Object.values(entries).forEach(entry => { if (!entry.panel.hidden) { event.preventDefault(); entry.close(true); } }); });
-    listen(window, 'wonder:locale-change', refresh);
+    listen(window, 'wonder:locale-change', () => queueMicrotask(refresh));
     listen(window, 'wonder:audio-volume-change', refresh);
     const api = Object.freeze({
       activate(name, { covered = false } = {}) {
@@ -111,5 +114,85 @@
     });
     mounts.set(root, api); refresh(); return api;
   }
-  window.WeightPlayScreenFrame = Object.freeze({ mount });
+  // One-time DOM binding for existing declared slots. This is not a second
+  // renderer/skin: every control, title, setting and activation uses mount().
+  function mountSlots(options) {
+    const {root, main, stage, battle} = options;
+    if (slotMounts.has(root)) return slotMounts.get(root);
+    root.setAttribute('data-wp-frame-root','');
+    root.dataset.wpFrameAdapted = 'true';
+    const oldMain = root.querySelector('[data-wp-shell-header="main"]');
+    const mainTitle = oldMain.querySelector('[data-wp-game-title],h1');
+    const localeSelect = root.querySelector('#localeSelect');
+    const scenes = {};
+    for (const [name, screen] of Object.entries({main,stage,battle})) {
+      if (!screen) continue;
+      const oldHeader = root.querySelector(`[data-wp-shell-header="${name}"]`);
+      const back = root.querySelector(`[data-wp-return="${name}"]`);
+      if (!back) throw Error(`FRAME_RETURN_REQUIRED:${name}`);
+      const header = document.createElement('header');
+      header.id = `wp-shared-${name}-header`;
+      const title = name==='main' ? mainTitle : document.createElement('strong');
+      title.setAttribute('data-wp-frame-title','');
+      title.textContent = mainTitle.textContent;
+      header.append(back,title);
+      let content;
+      if (name==='main') {
+        content=document.createElement('div');
+        content.append(...screen.childNodes);
+        screen.append(content);
+        const poster=content.querySelector('.cover'), copy=content.querySelector('.menu-copy');
+        if(poster?.parentElement.classList.contains('poster-frame')) {const wrapper=poster.parentElement;wrapper.replaceWith(poster);}
+        poster?.setAttribute('data-wp-frame-poster','');
+        copy?.setAttribute('data-wp-frame-copy','');
+        copy?.querySelector('[data-ui="menuHint"],.menu-hint')?.setAttribute('data-wp-frame-summary','');
+        copy?.querySelector('.main-progress')?.setAttribute('data-wp-frame-progress','');
+        copy?.querySelector('button')?.setAttribute('data-wp-frame-action','primary');
+        const redundant=copy?.querySelector('[data-ui="menuTitle"],#menuTitle');
+        if(redundant) redundant.style.setProperty('display','none','important');
+        const retained=document.createElement('div');retained.hidden=true;
+        retained.style.setProperty('display','none','important');
+        if(localeSelect)retained.append(localeSelect);
+        root.append(retained);
+        oldHeader.remove();
+      } else if(name==='stage') {
+        content=screen.querySelector('[data-wp-shell-content="stage"],.stage-content,.stage-workspace');
+        if(!content)throw Error('FRAME_STAGE_CONTENT_REQUIRED');
+        // Keep game-owned progress/section labels in its content, not title lane.
+        const context=document.createElement('div');
+        context.className='wp-frame-stage-context';
+        if(oldHeader) { context.append(...oldHeader.childNodes);oldHeader.remove(); }
+        content.prepend(context);
+        const nav=screen.querySelector('.stage-tabs');
+        if(nav) {
+          nav.setAttribute('data-wp-frame-nav','');
+          nav.querySelectorAll(':scope > [aria-hidden="true"]').forEach(n=>n.remove());
+          nav.querySelectorAll('button').forEach(n=>n.setAttribute('data-wp-frame-action','tab'));
+          screen.append(nav);
+        }
+      } else {
+        content=screen.querySelector('[data-wp-shell-content="battle"]');
+        if(!content) {
+          content=document.createElement('div');content.className='wp-frame-play-content';
+          [...screen.children].filter(n=>!n.matches('[role="dialog"],.modal-panel,.result-panel,.pause-panel')).forEach(n=>content.append(n));
+          screen.prepend(content);
+        }
+        content.querySelectorAll('.hud-return-slot').forEach(n=>n.remove());
+      }
+      screen.prepend(header);
+      scenes[name]={root:screen,header,content,titleFromMain:name!=='main'};
+    }
+    const frame=mount({root,scenes,localeSelect});
+    const visible=node=>node&&!node.hidden&&!node.classList.contains('is-hidden')&&getComputedStyle(node).display!=='none';
+    const activate=target=>{
+      const name=typeof target==='string'?target:Object.keys(scenes).find(k=>scenes[k].root===target);
+      const resolved=scenes[name]?name:visible(battle)?'battle':'main';
+      frame.activate(resolved,{covered:!name&&resolved==='battle'});
+    };
+    const sync=()=>{const name=Object.keys(scenes).find(k=>visible(scenes[k].root));if(name)activate(name);};
+    sync();
+    const api=Object.freeze({activate,sync,refresh:frame.refresh,destroy(){frame.destroy();slotMounts.delete(root);},get active(){return frame.active;}});
+    slotMounts.set(root,api);return api;
+  }
+  window.WeightPlayScreenFrame = Object.freeze({ mount, mountSlots });
 })();

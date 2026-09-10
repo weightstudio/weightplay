@@ -227,7 +227,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     "ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape",
   );
   const ctx = nodes.canvas.getContext("2d");
-  const gameShell = window.WeightPlayGameShell?.mount({
+const gameShell = window.WeightPlayScreenFrame.mountSlots({
     gameId: GAME_ID,
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
@@ -2328,8 +2328,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     nodes.stageTabBtn.textContent = t("stagesTab");
     nodes.equipmentTabBtn.textContent = t("equipmentTab");
     if (nodes.stageTitle) nodes.stageTitle.textContent = t(state.screen === "tech" ? "equipmentTab" : "stagesTab");
-    nodes.stageBackBtn.textContent = "\u2190";
-    nodes.menuBtn.textContent = "\u2190";
+    // Shared-frame return artwork is immutable; update accessible labels below.
     nodes.buildTitle.textContent = t("build");
     nodes.stageHudLabel.textContent = t("stage");
     nodes.coreHudLabel.textContent = t("core");

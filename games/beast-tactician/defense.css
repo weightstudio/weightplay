@@ -2744,6 +2744,29 @@ body:not(.guardian-playing):not(.guardian-stage) .cover {
   image-rendering: auto;
 }
 
+/* Game-owned arena/build composition inside the single shared Battle slot. */
+html body #gamePanel [data-wp-frame-content="battle"] .battle-layout {
+  display:grid!important;flex:1!important;min-height:0!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:minmax(100px,2fr) minmax(80px,1fr)!important;
+  overflow:hidden!important;
+}
+html body #gamePanel [data-wp-frame-content="battle"] .canvas-shell {
+  grid-row:1!important;grid-column:1!important;height:100%!important;min-height:0!important;
+}
+html body #gamePanel [data-wp-frame-content="battle"] .build-panel {
+  grid-row:2!important;grid-column:1!important;min-height:0!important;overflow:auto!important;
+}
+@media (orientation:landscape) {
+  html body #gamePanel [data-wp-frame-content="battle"] .battle-layout {
+    grid-template-columns:minmax(0,1fr) minmax(180px,32%)!important;
+    grid-template-rows:minmax(0,1fr)!important;
+  }
+  html body #gamePanel [data-wp-frame-content="battle"] .build-panel {
+    grid-column:2!important;grid-row:1!important;
+  }
+}
+
 /* v14 short-landscape composition: keep the shared 760x334 envelope fully
    playable by putting the arena beside the compact build rail. */
 @media (orientation: landscape) and (max-height: 560px) {

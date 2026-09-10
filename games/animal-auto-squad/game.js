@@ -11,15 +11,9 @@
   stagePanel?.setAttribute("data-wp-stage-landscape-width", "760");
   stagePanel?.setAttribute("data-wp-stage-landscape-height", "334");
   gamePanel?.setAttribute("data-wp-logical-battle-canvas", "true");
-  // Mount the shared Battle header once, not when the first expedition opens.
-  const battleHeader = document.createElement("header");
-  battleHeader.className = "wp-generated-battle-header";
-  battleHeader.dataset.wpShellHeader = "battle";
-  battleHeader.append(document.getElementById("quitRunBtn"));
-  document.getElementById("gamePanel").prepend(battleHeader);
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v35";
+const GAME_VERSION = "v36";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -1432,7 +1426,7 @@
     quitRunBtn: $("quitRunBtn"),
     hintText: $("hintText")
   };
-  const gameShell = window.WeightPlayGameShell?.mount({
+  const gameShell = window.WeightPlayScreenFrame.mountSlots({
     gameId: GAME_ID,
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
@@ -3760,7 +3754,7 @@
     nodes.shopRow.setAttribute("aria-label", t("shopShelfItems"));
     nodes.gameCanvas.dataset.runtimeLocalize = "off";
     nodes.gameCanvas.setAttribute("aria-label", t("battleArena"));
-    nodes.quitRunBtn.textContent = "\u2190";
+    // The shared frame owns the return glyph; localization only owns its label.
     nodes.quitRunBtn.setAttribute("aria-label", t("quitRun"));
     $("quitRunTitle").textContent = t("quitRunTitle");
     $("quitRunText").textContent = t("quitConfirm", { stage: state.stage, round: state.round, hearts: state.hearts, supplies: state.gold });

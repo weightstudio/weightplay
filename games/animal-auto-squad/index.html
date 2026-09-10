@@ -41,14 +41,14 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-shared-shell-v38" />
-    <link rel="stylesheet" href="../../src/game-screen-shell.css?v=20260910-lobby-shell-pilot2" />
+  <link rel="stylesheet" href="style.css?v=20260911-one-frame-v36" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-one-frame" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false">
-    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root>
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root data-wp-frame-root>
       <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
@@ -131,7 +131,7 @@
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
       <section id="gamePanel" class="panel game-panel battle-screen play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
-        
+
         <!-- HUD Line -->
         <div class="hud-row">
           <div class="hud-return-slot" aria-hidden="true"></div>
@@ -145,7 +145,7 @@
         <!-- Preparation (Shop & Grid) Phase UI -->
         <div id="prepPhaseArea" class="prep-phase-area">
           <div id="foodGuide" class="food-guide" aria-live="polite"></div>
-          
+
           <!-- Squad Positions (Linear Row, Slots 1-5) -->
           <div class="squad-section">
             <h3 data-ui="yourSquadLabel">Active Squad (Top: Front Row | Bottom: Back Row)</h3>
@@ -301,8 +301,8 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <script src="../../src/game-screen-shell.js?v=20260910-lobby-shell-pilot1"></script>
-  <script src="game.js?v=20260910-auto-squad-shared-shell-v38"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-one-frame"></script>
+  <script src="game.js?v=20260911-one-frame-v36"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -317,6 +317,6 @@
         else window.setTimeout(loadGameInfo, 300);
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+
 </body>
 </html>

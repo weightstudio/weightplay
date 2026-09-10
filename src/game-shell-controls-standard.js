@@ -1,5 +1,8 @@
 (function () {
   "use strict";
+  // The single explicit frame owns these pages, even if an old route injector
+  // accidentally adds this retired implicit controller after game boot.
+  if (document.querySelector('[data-wp-frame-root],[data-wp-game-shell-root]')) return;
 
   const sharedAssetBase = new URL(".", document.currentScript?.src || location.href);
   const immutableSceneControls =

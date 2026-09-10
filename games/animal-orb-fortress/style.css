@@ -2486,3 +2486,12 @@ html[dir="rtl"] body.wp-shell-battle-active.orb-fortress-playing #gamePanel.game
   right: auto !important;
   direction: ltr !important;
 }
+/* Game-only arena fills the common content group, never the shared header. */
+html body #gamePanel #battleLive[data-wp-frame-content="battle"] {position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:100%!important;min-height:0!important;grid-row:2!important;overflow:hidden!important;padding:0!important;margin:0!important}
+/* The game rail fills its reserved group instead of inheriting display:contents. */
+html body #stagePanel [data-wp-frame-content="stage"] .stage-view-panel.is-active {
+  display:flex!important;flex-direction:column;min-height:0;overflow:auto;
+}
+html body #stagePanel [data-wp-frame-content="stage"] .stage-rail {
+  flex:1;min-height:118px!important;height:auto!important;align-items:center!important;
+}
