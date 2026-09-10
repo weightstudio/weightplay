@@ -2079,7 +2079,7 @@ window.WeightPlayGameInfoLocales.es = {
       "guideTitleSuffix": "Guía del juego",
       "noteTitle": "Información del jugador y guardado",
       "hideScoreBands": true,
-      "intro": "Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales, colocas hasta seis de ellos en un escuadrón de dos filas, eliges una reliquia de expedición y luego observas cómo la alineación resuelve cada enfrentamiento automáticamente. La campaña contiene 30 etapas en Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel y Void Crown. Cada etapa tiene cinco oleadas de autor, mientras que las etapas 5, 10, 15, 20, 25 y 30 terminan con un jefe regional diferente.",
+      "intro": "Animal Auto Squad es un juego de estrategia de formación basado en decisiones tomadas antes del combate. Desbloqueas y entrenas a diez héroes animales, colocas hasta seis de ellos en un escuadrón de dos filas y luego observas cómo la alineación resuelve cada enfrentamiento automáticamente. La campaña contiene 30 etapas en Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel y Void Crown. Cada etapa tiene cinco oleadas de autor, mientras que las etapas 5, 10, 15, 20, 25 y 30 terminan con un jefe regional diferente.",
       "story": [
         "La expedición sigue una cadena de rutas ocupadas por animales de las sombras, criaturas de cristal, guardianes con armadura, bestias rúnicas y cazadores de eclipses. El escuadrón comienza en Mossy Trail de Thornwood, luego avanza a través de Prism Heart, Sunken Crown, Caldera King, Midnight Court y los accesos rotos a Void Crown. Cada región presenta una combinación de enemigos y un encuentro final diferente; Limpiar los seis significa romper toda la cadena de bloqueos regionales.",
         "Actúas como comandante de escuadrón en lugar de como luchador en el campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle y los otros héroes desbloqueables tienen cada uno una regla de apoyo o objetivo específica. Tu trabajo es decidir cuáles seis viajan juntos y si pertenecen a la fila delantera o trasera antes de que comience el choque automatizado."
@@ -2087,7 +2087,7 @@ window.WeightPlayGameInfoLocales.es = {
       "systems": [
         "Formación: las tres ranuras superiores son la primera fila y las tres inferiores son la última fila. Apuntar es importante porque algunas unidades atacan al enemigo líder, Moon Cap Owl caza la última fila y Boom Mane Lion barre una fila completa.",
         "Roles de animales: atacantes, sanadores, escudos, amortiguadores de equipo y efectos débiles se resuelven automáticamente. Bubble Fin Otter y Rainbow Hop Rabbit protegen a los aliados debilitados, mientras que Drum Belly Panda y Moss Shell Turtle fortalecen la durabilidad del equipo.",
-        "Reliquias de expedición: elige Escudo de arce, Semilla de roble, Garra de sombra o Hoja de trébol para una regla general. La elección de una reliquia es gratuita; gastar 3 diamantes opcionales solo vuelve a lanzar las opciones ofrecidas.",
+        "Planificación de combate: lee las cinco oleadas y reserva Suministros para las funciones que quieras mantener hasta el final.",
         "Suministros Temporales: cada expedición comienza con 12 Suministros. Selecciona un animal con tu propiedad durante la preparación para comprar un nivel temporal que agrega ataque y salud para esa expedición. Los suministros obtenidos durante la batalla siguen siendo parte del recorrido actual.",
         "Crecimiento permanente: las oleadas despejadas otorgan XP de equipo y oro de entrenamiento. Los niveles de equipo agregan bonificaciones de ataque y salud compartidas, mientras que Training Gold desbloquea y mejora a los héroes normales hasta el nivel 20. Dos héroes premium usan diamantes opcionales en lugar de Training Gold."
       ],
@@ -2095,7 +2095,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Elige un escenario desbloqueado del carril de campaña horizontal; cada quinta etapa está marcada como etapa de jefe.",
         "Abre Entrenamiento cuando quieras gastar el oro de entrenamiento guardado, desbloquear otro héroe normal o inspeccionar la bonificación permanente de nivel de equipo.",
         "En el despliegue, toca un animal con tu propiedad en la mochila vertical y luego toca una de las seis ranuras de formación. Toca un animal colocado para moverlo o reemplazarlo.",
-        "Elige una reliquia de expedición y luego gasta los suministros de la carrera en mejoras temporales para los animales que deseas alinear.",
+        "Gasta los suministros de la carrera en mejoras temporales para los animales que deseas alinear.",
         "Pulsa Iniciar batalla. Los ataques, la curación, los escudos, la orientación por fila y las habilidades débiles se resuelven automáticamente según la formación elegida.",
         "Un equipo ganador se enfrenta inmediatamente a la siguiente ola. Una pérdida cuesta un Corazón y reabre la preparación; llegar a cero Corazones finaliza la carrera a menos que se acepte la reactivación opcional.",
         "Supera la quinta ola para salvar el escenario, Team XP, Training Gold y el siguiente escenario desbloqueado. Utilice Siguiente etapa, Reintentar o Volver a etapas en el panel Resultados."
@@ -2111,7 +2111,7 @@ window.WeightPlayGameInfoLocales.es = {
         "Las etapas 16 a 25 aumentan el tamaño de la formación y la superposición de habilidades. Ember Peak combina jabalíes cargados, tanques de obsidiana, corredores de grietas y lobos rúnicos; Moonlit Citadel agrega Night Panthers, Eclipse Bats, Rune Ravens y Shadow Jaguars. Las oleadas de jefes van acompañadas de otros enemigos, por lo que derrotar a la pieza central no es el único requisito.",
         "Las etapas 26 a 30 utilizan la lista completa de Void Crown. La etapa 29 puede presentar seis enemigos a la vez, igualando el tamaño máximo de escuadrón del jugador. La ola final de la Etapa 30 coloca al Emperador de la Corona del Vacío junto a escoltas de runas, eclipses y sombras, probando la cobertura de filas, la recuperación, el daño y el entrenamiento permanente obtenido a lo largo de la campaña."
       ],
-      "designNote": "La batalla automatizada es intencional: la ejecución es breve, por lo que el trabajo importante se realiza en formación, cobertura de roles, orden de objetivos, selección de reliquias y entrenamiento a largo plazo. Una ola exitosa fluye directamente hacia la siguiente para que la etapa de cinco olas se sienta como una expedición en lugar de cinco visitas de menú desconectadas. Las pérdidas reabren la preparación para que el jugador pueda responder en lugar de ver la misma configuración fallida repetidamente. Tocar, seleccionar y tocar en lugar admite la reproducción por teléfono, mientras que las mismas tarjetas siguen siendo utilizables con la entrada del mouse en el escritorio. En comparación con Animal Rune Tactics por turnos de WeightPlay o Animal Crystal Survivor en tiempo real, Animal Auto Squad le pide al jugador que elabore un plan y luego evalúe cómo funciona ese plan sin lanzar ataques durante el combate.",
+      "designNote": "La batalla automatizada es intencional: la ejecución es breve, por lo que el trabajo importante se realiza en formación, cobertura de roles, orden de objetivos y entrenamiento a largo plazo. Una ola exitosa fluye directamente hacia la siguiente para que la etapa de cinco olas se sienta como una expedición en lugar de cinco visitas de menú desconectadas. Las pérdidas reabren la preparación para que el jugador pueda responder en lugar de ver la misma configuración fallida repetidamente. Tocar, seleccionar y tocar en lugar admite la reproducción por teléfono, mientras que las mismas tarjetas siguen siendo utilizables con la entrada del mouse en el escritorio. En comparación con Animal Rune Tactics por turnos de WeightPlay o Animal Crystal Survivor en tiempo real, Animal Auto Squad le pide al jugador que elabore un plan y luego evalúe cómo funciona ese plan sin lanzar ataques durante el combate.",
       "parent": "Las etapas posteriores combinan formaciones de seis unidades, objetivos especializados, mejoras permanentes, presión de fracaso en el combate, habilidades de jefe y decisiones Diamante opcionales. El progreso de la campaña, la última formación desplegada y las posiciones de los espacios, el oro de entrenamiento, el nivel del equipo, los animales desbloqueados, los niveles permanentes de los animales, las etapas completadas y las opciones cosméticas se almacenan localmente en este navegador; no es necesario iniciar sesión para el juego básico. Borrar el almacenamiento del navegador de este sitio puede eliminar ese progreso local.",
       "faq": [
         [
@@ -2124,7 +2124,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Controlo los ataques durante la batalla?",
-          "No. Tú controlas la plantilla, las posiciones de dos filas, la reliquia y las mejoras temporales antes del combate. Luego, los animales atacan, curan, protegen y activan habilidades automáticamente."
+          "No. Tú controlas la plantilla, las posiciones de dos filas y las mejoras temporales antes del combate. Luego, los animales atacan, curan, protegen y activan habilidades automáticamente."
         ],
         [
           "¿Puedo reorganizar el escuadrón entre cada oleada?",
@@ -2136,7 +2136,7 @@ window.WeightPlayGameInfoLocales.es = {
         ],
         [
           "¿Qué hacen los diamantes?",
-          "Los diamantes son opcionales. Pueden volver a seleccionar opciones de reliquias, revivir una expedición fallida, desbloquear dos héroes premium o desbloquear el aspecto cosmético dorado; la progresión normal de la etapa no los requiere."
+          "Los diamantes son opcionales. Pueden revivir una expedición fallida, desbloquear dos héroes premium o desbloquear el aspecto cosmético dorado; la progresión normal de la etapa no los requiere."
         ],
         [
           "¿Qué avances se guardan?",
