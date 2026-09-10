@@ -198,6 +198,14 @@
     return Boolean(root && !root.hidden && !root.classList.contains("hidden") && root.getClientRects().length && getComputedStyle(root).visibility !== "hidden");
   }
 
+  function stageOwnerActive(rail) {
+    // Explicit multi-page Stage owners survive an internally hidden selector.
+    // Unmarked games retain their existing rail-driven lifecycle.
+    const workspace = rail.closest("[data-wp-stage-workspace]");
+    return workspace ? stageRootVisible(workspace)
+      : Boolean(rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+  }
+
   function clearStageVariables() {
     const style = document.documentElement.style;
     [
@@ -216,7 +224,7 @@
   function updateStageCanvas() {
     const reserveHeight = isKidsAudience() ? 0 : STAGE_RESERVE_HEIGHT;
     const activeRails = [...document.querySelectorAll("[data-wp-stage-rail]")]
-      .filter((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+      .filter(stageOwnerActive);
     document.querySelectorAll("[data-wp-logical-stage-canvas]").forEach((root) => {
       if (!activeRails.some((rail) => root.contains(rail))) root.removeAttribute("data-wp-logical-stage-canvas");
     });
@@ -328,7 +336,7 @@
 
   function updateStageState() {
     const activeRail = [...document.querySelectorAll("[data-wp-stage-rail]")]
-      .some((rail) => rail.getClientRects().length && getComputedStyle(rail).visibility !== "hidden");
+      .some(stageOwnerActive);
     const active = activeRail
       || (gameId() === "animal-auto-squad" && document.body.classList.contains("squad-stage-select"));
     document.body?.classList.toggle("wp-stage-select-active", active);

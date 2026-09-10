@@ -1643,6 +1643,7 @@
     document.body?.classList.toggle("crystal-playing", panel !== nodes.menuPanel && !stageOpen);
     document.body?.classList.toggle("wp-shell-stage-active", stageOpen);
     document.body?.classList.toggle("wp-shell-battle-active", panel !== nodes.menuPanel && !stageOpen);
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
     updateCrystalBattleViewport();
     if (resultOpen) requestAnimationFrame(updateCrystalBattleViewport);
   }

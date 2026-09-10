@@ -33,7 +33,7 @@ button { cursor:pointer; }
 .best-line { min-height:22px; margin:14px 4px 0; color:#52786d; font-weight:900; }
 .back-link:focus-visible, .locale-picker select:focus-visible, .primary:focus-visible, .secondary:focus-visible, .text-button:focus-visible { outline:3px solid rgba(228,163,78,.38); outline-offset:3px; }
 .status-row { display:flex; justify-content:space-between; gap:12px; color:#52786d; font-weight:900; }.coop-card{padding:clamp(20px,4vw,40px)}.scene-head{text-align:center}.scene-head h2{margin:8px 0 5px;font-size:clamp(28px,5vw,46px);letter-spacing:-.045em}.scene-hint{margin:0 auto 24px;color:var(--muted);line-height:1.45}.role-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.role-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff}.scout-card{background:linear-gradient(155deg,#fffaf1,#fff)}.guide-card-panel{background:linear-gradient(155deg,#f4fbf7,#fff)}.role-card h3{margin:4px 0 7px;font-size:22px}.role-card p:not(.role-kicker):not(.role-state){margin:0;color:var(--muted);line-height:1.45}.symbol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.symbol-button{min-height:104px;display:grid;place-items:center;align-content:center;gap:7px;border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-weight:900}.symbol-button:hover:not(:disabled),.symbol-button:focus-visible{border-color:var(--gold);outline:3px solid rgba(228,163,78,.18)}.symbol-button:disabled{cursor:not-allowed;opacity:.45;background:#f3f5f2}.symbol-glyph{font-size:30px;color:#bb7c37}.role-state{min-height:24px;margin:13px 0 0;color:#52786d;font-size:13px;font-weight:900}.feedback{min-height:30px;margin:20px 0 4px;text-align:center;color:#9b5a63;font-weight:900}.feedback.is-good{color:#3e8f67}.text-button{min-height:44px;border:0;background:transparent;color:var(--muted);text-decoration:underline;font-weight:900}.result-screen{display:grid;place-items:center}.result-card{width:min(640px,100%);padding:clamp(24px,5vw,52px);text-align:center}.result-card h2{margin:8px 0 12px;font-size:clamp(30px,6vw,50px);letter-spacing:-.05em}.result-card p:not(.guide-badge){color:var(--muted);font-size:18px;line-height:1.5}.result-stats{display:flex;justify-content:center;gap:22px;margin:24px 0;color:#52786d;font-weight:900}.result-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}footer{margin-top:22px;color:#728072;font-size:12px;text-align:center}
-@media (min-width:701px) and (max-width:1023px){.hero-card{grid-template-columns:300px minmax(0,1fr)}.lantern-art{width:300px}}
+@media (min-width:701px) and (max-width:1023px){.hero-card{grid-template-columns:420px minmax(0,1fr)}.lantern-art{width:420px}}
 @media (max-width:700px){.guide-shell{width:min(100% - 20px,560px);padding-top:10px}.topbar{grid-template-columns:1fr auto;gap:8px}.title-block{grid-column:1 / -1;grid-row:1;padding:0 56px;text-align:center}.back-link{grid-column:1;grid-row:1;z-index:1}.locale-picker{grid-column:2;grid-row:1;z-index:1}.locale-picker span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.hero-card{min-height:0;grid-template-columns:1fr;padding:25px 20px}.lantern-art{width:100%;max-width:420px;grid-column:1;grid-row:1}.hero-copy{grid-column:1;grid-row:2}.hero-copy h2{font-size:36px}.hero-copy p:not(.guide-badge):not(.solo-note){font-size:16px}.promise-grid{grid-template-columns:1fr}.promise-grid article{display:grid;grid-template-columns:38px 1fr;column-gap:10px}.promise-grid p{grid-column:2}.role-grid{grid-template-columns:1fr}.role-card{padding:17px}.symbol-button{min-height:88px}.result-stats{flex-direction:column;gap:8px}}
 [dir="rtl"] .back-link { flex-direction:row-reverse; }
 
@@ -103,3 +103,29 @@ body[data-screen="result"] .game-page-info { display:none; }
   .hero-copy h2 { margin:6px 0 10px; font-size:32px; }
 }
 .battle-canvas #leaveBtn { position:sticky; bottom:0; z-index:2; display:block; margin:20px 0 0; padding-inline:12px; border-radius:12px; background:rgba(255,255,255,.96); }
+
+/* Interface V6 compact-landscape contract: retain the canonical Main poster
+   and fit the complete co-op handoff inside the Battle Canvas above reserve. */
+@media (min-width:701px) and (max-width:1023px) and (max-height:500px) {
+  .hero-card { grid-template-columns:420px minmax(0,1fr); gap:16px; padding:12px; }
+  .lantern-art { width:420px; }
+  .battle-canvas { padding:8px 12px; overflow:hidden; }
+  .panel-head { min-height:44px; }
+  .battle-canvas .wp-shell-settings-button,.battle-canvas .utility-button { width:44px; height:44px; }
+  .coop-card { margin-top:4px; padding:6px 10px; }
+  .status-row { font-size:12px; }
+  .scene-head h2 { margin:2px 0; font-size:18px; }
+  .scene-hint { margin:0; font-size:12px; line-height:1.2; }
+  .handoffPrompt,.handoff-prompt { margin:2px auto; padding:4px 8px; font-size:12px; line-height:1.2; }
+  .role-grid { gap:8px; }
+  .role-card { padding:6px; }
+  .role-kicker { display:none; }
+  .role-card h3 { margin:0; font-size:14px; }
+  .role-card p:not(.role-kicker):not(.role-state) { font-size:11px; line-height:1.2; }
+  .symbol-grid { gap:4px; margin-top:4px; }
+  .symbol-button { min-height:44px; display:flex; gap:4px; padding:2px; font-size:11px; }
+  .symbol-glyph { font-size:18px; }
+  .role-state { min-height:14px; margin:2px 0 0; font-size:10px; }
+  .feedback { min-height:14px; margin:2px 0; font-size:11px; }
+  .battle-canvas #leaveBtn { position:static; min-height:44px; margin:0 auto; padding:0 12px; }
+}

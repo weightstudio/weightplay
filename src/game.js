@@ -1660,6 +1660,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
   const rewards = [coinItem, diamondItem, dropItems, unlockItem].filter(Boolean).join("");
   return `
     <div class="settlement-panel">
+      <div class="settlement-body" tabindex="0">
       <div class="settlement-row">
         <strong>${t("settlement_title")}</strong>
         <span>${wasChallenge ? t("settlement_new_clear") : t("settlement_reclear")}</span>
@@ -1668,6 +1669,7 @@ function renderSettlement(drops, wasChallenge, diamondReward = 0) {
         ${rewards || `<div class="reward-empty">${diamondReward > 0 ? t("settlement_diamond_hint") : t("settlement_no_drops")}</div>`}
       </div>
       ${renderSkillReport(true)}
+      </div>
       ${renderResultActions(true)}
     </div>
   `;
@@ -1702,11 +1704,13 @@ function renderDefeatActions() {
   settlementDecisionPending = false;
   return `
     <div class="settlement-panel">
+      <div class="settlement-body" tabindex="0">
       <div class="settlement-row">
         <strong>${t("defeat_title")}</strong>
         <span>${t("defeat_desc", { lvl: state.level.id, coins: state.coins })}</span>
       </div>
       ${renderSkillReport(false)}
+      </div>
       ${renderResultActions(false)}
     </div>
   `;
