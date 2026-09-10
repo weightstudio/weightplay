@@ -7,11 +7,12 @@
   // Mount the shared Battle header once, not when the first expedition opens.
   const battleHeader = document.createElement("header");
   battleHeader.className = "wp-generated-battle-header";
+  battleHeader.dataset.wpShellHeader = "battle";
   battleHeader.append(document.getElementById("quitRunBtn"));
   document.getElementById("gamePanel").prepend(battleHeader);
 
   const GAME_ID = "animal-auto-squad";
-  const GAME_VERSION = "v34";
+  const GAME_VERSION = "v35";
   const localeKey = "weightPlayLocale";
   const saveKey = "animal_auto_squad_save";
 
@@ -89,9 +90,6 @@
       gold: "Gold",
       supplies: "Supplies",
       hearts: "Hearts",
-      activeRelic: "Relic",
-      chooseRelic: "Choose an Expedition Relic",
-      relicDesc: "Select one relic to buff your squad for the entire expedition run.",
       defeatTitle: "Expedition Failed!",
       reviveHint: "Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?",
       giveUp: "Give Up",
@@ -120,9 +118,6 @@
       skinPurchaseNeed: "Permanently unlock and equip Golden Skin. Requires 15 Diamonds. Current balance {balance}.",
       equipSkin: "Equip Golden Skin",
       unequipSkin: "Equip Normal Skin",
-      relicReroll: "Reroll Relics (3 💎)",
-      relicRerollDecision: "Reroll both relic choices. Spend 3 Diamonds. Balance {before} to {after}.",
-      relicRerollNeed: "Reroll both relic choices. Requires 3 Diamonds. Current balance {balance}.",
       reviveAction: "Revive (5 💎)",
       winText: "Victory! You defeated the shadow beasts.",
       failText: "Defeat! Your squad fainted.",
@@ -139,7 +134,7 @@
       noGold: "Not enough gold!",
       noSupplies: "Not enough supplies!",
       needSquad: "Position at least one animal in your squad before entering battle!",
-      quitConfirm: "Stage {stage}, Wave {round}/5, Hearts {hearts}/4, Supplies {supplies}. Leaving loses this run's temporary squad, relic, and unsettled progress; permanent training and unlocked stages stay safe.",
+      quitConfirm: "Stage {stage}, Wave {round}/5, Hearts {hearts}/4, Supplies {supplies}. Leaving loses this run's temporary squad and unsettled progress; permanent training and unlocked stages stay safe.",
       quitRunTitle: "Leave Expedition?",
       keepPlaying: "Keep Playing",
       confirmQuit: "Leave Expedition",
@@ -171,10 +166,6 @@
       resultGoldEarned: "Training Gold +{earned} · Total {total}",
       resultStageSaved: "Stages unlocked {unlocked}/{total}",
       resultGrowthNext: "Permanent bonus ATK +{atk} / HP +{hp} · {remaining} XP to next Team Level",
-      relicMaple: "Maple Shield: Front unit starts with Melon Shield.",
-      relicOak: "Oak Seed: All units gain +1 Health in battle.",
-      relicShadow: "Shadow Claw: All units gain +1 Attack in battle.",
-      relicClover: "Clover Leaf: First shop reroll each round is free.",
       roundNum: "Stage {stage} - Wave {round}/5",
       teamLevelValue: "Lv.{level}  XP {xp}/{goal}"
     },
@@ -200,9 +191,6 @@
       round: "回合",
       gold: "金幣",
       hearts: "生命值",
-      activeRelic: "聖物",
-      chooseRelic: "選擇一個遠征聖物",
-      relicDesc: "選擇一個聖物，為你的小隊在整場遠征中提供加成。",
       defeatTitle: "遠征失敗！",
       reviveHint: "你的生命值歸零了。花費 5 顆鑽石復活並以 2 生命值繼續遠征？",
       giveUp: "放棄",
@@ -222,7 +210,6 @@
       skinPurchaseNeed: "永久解鎖並裝備黃金外觀需要 15 鑽石。目前餘額 {balance}。",
       equipSkin: "使用黃金外觀",
       unequipSkin: "使用普通外觀",
-      relicReroll: "重置聖物 (3 💎)",
       reviveAction: "復活 (5 💎)",
       winText: "勝利！你擊退了暗影野獸。",
       failText: "戰敗！你的小隊全數昏厥。",
@@ -238,14 +225,10 @@
       noDiamonds: "鑽石不足！",
       noGold: "金幣不足！",
       needSquad: "請先把至少一名動物放進作戰小隊，再開始戰鬥！",
-      quitConfirm: "第 {stage} 關，第 {round}/5 波，生命 {hearts}/4，補給 {supplies}。離開會失去本輪臨時小隊、聖物與未結算進度；永久訓練與已解鎖關卡不受影響。",
+      quitConfirm: "第 {stage} 關，第 {round}/5 波，生命 {hearts}/4，補給 {supplies}。離開會失去本輪臨時小隊與未結算進度；永久訓練與已解鎖關卡不受影響。",
       quitRunTitle: "要離開遠征嗎？",
       keepPlaying: "繼續遠征",
       confirmQuit: "離開遠征",
-      relicMaple: "楓葉護盾：前線單位戰鬥開始時獲得甜瓜護盾。",
-      relicOak: "橡樹種子：全體單位在戰鬥中獲得 +1 生命。",
-      relicShadow: "暗影爪痕：全體單位在戰鬥中獲得 +1 攻擊力。",
-      relicClover: "幸運草：每回合第一次商店重置免費。",
       roundNum: "第 {stage} 關 - 第 {round}/5 波"
     }
   };
@@ -321,9 +304,6 @@
     gold: "Oro",
     supplies: "Suministros",
     hearts: "Corazones",
-    activeRelic: "Reliquia",
-    chooseRelic: "Elige una reliquia de expedición",
-    relicDesc: "Elige una reliquia que potencie al escuadrón durante toda la expedición.",
     defeatTitle: "¡Expedición fallida!",
     reviveHint: "Tus corazones llegaron a 0. ¿Gastar 5 diamantes para revivir con 2 corazones y continuar?",
     giveUp: "Rendirse",
@@ -351,9 +331,6 @@
     skinPurchaseNeed: "Desbloquear y equipar permanentemente el aspecto dorado requiere 15 diamantes. Saldo actual {balance}.",
     equipSkin: "Equipar aspecto dorado",
     unequipSkin: "Equipar aspecto normal",
-    relicReroll: "Cambiar reliquias (3 💎)",
-    relicRerollDecision: "Cambiar las dos reliquias. Gasta 3 diamantes. Saldo de {before} a {after}.",
-    relicRerollNeed: "Cambiar las dos reliquias requiere 3 diamantes. Saldo actual {balance}.",
     reviveAction: "Revivir (5 💎)",
     winText: "¡Victoria! Derrotaste a las bestias sombrías.",
     failText: "¡Derrota! Tu escuadrón cayó.",
@@ -382,10 +359,6 @@
     resultGoldEarned: "Oro de entrenamiento +{earned} · Total {total}",
     resultStageSaved: "Niveles desbloqueados {unlocked}/{total}",
     resultGrowthNext: "Bonificación permanente ATQ +{atk} / PV +{hp} · faltan {remaining} XP para subir",
-    relicMaple: "Escudo de Arce: la unidad frontal empieza con Escudo de Melón.",
-    relicOak: "Semilla de Roble: todas las unidades ganan +1 PV en batalla.",
-    relicShadow: "Garra Sombría: todas las unidades ganan +1 ATQ en batalla.",
-    relicClover: "Hoja de Trébol: el primer cambio de tienda de cada ronda es gratis.",
     roundNum: "Nivel {stage} - Oleada {round}/5",
     teamLevelValue: "Nv.{level}  XP {xp}/{goal}"
   };
@@ -412,8 +385,7 @@
     stageCleared: "クリア済み", stageLocked: "前のステージをクリア", stageProgress: "解放 {unlocked}/{total}", stageWaveCount: "全{count}ウェーブ",
     stageEnemyRange: "敵：{first}～{last}体", stageBoss: "ボス", nextStage: "次のステージ",
     stageClearText: "ステージ{stage}クリア！ ステージ{next}を解放しました。", allStagesClearText: "全30ステージと6地域のボスを制覇！ 好きなステージを再挑戦できます。",
-    gold: "ゴールド", supplies: "物資", hearts: "ハート", activeRelic: "レリック", none: "なし",
-    chooseRelic: "遠征レリックを選択", relicDesc: "遠征中ずっとスクワッドを強化するレリックを1つ選びます。",
+    gold: "ゴールド", supplies: "物資", hearts: "ハート", none: "なし",
     defeatTitle: "遠征失敗", reviveHint: "ハートが0になりました。ダイヤ5個でハート2つを回復し、遠征を続けますか？",
     giveUp: "あきらめる", retry: "もう一度", backToMenu: "メインメニュー", backToStages: "ステージへ戻る", quitRun: "遠征を中断",
     combatIntro: "バトル準備！", nextWaveCombat: "ウェーブ {round}/{total}：新たな敵が接近！", bossIncoming: "ボス：{boss}",
@@ -423,8 +395,7 @@
     backpackHint: "所持動物だけを表示します。編成後、物資で今回の遠征中だけ強化できます。", reroll: "更新", freeze: "固定", unfreeze: "固定解除",
     buySkin: "ゴールデンスキン解放（ダイヤ15）", skinPurchaseDecision: "ゴールデンスキンを恒久解放して装備します。もう一度選んで確定：{before} → {after} ダイヤ。",
     skinPurchaseNeed: "ゴールデンスキンの恒久解放にはダイヤ15個が必要です。現在 {balance} 個。", equipSkin: "ゴールデンスキンを装備",
-    unequipSkin: "通常スキンを装備", relicReroll: "レリック再抽選（ダイヤ3）", relicRerollDecision: "2つの候補を再抽選します。ダイヤ3個を使用：{before} → {after}。",
-    relicRerollNeed: "再抽選にはダイヤ3個が必要です。現在 {balance} 個。", reviveAction: "復活（ダイヤ5）",
+    unequipSkin: "通常スキンを装備", reviveAction: "復活（ダイヤ5）",
     winText: "勝利！ 影の獣を倒しました。", failText: "敗北。スクワッドが力尽きました。", drawText: "引き分け。両スクワッドが同時に力尽きました。",
     expeditionClear: "遠征クリア！", expeditionFail: "遠征失敗", skillReport: "論理的な判断、計画、戦術配置を練習できました！",
     skillsLearned: "練習したスキル：論理、問題解決、戦略的計画。", appleDesc: "リンゴ：攻撃/HP +1/+1", honeyDesc: "ハチミツ：HP +2。購入時ゴールド +1",
@@ -436,8 +407,6 @@
     savedProgress: "保存済み進行", resultXpEarned: "チームXP +{earned}・Lv.{level}・XP {xp}/{goal}",
     resultGoldEarned: "トレーニングゴールド +{earned}・合計 {total}", resultStageSaved: "解放済みステージ {unlocked}/{total}",
     resultGrowthNext: "恒久ボーナス 攻撃 +{atk} / HP +{hp}・次のチームレベルまで {remaining} XP",
-    relicMaple: "メイプルシールド：前線ユニットがメロンシールドを得て開始。", relicOak: "オークの種：全ユニットのHP +1。",
-    relicShadow: "シャドークロー：全ユニットの攻撃 +1。", relicClover: "クローバー：各ウェーブ最初のショップ更新が無料。",
     roundNum: "ステージ{stage} - ウェーブ{round}/5", teamLevelValue: "Lv.{level}  XP {xp}/{goal}", attackShort: "攻", healthShort: "HP"
   };
 
@@ -466,8 +435,7 @@
     stageWaveCount: "{count} موجات", stageEnemyRange: "الأعداء: من {first} إلى {last}", stageBoss: "زعيم",
     nextStage: "المرحلة التالية", stageClearText: "اكتملت المرحلة {stage}! فُتحت المرحلة {next}.",
     allStagesClearText: "اكتملت المراحل الثلاثون وزعماء المناطق الستة! أعد أي مرحلة لتحسين فرقتك.",
-    gold: "الذهب", supplies: "المؤن", hearts: "القلوب", activeRelic: "الأثر", none: "لا شيء",
-    chooseRelic: "اختر أثرًا للرحلة", relicDesc: "اختر أثرًا يمنح فرقتك تعزيزًا طوال الرحلة.",
+    gold: "الذهب", supplies: "المؤن", hearts: "القلوب", none: "لا شيء",
     defeatTitle: "فشلت الرحلة!", reviveHint: "وصلت قلوبك إلى صفر. هل تنفق 5 ألماسات للعودة بقلبيْن ومتابعة الرحلة؟",
     giveUp: "إنهاء الرحلة", retry: "حاول مجددًا", backToMenu: "القائمة الرئيسية", backToStages: "العودة إلى المراحل",
     quitRun: "مغادرة الرحلة", combatIntro: "استعد للمعركة!", nextWaveCombat: "الموجة {round}/{total}: أعداء جدد قادمون!",
@@ -479,9 +447,7 @@
     reroll: "إعادة السحب", freeze: "تجميد", unfreeze: "إلغاء التجميد", buySkin: "فتح المظهر الذهبي (15 💎)",
     skinPurchaseDecision: "افتح المظهر الذهبي وجهّزه دائمًا. اضغط مرة أخرى للتأكيد: {before} ← {after} ألماسة.",
     skinPurchaseNeed: "فتح المظهر الذهبي وتجهيزه يحتاج إلى 15 ألماسة. الرصيد الحالي {balance}.",
-    equipSkin: "تجهيز المظهر الذهبي", unequipSkin: "تجهيز المظهر العادي", relicReroll: "إعادة سحب الآثار (3 💎)",
-    relicRerollDecision: "أعد سحب خياري الأثر. ستنفق 3 ألماسات. الرصيد من {before} إلى {after}.",
-    relicRerollNeed: "إعادة السحب تحتاج إلى 3 ألماسات. الرصيد الحالي {balance}.", reviveAction: "إحياء (5 💎)",
+    equipSkin: "تجهيز المظهر الذهبي", unequipSkin: "تجهيز المظهر العادي", reviveAction: "إحياء (5 💎)",
     winText: "انتصار! هزمت وحوش الظل.", failText: "هزيمة! سقطت فرقتك.", drawText: "تعادل! سقط الفريقان في الوقت نفسه.",
     expeditionClear: "اكتملت الرحلة!", expeditionFail: "فشلت الرحلة!", skillReport: "تحسّن الاستنتاج المنطقي والتخطيط والتموضع التكتيكي!",
     skillsLearned: "المهارات المتدرّبة: المنطق، حل المشكلات، والتخطيط الاستراتيجي.", appleDesc: "التفاحة: +1/+1 إلى الإحصاءات",
@@ -494,8 +460,6 @@
     teamBonusNext: "المتبقي للمستوى التالي للفريق: {remaining} خبرة.", savedProgress: "التقدم المحفوظ",
     resultXpEarned: "خبرة الفريق +{earned} · المستوى {level} · الخبرة {xp}/{goal}", resultGoldEarned: "ذهب التدريب +{earned} · الإجمالي {total}",
     resultStageSaved: "المراحل المفتوحة {unlocked}/{total}", resultGrowthNext: "التعزيز الدائم: هجوم +{atk} / صحة +{hp} · {remaining} خبرة للمستوى التالي",
-    relicMaple: "درع القيقب: تبدأ الوحدة الأمامية بدرع الشمام.", relicOak: "بذرة البلوط: تحصل كل الوحدات على +1 صحة في المعركة.",
-    relicShadow: "مخلب الظل: تحصل كل الوحدات على +1 هجوم في المعركة.", relicClover: "ورقة البرسيم: أول إعادة سحب للمتجر في كل موجة مجانية.",
     roundNum: "المرحلة {stage} - الموجة {round}/5", teamLevelValue: "المستوى {level}  الخبرة {xp}/{goal}",
     attackShort: "هجوم", healthShort: "صحة"
   };
@@ -506,28 +470,28 @@
   // English base plus a partially translated runtime phrase.
   const localeOwnedDecisionCopy = {
     "zh-Hans": {
-      title: "动物自动小队", backToLobby: "返回 WeightPlay 大厅", back: "返回", languageSelection: "语言选择", stageSelection: "关卡选择", stageTab: "关卡", trainingTab: "训练", stageSwipe: "↔ 滑动关卡", stageDeploy: "点击已解锁关卡出发", stageSetup: "滑动浏览六个区域，选择已解锁关卡，然后准备阵型。", chooseExpedition: "开始游戏", menuTitle: "训练并布置你的动物小队！", menuHint: "训练动物，征服六个区域的 30 个五波关卡。", bestExpedition: "已解锁关卡", expeditionsCleared: "已通关次数", teamLevel: "队伍等级", diamonds: "钻石", startBattle: "开始战斗", yourSquadLabel: "主动小队（上：前排｜下：后排）", benchLabel: "储备区", shopLabel: "角色背包", round: "波次", stage: "关卡", chooseStage: "选择关卡", stageReady: "可挑战", stageCleared: "已通关", stageLocked: "通关上一关", stageProgress: "已解锁 {unlocked}/{total}", stageWaveCount: "{count} 波", stageEnemyRange: "敌人：{first} 至 {last}", stageBoss: "首领", nextStage: "下一关", chooseRelic: "选择远征遗物", relicDesc: "选择一个遗物，为本次远征的小队提供加成。", foodGuideTitle: "食物效果", guideHint: "点击已拥有的动物，再点击小队位置。上下滑动背包可查看全部角色。", combatIntro: "准备战斗！", nextWaveCombat: "第 {round}/{total} 波：新的敌人来了！", combatSummary: "小队生命 {playerHp}/{playerMax} | 敌人生命 {enemyHp}/{enemyMax}", combatFront: "前排：{player} 对 {enemy}", retry: "再试一次", backToMenu: "主菜单", backToStages: "返回关卡", expeditionClear: "远征通关！", expeditionFail: "远征失败！", winText: "胜利！你击败了暗影野兽。", failText: "失败！你的小队全部倒下。", drawText: "平局！双方小队同时倒下。", stageBoss: "首领", activeSquadSlots: "主动小队位置", shopShelfItems: "角色背包物品", emptyFormationSlot: "空的阵型位置", emptySlot: "空位置", activeSquad: "主动小队", expeditionBackpack: "远征背包", formationFrontRow: "前排", formationBackRow: "后排", formationLeftPosition: "左侧位置", formationCenterPosition: "中间位置", formationRightPosition: "右侧位置", slotPosition: "位置 {index}", deployedTo: "已部署到", selectedSkillTitle: "已选动物", selectCharacterHint: "点击动物查看定位和技能。", battleArena: "动物自动小队竞技场", retry: "再试一次", roundNum: "关卡 {stage} - 第 {round}/5 波"
+      title: "动物自动小队", backToLobby: "返回 WeightPlay 大厅", back: "返回", languageSelection: "语言选择", stageSelection: "关卡选择", stageTab: "关卡", trainingTab: "训练", stageSwipe: "↔ 滑动关卡", stageDeploy: "点击已解锁关卡出发", stageSetup: "滑动浏览六个区域，选择已解锁关卡，然后准备阵型。", chooseExpedition: "开始游戏", menuTitle: "训练并布置你的动物小队！", menuHint: "训练动物，征服六个区域的 30 个五波关卡。", bestExpedition: "已解锁关卡", expeditionsCleared: "已通关次数", teamLevel: "队伍等级", diamonds: "钻石", startBattle: "开始战斗", yourSquadLabel: "主动小队（上：前排｜下：后排）", benchLabel: "储备区", shopLabel: "角色背包", round: "波次", stage: "关卡", chooseStage: "选择关卡", stageReady: "可挑战", stageCleared: "已通关", stageLocked: "通关上一关", stageProgress: "已解锁 {unlocked}/{total}", stageWaveCount: "{count} 波", stageEnemyRange: "敌人：{first} 至 {last}", stageBoss: "首领", nextStage: "下一关", foodGuideTitle: "食物效果", guideHint: "点击已拥有的动物，再点击小队位置。上下滑动背包可查看全部角色。", combatIntro: "准备战斗！", nextWaveCombat: "第 {round}/{total} 波：新的敌人来了！", combatSummary: "小队生命 {playerHp}/{playerMax} | 敌人生命 {enemyHp}/{enemyMax}", combatFront: "前排：{player} 对 {enemy}", retry: "再试一次", backToMenu: "主菜单", backToStages: "返回关卡", expeditionClear: "远征通关！", expeditionFail: "远征失败！", winText: "胜利！你击败了暗影野兽。", failText: "失败！你的小队全部倒下。", drawText: "平局！双方小队同时倒下。", stageBoss: "首领", activeSquadSlots: "主动小队位置", shopShelfItems: "角色背包物品", emptyFormationSlot: "空的阵型位置", emptySlot: "空位置", activeSquad: "主动小队", expeditionBackpack: "远征背包", formationFrontRow: "前排", formationBackRow: "后排", formationLeftPosition: "左侧位置", formationCenterPosition: "中间位置", formationRightPosition: "右侧位置", slotPosition: "位置 {index}", deployedTo: "已部署到", selectedSkillTitle: "已选动物", selectCharacterHint: "点击动物查看定位和技能。", battleArena: "动物自动小队竞技场", retry: "再试一次", roundNum: "关卡 {stage} - 第 {round}/5 波"
     },
     ko: {
-      title: "애니멀 오토 스쿼드", backToLobby: "WeightPlay 로비로 돌아가기", back: "돌아가기", languageSelection: "언어 선택", stageSelection: "스테이지 선택", stageTab: "스테이지", trainingTab: "훈련", stageSwipe: "↔ 스테이지 스와이프", stageDeploy: "잠금 해제된 스테이지를 눌러 출발", stageSetup: "여섯 지역을 살펴보고 잠금 해제된 스테이지를 선택한 뒤 편성을 준비하세요.", chooseExpedition: "게임 시작", menuTitle: "동물 스쿼드를 훈련하고 배치하세요!", menuHint: "동물을 훈련해 여섯 지역의 30개 5웨이브 스테이지를 정복하세요.", bestExpedition: "잠금 해제된 스테이지", expeditionsCleared: "클리어한 원정", teamLevel: "팀 레벨", diamonds: "다이아", startBattle: "전투 시작", yourSquadLabel: "활성 스쿼드 (위: 전열 | 아래: 후열)", benchLabel: "대기 벤치", shopLabel: "캐릭터 배낭", round: "웨이브", stage: "스테이지", chooseStage: "스테이지 선택", stageReady: "도전 가능", stageCleared: "클리어", stageLocked: "이전 스테이지 클리어", stageProgress: "잠금 해제 {unlocked}/{total}", stageWaveCount: "{count}개 웨이브", stageEnemyRange: "적: {first}~{last}", stageBoss: "보스", nextStage: "다음 스테이지", chooseRelic: "원정 유물 선택", relicDesc: "원정 전체에서 스쿼드를 강화할 유물 하나를 선택하세요.", foodGuideTitle: "음식 효과", guideHint: "보유 동물을 선택한 다음 스쿼드 칸을 선택하세요. 배낭을 세로로 스크롤해 모든 동물을 확인하세요.", combatIntro: "전투 준비!", nextWaveCombat: "웨이브 {round}/{total}: 새 적이 다가옵니다!", combatSummary: "스쿼드 HP {playerHp}/{playerMax} | 적 HP {enemyHp}/{enemyMax}", combatFront: "전열: {player} 대 {enemy}", retry: "다시 시도", backToMenu: "메인 메뉴", backToStages: "스테이지로 돌아가기", expeditionClear: "원정 클리어!", expeditionFail: "원정 실패!", upgradeRun: "원정 업그레이드 ({cost} 보급품)", winText: "승리! 그림자 야수를 물리쳤습니다.", failText: "패배! 스쿼드가 모두 쓰러졌습니다.", drawText: "무승부! 양쪽 스쿼드가 동시에 쓰러졌습니다.", activeSquadSlots: "활성 스쿼드 칸", shopShelfItems: "캐릭터 배낭 아이템", emptyFormationSlot: "빈 편성 칸", emptySlot: "빈 칸", activeSquad: "활성 스쿼드", expeditionBackpack: "원정 배낭", formationFrontRow: "전열", formationBackRow: "후열", formationLeftPosition: "왼쪽 위치", formationCenterPosition: "가운데 위치", formationRightPosition: "오른쪽 위치", slotPosition: "칸 {index}", deployedTo: "배치 위치", selectedSkillTitle: "선택한 동물", selectCharacterHint: "동물을 눌러 역할과 스킬을 확인하세요.", battleArena: "애니멀 오토 스쿼드 전장", roundNum: "스테이지 {stage} - 웨이브 {round}/5"
+      title: "애니멀 오토 스쿼드", backToLobby: "WeightPlay 로비로 돌아가기", back: "돌아가기", languageSelection: "언어 선택", stageSelection: "스테이지 선택", stageTab: "스테이지", trainingTab: "훈련", stageSwipe: "↔ 스테이지 스와이프", stageDeploy: "잠금 해제된 스테이지를 눌러 출발", stageSetup: "여섯 지역을 살펴보고 잠금 해제된 스테이지를 선택한 뒤 편성을 준비하세요.", chooseExpedition: "게임 시작", menuTitle: "동물 스쿼드를 훈련하고 배치하세요!", menuHint: "동물을 훈련해 여섯 지역의 30개 5웨이브 스테이지를 정복하세요.", bestExpedition: "잠금 해제된 스테이지", expeditionsCleared: "클리어한 원정", teamLevel: "팀 레벨", diamonds: "다이아", startBattle: "전투 시작", yourSquadLabel: "활성 스쿼드 (위: 전열 | 아래: 후열)", benchLabel: "대기 벤치", shopLabel: "캐릭터 배낭", round: "웨이브", stage: "스테이지", chooseStage: "스테이지 선택", stageReady: "도전 가능", stageCleared: "클리어", stageLocked: "이전 스테이지 클리어", stageProgress: "잠금 해제 {unlocked}/{total}", stageWaveCount: "{count}개 웨이브", stageEnemyRange: "적: {first}~{last}", stageBoss: "보스", nextStage: "다음 스테이지", foodGuideTitle: "음식 효과", guideHint: "보유 동물을 선택한 다음 스쿼드 칸을 선택하세요. 배낭을 세로로 스크롤해 모든 동물을 확인하세요.", combatIntro: "전투 준비!", nextWaveCombat: "웨이브 {round}/{total}: 새 적이 다가옵니다!", combatSummary: "스쿼드 HP {playerHp}/{playerMax} | 적 HP {enemyHp}/{enemyMax}", combatFront: "전열: {player} 대 {enemy}", retry: "다시 시도", backToMenu: "메인 메뉴", backToStages: "스테이지로 돌아가기", expeditionClear: "원정 클리어!", expeditionFail: "원정 실패!", upgradeRun: "원정 업그레이드 ({cost} 보급품)", winText: "승리! 그림자 야수를 물리쳤습니다.", failText: "패배! 스쿼드가 모두 쓰러졌습니다.", drawText: "무승부! 양쪽 스쿼드가 동시에 쓰러졌습니다.", activeSquadSlots: "활성 스쿼드 칸", shopShelfItems: "캐릭터 배낭 아이템", emptyFormationSlot: "빈 편성 칸", emptySlot: "빈 칸", activeSquad: "활성 스쿼드", expeditionBackpack: "원정 배낭", formationFrontRow: "전열", formationBackRow: "후열", formationLeftPosition: "왼쪽 위치", formationCenterPosition: "가운데 위치", formationRightPosition: "오른쪽 위치", slotPosition: "칸 {index}", deployedTo: "배치 위치", selectedSkillTitle: "선택한 동물", selectCharacterHint: "동물을 눌러 역할과 스킬을 확인하세요.", battleArena: "애니멀 오토 스쿼드 전장", roundNum: "스테이지 {stage} - 웨이브 {round}/5"
     },
     "pt-BR": {
-      title: "Esquadrão Animal Automático", backToLobby: "Voltar ao lobby do WeightPlay", back: "Voltar", languageSelection: "Seleção de idioma", stageSelection: "Seleção de fase", stageTab: "Fases", trainingTab: "Treinamento", stageSwipe: "↔ Deslize pelas fases", stageDeploy: "Toque em uma fase desbloqueada para partir", stageSetup: "Passe pelas seis regiões, escolha uma fase desbloqueada e prepare sua formação.", chooseExpedition: "Iniciar jogo", menuTitle: "Treine e posicione seu esquadrão animal!", menuHint: "Treine animais e supere 30 fases de cinco ondas em seis regiões.", bestExpedition: "Fases desbloqueadas", expeditionsCleared: "Expedições concluídas", teamLevel: "Nível da equipe", diamonds: "Diamantes", startBattle: "Iniciar batalha", yourSquadLabel: "Esquadrão ativo (acima: frente | abaixo: retaguarda)", benchLabel: "Reserva", shopLabel: "Mochila de personagens", round: "Onda", stage: "Fase", chooseStage: "Escolher fase", stageReady: "Pronta", stageCleared: "Concluída", stageLocked: "Conclua a fase anterior", stageProgress: "Desbloqueadas {unlocked}/{total}", stageWaveCount: "{count} ondas", stageEnemyRange: "Inimigos: {first} a {last}", stageBoss: "Chefe", nextStage: "Próxima fase", chooseRelic: "Escolha uma relíquia da expedição", relicDesc: "Escolha uma relíquia para fortalecer seu esquadrão durante toda a expedição.", foodGuideTitle: "Efeitos dos alimentos", guideHint: "Toque em um animal obtido e depois em um espaço. Deslize a mochila para ver todos.", combatIntro: "Prepare-se para a batalha!", nextWaveCombat: "Onda {round}/{total}: novos inimigos chegando!", combatSummary: "Vida da equipe {playerHp}/{playerMax} | Vida inimiga {enemyHp}/{enemyMax}", combatFront: "Frente: {player} contra {enemy}", retry: "Tentar novamente", backToMenu: "Menu principal", backToStages: "Voltar às fases", expeditionClear: "Expedição concluída!", expeditionFail: "Expedição falhou!", upgradeRun: "Melhoria da expedição ({cost} suprimentos)", winText: "Vitória! Você derrotou as feras sombrias.", failText: "Derrota! Seu esquadrão caiu.", drawText: "Empate! As duas equipes caíram ao mesmo tempo.", activeSquadSlots: "Espaços do esquadrão ativo", shopShelfItems: "Itens da mochila de personagens", emptyFormationSlot: "Espaço de formação vazio", emptySlot: "Espaço vazio", activeSquad: "esquadrão ativo", expeditionBackpack: "mochila da expedição", formationFrontRow: "linha de frente", formationBackRow: "retaguarda", formationLeftPosition: "posição esquerda", formationCenterPosition: "posição central", formationRightPosition: "posição direita", slotPosition: "espaço {index}", deployedTo: "posicionado em", selectedSkillTitle: "Animal selecionado", selectCharacterHint: "Toque em um animal para ver sua função e habilidade.", battleArena: "Arena do Esquadrão Animal Automático", roundNum: "Fase {stage} - Onda {round}/5"
+      title: "Esquadrão Animal Automático", backToLobby: "Voltar ao lobby do WeightPlay", back: "Voltar", languageSelection: "Seleção de idioma", stageSelection: "Seleção de fase", stageTab: "Fases", trainingTab: "Treinamento", stageSwipe: "↔ Deslize pelas fases", stageDeploy: "Toque em uma fase desbloqueada para partir", stageSetup: "Passe pelas seis regiões, escolha uma fase desbloqueada e prepare sua formação.", chooseExpedition: "Iniciar jogo", menuTitle: "Treine e posicione seu esquadrão animal!", menuHint: "Treine animais e supere 30 fases de cinco ondas em seis regiões.", bestExpedition: "Fases desbloqueadas", expeditionsCleared: "Expedições concluídas", teamLevel: "Nível da equipe", diamonds: "Diamantes", startBattle: "Iniciar batalha", yourSquadLabel: "Esquadrão ativo (acima: frente | abaixo: retaguarda)", benchLabel: "Reserva", shopLabel: "Mochila de personagens", round: "Onda", stage: "Fase", chooseStage: "Escolher fase", stageReady: "Pronta", stageCleared: "Concluída", stageLocked: "Conclua a fase anterior", stageProgress: "Desbloqueadas {unlocked}/{total}", stageWaveCount: "{count} ondas", stageEnemyRange: "Inimigos: {first} a {last}", stageBoss: "Chefe", nextStage: "Próxima fase", foodGuideTitle: "Efeitos dos alimentos", guideHint: "Toque em um animal obtido e depois em um espaço. Deslize a mochila para ver todos.", combatIntro: "Prepare-se para a batalha!", nextWaveCombat: "Onda {round}/{total}: novos inimigos chegando!", combatSummary: "Vida da equipe {playerHp}/{playerMax} | Vida inimiga {enemyHp}/{enemyMax}", combatFront: "Frente: {player} contra {enemy}", retry: "Tentar novamente", backToMenu: "Menu principal", backToStages: "Voltar às fases", expeditionClear: "Expedição concluída!", expeditionFail: "Expedição falhou!", upgradeRun: "Melhoria da expedição ({cost} suprimentos)", winText: "Vitória! Você derrotou as feras sombrias.", failText: "Derrota! Seu esquadrão caiu.", drawText: "Empate! As duas equipes caíram ao mesmo tempo.", activeSquadSlots: "Espaços do esquadrão ativo", shopShelfItems: "Itens da mochila de personagens", emptyFormationSlot: "Espaço de formação vazio", emptySlot: "Espaço vazio", activeSquad: "esquadrão ativo", expeditionBackpack: "mochila da expedição", formationFrontRow: "linha de frente", formationBackRow: "retaguarda", formationLeftPosition: "posição esquerda", formationCenterPosition: "posição central", formationRightPosition: "posição direita", slotPosition: "espaço {index}", deployedTo: "posicionado em", selectedSkillTitle: "Animal selecionado", selectCharacterHint: "Toque em um animal para ver sua função e habilidade.", battleArena: "Arena do Esquadrão Animal Automático", roundNum: "Fase {stage} - Onda {round}/5"
     },
     fr: {
-      title: "Escouade animale automatique", backToLobby: "Retour au lobby WeightPlay", back: "Retour", languageSelection: "Choix de la langue", stageSelection: "Sélection de niveau", stageTab: "Niveaux", trainingTab: "Entraînement", stageSwipe: "↔ Faites défiler les niveaux", stageDeploy: "Touchez un niveau débloqué pour partir", stageSetup: "Parcourez les six régions, choisissez un niveau débloqué, puis préparez votre formation.", chooseExpedition: "Commencer", menuTitle: "Entraînez et placez votre escouade animale !", menuHint: "Entraînez vos animaux et franchissez 30 niveaux de cinq vagues dans six régions.", bestExpedition: "Niveaux débloqués", expeditionsCleared: "Expéditions réussies", teamLevel: "Niveau de l'équipe", diamonds: "Diamants", startBattle: "Commencer le combat", yourSquadLabel: "Équipe active (haut : avant | bas : arrière)", benchLabel: "Réserve", shopLabel: "Sac de personnages", round: "Vague", stage: "Niveau", chooseStage: "Choisir un niveau", stageReady: "Prêt", stageCleared: "Terminé", stageLocked: "Terminez le niveau précédent", stageProgress: "Débloqués {unlocked}/{total}", stageWaveCount: "{count} vagues", stageEnemyRange: "Ennemis : {first} à {last}", stageBoss: "Boss", nextStage: "Niveau suivant", chooseRelic: "Choisir une relique d'expédition", relicDesc: "Choisissez une relique qui renforce votre équipe pendant toute l'expédition.", foodGuideTitle: "Effets de nourriture", guideHint: "Touchez un animal possédé, puis une case. Faites défiler le sac pour tous les voir.", combatIntro: "Préparez-vous au combat !", nextWaveCombat: "Vague {round}/{total} : de nouveaux ennemis arrivent !", combatSummary: "PV de l'équipe {playerHp}/{playerMax} | PV ennemis {enemyHp}/{enemyMax}", combatFront: "Avant : {player} contre {enemy}", retry: "Réessayer", backToMenu: "Menu principal", backToStages: "Retour aux niveaux", expeditionClear: "Expédition réussie !", expeditionFail: "Expédition échouée !", upgradeRun: "Amélioration de l’expédition ({cost} provisions)", winText: "Victoire ! Vous avez vaincu les bêtes de l'ombre.", failText: "Défaite ! Votre équipe est tombée.", drawText: "Égalité ! Les deux équipes sont tombées en même temps.", activeSquadSlots: "Emplacements de l'équipe active", shopShelfItems: "Personnages du sac", emptyFormationSlot: "Emplacement de formation vide", emptySlot: "Emplacement vide", activeSquad: "équipe active", expeditionBackpack: "sac d'expédition", formationFrontRow: "première ligne", formationBackRow: "ligne arrière", formationLeftPosition: "position gauche", formationCenterPosition: "position centrale", formationRightPosition: "position droite", slotPosition: "emplacement {index}", deployedTo: "déployé à", selectedSkillTitle: "Animal sélectionné", selectCharacterHint: "Touchez un animal pour voir son rôle et sa compétence.", battleArena: "Arène de l'Escouade animale automatique", roundNum: "Niveau {stage} - Vague {round}/5"
+      title: "Escouade animale automatique", backToLobby: "Retour au lobby WeightPlay", back: "Retour", languageSelection: "Choix de la langue", stageSelection: "Sélection de niveau", stageTab: "Niveaux", trainingTab: "Entraînement", stageSwipe: "↔ Faites défiler les niveaux", stageDeploy: "Touchez un niveau débloqué pour partir", stageSetup: "Parcourez les six régions, choisissez un niveau débloqué, puis préparez votre formation.", chooseExpedition: "Commencer", menuTitle: "Entraînez et placez votre escouade animale !", menuHint: "Entraînez vos animaux et franchissez 30 niveaux de cinq vagues dans six régions.", bestExpedition: "Niveaux débloqués", expeditionsCleared: "Expéditions réussies", teamLevel: "Niveau de l'équipe", diamonds: "Diamants", startBattle: "Commencer le combat", yourSquadLabel: "Équipe active (haut : avant | bas : arrière)", benchLabel: "Réserve", shopLabel: "Sac de personnages", round: "Vague", stage: "Niveau", chooseStage: "Choisir un niveau", stageReady: "Prêt", stageCleared: "Terminé", stageLocked: "Terminez le niveau précédent", stageProgress: "Débloqués {unlocked}/{total}", stageWaveCount: "{count} vagues", stageEnemyRange: "Ennemis : {first} à {last}", stageBoss: "Boss", nextStage: "Niveau suivant", foodGuideTitle: "Effets de nourriture", guideHint: "Touchez un animal possédé, puis une case. Faites défiler le sac pour tous les voir.", combatIntro: "Préparez-vous au combat !", nextWaveCombat: "Vague {round}/{total} : de nouveaux ennemis arrivent !", combatSummary: "PV de l'équipe {playerHp}/{playerMax} | PV ennemis {enemyHp}/{enemyMax}", combatFront: "Avant : {player} contre {enemy}", retry: "Réessayer", backToMenu: "Menu principal", backToStages: "Retour aux niveaux", expeditionClear: "Expédition réussie !", expeditionFail: "Expédition échouée !", upgradeRun: "Amélioration de l’expédition ({cost} provisions)", winText: "Victoire ! Vous avez vaincu les bêtes de l'ombre.", failText: "Défaite ! Votre équipe est tombée.", drawText: "Égalité ! Les deux équipes sont tombées en même temps.", activeSquadSlots: "Emplacements de l'équipe active", shopShelfItems: "Personnages du sac", emptyFormationSlot: "Emplacement de formation vide", emptySlot: "Emplacement vide", activeSquad: "équipe active", expeditionBackpack: "sac d'expédition", formationFrontRow: "première ligne", formationBackRow: "ligne arrière", formationLeftPosition: "position gauche", formationCenterPosition: "position centrale", formationRightPosition: "position droite", slotPosition: "emplacement {index}", deployedTo: "déployé à", selectedSkillTitle: "Animal sélectionné", selectCharacterHint: "Touchez un animal pour voir son rôle et sa compétence.", battleArena: "Arène de l'Escouade animale automatique", roundNum: "Niveau {stage} - Vague {round}/5"
     },
     de: {
-      title: "Tierisches Auto-Team", backToLobby: "Zurück zur WeightPlay-Lobby", back: "Zurück", languageSelection: "Sprachauswahl", stageSelection: "Stufenauswahl", stageTab: "Stufen", trainingTab: "Training", stageSwipe: "↔ Stufen wischen", stageDeploy: "Tippe auf eine freigeschaltete Stufe", stageSetup: "Wische durch sechs Regionen, wähle eine freigeschaltete Stufe und bereite deine Formation vor.", chooseExpedition: "Spiel starten", menuTitle: "Trainiere und platziere dein Tierteam!", menuHint: "Trainiere Tiere und bezwinge 30 Fünf-Wellen-Stufen in sechs Regionen.", bestExpedition: "Freigeschaltete Stufen", expeditionsCleared: "Geschaffte Expeditionen", teamLevel: "Teamstufe", diamonds: "Diamanten", startBattle: "Kampf starten", yourSquadLabel: "Aktives Team (oben: vorne | unten: hinten)", benchLabel: "Reserve", shopLabel: "Charakter-Rucksack", round: "Welle", stage: "Stufe", chooseStage: "Stufe wählen", stageReady: "Bereit", stageCleared: "Geschafft", stageLocked: "Schließe die vorherige Stufe ab", stageProgress: "Freigeschaltet {unlocked}/{total}", stageWaveCount: "{count} Wellen", stageEnemyRange: "Gegner: {first} bis {last}", stageBoss: "Boss", nextStage: "Nächste Stufe", chooseRelic: "Expeditionsrelikt wählen", relicDesc: "Wähle ein Relikt, das dein Team für die ganze Expedition stärkt.", foodGuideTitle: "Nahrungseffekte", guideHint: "Tippe auf ein eigenes Tier und dann auf einen Platz. Scrolle den Rucksack, um alle zu sehen.", combatIntro: "Bereit für den Kampf!", nextWaveCombat: "Welle {round}/{total}: Neue Gegner kommen!", combatSummary: "Team-TP {playerHp}/{playerMax} | Gegner-TP {enemyHp}/{enemyMax}", combatFront: "Vorne: {player} gegen {enemy}", retry: "Erneut versuchen", backToMenu: "Hauptmenü", backToStages: "Zurück zu den Stufen", expeditionClear: "Expedition geschafft!", expeditionFail: "Expedition gescheitert!", upgradeRun: "Expeditions-Upgrade ({cost} Vorräte)", winText: "Sieg! Du hast die Schattenbestien besiegt.", failText: "Niederlage! Dein Team ist gefallen.", drawText: "Unentschieden! Beide Teams sind gleichzeitig gefallen.", activeSquadSlots: "Plätze des aktiven Teams", shopShelfItems: "Charaktere im Rucksack", emptyFormationSlot: "Leerer Formationsplatz", emptySlot: "Leerer Platz", activeSquad: "aktives Team", expeditionBackpack: "Expeditionsrucksack", formationFrontRow: "vordere Reihe", formationBackRow: "hintere Reihe", formationLeftPosition: "linke Position", formationCenterPosition: "mittlere Position", formationRightPosition: "rechte Position", slotPosition: "Platz {index}", deployedTo: "platziert auf", selectedSkillTitle: "Ausgewähltes Tier", selectCharacterHint: "Tippe auf ein Tier für Rolle und Fähigkeit.", battleArena: "Arena des Tierischen Auto-Teams", roundNum: "Stufe {stage} - Welle {round}/5"
+      title: "Tierisches Auto-Team", backToLobby: "Zurück zur WeightPlay-Lobby", back: "Zurück", languageSelection: "Sprachauswahl", stageSelection: "Stufenauswahl", stageTab: "Stufen", trainingTab: "Training", stageSwipe: "↔ Stufen wischen", stageDeploy: "Tippe auf eine freigeschaltete Stufe", stageSetup: "Wische durch sechs Regionen, wähle eine freigeschaltete Stufe und bereite deine Formation vor.", chooseExpedition: "Spiel starten", menuTitle: "Trainiere und platziere dein Tierteam!", menuHint: "Trainiere Tiere und bezwinge 30 Fünf-Wellen-Stufen in sechs Regionen.", bestExpedition: "Freigeschaltete Stufen", expeditionsCleared: "Geschaffte Expeditionen", teamLevel: "Teamstufe", diamonds: "Diamanten", startBattle: "Kampf starten", yourSquadLabel: "Aktives Team (oben: vorne | unten: hinten)", benchLabel: "Reserve", shopLabel: "Charakter-Rucksack", round: "Welle", stage: "Stufe", chooseStage: "Stufe wählen", stageReady: "Bereit", stageCleared: "Geschafft", stageLocked: "Schließe die vorherige Stufe ab", stageProgress: "Freigeschaltet {unlocked}/{total}", stageWaveCount: "{count} Wellen", stageEnemyRange: "Gegner: {first} bis {last}", stageBoss: "Boss", nextStage: "Nächste Stufe", foodGuideTitle: "Nahrungseffekte", guideHint: "Tippe auf ein eigenes Tier und dann auf einen Platz. Scrolle den Rucksack, um alle zu sehen.", combatIntro: "Bereit für den Kampf!", nextWaveCombat: "Welle {round}/{total}: Neue Gegner kommen!", combatSummary: "Team-TP {playerHp}/{playerMax} | Gegner-TP {enemyHp}/{enemyMax}", combatFront: "Vorne: {player} gegen {enemy}", retry: "Erneut versuchen", backToMenu: "Hauptmenü", backToStages: "Zurück zu den Stufen", expeditionClear: "Expedition geschafft!", expeditionFail: "Expedition gescheitert!", upgradeRun: "Expeditions-Upgrade ({cost} Vorräte)", winText: "Sieg! Du hast die Schattenbestien besiegt.", failText: "Niederlage! Dein Team ist gefallen.", drawText: "Unentschieden! Beide Teams sind gleichzeitig gefallen.", activeSquadSlots: "Plätze des aktiven Teams", shopShelfItems: "Charaktere im Rucksack", emptyFormationSlot: "Leerer Formationsplatz", emptySlot: "Leerer Platz", activeSquad: "aktives Team", expeditionBackpack: "Expeditionsrucksack", formationFrontRow: "vordere Reihe", formationBackRow: "hintere Reihe", formationLeftPosition: "linke Position", formationCenterPosition: "mittlere Position", formationRightPosition: "rechte Position", slotPosition: "Platz {index}", deployedTo: "platziert auf", selectedSkillTitle: "Ausgewähltes Tier", selectCharacterHint: "Tippe auf ein Tier für Rolle und Fähigkeit.", battleArena: "Arena des Tierischen Auto-Teams", roundNum: "Stufe {stage} - Welle {round}/5"
     },
     it: {
-      title: "Squadra animale automatica", backToLobby: "Torna alla lobby WeightPlay", back: "Indietro", languageSelection: "Scelta della lingua", stageSelection: "Scelta del livello", stageTab: "Livelli", trainingTab: "Addestramento", stageSwipe: "↔ Scorri i livelli", stageDeploy: "Tocca un livello sbloccato per partire", stageSetup: "Scorri le sei regioni, scegli un livello sbloccato e prepara la formazione.", chooseExpedition: "Inizia gioco", menuTitle: "Allena e posiziona la tua squadra animale!", menuHint: "Allena gli animali e supera 30 livelli da cinque ondate in sei regioni.", bestExpedition: "Livelli sbloccati", expeditionsCleared: "Spedizioni completate", teamLevel: "Livello squadra", diamonds: "Diamanti", startBattle: "Inizia battaglia", yourSquadLabel: "Squadra attiva (sopra: fronte | sotto: retro)", benchLabel: "Riserva", shopLabel: "Zaino personaggi", round: "Ondata", stage: "Livello", chooseStage: "Scegli livello", stageReady: "Pronto", stageCleared: "Completato", stageLocked: "Completa il livello precedente", stageProgress: "Sbloccati {unlocked}/{total}", stageWaveCount: "{count} ondate", stageEnemyRange: "Nemici: da {first} a {last}", stageBoss: "Boss", nextStage: "Livello successivo", chooseRelic: "Scegli una reliquia della spedizione", relicDesc: "Scegli una reliquia che potenzi la squadra per tutta la spedizione.", foodGuideTitle: "Effetti del cibo", guideHint: "Tocca un animale posseduto e poi uno spazio. Scorri lo zaino per vederli tutti.", combatIntro: "Preparati alla battaglia!", nextWaveCombat: "Ondata {round}/{total}: arrivano nuovi nemici!", combatSummary: "PS squadra {playerHp}/{playerMax} | PS nemici {enemyHp}/{enemyMax}", combatFront: "Fronte: {player} contro {enemy}", retry: "Riprova", backToMenu: "Menu principale", backToStages: "Torna ai livelli", expeditionClear: "Spedizione completata!", expeditionFail: "Spedizione fallita!", upgradeRun: "Miglioria spedizione ({cost} provviste)", winText: "Vittoria! Hai sconfitto le bestie ombra.", failText: "Sconfitta! La tua squadra è caduta.", drawText: "Pareggio! Entrambe le squadre sono cadute insieme.", activeSquadSlots: "Spazi della squadra attiva", shopShelfItems: "Oggetti dello zaino personaggi", emptyFormationSlot: "Spazio formazione vuoto", emptySlot: "Spazio vuoto", activeSquad: "squadra attiva", expeditionBackpack: "zaino spedizione", formationFrontRow: "prima fila", formationBackRow: "retroguardia", formationLeftPosition: "posizione sinistra", formationCenterPosition: "posizione centrale", formationRightPosition: "posizione destra", slotPosition: "spazio {index}", deployedTo: "posizionato in", selectedSkillTitle: "Animale selezionato", selectCharacterHint: "Tocca un animale per vedere ruolo e abilità.", battleArena: "Arena della Squadra animale automatica", roundNum: "Livello {stage} - Ondata {round}/5"
+      title: "Squadra animale automatica", backToLobby: "Torna alla lobby WeightPlay", back: "Indietro", languageSelection: "Scelta della lingua", stageSelection: "Scelta del livello", stageTab: "Livelli", trainingTab: "Addestramento", stageSwipe: "↔ Scorri i livelli", stageDeploy: "Tocca un livello sbloccato per partire", stageSetup: "Scorri le sei regioni, scegli un livello sbloccato e prepara la formazione.", chooseExpedition: "Inizia gioco", menuTitle: "Allena e posiziona la tua squadra animale!", menuHint: "Allena gli animali e supera 30 livelli da cinque ondate in sei regioni.", bestExpedition: "Livelli sbloccati", expeditionsCleared: "Spedizioni completate", teamLevel: "Livello squadra", diamonds: "Diamanti", startBattle: "Inizia battaglia", yourSquadLabel: "Squadra attiva (sopra: fronte | sotto: retro)", benchLabel: "Riserva", shopLabel: "Zaino personaggi", round: "Ondata", stage: "Livello", chooseStage: "Scegli livello", stageReady: "Pronto", stageCleared: "Completato", stageLocked: "Completa il livello precedente", stageProgress: "Sbloccati {unlocked}/{total}", stageWaveCount: "{count} ondate", stageEnemyRange: "Nemici: da {first} a {last}", stageBoss: "Boss", nextStage: "Livello successivo", foodGuideTitle: "Effetti del cibo", guideHint: "Tocca un animale posseduto e poi uno spazio. Scorri lo zaino per vederli tutti.", combatIntro: "Preparati alla battaglia!", nextWaveCombat: "Ondata {round}/{total}: arrivano nuovi nemici!", combatSummary: "PS squadra {playerHp}/{playerMax} | PS nemici {enemyHp}/{enemyMax}", combatFront: "Fronte: {player} contro {enemy}", retry: "Riprova", backToMenu: "Menu principale", backToStages: "Torna ai livelli", expeditionClear: "Spedizione completata!", expeditionFail: "Spedizione fallita!", upgradeRun: "Miglioria spedizione ({cost} provviste)", winText: "Vittoria! Hai sconfitto le bestie ombra.", failText: "Sconfitta! La tua squadra è caduta.", drawText: "Pareggio! Entrambe le squadre sono cadute insieme.", activeSquadSlots: "Spazi della squadra attiva", shopShelfItems: "Oggetti dello zaino personaggi", emptyFormationSlot: "Spazio formazione vuoto", emptySlot: "Spazio vuoto", activeSquad: "squadra attiva", expeditionBackpack: "zaino spedizione", formationFrontRow: "prima fila", formationBackRow: "retroguardia", formationLeftPosition: "posizione sinistra", formationCenterPosition: "posizione centrale", formationRightPosition: "posizione destra", slotPosition: "spazio {index}", deployedTo: "posizionato in", selectedSkillTitle: "Animale selezionato", selectCharacterHint: "Tocca un animale per vedere ruolo e abilità.", battleArena: "Arena della Squadra animale automatica", roundNum: "Livello {stage} - Ondata {round}/5"
     },
     ru: {
-      title: "Автокоманда животных", backToLobby: "Вернуться в лобби WeightPlay", back: "Назад", languageSelection: "Выбор языка", stageSelection: "Выбор этапа", stageTab: "Этапы", trainingTab: "Тренировка", stageSwipe: "↔ Листайте этапы", stageDeploy: "Нажмите на открытый этап, чтобы начать", stageSetup: "Просмотрите шесть регионов, выберите открытый этап и подготовьте строй.", chooseExpedition: "Начать игру", menuTitle: "Тренируйте и расставляйте отряд животных!", menuHint: "Тренируйте животных и проходите 30 этапов по пять волн в шести регионах.", bestExpedition: "Открытые этапы", expeditionsCleared: "Пройденные экспедиции", teamLevel: "Уровень отряда", diamonds: "Алмазы", startBattle: "Начать бой", yourSquadLabel: "Активный отряд (сверху: фронт | снизу: тыл)", benchLabel: "Резерв", shopLabel: "Рюкзак персонажей", round: "Волна", stage: "Этап", chooseStage: "Выберите этап", stageReady: "Готов", stageCleared: "Пройден", stageLocked: "Пройдите предыдущий этап", stageProgress: "Открыто {unlocked}/{total}", stageWaveCount: "Волн: {count}", stageEnemyRange: "Враги: от {first} до {last}", stageBoss: "Босс", nextStage: "Следующий этап", chooseRelic: "Выберите реликвию экспедиции", relicDesc: "Выберите реликвию, которая усилит отряд на всю экспедицию.", foodGuideTitle: "Эффекты еды", guideHint: "Нажмите на животное, затем на ячейку отряда. Листайте рюкзак, чтобы увидеть всех персонажей.", combatIntro: "Приготовьтесь к бою!", nextWaveCombat: "Волна {round}/{total}: приближаются новые враги!", combatSummary: "Здоровье отряда {playerHp}/{playerMax} | Здоровье врага {enemyHp}/{enemyMax}", combatFront: "Фронт: {player} против {enemy}", retry: "Попробовать снова", backToMenu: "Главное меню", backToStages: "К этапам", expeditionClear: "Экспедиция пройдена!", expeditionFail: "Экспедиция провалена!", upgradeRun: "Улучшение экспедиции ({cost} припасов)", winText: "Победа! Вы победили теневых зверей.", failText: "Поражение! Весь ваш отряд пал.", drawText: "Ничья! Оба отряда пали одновременно.", activeSquadSlots: "Ячейки активного отряда", shopShelfItems: "Предметы в рюкзаке", emptyFormationSlot: "Пустая ячейка строя", emptySlot: "Пустая ячейка", activeSquad: "активный отряд", expeditionBackpack: "рюкзак экспедиции", formationFrontRow: "передний ряд", formationBackRow: "задний ряд", formationLeftPosition: "левая позиция", formationCenterPosition: "центральная позиция", formationRightPosition: "правая позиция", slotPosition: "ячейка {index}", deployedTo: "размещено в", selectedSkillTitle: "Выбранное животное", selectCharacterHint: "Нажмите на животное, чтобы увидеть его роль и способность.", battleArena: "Арена автокоманды животных", roundNum: "Этап {stage} - волна {round}/5"
+      title: "Автокоманда животных", backToLobby: "Вернуться в лобби WeightPlay", back: "Назад", languageSelection: "Выбор языка", stageSelection: "Выбор этапа", stageTab: "Этапы", trainingTab: "Тренировка", stageSwipe: "↔ Листайте этапы", stageDeploy: "Нажмите на открытый этап, чтобы начать", stageSetup: "Просмотрите шесть регионов, выберите открытый этап и подготовьте строй.", chooseExpedition: "Начать игру", menuTitle: "Тренируйте и расставляйте отряд животных!", menuHint: "Тренируйте животных и проходите 30 этапов по пять волн в шести регионах.", bestExpedition: "Открытые этапы", expeditionsCleared: "Пройденные экспедиции", teamLevel: "Уровень отряда", diamonds: "Алмазы", startBattle: "Начать бой", yourSquadLabel: "Активный отряд (сверху: фронт | снизу: тыл)", benchLabel: "Резерв", shopLabel: "Рюкзак персонажей", round: "Волна", stage: "Этап", chooseStage: "Выберите этап", stageReady: "Готов", stageCleared: "Пройден", stageLocked: "Пройдите предыдущий этап", stageProgress: "Открыто {unlocked}/{total}", stageWaveCount: "Волн: {count}", stageEnemyRange: "Враги: от {first} до {last}", stageBoss: "Босс", nextStage: "Следующий этап", foodGuideTitle: "Эффекты еды", guideHint: "Нажмите на животное, затем на ячейку отряда. Листайте рюкзак, чтобы увидеть всех персонажей.", combatIntro: "Приготовьтесь к бою!", nextWaveCombat: "Волна {round}/{total}: приближаются новые враги!", combatSummary: "Здоровье отряда {playerHp}/{playerMax} | Здоровье врага {enemyHp}/{enemyMax}", combatFront: "Фронт: {player} против {enemy}", retry: "Попробовать снова", backToMenu: "Главное меню", backToStages: "К этапам", expeditionClear: "Экспедиция пройдена!", expeditionFail: "Экспедиция провалена!", upgradeRun: "Улучшение экспедиции ({cost} припасов)", winText: "Победа! Вы победили теневых зверей.", failText: "Поражение! Весь ваш отряд пал.", drawText: "Ничья! Оба отряда пали одновременно.", activeSquadSlots: "Ячейки активного отряда", shopShelfItems: "Предметы в рюкзаке", emptyFormationSlot: "Пустая ячейка строя", emptySlot: "Пустая ячейка", activeSquad: "активный отряд", expeditionBackpack: "рюкзак экспедиции", formationFrontRow: "передний ряд", formationBackRow: "задний ряд", formationLeftPosition: "левая позиция", formationCenterPosition: "центральная позиция", formationRightPosition: "правая позиция", slotPosition: "ячейка {index}", deployedTo: "размещено в", selectedSkillTitle: "Выбранное животное", selectCharacterHint: "Нажмите на животное, чтобы увидеть его роль и способность.", battleArena: "Арена автокоманды животных", roundNum: "Этап {stage} - волна {round}/5"
     },
     hi: {
-      title: "ऑटो एनिमल स्क्वाड", backToLobby: "WeightPlay लॉबी में लौटें", back: "वापस", languageSelection: "भाषा चुनें", stageSelection: "चरण चुनें", stageTab: "चरण", trainingTab: "प्रशिक्षण", stageSwipe: "↔ चरणों को स्वाइप करें", stageDeploy: "खुले चरण पर टैप करके आगे बढ़ें", stageSetup: "छह क्षेत्रों में देखें, खुला चरण चुनें और अपना गठन तैयार करें।", chooseExpedition: "खेल शुरू करें", menuTitle: "अपने पशु दल को प्रशिक्षित और व्यवस्थित करें!", menuHint: "पशुओं को प्रशिक्षित करें और छह क्षेत्रों के 30 पांच-लहर चरण पार करें।", bestExpedition: "खुले चरण", expeditionsCleared: "पूरे किए गए अभियान", teamLevel: "दल स्तर", diamonds: "हीरे", startBattle: "लड़ाई शुरू करें", yourSquadLabel: "सक्रिय दल (ऊपर: आगे की पंक्ति | नीचे: पीछे की पंक्ति)", benchLabel: "आरक्षित स्थान", shopLabel: "चरित्र बैकपैक", round: "लहर", stage: "चरण", chooseStage: "चरण चुनें", stageReady: "तैयार", stageCleared: "पूरा हुआ", stageLocked: "पिछला चरण पूरा करें", stageProgress: "खुले {unlocked}/{total}", stageWaveCount: "{count} लहरें", stageEnemyRange: "शत्रु: {first} से {last}", stageBoss: "बॉस", nextStage: "अगला चरण", chooseRelic: "अभियान का अवशेष चुनें", relicDesc: "पूरे अभियान में दल को मजबूत करने वाला एक अवशेष चुनें।", foodGuideTitle: "भोजन के प्रभाव", guideHint: "अपने पशु पर टैप करें, फिर दल के स्थान पर टैप करें। सभी पात्र देखने के लिए बैकपैक स्क्रॉल करें।", combatIntro: "लड़ाई के लिए तैयार!", nextWaveCombat: "लहर {round}/{total}: नए शत्रु आ रहे हैं!", combatSummary: "दल का स्वास्थ्य {playerHp}/{playerMax} | शत्रु स्वास्थ्य {enemyHp}/{enemyMax}", combatFront: "आगे: {player} बनाम {enemy}", retry: "फिर प्रयास करें", backToMenu: "मुख्य मेनू", backToStages: "चरणों पर लौटें", expeditionClear: "अभियान पूरा हुआ!", expeditionFail: "अभियान विफल!", upgradeRun: "अभियान उन्नयन ({cost} रसद)", winText: "जीत! आपने छाया पशुओं को हरा दिया।", failText: "हार! आपका दल गिर गया।", drawText: "बराबरी! दोनों दल एक साथ गिर गए।", activeSquadSlots: "सक्रिय दल के स्थान", shopShelfItems: "चरित्र बैकपैक की वस्तुएँ", emptyFormationSlot: "खाली गठन स्थान", emptySlot: "खाली स्थान", activeSquad: "सक्रिय दल", expeditionBackpack: "अभियान बैकपैक", formationFrontRow: "आगे की पंक्ति", formationBackRow: "पीछे की पंक्ति", formationLeftPosition: "बायाँ स्थान", formationCenterPosition: "बीच का स्थान", formationRightPosition: "दायाँ स्थान", slotPosition: "स्थान {index}", deployedTo: "यहाँ रखा", selectedSkillTitle: "चुना हुआ पशु", selectCharacterHint: "भूमिका और कौशल देखने के लिए पशु पर टैप करें।", battleArena: "ऑटो एनिमल स्क्वाड एरीना", roundNum: "चरण {stage} - लहर {round}/5"
+      title: "ऑटो एनिमल स्क्वाड", backToLobby: "WeightPlay लॉबी में लौटें", back: "वापस", languageSelection: "भाषा चुनें", stageSelection: "चरण चुनें", stageTab: "चरण", trainingTab: "प्रशिक्षण", stageSwipe: "↔ चरणों को स्वाइप करें", stageDeploy: "खुले चरण पर टैप करके आगे बढ़ें", stageSetup: "छह क्षेत्रों में देखें, खुला चरण चुनें और अपना गठन तैयार करें।", chooseExpedition: "खेल शुरू करें", menuTitle: "अपने पशु दल को प्रशिक्षित और व्यवस्थित करें!", menuHint: "पशुओं को प्रशिक्षित करें और छह क्षेत्रों के 30 पांच-लहर चरण पार करें।", bestExpedition: "खुले चरण", expeditionsCleared: "पूरे किए गए अभियान", teamLevel: "दल स्तर", diamonds: "हीरे", startBattle: "लड़ाई शुरू करें", yourSquadLabel: "सक्रिय दल (ऊपर: आगे की पंक्ति | नीचे: पीछे की पंक्ति)", benchLabel: "आरक्षित स्थान", shopLabel: "चरित्र बैकपैक", round: "लहर", stage: "चरण", chooseStage: "चरण चुनें", stageReady: "तैयार", stageCleared: "पूरा हुआ", stageLocked: "पिछला चरण पूरा करें", stageProgress: "खुले {unlocked}/{total}", stageWaveCount: "{count} लहरें", stageEnemyRange: "शत्रु: {first} से {last}", stageBoss: "बॉस", nextStage: "अगला चरण", foodGuideTitle: "भोजन के प्रभाव", guideHint: "अपने पशु पर टैप करें, फिर दल के स्थान पर टैप करें। सभी पात्र देखने के लिए बैकपैक स्क्रॉल करें।", combatIntro: "लड़ाई के लिए तैयार!", nextWaveCombat: "लहर {round}/{total}: नए शत्रु आ रहे हैं!", combatSummary: "दल का स्वास्थ्य {playerHp}/{playerMax} | शत्रु स्वास्थ्य {enemyHp}/{enemyMax}", combatFront: "आगे: {player} बनाम {enemy}", retry: "फिर प्रयास करें", backToMenu: "मुख्य मेनू", backToStages: "चरणों पर लौटें", expeditionClear: "अभियान पूरा हुआ!", expeditionFail: "अभियान विफल!", upgradeRun: "अभियान उन्नयन ({cost} रसद)", winText: "जीत! आपने छाया पशुओं को हरा दिया।", failText: "हार! आपका दल गिर गया।", drawText: "बराबरी! दोनों दल एक साथ गिर गए।", activeSquadSlots: "सक्रिय दल के स्थान", shopShelfItems: "चरित्र बैकपैक की वस्तुएँ", emptyFormationSlot: "खाली गठन स्थान", emptySlot: "खाली स्थान", activeSquad: "सक्रिय दल", expeditionBackpack: "अभियान बैकपैक", formationFrontRow: "आगे की पंक्ति", formationBackRow: "पीछे की पंक्ति", formationLeftPosition: "बायाँ स्थान", formationCenterPosition: "बीच का स्थान", formationRightPosition: "दायाँ स्थान", slotPosition: "स्थान {index}", deployedTo: "यहाँ रखा", selectedSkillTitle: "चुना हुआ पशु", selectCharacterHint: "भूमिका और कौशल देखने के लिए पशु पर टैप करें।", battleArena: "ऑटो एनिमल स्क्वाड एरीना", roundNum: "चरण {stage} - लहर {round}/5"
     }
   };
   Object.entries(localeOwnedDecisionCopy).forEach(([key, copy]) => { text[key] = { ...(text[key] || {}), ...copy }; });
@@ -544,20 +508,6 @@
   Object.entries(localeOwnedBackpackHints).forEach(([locale, value]) => {
     localeOwnedDecisionCopy[locale].backpackHint = value;
     text[locale] = { ...(text[locale] || {}), backpackHint: value };
-  });
-
-  const localeOwnedRelicRerollLabels = {
-    ko: "유물 재추첨 (다이아 3개)",
-    "pt-BR": "Rerrolar relíquias (3 💎)",
-    fr: "Relancer les reliques (3 💎)",
-    de: "Relikte neu würfeln (3 💎)",
-    it: "Rilancia reliquie (3 💎)",
-    ru: "Перебросить реликвии (3 💎)",
-    hi: "अवशेष फिर चुनें (3 💎)"
-  };
-  Object.entries(localeOwnedRelicRerollLabels).forEach(([locale, value]) => {
-    localeOwnedDecisionCopy[locale].relicReroll = value;
-    text[locale] = { ...(text[locale] || {}), relicReroll: value };
   });
 
   const localeOwnedResultCopy = {
@@ -980,13 +930,6 @@
     { id: 3, nameEn: "Chocolate", nameZht: "\u5de7\u514b\u529b", imageKey: "foodChocolate", descEn: "+2 Exp points.", descZht: "+2 \u7d93\u9a57\u3002" }
   ];
 
-  const RELIC_METADATA = [
-    { id: 0, nameEn: "Maple Shield", nameZht: "楓葉護盾", sx: 0, descEn: "Front unit starts with Melon Shield.", descZht: "前線單位戰鬥開始時獲得甜瓜護盾。" },
-    { id: 1, nameEn: "Oak Seed", nameZht: "橡樹種子", sx: 384, descEn: "All units gain +1 Health in battle.", descZht: "全體單位在戰鬥中獲得 +1 生命。" },
-    { id: 2, nameEn: "Shadow Claw", nameZht: "暗影爪痕", sx: 768, descEn: "All units gain +1 Attack in battle.", descZht: "全體單位在戰鬥中獲得 +1 攻擊力。" },
-    { id: 3, nameEn: "Clover Leaf", nameZht: "幸運草", sx: 1152, descEn: "First shop reroll each round is free.", descZht: "每回合第一次商店重置免費。" }
-  ];
-
   const ENEMY_METADATA = [
     { id: 0, nameEn: "Shadow Squirrel", nameZht: "\u5f71\u4e4b\u677e\u9f20", targetMode: "back", ability: "backstrike", roleEn: "Backline Ambush", roleZht: "\u5f8c\u6392\u5947\u8972", sx: 105, sy: 155, sw: 480, sh: 545, atkMod: 1.05, hpMod: .85 },
     { id: 1, nameEn: "Shadow Wolf", nameZht: "\u5f71\u4e4b\u7070\u72fc", targetMode: "front", ability: "pack", roleEn: "Pack Bite", roleZht: "\u7fa4\u72fc\u54ac\u64ca", sx: 690, sy: 170, sw: 630, sh: 535 },
@@ -1028,8 +971,6 @@
       enemyRoles: ["후열 기습", "무리 물기", "선제 돌진", "굴 파기 수호", "바위 휩쓸기", "쌍 단검", "조각 급강하", "갑옷 돌진", "살아 있는 방벽", "생명 흡수", "균열 난무", "흑요석 벽", "침묵 사냥", "룬 무리", "룬 폭풍", "달빛 흡수", "황혼 연속 공격"],
       bossNames: ["가시숲 우두머리", "프리즘 바실리스크", "심연 껍질 레비아탄", "마그마 엄니 거상", "일식 아치부엉이", "공허 왕관 황제"],
       bossRoles: ["가시 왕관", "프리즘 폭풍", "침몰 요새", "칼데라 충돌", "쌍둥이 달 낙하", "밤의 종말"],
-      relicNames: ["단풍 방패", "참나무 씨앗", "그림자 발톱", "클로버 잎"],
-      relicDescs: ["전열 유닛이 멜론 보호막을 얻고 시작합니다.", "전투 중 모든 유닛의 체력이 1 증가합니다.", "전투 중 모든 유닛의 공격력이 1 증가합니다.", "각 웨이브의 첫 상점 다시 굴리기가 무료입니다."]
     },
     "pt-BR": {
       animalNames: ["Raposa Pata de Faísca", "Lontra Barbatana-Bolha", "Panda Barriga de Tambor", "Coruja Boné Lunar", "Tartaruga Casco de Musgo", "Coelho Salto Arco-Íris", "Rinoceronte Chifre de Engrenagem", "Leão Juba Explosiva", "Capitão Pata de Faísca", "Guardião Rinoceronte"],
@@ -1039,8 +980,6 @@
       enemyRoles: ["Emboscada traseira", "Mordida da matilha", "Investida inicial", "Guarda escavadora", "Varredura de pedra", "Duas adagas", "Mergulho de estilhaços", "Investida blindada", "Baluarte vivo", "Dreno de vida", "Rajada da fenda", "Muralha de obsidiana", "Caçada silenciosa", "Matilha rúnica", "Tempestade rúnica", "Dreno lunar", "Rajada do crepúsculo"],
       bossNames: ["Alfa de Thornwood", "Basilisco Prismático", "Leviatã do Casco Abissal", "Colosso da Presa Magmática", "Arqui-Coruja do Eclipse", "Imperador da Coroa do Vazio"],
       bossRoles: ["Coroa de espinhos", "Tempestade prismática", "Fortaleza submersa", "Impacto da caldeira", "Queda das luas gêmeas", "Fim da noite"],
-      relicNames: ["Escudo de Bordo", "Semente de Carvalho", "Garra Sombria", "Folha de Trevo"],
-      relicDescs: ["A unidade da frente começa com Escudo de Melão.", "Todas as unidades ganham +1 de Vida na batalha.", "Todas as unidades ganham +1 de Ataque na batalha.", "O primeiro reroll da loja em cada rodada é grátis."]
     },
     fr: {
       animalNames: ["Renard Patte-Étincelle", "Loutre Nageoire-Bulle", "Panda Ventre-Tambour", "Hibou Bonnet-Lunaire", "Tortue Carapace-Mousse", "Lapin Saut Arc-en-ciel", "Rhinocéros Corne-Engrenage", "Lion Crinière-Explosion", "Capitaine Patte-Étincelle", "Gardien Rhinocéros"],
@@ -1050,8 +989,6 @@
       enemyRoles: ["Embuscade arrière", "Morsure de meute", "Charge initiale", "Garde fouisseuse", "Balayage de pierre", "Doubles dagues", "Plongeon d’éclats", "Charge blindée", "Bastion vivant", "Drain de vie", "Rafale de faille", "Mur d’obsidienne", "Chasse silencieuse", "Meute runique", "Tempête runique", "Drain lunaire", "Rafale du crépuscule"],
       bossNames: ["Alpha de Thornwood", "Basilic prismatique", "Léviathan de la coquille abyssale", "Colosse à défenses magmatiques", "Archibou de l’éclipse", "Empereur de la Couronne du Vide"],
       bossRoles: ["Couronne d’épines", "Tempête prismatique", "Forteresse engloutie", "Choc de caldeira", "Double chute lunaire", "Fin de la nuit"],
-      relicNames: ["Bouclier d’érable", "Graine de chêne", "Griffe d’ombre", "Feuille de trèfle"],
-      relicDescs: ["L’unité avant commence avec un bouclier de melon.", "Toutes les unités gagnent +1 en Santé au combat.", "Toutes les unités gagnent +1 en Attaque au combat.", "Le premier relance de boutique de chaque manche est gratuit."]
     },
     de: {
       animalNames: ["Funkenpfoten-Fuchs", "Blasenflossen-Otter", "Trommelbauch-Panda", "Mondkappen-Eule", "Moospanzer-Schildkröte", "Regenbogenhoppser", "Getriebehorn-Nashorn", "Bummmähnen-Löwe", "Kapitän Funkenpfote", "Nashornwächter"],
@@ -1061,8 +998,6 @@
       enemyRoles: ["Hinterhalt hinten", "Rudelbiss", "Erstangriff", "Grabwache", "Steinschlag", "Zwillingsdolche", "Splittersturz", "Rüstungsladung", "Lebender Wall", "Lebensentzug", "Spaltenwirbel", "Obsidianwall", "Stille Jagd", "Runenrudel", "Runensturm", "Mondentzug", "Dämmerwirbel"],
       bossNames: ["Thornwood-Alphatier", "Prismabasilisk", "Abgrundpanzer-Leviathan", "Magmazahn-Koloss", "Eklipse-Erz-Eule", "Leerenkronen-Kaiser"],
       bossRoles: ["Dornenkrone", "Prismensturm", "Versunkene Festung", "Kratersturz", "Doppelmondfall", "Ende der Nacht"],
-      relicNames: ["Ahornschild", "Eichensamen", "Schattenklaue", "Kleeblatt"],
-      relicDescs: ["Das vordere Tier startet mit einem Melonenschild.", "Alle Einheiten erhalten im Kampf +1 Gesundheit.", "Alle Einheiten erhalten im Kampf +1 Angriff.", "Der erste Laden-Neuwurf jeder Runde ist kostenlos."]
     },
     it: {
       animalNames: ["Volpe Zampa Scintilla", "Lontra Pinna Bolla", "Panda Pancia Tamburo", "Gufo Cappello Lunare", "Tartaruga Guscio Muschio", "Coniglio Salto Arcobaleno", "Rinoceronte Corno Ingranaggio", "Leone Criniera Boom", "Capitano Zampa Scintilla", "Guardiano Rinoceronte"],
@@ -1072,8 +1007,6 @@
       enemyRoles: ["Imboscata posteriore", "Morso del branco", "Carica iniziale", "Guardia sotterranea", "Spazzata di pietra", "Doppi pugnali", "Tuffo di schegge", "Carica corazzata", "Baluardo vivente", "Drenaggio vitale", "Raffica della fenditura", "Muro d’ossidiana", "Caccia silenziosa", "Branco runico", "Tempesta runica", "Drenaggio lunare", "Raffica del crepuscolo"],
       bossNames: ["Alfa di Thornwood", "Basilisco Prisma", "Leviatano del Guscio Abissale", "Colosso Zanna Magma", "Arcigufo dell’Eclissi", "Imperatore della Corona del Vuoto"],
       bossRoles: ["Corona di spine", "Tempesta prismatica", "Fortezza sommersa", "Impatto della caldera", "Doppia caduta lunare", "Fine della notte"],
-      relicNames: ["Scudo d’Acero", "Seme di Quercia", "Artiglio d’Ombra", "Foglia di Trifoglio"],
-      relicDescs: ["L’unità anteriore inizia con Scudo di Melone.", "Tutte le unità ottengono +1 Salute in battaglia.", "Tutte le unità ottengono +1 Attacco in battaglia.", "Il primo rimescolamento del negozio in ogni round è gratuito."]
     },
     ru: {
       animalNames: ["Лис Искролап", "Выдра Пузырь-плавник", "Панда Барабанное брюхо", "Сова Лунный колпак", "Черепаха Мшистый панцирь", "Радужный кролик", "Носорог Шестеророг", "Лев Взрывная грива", "Капитан Искролап", "Носорог-страж"],
@@ -1083,8 +1016,6 @@
       enemyRoles: ["Засада в тылу", "Укус стаи", "Первый натиск", "Подземная стража", "Каменный взмах", "Два кинжала", "Пикирование осколков", "Бронированный натиск", "Живой бастион", "Похищение жизни", "Шквал разлома", "Обсидиановая стена", "Тихая охота", "Руническая стая", "Рунический шторм", "Лунное поглощение", "Сумеречный шквал"],
       bossNames: ["Альфа Thornwood", "Призматический василиск", "Левиафан бездны", "Магмовый клыкастый колосс", "Архисова затмения", "Император Короны Пустоты"],
       bossRoles: ["Терновая корона", "Призматический шторм", "Затонувшая крепость", "Удар кальдеры", "Падение двух лун", "Конец ночи"],
-      relicNames: ["Кленовый щит", "Жёлудь", "Теневой коготь", "Клеверный лист"],
-      relicDescs: ["Передний боец начинает со щитом дыни.", "Все бойцы получают в бою +1 к здоровью.", "Все бойцы получают в бою +1 к атаке.", "Первая смена товаров в каждом раунде бесплатна."]
     },
     hi: {
       animalNames: ["स्पार्क पॉ फॉक्स", "बबल फिन ऊदबिलाव", "ड्रम बेली पांडा", "मून कैप उल्लू", "मॉस शेल कछुआ", "रेनबो हॉप खरगोश", "गियर हॉर्न गैंडा", "बूम मेन शेर", "स्पार्क पॉ कप्तान", "गैंडा रक्षक"],
@@ -1094,8 +1025,6 @@
       enemyRoles: ["पीछे घात", "झुंड काट", "पहला धावा", "बिल रक्षक", "पत्थर सफाया", "दो खंजर", "टुकड़ा गोता", "कवच धावा", "जीवित गढ़", "जीवन सोख", "दरार बौछार", "ऑब्सीडियन दीवार", "मौन शिकार", "रूण झुंड", "रूण तूफान", "चंद्र सोख", "सांझ बौछार"],
       bossNames: ["थॉर्नवुड अल्फा", "प्रिज़्म बेसिलिस्क", "एबिस शेल लेवियाथन", "मैग्मा टस्क कोलोसस", "ग्रहण आर्कउल्लू", "वॉइड क्राउन सम्राट"],
       bossRoles: ["काँटों का मुकुट", "प्रिज़्म तूफान", "डूबा किला", "काल्डेरा टक्कर", "जुड़वाँ चंद्र पतन", "रात का अंत"],
-      relicNames: ["मेपल ढाल", "ओक बीज", "छाया पंजा", "क्लोवर पत्ती"],
-      relicDescs: ["आगे की यूनिट खरबूजे की ढाल के साथ शुरू होती है।", "लड़ाई में सभी यूनिट को +1 स्वास्थ्य मिलता है।", "लड़ाई में सभी यूनिट को +1 आक्रमण मिलता है।", "हर लहर में दुकान का पहला पुनः-चयन मुफ्त है।"]
     }
   };
   for (const [localeKey, copy] of Object.entries(localeOwnedCombatMetadata)) {
@@ -1118,12 +1047,6 @@
     applyFields(ANIMAL_METADATA, copy.animalNames, copy.animalRoles, copy.animalDescs);
     applyFields(ENEMY_METADATA, copy.enemyNames, copy.enemyRoles);
     applyFields(BOSS_METADATA, copy.bossNames, copy.bossRoles);
-    RELIC_METADATA.forEach((record, index) => {
-      record.nameLocaleOwned ||= {};
-      record.descLocaleOwned ||= {};
-      record.nameLocaleOwned[localeKey] = copy.relicNames[index];
-      record.descLocaleOwned[localeKey] = copy.relicDescs[index];
-    });
   }
 
   const REGION_METADATA = [
@@ -1188,13 +1111,6 @@
     ["Melón", "Otorga Escudo de Melón."], ["Chocolate", "+2 puntos de EXP."]
   ];
   ITEM_METADATA.forEach((item, index) => [item.nameEs, item.descEs] = itemCopyEs[index]);
-  const relicCopyEs = [
-    ["Escudo de Arce", "La unidad frontal empieza con Escudo de Melón."],
-    ["Semilla de Roble", "Todas las unidades ganan +1 PV en batalla."],
-    ["Garra Sombría", "Todas las unidades ganan +1 ATQ en batalla."],
-    ["Hoja de Trébol", "El primer cambio de tienda de cada ronda es gratis."]
-  ];
-  RELIC_METADATA.forEach((relic, index) => [relic.nameEs, relic.descEs] = relicCopyEs[index]);
   const enemyCopyEs = [
     ["Ardilla Sombría", "Emboscada Trasera"], ["Lobo Sombrío", "Mordisco de Manada"],
     ["Jabalí Sombrío", "Primera Carga"], ["Tejón Sombrío", "Guardia Excavadora"],
@@ -1239,8 +1155,6 @@
   ANIMAL_METADATA.forEach((animal, index) => [animal.nameJa, animal.roleJa, animal.descJa] = animalCopyJa[index]);
   const itemCopyJa = [["リンゴ", "攻撃とHPを+1。"], ["ハチミツ", "HPを+2。購入時にゴールド+1。"], ["メロン", "メロンシールドを付与。"], ["チョコレート", "経験値を+2。"]];
   ITEM_METADATA.forEach((item, index) => [item.nameJa, item.descJa] = itemCopyJa[index]);
-  const relicCopyJa = [["メイプルシールド", "前線ユニットがメロンシールドを得て開始。"], ["オークの種", "戦闘中、全ユニットのHP+1。"], ["シャドークロー", "戦闘中、全ユニットの攻撃+1。"], ["クローバー", "各ウェーブ最初のショップ更新が無料。"]];
-  RELIC_METADATA.forEach((relic, index) => [relic.nameJa, relic.descJa] = relicCopyJa[index]);
   const enemyCopyJa = [
     ["シャドーリス", "後列奇襲"], ["シャドーウルフ", "群れの牙"], ["シャドーボア", "初撃突進"], ["シャドーバジャー", "地中ガード"],
     ["シャドーゴーレム", "岩石薙ぎ"], ["ソーンフォックス偵察兵", "双剣奇襲"], ["プリズムクロウ", "結晶急降下"], ["アイアンハイド・ボア", "装甲突進"],
@@ -1275,8 +1189,6 @@
   ANIMAL_METADATA.forEach((animal, index) => [animal.nameAr, animal.roleAr, animal.descAr] = animalCopyAr[index]);
   const itemCopyAr = [["تفاحة", "+1/+1 إلى الإحصاءات."], ["عسل", "+2 صحة. عند الشراء: +1 ذهب."], ["شمام", "يمنح درع الشمام."], ["شوكولاتة", "+2 خبرة."]];
   ITEM_METADATA.forEach((item, index) => [item.nameAr, item.descAr] = itemCopyAr[index]);
-  const relicCopyAr = [["درع القيقب", "تبدأ الوحدة الأمامية بدرع الشمام."], ["بذرة البلوط", "تحصل كل الوحدات على +1 صحة في المعركة."], ["مخلب الظل", "تحصل كل الوحدات على +1 هجوم في المعركة."], ["ورقة البرسيم", "أول إعادة سحب للمتجر في كل موجة مجانية."]];
-  RELIC_METADATA.forEach((relic, index) => [relic.nameAr, relic.descAr] = relicCopyAr[index]);
   const enemyCopyAr = [
     ["سنجاب الظل", "كمين خلفي"], ["ذئب الظل", "عضة القطيع"], ["خنزير الظل البري", "الاندفاعة الأولى"], ["غرير الظل", "حارس الجحر"],
     ["غولم الظل", "كنس حجري"], ["كشاف الثعلب الشوكي", "خنجران متزامنان"], ["الغراب المنشوري", "غوص الشظايا"], ["الخنزير المدرع", "اندفاعة مدرعة"],
@@ -1395,7 +1307,6 @@
     const definitions = [
       { id: "stageNotice", parent: $("trainingPane"), before: $("trainingPane")?.querySelector(".cosmetic-store") },
       { id: "prepNotice", parent: $("prepPhaseArea")?.querySelector(".shop-section"), before: $("shopRow") },
-      { id: "relicDraftNotice", parent: $("relicDraftPanel"), before: null },
       { id: "reviveNotice", parent: $("defeatRevivePanel"), before: $("defeatRevivePanel")?.querySelector(".revive-actions") },
     ];
     definitions.forEach(({ id, parent, before }) => {
@@ -1472,7 +1383,6 @@
     roundText: $("roundText"),
     goldText: $("goldText"),
     heartText: $("heartText"),
-    relicText: $("relicText"),
     prepPhaseArea: $("prepPhaseArea"),
     squadGrid: $("squadGrid"),
     benchGrid: $("benchGrid"),
@@ -1490,10 +1400,6 @@
     combatPaceHint: $("combatPaceHint"),
     foodGuide: $("foodGuide"),
     prepNotice: $("prepNotice"),
-    relicDraftPanel: $("relicDraftPanel"),
-    relicChoices: $("relicChoices"),
-    rerollRelicsBtn: $("rerollRelicsBtn"),
-    relicDraftNotice: $("relicDraftNotice"),
     defeatRevivePanel: $("defeatRevivePanel"),
     reviveBtn: $("reviveBtn"),
     reviveNotice: $("reviveNotice"),
@@ -1519,6 +1425,13 @@
     quitRunBtn: $("quitRunBtn"),
     hintText: $("hintText")
   };
+  const gameShell = window.WeightPlayGameShell?.mount({
+    gameId: GAME_ID,
+    root: document.querySelector("[data-wp-game-shell-root]"),
+    main: nodes.menuPanel,
+    stage: nodes.stagePanel,
+    battle: nodes.gamePanel,
+  });
 
   // The opening expedition needs a real formation response, not only two
   // versions of temporary stat growth. Owl adds back-row targeting to Fox
@@ -1682,8 +1595,6 @@
     resultGoldEarned: "\u8a13\u7df4\u91d1\u5e63 +{earned} \u00b7 \u7e3d\u8a08 {total}",
     resultStageSaved: "\u5df2\u89e3\u9396\u95dc\u5361 {unlocked}/{total}",
     resultGrowthNext: "\u6c38\u4e45\u52a0\u6210 \u653b +{atk} / \u751f +{hp} \u00b7 \u8ddd\u4e0b\u4e00\u5718\u968a\u7b49\u7d1a {remaining} XP",
-      relicRerollDecision: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u3002\u82b1\u8cbb 3 \u947d\u77f3\u3002\u9918\u984d {before} \u5230 {after}\u3002",
-      relicRerollNeed: "\u91cd\u62bd\u5169\u500b\u8056\u7269\u9078\u64c7\u9700\u8981 3 \u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
       skinPurchaseDecision: "\u6c38\u4e45\u89e3\u9396\u4e26\u88dd\u5099\u9ec3\u91d1\u5916\u89c0\u3002\u518d\u6b21\u9ede\u9078\u78ba\u8a8d\uff1a{before} \u2192 {after} \u947d\u77f3\u3002",
       skinPurchaseNeed: "\u6c38\u4e45\u89e3\u9396\u4e26\u88dd\u5099\u9ec3\u91d1\u5916\u89c0\u9700\u8981 15 \u947d\u77f3\u3002\u76ee\u524d\u9918\u984d {balance}\u3002",
       stage: "\u95dc\u5361",
@@ -1901,7 +1812,7 @@
   }
 
   function clearAllActionNotices() {
-    [nodes.stageNotice, nodes.prepNotice, nodes.relicDraftNotice, nodes.reviveNotice].forEach(clearActionNotice);
+    [nodes.stageNotice, nodes.prepNotice, nodes.reviveNotice].forEach(clearActionNotice);
   }
 
   function installTestApi() {
@@ -2374,7 +2285,6 @@
       round: 1,
       gold: 12,
       hearts: 4,
-      relic: null,
       freeRerollThisRound: false,
       rerollsUsedThisRound: 0,
       squad: [null, null, null, null, null, null],
@@ -2953,6 +2863,7 @@
   function syncSceneOwners() {
     // Commit shared geometry in the same navigation transaction, before paint.
     window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    gameShell?.sync();
     window.dispatchEvent(new CustomEvent("weightplay:stage-sync"));
     window.WeightPlayBattleCanvas?.sync?.();
     window.WeightPlayStageArtwork?.sync?.();
@@ -3872,8 +3783,6 @@
     nodes.roundText.previousElementSibling.textContent = t("round");
     nodes.goldText.previousElementSibling.textContent = t("supplies");
     nodes.heartText.previousElementSibling.textContent = t("hearts");
-    nodes.relicText.previousElementSibling.textContent = t("activeRelic");
-    if (!state.relic) nodes.relicText.textContent = t("none");
     renderCombatPaceControl();
     renderCombatTactic();
 
@@ -3894,11 +3803,6 @@
     }
 
     nodes.rerollShopBtn.classList.add("is-hidden");
-
-    // Relic Modal labels
-    document.querySelector("#relicDraftPanel h2").textContent = t("chooseRelic");
-    document.querySelector("#relicDraftPanel .status-line").textContent = t("relicDesc");
-    updateRelicRerollDecision();
 
     // Defeat Modal labels
     document.querySelector("#defeatRevivePanel h2").textContent = t("defeatTitle");
@@ -3949,94 +3853,12 @@
     nodes.combatStallPanel.classList.add("is-hidden");
     stallDecisionOpen = false;
 
-    // Initial Relic draft
     syncSceneOwners();
-    openRelicDraft();
-    window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
-  }
-
-  function openRelicDraft() {
-    nodes.startBattleBtn.disabled = true;
-    nodes.relicDraftPanel.classList.remove("is-hidden");
-    renderRelicChoices();
-    setBattleDecisionOwnership(nodes.relicDraftPanel, true);
-    const firstRelic = nodes.relicChoices.querySelector(".relic-card");
-    firstRelic?.focus({ preventScroll: true });
-    requestAnimationFrame(() => nodes.relicChoices.querySelector(".relic-card")?.focus({ preventScroll: true }));
-  }
-
-  function updateRelicRerollDecision() {
-    const before = getWalletDiamonds();
-    nodes.rerollRelicsBtn.setAttribute("aria-label", before >= 3
-      ? t("relicRerollDecision", { before, after: before - 3 })
-      : t("relicRerollNeed", { balance: before }));
-  }
-
-  function relicChoiceSignature() {
-    return [...nodes.relicChoices.querySelectorAll(".relic-card")]
-      .map((card) => Number(card.dataset.relicId))
-      .sort((a, b) => a - b)
-      .join(",");
-  }
-
-  function renderRelicChoices(avoidSignature = "") {
-    clearActionNotice(nodes.relicDraftNotice);
-    nodes.relicChoices.innerHTML = "";
-    const pairs = [];
-    for (let first = 0; first < RELIC_METADATA.length; first += 1) {
-      for (let second = first + 1; second < RELIC_METADATA.length; second += 1) {
-        pairs.push([RELIC_METADATA[first], RELIC_METADATA[second]]);
-      }
-    }
-    const eligible = pairs.filter((pair) => pair.map((relic) => relic.id).sort((a, b) => a - b).join(",") !== avoidSignature);
-    const choices = eligible[Math.floor(Math.random() * eligible.length)] || pairs[0];
-
-    choices.forEach((relic) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "relic-card";
-      card.dataset.wpPrimaryAction = "true";
-      card.dataset.relicId = String(relic.id);
-      card.innerHTML = `
-        <div class="relic-icon-art relic-icon-${relic.id}" aria-hidden="true"><span></span></div>
-        <h4>${localizedField(relic, "name")}</h4>
-        <p>${localizedField(relic, "desc")}</p>
-      `;
-      card.addEventListener("click", () => {
-        selectRelic(relic);
-      });
-      nodes.relicChoices.appendChild(card);
-    });
-
-    nodes.rerollRelicsBtn.textContent = t("relicReroll");
-    updateRelicRerollDecision();
-    nodes.rerollRelicsBtn.onclick = rerollRelics;
-  }
-
-  function selectRelic(relic) {
-    state.relic = relic;
-    nodes.relicText.textContent = localizedField(relic, "name");
-    setBattleDecisionOwnership(nodes.relicDraftPanel, false);
-    nodes.relicDraftPanel.classList.add("is-hidden");
-    playSynth("buy");
-
-    // First round preparation
+    // Preparation is immediately available, keeping the first deployment
+    // decision focused on formation and temporary upgrades.
     startRoundPrep();
     requestAnimationFrame(focusPreparationOwner);
-  }
-
-  function rerollRelics() {
-    clearActionNotice(nodes.relicDraftNotice);
-    if (getWalletDiamonds() < 3) {
-      showActionNotice(nodes.relicDraftNotice, t("noDiamonds"), nodes.rerollRelicsBtn);
-      playSynth("click");
-      return;
-    }
-    if (spendWalletDiamonds(3)) {
-      playSynth("revive");
-      renderRelicChoices(relicChoiceSignature());
-      window.WonderAnalytics?.track("relic_reroll", { game_id: GAME_ID, cost: 3 });
-    }
+    window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
   }
 
   // Round Setup and Shop Drafting
@@ -4047,7 +3869,7 @@
     nodes.combatArea.classList.add("is-hidden");
     nodes.combatSummary?.classList.add("is-hidden");
     selectedSlot = null;
-    state.freeRerollThisRound = state.relic?.id === 3; // Clover leaf gives free first reroll
+    state.freeRerollThisRound = false;
     state.rerollsUsedThisRound = 0;
     translateUI();
     updateHUD();
@@ -4516,7 +4338,7 @@
       }
     }
 
-    // 2. Buy Food / Relic from Shop
+    // 2. Buy Food from Shop
     else if (srcArea === "shop-item" && (destArea === "squad" || destArea === "bench")) {
       const targetCard = getCardAt(destArea, destIndex);
       if (!targetCard) return; // food must be fed to animal
@@ -4570,7 +4392,7 @@
     mainCard.maxHp = Math.round(mainCard.maxHp + levelGain);
   }
 
-  // Food / Relic feeding mechanic
+  // Food feeding mechanic
   function feedAnimal(animal, food) {
     if (food.id === 0) {
       // Apple: +1/+1
@@ -5048,21 +4870,6 @@
       shieldHp: card.hasShield ? Math.max(1, Math.ceil(card.currentHp * 0.35)) : 0
     }));
 
-    // Trigger Maple Shield relic (first unit gets shield)
-    if (state.relic?.id === 0 && state.combat.playerSquad.length) {
-      addUnitShield(state.combat.playerSquad[0], 2, "player", 0);
-    }
-    // Trigger Oak Seed relic (+1 HP in combat)
-    if (state.relic?.id === 1) {
-      state.combat.playerSquad.forEach((c) => {
-        c.hp += 1;
-        c.maxHp += 1;
-      });
-    }
-    // Trigger Shadow Claw relic (+1 Atk in combat)
-    if (state.relic?.id === 2) {
-      state.combat.playerSquad.forEach((c) => c.atk += 1);
-    }
     triggerBattleStartAbilities();
 
     // Generate a stage-specific wave instead of adding another enemy every round.
@@ -6574,14 +6381,6 @@
       handleStageCardKeydown(event);
     });
     nodes.rerollShopBtn.addEventListener("click", rerollShop);
-    nodes.rerollRelicsBtn.addEventListener("keydown", (event) => {
-      if (event.repeat && (event.key === "Enter" || event.key === " ")) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    });
-    nodes.rerollRelicsBtn.addEventListener("focus", updateRelicRerollDecision);
-    nodes.relicDraftPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.relicDraftPanel, event));
     nodes.defeatRevivePanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.defeatRevivePanel, event));
     nodes.combatStallPanel.addEventListener("keydown", (event) => trapBattleDecisionFocus(nodes.combatStallPanel, event));
     nodes.quitRunPanel.addEventListener("keydown", (event) => {

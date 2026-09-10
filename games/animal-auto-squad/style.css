@@ -261,7 +261,6 @@ body.squad-active .battle-external-return {
 .hud-row strong { color: var(--mint); font-size: .7rem; line-height:1.15; }
 .hud-row #goldText { color: var(--gold); }
 .hud-row #heartText { color: var(--danger); }
-.relic-badge { padding: 2px 4px; border-radius: 6px; color: #c6d7ff !important; background: rgba(119,164,255,.2); }
 .combat-summary { height: 44px; min-height: 44px; display: grid; place-content: center; gap: 2px; overflow: hidden; padding: 5px 10px; border: 1px solid rgba(137,239,194,.2); border-radius: 11px; background: rgba(2,11,9,.82); text-align: center; }
 .combat-summary strong, .combat-summary span { white-space:normal; overflow-wrap:anywhere; line-height:1.15; }
 .combat-summary strong { color: var(--mint); font-size: .73rem; }
@@ -328,13 +327,6 @@ body.squad-active .battle-external-return {
 .status-line { margin:0; color:var(--muted); font-size:.82rem; line-height:1.4; text-align:center; }
 .action-notice { margin:0; padding:8px 10px; border:1px solid rgba(255,214,102,.52); border-radius:10px; color:#fff4c7; background:rgba(91,48,6,.88); font-size:.76rem; font-weight:800; line-height:1.3; text-align:center; }
 .action-notice:empty { display:none; }
-.relic-choices { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.relic-card { display:grid; gap:6px; padding:10px; border:1px solid var(--line); border-radius:12px; background:rgba(0,0,0,.3); text-align:center; cursor:pointer; }
-.relic-card h4 { margin:0; font-size:.84rem; }
-.relic-card p { margin:0; color:var(--muted); font-size:.66rem; line-height:1.3; }
-.relic-icon-art { position:relative; width:48px; height:48px; margin:auto; border:1px solid var(--line); border-radius:12px; background:radial-gradient(circle,#7cf1bd33,#061712); }
-.relic-icon-art span { position:absolute; inset:12px; border-radius:50% 10% 50% 10%; background:linear-gradient(135deg,var(--gold),var(--mint)); transform:rotate(-25deg); }
-.reroll-relic-btn { width:100%; }
 .revive-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
 /* Result is a Battle substate. */
@@ -446,7 +438,6 @@ body.squad-active .game-panel {
 #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row strong { color: #f6fbff; font-size: .68rem; line-height: 1.1; }
 #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row #goldText { color: #ffe477; }
 #gamePanel:has(#combatArea:not(.is-hidden)) .hud-row #heartText { color: #ff8a9d; }
-#gamePanel:has(#combatArea:not(.is-hidden)) .hud-row .relic-badge { color: #c7d5ff !important; background: rgba(158, 139, 255, .22); font-size: .48rem; letter-spacing: -.035em; }
 
 #gamePanel:has(#combatArea:not(.is-hidden)) .combat-summary {
   position: absolute;
@@ -719,7 +710,7 @@ body.squad-active::before {
 #gameCanvas { background: transparent; image-rendering: auto; }
 .combat-status { border-color: rgba(255, 223, 105, .62); color: #fff1a7; background: rgba(4, 29, 47, .88); box-shadow: 0 4px 0 rgba(3, 19, 34, .6); }
 .modal-panel { border-color: rgba(255, 224, 110, .62); background: linear-gradient(145deg, rgba(24, 78, 95, .98), rgba(6, 29, 49, .98)); }
-.relic-card, .selected-ability-panel, .result-progress, .skill-report { border-color: rgba(125, 235, 255, .36); background: rgba(4, 27, 47, .72); }
+.selected-ability-panel, .result-progress, .skill-report { border-color: rgba(125, 235, 255, .36); background: rgba(4, 27, 47, .72); }
 .result-lion { border-color: #ffe079; box-shadow: 0 5px 0 rgba(3, 19, 34, .7); }
 .action-notice { border-color: rgba(255, 224, 110, .62); background: rgba(92, 56, 7, .88); }
 
@@ -856,10 +847,6 @@ body.squad-active button.battle-external-return {
     font-size: 1.75rem;
     line-height: 1.3;
   }
-  #gamePanel:has(#prepPhaseArea:not(.is-hidden)):not(.is-result) .relic-badge {
-    padding: 5px 8px;
-    border-radius: 10px;
-  }
   #gamePanel:has(#prepPhaseArea:not(.is-hidden)):not(.is-result) #prepPhaseArea {
     grid-column: 1 / -1;
     grid-row: 2;
@@ -951,13 +938,6 @@ body.squad-active button.battle-external-return {
   #gamePanel .modal-panel h2 { font-size: 2.35rem; line-height: 1.15; }
   #gamePanel .modal-panel .status-line { font-size: 1.65rem; line-height: 1.35; }
   #gamePanel .modal-panel .action-notice { padding: 14px 18px; font-size: 1.35rem; line-height: 1.3; }
-  #gamePanel .relic-choices { gap: 16px; }
-  #gamePanel .relic-card { min-height: 190px; gap: 10px; padding: 16px; border-radius: 20px; }
-  #gamePanel .relic-card h4 { font-size: 1.8rem; line-height: 1.2; }
-  #gamePanel .relic-card p { font-size: 1.5rem; line-height: 1.3; }
-  #gamePanel .relic-icon-art { width: 92px; height: 92px; border-radius: 20px; }
-  #gamePanel .relic-icon-art span { inset: 22px; }
-  #gamePanel .reroll-relic-btn { min-height: 104px; font-size: 1.5rem; }
   #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) {
     grid-template-columns: 480px minmax(0,1fr);
     grid-template-rows: 120px minmax(0,1fr);
@@ -988,10 +968,6 @@ body.squad-active button.battle-external-return {
   #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .hud-row strong {
     font-size: 1.75rem;
     line-height: 1.3;
-  }
-  #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .relic-badge {
-    padding: 5px 8px;
-    border-radius: 10px;
   }
   #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-summary {
     grid-column: 1;

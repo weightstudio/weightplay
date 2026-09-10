@@ -1267,7 +1267,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "訓練並配置十名動物英雄，穿越六個區域、30 個五波關卡與六場專屬 Boss 戰。"
       },
       meta: { en: ["Formation Strategy", "30 Stages", "Six Bosses"], "zh-Hant": ["編成策略", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/animal-auto-squad-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-auto-squad-cover-block-v2.webp", hideHero: true },
     },
     {
       id: "beast-tactician",

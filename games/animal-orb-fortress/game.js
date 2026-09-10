@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v27";
+  const GAME_VERSION = "v30";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -56,6 +56,13 @@
     resultText: $("resultText"),
     raidPlanText: $("raidPlanText"),
   };
+  const gameShell = window.WeightPlayGameShell?.mount({
+    gameId: GAME_ID,
+    root: document.querySelector("[data-wp-game-shell-root]"),
+    main: nodes.menuPanel,
+    stage: nodes.stagePanel,
+    battle: nodes.gamePanel,
+  });
   // Stage and Battle own the complete safe physical width. The shared
   // responsive Canvas controllers keep one uniform scale while widening the
   // logical envelope; this opt-in removes the superseded 920px desktop cap.
@@ -133,6 +140,7 @@
       core: "Core",
       shots: "Shots",
       orbCount: "Orbs",
+      bounce: "Bounce",
       hit: "HIT",
       blocked: "BLOCK",
       combo: "Combo",
@@ -280,6 +288,7 @@
       core: "核心",
       shots: "射擊",
       orbCount: "星珠",
+      bounce: "反彈",
       hit: "命中",
       blocked: "格擋",
       combo: "連擊",
@@ -983,10 +992,8 @@
   let save = loadSave();
   let selectedTier = 1;
   let centeredStageFrame = 0;
-  const STAGE_POOL_SIZE = 9;
-  let stagePool = [], stageWindowStart = 1, stageBrowseLogical = 1, stageSettleFrame = 0;
+  let stagePool = [], stageBrowseLogical = 1;
   let stageView = "raid";
-  let cancelStagePointer = () => {};
   let state = makeState();
   let lastFrame = 0;
   let raf = 0;
@@ -1040,10 +1047,15 @@
   function t(key, data = {}) {
     const actualLocale = window.WonderI18n?.actualLocale?.() || document.documentElement.lang || locale;
     const english = text.en[key];
+    const sharedShellLabel = key === "bounce" ? {
+      en: "Bounce", "zh-Hant": "反彈", "zh-Hans": "反弹", ja: "反射", ko: "반사",
+      es: "Rebote", "pt-BR": "Quique", fr: "Rebond", de: "Abprall", it: "Rimbalzo",
+      ru: "Отскок", hi: "उछाल", ar: "ارتداد",
+    }[actualLocale] : "";
     const runtimeValue = actualLocale === "ar" && english
       ? window.WeightPlayGameRuntimeLocales?.ar?.[english]
       : "";
-    const value = text[actualLocale]?.[key] || runtimeValue || text[locale]?.[key] || english || key;
+    const value = text[actualLocale]?.[key] || runtimeValue || sharedShellLabel || text[locale]?.[key] || english || key;
     return Object.entries(data).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, String(item)), value);
   }
 
@@ -1223,13 +1235,22 @@
     const shieldLevel = save?.rooms?.shield || 0;
     const forgeLevel = save?.rooms?.forge || 0;
     const denLevel = save?.rooms?.den || 0;
+    // The opening routes teach bank shots. Keep the one-orb rhythm, but give
+    // new players enough damage, recovery speed, and core room to learn it.
+    const openingRoute = selectedTier <= 3;
+    const openingCoreBonus = selectedTier === 1 ? 8 : openingRoute ? 4 : 0;
     return {
       mode: "menu",
       wave: 1,
       raidTier: selectedTier,
-      core: 20 + shieldLevel * 4,
-      maxCore: 20 + shieldLevel * 4,
-      baseDamage: 2 + forgeLevel,
+      core: 20 + shieldLevel * 4 + openingCoreBonus,
+      maxCore: 20 + shieldLevel * 4 + openingCoreBonus,
+      baseDamage: 2 + forgeLevel + (openingRoute ? 1 : 0),
+      orbScale: 1,
+      focusLevel: 0,
+      pierceLevel: 0,
+      chainLevel: 0,
+      magnetLevel: 0,
       shotCount: 0,
       stonesEarned: 0,
       bonusStones: 0,
@@ -1238,15 +1259,12 @@
       comboBest: save.comboBest || 0,
       comboTimer: 0,
       screenShake: 0,
-      chain: false,
       rerolled: false,
       rerollPending: false,
       upgradeReadyAt: 0,
       resultReadyAt: 0,
       readyTimer: 0,
-      orbCooldown: 0.48,
-      split: false,
-      pierce: false,
+      orbCooldown: selectedTier === 1 ? 0.28 : openingRoute ? 0.36 : 0.48,
       enemies: [],
       orbs: [],
       sparks: [],
@@ -1312,6 +1330,7 @@
     $("battleLive").inert = battleCovered;
     $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
+    gameShell?.activate(panel);
     if (panel === nodes.gamePanel || battleCovered) {
       window.dispatchEvent(new Event("weightplay:stage-sync"));
       window.dispatchEvent(new Event("weightplay:battle-sync"));
@@ -1629,16 +1648,18 @@
     nodes.diamondText.textContent = String(walletDiamonds());
     nodes.stageProgressText.textContent = t("stageProgress", { unlocked });
     stageBrowseLogical = unlocked;
-    stageWindowStart = desiredStageWindow(unlocked);
-    stagePool = Array.from({ length: Math.min(STAGE_POOL_SIZE, MAX_RAID_TIER) }, (_, poolIndex) => createStageCard(poolIndex));
+    // Keep the small 30-card campaign in one real rail so it uses the
+    // catalog-wide drag/snap controller rather than a game-specific variant.
+    stagePool = Array.from({ length: MAX_RAID_TIER }, (_, poolIndex) => createStageCard(poolIndex));
     nodes.stageRail.replaceChildren(...stagePool);
-    stagePool.forEach((card, offset) => bindStageCard(card, stageWindowStart + offset));
-    nodes.stageRail.dataset.wpStageVirtualized = "bounded-recycle";
+    stagePool.forEach((card, index) => bindStageCard(card, index + 1));
+    nodes.stageRail.dataset.wpStageVirtualized = "full-deck";
     nodes.stageRail.dataset.wpStagePoolSize = String(stagePool.length);
     nodes.stageRail.dataset.wpStageTotal = String(MAX_RAID_TIER);
-    nodes.stageRail.dataset.wpStageWindowStart = String(stageWindowStart);
-    nodes.stageRail.dataset.wpStageWindowEnd = String(stageWindowStart + stagePool.length - 1);
+    nodes.stageRail.dataset.wpStageWindowStart = "1";
+    nodes.stageRail.dataset.wpStageWindowEnd = String(MAX_RAID_TIER);
     nodes.stageRail.dataset.wpStageRecycleCount = "0";
+    delete nodes.stageRail.dataset.wpStageVirtualDrag;
     setCenteredStage(unlocked);
     nodes.roomGrid.innerHTML = roomDefs
       .map((room) => {
@@ -1668,10 +1689,6 @@
     }
   }
 
-  function stageWindowLimit() { return Math.max(1, MAX_RAID_TIER - STAGE_POOL_SIZE + 1); }
-  function desiredStageWindow(tier) {
-    return Math.max(1, Math.min(stageWindowLimit(), Math.round(tier) - Math.floor(STAGE_POOL_SIZE / 2)));
-  }
   function bindStageCard(card, tier) {
     const raid = raidDefs[tier - 1], unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
     const locked = raid.tier > unlocked;
@@ -1709,38 +1726,8 @@
       else card.removeAttribute("aria-current");
     });
   }
-  function moveStageWindow(targetStart) {
-    const target = Math.max(1, Math.min(stageWindowLimit(), targetStart));
-    let recycled = 0;
-    while (stageWindowStart < target) {
-      const card = nodes.stageRail.firstElementChild;
-      stageWindowStart += 1;
-      nodes.stageRail.append(card);
-      bindStageCard(card, stageWindowStart + stagePool.length - 1);
-      recycled += 1;
-    }
-    while (stageWindowStart > target) {
-      const card = nodes.stageRail.lastElementChild;
-      stageWindowStart -= 1;
-      nodes.stageRail.prepend(card);
-      bindStageCard(card, stageWindowStart);
-      recycled += 1;
-    }
-    stagePool = [...nodes.stageRail.children];
-    nodes.stageRail.dataset.wpStageWindowStart = String(stageWindowStart);
-    nodes.stageRail.dataset.wpStageWindowEnd = String(stageWindowStart + stagePool.length - 1);
-    if (recycled) nodes.stageRail.dataset.wpStageRecycleCount = String(Number(nodes.stageRail.dataset.wpStageRecycleCount || 0) + recycled);
-  }
   function ensureStageWindow(tier) {
-    moveStageWindow(desiredStageWindow(tier));
-    stagePool.forEach((card) => bindStageCard(card, Number(card.dataset.tier)));
-    setCenteredStage(Math.round(stageBrowseLogical));
-  }
-  function stageRailGeometry() {
-    const cards = [...nodes.stageRail.children];
-    const first = cards[0]?.getBoundingClientRect(), second = cards[1]?.getBoundingClientRect();
-    const pitch = first && second ? Math.abs((second.left + second.width / 2) - (first.left + first.width / 2)) : 274;
-    return { pitch: pitch || 274 };
+    setCenteredStage(Math.max(1, Math.min(MAX_RAID_TIER, Math.round(tier))));
   }
   function stageAnchorCenter(railRect = nodes.stageRail.getBoundingClientRect()) {
     const compactLandscape = window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches;
@@ -1748,26 +1735,9 @@
     const canvasRect = nodes.stagePanel.getBoundingClientRect();
     return canvasRect.left + canvasRect.width / 2;
   }
-  function positionStageRail(logical) {
-    const value = Math.max(1, Math.min(MAX_RAID_TIER, logical)), anchor = Math.round(value);
-    moveStageWindow(desiredStageWindow(anchor));
-    const card = nodes.stageRail.querySelector(`[data-tier="${anchor}"]`);
-    card?.scrollIntoView({ block:"nearest", inline:"center", behavior:"auto" });
-    nodes.stageRail.scrollLeft += (value - anchor) * stageRailGeometry().pitch;
-    if (card && window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches) {
-      const railRect = nodes.stageRail.getBoundingClientRect();
-      const cardRect = card.getBoundingClientRect();
-      const coordinateScale = railRect.width > 0 ? nodes.stageRail.clientWidth / railRect.width : 1;
-      nodes.stageRail.scrollLeft += ((cardRect.left + cardRect.width / 2) - stageAnchorCenter(railRect)) * coordinateScale;
-    }
-    nodes.stageRail.dataset.wpStageDragLogical = value.toFixed(4);
-    return value;
-  }
   function cancelStageMotion() {
     if (centeredStageFrame) cancelAnimationFrame(centeredStageFrame);
-    if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
-    centeredStageFrame = stageSettleFrame = 0;
-    cancelStagePointer();
+    centeredStageFrame = 0;
     nodes.stageRail.style.removeProperty("scroll-behavior");
     nodes.stageRail.style.removeProperty("scroll-snap-type");
     nodes.stageRail.classList.remove("wp-stage-dragging");
@@ -2033,7 +2003,8 @@
     const hpMod = kind === "armored" ? 1.35 : kind === "anchor" ? 1.45 : kind === "splitter" ? 1.15 : kind === "charger" ? 1.2 : kind === "phase" ? 0.9 : kind === "thorn" ? 1.18 : 1;
     const speedBase = kind === "anchor" ? 0 : kind === "thorn" || kind === "armored" ? 9 : kind === "phase" ? 15 : kind === "charger" ? 12 : kind === "wisp" ? 16 : 14;
     const size = kind === "anchor" ? 37 : kind === "armored" ? 35 : kind === "charger" ? 34 : 28;
-    const hp = Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * hpMod * (options.elite ? 1.5 : 1));
+    const openingHpScale = tier === 1 ? 0.6 : tier <= 3 ? 0.78 : 1;
+    const hp = Math.max(2, Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * hpMod * (options.elite ? 1.5 : 1) * openingHpScale));
     return makeEnemy(kind, x, y, hp, speedBase * profile.speedScale, size, options);
   }
 
@@ -2070,10 +2041,11 @@
     if (!nodes.orbCountText) return;
     const active = Math.max(0, state.orbs?.length || 0);
     const limit = Math.max(1, activeOrbLimit());
-    const signature = `${active}/${limit}`;
+    const bounces = Math.min(1, state.orbs?.[0]?.bounces || 0);
+    const signature = `${active}/${limit}:${bounces}`;
     if (signature !== orbHudSignature) {
-      nodes.orbCountText.textContent = signature;
-      nodes.orbStat?.setAttribute("aria-label", `${t("orbCount")} ${signature}`);
+      nodes.orbCountText.textContent = `${bounces}/1`;
+      nodes.orbStat?.setAttribute("aria-label", `${t("bounce")} ${bounces}/1`);
       nodes.orbStat?.setAttribute("role", "status");
       nodes.orbPips?.querySelectorAll("i").forEach((pip, index) => {
         pip.classList.toggle("is-active", index < active);
@@ -2082,7 +2054,7 @@
       });
       orbHudSignature = signature;
     }
-    nodes.orbCountText.setAttribute("aria-label", `${t("orbCount")} ${signature}`);
+    nodes.orbCountText.setAttribute("aria-label", `${t("bounce")} ${bounces}/1`);
   }
 
   function canvasPoint(event) {
@@ -2285,9 +2257,9 @@
     const v = aimVector(x, y);
     // A shot is one readable star orb. Earlier volleys launched several
     // different angles from one tap, which made the player's chosen line hard
-    // to follow. The Split blessing still improves the held orb's hit power,
+    // to follow. Focus blessings strengthen the held orb, but
     // but never creates an unexpected second trajectory.
-    const orb = makeOrb(v.vx, v.vy, state.shotCount % 5, state.split ? 1.25 : 1);
+    const orb = makeOrb(v.vx, v.vy, state.shotCount % 5);
     orb.firstShot = firstShot;
     state.orbs.push(orb);
     state.preview = [];
@@ -2297,23 +2269,28 @@
     nodes.hintText.textContent = t("orbFlying");
     updateArenaControlLabel(true);
     playSound("shoot", 0.08);
-    track("shot_fired", { wave: state.wave, split: state.split, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
-    trackGrowth("shot_fired", { wave: state.wave, split: state.split, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
+    track("shot_fired", { wave: state.wave, focused_level: state.focusLevel, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
+    trackGrowth("shot_fired", { wave: state.wave, focused_level: state.focusLevel, first_shot: firstShot, angle: Math.round((Math.atan2(y - state.launcher.y, x - state.launcher.x) * 180) / Math.PI + 90) });
     renderHud();
   }
 
-  function makeOrb(vx, vy, skin, damageScale = 1) {
+  function makeOrb(vx, vy, skin) {
     return {
       x: state.launcher.x,
       y: state.launcher.y,
       vx,
       vy,
-      r: 22,
-      life: 4.8,
-      damage: Math.max(1, Math.round(state.baseDamage * damageScale)),
+      r: Math.round(22 * state.orbScale),
+      // A launched star never disappears in the field: it completes one
+      // authored rebound, then visibly flies back to the keeper.
+      life: 1,
+      damage: Math.max(1, Math.round(state.baseDamage * (1 + state.focusLevel * 0.25))),
       skin,
       hits: new Map(),
       bounces: 0,
+      maxBounces: 1,
+      focusLevel: state.focusLevel,
+      pierceLevel: state.pierceLevel,
       returning: false,
       returnTimer: 0,
     };
@@ -2609,7 +2586,6 @@
   function startOrbReturn(orb) {
     if (orb.returning) return;
     orb.returning = true;
-    orb.returnTimer = 0.72;
     orb.hits.clear();
     nodes.hintText.textContent = t("orbReturning");
     state.sparks.push({ kind: "return", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: 3 });
@@ -2624,27 +2600,35 @@
       const returnSpeed = Math.max(520, distance * 7.5);
       orb.x += (dx / distance) * returnSpeed * dt;
       orb.y += (dy / distance) * returnSpeed * dt;
-      orb.returnTimer -= dt;
-      if (distance < 26 || orb.returnTimer <= 0) {
+      if (distance < 26) {
         orb.life = 0;
         state.sparks.push({ kind: "block-break", x: state.launcher.x, y: state.launcher.y - 18, life: 0.28, maxLife: 0.28, effectIndex: 0 });
       }
       return;
     }
-    orb.life -= dt;
     orb.x += orb.vx * dt;
     orb.y += orb.vy * dt;
     if (orb.x < 38 || orb.x > W - 38) {
       orb.vx *= -1;
       orb.bounces += 1;
       orb.x = Math.max(38, Math.min(W - 38, orb.x));
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
       playSound("click", 0.08);
+      if (orb.bounces >= orb.maxBounces) {
+        startOrbReturn(orb);
+        return;
+      }
     }
     if (orb.y < 38 || orb.y > H - 38) {
       orb.vy *= -1;
       orb.bounces += 1;
       orb.y = Math.max(38, Math.min(H - 38, orb.y));
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
       playSound("click", 0.08);
+      if (orb.bounces >= orb.maxBounces) {
+        startOrbReturn(orb);
+        return;
+      }
     }
     orb.pylonHits ||= new Map();
     state.pylons.forEach((pylon) => {
@@ -2666,10 +2650,15 @@
       orb.y = pylon.y + ny * (orb.r + pylon.r + 2);
       orb.pylonHits.set(pylon, 0.16);
       orb.bounces += 1;
+      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.focusLevel ? 1 : 0 });
       state.mechanicEvents.push("pylon_bounce");
       playSound("click", 0.06);
+      if (orb.bounces >= orb.maxBounces) {
+        startOrbReturn(orb);
+        return;
+      }
     });
-    if (orb.life <= 0 || orb.bounces >= 4) {
+    if (orb.bounces >= orb.maxBounces) {
       startOrbReturn(orb);
       return;
     }
@@ -2696,12 +2685,12 @@
         const blocked = damage === 0 && shieldDamage === 0;
         let chainDamage = 0;
         let chainTarget = null;
-        if (!blocked && state.chain && damage > 0 && (state.combo + 1) % 4 === 0) {
+        if (!blocked && state.chainLevel > 0 && damage > 0 && (state.combo + 1) % Math.max(2, 4 - state.chainLevel) === 0) {
           chainTarget = nearestChainTarget(enemy);
           if (chainTarget) {
             const chainBefore = chainTarget.hp;
             if (chainTarget.shield > 0) chainTarget.shield -= 1;
-            else chainTarget.hp -= Math.max(1, Math.round(orb.damage * 0.4));
+            else chainTarget.hp -= Math.max(1, Math.round(orb.damage * (0.4 + state.chainLevel * 0.12)));
             chainDamage = Math.max(0, chainBefore - chainTarget.hp);
             chainTarget.hitTimer = 0.22;
             state.sparks.push({
@@ -2745,7 +2734,7 @@
         track("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         trackGrowth("hit_result", { result: kind, first_shot: isFirstShot, wave: state.wave, bounces: orb.bounces, damage, shield_damage: shieldDamage, critical, chain_damage: chainDamage });
         enemy.hitTimer = 0.16;
-        orb.hits.set(enemy, state.pierce ? 0.2 : 0.55);
+        orb.hits.set(enemy, Math.max(0.08, 0.55 - orb.pierceLevel * 0.18));
         state.sparks.push({ kind: "impact", x: enemy.x, y: enemy.y, life: 0.52, maxLife: 0.52, label: shortLabel, blocked, critical, chain: Boolean(chainTarget), banked: orb.bounces > 0, effectIndex: critical ? 1 : chainTarget ? 2 : blocked ? 4 : 0 });
         if (critical || (shieldBefore > 0 && enemy.shield === 0) || enemy.hp <= 0) {
           state.sparks.push({ kind: "block-break", x: enemy.x, y: enemy.y, life: 0.56, maxLife: 0.56, effectIndex: critical ? 1 : 4, label: critical ? t("crit") : "" });
@@ -2825,6 +2814,15 @@
     armRerollConfirmation();
   }
 
+  function upgradeLevel(id) {
+    if (id === "damage") return Math.round((state.orbScale - 1) / 0.12);
+    if (id === "split") return state.focusLevel;
+    if (id === "pierce") return state.pierceLevel;
+    if (id === "chain") return state.chainLevel;
+    if (id === "magnet") return state.magnetLevel;
+    return 0;
+  }
+
   function renderUpgradeCards() {
     if (!nodes.upgradeCards) return;
     const choices = currentUpgradeChoices();
@@ -2849,6 +2847,7 @@
             <img class="upgrade-icon" src="${upgrade.iconSrc}" alt="" />
             <strong>${t(upgrade.name)}</strong>
             <span>${t(upgrade.desc)}</span>
+            <em class="upgrade-level">+${upgradeLevel(upgrade.id) + 1}</em>
           </button>`
       )
       .join("");
@@ -2857,13 +2856,19 @@
   function chooseUpgrade(id) {
     if (state.mode !== "upgrade" || performance.now() < state.upgradeReadyAt) return;
     clearRerollConfirmation();
-    if (id === "damage") state.baseDamage += 1;
-    if (id === "split") state.split = true;
-    if (id === "pierce") state.pierce = true;
+    if (id === "damage") {
+      state.baseDamage += 1;
+      state.orbScale += 0.12;
+    }
+    if (id === "split") state.focusLevel += 1;
+    if (id === "pierce") state.pierceLevel += 1;
     if (id === "recharge") state.orbCooldown = Math.max(0.25, state.orbCooldown - 0.16);
     if (id === "shield") state.core = Math.min(state.maxCore, state.core + 4);
-    if (id === "magnet") state.bonusStones += 2;
-    if (id === "chain") state.chain = true;
+    if (id === "magnet") {
+      state.magnetLevel += 1;
+      state.bonusStones += 2 + state.magnetLevel;
+    }
+    if (id === "chain") state.chainLevel += 1;
     state.wave += 1;
     state.rerolled = false;
     spawnWave();
@@ -3053,7 +3058,18 @@
       ctx.translate(orb.x, orb.y);
       ctx.rotate(heading);
       ctx.globalAlpha = orb.returning ? 0.82 : 1;
-      drawAtlas(images.orb, 0, 1, 0, 0, orb.returning ? 76 : 104);
+      if (orb.focusLevel > 0 && !orb.returning) {
+        const pulse = 1 + Math.sin(performance.now() / 110) * 0.08;
+        const ring = 52 * orb.orbScale * pulse;
+        ctx.strokeStyle = "rgba(255, 230, 105, 0.92)";
+        ctx.lineWidth = 5;
+        ctx.shadowColor = "#ffe56f";
+        ctx.shadowBlur = 20;
+        ctx.strokeRect(-ring / 2, -ring / 2, ring, ring);
+        ctx.shadowBlur = 0;
+      }
+      const visualSize = (orb.returning ? 76 : 104) * orb.orbScale;
+      drawAtlas(images.orb, 0, 1, 0, 0, visualSize);
       ctx.restore();
     });
     state.sparks.forEach((spark) => {
@@ -3302,74 +3318,6 @@
       window.setTimeout(startRaid, 80);
     }
   }
-
-  function installVirtualStageDrag() {
-    const rail = nodes.stageRail;
-    rail.dataset.wpStageVirtualDrag = "true";
-    rail.dataset.wpStageCenterObserver = "manual";
-    let pointerId = null, startX = 0, lastX = 0, logical = 1, moved = false, suppressClick = false;
-    const restore = () => {
-      rail.style.removeProperty("scroll-behavior");
-      rail.style.removeProperty("scroll-snap-type");
-      rail.classList.remove("wp-stage-dragging");
-      delete rail.dataset.wpStageSettling;
-    };
-    cancelStagePointer = () => { pointerId = null; moved = false; restore(); };
-    rail.addEventListener("pointerdown", (event) => {
-      if (nodes.stagePanel.classList.contains("is-hidden") || event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-      if (stageSettleFrame) cancelAnimationFrame(stageSettleFrame);
-      stageSettleFrame = 0;
-      pointerId = event.pointerId;
-      startX = lastX = event.clientX;
-      logical = stageBrowseLogical;
-      moved = false;
-      rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.style.setProperty("scroll-snap-type", "none", "important");
-      event.stopImmediatePropagation();
-    }, true);
-    document.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== pointerId) return;
-      const delta = event.clientX - lastX;
-      lastX = event.clientX;
-      if (!moved && Math.abs(event.clientX - startX) > 4) { moved = true; rail.classList.add("wp-stage-dragging"); }
-      if (moved) {
-        if (event.cancelable) event.preventDefault();
-        logical = positionStageRail(logical - delta / stageRailGeometry().pitch);
-        stageBrowseLogical = logical;
-        stagePool.forEach((card) => bindStageCard(card, Number(card.dataset.tier)));
-        setCenteredStage(Math.round(logical));
-      }
-      event.stopImmediatePropagation();
-    }, true);
-    const finish = (event) => {
-      if (pointerId === null || (event.pointerId !== undefined && event.pointerId !== pointerId)) return;
-      pointerId = null;
-      if (!moved) { restore(); return; }
-      if (event.cancelable) event.preventDefault();
-      suppressClick = true;
-      setTimeout(() => { suppressClick = false; }, 0);
-      const from = logical, target = Math.max(1, Math.min(MAX_RAID_TIER, Math.round(from))), started = performance.now();
-      rail.dataset.wpStageSettling = "true";
-      const settle = (now) => {
-        const progress = Math.min(1, (now - started) / 340), eased = progress * progress * (3 - 2 * progress);
-        stageBrowseLogical = positionStageRail(from + (target - from) * eased);
-        if (progress < 1) stageSettleFrame = requestAnimationFrame(settle);
-        else { stageSettleFrame = 0; ensureStageWindow(target); setCenteredStage(target); restore(); }
-      };
-      stageSettleFrame = requestAnimationFrame(settle);
-      moved = false;
-      event.stopImmediatePropagation();
-    };
-    document.addEventListener("pointerup", finish, true);
-    document.addEventListener("pointercancel", finish, true);
-    rail.addEventListener("click", (event) => {
-      if (!suppressClick) return;
-      suppressClick = false;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }, true);
-  }
-  installVirtualStageDrag();
 
   nodes.localeSelect.addEventListener("change", (event) => setLocale(event.target.value));
   nodes.startBtn.addEventListener("click", () => {

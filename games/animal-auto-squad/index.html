@@ -41,13 +41,14 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-combat-v34" />
+  <link rel="stylesheet" href="style.css?v=20260910-auto-squad-combat-v35" />
+    <link rel="stylesheet" href="../../src/game-screen-shell.css?v=20260910-lobby-shell-pilot2" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false">
-    <main class="squad-app">
-      <header class="topbar">
+    <main class="squad-app" data-no-mobile-immersive="true" data-wp-game-shell-root>
+      <header class="topbar" data-wp-shell-header="main">
         <a id="backToLobbyBtn" class="back-btn" data-wp-return="main" href="/" aria-label="Back to lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="brand">
           <span>WeightPlay</span>
@@ -73,7 +74,7 @@
       </section>
 
       <!-- Menu / Start Section -->
-      <section id="menuPanel" class="panel menu-panel" data-screen="main">
+      <section id="menuPanel" class="panel menu-panel" data-screen="main" data-wp-shell-slot="main">
         <img class="cover" src="../../assets/animal-auto-squad-cover-block-v2.webp" alt="Animal Auto Squad block adventure cover" />
         <div class="menu-copy">
           <strong id="menuHeadingText" data-ui="menuTitle">Train and position your animal squad!</strong>
@@ -88,8 +89,8 @@
         </div>
       </section>
 
-      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-canvas-max-width="920" aria-labelledby="stageSelectTitle">
-        <div class="stage-panel-head">
+      <section id="stagePanel" class="panel stage-panel is-hidden" data-screen="stage" data-wp-shell-slot="stage" data-wp-canvas-max-width="920" aria-labelledby="stageSelectTitle">
+        <div class="stage-panel-head" data-wp-shell-header="stage">
           <button id="stageBackBtn" class="stage-back-btn" data-wp-return="stage" type="button" aria-label="Back">&larr;</button>
           <div>
             <strong id="stageSelectTitle">Choose Stage</strong>
@@ -128,7 +129,7 @@
       </section>
       <!-- Active Play Viewport Container -->
       <button id="quitRunBtn" class="secondary-btn play-return battle-external-return" data-wp-return="battle" type="button" aria-label="Quit expedition" data-ui="quitRun">&larr;</button>
-      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-screen="battle" data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
+      <section id="gamePanel" class="panel game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-battle-return-only data-play-viewport data-wp-canvas-max-width="920">
         
         <!-- HUD Line -->
         <div class="hud-row">
@@ -137,7 +138,6 @@
           <div><span data-ui="round">Wave</span><strong id="roundText">1/5</strong></div>
           <div><span data-ui="gold">Gold</span><strong id="goldText">10</strong></div>
           <div><span data-ui="hearts">Hearts</span><strong id="heartText">4/4</strong></div>
-          <div class="relic-hud"><span data-ui="activeRelic">Relic</span><strong id="relicText" class="relic-badge">None</strong></div>
         </div>
         <div id="combatSummary" class="combat-summary is-hidden" aria-live="polite"></div>
 
@@ -180,14 +180,6 @@
         <div id="hintText" class="hint" data-ui="guideHint">Tap a character, then tap a destination slot to move it.</div>
 
         <!-- Run decisions are Battle-owned modal substates inside the logical Canvas. -->
-        <section id="relicDraftPanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="relicDraftTitle" aria-live="polite">
-          <h2 id="relicDraftTitle" data-ui="chooseRelic">Choose an Expedition Relic</h2>
-          <p data-ui="relicDesc" class="status-line">Select one relic to buff your squad for the entire expedition run.</p>
-          <div id="relicChoices" class="relic-choices"></div>
-          <button id="rerollRelicsBtn" class="secondary-btn reroll-relic-btn" type="button"></button>
-          <p id="relicDraftNotice" class="action-notice" role="status" aria-live="polite"></p>
-        </section>
-
         <section id="defeatRevivePanel" class="panel modal-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="defeatReviveTitle" aria-live="polite">
           <h2 id="defeatReviveTitle" data-ui="defeatTitle">Expedition Failed!</h2>
           <p data-ui="reviveHint" class="status-line">Your Hearts reached 0. Spend 5 Diamonds to revive with 2 Hearts and continue your expedition?</p>
@@ -250,7 +242,7 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Animal Auto Squad - Game Guide</h2>
-          <p>Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, choose one expedition relic, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.</p>
+          <p>Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.</p>
         </div>
         <div class="game-info-facts">
           <div class="game-info-fact"><span>Gameplay</span><strong>Tactical Auto-Battler</strong></div>
@@ -268,11 +260,11 @@
         </div>
         <div class="game-info-section game-info-systems">
           <h3>How the Systems Work</h3>
-          <ul><li>Formation: the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.</li><li>Animal roles and squad links: attackers, healers, shields, team buffers, and faint effects resolve automatically. Matching roles activate a Voxel Squad Link that grants a small automatic battle bonus. Connected hits build a combo; every fourth connected hit is shown as a Critical Linked Hit and breaks a block, while Boss waves open with a visible warning. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.</li><li>Expedition relics: choose Maple Shield, Oak Seed, Shadow Claw, or Clover Leaf for a run-wide rule. A relic choice is free; spending 3 optional Diamonds only rerolls the offered choices.</li><li>Temporary Supplies: each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.</li><li>Permanent growth: cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold.</li></ul>
+          <ul><li>Formation: the upper three slots are the front row and the lower three are the back row. Targeting matters because some units attack the lead enemy, Moon Cap Owl hunts the back row, and Boom Mane Lion sweeps a full row.</li><li>Animal roles and squad links: attackers, healers, shields, team buffers, and faint effects resolve automatically. Matching roles activate a Voxel Squad Link that grants a small automatic battle bonus. Connected hits build a combo; every fourth connected hit is shown as a Critical Linked Hit and breaks a block, while Boss waves open with a visible warning. Bubble Fin Otter and Rainbow Hop Rabbit protect weakened allies, while Drum Belly Panda and Moss Shell Turtle build team durability.</li><li>Temporary Supplies: each expedition starts with 12 Supplies. Select an owned animal during preparation to buy a temporary level that adds Attack and Health for that expedition. Supplies earned during battle remain part of the current run.</li><li>Permanent growth: cleared waves award Team XP and Training Gold. Team Levels add shared Attack and Health bonuses, while Training Gold unlocks and upgrades normal heroes up to level 20. Two premium heroes use optional Diamonds instead of Training Gold.</li></ul>
         </div>
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Choose an unlocked stage from the horizontal campaign rail; every fifth stage is marked as a Boss stage.</li><li>Open Training when you want to spend saved Training Gold, unlock another normal hero, or inspect the permanent Team Level bonus.</li><li>At deployment, tap an owned animal in the vertical backpack and then tap one of the six formation slots. Tap a placed animal to move or replace it.</li><li>Choose one expedition relic, then spend the run&#39;s Supplies on temporary upgrades for the animals you intend to field.</li><li>Press Start Battle. Attacks, healing, shields, row targeting, and faint abilities resolve automatically according to the chosen formation.</li><li>A winning squad immediately meets the next wave. A loss costs one Heart and reopens preparation; reaching zero Hearts ends the run unless the optional revive is accepted.</li><li>Clear the fifth wave to save the stage, Team XP, Training Gold, and the next unlocked stage. Use Next Stage, Retry, or Back to Stages from the Result panel.</li></ol>
+          <ol><li>Choose an unlocked stage from the horizontal campaign rail; every fifth stage is marked as a Boss stage.</li><li>Open Training when you want to spend saved Training Gold, unlock another normal hero, or inspect the permanent Team Level bonus.</li><li>At deployment, tap an owned animal in the vertical backpack and then tap one of the six formation slots. Tap a placed animal to move or replace it.</li><li>Spend the run&#39;s Supplies on temporary upgrades for the animals you intend to field.</li><li>Press Start Battle. Attacks, healing, shields, row targeting, and faint abilities resolve automatically according to the chosen formation.</li><li>A winning squad immediately meets the next wave. A loss costs one Heart and reopens preparation; reaching zero Hearts ends the run unless the optional revive is accepted.</li><li>Clear the fifth wave to save the stage, Team XP, Training Gold, and the next unlocked stage. Use Next Stage, Retry, or Back to Stages from the Result panel.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
@@ -284,7 +276,7 @@
         </div>
         <div class="game-info-section game-info-design">
           <h3>Developer Design Note</h3>
-          <p>The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, relic selection, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay&#39;s turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.</p>
+          <p>The automated battle is intentional: execution is short so the important work happens in formation, role coverage, target order, and long-term training. A successful wave flows directly into the next one to make the five-wave stage feel like one expedition rather than five disconnected menu visits. Losses reopen preparation so the player can respond instead of watching the same failed setup repeatedly. Tap-select and tap-place support phone play, while the same cards remain usable with mouse input on desktop. Compared with WeightPlay&#39;s turn-based Animal Rune Tactics or real-time Animal Crystal Survivor, Animal Auto Squad asks the player to build a plan and then evaluate how that plan performs without issuing attacks during combat.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Player and Save Information</h3>
@@ -292,7 +284,7 @@
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
-          <dl><div><dt>Is Animal Auto Squad free to play?</dt><dd>Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login.</dd></div><div><dt>What is the goal of each stage?</dt><dd>Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss.</dd></div><div><dt>Do I control attacks during battle?</dt><dd>No. You control the roster, two-row positions, relic, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically.</dd></div><div><dt>Can I rearrange the squad between every wave?</dt><dd>Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern.</dd></div><div><dt>What happens when I lose a wave?</dt><dd>The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive.</dd></div><div><dt>What do Diamonds do?</dt><dd>Diamonds are optional. They can reroll relic choices, revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them.</dd></div><div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device.</dd></div><div><dt>What do Squad Links and battle warnings mean?</dt><dd>Matching roles activate a Voxel Squad Link and a small automatic battle bonus. Connected hits build a combo; every fourth connected hit appears as a Critical Linked Hit and breaks a block. Boss waves begin with a visible warning.</dd></div></dl>
+          <dl><div><dt>Is Animal Auto Squad free to play?</dt><dd>Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login.</dd></div><div><dt>What is the goal of each stage?</dt><dd>Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss.</dd></div><div><dt>Do I control attacks during battle?</dt><dd>No. You control the roster, two-row positions, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically.</dd></div><div><dt>Can I rearrange the squad between every wave?</dt><dd>Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern.</dd></div><div><dt>What happens when I lose a wave?</dt><dd>The run loses one Heart. With Hearts remaining, you can adjust the squad and try that wave again. At zero Hearts, you may end the run or use the optional five-Diamond revive.</dd></div><div><dt>What do Diamonds do?</dt><dd>Diamonds are optional. They can revive a failed expedition, unlock two premium heroes, or unlock the golden cosmetic skin; normal stage progression does not require them.</dd></div><div><dt>What progress is saved?</dt><dd>The browser stores unlocked and completed stages, the last deployed formation and slot positions, Team Level and XP, Training Gold, unlocked animals, permanent animal levels, run records, and cosmetic selection on this device.</dd></div><div><dt>What do Squad Links and battle warnings mean?</dt><dd>Matching roles activate a Voxel Squad Link and a small automatic battle bonus. Connected hits build a combo; every fourth connected hit appears as a Critical Linked Hit and breaks a block. Boss waves begin with a visible warning.</dd></div></dl>
         </div>
       </div>
     </section>
@@ -308,13 +300,14 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="game.js?v=20260910-auto-squad-combat-v34"></script>
+    <script src="../../src/game-screen-shell.js?v=20260910-lobby-shell-pilot1"></script>
+  <script src="game.js?v=20260910-auto-squad-combat-v35"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
           if (document.querySelector("script[data-squad-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260910-auto-squad-combat-v34";
+          script.src = "../../src/game-page-info.js?v=20260910-auto-squad-combat-v35";
           script.dataset.squadGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);

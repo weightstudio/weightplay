@@ -1,0 +1,73 @@
+/* Shared lobby-derived skin and stable scene slots for opt-in games. */
+:root {
+  --wp-shell-lobby-bg: #0b202b;
+  --wp-shell-lobby-surface: #14323d;
+  --wp-shell-lobby-line: #597775;
+  --wp-shell-lobby-gold: #edb74e;
+  --wp-shell-lobby-active: #2c705d;
+  --wp-shell-lobby-text: #f6f2dd;
+  --wp-shell-battle-return-lane: 82px;
+}
+
+[data-wp-game-shell-root].wp-game-shell {
+  isolation: isolate;
+  color: var(--wp-shell-lobby-text);
+}
+
+.wp-game-shell-screen {
+  --wp-shell-frame-line: var(--wp-shell-lobby-line);
+}
+
+.wp-game-shell-header {
+  position: relative;
+  z-index: 12;
+}
+
+.wp-game-shell--lobby .wp-game-shell-screen--main,
+.wp-game-shell--lobby .wp-game-shell-screen--stage,
+.wp-game-shell--lobby .wp-game-shell-screen--battle {
+  background-color: var(--wp-shell-lobby-surface);
+}
+
+.wp-game-shell--lobby .wp-game-shell-screen--main::after,
+.wp-game-shell--lobby .wp-game-shell-screen--stage::after,
+.wp-game-shell--lobby .wp-game-shell-screen--battle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 2px solid var(--wp-shell-frame-line);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(246, 242, 221, 0.08);
+}
+
+.wp-game-shell--lobby :is(.primary-btn, [data-wp-main-start]) {
+  background: var(--wp-shell-lobby-gold);
+  border-color: #f7d67e;
+  color: #172a2b;
+}
+
+.wp-game-shell--lobby :is(.stage-tabs button[aria-selected="true"], .stage-tabs button.is-active) {
+  background: var(--wp-shell-lobby-active);
+  border-color: #8fc8b1;
+  color: #fff;
+}
+
+.wp-game-shell--lobby :is(.wp-shell-return, .play-return) {
+  border-radius: 3px;
+}
+
+/* A returned Battle control lives in its own lane.  Game HUDs start after
+   that lane instead of relying on a one-off margin that can collide at a
+   narrow scale. */
+.wp-game-shell--lobby .wp-generated-battle-header .play-return,
+.wp-game-shell--lobby .stage-header .play-return {
+  color: #f6f2dd !important;
+  background: #0b202b !important;
+  border-color: #597775 !important;
+  box-shadow: inset 0 2px 0 #1b4654, 0 3px 0 #061820 !important;
+}
+
+.wp-game-shell--lobby .wp-generated-battle-header {
+  width: var(--wp-shell-battle-return-lane) !important;
+}

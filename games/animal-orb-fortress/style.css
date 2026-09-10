@@ -38,7 +38,7 @@ select {
 
 .topbar {
   display: grid;
-  grid-template-columns: 58px 1fr minmax(132px, 190px);
+  grid-template-columns: 64px 1fr minmax(132px, 190px);
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
@@ -57,16 +57,18 @@ select {
 
 .back-btn {
   display: grid;
-  grid-template-columns: 16px 28px;
+  grid-template-columns: 18px 28px;
   gap: 4px;
   place-items: center;
-  width: 58px;
+  width: 64px;
   min-height: 44px;
-  height: 54px;
+  height: 48px;
+  padding: 4px;
   border-radius: 16px;
   color: #281704;
   text-decoration: none;
-  font-size: 2rem;
+  direction: ltr;
+  font-size: 1.35rem;
   font-weight: 900;
   background: linear-gradient(#fff7af, #f5ad28);
   box-shadow: 0 8px 0 #855219;
@@ -2338,4 +2340,42 @@ body:not(.orb-fortress-playing) .game-page-info :is(.game-info-fact, .game-info-
 
 body:not(.orb-fortress-playing) .game-page-info :is(.game-info-kicker, .game-info-section li::marker, .game-info-band strong) {
   color: #ffe091;
+}
+
+/* Shell readability and Battle safe lanes. */
+.brand span,
+.locale span,
+.menu-copy > span,
+.profile-grid span,
+body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title p, .game-info-section p, .game-info-section li, .game-info-section dd, .game-info-fact span, .game-info-band span) {
+  color: #e2f0df !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hud-row {
+  left: var(--wp-shell-battle-return-lane, 82px) !important;
+  right: 10px !important;
+}
+
+body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel #battleLive .hint {
+  display: none !important;
+}
+
+.upgrade-card[data-upgrade="damage"] { border-color: #ffc962; }
+.upgrade-card[data-upgrade="split"] { border-color: #ffe56e; background: linear-gradient(155deg, #5a6a37, #263b42); }
+.upgrade-card[data-upgrade="pierce"] { border-color: #72e9ff; background: linear-gradient(155deg, #285c70, #183647); }
+.upgrade-card[data-upgrade="recharge"] { border-color: #8ff4bd; }
+.upgrade-card[data-upgrade="chain"] { border-color: #d79bff; background: linear-gradient(155deg, #4a3a69, #24364c); }
+.upgrade-card .upgrade-level {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  min-height: 22px;
+  margin-top: 6px;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  color: #ffe091;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
 }
