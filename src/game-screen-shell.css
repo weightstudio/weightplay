@@ -60,12 +60,30 @@
 /* A returned Battle control lives in its own lane.  Game HUDs start after
    that lane instead of relying on a one-off margin that can collide at a
    narrow scale. */
-.wp-game-shell--lobby .wp-generated-battle-header .play-return,
-.wp-game-shell--lobby .stage-header .play-return {
+.wp-game-shell--lobby .wp-generated-battle-header .play-return {
   color: #f6f2dd !important;
   background: #0b202b !important;
   border-color: #597775 !important;
   box-shadow: inset 0 2px 0 #1b4654, 0 3px 0 #061820 !important;
+}
+
+/* Stage Return and Settings are a matched utility pair. Keep this shared so
+   Stage never falls back to a game's generic secondary-button appearance. */
+.wp-game-shell--lobby .wp-stage-shell-header > .wp-shell-return[data-wp-return="stage"] {
+  width: 48px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent) !important;
+  border-radius: 12px !important;
+  background: color-mix(in srgb, #071426 88%, transparent) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 22px #0005 !important;
+}
+
+.wp-game-shell--lobby .wp-stage-shell-header > .wp-shell-return[data-wp-return="stage"] > .wp-shell-return-arrow {
+  color: inherit !important;
 }
 
 .wp-game-shell--lobby .wp-generated-battle-header {

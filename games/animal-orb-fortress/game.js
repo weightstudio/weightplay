@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v31";
+  const GAME_VERSION = "v33";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -765,9 +765,9 @@
 
   const assets = {
     bg: "../../assets/animal-orb-fortress-arena-block-v2.png",
-    lion: "../../assets/animal-orb-fortress-hero-lion-block-v2.png",
-    orb: "../../assets/animal-orb-fortress-orb-block-v1.png",
-    beasts: "../../assets/animal-orb-fortress-shadow-beasts-block-v2.png",
+    lion: "../../assets/weightplay-boom-mane-lion.png",
+    orb: "../../assets/animal-orb-fortress-orb-set.webp",
+    beasts: "../../assets/animal-orb-fortress-shadow-beasts.webp",
     bossRootbound: "../../assets/animal-orb-fortress-boss-golem.webp",
     bossBrambleback: "../../assets/animal-orb-fortress-boss-brambleback.webp",
     bossLunarWisp: "../../assets/animal-orb-fortress-boss-lunar-wisp.webp",
@@ -775,7 +775,7 @@
     bossTempestHorn: "../../assets/animal-orb-fortress-boss-tempest-horn.webp",
     bossVoidcore: "../../assets/animal-orb-fortress-boss-voidcore-emperor.webp",
     revive: "../../assets/animal-orb-fortress-diamond-revive.webp",
-    fx: "../../assets/animal-orb-fortress-fx-block-v2.png",
+    fx: "../../assets/animal-orb-fortress-fx.webp",
   };
 
   const pageMeta = {
@@ -2320,7 +2320,9 @@
   }
 
   function activeOrbLimit() {
-    return 1;
+    // The opening battle needs room for a follow-up shot, but every input still
+    // creates exactly one orb. This avoids the old multi-direction burst.
+    return 2;
   }
 
   function canFireOrb() {
@@ -3231,43 +3233,49 @@
   function drawEnemy(enemy) {
     const size = enemy.kind === "boss" ? 156 : enemy.size * 2.25;
     ctx.save();
-    const aura = enemy.kind === "anchor" ? "#8fff9a" : enemy.kind === "charger" ? "#68c8ff" : enemy.kind === "splitter" ? "#d6a1ff" : enemy.kind === "thorn" || enemy.kind === "armored" ? "#ffd56a" : enemy.kind === "boss" ? "#ff8fcb" : "#8ee7ff";
     const shadow = enemy.kind === "thorn" || enemy.kind === "armored" ? "rgba(255, 202, 86, 0.9)" : enemy.kind === "boss" ? "rgba(255, 105, 190, 0.9)" : "rgba(132, 210, 255, 0.88)";
-    const blockHalf = size * 0.38;
+    const halo = ctx.createRadialGradient(enemy.x, enemy.y, size * 0.12, enemy.x, enemy.y, size * 0.82);
+    halo.addColorStop(0, "rgba(3, 10, 30, 0.28)");
+    halo.addColorStop(0.6, "rgba(3, 10, 30, 0.12)");
+    halo.addColorStop(1, "rgba(3, 10, 30, 0)");
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.ellipse(enemy.x, enemy.y + size * 0.1, size * 0.76, size * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
     ctx.shadowColor = shadow;
-    ctx.shadowBlur = enemy.hitTimer > 0 ? 24 : 13;
-    ctx.fillStyle = enemy.kind === "boss" ? "rgba(53, 16, 49, 0.82)" : "rgba(11, 28, 45, 0.86)";
-    ctx.fillRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
-    ctx.fillStyle = enemy.kind === "boss" ? "rgba(106, 31, 78, 0.52)" : "rgba(26, 68, 84, 0.56)";
-    ctx.fillRect(enemy.x - blockHalf * 1.22, enemy.y + blockHalf * 0.42, blockHalf * 0.48, blockHalf * 0.34);
-    ctx.fillRect(enemy.x + blockHalf * 0.74, enemy.y - blockHalf * 0.76, blockHalf * 0.48, blockHalf * 0.34);
-    ctx.strokeStyle = aura;
-    ctx.lineWidth = enemy.kind === "boss" ? 7 : 4;
-    ctx.strokeRect(enemy.x - blockHalf, enemy.y - blockHalf * 0.72, blockHalf * 2, blockHalf * 1.45);
+    ctx.shadowBlur = enemy.hitTimer > 0 ? 34 : 20;
     ctx.globalAlpha = enemy.phased ? 0.4 : enemy.hitTimer > 0 ? 1 : 0.9;
     if (enemy.kind === "boss") drawAtlas(images[enemy.imageKey] || images.bossRootbound, 0, 1, enemy.x, enemy.y, size);
     else drawAtlas(images.beasts, enemySpriteIndex(enemy.kind), 3, enemy.x, enemy.y, size);
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
     if (enemy.elite) {
-      ctx.strokeStyle = "#ffd86b";
-      ctx.lineWidth = 5;
-      ctx.strokeRect(enemy.x - size * 0.59, enemy.y - size * 0.55, size * 1.18, size * 1.1);
+      ctx.fillStyle = "#ffd86b";
+      ctx.beginPath();
+      ctx.moveTo(enemy.x, enemy.y - size * 0.74);
+      ctx.lineTo(enemy.x + 8, enemy.y - size * 0.62);
+      ctx.lineTo(enemy.x, enemy.y - size * 0.5);
+      ctx.lineTo(enemy.x - 8, enemy.y - size * 0.62);
+      ctx.closePath();
+      ctx.fill();
     }
     if (enemy.shield > 0) {
-      ctx.strokeStyle = "rgba(126, 233, 255, 0.96)";
-      ctx.lineWidth = 5;
-      ctx.shadowColor = "#7de9ff";
-      ctx.shadowBlur = 12;
-      ctx.strokeRect(enemy.x - size * 0.7, enemy.y - size * 0.64, size * 1.4, size * 1.24);
-      ctx.shadowBlur = 0;
+      ctx.fillStyle = "rgba(126, 233, 255, 0.96)";
+      ctx.beginPath();
+      ctx.moveTo(enemy.x, enemy.y - size * 0.69);
+      ctx.lineTo(enemy.x + 7, enemy.y - size * 0.64);
+      ctx.lineTo(enemy.x + 5, enemy.y - size * 0.54);
+      ctx.lineTo(enemy.x, enemy.y - size * 0.5);
+      ctx.lineTo(enemy.x - 5, enemy.y - size * 0.54);
+      ctx.lineTo(enemy.x - 7, enemy.y - size * 0.64);
+      ctx.closePath();
+      ctx.fill();
     }
     if (enemy.phased) {
-      ctx.strokeStyle = "rgba(170, 238, 255, 0.95)";
-      ctx.lineWidth = 4;
-      ctx.setLineDash([16, 10]);
-      ctx.strokeRect(enemy.x - size * 0.76, enemy.y - size * 0.69, size * 1.52, size * 1.36);
-      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(170, 238, 255, 0.95)";
+      for (let index = -1; index <= 1; index += 1) {
+        ctx.fillRect(enemy.x + index * 10 - 3, enemy.y + size * 0.57, 6, 3);
+      }
     }
     if (enemy.chargeState === "marked") {
       ctx.strokeStyle = "rgba(255, 224, 92, 0.94)";
@@ -3315,32 +3323,19 @@
     const x = state.launcher.x;
     const y = state.launcher.y;
     ctx.save();
-    // The core is a stepped block plinth, not a white-outlined halo around
-    // the keeper. Its health indicator is a compact block bar below it.
-    ctx.fillStyle = "rgba(5, 22, 38, 0.9)";
-    ctx.fillRect(x - 48, y - 44, 96, 86);
-    ctx.fillStyle = "rgba(28, 92, 112, 0.92)";
-    ctx.fillRect(x - 42, y - 38, 84, 66);
-    ctx.fillStyle = "rgba(64, 159, 170, 0.74)";
-    ctx.fillRect(x - 34, y - 34, 68, 12);
-    ctx.strokeStyle = "#276f8e";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(x - 48, y - 44, 96, 86);
-    ctx.fillStyle = pct > 0.35 ? "#7cf7d1" : "#ff6878";
+    // Keep the original keeper readable: a floor glow, never a white ring or
+    // a square plinth around the character.
+    const glow = ctx.createRadialGradient(x, y + 14, 8, x, y + 14, 53);
+    glow.addColorStop(0, pct > 0.35 ? "rgba(112, 248, 205, 0.38)" : "rgba(255, 104, 120, 0.42)");
+    glow.addColorStop(1, "rgba(3, 15, 28, 0)");
+    ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.moveTo(x, y - 27);
-    ctx.lineTo(x + 22, y);
-    ctx.lineTo(x, y + 27);
-    ctx.lineTo(x - 22, y);
-    ctx.closePath();
+    ctx.ellipse(x, y + 20, 50, 18, 0, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = "#1a6c86";
-    ctx.lineWidth = 4;
-    ctx.stroke();
     ctx.fillStyle = "rgba(3, 15, 28, 0.92)";
-    ctx.fillRect(x - 48, y + 49, 96, 11);
+    ctx.fillRect(x - 45, y + 53, 90, 8);
     ctx.fillStyle = pct > 0.35 ? "#7dffd0" : "#ff6878";
-    ctx.fillRect(x - 45, y + 52, 90 * pct, 5);
+    ctx.fillRect(x - 43, y + 55, 86 * pct, 4);
     ctx.restore();
   }
 

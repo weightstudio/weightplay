@@ -614,6 +614,10 @@ body.squad-active .game-panel {
   #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-control button { min-height: 28px; font-size: .55rem; }
   #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-hint { display: none; }
   #gamePanel.is-result #resultPanel { inset: 4px; padding: 5px; }
+  /* Result actions share the short-landscape Canvas scale. Keep their
+     logical hit areas large enough to remain a physical 44px target after
+     the shared contain-fit transform. */
+  #gamePanel.is-result .result-actions button { min-height: 104px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

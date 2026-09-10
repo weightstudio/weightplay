@@ -1112,13 +1112,6 @@ body.wp-logical-battle-active.orb-fortress-playing #gamePanel.game-panel .hud-ro
   margin: 0;
 }
 
-body.orb-fortress-playing #stagePanel #stageBackBtn {
-  width: 54px !important;
-  min-width: 54px !important;
-  height: 54px !important;
-  min-height: 54px !important;
-}
-
 @media (max-height:560px) {
   body.orb-fortress-playing #gamePanel.game-panel>#resultPanel.result-panel{grid-template-columns:92px minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:center;gap:10px;padding:10px}
   body.orb-fortress-playing #resultPanel .result-lion{width:88px;height:88px;justify-self:center}

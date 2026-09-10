@@ -22,7 +22,7 @@ const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
   : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
-const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-hero-trials";
+const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-auto-squad";
 const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;
@@ -111,7 +111,7 @@ spotlightSection.dataset.runtimeLocalize = "off";
 if (!isKidsLobby) document.querySelector(".lobby-hero").append(spotlightSection);
 function renderSpotlight() {
   if (isKidsLobby) return;
-  const game = lobby.games.find(item => item.id === "animal-crystal-survivor");
+  const game = lobby.games.find(item => item.id === lobby.featuredGameId);
   if (!game || !gameMatchesHall(game)) { spotlightSection.hidden = true; return; }
   spotlightSection.hidden = false;
   spotlightSection.innerHTML = `<h2>${spotlightCopy[i18n.locale()] || spotlightCopy.en}</h2><a class="spotlight-game" href="${game.href}">

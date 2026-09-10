@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index,follow" />
+    <meta name="description" content="A reusable AI workflow for splitting browser-game work into three passes: Planner, Tester, and Gameplay Reviewer." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:title" content="One AI, Three Hats: A Practical Workflow for Better Browser Games - WeightPlay Blog" />
+    <meta property="og:description" content="How to use AI as a Planner, Tester, and Gameplay Reviewer without letting one confident draft judge itself." />
+    <meta property="og:url" content="https://weightplay.com/blog/one-ai-three-hats/" />
+    <meta property="og:image" content="https://weightplay.com/assets/weightplay-lion-mascot.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://weightplay.com/blog/one-ai-three-hats/" />
+    <link rel="alternate" hreflang="en" href="https://weightplay.com/blog/one-ai-three-hats/" />
+    <title>One AI, Three Hats: A Practical Workflow for Better Browser Games - WeightPlay Blog</title>
+    <link rel="stylesheet" href="../blog.css?v=20260731-blog2" />
+  </head>
+  <body>
+    <main class="blog-shell">
+      <nav class="blog-nav" aria-label="Blog navigation">
+        <a class="brand" href="/">WeightPlay</a>
+        <div class="blog-nav-links"><a href="/">Game Lobby</a><a href="/contact.html">Contact</a></div>
+      </nav>
+      <p class="article-back"><a href="../">&larr; All articles</a></p>
+      <header class="blog-hero">
+        <p class="eyebrow">WeightPlay Blog - Workflow notes</p>
+        <h1>One AI, Three Hats: A Practical Workflow for Better Browser Games</h1>
+        <p class="dek">Use AI as a Planner, a Tester, and a Gameplay Reviewer—but give each pass a different question and a different kind of evidence.</p>
+        <div class="article-meta"><span>By WeightStudio</span><span>September 10, 2026</span><span>5 min read</span></div>
+        <p><a class="primary" href="/en/">Open the WeightPlay lobby &rarr;</a></p>
+      </header>
+      <article class="blog-article">
+        <p class="lead">The most useful AI technique I use for small game projects is not a clever prompt. It is a division of responsibility. Instead of asking one AI conversation to invent, build, test, and praise the same feature, I split the work into three passes: Planner, Tester, and Gameplay Reviewer.</p>
+        <p>WeightPlay uses these as different questions in its development workflow. The same pattern also works for a small website, a prototype, or a side project where one person is wearing every hat. The AI can help with all three passes. The important part is that the passes do not all ask for the same kind of answer.</p>
+
+        <h2>Why one giant prompt gives cheap confidence</h2>
+        <p>A large prompt often produces a convincing result: a feature list, some code, a test summary, and a sentence saying the experience feels good. The problem is that the same context created the assumptions, wrote the implementation, and judged the outcome.</p>
+        <p>That is not independent verification. It is one opinion repeated in several voices. Separating the roles creates useful friction. A Tester has to point to an action and an observed result. A Reviewer has to explain why a problem matters to a player. A Planner has to make the original intention clear enough for both of them to check.</p>
+
+        <h2>Pass one: let the Planner make a small contract</h2>
+        <p>The Planner is not there to generate twenty exciting features. The Planner turns an idea into a small contract that another person can verify.</p>
+        <p>Ask for five things:</p>
+        <ol>
+          <li>Who is the first player, and what should they understand in the opening minute?</li>
+          <li>What is the main loop, stated in one or two sentences?</li>
+          <li>Which states must exist: start, active play, success, failure, and recovery?</li>
+          <li>What are the acceptance checks for the first playable slice?</li>
+          <li>What is deliberately out of scope?</li>
+        </ol>
+        <p>The last question prevents scope from hiding inside enthusiastic AI output. A short contract is more useful than a long brainstorm because the next role can actually use it.</p>
+
+        <h2>Pass two: let the Tester work from the artifact</h2>
+        <p>The Tester should receive the current build, the exact route or entry point, the version being checked, and the Planner's acceptance checks. The Tester is not asked whether the idea is exciting. It is asked to perform the actions a player would take and record what happened.</p>
+        <p>A useful test note is concrete: “At a 390 × 844 viewport, the Start button is visible. After tapping it, the first round opens. Choosing the wrong target shows the failure state, and Retry returns to a playable state.” A vague note such as “mobile looks fine” cannot help someone reproduce or fix a problem.</p>
+        <p>If the AI cannot access a browser, it can still turn the contract into a test script. It must not invent the result. Run the steps yourself, or connect the Tester to a local build that it can actually inspect. Evidence beats confidence here.</p>
+
+        <h2>Pass three: let the Gameplay Reviewer judge the experience</h2>
+        <p>Once the feature works, the Gameplay Reviewer asks a different question: “Would a player understand the choice, enjoy the rhythm, and want to continue?” This is not a replacement for functional testing. It is a player-centred read of the working experience.</p>
+        <p>Ask the Reviewer to separate three layers:</p>
+        <ul>
+          <li><strong>Observation:</strong> what appeared, what the player had to do, and where the interaction slowed down.</li>
+          <li><strong>Interpretation:</strong> what that moment may mean for clarity, pacing, or motivation.</li>
+          <li><strong>Recommendation:</strong> one change that could improve the next version, with a reason.</li>
+        </ul>
+        <p>This separation matters because one play session cannot prove what every player thinks. It can reveal a confusing instruction, a dead moment, or a satisfying recovery. Treat those as evidence and hypotheses, not as invented user research.</p>
+
+        <h2>Keep the handoff smaller than the project</h2>
+        <p>The technique becomes practical when each role gets a small handoff instead of the entire repository or a huge conversation history:</p>
+        <pre style="white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;"><code style="white-space:inherit;">Idea
+  &darr;
+Planner brief + acceptance checks
+  &darr;
+Current build + Tester evidence
+  &darr;
+Gameplay Reviewer observations + next recommendation</code></pre>
+        <p>You can use three separate AI chats, three saved prompts, or three explicit phases in one session. Label the phase clearly. Give the Tester the build and the checks, not the Planner's confidence. Give the Reviewer the tested experience and the evidence, not a request to approve the original idea.</p>
+
+        <h2>A reusable role prompt</h2>
+        <p>Start each pass with the same short frame and change only the responsibility:</p>
+        <pre style="white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;"><code style="white-space:inherit;">You are the [Planner / Tester / Gameplay Reviewer].
+Current artifact: [local URL, feature, or version]
+Your question: [the one question this role must answer]
+Use only: [brief, build, or observed evidence]
+Return: facts first, then risks, then the smallest useful next step.
+Do not claim a check happened unless the evidence shows it.</code></pre>
+        <p>The final line is easy to overlook and does a lot of work. It stops a language model from turning an expected result into a reported result.</p>
+
+        <h2>What AI still cannot own</h2>
+        <p>AI can help write the brief, generate a checklist, compare observations, and suggest a next experiment. It cannot decide whether an unmeasured assumption is safe enough to ship, whether a privacy boundary is acceptable, or whether a trade-off matches your product. Those decisions still belong to the person responsible for the project.</p>
+        <p>For the next small feature, try three short passes: a Planner brief, a real Tester run, and a separate Reviewer read. If the answers disagree, do not average them into a nicer sentence. Find the missing evidence or make the decision explicit. That is where the three-role technique becomes more than prompt theatre.</p>
+        <hr />
+        <p><em>This article was outlined with AI assistance and then checked and edited against the actual WeightPlay development workflow by the WeightStudio team.</em></p>
+      </article>
+      <footer class="blog-footer"><a href="../">Back to Blog</a><a href="/">Back to WeightPlay</a><span>Copyright 2026 WeightStudio</span><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></footer>
+    </main>
+  </body>
+</html>

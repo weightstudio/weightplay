@@ -35,8 +35,8 @@
 html.wp-stage-select-active .wp-tutorial-button,
 body.wp-stage-select-active .wp-tutorial-button,
 body.wp-logical-battle-active .wp-tutorial-button,
-body:has(#stageScreen:not(.hidden):not([hidden])) .wp-tutorial-button,
-body:has([data-screen="stage"]:not(.hidden):not([hidden])) .wp-tutorial-button {
+body:has(#stageScreen:not(.hidden):not(.is-hidden):not([hidden])) .wp-tutorial-button,
+body:has([data-screen="stage"]:not(.hidden):not(.is-hidden):not([hidden])) .wp-tutorial-button {
   display: none;
 }
 
