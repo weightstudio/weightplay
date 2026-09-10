@@ -15,6 +15,10 @@
     // landscape envelope so the controls retain their touch target size.
     "animal-chameleon-blend": ["#battle-screen", 390, 788, 760, 334],
     "animal-habitat-builder": ["#battle-screen", 390, 788, 760, 334],
+    // Hoop League's aim and shot controls share this native Market Five
+    // shell. Keep its short-landscape Battle in the wide envelope so the
+    // scaler does not reduce 48px controls to roughly 20px at 844x390.
+    "animal-hoop-league": ["#battle-screen", 390, 788, 760, 334],
     // Cloudhook owns a native 960x540 playfield; in compact landscape it
     // uses the same wide envelope so its tether controls remain operable.
     "animal-cloudhook-courier": ["#battleScreen", 390, 788, 760, 334],
