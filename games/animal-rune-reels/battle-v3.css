@@ -1,8 +1,8 @@
 /* Animal Rune Reels V3: summon roster, downward reels, centered party and stable summoner combat. */
-.v3-stage{grid-template-rows:52px 44px minmax(0,1fr) 56px;padding:10px 12px;gap:8px;background:linear-gradient(#101842d9,#101842e8),url('../../assets/animal-rune-reels/arena.webp') center/cover}
+.v3-stage{grid-template-rows:52px 44px minmax(0,1fr) 56px;padding:10px 12px;gap:8px;background:linear-gradient(#101842d9,#101842e8),url('../../assets/animal-rune-reels/block-v1/arena-block-v1.webp') center/cover}
 .stage-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.stage-tabs button{border:1px solid #53609a;border-radius:10px;background:#111943;color:#aeb9e8;font-weight:850;font-size:.72rem}.stage-tabs button.active{color:#fff;border-color:#79e7ff;background:#263477;box-shadow:0 0 12px #4ddfff55}.management-panel{min-height:0;overflow:hidden}.management-panel[hidden]{display:none!important}#stagesPanel{display:grid;grid-template-rows:44px minmax(0,1fr);gap:6px}.v3-stage .progress-card{min-height:44px;padding:7px 12px}.v3-stage .stage-rail{min-height:0;align-items:center;padding:4px calc(50% - 132px);gap:18px;cursor:grab;overscroll-behavior-x:contain;scroll-behavior:smooth;touch-action:pan-y}.v3-stage .stage-rail.dragging{cursor:grabbing;scroll-behavior:auto}.v3-stage .stage-card{box-sizing:border-box;flex:0 0 264px;width:264px;height:190px;padding:9px;grid-template-rows:18px 27px 75px 22px 30px!important}.stage-enemy-preview{display:flex;justify-content:center;align-items:end;gap:2px;overflow:hidden;background:radial-gradient(circle at 50% 100%,#7868db55,transparent 68%);border-radius:10px}.stage-enemy-preview img{width:78px;height:72px;object-fit:contain;filter:drop-shadow(0 5px 4px #000b)}.stage-enemy-preview[data-count="2"] img{width:66px}.stage-enemy-preview[data-count="3"] img{width:54px}.stage-card h3,.stage-card p{margin:0}.monster-chip{display:flex;justify-content:space-between}.monster-count{color:#ffe36d;font-weight:950}
 .team-summary{height:48px;display:grid;grid-template-columns:1fr auto;align-items:center;padding:6px 10px;border-radius:12px;background:#111943dd}.team-summary span:last-child{grid-column:1/3;color:#92eaff;font-size:.7rem}.roster-grid{height:calc(100% - 54px);overflow:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:2px}.roster-card{position:relative;min-height:128px;border:2px solid #445184;border-radius:14px;background:#10183f;color:#fff;padding:6px;display:grid;grid-template-rows:72px auto auto;justify-items:center}.roster-card img{width:72px;height:72px;object-fit:contain}.roster-card b{font-size:.72rem}.roster-card small{font-size:.6rem;color:#aeb9e8}.roster-card.locked{filter:grayscale(1);opacity:.55}.roster-card.active{border-color:#64efc0;box-shadow:0 0 13px #52dfaa}.roster-card .active-dot{position:absolute;right:5px;top:5px;width:17px;height:17px;border-radius:50%;background:#43d99e;display:grid;place-items:center;font-size:.65rem}.summon-panel{text-align:center;overflow:auto;padding:10px 14px}.summon-orb img{width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 0 24px #a34dff)}.summon-panel h3{margin:4px}.summon-panel p{max-width:430px;margin:6px auto;color:#bdc7ee}.coin-bank{display:flex;justify-content:center;gap:12px;margin:12px;font-size:1.15rem}.coin-bank b{color:#ffd359}.summon-panel .primary{min-width:220px}.summon-panel .primary small{display:block}.rune-guide{height:100%;overflow:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:2px}.rune-guide-card{border:1px solid #4d5b92;border-radius:12px;background:#10183f;padding:6px;text-align:center}.rune-guide-card img{width:64px;height:64px;object-fit:contain}.rune-guide-card b{display:block;font-size:.68rem}.rune-guide-card small{display:block;color:#b9c3ea;font-size:.56rem;line-height:1.25}
-.v3-battle{grid-template-rows:48px minmax(0,1fr) 218px;overflow:hidden}.v3-battle .arena{isolation:isolate;min-height:0;background:url('../../assets/animal-rune-reels/arena.webp') center/cover}.enemy-squad{position:absolute;z-index:3;top:5%;left:50%;width:min(72%,560px);transform:translateX(-50%);display:flex;justify-content:center;align-items:end;gap:5px;direction:ltr}.enemy-unit{width:min(31%,155px);text-align:center}.enemy-unit img{width:100%;height:min(19vh,130px);object-fit:contain;filter:drop-shadow(0 8px 7px #000c)}.enemy-unit .enemy-name{font-size:.58rem;text-shadow:0 2px 3px #000}.enemy-unit .hpbar{height:15px;border-width:1px}.enemy-unit .hpbar span{font-size:.56rem;line-height:13px}.enemy-unit.defeated{opacity:.2;filter:grayscale(1)}.enemy-hit{animation:enemyHit .32s ease-out}@keyframes enemyHit{25%,75%{transform:translateX(-4px);filter:brightness(1.6)}50%{transform:translateX(4px)}}
+.v3-battle{grid-template-rows:48px minmax(0,1fr) 218px;overflow:hidden}.v3-battle .arena{isolation:isolate;min-height:0;background:url('../../assets/animal-rune-reels/block-v1/arena-block-v1.webp') center/cover}.enemy-squad{position:absolute;z-index:3;top:5%;left:50%;width:min(72%,560px);transform:translateX(-50%);display:flex;justify-content:center;align-items:end;gap:5px;direction:ltr}.enemy-unit{width:min(31%,155px);text-align:center}.enemy-unit img{width:100%;height:min(19vh,130px);object-fit:contain;filter:drop-shadow(0 8px 7px #000c)}.enemy-unit .enemy-name{font-size:.58rem;text-shadow:0 2px 3px #000}.enemy-unit .hpbar{height:15px;border-width:1px}.enemy-unit .hpbar span{font-size:.56rem;line-height:13px}.enemy-unit.defeated{opacity:.2;filter:grayscale(1)}.enemy-hit{animation:enemyHit .32s ease-out}@keyframes enemyHit{25%,75%{transform:translateX(-4px);filter:brightness(1.6)}50%{transform:translateX(4px)}}
 .summoner-field{position:absolute;z-index:4;left:50%;bottom:4px;transform:translateX(-50%);width:min(92%,700px);height:44%;direction:ltr}.summoner{position:absolute;z-index:1;left:50%;bottom:50px;transform:translateX(-50%);width:84px;height:104px;object-fit:contain;filter:drop-shadow(0 6px 5px #000b);opacity:.88}.summoner-field .party-heroes{position:absolute;z-index:2;left:50%;bottom:47px;transform:translateX(-50%);width:min(70%,430px);display:flex;justify-content:center;align-items:end;gap:10px}.party-hero{position:relative;width:30%;max-width:116px;text-align:center;transition:transform .2s,filter .2s}.party-hero img{width:100%;height:88px;object-fit:contain;filter:drop-shadow(0 6px 5px #000)}.party-hero small{position:absolute;left:2px;right:2px;bottom:0;padding:1px;border-radius:6px;background:#080d29e8;font-size:.52rem}.party-hero.active{transform:translateY(-10px) scale(1.08);filter:drop-shadow(0 0 14px #ffe36a)}.party-hero.attack-launch{animation:heroLaunch .65s ease-in-out}@keyframes heroLaunch{45%{transform:translateY(-45px) scale(1.18)}100%{transform:none}}.summoner-hud{position:absolute;z-index:3;left:0;right:0;bottom:0}.summoner-hp{width:100%;height:23px}.summoner-hp i{background:linear-gradient(90deg,#22d48a,#78f3bd)}.team-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:3px}.team-metrics span{display:flex;justify-content:center;gap:4px;padding:2px;border-radius:6px;background:#07102edc;font-size:.58rem}.team-metrics i{font-style:normal;color:#a7b5e6}.summoner-hit .summoner{animation:summonerHit .32s ease-out}@keyframes summonerHit{25%,75%{transform:translateX(calc(-50% - 4px))}50%{transform:translateX(calc(-50% + 4px))}}.damage-vignette{position:absolute;inset:0;z-index:9;background:radial-gradient(circle,transparent 48%,#ff274f77);animation:vignette .38s forwards}@keyframes vignette{to{opacity:0}}
 .phase-banner{position:absolute;z-index:11;left:50%;top:49%;transform:translate(-50%,-50%);min-width:min(84%,470px);padding:9px 14px;border:1px solid #ffffff88;border-radius:14px;background:#080d2af2;box-shadow:0 8px 28px #000b,0 0 24px var(--phase-color,#83eaff);text-align:center}.phase-banner small{display:block;color:var(--phase-color);font-weight:900}.phase-banner strong{display:block;font-size:1.2rem;margin-top:2px}.multiplier-chip{position:absolute;z-index:12;left:50%;top:58%;transform:translate(-50%,-50%);padding:9px 18px;border-radius:999px;background:#25145bea;border:2px solid #ffe06b;color:#fff;font-size:1.3rem;font-weight:1000;box-shadow:0 0 22px #a56eff}.multiplier-chip.fly{animation:multiplierFly .75s ease-in forwards}@keyframes multiplierFly{to{left:88%;top:91%;transform:translate(-50%,-50%) scale(.55);opacity:.35}}.magic-projectile{position:absolute;z-index:10;width:38px;height:16px;border-radius:50%;background:linear-gradient(90deg,#fff,#ffd35a,#ff6a42);box-shadow:0 0 20px #ffc54f;animation:magicShot .52s ease-in forwards}@keyframes magicShot{from{left:48%;top:73%}to{left:50%;top:20%;transform:scale(.35)}}.damage-number{position:absolute;z-index:12;left:50%;top:23%;font-size:1.45rem;font-weight:1000;color:#fff39a;text-shadow:0 2px 4px #000;animation:damageFloat .72s forwards}@keyframes damageFloat{to{transform:translateY(-44px) scale(1.15);opacity:0}}
 .v3-battle .reel-console{position:relative;min-height:0;padding:4px 10px 8px;border-top:1px solid #5766a5;background:linear-gradient(#101745,#080d28)}.v3-battle .combo{height:22px;line-height:22px}.v3-battle .reels{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:650px}.v3-battle .reel{--reel-height:96px;height:96px;border:3px solid #6574b5;border-radius:17px;overflow:hidden;position:relative;contain:paint;background:linear-gradient(#05091e,#182456,#05091e)}.reel-strip{position:absolute;left:0;right:0;top:0;will-change:transform}.reel-cell{height:var(--reel-height);display:grid;place-items:center}.reel-cell img{width:82px;height:82px;object-fit:contain}.reel.spinning{border-color:#73e7ff;box-shadow:0 0 13px #4de7ff66}.reel.line-win{border-color:#ffe466;animation:lineGlow 1s ease-in-out;box-shadow:0 0 20px #ffd94f,inset 0 0 18px #ffe06a77}@keyframes lineGlow{50%{filter:brightness(1.45);box-shadow:0 0 34px #fff18f,inset 0 0 24px #ffe06a}}.v3-battle .battle-actions{max-width:650px;margin:5px auto 0;display:grid;grid-template-columns:2fr 1fr;gap:7px}.v3-battle .spin,.auto-btn{height:54px;border:0;border-radius:14px;color:#fff;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center}.auto-btn{background:#24315f;border:1px solid #6675ad}.auto-btn.on{background:linear-gradient(135deg,#0c9b8d,#29d69d);box-shadow:0 0 14px #38e2aa77}.auto-btn small,.spin small{font-size:.62rem}
@@ -252,6 +252,133 @@ img{-webkit-user-drag:none}
   .summoner-hp.player-hit{animation-duration:.32s!important}
   .damage-number,.player-damage{animation-duration:.44s!important}
   .impact-burst,.impact-spark,.damage-vignette{animation-duration:.28s!important}
+}
+
+/* v74 block-v1 effects: the ten combat effect families use square pieces,
+   stepped masks and hard planar edges throughout the Rune Reels world. */
+.magic-projectile,
+.magic-projectile[class*="spell-"]{
+  width:48px!important;
+  height:30px!important;
+  border:3px solid #fff9c7!important;
+  border-radius:2px!important;
+  clip-path:polygon(0 25%,24% 25%,24% 0,76% 0,76% 25%,100% 25%,100% 75%,76% 75%,76% 100%,24% 100%,24% 75%,0 75%)!important;
+  background:linear-gradient(90deg,#fff 0 14%,var(--spell-color,#ffb640) 15% 62%,#713cff 63% 100%)!important;
+  box-shadow:0 0 0 3px #101842,0 0 18px var(--spell-color,#ffb640),0 0 36px var(--spell-color,#ffb640)!important;
+}
+.magic-projectile::before{
+  display:block!important;
+  content:"";
+  position:absolute;
+  right:100%;
+  top:7px;
+  width:96px;
+  height:12px;
+  border-radius:0!important;
+  background:repeating-linear-gradient(90deg,transparent 0 8px,var(--spell-color,#ffb640) 8px 20px,transparent 20px 27px)!important;
+  filter:none!important;
+}
+.magic-projectile::after{
+  display:block!important;
+  content:"";
+  position:absolute;
+  inset:7px 16px;
+  border:0!important;
+  border-radius:0!important;
+  background:#fff!important;
+  transform:rotate(45deg);
+  animation:blockCoreTurn .24s steps(4,end) infinite!important;
+}
+.magic-projectile.ultimate-projectile{width:72px!important;height:46px!important}
+@keyframes blockCoreTurn{to{transform:rotate(405deg)}}
+
+.impact-burst{
+  width:28px!important;
+  height:28px!important;
+  border:5px solid #fff!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:0 0 0 6px var(--spell-color),0 0 30px var(--spell-color)!important;
+}
+.impact-burst::before,.impact-burst::after{
+  inset:-22px!important;
+  border:4px solid var(--spell-color)!important;
+  border-radius:0!important;
+  transform:rotate(45deg)!important;
+}
+.impact-burst::after{inset:-36px!important;transform:none!important}
+.impact-spark{
+  width:34px!important;
+  height:8px!important;
+  border:2px solid #fff!important;
+  border-radius:0!important;
+  clip-path:polygon(0 0,74% 0,74% 25%,100% 25%,100% 75%,74% 75%,74% 100%,0 100%)!important;
+  background:linear-gradient(90deg,#fff,var(--spell-color) 45%,transparent)!important;
+}
+
+.ultimate-sigil{
+  width:92px!important;
+  height:92px!important;
+  border:5px solid var(--spell-color)!important;
+  border-radius:0!important;
+  clip-path:polygon(0 0,38% 0,38% 10%,62% 10%,62% 0,100% 0,100% 38%,90% 38%,90% 62%,100% 62%,100% 100%,62% 100%,62% 90%,38% 90%,38% 100%,0 100%,0 62%,10% 62%,10% 38%,0 38%)!important;
+  background:repeating-linear-gradient(45deg,transparent 0 10px,color-mix(in srgb,var(--spell-color) 34%,transparent) 10px 18px)!important;
+  box-shadow:inset 0 0 0 8px #ffffff66,0 0 32px var(--spell-color)!important;
+}
+.ultimate-sigil::before,.ultimate-sigil::after{
+  inset:15px!important;
+  border:4px solid #fff!important;
+  border-radius:0!important;
+  transform:rotate(45deg)!important;
+}
+.ultimate-sigil::after{inset:-14px!important;border-color:var(--spell-color)!important;transform:none!important}
+.ultimate-flash{
+  background:
+    linear-gradient(90deg,transparent 0 38%,color-mix(in srgb,var(--spell-color) 70%,white) 38% 62%,transparent 62%),
+    linear-gradient(0deg,transparent 0 38%,#ffffffaa 38% 62%,transparent 62%)!important;
+  clip-path:polygon(0 25%,25% 25%,25% 0,75% 0,75% 25%,100% 25%,100% 75%,75% 75%,75% 100%,25% 100%,25% 75%,0 75%)!important;
+}
+
+.party-hero.attack-launch::after,.party-hero.support-cast::after,
+.support-aura{
+  border-radius:0!important;
+  clip-path:polygon(0 20%,12% 20%,12% 0,88% 0,88% 20%,100% 20%,100% 80%,88% 80%,88% 100%,12% 100%,12% 80%,0 80%)!important;
+  background:repeating-linear-gradient(90deg,transparent 0 13px,color-mix(in srgb,var(--hero-aura,#7effa4) 62%,transparent) 13px 24px)!important;
+  filter:none!important;
+}
+.shield-aura{border:6px solid #60eaff!important;background:#1daed622!important}
+.heal-aura{border:6px solid #62ff9b!important;background:#28c96a22!important}
+.heal-wave{
+  border:6px solid #5cff9b!important;
+  border-radius:0!important;
+  clip-path:polygon(0 30%,8% 30%,8% 12%,20% 12%,20% 0,80% 0,80% 12%,92% 12%,92% 30%,100% 30%,100% 70%,92% 70%,92% 88%,80% 88%,80% 100%,20% 100%,20% 88%,8% 88%,8% 70%,0 70%)!important;
+  background:repeating-linear-gradient(90deg,transparent 0 22px,#55ff9b33 22px 38px)!important;
+}
+.shield-dome{
+  border:6px solid #70e9ff!important;
+  border-bottom-width:4px!important;
+  border-radius:0!important;
+  clip-path:polygon(8% 100%,0 80%,0 34%,12% 34%,12% 16%,30% 16%,30% 4%,70% 4%,70% 16%,88% 16%,88% 34%,100% 34%,100% 80%,92% 100%)!important;
+  background:repeating-linear-gradient(135deg,#71ecff22 0 16px,transparent 16px 32px)!important;
+}
+.rune-flight{
+  image-rendering:auto;
+  border-radius:0!important;
+  filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 12px var(--effect-color,#66eaff))!important;
+  animation-name:runeTransferBlock!important;
+  animation-timing-function:steps(8,end)!important;
+}
+@keyframes runeTransferBlock{
+  from{opacity:.2;transform:translate(calc(var(--rune-from-x) - 19px),calc(var(--rune-from-y) - 19px)) scale(.35) rotate(0)}
+  25%{opacity:1}
+  to{opacity:1;transform:translate(calc(var(--rune-to-x) - 19px),calc(var(--rune-to-y) - 19px)) scale(.72) rotate(360deg)}
+}
+.damage-vignette{
+  background:
+    linear-gradient(90deg,#ff274f88 0 7%,transparent 7% 93%,#ff274f88 93%),
+    linear-gradient(0deg,#ff274f88 0 7%,transparent 7% 93%,#ff274f88 93%),
+    repeating-linear-gradient(90deg,transparent 0 32px,#ff274f26 32px 48px)!important;
+  clip-path:polygon(0 0,100% 0,100% 100%,0 100%)!important;
 }
 
 /* Interface V4: protected header, one active workspace and the canonical

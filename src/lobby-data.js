@@ -1438,7 +1438,7 @@ window.WONDER_LOBBY = {
         ar: ["30 معركة", "توقف متتابع", "1–3 وحوش"],
       },
       previewVideo: "assets/previews/animal-rune-reels-battle.webm",
-      art: { kind: "image", background: "assets/lobby-posters/animal-rune-reels-square-v1.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-rune-reels/block-v1/cover-block-v1.webp", hideHero: true },
     },
     {
       id: "animal-spectrum-pulse",
