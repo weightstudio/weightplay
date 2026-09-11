@@ -101,7 +101,7 @@
         </div>
         <div class="stage-tabs" role="tablist" aria-label="Expedition management">
           <button id="stageTabBtn" class="stage-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="stageSelectPane">⚔ <span>Stages</span></button>
-          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">⬆ <span>Training</span></button>
+          <button id="trainingTabBtn" class="stage-tab" type="button" role="tab" aria-selected="false" aria-controls="trainingPane">✦ <span>Team</span></button>
         </div>
         <div class="stage-workspace">
           <section id="stageSelectPane" class="stage-pane is-active" role="tabpanel" aria-labelledby="stageTabBtn">
@@ -109,23 +109,28 @@
             <div id="stageRail" class="stage-rail" data-wp-stage-rail aria-label="Stage selection"></div>
             <div class="stage-legend"><span id="stageSwipeText">↔ Swipe</span><span id="stageDeployText">Tap an unlocked stage to deploy</span></div>
           </section>
-          <section id="trainingPane" class="stage-pane training-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
-            <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
-            <p id="stageNotice" class="action-notice" role="status" aria-live="polite"></p>
-            <div class="cosmetic-store">
-              <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
-              <div class="skin-actions">
-                <button id="buySkinBtn" class="store-btn" type="button"></button>
-                <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
+          <section id="trainingPane" class="stage-pane training-pane team-pane" role="tabpanel" aria-labelledby="trainingTabBtn" hidden>
+            <p id="teamEmptyState" class="team-empty-state" role="status">Choose a stage first, then set your team and backpack.</p>
+            <div id="teamPrepHost" class="team-prep-host"></div>
+            <details id="teamGrowthDetails" class="team-growth-details">
+              <summary>Permanent growth</summary>
+              <div id="teamBonusText" class="team-bonus-note" aria-live="polite"></div>
+              <p id="stageNotice" class="action-notice" role="status" aria-live="polite"></p>
+              <div class="cosmetic-store">
+                <span data-ui="cosmeticStoreTitle" class="store-label">Mascot Cosmetic Skin (15 Diamonds)</span>
+                <div class="skin-actions">
+                  <button id="buySkinBtn" class="store-btn" type="button"></button>
+                  <button id="equipSkinBtn" class="secondary-btn is-hidden" type="button"></button>
+                </div>
               </div>
-            </div>
-            <div class="training-store" aria-live="polite">
-              <div class="training-header">
-                <span id="trainingTitleText" class="store-label">Squad Training</span>
-                <strong id="trainingGoldText">0 Gold</strong>
+              <div class="training-store" aria-live="polite">
+                <div class="training-header">
+                  <span id="trainingTitleText" class="store-label">Squad Training</span>
+                  <strong id="trainingGoldText">0 Gold</strong>
+                </div>
+                <div id="trainingRoster" class="training-roster"></div>
               </div>
-              <div id="trainingRoster" class="training-roster"></div>
-            </div>
+            </details>
           </section>
         </div>
       </section>
@@ -145,8 +150,6 @@
 
         <!-- Preparation (Shop & Grid) Phase UI -->
         <div id="prepPhaseArea" class="prep-phase-area">
-          <div id="foodGuide" class="food-guide" aria-live="polite"></div>
-
           <!-- Squad Positions (Linear Row, Slots 1-5) -->
           <div class="squad-section">
             <h3 data-ui="yourSquadLabel">Active Squad (Top: Front Row | Bottom: Back Row)</h3>
@@ -290,7 +293,7 @@
       <div class="game-info-section"><h3>Nota de design</h3><p>A batalha automática é intencional: a execução é curta para que o trabalho importante fique na formação, na cobertura de funções, na ordem dos alvos e no treinamento de longo prazo. Uma onda vencida flui para a próxima e faz a fase de cinco ondas parecer uma expedição única, não cinco visitas desconectadas a menus. As derrotas reabrem a preparação para que você possa responder em vez de repetir a mesma configuração. Selecionar e posicionar com toques funciona no celular, e as mesmas cartas podem ser usadas com o mouse no desktop. Ao contrário de Animal Rune Tactics, por turnos, ou Animal Crystal Survivor, em tempo real, Animal Auto Squad pede um plano e depois deixa você avaliar seu desempenho sem emitir ataques durante o combate.</p></div>
       <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>As fases avançadas combinam formações de seis unidades, regras de alvo especializadas, melhorias permanentes, pressão de falha, habilidades de chefe e decisões opcionais com Diamonds. O progresso da campanha, a última formação e os espaços usados, Training Gold, Team Level, animais desbloqueados, níveis permanentes, fases concluídas e escolha cosmética são salvos neste navegador; não é necessário fazer login para jogar. Limpar os dados deste site pode remover o progresso local.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Animal Auto Squad é gratuito?</dt><dd>Sim. A campanha por fases roda no navegador da WeightPlay sem compra ou login obrigatório.</dd></div><div><dt>Qual é o objetivo de cada fase?</dt><dd>Monte uma equipe que sobreviva a cinco ondas contínuas. Concluir a quinta salva a fase e desbloqueia a próxima; toda quinta fase termina com um chefe regional.</dd></div><div><dt>Eu controlo os ataques durante a batalha?</dt><dd>Não. Antes do combate você controla o elenco, as duas fileiras e as melhorias temporárias. Depois os animais atacam, curam, protegem e ativam habilidades automaticamente.</dd></div><div><dt>Posso reorganizar a equipe entre todas as ondas?</dt><dd>A vitória leva direto à próxima onda. A preparação reabre depois de uma derrota ou empate enquanto ainda houver Hearts, então a formação inicial deve lidar com mais de um padrão de inimigos.</dd></div><div><dt>O que acontece quando perco uma onda?</dt><dd>A rodada perde um Heart. Com Hearts restantes, ajuste a equipe e tente novamente; com zero Hearts, você pode encerrar a expedição ou usar a ressurreição opcional de cinco Diamonds.</dd></div><div><dt>Para que servem os Diamonds?</dt><dd>Eles são opcionais. reviver uma expedição, desbloquear dois heróis premium ou a skin dourada; a progressão normal não exige Diamonds.</dd></div><div><dt>Que progresso é salvo?</dt><dd>Fases desbloqueadas e concluídas, última formação e espaços usados, Team Level e XP, Training Gold, animais desbloqueados, níveis permanentes, registros da rodada e escolha cosmética ficam salvos neste dispositivo.</dd></div><div><dt>O que significam os vínculos e o aviso de batalha?</dt><dd>Combinar funções ativa um Vínculo do esquadrão voxel e um pequeno bônus de batalha automática. Acertos conectados formam um combo; a cada quarto acerto aparece um Acerto vinculado crítico e um bloco é quebrado. Ondas de chefe começam com um aviso.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fortaleza dos Orbes</strong><span>QUERY LENGTH LIMIT EXCEEDED.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Fortaleza dos Orbes</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Arca de Carga</strong><span>Empurre, puxe e conduza cargas rúnicas por 30 armazéns celestes com gelo, sinais, ímãs e caixas ligadas.</span></span></a></div></div>
     </div>
   </section>
 </body>

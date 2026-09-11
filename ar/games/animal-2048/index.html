@@ -16,7 +16,7 @@
   <meta property="og:title" content="الحيوان 2048: تطور الغابة | WeightPlay" />
   <meta property="og:description" content="الحيوان 2048 لعبة استراتيجية غابية تعتمد على الأدوار وتدور حول البومة أورلا ذات القبعة القمرية. كل اتجاه يحرّك لوحة 4×4 كاملة، لذلك قد تفتح حركة واحدة..." />
   <meta property="og:url" content="https://weightplay.com/ar/games/animal-2048/" />
-  <meta property="og:image" content="https://weightplay.com/assets/animal-2048-cover.webp" />
+  <meta property="og:image" content="https://weightplay.com/assets/animal-2048/cover-block-v1.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="الحيوان 2048: تطور الغابة | WeightPlay" />
   <meta name="twitter:description" content="الحيوان 2048 لعبة استراتيجية غابية تعتمد على الأدوار وتدور حول البومة أورلا ذات القبعة القمرية. كل اتجاه يحرّك لوحة 4×4 كاملة، لذلك قد تفتح حركة واحدة..." />
@@ -35,30 +35,31 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-2048/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-2048/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-2048/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"الحيوان 2048: تطور الغابة","url":"https://weightplay.com/ar/games/animal-2048/","image":"https://weightplay.com/assets/animal-2048-cover.png","description":"الحيوان 2048 لعبة استراتيجية غابية تعتمد على الأدوار وتدور حول البومة أورلا ذات القبعة القمرية. كل اتجاه يحرّك لوحة 4×4 كاملة، لذلك قد تفتح حركة واحدة...","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ar","isAccessibleForFree":true,"genre":["ألغاز","استراتيجية","منطق","حيوانات","لعبة متصفح"],"audience":{"@type":"Audience","audienceType":"General players"},"alternateName":"2048: Forest Evolution"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"الحيوان 2048: تطور الغابة","url":"https://weightplay.com/ar/games/animal-2048/","image":"https://weightplay.com/assets/animal-2048/cover-block-v1.png","description":"الحيوان 2048 لعبة استراتيجية غابية تعتمد على الأدوار وتدور حول البومة أورلا ذات القبعة القمرية. كل اتجاه يحرّك لوحة 4×4 كاملة، لذلك قد تفتح حركة واحدة...","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"ar","isAccessibleForFree":true,"genre":["ألغاز","استراتيجية","منطق","حيوانات","لعبة متصفح"],"audience":{"@type":"Audience","audienceType":"General players"},"alternateName":"2048: Forest Evolution"}</script>
   <link rel="stylesheet" href="../../src/loading-screen.css" />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
   <link rel="stylesheet" href="../../src/play-viewport.css" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="style.css?v=20260909-animal-2048-interface-v24" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-animal-2048-interface-v24"><meta name="twitter:image" content="https://weightplay.com/assets/animal-2048-cover.webp" />
+  <link rel="stylesheet" href="style.css?v=20260911-forest-v25" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-forest-v25" data-wp-frame-style><meta name="twitter:image" content="https://weightplay.com/assets/animal-2048/cover-block-v1.webp" />
   <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-2048">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong><span id="loadingText" data-i18n="loading">Opening the forest sanctuary…</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
 
+  <div id="forestApp" data-wp-frame-root>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
         <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay" data-i18n-aria="backWeightPlay"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" /></a>
-        <strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong>
-        <label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
+        <strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong>
+        <label class="locale-control" hidden><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português (Brasil)</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label>
       </header>
-      <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-2048-cover.webp" alt="شعار WeightPlay" />
-        <div class="main-copy"><small data-i18n="eyebrow">Moonlit Forest Puzzle Sanctuary</small><h1 data-i18n="fullTitle" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</h1><p data-i18n="pitch">Swipe the whole grid, merge matching animals, and protect enough open space to complete each mission.</p><div id="mainProgress" class="main-progress"></div><button id="startBtn" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
+      <section class="main-hero" id="mainContent" data-wp-frame-content="main">
+        <img class="main-poster" data-wp-frame-poster src="../../assets/animal-2048/cover-block-v1.webp" alt="شعار WeightPlay" />
+        <div class="main-copy" data-wp-frame-copy><small data-i18n="eyebrow">Moonlit Forest Puzzle Sanctuary</small><h1 data-i18n="fullTitle" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</h1><p data-i18n="pitch" data-wp-frame-summary>Swipe the whole grid, merge matching animals, and protect enough open space to complete each mission.</p><div id="mainProgress" class="main-progress" data-wp-frame-progress></div><button id="startBtn" data-wp-frame-action="primary" class="primary-action" type="button" data-i18n="start">Start Game</button></div>
       </section>
     </main>
 
@@ -89,34 +90,39 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048-cover.webp')">
-      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back"><span class="wp-shell-return-arrow" aria-hidden="true">&larr;</span></button><div><strong data-i18n="chooseStage">Choose Mission</strong><span id="stageSummary"></span></div><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /></header>
-      <nav class="stage-mode-tabs" role="tablist" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" role="tab" aria-selected="true" aria-controls="stageRail" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" role="tab" aria-selected="false" aria-controls="stageRail" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen style="--wp-stage-art:url('../../assets/animal-2048/cover-block-v1.webp')">
+      <header class="stage-header"><button id="stageBackBtn" type="button" data-wp-return="stage" aria-label="Back" data-i18n-aria="back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong></header>
+      <div id="stageContent" class="stage-content"><div id="stageSummary" class="stage-summary"></div>
       <section class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></section>
       <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-settle-duration="360" data-wp-stage-settle-easing="smoothstep" aria-label="Mission selection" data-i18n-aria="stageRailLabel"></div>
+      </div>
+      <nav class="stage-mode-tabs" data-wp-frame-nav role="tablist" aria-label="Stage modes" data-i18n-aria="stageModeLabel"><button id="campaignTab" data-wp-frame-action="tab" role="tab" aria-selected="true" aria-controls="stageRail" type="button" data-stage-mode="campaign" data-i18n="stages">Stages</button><button id="challengeTab" data-wp-frame-action="tab" role="tab" aria-selected="false" aria-controls="stageRail" type="button" data-stage-mode="challenge" data-i18n="challengeMode">Challenge</button></nav>
     </div>
     <div class="stage-ad-reserve wp-stage-physical-reserve" aria-hidden="true"></div>
   </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
-      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back"><span class="wp-shell-return-arrow" aria-hidden="true">&larr;</span></button><div class="battle-progress"><span id="stageLabel"></span><strong id="goalValue"></strong></div><div class="battle-stat"><small data-i18n="moves">Moves</small><strong id="movesValue">0</strong></div><div class="battle-stat"><small data-i18n="score">Score</small><strong id="scoreValue">0</strong></div><button id="battleSoundBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Sound" data-i18n-aria="sound" aria-pressed="true">♪</button></header>
+      <header class="battle-header"><button id="battleBackBtn" type="button" data-wp-return="battle" aria-label="Back" data-i18n-aria="back"><span aria-hidden="true">←</span></button><strong data-wp-frame-title data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">الحيوان 2048: تطور الغابة</strong></header>
+      <div id="battleLive" class="battle-live"><div id="battleInfo"><div><span id="stageLabel"></span><strong id="goalValue"></strong></div><div><span data-i18n="moves">Moves</span><strong id="movesValue">0</strong></div><div><span data-i18n="score">Score</span><strong id="scoreValue">0</strong></div></div>
       <section id="objectiveRow" class="objective-row"></section>
-      <section class="board-zone"><div id="gameBoard" class="game-board" role="application" aria-label="Animal 2048 grid" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D U R H" tabindex="0"></div><div id="moveFeedback" class="move-feedback" aria-live="polite"></div></section>
+      <section class="board-zone"><div id="gameBoard" class="game-board" role="application" aria-label="Animal 2048 grid" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight W A S D U R H" tabindex="0"></div><div id="mergeEffects" aria-hidden="true"></div><div id="moveFeedback" class="move-feedback" aria-live="polite"></div></section>
       <div class="battle-actions"><button id="undoBtn" type="button" data-i18n="undo">Undo</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button><button id="hintBtn" type="button" data-runtime-localize="off"><span data-i18n="hint">Hint</span><small data-i18n="hintCostShort">Caps run at 2★</small></button></div>
       <div class="direction-pad" aria-label="Direction controls" data-i18n-aria="directionControls"><button type="button" data-direction="up" aria-label="Up" data-i18n-aria="up">↑</button><button type="button" data-direction="left" aria-label="Left" data-i18n-aria="left">←</button><button type="button" data-direction="down" aria-label="Down" data-i18n-aria="down">↓</button><button type="button" data-direction="right" aria-label="Right" data-i18n-aria="right">→</button></div>
 
-      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div></div></section>
+      </div>
+      <section id="resultPanel" class="result-overlay" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="result-card"><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p><p id="bestText" class="best-text"></p><div class="result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">Stages</button><button id="nextBtn" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Replay</button></div></div></section>
       <section id="leavePanel" class="leave-overlay" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="leave-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this mission?</h2><p id="leaveText"></p><div><button id="leaveContinueBtn" class="primary-action" type="button" data-i18n="continue">Continue</button><button id="leaveStagesBtn" type="button" data-i18n="returnStages">Return to Stages</button></div></div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
-  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/weightplay-character-moon-cap-owl-cutout.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
+  <section id="tutorialPanel" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card"><button id="tutorialCloseBtn" type="button" aria-label="Close" data-i18n-aria="close">×</button><img src="../../assets/animal-2048/orla-block-v1.webp" alt="" /><h2 id="tutorialTitle" data-i18n="tutorialTitle">Slide the whole forest grid.</h2><ol><li data-i18n="tutorial1">Swipe up, down, left, or right.</li><li data-i18n="tutorial2">Matching animals merge once per move.</li><li data-i18n="tutorial3">Keep a corner stable and protect empty spaces.</li></ol><button id="tutorialStartBtn" class="primary-action" type="button" data-i18n="tutorialStart">Start Mission 1</button></div></section>
 
-  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
+  </div>
+  <script src="../../src/site-config.js"></script><script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script><script src="../../src/analytics.js"></script><script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-  <script src="locales.js?v=20260824-growth-funnel-v19"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="game.js?v=20260909-animal-2048-interface-v24"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+  <script src="locales.js?v=20260911-forest-v25"></script><script src="/src/stage-virtualization-standard.js?v=20260809-stage-v6-source-demotion-v8" data-wp-stage-virtualization-standard></script><script src="../../src/game-screen-frame.js?v=20260911-forest-v25" data-wp-frame-script></script><script src="campaign.js?v=20260911-forest-v25"></script><script src="game.js?v=20260911-forest-v25"></script><script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script><script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
+
 </body>
 </html>

@@ -2,9 +2,9 @@
   "use strict";
   const copy = window.ANIMAL_DEWLINE_LOCALES || {};
   const meadows = [
-    { title: "Dawn Basin", targets: [2, 3, 1] },
-    { title: "Fern Channel", targets: [4, 1, 3] },
-    { title: "Pollen Brook", targets: [3, 5, 2] },
+    { titleKey: "meadow1", targets: [2, 3, 1] },
+    { titleKey: "meadow2", targets: [4, 1, 3] },
+    { titleKey: "meadow3", targets: [3, 5, 2] },
   ];
   const state = { locale: "en", meadow: 0, values: [0, 0, 0], tries: 0, sessionTries: 0, sound: true, screen: "main" };
   const $ = (id) => document.getElementById(id);
@@ -47,14 +47,14 @@
     $("stageList").replaceChildren(...meadows.map((meadow, index) => {
       const button = document.createElement("button");
       button.type = "button"; button.className = "stage-card"; button.dataset.meadow = index;
-      button.innerHTML = `<strong>${t("round", { n: index + 1, total: meadows.length })}</strong><span>${meadow.title}</span><small>${meadow.targets.join(" · ")}</small>`;
+      button.innerHTML = `<strong>${t("round", { n: index + 1, total: meadows.length })}</strong><span>${t(meadow.titleKey)}</span><small>${meadow.targets.join(" · ")}</small>`;
       button.addEventListener("click", () => startMeadow(index));
       return button;
     }));
   };
   const renderBattle = () => {
     const meadow = meadows[state.meadow];
-    $("battleHeading").textContent = meadow.title;
+    $("battleHeading").textContent = t(meadow.titleKey);
     $("roundLabel").textContent = t("round", { n: state.meadow + 1, total: meadows.length });
     $("battleHint").textContent = t("battleHint");
     $("targetValues").textContent = `${t("target")}: ${meadow.targets.join(" · ")}`;

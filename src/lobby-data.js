@@ -1006,7 +1006,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "滑動 4×4 森林棋盤、合併相同動物，挑戰石塊、分數與步數限制組成的 30 個進化任務。",
       },
       meta: { en: ["30 Missions", "Grid Strategy", "Forest Evolution"], "zh-Hant": ["30 個任務", "格子策略", "森林進化"] },
-      art: { kind: "image", background: "assets/animal-2048-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/animal-2048/cover-block-v1.webp", hideHero: true },
     },
     {
       id: "garden-tiles",

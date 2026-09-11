@@ -136,8 +136,20 @@
     const mainTitle = oldMain.querySelector('[data-wp-game-title],h1');
     const localeSelect = root.querySelector('#localeSelect');
     const scenes = {};
-    for (const [name, screen] of Object.entries({main,stage,battle})) {
-      if (!screen) continue;
+    // The adapter accepts the legacy DOM shorthand used by older games and a
+    // small descriptor for games that need the shared Battle information slot.
+    // Keeping the normalization here means every game still renders through
+    // the same mount() contract; no game-specific header skin is introduced.
+    const normalizeScene = (value) => value && value.nodeType ? {root: value} : value;
+    const sceneSpecs = {
+      main: normalizeScene(main),
+      stage: normalizeScene(stage),
+      battle: normalizeScene(battle),
+    };
+    for (const [name, spec] of Object.entries(sceneSpecs)) {
+      if (!spec?.root) continue;
+      const screen = spec.root;
+      const headerInfo = spec.headerInfo || null;
       const oldHeader = root.querySelector(`[data-wp-shell-header="${name}"]`);
       const back = root.querySelector(`[data-wp-return="${name}"]`);
       if (!back) throw Error(`FRAME_RETURN_REQUIRED:${name}`);
@@ -190,8 +202,14 @@
         }
         content.querySelectorAll('.hud-return-slot').forEach(n=>n.remove());
       }
+      if (headerInfo && !content.contains(headerInfo)) throw Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
       screen.prepend(header);
-      scenes[name]={root:screen,header,content,titleFromMain:name!=='main'};
+      scenes[name]={root:screen,header,content,headerInfo,titleFromMain:name!=='main'};
+      // The legacy slot is only a source wrapper. Once its permanent return
+      // button and optional info group have been moved into the generated
+      // header, remove the empty wrapper so it cannot reserve a second HUD
+      // row or intercept pointer events over the play surface.
+      if (oldHeader && oldHeader !== headerInfo && !oldHeader.children.length) oldHeader.remove();
     }
     const frame=mount({root,scenes,localeSelect});
     const visible=node=>node&&!node.hidden&&!node.classList.contains('is-hidden')&&getComputedStyle(node).display!=='none';

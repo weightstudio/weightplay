@@ -1,7 +1,7 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
-defenseModuleUrl.search = '?v=24-growth-fx';
+defenseModuleUrl.search = '?v=25-dungeon';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
@@ -57,7 +57,11 @@ function prepareDefense() {
 function roar() {
   useAbility('roar');
 }
-roarButton.addEventListener('click', roar);
+roarButton.className='wonder-ability';roarButton.dataset.ability='roar';
+roarButton.innerHTML='<img class="ability-icon" src="games/wonder-crash/icons/inferno.svg" alt=""/><span class="ability-copy"><strong></strong><small></small></span>';
+abilityBar.prepend(roarButton);
+abilityBar.querySelector('[data-ability="volley"] img').src='games/wonder-crash/icons/fireVolley.svg';
+abilityBar.querySelector('[data-ability="aegis"] img').src='games/wonder-crash/icons/aegis.svg';
 abilityBar.addEventListener('click', (event) => {
   const button = event.target.closest('button[data-ability]');
   if (button) useAbility(button.dataset.ability);
@@ -127,6 +131,11 @@ const WONDER_DYNAMIC_COPY = {
 
 function t(key, params = {}) {
   const activeLocale = locale();
+  if (window.LionTalents) {
+    const c=window.LionTalents.copy(activeLocale);
+    const owned={hud_guard:c.ui[17],talent_points:c.ui[2],settlement_talent_reward:c.ui[2]+' +{count}',shield_blocked:c.ui[17],upgrade_thunder_name:c.names[5],upgrade_thunder_desc:c.battle[0],upgrade_barrier_name:c.ui[17],upgrade_barrier_desc:c.battle[1],upgrade_fury_name:c.names[0],upgrade_fury_desc:c.battle[2]};
+    if(owned[key])return Object.entries(params).reduce((s,[k,v])=>s.replaceAll('{'+k+'}',String(v)),owned[key]);
+  }
   const table = { ...(dictionary[activeLocale] || {}), ...(WONDER_DYNAMIC_COPY[activeLocale] || {}) };
   const fallback = dictionary.en;
   const owned = table[key];
@@ -838,15 +847,7 @@ const LEVELS = DATA.levels;
 const UPGRADES = DATA.upgrades;
 const WEAPONS = DATA.weapons;
 const ENEMY_TYPES = DATA.enemyTypes;
-const TALENTS = [
-  { id: "lionInstinct", branch: "hero", max: 3, icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp" },
-  { id: "roarMastery", branch: "hero", max: 3, icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp", requires: "lionInstinct" },
-  { id: "volleyMastery", branch: "battle", max: 3, icon: "assets/wonder-prop-double-block-v1.png" },
-  { id: "thunderSigil", branch: "battle", max: 3, icon: "assets/wonder-prop-crit-block-v1.png", requires: "volleyMastery" },
-  { id: "wallAegis", branch: "wall", max: 3, icon: "assets/wonder-prop-wall-block-v1.png" },
-  { id: "thornRampart", branch: "wall", max: 3, icon: "assets/wonder-prop-repair-block-v1.png", requires: "wallAegis" },
-  { id: "fortifiedCore", branch: "wall", max: 3, icon: "assets/wonder-prop-diamond-block-v1.png" },
-];
+const TALENTS = window.LionTalents.nodes;
 registerWonderCombatUpgrades();
 const SAVE_KEY = "wonderCrashHighestUnlocked";
 const PROFILE_KEY = "wonderCrashProfile";
@@ -879,6 +880,7 @@ let stageCardPool = [];
 let stageWindowStart = 0;
 let stageBrowseLogical = 0;
 let profile = loadProfile();
+saveProfile();
 let activeMenuTab = "battle";
 let draggedWeaponId = null;
 let draggedEquipSlot = null;
@@ -974,6 +976,9 @@ function makeState(levelIndex) {
     defeatedCount: 0,
     upgradeChoices: 0,
     talentPointsEarned: 0,
+    specialization: profile.specialization,
+    shootPulse: 0, impactPulse: 0, fireWallTimer: 0, elementalTick: 0,
+    stormCharge: 0, bastionTimer: 0,
     hero: {
       x: W / 2,
       y: heroY,
@@ -1010,6 +1015,8 @@ function activateRoar() {
   state.abilityCooldowns.roar = cooldown;
   state.roarCooldown = cooldown;
   state.roarPulse = 0.5;
+  state.impactPulse = .12;
+  if (getTalentLevel('fireWall')) state.fireWallTimer = 4;
   const range = W * (0.34 + mastery * 0.045);
   for (const enemy of state.enemies) {
     if (Math.abs(enemy.x - state.hero.x) >= range || enemy.y <= wallY - H * 0.3) continue;
@@ -1018,17 +1025,16 @@ function activateRoar() {
     enemy.slowMultiplier = Math.min(enemy.slowMultiplier || 1, 0.45 - mastery * 0.035);
   }
   state.hits.push({ x: state.hero.x, y: wallY - H * 0.1, radius: 120 + mastery * 30, life: 0.5, roar: true });
-  state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 90, value: t("roar_label"), roar: true, life: 0.72, maxLife: 0.72 });
+  if(!defense3D)state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 90, value: t("roar_label"), roar: true, life: 0.72, maxLife: 0.72 });
   window.WonderSound?.play("start");
 }
 
 function activatePrideVolley() {
-  const mastery = getTalentLevel("volleyMastery");
   const entry = getEquippedWeaponSlots().find((candidate) => candidate?.weapon)
     || { weapon: getWeapon("eraser"), level: 1 };
-  const count = 3 + mastery * 2;
-  const spread = 42 + mastery * 4;
-  const damageScale = 1.8 + mastery * 0.24;
+  const count = 3 + getTalentLevel('inferno') * 2;
+  const spread = 42;
+  const damageScale = 1.8 * (1 + getTalentLevel('fireVolley') * .25);
   state.abilityCooldowns.volley = getVolleyCooldown();
   state.volleyPulse = 0.65;
   for (let index = 0; index < count; index += 1) {
@@ -1040,8 +1046,14 @@ function activatePrideVolley() {
     });
   }
   state.hits.push({ x: state.hero.x, y: state.hero.y - 74, radius: 70 + count * 8, life: 0.42, volley: true });
-  state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 104, value: t("ability_volley_label"), ability: true, life: 0.72, maxLife: 0.72 });
+  if(!defense3D)state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 104, value: t("ability_volley_label"), ability: true, life: 0.72, maxLife: 0.72 });
   window.WonderSound?.play("shoot");
+  if (getTalentLevel('tempest')) {
+    for (const enemy of state.enemies.filter(e => e.hp > 0).slice(0, 8)) {
+      damageEnemy(enemy, getDamageToEnemy(enemy, 4 * getTalentLevel('tempest')), false);
+      state.hits.push({x:state.hero.x,y:state.hero.y,toX:enemy.x,toY:enemy.y,lightning:true,life:.28,maxLife:.28});
+    }
+  }
 }
 
 function activateWallAegis() {
@@ -1050,10 +1062,11 @@ function activateWallAegis() {
   state.wallShield = Math.min(8, state.wallShield + getAegisShieldCount());
   state.wallWardTimer = 4.5 + mastery * 0.6;
   state.aegisPulse = 0.9;
-  const heal = Math.min(state.maxWallHp - state.wallHp, 10 + mastery * 4);
+  state.bastionTimer = getTalentLevel('bastion') ? 5 : 0;
+  const heal = Math.min(state.maxWallHp - state.wallHp, 10 + getTalentLevel('repair') * 8);
   state.wallHp += Math.max(0, heal);
   state.hits.push({ x: W / 2, y: wallY, radius: W * 0.42, life: 0.46, shield: true });
-  state.damageTexts.push({ x: W / 2, y: wallY - 46, value: t("ability_aegis_label"), ability: true, life: 0.72, maxLife: 0.72 });
+  if(!defense3D)state.damageTexts.push({ x: W / 2, y: wallY - 46, value: t("ability_aegis_label"), ability: true, life: 0.72, maxLife: 0.72 });
   window.WonderSound?.play("upgrade");
 }
 
@@ -1064,20 +1077,21 @@ function syncAbilityBar() {
   if (!active) return;
   const roarCooldown = state.abilityCooldowns?.roar || 0;
   roarButton.disabled = roarCooldown > 0;
-  const roarLabel = defenseText(0) + (roarCooldown > 0 ? ` · ${Math.ceil(roarCooldown)}s` : "");
-  if (roarButton.textContent !== roarLabel) roarButton.textContent = roarLabel;
+  const c=window.LionTalents.copy(locale());
   roarButton.title = defenseText(1);
   for (const button of abilityBar.querySelectorAll("button[data-ability]")) {
     const id = button.dataset.ability;
     const cooldown = state.abilityCooldowns?.[id] || 0;
-    const name = t(`ability_${id}_name`);
+    const name = c.ui[id==='roar'?15:id==='volley'?16:17];
     const copy = button.querySelector(".ability-copy strong");
     const timer = button.querySelector(".ability-copy small");
     if (copy) copy.textContent = name;
-    if (timer) timer.textContent = cooldown > 0 ? t("ability_cooldown", { seconds: Math.ceil(cooldown) }) : t("ability_ready");
+    if (timer) timer.textContent = cooldown > 0 ? String(Math.ceil(cooldown)) : c.ui[14];
+    const duration=id==='roar'?getRoarCooldown():id==='volley'?getVolleyCooldown():getAegisCooldown();
+    button.style.setProperty('--cooldown',String(Math.min(1,cooldown/duration)));
     button.disabled = cooldown > 0;
     button.classList.toggle("ready", cooldown <= 0);
-    button.setAttribute("aria-label", `${name} — ${cooldown > 0 ? t("ability_cooldown", { seconds: Math.ceil(cooldown) }) : t("ability_ready")}`);
+    button.setAttribute("aria-label", `${name} — ${cooldown > 0 ? Math.ceil(cooldown) : c.ui[14]}`);
   }
 }
 
@@ -1288,8 +1302,13 @@ profilePanel.addEventListener("click", (event) => {
   }
   const talentButton = event.target.closest("button[data-talent]");
   if (talentButton) {
-    buyTalent(talentButton.dataset.talent);
+    inspectTalent(talentButton.dataset.talent);
     return;
+  }
+  if (event.target.closest('[data-talent-reset]')) { resetTalents(); return; }
+  if (event.target.closest('[data-wall-talent]')) {
+    const id=profile.specialization==='fire'?'fireWall':profile.specialization==='storm'?'stormWall':'thorns';
+    showMainMenu('character');inspectTalent(id);return;
   }
   const button = event.target.closest("button[data-profile-upgrade]");
   if (button) {
@@ -1396,6 +1415,11 @@ function update(dt) {
   state.wallWardTimer = Math.max(0, state.wallWardTimer - dt);
   state.volleyPulse = Math.max(0, state.volleyPulse - dt);
   state.aegisPulse = Math.max(0, state.aegisPulse - dt);
+  state.shootPulse = Math.max(0, state.shootPulse - dt);
+  state.impactPulse = Math.max(0, state.impactPulse - dt);
+  state.bastionTimer = Math.max(0, state.bastionTimer - dt);
+  state.fireWallTimer = Math.max(0, state.fireWallTimer - dt);
+  updateSpecialization(dt);
 
   updateWeaponCooldowns(dt);
   updateWallRegen(dt);
@@ -1414,6 +1438,7 @@ function update(dt) {
   }
 
   for (const enemy of state.enemies) {
+    enemy.hitFlash = Math.max(0, (enemy.hitFlash || 0) - dt);
     updateEnemyAbility(enemy, dt);
     if (enemy.slowTimer > 0) enemy.slowTimer = Math.max(0, enemy.slowTimer - dt);
     const slowFactor = enemy.slowTimer > 0 ? enemy.slowMultiplier : 1;
@@ -1521,13 +1546,14 @@ function shootWeaponSlot(slotIndex, entry) {
 function fireProjectile(entry, xOffset, yOffset, vx, options = {}) {
   const weapon = entry.weapon;
   const damageRoll = rollWeaponDamage(entry);
+  state.shootPulse = .13;
   state.projectiles.push({
     x: state.hero.x + xOffset,
     y: state.hero.y - 72 + yOffset,
     vx,
     size: getWeaponSize(entry) * state.projectileSizeMultiplier,
     speed: getWeaponSpeed(entry) * H/1688,
-    damage: Math.max(1, Math.ceil(damageRoll.damage * (options.damageScale || 1))),
+    damage: Math.max(1, Math.ceil(damageRoll.damage * (options.damageScale || 1) * (state.bastionTimer > 0 ? 1 + getTalentLevel('bastion') * .3 : 1))),
     crit: damageRoll.crit,
     pierceLeft: state.pierceCount + (options.pierceBonus || 0),
     hitEnemies: [],
@@ -2040,6 +2066,7 @@ function resolveHits() {
         projectile.hitEnemies.push(enemy);
         const damage = getDamageToEnemy(enemy, projectile.damage);
         damageEnemy(enemy, damage, projectile.crit, projectile.x, projectile.y);
+        applyElementalHit(projectile, enemy);
         triggerChainReaction(projectile, enemy);
         if (state.splashDamage > 0) splashDamage(projectile, enemy);
         if (projectile.pierceLeft > 0) {
@@ -2056,20 +2083,28 @@ function resolveHits() {
 }
 
 function triggerChainReaction(projectile, primaryEnemy) {
-  if (!state.chainEvery || projectile.chainUsed) return;
+  const rank = getTalentLevel('chain');
+  if ((!state.chainEvery && !rank && !state.stormCharge) || projectile.chainUsed) return;
   state.hitCounter += 1;
-  if (state.hitCounter % state.chainEvery !== 0) return;
-  const target = state.enemies
+  if (!state.stormCharge && state.hitCounter % (state.chainEvery || 4) !== 0) return;
+  const targets = state.enemies
     .filter((enemy) => enemy !== primaryEnemy && enemy.hp > 0)
-    .sort((a, b) => Math.abs(a.x - primaryEnemy.x) + Math.abs(a.y - primaryEnemy.y) - (Math.abs(b.x - primaryEnemy.x) + Math.abs(b.y - primaryEnemy.y)))[0];
-  if (!target) return;
+    .sort((a, b) => Math.abs(a.x - primaryEnemy.x) + Math.abs(a.y - primaryEnemy.y) - (Math.abs(b.x - primaryEnemy.x) + Math.abs(b.y - primaryEnemy.y))).slice(0, 1 + getTalentLevel('bounce'));
+  if (!targets.length) return;
   projectile.chainUsed = true;
-  const chainDamage = getDamageToEnemy(target, Math.max(1, Math.ceil(projectile.damage * (state.chainDamage || 0.55))));
+  let previous=primaryEnemy;
+  for (const target of targets) {
+  const chainDamage = getDamageToEnemy(target, Math.max(1, Math.ceil(projectile.damage * Math.max(state.chainDamage || 0, rank * .4) + state.stormCharge * 2)));
   damageEnemy(target, chainDamage, false, target.x, target.y);
+  if (getTalentLevel('shock')) {target.slowTimer=1.5;target.slowMultiplier=1-getTalentLevel('shock')*.2;}
+  state.hits.push({x:previous.x,y:previous.y,toX:target.x,toY:target.y,lightning:true,life:.28,maxLife:.28});
+  previous=target;
+  }
+  state.stormCharge=0;
   state.hits.push({ x: primaryEnemy.x, y: primaryEnemy.y, radius: Math.max(26, primaryEnemy.size * 0.5), life: 0.28, lightning: true });
   state.damageTexts.push({
-    x: target.x,
-    y: target.y - target.size * 0.42,
+    x: previous.x,
+    y: previous.y - previous.size * 0.42,
     value: "⚡",
     lightning: true,
     life: 0.62,
@@ -2078,7 +2113,11 @@ function triggerChainReaction(projectile, primaryEnemy) {
 }
 
 function damageEnemy(enemy, damage, crit, hitX = enemy.x, hitY = enemy.y) {
+  if (enemy.hp <= 0) return;
   enemy.hp -= damage;
+  enemy.hitFlash = .09;
+  if (!enemy.isBoss) enemy.y -= Math.min(3, H*.002);
+  if (crit) state.impactPulse = .10;
   applyHitSlow(enemy, hitX, hitY);
   state.hits.push({ x: hitX, y: hitY, radius: crit ? 26 : 18, life: 0.18 });
   state.damageTexts.push({
@@ -2208,11 +2247,14 @@ function damageWall() {
 }
 
 function applyWallImpact(damage, x) {
+  state.impactPulse = .16;
+  state.stormCharge = Math.min(6, state.stormCharge + getTalentLevel('stormWall'));
   if (state.wallShield > 0) {
     state.wallShield -= 1;
     state.hits.push({ x, y: wallY, radius: 62, life: 0.46, shield: true });
     state.damageTexts.push({ x, y: wallY - 44, value: t("shield_blocked"), shield: true, life: 0.72, maxLife: 0.72 });
     triggerWallThorns(x);
+    if (getTalentLevel('counter')) retaliateWall(x, getTalentLevel('counter')*4);
     window.WonderSound?.play("upgrade");
     return 0;
   }
@@ -2222,10 +2264,10 @@ function applyWallImpact(damage, x) {
 }
 
 function triggerWallThorns(x) {
-  const level = getTalentLevel("thornRampart");
+  const level = getTalentLevel("thorns");
   if (!level) return;
   const radius = 90 + level * 30;
-  const thornDamage = Math.max(1, Math.ceil((2 + level * 2) + state.projectileDamage * 0.18));
+  const thornDamage = level * 4;
   state.hits.push({ x, y: wallY - 8, radius, life: 0.36, thorn: true });
   for (const enemy of state.enemies) {
     if (enemy.hp <= 0 || enemy.hitWall || Math.abs(enemy.x - x) > radius || enemy.y < wallY - H * 0.2) continue;
@@ -2237,8 +2279,6 @@ function draw() {
   syncAbilityBar();
   roarButton.hidden = !state.running;
   roarButton.disabled = state.roarCooldown > 0;
-  const roarLabel = defenseText(0) + (state.roarCooldown > 0 ? ` · ${Math.ceil(state.roarCooldown)}s` : '');
-  if (roarButton.textContent !== roarLabel) roarButton.textContent = roarLabel;
   roarButton.title = defenseText(1);
   // A pointer/compositor cancellation must not carry transient canvas state
   // into the next frame. The battle scene is always rebuilt from this baseline.
@@ -2268,10 +2308,10 @@ function draw() {
     drawWall();
   }
   drawWallHp();
-  drawAbilityVfx();
+  if (!defense3D) drawAbilityVfx();
   drawEnemies();
   if (!defense3D) { drawProjectiles(); drawBossProjectiles(); drawHero(); }
-  drawHits();
+  if (!defense3D) drawHits();
   drawDamageTexts();
   drawBossUi();
   drawWeaponHud();
@@ -2305,11 +2345,6 @@ function drawWallHp() {
     ctx.save();
     ctx.strokeStyle = "rgba(116, 235, 255, " + (state.wallWardTimer > 0 ? 0.95 : 0.72) + ")";
     ctx.lineWidth = Math.max(5, height * 0.42);
-    ctx.setLineDash([18, 12]);
-    ctx.beginPath();
-    ctx.arc(W / 2, wallY + 8, width * 0.42, Math.PI * 1.08, Math.PI * 1.92);
-    ctx.stroke();
-    ctx.setLineDash([]);
     ctx.font = "900 24px 'Microsoft JhengHei', system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -2364,7 +2399,7 @@ function drawEnemies() {
     if (!defense3D) ctx.drawImage(enemy.image, x - enemy.size / 2, enemy.y - enemy.size / 2, enemy.size, enemy.size);
     ctx.restore();
 
-    if (enemy.slowTimer > 0) {
+    if (enemy.slowTimer > 0 && !defense3D) {
       ctx.save();
       ctx.globalAlpha = clamp(enemy.slowTimer / Math.max(0.1, state.slowDuration), 0.28, 0.78);
       ctx.strokeStyle = "rgba(105, 221, 255, 0.95)";
@@ -2635,6 +2670,7 @@ function updateHud() {
 }
 
 function showMainMenu(tab = activeMenuTab) {
+  talentDialog?.close();
   disposeDefense();
   clearFloatingMessage();
   pauseReturnIntent = false;
@@ -3106,15 +3142,17 @@ function getTalent(id) {
 }
 
 function getTalentLevel(id) {
+  id = ({wallAegis:'aegis',volleyMastery:'fireVolley',thornRampart:'thorns'}[id] || id);
   return Math.max(0, Math.min(getTalent(id)?.max || 0, Number(profile.talents?.[id]) || 0));
 }
 
 function getTalentCost(talent) {
-  return 1 + getTalentLevel(talent.id);
+  return 1;
 }
 
 function canBuyTalent(talent) {
-  if (!talent || getTalentLevel(talent.id) >= talent.max) return false;
+  if (!talent || state.running || getTalentLevel(talent.id) >= talent.max) return false;
+  if (profile.specialization && profile.specialization !== talent.branch) return false;
   if (talent.requires && getTalentLevel(talent.requires) < 2) return false;
   return profile.talentPoints >= getTalentCost(talent);
 }
@@ -3126,43 +3164,67 @@ function buyTalent(id) {
     return;
   }
   const cost = getTalentCost(talent);
+  profile.specialization = talent.branch;
   profile.talentPoints -= cost;
   profile.talents[talent.id] = getTalentLevel(talent.id) + 1;
   saveProfile();
   renderProfilePanel(activeMenuTab);
   updateHud();
-  showFloatingMessage(t("talent_" + talent.id + "_name") + " · " + t("talent_rank", { level: profile.talents[talent.id], max: talent.max }));
+  renderTalentDialog();
+  talentDialog?.querySelector(canBuyTalent(talent)?'[data-talent-buy]':'[data-talent-close]')?.focus({preventScroll:true});
   window.WonderSound?.play("upgrade");
 }
 
 function renderTalentTree(branchFilter = "all") {
-  const branches = ["hero", "battle", "wall"].filter((branch) => branchFilter === "all" || branch === branchFilter);
-  const hint = branchFilter === "wall" ? t("talent_wall_hint") : t("talent_tree_hint");
-  const branchMarkup = branches.map((branch) => {
-    const nodes = TALENTS.filter((talent) => talent.branch === branch).map((talent) => {
-      const level = getTalentLevel(talent.id);
-      const cost = getTalentCost(talent);
-      const locked = talent.requires && getTalentLevel(talent.requires) < 2;
-      const maxed = level >= talent.max;
-      const available = canBuyTalent(talent);
-      const status = maxed ? t("talent_maxed") : locked ? t("talent_locked") : t("talent_cost", { cost });
-      const classes = ["talent-node", maxed ? "is-maxed" : "", locked ? "is-locked" : ""].filter(Boolean).join(" ");
-      return '<button type="button" class="' + classes + '" data-talent="' + talent.id + '"' + (available ? "" : " disabled") + ' title="' + escapeHtml(status) + '">' +
-        '<span class="talent-node-icon"><img src="' + talent.icon + '" alt="" /></span>' +
-        '<span class="talent-node-copy"><strong>' + t("talent_" + talent.id + "_name") + '</strong><small>' + t("talent_" + talent.id + "_desc") + '</small></span>' +
-        '<span class="talent-node-meta"><b>' + t("talent_rank", { level, max: talent.max }) + '</b><em>' + status + '</em></span>' +
-      '</button>';
-    }).join("");
-    return '<section class="talent-branch talent-branch-' + branch + '" aria-label="' + t("talent_branch_" + branch) + '">' +
-      '<div class="talent-branch-title"><span>' + t("talent_branch_" + branch) + '</span><i></i></div>' +
-      '<div class="talent-node-grid">' + nodes + '</div>' +
-    '</section>';
-  }).join("");
-  return '<section class="talent-tree" data-talent-tree="' + branchFilter + '">' +
-    '<div class="talent-tree-header"><div><span class="talent-eyebrow">' + t("talent_tree_title") + '</span><strong>' + hint + '</strong></div>' +
-    '<div class="talent-points"><img src="assets/wonder-prop-crit-block-v1.png" alt="" /><b>' + profile.talentPoints + '</b><small>' + t("talent_points") + '</small></div></div>' +
-    '<div class="talent-branches">' + branchMarkup + '</div>' +
-  '</section>';
+  const c=window.LionTalents.copy(locale()),spec=profile.specialization;
+  if(branchFilter==='wall')return `<section class="lion-wall-synergy" data-runtime-localize="off"><h3>${c.ui[12]}</h3><p>${spec?c.branches[window.LionTalents.branches.indexOf(spec)]:c.ui[8]}</p><button type="button" data-wall-talent>${c.ui[13]}</button></section>`;
+  return `<section class="lion-tree talent-tree" data-talent-tree="all" data-runtime-localize="off"><header><h2>${c.ui[0]}</h2><span>◆ ${profile.talentPoints} ${c.ui[2]}</span></header><p>${c.ui[1]}</p><div class="lion-paths">${window.LionTalents.branches.map((branch,col)=>`<section class="lion-path path-${branch} ${spec===branch?'chosen':''}"><h3>${c.branches[col]}</h3>${TALENTS.filter(n=>n.branch===branch).map(node=>{const rank=getTalentLevel(node.id),locked=(spec&&spec!==branch)||(node.requires&&getTalentLevel(node.requires)<2),index=TALENTS.indexOf(node);return `${node.index?`<span class="lion-link ${getTalentLevel(node.requires)===2?'open':''}" aria-hidden="true"></span>`:''}<button type="button" class="lion-node ${locked?'locked':''} ${rank?'learned':''}" data-talent="${node.id}" aria-label="${c.names[index]} ${rank}/2"><img src="games/wonder-crash/icons/${node.id}.svg" alt=""/><strong>${c.names[index]}</strong><small>${rank}/2</small></button>`;}).join('')}</section>`).join('')}</div><button type="button" class="lion-reset" data-talent-reset ${!spec?'disabled':''}>${c.ui[4]}</button></section>`;
+}
+
+let talentDialog, selectedTalent, lionPortrait;
+function inspectTalent(id) {
+  if (!getTalent(id) || state.running) return;
+  selectedTalent=id;
+  if (!talentDialog) {
+    talentDialog=document.createElement('dialog');talentDialog.className='lion-talent-dialog';talentDialog.dataset.runtimeLocalize='off';talentDialog.setAttribute('aria-labelledby','lionTalentTitle');overlay.append(talentDialog);
+    talentDialog.addEventListener('click',e=>{if(e.target===talentDialog||e.target.closest('[data-talent-close]'))talentDialog.close();else if(e.target.closest('[data-talent-buy]'))buyTalent(selectedTalent);});
+    talentDialog.addEventListener('close',()=>profilePanel.querySelector(`[data-talent="${selectedTalent}"]`)?.focus({preventScroll:true}));
+  }
+  renderTalentDialog();talentDialog.showModal();talentDialog.querySelector('[data-talent-close]').focus();
+}
+function renderTalentDialog() {
+  if(!talentDialog||!selectedTalent)return;
+  const n=getTalent(selectedTalent),i=TALENTS.indexOf(n),c=window.LionTalents.copy(locale()),rank=getTalentLevel(n.id);
+  const reason=rank===2?c.ui[11]:profile.specialization&&profile.specialization!==n.branch?c.ui[10]:n.requires&&getTalentLevel(n.requires)<2?c.ui[9]:'';
+  talentDialog.innerHTML=`<button type="button" data-talent-close aria-label="${c.ui[5]}">×</button><img src="games/wonder-crash/icons/${n.id}.svg" alt=""/><h2 id="lionTalentTitle">${c.names[i]}</h2><p>${c.descriptions[i]}</p><div class="lion-rank-preview"><span>${c.ui[6]} <b>${rank}/2</b></span><span>${c.ui[7]} <b>${Math.min(2,rank+1)}/2</b></span></div><p>${reason||'◆ '+profile.talentPoints+' '+c.ui[2]}</p><button type="button" data-talent-buy ${canBuyTalent(n)?'':'disabled'}>${rank===2?c.ui[11]:c.ui[3]+' · ◆ 1'}</button>`;
+}
+function resetTalents() {
+  if(state.running)return;
+  profile.talentPoints+=TALENTS.reduce((sum,n)=>sum+getTalentLevel(n.id),0);profile.talents={};profile.specialization=null;saveProfile();renderProfilePanel(activeMenuTab);updateHud();
+}
+
+function retaliateWall(x, damage) {
+  const enemy=state.enemies.filter(e=>e.hp>0).sort((a,b)=>Math.abs(a.x-x)+Math.abs(a.y-wallY)-Math.abs(b.x-x)-Math.abs(b.y-wallY))[0];
+  if(enemy){damageEnemy(enemy,getDamageToEnemy(enemy,damage),false);state.hits.push({x,y:wallY,toX:enemy.x,toY:enemy.y,shield:true,life:.28,maxLife:.28});}
+}
+function applyElementalHit(projectile, enemy) {
+  if(getTalentLevel('burn')&&enemy.hp>0){enemy.burnTimer=3;enemy.burnDamage=Math.max(enemy.burnDamage||0,projectile.damage*.2*getTalentLevel('burn'));}
+  if(projectile.ability==='volley'&&getTalentLevel('blast')){
+    for(const other of state.enemies){if(other===enemy||other.hp<=0||Math.hypot(other.x-enemy.x,other.y-enemy.y)>100)continue;
+      damageEnemy(other,getDamageToEnemy(other,Math.max(1,Math.ceil(projectile.damage*.3*getTalentLevel('blast')))),false);
+      if(getTalentLevel('inferno')){other.burnTimer=3;other.burnDamage=projectile.damage*.2*getTalentLevel('burn');}
+    }
+    state.hits.push({x:enemy.x,y:enemy.y,radius:80,fire:true,life:.4,maxLife:.4});
+  }
+}
+function updateSpecialization(dt) {
+  state.elementalTick+=dt;
+  for(const e of state.enemies)e.burnTimer=Math.max(0,(e.burnTimer||0)-dt);
+  if(state.elementalTick<.5)return;state.elementalTick-=.5;
+  for(const e of state.enemies){if(e.hp<=0)continue;
+    if(e.burnTimer>0)damageEnemy(e,getDamageToEnemy(e,Math.max(1,Math.ceil(e.burnDamage*.5))),false);
+    if(state.fireWallTimer>0&&e.y>wallY-H*.22){damageEnemy(e,getDamageToEnemy(e,2*getTalentLevel('fireWall')),false);state.hits.push({x:e.x,y:e.y,radius:25,fire:true,life:.4,maxLife:.4});}
+  }
 }
 
 function renderProfilePanel(tab = activeMenuTab) {
@@ -3182,6 +3244,13 @@ function renderProfilePanel(tab = activeMenuTab) {
       </div>
     `;
     profilePanel.insertAdjacentHTML("afterbegin", renderTalentTree());
+    if (Defense3D) {
+      if (!lionPortrait) {
+        let preview;
+        try {preview=new Defense3D();lionPortrait=preview.portrait();} catch {lionPortrait=null;} finally {preview?.dispose();}
+      }
+      if(lionPortrait)profilePanel.querySelector('.character-card img').src=lionPortrait;
+    }
     return;
   }
 
@@ -3203,7 +3272,7 @@ function renderProfilePanel(tab = activeMenuTab) {
       ${renderUpgradeRow("wallGuard", "assets/wonder-prop-repair-block-v1.png", t("wallGuard_title", { lvl: profile.wallGuardLevel }), getUpgradePreview("wallGuard"))}
       ${renderUpgradeRow("wallRegen", "assets/wonder-prop-cooldown-block-v1.png", t("wallRegen_title", { lvl: profile.wallRegenLevel }), getUpgradePreview("wallRegen"))}
     `;
-    profilePanel.insertAdjacentHTML("afterbegin", '<div class="wall-growth-banner"><strong>' + t("menu_wall") + '</strong><span>' + t("talent_wall_hint") + '</span></div>' + renderTalentTree("wall"));
+    profilePanel.insertAdjacentHTML("afterbegin", renderTalentTree("wall"));
     return;
   }
 
@@ -3427,7 +3496,7 @@ function buyProfileUpgrade(type) {
 }
 
 function pickUpgrades(count) {
-  const pool = [...UPGRADES];
+  const pool = UPGRADES.filter(u=>u.id!=='thunder'||profile.specialization==='storm');
   const picks = [];
   while (picks.length < count && pool.length > 0) {
     const index = Math.floor(random(0, pool.length));
@@ -3569,11 +3638,11 @@ function getRoarCooldown() {
 }
 
 function getVolleyCooldown() {
-  return Math.max(6.5, 12 - getTalentLevel("volleyMastery") * 1.2);
+  return 12;
 }
 
 function getAegisCooldown() {
-  return Math.max(8, 18 - getTalentLevel("wallAegis") * 1.5);
+  return Math.max(8, 18 - getTalentLevel("aegis") * 2);
 }
 
 function getAegisShieldCount() {
@@ -3923,8 +3992,7 @@ function loadProfile() {
       wallHpLevel: Math.max(1, Number(saved.wallHpLevel) || oldWallLevel),
       wallGuardLevel: Math.max(1, Number(saved.wallGuardLevel) || 1),
       wallRegenLevel: Math.max(1, Number(saved.wallRegenLevel) || 1),
-      talentPoints: Number.isFinite(Number(saved.talentPoints)) ? Math.max(0, Math.floor(Number(saved.talentPoints))) : 2,
-      talents: normalizeTalents(saved.talents),
+      ...window.LionTalents.migrate(saved),
       bossDiamondRewards: normalizeNumberList(saved.bossDiamondRewards),
       weaponBag: normalizeWeaponBag(saved.weaponBag),
       equippedWeapons: normalizeEquippedWeapons(saved.equippedWeapons),
@@ -3960,6 +4028,8 @@ function createDefaultProfile() {
     wallHpLevel: 1,
     wallGuardLevel: 1,
     wallRegenLevel: 1,
+    talentVersion: 2,
+    specialization: null,
     talentPoints: 2,
     talents: Object.fromEntries(TALENTS.map((talent) => [talent.id, 0])),
     bossDiamondRewards: [],

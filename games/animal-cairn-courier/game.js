@@ -15,7 +15,7 @@
   const routeLocale = window.__WEIGHTPLAY_ROUTE_LOCALE__ && locales[window.__WEIGHTPLAY_ROUTE_LOCALE__]
     ? window.__WEIGHTPLAY_ROUTE_LOCALE__
     : "en";
-  const state = { locale: routeLocale, round: 0, stack: [], picks: 0, sessionPicks: 0, sound: true, screen: "main" };
+  const state = { locale: routeLocale, round: 0, completed: false, stack: [], picks: 0, sessionPicks: 0, sound: true, screen: "main" };
   const t = (key, vars = {}) => {
     const table = locales[state.locale] || locales.en || {};
     let value = table[key] || (locales.en && locales.en[key]) || key;
@@ -33,7 +33,8 @@
     $("localeSelect").value = state.locale;
     $("soundBtn").textContent = state.sound ? t("soundOn") : t("soundOff");
     $("bestValue").textContent = readBest() || t("noBest");
-    $("mainProgress").textContent = `${t("stages")}: ${Math.min(state.round, rounds.length)} / ${rounds.length}`;
+    const completedRounds = state.completed ? rounds.length : Math.min(state.round, rounds.length);
+    $("mainProgress").textContent = `${t("stages")}: ${completedRounds} / ${rounds.length}`;
     $("settingsBtn").setAttribute("aria-label", t("settings"));
     $("localeSelect").setAttribute("aria-label", t("language"));
     document.querySelectorAll("[data-aria-copy]").forEach((node) => { node.setAttribute("aria-label", t(node.dataset.ariaCopy)); });
@@ -54,17 +55,17 @@
     $("battleStatus").textContent = $("battleStatus").dataset.message ? t($("battleStatus").dataset.message) : "";
   };
   const renderResult = () => { const done = state.round >= rounds.length - 1; $("resultTitle").textContent = done ? t("resultTitle") : t("resultPartial"); $("resultText").textContent = t("resultText", { count: Math.min(state.round + 1, rounds.length), total: rounds.length, picks: state.sessionPicks }); $("resultPrimaryBtn").textContent = done ? t("map") : t("next"); $("resultPrimaryBtn").onclick = done ? () => { show("stage"); renderStages(); } : () => startRound(state.round + 1); $("resultMapBtn").hidden = done; };
-  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); state.stack = []; state.picks = 0; $("battleStatus").dataset.message = ""; if (index === 0) state.sessionPicks = 0; show("battle"); renderBattle(); track("round_start"); };
+  const startRound = (index) => { state.round = Math.max(0, Math.min(rounds.length - 1, index)); if (index === 0) { state.sessionPicks = 0; state.completed = false; } state.stack = []; state.picks = 0; $("battleStatus").dataset.message = ""; show("battle"); renderBattle(); track("round_start"); };
   const pickStone = (id) => { if (state.stack.length >= stones.length) return; state.stack.push(id); state.picks += 1; state.sessionPicks += 1; track("stone_pick", { stone: id }); renderBattle(); };
-  const checkStack = () => { const correct = JSON.stringify(state.stack) === JSON.stringify(rounds[state.round].solution); track("stack_check", { correct, picks: state.picks }); if (correct) { $("battleStatus").dataset.message = "correct"; if (state.round === rounds.length - 1) { writeBest(); track("session_complete", { picks: state.sessionPicks }); } show("result"); renderResult(); } else { $("battleStatus").dataset.message = "wrong"; state.stack = []; renderBattle(); } };
+  const checkStack = () => { const correct = JSON.stringify(state.stack) === JSON.stringify(rounds[state.round].solution); track("stack_check", { correct, picks: state.picks }); if (correct) { $("battleStatus").dataset.message = "correct"; if (state.round === rounds.length - 1) { state.completed = true; writeBest(); track("session_complete", { picks: state.sessionPicks }); } show("result"); renderResult(); } else { $("battleStatus").dataset.message = "wrong"; state.stack = []; renderBattle(); } };
   const clearStack = () => { state.stack = []; $("battleStatus").dataset.message = "waiting"; renderBattle(); track("stack_clear"); };
   const setLocale = (locale) => { state.locale = locales[locale] ? locale : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); };
   $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); track("map_open", { source: "primary" }); });
   $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); track("map_open"); });
-  $("stageBackBtn").addEventListener("click", () => show("main"));
+  $("stageBackBtn").addEventListener("click", () => { show("main"); applyLocale(); });
   $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); });
   $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); });
-  $("resultHomeBtn").addEventListener("click", () => show("main"));
+  $("resultHomeBtn").addEventListener("click", () => { show("main"); applyLocale(); });
   $("checkBtn").addEventListener("click", checkStack);
   $("clearBtn").addEventListener("click", clearStack);
   $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; });

@@ -1694,25 +1694,25 @@
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases one star orb at a time, and protects the crystal core while shadow beasts advance. Each orb spends its rebound allowance on walls or obstacles, then vanishes at its final contact; enemy hits do not consume that allowance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
+        "Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb. Early routes use three waves, normal late routes use five, and each fifth-route Boss checkpoint adds waves progressively up to ten. The player drags from the lion keeper to preview a wall-bounce path, releases one star orb at a time, and protects the crystal core while shadow beasts advance. Each orb spends its rebound allowance on walls or obstacles, then vanishes at its final contact; enemy hits do not consume that allowance. Six five-route regions add skitters, thorn brutes, blinking wisps, armor, anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
       story: [
         "The Crystal Fortress was built where six guardian roads meet: the Crystal Woodland, Thornworks, Moon Ruins, Mirror Vault, Storm Bastion, and Eclipse Heart. When the fortress core began broadcasting an unstable pulse, shadow animals followed those roads inward. The lion orb keeper cannot leave the core unguarded, so every defense is fought from the launcher chamber by redirecting spirit orbs through the surrounding walls and mirrors.",
         "Clearing a route means its road is stable enough for repair crews to reopen it. Rootbound Golem tests the woodland gate, Brambleback Colossus occupies the thorn forge, Lunar Wisp Matriarch phases through the moon road, Prism Shell Regent controls the mirror vault, Tempest Horn Guardian marks storm lanes, and Voidcore Emperor seals the final chamber with three core phases. Completing Route 30 reconnects all six roads and stops the corrupted pulse from drawing more enemies to the fortress."
       ],
       systems: [
         "Aim and ricochet: drag from the launcher to see the initial path, then release one star orb. Each click launches exactly one orb from the keeper's hand; Capacity upgrades open additional independent in-flight slots. Wall and obstacle contacts consume its rebound allowance, enemy hits do not, and the orb vanishes at the final allowed contact. Wall banks can cross multiple lanes or reach a target hidden behind another formation. Piercing Shine shortens the delay before one orb can hit the same target again.",
-        "Three-wave route: Waves 1 and 2 establish the route's enemy rule. Wave 3 uses an authored elite formation, except Routes 5, 10, 15, 20, 25, and 30, which end with a named regional Boss. A cleared wave pauses inside Battle for one blessing choice, then resumes the same route with surviving core HP and current upgrades.",
-        "Special enemies: armored beasts absorb a fixed number of hits before losing HP. Stationary thorn anchors periodically give nearby allies a shield. Moon wisps visibly phase out and cannot be damaged until they return. Crystal splitters create two faster shards when defeated. Chargers mark a line, rush, then leave a recovery opening.",
+        "Wave pacing: Routes 1–4 use three waves, standard routes after the first checkpoint use five, and Boss routes 5, 10, 15, 20, 25, and 30 use 4, 6, 7, 8, 9, and 10 waves respectively. A cleared wave pauses inside Battle for one blessing choice, then resumes the same route with surviving core HP and current upgrades.",
+        "Distinct enemies: skitters weave across their lane, thorn brutes crawl slowly but hit the core harder, wisps blink sideways and leave after-images, armored beasts absorb hits, stationary anchors shield allies, phase beasts become temporarily intangible, splitters create two fast shards on defeat, and chargers mark a lane before a high-speed rush and recovery opening.",
         "Mirror pylons: later routes place one or two solid hexagonal pylons inside the arena. Orbs physically reflect from them, creating bank paths that do not exist in the early regions. Some pylons move horizontally, so a previously safe angle may stop working during the same wave.",
         "Boss rules: Rootbound rebuilds a breakable guard; Brambleback summons anchors and armored support at health thresholds; Lunar Wisp alternates visible and phased periods; Prism Shell can only be damaged while its gold shield segment is open; Tempest Horn is vulnerable after a marked charge; Voidcore changes phase twice, adds escorts, rebuilds protection, and activates two mirror pylons.",
         "Run and permanent growth: each wave offers Bigger Orb, Split Orb, Piercing Shine, Faster Recharge, Core Shield, or Scout Magnet according to the current choice cycle. Star Stones earned at Result improve Orb Forge damage, starting Core Shield HP, Companion Den support strikes, and Scout Tower rewards. A three-Diamond blessing reroll is optional, confirmed in two steps, and never required to unlock routes."
       ],
       how: [
-        "Choose an unlocked route from the horizontal fortress map. Read its name, rule tag, and route-specific warning before entering.",
+        "Choose an unlocked route from the horizontal fortress map. Read its name, rule tag, wave total, and route-specific warning before entering.",
         "Drag from the lion keeper toward the desired angle. Use the preview to decide whether a direct shot, one-wall bank, cross-arena bank, or pylon reflection reaches the priority target.",
-        "Release to fire one spirit orb. Watch armor rings, phase outlines, charge marks, anchor protection, and Boss cues; after its final wall or obstacle bounce, it disappears where it lands before you choose the next shot.",
-        "After Waves 1 and 2, select one blessing. A reroll costs three Diamonds and requires a second confirmation; selecting a blessing immediately continues to the next wave.",
-        "Keep core HP above zero through Wave 3. Victory saves the next route and Star Stones; failure still saves the earned Star Stones and leaves the best unlocked route intact.",
+        "Release to fire one spirit orb. Watch armor rings, enemy behavior markers, phase outlines, charge marks, anchor protection, and Boss cues; after its final wall or obstacle bounce, it disappears where it lands before you choose the next shot.",
+        "After every cleared wave except the final one, select one blessing. A reroll costs three Diamonds and requires a second confirmation; selecting a blessing immediately continues to the next wave.",
+        "Keep core HP above zero through the route's displayed wave total. Victory saves the next route and Star Stones; failure still saves the earned Star Stones and leaves the best unlocked route intact.",
         "Return to the map to spend Star Stones on fortress rooms, replay cleared routes, or continue with Next Stage from Result."
       ],
       strategyTips: [
@@ -1730,11 +1730,12 @@
         "Routes 26-30 combine armor, anchors, phase timing, splitters, chargers, and moving pylons in authored formations. Route 29 uses the full ordinary-enemy vocabulary. Route 30 adds two Voidcore phase changes, four support summons, rebuilt shielding, and two active pylons, testing aim planning, target priority, timing, upgrades, and permanent fortress growth together."
       ],
       designNote:
-        "The game uses three short waves because a route should feel like one focused aiming problem rather than a long endurance session. Wave breaks preserve core damage and the current build, but provide one compact blessing decision before the next formation. The first regions rely on walls so players can learn predictable geometry; later mirror pylons create new surfaces and invalidate memorized angles. Special enemies communicate their counterplay with rings, shield marks, lane lines, or distinct Boss artwork instead of requiring a long rules panel during Battle. Pointer drag is the primary phone control, while Left and Right adjust the same aim on a keyboard and Space or Enter fires. Compared with Beast Guardian's defender placement or Animal Auto Squad's formation planning, Animal Orb Fortress makes the shot path itself the main strategic resource.",
+        "Wave pacing grows with the campaign: three short waves teach the first routes, five waves create the normal late-route rhythm, and each fifth-route Boss checkpoint adds a longer 4–10-wave finale. Wave breaks preserve core damage and the current build, but provide one compact blessing decision before the next formation. The first regions rely on walls so players can learn predictable geometry; later mirror pylons create new surfaces and invalidate memorized angles. Each ordinary enemy now communicates a clear counterplay through movement, angular markers, shield cues, phase marks, or charge lanes instead of requiring a long rules panel during Battle. Pointer drag is the primary phone control, while Left and Right adjust the same aim on a keyboard and Space or Enter fires. Compared with Beast Guardian's defender placement or Animal Auto Squad's formation planning, Animal Orb Fortress makes the shot path itself the main strategic resource.",
       parent:
         "The browser saves the best unlocked route, Star Stones, play count, and four fortress-room levels on this device. Basic play does not require an account. Clearing this site's browser storage may remove that progress. Diamond blessing rerolls are optional, show the current and resulting balance, and are not required for the campaign. Scores and Skill Reports describe play only and are not formal ability measurements.",
       faq: [
-        ["What is the goal of a route?", "Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route."],
+        ["What is the goal of a route?", "Protect the crystal core through the displayed wave total. Clearing the final wave saves the route, awards Star Stones, and unlocks the next route."],
+        ["How many waves are in a route?", "Routes 1–4 have 3 waves, ordinary routes after the first checkpoint have 5, and Boss checkpoints scale from 4 to 10 waves."],
         ["Does every route use the same Boss?", "No. Only every fifth route is a regional Boss checkpoint. The other routes end with authored elite formations, and all six Bosses have different artwork, cues, and counterplay."],
         ["Why did my orb pass through a moon enemy?", "A dashed phase outline means that enemy is temporarily intangible. Wait for it to become solid, then release the prepared shot."],
         ["What do mirror pylons do?", "They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave."],
@@ -2898,14 +2899,14 @@
         guideTitleSuffix: "遊戲指南",
         noteTitle: "玩家與存檔說明",
         hideScoreBands: true,
-        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後一次放出一顆星珠，在影獸接近水晶核心前擊退牠們。每顆星珠會消耗牆壁或障礙物反彈次數，最後一次碰撞後在原地消失；命中敵人不會消耗反彈次數。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
+        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。前四關各有三波，首個檢查點之後的普通關卡各有五波，而首領關會逐步從四波增加到十波。玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後一次放出一顆星珠，在影獸接近水晶核心前擊退牠們。每顆星珠會消耗牆壁或障礙物反彈次數，最後一次碰撞後在原地消失；命中敵人不會消耗反彈次數。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
         story: [
           "水晶要塞位在六條守護道路交會的位置：水晶森林、荊棘工坊、月光遺跡、鏡面寶庫、風暴壁壘與蝕影核心。核心開始發出不穩定脈衝後，暗影動物沿著道路靠近。獅子星珠守衛不能離開核心，因此每次防守都必須從發射室把星珠導向牆面、鏡門與敵方路線。",
           "通過一關代表該段道路已穩定到足以讓修復隊重新開放。盤根魔像守在森林入口，荊背巨獸佔領工坊，月靈女王能穿過月光道路，稜晶甲攝政王控制鏡庫，暴風角守衛標記衝鋒路線，虛空核心皇則以三階段封鎖最後房間。完成第 30 關代表六條道路重新連結，核心也不再吸引新的影獸。"
         ],
         systems: [
           "瞄準與反彈：從發射器拖曳可預覽第一段路線，放開後一次只會從守護獅手中射出一顆星珠。每次點擊都只發射一顆；容量升級會開放額外、可分開瞄準的飛行欄位。牆壁與障礙物會消耗反彈次數，敵人不會；用完最後一次反彈後，星珠會在碰撞處消失。穿透星芒則縮短同一顆星珠再次命中相同敵人的間隔。",
-          "三波關卡：前兩波先讓玩家理解本關規則。第三波通常是特製菁英陣形；第 5、10、15、20、25、30 關則改為具名區域首領。通過一波後仍保留核心損傷與本局升級，只暫停讓玩家選一個祝福，再繼續同一關。",
+          "波次節奏：第 1-4 關使用三波，首個檢查點之後的普通關卡使用五波；第 5、10、15、20、25、30 首領關分別使用 4、6、7、8、9、10 波。通過一波後仍保留核心損傷與本局升級，只暫停讓玩家選一個祝福，再繼續同一關。",
           "特殊敵人：裝甲獸要先消耗固定次數的護甲；不移動的荊棘錨點會定期替鄰近隊友加盾；月光幽靈會用虛線提示進入相位，顯形前無法受傷；水晶分裂獸倒下後會產生兩枚更快碎片；衝鋒獸先標記路線，突進後才留下可攻擊空檔。",
           "鏡面柱：中後期會在競技場內放置一到兩座六角鏡面柱，星珠會真的從柱面反射，形成早期關卡不存在的新路線。有些鏡面柱會左右移動，同一波中原本有效的角度也可能失效。",
           "首領規則：盤根魔像會重建防護；荊背巨獸在生命門檻召喚錨點與裝甲護衛；月靈女王交替顯形與相位；稜晶甲攝政王只在金色盾片打開時受傷；暴風角守衛完成標記衝刺後才會外露；虛空核心皇會兩次換階段、補盾、召喚四名護衛並啟動兩座鏡面柱。",
@@ -2915,8 +2916,8 @@
           "從水平滑動的要塞地圖選擇已解鎖關卡，先閱讀關卡名稱、規則標籤與專屬警告。",
           "從獅子守衛旁拖向想要的角度，利用預覽判斷直接射擊、單牆反彈、跨場反彈或鏡柱反射能否命中優先目標。",
           "放開後射出一顆星珠，觀察護甲圈、相位虛線、衝鋒標記、錨點保護與首領提示；用完最後一次牆壁或障礙物反彈後，星珠會在原地消失，再決定下一次射擊。",
-          "通過前兩波後各選一個祝福。重抽花三顆鑽石並需要再按一次確認；選好祝福就立刻繼續下一波。",
-          "第三波結束前保持核心生命大於零。勝利會保存下一關與星石；失敗仍保存已取得星石，且不會失去最佳已解鎖關卡。",
+          "除了最後一波外，每波結束後都選一個祝福。重抽花三顆鑽石並需要再按一次確認；選好祝福就立刻繼續下一波。",
+          "在畫面顯示的波數總數前保持核心生命大於零。勝利會保存下一關與星石；失敗仍保存已取得星石，且不會失去最佳已解鎖關卡。",
           "回到地圖使用星石升級房間、重玩舊關，或從結算畫面直接進入下一關。"
         ],
         strategyTips: [
@@ -2933,10 +2934,11 @@
           "第 16-20 關加入可實際反射星珠的鏡面柱，以及倒下後產生快速碎片的分裂獸。第 21-25 關加入路線標記、衝鋒與風暴時機。稜晶甲攝政王有旋轉傷害窗口，暴風角守衛必須完成衝刺後才能受傷。",
           "第 26-30 關把護甲、錨點、相位、分裂、衝鋒與移動鏡柱組成特製陣形。第 29 關使用完整普通敵人語彙；第 30 關加入兩次虛空核心換階段、四名支援、補盾與兩座鏡面柱，同時測試瞄準、目標順序、時機、本局祝福與永久房間成長。"
         ],
-        designNote: "本作採三個短波次，是為了讓每關像一個集中的反彈問題，而不是過長的耐久戰。波次間保留核心損傷與本局配置，只加入一次簡短祝福決策。前期只使用牆面，讓玩家先理解可預測幾何；後期鏡面柱增加新反射面，也會使背熟的角度失效。特殊敵人用護甲圈、相位虛線、路線標記與獨立首領圖直接傳達反制方式，不要求玩家在戰鬥中閱讀長篇規則。手機以拖曳為主；鍵盤左右鍵調整同一套角度，空白鍵或 Enter 發射。相較《獸王守衛》的配置守衛與《動物自走小隊》的戰前編成，《動物星珠要塞》把射擊路徑本身當作主要策略資源。",
+        designNote: "本作讓前四關使用三個短波次，普通後期關卡使用五波，並把每個首領檢查點逐步拉長到四至十波，讓每關像集中的反彈問題而不是固定耐久戰。波次間保留核心損傷與本局配置，只加入一次簡短祝福決策。前期只使用牆面，讓玩家先理解可預測幾何；後期鏡面柱增加新反射面，也會使背熟的角度失效。特殊敵人用護甲圈、相位虛線、路線標記與獨立首領圖直接傳達反制方式，不要求玩家在戰鬥中閱讀長篇規則。手機以拖曳為主；鍵盤左右鍵調整同一套角度，空白鍵或 Enter 發射。相較《獸王守衛》的配置守衛與《動物自走小隊》的戰前編成，《動物星珠要塞》把射擊路徑本身當作主要策略資源。",
         parent: "瀏覽器會在本機保存最佳已解鎖關卡、星石、遊玩次數，以及星珠鍛造室、核心護盾室、夥伴巢穴、偵查高塔的等級；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能移除進度。鑽石祝福重抽完全可選，會顯示目前與扣除後餘額，不是完成關卡的必要條件。分數與能力回饋只描述遊玩表現，不是正式能力測量。",
         faq: [
-          ["每關的目標是什麼？", "守住水晶核心並通過三個波次。完成第三波會保存關卡、取得星石並解鎖下一關。"],
+          ["每關的目標是什麼？", "守住水晶核心直到畫面顯示的波數總數。完成最後一波會保存關卡、取得星石並解鎖下一關。"],
+          ["每關有多少波？", "第 1-4 關有 3 波，之後的普通關卡有 5 波，首領檢查點會從 4 波逐步增加到 10 波。"],
           ["每關都會出現同一隻首領嗎？", "不會。只有每五關是區域首領檢查點；其他關以特製菁英陣形收尾，六名首領的圖像、提示與反制規則都不同。"],
           ["為什麼星珠穿過月光敵人？", "相位虛線代表敵人暫時沒有實體。等牠重新顯形，再放開已準備好的射擊。"],
           ["鏡面柱有什麼作用？", "它是競技場內真正的反射面；後期鏡柱會移動，讓同一波中的可用反彈路線改變。"],
@@ -7691,14 +7693,14 @@
     noteTitle: "Informazioni sul giocatore e sui salvataggi",
     hideScoreBands: true,
     intro:
-      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi a percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una sola sfera stellare alla volta e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Ogni sfera consuma i rimbalzi contro pareti o ostacoli e scompare sul punto dell'ultimo contatto; colpire i nemici non consuma rimbalzi. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
+      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi a percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. I percorsi iniziali hanno tre ondate, quelli standard dopo il primo checkpoint ne hanno cinque e i percorsi Boss aumentano progressivamente da quattro fino a dieci. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una sola sfera stellare alla volta e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Ogni sfera consuma i rimbalzi contro pareti o ostacoli e scompare sul punto dell'ultimo contatto; colpire i nemici non consuma rimbalzi. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
     story: [
       "La Fortezza di Cristallo è stata costruita nel punto in cui si incontrano sei strade dei guardiani: il Bosco di Cristallo, le Officine Spinose, le Rovine Lunari, la Volta degli Specchi, il Bastione della Tempesta e il Cuore dell'Eclissi. Quando il nucleo della fortezza ha iniziato a trasmettere un impulso instabile, gli animali d'ombra hanno seguito quelle strade verso l'interno. Il custode leone non può lasciare il nucleo incustodito, quindi ogni difesa parte dalla camera di lancio e devia le sfere spirituali sulle pareti e sugli specchi circostanti.",
       "Liberare un percorso significa rendere la sua strada abbastanza stabile da consentire alle squadre di riparazione di riaprirla. Il Golem delle Radici sorveglia il cancello del bosco, il Colosso dei Rovi occupa la forgia spinosa, la Matriarca dei Fuochi Fatui Lunari attraversa la strada lunare, il Reggente del Guscio Prismatico controlla la Volta degli Specchi, il Guardiano Corno di Tempesta segna le corsie della tempesta e l'Imperatore del Nucleo Vuoto sigilla la camera finale con tre fasi. Completare il percorso 30 ricollega tutte e sei le strade e impedisce all'impulso corrotto di attirare altri nemici verso la fortezza."
     ],
     systems: [
       "Mira e rimbalza: trascina dal lanciatore per vedere la traiettoria iniziale, quindi rilascia una sola sfera stellare. Ogni tocco lancia esattamente una sfera dalla mano del custode; i potenziamenti di capacità aprono slot indipendenti per i tiri successivi. Pareti e ostacoli consumano i rimbalzi disponibili, i nemici no; dopo l'ultimo rimbalzo consentito la sfera scompare sul punto d'impatto. Luce Perforante riduce il ritardo prima che una sfera possa colpire di nuovo lo stesso bersaglio.",
-      "Percorso a tre ondate: le ondate 1 e 2 presentano la regola nemica del percorso. L'ondata 3 usa una formazione d'élite progettata, tranne nei percorsi 5, 10, 15, 20, 25 e 30, che terminano con un boss regionale. Dopo aver eliminato un'ondata, la battaglia si ferma per la scelta di una benedizione; poi lo stesso percorso riprende con i PV del nucleo rimasti e i potenziamenti attuali.",
+      "Ritmo delle ondate: i percorsi 1-4 usano tre ondate, i percorsi standard dopo il primo checkpoint ne usano cinque e i percorsi Boss 5, 10, 15, 20, 25 e 30 ne usano rispettivamente 4, 6, 7, 8, 9 e 10. Dopo aver eliminato un'ondata, la battaglia si ferma per la scelta di una benedizione; poi lo stesso percorso riprende con i PV del nucleo rimasti e i potenziamenti attuali.",
       "Nemici speciali: le bestie corazzate assorbono un numero fisso di colpi prima di perdere PV. Le ancore spinose immobili applicano periodicamente uno scudo agli alleati vicini. I fuochi fatui lunari diventano visibilmente intangibili e non possono subire danni finché non ritornano solidi. Gli scissori di cristallo generano due frammenti più veloci quando vengono sconfitti. Gli assalitori segnano una corsia, scattano in avanti e poi lasciano una finestra di recupero.",
       "Piloni a specchio: nei percorsi avanzati compaiono uno o due piloni esagonali solidi nell'arena. Le sfere rimbalzano davvero su di essi, creando traiettorie impossibili nelle prime regioni. Alcuni piloni si muovono in orizzontale, quindi un angolo prima sicuro può smettere di funzionare durante la stessa ondata.",
       "Regole dei boss: il Golem delle Radici ricostruisce una guardia spezzabile; il Colosso dei Rovi evoca ancore e rinforzi corazzati a determinate soglie di salute; la Matriarca dei Fuochi Fatui Lunari alterna periodi visibili e intangibili; il Reggente del Guscio Prismatico subisce danni solo quando il segmento dorato dello scudo è aperto; il Guardiano Corno di Tempesta è vulnerabile dopo una carica segnalata; l'Imperatore del Nucleo Vuoto cambia fase due volte, aggiunge scorte, ricostruisce la protezione e attiva due piloni a specchio.",
@@ -7708,8 +7710,8 @@
       "Scegli un percorso sbloccato dalla mappa orizzontale della fortezza. Leggi il nome, l'etichetta della regola e l'avviso specifico prima di entrare.",
       "Trascina dal custode leone verso l'angolo desiderato. Usa l'anteprima per capire se un tiro diretto, un rimbalzo su una parete, un rimbalzo attraverso l'arena o una riflessione su un pilone raggiunge il bersaglio prioritario.",
       "Rilascia per lanciare una sfera spirituale. Osserva gli anelli dell'armatura, i contorni di fase, i segni di carica, la protezione delle ancore e i segnali dei boss; dopo l'ultimo rimbalzo su parete o ostacolo la sfera scompare dove atterra, prima del tiro successivo.",
-      "Dopo le ondate 1 e 2, scegli una benedizione. Un rilancio costa tre Diamanti e richiede una seconda conferma; scegliere una benedizione avvia subito l'ondata successiva.",
-      "Mantieni i PV del nucleo sopra lo zero fino alla fine dell'ondata 3. La vittoria salva il percorso successivo e le Pietre Stellari; la sconfitta conserva comunque le Pietre Stellari guadagnate e il miglior percorso sbloccato.",
+      "Dopo ogni ondata tranne l'ultima, scegli una benedizione. Un rilancio costa tre Diamanti e richiede una seconda conferma; scegliere una benedizione avvia subito l'ondata successiva.",
+      "Mantieni i PV del nucleo sopra lo zero fino al totale di ondate mostrato per il percorso. La vittoria salva il percorso successivo e le Pietre Stellari; la sconfitta conserva comunque le Pietre Stellari guadagnate e il miglior percorso sbloccato.",
       "Torna alla mappa per spendere le Pietre Stellari nelle stanze della fortezza, rigiocare i percorsi completati o continuare con il percorso successivo dal risultato."
     ],
     strategyTips: [
@@ -7727,11 +7729,12 @@
       "I percorsi 26-30 combinano armature, ancore, tempismo delle fasi, scissori, assalitori e piloni mobili in formazioni progettate. Il percorso 29 usa l'intero repertorio dei nemici comuni. Il percorso 30 aggiunge due cambi di fase dell'Imperatore del Nucleo Vuoto, quattro evocazioni di supporto, scudi ricostruiti e due piloni attivi, mettendo alla prova pianificazione del tiro, priorità dei bersagli, tempismo, potenziamenti e crescita permanente della fortezza."
     ],
     designNote:
-      "Il gioco usa tre ondate brevi perché ogni percorso deve sembrare un problema di mira ben definito, non una lunga prova di resistenza. Le pause tra le ondate conservano i danni al nucleo e la configurazione attuale, ma offrono una scelta di benedizione compatta prima della formazione successiva. Le prime regioni si affidano alle pareti per insegnare una geometria prevedibile; in seguito i piloni a specchio creano nuove superfici e invalidano gli angoli memorizzati. I nemici speciali comunicano la propria contromossa con anelli, segni di scudo, linee di corsia o illustrazioni distinte dei boss, senza richiedere un lungo pannello di regole durante la battaglia. Il trascinamento è il controllo principale su telefono; su tastiera, Sinistra e Destra regolano la stessa mira, mentre Spazio o Invio sparano. A differenza del posizionamento dei difensori in Guardiano delle Bestie o della pianificazione delle formazioni in Squadra Animale Automatica, Fortezza delle Sfere Animali rende la traiettoria del tiro la risorsa strategica principale.",
+      "Il ritmo della campagna cresce con la difficoltà: tre ondate brevi insegnano i primi percorsi, cinque creano il ritmo standard e ogni checkpoint Boss si allunga da quattro fino a dieci ondate. Le pause tra le ondate conservano i danni al nucleo e la configurazione attuale, ma offrono una scelta di benedizione compatta prima della formazione successiva. Le prime regioni si affidano alle pareti per insegnare una geometria prevedibile; in seguito i piloni a specchio creano nuove superfici e invalidano gli angoli memorizzati. I nemici speciali comunicano la propria contromossa con movimenti, segni angolari, scudi, linee di corsia o illustrazioni distinte dei boss, senza richiedere un lungo pannello di regole durante la battaglia. Il trascinamento è il controllo principale su telefono; su tastiera, Sinistra e Destra regolano la stessa mira, mentre Spazio o Invio sparano. A differenza del posizionamento dei difensori in Guardiano delle Bestie o della pianificazione delle formazioni in Squadra Animale Automatica, Fortezza delle Sfere Animali rende la traiettoria del tiro la risorsa strategica principale.",
     parent:
       "Il browser salva su questo dispositivo il miglior percorso sbloccato, le Pietre Stellari, il numero di partite e i livelli delle quattro stanze della fortezza. Il gioco di base non richiede un account. La cancellazione dei dati del sito dal browser può rimuovere questi progressi. I rilanci delle benedizioni con Diamanti sono facoltativi, mostrano il saldo attuale e quello successivo e non sono necessari per completare i percorsi. Punteggi e rapporti sulle abilità descrivono soltanto il gioco e non sono valutazioni formali delle capacità.",
     faq: [
-      ["Qual è l'obiettivo di un percorso?", "Proteggere il nucleo di cristallo per tre ondate. Completare l'ondata 3 salva il percorso, assegna Pietre Stellari e sblocca il percorso successivo."],
+      ["Qual è l'obiettivo di un percorso?", "Proteggere il nucleo di cristallo fino al totale di ondate mostrato. Completare l'ultima ondata salva il percorso, assegna Pietre Stellari e sblocca il percorso successivo."],
+      ["Quante ondate ha un percorso?", "I percorsi 1-4 hanno 3 ondate, i percorsi standard successivi ne hanno 5 e i checkpoint Boss aumentano da 4 fino a 10 ondate."],
       ["Ogni percorso usa lo stesso boss?", "No. Solo ogni quinto percorso è un punto di controllo con un boss regionale. Gli altri terminano con formazioni d'élite progettate, e tutti e sei i boss hanno illustrazioni, segnali e contromosse diverse."],
       ["Perché la mia sfera ha attraversato un nemico lunare?", "Un contorno di fase tratteggiato indica che il nemico è temporaneamente intangibile. Attendi che torni solido, quindi rilascia il tiro preparato."],
       ["A cosa servono i piloni a specchio?", "Sono vere superfici riflettenti nell'arena. Nei percorsi avanzati si muovono, modificando la traiettoria di rimbalzo disponibile durante un'ondata."],
@@ -7760,14 +7763,14 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。每关包含三个连续波次，玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后一次放出一颗星珠，在影兽接近水晶核心前击退它们。每颗星珠会消耗墙壁或障碍物反弹次数，最后一次碰撞后在原地消失；命中敌人不会消耗反弹次数。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
+    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。前四关各有三波，首个检查点之后的普通关卡各有五波，而首领关会逐步从四波增加到十波。玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后一次放出一颗星珠，在影兽接近水晶核心前击退它们。每颗星珠会消耗墙壁或障碍物反弹次数，最后一次碰撞后在原地消失；命中敌人不会消耗反弹次数。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
     "story": [
       "水晶要塞位在六条守护道路交会的位置：水晶森林、荆棘工坊、月光遗迹、镜面宝库、风暴壁垒与蚀影核心。核心开始发出不稳定脉冲后，暗影动物沿著道路靠近。狮子星珠守卫不能离开核心，因此每次防守都必须从发射室把星珠导向墙面、镜门与敌方路线。",
       "通过一关代表该段道路已稳定到足以让修复队重新开放。盘根魔像守在森林入口，荆背巨兽占领工坊，月灵女王能穿过月光道路，棱晶甲摄政王控制镜库，暴风角守卫标记冲锋路线，虚空核心皇则以三阶段封锁最后房间。完成第 30 关代表六条道路重新连结，核心也不再吸引新的影兽。"
     ],
     "systems": [
       "瞄准与反弹：从发射器拖曳可预览第一段路线，放开后一次只会从守护狮手中射出一颗星珠。每次点击都只发射一颗；容量升级会开放额外、可分开瞄准的飞行栏位。墙壁与障碍物会消耗反弹次数，敌人不会；用完最后一次反弹后，星珠会在碰撞处消失。穿透星芒则缩短同一颗星珠再次命中相同敌人的间隔。",
-      "三波关卡：前两波先让玩家理解本关规则。第三波通常是特制菁英阵形；第 5、10、15、20、25、30 关则改为具名区域首领。通过一波后仍保留核心损伤与本局升级，只暂停让玩家选一个祝福，再继续同一关。",
+      "波次节奏：第 1-4 关使用三波，首个检查点之后的普通关卡使用五波；第 5、10、15、20、25、30 首领关分别使用 4、6、7、8、9、10 波。通过一波后仍保留核心损伤与本局升级，只暂停让玩家选一个祝福，再继续同一关。",
       "特殊敌人：装甲兽要先消耗固定次数的护甲；不移动的荆棘锚点会定期替邻近队友加盾；月光幽灵会用虚线提示进入相位，显形前无法受伤；水晶分裂兽倒下后会产生两枚更快碎片；冲锋兽先标记路线，突进后才留下可攻击空档。",
       "镜面柱：中后期会在竞技场内放置一到两座六角镜面柱，星珠会真的从柱面反射，形成早期关卡不存在的新路线。有些镜面柱会左右移动，同一波中原本有效的角度也可能失效。",
       "首领规则：盘根魔像会重建防护；荆背巨兽在生命门槛召唤锚点与装甲护卫；月灵女王交替显形与相位；棱晶甲摄政王只在金色盾片打开时受伤；暴风角守卫完成标记冲刺后才会外露；虚空核心皇会两次换阶段、补盾、召唤四名护卫并启动两座镜面柱。",
@@ -7777,8 +7780,8 @@
       "从水平滑动的要塞地图选择已解锁关卡，先阅读关卡名称、规则标签与专属警告。",
       "从狮子守卫旁拖向想要的角度，利用预览判断直接射击、单墙反弹、跨场反弹或镜柱反射能否命中优先目标。",
       "放开后射出一颗星珠，观察护甲圈、相位虚线、冲锋标记、锚点保护与首领提示；用完最后一次墙壁或障碍物反弹后，星珠会在原地消失，再决定下一次射击。",
-      "通过前两波后各选一个祝福。重抽花三颗钻石并需要再按一次确认；选好祝福就立刻继续下一波。",
-      "第三波结束前保持核心生命大于零。胜利会保存下一关与星石；失败仍保存已取得星石，且不会失去最佳已解锁关卡。",
+      "除了最后一波外，每波结束后都选一个祝福。重抽花三颗钻石并需要再按一次确认；选好祝福就立刻继续下一波。",
+      "在画面显示的波数总数前保持核心生命大于零。胜利会保存下一关与星石；失败仍保存已取得星石，且不会失去最佳已解锁关卡。",
       "回到地图使用星石升级房间、重玩旧关，或从结算画面直接进入下一关。"
     ],
     "strategyTips": [
@@ -7795,12 +7798,16 @@
       "第 16-20 关加入可实际反射星珠的镜面柱，以及倒下后产生快速碎片的分裂兽。第 21-25 关加入路线标记、冲锋与风暴时机。棱晶甲摄政王有旋转伤害窗口，暴风角守卫必须完成冲刺后才能受伤。",
       "第 26-30 关把护甲、锚点、相位、分裂、冲锋与移动镜柱组成特制阵形。第 29 关使用完整普通敌人语汇；第 30 关加入两次虚空核心换阶段、四名支援、补盾与两座镜面柱，同时测试瞄准、目标顺序、时机、本局祝福与永久房间成长。"
     ],
-    "designNote": "本作采三个短波次，是为了让每关像一个集中的反弹问题，而不是过长的耐久战。波次间保留核心损伤与本局配置，只加入一次简短祝福决策。前期只使用墙面，让玩家先理解可预测几何；后期镜面柱增加新反射面，也会使背熟的角度失效。特殊敌人用护甲圈、相位虚线、路线标记与独立首领图直接传达反制方式，不要求玩家在战斗中阅读长篇规则。手机以拖曳为主；键盘左右键调整同一套角度，空白键或 Enter 发射。相较《兽王守卫》的配置守卫与《动物自走小队》的战前编成，《动物星珠要塞》把射击路径本身当作主要策略资源。",
+    "designNote": "本作让前四关使用三个短波次，普通后期关卡使用五波，并把每个首领检查点逐步拉长到四至十波，让每关像集中的反弹问题而不是固定耐久战。波次间保留核心损伤与本局配置，只加入一次简短祝福决策。前期只使用墙面，让玩家先理解可预测几何；后期镜面柱增加新反射面，也会使背熟的角度失效。特殊敌人用移动轨迹、护甲角标、相位虚线、路线标记与独立首领图直接传达反制方式，不要求玩家在战斗中阅读长篇规则。手机以拖曳为主；键盘左右键调整同一套角度，空白键或 Enter 发射。相较《兽王守卫》的配置守卫与《动物自走小队》的战前编成，《动物星珠要塞》把射击路径本身当作主要策略资源。",
     "parent": "浏览器会在本机保存最佳已解锁关卡、星石、游玩次数，以及星珠锻造室、核心护盾室、伙伴巢穴、侦查高塔的等级；基本游玩不需要登入。清除本站浏览器储存资料可能移除进度。钻石祝福重抽完全可选，会显示目前与扣除后余额，不是完成关卡的必要条件。分数与能力回馈只描述游玩表现，不是正式能力测量。",
     "faq": [
       [
         "每关的目标是什么？",
-        "守住水晶核心并通过三个波次。完成第三波会保存关卡、取得星石并解锁下一关。"
+        "守住水晶核心直到画面显示的波数总数。完成最后一波会保存关卡、取得星石并解锁下一关。"
+      ],
+      [
+        "每关有多少波？",
+        "第 1-4 关有 3 波，之后的普通关卡有 5 波，首领检查点会从 4 波逐步增加到 10 波。"
       ],
       [
         "每关都会出现同一只首领吗？",
@@ -9406,6 +9413,7 @@
 
   function localizedGame(id) {
     let game = localizedGameContent(id);
+    if (id === "wonder-crash" && game && window.LionTalents) game = { ...game, ...window.LionTalents.guide(locale()) };
     if (id === "animal-crystal-survivor" && game) game = { ...game, ...(crystalCombatGuides[locale()] || crystalCombatGuides.en) };
     const official = window.WEIGHTPLAY_GAME_TITLES?.[id]?.[locale()];
     return game && official && document.documentElement.hasAttribute?.('data-wp-official-name') ? { ...game, title: official } : game;
@@ -9462,7 +9470,7 @@
           const reviewedSentences = {
             "Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.": "في مواجهة المهاجمين وحارس قرن العاصفة، راقب المسار المحدد وانتظر فترة التعافي بعد الاندفاع. لا تفيد إعادة الشحن الأسرع إلا عند إطلاق الكرات في التوقيت المناسب.",
             "Routes 6-10 introduce hit-count armor and stationary thorn anchors. Routes 11-15 replace constant firing with phase timing and then add the first moving reflection gate. Brambleback Colossus summons protection during the fight, while Lunar Wisp Matriarch alternates invulnerability with a recovery window.": "تقدم المسارات 6-10 دروعًا تحتاج إلى عدد محدد من الضربات ومراسي شوكية ثابتة. تستبدل المسارات 11-15 الإطلاق المستمر بتوقيت الطور، ثم تضيف أول بوابة انعكاس متحركة. يستدعي عملاق الظهر الشوكي الحماية أثناء القتال، بينما تتناوب سيدة خصلات القمر بين الحصانة ونافذة تعافٍ قصيرة.",
-            "Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route.": "احمِ النواة البلورية خلال ثلاث موجات. يؤدي إنهاء الموجة الثالثة إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي.",
+            "Protect the crystal core through the displayed wave total. Clearing the final wave saves the route, awards Star Stones, and unlocks the next route.": "احمِ النواة البلورية حتى إجمالي الموجات الظاهر. يؤدي إنهاء الموجة الأخيرة إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي.",
           };
           translated = reviewedSentences[value] || translated;
           [
@@ -18441,14 +18449,14 @@
     guideTitleSuffix: "دليل اللعبة",
     noteTitle: "معلومات اللاعب والحفظ",
     hideScoreBands: true,
-    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد متعددة المراحل، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. يضم كل مسار ثلاث موجات متواصلة. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق كرة نجمية واحدة في كل مرة واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تستهلك كل كرة ارتداداتها عند الجدران أو العوائق وتختفي عند آخر نقطة اصطدام؛ ولا تستهلك إصابة الأعداء أي ارتداد. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
+    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد متعددة المراحل، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. تضم المسارات الأربعة الأولى ثلاث موجات، وتضم المسارات العادية بعد نقطة الفحص الأولى خمس موجات، بينما تزيد مسارات الزعماء تدريجيًا من أربع موجات حتى عشر. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق كرة نجمية واحدة في كل مرة واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تستهلك كل كرة ارتداداتها عند الجدران أو العوائق وتختفي عند آخر نقطة اصطدام؛ ولا تستهلك إصابة الأعداء أي ارتداد. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
     story: [
       "بُني الحصن البلوري عند ملتقى ستة طرق للحراس: الغابة البلورية، مشاغل الأشواك، أطلال القمر، قبو المرايا، حصن العاصفة وقلب الكسوف. عندما بدأت نواة الحصن بث نبضة غير مستقرة، اتبعت حيوانات الظل تلك الطرق إلى الداخل. لا يستطيع حارس الكرة الأسد ترك النواة بلا حماية، لذلك تُخاض كل معركة من غرفة الإطلاق عبر إعادة توجيه الكرات الروحية بين الجدران والمرايا المحيطة.",
       "يعني تخطي مسار أن طريقه أصبح مستقرًا بما يكفي لإعادة فتحه أمام فرق الإصلاح. يختبر غول الجذور بوابة الغابة، ويحتل عملاق الظهر الشوكي مشغل الأشواك، وتتوارى سيدة خصلات القمر عبر طريق القمر، ويسيطر وصي القشرة المنشورية على قبو المرايا، ويحدد حارس قرن العاصفة ممرات العاصفة، ويغلق إمبراطور النواة الفارغة الغرفة الأخيرة بثلاثة أطوار للنواة. إكمال المسار 30 يعيد وصل الطرق الستة ويوقف النبضة الفاسدة عن جذب مزيد من الأعداء إلى الحصن.",
     ],
     systems: [
       "التصويب والارتداد: اسحب من منصة الإطلاق لرؤية المسار الأولي، ثم اترك لإطلاق كرة نجمية واحدة. يطلق كل نقر كرة واحدة تمامًا من يد الحارس؛ وتفتح ترقيات السعة خانات مستقلة للكرات التالية. تستهلك الجدران والعوائق ارتدادات الكرة، ولا تستهلكها إصابات الأعداء؛ وبعد آخر ارتداد مسموح تختفي الكرة عند نقطة الاصطدام. تقلل اللمعة الثاقبة المهلة قبل أن تصيب كرة واحدة الهدف نفسه مجددًا.",
-      "مسار من ثلاث موجات: تؤسس الموجتان 1 و2 قاعدة أعداء المسار. تستخدم الموجة 3 تشكيل نخبة مؤلفًا، باستثناء المسارات 5 و10 و15 و20 و25 و30 التي تنتهي بزعيم إقليمي مسمى. بعد إنهاء موجة تتوقف المعركة لاختيار بركة واحدة، ثم تستأنف المسار نفسه مع بقاء صحة النواة والترقيات الحالية.",
+      "إيقاع الموجات: تستخدم المسارات 1-4 ثلاث موجات، وتستخدم المسارات العادية بعد أول نقطة فحص خمس موجات؛ أما مسارات الزعماء 5 و10 و15 و20 و25 و30 فتستخدم 4 و6 و7 و8 و9 و10 موجات على التوالي. بعد إنهاء موجة تتوقف المعركة لاختيار بركة واحدة، ثم تستأنف المسار نفسه مع بقاء صحة النواة والترقيات الحالية.",
       "الأعداء الخاصون: تمتص الحيوانات المدرعة عددًا ثابتًا من الضربات قبل أن تفقد نقاط الصحة. تمنح المراسي الشوكية الثابتة الحلفاء القريبين درعًا دوريًا. تتوارى خصلات القمر بوضوح ولا يمكن إلحاق الضرر بها حتى تعود. تنشئ مقسمات الكريستال شظيتين أسرع عند هزيمتها. تحدد المهاجمات مسارًا، ثم تندفع وتترك نافذة للتعافي.",
       "أعمدة المرايا: تضع المسارات اللاحقة عمودًا أو عمودين سداسيين صلبين داخل الساحة. تنعكس الكرات عنها فعليًا، فتنشئ مسارات ارتداد لا توجد في المناطق المبكرة. تتحرك بعض الأعمدة أفقيًا، لذلك قد تتوقف زاوية آمنة سابقًا عن العمل خلال الموجة نفسها.",
       "قواعد الزعماء: يعيد غول الجذور بناء حارس قابل للكسر؛ يستدعي عملاق الظهر الشوكي مراسي ودعمًا مدرعًا عند عتبات الصحة؛ تتناوب سيدة خصلات القمر بين الفترات المرئية والمتوارية؛ لا يتلقى وصي القشرة المنشورية ضررًا إلا عندما ينفتح جزء درعه الذهبي؛ يصبح حارس قرن العاصفة ضعيفًا بعد اندفاع معلّم؛ ويغيّر إمبراطور النواة الفارغة طوره مرتين، ويضيف حراسًا، ويعيد بناء الحماية، وينشط عمودي مرآة.",
@@ -18458,8 +18466,8 @@
       "اختر مسارًا مفتوحًا من خريطة الحصن الأفقية. اقرأ اسمه ووسم قاعدته والتحذير الخاص بالمسار قبل الدخول.",
       "اسحب من حارس الأسد نحو الزاوية المطلوبة. استخدم المعاينة لتقرر ما إذا كان التصويب المباشر أو الارتداد عن جدار واحد أو الارتداد عبر الساحة أو انعكاس العمود سيصل إلى الهدف ذي الأولوية.",
       "اترك لإطلاق كرة روحية واحدة. راقب حلقات الدرع ومخططات التواري وعلامات الاندفاع وحماية المراسي وإشارات الزعماء؛ وبعد آخر ارتداد على جدار أو عائق تختفي الكرة حيث تهبط قبل اختيار الرمية التالية.",
-      "بعد الموجتين 1 و2 اختر بركة واحدة. تكلف إعادة التدوير ثلاثة ألماسات وتتطلب تأكيدًا ثانيًا؛ ويؤدي اختيار البركة فورًا إلى متابعة الموجة التالية.",
-      "حافظ على صحة النواة فوق الصفر حتى الموجة 3. يحفظ الفوز المسار التالي وأحجار النجوم، بينما يحفظ الفشل أحجار النجوم المكتسبة ويُبقي أفضل مسار مفتوحًا.",
+      "بعد كل موجة ما عدا الأخيرة اختر بركة واحدة. تكلف إعادة التدوير ثلاثة ألماسات وتتطلب تأكيدًا ثانيًا؛ ويؤدي اختيار البركة فورًا إلى متابعة الموجة التالية.",
+      "حافظ على صحة النواة فوق الصفر حتى إجمالي الموجات الظاهر للمسار. يحفظ الفوز المسار التالي وأحجار النجوم، بينما يحفظ الفشل أحجار النجوم المكتسبة ويُبقي أفضل مسار مفتوحًا.",
       "عد إلى الخريطة لإنفاق أحجار النجوم على غرف الحصن، أو أعد المسارات المكتملة، أو تابع إلى المرحلة التالية من النتيجة.",
     ],
     strategyTips: [
@@ -18476,10 +18484,11 @@
       "تضيف المسارات 16–20 أعمدة مرايا فعلية ومقسمات تنشئ شظايا أسرع عند هزيمتها. تحدد المسارات 21–25 ممرات الاندفاع وتضيف توقيت العاصفة. يدير وصي القشرة المنشورية نافذة ضرر متحركة، ويجب أن يكمل حارس قرن العاصفة اندفاعه قبل أن يتلقى الضرر.",
       "تجمع المسارات 26–30 الدروع والمراسي وتوقيت الطور والمقسمات والمهاجمين والأعمدة المتحركة في تشكيلات مؤلفة. يستخدم المسار 29 مجموعة الأعداء العاديين كاملة. يضيف المسار 30 تغيري طور لإمبراطور النواة الفارغة وأربعة استدعاءات دعم وحماية يعاد بناؤها وعمودين نشطين، فيختبر التخطيط للتصويب وأولوية الأهداف والتوقيت والترقيات والنمو الدائم للحصن معًا.",
     ],
-    designNote: "تستخدم الحملة ثلاث موجات قصيرة حتى يبدو كل مسار مسألة تصويب مركزة، لا جلسة تحمّل طويلة. تحفظ فواصل الموجات ضرر النواة والبناء الحالي، لكنها تقدم قرار بركة واحدًا ومختصرًا قبل التشكيل التالي. تعتمد المناطق الأولى على الجدران كي يتعلم اللاعبون هندسة متوقعة؛ ثم تضيف أعمدة المرايا أسطحًا جديدة وتبطل الزوايا المحفوظة. توضح الأعداء الخاصون طريقة مواجهتهم عبر الحلقات وعلامات الدرع وخطوط الممرات ورسوم الزعماء المميزة، بدل إجبار اللاعب على قراءة لوحة قواعد طويلة أثناء المعركة. السحب بالمؤشر هو التحكم الأساسي على الهاتف، بينما يضبط اليسار واليمين زاوية التصويب نفسها على لوحة المفاتيح، ويطلق Space أو Enter الكرة. وبخلاف تمركز المدافعين في حارس الوحوش أو تخطيط التشكيل في فرقة الحيوانات التلقائية، يجعل حصن الكرات الحيوانية مسار الرمية نفسه مورد الاستراتيجية الأساسي.",
+    designNote: "تجعل الحملة المسارات الأولى من ثلاث موجات قصيرة، والمسارات العادية اللاحقة من خمس موجات، وتطيل كل نقطة فحص للزعيم تدريجيًا من أربع إلى عشر موجات؛ لذلك يبدو كل مسار مسألة تصويب مركزة لا جلسة تحمّل ثابتة. تحفظ فواصل الموجات ضرر النواة والبناء الحالي، لكنها تقدم قرار بركة واحدًا ومختصرًا قبل التشكيل التالي. تعتمد المناطق الأولى على الجدران كي يتعلم اللاعبون هندسة متوقعة؛ ثم تضيف أعمدة المرايا أسطحًا جديدة وتبطل الزوايا المحفوظة. توضح الأعداء الخاصون طريقة مواجهتهم عبر الحركة والعلامات الزاوية وعلامات الدرع وخطوط الممرات ورسوم الزعماء المميزة، بدل إجبار اللاعب على قراءة لوحة قواعد طويلة أثناء المعركة. السحب بالمؤشر هو التحكم الأساسي على الهاتف، بينما يضبط اليسار واليمين زاوية التصويب نفسها على لوحة المفاتيح، ويطلق Space أو Enter الكرة. وبخلاف تمركز المدافعين في حارس الوحوش أو تخطيط التشكيل في فرقة الحيوانات التلقائية، يجعل حصن الكرات الحيوانية مسار الرمية نفسه مورد الاستراتيجية الأساسي.",
     parent: "يحفظ المتصفح أفضل مسار مفتوح وأحجار النجوم وعدد مرات اللعب ومستويات غرف الحصن الأربع على هذا الجهاز. لا يتطلب اللعب الأساسي حسابًا. قد يؤدي مسح تخزين المتصفح لهذا الموقع إلى حذف التقدم. إعادة تدوير البركة بثلاثة ألماسات اختيارية وتعرض الرصيد الحالي والنتيجة بعد التأكيد، وليست مطلوبة لحملة المسارات. تصف النتائج وتقارير المهارات اللعب فقط وليست قياسات رسمية للقدرات.",
     faq: [
-      ["ما هدف المسار؟", "احمِ النواة البلورية خلال ثلاث موجات. يؤدي إنهاء الموجة 3 إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي."],
+      ["ما هدف المسار؟", "احمِ النواة البلورية حتى إجمالي الموجات الظاهر. يؤدي إنهاء الموجة الأخيرة إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي."],
+      ["كم موجة في كل مسار؟", "تضم المسارات 1-4 ثلاث موجات، وتضم المسارات العادية اللاحقة خمسًا، وتزيد نقاط فحص الزعماء من أربع موجات حتى عشر."],
       ["هل يستخدم كل مسار الزعيم نفسه؟", "لا. كل مسار خامس فقط هو نقطة فحص لزعيم إقليمي. تنتهي المسارات الأخرى بتشكيلات نخبة مؤلفة، ولكل زعيم من الزعماء الستة رسوم وإشارات وطريقة مواجهة مختلفة."],
       ["لماذا مرت كرتي عبر عدو قمري؟", "يعني مخطط التواري المتقطع أن العدو غير ملموس مؤقتًا. انتظر حتى يصبح صلبًا، ثم أطلق الرمية المجهزة."],
       ["ماذا تفعل أعمدة المرايا؟", "هي أسطح انعكاس حقيقية داخل الساحة. تتحرك الأعمدة اللاحقة، فتغير مسار الارتداد المتاح أثناء الموجة."],

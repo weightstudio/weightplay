@@ -1,315 +1,58 @@
-:root{font-family:Inter,"Noto Sans TC",system-ui,sans-serif;color-scheme:dark;--ink:#f5fff9;--deep:#052c2d;--panel:rgba(4,43,42,.94);--mint:#72f1c5;--gold:#ffd76b;--blue:#77bfff}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#031d20;color:var(--ink);-webkit-text-size-adjust:100%;text-size-adjust:100%}button,select{font:inherit}button{cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}[hidden]{display:none!important}.main-group{width:min(100%,980px);margin:0 auto}.main-screen{min-height:min(780px,100svh);display:grid;grid-template-rows:72px 1fr;gap:14px;padding:16px;background:linear-gradient(rgba(2,28,30,.18),rgba(2,28,30,.78)),url('../../assets/animal-2048-background.webp') center/cover}.main-header{display:grid;grid-template-columns:76px minmax(0,1fr) 136px;align-items:center;gap:10px;padding:8px 10px;border:1px solid rgba(141,255,221,.4);border-radius:22px;background:rgba(2,27,30,.9)}.main-header>strong{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:25px}.main-return{width:56px;height:56px;border-radius:15px;background:#fff;display:grid;grid-template-columns:1fr 24px;place-items:center;color:#1378a7;text-decoration:none;font-size:28px;font-weight:900}.main-return img{width:22px;height:22px;object-fit:contain}.locale-control select{width:100%;min-height:44px;border-radius:12px;background:#123f40;color:#fff;border:1px solid #4c8984;padding:0 8px}.main-hero{display:grid;grid-template-columns:minmax(300px,1fr) minmax(280px,.8fr);align-items:center;gap:24px;padding:20px;border:1px solid rgba(145,255,224,.28);border-radius:28px;background:rgba(4,39,39,.74);backdrop-filter:blur(10px)}.main-poster{width:100%;aspect-ratio:1;object-fit:cover;border-radius:24px;box-shadow:0 18px 60px #001a1acc}.main-copy{display:grid;gap:14px}.main-copy small{color:#8effd9;font-weight:900}.main-copy h1{font-size:clamp(38px,6vw,68px);line-height:1;margin:0}.main-copy p{font-size:19px;line-height:1.5;margin:0}.main-progress{padding:14px;border-radius:16px;background:rgba(2,22,26,.84);color:#baffea;font-weight:800}.primary-action{min-height:58px;border:0;border-radius:16px;background:linear-gradient(#ffe98e,#ffc73f);color:#302600;font-weight:1000;font-size:19px;box-shadow:0 7px 0 #a96f00}.game-page-info{width:100%}body[data-screen="stage"] .main-group,body[data-screen="battle"] .main-group{display:none}
-
-.stage-screen,.battle-screen{position:fixed;inset:0;background:#031d20}.stage-screen{display:grid;grid-template-rows:minmax(0,1fr) 56px}.stage-canvas,.battle-canvas{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;background:linear-gradient(rgba(2,31,32,.55),rgba(2,31,32,.78)),url('../../assets/animal-2048-background.webp') center/cover}.stage-header{position:absolute;z-index:3;left:18px;right:18px;top:18px;height:84px;display:grid;grid-template-columns:60px minmax(0,1fr) 72px;align-items:center;gap:12px;padding:10px 14px;border:1px solid rgba(121,250,210,.45);border-radius:22px;background:rgba(3,40,40,.94)}.stage-header button,.battle-header>button{width:52px;height:52px;border-radius:14px;border:1px solid #7afad5;background:#fff;color:#117baa;font-size:28px;font-weight:900}.stage-header div{display:grid;gap:3px;min-width:0}.stage-header strong{font-size:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-header span{color:#a9e9d5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.stage-header img{width:70px;height:70px;object-fit:contain}.chapter-panel{position:absolute;left:24px;right:24px;top:120px;min-height:96px;padding:14px 18px;border-radius:18px;background:rgba(4,49,44,.92);border:1px solid rgba(255,226,105,.5);display:grid;gap:4px}.chapter-panel small{color:#ffe275;font-weight:900}.chapter-panel strong{font-size:22px}.chapter-panel p{margin:0;color:#d0eee4}.stage-rail{position:absolute;left:18px;right:18px;bottom:18px;height:330px;display:flex;gap:18px;align-items:center;overflow-x:auto;overflow-y:hidden;padding:28px calc(50% - 132px);scroll-snap-type:x mandatory;touch-action:pan-x}.stage-card{flex:0 0 264px;height:208px;scroll-snap-align:center;border-radius:24px;border:2px solid rgba(149,255,220,.36);background:linear-gradient(rgba(2,45,42,.54),rgba(2,30,33,.96)),url('../../assets/animal-2048-cover.webp') center/cover;color:white;padding:16px;text-align:left;display:grid;grid-template-rows:auto 1fr auto;box-shadow:0 18px 40px #001a1a80}.stage-card.selected{border-color:#65ffd0;box-shadow:0 0 0 5px rgba(85,255,200,.2),0 0 25px #65ffd088,0 18px 40px #001a1a}.stage-card.locked{filter:saturate(.25) brightness(.56)}.stage-card strong{font-size:32px}.stage-card span{font-weight:800}.stage-card small{display:flex;justify-content:space-between;color:#caffed}.stage-ad-reserve,.battle-ad-reserve{height:56px;min-height:56px;background:#071a2b;border-top:1px solid #264b55;pointer-events:none}
-
-.battle-screen{display:grid;grid-template-rows:minmax(0,1fr) 56px}.battle-canvas{display:grid;grid-template-rows:82px 48px minmax(0,1fr) 62px 74px;gap:8px;padding:10px}.battle-header{display:grid;grid-template-columns:56px minmax(0,1fr) 84px 98px;align-items:center;gap:10px;padding:8px 12px;border:1px solid rgba(118,249,211,.38);border-radius:18px;background:rgba(2,34,36,.94)}.battle-progress{display:grid;gap:2px;min-width:0}.battle-progress span{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.battle-progress strong{color:#ffe47a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.battle-stat{text-align:center;display:grid;min-width:0}.battle-stat small{color:#9cded0}.battle-stat strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.objective-row{display:flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:14px;background:rgba(5,56,49,.94);font-weight:800;color:#d8fff2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.board-zone{position:relative;min-height:0;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(145,255,218,.4);border-radius:24px;background:rgba(1,24,26,.72)}.game-board{width:min(100%,580px);max-height:100%;aspect-ratio:1;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:10px;padding:10px;border:4px solid #78946d;border-radius:24px;background:rgba(33,57,46,.94);touch-action:none;user-select:none;outline:none;box-shadow:0 18px 42px #00191699}.grid-cell{position:relative;min-width:0;min-height:0;border-radius:16px;background:rgba(210,219,185,.16);border:1px solid rgba(222,244,203,.18);overflow:hidden}.grid-cell.is-blocked{background:linear-gradient(145deg,#50675e,#2b413d);border:2px solid #71877b}.grid-cell.is-blocked::after{content:"";position:absolute;inset:18%;background:url('../../assets/animal-merge-token-1.png') center/contain no-repeat;filter:grayscale(1) brightness(.55);opacity:.42}.tile{position:absolute;inset:4px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#f6e8b8,#cba964);box-shadow:inset 0 -5px 0 rgba(80,44,7,.2),0 5px 10px #0018}.tile img{width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 4px 4px #0007)}.tile .tile-value{position:absolute;right:4px;bottom:3px;min-width:30px;padding:2px 5px;border-radius:999px;background:#061f22e8;color:#fff4a8;font-size:12px;font-weight:1000;text-align:center}.tile[data-level="1"],.tile[data-level="2"]{background:linear-gradient(145deg,#e9f5d7,#acd68d)}.tile[data-level="3"],.tile[data-level="4"]{background:linear-gradient(145deg,#c5f4e5,#62c5ab)}.tile[data-level="5"],.tile[data-level="6"]{background:linear-gradient(145deg,#cddfff,#75a7e8)}.tile[data-level="7"],.tile[data-level="8"]{background:linear-gradient(145deg,#f8d4ff,#bd73d1)}.tile[data-level="9"],.tile[data-level="10"],.tile[data-level="11"]{background:linear-gradient(145deg,#fff0a5,#e59b25);box-shadow:inset 0 -5px 0 #8b4b17,0 0 18px #ffd75a88}.tile.is-merged{z-index:2;animation:mergePop .34s ease-out}.tile.is-merged::after{content:"";position:absolute;inset:-4px;border:3px solid #fff6a8;border-radius:inherit;pointer-events:none;animation:mergeRing .34s ease-out both}.move-feedback{position:absolute;top:10px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);padding:6px 12px;border-radius:999px;background:#041e21e8;color:#fff4a8;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}.move-feedback:empty{display:none}@keyframes mergePop{0%{transform:scale(.88);filter:brightness(1.45)}55%{transform:scale(1.16);filter:brightness(1.2)}100%{transform:scale(1);filter:brightness(1)}}@keyframes mergeRing{0%{opacity:1;transform:scale(.72)}100%{opacity:0;transform:scale(1.12)}}.battle-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.battle-actions button,.direction-pad button,.result-actions button,.leave-card button{border:1px solid #67e9c4;border-radius:14px;background:#104c4a;color:#fff;font-weight:900}.battle-actions button:disabled{opacity:.42}.direction-pad{display:grid;grid-template-columns:repeat(4,64px);gap:12px;justify-content:center}.direction-pad button{height:64px;font-size:29px;background:#0b3f43}.direction-pad button:active{background:#1b7269}.result-overlay,.leave-overlay,.tutorial-overlay{position:absolute;inset:0;z-index:10;display:grid;place-items:center;padding:18px;background:rgba(0,20,23,.82)}.result-card,.leave-card,.tutorial-card{width:min(620px,100%);max-height:100%;overflow:auto;padding:22px;border-radius:26px;background:linear-gradient(145deg,#0b5550,#052e36);border:2px solid #6ff4cf;text-align:center;display:grid;gap:12px}.result-card>img,.tutorial-card>img{width:106px;height:106px;object-fit:contain;margin:-10px auto -14px}.result-card h2,.result-card p,.leave-card h2,.leave-card p,.tutorial-card h2{margin:0}.result-stars{font-size:38px;color:#ffd963;letter-spacing:8px}.skill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.skill-grid>div{padding:10px;border-radius:14px;background:#073c3c;display:grid;gap:4px}.skill-grid small{color:#9fe5d2}.result-actions{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:10px;min-height:58px}.result-actions .primary-action{color:#2d2500;background:linear-gradient(#ffe888,#ffc638);border-color:#ffe169}.leave-card{width:min(460px,100%)}.leave-card>div{display:grid;grid-template-columns:1fr 1fr;gap:10px}.leave-card .primary-action{color:#2d2500;background:linear-gradient(#ffe888,#ffc638)}.tutorial-overlay{position:fixed;z-index:30}.tutorial-card{position:relative;width:min(520px,100%);text-align:left}.tutorial-card h2{text-align:center}.tutorial-card li{margin:8px 0}.tutorial-card>button:first-child{position:absolute;right:12px;top:12px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#12616a;font-size:24px}.tutorial-card .primary-action{width:100%}
-
-@media(max-width:700px){.main-screen{padding:8px;grid-template-rows:68px auto}.main-header{grid-template-columns:62px minmax(0,1fr) 112px;padding:6px}.main-return{width:52px;height:52px}.main-hero{grid-template-columns:1fr;padding:12px;gap:12px}.main-poster{width:min(100%,340px);margin:auto}.main-copy{gap:9px}.main-copy h1{font-size:36px}.main-copy p{font-size:16px}.stage-header{left:8px;right:8px;top:8px}.chapter-panel{left:10px;right:10px;top:108px}.stage-rail{left:4px;right:4px;bottom:8px;height:300px}.battle-canvas{grid-template-rows:72px 46px minmax(0,1fr) 56px 68px;padding:6px;gap:6px}.battle-header{grid-template-columns:50px minmax(0,1fr) 62px 78px;padding:5px}.battle-header>button{width:46px;height:46px}.battle-stat small{font-size:11px}.game-board{gap:6px;padding:6px;border-width:3px;border-radius:18px}.grid-cell{border-radius:12px}.tile{inset:3px;border-radius:10px}.tile .tile-value{font-size:11px;min-width:26px}.direction-pad{grid-template-columns:repeat(4,58px);gap:10px}.direction-pad button{height:58px}.result-card{padding:16px}.skill-grid{grid-template-columns:1fr}.result-actions{grid-template-columns:1fr 1fr}.result-actions .primary-action{grid-column:1/-1}}
-@media(max-height:480px) and (orientation:landscape){.main-screen{height:100svh;min-height:0;grid-template-rows:58px minmax(0,1fr);gap:6px;padding:6px}.main-header{grid-template-columns:62px minmax(0,1fr) 132px;padding:3px 8px;border-radius:16px}.main-header>strong{font-size:21px}.main-return{width:48px;height:48px}.locale-control select{min-height:40px}.main-hero{min-height:0;grid-template-columns:minmax(250px,38%) minmax(0,1fr);gap:12px;padding:8px 12px;border-radius:20px}.main-poster{width:auto;height:100%;max-height:300px;aspect-ratio:1;margin:auto}.main-copy{gap:5px}.main-copy h1{font-size:30px;line-height:1.05}.main-copy p{font-size:14px;line-height:1.25}.main-progress{padding:7px 10px}.main-copy .primary-action{min-height:44px;font-size:17px;box-shadow:0 4px 0 #a96f00}.stage-header{height:64px;grid-template-columns:48px 1fr 54px}.stage-header button{width:44px;height:44px}.stage-header img{width:52px;height:52px}.chapter-panel{top:78px;left:8px;right:auto;width:36%;min-height:80px;padding:9px}.stage-rail{left:38%;top:76px;bottom:4px;height:auto;padding-block:8px}.stage-card{height:180px}.battle-canvas{grid-template-columns:minmax(0,1fr) 224px;grid-template-rows:58px 42px minmax(0,1fr);grid-template-areas:"head head" "objective side" "board side";gap:4px;padding:4px}.battle-header{grid-area:head}.objective-row{grid-area:objective}.board-zone{grid-area:board}.battle-actions{grid-area:side;grid-template-columns:1fr;align-self:start}.direction-pad{grid-area:side;grid-template-columns:repeat(2,64px);align-self:end}.direction-pad button{height:54px}.game-board{height:100%;width:auto}.result-card{width:min(760px,96%);grid-template-columns:110px 1fr;grid-template-areas:"img title" "img stars" "text skills" "best actions";gap:6px;padding:10px}.result-card>img{grid-area:img}.result-card h2{grid-area:title}.result-stars{grid-area:stars}.result-card>p:not(.best-text){grid-area:text}.skill-grid{grid-area:skills;grid-template-columns:repeat(3,1fr)}.best-text{grid-area:best}.result-actions{grid-area:actions}}
-.stage-screen,.battle-screen{left:0;right:0;width:100%;transform:none}.stage-screen{display:grid;grid-template-rows:minmax(0,1fr) 56px}.battle-canvas{width:min(100%,920px);justify-self:center}.tutorial-overlay{right:0;bottom:56px;left:0;width:100%;transform:none;z-index:60!important}.stage-card strong{font-size:27px;line-height:1.08;overflow-wrap:anywhere}.grid-cell.is-blocked::after{inset:10%;background-image:url('../../assets/animal-bubble-safari-blockers.webp');background-size:400% 100%;background-position:left center;filter:none;opacity:.9}:is(button,select,a,.game-board):focus-visible{outline:3px solid #fff27a;outline-offset:3px}
-.stage-card.infinite-stage-card{border-color:#ffd970;background:linear-gradient(145deg,rgba(7,75,65,.62),rgba(20,27,45,.96)),url('../../assets/animal-2048-cover.webp') center/cover}.stage-card.infinite-stage-card>small span:last-child{font-size:28px;color:#ffe27a}.stage-card.infinite-stage-card>strong{color:#fff0a0}.tile.is-legendary{background:linear-gradient(145deg,#fff0a5,#e59b25);box-shadow:inset 0 -5px 0 #8b4b17,0 0 18px #ffd75a88}
-.board-zone{container-type:size}.game-board{width:min(100cqw,100cqh,580px);height:min(100cqw,100cqh,580px);max-height:none}
-.grid-cell.has-moving-tile{overflow:visible;z-index:4}.tile.is-moving{z-index:5;will-change:transform;pointer-events:none}
-@media(min-width:701px) and (min-height:481px){.battle-canvas{grid-template-columns:minmax(0,1fr) auto;grid-template-rows:82px 48px minmax(0,1fr) 74px;grid-template-areas:"head head" "objective objective" "board board" "actions directions"}.battle-header{grid-area:head}.objective-row{grid-area:objective}.board-zone{grid-area:board}.battle-actions{grid-area:actions}.direction-pad{grid-area:directions;align-self:stretch;align-items:center}}
-body[data-screen="stage"] .sound-toggle,body[data-screen="battle"] .sound-toggle{display:none!important}
-
-/* The shared Stage shell adds Settings to this native absolute header.
-   Keep the header inside its left/right anchors and reserve the center track
-   for one clean title; the decorative owl must not compete for that track. */
-.stage-header.wp-stage-shell-header{width:auto!important}
-.stage-header.wp-stage-shell-header>img{display:none!important}
-.stage-header.wp-stage-shell-header>div:not(.wp-shell-settings){display:none!important}
-.stage-header.wp-stage-shell-header>.wp-shell-settings{top:auto;right:0;transform:none}
-.wp-stage-art-shell .stage-header :is(strong,span){text-shadow:none!important}
-.wp-stage-art-shell .stage-header .wp-shell-return-arrow{color:#117baa!important}
-
-/* Dim locked content without filtering the centered card's border and glow. */
-.stage-card.locked{filter:none;background:linear-gradient(rgba(3,33,34,.82),rgba(2,24,28,.98)),url('../../assets/animal-2048-cover.webp') center/cover;color:#b8ccc6;cursor:not-allowed}
-.stage-card.locked>*{opacity:.66}
-.stage-card.locked small{color:#91b8ad}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
-.stage-canvas{isolation:isolate;background:linear-gradient(rgba(2,19,31,.78),rgba(2,19,31,.94)),url('../../assets/animal-2048-background.webp') center/cover no-repeat}.stage-canvas::before{content:"";position:absolute;z-index:0;left:50%;top:270px;width:min(72%,560px);aspect-ratio:1;transform:translateX(-50%);background:url('../../assets/animal-2048-cover.webp') center/contain no-repeat;opacity:.2;filter:saturate(.82) contrast(.92);mask-image:radial-gradient(ellipse at center,#000 48%,transparent 76%);pointer-events:none}.wp-stage-art-shell .stage-header{position:absolute;width:auto}.stage-mode-tabs{position:absolute;z-index:4;left:24px;right:24px;top:116px;height:48px;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px;border:1px solid rgba(121,250,210,.4);border-radius:15px;background:rgba(3,28,35,.9)}.stage-mode-tabs button{width:100%;height:100%;min-width:0;min-height:0!important;border:0;border-radius:11px;background:transparent;color:#bcd8d2;font-size:17px;font-weight:900}.stage-mode-tabs button[aria-pressed="true"]{color:#10251f;background:linear-gradient(180deg,#fff09a,#ffc94f);box-shadow:0 0 16px rgba(255,219,92,.42)}.chapter-panel{z-index:2;top:178px;background:rgba(4,49,44,.9)}.stage-rail{z-index:2;bottom:72px}.stage-screen[data-mode="challenge"] .stage-rail{overflow:hidden}
-body.wp-logical-battle-active .battle-ad-reserve[data-wp-battle-physical-reserve]{left:50%!important;width:min(100vw,920px)!important;max-width:920px!important;transform:translateX(-50%)!important}
-@media(max-width:700px){.stage-mode-tabs{left:10px;right:10px;top:100px;height:46px}.chapter-panel{top:154px}.stage-canvas::before{top:238px;width:min(88%,500px);opacity:.18}.stage-rail{bottom:62px}}
-@media(max-height:480px) and (orientation:landscape){.stage-header{left:18px;right:18px;top:18px;width:auto;height:84px;grid-template-columns:60px minmax(0,1fr) 72px;transform:translateX(calc((100% - 1000px)/2))}.stage-header button{width:52px;height:52px}.stage-header img{width:70px;height:70px}.stage-mode-tabs{left:24px;right:24px;top:116px;width:auto;height:48px;transform:translateX(calc((100% - 1000px)/2))}.stage-mode-tabs button{font-size:17px}.chapter-panel{left:24px;right:24px;top:178px;width:auto;min-height:96px;padding:14px 18px;transform:translateX(calc((100% - 1000px)/2))}.stage-rail{left:18px;right:18px;top:auto;bottom:18px;width:auto;height:330px;padding:28px calc(50% - 132px);transform:translateX(calc((100% - 1000px)/2))}.stage-card{height:208px}}
-
-/* Keep the only visible board plate square and aligned to the 4 x 4 grid. */
-.board-zone{overflow:visible;border:0;border-radius:0;background:transparent}
-.game-board{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr))}
-
-/* Phone Result keeps every decision, including Next Stage, above the reserve. */
-@media(max-width:700px){.result-card{padding:12px;gap:8px;overflow:hidden}.result-card>img{width:78px;height:78px;margin:-4px auto -8px}.result-stars{font-size:32px;line-height:1}.skill-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.skill-grid>div{padding:7px 4px}.result-actions{grid-template-columns:1fr .8fr 1.15fr;gap:6px;min-height:50px}.result-actions .primary-action{grid-column:auto}.result-actions button{min-width:0;padding-inline:4px;font-size:15px}}
-
-/* Short landscape is a deliberate 760 x 334 composition, not the legacy 1000px Stage. */
-@media(max-height:480px) and (orientation:landscape){
-  .stage-header{left:4px;right:4px;top:4px;width:auto;height:58px;grid-template-columns:48px minmax(0,1fr) 52px;gap:8px;padding:4px 9px;border-radius:16px;transform:none}
-  .stage-header button{width:44px;height:44px}
-  .stage-header img{width:48px;height:48px}
-  .stage-header strong{font-size:20px}
-  .stage-mode-tabs{left:4px;right:auto;top:66px;width:300px;height:42px;padding:3px;transform:none}
-  .stage-mode-tabs button{font-size:15px}
-  .chapter-panel{left:4px;right:auto;top:112px;bottom:4px;width:300px;min-height:0;padding:10px 12px;align-content:center;transform:none}
-  .chapter-panel strong{font-size:19px}
-  .chapter-panel p{font-size:13px;line-height:1.25}
-  .stage-rail{left:312px;right:4px;top:66px;bottom:4px;width:auto;height:auto;padding:8px calc(50% - 132px);transform:none}
-  .stage-card{height:208px}
-  .stage-canvas::before{top:78px;left:68%;width:280px}
-  .tutorial-overlay{padding:4px}
-  .tutorial-card{width:min(760px,100%);height:100%;max-height:100%;overflow:hidden;padding:8px 14px;gap:5px;grid-template-columns:106px minmax(0,1fr);grid-template-rows:42px minmax(0,1fr) 48px;grid-template-areas:"img title" "img steps" "start start";align-items:center}
-  .tutorial-card>img{grid-area:img;width:96px;height:96px;margin:0 auto}
-  .tutorial-card h2{grid-area:title;padding:0 46px 0 0;font-size:21px;text-align:left}
-  .tutorial-card ol{grid-area:steps;margin:0;padding-left:24px;align-self:center}
-  .tutorial-card li{margin:3px 0;line-height:1.2}
-  .tutorial-card #tutorialStartBtn{grid-area:start;min-height:44px}
-  .result-overlay{padding:4px}
-  .result-card{width:min(820px,100%);height:100%;max-height:100%;overflow:hidden;padding:8px 12px;gap:5px;grid-template-columns:96px minmax(0,1fr) minmax(280px,1.15fr);grid-template-rows:22px 40px 34px minmax(0,1fr) 48px;grid-template-areas:"img kicker skills" "img title skills" "img stars skills" "text text best" "actions actions actions";align-items:center;text-align:left}
-  .result-card>img{grid-area:img;width:88px;height:88px;margin:0 auto}
-  .result-card>small{grid-area:kicker}
-  .result-card h2{grid-area:title;font-size:22px}
-  .result-stars{grid-area:stars;font-size:28px;line-height:1}
-  .result-card>p:not(.best-text){grid-area:text;font-size:14px;line-height:1.2}
-  .skill-grid{grid-area:skills;grid-template-columns:1fr;gap:4px}
-  .skill-grid>div{grid-template-columns:90px 1fr;align-items:center;padding:5px 8px}
-  .best-text{grid-area:best;font-size:14px;line-height:1.2}
-  .result-actions{grid-area:actions;min-height:44px;height:44px}
-  .result-actions button{min-width:0;min-height:44px}
-  .battle-actions button,.direction-pad button{min-width:44px;min-height:44px}
+:root{font-family:Inter,"Noto Sans TC",system-ui,sans-serif;color-scheme:dark;--forest-ink:#f1fff6;--forest-mint:#8ef0bf;--forest-gold:#ffdc83}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}button,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+button:focus-visible,a:focus-visible,.game-board:focus-visible{outline:3px solid #ffe599;outline-offset:3px}
+.main-group{width:100%;margin:0 auto}.main-screen{display:grid;gap:12px}.main-copy h1{display:none}.main-copy small{font-size:13px;letter-spacing:.04em}.main-copy p{margin:0}.locale-control[hidden]{display:none!important}
+.stage-screen,.battle-screen{position:fixed;inset:0;background:transparent;overflow:hidden}.stage-screen,.battle-screen{display:grid;grid-template-rows:minmax(0,1fr) 56px}
+.stage-canvas,.battle-canvas{position:relative;width:100%;height:100%;min-height:0;overflow:hidden;color:var(--forest-ink);background:linear-gradient(#082e3299,#092e32bd),url('../../assets/animal-2048/background-block-v1.webp') center/cover}
+.stage-content{display:grid;grid-template-rows:30px 120px minmax(0,1fr);gap:10px;overflow:hidden;min-height:0}
+.stage-summary{display:flex;align-items:center;justify-content:center;font-size:13px;color:#daeee3}
+.chapter-panel{display:grid;align-content:center;gap:6px;padding:12px 16px;background:#102f30e8;border:1px solid #517563;border-radius:3px;min-width:0;min-height:0}
+.chapter-panel small{color:var(--forest-gold);font-weight:800}.chapter-panel strong{font-size:22px}.chapter-panel p{margin:0;font-size:13px;line-height:1.4;color:#d8eade}
+.stage-rail{position:relative;display:flex;align-items:center;gap:18px;min-height:0;overflow-x:auto;overflow-y:hidden;padding:20px calc(50% - 124px);scroll-snap-type:x mandatory;touch-action:pan-x;scrollbar-width:none}
+.stage-rail::-webkit-scrollbar{display:none}
+.stage-card{flex:0 0 248px;height:218px;min-width:0;padding:18px;display:grid;grid-template-rows:30px minmax(0,1fr) 30px;gap:10px;scroll-snap-align:center;background:linear-gradient(#133d39eb,#112f30f5);color:#effff3;border:2px solid #557c68;border-radius:4px;box-shadow:0 8px 0 #09221f;text-align:start}
+.stage-card small{display:flex;justify-content:space-between;gap:6px;color:#ecdda2;font-size:12px}.stage-card strong{font-size:27px;line-height:1.2;align-self:center;overflow-wrap:anywhere}.stage-card>span{font-size:14px;color:#d3e5d8}.stage-card.locked{opacity:.6}.stage-card.selected{opacity:1;border-color:#65ffd0;box-shadow:0 0 0 3px #65ffd033,0 0 24px #65ffd044,0 8px 0 #09221f}
+.stage-ad-reserve,.battle-ad-reserve{height:56px;min-height:56px;background:#071a2b;border-top:1px solid #264b55;pointer-events:none}
+.battle-live{display:grid;grid-template-rows:48px minmax(0,1fr) 56px 56px;gap:10px;min-height:0;overflow:hidden}
+.objective-row{display:flex;align-items:center;justify-content:center;padding:4px 10px;font-size:13px;line-height:1.35;color:#dceee2;text-align:center;background:#0e3030d9;border:1px solid #456b59;border-radius:3px;overflow:hidden}
+.board-zone{position:relative;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 54px;gap:8px;justify-items:center;align-items:center;container-type:size}
+.game-board{position:relative;width:min(100%,calc(100cqh - 62px));height:auto;aspect-ratio:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:6px;padding:7px;border:3px solid #a3bc7d;border-radius:4px;background:#25483f;touch-action:none;user-select:none;direction:ltr;box-shadow:0 6px 0 #142e29,0 12px 22px #051c2466;isolation:isolate}
+.grid-cell{position:relative;min-width:0;min-height:0;border-radius:2px;background:#102f2c;box-shadow:inset 0 2px 0 #06232080;overflow:visible}
+.grid-cell.is-blocked{background:#263b36 url('../../assets/animal-2048/stone-block-v1.webp') center/92% no-repeat;box-shadow:inset 0 0 0 1px #91ac8170}
+.tile{position:absolute;inset:0;display:grid;place-items:center;border:1px solid #c9dd9e;border-radius:3px;background:linear-gradient(145deg,#dceac2,#a9c486);box-shadow:inset 0 -4px 0 #48684b55;transform-origin:center}
+.tile img{width:94%;height:84%;align-self:start;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 1px #193b3633)}
+.tile-value{position:absolute;right:2px;bottom:2px;min-width:24px;padding:1px 4px;border-radius:2px;background:#122d2a;color:#fff5bf;font-size:13px;line-height:1.25;font-weight:900;font-variant-numeric:tabular-nums;text-align:center}
+.tile[data-level="3"],.tile[data-level="4"]{background:linear-gradient(145deg,#b1e5d2,#69b7a4);border-color:#c4f5da}
+.tile[data-level="5"],.tile[data-level="6"]{background:linear-gradient(145deg,#becde9,#8a9acb);border-color:#d6dcfc}
+.tile[data-level="7"],.tile[data-level="8"]{background:linear-gradient(145deg,#dac3ea,#b393c3);border-color:#efd8fd}
+.tile[data-level="9"],.tile[data-level="10"],.tile.is-legendary{background:linear-gradient(145deg,#ffe7a1,#dcba61);border-color:#fff0b0}
+.grid-cell.has-moving-tile{z-index:8}.tile.is-moving{z-index:9}.tile.is-merged{z-index:4;animation:mergePop .28s cubic-bezier(.2,.75,.2,1)}
+.tile.is-merged::after{content:"";position:absolute;inset:0;border:3px solid #fff7b1;pointer-events:none;animation:mergeRing .3s ease-out both}
+.move-feedback{align-self:stretch;display:flex;align-items:center;justify-content:center;width:100%;min-width:0;padding:4px 8px;text-align:center;font-size:12px;line-height:1.3;color:#ffecb3;overflow:hidden;pointer-events:none}
+#mergeEffects{position:absolute;inset:0;pointer-events:none;z-index:12;overflow:hidden}
+.merge-score{position:absolute;transform:translate(-50%,-50%);color:#fff6b7;font-weight:900;font-size:21px;text-shadow:0 2px 0 #17382d,1px 0 0 #17382d;animation:scoreRise .52s ease-out both}
+.merge-cube{position:absolute;width:5px;height:5px;background:var(--spark);box-shadow:1px 2px 0 #307657;animation:cubeBurst .44s ease-out both}
+.battle-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.battle-actions button,.direction-pad button,.result-actions button,.leave-card button,.tutorial-card button{border:2px solid #658365;border-radius:3px;background:#234b40;color:#f1fff3;font-weight:800;min-height:44px;min-width:44px;box-shadow:inset 0 2px 0 #c3db9f22,0 3px 0 #102b25}
+.battle-actions button{display:grid;place-content:center;font-size:13px;line-height:1.2;padding:3px}.battle-actions small{font-size:10px;color:#ffe7a2;margin-top:3px}
+.direction-pad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;direction:ltr}.direction-pad button{font-size:26px}.direction-pad button:active,.direction-pad .is-hint{background:#567b46;border-color:#ffe59a}
+.result-overlay,.leave-overlay,.tutorial-overlay{position:absolute;inset:0;z-index:120;display:grid;place-items:center;padding:12px;background:#092a2be8}
+.result-card,.leave-card,.tutorial-card{width:min(560px,100%);max-height:100%;overflow:auto;padding:18px;border-radius:4px;background:#173e35;border:2px solid #94b17a;box-shadow:0 5px 0 #082c29;text-align:center;display:grid;gap:12px}
+.result-card>img,.tutorial-card>img{width:100px;height:100px;object-fit:contain;margin:auto}.result-card h2,.result-card p,.leave-card h2,.leave-card p,.tutorial-card h2{margin:0}.result-card h2,.leave-card h2,.tutorial-card h2{font-size:23px}.result-card p,.leave-card p{font-size:14px;line-height:1.5}.result-stars{font-size:32px;color:var(--forest-gold);letter-spacing:5px}.best-text{color:#cae5ca}
+.result-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}.result-actions button{font-size:13px;padding:5px;min-height:48px}
+.primary-action{background:#f6d984!important;border-color:#ffe8a7!important;color:#302817!important}
+.leave-card>div{display:grid;gap:10px}.tutorial-overlay{position:fixed;z-index:300}.tutorial-card{position:relative}.tutorial-card>button:first-child{position:absolute;right:8px;top:8px;width:44px;height:44px;font-size:24px}.tutorial-card ol{text-align:start;margin:0;padding-inline-start:24px;line-height:1.6;font-size:14px}.tutorial-card #tutorialStartBtn{width:100%}
+@keyframes mergePop{0%{transform:scale(.87,.93);filter:brightness(1.18)}48%{transform:scale(1.08,1.08)}100%{transform:scale(1)}}
+@keyframes mergeRing{0%{opacity:.95;transform:scale(.9)}100%{opacity:0;transform:scale(1.14)}}
+@keyframes cubeBurst{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(120deg)}}
+@keyframes scoreRise{0%{opacity:1;transform:translate(-50%,-30%) scale(.9)}100%{opacity:0;transform:translate(-50%,-155%) scale(1.05)}}
+@media(orientation:landscape) and (max-height:560px){
+ .stage-content{grid-template-columns:280px minmax(0,1fr);grid-template-rows:28px minmax(0,1fr);gap:8px}
+ .stage-summary{grid-column:1;grid-row:1;font-size:12px}.chapter-panel{grid-column:1;grid-row:2;padding:10px}.chapter-panel strong{font-size:19px}.chapter-panel p{font-size:12px}.stage-rail{grid-column:2;grid-row:1/3;padding-block:5px}.stage-card{height:142px;padding:10px;gap:3px}.stage-card strong{font-size:23px}
+ .battle-live{grid-template-columns:minmax(0,1fr) 218px;grid-template-rows:44px 56px minmax(0,1fr);gap:8px}
+ .board-zone{grid-column:1;grid-row:1/4;grid-template-columns:minmax(0,1fr) 140px;grid-template-rows:minmax(0,1fr);gap:8px}
+ .game-board{width:min(calc(100cqw - 148px),100cqh)}.move-feedback{font-size:12px;padding:6px}.objective-row{grid-column:2;grid-row:1;font-size:11px}.battle-actions{grid-column:2;grid-row:2;gap:5px}.battle-actions button{font-size:11px}.battle-actions small{font-size:9px}.direction-pad{grid-column:2;grid-row:3;align-self:end;gap:5px;height:48px}
+ .result-overlay,.leave-overlay,.tutorial-overlay{padding:6px}.result-card{grid-template-columns:84px minmax(0,1fr);grid-template-rows:auto auto auto 48px;gap:7px;padding:10px;text-align:start;width:min(720px,100%)}.result-card>img{grid-column:1;grid-row:1/4;width:80px;height:80px}.result-card h2{grid-column:2;font-size:20px}.result-stars{grid-column:2;position:absolute;top:10px;right:14px;font-size:20px}.result-card #resultText,.result-card #bestText{grid-column:2;font-size:12px;line-height:1.3}.result-actions{grid-column:1/3;margin:0}.result-card{position:relative}.result-card h2{padding-inline-end:90px}
+ .tutorial-card{grid-template-columns:85px minmax(0,1fr);gap:6px;padding:10px;width:min(700px,100%)}.tutorial-card>img{grid-row:1/3;width:80px;height:80px}.tutorial-card h2{font-size:20px;padding-inline-end:45px}.tutorial-card ol{font-size:13px}.tutorial-card #tutorialStartBtn{grid-column:1/3}
 }
-
-@media(min-width:700px) and (max-height:560px) and (orientation:landscape){
-  body[data-game-id="animal-2048"] .wp-standard-main-composition{
-    --wp-main-landscape-poster-size:420px;
-  }
-}
-
-.battle-actions button{display:grid;place-content:center;line-height:1.05}
-.battle-actions button small{margin-top:3px;color:#ffe47a;font-size:11px;font-weight:800;white-space:nowrap}
-
-/* First-session tutorial actions follow the current physical touch minimum. */
-.tutorial-card>button:first-child{width:44px;height:44px}
-
-@media(min-width:701px){
-  body[data-game-id="animal-2048"] .battle-header{grid-template-columns:56px minmax(0,1fr) 84px 98px 48px!important}
-}
-@media(max-width:700px){
-  body[data-game-id="animal-2048"] .battle-header{grid-template-columns:50px minmax(0,1fr) 62px 78px 46px!important}
-}
-
-/* 2048 Main / Stage calibration against the shared shell geometry. */
-.main-header.wp-main-shell-header{
-  height:64px!important;
-  min-height:64px!important;
-  max-height:64px!important;
-}
-.main-header.wp-main-shell-header>.wp-shell-return{
-  box-shadow:inset 0 -3px 0 #9d5626!important;
-}
-.main-header.wp-main-shell-header>.wp-shell-main-title{
-  top:calc(50% - 2px)!important;
-  transform:translateY(-50%)!important;
-  display:grid;
-  place-items:center;
-  font-size:22px!important;
-  font-weight:800;
-  line-height:1.2!important;
-  text-shadow:none!important;
-}
-#startBtn.wp-standard-main-start{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  height:52px!important;
-  min-height:52px!important;
-  max-height:52px!important;
-  padding:0 16px!important;
-  font-size:16px!important;
-  font-weight:800!important;
-  line-height:1.2!important;
-  white-space:nowrap;
-  text-align:center;
-}
-.stage-header.wp-stage-shell-header{
-  z-index:20!important;
-  width:auto!important;
-  height:64px!important;
-  min-height:64px!important;
-}
-.stage-header.wp-stage-shell-header>.wp-shell-main-title,
-.stage-header.wp-stage-shell-header>strong{
-  align-self:center;
-  font-size:22px!important;
-  font-weight:800;
-  line-height:1.2!important;
-}
-.stage-mode-tabs{
-  top:90px;
-  height:56px;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  align-items:center;
-  gap:8px;
-  padding:6px;
-}
-.chapter-panel{top:154px}
-.stage-mode-tabs button{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:44px;
-  padding:0 10px;
-  font-size:14px;
-  font-weight:700;
-  line-height:1.2;
-  white-space:nowrap;
-  text-align:center;
-}
-.stage-mode-tabs button:first-child{grid-column:2}
-.stage-mode-tabs button:last-child{grid-column:3}
-
-/* The game-local Stage anchors own the horizontal safe inset. Keep the shared
-   shell's full-width default from extending the native header past the Canvas. */
-body .stage-header.wp-stage-shell-header{
-  position:absolute!important;
-  width:auto!important;
-}
-
-/* First-session teaching is the active Stage decision layer and must remain
-   above the shared Stage header, including its Settings control. */
-body .tutorial-overlay{z-index:100!important}
-
-@media(max-width:700px){
-  .main-header.wp-main-shell-header>.wp-shell-main-title{font-size:20px!important}
-  .stage-header.wp-stage-shell-header>strong{font-size:20px!important}
-  .stage-mode-tabs{top:80px;height:56px;padding:6px}
-  .chapter-panel{top:144px}
-}
-
-@media(max-height:480px) and (orientation:landscape){
-  .main-header.wp-main-shell-header{
-    height:58px!important;
-    min-height:58px!important;
-    max-height:58px!important;
-  }
-  .stage-header.wp-stage-shell-header{height:58px!important;min-height:58px!important}
-  .stage-mode-tabs{height:56px;padding:6px}
-  .chapter-panel{top:126px}
-}
-
-/* Interface standard v4: Stage owns a fixed bottom tab bar and an
-   upper-middle selected mission; Result owns three stable decisions. */
-.stage-mode-tabs{
-  left:18px;
-  right:18px;
-  top:auto;
-  bottom:0;
-  width:auto;
-  height:56px;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  padding:6px;
-  transform:none;
-}
-.stage-mode-tabs button:first-child{grid-column:2}
-.stage-mode-tabs button:last-child{grid-column:3}
-.chapter-panel{
-  left:24px;
-  right:24px;
-  top:90px;
-  bottom:auto;
-  width:auto;
-  transform:none;
-}
-.stage-rail{
-  left:18px;
-  right:18px;
-  top:210px;
-  bottom:56px;
-  width:auto;
-  height:auto;
-  padding:8px calc(50% - 132px);
-  transform:none;
-}
-.stage-card{
-  position:relative;
-  top:-12%;
-}
-.result-card{
-  grid-template-columns:1fr;
-  grid-template-areas:none;
-}
-.result-card>img,
-.result-card h2,
-.result-stars,
-.result-card>p,
-.best-text,
-.result-actions{grid-area:auto}
-.result-actions{
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
-}
-.result-actions .primary-action{grid-column:auto}
-.result-actions button:disabled{
-  opacity:.46;
-  cursor:not-allowed;
-  filter:saturate(.45);
-}
-
-@media(max-width:700px){
-  .chapter-panel{top:78px}
-  .stage-rail{top:198px}
-  .result-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-
-@media(max-height:480px) and (orientation:landscape){
-  .stage-mode-tabs{
-    left:18px;
-    right:18px;
-    top:auto;
-    bottom:0;
-    width:auto;
-    height:56px;
-    transform:none;
-  }
-  .chapter-panel{
-    left:18px;
-    right:auto;
-    top:82px;
-    bottom:56px;
-    width:250px;
-    min-height:0;
-    align-content:center;
-    transform:none;
-  }
-  .stage-rail{
-    left:18px;
-    right:18px;
-    top:82px;
-    bottom:56px;
-    width:auto;
-    height:auto;
-    padding:8px calc(50% - 132px);
-    transform:none;
-  }
-  .stage-card{
-    top:0;
-    padding:12px;
-  }
-  .stage-card strong{font-size:24px}
-  .result-card{
-    width:min(760px,96%);
-    grid-template-columns:110px minmax(0,1fr);
-    grid-template-rows:auto auto minmax(0,1fr) auto 44px;
-    grid-template-areas:
-      "img title"
-      "img stars"
-      "text text"
-      "best best"
-      "actions actions";
-    gap:6px;
-    padding:10px;
-  }
-  .result-card>img{grid-area:img}
-  .result-card h2{grid-area:title}
-  .result-stars{grid-area:stars}
-  .result-card>p:not(.best-text){grid-area:text}
-  .result-card>.best-text{grid-area:best}
-  .result-actions{grid-area:actions}
-}
+@media(prefers-reduced-motion:reduce){.tile.is-merged{animation:none}.tile.is-merged::after{animation:none;opacity:.5}.merge-score,.merge-cube{display:none}}

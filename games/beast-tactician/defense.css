@@ -3747,3 +3747,37 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-workspace > .wp-
     grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important;
   }
 }
+
+/* Desktop Battle ratio repair: the shared play-content slot is already the
+   flexible track between the HUD and command row.  Keep the arena/build row
+   on one track so a legacy portrait row cannot leave a dead band below the
+   board, and use the full in-frame width while retaining the shared 920px
+   outer envelope. */
+@media (min-width: 700px) and (min-height: 600px) {
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .battle-layout {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .battle-layout > .canvas-shell,
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-panel {
+    grid-template-rows: 30px minmax(0, 1fr) auto !important;
+    align-content: stretch !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].wp-logical-battle-active.guardian-playing #gamePanel .build-cards {
+    height: auto !important;
+    min-height: 0 !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

@@ -1,13 +1,20 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v43";
+  const GAME_VERSION = "v44";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
   let H = 540;
   const rerollCost = 3;
   const MAX_RAID_TIER = 30;
-  const WAVES_PER_RAID = 3;
+  const MAX_WAVES_PER_RAID = 10;
+  const BOSS_WAVE_COUNTS = Object.freeze({ 5: 4, 10: 6, 15: 7, 20: 8, 25: 9, 30: 10 });
+
+  function wavesForTier(tier) {
+    const safeTier = Math.max(1, Math.min(MAX_RAID_TIER, Number(tier) || 1));
+    if (safeTier % 5 !== 0) return safeTier <= 5 ? 3 : 5;
+    return Math.min(MAX_WAVES_PER_RAID, BOSS_WAVE_COUNTS[safeTier] || 4);
+  }
 
   const $ = (id) => document.getElementById(id);
   const nodes = {
@@ -20,6 +27,7 @@
     mainProgress: $("mainProgress"),
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
+    battleLive: $("battleLive"),
     upgradePanel: $("upgradePanel"),
     pausePanel: $("pausePanel"),
     resultPanel: $("resultPanel"),
@@ -59,12 +67,24 @@
     resultRewards: $("resultRewards"),
     raidPlanText: $("raidPlanText"),
   };
+  // The legacy battle row remains the source of the game's three live stats,
+  // while the shared frame owns their final header geometry. Move the aim
+  // utility out of that source row first so the optional headerInfo contract
+  // receives exactly three stat children and never competes with navigation.
+  const battleHeader = nodes.gamePanel?.querySelector('[data-wp-shell-header="battle"]');
+  const battleHeaderInfo = document.createElement("div");
+  battleHeaderInfo.className = "orb-battle-header-stats";
+  [nodes.waveText?.parentElement, nodes.coreText?.parentElement, nodes.orbStat]
+    .filter(Boolean)
+    .forEach((node) => battleHeaderInfo.append(node));
+  if (battleHeader && battleHeaderInfo.children.length) battleHeader.append(battleHeaderInfo);
+  if (nodes.battleLive && nodes.assistBtn) nodes.battleLive.append(nodes.assistBtn);
   const gameShell = window.WeightPlayScreenFrame.mountSlots({
     gameId: GAME_ID,
     root: document.querySelector("[data-wp-game-shell-root]"),
     main: nodes.menuPanel,
     stage: nodes.stagePanel,
-    battle: nodes.gamePanel,
+    battle: { root: nodes.gamePanel, headerInfo: battleHeaderInfo },
   });
   // The shared frame owns the generated settings surface and arrow artwork;
   // retain the legacy semantic hooks used by the interface validator while
@@ -731,6 +751,78 @@
     upgradeChainDesc: "每 4 次命中会跳向附近影兽，造成 40% 伤害。",
   });
 
+  // Wave totals are authored by route rather than a single campaign-wide
+  // constant. Keep the compact HUD/result copy localized while exposing the
+  // active route total and the campaign cap to every supported locale.
+  const waveProgressCopy = {
+    en: {
+      stageProgress: "{unlocked}/30 routes unlocked · {waves} waves on the highlighted route; Boss routes scale to {bossWaves}",
+      resultWin: "Cleared route {tier}, wave {wave}/{waveTotal}, earned {stones} Star Stones, and protected {core} core HP.",
+      resultLose: "Reached route {tier}, wave {wave}/{waveTotal} and earned {stones} Star Stones. Upgrade rooms and try a safer bounce route.",
+    },
+    "zh-Hant": {
+      stageProgress: "已解鎖 {unlocked}/30 條路線 · 目前關卡 {waves} 波；首領關逐步增加至 {bossWaves} 波",
+      resultWin: "完成第 {tier} 關、第 {wave}/{waveTotal} 波，獲得 {stones} 顆星石，並保留 {core} 點核心生命。",
+      resultLose: "抵達第 {tier} 關、第 {wave}/{waveTotal} 波並獲得 {stones} 顆星石。升級房間後再試更安全的反彈路線。",
+    },
+    "zh-Hans": {
+      stageProgress: "已解锁 {unlocked}/30 条路线 · 当前关卡 {waves} 波；首领关逐步增加至 {bossWaves} 波",
+      resultWin: "完成第 {tier} 关、第 {wave}/{waveTotal} 波，获得 {stones} 颗星石，并保留 {core} 点核心生命。",
+      resultLose: "抵达第 {tier} 关、第 {wave}/{waveTotal} 波并获得 {stones} 颗星石。升级房间后再试更安全的反弹路线。",
+    },
+    es: {
+      stageProgress: "{unlocked}/30 rutas desbloqueadas · {waves} oleadas en la ruta destacada; las rutas Boss llegan a {bossWaves}",
+      resultWin: "Completaste la ruta {tier}, oleada {wave}/{waveTotal}, ganaste {stones} piedras y conservaste {core} de núcleo.",
+      resultLose: "Llegaste a la ruta {tier}, oleada {wave}/{waveTotal} y ganaste {stones} piedras. Mejora salas e intenta un rebote más seguro.",
+    },
+    fr: {
+      stageProgress: "{unlocked}/30 parcours débloqués · {waves} vagues sur le parcours choisi ; les parcours Boss montent à {bossWaves}",
+      resultWin: "Parcours {tier} terminé, vague {wave}/{waveTotal}, {stones} Pierres Stellaires gagnées et {core} PV du noyau préservés.",
+      resultLose: "Parcours {tier} atteint, vague {wave}/{waveTotal}, et {stones} Pierres Stellaires gagnées. Améliorez les salles et essayez une trajectoire plus sûre.",
+    },
+    de: {
+      stageProgress: "{unlocked}/30 Routen freigeschaltet · {waves} Wellen auf der gewählten Route; Boss-Routen steigen auf {bossWaves}",
+      resultWin: "Route {tier}, Welle {wave}/{waveTotal} geschafft, {stones} Sternsteine erhalten und {core} Kern-LP bewahrt.",
+      resultLose: "Route {tier}, Welle {wave}/{waveTotal} erreicht und {stones} Sternsteine erhalten. Verbessere Räume und versuche eine sicherere Bahn.",
+    },
+    it: {
+      stageProgress: "{unlocked}/30 percorsi sbloccati · {waves} ondate nel percorso scelto; i percorsi Boss arrivano a {bossWaves}",
+      resultWin: "Hai completato il percorso {tier}, ondata {wave}/{waveTotal}, ottenuto {stones} Pietre Stellari e protetto {core} PV del nucleo.",
+      resultLose: "Hai raggiunto il percorso {tier}, ondata {wave}/{waveTotal}, e ottenuto {stones} Pietre Stellari. Migliora le sale e prova una traiettoria più sicura.",
+    },
+    ja: {
+      stageProgress: "{unlocked}/30ルート解放 ・ 選択ルートは{waves}ウェーブ、ボスルートは最大{bossWaves}ウェーブ",
+      resultWin: "ルート{tier}のウェーブ{wave}/{waveTotal}を突破し、スターストーン{stones}個を獲得。コアHPを{core}守りました。",
+      resultLose: "ルート{tier}のウェーブ{wave}/{waveTotal}まで到達し、スターストーン{stones}個を獲得。施設を強化して安全な反射コースを試しましょう。",
+    },
+    ko: {
+      stageProgress: "{unlocked}/30 경로 해금 · 선택 경로 {waves}웨이브; 보스 경로는 최대 {bossWaves}웨이브",
+      resultWin: "루트 {tier} 웨이브 {wave}/{waveTotal}을 클리어하고 별석 {stones}개를 획득했으며 코어 HP {core}를 지켰습니다.",
+      resultLose: "루트 {tier} 웨이브 {wave}/{waveTotal}까지 도달해 별석 {stones}개를 획득했습니다. 시설을 강화하고 더 안전한 반사 경로를 시도하세요.",
+    },
+    "pt-BR": {
+      stageProgress: "{unlocked}/30 rotas desbloqueadas · {waves} ondas na rota destacada; rotas Boss chegam a {bossWaves}",
+      resultWin: "Rota {tier} concluída na onda {wave}/{waveTotal}; você ganhou {stones} Pedras Estelares e protegeu {core} PV do núcleo.",
+      resultLose: "Você chegou à rota {tier}, onda {wave}/{waveTotal}, e ganhou {stones} Pedras Estelares. Melhore as salas e tente uma trajetória mais segura.",
+    },
+    ru: {
+      stageProgress: "Открыто маршрутов: {unlocked}/30 · на выбранном маршруте {waves} волн; на маршрутах с боссом — до {bossWaves}",
+      resultWin: "Маршрут {tier} пройден до волны {wave}/{waveTotal}; получено звёздных камней: {stones}, ядро сохранило {core} HP.",
+      resultLose: "Маршрут {tier}, волна {wave}/{waveTotal}; получено звёздных камней: {stones}. Улучшите комнаты и попробуйте более безопасный рикошет.",
+    },
+    hi: {
+      stageProgress: "{unlocked}/30 मार्ग खुले · चुने मार्ग में {waves} लहरें; बॉस मार्ग {bossWaves} तक बढ़ते हैं",
+      resultWin: "मार्ग {tier} की लहर {wave}/{waveTotal} पूरी हुई; {stones} स्टार स्टोन मिले और कोर का {core} HP बचा।",
+      resultLose: "मार्ग {tier} की लहर {wave}/{waveTotal} तक पहुँचे और {stones} स्टार स्टोन मिले। कमरे अपग्रेड करके सुरक्षित उछाल आज़माएँ।",
+    },
+    ar: {
+      stageProgress: "تم فتح {unlocked}/30 مسارًا · {waves} موجات في المسار المحدد؛ مسارات الزعماء تصل إلى {bossWaves}",
+      resultWin: "أنهيت المسار {tier} حتى الموجة {wave}/{waveTotal}، وربحت {stones} من أحجار النجوم، وحميت {core} من صحة النواة.",
+      resultLose: "وصلت إلى المسار {tier} والموجة {wave}/{waveTotal}، وربحت {stones} من أحجار النجوم. طوّر الغرف وجرّب مسار ارتداد أكثر أمانًا.",
+    },
+  };
+  Object.entries(waveProgressCopy).forEach(([key, copy]) => Object.assign(text[key], copy));
+
   const shotFeedbackCopy = {
     en: { direct: "Direct hit", bank: "Bank hit", bankTarget: "Bank hit ×{bounces} → {target} −{amount}", target: "shadow beast", blocked: "Blocked" },
     "zh-Hant": { direct: "直接命中", bank: "反彈命中", bankTarget: "反彈命中 ×{bounces} → {target} −{amount}", target: "影獸", blocked: "攻擊無效" },
@@ -1134,7 +1226,11 @@
     const keyboardCopy = `${text.hi.keyboardAim || ""} ${text.hi.arenaControlLabel || ""}`;
     const pauseCopy = text.hi.pausedText || "";
     if (!keyboardCopy.includes("Space") || !keyboardCopy.includes("Enter")) invalid.push("keyboard tokens");
-    if (/\b(?:waves|Boss counterplay|RAID|Resume)\b/i.test(Object.values(text.hi).join(" "))) invalid.push("English fallback");
+    // Dynamic templates legitimately contain English-shaped placeholder names
+    // such as `{waves}` and `{waveTotal}`. Remove template tokens before the
+    // ownership guard so the Hindi check only flags visible fallback prose.
+    const hindiValues = Object.values(text.hi).join(" ").replace(/\{[^}]+\}/g, " ");
+    if (/\b(?:waves|Boss counterplay|RAID|Resume)\b/i.test(hindiValues)) invalid.push("English fallback");
     if (!pauseCopy.includes("मौजूदा लहर") || !pauseCopy.includes("अस्थायी आशीर्वाद")) invalid.push("pausedText");
     if (invalid.length) throw new Error(`animal-orb-fortress Hindi ownership failed: ${[...new Set(invalid)].join(", ")}`);
   }
@@ -1320,6 +1416,7 @@
     return {
       mode: "menu",
       wave: 1,
+      waveTotal: wavesForTier(selectedTier),
       raidTier: selectedTier,
       core: 20 + shieldLevel * 4 + openingCoreBonus,
       maxCore: 20 + shieldLevel * 4 + openingCoreBonus,
@@ -1731,11 +1828,12 @@
 
   function renderMenu() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
-    if (nodes.mainProgress) nodes.mainProgress.textContent = t("stageProgress", { unlocked });
+    const progressData = { unlocked, waves: wavesForTier(unlocked), bossWaves: wavesForTier(MAX_RAID_TIER) };
+    if (nodes.mainProgress) nodes.mainProgress.textContent = t("stageProgress", progressData);
     nodes.bestRaidText.textContent = String(unlocked);
     nodes.starStoneText.textContent = String(save.starStones || 0);
     nodes.diamondText.textContent = String(walletDiamonds());
-    nodes.stageProgressText.textContent = t("stageProgress", { unlocked });
+    nodes.stageProgressText.textContent = t("stageProgress", progressData);
     stageBrowseLogical = unlocked;
     // Keep the small 30-card campaign in one real rail so it uses the
     // catalog-wide drag/snap controller rather than a game-specific variant.
@@ -1790,7 +1888,7 @@
     card.setAttribute("aria-posinset", String(raid.tier));
     card.setAttribute("aria-setsize", String(MAX_RAID_TIER));
     applyCompactLandscapeCardEnvelope(card);
-    card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${WAVES_PER_RAID}</span> <span>${t("waves")}</span>`}</em>`;
+    card.innerHTML = `<span class="raid-number">${raid.tier}</span><strong>${localized(raid.name)}</strong><span>${localized(raid.desc)}</span><em><span>${t(raid.rule)}</span><span aria-hidden="true"> · </span>${locked ? `<span>${t("tierLocked")}</span>` : `<span>${t("enterRaid")}</span><span aria-hidden="true"> · </span><span>${wavesForTier(raid.tier)}</span> <span>${t("waves")}</span>`}</em>`;
   }
   function applyCompactLandscapeCardEnvelope(card) {
     const compactLandscape = window.innerWidth <= 900 && window.innerWidth > window.innerHeight;
@@ -1960,8 +2058,8 @@
     });
     lastFrame = performance.now();
     playSound("start", 0.2);
-    track("raid_start", { tier: state.raidTier, wave: state.wave });
-    trackGrowth("raid_start", { tier: state.raidTier, wave: state.wave });
+    track("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
+    trackGrowth("raid_start", { tier: state.raidTier, wave: state.wave, wave_total: state.waveTotal });
     loop(lastFrame);
   }
 
@@ -2022,7 +2120,7 @@
     const wave = state.wave;
     const profile = raidProfile(tier);
     configurePylons(profile);
-    if (wave >= WAVES_PER_RAID && profile.checkpoint) {
+    if (wave >= state.waveTotal && profile.checkpoint) {
       const bossDef = bossDefForTier(tier);
       const bossHp = Math.round((22 + tier * 3) * (1 + (tier - 1) * 0.045));
       const bossShield = bossDef?.id === "brambleback" ? 6 : bossDef?.id === "voidcore" ? 5 : bossDef?.id === "rootbound" || bossDef?.id === "prism" ? 3 : 0;
@@ -2041,14 +2139,14 @@
         state.enemies.push(makeSpecialEnemy(kind, x, Math.max(220, H * 0.18) + (i % 2) * 62, tier, wave, profile, { shield: Math.max(0, profile.shieldHits - 1) }));
       }
     } else {
-      const count = Math.min(10, 2 + wave + profile.countBonus + (wave === WAVES_PER_RAID ? 1 : 0));
+      const count = Math.min(10, 2 + wave + profile.countBonus + (wave === state.waveTotal ? 1 : 0));
       for (let i = 0; i < count; i += 1) {
         const kind = enemyKindFor(profile.zone, i + wave + profile.step);
         const side = W * 0.14;
         const span = W - side * 2;
         state.enemies.push(makeSpecialEnemy(kind, side + i * (span / Math.max(1, count - 1)), Math.max(92, H * 0.08) + (i % 2) * 54, tier, wave, profile, { shield: kind === "armored" ? Math.max(1, profile.shieldHits) : 0 }));
       }
-      if ((wave === 2 && profile.eliteWave) || wave === WAVES_PER_RAID) {
+      if ((wave === 2 && profile.eliteWave) || wave === state.waveTotal) {
         const kind = enemyKindFor(profile.zone, tier + 2);
         state.enemies.push(makeSpecialEnemy(kind, W / 2, Math.max(240, H * 0.2), tier, wave, profile, { elite: true, shield: profile.shieldHits }));
       }
@@ -2085,20 +2183,24 @@
       bossPhase: 1,
       summonedPhases: [],
       weakOpen: options.bossId !== "prism",
+      motionPhase: ((x * 0.017 + y * 0.031) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2),
+      blinkTimer: kind === "wisp" ? 0.85 : 0,
+      blinkLife: 0,
+      supportPulse: 0,
     };
   }
 
   function makeSpecialEnemy(kind, x, y, tier, wave, profile, options = {}) {
-    const hpMod = kind === "armored" ? 1.35 : kind === "anchor" ? 1.45 : kind === "splitter" ? 1.15 : kind === "charger" ? 1.2 : kind === "phase" ? 0.9 : kind === "thorn" ? 1.18 : 1;
-    const speedBase = kind === "anchor" ? 0 : kind === "thorn" || kind === "armored" ? 9 : kind === "phase" ? 15 : kind === "charger" ? 12 : kind === "wisp" ? 16 : 14;
-    const size = kind === "anchor" ? 37 : kind === "armored" ? 35 : kind === "charger" ? 34 : 28;
+    const hpMod = kind === "skitter" ? 0.78 : kind === "shard" ? 0.52 : kind === "wisp" ? 0.84 : kind === "armored" ? 1.48 : kind === "anchor" ? 1.45 : kind === "splitter" ? 1.15 : kind === "charger" ? 1.2 : kind === "phase" ? 0.9 : kind === "thorn" ? 1.3 : 1;
+    const speedBase = kind === "anchor" ? 0 : kind === "thorn" ? 6 : kind === "armored" ? 7 : kind === "skitter" ? 22 : kind === "phase" ? 15 : kind === "wisp" ? 19 : kind === "shard" ? 27 : kind === "charger" ? 12 : 14;
+    const size = kind === "anchor" ? 37 : kind === "armored" ? 35 : kind === "charger" ? 34 : kind === "shard" ? 21 : kind === "skitter" ? 26 : 28;
     const openingHpScale = tier === 1 ? 0.6 : tier <= 3 ? 0.78 : 1;
     const hp = Math.max(2, Math.round((4 + wave * 2 + tier * 0.62) * profile.hpScale * hpMod * (options.elite ? 1.5 : 1) * openingHpScale));
     return makeEnemy(kind, x, y, hp, speedBase * profile.speedScale, size, options);
   }
 
   function renderHud() {
-    nodes.waveText.textContent = `${t("tierShort", { tier: state.raidTier })} · ${Math.min(state.wave, 3)}/3`;
+    nodes.waveText.textContent = `${t("tierShort", { tier: state.raidTier })} · ${Math.min(state.wave, state.waveTotal)}/${state.waveTotal}`;
     const currentCore = Math.max(0, Math.ceil(state.core));
     nodes.coreText.textContent = `${currentCore}/${state.maxCore}`;
     const coreMeter = nodes.coreText.parentElement;
@@ -2484,11 +2586,7 @@
         enemy.hitTimer = Math.max(0, enemy.hitTimer - dt);
         return;
       }
-      const dx = state.launcher.x - enemy.x;
-      const dy = state.launcher.y - enemy.y;
-      const len = Math.max(1, Math.hypot(dx, dy));
-      enemy.x += (dx / len) * enemy.speed * dt;
-      enemy.y += (dy / len) * enemy.speed * dt;
+      moveEnemy(enemy, dt);
       enemy.hitTimer = Math.max(0, enemy.hitTimer - dt);
       if (Math.hypot(enemy.x - state.launcher.x, enemy.y - state.launcher.y) < enemy.size * 0.7) {
         const coreDamage = enemy.kind === "boss" ? 4 : enemy.kind === "thorn" || enemy.kind === "charger" ? 3 : 2;
@@ -2521,12 +2619,55 @@
 
     if (state.core <= 0) finishRaid(false);
     else if (state.enemies.length === 0) {
-      if (state.wave >= WAVES_PER_RAID) finishRaid(true);
+      if (state.wave >= state.waveTotal) finishRaid(true);
       else showUpgrade();
     } else if (canFireOrb() && state.preview.length === 0 && performance.now() >= state.firstShotCueUntil) {
       const firstWavePriority = state.wave === 1 && state.shotCount === 0 ? firstWavePriorityText() : "";
       nodes.hintText.textContent = activeEncounterCue() || firstWavePriority || t("orbReady");
     }
+  }
+
+  // Every ordinary enemy still pressures the core, but its movement profile
+  // now communicates a distinct answer: skitters weave, wisps blink, shards
+  // dart, thorn beasts crawl, and armored units hold a readable heavy line.
+  function moveEnemy(enemy, dt) {
+    const dx = state.launcher.x - enemy.x;
+    const dy = state.launcher.y - enemy.y;
+    const distance = Math.max(1, Math.hypot(dx, dy));
+    const forwardX = dx / distance;
+    const forwardY = dy / distance;
+    const lateralX = -forwardY;
+    const lateralY = forwardX;
+    let lateralSpeed = 0;
+
+    if (enemy.kind === "skitter") {
+      enemy.motionPhase += dt * (5.5 + enemy.speed * 0.08);
+      lateralSpeed = Math.sin(enemy.motionPhase) * (32 + enemy.speed * 0.24);
+    } else if (enemy.kind === "thorn") {
+      enemy.motionPhase += dt * 2.2;
+      lateralSpeed = Math.sin(enemy.motionPhase) * 5;
+    } else if (enemy.kind === "wisp") {
+      enemy.motionPhase += dt * 3.6;
+      lateralSpeed = Math.sin(enemy.motionPhase) * 38;
+      enemy.blinkTimer -= dt;
+      if (enemy.blinkTimer <= 0) {
+        enemy.blinkTimer = 1.65;
+        enemy.blinkLife = 0.28;
+        enemy.x += lateralX * 30;
+        enemy.y += lateralY * 30;
+        state.mechanicEvents.push("wisp_blink");
+      }
+      enemy.blinkLife = Math.max(0, enemy.blinkLife - dt);
+    } else if (enemy.kind === "shard") {
+      enemy.motionPhase += dt * 8;
+      lateralSpeed = Math.sin(enemy.motionPhase) * 18;
+    }
+
+    enemy.x += (forwardX * enemy.speed + lateralX * lateralSpeed) * dt;
+    enemy.y += (forwardY * enemy.speed + lateralY * lateralSpeed) * dt;
+    const margin = Math.max(28, enemy.size * 0.72);
+    enemy.x = Math.max(margin, Math.min(W - margin, enemy.x));
+    enemy.y = Math.max(margin, Math.min(H - margin, enemy.y));
   }
 
   function updatePylons(dt) {
@@ -2541,6 +2682,7 @@
   }
 
   function updateEnemyBehavior(enemy, dt) {
+    enemy.supportPulse = Math.max(0, (enemy.supportPulse || 0) - dt);
     if (enemy.bossId === "rootbound") {
       if (enemy.shield <= 0) {
         enemy.weakOpen = true;
@@ -2572,6 +2714,7 @@
         if (ally) {
           ally.shield = Math.min(3, ally.shield + 1);
           ally.maxShield = Math.max(ally.maxShield, ally.shield);
+          enemy.supportPulse = 0.5;
           state.mechanicEvents.push("anchor_guard");
         }
         enemy.behaviorTimer = 2.4;
@@ -2863,8 +3006,8 @@
       nodes.upgradePanel.classList.remove("is-revealing");
       nodes.upgradeCards.querySelector(".upgrade-card")?.focus({ preventScroll: true });
     }, 720);
-    track("wave_clear", { wave: state.wave });
-    trackGrowth("wave_clear", { wave: state.wave });
+    track("wave_clear", { wave: state.wave, wave_total: state.waveTotal });
+    trackGrowth("wave_clear", { wave: state.wave, wave_total: state.waveTotal });
   }
 
   function currentUpgradeChoices() {
@@ -3037,7 +3180,8 @@
     nodes.resultTitle.textContent = t(win ? "raidClear" : "raidFailed");
     const resultSummary = t(win ? "resultWin" : "resultLose", {
       tier: state.raidTier,
-      wave: Math.min(3, state.wave),
+      wave: Math.min(state.waveTotal, state.wave),
+      waveTotal: state.waveTotal,
       stones,
       core: Math.max(0, Math.ceil(state.core)),
     });
@@ -3089,8 +3233,8 @@
     }, 760);
     renderMenu();
     playSound(win ? "success" : "wrong", 0.2);
-    track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
-    trackGrowth("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(3, state.wave), stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
+    track("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
+    trackGrowth("raid_result", { win, outcome: win ? "win" : "loss", wave: Math.min(state.waveTotal, state.wave), wave_total: state.waveTotal, stones, next_tier: hasNextStage ? state.raidTier + 1 : null });
   }
 
   function commitResultDecision(action) {
@@ -3363,6 +3507,111 @@
     return images.beastWolf;
   }
 
+  function drawEnemyRoleMarker(enemy, size) {
+    if (enemy.kind === "boss") return;
+    const { x, y } = enemy;
+    ctx.save();
+    ctx.lineJoin = "miter";
+    ctx.lineCap = "square";
+    if (enemy.kind === "skitter") {
+      // Three trailing chevrons make the lane-weave readable even when the
+      // shared wolf sprite is reused for the basic scout.
+      ctx.strokeStyle = "#7de9ff";
+      ctx.lineWidth = 4;
+      for (let index = 0; index < 3; index += 1) {
+        const offset = size * 0.52 + index * 13;
+        const lift = Math.sin(enemy.motionPhase + index) * 4;
+        ctx.beginPath();
+        ctx.moveTo(x - offset, y + size * 0.28 + lift - 7);
+        ctx.lineTo(x - offset - 10, y + size * 0.28 + lift);
+        ctx.lineTo(x - offset, y + size * 0.28 + lift + 7);
+        ctx.stroke();
+      }
+    } else if (enemy.kind === "thorn") {
+      // Angular spikes communicate the slow contact-damage threat without a
+      // circular portrait frame.
+      ctx.strokeStyle = "rgba(255, 161, 93, 0.96)";
+      ctx.lineWidth = 4;
+      for (let index = 0; index < 6; index += 1) {
+        const angle = -Math.PI / 2 + index * (Math.PI / 3);
+        const inner = size * 0.5;
+        const outer = size * 0.66;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(angle) * inner, y + Math.sin(angle) * inner);
+        ctx.lineTo(x + Math.cos(angle) * outer, y + Math.sin(angle) * outer);
+        ctx.stroke();
+      }
+    } else if (enemy.kind === "wisp") {
+      // Blink leaves two square after-images and a diamond marker.
+      if (enemy.blinkLife > 0) {
+        ctx.fillStyle = "rgba(158, 237, 255, 0.42)";
+        const drift = Math.sin(enemy.motionPhase) * 18;
+        ctx.fillRect(x - drift - 18, y + size * 0.36, 10, 10);
+        ctx.fillRect(x - drift - 34, y + size * 0.42, 7, 7);
+      }
+      ctx.fillStyle = "#b8f5ff";
+      ctx.beginPath();
+      ctx.moveTo(x, y - size * 0.68);
+      ctx.lineTo(x + 8, y - size * 0.58);
+      ctx.lineTo(x, y - size * 0.48);
+      ctx.lineTo(x - 8, y - size * 0.58);
+      ctx.closePath();
+      ctx.fill();
+    } else if (enemy.kind === "armored") {
+      // Corner brackets remain visible after the shield pips are depleted.
+      ctx.strokeStyle = enemy.shield > 0 ? "#8beaff" : "rgba(188, 211, 223, 0.86)";
+      ctx.lineWidth = 4;
+      const half = size * 0.52;
+      const corner = 13;
+      [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([dx, dy]) => {
+        const cx = x + dx * half;
+        const cy = y + dy * half;
+        ctx.beginPath();
+        ctx.moveTo(cx - dx * corner, cy);
+        ctx.lineTo(cx, cy);
+        ctx.lineTo(cx, cy - dy * corner);
+        ctx.stroke();
+      });
+    } else if (enemy.kind === "anchor") {
+      // The support range is deliberately a square/tether motif, not a ring.
+      const allies = state.enemies.filter((unit) => unit !== enemy && unit.hp > 0).slice(0, 3);
+      ctx.strokeStyle = enemy.supportPulse > 0 ? "#ffe56e" : "rgba(125, 233, 255, 0.78)";
+      ctx.lineWidth = enemy.supportPulse > 0 ? 5 : 3;
+      allies.forEach((ally) => {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(ally.x, ally.y);
+        ctx.stroke();
+      });
+      ctx.strokeRect(x - 12, y - 12, 24, 24);
+      ctx.fillStyle = enemy.supportPulse > 0 ? "#ffe56e" : "#7de9ff";
+      ctx.fillRect(x - 4, y - 4, 8, 8);
+    } else if (enemy.kind === "splitter") {
+      ctx.strokeStyle = "#e3b0ff";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 8);
+      ctx.lineTo(x - 11, y + 7);
+      ctx.lineTo(x - 2, y + 4);
+      ctx.lineTo(x - 12, y + 19);
+      ctx.moveTo(x, y - 8);
+      ctx.lineTo(x + 11, y + 7);
+      ctx.lineTo(x + 2, y + 4);
+      ctx.lineTo(x + 12, y + 19);
+      ctx.stroke();
+    } else if (enemy.kind === "shard") {
+      ctx.fillStyle = "#f2d7ff";
+      ctx.beginPath();
+      ctx.moveTo(x, y - size * 0.68);
+      ctx.lineTo(x + 7, y - size * 0.3);
+      ctx.lineTo(x, y - size * 0.14);
+      ctx.lineTo(x - 7, y - size * 0.3);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
   function drawEnemy(enemy) {
     const size = enemy.kind === "boss" ? 156 : enemy.size * 2.25;
     ctx.save();
@@ -3382,6 +3631,7 @@
     else drawAtlas(enemySprite(enemy.kind), 0, 1, enemy.x, enemy.y, size * 0.92);
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
+    drawEnemyRoleMarker(enemy, size);
     if (enemy.elite) {
       ctx.fillStyle = "#ffd86b";
       ctx.beginPath();
@@ -3724,6 +3974,22 @@
       updateEnemyBehavior(charger, 0.016);
       const recovery = charger.chargeState;
 
+      const movementProfile = {};
+      const movementKinds = ["skitter", "thorn", "wisp", "shard"];
+      const movementEnemies = movementKinds.map((kind, index) => makeSpecialEnemy(kind, 240 + index * 120, 160 + index * 22, 30, 1, raidProfile(30)));
+      state.enemies = movementEnemies;
+      const movementBefore = movementEnemies.map((enemy) => ({ kind: enemy.kind, x: enemy.x, y: enemy.y, speed: enemy.speed }));
+      movementEnemies.find((enemy) => enemy.kind === "wisp").blinkTimer = 0.01;
+      update(0.12);
+      movementEnemies.forEach((enemy, index) => {
+        movementProfile[enemy.kind] = {
+          speed: enemy.speed,
+          moved: Math.round(Math.hypot(enemy.x - movementBefore[index].x, enemy.y - movementBefore[index].y) * 10) / 10,
+          lateralShift: Math.round((enemy.x - movementBefore[index].x) * 10) / 10,
+          blinkEvent: enemy.kind === "wisp" && state.mechanicEvents.includes("wisp_blink"),
+        };
+      });
+
       state.enemies = [];
       state.pylons = [{ x: 360, y: 300, r: 31, moving: false }];
       const pylonOrb = makeOrb(120, 0, 0);
@@ -3778,6 +4044,7 @@
         split,
         anchorGuard,
         charger: { marked, charging, recovery },
+        movementProfile,
         pylon,
         bosses: {
           rootbound: { rebuiltShield: rootbound.shield },
@@ -3803,12 +4070,14 @@
     snapshot: () => ({
       mode: state.mode,
       wave: state.wave,
+      waveTotal: state.waveTotal,
       raidTier: state.raidTier,
       core: state.core,
       maxCore: state.maxCore,
       shotCount: state.shotCount,
       enemies: state.enemies.length,
       enemyKinds: state.enemies.map((enemy) => enemy.kind),
+      enemyBehaviorStates: state.enemies.map((enemy) => ({ kind: enemy.kind, chargeState: enemy.chargeState, phased: enemy.phased, blinking: enemy.blinkLife > 0, stationary: enemy.stationary })),
       totalEnemyHp: state.enemies.reduce((total, enemy) => total + enemy.hp, 0),
       maxEnemySpeed: state.enemies.reduce((max, enemy) => Math.max(max, enemy.speed), 0),
       shieldedEnemies: state.enemies.filter((enemy) => enemy.shield > 0).length,
@@ -3849,10 +4118,11 @@
     }),
     campaignDepth: () => ({
       stageCount: raidDefs.length,
+      waveCurve: raidDefs.map((raid) => ({ tier: raid.tier, waves: wavesForTier(raid.tier), boss: raid.tier % 5 === 0 })),
       regions: [...new Set(raidDefs.map((raid) => raid.zone))],
       routes: raidDefs.map((raid) => ({ tier: raid.tier, zone: raid.zone, name: localized(raid.name), description: localized(raid.desc), rule: raid.rule })),
       bosses: bossDefs.map((boss) => ({ tier: boss.tier, id: boss.id, imageKey: boss.imageKey, name: localized(boss.name), loaded: Boolean(images[boss.imageKey]?.complete && images[boss.imageKey]?.naturalWidth) })),
-      specialKinds: ["armored", "anchor", "phase", "splitter", "charger"],
+      specialKinds: ["skitter", "thorn", "wisp", "armored", "anchor", "phase", "splitter", "charger", "shard"],
       shotFeedbackLocales: Object.keys(shotFeedbackCopy).sort(),
     }),
     runCampaignMechanicScenario,
@@ -3913,7 +4183,7 @@
       selectedTier = checkpoint;
       state = makeState();
       state.mode = "running";
-      state.wave = WAVES_PER_RAID;
+      state.wave = state.waveTotal;
       spawnWave();
       show(nodes.gamePanel);
       renderHud();

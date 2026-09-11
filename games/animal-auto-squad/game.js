@@ -1305,8 +1305,9 @@ const GAME_VERSION = "v36";
   ensureQuitRunPanel();
 
   function ensureActionNotices() {
+    const growthDetails = $("teamGrowthDetails");
     const definitions = [
-      { id: "stageNotice", parent: $("trainingPane"), before: $("trainingPane")?.querySelector(".cosmetic-store") },
+      { id: "stageNotice", parent: growthDetails || $("trainingPane"), before: growthDetails?.querySelector(".cosmetic-store") },
       { id: "prepNotice", parent: $("prepPhaseArea")?.querySelector(".shop-section"), before: $("shopRow") },
       { id: "reviveNotice", parent: $("defeatRevivePanel"), before: $("defeatRevivePanel")?.querySelector(".revive-actions") },
     ];
@@ -1335,7 +1336,9 @@ const GAME_VERSION = "v36";
     if (!trainingMeta) {
       trainingMeta = document.createElement("div");
       trainingMeta.className = "training-meta";
-      trainingPane.insertBefore(trainingMeta, trainingPane.querySelector(".cosmetic-store"));
+      const growthDetails = trainingPane.querySelector("#teamGrowthDetails");
+      const growthAnchor = growthDetails?.querySelector(".team-bonus-note") || null;
+      (growthDetails || trainingPane).insertBefore(trainingMeta, growthAnchor);
     }
     [$("teamLevelText")?.closest("div"), $("diamondText")?.closest("div")].forEach((cell) => {
       if (cell) trainingMeta.appendChild(cell);
@@ -1361,6 +1364,9 @@ const GAME_VERSION = "v36";
     trainingTabBtn: $("trainingTabBtn"),
     stageSelectPane: $("stageSelectPane"),
     trainingPane: $("trainingPane"),
+    teamEmptyState: $("teamEmptyState"),
+    teamPrepHost: $("teamPrepHost"),
+    teamGrowthDetails: $("teamGrowthDetails"),
     showStageBtn: $("showStageBtn"),
     stageBackBtn: $("stageBackBtn"),
     stageSetupText: $("stageSetupText"),
@@ -1434,6 +1440,70 @@ const GAME_VERSION = "v36";
     battle: nodes.gamePanel,
   });
 
+  // Team setup belongs to the shared Stage screen. Keep one preparation DOM
+  // tree and move it between Stage / Battle so card selection, backpack
+  // scrolling, and keyboard focus always update the same live state.
+  function mountPreparationToTeam() {
+    if (!nodes.teamPrepHost || !nodes.prepPhaseArea) return;
+    if (nodes.prepPhaseArea.parentElement !== nodes.teamPrepHost) {
+      nodes.teamPrepHost.appendChild(nodes.prepPhaseArea);
+    }
+  }
+
+  function mountPreparationToBattle() {
+    if (!nodes.gamePanel || !nodes.prepPhaseArea) return;
+    const battleContent = nodes.gamePanel.querySelector(":scope > .wp-frame-play-content") || nodes.gamePanel;
+    const anchor = [nodes.combatArea, nodes.hintText].find((node) => node?.parentElement === battleContent) || battleContent.firstChild;
+    if (nodes.prepPhaseArea.parentElement !== battleContent) {
+      battleContent.insertBefore(nodes.prepPhaseArea, anchor || null);
+    }
+  }
+
+  function syncTeamPreparationSurface() {
+    const activeRun = Boolean(state.activeRun);
+    if (nodes.teamEmptyState) nodes.teamEmptyState.hidden = activeRun;
+    if (nodes.teamPrepHost) nodes.teamPrepHost.hidden = !activeRun;
+    if (activeRun) {
+      mountPreparationToTeam();
+      nodes.prepPhaseArea?.classList.remove("is-hidden");
+    } else {
+      nodes.prepPhaseArea?.classList.add("is-hidden");
+    }
+  }
+
+  function showTeamPreparationView() {
+    mountPreparationToTeam();
+    document.body.classList.remove("squad-active");
+    document.body.classList.add("squad-stage-select");
+    nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.remove("is-hidden");
+    nodes.gamePanel.classList.add("is-hidden");
+    nodes.gamePanel.classList.remove("is-result");
+    nodes.resultPanel.classList.add("is-hidden");
+    nodes.combatStallPanel.classList.add("is-hidden");
+    nodes.combatSummary?.classList.add("is-hidden");
+    nodes.prepPhaseArea?.classList.remove("is-hidden");
+    nodes.combatArea?.classList.add("is-hidden");
+    setStageTab("training");
+    syncTeamPreparationSurface();
+    syncSceneOwners();
+    requestAnimationFrame(focusPreparationOwner);
+  }
+
+  function showBattlePreparationView() {
+    mountPreparationToBattle();
+    document.body.classList.remove("squad-stage-select");
+    document.body.classList.add("squad-active");
+    nodes.menuPanel.classList.add("is-hidden");
+    nodes.stagePanel.classList.add("is-hidden");
+    nodes.gamePanel.classList.remove("is-hidden");
+    nodes.gamePanel.classList.remove("is-result");
+    nodes.prepPhaseArea?.classList.remove("is-hidden");
+    nodes.combatArea?.classList.add("is-hidden");
+    nodes.combatSummary?.classList.add("is-hidden");
+    syncSceneOwners();
+  }
+
   // The opening expedition needs a real formation response, not only two
   // versions of temporary stat growth. Owl adds back-row targeting to Fox
   // damage and Otter healing for both new and existing saves.
@@ -1475,6 +1545,13 @@ const GAME_VERSION = "v36";
   let testLocaleOverride = "";
   let save = loadSave();
   let state = makeState();
+
+  const TEAM_TAB_LABELS = {
+    en: "Team", "zh-Hant": "隊伍", "zh-Hans": "队伍", ja: "チーム", ko: "팀",
+    es: "Equipo", "pt-BR": "Equipe", fr: "Équipe", de: "Team", it: "Squadra",
+    ru: "Команда", hi: "दल", ar: "الفريق"
+  };
+  const teamTabLabel = () => TEAM_TAB_LABELS[locale] || TEAM_TAB_LABELS.en;
   let resultDecisionCommitted = false;
   let selectedSlot = null; // for tap-to-select mobile fallback
   let imageCache = {};
@@ -3002,25 +3079,30 @@ const GAME_VERSION = "v36";
   }
 
   function setStageTab(tab) {
-    const training = tab === "training";
-    if (!training) {
+    const team = tab === "training";
+    if (!team) {
       clearSkinPurchaseDecision();
       clearTrainingStageCanvas();
     }
-    nodes.stageTabBtn?.classList.toggle("is-active", !training);
-    nodes.trainingTabBtn?.classList.toggle("is-active", training);
-    nodes.stageTabBtn?.setAttribute("aria-selected", String(!training));
-    nodes.trainingTabBtn?.setAttribute("aria-selected", String(training));
-    nodes.stageTabBtn?.setAttribute("tabindex", training ? "-1" : "0");
-    nodes.trainingTabBtn?.setAttribute("tabindex", training ? "0" : "-1");
-    nodes.stageSelectPane?.classList.toggle("is-active", !training);
-    nodes.trainingPane?.classList.toggle("is-active", training);
-    if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = training;
-    if (nodes.trainingPane) nodes.trainingPane.hidden = !training;
-    if (training) {
+    nodes.stageTabBtn?.classList.toggle("is-active", !team);
+    nodes.trainingTabBtn?.classList.toggle("is-active", team);
+    nodes.stageTabBtn?.setAttribute("aria-selected", String(!team));
+    nodes.trainingTabBtn?.setAttribute("aria-selected", String(team));
+    nodes.stageTabBtn?.setAttribute("tabindex", team ? "-1" : "0");
+    nodes.trainingTabBtn?.setAttribute("tabindex", team ? "0" : "-1");
+    nodes.stageSelectPane?.classList.toggle("is-active", !team);
+    nodes.trainingPane?.classList.toggle("is-active", team);
+    if (nodes.stageSelectPane) nodes.stageSelectPane.hidden = team;
+    if (nodes.trainingPane) nodes.trainingPane.hidden = !team;
+    if (team) {
+      mountPreparationToTeam();
+      syncTeamPreparationSurface();
+      if (nodes.stageSelectTitle) nodes.stageSelectTitle.textContent = teamTabLabel();
       renderTrainingRoster();
+      if (state.activeRun) renderPrepScreen();
       requestAnimationFrame(() => requestAnimationFrame(updateTrainingStageCanvas));
     } else {
+      if (nodes.stageSelectTitle) nodes.stageSelectTitle.textContent = t("chooseStage");
       requestAnimationFrame(() => renderStageSelector(true));
     }
   }
@@ -3209,6 +3291,7 @@ const GAME_VERSION = "v36";
 
   function renderStageSelector(shouldScroll = true) {
     if (!nodes.stageRail) return;
+    if (nodes.trainingPane?.classList.contains("is-active")) return;
     const renderVersion = ++stageRenderVersion;
     save = normalizeSave(save);
     nodes.stageSelectTitle.textContent = t("chooseStage");
@@ -3749,8 +3832,11 @@ const GAME_VERSION = "v36";
     nodes.localeSelect.setAttribute("aria-label", t("languageSelection"));
     nodes.stageBackBtn.setAttribute("aria-label", t("back"));
     if (nodes.stageTabBtn) nodes.stageTabBtn.querySelector("span").textContent = t("stageTab");
-    if (nodes.trainingTabBtn) nodes.trainingTabBtn.querySelector("span").textContent = t("trainingTab");
-    document.querySelector(".stage-tabs")?.setAttribute("aria-label", `${t("stageTab")} / ${t("trainingTab")}`);
+    if (nodes.trainingTabBtn) nodes.trainingTabBtn.querySelector("span").textContent = teamTabLabel();
+    document.querySelector(".stage-tabs")?.setAttribute("aria-label", `${t("stageTab")} / ${teamTabLabel()}`);
+    if (nodes.teamEmptyState) nodes.teamEmptyState.textContent = t("stageSetup");
+    const growthSummary = nodes.teamGrowthDetails?.querySelector("summary");
+    if (growthSummary) growthSummary.textContent = t("trainingTitle");
     if ($("stageSwipeText")) $("stageSwipeText").textContent = t("stageSwipe");
     if ($("stageDeployText")) $("stageDeployText").textContent = t("stageDeploy");
     nodes.stageRail.setAttribute("aria-label", t("stageSelection"));
@@ -3846,23 +3932,14 @@ const GAME_VERSION = "v36";
     state.backpack = createBackpackCards();
     restoreSavedFormation();
     state.activeRun = true;
-    document.body.classList.add("squad-active");
-    document.body.classList.remove("squad-stage-select");
-    nodes.menuPanel.classList.add("is-hidden");
-    nodes.stagePanel.classList.add("is-hidden");
-    nodes.gamePanel.classList.remove("is-hidden");
-    nodes.gamePanel.classList.remove("is-result");
-    nodes.prepPhaseArea.classList.remove("is-hidden");
-    nodes.combatArea.classList.add("is-hidden");
     nodes.defeatRevivePanel.classList.add("is-hidden");
     nodes.combatStallPanel.classList.add("is-hidden");
     stallDecisionOpen = false;
 
-    syncSceneOwners();
-    // Preparation is immediately available, keeping the first deployment
-    // decision focused on formation and temporary upgrades.
+    // Preparation lives in the Stage → Team tab. Battle only takes ownership
+    // after the player explicitly presses Start Battle.
+    showTeamPreparationView();
     startRoundPrep();
-    requestAnimationFrame(focusPreparationOwner);
     window.WonderAnalytics?.track("expedition_start", { game_id: GAME_ID, stage: state.stage });
   }
 
@@ -4862,6 +4939,7 @@ const GAME_VERSION = "v36";
       return;
     }
 
+    showBattlePreparationView();
     clearScheduledCombatTimers();
     const runId = ++combatRunSequence;
     nodes.startBattleBtn.disabled = true;
@@ -6078,9 +6156,7 @@ const GAME_VERSION = "v36";
         openRevivePopup();
       } else {
         // Return to shop prep
-        nodes.prepPhaseArea.classList.remove("is-hidden");
-        nodes.combatArea.classList.add("is-hidden");
-        nodes.combatSummary?.classList.add("is-hidden");
+        showTeamPreparationView();
         startRoundPrep();
         nodes.prepNotice?.classList.add("loss-recap");
         nodes.selectedAbilityPanel?.classList.add("is-hidden");
@@ -6090,9 +6166,7 @@ const GAME_VERSION = "v36";
       awardTrainingCoins(Math.max(2, Math.ceil(state.round / 2)));
       state.gold += 2;
       // Draw: no heart lost, return to shop
-      nodes.prepPhaseArea.classList.remove("is-hidden");
-      nodes.combatArea.classList.add("is-hidden");
-      nodes.combatSummary?.classList.add("is-hidden");
+      showTeamPreparationView();
       startRoundPrep();
     }
     window.WonderAnalytics?.track("battle_end", { game_id: GAME_ID, stage: state.stage, wave: settledRound, result });
@@ -6122,8 +6196,7 @@ const GAME_VERSION = "v36";
       playSynth("revive");
       
       // Return to shop prep
-      nodes.prepPhaseArea.classList.remove("is-hidden");
-      nodes.combatArea.classList.add("is-hidden");
+      showTeamPreparationView();
       startRoundPrep();
       requestAnimationFrame(focusPreparationOwner);
       window.WonderAnalytics?.track("expedition_revive", { game_id: GAME_ID, cost: 5 });
@@ -6186,9 +6259,7 @@ const GAME_VERSION = "v36";
     state.combat.waveInsight = "";
     state.combat.lastDefeatEvent = null;
     state.combat.stallEnded = false;
-    nodes.prepPhaseArea.classList.remove("is-hidden");
-    nodes.combatArea.classList.add("is-hidden");
-    nodes.combatSummary?.classList.add("is-hidden");
+    showTeamPreparationView();
     startRoundPrep();
     showActionNotice(nodes.prepNotice, t("stallRecoveryNotice"), nodes.startBattleBtn);
     window.WonderAnalytics?.track("battle_no_progress_reconfigure", { game_id: GAME_ID, stage: state.stage, wave: state.round });
