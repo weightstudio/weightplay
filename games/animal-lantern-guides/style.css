@@ -192,3 +192,102 @@ body[data-screen="stage"] .stage-ad-reserve { display:block; }
   .feedback { min-height:14px; margin:2px 0; font-size:11px; }
   .battle-canvas #leaveBtn { display:block; position:fixed; left:30px; right:auto; bottom:58px; width:160px; }
 }
+
+/* v9 exact-current contract repair: the Interface 7 runtime skin is injected
+   after game CSS, so keep this game's authored Guide frame and responsive
+   Battle/Stage controls explicit at the game boundary. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info {
+  border-radius:24px !important;
+  padding:24px !important;
+  background:rgba(255,255,255,.84) !important;
+  border:1px solid rgba(82,120,109,.22) !important;
+  box-shadow:0 14px 34px rgba(70,82,63,.12) !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info .game-info-section,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info .game-info-fact {
+  border-radius:16px !important;
+  padding:16px !important;
+  background:rgba(255,255,255,.72) !important;
+}
+/* Important declarations inside the shared frame layer outrank unlayered
+   important rules; keep the same layer for the protected Guide frame. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info {
+    border-radius:24px !important;
+    padding:24px !important;
+    background:rgba(255,255,255,.84) !important;
+    border:1px solid rgba(82,120,109,.22) !important;
+    box-shadow:0 14px 34px rgba(70,82,63,.12) !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info .game-info-section,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .game-page-info .game-info-fact {
+    border-radius:16px !important;
+    padding:16px !important;
+    background:rgba(255,255,255,.72) !important;
+  }
+}
+/* Keep the full 420px wide-layout poster at the governed compact landscape. */
+@media (min-width:700px) and (max-height:500px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size:420px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .wp-standard-main-poster,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .wp-standard-main-poster-media,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .wp-standard-main-poster-media > img,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .wp-standard-main-poster > img {
+    width:420px !important;
+    min-width:420px !important;
+    max-width:420px !important;
+    height:420px !important;
+    min-height:420px !important;
+    max-height:420px !important;
+  }
+}
+/* The shared shell supplies the sole Stage Settings owner. Retire the
+   legacy authored duplicate so it cannot sit under the generated title. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #stageSettingsBtn {
+  display:none !important;
+  pointer-events:none !important;
+}
+/* Keep the native Battle utility and return target at least 44 logical px
+   after the shared Canvas scale is applied. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleBackBtn,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleSettingsBtn {
+  width:56px !important;
+  min-width:56px !important;
+  height:56px !important;
+  min-height:56px !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleScreen .coop-card {
+  max-width:none !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleScreen[data-wp-logical-battle-canvas] > .battle-canvas {
+  width:100% !important;
+  height:100% !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleScreen #leaveBtn {
+  position:absolute !important;
+  left:16px !important;
+  right:auto !important;
+  bottom:8px !important;
+  width:160px !important;
+  min-height:56px !important;
+  margin:0 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] .battle-ad-reserve {
+  display:none !important;
+  position:fixed !important;
+  top:auto !important;
+  bottom:0 !important;
+  left:max(0px, calc((100vw - min(100vw, 920px)) / 2)) !important;
+  width:min(100vw, 920px) !important;
+  height:56px !important;
+  transform:none !important;
+  z-index:5 !important;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"][data-screen="battle"] .battle-ad-reserve {
+  display:block !important;
+}

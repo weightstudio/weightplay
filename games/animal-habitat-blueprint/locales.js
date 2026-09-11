@@ -57,6 +57,24 @@
       loading: "نفتح مخططات الموطن…", title: "مخطط الموطن", kicker: "لغز تخطيط هادئ", world: "محطة حقل ضوء الطحلب", intro: "رتّب أربع قطع موطن ليحصل بيت كل حيوان على الجار المناسب.", start: "افتح مخططًا", choose: "اختر مخططًا", best: "الأفضل: {best} تبادلات", chapter: "مخططات الموطن", round: "المخطط", prompt: "اختر قطعتين ثم بدّل مكانهما لتحقيق كل ملاحظات الحقل.", selection: "المحدد: {names}", selectionPrompt: "اختر قطعتين من الموطن لتبديلهما.", slot: "الخانة {count}", back: "رجوع", swap: "بدّل المحدد", reset: "إعادة ضبط المخطط", correct: "اصطف المخطط! كل ملاحظات الحقل مناسبة.", wrong: "هذا التبديل مسموح. راجع الملاحظات وجرّب ترتيبًا آخر.", settings: "الإعدادات", sound: "الصوت", on: "تشغيل", off: "إيقاف", language: "اللغة", close: "إغلاق", finished: "اكتمل المخطط", resultTitle: "كل موطن مناسب!", resultLevel: "اكتمل المخطط!", resultText: "اكتمل {count} من 3 مخططات. أفضل الحملة: {best} تبادلات.", next: "المخطط التالي", ruleTouch: "يجب أن تلامس {a} ‏{b}.", ruleApart: "يجب ألا تلامس {a} ‏{b}.", ruleBelow: "تقع {a} أسفل {b}.", tilePond: "بركة", tileReed: "ضفة القصب", tileNest: "عش", tileMeadow: "مرج", tileCanopy: "مظلة الأشجار", tileStream: "جدول", tileFern: "سرخس", tileBurrow: "جحر", tileDusk: "غابة الغسق", tilePool: "بركة المد", tileLantern: "فسحة الفوانيس", tileMoss: "ضفة الطحلب", blueprint1: "مخطط البركة", blueprint2: "مخطط المظلة", blueprint3: "مخطط الغسق", hint1: "ضع ضفة القصب بجوار البركة.", hint2: "أبقِ الجدول قريبًا من السرخس.", hint3: "دع فسحة الفوانيس تراقب ضفة الطحلب."
     })
   };
+  const resultActionCopyByLocale = {
+    en: { resultStages: "Stages", nextStage: "Next Stage", replay: "Replay" },
+    "zh-Hant": { resultStages: "階段", nextStage: "下一階段", replay: "重玩" },
+    "zh-Hans": { resultStages: "阶段", nextStage: "下一阶段", replay: "重玩" },
+    ja: { resultStages: "ステージ", nextStage: "次のステージ", replay: "リプレイ" },
+    ko: { resultStages: "스테이지", nextStage: "다음 스테이지", replay: "다시 플레이" },
+    es: { resultStages: "Fases", nextStage: "Siguiente fase", replay: "Repetir" },
+    "pt-BR": { resultStages: "Fases", nextStage: "Próxima fase", replay: "Jogar novamente" },
+    fr: { resultStages: "Étapes", nextStage: "Étape suivante", replay: "Rejouer" },
+    de: { resultStages: "Stufen", nextStage: "Nächste Stufe", replay: "Erneut spielen" },
+    it: { resultStages: "Livelli", nextStage: "Livello successivo", replay: "Rigioca" },
+    ru: { resultStages: "Этапы", nextStage: "Следующий этап", replay: "Играть снова" },
+    hi: { resultStages: "चरण", nextStage: "अगला चरण", replay: "फिर खेलें" },
+    ar: { resultStages: "المراحل", nextStage: "المرحلة التالية", replay: "إعادة اللعب" }
+  };
+  Object.entries(resultActionCopyByLocale).forEach(([locale, copy]) => {
+    window.HABITAT_BLUEPRINT_LOCALES[locale] = Object.assign({}, window.HABITAT_BLUEPRINT_LOCALES[locale], copy);
+  });
   const progressSummaryByLocale = {
     en: "30 stages · 6 chapters",
     "zh-Hant": "30 個階段 · 6 個章節",

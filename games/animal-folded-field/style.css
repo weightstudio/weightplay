@@ -459,6 +459,47 @@ body[data-screen="main"] #gameGuide { display: block; }
   min-height:52px;
 }
 
+/* Result is a Battle substate: keep it in the same logical Canvas and replace
+   the live HUD/board/footer without exposing a Main destination. */
+#battleScreen[data-battle-state="result"] .battle-canvas {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  row-gap: 0;
+}
+#battleScreen[data-battle-state="result"] #resultScreen {
+  display: grid;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+#battleScreen[data-battle-state="result"] #resultScreen .result-card {
+  width: min(680px, 100%);
+  min-height: 0;
+  max-height: 100%;
+  margin: auto;
+  overflow-y: auto;
+}
+#battleScreen[data-battle-state="result"] .result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, 600px);
+  gap: 10px;
+}
+#battleScreen[data-battle-state="result"] .result-actions > button {
+  min-width: 0;
+  min-height: 52px;
+}
+#battleScreen[data-battle-state="result"] #resultPrimaryBtn:disabled {
+  cursor: not-allowed;
+  opacity: .48;
+}
+
 /* Folded Field keeps the shared Interface 7 skin's rounded Guide and the
    canonical 420px compact-landscape Main poster. These scoped declarations
    outrank the token skin without altering other games. */

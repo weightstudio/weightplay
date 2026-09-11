@@ -150,12 +150,27 @@
     state.screen = screen;
     const loading = $("loadingPanel");
     if (loading) loading.hidden = true;
-    ["main", "stage", "battle", "result"].forEach((name) => {
+    const inBattle = screen === "battle" || screen === "result";
+    ["main", "stage"].forEach((name) => {
       const node = $(name + "Screen");
       if (node) node.hidden = name !== screen;
     });
-    document.body.dataset.screen = screen;
-    pinViewportTop(screen === "stage" || screen === "battle");
+    const battleScreen = $("battleScreen");
+    if (battleScreen) {
+      battleScreen.hidden = !inBattle;
+      battleScreen.dataset.battleState = inBattle ? screen : "";
+    }
+    const battleHud = $("battleHud");
+    const battleContent = $("battleContent");
+    const resultScreen = $("resultScreen");
+    if (battleHud) battleHud.hidden = screen !== "battle";
+    if (battleContent) battleContent.hidden = screen !== "battle";
+    if (resultScreen) resultScreen.hidden = screen !== "result";
+    const battleActions = document.querySelector("#battleScreen .battle-canvas > .battle-actions");
+    if (battleActions) battleActions.hidden = screen !== "battle";
+    document.body.dataset.screen = screen === "result" ? "battle" : screen;
+    document.body.dataset.battleSubstate = screen === "result" ? "result" : "";
+    pinViewportTop(screen === "stage" || inBattle);
     if (screen === "main") renderMain();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
@@ -216,11 +231,19 @@
     const badges = $("resultBadges");
     if (badges) badges.innerHTML = state.cleared.map((number) => "<span class=\"result-badge\">" + copy("badge", { number: number + 1 }) + " · " + copy("badgeComplete") + "</span>").join("");
     const primary = $("resultPrimaryBtn");
+    const hasNext = state.round < rounds.length - 1;
     if (primary) {
-      primary.textContent = finished ? copy("home") : copy("next");
-      primary.dataset.action = finished ? "home" : "next";
+      primary.textContent = copy("nextStage");
+      primary.dataset.action = hasNext ? "next" : "disabled";
+      primary.disabled = !hasNext;
+      primary.setAttribute("aria-disabled", String(!hasNext));
     }
-    if ($("resultHomeBtn")) $("resultHomeBtn").hidden = finished;
+    const replay = $("resultHomeBtn");
+    if (replay) {
+      replay.hidden = false;
+      replay.disabled = false;
+      replay.textContent = copy("replay");
+    }
   };
   const startRound = (number) => {
     state.round = Math.max(0, Math.min(rounds.length - 1, number));
@@ -274,11 +297,13 @@
     $("battleBackBtn").addEventListener("click", () => show("stage"));
     $("resetBtn").addEventListener("click", () => { state.pattern = rounds[state.round].initial.slice(); state.flips = 0; announce("moveHint"); renderBattle(); });
     $("checkBtn").addEventListener("click", clearRound);
-    $("resultMapBtn").addEventListener("click", () => show("stage"));
-    $("resultHomeBtn").addEventListener("click", () => show("main"));
+    $("resultMapBtn").addEventListener("click", () => {
+      if (state.cleared.length) state.round = Math.max(...state.cleared);
+      show("stage");
+    });
+    $("resultHomeBtn").addEventListener("click", () => startRound(state.round));
     $("resultPrimaryBtn").addEventListener("click", () => {
       if ($("resultPrimaryBtn").dataset.action === "next") startRound(state.round + 1);
-      else show("main");
     });
     $("settingsBtn")?.addEventListener("click", () => {
       const panel = $("settingsPanel");

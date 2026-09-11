@@ -96,8 +96,8 @@
   </section>
   <div class="stage-ad-reserve" data-wp-ad-reserve aria-hidden="true"></div>
 
-  <section id="battleScreen" class="screen panel-screen" data-screen="battle" hidden aria-labelledby="sceneTitle">
-    <div class="battle-canvas" data-wp-logical-battle-canvas>
+  <section id="battleScreen" class="screen panel-screen" data-screen="battle" data-wp-logical-battle-canvas hidden aria-labelledby="sceneTitle">
+    <div class="battle-canvas">
       <header class="panel-head">
         <button id="battleBackBtn" class="back-btn back-button" type="button" data-wp-return="battle"><span aria-hidden="true">←</span><span id="battleBackLabel">Back</span></button>
         <div><p class="eyebrow" id="sceneBadge">Night rescue</p><h2 id="sceneTitle"></h2></div>
@@ -124,11 +124,11 @@
           </article>
         </div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
-        <button id="leaveBtn" class="text-button" type="button">Leave rescue</button>
       </div>
+      <button id="leaveBtn" class="text-button" type="button">Leave rescue</button>
     </div>
-    <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
+  <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
   <section id="resultScreen" class="screen result-screen" data-screen="result" hidden aria-labelledby="resultTitle">
     <div class="result-card">

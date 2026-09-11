@@ -104,3 +104,53 @@ body{overflow-x:hidden}
   .battle-canvas .battle-actions>*{min-height:44px;padding:6px 8px}
   .battle-canvas .status{height:16px;min-height:16px;overflow:hidden;font-size:.72rem}
 }
+
+/* Result is a Battle substate: keep all actions inside the same logical
+   Canvas, replacing the live puzzle controls without exposing Main. */
+#battleScreen[data-battle-state="result"] {
+  display:flex;
+  flex-direction:column;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen {
+  display:grid;
+  flex:1 1 auto;
+  min-width:0;
+  min-height:0;
+  width:100%;
+  height:100%;
+  padding:0;
+  margin:0;
+  overflow:auto;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen .result-guide-art {
+  display:block;
+  width:min(220px, 42vw);
+  height:auto;
+  margin:0 auto 8px;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen .result-icon,
+#battleScreen[data-battle-state="result"] > #resultScreen > .eyebrow,
+#battleScreen[data-battle-state="result"] > #resultScreen > h2,
+#battleScreen[data-battle-state="result"] > #resultScreen > .intro {
+  text-align:center;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen .result-actions {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  width:min(100%,680px);
+  gap:10px;
+  margin:20px auto 0;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen .result-actions > button {
+  min-width:0;
+  min-height:52px;
+}
+#battleScreen[data-battle-state="result"] > #resultScreen #nextBtn:disabled {
+  cursor:not-allowed;
+  opacity:.48;
+}

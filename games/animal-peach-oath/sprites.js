@@ -21,11 +21,33 @@
     } },
   };
 
+  // Independently authored transparent assets use their complete canvas, not
+  // legacy atlas partitions. Retain every weapon/foot pixel without editing art.
+  const individual = {
+    hero: {
+      leo: { source: "hero-lion-block-v1.png", width: 1024, height: 1536 },
+      tiger: { source: "hero-tiger-block-v1.png", width: 1024, height: 1536 },
+      bear: { source: "hero-bear-block-v1.png", width: 1024, height: 1536 },
+      crane: { source: "hero-crane-block-v1.png", width: 1024, height: 1536 },
+      fox: { source: "hero-fox-block-v1.png", width: 1024, height: 1536 },
+    },
+    enemy: {
+      wolf: { source: "enemy-wolf-block-v1.png", width: 1024, height: 1536 },
+    },
+  };
+
   function markup(side, id, instance) {
     if (side !== "hero" && side !== "enemy") throw new Error("Unknown Peach Oath side");
     const atlas = atlases[side === "hero" ? "heroes" : "enemies"];
     const frame = atlas.frames[id];
     if (!frame || !/^[a-zA-Z0-9-]+$/.test(instance)) throw new Error("Unknown Peach Oath sprite");
+    const asset = individual[side]?.[id];
+    if (asset) {
+      return `<svg class="sprite" data-sprite="${id}" viewBox="0 0 ${asset.width} ${asset.height}"
+        preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+        <image href="assets/${asset.source}" width="${asset.width}" height="${asset.height}"/>
+      </svg>`;
+    }
     const clipId = `peach-sprite-${instance}`;
     const sheet = side === "hero" ? "heroes" : "enemies";
     return `<svg class="sprite" data-sprite="${id}" viewBox="${frame.box.join(" ")}"

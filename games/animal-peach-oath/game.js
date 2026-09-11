@@ -164,11 +164,14 @@
     enemies: [],
     pendingLoot: { coins: 0, materials: 0, gear: [] },
     tickHandle: 0,
+    nextWaveHandle: 0,
     resultOpen: false,
     manageFromResult: false
   };
 
+  let resettingProgress = false;
   function save() {
+    if (resettingProgress) return;
     state.lastSave = Date.now();
     try { localStorage.setItem(C.saveKey, JSON.stringify(state)); }
     catch { /* Storage can be disabled; play remains available for this session. */ }
@@ -305,8 +308,13 @@
     if (!main) {
       updateHud();
       if (!battle.running && !battle.resultOpen) startWave();
+      else if (battle.running && !battle.resultOpen && !battle.tickHandle) battle.tickHandle = window.setInterval(battleTick, 260);
       if (!state.tutorialDone) showCoach();
     } else {
+      clearInterval(battle.tickHandle);
+      battle.tickHandle = 0;
+      clearTimeout(battle.nextWaveHandle);
+      battle.nextWaveHandle = 0;
       closeManagement();
       closeModal();
     }
@@ -330,6 +338,8 @@
   }
 
   function startWave() {
+    clearTimeout(battle.nextWaveHandle);
+    battle.nextWaveHandle = 0;
     clearInterval(battle.tickHandle);
     battle.resultOpen = false;
     battle.running = true;
@@ -365,7 +375,7 @@
   }
 
   function battleTick() {
-    if (!battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
+    if ($("#app").dataset.scene !== "battle" || document.hidden || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
     const dt = .26 * battle.speed;
     battle.heroes.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.enemies, dt));
     battle.enemies.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.heroes, dt));
@@ -469,7 +479,10 @@
     if (state.wave < 5) {
       state.wave += 1;
       save();
-      setTimeout(() => { if (!battle.resultOpen) startWave(); }, 900 / battle.speed);
+      battle.nextWaveHandle = setTimeout(() => {
+        battle.nextWaveHandle = 0;
+        if (!battle.resultOpen && $("#app").dataset.scene === "battle") startWave();
+      }, 900 / battle.speed);
     } else {
       state.stats.bossKills += 1;
       state.stats.stagesCleared += 1;
@@ -494,8 +507,8 @@
     $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
     $("#resultRewards").innerHTML = win ? `<span>${copy("rewardXp")} +${35 + state.stage * 6}</span><span>${copy("rewardMaterials")} +${reward.materials || 3}</span>` : "";
     renderCampaignMilestone(win);
-    $("#resultNext").classList.toggle("is-hidden", !win);
-    $("#resultRetry").classList.toggle("is-hidden", win);
+    // Outcomes change availability, never the three permanent action tracks.
+    $("#resultNext").disabled = !win;
     if (win) collectLoot(true);
     updateHud();
     save();
@@ -558,14 +571,15 @@
         <div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3>
         <p>${p.owned ? `${localizedValue(hero.role)} · ${localizedValue(hero.skill)}` : `${copy("fragments")} ${p.fragments}/10`}</p>
         ${p.owned ? `<div class="mini-stats"><span>${copy("level")}${p.level}</span><span>${p.star} ${copy("stars")}</span><span>${copy("rank")} +${p.rank || 0}</span><span>${copy("attack")} ${stats.atk}</span><span>${copy("health")} ${stats.hp}</span></div>
-        <div class="card-actions"><button data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>${copy("upgrade")} ${cost}</button><button data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>${copy("break")} ${breakCost}</button><button class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy("remove") : copy("deploy")}</button></div>` : ""}
+        <div class="card-actions"><button data-wp-frame-action="secondary" data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>${copy("upgrade")} ${cost}</button><button data-wp-frame-action="secondary" data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>${copy("break")} ${breakCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy("remove") : copy("deploy")}</button></div>` : ""}
         </div></article>`;
     }).join("");
     const equipment = state.inventory.length ? state.inventory.map((entry) => {
       const def = equipmentData(entry.itemId);
       const holder = Object.keys(state.equipped).find((id) => state.equipped[id] === entry.uid);
       const enhanceCost = 3 + entry.level * 2;
-      return `<div class="equipment-row"><div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div><div class="card-actions"><button data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
+      const icon = `<span class="equipment-art" data-equipment-art="${def.id}" aria-hidden="true"></span>`;
+      return `<div class="equipment-row"><div class="equipment-description">${icon}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
     }).join("") : `<p>${copy("noEquipment")}</p>`;
     $("#managementBody").innerHTML = `<div class="section-title"><h3>${copy("teamFormation")}</h3><span>${copy("maxTeam")}</span></div><div class="formation">${formation}</div>
       <div class="section-title"><h3>${copy("heroGrowth")}</h3><span>${copy("heroGrowthMeta")}</span></div><div class="hero-grid">${cards}</div>
@@ -574,7 +588,7 @@
 
   function renderTavern() {
     const owned = C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
-    $("#managementBody").innerHTML = `<section class="summon-stage"><span class="eyebrow">桃園酒肆</span><h3>煮酒招英傑</h3><p>招募可獲得武將碎片；集滿 10 片即可解鎖，已擁有武將的碎片會累積升星。</p><div class="summon-buttons"><button data-action="summon" data-count="1">${state.daily.freeSummon ? "免費招募" : "招募一次 · 60 元寶"}</button><button data-action="summon" data-count="5">招募五次 · 260 元寶</button></div></section>
+    $("#managementBody").innerHTML = `<section class="summon-stage"><span class="eyebrow">桃園酒肆</span><h3>煮酒招英傑</h3><p>招募可獲得武將碎片；集滿 10 片即可解鎖，已擁有武將的碎片會累積升星。</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? "免費招募" : "招募一次 · 60 元寶"}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">招募五次 · 260 元寶</button></div></section>
       <div class="section-title"><h3>武將名冊</h3><span>${owned} / ${C.heroes.length}</span></div><div class="card-grid">${C.heroes.map((hero) => { const p = state.heroes[hero.id]; return `<article class="panel-card"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3><p>${hero.title}</p><div class="progress"><b style="width:${p.owned ? 100 : p.fragments * 10}%"></b></div><small>${p.owned ? `已獲得 · ${p.fragments} 碎片` : `${p.fragments} / 10 碎片`}</small></article>`; }).join("")}</div>`;
   }
 
@@ -584,7 +598,7 @@
       { id: "bulwark", seal: "守", title: "堅陣軍令", copy: "全隊生命提升 5.5%" },
       { id: "tactics", seal: "策", title: "疾行軍令", copy: "全隊攻速提升 2.2%" }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>全隊永久強化</h3><span>材料 ${state.resources.materials}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><span class="seal">${law.seal}</span><div><h3>${law.title} · ${level} 級</h3><p>${law.copy} · 下一級需 ${cost} 材料</p></div><button data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>研習</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>全隊永久強化</h3><span>材料 ${state.resources.materials}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><span class="seal">${law.seal}</span><div><h3>${law.title} · ${level} 級</h3><p>${law.copy} · 下一級需 ${cost} 材料</p></div><button data-wp-frame-action="secondary" data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>研習</button></article>`; }).join("")}</div>`;
   }
 
   function renderCampaign() {
@@ -595,7 +609,7 @@
       { id: "materials", title: "軍法演武", copy: "完成兵種操演，取得軍法材料。", reward: { materials: 14 + Math.floor(state.stage / 2) } },
       { id: "daily-boss", title: "每日 Boss · 黑角試煉", copy: "每日挑戰強敵一次，取得元寶與必得裝備。", reward: { ingots: 25, gear: 1 }, limit: 1 }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><button data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><button data-wp-frame-action="secondary" data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
   }
 
   function managementAction(event) {
@@ -721,7 +735,7 @@
       const ready = value >= entry.target;
       const claimed = state.claimed[entry.id];
       const reward = Object.entries(entry.reward).map(([key, amount]) => `${resourceName(key)} ${amount}`).join("、");
-      return `<div class="list-item"><div><p>${entry.label}</p><small>${Math.min(value, entry.target)} / ${entry.target} · ${reward}</small><div class="progress"><b style="width:${clamp(value / entry.target * 100,0,100)}%"></b></div></div><button data-claim="${entry.id}" data-kind="${kind}" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : "領取"}</button></div>`;
+      return `<div class="list-item"><div><p>${entry.label}</p><small>${Math.min(value, entry.target)} / ${entry.target} · ${reward}</small><div class="progress"><b style="width:${clamp(value / entry.target * 100,0,100)}%"></b></div></div><button data-wp-frame-action="secondary" data-claim="${entry.id}" data-kind="${kind}" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : "領取"}</button></div>`;
     }).join("")}</div>`);
   }
 
@@ -750,18 +764,18 @@
   }
 
   function renderShop() {
-    openModal("商店", `<div class="list"><div class="list-item"><div><p>快速收益 · 10 分鐘</p><small>依目前關卡獲得掛機銅錢與材料</small></div><button data-shop="quick" ${!state.daily.quick ? "disabled" : ""}>${state.daily.quick ? "免費" : "已領取"}</button></div>
-      <div class="list-item"><div><p>軍糧補給</p><small>軍糧 50</small></div><button data-shop="food">20 元寶</button></div>
-      <div class="list-item"><div><p>材料木箱</p><small>軍法材料 20</small></div><button data-shop="material">35 元寶</button></div>
-      <div class="list-item"><div><p>精良裝備箱</p><small>隨機獲得一件裝備</small></div><button data-shop="gear">80 元寶</button></div></div>`);
+    openModal("商店", `<div class="list"><div class="list-item"><div><p>快速收益 · 10 分鐘</p><small>依目前關卡獲得掛機銅錢與材料</small></div><button data-wp-frame-action="secondary" data-shop="quick" ${!state.daily.quick ? "disabled" : ""}>${state.daily.quick ? "免費" : "已領取"}</button></div>
+      <div class="list-item"><div><p>軍糧補給</p><small>軍糧 50</small></div><button data-wp-frame-action="secondary" data-shop="food">20 元寶</button></div>
+      <div class="list-item"><div><p>材料木箱</p><small>軍法材料 20</small></div><button data-wp-frame-action="secondary" data-shop="material">35 元寶</button></div>
+      <div class="list-item"><div><p>精良裝備箱</p><small>隨機獲得一件裝備</small></div><button data-wp-frame-action="secondary" data-shop="gear">80 元寶</button></div></div>`);
   }
 
   function renderSettings() {
     openModal(battleOptionsLabel(), `<div class="settings-list">
       <div class="setting-row"><span>${copy("quality")}</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>${copy("high")}</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>${copy("low")}</option></select></div>
-      <div class="setting-row"><span>${copy("damage")}</span><button class="toggle ${state.settings.damage ? "is-on" : ""}" data-setting="damage" aria-pressed="${state.settings.damage}"></button></div>
+      <div class="setting-row"><span>${copy("damage")}</span><button data-wp-frame-action="tab" data-setting="damage" aria-label="${copy("damage")}" aria-pressed="${state.settings.damage}">${state.settings.damage ? "✓" : "—"}</button></div>
       <div class="setting-row"><span>${copy("save")}</span><strong>${copy("autoSave")}</strong></div>
-      <div class="setting-row"><span>${copy("resetProgress")}</span><button data-reset="arm">${copy("reset")}</button></div></div>`);
+      <div class="setting-row"><span>${copy("resetProgress")}</span><button data-wp-frame-action="secondary" data-reset="arm">${copy("reset")}</button></div></div>`);
   }
 
   function modalAction(event) {
@@ -790,7 +804,14 @@
     const reset = event.target.closest("[data-reset]");
     if (reset) {
       if (reset.dataset.reset === "arm") { reset.dataset.reset = "confirm"; reset.textContent = copy("confirmReset"); }
-      else { localStorage.removeItem(C.saveKey); location.reload(); }
+      else {
+        // beforeunload/visibility/autosave must not recreate the deleted save.
+        localStorage.removeItem(C.saveKey);
+        resettingProgress = true;
+        clearInterval(battle.tickHandle);
+        clearTimeout(battle.nextWaveHandle);
+        location.reload();
+      }
     }
   }
 
@@ -887,22 +908,10 @@
     $("#modalLayer").addEventListener("click", (event) => { if (event.target === $("#modalLayer")) closeModal(); });
     $("#modalBody").addEventListener("click", modalAction);
     $("#modalBody").addEventListener("change", (event) => {
-      if (event.target.dataset.setting === "locale") {
-        const next = localeOrder.includes(event.target.value) ? event.target.value : "en";
-        localStorage.setItem("weightPlayLocale", next);
-        localStorage.setItem("weightplayLocale", next);
-        const target = `/${localeSegments[next]}/games/animal-peach-oath/${location.search}${location.hash}`;
-        if (/^https?:$/.test(location.protocol) && location.pathname !== target) { location.assign(target); return; }
-        document.documentElement.lang = next;
-        document.documentElement.dir = next === "ar" ? "rtl" : "ltr";
-        document.body.dir = next === "ar" ? "rtl" : "ltr";
-        applyLocale();
-        renderSettings();
-      }
       if (event.target.dataset.setting === "quality") { state.settings.quality = event.target.value; document.body.dataset.quality = event.target.value; save(); }
     });
     $("#resultManage").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); battle.manageFromResult = true; openManagement("heroes"); });
-    $("#resultNext").addEventListener("click", () => { state.stage += 1; state.wave = 1; $("#resultPanel").classList.add("is-hidden"); startWave(); save(); });
+    $("#resultNext").addEventListener("click", () => { if ($("#resultNext").disabled) return; state.stage += 1; state.wave = 1; $("#resultPanel").classList.add("is-hidden"); startWave(); save(); });
     $("#resultRetry").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); state.wave = 1; startWave(); });
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape" || event.defaultPrevented) return;

@@ -60,6 +60,10 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .unit.is-hit { animation: hit .18s linear; }
 @keyframes hit { 50% { transform: translateX(7px); filter: brightness(1.7) saturate(.5); } }
 .sprite { position: absolute; top: 15px; left: 0; width: 100%; height: calc(100% - 37px); overflow: hidden; pointer-events: none; }
+/* Bottom-aligned artwork, health and name form one stack. A narrow sprite
+   may not fill a tall viewport-based unit; never leave health at its top. */
+.unit > .sprite { top: 0; height: calc(100% - 39px); }
+.unit > .hp { top: auto; bottom: 26px; }
 .enemy-line .sprite { transform: scaleX(-1); }
 .unit-name { position: absolute; left: 50%; bottom: 5px; transform: translateX(-50%); max-width: 100%; padding: 2px 6px; border-radius: 8px; background: rgba(10,15,22,.78); font-size: 10px; font-weight: 900; white-space: nowrap; }
 .hp { position: absolute; z-index: 2; top: 4px; left: 8%; width: 84%; height: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,.9); border-radius: 8px; background: #39231f; }
@@ -95,17 +99,16 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .ad-reserve { position: fixed; z-index: 2; left: max(0px,calc((100vw - 920px)/2)); bottom: 0; width: min(100vw,920px); height: 56px; background: #0a121d; }
 .app[data-scene="main"] > .ad-reserve { display: none; }
 
-.management { position: absolute; z-index: 40; inset: 0; display: grid; grid-template-rows: 58px minmax(0,1fr); background: linear-gradient(145deg,#1b3045,#101d2e); }
+.management { position: absolute; z-index: 40; inset: 0; display: grid; grid-template-rows: 58px minmax(0,1fr); background: var(--wp-ui-surface); color: var(--wp-ui-text); }
 .management > header { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 8px; padding: 5px 12px; border-bottom: 1px solid var(--wp-ui-border); }
-.management > header button { width: 48px; height: 48px; border: 0; border-radius: 14px; color: #176a9d; background: #f8fafc; font-size: 24px; }
 .management h2 { margin: 0; text-align: center; }
-.management header span { color: #ffe291; font-size: 12px; font-weight: 800; }
+.management header span { color: var(--wp-ui-muted); font-size: 12px; font-weight: 800; }
 .management-body { min-height: 0; overflow-y: auto; padding: 12px 12px 80px; }
 .section-title { display: flex; justify-content: space-between; align-items: center; margin: 10px 0 8px; }
 .section-title h3 { margin: 0; font-size: 15px; }
 .section-title span { color: var(--wp-ui-muted); font-size: 11px; }
 .hero-grid, .card-grid, .campaign-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 8px; }
-.hero-card, .panel-card, .campaign-card { overflow: hidden; border: 1px solid var(--wp-ui-border); border-radius: 16px; background: rgba(27,48,69,.92); }
+.hero-card, .panel-card, .campaign-card { overflow: hidden; border: 1px solid var(--wp-ui-line); border-radius: var(--wp-ui-radius); background: var(--wp-ui-background); }
 .hero-card { display: grid; grid-template-columns: 96px minmax(0,1fr); min-height: 150px; }
 .hero-portrait { position: relative; min-height: 150px; overflow: hidden; background: linear-gradient(#4a6379,#1a2c3e); }
 .hero-portrait .sprite { top: 6px; left: 6px; width: calc(100% - 12px); height: calc(100% - 12px); }
@@ -125,6 +128,12 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .equipment-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,360px); gap: 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--wp-ui-border); }
 .equipment-row > .card-actions { grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 0; }
 .equipment-row small { display: block; color: var(--wp-ui-muted); }
+.equipment-description { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.equipment-description > div { min-width: 0; overflow-wrap: anywhere; }
+.equipment-art { flex: 0 0 64px; width: 64px; height: 64px; background: url("assets/equipment-block-v1.png") 0 0/200% 200%; border-radius: var(--wp-ui-radius-sm,4px); }
+.equipment-art[data-equipment-art="jade-armor"] { background-position: 100% 0; }
+.equipment-art[data-equipment-art="swift-boots"] { background-position: 0 100%; }
+.equipment-art[data-equipment-art="war-seal"] { background-position: 100% 100%; }
 .equipment-row button { min-height: 38px; border: 0; border-radius: 10px; color: #1f2937; background: #f5c84c; font-weight: 900; }
 .summon-stage { min-height: 210px; display: grid; place-items: center; align-content: center; gap: 12px; margin-bottom: 12px; border-radius: 20px; background: radial-gradient(circle,#884133,#26334b 70%); text-align: center; }
 .summon-stage h3 { margin: 0; font-size: 26px; }
@@ -156,12 +165,15 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .toggle.is-on { background: #45c7a3; }
 
 .result-panel, .coach { position: absolute; z-index: 60; inset: 64px 0 0; display: grid; place-content: center; gap: 12px; padding: 24px; background: radial-gradient(circle at 50% 30%,rgba(120,62,45,.96),rgba(12,24,37,.98) 68%); text-align: center; overflow-y: auto; }
+.result-panel { inset: 0; align-content: start; justify-content: stretch; grid-template-rows: repeat(5,max-content) minmax(max-content,1fr); overscroll-behavior: contain; background: var(--wp-ui-surface); color: var(--wp-ui-text); }
 .result-panel h2, .coach h2 { margin: 0; font-size: clamp(34px,8vw,58px); color: #ffe394; }
 .result-panel p, .coach p { max-width: 520px; margin: 0 auto; color: #e5e9ef; line-height: 1.6; }
+.result-panel :is(h2,p) { color: var(--wp-ui-text); }
 .campaign-milestone { width: min(100%, 520px); margin: 2px auto 0; padding: 10px 14px; border: 1px solid rgba(255,227,154,.34); border-radius: 14px; color: #fff0ad; background: rgba(21,38,52,.72); font-size: 13px; font-weight: 800; line-height: 1.5; }
 .reward-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .reward-row span { padding: 8px 12px; border-radius: 12px; color: #2a2110; background: #ffe39a; font-weight: 900; }
-.result-actions { display: grid; grid-template-columns: repeat(3,minmax(100px,1fr)); gap: 8px; width: min(100%,520px); margin: 6px auto 0; }
+.result-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: center; align-self: end; gap: 8px; width: min(100%,520px); margin: 6px auto 0; }
+.result-actions button { min-width: 0; overflow-wrap: anywhere; }
 .coach { z-index: 80; pointer-events: none; background: rgba(8,18,29,.94); }
 .coach span { color: #ffb5aa; font-weight: 900; }
 .coach h2 { font-size: clamp(26px,6vw,42px); }
@@ -182,7 +194,6 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .campaign-goal { left: calc(50% + 24px); width: calc(100% - 80px); padding-inline: 8px; font-size: 10px; }
   .hero-grid, .card-grid, .campaign-grid { grid-template-columns: 1fr; }
   .equipment-row { grid-template-columns: minmax(0,1fr) minmax(0,185px); }
-  .result-actions { grid-template-columns: 1fr; }
 }
 
 @media (max-height:520px) and (orientation:landscape) {
@@ -204,7 +215,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
   .campaign-goal { display: none; }
   .hero-grid { grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); }
   .equipment-row { grid-template-columns: minmax(0,1fr) minmax(0,300px); }
-  .result-panel { inset: 56px 0 0; gap: 4px; padding: 8px 24px; }
+  .result-panel { inset: 0; gap: 4px; padding: 8px 24px; }
   .result-panel h2 { font-size: clamp(30px, 8vh, 42px); line-height: 1.05; }
   .result-panel p { line-height: 1.3; }
   .result-panel .reward-row span { padding: 6px 10px; }
