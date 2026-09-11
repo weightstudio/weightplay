@@ -458,3 +458,36 @@ body[data-screen="main"] #gameGuide { display: block; }
   height:52px;
   min-height:52px;
 }
+
+/* Folded Field keeps the shared Interface 7 skin's rounded Guide and the
+   canonical 420px compact-landscape Main poster. These scoped declarations
+   outrank the token skin without altering other games. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info {
+    border-radius:24px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-info-sections {
+    display:grid !important;
+    grid-template-columns:minmax(0, 1.3fr) minmax(280px, 0.7fr) !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info .game-info-section,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .game-page-info .game-info-fact {
+    border-radius:16px !important;
+  }
+  @media (min-width:700px) and (orientation:landscape) and (max-height:560px) {
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-composition {
+      --wp-main-landscape-poster-size:420px !important;
+    }
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster-media,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster-media > img,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-folded-field"] .wp-standard-main-poster > img {
+      width:420px !important;
+      min-width:420px !important;
+      max-width:420px !important;
+      height:420px !important;
+      min-height:420px !important;
+      max-height:420px !important;
+    }
+  }
+}

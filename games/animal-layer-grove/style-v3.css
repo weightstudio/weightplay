@@ -8,6 +8,14 @@
 
 /* Keep the shared guide and Canvas contracts explicit after the art skin. */
 .game-page-info{padding:12px}
+/* Interface 7's block skin uses a 3px token by default; keep the public
+   Guide visibly framed and structured for this game's rounded surface. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-page-info { border-radius:24px !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-page-info .game-info-sections { display:grid !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-page-info .game-info-section { border-radius:16px !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-layer-grove"] .game-page-info .game-info-fact { border-radius:16px !important; }
+}
 .stage-canvas,.battle-canvas{width:100%;min-height:100%;box-sizing:border-box}
 .stage-canvas{background:linear-gradient(145deg,#132523,#172d3b)}
 .battle-canvas{position:relative;background:linear-gradient(145deg,#132523e8,#172d3bf2)}

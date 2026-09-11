@@ -884,6 +884,48 @@ body.wonder-stage-select #profilePanel .lion-reset, .lion-wall-synergy button { 
 .lion-rank-preview small { display:block; margin-top:5px; color:#edc36c; }
 .lion-passive-help { margin-bottom:10px; padding:12px; border:1px solid #546d83; border-radius:8px; background:#192e40; color:#c5d3df; font-size:13px; line-height:1.6; }
 .lion-passive-help summary { cursor:pointer; color:#edc36c; min-height:28px; }
+
+/* Owner-requested compact Stage/Battle chrome. Keep shared navigation ownership
+   and Main branding; put the wallet into the unused center of the Stage rail. */
+body.wonder-stage-select .wp-stage-shell-header > :is(h1,h2,strong,.wp-generated-main-title),
+body.wonder-playing .wp-battle-shell-header > :is(h1,h2,strong,.wp-generated-main-title) {
+  display:none !important;
+  pointer-events:none !important;
+}
+body.wonder-stage-select #overlayText { display:none !important; }
+body.wonder-stage-select #menuCoinLine {
+  position:fixed !important;
+  z-index:101 !important;
+  top:2px;
+  left:80px;
+  right:80px;
+  height:44px;
+  box-sizing:border-box;
+  display:flex !important;
+  flex-wrap:nowrap;
+  justify-content:center;
+  gap:10px;
+  margin:0;
+  padding:4px;
+  border:0;
+  background:transparent;
+  font-size:17px;
+  pointer-events:none;
+}
+body.wonder-stage-select #menuCoinLine img { width:24px; height:24px; }
+body.wonder-stage-select #menuCoinLine .menu-wallet-item { min-width:0; gap:3px; }
+body.wonder-stage-select #menuCoinLine .menu-wallet-item > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+body.wonder-stage-select #overlay { grid-template-rows:minmax(0,1fr); }
+body.wonder-stage-select #menuContent { grid-row:1; }
+body.wonder-stage-select .wp-stage-shell-header { height:48px !important; min-height:48px !important; }
+body.wonder-stage-select #overlay { padding-top:52px; }
+@media (min-aspect-ratio:3/2) and (max-height:500px) {
+  body.wonder-stage-select #overlay { padding-top:calc(70px + var(--wonder-stage-tab-height,44px)); }
+  body.wonder-stage-select #menuTabs { top:56px; }
+}
+@media (min-height:501px), (max-aspect-ratio:149/100) {
+  body.wonder-stage-select #overlay { padding-bottom:108px; }
+}
 .lion-rank-preview { display:flex; justify-content:space-around; gap:12px; padding:12px 0; border-block:1px solid #455c70; }
 .lion-rank-preview span { display:grid; gap:5px; font-size:12px; }
 .lion-rank-preview b { color:#f0cc82; }

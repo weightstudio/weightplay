@@ -57,6 +57,24 @@
       loading: "نفتح مخططات الموطن…", title: "مخطط الموطن", kicker: "لغز تخطيط هادئ", world: "محطة حقل ضوء الطحلب", intro: "رتّب أربع قطع موطن ليحصل بيت كل حيوان على الجار المناسب.", start: "افتح مخططًا", choose: "اختر مخططًا", best: "الأفضل: {best} تبادلات", chapter: "مخططات الموطن", round: "المخطط", prompt: "اختر قطعتين ثم بدّل مكانهما لتحقيق كل ملاحظات الحقل.", selection: "المحدد: {names}", selectionPrompt: "اختر قطعتين من الموطن لتبديلهما.", slot: "الخانة {count}", back: "رجوع", swap: "بدّل المحدد", reset: "إعادة ضبط المخطط", correct: "اصطف المخطط! كل ملاحظات الحقل مناسبة.", wrong: "هذا التبديل مسموح. راجع الملاحظات وجرّب ترتيبًا آخر.", settings: "الإعدادات", sound: "الصوت", on: "تشغيل", off: "إيقاف", language: "اللغة", close: "إغلاق", finished: "اكتمل المخطط", resultTitle: "كل موطن مناسب!", resultLevel: "اكتمل المخطط!", resultText: "اكتمل {count} من 3 مخططات. أفضل الحملة: {best} تبادلات.", next: "المخطط التالي", ruleTouch: "يجب أن تلامس {a} ‏{b}.", ruleApart: "يجب ألا تلامس {a} ‏{b}.", ruleBelow: "تقع {a} أسفل {b}.", tilePond: "بركة", tileReed: "ضفة القصب", tileNest: "عش", tileMeadow: "مرج", tileCanopy: "مظلة الأشجار", tileStream: "جدول", tileFern: "سرخس", tileBurrow: "جحر", tileDusk: "غابة الغسق", tilePool: "بركة المد", tileLantern: "فسحة الفوانيس", tileMoss: "ضفة الطحلب", blueprint1: "مخطط البركة", blueprint2: "مخطط المظلة", blueprint3: "مخطط الغسق", hint1: "ضع ضفة القصب بجوار البركة.", hint2: "أبقِ الجدول قريبًا من السرخس.", hint3: "دع فسحة الفوانيس تراقب ضفة الطحلب."
     })
   };
+  const progressSummaryByLocale = {
+    en: "30 stages · 6 chapters",
+    "zh-Hant": "30 個階段 · 6 個章節",
+    "zh-Hans": "30 个阶段 · 6 个章节",
+    ja: "30ステージ · 6チャプター",
+    ko: "30개 스테이지 · 6개 챕터",
+    es: "30 fases · 6 capítulos",
+    "pt-BR": "30 fases · 6 capítulos",
+    fr: "30 étapes · 6 chapitres",
+    de: "30 Stufen · 6 Kapitel",
+    it: "30 livelli · 6 capitoli",
+    ru: "30 этапов · 6 глав",
+    hi: "30 चरण · 6 अध्याय",
+    ar: "30 مرحلة · 6 فصول",
+  };
+  Object.entries(progressSummaryByLocale).forEach(([locale, progressSummary]) => {
+    window.HABITAT_BLUEPRINT_LOCALES[locale].progressSummary = progressSummary;
+  });
   const guideCopyByLocale = {
     en: {
       guideAria: "Habitat Blueprint game information", guideKicker: "WeightPlay Original Game Guide", guideIntro: "Swap four habitat tiles to satisfy every neighbour clue and build a calm, connected home for the animals.", guideGameplay: "Gameplay", guideGameplayValue: "Habitat constraint puzzle", guideGenre: "Genre", guideGenreValue: "Puzzle · Logic · Spatial Planning · Family · Animal", guidePlansTitle: "Habitat plans", guideHow1: "Read the three field notes.", guideHow2: "Select two tiles and swap them.", guideHow3: "Reset safely when a trial arrangement is not right.", guideResultsTitle: "Results and saves", guideResults: "Three short plans form one calm session. Your best swap count stays in this browser.", guideTipsTitle: "Practical tips", guideTips: "Use the required, forbidden, and below clues together; every plan stays recoverable.", faqTitle: "FAQ", faqProgressQuestion: "Is progress saved?", faqProgressAnswer: "Yes, only in this browser."

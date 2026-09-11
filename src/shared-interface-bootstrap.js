@@ -59,17 +59,36 @@
     return match?.[1] || "";
   };
 
+  const findMainPoster = () => {
+    const explicit = document.querySelector(
+      "[data-wp-frame-poster], .main-poster, .main-cover, .menu-poster, main .poster, main img.cover, .poster-frame > img.cover, .cover-wrap > img, #posterImage, #coverImage"
+    );
+    const image = explicit?.tagName === "IMG" ? explicit : explicit?.querySelector("img");
+    if (image) return image;
+    // Legacy Main content slots do not all name the image itself. Restrict
+    // discovery to Main and exclude guides/related cards, never Battle art.
+    const scopes = document.querySelectorAll(
+      '[data-wp-frame-main], [data-screen="main"], #main, #mainScreen, #main-screen, .main-screen, .screen.main'
+    );
+    for (const scope of scopes) {
+      for (const candidate of scope.querySelectorAll("img")) {
+        if (candidate.closest('a, [data-wp-guide], .game-guide, .public-game-guide, .related-games, [data-screen="battle"], [data-screen="stage"]')) continue;
+        const identity = `${candidate.id} ${candidate.className} ${candidate.getAttribute("src") || ""}`;
+        if (/loading|logo|icon|avatar|portrait|badge/i.test(identity)) continue;
+        if (/cover|poster/i.test(identity)) return candidate;
+      }
+    }
+    return null;
+  };
+
   const applyInterface7Poster = () => {
     const gameId = gameIdFromPath();
     const poster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[gameId];
     if (!poster) return;
-    const candidate = document.querySelector(
-      "[data-wp-frame-poster], .main-poster, .main-cover, main .poster, main img.cover, .poster-frame > img.cover, .cover-wrap > img, #posterImage, #coverImage"
-    );
-    const posterImage = candidate?.tagName === "IMG" ? candidate : candidate?.querySelector("img");
+    const posterImage = findMainPoster();
     if (posterImage) {
-      posterImage.src = poster;
-      posterImage.removeAttribute("srcset");
+      if (posterImage.getAttribute("src") !== poster) posterImage.src = poster;
+      if (posterImage.hasAttribute("srcset")) posterImage.removeAttribute("srcset");
       posterImage.dataset.wpInterface7Poster = "true";
     }
     document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]')
@@ -113,6 +132,14 @@
   const ready = () => {
     addInterfaceMeta();
     ensureLegacyShell();
+    // Dynamic Main renderers create fresh images after initial startup or
+    // returning from play. Captured image events cover that lifecycle without
+    // a document-wide MutationObserver, timers, or retained old DOM nodes.
+    const onImageSettled = (event) => {
+      if (event.target?.tagName === "IMG" && event.target === findMainPoster()) applyInterface7Poster();
+    };
+    document.addEventListener("load", onImageSettled, true);
+    document.addEventListener("error", onImageSettled, true);
     ensurePosterRegistry(applyInterface7Poster);
   };
   if (document.readyState === "loading") {

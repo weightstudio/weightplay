@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v44";
+  const GAME_VERSION = "v45";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -1510,6 +1510,7 @@
     }
     panel.classList.remove("is-hidden");
     setSceneOwnership(panel, true);
+    if (battleCovered) panel.scrollTop = 0;
     $("battleLive").inert = battleCovered;
     $("battleLive").setAttribute("aria-hidden", battleCovered ? "true" : "false");
     document.body.classList.toggle("orb-fortress-playing", panel !== nodes.menuPanel);
@@ -3006,6 +3007,7 @@
     nodes.hintText.textContent = t("waveClear");
     renderUpgradeCards();
     show(nodes.upgradePanel);
+    nodes.upgradeCards.scrollTop = 0;
     nodes.upgradePanel.classList.add("is-revealing");
     window.setTimeout(() => {
       if (state.mode !== "upgrade") return;

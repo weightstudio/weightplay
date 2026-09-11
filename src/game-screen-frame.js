@@ -215,7 +215,7 @@
     const visible=node=>node&&!node.hidden&&!node.classList.contains('is-hidden')&&getComputedStyle(node).display!=='none';
     const activate=target=>{
       const name=typeof target==='string'?target:Object.keys(scenes).find(k=>scenes[k].root===target);
-      const resolved=scenes[name]?name:visible(battle)?'battle':'main';
+      const resolved=scenes[name]?name:visible(scenes.battle.root)?'battle':'main';
       frame.activate(resolved,{covered:!name&&resolved==='battle'});
     };
     const sync=()=>{const name=Object.keys(scenes).find(k=>visible(scenes[k].root));if(name)activate(name);};

@@ -28,6 +28,10 @@
     // Habitat Blueprint's compact-landscape Battle keeps its Reset/Swap
     // actions at the shared 44px touch-target floor inside the wide envelope.
     "animal-habitat-blueprint": [".battle-canvas", 390, 788, 760, 334],
+    // Folded Field publishes the logical Battle attribute on its permanent
+    // outer screen. Keep that owner on the wide envelope so flap feedback
+    // cannot reapply the portrait scale to the inner board.
+    "animal-folded-field": ["#battleScreen", 390, 788, 760, 334],
     // Twin Switchyard keeps its game-local physical fallback controls, while
     // the native 960x540 playfield also needs the complete wide envelope.
     "animal-twin-switchyard": ["#battleScreen", 390, 788, 760, 334],
@@ -171,6 +175,7 @@
   // lower it only for this game so its physical controls stay >=44px.
   const landscapeRatioThresholdByGame = {
     "animal-habitat-builder": 1.25,
+    "animal-folded-field": 1.25,
   };
   const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";
