@@ -112,7 +112,7 @@
   const BREAKOUT_GAME_VERSION = "v15";
   const TETRIS_GAME_VERSION = "v20";
   const SNAKE_GAME_VERSION = "v30";
-  const WORDLE_GAME_VERSION = "v12";
+  const WORDLE_GAME_VERSION = "v15";
   const PONG_TARGET_LANES = [2, 4, 1, 5, 0];
   const pongTargetForRally = (rally) => PONG_TARGET_LANES[Math.max(0, Math.min(PONG_TARGET_LANES.length - 1, rally))];
   const pongLanePosition = (lane) => Math.max(17, Math.min(82, Number(lane) * 13 + 17));

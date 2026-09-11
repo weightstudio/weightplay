@@ -24,11 +24,11 @@
     <meta property="og:title" content="Herz | WeightPlay" />
     <meta property="og:description" content="Gib drei Karten weiter, bediene die Farbe und meide Strafherzen in dreizehn Stichen." />
     <meta property="og:url" content="https://weightplay.com/de/games/hearts/" />
-    <meta property="og:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/hearts.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Herz | WeightPlay" />
     <meta name="twitter:description" content="Gib drei Karten weiter, bediene die Farbe und meide Strafherzen in dreizehn Stichen." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/hearts.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "name": "Herz",
   "alternateName": "Hearts",
   "url": "https://weightplay.com/de/games/hearts/",
-  "image": "https://weightplay.com/assets/card-games-hearts-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/hearts.webp",
   "description": "Gib drei Karten weiter, bediene die Farbe und meide Strafherzen in dreizehn Stichen.",
   "publisher": {
     "@type": "Organization",
@@ -79,7 +79,7 @@
       <div class="game-info-section"><h3>Designnotiz</h3><p>Die Browserversion nutzt eine lokale Vier-Spieler-Kartenengine für Weitergabe, Bedienpflicht, Herzbruch, Strafpunkte, Shooting the Moon und Ergebnis. Touch-, Maus- und Tastaturkarten verwenden dieselben Regeln.</p></div>
       <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherinformationen</h3><p>Spiele Herz kostenlos im Browser, ohne Konto oder Kauf. Runde und Ergebnis bleiben nur in diesem Browser; das Löschen von Websitedaten oder ein Browserwechsel kann den lokalen Stand entfernen.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Warum beginnt der erste Stich mit Kreuz 2?</dt><dd>So gibt es einen festen, sichtbaren Startpunkt, bevor die Stichgewinner die nächsten Führungen bestimmen.</dd></div><div><dt>Wann darf ich ein Herz spielen?</dt><dd>Du musst die angespielte Farbe bedienen, wenn du sie hast. Herzen dürfen erst nach dem Herzbruch angespielt werden.</dd></div><div><dt>Wie viele Punkte geben Strafkarten?</dt><dd>Jedes Herz zählt 1 Punkt, die Pik-Dame zählt 13 Punkte.</dd></div><div><dt>Was ist Shooting the Moon?</dt><dd>Nimmt ein Spieler alle 26 Strafpunkte, erhält er −26 und alle anderen erhalten jeweils 26.</dd></div><div><dt>Wer spielt den nächsten Stich an?</dt><dd>Die höchste Karte der angespielten Farbe gewinnt und ihr Spieler spielt den nächsten Stich an.</dd></div><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Runde und Ergebnis bleiben nur in diesem Browser; es gibt kein Konto und keinen Cloud-Speicher.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/go-fish/"><img src="/assets/card-games-go-fish-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Gehen Sie angeln</strong><span>Frage einen Gegner nach einem Rang, den du bereits hältst.</span></span></a><a class="game-info-related-card" href="/de/games/crazy-eights/"><img src="/assets/card-games-crazy-eights-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Verrückte Achter</strong><span>Verrückte Achter ist ein Ablegespiel für vier Personen.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/go-fish/"><img src="/assets/interface7-redrawn/go-fish.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Gehen Sie angeln</strong><span>Frage einen Gegner nach einem Rang, den du bereits hältst.</span></span></a><a class="game-info-related-card" href="/de/games/crazy-eights/"><img src="/assets/interface7-redrawn/crazy-eights.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Verrückte Achter</strong><span>Verrückte Achter ist ein Ablegespiel für vier Personen.</span></span></a></div></div>
     </div>
   </section></main>
 <section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Hearts</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong id="cardGameHandLabel">Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section>

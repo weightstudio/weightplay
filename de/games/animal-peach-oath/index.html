@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>Pfirsichgarten-Schwur | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen." />
+  <meta name="description" content="Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Pfirsichgarten-Schwur | WeightPlay" />
-    <meta property="og:description" content="Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen." />
+    <meta property="og:description" content="Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen." />
     <meta property="og:url" content="https://weightplay.com/de/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Pfirsichgarten-Schwur | WeightPlay" />
-    <meta name="twitter:description" content="Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "Pfirsichgarten-Schwur",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/de/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">Pfirsichgarten-Schwur</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>Pfirsichgarten-Schwur</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="Spielgrafik zu Pfirsichgarten-Schwur" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="Spielgrafik zu Pfirsichgarten-Schwur" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="Informationen zu Pfirsichgarten-Schwur" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Pfirsichgarten-Schwur</h2><p>Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Trupp-RPG mit automatischen Kämpfen</strong></div><div class="game-info-fact"><span>Genre</span><strong>Tierspiele · RPG · Strategie · Idle</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht zu beginnen, zunehmend anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>5–15 Minuten</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Welt und Mission</h3><p>Jedes Kapitel bietet eine kurze Route, ein klares Ziel und einen Grund, den nächsten Entwicklungsschritt der Einheit zu wählen.</p></div>
+      <div class="game-info-section"><h3>Spielsysteme</h3><p>Jede Stufe hat fünf Feindwellen. Level, Sterne, Rang, Ausrüstung und Konter entscheiden über die späten Wellen und den Boss.</p></div>
+      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Nach dem Start kämpfen die Helden automatisch. Sammle die Beute ein, die in der Arena erscheint.</li><li>Verbessere Helden, lege Ausrüstung an und passe den Trupp über die unteren Menüs an.</li><li>Nach einem Sieg geht es zur nächsten Stufe. Nach einer Niederlage stärkst du den Trupp und versuchst es erneut.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Ändere pro Versuch nur eine Sache, damit das Ergebnis aussagekräftig bleibt.</li></ul></div>
+      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Kapitel ergänzen Gegner, Ziele, Helden, Ausrüstung und Bossprüfungen.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Stufen, Helden, Fortschritt und Einstellungen werden nur in diesem Browser gespeichert. Konto, Kauf, Online-Profil und Cloud-Speicher sind nicht nötig.</p></div>
+      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Ist der Kampf automatisch?</dt><dd>Ja, aber Formation, Verbesserungen, Ausrüstung und Konter wählst du selbst.</dd></div><div><dt>Was passiert nach einer Niederlage?</dt><dd>Nach einem Sieg geht es zur nächsten Stufe. Nach einer Niederlage stärkst du den Trupp und versuchst es erneut.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Licht aus</strong><span>Licht aus ist ein klassisches 5x5-Schalterrätsel: Schalte ein Feld und seine orthogonalen Nachbarn um, bis alle Lichter aus sind.</span></span></a><a class="game-info-related-card" href="/de/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Schiebepuzzle 15</strong><span>Wähle aus 30 gespeicherten Stufen mit klassischen, Schlangen-, Spalten-, Anker- und Umleitungszielen.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informationen zu Pfirsichgarten-Schwur">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Pfirsichgarten-Schwur</h2><p>Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Vertikales Idle-Truppen-RPG</strong></div><div class="game-info-fact"><span>Genre</span><strong>Tierspiele · RPG · Strategie · Idle</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Leicht zu beginnen, zunehmend anspruchsvoll</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>5–15 Minuten</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Welt und Mission</h3><p>Jedes Kapitel bietet eine kurze Route, ein klares Ziel und einen Grund, den nächsten Entwicklungsschritt der Einheit zu wählen.</p>
-<p>Die Helden kämpfen automatisch. Du bereitest die Einheit vor, liest das Ergebnis und entscheidest zwischen Verstärken, Weitergehen und erneutem Versuch.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Jede Stufe hat fünf Feindwellen. Level, Sterne, Rang, Ausrüstung und Konter entscheiden über die späten Wellen und den Boss.</p>
-<p>Verbessere Helden und Ausrüstung im Management. Ein Konter gegen die ganze Welle kann wertvoller sein als eine kleine Einzelverbesserung.</p>
-<p>Das Ergebnis bietet Weiter, Erneut versuchen oder Management. Fortschritt und Einstellungen bleiben in diesem Browser; Konto und Serverprofil sind nicht nötig.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Öffne die nächste Stufe und prüfe Gegner und Ziel.</li><li>Passe im Management Level, Sterne, Rang und Ausrüstung an.</li><li>Prüfe Konter und Fähigkeiten vor den fünf automatischen Wellen.</li><li>Lies das Ergebnis und wähle Weiter, Erneut versuchen oder Management.</li><li>Spiele frühere Stufen für Ressourcen oder einen anderen Konter erneut.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Prüfe die nächste Welle vor dem Ausgeben von Ressourcen.</li><li>Ein Konter für die ganze Welle kann mehr bringen als ein kleiner Einzelbonus.</li><li>Bei einer späten Niederlage zuerst Überleben oder Ausrüstung verbessern.</li><li>Ändere pro Versuch nur eine Sache, damit das Ergebnis aussagekräftig bleibt.</li></ul></div>
-      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Kapitel ergänzen Gegner, Ziele, Helden, Ausrüstung und Bossprüfungen.</p>
-<p>Die Kampagne passt zu kurzen Sitzungen: Vorwärts gehen, wenn die Verbesserung klar ist, und für Ressourcen zurückkehren.</p></div>
-      <div class="game-info-section"><h3>Designnotiz</h3><p>Das Spiel macht aus Idle-Kämpfen eine Planungsschleife: vorbereiten, fünf Wellen beobachten, vom Boss lernen und eine sinnvolle Verbesserung wählen.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Stufen, Helden, Fortschritt und Einstellungen werden nur in diesem Browser gespeichert. Konto, Kauf, Online-Profil und Cloud-Speicher sind nicht nötig.</p></div>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Ist der Kampf automatisch?</dt><dd>Ja, aber Formation, Verbesserungen, Ausrüstung und Konter wählst du selbst.</dd></div><div><dt>Wie lange dauert eine Stufe?</dt><dd>Eine Stufe umfasst fünf Wellen und eine Boss- oder Zielprüfung und passt meist in eine kurze Sitzung.</dd></div><div><dt>Was sollte ich zuerst verbessern?</dt><dd>Prüfe die nächste Gegnergruppe und wähle die Verbesserung oder den Konter, der beim nächsten Sieg hilft, statt Ressourcen zufällig auszugeben.</dd></div><div><dt>Was passiert nach einer Niederlage?</dt><dd>Erneut versuchen, die Einheit verwalten oder zu einer früheren Stufe zurückkehren.</dd></div><div><dt>Wird online gespeichert?</dt><dd>Nein, nur in diesem Browser.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Licht aus</strong><span>Licht aus ist ein klassisches 5x5-Schalterrätsel: Schalte ein Feld und seine orthogonalen Nachbarn um, bis alle Lichter aus sind.</span></span></a><a class="game-info-related-card" href="/de/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Schiebepuzzle 15</strong><span>Wähle aus 30 gespeicherten Stufen mit klassischen, Schlangen-, Spalten-, Anker- und Umleitungszielen.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

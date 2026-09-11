@@ -39,5 +39,9 @@
     ar: { loading: "جارٍ تجهيز خريطة الإنقاذ…", brand: "WeightPlay", lobbyBack: "العودة إلى WeightPlay", kicker: "خريطة إنقاذ تارو ذي صدفة الطحلب", help: "طريقة اللعب", sound: "الصوت", boardKicker: "لوحة الإنقاذ", boardTitle: "لوحة أطراف الأغصان", current: "الطرف الحالي", noBest: "—", swapName: "الطرف {number}" },
   };
   Object.entries(completeness).forEach(([locale, copy]) => Object.assign(locales[locale], copy));
+  Object.values(locales).forEach((dictionary) => {
+    dictionary.stages = dictionary.map;
+    dictionary.nextStage = dictionary.next;
+  });
   window.TANGLE_RESCUE_LOCALES = locales;
 }());

@@ -3286,26 +3286,21 @@
   }
 
   // Hexa Sort owns a complete public FAQ in every generated route. The
-  // runtime guide renderer still starts from the generic English catalog, so
-  // keep the same locale-owned question and answer together here as well;
-  // otherwise the post-load guide can reintroduce an English fallback after
-  // the static route has already rendered the localized copy.
+  // runtime guide renderer starts from the shared six-question catalog for
+  // most locales, so keep the two additional public-value answers and the
+  // two questions that the runtime dictionaries do not translate here too.
   const hexaSortFaqByLocale = Object.freeze({
-    en: [["Is progress saved?", "Campaign unlocks, Endless best score, and preferences are stored locally in this browser."]],
-    "zh-Hant": [["進度會保存嗎？", "戰役解鎖、無盡最佳分數與偏好會儲存在目前瀏覽器。"]],
-    "zh-Hans": [["进度会保存吗？", "战役解锁、无尽最佳分数与偏好会保存在当前浏览器。"]],
-    ja: [["進行状況は保存されますか？", "キャンペーンの解放、エンドレスのベストスコア、設定はこのブラウザにローカル保存されます。"]],
-    ko: [["진행 상황이 저장되나요?", "캠페인 잠금 해제, Endless 최고 점수와 설정은 이 브라우저에 로컬로 저장됩니다."]],
-    es: [["¿Se guarda el progreso?", "Los desbloqueos de campaña, la mejor puntuación de Sin fin y las preferencias se guardan localmente en este navegador."]],
-    "pt-BR": [["O progresso é salvo?", "Desbloqueios da campanha, melhor pontuação do Endless e preferências ficam armazenados localmente neste navegador."]],
-    fr: [["La progression est-elle sauvegardée ?", "Les déverrouillages de campagne, le meilleur score sans fin et les préférences sont stockés localement dans ce navigateur."]],
-    de: [["Wird der Fortschritt gespeichert?", "Kampagnenfreischaltungen, Endless-Bestwert und Einstellungen werden lokal in diesem Browser gespeichert."]],
-    it: [["I progressi vengono salvati?", "Gli sblocchi della campagna, il miglior punteggio Infinita e le preferenze vengono salvati localmente in questo browser."]],
-    ru: [["Сохраняется ли прогресс?", "Открытия кампании, лучший результат в бесконечном режиме и настройки сохраняются локально в этом браузере."]],
-    hi: [["क्या प्रगति सहेजी जाती है?", "अभियान अनलॉक, अंतहीन सर्वोत्तम स्कोर और प्राथमिकताएँ इसी ब्राउज़र में स्थानीय रूप से सहेजी जाती हैं।"]],
-    ar: [["هل يُحفظ التقدم؟", "تُحفظ عمليات فتح الحملة وأفضل نتيجة في الوضع اللانهائي والتفضيلات محليًا في هذا المتصفح."]],
+    en: { first: "How many stages are included?", save: "Is progress saved?", tail: [["Which controls and screen sizes are supported?", "The same game rules support touch, mouse, and keyboard where available; the layout scales across phone, landscape, and desktop screens."], ["Can progress move automatically to another device?", "No. Progress stays in this browser's local storage, so another device or browser profile starts separately."]] },
+    ja: { first: "ステージはいくつありますか？", save: "進行状況は保存されますか？", tail: [["どの操作方法と画面サイズに対応していますか？", "対応している場合、タッチ、マウス、キーボードは同じルールで使えます。画面はスマートフォン、横画面、デスクトップに合わせて拡大縮小されます。"], ["進行状況は別の端末に自動で移行しますか？", "いいえ。進行状況はブラウザのローカルストレージだけに保存されるため、別の端末やプロファイルでは別の進行状況になります。"]] },
+    ko: { first: "스테이지는 몇 개인가요?", save: "진행 상황이 저장되나요?", tail: [["어떤 조작 방식과 화면 크기를 지원하나요?", "지원하는 범위에서 터치, 마우스와 키보드는 같은 규칙으로 작동하며 화면은 휴대폰, 가로 화면과 데스크톱에 맞춰 조정됩니다."], ["진행 상황이 다른 기기로 자동 이동하나요?", "아니요. 진행 상황은 브라우저 로컬 저장소에만 보관되므로 다른 기기나 브라우저 프로필에서는 별도로 시작합니다."]] },
+    es: { first: "¿Cuántas fases hay?", save: "¿Se guarda el progreso?", tail: [["¿Qué controles y tamaños de pantalla son compatibles?", "Cuando están disponibles, el tacto, el ratón y el teclado siguen las mismas reglas; el diseño se adapta a móvil, apaisado y escritorio."], ["¿El progreso se transfiere automáticamente a otro dispositivo?", "No. El progreso permanece en el almacenamiento local de este navegador, así que otro dispositivo o perfil empieza por separado."]] },
+    "pt-BR": { first: "Quantas fases existem?", save: "O progresso é salvo?", tail: [["Quais controles e tamanhos de tela são compatíveis?", "Quando disponíveis, toque, mouse e teclado seguem as mesmas regras; o layout se adapta a celular, paisagem e desktop."], ["O progresso é transferido automaticamente para outro dispositivo?", "Não. O progresso fica no armazenamento local deste navegador, então outro dispositivo ou perfil começa separadamente."]] },
+    fr: { first: "Combien de niveaux sont inclus ?", save: "La progression est-elle sauvegardée ?", tail: [["Quels contrôles et quelles tailles d’écran sont pris en charge ?", "Lorsqu’ils sont disponibles, le tactile, la souris et le clavier suivent les mêmes règles ; la mise en page s’adapte au téléphone, au paysage et au bureau."], ["La progression est-elle transférée automatiquement vers un autre appareil ?", "Non. Elle reste dans le stockage local de ce navigateur ; un autre appareil ou profil démarre séparément."]] },
+    de: { first: "Wie viele Stufen gibt es?", save: "Wird der Fortschritt gespeichert?", tail: [["Welche Steuerungen und Bildschirmgrößen werden unterstützt?", "Wenn verfügbar, folgen Touch, Maus und Tastatur denselben Regeln; das Layout passt sich an Smartphone, Querformat und Desktop an."], ["Wird der Fortschritt automatisch auf ein anderes Gerät übertragen?", "Nein. Der Fortschritt bleibt im lokalen Speicher dieses Browsers; ein anderes Gerät oder Profil beginnt getrennt."]] },
+    it: { first: "Quanti livelli sono inclusi?", save: "I progressi vengono salvati?", tail: [["Quali controlli e dimensioni dello schermo sono supportati?", "Quando disponibili, tocco, mouse e tastiera seguono le stesse regole; il layout si adatta a telefono, orizzontale e desktop."], ["I progressi vengono trasferiti automaticamente su un altro dispositivo?", "No. Restano nell’archiviazione locale di questo browser, quindi un altro dispositivo o profilo parte separatamente."]] },
+    ru: { first: "Сколько этапов включено?", save: "Сохраняется ли прогресс?", tail: [["Какие способы управления и размеры экрана поддерживаются?", "Если они доступны, сенсорное управление, мышь и клавиатура работают по одним правилам; макет адаптируется к телефону, альбомной ориентации и компьютеру."], ["Прогресс автоматически переносится на другое устройство?", "Нет. Он хранится в локальном хранилище этого браузера, поэтому другое устройство или профиль начинает отдельно."]] },
+    hi: { first: "कितने चरण शामिल हैं?", save: "क्या प्रगति सहेजी जाती है?", tail: [["कौन-से नियंत्रण और स्क्रीन आकार समर्थित हैं?", "जहाँ उपलब्ध हों, टच, माउस और कीबोर्ड एक ही नियमों पर चलते हैं; लेआउट फोन, लैंडस्केप और डेस्कटॉप के अनुसार ढलता है।"], ["क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?", "नहीं। प्रगति इसी ब्राउज़र के स्थानीय संग्रहण में रहती है, इसलिए दूसरा डिवाइस या प्रोफ़ाइल अलग से शुरू होता है।"]] },
   });
-
   const ginRummyLocalizedCopy = {
     en: {
       title: "Gin Rummy", difficulty: "Easy to Challenging", time: "5-15 minutes",
@@ -9552,8 +9547,18 @@
       translated.how = animalHeroTrialsLocaleOverride.how;
       translated.faq = animalHeroTrialsLocaleOverride.faq;
     }
-    if (id === "hexa-sort" && hexaSortFaqByLocale[activeLocale]) {
-      translated.faq = hexaSortFaqByLocale[activeLocale];
+    if (id === "hexa-sort") {
+      const localizedFaq = localizedGames[activeLocale]?.["hexa-sort"]?.faq;
+      const faq = Array.isArray(localizedFaq) && localizedFaq.length > 1
+        ? localizedFaq.map((entry) => [...entry])
+        : (Array.isArray(translated.faq) ? translated.faq.map((entry) => [...entry]) : []);
+      const faqFix = hexaSortFaqByLocale[activeLocale];
+      if (faqFix && faq.length) {
+        if (faqFix.first && faq[0]) faq[0][0] = faqFix.first;
+        if (faqFix.save && faq[5]) faq[5][0] = faqFix.save;
+        if (faqFix.tail?.length && faq.length < 8) faq.push(...faqFix.tail.slice(0, 8 - faq.length));
+      }
+      translated.faq = faq;
     }
     if (translated.designNoteParts?.length && !override.designNote) translated.designNote = translated.designNoteParts.join(" ");
     if (translated.parentParts?.length && !override.parent) translated.parent = translated.parentParts.join(" ");

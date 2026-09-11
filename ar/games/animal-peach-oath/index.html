@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>عهد حديقة الخوخ | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي..." />
+  <meta name="description" content="كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="عهد حديقة الخوخ | WeightPlay" />
-    <meta property="og:description" content="قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي..." />
+    <meta property="og:description" content="كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة." />
     <meta property="og:url" content="https://weightplay.com/ar/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="عهد حديقة الخوخ | WeightPlay" />
-    <meta name="twitter:description" content="قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي..." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "عهد حديقة الخوخ",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/ar/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي...",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="العودة إلى ردهة WeightPlay">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">عهد حديقة الخوخ</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="الإعدادات">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>عهد حديقة الخوخ</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="شعار WeightPlay" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="شعار WeightPlay" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">لعبة RPG حيوانات خاملة من الممالك الثلاث</span>
-            <p>قد فريقًا من الحيوانات المتعاهدين عبر القتال التلقائي وتطوير الأبطال والتجهيزات وتفوق الأنواع ومراحل الزعماء.</p>
-            <div class="main-progress"><span>التقدم الحالي</span><strong id="mainProgress">1 · تعبئة بستان الخوخ</strong></div>
-            <button id="startBtn" class="primary" type="button">ابدأ اللعبة</button>
+            <p data-wp-frame-summary>قد فريقًا من الحيوانات المتعاهدين عبر القتال التلقائي وتطوير الأبطال والتجهيزات وتفوق الأنواع ومراحل الزعماء.</p>
+            <div class="main-progress" data-wp-frame-progress><span>التقدم الحالي</span><strong id="mainProgress">1 · تعبئة بستان الخوخ</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">ابدأ اللعبة</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="معلومات اللعبة">
-        <h2>طريقة اللعب</h2>
-        <p>تجري المعارك تلقائيًا. اجمع الغنائم في الساحة، ثم استخدم أدوات الأسفل لتطوير الأبطال وضبط الفريق وتحسين قوانين الحرب.</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="ساحة معركة قسم بستان الخوخ">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="العودة إلى الرئيسية">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">القوة 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="الإعدادات">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>تلقائي</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="إجراءات سريعة">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>الأحداث</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>الموسوعة</span></button>
             <button data-open="shop" type="button"><span>المتجر</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="منطقة المعركة المباشرة">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="إغلاق">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">نتيجة المعركة</span><h2 id="resultTitle">انتصار</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة عهد حديقة الخوخ" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>عهد حديقة الخوخ</h2><p>كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لعبة تقمص أدوار بفرقة وقتال تلقائي</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألعاب الحيوانات · RPG · استراتيجية · خمول</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهلة البدء ومتدرجة التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>5–15 دقيقة</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يقدم كل فصل طريقًا قصيرًا وهدفًا واضحًا وسببًا لاختيار الجزء الذي يحتاج إلى التطوير في الفريق.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>تتكون كل مرحلة من خمس موجات. يحدد المستوى والنجوم والرتبة والمعدات وتفوق الوحدات القدرة على تجاوز الموجات الأخيرة والزعيم.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>عند بدء اللعب يقاتل الأبطال تلقائيًا. اجمع الغنائم التي تظهر في الساحة.</li><li>استخدم القوائم السفلية لتحسين الأبطال وتجهيز المعدات وتعديل الفرقة.</li><li>بعد الفوز انتقل إلى المرحلة التالية. بعد الخسارة قوِّ الفرقة وأعد المحاولة.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>غيّر شيئًا واحدًا في كل إعادة حتى تعرف ما الذي ساعد.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تضيف الفصول أعداء وأهدافًا وأبطالًا ومعدات وفحوص زعماء جديدة.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تُحفظ المراحل والأبطال والتقدم والتفضيلات في هذا المتصفح فقط. لا يلزم حساب أو شراء أو ملف عبر الإنترنت أو حفظ سحابي.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل القتال تلقائي؟</dt><dd>نعم، لكنك تختار التشكيل والتحسينات والمعدات وتفوق الوحدات.</dd></div><div><dt>ماذا أفعل بعد الخسارة؟</dt><dd>بعد الفوز انتقل إلى المرحلة التالية. بعد الخسارة قوِّ الفرقة وأعد المحاولة.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>إطفاء الأنوار</strong><span>إطفاء الأنوار لغز مفاتيح كلاسيكي على لوحة 5×5: بدّل الخلية وجيرانها الجانبيين حتى تطفئ كل الأضواء.</span></span></a><a class="game-info-related-card" href="/ar/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>لغز الخمسة عشر</strong><span>اختر من 30 مرحلة محفوظة بأهداف كلاسيكية ومتعرجة وبالأعمدة والمراسي والتحويلات.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="معلومات لعبة عهد حديقة الخوخ">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>عهد حديقة الخوخ</h2><p>قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي تلقائيًا، لكنك تحدد المسار.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>لعبة RPG عمودية لفريق خامل</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألعاب الحيوانات · RPG · استراتيجية · خمول</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهلة البدء ومتدرجة التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>5–15 دقيقة</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>يقدم كل فصل طريقًا قصيرًا وهدفًا واضحًا وسببًا لاختيار الجزء الذي يحتاج إلى التطوير في الفريق.</p>
-<p>يقاتل الأبطال تلقائيًا؛ تجهز الفريق وتقرأ النتيجة ثم تختار التعزيز أو المتابعة أو الإعادة بتفوق أفضل للوحدات.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>تتكون كل مرحلة من خمس موجات. يحدد المستوى والنجوم والرتبة والمعدات وتفوق الوحدات القدرة على تجاوز الموجات الأخيرة والزعيم.</p>
-<p>استخدم الإدارة لتحسين الأبطال والمعدات. قد يكون التفوق الذي يفيد الموجة كلها أقوى من زيادة صغيرة لبطل واحد.</p>
-<p>تقدم شاشة النتيجة التالي أو الإعادة أو الإدارة. يبقى التقدم والتفضيلات في هذا المتصفح فقط، ولا يلزم حساب أو ملف خادم.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>افتح مرحلة الحملة التالية واقرأ الأعداء والهدف.</li><li>عدّل مستوى البطل ونجومه ورُتبته ومعداته من الإدارة عند الحاجة.</li><li>تحقق من تفوق الوحدات والمهارات قبل بدء الموجات الخمس.</li><li>اقرأ النتيجة واختر التالي أو الإعادة أو الإدارة.</li><li>أعد المراحل السابقة عند الحاجة إلى الموارد أو لتجربة تفوق مختلف.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>شاهد الموجة التالية قبل إنفاق الموارد.</li><li>قد يكون تفوق الموجة كلها أفضل من تحسين فردي صغير.</li><li>إذا خسرت في النهاية فحسن البقاء أو المعدات قبل تغيير التشكيل كله.</li><li>غيّر شيئًا واحدًا في كل إعادة حتى تعرف ما الذي ساعد.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تضيف الفصول أعداء وأهدافًا وأبطالًا ومعدات وفحوص زعماء جديدة.</p>
-<p>تناسب الحملة جلسات قصيرة: تقدم عند وضوح التحسين، وعد للموارد عند الحاجة.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تحول اللعبة القتال الخامل إلى حلقة تخطيط: جهز الفريق، راقب خمس موجات، تعلم من الزعيم، ثم اتخذ قرار نمو واحدًا ذا معنى.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>تُحفظ المراحل والأبطال والتقدم والتفضيلات في هذا المتصفح فقط. لا يلزم حساب أو شراء أو ملف عبر الإنترنت أو حفظ سحابي.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل القتال تلقائي؟</dt><dd>نعم، لكنك تختار التشكيل والتحسينات والمعدات وتفوق الوحدات.</dd></div><div><dt>ما مدة المرحلة؟</dt><dd>تتكون كل مرحلة من خمس موجات وفحص للزعيم أو الهدف، وهي مناسبة لجلسة قصيرة.</dd></div><div><dt>ما الذي أُحسّنه أولًا؟</dt><dd>اقرأ مجموعة الأعداء التالية ثم اختر التحسين أو تفوق الوحدات الذي يساعد على الفوز التالي بدل إنفاق الموارد عشوائيًا.</dd></div><div><dt>ماذا أفعل بعد الخسارة؟</dt><dd>أعد المحاولة أو أدر الفريق أو عد إلى مرحلة سابقة.</dd></div><div><dt>هل يُحفظ التقدم عبر الإنترنت؟</dt><dd>لا، في هذا المتصفح فقط.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>إطفاء الأنوار</strong><span>إطفاء الأنوار لغز مفاتيح كلاسيكي على لوحة 5×5: بدّل الخلية وجيرانها الجانبيين حتى تطفئ كل الأضواء.</span></span></a><a class="game-info-related-card" href="/ar/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>لغز الخمسة عشر</strong><span>اختر من 30 مرحلة محفوظة بأهداف كلاسيكية ومتعرجة وبالأعمدة والمراسي والتحويلات.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>桃園の誓い | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。" />
+  <meta name="description" content="英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="桃園の誓い | WeightPlay" />
-    <meta property="og:description" content="誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。" />
+    <meta property="og:description" content="英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="桃園の誓い | WeightPlay" />
-    <meta name="twitter:description" content="誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "桃園の誓い",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/ja/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">桃園の誓い</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>桃園の誓い</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="桃園の誓いのゲーム画像" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="桃園の誓いのゲーム画像" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,38 +175,36 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="桃園の誓い ゲーム情報" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>桃園の誓い</h2><p>英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>部隊育成オートバトルRPG</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アニマルゲーム · RPG · ストラテジー · 放置</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、徐々に挑戦</strong></div><div class="game-info-fact"><span>目安時間</span><strong>5〜15分</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>桃園の誓いは、動物部隊が道を守る短いキャンペーンです。各章には短い戦闘列、見やすいマイルストーン、そして次に部隊のどこを育てるかを考える理由があります。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各ステージは5つの敵ウェーブで進みます。英雄は自動攻撃しますが、編成、レベル、星、装備、兵種相性が後半とボスを左右します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>ゲームを始めると英雄が自動で戦います。戦場に出たドロップを選んで資源を集めます。</li><li>下部メニューで英雄を強化し、装備を選び、部隊を編成します。</li><li>勝利したら次のステージへ。負けたら部隊を強化して再挑戦します。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>再挑戦では一度に一つだけ変更し、結果から何が効いたかを読み取ります。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>章が進むと敵の組み合わせ、マイルストーン、英雄、装備、ボスの確認が増えます。ルールを隠すのではなく、より意図的な部隊作りを求める成長です。</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>解放したステージ、英雄、進行、設定はこのブラウザだけに保存されます。アカウント、購入、オンラインプロフィール、クラウド保存は不要です。サイトデータを消すとローカルキャンペーンが失われることがあります。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>戦闘は自動ですか？</dt><dd>はい。英雄は各ウェーブを自動で戦いますが、編成、強化、装備、相性はあなたが選びます。</dd></div><div><dt>失敗したら何をしますか？</dt><dd>勝利したら次のステージへ。負けたら部隊を強化して再挑戦します。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="桃園の誓い ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>桃園の誓い</h2><p>誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>縦画面アイドル部隊RPG</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>アニマルゲーム · RPG · ストラテジー · 放置</strong></div><div class="game-info-fact"><span>難易度</span><strong>始めやすく、徐々に挑戦</strong></div><div class="game-info-fact"><span>目安時間</span><strong>5〜15分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>桃園の誓いは、動物部隊が道を守る短いキャンペーンです。各章には短い戦闘列、見やすいマイルストーン、そして次に部隊のどこを育てるかを考える理由があります。</p>
-<p>戦闘の流れは読みやすく設計されています。英雄はオートバトルの列を進み、プレイヤーは部隊を準備し、結果を読み、強化・続行・相性を変えた再挑戦を選びます。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各ステージは5つの敵ウェーブで進みます。英雄は自動攻撃しますが、編成、レベル、星、装備、兵種相性が後半とボスを左右します。</p>
-<p>管理画面で英雄のレベル、星、ランクを上げ、必要な装備を選びます。次の敵グループに合う相性やスキルを使う方が、資源をすぐ使い切るより効果的な場合があります。</p>
-<p>結果画面には戦闘の理由がまとまり、次へ、再挑戦、管理を選べます。ステージ、英雄、進行、設定はこのブラウザに保存され、アカウントやサーバープロフィールは必要ありません。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>次のキャンペーンステージを開き、敵の構成とマイルストーンを確認します。</li><li>明確な強化が必要なら管理画面で英雄、星、ランク、装備を調整します。</li><li>5ウェーブを始める前に兵種相性と英雄スキルを確認します。</li><li>結果を読み、次へ、再挑戦、または管理から部隊を調整します。</li><li>資源が必要なときや別の相性を試すときは、前のステージを再プレイします。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>次の敵を先に見てから資源を使います。必要を確認せず、一人の英雄だけに集中しないでください。</li><li>ウェーブ全体に効く相性は、小さなレベル上昇より強いことがあります。</li><li>ボスまで届いて後半に負けるなら、開幕編成を変える前に耐久力か装備を見直します。</li><li>再挑戦では一度に一つだけ変更し、結果から何が効いたかを読み取ります。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>章が進むと敵の組み合わせ、マイルストーン、英雄、装備、ボスの確認が増えます。ルールを隠すのではなく、より意図的な部隊作りを求める成長です。</p>
-<p>短い再訪に向いたキャンペーンです。強化方針が見えたら進み、資源が必要なら戻り、失敗を次の計画へ変えます。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>桃園の誓いは放置戦闘を計画のループにします。部隊を整え、5ウェーブの結果を見て、ボスから学び、一つの成長判断を行います。自動戦闘が流れを見せ、相性・装備・結果の選択が主体性を残します。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>解放したステージ、英雄、進行、設定はこのブラウザだけに保存されます。アカウント、購入、オンラインプロフィール、クラウド保存は不要です。サイトデータを消すとローカルキャンペーンが失われることがあります。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>戦闘は自動ですか？</dt><dd>はい。英雄は各ウェーブを自動で戦いますが、編成、強化、装備、相性はあなたが選びます。</dd></div><div><dt>1ステージの長さは？</dt><dd>5ウェーブとボスまたはマイルストーンの確認で、短時間に遊べる長さです。</dd></div><div><dt>何から強化すべきですか？</dt><dd>次の敵を読み、次のクリアに役立つ強化や相性を選びます。</dd></div><div><dt>失敗したら何をしますか？</dt><dd>再挑戦、管理での編成変更、または前のステージでの資源集めができます。</dd></div><div><dt>進行はオンライン保存されますか？</dt><dd>いいえ。進行と設定はこのブラウザだけに保存され、アカウントは不要です。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>ライツアウトは、マスと上下左右の隣を切り替えてすべての灯りを消す5×5の定番パズルです。</span></span></a><a class="game-info-related-card" href="/ja/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スライディング15</strong><span>30の保存ステージから選び、クラシック・蛇行・列・アンカー・迂回の目標に挑戦します。</span></span></a></div></div>
-    </div>
-  </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="桃園の誓い";document.title="桃園の誓い | WeightPlay";},{once:true});</script>
 </body>
 </html>

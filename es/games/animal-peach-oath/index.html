@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>Juramento del Jardín de Melocotones | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes." />
+  <meta name="description" content="Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Juramento del Jardín de Melocotones | WeightPlay" />
-    <meta property="og:description" content="Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes." />
+    <meta property="og:description" content="Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña." />
     <meta property="og:url" content="https://weightplay.com/es/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Juramento del Jardín de Melocotones | WeightPlay" />
-    <meta name="twitter:description" content="Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "Juramento del Jardín de Melocotones",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/es/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">Juramento del Jardín de Melocotones</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>Juramento del Jardín de Melocotones</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="Imagen del juego Juramento del Jardín de Melocotones" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="Imagen del juego Juramento del Jardín de Melocotones" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="Información de Juramento del Jardín de Melocotones" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Juramento del Jardín de Melocotones</h2><p>Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>RPG de escuadrón y combate automático</strong></div><div class="game-info-fact"><span>Género</span><strong>Juegos de animales · RPG · Estrategia · Idle</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de empezar, difícil de dominar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5–15 minutos</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo y misión</h3><p>Cada capítulo presenta una ruta corta, un hito claro y una decisión sobre qué parte del escuadrón debe crecer.</p></div>
+      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Cada fase tiene cinco oleadas. El nivel, las estrellas, el rango, el equipo y las ventajas de tropas determinan si el grupo supera las últimas oleadas y al jefe.</p></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Al empezar, los héroes luchan automáticamente. Recoge el botín que aparece en la arena.</li><li>Usa los menús inferiores para mejorar héroes, equipar objetos y ajustar el escuadrón.</li><li>Tras ganar, pasa a la siguiente fase. Si pierdes, refuerza el escuadrón y vuelve a intentarlo.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Cambia una cosa por reintento para saber qué decisión ayudó.</li></ul></div>
+      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Los capítulos añaden enemigos, hitos, héroes, equipo y comprobaciones de jefe.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Las fases, héroes, progreso y preferencias se guardan solo en este navegador. No hacen falta cuenta, compra, perfil online ni nube.</p></div>
+      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿El combate es automático?</dt><dd>Sí, pero tú eliges formación, mejoras, equipo y ventajas.</dd></div><div><dt>¿Qué ocurre tras fallar?</dt><dd>Tras ganar, pasa a la siguiente fase. Si pierdes, refuerza el escuadrón y vuelve a intentarlo.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apaga las luces</strong><span>Apaga las luces es un puzzle clásico de interruptores en una cuadrícula 5x5: cambia una casilla y sus vecinas ortogonales para apagar todas las luces.</span></span></a><a class="game-info-related-card" href="/es/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quince deslizante</strong><span>Elige entre 30 fases guardadas con objetivos clásicos, serpenteantes, por columnas, con ancla y de desvío.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Información de Juramento del Jardín de Melocotones">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Juramento del Jardín de Melocotones</h2><p>Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>RPG de escuadrón idle vertical</strong></div><div class="game-info-fact"><span>Género</span><strong>Juegos de animales · RPG · Estrategia · Idle</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil de empezar, difícil de dominar</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5–15 minutos</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Cada capítulo presenta una ruta corta, un hito claro y una decisión sobre qué parte del escuadrón debe crecer.</p>
-<p>Los héroes combaten automáticamente; tú preparas el equipo, lees el resultado y decides si fortalecer, avanzar o repetir con un mejor contraataque.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Cada fase tiene cinco oleadas. El nivel, las estrellas, el rango, el equipo y las ventajas de tropas determinan si el grupo supera las últimas oleadas y al jefe.</p>
-<p>Usa Gestionar para mejorar héroes y equipo. Una ventaja que cubre toda la oleada puede valer más que gastar todos los recursos en un solo héroe.</p>
-<p>Resultado ofrece Siguiente, Reintentar o Gestionar. El progreso y las preferencias se guardan solo en este navegador, sin cuenta ni perfil de servidor.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Abre la siguiente fase y lee sus enemigos y su hito.</li><li>Mejora héroes, rango, estrellas o equipo desde Gestionar cuando el grupo lo necesite.</li><li>Comprueba las ventajas de tropas y las habilidades antes de iniciar las cinco oleadas.</li><li>Lee Resultado y elige Siguiente, Reintentar o Gestionar.</li><li>Repite fases anteriores si necesitas recursos o quieres probar otro contraataque.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Mira el siguiente grupo antes de gastar recursos.</li><li>Una ventaja para toda la oleada puede superar una pequeña mejora individual.</li><li>Si fallas al final, mejora supervivencia o equipo antes de cambiar toda la formación.</li><li>Cambia una cosa por reintento para saber qué decisión ayudó.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Los capítulos añaden enemigos, hitos, héroes, equipo y comprobaciones de jefe.</p>
-<p>La campaña está pensada para volver en sesiones cortas: avanza con una mejora clara y vuelve por recursos cuando haga falta.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego convierte el combate idle en un ciclo de planificación: prepara, observa cinco oleadas, aprende del jefe y toma una decisión de crecimiento.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Las fases, héroes, progreso y preferencias se guardan solo en este navegador. No hacen falta cuenta, compra, perfil online ni nube.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿El combate es automático?</dt><dd>Sí, pero tú eliges formación, mejoras, equipo y ventajas.</dd></div><div><dt>¿Cuánto dura una fase?</dt><dd>Cada fase tiene cinco oleadas y una comprobación de jefe o hito, pensada para una sesión corta.</dd></div><div><dt>¿Qué debería mejorar primero?</dt><dd>Lee el siguiente grupo de enemigos y elige la mejora o ventaja que ayude a superarlo, en lugar de gastar recursos al azar.</dd></div><div><dt>¿Qué ocurre tras fallar?</dt><dd>Puedes reintentar, gestionar el grupo o volver a una fase anterior.</dd></div><div><dt>¿Se guarda online?</dt><dd>No, solo en este navegador.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apaga las luces</strong><span>Apaga las luces es un puzzle clásico de interruptores en una cuadrícula 5x5: cambia una casilla y sus vecinas ortogonales para apagar todas las luces.</span></span></a><a class="game-info-related-card" href="/es/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quince deslizante</strong><span>Elige entre 30 fases guardadas con objetivos clásicos, serpenteantes, por columnas, con ancla y de desvío.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

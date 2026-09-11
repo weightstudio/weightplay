@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>Juramento do Jardim de Pêssegos | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes." />
+  <meta name="description" content="Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Juramento do Jardim de Pêssegos | WeightPlay" />
-    <meta property="og:description" content="Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes." />
+    <meta property="og:description" content="Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Juramento do Jardim de Pêssegos | WeightPlay" />
-    <meta name="twitter:description" content="Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "Juramento do Jardim de Pêssegos",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/pt-br/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">Juramento do Jardim de Pêssegos</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>Juramento do Jardim de Pêssegos</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="Imagem do jogo Juramento do Jardim de Pêssegos" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="Imagem do jogo Juramento do Jardim de Pêssegos" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="Informações de Juramento do Jardim de Pêssegos" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Juramento do Jardim de Pêssegos</h2><p>Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>RPG de esquadrão e batalha automática</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Jogos de animais · RPG · Estratégia · Idle</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de começar, difícil de dominar</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>5–15 minutos</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mundo e missão</h3><p>Cada capítulo oferece uma rota curta, um marco claro e uma decisão sobre qual parte do esquadrão deve crescer.</p></div>
+      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Cada fase tem cinco ondas. Nível, estrelas, patente, equipamento e vantagens de tropas decidem se a equipe vence as ondas finais e o chefe.</p></div>
+      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Ao começar, os heróis lutam automaticamente. Recolha o saque que aparece na arena.</li><li>Use os menus inferiores para melhorar heróis, equipar itens e ajustar o esquadrão.</li><li>Após vencer, avance para a próxima fase. Se perder, fortaleça o esquadrão e tente novamente.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Mude uma coisa por tentativa para entender o que ajudou.</li></ul></div>
+      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Os capítulos acrescentam inimigos, marcos, heróis, equipamentos e testes de chefe.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>Fases, heróis, progresso e preferências são salvos apenas neste navegador. Não é necessário ter conta, comprar, usar perfil online ou nuvem.</p></div>
+      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O combate é automático?</dt><dd>Sim, mas você escolhe formação, melhorias, equipamentos e vantagens.</dd></div><div><dt>O que faço depois de perder?</dt><dd>Após vencer, avance para a próxima fase. Se perder, fortaleça o esquadrão e tente novamente.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apague as Luzes</strong><span>Apague as Luzes é um puzzle clássico de interruptores em uma grade 5x5: alterne uma casa e suas vizinhas ortogonais para apagar todas as luzes.</span></span></a><a class="game-info-related-card" href="/pt-br/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quinze Deslizante</strong><span>Escolha entre 30 fases salvas com objetivos clássicos, em zigue-zague, por colunas, com âncora e desvios.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informações de Juramento do Jardim de Pêssegos">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Juramento do Jardim de Pêssegos</h2><p>Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>RPG idle vertical de esquadrão</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Jogos de animais · RPG · Estratégia · Idle</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Fácil de começar, difícil de dominar</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>5–15 minutos</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Cada capítulo oferece uma rota curta, um marco claro e uma decisão sobre qual parte do esquadrão deve crescer.</p>
-<p>Os heróis lutam automaticamente; você prepara a equipe, lê o resultado e decide entre fortalecer, avançar ou tentar de novo com um contra-ataque melhor.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Cada fase tem cinco ondas. Nível, estrelas, patente, equipamento e vantagens de tropas decidem se a equipe vence as ondas finais e o chefe.</p>
-<p>Use Gerenciar para melhorar heróis e equipamentos. Uma vantagem que ajuda a onda inteira pode valer mais do que gastar todos os recursos em um herói.</p>
-<p>Resultado oferece Próxima, Tentar novamente ou Gerenciar. Progresso e preferências ficam apenas neste navegador, sem conta ou perfil no servidor.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Abra a próxima fase e leia os inimigos e o marco.</li><li>Melhore heróis, estrelas, patente ou equipamentos em Gerenciar quando necessário.</li><li>Confira vantagens de tropas e habilidades antes das cinco ondas.</li><li>Leia Resultado e escolha Próxima, Tentar novamente ou Gerenciar.</li><li>Repita fases anteriores para obter recursos ou testar outra vantagem.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Veja a próxima onda antes de gastar recursos.</li><li>Uma vantagem para a onda inteira pode superar uma pequena melhoria individual.</li><li>Se a derrota acontecer no fim, melhore sobrevivência ou equipamento antes de trocar toda a formação.</li><li>Mude uma coisa por tentativa para entender o que ajudou.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Os capítulos acrescentam inimigos, marcos, heróis, equipamentos e testes de chefe.</p>
-<p>A campanha funciona bem em sessões curtas: avance quando a melhoria for clara e volte por recursos quando precisar.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>O jogo transforma combate idle em um ciclo de planejamento: prepare, observe cinco ondas, aprenda com o chefe e faça uma decisão de evolução.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informações do jogador e do salvamento</h3><p>Fases, heróis, progresso e preferências são salvos apenas neste navegador. Não é necessário ter conta, comprar, usar perfil online ou nuvem.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>O combate é automático?</dt><dd>Sim, mas você escolhe formação, melhorias, equipamentos e vantagens.</dd></div><div><dt>Quanto dura uma fase?</dt><dd>Cada fase tem cinco ondas e uma verificação de chefe ou marco, adequada para uma sessão curta.</dd></div><div><dt>O que devo melhorar primeiro?</dt><dd>Leia o próximo grupo de inimigos e escolha a melhoria ou vantagem que ajuda na próxima vitória, em vez de gastar recursos ao acaso.</dd></div><div><dt>O que faço depois de perder?</dt><dd>Tente novamente, gerencie o esquadrão ou volte a uma fase anterior.</dd></div><div><dt>O progresso fica online?</dt><dd>Não, somente neste navegador.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Apague as Luzes</strong><span>Apague as Luzes é um puzzle clássico de interruptores em uma grade 5x5: alterne uma casa e suas vizinhas ortogonais para apagar todas as luzes.</span></span></a><a class="game-info-related-card" href="/pt-br/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quinze Deslizante</strong><span>Escolha entre 30 fases salvas com objetivos clássicos, em zigue-zague, por colunas, com âncora e desvios.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

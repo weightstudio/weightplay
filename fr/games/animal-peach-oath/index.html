@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>Le Serment du Jardin des Pêchers | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss." />
+  <meta name="description" content="Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Le Serment du Jardin des Pêchers | WeightPlay" />
-    <meta property="og:description" content="Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss." />
+    <meta property="og:description" content="Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne." />
     <meta property="og:url" content="https://weightplay.com/fr/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Le Serment du Jardin des Pêchers | WeightPlay" />
-    <meta name="twitter:description" content="Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "Le Serment du Jardin des Pêchers",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/fr/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">Le Serment du Jardin des Pêchers</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>Le Serment du Jardin des Pêchers</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="Illustration du jeu Le Serment du Jardin des Pêchers" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="Illustration du jeu Le Serment du Jardin des Pêchers" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="Informations sur Le Serment du Jardin des Pêchers" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Le Serment du Jardin des Pêchers</h2><p>Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>RPG d’escouade à combats automatiques</strong></div><div class="game-info-fact"><span>Genre</span><strong>Jeux d’animaux · RPG · Stratégie · Idle</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à commencer, exigeant à maîtriser</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>5–15 minutes</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Monde et mission</h3><p>Chaque chapitre propose une route courte, un objectif lisible et une décision sur la partie de l’escouade à développer.</p></div>
+      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Chaque étape comporte cinq vagues. Niveau, étoiles, rang, équipement et contres déterminent la réussite des dernières vagues et du boss.</p></div>
+      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Au lancement, les héros combattent automatiquement. Ramassez le butin qui apparaît dans l’arène.</li><li>Utilisez les menus du bas pour améliorer les héros, choisir leur équipement et organiser l’escouade.</li><li>Après une victoire, passez à l’étape suivante. Après une défaite, renforcez l’escouade et réessayez.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Ne changez qu’un élément par essai pour comprendre ce qui a aidé.</li></ul></div>
+      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les chapitres ajoutent ennemis, objectifs, héros, équipement et contrôles de boss.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Étapes, héros, progression et préférences sont sauvegardés uniquement dans ce navigateur. Aucun compte, achat, profil en ligne ou cloud n’est nécessaire.</p></div>
+      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Le combat est-il automatique ?</dt><dd>Oui, mais vous choisissez la formation, les améliorations, l’équipement et les contres.</dd></div><div><dt>Que faire après un échec ?</dt><dd>Après une victoire, passez à l’étape suivante. Après une défaite, renforcez l’escouade et réessayez.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Extinction des lumières</strong><span>Extinction des lumières est un puzzle classique 5x5 : basculez une case et ses voisines orthogonales pour tout éteindre.</span></span></a><a class="game-info-related-card" href="/fr/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Taquin 15</strong><span>Choisissez parmi 30 étapes sauvegardées avec objectifs classiques, en serpent, par colonnes, avec ancre et détours.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informations sur Le Serment du Jardin des Pêchers">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Le Serment du Jardin des Pêchers</h2><p>Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>RPG idle vertical d’escouade</strong></div><div class="game-info-fact"><span>Genre</span><strong>Jeux d’animaux · RPG · Stratégie · Idle</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à commencer, exigeant à maîtriser</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>5–15 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Monde et mission</h3><p>Chaque chapitre propose une route courte, un objectif lisible et une décision sur la partie de l’escouade à développer.</p>
-<p>Les héros combattent automatiquement ; vous préparez l’équipe, lisez le résultat et choisissez de renforcer, continuer ou réessayer avec un meilleur contre.</p></div>
-      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Chaque étape comporte cinq vagues. Niveau, étoiles, rang, équipement et contres déterminent la réussite des dernières vagues et du boss.</p>
-<p>Utilisez Gestion pour améliorer les héros et l’équipement. Un contre utile à toute la vague peut valoir mieux qu’une petite hausse individuelle.</p>
-<p>Résultat propose Suivant, Réessayer ou Gestion. La progression et les préférences restent dans ce navigateur, sans compte ni profil serveur.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Ouvrez l’étape suivante et lisez ses ennemis et son objectif.</li><li>Améliorez héros, rang, étoiles ou équipement depuis Gestion si l’escouade en a besoin.</li><li>Vérifiez les contres et les compétences avant les cinq vagues.</li><li>Lisez Résultat et choisissez Suivant, Réessayer ou Gestion.</li><li>Rejouez une étape précédente pour obtenir des ressources ou tester un autre contre.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Observez la prochaine vague avant de dépenser vos ressources.</li><li>Un contre valable pour toute la vague peut dépasser une petite amélioration individuelle.</li><li>En cas d’échec tardif, améliorez la survie ou l’équipement avant de changer toute la formation.</li><li>Ne changez qu’un élément par essai pour comprendre ce qui a aidé.</li></ul></div>
-      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les chapitres ajoutent ennemis, objectifs, héros, équipement et contrôles de boss.</p>
-<p>La campagne convient aux courtes sessions : avancez quand l’amélioration est claire et revenez chercher des ressources si nécessaire.</p></div>
-      <div class="game-info-section"><h3>Note de conception</h3><p>Le jeu transforme le combat idle en boucle de planification : préparer, observer cinq vagues, apprendre du boss, puis choisir une amélioration significative.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Étapes, héros, progression et préférences sont sauvegardés uniquement dans ce navigateur. Aucun compte, achat, profil en ligne ou cloud n’est nécessaire.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Le combat est-il automatique ?</dt><dd>Oui, mais vous choisissez la formation, les améliorations, l’équipement et les contres.</dd></div><div><dt>Combien de temps dure une étape ?</dt><dd>Chaque étape comporte cinq vagues et une vérification de boss ou d’objectif, adaptée à une courte session.</dd></div><div><dt>Que faut-il améliorer en premier ?</dt><dd>Lisez le prochain groupe d’ennemis, puis choisissez l’amélioration ou le contre utile à la prochaine victoire plutôt que de dépenser au hasard.</dd></div><div><dt>Que faire après un échec ?</dt><dd>Réessayez, gérez l’escouade ou revenez à une étape précédente.</dd></div><div><dt>La progression est-elle en ligne ?</dt><dd>Non, elle reste dans ce navigateur.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Extinction des lumières</strong><span>Extinction des lumières est un puzzle classique 5x5 : basculez une case et ses voisines orthogonales pour tout éteindre.</span></span></a><a class="game-info-related-card" href="/fr/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Taquin 15</strong><span>Choisissez parmi 30 étapes sauvegardées avec objectifs classiques, en serpent, par colonnes, avec ancre et détours.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

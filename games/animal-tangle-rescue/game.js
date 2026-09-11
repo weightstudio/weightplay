@@ -27,7 +27,7 @@
   const titleForAnimal = (animalKey) => copy(animalKey);
   const indexForAnimal = (animalKey) => animals.indexOf(animalKey);
   const analytics = (eventName, details = {}) => {
-    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v3", ...details }); } catch (_error) {}
+    try { window.gtag?.("event", eventName, { game_id: "animal-tangle-rescue", game_version: "v5", ...details }); } catch (_error) {}
     window.__tangleRescueEvents = window.__tangleRescueEvents || [];
     window.__tangleRescueEvents.push({ eventName, ...details });
   };
@@ -115,8 +115,10 @@
     $("resultHeading").textContent = copy(final ? "finalTitle" : "resultTitle");
     $("resultText").textContent = copy(final ? "finalText" : "resultText");
     $("resultStats").textContent = copy("stats", { moves: copy("placements", { count: moves }), best: copy("placements", { count: best }) });
-    $("resultPrimaryBtn").textContent = copy(final ? "replay" : "next");
-    $("resultPrimaryBtn").onclick = () => final ? startBoard(0) : startBoard(state.board + 1);
+    const canNext = state.board + 1 < boards.length && state.completed.includes(state.board);
+    $("nextStageBtn").disabled = !canNext;
+    $("nextStageBtn").onclick = () => { if (canNext) startBoard(state.board + 1); };
+    $("retryBtn").onclick = () => startBoard(state.board);
     setScreen("result");
   };
   const selectEndpoint = (row) => {
@@ -183,6 +185,18 @@
     if (state.screen === "stage") renderStages();
     if (state.screen === "battle") renderBattle();
   };
+  const ensureGuideContract = () => {
+    const guide = $("guideScreen");
+    if (!guide) return;
+    // The Interface 7 fallback theme is loaded after this game and its
+    // unlayered important token uses a 3px arcade radius. This authored Guide
+    // is the game's structured public surface, so keep its approved framed
+    // treatment explicit at the element boundary.
+    guide.style.setProperty("border-radius", "24px", "important");
+    guide.style.setProperty("border-width", "1px", "important");
+    guide.style.setProperty("background", "rgb(255 253 247 / 96%)", "important");
+    guide.style.setProperty("box-shadow", "0 10px 24px rgb(38 82 71 / 6%)", "important");
+  };
   const applyLocale = (locale) => { state.locale = normalizeLocale(locale) || "en"; safeSet("weightplay-locale", state.locale); safeSet("weightPlayLocale", state.locale); document.documentElement.lang = state.locale; document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr"; $("languageSelect").value = state.locale; applyText(); };
   const openLeaveDialog = () => { $("leaveDialog").hidden = false; $("cancelLeaveBtn").focus(); };
   const closeLeaveDialog = () => { $("leaveDialog").hidden = true; $("leaveBtn").focus(); };
@@ -200,8 +214,11 @@
     $("leaveBtn").addEventListener("click", openLeaveDialog);
     $("cancelLeaveBtn").addEventListener("click", closeLeaveDialog);
     $("confirmLeaveBtn").addEventListener("click", () => { closeLeaveDialog(); setScreen("stage"); });
-    $("resultMapBtn").addEventListener("click", () => setScreen("stage"));
-    $("resultHomeBtn").addEventListener("click", () => setScreen("main"));
+    $("resultStagesBtn").addEventListener("click", () => {
+      setScreen("stage");
+      const highestUnlocked = Math.max(0, ...state.completed.filter((index) => index >= 0 && index < boards.length));
+      $("stageList").querySelector(`[data-stage="${highestUnlocked}"]`)?.focus();
+    });
     [$('soundBtn'), $('battleSoundBtn')].forEach((button) => button.addEventListener("click", () => { state.sound = !state.sound; safeSet("weightplay-animal-tangle-rescue-sound", state.sound ? "on" : "off"); applyText(); }));
     $("languageSelect").addEventListener("change", (event) => { const requested = normalizeLocale(event.target.value) || "en"; try { window.WonderI18n?.setLocale?.(requested); } catch (_error) {} applyLocale(requested); });
   };
@@ -209,6 +226,7 @@
     try { const saved = JSON.parse(safeGet("weightplay-animal-tangle-rescue-completed", "[]")); state.completed = Array.isArray(saved) ? saved.filter((index) => Number.isInteger(index) && index >= 0 && index < boards.length) : []; } catch (_error) { state.completed = []; }
     state.sound = safeGet("weightplay-animal-tangle-rescue-sound", "on") !== "off";
     bind();
+    ensureGuideContract();
     window.addEventListener("wonder:locale-change", (event) => applyLocale(event.detail?.locale || window.WonderI18n?.actualLocale?.() || document.documentElement.lang));
     applyLocale(initialLocale());
     window.setTimeout(() => { $("loadingScreen").hidden = true; $("app").hidden = false; setScreen("main"); }, 90);

@@ -76,6 +76,12 @@
     button.hidden = false;
     button.removeAttribute("aria-hidden");
     button.tabIndex = 0;
+    // The shell may arrive after the game compatibility layer and inherit a
+    // hidden state from the legacy header branch. Reassert the contract on
+    // the generated control so the shared owner remains visibly actionable.
+    button.style.setProperty("display", "grid", "important");
+    button.style.setProperty("width", "48px", "important");
+    button.style.setProperty("height", "48px", "important");
     return true;
   };
   const watchMainMapAction = () => {
@@ -154,6 +160,11 @@
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
     if (screen === "result") renderResult();
+    // The shared shell normally schedules placement from a MutationObserver.
+    // Reconcile synchronously at every screen boundary so returning from the
+    // terminal Result cannot expose Main before its Settings host is placed.
+    window.dispatchEvent(new CustomEvent("weightplay:shell-sync"));
+    if (screen === "main") ensureSharedSettingsButton();
     window.scrollTo(0, 0);
   };
   const renderMain = () => {

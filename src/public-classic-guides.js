@@ -715,89 +715,642 @@
   };
 
   const animalPeachOath = {
-    en: guide({
-      title: "Peach Garden Oath", intro: "Lead an oath-bound animal squad through five-wave auto battles, hero growth, equipment choices, troop counters, and boss stages. Your decisions shape the route even while the frontline fights on its own.",
-      gameplay: "Vertical idle squad RPG", genre: ["Animal Games", "RPG", "Strategy", "Idle"], difficulty: "Easy to challenging", time: "5–15 minutes",
-      story: ["Peach Garden Oath is a compact campaign about an animal squad protecting its route from stage bosses. Each chapter presents a short sequence of battles, a clear milestone, and a reason to decide which part of the team should grow next.", "The game keeps the action readable: heroes advance through an auto-battle lane, while you prepare the squad, read the result, and choose whether to strengthen, continue, or retry with a better counter."],
-      systems: ["Every stage runs through five enemy waves. Heroes attack automatically, but the roster, ranks, equipment, and troop counters determine whether the squad can survive the later waves and the boss finish.", "Use the management screen to level heroes, improve stars and rank, and equip useful items. Matching a troop counter or a hero skill to the next enemy group is more valuable than spending every resource immediately.", "The Result screen explains the outcome and offers Next, Retry, or Manage. Progress, unlocked stages, heroes, and preferences stay in this browser; there is no account or server profile behind the campaign."],
-      how: ["Open the next campaign stage and inspect its enemy group and milestone.", "Use Manage to level a hero, improve rank or stars, and equip items when the squad needs a clear upgrade.", "Check troop counters and hero skills before starting the five-wave auto battle.", "Read the Result screen, then choose Next for a new stage, Retry for another attempt, or Manage to change the squad.", "Replay earlier stages when you need a safer resource route or want to test a different counter."],
-      strategyTips: ["Do not spend every resource on one hero before checking which enemy group appears in the next stage.", "A counter that improves the whole wave can be more useful than a small individual level increase.", "If the squad reaches the boss but fails late, improve survivability or equipment before changing the opening lineup.", "Use Retry to test one deliberate change at a time, so the Result screen teaches you what actually helped."],
-      progression: ["Chapters add new enemy groups, milestones, heroes, equipment decisions, and boss checks. The authored route grows by asking for a more intentional squad rather than by hiding the rules.", "The campaign is designed for short returns: push forward when the upgrade is clear, revisit a stage when you want resources, and use Manage to turn a failed result into the next plan."],
-      designNote: "Peach Garden Oath makes idle combat a planning loop: prepare the squad, watch the five-wave result, learn from the boss, and make one meaningful growth decision. Auto battle keeps the session readable while counters, equipment, and Result choices preserve player agency.",
-      noteTitle: "Player and Save Information", parent: "Unlocked stages, heroes, progress, and preferences are saved only in this browser. No account, purchase, online profile, or cloud save is required; clearing site data can remove the local campaign.",
-      faq: [["Is combat automatic?", "Yes. Heroes fight through each wave automatically, while you choose the squad, upgrades, equipment, and counters."], ["How long is a stage?", "A stage is a five-wave run with a boss or milestone check, usually suitable for a short session."], ["What should I upgrade first?", "Read the next enemy group, then choose the upgrade or counter that improves the next clear rather than spending resources at random."], ["What can I do after a failed result?", "Choose Retry for another attempt, Manage to change the squad, or return to an earlier stage for resources."], ["Is progress saved online?", "No. Progress and preferences remain only in this browser and do not require an account."]],
+    "en": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Peach Garden Oath",
+      "intro": "Build your squad, equip heroes and win automatic battles to advance through the campaign.",
+      "gameplay": "Auto-battle squad RPG",
+      "genre": [
+        "Animal Games",
+        "RPG",
+        "Strategy",
+        "Idle"
+      ],
+      "difficulty": "Easy to challenging",
+      "time": "5–15 minutes",
+      "story": [
+        "Peach Garden Oath is a compact campaign about an animal squad protecting its route from stage bosses. Each chapter presents a short sequence of battles, a clear milestone, and a reason to decide which part of the team should grow next."
+      ],
+      "systems": [
+        "Every stage runs through five enemy waves. Heroes attack automatically, but the roster, ranks, equipment, and troop counters determine whether the squad can survive the later waves and the boss finish."
+      ],
+      "how": [
+        "Start the game: heroes fight automatically. Collect the drops that appear in the arena.",
+        "Use the bottom menus to upgrade heroes, equip items and adjust the squad.",
+        "After victory, choose Next. After defeat, strengthen the squad and retry."
+      ],
+      "strategyTips": [
+        "Use Retry to test one deliberate change at a time, so the Result screen teaches you what actually helped."
+      ],
+      "progression": [
+        "Chapters add new enemy groups, milestones, heroes, equipment decisions, and boss checks. The authored route grows by asking for a more intentional squad rather than by hiding the rules."
+      ],
+      "noteTitle": "Player and Save Information",
+      "parent": "Unlocked stages, heroes, progress, and preferences are saved only in this browser. No account, purchase, online profile, or cloud save is required; clearing site data can remove the local campaign.",
+      "faq": [
+        [
+          "Is combat automatic?",
+          "Yes. Heroes fight through each wave automatically, while you choose the squad, upgrades, equipment, and counters."
+        ],
+        [
+          "What can I do after a failed result?",
+          "After victory, choose Next. After defeat, strengthen the squad and retry."
+        ]
+      ]
     }),
     "zh-Hant": guide({
-      title: "桃園誓約", intro: "帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。",
-      gameplay: "縱向放置小隊 RPG", genre: ["動物遊戲", "RPG", "策略", "放置"], difficulty: "容易上手，逐步挑戰", time: "5–15 分鐘",
-      story: ["《桃園誓約》是一段由動物小隊守護路線的短篇戰役。每個章節都有短小的戰鬥序列、清楚的里程碑，以及一個需要你判斷下一步該強化隊伍哪個部分的理由。", "遊戲把戰鬥呈現得容易閱讀：英雄會在自動戰鬥線上前進，而你負責準備小隊、閱讀結果，並決定要強化、繼續，還是用更好的克制關係重試。"],
-      systems: ["每個關卡都會經過五波敵人。英雄會自動攻擊，但陣容、等級、星級、裝備與兵種克制會決定小隊能否撐過後段波次與首領。", "在管理畫面提升英雄等級、星級與階級，並裝備適合的物品。讓兵種克制或英雄技能對應下一組敵人，通常比立即花光所有資源更有價值。", "結果畫面會說明戰況，並提供下一關、重試或管理選項。關卡、英雄、進度與偏好只會保存在這個瀏覽器，不需要帳號或伺服器個人檔案。"],
-      how: ["開啟下一個戰役關卡，先查看敵人組成與里程碑。", "隊伍需要明確提升時，進入管理畫面提升英雄、星級或階級並裝備物品。", "開始五波自動戰鬥前，檢查兵種克制與英雄技能。", "閱讀結果畫面，再選擇下一關、重試，或回到管理畫面調整隊伍。", "需要資源或想測試不同克制時，重玩較早的關卡。"],
-      strategyTips: ["先查看下一關的敵人，再決定資源用途，不要在還沒讀懂需求前把資源集中給一名英雄。", "能改善整波戰鬥的兵種克制，可能比小幅提升單一英雄等級更有效。", "如果小隊能到達首領卻在後段失敗，先改善生存力或裝備，再考慮更換開場陣容。", "重試時一次只改變一個明確因素，讓結果畫面真正告訴你哪個決定有幫助。"],
-      progression: ["章節會加入新的敵人組合、里程碑、英雄、裝備決策與首領檢查。成長不是把規則藏起來，而是要求你更有意識地組織小隊。", "戰役適合短時間回來遊玩：升級方向清楚時向前推進，需要資源時回到舊關卡，並用管理畫面把失敗結果轉成下一個計畫。"],
-      designNote: "《桃園誓約》把放置戰鬥變成規劃循環：準備小隊、觀察五波結果、從首領學習，再做出一個有意義的成長決定。自動戰鬥讓流程容易閱讀，克制、裝備與結果選項則保留玩家的主動性。",
-      noteTitle: "玩家與存檔資訊", parent: "解鎖的關卡、英雄、進度與偏好只會保存在這個瀏覽器。不需要帳號、購買、線上個人檔案或雲端存檔；清除網站資料可能刪除本機戰役。",
-      faq: [["戰鬥是自動的嗎？", "是。英雄會自動通過每一波，但隊伍、升級、裝備與克制關係由你決定。"], ["一個關卡要玩多久？", "每關是五波並帶有首領或里程碑檢查，通常適合短時間完成。"], ["應該先升級什麼？", "先閱讀下一組敵人，再選擇能幫助下一次通關的升級或克制，不要隨機花資源。"], ["失敗後可以做什麼？", "可以重試、管理隊伍，或回到較早關卡取得資源。"], ["進度會上傳到線上嗎？", "不會。進度與偏好只留在這個瀏覽器，不需要帳號。"]],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "桃園誓約",
+      "intro": "培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。",
+      "gameplay": "自動戰鬥小隊 RPG",
+      "genre": [
+        "動物遊戲",
+        "RPG",
+        "策略",
+        "放置"
+      ],
+      "difficulty": "容易上手，逐步挑戰",
+      "time": "5–15 分鐘",
+      "story": [
+        "《桃園誓約》是一段由動物小隊守護路線的短篇戰役。每個章節都有短小的戰鬥序列、清楚的里程碑，以及一個需要你判斷下一步該強化隊伍哪個部分的理由。"
+      ],
+      "systems": [
+        "每個關卡都會經過五波敵人。英雄會自動攻擊，但陣容、等級、星級、裝備與兵種克制會決定小隊能否撐過後段波次與首領。"
+      ],
+      "how": [
+        "開始遊戲後，武將會自動交戰；點選戰場上的掉落物領取資源。",
+        "使用底部功能升級武將、裝備物品與調整隊伍。",
+        "勝利後選下一關；失敗時先強化隊伍，再重新挑戰。"
+      ],
+      "strategyTips": [
+        "重試時一次只改變一個明確因素，讓結果畫面真正告訴你哪個決定有幫助。"
+      ],
+      "progression": [
+        "章節會加入新的敵人組合、里程碑、英雄、裝備決策與首領檢查。成長不是把規則藏起來，而是要求你更有意識地組織小隊。"
+      ],
+      "noteTitle": "玩家與存檔資訊",
+      "parent": "解鎖的關卡、英雄、進度與偏好只會保存在這個瀏覽器。不需要帳號、購買、線上個人檔案或雲端存檔；清除網站資料可能刪除本機戰役。",
+      "faq": [
+        [
+          "戰鬥是自動的嗎？",
+          "是。英雄會自動通過每一波，但隊伍、升級、裝備與克制關係由你決定。"
+        ],
+        [
+          "失敗後可以做什麼？",
+          "勝利後選下一關；失敗時先強化隊伍，再重新挑戰。"
+        ]
+      ]
     }),
     "zh-Hans": guide({
-      title: "桃园誓约", intro: "带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。",
-      gameplay: "纵向放置小队 RPG", genre: ["动物游戏", "RPG", "策略", "放置"], difficulty: "容易上手，逐步挑战", time: "5–15 分钟",
-      story: ["《桃园誓约》是一段由动物小队守护路线的短篇战役。每个章节都有短小的战斗序列、清楚的里程碑，以及一个需要你判断下一步该强化队伍哪一部分的理由。", "游戏把战斗呈现得容易阅读：英雄会在自动战斗线上前进，而你负责准备小队、阅读结果，并决定要强化、继续，还是用更好的克制关系重试。"],
-      systems: ["每个关卡都会经过五波敌人。英雄会自动攻击，但阵容、等级、星级、装备和兵种克制会决定小队能否撑过后段波次与首领。", "在管理画面提升英雄等级、星级与阶级，并装备合适的物品。让兵种克制或英雄技能对应下一组敌人，通常比立即花光所有资源更有价值。", "结果画面会说明战况，并提供下一关、重试或管理选项。关卡、英雄、进度和偏好只会保存在此浏览器，不需要账号或服务器个人档案。"],
-      how: ["打开下一个战役关卡，先查看敌人组成与里程碑。", "队伍需要明显提升时，进入管理画面提升英雄、星级或阶级并装备物品。", "开始五波自动战斗前，检查兵种克制与英雄技能。", "阅读结果画面，再选择下一关、重试，或回到管理画面调整队伍。", "需要资源或想测试不同克制时，重玩较早的关卡。"],
-      strategyTips: ["先查看下一关的敌人，再决定资源用途，不要在还没读懂需求前把资源集中给一名英雄。", "能改善整波战斗的兵种克制，可能比小幅提升单一英雄等级更有效。", "如果小队能到达首领却在后段失败，先改善生存力或装备，再考虑更换开场阵容。", "重试时一次只改变一个明确因素，让结果画面真正告诉你哪个决定有帮助。"],
-      progression: ["章节会加入新的敌人组合、里程碑、英雄、装备决策与首领检查。成长不是把规则藏起来，而是要求你更有意识地组织小队。", "战役适合短时间回来游玩：升级方向清楚时向前推进，需要资源时回到旧关卡，并用管理画面把失败结果转成下一个计划。"],
-      designNote: "《桃园誓约》把放置战斗变成规划循环：准备小队、观察五波结果、从首领学习，再做出一个有意义的成长决定。自动战斗让流程容易阅读，克制、装备与结果选项则保留玩家的主动性。",
-      noteTitle: "玩家与存档信息", parent: "解锁的关卡、英雄、进度和偏好只会保存在此浏览器。不需要账号、购买、在线个人档案或云端存档；清除网站数据可能删除本地战役。",
-      faq: [["战斗是自动的吗？", "是。英雄会自动通过每一波，但队伍、升级、装备和克制关系由你决定。"], ["一个关卡要玩多久？", "每关是五波并带有首领或里程碑检查，通常适合短时间完成。"], ["应该先升级什么？", "先阅读下一组敌人，再选择能帮助下一次通关的升级或克制，不要随机花资源。"], ["失败后可以做什么？", "可以重试、管理队伍，或回到较早关卡取得资源。"], ["进度会上传到线上吗？", "不会。进度和偏好只留在此浏览器，不需要账号。"]],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "桃园誓约",
+      "intro": "培养武将、搭配装备与队伍，通过自动战斗推进战役。",
+      "gameplay": "自动战斗小队 RPG",
+      "genre": [
+        "动物游戏",
+        "RPG",
+        "策略",
+        "放置"
+      ],
+      "difficulty": "容易上手，逐步挑战",
+      "time": "5–15 分钟",
+      "story": [
+        "《桃园誓约》是一段由动物小队守护路线的短篇战役。每个章节都有短小的战斗序列、清楚的里程碑，以及一个需要你判断下一步该强化队伍哪一部分的理由。"
+      ],
+      "systems": [
+        "每个关卡都会经过五波敌人。英雄会自动攻击，但阵容、等级、星级、装备和兵种克制会决定小队能否撑过后段波次与首领。"
+      ],
+      "how": [
+        "开始游戏后，武将会自动交战；点击战场上的掉落物领取资源。",
+        "使用底部功能升级武将、装备物品与调整队伍。",
+        "胜利后选下一关；失败时先强化队伍，再重新挑战。"
+      ],
+      "strategyTips": [
+        "重试时一次只改变一个明确因素，让结果画面真正告诉你哪个决定有帮助。"
+      ],
+      "progression": [
+        "章节会加入新的敌人组合、里程碑、英雄、装备决策与首领检查。成长不是把规则藏起来，而是要求你更有意识地组织小队。"
+      ],
+      "noteTitle": "玩家与存档信息",
+      "parent": "解锁的关卡、英雄、进度和偏好只会保存在此浏览器。不需要账号、购买、在线个人档案或云端存档；清除网站数据可能删除本地战役。",
+      "faq": [
+        [
+          "战斗是自动的吗？",
+          "是。英雄会自动通过每一波，但队伍、升级、装备和克制关系由你决定。"
+        ],
+        [
+          "失败后可以做什么？",
+          "胜利后选下一关；失败时先强化队伍，再重新挑战。"
+        ]
+      ]
     }),
-    ja: guide({
-      title: "桃園の誓い", intro: "誓いを結んだ動物部隊を、5ウェーブのオートバトル、英雄育成、装備選択、兵種相性、ボスステージへ導きます。前線は自動で戦いますが、進路を決めるのはあなたです。",
-      gameplay: "縦画面アイドル部隊RPG", genre: ["アニマルゲーム", "RPG", "ストラテジー", "放置"], difficulty: "始めやすく、徐々に挑戦", time: "5〜15分",
-      story: ["桃園の誓いは、動物部隊が道を守る短いキャンペーンです。各章には短い戦闘列、見やすいマイルストーン、そして次に部隊のどこを育てるかを考える理由があります。", "戦闘の流れは読みやすく設計されています。英雄はオートバトルの列を進み、プレイヤーは部隊を準備し、結果を読み、強化・続行・相性を変えた再挑戦を選びます。"],
-      systems: ["各ステージは5つの敵ウェーブで進みます。英雄は自動攻撃しますが、編成、レベル、星、装備、兵種相性が後半とボスを左右します。", "管理画面で英雄のレベル、星、ランクを上げ、必要な装備を選びます。次の敵グループに合う相性やスキルを使う方が、資源をすぐ使い切るより効果的な場合があります。", "結果画面には戦闘の理由がまとまり、次へ、再挑戦、管理を選べます。ステージ、英雄、進行、設定はこのブラウザに保存され、アカウントやサーバープロフィールは必要ありません。"],
-      how: ["次のキャンペーンステージを開き、敵の構成とマイルストーンを確認します。", "明確な強化が必要なら管理画面で英雄、星、ランク、装備を調整します。", "5ウェーブを始める前に兵種相性と英雄スキルを確認します。", "結果を読み、次へ、再挑戦、または管理から部隊を調整します。", "資源が必要なときや別の相性を試すときは、前のステージを再プレイします。"],
-      strategyTips: ["次の敵を先に見てから資源を使います。必要を確認せず、一人の英雄だけに集中しないでください。", "ウェーブ全体に効く相性は、小さなレベル上昇より強いことがあります。", "ボスまで届いて後半に負けるなら、開幕編成を変える前に耐久力か装備を見直します。", "再挑戦では一度に一つだけ変更し、結果から何が効いたかを読み取ります。"],
-      progression: ["章が進むと敵の組み合わせ、マイルストーン、英雄、装備、ボスの確認が増えます。ルールを隠すのではなく、より意図的な部隊作りを求める成長です。", "短い再訪に向いたキャンペーンです。強化方針が見えたら進み、資源が必要なら戻り、失敗を次の計画へ変えます。"],
-      designNote: "桃園の誓いは放置戦闘を計画のループにします。部隊を整え、5ウェーブの結果を見て、ボスから学び、一つの成長判断を行います。自動戦闘が流れを見せ、相性・装備・結果の選択が主体性を残します。",
-      noteTitle: "プレイヤーと保存情報", parent: "解放したステージ、英雄、進行、設定はこのブラウザだけに保存されます。アカウント、購入、オンラインプロフィール、クラウド保存は不要です。サイトデータを消すとローカルキャンペーンが失われることがあります。",
-      faq: [["戦闘は自動ですか？", "はい。英雄は各ウェーブを自動で戦いますが、編成、強化、装備、相性はあなたが選びます。"], ["1ステージの長さは？", "5ウェーブとボスまたはマイルストーンの確認で、短時間に遊べる長さです。"], ["何から強化すべきですか？", "次の敵を読み、次のクリアに役立つ強化や相性を選びます。"], ["失敗したら何をしますか？", "再挑戦、管理での編成変更、または前のステージでの資源集めができます。"], ["進行はオンライン保存されますか？", "いいえ。進行と設定はこのブラウザだけに保存され、アカウントは不要です。"]],
+    "ja": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "桃園の誓い",
+      "intro": "英雄を育て、装備と部隊を整えてオートバトルの戦役を進めます。",
+      "gameplay": "部隊育成オートバトルRPG",
+      "genre": [
+        "アニマルゲーム",
+        "RPG",
+        "ストラテジー",
+        "放置"
+      ],
+      "difficulty": "始めやすく、徐々に挑戦",
+      "time": "5〜15分",
+      "story": [
+        "桃園の誓いは、動物部隊が道を守る短いキャンペーンです。各章には短い戦闘列、見やすいマイルストーン、そして次に部隊のどこを育てるかを考える理由があります。"
+      ],
+      "systems": [
+        "各ステージは5つの敵ウェーブで進みます。英雄は自動攻撃しますが、編成、レベル、星、装備、兵種相性が後半とボスを左右します。"
+      ],
+      "how": [
+        "ゲームを始めると英雄が自動で戦います。戦場に出たドロップを選んで資源を集めます。",
+        "下部メニューで英雄を強化し、装備を選び、部隊を編成します。",
+        "勝利したら次のステージへ。負けたら部隊を強化して再挑戦します。"
+      ],
+      "strategyTips": [
+        "再挑戦では一度に一つだけ変更し、結果から何が効いたかを読み取ります。"
+      ],
+      "progression": [
+        "章が進むと敵の組み合わせ、マイルストーン、英雄、装備、ボスの確認が増えます。ルールを隠すのではなく、より意図的な部隊作りを求める成長です。"
+      ],
+      "noteTitle": "プレイヤーと保存情報",
+      "parent": "解放したステージ、英雄、進行、設定はこのブラウザだけに保存されます。アカウント、購入、オンラインプロフィール、クラウド保存は不要です。サイトデータを消すとローカルキャンペーンが失われることがあります。",
+      "faq": [
+        [
+          "戦闘は自動ですか？",
+          "はい。英雄は各ウェーブを自動で戦いますが、編成、強化、装備、相性はあなたが選びます。"
+        ],
+        [
+          "失敗したら何をしますか？",
+          "勝利したら次のステージへ。負けたら部隊を強化して再挑戦します。"
+        ]
+      ]
     }),
-    ko: guide({
-      title: "도원 서약", intro: "맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다.",
-      gameplay: "세로형 방치 부대 RPG", genre: ["동물 게임", "RPG", "전략", "방치"], difficulty: "쉽게 시작하고 점점 도전", time: "5~15분",
-      story: ["도원 서약은 동물 부대가 길을 지키는 짧은 캠페인입니다. 각 장에는 짧은 전투 순서, 분명한 목표, 다음에 부대의 무엇을 키울지 판단할 이유가 있습니다.", "전투 흐름은 읽기 쉽습니다. 영웅은 자동 전투를 진행하고, 플레이어는 부대를 준비하고 결과를 읽은 뒤 강화, 계속하기, 상성을 바꾼 재도전을 선택합니다."],
-      systems: ["각 스테이지는 다섯 웨이브의 적으로 진행됩니다. 영웅은 자동 공격하지만 편성, 레벨, 별, 장비와 병종 상성이 후반 웨이브와 보스를 좌우합니다.", "관리 화면에서 영웅 레벨과 별, 등급을 올리고 장비를 선택하세요. 다음 적 무리에 맞는 상성이나 스킬이 자원을 즉시 모두 쓰는 것보다 효과적일 수 있습니다.", "결과 화면은 전투 결과를 설명하고 다음, 재도전, 관리 선택을 제공합니다. 스테이지와 영웅, 진행, 설정은 이 브라우저에만 저장되며 계정이나 서버 프로필은 필요하지 않습니다."],
-      how: ["다음 캠페인 스테이지를 열고 적 구성과 목표를 확인하세요.", "분명한 강화가 필요하면 관리에서 영웅, 별, 등급과 장비를 조정하세요.", "5웨이브 자동 전투를 시작하기 전에 병종 상성과 영웅 스킬을 확인하세요.", "결과를 읽고 다음, 재도전 또는 관리로 부대를 조정하세요.", "자원이 필요하거나 다른 상성을 시험하고 싶으면 이전 스테이지를 다시 플레이하세요."],
-      strategyTips: ["자원을 쓰기 전에 다음 적을 확인하세요. 필요를 모른 채 한 영웅에게만 집중하지 마세요.", "전체 웨이브에 효과가 있는 상성이 작은 레벨 상승보다 강할 수 있습니다.", "보스까지 갔다가 후반에 패배한다면 시작 편성보다 생존력이나 장비를 먼저 점검하세요.", "재도전에서는 한 번에 하나만 바꾸고 결과에서 효과를 확인하세요."],
-      progression: ["장이 진행되면 적 조합, 목표, 영웅, 장비와 보스 확인이 늘어납니다. 규칙을 숨기기보다 더 의도적인 부대 구성을 요구하는 성장입니다.", "짧게 다시 방문하기 좋습니다. 강화 방향이 분명하면 전진하고 자원이 필요하면 돌아가며 실패를 다음 계획으로 바꾸세요."],
-      designNote: "도원 서약은 방치 전투를 계획의 순환으로 만듭니다. 부대를 준비하고 다섯 웨이브 결과를 보고 보스에게 배우며 한 가지 성장 결정을 내립니다. 자동 전투는 흐름을 보여주고 상성, 장비, 결과 선택은 주도권을 남깁니다.",
-      noteTitle: "플레이어 및 저장 정보", parent: "해금한 스테이지, 영웅, 진행과 설정은 이 브라우저에만 저장됩니다. 계정, 구매, 온라인 프로필, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 로컬 캠페인이 사라질 수 있습니다.",
-      faq: [["전투는 자동인가요?", "네. 영웅은 각 웨이브를 자동으로 싸우지만 편성, 강화, 장비와 상성은 직접 선택합니다."], ["스테이지는 얼마나 걸리나요?", "다섯 웨이브와 보스 또는 목표 확인으로 짧게 플레이할 수 있습니다."], ["무엇을 먼저 강화하나요?", "다음 적을 읽고 다음 클리어에 도움이 되는 강화나 상성을 선택하세요."], ["실패하면 무엇을 하나요?", "재도전하거나 관리에서 편성을 바꾸고 이전 스테이지에서 자원을 모을 수 있습니다."], ["진행이 온라인에 저장되나요?", "아니요. 진행과 설정은 이 브라우저에만 저장되며 계정은 필요하지 않습니다."]],
+    "ko": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "도원 서약",
+      "intro": "영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요.",
+      "gameplay": "부대 육성 자동 전투 RPG",
+      "genre": [
+        "동물 게임",
+        "RPG",
+        "전략",
+        "방치"
+      ],
+      "difficulty": "쉽게 시작하고 점점 도전",
+      "time": "5~15분",
+      "story": [
+        "도원 서약은 동물 부대가 길을 지키는 짧은 캠페인입니다. 각 장에는 짧은 전투 순서, 분명한 목표, 다음에 부대의 무엇을 키울지 판단할 이유가 있습니다."
+      ],
+      "systems": [
+        "각 스테이지는 다섯 웨이브의 적으로 진행됩니다. 영웅은 자동 공격하지만 편성, 레벨, 별, 장비와 병종 상성이 후반 웨이브와 보스를 좌우합니다."
+      ],
+      "how": [
+        "게임을 시작하면 영웅이 자동으로 싸웁니다. 전장에 나타난 전리품을 눌러 자원을 받으세요.",
+        "하단 메뉴에서 영웅을 강화하고 장비와 부대 구성을 바꾸세요.",
+        "승리하면 다음 스테이지로 이동하세요. 패배하면 부대를 강화한 뒤 재도전하세요."
+      ],
+      "strategyTips": [
+        "재도전에서는 한 번에 하나만 바꾸고 결과에서 효과를 확인하세요."
+      ],
+      "progression": [
+        "장이 진행되면 적 조합, 목표, 영웅, 장비와 보스 확인이 늘어납니다. 규칙을 숨기기보다 더 의도적인 부대 구성을 요구하는 성장입니다."
+      ],
+      "noteTitle": "플레이어 및 저장 정보",
+      "parent": "해금한 스테이지, 영웅, 진행과 설정은 이 브라우저에만 저장됩니다. 계정, 구매, 온라인 프로필, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 로컬 캠페인이 사라질 수 있습니다.",
+      "faq": [
+        [
+          "전투는 자동인가요?",
+          "네. 영웅은 각 웨이브를 자동으로 싸우지만 편성, 강화, 장비와 상성은 직접 선택합니다."
+        ],
+        [
+          "실패하면 무엇을 하나요?",
+          "승리하면 다음 스테이지로 이동하세요. 패배하면 부대를 강화한 뒤 재도전하세요."
+        ]
+      ]
     }),
-    es: guide({
-      title: "Juramento del Jardín de Melocotones", intro: "Guía a un escuadrón animal unido por un juramento en batallas automáticas de cinco oleadas, crecimiento de héroes, equipo, ventajas de tropas y jefes.", gameplay: "RPG de escuadrón idle vertical", genre: ["Juegos de animales", "RPG", "Estrategia", "Idle"], difficulty: "Fácil de empezar, difícil de dominar", time: "5–15 minutos", story: ["Cada capítulo presenta una ruta corta, un hito claro y una decisión sobre qué parte del escuadrón debe crecer.", "Los héroes combaten automáticamente; tú preparas el equipo, lees el resultado y decides si fortalecer, avanzar o repetir con un mejor contraataque."], systems: ["Cada fase tiene cinco oleadas. El nivel, las estrellas, el rango, el equipo y las ventajas de tropas determinan si el grupo supera las últimas oleadas y al jefe.", "Usa Gestionar para mejorar héroes y equipo. Una ventaja que cubre toda la oleada puede valer más que gastar todos los recursos en un solo héroe.", "Resultado ofrece Siguiente, Reintentar o Gestionar. El progreso y las preferencias se guardan solo en este navegador, sin cuenta ni perfil de servidor."], how: ["Abre la siguiente fase y lee sus enemigos y su hito.", "Mejora héroes, rango, estrellas o equipo desde Gestionar cuando el grupo lo necesite.", "Comprueba las ventajas de tropas y las habilidades antes de iniciar las cinco oleadas.", "Lee Resultado y elige Siguiente, Reintentar o Gestionar.", "Repite fases anteriores si necesitas recursos o quieres probar otro contraataque."], strategyTips: ["Mira el siguiente grupo antes de gastar recursos.", "Una ventaja para toda la oleada puede superar una pequeña mejora individual.", "Si fallas al final, mejora supervivencia o equipo antes de cambiar toda la formación.", "Cambia una cosa por reintento para saber qué decisión ayudó."], progression: ["Los capítulos añaden enemigos, hitos, héroes, equipo y comprobaciones de jefe.", "La campaña está pensada para volver en sesiones cortas: avanza con una mejora clara y vuelve por recursos cuando haga falta."], designNote: "El juego convierte el combate idle en un ciclo de planificación: prepara, observa cinco oleadas, aprende del jefe y toma una decisión de crecimiento.", noteTitle: "Información del jugador y guardado", parent: "Las fases, héroes, progreso y preferencias se guardan solo en este navegador. No hacen falta cuenta, compra, perfil online ni nube.", faq: [["¿El combate es automático?", "Sí, pero tú eliges formación, mejoras, equipo y ventajas."], ["¿Cuánto dura una fase?", "Cada fase tiene cinco oleadas y una comprobación de jefe o hito, pensada para una sesión corta."], ["¿Qué debería mejorar primero?", "Lee el siguiente grupo de enemigos y elige la mejora o ventaja que ayude a superarlo, en lugar de gastar recursos al azar."], ["¿Qué ocurre tras fallar?", "Puedes reintentar, gestionar el grupo o volver a una fase anterior."], ["¿Se guarda online?", "No, solo en este navegador."]],
+    "es": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Juramento del Jardín de Melocotones",
+      "intro": "Forma tu escuadrón, equipa a tus héroes y gana combates automáticos para avanzar en la campaña.",
+      "gameplay": "RPG de escuadrón y combate automático",
+      "genre": [
+        "Juegos de animales",
+        "RPG",
+        "Estrategia",
+        "Idle"
+      ],
+      "difficulty": "Fácil de empezar, difícil de dominar",
+      "time": "5–15 minutos",
+      "story": [
+        "Cada capítulo presenta una ruta corta, un hito claro y una decisión sobre qué parte del escuadrón debe crecer."
+      ],
+      "systems": [
+        "Cada fase tiene cinco oleadas. El nivel, las estrellas, el rango, el equipo y las ventajas de tropas determinan si el grupo supera las últimas oleadas y al jefe."
+      ],
+      "how": [
+        "Al empezar, los héroes luchan automáticamente. Recoge el botín que aparece en la arena.",
+        "Usa los menús inferiores para mejorar héroes, equipar objetos y ajustar el escuadrón.",
+        "Tras ganar, pasa a la siguiente fase. Si pierdes, refuerza el escuadrón y vuelve a intentarlo."
+      ],
+      "strategyTips": [
+        "Cambia una cosa por reintento para saber qué decisión ayudó."
+      ],
+      "progression": [
+        "Los capítulos añaden enemigos, hitos, héroes, equipo y comprobaciones de jefe."
+      ],
+      "noteTitle": "Información del jugador y guardado",
+      "parent": "Las fases, héroes, progreso y preferencias se guardan solo en este navegador. No hacen falta cuenta, compra, perfil online ni nube.",
+      "faq": [
+        [
+          "¿El combate es automático?",
+          "Sí, pero tú eliges formación, mejoras, equipo y ventajas."
+        ],
+        [
+          "¿Qué ocurre tras fallar?",
+          "Tras ganar, pasa a la siguiente fase. Si pierdes, refuerza el escuadrón y vuelve a intentarlo."
+        ]
+      ]
     }),
     "pt-BR": guide({
-      title: "Juramento do Jardim de Pêssegos", intro: "Lidere um esquadrão animal unido por um juramento em batalhas automáticas de cinco ondas, evolução de heróis, equipamentos, vantagens de tropas e chefes.", gameplay: "RPG idle vertical de esquadrão", genre: ["Jogos de animais", "RPG", "Estratégia", "Idle"], difficulty: "Fácil de começar, difícil de dominar", time: "5–15 minutos", story: ["Cada capítulo oferece uma rota curta, um marco claro e uma decisão sobre qual parte do esquadrão deve crescer.", "Os heróis lutam automaticamente; você prepara a equipe, lê o resultado e decide entre fortalecer, avançar ou tentar de novo com um contra-ataque melhor."], systems: ["Cada fase tem cinco ondas. Nível, estrelas, patente, equipamento e vantagens de tropas decidem se a equipe vence as ondas finais e o chefe.", "Use Gerenciar para melhorar heróis e equipamentos. Uma vantagem que ajuda a onda inteira pode valer mais do que gastar todos os recursos em um herói.", "Resultado oferece Próxima, Tentar novamente ou Gerenciar. Progresso e preferências ficam apenas neste navegador, sem conta ou perfil no servidor."], how: ["Abra a próxima fase e leia os inimigos e o marco.", "Melhore heróis, estrelas, patente ou equipamentos em Gerenciar quando necessário.", "Confira vantagens de tropas e habilidades antes das cinco ondas.", "Leia Resultado e escolha Próxima, Tentar novamente ou Gerenciar.", "Repita fases anteriores para obter recursos ou testar outra vantagem."], strategyTips: ["Veja a próxima onda antes de gastar recursos.", "Uma vantagem para a onda inteira pode superar uma pequena melhoria individual.", "Se a derrota acontecer no fim, melhore sobrevivência ou equipamento antes de trocar toda a formação.", "Mude uma coisa por tentativa para entender o que ajudou."], progression: ["Os capítulos acrescentam inimigos, marcos, heróis, equipamentos e testes de chefe.", "A campanha funciona bem em sessões curtas: avance quando a melhoria for clara e volte por recursos quando precisar."], designNote: "O jogo transforma combate idle em um ciclo de planejamento: prepare, observe cinco ondas, aprenda com o chefe e faça uma decisão de evolução.", noteTitle: "Informações do jogador e do salvamento", parent: "Fases, heróis, progresso e preferências são salvos apenas neste navegador. Não é necessário ter conta, comprar, usar perfil online ou nuvem.", faq: [["O combate é automático?", "Sim, mas você escolhe formação, melhorias, equipamentos e vantagens."], ["Quanto dura uma fase?", "Cada fase tem cinco ondas e uma verificação de chefe ou marco, adequada para uma sessão curta."], ["O que devo melhorar primeiro?", "Leia o próximo grupo de inimigos e escolha a melhoria ou vantagem que ajuda na próxima vitória, em vez de gastar recursos ao acaso."], ["O que faço depois de perder?", "Tente novamente, gerencie o esquadrão ou volte a uma fase anterior."], ["O progresso fica online?", "Não, somente neste navegador."]],
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Juramento do Jardim de Pêssegos",
+      "intro": "Monte seu esquadrão, equipe os heróis e vença batalhas automáticas para avançar na campanha.",
+      "gameplay": "RPG de esquadrão e batalha automática",
+      "genre": [
+        "Jogos de animais",
+        "RPG",
+        "Estratégia",
+        "Idle"
+      ],
+      "difficulty": "Fácil de começar, difícil de dominar",
+      "time": "5–15 minutos",
+      "story": [
+        "Cada capítulo oferece uma rota curta, um marco claro e uma decisão sobre qual parte do esquadrão deve crescer."
+      ],
+      "systems": [
+        "Cada fase tem cinco ondas. Nível, estrelas, patente, equipamento e vantagens de tropas decidem se a equipe vence as ondas finais e o chefe."
+      ],
+      "how": [
+        "Ao começar, os heróis lutam automaticamente. Recolha o saque que aparece na arena.",
+        "Use os menus inferiores para melhorar heróis, equipar itens e ajustar o esquadrão.",
+        "Após vencer, avance para a próxima fase. Se perder, fortaleça o esquadrão e tente novamente."
+      ],
+      "strategyTips": [
+        "Mude uma coisa por tentativa para entender o que ajudou."
+      ],
+      "progression": [
+        "Os capítulos acrescentam inimigos, marcos, heróis, equipamentos e testes de chefe."
+      ],
+      "noteTitle": "Informações do jogador e do salvamento",
+      "parent": "Fases, heróis, progresso e preferências são salvos apenas neste navegador. Não é necessário ter conta, comprar, usar perfil online ou nuvem.",
+      "faq": [
+        [
+          "O combate é automático?",
+          "Sim, mas você escolhe formação, melhorias, equipamentos e vantagens."
+        ],
+        [
+          "O que faço depois de perder?",
+          "Após vencer, avance para a próxima fase. Se perder, fortaleça o esquadrão e tente novamente."
+        ]
+      ]
     }),
-    fr: guide({
-      title: "Le Serment du Jardin des Pêchers", intro: "Menez une escouade animale liée par un serment dans des combats automatiques de cinq vagues, avec évolution des héros, équipement, contres de troupes et boss.", gameplay: "RPG idle vertical d’escouade", genre: ["Jeux d’animaux", "RPG", "Stratégie", "Idle"], difficulty: "Facile à commencer, exigeant à maîtriser", time: "5–15 minutes", story: ["Chaque chapitre propose une route courte, un objectif lisible et une décision sur la partie de l’escouade à développer.", "Les héros combattent automatiquement ; vous préparez l’équipe, lisez le résultat et choisissez de renforcer, continuer ou réessayer avec un meilleur contre."], systems: ["Chaque étape comporte cinq vagues. Niveau, étoiles, rang, équipement et contres déterminent la réussite des dernières vagues et du boss.", "Utilisez Gestion pour améliorer les héros et l’équipement. Un contre utile à toute la vague peut valoir mieux qu’une petite hausse individuelle.", "Résultat propose Suivant, Réessayer ou Gestion. La progression et les préférences restent dans ce navigateur, sans compte ni profil serveur."], how: ["Ouvrez l’étape suivante et lisez ses ennemis et son objectif.", "Améliorez héros, rang, étoiles ou équipement depuis Gestion si l’escouade en a besoin.", "Vérifiez les contres et les compétences avant les cinq vagues.", "Lisez Résultat et choisissez Suivant, Réessayer ou Gestion.", "Rejouez une étape précédente pour obtenir des ressources ou tester un autre contre."], strategyTips: ["Observez la prochaine vague avant de dépenser vos ressources.", "Un contre valable pour toute la vague peut dépasser une petite amélioration individuelle.", "En cas d’échec tardif, améliorez la survie ou l’équipement avant de changer toute la formation.", "Ne changez qu’un élément par essai pour comprendre ce qui a aidé."], progression: ["Les chapitres ajoutent ennemis, objectifs, héros, équipement et contrôles de boss.", "La campagne convient aux courtes sessions : avancez quand l’amélioration est claire et revenez chercher des ressources si nécessaire."], designNote: "Le jeu transforme le combat idle en boucle de planification : préparer, observer cinq vagues, apprendre du boss, puis choisir une amélioration significative.", noteTitle: "Informations du joueur et sauvegarde", parent: "Étapes, héros, progression et préférences sont sauvegardés uniquement dans ce navigateur. Aucun compte, achat, profil en ligne ou cloud n’est nécessaire.", faq: [["Le combat est-il automatique ?", "Oui, mais vous choisissez la formation, les améliorations, l’équipement et les contres."], ["Combien de temps dure une étape ?", "Chaque étape comporte cinq vagues et une vérification de boss ou d’objectif, adaptée à une courte session."], ["Que faut-il améliorer en premier ?", "Lisez le prochain groupe d’ennemis, puis choisissez l’amélioration ou le contre utile à la prochaine victoire plutôt que de dépenser au hasard."], ["Que faire après un échec ?", "Réessayez, gérez l’escouade ou revenez à une étape précédente."], ["La progression est-elle en ligne ?", "Non, elle reste dans ce navigateur."]],
+    "fr": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Le Serment du Jardin des Pêchers",
+      "intro": "Formez votre escouade, équipez vos héros et gagnez des combats automatiques pour avancer dans la campagne.",
+      "gameplay": "RPG d’escouade à combats automatiques",
+      "genre": [
+        "Jeux d’animaux",
+        "RPG",
+        "Stratégie",
+        "Idle"
+      ],
+      "difficulty": "Facile à commencer, exigeant à maîtriser",
+      "time": "5–15 minutes",
+      "story": [
+        "Chaque chapitre propose une route courte, un objectif lisible et une décision sur la partie de l’escouade à développer."
+      ],
+      "systems": [
+        "Chaque étape comporte cinq vagues. Niveau, étoiles, rang, équipement et contres déterminent la réussite des dernières vagues et du boss."
+      ],
+      "how": [
+        "Au lancement, les héros combattent automatiquement. Ramassez le butin qui apparaît dans l’arène.",
+        "Utilisez les menus du bas pour améliorer les héros, choisir leur équipement et organiser l’escouade.",
+        "Après une victoire, passez à l’étape suivante. Après une défaite, renforcez l’escouade et réessayez."
+      ],
+      "strategyTips": [
+        "Ne changez qu’un élément par essai pour comprendre ce qui a aidé."
+      ],
+      "progression": [
+        "Les chapitres ajoutent ennemis, objectifs, héros, équipement et contrôles de boss."
+      ],
+      "noteTitle": "Informations du joueur et sauvegarde",
+      "parent": "Étapes, héros, progression et préférences sont sauvegardés uniquement dans ce navigateur. Aucun compte, achat, profil en ligne ou cloud n’est nécessaire.",
+      "faq": [
+        [
+          "Le combat est-il automatique ?",
+          "Oui, mais vous choisissez la formation, les améliorations, l’équipement et les contres."
+        ],
+        [
+          "Que faire après un échec ?",
+          "Après une victoire, passez à l’étape suivante. Après une défaite, renforcez l’escouade et réessayez."
+        ]
+      ]
     }),
-    de: guide({
-      title: "Pfirsichgarten-Schwur", intro: "Führe eine tierische Schwureinheit durch automatische Kämpfe mit fünf Wellen, Heldenwachstum, Ausrüstung, Truppenkontern und Boss-Stufen.", gameplay: "Vertikales Idle-Truppen-RPG", genre: ["Tierspiele", "RPG", "Strategie", "Idle"], difficulty: "Leicht zu beginnen, zunehmend anspruchsvoll", time: "5–15 Minuten", story: ["Jedes Kapitel bietet eine kurze Route, ein klares Ziel und einen Grund, den nächsten Entwicklungsschritt der Einheit zu wählen.", "Die Helden kämpfen automatisch. Du bereitest die Einheit vor, liest das Ergebnis und entscheidest zwischen Verstärken, Weitergehen und erneutem Versuch."], systems: ["Jede Stufe hat fünf Feindwellen. Level, Sterne, Rang, Ausrüstung und Konter entscheiden über die späten Wellen und den Boss.", "Verbessere Helden und Ausrüstung im Management. Ein Konter gegen die ganze Welle kann wertvoller sein als eine kleine Einzelverbesserung.", "Das Ergebnis bietet Weiter, Erneut versuchen oder Management. Fortschritt und Einstellungen bleiben in diesem Browser; Konto und Serverprofil sind nicht nötig."], how: ["Öffne die nächste Stufe und prüfe Gegner und Ziel.", "Passe im Management Level, Sterne, Rang und Ausrüstung an.", "Prüfe Konter und Fähigkeiten vor den fünf automatischen Wellen.", "Lies das Ergebnis und wähle Weiter, Erneut versuchen oder Management.", "Spiele frühere Stufen für Ressourcen oder einen anderen Konter erneut."], strategyTips: ["Prüfe die nächste Welle vor dem Ausgeben von Ressourcen.", "Ein Konter für die ganze Welle kann mehr bringen als ein kleiner Einzelbonus.", "Bei einer späten Niederlage zuerst Überleben oder Ausrüstung verbessern.", "Ändere pro Versuch nur eine Sache, damit das Ergebnis aussagekräftig bleibt."], progression: ["Kapitel ergänzen Gegner, Ziele, Helden, Ausrüstung und Bossprüfungen.", "Die Kampagne passt zu kurzen Sitzungen: Vorwärts gehen, wenn die Verbesserung klar ist, und für Ressourcen zurückkehren."], designNote: "Das Spiel macht aus Idle-Kämpfen eine Planungsschleife: vorbereiten, fünf Wellen beobachten, vom Boss lernen und eine sinnvolle Verbesserung wählen.", noteTitle: "Spieler- und Speicherhinweise", parent: "Stufen, Helden, Fortschritt und Einstellungen werden nur in diesem Browser gespeichert. Konto, Kauf, Online-Profil und Cloud-Speicher sind nicht nötig.", faq: [["Ist der Kampf automatisch?", "Ja, aber Formation, Verbesserungen, Ausrüstung und Konter wählst du selbst."], ["Wie lange dauert eine Stufe?", "Eine Stufe umfasst fünf Wellen und eine Boss- oder Zielprüfung und passt meist in eine kurze Sitzung."], ["Was sollte ich zuerst verbessern?", "Prüfe die nächste Gegnergruppe und wähle die Verbesserung oder den Konter, der beim nächsten Sieg hilft, statt Ressourcen zufällig auszugeben."], ["Was passiert nach einer Niederlage?", "Erneut versuchen, die Einheit verwalten oder zu einer früheren Stufe zurückkehren."], ["Wird online gespeichert?", "Nein, nur in diesem Browser."]],
+    "de": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Pfirsichgarten-Schwur",
+      "intro": "Stelle deinen Trupp zusammen, rüste Helden aus und gewinne automatische Kämpfe, um die Kampagne voranzubringen.",
+      "gameplay": "Trupp-RPG mit automatischen Kämpfen",
+      "genre": [
+        "Tierspiele",
+        "RPG",
+        "Strategie",
+        "Idle"
+      ],
+      "difficulty": "Leicht zu beginnen, zunehmend anspruchsvoll",
+      "time": "5–15 Minuten",
+      "story": [
+        "Jedes Kapitel bietet eine kurze Route, ein klares Ziel und einen Grund, den nächsten Entwicklungsschritt der Einheit zu wählen."
+      ],
+      "systems": [
+        "Jede Stufe hat fünf Feindwellen. Level, Sterne, Rang, Ausrüstung und Konter entscheiden über die späten Wellen und den Boss."
+      ],
+      "how": [
+        "Nach dem Start kämpfen die Helden automatisch. Sammle die Beute ein, die in der Arena erscheint.",
+        "Verbessere Helden, lege Ausrüstung an und passe den Trupp über die unteren Menüs an.",
+        "Nach einem Sieg geht es zur nächsten Stufe. Nach einer Niederlage stärkst du den Trupp und versuchst es erneut."
+      ],
+      "strategyTips": [
+        "Ändere pro Versuch nur eine Sache, damit das Ergebnis aussagekräftig bleibt."
+      ],
+      "progression": [
+        "Kapitel ergänzen Gegner, Ziele, Helden, Ausrüstung und Bossprüfungen."
+      ],
+      "noteTitle": "Spieler- und Speicherhinweise",
+      "parent": "Stufen, Helden, Fortschritt und Einstellungen werden nur in diesem Browser gespeichert. Konto, Kauf, Online-Profil und Cloud-Speicher sind nicht nötig.",
+      "faq": [
+        [
+          "Ist der Kampf automatisch?",
+          "Ja, aber Formation, Verbesserungen, Ausrüstung und Konter wählst du selbst."
+        ],
+        [
+          "Was passiert nach einer Niederlage?",
+          "Nach einem Sieg geht es zur nächsten Stufe. Nach einer Niederlage stärkst du den Trupp und versuchst es erneut."
+        ]
+      ]
     }),
-    it: guide({
-      title: "Giuramento del Giardino dei Peschi", intro: "Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra truppe e boss.", gameplay: "RPG idle verticale di squadra", genre: ["Giochi di animali", "RPG", "Strategia", "Idle"], difficulty: "Facile da iniziare, difficile da padroneggiare", time: "5–15 minuti", story: ["Ogni capitolo offre un percorso breve, un traguardo chiaro e un motivo per decidere quale parte della squadra far crescere.", "Gli eroi combattono automaticamente; tu prepari la squadra, leggi il risultato e scegli se potenziare, continuare o riprovare con un contrasto migliore."], systems: ["Ogni livello contiene cinque ondate. Livello, stelle, grado, equipaggiamento e contrasti decidono l’esito delle ultime ondate e del boss.", "Usa Gestione per migliorare eroi ed equipaggiamento. Un contrasto utile a tutta l’ondata può valere più di un piccolo aumento individuale.", "Il Risultato offre Avanti, Riprova o Gestione. Progressi e preferenze restano in questo browser, senza account o profilo server."], how: ["Apri il livello successivo e leggi nemici e traguardo.", "Regola livello, stelle, grado ed equipaggiamento dalla Gestione.", "Controlla contrasti e abilità prima delle cinque ondate.", "Leggi il Risultato e scegli Avanti, Riprova o Gestione.", "Rigioca un livello precedente per risorse o per provare un altro contrasto."], strategyTips: ["Guarda l’ondata successiva prima di spendere risorse.", "Un contrasto per l’intera ondata può superare un piccolo miglioramento singolo.", "Se perdi tardi, migliora sopravvivenza o equipaggiamento prima di cambiare formazione.", "Cambia una sola cosa per tentativo per capire cosa ha funzionato."], progression: ["I capitoli aggiungono nemici, traguardi, eroi, equipaggiamento e controlli dei boss.", "La campagna funziona in sessioni brevi: avanza con un miglioramento chiaro e torna per le risorse quando serve."], designNote: "Il gioco trasforma il combattimento idle in un ciclo di pianificazione: prepara, osserva cinque ondate, impara dal boss e scegli una crescita significativa.", noteTitle: "Informazioni del giocatore e salvataggio", parent: "Livelli, eroi, progressi e preferenze vengono salvati solo in questo browser. Non servono account, acquisti, profili online o cloud.", faq: [["Il combattimento è automatico?", "Sì, ma scegli tu formazione, potenziamenti, equipaggiamento e contrasti."], ["Quanto dura un livello?", "Ogni livello comprende cinque ondate e una verifica del boss o dell’obiettivo, adatta a una sessione breve."], ["Cosa dovrei potenziare per primo?", "Leggi il prossimo gruppo di nemici e scegli il potenziamento o il contrasto utile alla prossima vittoria, invece di spendere risorse a caso."], ["Cosa posso fare dopo una sconfitta?", "Riprova, gestisci la squadra o torna a un livello precedente."], ["I progressi sono online?", "No, solo in questo browser."]],
+    "it": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Giuramento del Giardino dei Peschi",
+      "intro": "Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna.",
+      "gameplay": "RPG di squadra con battaglie automatiche",
+      "genre": [
+        "Giochi di animali",
+        "RPG",
+        "Strategia",
+        "Idle"
+      ],
+      "difficulty": "Facile da iniziare, difficile da padroneggiare",
+      "time": "5–15 minuti",
+      "story": [
+        "Ogni capitolo offre un percorso breve, un traguardo chiaro e un motivo per decidere quale parte della squadra far crescere."
+      ],
+      "systems": [
+        "Ogni livello contiene cinque ondate. Livello, stelle, grado, equipaggiamento e contrasti decidono l’esito delle ultime ondate e del boss."
+      ],
+      "how": [
+        "All’avvio gli eroi combattono automaticamente. Raccogli il bottino che appare nell’arena.",
+        "Usa i menu inferiori per potenziare gli eroi, equipaggiare oggetti e modificare la squadra.",
+        "Dopo una vittoria, passa al livello successivo. Se perdi, rafforza la squadra e riprova."
+      ],
+      "strategyTips": [
+        "Cambia una sola cosa per tentativo per capire cosa ha funzionato."
+      ],
+      "progression": [
+        "I capitoli aggiungono nemici, traguardi, eroi, equipaggiamento e controlli dei boss."
+      ],
+      "noteTitle": "Informazioni del giocatore e salvataggio",
+      "parent": "Livelli, eroi, progressi e preferenze vengono salvati solo in questo browser. Non servono account, acquisti, profili online o cloud.",
+      "faq": [
+        [
+          "Il combattimento è automatico?",
+          "Sì, ma scegli tu formazione, potenziamenti, equipaggiamento e contrasti."
+        ],
+        [
+          "Cosa posso fare dopo una sconfitta?",
+          "Dopo una vittoria, passa al livello successivo. Se perdi, rafforza la squadra e riprova."
+        ]
+      ]
     }),
-    ru: guide({
-      title: "Клятва Персикового сада", intro: "Проведите звериную отрядную клятву через автоматические бои по пять волн, развитие героев, экипировку, контратаки отрядов и битвы с боссами.", gameplay: "Вертикальная idle RPG отряда", genre: ["Игры с животными", "RPG", "Стратегия", "Idle"], difficulty: "Легко начать, сложно освоить", time: "5–15 минут", story: ["Каждая глава предлагает короткий маршрут, ясную цель и повод решить, какую часть отряда развивать дальше.", "Герои сражаются автоматически; вы готовите отряд, читаете результат и выбираете усиление, продолжение или повтор с лучшим контрходом."], systems: ["Каждая стадия состоит из пяти волн. Уровень, звёзды, ранг, экипировка и контратаки определяют поздние волны и босса.", "В Управлении улучшайте героев и экипировку. Контратака для всей волны может оказаться полезнее небольшого личного усиления.", "Результат предлагает Далее, Повторить или Управление. Прогресс и настройки остаются в этом браузере; аккаунт и серверный профиль не нужны."], how: ["Откройте следующую стадию и прочитайте врагов и цель.", "В Управлении настройте уровень, звёзды, ранг и экипировку.", "Перед пятью автоматическими волнами проверьте контратаки и умения.", "Прочитайте результат и выберите Далее, Повторить или Управление.", "Повторяйте ранние стадии ради ресурсов или другого плана контратаки."], strategyTips: ["Сначала посмотрите следующую волну, затем тратьте ресурсы.", "Контратака для всей волны может быть сильнее небольшого личного бонуса.", "При позднем поражении сначала улучшите выживаемость или экипировку.", "Меняйте за попытку что-то одно, чтобы результат оставался понятным."], progression: ["Главы добавляют врагов, цели, героев, экипировку и проверки боссов.", "Кампания подходит для коротких сессий: продвигайтесь при ясном улучшении и возвращайтесь за ресурсами."], designNote: "Игра превращает idle-бой в цикл планирования: подготовка, пять волн, урок от босса и один осмысленный шаг развития.", noteTitle: "Сведения об игроке и сохранении", parent: "Стадии, герои, прогресс и настройки сохраняются только в этом браузере. Аккаунт, покупка, онлайн-профиль и облако не нужны.", faq: [["Бой автоматический?", "Да, но вы выбираете состав, улучшения, экипировку и контратаки."], ["Сколько длится стадия?", "Каждая стадия состоит из пяти волн и проверки босса или цели и подходит для короткой сессии."], ["Что улучшить в первую очередь?", "Изучите следующую группу врагов и выберите улучшение или контратаку для следующей победы, а не тратьте ресурсы случайно."], ["Что делать после поражения?", "Повторить бой, открыть управление или вернуться на раннюю стадию."], ["Прогресс сохраняется онлайн?", "Нет, только в этом браузере."]],
+    "ru": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "Клятва Персикового сада",
+      "intro": "Соберите отряд, экипируйте героев и побеждайте в автоматических боях, чтобы продвигаться по кампании.",
+      "gameplay": "Отрядная RPG с автоматическими боями",
+      "genre": [
+        "Игры с животными",
+        "RPG",
+        "Стратегия",
+        "Idle"
+      ],
+      "difficulty": "Легко начать, сложно освоить",
+      "time": "5–15 минут",
+      "story": [
+        "Каждая глава предлагает короткий маршрут, ясную цель и повод решить, какую часть отряда развивать дальше."
+      ],
+      "systems": [
+        "Каждая стадия состоит из пяти волн. Уровень, звёзды, ранг, экипировка и контратаки определяют поздние волны и босса."
+      ],
+      "how": [
+        "После старта герои сражаются автоматически. Собирайте добычу, появляющуюся на арене.",
+        "В нижних меню улучшайте героев, выбирайте снаряжение и меняйте состав отряда.",
+        "После победы переходите дальше. После поражения усильте отряд и повторите попытку."
+      ],
+      "strategyTips": [
+        "Меняйте за попытку что-то одно, чтобы результат оставался понятным."
+      ],
+      "progression": [
+        "Главы добавляют врагов, цели, героев, экипировку и проверки боссов."
+      ],
+      "noteTitle": "Сведения об игроке и сохранении",
+      "parent": "Стадии, герои, прогресс и настройки сохраняются только в этом браузере. Аккаунт, покупка, онлайн-профиль и облако не нужны.",
+      "faq": [
+        [
+          "Бой автоматический?",
+          "Да, но вы выбираете состав, улучшения, экипировку и контратаки."
+        ],
+        [
+          "Что делать после поражения?",
+          "После победы переходите дальше. После поражения усильте отряд и повторите попытку."
+        ]
+      ]
     }),
-    hi: guide({
-      title: "पीच गार्डन शपथ", intro: "शपथबद्ध पशु दल को पाँच-वेव ऑटो बैटल, हीरो विकास, उपकरण, सैनिक-काउंटर और बॉस चरणों से आगे ले जाएँ। मोर्चा अपने आप लड़ता है, पर रास्ते का निर्णय आपका है।", gameplay: "वर्टिकल आइडल स्क्वाड RPG", genre: ["पशु गेम", "RPG", "रणनीति", "आइडल"], difficulty: "आसानी से शुरू, धीरे-धीरे चुनौती", time: "5–15 मिनट", story: ["हर अध्याय छोटा मार्ग, स्पष्ट लक्ष्य और दल के अगले विकास पर निर्णय देता है।", "हीरो अपने आप लड़ते हैं; आप दल तैयार करते हैं, परिणाम पढ़ते हैं और मजबूत करने, आगे बढ़ने या बेहतर काउंटर के साथ फिर प्रयास चुनते हैं।"], systems: ["हर चरण में पाँच वेव होती हैं। स्तर, स्टार, रैंक, उपकरण और सैनिक-काउंटर अंतिम वेव व बॉस का परिणाम तय करते हैं।", "प्रबंधन में हीरो और उपकरण सुधारें। पूरी वेव पर काम करने वाला काउंटर किसी छोटे व्यक्तिगत उन्नयन से अधिक उपयोगी हो सकता है।", "परिणाम अगला, फिर प्रयास और प्रबंधन विकल्प देता है। प्रगति और पसंद केवल इसी ब्राउज़र में रहती हैं; खाते या सर्वर प्रोफ़ाइल की जरूरत नहीं।"], how: ["अगला चरण खोलकर दुश्मन और लक्ष्य पढ़ें।", "प्रबंधन में हीरो, स्टार, रैंक और उपकरण बदलें।", "पाँच ऑटो वेव शुरू करने से पहले काउंटर और कौशल जाँचें।", "परिणाम पढ़कर अगला, फिर प्रयास या प्रबंधन चुनें।", "संसाधन या नया काउंटर आज़माने के लिए पुराने चरण फिर खेलें।"], strategyTips: ["संसाधन खर्च करने से पहले अगली वेव देखें।", "पूरी वेव का काउंटर छोटे व्यक्तिगत बोनस से बेहतर हो सकता है।", "अंत में हारें तो पूरी फॉर्मेशन बदलने से पहले जीवित रहने की क्षमता या उपकरण सुधारें।", "हर प्रयास में एक ही चीज बदलें ताकि परिणाम से सीख मिल सके।"], progression: ["अध्याय नए दुश्मन, लक्ष्य, हीरो, उपकरण और बॉस जाँच जोड़ते हैं।", "अभियान छोटी बैठकों के लिए है: स्पष्ट सुधार मिलने पर आगे बढ़ें और संसाधन के लिए लौटें।"], designNote: "यह गेम आइडल युद्ध को योजना चक्र बनाता है: दल तैयार करें, पाँच वेव देखें, बॉस से सीखें और एक अर्थपूर्ण विकास निर्णय लें।", noteTitle: "खिलाड़ी और सेव जानकारी", parent: "चरण, हीरो, प्रगति और पसंद केवल इसी ब्राउज़र में सहेजे जाते हैं। खाते, खरीद, ऑनलाइन प्रोफ़ाइल या क्लाउड सेव की जरूरत नहीं।", faq: [["क्या लड़ाई ऑटो है?", "हाँ, पर दल, उन्नयन, उपकरण और काउंटर आप चुनते हैं।"], ["एक चरण कितना लंबा है?", "हर चरण में पाँच वेव और बॉस या लक्ष्य की जाँच होती है, इसलिए वह छोटे सत्र के लिए उपयुक्त है।"], ["सबसे पहले क्या सुधारें?", "अगले दुश्मन समूह को पढ़ें और अगली जीत में मदद करने वाला उन्नयन या काउंटर चुनें, संसाधन यूँ ही खर्च न करें।"], ["हारने के बाद क्या करें?", "फिर प्रयास करें, दल प्रबंधित करें या पुराने चरण पर लौटें।"], ["क्या प्रगति ऑनलाइन सेव होती है?", "नहीं, केवल इसी ब्राउज़र में।"]],
+    "hi": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "पीच गार्डन शपथ",
+      "intro": "दल तैयार करें, नायकों को उपकरण दें और अभियान में आगे बढ़ने के लिए ऑटो लड़ाइयाँ जीतें।",
+      "gameplay": "ऑटो लड़ाई वाला दल RPG",
+      "genre": [
+        "पशु गेम",
+        "RPG",
+        "रणनीति",
+        "आइडल"
+      ],
+      "difficulty": "आसानी से शुरू, धीरे-धीरे चुनौती",
+      "time": "5–15 मिनट",
+      "story": [
+        "हर अध्याय छोटा मार्ग, स्पष्ट लक्ष्य और दल के अगले विकास पर निर्णय देता है।"
+      ],
+      "systems": [
+        "हर चरण में पाँच वेव होती हैं। स्तर, स्टार, रैंक, उपकरण और सैनिक-काउंटर अंतिम वेव व बॉस का परिणाम तय करते हैं।"
+      ],
+      "how": [
+        "खेल शुरू होने पर नायक अपने आप लड़ते हैं। मैदान में दिखाई देने वाली लूट चुनकर संसाधन लें।",
+        "नीचे के मेनू से नायकों को उन्नत करें, उपकरण लगाएँ और दल बदलें।",
+        "जीतने पर अगले चरण में जाएँ। हारने पर दल को मजबूत करके दोबारा कोशिश करें।"
+      ],
+      "strategyTips": [
+        "हर प्रयास में एक ही चीज बदलें ताकि परिणाम से सीख मिल सके।"
+      ],
+      "progression": [
+        "अध्याय नए दुश्मन, लक्ष्य, हीरो, उपकरण और बॉस जाँच जोड़ते हैं।"
+      ],
+      "noteTitle": "खिलाड़ी और सेव जानकारी",
+      "parent": "चरण, हीरो, प्रगति और पसंद केवल इसी ब्राउज़र में सहेजे जाते हैं। खाते, खरीद, ऑनलाइन प्रोफ़ाइल या क्लाउड सेव की जरूरत नहीं।",
+      "faq": [
+        [
+          "क्या लड़ाई ऑटो है?",
+          "हाँ, पर दल, उन्नयन, उपकरण और काउंटर आप चुनते हैं।"
+        ],
+        [
+          "हारने के बाद क्या करें?",
+          "जीतने पर अगले चरण में जाएँ। हारने पर दल को मजबूत करके दोबारा कोशिश करें।"
+        ]
+      ]
     }),
-    ar: guide({
-      title: "عهد حديقة الخوخ", intro: "قد فريقًا من الحيوانات الملتزمة بالعهد عبر معارك تلقائية من خمس موجات، وتطور الأبطال، والمعدات، وتفوق الوحدات، ومراحل الزعماء. يقاتل الخط الأمامي تلقائيًا، لكنك تحدد المسار.", gameplay: "لعبة RPG عمودية لفريق خامل", genre: ["ألعاب الحيوانات", "RPG", "استراتيجية", "خمول"], difficulty: "سهلة البدء ومتدرجة التحدي", time: "5–15 دقيقة", story: ["يقدم كل فصل طريقًا قصيرًا وهدفًا واضحًا وسببًا لاختيار الجزء الذي يحتاج إلى التطوير في الفريق.", "يقاتل الأبطال تلقائيًا؛ تجهز الفريق وتقرأ النتيجة ثم تختار التعزيز أو المتابعة أو الإعادة بتفوق أفضل للوحدات."], systems: ["تتكون كل مرحلة من خمس موجات. يحدد المستوى والنجوم والرتبة والمعدات وتفوق الوحدات القدرة على تجاوز الموجات الأخيرة والزعيم.", "استخدم الإدارة لتحسين الأبطال والمعدات. قد يكون التفوق الذي يفيد الموجة كلها أقوى من زيادة صغيرة لبطل واحد.", "تقدم شاشة النتيجة التالي أو الإعادة أو الإدارة. يبقى التقدم والتفضيلات في هذا المتصفح فقط، ولا يلزم حساب أو ملف خادم."], how: ["افتح مرحلة الحملة التالية واقرأ الأعداء والهدف.", "عدّل مستوى البطل ونجومه ورُتبته ومعداته من الإدارة عند الحاجة.", "تحقق من تفوق الوحدات والمهارات قبل بدء الموجات الخمس.", "اقرأ النتيجة واختر التالي أو الإعادة أو الإدارة.", "أعد المراحل السابقة عند الحاجة إلى الموارد أو لتجربة تفوق مختلف."], strategyTips: ["شاهد الموجة التالية قبل إنفاق الموارد.", "قد يكون تفوق الموجة كلها أفضل من تحسين فردي صغير.", "إذا خسرت في النهاية فحسن البقاء أو المعدات قبل تغيير التشكيل كله.", "غيّر شيئًا واحدًا في كل إعادة حتى تعرف ما الذي ساعد."], progression: ["تضيف الفصول أعداء وأهدافًا وأبطالًا ومعدات وفحوص زعماء جديدة.", "تناسب الحملة جلسات قصيرة: تقدم عند وضوح التحسين، وعد للموارد عند الحاجة."], designNote: "تحول اللعبة القتال الخامل إلى حلقة تخطيط: جهز الفريق، راقب خمس موجات، تعلم من الزعيم، ثم اتخذ قرار نمو واحدًا ذا معنى.", noteTitle: "معلومات اللاعب والحفظ", parent: "تُحفظ المراحل والأبطال والتقدم والتفضيلات في هذا المتصفح فقط. لا يلزم حساب أو شراء أو ملف عبر الإنترنت أو حفظ سحابي.", faq: [["هل القتال تلقائي؟", "نعم، لكنك تختار التشكيل والتحسينات والمعدات وتفوق الوحدات."], ["ما مدة المرحلة؟", "تتكون كل مرحلة من خمس موجات وفحص للزعيم أو الهدف، وهي مناسبة لجلسة قصيرة."], ["ما الذي أُحسّنه أولًا؟", "اقرأ مجموعة الأعداء التالية ثم اختر التحسين أو تفوق الوحدات الذي يساعد على الفوز التالي بدل إنفاق الموارد عشوائيًا."], ["ماذا أفعل بعد الخسارة؟", "أعد المحاولة أو أدر الفريق أو عد إلى مرحلة سابقة."], ["هل يُحفظ التقدم عبر الإنترنت؟", "لا، في هذا المتصفح فقط."]],
+    "ar": guide({
+      "relatedIds": [
+        "lights-out",
+        "sliding-15"
+      ],
+      "hideSkillsFact": true,
+      "showRelatedSkill": false,
+      "preserveStaticGuide": true,
+      "title": "عهد حديقة الخوخ",
+      "intro": "كوّن فرقتك وجهّز الأبطال وانتصر في المعارك التلقائية للتقدم في الحملة.",
+      "gameplay": "لعبة تقمص أدوار بفرقة وقتال تلقائي",
+      "genre": [
+        "ألعاب الحيوانات",
+        "RPG",
+        "استراتيجية",
+        "خمول"
+      ],
+      "difficulty": "سهلة البدء ومتدرجة التحدي",
+      "time": "5–15 دقيقة",
+      "story": [
+        "يقدم كل فصل طريقًا قصيرًا وهدفًا واضحًا وسببًا لاختيار الجزء الذي يحتاج إلى التطوير في الفريق."
+      ],
+      "systems": [
+        "تتكون كل مرحلة من خمس موجات. يحدد المستوى والنجوم والرتبة والمعدات وتفوق الوحدات القدرة على تجاوز الموجات الأخيرة والزعيم."
+      ],
+      "how": [
+        "عند بدء اللعب يقاتل الأبطال تلقائيًا. اجمع الغنائم التي تظهر في الساحة.",
+        "استخدم القوائم السفلية لتحسين الأبطال وتجهيز المعدات وتعديل الفرقة.",
+        "بعد الفوز انتقل إلى المرحلة التالية. بعد الخسارة قوِّ الفرقة وأعد المحاولة."
+      ],
+      "strategyTips": [
+        "غيّر شيئًا واحدًا في كل إعادة حتى تعرف ما الذي ساعد."
+      ],
+      "progression": [
+        "تضيف الفصول أعداء وأهدافًا وأبطالًا ومعدات وفحوص زعماء جديدة."
+      ],
+      "noteTitle": "معلومات اللاعب والحفظ",
+      "parent": "تُحفظ المراحل والأبطال والتقدم والتفضيلات في هذا المتصفح فقط. لا يلزم حساب أو شراء أو ملف عبر الإنترنت أو حفظ سحابي.",
+      "faq": [
+        [
+          "هل القتال تلقائي؟",
+          "نعم، لكنك تختار التشكيل والتحسينات والمعدات وتفوق الوحدات."
+        ],
+        [
+          "ماذا أفعل بعد الخسارة؟",
+          "بعد الفوز انتقل إلى المرحلة التالية. بعد الخسارة قوِّ الفرقة وأعد المحاولة."
+        ]
+      ]
     }),
   };
 

@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>도원 서약 | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다." />
+  <meta name="description" content="영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="도원 서약 | WeightPlay" />
-    <meta property="og:description" content="맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다." />
+    <meta property="og:description" content="영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="도원 서약 | WeightPlay" />
-    <meta name="twitter:description" content="맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "도원 서약",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/ko/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">도원 서약</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>도원 서약</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="도원 서약 게임 이미지" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="도원 서약 게임 이미지" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="도원 서약 게임 정보" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>도원 서약</h2><p>영웅을 육성하고 장비와 부대를 구성해 자동 전투로 캠페인을 진행하세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>부대 육성 자동 전투 RPG</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · RPG · 전략 · 방치</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작하고 점점 도전</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5~15분</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 목표</h3><p>도원 서약은 동물 부대가 길을 지키는 짧은 캠페인입니다. 각 장에는 짧은 전투 순서, 분명한 목표, 다음에 부대의 무엇을 키울지 판단할 이유가 있습니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>각 스테이지는 다섯 웨이브의 적으로 진행됩니다. 영웅은 자동 공격하지만 편성, 레벨, 별, 장비와 병종 상성이 후반 웨이브와 보스를 좌우합니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>게임을 시작하면 영웅이 자동으로 싸웁니다. 전장에 나타난 전리품을 눌러 자원을 받으세요.</li><li>하단 메뉴에서 영웅을 강화하고 장비와 부대 구성을 바꾸세요.</li><li>승리하면 다음 스테이지로 이동하세요. 패배하면 부대를 강화한 뒤 재도전하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>재도전에서는 한 번에 하나만 바꾸고 결과에서 효과를 확인하세요.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>장이 진행되면 적 조합, 목표, 영웅, 장비와 보스 확인이 늘어납니다. 규칙을 숨기기보다 더 의도적인 부대 구성을 요구하는 성장입니다.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>해금한 스테이지, 영웅, 진행과 설정은 이 브라우저에만 저장됩니다. 계정, 구매, 온라인 프로필, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 로컬 캠페인이 사라질 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>전투는 자동인가요?</dt><dd>네. 영웅은 각 웨이브를 자동으로 싸우지만 편성, 강화, 장비와 상성은 직접 선택합니다.</dd></div><div><dt>실패하면 무엇을 하나요?</dt><dd>승리하면 다음 스테이지로 이동하세요. 패배하면 부대를 강화한 뒤 재도전하세요.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>라이트 아웃</strong><span>라이트 아웃은 칸과 상하좌우 이웃을 바꿔 모든 불을 끄는 5×5 클래식 스위치 퍼즐입니다.</span></span></a><a class="game-info-related-card" href="/ko/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>15 퍼즐</strong><span>30개의 저장된 스테이지에서 클래식, 지그재그, 열, 앵커, 우회 목표를 선택하세요.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="도원 서약 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>도원 서약</h2><p>맹세를 맺은 동물 부대를 5웨이브 자동 전투, 영웅 성장, 장비 선택, 병종 상성, 보스 스테이지로 이끄세요. 전선은 자동으로 싸우지만 진로는 여러분이 정합니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>세로형 방치 부대 RPG</strong></div><div class="game-info-fact"><span>장르</span><strong>동물 게임 · RPG · 전략 · 방치</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작하고 점점 도전</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5~15분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>도원 서약은 동물 부대가 길을 지키는 짧은 캠페인입니다. 각 장에는 짧은 전투 순서, 분명한 목표, 다음에 부대의 무엇을 키울지 판단할 이유가 있습니다.</p>
-<p>전투 흐름은 읽기 쉽습니다. 영웅은 자동 전투를 진행하고, 플레이어는 부대를 준비하고 결과를 읽은 뒤 강화, 계속하기, 상성을 바꾼 재도전을 선택합니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>각 스테이지는 다섯 웨이브의 적으로 진행됩니다. 영웅은 자동 공격하지만 편성, 레벨, 별, 장비와 병종 상성이 후반 웨이브와 보스를 좌우합니다.</p>
-<p>관리 화면에서 영웅 레벨과 별, 등급을 올리고 장비를 선택하세요. 다음 적 무리에 맞는 상성이나 스킬이 자원을 즉시 모두 쓰는 것보다 효과적일 수 있습니다.</p>
-<p>결과 화면은 전투 결과를 설명하고 다음, 재도전, 관리 선택을 제공합니다. 스테이지와 영웅, 진행, 설정은 이 브라우저에만 저장되며 계정이나 서버 프로필은 필요하지 않습니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>다음 캠페인 스테이지를 열고 적 구성과 목표를 확인하세요.</li><li>분명한 강화가 필요하면 관리에서 영웅, 별, 등급과 장비를 조정하세요.</li><li>5웨이브 자동 전투를 시작하기 전에 병종 상성과 영웅 스킬을 확인하세요.</li><li>결과를 읽고 다음, 재도전 또는 관리로 부대를 조정하세요.</li><li>자원이 필요하거나 다른 상성을 시험하고 싶으면 이전 스테이지를 다시 플레이하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>자원을 쓰기 전에 다음 적을 확인하세요. 필요를 모른 채 한 영웅에게만 집중하지 마세요.</li><li>전체 웨이브에 효과가 있는 상성이 작은 레벨 상승보다 강할 수 있습니다.</li><li>보스까지 갔다가 후반에 패배한다면 시작 편성보다 생존력이나 장비를 먼저 점검하세요.</li><li>재도전에서는 한 번에 하나만 바꾸고 결과에서 효과를 확인하세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>장이 진행되면 적 조합, 목표, 영웅, 장비와 보스 확인이 늘어납니다. 규칙을 숨기기보다 더 의도적인 부대 구성을 요구하는 성장입니다.</p>
-<p>짧게 다시 방문하기 좋습니다. 강화 방향이 분명하면 전진하고 자원이 필요하면 돌아가며 실패를 다음 계획으로 바꾸세요.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>도원 서약은 방치 전투를 계획의 순환으로 만듭니다. 부대를 준비하고 다섯 웨이브 결과를 보고 보스에게 배우며 한 가지 성장 결정을 내립니다. 자동 전투는 흐름을 보여주고 상성, 장비, 결과 선택은 주도권을 남깁니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>해금한 스테이지, 영웅, 진행과 설정은 이 브라우저에만 저장됩니다. 계정, 구매, 온라인 프로필, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 로컬 캠페인이 사라질 수 있습니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>전투는 자동인가요?</dt><dd>네. 영웅은 각 웨이브를 자동으로 싸우지만 편성, 강화, 장비와 상성은 직접 선택합니다.</dd></div><div><dt>스테이지는 얼마나 걸리나요?</dt><dd>다섯 웨이브와 보스 또는 목표 확인으로 짧게 플레이할 수 있습니다.</dd></div><div><dt>무엇을 먼저 강화하나요?</dt><dd>다음 적을 읽고 다음 클리어에 도움이 되는 강화나 상성을 선택하세요.</dd></div><div><dt>실패하면 무엇을 하나요?</dt><dd>재도전하거나 관리에서 편성을 바꾸고 이전 스테이지에서 자원을 모을 수 있습니다.</dd></div><div><dt>진행이 온라인에 저장되나요?</dt><dd>아니요. 진행과 설정은 이 브라우저에만 저장되며 계정은 필요하지 않습니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>라이트 아웃</strong><span>라이트 아웃은 칸과 상하좌우 이웃을 바꿔 모든 불을 끄는 5×5 클래식 스위치 퍼즐입니다.</span></span></a><a class="game-info-related-card" href="/ko/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>15 퍼즐</strong><span>30개의 저장된 스테이지에서 클래식, 지그재그, 열, 앵커, 우회 목표를 선택하세요.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

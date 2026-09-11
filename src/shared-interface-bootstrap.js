@@ -106,7 +106,7 @@
     }
     window.__weightPlayInterface7PosterRegistryRequested = true;
     const script = document.createElement("script");
-    script.src = assetUrl("interface7-poster-registry.js?v=20260911-authored-posters");
+    script.src = assetUrl("interface7-poster-registry.js?v=20260911-authored-posters-complete");
     script.dataset.wpSharedInterface = "7";
     script.addEventListener("load", () => {
       window.dispatchEvent(new Event("weightplay-interface7-poster-registry-ready"));

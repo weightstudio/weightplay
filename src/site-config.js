@@ -1,5 +1,5 @@
 window.WONDER_SITE = {
-  version: "v0.33.98",
+  version: "v0.33.99",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
@@ -33,7 +33,7 @@ if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(loca
   window.__weightPlaySharedInterfaceRequested = true;
   const currentScript = document.currentScript;
   const bootstrap = document.createElement("script");
-  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260911-authored-posters", currentScript?.src || document.baseURI).href;
+  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260911-authored-posters-complete", currentScript?.src || document.baseURI).href;
   bootstrap.dataset.wpSharedInterface = "7";
   document.head.append(bootstrap);
 }

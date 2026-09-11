@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>Giuramento del Giardino dei Peschi | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra..." />
+  <meta name="description" content="Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Giuramento del Giardino dei Peschi | WeightPlay" />
-    <meta property="og:description" content="Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra..." />
+    <meta property="og:description" content="Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna." />
     <meta property="og:url" content="https://weightplay.com/it/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Giuramento del Giardino dei Peschi | WeightPlay" />
-    <meta name="twitter:description" content="Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra..." />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "Giuramento del Giardino dei Peschi",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/it/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra...",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">Giuramento del Giardino dei Peschi</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>Giuramento del Giardino dei Peschi</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="Immagine del gioco Giuramento del Giardino dei Peschi" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="Immagine del gioco Giuramento del Giardino dei Peschi" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="Informazioni su Giuramento del Giardino dei Peschi" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Giuramento del Giardino dei Peschi</h2><p>Forma la squadra, equipaggia gli eroi e vinci battaglie automatiche per avanzare nella campagna.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>RPG di squadra con battaglie automatiche</strong></div><div class="game-info-fact"><span>Genere</span><strong>Giochi di animali · RPG · Strategia · Idle</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Facile da iniziare, difficile da padroneggiare</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>5–15 minuti</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>Mondo e missione</h3><p>Ogni capitolo offre un percorso breve, un traguardo chiaro e un motivo per decidere quale parte della squadra far crescere.</p></div>
+      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Ogni livello contiene cinque ondate. Livello, stelle, grado, equipaggiamento e contrasti decidono l’esito delle ultime ondate e del boss.</p></div>
+      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>All’avvio gli eroi combattono automaticamente. Raccogli il bottino che appare nell’arena.</li><li>Usa i menu inferiori per potenziare gli eroi, equipaggiare oggetti e modificare la squadra.</li><li>Dopo una vittoria, passa al livello successivo. Se perdi, rafforza la squadra e riprova.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Cambia una sola cosa per tentativo per capire cosa ha funzionato.</li></ul></div>
+      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>I capitoli aggiungono nemici, traguardi, eroi, equipaggiamento e controlli dei boss.</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>Livelli, eroi, progressi e preferenze vengono salvati solo in questo browser. Non servono account, acquisti, profili online o cloud.</p></div>
+      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Il combattimento è automatico?</dt><dd>Sì, ma scegli tu formazione, potenziamenti, equipaggiamento e contrasti.</dd></div><div><dt>Cosa posso fare dopo una sconfitta?</dt><dd>Dopo una vittoria, passa al livello successivo. Se perdi, rafforza la squadra e riprova.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Spegni le luci</strong><span>Spegni le luci è un classico puzzle 5x5: inverti una casella e le vicine ortogonali per spegnere tutte le luci.</span></span></a><a class="game-info-related-card" href="/it/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Puzzle 15 scorrevole</strong><span>Scegli tra 30 fasi salvate con obiettivi classici, a serpentina, per colonne, con ancora e deviazioni.</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informazioni su Giuramento del Giardino dei Peschi">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Giuramento del Giardino dei Peschi</h2><p>Guida una squadra animale legata da un giuramento attraverso battaglie automatiche da cinque ondate, crescita degli eroi, equipaggiamento, contrasti tra truppe e boss.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>RPG idle verticale di squadra</strong></div><div class="game-info-fact"><span>Genere</span><strong>Giochi di animali · RPG · Strategia · Idle</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Facile da iniziare, difficile da padroneggiare</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>5–15 minuti</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mondo e missione</h3><p>Ogni capitolo offre un percorso breve, un traguardo chiaro e un motivo per decidere quale parte della squadra far crescere.</p>
-<p>Gli eroi combattono automaticamente; tu prepari la squadra, leggi il risultato e scegli se potenziare, continuare o riprovare con un contrasto migliore.</p></div>
-      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Ogni livello contiene cinque ondate. Livello, stelle, grado, equipaggiamento e contrasti decidono l’esito delle ultime ondate e del boss.</p>
-<p>Usa Gestione per migliorare eroi ed equipaggiamento. Un contrasto utile a tutta l’ondata può valere più di un piccolo aumento individuale.</p>
-<p>Il Risultato offre Avanti, Riprova o Gestione. Progressi e preferenze restano in questo browser, senza account o profilo server.</p></div>
-      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Apri il livello successivo e leggi nemici e traguardo.</li><li>Regola livello, stelle, grado ed equipaggiamento dalla Gestione.</li><li>Controlla contrasti e abilità prima delle cinque ondate.</li><li>Leggi il Risultato e scegli Avanti, Riprova o Gestione.</li><li>Rigioca un livello precedente per risorse o per provare un altro contrasto.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Guarda l’ondata successiva prima di spendere risorse.</li><li>Un contrasto per l’intera ondata può superare un piccolo miglioramento singolo.</li><li>Se perdi tardi, migliora sopravvivenza o equipaggiamento prima di cambiare formazione.</li><li>Cambia una sola cosa per tentativo per capire cosa ha funzionato.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>I capitoli aggiungono nemici, traguardi, eroi, equipaggiamento e controlli dei boss.</p>
-<p>La campagna funziona in sessioni brevi: avanza con un miglioramento chiaro e torna per le risorse quando serve.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>Il gioco trasforma il combattimento idle in un ciclo di pianificazione: prepara, osserva cinque ondate, impara dal boss e scegli una crescita significativa.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informazioni del giocatore e salvataggio</h3><p>Livelli, eroi, progressi e preferenze vengono salvati solo in questo browser. Non servono account, acquisti, profili online o cloud.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Il combattimento è automatico?</dt><dd>Sì, ma scegli tu formazione, potenziamenti, equipaggiamento e contrasti.</dd></div><div><dt>Quanto dura un livello?</dt><dd>Ogni livello comprende cinque ondate e una verifica del boss o dell’obiettivo, adatta a una sessione breve.</dd></div><div><dt>Cosa dovrei potenziare per primo?</dt><dd>Leggi il prossimo gruppo di nemici e scegli il potenziamento o il contrasto utile alla prossima vittoria, invece di spendere risorse a caso.</dd></div><div><dt>Cosa posso fare dopo una sconfitta?</dt><dd>Riprova, gestisci la squadra o torna a un livello precedente.</dd></div><div><dt>I progressi sono online?</dt><dd>No, solo in questo browser.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Spegni le luci</strong><span>Spegni le luci è un classico puzzle 5x5: inverti una casella e le vicine ortogonali per spegnere tutte le luci.</span></span></a><a class="game-info-related-card" href="/it/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Puzzle 15 scorrevole</strong><span>Scegli tra 30 fasi salvate con obiettivi classici, a serpentina, per colonne, con ancora e deviazioni.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

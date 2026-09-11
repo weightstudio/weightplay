@@ -22,21 +22,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v3">
+  <meta name="weightplay-game-version" content="v5">
   <meta name="description" content="交換兩個藤蔓端點，讓每條救援路徑都連到相符的動物棲所。" />
   <title>纏藤救援 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-tangle-rescue-feedback-envelope-v2">
-  <link rel="stylesheet" href="style.css?v=20260908-tangle-rescue-v3-responsive-repair">
+    <link rel="stylesheet" href="style.css?v=20260912-tangle-rescue-v5-result-contract">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="纏藤救援 | WeightPlay" />
     <meta property="og:description" content="交換兩個藤蔓端點，讓每條救援路徑都連到相符的動物棲所。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-tangle-rescue/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-tangle-rescue.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="纏藤救援 | WeightPlay" />
     <meta name="twitter:description" content="交換兩個藤蔓端點，讓每條救援路徑都連到相符的動物棲所。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.png" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-tangle-rescue.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,7 +44,7 @@
   "name": "纏藤救援",
   "alternateName": "Tangle Rescue",
   "url": "https://weightplay.com/zh-tw/games/animal-tangle-rescue/",
-  "image": "https://weightplay.com/games/animal-tangle-rescue/assets/animal-tangle-rescue-cover.png",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-tangle-rescue.webp",
   "description": "交換兩個藤蔓端點，讓每條救援路徑都連到相符的動物棲所。",
   "publisher": {
     "@type": "Organization",
@@ -69,7 +69,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v3" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-tangle-rescue" data-wp-game-version="v5" data-wp-battle-layout="native" data-screen="main">
   <div id="loadingScreen" class="loading-screen" role="status" aria-live="polite">
     <div class="loading-mark" aria-hidden="true">✦</div>
     <p data-copy="loading">正在準備救援地圖……</p>
@@ -139,8 +139,8 @@
 
     <section id="resultScreen" class="screen" data-screen="result" hidden>
       <div class="result-canvas" data-wp-logical-result-canvas data-wp-canvas-max-width="920">
-        <header class="panel-head"><button id="resultMapBtn" class="back-btn" type="button" data-copy="map">救援地圖</button><h2 data-copy="resultKicker">救援結果</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
-        <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.png" alt="" width="1024" height="1536"></div><p class="eyebrow" data-copy="successKicker">路徑已連線</p><h1 id="resultHeading"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultPrimaryBtn" class="primary-btn" type="button"></button><button id="resultHomeBtn" class="text-btn" type="button" data-copy="home">回到開始</button></div></div>
+        <header class="panel-head"><span class="panel-utility" aria-hidden="true"></span><h2 data-copy="resultKicker">救援結果</h2><span class="panel-utility" aria-hidden="true">✦</span></header>
+        <div class="result-card"><div class="result-character" aria-hidden="true"><img src="assets/animal-tangle-rescue-guide.png" alt="" width="1024" height="1536"></div><p class="eyebrow" data-copy="successKicker">路徑已連線</p><h1 id="resultHeading"></h1><p id="resultText"></p><div id="resultStats" class="result-stats"></div><div class="result-actions"><button id="resultStagesBtn" class="secondary-btn" type="button" data-copy="stages">救援地圖</button><button id="nextStageBtn" class="primary-btn" type="button" data-copy="nextStage">下一張</button><button id="retryBtn" class="text-btn" type="button" data-copy="replay">重玩這張</button></div></div>
       </div>
     </section>
   </div>
@@ -151,6 +151,6 @@
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="locales.js?v=20260904-tangle-rescue-locale-state-v3"></script>
-  <script src="game.js?v=20260908-tangle-rescue-v3-responsive-repair"></script>
+  <script src="game.js?v=20260912-tangle-rescue-v5-result-contract"></script>
 </body>
 </html>

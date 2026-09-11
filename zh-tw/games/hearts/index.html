@@ -24,11 +24,11 @@
     <meta property="og:title" content="紅心大戰 | WeightPlay" />
     <meta property="og:description" content="傳出三張牌、跟牌，並在十三墩中避開紅心懲罰牌。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/hearts/" />
-    <meta property="og:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/hearts.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="紅心大戰 | WeightPlay" />
     <meta name="twitter:description" content="傳出三張牌、跟牌，並在十三墩中避開紅心懲罰牌。" />
-    <meta name="twitter:image" content="https://weightplay.com/assets/card-games-hearts-cover.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/hearts.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
   "name": "紅心大戰",
   "alternateName": "Hearts",
   "url": "https://weightplay.com/zh-tw/games/hearts/",
-  "image": "https://weightplay.com/assets/card-games-hearts-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/hearts.webp",
   "description": "傳出三張牌、跟牌，並在十三墩中避開紅心懲罰牌。",
   "publisher": {
     "@type": "Organization",
@@ -79,7 +79,7 @@
       <div class="game-info-section"><h3>開發設計理念</h3><p>瀏覽器版本以本機四人牌局引擎處理傳牌、跟牌合法性、破紅心、罰分、射月與結果；觸控、滑鼠與鍵盤友善的牌面控制遵循同一套規則。</p></div>
       <div class="game-info-section game-info-parent"><h3>玩家與保存資訊</h3><p>可在瀏覽器免費遊玩紅心大戰，不需要帳號或購買。牌局與結果只保存在這個瀏覽器；清除網站資料或更換瀏覽器可能會移除本機紀錄。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>為什麼第一墩必須由梅花 2 開始？</dt><dd>它讓開局有固定且清楚的起點，之後才由每墩的贏家控制領牌。</dd></div><div><dt>什麼時候可以打紅心？</dt><dd>能跟牌時必須跟牌；紅心破掉前不能領紅心，除非已沒有非罰分牌可領。</dd></div><div><dt>罰分牌值多少分？</dt><dd>每張紅心值 1 分，黑桃皇后值 13 分。</dd></div><div><dt>什麼是射月？</dt><dd>若一位玩家收下全部 26 分罰分，他得 −26 分，其他玩家各得 26 分。</dd></div><div><dt>誰領下一墩？</dt><dd>領出花色中牌面最大的玩家贏得該墩，並領下一墩。</dd></div><div><dt>進度會保存嗎？</dt><dd>目前牌局與結果只保存在這個瀏覽器，沒有帳號或雲端保存。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/go-fish/"><img src="/assets/card-games-go-fish-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>釣魚配對紙牌</strong><span>詢問對手手上已有的點數；如果對方有，就交出該點數的全部牌，否則請從牌堆釣牌。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/crazy-eights/"><img src="/assets/card-games-crazy-eights-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>瘋狂八紙牌</strong><span>《瘋狂八人組》是四人出牌型卡牌對戰。</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/go-fish/"><img src="/assets/interface7-redrawn/go-fish.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>釣魚配對紙牌</strong><span>詢問對手手上已有的點數；如果對方有，就交出該點數的全部牌，否則請從牌堆釣牌。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/crazy-eights/"><img src="/assets/interface7-redrawn/crazy-eights.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>瘋狂八紙牌</strong><span>《瘋狂八人組》是四人出牌型卡牌對戰。</span></span></a></div></div>
     </div>
   </section></main>
 <section id="battleScreen" class="battle-screen" hidden><div class="battle-canvas card-game-battle" data-wp-logical-battle-canvas><div class="card-table-ui"><div class="card-game-topbar"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="card-game-stats"><div class="card-stat"><small id="cardGamePhase">Hearts</small><strong id="cardGameScore">0</strong></div></div><div id="cardGameStatus" class="card-game-status"></div><button id="battleUtilityBtn" class="battle-utility header-icon-btn" type="button" data-wp-battle-utility="true" aria-label="Settings" title="Settings">⚙</button></div><div id="cardGameBoard" class="card-game-board"><div id="cardGameOpponents" class="card-opponents"></div><div id="cardGameTable" class="card-table-center"><div id="cardGameCenter"></div></div><div class="card-game-player"><div class="card-game-player-header"><strong id="cardGameHandLabel">Your hand</strong><small id="cardGameStatusText" role="status"></small></div><div id="cardGameHand" class="card-hand"></div></div></div><div id="cardGameActions" class="card-action-row"></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div></section>

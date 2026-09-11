@@ -405,6 +405,10 @@
       "date": "2026-08-14T05:29:51+08:00",
       "evidence": "git:8ee4ba73ea9c3bfa895c3036c02dde528db3d23b"
     },
+    "old-maid": {
+      "date": "2026-09-11T16:47:51.441Z",
+      "evidence": "canonical-public-catalog"
+    },
     "peg-solitaire": {
       "date": "2026-09-07T13:23:52+08:00",
       "evidence": "git:8f5eb3cee5b5d6cb58a4e60c96b13541a6150aaf"

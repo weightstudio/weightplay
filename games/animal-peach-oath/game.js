@@ -3,6 +3,7 @@
 
   const C = window.PEACH_OATH_CONFIG;
   const sprites = window.PEACH_OATH_SPRITES;
+  let sharedFrame;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const today = () => new Date().toISOString().slice(0, 10);
@@ -22,7 +23,7 @@
   const localeCopy = {
     "zh-Hant": {
       back: "返回 WeightPlay 大廳", settings: "設定", title: "桃園結義", eyebrow: "三國動物放置 RPG",
-      intro: "率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。", progress: "目前進度", start: "開始遊戲",
+      intro: "培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。", progress: "目前進度", start: "開始遊戲",
       guideAria: "遊戲說明", guideTitle: "如何遊玩", guideText: "戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。",
       battleAria: "桃園結義戰場", backMain: "返回主畫面", power: "戰力", auto: "自動", quick: "快捷功能", missions: "任務", achievements: "成就", events: "活動", codex: "圖鑑", shop: "商店",
       arena: "即時戰鬥區", wave: "Wave", enemies: "敵軍", loot: "戰利品", resources: "資源", mainFunctions: "主要功能", battle: "征戰", heroes: "武將", tavern: "酒館", law: "軍法", campaign: "戰役", close: "關閉",
@@ -36,7 +37,7 @@
     },
     en: {
       back: "Back to WeightPlay lobby", settings: "Settings", title: "Peach Garden Oath", eyebrow: "Animal Three Kingdoms idle RPG",
-      intro: "Lead an oath-bound animal squad through auto battles, hero growth, equipment, troop counters, and boss stages.", progress: "Current progress", start: "Start game",
+      intro: "Train heroes and choose your squad to win automatic battles and defeat bosses.", progress: "Current progress", start: "Start game",
       guideAria: "Game information", guideTitle: "How to play", guideText: "Battles run automatically. Collect drops in the arena, then use the bottom controls to grow heroes, tune your squad, and improve your war laws.",
       battleAria: "Peach Garden Oath battlefield", backMain: "Back to main", power: "Power", auto: "Auto", quick: "Quick actions", missions: "Missions", achievements: "Achievements", events: "Events", codex: "Codex", shop: "Shop",
       arena: "Live battle area", wave: "Wave", enemies: "Enemies", loot: "Loot", resources: "Resources", mainFunctions: "Main functions", battle: "Battle", heroes: "Heroes", tavern: "Tavern", law: "War laws", campaign: "Campaign", close: "Close",
@@ -86,9 +87,13 @@
     document.body.dir = locale === "ar" ? "rtl" : "ltr";
     const text = (selector, value) => { const node = $(selector); if (node) node.textContent = value; };
     const attr = (selector, name, value) => { const node = $(selector); if (node) node.setAttribute(name, value); };
-    text("#mainTitle", copy("title")); text(".main-copy .eyebrow", copy("eyebrow")); text(".main-copy p", copy("intro"));
-    text(".main-progress span", copy("progress")); text("#startBtn", copy("start")); text(".guide h2", copy("guideTitle")); text(".guide p", copy("guideText"));
-    attr(".main-return", "aria-label", copy("back")); attr(".shared-header .utility", "aria-label", copy("settings")); attr(".battle-settings", "aria-label", copy("settings"));
+    // The generated route already contains the catalog's localized game name.
+    // Keep that identity instead of restoring an older title from runtime copy.
+    text(".main-copy .eyebrow", copy("eyebrow")); text(".main-copy p", copy("intro"));
+    text(".main-progress span", copy("progress")); text("#startBtn", copy("start")); text(".guide h2", $("#mainTitle").textContent); text(".guide p", copy("guideText"));
+    // "back" is also the formation's back-row label; preserve the route's
+    // already localized lobby-return label instead of replacing it with that.
+    attr(".shared-header .utility", "aria-label", copy("settings")); attr(".battle-settings", "aria-label", copy("settings"));
     attr("#battleScene", "aria-label", copy("battleAria")); attr("#battleBack", "aria-label", copy("backMain")); attr(".quick-rail", "aria-label", copy("quick")); attr(".arena-wrap", "aria-label", copy("arena"));
     ["missions", "achievements", "events", "codex", "shop", "settings"].forEach((key, index) => { const button = $(".quick-rail button:nth-child(" + (index + 1) + ")"); if (button) { const label = key === "settings" ? copy("settings") : copy(key); text(`.quick-rail button:nth-child(${index + 1}) span`, label); button.setAttribute("aria-label", label); } });
     text("#autoBtn", copy("auto")); attr("#lootPile", "aria-label", copy("collectLoot")); attr(".resource-bar", "aria-label", copy("resources")); attr(".bottom-nav", "aria-label", copy("mainFunctions"));
@@ -287,9 +292,14 @@
   function showScene(name) {
     const main = name === "main";
     $("#mainScene").classList.toggle("is-hidden", !main);
-    $(".guide")?.classList.toggle("is-hidden", !main);
+    // Localized routes emit the shared static guide instead of the source stub.
+    document.querySelectorAll(".game-page-info").forEach(guide => {
+      guide.classList.toggle("is-hidden", !main);
+      guide.hidden = !main;
+    });
     $("#battleScene").classList.toggle("is-hidden", main);
     $("#app").dataset.scene = name;
+    sharedFrame?.activate(name);
     document.documentElement.classList.toggle("battle-active", !main);
     document.body.classList.toggle("battle-active", !main);
     if (!main) {
@@ -326,6 +336,7 @@
     battle.heroes = state.team.filter((id) => state.heroes[id]?.owned).map((id, i) => makeUnit(heroData(id), "hero", i));
     battle.enemies = enemyPack();
     $("#resultPanel").classList.add("is-hidden");
+    syncFrameCoverage();
     $("#battleStatus").textContent = state.wave === 5 ? copy("bossIncoming") : copy("enemyIncoming");
     renderCampaignMilestone();
     renderUnits();
@@ -477,6 +488,7 @@
     battle.resultOpen = true;
     clearInterval(battle.tickHandle);
     $("#resultPanel").classList.remove("is-hidden");
+    syncFrameCoverage();
     $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
     $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
@@ -511,6 +523,7 @@
   function openManagement(tab) {
     closeModal();
     $("#management").classList.remove("is-hidden");
+    syncFrameCoverage();
     $$(".bottom-nav button").forEach((button) => button.classList.toggle("is-active", button.dataset.tab === tab));
     const titles = { heroes: copy("managementHeroes"), tavern: copy("managementTavern"), law: copy("managementLaw"), campaign: copy("managementCampaign") };
     $("#managementTitle").textContent = titles[tab] || copy("managementBattle");
@@ -529,6 +542,7 @@
       battle.resultOpen = true;
       $("#resultPanel").classList.remove("is-hidden");
     }
+    syncFrameCoverage();
   }
 
   function renderHeroes() {
@@ -743,10 +757,7 @@
   }
 
   function renderSettings() {
-    const locale = localeOrder.includes(routeLocale()) ? routeLocale() : "en";
-    const options = localeOrder.map((code) => `<option value="${code}" ${code === locale ? "selected" : ""}>${localeLabels[code]}</option>`).join("");
-    openModal(copy("settings"), `<div class="settings-list"><div class="setting-row"><span>${copy("language")}</span><select id="localeSelect" data-setting="locale" data-wp-language aria-label="${copy("language")}">${options}</select></div>
-      <div class="setting-row"><span>${copy("sound")}</span><button class="toggle ${state.settings.sound ? "is-on" : ""}" data-setting="sound" data-sound-toggle aria-pressed="${state.settings.sound}"></button></div>
+    openModal(battleOptionsLabel(), `<div class="settings-list">
       <div class="setting-row"><span>${copy("quality")}</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>${copy("high")}</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>${copy("low")}</option></select></div>
       <div class="setting-row"><span>${copy("damage")}</span><button class="toggle ${state.settings.damage ? "is-on" : ""}" data-setting="damage" aria-pressed="${state.settings.damage}"></button></div>
       <div class="setting-row"><span>${copy("save")}</span><strong>${copy("autoSave")}</strong></div>
@@ -841,7 +852,7 @@
 
   let audioContext;
   function tone(frequency, duration) {
-    if (!state.settings.sound) return;
+    if (window.WonderSound?.isMuted?.()) return;
     try {
       audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
@@ -894,7 +905,7 @@
     $("#resultNext").addEventListener("click", () => { state.stage += 1; state.wave = 1; $("#resultPanel").classList.add("is-hidden"); startWave(); save(); });
     $("#resultRetry").addEventListener("click", () => { $("#resultPanel").classList.add("is-hidden"); state.wave = 1; startWave(); });
     document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape" || event.defaultPrevented) return;
       if (!$("#modalLayer").classList.contains("is-hidden")) closeModal();
       else if (!$("#management").classList.contains("is-hidden")) closeManagement();
     });
@@ -903,7 +914,44 @@
     setInterval(save, 5000);
   }
 
+  function battleOptionsLabel() {
+    return ({"zh-Hant":"戰鬥選項","zh-Hans":"战斗选项",en:"Battle options",ja:"戦闘オプション",ko:"전투 옵션",es:"Opciones de combate","pt-BR":"Opções de batalha",fr:"Options de combat",de:"Kampfoptionen",it:"Opzioni di battaglia",ru:"Настройки боя",hi:"युद्ध विकल्प",ar:"خيارات المعركة"})[activeLocale()] || "Battle options";
+  }
+
+  function syncFrameCoverage() {
+    const scene = $("#app").dataset.scene;
+    const covered = scene === "battle" && !$("#resultPanel").classList.contains("is-hidden");
+    sharedFrame?.activate(scene, {covered});
+    $("#battleContent").inert = covered;
+  }
+
+  function mountSharedFrame() {
+    // The hidden select is a locale data/action adapter, never a second panel.
+    const localeSelect = document.createElement("select");
+    localeSelect.id = "localeSelect";
+    localeSelect.hidden = true;
+    for (const code of localeOrder) localeSelect.add(new Option(localeLabels[code], code));
+    localeSelect.value = activeLocale();
+    localeSelect.addEventListener("change", () => {
+      const next = localeSelect.value;
+      if (!localeSegments[next]) return;
+      localStorage.setItem("weightPlayLocale", next);
+      localStorage.setItem("weightplayLocale", next);
+      location.assign(`/${localeSegments[next]}/games/animal-peach-oath/${location.search}${location.hash}`);
+    });
+    $("#app").append(localeSelect);
+    sharedFrame = window.WeightPlayScreenFrame.mount({root: $("#app"), localeSelect, scenes: {
+      main: {root: $("#mainScene"), header: $("#mainScene > header"), content: $("#mainContent")},
+      battle: {root: $("#battleScene"), header: $("#battleScene > header"), content: $("#battleContent"), headerInfo: $("#battleInfo")}
+    }});
+    sharedFrame.activate("main");
+    const options = $('.quick-rail [data-open="settings"]');
+    options.querySelector("span").textContent = battleOptionsLabel();
+    options.setAttribute("aria-label", battleOptionsLabel());
+  }
+
   applyLocale();
+  mountSharedFrame();
   bind();
   updateHud();
   document.body.dataset.quality = state.settings.quality;

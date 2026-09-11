@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>桃園誓約 | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。" />
+  <meta name="description" content="培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="桃園誓約 | WeightPlay" />
-    <meta property="og:description" content="帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。" />
+    <meta property="og:description" content="培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="桃園誓約 | WeightPlay" />
-    <meta name="twitter:description" content="帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "桃園誓約",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/zh-tw/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">桃園誓約</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>桃園誓約</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="《桃園誓約》遊戲圖片" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="《桃園誓約》遊戲圖片" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="桃園誓約 遊戲資訊" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>桃園誓約</h2><p>培養武將、搭配裝備與隊伍，通過自動戰鬥推進戰役。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>自動戰鬥小隊 RPG</strong></div><div class="game-info-fact"><span>類型</span><strong>動物遊戲 · RPG · 策略 · 放置</strong></div><div class="game-info-fact"><span>難度</span><strong>容易上手，逐步挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5–15 分鐘</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>《桃園誓約》是一段由動物小隊守護路線的短篇戰役。每個章節都有短小的戰鬥序列、清楚的里程碑，以及一個需要你判斷下一步該強化隊伍哪個部分的理由。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>每個關卡都會經過五波敵人。英雄會自動攻擊，但陣容、等級、星級、裝備與兵種克制會決定小隊能否撐過後段波次與首領。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開始遊戲後，武將會自動交戰；點選戰場上的掉落物領取資源。</li><li>使用底部功能升級武將、裝備物品與調整隊伍。</li><li>勝利後選下一關；失敗時先強化隊伍，再重新挑戰。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>重試時一次只改變一個明確因素，讓結果畫面真正告訴你哪個決定有幫助。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>章節會加入新的敵人組合、里程碑、英雄、裝備決策與首領檢查。成長不是把規則藏起來，而是要求你更有意識地組織小隊。</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>解鎖的關卡、英雄、進度與偏好只會保存在這個瀏覽器。不需要帳號、購買、線上個人檔案或雲端存檔；清除網站資料可能刪除本機戰役。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>戰鬥是自動的嗎？</dt><dd>是。英雄會自動通過每一波，但隊伍、升級、裝備與克制關係由你決定。</dd></div><div><dt>失敗後可以做什麼？</dt><dd>勝利後選下一關；失敗時先強化隊伍，再重新挑戰。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="桃園誓約 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>桃園誓約</h2><p>帶領誓約動物小隊穿越五波自動戰鬥、英雄成長、裝備選擇、兵種克制與首領關卡。前線會自行交戰，但你的決策會改變整條推進路線。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>縱向放置小隊 RPG</strong></div><div class="game-info-fact"><span>類型</span><strong>動物遊戲 · RPG · 策略 · 放置</strong></div><div class="game-info-fact"><span>難度</span><strong>容易上手，逐步挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>5–15 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>《桃園誓約》是一段由動物小隊守護路線的短篇戰役。每個章節都有短小的戰鬥序列、清楚的里程碑，以及一個需要你判斷下一步該強化隊伍哪個部分的理由。</p>
-<p>遊戲把戰鬥呈現得容易閱讀：英雄會在自動戰鬥線上前進，而你負責準備小隊、閱讀結果，並決定要強化、繼續，還是用更好的克制關係重試。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>每個關卡都會經過五波敵人。英雄會自動攻擊，但陣容、等級、星級、裝備與兵種克制會決定小隊能否撐過後段波次與首領。</p>
-<p>在管理畫面提升英雄等級、星級與階級，並裝備適合的物品。讓兵種克制或英雄技能對應下一組敵人，通常比立即花光所有資源更有價值。</p>
-<p>結果畫面會說明戰況，並提供下一關、重試或管理選項。關卡、英雄、進度與偏好只會保存在這個瀏覽器，不需要帳號或伺服器個人檔案。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開啟下一個戰役關卡，先查看敵人組成與里程碑。</li><li>隊伍需要明確提升時，進入管理畫面提升英雄、星級或階級並裝備物品。</li><li>開始五波自動戰鬥前，檢查兵種克制與英雄技能。</li><li>閱讀結果畫面，再選擇下一關、重試，或回到管理畫面調整隊伍。</li><li>需要資源或想測試不同克制時，重玩較早的關卡。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先查看下一關的敵人，再決定資源用途，不要在還沒讀懂需求前把資源集中給一名英雄。</li><li>能改善整波戰鬥的兵種克制，可能比小幅提升單一英雄等級更有效。</li><li>如果小隊能到達首領卻在後段失敗，先改善生存力或裝備，再考慮更換開場陣容。</li><li>重試時一次只改變一個明確因素，讓結果畫面真正告訴你哪個決定有幫助。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>章節會加入新的敵人組合、里程碑、英雄、裝備決策與首領檢查。成長不是把規則藏起來，而是要求你更有意識地組織小隊。</p>
-<p>戰役適合短時間回來遊玩：升級方向清楚時向前推進，需要資源時回到舊關卡，並用管理畫面把失敗結果轉成下一個計畫。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>《桃園誓約》把放置戰鬥變成規劃循環：準備小隊、觀察五波結果、從首領學習，再做出一個有意義的成長決定。自動戰鬥讓流程容易閱讀，克制、裝備與結果選項則保留玩家的主動性。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>解鎖的關卡、英雄、進度與偏好只會保存在這個瀏覽器。不需要帳號、購買、線上個人檔案或雲端存檔；清除網站資料可能刪除本機戰役。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>戰鬥是自動的嗎？</dt><dd>是。英雄會自動通過每一波，但隊伍、升級、裝備與克制關係由你決定。</dd></div><div><dt>一個關卡要玩多久？</dt><dd>每關是五波並帶有首領或里程碑檢查，通常適合短時間完成。</dd></div><div><dt>應該先升級什麼？</dt><dd>先閱讀下一組敵人，再選擇能幫助下一次通關的升級或克制，不要隨機花資源。</dd></div><div><dt>失敗後可以做什麼？</dt><dd>可以重試、管理隊伍，或回到較早關卡取得資源。</dd></div><div><dt>進度會上傳到線上嗎？</dt><dd>不會。進度與偏好只留在這個瀏覽器，不需要帳號。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄燈遊戲</strong><span>熄燈遊戲是經典 5×5 開關益智遊戲：按下一格與其上下左右鄰格，關掉全部燈光。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑塊</strong><span>從 30 個已儲存關卡中選擇，挑戰經典、蛇形、直欄、錨點與繞行目標。</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

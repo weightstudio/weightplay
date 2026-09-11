@@ -22,22 +22,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#17243a" />
-    <meta name="weightplay-game-version" content="v8" />
+    <meta name="weightplay-game-version" content="v10" />
     <title>桃园誓约 | WeightPlay</title>
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260901-peach-guide-v8" />
-    <link rel="stylesheet" href="style.css?v=20260904-peach-locale-overflow-v9" />
+    <link rel="stylesheet" href="style.css?v=20260912-peach-frame-v10" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" data-wp-frame-style />
     <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
-  <meta name="description" content="带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。" />
+  <meta name="description" content="培养武将、搭配装备与队伍，通过自动战斗推进战役。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="桃园誓约 | WeightPlay" />
-    <meta property="og:description" content="带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。" />
+    <meta property="og:description" content="培养武将、搭配装备与队伍，通过自动战斗推进战役。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-peach-oath/" />
-    <meta property="og:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="桃园誓约 | WeightPlay" />
-    <meta name="twitter:description" content="带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。" />
-    <meta name="twitter:image" content="https://weightplay.com/games/animal-peach-oath/assets/cover.webp" />
+    <meta name="twitter:description" content="培养武将、搭配装备与队伍，通过自动战斗推进战役。" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,8 +46,8 @@
   "name": "桃园誓约",
   "alternateName": "Peach Garden Oath",
   "url": "https://weightplay.com/zh-cn/games/animal-peach-oath/",
-  "image": "https://weightplay.com/games/animal-peach-oath/assets/cover.webp",
-  "description": "带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-peach-oath.webp",
+  "description": "培养武将、搭配装备与队伍，通过自动战斗推进战役。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -70,39 +71,36 @@
     </script>
   </head>
   <body>
-    <main id="app" class="app" data-scene="main">
+    <main id="app" class="app" data-scene="main" data-wp-frame-root>
       <section id="mainScene" class="scene main-scene" data-screen="main" data-wp-main-envelope aria-labelledby="mainTitle">
         <header class="shared-header">
           <a class="return main-return" data-wp-return="main" href="/" aria-label="返回 WeightPlay 大廳">
             <span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" />
           </a>
-          <h1 id="mainTitle">桃园誓约</h1>
-          <button class="utility" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          <h1 id="mainTitle" data-wp-frame-title>桃园誓约</h1>
         </header>
-        <div class="main-card">
-          <img class="cover main-poster" src="assets/cover.png" alt="《桃园誓约》游戏图片" />
-          <div class="main-copy">
+        <div id="mainContent" class="main-card">
+          <img class="cover main-poster" data-wp-frame-poster src="/assets/interface7-redrawn/animal-peach-oath.webp" alt="《桃园誓约》游戏图片" />
+          <div class="main-copy" data-wp-frame-copy>
             <span class="eyebrow">三國動物放置 RPG</span>
-            <p>率領義軍自動迎戰，培養武將、整備兵裝，在桃園盟誓後一路挑戰群雄。</p>
-            <div class="main-progress"><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
-            <button id="startBtn" class="primary" type="button">開始遊戲</button>
+            <p data-wp-frame-summary>培養武將、調整隊伍，率領義軍自動迎戰並擊敗首領。</p>
+            <div class="main-progress" data-wp-frame-progress><span>目前進度</span><strong id="mainProgress">第 1 關</strong></div>
+            <button id="startBtn" class="primary" data-wp-frame-action="primary" type="button">開始遊戲</button>
           </div>
         </div>
-      </section>
-
-      <section class="scene guide" data-wp-game-guide aria-label="遊戲說明">
-        <h2>如何遊玩</h2>
-        <p>戰鬥會自動進行；在戰場上領取掉落，再用底部功能培養武將、調整隊伍與提升軍法。</p>
       </section>
 
       <section id="battleScene" class="scene battle-scene is-hidden" data-screen="battle" data-wp-canvas-max-width="920" aria-label="桃園結義戰場">
         <header class="battle-header">
           <button id="battleBack" class="return battle-return" data-wp-return="battle" type="button" aria-label="返回主畫面">←</button>
+          <strong data-wp-frame-title hidden></strong>
+        </header>
+        <div id="battleContent">
+          <div id="battleInfo">
           <div class="player-chip"><span id="playerLevel">Lv.1</span><strong id="playerPower">戰力 0</strong></div>
           <div class="stage-chip"><span id="chapterName">桃園起兵</span><strong id="stageLabel">1-1</strong></div>
-          <button class="utility battle-settings" data-open="settings" data-wp-settings type="button" aria-label="設定">⚙</button>
+          </div>
           <button id="autoBtn" class="auto-chip is-on" type="button" aria-pressed="true"><i></i>自動</button>
-        </header>
 
         <div class="battle-layout">
           <aside class="quick-rail" aria-label="快捷功能">
@@ -111,7 +109,7 @@
             <button data-open="events" type="button"><span>活動</span><b class="dot" data-dot="events"></b></button>
             <button data-open="codex" type="button"><span>圖鑑</span></button>
             <button data-open="shop" type="button"><span>商店</span><b class="dot" data-dot="shop"></b></button>
-            <button data-open="settings" data-wp-settings type="button"><span>設定</span></button>
+            <button data-open="settings" type="button"><span>戰鬥選項</span></button>
           </aside>
 
           <section class="arena-wrap" aria-label="即時戰鬥區">
@@ -150,6 +148,7 @@
           <header><button id="closeManagement" type="button" aria-label="關閉">←</button><h2 id="managementTitle">武將</h2><span id="managementMeta"></span></header>
           <div id="managementBody" class="management-body"></div>
         </section>
+        </div>
 
         <section id="resultPanel" class="result-panel is-hidden" aria-live="assertive">
           <span id="resultKicker">戰鬥結果</span><h2 id="resultTitle">勝利</h2><p id="resultCopy"></p>
@@ -176,36 +175,34 @@
       </div>
       <div class="ad-reserve" aria-hidden="true"></div>
     </main>
+    <section class="game-page-info game-page-info-static" aria-label="桃园誓约 游戏信息" data-wp-preserve-static-guide data-runtime-localize="off">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>桃园誓约</h2><p>培养武将、搭配装备与队伍，通过自动战斗推进战役。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>自动战斗小队 RPG</strong></div><div class="game-info-fact"><span>类型</span><strong>动物游戏 · RPG · 策略 · 放置</strong></div><div class="game-info-fact"><span>难度</span><strong>容易上手，逐步挑战</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5–15 分钟</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界与任务</h3><p>《桃园誓约》是一段由动物小队守护路线的短篇战役。每个章节都有短小的战斗序列、清楚的里程碑，以及一个需要你判断下一步该强化队伍哪一部分的理由。</p></div>
+      <div class="game-info-section"><h3>游戏系统</h3><p>每个关卡都会经过五波敌人。英雄会自动攻击，但阵容、等级、星级、装备和兵种克制会决定小队能否撑过后段波次与首领。</p></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>开始游戏后，武将会自动交战；点击战场上的掉落物领取资源。</li><li>使用底部功能升级武将、装备物品与调整队伍。</li><li>胜利后选下一关；失败时先强化队伍，再重新挑战。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>重试时一次只改变一个明确因素，让结果画面真正告诉你哪个决定有帮助。</li></ul></div>
+      <div class="game-info-section"><h3>关卡与难度成长</h3><p>章节会加入新的敌人组合、里程碑、英雄、装备决策与首领检查。成长不是把规则藏起来，而是要求你更有意识地组织小队。</p></div>
+
+      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>解锁的关卡、英雄、进度和偏好只会保存在此浏览器。不需要账号、购买、在线个人档案或云端存档；清除网站数据可能删除本地战役。</p></div>
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>战斗是自动的吗？</dt><dd>是。英雄会自动通过每一波，但队伍、升级、装备和克制关系由你决定。</dd></div><div><dt>失败后可以做什么？</dt><dd>胜利后选下一关；失败时先强化队伍，再重新挑战。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑块</strong><span>从 30 个已保存关卡中选择，挑战经典、蛇形、直列、锚点和绕行目标。</span></span></a></div></div>
+    </div>
+  </section>
     <script src="config.js?v=7"></script>
     <script src="sprites.js?v=20260901-main-battle-hit-target-v8"></script>
-    <script src="game.js?v=20260904-peach-locale-overflow-v9"></script>
+    <script src="../../src/sound.js?v=20260720-locale11"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control" data-wp-frame-script></script>
+    <script src="game.js?v=20260912-peach-frame-v10"></script>
     <script src="../../src/edge-guard.js?v=20260726"></script>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-<section class="game-page-info game-page-info-static" aria-label="桃园誓约 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>桃园誓约</h2><p>带领誓约动物小队穿过五波自动战斗、英雄成长、装备选择、兵种克制和首领关卡。前线会自行交战，但你的决定会改变整条推进路线。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>纵向放置小队 RPG</strong></div><div class="game-info-fact"><span>类型</span><strong>动物游戏 · RPG · 策略 · 放置</strong></div><div class="game-info-fact"><span>难度</span><strong>容易上手，逐步挑战</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5–15 分钟</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>《桃园誓约》是一段由动物小队守护路线的短篇战役。每个章节都有短小的战斗序列、清楚的里程碑，以及一个需要你判断下一步该强化队伍哪一部分的理由。</p>
-<p>游戏把战斗呈现得容易阅读：英雄会在自动战斗线上前进，而你负责准备小队、阅读结果，并决定要强化、继续，还是用更好的克制关系重试。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>每个关卡都会经过五波敌人。英雄会自动攻击，但阵容、等级、星级、装备和兵种克制会决定小队能否撑过后段波次与首领。</p>
-<p>在管理画面提升英雄等级、星级与阶级，并装备合适的物品。让兵种克制或英雄技能对应下一组敌人，通常比立即花光所有资源更有价值。</p>
-<p>结果画面会说明战况，并提供下一关、重试或管理选项。关卡、英雄、进度和偏好只会保存在此浏览器，不需要账号或服务器个人档案。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>打开下一个战役关卡，先查看敌人组成与里程碑。</li><li>队伍需要明显提升时，进入管理画面提升英雄、星级或阶级并装备物品。</li><li>开始五波自动战斗前，检查兵种克制与英雄技能。</li><li>阅读结果画面，再选择下一关、重试，或回到管理画面调整队伍。</li><li>需要资源或想测试不同克制时，重玩较早的关卡。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先查看下一关的敌人，再决定资源用途，不要在还没读懂需求前把资源集中给一名英雄。</li><li>能改善整波战斗的兵种克制，可能比小幅提升单一英雄等级更有效。</li><li>如果小队能到达首领却在后段失败，先改善生存力或装备，再考虑更换开场阵容。</li><li>重试时一次只改变一个明确因素，让结果画面真正告诉你哪个决定有帮助。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>章节会加入新的敌人组合、里程碑、英雄、装备决策与首领检查。成长不是把规则藏起来，而是要求你更有意识地组织小队。</p>
-<p>战役适合短时间回来游玩：升级方向清楚时向前推进，需要资源时回到旧关卡，并用管理画面把失败结果转成下一个计划。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>《桃园誓约》把放置战斗变成规划循环：准备小队、观察五波结果、从首领学习，再做出一个有意义的成长决定。自动战斗让流程容易阅读，克制、装备与结果选项则保留玩家的主动性。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>解锁的关卡、英雄、进度和偏好只会保存在此浏览器。不需要账号、购买、在线个人档案或云端存档；清除网站数据可能删除本地战役。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>战斗是自动的吗？</dt><dd>是。英雄会自动通过每一波，但队伍、升级、装备和克制关系由你决定。</dd></div><div><dt>一个关卡要玩多久？</dt><dd>每关是五波并带有首领或里程碑检查，通常适合短时间完成。</dd></div><div><dt>应该先升级什么？</dt><dd>先阅读下一组敌人，再选择能帮助下一次通关的升级或克制，不要随机花资源。</dd></div><div><dt>失败后可以做什么？</dt><dd>可以重试、管理队伍，或回到较早关卡获得资源。</dd></div><div><dt>进度会上传到线上吗？</dt><dd>不会。进度和偏好只留在此浏览器，不需要账号。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/sliding-15/"><img src="/assets/sliding-15-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑块</strong><span>从 30 个已保存关卡中选择，挑战经典、蛇形、直列、锚点和绕行目标。</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

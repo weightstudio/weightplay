@@ -75,6 +75,7 @@ WeightPlay covers these game and content clusters:
 - Peg Solitaire: https://weightplay.com/en/games/peg-solitaire/
 - Reversi: https://weightplay.com/en/games/reversi/
 - Mahjong Solitaire: https://weightplay.com/en/games/mahjong-solitaire/
+- Old Maid: https://weightplay.com/en/games/old-maid/
 - Wordle: https://weightplay.com/en/games/wordle/
 - Flip Foundry: https://weightplay.com/en/games/animal-flip-foundry/
 - Moonlit Trap Trail: https://weightplay.com/en/games/animal-trap-trail/
