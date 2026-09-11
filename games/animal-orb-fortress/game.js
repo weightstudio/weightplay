@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-const GAME_VERSION = "v40";
+  const GAME_VERSION = "v41";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -649,6 +649,23 @@ const GAME_VERSION = "v40";
   };
   Object.entries(orbCapacityCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
 
+  const orbGrowthCopy = {
+    en: { upgradeDamage: "Orb Power", upgradeDamageDesc: "+1 orb damage.", upgradeBounce: "Rebound Core", upgradeBounceDesc: "+1 wall or obstacle rebound before the orb returns.", upgradeSize: "Expanding Star", upgradeSizeDesc: "Increase orb size and collision reach." },
+    "zh-Hant": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠傷害 +1。", upgradeBounce: "反彈核心", upgradeBounceDesc: "飛回前可多反彈 1 次；牆壁與障礙物都會計數。", upgradeSize: "星珠膨脹", upgradeSizeDesc: "增大星珠與命中範圍。" },
+    "zh-Hans": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠伤害 +1。", upgradeBounce: "反弹核心", upgradeBounceDesc: "飞回前可多反弹 1 次；墙壁与障碍物都会计数。", upgradeSize: "星珠膨胀", upgradeSizeDesc: "增大星珠与命中范围。" },
+    es: { upgradeDamage: "Poder del orbe", upgradeDamageDesc: "+1 de daño de orbe.", upgradeBounce: "Núcleo de rebote", upgradeBounceDesc: "+1 rebote en muro u obstáculo antes de regresar.", upgradeSize: "Estrella creciente", upgradeSizeDesc: "Aumenta el tamaño y el alcance de impacto." },
+    fr: { upgradeDamage: "Puissance d'orbe", upgradeDamageDesc: "+1 dégât d'orbe.", upgradeBounce: "Cœur de rebond", upgradeBounceDesc: "+1 rebond sur mur ou obstacle avant le retour.", upgradeSize: "Étoile croissante", upgradeSizeDesc: "Augmente la taille et la portée de collision." },
+    de: { upgradeDamage: "Kugelkraft", upgradeDamageDesc: "+1 Kugelschaden.", upgradeBounce: "Abprallkern", upgradeBounceDesc: "+1 Wand- oder Hindernisabprall vor der Rückkehr.", upgradeSize: "Wachsender Stern", upgradeSizeDesc: "Erhöht Größe und Trefferbereich der Kugel." },
+    it: { upgradeDamage: "Potenza sfera", upgradeDamageDesc: "+1 danno della sfera.", upgradeBounce: "Nucleo di rimbalzo", upgradeBounceDesc: "+1 rimbalzo su muro o ostacolo prima del ritorno.", upgradeSize: "Stella crescente", upgradeSizeDesc: "Aumenta dimensioni e area di impatto." },
+    ja: { upgradeDamage: "星珠パワー", upgradeDamageDesc: "星珠ダメージ+1。", upgradeBounce: "反射コア", upgradeBounceDesc: "帰還前の壁・障害物反射+1。", upgradeSize: "膨張する星", upgradeSizeDesc: "星珠の大きさと当たり判定を拡大。" },
+    ko: { upgradeDamage: "별 구슬 위력", upgradeDamageDesc: "별 구슬 피해 +1.", upgradeBounce: "반사 코어", upgradeBounceDesc: "귀환 전 벽 또는 장애물 반사 +1.", upgradeSize: "팽창하는 별", upgradeSizeDesc: "별 구슬 크기와 충돌 범위를 늘립니다." },
+    "pt-BR": { upgradeDamage: "Poder do orbe", upgradeDamageDesc: "+1 de dano do orbe.", upgradeBounce: "Núcleo de ricochete", upgradeBounceDesc: "+1 ricochete em parede ou obstáculo antes de voltar.", upgradeSize: "Estrela crescente", upgradeSizeDesc: "Aumenta o tamanho e o alcance de colisão." },
+    ru: { upgradeDamage: "Сила сферы", upgradeDamageDesc: "+1 к урону сферы.", upgradeBounce: "Ядро отскока", upgradeBounceDesc: "+1 отскок от стены или препятствия до возврата.", upgradeSize: "Растущая звезда", upgradeSizeDesc: "Увеличивает размер и область попадания сферы." },
+    hi: { upgradeDamage: "गोला शक्ति", upgradeDamageDesc: "गोले की क्षति +1।", upgradeBounce: "उछाल केंद्र", upgradeBounceDesc: "वापसी से पहले दीवार या बाधा पर +1 उछाल।", upgradeSize: "बढ़ता तारा", upgradeSizeDesc: "गोले का आकार और टक्कर क्षेत्र बढ़ाता है।" },
+    ar: { upgradeDamage: "قوة الكرة", upgradeDamageDesc: "+1 لضرر الكرة.", upgradeBounce: "نواة الارتداد", upgradeBounceDesc: "+1 ارتداد عن جدار أو عائق قبل العودة.", upgradeSize: "نجمة متنامية", upgradeSizeDesc: "يزيد حجم الكرة ونطاق الاصطدام." },
+  };
+  Object.entries(orbGrowthCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
+
   // New combat labels are deliberately short so every supported locale keeps
   // the same compact HUD. Full locale dictionaries can extend these later;
   // falling back to English here prevents a missing key from leaking into a
@@ -973,6 +990,8 @@ const GAME_VERSION = "v40";
   const upgradeDefs = [
     { id: "damage", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeDamage", desc: "upgradeDamageDesc" },
     { id: "split", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-2.webp", name: "upgradeSplit", desc: "upgradeSplitDesc" },
+    { id: "bounce", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-4.webp", name: "upgradeBounce", desc: "upgradeBounceDesc" },
+    { id: "size", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-1.webp", name: "upgradeSize", desc: "upgradeSizeDesc" },
     { id: "pierce", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-3.webp", name: "upgradePierce", desc: "upgradePierceDesc" },
     { id: "recharge", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-4.webp", name: "upgradeRecharge", desc: "upgradeRechargeDesc" },
     { id: "shield", iconSrc: "../../assets/animal-orb-fortress-upgrade-icon-5.webp", name: "upgradeShield", desc: "upgradeShieldDesc" },
@@ -1268,7 +1287,9 @@ const GAME_VERSION = "v40";
       core: 20 + shieldLevel * 4 + openingCoreBonus,
       maxCore: 20 + shieldLevel * 4 + openingCoreBonus,
       baseDamage: 2 + forgeLevel + (openingRoute ? 1 : 0),
-      orbScale: 1,
+      damageLevel: 0,
+      orbSizeLevel: 0,
+      orbBounceLevel: 0,
       orbCapacityLevel: 0,
       pierceLevel: 0,
       chainLevel: 0,
@@ -2070,11 +2091,12 @@ const GAME_VERSION = "v40";
     if (!nodes.orbCountText) return;
     const active = Math.max(0, state.orbs?.length || 0);
     const limit = Math.max(1, activeOrbLimit());
-    const bounces = Math.min(1, state.orbs?.[0]?.bounces || 0);
-    const signature = `${active}/${limit}:${bounces}`;
+    const maxBounces = maxBounceLimit();
+    const bounces = Math.min(maxBounces, state.orbs?.[0]?.bounces || 0);
+    const signature = `${active}/${limit}:${bounces}/${maxBounces}`;
     if (signature !== orbHudSignature) {
-      nodes.orbCountText.textContent = `${bounces}/1`;
-      nodes.orbStat?.setAttribute("aria-label", `${t("bounce")} ${bounces}/1`);
+      nodes.orbCountText.textContent = `${bounces}/${maxBounces}`;
+      nodes.orbStat?.setAttribute("aria-label", `${t("bounce")} ${bounces}/${maxBounces}`);
       nodes.orbStat?.setAttribute("role", "status");
       nodes.orbPips?.querySelectorAll("i").forEach((pip, index) => {
         pip.classList.toggle("is-active", index < active);
@@ -2083,7 +2105,7 @@ const GAME_VERSION = "v40";
       });
       orbHudSignature = signature;
     }
-    nodes.orbCountText.setAttribute("aria-label", `${t("bounce")} ${bounces}/1`);
+    nodes.orbCountText.setAttribute("aria-label", `${t("bounce")} ${bounces}/${maxBounces}`);
   }
 
   function canvasPoint(event) {
@@ -2196,17 +2218,26 @@ const GAME_VERSION = "v40";
     let py = launcher.y;
     let vx = v.vx;
     let vy = v.vy;
+    let bounces = 0;
+    const maxBounces = maxBounceLimit();
+    const wallInset = 34 + orbRadius();
     const points = [{ x: px, y: py }];
     for (let i = 0; i < 85; i += 1) {
       px += vx * 0.035;
       py += vy * 0.035;
-      if (px < 46 || px > W - 46) {
+      if (px < wallInset || px > W - wallInset) {
         vx *= -1;
-        px = Math.max(46, Math.min(W - 46, px));
+        px = Math.max(wallInset, Math.min(W - wallInset, px));
+        bounces += 1;
+        points.push({ x: px, y: py });
+        if (bounces >= maxBounces) break;
       }
-      if (py < 46 || py > H - 46) {
+      if (py < wallInset || py > H - wallInset) {
         vy *= -1;
-        py = Math.max(46, Math.min(H - 46, py));
+        py = Math.max(wallInset, Math.min(H - wallInset, py));
+        bounces += 1;
+        points.push({ x: px, y: py });
+        if (bounces >= maxBounces) break;
       }
       if (i % 10 === 0) points.push({ x: px, y: py });
     }
@@ -2318,15 +2349,15 @@ const GAME_VERSION = "v40";
       ...launcherOrbPoint(),
       vx,
       vy,
-      r: Math.round(22 * state.orbScale),
-      // A launched star never disappears in the field: it completes one
-      // authored rebound, then visibly flies back to the keeper.
+      r: orbRadius(),
+      // A launched star never disappears in the field. Wall and obstacle
+      // contacts spend its rebound allowance; enemy hits do not.
       life: 1,
       damage: Math.max(1, state.baseDamage),
       skin,
       hits: new Map(),
       bounces: 0,
-      maxBounces: 1,
+      maxBounces: maxBounceLimit(),
       pierceLevel: state.pierceLevel,
       capacity: activeOrbLimit(),
       returning: false,
@@ -2338,6 +2369,14 @@ const GAME_VERSION = "v40";
     // One orb is the opening lesson. Capacity grows to two, then three active
     // slots; an upgrade never changes an individual click into a multi-shot.
     return 1 + Math.min(2, state.orbCapacityLevel || 0);
+  }
+
+  function maxBounceLimit() {
+    return 1 + Math.max(0, state.orbBounceLevel || 0);
+  }
+
+  function orbRadius() {
+    return 16 + Math.min(3, Math.max(0, state.orbSizeLevel || 0)) * 4;
   }
 
   function canFireOrb() {
@@ -2632,6 +2671,16 @@ const GAME_VERSION = "v40";
     playSound("click", 0.08);
   }
 
+  function registerOrbBounce(orb, surface) {
+    if (orb.returning) return true;
+    orb.bounces += 1;
+    state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
+    if (surface === "obstacle") state.mechanicEvents.push("pylon_bounce");
+    playSound("click", surface === "obstacle" ? 0.06 : 0.08);
+    if (orb.bounces >= orb.maxBounces) startOrbReturn(orb);
+    return orb.returning;
+  }
+
   function updateOrb(orb, dt) {
     if (orb.returning) {
       const launcher = launcherOrbPoint();
@@ -2649,30 +2698,20 @@ const GAME_VERSION = "v40";
     }
     orb.x += orb.vx * dt;
     orb.y += orb.vy * dt;
-    if (orb.x < 38 || orb.x > W - 38) {
+    const wallInset = 34 + orb.r;
+    if (orb.x < wallInset || orb.x > W - wallInset) {
       orb.vx *= -1;
-      orb.bounces += 1;
-      orb.x = Math.max(38, Math.min(W - 38, orb.x));
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
-      playSound("click", 0.08);
-      if (orb.bounces >= orb.maxBounces) {
-        startOrbReturn(orb);
-        return;
-      }
+      orb.x = Math.max(wallInset, Math.min(W - wallInset, orb.x));
+      if (registerOrbBounce(orb, "wall")) return;
     }
-    if (orb.y < 38 || orb.y > H - 38) {
+    if (orb.y < wallInset || orb.y > H - wallInset) {
       orb.vy *= -1;
-      orb.bounces += 1;
-      orb.y = Math.max(38, Math.min(H - 38, orb.y));
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
-      playSound("click", 0.08);
-      if (orb.bounces >= orb.maxBounces) {
-        startOrbReturn(orb);
-        return;
-      }
+      orb.y = Math.max(wallInset, Math.min(H - wallInset, orb.y));
+      if (registerOrbBounce(orb, "wall")) return;
     }
     orb.pylonHits ||= new Map();
     state.pylons.forEach((pylon) => {
+      if (orb.returning) return;
       const cooldown = orb.pylonHits.get(pylon) || 0;
       if (cooldown > 0) {
         orb.pylonHits.set(pylon, cooldown - dt);
@@ -2690,14 +2729,7 @@ const GAME_VERSION = "v40";
       orb.x = pylon.x + nx * (orb.r + pylon.r + 2);
       orb.y = pylon.y + ny * (orb.r + pylon.r + 2);
       orb.pylonHits.set(pylon, 0.16);
-      orb.bounces += 1;
-      state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
-      state.mechanicEvents.push("pylon_bounce");
-      playSound("click", 0.06);
-      if (orb.bounces >= orb.maxBounces) {
-        startOrbReturn(orb);
-        return;
-      }
+      registerOrbBounce(orb, "obstacle");
     });
     if (orb.bounces >= orb.maxBounces) {
       startOrbReturn(orb);
@@ -2812,7 +2844,13 @@ const GAME_VERSION = "v40";
 
   function currentUpgradeChoices() {
     const seed = state.wave + state.shotCount + (state.rerolled ? 5 : 0);
-    return [0, 1, 2].map((offset) => upgradeDefs[(seed + offset) % upgradeDefs.length]);
+    const orbGrowth = upgradeDefs.filter((upgrade) => ["split", "bounce", "size"].includes(upgrade.id));
+    const utility = upgradeDefs.filter((upgrade) => !["split", "bounce", "size"].includes(upgrade.id));
+    return [
+      orbGrowth[seed % orbGrowth.length],
+      orbGrowth[(seed + 1) % orbGrowth.length],
+      utility[seed % utility.length],
+    ];
   }
 
   let rerollConfirmTimer = 0;
@@ -2856,8 +2894,10 @@ const GAME_VERSION = "v40";
   }
 
   function upgradeLevel(id) {
-    if (id === "damage") return Math.round((state.orbScale - 1) / 0.12);
+    if (id === "damage") return state.damageLevel;
     if (id === "split") return state.orbCapacityLevel;
+    if (id === "bounce") return state.orbBounceLevel;
+    if (id === "size") return state.orbSizeLevel;
     if (id === "pierce") return state.pierceLevel;
     if (id === "chain") return state.chainLevel;
     if (id === "magnet") return state.magnetLevel;
@@ -2899,9 +2939,11 @@ const GAME_VERSION = "v40";
     clearRerollConfirmation();
     if (id === "damage") {
       state.baseDamage += 1;
-      state.orbScale += 0.12;
+      state.damageLevel += 1;
     }
     if (id === "split") state.orbCapacityLevel = Math.min(2, state.orbCapacityLevel + 1);
+    if (id === "bounce") state.orbBounceLevel += 1;
+    if (id === "size") state.orbSizeLevel = Math.min(3, state.orbSizeLevel + 1);
     if (id === "pierce") state.pierceLevel += 1;
     if (id === "recharge") state.orbCooldown = Math.max(0.25, state.orbCooldown - 0.16);
     if (id === "shield") state.core = Math.min(state.maxCore, state.core + 4);
@@ -3787,6 +3829,13 @@ const GAME_VERSION = "v40";
       lastShotFeedback: state.lastShotFeedback,
       orbs: state.orbs.length,
       activeOrbLimit: activeOrbLimit(),
+      maxBounces: maxBounceLimit(),
+      orbRadius: orbRadius(),
+      orbGrowth: {
+        capacity: state.orbCapacityLevel,
+        bounce: state.orbBounceLevel,
+        size: state.orbSizeLevel,
+      },
       previewPoints: state.preview.length,
       keyboardAim: Math.round(keyboardAimDeg + 90),
       stonesEarned: state.stonesEarned,
@@ -3845,6 +3894,13 @@ const GAME_VERSION = "v40";
       state.orbs = [orb];
       updateOrb(orb, 0.016);
       return state.lastShotFeedback;
+    },
+    setOrbGrowthLevels: ({ capacity = 0, bounce = 0, size = 0 } = {}) => {
+      state.orbCapacityLevel = Math.max(0, Math.min(2, Math.floor(Number(capacity) || 0)));
+      state.orbBounceLevel = Math.max(0, Math.min(4, Math.floor(Number(bounce) || 0)));
+      state.orbSizeLevel = Math.max(0, Math.min(3, Math.floor(Number(size) || 0)));
+      renderHud();
+      return { activeOrbLimit: activeOrbLimit(), maxBounces: maxBounceLimit(), orbRadius: orbRadius() };
     },
     setRoomLevel: (id, level) => {
       if (!roomDefs.some((room) => room.id === id)) return null;

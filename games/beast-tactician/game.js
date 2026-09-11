@@ -190,6 +190,7 @@ const BEAST_GUARDIAN_LOCALE_OVERRIDES = {
     waveIntelLabel: $("waveIntelLabel"),
     waveIntelText: $("waveIntelText"),
     speedBtn: $("speedBtn"),
+    canvasShell: $("gameCanvas")?.closest(".canvas-shell"),
     waveBtn: $("waveBtn"),
     upgradeBtn: $("upgradeBtn"),
     rallyBtn: $("rallyBtn"),
@@ -234,6 +235,30 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     stage: nodes.stagePanel,
     battle: nodes.gamePanel,
   });
+  // Battle uses the shared V6 header for navigation and Settings, while its
+  // own HUD supplies the live stage data. Keep the header context useful but
+  // do not repeat the public game name during active play.
+  const battleFrameHeader = document.querySelector("#wp-shared-battle-header");
+  const battleFrameTitle = battleFrameHeader?.querySelector("[data-wp-frame-title]");
+  if (battleFrameHeader && battleFrameTitle) {
+    battleFrameTitle.hidden = true;
+    const battleHeaderContext = document.createElement("span");
+    battleHeaderContext.id = "battleHeaderContext";
+    battleHeaderContext.className = "wp-frame-battle-context";
+    battleHeaderContext.setAttribute("aria-live", "polite");
+    battleHeaderContext.setAttribute("aria-atomic", "true");
+    battleFrameHeader.append(battleHeaderContext);
+    nodes.battleHeaderContext = battleHeaderContext;
+  }
+  // Keep the game-local adapter discoverable to the governed interface probe.
+  // The shared frame still owns the popover, locale select, and sound state.
+  document.querySelectorAll(".wp-frame-popover").forEach((panel) => {
+    panel.classList.add("wp-shell-settings-popover");
+    panel.querySelectorAll(":scope > div").forEach((row) => row.classList.add("wp-shell-sound-row"));
+  });
+  document.querySelectorAll(".wp-frame-back-icon").forEach((icon) => {
+    icon.textContent = "←";
+  });
 
   const text = {
     en: {
@@ -258,7 +283,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
       publicReleaseBadge: "Playable Now",
       menuTitle: "Hero Tower Defense",
       menuHint:
-        "Build anywhere on the forest grid, shape enemy routes, and command WeightPlay heroes with balanced animal soldiers through 30 defense stages.",
+        "Build routes, command animal defenders, and protect the crystal through 30 tower-defense stages.",
       holdNotice:
         "Public lobby remains Coming Soon until the user approves release. This route is for internal release validation.",
       publicNotice: "Build defenders, protect the crystal core, and unlock all 30 stages across six forest regions. Progress saves on this device.",
@@ -2994,7 +3019,10 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     renderBuildCards();
     renderSelectedInfo();
     updateHud();
-    window.requestAnimationFrame(() => nodes.canvas.focus({ preventScroll: true }));
+    window.requestAnimationFrame(() => {
+      centerCanvasViewport();
+      nodes.canvas.focus({ preventScroll: true });
+    });
     track("game_start", { stage: id });
   }
 
@@ -3004,6 +3032,11 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     nodes.coreText.textContent = Math.max(0, Math.ceil(state.coreHp));
     nodes.coinText.textContent = Math.floor(state.coins);
     nodes.waveText.textContent = state.stage ? `${state.wave}/${state.stage.waves}` : "0/0";
+    if (nodes.battleHeaderContext) {
+      nodes.battleHeaderContext.textContent = state.stage
+        ? `${t("stage")} ${state.currentStage} · ${t("wave")} ${state.wave}/${state.stage.waves}`
+        : "";
+    }
     const autoWavePending = !state.runningWave && state.nextWaveTimer > 0;
     nodes.waveBtn.textContent = state.runningWave
       ? t("nextWave")
@@ -5065,26 +5098,53 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   function beginCanvasPress(event) {
     if (canvasPress || state.screen !== "game" || state.gameOver || leaveBattleConfirmPending) return;
     if (event.isPrimary === false || (event.button !== undefined && event.button !== 0)) return;
-    canvasPress = { pointerId: event.pointerId };
+    canvasPress = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      startScrollLeft: nodes.canvasShell?.scrollLeft || 0,
+      startScrollTop: nodes.canvasShell?.scrollTop || 0,
+      moved: false,
+    };
     try { nodes.canvas.setPointerCapture?.(event.pointerId); } catch {}
   }
 
   function finishCanvasPress(event) {
     if (!canvasPress || canvasPress.pointerId !== event.pointerId) return;
+    const moved = canvasPress.moved;
     canvasPress = null;
     try {
       if (nodes.canvas.hasPointerCapture?.(event.pointerId)) nodes.canvas.releasePointerCapture(event.pointerId);
     } catch {}
-    applyCanvasPress(event);
+    if (!moved) applyCanvasPress(event);
   }
 
   function onCanvasPointerMove(event) {
     if (state.screen !== "game" || state.gameOver) return;
     if (event.isPrimary === false) return;
+    if (canvasPress?.pointerId === event.pointerId) {
+      const deltaX = event.clientX - canvasPress.startX;
+      const deltaY = event.clientY - canvasPress.startY;
+      if (!canvasPress.moved && Math.hypot(deltaX, deltaY) > 8) canvasPress.moved = true;
+      if (canvasPress.moved && nodes.canvasShell) {
+        event.preventDefault();
+        nodes.canvasShell.scrollLeft = canvasPress.startScrollLeft - deltaX;
+        nodes.canvasShell.scrollTop = canvasPress.startScrollTop - deltaY;
+        state.pointerTile = null;
+        return;
+      }
+    }
     const p = canvasPointer(event);
     const tile = pointToTile(p.x, p.y);
     state.pointerTile = isInside(tile) ? tile : null;
     state.keyboardMode = false;
+  }
+
+  function centerCanvasViewport() {
+    const shell = nodes.canvasShell;
+    if (!shell) return;
+    shell.scrollLeft = Math.max(0, Math.round((shell.scrollWidth - shell.clientWidth) / 2));
+    shell.scrollTop = Math.max(0, Math.round((shell.scrollHeight - shell.clientHeight) / 2));
   }
 
   function moveKeyboardTile(dx, dy) {

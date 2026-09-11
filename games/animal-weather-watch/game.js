@@ -81,7 +81,15 @@
   function checkForecast() { if (!selected) return; checks += 1; sessionChecks += 1; const correct = selected === plans[planIndex].answer; feedback = correct ? "correct" : "wrong"; announce("check", { selected, correct }); if (correct) { solved.add(planIndex); renderBattle(); setTimeout(() => { show("result"); renderResult(); }, 280); } else renderBattle(); }
   function renderResult() { if (!$("resultText")) return; const complete = solved.size === plans.length; $("resultTitle").textContent = complete ? copy("resultTitle") : copy("resultLevel"); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: bestValue() }); $("nextBtn").hidden = complete; $("resultMapBtn").hidden = !complete; if (complete) { const old = Number(localStorage.getItem("weightplay-animal-weather-watch-best-v1") || 0); if (!old || sessionChecks < old) localStorage.setItem("weightplay-animal-weather-watch-best-v1", String(sessionChecks)); $("resultText").textContent = copy("resultText", { count: solved.size, checks: sessionChecks, best: Math.min(old || sessionChecks, sessionChecks) }); } }
   function nextPlan() { const nextIndex = planIndex + 1; if (nextIndex < plans.length) startPlan(nextIndex); else { show("stage"); renderStages(); } }
-  function goBack() { if (currentScreen === "battle" || currentScreen === "result") { show("stage"); renderStages(); } else if (currentScreen === "stage") show("main"); }
+  function goBack() {
+    if (currentScreen === "battle" || currentScreen === "result") {
+      show("stage");
+      renderStages();
+    } else if (currentScreen === "stage") {
+      show("main");
+      renderStatic();
+    }
+  }
   function openSettings() { $("settingsPanel").hidden = false; $("localeSelect").focus(); }
   function bind() {
     $("startBtn").addEventListener("click", () => { show("stage"); renderStages(); announce("start"); }); $("mapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextPlan); $("checkBtn").addEventListener("click", checkForecast); $("resetBtn").addEventListener("click", () => { selected = ""; checks = 0; feedback = ""; renderBattle(); announce("reset"); });

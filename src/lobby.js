@@ -22,7 +22,8 @@ const showAgeLabels = isKidsLobby;
 const modeHeroGameIds = isKidsLobby
   ? ["color-lunchbox", "animal-zoo-idle", "bubble-bakery", "fruit-merge", "snack-blocks"]
   : ["animal-hero-trials", "animal-relic-hunters", "beast-deck", "animal-rune-tactics", "animal-orb-fortress"];
-const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-auto-squad";
+// Owner-locked General spotlight. See docs/lobby-featured-game-lock.md.
+const modeFeaturedGameId = isKidsLobby ? "color-lunchbox" : "animal-crystal-survivor";
 const tabletopHeroGameIds = ["mahjong-solitaire", "chess", "hearts", "klondike-solitaire", "spades"];
 lobby.games = catalogGames;
 lobby.heroGameIds = modeHeroGameIds;

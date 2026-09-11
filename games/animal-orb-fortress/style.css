@@ -2316,38 +2316,11 @@ body {
   box-shadow: inset 0 3px 0 rgba(255, 225, 141, 0.3), 0 6px 0 #77562c;
 }
 
-body:not(.orb-fortress-playing) .game-page-info {
-  border: 2px solid #597775;
-  border-radius: 16px;
-  color: #e8f1df;
-  background: #14323d;
-  box-shadow: 0 5px 0 #061820;
-}
-
-body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title h2, .game-info-section h3, .game-info-fact strong, .game-info-section dt, .game-info-related-copy strong) {
-  color: #fff1c8;
-}
-
-body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title p, .game-info-section p, .game-info-section li, .game-info-section dd, .game-info-fact span, .game-info-band span) {
-  color: #c1d5c7;
-}
-
-body:not(.orb-fortress-playing) .game-page-info :is(.game-info-fact, .game-info-section, .game-info-band, .game-info-related-card) {
-  border-color: #486977;
-  border-radius: 16px;
-  background: #102e39;
-}
-
-body:not(.orb-fortress-playing) .game-page-info :is(.game-info-kicker, .game-info-section li::marker, .game-info-band strong) {
-  color: #ffe091;
-}
-
 /* Shell readability and Battle safe lanes. */
 .brand span,
 .locale span,
 .menu-copy > span,
-.profile-grid span,
-body:not(.orb-fortress-playing) .game-page-info :is(.game-info-title p, .game-info-section p, .game-info-section li, .game-info-section dd, .game-info-fact span, .game-info-band span) {
+.profile-grid span {
   color: #e2f0df !important;
 }
 

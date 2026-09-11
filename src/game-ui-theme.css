@@ -11,10 +11,14 @@
   --wp-ui-highlight:#41606b;
   --wp-ui-shadow:#061820;
   --wp-ui-radius:3px;
+  --wp-ui-tag-background:var(--wp-ui-background);
+  --wp-ui-tag-text:var(--wp-ui-text);
+  --wp-ui-tag-border:var(--wp-ui-line);
   --wp-ui-background-image:url('../assets/lobby-block-atmosphere.svg');
   --wp-ui-header-image:linear-gradient(#1f4550,#14323d);
   --wp-ui-button-image:linear-gradient(#244a55,#163440);
   --wp-ui-back-image:url('../assets/ui/frame-back.svg?v=20260911-orb-controls');
+  --wp-ui-lobby-logo-image:url('../assets/weightplay-logo.png');
   --wp-ui-settings-image:url('../assets/ui/frame-settings.svg?v=20260911-orb-controls');
   --wp-frame-header-height:64px;
   --wp-frame-control-size:48px;

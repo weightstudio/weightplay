@@ -29,7 +29,7 @@
     <meta property="og:title" content="Gardien des bêtes | WeightPlay" />
     <meta property="og:description" content="Beast Guardian est une campagne de tower defense héroïque en 30 étapes, fondée sur la construction d’itinéraires plutôt que sur des emplacements de tours..." />
     <meta property="og:url" content="https://weightplay.com/fr/games/beast-tactician/" />
-    <meta property="og:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Gardien des bêtes | WeightPlay</title>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
@@ -38,8 +38,8 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-one-frame" />
-    <link rel="stylesheet" href="defense.css?v=20260911-one-frame-v15" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-lobby-return" />
+    <link rel="stylesheet" href="defense.css?v=20260911-beast-interface-v17" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,7 +71,7 @@
 }
     </script>
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-    <style data-beast-interface-v15>
+    <style data-beast-interface-v17>
       body:not(.guardian-playing):not(.guardian-stage) .guardian-app { width:min(920px, calc(100% - 24px)); margin-inline:auto; }
       body:not(.guardian-playing):not(.guardian-stage) .menu-panel { width:100%; max-width:920px; margin-inline:auto; }
       body:not(.guardian-playing):not(.guardian-stage) .game-page-info-static { position:relative; clear:both; margin-top:28px; }
@@ -83,7 +83,7 @@
     </style>
   <meta name="twitter:title" content="Gardien des bêtes | WeightPlay" />
     <meta name="twitter:description" content="Beast Guardian est une campagne de tower defense héroïque en 30 étapes, fondée sur la construction d’itinéraires plutôt que sur des emplacements de tours..." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/beast-tactician-cover.webp" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" />
   </head>
   <body data-game-id="beast-tactician" data-wp-game-id="beast-tactician" data-screen="main" data-wp-combined-sound="true">
     <main class="guardian-app" data-wp-game-shell-root data-wp-frame-root data-runtime-localize="off">
@@ -110,7 +110,7 @@
                   <option value="ja">日本語</option>
                   <option value="ko">한국어</option>
                   <option value="es">Español</option>
-                  <option value="pt-BR">Português (Brasil)</option>
+                  <option value="pt-BR">Português</option>
                   <option value="fr">Français</option>
                   <option value="de">Deutsch</option>
                   <option value="it">Italiano</option>
@@ -132,17 +132,17 @@
         </div>
       </section>
 
-      <section id="menuPanel" class="menu-panel" data-screen="main" data-wp-shell-slot="main">
+      <section id="menuPanel" class="menu-panel main-screen" data-screen="main" data-wp-shell-slot="main">
         <div class="poster-frame">
           <img class="cover" src="../../assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="Illustration du jeu Gardien des bêtes" />
         </div>
-        <div class="menu-copy">
+        <div class="menu-copy main-copy">
           <p id="releaseBadge" class="release-badge">Jouable maintenant</p>
           <h2 id="menuTitle">Défense de héros</h2>
-          <p id="menuHint" class="menu-hint"></p>
-          <p id="mainProgress" class="main-progress"></p>
+          <p id="menuHint" class="menu-hint main-summary"></p>
+          <p id="mainProgress" class="main-progress" data-wp-main-progress></p>
           <div class="menu-actions">
-            <button id="startBtn" class="primary-btn" type="button">Commencer</button>
+            <button id="startBtn" class="primary-btn" type="button" data-wp-main-start>Commencer</button>
           </div>
           <p id="holdNotice" class="hold-notice"></p>
         </div>
@@ -177,7 +177,7 @@
         </nav>
       </section>
 
-      <section id="gamePanel" class="game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-play-viewport>
+      <section id="gamePanel" class="game-panel play-area is-hidden" data-screen="battle" data-wp-shell-slot="battle" data-wp-logical-battle-canvas data-wp-battle-no-title data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" data-play-viewport>
         <div class="hud-row" data-wp-shell-header="battle">
           <button id="menuBtn" class="secondary-btn" data-wp-return="battle" type="button" aria-label="Retour aux niveaux">&larr;</button>
           <div><span id="stageHudLabel">Niveau</span><strong id="stageHudText">1</strong></div>
@@ -205,13 +205,13 @@
             <div id="buildCards" class="build-cards"></div>
             <div id="selectedInfo" class="selected-info" role="status" aria-live="polite" aria-atomic="true"></div>
           </aside>
-          <div class="canvas-shell">
+          <div class="canvas-shell" data-wp-board-viewport="zoom-pan">
             <canvas id="gameCanvas" width="960" height="640" tabindex="0" aria-keyshortcuts="ArrowUp ArrowDown ArrowLeft ArrowRight Enter Space 1 2 3 4 5 6 7 8 9 Q E W U S R Escape" aria-label="Plateau de tower defense du Gardien des bêtes"></canvas>
             <div id="toast" class="toast is-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
         <div class="command-row">
-          <button id="waveBtn" class="primary-btn" type="button">Démarrer la vague</button>
+          <button id="waveBtn" class="primary-btn" type="button" data-wp-primary-action>Démarrer la vague</button>
           <button id="upgradeBtn" class="secondary-btn" type="button">Améliorer</button>
           <button id="rallyBtn" class="secondary-btn" type="button" aria-label="Rally selected defender">Ralliement · 1</button>
           <button id="sellBtn" class="secondary-btn" type="button">Vendre</button>
@@ -252,10 +252,10 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260911-one-frame"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-lobby-return"></script>
     <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
-    <script src="game.js?v=20260911-one-frame-v15"></script>
+    <script src="game.js?v=20260911-beast-interface-v17"></script>
     <section class="game-page-info game-page-info-static" aria-label="Informations sur Gardien des bêtes">
 
     <div class="game-info-hero">
@@ -284,15 +284,41 @@
     </div>
   </section>
 <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script data-beast-interface-v17-guide>
+      (() => {
+        const applyGuideFrame = () => {
+          const guide = document.querySelector(".game-page-info,[data-wp-game-guide]");
+          if (!guide) return;
+          guide.style.setProperty("border-radius", "18px", "important");
+          const sections = guide.querySelector(".game-info-sections");
+          sections?.style.setProperty("display", "grid", "important");
+          sections?.style.setProperty("gap", "14px", "important");
+          guide.querySelectorAll(".game-info-section").forEach((section) => {
+            section.style.setProperty("padding", "16px", "important");
+            section.style.setProperty("border-radius", "14px", "important");
+            section.style.setProperty("background", "#0b202b", "important");
+          });
+        };
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", applyGuideFrame, { once: true });
+        } else {
+          applyGuideFrame();
+        }
+      })();
+    </script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 
-  <style data-beast-interface-v14-final>
+  <style data-beast-interface-v17-final>
     html body .guardian-app { width:min(920px, calc(100% - 24px))!important; max-width:920px!important; margin-inline:auto!important; }
     html body .guardian-topbar .back-btn[data-wp-return="main"] { width:58px!important; min-width:58px!important; max-width:58px!important; height:48px!important; min-height:48px!important; }
     html body .poster-frame { width:420px!important; max-width:calc(100vw - 24px)!important; }
     html body .game-page-info-static { clear:both!important; position:relative!important; margin-top:28px!important; }
     html body #gamePanel [data-wp-battle-utility] { min-width:44px!important; width:44px!important; min-height:44px!important; height:44px!important; }
     html body #gamePanel .build-panel { min-width:0!important; max-width:100%!important; overflow:hidden!important; }
+    html body[data-game-id="beast-tactician"] .game-page-info { border-radius:18px!important; }
+    html body[data-game-id="beast-tactician"] .game-page-info .game-info-sections { display:grid!important; gap:14px!important; }
+    html body[data-game-id="beast-tactician"] .game-page-info .game-info-section { padding:16px!important; border-radius:14px!important; background:#0b202b!important; }
+    html body[data-game-id="beast-tactician"].guardian-stage #stagePanel .stage-card { height:160px!important; min-height:160px!important; max-height:160px!important; }
   </style>
 </body>
 </html>

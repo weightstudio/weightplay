@@ -1284,7 +1284,7 @@ window.WONDER_LOBBY = {
         "zh-Hant": "改造敵人路線，指揮動物士兵與 WeightPlay 英雄，挑戰六區 30 關與六場不同規則的 Boss 戰。"
       },
       meta: { en: ["Tower Defense", "30 Stages", "Six Bosses"], "zh-Hant": ["塔防", "30 關", "六名 Boss"] },
-      art: { kind: "image", background: "assets/beast-tactician-cover.webp", hideHero: true },
+      art: { kind: "image", background: "assets/wonder-crash-related-beast-tactician-cover-block-v1.webp", hideHero: true },
     },
     {
       id: "shadow-wolf",

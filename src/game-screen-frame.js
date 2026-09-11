@@ -3,6 +3,7 @@
   'use strict';
   const mounts = new WeakMap();
   const slotMounts = new WeakMap();
+  const lobbyLogoUrl = new URL('../assets/weightplay-logo.png', document.currentScript.src).href;
   const copy = {
     en: ['Settings', 'Language', 'Sound'], 'zh-Hant': ['設定', '語言', '聲音'],
     'zh-Hans': ['设置', '语言', '声音'], ja: ['設定', '言語', 'サウンド'],
@@ -34,6 +35,12 @@
       arrow.className = 'wp-frame-back-icon'; arrow.setAttribute('aria-hidden','true');
       arrow.textContent = '';
       back.querySelectorAll('img').forEach(image => image.remove());
+      if (name === 'main') {
+        const logo = document.createElement('img');
+        logo.className = 'wp-frame-lobby-logo';
+        logo.src = lobbyLogoUrl; logo.alt = ''; logo.setAttribute('aria-hidden', 'true');
+        back.append(logo);
+      }
       scene.root.dataset.wpFrameScene = name;
       scene.content.dataset.wpFrameContent = name;
       if (name !== 'main') {
