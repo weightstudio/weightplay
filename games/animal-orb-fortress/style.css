@@ -2489,3 +2489,12 @@ html body[data-game-id="animal-orb-fortress"] section.game-page-info .game-info-
   padding: 16px !important;
   border-radius: 16px !important;
 }
+
+/* v43: the full-bleed Battle surface does not need a duplicate blue frame.
+   Keep the shared shell and keyboard focus treatment intact while removing
+   only this game's decorative scene/Canvas borders. */
+html body[data-game-id="animal-orb-fortress"].orb-fortress-playing #gamePanel.game-panel[data-wp-frame-scene="battle"],
+html body[data-game-id="animal-orb-fortress"].orb-fortress-playing #gamePanel.game-panel,
+html body[data-game-id="animal-orb-fortress"].orb-fortress-playing #gamePanel.game-panel #battleLive #gameCanvas {
+  border: 0 !important;
+}
