@@ -338,11 +338,10 @@ function primaryArt(game) {
 
 function lobbyThumbnail(source, width = 480) {
   const clean = String(source || "").split(/[?#]/, 1)[0].replace(/^\/+/, "");
-  // Accepted replacement posters are square and optimized for the
-  // lobby. Never route them through the legacy thumbnail naming convention;
-  // that would silently request a non-existent derivative and show a blank
-  // entry image.
-  if (clean.startsWith("assets/interface7-posters/") || clean.startsWith("assets/interface7-redrawn/")) return `/${clean}`;
+  // The poster registry resolves existing derivatives, or the intact source
+  // when a historical thumbnail is absent. Never request a guessed missing file.
+  const posterDelivery = window.WEIGHTPLAY_INTERFACE7_POSTER_DELIVERIES?.[`/${clean}`];
+  if (width === 480 && posterDelivery) return posterDelivery;
   if (!/^(?:assets|games)\/.+\.(?:avif|jpe?g|png|webp)$/i.test(clean)) return source;
   const encoded = clean.replace(/[^A-Za-z0-9._-]+/g, "__").replace(/\.[^.]+$/, ".webp");
   return `assets/lobby-thumbs/w${width}/${encoded}`;
