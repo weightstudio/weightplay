@@ -1,30 +1,10 @@
 const canvas = document.querySelector("#game");
 const ctx = canvas.getContext("2d");
 const defenseModuleUrl = new URL('../games/wonder-crash/defense-3d.mjs', document.currentScript.src);
-defenseModuleUrl.search = '?v=25-dungeon';
+defenseModuleUrl.search = '?v=26-passive';
 const defenseModule = import(defenseModuleUrl.href).catch(() => null);
 let Defense3D, defense3D = null, animationFrame = 0;
 const movementKeys = new Set();
-const roarButton = document.createElement('button');
-roarButton.id = 'wonderRoar';
-roarButton.type = 'button';
-roarButton.hidden = true;
-roarButton.dataset.runtimeLocalize = 'off';
-document.querySelector('.game-shell').append(roarButton);
-const abilityBar = document.createElement('div');
-abilityBar.id = 'wonderAbilities';
-abilityBar.hidden = true;
-abilityBar.dataset.runtimeLocalize = 'off';
-abilityBar.innerHTML = `
-  <button type="button" class="wonder-ability" data-ability="volley">
-    <img class="ability-icon" src="assets/wonder-prop-double-block-v1.png" alt="" />
-    <span class="ability-copy"><strong></strong><small></small></span>
-  </button>
-  <button type="button" class="wonder-ability" data-ability="aegis">
-    <img class="ability-icon" src="assets/wonder-prop-wall-block-v1.png" alt="" />
-    <span class="ability-copy"><strong></strong><small></small></span>
-  </button>`;
-document.querySelector('.game-shell').append(abilityBar);
 const defenseCopy = {
   en:['Lion roar','Drag to aim · auto-fire · Space roar · Q Pride Volley · E Wall Aegis','3D unavailable. Return to stages and retry.'],
   'zh-TW':['獅吼擊退','拖曳瞄準・自動射擊・Space 獅吼・Q 獅心齊射・E 城牆護盾','3D 暫時無法使用，請返回關卡後重試。'],
@@ -41,6 +21,7 @@ const defenseCopy = {
   hi:['शेर की दहाड़','निशाना लगाने के लिए खींचें · स्वतः गोलीबारी · दहाड़ से दुश्मन पीछे धकेलें','3D उपलब्ध नहीं है। चरणों पर लौटकर फिर कोशिश करें।']
 };
 function defenseText(index) {
+  if(index===1&&window.LionTalents)return window.LionTalents.copy(locale()).short;
   const segment=location.pathname.match(/\/(en|zh-tw|zh-cn|ja|ko|es|pt-br|fr|de|it|ru|hi|ar)\/games\/wonder-crash(?:\/|$)/)?.[1];
   const current=segment ? ({'zh-tw':'zh-TW','zh-cn':'zh-CN','pt-br':'pt-BR'}[segment]||segment) : ({'zh-Hant':'zh-TW','zh-Hans':'zh-CN'}[locale()]||locale());
   return (defenseCopy[current] || defenseCopy.en)[index];
@@ -54,18 +35,6 @@ function prepareDefense() {
   try { if (!Defense3D) throw Error('3D module unavailable'); if (!defense3D || defense3D.contextLost) { disposeDefense(); defense3D = new Defense3D(); } canvas.dataset.renderer = 'three'; return true; }
   catch { disposeDefense(); showFloatingMessage(defenseText(2)); return false; }
 }
-function roar() {
-  useAbility('roar');
-}
-roarButton.className='wonder-ability';roarButton.dataset.ability='roar';
-roarButton.innerHTML='<img class="ability-icon" src="games/wonder-crash/icons/inferno.svg" alt=""/><span class="ability-copy"><strong></strong><small></small></span>';
-abilityBar.prepend(roarButton);
-abilityBar.querySelector('[data-ability="volley"] img').src='games/wonder-crash/icons/fireVolley.svg';
-abilityBar.querySelector('[data-ability="aegis"] img').src='games/wonder-crash/icons/aegis.svg';
-abilityBar.addEventListener('click', (event) => {
-  const button = event.target.closest('button[data-ability]');
-  if (button) useAbility(button.dataset.ability);
-});
 const battleHud = document.querySelector("#battleHud");
 const coinText = document.querySelector("#coinText");
 const menuCoinLine = document.querySelector("#menuCoinLine");
@@ -133,7 +102,7 @@ function t(key, params = {}) {
   const activeLocale = locale();
   if (window.LionTalents) {
     const c=window.LionTalents.copy(activeLocale);
-    const owned={hud_guard:c.ui[17],talent_points:c.ui[2],settlement_talent_reward:c.ui[2]+' +{count}',shield_blocked:c.ui[17],upgrade_thunder_name:c.names[5],upgrade_thunder_desc:c.battle[0],upgrade_barrier_name:c.ui[17],upgrade_barrier_desc:c.battle[1],upgrade_fury_name:c.names[0],upgrade_fury_desc:c.battle[2]};
+    const owned={hud_guard:c.ui[17],talent_points:c.ui[2],settlement_talent_reward:c.ui[2]+' +{count}',shield_blocked:c.ui[17],upgrade_thunder_name:c.names[5],upgrade_thunder_desc:c.battle[0],upgrade_barrier_name:c.ui[17],upgrade_barrier_desc:c.battle[1],upgrade_fury_name:c.ui[15]+' +',upgrade_fury_desc:c.battle[2]};
     if(owned[key])return Object.entries(params).reduce((s,[k,v])=>s.replaceAll('{'+k+'}',String(v)),owned[key]);
   }
   const table = { ...(dictionary[activeLocale] || {}), ...(WONDER_DYNAMIC_COPY[activeLocale] || {}) };
@@ -938,7 +907,8 @@ function makeState(levelIndex) {
     time: 0,
     roarCooldown: 0,
     roarPulse: 0,
-    abilityCooldowns: { roar: 0, volley: 0, aegis: 0 },
+    abilityCooldowns: { roar: 6, volley: 4, aegis: 8 },
+    passiveShieldRemaining: 0, passiveShieldTimer: 0,
     abilityUses: { roar: 0, volley: 0, aegis: 0 },
     wallShield: getStartingWallShield(),
     wallWardTimer: 0,
@@ -994,7 +964,7 @@ function makeState(levelIndex) {
   };
 }
 
-function useAbility(id) {
+function triggerPassive(id) {
   if (!state?.running || !state.abilityCooldowns || !Object.hasOwn(state.abilityCooldowns, id)) return false;
   const cooldown = state.abilityCooldowns[id] || 0;
   if (cooldown > 0) {
@@ -1005,7 +975,7 @@ function useAbility(id) {
   if (id === "volley") activatePrideVolley();
   if (id === "aegis") activateWallAegis();
   state.abilityUses[id] = (state.abilityUses[id] || 0) + 1;
-  syncAbilityBar();
+  syncPassiveAccessibility();
   return true;
 }
 
@@ -1017,12 +987,12 @@ function activateRoar() {
   state.roarPulse = 0.5;
   state.impactPulse = .12;
   if (getTalentLevel('fireWall')) state.fireWallTimer = 4;
-  const range = W * (0.34 + mastery * 0.045);
+  const range = W * 0.3;
   for (const enemy of state.enemies) {
     if (Math.abs(enemy.x - state.hero.x) >= range || enemy.y <= wallY - H * 0.3) continue;
-    enemy.y -= enemy.isBoss ? H * (0.035 + mastery * 0.006) : H * (0.12 + mastery * 0.018);
-    enemy.slowTimer = Math.max(enemy.slowTimer || 0, 1.5 + mastery * 0.2);
-    enemy.slowMultiplier = Math.min(enemy.slowMultiplier || 1, 0.45 - mastery * 0.035);
+    enemy.y -= enemy.isBoss ? H * 0.02 : H * 0.08;
+    enemy.slowTimer = Math.max(enemy.slowTimer || 0, 0.8);
+    enemy.slowMultiplier = Math.min(enemy.slowMultiplier || 1, 0.7);
   }
   state.hits.push({ x: state.hero.x, y: wallY - H * 0.1, radius: 120 + mastery * 30, life: 0.5, roar: true });
   if(!defense3D)state.damageTexts.push({ x: state.hero.x, y: state.hero.y - 90, value: t("roar_label"), roar: true, life: 0.72, maxLife: 0.72 });
@@ -1034,7 +1004,7 @@ function activatePrideVolley() {
     || { weapon: getWeapon("eraser"), level: 1 };
   const count = 3 + getTalentLevel('inferno') * 2;
   const spread = 42;
-  const damageScale = 1.8 * (1 + getTalentLevel('fireVolley') * .25);
+  const damageScale = 1.15 * (1 + getTalentLevel('fireVolley') * .25);
   state.abilityCooldowns.volley = getVolleyCooldown();
   state.volleyPulse = 0.65;
   for (let index = 0; index < count; index += 1) {
@@ -1059,40 +1029,22 @@ function activatePrideVolley() {
 function activateWallAegis() {
   const mastery = getTalentLevel("wallAegis");
   state.abilityCooldowns.aegis = getAegisCooldown();
-  state.wallShield = Math.min(8, state.wallShield + getAegisShieldCount());
-  state.wallWardTimer = 4.5 + mastery * 0.6;
+  state.passiveShieldRemaining = Math.min(4-state.wallShield, getAegisShieldCount());
+  state.wallShield += state.passiveShieldRemaining;
+  state.passiveShieldTimer = 6;
+  state.wallWardTimer = 1.5;
   state.aegisPulse = 0.9;
   state.bastionTimer = getTalentLevel('bastion') ? 5 : 0;
-  const heal = Math.min(state.maxWallHp - state.wallHp, 10 + getTalentLevel('repair') * 8);
+  const heal = Math.min(state.maxWallHp - state.wallHp, getTalentLevel('repair') * 8);
   state.wallHp += Math.max(0, heal);
   state.hits.push({ x: W / 2, y: wallY, radius: W * 0.42, life: 0.46, shield: true });
   if(!defense3D)state.damageTexts.push({ x: W / 2, y: wallY - 46, value: t("ability_aegis_label"), ability: true, life: 0.72, maxLife: 0.72 });
   window.WonderSound?.play("upgrade");
 }
 
-function syncAbilityBar() {
-  const active = Boolean(state?.running && !state.awaitingUpgrade && !state.gameOver && !state.won);
-  abilityBar.hidden = !active;
-  roarButton.hidden = !active;
-  if (!active) return;
-  const roarCooldown = state.abilityCooldowns?.roar || 0;
-  roarButton.disabled = roarCooldown > 0;
-  const c=window.LionTalents.copy(locale());
-  roarButton.title = defenseText(1);
-  for (const button of abilityBar.querySelectorAll("button[data-ability]")) {
-    const id = button.dataset.ability;
-    const cooldown = state.abilityCooldowns?.[id] || 0;
-    const name = c.ui[id==='roar'?15:id==='volley'?16:17];
-    const copy = button.querySelector(".ability-copy strong");
-    const timer = button.querySelector(".ability-copy small");
-    if (copy) copy.textContent = name;
-    if (timer) timer.textContent = cooldown > 0 ? String(Math.ceil(cooldown)) : c.ui[14];
-    const duration=id==='roar'?getRoarCooldown():id==='volley'?getVolleyCooldown():getAegisCooldown();
-    button.style.setProperty('--cooldown',String(Math.min(1,cooldown/duration)));
-    button.disabled = cooldown > 0;
-    button.classList.toggle("ready", cooldown <= 0);
-    button.setAttribute("aria-label", `${name} — ${cooldown > 0 ? Math.ceil(cooldown) : c.ui[14]}`);
-  }
+function syncPassiveAccessibility() {
+  const description=window.LionTalents.copy(locale()).passive;
+  if(canvas.getAttribute('aria-description')!==description)canvas.setAttribute('aria-description',description);
 }
 
 function loadImage(src) {
@@ -1242,7 +1194,7 @@ function startLevel(levelIndex) {
   overlay.classList.add("hidden");
   hudElapsed = 0;
   updateHud();
-  syncAbilityBar();
+  syncPassiveAccessibility();
   requestAnimationFrame(() => canvas.focus({ preventScroll: true }));
   window.WonderSound?.play("start");
 }
@@ -1253,9 +1205,6 @@ window.addEventListener("keydown", (event) => {
     movementKeys.add(event.code);
     return;
   }
-  if (event.code === 'Space' && state.running) { event.preventDefault(); if (!event.repeat) roar(); }
-  if (event.code === 'KeyQ' && state.running) { event.preventDefault(); if (!event.repeat) useAbility("volley"); }
-  if (event.code === 'KeyE' && state.running) { event.preventDefault(); if (!event.repeat) useAbility("aegis"); }
 });
 window.addEventListener('keyup', event => movementKeys.delete(event.code));
 window.addEventListener('blur', () => { movementKeys.clear(); if (state.running) showPauseMenu(); });
@@ -1308,7 +1257,7 @@ profilePanel.addEventListener("click", (event) => {
   if (event.target.closest('[data-talent-reset]')) { resetTalents(); return; }
   if (event.target.closest('[data-wall-talent]')) {
     const id=profile.specialization==='fire'?'fireWall':profile.specialization==='storm'?'stormWall':'thorns';
-    showMainMenu('character');inspectTalent(id);return;
+    showMainMenu('talents');inspectTalent(id);return;
   }
   const button = event.target.closest("button[data-profile-upgrade]");
   if (button) {
@@ -1396,8 +1345,6 @@ function loop(now) {
   defenseHelp.textContent = defenseText(1);
   if (loaded && state.running && !document.hidden) { update(dt); draw(); }
   else {
-    roarButton.hidden = true;
-    abilityBar.hidden = true;
   }
   animationFrame = requestAnimationFrame(loop);
 }
@@ -1420,6 +1367,7 @@ function update(dt) {
   state.bastionTimer = Math.max(0, state.bastionTimer - dt);
   state.fireWallTimer = Math.max(0, state.fireWallTimer - dt);
   updateSpecialization(dt);
+  updatePassives(dt);
 
   updateWeaponCooldowns(dt);
   updateWallRegen(dt);
@@ -1794,7 +1742,7 @@ function loseLevel() {
   overlay.classList.add("settlement-screen");
   bankRunCoins();
   state.running = false;
-  syncAbilityBar();
+  syncPassiveAccessibility();
   state.gameOver = true;
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
@@ -2251,6 +2199,7 @@ function applyWallImpact(damage, x) {
   state.stormCharge = Math.min(6, state.stormCharge + getTalentLevel('stormWall'));
   if (state.wallShield > 0) {
     state.wallShield -= 1;
+    state.passiveShieldRemaining = Math.max(0, state.passiveShieldRemaining - 1);
     state.hits.push({ x, y: wallY, radius: 62, life: 0.46, shield: true });
     state.damageTexts.push({ x, y: wallY - 44, value: t("shield_blocked"), shield: true, life: 0.72, maxLife: 0.72 });
     triggerWallThorns(x);
@@ -2276,10 +2225,7 @@ function triggerWallThorns(x) {
 }
 
 function draw() {
-  syncAbilityBar();
-  roarButton.hidden = !state.running;
-  roarButton.disabled = state.roarCooldown > 0;
-  roarButton.title = defenseText(1);
+  syncPassiveAccessibility();
   // A pointer/compositor cancellation must not carry transient canvas state
   // into the next frame. The battle scene is always rebuilt from this baseline.
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -2524,7 +2470,7 @@ function drawDamageTexts() {
   ctx.save();
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  for (const text of state.damageTexts) {
+  for (const text of state.damageTexts.slice(-14)) {
     const progress = clamp(text.life / text.maxLife, 0, 1);
     const scale = text.crit ? 1.18 : text.roar ? 1.08 : 1;
     ctx.globalAlpha = Math.min(1, progress * 1.4);
@@ -2536,7 +2482,7 @@ function drawDamageTexts() {
     if (text.shield) ctx.fillStyle = "#b9f6ff";
     if (text.lightning) ctx.fillStyle = "#d4b3ff";
     if (text.lightning || text.shield || text.ability) ctx.lineWidth = 8;
-    const label = text.crit ? `${t("crit_label")} ${text.value}` : String(text.value);
+    const label = text.crit ? `✦ ${text.value}` : String(text.value);
     ctx.strokeText(label, text.x, text.y);
     ctx.fillText(label, text.x, text.y);
   }
@@ -2666,7 +2612,7 @@ function updateHud() {
   setText(levelText, state.level.id);
   setText(waveText, `${Math.min(state.waveIndex + 1, state.level.waves.length)}/${state.level.waves.length}`);
   setText(wallShieldText, state.wallShield || 0);
-  syncAbilityBar();
+  syncPassiveAccessibility();
 }
 
 function showMainMenu(tab = activeMenuTab) {
@@ -2719,16 +2665,18 @@ function showWonderMain() {
   battleHud.classList.add("hidden");
   settingsBtn.classList.add("hidden");
   backToMenuBtn.classList.add("hidden");
-  syncAbilityBar();
+  syncPassiveAccessibility();
 }
 
 function getMenuTitle(tab) {
+  if(tab==='talents')return window.LionTalents.copy(locale()).tab;
   return t("menu_" + tab);
 }
 
 function renderMenuTabs() {
   for (const button of menuTabs.querySelectorAll("button[data-menu-tab]")) {
     button.classList.toggle("active", button.dataset.menuTab === activeMenuTab);
+    if(button.dataset.menuTab==='talents')button.querySelector('span').textContent=window.LionTalents.copy(locale()).tab;
   }
 }
 
@@ -3032,7 +2980,7 @@ function clearFloatingMessage() {
 function showUpgradeChoices() {
   overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
-  syncAbilityBar();
+  syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
   settingsBtn.classList.add("hidden");
   battleHud.classList.add("hidden");
@@ -3078,7 +3026,7 @@ function chooseUpgrade(id) {
   settingsBtn.classList.remove("hidden");
   battleHud.classList.remove("hidden");
   menuCoinLine.classList.add("hidden");
-  syncAbilityBar();
+  syncPassiveAccessibility();
   updateHud();
 }
 
@@ -3089,7 +3037,7 @@ function showPauseMenu(returnIntent = false) {
   pauseReturnIntent = returnIntent;
   overlay.classList.remove("equipment-screen", "settlement-screen");
   state.running = false;
-  syncAbilityBar();
+  syncPassiveAccessibility();
   document.body.classList.add("wonder-tutorial-hidden");
   backToMenuBtn.classList.add("hidden");
   settingsBtn.classList.add("hidden");
@@ -3217,12 +3165,31 @@ function applyElementalHit(projectile, enemy) {
     state.hits.push({x:enemy.x,y:enemy.y,radius:80,fire:true,life:.4,maxLife:.4});
   }
 }
+function updatePassives(dt) {
+  if(!state.running||state.awaitingUpgrade||state.gameOver||state.won)return;
+  if(state.passiveShieldTimer>0){
+    state.passiveShieldTimer=Math.max(0,state.passiveShieldTimer-dt);
+    if(!state.passiveShieldTimer){state.wallShield=Math.max(0,state.wallShield-state.passiveShieldRemaining);state.passiveShieldRemaining=0;}
+  }
+  const living=state.enemies.filter(e=>e.hp>0&&!e.hitWall);
+  if(!living.length)return;
+  if(!state.abilityCooldowns.volley)triggerPassive('volley');
+  if(!state.abilityCooldowns.roar&&living.some(e=>e.y>wallY-H*.25&&Math.abs(e.x-state.hero.x)<W*.3))triggerPassive('roar');
+  if(!state.abilityCooldowns.aegis&&state.wallShield===0&&state.wallHp<state.maxWallHp&&living.some(e=>e.y>wallY-H*.3))triggerPassive('aegis');
+}
+
 function updateSpecialization(dt) {
   state.elementalTick+=dt;
-  for(const e of state.enemies)e.burnTimer=Math.max(0,(e.burnTimer||0)-dt);
+  for(const e of state.enemies){
+    const burning=Math.min(dt,e.burnTimer||0);
+    e.burnTimer=Math.max(0,(e.burnTimer||0)-dt);
+    if(e.hp<=0||!burning)continue;
+    e.burnCarry=(e.burnCarry||0)+burning*(e.burnDamage||0);
+    const whole=Math.floor(e.burnCarry+1e-9);
+    if(whole>0){e.burnCarry-=whole;damageEnemy(e,getDamageToEnemy(e,whole),false);}
+  }
   if(state.elementalTick<.5)return;state.elementalTick-=.5;
   for(const e of state.enemies){if(e.hp<=0)continue;
-    if(e.burnTimer>0)damageEnemy(e,getDamageToEnemy(e,Math.max(1,Math.ceil(e.burnDamage*.5))),false);
     if(state.fireWallTimer>0&&e.y>wallY-H*.22){damageEnemy(e,getDamageToEnemy(e,2*getTalentLevel('fireWall')),false);state.hits.push({x:e.x,y:e.y,radius:25,fire:true,life:.4,maxLife:.4});}
   }
 }
@@ -3243,7 +3210,6 @@ function renderProfilePanel(tab = activeMenuTab) {
         ${renderUpgradeRow("diamondPower", "assets/wonder-prop-damage-block-v1.png", t("diamondPower_title", { lvl: profile.diamondPowerLevel }), getUpgradePreview("diamondPower"), "diamond")}
       </div>
     `;
-    profilePanel.insertAdjacentHTML("afterbegin", renderTalentTree());
     if (Defense3D) {
       if (!lionPortrait) {
         let preview;
@@ -3266,13 +3232,9 @@ function renderProfilePanel(tab = activeMenuTab) {
     return;
   }
 
-  if (tab === "wall") {
-    profilePanel.innerHTML = `
-      ${renderUpgradeRow("wallHp", "assets/wonder-prop-wall-block-v1.png", t("wallHp_title", { lvl: profile.wallHpLevel }), getUpgradePreview("wallHp"))}
-      ${renderUpgradeRow("wallGuard", "assets/wonder-prop-repair-block-v1.png", t("wallGuard_title", { lvl: profile.wallGuardLevel }), getUpgradePreview("wallGuard"))}
-      ${renderUpgradeRow("wallRegen", "assets/wonder-prop-cooldown-block-v1.png", t("wallRegen_title", { lvl: profile.wallRegenLevel }), getUpgradePreview("wallRegen"))}
-    `;
-    profilePanel.insertAdjacentHTML("afterbegin", renderTalentTree("wall"));
+  if (tab === "talents") {
+    const c=window.LionTalents.copy(locale());
+    profilePanel.innerHTML = `<details class="lion-passive-help" data-runtime-localize="off"><summary>${c.ui[15]} · ${c.ui[16]} · ${c.ui[17]}</summary><p>${c.passive}</p></details>` + renderTalentTree();
     return;
   }
 
@@ -3634,19 +3596,19 @@ function getStartingWallShield() {
 }
 
 function getRoarCooldown() {
-  return Math.max(3.5, 8 - getTalentLevel("roarMastery") * 0.9 - (state?.roarCooldownReduction || 0));
+  return Math.max(9, 12 - (state?.roarCooldownReduction || 0));
 }
 
 function getVolleyCooldown() {
-  return 12;
+  return 14;
 }
 
 function getAegisCooldown() {
-  return Math.max(8, 18 - getTalentLevel("aegis") * 2);
+  return 22 - getTalentLevel("aegis") * 2;
 }
 
 function getAegisShieldCount() {
-  return 2 + getTalentLevel("wallAegis");
+  return 1 + getTalentLevel("aegis");
 }
 
 function getWeaponUpgradeCost() {

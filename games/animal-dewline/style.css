@@ -108,6 +108,8 @@ h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-dewline"] .guide-card.game-page-info .game-info-section { border-radius: 16px !important; }
 }
 .settings-panel { position: fixed; z-index: 20; top: 68px; right: max(12px, calc((100vw - 920px) / 2 + 12px)); width: min(320px, calc(100vw - 24px)); margin: 0; padding: 16px; display: grid; gap: 12px; border: 1px solid var(--line); border-radius: 18px; background: #fffffff2; box-shadow: 0 12px 32px #234b3b20; }
+.wp-shell-settings ~ #stageSettingsBtn,
+html[data-wp-shared-interface="7"] #stageSettingsBtn { display: none !important; }
 .settings-panel .setting-row { width: 100%; }
 body[data-screen="stage"] .game-page-info,
 body[data-screen="battle"] .game-page-info,

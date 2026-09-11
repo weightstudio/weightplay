@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="Fantasy Lion Defense | WeightPlay" />
     <meta name="twitter:description" content="कवचधारी ब्लॉक शेर के साथ 30 चरणों में दीवार बचाएँ। हथियार लगाएँ, लहरों के बीच सुधार चुनें और तीन विशेषज्ञताओं में से एक विकसित करें।" />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="Fantasy Lion Defense गेम की जानकारी">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>बूम माने लियो WeightPlay के मंत्रमुग्ध स्कूल-सप्लाई वॉल्ट के बाहर की दीवार की रखवाली करता है। जंगली सूअर, चालबाज लकड़बग्घे, बख्तरबंद गैंडे, शिकारी भैंसे, बाज, भालू, बाघ और मगरमच्छ इसके पेंसिल, रूलर और इरेज़र के अंदर संग्रहीत जादू की ओर आकर्षित होते हैं। लियो दीवार को असुरक्षित नहीं छोड़ सकता, इसलिए खिलाड़ी इसकी चौड़ाई पर गश्त करता है, स्वचालित हथियारों को आने वाली लेन के साथ संरेखित रखता है, और अभियानों के बीच क्षति की मरम्मत करता है।</p>
 <p>अभियान छह पाँच-चरणीय रक्षा मार्गों को पार करता है। प्रत्येक मार्ग तब समाप्त होता है जब नामित जानवर कमांडर चरण 5, 10, 15, 20, 25, या 30 पर पराजित हो जाता है। पहला स्पष्ट अगला चरण खोलता है; बॉस पहले स्पष्ट रूप से रिकॉर्ड किए गए हीरे का बोनस भी देता है। स्टेज 30 पर बियर स्टारफ़ॉल को साफ़ करने का मतलब है कि पूरे जानवर रोस्टर को हटा दिया गया है और वॉल्ट सुरक्षित रूप से फिर से खुल सकता है।</p></div>
-      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</p>
+      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>खींचें या ← → से चलें। सब स्वतः: शत्रु होने पर हर 14 सेकंड बौछार; दीवार के पास हर 12 सेकंड दहाड़ (न्यूनतम 9); क्षतिग्रस्त दीवार और निकट शत्रु पर हर 22 सेकंड ढाल (स्तर 2 पर 18)। ढाल 6 सेकंड। कौशल बटन नहीं।</p>
+<p>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</p>
 <p>ज्वाला राजा: हर स्तर पर बौछार क्षति +25%। दहाड़ दीवार के सामने 4 सेकंड आग लगाती है। स्तर 2 पर दोगुनी क्षति।</p>
 <p>तड़ित राजा: हर चौथा वार हर स्तर पर 40% श्रृंखला क्षति देता है। दीवार पर वार हर स्तर पर 1 ऊर्जा जमा करता है, अगला वार छोड़ता है।</p>
 <p>दुर्ग राजा: हर स्तर पर ढाल +1 और समय −2 सेकंड। दीवार पर वार आसपास हर स्तर पर 4 क्षति देता है।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>बैटल खोलें और क्षैतिज रेल को अनलॉक अवस्था में स्वाइप करें।</li><li>शुरू करने से पहले मंच का नाम, दुश्मन के चित्र, गठन सुराग, तरंग गणना और बॉस बैज पढ़ें।</li><li>लियो को उस लेन के नीचे ले जाएँ जहाँ हथियार कवरेज की सबसे अधिक आवश्यकता है; गोलीबारी स्वचालित है.</li><li>Use Roar, Pride Volley, and Wall Aegis when a lane or the wall is under pressure.</li><li>Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.</li><li>Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment.</li></ol></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>खींचें या ← → से चलें। सब स्वतः: शत्रु होने पर हर 14 सेकंड बौछार; दीवार के पास हर 12 सेकंड दहाड़ (न्यूनतम 9); क्षतिग्रस्त दीवार और निकट शत्रु पर हर 22 सेकंड ढाल (स्तर 2 पर 18)। ढाल 6 सेकंड। कौशल बटन नहीं।</li><li>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</li><li>पिछली प्रतिभा 2/2 आवश्यक</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>पिछली प्रतिभा 2/2 आवश्यक</li><li>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</li><li>दीवार तालमेल: ढाल हर स्तर पर दीवार के 8 अतिरिक्त जीवन लौटाती है।</li></ul></div>
       <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>चरण 1-5 सीधी लेन, वैकल्पिक प्रवेश द्वार और टेढ़े-मेढ़े लकड़बग्घों को सिखाते हैं। बोअर परस्यूट मिश्रित एस्कॉर्ट के पीछे त्वरित लक्षित शॉट्स के साथ मार्ग को बंद कर देता है।</p>
 <p>चरण 6-10 में बख़्तरबंद केंद्र स्क्रीन, दीवार तोड़ने वाले, घुमावदार कैस्टर और स्काई रश का परिचय दिया गया है। हाइना क्रॉसफ़ायर युग्मित प्रोजेक्टाइल जोड़ता है जबकि मिश्रित दुश्मन दोनों किनारों से प्रवेश करते हैं।</p>
@@ -218,12 +219,12 @@
 <p>चरण 21-25 में संरक्षित धावकों, ज़िगज़ैग स्प्रिंटर्स, भारी गेट्स और फ़्लैंक हमलों का मिश्रण होता है। हॉक डाइव स्क्वाड्रन बार-बार गति बढ़ाता है और दो तेज़ प्रोजेक्टाइल दागता है, जिससे शीघ्र पुनः स्थिति को पुरस्कृत किया जाता है।</p>
 <p>चरण 26-30 लेन, वैकल्पिक, केंद्र और किनारे संरचनाओं के माध्यम से सभी आठ भूमिकाओं की समीक्षा करते हैं। बियर स्टारफ़ॉल ने पहले बॉस की एक और संख्यात्मक प्रतिलिपि के बजाय पूर्ण रोस्टर और तीन-प्रोजेक्टाइल कास्टिंग पैटर्न के साथ अभियान समाप्त किया।</p></div>
       <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>कवचधारी ब्लॉक शेर के साथ 30 चरणों में दीवार बचाएँ। हथियार लगाएँ, लहरों के बीच सुधार चुनें और तीन विशेषज्ञताओं में से एक विकसित करें। एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</p></div>
-      <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव जानकारी</h3><p>Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, active abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.</p></div>
+      <div class="game-info-section game-info-parent"><h3>खिलाड़ी और सेव जानकारी</h3><p>प्रगति इसी ब्राउज़र में रहती है। लॉगिन या विज्ञापन नहीं। परिणाम इस लड़ाई का विवरण हैं, व्यक्तिगत क्षमता का मूल्यांकन नहीं।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>विशेषज्ञताएँ</dt><dd>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</dd></div><div><dt>दीवार तालमेल</dt><dd>दहाड़ दीवार के सामने 4 सेकंड आग लगाती है। स्तर 2 पर दोगुनी क्षति। दीवार पर वार हर स्तर पर 1 ऊर्जा जमा करता है, अगला वार छोड़ता है। दीवार पर वार आसपास हर स्तर पर 4 क्षति देता है।</dd></div><div><dt>रीसेट · सभी अंक वापस</dt><dd>एक रास्ता चुनें। मुफ्त रीसेट से बदलें।</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म बटालियन</strong><span>तीन गलियों के बीच एक स्वचालित प्रिज़्म बैटरी बदलें, आती हुई संरचनाएँ नष्ट करें, दुर्लभ आक्रमण कोर इकट्ठा करें और बचे हुए राक्षसों को क्रिस्टल कोर से दूर रखें।</span></span></a><a class="game-info-related-card" href="/hi/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Beast Guardian</strong><span>बीस्ट गार्जियन एक हीरो टावर-रक्षा अभियान है जो निश्चित टावर पैड के बजाय मार्ग निर्माण के आसपास बनाया गया है। चार सामान्य पशु सैनिक भूमिकाएँ और सात WeightPlay नायकों को वन ग्रिड पर रखें, कम से कम एक मार्ग खुला रखें, और छह पाँच-चरण क्षेत्रों के माध्यम से क्रिस्टल कोर की रक्षा करें। भेड़िये, बख्तरबंद सूअर, उड़ने वाले चमगादड़, पुनर्जीवित झुंड, घायल धावक और ग्रहण संरचनाएं अलग-अलग सुरक्षा की मांग करती हैं। चरण 5, 10, 15, 20, 25, और 30 बड़े स्वास्थ्य सलाखों वाले सामान्य दुश्मनों के बजाय नियम बदलने वाले मालिकों के साथ समाप्त होते हैं।</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="Fantasía: Defensa del León | WeightPlay" />
     <meta name="twitter:description" content="Defiende el muro con un león de bloques con armadura en 30 niveles. Equipa armas, elige mejoras entre oleadas y desarrolla una de tres especializaciones." />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="Información de Fantasía: Defensa del León">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>Mundo y misión</h3><p>Boom Mane Leo protege la pared fuera de la bóveda encantada de útiles escolares de WeightPlay. Jabalíes, hienas embaucadoras, rinocerontes acorazados, búfalos, halcones, osos, tigres y cocodrilos se sienten atraídos por la magia almacenada dentro de sus lápices, reglas y borradores. Leo no puede dejar la pared desprotegida, por lo que el jugador patrulla su ancho, mantiene las armas automáticas alineadas con los carriles entrantes y repara los daños entre expediciones.</p>
 <p>La campaña atraviesa seis rutas de defensa de cinco niveles. Cada ruta termina cuando un comandante de bestias nombrado es derrotado en las Niveles 5, 10, 15, 20, 25 o 30. Una primera limpieza abre la siguiente nivel; una primera limpieza del jefe también otorga la bonificación de diamantes registrada. Limpiar Bear Starfall en la nivel 30 significa que toda la lista de bestias ha sido expulsada y la bóveda puede reabrirse de forma segura.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Elige una ruta. Reinicia gratis para cambiarla.</p>
+      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Arrastra o usa ← →. Todo es automático: salva cada 14 s con enemigos; rugido cerca del muro cada 12 s (mín. 9 s); escudo con muro dañado y enemigos próximos cada 22 s (18 s en rango 2). Dura 6 s. Sin botones de habilidad.</p>
+<p>Elige una ruta. Reinicia gratis para cambiarla.</p>
 <p>Rey del fuego: Daño de salva +25% por rango. El rugido quema ante el muro 4 s. Rango 2: daño doble.</p>
 <p>Rey del rayo: Cada cuarto impacto encadena 40% de daño por rango. Los impactos al muro guardan 1 carga por rango para el próximo golpe.</p>
 <p>Rey del bastión: Escudo +1 y recarga −2 s por rango. El muro golpeado causa 4 de daño cercano por rango.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Abre Batalla y desliza el riel horizontal hasta un nivel desbloqueado.</li><li>Lee el nombre artístico, los retratos de los enemigos, la pista de formación, el recuento de oleadas y la insignia del jefe antes de comenzar.</li><li>Mueva a Leo debajo del carril que más necesita cobertura de armas; El disparo es automático.</li><li>Elige una mejora después de cada oleada completada y adáptala a la siguiente combinación de enemigos.</li><li>Mantén el muro por encima de cero PV hasta que todas las bestias y jefes normales sean derrotados.</li><li>Utilice las recompensas del asentamiento para mejoras permanentes de héroes, equipos o muros, luego continúe o vuelva a jugar.</li></ol></div>
+      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Arrastra o usa ← →. Todo es automático: salva cada 14 s con enemigos; rugido cerca del muro cada 12 s (mín. 9 s); escudo con muro dañado y enemigos próximos cada 22 s (18 s en rango 2). Dura 6 s. Sin botones de habilidad.</li><li>Elige una ruta. Reinicia gratis para cambiarla.</li><li>Requiere talento anterior 2/2</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Requiere talento anterior 2/2</li><li>Elige una ruta. Reinicia gratis para cambiarla.</li><li>Sinergia del muro: El escudo restaura 8 PV adicionales por rango.</li></ul></div>
       <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Las niveles 1 a 5 enseñan carriles rectos, entradas alternas y hienas en zigzag. Boar Pursuit cierra la ruta con disparos rápidos detrás de una escolta mixta.</p>
 <p>Las niveles 6 a 10 presentan pantallas centrales blindadas, rompemuros, ruedas curvas y juncos del cielo. Hyena Crossfire agrega proyectiles emparejados mientras enemigos mixtos ingresan por ambos lados.</p>
@@ -218,12 +219,12 @@
 <p>Las niveles 21 a 25 combinan corredores vigilados, velocistas en zigzag, puertas pesadas y ataques por los flancos. Hawk Dive Squadron acelera repetidamente y dispara dos proyectiles rápidos, lo que recompensa el reposicionamiento temprano.</p>
 <p>Las niveles 26 a 30 revisan los ocho roles a través de formaciones de carril, alternancia, centro y borde. Bear Starfall termina la campaña con la lista completa y un patrón de lanzamiento de tres proyectiles en lugar de otra copia numérica de un Jefe anterior.</p></div>
       <div class="game-info-section"><h3>Nota de diseño</h3><p>Defiende el muro con un león de bloques con armadura en 30 niveles. Equipa armas, elige mejoras entre oleadas y desarrolla una de tres especializaciones. Elige una ruta. Reinicia gratis para cambiarla.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Fantasy Lion Defense utiliza combates con animales de dibujos animados, armas automáticas de útiles escolares, PV de pared y decisiones de actualización. El rendimiento de batalla resume el estado del muro, las bestias derrotadas y las mejoras elegidas en la partida actual; no es una evaluación de capacidades. La página del juego General no tiene publicidad, no es necesario iniciar sesión y el progreso permanece en el navegador actual a menos que se borre su almacenamiento.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>El progreso se guarda en este navegador. Sin cuenta ni anuncios. El resultado describe la partida, no evalúa capacidades personales.</p></div>
       <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>Especializaciones</dt><dd>Elige una ruta. Reinicia gratis para cambiarla.</dd></div><div><dt>Sinergia del muro</dt><dd>El rugido quema ante el muro 4 s. Rango 2: daño doble. Los impactos al muro guardan 1 carga por rango para el próximo golpe. El muro golpeado causa 4 de daño cercano por rango.</dd></div><div><dt>Reiniciar · devolver puntos</dt><dd>Elige una ruta. Reinicia gratis para cambiarla.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Batallón de Prismas</strong><span>Cambia una batería prismática automática entre tres carriles, destruye cada formación, reúne núcleos de ataque raros y mantén a los monstruos lejos del núcleo de cristal.</span></span></a><a class="game-info-related-card" href="/es/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Guardián de Bestias</strong><span>Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de torres fijas.</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

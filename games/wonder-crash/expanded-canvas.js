@@ -164,9 +164,7 @@
         : activeLocale === "ar"
           ? "لوحة لعبة الدفاع عن الأسد الخيالي"
           : runtimeTranslate("Fantasy Lion Defense game board"));
-      board.setAttribute("aria-description", isTraditionalChinese
-        ? "\u4f7f\u7528\u5de6\u53f3\u65b9\u5411\u9375\u79fb\u52d5\u7345\u5b50\uff0c\u6216\u5728\u904a\u6232\u756b\u9762\u4e0a\u62d6\u66f3\uff1bSpace \u65bd\u653e\u7345\u543c\u3001Q \u9f4a\u5c04\u3001E \u8b77\u76fe\u3002"
-        : runtimeTranslate("Move the lion with Left and Right Arrow keys, or drag across the game board."));
+      board.setAttribute("aria-description", window.LionTalents.copy(activeLocale).passive);
     }
     if (stageBack) stageBack.setAttribute("aria-label", isTraditionalChinese
       ? "\u8fd4\u56de"

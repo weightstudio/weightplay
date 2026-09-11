@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="الدفاع عن الأسد الخيالي | WeightPlay" />
     <meta name="twitter:description" content="دافع عن السور بأسد مكعبات مدرّع عبر 30 مرحلة. جهّز الأسلحة واختر ترقيات بين الموجات وطوّر أحد التخصصات الثلاثة." />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة الدفاع عن الأسد الخيالي">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>العالم والرسالة</h3><p>يحرس ليو الجدار خارج خزنة WeightPlay المسحورة التي تحفظ الأدوات المدرسية. تنجذب الخنازير البرية والضباع المراوغة ووحيدات القرن المدرعة والجاموس والصقور والدببة والنمور والتماسيح إلى السحر المخزن في الأقلام والمسطرة والمحايات. لا يستطيع ليو ترك الجدار بلا حماية، لذلك يراقب اللاعب عرضه، ويُبقي الأسلحة التلقائية مصطفة مع الممرات القادمة، ويصلح الضرر بين الرحلات.</p>
 <p>تتكون الحملة من ستة مسارات دفاعية، في كل مسار خمس مراحل. ينتهي المسار عند هزيمة قائد وحوش مسمى في المراحل 5 و10 و15 و20 و25 و30. يفتح أول فوز المرحلة التالية، ويمنح أول فوز على الزعيم مكافأة الماس المسجلة. عند إنهاء سقوط الدب النجمي في المرحلة 30 يكون جميع الوحوش قد أُبعدوا ويمكن إعادة فتح الخزنة بأمان.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</p>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>اسحب أو استخدم ← →. المهارات تلقائية: وابل كل 14 ثانية مع وجود أعداء؛ زئير قرب السور كل 12 ثانية (حد أدنى 9)؛ درع عند تضرر السور واقتراب الأعداء كل 22 ثانية (18 بالرتبة 2). يدوم 6 ثوانٍ. لا أزرار مهارات.</p>
+<p>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</p>
 <p>ملك اللهب: ضرر الوابل +25% لكل رتبة. الزئير يشعل أمام السور 4 ثوانٍ. الرتبة 2 تضاعف الضرر.</p>
 <p>ملك الرعد: كل إصابة رابعة تسلسل ضرراً بنسبة 40% لكل رتبة. ضربات السور تخزن شحنة لكل رتبة للإصابة التالية.</p>
 <p>ملك الحصن: درع إضافي وتبريد أقل بثانيتين لكل رتبة. ضرب السور يسبب ضرراً قريباً 4 لكل رتبة.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>افتح تبويب المراحل واسحب المسار الأفقي إلى مرحلة مفتوحة.</li><li>اقرأ اسم المرحلة وصور الأعداء وتلميح التشكيل وعدد الموجات وشارة الزعيم قبل البدء.</li><li>حرّك ليو تحت الممر الذي يحتاج إلى تغطية أكبر؛ إطلاق النار تلقائي.</li><li>اختر ترقية واحدة بعد كل موجة مكتملة وكيّفها مع مزيج الأعداء التالي.</li><li>أبقِ صحة الجدار فوق الصفر حتى تُهزم الوحوش العادية والزعيم.</li><li>استخدم مكافآت النتيجة لترقية البطل أو المعدات أو الجدار، ثم تابع أو أعد المرحلة.</li></ol></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اسحب أو استخدم ← →. المهارات تلقائية: وابل كل 14 ثانية مع وجود أعداء؛ زئير قرب السور كل 12 ثانية (حد أدنى 9)؛ درع عند تضرر السور واقتراب الأعداء كل 22 ثانية (18 بالرتبة 2). يدوم 6 ثوانٍ. لا أزرار مهارات.</li><li>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</li><li>يتطلب الموهبة السابقة 2/2</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>يتطلب الموهبة السابقة 2/2</li><li>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</li><li>تكامل السور: الدرع يرمم 8 نقاط حياة إضافية للسور لكل رتبة.</li></ul></div>
       <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلّم المراحل 1–5 الممرات المستقيمة والمداخل المتبادلة والضباع المتعرجة. وتغلق مطاردة الخنزير المسار بطلقات ملاحقة سريعة خلف مجموعة مختلطة.</p>
 <p>تضيف المراحل 6–10 شاشات مركزية مدرعة وكاسري جدار وسحرة منحرفين واندفاعات جوية. وتضيف نيران الضبع المتقاطعة مقذوفات مزدوجة مع دخول أعداء من الجانبين.</p>
@@ -218,12 +219,12 @@
 <p>تمزج المراحل 21–25 بين العدّائين المحميين والعدّائين المتعرجين والبوابات الثقيلة والهجمات الجانبية. يسرّع سرب غوص الصقر اندفاعه ويطلق مقذوفين سريعَين، فيكافئ إعادة التموضع المبكرة.</p>
 <p>تراجع المراحل 26–30 الأدوار الثمانية عبر تشكيلات الممر والتبادل والوسط والجانب. وينهي سقوط الدب النجمي الحملة بقائمة الوحوش الكاملة ونمط قذف من ثلاثة مقذوفات.</p></div>
       <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>دافع عن السور بأسد مكعبات مدرّع عبر 30 مرحلة. جهّز الأسلحة واختر ترقيات بين الموجات وطوّر أحد التخصصات الثلاثة. اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>يستخدم دفاع الأسد الخيالي قتال حيوانات كرتونية وأسلحة أدوات مدرسية تلقائية وصحة للجدار وقرارات ترقية. يلخص أداء المعركة حالة الجدار والوحوش المهزومة والترقيات المختارة في الجولة الحالية، ولا يمثل تقييمًا للقدرة. صفحة اللعبة العامة بلا إعلانات، ولا يلزم تسجيل الدخول، ويبقى التقدم في هذا المتصفح ما لم تُمسح مساحة التخزين.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>يُحفظ التقدم في هذا المتصفح. لا تسجيل دخول ولا إعلانات. النتائج تصف المعركة ولا تقيّم القدرات الشخصية.</p></div>
       <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>التخصصات</dt><dd>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</dd></div><div><dt>تكامل السور</dt><dd>الزئير يشعل أمام السور 4 ثوانٍ. الرتبة 2 تضاعف الضرر. ضربات السور تخزن شحنة لكل رتبة للإصابة التالية. ضرب السور يسبب ضرراً قريباً 4 لكل رتبة.</dd></div><div><dt>إعادة ضبط · استرداد النقاط</dt><dd>اختر مساراً واحداً. أعد الضبط مجاناً لتغييره.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>كتيبة بريزم الحيوان</strong><span>بدّل بطارية منشورية آلية بين ثلاثة ممرات، ودمر كل تشكيل قادم، واجمع نوى الهجوم النادرة، وأبعد كل وحش باقٍ عن النواة البلورية.</span></span></a><a class="game-info-related-card" href="/ar/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Beast Guardian</strong><span>Beast Guardian هي حملة أبطال للدفاع عن الأبراج مبنية على بناء الطرق بدلاً من منصات الأبراج الثابتة.</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

@@ -1,7 +1,7 @@
 import * as THREE from '../animal-skyspire-drop/vendor/three/three.module.min.js';
 import {propParts} from './block-props.mjs?v=1';
 
-export const HERO_VISUAL_SCALE = 1.12;
+export const HERO_VISUAL_SCALE = 0.784;
 // Ground X/Z, vertical Y. Camera projects ground Z at 0.6 and height at 0.8.
 // Anchors compensate height so visible centres still equal simulation coordinates.
 export class LionDefense3D {
@@ -20,10 +20,10 @@ export class LionDefense3D {
       const rim=new THREE.DirectionalLight('#88b9ff',1.3);rim.position.set(800,600,-900);this.scene.add(rim);
       this.unit=this.own(new THREE.BoxGeometry(1,1,1));
       this.material=this.own(new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8,metalness:.05}));
-      this.white=this.own(new THREE.MeshBasicMaterial({color:'#fff1cf'}));
+      this.white=this.own(new THREE.MeshStandardMaterial({vertexColors:true,roughness:.8,emissive:'#ad7840',emissiveIntensity:1.2}));
       this.fx={};
       for(const [name,color] of Object.entries({fire:'#ffab45',storm:'#b6a1ff',fortress:'#6ee7df',hit:'#ffe4a5',danger:'#ff655d'}))
-        this.fx[name]=this.own(new THREE.MeshBasicMaterial({color,transparent:true,opacity:.85,depthWrite:false}));
+        this.fx[name]=this.own(new THREE.MeshBasicMaterial({color,transparent:true,opacity:.85,depthWrite:false,depthTest:false}));
       this.shieldMat=this.own(new THREE.MeshStandardMaterial({color:'#54cfd9',emissive:'#187b92',emissiveIntensity:.45,transparent:true,opacity:.27,roughness:.25,depthWrite:false}));
       this.shadowMat=this.own(new THREE.MeshBasicMaterial({color:'#081525',transparent:true,opacity:.24,depthWrite:false}));
       this.shadowGeo=this.own(new THREE.PlaneGeometry(1,1));
@@ -169,6 +169,17 @@ export class LionDefense3D {
     for(;si<this.shotPool.length;si++)this.shotPool[si].visible=false;
     let pi=0;
     const particle=(x,y,size,material,angle=0,length=size)=>{if(pi>=this.particles.length)return;const m=this.particles[pi++];m.visible=true;this.place(m,x,y,42);m.scale.set(size,size,length);m.material=material;m.rotation.set(angle,angle,angle);};
+    // Give persistent passive states a reserved, bounded visual budget before impacts.
+    if(state.fireWallTimer>0)for(let i=0;i<10;i++){
+      const x=(i+.5)*w/10,rise=(state.time*35+i*11)%28;
+      particle(x,wall-85-rise,6+rise*.12,this.fx.fire,0,16);
+      particle(x,wall-79,4,this.fx.hit,0,9);
+    }
+    for(let i=0;i<Math.min(6,state.stormCharge||0);i++){
+      const a=state.time*2+i*Math.PI/3;
+      particle(state.hero.x+Math.cos(a)*32,state.hero.y-25+Math.sin(a)*12,5,this.fx.storm,a,11);
+    }
+    if(state.bastionTimer>0)for(let i=0;i<3;i++)particle(state.hero.x+(i-1)*19,state.hero.y-18-((state.time*22+i*9)%32),4,this.fx.fortress,0,12);
     for(const hit of state.hits.slice(-12)){
       const progress=1-Math.min(1,hit.life/(hit.maxLife||.46)),mat=hit.shield?this.fx.fortress:hit.lightning?this.fx.storm:hit.fire?this.fx.fire:this.fx.hit;
       if(hit.toX!==undefined){const dx=hit.toX-hit.x,dy=hit.toY-hit.y;for(let i=0;i<7;i++)particle(hit.x+dx*i/6,hit.y+dy*i/6+(i%2?7:-7),5,mat,0,18);}
@@ -180,7 +191,7 @@ export class LionDefense3D {
       if(e.isBoss&&e.bossAttackTimer<.65)for(let i=-1;i<=1;i++)particle(e.x+i*e.size*.28,e.y+e.size*.5,7,this.fx.danger,0,23);
     }
     if(state.roarPulse>0)for(let i=-3;i<=3;i++)particle(state.hero.x+i*25,wall-45-(.5-state.roarPulse)*160,7,this.fx.hit,0,16);
-    if(state.shootPulse>0)particle(state.hero.x,state.hero.y-54,10,this.fx[state.specialization]||this.fx.hit,.5,18);
+    if(state.shootPulse>0)particle(state.hero.x,state.hero.y-38,8,this.fx[state.specialization]||this.fx.hit,.5,15);
     for(;pi<this.particles.length;pi++)this.particles[pi].visible=false;
     for(let i=0;i<12;i++){
       const panel=this.shields[i],active=state.wallShield>0,delay=i*.025;

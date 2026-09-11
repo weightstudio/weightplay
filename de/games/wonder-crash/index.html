@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="Fantasy Lion Defense | WeightPlay" />
     <meta name="twitter:description" content="Verteidige mit einem gepanzerten Blocklöwen die Mauer in 30 gestalteten Stufen. Rüste Waffen aus, wähle Wellenverbesserungen und entwickle eine von drei..." />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="Informationen zu Fantasy Lion Defense">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>Welt und Mission</h3><p>Boom Mane Leo guards the wall outside WeightPlay&#39;s enchanted school-supply vault. Wild boars, trickster hyenas, armored rhinos, charging buffalo, hawks, bears, tigers, and crocodiles are drawn toward the magic stored inside its pencils, rulers, and erasers. Leo cannot leave the wall unprotected, so the player patrols its width, keeps the automatic weapons aligned with incoming lanes, and repairs damage between expeditions.</p>
 <p>The campaign crosses six five-stage defense routes. Each route ends when a named beast commander is defeated at Stages 5, 10, 15, 20, 25, or 30. A first clear opens the next stage; a Boss first clear also grants the recorded diamond bonus. Clearing Bear Starfall at Stage 30 means the full beast roster has been driven away and the vault can reopen safely.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</p>
+      <div class="game-info-section"><h3>Spielsysteme</h3><p>Ziehen oder ← →. Alles automatisch: Salve alle 14 s bei Gegnern; Brüllen nahe der Mauer alle 12 s (min. 9 s); Schild bei beschädigter Mauer und nahen Gegnern alle 22 s (18 s auf Stufe 2). Dauer 6 s. Keine Fertigkeitstasten.</p>
+<p>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</p>
 <p>Flammenkönig: Salvenschaden +25% pro Stufe. Brüllen entzündet den Mauerbereich 4 s. Stufe 2: doppelter Schaden.</p>
 <p>Donnerkönig: Jeder vierte Treffer verkettet 40% Schaden pro Stufe. Mauertreffer speichern 1 Ladung pro Stufe für den nächsten Treffer.</p>
 <p>Festungskönig: Schild +1 und Abklingzeit −2 s pro Stufe. Mauertreffer verursachen 4 Nahbereichsschaden pro Stufe.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Open Battle and swipe the horizontal rail to an unlocked stage.</li><li>Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.</li><li>Move Leo beneath the lane that most needs weapon coverage; firing is automatic.</li><li>Use Roar, Pride Volley, and Wall Aegis when a lane or the wall is under pressure.</li><li>Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.</li><li>Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment.</li></ol></div>
+      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Ziehen oder ← →. Alles automatisch: Salve alle 14 s bei Gegnern; Brüllen nahe der Mauer alle 12 s (min. 9 s); Schild bei beschädigter Mauer und nahen Gegnern alle 22 s (18 s auf Stufe 2). Dauer 6 s. Keine Fertigkeitstasten.</li><li>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</li><li>Vorheriges Talent 2/2 erforderlich</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Vorheriges Talent 2/2 erforderlich</li><li>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</li><li>Mauersynergie: Schild heilt zusätzlich 8 Mauer-LP pro Stufe.</li></ul></div>
       <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Stages 1-5 teach straight lanes, alternating entrances, and zigzag hyenas. Boar Pursuit closes the route with quick aimed shots behind a mixed escort.</p>
 <p>Stages 6-10 introduce armored center screens, wall breakers, curving casters, and sky rushes. Hyena Crossfire adds paired projectiles while mixed enemies enter from both edges.</p>
@@ -218,12 +219,12 @@
 <p>Stages 21-25 mix guarded runners, zigzag sprinters, heavy gates, and flank attacks. Hawk Dive Squadron repeatedly accelerates and fires two fast projectiles, rewarding early repositioning.</p>
 <p>Stages 26-30 review all eight roles through lane, alternating, center, and edge formations. Bear Starfall finishes the campaign with the complete roster and a three-projectile casting pattern rather than another numeric copy of an earlier Boss.</p></div>
       <div class="game-info-section"><h3>Designnotiz</h3><p>Verteidige mit einem gepanzerten Blocklöwen die Mauer in 30 gestalteten Stufen. Rüste Waffen aus, wähle Wellenverbesserungen und entwickle eine von drei Spezialisierungen. Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, active abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherhinweise</h3><p>Fortschritt bleibt in diesem Browser. Ohne Anmeldung oder Werbung. Ergebnisse beschreiben die Runde, keine persönlichen Fähigkeiten.</p></div>
       <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Spezialisierungen</dt><dd>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</dd></div><div><dt>Mauersynergie</dt><dd>Brüllen entzündet den Mauerbereich 4 s. Stufe 2: doppelter Schaden. Mauertreffer speichern 1 Ladung pro Stufe für den nächsten Treffer. Mauertreffer verursachen 4 Nahbereichsschaden pro Stufe.</dd></div><div><dt>Zurücksetzen · Punkte erstatten</dt><dd>Wähle einen Pfad. Kostenlos zurücksetzen und wechseln.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Prismabataillon</strong><span>Wechsle eine automatische Prismabatterie zwischen drei Spuren, zerstöre jede Formation, sammle seltene Angriffskerne und halte alle überlebenden Monster vom Kristallkern fern.</span></span></a><a class="game-info-related-card" href="/de/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Bestienwächter</strong><span>Beast Guardian ist eine mehrstufige Helden-Tower-Defense-Kampagne, bei der du Wege baust, statt feste Turmplätze zu nutzen.</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

@@ -25,6 +25,9 @@
     // Cloudhook owns a native 960x540 playfield; in compact landscape it
     // uses the same wide envelope so its tether controls remain operable.
     "animal-cloudhook-courier": ["#battleScreen", 390, 788, 760, 334],
+    // Habitat Blueprint's compact-landscape Battle keeps its Reset/Swap
+    // actions at the shared 44px touch-target floor inside the wide envelope.
+    "animal-habitat-blueprint": [".battle-canvas", 390, 788, 760, 334],
     // Twin Switchyard keeps its game-local physical fallback controls, while
     // the native 960x540 playfield also needs the complete wide envelope.
     "animal-twin-switchyard": ["#battleScreen", 390, 788, 760, 334],

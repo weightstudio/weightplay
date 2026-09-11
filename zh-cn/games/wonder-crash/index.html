@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="奇幻狮子防卫 | WeightPlay" />
     <meta name="twitter:description" content="带领蓝金盔甲的方块狮子守住城墙，挑战 30 个设计关卡。搭配武器、选择波次升级，并深入培养三种专精之一。" />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="奇幻狮子防卫 游戏信息">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界与任务</h3><p>爆鬃狮雷欧守护 WeightPlay 魔法文具库外的城墙。野猪、鬣狗、犀牛、水牛、猛鹰、黑熊、老虎与鳄鱼受到铅笔、尺和橡皮擦中的魔力吸引而来。雷欧不能离开城墙，因此玩家要在墙前巡守，让自动武器对准危险路线，并在一场防卫结束后修补长期伤害。</p>
 <p>战役分成六条、每条五关的防卫路线。第 5、10、15、20、25、30 关各有一位野兽指挥者；首次通关会开启下一关，王关首次通过还会获得已记录的钻石奖励。击退第 30 关黑熊星落王与完整兽群，代表文具库可以重新安全开放。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>选择一条路线深入培养，可免费重置改选。</p>
+      <div class="game-info-section"><h3>游戏系统</h3><p>拖动或按 ← → 移动。技能全自动：场上有敌人时每 14 秒齐射；敌人靠近城墙时每 12 秒狮吼（最低 9 秒）；城墙受损且敌人逼近时每 22 秒护盾（二级 18 秒）。临时护盾持续 6 秒，无技能按钮。</p>
+<p>选择一条路线深入培养，可免费重置改选。</p>
 <p>烈焰狮王: 每级使齐射伤害增加 25%。 狮吼使墙前燃烧 4 秒，二级伤害加倍。</p>
 <p>雷霆狮王: 每第 4 次命中触发连锁，每级造成 40% 伤害。 城墙受击每级保存 1 层电能，下次命中释放。</p>
 <p>堡垒狮王: 护盾每级增加 1 层，冷却每级减少 2 秒。 城墙受击对附近敌人造成每级 4 点伤害。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>开启战斗页，左右滑动关卡轨道并选择已解锁关卡。</li><li>开战前查看关卡名称、敌人图片、编队提示、波数与王关标记。</li><li>把雷欧移到最需要火力的路线下方；武器会自动射击。</li><li>每波结束选一个强化，依下一波敌人编成调整打法。</li><li>在所有普通野兽与王被击败前，让城墙生命保持在零以上。</li><li>用结算奖励永久提升角色、装备或城墙，再继续或重玩。</li></ol></div>
+      <div class="game-info-section"><h3>玩法说明</h3><ol><li>拖动或按 ← → 移动。技能全自动：场上有敌人时每 14 秒齐射；敌人靠近城墙时每 12 秒狮吼（最低 9 秒）；城墙受损且敌人逼近时每 22 秒护盾（二级 18 秒）。临时护盾持续 6 秒，无技能按钮。</li><li>选择一条路线深入培养，可免费重置改选。</li><li>需要前置天赋 2/2</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>需要前置天赋 2/2</li><li>选择一条路线深入培养，可免费重置改选。</li><li>城墙联动: 护盾每级额外修复 8 点城墙生命。</li></ul></div>
       <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1～5 关教直线、左右入口与鬣狗曲线；野猪追击王在混合护卫后方快速瞄准射击。</p>
 <p>第 6～10 关加入中央重甲、破墙兽、曲线施法兽与天空急袭；鬣狗交叉火网王会在双侧兽群间发射成对投射物。</p>
@@ -218,12 +219,12 @@
 <p>第 21～25 关组合护甲快攻、曲线冲刺、重兽城门与侧翼破墙；猛鹰王会反复加速并射出两发高速弹。</p>
 <p>第 26～30 关用四种编队复习八种角色；黑熊星落王以三发投射物和完整兽群收尾，不是前一位王的数值放大版本。</p></div>
       <div class="game-info-section"><h3>开发设计理念</h3><p>带领蓝金盔甲的方块狮子守住城墙，挑战 30 个设计关卡。搭配武器、选择波次升级，并深入培养三种专精之一。 选择一条路线深入培养，可免费重置改选。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>本作包含卡通动物攻城、自动文具武器、城墙生命与强化选择。战斗表现只摘要本场城墙状况、击败数与强化选择，不是能力评量。General 游戏页面没有广告，也不需要登录；进度保存在目前浏览器，清除网站数据可能会移除记录。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>进度保存在当前浏览器，无需登录、没有广告。战斗结果仅总结本场表现，不是个人能力评估。</p></div>
       <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>狮王专精</dt><dd>选择一条路线深入培养，可免费重置改选。</dd></div><div><dt>城墙联动</dt><dd>狮吼使墙前燃烧 4 秒，二级伤害加倍。 城墙受击每级保存 1 层电能，下次命中释放。 城墙受击对附近敌人造成每级 4 点伤害。</dd></div><div><dt>重置・全额退点</dt><dd>选择一条路线深入培养，可免费重置改选。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>棱光军团</strong><span>在三条路线之间切换一座自动棱光炮台，摧毁来袭编队，收集稀有攻击核心，并让所有存活的怪物远离水晶核心。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>兽王守卫</strong><span>《兽王守卫》是一套以自由改造路线为核心的英雄塔防战役。</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

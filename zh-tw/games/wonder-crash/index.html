@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v25" />
+    <meta name="weightplay-game-version" content="v26" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v25-dungeon" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v26-passive" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="奇幻獅子防衛 | WeightPlay" />
     <meta name="twitter:description" content="帶領藍金盔甲的方塊獅子守住城牆，挑戰 30 個設計關卡。搭配武器、選擇波次升級，並深入培養三種專精之一。" />
@@ -154,7 +154,7 @@
           <button type="button" data-menu-tab="character"><img src="../../assets/weightplay-character-boom-mane-lion-block-v1.webp" alt="" /><span data-i18n="tab_character">Hero</span></button>
           <button type="button" data-menu-tab="equipment"><img src="../../assets/wonder-prop-eraser-block-v1.png" alt="" /><span data-i18n="tab_equipment">Weapons</span></button>
           <button type="button" data-menu-tab="battle"><img src="../../assets/wonder-prop-damage-block-v1.png" alt="" /><span data-i18n="tab_battle">Stages</span></button>
-          <button type="button" data-menu-tab="wall"><img src="../../assets/wonder-prop-wall-block-v1.png" alt="" /><span data-i18n="tab_wall">Wall</span></button>
+          <button type="button" data-menu-tab="talents" data-runtime-localize="off"><img src="games/wonder-crash/icons/chain.svg" alt="" /><span>Talents</span></button>
           <button type="button" data-menu-tab="settings"><img src="../../assets/wonder-prop-settings-block-v1.png" alt="" /><span data-i18n="tab_settings">Settings</span></button>
         </nav>
       </div>
@@ -189,12 +189,12 @@
     <script src="src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
-    <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
+    <script src="src/tutorial.js?v=20260911-wonder-crash-v26-passive"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
     <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
-    <script src="games/wonder-crash/talents.js?v=25"></script>
-    <script src="src/game.js?v=20260911-wonder-crash-v25-dungeon"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v25-dungeon"></script>
+    <script src="games/wonder-crash/talents.js?v=26"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v26-passive"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v26-passive"></script>
     <section class="game-page-info game-page-info-static" aria-label="奇幻獅子防衛 遊戲資訊">
 
     <div class="game-info-hero">
@@ -205,11 +205,12 @@
     <div class="game-info-sections">
       <div class="game-info-section"><h3>世界與任務</h3><p>爆鬃獅雷歐守護 WeightPlay 魔法文具庫外的城牆。野豬、鬣狗、犀牛、水牛、猛鷹、黑熊、老虎與鱷魚受到鉛筆、尺和橡皮擦中的魔力吸引而來。雷歐不能離開城牆，因此玩家要在牆前巡守，讓自動武器對準危險路線，並在一場防衛結束後修補長期傷害。</p>
 <p>戰役分成六條、每條五關的防衛路線。第 5、10、15、20、25、30 關各有一位野獸指揮者；首次通關會開啟下一關，王關首次通過還會取得已記錄的鑽石獎勵。擊退第 30 關黑熊星落王與完整獸群，代表文具庫可以重新安全開放。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>選一條路線深入培養，可免費重置改選。</p>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>拖曳或按 ← → 移動。技能全自動：場上有敵人時每 14 秒齊射；敵人靠近城牆時每 12 秒獅吼（最低 9 秒）；城牆受損且有敵人逼近時每 22 秒護盾（二級 18 秒）。臨時護盾持續 6 秒，不需按技能。</p>
+<p>選一條路線深入培養，可免費重置改選。</p>
 <p>烈焰獅王: 每級使齊射傷害增加 25%。 獅吼使牆前燃燒 4 秒；二級傷害加倍。</p>
 <p>雷霆獅王: 每第 4 次命中觸發連鎖，每級造成 40% 傷害。 城牆受擊每級儲存 1 層電能，下次命中釋放。</p>
 <p>堡壘獅王: 護盾每級增加 1 層，冷卻每級減少 2 秒。 城牆受擊時對附近敵人造成每級 4 點傷害。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>開啟戰鬥頁，左右滑動關卡軌道並選擇已解鎖關卡。</li><li>開戰前查看關卡名稱、敵人圖片、編隊提示、波數與王關標記。</li><li>把雷歐移到最需要火力的路線下方；武器會自動射擊。</li><li>在危險路線使用獅吼、獅心齊射與城牆護盾。</li><li>每波結束選一個戰鬥強化，依下一波敵人編成調整打法。</li><li>用結算獎勵取得的天賦點配置共用天賦樹，再永久提升角色、裝備或城牆。</li></ol></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>拖曳或按 ← → 移動。技能全自動：場上有敵人時每 14 秒齊射；敵人靠近城牆時每 12 秒獅吼（最低 9 秒）；城牆受損且有敵人逼近時每 22 秒護盾（二級 18 秒）。臨時護盾持續 6 秒，不需按技能。</li><li>選一條路線深入培養，可免費重置改選。</li><li>需要前置天賦 2/2</li></ol></div>
       <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>需要前置天賦 2/2</li><li>選一條路線深入培養，可免費重置改選。</li><li>城牆連動: 護盾每級額外修復 8 點城牆生命。</li></ul></div>
       <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1～5 關教直線、左右入口與鬣狗曲線；野豬追擊王在混合護衛後方快速瞄準射擊。</p>
 <p>第 6～10 關加入中央重甲、破牆獸、曲線施法獸與天空急襲；鬣狗交叉火網王會在雙側獸群間發射成對投射物。</p>
@@ -218,12 +219,12 @@
 <p>第 21～25 關組合護甲快攻、曲線衝刺、重獸城門與側翼破牆；猛鷹王會反覆加速並射出兩發高速彈。</p>
 <p>第 26～30 關用四種編隊複習八種角色；黑熊星落王以三發投射物和完整獸群收尾，不是前一位王的數值放大版本。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>帶領藍金盔甲的方塊獅子守住城牆，挑戰 30 個設計關卡。搭配武器、選擇波次升級，並深入培養三種專精之一。 選一條路線深入培養，可免費重置改選。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>本作包含卡通動物攻城、自動文具武器、三種主動能力、城牆生命、共用天賦樹與強化選擇。戰鬥表現只摘要本場城牆狀況、擊敗數與強化選擇，不是能力評量。General 遊戲頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>進度保存在目前瀏覽器，不需登入、沒有廣告。戰鬥結果僅摘要本場表現，不是個人能力評量。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>獅王專精</dt><dd>選一條路線深入培養，可免費重置改選。</dd></div><div><dt>城牆連動</dt><dd>獅吼使牆前燃燒 4 秒；二級傷害加倍。 城牆受擊每級儲存 1 層電能，下次命中釋放。 城牆受擊時對附近敵人造成每級 4 點傷害。</dd></div><div><dt>重置・全額退點</dt><dd>選一條路線深入培養，可免費重置改選。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>稜光軍團</strong><span>在三條路線之間切換一座自動稜光砲台，摧毀來襲編隊，收集稀有攻擊核心，並讓所有存活的怪物遠離水晶核心。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>獸王守衛</strong><span>《獸王守衛》是一套以自由改造路線為核心的英雄塔防戰役。</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260911-wonder-crash-v25-dungeon-guide"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v26-passive-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

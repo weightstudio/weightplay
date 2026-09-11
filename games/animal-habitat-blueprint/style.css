@@ -96,11 +96,11 @@ body{overflow-x:hidden}
   .battle-canvas .rules{max-height:43px;overflow:hidden;padding:4px 8px 4px 24px;font-size:.72rem;line-height:1.05}
   .battle-canvas .rules li+li{margin-top:2px}
   .battle-canvas .selection{height:17px;min-height:17px;overflow:hidden;font-size:.75rem}
-  .battle-canvas .habitat-grid{height:80px;grid-auto-rows:38px;gap:4px}
-  .battle-canvas .habitat-tile{min-height:38px;padding:4px;border-radius:10px;column-gap:4px;font-size:.72rem}
+  .battle-canvas .habitat-grid{height:92px;grid-auto-rows:44px;gap:4px}
+  .battle-canvas .habitat-tile{min-height:44px;padding:4px;border-radius:10px;column-gap:4px;font-size:.72rem}
   .battle-canvas .tile-icon{width:26px;height:26px;border-radius:8px;font-size:1rem}
   .battle-canvas .habitat-tile small{margin-top:0;font-size:.62rem}
-  .battle-canvas .battle-actions{min-height:38px;gap:6px}
-  .battle-canvas .battle-actions>*{min-height:38px;padding:5px 8px}
+  .battle-canvas .battle-actions{min-height:44px;gap:6px}
+  .battle-canvas .battle-actions>*{min-height:44px;padding:6px 8px}
   .battle-canvas .status{height:16px;min-height:16px;overflow:hidden;font-size:.72rem}
 }
