@@ -64,15 +64,16 @@
     const poster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[gameId];
     if (!poster) return;
     const candidate = document.querySelector(
-      "[data-wp-frame-poster], .main-poster, .main-cover, main .poster, main img.cover, .poster-frame > img.cover, .cover-wrap > img"
+      "[data-wp-frame-poster], .main-poster, .main-cover, main .poster, main img.cover, .poster-frame > img.cover, .cover-wrap > img, #posterImage, #coverImage"
     );
-    if (candidate && candidate.tagName === "IMG") {
-      candidate.src = poster;
-      candidate.removeAttribute("srcset");
-      candidate.dataset.wpInterface7Poster = "true";
+    const posterImage = candidate?.tagName === "IMG" ? candidate : candidate?.querySelector("img");
+    if (posterImage) {
+      posterImage.src = poster;
+      posterImage.removeAttribute("srcset");
+      posterImage.dataset.wpInterface7Poster = "true";
     }
-    const socialImage = document.querySelector('meta[property="og:image"], meta[name="twitter:image"]');
-    if (socialImage) socialImage.content = new URL(poster, location.origin).href;
+    document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]')
+      .forEach((meta) => { meta.content = new URL(poster, location.origin).href; });
   };
 
   const ensurePosterRegistry = (done) => {

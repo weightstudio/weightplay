@@ -338,11 +338,11 @@ function primaryArt(game) {
 
 function lobbyThumbnail(source, width = 480) {
   const clean = String(source || "").split(/[?#]/, 1)[0].replace(/^\/+/, "");
-  // Interface 7 posters are already square, framed, and optimized for the
+  // Accepted replacement posters are square and optimized for the
   // lobby. Never route them through the legacy thumbnail naming convention;
   // that would silently request a non-existent derivative and show a blank
   // entry image.
-  if (clean.startsWith("assets/interface7-posters/")) return `/${clean}`;
+  if (clean.startsWith("assets/interface7-posters/") || clean.startsWith("assets/interface7-redrawn/")) return `/${clean}`;
   if (!/^(?:assets|games)\/.+\.(?:avif|jpe?g|png|webp)$/i.test(clean)) return source;
   const encoded = clean.replace(/[^A-Za-z0-9._-]+/g, "__").replace(/\.[^.]+$/, ".webp");
   return `assets/lobby-thumbs/w${width}/${encoded}`;
