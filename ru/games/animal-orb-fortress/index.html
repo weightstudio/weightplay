@@ -8,16 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#10251f" />
-    <meta name="description" content="Крепость животных сфер — это 30-маршрутная кампания по защите от рикошета, в которой вам нужно прочитать арену перед тем, как выпустить сферу духа. На каждом..." />
+    <meta name="description" content="Крепость животных сфер — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа. На каждом маршруте есть три..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Крепость животных сфер | WeightPlay" />
-    <meta property="og:description" content="Крепость животных сфер — это 30-маршрутная кампания по защите от рикошета, в которой вам нужно прочитать арену перед тем, как выпустить сферу духа. На каждом..." />
+    <meta property="og:description" content="Крепость животных сфер — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа. На каждом маршруте есть три..." />
     <meta property="og:url" content="https://weightplay.com/ru/games/animal-orb-fortress/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Крепость животных сфер | WeightPlay" />
-    <meta name="twitter:description" content="Крепость животных сфер — это 30-маршрутная кампания по защите от рикошета, в которой вам нужно прочитать арену перед тем, как выпустить сферу духа. На каждом..." />
+    <meta name="twitter:description" content="Крепость животных сфер — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа. На каждом маршруте есть три..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <title>Крепость животных сфер | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/ru/games/animal-orb-fortress/" />
@@ -35,12 +35,12 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orb-fortress/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Крепость животных сфер","alternateName":"動物星珠要塞","url":"https://weightplay.com/ru/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp","description":"Крепость животных сфер — это 30-маршрутная кампания по защите от рикошета, в которой вам нужно прочитать арену перед тем, как выпустить сферу духа. На каждом...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"ru","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Крепость животных сфер","alternateName":"動物星珠要塞","url":"https://weightplay.com/ru/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp","description":"Крепость животных сфер — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа. На каждом маршруте есть три...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"ru","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-background-tile" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-guide-copy" />
     <link rel="stylesheet" href="style.css?v=20260911-orb-growth-v41-interface" />
     <style data-orb-interface-v41>
       html body:has([data-wp-frame="2"]) .game-page-info { border-radius:16px!important; }
@@ -194,7 +194,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260911-lobby-return"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
 <script src="game.js?v=20260911-orb-growth-v41"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
@@ -207,7 +207,7 @@
             return;
           }
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.src = "../../src/game-page-info.js?v=20260911-guide-copy";
           script.dataset.orbGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -220,7 +220,7 @@
 <section class="game-page-info game-page-info-static" aria-label="Информация об игре Крепость животных сфер">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Крепость животных сфер</h2><p>Animal Orb Fortress — это 30-маршрутная кампания по защите от рикошета, в которой вам нужно прочитать арену перед тем, как выпустить сферу духа. На каждом маршруте есть три непрерывные волны. Игрок утаскивает льва-хранителя, чтобы просмотреть траекторию отскока от стены, выпускает залп и защищает кристаллическое ядро, пока теневые звери наступают. Шесть регионов с пятью маршрутами добавляют броню, защитные якоря, фазовых врагов, сплиттеры, движущиеся зеркальные пилоны, телеграфные зарядные устройства и шесть механически различных региональных боссов. Между волнами одно благословение крепости меняет текущий рейд; Между маршрутами Звездные камни улучшают четыре постоянные комнаты-крепости.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Крепость животных сфер</h2><p>Animal Orb Fortress — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа. На каждом маршруте есть три непрерывные волны. Игрок утаскивает льва-хранителя, чтобы просмотреть траекторию отскока от стены, выпускает залп и защищает кристаллическое ядро, пока теневые звери наступают. Шесть регионов с пятью маршрутами добавляют броню, защитные якоря, фазовых врагов, сплиттеры, движущиеся зеркальные пилоны, телеграфные зарядные устройства и шесть механически различных региональных боссов. Между волнами одно благословение крепости меняет текущий рейд; Между маршрутами Звездные камни улучшают четыре постоянные комнаты-крепости.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Ricochet Roguelite</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Action · Roguelite · Animal</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Hard</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>5-8 minutes per route</strong></div></div>
     </div>
 
@@ -240,7 +240,7 @@
 <p>Routes 16-20 add physical mirror pylons and splitters whose defeat creates faster shards. Routes 21-25 mark charge lanes and add storm timing. Prism Shell Regent rotates a damage window; Tempest Horn Guardian must complete its rush before it can be hurt.</p>
 <p>Routes 26-30 combine armor, anchors, phase timing, splitters, chargers, and moving pylons in authored formations. Route 29 uses the full ordinary-enemy vocabulary. Route 30 adds two Voidcore phase changes, four support summons, rebuilt shielding, and two active pylons, testing aim planning, target priority, timing, upgrades, and permanent fortress growth together.</p></div>
       <div class="game-info-section"><h3>Заметка разработчика</h3><p>В игре используются три короткие волны, потому что маршрут должен напоминать одну целенаправленную задачу прицеливания, а не длительную тренировку на выносливость. Разрывы волн сохраняют основной урон и текущую сборку, но обеспечивают одно компактное решение о благословении перед следующим формированием. Первые регионы опираются на стены, чтобы игроки могли изучать предсказуемую геометрию; более поздние зеркальные пилоны создают новые поверхности и аннулируют запомненные углы. Особые враги сообщают о своей контригре с помощью колец, знаков щита, линий дорожек или отдельных изображений босса вместо того, чтобы требовать длинной панели правил во время битвы. Перетаскивание указателя является основным элементом управления телефоном, в то время как «Влево» и «Вправо» регулируют одну и ту же цель на клавиатуре, а пробел или Enter срабатывают. По сравнению с размещением защитников Beast Guardian или планированием построения Animal Auto Squad, Animal Orb Fortress делает саму траекторию выстрела основным стратегическим ресурсом.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Браузер сохраняет на этом устройстве лучший разблокированный маршрут, звездные камни, количество игр и четыре уровня комнаты-крепости. Базовая игра не требует учетной записи. Очистка памяти браузера этого сайта может привести к удалению этого прогресса. Перебросы алмазного благословения не являются обязательными, показывают текущий и результирующий баланс и не требуются для кампании с 30 маршрутами. Отчеты о результатах и ​​навыках описывают только игру и не являются формальными измерениями способностей.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Браузер сохраняет на этом устройстве лучший разблокированный маршрут, звездные камни, количество игр и четыре уровня комнаты-крепости. Базовая игра не требует учетной записи. Очистка памяти браузера этого сайта может привести к удалению этого прогресса. Перебросы алмазных благословений не являются обязательными, показывают текущий и конечный баланс и не требуются для кампании. Отчеты о результатах и ​​навыках описывают только игру и не являются формальными измерениями способностей.</p></div>
       <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>What is the goal of a route?</dt><dd>Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route.</dd></div><div><dt>Does every route use the same Boss?</dt><dd>No. Only every fifth route is a regional Boss checkpoint. The other routes end with authored elite formations, and all six Bosses have different artwork, cues, and counterplay.</dd></div><div><dt>Why did my orb pass through a moon enemy?</dt><dd>A dashed phase outline means that enemy is temporarily intangible. Wait for it to become solid, then release the prepared shot.</dd></div><div><dt>What do mirror pylons do?</dt><dd>They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.</dd></div><div><dt>Do I need Diamonds to finish the campaign?</dt><dd>No. Diamonds only reroll the three blessing choices once during a wave after a two-step confirmation.</dd></div><div><dt>What happens after a failed route?</dt><dd>The run ends, but earned Star Stones are saved and the best unlocked route is retained. Upgrade a room, change the aim plan, or retry.</dd></div><div><dt>What progress is stored?</dt><dd>Best unlocked route, Star Stones, play count, and Orb Forge, Core Shield, Companion Den, and Scout Tower levels are stored locally in this browser.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-prism-breakers/"><img src="/assets/animal-prism-breakers/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Звери: Разрушители призм</strong><span>Двигайте платформу под возвращающимся световым шаром, меняйте угол точкой контакта и разбивайте все хрупкие кристаллы, пока не потеряны три шара.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-rift-salvage/"><img src="/assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Звери: Сбор в разломе</strong><span>Веди лунное кольцо Орлы через тридцать зон, собирай мелкие обломки, расти, спасай ядра и обгоняй соперников.</span></span></a></div></div>
     </div>

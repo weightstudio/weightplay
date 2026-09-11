@@ -1,4 +1,6 @@
 @import url('./game-ui-theme.css');
+body.general-lobby-page .lobby-topbar [data-wp-preferences] {margin-left:auto!important;margin-right:0!important;flex:0 0 48px;}
+body.general-lobby-page .lobby-topbar {direction:ltr;}
 /* General lobby storefront. Loaded only by General entrypoints; gameplay and
    Kids retain the shared stylesheet. See specialist-lobby-discovery.md. */
 body.general-lobby-page {
@@ -304,7 +306,7 @@ body.general-lobby-page {
   background-image: var(--wp-ui-background-image), radial-gradient(ellipse at 50% 0, #204d4c 0, var(--wp-ui-background) 70%);
   background-size: 1440px 960px, 100% 1200px;
   background-position: center top;
-  background-repeat: repeat-y, no-repeat;
+  background-repeat: repeat, no-repeat;
 }
 body.general-lobby-page .lobby-topbar { border-bottom: 2px solid #3c6368; margin-bottom: 18px; }
 body.general-lobby-page .lobby-topbar h1 { color: #fff4ce; text-shadow: 2px 3px 0 #07181e; letter-spacing: -.6px; }

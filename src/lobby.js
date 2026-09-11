@@ -151,6 +151,14 @@ const lobbyKicker = document.querySelector("#lobbyKicker");
 const featuredLabel = document.querySelector("#featuredLabel");
 const languageLabel = document.querySelector("#languageLabel");
 const localeSelect = document.querySelector("#localeSelect");
+// General lobby reuses the exact game-frame preferences component, not its own audio UI.
+if (audienceMode === 'general' && window.WeightPlayScreenFrame && localeSelect) {
+  const label=localeSelect.closest('label');
+  const preferences=window.WeightPlayScreenFrame.createSettings({localeSelect,id:'lobby'});
+  label.before(preferences.utility);
+  label.hidden=true;label.style.setProperty('display','none','important');
+  window.addEventListener('pagehide',event=>{if(!event.persisted)preferences.destroy();});
+}
 const heroRankLabel = document.querySelector("#heroRankLabel");
 const heroGamesTitle = document.querySelector("#heroGamesTitle");
 const mobilePicksTitle = document.querySelector("#mobilePicksTitle");

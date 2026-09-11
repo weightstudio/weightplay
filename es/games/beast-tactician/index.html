@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guardian-public1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260910-beast-rally-block-v14" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260910-beast-rally-block-v14" data-wp-battle-standard />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-background-tile" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-guide-copy" />
     <link rel="stylesheet" href="defense.css?v=20260911-beast-interface-v17" />
     <script type="application/ld+json">
 {
@@ -252,7 +252,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
     <script src="../../src/tutorial.js?v=20260701-style1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260911-lobby-return"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
     <script src="../../src/stage-selector-standard.js?v=20260910-beast-rally-block-v14" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260910-beast-rally-block-v14" data-wp-battle-standard></script>
     <script src="game.js?v=20260911-beast-interface-v17"></script>
@@ -282,29 +282,7 @@
       <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Tácticas de Runas</strong><span>Animal Rune Tactics es una campaña por turnos de 30 misiones que se juega en un tablero de runas de tres por cuatro.</span></span></a><a class="game-info-related-card" href="/es/games/animal-prism-battalion/"><img src="/assets/lobby-posters/animal-prism-battalion-square-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Batallón de Prismas</strong><span>Cambia una batería prismática automática entre tres carriles, destruye cada formación, reúne núcleos de ataque raros y mantén a los monstruos lejos del núcleo de cristal.</span></span></a></div></div>
     </div>
   </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-    <script data-beast-interface-v17-guide>
-      (() => {
-        const applyGuideFrame = () => {
-          const guide = document.querySelector(".game-page-info,[data-wp-game-guide]");
-          if (!guide) return;
-          guide.style.setProperty("border-radius", "18px", "important");
-          const sections = guide.querySelector(".game-info-sections");
-          sections?.style.setProperty("display", "grid", "important");
-          sections?.style.setProperty("gap", "14px", "important");
-          guide.querySelectorAll(".game-info-section").forEach((section) => {
-            section.style.setProperty("padding", "16px", "important");
-            section.style.setProperty("border-radius", "14px", "important");
-            section.style.setProperty("background", "#0b202b", "important");
-          });
-        };
-        if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", applyGuideFrame, { once: true });
-        } else {
-          applyGuideFrame();
-        }
-      })();
-    </script>
+<script src="../../src/game-page-info.js?v=20260911-guide-copy"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
 
   <style data-beast-interface-v17-final>

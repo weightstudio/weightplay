@@ -1248,14 +1248,14 @@
       time: "3 minutes per stage",
       skills: ["Reaction", "Focus", "Problem Solving"],
       guideKicker: "WeightPlay Original Game Guide",
-      guideTitleSuffix: "30-Stage Campaign Guide",
+      guideTitleSuffix: "Stage Campaign Guide",
       useCustomGuideIdentity: true,
       noteTitle: "Player and Save Information",
       hideScoreBands: true,
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Crystal Survivor is a 30-stage real-time patrol campaign built around movement, automatic attacks, temporary upgrades, readable hazards, and six original animal Bosses. Every route lasts up to three minutes and has a named rule, key target, and saved unlock.",
+        "Animal Crystal Survivor is a real-time patrol campaign built around movement, automatic attacks, temporary upgrades, readable hazards, and six original animal Bosses. Every route lasts up to three minutes and has a named rule, key target, and saved unlock.",
       story: [
         "Six crystal beacons keep the Crystal Grove's paths open. An Eclipse pulse has scattered their golden tuning keys and changed familiar animals into shadow beasts. The Crystal Ranger carries the keys, calms affected animals, and reconnects one route at a time.",
         "Stages 5, 10, 15, 20, 25, and 30 are guardian checkpoints. Defeating Root Stalker, Prism Moth Queen, Briar Boar King, Cinder Panther, Tempest Roc, and Eclipse Colossus reconnects the six regions and ends the feedback loop beneath the grove."
@@ -1267,7 +1267,7 @@
         "A stage clears at 3:00 only when its printed key target is complete. Boss stages also require the guardian to be calmed. Missing an objective records local statistics but does not unlock the next route."
       ],
       how: [
-        "Choose an unlocked card from the horizontal 30-stage rail and read its rule.",
+        "Choose an unlocked card from the horizontal stage rail and read its rule.",
         "Move the Ranger while auto-attack handles the nearest target inside range.",
         "Collect the displayed number of keys and XP crystals before the timer ends.",
         "Leave dashed warning shapes before they become solid roots, flame, lightning, or lanes.",
@@ -1286,7 +1286,7 @@
       related: ["beast-tactician", "animal-orb-fortress", "animal-rift-salvage"],
       relatedIds: ["beast-tactician", "animal-orb-fortress", "animal-rift-salvage"],
       faq: [
-        ["How many stages are included?", "There are 30 named stages across six regions, with Boss checkpoints every fifth stage."],
+        ["How many stages are included?", "Named stages are arranged across six regions, with Boss checkpoints every fifth stage."],
         ["What clears a stage?", "Survive three minutes and meet the printed key target; a checkpoint also requires its Boss to be defeated."],
         ["Does the player aim manually?", "No. The ranger attacks automatically. The player focuses on movement, collecting, and upgrade choices."],
         ["Why did Prism Moth Queen take no damage?", "Her visible shield blocks attacks during one phase. Damage resumes when it disappears."],
@@ -1689,7 +1689,7 @@
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Orb Fortress is a 30-route ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases a volley, and protects the crystal core while shadow beasts advance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
+        "Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases a volley, and protects the crystal core while shadow beasts advance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
       story: [
         "The Crystal Fortress was built where six guardian roads meet: the Crystal Woodland, Thornworks, Moon Ruins, Mirror Vault, Storm Bastion, and Eclipse Heart. When the fortress core began broadcasting an unstable pulse, shadow animals followed those roads inward. The lion orb keeper cannot leave the core unguarded, so every defense is fought from the launcher chamber by redirecting spirit orbs through the surrounding walls and mirrors.",
         "Clearing a route means its road is stable enough for repair crews to reopen it. Rootbound Golem tests the woodland gate, Brambleback Colossus occupies the thorn forge, Lunar Wisp Matriarch phases through the moon road, Prism Shell Regent controls the mirror vault, Tempest Horn Guardian marks storm lanes, and Voidcore Emperor seals the final chamber with three core phases. Completing Route 30 reconnects all six roads and stops the corrupted pulse from drawing more enemies to the fortress."
@@ -1727,7 +1727,7 @@
       designNote:
         "The game uses three short waves because a route should feel like one focused aiming problem rather than a long endurance session. Wave breaks preserve core damage and the current build, but provide one compact blessing decision before the next formation. The first regions rely on walls so players can learn predictable geometry; later mirror pylons create new surfaces and invalidate memorized angles. Special enemies communicate their counterplay with rings, shield marks, lane lines, or distinct Boss artwork instead of requiring a long rules panel during Battle. Pointer drag is the primary phone control, while Left and Right adjust the same aim on a keyboard and Space or Enter fires. Compared with Beast Guardian's defender placement or Animal Auto Squad's formation planning, Animal Orb Fortress makes the shot path itself the main strategic resource.",
       parent:
-        "The browser saves the best unlocked route, Star Stones, play count, and four fortress-room levels on this device. Basic play does not require an account. Clearing this site's browser storage may remove that progress. Diamond blessing rerolls are optional, show the current and resulting balance, and are not required for the 30-route campaign. Scores and Skill Reports describe play only and are not formal ability measurements.",
+        "The browser saves the best unlocked route, Star Stones, play count, and four fortress-room levels on this device. Basic play does not require an account. Clearing this site's browser storage may remove that progress. Diamond blessing rerolls are optional, show the current and resulting balance, and are not required for the campaign. Scores and Skill Reports describe play only and are not formal ability measurements.",
       faq: [
         ["What is the goal of a route?", "Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route."],
         ["Does every route use the same Boss?", "No. Only every fifth route is a regional Boss checkpoint. The other routes end with authored elite formations, and all six Bosses have different artwork, cues, and counterplay."],
@@ -1755,7 +1755,7 @@
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, and then watch the lineup resolve each clash automatically. The campaign contains 30 stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
+        "Animal Auto Squad is a formation strategy game built around decisions made before combat. You unlock and train ten animal heroes, place up to six of them in a two-row squad, and then watch the lineup resolve each clash automatically. The campaign progresses through stages across Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, and Void Crown. Every stage has five authored waves, while stages 5, 10, 15, 20, 25, and 30 end with a different regional Boss.",
       story: [
         "The expedition follows a chain of routes occupied by shadow animals, crystal creatures, armored guardians, rune beasts, and eclipse hunters. The squad begins on Thornwood's Mossy Trail, then pushes through the Prism Heart, Sunken Crown, Caldera King, Midnight Court, and the broken approaches to Void Crown. Each region introduces a different enemy mix and final encounter; clearing all six means breaking the complete chain of regional blockades.",
         "You act as the squad commander rather than a fighter on the field. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle, and the other unlockable heroes each bring a specific targeting or support rule. Your job is to decide which six travel together and whether they belong in the front or back row before the automated clash begins.",
@@ -1792,7 +1792,7 @@
       parent:
         "Later stages combine six-unit formations, specialized targeting, permanent upgrades, combat failure pressure, Boss abilities, and optional Diamond decisions. Campaign progress, the last deployed formation and slot positions, Training Gold, Team Level, unlocked animals, permanent animal levels, completed stages, and cosmetic choice are stored locally in this browser; no login is required for basic play. Clearing this site's browser storage may remove that local progress.",
       faq: [
-        ["Is Animal Auto Squad free to play?", "Yes. The 30-stage campaign runs in the browser on WeightPlay without a required purchase or login."],
+        ["Is Animal Auto Squad free to play?", "Yes. The campaign runs in the browser on WeightPlay without a required purchase or login."],
         ["What is the goal of each stage?", "Build a squad that survives five continuous waves. Clearing wave five saves the stage and unlocks the next one; every fifth stage ends with a regional Boss."],
         ["Do I control attacks during battle?", "No. You control the roster, two-row positions, and temporary upgrades before combat. The animals then attack, heal, shield, and trigger abilities automatically."],
         ["Can I rearrange the squad between every wave?", "Winning moves directly to the next wave. Preparation reopens after a loss or draw while the run still has Hearts, so the initial formation should be able to handle more than one enemy pattern."],
@@ -1817,7 +1817,7 @@
       hideScoreBands: true,
       relatedIds: ["animal-rune-tactics", "animal-prism-battalion"],
       intro:
-        "Beast Guardian is a 30-stage hero tower-defense campaign built around route construction rather than fixed tower pads. Place four ordinary animal soldier roles and seven WeightPlay heroes on a forest grid, keep at least one route open, and protect the crystal core through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.",
+        "Beast Guardian is a hero tower-defense campaign built around route construction rather than fixed tower pads. Place four ordinary animal soldier roles and seven WeightPlay heroes on a forest grid, keep at least one route open, and protect the crystal core through six five-stage regions. Wolves, armored boars, flying bats, regenerating packs, wounded sprinters, and eclipse formations ask for different defenses. Stages 5, 10, 15, 20, 25, and 30 end with rule-changing Bosses instead of ordinary enemies with larger health bars.",
       story: [
         "The crystal routes connect six parts of the Guardian Forest: the first root paths, crystal air lanes, Ironbark works, the regrowing mistwood, storm ramparts, and the eclipse road to the Voidroot throne. Enemy packs are trying to reach the core at the far side of each battlefield. A cleared stage means the route is secure long enough for the guardians to advance to the next sector.",
         "You command the defense before and during every wave. Acorn Guards and Moss Shell Taro hold bends, Scout Archers and Moon Cap Orla cover long angles, Rune Sappers slow clustered attackers, Medic Cubs repair injured blockers, and heroes such as Spark Paw Fia provide focused damage. The board is not a decoration: every placed defender changes the route unless the unit is serving as ranged support away from the path."
@@ -1850,11 +1850,11 @@
         "Stages 16-20 make unfinished enemies regenerate while moving; Verdant Ancient restores a portion of its own health and calls support. Stages 21-25 add wounded speed surges, ending with Tempest Ravager accelerating its escorts. Stages 26-30 combine every previous rule with reduced slow effectiveness. Voidroot Emperor has two phase changes, so stage 30 requires ground routing, air coverage, armor breaking, finishing damage, healing, and saved Boss focus in one defense."
       ],
       designNote:
-        "Beast Guardian uses free placement because the central decision is not simply which tower to buy; it is how each body changes travel time, firing angles, and blocker risk. The five-second transition between waves preserves the feeling of one continuous defense while leaving a short planning window. Thirty stages are organized as six mechanical arcs so difficulty grows through new counters and combinations before raw statistics. Touch players use the same large build cards and grid cells as mouse players, while keyboard controls can move a tile cursor, build, select, upgrade, sell, cycle units, and start waves. This distinguishes the game from Animal Auto Squad: both reward preparation, but Beast Guardian lets the player reshape the battlefield and react during live waves.",
+        "Beast Guardian uses free placement because the central decision is not simply which tower to buy; it is how each body changes travel time, firing angles, and blocker risk. The five-second transition between waves preserves the feeling of one continuous defense while leaving a short planning window. Stages are organized as six mechanical arcs so difficulty grows through new counters and combinations before raw statistics. Touch players use the same large build cards and grid cells as mouse players, while keyboard controls can move a tile cursor, build, select, upgrade, sell, cycle units, and start waves. This distinguishes the game from Animal Auto Squad: both reward preparation, but Beast Guardian lets the player reshape the battlefield and react during live waves.",
       parent:
-        "The browser stores the highest unlocked stage, stage clears, best star ratings, permanent technology levels, upgrade points, Diamond balance, and cosmetic ownership on this device. No login is required for basic play, and clearing this site's browser storage may remove that progress. Diamond actions are optional and are not required to unlock the 30 campaign stages.",
+        "The browser stores the highest unlocked stage, stage clears, best star ratings, permanent technology levels, upgrade points, Diamond balance, and cosmetic ownership on this device. No login is required for basic play, and clearing this site's browser storage may remove that progress. Diamond actions are optional and are not required to unlock the campaign stages.",
       faq: [
-        ["Is Beast Guardian free to play?", "Yes. The complete 30-stage campaign runs in the browser without a required purchase or login."],
+        ["Is Beast Guardian free to play?", "Yes. The complete campaign runs in the browser without a required purchase or login."],
         ["How do I start a stage?", "Choose an unlocked stage from the swipe rail, then begin the defense. Cleared non-final waves start automatically after a five-second countdown."],
         ["Why do enemies sometimes attack a defender?", "Ground enemies attack a nearby blocker when every legal route to the core is sealed. Sell or reposition a unit on the next attempt, or design a route with one open lane."],
         ["How are the six Bosses different?", "Shadow Brute attacks blockers quickly, Forest Behemoth summons escorts, Ironbark Colossus rebuilds armor, Verdant Ancient heals, Tempest Ravager hastens allies, and Voidroot Emperor changes phase twice."],
@@ -2503,7 +2503,7 @@
     "animal-bubble-safari": { gameplay: "Bubble Shooter Puzzle", genre: ["Puzzle", "Bubble Shooter", "Animal"] },
     "animal-habitat-mahjong": { gameplay: "Mahjong Solitaire", genre: ["Puzzle", "Logic", "Animal"] },
     "animal-hidden-safari": { gameplay: "30-Habitat Seek and Find", genre: ["Puzzle", "Safari", "Animal", "Family"] },
-    "animal-crystal-survivor": { gameplay: "30-Stage Action Survival Campaign", genre: ["Action", "Survival", "Campaign", "Boss Battle", "Animal"] },
+    "animal-crystal-survivor": { gameplay: "Action Survival Campaign", genre: ["Action", "Survival", "Campaign", "Boss Battle", "Animal"] },
     "animal-guard-yard": { gameplay: "Lane Defense", genre: ["Strategy", "Tower Defense", "Animal"] },
     "animal-quiz": { gameplay: "Animal Quiz", genre: ["Quiz", "Education", "Animal"] },
     "zoo-helper-day": { gameplay: "Zoo Workday", genre: ["Preschool", "Simulation", "Animal"] },
@@ -2579,7 +2579,7 @@
       "animal-bubble-safari": { gameplay: "泡泡射擊解謎", genre: ["益智", "泡泡射擊", "動物"] },
       "animal-habitat-mahjong": { gameplay: "麻將牌配對", genre: ["益智", "邏輯", "動物"] },
       "animal-hidden-safari": { gameplay: "30 關棲地找找看", genre: ["益智", "自然探索", "動物", "親子"] },
-      "animal-crystal-survivor": { gameplay: "30 關動作生存戰役", genre: ["動作", "生存", "戰役", "首領戰", "動物"] },
+      "animal-crystal-survivor": { gameplay: "動作生存戰役", genre: ["動作", "生存", "戰役", "首領戰", "動物"] },
       "animal-guard-yard": { gameplay: "路線防守", genre: ["策略", "防守", "動物"] },
       "animal-quiz": { gameplay: "動物問答", genre: ["問答", "教育", "動物"] },
       "zoo-helper-day": { gameplay: "動物園工作日", genre: ["幼兒", "經營", "動物"] },
@@ -2893,7 +2893,7 @@
         guideTitleSuffix: "遊戲指南",
         noteTitle: "玩家與存檔說明",
         hideScoreBands: true,
-        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
+        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
         story: [
           "水晶要塞位在六條守護道路交會的位置：水晶森林、荊棘工坊、月光遺跡、鏡面寶庫、風暴壁壘與蝕影核心。核心開始發出不穩定脈衝後，暗影動物沿著道路靠近。獅子星珠守衛不能離開核心，因此每次防守都必須從發射室把星珠導向牆面、鏡門與敵方路線。",
           "通過一關代表該段道路已穩定到足以讓修復隊重新開放。盤根魔像守在森林入口，荊背巨獸佔領工坊，月靈女王能穿過月光道路，稜晶甲攝政王控制鏡庫，暴風角守衛標記衝鋒路線，虛空核心皇則以三階段封鎖最後房間。完成第 30 關代表六條道路重新連結，核心也不再吸引新的影獸。"
@@ -2920,7 +2920,7 @@
           "移動鏡面柱也是工具，不只是障礙。稍微預判柱子移動位置，讓星珠撞上後穿越牆面無法到達的路線。",
           "面對衝鋒獸與暴風角守衛，要先看標記路線並等待恢復空檔；快速充能只有在射擊時機正確時才有價值。",
           "核心護盾與快速充能適合穩住壓力，巨大星珠與穿透星芒能縮短危險首領階段；偵查磁力偏向長期成長，無法立即阻止核心被撞。",
-          "只有三個祝福都不符合本關規則時才考慮可選鑽石重抽。正常解鎖 30 關與六名首領都不要求花鑽石。"
+          "只有三個祝福都不符合本關規則時才考慮可選鑽石重抽。正常解鎖關卡與六名首領都不要求花鑽石。"
         ],
         progression: [
           "第 1-5 關教直接射擊、單牆反彈、分離路線與目標順序。盤根王冠是第一個檢查點；魔像會在外露一段時間後重建防護，所以玩家要先破防，再利用空檔攻擊。",
@@ -2929,7 +2929,7 @@
           "第 26-30 關把護甲、錨點、相位、分裂、衝鋒與移動鏡柱組成特製陣形。第 29 關使用完整普通敵人語彙；第 30 關加入兩次虛空核心換階段、四名支援、補盾與兩座鏡面柱，同時測試瞄準、目標順序、時機、本局祝福與永久房間成長。"
         ],
         designNote: "本作採三個短波次，是為了讓每關像一個集中的反彈問題，而不是過長的耐久戰。波次間保留核心損傷與本局配置，只加入一次簡短祝福決策。前期只使用牆面，讓玩家先理解可預測幾何；後期鏡面柱增加新反射面，也會使背熟的角度失效。特殊敵人用護甲圈、相位虛線、路線標記與獨立首領圖直接傳達反制方式，不要求玩家在戰鬥中閱讀長篇規則。手機以拖曳為主；鍵盤左右鍵調整同一套角度，空白鍵或 Enter 發射。相較《獸王守衛》的配置守衛與《動物自走小隊》的戰前編成，《動物星珠要塞》把射擊路徑本身當作主要策略資源。",
-        parent: "瀏覽器會在本機保存最佳已解鎖關卡、星石、遊玩次數，以及星珠鍛造室、核心護盾室、夥伴巢穴、偵查高塔的等級；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能移除進度。鑽石祝福重抽完全可選，會顯示目前與扣除後餘額，不是完成 30 關的必要條件。分數與能力回饋只描述遊玩表現，不是正式能力測量。",
+        parent: "瀏覽器會在本機保存最佳已解鎖關卡、星石、遊玩次數，以及星珠鍛造室、核心護盾室、夥伴巢穴、偵查高塔的等級；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能移除進度。鑽石祝福重抽完全可選，會顯示目前與扣除後餘額，不是完成關卡的必要條件。分數與能力回饋只描述遊玩表現，不是正式能力測量。",
         faq: [
           ["每關的目標是什麼？", "守住水晶核心並通過三個波次。完成第三波會保存關卡、取得星石並解鎖下一關。"],
           ["每關都會出現同一隻首領嗎？", "不會。只有每五關是區域首領檢查點；其他關以特製菁英陣形收尾，六名首領的圖像、提示與反制規則都不同。"],
@@ -3149,15 +3149,15 @@
         title: "動物水晶生存戰",
         difficulty: "中等",
         time: "每關 3 分鐘",
-        gameplay: "30 關動作生存戰役",
+        gameplay: "動作生存戰役",
         genre: ["動作", "生存", "戰役", "動物"],
         skills: ["反應", "專注", "問題解決"],
         guideKicker: "WeightPlay 原創遊戲指南",
-        guideTitleSuffix: "30 關戰役指南",
+        guideTitleSuffix: "戰役指南",
         noteTitle: "玩家與存檔說明",
         hideScoreBands: true,
         intro:
-          "《動物水晶生存戰》是一款以移動、自動攻擊、臨時升級與可讀危險為核心的 30 關實時巡邏戰役。每關最多三分鐘，都有專屬名稱、金鑰目標與區域規則。每第五關會出現一隻擁有獨立角色圖、警示與反制方式的首領，不是把普通敵人放大。",
+          "《動物水晶生存戰》是一款以移動、自動攻擊、臨時升級與可讀危險為核心的實時巡邏戰役。每關最多三分鐘，都有專屬名稱、金鑰目標與區域規則。每第五關會出現一隻擁有獨立角色圖、警示與反制方式的首領，不是把普通敵人放大。",
         story: [
           "水晶林地原本依靠六座水晶燈塔維持通道，金鑰則是調律燈塔的工具。日蝕核心從地底送出暗影脈衝後，金鑰散落在各條路線，熟悉的動物也變成影獸。水晶巡守員必須收回金鑰、安撫影獸，並讓每條通道在三分鐘內穩定下來。",
           "第 5、10、15、20、25、30 關是六個守衛檢查點。依序安撫根系追獵者、棱鏡飛蛾女王、荊棘野豬王、燼火黑豹、暴風巨鵬與日蝕巨像，才能重新連結六個區域。完成第 30 關代表六座燈塔重新同步，林地不再把暗影能量送回自己的根系。"
@@ -3169,7 +3169,7 @@
           "成功與失敗：普通關必須在 3:00 結束時仍有生命，並收集卡片顯示的金鑰數。首領關還必須安撫該區守衛。生命歸零或漏掉目標都不會解鎖下一關，但本機紀錄與先前進度不會被刪除。"
         ],
         how: [
-          "在 30 張橫向卡片中選擇已解鎖關卡，先讀取規則。",
+          "在橫向卡片中選擇已解鎖關卡，先讀取規則。",
           "用觸控、滑鼠、WASD 或方向鍵移動；攻擊會自動鎖定範圍內目標。",
           "收集本關要求的金鑰，並撿取經驗水晶選擇升級。",
           "虛線警示變成實心危險前，離開根系、火焰、閃電或走廊。",
@@ -3196,13 +3196,13 @@
         parent:
           "本機會保存已解鎖關卡、已通關關卡、各關最佳金鑰、累積金鑰、巡守階級與可選水晶護符。清除網站儲存或更換裝置可能會移除進度。水晶護符需二次確認，只會把起始生命從 100 提高到 115，並把拾取範圍從 54 提高到 68；它不是任何關卡的必要條件。結果回饋只是娛樂與本機進度資訊，不是能力測驗或診斷。",
         faq: [
-          ["動物水晶生存戰有幾關？", "共有 30 個命名關卡與六個區域，每第五關都是首領檢查點。"],
+          ["動物水晶生存戰有幾關？", "包含多個命名關卡與六個區域，每第五關都是首領檢查點。"],
           ["如何才算通關？", "生存到三分鐘結束並完成卡片的金鑰目標；首領關還要擊敗該區守衛。"],
           ["玩家需要手動瞄準嗎？", "不用。巡守員會自動攻擊，玩家主要負責移動、收集與升級選擇。"],
           ["為什麼攻擊沒有傷害棱鏡飛蛾女王？", "她發亮時有可見護盾，會擋住攻擊。護盾消失後才會扣除生命。"],
           ["漏掉金鑰目標會怎樣？", "這局金鑰與累積資料仍會記錄，但不會解鎖下一關，可立即重試。"],
           ["進度會保存嗎？", "會。關卡、金鑰、巡守階級與護符會保存在目前瀏覽器。"],
-          ["水晶護符是必要的嗎？", "不是。它只是需要確認的可選起始屬性加成，30 關都可不使用。"],
+          ["水晶護符是必要的嗎？", "不是。它只是需要確認的可選起始屬性加成，所有關卡都可不使用。"],
           ["手機與電腦都能玩嗎？", "可以。手機使用點擊或拖曳，電腦還可使用 WASD 與方向鍵，關卡規則完全相同。"],
           ["結果回饋是能力評估嗎？", "不是。它只報告本機遊戲結果與下一局路線策略，僅供娛樂。"],
         ],
@@ -3920,17 +3920,17 @@
     title: "الناجي من الكريستال الحيواني",
     difficulty: "متوسط",
     time: "3 دقائق لكل مرحلة",
-    gameplay: "حملة حركة وبقاء من 30 مرحلة",
+    gameplay: "حملة حركة وبقاء متعددة المراحل",
     genre: ["حركة", "بقاء", "حملة", "معركة زعيم", "حيوانات"],
     skills: ["رد الفعل", "التركيز", "حل المشكلات"],
     guideKicker: "دليل لعبة WeightPlay الأصلية",
-    guideTitleSuffix: "دليل حملة من 30 مرحلة",
+    guideTitleSuffix: "دليل حملة متعددة المراحل",
     useCustomGuideIdentity: true,
     noteTitle: "معلومات اللاعب والحفظ",
     hideScoreBands: true,
     showSkills: false,
     showRelatedSkill: false,
-    intro: "الناجي من الكريستال الحيواني حملة دورية فورية من 30 مرحلة، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانيين أصليين. تدوم كل جولة حتى ثلاث دقائق، ولها قاعدة وهدف مفاتيح وفتح محفوظ.",
+    intro: "الناجي من الكريستال الحيواني حملة دورية فورية متعددة المراحل، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانيين أصليين. تدوم كل جولة حتى ثلاث دقائق، ولها قاعدة وهدف مفاتيح وفتح محفوظ.",
     story: [
       "تحافظ ستة منارات كريستالية على انفتاح مسارات بستان الكريستال. بعثت نبضة الكسوف المفاتيح الذهبية بعيداً وحولت الحيوانات المألوفة إلى وحوش ظل. يحمل حارس الكريستال المفاتيح، ويهدئ الحيوانات المتأثرة، ويعيد ربط مسار واحد في كل مرة.",
       "المرحلة 5 و10 و15 و20 و25 و30 هي نقاط حراسة. هزيمة متعقب الجذور وملكة عثة المنشور وملك خنزير الشوك والنمر الجمر وطائر العاصفة روك وعملاق الكسوف تعيد ربط المناطق الست وتنهي الحلقة تحت البستان.",
@@ -3942,7 +3942,7 @@
       "تنجح المرحلة عند 3:00 فقط إذا اكتمل هدف المفاتيح المطبوع. وتتطلب مراحل الزعماء تهدئة الحارس أيضاً. يسجل تفويت الهدف إحصاءات محلية، لكنه لا يفتح المسار التالي.",
     ],
     how: [
-      "اختر بطاقة مفتوحة من مسار المراحل الأفقي ذي الثلاثين بطاقة واقرأ قاعدتها.",
+      "اختر بطاقة مفتوحة من مسار المراحل الأفقي الذي يعرض بطاقات المراحل واقرأ قاعدتها.",
       "حرّك الحارس بينما يتولى الهجوم التلقائي أقرب هدف داخل المدى.",
       "اجمع عدد المفاتيح والبلورات الظاهر قبل انتهاء المؤقت.",
       "غادر أشكال التحذير المتقطعة قبل أن تتحول إلى جذور أو نار أو برق أو مسارات صلبة.",
@@ -3967,7 +3967,7 @@
     designNote: "تحافظ الحملة على مسار قرار واضح: حركة، جمع، ترقية، ثم مواجهة الزعيم في نقاط الحراسة. تستخدم الواجهة أزراراً أصلية ولمساً وسحباً ولوحة مفاتيح بالقواعد نفسها، وتبقى النتيجة وإعادة المحاولة والعودة إلى المراحل داخل دورة المعركة نفسها.",
     parent: "تبقى فتحات المراحل والنتائج وأفضل عدد للمفاتيح ورصيد المفاتيح ورتبة الدورية وملكية سحر الكريستال الاختيارية في هذا المتصفح. قد يؤدي مسح بيانات الموقع أو تبديل الجهاز إلى حذفها. شراء سحر الكريستال اختياري ولا تتطلب أي مرحلة امتلاكه. ملاحظات النتيجة للترفيه وتتبع التقدم المحلي وليست اختباراً أو تشخيصاً.",
     faq: [
-      ["كم عدد المراحل؟", "هناك 30 مرحلة مسماة عبر ست مناطق، مع نقطة زعيم في كل مرحلة خامسة."],
+      ["كم عدد المراحل؟", "هناك مراحل مسماة عبر ست مناطق، مع نقطة زعيم في كل مرحلة خامسة."],
       ["ما الذي ينهي المرحلة؟", "ابقَ ثلاث دقائق وحقق هدف المفاتيح المطبوع؛ وتتطلب نقطة الحراسة هزيمة زعيمها أيضاً."],
       ["هل يصوّب اللاعب يدوياً؟", "لا. يهاجم الحارس تلقائياً، ويركز اللاعب على الحركة والجمع واختيار الترقية."],
       ["لماذا لم تتضرر ملكة عثة المنشور؟", "يحجب درعها الظاهر الهجمات خلال طور واحد، ويعود الضرر بعد اختفائه."],
@@ -4400,7 +4400,7 @@
     noteTitle: "玩家與存檔說明",
     hideScoreBands: true,
     intro:
-      "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役共有 30 關，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
+      "《動物自走小隊》是一款以戰前決策為核心的編成策略遊戲。玩家可以解鎖並訓練十名動物英雄，把最多六名角色配置在前後兩排，再觀看小隊依照站位與能力自動交戰。戰役分為多個關卡，依序穿越荊棘林、水晶洞窟、沉沒遺跡、燼火峰、月光城塞與虛空王冠。每關包含五波固定設計的敵人，第 5、10、15、20、25、30 關則各有一名專屬區域 Boss。",
     story: [
       "遠征路線被影之獸、水晶生物、重甲守衛、符文獸與月蝕獵手分段占據。小隊從荊棘林的苔蘚小徑出發，接著深入棱晶之心、沉沒王冠、火山口之王、子夜王庭，最後沿著破碎天路抵達虛空王冠。每區都有不同的敵人組合與最終首領；完成六區代表解除整條遠征路線的封鎖。",
       "玩家扮演的是小隊指揮者，不是在戰鬥中直接操作某一名角色。星爪狐、泡泡鰭水獺、鼓肚熊貓、月帽貓頭鷹、苔殼烏龜與其他可解鎖英雄，都有明確的攻擊、治療、護盾或倒下效果。真正的任務是在交戰前決定由哪六名角色同行，以及誰應站在前排或後排。",
@@ -4437,7 +4437,7 @@
     parent:
       "後期關卡會同時組合六人陣形、特殊攻擊目標、永久升級、戰鬥失敗壓力、Boss 能力與可選鑽石決策。關卡進度、上次出場陣容與位置、訓練金幣、團隊等級、已解鎖角色、角色永久等級、已完成關卡與外觀選擇，都會儲存在目前瀏覽器本機；基本遊玩不需要登入。清除本站的瀏覽器儲存資料可能會移除這些本機進度。",
     faq: [
-      ["動物自走小隊可以免費玩嗎？", "可以。30 關戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。"],
+      ["動物自走小隊可以免費玩嗎？", "可以。戰役能直接在 WeightPlay 瀏覽器頁面遊玩，不要求購買或登入。"],
       ["每一關的目標是什麼？", "配置能撐過五波連續敵人的小隊。通過第五波便會保存關卡並解鎖下一關；每五關的最後一波都有區域 Boss。"],
       ["戰鬥時需要手動攻擊嗎？", "不用。玩家在戰前決定角色、前後排與臨時升級，之後動物會依照能力自動攻擊、治療、加盾與觸發效果。"],
       ["每波之間都能重新排隊嗎？", "勝利會直接進入下一波。只有失敗或平手且仍有生命時，才會回到準備畫面，因此初始陣容要能面對不只一種敵人排列。"],
@@ -4814,7 +4814,7 @@
     noteTitle: "玩家與存檔說明",
     hideScoreBands: true,
     intro:
-      "《獸王守衛》是一套以自由改造路線為核心的 30 關英雄塔防戰役。玩家在森林格子上配置四種動物士兵與七名 WeightPlay 英雄，保留至少一條可通行路線，穿越六個五關區域並守住水晶核心。暗狼、重甲野豬、飛行影蝠、再生敵群、受傷加速者與月蝕混合編隊，都需要不同的防線。第 5、10、15、20、25、30 關各有改變規則的 Boss，不是只把普通敵人的生命放大。",
+      "《獸王守衛》是一套以自由改造路線為核心的英雄塔防戰役。玩家在森林格子上配置四種動物士兵與七名 WeightPlay 英雄，保留至少一條可通行路線，穿越六個五關區域並守住水晶核心。暗狼、重甲野豬、飛行影蝠、再生敵群、受傷加速者與月蝕混合編隊，都需要不同的防線。第 5、10、15、20、25、30 關各有改變規則的 Boss，不是只把普通敵人的生命放大。",
     story: [
       "水晶路線連接守護森林的六個區域：最初的樹根小徑、水晶空中通道、鐵皮木工坊、會再生的霧林、暴風壁壘，以及通往虛根王座的月蝕道路。敵群會從入口穿越玩家安排的防線前往另一端核心；通關代表該段路線已安全到足以讓守衛隊前進。",
       "玩家是整條防線的指揮者。栗果守衛與苔甲太郎負責撐住轉角，偵查弓手與月帽歐菈覆蓋長距離，符文工兵緩速群體，醫護幼獸修復受傷阻擋者，火花菲雅則負責集中攻擊 Boss。每個角色站的位置都會改變敵人行走距離、射擊角度或阻擋風險。"
@@ -4824,7 +4824,7 @@
       "角色定位：阻擋者爭取時間，弓手與歐菈負責遠程，工兵提供濺射與緩速，醫護修復前線，菲雅專門處理 Boss 壓力，齒角魯克斯則強化附近隊友。點選已部署角色可查看升級費用與出售返還。",
       "波次情報：每波開始前會列出暗狼、野豬、影蝠、護衛與 Boss 組成。非最終波通過後有五秒倒數，玩家可以讀取下一波、花費剛取得的金幣並調整升級。",
       "特殊敵人：鐵皮木區的敵人有可擊破護甲；霧林敵人移動時恢復生命；暴風敵人在生命低於一半後加速；月蝕區會同時混合護甲、再生、加速、飛行與較高緩速抗性。",
-      "永久進度：勝利會取得星等、升級點與鑽石。升級點可提高英雄力量、守衛生命或開場經濟；鑽石只用於可選的核心復活、結果獎勵重抽與黃金守衛框，正常解鎖 30 關不需要鑽石。"
+      "永久進度：勝利會取得星等、升級點與鑽石。升級點可提高英雄力量、守衛生命或開場經濟；鑽石只用於可選的核心復活、結果獎勵重抽與黃金守衛框，正常解鎖關卡不需要鑽石。"
     ],
     how: [
       "從可滑動關卡列選擇已解鎖關卡，先閱讀敵情、建議與獎勵。",
@@ -4847,11 +4847,11 @@
       "第 16-20 關讓未被擊倒的敵人在移動時再生，翠綠古木會回血並呼叫支援。第 21-25 關加入受傷加速，暴風掠奪者還會提高護衛速度。第 26-30 關把先前規則全部組合並降低緩速效果；虛根皇帝進行兩次階段轉換，要求地面路線、空中覆蓋、破甲、收尾火力、治療與 Boss 集火同時成立。"
     ],
     designNote:
-      "本作採自由配置，是因為核心決策不只是買哪座塔，而是每個角色如何改變移動時間、射擊角度與阻擋風險。波次之間保留五秒倒數，讓五波仍像同一場連續防衛，同時給玩家短暫調整時間。30 關分成六個機制區域，難度會先透過新反制與規則組合成長，再增加數值。手機與桌面共用大型建置卡與格子操作，鍵盤也能移動游標、建置、選取、升級、出售、切換角色與開始波次。相較於以戰前編隊為主的《動物自走小隊》，《獸王守衛》允許玩家即時重塑戰場並在波次中回應。",
+      "本作採自由配置，是因為核心決策不只是買哪座塔，而是每個角色如何改變移動時間、射擊角度與阻擋風險。波次之間保留五秒倒數，讓五波仍像同一場連續防衛，同時給玩家短暫調整時間。關卡分成六個機制區域，難度會先透過新反制與規則組合成長，再增加數值。手機與桌面共用大型建置卡與格子操作，鍵盤也能移動游標、建置、選取、升級、出售、切換角色與開始波次。相較於以戰前編隊為主的《動物自走小隊》，《獸王守衛》允許玩家即時重塑戰場並在波次中回應。",
     parent:
-      "瀏覽器會在本機保存最高解鎖關卡、已通關關卡、最佳星等、永久科技、升級點、鑽石餘額與外觀所有權；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能會移除這些進度。鑽石操作完全可選，不是解鎖 30 關的必要條件。",
+      "瀏覽器會在本機保存最高解鎖關卡、已通關關卡、最佳星等、永久科技、升級點、鑽石餘額與外觀所有權；基本遊玩不需要登入。清除本站瀏覽器儲存資料可能會移除這些進度。鑽石操作完全可選，不是解鎖關卡的必要條件。",
     faq: [
-      ["獸王守衛可以免費玩嗎？", "可以。完整 30 關戰役能直接在瀏覽器遊玩，不要求購買或登入。"],
+      ["獸王守衛可以免費玩嗎？", "可以。完整 戰役能直接在瀏覽器遊玩，不要求購買或登入。"],
       ["要怎麼開始關卡？", "在滑動關卡列選擇已解鎖關卡後開始防衛；非最終波通過後會在五秒倒數結束時自動接續。"],
       ["為什麼敵人有時會直接打守衛？", "當所有通往核心的合法路線都被封死時，地面敵人會攻擊附近阻擋者。下一次可出售或換位置，保留一條開放道路。"],
       ["六個 Boss 有什麼不同？", "暗影巨漢快速攻城、森林巨獸召援、鐵皮巨像重建護甲、翠綠古木回血、暴風掠奪者加速護衛、虛根皇帝則有兩次階段轉換。"],
@@ -5779,7 +5779,7 @@
       ]
     },
     "animal-crystal-survivor": {
-      "gameplay": "30 关动作生存战役",
+      "gameplay": "关动作生存战役",
       "genre": [
         "动作",
         "生存",
@@ -7682,7 +7682,7 @@
     noteTitle: "Informazioni sul giocatore e sui salvataggi",
     hideScoreBands: true,
     intro:
-      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi con 30 percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una raffica e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
+      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi a percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una raffica e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
     story: [
       "La Fortezza di Cristallo è stata costruita nel punto in cui si incontrano sei strade dei guardiani: il Bosco di Cristallo, le Officine Spinose, le Rovine Lunari, la Volta degli Specchi, il Bastione della Tempesta e il Cuore dell'Eclissi. Quando il nucleo della fortezza ha iniziato a trasmettere un impulso instabile, gli animali d'ombra hanno seguito quelle strade verso l'interno. Il custode leone non può lasciare il nucleo incustodito, quindi ogni difesa parte dalla camera di lancio e devia le sfere spirituali sulle pareti e sugli specchi circostanti.",
       "Liberare un percorso significa rendere la sua strada abbastanza stabile da consentire alle squadre di riparazione di riaprirla. Il Golem delle Radici sorveglia il cancello del bosco, il Colosso dei Rovi occupa la forgia spinosa, la Matriarca dei Fuochi Fatui Lunari attraversa la strada lunare, il Reggente del Guscio Prismatico controlla la Volta degli Specchi, il Guardiano Corno di Tempesta segna le corsie della tempesta e l'Imperatore del Nucleo Vuoto sigilla la camera finale con tre fasi. Completare il percorso 30 ricollega tutte e sei le strade e impedisce all'impulso corrotto di attirare altri nemici verso la fortezza."
@@ -7720,7 +7720,7 @@
     designNote:
       "Il gioco usa tre ondate brevi perché ogni percorso deve sembrare un problema di mira ben definito, non una lunga prova di resistenza. Le pause tra le ondate conservano i danni al nucleo e la configurazione attuale, ma offrono una scelta di benedizione compatta prima della formazione successiva. Le prime regioni si affidano alle pareti per insegnare una geometria prevedibile; in seguito i piloni a specchio creano nuove superfici e invalidano gli angoli memorizzati. I nemici speciali comunicano la propria contromossa con anelli, segni di scudo, linee di corsia o illustrazioni distinte dei boss, senza richiedere un lungo pannello di regole durante la battaglia. Il trascinamento è il controllo principale su telefono; su tastiera, Sinistra e Destra regolano la stessa mira, mentre Spazio o Invio sparano. A differenza del posizionamento dei difensori in Guardiano delle Bestie o della pianificazione delle formazioni in Squadra Animale Automatica, Fortezza delle Sfere Animali rende la traiettoria del tiro la risorsa strategica principale.",
     parent:
-      "Il browser salva su questo dispositivo il miglior percorso sbloccato, le Pietre Stellari, il numero di partite e i livelli delle quattro stanze della fortezza. Il gioco di base non richiede un account. La cancellazione dei dati del sito dal browser può rimuovere questi progressi. I rilanci delle benedizioni con Diamanti sono facoltativi, mostrano il saldo attuale e quello successivo e non sono necessari per completare i 30 percorsi. Punteggi e rapporti sulle abilità descrivono soltanto il gioco e non sono valutazioni formali delle capacità.",
+      "Il browser salva su questo dispositivo il miglior percorso sbloccato, le Pietre Stellari, il numero di partite e i livelli delle quattro stanze della fortezza. Il gioco di base non richiede un account. La cancellazione dei dati del sito dal browser può rimuovere questi progressi. I rilanci delle benedizioni con Diamanti sono facoltativi, mostrano il saldo attuale e quello successivo e non sono necessari per completare i percorsi. Punteggi e rapporti sulle abilità descrivono soltanto il gioco e non sono valutazioni formali delle capacità.",
     faq: [
       ["Qual è l'obiettivo di un percorso?", "Proteggere il nucleo di cristallo per tre ondate. Completare l'ondata 3 salva il percorso, assegna Pietre Stellari e sblocca il percorso successivo."],
       ["Ogni percorso usa lo stesso boss?", "No. Solo ogni quinto percorso è un punto di controllo con un boss regionale. Gli altri terminano con formazioni d'élite progettate, e tutti e sei i boss hanno illustrazioni, segnali e contromosse diverse."],
@@ -7751,7 +7751,7 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的 30 关防守战役。每关包含三个连续波次，玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后放开星珠，在影兽接近水晶核心前击退牠们。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
+    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。每关包含三个连续波次，玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后放开星珠，在影兽接近水晶核心前击退牠们。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
     "story": [
       "水晶要塞位在六条守护道路交会的位置：水晶森林、荆棘工坊、月光遗迹、镜面宝库、风暴壁垒与蚀影核心。核心开始发出不稳定脉冲后，暗影动物沿著道路靠近。狮子星珠守卫不能离开核心，因此每次防守都必须从发射室把星珠导向墙面、镜门与敌方路线。",
       "通过一关代表该段道路已稳定到足以让修复队重新开放。盘根魔像守在森林入口，荆背巨兽占领工坊，月灵女王能穿过月光道路，棱晶甲摄政王控制镜库，暴风角守卫标记冲锋路线，虚空核心皇则以三阶段封锁最后房间。完成第 30 关代表六条道路重新连结，核心也不再吸引新的影兽。"
@@ -7778,7 +7778,7 @@
       "移动镜面柱也是工具，不只是障碍。稍微预判柱子移动位置，让星珠撞上后穿越墙面无法到达的路线。",
       "面对冲锋兽与暴风角守卫，要先看标记路线并等待恢复空档；快速充能只有在射击时机正确时才有价值。",
       "核心护盾与快速充能适合稳住压力，巨大星珠与穿透星芒能缩短危险首领阶段；侦查磁力偏向长期成长，无法立即阻止核心被撞。",
-      "只有三个祝福都不符合本关规则时才考虑可选钻石重抽。正常解锁 30 关与六名首领都不要求花钻石。"
+      "只有三个祝福都不符合本关规则时才考虑可选钻石重抽。正常解锁关卡与六名首领都不要求花钻石。"
     ],
     "progression": [
       "第 1-5 关教直接射击、单墙反弹、分离路线与目标顺序。盘根王冠是第一个检查点；魔像会在外露一段时间后重建防护，所以玩家要先破防，再利用空档攻击。",
@@ -7787,7 +7787,7 @@
       "第 26-30 关把护甲、锚点、相位、分裂、冲锋与移动镜柱组成特制阵形。第 29 关使用完整普通敌人语汇；第 30 关加入两次虚空核心换阶段、四名支援、补盾与两座镜面柱，同时测试瞄准、目标顺序、时机、本局祝福与永久房间成长。"
     ],
     "designNote": "本作采三个短波次，是为了让每关像一个集中的反弹问题，而不是过长的耐久战。波次间保留核心损伤与本局配置，只加入一次简短祝福决策。前期只使用墙面，让玩家先理解可预测几何；后期镜面柱增加新反射面，也会使背熟的角度失效。特殊敌人用护甲圈、相位虚线、路线标记与独立首领图直接传达反制方式，不要求玩家在战斗中阅读长篇规则。手机以拖曳为主；键盘左右键调整同一套角度，空白键或 Enter 发射。相较《兽王守卫》的配置守卫与《动物自走小队》的战前编成，《动物星珠要塞》把射击路径本身当作主要策略资源。",
-    "parent": "浏览器会在本机保存最佳已解锁关卡、星石、游玩次数，以及星珠锻造室、核心护盾室、伙伴巢穴、侦查高塔的等级；基本游玩不需要登入。清除本站浏览器储存资料可能移除进度。钻石祝福重抽完全可选，会显示目前与扣除后余额，不是完成 30 关的必要条件。分数与能力回馈只描述游玩表现，不是正式能力测量。",
+    "parent": "浏览器会在本机保存最佳已解锁关卡、星石、游玩次数，以及星珠锻造室、核心护盾室、伙伴巢穴、侦查高塔的等级；基本游玩不需要登入。清除本站浏览器储存资料可能移除进度。钻石祝福重抽完全可选，会显示目前与扣除后余额，不是完成关卡的必要条件。分数与能力回馈只描述游玩表现，不是正式能力测量。",
     "faq": [
       [
         "每关的目标是什么？",
@@ -7840,7 +7840,7 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，再观看小队依照站位与能力自动交战。战役共有 30 关，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第 5、10、15、20、25、30 关则各有一名专属区域 Boss。",
+    "intro": "《动物自走小队》是一款以战前决策为核心的编成策略游戏。玩家可以解锁并训练十名动物英雄，把最多六名角色配置在前后两排，再观看小队依照站位与能力自动交战。战役分為多個關卡，依序穿越荆棘林、水晶洞窟、沉没遗迹、烬火峰、月光城塞与虚空王冠。每关包含五波固定设计的敌人，第 5、10、15、20、25、30 关则各有一名专属区域 Boss。",
     "story": [
       "远征路线被影之兽、水晶生物、重甲守卫、符文兽与月蚀猎手分段占据。小队从荆棘林的苔藓小径出发，接著深入棱晶之心、沉没王冠、火山口之王、子夜王庭，最后沿著破碎天路抵达虚空王冠。每区都有不同的敌人组合与最终首领；完成六区代表解除整条远征路线的封锁。",
       "玩家扮演的是小队指挥者，不是在战斗中直接操作某一名角色。星爪狐、泡泡鳍水獭、鼓肚熊猫、月帽猫头鹰、苔壳乌龟与其他可解锁英雄，都有明确的攻击、治疗、护盾或倒下效果。真正的任务是在交战前决定由哪六名角色同行，以及谁应站在前排或后排。"
@@ -7877,7 +7877,7 @@
     "faq": [
       [
         "动物自走小队可以免费玩吗？",
-        "可以。30 关战役能直接在 WeightPlay 浏览器页面游玩，不要求购买或登入。"
+        "可以。战役能直接在 WeightPlay 浏览器页面游玩，不要求购买或登入。"
       ],
       [
         "每一关的目标是什么？",
@@ -7924,7 +7924,7 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《兽王守卫》是一套以自由改造路线为核心的 30 关英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30 关各有改变规则的 Boss，不是只把普通敌人的生命放大。",
+    "intro": "《兽王守卫》是一套以自由改造路线为核心的英雄塔防战役。玩家在森林格子上配置四种动物士兵与七名 WeightPlay 英雄，保留至少一条可通行路线，穿越六个五关区域并守住水晶核心。暗狼、重甲野猪、飞行影蝠、再生敌群、受伤加速者与月蚀混合编队，都需要不同的防线。第 5、10、15、20、25、30 关各有改变规则的 Boss，不是只把普通敌人的生命放大。",
     "story": [
       "水晶路线连接守护森林的六个区域：最初的树根小径、水晶空中通道、铁皮木工坊、会再生的雾林、暴风壁垒，以及通往虚根王座的月蚀道路。敌群会从入口穿越玩家安排的防线前往另一端核心；通关代表该段路线已安全到足以让守卫队前进。",
       "玩家是整条防线的指挥者。栗果守卫与苔甲太郎负责撑住转角，侦查弓手与月帽欧菈覆盖长距离，符文工兵缓速群体，医护幼兽修复受伤阻挡者，火花菲雅则负责集中攻击 Boss。每个角色站的位置都会改变敌人行走距离、射击角度或阻挡风险。"
@@ -7934,7 +7934,7 @@
       "角色定位：阻挡者争取时间，弓手与欧菈负责远程，工兵提供溅射与缓速，医护修复前线，菲雅专门处理 Boss 压力，齿角鲁克斯则强化附近队友。点选已部署角色可查看升级费用与出售返还。",
       "波次情报：每波开始前会列出暗狼、野猪、影蝠、护卫与 Boss 组成。非最终波通过后有五秒倒数，玩家可以读取下一波、花费刚取得的金币并调整升级。",
       "特殊敌人：铁皮木区的敌人有可击破护甲；雾林敌人移动时恢复生命；暴风敌人在生命低于一半后加速；月蚀区会同时混合护甲、再生、加速、飞行与较高缓速抗性。",
-      "永久进度：胜利会取得星等、升级点与钻石。升级点可提高英雄力量、守卫生命或开场经济；钻石只用于可选的核心复活、结果奖励重抽与黄金守卫框，正常解锁 30 关不需要钻石。"
+      "永久进度：胜利会取得星等、升级点与钻石。升级点可提高英雄力量、守卫生命或开场经济；钻石只用于可选的核心复活、结果奖励重抽与黄金守卫框，正常解锁关卡不需要钻石。"
     ],
     "how": [
       "从可滑动关卡列选择已解锁关卡，先阅读敌情、建议与奖励。",
@@ -7956,12 +7956,12 @@
       "第 6-10 关加入无视地面路线的影蝠与空地混合波；森林巨兽损失部分生命后会召唤暗狼与影蝠。第 11-15 关加入可击破的铁皮护甲，铁皮巨像则会在战斗中重新建立一层大型防护。",
       "第 16-20 关让未被击倒的敌人在移动时再生，翠绿古木会回血并呼叫支援。第 21-25 关加入受伤加速，暴风掠夺者还会提高护卫速度。第 26-30 关把先前规则全部组合并降低缓速效果；虚根皇帝进行两次阶段转换，要求地面路线、空中覆盖、破甲、收尾火力、治疗与 Boss 集火同时成立。"
     ],
-    "designNote": "本作采自由配置，是因为核心决策不只是买哪座塔，而是每个角色如何改变移动时间、射击角度与阻挡风险。波次之间保留五秒倒数，让五波仍像同一场连续防卫，同时给玩家短暂调整时间。30 关分成六个机制区域，难度会先透过新反制与规则组合成长，再增加数值。手机与桌面共用大型建置卡与格子操作，键盘也能移动游标、建置、选取、升级、出售、切换角色与开始波次。相较于以战前编队为主的《动物自走小队》，《兽王守卫》允许玩家即时重塑战场并在波次中回应。",
-    "parent": "浏览器会在本机保存最高解锁关卡、已通关关卡、最佳星等、永久科技、升级点、钻石余额与外观所有权；基本游玩不需要登入。清除本站浏览器储存资料可能会移除这些进度。钻石操作完全可选，不是解锁 30 关的必要条件。",
+    "designNote": "本作采自由配置，是因为核心决策不只是买哪座塔，而是每个角色如何改变移动时间、射击角度与阻挡风险。波次之间保留五秒倒数，让五波仍像同一场连续防卫，同时给玩家短暂调整时间。关卡分成六个机制区域，难度会先透过新反制与规则组合成长，再增加数值。手机与桌面共用大型建置卡与格子操作，键盘也能移动游标、建置、选取、升级、出售、切换角色与开始波次。相较于以战前编队为主的《动物自走小队》，《兽王守卫》允许玩家即时重塑战场并在波次中回应。",
+    "parent": "浏览器会在本机保存最高解锁关卡、已通关关卡、最佳星等、永久科技、升级点、钻石余额与外观所有权；基本游玩不需要登入。清除本站浏览器储存资料可能会移除这些进度。钻石操作完全可选，不是解锁关卡的必要条件。",
     "faq": [
       [
         "兽王守卫可以免费玩吗？",
-        "可以。完整 30 关战役能直接在浏览器游玩，不要求购买或登入。"
+        "可以。完整 战役能直接在浏览器游玩，不要求购买或登入。"
       ],
       [
         "要怎么开始关卡？",
@@ -8348,7 +8348,7 @@
     "title": "动物水晶生存战",
     "difficulty": "中等",
     "time": "每关 3 分钟",
-    "gameplay": "30 关动作生存战役",
+    "gameplay": "关动作生存战役",
     "genre": [
       "动作",
       "生存",
@@ -8361,10 +8361,10 @@
       "问题解决"
     ],
     "guideKicker": "WeightPlay 原创游戏指南",
-    "guideTitleSuffix": "30 关战役指南",
+    "guideTitleSuffix": "战役指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。",
+    "intro": "《动物水晶生存战》是一款以移动、自动攻击、临时升级与可读危险为核心的实时巡逻战役。每关最多三分钟，都有专属名称、金钥目标与区域规则。每第五关会出现一只拥有独立角色图、警示与反制方式的首领，不是把普通敌人放大。",
     "story": [
       "水晶林地原本依靠六座水晶灯塔维持通道，金钥则是调律灯塔的工具。日蚀核心从地底送出暗影脉冲后，金钥散落在各条路线，熟悉的动物也变成影兽。水晶巡守员必须收回金钥、安抚影兽，并让每条通道在三分钟内稳定下来。",
       "第 5、10、15、20、25、30 关是六个守卫检查点。依序安抚根系追猎者、棱镜飞蛾女王、荆棘野猪王、烬火黑豹、暴风巨鹏与日蚀巨像，才能重新连结六个区域。完成第 30 关代表六座灯塔重新同步，林地不再把暗影能量送回自己的根系。"
@@ -8376,7 +8376,7 @@
       "成功与失败：普通关必须在 3:00 结束时仍有生命，并收集卡片显示的金钥数。首领关还必须安抚该区守卫。生命归零或漏掉目标都不会解锁下一关，但本机纪录与先前进度不会被删除。"
     ],
     "how": [
-      "在 30 张横向卡片中选择已解锁关卡，先读取规则。",
+      "在横向卡片中选择已解锁关卡，先读取规则。",
       "用触控、滑鼠、WASD 或方向键移动；攻击会自动锁定范围内目标。",
       "收集本关要求的金钥，并捡取经验水晶选择升级。",
       "虚线警示变成实心危险前，离开根系、火焰、闪电或走廊。",
@@ -8403,7 +8403,7 @@
     "faq": [
       [
         "动物水晶生存战有几关？",
-        "共有 30 个命名关卡与六个区域，每第五关都是首领检查点。"
+        "包含多个命名关卡与六个区域，每第五关都是首领检查点。"
       ],
       [
         "如何才算通关？",
@@ -8427,7 +8427,7 @@
       ],
       [
         "水晶护符是必要的吗？",
-        "不是。它只是需要确认的可选起始属性加成，30 关都可不使用。"
+        "不是。它只是需要确认的可选起始属性加成，所有关卡都可不使用。"
       ],
       [
         "手机与电脑都能玩吗？",
@@ -9894,7 +9894,7 @@
       <div class="game-info-hero">
         <div class="game-info-title">
           <span class="game-info-kicker">${escapeHtml(identity.kicker)}</span>
-          <h2>${escapeHtml(game.title)} - ${escapeHtml(identity.suffix)}</h2>
+          <h2>${escapeHtml(game.title)}</h2>
           <p>${escapeHtml(game.intro)}</p>
         </div>
         ${isClassicCardGame ? "" : `<div class="game-info-facts">
@@ -12152,7 +12152,7 @@
     guideKicker: "دليل ألعاب WeightPlay الأصلية",
     guideTitleSuffix: "دليل اللعبة",
     noteTitle: "معلومات اللاعب والحفظ",
-    intro: "فرقة الحيوانات الآلية لعبة استراتيجية لتشكيل الفريق، وتدور حول القرارات التي تتخذها قبل القتال. درّب عشرة أبطال من الحيوانات، وضع ما يصل إلى ستة منهم في صفين، ثم شاهد التشكيلة تحسم كل مواجهة تلقائيًا. تضم الحملة 30 مرحلة عبر غابة الشوك والكهوف البلورية والآثار الغارقة وقمة الجمر وقلعة ضوء القمر وتاج الفراغ. لكل مرحلة خمس موجات من تصميمنا، وتنتهي المراحل 5 و10 و15 و20 و25 و30 بزعيم إقليمي مختلف.",
+    intro: "فرقة الحيوانات الآلية لعبة استراتيجية لتشكيل الفريق، وتدور حول القرارات التي تتخذها قبل القتال. درّب عشرة أبطال من الحيوانات، وضع ما يصل إلى ستة منهم في صفين، ثم شاهد التشكيلة تحسم كل مواجهة تلقائيًا. تضم الحملة مراحل متتابعة عبر غابة الشوك والكهوف البلورية والآثار الغارقة وقمة الجمر وقلعة ضوء القمر وتاج الفراغ. لكل مرحلة خمس موجات من تصميمنا، وتنتهي المراحل 5 و10 و15 و20 و25 و30 بزعيم إقليمي مختلف.",
     story: [
       "تتبع الرحلة سلسلة من المسارات التي تحتلها حيوانات الظل ومخلوقات البلور والحراس المدرعون ووحوش الرون وصيادو الكسوف. تبدأ الفرقة من درب الطحلب في غابة الشوك، ثم تعبر قلب المنشور والتاج الغارق وملك الكالديرا ومحكمة منتصف الليل والطرق المحطمة المؤدية إلى تاج الفراغ. لكل منطقة مزيج أعداء ومواجهة نهائية مختلفة؛ وإكمال المناطق الست يعني كسر سلسلة الحواجز الإقليمية كاملة.",
       "أنت قائد الفرقة ولست مقاتلًا في الميدان. لكل بطل قابل للفتح قاعدة استهداف أو دعم خاصة. مهمتك أن تقرر أي ستة سيسافرون معًا، وهل ينتمون إلى الصف الأمامي أم الخلفي قبل بدء الاشتباك الآلي."
@@ -12187,7 +12187,7 @@
     designNote: "القتال الآلي مقصود: التنفيذ قصير حتى يتركز العمل المهم على التشكيل وتغطية الأدوار وترتيب الأهداف والتدريب طويل الأمد. تنتقل الموجة الناجحة مباشرة إلى التالية لتشعر المرحلة ذات الموجات الخمس كرحلة واحدة، بينما يعيد الفشل فتح التحضير كي تستجيب بدل مشاهدة الإعداد نفسه يفشل. يدعم الاختيار باللمس اللعب على الهاتف، وتبقى البطاقات قابلة للاستخدام بالماوس على الحاسوب.",
     parent: "تُحفظ الحملة والتشكيل الأخير ومواضع الخانات وذهب التدريب ومستوى الفريق والحيوانات المفتوحة ومستوياتها الدائمة والمراحل المكتملة والاختيار التجميلي محليًا في هذا المتصفح؛ لا يلزم تسجيل الدخول للعب الأساسي. قد يؤدي مسح تخزين المتصفح إلى إزالة التقدم المحلي.",
     faq: [
-      ["هل فرقة الحيوانات الآلية مجانية؟", "نعم. تعمل حملة المراحل الثلاثين في متصفح WeightPlay من دون شراء أو تسجيل دخول إلزامي."],
+      ["هل فرقة الحيوانات الآلية مجانية؟", "نعم. تعمل حملة المراحل في متصفح WeightPlay من دون شراء أو تسجيل دخول إلزامي."],
       ["ما هدف كل مرحلة؟", "كوّن فرقة تصمد أمام خمس موجات متصلة. حفظ الموجة الخامسة المرحلة ويفتح التالية، وتنتهي كل مرحلة خامسة بزعيم إقليمي."],
       ["هل أتحكم في الهجمات أثناء القتال؟", "لا. تتحكم في الأبطال والصفين والترقيات المؤقتة قبل القتال، ثم تهاجم الحيوانات وتعالج وتحمي وتطلق قدراتها تلقائيًا."],
       ["هل يمكنني إعادة ترتيب الفرقة بين كل موجة؟", "تنتقل الجولة الفائزة مباشرة إلى الموجة التالية. يعاد فتح التحضير بعد الخسارة أو التعادل ما دامت القلوب متبقية."],
@@ -15963,27 +15963,27 @@
   const beastGuardianDesignNoteLocaleCopy = {
     ko: {
       "beast-tactician": {
-        designNote: "이 게임은 자유 배치를 사용합니다. 핵심 결정은 어떤 타워를 살지뿐 아니라 각 유닛의 배치가 이동 시간, 공격 각도와 차단 위험을 어떻게 바꾸는지에 있습니다. 웨이브 사이의 5초 전환은 짧은 계획 시간을 남기면서 하나의 연속된 방어를 이어가는 느낌을 줍니다. 30개 스테이지는 6개의 기계적 구간으로 구성되어, 단순히 수치만 올리기보다 새로운 대응법과 조합으로 난도가 높아집니다. 터치 플레이어는 마우스 플레이어와 같은 큰 건설 카드와 격자 칸을 사용하고, 키보드로 타일 커서를 이동하고 건설, 선택, 업그레이드, 판매, 유닛 전환, 웨이브 시작을 할 수 있습니다. Animal Auto Squad와 달리 두 게임 모두 준비를 보상하지만, 이 게임은 실시간 웨이브 중 전장을 다시 만들고 대응할 수 있습니다.",
+        designNote: "이 게임은 자유 배치를 사용합니다. 핵심 결정은 어떤 타워를 살지뿐 아니라 각 유닛의 배치가 이동 시간, 공격 각도와 차단 위험을 어떻게 바꾸는지에 있습니다. 웨이브 사이의 5초 전환은 짧은 계획 시간을 남기면서 하나의 연속된 방어를 이어가는 느낌을 줍니다. 여러 스테이지는 6개의 기계적 구간으로 구성되어, 단순히 수치만 올리기보다 새로운 대응법과 조합으로 난도가 높아집니다. 터치 플레이어는 마우스 플레이어와 같은 큰 건설 카드와 격자 칸을 사용하고, 키보드로 타일 커서를 이동하고 건설, 선택, 업그레이드, 판매, 유닛 전환, 웨이브 시작을 할 수 있습니다. Animal Auto Squad와 달리 두 게임 모두 준비를 보상하지만, 이 게임은 실시간 웨이브 중 전장을 다시 만들고 대응할 수 있습니다.",
       },
     },
     "pt-BR": {
       "beast-tactician": {
-        designNote: "O jogo usa posicionamento livre porque a decisão central não é apenas qual torre comprar, mas como a posição de cada unidade altera o tempo de deslocamento, os ângulos de disparo e o risco de bloqueio. A transição de cinco segundos entre as ondas mantém a sensação de uma defesa contínua e deixa uma breve janela para planejar. As 30 fases são organizadas em seis arcos mecânicos, então a dificuldade cresce com novos contra-ataques e combinações antes de simplesmente aumentar os números. Jogadores com toque usam as mesmas cartas grandes de construção e células da grade que jogadores com mouse; o teclado também pode mover o cursor de uma célula, construir, selecionar, aprimorar, vender, alternar unidades e iniciar ondas. Isso diferencia o jogo de Animal Auto Squad: ambos valorizam a preparação, mas este permite remodelar o campo de batalha e reagir durante as ondas em andamento.",
+        designNote: "O jogo usa posicionamento livre porque a decisão central não é apenas qual torre comprar, mas como a posição de cada unidade altera o tempo de deslocamento, os ângulos de disparo e o risco de bloqueio. A transição de cinco segundos entre as ondas mantém a sensação de uma defesa contínua e deixa uma breve janela para planejar. As fases são organizadas em seis arcos mecânicos, então a dificuldade cresce com novos contra-ataques e combinações antes de simplesmente aumentar os números. Jogadores com toque usam as mesmas cartas grandes de construção e células da grade que jogadores com mouse; o teclado também pode mover o cursor de uma célula, construir, selecionar, aprimorar, vender, alternar unidades e iniciar ondas. Isso diferencia o jogo de Animal Auto Squad: ambos valorizam a preparação, mas este permite remodelar o campo de batalha e reagir durante as ondas em andamento.",
       },
     },
     fr: {
       "beast-tactician": {
-        designNote: "Le jeu utilise un placement libre, car la décision centrale ne consiste pas seulement à choisir quelle tour acheter : il s’agit de voir comment la position de chaque unité modifie le temps de parcours, les angles de tir et le risque de blocage. La transition de cinq secondes entre les vagues conserve l’impression d’une défense continue tout en laissant un court moment pour planifier. Les 30 étapes sont organisées en six arcs mécaniques : la difficulté progresse grâce à de nouveaux contres et à des combinaisons, avant une simple hausse des valeurs. Les joueurs tactiles utilisent les mêmes grandes cartes de construction et cases de grille que les joueurs à la souris ; le clavier peut aussi déplacer le curseur d’une case, construire, sélectionner, améliorer, vendre, changer d’unité et lancer les vagues. Cela distingue le jeu d’Animal Auto Squad : les deux récompensent la préparation, mais celui-ci permet de remodeler le champ de bataille et de réagir pendant les vagues en cours.",
+        designNote: "Le jeu utilise un placement libre, car la décision centrale ne consiste pas seulement à choisir quelle tour acheter : il s’agit de voir comment la position de chaque unité modifie le temps de parcours, les angles de tir et le risque de blocage. La transition de cinq secondes entre les vagues conserve l’impression d’une défense continue tout en laissant un court moment pour planifier. Les étapes sont organisées en six arcs mécaniques : la difficulté progresse grâce à de nouveaux contres et à des combinaisons, avant une simple hausse des valeurs. Les joueurs tactiles utilisent les mêmes grandes cartes de construction et cases de grille que les joueurs à la souris ; le clavier peut aussi déplacer le curseur d’une case, construire, sélectionner, améliorer, vendre, changer d’unité et lancer les vagues. Cela distingue le jeu d’Animal Auto Squad : les deux récompensent la préparation, mais celui-ci permet de remodeler le champ de bataille et de réagir pendant les vagues en cours.",
       },
     },
     de: {
       "beast-tactician": {
-        designNote: "Das Spiel setzt auf freie Platzierung, weil die zentrale Entscheidung nicht nur lautet, welchen Turm man kauft, sondern wie die Position jeder Einheit Laufzeit, Schusswinkel und Blockierrisiko verändert. Der fünfsekündige Übergang zwischen den Wellen vermittelt weiterhin eine zusammenhängende Verteidigung und lässt zugleich ein kurzes Planungsfenster. Die 30 Stufen sind in sechs Mechanikbögen gegliedert, sodass die Schwierigkeit zuerst durch neue Konter und Kombinationen wächst und nicht nur durch höhere Werte. Touch-Spieler verwenden dieselben großen Baukarten und Rasterfelder wie Mausspieler; mit der Tastatur lassen sich außerdem der Kachelcursor bewegen, bauen, auswählen, verbessern, verkaufen, Einheiten wechseln und Wellen starten. Das unterscheidet das Spiel von Animal Auto Squad: Beide belohnen Vorbereitung, aber hier lässt sich das Schlachtfeld während laufender Wellen umgestalten, sodass man reagieren kann.",
+        designNote: "Das Spiel setzt auf freie Platzierung, weil die zentrale Entscheidung nicht nur lautet, welchen Turm man kauft, sondern wie die Position jeder Einheit Laufzeit, Schusswinkel und Blockierrisiko verändert. Der fünfsekündige Übergang zwischen den Wellen vermittelt weiterhin eine zusammenhängende Verteidigung und lässt zugleich ein kurzes Planungsfenster. Die Stufen sind in sechs Mechanikbögen gegliedert, sodass die Schwierigkeit zuerst durch neue Konter und Kombinationen wächst und nicht nur durch höhere Werte. Touch-Spieler verwenden dieselben großen Baukarten und Rasterfelder wie Mausspieler; mit der Tastatur lassen sich außerdem der Kachelcursor bewegen, bauen, auswählen, verbessern, verkaufen, Einheiten wechseln und Wellen starten. Das unterscheidet das Spiel von Animal Auto Squad: Beide belohnen Vorbereitung, aber hier lässt sich das Schlachtfeld während laufender Wellen umgestalten, sodass man reagieren kann.",
       },
     },
     it: {
       "beast-tactician": {
-        designNote: "Il gioco usa il posizionamento libero perché la decisione centrale non è soltanto quale torre acquistare, ma come la posizione di ogni unità modifica il tempo di percorrenza, gli angoli di tiro e il rischio di blocco. La transizione di cinque secondi tra le ondate conserva la sensazione di una difesa continua e lascia un breve momento per pianificare. Le 30 fasi sono organizzate in sei archi meccanici: la difficoltà cresce con nuovi contrasti e combinazioni prima di aumentare soltanto i valori. Chi usa il tocco vede le stesse grandi carte di costruzione e celle della griglia di chi usa il mouse; la tastiera permette anche di muovere il cursore sulla cella, costruire, selezionare, potenziare, vendere, cambiare unità e avviare le ondate. Questo distingue il gioco da Animal Auto Squad: entrambi premiano la preparazione, ma qui puoi ridisegnare il campo e reagire durante le ondate attive.",
+        designNote: "Il gioco usa il posizionamento libero perché la decisione centrale non è soltanto quale torre acquistare, ma come la posizione di ogni unità modifica il tempo di percorrenza, gli angoli di tiro e il rischio di blocco. La transizione di cinque secondi tra le ondate conserva la sensazione di una difesa continua e lascia un breve momento per pianificare. Le fasi sono organizzate in sei archi meccanici: la difficoltà cresce con nuovi contrasti e combinazioni prima di aumentare soltanto i valori. Chi usa il tocco vede le stesse grandi carte di costruzione e celle della griglia di chi usa il mouse; la tastiera permette anche di muovere il cursore sulla cella, costruire, selezionare, potenziare, vendere, cambiare unità e avviare le ondate. Questo distingue il gioco da Animal Auto Squad: entrambi premiano la preparazione, ma qui puoi ridisegnare il campo e reagire durante le ondate attive.",
       },
     },
     ru: {
@@ -15993,7 +15993,7 @@
     },
     hi: {
       "beast-tactician": {
-        designNote: "खेल में इकाइयों को स्वतंत्र रूप से रखने दिया जाता है, क्योंकि मुख्य निर्णय केवल यह नहीं है कि कौन-सा टावर खरीदा जाए; यह भी है कि हर इकाई की जगह बदलने से यात्रा समय, हमले के कोण और रास्ता रुकने का जोखिम कैसे बदलता है। लहरों के बीच पाँच सेकंड का बदलाव लगातार चल रही रक्षा का एहसास बनाए रखता है और थोड़ी योजना का समय देता है। 30 स्टेज छह यांत्रिक चरणों में बाँटे गए हैं, इसलिए कठिनाई केवल आँकड़े बढ़ाने के बजाय नए जवाबों और संयोजनों से बढ़ती है। टच खिलाड़ी माउस खिलाड़ियों जैसे ही बड़े निर्माण कार्ड और ग्रिड खाने इस्तेमाल करते हैं; कीबोर्ड से टाइल कर्सर चलाना, बनाना, चुनना, अपग्रेड करना, बेचना, यूनिट बदलना और लहर शुरू करना भी संभव है। यह खेल Animal Auto Squad से अलग है: दोनों तैयारी को महत्व देते हैं, लेकिन यहाँ सक्रिय लहरों के दौरान मैदान को फिर से बनाने और प्रतिक्रिया देने की सुविधा है।",
+        designNote: "खेल में इकाइयों को स्वतंत्र रूप से रखने दिया जाता है, क्योंकि मुख्य निर्णय केवल यह नहीं है कि कौन-सा टावर खरीदा जाए; यह भी है कि हर इकाई की जगह बदलने से यात्रा समय, हमले के कोण और रास्ता रुकने का जोखिम कैसे बदलता है। लहरों के बीच पाँच सेकंड का बदलाव लगातार चल रही रक्षा का एहसास बनाए रखता है और थोड़ी योजना का समय देता है। विभिन्न स्टेज छह यांत्रिक चरणों में बाँटे गए हैं, इसलिए कठिनाई केवल आँकड़े बढ़ाने के बजाय नए जवाबों और संयोजनों से बढ़ती है। टच खिलाड़ी माउस खिलाड़ियों जैसे ही बड़े निर्माण कार्ड और ग्रिड खाने इस्तेमाल करते हैं; कीबोर्ड से टाइल कर्सर चलाना, बनाना, चुनना, अपग्रेड करना, बेचना, यूनिट बदलना और लहर शुरू करना भी संभव है। यह खेल Animal Auto Squad से अलग है: दोनों तैयारी को महत्व देते हैं, लेकिन यहाँ सक्रिय लहरों के दौरान मैदान को फिर से बनाने और प्रतिक्रिया देने की सुविधा है।",
       },
     },
     ar: {
@@ -16021,7 +16021,7 @@
         guideTitleSuffix: "Guide du jeu",
         noteTitle: "Informations sur le joueur et la sauvegarde",
         intro:
-          "Beast Guardian est une campagne de tower defense héroïque en 30 étapes, fondée sur la construction d’itinéraires plutôt que sur des emplacements de tours fixes. Placez quatre rôles de soldats animaux ordinaires et sept héros WeightPlay sur une grille forestière, gardez au moins un itinéraire ouvert et protégez le noyau de cristal à travers six régions de cinq étapes. Loups, sangliers cuirassés, chauves-souris volantes, meutes régénérantes, coureurs blessés et formations d’éclipse exigent des défenses différentes. Les étapes 5, 10, 15, 20, 25 et 30 se terminent par des Boss qui changent les règles, et non par de simples ennemis dotés d’une barre de vie plus grande.",
+          "Beast Guardian est une campagne de tower defense héroïque, fondée sur la construction d’itinéraires plutôt que sur des emplacements de tours fixes. Placez quatre rôles de soldats animaux ordinaires et sept héros WeightPlay sur une grille forestière, gardez au moins un itinéraire ouvert et protégez le noyau de cristal à travers six régions de cinq étapes. Loups, sangliers cuirassés, chauves-souris volantes, meutes régénérantes, coureurs blessés et formations d’éclipse exigent des défenses différentes. Les étapes 5, 10, 15, 20, 25 et 30 se terminent par des Boss qui changent les règles, et non par de simples ennemis dotés d’une barre de vie plus grande.",
         story: [
           "Les itinéraires de cristal relient six parties de la Forêt des Gardiens : les premiers chemins de racines, les voies aériennes de cristal, les ateliers d’Écorce-de-Fer, le bois brumeux qui repousse, les remparts de tempête et la route de l’éclipse vers le trône de Voidroot. Les meutes ennemies tentent d’atteindre le noyau à l’autre bout de chaque champ de bataille. Une étape terminée signifie que l’itinéraire reste assez sûr pour permettre aux gardiens d’avancer vers le secteur suivant.",
           "Vous commandez la défense avant et pendant chaque vague. Les Gardes Gland et Taro Carapace-Mousse tiennent les virages, les Archers éclaireurs et Orla Coiffe-Lunaire couvrent les longues lignes, les Sapeurs runiques ralentissent les attaquants groupés, les Petits soigneurs réparent les bloqueurs blessés et des héros comme Fia Patte-Étincelle infligent des dégâts concentrés. Le plateau n’est pas décoratif : chaque défenseur placé modifie l’itinéraire, sauf lorsqu’il sert de soutien à distance loin du chemin."
@@ -16054,9 +16054,9 @@
           "Les étapes 16 à 20 font régénérer les ennemis encore en mouvement ; Verdant Ancient restaure une partie de sa santé et appelle du soutien. Les étapes 21 à 25 ajoutent des accélérations lorsque les ennemis sont blessés et se terminent par Tempest Ravager, qui hâte ses escortes. Les étapes 26 à 30 combinent toutes les règles précédentes avec des ralentissements moins efficaces. Voidroot Emperor change deux fois de phase : l’étape 30 demande donc itinéraires terrestres, couverture aérienne, bris d’armure, dégâts de finition, soins et concentration sur le Boss dans une seule défense."
         ],
         parent:
-          "Le navigateur conserve sur cet appareil l’étape débloquée la plus avancée, les étapes terminées, les meilleures étoiles, les niveaux de technologie permanente, les points d’amélioration, le solde de Diamants et les éléments cosmétiques possédés. Aucun compte n’est nécessaire pour jouer normalement ; effacer le stockage du navigateur de ce site peut supprimer cette progression. Les actions en Diamants sont facultatives et ne sont pas nécessaires pour débloquer les 30 étapes de la campagne.",
+          "Le navigateur conserve sur cet appareil l’étape débloquée la plus avancée, les étapes terminées, les meilleures étoiles, les niveaux de technologie permanente, les points d’amélioration, le solde de Diamants et les éléments cosmétiques possédés. Aucun compte n’est nécessaire pour jouer normalement ; effacer le stockage du navigateur de ce site peut supprimer cette progression. Les actions en Diamants sont facultatives et ne sont pas nécessaires pour débloquer les étapes de la campagne.",
         faq: [
-          ["Beast Guardian est-il gratuit ?", "Oui. La campagne complète de 30 étapes fonctionne dans le navigateur sans achat obligatoire ni connexion."],
+          ["Beast Guardian est-il gratuit ?", "Oui. La campagne complète fonctionne dans le navigateur sans achat obligatoire ni connexion."],
           ["Comment commencer une étape ?", "Choisissez une étape débloquée dans le rail à faire défiler, puis lancez la défense. Les vagues non finales terminées démarrent automatiquement après un compte à rebours de cinq secondes."],
           ["Pourquoi les ennemis attaquent-ils parfois un défenseur ?", "Les ennemis terrestres attaquent un bloqueur proche lorsque tous les itinéraires légaux vers le noyau sont fermés. Vendez ou repositionnez une unité à la tentative suivante, ou concevez un itinéraire avec une voie ouverte."],
           ["En quoi les six Boss sont-ils différents ?", "Shadow Brute attaque rapidement les bloqueurs, Forest Behemoth invoque des escortes, Ironbark Colossus reconstruit son armure, Verdant Ancient se soigne, Tempest Ravager accélère ses alliés et Voidroot Emperor change deux fois de phase."],
@@ -16078,7 +16078,7 @@
         guideTitleSuffix: "Spielguide",
         noteTitle: "Spieler- und Speicherinformationen",
         intro:
-          "Beast Guardian ist eine 30-stufige Helden-Tower-Defense-Kampagne, bei der du Wege baust, statt feste Turmplätze zu nutzen. Platziere vier gewöhnliche Tier-Soldatenrollen und sieben WeightPlay-Helden auf einem Waldraster, halte mindestens einen Weg offen und beschütze den Kristallkern in sechs Regionen mit je fünf Stufen. Wölfe, gepanzerte Wildschweine, fliegende Fledermäuse, sich regenerierende Rudel, verwundete Sprinter und Eclipse-Formationen verlangen unterschiedliche Verteidigungen. Die Stufen 5, 10, 15, 20, 25 und 30 enden mit Bossen, die Regeln verändern, statt nur gewöhnliche Gegner mit größeren Lebensbalken zu bringen.",
+          "Beast Guardian ist eine mehrstufige Helden-Tower-Defense-Kampagne, bei der du Wege baust, statt feste Turmplätze zu nutzen. Platziere vier gewöhnliche Tier-Soldatenrollen und sieben WeightPlay-Helden auf einem Waldraster, halte mindestens einen Weg offen und beschütze den Kristallkern in sechs Regionen mit je fünf Stufen. Wölfe, gepanzerte Wildschweine, fliegende Fledermäuse, sich regenerierende Rudel, verwundete Sprinter und Eclipse-Formationen verlangen unterschiedliche Verteidigungen. Die Stufen 5, 10, 15, 20, 25 und 30 enden mit Bossen, die Regeln verändern, statt nur gewöhnliche Gegner mit größeren Lebensbalken zu bringen.",
         story: [
           "Die Kristallwege verbinden sechs Bereiche des Wächterwaldes: die ersten Wurzelpfade, die Kristall-Luftwege, die Eisenrinden-Werke, das nachwachsende Nebelgehölz, die Sturmwälle und den Eclipse-Weg zum Thron von Voidroot. Feindliche Rudel wollen auf der anderen Seite jedes Schlachtfelds den Kern erreichen. Eine geschaffte Stufe bedeutet, dass der Weg lange genug sicher ist, damit die Wächter in den nächsten Sektor vorrücken können.",
           "Du leitest die Verteidigung vor und während jeder Welle. Eichelwachen und Moospanzer Taro halten Kurven, Späher-Bogenschützen und Mondkappe Orla decken lange Winkel ab, Runen-Sappeure verlangsamen geballte Angreifer, Medic Cubs reparieren verletzte Blocker und Helden wie Funkenpfote Fia verursachen konzentrierten Schaden. Das Spielfeld ist keine Dekoration: Jede platzierte Verteidigung verändert den Weg, außer wenn sie abseits des Pfads als Fernkampfunterstützung dient."
@@ -16111,9 +16111,9 @@
           "In den Stufen 16–20 regenerieren sich nicht besiegte Gegner während der Bewegung; der Grüne Uralte stellt einen Teil seiner Gesundheit wieder her und ruft Unterstützung. Die Stufen 21–25 fügen verletzte Geschwindigkeitsschübe hinzu und enden mit Sturmräuber, der seine Begleiter beschleunigt. Die Stufen 26–30 verbinden alle bisherigen Regeln mit weniger wirksamen Verlangsamungen. Der Voidroot-Kaiser hat zwei Phasenwechsel, daher braucht Stufe 30 in einer Verteidigung Bodenwege, Luftabdeckung, Rüstungsbruch, Abschlusschaden, Heilung und gespeicherten Boss-Fokus."
         ],
         parent:
-          "Der Browser speichert auf diesem Gerät die höchste freigeschaltete Stufe, abgeschlossene Stufen, beste Sternebewertungen, permanente Technologiestufen, Verbesserungspunkte, den Diamantenstand und den Besitz kosmetischer Elemente. Für das normale Spielen ist keine Anmeldung nötig; das Löschen des Browser-Speichers dieser Website kann den Fortschritt entfernen. Diamanten-Aktionen sind optional und nicht erforderlich, um die 30 Kampagnenstufen freizuschalten.",
+          "Der Browser speichert auf diesem Gerät die höchste freigeschaltete Stufe, abgeschlossene Stufen, beste Sternebewertungen, permanente Technologiestufen, Verbesserungspunkte, den Diamantenstand und den Besitz kosmetischer Elemente. Für das normale Spielen ist keine Anmeldung nötig; das Löschen des Browser-Speichers dieser Website kann den Fortschritt entfernen. Diamanten-Aktionen sind optional und nicht erforderlich, um die Kampagnenstufen freizuschalten.",
         faq: [
-          ["Ist Beast Guardian kostenlos spielbar?", "Ja. Die vollständige Kampagne mit 30 Stufen läuft im Browser ohne verpflichtenden Kauf oder Anmeldung."],
+          ["Ist Beast Guardian kostenlos spielbar?", "Ja. Die vollständige Kampagne mit Stufen läuft im Browser ohne verpflichtenden Kauf oder Anmeldung."],
           ["Wie starte ich eine Stufe?", "Wähle eine freigeschaltete Stufe aus der Wischleiste und beginne dann die Verteidigung. Abgeschlossene, nicht finale Wellen starten nach einem fünfsekündigen Countdown automatisch."],
           ["Warum greifen Gegner manchmal einen Verteidiger an?", "Bodengegner greifen einen nahen Blocker an, wenn alle legalen Wege zum Kern versiegelt sind. Verkaufe oder verschiebe beim nächsten Versuch eine Einheit oder plane einen Weg mit einer offenen Spur."],
           ["Worin unterscheiden sich die sechs Bosse?", "Schattenbrut greift Blocker schnell an, Waldkoloss beschwört Begleiter, Eisenrindenkoloss baut Rüstung wieder auf, der Grüne Uralte heilt sich, Sturmräuber beschleunigt Verbündete und der Voidroot-Kaiser wechselt zweimal die Phase."],
@@ -16279,7 +16279,7 @@
       "animal-triple-match": { title: "पशु ट्रिपल मैच", intro: "परतों से खुले वस्तुओं को सात-स्थान ट्रे में ले जाएँ और असंगत वस्तुओं से जगह भरने से पहले तीन समान वस्तुएँ मिलाएँ।" }
     },
     "ar": {
-      "beast-tactician": { title: "حارس الوحوش", intro: "ابنِ مسارات دفاعية على شبكة الغابة، وضع الجنود والأبطال، واحمِ النواة البلورية عبر ثلاثين مرحلة." },
+      "beast-tactician": { title: "حارس الوحوش", intro: "ابنِ مسارات دفاعية على شبكة الغابة، وضع الجنود والأبطال، واحمِ النواة البلورية عبر مراحل متتابعة." },
       "maze-chase": { title: "مطاردة المتاهة", intro: "قد أورلا داخل متاهة ثابتة لجمع ذرات النجوم، واقرأ أربعة أنماط لمطاردة الومضات، وحوّل الممر الخطير إلى فرصة قصيرة للهجوم المضاد باستخدام المنارات." },
       "animal-number-match": { title: "بستان رقم بانكو", intro: "أزل الأزواج التي يساوي مجموعها عشرة عندما تتلامس أو ترى بعضها عبر الخانات الفارغة، وافتح خطوط رؤية جديدة." },
       "animal-sunbeam-garden": { title: "حديقة شعاع الشمس", intro: "أدر المرايا على لوحة حديقة من ستة في ستة حتى يسلك كل شعاع ظاهر مسارًا صحيحًا من مصدره إلى الزنبق النائم." },
@@ -16301,8 +16301,8 @@
         ],
       },
       "animal-cratebound": { title: "مستودع الحيوانات", intro: "حرّك الصناديق وادفعها واسحبها عبر ثلاثين مستودعًا في سكاي-آرك، وافتح مسارًا واضحًا للرحلة من دون إغلاق الممرات." },
-      "animal-orb-fortress": { title: "حصن الكرات الحيوانية", intro: "حملة دفاعية مرتدة من 30 مسارًا؛ اقرأ الساحة، وأطلق الكرة الروحية، واحمِ النواة البلورية من حيوانات الظل." },
-      "animal-crystal-survivor": { title: "الناجي من الكريستال الحيواني", intro: "حملة دورية في الوقت الفعلي من 30 مرحلة، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانات أصليين." },
+      "animal-orb-fortress": { title: "حصن الكرات الحيوانية", intro: "حملة دفاعية مرتدة متعددة المراحل؛ اقرأ الساحة، وأطلق الكرة الروحية، واحمِ النواة البلورية من حيوانات الظل." },
+      "animal-crystal-survivor": { title: "الناجي من الكريستال الحيواني", intro: "حملة دورية في الوقت الفعلي متعددة المراحل، تعتمد على الحركة والهجمات التلقائية والترقيات المؤقتة والمخاطر الواضحة وستة زعماء حيوانات أصليين." },
       "animal-reef-fisher": { title: "صياد الشعاب الحيوانية", intro: "حملة صيد وجمع من 30 مهمة؛ اشحن الرمية، واضبط توتر الخيط، واكتشف المخلوقات البحرية، وأنفق ملاحظات الشعاب على تحسين العتاد." },
       "animal-bounce-brawl": { title: "شجار الارتداد", intro: "اضبط توقيت الارتداد، واختر أدوات الرغوة، وأخل بتوازن المنافس في ساحة فيزياء مرحة." },
       "animal-block-grove": { title: "بستان الحيوانات المتراصة", intro: "ضع ثلاثين تشكيلًا من الكتل داخل لوحة غابة 8×8، وأكمل الصفوف والأعمدة لتفتح مساحة جديدة للتقدم." },
@@ -17718,30 +17718,30 @@
     localizedGameplayProfiles[locale]["animal-mosaic-clues"] = { gameplay: copy.gameplay, genre: copy.genre };
   }
   const crystalGuideLocaleCopy = {
-    "zh-Hans": { title: "动物水晶生存战", difficulty: "中等", time: "每关 3 分钟", gameplay: "30 关动作生存战役", genre: ["动作", "生存", "战役", "首领战", "动物"], skills: ["反应", "专注", "问题解决"], guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "30 关战役指南", noteTitle: "玩家与存档说明", intro: "《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的 30 关实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。", parent: "关卡、金钥匙、巡守等级和可选水晶护符保存在此浏览器中。清除网站数据或更换设备可能会移除进度；结果反馈仅供娱乐和本机进度记录。" },
-    ja: { title: "どうぶつクリスタルサバイバー", difficulty: "中級", time: "1ステージ 3分", gameplay: "30ステージのアクションサバイバル", genre: ["アクション", "サバイバル", "キャンペーン", "ボス戦", "動物"], skills: ["反応", "集中", "問題解決"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "30ステージ攻略ガイド", noteTitle: "プレイヤーと保存情報", intro: "『どうぶつクリスタルサバイバー』は、移動、自動攻撃、一時強化、読みやすい危険表示を軸にした30ステージのリアルタイム巡回キャンペーンです。各ステージは最大3分で、5ステージごとに固有の動物ボスが登場します。", parent: "解放状況、鍵、パトロールランク、任意のクリスタルチャームはこのブラウザに保存されます。サイトデータを消すと進行が失われる場合があります。結果表示は遊びとローカル記録のためのものです。" },
-    ko: { title: "동물 크리스털 서바이버", difficulty: "보통", time: "스테이지당 3분", gameplay: "30개 스테이지 액션 서바이벌 캠페인", genre: ["액션", "생존", "캠페인", "보스전", "동물"], skills: ["반응", "집중", "문제 해결"], guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "30개 스테이지 캠페인 가이드", noteTitle: "플레이어 및 저장 정보", intro: "동물 크리스털 서바이버는 이동, 자동 공격, 임시 강화와 읽기 쉬운 위험 표시를 중심으로 한 30개 스테이지 실시간 순찰 캠페인입니다. 각 스테이지는 최대 3분이며 다섯 번째마다 고유한 동물 보스가 등장합니다.", parent: "해금, 열쇠, 순찰 등급과 선택형 크리스털 부적은 이 브라우저에 저장됩니다. 사이트 데이터를 지우면 진행이 사라질 수 있으며 결과는 재미와 로컬 기록만을 위한 것입니다." },
-    es: { title: "Superviviente de Cristal Animal", difficulty: "Media", time: "3 minutos por nivel", gameplay: "Campaña de acción y supervivencia de 30 niveles", genre: ["Acción", "Supervivencia", "Campaña", "Jefes", "Animales"], skills: ["Reacción", "Atención", "Resolución de problemas"], guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía de campaña de 30 niveles", noteTitle: "Información del jugador y guardado", intro: "Superviviente de Cristal Animal es una campaña de patrulla en tiempo real de 30 niveles basada en movimiento, ataques automáticos, mejoras temporales y peligros legibles. Cada nivel dura como máximo tres minutos y cada quinto nivel presenta un jefe animal único.", parent: "Los niveles, las llaves, el rango de patrulla y el amuleto de cristal opcional se guardan en este navegador. Borrar los datos del sitio puede eliminar el progreso; los resultados son solo para diversión y registro local." },
-    "pt-BR": { title: "Sobrevivente do Cristal Animal", difficulty: "Média", time: "3 minutos por fase", gameplay: "Campanha de ação e sobrevivência com 30 fases", genre: ["Ação", "Sobrevivência", "Campanha", "Chefes", "Animais"], skills: ["Reação", "Foco", "Resolução de problemas"], guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia da campanha de 30 fases", noteTitle: "Informações do jogador e do salvamento", intro: "Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real com 30 fases, baseada em movimento, ataques automáticos, melhorias temporárias e perigos legíveis. Cada fase dura no máximo três minutos e cada quinta fase traz um chefe animal único.", parent: "Fases, chaves, patente da patrulha e o Amuleto de cristal opcional ficam salvos neste navegador. Limpar os dados do site pode apagar o progresso; os resultados servem apenas para diversão e registro local." },
-    fr: { title: "Survivant du cristal animal", difficulty: "Moyenne", time: "3 minutes par niveau", gameplay: "Campagne d’action-survie de 30 niveaux", genre: ["Action", "Survie", "Campagne", "Boss", "Animaux"], skills: ["Réaction", "Concentration", "Résolution de problèmes"], guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide de campagne de 30 niveaux", noteTitle: "Informations du joueur et sauvegarde", intro: "Survivant du cristal animal est une campagne de patrouille en temps réel de 30 niveaux, fondée sur le déplacement, l’attaque automatique, les améliorations temporaires et des dangers lisibles. Chaque niveau dure au plus trois minutes et un boss animal unique apparaît tous les cinq niveaux.", parent: "Les niveaux, les clés, le rang de patrouille et le talisman de cristal optionnel sont enregistrés dans ce navigateur. Effacer les données du site peut supprimer la progression ; les résultats servent au jeu et au suivi local." },
-    de: { title: "Tierischer Kristall-Überlebenskampf", difficulty: "Mittel", time: "3 Minuten pro Stufe", gameplay: "30-stufige Action-Überlebenskampagne", genre: ["Action", "Überleben", "Kampagne", "Bosskampf", "Tiere"], skills: ["Reaktion", "Fokus", "Problemlösung"], guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Leitfaden zur 30-stufigen Kampagne", noteTitle: "Spieler- und Speicherinformationen", intro: "Der tierische Kristall-Überlebenskampf ist eine Echtzeit-Patrouillenkampagne mit 30 Stufen und legt den Schwerpunkt auf Bewegung, Auto-Angriffe, vorübergehende Verbesserungen und lesbare Gefahren. Jede Stufe dauert höchstens drei Minuten; jede fünfte Stufe bringt einen eigenen Tier-Boss.", parent: "Stufen, Schlüssel, Patrouillenrang und das optionale Kristallamulett werden in diesem Browser gespeichert. Gelöschte Websitedaten können den Fortschritt entfernen; Ergebnisse dienen nur dem Spielspaß und der lokalen Aufzeichnung." },
-    it: { title: "Sopravvissuto del Cristallo Animale", difficulty: "Media", time: "3 minuti per livello", gameplay: "Campagna d’azione e sopravvivenza di 30 livelli", genre: ["Azione", "Sopravvivenza", "Campagna", "Boss", "Animali"], skills: ["Reazione", "Concentrazione", "Risoluzione dei problemi"], guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida alla campagna di 30 livelli", noteTitle: "Informazioni del giocatore e salvataggio", intro: "Sopravvissuto del Cristallo Animale è una campagna di pattuglia in tempo reale di 30 livelli basata su movimento, attacchi automatici, potenziamenti temporanei e pericoli leggibili. Ogni livello dura al massimo tre minuti e ogni quinto livello presenta un boss animale unico.", parent: "Livelli, chiavi, grado di pattuglia e Amuleto di cristallo opzionale vengono salvati in questo browser. Cancellare i dati del sito può eliminare i progressi; i risultati servono solo al gioco e al registro locale." },
-    ru: { title: "Хрустальный выживший: животные", difficulty: "Средняя", time: "3 минуты на этап", gameplay: "Кампания действия и выживания на 30 этапов", genre: ["Экшен", "Выживание", "Кампания", "Боссы", "Животные"], skills: ["Реакция", "Внимание", "Решение задач"], guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Справочник кампании на 30 этапов", noteTitle: "Сведения об игроке и сохранении", intro: "Хрустальный выживший — это кампания патруля в реальном времени на 30 этапов, построенная на движении, автоматической атаке, временных улучшениях и понятных опасностях. Каждый этап длится не более трёх минут, а на каждом пятом появляется особый звериный босс.", parent: "Этапы, ключи, ранг патруля и необязательный кристальный амулет сохраняются в этом браузере. Очистка данных сайта может удалить прогресс; результаты предназначены только для игры и локальной записи." },
-    hi: { title: "पशु क्रिस्टल सर्वाइवर", difficulty: "मध्यम", time: "हर चरण 3 मिनट", gameplay: "30 चरणों का एक्शन सर्वाइवल अभियान", genre: ["एक्शन", "सर्वाइवल", "अभियान", "बॉस लड़ाई", "जानवर"], skills: ["प्रतिक्रिया", "ध्यान", "समस्या समाधान"], guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "30 चरणों का अभियान गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", intro: "पशु क्रिस्टल सर्वाइवर 30 चरणों का रीयल-टाइम गश्ती अभियान है, जिसमें गति, स्वचालित हमला, अस्थायी उन्नयन और साफ़ दिखाई देने वाले खतरे मुख्य हैं। हर चरण अधिकतम तीन मिनट चलता है और हर पाँचवें चरण में अलग पशु बॉस आता है।", parent: "चरण, चाबियाँ, गश्ती रैंक और वैकल्पिक क्रिस्टल ताबीज इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने पर प्रगति हट सकती है; परिणाम केवल मनोरंजन और स्थानीय रिकॉर्ड के लिए हैं।" },
+    "zh-Hans": { title: "动物水晶生存战", difficulty: "中等", time: "每关 3 分钟", gameplay: "关动作生存战役", genre: ["动作", "生存", "战役", "首领战", "动物"], skills: ["反应", "专注", "问题解决"], guideKicker: "WeightPlay 原创游戏指南", guideTitleSuffix: "战役指南", noteTitle: "玩家与存档说明", intro: "《动物水晶生存战》是一款以移动、自动攻击、临时强化和可读危险为核心的实时巡逻战役。每关最多三分钟，并在每第五关安排一个拥有独特警示与反制方式的动物首领。", parent: "关卡、金钥匙、巡守等级和可选水晶护符保存在此浏览器中。清除网站数据或更换设备可能会移除进度；结果反馈仅供娱乐和本机进度记录。" },
+    ja: { title: "どうぶつクリスタルサバイバー", difficulty: "中級", time: "1ステージ 3分", gameplay: "各ステージのアクションサバイバル", genre: ["アクション", "サバイバル", "キャンペーン", "ボス戦", "動物"], skills: ["反応", "集中", "問題解決"], guideKicker: "WeightPlay オリジナルゲームガイド", guideTitleSuffix: "各ステージ攻略ガイド", noteTitle: "プレイヤーと保存情報", intro: "『どうぶつクリスタルサバイバー』は、移動、自動攻撃、一時強化、読みやすい危険表示を軸にした各ステージのリアルタイム巡回キャンペーンです。各ステージは最大3分で、5ステージごとに固有の動物ボスが登場します。", parent: "解放状況、鍵、パトロールランク、任意のクリスタルチャームはこのブラウザに保存されます。サイトデータを消すと進行が失われる場合があります。結果表示は遊びとローカル記録のためのものです。" },
+    ko: { title: "동물 크리스털 서바이버", difficulty: "보통", time: "스테이지당 3분", gameplay: "여러 스테이지 액션 서바이벌 캠페인", genre: ["액션", "생존", "캠페인", "보스전", "동물"], skills: ["반응", "집중", "문제 해결"], guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "여러 스테이지 캠페인 가이드", noteTitle: "플레이어 및 저장 정보", intro: "동물 크리스털 서바이버는 이동, 자동 공격, 임시 강화와 읽기 쉬운 위험 표시를 중심으로 한 여러 스테이지 실시간 순찰 캠페인입니다. 각 스테이지는 최대 3분이며 다섯 번째마다 고유한 동물 보스가 등장합니다.", parent: "해금, 열쇠, 순찰 등급과 선택형 크리스털 부적은 이 브라우저에 저장됩니다. 사이트 데이터를 지우면 진행이 사라질 수 있으며 결과는 재미와 로컬 기록만을 위한 것입니다." },
+    es: { title: "Superviviente de Cristal Animal", difficulty: "Media", time: "3 minutos por nivel", gameplay: "Campaña de acción y supervivencia", genre: ["Acción", "Supervivencia", "Campaña", "Jefes", "Animales"], skills: ["Reacción", "Atención", "Resolución de problemas"], guideKicker: "Guía de juego original de WeightPlay", guideTitleSuffix: "Guía de campaña", noteTitle: "Información del jugador y guardado", intro: "Superviviente de Cristal Animal es una campaña de patrulla en tiempo real basada en movimiento, ataques automáticos, mejoras temporales y peligros legibles. Cada nivel dura como máximo tres minutos y cada quinto nivel presenta un jefe animal único.", parent: "Los niveles, las llaves, el rango de patrulla y el amuleto de cristal opcional se guardan en este navegador. Borrar los datos del sitio puede eliminar el progreso; los resultados son solo para diversión y registro local." },
+    "pt-BR": { title: "Sobrevivente do Cristal Animal", difficulty: "Média", time: "3 minutos por fase", gameplay: "Campanha de ação e sobrevivência por fases", genre: ["Ação", "Sobrevivência", "Campanha", "Chefes", "Animais"], skills: ["Reação", "Foco", "Resolução de problemas"], guideKicker: "Guia de jogo original WeightPlay", guideTitleSuffix: "Guia da campanha por fases", noteTitle: "Informações do jogador e do salvamento", intro: "Sobrevivente do Cristal Animal é uma campanha de patrulha em tempo real por fases, baseada em movimento, ataques automáticos, melhorias temporárias e perigos legíveis. Cada fase dura no máximo três minutos e cada quinta fase traz um chefe animal único.", parent: "Fases, chaves, patente da patrulha e o Amuleto de cristal opcional ficam salvos neste navegador. Limpar os dados do site pode apagar o progresso; os resultados servem apenas para diversão e registro local." },
+    fr: { title: "Survivant du cristal animal", difficulty: "Moyenne", time: "3 minutes par niveau", gameplay: "Campagne d’action-survie", genre: ["Action", "Survie", "Campagne", "Boss", "Animaux"], skills: ["Réaction", "Concentration", "Résolution de problèmes"], guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide de campagne", noteTitle: "Informations du joueur et sauvegarde", intro: "Survivant du cristal animal est une campagne de patrouille en temps réel, fondée sur le déplacement, l’attaque automatique, les améliorations temporaires et des dangers lisibles. Chaque niveau dure au plus trois minutes et un boss animal unique apparaît tous les cinq niveaux.", parent: "Les niveaux, les clés, le rang de patrouille et le talisman de cristal optionnel sont enregistrés dans ce navigateur. Effacer les données du site peut supprimer la progression ; les résultats servent au jeu et au suivi local." },
+    de: { title: "Tierischer Kristall-Überlebenskampf", difficulty: "Mittel", time: "3 Minuten pro Stufe", gameplay: "mehrstufige Action-Überlebenskampagne", genre: ["Action", "Überleben", "Kampagne", "Bosskampf", "Tiere"], skills: ["Reaktion", "Fokus", "Problemlösung"], guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Leitfaden zur mehrstufigen Kampagne", noteTitle: "Spieler- und Speicherinformationen", intro: "Der tierische Kristall-Überlebenskampf ist eine Echtzeit-Patrouillenkampagne mit Stufen und legt den Schwerpunkt auf Bewegung, Auto-Angriffe, vorübergehende Verbesserungen und lesbare Gefahren. Jede Stufe dauert höchstens drei Minuten; jede fünfte Stufe bringt einen eigenen Tier-Boss.", parent: "Stufen, Schlüssel, Patrouillenrang und das optionale Kristallamulett werden in diesem Browser gespeichert. Gelöschte Websitedaten können den Fortschritt entfernen; Ergebnisse dienen nur dem Spielspaß und der lokalen Aufzeichnung." },
+    it: { title: "Sopravvissuto del Cristallo Animale", difficulty: "Media", time: "3 minuti per livello", gameplay: "Campagna d’azione e sopravvivenza a livelli", genre: ["Azione", "Sopravvivenza", "Campagna", "Boss", "Animali"], skills: ["Reazione", "Concentrazione", "Risoluzione dei problemi"], guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida alla campagna a livelli", noteTitle: "Informazioni del giocatore e salvataggio", intro: "Sopravvissuto del Cristallo Animale è una campagna di pattuglia in tempo reale a livelli basata su movimento, attacchi automatici, potenziamenti temporanei e pericoli leggibili. Ogni livello dura al massimo tre minuti e ogni quinto livello presenta un boss animale unico.", parent: "Livelli, chiavi, grado di pattuglia e Amuleto di cristallo opzionale vengono salvati in questo browser. Cancellare i dati del sito può eliminare i progressi; i risultati servono solo al gioco e al registro locale." },
+    ru: { title: "Хрустальный выживший: животные", difficulty: "Средняя", time: "3 минуты на этап", gameplay: "Кампания действия и выживания с последовательными этапами", genre: ["Экшен", "Выживание", "Кампания", "Боссы", "Животные"], skills: ["Реакция", "Внимание", "Решение задач"], guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Справочник кампании с последовательными этапами", noteTitle: "Сведения об игроке и сохранении", intro: "Хрустальный выживший — это кампания патруля в реальном времени с последовательными этапами, построенная на движении, автоматической атаке, временных улучшениях и понятных опасностях. Каждый этап длится не более трёх минут, а на каждом пятом появляется особый звериный босс.", parent: "Этапы, ключи, ранг патруля и необязательный кристальный амулет сохраняются в этом браузере. Очистка данных сайта может удалить прогресс; результаты предназначены только для игры и локальной записи." },
+    hi: { title: "पशु क्रिस्टल सर्वाइवर", difficulty: "मध्यम", time: "हर चरण 3 मिनट", gameplay: "विभिन्न चरणों का एक्शन सर्वाइवल अभियान", genre: ["एक्शन", "सर्वाइवल", "अभियान", "बॉस लड़ाई", "जानवर"], skills: ["प्रतिक्रिया", "ध्यान", "समस्या समाधान"], guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "विभिन्न चरणों का अभियान गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", intro: "पशु क्रिस्टल सर्वाइवर विभिन्न चरणों का रीयल-टाइम गश्ती अभियान है, जिसमें गति, स्वचालित हमला, अस्थायी उन्नयन और साफ़ दिखाई देने वाले खतरे मुख्य हैं। हर चरण अधिकतम तीन मिनट चलता है और हर पाँचवें चरण में अलग पशु बॉस आता है।", parent: "चरण, चाबियाँ, गश्ती रैंक और वैकल्पिक क्रिस्टल ताबीज इसी ब्राउज़र में सहेजे जाते हैं। साइट डेटा मिटाने पर प्रगति हट सकती है; परिणाम केवल मनोरंजन और स्थानीय रिकॉर्ड के लिए हैं।" },
   };
   const crystalFaqByLocale = {
-    "zh-Hant": [["共有多少個關卡？", "共有 30 個命名關卡，分布在六個區域，每五關設有首領檢查點。"], ["怎樣才算完成關卡？", "在三分鐘內存活並達成畫面上的金鑰目標；檢查點還必須擊敗首領。"], ["玩家需要手動瞄準嗎？", "不需要。守望者會自動攻擊，玩家專注於移動、收集與升級選擇。"], ["為什麼棱彩蛾后沒有受傷？", "牠的可見護盾在其中一個階段會擋住攻擊；護盾消失後傷害才會恢復。"], ["進度會保存嗎？", "會。解鎖、完成數、最佳金鑰數、終身巡守等級與護符所有權會保存在本瀏覽器。"], ["水晶護符是必要的嗎？", "不是。它是可選的強化，不會成為任何關卡的必要條件。"], ["手機和桌面都能玩嗎？", "可以。觸控拖曳與鍵盤移動使用相同的戰役規則。"], ["結果回饋是評量嗎？", "不是。它只回報本地遊玩結果與下一條路線提示，供娛樂使用。"]],
-    "zh-Hans": [["共有多少个关卡？", "共有 30 个命名关卡，分布在六个区域，每五关设有首领检查点。"], ["怎样才算完成关卡？", "在三分钟内存活并达成画面上的金钥目标；检查点还必须击败首领。"], ["玩家需要手动瞄准吗？", "不需要。巡守员会自动攻击，玩家专注于移动、收集和强化选择。"], ["为什么棱彩蛾后没有受伤？", "它的可见护盾会在其中一个阶段挡住攻击；护盾消失后伤害才会恢复。"], ["进度会保存吗？", "会。解锁、完成数、最佳金钥数、终身巡守等级和护符所有权会保存在此浏览器。"], ["水晶护符是必要的吗？", "不是。它是可选强化，不会成为任何关卡的必要条件。"], ["手机和桌面都能玩吗？", "可以。触控拖曳和键盘移动使用相同的战役规则。"], ["结果反馈是评量吗？", "不是。它只回报本地游玩结果和下一条路线提示，供娱乐使用。"]],
-    ja: [["ステージはいくつありますか？", "6つの地域に30ステージあり、5ステージごとにボスのチェックポイントがあります。"], ["ステージをクリアする条件は？", "3分間生き残り、表示された鍵の目標を達成します。チェックポイントではボスも倒す必要があります。"], ["プレイヤーは手動で狙いますか？", "いいえ。レンジャーが自動で攻撃するため、移動、収集、強化の選択に集中します。"], ["なぜプリズム・モス・クイーンにダメージが入りませんか？", "見えるシールドが一つの段階で攻撃を防ぎます。消えるとダメージが通ります。"], ["進行は保存されますか？", "はい。解放状況、クリア数、最高鍵数、累計パトロールランク、チャームの所有状況はこのブラウザに保存されます。"], ["クリスタルチャームは必須ですか？", "いいえ。任意の強化で、どのステージにも必須ではありません。"], ["スマートフォンとデスクトップで遊べますか？", "はい。タッチ操作とキーボード移動は同じキャンペーンルールです。"], ["リザルトは評価ですか？", "いいえ。ローカルのプレイ結果と次のルートのヒントを表示するだけです。"]],
-    ko: [["스테이지는 몇 개 있나요?", "6개 지역에 30개 스테이지가 있으며, 5스테이지마다 보스 체크포인트가 있습니다."], ["스테이지를 클리어하려면 어떻게 하나요?", "3분 동안 살아남고 표시된 열쇠 목표를 달성해야 합니다. 체크포인트에서는 보스도 물리쳐야 합니다."], ["플레이어가 직접 조준하나요?", "아니요. 레인저가 자동으로 공격하므로 이동, 수집, 강화 선택에 집중합니다."], ["프리즘 나방 여왕에게 왜 피해가 들어가지 않나요?", "보이는 보호막이 한 단계에서 공격을 막습니다. 보호막이 사라지면 피해를 줄 수 있습니다."], ["진행 상황이 저장되나요?", "네. 해금, 클리어 수, 최고 열쇠 수, 누적 순찰 등급과 부적 보유 정보가 이 브라우저에 저장됩니다."], ["크리스털 부적이 필요한가요?", "아니요. 선택형 강화이며 어떤 스테이지에도 필수가 아닙니다."], ["휴대폰과 데스크톱에서 모두 플레이할 수 있나요?", "네. 터치 드래그와 키보드 이동은 같은 캠페인 규칙을 사용합니다."], ["결과 피드백이 평가인가요?", "아니요. 로컬 플레이 결과와 다음 경로 힌트만 보여 줍니다."]],
-    es: [["¿Cuántos niveles hay?", "Hay 30 niveles con nombre en seis regiones, con un punto de control de jefe cada cinco niveles."], ["¿Qué completa un nivel?", "Sobrevive tres minutos y alcanza el objetivo de llaves indicado; en un punto de control también debes derrotar al jefe."], ["¿Hay que apuntar manualmente?", "No. El guardabosques ataca automáticamente y tú te ocupas del movimiento, la recolección y las mejoras."], ["¿Por qué la Reina Polilla Prisma no recibe daño?", "Su escudo visible bloquea los ataques durante una fase; el daño vuelve cuando desaparece."], ["¿Se guarda el progreso?", "Sí. Los desbloqueos, las victorias, las mejores llaves, el rango de patrulla y el amuleto se guardan en este navegador."], ["¿Es necesario el Amuleto de cristal?", "No. Es una mejora opcional y ningún nivel la exige."], ["¿Funciona en móvil y escritorio?", "Sí. El arrastre táctil y el movimiento con teclado usan las mismas reglas de campaña."], ["¿El resultado es una evaluación?", "No. Solo informa del resultado local y de la próxima ruta para jugar."]],
-    "pt-BR": [["Quantas fases existem?", "São 30 fases nomeadas em seis regiões, com um ponto de controle de chefe a cada cinco fases."], ["O que conclui uma fase?", "Sobreviva por três minutos e cumpra a meta de chaves exibida; em um ponto de controle, também derrote o chefe."], ["É preciso mirar manualmente?", "Não. O patrulheiro ataca automaticamente, enquanto você cuida do movimento, da coleta e das melhorias."], ["Por que a Rainha Mariposa Prisma não sofreu dano?", "O escudo visível bloqueia ataques durante uma fase; o dano volta quando ele desaparece."], ["O progresso é salvo?", "Sim. Desbloqueios, vitórias, melhores chaves, patente da patrulha e o amuleto ficam salvos neste navegador."], ["O Amuleto de cristal é obrigatório?", "Não. É uma melhoria opcional e nenhuma fase exige seu uso."], ["Funciona no celular e no computador?", "Sim. Arrastar por toque e mover pelo teclado usam as mesmas regras da campanha."], ["O resultado é uma avaliação?", "Não. Ele apenas mostra o resultado local e a próxima rota para continuar jogando."]],
-    fr: [["Combien de niveaux sont inclus ?", "Il y a 30 niveaux nommés dans six régions, avec un point de contrôle de boss tous les cinq niveaux."], ["Qu'est-ce qui valide un niveau ?", "Survivez trois minutes et atteignez l'objectif de clés affiché ; un point de contrôle demande aussi de vaincre son boss."], ["Faut-il viser manuellement ?", "Non. Le ranger attaque automatiquement ; vous vous concentrez sur les déplacements, la collecte et les améliorations."], ["Pourquoi la Reine papillon prismatique ne subit-elle aucun dégât ?", "Son bouclier visible bloque les attaques pendant une phase ; les dégâts reprennent quand il disparaît."], ["La progression est-elle sauvegardée ?", "Oui. Les déblocages, victoires, meilleurs nombres de clés, rang de patrouille et talisman sont enregistrés dans ce navigateur."], ["Le talisman de cristal est-il obligatoire ?", "Non. C'est une amélioration facultative et aucun niveau ne l'exige."], ["Le jeu fonctionne-t-il sur mobile et ordinateur ?", "Oui. Le glissement tactile et le déplacement au clavier utilisent les mêmes règles de campagne."], ["Le résultat est-il une évaluation ?", "Non. Il indique seulement le résultat local et la prochaine route de jeu."]],
-    de: [["Wie viele Stufen gibt es?", "Es gibt 30 benannte Stufen in sechs Regionen; alle fünf Stufen wartet ein Boss-Checkpoint."], ["Wann ist eine Stufe geschafft?", "Überlebe drei Minuten und erreiche das angezeigte Schlüsselziel; an einem Checkpoint muss außerdem der Boss besiegt werden."], ["Muss man manuell zielen?", "Nein. Der Ranger greift automatisch an; du kümmerst dich um Bewegung, Sammeln und Verbesserungen."], ["Warum erleidet die Prismamot­tenkönigin keinen Schaden?", "Ihr sichtbarer Schild blockiert Angriffe in einer Phase; danach kann sie wieder verletzt werden."], ["Wird der Fortschritt gespeichert?", "Ja. Freischaltungen, Abschlüsse, beste Schlüsselzahlen, Patrouillenrang und Amulettbesitz werden in diesem Browser gespeichert."], ["Ist das Kristallamulett nötig?", "Nein. Es ist eine optionale Verbesserung und für keine Stufe erforderlich."], ["Funktioniert das Spiel auf Handy und Desktop?", "Ja. Ziehen per Touch und Bewegung per Tastatur verwenden dieselben Kampagnenregeln."], ["Ist die Ergebnisanzeige eine Bewertung?", "Nein. Sie zeigt nur das lokale Ergebnis und den nächsten Spielweg."]],
-    it: [["Quanti livelli ci sono?", "Ci sono 30 livelli nominati in sei regioni, con un checkpoint del boss ogni cinque livelli."], ["Quando si completa un livello?", "Sopravvivi per tre minuti e raggiungi l'obiettivo delle chiavi mostrato; nei checkpoint devi anche sconfiggere il boss."], ["Bisogna mirare manualmente?", "No. Il ranger attacca automaticamente; tu gestisci movimento, raccolta e potenziamenti."], ["Perché la Regina falena prisma non subisce danni?", "Il suo scudo visibile blocca gli attacchi durante una fase; i danni tornano quando scompare."], ["I progressi vengono salvati?", "Sì. Sblocchi, completamenti, migliori quantità di chiavi, grado di pattuglia e amuleto vengono salvati in questo browser."], ["L'Amuleto di cristallo è obbligatorio?", "No. È un potenziamento facoltativo e nessun livello lo richiede."], ["Funziona su telefono e desktop?", "Sì. Trascinamento tattile e movimento da tastiera usano le stesse regole della campagna."], ["Il risultato è una valutazione?", "No. Mostra soltanto il risultato locale e il prossimo percorso di gioco."]],
-    ru: [["Сколько здесь этапов?", "Здесь 30 именных этапов в шести регионах; каждые пять этапов отмечены контрольной точкой босса."], ["Когда этап считается пройденным?", "Продержитесь три минуты и выполните указанную цель по ключам; на контрольной точке нужно также победить босса."], ["Нужно ли целиться вручную?", "Нет. Рейнджер атакует автоматически, а игрок отвечает за движение, сбор и выбор улучшений."], ["Почему призматическая мотыльковая королева не получает урон?", "Её видимый щит блокирует атаки в одной фазе; после исчезновения щита урон снова проходит."], ["Сохраняется ли прогресс?", "Да. Открытия, прохождения, лучшие результаты по ключам, ранг патруля и амулет сохраняются в этом браузере."], ["Кристальный амулет обязателен?", "Нет. Это необязательное улучшение, и ни один этап его не требует."], ["Можно играть на телефоне и компьютере?", "Да. Перетаскивание пальцем и движение клавишами используют одни и те же правила кампании."], ["Результат — это оценка?", "Нет. Он показывает только локальный итог и следующий игровой маршрут."]],
-    hi: [["कुल कितने चरण हैं?", "छह क्षेत्रों में नामित 30 चरण हैं और हर पाँचवें चरण पर बॉस जाँच-बिंदु है।"], ["चरण पूरा कैसे होता है?", "तीन मिनट तक जीवित रहें और दिखाया गया चाबी लक्ष्य पूरा करें; जाँच-बिंदु पर बॉस को हराना भी ज़रूरी है।"], ["क्या खिलाड़ी को हाथ से निशाना लगाना होता है?", "नहीं। रेंजर अपने-आप हमला करता है; खिलाड़ी गति, संग्रह और उन्नयन चुनता है।"], ["प्रिज़्म मॉथ क्वीन को नुकसान क्यों नहीं हुआ?", "उसकी दिखाई देने वाली ढाल एक चरण में हमले रोकती है; ढाल हटने पर नुकसान फिर लगता है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। अनलॉक, पूरे किए चरण, सर्वोत्तम चाबी संख्या, गश्ती रैंक और ताबीज इसी ब्राउज़र में सहेजे जाते हैं।"], ["क्या क्रिस्टल ताबीज ज़रूरी है?", "नहीं। यह वैकल्पिक उन्नयन है और किसी चरण के लिए अनिवार्य नहीं है।"], ["क्या मोबाइल और डेस्कटॉप पर खेल सकते हैं?", "हाँ। टच ड्रैग और कीबोर्ड गति एक ही अभियान नियमों का उपयोग करते हैं।"], ["क्या परिणाम कोई आकलन है?", "नहीं। यह केवल स्थानीय परिणाम और अगला खेलने का मार्ग दिखाता है।"]],
-    ar: [["كم مرحلة تتضمن اللعبة؟", "تتضمن اللعبة 30 مرحلة مسماة في ست مناطق، مع نقطة حراسة للزعيم كل خمس مراحل."], ["ما الذي ينهي المرحلة؟", "اصمد ثلاث دقائق وحقق هدف المفاتيح الظاهر؛ وتتطلب نقطة الحراسة هزيمة الزعيم أيضًا."], ["هل يحتاج اللاعب إلى التصويب يدويًا؟", "لا. يهاجم الحارس تلقائيًا، بينما يركز اللاعب على الحركة والجمع واختيار الترقيات."], ["لماذا لم تتضرر ملكة عثة المنشور؟", "يحجب درعها الظاهر الهجمات خلال طور واحد؛ ويعود الضرر بعد اختفاء الدرع."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ عمليات الفتح والإكمال وأفضل عدد من المفاتيح ورتبة الدورية وملكية التعويذة محليًا في هذا المتصفح."], ["هل تعويذة الكريستال ضرورية؟", "لا. إنها ترقية اختيارية ولا تتطلبها أي مرحلة."], ["هل تعمل اللعبة على الهاتف والكمبيوتر؟", "نعم. يستخدم السحب باللمس والحركة بلوحة المفاتيح قواعد الحملة نفسها."], ["هل النتيجة تقييم؟", "لا. تعرض نتيجة الجولة المحلية والمسار التالي للعب فقط."]],
+    "zh-Hant": [["共有多少個關卡？", "包含多個命名關卡，分布在六個區域，每五關設有首領檢查點。"], ["怎樣才算完成關卡？", "在三分鐘內存活並達成畫面上的金鑰目標；檢查點還必須擊敗首領。"], ["玩家需要手動瞄準嗎？", "不需要。守望者會自動攻擊，玩家專注於移動、收集與升級選擇。"], ["為什麼棱彩蛾后沒有受傷？", "牠的可見護盾在其中一個階段會擋住攻擊；護盾消失後傷害才會恢復。"], ["進度會保存嗎？", "會。解鎖、完成數、最佳金鑰數、終身巡守等級與護符所有權會保存在本瀏覽器。"], ["水晶護符是必要的嗎？", "不是。它是可選的強化，不會成為任何關卡的必要條件。"], ["手機和桌面都能玩嗎？", "可以。觸控拖曳與鍵盤移動使用相同的戰役規則。"], ["結果回饋是評量嗎？", "不是。它只回報本地遊玩結果與下一條路線提示，供娛樂使用。"]],
+    "zh-Hans": [["共有多少个关卡？", "包含多个命名关卡，分布在六个区域，每五关设有首领检查点。"], ["怎样才算完成关卡？", "在三分钟内存活并达成画面上的金钥目标；检查点还必须击败首领。"], ["玩家需要手动瞄准吗？", "不需要。巡守员会自动攻击，玩家专注于移动、收集和强化选择。"], ["为什么棱彩蛾后没有受伤？", "它的可见护盾会在其中一个阶段挡住攻击；护盾消失后伤害才会恢复。"], ["进度会保存吗？", "会。解锁、完成数、最佳金钥数、终身巡守等级和护符所有权会保存在此浏览器。"], ["水晶护符是必要的吗？", "不是。它是可选强化，不会成为任何关卡的必要条件。"], ["手机和桌面都能玩吗？", "可以。触控拖曳和键盘移动使用相同的战役规则。"], ["结果反馈是评量吗？", "不是。它只回报本地游玩结果和下一条路线提示，供娱乐使用。"]],
+    ja: [["ステージはいくつありますか？", "6つの地域に各ステージあり、5ステージごとにボスのチェックポイントがあります。"], ["ステージをクリアする条件は？", "3分間生き残り、表示された鍵の目標を達成します。チェックポイントではボスも倒す必要があります。"], ["プレイヤーは手動で狙いますか？", "いいえ。レンジャーが自動で攻撃するため、移動、収集、強化の選択に集中します。"], ["なぜプリズム・モス・クイーンにダメージが入りませんか？", "見えるシールドが一つの段階で攻撃を防ぎます。消えるとダメージが通ります。"], ["進行は保存されますか？", "はい。解放状況、クリア数、最高鍵数、累計パトロールランク、チャームの所有状況はこのブラウザに保存されます。"], ["クリスタルチャームは必須ですか？", "いいえ。任意の強化で、どのステージにも必須ではありません。"], ["スマートフォンとデスクトップで遊べますか？", "はい。タッチ操作とキーボード移動は同じキャンペーンルールです。"], ["リザルトは評価ですか？", "いいえ。ローカルのプレイ結果と次のルートのヒントを表示するだけです。"]],
+    ko: [["스테이지는 몇 개 있나요?", "6개 지역에 여러 스테이지가 있으며, 5스테이지마다 보스 체크포인트가 있습니다."], ["스테이지를 클리어하려면 어떻게 하나요?", "3분 동안 살아남고 표시된 열쇠 목표를 달성해야 합니다. 체크포인트에서는 보스도 물리쳐야 합니다."], ["플레이어가 직접 조준하나요?", "아니요. 레인저가 자동으로 공격하므로 이동, 수집, 강화 선택에 집중합니다."], ["프리즘 나방 여왕에게 왜 피해가 들어가지 않나요?", "보이는 보호막이 한 단계에서 공격을 막습니다. 보호막이 사라지면 피해를 줄 수 있습니다."], ["진행 상황이 저장되나요?", "네. 해금, 클리어 수, 최고 열쇠 수, 누적 순찰 등급과 부적 보유 정보가 이 브라우저에 저장됩니다."], ["크리스털 부적이 필요한가요?", "아니요. 선택형 강화이며 어떤 스테이지에도 필수가 아닙니다."], ["휴대폰과 데스크톱에서 모두 플레이할 수 있나요?", "네. 터치 드래그와 키보드 이동은 같은 캠페인 규칙을 사용합니다."], ["결과 피드백이 평가인가요?", "아니요. 로컬 플레이 결과와 다음 경로 힌트만 보여 줍니다."]],
+    es: [["¿Cuántos niveles hay?", "Hay niveles con nombre en seis regiones, con un punto de control de jefe cada cinco niveles."], ["¿Qué completa un nivel?", "Sobrevive tres minutos y alcanza el objetivo de llaves indicado; en un punto de control también debes derrotar al jefe."], ["¿Hay que apuntar manualmente?", "No. El guardabosques ataca automáticamente y tú te ocupas del movimiento, la recolección y las mejoras."], ["¿Por qué la Reina Polilla Prisma no recibe daño?", "Su escudo visible bloquea los ataques durante una fase; el daño vuelve cuando desaparece."], ["¿Se guarda el progreso?", "Sí. Los desbloqueos, las victorias, las mejores llaves, el rango de patrulla y el amuleto se guardan en este navegador."], ["¿Es necesario el Amuleto de cristal?", "No. Es una mejora opcional y ningún nivel la exige."], ["¿Funciona en móvil y escritorio?", "Sí. El arrastre táctil y el movimiento con teclado usan las mismas reglas de campaña."], ["¿El resultado es una evaluación?", "No. Solo informa del resultado local y de la próxima ruta para jugar."]],
+    "pt-BR": [["Quantas fases existem?", "Há fases nomeadas em seis regiões, com um ponto de controle de chefe a cada cinco fases."], ["O que conclui uma fase?", "Sobreviva por três minutos e cumpra a meta de chaves exibida; em um ponto de controle, também derrote o chefe."], ["É preciso mirar manualmente?", "Não. O patrulheiro ataca automaticamente, enquanto você cuida do movimento, da coleta e das melhorias."], ["Por que a Rainha Mariposa Prisma não sofreu dano?", "O escudo visível bloqueia ataques durante uma fase; o dano volta quando ele desaparece."], ["O progresso é salvo?", "Sim. Desbloqueios, vitórias, melhores chaves, patente da patrulha e o amuleto ficam salvos neste navegador."], ["O Amuleto de cristal é obrigatório?", "Não. É uma melhoria opcional e nenhuma fase exige seu uso."], ["Funciona no celular e no computador?", "Sim. Arrastar por toque e mover pelo teclado usam as mesmas regras da campanha."], ["O resultado é uma avaliação?", "Não. Ele apenas mostra o resultado local e a próxima rota para continuar jogando."]],
+    fr: [["Combien de niveaux sont inclus ?", "Il y a des niveaux nommés dans six régions, avec un point de contrôle de boss tous les cinq niveaux."], ["Qu'est-ce qui valide un niveau ?", "Survivez trois minutes et atteignez l'objectif de clés affiché ; un point de contrôle demande aussi de vaincre son boss."], ["Faut-il viser manuellement ?", "Non. Le ranger attaque automatiquement ; vous vous concentrez sur les déplacements, la collecte et les améliorations."], ["Pourquoi la Reine papillon prismatique ne subit-elle aucun dégât ?", "Son bouclier visible bloque les attaques pendant une phase ; les dégâts reprennent quand il disparaît."], ["La progression est-elle sauvegardée ?", "Oui. Les déblocages, victoires, meilleurs nombres de clés, rang de patrouille et talisman sont enregistrés dans ce navigateur."], ["Le talisman de cristal est-il obligatoire ?", "Non. C'est une amélioration facultative et aucun niveau ne l'exige."], ["Le jeu fonctionne-t-il sur mobile et ordinateur ?", "Oui. Le glissement tactile et le déplacement au clavier utilisent les mêmes règles de campagne."], ["Le résultat est-il une évaluation ?", "Non. Il indique seulement le résultat local et la prochaine route de jeu."]],
+    de: [["Wie viele Stufen gibt es?", "Es gibt benannte Stufen in sechs Regionen; alle fünf Stufen wartet ein Boss-Checkpoint."], ["Wann ist eine Stufe geschafft?", "Überlebe drei Minuten und erreiche das angezeigte Schlüsselziel; an einem Checkpoint muss außerdem der Boss besiegt werden."], ["Muss man manuell zielen?", "Nein. Der Ranger greift automatisch an; du kümmerst dich um Bewegung, Sammeln und Verbesserungen."], ["Warum erleidet die Prismamot­tenkönigin keinen Schaden?", "Ihr sichtbarer Schild blockiert Angriffe in einer Phase; danach kann sie wieder verletzt werden."], ["Wird der Fortschritt gespeichert?", "Ja. Freischaltungen, Abschlüsse, beste Schlüsselzahlen, Patrouillenrang und Amulettbesitz werden in diesem Browser gespeichert."], ["Ist das Kristallamulett nötig?", "Nein. Es ist eine optionale Verbesserung und für keine Stufe erforderlich."], ["Funktioniert das Spiel auf Handy und Desktop?", "Ja. Ziehen per Touch und Bewegung per Tastatur verwenden dieselben Kampagnenregeln."], ["Ist die Ergebnisanzeige eine Bewertung?", "Nein. Sie zeigt nur das lokale Ergebnis und den nächsten Spielweg."]],
+    it: [["Quanti livelli ci sono?", "Ci sono livelli nominati in sei regioni, con un checkpoint del boss ogni cinque livelli."], ["Quando si completa un livello?", "Sopravvivi per tre minuti e raggiungi l'obiettivo delle chiavi mostrato; nei checkpoint devi anche sconfiggere il boss."], ["Bisogna mirare manualmente?", "No. Il ranger attacca automaticamente; tu gestisci movimento, raccolta e potenziamenti."], ["Perché la Regina falena prisma non subisce danni?", "Il suo scudo visibile blocca gli attacchi durante una fase; i danni tornano quando scompare."], ["I progressi vengono salvati?", "Sì. Sblocchi, completamenti, migliori quantità di chiavi, grado di pattuglia e amuleto vengono salvati in questo browser."], ["L'Amuleto di cristallo è obbligatorio?", "No. È un potenziamento facoltativo e nessun livello lo richiede."], ["Funziona su telefono e desktop?", "Sì. Trascinamento tattile e movimento da tastiera usano le stesse regole della campagna."], ["Il risultato è una valutazione?", "No. Mostra soltanto il risultato locale e il prossimo percorso di gioco."]],
+    ru: [["Сколько здесь этапов?", "Именные этапы расположены в шести регионах; каждые пять этапов отмечены контрольной точкой босса."], ["Когда этап считается пройденным?", "Продержитесь три минуты и выполните указанную цель по ключам; на контрольной точке нужно также победить босса."], ["Нужно ли целиться вручную?", "Нет. Рейнджер атакует автоматически, а игрок отвечает за движение, сбор и выбор улучшений."], ["Почему призматическая мотыльковая королева не получает урон?", "Её видимый щит блокирует атаки в одной фазе; после исчезновения щита урон снова проходит."], ["Сохраняется ли прогресс?", "Да. Открытия, прохождения, лучшие результаты по ключам, ранг патруля и амулет сохраняются в этом браузере."], ["Кристальный амулет обязателен?", "Нет. Это необязательное улучшение, и ни один этап его не требует."], ["Можно играть на телефоне и компьютере?", "Да. Перетаскивание пальцем и движение клавишами используют одни и те же правила кампании."], ["Результат — это оценка?", "Нет. Он показывает только локальный итог и следующий игровой маршрут."]],
+    hi: [["कुल कितने चरण हैं?", "छह क्षेत्रों में नामित चरण हैं और हर पाँचवें चरण पर बॉस जाँच-बिंदु है।"], ["चरण पूरा कैसे होता है?", "तीन मिनट तक जीवित रहें और दिखाया गया चाबी लक्ष्य पूरा करें; जाँच-बिंदु पर बॉस को हराना भी ज़रूरी है।"], ["क्या खिलाड़ी को हाथ से निशाना लगाना होता है?", "नहीं। रेंजर अपने-आप हमला करता है; खिलाड़ी गति, संग्रह और उन्नयन चुनता है।"], ["प्रिज़्म मॉथ क्वीन को नुकसान क्यों नहीं हुआ?", "उसकी दिखाई देने वाली ढाल एक चरण में हमले रोकती है; ढाल हटने पर नुकसान फिर लगता है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ। अनलॉक, पूरे किए चरण, सर्वोत्तम चाबी संख्या, गश्ती रैंक और ताबीज इसी ब्राउज़र में सहेजे जाते हैं।"], ["क्या क्रिस्टल ताबीज ज़रूरी है?", "नहीं। यह वैकल्पिक उन्नयन है और किसी चरण के लिए अनिवार्य नहीं है।"], ["क्या मोबाइल और डेस्कटॉप पर खेल सकते हैं?", "हाँ। टच ड्रैग और कीबोर्ड गति एक ही अभियान नियमों का उपयोग करते हैं।"], ["क्या परिणाम कोई आकलन है?", "नहीं। यह केवल स्थानीय परिणाम और अगला खेलने का मार्ग दिखाता है।"]],
+    ar: [["كم مرحلة تتضمن اللعبة؟", "تتضمن اللعبة مراحل مسماة في ست مناطق، مع نقطة حراسة للزعيم كل خمس مراحل."], ["ما الذي ينهي المرحلة؟", "اصمد ثلاث دقائق وحقق هدف المفاتيح الظاهر؛ وتتطلب نقطة الحراسة هزيمة الزعيم أيضًا."], ["هل يحتاج اللاعب إلى التصويب يدويًا؟", "لا. يهاجم الحارس تلقائيًا، بينما يركز اللاعب على الحركة والجمع واختيار الترقيات."], ["لماذا لم تتضرر ملكة عثة المنشور؟", "يحجب درعها الظاهر الهجمات خلال طور واحد؛ ويعود الضرر بعد اختفاء الدرع."], ["هل يُحفظ التقدم؟", "نعم. تُحفظ عمليات الفتح والإكمال وأفضل عدد من المفاتيح ورتبة الدورية وملكية التعويذة محليًا في هذا المتصفح."], ["هل تعويذة الكريستال ضرورية؟", "لا. إنها ترقية اختيارية ولا تتطلبها أي مرحلة."], ["هل تعمل اللعبة على الهاتف والكمبيوتر؟", "نعم. يستخدم السحب باللمس والحركة بلوحة المفاتيح قواعد الحملة نفسها."], ["هل النتيجة تقييم؟", "لا. تعرض نتيجة الجولة المحلية والمسار التالي للعب فقط."]],
   };
   for (const [locale, copy] of Object.entries(crystalGuideLocaleCopy)) {
     localizedGames[locale] ||= {};
@@ -18004,7 +18004,7 @@
       title: "동물 자동 전투 부대", age: "13+", difficulty: "보통", time: "5~10분", gameplay: "전술 자동 전투",
       genre: ["자동 전투", "전략", "동물"], skills: ["논리", "문제 해결", "전략 계획"],
       guideKicker: "WeightPlay 오리지널 게임 가이드", guideTitleSuffix: "게임 가이드", noteTitle: "플레이어 및 저장 정보", hideScoreBands: true,
-      intro: "Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 30개 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.",
+      intro: "Animal Auto Squad는 전투 전에 내리는 결정을 중심으로 한 진형 전략 게임입니다. 동물 영웅을 해금하고 훈련해 최대 여섯 명을 앞줄과 뒷줄 두 줄에 배치하고 각 전투가 자동으로 진행되는 모습을 지켜보세요. 캠페인은 Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel, Void Crown의 여섯 지역에 걸친 여러 스테이지로 구성됩니다. 모든 스테이지에는 직접 만든 다섯 웨이브가 있고 5, 10, 15, 20, 25, 30 스테이지는 서로 다른 지역 보스로 끝납니다.",
       story: [
         "원정대는 그림자 동물, 크리스털 생물, 갑옷 수호자, 룬 야수, 일식 사냥꾼이 점령한 길을 따라갑니다. 분대는 Thornwood의 Mossy Trail에서 출발해 Prism Heart, Sunken Crown, Caldera King, Midnight Court를 지나 Void Crown으로 향합니다. 각 지역은 다른 적 조합과 최종 전투를 보여 주며, 여섯 지역을 모두 돌파하면 지역 봉쇄의 연결고리를 끊게 됩니다.",
         "당신은 전장에 나서는 전사가 아니라 분대 지휘관입니다. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle과 해금 가능한 영웅들은 각자 공격 대상이나 지원 규칙이 다릅니다. 자동 전투가 시작되기 전에 함께 데려갈 여섯 명과 앞줄 또는 뒷줄 위치를 결정하세요."
@@ -18039,7 +18039,7 @@
       designNote: "자동 전투는 의도된 구조입니다. 실행은 짧게 하고 핵심 작업은 진형, 역할 범위, 대상 순서과 장기 훈련에 두었습니다. 성공한 웨이브가 다음 웨이브로 바로 이어져 다섯 웨이브가 따로 떨어진 메뉴 방문이 아니라 하나의 원정처럼 느껴집니다. 패배하면 준비 화면이 다시 열려 같은 실패한 배치를 무작정 반복하지 않고 대응할 수 있습니다. 탭으로 선택하고 배치하는 조작은 휴대폰에서 쓰기 쉽고, 데스크톱에서는 같은 카드를 마우스로 사용할 수 있습니다. WeightPlay의 턴제 Animal Rune Tactics나 실시간 Animal Crystal Survivor와 달리, Animal Auto Squad는 전투 중 공격을 지시하지 않고 계획을 세운 뒤 그 결과를 평가하게 합니다.",
       parent: "후반 스테이지는 여섯 유닛 진형, 특수 대상 규칙, 영구 강화, 전투 실패 압박, 보스 능력과 선택형 Diamond 결정을 함께 다룹니다. 캠페인 진행, 마지막 진형과 칸 위치, Training Gold, Team Level, 해금 동물, 영구 동물 레벨, 완료 스테이지와 꾸미기 선택은 이 브라우저에 저장되며 기본 플레이에는 로그인이 필요하지 않습니다. 사이트 데이터를 지우면 이 기기의 진행이 사라질 수 있습니다.",
       faq: [
-        ["Animal Auto Squad는 무료인가요?", "네. 30스테이지 캠페인은 WeightPlay 브라우저에서 필수 구매나 로그인 없이 실행됩니다."],
+        ["Animal Auto Squad는 무료인가요?", "네. 스테이지 캠페인은 WeightPlay 브라우저에서 필수 구매나 로그인 없이 실행됩니다."],
         ["각 스테이지의 목표는 무엇인가요?", "다섯 개의 연속 웨이브를 버틸 분대를 만드는 것입니다. 다섯 번째 웨이브를 클리어하면 스테이지가 저장되고 다음 스테이지가 열리며, 5번째마다 지역 보스가 등장합니다."],
         ["전투 중 공격을 조작하나요?", "아니요. 전투 전에 영웅, 두 줄 위치과 임시 강화를 정합니다. 이후 동물들이 자동으로 공격, 회복, 보호막과 능력을 사용합니다."],
         ["매 웨이브 사이에 분대를 바꿀 수 있나요?", "승리하면 다음 웨이브로 바로 이동합니다. Heart가 남아 있는 동안 패배나 무승부 뒤에는 준비가 다시 열리므로 처음 진형은 여러 적 패턴을 견딜 수 있어야 합니다."],
@@ -18052,7 +18052,7 @@
       title: "Esquadrão de Animais Automático", age: "13+", difficulty: "Médio", time: "5–10 minutos", gameplay: "Auto-batalha tática",
       genre: ["Auto-batalha", "Estratégia", "Animais"], skills: ["Lógica", "Resolução de problemas", "Planejamento estratégico"],
       guideKicker: "Guia de jogo original da WeightPlay", guideTitleSuffix: "Guia do jogo", noteTitle: "Informações do jogador e do salvamento", hideScoreBands: true,
-      intro: "Animal Auto Squad é um jogo de estratégia de formação baseado nas decisões tomadas antes do combate. Desbloqueie e treine heróis animais, coloque até seis deles em duas fileiras observe cada confronto ser resolvido automaticamente. A campanha tem 30 fases em Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Cada fase possui cinco ondas criadas à mão, e as fases 5, 10, 15, 20, 25 e 30 terminam com um chefe regional diferente.",
+      intro: "Animal Auto Squad é um jogo de estratégia de formação baseado nas decisões tomadas antes do combate. Desbloqueie e treine heróis animais, coloque até seis deles em duas fileiras observe cada confronto ser resolvido automaticamente. A campanha tem fases em Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Cada fase possui cinco ondas criadas à mão, e as fases 5, 10, 15, 20, 25 e 30 terminam com um chefe regional diferente.",
       story: [
         "A expedição percorre rotas ocupadas por animais sombrios, criaturas de cristal, guardiões blindados, feras rúnicas e caçadores do eclipse. A equipe começa na Mossy Trail de Thornwood e segue pelo Prism Heart, Sunken Crown, Caldera King, Midnight Court e pelas ruínas que levam à Void Crown. Cada região traz uma mistura de inimigos e um encontro final próprios; atravessar as seis regiões quebra toda a cadeia de bloqueios.",
         "Você comanda a equipe em vez de lutar no campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle e os demais heróis desbloqueáveis têm regras de alvo ou suporte diferentes. Decida quais seis viajam juntos e se ficam na fileira da frente ou de trás antes de iniciar o confronto automático."
@@ -18087,7 +18087,7 @@
       designNote: "A batalha automática é intencional: a execução é curta para que o trabalho importante fique na formação, na cobertura de funções, na ordem dos alvos e no treinamento de longo prazo. Uma onda vencida flui para a próxima e faz a fase de cinco ondas parecer uma expedição única, não cinco visitas desconectadas a menus. As derrotas reabrem a preparação para que você possa responder em vez de repetir a mesma configuração. Selecionar e posicionar com toques funciona no celular, e as mesmas cartas podem ser usadas com o mouse no desktop. Ao contrário de Animal Rune Tactics, por turnos, ou Animal Crystal Survivor, em tempo real, Animal Auto Squad pede um plano e depois deixa você avaliar seu desempenho sem emitir ataques durante o combate.",
       parent: "As fases avançadas combinam formações de seis unidades, regras de alvo especializadas, melhorias permanentes, pressão de falha, habilidades de chefe e decisões opcionais com Diamonds. O progresso da campanha, a última formação e os espaços usados, Training Gold, Team Level, animais desbloqueados, níveis permanentes, fases concluídas e escolha cosmética são salvos neste navegador; não é necessário fazer login para jogar. Limpar os dados deste site pode remover o progresso local.",
       faq: [
-        ["Animal Auto Squad é gratuito?", "Sim. A campanha de 30 fases roda no navegador da WeightPlay sem compra ou login obrigatório."],
+        ["Animal Auto Squad é gratuito?", "Sim. A campanha por fases roda no navegador da WeightPlay sem compra ou login obrigatório."],
         ["Qual é o objetivo de cada fase?", "Monte uma equipe que sobreviva a cinco ondas contínuas. Concluir a quinta salva a fase e desbloqueia a próxima; toda quinta fase termina com um chefe regional."],
         ["Eu controlo os ataques durante a batalha?", "Não. Antes do combate você controla o elenco, as duas fileiras e as melhorias temporárias. Depois os animais atacam, curam, protegem e ativam habilidades automaticamente."],
         ["Posso reorganizar a equipe entre todas as ondas?", "A vitória leva direto à próxima onda. A preparação reabre depois de uma derrota ou empate enquanto ainda houver Hearts, então a formação inicial deve lidar com mais de um padrão de inimigos."],
@@ -18100,7 +18100,7 @@
       title: "Escouade Animale Automatique", age: "13+", difficulty: "Moyenne", time: "5 à 10 minutes", gameplay: "Auto-bataille tactique",
       genre: ["Auto-bataille", "Stratégie", "Animaux"], skills: ["Logique", "Résolution de problèmes", "Planification stratégique"],
       guideKicker: "Guide du jeu original WeightPlay", guideTitleSuffix: "Guide du jeu", noteTitle: "Informations du joueur et sauvegarde", hideScoreBands: true,
-      intro: "Animal Auto Squad est un jeu de stratégie de formation fondé sur les décisions prises avant le combat. Déverrouillez et entraînez des héros animaux, placez-en jusqu’à six sur deux rangées, puis observez chaque affrontement se résoudre automatiquement. La campagne compte 30 niveaux dans Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel et Void Crown. Chaque niveau possède cinq vagues conçues à la main, et les niveaux 5, 10, 15, 20, 25 et 30 se terminent par un boss régional différent.",
+      intro: "Animal Auto Squad est un jeu de stratégie de formation fondé sur les décisions prises avant le combat. Déverrouillez et entraînez des héros animaux, placez-en jusqu’à six sur deux rangées, puis observez chaque affrontement se résoudre automatiquement. La campagne propose des niveaux dans Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel et Void Crown. Chaque niveau possède cinq vagues conçues à la main, et les niveaux 5, 10, 15, 20, 25 et 30 se terminent par un boss régional différent.",
       story: [
         "L’expédition suit des routes occupées par des animaux d’ombre, des créatures de cristal, des gardiens blindés, des bêtes runiques et des chasseurs de l’éclipse. L’escouade commence sur Mossy Trail, à Thornwood, puis traverse Prism Heart, Sunken Crown, Caldera King et Midnight Court avant les abords brisés de Void Crown. Chaque région propose un mélange d’ennemis et une rencontre finale distincts ; traverser les six régions rompt toute la chaîne de barrages.",
         "Vous commandez l’escouade au lieu de combattre sur le terrain. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle et les autres héros à débloquer ont chacun une règle de ciblage ou de soutien. Choisissez les six compagnons et leur rangée avant le début de l’affrontement automatique."
@@ -18135,7 +18135,7 @@
       designNote: "La bataille automatique est intentionnelle : l’exécution reste courte pour que le travail important porte sur la formation, la couverture des rôles, l’ordre des cibles et l’entraînement à long terme. Une vague réussie enchaîne la suivante afin que le niveau de cinq vagues ressemble à une expédition unique plutôt qu’à cinq visites de menu. Les défaites rouvrent la préparation pour permettre une réponse au lieu de répéter la même configuration. La sélection et le placement par toucher conviennent au téléphone, et les mêmes cartes restent utilisables à la souris sur ordinateur. À la différence d’Animal Rune Tactics, au tour par tour, et d’Animal Crystal Survivor, en temps réel, Animal Auto Squad demande de construire un plan puis d’en observer le résultat sans commander d’attaques pendant le combat.",
       parent: "Les niveaux avancés combinent formations de six unités, ciblages spécialisés, améliorations permanentes, pression de défaite, capacités de boss et choix facultatifs de Diamonds. La progression de campagne, la dernière formation et ses emplacements, Training Gold, Team Level, les animaux débloqués, leurs niveaux permanents, les niveaux terminés et le choix cosmétique sont enregistrés dans ce navigateur ; aucun compte n’est nécessaire pour jouer. Effacer les données du site peut supprimer cette progression locale.",
       faq: [
-        ["Animal Auto Squad est-il gratuit ?", "Oui. La campagne de 30 niveaux fonctionne dans le navigateur WeightPlay sans achat ni compte obligatoire."],
+        ["Animal Auto Squad est-il gratuit ?", "Oui. La campagne fonctionne dans le navigateur WeightPlay sans achat ni compte obligatoire."],
         ["Quel est le but d’un niveau ?", "Construire une escouade capable de survivre à cinq vagues continues. La cinquième vague terminée enregistre le niveau et débloque le suivant ; un boss apparaît tous les cinq niveaux."],
         ["Contrôle-t-on les attaques pendant le combat ?", "Non. Avant le combat, vous contrôlez les héros, les deux rangées et les améliorations temporaires. Les animaux attaquent, soignent, protègent et déclenchent ensuite leurs capacités automatiquement."],
         ["Puis-je réorganiser l’escouade entre chaque vague ?", "La victoire mène directement à la vague suivante. La préparation revient après une défaite ou une égalité tant qu’il reste des Hearts ; la formation initiale doit donc répondre à plusieurs modèles ennemis."],
@@ -18148,7 +18148,7 @@
       title: "Tierisches Auto-Team", age: "13+", difficulty: "Mittel", time: "5–10 Minuten", gameplay: "Taktischer Auto-Battler",
       genre: ["Auto-Battler", "Strategie", "Tiere"], skills: ["Logik", "Problemlösung", "Strategische Planung"],
       guideKicker: "WeightPlay-Leitfaden für Originalspiele", guideTitleSuffix: "Spielleitfaden", noteTitle: "Spieler- und Speicherinformationen", hideScoreBands: true,
-      intro: "Animal Auto Squad ist ein Formation-Strategiespiel, in dem die Entscheidungen vor dem Kampf zählen. Schalte Tierhelden frei und trainiere sie, stelle bis zu sechs von ihnen in zwei Reihen auf und beobachte, wie jeder Kampf automatisch entschieden wird. Die Kampagne umfasst 30 Stufen in Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel und Void Crown. Jede Stufe hat fünf handgefertigte Wellen; die Stufen 5, 10, 15, 20, 25 und 30 enden mit einem eigenen regionalen Boss.",
+      intro: "Animal Auto Squad ist ein Formation-Strategiespiel, in dem die Entscheidungen vor dem Kampf zählen. Schalte Tierhelden frei und trainiere sie, stelle bis zu sechs von ihnen in zwei Reihen auf und beobachte, wie jeder Kampf automatisch entschieden wird. Die Kampagne umfasst Stufen in Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel und Void Crown. Jede Stufe hat fünf handgefertigte Wellen; die Stufen 5, 10, 15, 20, 25 und 30 enden mit einem eigenen regionalen Boss.",
       story: [
         "Die Expedition folgt Wegen, die von Schattenwesen, Kristallkreaturen, gepanzerten Wächtern, Runenbestien und Eclipse-Jägern besetzt sind. Das Team beginnt auf Thornwoods Mossy Trail und zieht durch Prism Heart, Sunken Crown, Caldera King und Midnight Court zu den zerbrochenen Zugängen von Void Crown. Jede Region bringt eine eigene Gegnerkombination und ein eigenes Finale; wer alle sechs Regionen durchquert, durchbricht die gesamte Kette der Blockaden.",
         "Du führst das Team, statt selbst auf dem Feld zu kämpfen. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle und weitere freischaltbare Helden haben eigene Ziel- oder Unterstützungsregeln. Entscheide vor dem automatischen Kampf, welche sechs Tiere mitreisen und in welcher Reihe sie stehen."
@@ -18183,7 +18183,7 @@
       designNote: "Der automatische Kampf ist beabsichtigt: Die Ausführung bleibt kurz, damit die wichtige Arbeit in Formation, Rollenabdeckung, Zielreihenfolge und langfristigem Training steckt. Eine gewonnene Welle fließt direkt in die nächste, damit die fünf Wellen wie eine Expedition statt wie fünf getrennte Menüs wirken. Niederlagen öffnen die Vorbereitung erneut, damit du reagieren kannst, statt dieselbe gescheiterte Aufstellung zu wiederholen. Tippen und Platzieren eignet sich für das Handy; auf dem Desktop funktionieren dieselben Karten mit der Maus. Anders als das rundenbasierte Animal Rune Tactics oder das Echtzeitspiel Animal Crystal Survivor lässt Animal Auto Squad dich einen Plan bauen und seine Wirkung beurteilen, ohne im Kampf einzelne Angriffe zu befehlen.",
       parent: "Späte Stufen verbinden Sechserformationen, spezialisierte Zielregeln, permanente Verbesserungen, Niederlagendruck, Bossfähigkeiten und optionale Diamond-Entscheidungen. Kampagnenfortschritt, letzte Formation und Plätze, Training Gold, Team Level, freigeschaltete Tiere, permanente Tierlevel, abgeschlossene Stufen und kosmetische Auswahl werden in diesem Browser gespeichert; für das normale Spiel ist kein Login nötig. Das Löschen der Websitedaten kann den lokalen Fortschritt entfernen.",
       faq: [
-        ["Ist Animal Auto Squad kostenlos?", "Ja. Die 30-stufige Kampagne läuft im WeightPlay-Browser ohne verpflichtenden Kauf oder Login."],
+        ["Ist Animal Auto Squad kostenlos?", "Ja. Die mehrstufige Kampagne läuft im WeightPlay-Browser ohne verpflichtenden Kauf oder Login."],
         ["Was ist das Ziel jeder Stufe?", "Baue ein Team, das fünf aufeinanderfolgende Wellen überlebt. Nach Welle fünf wird die Stufe gespeichert und die nächste freigeschaltet; jede fünfte Stufe endet mit einem regionalen Boss."],
         ["Steuere ich die Angriffe im Kampf?", "Nein. Vor dem Kampf bestimmst du Team, Reihen und temporäre Verbesserungen. Danach greifen die Tiere automatisch an, heilen, schützen und aktivieren Fähigkeiten."],
         ["Kann ich das Team zwischen jeder Welle umstellen?", "Ein Sieg führt direkt zur nächsten Welle. Nach einer Niederlage oder einem Gleichstand öffnet sich die Vorbereitung erneut, solange Hearts übrig sind; die Startformation sollte daher mehrere Muster aushalten."],
@@ -18196,7 +18196,7 @@
       title: "Squadra Animale Automatica", age: "13+", difficulty: "Media", time: "5–10 minuti", gameplay: "Auto-battler tattico",
       genre: ["Auto-battler", "Strategia", "Animali"], skills: ["Logica", "Risoluzione dei problemi", "Pianificazione strategica"],
       guideKicker: "Guida al gioco originale WeightPlay", guideTitleSuffix: "Guida del gioco", noteTitle: "Informazioni del giocatore e salvataggio", hideScoreBands: true,
-      intro: "Animal Auto Squad è un gioco di strategia della formazione basato sulle decisioni prese prima del combattimento. Sblocca e allena eroi animali, posizionane fino a sei in due file e osserva ogni scontro risolversi automaticamente. La campagna comprende 30 livelli nelle regioni Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Ogni livello ha cinque ondate create a mano; i livelli 5, 10, 15, 20, 25 e 30 terminano con un boss regionale diverso.",
+      intro: "Animal Auto Squad è un gioco di strategia della formazione basato sulle decisioni prese prima del combattimento. Sblocca e allena eroi animali, posizionane fino a sei in due file e osserva ogni scontro risolversi automaticamente. La campagna comprende livelli nelle regioni Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel e Void Crown. Ogni livello ha cinque ondate create a mano; i livelli 5, 10, 15, 20, 25 e 30 terminano con un boss regionale diverso.",
       story: [
         "La spedizione segue percorsi occupati da animali d’ombra, creature di cristallo, guardiani corazzati, bestie runiche e cacciatori dell’eclissi. La squadra parte dal Mossy Trail di Thornwood e attraversa Prism Heart, Sunken Crown, Caldera King e Midnight Court prima di arrivare agli accessi spezzati di Void Crown. Ogni regione propone una combinazione di nemici e un incontro finale diversi; superarle tutte spezza la catena completa dei blocchi regionali.",
         "Tu comandi la squadra invece di combattere sul campo. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle e gli altri eroi sbloccabili hanno regole di bersaglio o supporto specifiche. Decidi quali sei partiranno e in quale fila stare prima che inizi lo scontro automatico."
@@ -18231,7 +18231,7 @@
       designNote: "La battaglia automatica è intenzionale: l’esecuzione è breve perché il lavoro importante resti nella formazione, nella copertura dei ruoli, nell’ordine dei bersagli e nell’allenamento a lungo termine. Un’ondata vinta fluisce direttamente nella successiva, così il livello da cinque ondate sembra una spedizione unica e non cinque visite separate ai menu. Le sconfitte riaprono la preparazione, permettendo di reagire invece di ripetere la stessa configurazione fallita. Selezione e posizionamento a tocco funzionano sul telefono; su desktop le stesse carte sono utilizzabili con il mouse. A differenza di Animal Rune Tactics, a turni, e Animal Crystal Survivor, in tempo reale, Animal Auto Squad chiede di costruire un piano e valutarne l’esito senza impartire attacchi durante il combattimento.",
       parent: "I livelli avanzati combinano formazioni da sei unità, bersagli specializzati, potenziamenti permanenti, pressione della sconfitta, abilità dei boss e scelte opzionali con Diamonds. Progressi della campagna, ultima formazione e slot, Training Gold, Team Level, animali sbloccati, livelli permanenti, livelli completati e scelta cosmetica vengono salvati in questo browser; non serve un account per giocare. Cancellare i dati del sito può rimuovere i progressi locali.",
       faq: [
-        ["Animal Auto Squad è gratuito?", "Sì. La campagna di 30 livelli funziona nel browser WeightPlay senza acquisto o accesso obbligatorio."],
+        ["Animal Auto Squad è gratuito?", "Sì. La campagna a livelli funziona nel browser WeightPlay senza acquisto o accesso obbligatorio."],
         ["Qual è l’obiettivo di ogni livello?", "Costruire una squadra che sopravviva a cinque ondate consecutive. Superare la quinta salva il livello e sblocca il successivo; ogni quinto livello termina con un boss regionale."],
         ["Controllo gli attacchi durante la battaglia?", "No. Prima del combattimento controlli rosa, due file e potenziamenti temporanei. Poi gli animali attaccano, curano, proteggono e attivano le abilità automaticamente."],
         ["Posso riorganizzare la squadra tra ogni ondata?", "La vittoria porta direttamente all’ondata successiva. La preparazione si riapre dopo una sconfitta o un pareggio finché restano Hearts, quindi la formazione iniziale deve gestire più schemi nemici."],
@@ -18244,7 +18244,7 @@
       title: "Автоматический звериный отряд", age: "13+", difficulty: "Средняя", time: "5–10 минут", gameplay: "Тактический автобаттлер",
       genre: ["Автобаттлер", "Стратегия", "Животные"], skills: ["Логика", "Решение задач", "Стратегическое планирование"],
       guideKicker: "Оригинальный игровой справочник WeightPlay", guideTitleSuffix: "Игровой справочник", noteTitle: "Сведения об игроке и сохранении", hideScoreBands: true,
-      intro: "Animal Auto Squad — это стратегия построения строя, где главное — решения до начала боя. Открывайте и тренируйте звериных героев, размещайте до шести из них в два ряда и наблюдайте, как каждый бой разрешается автоматически. Кампания состоит из 30 этапов в Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel и Void Crown. В каждом этапе пять авторских волн, а этапы 5, 10, 15, 20, 25 и 30 заканчиваются своим региональным боссом.",
+      intro: "Animal Auto Squad — это стратегия построения строя, где главное — решения до начала боя. Открывайте и тренируйте звериных героев, размещайте до шести из них в два ряда и наблюдайте, как каждый бой разрешается автоматически. Кампания состоит с последовательными этапами в Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel и Void Crown. В каждом этапе пять авторских волн, а этапы 5, 10, 15, 20, 25 и 30 заканчиваются своим региональным боссом.",
       story: [
         "Экспедиция идёт по маршрутам, занятым теневыми животными, кристальными существами, бронированными стражами, руническими зверями и охотниками затмения. Отряд начинает на Mossy Trail в Thornwood, затем проходит через Prism Heart, Sunken Crown, Caldera King и Midnight Court к разрушенным подступам Void Crown. В каждом регионе свой состав врагов и финальная встреча; прохождение всех шести регионов разрывает всю цепь региональных блокад.",
         "Вы командуете отрядом, а не сражаетесь на поле. Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle и другие открываемые герои имеют собственные правила целей и поддержки. До автоматического боя решите, какие шесть героев отправятся в путь и в каком ряду будут стоять."
@@ -18279,7 +18279,7 @@
       designNote: "Автоматический бой задуман именно так: исполнение короткое, чтобы главная работа была в строе, покрытии ролей, порядке целей и долгой тренировке. Победа в волне сразу ведёт в следующую, поэтому пять волн ощущаются одной экспедицией, а не пятью разрозненными меню. После поражения открывается подготовка, чтобы игрок мог ответить на проблему, а не повторять ту же неудачную расстановку. Выбор касанием и размещение подходят для телефона, а на компьютере те же карточки работают мышью. В отличие от пошаговой Animal Rune Tactics и игры в реальном времени Animal Crystal Survivor, Animal Auto Squad предлагает составить план и оценить его результат без командования отдельными атаками во время боя.",
       parent: "Поздние этапы объединяют строи из шести бойцов, специальные правила целей, постоянные улучшения, давление поражения, способности боссов и необязательные решения с Diamonds. Прогресс кампании, последний строй и места, Training Gold, Team Level, открытые животные, их постоянные уровни, пройденные этапы и косметический выбор сохраняются в этом браузере; для обычной игры вход не нужен. Очистка данных сайта может удалить локальный прогресс.",
       faq: [
-        ["Animal Auto Squad бесплатна?", "Да. Кампания из 30 этапов запускается в браузере WeightPlay без обязательной покупки или входа."],
+        ["Animal Auto Squad бесплатна?", "Да. Кампания с последовательными этапами запускается в браузере WeightPlay без обязательной покупки или входа."],
         ["Какова цель каждого этапа?", "Соберите отряд, который переживёт пять непрерывных волн. После пятой этап сохраняется и открывается следующий, а каждый пятый этап заканчивается региональным боссом."],
         ["Можно ли управлять атаками в бою?", "Нет. До боя вы выбираете состав, два ряда и временные улучшения. Затем животные автоматически атакуют, лечат, защищают и используют способности."],
         ["Можно ли менять строй между волнами?", "Победа сразу ведёт в следующую волну. После поражения или ничьей подготовка открывается снова, пока остаются Hearts, поэтому начальный строй должен отвечать нескольким моделям врагов."],
@@ -18292,7 +18292,7 @@
       title: "पशु ऑटो दस्ता", age: "13+", difficulty: "मध्यम", time: "5–10 मिनट", gameplay: "टैक्टिकल ऑटो-बैटलर",
       genre: ["ऑटो-बैटलर", "रणनीति", "जानवर"], skills: ["तर्क", "समस्या समाधान", "रणनीतिक योजना"],
       guideKicker: "WeightPlay मौलिक गेम गाइड", guideTitleSuffix: "गेम गाइड", noteTitle: "खिलाड़ी और सेव जानकारी", hideScoreBands: true,
-      intro: "Animal Auto Squad एक फॉर्मेशन रणनीति गेम है जिसमें लड़ाई से पहले लिए गए फैसले सबसे महत्वपूर्ण हैं। जानवर नायकों को अनलॉक और प्रशिक्षित करें, उनमें से अधिकतम छह को दो पंक्तियों में रखें और हर मुकाबले को अपने-आप सुलझते देखें। अभियान Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel और Void Crown के छह क्षेत्रों में 30 चरणों का है। हर चरण में हाथ से बनाए गए पाँच वेव हैं और चरण 5, 10, 15, 20, 25 और 30 अलग क्षेत्रीय बॉस पर समाप्त होते हैं।",
+      intro: "Animal Auto Squad एक फॉर्मेशन रणनीति गेम है जिसमें लड़ाई से पहले लिए गए फैसले सबसे महत्वपूर्ण हैं। जानवर नायकों को अनलॉक और प्रशिक्षित करें, उनमें से अधिकतम छह को दो पंक्तियों में रखें और हर मुकाबले को अपने-आप सुलझते देखें। अभियान Thornwood, Crystal Caverns, Sunken Ruins, Ember Peak, Moonlit Citadel और Void Crown के छह क्षेत्रों में विभिन्न चरणों का है। हर चरण में हाथ से बनाए गए पाँच वेव हैं और चरण 5, 10, 15, 20, 25 और 30 अलग क्षेत्रीय बॉस पर समाप्त होते हैं।",
       story: [
         "अभियान उन रास्तों से गुजरता है जिन पर छाया जानवर, क्रिस्टल जीव, कवचधारी रक्षक, रूण पशु और ग्रहण शिकारी कब्ज़ा किए हुए हैं। दल Thornwood के Mossy Trail से शुरू होकर Prism Heart, Sunken Crown, Caldera King और Midnight Court से गुजरता है और Void Crown के टूटे रास्तों तक पहुँचता है। हर क्षेत्र में अलग दुश्मन मिश्रण और अंतिम मुकाबला है; सभी छह क्षेत्रों को पार करने पर क्षेत्रीय नाकेबंदी की पूरी कड़ी टूटती है।",
         "आप मैदान में लड़ने वाले योद्धा नहीं, दल के कमांडर हैं। Spark Paw Fox, Bubble Fin Otter, Drum Belly Panda, Moon Cap Owl, Moss Shell Turtle और बाकी अनलॉक होने वाले नायकों की लक्ष्य या सहायता नियम अलग हैं। अपने-आप होने वाली लड़ाई शुरू होने से पहले तय करें कि कौन से छह जानवर साथ जाएंगे और किसे आगे या पीछे की पंक्ति में रखना है।"
@@ -18327,7 +18327,7 @@
       designNote: "ऑटो-बैटल जानबूझकर रखा गया है: क्रियान्वयन छोटा है ताकि असली काम फॉर्मेशन, भूमिकाओं की कवरेज, लक्ष्य क्रम और लंबे समय के प्रशिक्षण में हो। जीता हुआ वेव सीधे अगले वेव में जाता है, इसलिए पाँच-वेव चरण पाँच अलग मेनू यात्राओं के बजाय एक अभियान जैसा लगता है। हार के बाद तैयारी खुलती है ताकि खिलाड़ी वही असफल व्यवस्था दोहराने के बजाय जवाब दे सके। टैप से चुनना और रखना फोन पर आसान है और डेस्कटॉप पर वही कार्ड माउस से चलते हैं। बारी-आधारित Animal Rune Tactics और रीयल-टाइम Animal Crystal Survivor से अलग, Animal Auto Squad में खिलाड़ी योजना बनाता है और लड़ाई के दौरान हमले चलाए बिना उसके परिणाम को देखता है।",
       parent: "बाद के चरण छह-यूनिट फॉर्मेशन, विशेष लक्ष्य नियम, स्थायी उन्नयन, हार का दबाव, बॉस क्षमताएँ और वैकल्पिक Diamond फैसले जोड़ते हैं। अभियान प्रगति, पिछला फॉर्मेशन और स्थान, Training Gold, Team Level, अनलॉक जानवर, स्थायी स्तर, पूरे किए चरण और कॉस्मेटिक चुनाव इसी ब्राउज़र में सेव होते हैं; सामान्य खेल के लिए लॉगिन ज़रूरी नहीं है। साइट डेटा मिटाने पर स्थानीय प्रगति हट सकती है।",
       faq: [
-        ["क्या Animal Auto Squad मुफ्त है?", "हाँ। 30 चरणों का अभियान WeightPlay ब्राउज़र में बिना अनिवार्य खरीद या लॉगिन के चलता है।"],
+        ["क्या Animal Auto Squad मुफ्त है?", "हाँ। विभिन्न चरणों का अभियान WeightPlay ब्राउज़र में बिना अनिवार्य खरीद या लॉगिन के चलता है।"],
         ["हर चरण का लक्ष्य क्या है?", "ऐसा दल बनाना जो लगातार पाँच वेव झेल सके। पाँचवाँ वेव पूरा करने पर चरण सेव होता है और अगला खुलता है; हर पाँचवाँ चरण क्षेत्रीय बॉस पर समाप्त होता है।"],
         ["क्या लड़ाई में हमले नियंत्रित कर सकता हूँ?", "नहीं। लड़ाई से पहले आप दल, दोनों पंक्तियाँ और अस्थायी उन्नयन चुनते हैं। उसके बाद जानवर अपने-आप हमला, उपचार, रक्षा और क्षमताएँ करते हैं।"],
         ["क्या हर वेव के बीच दल बदल सकता हूँ?", "जीत के बाद अगला वेव तुरंत शुरू होता है। हार या ड्रॉ के बाद Heart बचे होने पर तैयारी फिर खुलती है, इसलिए शुरुआती फॉर्मेशन को एक से अधिक दुश्मन पैटर्न संभालने चाहिए।"],
@@ -18432,7 +18432,7 @@
     guideTitleSuffix: "دليل اللعبة",
     noteTitle: "معلومات اللاعب والحفظ",
     hideScoreBands: true,
-    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد من 30 مسارًا، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. يضم كل مسار ثلاث موجات متواصلة. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق وابلًا واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
+    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد متعددة المراحل، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. يضم كل مسار ثلاث موجات متواصلة. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق وابلًا واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
     story: [
       "بُني الحصن البلوري عند ملتقى ستة طرق للحراس: الغابة البلورية، مشاغل الأشواك، أطلال القمر، قبو المرايا، حصن العاصفة وقلب الكسوف. عندما بدأت نواة الحصن بث نبضة غير مستقرة، اتبعت حيوانات الظل تلك الطرق إلى الداخل. لا يستطيع حارس الكرة الأسد ترك النواة بلا حماية، لذلك تُخاض كل معركة من غرفة الإطلاق عبر إعادة توجيه الكرات الروحية بين الجدران والمرايا المحيطة.",
       "يعني تخطي مسار أن طريقه أصبح مستقرًا بما يكفي لإعادة فتحه أمام فرق الإصلاح. يختبر غول الجذور بوابة الغابة، ويحتل عملاق الظهر الشوكي مشغل الأشواك، وتتوارى سيدة خصلات القمر عبر طريق القمر، ويسيطر وصي القشرة المنشورية على قبو المرايا، ويحدد حارس قرن العاصفة ممرات العاصفة، ويغلق إمبراطور النواة الفارغة الغرفة الأخيرة بثلاثة أطوار للنواة. إكمال المسار 30 يعيد وصل الطرق الستة ويوقف النبضة الفاسدة عن جذب مزيد من الأعداء إلى الحصن.",
@@ -18468,7 +18468,7 @@
       "تجمع المسارات 26–30 الدروع والمراسي وتوقيت الطور والمقسمات والمهاجمين والأعمدة المتحركة في تشكيلات مؤلفة. يستخدم المسار 29 مجموعة الأعداء العاديين كاملة. يضيف المسار 30 تغيري طور لإمبراطور النواة الفارغة وأربعة استدعاءات دعم وحماية يعاد بناؤها وعمودين نشطين، فيختبر التخطيط للتصويب وأولوية الأهداف والتوقيت والترقيات والنمو الدائم للحصن معًا.",
     ],
     designNote: "تستخدم الحملة ثلاث موجات قصيرة حتى يبدو كل مسار مسألة تصويب مركزة، لا جلسة تحمّل طويلة. تحفظ فواصل الموجات ضرر النواة والبناء الحالي، لكنها تقدم قرار بركة واحدًا ومختصرًا قبل التشكيل التالي. تعتمد المناطق الأولى على الجدران كي يتعلم اللاعبون هندسة متوقعة؛ ثم تضيف أعمدة المرايا أسطحًا جديدة وتبطل الزوايا المحفوظة. توضح الأعداء الخاصون طريقة مواجهتهم عبر الحلقات وعلامات الدرع وخطوط الممرات ورسوم الزعماء المميزة، بدل إجبار اللاعب على قراءة لوحة قواعد طويلة أثناء المعركة. السحب بالمؤشر هو التحكم الأساسي على الهاتف، بينما يضبط اليسار واليمين زاوية التصويب نفسها على لوحة المفاتيح، ويطلق Space أو Enter الكرة. وبخلاف تمركز المدافعين في حارس الوحوش أو تخطيط التشكيل في فرقة الحيوانات التلقائية، يجعل حصن الكرات الحيوانية مسار الرمية نفسه مورد الاستراتيجية الأساسي.",
-    parent: "يحفظ المتصفح أفضل مسار مفتوح وأحجار النجوم وعدد مرات اللعب ومستويات غرف الحصن الأربع على هذا الجهاز. لا يتطلب اللعب الأساسي حسابًا. قد يؤدي مسح تخزين المتصفح لهذا الموقع إلى حذف التقدم. إعادة تدوير البركة بثلاثة ألماسات اختيارية وتعرض الرصيد الحالي والنتيجة بعد التأكيد، وليست مطلوبة لحملة المسارات الثلاثين. تصف النتائج وتقارير المهارات اللعب فقط وليست قياسات رسمية للقدرات.",
+    parent: "يحفظ المتصفح أفضل مسار مفتوح وأحجار النجوم وعدد مرات اللعب ومستويات غرف الحصن الأربع على هذا الجهاز. لا يتطلب اللعب الأساسي حسابًا. قد يؤدي مسح تخزين المتصفح لهذا الموقع إلى حذف التقدم. إعادة تدوير البركة بثلاثة ألماسات اختيارية وتعرض الرصيد الحالي والنتيجة بعد التأكيد، وليست مطلوبة لحملة المسارات. تصف النتائج وتقارير المهارات اللعب فقط وليست قياسات رسمية للقدرات.",
     faq: [
       ["ما هدف المسار؟", "احمِ النواة البلورية خلال ثلاث موجات. يؤدي إنهاء الموجة 3 إلى حفظ المسار ومنح أحجار النجوم وفتح المسار التالي."],
       ["هل يستخدم كل مسار الزعيم نفسه؟", "لا. كل مسار خامس فقط هو نقطة فحص لزعيم إقليمي. تنتهي المسارات الأخرى بتشكيلات نخبة مؤلفة، ولكل زعيم من الزعماء الستة رسوم وإشارات وطريقة مواجهة مختلفة."],

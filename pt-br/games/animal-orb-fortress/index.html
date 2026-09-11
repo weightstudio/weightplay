@@ -8,16 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#10251f" />
-    <meta name="description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta name="description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas..." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Fortaleza dos Orbes | WeightPlay" />
-    <meta property="og:description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta property="og:description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas..." />
     <meta property="og:url" content="https://weightplay.com/pt-br/games/animal-orb-fortress/" />
     <meta property="og:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Fortaleza dos Orbes | WeightPlay" />
-    <meta name="twitter:description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três..." />
+    <meta name="twitter:description" content="Fortaleza dos Orbes é uma campanha de defesa de ricochete sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp" />
     <title>Fortaleza dos Orbes | WeightPlay</title>
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-orb-fortress/" />
@@ -35,12 +35,12 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-orb-fortress/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-orb-fortress/" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Fortaleza dos Orbes","alternateName":"動物星珠要塞","url":"https://weightplay.com/pt-br/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp","description":"Fortaleza dos Orbes é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Fortaleza dos Orbes","alternateName":"動物星珠要塞","url":"https://weightplay.com/pt-br/games/animal-orb-fortress/","image":"https://weightplay.com/assets/animal-orb-fortress-cover-block-v1.webp","description":"Fortaleza dos Orbes é uma campanha de defesa de ricochete sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas...","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com/"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Web Browser","genre":["Action","Roguelite","Animal","Browser Game"],"audience":{"@type":"Audience","audienceType":"General players"}}</script>
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
-    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-background-tile" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-guide-copy" />
     <link rel="stylesheet" href="style.css?v=20260911-orb-growth-v41-interface" />
     <style data-orb-interface-v41>
       html body:has([data-wp-frame="2"]) .game-page-info { border-radius:16px!important; }
@@ -194,7 +194,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
-    <script src="../../src/game-screen-frame.js?v=20260911-lobby-return"></script>
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
 <script src="game.js?v=20260911-orb-growth-v41"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script>
@@ -207,7 +207,7 @@
             return;
           }
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260720-locale11-2";
+          script.src = "../../src/game-page-info.js?v=20260911-guide-copy";
           script.dataset.orbGameInfo = "internal";
           script.async = true;
           document.body.appendChild(script);
@@ -220,7 +220,7 @@
 <section class="game-page-info game-page-info-static" aria-label="Informações de Fortaleza dos Orbes">
 
     <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Fortaleza dos Orbes</h2><p>Animal Orb Fortress é uma campanha de defesa de ricochete de 30 rotas sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas contínuas. O jogador se arrasta do guardião do leão para visualizar um caminho de salto na parede, lança uma saraivada e protege o núcleo de cristal enquanto as feras das sombras avançam. Seis regiões de cinco rotas adicionam armadura, âncoras de proteção, inimigos em fases, divisores, postes de espelhos móveis, carregadores telegrafados e seis chefes regionais mecanicamente diferentes. Entre as ondas, uma bênção da fortaleza altera o ataque atual; entre as rotas, as Star Stones melhoram quatro salas de fortaleza permanentes.</p></div>
+      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Fortaleza dos Orbes</h2><p>Animal Orb Fortress é uma campanha de defesa de ricochete sobre a leitura de uma arena antes de liberar um orbe espiritual. Cada rota tem três ondas contínuas. O jogador se arrasta do guardião do leão para visualizar um caminho de salto na parede, lança uma saraivada e protege o núcleo de cristal enquanto as feras das sombras avançam. Seis regiões de cinco rotas adicionam armadura, âncoras de proteção, inimigos em fases, divisores, postes de espelhos móveis, carregadores telegrafados e seis chefes regionais mecanicamente diferentes. Entre as ondas, uma bênção da fortaleza altera o ataque atual; entre as rotas, as Star Stones melhoram quatro salas de fortaleza permanentes.</p></div>
       <div class="game-info-facts"><div class="game-info-fact"><span>Jogabilidade</span><strong>Ricochet Roguelite</strong></div><div class="game-info-fact"><span>Gênero</span><strong>Action · Roguelite · Animal</strong></div><div class="game-info-fact"><span>Dificuldade</span><strong>Hard</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>5-8 minutes per route</strong></div></div>
     </div>
 
@@ -240,7 +240,7 @@
 <p>Routes 16-20 add physical mirror pylons and splitters whose defeat creates faster shards. Routes 21-25 mark charge lanes and add storm timing. Prism Shell Regent rotates a damage window; Tempest Horn Guardian must complete its rush before it can be hurt.</p>
 <p>Routes 26-30 combine armor, anchors, phase timing, splitters, chargers, and moving pylons in authored formations. Route 29 uses the full ordinary-enemy vocabulary. Route 30 adds two Voidcore phase changes, four support summons, rebuilt shielding, and two active pylons, testing aim planning, target priority, timing, upgrades, and permanent fortress growth together.</p></div>
       <div class="game-info-section"><h3>Nota de design</h3><p>O jogo usa três ondas curtas porque uma rota deve parecer um problema de mira focado, em vez de uma longa sessão de resistência. As quebras de onda preservam o dano do núcleo e a construção atual, mas fornecem uma decisão compacta de bênção antes da próxima formação. As primeiras regiões dependem de paredes para que os jogadores possam aprender geometria previsível; postes de espelho posteriores criam novas superfícies e invalidam ângulos memorizados. Inimigos especiais comunicam seu contra-ataque com anéis, marcas de escudo, linhas de pista ou arte distinta de Boss, em vez de exigir um longo painel de regras durante a Batalha. Arrastar o ponteiro é o controle principal do telefone, enquanto Esquerda e Direita ajustam a mesma mira em um teclado e Espaço ou Enter dispara. Comparado com a colocação de defensor do Beast Guardian ou o planejamento de formação do Animal Auto Squad, o Animal Orb Fortress torna o próprio caminho do tiro o principal recurso estratégico.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>O navegador salva a melhor rota desbloqueada, Star Stones, contagem de jogos e quatro níveis de sala de fortaleza neste dispositivo. O jogo básico não requer uma conta. Limpar o armazenamento do navegador deste site pode remover esse progresso. As novas jogadas de bênção de diamante são opcionais, mostram o saldo atual e resultante e não são obrigatórias para a campanha de 30 rotas. Pontuações e Relatórios de Habilidade descrevem apenas o jogo e não são medidas formais de habilidade.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>O navegador salva a melhor rota desbloqueada, Star Stones, contagem de jogos e quatro níveis de sala de fortaleza neste dispositivo. O jogo básico não requer uma conta. Limpar o armazenamento do navegador deste site pode remover esse progresso. As novas jogadas de bênção de diamante são opcionais, mostram o saldo atual e resultante e não são obrigatórias para a campanha. Pontuações e Relatórios de Habilidade descrevem apenas o jogo e não são medidas formais de habilidade.</p></div>
       <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>What is the goal of a route?</dt><dd>Protect the crystal core through three waves. Clearing Wave 3 saves the route, awards Star Stones, and unlocks the next route.</dd></div><div><dt>Does every route use the same Boss?</dt><dd>No. Only every fifth route is a regional Boss checkpoint. The other routes end with authored elite formations, and all six Bosses have different artwork, cues, and counterplay.</dd></div><div><dt>Why did my orb pass through a moon enemy?</dt><dd>A dashed phase outline means that enemy is temporarily intangible. Wait for it to become solid, then release the prepared shot.</dd></div><div><dt>What do mirror pylons do?</dt><dd>They are real reflection surfaces inside the arena. Later pylons move, changing the available ricochet path during a wave.</dd></div><div><dt>Do I need Diamonds to finish the campaign?</dt><dd>No. Diamonds only reroll the three blessing choices once during a wave after a two-step confirmation.</dd></div><div><dt>What happens after a failed route?</dt><dd>The run ends, but earned Star Stones are saved and the best unlocked route is retained. Upgrade a room, change the aim plan, or retry.</dd></div><div><dt>What progress is stored?</dt><dd>Best unlocked route, Star Stones, play count, and Orb Forge, Core Shield, Companion Den, and Scout Tower levels are stored locally in this browser.</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-prism-breakers/"><img src="/assets/animal-prism-breakers/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quebra-Prismas</strong><span>Mova a raquete sob cada esfera de luz que retorna, controle o ângulo pelo ponto de contato e quebre todos os cristais quebráveis antes de perder as três esferas.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-rift-salvage/"><img src="/assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Resgate na Fenda</strong><span>Guie o anel lunar de Orla por trinta zonas, recolha destroços pequenos para crescer, resgate núcleos e supere rivais.</span></span></a></div></div>
     </div>

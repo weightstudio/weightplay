@@ -1,5 +1,9 @@
-@import url('./game-ui-theme.css?v=20260911-lobby-return');
+@import url('./game-ui-theme.css?v=20260911-sound-control');
 @layer wp-frame-contract {
+/* One protected preferences component, reused by lobby and all frame scenes. */
+html body [data-wp-preferences] {position:relative!important;z-index:110;direction:ltr}
+html body [data-wp-preferences] .wp-frame-settings {display:grid!important;place-items:center!important;width:48px!important;height:48px!important;padding:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:var(--wp-ui-button-image)!important;color:var(--wp-ui-text)!important;cursor:pointer}
+html body [data-wp-preferences] .wp-frame-settings-icon {display:block!important;width:24px!important;height:24px!important;background:var(--wp-ui-text)!important;mask:var(--wp-ui-settings-image) center/contain no-repeat}
 /* Optional Battle information replaces the visible title, not the frame. */
 html body [data-wp-frame="2"] .wp-frame-header [data-wp-frame-title][hidden] {display:none!important}
 html body [data-wp-frame="2"] [data-wp-frame-info] {grid-column:2!important;grid-row:1!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:1fr!important;gap:4px!important;position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;direction:inherit}
@@ -9,17 +13,35 @@ html body [data-wp-frame="2"] [data-wp-frame-stat] {display:flex!important;flex-
 html body [data-wp-frame="2"] [data-wp-frame-stat] :is(span,b,strong) {display:block!important;max-width:100%!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 11px/1.2 system-ui!important;color:var(--wp-ui-muted)!important}
 html body [data-wp-frame="2"] [data-wp-frame-stat] :is(b,strong) {font-size:14px!important;font-weight:800!important;font-variant-numeric:tabular-nums;color:var(--wp-ui-text)!important}
 /* The guide is outside the play canvas, but belongs to the same shared skin. */
-html body:has([data-wp-frame="2"]) .game-page-info {box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
-html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-fact > span,.game-info-related-copy span) {color:var(--wp-ui-muted)!important}
-html body:has([data-wp-frame="2"]) .game-page-info :is(dt,a,.game-info-kicker,li::marker) {color:var(--wp-ui-text)!important}
-html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-tags,.game-info-skills) > span {background:var(--wp-ui-tag-background)!important;color:var(--wp-ui-tag-text)!important;border:1px solid var(--wp-ui-tag-border)!important;border-radius:var(--wp-ui-radius)!important}
-html body:has([data-wp-frame="2"]) .game-page-info {background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
-html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
-html body:has([data-wp-frame="2"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
+html body:has([data-wp-frame="2"][data-wp-frame-active="main"]) [data-weightplay-version] {display:none!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info {padding:16px!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-title {gap:10px!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-title h2 {font:800 clamp(22px,3vw,30px)/1.35 system-ui!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-title p {max-width:72ch!important;font:400 15px/1.7 system-ui!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-facts {display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-fact {min-width:0!important;min-height:0!important;padding:12px!important;gap:8px!important;align-content:start!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-sections {display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:24px!important;margin-top:24px!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-section {min-width:0!important;padding:16px!important;gap:12px!important;align-content:start!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-section h3 {font:700 18px/1.4 system-ui!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-section :is(p,li,dd) {max-width:72ch!important;font:400 15px/1.75 system-ui!important;overflow-wrap:anywhere!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-tags {gap:6px!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-info-tags > span {padding:5px 8px!important;font:600 13px/1.4 system-ui!important;white-space:normal!important}
+@media(min-width:700px) {
+ html body:has(script[src*="game-screen-frame.js"]) .game-page-info {padding:24px!important}
+ html body:has(script[src*="game-screen-frame.js"]) .game-info-facts {grid-template-columns:repeat(4,minmax(0,1fr))!important}
+ html body:has(script[src*="game-screen-frame.js"]) .game-info-section {padding:20px!important}
+}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info {box-shadow:0 5px 0 var(--wp-ui-shadow)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info :is(.game-info-fact > span,.game-info-related-copy span) {color:var(--wp-ui-muted)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info :is(dt,a,.game-info-kicker,li::marker) {color:var(--wp-ui-text)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info :is(.game-info-tags,.game-info-skills) > span {background:var(--wp-ui-tag-background)!important;color:var(--wp-ui-tag-text)!important;border:1px solid var(--wp-ui-tag-border)!important;border-radius:var(--wp-ui-radius)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info {box-sizing:border-box!important;width:min(var(--wp-main-width),calc(100% - 2 * var(--wp-main-gutter)))!important;max-width:var(--wp-main-width)!important;margin-inline:auto!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
+html body:has(script[src*="game-screen-frame.js"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
 /* One protected frame. Game CSS may style content, never these shared slots. */
 html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat var(--wp-ui-background)!important; color:var(--wp-ui-text); }
 html body [data-wp-frame="2"] .wp-frame-header {
- box-sizing:border-box!important; display:grid!important; position:relative!important; z-index:100; isolation:isolate;
+ box-sizing:border-box!important; display:grid!important; position:relative!important; z-index:100!important; isolation:isolate!important;
  grid-template-columns:var(--wp-frame-lobby-return-width) minmax(0,1fr) var(--wp-frame-lobby-return-width)!important;
  grid-template-rows:var(--wp-frame-control-size)!important; align-items:center!important; gap:var(--wp-frame-header-gap)!important;
  width:100%!important; height:var(--wp-frame-header-height)!important; min-height:var(--wp-frame-header-height)!important;
@@ -56,15 +78,24 @@ html body [data-wp-frame="2"] .wp-frame-popover[hidden],html body [data-wp-frame
 html body [data-wp-frame="2"] .wp-frame-popover > :is(label,div) {display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px}
 html body [data-wp-frame="2"] .wp-frame-popover span {font:600 14px/1.2 system-ui;color:var(--wp-ui-text);white-space:nowrap}
 html body [data-wp-frame="2"] .wp-frame-popover select {min-width:0;max-width:160px;height:44px;font-size:14px;color:var(--wp-ui-text);background:var(--wp-ui-header)}
-html body [data-wp-frame="2"] .wp-frame-sound {width:52px;height:44px;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);background:var(--wp-ui-background);padding:6px}
-html body [data-wp-frame="2"] .wp-frame-sound::after {content:'';display:block;width:22px;height:22px;background:var(--wp-ui-text)}
-html body [data-wp-frame="2"] .wp-frame-sound[aria-checked="true"] {background:var(--wp-ui-active)}
-html body [data-wp-frame="2"] .wp-frame-sound[aria-checked="true"]::after {margin-left:auto}
+html body [data-wp-preferences] .wp-frame-popover {position:absolute!important;inset:56px 0 auto auto!important;display:block!important;width:min(280px,calc(100vw - 40px))!important;min-width:0!important;height:auto!important;max-height:calc(100dvh - 100px)!important;overflow:auto!important;box-sizing:border-box!important;margin:0!important;padding:12px!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;box-shadow:0 5px 0 var(--wp-ui-shadow)!important;transform:none!important;direction:initial}
+html body [data-wp-preferences] .wp-frame-popover > :is(label,div) {display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-height:48px!important;margin:0!important;padding:0!important;background:none!important;border:0!important}
+html body [data-wp-preferences] .wp-frame-popover span {color:var(--wp-ui-text)!important;font:600 14px/1.3 system-ui!important;white-space:nowrap!important}
+html body [data-wp-preferences] .wp-frame-popover select {box-sizing:border-box!important;width:160px!important;min-width:0!important;max-width:65%!important;height:44px!important;margin:0!important;padding:0 8px!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:#0b202b!important;color:#f6f2dd!important;font:600 14px/1.3 system-ui!important;box-shadow:none!important;color-scheme:dark}
+html body [data-wp-preferences] .wp-frame-popover option {background:#0b202b!important;color:#f6f2dd!important}
+html body [data-wp-preferences] .wp-frame-sound {box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;flex:0 0 auto!important;width:auto!important;min-width:108px!important;max-width:150px!important;height:44px!important;min-height:44px!important;padding:6px 12px!important;margin:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:3px!important;background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;position:static!important;transform:none!important;box-shadow:inset 0 1px 0 var(--wp-ui-highlight)!important;cursor:pointer;touch-action:manipulation}
+html body [data-wp-preferences] .wp-frame-sound::after {content:none!important}
+html body [data-wp-preferences] .wp-frame-sound-icon {display:block!important;flex:0 0 22px!important;width:22px!important;height:22px!important;margin:0!important;background:var(--wp-ui-muted)!important;mask:var(--wp-ui-sound-off-image) center/contain no-repeat!important;pointer-events:none}
+html body [data-wp-preferences] .wp-frame-sound-state {display:block!important;min-width:2.5em!important;margin:0!important;color:var(--wp-ui-muted)!important;font:700 14px/1.2 system-ui!important;text-align:center!important;pointer-events:none}
+html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] {background:var(--wp-ui-active)!important;border-color:var(--wp-ui-gold)!important}
+html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] .wp-frame-sound-icon {background:var(--wp-ui-gold)!important;mask-image:var(--wp-ui-sound-on-image)!important}
+html body [data-wp-preferences] .wp-frame-sound[aria-checked="true"] .wp-frame-sound-state {color:var(--wp-ui-text)!important}
+html body [data-wp-preferences] .wp-frame-popover[hidden],html body [data-wp-preferences] .wp-frame-popover > [hidden] {display:none!important}
 html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):hover {filter:brightness(1.12)}
 html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,[data-wp-frame-action]):active {filter:brightness(.9)}
 html body [data-wp-frame="2"] :is(.wp-frame-return,.wp-frame-settings,.wp-frame-sound,[data-wp-frame-action]):focus-visible {outline:3px solid var(--wp-ui-gold);outline-offset:2px}
 html body [data-wp-frame="2"] [data-wp-frame-scene] {box-sizing:border-box;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important}
-html body [data-wp-frame="2"] [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:920px!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important}
+html body [data-wp-frame="2"] [data-wp-frame-scene="main"] {display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto!important;width:100%!important;max-width:var(--wp-main-width)!important;padding:8px!important;gap:12px!important;margin:0 auto!important;overflow:visible!important}
 html body [data-wp-frame="2"] [data-wp-frame-content] {min-width:0;min-height:0}
 html body [data-wp-frame="2"] [data-wp-frame-content="main"] {display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 html body [data-wp-frame="2"] [data-wp-frame-poster] {width:100%!important;height:auto!important;aspect-ratio:1;object-fit:contain;margin:0!important;border:2px solid var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important;box-shadow:none!important;box-sizing:border-box}
@@ -91,7 +122,7 @@ html body [data-wp-frame="2"] .wp-frame-stage-context:empty {display:none}
 html body [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-content="stage"] > :is(.stage-page,.stage-view-panel,.stage-pane):not([hidden]):not(.is-hidden) {min-height:0!important;flex:1!important}
 html body [data-wp-frame="2"][data-wp-frame-adapted] [data-wp-frame-content="stage"] > .profile-grid {flex:none!important;height:auto!important}
 html body [data-wp-frame="2"] [data-wp-frame-poster] {aspect-ratio:1!important;max-height:none!important;max-width:100%!important;object-fit:contain!important}
-html body [data-wp-frame="2"][data-wp-frame-active="main"] {position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(100%,944px)!important;max-width:944px!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:12px!important;overflow:visible!important}
+html body [data-wp-frame="2"][data-wp-frame-active="main"] {position:relative!important;inset:auto!important;display:block!important;box-sizing:border-box!important;width:min(calc(100% - 2 * var(--wp-main-gutter)),var(--wp-main-width))!important;max-width:var(--wp-main-width)!important;height:auto!important;min-height:0!important;margin:0 auto!important;padding:0!important;overflow:visible!important}
 html body:has([data-wp-frame="2"]) > .sound-toggle {display:none!important}
 html body [data-wp-frame="2"] .wp-frame-play-content {display:flex!important;flex-direction:column!important;gap:6px;overflow:hidden!important}
 html body [data-wp-frame="2"] .wp-frame-play-content > :is(.battle-layout,.prep-area,.combat-area) {flex:1;min-height:0}

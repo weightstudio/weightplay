@@ -5,21 +5,52 @@
   const slotMounts = new WeakMap();
   const lobbyLogoUrl = new URL('../assets/weightplay-logo.png', document.currentScript.src).href;
   const copy = {
-    en: ['Settings', 'Language', 'Sound'], 'zh-Hant': ['設定', '語言', '聲音'],
-    'zh-Hans': ['设置', '语言', '声音'], ja: ['設定', '言語', 'サウンド'],
-    ko: ['설정', '언어', '소리'], es: ['Configuración', 'Idioma', 'Sonido'],
-    'pt-BR': ['Configurações', 'Idioma', 'Som'], fr: ['Paramètres', 'Langue', 'Son'],
-    de: ['Einstellungen', 'Sprache', 'Ton'], it: ['Impostazioni', 'Lingua', 'Suono'],
-    ru: ['Настройки', 'Язык', 'Звук'], hi: ['सेटिंग्स', 'भाषा', 'ध्वनि'],
-    ar: ['الإعدادات', 'اللغة', 'الصوت'],
+    en: ['Settings', 'Language', 'Sound', 'On', 'Muted'], 'zh-Hant': ['設定', '語言', '聲音', '開啟', '靜音'],
+    'zh-Hans': ['设置', '语言', '声音', '开启', '静音'], ja: ['設定', '言語', 'サウンド', 'オン', 'ミュート'],
+    ko: ['설정', '언어', '소리', '켜짐', '음소거'], es: ['Configuración', 'Idioma', 'Sonido', 'Activado', 'Silencio'],
+    'pt-BR': ['Configurações', 'Idioma', 'Som', 'Ligado', 'Mudo'], fr: ['Paramètres', 'Langue', 'Son', 'Activé', 'Muet'],
+    de: ['Einstellungen', 'Sprache', 'Ton', 'An', 'Stumm'], it: ['Impostazioni', 'Lingua', 'Suono', 'Attivo', 'Muto'],
+    ru: ['Настройки', 'Язык', 'Звук', 'Вкл.', 'Без звука'], hi: ['सेटिंग्स', 'भाषा', 'ध्वनि', 'चालू', 'म्यूट'],
+    ar: ['الإعدادات', 'اللغة', 'الصوت', 'مفعّل', 'صامت'],
   };
+  function createSettings({localeSelect, showLanguage = true, id = 'lobby', onOpen = () => {}}) {
+    const abort = new AbortController();
+    const listen = (node, event, fn) => node.addEventListener(event, fn, {signal:abort.signal});
+    const utility = document.createElement('div'); utility.className = 'wp-frame-utility'; utility.dataset.wpPreferences = '';
+    utility.innerHTML = '<button type="button" class="wp-frame-settings" data-wp-settings aria-expanded="false"><span class="wp-frame-settings-icon" aria-hidden="true"></span></button><div class="wp-frame-popover" role="group" hidden><label><span></span><select></select></label><div><span></span><button type="button" role="switch" class="wp-frame-sound"><span class="wp-frame-sound-icon" aria-hidden="true"></span><span class="wp-frame-sound-state"></span></button></div></div>';
+    const button=utility.querySelector('button'), panel=utility.querySelector('.wp-frame-popover'), select=utility.querySelector('select');
+    const languageText=panel.querySelector('label > span'), soundText=panel.querySelector('div > span'), sound=panel.querySelector('.wp-frame-sound'), soundState=sound.querySelector('.wp-frame-sound-state');
+    panel.id=`wp-frame-${id}-settings`;button.setAttribute('aria-controls',panel.id);
+    for(const option of localeSelect?.options||[])select.add(option.cloneNode(true));
+    panel.querySelector('label').hidden=!showLanguage||!localeSelect;
+    const close=(focus=false)=>{panel.hidden=true;button.setAttribute('aria-expanded','false');if(focus)button.focus({preventScroll:true});};
+    const refresh=()=>{
+      const locale=window.WonderI18n?.locale?.()||document.documentElement.lang;
+      const labels=copy[locale]||copy.en;
+      button.setAttribute('aria-label',labels[0]);panel.setAttribute('aria-label',labels[0]);
+      languageText.textContent=labels[1];select.setAttribute('aria-label',labels[1]);select.value=localeSelect?.value||locale;
+      const muted=Boolean(window.WonderSound?.isMuted?.());
+      soundText.textContent=labels[2];soundState.textContent=muted?labels[4]:labels[3];sound.setAttribute('aria-label',`${labels[2]}：${muted?labels[4]:labels[3]}`);sound.setAttribute('aria-checked',String(!muted));
+      sound.disabled=!window.WonderSound?.setMuted;
+    };
+    listen(button,'click',()=>{const open=panel.hidden;if(open)onOpen();panel.hidden=!open;button.setAttribute('aria-expanded',String(open));});
+    listen(select,'change',()=>{localeSelect.value=select.value;localeSelect.dispatchEvent(new Event('change',{bubbles:true}));refresh();});
+    listen(sound,'click',()=>{window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.());refresh();});
+    // Inside interactions belong to this component, not legacy game dismissal handlers.
+    for(const event of ['pointerdown','click'])listen(panel,event,e=>e.stopPropagation());
+    listen(document,'pointerdown',e=>{if(!utility.contains(e.target))close();});
+    listen(document,'keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();close(true);}});
+    listen(window,'wonder:locale-change',refresh);listen(window,'wonder:audio-volume-change',refresh);
+    refresh();
+    return {utility,button,panel,select,sound,close,refresh,destroy(){abort.abort();utility.remove();}};
+  }
   function mount({ root, scenes, localeSelect }) {
     if (mounts.has(root)) return mounts.get(root);
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
     const abort = new AbortController();
     const listen = (node, event, fn) => node.addEventListener(event, fn, { signal: abort.signal });
     const entries = {};
-    let active = null;
+    let active = null, activeCovered = false;
     root.dataset.wpFrame = '2';
     for (const [name, scene] of Object.entries(scenes)) {
       const header = scene.header;
@@ -60,60 +91,24 @@
         scene.headerInfo.querySelectorAll(':scope > *').forEach(node => node.setAttribute('data-wp-frame-stat',''));
         header.append(scene.headerInfo);
       }
-      const utility = document.createElement('div');
-      utility.className = 'wp-frame-utility';
-      const button = document.createElement('button');
-      button.type = 'button'; button.className = 'wp-frame-settings'; button.dataset.wpSettings = 'true';
-      const gear = document.createElement('span');
-      gear.className = 'wp-frame-settings-icon'; gear.setAttribute('aria-hidden','true');
-      button.append(gear);
-      const panel = document.createElement('div');
-      panel.className = 'wp-frame-popover'; panel.hidden = true; panel.setAttribute('role', 'group');
-      panel.id = `wp-frame-${name}-settings`;
-      button.setAttribute('aria-controls', panel.id); button.setAttribute('aria-expanded', 'false');
-      const language = document.createElement('label');
-      const languageText = document.createElement('span');
-      const select = document.createElement('select');
-      for (const option of localeSelect?.options || []) select.add(option.cloneNode(true));
-      language.append(languageText, select);
-      language.hidden = name !== 'main' || !localeSelect;
-      const soundRow = document.createElement('div');
-      const soundText = document.createElement('span');
-      const sound = document.createElement('button');
-      sound.type = 'button'; sound.setAttribute('role', 'switch'); sound.className = 'wp-frame-sound';
-      soundRow.append(soundText, sound);
-      panel.append(language, soundRow); utility.append(button, panel); header.append(utility);
-      const close = (focus = false) => { panel.hidden = true; button.setAttribute('aria-expanded', 'false'); if (focus) button.focus({ preventScroll: true }); };
-      listen(button, 'click', () => {
-        const open = panel.hidden;
-        Object.values(entries).forEach(entry => entry.close());
-        panel.hidden = !open; button.setAttribute('aria-expanded', String(open));
-      });
-      listen(select, 'change', () => { localeSelect.value = select.value; localeSelect.dispatchEvent(new Event('change', { bubbles: true })); refresh(); });
-      listen(sound, 'click', () => { window.WonderSound?.setMuted?.(!window.WonderSound?.isMuted?.()); refresh(); });
-      entries[name] = { ...scene, button, panel, utility, select, languageText, soundText, sound, close };
+      const settings=createSettings({localeSelect,showLanguage:name==='main',id:name,onOpen:()=>Object.values(entries).forEach(entry=>entry.close())});
+      header.append(settings.utility);
+      entries[name] = { ...scene, ...settings };
     }
     function refresh() {
-      const locale = window.WonderI18n?.locale?.() || document.documentElement.lang;
-      const labels = copy[locale] || copy.en;
       for (const entry of Object.values(entries)) {
         if (entry.titleFromMain) entry.header.querySelector('[data-wp-frame-title]').textContent = scenes.main.header.querySelector('[data-wp-frame-title]').textContent;
-        entry.button.setAttribute('aria-label', labels[0]); entry.panel.setAttribute('aria-label', labels[0]);
-        entry.languageText.textContent = labels[1]; entry.select.setAttribute('aria-label', labels[1]);
-        entry.select.value = localeSelect?.value || locale;
-        entry.soundText.textContent = labels[2]; entry.sound.setAttribute('aria-label', labels[2]);
-        entry.sound.setAttribute('aria-checked', String(!window.WonderSound?.isMuted?.()));
+        entry.refresh();
       }
     }
     const close = () => Object.values(entries).forEach(entry => entry.close());
-    listen(document, 'pointerdown', event => Object.values(entries).forEach(entry => { if (!entry.utility.contains(event.target)) entry.close(); }));
-    listen(document, 'keydown', event => { if (event.key === 'Escape') Object.values(entries).forEach(entry => { if (!entry.panel.hidden) { event.preventDefault(); entry.close(true); } }); });
     listen(window, 'wonder:locale-change', () => queueMicrotask(refresh));
     listen(window, 'wonder:audio-volume-change', refresh);
     const api = Object.freeze({
       activate(name, { covered = false } = {}) {
         if (!entries[name]) throw new Error(`FRAME_UNKNOWN_SCENE:${name}`);
-        close(); active = name; root.dataset.wpFrameActive = name;
+        if(active!==name||activeCovered!==covered)close();
+        active = name; activeCovered=covered; root.dataset.wpFrameActive = name;
         for (const [key, entry] of Object.entries(entries)) {
           const enabled = key === name;
           entry.header.hidden = !enabled || covered;
@@ -126,7 +121,7 @@
       close,
       refresh,
       get active() { return active; },
-      destroy() { close(); abort.abort(); Object.values(entries).forEach(entry => entry.utility.remove()); mounts.delete(root); },
+      destroy() { close(); abort.abort(); Object.values(entries).forEach(entry => entry.destroy()); mounts.delete(root); },
     });
     mounts.set(root, api); refresh(); return api;
   }
@@ -210,5 +205,5 @@
     const api=Object.freeze({activate,sync,refresh:frame.refresh,destroy(){frame.destroy();slotMounts.delete(root);},get active(){return frame.active;}});
     slotMounts.set(root,api);return api;
   }
-  window.WeightPlayScreenFrame = Object.freeze({ mount, mountSlots });
+  window.WeightPlayScreenFrame = Object.freeze({ mount, mountSlots, createSettings });
 })();
