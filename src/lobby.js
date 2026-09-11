@@ -2,6 +2,10 @@ const lobby = window.WONDER_LOBBY;
 const officialGameTitles = window.WEIGHTPLAY_GAME_TITLES || {};
 lobby.games.forEach((game) => {
   if (officialGameTitles[game.id]) game.title = officialGameTitles[game.id];
+  const interface7Poster = window.WEIGHTPLAY_INTERFACE7_POSTERS?.[game.id];
+  if (interface7Poster) {
+    game.art = { ...(game.art || {}), kind: "image", background: interface7Poster, hideHero: true };
+  }
 });
 let activeGamePreview = null;
 const ownerPreviewMode = new URLSearchParams(window.location.search).get("preview") === "1";
@@ -334,6 +338,11 @@ function primaryArt(game) {
 
 function lobbyThumbnail(source, width = 480) {
   const clean = String(source || "").split(/[?#]/, 1)[0].replace(/^\/+/, "");
+  // Interface 7 posters are already square, framed, and optimized for the
+  // lobby. Never route them through the legacy thumbnail naming convention;
+  // that would silently request a non-existent derivative and show a blank
+  // entry image.
+  if (clean.startsWith("assets/interface7-posters/")) return `/${clean}`;
   if (!/^(?:assets|games)\/.+\.(?:avif|jpe?g|png|webp)$/i.test(clean)) return source;
   const encoded = clean.replace(/[^A-Za-z0-9._-]+/g, "__").replace(/\.[^.]+$/, ".webp");
   return `assets/lobby-thumbs/w${width}/${encoded}`;

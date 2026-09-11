@@ -3196,7 +3196,7 @@ function renderTalentDialog() {
   if(!talentDialog||!selectedTalent)return;
   const n=getTalent(selectedTalent),i=TALENTS.indexOf(n),c=window.LionTalents.copy(locale()),rank=getTalentLevel(n.id);
   const reason=rank===2?c.ui[11]:profile.specialization&&profile.specialization!==n.branch?c.ui[10]:n.requires&&getTalentLevel(n.requires)<2?c.ui[9]:'';
-  talentDialog.innerHTML=`<button type="button" data-talent-close aria-label="${c.ui[5]}">×</button><img src="games/wonder-crash/icons/${n.id}.svg" alt=""/><h2 id="lionTalentTitle">${c.names[i]}</h2><p>${c.descriptions[i]}</p><div class="lion-rank-preview"><span>${c.ui[6]} <b>${rank}/2</b></span><span>${c.ui[7]} <b>${Math.min(2,rank+1)}/2</b></span></div><p>${reason||'◆ '+profile.talentPoints+' '+c.ui[2]}</p><button type="button" data-talent-buy ${canBuyTalent(n)?'':'disabled'}>${rank===2?c.ui[11]:c.ui[3]+' · ◆ 1'}</button>`;
+  talentDialog.innerHTML=`<button type="button" data-talent-close aria-label="${c.ui[5]}">×</button><img src="games/wonder-crash/icons/${n.id}.svg" alt=""/><h2 id="lionTalentTitle">${c.names[i]}</h2><p>${c.descriptions[i]}</p><div class="lion-rank-preview"><span>${c.ui[6]} <b>${rank}/2</b><small>${window.LionTalents.effect(n.id,rank)}</small></span><span>${c.ui[7]} <b>${Math.min(2,rank+1)}/2</b><small>${window.LionTalents.effect(n.id,Math.min(2,rank+1))}</small></span></div><p>${reason||'◆ '+profile.talentPoints+' '+c.ui[2]}</p><button type="button" data-talent-buy ${canBuyTalent(n)?'':'disabled'}>${rank===2?c.ui[11]:c.ui[3]+' · ◆ 1'}</button>`;
 }
 function resetTalents() {
   if(state.running)return;

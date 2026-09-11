@@ -881,6 +881,7 @@ body.wonder-stage-select #profilePanel .lion-reset, .lion-wall-synergy button { 
 .lion-talent-dialog button { min-height:44px; border:1px solid #b49a65; border-radius:6px; background:#edc36c; color:#1a2938; padding:8px 16px; cursor:pointer; font-size:14px; }
 .lion-talent-dialog [data-talent-close] { position:absolute; top:4px; inset-inline-end:4px; width:44px; background:transparent; border:0; color:#e8edf4; font-size:24px; }
 .lion-talent-dialog button:disabled { opacity:.5; cursor:default; }
+.lion-rank-preview small { display:block; margin-top:5px; color:#edc36c; }
 .lion-rank-preview { display:flex; justify-content:space-around; gap:12px; padding:12px 0; border-block:1px solid #455c70; }
 .lion-rank-preview span { display:grid; gap:5px; font-size:12px; }
 .lion-rank-preview b { color:#f0cc82; }

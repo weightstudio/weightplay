@@ -86,6 +86,10 @@
     stage: nodes.stagePanel,
     battle: { root: nodes.gamePanel, headerInfo: battleHeaderInfo },
   });
+  // The legacy row is only a source wrapper for the shared Battle header. Once
+  // its return button and stat group have been adopted, remove the empty node
+  // so it cannot reserve an accidental second HUD row over the arena.
+  if (battleHeader && !battleHeader.children.length && !battleHeader.textContent.trim()) battleHeader.remove();
   // The shared frame owns the generated settings surface and arrow artwork;
   // retain the legacy semantic hooks used by the interface validator while
   // keeping one player-facing control and one popover.
@@ -104,6 +108,8 @@
   nodes.stagePanel.dataset.wpStageLandscapeWidth = "760";
   nodes.stagePanel.dataset.wpStageLandscapeHeight = "334";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
+  nodes.gamePanel.dataset.wpBattleLandscapeWidth = "760";
+  nodes.gamePanel.dataset.wpBattleLandscapeHeight = "334";
   const stageContent = nodes.stagePanel?.querySelector(".stage-content");
   function normalizeCompactStageLayout() {
     if (!stageContent) return;
@@ -3268,9 +3274,9 @@
     contrastGlow.addColorStop(1, "rgba(4, 18, 34, 0.22)");
     ctx.fillStyle = contrastGlow;
     ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = "rgba(126, 255, 202, 0.6)";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(34, 34, W - 68, H - 68);
+    // The shared frame already supplies the playable boundary. Do not draw a
+    // second neon rectangle inside the arena; it reads as a stray blue frame
+    // over the original fortress artwork.
 
     if (state.preview.length > 1) {
       ctx.strokeStyle = "rgba(255, 230, 112, 0.86)";

@@ -1,5 +1,5 @@
 window.WONDER_SITE = {
-  version: "v0.33.89",
+  version: "v0.33.90",
   localization: {
     defaultLocale: "en",
     fallbackLocale: "en",
@@ -23,4 +23,17 @@ if (typeof document !== "undefined" && !window.__weightPlayEdgeGuardRequested) {
   guard.src = new URL("edge-guard.js", currentScript?.src || document.baseURI).href;
   guard.dataset.wpSharedEdgeGuard = "true";
   document.head.append(guard);
+}
+
+// Interface 7 is a route-wide contract.  The game bootstrap is deliberately
+// loaded from the shared site config so canonical and localized pages cannot
+// drift merely because one generated shell omitted a legacy link/script.
+if (typeof document !== "undefined" && /(?:^|\/)games\/[^/]+(?:\/|$)/i.test(location.pathname)
+  && !window.__weightPlaySharedInterfaceRequested) {
+  window.__weightPlaySharedInterfaceRequested = true;
+  const currentScript = document.currentScript;
+  const bootstrap = document.createElement("script");
+  bootstrap.src = new URL("shared-interface-bootstrap.js?v=20260911-interface7-universal", currentScript?.src || document.baseURI).href;
+  bootstrap.dataset.wpSharedInterface = "7";
+  document.head.append(bootstrap);
 }
