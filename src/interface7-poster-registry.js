@@ -1,4 +1,6 @@
 // Generated from the universal Interface 7 poster pipeline.
+// Six owner-approved game-specific block illustrations intentionally point to
+// their existing assets; all other entries point to the full-plane redraw set.
 window.WEIGHTPLAY_INTERFACE7_POSTERS = Object.freeze({
   "alien-defender": "/assets/interface7-posters/alien-defender.webp",
   "animal-2048": "/assets/interface7-posters/animal-2048.webp",

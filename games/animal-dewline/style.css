@@ -100,6 +100,13 @@ h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); }
 .guide-card.game-page-info .game-info-sections { width: 100%; margin-top: 14px; padding: 0; border: 0; background: transparent; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .guide-card.game-page-info .game-info-section { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #eef9f2; }
 .guide-card.game-page-info .game-info-section p { color: var(--muted); line-height: 1.45; margin-bottom: 0; }
+/* Keep Dewline's authored Guide framing readable under Interface 7's block
+   skin while preserving the three-section layout contract. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-dewline"] .guide-card.game-page-info { border-radius: 24px !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-dewline"] .guide-card.game-page-info .game-info-sections { display: grid !important; }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-dewline"] .guide-card.game-page-info .game-info-section { border-radius: 16px !important; }
+}
 .settings-panel { position: fixed; z-index: 20; top: 68px; right: max(12px, calc((100vw - 920px) / 2 + 12px)); width: min(320px, calc(100vw - 24px)); margin: 0; padding: 16px; display: grid; gap: 12px; border: 1px solid var(--line); border-radius: 18px; background: #fffffff2; box-shadow: 0 12px 32px #234b3b20; }
 .settings-panel .setting-row { width: 100%; }
 body[data-screen="stage"] .game-page-info,
@@ -150,7 +157,7 @@ body[data-screen="result"] .game-page-info { display: none; }
 #battleScreen[data-wp-logical-battle-canvas] .battle-actions button { height: 52px; min-height: 52px; }
 
 @media (min-width: 700px) and (max-height: 560px) {
-  body[data-wp-game-id="animal-dewline"] .wp-standard-main-composition { --wp-main-landscape-poster-size: 420px; }
+  body[data-wp-game-id="animal-dewline"] .wp-standard-main-composition { --wp-main-landscape-poster-size: 420px !important; }
   .hero-grid { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); }
   .cover-wrap { max-width: 420px; }
   #battleScreen[data-wp-logical-battle-canvas] { padding: 10px; gap: 8px; }
