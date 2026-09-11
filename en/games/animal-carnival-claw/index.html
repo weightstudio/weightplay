@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-carnival-claw/" />
-
     <link rel="canonical" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -31,8 +30,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Carnival Claw | WeightPlay" />
@@ -43,18 +41,20 @@
     <meta name="twitter:title" content="Carnival Claw | WeightPlay" />
     <meta name="twitter:description" content="Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Carnival Claw","url":"https://weightplay.com/en/games/animal-carnival-claw/","image":"https://weightplay.com/assets/animal-carnival-claw-cover.webp","description":"Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulation","Collection","Family","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Carnival Claw","url":"https://weightplay.com/en/games/animal-carnival-claw/","image":"https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp","description":"Aim, time and stabilize a fair skill claw to retrieve target charms across 30 original carnival missions.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"en","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulation","Collection","Family"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
+      <img src="../../assets/interface7-redrawn/animal-carnival-claw.webp" alt="">
       <strong data-i18n="loading">Lighting the Starbell Carnival…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,11 +76,11 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="Carnival Claw game artwork">
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-carnival-claw.webp" data-i18n-alt="posterAlt" alt="Carnival Claw game artwork">
         <div class="main-copy">
           <small data-i18n="eyebrow">Starbell skill arcade</small>
           <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Carnival Claw</h1>
-          <p data-i18n="pitch">Choose a charm, time the swaying claw, then steady the lift before three drops run out.</p>
+          <p data-i18n="pitch">Aim the carnival claw and time its grip to collect the requested charms.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Start Game</button>
         </div>
@@ -90,46 +90,43 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Game guide">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Original Game Guide</span>
-        <h2 data-i18n="guideTitle">Turn every drop into a deliberate rescue</h2>
-        <p data-i18n="guideIntro">Rux built thirty fair skill machines for Starbell Carnival. Nori needs your timing to retrieve the requested memory charms.</p>
+        <h2 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Carnival Claw</h2>
+        <p data-i18n="guideIntro">Aim the carnival claw and time its grip to collect the requested charms.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">How to play</h3><ol>
-          <li data-i18n="how1">Drag the aiming reticle over a visible target charm.</li>
+          <li data-i18n="how1">Drag the reticle onto a requested charm.</li>
           <li data-i18n="how2">Release or press Drop when the swaying claw lines up.</li>
-          <li data-i18n="how3">After a catch, press Lock Grip when the moving pointer enters the green zone.</li>
+          <li data-i18n="how3">After a catch, press Lock Grip as the pointer enters the green zone.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Each mission gives three free drops and shows every target, weight and grip need. Retrieve the complete target set to clear. No payment, random rarity or real prize is involved.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty carnival missions</h3><p data-i18n="progressText">Six machines add bumpers, shelves, magnetic drift, fragile stacks and mixed championship layouts. Every clear unlocks the next authored mission.</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Start with exposed light charms, watch the claw sway, then press Lock Grip near the center of the green timing zone. Heavy charms use a narrower green window.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Collect every requested charm within three drops. Other charms add to your cabinet, but do not complete the objective.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Missions</h3><p data-i18n="progressText">Clear a mission to unlock the next. Later machines add moving shelves, magnetic drift and mixed weights. Earn starbolts to tune the machine in Workshop.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Start with exposed targets. Heavy charms have a narrower green timing zone; workshop upgrades can widen it.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked missions, medals and cabinet charms stay only in this browser. No account, upload or personal information is required.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
           <div><dt data-i18n="faq1q">Is a grab random?</dt><dd data-i18n="faq1a">No. Position, timing, visible weight and your stabilization determine the result.</dd></div>
           <div><dt data-i18n="faq2q">Can I lose collected charms?</dt><dd data-i18n="faq2a">No. Cabinet progress is permanent on this device.</dd></div>
           <div><dt data-i18n="faq3q">What should I play next?</dt><dd data-i18n="faq3a">Try Animal Reef Fisher for another timing challenge or Animal Parking Patrol for careful planning.</dd></div>
         </dl></article>
-        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Read the machine before committing a drop</h3>
-          <p data-i18n="guideDeep1">Every mission is a small spatial puzzle rather than a lottery. The target strip names the charms that matter, while the bin shows their exact locations and relative weights. Move the reticle slowly enough to compare the claw center with the target center. Nearby bumpers, shelves, and stacks are not decoration: they define the safe approach corridor. If the direct route is narrow, begin from the open side and let the visible sway carry the claw into alignment. Releasing at the same rail position can produce different contact when the sway direction differs, so watch both position and motion.</p>
-          <p data-i18n="guideDeep2">The lift is a second timing decision, not an automatic reward. Once a charm is held, a pointer sweeps across the visible timing track. Press Lock Grip while it is inside the green zone. A centered press creates a stronger lock; missing the zone visibly opens the claw and drops the charm. Heavy charms use a slightly narrower window, while Workshop tuning widens that known window. Nothing depends on hidden probability.</p>
-          <p data-i18n="guideDeep3">Three drops create a planning budget. A non-target charm can still enter the permanent cabinet, but it does not advance the current objective, so decide whether discovery is worth one attempt. Early missions isolate one lesson at a time. Later chapters combine moving shelves, magnetic drift, fragile neighbors, and mixed weights. When a layout feels crowded, identify the most constrained target first. Removing an exposed charm can also open a safer path to one below it. Failure leaves the authored layout understandable and replayable, making practice more useful than guessing.</p>
-          <p data-i18n="guideDeep4">Keyboard players can focus the machine, use the arrow keys to move the reticle, press Space or Enter to drop, then press Space or Enter again when the timing pointer enters green. Pointer and touch players drag and release to drop, then tap Lock Grip in the same green window. Pause freezes the complete attempt, and the protected back action asks before ending it. Result buttons always return to Missions first, then offer the next unlocked mission, then Replay. Progress, medals, cabinet discoveries, starbolts, and transparent tuning remain on this device only.</p>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Controls and navigation</h3>
+          <p data-i18n="guideDeep4">Touch or mouse: drag to aim, release to drop, then press Lock Grip. Keyboard: arrows aim; Space or Enter drops and locks the grip. Pause freezes the attempt; returning to Missions ends it.</p>
         </article>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-carnival-claw.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-carnival-claw.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back to Main">←</button>
-        <div><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Carnival Claw</strong><span id="stageSummary"></span></div>
+        <div><strong data-runtime-localize="off" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Carnival Claw</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Carnival mission selection"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter" data-wp-enter-battle="true">Enter Machine</button>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-wp-enter-battle="true" data-i18n="enter">Enter Machine</button>
         </section>
         <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Cabinet</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
         <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Workshop</h2><p data-i18n="workshopIntro">Spend earned starbolts on permanent, transparent machine tuning.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
@@ -190,15 +187,17 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
-  <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

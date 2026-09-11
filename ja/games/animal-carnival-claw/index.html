@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-carnival-claw/" />
-
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -31,8 +30,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="カーニバルクロー | WeightPlay" />
@@ -43,18 +41,20 @@
     <meta name="twitter:title" content="カーニバルクロー | WeightPlay" />
     <meta name="twitter:description" content="30のオリジナルミッションで狙い、タイミングを合わせ、クローを安定させて目標チャームを集めよう。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"カーニバルクロー","url":"https://weightplay.com/ja/games/animal-carnival-claw/","image":"https://weightplay.com/assets/animal-carnival-claw-cover.webp","description":"30のオリジナルミッションで狙い、タイミングを合わせ、クローを安定させて目標チャームを集めよう。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","シミュレーション","コレクション","Family","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Carnival Claw"}</script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"カーニバルクロー","alternateName":"Carnival Claw","url":"https://weightplay.com/ja/games/animal-carnival-claw/","image":"https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp","description":"30のオリジナルミッションで狙い、タイミングを合わせ、クローを安定させて目標チャームを集めよう。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","シミュレーション","コレクション","Family"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
+      <img src="../../assets/interface7-redrawn/animal-carnival-claw.webp" alt="">
       <strong data-i18n="loading">スターべル・カーニバルを点灯中…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,11 +76,11 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="カーニバルクローのゲーム画像">
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-carnival-claw.webp" data-i18n-alt="posterAlt" alt="カーニバルクローのゲーム画像">
         <div class="main-copy">
           <small data-i18n="eyebrow">スターベルスキルアーケード</small>
           <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">カーニバルクロー</h1>
-          <p data-i18n="pitch">チャームを選び、揺れるクローのタイミングを合わせ、3回以内に持ち上げを安定させよう。</p>
+          <p data-i18n="pitch">クレーンを狙いに合わせ、つかむタイミングを計って指定のチャームを集めよう。</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">ゲーム開始</button>
         </div>
@@ -90,46 +90,43 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
-        <h2 data-i18n="guideTitle">一滴一滴を意図的な救助に変える</h2>
-        <p data-i18n="guideIntro">ラックスはスターベルカーニバルのために30台のフェアスキルマシンを作りました。ノリは、要求されたメモリーチャームを取得するためにあなたのタイミングを必要としています。</p>
+        <h2 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">カーニバルクロー</h2>
+        <p data-i18n="guideIntro">クレーンを狙いに合わせ、つかむタイミングを計って指定のチャームを集めよう。</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
-          <li data-i18n="how1">照準レティクルを、表示されているターゲット チャーム上にドラッグします。</li>
-          <li data-i18n="how2">揺れる爪が揃ったら放すかドロップを押します。</li>
-          <li data-i18n="how3">キャッチ後、移動ポインタが緑色のゾーンに入ったときにロック グリップを押します。</li>
+          <li data-i18n="how1">照準を指定のチャームまでドラッグします。</li>
+          <li data-i18n="how2">揺れるクレーンが重なったら指を離すか、降下ボタンを押します。</li>
+          <li data-i18n="how3">つかんだ後、指針が緑の範囲に入った瞬間にグリップを固定します。</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">各ミッションでは 3 つの無料ドロップが提供され、あらゆるターゲット、重量、グリップのニーズが表示されます。クリアする完全なターゲット セットを取得します。支払い、ランダムな希少性、または実際の賞品は含まれません。</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">30のカーニバルミッション</h3><p data-i18n="progressText">6 台のマシンにバンパー、シェルフ、磁気ドリフト、壊れやすいスタック、混合チャンピオンシップ レイアウトが追加されます。クリアするたびに、次の作成されたミッションのロックが解除されます。</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">露出した光のチャームから始めて、スウェイコーンを観察し、リフト中に反対側の小さな修正を加えます。中心にある重いチャームは、軽いチャームよりも安定させる必要があります。</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">3回以内に指定のチャームをすべて集めればクリア。ほかのチャームはコレクションに加わりますが、目標には数えません。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">ミッション</h3><p data-i18n="progressText">クリアすると次のミッションが解放されます。移動する棚、磁力によるずれ、異なる重さに挑戦し、獲得したスターボルトで工房の機械を強化しましょう。</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">まずは手前の狙いやすい目標から。重いチャームほど緑の範囲が狭くなりますが、工房の強化で広げられます。</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">ロック解除されたミッション、メダル、キャビネットのチャームはこのブラウザ内にのみ残ります。アカウント、アップロード、個人情報は必要ありません。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
           <div><dt data-i18n="faq1q">グラブはランダムですか？</dt><dd data-i18n="faq1a">いいえ、位置、タイミング、目に見える重量、そして安定性が結果を左右します。</dd></div>
           <div><dt data-i18n="faq2q">集めたチャームは失われることはありますか?</dt><dd data-i18n="faq2a">いいえ。キャビネットの進行状況はこのデバイスでは永続的です。</dd></div>
           <div><dt data-i18n="faq3q">次は何を遊べばいいでしょうか？</dt><dd data-i18n="faq3a">別のタイミング チャレンジにはアニマル リーフ フィッシャーを、慎重な計画にはアニマル パーキング パトロールをお試しください。</dd></div>
         </dl></article>
-        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">ドロップをコミットする前にマシンを読む</h3>
-          <p data-i18n="guideDeep1">すべてのミッションは宝くじではなく、小さな空間パズルです。ターゲット ストリップには重要なチャームの名前が記載され、ビンにはそれらの正確な位置と相対的な重さが表示されます。レチクルをゆっくりと移動させて、クローの中心とターゲットの中心を比較します。近くのバンパー、棚、書庫は装飾ではなく、安全なアプローチ廊下を定義します。直接のルートが狭い場合は、開いた側から始めて、目に見える揺れによって爪の位置を調整します。同じレール位置でリリースしても、揺れ方向が異なると接触が異なる場合がありますので、位置と動作の両方に注意してください。</p>
-          <p data-i18n="guideDeep2">リフトは第二の決定であり、自動的に得られる報酬ではありません。短い修正で目に見えるスイングに対抗し、グリップラインより上の安定性を保ちます。</p>
-          <p data-i18n="guideDeep3">3 滴で計画予算が作成されます。対象外のお守りも常設キャビネットに入れることはできますが、現在の目的を前進させることはできないため、発見が一度試みる価値があるかどうかを判断してください。初期のミッションでは、一度に 1 つのレッスンが分離されます。後の章では、移動棚、磁気ドリフト、壊れやすい隣接物、および混合重量を組み合わせます。レイアウトが混雑していると感じた場合は、最も制限されたターゲットを最初に特定します。露出したチャームを削除すると、その下にあるチャームへのより安全なパスが開かれる場合もあります。失敗しても、作成されたレイアウトは理解可能で再現可能になるため、推測するよりも練習する方が役立ちます。</p>
-          <p data-i18n="guideDeep4">タッチ、ポインター、およびキーボード コントロールは、同じ公正なルールを共有します。このデバイスでは進行状況が残り、保護されたナビゲーションにより慎重な決定が保持されます。</p>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">操作と戻り方</h3>
+          <p data-i18n="guideDeep4">タッチ・マウス：ドラッグで狙い、離して降下し、グリップ固定ボタンを押します。キーボード：矢印キーで照準、スペースかEnterで降下・固定。一時停止で動きが止まり、ミッションへ戻ると今回の挑戦が終了します。</p>
         </article>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-carnival-claw.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-carnival-claw.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="メインへ戻る">←</button>
-        <div><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">カーニバルクロー</strong><span id="stageSummary"></span></div>
+        <div><strong data-runtime-localize="off" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">カーニバルクロー</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="カーニバルミッション選択"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter" data-wp-enter-battle="true">マシンに入る</button>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-wp-enter-battle="true" data-i18n="enter">マシンに入る</button>
         </section>
         <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">キャビネット</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
         <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">工房</h2><p data-i18n="workshopIntro">獲得したスターボルトは、永続的で透明性のあるマシンのチューニングに費やします。</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
@@ -190,18 +187,20 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="カーニバルクロー";document.title="カーニバルクロー | WeightPlay";},{once:true});</script>
 </body>
 </html>

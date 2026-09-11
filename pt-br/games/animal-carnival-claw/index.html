@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-carnival-claw/" />
-
     <link rel="canonical" href="https://weightplay.com/pt-br/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -31,8 +30,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Garra do Carnaval | WeightPlay" />
@@ -43,18 +41,20 @@
     <meta name="twitter:title" content="Garra do Carnaval | WeightPlay" />
     <meta name="twitter:description" content="Mire, calcule e estabilize uma garra justa para coletar alvos em 30 missões originais." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Garra do Carnaval","url":"https://weightplay.com/pt-br/games/animal-carnival-claw/","image":"https://weightplay.com/assets/animal-carnival-claw-cover.webp","description":"Mire, calcule e estabilize uma garra justa para coletar alvos em 30 missões originais.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulação","Coleção","Family","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Carnival Claw"}</script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Garra do Carnaval","alternateName":"Carnival Claw","url":"https://weightplay.com/pt-br/games/animal-carnival-claw/","image":"https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp","description":"Mire, calcule e estabilize uma garra justa para coletar alvos em 30 missões originais.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"pt-BR","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulação","Coleção","Family"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
+      <img src="../../assets/interface7-redrawn/animal-carnival-claw.webp" alt="">
       <strong data-i18n="loading">Acendendo o Carnaval Estelar…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,11 +76,11 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="Imagem do jogo Garra do Carnaval">
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-carnival-claw.webp" data-i18n-alt="posterAlt" alt="Imagem do jogo Garra do Carnaval">
         <div class="main-copy">
           <small data-i18n="eyebrow">Arcada de habilidade Starbell</small>
           <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Garra do Carnaval</h1>
-          <p data-i18n="pitch">Escolha um amuleto, acerte o balanço e estabilize a subida antes de gastar três tentativas.</p>
+          <p data-i18n="pitch">Mire a garra e firme a pegada na hora certa para recolher os amuletos pedidos.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Começar</button>
         </div>
@@ -90,46 +90,43 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Guia do jogo">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Guia do jogo original</span>
-        <h2 data-i18n="guideTitle">Transforme cada gota em um resgate deliberado</h2>
-        <p data-i18n="guideIntro">Rux construiu trinta máquinas de habilidade justa para o Starbell Carnival. Nori precisa do seu tempo para recuperar os amuletos de memória solicitados.</p>
+        <h2 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Garra do Carnaval</h2>
+        <p data-i18n="guideIntro">Mire a garra e firme a pegada na hora certa para recolher os amuletos pedidos.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">Como jogar</h3><ol>
-          <li data-i18n="how1">Arraste o retículo de mira sobre um amuleto de alvo visível.</li>
-          <li data-i18n="how2">Solte ou pressione Soltar quando a garra oscilante se alinhar.</li>
-          <li data-i18n="how3">Após uma captura, pressione Lock Grip quando o ponteiro móvel entrar na zona verde.</li>
+          <li data-i18n="how1">Arraste a mira até um amuleto pedido.</li>
+          <li data-i18n="how2">Solte ou aperte o botão de descida quando a garra se alinhar.</li>
+          <li data-i18n="how3">Depois de pegar, trave a pegada quando o ponteiro entrar na faixa verde.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regras e resultados</h3><p data-i18n="rulesText">Cada missão dá três quedas grátis e mostra cada alvo, peso e necessidade de aderência. Recupere o alvo completo definido para limpar. Nenhum pagamento, raridade aleatória ou prêmio real está envolvido.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Trinta missões de carnaval</h3><p data-i18n="progressText">Seis máquinas adicionam pára-choques, prateleiras, deriva magnética, pilhas frágeis e layouts de campeonato mistos. Cada conclusão desbloqueia a próxima missão de autoria.</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">Dicas práticas</h3><p data-i18n="tipsText">Comece com encantos de luz exposta, observe o cone de oscilação e faça pequenas correções opostas durante a elevação. Um charme pesado e centrado precisa de mais firmeza do que um leve.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regras e resultados</h3><p data-i18n="rulesText">Recolha todos os amuletos pedidos em três tentativas. Os demais entram na coleção, mas não completam o objetivo.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Missões</h3><p data-i18n="progressText">Conclua uma missão para liberar a próxima. As máquinas seguintes trazem prateleiras móveis, desvio magnético e pesos variados. Use os parafusos estrela ganhos para melhorar a máquina na oficina.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Dicas práticas</h3><p data-i18n="tipsText">Comece pelos alvos livres. Amuletos pesados têm uma faixa verde menor; melhorias da oficina podem ampliá-la.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Salvar e privacidade</h3><p data-i18n="saveText">Missões desbloqueadas, medalhas e amuletos de gabinete ficam apenas neste navegador. Nenhuma conta, upload ou informações pessoais são necessárias.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">Perguntas frequentes</h3><dl>
           <div><dt data-i18n="faq1q">Uma captura é aleatória?</dt><dd data-i18n="faq1a">Não. A posição, o tempo, o peso visível e a sua estabilização determinam o resultado.</dd></div>
           <div><dt data-i18n="faq2q">Posso perder amuletos coletados?</dt><dd data-i18n="faq2a">Não. O progresso do gabinete é permanente neste dispositivo.</dd></div>
           <div><dt data-i18n="faq3q">O que devo jogar a seguir?</dt><dd data-i18n="faq3a">Experimente Animal Reef Fisher para outro desafio de tempo ou Animal Parking Patrol para um planejamento cuidadoso.</dd></div>
         </dl></article>
-        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Leia a máquina antes de cometer uma queda</h3>
-          <p data-i18n="guideDeep1">Cada missão é um pequeno quebra-cabeça espacial e não uma loteria. A faixa de destino nomeia os símbolos importantes, enquanto a caixa mostra suas localizações exatas e pesos relativos. Mova o retículo lentamente o suficiente para comparar o centro da garra com o centro do alvo. Pára-choques, prateleiras e pilhas próximas não são decoração: eles definem o corredor de acesso seguro. Se a rota direta for estreita, comece pelo lado aberto e deixe a oscilação visível alinhar a garra. Liberar na mesma posição do trilho pode produzir contato diferente quando a direção de oscilação for diferente, portanto observe a posição e o movimento.</p>
-          <p data-i18n="guideDeep2">O aumento é uma segunda decisão, não uma recompensa automática. Contrarie o swing visível com pequenas correções e mantenha a estabilidade acima da linha de aderência.</p>
-          <p data-i18n="guideDeep3">Três gotas criam um orçamento de planejamento. Um feitiço não-alvo ainda pode entrar no gabinete permanente, mas não avança o objetivo atual, então decida se vale a pena tentar a descoberta. As primeiras missões isolam uma lição de cada vez. Os capítulos posteriores combinam prateleiras móveis, deriva magnética, vizinhos frágeis e pesos mistos. Quando um layout parecer lotado, identifique primeiro o alvo mais restrito. Remover um amuleto exposto também pode abrir um caminho mais seguro para outro abaixo dele. A falha deixa o layout criado compreensível e reproduzível, tornando a prática mais útil do que a adivinhação.</p>
-          <p data-i18n="guideDeep4">Os controles de toque, ponteiro e teclado compartilham as mesmas regras justas. O progresso permanece neste dispositivo e a navegação protegida preserva as decisões deliberadas.</p>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Controles e retorno</h3>
+          <p data-i18n="guideDeep4">Toque ou mouse: arraste para mirar, solte para descer e aperte para travar a pegada. Teclado: setas para mirar; Espaço ou Enter para descer e travar. Pausar congela a tentativa; voltar às missões a encerra.</p>
         </article>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-carnival-claw.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-carnival-claw.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Voltar ao início">←</button>
-        <div><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Garra do Carnaval</strong><span id="stageSummary"></span></div>
+        <div><strong data-runtime-localize="off" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Garra do Carnaval</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Seleção de missão de carnaval"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter" data-wp-enter-battle="true">Entrar na máquina</button>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-wp-enter-battle="true" data-i18n="enter">Entrar na máquina</button>
         </section>
         <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Coleção</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
         <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Oficina</h2><p data-i18n="workshopIntro">Gaste os starbolts ganhos em ajustes permanentes e transparentes da máquina.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
@@ -190,16 +187,18 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

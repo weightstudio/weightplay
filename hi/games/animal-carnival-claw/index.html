@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-carnival-claw/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -31,8 +30,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="कार्निवल क्लॉ | WeightPlay" />
@@ -43,18 +41,20 @@
     <meta name="twitter:title" content="कार्निवल क्लॉ | WeightPlay" />
     <meta name="twitter:description" content="30 मौलिक कार्निवल मिशनों में निशाना लगाएँ, समय साधें और पंजे को स्थिर रखें।" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"कार्निवल क्लॉ","url":"https://weightplay.com/hi/games/animal-carnival-claw/","image":"https://weightplay.com/assets/animal-carnival-claw-cover.webp","description":"30 मौलिक कार्निवल मिशनों में निशाना लगाएँ, समय साधें और पंजे को स्थिर रखें।","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"hi","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","अनुकरण","संग्रह","Family","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Carnival Claw"}</script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"कार्निवल क्लॉ","alternateName":"Carnival Claw","url":"https://weightplay.com/hi/games/animal-carnival-claw/","image":"https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp","description":"30 मौलिक कार्निवल मिशनों में निशाना लगाएँ, समय साधें और पंजे को स्थिर रखें।","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"hi","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","अनुकरण","संग्रह","Family"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
+      <img src="../../assets/interface7-redrawn/animal-carnival-claw.webp" alt="">
       <strong data-i18n="loading">स्टारबेल कार्निवल रोशन हो रहा है…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,11 +76,11 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="कार्निवल क्लॉ game artwork">
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-carnival-claw.webp" data-i18n-alt="posterAlt" alt="कार्निवल क्लॉ game artwork">
         <div class="main-copy">
           <small data-i18n="eyebrow">स्टारबेल कौशल आर्केड</small>
           <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">कार्निवल क्लॉ</h1>
-          <p data-i18n="pitch">चार्म चुनें, झूलते पंजे का समय साधें और तीन मौकों में उठान स्थिर रखें।</p>
+          <p data-i18n="pitch">पंजे से निशाना लगाएँ और सही समय पर पकड़ कसकर माँगे गए आभूषण इकट्ठे करें।</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">खेल शुरू करें</button>
         </div>
@@ -90,46 +90,43 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="गेम गाइड">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay मूल गेम गाइड</span>
-        <h2 data-i18n="guideTitle">प्रत्येक बूंद को सुविचारित बचाव में बदलें</h2>
-        <p data-i18n="guideIntro">रक्स ने स्टारबेल कार्निवल के लिए तीस निष्पक्ष कौशल मशीनें बनाईं। अनुरोधित मेमोरी चार्म्स को पुनः प्राप्त करने के लिए नोरी को आपके समय की आवश्यकता है।</p>
+        <h2 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">कार्निवल क्लॉ</h2>
+        <p data-i18n="guideIntro">पंजे से निशाना लगाएँ और सही समय पर पकड़ कसकर माँगे गए आभूषण इकट्ठे करें।</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">कैसे खेलें</h3><ol>
-          <li data-i18n="how1">लक्ष्य करने वाले रेटिकल को दृश्यमान लक्ष्य आकर्षण पर खींचें।</li>
-          <li data-i18n="how2">जब लहराता हुआ पंजा सीधी रेखा में आ जाए तो छोड़ें या ड्रॉप दबाएँ।</li>
-          <li data-i18n="how3">कैच के बाद, जब गतिशील पॉइंटर हरे क्षेत्र में प्रवेश करता है तो लॉक ग्रिप दबाएँ।</li>
+          <li data-i18n="how1">निशाने को खींचकर माँगे गए आभूषण पर रखें।</li>
+          <li data-i18n="how2">झूलता पंजा सीध में आने पर छोड़ें या नीचे उतारने का बटन दबाएँ।</li>
+          <li data-i18n="how3">पकड़ने के बाद सूचक के हरे क्षेत्र में आते ही पकड़ लॉक करें।</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">नियम और परिणाम</h3><p data-i18n="rulesText">प्रत्येक मिशन तीन निःशुल्क ड्रॉप्स देता है और प्रत्येक लक्ष्य, वजन और पकड़ की आवश्यकता को दर्शाता है। स्पष्ट करने के लिए निर्धारित पूरा लक्ष्य पुनः प्राप्त करें। इसमें कोई भुगतान, यादृच्छिक दुर्लभता या वास्तविक पुरस्कार शामिल नहीं है।</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">तीस कार्निवल मिशन</h3><p data-i18n="progressText">छह मशीनों में बंपर, अलमारियां, चुंबकीय बहाव, नाजुक ढेर और मिश्रित चैम्पियनशिप लेआउट शामिल हैं। प्रत्येक स्पष्ट अगले लिखित मिशन को अनलॉक करता है।</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">व्यावहारिक सुझाव</h3><p data-i18n="tipsText">उजागर प्रकाश आकर्षण के साथ शुरू करें, स्वे कोन देखें, और लिफ्ट के दौरान छोटे विपरीत सुधार करें। एक केंद्रित भारी आकर्षण को हल्के की तुलना में अधिक स्थिरता की आवश्यकता होती है।</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">नियम और परिणाम</h3><p data-i18n="rulesText">तीन कोशिशों में सभी माँगे गए आभूषण इकट्ठे करें। दूसरे आभूषण संग्रह में जुड़ते हैं, लेकिन मिशन का लक्ष्य पूरा नहीं करते।</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">मिशन</h3><p data-i18n="progressText">मिशन पूरा करने पर अगला खुलता है। आगे चलती शेल्फ, चुंबकीय बहाव और अलग-अलग वजन मिलेंगे। कमाए गए स्टारबोल्ट से कार्यशाला में मशीन सुधारें।</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">व्यावहारिक सुझाव</h3><p data-i18n="tipsText">पहले खुले लक्ष्यों को चुनें। भारी आभूषणों का हरा क्षेत्र छोटा होता है; कार्यशाला के सुधार इसे बढ़ा सकते हैं।</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">सहेजें और गोपनीयता</h3><p data-i18n="saveText">अनलॉक किए गए मिशन, पदक और कैबिनेट आकर्षण केवल इस ब्राउज़र में रहते हैं। किसी खाते, अपलोड या व्यक्तिगत जानकारी की आवश्यकता नहीं है।</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">अक्सर पूछे जाने वाले प्रश्न</h3><dl>
           <div><dt data-i18n="faq1q">क्या हड़पना यादृच्छिक है?</dt><dd data-i18n="faq1a">नहीं, स्थिति, समय, दृश्यमान वजन और आपका स्थिरीकरण परिणाम निर्धारित करते हैं।</dd></div>
           <div><dt data-i18n="faq2q">क्या मैं एकत्रित आकर्षण खो सकता हूँ?</dt><dd data-i18n="faq2a">नहीं, इस उपकरण पर कैबिनेट की प्रगति स्थायी है।</dd></div>
           <div><dt data-i18n="faq3q">मुझे आगे क्या खेलना चाहिए?</dt><dd data-i18n="faq3a">किसी अन्य टाइमिंग चुनौती के लिए एनिमल रीफ फिशर या सावधानीपूर्वक योजना बनाने के लिए एनिमल पार्किंग गश्ती का प्रयास करें।</dd></div>
         </dl></article>
-        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">ड्रॉप करने से पहले मशीन को पढ़ें</h3>
-          <p data-i18n="guideDeep1">प्रत्येक मिशन लॉटरी के बजाय एक छोटी स्थानिक पहेली है। लक्ष्य पट्टी उन आकर्षणों के नाम बताती है जो मायने रखते हैं, जबकि बिन उनके सटीक स्थान और सापेक्ष वजन दिखाता है। पंजे के केंद्र की तुलना लक्ष्य केंद्र से करने के लिए रेटिकल को धीरे-धीरे घुमाएँ। आस-पास के बंपर, अलमारियाँ और ढेर सजावट नहीं हैं: वे सुरक्षित दृष्टिकोण गलियारे को परिभाषित करते हैं। यदि सीधा मार्ग संकीर्ण है, तो खुली तरफ से शुरू करें और दृश्यमान घुमाव को पंजे को संरेखण में ले जाने दें। एक ही रेल स्थिति पर रिलीज करने से स्वे दिशा भिन्न होने पर अलग-अलग संपर्क उत्पन्न हो सकता है, इसलिए स्थिति और गति दोनों पर नजर रखें।</p>
-          <p data-i18n="guideDeep2">लिफ्ट एक दूसरा निर्णय है, स्वचालित इनाम नहीं। छोटे सुधारों के साथ दृश्यमान स्विंग का मुकाबला करें और पकड़ रेखा के ऊपर स्थिरता बनाए रखें।</p>
-          <p data-i18n="guideDeep3">तीन बूँदें एक योजना बजट बनाती हैं। एक गैर-लक्ष्य आकर्षण अभी भी स्थायी कैबिनेट में प्रवेश कर सकता है, लेकिन यह वर्तमान उद्देश्य को आगे नहीं बढ़ाता है, इसलिए तय करें कि खोज एक प्रयास के लायक है या नहीं। प्रारंभिक मिशन एक समय में एक पाठ को अलग करते हैं। बाद के अध्यायों में चलती अलमारियाँ, चुंबकीय बहाव, नाजुक पड़ोसी और मिश्रित भार शामिल हैं। जब किसी लेआउट में भीड़ महसूस हो तो सबसे पहले सबसे सीमित लक्ष्य की पहचान करें। किसी खुले आकर्षण को हटाने से उसके नीचे वाले आकर्षण के लिए एक सुरक्षित रास्ता भी खुल सकता है। विफलता से लिखित लेआउट समझने योग्य और दोबारा चलाने योग्य हो जाता है, जिससे अनुमान लगाने की तुलना में अभ्यास अधिक उपयोगी हो जाता है।</p>
-          <p data-i18n="guideDeep4">टच, पॉइंटर और कीबोर्ड नियंत्रण समान निष्पक्ष नियम साझा करते हैं। इस उपकरण पर प्रगति बनी रहती है, और संरक्षित नेविगेशन जानबूझकर किए गए निर्णयों को सुरक्षित रखता है।</p>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">नियंत्रण और वापसी</h3>
+          <p data-i18n="guideDeep4">टच या माउस: खींचकर निशाना लगाएँ, छोड़कर पंजा उतारें, फिर पकड़ लॉक करें। कीबोर्ड: तीरों से निशाना और स्पेस या Enter से नीचे उतारना व लॉक करना। विराम कोशिश को रोकता है; मिशन पर लौटना इसे समाप्त करता है।</p>
         </article>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-carnival-claw.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-carnival-claw.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="मुख्य स्क्रीन पर">←</button>
-        <div><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">कार्निवल क्लॉ</strong><span id="stageSummary"></span></div>
+        <div><strong data-runtime-localize="off" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">कार्निवल क्लॉ</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="कार्निवल मिशन चयन"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter" data-wp-enter-battle="true">मशीन में जाएँ</button>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-wp-enter-battle="true" data-i18n="enter">मशीन में जाएँ</button>
         </section>
         <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">संग्रह</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
         <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">कार्यशाला</h2><p data-i18n="workshopIntro">अर्जित स्टारबोल्ट को स्थायी, पारदर्शी मशीन ट्यूनिंग पर खर्च करें।</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
@@ -190,16 +187,18 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

@@ -14,15 +14,25 @@ if(!window.CARNIVAL_CLAW_LOCALES[locale])locale="en";
 let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0,stageEntry="main";
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
 const images={
-  background:loadImage("../../assets/animal-carnival-claw-background-v2.webp"),
-  atlas:loadImage("../../assets/animal-carnival-claw-atlas.webp"),
-  prizesA:loadImage("../../assets/animal-carnival-claw-prizes-a.webp"),
-  prizesB:loadImage("../../assets/animal-carnival-claw-prizes-b.webp"),
-  props:loadImage("../../assets/animal-carnival-claw-props.webp")
+  background:loadImage("../../assets/animal-carnival-claw-background-block-v1.png"),
+  nori:loadImage("../../assets/animal-carnival-claw-nori-block-v1.png"),
+  rux:loadImage("../../assets/animal-carnival-claw-rux-block-v1.png"),
+  leo:loadImage("../../assets/animal-carnival-claw-leo-block-v1.png"),
+  fox:loadImage("../../assets/animal-carnival-claw-fox-block-v1.png"),
+  turtle:loadImage("../../assets/animal-carnival-claw-turtle-block-v1.png"),
+  owl:loadImage("../../assets/animal-carnival-claw-owl-block-v1.png"),
+  panda:loadImage("../../assets/animal-carnival-claw-panda-block-v1.png"),
+  rabbit:loadImage("../../assets/animal-carnival-claw-rabbit-block-v1.png"),
+  bell:loadImage("../../assets/animal-carnival-claw-bell-block-v1.png"),
+  bumper:loadImage("../../assets/animal-carnival-claw-bumper-block-v1.png"),
+  shelf:loadImage("../../assets/animal-carnival-claw-shelf-block-v1.png"),
+  magnet:loadImage("../../assets/animal-carnival-claw-magnet-block-v1.png"),
+  clawOpen:loadImage("../../assets/animal-carnival-claw-claw-open-block-v1.png"),
+  clawClosed:loadImage("../../assets/animal-carnival-claw-claw-closed-block-v1.png")
 };
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
-let run=null,pointerId=null;
+let run=null,pointerId=null,frame=null;
 const STAGE_CARD_POOL_SIZE=9;
 let stageWindowStart=0,stageCardPool=[],stageSettleRaf=0;
 const chapters=[
@@ -55,9 +65,11 @@ function persist(){safeSet("weightplay_animal_carnival_claw_v1",JSON.stringify(s
 function loadImage(src){const image=new Image();image.src=src;return image}
 function t(key,data){return fmt(copy[key]??window.CARNIVAL_CLAW_LOCALES.en[key]??key,data)}
 function prizeName(kind){return t(`prize${kind+1}`)}
+const individualPrizeArt={0:"leo",1:"nori",2:"fox",3:"turtle",4:"owl",5:"panda",6:"rux",7:"rabbit"};
 function prizeSpriteStyle(kind){
-  const sheet=kind<4?"a":"b",cell=kind%4,x=cell%2,y=Math.floor(cell/2);
-  return`background-image:url('../../assets/animal-carnival-claw-prizes-${sheet}.webp');background-position:${x*100}% ${y*100}%`;
+  const individual=images[individualPrizeArt[kind]];
+  if(individual)return`background-image:url('${individual.src}');background-position:center;background-size:contain`;
+  throw new Error(`Missing prize artwork for kind ${kind}`);
 }
 function medalText(value){return value?"★".repeat(value):t("none")}
 function announce(message,data){
@@ -76,10 +88,13 @@ function setLocale(next,persistChoice=true){
   $("localeSelect").value=next;
   if(persistChoice){safeSet("weightPlayLocale",next);safeSet("weightplayLocale",next)}
   renderMain();renderStage();if(run){renderHud();draw()}
+  frame?.refresh();
 }
 function show(next){
   cancelAnimationFrame(raf);raf=0;screen=next;document.body.dataset.screen=next;
   $("mainGroup").hidden=next!=="main";$("stageScreen").hidden=next!=="stage";$("battleScreen").hidden=next!=="battle";
+  $("mainGuide").hidden=next!=="main";
+  frame?.activate(next,{covered:next==="battle"&&Boolean(activeModal()||run?.result)});
   if(next==="main")renderMain();
   if(next==="stage"){selected=clamp(save.unlocked-1,0,levels.length-1);renderStage();requestAnimationFrame(()=>centerSelected(false))}
   // Settle the existing shared owners in this navigation transaction. Waiting
@@ -105,7 +120,7 @@ function stageWindowLimit(){return Math.max(0,levels.length-STAGE_CARD_POOL_SIZE
 function desiredStageWindow(index){return clamp(index-Math.floor(STAGE_CARD_POOL_SIZE/2),0,stageWindowLimit())}
 function createStageCard(){
   const button=document.createElement("button"),image=document.createElement("img"),body=document.createElement("span"),title=document.createElement("strong"),status=document.createElement("small");
-  button.type="button";button.className="stage-card";image.src="../../assets/animal-carnival-claw-cover.webp";image.alt="";
+  button.type="button";button.className="stage-card";image.src="../../assets/interface7-redrawn/animal-carnival-claw.webp";image.alt="";
   body.append(title,status);button.append(image,body);
   button.addEventListener("click",()=>{const index=Number(button.dataset.stageIndex);if(Number.isInteger(index))selectStage(index,true)});
   return button;
@@ -259,8 +274,7 @@ function centerSelected(){
 function renderCabinet(){
   $("cabinetSummary").textContent=t("progress",{cleared:save.medals.filter(Boolean).length,charms:save.cabinet.filter(Boolean).length});
   $("cabinetGrid").innerHTML=Array.from({length:8},(_,kind)=>{
-    const sheet=kind<4?"a":"b",cell=kind%4,x=cell%2,y=Math.floor(cell/2);
-    return`<div class="cabinet-item ${save.cabinet[kind]?"":"locked"}"><span class="cabinet-sprite" style="background-image:url('../../assets/animal-carnival-claw-prizes-${sheet}.webp');background-position:${x*100}% ${y*100}%"></span><strong>${save.cabinet[kind]?prizeName(kind):t("unknown")}</strong></div>`;
+    return`<div class="cabinet-item ${save.cabinet[kind]?"":"locked"}"><span class="cabinet-sprite" style="${prizeSpriteStyle(kind)}"></span><strong>${save.cabinet[kind]?prizeName(kind):t("unknown")}</strong></div>`;
   }).join("");
 }
 function renderWorkshop(){
@@ -420,6 +434,7 @@ function finish(won){
   run.result={won,medal,newBest};settledDecision=false;cancelAnimationFrame(raf);raf=0;
   track(won?"mission_clear":"mission_fail",{mission:boundedMetric(run.index+1,30),drops_remaining:boundedMetric(run.drops,3),misses:boundedMetric(run.misses,30),medal:boundedMetric(medal,3),new_best:Boolean(newBest)});
   $("battleLive").hidden=true;$("battleLive").inert=true;$("resultPanel").hidden=false;
+  frame?.activate("battle",{covered:true});
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;
   $("resultTitle").textContent=t(won?"winTitle":"failTitle");$("resultMedal").textContent=medalText(medal);
   const resultData={drops:run.drops,count:remainingTargets().length};
@@ -443,13 +458,22 @@ function updateTimingCoach(locked=false,failed=false){
 function activeModal(){return["tutorialPanel","leavePanel","pausePanel","resultPanel"].some(id=>!$(id).hidden)}
 function resolvedAutoplayPhase(){return Boolean(run&&["lift","return"].includes(run.phase))}
 function syncBattleModalState(id,open){if(!["tutorialPanel","leavePanel","pausePanel"].includes(id))return;$("battleLive").inert=open;["battleBackBtn","pauseBtn","dropBtn","restartBtn"].forEach(buttonId=>{const button=$(buttonId);if(!button)return;button.inert=open;if(open)button.setAttribute("aria-disabled","true");else button.removeAttribute("aria-disabled")})}
-function openModal(id,focus){focusReturn=document.activeElement;syncBattleModalState(id,true);$(id).hidden=false;cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
-function closeModal(id,resume=true){$(id).hidden=true;syncBattleModalState(id,false);focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
+function openModal(id,focus){focusReturn=document.activeElement;syncBattleModalState(id,true);$(id).hidden=false;frame?.activate(screen,{covered:true});cancelAnimationFrame(raf);raf=0;resolvedWallAnchor=0;requestAnimationFrame(()=>focus?.focus({preventScroll:true}))}
+function closeModal(id,resume=true){$(id).hidden=true;syncBattleModalState(id,false);frame?.activate(screen,{covered:Boolean(activeModal()||run?.result)});focusReturn?.focus?.({preventScroll:true});focusReturn=null;if(resume)resumeLoop()}
 function resumeLoop(){if(!run||run.result||screen!=="battle"||activeModal())return;cancelAnimationFrame(raf);last=performance.now();if(resolvedAutoplayPhase())resolvedWallAnchor=last-run.phaseTime*1000;raf=requestAnimationFrame(loop)}
 function loop(time){raf=0;const dt=Math.min(.04,(time-last)/1000||0);last=time;update(dt,time);draw();if(run&&!run.result&&screen==="battle"&&!activeModal())raf=requestAnimationFrame(loop)}
 function resizeCanvas(){const rect=canvas.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);canvas.width=Math.max(1,Math.round(rect.width*d));canvas.height=Math.max(1,Math.round(rect.height*d));canvas.dataset.dpr=d;draw()}
 function drawCover(image,x,y,w,h){if(!image.complete||!image.naturalWidth)return;const scale=Math.max(w/image.naturalWidth,h/image.naturalHeight),sw=w/scale,sh=h/scale,sx=(image.naturalWidth-sw)/2,sy=(image.naturalHeight-sh)/2;ctx.drawImage(image,sx,sy,sw,sh,x,y,w,h)}
-function drawCell(image,cell,x,y,w,h,cols=2,rows=2){if(!image.complete||!image.naturalWidth)return;const col=cell%cols,row=Math.floor(cell/cols),sw=image.naturalWidth/cols,sh=image.naturalHeight/rows;ctx.drawImage(image,col*sw,row*sh,sw,sh,x,y,w,h)}
+function drawPrize(kind,x,y,w,h){
+  const image=images[individualPrizeArt[kind]];
+  if(!image)throw new Error(`Missing prize artwork for kind ${kind}`);
+  drawContained(image,x,y,w,h);
+}
+function drawContained(image,x,y,w,h){
+  if(!image.complete||!image.naturalWidth)return;
+  const scale=Math.min(w/image.naturalWidth,h/image.naturalHeight),dw=image.naturalWidth*scale,dh=image.naturalHeight*scale;
+  ctx.drawImage(image,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+}
 function draw(){
   if(!run)return;const d=+canvas.dataset.dpr||1,w=canvas.width/d,h=canvas.height/d,px=x=>x/1000*w,py=y=>y/620*h,min=Math.min(w,h);
   ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);drawCover(images.background,0,0,w,h);ctx.save();
@@ -458,33 +482,34 @@ function draw(){
   for(const prize of run.prizes){
     if(!prize.active)continue;
     if(prize===heldPrize||(run.phase==="fall"&&prize===run.held))continue;
-    const size=clamp(min*.16+prize.weight*3,42,88),image=prize.kind<4?images.prizesA:images.prizesB,cell=prize.kind%4,x=px(prize.x),y=py(prize.y),isTarget=remainingTargets().includes(prize.kind);
+    const size=clamp(min*.16+prize.weight*3,42,88),x=px(prize.x),y=py(prize.y),isTarget=remainingTargets().includes(prize.kind);
     if(run.phase==="aim"&&isTarget){
       ctx.save();ctx.strokeStyle="#65ffe1";ctx.lineWidth=4;ctx.shadowColor="#65ffe1";ctx.shadowBlur=13;ctx.beginPath();ctx.arc(x,y,size*.58,0,Math.PI*2);ctx.stroke();ctx.restore();
     }
-    ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(prize.kind*2.1+run.elapsed*.3)*.05);drawCell(image,cell,-size/2,-size/2,size,size);ctx.restore();
+    ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(prize.kind*2.1+run.elapsed*.3)*.05);drawPrize(prize.kind,-size/2,-size/2,size,size);ctx.restore();
     if(run.phase==="aim"){
       const labelY=py(prize.y)-size*.58,badgeText=isTarget?`${t("targetMark")} · ${"◆".repeat(prize.weight)}`:"◆".repeat(prize.weight);
       ctx.font="800 12px sans-serif";const badgeWidth=clamp(ctx.measureText(badgeText).width+18,48,104);
       ctx.fillStyle=isTarget?"#087567ee":"#031c23cc";ctx.strokeStyle=isTarget?"#65ffe1":"#ffe173";ctx.lineWidth=isTarget?3:2;roundRect(px(prize.x)-badgeWidth/2,labelY,badgeWidth,22,10);ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(badgeText,px(prize.x),labelY+11);
     }
   }
-  const claw=clawPosition(),cell=heldPrize?3:2,clawSize=clamp(min*.28,70,128),clawX=px(claw.x),clawY=py(claw.y);
-  drawCell(images.atlas,cell,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
+  const claw=clawPosition(),clawSize=clamp(min*.28,70,128),clawX=px(claw.x),clawY=py(claw.y);
+  if(heldPrize)drawContained(images.clawClosed,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
+  else drawContained(images.clawOpen,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
   if(heldPrize){
-    const heldSize=clamp(min*.16+heldPrize.weight*3,54,82),heldImage=heldPrize.kind<4?images.prizesA:images.prizesB;
+    const heldSize=clamp(min*.16+heldPrize.weight*3,54,82);
     ctx.save();ctx.fillStyle="#03252ecc";ctx.strokeStyle="#65ffe1";ctx.lineWidth=3;ctx.shadowColor="#65ffe1";ctx.shadowBlur=12;
     ctx.beginPath();ctx.arc(clawX,clawY,heldSize*.39,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.shadowBlur=0;
-    drawCell(heldImage,heldPrize.kind%4,clawX-heldSize/2,clawY-heldSize/2,heldSize,heldSize);ctx.restore();
+    drawPrize(heldPrize.kind,clawX-heldSize/2,clawY-heldSize/2,heldSize,heldSize);ctx.restore();
     const clawTop=clawY-clawSize*.72;
     ctx.save();ctx.beginPath();ctx.rect(clawX-clawSize/2,clawTop,clawSize,clawSize*.5);
     ctx.rect(clawX-clawSize/2,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);
     ctx.rect(clawX+clawSize*.16,clawTop+clawSize*.42,clawSize*.34,clawSize*.58);ctx.clip();
-    drawCell(images.atlas,3,clawX-clawSize/2,clawTop,clawSize,clawSize);ctx.restore();
+    drawContained(images.clawClosed,clawX-clawSize/2,clawTop,clawSize,clawSize);ctx.restore();
   }
   if(run.phase==="fall"&&run.held){
-    const fallingSize=clamp(min*.16+run.held.weight*3,54,82),fallingImage=run.held.kind<4?images.prizesA:images.prizesB;
-    ctx.save();ctx.translate(px(run.fallX),py(run.fallY));ctx.rotate(run.fallRotation);drawCell(fallingImage,run.held.kind%4,-fallingSize/2,-fallingSize/2,fallingSize,fallingSize);ctx.restore();
+    const fallingSize=clamp(min*.16+run.held.weight*3,54,82);
+    ctx.save();ctx.translate(px(run.fallX),py(run.fallY));ctx.rotate(run.fallRotation);drawPrize(run.held.kind,-fallingSize/2,-fallingSize/2,fallingSize,fallingSize);ctx.restore();
   }
   if(run.phase==="aim"){
     const landingX=px(claw.x),landingY=py(run.aimY),active=run.prizes.filter(prize=>prize.active);
@@ -503,9 +528,14 @@ function draw(){
 function drawObstacles(w,h,px,py){
   const type=run.level.obstacle;
   if(type==="none")return;
-  const min=Math.min(w,h),prop=clamp(min*.2,52,118),at=(cell,x,y,size=prop)=>drawCell(images.props,cell,px(x)-size/2,py(y)-size/2,size,size);
+  const min=Math.min(w,h),prop=clamp(min*.2,52,118),at=(cell,x,y,size=prop)=>{
+    if(cell===0)drawContained(images.bell,px(x)-size/2,py(y)-size/2,size,size);
+    else if(cell===1)drawContained(images.bumper,px(x)-size/2,py(y)-size/2,size,size);
+    else if(cell===3)drawContained(images.magnet,px(x)-size/2,py(y)-size/2,size,size);
+    else throw new Error(`Missing obstacle artwork for cell ${cell}`);
+  };
   if(type==="bumper"||type==="mix"){at(1,260,355);at(1,640,360)}
-  if(type==="shelf"||type==="mix"){const x=500+Math.sin(run.elapsed*1.4+run.level.shelfPhase)*115,size=clamp(prop*1.45,78,170);drawCell(images.props,2,px(x)-size/2,py(330)-prop/2,size,prop)}
+  if(type==="shelf"||type==="mix"){const x=500+Math.sin(run.elapsed*1.4+run.level.shelfPhase)*115,size=clamp(prop*1.45,78,170);drawContained(images.shelf,px(x)-size/2,py(330)-prop/2,size,prop)}
   if(type==="magnet"||type==="mix")at(3,760,230,prop*1.08);
   if(type==="stack"||type==="mix"){at(0,440,390,prop*.8);at(0,530,405,prop*.8)}
 }
@@ -561,7 +591,7 @@ function bind(){
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&screen==="battle"&&run&&!run.result&&!activeModal())openModal("pausePanel",$("resumeBtn"))});
 }
 function init(){
-  bind();setLocale(locale,false);
+  frame=window.mountCarnivalFrame();bind();setLocale(locale,false);
   Promise.all(Object.values(images).map(image=>image.decode?.().catch(()=>{})||Promise.resolve())).finally(()=>setTimeout(()=>{$("loadingPanel").hidden=true;show("main")},350));
 }
 window.__CARNIVAL_CLAW_TEST__={

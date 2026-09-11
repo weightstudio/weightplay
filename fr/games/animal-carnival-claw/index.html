@@ -4,7 +4,6 @@
 <script src="/src/game-title-registry.js?v=20260908-approved-game-names1" data-wp-game-title-registry></script>
 
     <base href="/games/animal-carnival-claw/" />
-
     <link rel="canonical" href="https://weightplay.com/fr/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-carnival-claw/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-carnival-claw/" />
@@ -31,8 +30,7 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37">
+  <link rel="stylesheet" href="style.css?v=20260902-carnival-occlusion-v37"><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Griffe du Carnaval | WeightPlay" />
@@ -43,18 +41,20 @@
     <meta name="twitter:title" content="Griffe du Carnaval | WeightPlay" />
     <meta name="twitter:description" content="Visez, synchronisez et stabilisez une griffe équitable dans 30 missions originales." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Griffe du Carnaval","url":"https://weightplay.com/fr/games/animal-carnival-claw/","image":"https://weightplay.com/assets/animal-carnival-claw-cover.webp","description":"Visez, synchronisez et stabilisez une griffe équitable dans 30 missions originales.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulations","Collecte","Family","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players"},"alternateName":"Carnival Claw"}</script><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Griffe du Carnaval","alternateName":"Carnival Claw","url":"https://weightplay.com/fr/games/animal-carnival-claw/","image":"https://weightplay.com/assets/interface7-redrawn/animal-carnival-claw.webp","description":"Visez, synchronisez et stabilisez une griffe équitable dans 30 missions originales.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"fr","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Animal Games","Arcade","Simulations","Collecte","Family"],"audience":{"@type":"PeopleAudience","audienceType":"General players"}}</script>
+  <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
 <body data-screen="main" data-game-id="animal-carnival-claw" data-wp-combined-sound="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../assets/animal-carnival-claw-cover.webp" alt="">
+      <img src="../../assets/interface7-redrawn/animal-carnival-claw.webp" alt="">
       <strong data-i18n="loading">Illumination du Carnaval Étoilé…</strong>
       <div class="loading-track"><i id="loadingFill"></i></div>
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,11 +76,11 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-carnival-claw-cover.webp" data-i18n-alt="posterAlt" alt="Illustration du jeu Griffe du Carnaval">
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-carnival-claw.webp" data-i18n-alt="posterAlt" alt="Illustration du jeu Griffe du Carnaval">
         <div class="main-copy">
           <small data-i18n="eyebrow">Arcade de compétences Starbell</small>
           <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Griffe du Carnaval</h1>
-          <p data-i18n="pitch">Choisissez un charme, visez pendant le balancement puis stabilisez la montée en trois essais.</p>
+          <p data-i18n="pitch">Visez avec la pince et serrez au bon moment pour récupérer les breloques demandées.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">Commencer</button>
         </div>
@@ -90,46 +90,43 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Guide du jeu">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay Guide de jeu original</span>
-        <h2 data-i18n="guideTitle">Transformez chaque goutte en un sauvetage délibéré</h2>
-        <p data-i18n="guideIntro">Rux a construit trente machines de compétences équitables pour le Carnaval Starbell. Nori a besoin de votre timing pour récupérer les charmes de mémoire demandés.</p>
+        <h2 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Griffe du Carnaval</h2>
+        <p data-i18n="guideIntro">Visez avec la pince et serrez au bon moment pour récupérer les breloques demandées.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">Comment jouer</h3><ol>
-          <li data-i18n="how1">Faites glisser le réticule de visée sur un charme de cible visible.</li>
-          <li data-i18n="how2">Relâchez ou appuyez sur Drop lorsque la griffe oscillante s&#39;aligne.</li>
-          <li data-i18n="how3">Après une capture, appuyez sur Lock Grip lorsque le pointeur mobile entre dans la zone verte.</li>
+          <li data-i18n="how1">Faites glisser le viseur sur une breloque demandée.</li>
+          <li data-i18n="how2">Relâchez ou appuyez sur le bouton de descente quand la pince s’aligne.</li>
+          <li data-i18n="how3">Après la prise, verrouillez la pince lorsque le curseur entre dans la zone verte.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Règles et résultats</h3><p data-i18n="rulesText">Chaque mission donne trois largages gratuits et montre tous les besoins en matière d&#39;objectif, de poids et d&#39;adhérence. Récupérez l’ensemble cible complet à effacer. Aucun paiement, rareté aléatoire ou prix réel n&#39;est impliqué.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Trente missions de carnaval</h3><p data-i18n="progressText">Six machines ajoutent des pare-chocs, des étagères, une dérive magnétique, des piles fragiles et des configurations de championnat mixtes. Chaque achèvement débloque la prochaine mission écrite.</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">Conseils pratiques</h3><p data-i18n="tipsText">Commencez par des charmes de lumière exposés, observez le cône de balancement et effectuez de petites corrections opposées pendant le levage. Un charme lourd centré a besoin de plus de stabilisation qu’un charme léger.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Règles et résultats</h3><p data-i18n="rulesText">Récupérez toutes les breloques demandées en trois essais. Les autres rejoignent la collection sans valider l’objectif.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Missions</h3><p data-i18n="progressText">Réussissez une mission pour débloquer la suivante. Les machines suivantes ajoutent des étagères mobiles, une dérive magnétique et des poids variés. Dépensez les boulons étoilés gagnés dans l’atelier.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Conseils pratiques</h3><p data-i18n="tipsText">Commencez par les cibles dégagées. Les breloques lourdes ont une zone verte plus étroite ; les améliorations de l’atelier peuvent l’élargir.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Sauvegarde et confidentialité</h3><p data-i18n="saveText">Les missions, médailles et charmes d&#39;armoire débloqués restent uniquement dans ce navigateur. Aucun compte, téléchargement ou information personnelle n’est requis.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
           <div><dt data-i18n="faq1q">Une saisie est-elle aléatoire ?</dt><dd data-i18n="faq1a">Non. La position, le timing, le poids visible et votre stabilisation déterminent le résultat.</dd></div>
           <div><dt data-i18n="faq2q">Puis-je perdre les charmes collectés ?</dt><dd data-i18n="faq2a">Non. La progression du cabinet est permanente sur cet appareil.</dd></div>
           <div><dt data-i18n="faq3q">À quoi dois-je jouer ensuite ?</dt><dd data-i18n="faq3a">Essayez Animal Reef Fisher pour un autre défi de timing ou Animal Parking Patrol pour une planification minutieuse.</dd></div>
         </dl></article>
-        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Lisez la machine avant de commettre un drop</h3>
-          <p data-i18n="guideDeep1">Chaque mission est un petit puzzle spatial plutôt qu&#39;une loterie. La bande cible nomme les charmes qui comptent, tandis que le bac affiche leurs emplacements exacts et leurs poids relatifs. Déplacez le réticule assez lentement pour comparer le centre de la griffe avec le centre de la cible. Les pare-chocs, étagères et piles à proximité ne sont pas une décoration : ils définissent le couloir d&#39;approche sûr. Si le chemin direct est étroit, commencez par le côté ouvert et laissez le balancement visible aligner la griffe. Le relâchement à la même position du rail peut produire un contact différent lorsque la direction du balancement diffère, alors surveillez à la fois la position et le mouvement.</p>
-          <p data-i18n="guideDeep2">L’ascenseur est une deuxième décision et non une récompense automatique. Contrez le swing visible avec de courtes corrections et maintenez la stabilité au-dessus de la ligne de préhension.</p>
-          <p data-i18n="guideDeep3">Trois gouttes créent un budget de planification. Un charme non ciblé peut toujours entrer dans le cabinet permanent, mais il ne fait pas progresser l&#39;objectif actuel, alors décidez si la découverte vaut la peine d&#39;être tentée. Les premières missions isolent une leçon à la fois. Les chapitres suivants combinent des étagères mobiles, une dérive magnétique, des voisins fragiles et des poids mixtes. Lorsqu&#39;une mise en page semble encombrée, identifiez d&#39;abord la cible la plus contrainte. Supprimer un charme exposé peut également ouvrir un chemin plus sûr vers celui situé en dessous. L&#39;échec laisse la mise en page écrite compréhensible et rejouable, ce qui rend la pratique plus utile que la supposition.</p>
-          <p data-i18n="guideDeep4">Les commandes tactiles, du pointeur et du clavier partagent les mêmes règles équitables. Des progrès restent sur ce dispositif, et la navigation protégée préserve les décisions délibérées.</p>
+        <article class="game-info-section"><h3 data-i18n="guideDeepTitle">Commandes et retour</h3>
+          <p data-i18n="guideDeep4">Tactile ou souris : faites glisser pour viser, relâchez pour descendre, puis appuyez pour verrouiller. Au clavier : flèches pour viser, Espace ou Entrée pour descendre et verrouiller. La pause fige l’essai ; le retour aux missions y met fin.</p>
         </article>
       </div>
     </section>
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-carnival-claw-cover.webp')" data-wp-stage-art="../../assets/animal-carnival-claw-cover.webp">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" data-wp-stage-art="../../assets/interface7-redrawn/animal-carnival-claw.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-carnival-claw.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Retour à l&#39;accueil">←</button>
-        <div><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Griffe du Carnaval</strong><span id="stageSummary"></span></div>
+        <div><strong data-runtime-localize="off" data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">Griffe du Carnaval</strong><span id="stageSummary"></span></div>
         <span aria-hidden="true"></span>
       </header>
       <section id="stageWorkspace" class="stage-workspace">
         <section id="stagesPanel" class="stage-panel">
           <div class="chapter-panel"><small id="chapterKicker"></small><strong id="chapterTitle"></strong><p id="chapterRule"></p></div>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" data-i18n-aria="stageRailLabel" aria-label="Sélection des missions du Carnaval"></div>
-          <button id="enterBtn" class="enter-button primary-action" type="button" data-i18n="enter" data-wp-enter-battle="true">Entrer dans la machine</button>
+          <button id="enterBtn" class="enter-button primary-action" type="button" data-wp-enter-battle="true" data-i18n="enter">Entrer dans la machine</button>
         </section>
         <section id="cabinetPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="cabinet">Vitrine</h2><p id="cabinetSummary"></p></div><div id="cabinetGrid" class="cabinet-grid"></div></section>
         <section id="workshopPanel" class="management-panel" hidden><div class="panel-heading"><h2 data-i18n="workshop">Atelier</h2><p data-i18n="workshopIntro">Dépensez les starbolts gagnés pour un réglage permanent et transparent de la machine.</p></div><div id="upgradeGrid" class="upgrade-grid"></div><p id="workshopFeedback" role="status"></p></section>
@@ -190,16 +187,18 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260902-carnival-occlusion-v37"></script><script src="game.js?v=20260902-carnival-occlusion-v37"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="../../src/stage-selector-standard.js?v=20260801-claw-v17" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

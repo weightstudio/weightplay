@@ -78,6 +78,20 @@ body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
   margin-inline: auto;
 }
 
+/* Interface 7's shared frame uses a deliberately crisp 3px radius for the
+   shell.  The public Guide is a content surface with its own readability
+   contract, so keep its panel and structured cards visibly rounded even when
+   the shared theme is injected after this stylesheet. */
+@layer wp-frame-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info {
+    border-radius: 18px !important;
+  }
+
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="zhao-yun-a-dou"] > .game-page-info .game-info-section {
+    border-radius: 16px !important;
+  }
+}
+
 .main-screen {
   padding: 20px 16px 56px;
 }
