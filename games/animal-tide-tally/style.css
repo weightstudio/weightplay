@@ -20,6 +20,19 @@
     html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-poster-media > img{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
   }
 }
+@layer wp-tide-tally-contrast {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #battleScreen,
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #battleScreen .battle-canvas {
+    color: #143f47!important;
+    background-image: linear-gradient(145deg,rgb(223 244 240 / 96%),rgb(255 245 223 / 96%)),url("assets/animal-tide-tally-background.png")!important;
+    background-color: #dff4f0!important;
+    background-position: center!important;
+    background-size: cover!important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #battleScreen .battle-canvas :is(h2,h3,p,.eyebrow,.story,.prompt,.tide-card) {
+    color: #143f47!important;
+  }
+}
 #mainScreen { width:min(100%,920px); max-width:920px; margin:0 auto; padding:0 18px 32px; }
 #mainScreen .main-canvas { width:min(100%,920px); margin:0 auto; }
 #mainScreen .wp-main-shell-header,

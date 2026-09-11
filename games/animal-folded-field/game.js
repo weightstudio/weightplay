@@ -26,6 +26,10 @@
   const getBest = () => Number(safeGet("weightplay-animal-folded-field-best", "0")) || 0;
   const setText = (node, key, vars) => { if (node) node.textContent = copy(key, vars); };
   const announce = (key, vars) => { setText($("battleStatus"), key, vars); };
+  // The shared Battle scaler observes DOM mutations asynchronously. Folded
+  // Field rerenders its flap board after every native action, so checkpoint
+  // the settled logical envelope in the same task before the next input.
+  const syncBattleLayout = () => window.WeightPlayBattleCanvas?.sync?.();
   const aligned = () => state.pattern.reduce((total, value, index) => total + (value === rounds[state.round].target[index] ? 1 : 0), 0);
   const samePattern = () => state.pattern.every((value, index) => value === rounds[state.round].target[index]);
   const toggle = (index) => {
@@ -123,6 +127,7 @@
         renderBattle();
       }));
     }
+    syncBattleLayout();
   };
   const renderResult = () => {
     const finished = state.cleared.length === rounds.length;
