@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-bus-jam/" />
-
     <link rel="canonical" href="https://weightplay.com/en/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
@@ -27,6 +26,7 @@
   <meta name="theme-color" content="#081622">
   <title>Panko&#39;s Bus Jam | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
   <meta name="description" content="Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal." />
@@ -59,8 +59,7 @@
   "genre": [
     "Puzzle",
     "Strategy",
-    "Animal",
-    "Browser Game"
+    "Animal"
   ],
   "audience": {
     "@type": "PeopleAudience",
@@ -69,7 +68,6 @@
   }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <main id="main" class="screen main main-screen" data-screen="main">
@@ -83,19 +81,34 @@
       <div>
         <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
         <h1 data-t="title">Panko&#39;s Bus Jam</h1>
-        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <p class="main-summary" data-t="summary">Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.</p>
         <button id="start" class="primary" data-t="start">Start game</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
-      <ol>
-        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
-        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
-        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
-      </ol>
-    </section>
+    <section class="game-page-info game-page-info-static" aria-label="Panko&#39;s Bus Jam game information">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Panko&#39;s Bus Jam</h2><p>Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Convoy and Holding-Lane Strategy</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-8 minutes per stage</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>World and Mission</h3><p>Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.</p>
+<p>Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer.</p></div>
+      <div class="game-info-section"><h3>How the Systems Work</h3><p>Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.</p>
+<p>A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.</p>
+<p>When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.</p>
+<p>If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal.</p></div>
+      <div class="game-info-section"><h3>How to Play</h3><ol><li>Select an unlocked terminal.</li><li>Read the active bus, its remaining seats, and the next buses in the convoy.</li><li>Compare every queue front before sending a future color into the holding lane.</li><li>Fill every bus without deadlocking the holding lane to unlock the next terminal.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Treat each holding space as a scarce resource, not free storage.</li><li>Before sending a future color, check whether it will become the front blocker.</li><li>Expose the active color first whenever the holding lane is nearly full.</li><li>Use Undo as soon as a dispatch changes the holding order you planned.</li></ul></div>
+      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Terminal 1 teaches the flow. From Terminal 2 onward, wrong routes can create a real deadlock.</p>
+<p>Later chapters add a fourth route, longer convoys, more queues, repeated bus colors, and a two-space holding lane instead of repeating the same three-bus layout.</p></div>
+      <div class="game-info-section"><h3>Developer Design Note</h3><p>The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
+      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>The game is a General-audience untimed strategy puzzle. It has no account, purchase, or public leaderboard. Local clears remain in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can I dispatch from the middle of a queue?</dt><dd>No. Only each exposed front passenger can move.</dd></div><div><dt>Why did a passenger enter the holding lane?</dt><dd>Only the active bus boards; every future route waits in dispatch order.</dd></div><div><dt>Why did the terminal deadlock?</dt><dd>The holding order blocked the active route and no exposed passenger could clear it.</dd></div><div><dt>Are all terminals solvable?</dt><dd>Yes. All thirty recorded solution paths are checked automatically.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Panko&#39;s Bamboo Waterway</strong><span>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</span></span></a><a class="game-info-related-card" href="/en/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div>
+    </div>
+  </section>
   </main>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
@@ -176,7 +189,7 @@
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
   <script src="levels.js"></script>
   <script src="locales.js"></script>
@@ -186,29 +199,5 @@
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="Panko&#39;s Bus Jam game information">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Panko&#39;s Bus Jam</h2><p>Read the fixed departure order, expose the right passengers, and keep a limited first-in-first-out holding lane from locking the terminal.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Convoy and Holding-Lane Strategy</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>2-8 minutes per stage</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Thirty night terminals are operating at capacity. Only the active bus can board passengers, while every other color must wait in the holding lane in the exact order dispatched.</p>
-<p>Every decision is visible: the complete convoy, each queue, the active bus seats, and every occupied holding space. Failure comes from a route choice, not hidden traffic or a timer.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>Only the front passenger of a queue can move. A matching passenger boards the active bus immediately.</p>
-<p>A nonmatching passenger enters the holding lane. Its first passenger must be cleared before anyone behind it can board.</p>
-<p>When the active bus fills, it departs and the next bus becomes active. Matching passengers at the front of the holding lane board automatically.</p>
-<p>If the holding lane is full and no exposed passenger can complete the active route, the terminal deadlocks. Undo restores the exact prior state; Restart restores the authored terminal.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Select an unlocked terminal.</li><li>Read the active bus, its remaining seats, and the next buses in the convoy.</li><li>Compare every queue front before sending a future color into the holding lane.</li><li>Fill every bus without deadlocking the holding lane to unlock the next terminal.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Treat each holding space as a scarce resource, not free storage.</li><li>Before sending a future color, check whether it will become the front blocker.</li><li>Expose the active color first whenever the holding lane is nearly full.</li><li>Use Undo as soon as a dispatch changes the holding order you planned.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>Terminal 1 teaches the flow. From Terminal 2 onward, wrong routes can create a real deadlock.</p>
-<p>Later chapters add a fourth route, longer convoys, more queues, repeated bus colors, and a two-space holding lane instead of repeating the same three-bus layout.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>The four routes use both color and letter codes. The fixed convoy, FIFO holding lane, deterministic queues, and verified solution path define one readable strategy puzzle on phone and desktop. The complete interface uses one centered logical layout with a 920-pixel maximum. Phone, landscape, and desktop views scale the same controls, hit areas, artwork, and game coordinates together instead of stretching individual pieces. Touch, mouse, and keyboard therefore act on the same legal state. The Main poster and Start Game action remain separate from Stage management, while Stage selection, Battle, dialogs, and Result keep their own bounded content and return path.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>The game is a General-audience untimed strategy puzzle. It has no account, purchase, or public leaderboard. Local clears remain in this browser. You can play without creating an account. Progress is saved in local browser storage on the current browser profile, not in an online account or cross-device database. Clearing site data, using private browsing, changing browsers, or moving to another device can create a separate save or remove the existing one. Language, sound, and reduced-motion preferences follow the shared WeightPlay controls when the browser permits storage. No guide result is a medical, school, or professional assessment.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Can I dispatch from the middle of a queue?</dt><dd>No. Only each exposed front passenger can move.</dd></div><div><dt>Why did a passenger enter the holding lane?</dt><dd>Only the active bus boards; every future route waits in dispatch order.</dd></div><div><dt>Why did the terminal deadlock?</dt><dd>The holding order blocked the active route and no exposed passenger could clear it.</dd></div><div><dt>Are all terminals solvable?</dt><dd>Yes. All thirty recorded solution paths are checked automatically.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Panko&#39;s Bamboo Waterway</strong><span>Rotate a complete bamboo network so water can travel from the carved spring to the flowering basin without gaps, false branches, or misaligned pipe centers.</span></span></a><a class="game-info-related-card" href="/en/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Cratebound</strong><span>Walk, push, and pull rune cargo through thirty authored sky-ark warehouses.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

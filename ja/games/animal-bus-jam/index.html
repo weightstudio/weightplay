@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-bus-jam/" />
-
     <link rel="canonical" href="https://weightplay.com/ja/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
@@ -27,6 +26,7 @@
   <meta name="theme-color" content="#081622">
   <title>パン子のバスジャム | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
   <meta name="description" content="固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。" />
@@ -45,6 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "パン子のバスジャム",
+  "alternateName": "Panko's Bus Jam",
   "url": "https://weightplay.com/ja/games/animal-bus-jam/",
   "image": "https://weightplay.com/assets/animal-bus-jam-cover-general-v4.webp",
   "description": "固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。",
@@ -59,18 +60,15 @@
   "genre": [
     "パズル",
     "戦略",
-    "動物",
-    "Browser Game"
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Panko's Bus Jam"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <main id="main" class="screen main main-screen" data-screen="main">
@@ -84,19 +82,34 @@
       <div>
         <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
         <h1 data-t="title">パン子のバスジャム</h1>
-        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <p class="main-summary" data-t="summary">固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。</p>
         <button id="start" class="primary" data-t="start">Start game</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
-      <ol>
-        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
-        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
-        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
-      </ol>
-    </section>
+    <section class="game-page-info game-page-info-static" aria-label="パン子のバスジャム ゲーム情報">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パン子のバスジャム</h2><p>固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>車列と待機レーンの戦略</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜手ごたえあり</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ 2〜8分</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界とミッション</h3><p>30か所の夜間ターミナルが満員で稼働しています。乗客を乗せられるのは現在のバスだけで、ほかの色は送った順に待機レーンで待ちます。</p>
+<p>すべての判断材料が見えています。車列全体、各列、現在のバスの空席、埋まった待機枠を確認できます。失敗は隠れた交通やタイマーではなく、ルートの選択から起こります。</p></div>
+      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各列で動かせるのは先頭の乗客だけです。同じ色の乗客はすぐ現在のバスに乗ります。</p>
+<p>色が違う乗客は待機レーンに入り、その先頭を出すまで後ろの乗客は乗れません。</p>
+<p>現在のバスが満席になると出発し、次のバスが現在の目標になります。待機レーンの先頭が同じ色なら自動で乗車します。</p>
+<p>待機レーンが満杯で、見えている乗客から現在のルートを完成できないとターミナルが詰まります。「戻す」は直前の状態を復元し、「やり直す」はステージを初期化します。</p></div>
+      <div class="game-info-section"><h3>遊び方</h3><ol><li>解放済みのターミナルを選びます。</li><li>現在のバス、空席、車列の次のバスを確認します。</li><li>先の色を待機レーンへ送る前に、各列の先頭を比べます。</li><li>待機レーンを詰まらせず全バスを満席にして、次のターミナルを解放します。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>待機枠は無料の収納ではなく、限られた資源として扱いましょう。</li><li>先の色を送る前に、それが先頭の詰まりになるか確認します。</li><li>待機レーンが満杯に近いときは、現在の色を先に見えるようにします。</li><li>送り出した乗客で考えていた待機順が変わったら、すぐ「戻す」を使います。</li></ul></div>
+      <div class="game-info-section"><h3>進行と難易度</h3><p>ターミナル1で流れを学び、2以降では間違ったルートが本当の詰まりを生みます。</p>
+<p>後半は4路線、長い車列、多い列、同じ色のバスを追加し、固定3台構成ではなく2枠の待機レーンを使います。</p></div>
+      <div class="game-info-section"><h3>開発者メモ</h3><p>4つのルートは色と文字コードを併用します。固定車列、FIFO待機レーン、決定的な列、検証済みの解答が、スマートフォンでもデスクトップでも読みやすい戦略パズルを作ります。完全な画面は中央寄せの単一論理レイアウトで、最大幅は920ピクセルです。スマートフォン、横画面、デスクトップでも操作、タップ領域、アート、ゲーム座標を一緒に拡大縮小し、個別には引き伸ばしません。そのためタッチ、マウス、キーボードは同じ合法状態を操作します。メインのポスターと開始操作はステージ管理から分離され、ステージ選択、バトル、ダイアログ、リザルトはそれぞれの範囲と戻り道を保ちます。</p></div>
+      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、公開ランキングのない、一般向けで時間制限のない戦略パズルです。クリア状況はこのブラウザだけに保存されます。アカウントなしで遊べます。進行状況は現在のブラウザプロフィールのローカルストレージに保存され、オンラインアカウントや端末間データベースには保存されません。サイトデータの削除、プライベートブラウズ、ブラウザや端末の変更で別のセーブが作られたり、現在の進行が消えたりすることがあります。保存が許可される場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果は医療、学校、専門的な評価ではありません。</p></div>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>列の途中から乗客を送れますか？</dt><dd>いいえ。見えている各列の先頭だけを動かせます。</dd></div><div><dt>なぜ乗客が待機レーンに入ったのですか？</dt><dd>乗れるのは現在のバスだけで、ほかのルートは送った順に待つからです。</dd></div><div><dt>なぜターミナルが詰まったのですか？</dt><dd>待機順が現在のルートを塞ぎ、見えている乗客から解消できなかったためです。</dd></div><div><dt>すべてのターミナルは解けますか？</dt><dd>はい。30本の解答ルートはすべて自動検証されています。</dd></div><div><dt>対応する操作と画面サイズは？</dt><dd>タッチ、マウス、キーボードを使える場所では同じルールで遊べます。指定のスマートフォン、横画面、デスクトップで単一の論理レイアウトが拡大縮小します。</dd></div><div><dt>進行状況は別の端末へ自動で移りますか？</dt><dd>いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
+    </div>
+  </section>
   </main>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
@@ -178,7 +191,7 @@
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js"></script>
@@ -189,30 +202,6 @@
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="パン子のバスジャム ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パン子のバスジャム</h2><p>固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>車列と待機レーンの戦略</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜手ごたえあり</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ 2〜8分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>30か所の夜間ターミナルが満員で稼働しています。乗客を乗せられるのは現在のバスだけで、ほかの色は送った順に待機レーンで待ちます。</p>
-<p>すべての判断材料が見えています。車列全体、各列、現在のバスの空席、埋まった待機枠を確認できます。失敗は隠れた交通やタイマーではなく、ルートの選択から起こります。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各列で動かせるのは先頭の乗客だけです。同じ色の乗客はすぐ現在のバスに乗ります。</p>
-<p>色が違う乗客は待機レーンに入り、その先頭を出すまで後ろの乗客は乗れません。</p>
-<p>現在のバスが満席になると出発し、次のバスが現在の目標になります。待機レーンの先頭が同じ色なら自動で乗車します。</p>
-<p>待機レーンが満杯で、見えている乗客から現在のルートを完成できないとターミナルが詰まります。「戻す」は直前の状態を復元し、「やり直す」はステージを初期化します。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>解放済みのターミナルを選びます。</li><li>現在のバス、空席、車列の次のバスを確認します。</li><li>先の色を待機レーンへ送る前に、各列の先頭を比べます。</li><li>待機レーンを詰まらせず全バスを満席にして、次のターミナルを解放します。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>待機枠は無料の収納ではなく、限られた資源として扱いましょう。</li><li>先の色を送る前に、それが先頭の詰まりになるか確認します。</li><li>待機レーンが満杯に近いときは、現在の色を先に見えるようにします。</li><li>送り出した乗客で考えていた待機順が変わったら、すぐ「戻す」を使います。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>ターミナル1で流れを学び、2以降では間違ったルートが本当の詰まりを生みます。</p>
-<p>後半は4路線、長い車列、多い列、同じ色のバスを追加し、固定3台構成ではなく2枠の待機レーンを使います。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>4つのルートは色と文字コードを併用します。固定車列、FIFO待機レーン、決定的な列、検証済みの解答が、スマートフォンでもデスクトップでも読みやすい戦略パズルを作ります。完全な画面は中央寄せの単一論理レイアウトで、最大幅は920ピクセルです。スマートフォン、横画面、デスクトップでも操作、タップ領域、アート、ゲーム座標を一緒に拡大縮小し、個別には引き伸ばしません。そのためタッチ、マウス、キーボードは同じ合法状態を操作します。メインのポスターと開始操作はステージ管理から分離され、ステージ選択、バトル、ダイアログ、リザルトはそれぞれの範囲と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、公開ランキングのない、一般向けで時間制限のない戦略パズルです。クリア状況はこのブラウザだけに保存されます。アカウントなしで遊べます。進行状況は現在のブラウザプロフィールのローカルストレージに保存され、オンラインアカウントや端末間データベースには保存されません。サイトデータの削除、プライベートブラウズ、ブラウザや端末の変更で別のセーブが作られたり、現在の進行が消えたりすることがあります。保存が許可される場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果は医療、学校、専門的な評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>列の途中から乗客を送れますか？</dt><dd>いいえ。見えている各列の先頭だけを動かせます。</dd></div><div><dt>なぜ乗客が待機レーンに入ったのですか？</dt><dd>乗れるのは現在のバスだけで、ほかのルートは送った順に待つからです。</dd></div><div><dt>なぜターミナルが詰まったのですか？</dt><dd>待機順が現在のルートを塞ぎ、見えている乗客から解消できなかったためです。</dd></div><div><dt>すべてのターミナルは解けますか？</dt><dd>はい。30本の解答ルートはすべて自動検証されています。</dd></div><div><dt>対応する操作と画面サイズは？</dt><dd>タッチ、マウス、キーボードを使える場所では同じルールで遊べます。指定のスマートフォン、横画面、デスクトップで単一の論理レイアウトが拡大縮小します。</dd></div><div><dt>進行状況は別の端末へ自動で移りますか？</dt><dd>いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
-    </div>
-  </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パン子のバスジャム";document.title="パン子のバスジャム | WeightPlay";},{once:true});</script>
 </body>
 </html>

@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-bus-jam/" />
-
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
@@ -27,6 +26,7 @@
   <meta name="theme-color" content="#081622">
   <title>潘可的巴士疏運 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
   <meta name="description" content="判讀固定發車順序，安排露出的乘客，別讓有限的先進先出候車通道堵死轉運站。" />
@@ -45,6 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "潘可的巴士疏運",
+  "alternateName": "Panko's Bus Jam",
   "url": "https://weightplay.com/zh-tw/games/animal-bus-jam/",
   "image": "https://weightplay.com/assets/animal-bus-jam-cover-general-v4.webp",
   "description": "判讀固定發車順序，安排露出的乘客，別讓有限的先進先出候車通道堵死轉運站。",
@@ -59,18 +60,15 @@
   "genre": [
     "益智",
     "策略",
-    "動物",
-    "Browser Game"
+    "動物"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Panko's Bus Jam"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <main id="main" class="screen main main-screen" data-screen="main">
@@ -84,19 +82,34 @@
       <div>
         <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
         <h1 data-t="title">潘可的巴士疏運</h1>
-        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <p class="main-summary" data-t="summary">判讀固定發車順序，安排露出的乘客，別讓有限的先進先出候車通道堵死轉運站。</p>
         <button id="start" class="primary" data-t="start">Start game</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
-      <ol>
-        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
-        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
-        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
-      </ol>
-    </section>
+    <section class="game-page-info game-page-info-static" aria-label="潘可的巴士疏運 遊戲資訊">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>潘可的巴士疏運</h2><p>判讀固定發車順序，安排露出的乘客，別讓有限的先進先出候車通道堵死轉運站。</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>車隊與候車通道策略</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每站 2–8 分鐘</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>世界與任務</h3><p>三十座夜間轉運站都在滿載運作。只有當前公車能讓乘客上車，其他顏色都必須依照派出順序等待在候車通道。</p>
+<p>所有決策都清楚可見：完整車隊、每條隊列、當前公車座位，以及每個已占用的候車位。失敗來自路線選擇，而不是隱藏車流或倒數計時。</p></div>
+      <div class="game-info-section"><h3>遊戲系統</h3><p>每條隊列只能移動最前方的乘客。顏色相符的乘客會立即登上當前公車。</p>
+<p>顏色不符的乘客會進入候車通道；必須先清出最前方的乘客，後面的人才能上車。</p>
+<p>當前公車坐滿後會發車，下一台公車成為當前目標；候車通道最前方顏色相符的乘客會自動上車。</p>
+<p>候車通道已滿，且沒有露出的乘客能完成當前路線時，轉運站就會堵死。復原會回到精確的上一個狀態，重新開始會還原關卡。</p></div>
+      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇已解鎖的轉運站。</li><li>閱讀當前公車、剩餘座位，以及車隊中的下一台公車。</li><li>把未來顏色送進候車通道前，先比較每條隊列的最前方乘客。</li><li>在不堵死候車通道的前提下坐滿所有公車，解鎖下一個轉運站。</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>把每個候車位視為稀缺資源，而不是免費倉庫。</li><li>送出未來顏色前，先確認它會不會成為最前方的阻塞點。</li><li>候車通道接近滿載時，優先露出當前顏色。</li><li>只要派出乘客改變了你規劃的候車順序，就立即使用復原。</li></ul></div>
+      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1 站教你熟悉流程；從第 2 站開始，錯誤路線可能造成真正的堵死。</p>
+<p>後續章節加入第四條路線、更長的車隊、更多隊列與重複顏色，並以兩格候車通道取代固定的三車配置。</p></div>
+      <div class="game-info-section"><h3>開發設計理念</h3><p>四條路線同時使用顏色與字母代碼。固定車隊、先進先出候車通道、確定性的隊列與驗證過的解法，共同構成一個在手機與桌面上都清楚易讀的策略益智遊戲。完整介面使用置中的單一邏輯版面，最大寬度為 920 像素。手機、橫向與桌面畫面會一起縮放相同的控制項、點擊區、美術與遊戲座標，不會個別拉伸。因此觸控、滑鼠與鍵盤都操作同一套合法狀態。主畫面海報與開始遊戲動作獨立於關卡管理；關卡選擇、戰鬥、對話框與結果則各自保有界線清楚的內容與返回路徑。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>這是一款一般向、不計時的策略益智遊戲，不需要帳號、購買或公開排行榜。通關紀錄只保存在此瀏覽器。你可以不建立帳號直接遊玩；進度儲存在目前瀏覽器設定檔的本機儲存空間，不是線上帳號或跨裝置資料庫。清除網站資料、使用私密瀏覽、換瀏覽器或換裝置，都可能建立獨立存檔或移除現有進度。瀏覽器允許儲存時，語言、音效與減少動態效果偏好會跟隨 WeightPlay 共用控制。指南結果不代表醫療、學校或專業評估。</p></div>
+      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>可以從隊列中間派出乘客嗎？</dt><dd>不行。每次只能移動露出的最前方乘客。</dd></div><div><dt>為什麼乘客進入候車通道？</dt><dd>只有當前公車能上客；其他路線都依派出順序等待。</dd></div><div><dt>為什麼轉運站堵死？</dt><dd>候車順序卡住了當前路線，而且沒有露出的乘客能解除阻塞。</dd></div><div><dt>所有轉運站都能解嗎？</dt><dd>可以。三十條記錄中的解法路徑都經過自動檢查。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>遊戲規則支援觸控、滑鼠與鍵盤；介面會在指定手機、橫向與桌面視窗中以單一邏輯版面縮放。</dd></div><div><dt>進度會自動移到其他裝置嗎？</dt><dd>不會。目前只儲存在本機瀏覽器；其他瀏覽器設定檔或裝置會有獨立進度。</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖達竹水道</strong><span>旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
+    </div>
+  </section>
   </main>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
@@ -177,7 +190,7 @@
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js"></script>
@@ -188,29 +201,5 @@
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="潘可的巴士疏運 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>潘可的巴士疏運</h2><p>判讀固定發車順序，安排露出的乘客，別讓有限的先進先出候車通道堵死轉運站。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>車隊與候車通道策略</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每站 2–8 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>三十座夜間轉運站都在滿載運作。只有當前公車能讓乘客上車，其他顏色都必須依照派出順序等待在候車通道。</p>
-<p>所有決策都清楚可見：完整車隊、每條隊列、當前公車座位，以及每個已占用的候車位。失敗來自路線選擇，而不是隱藏車流或倒數計時。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>每條隊列只能移動最前方的乘客。顏色相符的乘客會立即登上當前公車。</p>
-<p>顏色不符的乘客會進入候車通道；必須先清出最前方的乘客，後面的人才能上車。</p>
-<p>當前公車坐滿後會發車，下一台公車成為當前目標；候車通道最前方顏色相符的乘客會自動上車。</p>
-<p>候車通道已滿，且沒有露出的乘客能完成當前路線時，轉運站就會堵死。復原會回到精確的上一個狀態，重新開始會還原關卡。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇已解鎖的轉運站。</li><li>閱讀當前公車、剩餘座位，以及車隊中的下一台公車。</li><li>把未來顏色送進候車通道前，先比較每條隊列的最前方乘客。</li><li>在不堵死候車通道的前提下坐滿所有公車，解鎖下一個轉運站。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>把每個候車位視為稀缺資源，而不是免費倉庫。</li><li>送出未來顏色前，先確認它會不會成為最前方的阻塞點。</li><li>候車通道接近滿載時，優先露出當前顏色。</li><li>只要派出乘客改變了你規劃的候車順序，就立即使用復原。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1 站教你熟悉流程；從第 2 站開始，錯誤路線可能造成真正的堵死。</p>
-<p>後續章節加入第四條路線、更長的車隊、更多隊列與重複顏色，並以兩格候車通道取代固定的三車配置。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>四條路線同時使用顏色與字母代碼。固定車隊、先進先出候車通道、確定性的隊列與驗證過的解法，共同構成一個在手機與桌面上都清楚易讀的策略益智遊戲。完整介面使用置中的單一邏輯版面，最大寬度為 920 像素。手機、橫向與桌面畫面會一起縮放相同的控制項、點擊區、美術與遊戲座標，不會個別拉伸。因此觸控、滑鼠與鍵盤都操作同一套合法狀態。主畫面海報與開始遊戲動作獨立於關卡管理；關卡選擇、戰鬥、對話框與結果則各自保有界線清楚的內容與返回路徑。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>這是一款一般向、不計時的策略益智遊戲，不需要帳號、購買或公開排行榜。通關紀錄只保存在此瀏覽器。你可以不建立帳號直接遊玩；進度儲存在目前瀏覽器設定檔的本機儲存空間，不是線上帳號或跨裝置資料庫。清除網站資料、使用私密瀏覽、換瀏覽器或換裝置，都可能建立獨立存檔或移除現有進度。瀏覽器允許儲存時，語言、音效與減少動態效果偏好會跟隨 WeightPlay 共用控制。指南結果不代表醫療、學校或專業評估。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>可以從隊列中間派出乘客嗎？</dt><dd>不行。每次只能移動露出的最前方乘客。</dd></div><div><dt>為什麼乘客進入候車通道？</dt><dd>只有當前公車能上客；其他路線都依派出順序等待。</dd></div><div><dt>為什麼轉運站堵死？</dt><dd>候車順序卡住了當前路線，而且沒有露出的乘客能解除阻塞。</dd></div><div><dt>所有轉運站都能解嗎？</dt><dd>可以。三十條記錄中的解法路徑都經過自動檢查。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>遊戲規則支援觸控、滑鼠與鍵盤；介面會在指定手機、橫向與桌面視窗中以單一邏輯版面縮放。</dd></div><div><dt>進度會自動移到其他裝置嗎？</dt><dd>不會。目前只儲存在本機瀏覽器；其他瀏覽器設定檔或裝置會有獨立進度。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖達竹水道</strong><span>旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方舟搬運隊</strong><span>在 30 座手工設計的天空方舟倉庫中行走、推動與拉回符文貨箱。</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>

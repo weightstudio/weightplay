@@ -26,6 +26,75 @@
   const getBest = () => Number(safeGet("weightplay-animal-folded-field-best", "0")) || 0;
   const setText = (node, key, vars) => { if (node) node.textContent = copy(key, vars); };
   const announce = (key, vars) => { setText($("battleStatus"), key, vars); };
+  // Interface 7 supplies one shared Settings owner. The authored legacy
+  // button remains in the markup for backwards-compatible bindings, but it
+  // must not compete with the generated shell control in the player-facing
+  // header.
+  const installInterfaceCompatibility = () => {
+    if (document.getElementById("foldedFieldInterfaceCompatibility")) return;
+    const style = document.createElement("style");
+    style.id = "foldedFieldInterfaceCompatibility";
+    style.textContent = `
+      @layer wp-frame-contract {
+        #mainScreen #settingsBtn { display: none !important; }
+      }
+    `;
+    const legacySettings = $("settingsBtn");
+    if (legacySettings) {
+      legacySettings.classList.remove("wp-shell-settings-button");
+      legacySettings.removeAttribute("data-wp-settings");
+      legacySettings.hidden = true;
+      legacySettings.setAttribute("aria-hidden", "true");
+      legacySettings.tabIndex = -1;
+      legacySettings.id = "foldedFieldLegacySettingsBtn";
+    }
+    (document.body || document.head).append(style);
+  };
+  // The shared Main adapter promotes only the primary start action and marks
+  // the original hero branch as legacy. Keep the authored Field map entry
+  // reachable by moving it into the promoted copy pane once that pane exists.
+  const ensureMainMapAction = () => {
+    const map = $("mapBtn");
+    const copyPane = document.querySelector(".wp-standard-main-copy");
+    if (!map || !copyPane) return false;
+    if (!copyPane.contains(map)) {
+      const actions = document.createElement("div");
+      actions.className = "hero-actions wp-standard-main-extra-actions";
+      actions.append(map);
+      copyPane.append(actions);
+    }
+    map.hidden = false;
+    map.removeAttribute("aria-hidden");
+    map.classList.remove("wp-main-legacy-layout");
+    map.tabIndex = 0;
+    return true;
+  };
+  const ensureSharedSettingsButton = () => {
+    const button = document.querySelector(".wp-shell-settings-button");
+    if (!button) return false;
+    button.id = "settingsBtn";
+    button.hidden = false;
+    button.removeAttribute("aria-hidden");
+    button.tabIndex = 0;
+    return true;
+  };
+  const watchMainMapAction = () => {
+    const reconcile = () => {
+      const mapReady = ensureMainMapAction();
+      const settingsReady = ensureSharedSettingsButton();
+      return mapReady && settingsReady;
+    };
+    if (reconcile()) return;
+    const root = document.body || document.documentElement;
+    if (!root) return;
+    const observer = new MutationObserver(() => {
+      if (reconcile()) observer.disconnect();
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    window.setTimeout(() => {
+      if (reconcile()) observer.disconnect();
+    }, 2000);
+  };
   // The shared Battle scaler observes DOM mutations asynchronously. Folded
   // Field rerenders its flap board after every native action, so checkpoint
   // the settled logical envelope in the same task before the next input.
@@ -200,7 +269,7 @@
       if ($("resultPrimaryBtn").dataset.action === "next") startRound(state.round + 1);
       else show("main");
     });
-    $("settingsBtn").addEventListener("click", () => {
+    $("settingsBtn")?.addEventListener("click", () => {
       const panel = $("settingsPanel");
       panel.hidden = !panel.hidden;
       $("settingsBtn").setAttribute("aria-expanded", String(!panel.hidden));
@@ -211,6 +280,8 @@
     $("battleInfoBtn").addEventListener("click", () => window.alert(copy("moveHint")));
   };
   const boot = () => {
+    installInterfaceCompatibility();
+    watchMainMapAction();
     // Keep persistent actions outside the independently scrolling field.
     const canvas = document.querySelector("#battleScreen .battle-canvas");
     const actions = canvas.querySelector(".battle-actions");

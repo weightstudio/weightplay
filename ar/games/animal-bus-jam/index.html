@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/animal-bus-jam/" />
-
     <link rel="canonical" href="https://weightplay.com/ar/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bus-jam/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-bus-jam/" />
@@ -27,6 +26,7 @@
   <meta name="theme-color" content="#081622">
   <title>ازدحام حافلة بانكو | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
   <meta name="description" content="اقرأ ترتيب المغادرة الثابت، وأظهر الركاب المناسبين، وامنع مسار الانتظار المحدود بنظام الوارد أولًا من الانسداد." />
@@ -45,6 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "ازدحام حافلة بانكو",
+  "alternateName": "Panko's Bus Jam",
   "url": "https://weightplay.com/ar/games/animal-bus-jam/",
   "image": "https://weightplay.com/assets/animal-bus-jam-cover-general-v4.webp",
   "description": "اقرأ ترتيب المغادرة الثابت، وأظهر الركاب المناسبين، وامنع مسار الانتظار المحدود بنظام الوارد أولًا من الانسداد.",
@@ -59,18 +60,15 @@
   "genre": [
     "ألغاز",
     "استراتيجية",
-    "حيوانات",
-    "لعبة متصفح"
+    "حيوانات"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Panko's Bus Jam"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
   <main id="main" class="screen main main-screen" data-screen="main">
@@ -84,19 +82,34 @@
       <div>
         <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
         <h1 data-t="title">ازدحام حافلة بانكو</h1>
-        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <p class="main-summary" data-t="summary">اقرأ ترتيب المغادرة الثابت، وأظهر الركاب المناسبين، وامنع مسار الانتظار المحدود بنظام الوارد أولًا من الانسداد.</p>
         <button id="start" class="primary" data-t="start">Start game</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
-      <ol>
-        <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
-        <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
-        <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
-      </ol>
-    </section>
+    <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة ازدحام حافلة بانكو">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ازدحام حافلة بانكو</h2><p>اقرأ ترتيب المغادرة الثابت، وأظهر الركاب المناسبين، وامنع مسار الانتظار المحدود بنظام الوارد أولًا من الانسداد.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>استراتيجية الموكب ومسار الانتظار</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · استراتيجية · حيوانات</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى المتحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2–8 دقائق لكل محطة</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تعمل ثلاثون محطة ليلية بأقصى طاقتها. الحافلة النشطة وحدها تستقبل الركاب، بينما تنتظر الألوان الأخرى في مسار الانتظار حسب ترتيب إرسالها الدقيق.</p>
+<p>كل القرارات واضحة: الموكب الكامل، وكل صف، ومقاعد الحافلة النشطة، وكل مكان انتظار مشغول. تأتي الخسارة من اختيار المسار، لا من حركة مرور مخفية أو مؤقت.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>لا يمكن تحريك سوى الراكب الأول في كل صف. يصعد الراكب المطابق للون فورًا إلى الحافلة النشطة.</p>
+<p>يدخل الراكب غير المطابق إلى مسار الانتظار. يجب إخراج راكبه الأول قبل أن يتمكن أي شخص خلفه من الصعود.</p>
+<p>عندما تمتلئ الحافلة النشطة تغادر وتصبح الحافلة التالية نشطة. يصعد الركاب المطابقون لأول مسار الانتظار تلقائيًا.</p>
+<p>إذا امتلأ مسار الانتظار ولم يتمكن أي راكب ظاهر من إكمال المسار النشط، تنسد المحطة. يعيد التراجع الحالة السابقة بدقة، وتعيد إعادة البدء المحطة إلى حالتها الأصلية.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر محطة مفتوحة.</li><li>اقرأ الحافلة النشطة والمقاعد المتبقية والحافلات التالية في الموكب.</li><li>قارن أول راكب في كل صف قبل إرسال لون مستقبلي إلى مسار الانتظار.</li><li>املأ كل الحافلات من دون سد مسار الانتظار لفتح المحطة التالية.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>اعتبر كل مكان انتظار موردًا محدودًا، لا مخزنًا مجانيًا.</li><li>قبل إرسال لون مستقبلي، تحقق من أنه لن يصبح العائق الأمامي.</li><li>عندما يقترب المسار من الامتلاء، أظهر اللون النشط أولًا.</li><li>استخدم التراجع فورًا عندما يغير الإرسال ترتيب الانتظار الذي خططت له.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلمك المحطة 1 التدفق. ابتداءً من المحطة 2 يمكن للمسارات الخاطئة إنشاء انسداد حقيقي.</p>
+<p>تضيف الفصول اللاحقة مسارًا رابعًا وموكبًا أطول وصفوفًا أكثر وألوانًا متكررة، مع مسار انتظار من مكانين بدل تكرار ترتيب الحافلات الثلاث.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم المسارات الأربعة رموز الألوان والحروف معًا. ويكوّن الموكب الثابت، ومسار الانتظار FIFO، والصفوف المحددة، ومسار الحل المتحقق منه لغزًا استراتيجيًا واضحًا على الهاتف وسطح المكتب. تستخدم الواجهة الكاملة تخطيطًا منطقيًا واحدًا في المنتصف بحد أقصى يبلغ 920 بكسلًا. تعمل عروض الهاتف والوضع الأفقي وسطح المكتب على تغيير حجم عناصر التحكم ومناطق النقر والرسومات وإحداثيات اللعبة نفسها معًا بدلًا من تمديد العناصر منفردة. لذلك تعمل اللمسة والماوس ولوحة المفاتيح على الحالة القانونية نفسها. يبقى ملصق الشاشة الرئيسية وإجراء البدء منفصلين عن إدارة المراحل، بينما يحافظ اختيار المرحلة والمعركة والنوافذ والنتيجة على محتواها المحدود ومسار العودة الخاص بها.</p></div>
+      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>هذه لعبة ألغاز استراتيجية عامة بلا مؤقت، ولا تتطلب حسابًا أو شراءً أو لوحة متصدرين عامة. تبقى المحطات المكتملة في هذا المتصفح فقط. يمكنك اللعب دون إنشاء حساب. يُحفظ التقدم في التخزين المحلي لملف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات بين الأجهزة. قد يؤدي مسح بيانات الموقع أو التصفح الخاص أو تغيير المتصفح أو الجهاز إلى إنشاء حفظ منفصل أو حذف التقدم الحالي. عندما يسمح المتصفح بالتخزين، تتبع اللغة والصوت وتقليل الحركة عناصر تحكم WeightPlay المشتركة. لا تمثل نتيجة الدليل تقييمًا طبيًا أو مدرسيًا أو مهنيًا.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكنني إرسال راكب من منتصف الصف؟</dt><dd>لا. لا يمكن تحريك سوى الراكب الأول الظاهر في كل صف.</dd></div><div><dt>لماذا دخل الراكب إلى مسار الانتظار؟</dt><dd>الحافلة النشطة وحدها تستقبل الركاب، أما المسارات المستقبلية فتنتظر حسب ترتيب الإرسال.</dd></div><div><dt>لماذا انسدت المحطة؟</dt><dd>أوقف ترتيب الانتظار المسار النشط ولم يتمكن أي راكب ظاهر من فتحه.</dd></div><div><dt>هل يمكن حل كل المحطات؟</dt><dd>نعم. تُفحص مسارات الحل الثلاثون المسجلة تلقائيًا.</dd></div><div><dt>ما عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها حيث تتوفر. تتدرج الواجهة كتخطيط منطقي واحد على الهاتف والوضع الأفقي وسطح المكتب.</dd></div><div><dt>هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يُحفظ حاليًا في المتصفح فقط؛ وسيملك الملف أو الجهاز الآخر تقدمًا منفصلًا.</dd></div></dl></div>
+      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر شبكة الخيزران كاملة لتوصل الماء من النبع المنحوت إلى الحوض المزهر من دون فواصل أو تفرعات زائفة أو مراكز أنابيب منحرفة.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div>
+    </div>
+  </section>
   </main>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
@@ -177,7 +190,7 @@
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js"></script>
@@ -188,29 +201,5 @@
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" aria-label="معلومات لعبة ازدحام حافلة بانكو">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>ازدحام حافلة بانكو</h2><p>اقرأ ترتيب المغادرة الثابت، وأظهر الركاب المناسبين، وامنع مسار الانتظار المحدود بنظام الوارد أولًا من الانسداد.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>استراتيجية الموكب ومسار الانتظار</strong></div><div class="game-info-fact"><span>النوع</span><strong>ألغاز · استراتيجية · حيوانات</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>من السهل إلى المتحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>2–8 دقائق لكل محطة</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>تعمل ثلاثون محطة ليلية بأقصى طاقتها. الحافلة النشطة وحدها تستقبل الركاب، بينما تنتظر الألوان الأخرى في مسار الانتظار حسب ترتيب إرسالها الدقيق.</p>
-<p>كل القرارات واضحة: الموكب الكامل، وكل صف، ومقاعد الحافلة النشطة، وكل مكان انتظار مشغول. تأتي الخسارة من اختيار المسار، لا من حركة مرور مخفية أو مؤقت.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>لا يمكن تحريك سوى الراكب الأول في كل صف. يصعد الراكب المطابق للون فورًا إلى الحافلة النشطة.</p>
-<p>يدخل الراكب غير المطابق إلى مسار الانتظار. يجب إخراج راكبه الأول قبل أن يتمكن أي شخص خلفه من الصعود.</p>
-<p>عندما تمتلئ الحافلة النشطة تغادر وتصبح الحافلة التالية نشطة. يصعد الركاب المطابقون لأول مسار الانتظار تلقائيًا.</p>
-<p>إذا امتلأ مسار الانتظار ولم يتمكن أي راكب ظاهر من إكمال المسار النشط، تنسد المحطة. يعيد التراجع الحالة السابقة بدقة، وتعيد إعادة البدء المحطة إلى حالتها الأصلية.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>اختر محطة مفتوحة.</li><li>اقرأ الحافلة النشطة والمقاعد المتبقية والحافلات التالية في الموكب.</li><li>قارن أول راكب في كل صف قبل إرسال لون مستقبلي إلى مسار الانتظار.</li><li>املأ كل الحافلات من دون سد مسار الانتظار لفتح المحطة التالية.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>اعتبر كل مكان انتظار موردًا محدودًا، لا مخزنًا مجانيًا.</li><li>قبل إرسال لون مستقبلي، تحقق من أنه لن يصبح العائق الأمامي.</li><li>عندما يقترب المسار من الامتلاء، أظهر اللون النشط أولًا.</li><li>استخدم التراجع فورًا عندما يغير الإرسال ترتيب الانتظار الذي خططت له.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تعلمك المحطة 1 التدفق. ابتداءً من المحطة 2 يمكن للمسارات الخاطئة إنشاء انسداد حقيقي.</p>
-<p>تضيف الفصول اللاحقة مسارًا رابعًا وموكبًا أطول وصفوفًا أكثر وألوانًا متكررة، مع مسار انتظار من مكانين بدل تكرار ترتيب الحافلات الثلاث.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>تستخدم المسارات الأربعة رموز الألوان والحروف معًا. ويكوّن الموكب الثابت، ومسار الانتظار FIFO، والصفوف المحددة، ومسار الحل المتحقق منه لغزًا استراتيجيًا واضحًا على الهاتف وسطح المكتب. تستخدم الواجهة الكاملة تخطيطًا منطقيًا واحدًا في المنتصف بحد أقصى يبلغ 920 بكسلًا. تعمل عروض الهاتف والوضع الأفقي وسطح المكتب على تغيير حجم عناصر التحكم ومناطق النقر والرسومات وإحداثيات اللعبة نفسها معًا بدلًا من تمديد العناصر منفردة. لذلك تعمل اللمسة والماوس ولوحة المفاتيح على الحالة القانونية نفسها. يبقى ملصق الشاشة الرئيسية وإجراء البدء منفصلين عن إدارة المراحل، بينما يحافظ اختيار المرحلة والمعركة والنوافذ والنتيجة على محتواها المحدود ومسار العودة الخاص بها.</p></div>
-      <div class="game-info-section game-info-parent"><h3>معلومات اللاعب والحفظ</h3><p>هذه لعبة ألغاز استراتيجية عامة بلا مؤقت، ولا تتطلب حسابًا أو شراءً أو لوحة متصدرين عامة. تبقى المحطات المكتملة في هذا المتصفح فقط. يمكنك اللعب دون إنشاء حساب. يُحفظ التقدم في التخزين المحلي لملف المتصفح الحالي، وليس في حساب عبر الإنترنت أو قاعدة بيانات بين الأجهزة. قد يؤدي مسح بيانات الموقع أو التصفح الخاص أو تغيير المتصفح أو الجهاز إلى إنشاء حفظ منفصل أو حذف التقدم الحالي. عندما يسمح المتصفح بالتخزين، تتبع اللغة والصوت وتقليل الحركة عناصر تحكم WeightPlay المشتركة. لا تمثل نتيجة الدليل تقييمًا طبيًا أو مدرسيًا أو مهنيًا.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل يمكنني إرسال راكب من منتصف الصف؟</dt><dd>لا. لا يمكن تحريك سوى الراكب الأول الظاهر في كل صف.</dd></div><div><dt>لماذا دخل الراكب إلى مسار الانتظار؟</dt><dd>الحافلة النشطة وحدها تستقبل الركاب، أما المسارات المستقبلية فتنتظر حسب ترتيب الإرسال.</dd></div><div><dt>لماذا انسدت المحطة؟</dt><dd>أوقف ترتيب الانتظار المسار النشط ولم يتمكن أي راكب ظاهر من فتحه.</dd></div><div><dt>هل يمكن حل كل المحطات؟</dt><dd>نعم. تُفحص مسارات الحل الثلاثون المسجلة تلقائيًا.</dd></div><div><dt>ما عناصر التحكم وأحجام الشاشة المدعومة؟</dt><dd>تستخدم اللمسة والماوس ولوحة المفاتيح القواعد نفسها حيث تتوفر. تتدرج الواجهة كتخطيط منطقي واحد على الهاتف والوضع الأفقي وسطح المكتب.</dd></div><div><dt>هل ينتقل التقدم تلقائيًا إلى جهاز آخر؟</dt><dd>لا. يُحفظ حاليًا في المتصفح فقط؛ وسيملك الملف أو الجهاز الآخر تقدمًا منفصلًا.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>ألعاب مشابهة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-bamboo-pipes/"><img src="/assets/animal-bamboo-pipes-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مجرى بانكو الخيزراني</strong><span>أدر شبكة الخيزران كاملة لتوصل الماء من النبع المنحوت إلى الحوض المزهر من دون فواصل أو تفرعات زائفة أو مراكز أنابيب منحرفة.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>مستودع</strong><span>تحرّك وادفع واسحب صناديق الرون عبر 30 مستودعًا سماويًا مصممًا يدويًا.</span></span></a></div></div>
-    </div>
-  </section>
 </body>
 </html>
