@@ -10,6 +10,16 @@
 /* Interface 6 shell contract: keep the authored tide loop inside the shared
    Main, Stage, Battle, and General reserve envelopes. */
 #app { width:100%; }
+@layer wp-tide-tally-override {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] #gameGuide{border-radius:24px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .game-info-section{border-radius:16px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}
+  @media (min-width:700px) and (orientation:landscape) and (max-height:700px){
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-poster,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-poster-media,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-tide-tally"] .wp-standard-main-poster-media > img{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
+  }
+}
 #mainScreen { width:min(100%,920px); max-width:920px; margin:0 auto; padding:0 18px 32px; }
 #mainScreen .main-canvas { width:min(100%,920px); margin:0 auto; }
 #mainScreen .wp-main-shell-header,

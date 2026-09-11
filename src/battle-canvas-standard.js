@@ -15,6 +15,9 @@
     // landscape envelope so the controls retain their touch target size.
     "animal-chameleon-blend": ["#battle-screen", 390, 788, 760, 334],
     "animal-habitat-builder": ["#battle-screen", 390, 788, 760, 334],
+    // Tide Tally's responsive answer grid needs the full wide short-landscape
+    // envelope so its 44px Battle controls are not shrunk into a letterbox.
+    "animal-tide-tally": [".battle-canvas", 390, 788, 760, 334],
     // Hoop League's aim and shot controls share this native Market Five
     // shell. Keep its short-landscape Battle in the wide envelope so the
     // scaler does not reduce 48px controls to roughly 20px at 844x390.

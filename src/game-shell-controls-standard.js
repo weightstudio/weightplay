@@ -1062,7 +1062,16 @@
       const battleReturn = first(RETURN_SELECTORS, header);
       if (battleReturn && !immutableSceneControls) battleReturn.dataset.wpReturn = "battle";
       normalizeReturn(header);
-      host.hidden = true;
+      /* A small set of authored shells explicitly keeps Settings available
+         during Battle. The default contract remains hidden; opt in per game
+         so the Battle utility stays owned by its active header and cannot
+         leak through a prior Stage placement. */
+      if (document.body?.dataset.wpBattleSettings === "visible") {
+        if (host.parentElement !== header) header.append(host);
+        host.hidden = false;
+      } else {
+        host.hidden = true;
+      }
       return;
     }
     const untypedExternalReturn = [...screen.querySelectorAll(RETURN_SELECTORS.join(","))]

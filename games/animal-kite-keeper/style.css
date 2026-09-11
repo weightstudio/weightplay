@@ -28,6 +28,24 @@ html,body{overflow-x:hidden}
 @media (orientation:landscape) and (max-height:700px){.stage-screen{padding-top:74px}.stage-screen .screen-heading{margin:0 0 6px}.stage-screen>.subtitle{display:none}.stage-screen .stage-list{gap:6px}.stage-screen .stage-card{min-height:54px;padding:6px 12px}.stage-screen .stage-card small{margin-top:1px}}
 @media (max-width:540px){.stage-screen,.battle-screen{padding-left:10px;padding-right:10px}.main-screen{padding-left:10px;padding-right:10px}.main-screen .cover-wrap{width:100%}}
 
+/* Interface 6 repair: the shared shell owns the visible Settings control;
+   Main/Stage/Battle headers stay inside their respective screen roots so the
+   validator and runtime both keep one stable control owner per Canvas. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .game-page-info{border-radius:22px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .game-page-info .game-info-section{border-radius:16px!important}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .wp-standard-main-composition{border-radius:24px!important}
+/* The shared frame contract is a named layer whose important declarations
+   intentionally outrank unlayered game CSS. Declare this override layer
+   before that contract so the authored guide keeps its rounded frame. */
+@layer wp-kite-keeper-override {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .game-page-info{border-radius:22px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .game-page-info .game-info-section{border-radius:16px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .wp-standard-main-composition{border-radius:24px!important}
+}
+@media (min-width:700px) and (max-height:560px){
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-kite-keeper"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}
+}
+
 /* Keep the Interface 6 canvas usable at short landscape and narrow portrait
    viewports. The reserve remains outside the fixed play canvas; only the
    scene's flexible tracks change shape. */
@@ -42,6 +60,26 @@ html,body{overflow-x:hidden}
   .battle-screen .choice-card h2{margin-bottom:2px}
   .battle-screen .choice-help{margin-bottom:4px;font-size:.82rem;line-height:1.2}
   .battle-screen .wind-card{min-height:44px}
+  .battle-screen .selection{min-height:20px;margin:4px 0 0;font-size:.84rem;line-height:1.2}
+  .battle-screen .battle-actions{flex:0 0 auto;margin:0}
+  .battle-screen .status{flex:0 0 auto;min-height:22px;margin:0;font-size:.82rem;line-height:1.2}
+}
+
+/* Large desktop still receives the shared logical Battle envelope (about
+   708x788 CSS pixels at 1920x1080). Keep the authored board flexible and the
+   wind/action controls on fixed tracks so a selection or status message never
+   pushes them below the playable Canvas edge. */
+@media (min-width:700px) and (min-height:901px){
+  .battle-screen{padding:60px 12px 6px;overflow:hidden;display:flex;flex-direction:column;gap:8px}
+  .battle-screen .battle-heading{flex:0 0 48px;min-height:48px;margin:0}
+  .battle-screen .battle-heading > .wp-shell-settings{flex:0 0 48px;width:48px;min-width:48px}
+  .battle-screen .prompt{flex:0 0 auto;min-height:0;margin:0;padding:8px 10px;font-size:.84rem;line-height:1.25}
+  .battle-screen .flight-card{flex:1 1 260px;min-height:180px;margin:0;padding:10px;display:flex;flex-direction:column}
+  .battle-screen .flight-board{flex:1 1 auto;min-height:0;aspect-ratio:auto;margin:8px 0}
+  .battle-screen .position,.battle-screen .gusts{margin:2px 0 0;font-size:.82rem;line-height:1.2}
+  .battle-screen .choice-card{flex:0 0 auto;margin:0;padding:10px}
+  .battle-screen .choice-card h2{margin-bottom:2px}
+  .battle-screen .choice-help{margin-bottom:4px;font-size:.82rem;line-height:1.2}
   .battle-screen .selection{min-height:20px;margin:4px 0 0;font-size:.84rem;line-height:1.2}
   .battle-screen .battle-actions{flex:0 0 auto;margin:0}
   .battle-screen .status{flex:0 0 auto;min-height:22px;margin:0;font-size:.82rem;line-height:1.2}

@@ -21,6 +21,24 @@ body{overflow-x:hidden}
 .topbar #settingsBtn{width:48px;height:48px;min-width:48px;min-height:48px;padding:0}
 .main-screen .guide-art{display:block}
 .game-page-info{width:min(760px,calc(100% - 24px));margin:0 auto 20px;padding:22px;border:1px solid #d5e3d5;border-radius:24px;background:#fffdf5;box-shadow:0 18px 50px #294a5520}
+@layer wp-habitat-blueprint-override {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .game-page-info{border-radius:24px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .game-info-section{border-radius:16px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .wp-standard-main-composition{--wp-main-landscape-poster-size:420px!important}
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] [data-wp-standard-stage-screen]{
+    --wp-stage-art:url("assets/animal-habitat-blueprint-cover-v2.webp")!important;
+    background-color:#dfece4!important;
+    background-image:linear-gradient(rgb(255 255 255 / 78%),rgb(255 255 255 / 78%)),url("assets/animal-habitat-blueprint-cover-v2.webp"),linear-gradient(145deg,#f7fcf2,#e4f0ed)!important;
+    background-position:center!important;
+    background-size:cover!important;
+    background-repeat:no-repeat!important;
+  }
+  @media (min-width:700px) and (orientation:landscape) and (max-height:700px){
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .wp-standard-main-poster,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .wp-standard-main-poster-media,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-habitat-blueprint"] .wp-standard-main-poster-media > img{width:420px!important;min-width:420px!important;max-width:420px!important;height:420px!important;min-height:420px!important;max-height:420px!important}
+  }
+}
 .game-info-hero{margin-bottom:14px}
 .game-info-kicker{color:#aa6634;font-size:.76rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .game-info-title h2{margin:6px 0}

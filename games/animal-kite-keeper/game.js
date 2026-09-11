@@ -93,7 +93,7 @@
     $("backBtn").setAttribute("aria-label", copy("back"));
     if ($("stageBack")) $("stageBack").setAttribute("aria-label", copy("back"));
     if ($("battleBack")) $("battleBack").setAttribute("aria-label", copy("map"));
-    $("settingsBtn").setAttribute("aria-label", copy("settings"));
+    $("settingsBtn")?.setAttribute("aria-label", copy("settings"));
     $("closeSettings").setAttribute("aria-label", copy("close"));
     $("localeSelect").setAttribute("aria-label", copy("language"));
     $("soundBtn").setAttribute("aria-pressed", String(sound));
@@ -189,7 +189,7 @@
     $("startBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("mapBtn").addEventListener("click", () => { try { show("stage"); renderStages(); } catch (error) { document.body.dataset.kiteError = String(error); } }); $("stageList").addEventListener("keydown", handleStageKeydown);
     $("resultMapBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("nextBtn").addEventListener("click", nextRoute);
     $("resetBtn").addEventListener("click", resetRoute); $("battleBack").addEventListener("click", () => { show("stage"); renderStages(); }); $("stageBack").addEventListener("click", () => { show("main"); });
-    $("settingsBtn").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; });
+    $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; });
     $("soundBtn").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-kite-keeper-sound", sound ? "on" : "off"); applyLocale(); });
     $("localeSelect").addEventListener("change", (event) => { locale = event.target.value; localStorage.setItem("weightplay-kite-keeper-locale", locale); applyLocale(); });
     $("backBtn").addEventListener("click", goLobby); $("homeBtn").addEventListener("click", goLobby);
