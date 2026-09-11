@@ -5,7 +5,7 @@
     <base href="/" />
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v23" />
+    <meta name="weightplay-game-version" content="v24" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -45,7 +45,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "Fantasía: Defensa del León",
-  "alternateName": "奇幻獅子守城",
+  "alternateName": "奇幻獅子防衛",
   "url": "https://weightplay.com/es/games/wonder-crash/",
   "image": "https://weightplay.com/assets/wonder-crash-cover-block-v1.png",
   "description": "Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de...",
@@ -73,7 +73,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260910-wonder-crash-v23-result-footer" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v24-growth-loop" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
   <meta name="twitter:title" content="Fantasía: Defensa del León | WeightPlay" />
     <meta name="twitter:description" content="Fantasy Lion Defense es un juego de defensa de animales de 30 niveles protagonizado por Boom Mane Leo. El león se mueve a lo largo de una pared de..." />
@@ -102,6 +102,7 @@
       <div id="battleHud" class="hud battle-hud hidden" data-screen="battle" data-wp-battle-return-only>
         <div class="battle-primary"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="coinText">0</span></div>
         <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
+        <div class="battle-status wall-shield-status"><span data-i18n="hud_guard">Guard</span> <span id="wallShieldText">0</span></div>
       </div>
 
       <!-- Internal pause safety trigger; the duplicate Battle Settings control is not exposed. -->
@@ -114,6 +115,7 @@
         <div id="menuCoinLine" class="menu-coin-line">
           <span class="menu-wallet-item"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="menuCoinText">0</span></span>
           <span class="menu-wallet-item diamond-wallet"><img src="assets/wonder-prop-diamond-block-v1.png" alt="" /> <span id="menuDiamondText">0</span></span>
+          <span class="menu-wallet-item talent-wallet"><img src="assets/wonder-prop-crit-block-v1.png" alt="" /> <span id="talentText">0</span></span>
         </div>
         <label class="language-picker wonder-language-picker">
           <span data-i18n="language">Idioma</span>
@@ -189,9 +191,9 @@
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
     <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
     <script src="src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
-    <script src="src/game-data.js?v=20260909-wonder-crash-v21-block-props"></script>
-    <script src="src/game.js?v=20260910-wonder-crash-v23-result-footer"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260909-wonder-crash-v20-block-stable-stage"></script>
+    <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v24-growth-loop"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v24-growth-loop"></script>
     <section class="game-page-info game-page-info-static" aria-label="Información de Fantasía: Defensa del León">
 
     <div class="game-info-hero">
@@ -221,7 +223,7 @@
       <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-prism-battalion/"><img src="/assets/wonder-crash-related-prism-battalion-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Batallón de Prismas</strong><span>Cambia una batería prismática automática entre tres carriles, destruye cada formación, reúne núcleos de ataque raros y mantén a los monstruos lejos del núcleo de cristal.</span></span></a><a class="game-info-related-card" href="/es/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Guardián de Bestias</strong><span>Beast Guardian es una campaña de defensa de torres de héroes de 30 niveles construida alrededor de la construcción de rutas en lugar de plataformas de torres fijas.</span></span></a></div></div>
     </div>
   </section>
-<script src="src/game-page-info.js?v=20260909-wonder-crash-v20-block-related-cover"></script>
+<script src="src/game-page-info.js?v=20260911-wonder-crash-v24-growth-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>

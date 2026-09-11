@@ -250,6 +250,22 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     battleFrameHeader.append(battleHeaderContext);
     nodes.battleHeaderContext = battleHeaderContext;
   }
+  // Stage follows the same current shared-frame rule as Battle: the public
+  // game name belongs to Main, while active play surfaces show only useful
+  // local context. Keep the progress in the shared header so the content
+  // area can stay focused on the selectable stage cards.
+  const stageFrameHeader = document.querySelector("#wp-shared-stage-header");
+  const stageFrameTitle = stageFrameHeader?.querySelector("[data-wp-frame-title]");
+  if (stageFrameHeader && stageFrameTitle) {
+    stageFrameTitle.hidden = true;
+    const stageHeaderContext = document.createElement("span");
+    stageHeaderContext.id = "stageHeaderContext";
+    stageHeaderContext.className = "wp-frame-stage-context";
+    stageHeaderContext.setAttribute("aria-live", "polite");
+    stageHeaderContext.setAttribute("aria-atomic", "true");
+    stageFrameHeader.append(stageHeaderContext);
+    nodes.stageHeaderContext = stageHeaderContext;
+  }
   // Keep the game-local adapter discoverable to the governed interface probe.
   // The shared frame still owns the popover, locale select, and sound state.
   document.querySelectorAll(".wp-frame-popover").forEach((panel) => {
@@ -2073,6 +2089,7 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
   function setStagePage(page, focusPanel = false) {
     const equipment = page === "equipment";
     if (nodes.stageTitle) nodes.stageTitle.textContent = t(equipment ? "equipmentTab" : "stagesTab");
+    syncStageHeaderContext();
     nodes.stagePage?.classList.toggle("is-hidden", equipment);
     nodes.techPanel?.classList.toggle("is-hidden", !equipment);
     nodes.stageTabBtn?.classList.toggle("is-active", !equipment);
@@ -2385,9 +2402,17 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     const progress = `${state.save.bestStage} / ${STAGE_COUNT}`;
     nodes.bestStageText.textContent = progress;
     if (nodes.stageProgressText) nodes.stageProgressText.textContent = progress;
+    syncStageHeaderContext();
     if (nodes.mainProgress) nodes.mainProgress.textContent = `${t("bestStage")} ${progress}`;
     nodes.upgradePointText.textContent = state.save.upgradePoints;
     nodes.diamondText.textContent = state.save.diamonds;
+  }
+
+  function syncStageHeaderContext() {
+    if (!nodes.stageHeaderContext) return;
+    const title = nodes.stageTitle?.textContent?.trim() || t("stagesTab");
+    const progress = nodes.stageProgressText?.textContent?.trim();
+    nodes.stageHeaderContext.textContent = progress ? `${title} · ${progress}` : title;
   }
 
   function renderBuildCards() {
@@ -2605,26 +2630,50 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     moveStageWindow(desiredStageWindow(anchorIndex + 1));
     const card = nodes.stageRail.querySelector(`[data-stage-id="${anchorIndex + 1}"]`);
     if (!card) return logical;
-    card.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" });
+    // scrollIntoView is inconsistent when the shared frame clips a nested
+    // transformed grid. Calculate the owning rail's scroll offset explicitly
+    // so the visual card and aria-current/focus state always agree.
+    const rail = nodes.stageRail;
+    const railBox = rail.getBoundingClientRect();
+    const cardBox = card.getBoundingClientRect();
+    const railCenter = railBox.left + railBox.width / 2;
+    const cardCenter = cardBox.left + cardBox.width / 2;
+    const renderedScrollDelta = cardCenter - railCenter;
+    const renderedScrollScale = card.offsetWidth ? cardBox.width / card.offsetWidth : 1;
+    const targetScroll = rail.scrollLeft + renderedScrollDelta / Math.max(0.01, renderedScrollScale);
+    const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
+    const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
+    rail.style.setProperty("scroll-behavior", "auto", "important");
+    rail.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll));
+    if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
+    else rail.style.removeProperty("scroll-behavior");
     const geometry = stageRailGeometry();
     const fraction = logical - anchorIndex;
     if (Math.abs(fraction) > 0.0001) nodes.stageRail.scrollLeft += fraction * geometry.orientation * geometry.pitch;
+    else markStageCardCurrent(card);
     nodes.stageRail.dataset.wpStageDragLogical = logical.toFixed(4);
     return logical;
   }
 
   function syncCenteredStageCard() {
-    if (!stageCardPool.length || !nodes.stageRail.getClientRects().length) return null;
+    if (!stageCardPool.length || !nodes.stageRail.getClientRects().length || nodes.stageRail.clientWidth <= 0) return null;
     const nearest = nearestStageCard();
     const stageId = Number(nearest?.dataset.stageId);
-    if (Number.isInteger(stageId)) stageBrowseId = stageId;
+    if (!Number.isInteger(stageId)) return null;
+    stageBrowseId = stageId;
+    return markStageCardCurrent(nearest);
+  }
+
+  function markStageCardCurrent(selected) {
+    if (!selected) return null;
     stageCardPool.forEach((card) => {
-      const current = card === nearest;
+      const current = card === selected;
       card.tabIndex = current ? 0 : -1;
       if (current) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
     });
-    return nearest;
+    return selected;
   }
 
   function settleStageRail(from, stageId, immediate = false) {
@@ -2662,7 +2711,10 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     stageBrowseId = clampStage(state.save.bestStage);
     ensureStageWindow(stageBrowseId);
     stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-    requestAnimationFrame(() => centerStageCard(stageBrowseId));
+    // Capture the intended stage before the hidden-to-visible frame transition
+    // can let an early zero-sized rail sync overwrite stageBrowseId.
+    const targetStage = stageBrowseId;
+    requestAnimationFrame(() => centerStageCard(targetStage));
   }
 
   function focusCurrentStage() {
@@ -2673,7 +2725,8 @@ const gameShell = window.WeightPlayScreenFrame.mountSlots({
     stageBrowseId = clampStage(stageId);
     ensureStageWindow(stageBrowseId);
     stageCardPool.forEach((button) => bindStageCard(button, Number(button.dataset.stageId)));
-    window.requestAnimationFrame(() => settleStageRail(stageBrowseId - 1, stageBrowseId, true));
+    const targetStage = stageBrowseId;
+    window.requestAnimationFrame(() => settleStageRail(targetStage - 1, targetStage, true));
   }
 
   function snapStageRailToNearest(behavior = "smooth") {

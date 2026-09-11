@@ -1391,3 +1391,237 @@ body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)) .combat-pace-contr
   background: rgba(13, 41, 53, .94);
   box-shadow: 0 3px 0 #061820;
 }
+
+/* Result is its own bounded Battle substate. The shared Canvas stylesheet
+   intentionally gives result panels an edge-to-edge overlay; this game keeps
+   the shared frame header visible and places the settlement inside the play
+   row so the combat HUD can never bleed through it. */
+html body #gamePanel.is-result > #wp-shared-battle-header {
+  display: grid !important;
+  visibility: visible !important;
+  z-index: 50 !important;
+}
+
+html body #gamePanel.is-result > .wp-frame-play-content,
+html body #gamePanel.is-result > :is(#defeatRevivePanel, #combatStallPanel, #quitRunPanel) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* The shared battle shell opens descendants for touch hit targets. The
+   summary is read-only and sits above the canvas status copy, so it must not
+   steal the status tap or become an invisible hit layer. */
+html body.squad-active #gamePanel .combat-summary {
+  pointer-events: none !important;
+}
+
+/* Keep the short action/status banner below the summary strip. This leaves
+   the top of the arena clear for the Boss warning and prevents two text
+   surfaces from occupying the same pixels on phone and desktop. */
+html body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-status {
+  top: 54px !important;
+}
+
+@media (max-width: 560px) {
+  html body.squad-active #gamePanel:has(#combatArea:not(.is-hidden)):not(.is-result) .combat-status {
+    top: 52px !important;
+  }
+}
+
+html body #gamePanel.is-result #resultPanel {
+  position: absolute !important;
+  top: calc(var(--wp-frame-header-height, 64px) + 16px) !important;
+  right: 8px !important;
+  bottom: 8px !important;
+  left: 8px !important;
+  z-index: 40 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  overflow: hidden !important;
+  border: 2px solid #597775 !important;
+  border-radius: 3px !important;
+  background:
+    linear-gradient(155deg, rgba(20, 62, 66, .98), rgba(7, 28, 34, .98)),
+    url("../../assets/animal-auto-squad-arena-block-v1.webp") center / cover !important;
+  box-shadow: 0 6px 0 #061820, 0 18px 42px rgba(1, 12, 20, .42) !important;
+}
+
+html body #gamePanel.is-result .result-lion {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  height: 128px !important;
+  min-height: 96px !important;
+  max-height: 160px !important;
+  min-width: 0 !important;
+  object-fit: cover !important;
+  object-position: center 38% !important;
+  border: 2px solid #d8ad59 !important;
+  border-radius: 3px !important;
+  box-shadow: 0 4px 0 #061820 !important;
+}
+
+html body #gamePanel.is-result .result-copy {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto minmax(0, 1fr) !important;
+  align-content: stretch !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  gap: 7px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 1px !important;
+  scrollbar-width: thin;
+}
+
+html body #gamePanel.is-result .result-heading {
+  margin: 0 !important;
+  color: #ffe091 !important;
+  font-size: 1.25rem !important;
+  line-height: 1.12 !important;
+  overflow-wrap: anywhere;
+}
+
+html body #gamePanel.is-result .result-decision {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  border: 2px solid #b88843 !important;
+  border-radius: 3px !important;
+  color: #fff1be !important;
+  background: rgba(92, 56, 16, .9) !important;
+  font-size: .9rem !important;
+  line-height: 1.2 !important;
+  overflow-wrap: anywhere;
+}
+
+html body #gamePanel.is-result .result-desc,
+html body #gamePanel.is-result .skill-report,
+html body #gamePanel.is-result .result-progress {
+  min-width: 0 !important;
+  margin: 0 !important;
+  font-size: .76rem !important;
+  line-height: 1.32 !important;
+  overflow-wrap: anywhere;
+}
+
+html body #gamePanel.is-result .result-rewards {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: grid !important;
+  align-content: start !important;
+  gap: 7px !important;
+}
+
+html body #gamePanel.is-result .result-progress,
+html body #gamePanel.is-result .skill-report {
+  padding: 8px !important;
+  border: 2px solid #486977 !important;
+  border-radius: 3px !important;
+  color: #dcebe0 !important;
+  background: rgba(13, 41, 53, .94) !important;
+  box-shadow: 0 3px 0 #061820 !important;
+}
+
+html body #gamePanel.is-result .result-progress strong,
+html body #gamePanel.is-result .result-progress em,
+html body #gamePanel.is-result .skill-report strong {
+  color: #ffe091 !important;
+}
+
+html body #gamePanel.is-result .result-actions {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-self: end !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #gamePanel.is-result .result-actions button {
+  min-width: 0 !important;
+  min-height: 54px !important;
+  height: auto !important;
+  padding: 7px 6px !important;
+  border: 2px solid #486977 !important;
+  border-radius: 3px !important;
+  color: #dcebe0 !important;
+  background: #213e4a !important;
+  box-shadow: inset 0 3px 0 #41606b, 0 4px 0 #071923 !important;
+  font-size: .8rem !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  overflow-wrap: anywhere;
+}
+
+html body #gamePanel.is-result .result-actions button.primary-btn {
+  border-color: #d8ad59 !important;
+  color: #2b2110 !important;
+  background: linear-gradient(180deg, #ffe091, #d89a3e) !important;
+  box-shadow: inset 0 3px 0 #fff2b2, 0 4px 0 #77562c !important;
+}
+
+html body #gamePanel.is-result .result-actions button:disabled {
+  filter: saturate(.3);
+  opacity: .56;
+}
+
+@media (min-width: 700px) {
+  html body #gamePanel.is-result #resultPanel {
+    grid-template-columns: 240px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+  html body #gamePanel.is-result .result-lion {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 240px !important;
+    height: 100% !important;
+    max-height: none !important;
+  }
+  html body #gamePanel.is-result .result-copy {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    gap: 9px !important;
+  }
+  html body #gamePanel.is-result .result-heading { font-size: 1.5rem !important; }
+  html body #gamePanel.is-result .result-decision { font-size: 1rem !important; }
+  html body #gamePanel.is-result .result-desc,
+  html body #gamePanel.is-result .skill-report,
+  html body #gamePanel.is-result .result-progress { font-size: .86rem !important; }
+  html body #gamePanel.is-result .result-actions {
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    gap: 8px !important;
+  }
+  html body #gamePanel.is-result .result-actions button {
+    min-height: 58px !important;
+    font-size: .9rem !important;
+  }
+}
+
+@media (max-width: 380px) {
+  html body #gamePanel.is-result #resultPanel { padding: 7px !important; gap: 6px !important; }
+  html body #gamePanel.is-result .result-lion { height: 112px !important; min-height: 88px !important; }
+  html body #gamePanel.is-result .result-actions { gap: 4px !important; }
+  html body #gamePanel.is-result .result-actions button { min-height: 50px !important; font-size: .74rem !important; }
+}

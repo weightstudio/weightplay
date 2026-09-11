@@ -824,3 +824,440 @@ body.wonder-playing #game {
   aspect-ratio: auto !important;
   box-shadow: none;
 }
+
+/* Growth loop and ability rail: game-owned content inside the shared
+   Main/Stage/Battle/Result frame. */
+body.wonder-stage-select #menuCoinLine {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+body.wonder-stage-select .talent-wallet {
+  border-color: rgba(215, 146, 255, 0.72);
+  background: linear-gradient(180deg, rgba(82, 43, 112, 0.92), rgba(35, 25, 58, 0.96));
+}
+
+body.wonder-stage-select .talent-wallet img {
+  filter: drop-shadow(0 0 5px rgba(215, 146, 255, 0.8));
+}
+
+body.wonder-playing .battle-hud {
+  gap: 6px;
+}
+
+body.wonder-playing .wall-shield-status {
+  color: #aaf3ff;
+  border-color: rgba(116, 235, 255, 0.65);
+}
+
+#wonderAbilities {
+  position: absolute;
+  top: 76px;
+  left: 12px;
+  z-index: 24;
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+#wonderAbilities[hidden] {
+  display: none !important;
+}
+
+#wonderAbilities .wonder-ability {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  width: 132px;
+  min-width: 132px;
+  min-height: 58px;
+  padding: 7px 9px;
+  border: 2px solid rgba(255, 226, 122, 0.74);
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(51, 38, 83, 0.98), rgba(20, 36, 62, 0.98));
+  color: #fff7d0;
+  box-shadow:
+    0 4px 0 rgba(6, 17, 28, 0.8),
+    0 0 16px rgba(255, 207, 84, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  text-align: left;
+}
+
+#wonderAbilities .wonder-ability.ready {
+  border-color: #8ff3ff;
+  box-shadow:
+    0 4px 0 rgba(6, 17, 28, 0.8),
+    0 0 18px rgba(116, 235, 255, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+#wonderAbilities .wonder-ability:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(6, 17, 28, 0.8), 0 0 14px rgba(116, 235, 255, 0.22);
+}
+
+#wonderAbilities .wonder-ability:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  filter: saturate(0.66);
+}
+
+#wonderAbilities .wonder-ability:focus-visible {
+  outline: 3px solid #ffe27a;
+  outline-offset: 2px;
+}
+
+#wonderAbilities .ability-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  image-rendering: auto;
+  filter: drop-shadow(0 0 6px rgba(255, 226, 122, 0.54));
+}
+
+#wonderAbilities .ability-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+#wonderAbilities .ability-copy strong,
+#wonderAbilities .ability-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#wonderAbilities .ability-copy strong {
+  font: 900 13px/1.05 system-ui, sans-serif;
+}
+
+#wonderAbilities .ability-copy small {
+  color: #c5e9ec;
+  font: 800 11px/1.1 system-ui, sans-serif;
+}
+
+body.wonder-playing #wonderAbilities .wonder-ability {
+  min-height: calc(58px / var(--wonder-battle-scale, 1));
+  font-size: calc(13px / var(--wonder-battle-scale, 1));
+}
+
+body.wonder-stage-select #profilePanel .talent-tree {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 1px solid rgba(215, 146, 255, 0.42);
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(159, 91, 219, 0.2), transparent 34%),
+    linear-gradient(150deg, rgba(25, 31, 57, 0.98), rgba(11, 26, 42, 0.98));
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+body.wonder-stage-select #profilePanel .talent-tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+body.wonder-stage-select #profilePanel .talent-tree-header > div:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+body.wonder-stage-select #profilePanel .talent-eyebrow {
+  color: #ffe27a;
+  font: 900 12px/1.1 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+body.wonder-stage-select #profilePanel .talent-tree-header strong {
+  color: #d8f4f2;
+  font: 700 12px/1.28 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .talent-points {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: 26px auto;
+  align-items: center;
+  column-gap: 4px;
+  min-width: 82px;
+  padding: 6px 8px;
+  border: 1px solid rgba(215, 146, 255, 0.64);
+  border-radius: 8px;
+  background: rgba(69, 43, 91, 0.74);
+  color: #f7d8ff;
+  text-align: left;
+}
+
+body.wonder-stage-select #profilePanel .talent-points img {
+  grid-row: 1 / span 2;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(215, 146, 255, 0.76));
+}
+
+body.wonder-stage-select #profilePanel .talent-points b {
+  font: 900 18px/1 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .talent-points small {
+  color: #edcaff;
+  font: 800 9px/1.1 system-ui, sans-serif;
+  white-space: nowrap;
+}
+
+body.wonder-stage-select #profilePanel .talent-branches {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+body.wonder-stage-select #profilePanel .talent-branch {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(6, 18, 31, 0.74);
+}
+
+body.wonder-stage-select #profilePanel .talent-branch-hero {
+  border-color: rgba(255, 196, 89, 0.34);
+}
+
+body.wonder-stage-select #profilePanel .talent-branch-battle {
+  border-color: rgba(137, 198, 255, 0.34);
+}
+
+body.wonder-stage-select #profilePanel .talent-branch-wall {
+  border-color: rgba(116, 235, 255, 0.38);
+}
+
+body.wonder-stage-select #profilePanel .talent-branch-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff1b6;
+  font: 900 12px/1.1 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .talent-branch-title i {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 226, 122, 0.52), transparent);
+}
+
+body.wonder-stage-select #profilePanel .talent-node-grid {
+  display: grid;
+  gap: 6px;
+}
+
+body.wonder-stage-select #profilePanel .talent-node {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: minmax(34px, auto) auto;
+  align-items: center;
+  gap: 4px 6px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 6px;
+  border: 1px solid rgba(255, 226, 122, 0.42);
+  border-radius: 7px;
+  background: linear-gradient(145deg, rgba(47, 59, 81, 0.98), rgba(21, 32, 50, 0.98));
+  color: #f8fbff;
+  text-align: left;
+  cursor: pointer;
+}
+
+body.wonder-stage-select #profilePanel .talent-node:not(:disabled):hover {
+  border-color: #ffe27a;
+  box-shadow: 0 0 12px rgba(255, 226, 122, 0.26);
+  transform: translateY(-1px);
+}
+
+body.wonder-stage-select #profilePanel .talent-node:focus-visible {
+  outline: 2px solid #8ff3ff;
+  outline-offset: 1px;
+}
+
+body.wonder-stage-select #profilePanel .talent-node:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+body.wonder-stage-select #profilePanel .talent-node.is-maxed {
+  border-color: rgba(255, 226, 122, 0.88);
+  background: linear-gradient(145deg, rgba(95, 70, 42, 0.98), rgba(37, 35, 43, 0.98));
+}
+
+body.wonder-stage-select #profilePanel .talent-node-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  grid-row: 1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(4, 13, 24, 0.72);
+}
+
+body.wonder-stage-select #profilePanel .talent-node-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-copy {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-copy strong,
+body.wonder-stage-select #profilePanel .talent-node-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-copy strong {
+  font: 900 11px/1.1 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-copy small {
+  color: #b9d7db;
+  font: 600 10px/1.15 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-meta {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  min-width: 0;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-meta b,
+body.wonder-stage-select #profilePanel .talent-node-meta em {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 800 9px/1.1 system-ui, sans-serif;
+  font-style: normal;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-meta b {
+  color: #ffe27a;
+}
+
+body.wonder-stage-select #profilePanel .talent-node-meta em {
+  color: #9ddde5;
+}
+
+body.wonder-stage-select #profilePanel .wall-growth-banner {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 8px;
+  padding: 9px 10px;
+  border-left: 3px solid #75ebff;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(23, 77, 88, 0.72), rgba(12, 29, 43, 0.58));
+}
+
+body.wonder-stage-select #profilePanel .wall-growth-banner strong {
+  color: #b9f6ff;
+  font: 900 14px/1.1 system-ui, sans-serif;
+}
+
+body.wonder-stage-select #profilePanel .wall-growth-banner span {
+  color: #c5e9ec;
+  font: 600 11px/1.25 system-ui, sans-serif;
+}
+
+@media (max-width: 720px) {
+  body.wonder-stage-select #profilePanel .talent-branches {
+    grid-template-columns: 1fr;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-branch {
+    padding: 8px;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-node-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  #wonderAbilities {
+    top: 76px;
+    left: 8px;
+    gap: 5px;
+  }
+
+  #wonderAbilities .wonder-ability {
+    grid-template-columns: 28px minmax(0, 1fr);
+    width: 108px;
+    min-width: 108px;
+    min-height: 52px;
+    padding: 5px 6px;
+  }
+
+  #wonderAbilities .ability-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  #wonderAbilities .ability-copy strong {
+    font-size: 11px;
+  }
+
+  #wonderAbilities .ability-copy small {
+    font-size: 9px;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-tree {
+    padding: 8px;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-tree-header {
+    align-items: start;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-points {
+    min-width: 72px;
+    padding-inline: 5px;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-points small {
+    white-space: normal;
+  }
+
+  body.wonder-stage-select #profilePanel .talent-node-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #wonderAbilities .wonder-ability,
+  body.wonder-stage-select #profilePanel .talent-node {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -244,13 +244,44 @@ window.WONDER_DATA = {
         splashRadius: 145
       }
     },
-{
+    {
       id: "lifeSteal",
       name: "守城回復",
       desc: "擊敗敵人時回復 3 點牆血量",
       icon: "assets/wonder-prop-repair-block-v1.png",
       effect: {
         killHeal: 3
+      }
+    },
+    {
+      id: "thunder",
+      name: "雷霆連鎖",
+      desc: "每 4 次命中引發一次閃電鏈",
+      icon: "assets/wonder-prop-crit-block-v1.png",
+      effect: {
+        chainEvery: 4,
+        chainDamage: 0.6
+      }
+    },
+    {
+      id: "barrier",
+      name: "城牆護符",
+      desc: "獲得 1 層城牆護盾並回復 8 點",
+      icon: "assets/wonder-prop-wall-block-v1.png",
+      effect: {
+        wallShield: 1,
+        wallHp: 8,
+        maxWallHp: 100
+      }
+    },
+    {
+      id: "fury",
+      name: "獅心狂熱",
+      desc: "爆擊率 +8%，獅吼冷卻 -1 秒",
+      icon: "assets/weightplay-character-boom-mane-lion-block-v1.webp",
+      effect: {
+        critChance: 0.08,
+        roarCooldownReduction: 1
       }
     }
   ],

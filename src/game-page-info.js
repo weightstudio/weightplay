@@ -463,24 +463,27 @@
       },
       showRelatedSkill: false,
       intro:
-        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
+        "Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; three active abilities create clutch moments; after settlement, saved coins improve Leo, equipment, the shared Lionheart talent tree, or the wall. Players can retry without a timer, and the game remains permanently ad-free.",
       story: [
         "Boom Mane Leo guards the wall outside WeightPlay's enchanted school-supply vault. Wild boars, trickster hyenas, armored rhinos, charging buffalo, hawks, bears, tigers, and crocodiles are drawn toward the magic stored inside its pencils, rulers, and erasers. Leo cannot leave the wall unprotected, so the player patrols its width, keeps the automatic weapons aligned with incoming lanes, and repairs damage between expeditions.",
         "The campaign crosses six five-stage defense routes. Each route ends when a named beast commander is defeated at Stages 5, 10, 15, 20, 25, or 30. A first clear opens the next stage; a Boss first clear also grants the recorded diamond bonus. Clearing Bear Starfall at Stage 30 means the full beast roster has been driven away and the vault can reopen safely."
       ],
       systems: [
         "Leo moves horizontally by dragging or tapping the battlefield; a focused keyboard can also use Left and Right Arrow. Equipped weapons fire automatically, but each slot owns its cooldown, so duplicate weapons still produce separate shots. Pencil, ruler, and eraser builds differ in speed, damage, size, and firing rhythm.",
-        "Every stage contains three to seven waves. Defeated beasts award coins, and the wall must retain at least one HP until the last enemy is gone. Between waves, three temporary choices can improve damage, cooldown, projectile count, side shots, bursts, size, piercing, splash, defeat healing, coin gain, slowing, or immediate wall repair.",
+        "Every stage contains three to seven waves. Defeated beasts award coins, and the wall must retain at least one HP until the last enemy is gone. Between waves, three temporary Battle choices can improve damage, cooldown, projectile count, side shots, bursts, size, piercing, splash, chain lightning, shields, defeat healing, coin gain, slowing, or immediate wall repair.",
+        "Roar pushes and slows nearby beasts, Pride Volley sends a fan of empowered shots, and Wall Aegis blocks impacts before its wall-thorn retaliation. Q and E are optional keyboard shortcuts; touch players use the visible ability rail.",
+        "Victory awards Talent Points. The shared Lionheart tree links Lionheart, Battle Arts, and Rampart branches, so wall talents are part of the same build rather than a separate mini-game. Unlocking a talent changes the next battle's ability range, volley, shield, retaliation, attack, or wall endurance.",
         "The eight enemies are mechanical roles rather than cosmetic swaps: boars and tigers rush, hyenas and bears curve sideways, rhinos reduce an opening hit with armor, buffalo and crocodiles punish the wall, and hawks dash. Authored type pools and formation positions make later stages emphasize different target priorities instead of drawing every beast randomly.",
         "Bosses keep their beast identity and add a unique projectile rule. The Boar Captain fires quick pursuit shots; the Hyena creates paired crossfire; the Rhino begins behind six shield hits and throws a heavy orb; the Buffalo aims a large siege orb at wall center; the Hawk combines repeated dashes with twin fast shots; and the Bear casts three-orb starfall.",
         "Stage unlocks, permanent upgrades, equipped weapons, coins, and claimed Boss diamond bonuses are stored in this browser. Result shows remaining wall HP, defeated beasts, upgrade choices, rewards, and either the next stage or a replay/menu route."
       ],
-      how: ["Open Battle and swipe the horizontal rail to an unlocked stage.", "Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.", "Move Leo beneath the lane that most needs weapon coverage; firing is automatic.", "Choose one upgrade after each completed wave and adapt it to the next enemy mix.", "Keep the wall above zero HP until every normal beast and Boss is defeated.", "Use settlement rewards for permanent hero, equipment, or wall upgrades, then continue or replay."],
+      how: ["Open Battle and swipe the horizontal rail to an unlocked stage.", "Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.", "Move Leo beneath the lane that most needs weapon coverage; firing is automatic.", "Use Roar, Pride Volley, and Wall Aegis when a lane or the wall is under pressure.", "Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.", "Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment."],
       strategyTips: [
         "Piercing and splash are strongest against fixed lanes or center-heavy formations; side shots cover alternating and edge attacks.",
         "Do not chase every fast beast. Hold a useful firing lane and move early when a hawk or tiger begins a dash.",
         "Against the Rhino Bulwark, rapid multi-shot attacks remove six shield hits efficiently before heavier damage matters.",
-        "Save wall repair and defeat-healing choices for breaker-heavy stages such as Buffalo Siege and Crocodile Siege.",
+        "Save Wall Aegis, wall repair, and defeat-healing choices for breaker-heavy stages such as Buffalo Siege and Crocodile Siege.",
+        "A Volley-focused tree path rewards grouped enemies; a Rampart path turns a dangerous wall hit into a counterattack. Mix branches when a stage's Boss pattern changes the priority.",
         "The final Bear Starfall spreads three weaker orbs. Broad damage can control its mixed escort while movement keeps Leo aligned with dangerous lanes."
       ],
       progression: [
@@ -492,12 +495,14 @@
         "Stages 26-30 review all eight roles through lane, alternating, center, and edge formations. Bear Starfall finishes the campaign with the complete roster and a three-projectile casting pattern rather than another numeric copy of an earlier Boss."
       ],
       designNote:
-        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, not whether a small fire button registered on a phone. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.",
+        "We use automatic weapon fire so the player's continuous decision is where Leo should stand, then make the high-stakes moments tactile: a visible ability rail, readable cooldowns, impact rings, chain lightning, shield flashes, wall thorns, and a shared talent tree. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.",
       parent:
-        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, wall HP, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
+        "Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, active abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.",
       faq: [
         ["How many stages are in Fantasy Lion Defense?", "There are 30 authored stages in six five-stage routes, with Boss battles at Stages 5, 10, 15, 20, 25, and 30."],
         ["Do the weapons fire by themselves?", "Yes. Every equipped slot fires on its own cooldown while the player moves Leo and chooses between-wave upgrades."],
+        ["What are the active abilities?", "Roar controls nearby beasts, Pride Volley fires an empowered fan, and Wall Aegis blocks wall hits. The visible buttons show their cooldowns."],
+        ["How does the talent tree work?", "Victories award Talent Points. Lionheart, Battle Arts, and Rampart share one tree, and Rampart talents directly improve the wall inside the same build."],
         ["Why do later stages feel different?", "They use specified beast compositions and lane, alternating, edge, or center formations. Later Bosses also use different projectile patterns."],
         ["What happens if the wall reaches zero HP?", "The run ends with a retry and stage-select choice. Permanent progress already saved in the browser remains available."],
         ["How are Boss diamonds earned?", "Each Boss stage grants its recorded diamond bonus only on the first clear; replaying still provides normal stage rewards."],
@@ -1689,13 +1694,13 @@
       showSkills: false,
       showRelatedSkill: false,
       intro:
-        "Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases a volley, and protects the crystal core while shadow beasts advance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
+        "Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb. Each route has three continuous waves. The player drags from the lion keeper to preview a wall-bounce path, releases one star orb at a time, and protects the crystal core while shadow beasts advance. Each orb spends its rebound allowance on walls or obstacles, then vanishes at its final contact; enemy hits do not consume that allowance. Six five-route regions add armor, protective anchors, phasing enemies, splitters, moving mirror pylons, telegraphed chargers, and six mechanically different regional Bosses. Between waves, one fortress blessing changes the current raid; between routes, Star Stones improve four permanent fortress rooms.",
       story: [
         "The Crystal Fortress was built where six guardian roads meet: the Crystal Woodland, Thornworks, Moon Ruins, Mirror Vault, Storm Bastion, and Eclipse Heart. When the fortress core began broadcasting an unstable pulse, shadow animals followed those roads inward. The lion orb keeper cannot leave the core unguarded, so every defense is fought from the launcher chamber by redirecting spirit orbs through the surrounding walls and mirrors.",
         "Clearing a route means its road is stable enough for repair crews to reopen it. Rootbound Golem tests the woodland gate, Brambleback Colossus occupies the thorn forge, Lunar Wisp Matriarch phases through the moon road, Prism Shell Regent controls the mirror vault, Tempest Horn Guardian marks storm lanes, and Voidcore Emperor seals the final chamber with three core phases. Completing Route 30 reconnects all six roads and stops the corrupted pulse from drawing more enemies to the fortress."
       ],
       systems: [
-        "Aim and ricochet: drag from the launcher to see the initial path, then release. The main orb and one weaker echo orb travel at related angles. Wall banks can cross multiple lanes or reach a target hidden behind another formation. Split Orb can add a third projectile, while Piercing Shine shortens the delay before one orb can hit the same target again.",
+        "Aim and ricochet: drag from the launcher to see the initial path, then release one star orb. Each click launches exactly one orb from the keeper's hand; Capacity upgrades open additional independent in-flight slots. Wall and obstacle contacts consume its rebound allowance, enemy hits do not, and the orb vanishes at the final allowed contact. Wall banks can cross multiple lanes or reach a target hidden behind another formation. Piercing Shine shortens the delay before one orb can hit the same target again.",
         "Three-wave route: Waves 1 and 2 establish the route's enemy rule. Wave 3 uses an authored elite formation, except Routes 5, 10, 15, 20, 25, and 30, which end with a named regional Boss. A cleared wave pauses inside Battle for one blessing choice, then resumes the same route with surviving core HP and current upgrades.",
         "Special enemies: armored beasts absorb a fixed number of hits before losing HP. Stationary thorn anchors periodically give nearby allies a shield. Moon wisps visibly phase out and cannot be damaged until they return. Crystal splitters create two faster shards when defeated. Chargers mark a line, rush, then leave a recovery opening.",
         "Mirror pylons: later routes place one or two solid hexagonal pylons inside the arena. Orbs physically reflect from them, creating bank paths that do not exist in the early regions. Some pylons move horizontally, so a previously safe angle may stop working during the same wave.",
@@ -1705,14 +1710,14 @@
       how: [
         "Choose an unlocked route from the horizontal fortress map. Read its name, rule tag, and route-specific warning before entering.",
         "Drag from the lion keeper toward the desired angle. Use the preview to decide whether a direct shot, one-wall bank, cross-arena bank, or pylon reflection reaches the priority target.",
-        "Release to fire the spirit-orb volley. Watch armor rings, phase outlines, charge marks, anchor protection, and Boss cues before choosing the next shot.",
+        "Release to fire one spirit orb. Watch armor rings, phase outlines, charge marks, anchor protection, and Boss cues; after its final wall or obstacle bounce, it disappears where it lands before you choose the next shot.",
         "After Waves 1 and 2, select one blessing. A reroll costs three Diamonds and requires a second confirmation; selecting a blessing immediately continues to the next wave.",
         "Keep core HP above zero through Wave 3. Victory saves the next route and Star Stones; failure still saves the earned Star Stones and leaves the best unlocked route intact.",
         "Return to the map to spend Star Stones on fortress rooms, replay cleared routes, or continue with Next Stage from Result."
       ],
       strategyTips: [
         "Do not always aim at the closest enemy. Anchors, splitters, and backline wisps can create more pressure than a slow front target, so use a bank route to reach the correct priority.",
-        "A phase outline means damage is blocked. Keep the next angle prepared and release when the enemy becomes solid instead of wasting the volley during its closed state.",
+        "A phase outline means damage is blocked. Keep the next angle prepared and release when the enemy becomes solid instead of wasting the shot during its closed state.",
         "Moving pylons are useful surfaces, not only obstacles. Aim slightly ahead of their travel so the orb meets the pylon where it will be, then crosses a lane that wall-only shots cannot reach.",
         "Against chargers and Tempest Horn Guardian, read the marked line and wait for recovery. Faster Recharge helps only if the shots are released during a useful window.",
         "Core Shield and Faster Recharge stabilize a route under pressure; Bigger Orb and Piercing Shine shorten dangerous Boss phases. Scout Magnet helps long-term growth but does not stop an immediate breach.",
@@ -2683,7 +2688,7 @@
         parent: "《彩色連線花園》是無廣告的 Kids 益智遊戲，建議 9 歲以上與家庭一起遊玩。進度只存於此瀏覽器；星星與完成回饋是遊戲摘要，不是正式評量。",
         faq: [["每一格都要有路線嗎？", "是。只連好所有配對還不夠，必須填滿整個版面。"], ["路線可以交叉嗎？", "不可以，每一格只能屬於一種顏色。"], ["提示有限制嗎？", "沒有。提示會完成一條安全路線，也不會消耗貨幣。"], ["進度會保存嗎？", "會，解鎖進度會儲存在此瀏覽器。"], ["遊戲會顯示廣告嗎？", "不會，Kids 大廳與遊戲都不會請求廣告。"]],
       },
-      "wonder-crash": zhGuide("奇幻獅子守城", "彈幕守城防禦", ["拖曳角色左右移動。", "武器冷卻完成後會自動攻擊敵人。", "守住城牆並完成所有波次即可過關。"]),
+      "wonder-crash": zhGuide("奇幻獅子防衛", "彈幕守城防禦", ["拖曳角色左右移動，或使用 Space、Q、E 施放三種主動能力。", "波次之間選擇戰鬥強化，通關取得天賦點，獅心、戰鬥與城牆共用一棵天賦樹。", "守住城牆並完成所有波次即可過關。"]),
       "color-lunchbox": zhGuide("動物顏色便當盒", "顏色分類", ["觀察食物或動物圖案的顏色。", "把物品拖到相同顏色的便當盒。", "完成每關指定題目即可進入下一關。"]),
       "bubble-bakery": zhGuide("動物泡泡烘焙坊", "泡泡連線益智", ["點擊兩顆以上相連的同色泡泡。", "消除泡泡後，上方泡泡會落下補位。", "在步數內完成關卡目標。"]),
       "animal-zoo-idle": {
@@ -2893,13 +2898,13 @@
         guideTitleSuffix: "遊戲指南",
         noteTitle: "玩家與存檔說明",
         hideScoreBands: true,
-        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後放開星珠，在影獸接近水晶核心前擊退牠們。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
+        intro: "《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的防守戰役。每關包含三個連續波次，玩家從獅子守衛旁拖曳瞄準，預覽牆面反彈後一次放出一顆星珠，在影獸接近水晶核心前擊退牠們。每顆星珠會消耗牆壁或障礙物反彈次數，最後一次碰撞後在原地消失；命中敵人不會消耗反彈次數。六個五關區域依序加入護甲、荊棘錨點、相位敵人、水晶分裂獸、移動鏡面柱、衝鋒路線，以及六場規則不同的區域首領戰。波次之間選擇本局祝福，關卡之間則用星石升級四個永久要塞房間。",
         story: [
           "水晶要塞位在六條守護道路交會的位置：水晶森林、荊棘工坊、月光遺跡、鏡面寶庫、風暴壁壘與蝕影核心。核心開始發出不穩定脈衝後，暗影動物沿著道路靠近。獅子星珠守衛不能離開核心，因此每次防守都必須從發射室把星珠導向牆面、鏡門與敵方路線。",
           "通過一關代表該段道路已穩定到足以讓修復隊重新開放。盤根魔像守在森林入口，荊背巨獸佔領工坊，月靈女王能穿過月光道路，稜晶甲攝政王控制鏡庫，暴風角守衛標記衝鋒路線，虛空核心皇則以三階段封鎖最後房間。完成第 30 關代表六條道路重新連結，核心也不再吸引新的影獸。"
         ],
         systems: [
-          "瞄準與反彈：從發射器拖曳可預覽第一段路線，放開後會射出主星珠與一顆角度相關的弱化回音珠。牆面反彈可以跨越多條路線，或打到被前排遮住的優先目標。分裂星珠能增加第三顆彈體，穿透星芒則縮短同一顆星珠再次命中相同敵人的間隔。",
+          "瞄準與反彈：從發射器拖曳可預覽第一段路線，放開後一次只會從守護獅手中射出一顆星珠。每次點擊都只發射一顆；容量升級會開放額外、可分開瞄準的飛行欄位。牆壁與障礙物會消耗反彈次數，敵人不會；用完最後一次反彈後，星珠會在碰撞處消失。穿透星芒則縮短同一顆星珠再次命中相同敵人的間隔。",
           "三波關卡：前兩波先讓玩家理解本關規則。第三波通常是特製菁英陣形；第 5、10、15、20、25、30 關則改為具名區域首領。通過一波後仍保留核心損傷與本局升級，只暫停讓玩家選一個祝福，再繼續同一關。",
           "特殊敵人：裝甲獸要先消耗固定次數的護甲；不移動的荊棘錨點會定期替鄰近隊友加盾；月光幽靈會用虛線提示進入相位，顯形前無法受傷；水晶分裂獸倒下後會產生兩枚更快碎片；衝鋒獸先標記路線，突進後才留下可攻擊空檔。",
           "鏡面柱：中後期會在競技場內放置一到兩座六角鏡面柱，星珠會真的從柱面反射，形成早期關卡不存在的新路線。有些鏡面柱會左右移動，同一波中原本有效的角度也可能失效。",
@@ -2909,7 +2914,7 @@
         how: [
           "從水平滑動的要塞地圖選擇已解鎖關卡，先閱讀關卡名稱、規則標籤與專屬警告。",
           "從獅子守衛旁拖向想要的角度，利用預覽判斷直接射擊、單牆反彈、跨場反彈或鏡柱反射能否命中優先目標。",
-          "放開後射出星珠，觀察護甲圈、相位虛線、衝鋒標記、錨點保護與首領提示，再決定下一次射擊。",
+          "放開後射出一顆星珠，觀察護甲圈、相位虛線、衝鋒標記、錨點保護與首領提示；用完最後一次牆壁或障礙物反彈後，星珠會在原地消失，再決定下一次射擊。",
           "通過前兩波後各選一個祝福。重抽花三顆鑽石並需要再按一次確認；選好祝福就立刻繼續下一波。",
           "第三波結束前保持核心生命大於零。勝利會保存下一關與星石；失敗仍保存已取得星石，且不會失去最佳已解鎖關卡。",
           "回到地圖使用星石升級房間、重玩舊關，或從結算畫面直接進入下一關。"
@@ -5098,20 +5103,22 @@
     noteTitle: "玩家與存檔資訊",
     gameplay: "橫向移動自動射擊防衛",
     genre: ["動作", "守城", "動物"],
-    intro: "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，結算後再用保存的金幣提升雷歐、裝備或城牆。玩家可在沒有計時壓力的情況下重試，遊戲也永久無廣告。",
+    intro: "《奇幻獅子防衛》是由爆鬃獅雷歐擔任主角的 30 關動物守城遊戲。玩家沿著奇幻城牆左右移動，裝備的橡皮擦、鉛筆與尺會依各自冷卻時間自動攻擊。八種野獸依直線、左右交替、外側與中央四種編隊進攻，每五關還有一種不同攻擊規則的王。波次之間可選本場強化，戰鬥中還能用三種主動能力扭轉危機，結算後再用保存的金幣與天賦點提升雷歐、裝備、共用天賦樹或城牆。玩家可在沒有計時壓力的情況下重試，遊戲也永久無廣告。",
     story: [
       "爆鬃獅雷歐守護 WeightPlay 魔法文具庫外的城牆。野豬、鬣狗、犀牛、水牛、猛鷹、黑熊、老虎與鱷魚受到鉛筆、尺和橡皮擦中的魔力吸引而來。雷歐不能離開城牆，因此玩家要在牆前巡守，讓自動武器對準危險路線，並在一場防衛結束後修補長期傷害。",
       "戰役分成六條、每條五關的防衛路線。第 5、10、15、20、25、30 關各有一位野獸指揮者；首次通關會開啟下一關，王關首次通過還會取得已記錄的鑽石獎勵。擊退第 30 關黑熊星落王與完整獸群，代表文具庫可以重新安全開放。"
     ],
     systems: [
       "玩家可在戰場點擊或拖曳，讓雷歐水平移動；桌面鍵盤聚焦後也能用左右方向鍵。每個裝備欄有獨立冷卻，即使裝備重複武器也會分別射擊。鉛筆、尺與橡皮擦在速度、傷害、大小與節奏上各有差異。",
-      "每關有三到七波。擊敗野獸可取得金幣，城牆必須在最後一隻敵人倒下前保留至少一點生命。波次之間可從三個選項挑一項，強化傷害、冷卻、數量、側射、連射、大小、穿透、濺射、擊敗回復、金幣、減速或立即修牆。",
+      "每關有三到七波。擊敗野獸可取得金幣，城牆必須在最後一隻敵人倒下前保留至少一點生命。波次之間可從三個選項挑一項，強化傷害、冷卻、數量、側射、連射、大小、穿透、濺射、雷霆連鎖、護盾、擊敗回復、金幣、減速或立即修牆。",
+      "獅吼會擊退並減速附近野獸，獅心齊射會扇形發射強化文具彈，城牆護盾會擋住撞擊並觸發荊棘反擊；畫面上的能力按鈕會顯示冷卻，鍵盤也可用 Q、E。",
+      "勝利會取得天賦點。獅心、戰鬥技與城牆三條分支共用同一棵天賦樹，城牆天賦不是孤立的小系統，而是直接改變下一場護盾、反擊、血量與修補的戰鬥配置。",
       "八種敵人不是只換圖片：野豬與老虎高速前進，鬣狗與黑熊左右走曲線，犀牛用護甲降低第一次傷害，水牛與鱷魚擅長破牆，猛鷹會突然俯衝。每關指定敵人編成與進場位置，後段不再只是所有野獸隨機出現。",
       "六位王各有獨立規則：野豬王快速追擊；鬣狗王發射成對交叉彈；犀牛王先用六層護盾吸收攻擊並投出重彈；水牛王向城牆中央發射大型攻城彈；猛鷹王俯衝並連射兩發高速彈；黑熊王施放三連星落。",
-      "最高關卡、永久強化、裝備、金幣與已領取的王關鑽石都存在目前瀏覽器。結算會顯示剩餘牆血、擊敗數、強化選擇與獎勵，再提供下一關、重玩或回選單。"
+      "最高關卡、永久強化、裝備、金幣、天賦點與已領取的王關鑽石都存在目前瀏覽器。結算會顯示剩餘牆血、擊敗數、強化選擇與獎勵，再提供下一關、重玩或回選單。"
     ],
-    how: ["開啟戰鬥頁，左右滑動關卡軌道並選擇已解鎖關卡。", "開戰前查看關卡名稱、敵人圖片、編隊提示、波數與王關標記。", "把雷歐移到最需要火力的路線下方；武器會自動射擊。", "每波結束選一個強化，依下一波敵人編成調整打法。", "在所有普通野獸與王被擊敗前，讓城牆生命保持在零以上。", "用結算獎勵永久提升角色、裝備或城牆，再繼續或重玩。"],
-    strategyTips: ["穿透與濺射適合固定直線或中央重兵；側射適合左右交替與外側進攻。", "不用追逐每一隻快獸；守住有效射線，看到猛鷹或老虎加速時提早移動。", "對抗犀牛護盾王時，先用快速多發攻擊拆掉六層護盾，再讓高傷害武器發揮。", "水牛攻城與鱷魚攻城等破牆關卡，修牆與擊敗回復的價值更高。", "最終黑熊星落王會分散三發較弱投射物；廣域傷害可控制混合護衛，移動則用來維持危險路線的火力。"],
+    how: ["開啟戰鬥頁，左右滑動關卡軌道並選擇已解鎖關卡。", "開戰前查看關卡名稱、敵人圖片、編隊提示、波數與王關標記。", "把雷歐移到最需要火力的路線下方；武器會自動射擊。", "在危險路線使用獅吼、獅心齊射與城牆護盾。", "每波結束選一個戰鬥強化，依下一波敵人編成調整打法。", "用結算獎勵取得的天賦點配置共用天賦樹，再永久提升角色、裝備或城牆。"],
+    strategyTips: ["穿透與濺射適合固定直線或中央重兵；側射適合左右交替與外側進攻。", "不用追逐每一隻快獸；守住有效射線，看到猛鷹或老虎加速時提早移動。", "對抗犀牛護盾王時，先用快速多發攻擊拆掉六層護盾，再讓高傷害武器發揮。", "水牛攻城與鱷魚攻城等破牆關卡，修牆、荊棘反擊與擊敗回復的價值更高。", "獅心齊射適合處理聚團野獸，城牆分支則能把撞牆危機變成反擊；王的規則改變時可以混搭分支。", "最終黑熊星落王會分散三發較弱投射物；廣域傷害可控制混合護衛，移動則用來維持危險路線的火力。"],
     progression: [
       "第 1～5 關教直線、左右入口與鬣狗曲線；野豬追擊王在混合護衛後方快速瞄準射擊。",
       "第 6～10 關加入中央重甲、破牆獸、曲線施法獸與天空急襲；鬣狗交叉火網王會在雙側獸群間發射成對投射物。",
@@ -5120,11 +5127,13 @@
       "第 21～25 關組合護甲快攻、曲線衝刺、重獸城門與側翼破牆；猛鷹王會反覆加速並射出兩發高速彈。",
       "第 26～30 關用四種編隊複習八種角色；黑熊星落王以三發投射物和完整獸群收尾，不是前一位王的數值放大版本。"
     ],
-    designNote: "我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，而不是在手機上反覆確認小型射擊按鈕是否按到。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，同時保留對玩家友善的承諾：無廣告、無倒數壓力、支持性重試，並以事實性的戰鬥表現摘要取代能力評量。",
-    parent: "本作包含卡通動物攻城、自動文具武器、城牆生命與強化選擇。戰鬥表現只摘要本場城牆狀況、擊敗數與強化選擇，不是能力評量。General 遊戲頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。",
+    designNote: "我們採用自動射擊，讓玩家持續思考雷歐該站在哪裡，再用能力按鈕、冷卻讀條、命中環、連鎖閃電、護盾閃光與城牆荊棘補上真正的打擊感。每個裝備欄的獨立冷卻保留配裝價值，波次強化則提供短暫的策略停頓；共用天賦樹讓獅子、戰鬥與城牆成為同一套成長配置。本次 30 關改造以指定敵人編成與四種清楚的進場陣形取代舊後段的全種類隨機，再用六種王的投射物規則建立里程碑。手機點擊、拖曳與桌面方向鍵都控制同一個有邊界的邏輯戰場。本作比《動物顏色便當盒》更要求反應與配裝，同時保留對玩家友善的承諾：無廣告、無倒數壓力、支持性重試，並以事實性的戰鬥表現摘要取代能力評量。",
+    parent: "本作包含卡通動物攻城、自動文具武器、三種主動能力、城牆生命、共用天賦樹與強化選擇。戰鬥表現只摘要本場城牆狀況、擊敗數與強化選擇，不是能力評量。General 遊戲頁面沒有廣告，也不需要登入；進度保存在目前瀏覽器，清除網站資料可能會移除紀錄。",
     faq: [
       ["一共有多少關？", "共有 30 個具名關卡，分成六條五關路線，王關位於第 5、10、15、20、25、30 關。"],
-      ["武器會自動攻擊嗎？", "會。每個裝備欄依自己的冷卻時間射擊，玩家負責移動雷歐與選擇波次強化。"],
+      ["武器會自動攻擊嗎？", "會。每個裝備欄依自己的冷卻時間射擊，玩家負責移動雷歐、使用能力與選擇波次強化。"],
+      ["主動能力怎麼用？", "獅吼控制附近野獸，獅心齊射發射強化彈幕，城牆護盾擋下撞擊；按鈕會顯示各自冷卻。"],
+      ["天賦樹怎麼用？", "通關取得天賦點，獅心、戰鬥技與城牆共用同一棵樹；城牆天賦會直接影響同一場戰鬥。"],
       ["後段關卡為什麼不同？", "各關指定敵人編成與直線、交替、外側或中央陣形，六位王也有不同投射物規則。"],
       ["城牆生命歸零會怎樣？", "本次防衛結束，可選擇重試或回關卡；已保存的永久進度不會因此消失。"],
       ["王關鑽石怎麼取得？", "每個王關只有首次通關會取得記錄中的鑽石獎勵，重玩仍會有一般關卡收益。"],
@@ -7682,13 +7691,13 @@
     noteTitle: "Informazioni sul giocatore e sui salvataggi",
     hideScoreBands: true,
     intro:
-      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi a percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una raffica e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
+      "Fortezza delle Sfere Animali è una campagna di difesa a rimbalzi a percorsi, in cui bisogna analizzare l'arena prima di lanciare una sfera spirituale. Ogni percorso ha tre ondate continue. Il giocatore trascina dal custode leone per visualizzare una traiettoria con rimbalzo sulle pareti, rilascia una sola sfera stellare alla volta e protegge il nucleo di cristallo mentre le bestie d'ombra avanzano. Ogni sfera consuma i rimbalzi contro pareti o ostacoli e scompare sul punto dell'ultimo contatto; colpire i nemici non consuma rimbalzi. Sei regioni da cinque percorsi introducono armature, ancore protettive, nemici in fase, scissori, piloni a specchio mobili, assalitori con attacchi segnalati e sei boss regionali con meccaniche diverse. Tra un'ondata e l'altra, una benedizione della fortezza modifica l'incursione in corso; tra i percorsi, le Pietre Stellari migliorano quattro stanze permanenti della fortezza.",
     story: [
       "La Fortezza di Cristallo è stata costruita nel punto in cui si incontrano sei strade dei guardiani: il Bosco di Cristallo, le Officine Spinose, le Rovine Lunari, la Volta degli Specchi, il Bastione della Tempesta e il Cuore dell'Eclissi. Quando il nucleo della fortezza ha iniziato a trasmettere un impulso instabile, gli animali d'ombra hanno seguito quelle strade verso l'interno. Il custode leone non può lasciare il nucleo incustodito, quindi ogni difesa parte dalla camera di lancio e devia le sfere spirituali sulle pareti e sugli specchi circostanti.",
       "Liberare un percorso significa rendere la sua strada abbastanza stabile da consentire alle squadre di riparazione di riaprirla. Il Golem delle Radici sorveglia il cancello del bosco, il Colosso dei Rovi occupa la forgia spinosa, la Matriarca dei Fuochi Fatui Lunari attraversa la strada lunare, il Reggente del Guscio Prismatico controlla la Volta degli Specchi, il Guardiano Corno di Tempesta segna le corsie della tempesta e l'Imperatore del Nucleo Vuoto sigilla la camera finale con tre fasi. Completare il percorso 30 ricollega tutte e sei le strade e impedisce all'impulso corrotto di attirare altri nemici verso la fortezza."
     ],
     systems: [
-      "Mira e rimbalza: trascina dal lanciatore per vedere la traiettoria iniziale, quindi rilascia. La sfera principale e una sfera dell'eco più debole viaggiano ad angoli correlati. I rimbalzi sulle pareti possono attraversare più corsie o raggiungere un bersaglio nascosto dietro un'altra formazione. Sfera Divisa può aggiungere un terzo proiettile, mentre Luce Perforante riduce il ritardo prima che una sfera possa colpire di nuovo lo stesso bersaglio.",
+      "Mira e rimbalza: trascina dal lanciatore per vedere la traiettoria iniziale, quindi rilascia una sola sfera stellare. Ogni tocco lancia esattamente una sfera dalla mano del custode; i potenziamenti di capacità aprono slot indipendenti per i tiri successivi. Pareti e ostacoli consumano i rimbalzi disponibili, i nemici no; dopo l'ultimo rimbalzo consentito la sfera scompare sul punto d'impatto. Luce Perforante riduce il ritardo prima che una sfera possa colpire di nuovo lo stesso bersaglio.",
       "Percorso a tre ondate: le ondate 1 e 2 presentano la regola nemica del percorso. L'ondata 3 usa una formazione d'élite progettata, tranne nei percorsi 5, 10, 15, 20, 25 e 30, che terminano con un boss regionale. Dopo aver eliminato un'ondata, la battaglia si ferma per la scelta di una benedizione; poi lo stesso percorso riprende con i PV del nucleo rimasti e i potenziamenti attuali.",
       "Nemici speciali: le bestie corazzate assorbono un numero fisso di colpi prima di perdere PV. Le ancore spinose immobili applicano periodicamente uno scudo agli alleati vicini. I fuochi fatui lunari diventano visibilmente intangibili e non possono subire danni finché non ritornano solidi. Gli scissori di cristallo generano due frammenti più veloci quando vengono sconfitti. Gli assalitori segnano una corsia, scattano in avanti e poi lasciano una finestra di recupero.",
       "Piloni a specchio: nei percorsi avanzati compaiono uno o due piloni esagonali solidi nell'arena. Le sfere rimbalzano davvero su di essi, creando traiettorie impossibili nelle prime regioni. Alcuni piloni si muovono in orizzontale, quindi un angolo prima sicuro può smettere di funzionare durante la stessa ondata.",
@@ -7698,7 +7707,7 @@
     how: [
       "Scegli un percorso sbloccato dalla mappa orizzontale della fortezza. Leggi il nome, l'etichetta della regola e l'avviso specifico prima di entrare.",
       "Trascina dal custode leone verso l'angolo desiderato. Usa l'anteprima per capire se un tiro diretto, un rimbalzo su una parete, un rimbalzo attraverso l'arena o una riflessione su un pilone raggiunge il bersaglio prioritario.",
-      "Rilascia per lanciare la raffica di sfere spirituali. Osserva gli anelli dell'armatura, i contorni di fase, i segni di carica, la protezione delle ancore e i segnali dei boss prima del tiro successivo.",
+      "Rilascia per lanciare una sfera spirituale. Osserva gli anelli dell'armatura, i contorni di fase, i segni di carica, la protezione delle ancore e i segnali dei boss; dopo l'ultimo rimbalzo su parete o ostacolo la sfera scompare dove atterra, prima del tiro successivo.",
       "Dopo le ondate 1 e 2, scegli una benedizione. Un rilancio costa tre Diamanti e richiede una seconda conferma; scegliere una benedizione avvia subito l'ondata successiva.",
       "Mantieni i PV del nucleo sopra lo zero fino alla fine dell'ondata 3. La vittoria salva il percorso successivo e le Pietre Stellari; la sconfitta conserva comunque le Pietre Stellari guadagnate e il miglior percorso sbloccato.",
       "Torna alla mappa per spendere le Pietre Stellari nelle stanze della fortezza, rigiocare i percorsi completati o continuare con il percorso successivo dal risultato."
@@ -7751,13 +7760,13 @@
     "guideTitleSuffix": "游戏指南",
     "noteTitle": "玩家与存档说明",
     "hideScoreBands": true,
-    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。每关包含三个连续波次，玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后放开星珠，在影兽接近水晶核心前击退牠们。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
+    "intro": "《动物星珠要塞》是一套以阅读战场与规划反弹路线为核心的防守战役。每关包含三个连续波次，玩家从狮子守卫旁拖曳瞄准，预览墙面反弹后一次放出一颗星珠，在影兽接近水晶核心前击退它们。每颗星珠会消耗墙壁或障碍物反弹次数，最后一次碰撞后在原地消失；命中敌人不会消耗反弹次数。六个五关区域依序加入护甲、荆棘锚点、相位敌人、水晶分裂兽、移动镜面柱、冲锋路线，以及六场规则不同的区域首领战。波次之间选择本局祝福，关卡之间则用星石升级四个永久要塞房间。",
     "story": [
       "水晶要塞位在六条守护道路交会的位置：水晶森林、荆棘工坊、月光遗迹、镜面宝库、风暴壁垒与蚀影核心。核心开始发出不稳定脉冲后，暗影动物沿著道路靠近。狮子星珠守卫不能离开核心，因此每次防守都必须从发射室把星珠导向墙面、镜门与敌方路线。",
       "通过一关代表该段道路已稳定到足以让修复队重新开放。盘根魔像守在森林入口，荆背巨兽占领工坊，月灵女王能穿过月光道路，棱晶甲摄政王控制镜库，暴风角守卫标记冲锋路线，虚空核心皇则以三阶段封锁最后房间。完成第 30 关代表六条道路重新连结，核心也不再吸引新的影兽。"
     ],
     "systems": [
-      "瞄准与反弹：从发射器拖曳可预览第一段路线，放开后会射出主星珠与一颗角度相关的弱化回音珠。墙面反弹可以跨越多条路线，或打到被前排遮住的优先目标。分裂星珠能增加第三颗弹体，穿透星芒则缩短同一颗星珠再次命中相同敌人的间隔。",
+      "瞄准与反弹：从发射器拖曳可预览第一段路线，放开后一次只会从守护狮手中射出一颗星珠。每次点击都只发射一颗；容量升级会开放额外、可分开瞄准的飞行栏位。墙壁与障碍物会消耗反弹次数，敌人不会；用完最后一次反弹后，星珠会在碰撞处消失。穿透星芒则缩短同一颗星珠再次命中相同敌人的间隔。",
       "三波关卡：前两波先让玩家理解本关规则。第三波通常是特制菁英阵形；第 5、10、15、20、25、30 关则改为具名区域首领。通过一波后仍保留核心损伤与本局升级，只暂停让玩家选一个祝福，再继续同一关。",
       "特殊敌人：装甲兽要先消耗固定次数的护甲；不移动的荆棘锚点会定期替邻近队友加盾；月光幽灵会用虚线提示进入相位，显形前无法受伤；水晶分裂兽倒下后会产生两枚更快碎片；冲锋兽先标记路线，突进后才留下可攻击空档。",
       "镜面柱：中后期会在竞技场内放置一到两座六角镜面柱，星珠会真的从柱面反射，形成早期关卡不存在的新路线。有些镜面柱会左右移动，同一波中原本有效的角度也可能失效。",
@@ -7767,7 +7776,7 @@
     "how": [
       "从水平滑动的要塞地图选择已解锁关卡，先阅读关卡名称、规则标签与专属警告。",
       "从狮子守卫旁拖向想要的角度，利用预览判断直接射击、单墙反弹、跨场反弹或镜柱反射能否命中优先目标。",
-      "放开后射出星珠，观察护甲圈、相位虚线、冲锋标记、锚点保护与首领提示，再决定下一次射击。",
+      "放开后射出一颗星珠，观察护甲圈、相位虚线、冲锋标记、锚点保护与首领提示；用完最后一次墙壁或障碍物反弹后，星珠会在原地消失，再决定下一次射击。",
       "通过前两波后各选一个祝福。重抽花三颗钻石并需要再按一次确认；选好祝福就立刻继续下一波。",
       "第三波结束前保持核心生命大于零。胜利会保存下一关与星石；失败仍保存已取得星石，且不会失去最佳已解锁关卡。",
       "回到地图使用星石升级房间、重玩旧关，或从结算画面直接进入下一关。"
@@ -18432,13 +18441,13 @@
     guideTitleSuffix: "دليل اللعبة",
     noteTitle: "معلومات اللاعب والحفظ",
     hideScoreBands: true,
-    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد متعددة المراحل، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. يضم كل مسار ثلاث موجات متواصلة. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق وابلًا واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
+    intro: "حصن الكرات الحيوانية حملة دفاعية بالارتداد متعددة المراحل، تعتمد على قراءة الساحة قبل إطلاق كرة روحية. يضم كل مسار ثلاث موجات متواصلة. اسحب من حارس الأسد لمعاينة مسار الارتداد عن الجدار، ثم أطلق كرة نجمية واحدة في كل مرة واحمِ النواة البلورية بينما تتقدم حيوانات الظل. تستهلك كل كرة ارتداداتها عند الجدران أو العوائق وتختفي عند آخر نقطة اصطدام؛ ولا تستهلك إصابة الأعداء أي ارتداد. تضيف ست مناطق، تضم كل منها خمسة مسارات، دروعًا ومراسي حماية وأعداء يتوارون وأعداء منقسمين وأعمدة مرايا متحركة ومهاجمين ذوي مسارات معلنة وستة زعماء إقليميين مختلفين ميكانيكيًا. وبين الموجات تغيّر بركة حصن واحدة الغارة الحالية؛ وبين المسارات تحسن أحجار النجوم أربع غرف دائمة في الحصن.",
     story: [
       "بُني الحصن البلوري عند ملتقى ستة طرق للحراس: الغابة البلورية، مشاغل الأشواك، أطلال القمر، قبو المرايا، حصن العاصفة وقلب الكسوف. عندما بدأت نواة الحصن بث نبضة غير مستقرة، اتبعت حيوانات الظل تلك الطرق إلى الداخل. لا يستطيع حارس الكرة الأسد ترك النواة بلا حماية، لذلك تُخاض كل معركة من غرفة الإطلاق عبر إعادة توجيه الكرات الروحية بين الجدران والمرايا المحيطة.",
       "يعني تخطي مسار أن طريقه أصبح مستقرًا بما يكفي لإعادة فتحه أمام فرق الإصلاح. يختبر غول الجذور بوابة الغابة، ويحتل عملاق الظهر الشوكي مشغل الأشواك، وتتوارى سيدة خصلات القمر عبر طريق القمر، ويسيطر وصي القشرة المنشورية على قبو المرايا، ويحدد حارس قرن العاصفة ممرات العاصفة، ويغلق إمبراطور النواة الفارغة الغرفة الأخيرة بثلاثة أطوار للنواة. إكمال المسار 30 يعيد وصل الطرق الستة ويوقف النبضة الفاسدة عن جذب مزيد من الأعداء إلى الحصن.",
     ],
     systems: [
-      "التصويب والارتداد: اسحب من منصة الإطلاق لرؤية المسار الأولي، ثم اترك. تتحرك الكرة الرئيسية وصدى أضعف بزاويتين متقاربتين. يمكن للارتداد عن الجدران عبور عدة ممرات أو الوصول إلى هدف خلف تشكيل آخر. قد تضيف كرة الانقسام مقذوفًا ثالثًا، بينما تقلل اللمعة الثاقبة المهلة قبل أن تصيب كرة واحدة الهدف نفسه مجددًا.",
+      "التصويب والارتداد: اسحب من منصة الإطلاق لرؤية المسار الأولي، ثم اترك لإطلاق كرة نجمية واحدة. يطلق كل نقر كرة واحدة تمامًا من يد الحارس؛ وتفتح ترقيات السعة خانات مستقلة للكرات التالية. تستهلك الجدران والعوائق ارتدادات الكرة، ولا تستهلكها إصابات الأعداء؛ وبعد آخر ارتداد مسموح تختفي الكرة عند نقطة الاصطدام. تقلل اللمعة الثاقبة المهلة قبل أن تصيب كرة واحدة الهدف نفسه مجددًا.",
       "مسار من ثلاث موجات: تؤسس الموجتان 1 و2 قاعدة أعداء المسار. تستخدم الموجة 3 تشكيل نخبة مؤلفًا، باستثناء المسارات 5 و10 و15 و20 و25 و30 التي تنتهي بزعيم إقليمي مسمى. بعد إنهاء موجة تتوقف المعركة لاختيار بركة واحدة، ثم تستأنف المسار نفسه مع بقاء صحة النواة والترقيات الحالية.",
       "الأعداء الخاصون: تمتص الحيوانات المدرعة عددًا ثابتًا من الضربات قبل أن تفقد نقاط الصحة. تمنح المراسي الشوكية الثابتة الحلفاء القريبين درعًا دوريًا. تتوارى خصلات القمر بوضوح ولا يمكن إلحاق الضرر بها حتى تعود. تنشئ مقسمات الكريستال شظيتين أسرع عند هزيمتها. تحدد المهاجمات مسارًا، ثم تندفع وتترك نافذة للتعافي.",
       "أعمدة المرايا: تضع المسارات اللاحقة عمودًا أو عمودين سداسيين صلبين داخل الساحة. تنعكس الكرات عنها فعليًا، فتنشئ مسارات ارتداد لا توجد في المناطق المبكرة. تتحرك بعض الأعمدة أفقيًا، لذلك قد تتوقف زاوية آمنة سابقًا عن العمل خلال الموجة نفسها.",
@@ -18448,7 +18457,7 @@
     how: [
       "اختر مسارًا مفتوحًا من خريطة الحصن الأفقية. اقرأ اسمه ووسم قاعدته والتحذير الخاص بالمسار قبل الدخول.",
       "اسحب من حارس الأسد نحو الزاوية المطلوبة. استخدم المعاينة لتقرر ما إذا كان التصويب المباشر أو الارتداد عن جدار واحد أو الارتداد عبر الساحة أو انعكاس العمود سيصل إلى الهدف ذي الأولوية.",
-      "اترك لإطلاق وابل الكرة الروحية. راقب حلقات الدرع ومخططات التواري وعلامات الاندفاع وحماية المراسي وإشارات الزعماء قبل اختيار الرمية التالية.",
+      "اترك لإطلاق كرة روحية واحدة. راقب حلقات الدرع ومخططات التواري وعلامات الاندفاع وحماية المراسي وإشارات الزعماء؛ وبعد آخر ارتداد على جدار أو عائق تختفي الكرة حيث تهبط قبل اختيار الرمية التالية.",
       "بعد الموجتين 1 و2 اختر بركة واحدة. تكلف إعادة التدوير ثلاثة ألماسات وتتطلب تأكيدًا ثانيًا؛ ويؤدي اختيار البركة فورًا إلى متابعة الموجة التالية.",
       "حافظ على صحة النواة فوق الصفر حتى الموجة 3. يحفظ الفوز المسار التالي وأحجار النجوم، بينما يحفظ الفشل أحجار النجوم المكتسبة ويُبقي أفضل مسار مفتوحًا.",
       "عد إلى الخريطة لإنفاق أحجار النجوم على غرف الحصن، أو أعد المسارات المكتملة، أو تابع إلى المرحلة التالية من النتيجة.",

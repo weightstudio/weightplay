@@ -26,10 +26,14 @@ export class LionDefense3D {
       this.gold=this.own(new THREE.MeshStandardMaterial({color:'#ffda71',emissive:'#805a10',emissiveIntensity:.8}));
       this.red=this.own(new THREE.MeshStandardMaterial({color:'#ff6760',emissive:'#951b23',emissiveIntensity:.9}));
       this.cyan=this.own(new THREE.MeshStandardMaterial({color:'#73ecff',emissive:'#126980',emissiveIntensity:.6}));
+      this.fxGold=this.own(new THREE.MeshBasicMaterial({color:'#ffe27a',transparent:true,opacity:.86,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
+      this.fxRed=this.own(new THREE.MeshBasicMaterial({color:'#ff6b58',transparent:true,opacity:.86,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
+      this.fxCyan=this.own(new THREE.MeshBasicMaterial({color:'#73ecff',transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
+      this.fxPurple=this.own(new THREE.MeshBasicMaterial({color:'#c78cff',transparent:true,opacity:.9,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
       this.ringGeometry=this.own(new THREE.RingGeometry(.8,1,32));
       this.shotPool=[];this.rings=[];
       for(let i=0;i<160;i++) {const mesh=new THREE.Mesh(this.unit,this.gold);mesh.visible=false;this.scene.add(mesh);this.shotPool.push(mesh);}
-      for(let i=0;i<24;i++){const mesh=new THREE.Mesh(this.ringGeometry,this.gold);mesh.visible=false;this.scene.add(mesh);this.rings.push(mesh);}
+      for(let i=0;i<32;i++){const mesh=new THREE.Mesh(this.ringGeometry,this.fxGold);mesh.visible=false;this.scene.add(mesh);this.rings.push(mesh);}
       this.contextLost=false;
       this.onLost=e=>{e.preventDefault();this.contextLost=true;};
       this.renderer.domElement.addEventListener('webglcontextlost',this.onLost);
@@ -107,6 +111,7 @@ export class LionDefense3D {
       const x=side?w-22:22,y=-h*ratio;
       p.push([x,y,-20,38,70,100,'#526f76'],[x,y+25,40,46,12,16,'#c6a965'],[x,y+25,58,16,16,24,'#ffc76a']);
     }
+    p.push([w/2,-wall-32,48,92,82,26,'#315b68'],[w/2,-wall-78,55,30,72,18,'#75ebff'],[w/2,-wall-108,48,56,18,22,'#d5f8ff']);
     this.arena=new THREE.Mesh(this.geometry(p),this.material);this.scene.add(this.arena);
   }
   render(state,w,h,wall,cssWidth,cssHeight){
@@ -142,6 +147,17 @@ export class LionDefense3D {
       if(enemy.isBoss&&enemy.bossAttackTimer<.65||enemy.dashBoost>1){const ring=this.rings[index++];ring.visible=true;ring.material=this.red;ring.position.set(enemy.x,-enemy.y,2);ring.scale.setScalar(enemy.size*.6);}
     }
     if(state.roarPulse>0){const ring=this.rings[index++];ring.visible=true;ring.material=this.cyan;ring.position.set(state.hero.x,-wall,20);ring.scale.setScalar(80+(1-state.roarPulse/.5)*210);}
+    for(const hit of state.hits){
+      if(index>=this.rings.length)break;
+      const ring=this.rings[index++];ring.visible=true;
+      const baseLife=hit.roar ? 0.5 : hit.shield ? 0.46 : hit.slow ? 0.34 : (hit.thorn || hit.lightning || hit.volley) ? 0.42 : 0.28;
+      const progress=Math.max(0,Math.min(1,hit.life/baseLife));
+      ring.material=hit.shield?this.fxCyan:hit.thorn?this.fxRed:hit.lightning?this.fxPurple:this.fxGold;
+      ring.position.set(hit.x,-hit.y,36);
+      ring.rotation.z=state.time*1.8;
+      ring.scale.setScalar(Math.max(8,hit.radius*(1.38-progress)));
+    }
+    if(state.wallShield>0&&index<this.rings.length){const ring=this.rings[index++];ring.visible=true;ring.material=this.fxCyan;ring.position.set(w/2,-wall,22);ring.rotation.z=state.time;ring.scale.setScalar(w*.34);}
     for(;index<this.rings.length;index++)this.rings[index].visible=false;
     this.renderer.render(this.scene,this.camera);
     return this.renderer.domElement;

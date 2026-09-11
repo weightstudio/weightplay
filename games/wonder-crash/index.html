@@ -4,18 +4,18 @@
     <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/wonder-crash/"+location.search+location.hash)}catch{location.replace("/en/games/wonder-crash/"+location.search+location.hash)}})();</script>
     <meta charset="UTF-8" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v23" />
+    <meta name="weightplay-game-version" content="v24" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#12151d" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index,follow" />
-    <meta name="description" content="Defend 30 authored stages as Boom Mane Leo using three auto-firing school-supply weapons, four beast formations, upgrades, and six distinct Boss attacks." />
+    <meta name="description" content="Defend 30 authored stages as Boom Mane Leo with active abilities, tactical Battle upgrades, a shared talent tree, wall talents, and six distinct Boss attacks." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Fantasy Lion Defense - Animal Defense Game" />
-    <meta property="og:description" content="Defend 30 authored stages as Boom Mane Leo using three auto-firing school-supply weapons, four beast formations, upgrades, and six distinct Boss attacks." />
+    <meta property="og:description" content="Defend 30 authored stages as Boom Mane Leo with active abilities, tactical Battle upgrades, a shared talent tree, wall talents, and six distinct Boss attacks." />
     <meta property="og:url" content="https://weightplay.com/games/wonder-crash/" />
     <meta property="og:image" content="https://weightplay.com/assets/wonder-crash-cover-block-v1.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -45,10 +45,10 @@
               "@context": "https://schema.org",
               "@type": "VideoGame",
               "name": "Fantasy Lion Defense",
-              "alternateName": "\u5947\u5e7b\u7345\u5b50\u5b88\u57ce",
+              "alternateName": "\u5947\u5e7b\u7345\u5b50\u9632\u885b",
               "url": "https://weightplay.com/games/wonder-crash/",
               "image": "https://weightplay.com/assets/wonder-crash-cover-block-v1.png",
-              "description": "Defend 30 authored stages as Boom Mane Leo using three auto-firing school-supply weapons, four beast formations, upgrades, and six distinct Boss attacks.",
+              "description": "Defend 30 authored stages as Boom Mane Leo with active abilities, tactical Battle upgrades, a shared talent tree, wall talents, and six distinct Boss attacks.",
               "applicationCategory": "Game",
               "operatingSystem": "Web browser",
               "publisher": {
@@ -77,7 +77,7 @@
     <link rel="stylesheet" href="src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="src/play-viewport.css?v=20260710-mobile-play-shell2" />
-    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260910-wonder-crash-v23-result-footer" />
+    <link rel="stylesheet" href="games/wonder-crash/expanded-canvas.css?v=20260911-wonder-crash-v24-growth-loop" />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260909-wonder-crash-v19-3d">
 </head>
   <body>
@@ -103,6 +103,7 @@
       <div id="battleHud" class="hud battle-hud hidden" data-screen="battle" data-wp-battle-return-only>
         <div class="battle-primary"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="coinText">0</span></div>
         <div class="battle-status"><span data-i18n="hud_stage">Stage</span> <span id="levelText">1</span><span aria-hidden="true"> · </span><span data-i18n="hud_wave">Wave</span> <span id="waveText">1/1</span></div>
+        <div class="battle-status wall-shield-status"><span data-i18n="hud_guard">Guard</span> <span id="wallShieldText">0</span></div>
       </div>
 
       <!-- Internal pause safety trigger; the duplicate Battle Settings control is not exposed. -->
@@ -115,6 +116,7 @@
         <div id="menuCoinLine" class="menu-coin-line">
           <span class="menu-wallet-item"><img src="../../assets/wonder-prop-coin-block-v1.png" alt="" /> <span id="menuCoinText">0</span></span>
           <span class="menu-wallet-item diamond-wallet"><img src="assets/wonder-prop-diamond-block-v1.png" alt="" /> <span id="menuDiamondText">0</span></span>
+          <span class="menu-wallet-item talent-wallet"><img src="assets/wonder-prop-crit-block-v1.png" alt="" /> <span id="talentText">0</span></span>
         </div>
         <label class="language-picker wonder-language-picker">
           <span data-i18n="language">Language</span>
@@ -181,7 +183,7 @@
         <div class="game-info-title">
           <span class="game-info-kicker">WeightPlay Original Game Guide</span>
           <h2>Fantasy Lion Defense - Game Guide</h2>
-          <p>Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; after settlement, saved coins improve Leo, equipment, or the wall. Players can retry without a timer, and the game remains permanently ad-free.</p>
+          <p>Fantasy Lion Defense is a 30-stage animal defense game starring Boom Mane Leo. The lion moves along a fantasy wall while equipped erasers, pencils, and rulers fire on separate cooldowns. Eight beast roles attack in authored lane, alternating, edge, and center formations, and every fifth stage ends with a different Boss pattern. Between waves, the player chooses temporary Battle upgrades; three active abilities create clutch moments; after settlement, saved coins improve Leo, equipment, the shared Lionheart talent tree, or the wall. Players can retry without a timer, and the game remains permanently ad-free.</p>
         </div>
         <div class="game-info-facts">
           <div class="game-info-fact"><span>Gameplay</span><strong>Fantasy Lion Defense</strong></div>
@@ -199,15 +201,15 @@
         </div>
         <div class="game-info-section game-info-systems">
           <h3>How the Systems Work</h3>
-          <ul><li>Leo moves horizontally by dragging or tapping the battlefield; a focused keyboard can also use Left and Right Arrow. Equipped weapons fire automatically, but each slot owns its cooldown, so duplicate weapons still produce separate shots. Pencil, ruler, and eraser builds differ in speed, damage, size, and firing rhythm.</li><li>Every stage contains three to seven waves. Defeated beasts award coins, and the wall must retain at least one HP until the last enemy is gone. Between waves, three temporary choices can improve damage, cooldown, projectile count, side shots, bursts, size, piercing, splash, defeat healing, coin gain, slowing, or immediate wall repair.</li><li>The eight enemies are mechanical roles rather than cosmetic swaps: boars and tigers rush, hyenas and bears curve sideways, rhinos reduce an opening hit with armor, buffalo and crocodiles punish the wall, and hawks dash. Authored type pools and formation positions make later stages emphasize different target priorities instead of drawing every beast randomly.</li><li>Bosses keep their beast identity and add a unique projectile rule. The Boar Captain fires quick pursuit shots; the Hyena creates paired crossfire; the Rhino begins behind six shield hits and throws a heavy orb; the Buffalo aims a large siege orb at wall center; the Hawk combines repeated dashes with twin fast shots; and the Bear casts three-orb starfall.</li><li>Stage unlocks, permanent upgrades, equipped weapons, coins, and claimed Boss diamond bonuses are stored in this browser. Result shows remaining wall HP, defeated beasts, upgrade choices, rewards, and either the next stage or a replay/menu route.</li></ul>
+          <ul><li>Leo moves horizontally by dragging or tapping the battlefield; a focused keyboard can also use Left and Right Arrow. Equipped weapons fire automatically, but each slot owns its cooldown, so duplicate weapons still produce separate shots. Pencil, ruler, and eraser builds differ in speed, damage, size, and firing rhythm.</li><li>Every stage contains three to seven waves. Defeated beasts award coins, and the wall must retain at least one HP until the last enemy is gone. Between waves, three temporary Battle choices can improve damage, cooldown, projectile count, side shots, bursts, size, piercing, splash, chain lightning, shields, defeat healing, coin gain, slowing, or immediate wall repair.</li><li>Roar pushes and slows nearby beasts, Pride Volley sends a fan of empowered shots, and Wall Aegis blocks impacts before its wall-thorn retaliation. Q and E are optional keyboard shortcuts; touch players use the visible ability rail.</li><li>Victory awards Talent Points. The shared Lionheart tree links Lionheart, Battle Arts, and Rampart branches, so wall talents are part of the same build rather than a separate mini-game. Unlocking a talent changes the next battle's ability range, volley, shield, retaliation, attack, or wall endurance.</li><li>The eight enemies are mechanical roles rather than cosmetic swaps: boars and tigers rush, hyenas and bears curve sideways, rhinos reduce an opening hit with armor, buffalo and crocodiles punish the wall, and hawks dash. Authored type pools and formation positions make later stages emphasize different target priorities instead of drawing every beast randomly.</li><li>Bosses keep their beast identity and add a unique projectile rule. The Boar Captain fires quick pursuit shots; the Hyena creates paired crossfire; the Rhino begins behind six shield hits and throws a heavy orb; the Buffalo aims a large siege orb at wall center; the Hawk combines repeated dashes with twin fast shots; and the Bear casts three-orb starfall.</li><li>Stage unlocks, permanent upgrades, equipped weapons, coins, Talent Points, and claimed Boss diamond bonuses are stored in this browser. Result shows remaining wall HP, defeated beasts, upgrade choices, rewards, and either the next stage or a replay/menu route.</li></ul>
         </div>
         <div class="game-info-section">
           <h3>How to Play</h3>
-          <ol><li>Open Battle and swipe the horizontal rail to an unlocked stage.</li><li>Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.</li><li>Move Leo beneath the lane that most needs weapon coverage; firing is automatic.</li><li>Choose one upgrade after each completed wave and adapt it to the next enemy mix.</li><li>Keep the wall above zero HP until every normal beast and Boss is defeated.</li><li>Use settlement rewards for permanent hero, equipment, or wall upgrades, then continue or replay.</li></ol>
+          <ol><li>Open Battle and swipe the horizontal rail to an unlocked stage.</li><li>Read the stage name, enemy portraits, formation clue, wave count, and Boss badge before starting.</li><li>Move Leo beneath the lane that most needs weapon coverage; firing is automatic.</li><li>Use Roar, Pride Volley, and Wall Aegis when a lane or the wall is under pressure.</li><li>Choose one Battle upgrade after each completed wave and adapt it to the next enemy mix.</li><li>Spend settlement Talent Points in the shared tree, then continue, replay, or tune equipment.</li></ol>
         </div>
         <div class="game-info-section game-info-strategy">
           <h3>Strategy Tips</h3>
-          <ul><li>Piercing and splash are strongest against fixed lanes or center-heavy formations; side shots cover alternating and edge attacks.</li><li>Do not chase every fast beast. Hold a useful firing lane and move early when a hawk or tiger begins a dash.</li><li>Against the Rhino Bulwark, rapid multi-shot attacks remove six shield hits efficiently before heavier damage matters.</li><li>Save wall repair and defeat-healing choices for breaker-heavy stages such as Buffalo Siege and Crocodile Siege.</li><li>The final Bear Starfall spreads three weaker orbs. Broad damage can control its mixed escort while movement keeps Leo aligned with dangerous lanes.</li></ul>
+          <ul><li>Piercing and splash are strongest against fixed lanes or center-heavy formations; side shots cover alternating and edge attacks.</li><li>Do not chase every fast beast. Hold a useful firing lane and move early when a hawk or tiger begins a dash.</li><li>Against the Rhino Bulwark, rapid multi-shot attacks remove six shield hits efficiently before heavier damage matters.</li><li>Save Wall Aegis, wall repair, and defeat-healing choices for breaker-heavy stages such as Buffalo Siege and Crocodile Siege.</li><li>A Volley-focused tree path rewards grouped enemies; a Rampart path turns a dangerous wall hit into a counterattack. Mix branches when a stage's Boss pattern changes the priority.</li><li>The final Bear Starfall spreads three weaker orbs. Broad damage can control its mixed escort while movement keeps Leo aligned with dangerous lanes.</li></ul>
         </div>
         <div class="game-info-section game-info-campaign">
           <h3>Campaign and Difficulty Growth</h3>
@@ -215,11 +217,11 @@
         </div>
         <div class="game-info-section game-info-design">
           <h3>Developer Design Note</h3>
-          <p>We use automatic weapon fire so the player&#39;s continuous decision is where Leo should stand, not whether a small fire button registered on a phone. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.</p>
+          <p>We use automatic weapon fire so the player&#39;s continuous decision is where Leo should stand, then make the high-stakes moments tactile: a visible ability rail, readable cooldowns, impact rings, chain lightning, shield flashes, wall thorns, and a shared talent tree. Separate slot cooldowns preserve equipment-building value, while between-wave upgrades create short tactical pauses. The 30-stage revision replaces the old late-game all-beast randomness with authored compositions and four readable spawn formations. Six Boss projectile patterns provide checkpoints without adding hostile imagery beyond the existing fantasy animal defense tone. Phone drag, tap movement, and desktop Arrow keys all control the same bounded logical battlefield. Unlike Animal Color Lunchbox, this game asks for reaction and build choices while keeping a player-friendly promise: no ads, no countdown pressure, supportive retry, and a factual Battle Performance summary rather than an ability assessment.</p>
         </div>
         <div class="game-info-section game-info-parent">
           <h3>Player and Save Information</h3>
-          <p>Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, wall HP, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.</p>
+          <p>Fantasy Lion Defense uses cartoon animal combat, automatic school-supply weapons, active abilities, wall HP, a shared talent tree, and upgrade decisions. Battle Performance summarizes wall condition, defeated beasts, and upgrade choices from the current run; it is not an ability assessment. The General game page is ad-free, sign-in is not required, and progress stays in the current browser unless its storage is cleared.</p>
         </div>
         <div class="game-info-section">
           <h3>Frequently Asked Questions</h3>
@@ -250,10 +252,10 @@
     <script src="src/wallet.js?v=20260630-upgrade1"></script>
     <script src="src/tutorial.js?v=20260909-wonder-crash-v19-3d"></script>
     <script src="src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
-    <script src="src/game-data.js?v=20260909-wonder-crash-v21-block-props"></script>
-    <script src="src/game.js?v=20260910-wonder-crash-v23-result-footer"></script>
-    <script src="games/wonder-crash/expanded-canvas.js?v=20260909-wonder-crash-v20-block-stable-stage"></script>
-    <script src="src/game-page-info.js?v=20260909-wonder-crash-v20-block-related-cover"></script>
+    <script src="src/game-data.js?v=20260911-wonder-crash-v24-growth-data"></script>
+    <script src="src/game.js?v=20260911-wonder-crash-v24-growth-loop"></script>
+    <script src="games/wonder-crash/expanded-canvas.js?v=20260911-wonder-crash-v24-growth-loop"></script>
+    <script src="src/game-page-info.js?v=20260911-wonder-crash-v24-growth-guide"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
 </body>

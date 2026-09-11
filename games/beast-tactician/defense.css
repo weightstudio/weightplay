@@ -3550,3 +3550,200 @@ html body[data-game-id="beast-tactician"].guardian-stage .stage-card {
     white-space: nowrap !important;
   }
 }
+
+/* v17 Result recovery: the shared short-landscape Battle envelope is only
+   760x334 logical pixels.  Keep the terminal Result in that same reserved
+   Canvas instead of inheriting the legacy 220px artwork / 104px action
+   treatment, which can place Stages, Next Stage, and Retry below the viewport.
+   The portrait Result keeps its existing readable stacked composition. */
+@media (orientation: landscape) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel.modal-panel {
+    display: grid !important;
+    place-items: center !important;
+    padding: 6px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card {
+    box-sizing: border-box !important;
+    width: min(748px, 100%) !important;
+    height: min(322px, 100%) !important;
+    max-height: 100% !important;
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    overflow: hidden !important;
+    text-align: left !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card > img {
+    width: 104px !important;
+    height: 104px !important;
+    align-self: center !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card > div {
+    min-width: 0 !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card h2 {
+    font-size: 22px !important;
+    line-height: 1.05 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card p {
+    max-width: none !important;
+    font-size: 12px !important;
+    line-height: 1.18 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-stars {
+    margin: 0 !important;
+    font-size: 15px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card :is(.result-reward, .result-progress, .result-unlock) {
+    margin: 0 !important;
+    padding: 4px 6px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: 32px !important;
+    overflow: hidden !important;
+    line-height: 1.15 !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-progress {
+    display: block !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-actions {
+    gap: 4px !important;
+    margin-top: 2px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-reward-actions,
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-nav-actions {
+    gap: 4px !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-result #resultPanel .result-card .result-actions button {
+    min-height: 44px !important;
+    height: 44px !important;
+    padding: 3px 6px !important;
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+    white-space: normal !important;
+  }
+}
+
+/* The guide is public Main content, not a legacy white document block. Keep
+   the frame contract explicit on the canonical source route even when the
+   runtime guide replaces the static preview after load. */
+html body[data-game-id="beast-tactician"] .game-page-info {
+  --wp-ui-radius: 18px !important;
+  box-sizing: border-box !important;
+  width: min(920px, calc(100% - 24px)) !important;
+  max-width: 920px !important;
+  margin-inline: auto !important;
+  padding: 16px !important;
+  border: 2px solid var(--line) !important;
+  border-radius: 18px !important;
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.32) !important;
+}
+
+html body[data-game-id="beast-tactician"] .game-page-info .game-info-sections {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 14px !important;
+  margin-top: 14px !important;
+}
+
+html body[data-game-id="beast-tactician"] .game-page-info .game-info-section {
+  min-width: 0 !important;
+  padding: 16px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 14px !important;
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+}
+
+/* v17 follow-up: Stage and Battle use the shared V6 frame, but active-play
+   headers carry local context rather than repeating the public game name. */
+html body[data-game-id="beast-tactician"].guardian-stage #wp-shared-stage-header .wp-frame-stage-context {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  color: var(--wp-ui-text) !important;
+  font: 800 14px/1.2 system-ui, sans-serif !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body[data-game-id="beast-tactician"].guardian-stage .stage-workspace > .wp-frame-stage-context {
+  display: none !important;
+}
+
+/* The current card is the selection target. Put it in a predictable top
+   reading zone instead of vertically centring it in a mostly empty rail. */
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-stage .stage-rail {
+    align-content: start !important;
+    align-items: start !important;
+    grid-auto-rows: max-content !important;
+    padding-top: 48px !important;
+    padding-bottom: 12px !important;
+    background: linear-gradient(180deg, rgba(8, 22, 35, .5), rgba(8, 22, 35, .16)) !important;
+    border: 1px solid rgba(255, 255, 255, .1) !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* A closer board view: the complete route remains available through the
+   existing pointer/touch pan handler, while the phone shows a readable local
+   section instead of a tiny full-map thumbnail. */
+@media (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .canvas-shell {
+    direction: ltr !important;
+    align-items: flex-start !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel #gameCanvas {
+    width: 620px !important;
+    min-width: 620px !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 3 / 2 !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  html body[data-game-id="beast-tactician"].guardian-stage #wp-shared-stage-header .wp-frame-stage-context {
+    font-size: 12px !important;
+  }
+}
+
+/* Give the 612px portrait envelope the same balanced top/bottom anchors as
+   the board and build panel; the narrow-phone rules keep their compact grid. */
+@media (min-width: 500px) and (max-width: 699px) and (orientation: portrait) {
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel :is(.hud-row, .command-row) {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  html body[data-game-id="beast-tactician"].guardian-playing #gamePanel .command-row {
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) !important;
+  }
+}

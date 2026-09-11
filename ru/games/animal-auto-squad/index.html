@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260716-kids-stage-swipe3" />
-  <link rel="stylesheet" href="style.css?v=20260911-one-frame-v36" />
+  <link rel="stylesheet" href="style.css?v=20260911-result-v36-1" />
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-guide-copy" />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
     <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
@@ -227,11 +227,11 @@
               </div>
               <p id="skillReportText" class="skill-report"></p>
             </div>
-            <div class="result-actions">
-              <button id="nextStageBtn" class="primary-btn is-hidden" type="button" data-ui="nextStage">Следующий этап</button>
-              <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
-              <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
-            </div>
+          </div>
+          <div class="result-actions">
+            <button id="nextStageBtn" class="primary-btn is-hidden" type="button" data-ui="nextStage">Следующий этап</button>
+            <button id="retryBtn" class="primary-btn" type="button" data-ui="retry">Try Again</button>
+            <button id="resultMenuBtn" class="secondary-btn" type="button" data-ui="backToStages">Back to Stages</button>
           </div>
         </section>
       </section>
@@ -251,7 +251,7 @@
     <script src="../../src/stage-selector-standard.js?v=20260720-canvas-max920-1"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-  <script src="game.js?v=20260911-one-frame-v36"></script>
+  <script src="game.js?v=20260911-result-v36-1"></script>
     <script>
       (() => {
         const loadGameInfo = () => {
@@ -290,7 +290,7 @@
       <div class="game-info-section"><h3>Заметка разработчика</h3><p>Автоматический бой задуман именно так: исполнение короткое, чтобы главная работа была в строе, покрытии ролей, порядке целей и долгой тренировке. Победа в волне сразу ведёт в следующую, поэтому пять волн ощущаются одной экспедицией, а не пятью разрозненными меню. После поражения открывается подготовка, чтобы игрок мог ответить на проблему, а не повторять ту же неудачную расстановку. Выбор касанием и размещение подходят для телефона, а на компьютере те же карточки работают мышью. В отличие от пошаговой Animal Rune Tactics и игры в реальном времени Animal Crystal Survivor, Animal Auto Squad предлагает составить план и оценить его результат без командования отдельными атаками во время боя.</p></div>
       <div class="game-info-section game-info-parent"><h3>Сведения об игроке и сохранении</h3><p>Поздние этапы объединяют строи из шести бойцов, специальные правила целей, постоянные улучшения, давление поражения, способности боссов и необязательные решения с Diamonds. Прогресс кампании, последний строй и места, Training Gold, Team Level, открытые животные, их постоянные уровни, пройденные этапы и косметический выбор сохраняются в этом браузере; для обычной игры вход не нужен. Очистка данных сайта может удалить локальный прогресс.</p></div>
       <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Animal Auto Squad бесплатна?</dt><dd>Да. Кампания с последовательными этапами запускается в браузере WeightPlay без обязательной покупки или входа.</dd></div><div><dt>Какова цель каждого этапа?</dt><dd>Соберите отряд, который переживёт пять непрерывных волн. После пятой этап сохраняется и открывается следующий, а каждый пятый этап заканчивается региональным боссом.</dd></div><div><dt>Можно ли управлять атаками в бою?</dt><dd>Нет. До боя вы выбираете состав, два ряда и временные улучшения. Затем животные автоматически атакуют, лечат, защищают и используют способности.</dd></div><div><dt>Можно ли менять строй между волнами?</dt><dd>Победа сразу ведёт в следующую волну. После поражения или ничьей подготовка открывается снова, пока остаются Hearts, поэтому начальный строй должен отвечать нескольким моделям врагов.</dd></div><div><dt>Что происходит после поражения в волне?</dt><dd>Поход теряет один Heart. Пока Hearts есть, строй можно изменить и попробовать снова; при нуле Hearts можно закончить экспедицию или использовать необязательное возрождение за пять Diamonds.</dd></div><div><dt>Для чего нужны Diamonds?</dt><dd>Это необязательная валюта. возродить экспедицию, открыть двух премиальных героев или золотой косметический скин; обычному прохождению Diamonds не нужны.</dd></div><div><dt>Какой прогресс сохраняется?</dt><dd>На устройстве сохраняются открытые и пройденные этапы, последний строй и места, Team Level и XP, Training Gold, открытые животные, их постоянные уровни, записи походов и косметический выбор.</dd></div><div><dt>Что означают связи и боевое предупреждение?</dt><dd>Совпадение ролей активирует связь воксельного отряда и небольшой бонус автоматического боя. Связанные удары складываются в серию; каждый четвёртый отображается как критический связанный удар и ломает блок. Волна с боссом начинается с предупреждения.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Крепость животных сфер</strong><span>Animal Orb Fortress — это кампания по защите от рикошета, в которой вы читаете арену перед тем, как выпустить сферу духа.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Животный груз</strong><span>Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Крепость животных сфер</strong><span>Animal Orb Fortress is a ricochet defense campaign about reading an arena before releasing a spirit orb.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-cratebound/"><img src="/assets/animal-cratebound/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Животный груз</strong><span>Толкайте, тяните и направляйте рунические грузы через 30 небесных складов с ледяными рельсами, сигналами, магнитами и связанными ящиками.</span></span></a></div></div>
     </div>
   </section>
 </body>

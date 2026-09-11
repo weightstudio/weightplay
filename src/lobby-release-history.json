@@ -181,6 +181,10 @@
       "date": "2026-07-30T14:58:54+08:00",
       "evidence": "git:7ad044e058343a5a4b2c331b9d72f6502b4eed0c"
     },
+    "animal-putt-trails": {
+      "date": "2026-09-11T04:17:56.526Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-quiz": {
       "date": "2026-06-29T18:20:39+08:00",
       "evidence": "git:dc8b075b3b2fe3124211990f8b999ed8f6af778f"

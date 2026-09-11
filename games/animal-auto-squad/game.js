@@ -1442,6 +1442,10 @@ const GAME_VERSION = "v36";
   const COMBAT_HEALTH_BAR_HEIGHT = 28;
   const COMBAT_HEALTH_FONT_SIZE = 20;
   const COMBAT_SWIFT_PACE_MULTIPLIER = 1.55;
+  // Keep each auto-battle beat readable and predictable for background/
+  // foreground handoff checks. The wave ramp below supplies pressure instead
+  // of asking players to wait through oversized enemy health pools; players
+  // can still opt into the swift pace control when they want a faster run.
   const COMBAT_STEP_INTERVAL_FRAMES = 42;
   const COMBAT_HIT_STOP_FRAMES = 5;
   const COMBAT_EFFECT_LIMIT = 80;
@@ -4781,17 +4785,22 @@ const GAME_VERSION = "v36";
       addCombatEffect("shield", x, y, t("blockedShort"), "#8fb7ff");
     }
     if (damage > 0) {
+      const nextCombo = Math.min(99, (state.combat.combo || 0) + 1);
+      const linked = nextCombo > 1 && nextCombo % 4 === 0;
+      // A linked hit is a real payoff as well as a visual cue. Keep the
+      // bonus bounded so low-level teams still have time to recover.
+      const criticalBonus = linked ? Math.max(1, Math.round(damage * 0.25)) : 0;
+      damage += criticalBonus;
       unit.hp -= damage;
-      state.combat.combo = Math.min(99, (state.combat.combo || 0) + 1);
+      state.combat.combo = nextCombo;
       state.combat.comboBest = Math.max(state.combat.comboBest || 0, state.combat.combo);
       state.combat.comboTimer = 150;
-      const linked = state.combat.combo > 1 && state.combat.combo % 4 === 0;
       state.combat.lastActionShort = linked ? t("actionCritical") : t("hitShort");
       state.combat.hitStopFrames = Math.max(Number(state.combat.hitStopFrames) || 0, linked ? COMBAT_HIT_STOP_FRAMES + 2 : COMBAT_HIT_STOP_FRAMES);
+      state.combat.shakeFrames = Math.max(state.combat.shakeFrames, linked ? 18 : 6);
+      state.combat.shakeTarget = state.combat.enemySquad.includes(unit) ? "enemy" : "player";
       addCombatEffect(linked ? "combo" : "hit", x, y, linked ? t("actionCritical") : "", linked ? "#ffe477" : "#fff6a6");
       if (linked) {
-        state.combat.shakeFrames = Math.max(state.combat.shakeFrames, 14);
-        state.combat.shakeTarget = state.combat.enemySquad.includes(unit) ? "enemy" : "player";
         addCombatEffect("block-break", x, y, t("breakShort"), "#ffe477");
       }
       if (unit.hp <= 0) {
@@ -4928,8 +4937,8 @@ const GAME_VERSION = "v36";
     const safeWave = Math.max(1, Math.min(WAVES_PER_STAGE, Number(wave) || 1));
     const definition = stageDefinition(safeStage);
     const enemyIds = [...definition.waves[safeWave - 1]];
-    const attack = 1 + Math.floor((safeStage - 1) / 6) + Math.floor((safeWave - 1) / 3);
-    const health = 2 + Math.floor((safeStage - 1) / 3) + Math.floor((safeWave - 1) / 2);
+    const attack = 1 + Math.floor((safeStage - 1) / 6) + Math.floor((safeWave - 1) / 2);
+    const health = 2 + Math.floor((safeStage - 1) / 4) + Math.floor((safeWave - 1) / 2);
     return {
       stage: safeStage,
       wave: safeWave,
@@ -5517,6 +5526,44 @@ const GAME_VERSION = "v36";
     canvasCtx.globalCompositeOperation = "source-over";
   }
 
+  function drawImpactShape(fx, progress, alpha, radius) {
+    if (!["hit", "combo", "block-break", "ko"].includes(fx.type)) return;
+    const isCritical = fx.type === "combo" || fx.type === "block-break";
+    const color = isCritical ? "#ffe477" : fx.type === "ko" ? "#ffffff" : "#8ff7ff";
+    const eased = Math.sin(Math.min(1, progress) * Math.PI);
+    canvasCtx.save();
+    canvasCtx.translate(Number(fx.x) || 0, Number(fx.y) || 0);
+    canvasCtx.globalAlpha = alpha * (0.5 + eased * 0.5);
+    canvasCtx.strokeStyle = color;
+    canvasCtx.lineWidth = isCritical ? 6 : 4;
+    canvasCtx.beginPath();
+    canvasCtx.arc(0, 0, radius * (0.65 + progress * (isCritical ? 1.35 : 1.05)), 0, Math.PI * 2);
+    canvasCtx.stroke();
+    if (isCritical) {
+      canvasCtx.rotate(progress * Math.PI * 0.7);
+      canvasCtx.fillStyle = color;
+      for (let index = 0; index < 8; index++) {
+        const angle = (Math.PI * 2 * index) / 8;
+        const distance = radius * (0.9 + progress * 1.2);
+        const size = 5 + (index % 2) * 3;
+        canvasCtx.save();
+        canvasCtx.translate(Math.cos(angle) * distance, Math.sin(angle) * distance);
+        canvasCtx.rotate(angle);
+        canvasCtx.fillRect(-size / 2, -size / 2, size, size);
+        canvasCtx.restore();
+      }
+    } else if (fx.type === "ko") {
+      canvasCtx.fillStyle = color;
+      for (let index = 0; index < 6; index++) {
+        const angle = (Math.PI * 2 * index) / 6;
+        const distance = radius * (0.7 + progress * 1.5);
+        const size = 4 + (index % 3);
+        canvasCtx.fillRect(Math.cos(angle) * distance - size / 2, Math.sin(angle) * distance - size / 2, size, size);
+      }
+    }
+    canvasCtx.restore();
+  }
+
   function drawEffects() {
     state.combat.effects = state.combat.effects.filter((fx) => {
       fx.life--;
@@ -5528,6 +5575,7 @@ const GAME_VERSION = "v36";
       canvasCtx.save();
       canvasCtx.globalAlpha = alpha;
       drawEffectSprite(fx, progress, radius);
+      drawImpactShape(fx, progress, alpha, radius);
       
       // Floating text overlays (e.g. Damage numbers)
       if (fx.text) {
@@ -6218,6 +6266,21 @@ const GAME_VERSION = "v36";
   function setResultOwnership(active) {
     resultOwnershipObserver?.disconnect();
     resultOwnershipObserver = null;
+    const battleContent = nodes.gamePanel.querySelector(":scope > .wp-frame-play-content");
+    // The shared Battle frame keeps its play row display:flex!important. Use
+    // an inline priority only while the Result owns the screen so the canvas,
+    // summary and pace controls cannot remain painted underneath the modal.
+    if (battleContent) {
+      if (active) {
+        battleContent.style.setProperty("display", "none", "important");
+        battleContent.style.setProperty("visibility", "hidden", "important");
+        battleContent.style.setProperty("pointer-events", "none", "important");
+      } else {
+        battleContent.style.removeProperty("display");
+        battleContent.style.removeProperty("visibility");
+        battleContent.style.removeProperty("pointer-events");
+      }
+    }
     [...nodes.gamePanel.children].forEach((child) => {
       if (child === nodes.resultPanel) return;
       child.inert = active;

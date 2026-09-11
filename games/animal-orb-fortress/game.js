@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-orb-fortress";
-  const GAME_VERSION = "v41";
+  const GAME_VERSION = "v42";
   const saveKey = "weightplay_animal_orb_fortress_v1";
   const localeKey = "weightPlayLocale";
   let W = 960;
@@ -179,7 +179,7 @@
       arenaControlLimitLabel: "Animal Orb Fortress arena. Aim {angle} degrees from center. {active}/{limit} spirit orbs are flying, the active limit; Space or Enter cannot fire yet.",
       orbReady: "Orb ready. Bank shots into shadow beasts before they reach the core.",
       orbFlying: "Spirit orb is flying. Watch the bounce route and prepare the next aim.",
-      orbReturning: "The spirit orb is returning to the keeper. Read the next bounce angle.",
+      orbSpent: "The spirit orb spent its rebounds and vanished. Prepare the next aim.",
       fortressHit: "A shadow beast hit the core. Aim earlier or use wider angles.",
       waveClear: "Wave clear. Choose one blessing before the next wave.",
       chooseUpgrade: "Choose a fortress blessing",
@@ -327,7 +327,7 @@
       arenaControlLimitLabel: "動物星珠要塞競技場。瞄準偏移 {angle} 度。目前有 {active}/{limit} 顆星珠飛行中，已達飛行上限；空白鍵或 Enter 尚無法發射。",
       orbReady: "星珠已準備好。用牆面反彈擊中影獸，別讓牠們靠近核心。",
       orbFlying: "星珠正在飛行。觀察反彈路線，準備下一次瞄準。",
-      orbReturning: "星珠正飛回守護獅子身邊。觀察下一次反彈角度。",
+      orbSpent: "星珠的反彈次數用完，已消失。準備下一次瞄準。",
       fortressHit: "影獸撞到核心了。更早瞄準，或改用更寬的反彈角度。",
       waveClear: "波次完成。選擇一個祝福後進入下一波。",
       chooseUpgrade: "選擇一個要塞祝福",
@@ -457,7 +457,7 @@
     aimHint: "从发射器拖曳瞄准，预览反弹路线后放开。",
     keyboardAim: "瞄准偏移 {angle}°。左右方向键调整，按空格键或 Enter 发射。",
     orbFlying: "星珠正在飞行。观察反弹路线，准备下一次瞄准。",
-    orbReturning: "星珠正飞回守护狮子身边。观察下一次反弹角度。",
+    orbSpent: "星珠的反弹次数用完，已消失。准备下一次瞄准。",
     upgradeSplit: "星珠扩容",
     upgradeSplitDesc: "场上可同时持有的星珠 +1。",
     fortressHit: "影兽撞到核心了。更早瞄准，或改用更宽的反弹角度。",
@@ -656,33 +656,33 @@
   // readable orb; each selection opens one more in-flight slot, while every
   // individual input still releases only the orb in the keeper's hand.
   const orbCapacityCopy = {
-    es: { upgradeSplit: "Capacidad estelar", upgradeSplitDesc: "+1 orbe estelar que puedes mantener en la arena.", orbReturning: "El orbe estelar regresa al guardián." },
-    fr: { upgradeSplit: "Capacité d'orbes", upgradeSplitDesc: "+1 orbe étoile que vous pouvez garder dans l'arène.", orbReturning: "L'orbe étoile revient au gardien." },
-    de: { upgradeSplit: "Sternkugel-Kapazität", upgradeSplitDesc: "+1 Sternkugel gleichzeitig in der Arena.", orbReturning: "Die Sternkugel kehrt zum Hüter zurück." },
-    it: { upgradeSplit: "Capacità sfere", upgradeSplitDesc: "+1 sfera stellare che puoi tenere nell'arena.", orbReturning: "La sfera stellare torna dal custode." },
-    ja: { upgradeSplit: "星珠容量", upgradeSplitDesc: "アリーナで同時に保持できる星珠が1個増加。", orbReturning: "星のオーブが守り手へ戻ります。" },
-    ko: { upgradeSplit: "별 구슬 용량", upgradeSplitDesc: "아레나에 동시에 유지할 수 있는 별 구슬 +1.", orbReturning: "별 구슬이 수호자에게 돌아옵니다." },
-    "pt-BR": { upgradeSplit: "Capacidade de orbes", upgradeSplitDesc: "+1 orbe estelar que pode ficar na arena.", orbReturning: "O orbe estelar está voltando ao guardião." },
-    ru: { upgradeSplit: "Вместимость звёздных шаров", upgradeSplitDesc: "+1 звёздный шар, который можно держать на арене.", orbReturning: "Звёздный шар возвращается к хранителю." },
-    hi: { upgradeSplit: "तारा गोला क्षमता", upgradeSplitDesc: "मैदान में एक साथ रखने के लिए +1 तारा गोला।", orbReturning: "तारा गोला रक्षक के पास लौट रहा है।" },
-    ar: { upgradeSplit: "سعة الكرات النجمية", upgradeSplitDesc: "+1 كرة نجمية يمكنك الاحتفاظ بها في الساحة.", orbReturning: "تعود الكرة النجمية إلى الحارس." },
+    es: { upgradeSplit: "Capacidad estelar", upgradeSplitDesc: "+1 orbe estelar que puedes mantener en la arena.", orbSpent: "El orbe estelar gastó sus rebotes y desapareció." },
+    fr: { upgradeSplit: "Capacité d'orbes", upgradeSplitDesc: "+1 orbe étoile que vous pouvez garder dans l'arène.", orbSpent: "L'orbe étoile a épuisé ses rebonds et disparaît." },
+    de: { upgradeSplit: "Sternkugel-Kapazität", upgradeSplitDesc: "+1 Sternkugel gleichzeitig in der Arena.", orbSpent: "Die Sternkugel hat ihre Abpraller verbraucht und ist verschwunden." },
+    it: { upgradeSplit: "Capacità sfere", upgradeSplitDesc: "+1 sfera stellare che puoi tenere nell'arena.", orbSpent: "La sfera stellare ha esaurito i rimbalzi ed è scomparsa." },
+    ja: { upgradeSplit: "星珠容量", upgradeSplitDesc: "アリーナで同時に保持できる星珠が1個増加。", orbSpent: "星のオーブは反射回数を使い切って消えました。" },
+    ko: { upgradeSplit: "별 구슬 용량", upgradeSplitDesc: "아레나에 동시에 유지할 수 있는 별 구슬 +1.", orbSpent: "별 구슬이 반사 횟수를 다 써서 사라졌습니다." },
+    "pt-BR": { upgradeSplit: "Capacidade de orbes", upgradeSplitDesc: "+1 orbe estelar que pode ficar na arena.", orbSpent: "O orbe estelar gastou seus ricochetes e desapareceu." },
+    ru: { upgradeSplit: "Вместимость звёздных шаров", upgradeSplitDesc: "+1 звёздный шар, который можно держать на арене.", orbSpent: "Звёздный шар исчерпал отскоки и исчез." },
+    hi: { upgradeSplit: "तारा गोला क्षमता", upgradeSplitDesc: "मैदान में एक साथ रखने के लिए +1 तारा गोला।", orbSpent: "तारा गोला अपने उछाल पूरे करके गायब हो गया।" },
+    ar: { upgradeSplit: "سعة الكرات النجمية", upgradeSplitDesc: "+1 كرة نجمية يمكنك الاحتفاظ بها في الساحة.", orbSpent: "استهلكت الكرة النجمية ارتداداتها واختفت." },
   };
   Object.entries(orbCapacityCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
 
   const orbGrowthCopy = {
-    en: { upgradeDamage: "Orb Power", upgradeDamageDesc: "+1 orb damage.", upgradeBounce: "Rebound Core", upgradeBounceDesc: "+1 wall or obstacle rebound before the orb returns.", upgradeSize: "Expanding Star", upgradeSizeDesc: "Increase orb size and collision reach." },
-    "zh-Hant": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠傷害 +1。", upgradeBounce: "反彈核心", upgradeBounceDesc: "飛回前可多反彈 1 次；牆壁與障礙物都會計數。", upgradeSize: "星珠膨脹", upgradeSizeDesc: "增大星珠與命中範圍。" },
-    "zh-Hans": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠伤害 +1。", upgradeBounce: "反弹核心", upgradeBounceDesc: "飞回前可多反弹 1 次；墙壁与障碍物都会计数。", upgradeSize: "星珠膨胀", upgradeSizeDesc: "增大星珠与命中范围。" },
-    es: { upgradeDamage: "Poder del orbe", upgradeDamageDesc: "+1 de daño de orbe.", upgradeBounce: "Núcleo de rebote", upgradeBounceDesc: "+1 rebote en muro u obstáculo antes de regresar.", upgradeSize: "Estrella creciente", upgradeSizeDesc: "Aumenta el tamaño y el alcance de impacto." },
-    fr: { upgradeDamage: "Puissance d'orbe", upgradeDamageDesc: "+1 dégât d'orbe.", upgradeBounce: "Cœur de rebond", upgradeBounceDesc: "+1 rebond sur mur ou obstacle avant le retour.", upgradeSize: "Étoile croissante", upgradeSizeDesc: "Augmente la taille et la portée de collision." },
-    de: { upgradeDamage: "Kugelkraft", upgradeDamageDesc: "+1 Kugelschaden.", upgradeBounce: "Abprallkern", upgradeBounceDesc: "+1 Wand- oder Hindernisabprall vor der Rückkehr.", upgradeSize: "Wachsender Stern", upgradeSizeDesc: "Erhöht Größe und Trefferbereich der Kugel." },
-    it: { upgradeDamage: "Potenza sfera", upgradeDamageDesc: "+1 danno della sfera.", upgradeBounce: "Nucleo di rimbalzo", upgradeBounceDesc: "+1 rimbalzo su muro o ostacolo prima del ritorno.", upgradeSize: "Stella crescente", upgradeSizeDesc: "Aumenta dimensioni e area di impatto." },
-    ja: { upgradeDamage: "星珠パワー", upgradeDamageDesc: "星珠ダメージ+1。", upgradeBounce: "反射コア", upgradeBounceDesc: "帰還前の壁・障害物反射+1。", upgradeSize: "膨張する星", upgradeSizeDesc: "星珠の大きさと当たり判定を拡大。" },
-    ko: { upgradeDamage: "별 구슬 위력", upgradeDamageDesc: "별 구슬 피해 +1.", upgradeBounce: "반사 코어", upgradeBounceDesc: "귀환 전 벽 또는 장애물 반사 +1.", upgradeSize: "팽창하는 별", upgradeSizeDesc: "별 구슬 크기와 충돌 범위를 늘립니다." },
-    "pt-BR": { upgradeDamage: "Poder do orbe", upgradeDamageDesc: "+1 de dano do orbe.", upgradeBounce: "Núcleo de ricochete", upgradeBounceDesc: "+1 ricochete em parede ou obstáculo antes de voltar.", upgradeSize: "Estrela crescente", upgradeSizeDesc: "Aumenta o tamanho e o alcance de colisão." },
-    ru: { upgradeDamage: "Сила сферы", upgradeDamageDesc: "+1 к урону сферы.", upgradeBounce: "Ядро отскока", upgradeBounceDesc: "+1 отскок от стены или препятствия до возврата.", upgradeSize: "Растущая звезда", upgradeSizeDesc: "Увеличивает размер и область попадания сферы." },
-    hi: { upgradeDamage: "गोला शक्ति", upgradeDamageDesc: "गोले की क्षति +1।", upgradeBounce: "उछाल केंद्र", upgradeBounceDesc: "वापसी से पहले दीवार या बाधा पर +1 उछाल।", upgradeSize: "बढ़ता तारा", upgradeSizeDesc: "गोले का आकार और टक्कर क्षेत्र बढ़ाता है।" },
-    ar: { upgradeDamage: "قوة الكرة", upgradeDamageDesc: "+1 لضرر الكرة.", upgradeBounce: "نواة الارتداد", upgradeBounceDesc: "+1 ارتداد عن جدار أو عائق قبل العودة.", upgradeSize: "نجمة متنامية", upgradeSizeDesc: "يزيد حجم الكرة ونطاق الاصطدام." },
+    en: { upgradeDamage: "Orb Power", upgradeDamageDesc: "+1 orb damage.", upgradeBounce: "Rebound Core", upgradeBounceDesc: "+1 wall or obstacle rebound before the orb vanishes.", upgradeSize: "Expanding Star", upgradeSizeDesc: "Increase orb size and collision reach." },
+    "zh-Hant": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠傷害 +1。", upgradeBounce: "反彈核心", upgradeBounceDesc: "星珠消失前可多反彈 1 次；牆壁與障礙物都會計數。", upgradeSize: "星珠膨脹", upgradeSizeDesc: "增大星珠與命中範圍。" },
+    "zh-Hans": { upgradeDamage: "星珠威力", upgradeDamageDesc: "星珠伤害 +1。", upgradeBounce: "反弹核心", upgradeBounceDesc: "星珠消失前可多反弹 1 次；墙壁与障碍物都会计数。", upgradeSize: "星珠膨胀", upgradeSizeDesc: "增大星珠与命中范围。" },
+    es: { upgradeDamage: "Poder del orbe", upgradeDamageDesc: "+1 de daño de orbe.", upgradeBounce: "Núcleo de rebote", upgradeBounceDesc: "+1 rebote en muro u obstáculo antes de desaparecer.", upgradeSize: "Estrella creciente", upgradeSizeDesc: "Aumenta el tamaño y el alcance de impacto." },
+    fr: { upgradeDamage: "Puissance d'orbe", upgradeDamageDesc: "+1 dégât d'orbe.", upgradeBounce: "Cœur de rebond", upgradeBounceDesc: "+1 rebond sur mur ou obstacle avant de disparaître.", upgradeSize: "Étoile croissante", upgradeSizeDesc: "Augmente la taille et la portée de collision." },
+    de: { upgradeDamage: "Kugelkraft", upgradeDamageDesc: "+1 Kugelschaden.", upgradeBounce: "Abprallkern", upgradeBounceDesc: "+1 Wand- oder Hindernisabprall, bevor die Kugel verschwindet.", upgradeSize: "Wachsender Stern", upgradeSizeDesc: "Erhöht Größe und Trefferbereich der Kugel." },
+    it: { upgradeDamage: "Potenza sfera", upgradeDamageDesc: "+1 danno della sfera.", upgradeBounce: "Nucleo di rimbalzo", upgradeBounceDesc: "+1 rimbalzo su muro o ostacolo prima di scomparire.", upgradeSize: "Stella crescente", upgradeSizeDesc: "Aumenta dimensioni e area di impatto." },
+    ja: { upgradeDamage: "星珠パワー", upgradeDamageDesc: "星珠ダメージ+1。", upgradeBounce: "反射コア", upgradeBounceDesc: "消える前の壁・障害物反射+1。", upgradeSize: "膨張する星", upgradeSizeDesc: "星珠の大きさと当たり判定を拡大。" },
+    ko: { upgradeDamage: "별 구슬 위력", upgradeDamageDesc: "별 구슬 피해 +1.", upgradeBounce: "반사 코어", upgradeBounceDesc: "사라지기 전 벽 또는 장애물 반사 +1.", upgradeSize: "팽창하는 별", upgradeSizeDesc: "별 구슬 크기와 충돌 범위를 늘립니다." },
+    "pt-BR": { upgradeDamage: "Poder do orbe", upgradeDamageDesc: "+1 de dano do orbe.", upgradeBounce: "Núcleo de ricochete", upgradeBounceDesc: "+1 ricochete em parede ou obstáculo antes de desaparecer.", upgradeSize: "Estrela crescente", upgradeSizeDesc: "Aumenta o tamanho e o alcance de colisão." },
+    ru: { upgradeDamage: "Сила сферы", upgradeDamageDesc: "+1 к урону сферы.", upgradeBounce: "Ядро отскока", upgradeBounceDesc: "+1 отскок от стены или препятствия до исчезновения.", upgradeSize: "Растущая звезда", upgradeSizeDesc: "Увеличивает размер и область попадания сферы." },
+    hi: { upgradeDamage: "गोला शक्ति", upgradeDamageDesc: "गोले की क्षति +1।", upgradeBounce: "उछाल केंद्र", upgradeBounceDesc: "गोला गायब होने से पहले दीवार या बाधा पर +1 उछाल।", upgradeSize: "बढ़ता तारा", upgradeSizeDesc: "गोले का आकार और टक्कर क्षेत्र बढ़ाता है।" },
+    ar: { upgradeDamage: "قوة الكرة", upgradeDamageDesc: "+1 لضرر الكرة.", upgradeBounce: "نواة الارتداد", upgradeBounceDesc: "+1 ارتداد عن جدار أو عائق قبل اختفاء الكرة.", upgradeSize: "نجمة متنامية", upgradeSizeDesc: "يزيد حجم الكرة ونطاق الاصطدام." },
   };
   Object.entries(orbGrowthCopy).forEach(([locale, copy]) => Object.assign(text[locale], copy));
 
@@ -2034,7 +2034,7 @@
         name: bossDef?.name,
         cue: bossDef?.cue,
       }));
-      if (bossDef?.cue) nodes.hintText.textContent = `${localized(bossDef.name)} — ${t(bossDef.cue)}`;
+      if (bossDef?.cue) nodes.hintText.textContent = t(bossDef.cue);
       for (let i = 0; i < profile.bossMinions; i += 1) {
         const x = W * (0.18 + (i / Math.max(1, profile.bossMinions - 1)) * 0.64);
         const kind = enemyKindFor(profile.zone, i + tier);
@@ -2389,8 +2389,8 @@
       vx,
       vy,
       r: orbRadius(),
-      // A launched star never disappears in the field. Wall and obstacle
-      // contacts spend its rebound allowance; enemy hits do not.
+      // Wall and obstacle contacts spend the orb's rebound allowance; enemy
+      // hits do not. When the allowance is spent, the orb expires in place.
       life: 1,
       damage: Math.max(1, state.baseDamage),
       skin,
@@ -2399,8 +2399,6 @@
       maxBounces: maxBounceLimit(),
       pierceLevel: state.pierceLevel,
       capacity: activeOrbLimit(),
-      returning: false,
-      returnTimer: 0,
     };
   }
 
@@ -2641,7 +2639,7 @@
       state.enemies.push(makeSpecialEnemy(kind, W * (0.34 + index * 0.32), H * (0.2 + index * 0.05), state.raidTier, state.wave, profile, { shield: kind === "armored" ? 2 : 0 }));
     }
     state.mechanicEvents.push(`${enemy.bossId}_summon_${kind}`);
-    if (enemy.cue) nodes.hintText.textContent = `${localized(enemy.name)} — ${t(enemy.cue)}`;
+    if (enemy.cue) nodes.hintText.textContent = t(enemy.cue);
   }
 
   function resolveEnemyDeaths() {
@@ -2662,7 +2660,7 @@
 
   function activeEncounterCue() {
     const boss = state.enemies.find((enemy) => enemy.kind === "boss" && enemy.hp > 0);
-    if (boss?.cue) return `${localized(boss.name)} — ${t(boss.cue)}`;
+    if (boss?.cue) return t(boss.cue);
     if (locale === "it" && state.enemies.some((enemy) => enemy.phased)) return "Fase chiusa: attendi che il nemico ricompaia.";
     if (locale === "it" && state.enemies.some((enemy) => enemy.chargeState === "marked")) return "Corsia di carica segnalata: prepara un altro angolo.";
     if (state.enemies.some((enemy) => enemy.phased)) return locale === "zh-Hant" ? "相位關閉：等待敵人重新顯形。" : locale === "es" ? "Fase cerrada: espera a que reaparezca." : locale === "ja" ? "位相が閉じています。敵が再出現するまで待ちましょう。" : "Phase closed — wait for the enemy to reappear.";
@@ -2701,40 +2699,28 @@
       .sort((a, b) => Math.hypot(a.x - source.x, a.y - source.y) - Math.hypot(b.x - source.x, b.y - source.y))[0] || null;
   }
 
-  function startOrbReturn(orb) {
-    if (orb.returning) return;
-    orb.returning = true;
+  function expireOrb(orb) {
+    if (orb.life <= 0) return;
     orb.hits.clear();
-    nodes.hintText.textContent = t("orbReturning");
-    state.sparks.push({ kind: "return", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: 3 });
+    orb.life = 0;
+    orb.vx = 0;
+    orb.vy = 0;
+    nodes.hintText.textContent = t("orbSpent");
+    state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.26, maxLife: 0.26, effectIndex: orb.capacity > 1 ? 1 : 0 });
     playSound("click", 0.08);
   }
 
   function registerOrbBounce(orb, surface) {
-    if (orb.returning) return true;
+    if (orb.life <= 0) return true;
     orb.bounces += 1;
     state.sparks.push({ kind: "block-break", x: orb.x, y: orb.y, life: 0.32, maxLife: 0.32, effectIndex: orb.capacity > 1 ? 1 : 0 });
     if (surface === "obstacle") state.mechanicEvents.push("pylon_bounce");
     playSound("click", surface === "obstacle" ? 0.06 : 0.08);
-    if (orb.bounces >= orb.maxBounces) startOrbReturn(orb);
-    return orb.returning;
+    if (orb.bounces >= orb.maxBounces) expireOrb(orb);
+    return orb.life <= 0;
   }
 
   function updateOrb(orb, dt) {
-    if (orb.returning) {
-      const launcher = launcherOrbPoint();
-      const dx = launcher.x - orb.x;
-      const dy = launcher.y - orb.y;
-      const distance = Math.max(1, Math.hypot(dx, dy));
-      const returnSpeed = Math.max(520, distance * 7.5);
-      orb.x += (dx / distance) * returnSpeed * dt;
-      orb.y += (dy / distance) * returnSpeed * dt;
-      if (distance < 26) {
-        orb.life = 0;
-        state.sparks.push({ kind: "block-break", x: launcher.x, y: launcher.y, life: 0.28, maxLife: 0.28, effectIndex: 0 });
-      }
-      return;
-    }
     orb.x += orb.vx * dt;
     orb.y += orb.vy * dt;
     const wallInset = 34 + orb.r;
@@ -2750,7 +2736,7 @@
     }
     orb.pylonHits ||= new Map();
     state.pylons.forEach((pylon) => {
-      if (orb.returning) return;
+      if (orb.life <= 0) return;
       const cooldown = orb.pylonHits.get(pylon) || 0;
       if (cooldown > 0) {
         orb.pylonHits.set(pylon, cooldown - dt);
@@ -2771,7 +2757,7 @@
       registerOrbBounce(orb, "obstacle");
     });
     if (orb.bounces >= orb.maxBounces) {
-      startOrbReturn(orb);
+      expireOrb(orb);
       return;
     }
     state.enemies.forEach((enemy) => {
@@ -3173,12 +3159,10 @@
     state.orbs.forEach((orb) => {
       ctx.save();
       const speed = Math.max(1, Math.hypot(orb.vx, orb.vy));
-      const trail = orb.returning ? 18 : Math.min(34, 10 + speed * 0.045);
-      const heading = orb.returning
-        ? Math.atan2(launcherOrbPoint().y - orb.y, launcherOrbPoint().x - orb.x)
-        : Math.atan2(orb.vy, orb.vx);
-      ctx.strokeStyle = orb.returning ? "rgba(255, 229, 115, 0.7)" : "rgba(79, 231, 255, 0.64)";
-      ctx.lineWidth = orb.returning ? 6 : 7;
+      const trail = Math.min(34, 10 + speed * 0.045);
+      const heading = Math.atan2(orb.vy, orb.vx);
+      ctx.strokeStyle = "rgba(79, 231, 255, 0.64)";
+      ctx.lineWidth = 7;
       ctx.shadowColor = "#4ce8ff";
       ctx.shadowBlur = 14;
       ctx.beginPath();
@@ -3188,7 +3172,6 @@
       ctx.shadowBlur = 0;
       ctx.translate(orb.x, orb.y);
       ctx.rotate(heading);
-      ctx.globalAlpha = orb.returning ? 0.82 : 1;
       drawStarOrb(orb);
       ctx.restore();
     });
@@ -3256,23 +3239,6 @@
         ctx.shadowBlur = 0;
         ctx.restore();
       }
-      if (spark.kind === "return") {
-        ctx.save();
-        const progress = 1 - spark.life / maxLife;
-        const radius = 12 + progress * 28;
-        ctx.strokeStyle = "#ffe77d";
-        ctx.lineWidth = Math.max(3, 8 - progress * 5);
-        ctx.shadowColor = "#59e9ff";
-        ctx.shadowBlur = 18;
-        ctx.strokeRect(spark.x - radius, spark.y - radius, radius * 2, radius * 2);
-        for (let piece = 0; piece < 8; piece += 1) {
-          const angle = piece * Math.PI / 4;
-          const distance = radius + 8;
-          ctx.fillStyle = piece % 2 ? "#ffe77d" : "#72efff";
-          ctx.fillRect(spark.x + Math.cos(angle) * distance - 3, spark.y + Math.sin(angle) * distance - 3, 6, 6);
-        }
-        ctx.restore();
-      }
       ctx.globalAlpha = 1;
     });
 
@@ -3284,12 +3250,12 @@
 
   function drawStarOrb(orb) {
     const pulse = 1 + Math.sin(performance.now() / 105 + orb.skin) * 0.06;
-    const radius = (orb.returning ? 21 : 25) * (orb.r / 22) * pulse;
-    const hue = orb.returning ? "#ffe67b" : orb.capacity > 1 ? "#b78cff" : "#64ecff";
+    const radius = 25 * (orb.r / 22) * pulse;
+    const hue = orb.capacity > 1 ? "#b78cff" : "#64ecff";
     const aura = ctx.createRadialGradient(-radius * 0.18, -radius * 0.2, radius * 0.08, 0, 0, radius * 1.5);
     aura.addColorStop(0, "rgba(255,255,255,0.96)");
-    aura.addColorStop(0.24, orb.returning ? "rgba(255,239,155,0.96)" : orb.capacity > 1 ? "rgba(207,173,255,0.96)" : "rgba(143,247,255,0.98)");
-    aura.addColorStop(0.58, orb.returning ? "rgba(255,180,72,0.78)" : orb.capacity > 1 ? "rgba(109,80,242,0.82)" : "rgba(25,142,220,0.84)");
+    aura.addColorStop(0.24, orb.capacity > 1 ? "rgba(207,173,255,0.96)" : "rgba(143,247,255,0.98)");
+    aura.addColorStop(0.58, orb.capacity > 1 ? "rgba(109,80,242,0.82)" : "rgba(25,142,220,0.84)");
     aura.addColorStop(1, "rgba(7,27,71,0)");
     ctx.fillStyle = aura;
     ctx.shadowColor = hue;
@@ -3471,18 +3437,6 @@
     ctx.fillRect(enemy.x - barW / 2 - 1, enemy.y - size * 0.5 - 1, barW + 2, 9);
     ctx.fillStyle = enemy.hitTimer > 0 ? "#fff06a" : "#ff6478";
     ctx.fillRect(enemy.x - barW / 2, enemy.y - size * 0.5, barW * Math.max(0, enemy.hp / enemy.maxHp), 7);
-    if (enemy.kind === "boss" && enemy.name) {
-      ctx.save();
-      ctx.font = "800 18px system-ui, sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = "rgba(0, 8, 18, 0.95)";
-      ctx.strokeText(localized(enemy.name), enemy.x, enemy.y - size * 0.57);
-      ctx.fillStyle = "#fff3a0";
-      ctx.fillText(localized(enemy.name), enemy.x, enemy.y - size * 0.57);
-      ctx.restore();
-    }
   }
 
   function drawCore() {
