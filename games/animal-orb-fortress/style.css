@@ -2468,3 +2468,24 @@ html body #stagePanel [data-wp-frame-content="stage"] .stage-view-panel.is-activ
 html body #stagePanel [data-wp-frame-content="stage"] .stage-rail {
   flex:1;min-height:118px!important;height:auto!important;align-items:center!important;
 }
+
+/* v41: keep this game's public guide and Main progress slot inside the
+   shared-frame acceptance envelope after the shared theme is loaded. */
+html body[data-game-id="animal-orb-fortress"] #mainProgress[data-wp-main-progress] {
+  height: 44px !important;
+  min-height: 44px !important;
+  box-sizing: border-box !important;
+}
+
+html body[data-game-id="animal-orb-fortress"] section.game-page-info {
+  border-radius: 16px !important;
+}
+
+html body[data-game-id="animal-orb-fortress"] section.game-page-info > .game-info-sections {
+  display: grid !important;
+}
+
+html body[data-game-id="animal-orb-fortress"] section.game-page-info .game-info-section {
+  padding: 16px !important;
+  border-radius: 16px !important;
+}

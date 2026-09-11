@@ -47,7 +47,7 @@
     <meta name="twitter:title" content="勇闖地監 | WeightPlay" />
     <meta name="twitter:description" content="《動物水晶生存戰》是一款以移動、自動攻擊、臨時升級與可讀危險為核心的 30 關實時巡邏戰役。每關最多三分鐘，都有專屬名稱、金鑰目標與區域規則。每第五關會出現一隻擁有獨立角色圖、警示與反制方式的首領，不是把普通敵人放大。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/animal-crystal-survivor-otter-cover-v26.webp" /><link rel="stylesheet" href="/src/stage-selector-standard.css" />
-<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260911-lobby-return" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
+<link rel="stylesheet" href="/src/game-screen-frame.css?v=20260911-background-tile" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-sound-toggle="off">
@@ -117,7 +117,7 @@
               <button id="charmBtn" class="diamond-btn" type="button">
                 <span>
                   <strong data-ui="charmName">Crystal Charm</strong>
-                  <small data-ui="charmEffect">Permanent run start: Max HP 7 → 8 · pickup radius 54 → 68.</small>
+                  <small data-ui="charmEffect">Permanent run start: Max HP 100 → 115 · pickup radius 54 → 68.</small>
                 </span>
                 <b><img src="../../assets/weightplay-diamond.svg" alt="" /> <span id="charmCost">12</span></b>
               </button>
@@ -144,7 +144,7 @@
           <span data-ui="crystals">Crystals</span>
           <div class="xp-track"><i id="xpFill"></i></div>
         </div>
-        <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i><b id="hpText">7/7</b></div></div>
+        <div class="canvas-wrap play-area"><div class="battle-objective"><strong id="modeText"></strong><div class="mode-track"><i id="modeFill"></i></div></div><div id="healthMeter" class="health-meter" role="progressbar" aria-valuemin="0"><span aria-hidden="true">♥</span><div class="health-track"><i></i><b id="hpText">100/100</b></div></div>
           <canvas id="gameCanvas" width="1024" height="1760" tabindex="-1" aria-label="動物水晶生存戰遊戲區" data-aria-ui="playfield"></canvas>
         </div>
         <p id="hintText" class="hint-text" role="status" aria-live="polite" aria-atomic="true" data-ui="playHint">目標：在 3:00 之前收集金鑰。撿取水晶升級，卡片出現時選擇升級。</p>
@@ -203,7 +203,7 @@
     <script src="../../src/wallet.js?v=20260706-crystal-diamond-charm1"></script>
     <script src="talent-data.js?v=20260909-dungeon-levels-v26"></script>
     <script src="/src/game-screen-frame.js?v=20260911-lobby-return"></script>
-<script src="game.js?v=20260911-header-info-v30"></script>
+<script src="game.js?v=20260911-integer-balance-v31"></script>
     <script src="../../src/battle-canvas-standard.js?v=20260824-crystal-responsive-canvas-v2" data-wp-battle-standard></script>
   <script src="/src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
 
@@ -213,7 +213,7 @@
         const loadGameInfo = () => {
           if (document.querySelector("script[data-crystal-game-info]")) return;
           const script = document.createElement("script");
-          script.src = "../../src/game-page-info.js?v=20260909-dungeon-levels-v26";
+          script.src = "../../src/game-page-info.js?v=20260911-integer-balance-v31";
           script.dataset.crystalGameInfo = "idle";
           script.async = true;
           document.body.appendChild(script);
@@ -260,7 +260,7 @@
 <p>第 21-25 關以藍色圈預告閃電，強風還會推動掉落物。暴風巨鵬同時使用三個雷區與高速俯衝。</p>
 <p>第 26-30 關要跟隨移動光環，並輪流處理根系、火焰與閃電。日蝕巨像把三種警示放在安全環周圍，是全部移動與傷害時機的最終檢查。</p></div>
       <div class="game-info-section"><h3>開發設計理念</h3><p>三分鐘足以讓一局出現數次升級選擇，又不會讓失敗後的重試代價過高。自動鎖定是為了移除手機上細小的瞄準控制，但玩家仍要持續決定距離、收集順序、逃生方向與首領可攻擊窗口。六個五關區域會依序導入、組合、再由首領檢查新規則。難度雖然提高，但主要變化來自護盾、衝鋒時機、警示圈、走廊、飄移資源與安全環，而不是只把敵人生命變大。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔說明</h3><p>本機會保存已解鎖關卡、已通關關卡、各關最佳金鑰、累積金鑰、巡守階級與可選水晶護符。清除網站儲存或更換裝置可能會移除進度。水晶護符需二次確認，只會把起始生命從 7 提高到 8，並把拾取範圍從 54 提高到 68；它不是任何關卡的必要條件。結果回饋只是娛樂與本機進度資訊，不是能力測驗或診斷。</p></div>
+      <div class="game-info-section game-info-parent"><h3>玩家與存檔說明</h3><p>本機會保存已解鎖關卡、已通關關卡、各關最佳金鑰、累積金鑰、巡守階級與可選水晶護符。清除網站儲存或更換裝置可能會移除進度。水晶護符需二次確認，只會把起始生命從 100 提高到 115，並把拾取範圍從 54 提高到 68；它不是任何關卡的必要條件。結果回饋只是娛樂與本機進度資訊，不是能力測驗或診斷。</p></div>
       <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>共有多少個關卡？</dt><dd>共有 30 個命名關卡，分布在六個區域，每五關設有首領檢查點。</dd></div><div><dt>怎樣才算完成關卡？</dt><dd>在三分鐘內存活並達成畫面上的金鑰目標；檢查點還必須擊敗首領。</dd></div><div><dt>玩家需要手動瞄準嗎？</dt><dd>不需要。守望者會自動攻擊，玩家專注於移動、收集與升級選擇。</dd></div><div><dt>為什麼棱彩蛾后沒有受傷？</dt><dd>牠的可見護盾在其中一個階段會擋住攻擊；護盾消失後傷害才會恢復。</dd></div><div><dt>進度會保存嗎？</dt><dd>會。解鎖、完成數、最佳金鑰數、終身巡守等級與護符所有權會保存在本瀏覽器。</dd></div><div><dt>水晶護符是必要的嗎？</dt><dd>不是。它是可選的強化，不會成為任何關卡的必要條件。</dd></div><div><dt>手機和桌面都能玩嗎？</dt><dd>可以。觸控拖曳與鍵盤移動使用相同的戰役規則。</dd></div><div><dt>結果回饋是評量嗎？</dt><dd>不是。它只回報本地遊玩結果與下一條路線提示，供娛樂使用。</dd></div></dl></div>
       <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>獸王守衛</strong><span>《獸王守衛》是一套以自由改造路線為核心的 30 關英雄塔防戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-orb-fortress/"><img src="/assets/animal-orb-fortress-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>星珠要塞</strong><span>《動物星珠要塞》是一套以閱讀戰場與規劃反彈路線為核心的 30 關防守戰役。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-rift-salvage/"><img src="/assets/animal-rift-salvage/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>裂隙回收隊</strong><span>引導奧拉的月輪挑戰 30 個星界區域，先回收小型殘骸成長，再救援核心、超越對手並收回王冠遺物。</span></span></a></div></div>
     </div>

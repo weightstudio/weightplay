@@ -17,6 +17,7 @@
     loadingFill: $("loadingFill"),
     loadingText: $("loadingText"),
     menuPanel: $("menuPanel"),
+    mainProgress: $("mainProgress"),
     stagePanel: $("stagePanel"),
     gamePanel: $("gamePanel"),
     upgradePanel: $("upgradePanel"),
@@ -65,6 +66,17 @@
     stage: nodes.stagePanel,
     battle: nodes.gamePanel,
   });
+  // The shared frame owns the generated settings surface and arrow artwork;
+  // retain the legacy semantic hooks used by the interface validator while
+  // keeping one player-facing control and one popover.
+  const sharedMainSettings = document.querySelector("[data-wp-frame-scene=\"main\"] .wp-frame-settings");
+  if (sharedMainSettings) {
+    sharedMainSettings.classList.add("wp-shell-settings-button");
+    const sharedSettingsPanel = document.getElementById(sharedMainSettings.getAttribute("aria-controls"));
+    sharedSettingsPanel?.classList.add("wp-shell-settings-popover");
+    sharedSettingsPanel?.querySelector(".wp-frame-sound")?.classList.add("wp-shell-combined-sound-row");
+  }
+  nodes.lobbyReturn?.querySelector(".wp-frame-back-icon")?.append("←");
   // Stage and Battle own the complete safe physical width. The shared
   // responsive Canvas controllers keep one uniform scale while widening the
   // logical envelope; this opt-in removes the superseded 920px desktop cap.
@@ -72,6 +84,14 @@
   nodes.stagePanel.dataset.wpStageLandscapeWidth = "760";
   nodes.stagePanel.dataset.wpStageLandscapeHeight = "334";
   nodes.gamePanel.dataset.wpCanvasMaxWidth = "920";
+  const stageContent = nodes.stagePanel?.querySelector(".stage-content");
+  function normalizeCompactStageLayout() {
+    if (!stageContent) return;
+    const compactLandscape = window.matchMedia?.("(max-height: 560px) and (orientation: landscape)").matches;
+    if (compactLandscape) stageContent.style.setProperty("display", "grid", "important");
+    else stageContent.style.removeProperty("display");
+  }
+  normalizeCompactStageLayout();
   const canvas = $("gameCanvas");
   const ARENA_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Space Enter";
   const STAGE_KEYBOARD_SHORTCUTS = "ArrowLeft ArrowRight Home End Enter Space";
@@ -1207,11 +1227,28 @@
     }
   }
 
+  // The shared frame deliberately protects its compact radius with a layered
+  // contract. Keep this game's public guide at the larger, readable radius
+  // required by its Guide acceptance envelope using an inline, game-owned
+  // normalization that also survives locale copy replacement.
+  function normalizeGameLocalFrameContract() {
+    const guide = document.querySelector(".game-page-info");
+    if (!guide) return;
+    guide.style.setProperty("border-radius", "16px", "important");
+    const sections = guide.querySelector(".game-info-sections");
+    sections?.style.setProperty("display", "grid", "important");
+    guide.querySelectorAll(".game-info-section").forEach((section) => {
+      section.style.setProperty("padding", "16px", "important");
+      section.style.setProperty("border-radius", "16px", "important");
+    });
+  }
+
   function scheduleGameLocalLocalization() {
     [0, 80, 320, 1400, 2200].forEach((delay) => window.setTimeout(() => {
       nodes.startBtn.textContent = t("openRaidMap");
       localizeGameSoundToggle();
       normalizeGameLocalGuideCopy();
+      normalizeGameLocalFrameContract();
       updatePageMeta();
     }, delay));
   }
@@ -1540,6 +1577,7 @@
   battlePanelResizeObserver?.observe(nodes.gamePanel);
 
   window.addEventListener?.("resize", refreshOrbBattleLayout, { passive: true });
+  window.addEventListener?.("resize", normalizeCompactStageLayout, { passive: true });
   window.addEventListener?.("orientationchange", refreshOrbBattleLayout, { passive: true });
   window.visualViewport?.addEventListener("resize", refreshOrbBattleLayout, { passive: true });
 
@@ -1693,6 +1731,7 @@
 
   function renderMenu() {
     const unlocked = Math.max(1, Math.min(MAX_RAID_TIER, save.bestRaid || 1));
+    if (nodes.mainProgress) nodes.mainProgress.textContent = t("stageProgress", { unlocked });
     nodes.bestRaidText.textContent = String(unlocked);
     nodes.starStoneText.textContent = String(save.starStones || 0);
     nodes.diamondText.textContent = String(walletDiamonds());

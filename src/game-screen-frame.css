@@ -17,7 +17,7 @@ html body:has([data-wp-frame="2"]) .game-page-info {background:var(--wp-ui-surfa
 html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}
 html body:has([data-wp-frame="2"]) .game-page-info :is(h2,h3,p,li,dd,strong,.game-info-kicker,.game-info-band span,.game-info-related-copy span) {color:var(--wp-ui-text)!important}
 /* One protected frame. Game CSS may style content, never these shared slots. */
-html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat-y var(--wp-ui-background)!important; color:var(--wp-ui-text); }
+html body:has([data-wp-frame="2"]) { background:var(--wp-ui-background-image) center top/1440px 960px repeat var(--wp-ui-background)!important; color:var(--wp-ui-text); }
 html body [data-wp-frame="2"] .wp-frame-header {
  box-sizing:border-box!important; display:grid!important; position:relative!important; z-index:100; isolation:isolate;
  grid-template-columns:var(--wp-frame-lobby-return-width) minmax(0,1fr) var(--wp-frame-lobby-return-width)!important;

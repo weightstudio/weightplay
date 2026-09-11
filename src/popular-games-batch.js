@@ -699,19 +699,19 @@
     ar: { battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay", settings: "الإعدادات", objective: "الهدف", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", progress: "اربح خمسة تبادلات بحركات مدروسة." },
   };
   const WORDLE_SHELL_COPY = {
-    en: { settings: "Settings", language: "Language", sound: "Sound", soundOn: "On", soundOff: "Off", progressLabel: "Deck", progress: "Six puzzles · Play again advances." },
-    "zh-Hant": { settings: "設定", language: "語言", sound: "音效", soundOn: "開啟", soundOff: "關閉", progressLabel: "題庫", progress: "六個謎題・再玩一次會前進。" },
-    "zh-Hans": { settings: "设置", language: "语言", sound: "音效", soundOn: "开启", soundOff: "关闭", progressLabel: "题库", progress: "六个谜题·再玩一次会前进。" },
-    ja: { settings: "設定", language: "言語", sound: "サウンド", soundOn: "オン", soundOff: "オフ", progressLabel: "デッキ", progress: "6問のデッキ・もう一度で次へ。" },
-    ko: { settings: "설정", language: "언어", sound: "소리", soundOn: "켜기", soundOff: "끄기", progressLabel: "퍼즐 묶음", progress: "6개 퍼즐 · 다시 플레이하면 다음으로." },
-    es: { settings: "Ajustes", language: "Idioma", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado", progressLabel: "Colección", progress: "Seis puzles · Jugar otra vez avanza." },
-    "pt-BR": { settings: "Configurações", language: "Idioma", sound: "Som", soundOn: "Ativado", soundOff: "Desativado", progressLabel: "Coleção", progress: "Seis quebra-cabeças · jogar novamente avança." },
-    fr: { settings: "Paramètres", language: "Langue", sound: "Son", soundOn: "Activé", soundOff: "Désactivé", progressLabel: "Série", progress: "Six puzzles · Rejouer avance." },
-    de: { settings: "Einstellungen", language: "Sprache", sound: "Ton", soundOn: "An", soundOff: "Aus", progressLabel: "Reihe", progress: "Sechs Rätsel · Nochmal spielt das nächste." },
-    it: { settings: "Impostazioni", language: "Lingua", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato", progressLabel: "Serie", progress: "Sei rompicapi · Gioca ancora per avanzare." },
-    ru: { settings: "Настройки", language: "Язык", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл.", progressLabel: "Набор", progress: "Шесть загадок · «Играть снова» ведёт дальше." },
-    hi: { settings: "सेटिंग", language: "भाषा", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", progressLabel: "पहेली सेट", progress: "छह पहेलियाँ · फिर खेलने पर अगली पहेली।" },
-    ar: { settings: "الإعدادات", language: "اللغة", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", progressLabel: "مجموعة الألغاز", progress: "ستة ألغاز · اللعب مجدداً ينقلك إلى التالي." },
+    en: { settings: "Settings", language: "Language", sound: "Sound", soundOn: "On", soundOff: "Off", battleBack: "Back to main", mainBack: "Back to WeightPlay", progressLabel: "Deck", progress: "Six puzzles · Play again advances." },
+    "zh-Hant": { settings: "設定", language: "語言", sound: "音效", soundOn: "開啟", soundOff: "關閉", battleBack: "返回主頁", mainBack: "返回 WeightPlay", progressLabel: "題庫", progress: "六個謎題・再玩一次會前進。" },
+    "zh-Hans": { settings: "设置", language: "语言", sound: "音效", soundOn: "开启", soundOff: "关闭", battleBack: "返回主页", mainBack: "返回 WeightPlay", progressLabel: "题库", progress: "六个谜题·再玩一次会前进。" },
+    ja: { settings: "設定", language: "言語", sound: "サウンド", soundOn: "オン", soundOff: "オフ", battleBack: "メインへ戻る", mainBack: "WeightPlayへ戻る", progressLabel: "デッキ", progress: "6問のデッキ・もう一度で次へ。" },
+    ko: { settings: "설정", language: "언어", sound: "소리", soundOn: "켜기", soundOff: "끄기", battleBack: "메인으로", mainBack: "WeightPlay로 돌아가기", progressLabel: "퍼즐 묶음", progress: "6개 퍼즐 · 다시 플레이하면 다음으로." },
+    es: { settings: "Ajustes", language: "Idioma", sound: "Sonido", soundOn: "Activado", soundOff: "Desactivado", battleBack: "Volver al inicio", mainBack: "Volver a WeightPlay", progressLabel: "Colección", progress: "Seis puzles · Jugar otra vez avanza." },
+    "pt-BR": { settings: "Configurações", language: "Idioma", sound: "Som", soundOn: "Ativado", soundOff: "Desativado", battleBack: "Voltar ao início", mainBack: "Voltar ao WeightPlay", progressLabel: "Coleção", progress: "Seis quebra-cabeças · jogar novamente avança." },
+    fr: { settings: "Paramètres", language: "Langue", sound: "Son", soundOn: "Activé", soundOff: "Désactivé", battleBack: "Retour à l’accueil", mainBack: "Retour à WeightPlay", progressLabel: "Série", progress: "Six puzzles · Rejouer avance." },
+    de: { settings: "Einstellungen", language: "Sprache", sound: "Ton", soundOn: "An", soundOff: "Aus", battleBack: "Zur Startseite", mainBack: "Zurück zu WeightPlay", progressLabel: "Reihe", progress: "Sechs Rätsel · Nochmal spielt das nächste." },
+    it: { settings: "Impostazioni", language: "Lingua", sound: "Audio", soundOn: "Attivo", soundOff: "Disattivato", battleBack: "Torna alla home", mainBack: "Torna a WeightPlay", progressLabel: "Serie", progress: "Sei rompicapi · Gioca ancora per avanzare." },
+    ru: { settings: "Настройки", language: "Язык", sound: "Звук", soundOn: "Вкл.", soundOff: "Выкл.", battleBack: "На главную", mainBack: "Вернуться в WeightPlay", progressLabel: "Набор", progress: "Шесть загадок · «Играть снова» ведёт дальше." },
+    hi: { settings: "सेटिंग", language: "भाषा", sound: "ध्वनि", soundOn: "चालू", soundOff: "बंद", battleBack: "मुख्य पृष्ठ", mainBack: "WeightPlay पर वापस जाएँ", progressLabel: "पहेली सेट", progress: "छह पहेलियाँ · फिर खेलने पर अगली पहेली।" },
+    ar: { settings: "الإعدادات", language: "اللغة", sound: "الصوت", soundOn: "مفعّل", soundOff: "متوقف", battleBack: "العودة إلى الرئيسية", mainBack: "العودة إلى WeightPlay", progressLabel: "مجموعة الألغاز", progress: "ستة ألغاز · اللعب مجدداً ينقلك إلى التالي." },
   };
   const syncWordleShellLocale = () => {
     if (document.body?.dataset.gameId !== "wordle") return;
@@ -723,6 +723,8 @@
       node.setAttribute("aria-label", label);
       node.setAttribute("title", label);
     };
+    setLabel("[data-wp-return='main']", ui.mainBack);
+    setLabel("[data-wp-return='battle']", ui.battleBack);
     setLabel("#audioMenuBtn", ui.settings);
     setLabel("#battleUtilityBtn", ui.settings);
     document.querySelector("#audioPopover")?.setAttribute("aria-label", ui.settings);
