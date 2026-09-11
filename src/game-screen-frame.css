@@ -1,5 +1,13 @@
 @import url('./game-ui-theme.css?v=20260911-one-frame');
 @layer wp-frame-contract {
+/* Optional Battle information replaces the visible title, not the frame. */
+html body [data-wp-frame="2"] .wp-frame-header [data-wp-frame-title][hidden] {display:none!important}
+html body [data-wp-frame="2"] [data-wp-frame-info] {grid-column:2!important;grid-row:1!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:1fr!important;gap:4px!important;position:relative!important;inset:auto!important;width:100%!important;min-width:0!important;max-width:none!important;height:48px!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;direction:inherit}
+html body [data-wp-frame="2"] [data-wp-frame-info]::before {display:none!important}
+html body [data-wp-frame="2"] [data-wp-frame-info] {grid-template-columns:repeat(var(--wp-frame-stat-count,3),minmax(0,1fr))!important}
+html body [data-wp-frame="2"] [data-wp-frame-stat] {display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;margin:0!important;padding:0 2px!important;border:0!important;border-radius:0!important;background:none!important;box-shadow:none!important;gap:3px!important}
+html body [data-wp-frame="2"] [data-wp-frame-stat] :is(span,b,strong) {display:block!important;max-width:100%!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 11px/1.2 system-ui!important;color:var(--wp-ui-muted)!important}
+html body [data-wp-frame="2"] [data-wp-frame-stat] :is(b,strong) {font-size:14px!important;font-weight:800!important;font-variant-numeric:tabular-nums;color:var(--wp-ui-text)!important}
 /* The guide is outside the play canvas, but belongs to the same shared skin. */
 html body:has([data-wp-frame="2"]) .game-page-info {background:var(--wp-ui-surface)!important;color:var(--wp-ui-text)!important;border:2px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius)!important}
 html body:has([data-wp-frame="2"]) .game-page-info :is(.game-info-section,.game-info-band,.game-info-related-card,.game-info-fact) {background:var(--wp-ui-background)!important;color:var(--wp-ui-text)!important;border-color:var(--wp-ui-line)!important;border-radius:var(--wp-ui-radius)!important}

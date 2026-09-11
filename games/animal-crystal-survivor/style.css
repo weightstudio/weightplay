@@ -2012,10 +2012,14 @@ html body .element-branch .talent-tree-node {width:100%;min-height:96px;}
 .talent-info-dialog .talent-prerequisite {font-size:13px;color:#efce86;}
 
 /* Only the game-owned content track controls HUD and playfield placement. */
-[data-wp-frame-content="battle"] { display:grid!important; grid-template-columns:minmax(0,1fr); grid-template-rows:48px 24px minmax(0,1fr) 42px; gap:6px; overflow:hidden; }
+html body #gamePanel #battleLive > :is(.xp-row,.canvas-wrap,.hint-text) {grid-column:1!important;}
+html body #gamePanel #battleLive > .xp-row {grid-row:1!important;}
+html body #gamePanel #battleLive > .canvas-wrap {grid-row:2!important;}
+html body #gamePanel #battleLive > .hint-text {grid-row:3!important;}
+[data-wp-frame-content="battle"] { display:grid!important; grid-template-columns:minmax(0,1fr); grid-template-rows:24px minmax(0,1fr) 42px; gap:6px; overflow:hidden; }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row { grid-template-columns:repeat(3,minmax(0,1fr))!important; grid-template-rows:1fr!important; }
 html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row::before { display:none!important; }
 @media(max-height:560px) and (orientation:landscape) {
- [data-wp-frame-content="battle"] { grid-template-columns:112px minmax(0,1fr); grid-template-rows:24px minmax(0,1fr) 42px; }
+ [data-wp-frame-content="battle"] { grid-template-columns:minmax(0,1fr); grid-template-rows:24px minmax(0,1fr) 42px; }
  html body.wp-logical-battle-active.crystal-playing #gamePanel.game-panel .hud-row { grid-template-columns:1fr!important; grid-template-rows:repeat(3,minmax(0,1fr))!important; }
 }

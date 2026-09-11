@@ -44,6 +44,15 @@
       }
       const title = header.querySelector('[data-wp-frame-title]');
       if (!title) throw new Error(`FRAME_TITLE_REQUIRED:${name}`);
+      if (scene.headerInfo) {
+        if (name !== 'battle' || !scene.content.contains(scene.headerInfo)) throw new Error('FRAME_BATTLE_INFO_SLOT_REQUIRED');
+        if (!scene.headerInfo.children.length || scene.headerInfo.children.length>3) throw new Error('FRAME_BATTLE_INFO_REQUIRES_ONE_TO_THREE_STATS');
+        title.hidden = true;
+        scene.headerInfo.setAttribute('data-wp-frame-info','');
+        scene.headerInfo.style.setProperty('--wp-frame-stat-count',scene.headerInfo.children.length);
+        scene.headerInfo.querySelectorAll(':scope > *').forEach(node => node.setAttribute('data-wp-frame-stat',''));
+        header.append(scene.headerInfo);
+      }
       const utility = document.createElement('div');
       utility.className = 'wp-frame-utility';
       const button = document.createElement('button');

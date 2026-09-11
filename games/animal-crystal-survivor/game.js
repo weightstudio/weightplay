@@ -8,7 +8,7 @@
   document.getElementById("gamePanel")?.setAttribute("data-wp-canvas-max-width", "920");
 
   const GAME_ID = "animal-crystal-survivor";
-const GAME_VERSION = "v29";
+  const GAME_VERSION = "v30";
   const rendererModuleUrl = new URL("crystal-3d.js?v=20260909-dungeon-levels-v26", document.currentScript.src).href;
   let crystal3D = null;
   let rendererRequest = 0;
@@ -220,7 +220,7 @@ const GAME_VERSION = "v29";
     scenes: {
       main: { root: nodes.menuPanel, header: $('mainFrameHeader'), content: $('mainContent') },
       stage: { root: nodes.stagePanel, header: $('stageFrameHeader'), content: document.querySelector('[data-wp-stage-content]') },
-      battle: { root: nodes.gamePanel, header: $('battleFrameHeader'), content: $('battleLive') },
+      battle: { root: nodes.gamePanel, header: $('battleFrameHeader'), content: $('battleLive'), headerInfo: $('battleLive').querySelector('.hud-row') },
     },
   });
   screenFrame.activate('main');
