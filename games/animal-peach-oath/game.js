@@ -72,6 +72,39 @@
     en: { "桃園劍陣": "Peach Garden Blade Formation", "青月斬": "Azure Moon Slash", "長坂怒吼": "Changban Roar", "東風星火": "East Wind Starfire", "七進箭雨": "Sevenfold Arrow Rain", "百鍊青銅劍": "Hundred-Forged Bronze Sword", "桃紋明光甲": "Peach-patterned Bright Armor", "踏雲戰靴": "Cloudstep War Boots", "盟誓兵符": "Oathbound War Seal", "武器": "Weapon", "鎧甲": "Armor", "戰靴": "Boots", "寶物": "Relic" },
     ar: { "桃園劍陣": "تشكيلة سيوف بستان الخوخ", "青月斬": "ضربة القمر الأزرق", "長坂怒吼": "زئير تشانغبان", "東風星火": "شرر ريح الشرق", "七進箭雨": "وابل السهام السباعي", "百鍊青銅劍": "سيف البرونز المصقول", "桃紋明光甲": "درع الضوء بنقش الخوخ", "踏雲戰靴": "حذاء حرب عابر للسحاب", "盟誓兵符": "ختم عهد الحرب", "武器": "سلاح", "鎧甲": "درع", "戰靴": "حذاء", "寶物": "أثر" }
   };
+  const heroIdentityCopy = {
+    'zh-Hant':['玄德獅','雲長虎','翼德熊','孔明鶴','子龍狐','碎片','元寶'],
+    'zh-Hans':['玄德狮','云长虎','翼德熊','孔明鹤','子龙狐','碎片','元宝'],
+    en:['Lion Xuande','Tiger Yunchang','Bear Yide','Crane Kongming','Fox Zilong','fragments','Ingots'],
+    ja:['玄徳ライオン','雲長トラ','翼徳クマ','孔明ツル','子龍キツネ','欠片','元宝'],
+    ko:['현덕 사자','운장 호랑이','익덕 곰','공명 학','자룡 여우','조각','원보'],
+    es:['León Xuande','Tigre Yunchang','Oso Yide','Grulla Kongming','Zorro Zilong','fragmentos','Lingotes'],
+    'pt-BR':['Leão Xuande','Tigre Yunchang','Urso Yide','Grou Kongming','Raposa Zilong','fragmentos','Lingotes'],
+    fr:['Lion Xuande','Tigre Yunchang','Ours Yide','Grue Kongming','Renard Zilong','fragments','Lingots'],
+    de:['Löwe Xuande','Tiger Yunchang','Bär Yide','Kranich Kongming','Fuchs Zilong','Fragmente','Barren'],
+    it:['Leone Xuande','Tigre Yunchang','Orso Yide','Gru Kongming','Volpe Zilong','frammenti','Lingotti'],
+    ru:['Лев Сюаньдэ','Тигр Юньчан','Медведь Идэ','Журавль Кунмин','Лис Цзылун','фрагменты','Слитки'],
+    hi:['सिंह शुआनदे','बाघ युनचांग','भालू यीदे','सारस कोंगमिंग','लोमड़ी ज़िलोंग','टुकड़े','सिल्लियाँ'],
+    ar:['أسد شوانده','نمر يونتشانغ','دب ييده','كركي كونغمينغ','ثعلب زيلونغ','شظايا','سبائك']
+  };
+  const heroTraitKeys = ['傳說','史詩','稀有','步兵','騎兵','槍兵','謀士','弓兵','前排均衡','突進爆發','前排守護','群體法術','遠程連射'];
+  const heroTraitCopy = {
+    'zh-Hans':['传说','史诗','稀有','步兵','骑兵','枪兵','谋士','弓兵','前排均衡','突进爆发','前排守护','群体法术','远程连射'],
+    ja:['伝説','エピック','レア','歩兵','騎兵','槍兵','軍師','弓兵','前衛万能型','突撃型','前衛守護型','範囲魔法','遠距離連射'],
+    ko:['전설','영웅','희귀','보병','기병','창병','책사','궁병','균형 잡힌 전열','돌진 공격','전열 수호','광역 마법','원거리 연사'],
+    es:['Legendario','Épico','Raro','Infantería','Caballería','Lanceros','Estratega','Arqueros','Primera línea equilibrada','Carga explosiva','Guardián de vanguardia','Magia de área','Ráfaga a distancia'],
+    'pt-BR':['Lendário','Épico','Raro','Infantaria','Cavalaria','Lanceiros','Estrategista','Arqueiros','Frente equilibrada','Investida explosiva','Guardião da linha de frente','Magia de área','Rajada à distância'],
+    fr:['Légendaire','Épique','Rare','Infanterie','Cavalerie','Lanciers','Stratège','Archers','Avant-garde équilibrée','Charge puissante','Gardien de première ligne','Magie de zone','Salve à distance'],
+    de:['Legendär','Episch','Selten','Infanterie','Kavallerie','Speerkämpfer','Stratege','Bogenschützen','Ausgewogene Frontlinie','Sturmangriff','Frontwächter','Flächenmagie','Fernkampfsalve'],
+    it:['Leggendario','Epico','Raro','Fanteria','Cavalleria','Lancieri','Stratega','Arcieri','Prima linea equilibrata','Carica esplosiva','Guardiano della prima linea','Magia ad area','Raffica a distanza'],
+    ru:['Легендарный','Эпический','Редкий','Пехота','Кавалерия','Копейщики','Стратег','Лучники','Сбалансированный авангард','Мощный рывок','Защитник авангарда','Магия по площади','Дальний залп'],
+    hi:['पौराणिक','महाकाव्य','दुर्लभ','पैदल सेना','घुड़सवार सेना','भालाधारी','रणनीतिकार','धनुर्धर','संतुलित अग्रिम पंक्ति','तेज़ धावा','अग्रिम पंक्ति का रक्षक','क्षेत्रीय जादू','दूर से लगातार वार']
+  };
+  for (const [locale, values] of Object.entries(heroTraitCopy)) localeNames[locale] = {...localeNames[locale], ...Object.fromEntries(heroTraitKeys.map((key,index)=>[key,values[index]]))};
+  for (const [locale, values] of Object.entries(heroIdentityCopy)) {
+    localeNames[locale] = {...localeNames[locale], ...Object.fromEntries(['玄德獅','雲長虎','翼德熊','孔明鶴','子龍狐'].map((name,index)=>[name,values[index]]))};
+    localeCopy[locale] = {...(localeCopy[locale] || localeCopy.en), fragments:values[5], resourceIngots:values[6]};
+  }
   const activeLocale = () => localeOrder.includes(routeLocale()) ? routeLocale() : "en";
   const copy = (key, values = {}) => {
     const table = localeCopy[activeLocale()] || localeCopy.en;
@@ -80,6 +113,30 @@
     return String(value).replace(/\{(\w+)\}/g, (match, name) => values[name] ?? match);
   };
   const localizedValue = (value) => (localeNames[activeLocale()] || {})[value] || (localeExtraNames[activeLocale()] || {})[value] || value;
+  // Game-specific consequences; the shared frame still owns chrome and skin.
+  const interactionCopy = {
+    'zh-Hant': ['暫停征戰？','目前戰役 {stage}、第 {wave} 波。返回主畫面會暫停本次戰鬥；重新整理頁面會從本波重開。已儲存的養成與資源會保留。','繼續遊玩','返回主畫面','攻速'],
+    'zh-Hans': ['暂停征战？','当前战役 {stage}、第 {wave} 波。返回主画面会暂停本次战斗；刷新页面会从本波重开。已保存的养成与资源会保留。','继续游玩','返回主画面','攻速'],
+    en: ['Pause this battle?','Campaign {stage}, wave {wave}. Returning to Main pauses this encounter; reloading starts this wave again. Saved upgrades and resources are kept.','Continue playing','Return to Main','Attack speed'],
+    ja: ['戦闘を一時停止しますか？','戦役 {stage}、第 {wave} 波。メインに戻ると戦闘は一時停止します。ページを再読み込みするとこの波から再開します。保存済みの育成と資源は残ります。','プレイを続ける','メインに戻る','攻撃速度'],
+    ko: ['전투를 일시 정지할까요?','전역 {stage}, {wave}번째 공세입니다. 메인으로 돌아가면 전투가 멈추며, 새로고침하면 이 공세를 다시 시작합니다. 저장된 성장과 자원은 유지됩니다.','계속 플레이','메인으로 돌아가기','공격 속도'],
+    es: ['¿Pausar la batalla?','Campaña {stage}, oleada {wave}. Volver al inicio pausa el combate; recargar reinicia esta oleada. Las mejoras y los recursos guardados se conservan.','Seguir jugando','Volver al inicio','Velocidad de ataque'],
+    'pt-BR': ['Pausar a batalha?','Campanha {stage}, onda {wave}. Voltar ao início pausa o combate; recarregar reinicia esta onda. Melhorias e recursos salvos são mantidos.','Continuar jogando','Voltar ao início','Velocidade de ataque'],
+    fr: ['Mettre le combat en pause ?','Campagne {stage}, vague {wave}. Revenir à l’accueil met le combat en pause ; recharger recommence cette vague. Les améliorations et ressources sauvegardées sont conservées.','Continuer à jouer','Retour à l’accueil','Vitesse d’attaque'],
+    de: ['Kampf pausieren?','Feldzug {stage}, Welle {wave}. Die Rückkehr zum Hauptmenü pausiert den Kampf; Neuladen startet diese Welle erneut. Gespeicherte Verbesserungen und Ressourcen bleiben erhalten.','Weiterspielen','Zum Hauptmenü','Angriffstempo'],
+    it: ['Mettere in pausa la battaglia?','Campagna {stage}, ondata {wave}. Tornare al menu mette in pausa lo scontro; ricaricare riavvia questa ondata. Migliorie e risorse salvate restano.','Continua a giocare','Torna al menu','Velocità di attacco'],
+    ru: ['Приостановить бой?','Кампания {stage}, волна {wave}. Возврат в меню приостановит бой; перезагрузка начнёт эту волну заново. Сохранённые улучшения и ресурсы останутся.','Продолжить игру','Вернуться в меню','Скорость атаки'],
+    hi: ['युद्ध रोकें?','अभियान {stage}, लहर {wave}। मुख्य पृष्ठ पर लौटने से युद्ध रुकेगा; पृष्ठ फिर लोड करने पर यह लहर दोबारा शुरू होगी। सहेजे गए सुधार और संसाधन बने रहेंगे।','खेल जारी रखें','मुख्य पृष्ठ पर लौटें','हमले की गति'],
+    ar: ['إيقاف المعركة مؤقتًا؟','الحملة {stage}، الموجة {wave}. العودة للرئيسية توقف القتال مؤقتًا؛ إعادة تحميل الصفحة تبدأ هذه الموجة من جديد. تبقى الترقيات والموارد المحفوظة.','متابعة اللعب','العودة للرئيسية','سرعة الهجوم']
+  };
+  const interactionText = index => (interactionCopy[activeLocale()] || interactionCopy.en)[index];
+  function equipmentStat(def, level) {
+    const value = def.value * level;
+    const label = def.stat === 'speed' ? interactionText(4) : copy(def.stat === 'hp' ? 'health' : 'attack');
+    // Speed is an additive stat, not an integer count or a percentage.
+    const number = new Intl.NumberFormat(activeLocale(), {maximumFractionDigits: 2}).format(value);
+    return `${label} +${number}`;
+  }
   function applyLocale() {
     const locale = activeLocale();
     document.documentElement.lang = locale;
@@ -165,6 +222,9 @@
     pendingLoot: { coins: 0, materials: 0, gear: [] },
     tickHandle: 0,
     nextWaveHandle: 0,
+    nextWaveDue: 0,
+    pausedAt: 0,
+    pendingWaveMs: null,
     resultOpen: false,
     manageFromResult: false
   };
@@ -307,17 +367,68 @@
     document.body.classList.toggle("battle-active", !main);
     if (!main) {
       updateHud();
-      if (!battle.running && !battle.resultOpen) startWave();
+      resumeCombat();
+      if (!battle.running && !battle.resultOpen && !battle.nextWaveHandle) startWave();
       else if (battle.running && !battle.resultOpen && !battle.tickHandle) battle.tickHandle = window.setInterval(battleTick, 260);
       if (!state.tutorialDone) showCoach();
     } else {
-      clearInterval(battle.tickHandle);
-      battle.tickHandle = 0;
-      clearTimeout(battle.nextWaveHandle);
-      battle.nextWaveHandle = 0;
+      suspendCombat();
       closeManagement();
       closeModal();
     }
+    syncFrameCoverage();
+  }
+
+  function suspendCombat() {
+    if (battle.pausedAt) return;
+    battle.pausedAt = Date.now();
+    battle.pendingWaveMs = battle.nextWaveHandle ? Math.max(0, battle.nextWaveDue - performance.now()) : null;
+    clearInterval(battle.tickHandle); battle.tickHandle = 0;
+    clearTimeout(battle.nextWaveHandle); battle.nextWaveHandle = 0;
+  }
+
+  function resumeCombat() {
+    if (!battle.pausedAt) return;
+    const pausedAt = battle.pausedAt, elapsed = Date.now() - pausedAt;
+    for (const unit of [...battle.heroes, ...battle.enemies]) {
+      for (const field of ['weakenUntil', 'shieldUntil', 'buffUntil']) {
+        if (unit.status[field] > pausedAt) unit.status[field] += elapsed;
+      }
+    }
+    battle.pausedAt = 0;
+    if (battle.pendingWaveMs !== null) {
+      const remaining = battle.pendingWaveMs; battle.pendingWaveMs = null;
+      scheduleNextWave(remaining);
+    } else if (battle.running && !battle.resultOpen && !battle.tickHandle) {
+      battle.tickHandle = window.setInterval(battleTick, 260);
+    }
+  }
+
+  function scheduleNextWave(delay) {
+    clearTimeout(battle.nextWaveHandle);
+    battle.nextWaveDue = performance.now() + delay;
+    battle.nextWaveHandle = setTimeout(() => {
+      battle.nextWaveHandle = 0;
+      if (!battle.resultOpen && !battle.pausedAt && $('#app').dataset.scene === 'battle') startWave();
+    }, delay);
+  }
+
+  function requestBattleReturn() {
+    if (!battle.running && !battle.nextWaveHandle && battle.pendingWaveMs === null) return showScene('main');
+    suspendCombat();
+    $('#leaveTitle').textContent = interactionText(0);
+    $('#leaveCopy').textContent = interactionText(1).replace('{stage}', stageCode()).replace('{wave}', state.wave);
+    $('#leaveContinue').textContent = interactionText(2);
+    $('#leaveMain').textContent = interactionText(3);
+    $('#leaveConfirm').classList.remove('is-hidden');
+    syncFrameCoverage();
+    $('#leaveContinue').focus({preventScroll: true});
+  }
+
+  function closeBattleReturn(leave = false) {
+    $('#leaveConfirm').classList.add('is-hidden');
+    if (leave) { save(); showScene('main'); $('#startBtn').focus({preventScroll: true}); }
+    else { syncFrameCoverage(); resumeCombat(); $('#battleBack').focus({preventScroll: true}); }
   }
 
   function makeUnit(data, side, index) {
@@ -340,6 +451,8 @@
   function startWave() {
     clearTimeout(battle.nextWaveHandle);
     battle.nextWaveHandle = 0;
+    battle.nextWaveDue = 0;
+    battle.pendingWaveMs = null;
     clearInterval(battle.tickHandle);
     battle.resultOpen = false;
     battle.running = true;
@@ -375,7 +488,7 @@
   }
 
   function battleTick() {
-    if ($("#app").dataset.scene !== "battle" || document.hidden || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
+    if ($("#app").dataset.scene !== "battle" || document.hidden || battle.pausedAt || !battle.running || !battle.auto || battle.resultOpen || !$("#management").classList.contains("is-hidden") || !$("#modalLayer").classList.contains("is-hidden")) return;
     const dt = .26 * battle.speed;
     battle.heroes.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.enemies, dt));
     battle.enemies.filter((unit) => unit.hp > 0).forEach((unit) => runUnitAttack(unit, battle.heroes, dt));
@@ -479,10 +592,7 @@
     if (state.wave < 5) {
       state.wave += 1;
       save();
-      battle.nextWaveHandle = setTimeout(() => {
-        battle.nextWaveHandle = 0;
-        if (!battle.resultOpen && $("#app").dataset.scene === "battle") startWave();
-      }, 900 / battle.speed);
+      scheduleNextWave(900 / battle.speed);
     } else {
       state.stats.bossKills += 1;
       state.stats.stagesCleared += 1;
@@ -538,7 +648,7 @@
     $("#management").classList.remove("is-hidden");
     syncFrameCoverage();
     $$(".bottom-nav button").forEach((button) => button.classList.toggle("is-active", button.dataset.tab === tab));
-    const titles = { heroes: copy("managementHeroes"), tavern: copy("managementTavern"), law: copy("managementLaw"), campaign: copy("managementCampaign") };
+    const titles = { heroes: copy("managementHeroes"), tavern: recruitText(2), law: copy("managementLaw"), campaign: copy("managementCampaign") };
     $("#managementTitle").textContent = titles[tab] || copy("managementBattle");
     $("#managementMeta").textContent = `${copy("power")} ${fmt(totalPower())}`;
     if (tab === "heroes") renderHeroes();
@@ -579,17 +689,36 @@
       const holder = Object.keys(state.equipped).find((id) => state.equipped[id] === entry.uid);
       const enhanceCost = 3 + entry.level * 2;
       const icon = `<span class="equipment-art" data-equipment-art="${def.id}" aria-hidden="true"></span>`;
-      return `<div class="equipment-row"><div class="equipment-description">${icon}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${def.stat.toUpperCase()} +${fmt(def.value * entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
+      return `<div class="equipment-row"><div class="equipment-description">${icon}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${equipmentStat(def, entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
     }).join("") : `<p>${copy("noEquipment")}</p>`;
     $("#managementBody").innerHTML = `<div class="section-title"><h3>${copy("teamFormation")}</h3><span>${copy("maxTeam")}</span></div><div class="formation">${formation}</div>
       <div class="section-title"><h3>${copy("heroGrowth")}</h3><span>${copy("heroGrowthMeta")}</span></div><div class="hero-grid">${cards}</div>
       <div class="section-title"><h3>${copy("equipmentBag")}</h3><span>${state.inventory.length} ${copy("inventory")}</span></div><div>${equipment}</div>`;
   }
 
+  const recruitCopy = {
+    'zh-Hant':['收集 10 片解鎖武將；已擁有武將每 20 片升一星，最高五星。','免費招募','招募','武將名冊','已獲得','招募結果','{hero} 加入隊伍','{hero} 升至 {stars} 星'],
+    'zh-Hans':['收集 10 片解锁武将；已有武将每 20 片升一星，最高五星。','免费招募','招募','武将名册','已获得','招募结果','{hero} 加入队伍','{hero} 升至 {stars} 星'],
+    en:['Collect 10 fragments to unlock a hero. Owned heroes gain a star per 20 fragments, up to five stars.','Free recruit','Recruit','Hero roster','Owned','Recruitment results','{hero} joined the team','{hero} reached {stars} stars'],
+    ja:['欠片10個で武将を解放。解放済みの武将は20個ごとに星が1つ増え、最大5つになります。','無料募集','募集','武将一覧','解放済み','募集結果','{hero}が仲間になりました','{hero}が星{stars}になりました'],
+    ko:['조각 10개로 장수를 해제합니다. 보유 장수는 조각 20개마다 별이 하나 오르며 최대 5성입니다.','무료 모집','모집','장수 명단','보유','모집 결과','{hero} 합류','{hero}: {stars}성 달성'],
+    es:['Reúne 10 fragmentos para desbloquear un héroe. Después, cada 20 fragmentos añaden una estrella, hasta cinco.','Reclutamiento gratis','Reclutar','Lista de héroes','Obtenido','Resultados','{hero} se ha unido','{hero} alcanzó {stars} estrellas'],
+    'pt-BR':['Junte 10 fragmentos para desbloquear um herói. Depois, cada 20 fragmentos dão uma estrela, até cinco.','Recrutamento grátis','Recrutar','Lista de heróis','Obtido','Resultados','{hero} entrou na equipe','{hero} chegou a {stars} estrelas'],
+    fr:['Réunissez 10 fragments pour débloquer un héros. Ensuite, 20 fragments ajoutent une étoile, jusqu’à cinq.','Recrutement gratuit','Recruter','Liste des héros','Obtenu','Résultats','{hero} rejoint l’équipe','{hero} atteint {stars} étoiles'],
+    de:['10 Fragmente schalten einen Helden frei. Danach geben je 20 Fragmente einen Stern, bis zu fünf Sterne.','Kostenlos rekrutieren','Rekrutieren','Heldenliste','Freigeschaltet','Ergebnisse','{hero} ist dem Team beigetreten','{hero} erreicht {stars} Sterne'],
+    it:['Raccogli 10 frammenti per sbloccare un eroe. Poi ogni 20 frammenti aggiungono una stella, fino a cinque.','Reclutamento gratis','Recluta','Elenco eroi','Ottenuto','Risultati','{hero} si è unito alla squadra','{hero} ha raggiunto {stars} stelle'],
+    ru:['10 фрагментов открывают героя. Затем каждые 20 фрагментов дают звезду, максимум пять.','Бесплатный призыв','Призвать','Список героев','Получен','Результаты призыва','{hero} присоединился к отряду','{hero}: достигнуто {stars} звёзд'],
+    hi:['10 टुकड़ों से नायक अनलॉक करें। फिर हर 20 टुकड़ों पर एक सितारा मिलता है, अधिकतम पाँच।','मुफ़्त भर्ती','भर्ती','नायकों की सूची','प्राप्त','भर्ती के परिणाम','{hero} दल में शामिल हुआ','{hero} ने {stars} सितारे पाए'],
+    ar:['اجمع 10 شظايا لفتح بطل. بعد ذلك تمنح كل 20 شظية نجمة إضافية، حتى خمس نجوم.','تجنيد مجاني','تجنيد','قائمة الأبطال','تم الحصول عليه','نتائج التجنيد','انضم {hero} إلى الفريق','وصل {hero} إلى {stars} نجوم']
+  };
+  const recruitText = (index, values={}) => (recruitCopy[activeLocale()]||recruitCopy.en)[index].replace(/\{(\w+)\}/g,(match,key)=>values[key]??match);
   function renderTavern() {
     const owned = C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
-    $("#managementBody").innerHTML = `<section class="summon-stage"><span class="eyebrow">桃園酒肆</span><h3>煮酒招英傑</h3><p>招募可獲得武將碎片；集滿 10 片即可解鎖，已擁有武將的碎片會累積升星。</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? "免費招募" : "招募一次 · 60 元寶"}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">招募五次 · 260 元寶</button></div></section>
-      <div class="section-title"><h3>武將名冊</h3><span>${owned} / ${C.heroes.length}</span></div><div class="card-grid">${C.heroes.map((hero) => { const p = state.heroes[hero.id]; return `<article class="panel-card"><span class="quality">${hero.quality} · ${hero.troop}</span><h3>${hero.name}</h3><p>${hero.title}</p><div class="progress"><b style="width:${p.owned ? 100 : p.fragments * 10}%"></b></div><small>${p.owned ? `已獲得 · ${p.fragments} 碎片` : `${p.fragments} / 10 碎片`}</small></article>`; }).join("")}</div>`;
+    $('#managementBody').innerHTML = `<section class="summon-stage" data-runtime-localize="off"><p>${recruitText(0)}</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? recruitText(1) : `${recruitText(2)} ×1 · 60 ${copy('resourceIngots')}`}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">${recruitText(2)} ×5 · 260 ${copy('resourceIngots')}</button></div></section>
+      <div class="section-title"><h3>${recruitText(3)}</h3><span>${owned} / ${C.heroes.length}</span></div><div class="card-grid">${C.heroes.map((hero) => {
+        const p = state.heroes[hero.id], progress = p.owned ? 10 : Math.min(10, p.fragments);
+        return `<article class="panel-card tavern-hero-card" data-tavern-hero="${hero.id}"><div class="tavern-portrait">${sprites.markup('hero', hero.id, `tavern-${hero.id}`)}</div><div class="tavern-hero-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)}</p><div class="progress" role="progressbar" aria-label="${localizedValue(hero.name)} · ${copy('fragments')}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${progress}"><b style="width:${progress * 10}%"></b></div><small>${p.owned ? `${recruitText(4)} · ${p.fragments} ${copy('fragments')}` : `${p.fragments} / 10 ${copy('fragments')}`}</small></div></article>`;
+      }).join("")}</div>`;
   }
 
   function renderLaw() {
@@ -684,7 +813,7 @@
 
   function summon(count) {
     const cost = count === 5 ? 260 : state.daily.freeSummon ? 0 : 60;
-    if (state.resources.ingots < cost) return toast("元寶不足");
+    if (state.resources.ingots < cost) return toast(shopText(8));
     state.resources.ingots -= cost;
     if (count === 1) state.daily.freeSummon = false;
     const results = [];
@@ -693,12 +822,15 @@
       const amount = Math.random() < .16 ? 5 : 2;
       const p = state.heroes[hero.id];
       p.fragments += amount;
-      if (!p.owned && p.fragments >= 10) { p.owned = true; p.fragments -= 10; results.push(`${hero.name}加入`); }
-      else if (p.owned && p.fragments >= 20 && p.star < 5) { p.fragments -= 20; p.star += 1; results.push(`${hero.name}升至 ${p.star} 星`); }
-      else results.push(`${hero.name}碎片 ×${amount}`);
+      if (!p.owned && p.fragments >= 10) { p.owned = true; p.fragments -= 10; results.push(recruitText(6,{hero:localizedValue(hero.name)})); }
+      else if (p.owned && p.fragments >= 20 && p.star < 5) { p.fragments -= 20; p.star += 1; results.push(recruitText(7,{hero:localizedValue(hero.name),stars:p.star})); }
+      else results.push(`${localizedValue(hero.name)} · ${copy('fragments')} ×${amount}`);
     }
     state.stats.summons += count;
-    openModal("招募結果", `<div class="list">${results.map((r) => `<div class="list-item"><p>${r}</p></div>`).join("")}</div>`);
+    openModal(recruitText(5), `<div class="list" data-runtime-localize="off">${results.map((r) => `<div class="list-item"><p>${r}</p></div>`).join("")}</div>`, () => {
+      openManagement('tavern');
+      $('#managementBody [data-action="summon"]').focus({preventScroll:true});
+    });
     renderTavern(); tone(660, .1);
   }
 
@@ -719,15 +851,36 @@
     renderCampaign();
   }
 
-  function openModal(title, html) {
+  let modalReturnFocus = null;
+  let modalOwnsPause = false;
+  let modalOnClose = null;
+  function openModal(title, html, onClose = null) {
+    const layer = $('#modalLayer');
+    const fresh = layer.classList.contains('is-hidden');
+    if (fresh) modalReturnFocus = document.activeElement;
+    if (fresh || onClose) modalOnClose = onClose;
     closeManagement();
+    const inBattle = $('#app').dataset.scene === 'battle';
+    (inBattle ? $('#battleScene') : $('#app')).append(layer);
+    if (inBattle && !battle.pausedAt) { suspendCombat(); modalOwnsPause = true; }
     $("#modalTitle").textContent = title;
     $("#modalBody").innerHTML = html;
-    $("#modalLayer").classList.remove("is-hidden");
-    $("#modalClose").focus();
+    layer.classList.remove('is-hidden');
+    syncFrameCoverage();
+    $('#modalClose').focus({preventScroll: true});
   }
 
-  function closeModal() { $("#modalLayer").classList.add("is-hidden"); }
+  function closeModal() {
+    if ($('#modalLayer').classList.contains('is-hidden')) return;
+    $('#modalLayer').classList.add('is-hidden');
+    syncFrameCoverage();
+    if (modalOwnsPause && $('#app').dataset.scene === 'battle' && !battle.resultOpen && $('#leaveConfirm').classList.contains('is-hidden')) resumeCombat();
+    modalOwnsPause = false;
+    if (modalReturnFocus?.isConnected && !modalReturnFocus.closest('[inert],.is-hidden')) modalReturnFocus.focus({preventScroll: true});
+    modalReturnFocus = null;
+    const afterClose = modalOnClose; modalOnClose = null;
+    if (afterClose && $('#app').dataset.scene === 'battle') afterClose();
+  }
 
   function objectiveModal(entries, kind) {
     openModal(kind === "mission" ? "任務" : "成就", `<div class="list">${entries.map((entry) => {
@@ -763,11 +916,30 @@
     openModal("圖鑑", `<div class="card-grid"><article class="panel-card"><span class="quality">武將圖鑑</span><h3>${owned} / ${C.heroes.length}</h3><p>收集武將，查看品質、兵種與技能。</p></article><article class="panel-card"><span class="quality">敵軍圖鑑</span><h3>${seenEnemies} / ${C.enemies.length}</h3><p>推進關卡會揭露新兵種與 Boss。</p></article><article class="panel-card"><span class="quality">裝備圖鑑</span><h3>${new Set(state.inventory.map((item) => item.itemId)).size} / ${C.equipment.length}</h3><p>Boss、戰役與商店會掉落不同品質裝備。</p></article></div>`);
   }
 
+  // Authored shop copy, including result feedback; never rely on a runtime
+  // translator to guess text added after opening or purchasing an item.
+  const shopCopy = {
+    'zh-Hant': ['快速收益 · 10 分鐘','依目前關卡取得銅錢與材料','免費','已領取','軍糧補給','材料木箱','精良裝備箱','隨機取得一件裝備','元寶不足','購買成功'],
+    'zh-Hans': ['快速收益 · 10 分钟','按当前关卡获得铜钱与材料','免费','已领取','军粮补给','材料木箱','精良装备箱','随机获得一件装备','元宝不足','购买成功'],
+    en: ['Quick rewards · 10 minutes','Coins and materials based on your current stage','Free','Claimed','Ration supplies','Material crate','Equipment chest','Receive one random piece of equipment','Not enough ingots','Purchase complete'],
+    ja: ['即時報酬・10分','現在のステージに応じた銅銭と素材','無料','受取済み','兵糧補給','素材箱','装備箱','ランダムな装備を1個獲得','元宝が足りません','購入しました'],
+    ko: ['즉시 보상 · 10분','현재 스테이지에 따른 동전과 재료','무료','수령 완료','군량 보급','재료 상자','장비 상자','무작위 장비 1개 획득','원보가 부족합니다','구매 완료'],
+    es: ['Recompensas rápidas · 10 minutos','Monedas y materiales según la etapa actual','Gratis','Recogido','Suministros de víveres','Caja de materiales','Cofre de equipo','Recibe una pieza de equipo aleatoria','No hay suficientes lingotes','Compra completada'],
+    'pt-BR': ['Recompensas rápidas · 10 minutos','Moedas e materiais conforme a fase atual','Grátis','Resgatado','Suprimentos de provisões','Caixa de materiais','Baú de equipamento','Receba um equipamento aleatório','Lingotes insuficientes','Compra concluída'],
+    fr: ['Récompenses rapides · 10 minutes','Pièces et matériaux selon le niveau actuel','Gratuit','Récupéré','Réserve de vivres','Caisse de matériaux','Coffre d’équipement','Recevez une pièce d’équipement aléatoire','Lingots insuffisants','Achat effectué'],
+    de: ['Schnelle Belohnung · 10 Minuten','Münzen und Materialien passend zum aktuellen Abschnitt','Kostenlos','Abgeholt','Proviantnachschub','Materialkiste','Ausrüstungstruhe','Erhalte ein zufälliges Ausrüstungsteil','Nicht genügend Barren','Kauf abgeschlossen'],
+    it: ['Ricompense rapide · 10 minuti','Monete e materiali in base al livello attuale','Gratis','Riscosso','Rifornimenti di viveri','Cassa di materiali','Forziere di equipaggiamento','Ricevi un pezzo di equipaggiamento casuale','Lingotti insufficienti','Acquisto completato'],
+    ru: ['Быстрая награда · 10 минут','Монеты и материалы за текущий этап','Бесплатно','Получено','Запас провизии','Ящик материалов','Сундук снаряжения','Получите один случайный предмет снаряжения','Недостаточно слитков','Покупка завершена'],
+    hi: ['तुरंत पुरस्कार · 10 मिनट','मौजूदा चरण के अनुसार सिक्के और सामग्री','मुफ़्त','प्राप्त','राशन की आपूर्ति','सामग्री का बक्सा','उपकरण की पेटी','एक यादृच्छिक उपकरण प्राप्त करें','पर्याप्त सिल्लियाँ नहीं हैं','खरीद पूरी हुई'],
+    ar: ['مكافآت سريعة · 10 دقائق','عملات ومواد حسب المرحلة الحالية','مجانًا','تم الاستلام','إمدادات المؤن','صندوق مواد','صندوق معدات','احصل على قطعة معدات عشوائية','لا توجد سبائك كافية','اكتمل الشراء']
+  };
+  const shopText = index => (shopCopy[activeLocale()] || shopCopy.en)[index];
   function renderShop() {
-    openModal("商店", `<div class="list"><div class="list-item"><div><p>快速收益 · 10 分鐘</p><small>依目前關卡獲得掛機銅錢與材料</small></div><button data-wp-frame-action="secondary" data-shop="quick" ${!state.daily.quick ? "disabled" : ""}>${state.daily.quick ? "免費" : "已領取"}</button></div>
-      <div class="list-item"><div><p>軍糧補給</p><small>軍糧 50</small></div><button data-wp-frame-action="secondary" data-shop="food">20 元寶</button></div>
-      <div class="list-item"><div><p>材料木箱</p><small>軍法材料 20</small></div><button data-wp-frame-action="secondary" data-shop="material">35 元寶</button></div>
-      <div class="list-item"><div><p>精良裝備箱</p><small>隨機獲得一件裝備</small></div><button data-wp-frame-action="secondary" data-shop="gear">80 元寶</button></div></div>`);
+    const quantity = (value, key) => `${new Intl.NumberFormat(activeLocale()).format(value)} ${copy(key)}`;
+    openModal(copy('shop'), `<div class="list" data-runtime-localize="off"><div class="list-item"><div><p>${shopText(0)}</p><small>${shopText(1)}</small></div><button data-wp-frame-action="secondary" data-shop="quick" ${!state.daily.quick ? "disabled" : ""}>${shopText(state.daily.quick ? 2 : 3)}</button></div>
+      <div class="list-item"><div><p>${shopText(4)}</p><small>${quantity(50,'resourceFood')}</small></div><button data-wp-frame-action="secondary" data-shop="food">${quantity(20,'resourceIngots')}</button></div>
+      <div class="list-item"><div><p>${shopText(5)}</p><small>${quantity(20,'resourceMaterials')}</small></div><button data-wp-frame-action="secondary" data-shop="material">${quantity(35,'resourceIngots')}</button></div>
+      <div class="list-item"><div><p>${shopText(6)}</p><small>${shopText(7)}</small></div><button data-wp-frame-action="secondary" data-shop="gear">${quantity(80,'resourceIngots')}</button></div></div>`);
   }
 
   function renderSettings() {
@@ -821,12 +993,12 @@
       state.daily.quick = false; grant({ coins: Math.round((16 + state.stage * 4) * 600), materials: 6 + Math.floor(state.stage / 3) }); renderShop(); return;
     }
     const cost = costs[id];
-    if (!cost || state.resources.ingots < cost) return toast("元寶不足");
+    if (!cost || state.resources.ingots < cost) return toast(shopText(8));
     state.resources.ingots -= cost;
     if (id === "food") state.resources.food += 50;
     if (id === "material") state.resources.materials += 20;
     if (id === "gear") state.inventory.push({ uid: uid(), itemId: C.equipment[Math.floor(Math.random() * C.equipment.length)].id, level: 1 });
-    toast("購買成功"); updateHud(); renderShop(); save();
+    toast(shopText(9)); updateHud(); renderShop(); save();
   }
 
   function calculateOffline() {
@@ -888,7 +1060,16 @@
 
   function bind() {
     $("#startBtn").addEventListener("click", () => showScene("battle"));
-    $("#battleBack").addEventListener("click", () => showScene("main"));
+    $("#battleBack").addEventListener("click", requestBattleReturn);
+    $('#leaveContinue').addEventListener('click', () => closeBattleReturn());
+    $('#leaveMain').addEventListener('click', () => closeBattleReturn(true));
+    $('#leaveConfirm').addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeBattleReturn(); }
+      else if (event.key === 'Tab') {
+        event.preventDefault();
+        (document.activeElement === $('#leaveContinue') ? $('#leaveMain') : $('#leaveContinue')).focus();
+      }
+    });
     $("#autoBtn").addEventListener("click", () => {
       battle.auto = !battle.auto;
       $("#autoBtn").classList.toggle("is-on", battle.auto);
@@ -905,6 +1086,15 @@
     $("#closeManagement").addEventListener("click", closeManagement);
     $("#managementBody").addEventListener("click", managementAction);
     $("#modalClose").addEventListener("click", closeModal);
+    $('#modalLayer').addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeModal(); return; }
+      if (event.key !== 'Tab') return;
+      const items = [...$('#modal').querySelectorAll('button:not(:disabled),select:not(:disabled),input:not(:disabled),a[href],[tabindex="0"]')].filter(n => n.getClientRects().length && !n.closest('[inert]'));
+      if (!items.length) return;
+      const index = items.indexOf(document.activeElement);
+      event.preventDefault();
+      items[(index + (event.shiftKey ? -1 : 1) + items.length) % items.length].focus();
+    });
     $("#modalLayer").addEventListener("click", (event) => { if (event.target === $("#modalLayer")) closeModal(); });
     $("#modalBody").addEventListener("click", modalAction);
     $("#modalBody").addEventListener("change", (event) => {
@@ -929,12 +1119,25 @@
 
   function syncFrameCoverage() {
     const scene = $("#app").dataset.scene;
-    const covered = scene === "battle" && !$("#resultPanel").classList.contains("is-hidden");
+    const modalOpen = !$('#modalLayer').classList.contains('is-hidden');
+    const covered = modalOpen || (scene === "battle" && (!$("#resultPanel").classList.contains("is-hidden") || !$('#leaveConfirm').classList.contains('is-hidden')));
     sharedFrame?.activate(scene, {covered});
     $("#battleContent").inert = covered;
+    $('#mainScene').inert = scene !== 'main' || modalOpen;
+    document.querySelectorAll('.game-page-info').forEach(n => { n.inert = scene !== 'main' || modalOpen; });
   }
 
   function mountSharedFrame() {
+    $('#coachNext').setAttribute('data-wp-frame-action', 'primary');
+    const leaveDialog = document.createElement('section');
+    leaveDialog.id = 'leaveConfirm';
+    leaveDialog.className = 'leave-confirm is-hidden';
+    leaveDialog.setAttribute('role', 'dialog');
+    leaveDialog.setAttribute('aria-modal', 'true');
+    leaveDialog.setAttribute('aria-labelledby', 'leaveTitle');
+    leaveDialog.setAttribute('aria-describedby', 'leaveCopy');
+    leaveDialog.innerHTML = '<div class="leave-card"><h2 id="leaveTitle"></h2><p id="leaveCopy"></p><div class="leave-actions"><button id="leaveContinue" type="button" data-wp-frame-action="primary"></button><button id="leaveMain" type="button" data-wp-frame-action="secondary"></button></div></div>';
+    $('#battleScene').append(leaveDialog);
     // The hidden select is a locale data/action adapter, never a second panel.
     const localeSelect = document.createElement("select");
     localeSelect.id = "localeSelect";

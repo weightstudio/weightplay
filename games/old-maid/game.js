@@ -34,6 +34,21 @@
     hi: "आपके पत्ते",
     ar: "يدك",
   };
+  const mainProgressCopy = {
+    en: ["Blind-draw pairs", "Clear pairs and avoid the Old Maid."],
+    "zh-Hant": ["盲抽配對", "消除配對，別讓鬼牌留在手上。"],
+    "zh-Hans": ["盲抽配对", "消除配对，别让鬼牌留在手上。"],
+    ja: ["裏引きのペア", "ペアを消し、ババを残さない。"],
+    ko: ["맹목적 뽑기 짝", "짝을 없애고 버바를 남기지 마세요."],
+    es: ["Parejas a ciegas", "Elimina parejas y evita la vieja solterona."],
+    "pt-BR": ["Pares às cegas", "Elimine os pares e evite ficar com o Mico."],
+    fr: ["Paires à l’aveugle", "Éliminez les paires et évitez le Pouilleux."],
+    de: ["Verdeckte Paare", "Entferne Paare und vermeide den Schwarzen Peter."],
+    it: ["Coppie alla cieca", "Elimina le coppie ed evita di restare con l’Asino."],
+    ru: ["Пары вслепую", "Убирайте пары и не оставляйте Старую деву."],
+    hi: ["छिपी जोड़ियाँ", "जोड़ियाँ हटाएँ और ओल्ड मेड से बचें।"],
+    ar: ["أزواج السحب الأعمى", "أزل الأزواج وتجنب الاحتفاظ بالعانس."],
+  };
   const syncHandLabel = () => {
     const label = document.querySelector(".card-game-player-header strong");
     if (!label) return;
@@ -51,10 +66,13 @@
     progress.dataset.wpMainProgress = "true";
     progress.setAttribute("role", "status");
     progress.setAttribute("aria-live", "polite");
+    const [progressLabel, progressText] = mainProgressCopy[document.documentElement.lang] || mainProgressCopy.en;
     const label = document.createElement("strong");
-    label.textContent = "Blind-draw pairs";
+    label.textContent = progressLabel;
+    label.setAttribute("data-runtime-localize", "off");
     const copy = document.createElement("span");
-    copy.textContent = "Clear pairs and avoid the Old Maid.";
+    copy.textContent = progressText;
+    copy.setAttribute("data-runtime-localize", "off");
     progress.append(label, copy);
     mainCopy.insertBefore(progress, mainCopy.querySelector(".main-actions") || null);
   }

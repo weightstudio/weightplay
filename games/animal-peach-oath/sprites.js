@@ -33,6 +33,9 @@
     },
     enemy: {
       wolf: { source: "enemy-wolf-block-v1.png", width: 1024, height: 1536 },
+      boar: { source: "enemy-boar-block-v1.png", width: 1024, height: 1536 },
+      cobra: { source: "enemy-cobra-block-v1.png", width: 1024, height: 1536 },
+      buffalo: { source: "enemy-buffalo-block-v1.png", width: 1024, height: 1536 },
     },
   };
 
