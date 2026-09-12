@@ -378,12 +378,21 @@ button.primary:focus-visible {
   position: relative;
 }
 
-body.wp-shell-battle-active #generalReserve {
+body:is(.wp-shell-battle-active, [data-screen="battle"]) #generalReserve {
+  position: fixed;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  z-index: 49;
   display: block;
   width: min(100%, 920px);
+  min-width: 0;
+  max-width: none;
   height: 56px;
   min-height: 56px;
-  margin: 0 auto;
+  max-height: 56px;
+  margin: 0;
+  transform: translateX(-50%);
   background: rgba(9, 20, 16, .9);
   pointer-events: none;
 }

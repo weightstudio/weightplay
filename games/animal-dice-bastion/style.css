@@ -191,7 +191,11 @@
 #gameFrame .battle-live.is-settled{visibility:hidden;pointer-events:none}
 #gameFrame .modal-layer{grid-area:1/1/-1/-1}
 #gameFrame .battle-layout{grid-template-rows:minmax(0,38%) minmax(0,62%);background:none}
-#gameFrame .command-panel{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 216px;gap:6px}
+#gameFrame .command-panel{container-type:size;grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) 216px;gap:6px}
+/* Fit the 5x3 board to its allocated track, including the fixed command dock.
+   A width-only aspect ratio can overflow both neighbouring rows on phones. */
+#gameFrame .guardian-board{width:min(100%,calc((100cqh - 222px) * 5 / 3));height:auto;max-height:none;aspect-ratio:5/3;justify-self:center;align-self:center}
+#gameFrame .rune-slot{aspect-ratio:auto}
 #gameFrame .command-stack{display:grid;grid-template-columns:1fr;grid-template-rows:44px 122px 30px;gap:4px;height:auto;padding:4px;overflow:visible}
 #gameFrame .command-head{display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;gap:8px;min-width:0}
 #gameFrame .command-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:58px 58px;gap:6px 8px;min-width:0}
@@ -206,6 +210,7 @@ html[dir="rtl"] #gameFrame :is(.command-cell button,.command-head .charge-meter>
 @media(orientation:landscape){
   #gameFrame .battle-layout{grid-template-columns:34% minmax(0,66%);grid-template-rows:minmax(0,1fr)}
   #gameFrame .command-panel{grid-template-columns:minmax(0,1fr) minmax(240px,52%);grid-template-rows:minmax(0,1fr)}
+  #gameFrame .guardian-board{width:min(100%,calc(100cqh * 5 / 3))}
 }
 .dialog-card,.result-card{border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);border-color:var(--wp-ui-line);color:var(--wp-ui-text)}
 @media(max-height:520px) and (orientation:landscape){

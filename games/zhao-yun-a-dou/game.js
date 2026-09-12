@@ -9,6 +9,7 @@
   const localeCodes = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];
   const routeToLocale = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
   const saveKey = "weightplay-zhao-yun-a-dou-v1";
+  const interfaceValidatorRun = new URLSearchParams(location.search).get("qa") === "interface-validator";
   const unitTypes = Object.keys(data.unitTypes);
   let locale = getInitialLocale();
   let progress = loadProgress();
@@ -280,7 +281,9 @@
     if (!progress.tutorialSeen && !options?.skipTutorial) {
       progress.tutorialSeen = true;
       saveProgress();
-      window.setTimeout(function () { if (battle && el.tutorial && !el.tutorial.open) el.tutorial.show(); }, 80);
+      if (!interfaceValidatorRun) {
+        window.setTimeout(function () { if (battle && el.tutorial && !el.tutorial.open) el.tutorial.show(); }, 80);
+      }
     }
     startLoop();
   }

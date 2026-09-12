@@ -66,6 +66,12 @@
   if (!root) throw new Error('ZHAO_GUIDE_SURFACE_MISSING');
   root.id = 'mainGuide';
   root.dataset.wpGameGuide = '';
+  // Interface 7's shared shell uses a crisp radius, while the public Guide
+  // remains a readable content surface with rounded panel and section edges.
+  // Inline priorities are intentional: the shared stylesheet protects its
+  // shell radius with !important, so the game-owned Guide contract must win
+  // at the rendered surface itself.
+  root.style.setProperty('border-radius', '18px', 'important');
   const localeSelect = document.getElementById('locale');
   const node = (tag, text, className) => {
     const el = document.createElement(tag);
@@ -85,11 +91,13 @@
     const grid = node('div', '', 'game-info-sections');
     sections.forEach((lines, i) => {
       const article = node('article', '', 'game-info-section');
+      article.style.setProperty('border-radius', '16px', 'important');
       article.append(node('h3', labels[locale][i]));
       lines.forEach(line => article.append(node('p', line)));
       grid.append(article);
     });
     const faq = node('article', '', 'game-info-section');
+    faq.style.setProperty('border-radius', '16px', 'important');
     faq.append(node('h3', labels[locale][6]));
     guide.faq.forEach(([question, answer]) => {
       const detail = node('details');

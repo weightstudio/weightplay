@@ -26,7 +26,7 @@
   <meta name="theme-color" content="#18231f">
   <title>تشاو يون وآ دو: دفاع الحبر | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260912-zhao-block-frame-v24">
+  <link rel="stylesheet" href="style.css?v=20260912-zhao-block-frame-v25">
   <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -79,11 +79,11 @@
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">تشاو يون وآ دو: دفاع الحبر</h1>
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
+      <strong class="wp-shell-main-title wp-standard-main-title" data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
     <section class="main-content">
-      <img data-wp-frame-poster data-t-aria="posterAlt" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="شعار WeightPlay" width="1254" height="1254">
+      <img class="main-poster wp-standard-main-poster" data-wp-frame-poster data-t-aria="posterAlt" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="شعار WeightPlay" width="1254" height="1254">
       <div class="hero-copy" data-wp-frame-copy>
         <p class="main-summary" data-wp-frame-summary data-t="summary">Recruit soldiers, merge matching units and defend all three lanes.</p>
         <p id="mainProgress" data-wp-frame-progress aria-live="polite"></p>
@@ -116,7 +116,7 @@
     </div>
   </section>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-stage-art="/assets/interface7-redrawn/zhao-yun-a-dou.webp" style="--wp-stage-art: url('/assets/interface7-redrawn/zhao-yun-a-dou.webp');" data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button>
       <h2 data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</h2>
@@ -129,9 +129,9 @@
     </section>
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-t-aria="stageList" aria-label="Stage list"></section>
     </div>
-    <nav data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
+    <nav class="stage-tabs" role="tablist" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
       <span aria-hidden="true"></span>
-      <button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true" data-t="stages">Stages</button>
+      <button type="button" role="tab" data-wp-frame-action="tab" aria-current="page" aria-pressed="true" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
   </main>
@@ -208,20 +208,20 @@
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
-  <script src="locales.js?v=20260912-zhao-block-frame-v24"></script>
+  <script src="locales.js?v=20260912-zhao-block-frame-v25"></script>
   <script src="guide-copy.js?v=20260912-block-v24"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
   <script src="frame.js?v=20260912-block-v24"></script>
-  <script src="game.js?v=20260912-zhao-block-frame-v24"></script>
-  <script src="analytics-ownership.js?v=20260912-zhao-block-frame-v24"></script>
+  <script src="game.js?v=20260912-zhao-block-frame-v25"></script>
+  <script src="analytics-ownership.js?v=20260912-zhao-block-frame-v25"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
-  <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
   <script src="public-guide.js?v=20260912-block-v24"></script>
 </body>
 </html>

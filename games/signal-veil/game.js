@@ -6,7 +6,7 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v13";
+  const GAME_VERSION = "v15";
   const INTERFACE_VERSION = 7;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
@@ -109,7 +109,7 @@
   atlas.player = new Image();
   atlas.player.src = "/assets/signal-veil-fox-block-v13.webp";
   atlas.items.src = "/assets/signal-veil-items-block-v13-final.webp";
-  atlas.npcs.src = "/assets/signal-veil-npcs-block-v13-final.webp";
+  atlas.npcs.src = "/assets/signal-veil-npcs-block-v15-clean.webp";
   atlas.world.src = "/assets/signal-veil-ground-block-v13.webp";
   atlas.objects = new Image();
   atlas.objects.src = "/assets/signal-veil-objects-block-v13-final.webp";
@@ -627,7 +627,14 @@
     return {scale,ox:(canvas.width-drawW)/2,oy:(canvas.height-drawH)/2};
   }
   function camera() {
-    return {x:clamp(state.x-BASE_VIEW.width/2,0,WORLD.width-BASE_VIEW.width),y:clamp(state.y-BASE_VIEW.height/2,0,WORLD.height-BASE_VIEW.height)};
+    // Cover fitting crops the reference view on narrow/tall play surfaces.
+    // Clamp the *visible* world rectangle, not the hidden 960x540 envelope,
+    // otherwise a player near a map edge disappears behind the crop.
+    const tr=viewTransform(),visibleW=canvas.width/tr.scale,visibleH=canvas.height/tr.scale;
+    return {
+      x:clamp(state.x-visibleW/2,0,WORLD.width-visibleW)+tr.ox/tr.scale,
+      y:clamp(state.y-visibleH/2,0,WORLD.height-visibleH)+tr.oy/tr.scale,
+    };
   }
   function drawAtlas(image,index,columns,rows,x,y,w,h,alpha=1) {
     if(!image.complete||!image.naturalWidth)return;
