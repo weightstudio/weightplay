@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v50" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260909-landscape-poster-v52" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Escudo de Mel | WeightPlay" />
     <meta property="og:description" content="Desenhe e conserte linhas de néctar durante ondas de abelhas para proteger Pip em 30 fases originais." />
@@ -55,6 +55,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,7 +77,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip protegido por uma linha brilhante enquanto abelhas se aproximam" alt="Imagem do jogo Escudo de Mel" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip protegido por uma linha brilhante enquanto abelhas se aproximam" alt="Imagem do jogo Escudo de Mel" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Resgates do Prado Luz do Trevo</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Escudo de Mel</h1>
@@ -99,8 +100,8 @@
           <li data-i18n="how2">As abelhas esperam enquanto você desenha. Soltar a primeira linha válida inicia a onda; depois, continue reforçando.</li>
           <li data-i18n="how3">Resista até o tempo zerar sem deixar uma abelha tocar Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regras e resultados</h3><p data-i18n="rulesText">As linhas não quebram. Se houver rota, as abelhas a usam primeiro; sem rota, empurram, giram e flexionam a parede. Um círculo em uma só pedra é apenas um pivô e o enxame o descasca ao redor dela. Só uma linha presa a dois pontos separados fica dourada e fixa.</p><p data-i18n="guideExtra">Comece observando o prado antes de desenhar. Pip fica mais seguro quando a barreira cria uma rota curta que as abelhas não conseguem contornar, mas uma parede longa gasta mais néctar e oferece mais superfície para empurrar. Deixe espaço ao redor do filhote para que um reparo não prenda sua próxima linha. Se a barreira piscar em vermelho, repare primeiro o trecho fraco. A primeira linha válida inicia a onda, então você pode planejar enquanto o prado está calmo. Quando as abelhas se moverem, observe a rota delas e não apenas a linha: uma defesa aparentemente segura pode deixar um canto aberto atrás de Pip. Dois apoios separados no terreno são mais fortes que um único laço. Uma pedra permite que a parede gire ou descasque; prender a mesma linha em dois pontos distintos faz ela ficar dourada e firme. Se as abelhas empurrarem uma parede solta, espere o vão que tentam abrir e faça um gancho curto. O néctar é limitado, e reparos eficientes rendem mais estrelas que outro círculo grande. Antes de cada capítulo, releia a dica: novas colmeias, rotas divididas, rajadas, brechas frágeis e ondas mistas mudam o desenho mais curto. Depois de vencer, a próxima rota é desbloqueada e suas melhores estrelas ficam neste navegador. Falhar não apaga dados; volte às fases, observe a abertura vermelha e tente outra forma. Você também pode repetir rotas para comparar estrelas e aprender qual lado do prado oferece menos escolhas às abelhas.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Trinta rotas do prado</h3><p data-i18n="progressText">Seis capítulos adicionam colmeias, ataques divididos, âncoras de pedra, rajadas, brechas frágeis e ondas combinadas.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regras e resultados</h3><p data-i18n="rulesText">As linhas não quebram. Se houver rota, as abelhas a usam primeiro; sem rota, empurram, giram e flexionam a parede. Um círculo em uma só pedra é apenas um pivô e o enxame o descasca ao redor dela. Só uma linha presa a dois pontos separados fica dourada e fixa.</p><p data-i18n="guideExtra">Antes de desenhar, localize a colmeia, Pip e dois apoios separados no terreno. A primeira linha válida solta as abelhas; reserve néctar para fechar uma passagem com uma linha curta. Se tocarem em Pip, tente outra forma.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Rotas do prado</h3><p data-i18n="progressText">As próximas rotas mudam as colmeias, o terreno e o vento. Cada vitória libera a rota seguinte.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Dicas práticas</h3><p data-i18n="tipsText">Uma ponte reta e um círculo em uma pedra continuam soltos. Use duas voltas, ganchos opostos ou uma fenda real do terreno.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Progresso e privacidade</h3><p data-i18n="saveText">Fases e melhores estrelas ficam apenas neste navegador. Nenhuma conta ou informação pessoal é necessária.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">Perguntas frequentes</h3><dl>
@@ -117,7 +118,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Voltar ao início">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Escudo de Mel</strong><span id="stageSummary"></span></div>
@@ -181,6 +182,7 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Fechar">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Desenhe, fixe e resista</h2><ol>
@@ -192,15 +194,16 @@
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260909-landscape-poster-v52"></script><script src="game.js?v=20260909-landscape-poster-v52"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

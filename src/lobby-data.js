@@ -4478,19 +4478,18 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.games.push(animalFireflyFolioPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalFireflyFolioPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalFireflyFolioPlanned.id);
 
-// Signal Scout is a planned General identity for a bounded signal-decoding
-// prototype. Keep the card Coming Soon until art, Tester, Reviewer, release,
-// and owner-opening gates are complete.
+// Signal Scout is a public General game after exact Tester, Gameplay Review,
+// art, Director, and release gates completed for v9/I6.
 const animalSignalScoutPlanned = {
   id: "animal-signal-scout",
   title: marketFiveLocalized(["Signal Scout", "訊號偵察員", "信号侦察员", "シグナル・スカウト", "신호 정찰대", "Explorador de señales", "Batedor de Sinais", "Éclaireur des signaux", "Signal-Scout", "Esploratore dei segnali", "Разведчик сигналов", "सिग्नल स्काउट", "كشّاف الإشارات"]),
-  status: "planned",
-  statusText: { ...ownerPreviewStatusText },
+  status: "playable",
+  statusText: { en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب" },
   type: marketFiveLocalized(["Signal Decoding Puzzle", "訊號解碼益智", "信号解码益智", "信号解読パズル", "신호 해독 퍼즐", "Puzzle de descifrado de señales", "Puzzle de decifração de sinais", "Puzzle de décodage de signaux", "Signal-Entschlüsselungspuzzle", "Puzzle di decodifica segnali", "Пазл расшифровки сигналов", "सिग्नल डिकोडिंग पहेली", "لغز فك الإشارات"]),
   description: marketFiveLocalized(["Read three scout notes, match each animal to its signal colour, and copy the visible patrol order.", "讀懂三張偵察筆記，把動物配對到訊號顏色，再照著可見巡邏順序點選。", "读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。", "3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。", "세 정찰 기록을 읽고 동물과 신호 색을 맞춘 뒤 보이는 순서대로 누르세요.", "Lee tres notas, relaciona cada animal con su color y copia el orden de patrulla.", "Leia três notas, associe cada animal à sua cor e copie a ordem da patrulha.", "Lis trois notes, associe chaque animal à sa couleur puis copie l’ordre de patrouille.", "Lies drei Notizen, ordne jedem Tier seine Signalfarbe zu und kopiere die sichtbare Reihenfolge.", "Leggi tre note, abbina ogni animale al suo colore e copia l’ordine del giro.", "Прочитайте три заметки, сопоставьте зверей с цветами и повторите порядок патруля.", "तीन नोट पढ़ें, हर जानवर को संकेत रंग से मिलाएँ और गश्त का क्रम दोहराएँ।", "اقرأ ثلاث ملاحظات وطابق كل حيوان مع لون إشارته ثم انسخ ترتيب الدورية."]),
   meta: marketFiveLocalized([["3 Patrol Notes", "Match + Copy", "Calm Retry"], ["3 張巡邏筆記", "配對＋照抄", "平靜重試"], ["3 张巡逻笔记", "配对＋照抄", "平静重试"], ["3つの巡回メモ", "合わせてまねる", "穏やかな再挑戦"], ["정찰 기록 3개", "맞추고 따라하기", "차분한 재시도"], ["3 notas", "Relaciona y copia", "Reintento tranquilo"], ["3 notas", "Associe e copie", "Nova tentativa calma"], ["3 notes", "Associer et copier", "Reprise sereine"], ["3 Notizen", "Zuordnen + Kopieren", "Ruhiger Versuch"], ["3 note", "Abbina e copia", "Riprova calma"], ["3 заметки", "Сопоставь и повтори", "Спокойный повтор"], ["3 नोट", "मिलाएँ और दोहराएँ", "शांत पुनः प्रयास"], ["3 ملاحظات", "طابق وانسخ", "محاولة هادئة"]]),
   categories: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"], skills: ["Observation", "Working Memory", "Focus"], ages: ["6", "family"], ageLabel: marketFiveLocalized(Array(13).fill("6+")),
-  href: "games/animal-signal-scout/", internalTrial: "index.html?trial=1", art: { kind: "image", background: "assets/lobby-posters/animal-signal-scout-square-v1.webp", hideHero: true },
+  href: "games/animal-signal-scout/", art: { kind: "image", background: "assets/lobby-posters/animal-signal-scout-square-v1.webp", hideHero: true },
 };
 for (const field of ["title", "type", "description", "meta", "statusText", "ageLabel"]) Object.defineProperty(animalSignalScoutPlanned[field], "__localizedExact", { value: true, enumerable: false });
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalSignalScoutPlanned.id)) window.WONDER_LOBBY.games.push(animalSignalScoutPlanned);

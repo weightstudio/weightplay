@@ -157,6 +157,7 @@ WeightPlay covers these game and content clusters:
 - Animal Rift Salvage: https://weightplay.com/games/animal-rift-salvage/
 - Animal Skyport Dispatch: https://weightplay.com/games/animal-skyport-dispatch/
 - Weather Watch: https://weightplay.com/games/animal-weather-watch/
+- Signal Scout: https://weightplay.com/games/animal-signal-scout/
 ## Age And Skill Positioning
 
 WeightPlay uses age-aware and skill-aware game discovery.

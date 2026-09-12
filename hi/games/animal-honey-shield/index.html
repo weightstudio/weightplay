@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v50" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260909-landscape-poster-v52" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="हनी शील्ड | WeightPlay" />
     <meta property="og:description" content="मधुमक्खी लहरों के दौरान नेक्टर रेखाएँ बनाएँ और सुधारें, फिर 30 चरणों में पिप को बचाएँ।" />
@@ -55,6 +55,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,7 +77,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="मधुमक्खियों के पास आने पर चमकती रेखा से सुरक्षित पिप" alt="हनी शील्ड game artwork" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="मधुमक्खियों के पास आने पर चमकती रेखा से सुरक्षित पिप" alt="हनी शील्ड game artwork" />
         <div class="main-copy">
           <small data-i18n="eyebrow">क्लोवरलाइट मैदान बचाव पहेलियाँ</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">हनी शील्ड</h1>
@@ -99,8 +100,8 @@
           <li data-i18n="how2">मधुमक्खियाँ आपके चित्र पूरा करने तक रुकती हैं। पहली सही रेखा छोड़ते ही लहर शुरू होती है; बाद में उसे मजबूत कर सकते हैं।</li>
           <li data-i18n="how3">किसी मधुमक्खी को पिप तक पहुँचने दिए बिना समय शून्य होने तक बचाएँ।</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">नियम और परिणाम</h3><p data-i18n="rulesText">रेखाएँ नहीं टूटतीं। रास्ता खुला हो तो मधुमक्खियाँ पहले उसी से जाती हैं; रास्ता बंद हो तो ढीली दीवार को धकेलती, मोड़ती और झुकाती हैं। एक पत्थर का घेरा केवल धुरी है और झुंड उसे पत्थर के चारों ओर कस देता है। दो अलग भू-बिंदुओं पर फँसी एक ही रेखा ही सुनहरी होकर टिकती है।</p><p data-i18n="guideExtra">रेखा बनाने से पहले मैदान को ध्यान से देखें। पिप तब अधिक सुरक्षित रहता है जब बाधा ऐसा छोटा रास्ता बनाए जिसे मधुमक्खियाँ आसानी से घेरकर पार न कर सकें, लेकिन लंबी दीवार अधिक नेक्टर खर्च करती है और झुंड को धक्का देने के लिए अधिक सतह देती है। पिल्ले के चारों ओर थोड़ी जगह छोड़ें ताकि मरम्मत आपकी अगली रेखा को न फँसाए। बाधा लाल चमके तो पहले उसी कमजोर हिस्से को ठीक करें। पहली सही रेखा लहर शुरू करती है, इसलिए शांत मैदान में योजना बना लें। मधुमक्खियाँ चलने लगें तो केवल रेखा नहीं, उनका रास्ता देखें: पिप के पीछे कोई खुला कोना बच सकता है। भूभाग के दो अलग संपर्क एक ही घेराव से मजबूत होते हैं। एक पत्थर पर दीवार घूम या खिसक सकती है; उसी रेखा को दो अलग बिंदुओं से जोड़ने पर वह सुनहरी और स्थिर होती है। ढीली दीवार को मधुमक्खियाँ धकेलें तो उस खुली जगह को देखें जिसे वे बनाना चाहती हैं और छोटा हुक जोड़ें। नेक्टर सीमित है, इसलिए कुशल मरम्मत बड़े दूसरे घेरे से अधिक सितारे दे सकती है। हर अध्याय से पहले संकेत पढ़ें: नए छत्ते, बँटे रास्ते, झोंके, नाज़ुक खाली जगहें और मिली-जुली लहरें सबसे छोटी सुरक्षित रेखा बदल देती हैं। जीत के बाद अगला रास्ता खुलता है और आपके अच्छे सितारे इसी ब्राउज़र में रहते हैं। हारने से डेटा नहीं मिटता; चरणों पर लौटें, लाल खुली जगह देखें और अलग आकार आज़माएँ। पुराने रास्ते दोहराकर सितारों की तुलना करें और जानें कि मैदान का कौन सा किनारा मधुमक्खियों को कम विकल्प देता है।</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">मैदान के 30 रास्ते</h3><p data-i18n="progressText">छह अध्यायों में अतिरिक्त छत्ते, दो दिशाएँ, पत्थर के सहारे, हवा, कमजोर खाली जगह और मिश्रित लहरें आती हैं।</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">नियम और परिणाम</h3><p data-i18n="rulesText">रेखाएँ नहीं टूटतीं। रास्ता खुला हो तो मधुमक्खियाँ पहले उसी से जाती हैं; रास्ता बंद हो तो ढीली दीवार को धकेलती, मोड़ती और झुकाती हैं। एक पत्थर का घेरा केवल धुरी है और झुंड उसे पत्थर के चारों ओर कस देता है। दो अलग भू-बिंदुओं पर फँसी एक ही रेखा ही सुनहरी होकर टिकती है।</p><p data-i18n="guideExtra">रेखा बनाने से पहले छत्ता, पिप और भूभाग के दो अलग सहारे खोजें। पहली मान्य रेखा से मधुमक्खियाँ चल पड़ती हैं; बचा हुआ नेक्टर छोटी रेखा से रास्ता बंद करने के काम आएगा। पिप को छू लिया जाए तो दूसरे आकार से फिर कोशिश करें।</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">मैदान के रास्ते</h3><p data-i18n="progressText">आगे के रास्तों में छत्तों की जगह, भूभाग और हवा बदलती है। हर जीत अगला रास्ता खोलती है।</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">उपयोगी सुझाव</h3><p data-i18n="tipsText">दो पत्थरों के बीच सीधी रेखा और एक पत्थर का घेरा दोनों ढीले हैं। दो लपेट, उल्टे हुक या असली भू-खाँचा उपयोग करें।</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">सेव और गोपनीयता</h3><p data-i18n="saveText">खुले चरण और सर्वश्रेष्ठ सितारे केवल इस ब्राउज़र में रहते हैं। खाते या निजी जानकारी की जरूरत नहीं है।</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">सामान्य प्रश्न</h3><dl>
@@ -117,7 +118,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="मुख्य स्क्रीन पर">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">हनी शील्ड</strong><span id="stageSummary"></span></div>
@@ -181,6 +182,7 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="बंद करें">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">बनाएँ, अटकाएँ, बचाएँ</h2><ol>
@@ -192,15 +194,16 @@
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260909-landscape-poster-v52"></script><script src="game.js?v=20260909-landscape-poster-v52"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

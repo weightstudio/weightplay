@@ -761,6 +761,18 @@
         [
           "What can I do after a failed result?",
           "After victory, choose Next. After defeat, strengthen the squad and retry."
+        ],
+        [
+          "How many enemy waves are in a stage?",
+          "Every stage has five enemy waves before its result."
+        ],
+        [
+          "What should I upgrade after a loss?",
+          "Change one deliberate choice at a time: strengthen a hero, adjust equipment, or revise the squad, then use Retry to compare the result."
+        ],
+        [
+          "Is progress saved online?",
+          "No. Stage unlocks, heroes, progress, and preferences stay only in this browser; clearing site data can remove the local campaign."
         ]
       ]
     }),
@@ -810,6 +822,18 @@
         [
           "失敗後可以做什麼？",
           "勝利後選下一關；失敗時先強化隊伍，再重新挑戰。"
+        ],
+        [
+          "每個關卡有幾波敵人？",
+          "每個關卡在結果畫面前都會經過五波敵人。"
+        ],
+        [
+          "失敗後應該升級什麼？",
+          "一次只改變一個明確選擇：強化武將、調整裝備或修改隊伍，再用重試比較結果。"
+        ],
+        [
+          "進度會線上保存嗎？",
+          "不會。關卡解鎖、武將、進度與偏好只保存在這個瀏覽器；清除網站資料可能刪除本機戰役。"
         ]
       ]
     }),
@@ -859,6 +883,18 @@
         [
           "失败后可以做什么？",
           "胜利后选下一关；失败时先强化队伍，再重新挑战。"
+        ],
+        [
+          "每个关卡有几波敌人？",
+          "每个关卡在结果画面前都会经过五波敌人。"
+        ],
+        [
+          "失败后应该升级什么？",
+          "一次只改变一个明确选择：强化武将、调整装备或修改队伍，再用重试比较结果。"
+        ],
+        [
+          "进度会在线保存吗？",
+          "不会。关卡解锁、武将、进度和偏好只保存在此浏览器；清除网站数据可能删除本地战役。"
         ]
       ]
     }),
@@ -908,6 +944,18 @@
         [
           "失敗したら何をしますか？",
           "勝利したら次のステージへ。負けたら部隊を強化して再挑戦します。"
+        ],
+        [
+          "1ステージに敵ウェーブはいくつありますか？",
+          "各ステージは結果画面の前に5つの敵ウェーブを進みます。"
+        ],
+        [
+          "負けた後は何を強化しますか？",
+          "一度に一つだけ、英雄の強化、装備、部隊編成を変え、Retryで結果を比べます。"
+        ],
+        [
+          "進行状況はオンラインに保存されますか？",
+          "いいえ。ステージ解放、英雄、進行、設定はこのブラウザーだけに保存され、サイトデータを消すと失われることがあります。"
         ]
       ]
     }),
@@ -957,6 +1005,18 @@
         [
           "실패하면 무엇을 하나요?",
           "승리하면 다음 스테이지로 이동하세요. 패배하면 부대를 강화한 뒤 재도전하세요."
+        ],
+        [
+          "스테이지에 적 웨이브가 몇 개 있나요?",
+          "각 스테이지는 결과 화면 전에 적 다섯 웨이브를 진행합니다."
+        ],
+        [
+          "실패한 뒤 무엇을 강화하나요?",
+          "한 번에 하나만 바꾸세요. 영웅 강화, 장비, 부대 편성 중 하나를 조정한 뒤 Retry로 결과를 비교하세요."
+        ],
+        [
+          "진행 상황이 온라인에 저장되나요?",
+          "아니요. 스테이지 해금, 영웅, 진행과 설정은 이 브라우저에만 저장되며 사이트 데이터를 지우면 사라질 수 있습니다."
         ]
       ]
     }),
@@ -1006,6 +1066,18 @@
         [
           "¿Qué ocurre tras fallar?",
           "Tras ganar, pasa a la siguiente fase. Si pierdes, refuerza el escuadrón y vuelve a intentarlo."
+        ],
+        [
+          "¿Cuántas oleadas tiene una fase?",
+          "Cada fase tiene cinco oleadas antes de mostrar el resultado."
+        ],
+        [
+          "¿Qué debo mejorar después de perder?",
+          "Cambia una sola decisión: mejora un héroe, ajusta el equipo o revisa la formación, y usa Reintentar para comparar el resultado."
+        ],
+        [
+          "¿El progreso se guarda en línea?",
+          "No. Las fases desbloqueadas, héroes, progreso y preferencias se guardan solo en este navegador; borrar los datos del sitio puede eliminar la campaña local."
         ]
       ]
     }),
@@ -1055,6 +1127,18 @@
         [
           "O que faço depois de perder?",
           "Após vencer, avance para a próxima fase. Se perder, fortaleça o esquadrão e tente novamente."
+        ],
+        [
+          "Quantas ondas há em uma fase?",
+          "Cada fase tem cinco ondas de inimigos antes de mostrar o resultado."
+        ],
+        [
+          "O que devo melhorar depois de perder?",
+          "Mude uma decisão por vez: melhore um herói, ajuste o equipamento ou revise o esquadrão, e use Tentar novamente para comparar o resultado."
+        ],
+        [
+          "O progresso é salvo online?",
+          "Não. Fases liberadas, heróis, progresso e preferências ficam apenas neste navegador; limpar os dados do site pode remover a campanha local."
         ]
       ]
     }),
@@ -1104,6 +1188,18 @@
         [
           "Que faire après un échec ?",
           "Après une victoire, passez à l’étape suivante. Après une défaite, renforcez l’escouade et réessayez."
+        ],
+        [
+          "Combien de vagues compte une étape ?",
+          "Chaque étape comporte cinq vagues d’ennemis avant l’affichage du résultat."
+        ],
+        [
+          "Que dois-je améliorer après une défaite ?",
+          "Ne changez qu’une décision : améliorez un héros, ajustez l’équipement ou revoyez l’escouade, puis utilisez Réessayer pour comparer le résultat."
+        ],
+        [
+          "La progression est-elle enregistrée en ligne ?",
+          "Non. Les étapes débloquées, les héros, la progression et les préférences restent uniquement dans ce navigateur ; effacer les données du site peut supprimer la campagne locale."
         ]
       ]
     }),
@@ -1153,6 +1249,18 @@
         [
           "Was passiert nach einer Niederlage?",
           "Nach einem Sieg geht es zur nächsten Stufe. Nach einer Niederlage stärkst du den Trupp und versuchst es erneut."
+        ],
+        [
+          "Wie viele Wellen hat eine Stufe?",
+          "Jede Stufe umfasst fünf Gegnerwellen, bevor das Ergebnis erscheint."
+        ],
+        [
+          "Was sollte ich nach einer Niederlage verbessern?",
+          "Ändere jeweils nur eine Entscheidung: verbessere einen Helden, passe die Ausrüstung an oder überarbeite das Team und vergleiche dann mit Erneut versuchen das Ergebnis."
+        ],
+        [
+          "Wird der Fortschritt online gespeichert?",
+          "Nein. Freigeschaltete Stufen, Helden, Fortschritt und Einstellungen bleiben nur in diesem Browser; das Löschen der Websitedaten kann die lokale Kampagne entfernen."
         ]
       ]
     }),
@@ -1202,6 +1310,18 @@
         [
           "Cosa posso fare dopo una sconfitta?",
           "Dopo una vittoria, passa al livello successivo. Se perdi, rafforza la squadra e riprova."
+        ],
+        [
+          "Quante ondate ci sono in una fase?",
+          "Ogni fase comprende cinque ondate nemiche prima di mostrare il risultato."
+        ],
+        [
+          "Cosa dovrei migliorare dopo una sconfitta?",
+          "Cambia una sola decisione alla volta: potenzia un eroe, regola l’equipaggiamento o rivedi la squadra, poi usa Riprova per confrontare il risultato."
+        ],
+        [
+          "I progressi vengono salvati online?",
+          "No. Fasi sbloccate, eroi, progressi e preferenze restano solo in questo browser; cancellare i dati del sito può rimuovere la campagna locale."
         ]
       ]
     }),
@@ -1251,6 +1371,18 @@
         [
           "Что делать после поражения?",
           "После победы переходите дальше. После поражения усильте отряд и повторите попытку."
+        ],
+        [
+          "Сколько волн врагов в этапе?",
+          "В каждом этапе пять волн врагов, после чего появляется результат."
+        ],
+        [
+          "Что улучшать после поражения?",
+          "Меняйте только одно решение за раз: улучшите героя, настройте снаряжение или состав отряда, затем нажмите «Повторить», чтобы сравнить результат."
+        ],
+        [
+          "Сохраняется ли прогресс онлайн?",
+          "Нет. Открытые этапы, герои, прогресс и настройки хранятся только в этом браузере; очистка данных сайта может удалить локальную кампанию."
         ]
       ]
     }),
@@ -1300,6 +1432,18 @@
         [
           "हारने के बाद क्या करें?",
           "जीतने पर अगले चरण में जाएँ। हारने पर दल को मजबूत करके दोबारा कोशिश करें।"
+        ],
+        [
+          "एक चरण में कितनी दुश्मन लहरें होती हैं?",
+          "हर चरण में परिणाम दिखने से पहले दुश्मनों की पाँच लहरें होती हैं।"
+        ],
+        [
+          "हार के बाद मुझे क्या सुधारना चाहिए?",
+          "एक बार में एक ही निर्णय बदलें: किसी नायक को मजबूत करें, उपकरण बदलें या दल की रचना सुधारें, फिर परिणाम की तुलना के लिए Retry करें।"
+        ],
+        [
+          "क्या प्रगति ऑनलाइन सहेजी जाती है?",
+          "नहीं। अनलॉक किए गए चरण, नायक, प्रगति और पसंद इसी ब्राउज़र में रहते हैं; साइट डेटा मिटाने से स्थानीय अभियान हट सकता है।"
         ]
       ]
     }),
@@ -1349,6 +1493,18 @@
         [
           "ماذا أفعل بعد الخسارة؟",
           "بعد الفوز انتقل إلى المرحلة التالية. بعد الخسارة قوِّ الفرقة وأعد المحاولة."
+        ],
+        [
+          "كم موجة من الأعداء في المرحلة؟",
+          "تضم كل مرحلة خمس موجات من الأعداء قبل ظهور النتيجة."
+        ],
+        [
+          "ماذا أُحسّن بعد الخسارة؟",
+          "غيّر قراراً واحداً في كل مرة: طوّر بطلاً أو عدّل التجهيز أو راجع التشكيلة، ثم استخدم إعادة المحاولة لمقارنة النتيجة."
+        ],
+        [
+          "هل يُحفظ التقدم عبر الإنترنت؟",
+          "لا. تبقى المراحل المفتوحة والأبطال والتقدم والتفضيلات في هذا المتصفح فقط؛ وقد يؤدي مسح بيانات الموقع إلى حذف الحملة المحلية."
         ]
       ]
     }),

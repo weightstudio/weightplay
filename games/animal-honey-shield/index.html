@@ -29,9 +29,9 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
   <link rel="stylesheet" href="style.css?v=20260909-landscape-poster-v52" /><style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
 </head>
 <body data-screen="main" data-game-id="animal-honey-shield" data-wp-combined-sound="true">
   <section id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
@@ -42,6 +42,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -63,7 +64,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="posterAlt" alt="Pip sheltered by a glowing line as bees approach" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="posterAlt" alt="Pip sheltered by a glowing line as bees approach" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Cloverlight Meadow rescue puzzles</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Honey Shield</h1>
@@ -86,9 +87,9 @@
           <li data-i18n="how2">Release to begin the bee wave; keep drawing new segments while it runs.</li>
           <li data-i18n="how3">Survive until the timer reaches zero without letting a bee touch Pip.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines never break. Bees use every open route and move loose walls only when Pip is sealed off. A touch on Pip immediately fails the attempt.</p><p data-i18n="guideExtra">Start by studying the meadow before you draw. Pip is safest when the barrier creates a short route that bees cannot simply walk around, but a long wall is expensive and gives the swarm more surface to push. Leave a little breathing room around the puppy so a repair does not trap your next stroke. When a barrier flashes red, repair that weak section first instead of replacing the whole shape. The first valid line starts the wave, so you have time to plan while the meadow is quiet. Once bees are moving, watch their approach rather than the line you are drawing: a safe-looking wall can still leave an open corner behind Pip. Two separated terrain anchors are stronger than one loop. A single stone lets a wall pivot or peel; wrapping the same stroke around two distinct stones, corners, or approved terrain points makes the wall hold and glow gold. If bees push a loose wall, do not chase the wall with frantic redraws. Wait for the gap they are trying to open, then add a short hook that closes that route. Nectar is limited, and efficient repairs usually earn more stars than a second large circle. Before each later chapter, reread the chapter hint: new hives, split approaches, gusts, fragile gaps, and mixed waves each change what the shortest safe line should look like. After a clear, the next route unlocks automatically and your best stars remain in this browser. A failed attempt costs no account data; simply return to the stage list, study the red opening, and try a different shape. You can also replay an earlier route to practice efficient shapes, compare the stars earned from short repairs, and learn which side of the meadow gives the bees the fewest choices. The stage summary records your progress, while the guide remains available whenever you need to refresh the basic rules.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Thirty meadow routes</h3><p data-i18n="progressText">Six chapters add extra hives, split approaches, stone anchors, moving gusts, fragile gaps, and mixed mastery waves. Every clear unlocks the next route.</p></article>
-        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">Anchor short curves between stones, leave room around Pip, and watch where the barrier glows red. A small repair is often stronger than drawing a second full circle.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Rules and results</h3><p data-i18n="rulesText">Lines never break. Bees use any open route first. With no route they push, twist, and flex a loose wall. A loop on one stone is only a pivot: the swarm peels it tight around that stone. Only one stroke hooked around two separated terrain points turns gold and holds.</p><p data-i18n="guideExtra">Before drawing, locate the hive, Pip and two separate terrain anchors. The first valid line starts the bees; keep some nectar for a short barrier that closes an escape route. If Pip is touched, replay and try a different shape.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Meadow routes</h3><p data-i18n="progressText">Later routes change hive positions, terrain and wind. Each clear unlocks the next route.</p></article>
+        <article class="game-info-section"><h3 data-i18n="tipsTitle">Practical tips</h3><p data-i18n="tipsText">A straight bridge and a one-stone circle are both loose. Use two separated wraps, opposite hooks, or a real terrain slot.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Save and privacy</h3><p data-i18n="saveText">Unlocked stages and best stars stay only in this browser. No account, upload, or personal information is required.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
           <div><dt data-i18n="faq1q">Can I draw after the bees start?</dt><dd data-i18n="faq1a">Yes. Live repairs are the heart of the game, as long as nectar remains.</dd></div>
@@ -104,7 +105,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Back">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Honey Shield</strong><span id="stageSummary"></span></div>
@@ -168,6 +169,7 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Close">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Draw, watch, and repair</h2><ol>
@@ -183,10 +185,11 @@
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260909-landscape-poster-v52"></script><script src="game.js?v=20260909-landscape-poster-v52"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

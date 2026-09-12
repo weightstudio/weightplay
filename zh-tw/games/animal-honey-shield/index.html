@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v50" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260909-landscape-poster-v52" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="蜂蜜盾 | WeightPlay" />
     <meta property="og:description" content="在即時蜂群波次中畫線並修補花蜜防線，於 30 個原創草原關卡保護苜蓿小犬皮普。" />
@@ -55,6 +55,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,7 +77,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="蜜蜂接近時，皮普躲在發光防線後方" alt="《蜂蜜盾》遊戲圖片" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="蜜蜂接近時，皮普躲在發光防線後方" alt="《蜂蜜盾》遊戲圖片" />
         <div class="main-copy">
           <small data-i18n="eyebrow">苜蓿光原救援解謎</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">蜂蜜盾</h1>
@@ -99,8 +100,8 @@
           <li data-i18n="how2">蜜蜂會等你畫完。放開第一條有效防線才會開始波次；之後仍可繼續修補。</li>
           <li data-i18n="how3">在倒數結束前，不讓任何蜜蜂碰到皮普。</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">線條不會斷裂。蜜蜂會優先走任何可達皮普的路；沒有路時，牠們會一起推動、扭轉並壓彎鬆動的牆。只繞一顆石頭只是支點，蜂群會沿石頭把牆剝開。必須讓同一條線勾住兩個分開的地形點，才會變成金色固定牆。</p><p data-i18n="guideExtra">開始前先觀察草原，再決定第一筆線要放在哪裡。皮普最安全的情況，是防線形成蜜蜂不能直接繞過的短路線；太長的牆會消耗更多花蜜，也會留下更大的受力面。請在小狗周圍留一點空間，這樣補線時才不會困住下一筆筆畫。防線閃紅時，先修補那一小段弱點，不要立刻把整個形狀重畫。第一條有效的線會開始波次，所以草原安靜時可以先看清楚蜂巢、石頭與可能的入口。蜜蜂開始移動後，要觀察牠們的來向，而不只是盯著手上的線；看似安全的牆，可能仍在皮普身後留下開口。兩個分開的地形錨點比單一圓圈可靠。只繞一顆石頭時，牆仍可能以它為支點旋轉或被蜂群剝開；同一筆線繞過兩個不同的石頭、平台角落或有效地形點，才會固定並發出金色光芒。若蜜蜂正在推動鬆動的牆，不要慌張地反覆重畫。先看牠們想打開哪個缺口，再用短鉤線封住那條路。花蜜有限，精準的小修補通常比第二個大圓圈更容易拿到高星。進入後面的章節前，重新閱讀章節提示：新增蜂巢、分岔來向、風勢、脆弱缺口與混合波次，都會改變最短安全防線的形狀。過關後下一條路線會自動解鎖，最佳星級只保存在這個瀏覽器。失敗不會上傳帳號資料，回到關卡列表、研究紅色缺口，再換一種形狀嘗試即可。</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">30 條草原路線</h3><p data-i18n="progressText">六個章節加入更多蜂巢、分岔來向、石頭錨點、移動風勢、脆弱缺口與綜合波次。過關就能解鎖下一關。</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">規則與結果</h3><p data-i18n="rulesText">線條不會斷裂。蜜蜂會優先走任何可達皮普的路；沒有路時，牠們會一起推動、扭轉並壓彎鬆動的牆。只繞一顆石頭只是支點，蜂群會沿石頭把牆剝開。必須讓同一條線勾住兩個分開的地形點，才會變成金色固定牆。</p><p data-i18n="guideExtra">畫線前先找出蜂巢、皮普與兩個分開的地形錨點。第一條有效防線會啟動蜂群；留些花蜜，用短線封住繞行缺口。皮普被碰到就重試，改用不同的防線形狀。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">草原路線</h3><p data-i18n="progressText">後續路線會改變蜂巢位置、地形與風勢；每次過關解鎖下一條路線。</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">實用提示</h3><p data-i18n="tipsText">直線架在兩顆石頭之間、或只繞一顆石頭，都仍可移動。請使用兩個分開的繞點、相反勾角或真正的地形凹槽。</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">儲存與隱私</h3><p data-i18n="saveText">解鎖關卡與最佳星級只保存在這個瀏覽器，不需帳號、上傳或個人資料。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl>
@@ -117,7 +118,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="返回主畫面">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">蜂蜜盾</strong><span id="stageSummary"></span></div>
@@ -181,6 +182,7 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="關閉">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">畫線、卡住、守住</h2><ol>
@@ -192,15 +194,16 @@
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260909-landscape-poster-v52"></script><script src="game.js?v=20260909-landscape-poster-v52"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

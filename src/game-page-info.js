@@ -2233,6 +2233,51 @@
       parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Arena wins and best progress stay in this browser.",
       faq: [["How do I hit the rival?", "Move close enough for contact and press Space or the visible BOUNCE control during the opening."], ["What do the tools do?", "They change the active foam response, giving you a different timing or spacing option."], ["How do I lose?", "Your energy can run out, or the arena can reach its time limit before the rival is defeated."], ["Is progress saved?", "Only your best arena is saved in this browser."]],
     },
+    "animal-signal-scout": {
+      title: "Signal Scout", age: "6+", difficulty: "Calm and Readable", time: "2-5 minutes per patrol",
+      gameplay: "Signal Decoding Puzzle", genre: ["Puzzle", "Logic", "Pattern Recognition", "Family", "Animal"], skills: ["Observation", "Working Memory", "Focus"],
+      showSkills: false, showRelatedSkill: false, hideRecommendedAge: true, hideScoreBands: true,
+      intro: "Signal Scout is a calm three-patrol decoding game. Read each scout note, match every animal with its coloured signal, and copy the visible patrol order to light the lookout. The complete session is short, deterministic, and designed so a player can understand the rule before making a choice.",
+      story: [
+        "A small lookout network uses coloured animal signals to guide a patrol between a pine ridge, a creek crossing, and a fern clearing. The scout's notes are deliberately clear: each note names the animals and their colours, while the patrol order remains visible on the card. Your job is to turn that observation into a precise, friendly code.",
+        "The game treats mistakes as information rather than punishment. A wrong code clears gently, keeps the note visible, and gives the player another chance without a timer, lives, purchase prompt, or threatening presentation. Finishing all three patrols completes one compact route through the lookout network."
+      ],
+      systems: [
+        "Each patrol presents a note that maps three animals to three signal colours, followed by a target order. Signal cards are labelled for the same animals, so the player can compare the note, target, and current code without relying on hidden rules.",
+        "Tap or click cards to build the code in order. The visible Check code action compares the complete sequence with the target; Clear code removes the current attempt. Touch, mouse, and keyboard activation use the same patrol state and the same validation result.",
+        "The session tracks completed patrols and checks used. A best total may be stored locally in this browser when storage is available, but it never controls access, changes the puzzle, or sends progress to an account. Result offers a direct route back to the menu or to the patrol map."
+      ],
+      how: [
+        "Start from Main and choose the first open patrol, or use the patrol map to revisit a completed one.",
+        "Read the scout note carefully and identify the colour paired with each named animal.",
+        "Look at the visible patrol order, then tap the matching animal signal cards in that exact order.",
+        "Check the code. If it is wrong, the attempt clears so you can reread the note and try again without losing a life.",
+        "Complete all three patrols to see the Result summary, then return to Main or choose another patrol."
+      ],
+      strategyTips: [
+        "Treat the note as a small lookup table: say the animal first, then recall its colour and card label.",
+        "Read the target order from left to right before tapping. Building a plan first avoids accidental extra checks.",
+        "If a code fails, compare one position at a time instead of guessing a completely new sequence.",
+        "The order is always visible, so focus on careful matching rather than speed. There is no timer or life counter.",
+        "Use Clear code whenever you want a clean start; the game is designed for calm retries and local practice."
+      ],
+      progression: [
+        "Pine Lookout introduces a repeated animal so the player learns that the same signal can appear more than once in a code.",
+        "Creek Lookout changes the animal set and order while keeping the same readable note-and-card rule.",
+        "Fern Lookout completes the route with a third vocabulary set. Together the three patrols form a compact progression from reading a mapping to applying it consistently."
+      ],
+      designNote: "Signal Scout keeps the cognitive task visible in every screen: Main explains the promise, Stage names the patrol, Battle shows the note and target order together, and Result reports the completed count and checks. The responsive logical canvas preserves those relationships on portrait phones, compact landscape screens, and desktop widths. The game has no account, multiplayer, advertising, purchase, or timed-pressure flow.",
+      noteTitle: "Player and Save Information",
+      parent: "Signal Scout is a General family browser puzzle for ages 6+; no account or purchase is required. Best checks and completed patrols stay only in this browser when local storage is available. Clearing site data can remove that local record, while every patrol remains playable.",
+      faq: [
+        ["How many patrols are included?", "Three authored patrols make one short session: Pine Lookout, Creek Lookout, and Fern Lookout."],
+        ["What do I match?", "Read each scout note, pair every named animal with its signal colour, and tap the animals in the visible patrol order."],
+        ["What happens after a wrong code?", "The code clears gently and the same note remains available for another try. No life, timer, or progress is lost."],
+        ["Is the target hidden?", "No. The target order is shown in Battle so the challenge is careful reading and matching, not memorising an unseen answer."],
+        ["Is progress saved?", "Completed patrols and the best checks total may be saved only in this browser when storage is available."],
+        ["Can I play on a phone?", "Yes. Touch and mouse input use the same controls, and the layout adapts to portrait, landscape, and desktop screens."],
+      ],
+    },
     "animal-frost-maze": {
       title: "Frostline Rescue", age: "9+", difficulty: "Easy to Challenging", time: "1-4 minutes per room",
       gameplay: "Changeable Ice Maze", genre: ["Puzzle", "Action", "Animal"], skills: ["Route Planning", "Timing", "Problem Solving"],

@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
   <link rel="stylesheet" href="../../src/game-page-info.css" />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v50" /><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="style.css?v=20260909-landscape-poster-v52" /><link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Honigschild | WeightPlay" />
     <meta property="og:description" content="Zeichne und repariere Nektarlinien während der Bienenwellen und beschütze Pip in 30 originalen Stufen." />
@@ -55,6 +55,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -76,7 +77,7 @@
         </label>
       </header>
       <section class="main-hero">
-        <img class="main-poster" src="../../assets/animal-honey-shield-cover.webp" data-i18n-alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" alt="Spielgrafik zu Honigschild" />
+        <img class="main-poster" src="../../assets/interface7-redrawn/animal-honey-shield.webp" data-i18n-alt="Pip hinter einer leuchtenden Linie, während Bienen näherkommen" alt="Spielgrafik zu Honigschild" />
         <div class="main-copy">
           <small data-i18n="eyebrow">Rettungsrätsel auf der Kleelicht-Wiese</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">Honigschild</h1>
@@ -99,8 +100,8 @@
           <li data-i18n="how2">Die Bienen warten beim Zeichnen. Beim Loslassen der ersten gültigen Linie startet die Welle; danach kannst du nachbessern.</li>
           <li data-i18n="how3">Halte bis zum Ablauf der Zeit durch, ohne dass eine Biene Pip berührt.</li>
         </ol></article>
-        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regeln und Ergebnis</h3><p data-i18n="rulesText">Linien brechen nicht. Gibt es einen Weg, nehmen ihn die Bienen zuerst; sonst schieben, drehen und biegen sie die Wand. Ein Kreis um nur einen Stein ist bloß ein Drehpunkt und wird vom Schwarm eng um den Stein geschält. Erst dieselbe Linie an zwei getrennten Geländepunkten wird golden und fest.</p><p data-i18n="guideExtra">Beobachte die Wiese zuerst, bevor du zeichnest. Pip ist am sichersten, wenn die Barriere einen kurzen Weg erzeugt, den die Bienen nicht einfach umgehen können. Eine lange Wand kostet jedoch mehr Nektar und bietet dem Schwarm mehr Angriffsfläche. Lass etwas Platz um den Welpen, damit eine Reparatur deine nächste Linie nicht einschließt. Blinkt eine Barriere rot, repariere zuerst die schwache Stelle. Die erste gültige Linie startet die Welle, deshalb kannst du in der Ruhe planen. Sobald die Bienen fliegen, beobachte ihren Weg und nicht nur die Linie: Hinter Pip kann eine scheinbar sichere Wand eine offene Ecke lassen. Zwei getrennte Geländean­ker sind stärker als eine einzelne Schleife. An einem Stein kann sich die Wand drehen oder ablösen; dieselbe Linie an zwei verschiedenen Punkten wird golden und fest. Wenn Bienen eine lose Wand schieben, warte auf die Lücke, die sie öffnen wollen, und setze einen kurzen Haken. Nektar ist begrenzt, und sparsame Reparaturen bringen mehr Sterne als ein weiterer großer Kreis. Lies vor jedem Kapitel den Hinweis erneut: neue Bienenstöcke, geteilte Wege, Böen, fragile Lücken und gemischte Wellen verändern die kürzeste sichere Linie. Nach einem Sieg wird die nächste Route freigeschaltet; deine besten Sterne bleiben in diesem Browser. Ein Fehlschlag löscht keine Daten: Kehre zu den Stufen zurück, studiere die rote Öffnung und probiere eine andere Form. Wiederhole frühere Routen, um Sterne zu vergleichen und die Seite mit den wenigsten Möglichkeiten für die Bienen zu lernen.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">Dreißig Wiesenrouten</h3><p data-i18n="progressText">Sechs Kapitel ergänzen weitere Stöcke, geteilte Anflüge, Steinanker, Böen, brüchige Lücken und gemischte Wellen.</p></article>
+        <article class="game-info-section"><h3 data-i18n="rulesTitle">Regeln und Ergebnis</h3><p data-i18n="rulesText">Linien brechen nicht. Gibt es einen Weg, nehmen ihn die Bienen zuerst; sonst schieben, drehen und biegen sie die Wand. Ein Kreis um nur einen Stein ist bloß ein Drehpunkt und wird vom Schwarm eng um den Stein geschält. Erst dieselbe Linie an zwei getrennten Geländepunkten wird golden und fest.</p><p data-i18n="guideExtra">Suche vor dem Zeichnen den Bienenstock, Pip und zwei getrennte Geländeanker. Die erste gültige Linie setzt die Bienen in Bewegung. Spare Nektar, um einen Umweg mit einer kurzen Linie zu schließen; wird Pip berührt, versuche eine andere Form.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">Wiesenrouten</h3><p data-i18n="progressText">Spätere Routen verändern Bienenstöcke, Gelände und Wind. Jeder Sieg schaltet die nächste Route frei.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">Praktische Tipps</h3><p data-i18n="tipsText">Eine gerade Brücke und ein Kreis um einen Stein bleiben beweglich. Nutze zwei Schlingen, entgegengesetzte Haken oder eine echte Geländerinne.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">Speichern und Datenschutz</h3><p data-i18n="saveText">Stufen und Beststerne bleiben nur in diesem Browser. Konto und persönliche Daten sind nicht nötig.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
@@ -117,7 +118,7 @@
   </div>
 
   <section id="stageScreen" class="stage-screen" hidden>
-    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-honey-shield-cover.webp')">
+    <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="400" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-honey-shield.webp')">
       <header class="stage-header">
         <button id="stageBackBtn" type="button" data-wp-return="stage" data-i18n-aria="backMain" aria-label="Zurück zum Hauptmenü">←</button>
         <div><strong data-i18n="title" data-wp-game-title data-runtime-localize="off">Honigschild</strong><span id="stageSummary"></span></div>
@@ -181,6 +182,7 @@
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <section id="tutorialPanel" class="tutorial-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="tutorial-card">
     <button id="tutorialCloseBtn" class="modal-close" type="button" data-i18n-aria="close" aria-label="Schließen">×</button>
     <div class="sprite sprite-pup" aria-hidden="true"></div><h2 id="tutorialTitle" data-i18n="tutorialTitle">Zeichnen, verkeilen, halten</h2><ol>
@@ -192,15 +194,16 @@
 
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="locales.js?v=20260909-landscape-poster-v52"></script><script src="game.js?v=20260909-landscape-poster-v52"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>
