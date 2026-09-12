@@ -30,6 +30,17 @@ html,body{margin:0;min-height:100%;background:#031a21;color:var(--ink)}body{over
   #gameFrame .battle-live #targetList{flex:1 1 100%}
   #gameFrame .machine-wrap .timing-hud{top:8px;bottom:auto}
 }
+
+/* Official localized names may need two lines in the compact shared frame. */
+@layer wp-frame-contract {
+  html[data-wp-official-name] body[data-game-id="animal-carnival-claw"] [data-wp-frame="2"] [data-wp-frame-title] {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-overflow: clip !important;
+    font-size: clamp(14px, 3.4vw, 20px) !important;
+    line-height: 1.15 !important;
+  }
+}
 .timing-hud{position:absolute;z-index:3;left:50%;bottom:54px;display:grid;width:min(calc(100% - 44px),460px);min-height:54px;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:9px 14px;transform:translateX(-50%);visibility:hidden;border:2px solid #477b80;border-radius:14px;background:#031c23ee;box-shadow:0 8px 24px #0009;opacity:0;transition:border-color .15s,box-shadow .15s,opacity .15s}.timing-hud span{display:block;color:#d7efeb;font-size:14px;font-weight:900;white-space:nowrap}.timing-hud i{height:24px;border-color:#5e7b80}.timing-hud b{width:10px;left:calc(var(--timing-position,0%) - 5px)}.timing-hud.timing-active{visibility:visible;border-color:#65ffe1;background:#04353cee;box-shadow:0 0 0 2px #65ffe144,0 0 26px #27e5c088,0 8px 24px #000b;opacity:1}.timing-hud.timing-active span{color:#fff}.battle-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
 .machine-wrap:has(.timing-hud.timing-active) .phase-hint{display:none}
 @media(max-width:680px){

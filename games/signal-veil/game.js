@@ -6,8 +6,8 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
-  const GAME_VERSION = "v12";
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = "v13";
+  const INTERFACE_VERSION = 7;
   const SAVE_KEY = "weightplay-signal-veil-v1";
   const LOCALE_PATHS = {en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const PATH_LOCALES = Object.fromEntries(Object.entries(LOCALE_PATHS).map(([key,value]) => [value,key]));
@@ -108,11 +108,11 @@
   atlas.sprites.src = "/assets/signal-veil-enemies-block-v13-final.webp";
   atlas.player = new Image();
   atlas.player.src = "/assets/signal-veil-fox-block-v13.webp";
-  atlas.items.src = "/assets/signal-veil-items.webp";
+  atlas.items.src = "/assets/signal-veil-items-block-v13-final.webp";
   atlas.npcs.src = "/assets/signal-veil-npcs-block-v13-final.webp";
   atlas.world.src = "/assets/signal-veil-ground-block-v13.webp";
   atlas.objects = new Image();
-  atlas.objects.src = "/assets/signal-veil-world-objects-v2.webp";
+  atlas.objects.src = "/assets/signal-veil-objects-block-v13-final.webp";
 
   function routeLocale() {
     const match = location.pathname.match(/^\/([^/]+)\/games\/signal-veil\//);
@@ -634,7 +634,8 @@
     const cellW=image.naturalWidth/columns,cellH=image.naturalHeight/rows;
     const col=index%columns,row=Math.floor(index/columns);
     ctx.save();ctx.globalAlpha=alpha;
-    if(image===atlas.npcs||image===atlas.player)ctx.imageSmoothingEnabled=true;
+    // All runtime atlases are now modeled block artwork, not pixel sprites.
+    ctx.imageSmoothingEnabled=true;
     ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,x-w/2,y-h/2,w,h);ctx.restore();
   }
   function drawAtlasRotated(image,index,columns,rows,x,y,w,h,rotation,alpha=1) {
@@ -645,6 +646,7 @@
     ctx.globalAlpha=alpha;
     ctx.translate(x,y);
     ctx.rotate(rotation);
+    ctx.imageSmoothingEnabled=true;
     ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,-w/2,-h/2,w,h);
     ctx.restore();
   }
