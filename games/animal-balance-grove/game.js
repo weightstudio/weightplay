@@ -15,7 +15,18 @@
     it: { kicker: "Guida ai giochi originali WeightPlay", gameplay: "Gioco", gameplayValue: "Puzzle di equilibrio per sottoinsiemi", genre: "Genere", genreValue: "Puzzle · Equilibrio · Logica · Famiglia · Animali", faq: "Domande frequenti", faqQuestion: "I progressi vengono salvati?", faqAnswer: "Sì, solo in questo browser.", stageHelp: "Aiuto del bosco", stageSections: "Sezioni del bosco", guideAria: "Informazioni sul gioco Bosco Equilibrio" },
     ru: { kicker: "Руководство по оригинальным играм WeightPlay", gameplay: "Геймплей", gameplayValue: "Головоломка на баланс подмножеств", genre: "Жанр", genreValue: "Головоломка · Баланс · Логика · Семейная · Животные", faq: "Частые вопросы", faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Да, только в этом браузере.", stageHelp: "Справка о лесе", stageSections: "Разделы леса", guideAria: "Информация об игре «Равновесный лес»" },
     hi: { kicker: "WeightPlay मौलिक गेम गाइड", gameplay: "गेमप्ले", gameplayValue: "उपसमुच्चय संतुलन पहेली", genre: "शैली", genreValue: "पहेली · संतुलन · तर्क · परिवार · जानवर", faq: "अक्सर पूछे जाने वाले प्रश्न", faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "हाँ, केवल इसी ब्राउज़र में।", stageHelp: "वन सहायता", stageSections: "वन अनुभाग", guideAria: "संतुलन वन गेम की जानकारी" },
-    ar: { kicker: "دليل ألعاب WeightPlay الأصلية", gameplay: "طريقة اللعب", gameplayValue: "لغز توازن المجموعات الجزئية", genre: "النوع", genreValue: "لغز · توازن · منطق · عائلية · حيوانات", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", stageHelp: "مساعدة الغابة", stageSections: "أقسام الغابة", guideAria: "معلومات لعبة غابة التوازن" },
+    ar: {
+      kicker: "دليل ألعاب WeightPlay الأصلية", gameplay: "طريقة اللعب", gameplayValue: "لغز توازن المجموعات الجزئية", genre: "النوع", genreValue: "لغز · توازن · منطق · عائلية · حيوانات", difficulty: "من السهل إلى التحدي", time: "2–6 دقائق لكل غابة", faq: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، في هذا المتصفح فقط.", stageHelp: "مساعدة الغابة", stageSections: "أقسام الغابة", guideAria: "معلومات لعبة غابة التوازن",
+      storyTitle: "العالم والرسالة", systemsTitle: "كيف تعمل الأنظمة", howTitle: "طريقة اللعب", strategyTitle: "نصائح استراتيجية", progressionTitle: "تطور المراحل والصعوبة", designTitle: "ملاحظة تصميم المطوّر", parentTitle: "معلومات اللاعب والحفظ",
+      story: ["يُصلح تارو ذو الدرع الطحلبي ثلاثة جسور هادئة في بستان الغابة. تعرض كل غابة مجموعة أحجار مصممة بعناية، بأسماء واضحة وهدف محدد. ليست السرعة هي الهدف؛ بل ملاحظة العلاقات ووضع خطة واختيار مجموعة مستقرة تُبقي الجسر متوازنًا.", "تحافظ الحملة القصيرة على القواعد الودودة نفسها مع تغيير الهدف ومجموعة الأحجار والتركيبات المفيدة. تطلب الغابات اللاحقة مقارنة أكثر تعمدًا وتجعل الأحجار الخادعة أكثر إغراءً، ليتعلم اللاعب فحص الصينية كاملة بدل اختيار أول إجابة تبدو مناسبة."],
+      systems: ["اختر الأحجار من الصينية لوضعها على الكفة اليمنى، ثم اختر فحص التوازن. تعرض الكفة اليسرى وزن الجسر الثابت، بينما تعرض الكفة اليمنى المجموعة المختارة. يمكن مسح التركيبة الخاطئة بأمان والمحاولة من جديد.", "لا يوجد مؤقت أو حساب أو شراء أو طلب إعلانات. يبقى التقدم وأفضل عدد من الفحوص في هذا المتصفح. يعمل مسار الشاشة الرئيسي والمرحلة والمعركة والنتيجة باللمس والماوس ولوحة المفاتيح."],
+      how: ["ابدأ جولة واقرأ الهدف المعروض للغابة الحالية.", "افحص أسماء كل حجر وأوزانه قبل اختيار أي حجر.", "اختر مجموعة يساوي مجموعها هدف الجسر، ثم افحص التوازن.", "امسح الكفة وحاول تركيبة أخرى عندما لا تكون النتيجة مستقرة."],
+      strategyTips: ["ابحث عن أزواج يساوي مجموعها الهدف قبل تجربة تركيبات أكبر.", "استخدم الأوزان الظاهرة لاستبعاد الأحجار الأثقل أو الأخف من اللازم.", "أبقِ الصينية المتبقية أمامك؛ فقد يساعد حجر خادع في مجموع جزئي لكنه يمنع المجموعة النهائية.", "اعتبر كل غابة درسًا قصيرًا في تخطيط المجموعات، لا سباقًا مع الساعة."],
+      progression: ["تعرّف الغابة الأولى بالميزان والأحجار المسماة ومطابقة الهدف المباشرة. تضيف الغابة الثانية بدائل أكثر إغراءً وتطلب خطة مقارنة أوضح.", "تجمع الغابة الثالثة الاختيارات السابقة في فحص إتقان موجز. كل غابة قابلة لإعادة اللعب، وتساعد المحاولة الهادئة على فهم سبب نجاح المجموعة أو فشلها."],
+      designNote: "تستخدم غابة التوازن أهدافًا مصممة وحسابًا ظاهرًا وشاشات رئيسية ومرحلة ومعركة ونتيجة متجاوبة، مع عناصر تحكم مترجمة وتعليقات إعادة محاولة لطيفة. ملاحظات اللغز للعب والتقدم المحلي وليست تقييمًا رسميًا للقدرة.",
+      parent: "قد تساعد هذه اللعبة العائلية العامة على ممارسة العد والمقارنة والتخطيط وشرح الاختيار. إنها ملاحظات لعب وليست تقييمًا مدرسيًا أو طبيًا أو للذكاء. يُخزّن التقدم وأفضل الفحوص في هذا المتصفح فقط، ولا يلزم حساب أو شراء.",
+      faqItems: [["كيف أثبّت الجسر؟", "اختر أحجارًا يساوي مجموع أوزانها الهدف المعروض، ثم اختر فحص التوازن."], ["هل يمكنني إعادة محاولة إجابة خاطئة؟", "نعم. يمكن مسح التركيبة الخاطئة بأمان، وإعادة تجربة الغابة الحالية دون فقدان التقدم."], ["هل يوجد مؤقت؟", "لا. صُممت الغابات الثلاث للمقارنة الهادئة وتخطيط المجموعات."], ["هل يُحفظ التقدم؟", "يُحفظ التقدم المفتوح وأفضل عدد من الفحوص في هذا المتصفح فقط."]]
+    },
   };
   const normalizeLocale = (value) => {
     if (value === "zh-TW") return "zh-Hant";
@@ -82,7 +93,7 @@
     if (!screens.result.hidden) renderResult();
   };
   const applyGuideLocale = (guideCopy) => {
-    const guide = document.querySelector(".game-page-info[data-wp-balance-grove-guide]");
+    const guide = document.querySelector(".game-page-info[data-runtime-localize='off'], .game-page-info[data-wp-balance-grove-guide]");
     if (!guide) return;
     const setText = (node, value) => {
       if (node && node.textContent !== value) node.replaceChildren(document.createTextNode(value));
@@ -98,10 +109,32 @@
     const genreFact = facts[1];
     setText(genreFact?.querySelector("span"), guideCopy.genre);
     setText(genreFact?.querySelector("strong") || genreFact?.querySelector(".game-info-tags"), guideCopy.genreValue);
-    const faqSection = [...guide.querySelectorAll(".game-info-section")].find((section) => section.querySelector("dl"));
+    setText(facts[2]?.querySelector("span"), guideCopy.difficultyLabel || (state.locale === "ar" ? "الصعوبة" : facts[2]?.querySelector("span")?.textContent));
+    setText(facts[2]?.querySelector("strong"), guideCopy.difficulty || facts[2]?.querySelector("strong")?.textContent);
+    setText(facts[3]?.querySelector("span"), guideCopy.timeLabel || (state.locale === "ar" ? "وقت اللعب المقدر" : facts[3]?.querySelector("span")?.textContent));
+    setText(facts[3]?.querySelector("strong"), guideCopy.time || facts[3]?.querySelector("strong")?.textContent);
+    const sections = [...guide.querySelectorAll(".game-info-section")];
+    const storySection = guide.querySelector(".game-info-story") || sections.find((section) => section.querySelector("h3")?.textContent.includes("العالم") || section.querySelector("h3")?.textContent.includes("Story"));
+    const systemsSection = guide.querySelector(".game-info-systems") || sections.find((section) => section.querySelector("h3")?.textContent.includes("الأنظمة") || section.querySelector("h3")?.textContent.includes("Systems"));
+    const howSection = sections.find((section) => section.querySelector("ol"));
+    const strategySection = guide.querySelector(".game-info-strategy") || sections.find((section) => section.querySelector("ul"));
+    const progressionSection = guide.querySelector(".game-info-campaign") || sections.find((section) => section.querySelector("h3")?.textContent.includes("تطور") || section.querySelector("h3")?.textContent.includes("Progress"));
+    const designSection = guide.querySelector(".game-info-design") || sections.find((section) => section.querySelector("h3")?.textContent.includes("تصميم") || section.querySelector("h3")?.textContent.includes("Design"));
+    const parentSection = sections.find((section) => section.classList.contains("game-info-parent"));
+    [[storySection, guideCopy.storyTitle], [systemsSection, guideCopy.systemsTitle], [howSection, guideCopy.howTitle], [strategySection, guideCopy.strategyTitle], [progressionSection, guideCopy.progressionTitle], [designSection, guideCopy.designTitle], [parentSection, guideCopy.parentTitle]].forEach(([section, title]) => { if (title) setText(section?.querySelector("h3"), title); });
+    const setParagraphs = (section, values) => { if (!section || !Array.isArray(values)) return; section.querySelectorAll(":scope > p").forEach((node, index) => setText(node, values[index] ?? "")); };
+    setParagraphs(storySection, guideCopy.story);
+    setParagraphs(systemsSection, guideCopy.systems);
+    if (systemsSection && Array.isArray(guideCopy.systems)) systemsSection.querySelectorAll("ul > li").forEach((node, index) => setText(node, guideCopy.systems[index] ?? ""));
+    setParagraphs(progressionSection, guideCopy.progression);
+    setParagraphs(designSection, guideCopy.designNote ? [guideCopy.designNote] : null);
+    setParagraphs(parentSection, guideCopy.parent ? [guideCopy.parent] : null);
+    if (howSection && Array.isArray(guideCopy.how)) howSection.querySelectorAll("ol > li").forEach((node, index) => setText(node, guideCopy.how[index] ?? ""));
+    if (strategySection && Array.isArray(guideCopy.strategyTips)) strategySection.querySelectorAll("ul > li").forEach((node, index) => setText(node, guideCopy.strategyTips[index] ?? ""));
+    const faqSection = sections.find((section) => section.querySelector("dl"));
     setText(faqSection?.querySelector("h3"), guideCopy.faq);
-    setText(faqSection?.querySelector("dt"), guideCopy.faqQuestion);
-    setText(faqSection?.querySelector("dd"), guideCopy.faqAnswer);
+    const faqItems = guideCopy.faqItems || [[guideCopy.faqQuestion, guideCopy.faqAnswer]];
+    faqSection?.querySelectorAll("dl > div").forEach((item, index) => { const pair = faqItems[index]; if (!pair) return; setText(item.querySelector("dt"), pair[0]); setText(item.querySelector("dd"), pair[1]); });
   };
   const setLocale = (locale) => { state.locale = normalizeLocale(locale); try { localStorage.setItem("weightPlayLocale", state.locale); localStorage.setItem("weightplayLocale", state.locale); } catch (error) { state.storage = false; } applyLocale(); track("locale", { locale: state.locale }); };
   const beep = (frequency) => { if (!state.sound) return; try { const AudioContext = window.AudioContext || window.webkitAudioContext; if (!AudioContext) return; const context = new AudioContext(); const oscillator = context.createOscillator(); const gain = context.createGain(); oscillator.frequency.value = frequency; gain.gain.setValueAtTime(.035, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .12); oscillator.connect(gain).connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .12); oscillator.addEventListener("ended", () => context.close()); } catch (error) { /* audio is optional */ } };

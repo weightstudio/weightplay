@@ -1,5 +1,6 @@
 // Authored guide presentation; stage names and campaign data remain unchanged.
 import {COPY} from './locales.mjs';
+import {upgradeText} from './upgrade-copy.mjs';
 // Each locale describes this game's actual removal/absorption rules. These
 // compact paragraphs are also consumed by the static route generator.
 const rules={
@@ -39,3 +40,25 @@ export const DETAILS=Object.fromEntries(Object.entries(rules).map(([locale,parts
  COPY[locale].stage=stageLabels[locale];
  return [locale,[parts[0],parts[1],body,parts[2]]];
 }));
+
+// The upgraded campaign's rules are shared by the guide and native routes.
+const combat={
+ en:'Life cost is 40% of enemy power (60% for bosses), rounded up, minus armor; minimum 1. Life must remain above zero. A stronger sword or armor replaces the old one; it does not stack. After an upgrade, unlocked stages and clears remain; an unfinished puzzle restarts and mastery badges are earned again.',
+ 'zh-Hant':'戰鬥消耗敵方戰力的 40%（首領 60%），無條件進位後扣除護甲，至少扣 1 生命；剩餘生命必須大於零。較強武器與護甲會替換舊裝備，不會疊加。改版保留解鎖與通關，未完成棋局會重開，熟練徽章需重新挑戰。',
+ 'zh-Hans':'战斗消耗敌方战力的 40%（首领 60%），向上取整后扣除护甲，至少扣 1 生命；剩余生命必须大于零。较强武器与护甲会替换旧装备，不会叠加。改版保留解锁与通关，未完成棋局会重开，熟练徽章需重新挑战。',
+ ja:'消費する命は敵戦力の40%（ボス60%）を切り上げ、鎧を引いた値で最低1。命を0より多く残す必要があります。強い装備は交換で、加算されません。更新後も解放とクリアは残りますが、中断パズルと熟練バッジは再挑戦です。',
+ ko:'생명 소모는 적 전투력의 40%(보스 60%)를 올림한 뒤 갑옷을 빼며 최소 1입니다. 생명이 0보다 높아야 해요. 강한 장비로 교체하며 중첩되지 않아요. 업데이트 후 해금과 클리어는 유지되고 미완성 퍼즐과 숙련 배지는 다시 도전해요.',
+ es:'El coste de vida es el 40% del poder enemigo (60% en jefes), redondeado arriba, menos armadura; mínimo 1. Debe quedar vida. El equipo más fuerte reemplaza al anterior. La actualización conserva niveles y victorias; reinicia el intento pendiente y las medallas de dominio.',
+ 'pt-BR':'O custo de vida é 40% do poder inimigo (60% nos chefes), arredondado para cima, menos armadura; mínimo 1. Deve sobrar vida. Equipamento mais forte substitui o anterior. A atualização mantém fases e vitórias; reinicia a tentativa pendente e as medalhas de domínio.',
+ fr:'Le coût en vie est de 40% de la puissance ennemie (60% pour les boss), arrondi au supérieur, moins l’armure ; minimum 1. Il doit rester de la vie. L’équipement plus fort remplace l’ancien. La mise à jour garde déblocages et victoires ; l’essai en cours et les badges de maîtrise recommencent.',
+ de:'Lebenskosten: 40% der Gegnerstärke (Bosse 60%), aufgerundet, minus Rüstung; mindestens 1. Leben muss übrig bleiben. Stärkere Ausrüstung ersetzt die alte. Das Update erhält Freischaltungen und Siege; laufende Rätsel und Meisterabzeichen beginnen neu.',
+ it:'Costo vita: 40% della potenza nemica (60% per i boss), arrotondato in alto, meno armatura; minimo 1. Deve restare vita. L’equipaggiamento più forte sostituisce il vecchio. L’aggiornamento conserva sblocchi e vittorie; tentativi in corso e medaglie di maestria ricominciano.',
+ ru:'Расход жизни: 40% силы врага (боссы 60%), округление вверх, минус броня; минимум 1. Жизнь должна остаться. Сильное снаряжение заменяет старое. Обновление сохраняет открытые этапы и победы; текущая попытка и значки мастерства начинаются заново.',
+ hi:'जीवन लागत दुश्मन की शक्ति का 40% (मुखिया 60%), ऊपर पूर्णांक करके, कवच घटाकर; कम से कम 1। जीवन शून्य से अधिक बचना चाहिए। बेहतर उपकरण पुराने को बदलते हैं, जुड़ते नहीं। अपडेट में खुले स्तर और जीत बचते हैं; अधूरा प्रयास और महारत बैज फिर शुरू होते हैं।',
+ ar:'تكلفة الحياة 40% من قوة العدو (60% للزعيم)، مقربة للأعلى ناقص الدرع؛ بحد أدنى 1. يجب أن تبقى حياة. المعدات الأقوى تستبدل القديمة ولا تتراكم. يحفظ التحديث المراحل المفتوحة والانتصارات؛ تبدأ المحاولة المعلقة وشارات الإتقان من جديد.'
+};
+for(const [locale,parts] of Object.entries(DETAILS)){
+ parts[0]=`${upgradeText(locale,'previewHelp')} ${parts[0]} ${combat[locale]}`;
+ parts[1]+=` ${['blade','life','multiply','defense','charge'].map(key=>upgradeText(locale,key)).join(' ')}`;
+ parts[2]+=` ${['order','multiply','gate','runeLesson','charge','finale'].map(key=>upgradeText(locale,key)).join(' ')}`;
+}

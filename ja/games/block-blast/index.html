@@ -13,16 +13,16 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>ブロックブラスト | WeightPlay</title>
-    <meta name="description" content="Block Blast は、30 の作成された地形ミッションとエンドレスのハイスコア モードを備えたオリジナルの 8 x 8 空間パズルです。現在のセットからすべての固定シェイプを配置し、完全な行または列をクリアして、トレイ内でまだ待機しているシェイプのための十分な空きスペースを保護します。" />
+    <meta name="description" content="3つの形を8×8盤面に置き、完成した行と列を消します。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ブロックブラスト | WeightPlay" />
-    <meta property="og:description" content="Block Blast は、30 の作成された地形ミッションとエンドレスのハイスコア モードを備えたオリジナルの 8 x 8 空間パズルです。現在のセットからすべての固定シェイプを配置し、完全な行または列をクリアして、トレイ内でまだ待機しているシェイプのための十分な空きスペースを保護します。" />
+    <meta property="og:description" content="3つの形を8×8盤面に置き、完成した行と列を消します。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/block-blast/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ブロックブラスト | WeightPlay" />
-    <meta name="twitter:description" content="Block Blast は、30 の作成された地形ミッションとエンドレスのハイスコア モードを備えたオリジナルの 8 x 8 空間パズルです。現在のセットからすべての固定シェイプを配置し、完全な行または列をクリアして、トレイ内でまだ待機しているシェイプのための十分な空きスペースを保護します。" />
+    <meta name="twitter:description" content="3つの形を8×8盤面に置き、完成した行と列を消します。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <link rel="canonical" href="https://weightplay.com/ja/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
@@ -51,11 +51,11 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260904-interface-contract-v36" />
-    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260913-block-frame-v37" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,7 +63,7 @@
   "name": "ブロックブラスト",
   "url": "https://weightplay.com/ja/games/block-blast/",
   "image": "https://weightplay.com/assets/interface7-redrawn/block-blast.webp",
-  "description": "Block Blast は、30 の作成された地形ミッションとエンドレスのハイスコア モードを備えたオリジナルの 8 x 8 空間パズルです。現在のセットからすべての固定シェイプを配置し、完全な行または列をクリアして、トレイ内でまだ待機しているシェイプのための十分な空きスペースを保護します。",
+  "description": "3つの形を8×8盤面に置き、完成した行と列を消します。",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -88,7 +88,7 @@
 }
     </script>
   </head>
-  <body
+  <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -128,11 +128,9 @@
             alt="ブロックブラストのゲーム画像"
           />
           <div class="hero-copy">
-            <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
+            <small data-i18n="genre">8×8 ブロックパズル</small>
             <h1 data-runtime-localize="off">ブロックブラスト</h1>
-            <p data-i18n="pitch">
-              Place all three shapes and clear complete rows or columns.
-            </p>
+            <p data-i18n="pitch">3つの形をすべて置き、行か列を完成させよう。</p>
             <strong id="mainProgress">1 / 30</strong>
             <div class="main-actions">
               <button
@@ -142,38 +140,20 @@
                 data-i18n="campaign"
               >
                 Campaign</button
-              ><button id="endlessBtn" type="button" data-i18n="endless">
-                Endless
-              </button>
+              ><button id="endlessBtn" type="button" data-i18n="endless">エンドレス</button>
             </div>
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="ブロックブラスト ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>ブロックブラスト</h2><p>Block Blast は、30 の作成された地形ミッションとエンドレスのハイスコア モードを備えたオリジナルの 8 x 8 空間パズルです。現在のセットからすべての固定シェイプを配置し、完全な行または列をクリアして、トレイ内でまだ待機しているシェイプのための十分な空きスペースを保護します。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>2～10分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>このキャンペーンは、1 枚の空のボードを 30 部コピーするのではなく、30 個のコンパクトなパズル ミッションとして構成されています。土、氷、石、宝石、ロック、カラーターゲット、設定された制限が組み合わされて、さまざまな計画上の問題が発生します。</p>
-<p>エンドレスモードではミッションターゲットを削除し、3 つの形状セットを扱い続けます。そのバランスの取れた形状プールには、小さなコネクタ、中程度のコーナー、長い 5 セルのピース、大きな長方形、および時折 3 x 3 の正方形が含まれているため、不注意なボードは最終的に合法的なスペースを使い果たしてしまいます。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>図形はトレイに表示された方向を維持し、配置後に移動することはできません。形状を選択し、有効なボード セルをタップするか、高くなった踊り場のプレビューにドラッグします。</p>
-<p>完全な行または列はすぐに消去されます。クリアしたラインのみがポイントを獲得します。ブロックを単独で配置してもスコアは増加しません。</p>
-<p>3 つの形状をすべて使用すると、新しい固定セットが得られます。キャンペーン ミッションでは、ライン、地形、宝石、色、または限定セットの目標を要求することもできます。未使用のトレイ形状がいずれも適切に適合しないとすぐに実行は終了します。</p>
-<p>氷は、その線が消えるまで、配置されたブロックの下に表示されたままになりますが、石と錠前が配置をブロックします。ジェムセルを覆うとリンクされたロックが開きます。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>30 ミッションのキャンペーンまたは 1 つの継続的なスコア実行のエンドレスを選択します。</li><li>ボードの下にある 3 つの形状から 1 つを選択します。</li><li>開いたセルをタップするか、形状を適切にフィットするまでドラッグします。</li><li>行または列を完成させてクリアし、スコアを獲得します。</li><li>残りのすべての形状のためのスペースを確保しながら、3 つの形状すべてを使用して次のセットを受け取ります。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>最初の配置をコミットする前に、3 つの形状すべてを検査します。</li><li>1 つの隅を完全に埋めるのではなく、いくつかの開いた領域を保持します。</li><li>次の図形が安全になると、交差する行と列を構築してクリアされます。</li><li>小さな断片だけを受け取ることを計画しないでください。長い形状と時折の 3 × 3 の正方形は、意図的にエンドレス モードの一部です。</li><li>地形ミッションでは、絶対に占有できない石のセルと、クリアする必要があるセルを区別します。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>ステージ 1 ～ 5 では、ライン目標とクリーンなボード計画を導入します。</p>
-<p>後の章では、土、氷、石、宝石、ロック、カラーターゲット、混合目標、およびより厳しい設定制限が階層化されます。</p>
-<p>プレーヤーの選択によって作成されるボードの状態から無限の難易度が増加しますが、形状の分布により、硬い形状だけを扱うことなく、定期的に大きなピースのプレッシャーが保証されます。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>スコアと効果は実際のラインクリアに連動します。クリアビームは完成した行または列の中心に留まり、破片はクリアされたセルから落ち、プレイヤーがすぐに次のトレイピースを選択すると、リプレイすることなくクリアされた領域に白いスコアゲインが表示されます。 完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Main のポスターとゲーム開始操作は Stage 管理から分離され、Stage 選択、Battle、ダイアログ、Result はそれぞれの範囲内の内容と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>Block Blast is a general-audience browser puzzle for family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress. アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>図形は回転できますか?</dt><dd>いいえ。各トレイの形状は、表示された方向を維持します。</dd></div><div><dt>ポイントが増えるのはいつですか？</dt><dd>完了した行または列のみがポイントを獲得します。単にシェイプを配置するだけでは機能しません。</dd></div><div><dt>ステージはいくつありますか？</dt><dd>30 の作成されたキャンペーン ミッションに加え、無制限のエンドレス実行が可能です。</dd></div><div><dt>氷と石は何をするのですか？</dt><dd>氷は、その線が消えるまで、配置されたブロックの下に表示されたままになります。石を占領することはできません。</dd></div><div><dt>なぜ実行が終了したのですか?</dt><dd>現在のトレイ内の未使用の形状がいずれも適切に配置されない場合、実行は終了します。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>キャンペーンのロック解除と設定は、このブラウザーにローカルに保存されます。</dd></div><div><dt>どの操作方法と画面サイズに対応していますか？</dt><dd>ゲームが対応している範囲で、タッチ、マウス、キーボードは同じルールで操作できます。インターフェースはスマートフォン、横画面、デスクトップの必要な画面サイズで、同じ論理レイアウトとして拡大縮小します。</dd></div><div><dt>進行状況は別の端末に自動で移行しますか？</dt><dd>いいえ。このゲームの進行状況は現在のところブラウザのローカルストレージにのみ保存されるため、別のブラウザプロファイルや端末では、それぞれ別の進行状況になります。将来アカウントシステムが追加されない限り、共有されません。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>陽だまりの庭：鏡の光路</strong><span>6×6の庭で鏡を回し、見えているすべての光を正しい道で眠るハスまで届けましょう。</span></span></a></div></div>
-    </div>
-  </section>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
+        <h2 data-i18n="howTitle">遊び方</h2>
+        <div class="game-info-section"><ol>
+          <li data-i18n="how1">固定された3つの形から1つを8×8盤へドラッグします。</li>
+          <li data-i18n="how2">持ち上がった半透明プレビューが置ける場所を示します。</li>
+          <li data-i18n="how3">行か列が完成するとすぐ消えます。</li>
+        </ol></div>
+        <div class="game-info-section"><p data-i18n="helpText">配置後は移動も回転もできません。完成ラインは即座に消えます。</p><p data-i18n="gameOver">残りの形を置けません。</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>ステージはいくつありますか？</dt><dd>ルールの 6 章にわたって 30 の作成されたステージがあります。ステージ 30 は完了後もリプレイ可能です。</dd></div><div><dt>進行状況は保存されますか？</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -203,13 +183,9 @@
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
           <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">
-              Select an unlocked mission.
-            </p>
+            <p class="stage-hint" data-i18n="stageHint">解放済みミッションを選びます。</p>
             <nav class="stage-tabs" aria-label="Stage navigation">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
-                Stage Map
-              </button>
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">ステージマップ</button>
             </nav>
           </footer>
           <button
@@ -218,9 +194,7 @@
             type="button"
             data-wp-enter-battle
             data-i18n="enter"
-          >
-            Enter Stage
-          </button>
+          >入る</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -288,25 +262,20 @@
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="howTitle">How to play</h2>
-              <p data-i18n="helpText">
-                Shapes cannot move or rotate after placement. Complete lines
-                clear immediately.
-              </p>
+              <h2 data-i18n="howTitle">遊び方</h2>
+              <p data-i18n="helpText">配置後は移動も回転もできません。完成ラインは即座に消えます。</p>
               <button
                 id="helpClose"
                 class="primary"
                 type="button"
                 data-i18n="continue"
-              >
-                Continue
-              </button>
+              >続ける</button>
             </div>
           </section>
           <section id="leaveModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="leaveTitle">Leave this run?</h2>
-              <p data-i18n="leaveText">Continue keeps the exact board.</p>
+              <h2 data-i18n="leaveTitle">このプレイを離れますか？</h2>
+              <p data-i18n="leaveText">続けると盤面を維持します。</p>
               <div class="modal-actions">
                 <button
                   id="leaveContinue"
@@ -315,9 +284,7 @@
                   data-i18n="continue"
                 >
                   Continue</button
-                ><button id="leaveStage" type="button" data-i18n="stageMap">
-                  Stage Map
-                </button>
+                ><button id="leaveStage" type="button" data-i18n="stageMap">ステージマップ</button>
               </div>
             </div>
           </section>
@@ -329,7 +296,7 @@
               />
               <div>
                 <small id="resultStage">STAGE 1</small>
-                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <h2 id="resultTitle" data-i18n="clear">ミッション完了！</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
@@ -342,9 +309,7 @@
                   data-i18n="next"
                 >
                   Next Stage</button
-                ><button id="retryBtn" type="button" data-i18n="retry">
-                  Play Again
-                </button>
+                ><button id="retryBtn" type="button" data-i18n="retry">もう一度</button>
               </div>
             </div>
           </section>
@@ -367,9 +332,9 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260904-interface-contract-v36"></script>
+    <script src="game.js?v=20260913-block-frame-v37"></script>
     <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
+    <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

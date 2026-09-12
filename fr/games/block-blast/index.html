@@ -13,16 +13,16 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>Explosion de blocs | WeightPlay</title>
-    <meta name="description" content="Block Blast est un puzzle spatial original de 8 x 8 avec 30 missions de terrain créées et un mode high-score sans fin. Placez chaque forme fixe de..." />
+    <meta name="description" content="Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Explosion de blocs | WeightPlay" />
-    <meta property="og:description" content="Block Blast est un puzzle spatial original de 8 x 8 avec 30 missions de terrain créées et un mode high-score sans fin. Placez chaque forme fixe de..." />
+    <meta property="og:description" content="Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes." />
     <meta property="og:url" content="https://weightplay.com/fr/games/block-blast/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Explosion de blocs | WeightPlay" />
-    <meta name="twitter:description" content="Block Blast est un puzzle spatial original de 8 x 8 avec 30 missions de terrain créées et un mode high-score sans fin. Placez chaque forme fixe de..." />
+    <meta name="twitter:description" content="Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <link rel="canonical" href="https://weightplay.com/fr/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
@@ -51,11 +51,11 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260904-interface-contract-v36" />
-    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260913-block-frame-v37" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,7 +63,7 @@
   "name": "Explosion de blocs",
   "url": "https://weightplay.com/fr/games/block-blast/",
   "image": "https://weightplay.com/assets/interface7-redrawn/block-blast.webp",
-  "description": "Block Blast est un puzzle spatial original de 8 x 8 avec 30 missions de terrain créées et un mode high-score sans fin. Placez chaque forme fixe de...",
+  "description": "Placez trois formes sur une grille 8×8 et effacez les lignes et colonnes complètes.",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -88,7 +88,7 @@
 }
     </script>
   </head>
-  <body
+  <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -128,11 +128,9 @@
             alt="Illustration du jeu Explosion de blocs"
           />
           <div class="hero-copy">
-            <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
+            <small data-i18n="genre">PUZZLE 8×8</small>
             <h1 data-runtime-localize="off">Explosion de blocs</h1>
-            <p data-i18n="pitch">
-              Place all three shapes and clear complete rows or columns.
-            </p>
+            <p data-i18n="pitch">Placez les trois formes et complétez des lignes ou colonnes.</p>
             <strong id="mainProgress">1 / 30</strong>
             <div class="main-actions">
               <button
@@ -142,38 +140,20 @@
                 data-i18n="campaign"
               >
                 Campaign</button
-              ><button id="endlessBtn" type="button" data-i18n="endless">
-                Endless
-              </button>
+              ><button id="endlessBtn" type="button" data-i18n="endless">Sans fin</button>
             </div>
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="Informations sur Explosion de blocs">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Explosion de blocs</h2><p>Block Blast est un puzzle spatial original de 8 x 8 avec 30 missions de terrain créées et un mode high-score sans fin. Placez chaque forme fixe de l&#39;ensemble actuel, supprimez des lignes ou des colonnes complètes et protégez suffisamment d&#39;espace ouvert pour les formes en attente dans le bac.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Difficulté</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>2 à 10 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Monde et mission</h3><p>La campagne est organisée en trente missions de puzzle compactes plutôt que trente exemplaires d&#39;un plateau vide. La saleté, la glace, la pierre, les pierres précieuses, les serrures, les cibles de couleur et les limites fixées se combinent pour créer différents problèmes de planification.</p>
-<p>Le mode sans fin supprime la cible de la mission et continue de distribuer des ensembles de trois formes. Son pool de forme équilibrée comprend de petits connecteurs, des coins moyens, de longues pièces à cinq cellules, des rectangles plus grands et des carrés occasionnels de 3 x 3, de sorte qu&#39;un tableau négligent finit par manquer d&#39;espace légal.</p></div>
-      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Les formes conservent l&#39;orientation indiquée dans le bac et ne peuvent pas bouger après leur placement. Sélectionnez une forme et appuyez sur une cellule légale du tableau, ou faites-la glisser sur l&#39;aperçu de l&#39;atterrissage en relief.</p>
-<p>Une ligne ou une colonne complète est immédiatement effacée. Seules les lignes dégagées rapportent des points ; placer un bloc seul n’augmente pas le score.</p>
-<p>L’utilisation des trois formes donne un nouvel ensemble fixe. Les missions de campagne peuvent également demander des objectifs de ligne, de terrain, de gemme, de couleur ou limités. Le cycle se termine dès qu&#39;aucune des formes de plateau inutilisées n&#39;a de compatibilité légale.</p>
-<p>La glace reste visible sous un bloc placé jusqu&#39;à ce que cette ligne disparaisse, tandis que la pierre et les verrous bloquent le placement. Les cellules gemmes ouvrent les verrous liés lorsqu&#39;elles sont couvertes.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez Campagne pour trente missions ou Sans fin pour une course de score continue.</li><li>Sélectionnez l’une des trois formes sous le tableau.</li><li>Appuyez sur une cellule ouverte ou faites glisser la forme jusqu&#39;à un ajustement légal.</li><li>Remplissez une ligne ou une colonne pour l&#39;effacer et marquer.</li><li>Utilisez les trois formes pour recevoir l’ensemble suivant, tout en gardant de la place pour chaque forme restante.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Inspectez les trois formes avant de valider le premier placement.</li><li>Préservez plusieurs zones ouvertes au lieu de remplir parfaitement un coin.</li><li>Construisez des lignes et des colonnes qui se croisent lorsque les formes suivantes le rendent sûr.</li><li>Ne prévoyez pas de recevoir uniquement de minuscules morceaux ; les formes longues et les carrés occasionnels de 3 x 3 font délibérément partie du mode Endless.</li><li>Dans les missions terrain, distinguez les cellules qui doivent être dégagées des cellules en pierre qui ne peuvent jamais être occupées.</li></ul></div>
-      <div class="game-info-section"><h3>Progression et difficulté</h3><p>Les étapes 1 à 5 présentent les objectifs de ligne et la planification propre du tableau.</p>
-<p>Les chapitres suivants superposent la terre, la glace, la pierre, les pierres précieuses, les serrures, les cibles de couleur, les objectifs mixtes et les limites plus strictes.</p>
-<p>La difficulté sans fin découle de l&#39;état du plateau créé par les choix du joueur, tandis que la répartition des formes garantit une pression régulière sur les grosses pièces sans traiter uniquement des formes difficiles.</p></div>
-      <div class="game-info-section"><h3>Note de conception</h3><p>Le score et les effets sont liés aux effacements de lignes réels. Les faisceaux clairs restent centrés sur la ligne ou la colonne terminée, les fragments tombent des cellules effacées et le gain de score blanc apparaît sur la zone dégagée sans relecture lorsque le joueur sélectionne immédiatement la pièce suivante du plateau. L&#39;interface complète utilise une seule mise en page logique centrée, avec une largeur maximale de 920 pixels. Les vues mobile, paysage et bureau redimensionnent ensemble les mêmes commandes, zones de contact, illustrations et coordonnées du jeu au lieu d&#39;étirer des éléments individuels. Le tactile, la souris et le clavier agissent donc sur le même état légal. L&#39;affiche de Main et l&#39;action de démarrer le jeu restent séparées de la gestion de Stage, tandis que la sélection de Stage, Battle, les dialogues et Result conservent leur contenu délimité et leur chemin de retour.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Block Blast is a general-audience browser puzzle for family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress. Vous pouvez jouer sans créer de compte. La progression est enregistrée dans le stockage local du profil actuel du navigateur, et non dans un compte en ligne ou une base de données entre appareils. Effacer les données du site, utiliser la navigation privée, changer de navigateur ou passer à un autre appareil peut créer une sauvegarde distincte ou supprimer l&#39;existante. Lorsque le navigateur autorise le stockage, les préférences de langue, de son et de réduction des mouvements suivent les contrôles partagés de WeightPlay. Aucun résultat du guide ne constitue une évaluation médicale, scolaire ou professionnelle.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Les formes peuvent-elles tourner ?</dt><dd>Non. Chaque forme de plateau conserve son orientation affichée.</dd></div><div><dt>Quand les points augmentent-ils ?</dt><dd>Seules les lignes ou colonnes complétées attribuent des points ; le simple fait de placer une forme ne le fait pas.</dd></div><div><dt>Combien de niveaux y a-t-il ?</dt><dd>Il y a 30 missions de campagne créées plus une course sans fin illimitée.</dd></div><div><dt>À quoi servent la glace et la pierre ?</dt><dd>La glace reste visible sous un bloc placé jusqu&#39;à ce que sa ligne disparaisse ; la pierre ne peut pas être occupée.</dd></div><div><dt>Pourquoi la course s&#39;est-elle terminée ?</dt><dd>L&#39;exécution se termine lorsqu&#39;aucune des formes inutilisées dans le bac actuel n&#39;a un emplacement légal.</dd></div><div><dt>La progression est-elle sauvegardée ?</dt><dd>Les déverrouillages et les préférences de campagne sont stockés localement dans ce navigateur.</dd></div><div><dt>Quels contrôles et quelles tailles d’écran sont pris en charge ?</dt><dd>Lorsque le jeu les prend en charge, le tactile, la souris et le clavier suivent les mêmes règles. L’interface s’adapte comme une seule mise en page logique sur les tailles requises pour mobile, paysage et ordinateur.</dd></div><div><dt>Le progrès est-il transféré automatiquement vers un autre appareil ?</dt><dd>Non. Pour le moment, ce jeu enregistre la progression uniquement dans le stockage local du navigateur ; un autre profil de navigateur ou un autre appareil aura donc une progression locale distincte, sauf si un système de comptes est ajouté plus tard.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambou de Panko</strong><span>Faites pivoter un réseau complet de bambou pour conduire l’eau de la source sculptée au bassin fleuri, sans coupure, fausse branche ni centre décalé.</span></span></a><a class="game-info-related-card" href="/fr/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Jardin solaire : chemins de miroirs</strong><span>Tournez les miroirs d’un jardin de 6×6 afin que chaque rayon visible suive un parcours valide jusqu’au lotus endormi.</span></span></a></div></div>
-    </div>
-  </section>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
+        <h2 data-i18n="howTitle">Comment jouer</h2>
+        <div class="game-info-section"><ol>
+          <li data-i18n="how1">Glissez une des trois formes fixes sur la grille 8×8.</li>
+          <li data-i18n="how2">Un aperçu translucide relevé montre un emplacement valide.</li>
+          <li data-i18n="how3">Complétez une ligne ou colonne pour l’effacer aussitôt.</li>
+        </ol></div>
+        <div class="game-info-section"><p data-i18n="helpText">Une forme placée ne bouge ni ne tourne. Les lignes complètes disparaissent aussitôt.</p><p data-i18n="gameOver">Aucune forme restante ne tient.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Combien de niveaux y a-t-il ?</dt><dd>Il y a 30 étapes écrites réparties dans six chapitres de règles. L&#39;étape 30 reste rejouable une fois terminée.</dd></div><div><dt>La progression est-elle sauvegardée ?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -203,13 +183,9 @@
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
           <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">
-              Select an unlocked mission.
-            </p>
+            <p class="stage-hint" data-i18n="stageHint">Choisissez une mission débloquée.</p>
             <nav class="stage-tabs" aria-label="Stage navigation">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
-                Stage Map
-              </button>
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">Carte</button>
             </nav>
           </footer>
           <button
@@ -218,9 +194,7 @@
             type="button"
             data-wp-enter-battle
             data-i18n="enter"
-          >
-            Enter Stage
-          </button>
+          >Entrer</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -288,25 +262,20 @@
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="howTitle">How to play</h2>
-              <p data-i18n="helpText">
-                Shapes cannot move or rotate after placement. Complete lines
-                clear immediately.
-              </p>
+              <h2 data-i18n="howTitle">Comment jouer</h2>
+              <p data-i18n="helpText">Une forme placée ne bouge ni ne tourne. Les lignes complètes disparaissent aussitôt.</p>
               <button
                 id="helpClose"
                 class="primary"
                 type="button"
                 data-i18n="continue"
-              >
-                Continue
-              </button>
+              >Continuer</button>
             </div>
           </section>
           <section id="leaveModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="leaveTitle">Leave this run?</h2>
-              <p data-i18n="leaveText">Continue keeps the exact board.</p>
+              <h2 data-i18n="leaveTitle">Quitter la partie ?</h2>
+              <p data-i18n="leaveText">Continuer conserve la grille.</p>
               <div class="modal-actions">
                 <button
                   id="leaveContinue"
@@ -315,9 +284,7 @@
                   data-i18n="continue"
                 >
                   Continue</button
-                ><button id="leaveStage" type="button" data-i18n="stageMap">
-                  Stage Map
-                </button>
+                ><button id="leaveStage" type="button" data-i18n="stageMap">Carte</button>
               </div>
             </div>
           </section>
@@ -329,7 +296,7 @@
               />
               <div>
                 <small id="resultStage">STAGE 1</small>
-                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <h2 id="resultTitle" data-i18n="clear">Mission réussie !</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
@@ -342,9 +309,7 @@
                   data-i18n="next"
                 >
                   Next Stage</button
-                ><button id="retryBtn" type="button" data-i18n="retry">
-                  Play Again
-                </button>
+                ><button id="retryBtn" type="button" data-i18n="retry">Rejouer</button>
               </div>
             </div>
           </section>
@@ -366,9 +331,9 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260904-interface-contract-v36"></script>
+    <script src="game.js?v=20260913-block-frame-v37"></script>
     <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
+    <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

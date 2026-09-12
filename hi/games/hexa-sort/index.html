@@ -51,9 +51,10 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260829-interface-contract-v37" />
     <link rel="stylesheet" href="style.css?v=20260829-interface-contract-v37" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css" />
+    <link rel="stylesheet" href="frame-content.css" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -84,12 +85,13 @@
 }
     </script>
   </head>
-  <body
+  <body data-wp-game-owned-guide="true"
     data-screen="main"
     data-wp-game-id="hexa-sort"
     data-wp-audience="general"
   >
     <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>Hexa Sort</strong><span>Preparing the stacks…</span><div class="loading-track"><i></i></div></div></section>
+    <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main id="main" class="main-canvas">
         <header class="main-header">
@@ -118,7 +120,7 @@
         <section class="hero">
           <img
             class="poster"
-            src="../../assets/hexa-sort/cover.webp"
+            src="../../assets/interface7-redrawn/hexa-sort.webp"
             alt="Hexa Sort game artwork"
           />
           <div class="hero-copy">
@@ -170,35 +172,9 @@
       <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>चिप स्थानांतरण लगातार दृश्यमान परतों और अनुक्रमिक पठनीय गति का उपयोग करते हैं। बोर्ड एक समय में एक नियतात्मक लेन-देन का समाधान करता है, जबकि स्टेज चयनकर्ता नौ स्थिर कार्डों को पुनर्चक्रित करता है, ताकि लंबे समय तक अभियान प्रति चरण एक स्थायी आइटम बनाए बिना सुचारू रहे। पूरा इंटरफ़ेस अधिकतम 920 पिक्सेल वाले एक केंद्रित तार्किक लेआउट का उपयोग करता है। फ़ोन, लैंडस्केप और डेस्कटॉप दृश्य अलग-अलग हिस्सों को खींचने के बजाय उन्हीं नियंत्रणों, हिट क्षेत्रों, चित्रों और गेम निर्देशांकों को साथ में स्केल करते हैं। इसलिए टच, माउस और कीबोर्ड एक ही वैध स्थिति पर काम करते हैं। Main पोस्टर और गेम शुरू करने की क्रिया Stage प्रबंधन से अलग रहती है, जबकि Stage चयन, Battle, संवाद और Result अपनी सीमित सामग्री और वापसी मार्ग बनाए रखते हैं।</p></div>
       <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>Hexa Sort परिवार के साथ खेलने के लिए सामान्य दर्शकों का ब्राउज़र पज़ल गेम है। खाते या खरीदारी की आवश्यकता नहीं है; अभियान अनलॉक, Endless का सर्वोच्च स्कोर, भाषा और ध्वनि प्राथमिकताएँ केवल इसी ब्राउज़र में संग्रहीत रहती हैं। आप बिना खाता बनाए खेल सकते हैं। प्रगति ऑनलाइन खाते या उपकरणों के बीच डेटाबेस में नहीं, बल्कि वर्तमान ब्राउज़र प्रोफ़ाइल के स्थानीय संग्रहण में सहेजी जाती है। साइट डेटा मिटाने, निजी ब्राउज़िंग, ब्राउज़र बदलने या किसी अन्य उपकरण पर जाने से अलग सेव बन सकती है या मौजूदा सेव हट सकती है। जब ब्राउज़र संग्रहण की अनुमति देता है, तो भाषा, ध्वनि और गति कम करने की प्राथमिकताएँ WeightPlay के साझा नियंत्रणों का पालन करती हैं। गाइड का कोई भी परिणाम चिकित्सा, स्कूल या पेशेवर मूल्यांकन नहीं है।</p></div>
       <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>कितने चरण शामिल हैं?</dt><dd>30 हस्तनिर्मित अभियान चरण और अंतहीन मोड हैं।</dd></div><div><dt>क्या मैं किसी ढेर को रखने के बाद उसे हटा सकता हूँ?</dt><dd>नहीं, सावधानी से चुनें; प्लेसमेंट अंतिम है और मिलान वाले शीर्ष रन स्वचालित रूप से हल हो जाते हैं।</dd></div><div><dt>किन चिप्स को ले जाने की अनुमति है?</dt><dd>स्टैक के शीर्ष पर एक ही रंग का केवल एक सन्निहित रन आसन्न स्टैक में जा सकता है।</dd></div><div><dt>कोई रंग कब साफ़ होता है?</dt><dd>एक कनेक्टेड रिज़ॉल्व्ड स्टैक तब साफ़ हो जाता है जब वह दस मिलान चिप्स तक पहुँच जाता है।</dd></div><div><dt>क्या अंतहीन यादृच्छिक है?</dt><dd>ऑफ़र अलग-अलग होते हैं, लेकिन नियम और प्रत्येक विलय निर्णय वर्तमान स्थिति से निर्धारित होते हैं।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>अभियान अनलॉक, अंतहीन सर्वोत्तम स्कोर और प्राथमिकताएँ इस ब्राउज़र में स्थानीय रूप से संग्रहीत की जाती हैं।</dd></div><div><dt>कौन-से नियंत्रण और स्क्रीन आकार समर्थित हैं?</dt><dd>जहाँ गेम उन्हें समर्थित करता है, टच, माउस और कीबोर्ड एक ही नियमों का पालन करते हैं। इंटरफ़ेस फ़ोन, लैंडस्केप और डेस्कटॉप के आवश्यक स्क्रीन आकारों में एक ही तार्किक लेआउट के रूप में अनुकूलित होता है।</dd></div><div><dt>क्या प्रगति अपने-आप दूसरे डिवाइस पर चली जाती है?</dt><dd>नहीं। यह गेम अभी प्रगति को केवल ब्राउज़र के स्थानीय संग्रहण में सहेजता है, इसलिए किसी दूसरे ब्राउज़र प्रोफ़ाइल या डिवाइस पर अलग स्थानीय प्रगति होगी, जब तक भविष्य में खाता प्रणाली नहीं जोड़ी जाती।</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ब्लॉक ब्लास्ट</strong><span>ब्लॉक ब्लास्ट एक मूल 8 बाय 8 स्थानिक पहेली है जिसमें 30 लिखित भू-भाग मिशन और एक अंतहीन उच्च-स्कोर मोड है। वर्तमान सेट से प्रत्येक निश्चित आकृति को रखें, पूरी पंक्तियों या स्तंभों को साफ़ करें, और ट्रे में अभी भी प्रतीक्षा कर रही आकृतियों के लिए पर्याप्त खुली जगह सुरक्षित रखें।</span></span></a><a class="game-info-related-card" href="/hi/games/arrow-escape/"><img src="/assets/interface7-redrawn/arrow-escape.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>तीरों से बचाव</strong><span>तीर वाले ब्लॉकों को सही क्रम में हटाकर 30 बचाव स्तर पूरे करें।</span></span></a></div></div>
+      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ब्लॉक ब्लास्ट</strong><span>8×8 बोर्ड पर तीन आकृतियाँ रखें और पूरी पंक्तियाँ व स्तंभ साफ करें।</span></span></a><a class="game-info-related-card" href="/hi/games/arrow-escape/"><img src="/assets/interface7-redrawn/arrow-escape.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>तीरों से बचाव</strong><span>तीर वाले ब्लॉकों को सही क्रम में हटाकर 30 बचाव स्तर पूरे करें।</span></span></a></div></div>
     </div>
   </section>
-      <section class="guide" aria-label="Game guide">
-        <h2 data-i18n="guideTitle">Only matching top layers can travel.</h2>
-        <div class="guide-grid">
-          <article>
-            <h3 data-i18n="howTitle">How to play</h3>
-            <ol>
-              <li data-i18n="how1">
-                Choose one of three stacks, then an empty hex.
-              </li>
-              <li data-i18n="how2">
-                Adjacent matching top runs move into the newly placed stack.
-              </li>
-              <li data-i18n="how3">
-                Ten matching chips clear and reveal the next chain.
-              </li>
-            </ol>
-          </article>
-          <article>
-            <h3 data-i18n="priorityTitle">Anchored merge order</h3>
-            <p data-i18n="priority">
-              The newly placed stack stays put; only directly adjacent
-              matching top runs move into it.
-            </p>
-          </article>
-        </div>
-      </section>
     </div>
     <section id="stageScreen" class="active-screen" hidden data-runtime-localize="off">
       <div class="stage-shell">
@@ -368,7 +344,7 @@
           </section>
           <section id="resultModal" class="modal" hidden>
             <div class="dialog result-layout">
-              <img src="../../assets/hexa-sort/cover.webp" alt="Hexa Sort" />
+              <img src="../../assets/interface7-redrawn/hexa-sort.webp" alt="Hexa Sort" />
               <div>
                 <small id="resultStage">STAGE 1</small>
                 <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
@@ -394,14 +370,17 @@
         <div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
       </div>
     </section>
+    </div>
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"hexa-sort"});</script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script>
     <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js"></script>
     <script src="game.js?v=20260829-interface-contract-v37"></script>
+    <script src="../../src/game-screen-frame.js"></script>
+    <script src="frame.js"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard
@@ -410,9 +389,8 @@
       src="../../src/battle-canvas-standard.js"
       data-wp-battle-standard
     ></script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-    <script src="../../src/game-page-info.js?v=20260911-hexa-public-faq-value-v40"></script>
-    <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+    <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+    <script src="/src/game-title-registry.js?v=20260804-hexa-release-v26" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
   </body>
 </html>

@@ -6,3 +6,15 @@
 .board-section{position:absolute;top:3px;transform:translateX(-50%);font-size:11px;color:#ffdf89;background:#17333c;padding:2px 5px}
 
 .active-scene{transform-origin:top left}
+/* Battle-owned state and route preview; shared navigation remains untouched. */
+#battleContent{grid-template-rows:minmax(0,1fr) 156px 48px}
+#side{grid-template-rows:32px 24px minmax(28px,1fr) 20px 22px;position:relative}
+#health{font-size:11px;line-height:24px;color:#9df0c8;white-space:nowrap;overflow:auto;text-align:center}
+#health[data-low="true"]{color:#ff9baf}
+#feedback[data-risk="true"]{color:#ffadb8}
+#choice{position:absolute;bottom:0;inset-inline:0;display:flex;justify-content:center;gap:8px;background:#173944;z-index:2;min-height:42px}
+#choice button{font-size:12px;min-height:40px;padding:6px 12px}
+.impact-cue{position:absolute;z-index:4;pointer-events:none;transform:translate(-50%,-130%);border:1px solid #ffe3a0;border-radius:6px;background:#243642ed;color:#ffe09a;font-size:12px;font-weight:800;padding:5px 8px;white-space:nowrap}
+.impact-cue[data-kind="pickup"]{color:#a0ffce;border-color:#a0ffce}
+.impact-cue[data-kind="fail"]{color:#ff9cb4;border-color:#ff9cb4}
+@media(min-aspect-ratio:1.45){#battleContent{grid-template-rows:minmax(0,1fr) 48px}#side{grid-template-rows:40px 28px minmax(28px,1fr) 24px 24px}#health{font-size:10px}#choice{min-height:38px}}

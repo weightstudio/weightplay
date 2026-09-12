@@ -1,4 +1,5 @@
 /* Only game-content layout. Shared core owns all headers and preferences. */
+.blast-stage-content,.blast-battle-content {background:linear-gradient(#09203955,#09203977),url('/assets/block-blast/workshop-block-v37.webp') center/cover}
 .blast-stage-content {display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .blast-stage-content #stageRail {flex:1;min-height:0}
 .blast-stage-content #enterStage {position:static;flex:none}
@@ -9,6 +10,7 @@
 .blast-battle-content>#battleHelp {grid-row:4;justify-self:end}
 #battleLive .blast-battle-content .block-play {container-type:size}
 #battleLive .blast-battle-content #blockBoard {
+  background:url('/assets/block-blast/board-block-v37.webp') center/100% 100%;border-radius:3px;
   width:min(100%,calc(100cqh - 124px));height:auto;aspect-ratio:1;
   max-width:100%;max-height:100%;align-self:center;justify-self:center;
 }
@@ -20,3 +22,40 @@
  .blast-battle-content>#battleHelp {grid-column:1;grid-row:2}
  #battleLive .blast-battle-content #blockBoard {width:min(100%,100cqh)}
 }
+/* One authored sprite shared by placed cells and the matching tray pieces. */
+.block-fill[style*="#4f8cff"],
+.piece-shape[style*="#4f8cff"] i {
+  background: url('/assets/block-blast/tile-blue-block-v37.webp') center / 100% 100%;
+  border-radius: 2px;
+}
+.block-fill[style*="#a866e8"], .piece-shape[style*="#a866e8"] i {
+  background: url('/assets/block-blast/tile-purple-block-v37.webp') center / 100% 100%; border-radius:2px;
+}
+.block-fill[style*="#36c9b2"], .piece-shape[style*="#36c9b2"] i {
+  background: url('/assets/block-blast/tile-teal-block-v37.webp') center / 100% 100%; border-radius:2px;
+}
+.block-fill[style*="#ffbd45"], .piece-shape[style*="#ffbd45"] i {
+  background: url('/assets/block-blast/tile-gold-block-v37.webp') center / 100% 100%; border-radius:2px;
+}
+.block-fill[style*="#ff668b"], .piece-shape[style*="#ff668b"] i {
+  background: url('/assets/block-blast/tile-pink-block-v37.webp') center / 100% 100%; border-radius:2px;
+}
+/* Invalid placement must remain distinguishable after the authored art layer. */
+.terrain-dirt, .block-fill.dirt-fill {
+  background: url('/assets/block-blast/terrain-dirt-block-v37.webp') center / 100% 100%;
+  border-radius:2px;
+}
+.terrain-dirt::after, .terrain-dirt.filled::after {content:none}
+.terrain-stone {background:url('/assets/block-blast/terrain-stone-block-v37.webp') center / 100% 100%;border-radius:2px}
+.terrain-stone::after {content:none}
+.terrain-lock::after, .terrain-gem::after {
+  content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:center / contain no-repeat;
+}
+.terrain-lock::after {background-image:url('/assets/block-blast/terrain-lock-block-v37.webp')}
+.terrain-gem::after {background-image:url('/assets/block-blast/terrain-gem-block-v37.webp')}
+.terrain-ice::after {
+  content:""; inset:0; border:0; border-radius:0;
+  background:url('/assets/block-blast/terrain-ice-block-v37.webp') center / 100% 100%;
+}
+.piece-shape.drag-ghost.invalid i {outline:2px solid #ff668b; filter:brightness(.65)}

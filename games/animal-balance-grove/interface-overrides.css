@@ -10,6 +10,7 @@ html.wp-active-play,body.wp-active-play{height:100%;overflow:hidden;overscroll-b
 .stage-canvas,.battle-canvas{width:min(920px,100%);height:calc(100vh - 56px);margin:0 auto;padding:clamp(18px,4vw,40px);overflow:hidden}
 .stage-canvas{position:relative;background:linear-gradient(180deg,rgba(32,86,76,.9),rgba(111,166,118,.34)),var(--wp-stage-art) center/cover}
 .panel-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.back-btn{min-width:4.75rem;white-space:nowrap}
 .stage-rail{max-height:calc(100% - 96px);overflow:auto}
 .stage-tabs{position:absolute;left:0;right:0;bottom:0;height:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:8px;padding:6px 12px;background:rgba(255,250,240,.78)}
 .stage-tabs button{grid-column:2;width:100%;min-height:44px}

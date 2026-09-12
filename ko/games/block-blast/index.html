@@ -13,16 +13,16 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>블록 블라스트 | WeightPlay</title>
-    <meta name="description" content="Block Blast는 30개의 지형 미션과 Endless 최고 점수 모드를 갖춘 독창적인 8 x 8 공간 퍼즐입니다. 현재 세트에서 고정된 모든 모양을 배치하고, 전체 행이나 열을 지우고, 아직 트레이에 대기 중인 모양을 위한 충분한 열린 공간을 보호하세요." />
+    <meta name="description" content="세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="블록 블라스트 | WeightPlay" />
-    <meta property="og:description" content="Block Blast는 30개의 지형 미션과 Endless 최고 점수 모드를 갖춘 독창적인 8 x 8 공간 퍼즐입니다. 현재 세트에서 고정된 모든 모양을 배치하고, 전체 행이나 열을 지우고, 아직 트레이에 대기 중인 모양을 위한 충분한 열린 공간을 보호하세요." />
+    <meta property="og:description" content="세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요." />
     <meta property="og:url" content="https://weightplay.com/ko/games/block-blast/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="블록 블라스트 | WeightPlay" />
-    <meta name="twitter:description" content="Block Blast는 30개의 지형 미션과 Endless 최고 점수 모드를 갖춘 독창적인 8 x 8 공간 퍼즐입니다. 현재 세트에서 고정된 모든 모양을 배치하고, 전체 행이나 열을 지우고, 아직 트레이에 대기 중인 모양을 위한 충분한 열린 공간을 보호하세요." />
+    <meta name="twitter:description" content="세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <link rel="canonical" href="https://weightplay.com/ko/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
@@ -51,11 +51,11 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260904-interface-contract-v36" />
-    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260913-block-frame-v37" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,7 +63,7 @@
   "name": "블록 블라스트",
   "url": "https://weightplay.com/ko/games/block-blast/",
   "image": "https://weightplay.com/assets/interface7-redrawn/block-blast.webp",
-  "description": "Block Blast는 30개의 지형 미션과 Endless 최고 점수 모드를 갖춘 독창적인 8 x 8 공간 퍼즐입니다. 현재 세트에서 고정된 모든 모양을 배치하고, 전체 행이나 열을 지우고, 아직 트레이에 대기 중인 모양을 위한 충분한 열린 공간을 보호하세요.",
+  "description": "세 가지 모양을 8×8 보드에 놓고 완성된 행과 열을 지우세요.",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -88,7 +88,7 @@
 }
     </script>
   </head>
-  <body
+  <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -128,11 +128,9 @@
             alt="블록 블라스트 게임 이미지"
           />
           <div class="hero-copy">
-            <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
+            <small data-i18n="genre">8×8 블록 퍼즐</small>
             <h1 data-runtime-localize="off">블록 블라스트</h1>
-            <p data-i18n="pitch">
-              Place all three shapes and clear complete rows or columns.
-            </p>
+            <p data-i18n="pitch">세 모양을 모두 놓고 완성된 행이나 열을 지우세요.</p>
             <strong id="mainProgress">1 / 30</strong>
             <div class="main-actions">
               <button
@@ -142,38 +140,20 @@
                 data-i18n="campaign"
               >
                 Campaign</button
-              ><button id="endlessBtn" type="button" data-i18n="endless">
-                Endless
-              </button>
+              ><button id="endlessBtn" type="button" data-i18n="endless">무한 모드</button>
             </div>
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="블록 블라스트 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>블록 블라스트</h2><p>Block Blast는 30개의 지형 미션과 Endless 최고 점수 모드를 갖춘 독창적인 8 x 8 공간 퍼즐입니다. 현재 세트에서 고정된 모든 모양을 배치하고, 전체 행이나 열을 지우고, 아직 트레이에 대기 중인 모양을 위한 충분한 열린 공간을 보호하세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>난이도</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>2~10분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>캠페인은 하나의 빈 보드 30개가 아닌 30개의 소형 퍼즐 미션으로 구성됩니다. 흙, 얼음, 돌, 보석, 자물쇠, 색상 목표 및 설정된 제한이 결합되어 다양한 계획 문제가 발생합니다.</p>
-<p>Endless 모드는 미션 대상을 제거하고 3가지 형태의 세트를 계속해서 처리합니다. 균형 잡힌 모양 풀에는 작은 커넥터, 중간 모서리, 긴 5셀 조각, 더 큰 직사각형 및 가끔 3 x 3 정사각형이 포함되므로 부주의한 보드에는 결국 법적 공간이 부족해집니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>모양은 트레이에 표시된 방향을 유지하며 배치 후에는 이동할 수 없습니다. 모양을 선택하고 합법적인 보드 셀을 탭하거나 돌출된 착륙 미리보기로 드래그하세요.</p>
-<p>전체 행이나 열이 즉시 지워집니다. 클리어된 라인만 포인트를 부여합니다. 블록을 설치하는 것만으로는 점수가 올라가지 않습니다.</p>
-<p>세 가지 모양을 모두 사용하면 새로운 고정 세트가 처리됩니다. 캠페인 임무에서는 라인, 지형, 보석, 색상 또는 제한된 목표를 요청할 수도 있습니다. 사용하지 않은 트레이 모양 중 어느 것도 적합하지 않으면 실행이 즉시 종료됩니다.</p>
-<p>얼음은 해당 선이 지워질 때까지 배치된 블록 아래에 보이는 반면, 돌과 자물쇠는 블록 배치를 차단합니다. 보석 세포는 덮여 있으면 연결된 자물쇠를 엽니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>30개의 미션을 수행하려면 캠페인을 선택하고, 한 번의 연속 점수 실행을 위해서는 Endless를 선택하세요.</li><li>보드 아래에 있는 세 가지 모양 중 하나를 선택합니다.</li><li>열려 있는 셀을 탭하거나 모양을 딱 맞게 드래그하세요.</li><li>행이나 열을 완성하여 지우고 점수를 매기세요.</li><li>나머지 모든 모양을 위한 공간을 유지하면서 세 가지 모양을 모두 사용하여 다음 세트를 받으세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>첫 번째 배치를 수행하기 전에 세 가지 모양을 모두 검사하세요.</li><li>한 모서리를 완벽하게 채우는 대신 여러 개의 열린 영역을 유지합니다.</li><li>다음 모양이 안전해지면 교차하는 행과 열을 지웁니다.</li><li>작은 조각만 받을 계획을 세우지 마십시오. 긴 모양과 때때로 3 x 3 정사각형은 의도적으로 Endless 모드의 일부입니다.</li><li>지형 미션에서는 반드시 제거해야 하는 셀과 절대 점유할 수 없는 석조 셀을 구별하세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>1~5단계에서는 라인 목표와 클린 보드 계획을 소개합니다.</p>
-<p>이후 장에서는 흙, 얼음, 돌, 보석, 자물쇠, 색상 목표, 혼합 목표 및 더 엄격한 설정 제한을 계층화합니다.</p>
-<p>플레이어의 선택에 따라 생성된 보드 상태에서 끝없는 난이도가 증가하며, 모양 분포는 단단한 모양만 다루지 않고 규칙적인 대형 조각 압력을 보장합니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>점수와 효과는 실제 라인 클리어와 연결됩니다. 투명한 광선은 완성된 행이나 열의 중앙에 유지되고, 조각은 지워진 셀에서 떨어지며, 플레이어가 다음 트레이 조각을 즉시 선택할 때 재생되지 않고 지워진 영역 위에 흰색 점수 게인이 나타납니다. 전체 인터페이스는 최대 920픽셀의 중앙 정렬 단일 논리 레이아웃을 사용합니다. 휴대폰, 가로 화면, 데스크톱에서는 개별 요소를 늘이지 않고 동일한 컨트롤, 적중 영역, 아트와 게임 좌표를 함께 확대·축소합니다. 따라서 터치, 마우스, 키보드는 같은 합법 상태를 조작합니다. Main 포스터와 게임 시작 동작은 Stage 관리와 분리되며, Stage 선택, Battle, 대화상자, Result는 각각 제한된 콘텐츠와 돌아갈 경로를 유지합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>Block Blast is a general-audience browser puzzle for family play. No account is required. Campaign unlocks and preferences are stored only in this browser, so clearing site data or changing devices can remove local progress. 계정을 만들지 않고 플레이할 수 있습니다. 진행 상황은 온라인 계정이나 기기 간 데이터베이스가 아니라 현재 브라우저 프로필의 로컬 저장소에 저장됩니다. 사이트 데이터를 지우거나, 시크릿 브라우징을 사용하거나, 브라우저를 바꾸거나, 다른 기기로 옮기면 별도의 저장이 만들어지거나 기존 저장이 사라질 수 있습니다. 브라우저가 저장을 허용하면 언어, 사운드, 동작 줄이기 설정은 WeightPlay 공용 컨트롤을 따릅니다. 가이드의 어떤 결과도 의료, 학교 또는 전문 평가가 아닙니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>도형이 회전할 수 있나요?</dt><dd>아니요. 각 트레이 모양은 표시된 방향을 유지합니다.</dd></div><div><dt>포인트는 언제 늘어나나요?</dt><dd>완료된 행 또는 열에만 포인트가 부여됩니다. 단순히 모양을 배치하는 것은 아닙니다.</dd></div><div><dt>스테이지는 몇 개 있나요?</dt><dd>30개의 캠페인 미션과 무제한 Endless 런이 있습니다.</dd></div><div><dt>얼음과 돌은 무엇을 하는가?</dt><dd>선이 지워질 때까지 설치된 블록 아래에 얼음이 계속 보입니다. 돌은 점유할 수 없습니다.</dd></div><div><dt>왜 달리기가 끝났나요?</dt><dd>현재 트레이에서 사용되지 않은 모양 중 올바른 배치가 없으면 실행이 종료됩니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>캠페인 잠금 해제 및 기본 설정은 이 브라우저에 로컬로 저장됩니다.</dd></div><div><dt>어떤 조작 방식과 화면 크기를 지원하나요?</dt><dd>게임이 지원하는 범위에서 터치, 마우스, 키보드는 같은 규칙으로 작동합니다. 인터페이스는 필요한 휴대폰, 가로 화면, 데스크톱 크기에서 하나의 논리 레이아웃으로 함께 조정됩니다.</dd></div><div><dt>진행 상황이 다른 기기로 자동 이동하나요?</dt><dd>아니요. 현재 이 게임의 진행 상황은 브라우저 로컬 저장소에만 저장되므로 다른 브라우저 프로필이나 기기에서는 각각 별도의 로컬 진행 상황을 사용합니다. 향후 계정 시스템이 추가되지 않는 한 공유되지 않습니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>판코의 대나무 수로</strong><span>대나무 네트워크를 돌려 조각된 샘에서 꽃 연못까지 물을 연결하고 끊긴 곳, 가짜 가지, 어긋난 중심을 없애세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>햇살 정원: 거울 빛길</strong><span>6×6 정원에서 거울을 돌려 보이는 모든 햇빛을 올바른 길로 잠든 연꽃까지 보내세요.</span></span></a></div></div>
-    </div>
-  </section>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
+        <h2 data-i18n="howTitle">플레이 방법</h2>
+        <div class="game-info-section"><ol>
+          <li data-i18n="how1">고정된 세 모양 중 하나를 8×8 보드로 드래그하세요.</li>
+          <li data-i18n="how2">위로 뜬 반투명 미리보기가 가능한 위치를 보여 줍니다.</li>
+          <li data-i18n="how3">행이나 열을 완성하면 즉시 사라집니다.</li>
+        </ol></div>
+        <div class="game-info-section"><p data-i18n="helpText">놓은 뒤에는 이동하거나 회전할 수 없습니다. 완성된 줄은 즉시 지워집니다.</p><p data-i18n="gameOver">남은 모양을 놓을 수 없습니다.</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>스테이지는 몇 개 있나요?</dt><dd>6개의 규칙 장에 걸쳐 30개의 작성된 단계가 있습니다. 스테이지 30은 완료 후에도 다시 플레이할 수 있습니다.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -203,13 +183,9 @@
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
           <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">
-              Select an unlocked mission.
-            </p>
+            <p class="stage-hint" data-i18n="stageHint">열린 미션을 선택하세요.</p>
             <nav class="stage-tabs" aria-label="Stage navigation">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
-                Stage Map
-              </button>
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">스테이지 맵</button>
             </nav>
           </footer>
           <button
@@ -218,9 +194,7 @@
             type="button"
             data-wp-enter-battle
             data-i18n="enter"
-          >
-            Enter Stage
-          </button>
+          >입장</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -288,25 +262,20 @@
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="howTitle">How to play</h2>
-              <p data-i18n="helpText">
-                Shapes cannot move or rotate after placement. Complete lines
-                clear immediately.
-              </p>
+              <h2 data-i18n="howTitle">플레이 방법</h2>
+              <p data-i18n="helpText">놓은 뒤에는 이동하거나 회전할 수 없습니다. 완성된 줄은 즉시 지워집니다.</p>
               <button
                 id="helpClose"
                 class="primary"
                 type="button"
                 data-i18n="continue"
-              >
-                Continue
-              </button>
+              >계속</button>
             </div>
           </section>
           <section id="leaveModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="leaveTitle">Leave this run?</h2>
-              <p data-i18n="leaveText">Continue keeps the exact board.</p>
+              <h2 data-i18n="leaveTitle">이 게임을 나갈까요?</h2>
+              <p data-i18n="leaveText">계속하면 현재 보드를 유지합니다.</p>
               <div class="modal-actions">
                 <button
                   id="leaveContinue"
@@ -315,9 +284,7 @@
                   data-i18n="continue"
                 >
                   Continue</button
-                ><button id="leaveStage" type="button" data-i18n="stageMap">
-                  Stage Map
-                </button>
+                ><button id="leaveStage" type="button" data-i18n="stageMap">스테이지 맵</button>
               </div>
             </div>
           </section>
@@ -329,7 +296,7 @@
               />
               <div>
                 <small id="resultStage">STAGE 1</small>
-                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <h2 id="resultTitle" data-i18n="clear">미션 완료!</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
@@ -342,9 +309,7 @@
                   data-i18n="next"
                 >
                   Next Stage</button
-                ><button id="retryBtn" type="button" data-i18n="retry">
-                  Play Again
-                </button>
+                ><button id="retryBtn" type="button" data-i18n="retry">다시 플레이</button>
               </div>
             </div>
           </section>
@@ -366,9 +331,9 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260904-interface-contract-v36"></script>
+    <script src="game.js?v=20260913-block-frame-v37"></script>
     <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
+    <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

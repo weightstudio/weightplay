@@ -1,0 +1,19 @@
+/* Game content only; common headers, buttons and preferences belong to core. */
+.hexa-stage-content,.hexa-battle-content {background:linear-gradient(#10142b55,#10142b77),url('/assets/hexa-sort/workshop-block-v38.png') center / cover}
+.hexa-stage-content {display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.hexa-stage-content #stageRail {flex:1;min-height:0}
+.hexa-stage-content #enterStage {position:static;flex:none}
+.hexa-battle-content {display:flex;flex-direction:column;min-height:0;gap:6px}
+.hexa-battle-content .hexa-play {flex:1;min-height:0}
+.hexa-battle-content #battleHelp {align-self:flex-end}
+/* Native alpha sprite shared by the board, tray and moving chip clones.
+   Preserve the existing layer offsets and hit targets; never square the hex. */
+.chip[data-chip="red"],.chip[data-chip="blue"] {
+  -webkit-mask:none;
+  mask:none;
+  background:url('/assets/hexa-sort/chip-red-block-v38.png') center / 100% 100% no-repeat;
+  box-shadow:none;
+}
+.chip[data-chip="blue"] {background-image:url('/assets/hexa-sort/chip-blue-block-v38.png')}
+.chip[data-chip="red"]::before,.chip[data-chip="red"]::after,
+.chip[data-chip="blue"]::before,.chip[data-chip="blue"]::after {content:none}

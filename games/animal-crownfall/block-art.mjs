@@ -9,7 +9,7 @@ const C = {
   stone:0x697b88, pale:0xc4ccbd, guard:0x445768, purple:0x684c8e,
 };
 
-export function makeActor(box, enemy = null) {
+export function makeActor(box, enemy = null, gear = null) {
   const g = new THREE.Group(), boss = !!enemy?.boss;
   const add = (...args) => box(g, ...args);
   const fur = enemy ? C.stone : C.fur;
@@ -21,6 +21,7 @@ export function makeActor(box, enemy = null) {
   add(0,.31,.31,.29,.13,.15,C.cream);
   add(0,.38,.405,.12,.07,.065,C.ink);
   add(0,.27,.393,.16,.025,.02,C.furShade);
+  const legs=[];
   for(const side of [-1,1]) {
     add(side*.3,.35,-.01,.12,.19,.31,fur);
     add(side*.25,.72,-.015,.2,.2,.22,fur);
@@ -34,10 +35,11 @@ export function makeActor(box, enemy = null) {
     add(side*.17,.58,.24,.19,.038,.028,enemy?C.ink:C.furShade);
     add(side*.25,.31,.235,.1,.095,.05,C.cream);
     // Separate boot, cuff, knee and toe planes establish contact with the cell.
-    add(side*.135,-.29,0,.19,.23,.23,enemy?C.guard:C.furShade);
-    add(side*.135,-.32,.14,.17,.1,.06,trim,true);
-    add(side*.135,-.43,.065,.23,.13,.34,armor,true);
-    add(side*.135,-.465,.17,.24,.055,.17,enemy?C.pale:C.goldLight,true);
+    const leg=new THREE.Group();leg.position.set(side*.135,-.2,0);g.add(leg);legs.push(leg);
+    box(leg,0,-.09,0,.19,.23,.23,enemy?C.guard:C.furShade);
+    box(leg,0,-.12,.14,.17,.1,.06,trim,true);
+    box(leg,0,-.23,.065,.23,.13,.34,armor,true);
+    box(leg,0,-.265,.17,.24,.055,.17,enemy?C.pale:C.goldLight,true);
   }
   add(0,.035,0,.43,.4,.34,armor,true);
   add(0,.08,.192,.34,.25,.08,enemy?0x8095a1:C.tealLight,true);
@@ -107,6 +109,9 @@ export function makeActor(box, enemy = null) {
     }
   }
   g.userData.arms=arms;
+  g.userData.legs=legs;
+  if(!enemy&&gear?.weapon){const sword=new THREE.Group();arms[1].add(sword);sword.position.set(.07,-.22,.2);box(sword,0,.24,0,.085,.6,.07,C.pale,true);box(sword,0,.04,0,.3,.075,.1,C.gold,true);box(sword,0,.57,0,.05,.08,.07,C.blueLight,true);}
+  if(!enemy&&gear?.armor){const plate=new THREE.Group();arms[0].add(plate);plate.position.set(0,-.14,.22);box(plate,0,0,0,.36,.47,.12,C.blue,true);box(plate,0,0,.08,.27,.35,.05,C.gold,true);box(plate,0,0,.12,.12,.22,.04,C.tealLight,true);}
   g.scale.setScalar(boss?.81:.75);
   return g;
 }
@@ -123,6 +128,16 @@ export function makeProp(box, item) {
       add(x,x===0?.265:.195,.14,.115,.07,.12,C.goldLight,true);
       add(x,.04,.206,.063,.07,.035,x===0?0xd9507d:C.tealLight,true);
     }
+  } else if(item.kind==='sword') {
+    add(0,-.22,0,.08,.22,.1,C.ink);add(0,-.08,0,.42,.09,.15,C.gold,true);add(0,.2,0,.12,.5,.09,C.pale,true);add(0,.48,0,.06,.1,.08,C.blueLight,true);
+  } else if(item.kind==='armor') {
+    add(0,0,0,.55,.61,.18,C.blue,true);add(0,-.32,0,.3,.1,.15,C.blue,true);add(0,0,.11,.41,.47,.08,C.gold,true);add(0,0,.17,.17,.26,.04,C.tealLight,true);
+  } else if(item.kind==='heart') {
+    add(-.13,.08,0,.24,.28,.22,0xf46688);add(.13,.08,0,.24,.28,.22,0xf46688);add(0,-.14,0,.32,.18,.22,0xde3862);add(0,-.27,0,.13,.1,.16,0xde3862);add(-.17,.14,.13,.09,.1,.025,0xffc7d7);add(0,.32,0,.065,.13,.065,0x785134);add(.12,.34,0,.18,.07,.09,C.tealLight);
+  } else if(item.kind==='elixir') {
+    add(0,-.06,0,.4,.47,.28,0x42e4bb,true);add(0,.23,0,.16,.18,.14,0xb5fff2,true);add(0,.35,0,.23,.08,.2,C.gold,true);add(0,-.03,.16,.25,.18,.025,0xe9fff4);add(0,-.03,.18,.035,.13,.025,C.teal);add(0,-.03,.18,.13,.035,.025,C.teal);
+  } else if(item.kind==='fury') {
+    const gem=add(0,0,0,.35,.5,.25,0xe7a7ff,true);gem.rotation.z=.35;add(0,0,.17,.08,.33,.04,0xffffff);add(0,0,.2,.2,.06,.03,C.goldLight);
   } else if(item.kind==='key') {
     // Hollow square bow and two teeth retain a clear key silhouette.
     for(const x of [-.14,.14])add(x,.2,0,.08,.28,.12,C.gold,true);

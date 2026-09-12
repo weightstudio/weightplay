@@ -13,16 +13,16 @@
     <meta name="weightplay-scene-controls" content="immutable" />
     <meta name="theme-color" content="#17243d" />
     <title>方塊爆破 | WeightPlay</title>
-    <meta name="description" content="《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。" />
+    <meta name="description" content="把三個形狀放進 8×8 棋盤，消除完整橫排與直列。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="方塊爆破 | WeightPlay" />
-    <meta property="og:description" content="《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。" />
+    <meta property="og:description" content="把三個形狀放進 8×8 棋盤，消除完整橫排與直列。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/block-blast/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="方塊爆破 | WeightPlay" />
-    <meta name="twitter:description" content="《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。" />
+    <meta name="twitter:description" content="把三個形狀放進 8×8 棋盤，消除完整橫排與直列。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <link rel="canonical" href="https://weightplay.com/zh-tw/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
@@ -51,11 +51,11 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260904-interface-contract-v36" />
-    <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
+    <link rel="stylesheet" href="../arrow-escape/style.css?v=20260913-block-frame-v37" />
+    <link rel="stylesheet" href="style.css?v=20260913-block-frame-v37" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
     <link rel="stylesheet" href="../../src/game-screen-frame.css" />
-    <link rel="stylesheet" href="frame-content.css" />
+    <link rel="stylesheet" href="frame-content.css?v=20260913-block-frame-v37" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -63,7 +63,7 @@
   "name": "方塊爆破",
   "url": "https://weightplay.com/zh-tw/games/block-blast/",
   "image": "https://weightplay.com/assets/interface7-redrawn/block-blast.webp",
-  "description": "《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。",
+  "description": "把三個形狀放進 8×8 棋盤，消除完整橫排與直列。",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -87,7 +87,7 @@
 }
     </script>
   </head>
-  <body
+  <body data-wp-game-owned-guide="true"
     data-wp-game-id="block-blast"
     data-wp-audience="general"
   >
@@ -127,11 +127,9 @@
             alt="《方塊爆破》遊戲圖片"
           />
           <div class="hero-copy">
-            <small data-i18n="genre">8×8 BLOCK PUZZLE</small>
+            <small data-i18n="genre">8×8 方塊益智</small>
             <h1 data-runtime-localize="off">方塊爆破</h1>
-            <p data-i18n="pitch">
-              Place all three shapes and clear complete rows or columns.
-            </p>
+            <p data-i18n="pitch">放完每組三個形狀，填滿橫排或直列立即消除。</p>
             <strong id="mainProgress">1 / 30</strong>
             <div class="main-actions">
               <button
@@ -141,38 +139,20 @@
                 data-i18n="campaign"
               >
                 Campaign</button
-              ><button id="endlessBtn" type="button" data-i18n="endless">
-                Endless
-              </button>
+              ><button id="endlessBtn" type="button" data-i18n="endless">無限模式</button>
             </div>
           </div>
         </section>
       </main>
-      <section class="game-page-info game-page-info-static" aria-label="方塊爆破 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>方塊爆破</h2><p>《方塊爆破》是原創的 8×8 空間益智遊戲，包含 30 個精心設計的地形任務與無限計分模式。把每組三個固定形狀放進棋盤，完成整列或整行，並為尚未放置的形狀保留足夠空間。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>8×8 方塊配置益智</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 空間推理</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單至具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每局約 2 至 10 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>戰役由三十個小型益智任務組成，不是重複同一張空棋盤。泥土、冰塊、石頭、寶石、鎖定格、顏色目標與組數限制會組合成不同的規劃問題。</p>
-<p>無限模式不設任務目標，會持續提供三個形狀。形狀池包含小型連接塊、中型轉角、五格長條、較大矩形與偶爾出現的 3×3 方塊，因此疏忽配置終究會耗盡合法空間。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>形狀維持托盤顯示的方向，放置後不能移動。選取形狀後點擊合法棋盤格，或拖曳到抬高的落點預覽。</p>
-<p>填滿的橫列或直行會立即消除。只有消除行列才會得分，單純放下一個方塊不會增加分數。</p>
-<p>用完三個形狀後會取得下一組固定形狀。戰役任務也可能要求消除行列、處理地形、收集寶石、完成顏色目標或遵守組數限制。當托盤中所有未使用形狀都無法合法放置時，本局立即結束。</p>
-<p>冰塊會留在已放置方塊下方，直到該行列被消除；石頭與鎖定格不能放置。覆蓋寶石格會開啟相連的鎖。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>選擇包含三十個任務的戰役，或持續計分的無限模式。</li><li>選取棋盤下方三個形狀之一。</li><li>點擊空格或把形狀拖到合法位置。</li><li>完成橫列或直行以消除並得分。</li><li>用完三個形狀以取得下一組，同時為所有剩餘形狀保留空間。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>放下第一個形狀前，先檢查整組三個形狀。</li><li>保留數個開放區域，不要把單一角落填得過滿。</li><li>當後續形狀允許時，規劃互相交會的橫列與直行消除。</li><li>不要假設只會抽到小方塊；長條與偶爾出現的 3×3 方塊刻意構成無限模式的空間壓力。</li><li>在地形任務中，要分辨必須消除的格子與永遠不能放置的石頭格。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>第 1 至 5 關介紹行列目標與乾淨棋盤的空間規劃。</p>
-<p>後續章節逐步加入泥土、冰塊、石頭、寶石、鎖定格、顏色目標、混合任務與更嚴格的組數限制。</p>
-<p>無限模式的難度由玩家留下的棋盤狀態成長；平衡的形狀分布會定期帶來大型方塊壓力，但不會只提供困難形狀。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>分數與效果只對應真正完成的行列消除。消除光束保持在完成的橫列或直行中央，碎片從被消除的格子落下，白色加分提示顯示在消除區域，而且玩家立即選取下一個形狀時不會重播。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>《方塊爆破》是適合親子遊玩的普通大廳瀏覽器益智遊戲。不需要帳號；戰役解鎖與偏好只儲存在這個瀏覽器，清除網站資料或更換裝置可能移除本機進度。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>形狀可以旋轉嗎？</dt><dd>不可以。每個托盤形狀都維持顯示時的方向。</dd></div><div><dt>什麼時候會增加分數？</dt><dd>只有完成橫列或直行才會得分；單純放置形狀不會加分。</dd></div><div><dt>共有多少關？</dt><dd>包含 30 個精心設計的戰役任務，以及沒有固定終點的無限模式。</dd></div><div><dt>冰塊與石頭有什麼作用？</dt><dd>冰塊會留在方塊下方，直到該行列消除；石頭不能被占用。</dd></div><div><dt>為什麼本局結束？</dt><dd>當目前托盤中所有未使用形狀都沒有合法位置時，本局就會結束。</dd></div><div><dt>進度會儲存嗎？</dt><dd>戰役解鎖與偏好會儲存在這個瀏覽器。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>胖達竹水道</strong><span>旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>陽光花園：鏡面導光</strong><span>在六乘六花園中旋轉鏡子，讓每道可見陽光沿著正確路線照到沉睡的蓮花。</span></span></a></div></div>
-    </div>
-  </section>
+      <section id="guide" class="game-page-info game-page-info-static" aria-label="Block Blast game guide">
+        <h2 data-i18n="howTitle">玩法說明</h2>
+        <div class="game-info-section"><ol>
+          <li data-i18n="how1">拖曳三個固定形狀之一到 8×8 棋盤。</li>
+          <li data-i18n="how2">上移的半透明預覽會顯示合法落點。</li>
+          <li data-i18n="how3">填滿橫排或直列後立即消除。</li>
+        </ol></div>
+        <div class="game-info-section"><p data-i18n="helpText">放置後不能移動或旋轉；完整行列會立即消除。</p><p data-i18n="gameOver">剩餘形狀都無法放置。</p></div>
+      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>共有幾關？</dt><dd>六個規則章節有 30 個編寫階段。第 30 關在完成後仍然可以重玩。</dd></div><div><dt>進度會保存嗎？</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
     </div>
     <section id="stageScreen" class="active-screen" data-screen="stage" hidden>
       <div class="stage-shell">
@@ -202,13 +182,9 @@
           </header>
           <div id="stageRail" class="stage-rail" data-wp-stage-rail></div>
           <footer class="stage-footer">
-            <p class="stage-hint" data-i18n="stageHint">
-              Select an unlocked mission.
-            </p>
+            <p class="stage-hint" data-i18n="stageHint">選擇已解鎖任務。</p>
             <nav class="stage-tabs" aria-label="Stage navigation">
-              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">
-                Stage Map
-              </button>
+              <button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" aria-current="page" data-i18n="stageMap">關卡地圖</button>
             </nav>
           </footer>
           <button
@@ -217,9 +193,7 @@
             type="button"
             data-wp-enter-battle
             data-i18n="enter"
-          >
-            Enter Stage
-          </button>
+          >進入關卡</button>
         </div>
         <div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div>
       </div>
@@ -287,25 +261,20 @@
           </div>
           <section id="helpModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="howTitle">How to play</h2>
-              <p data-i18n="helpText">
-                Shapes cannot move or rotate after placement. Complete lines
-                clear immediately.
-              </p>
+              <h2 data-i18n="howTitle">玩法說明</h2>
+              <p data-i18n="helpText">放置後不能移動或旋轉；完整行列會立即消除。</p>
               <button
                 id="helpClose"
                 class="primary"
                 type="button"
                 data-i18n="continue"
-              >
-                Continue
-              </button>
+              >繼續</button>
             </div>
           </section>
           <section id="leaveModal" class="modal" hidden>
             <div class="dialog">
-              <h2 data-i18n="leaveTitle">Leave this run?</h2>
-              <p data-i18n="leaveText">Continue keeps the exact board.</p>
+              <h2 data-i18n="leaveTitle">要離開這局嗎？</h2>
+              <p data-i18n="leaveText">繼續會保留目前棋盤。</p>
               <div class="modal-actions">
                 <button
                   id="leaveContinue"
@@ -314,9 +283,7 @@
                   data-i18n="continue"
                 >
                   Continue</button
-                ><button id="leaveStage" type="button" data-i18n="stageMap">
-                  Stage Map
-                </button>
+                ><button id="leaveStage" type="button" data-i18n="stageMap">關卡地圖</button>
               </div>
             </div>
           </section>
@@ -328,7 +295,7 @@
               />
               <div>
                 <small id="resultStage">STAGE 1</small>
-                <h2 id="resultTitle" data-i18n="clear">Mission Complete!</h2>
+                <h2 id="resultTitle" data-i18n="clear">任務完成！</h2>
                 <p id="resultText"></p>
               </div>
               <div class="modal-actions result-actions">
@@ -341,9 +308,7 @@
                   data-i18n="next"
                 >
                   Next Stage</button
-                ><button id="retryBtn" type="button" data-i18n="retry">
-                  Play Again
-                </button>
+                ><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button>
               </div>
             </div>
           </section>
@@ -365,9 +330,9 @@
        src="../../src/stage-virtualization-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-virtualization-standard
     ></script>
-    <script src="game.js?v=20260904-interface-contract-v36"></script>
+    <script src="game.js?v=20260913-block-frame-v37"></script>
     <script src="../../src/game-screen-frame.js"></script>
-    <script src="frame.js"></script>
+    <script src="frame.js?v=20260913-block-frame-v37"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

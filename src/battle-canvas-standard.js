@@ -59,6 +59,9 @@
     "animal-tangram": [".battle", 390, 788, 760, 334],
     "animal-bamboo-pipes": ["#battle", 390, 788, 760, 334],
     "animal-abyss-diver": [".battle-canvas", 390, 788, 760, 334],
+    // Balance Grove's two-column subset tray needs the wide short-landscape
+    // envelope so its Back and Check controls remain physical touch targets.
+    "animal-balance-grove": [".battle-canvas", 390, 788, 760, 334],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],

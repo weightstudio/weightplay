@@ -1,6 +1,6 @@
 (() => {
   const GAME_ID = "animal-abyss-diver";
-  const GAME_VERSION = 20;
+  const GAME_VERSION = 21;
   const INTERFACE_VERSION = "7";
   document.body.dataset.wpCombinedSound = "true";
   const $ = (id) => document.getElementById(id);
@@ -594,12 +594,14 @@
     hi:{coins:"बचाव सिक्के: {n}",rank:"डाइवर रैंक: {n}",coinsEarned:"यह डाइव: +{n} बचाव सिक्के",coinsSaved:"सहेजा गया कुल: {n} बचाव सिक्के",routeUnlocked:"नया रूट अनलॉक: रूट {n} · {name}",routeReady:"अगला रूट तैयार: रूट {n} · {name}",routeComplete:"सभी 30 डाइव रूट पूरे हो गए।",routeRetry:"अगला लक्ष्य: {zones} क्षेत्रों में {target} बचाव"},
     ar:{coins:"عملات الإنقاذ: {n}",rank:"رتبة الغواص: {n}",coinsEarned:"هذه الغوصة: +{n} من عملات الإنقاذ",coinsSaved:"إجمالي العملات المحفوظة: {n}",routeUnlocked:"تم فتح المسار الجديد: المسار {n} · {name}",routeReady:"المسار التالي جاهز: المسار {n} · {name}",routeComplete:"اكتملت مسارات الغوص الثلاثون.",routeRetry:"الهدف التالي: إنقاذ {target} عبر {zones} مناطق"}
   };
+  const zhHant={...zh};
+  const zhHans={...zh};
   for(const [localeKey,labels] of Object.entries(progressionLocaleLabels)){
-    const pack=localeKey.startsWith("zh-")?zh:localeKey==="en"?en:localePacks[localeKey];
+    const pack=localeKey==="zh-Hant"?zhHant:localeKey==="zh-Hans"?zhHans:localeKey==="en"?en:localePacks[localeKey];
     if(!pack)throw new Error(`Animal Abyss Diver ${localeKey} progression labels are missing.`);
     Object.assign(pack,labels);
   }
-  const dictionaries={en,"zh-Hant":zh,"zh-Hans":zh,...localePacks};
+  const dictionaries={en,"zh-Hant":zhHant,"zh-Hans":zhHans,...localePacks};
   const routeText=(route,key)=>{
     const index=Math.max(0,routes.indexOf(route));
     if(!isChinese()&&localePacks[locale]){
