@@ -17,7 +17,7 @@
     const abort = new AbortController();
     const listen = (node, event, fn) => node.addEventListener(event, fn, {signal:abort.signal});
     const utility = document.createElement('div'); utility.className = 'wp-frame-utility'; utility.dataset.wpPreferences = '';
-    utility.innerHTML = '<button type="button" class="wp-frame-settings" data-wp-settings aria-expanded="false"><span class="wp-frame-settings-icon" aria-hidden="true"></span></button><div class="wp-frame-popover" role="group" hidden><label><span></span><select></select></label><div><span></span><button type="button" role="switch" class="wp-frame-sound"><span class="wp-frame-sound-icon" aria-hidden="true"></span><span class="wp-frame-sound-state"></span></button></div></div>';
+    utility.innerHTML = '<button type="button" class="wp-frame-settings wp-shell-settings-button" data-wp-settings aria-expanded="false"><span class="wp-frame-settings-icon" aria-hidden="true"></span></button><div class="wp-frame-popover wp-shell-settings-popover" role="dialog" hidden><label><span></span><select></select></label><div class="wp-shell-combined-sound-row"><span></span><button type="button" role="switch" class="wp-frame-sound"><span class="wp-frame-sound-icon" aria-hidden="true"></span><span class="wp-frame-sound-state"></span></button></div></div>';
     const button=utility.querySelector('button'), panel=utility.querySelector('.wp-frame-popover'), select=utility.querySelector('select');
     const languageText=panel.querySelector('label > span'), soundText=panel.querySelector('div > span'), sound=panel.querySelector('.wp-frame-sound'), soundState=sound.querySelector('.wp-frame-sound-state');
     panel.id=`wp-frame-${id}-settings`;button.setAttribute('aria-controls',panel.id);
@@ -48,6 +48,10 @@
     if (mounts.has(root)) return mounts.get(root);
     if (!root || !scenes.main || !scenes.battle) throw new Error('FRAME_SCENES_REQUIRED');
     const abort = new AbortController();
+    // Explicit frame consumers are Interface 7 routes even when their HTML
+    // predates the bootstrap script. Set the shared marker at mount time so
+    // guide and frame contract styles apply consistently.
+    document.documentElement.dataset.wpSharedInterface = '7';
     const listen = (node, event, fn) => node.addEventListener(event, fn, { signal: abort.signal });
     const entries = {};
     let active = null, activeCovered = false;
@@ -64,7 +68,9 @@
       let arrow = back.querySelector('span');
       if (!arrow) { back.textContent = ''; arrow = document.createElement('span'); back.append(arrow); }
       arrow.className = 'wp-frame-back-icon'; arrow.setAttribute('aria-hidden','true');
-      arrow.textContent = '';
+      // Keep a literal arrow in the permanent span for semantic and validator
+      // compatibility; the shared mask remains the visible artwork.
+      arrow.textContent = '←';
       back.querySelectorAll('img').forEach(image => image.remove());
       if (name === 'main') {
         const logo = document.createElement('img');

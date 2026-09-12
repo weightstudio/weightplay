@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Guide du jeu">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">Guide du jeu original WeightPlay</span>
-        <h2 data-i18n="guideTitle">Protégez Pip avec la ligne solide la plus courte</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">Bouclier de Miel</h2>
         <p data-i18n="guideIntro">Pip s&#39;est approché des ruches de la Prairie Trèfle-Lumière. Tracez des barrières pendant le vol des abeilles et renforcez les ouvertures avant qu&#39;elles atteignent le chiot.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
           <div><dt data-i18n="faq1q">Puis-je dessiner après le départ des abeilles ?</dt><dd data-i18n="faq1a">Oui. Ajoutez une ligne ou reliez un mur libre au terrain tant qu&#39;il reste du nectar.</dd></div>
           <div><dt data-i18n="faq2q">Les abeilles sont-elles blessées ?</dt><dd data-i18n="faq2a">Non. Les barrières les repoussent doucement vers les fleurs.</dd></div>
-          <div><dt data-i18n="faq3q">À quoi jouer ensuite ?</dt><dd data-i18n="faq3a">Essayez One Line pour le tracé précis ou Animal Guard Yard pour une défense plus vaste.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Jeux associés</h3><p data-i18n="relatedIntro">Si vous aimez dessiner une défense sous pression, essayez ensuite ces jeux :</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/fr/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Bataillon de prismes animaux</strong><span data-i18n="relatedPrismDescription">Basculez une batterie de prismes automatique entre trois voies et protégez un cœur de cristal contre des formations changeantes.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/fr/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Ouvrez une route dans la forêt, placez des défenseurs et protégez un cœur de cristal selon six règles de boss.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/fr/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Bataillon de prismes animaux</strong><span data-i18n="relatedPrismDescription">Basculez une batterie de prismes automatique entre trois voies et protégez un cœur de cristal contre des formations changeantes.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/fr/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Ouvrez une route dans la forêt, placez des défenseurs et protégez un cœur de cristal selon six règles de boss.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Retour aux niveaux">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">Bouclier de Miel</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

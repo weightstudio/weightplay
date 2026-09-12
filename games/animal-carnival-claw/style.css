@@ -56,3 +56,45 @@ html,body{margin:0;min-height:100%;background:#031a21;color:var(--ink)}body{over
 @media(max-height:500px) and (orientation:landscape){.stage-rail{gap:8px;padding:4px calc(50% - 75px)}.stage-card{flex-basis:150px}}
 @media(max-height:500px) and (orientation:landscape){.stage-rail{gap:8px!important;padding-inline:calc(50% - 75px)!important}.stage-card{flex:0 0 150px!important;width:150px!important;min-width:150px!important;max-width:150px!important;height:150px!important;min-height:150px!important;max-height:150px!important}}
 @media(max-height:500px) and (orientation:landscape){body.wp-stage-select-active [data-wp-logical-stage-canvas] #stageRail > .stage-card{flex:0 0 150px!important;width:150px!important;min-width:150px!important;max-width:150px!important;height:150px!important;min-height:150px!important;max-height:150px!important}.tutorial-nori{width:84px}}
+
+/* v41/I7 repair: keep the shared frame's measurable contracts authoritative
+   across this game's legacy content styles. */
+@layer wp-frame-contract {
+html body[data-game-id="animal-carnival-claw"] [data-wp-frame="2"] [data-wp-frame-progress] {
+  height:40px!important;
+  min-height:40px!important;
+  max-height:44px!important;
+}
+html body[data-game-id="animal-carnival-claw"] .game-page-info#mainGuide {
+  border-radius:24px!important;
+}
+html body[data-game-id="animal-carnival-claw"] .game-page-info#mainGuide .game-info-sections {
+  display:grid!important;
+}
+html body[data-game-id="animal-carnival-claw"] .game-page-info#mainGuide .game-info-section {
+  min-width:0!important;
+  padding:16px!important;
+  border:2px solid var(--wp-ui-line)!important;
+  border-radius:16px!important;
+  background:var(--wp-ui-background)!important;
+}
+@media(min-width:700px) {
+  html body[data-game-id="animal-carnival-claw"] [data-wp-frame-content="main"] {
+    grid-template-columns:420px minmax(0,1fr)!important;
+  }
+  html body[data-game-id="animal-carnival-claw"] [data-wp-frame-content="main"] [data-wp-frame-poster] {
+    width:420px!important;
+    min-width:420px!important;
+    max-width:420px!important;
+    height:420px!important;
+    min-height:420px!important;
+    max-height:420px!important;
+  }
+}
+@media(max-height:500px) and (orientation:landscape) {
+  html body[data-game-id="animal-carnival-claw"] [data-wp-logical-stage-canvas] #stageRail {
+    min-height:0!important;
+    height:100%!important;
+  }
+}
+}

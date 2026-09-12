@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="खेल मार्गदर्शिका">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay मूल खेल मार्गदर्शिका</span>
-        <h2 data-i18n="guideTitle">सबसे छोटी मजबूत रेखा से पिप को बचाएँ</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">हनी शील्ड</h2>
         <p data-i18n="guideIntro">पिप क्लोवरलाइट मैदान के छत्तों के पास पहुँच गया है। मधुमक्खियों के उड़ते समय दीवार बनाएँ और पिल्ले तक पहुँचने से पहले खाली जगह सुधारें।</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">सामान्य प्रश्न</h3><dl>
           <div><dt data-i18n="faq1q">क्या मधुमक्खियों के उड़ने के बाद भी रेखा बना सकता हूँ?</dt><dd data-i18n="faq1a">हाँ। मकरंद रहते नई रेखा बनाएँ या खुली दीवार को भूभाग से जोड़ें।</dd></div>
           <div><dt data-i18n="faq2q">क्या मधुमक्खियों को चोट लगती है?</dt><dd data-i18n="faq2a">नहीं। नेक्टर दीवार उन्हें धीरे से फूलों की ओर लौटा देती है।</dd></div>
-          <div><dt data-i18n="faq3q">इसके बाद क्या खेलूँ?</dt><dd data-i18n="faq3a">सटीक रेखा के लिए One Line या बड़ी रक्षा के लिए Animal Guard Yard खेलें।</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">संबंधित खेल</h3><p data-i18n="relatedIntro">अगर आपको दबाव में रक्षा रेखा बनाना पसंद है, तो ये खेल आज़माएँ:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/hi/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">पशु प्रिज़्म बटालियन</strong><span data-i18n="relatedPrismDescription">तीन लेन के बीच एक स्वचालित प्रिज़्म बैटरी बदलें और बदलती संरचनाओं से क्रिस्टल कोर की रक्षा करें।</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/hi/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">खुले जंगल का रास्ता बनाएँ, रक्षकों को तैनात करें और छह बॉस नियमों के बीच क्रिस्टल कोर को सुरक्षित रखें।</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/hi/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">पशु प्रिज़्म बटालियन</strong><span data-i18n="relatedPrismDescription">तीन लेन के बीच एक स्वचालित प्रिज़्म बैटरी बदलें और बदलती संरचनाओं से क्रिस्टल कोर की रक्षा करें।</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/hi/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">खुले जंगल का रास्ता बनाएँ, रक्षकों को तैनात करें और छह बॉस नियमों के बीच क्रिस्टल कोर को सुरक्षित रखें।</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="चरणों पर">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">हनी शील्ड</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="रोकें">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

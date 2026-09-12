@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Guia do jogo">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">Guia de jogo original WeightPlay</span>
-        <h2 data-i18n="guideTitle">Proteja Pip com a linha forte mais curta</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">Escudo de Mel</h2>
         <p data-i18n="guideIntro">Pip chegou perto das colmeias do Prado Luz do Trevo. Desenhe barreiras enquanto as abelhas voam e reforce as aberturas antes que alcancem o filhote.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">Perguntas frequentes</h3><dl>
           <div><dt data-i18n="faq1q">Posso desenhar depois que as abelhas saem?</dt><dd data-i18n="faq1a">Sim. Adicione outra linha ou conecte uma parede solta ao terreno enquanto houver néctar.</dd></div>
           <div><dt data-i18n="faq2q">As abelhas se machucam?</dt><dd data-i18n="faq2a">Não. As barreiras as fazem voltar suavemente para as flores.</dd></div>
-          <div><dt data-i18n="faq3q">O que jogar depois?</dt><dd data-i18n="faq3a">Tente One Line para traços cuidadosos ou Animal Guard Yard para uma defesa maior.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Jogos relacionados</h3><p data-i18n="relatedIntro">Se você gosta de desenhar uma defesa sob pressão, experimente estes jogos:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/pt-br/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Batalhão de Prismas Animal</strong><span data-i18n="relatedPrismDescription">Alterne uma bateria de prismas automática entre três faixas e proteja um núcleo de cristal de formações mutáveis.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/pt-br/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Abra uma rota na floresta, posicione defensores e mantenha um núcleo de cristal seguro sob seis regras de chefe.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/pt-br/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Batalhão de Prismas Animal</strong><span data-i18n="relatedPrismDescription">Alterne uma bateria de prismas automática entre três faixas e proteja um núcleo de cristal de formações mutáveis.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/pt-br/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Abra uma rota na floresta, posicione defensores e mantenha um núcleo de cristal seguro sob seis regras de chefe.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Voltar às fases">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">Escudo de Mel</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pausa">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

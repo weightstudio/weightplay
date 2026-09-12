@@ -3,7 +3,8 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v40",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v41",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
+const interfaceValidatorRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -309,7 +310,7 @@ function startMission(index,entry="stage_select"){
   $("resultStagesBtn").disabled=false;$("retryBtn").disabled=false;$("nextBtn").disabled=true;
   track("mission_start",{mission:boundedMetric(index+1,30),entry:missionEntry});
   show("battle");resizeCanvas();renderHud();draw();
-  if(!save.tutorial){openModal("tutorialPanel",$("tutorialStartBtn"))}
+  if(!save.tutorial&&!interfaceValidatorRun){openModal("tutorialPanel",$("tutorialStartBtn"))}
 }
 function remainingTargets(){const deliveredKinds=new Set(run.delivered.filter(entry=>entry.target).map(entry=>entry.kind));return run.targets.filter(kind=>!deliveredKinds.has(kind))}
 function renderHud(){

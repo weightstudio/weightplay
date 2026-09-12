@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="遊戲指南">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 原創遊戲指南</span>
-        <h2 data-i18n="guideTitle">用最短又堅固的線保護皮普</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">蜂蜜盾</h2>
         <p data-i18n="guideIntro">皮普走到苜蓿光原的蜂巢旁。蜂群飛行時畫出屏障，並在牠們碰到小犬前修補缺口。</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">常見問題</h3><dl>
           <div><dt data-i18n="faq1q">蜜蜂出發後還能畫線嗎？</dt><dd data-i18n="faq1a">可以。花蜜足夠時，可補畫另一條線，或把未固定的牆接到地形。</dd></div>
           <div><dt data-i18n="faq2q">蜜蜂會受傷嗎？</dt><dd data-i18n="faq2a">不會。花蜜屏障只會溫柔地把受驚蜂群彈回花朵方向。</dd></div>
-          <div><dt data-i18n="faq3q">接著適合玩什麼？</dt><dd data-i18n="faq3a">想練細緻描線可玩《動物一筆畫》，想挑戰大型防守可玩《動物守護庭院》。</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">相關遊戲</h3><p data-i18n="relatedIntro">如果你喜歡在壓力下畫出防線，可以接著挑戰：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">動物稜光軍團</strong><span data-i18n="relatedPrismDescription">在三條路線間切換自動稜光電池，抵禦變化中的敵陣並保護水晶核心。</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/zh-tw/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">獸王守衛</strong><span data-i18n="relatedBeastDescription">建立保持暢通的森林路線、安排防守者，在六種首領規則下守住水晶核心。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">動物稜光軍團</strong><span data-i18n="relatedPrismDescription">在三條路線間切換自動稜光電池，抵禦變化中的敵陣並保護水晶核心。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/zh-tw/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">獸王守衛</strong><span data-i18n="relatedBeastDescription">建立保持暢通的森林路線、安排防守者，在六種首領規則下守住水晶核心。</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="返回關卡">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">蜂蜜盾</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="暫停">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

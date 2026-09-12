@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
-        <h2 data-i18n="guideTitle">短く強い線でピップを守ろう</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">ハニーシールド</h2>
         <p data-i18n="guideIntro">ピップはクローバーライト草原の巣のそばに迷い込みました。ハチが飛んでいる間に壁を描き、子犬に届く前に隙間を補強します。</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
           <div><dt data-i18n="faq1q">ハチが飛び始めた後も描けますか？</dt><dd data-i18n="faq1a">はい。蜜が残っていれば、線を追加したり自由な壁を地形につないだりできます。</dd></div>
           <div><dt data-i18n="faq2q">ハチは傷つきますか？</dt><dd data-i18n="faq2a">いいえ。蜜のバリアは驚いたハチを花の方向へ優しく跳ね返します。</dd></div>
-          <div><dt data-i18n="faq3q">次におすすめのゲームは？</dt><dd data-i18n="faq3a">丁寧ななぞりなら『どうぶつ一筆書き』、大きな防衛なら『アニマル・ガード・ヤード』がおすすめです。</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">関連ゲーム</h3><p data-i18n="relatedIntro">プレッシャーの中で防衛線を描くのが好きなら、次はこちら：</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ja/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">アニマル・プリズム・バタリオン</strong><span data-i18n="relatedPrismDescription">3つのレーンで自動プリズム砲を切り替え、変化する敵編成からクリスタルコアを守ります。</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ja/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">ビースト戦術家</strong><span data-i18n="relatedBeastDescription">森のルートを開き、防衛役を配置して、6種類のボスルールからクリスタルコアを守ります。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ja/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">アニマル・プリズム・バタリオン</strong><span data-i18n="relatedPrismDescription">3つのレーンで自動プリズム砲を切り替え、変化する敵編成からクリスタルコアを守ります。</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ja/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">ビースト戦術家</strong><span data-i18n="relatedBeastDescription">森のルートを開き、防衛役を配置して、6種類のボスルールからクリスタルコアを守ります。</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="ステージへ戻る">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">ハニーシールド</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="一時停止">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

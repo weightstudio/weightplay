@@ -394,5 +394,9 @@
   Object.assign(hi,{relatedTitle:"संबंधित खेल",relatedIntro:"अगर आपको दबाव में रक्षा रेखा बनाना पसंद है, तो ये खेल आज़माएँ:",relatedPrismTitle:"पशु प्रिज़्म बटालियन",relatedPrismDescription:"तीन लेन के बीच एक स्वचालित प्रिज़्म बैटरी बदलें और बदलती संरचनाओं से क्रिस्टल कोर की रक्षा करें।",relatedBeastTitle:"Beast Guardian",relatedBeastDescription:"खुले जंगल का रास्ता बनाएँ, रक्षकों को तैनात करें और छह बॉस नियमों के बीच क्रिस्टल कोर को सुरक्षित रखें।"});
   Object.assign(ar,{relatedTitle:"ألعاب ذات صلة",relatedIntro:"إذا كنت تحب رسم دفاع تحت الضغط، فجرّب هذه الألعاب التالية:",relatedPrismTitle:"كتيبة بريزم الحيوان",relatedPrismDescription:"بدّل بطارية بريزم آلية بين ثلاثة مسارات واحمِ نواة بلورية من تشكيلات متغيرة.",relatedBeastTitle:"Beast Guardian",relatedBeastDescription:"افتح طريقاً في الغابة، وزّع المدافعين، وحافظ على نواة بلورية آمنة وفق ست قواعد للزعماء."});
   fr.start="Commencer le jeu";
+  // Dynamic objectives belong to the selected dictionary, not inherited
+  // Traditional Chinese/Spanish plus a later DOM translation pass.
+  zhHans.objective="保护皮普 {n} 秒";
+  pt.objective="Proteja Pip por {n} segundos";
   window.ANIMAL_HONEY_SHIELD_LOCALES={en,"zh-Hant":zhHant,"zh-Hans":zhHans,ja,ko,es,"pt-BR":pt,fr,de,it,ru,hi,ar};
 })();

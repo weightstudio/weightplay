@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Spielanleitung">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">Originale WeightPlay-Spielanleitung</span>
-        <h2 data-i18n="guideTitle">Beschütze Pip mit der kürzesten starken Linie</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">Honigschild</h2>
         <p data-i18n="guideIntro">Pip ist den Bienenstöcken der Kleelicht-Wiese zu nahe gekommen. Zeichne Barrieren, während die Bienen fliegen, und schließe Lücken rechtzeitig.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">FAQ</h3><dl>
           <div><dt data-i18n="faq1q">Kann ich nach dem Start der Bienen zeichnen?</dt><dd data-i18n="faq1a">Ja. Zeichne eine weitere Linie oder verbinde eine freie Wand mit dem Gelände, solange Nektar bleibt.</dd></div>
           <div><dt data-i18n="faq2q">Werden die Bienen verletzt?</dt><dd data-i18n="faq2a">Nein. Die Barrieren lenken sie sanft zurück zu den Blumen.</dd></div>
-          <div><dt data-i18n="faq3q">Was kann ich danach spielen?</dt><dd data-i18n="faq3a">Probiere One Line für genaues Zeichnen oder Animal Guard Yard für größere Verteidigung.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Ähnliche Spiele</h3><p data-i18n="relatedIntro">Wenn du gern unter Druck eine Verteidigung zeichnest, probiere diese Spiele:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/de/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Tierisches Prismabataillon</strong><span data-i18n="relatedPrismDescription">Schalte eine automatische Prismenbatterie zwischen drei Bahnen um und schütze einen Kristallkern vor wechselnden Formationen.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/de/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Öffne einen Waldweg, positioniere Verteidiger und halte einen Kristallkern unter sechs Bossregeln sicher.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/de/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Tierisches Prismabataillon</strong><span data-i18n="relatedPrismDescription">Schalte eine automatische Prismenbatterie zwischen drei Bahnen um und schütze einen Kristallkern vor wechselnden Formationen.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/de/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Öffne einen Waldweg, positioniere Verteidiger und halte einen Kristallkern unter sechs Bossregeln sicher.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Zurück zu Stufen">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">Honigschild</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pause">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

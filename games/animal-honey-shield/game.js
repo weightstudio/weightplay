@@ -14,15 +14,15 @@
   const fallbackSave={unlocked:1,cleared:{},stars:{}};
   let save=loadSave(),screen="main",stageIndex=0,selectedStage=0,tutorialReturnFocus=null,frame=null;
   const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
-  const atlas=new Image(),background=new Image(),pipArt=new Image(),beeArt=new Image();
+  const background=new Image(),pipArt=new Image(),beeArt=new Image(),hiveArt=new Image(),anchorArt=new Image(),flowerArt=new Image();
   const themeBackgrounds=[background,new Image(),new Image(),new Image(),new Image(),new Image()];
   const themeBackgroundSources=[
-    "../../assets/animal-honey-shield-background-simple-meadow.webp",
-    "../../assets/animal-honey-shield-background-simple-brook.webp",
-    "../../assets/animal-honey-shield-background-simple-stones.webp",
-    "../../assets/animal-honey-shield-background-simple-wind.webp",
-    "../../assets/animal-honey-shield-background-simple-bramble.webp",
-    "../../assets/animal-honey-shield-background-simple-ruins.webp",
+    "../../assets/animal-honey-shield-background-block-meadow-v1.webp",
+    "../../assets/animal-honey-shield-background-block-brook-v1.webp",
+    "../../assets/animal-honey-shield-background-block-stones-v1.webp",
+    "../../assets/animal-honey-shield-background-block-wind-v1.webp",
+    "../../assets/animal-honey-shield-background-block-bramble-v1.webp",
+    "../../assets/animal-honey-shield-background-block-ruins-v1.webp",
   ];
   const state={mode:"idle",paused:false,modal:false,started:false,planElapsed:0,elapsed:0,duration:8,nectar:100,strokes:[],drawing:null,bees:[],spawnClock:0,spawned:0,frame:0,last:0,flash:0,wallMoves:0,wallApproachStartedAt:null,wallFirstMovedAt:null,maxGroupAttached:0,pathOpenedAt:null,navClock:0,nav:null,wallNavClock:0,wallNav:null,mover:null,wallImpactContacts:0,wallMoveSolves:0,wallSupportContributions:0,frameWallMoveSolves:0,maxFrameWallMoveSolves:0,carrierChanges:0,beeWallCorrections:0,wallNavBuilds:0,directWallTargets:0,supporterCarryDistance:0,repairCueKey:"",repairCueUntil:0,keyboard:{x:500,y:310},result:null};
   let raf=0;
@@ -329,7 +329,7 @@
     $("resultPanel").hidden=true;$("leavePanel").hidden=true;$("pausePanel").hidden=true;$("battleLive").inert=false;$("battleLive").hidden=false;
     frame?.activate('battle');
     $("clearBtn").disabled=false;
-    $("stageLabel").textContent=fmt("stage",{n:stageIndex+1});$("objectiveText").textContent=fmt("objective",{n:spec.duration});
+    $("stageLabel").textContent=fmt("stage",{n:stageIndex+1});$("objectiveText").textContent=fmt("objective",{n:spec.duration.toFixed(1)});
     announce("ready");updateHud();updateAnchorCoach();draw();
   }
   function startStage(index){
@@ -346,9 +346,10 @@
     $("lineReadout").textContent=fmt("lineStatus",nectar);
   }
   function updateAnchorCoach(){
-    const visible=screen==="battle"&&stageIndex===0&&!state.started&&!state.result&&state.strokes.length===0;
+    const awaitingDraw=screen==="battle"&&!state.started&&!state.result&&!state.drawing&&state.strokes.length===0;
+    const visible=stageIndex===0&&awaitingDraw;
     $("anchorCoach").hidden=!visible;
-    $("drawHint").hidden=visible;
+    $("drawHint").hidden=!awaitingDraw||visible;
   }
   function updateAnchorContactCue(){
     if(!state.drawing||state.started||state.result)return;
@@ -1113,18 +1114,20 @@
     const dt=Math.min(.034,Math.max(0,(now-state.last)/1000));state.last=now;update(dt);draw();raf=requestAnimationFrame(loop);
   }
 
-  const SPRITE_CROPS=[
-    {x:70,y:115,w:420,h:330},{x:123,y:146,w:266,h:261},{x:20,y:22,w:475,h:455},
-    {x:62,y:35,w:395,h:465},{x:54,y:28,w:410,h:465},{x:8,y:76,w:500,h:390},
-  ];
   function drawSprite(cell,x,y,w,h,flip=false){
-    const image=cell===0?pipArt:atlas;
-    if(!image.complete||!image.naturalWidth)return;
-    const crop=cell===0?{x:0,y:0,w:image.naturalWidth,h:image.naturalHeight}:SPRITE_CROPS[cell];
-    const sx=cell===0?0:(cell%3)*512+crop.x,sy=cell===0?0:Math.floor(cell/3)*512+crop.y;
+    const standalone=cell===0?pipArt:cell===2?hiveArt:cell===3?anchorArt:cell===4?flowerArt:null;
+    const image=standalone;
+    if(!image?.complete||!image.naturalWidth)return;
+    const crop={x:0,y:0,w:image.naturalWidth,h:image.naturalHeight},sx=0,sy=0;
     const rect=canvas.getBoundingClientRect(),physicalX=Math.max(.0001,rect.width/1000),physicalY=Math.max(.0001,rect.height/620),uniform=Math.sqrt(physicalX*physicalY);
-    const physicalScale=Math.min((w*uniform)/crop.w,(h*uniform)/crop.h);
-    const dw=crop.w*physicalScale/physicalX,dh=crop.h*physicalScale/physicalY,dx=x+(w-dw)/2,dy=y+(h-dh)/2;
+    // Align the painted interaction feature, not the transparent file midpoint.
+    const pivot=cell===2?{x:.5,y:.67}:cell===3?{x:.43,y:.57}:cell===4?{x:.48,y:.37}:{x:.5,y:.5};
+    let physicalScale=Math.min((w*uniform)/crop.w,(h*uniform)/crop.h);
+    if(standalone&&cell!==0){
+      const cx=x+w/2,cy=y+h/2;
+      physicalScale=Math.min(physicalScale,Math.max(0,cx-4)*physicalX/(crop.w*pivot.x),Math.max(0,996-cx)*physicalX/(crop.w*(1-pivot.x)),Math.max(0,cy-4)*physicalY/(crop.h*pivot.y),Math.max(0,616-cy)*physicalY/(crop.h*(1-pivot.y)));
+    }
+    const dw=crop.w*physicalScale/physicalX,dh=crop.h*physicalScale/physicalY,dx=x+w/2-dw*pivot.x,dy=y+h/2-dh*pivot.y;
     ctx.save();
     if(flip){ctx.translate(dx+dw,dy);ctx.scale(-1,1);ctx.drawImage(image,sx,sy,crop.w,crop.h,0,0,dw,dh)}
     else ctx.drawImage(image,sx,sy,crop.w,crop.h,dx,dy,dw,dh);
@@ -1151,6 +1154,39 @@
     ctx.transform(cos*facing,sin*facing*physicalX/physicalY,-sin*physicalY/physicalX,cos,0,0);
     ctx.scale(ram.scaleX,ram.scaleY);
     ctx.drawImage(beeArt,0,0,crop.w,crop.h,-centroid.x/crop.w*dw,-centroid.y/crop.h*dh,dw,dh);
+    ctx.restore();
+  }
+  const platformMaterials={
+    meadow:{face:"#85623d",top:"#92c86a",edge:"#426437",light:"#d9edaa",mortar:"#58432c"},
+    brook:{face:"#ac793f",top:"#e1b96b",edge:"#684628",light:"#fff0b9",mortar:"#79552e"},
+    stones:{face:"#82908b",top:"#b9c6b8",edge:"#485b58",light:"#e3e9cb",mortar:"#566a63"},
+    wind:{face:"#78acbd",top:"#cce8e6",edge:"#3f7289",light:"#f1fff5",mortar:"#548b9e"},
+    bramble:{face:"#80576d",top:"#b9a078",edge:"#49394e",light:"#edcdad",mortar:"#5c405c"},
+    ruins:{face:"#b18d51",top:"#ead39a",edge:"#70552f",light:"#fff0bf",mortar:"#856b40"}
+  };
+  function drawBlockPlatform(platform,terrain){
+    // The artwork stays strictly inside the unchanged rectangular collider.
+    // No decorative overhang may suggest another supporting surface.
+    const {x,y,w,h}=platform,material=platformMaterials[terrain]||platformMaterials.stones;
+    const bevel=Math.min(10,w*.12,h*.22),top=Math.min(18,h*.3);
+    ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();
+    ctx.fillStyle=material.face;ctx.fillRect(x,y,w,h);
+    const tileW=terrain==="brook"?34:58,tileH=30;
+    for(let row=0,ty=y+top;ty<y+h;row++,ty+=tileH){
+      for(let tx=x-(row%2)*tileW*.5;tx<x+w;tx+=tileW){
+        ctx.fillStyle=material.mortar;ctx.fillRect(tx,ty,tileW,2);ctx.fillRect(tx,ty,2,tileH);
+        ctx.fillStyle=material.light;ctx.globalAlpha=.18;ctx.fillRect(tx+3,ty+3,tileW-5,2);
+        ctx.globalAlpha=1;
+      }
+    }
+    ctx.fillStyle=material.top;ctx.fillRect(x,y,w,top);
+    ctx.fillStyle=material.edge;
+    ctx.beginPath();ctx.moveTo(x+w-bevel,y+top);ctx.lineTo(x+w,y);
+    ctx.lineTo(x+w,y+h);ctx.lineTo(x+w-bevel,y+h-bevel);ctx.closePath();ctx.fill();
+    ctx.fillRect(x,y+h-bevel,w,bevel);
+    ctx.fillStyle=material.light;ctx.fillRect(x+2,y+2,Math.max(0,w-4),2);
+    ctx.globalAlpha=.5;ctx.fillRect(x+2,y+4,2,Math.max(0,h-bevel-4));ctx.globalAlpha=1;
+    ctx.strokeStyle=material.edge;ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,Math.max(0,w-2),Math.max(0,h-2));
     ctx.restore();
   }
   function drawTerrain(spec){
@@ -1208,24 +1244,11 @@
       ctx.drawImage(sceneBackground,sx,sy,sw,sh,0,0,1000,620);
     }else{ctx.fillStyle="#3a8b59";ctx.fillRect(0,0,1000,620)}
     drawTerrain(spec);ctx.fillStyle="rgba(7,39,29,.12)";ctx.fillRect(0,0,1000,620);
-    for(const platform of spec.platforms){
-      if(spec.theme.terrain==="brook"){ctx.save();ctx.fillStyle="#a96f35";ctx.strokeStyle="#ffe49b";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,14);ctx.fill();ctx.stroke();for(let x=platform.x+22;x<platform.x+platform.w;x+=34){ctx.beginPath();ctx.moveTo(x,platform.y+5);ctx.lineTo(x,platform.y+platform.h-5);ctx.stroke()}ctx.restore()}
-      else if(spec.theme.terrain==="wind"){ctx.save();ctx.fillStyle="rgba(184,241,255,.78)";ctx.strokeStyle="#ecffff";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,28);ctx.fill();ctx.stroke();ctx.restore()}
-      else if(spec.theme.terrain==="bramble"){ctx.save();ctx.fillStyle="#512847";ctx.strokeStyle="#ff9fcf";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,18);ctx.fill();ctx.stroke();ctx.restore()}
-      else if(spec.theme.terrain==="ruins"){ctx.save();ctx.fillStyle="#8b6c45";ctx.strokeStyle="#f9d98e";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,8);ctx.fill();ctx.stroke();ctx.restore()}
-      else if(spec.theme.terrain==="meadow"){
-        ctx.save();ctx.fillStyle="#76502f";ctx.strokeStyle="#d8ff9b";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,Math.min(18,platform.h*.22));ctx.fill();ctx.stroke();
-        ctx.fillStyle="#5aa94d";ctx.fillRect(platform.x+3,platform.y+3,platform.w-6,Math.min(18,platform.h-6));
-        ctx.strokeStyle="rgba(255,235,174,.2)";ctx.lineWidth=2;for(let y=platform.y+42;y<platform.y+platform.h;y+=36){ctx.beginPath();ctx.moveTo(platform.x+8,y);ctx.lineTo(platform.x+platform.w-8,y);ctx.stroke()}ctx.restore();
-      }else{
-        ctx.save();ctx.fillStyle="#716a45";ctx.strokeStyle="#e8d08a";ctx.lineWidth=5;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,platform.h,10);ctx.fill();ctx.stroke();
-        ctx.strokeStyle="rgba(255,244,195,.25)";ctx.lineWidth=2;for(let y=platform.y+34;y<platform.y+platform.h;y+=34){ctx.beginPath();ctx.moveTo(platform.x+5,y);ctx.lineTo(platform.x+platform.w-5,y);ctx.stroke()}for(let x=platform.x+42;x<platform.x+platform.w;x+=70){ctx.beginPath();ctx.moveTo(x,platform.y+4);ctx.lineTo(x,platform.y+platform.h-4);ctx.stroke()}ctx.restore();
-      }
-    }
-    for(const anchor of spec.anchors){if(spec.theme.terrain==="bramble"){ctx.save();ctx.fillStyle="#552245";ctx.strokeStyle="#ff9ed4";ctx.lineWidth=6;ctx.beginPath();ctx.arc(anchor.x,anchor.y,anchor.r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}else drawSprite(3,anchor.x-48,anchor.y-48,96,96)}
+    for(const platform of spec.platforms)drawBlockPlatform(platform,spec.theme.terrain);
+    for(const anchor of spec.anchors)drawSprite(3,anchor.x-48,anchor.y-48,96,96);
     drawAnchorTargetGuide(spec);
-    for(const gate of spec.gates){if(spec.theme.terrain==="ruins"){ctx.save();ctx.strokeStyle="#ffe09a";ctx.lineWidth=14;ctx.beginPath();ctx.arc(gate.x,gate.y,gate.r,Math.PI,0);ctx.stroke();ctx.restore()}else drawSprite(4,gate.x-52,gate.y-58,104,116)}
-    for(const hive of spec.hives)drawSprite(2,hive.x-75,hive.y-65,150,150);
+    for(const gate of spec.gates)drawSprite(4,gate.x-52,gate.y-58,104,116);
+    for(const hive of spec.hives)drawSprite(2,hive.x-75,hive.y-75,150,150);
     drawSprite(0,spec.dog.x-82,spec.dog.y-62,164,124);
     for(const bee of state.bees)drawBee(bee);
     const strokes=state.drawing?[...state.strokes,state.drawing]:state.strokes;
@@ -1288,7 +1311,7 @@
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendForeground()});
 
   function loadAssets(){
-    const sources=[[atlas,"../../assets/animal-honey-shield-sprites.webp"],[pipArt,"../../assets/animal-honey-shield-pip-block-v1.webp"],[beeArt,"../../assets/animal-honey-shield-bee-block-v1.webp"],...themeBackgrounds.map((image,index)=>[image,themeBackgroundSources[index]])];
+    const sources=[[pipArt,"../../assets/animal-honey-shield-pip-block-v1.webp"],[beeArt,"../../assets/animal-honey-shield-bee-block-v1.webp"],[hiveArt,"../../assets/animal-honey-shield-hive-block-v1.webp"],[anchorArt,"../../assets/animal-honey-shield-anchor-block-v1.webp"],[flowerArt,"../../assets/animal-honey-shield-flower-block-v1.webp"],...themeBackgrounds.map((image,index)=>[image,themeBackgroundSources[index]])];
     let settled=0;const done=()=>{settled++;$("loadingFill").style.width=`${settled/sources.length*100}%`;if(settled===sources.length)setTimeout(()=>{$("loadingPanel").hidden=true;applyLocale();draw()},120)};
     for(const [image,src] of sources){image.onload=done;image.onerror=done;image.src=src}
   }
@@ -1505,8 +1528,8 @@
       return{records,failures};
     },
     beeSpriteMetrics(){
-      const crop=SPRITE_CROPS[1],centroid={x:133.44,y:137.67},rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(physicalX*physicalY);
-      const physicalWidth=58*uniform,physicalHeight=physicalWidth*crop.h/crop.w;
+      const crop={w:beeArt.naturalWidth,h:beeArt.naturalHeight},centroid={x:crop.w*(769.0084916800637/1536),y:crop.h*(482.7998664457817/1024)},rect=canvas.getBoundingClientRect(),physicalX=rect.width/1000,physicalY=rect.height/620,uniform=Math.sqrt(physicalX*physicalY);
+      const physicalWidth=80*uniform,physicalHeight=physicalWidth*crop.h/crop.w;
       const drawOrigin={x:-centroid.x/crop.w*physicalWidth,y:-centroid.y/crop.h*physicalHeight};
       return{sourceRatio:crop.w/crop.h,physicalRatio:physicalWidth/physicalHeight,alphaCentroid:[centroid.x,centroid.y],centerOffset:[drawOrigin.x+centroid.x/crop.w*physicalWidth,drawOrigin.y+centroid.y/crop.h*physicalHeight]};
     },
@@ -1531,7 +1554,7 @@
       const sample=life=>{bee.life=life;const visual=wallRamVisual(bee);return{phase:visual.phase,offset:visual.offset,x:visual.x,scaleX:visual.scaleX,scaleY:visual.scaleY}};
       return{start:sample(0),recoil:sample(.18),charge:sample(.31),impact:sample(.4368),recover:sample(.52)};
     },
-    assetStatus:()=>({atlas:atlas.naturalWidth,backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
+    assetStatus:()=>({sprites:{pip:pipArt.naturalWidth,bee:beeArt.naturalWidth,hive:hiveArt.naturalWidth,anchor:anchorArt.naturalWidth,flower:flowerArt.naturalWidth},backgrounds:themeBackgrounds.map(image=>image.naturalWidth)}),
     loopTailProbe(){
       const points=[{x:500,y:360},{x:500,y:300},{x:430,y:235}];
       for(let step=0;step<=24;step++){const angle=Math.PI*2*step/24;points.push({x:500+190*Math.cos(angle),y:350+150*Math.sin(angle)})}

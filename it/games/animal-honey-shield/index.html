@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="Guida al gioco">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">Guida al gioco originale WeightPlay</span>
-        <h2 data-i18n="guideTitle">Proteggi Pip con la linea forte più corta</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">Scudo di Miele</h2>
         <p data-i18n="guideIntro">Pip si è avvicinato agli alveari del Prato Trifoglio Luce. Disegna barriere mentre le api volano e rinforza le aperture prima che raggiungano il cucciolo.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">Domande frequenti</h3><dl>
           <div><dt data-i18n="faq1q">Posso disegnare dopo la partenza delle api?</dt><dd data-i18n="faq1a">Sì. Aggiungi una linea o collega un muro libero al terreno finché resta nettare.</dd></div>
           <div><dt data-i18n="faq2q">Le api si fanno male?</dt><dd data-i18n="faq2a">No. Le barriere le fanno rimbalzare dolcemente verso i fiori.</dd></div>
-          <div><dt data-i18n="faq3q">A cosa posso giocare dopo?</dt><dd data-i18n="faq3a">Prova One Line per tracciare con precisione o Animal Guard Yard per una difesa più ampia.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">Giochi correlati</h3><p data-i18n="relatedIntro">Se ti piace disegnare una difesa sotto pressione, prova questi giochi:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/it/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Battaglione Prismi Animali</strong><span data-i18n="relatedPrismDescription">Sposta una batteria di prismi automatica tra tre corsie e proteggi un nucleo di cristallo da formazioni mutevoli.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/it/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Apri un percorso nella foresta, posiziona i difensori e proteggi un nucleo di cristallo attraverso sei regole dei boss.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/it/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">Battaglione Prismi Animali</strong><span data-i18n="relatedPrismDescription">Sposta una batteria di prismi automatica tra tre corsie e proteggi un nucleo di cristallo da formazioni mutevoli.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/it/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">Apri un percorso nella foresta, posiziona i difensori e proteggi un nucleo di cristallo attraverso sei regole dei boss.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="Torna ai livelli">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">Scudo di Miele</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="Pausa">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

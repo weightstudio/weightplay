@@ -91,7 +91,7 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="게임 안내">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 오리지널 게임 안내</span>
-        <h2 data-i18n="guideTitle">가장 짧고 튼튼한 선으로 핍을 지키세요</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">허니 실드</h2>
         <p data-i18n="guideIntro">핍이 클로버라이트 초원의 벌집 가까이 왔습니다. 벌이 나는 동안 방어선을 그리고 강아지에게 닿기 전에 틈을 보강하세요.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
@@ -107,11 +107,10 @@
         <article class="game-info-section"><h3 data-i18n="faqTitle">자주 묻는 질문</h3><dl>
           <div><dt data-i18n="faq1q">벌이 출발한 뒤에도 그릴 수 있나요?</dt><dd data-i18n="faq1a">네. 꿀이 남아 있으면 선을 추가하거나 느슨한 벽을 지형에 연결할 수 있어요.</dd></div>
           <div><dt data-i18n="faq2q">벌이 다치나요?</dt><dd data-i18n="faq2a">아니요. 꽃꿀 방어선은 놀란 벌을 꽃 쪽으로 부드럽게 튕겨 냅니다.</dd></div>
-          <div><dt data-i18n="faq3q">다음에는 무엇을 플레이하나요?</dt><dd data-i18n="faq3a">정교한 선 긋기는 애니멀 원 라인, 더 큰 방어는 애니멀 가드 야드를 추천합니다.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">관련 게임</h3><p data-i18n="relatedIntro">압박 속에서 방어선을 그리는 플레이가 좋다면 다음 게임을 만나 보세요:</p><div class="game-info-related">
-          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ko/games/animal-prism-battalion/"><img src="/assets/animal-prism-battalion/cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">동물 프리즘 대대</strong><span data-i18n="relatedPrismDescription">세 레인 사이에서 자동 프리즘 포대를 전환하며 변화하는 적 대형으로부터 크리스털 코어를 지키세요.</span></span></a>
-          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ko/games/beast-tactician/"><img src="/assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">숲의 길을 열고 방어자를 배치해 여섯 가지 보스 규칙 속에서 크리스털 코어를 지키세요.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="animal-prism-battalion" href="/ko/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedPrismTitle">동물 프리즘 대대</strong><span data-i18n="relatedPrismDescription">세 레인 사이에서 자동 프리즘 포대를 전환하며 변화하는 적 대형으로부터 크리스털 코어를 지키세요.</span></span></a>
+          <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="/ko/games/beast-tactician/"><img src="/assets/wonder-crash-related-beast-tactician-cover-block-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">숲의 길을 열고 방어자를 배치해 여섯 가지 보스 규칙 속에서 크리스털 코어를 지키세요.</span></span></a>
         </div></article>
       </div>
     </section>
@@ -135,7 +134,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="스테이지로">←</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="objectiveText" data-wp-game-title data-runtime-localize="off">허니 실드</strong></div>
+          <div class="battle-title" data-wp-frame-info><small id="stageLabel"></small><strong id="objectiveText"></strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="일시정지">Ⅱ</button>
         </header>
         <section class="battle-metrics" aria-label="Battle status">

@@ -49,6 +49,11 @@
     farBack: "最深處", mechanicStack: "規則：完全符合由前到後的順序。", mechanicDecoy: "規則：把標記的飛蛾誘餌放在所有目標圖層後方。", mechanicWind: "規則：這股風要求你由後往前讀取目標。", mechanicEcho: "規則：把回聲圖層放在顯示的位置；每一層都重要。",
     fern: "蕨葉圖層", pond: "池水圖層", moon: "月光圖層", moss: "苔蘚圖層", glow: "林地光芒圖層", root: "樹根圖層", willow: "柳樹圖層", brook: "小溪圖層", mist: "薄霧圖層", leaf: "葉片圖層", rain: "雨水圖層", sun: "陽光圖層", bloom: "花朵圖層", canopy: "樹冠圖層", beacon: "燈塔圖層", reeds: "蘆葦圖層", creek: "溪流圖層", amber: "琥珀光圖層", reed: "單枝蘆葦圖層", stone: "石頭圖層", stream: "水流圖層", pebble: "卵石圖層", wind: "風圖層", pine: "松林圖層", fog: "霧氣圖層", fox: "狐狸圖層", wing: "翅膀圖層", meadow: "草地圖層", whistle: "口哨圖層", storm: "風暴圖層", glass: "玻璃圖層", ridge: "山脊圖層", owl: "貓頭鷹圖層", frost: "霜晶圖層", echo: "回聲圖層", snow: "雪地圖層", bell: "鈴鐺圖層", hollow: "空谷圖層", night: "夜色圖層", star: "星光圖層", shell: "貝殼圖層", coral: "珊瑚圖層", kelp: "海帶圖層", tide: "潮汐圖層", sand: "沙地圖層", water: "水面圖層", acorn: "橡實圖層", burrow: "洞穴圖層", keeper: "守護員圖層", moth: "飛蛾誘餌圖層"
   });
+  Object.assign(variants["zh-Hant"], {
+    placementHint: "請將{name}放在{depth}。",
+    moveForward: "將{name}移向前景",
+    moveBackward: "將{name}移向後景"
+  });
   const stageCopy = [
     ["Fern Window", "A fern window needs the soft pond glow behind its fronds.", "Fern, pond, and moonlight overlap.", "The fern window is still hidden by the wrong depth."],
     ["Moss Lantern", "A moss lantern warms when its root holds the lowest edge.", "Moss, glow, and root overlap.", "The root is not holding the lowest edge yet."],
