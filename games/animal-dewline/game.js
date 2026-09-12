@@ -27,6 +27,7 @@
     state.screen = screen;
     ["main", "stage", "battle", "result"].forEach((name) => { $(`${name}Screen`).hidden = name !== screen; });
     document.body.dataset.screen = screen;
+    if (screen === "main") $("bestValue").textContent = readBest() || t("noBest");
   };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;

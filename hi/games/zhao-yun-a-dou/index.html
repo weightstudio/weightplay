@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/zhao-yun-a-dou/" />
-
     <link rel="canonical" href="https://weightplay.com/hi/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/zhao-yun-a-dou/" />
@@ -28,7 +27,11 @@
   <title>झाओ युन और आ-दो: स्याही रक्षा | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="style.css?v=20260910-zhao-main-poster-v23">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="frame-content.css?v=20260912-block-v24">
   <meta name="description" content="अक्षर सैनिकों की भर्ती करें, उन्हें तीन लेन में बाँटें और समान इकाइयाँ मिलाकर 30 छोटे स्याही रक्षा मिशनों में आ-दो को बचाएँ।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,8 +48,9 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "झाओ युन और आ-दो: स्याही रक्षा",
+  "alternateName": "Zhao Yun & A Dou: Inkline Defense",
   "url": "https://weightplay.com/hi/games/zhao-yun-a-dou/",
-  "image": "https://weightplay.com/assets/zhao-yun-a-dou-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/zhao-yun-a-dou.webp",
   "description": "अक्षर सैनिकों की भर्ती करें, उन्हें तीन लेन में बाँटें और समान इकाइयाँ मिलाकर 30 छोटे स्याही रक्षा मिशनों में आ-दो को बचाएँ।",
   "publisher": {
     "@type": "Organization",
@@ -59,60 +63,68 @@
   "genre": [
     "रणनीति",
     "रक्षा",
-    "मर्ज",
-    "Browser Game"
+    "मर्ज"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Zhao Yun & A Dou: Inkline Defense"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-zhao-interface-contract-v23" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <main id="main" class="screen main main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">झाओ युन और आ-दो: स्याही रक्षा</h1>
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle">INKLINE DEFENSE</strong>
+      <strong data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
     <section class="hero">
       <div class="ink-poster" role="img" data-t-aria="posterAlt" aria-label="Ink wash battlefield with Zhao Yun and A Dou">
-        <img class="poster-art" src="../../assets/zhao-yun-a-dou-cover.png" alt="">
-        <div class="poster-moon" aria-hidden="true"></div>
-        <div class="poster-flag poster-flag-left" aria-hidden="true">趙</div>
-        <div class="poster-flag poster-flag-right" aria-hidden="true">阿</div>
-        <div class="poster-brush" aria-hidden="true"></div>
-        <div class="poster-title" aria-hidden="true">墨線</div>
+        <img class="poster-art" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="" width="1254" height="1254">
       </div>
       <div class="hero-copy">
-        <p class="eyebrow" data-t="kicker">A SHORT MERGE-DEFENSE CAMPAIGN</p>
-        <h1 data-t="title">झाओ युन और आ-दो: स्याही रक्षा</h1>
-        <p class="main-summary" data-t="summary">Recruit Chinese-character soldiers, merge matching units, and keep three lanes safe while Zhao Yun protects A Dou.</p>
-        <p class="prototype-pill" data-t="prototype">Internal prototype</p>
+        <p class="main-summary" data-t="summary">Recruit soldiers, merge matching units and defend all three lanes.</p>
         <button id="start" class="primary" data-t="start">Start Campaign</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Recruit a unit, place it in an open lane, then select two matching characters to merge.</p>
-      <ul>
-        <li data-t="guideRule1">Recruit with the buns resource.</li>
-        <li data-t="guideRule2">Merge equal characters before a lane is overwhelmed.</li>
-        <li data-t="guideRule3">Tap a general skill when the pressure rises.</li>
-      </ul>
-    </section>
   </main>
+  <section class="game-page-info game-page-info-static" aria-label="झाओ युन और आ-दो: स्याही रक्षा गेम की जानकारी">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>झाओ युन और आ-दो: स्याही रक्षा</h2><p>अक्षर सैनिकों की भर्ती करें, उन्हें तीन लेन में बाँटें और समान इकाइयाँ मिलाकर 30 छोटे स्याही रक्षा मिशनों में आ-दो को बचाएँ।</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>मर्ज रणनीति रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>रणनीति · रक्षा · मर्ज</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>शुरू करना आसान, आगे चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>हर मिशन लगभग 1–3 मिनट</strong></div><div class="game-info-fact"><span>अभ्यास कौशल</span><strong>योजना · सही समय · अनुकूलन</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>आ-दो के चारों ओर की स्याही रेखा दुश्मन लहरों से टूट रही है। झाओ युन को थोड़े समय में गठन बनाकर तीनों लेन बचानी हैं।</p>
+<p>हर अक्षर इकाई का साफ़ चिन्ह है; असली निर्णय है उसे कहाँ रखें, कब मिलाएँ और जनरल कौशल कब चलाएँ।</p></div>
+      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>भर्ती में तीन राशन लगते हैं और अगली इकाई पहले खाली स्थान पर आती है; युद्ध के दौरान राशन लौटते हैं।</p>
+<p>एक ही प्रकार और स्तर की दो इकाइयाँ चुनकर उन्हें मिलाएँ। स्तर तीन की दो इकाइयाँ संबंधित जनरल बनती हैं।</p>
+<p>हर गठन स्थान तीन लेन में से एक का है। इकाइयाँ अपने आप हमला करती हैं, पर कवरेज और मर्ज का समय आप तय करते हैं।</p>
+<p>चार जनरल काट, स्तब्ध, धावा या बहु-तीर कौशल देते हैं; हर कौशल का दिखने वाला कूलडाउन है और उसे आप चलाते हैं।</p>
+<p>परिणाम युद्ध के भीतर खुलता है और मिशन मानचित्र, अगला मिशन या फिर से खेलने का विकल्प देता है।</p></div>
+      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>खुले मिशन में जाएँ और तीन-लेन लक्ष्य पढ़ें।</li><li>सुरक्षित खाली स्थान होने पर भर्ती करें और दो समान इकाइयाँ मिलाएँ।</li><li>खाली होती लेन में इकाई ले जाएँ और जोखिम वाले मर्ज से पहले कवरेज बचाएँ।</li><li>बॉस या तेज़ दुश्मन के पास आने पर तैयार जनरल कौशल चलाएँ।</li><li>सभी लहरों और दुश्मन चौकी को हराएँ। आ-दो की सेहत शून्य हो तो गठन बदलकर दोबारा कोशिश करें।</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>मज़बूत इकाई भी खाली लेन की भरपाई नहीं करती।</li><li>दुश्मन की आने वाली लेन देखकर कवरेज या मर्ज चुनें।</li><li>जनरल कौशल को साफ़ दबाव वाले क्षण के लिए बचाएँ।</li><li>बाद के अध्याय गति, सहनशक्ति, बँटा दबाव और बॉस बढ़ाते हैं, छिपे नियम नहीं।</li></ul></div>
+      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>30 मिशन छह अध्यायों में हैं; आगे लहर दबाव, दुश्मन सहनशक्ति और बॉस की संख्या बढ़ती है।</p>
+<p>सर्वश्रेष्ठ सितारे केवल इस ब्राउज़र में रहते हैं; कोई खाता या रैंकिंग नहीं है।</p></div>
+      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>यह WeightPlay का मौलिक मर्ज-रक्षा खेल है, जिसके मिशन, मैदान, नियंत्रण, लेखन और स्याही कला अपने हैं।</p></div>
+      <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>कोई खाता, खरीद, चैट, रैंकिंग या विज्ञापन नहीं है। प्रगति केवल मौजूदा ब्राउज़र में रहती है।</p></div>
+      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>अक्षरों का क्या अर्थ है?</dt><dd>वे अलग नुकसान और हमले की गति वाली चार इकाइयों के चिन्ह हैं, शब्द-परीक्षा नहीं।</dd></div><div><dt>जनरल कैसे मिलता है?</dt><dd>एक जैसी स्तर तीन की दो इकाइयाँ मिलाकर उस प्रकार का जनरल बनाएँ।</dd></div><div><dt>मज़बूत मर्ज के बाद भी हार सकते हैं?</dt><dd>हाँ। नुकसान बढ़ता है पर एक लेन खाली हो सकती है; पहले कवरेज जाँचें।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ। पूरे मिशन और सर्वश्रेष्ठ सितारे केवल इस ब्राउज़र में सहेजे जाते हैं।</dd></div></dl></div>
+
+    </div>
+  </section>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <h2 data-t="shortTitle">INKLINE DEFENSE</h2>
+      <h2 data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</h2>
       <span class="scene-utility" aria-hidden="true"></span>
     </header>
+    <div id="stageContent">
     <section class="stage-intro">
       <p class="eyebrow" data-t="stageTitle">Choose a mission</p>
       <p id="progress" class="stage-progress"></p>
@@ -123,16 +135,17 @@
       <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
+    </div>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="760" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <div class="battle-heading"><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="remaining" class="wave-readout"></span>
-      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-wp-battle-utility="true" data-t-aria="tutorialAria" aria-label="Battle tutorial" title="Battle tutorial">?</button>
+      <h2 data-wp-frame-title data-t="shortTitle">INKLINE DEFENSE</h2>
     </header>
     <section class="battle-content">
+      <div id="battleInfo"><div><small id="chapter" hidden></small><strong id="stageName"></strong></div><div><span id="remaining" class="wave-readout"></span></div></div>
+      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-t-aria="tutorialAria" aria-label="Battle tutorial">?</button>
       <div class="battle-hud">
         <div class="hud-card enemy-hud"><span data-t="enemyCamp">Enemy command</span><strong id="enemyHp"></strong></div>
         <div class="hud-card buns-hud"><span data-t="buns">Buns</span><strong id="buns"></strong></div>
@@ -166,7 +179,7 @@
 
   <div id="generalReserve" class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
-  <dialog id="tutorial" class="game-dialog" aria-labelledby="tutorialTitle">
+  <dialog id="tutorial" class="game-dialog" aria-modal="false" aria-labelledby="tutorialTitle">
     <p class="eyebrow" data-t="tip">TIP</p>
     <h2 id="tutorialTitle" data-t="tutorialTitle">Your first command</h2>
     <ol>
@@ -193,45 +206,24 @@
     <div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="next" class="primary" data-t="nextStage">Next stage</button><button id="retry" data-t="replay">Replay</button></div>
   </dialog>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
   <script src="locales.js?v=20260910-zhao-main-poster-v23"></script>
+  <script src="guide-copy.js?v=20260912-block-v24"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260912-block-v24"></script>
   <script src="game.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="analytics-ownership.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
+  <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260812-zhao-battle-v2"></script>
-<section class="game-page-info game-page-info-static" aria-label="झाओ युन और आ-दो: स्याही रक्षा गेम की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2>झाओ युन और आ-दो: स्याही रक्षा</h2><p>अक्षर सैनिकों की भर्ती करें, उन्हें तीन लेन में बाँटें और समान इकाइयाँ मिलाकर 30 छोटे स्याही रक्षा मिशनों में आ-दो को बचाएँ।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>मर्ज रणनीति रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>रणनीति · रक्षा · मर्ज</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>शुरू करना आसान, आगे चुनौतीपूर्ण</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>हर मिशन लगभग 1–3 मिनट</strong></div><div class="game-info-fact"><span>अभ्यास कौशल</span><strong>योजना · सही समय · अनुकूलन</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>दुनिया और लक्ष्य</h3><p>आ-दो के चारों ओर की स्याही रेखा दुश्मन लहरों से टूट रही है। झाओ युन को थोड़े समय में गठन बनाकर तीनों लेन बचानी हैं।</p>
-<p>हर अक्षर इकाई का साफ़ चिन्ह है; असली निर्णय है उसे कहाँ रखें, कब मिलाएँ और जनरल कौशल कब चलाएँ।</p></div>
-      <div class="game-info-section"><h3>गेम सिस्टम</h3><p>भर्ती में तीन राशन लगते हैं और अगली इकाई पहले खाली स्थान पर आती है; युद्ध के दौरान राशन लौटते हैं।</p>
-<p>एक ही प्रकार और स्तर की दो इकाइयाँ चुनकर उन्हें मिलाएँ। स्तर तीन की दो इकाइयाँ संबंधित जनरल बनती हैं।</p>
-<p>हर गठन स्थान तीन लेन में से एक का है। इकाइयाँ अपने आप हमला करती हैं, पर कवरेज और मर्ज का समय आप तय करते हैं।</p>
-<p>चार जनरल काट, स्तब्ध, धावा या बहु-तीर कौशल देते हैं; हर कौशल का दिखने वाला कूलडाउन है और उसे आप चलाते हैं।</p>
-<p>परिणाम युद्ध के भीतर खुलता है और मिशन मानचित्र, अगला मिशन या फिर से खेलने का विकल्प देता है।</p></div>
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>खुले मिशन में जाएँ और तीन-लेन लक्ष्य पढ़ें।</li><li>सुरक्षित खाली स्थान होने पर भर्ती करें और दो समान इकाइयाँ मिलाएँ।</li><li>खाली होती लेन में इकाई ले जाएँ और जोखिम वाले मर्ज से पहले कवरेज बचाएँ।</li><li>बॉस या तेज़ दुश्मन के पास आने पर तैयार जनरल कौशल चलाएँ।</li><li>सभी लहरों और दुश्मन चौकी को हराएँ। आ-दो की सेहत शून्य हो तो गठन बदलकर दोबारा कोशिश करें।</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>मज़बूत इकाई भी खाली लेन की भरपाई नहीं करती।</li><li>दुश्मन की आने वाली लेन देखकर कवरेज या मर्ज चुनें।</li><li>जनरल कौशल को साफ़ दबाव वाले क्षण के लिए बचाएँ।</li><li>बाद के अध्याय गति, सहनशक्ति, बँटा दबाव और बॉस बढ़ाते हैं, छिपे नियम नहीं।</li></ul></div>
-      <div class="game-info-section"><h3>प्रगति और कठिनाई</h3><p>30 मिशन छह अध्यायों में हैं; आगे लहर दबाव, दुश्मन सहनशक्ति और बॉस की संख्या बढ़ती है।</p>
-<p>सर्वश्रेष्ठ सितारे केवल इस ब्राउज़र में रहते हैं; कोई खाता या रैंकिंग नहीं है।</p></div>
-      <div class="game-info-section"><h3>डिज़ाइन नोट</h3><p>यह WeightPlay का मौलिक मर्ज-रक्षा खेल है, जिसके मिशन, मैदान, नियंत्रण, लेखन और स्याही कला अपने हैं।</p></div>
-      <div class="game-info-section game-info-parent"><h3>अभिभावक सूचना</h3><p>कोई खाता, खरीद, चैट, रैंकिंग या विज्ञापन नहीं है। प्रगति केवल मौजूदा ब्राउज़र में रहती है।</p></div>
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>अक्षरों का क्या अर्थ है?</dt><dd>वे अलग नुकसान और हमले की गति वाली चार इकाइयों के चिन्ह हैं, शब्द-परीक्षा नहीं।</dd></div><div><dt>जनरल कैसे मिलता है?</dt><dd>एक जैसी स्तर तीन की दो इकाइयाँ मिलाकर उस प्रकार का जनरल बनाएँ।</dd></div><div><dt>मज़बूत मर्ज के बाद भी हार सकते हैं?</dt><dd>हाँ। नुकसान बढ़ता है पर एक लेन खाली हो सकती है; पहले कवरेज जाँचें।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>हाँ। पूरे मिशन और सर्वश्रेष्ठ सितारे केवल इस ब्राउज़र में सहेजे जाते हैं।</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="public-guide.js?v=20260912-block-v24"></script>
 </body>
 </html>

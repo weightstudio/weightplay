@@ -1,0 +1,66 @@
+/* Game-owned artwork only; navigation and settings belong to shared frame. */
+.ink-poster::before, .ink-poster::after { content: none; }
+.poster-art { object-fit: contain; }
+/* Names remain in existing labels/accessible names; glyphs must not cover art. */
+.unit-slot:not(.empty) .unit-glyph,
+.lane-unit-glyph, .enemy-glyph, .skill-glyph { visibility: hidden; }
+.unit-slot.empty .unit-glyph { visibility: visible; }
+.unit-slot:not(.empty) { background-color: rgba(8,27,31,.7); }
+.lane-unit, .enemy-token, .enemy-token.boss { background-color: transparent; }
+.unit-type-blade { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-blade-troop-block-v24.webp'); }
+.unit-type-spear { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-spear-troop-block-v24.webp'); }
+.unit-type-horse { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-horse-troop-block-v24.webp'); }
+.unit-type-bow { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-bow-troop-block-v24.webp'); }
+.general-unit.unit-type-blade, .skill-blade { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-guan-yu-block-v24.webp'); }
+.general-unit.unit-type-spear, .skill-spear { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-zhang-fei-block-v24.webp'); }
+.general-unit.unit-type-horse, .skill-horse { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-mounted-zhao-block-v24.webp'); }
+.general-unit.unit-type-bow, .skill-bow { --zhao-unit-art: url('../../assets/zhao-yun-a-dou-huang-zhong-block-v24.webp'); }
+.unit-slot:not(.empty), .unit-slot.general-unit, .lane-unit, .skill-button {
+  background-image: var(--zhao-unit-art);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.enemy-token.enemy-kind-0 { --zhao-enemy-art: url('../../assets/zhao-yun-a-dou-enemy-blade-block-v24.webp'); }
+.enemy-token.enemy-kind-1 { --zhao-enemy-art: url('../../assets/zhao-yun-a-dou-enemy-spear-block-v24.webp'); }
+.enemy-token.enemy-kind-2 { --zhao-enemy-art: url('../../assets/zhao-yun-a-dou-enemy-heavy-block-v24.webp'); }
+.enemy-token.boss { --zhao-enemy-art: url('../../assets/zhao-yun-a-dou-enemy-boss-block-v24.webp'); }
+.enemy-token, .enemy-token.boss {
+  background-image: var(--zhao-enemy-art);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.battle-field {
+  background-image: linear-gradient(180deg, rgba(13,26,21,.15), rgba(13,26,21,.3)), url('../../assets/zhao-yun-a-dou-battle-block-v24.webp');
+  background-position: center;
+  background-size: cover;
+}
+/* Match the three opposing lanes visually; units remain in their original
+   simulation lane and DOM group. These sizes never affect combat values. */
+#battle .battle-field {
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows: 24px minmax(0,1fr) 24px;
+}
+#battle .camp-enemy { grid-column: 1 / -1; grid-row: 1; }
+#battle .enemy-lanes { grid-column: 1; grid-row: 2; }
+#battle .player-lanes { grid-column: 2; grid-row: 2; }
+#battle .camp-ally { grid-column: 1 / -1; grid-row: 3; }
+#battle .battle-divider { display: none; }
+#battle .lane-unit, #battle .enemy-token {
+  box-sizing: border-box;
+  height: 85%; max-height: 76px; min-height: 0;
+  width: 64px; min-width: 0; flex: 0 1 64px;
+  padding: 0; border: 0;
+  background-position: center;
+  box-shadow: none;
+}
+#battle .lane-unit-name, #battle .enemy-name {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  max-width: none; text-align: center;
+  font: 600 9px/12px system-ui;
+  background: rgba(8,27,31,.8); border-radius: 2px;
+}
+#battle .enemy-health { position: absolute; top: 0; left: 5%; width: 90%; }
+#battle .enemy-token { --zhao-enemy-half-width: 32px; }
+#battle .unit-slot.general-unit { background-position: center; }

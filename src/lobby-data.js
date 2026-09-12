@@ -16,6 +16,7 @@ window.WONDER_LOBBY = {
   heroGameIds: ["color-lunchbox", "animal-zoo-idle", "bubble-bakery"],
   audiences: {
     generalGameIds: [
+      "animal-crownfall",
       "wonder-crash",
       "signal-veil", "animal-crystal-survivor", "beast-deck", "animal-relic-hunters", "animal-rune-tactics",
       "animal-orb-fortress", "animal-auto-squad", "beast-tactician", "shadow-wolf",
@@ -63,6 +64,15 @@ window.WONDER_LOBBY = {
     ],
   },
   games: [
+    {
+      id: "animal-crownfall", audience: "general", status: "planned",
+      title: { en: "Crownfall", "zh-Hant": "落塊奪冠", "zh-Hans": "落块夺冠", ja: "ブロック王冠の旅", ko: "블록 왕관 모험", es: "La corona caída", "pt-BR": "A coroa perdida", fr: "La couronne perdue", de: "Kronensturz", it: "La corona perduta", ru: "Путь к короне", hi: "ताज की तलाश", ar: "رحلة التاج" },
+      type: { en: "Dungeon Puzzle", "zh-Hant": "古堡消除解謎" },
+      description: { en: "Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.", "zh-Hant": "消除相連符文方塊，安排打怪順序，在 30 道古堡謎題中奪回皇冠。" },
+      categories: ["Puzzle", "Strategy", "Animal Games"], skills: ["Planning", "Logic"], ages: ["general"],
+      href: "games/animal-crownfall/", meta: { en: ["30 Stages", "Undo", "Deterministic Battles"], "zh-Hant": ["30 關", "自由撤銷", "順序戰鬥"] },
+      art: { kind: "image", background: "assets/animal-crownfall/cover.png", hideHero: true },
+    },
     {
       id: "animal-carnival-claw",
       title: {

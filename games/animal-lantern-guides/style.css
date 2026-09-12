@@ -294,3 +294,76 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"]
 html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"][data-screen="battle"] .battle-ad-reserve {
   display:block !important;
 }
+/* v11 block forest: one active role, persistent tracks, no text-driven reflow. */
+#battleScreen{color:#ecf6ff;background:linear-gradient(#07172655,#07172699),url('assets/forest-block-v1.webp') center/cover!important}
+#battleScreen .battle-canvas{height:100%;display:grid;grid-template-rows:48px minmax(0,1fr) 44px;gap:6px;padding:8px 10px;overflow:hidden}
+#battleScreen .panel-head{height:48px;min-height:48px;margin:0;color:#fff;grid-template-columns:48px minmax(0,1fr) auto}
+#battleScreen .panel-head>div:nth-child(2){display:none}
+#battleScreen .battle-header-tools{grid-column:2/4;justify-content:flex-end}
+#battleScreen .battle-header-tools .meter-pill{display:inline-flex;color:#ffe1a5;background:#102637e8;border-color:#7d986f;min-height:32px;padding:4px 7px;font-size:11px}
+#battleScreen .coop-card{min-height:0;margin:0;padding:0;display:grid;grid-template-rows:minmax(120px,1fr) 54px 44px 318px 40px;gap:6px;background:none;border:0;box-shadow:none;border-radius:0;overflow:hidden}
+#battleScreen .block-world{grid-row:1;min-height:0;position:relative;overflow:hidden;border-bottom:3px solid #ab8b4d;background:linear-gradient(0deg,#10283ad9,transparent)}
+.block-world canvas{display:block;width:100%;height:100%;touch-action:manipulation}
+.world-scout,.world-guide{position:absolute;bottom:24px;height:80%;max-width:24%;object-fit:contain;pointer-events:none;filter:drop-shadow(3px 5px 0 #07172688)}.world-scout{left:0}.world-guide{right:0}
+.bridge-hud{position:absolute;inset:auto 0 0;display:flex;align-items:center;justify-content:center;gap:10px;height:26px;font-size:11px;font-weight:800;background:#081d2bdd;color:#fff}
+#bridgeTrack{display:flex;direction:ltr;gap:4px}.bridge-tile{display:inline-grid;place-items:center;width:22px;height:18px;background:#33495d;border:1px solid #64869b;font-size:10px}.bridge-tile.is-lit{background:#f4c462;color:#213043;border-color:#ffe59a;box-shadow:0 0 6px #f8c870}
+#battleScreen .scene-head{grid-row:2;min-height:0;overflow:hidden}.scene-hint{display:none!important}#battleScreen .handoff-prompt{display:grid;align-items:center;height:54px;margin:0;padding:5px 10px;border:2px solid #b79450;border-radius:4px;color:#fff0c4;background:#28352bec;font-size:13px;line-height:1.25;overflow:auto}
+#battleScreen .turn-steps{grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);margin:0;gap:5px;padding:0;list-style:none}
+#battleScreen .turn-steps li{min-height:44px;height:44px;padding:4px;display:grid;align-content:center;font-size:12px;line-height:1.1;border:1px solid #789a97;border-radius:3px;background:#173044e8;color:#d7e6ee;overflow:hidden;text-align:center}
+#battleScreen .turn-steps li.is-current{background:#f1c574;color:#172535;border:2px solid #fff0b2}.turn-steps li.is-done{color:#8df2c9!important}
+#battleScreen .role-grid{grid-row:4;display:grid;grid-template-columns:1fr;grid-template-rows:318px;gap:0;min-height:0}
+#battleScreen .role-card{grid-area:1/1;display:grid;grid-template-rows:24px 36px 54px 100px 24px 44px;gap:3px;padding:9px;border:2px solid #70928f;border-radius:5px;background:#112c40f2;color:#f3f8ff;visibility:hidden;pointer-events:none;min-height:0;overflow:hidden}
+#battleScreen .role-card.is-active{visibility:visible;pointer-events:auto;opacity:1;border-color:#ddc276;box-shadow:inset 0 0 0 2px #293e46}
+#battleScreen .role-kicker{display:none}
+#battleScreen .role-card h3{grid-row:1;margin:0;font-size:17px;line-height:24px;color:#fff4d5}
+#battleScreen .role-card #scoutTask,#battleScreen .role-card #guideTask{grid-row:2;display:block;margin:0;color:#d5e6eb;font-size:12px;line-height:1.25;overflow:auto}
+#battleScreen .scout-card #scoutChoices{grid-row:3/5;display:grid;grid-template-columns:1fr;max-width:240px;width:100%;justify-self:center;margin:0;gap:0}
+#battleScreen .scout-card .symbol-button{height:157px;min-height:0;font-size:14px;opacity:1;background:linear-gradient(135deg,#314657,#1a3542);color:#fff3c5;border:2px solid #d5ad60;box-shadow:inset 0 -6px #071b29;display:grid;align-content:center;gap:10px}
+#battleScreen .scout-card .symbol-button:disabled{opacity:1}.revealed-pair{display:flex;justify-content:center;gap:15px}.sealed-lantern{display:grid;place-items:center;width:60px;height:60px;justify-self:center;border:4px solid #e1bb68;box-shadow:5px 5px #846530;background:#203d4b;font-size:40px;color:#ffe2a2}
+#battleScreen .guide-rule{grid-row:3;margin:0!important;min-height:0;padding:3px 6px;font-size:12px;line-height:1.2;border:0;background:none;color:#ffe4ad;overflow:auto;align-self:start;max-height:28px}
+#battleScreen .rule-map{grid-row:3;align-self:end;display:flex;justify-content:space-around;gap:4px;height:26px;direction:ltr;color:#fff1ca}
+.rule-map>span{display:flex;align-items:center;gap:4px;font-size:13px}.rule-map .rune-icon{width:19px;height:19px}.rune-icon{width:42px;height:42px;fill:currentColor;display:inline-block;filter:drop-shadow(2px 2px 0 #07192888)}.rune-moon{color:#f7d16b}.rune-leaf{color:#73e5bb}.rune-star{color:#ba9cff}
+#battleScreen #guideChoices{grid-row:4;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0;min-height:0}
+#battleScreen #guideChoices .symbol-button{height:100px;min-height:0;display:grid;align-content:center;gap:8px;border:2px solid #83a6a1;border-radius:4px;background:linear-gradient(135deg,#2d4659,#142c3e);color:#eaf8ff;font-size:13px;padding:4px;box-shadow:inset 0 -5px #0a1c2d}
+#battleScreen .role-state{grid-row:5;min-height:0;margin:0;font-size:11px;line-height:1.2;color:#bce4db;overflow:auto}
+#battleScreen #passBtn,#battleScreen #recallBtn{grid-row:6;margin:0;min-height:44px;height:44px;padding:4px 8px;border:1px solid #9bb4ac;border-radius:4px;background:#294859;color:#fff;font-size:12px;box-shadow:none}
+#battleScreen #passBtn:not(:disabled){background:#e8bd65;color:#152938;font-weight:900}#battleScreen #passBtn:disabled{opacity:.4}
+#battleScreen .feedback{grid-row:5;height:40px;min-height:0;display:grid;align-items:center;margin:0;padding:3px 8px;background:#102c3deb;border:1px solid #72888d;border-radius:3px;color:#ffd0ad;font-size:12px;line-height:1.2;overflow:auto}#battleScreen .feedback.is-good{color:#94f0c3}
+#battleScreen .battle-canvas #leaveBtn{position:static!important;width:100%;height:44px;min-height:44px;margin:0;padding:4px;font-size:12px;color:#d7eaf0;background:#143043e8;border:1px solid #789697;border-radius:3px;text-decoration:none}
+@media(max-height:520px) and (orientation:landscape){
+ #battleScreen .battle-canvas{padding:4px 8px;grid-template-rows:44px minmax(0,1fr);gap:4px}
+ #battleScreen .coop-card{grid-template-columns:minmax(0,1fr) minmax(365px,48%);grid-template-rows:minmax(100px,1fr) 44px 44px;gap:5px}
+ #battleScreen .block-world{grid-column:1;grid-row:1}#battleScreen .scene-head{grid-column:1;grid-row:2}#battleScreen .handoff-prompt{height:44px;font-size:11px;padding:3px 6px}
+ #battleScreen .turn-steps{grid-column:1;grid-row:3;margin-inline-end:70px}#battleScreen .turn-steps li{font-size:10px}
+ #battleScreen .role-grid{grid-column:2;grid-row:1/4;grid-template-rows:1fr}
+ #battleScreen .role-card{grid-template-rows:20px 28px 42px minmax(50px,1fr) 16px 44px;padding:5px;gap:2px}
+ #battleScreen .role-card h3{font-size:14px;line-height:20px}#battleScreen .role-card #scoutTask,#battleScreen .role-card #guideTask{font-size:10px}
+ #battleScreen .guide-rule{font-size:10px;max-height:22px}.rule-map .rune-icon{width:16px;height:16px}#battleScreen .rule-map{height:20px}
+ #battleScreen #guideChoices .symbol-button{height:100%;min-height:44px;display:flex;font-size:11px;gap:8px}.rune-icon{height:28px;width:28px}
+ #battleScreen .scout-card .symbol-button{height:100%;min-height:44px;font-size:12px;display:flex;gap:12px}.sealed-lantern{height:48px;width:48px;font-size:26px}
+ #battleScreen .feedback{display:none}#battleScreen .battle-canvas #leaveBtn{position:absolute!important;bottom:4px;left:calc(52% - 70px);width:62px;z-index:2;font-size:10px;}
+}
+@media(prefers-reduced-motion:reduce){#battleScreen *{animation:none!important;transition:none!important}}
+#battleScreen .battle-canvas{background:transparent!important}
+#battleScreen,#battleScreen button{font-family:system-ui,-apple-system,sans-serif!important}
+#battleScreen .battle-header-tools{display:flex;align-items:center;gap:5px;min-width:0;overflow:visible}
+#battleScreen .battle-header-tools .meter-pill{max-width:none!important;width:auto!important;flex:1;min-width:0;height:40px;white-space:normal;overflow:visible;line-height:1.15;font-size:11px;border-radius:3px;justify-content:center;text-align:center}
+#battleScreen #battleBackLabel{display:none}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleBackBtn,
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleSettingsBtn{width:48px!important;min-width:48px!important;height:48px!important;min-height:48px!important;flex:0 0 48px}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleScreen #leaveBtn{position:static!important;left:auto!important;bottom:auto!important;width:100%!important;min-height:44px!important}
+@media(max-height:520px) and (orientation:landscape){
+ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-lantern-guides"] #battleScreen #leaveBtn{position:absolute!important;left:calc(52% - 70px)!important;bottom:4px!important;width:62px!important;min-height:44px!important}
+}
+#battleScreen .role-card>*{grid-column:1;min-width:0;max-width:100%}
+#battleScreen .role-card:not(.is-active){visibility:hidden!important;pointer-events:none!important;opacity:0!important}
+#battleScreen .role-card.is-active{visibility:visible!important;opacity:1!important;background:#112c40f7!important}
+#battleScreen .guide-rule{color:#ffe4ad!important}#battleScreen #ruleMap{grid-column:1;width:100%}
+#battleScreen #guideChoices{grid-column:1;width:100%}
+#battleScreen .role-card{transition:none!important}
+#battleScreen .scout-card .symbol-button{border-radius:4px}
+#battleScreen .handoff-prompt{max-width:none;width:100%}
+#blockWorld[data-feedback="success"]::after{content:"";position:absolute;width:8px;height:8px;left:50%;top:50%;pointer-events:none;background:#ffe6a4;box-shadow:-48px -8px #89e9c7,48px -8px #b99af5,-24px -35px #ffe6a4,24px -35px #89e9c7;animation:bridge-block-reward .32s ease-out both}
+@keyframes bridge-block-reward{from{transform:translateY(8px);opacity:1}to{transform:translateY(-28px);opacity:0}}
+.battle-ad-reserve{background:#0b2130!important}
+@media(prefers-reduced-motion:reduce){#blockWorld::after{animation:none!important;display:none}}

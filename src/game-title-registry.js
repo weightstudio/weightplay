@@ -15,6 +15,22 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "hi": "पीच गार्डन शपथ",
     "ar": "عهد حديقة الخوخ"
   },
+  "animal-crownfall": {
+    "__localizedExact": true,
+    "en": "Crownfall",
+    "zh-Hant": "落塊奪冠",
+    "zh-Hans": "落块夺冠",
+    "ja": "ブロック王冠の旅",
+    "ko": "블록 왕관 모험",
+    "es": "La corona caída",
+    "pt-BR": "A coroa perdida",
+    "fr": "La couronne perdue",
+    "de": "Kronensturz",
+    "it": "La corona perduta",
+    "ru": "Путь к короне",
+    "hi": "ताज की तलाश",
+    "ar": "رحلة التاج"
+  },
   "animal-carnival-claw": {
     "__localizedExact": true,
     "en": "Carnival Claw",

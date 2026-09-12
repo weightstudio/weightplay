@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/zhao-yun-a-dou/" />
-
     <link rel="canonical" href="https://weightplay.com/ar/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/zhao-yun-a-dou/" />
@@ -28,7 +27,11 @@
   <title>تشاو يون وآ دو: دفاع الحبر | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="style.css?v=20260910-zhao-main-poster-v23">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="frame-content.css?v=20260912-block-v24">
   <meta name="description" content="جنّد جنود الحروف ووزّعهم على ثلاثة مسارات وادمج الوحدات المتطابقة لحماية آ دو في 30 مهمة دفاع قصيرة بالحبر." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,8 +48,9 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "تشاو يون وآ دو: دفاع الحبر",
+  "alternateName": "Zhao Yun & A Dou: Inkline Defense",
   "url": "https://weightplay.com/ar/games/zhao-yun-a-dou/",
-  "image": "https://weightplay.com/assets/zhao-yun-a-dou-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/zhao-yun-a-dou.webp",
   "description": "جنّد جنود الحروف ووزّعهم على ثلاثة مسارات وادمج الوحدات المتطابقة لحماية آ دو في 30 مهمة دفاع قصيرة بالحبر.",
   "publisher": {
     "@type": "Organization",
@@ -59,60 +63,68 @@
   "genre": [
     "استراتيجية",
     "دفاع",
-    "دمج",
-    "لعبة متصفح"
+    "دمج"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Zhao Yun & A Dou: Inkline Defense"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-zhao-interface-contract-v23" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <main id="main" class="screen main main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">تشاو يون وآ دو: دفاع الحبر</h1>
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle">INKLINE DEFENSE</strong>
+      <strong data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
     <section class="hero">
       <div class="ink-poster" role="img" data-t-aria="posterAlt" aria-label="Ink wash battlefield with Zhao Yun and A Dou">
-        <img class="poster-art" src="../../assets/zhao-yun-a-dou-cover.png" alt="">
-        <div class="poster-moon" aria-hidden="true"></div>
-        <div class="poster-flag poster-flag-left" aria-hidden="true">趙</div>
-        <div class="poster-flag poster-flag-right" aria-hidden="true">阿</div>
-        <div class="poster-brush" aria-hidden="true"></div>
-        <div class="poster-title" aria-hidden="true">墨線</div>
+        <img class="poster-art" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="" width="1254" height="1254">
       </div>
       <div class="hero-copy">
-        <p class="eyebrow" data-t="kicker">A SHORT MERGE-DEFENSE CAMPAIGN</p>
-        <h1 data-t="title">تشاو يون وآ دو: دفاع الحبر</h1>
-        <p class="main-summary" data-t="summary">Recruit Chinese-character soldiers, merge matching units, and keep three lanes safe while Zhao Yun protects A Dou.</p>
-        <p class="prototype-pill" data-t="prototype">Internal prototype</p>
+        <p class="main-summary" data-t="summary">Recruit soldiers, merge matching units and defend all three lanes.</p>
         <button id="start" class="primary" data-t="start">Start Campaign</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Recruit a unit, place it in an open lane, then select two matching characters to merge.</p>
-      <ul>
-        <li data-t="guideRule1">Recruit with the buns resource.</li>
-        <li data-t="guideRule2">Merge equal characters before a lane is overwhelmed.</li>
-        <li data-t="guideRule3">Tap a general skill when the pressure rises.</li>
-      </ul>
-    </section>
   </main>
+  <section class="game-page-info game-page-info-static" aria-label="معلومات لعبة تشاو يون وآ دو: دفاع الحبر">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>تشاو يون وآ دو: دفاع الحبر</h2><p>جنّد جنود الحروف ووزّعهم على ثلاثة مسارات وادمج الوحدات المتطابقة لحماية آ دو في 30 مهمة دفاع قصيرة بالحبر.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>دفاع استراتيجي بالدمج</strong></div><div class="game-info-fact"><span>النوع</span><strong>استراتيجية · دفاع · دمج</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهل البدء ويتدرج في التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>نحو 1–3 دقائق لكل مهمة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التخطيط · التوقيت · التكيف</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>العالم والرسالة</h3><p>ينهار خط الحبر حول آ دو تحت موجات الأعداء. على تشاو يون إعادة بناء التشكيل سريعًا وحماية المسارات الثلاثة.</p>
+<p>كل حرف رمز واضح لوحدة؛ والقرار الحقيقي هو مكان وضعها ووقت دمجها ووقت استخدام مهارة القائد.</p></div>
+      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>يكلف التجنيد ثلاث حصص ويضع الوحدة التالية في أول خانة فارغة؛ وتتعافى الحصص أثناء المعركة.</p>
+<p>اختر وحدتين متطابقتين من المستوى نفسه لدمجهما. تتحول وحدتان من المستوى الثالث إلى القائد الموافق.</p>
+<p>تنتمي كل خانة إلى أحد المسارات الثلاثة. تهاجم الوحدات تلقائيًا، لكنك تختار التغطية وتوقيت الدمج.</p>
+<p>لدى القادة الأربعة ضربة أو صعق أو اندفاع أو سهام متعددة؛ ولكل مهارة تبريد ظاهر وتحتاج إلى تفعيل يدوي.</p>
+<p>تظهر النتيجة داخل المعركة وتتيح خريطة المهام أو المهمة التالية أو إعادة المهمة الحالية.</p></div>
+      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ادخل مهمة مفتوحة واقرأ هدف المسارات الثلاثة.</li><li>جنّد عند وجود خانة آمنة ثم ادمج وحدتين متطابقتين.</li><li>انقل وحدة إلى مسار بلا دفاع وحافظ على التغطية قبل دمج محفوف بالمخاطر.</li><li>استخدم مهارة جاهزة عندما يهدد قائد أو عدو سريع أحد المسارات.</li><li>اهزم كل الموجات والموقع المعادي. إذا وصلت صحة آ دو إلى الصفر، غيّر التشكيل وحاول مجددًا.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>لا تعوض وحدة قوية مسارًا فارغًا.</li><li>راقب مسار وصول العدو قبل الاختيار بين التغطية والدمج.</li><li>احتفظ بمهارة القائد لذروة ضغط واضحة.</li><li>تضيف الفصول اللاحقة سرعة ومتانة وضغطًا موزعًا وقادة، لا قواعد مخفية.</li></ul></div>
+      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تنقسم 30 مهمة إلى ستة فصول تتزايد فيها الموجات ومتانة الأعداء وتكرار القادة.</p>
+<p>يبقى أفضل تقييم بالنجوم في هذا المتصفح فقط؛ لا يوجد حساب أو ترتيب عام.</p></div>
+      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>هذه لعبة دفاع ودمج أصلية من WeightPlay بمهام وميدان وتحكم ونصوص ورسوم حبر خاصة بها.</p></div>
+      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>لا يوجد حساب أو شراء أو دردشة أو ترتيب أو إعلانات. يُحفظ التقدم في هذا المتصفح فقط.</p></div>
+      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ماذا تعني الحروف؟</dt><dd>هي رموز لأربعة أنواع من الوحدات تختلف في الضرر وإيقاع الهجوم، وليست اختبار مفردات.</dd></div><div><dt>كيف يظهر القائد؟</dt><dd>ادمج وحدتين متطابقتين من المستوى الثالث للحصول على قائد ذلك النوع.</dd></div><div><dt>هل يمكن أن أخسر بعد دمج قوي؟</dt><dd>نعم. يزيد الضرر لكن قد يترك مسارًا فارغًا؛ تحقق من التغطية أولًا.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم. تُحفظ المهام المكتملة وأفضل النجوم في هذا المتصفح فقط.</dd></div></dl></div>
+
+    </div>
+  </section>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <h2 data-t="shortTitle">INKLINE DEFENSE</h2>
+      <h2 data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</h2>
       <span class="scene-utility" aria-hidden="true"></span>
     </header>
+    <div id="stageContent">
     <section class="stage-intro">
       <p class="eyebrow" data-t="stageTitle">Choose a mission</p>
       <p id="progress" class="stage-progress"></p>
@@ -123,16 +135,17 @@
       <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
+    </div>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="760" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <div class="battle-heading"><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="remaining" class="wave-readout"></span>
-      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-wp-battle-utility="true" data-t-aria="tutorialAria" aria-label="Battle tutorial" title="Battle tutorial">?</button>
+      <h2 data-wp-frame-title data-t="shortTitle">INKLINE DEFENSE</h2>
     </header>
     <section class="battle-content">
+      <div id="battleInfo"><div><small id="chapter" hidden></small><strong id="stageName"></strong></div><div><span id="remaining" class="wave-readout"></span></div></div>
+      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-t-aria="tutorialAria" aria-label="Battle tutorial">?</button>
       <div class="battle-hud">
         <div class="hud-card enemy-hud"><span data-t="enemyCamp">Enemy command</span><strong id="enemyHp"></strong></div>
         <div class="hud-card buns-hud"><span data-t="buns">Buns</span><strong id="buns"></strong></div>
@@ -166,7 +179,7 @@
 
   <div id="generalReserve" class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
-  <dialog id="tutorial" class="game-dialog" aria-labelledby="tutorialTitle">
+  <dialog id="tutorial" class="game-dialog" aria-modal="false" aria-labelledby="tutorialTitle">
     <p class="eyebrow" data-t="tip">TIP</p>
     <h2 id="tutorialTitle" data-t="tutorialTitle">Your first command</h2>
     <ol>
@@ -193,45 +206,24 @@
     <div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="next" class="primary" data-t="nextStage">Next stage</button><button id="retry" data-t="replay">Replay</button></div>
   </dialog>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
   <script src="locales.js?v=20260910-zhao-main-poster-v23"></script>
+  <script src="guide-copy.js?v=20260912-block-v24"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260912-block-v24"></script>
   <script src="game.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="analytics-ownership.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
+  <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260812-zhao-battle-v2"></script>
-<section class="game-page-info game-page-info-static" aria-label="معلومات لعبة تشاو يون وآ دو: دفاع الحبر">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2>تشاو يون وآ دو: دفاع الحبر</h2><p>جنّد جنود الحروف ووزّعهم على ثلاثة مسارات وادمج الوحدات المتطابقة لحماية آ دو في 30 مهمة دفاع قصيرة بالحبر.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>طريقة اللعب</span><strong>دفاع استراتيجي بالدمج</strong></div><div class="game-info-fact"><span>النوع</span><strong>استراتيجية · دفاع · دمج</strong></div><div class="game-info-fact"><span>الصعوبة</span><strong>سهل البدء ويتدرج في التحدي</strong></div><div class="game-info-fact"><span>وقت اللعب المقدر</span><strong>نحو 1–3 دقائق لكل مهمة</strong></div><div class="game-info-fact"><span>المهارات المتدرّبة</span><strong>التخطيط · التوقيت · التكيف</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>العالم والرسالة</h3><p>ينهار خط الحبر حول آ دو تحت موجات الأعداء. على تشاو يون إعادة بناء التشكيل سريعًا وحماية المسارات الثلاثة.</p>
-<p>كل حرف رمز واضح لوحدة؛ والقرار الحقيقي هو مكان وضعها ووقت دمجها ووقت استخدام مهارة القائد.</p></div>
-      <div class="game-info-section"><h3>كيف تعمل الأنظمة</h3><p>يكلف التجنيد ثلاث حصص ويضع الوحدة التالية في أول خانة فارغة؛ وتتعافى الحصص أثناء المعركة.</p>
-<p>اختر وحدتين متطابقتين من المستوى نفسه لدمجهما. تتحول وحدتان من المستوى الثالث إلى القائد الموافق.</p>
-<p>تنتمي كل خانة إلى أحد المسارات الثلاثة. تهاجم الوحدات تلقائيًا، لكنك تختار التغطية وتوقيت الدمج.</p>
-<p>لدى القادة الأربعة ضربة أو صعق أو اندفاع أو سهام متعددة؛ ولكل مهارة تبريد ظاهر وتحتاج إلى تفعيل يدوي.</p>
-<p>تظهر النتيجة داخل المعركة وتتيح خريطة المهام أو المهمة التالية أو إعادة المهمة الحالية.</p></div>
-      <div class="game-info-section"><h3>طريقة اللعب</h3><ol><li>ادخل مهمة مفتوحة واقرأ هدف المسارات الثلاثة.</li><li>جنّد عند وجود خانة آمنة ثم ادمج وحدتين متطابقتين.</li><li>انقل وحدة إلى مسار بلا دفاع وحافظ على التغطية قبل دمج محفوف بالمخاطر.</li><li>استخدم مهارة جاهزة عندما يهدد قائد أو عدو سريع أحد المسارات.</li><li>اهزم كل الموجات والموقع المعادي. إذا وصلت صحة آ دو إلى الصفر، غيّر التشكيل وحاول مجددًا.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>نصائح استراتيجية</h3><ul><li>لا تعوض وحدة قوية مسارًا فارغًا.</li><li>راقب مسار وصول العدو قبل الاختيار بين التغطية والدمج.</li><li>احتفظ بمهارة القائد لذروة ضغط واضحة.</li><li>تضيف الفصول اللاحقة سرعة ومتانة وضغطًا موزعًا وقادة، لا قواعد مخفية.</li></ul></div>
-      <div class="game-info-section"><h3>تطور المراحل والصعوبة</h3><p>تنقسم 30 مهمة إلى ستة فصول تتزايد فيها الموجات ومتانة الأعداء وتكرار القادة.</p>
-<p>يبقى أفضل تقييم بالنجوم في هذا المتصفح فقط؛ لا يوجد حساب أو ترتيب عام.</p></div>
-      <div class="game-info-section"><h3>ملاحظة تصميم المطوّر</h3><p>هذه لعبة دفاع ودمج أصلية من WeightPlay بمهام وميدان وتحكم ونصوص ورسوم حبر خاصة بها.</p></div>
-      <div class="game-info-section game-info-parent"><h3>ملاحظة للوالدين</h3><p>لا يوجد حساب أو شراء أو دردشة أو ترتيب أو إعلانات. يُحفظ التقدم في هذا المتصفح فقط.</p></div>
-      <div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ماذا تعني الحروف؟</dt><dd>هي رموز لأربعة أنواع من الوحدات تختلف في الضرر وإيقاع الهجوم، وليست اختبار مفردات.</dd></div><div><dt>كيف يظهر القائد؟</dt><dd>ادمج وحدتين متطابقتين من المستوى الثالث للحصول على قائد ذلك النوع.</dd></div><div><dt>هل يمكن أن أخسر بعد دمج قوي؟</dt><dd>نعم. يزيد الضرر لكن قد يترك مسارًا فارغًا؛ تحقق من التغطية أولًا.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>نعم. تُحفظ المهام المكتملة وأفضل النجوم في هذا المتصفح فقط.</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="public-guide.js?v=20260912-block-v24"></script>
 </body>
 </html>

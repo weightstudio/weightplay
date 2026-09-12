@@ -11,7 +11,7 @@
   const art=(i,cls='animal-icon')=>`<img class="${cls}" src="${portraits[i]}" alt="" draggable="false">`;
   const sound=(good=false)=>{try{if(window.WonderSound?.play) window.WonderSound.play(good?'success':'click');}catch{}};
   const scene=()=>window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:state.screen==='battle',colours:hex,lit:state.code.length,labels:animals.map(a=>t(a))}}));
-  function show(screen){state.screen=screen;document.querySelectorAll('section[data-screen]').forEach(n=>n.hidden=n.dataset.screen!==screen);document.body.dataset.screen=screen;window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));scene();}
+  function show(screen){state.screen=screen;document.querySelectorAll('[data-screen]').forEach(n=>n.hidden=n.dataset.screen!==screen);document.body.dataset.screen=screen;window.dispatchEvent(new CustomEvent('weightplay:shell-sync'));scene();}
   function persist(){try{localStorage.setItem(saveKey,JSON.stringify(progress));}catch{}}
   function renderMain(){ $('mainProgress').textContent=t('saved',{n:Object.keys(progress.stars).length});$('bestValue').textContent=`${Object.values(progress.stars).reduce((a,b)=>a+(Number(b)||0),0)} / 90`; }
   function rules(p){const keys=[];if(p.rule.includes('skip')||p.rule==='finale')keys.push('skip');if(p.rule.includes('reverse')||p.rule==='finale')keys.push('reverse');else if(p.rule.includes('rotate'))keys.push('rotate');else keys.push('forward');if(p.memory)keys.push('memory');return keys.map(k=>t(k)).join(' ');}

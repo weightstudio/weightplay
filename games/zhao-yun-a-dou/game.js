@@ -20,6 +20,7 @@
   let statusTimer = null;
   let dragSlot = null;
   let formationRenderKey = null;
+  let frame = null;
 
   const el = {
     main: document.getElementById("main"),
@@ -191,6 +192,7 @@
       node.hidden = node.id !== name;
     });
     document.body.setAttribute("data-screen", name);
+    if (frame) frame.activate(name);
     document.documentElement.scrollTop = 0;
     window.scrollTo(0, 0);
   }
@@ -344,13 +346,18 @@
     motionFrame = null;
   }
 
+  function enemyTokenPosition(progress) {
+    // Keep the painted token inside its lane; simulation progress is untouched.
+    return "clamp(var(--zhao-enemy-half-width, 32px), " + (progress * 100) + "%, calc(100% - var(--zhao-enemy-half-width, 32px)))";
+  }
+
   function renderEnemyMotion(timestamp) {
     motionFrame = null;
     if (!battle || battle.result) return;
     battle.enemies.forEach(function (enemy) {
       const token = el.enemyLanes.querySelector(".enemy-token[data-enemy-id=\"" + enemy.id + "\"]");
       if (!token) return;
-      token.style.left = (getEnemyVisualPosition(enemy, timestamp) * 100) + "%";
+      token.style.left = enemyTokenPosition(getEnemyVisualPosition(enemy, timestamp));
     });
     motionFrame = window.requestAnimationFrame(renderEnemyMotion);
   }
@@ -751,7 +758,7 @@
       battle.units.forEach(function (unit, slot) {
         if (!unit || slot % 3 !== lane) return;
         const token = document.createElement("span");
-        token.className = "lane-unit" + (unit.general ? " general-unit" : "") + (unit.attackFlash > 0 ? " is-attacking" : "");
+        token.className = "lane-unit unit-type-" + unit.type + (unit.general ? " general-unit" : "") + (unit.attackFlash > 0 ? " is-attacking" : "");
         const unitLabelText = unitLabel(unit);
         const glyph = unit.general ? data.generals[unit.type].glyph : data.unitTypes[unit.type].glyph;
         token.innerHTML = "<span class=\"lane-unit-glyph\" aria-hidden=\"true\">" + glyph + "</span><span class=\"lane-unit-name\">" + escapeHtml(unitLabelText) + "</span><span class=\"lane-unit-arrow\" aria-hidden=\"true\">" + (unit.attackFlash > 0 ? "→" : "") + "</span>";
@@ -782,7 +789,7 @@
     const hpPercent = Math.max(0, Math.round((enemy.hp / enemy.maxHp) * 100));
       token.className = "enemy-token enemy-kind-" + (enemy.id % 3) + (enemy.boss ? " boss" : "") + (enemy.hitFlash > 0 ? " is-hit" : "") + (enemy.defeatedTicks > 0 ? " is-defeated" : "");
       token.setAttribute("data-enemy-id", String(enemy.id));
-    token.style.left = (getEnemyVisualPosition(enemy, window.performance?.now?.() || Date.now()) * 100) + "%";
+    token.style.left = enemyTokenPosition(getEnemyVisualPosition(enemy, window.performance?.now?.() || Date.now()));
     token.setAttribute("aria-label", enemyLabel + ", " + t("hp") + " " + enemy.hp + "/" + enemy.maxHp);
     token.title = enemyLabel + " / " + enemy.hp + " / " + enemy.maxHp;
     token.innerHTML = "<span class=\"enemy-glyph\">" + (enemy.boss ? "將" : "卒") + "</span><span class=\"enemy-name\">" + escapeHtml(enemyLabel) + "</span><span class=\"enemy-health\"><span style=\"width:" + hpPercent + "%\"></span></span>";
@@ -1013,6 +1020,10 @@
     if (el.battle.scrollTop) el.battle.scrollTop = 0;
   }, { passive: true });
   document.addEventListener("keydown", function (event) {
+    if ([el.tutorial, el.leaveBattle, el.result].some(function (dialog) { return dialog.open; })) {
+      if (event.key === "Escape" && el.tutorial.open) el.tutorial.close();
+      return;
+    }
     if (document.activeElement && ["INPUT", "SELECT", "TEXTAREA"].indexOf(document.activeElement.tagName) >= 0) return;
     if (event.key.toLowerCase() === "r" && battle && !battle.result) recruit();
     if (event.key.toLowerCase() === "h" && battle && !battle.result) showHint();
@@ -1021,6 +1032,7 @@
   });
 
   updateStaticLocale();
+  frame = window.mountZhaoFrame();
   showScreen("main");
   window.setTimeout(updateStaticLocale, 900);
 

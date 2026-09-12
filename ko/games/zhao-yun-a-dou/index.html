@@ -3,7 +3,6 @@
 <head>
 
     <base href="/games/zhao-yun-a-dou/" />
-
     <link rel="canonical" href="https://weightplay.com/ko/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/zhao-yun-a-dou/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/zhao-yun-a-dou/" />
@@ -28,7 +27,11 @@
   <title>조운과 아두: 먹선 방어전 | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
   <link rel="stylesheet" href="style.css?v=20260910-zhao-main-poster-v23">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="frame-content.css?v=20260912-block-v24">
   <meta name="description" content="한자 병사를 모집해 세 개 전선에 배치하고 같은 부대를 합쳐, 30개의 짧은 먹선 방어 임무에서 아두를 지키세요." />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,8 +48,9 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "조운과 아두: 먹선 방어전",
+  "alternateName": "Zhao Yun & A Dou: Inkline Defense",
   "url": "https://weightplay.com/ko/games/zhao-yun-a-dou/",
-  "image": "https://weightplay.com/assets/zhao-yun-a-dou-cover.webp",
+  "image": "https://weightplay.com/assets/interface7-redrawn/zhao-yun-a-dou.webp",
   "description": "한자 병사를 모집해 세 개 전선에 배치하고 같은 부대를 합쳐, 30개의 짧은 먹선 방어 임무에서 아두를 지키세요.",
   "publisher": {
     "@type": "Organization",
@@ -59,60 +63,68 @@
   "genre": [
     "전략",
     "방어",
-    "합성",
-    "Browser Game"
+    "합성"
   ],
   "audience": {
     "@type": "PeopleAudience",
     "audienceType": "General players",
     "suggestedMinAge": 9
-  },
-  "alternateName": "Zhao Yun & A Dou: Inkline Defense"
+  }
 }
     </script>
-      <link rel="stylesheet" href="../../src/game-page-info.css?v=20260904-zhao-interface-contract-v23" />
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <main id="main" class="screen main main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">조운과 아두: 먹선 방어전</h1>
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle">INKLINE DEFENSE</strong>
+      <strong data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
     <section class="hero">
       <div class="ink-poster" role="img" data-t-aria="posterAlt" aria-label="Ink wash battlefield with Zhao Yun and A Dou">
-        <img class="poster-art" src="../../assets/zhao-yun-a-dou-cover.png" alt="">
-        <div class="poster-moon" aria-hidden="true"></div>
-        <div class="poster-flag poster-flag-left" aria-hidden="true">趙</div>
-        <div class="poster-flag poster-flag-right" aria-hidden="true">阿</div>
-        <div class="poster-brush" aria-hidden="true"></div>
-        <div class="poster-title" aria-hidden="true">墨線</div>
+        <img class="poster-art" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="" width="1254" height="1254">
       </div>
       <div class="hero-copy">
-        <p class="eyebrow" data-t="kicker">A SHORT MERGE-DEFENSE CAMPAIGN</p>
-        <h1 data-t="title">조운과 아두: 먹선 방어전</h1>
-        <p class="main-summary" data-t="summary">Recruit Chinese-character soldiers, merge matching units, and keep three lanes safe while Zhao Yun protects A Dou.</p>
-        <p class="prototype-pill" data-t="prototype">Internal prototype</p>
+        <p class="main-summary" data-t="summary">Recruit soldiers, merge matching units and defend all three lanes.</p>
         <button id="start" class="primary" data-t="start">Start Campaign</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
-      <p data-t="guideBody">Recruit a unit, place it in an open lane, then select two matching characters to merge.</p>
-      <ul>
-        <li data-t="guideRule1">Recruit with the buns resource.</li>
-        <li data-t="guideRule2">Merge equal characters before a lane is overwhelmed.</li>
-        <li data-t="guideRule3">Tap a general skill when the pressure rises.</li>
-      </ul>
-    </section>
   </main>
+  <section class="game-page-info game-page-info-static" aria-label="조운과 아두: 먹선 방어전 게임 정보">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>조운과 아두: 먹선 방어전</h2><p>한자 병사를 모집해 세 개 전선에 배치하고 같은 부대를 합쳐, 30개의 짧은 먹선 방어 임무에서 아두를 지키세요.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>합성 전략 방어</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · 방어 · 합성</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 점차 어려워짐</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>임무당 약 1~3분</strong></div><div class="game-info-fact"><span>연습 능력</span><strong>계획 · 타이밍 · 대응</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+      <div class="game-info-section"><h3>세계와 목표</h3><p>적군이 아두를 둘러싼 먹선을 돌파하고 있습니다. 조운은 짧은 전투 동안 진형을 재정비해 세 전선을 지켜야 합니다.</p>
+<p>각 한자는 분명한 부대 기호입니다. 어느 전선에 둘지, 언제 합칠지, 언제 장수 기술을 쓸지가 핵심 선택입니다.</p></div>
+      <div class="game-info-section"><h3>게임 시스템</h3><p>모집은 군량 3개를 쓰고 다음 부대를 첫 빈칸에 놓습니다. 군량은 전투 중 회복됩니다.</p>
+<p>종류와 레벨이 같은 두 부대를 차례로 선택하면 합성됩니다. 레벨 3 두 명은 해당 장수로 승급합니다.</p>
+<p>각 진형 칸은 세 전선 중 하나에 속합니다. 공격은 자동이지만 배치와 합성 시점은 플레이어가 결정합니다.</p>
+<p>네 장수는 베기, 기절, 돌진, 다중 화살 기술을 가지며 표시된 재사용 대기시간 뒤 직접 발동합니다.</p>
+<p>결과는 전투 안에 표시되며 임무 지도, 다음 임무, 같은 임무 다시 하기를 선택할 수 있습니다.</p></div>
+      <div class="game-info-section"><h3>게임 방법</h3><ol><li>해제된 임무에 들어가 세 전선 목표를 확인하세요.</li><li>안전한 빈칸이 있을 때 모집하고 같은 부대 둘을 합치세요.</li><li>비어 가는 전선에는 부대를 옮기고 위험한 합성 전에는 최소한의 수비를 남기세요.</li><li>보스나 빠른 적이 위험한 전선에 접근하면 준비된 장수 기술을 사용하세요.</li><li>모든 웨이브와 적 지휘소를 쓰러뜨리면 승리합니다. 아두의 체력이 0이 되면 진형을 바꿔 재도전하세요.</li></ol></div>
+      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>고레벨 부대가 강해도 빈 전선이 있으면 패배할 수 있습니다.</li><li>적이 오는 전선을 보고 보충과 합성 중 하나를 선택하세요.</li><li>장수 기술은 첫 적보다 눈에 보이는 위기 순간을 위해 아껴 두세요.</li><li>후반에는 속도, 내구도, 분산 압박, 보스 웨이브가 늘어나며 숨은 규칙은 없습니다.</li></ul></div>
+      <div class="game-info-section"><h3>진행과 난이도</h3><p>30개 임무는 여섯 장으로 나뉘며 뒤로 갈수록 웨이브 압박, 적 내구도, 보스 빈도가 올라갑니다.</p>
+<p>최고 별 결과는 이 브라우저에만 저장되며 계정이나 순위표는 없습니다.</p></div>
+      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>WeightPlay의 독창적인 합성 방어 게임으로 임무, 전장, 조작, 문구, 먹선 미술을 자체 제작했습니다.</p></div>
+      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>계정, 구매, 채팅, 순위표, 광고가 없으며 진행 상황은 현재 브라우저에만 저장됩니다.</p></div>
+      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>한자는 무엇을 뜻하나요?</dt><dd>병·궁·기·순은 공격력과 공격 속도가 다른 부대 기호이며 한자 시험이 아닙니다.</dd></div><div><dt>장수는 어떻게 얻나요?</dt><dd>같은 레벨 3 부대 둘을 합치면 해당 병종의 장수로 승급합니다.</dd></div><div><dt>강하게 합친 뒤에도 질 수 있나요?</dt><dd>네. 공격력은 올라가지만 전선이 비게 될 수 있으니 합성 전에 수비 범위를 확인하세요.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>네. 완료 임무와 최고 별 결과는 현재 브라우저에만 저장됩니다.</dd></div></dl></div>
+
+    </div>
+  </section>
 
   <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="420" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <h2 data-t="shortTitle">INKLINE DEFENSE</h2>
+      <h2 data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</h2>
       <span class="scene-utility" aria-hidden="true"></span>
     </header>
+    <div id="stageContent">
     <section class="stage-intro">
       <p class="eyebrow" data-t="stageTitle">Choose a mission</p>
       <p id="progress" class="stage-progress"></p>
@@ -123,16 +135,17 @@
       <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
+    </div>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="760" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button>
-      <div class="battle-heading"><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="remaining" class="wave-readout"></span>
-      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-wp-battle-utility="true" data-t-aria="tutorialAria" aria-label="Battle tutorial" title="Battle tutorial">?</button>
+      <h2 data-wp-frame-title data-t="shortTitle">INKLINE DEFENSE</h2>
     </header>
     <section class="battle-content">
+      <div id="battleInfo"><div><small id="chapter" hidden></small><strong id="stageName"></strong></div><div><span id="remaining" class="wave-readout"></span></div></div>
+      <button id="battleUtilityBtn" class="utility-button battle-utility" type="button" data-t-aria="tutorialAria" aria-label="Battle tutorial">?</button>
       <div class="battle-hud">
         <div class="hud-card enemy-hud"><span data-t="enemyCamp">Enemy command</span><strong id="enemyHp"></strong></div>
         <div class="hud-card buns-hud"><span data-t="buns">Buns</span><strong id="buns"></strong></div>
@@ -166,7 +179,7 @@
 
   <div id="generalReserve" class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
 
-  <dialog id="tutorial" class="game-dialog" aria-labelledby="tutorialTitle">
+  <dialog id="tutorial" class="game-dialog" aria-modal="false" aria-labelledby="tutorialTitle">
     <p class="eyebrow" data-t="tip">TIP</p>
     <h2 id="tutorialTitle" data-t="tutorialTitle">Your first command</h2>
     <ol>
@@ -193,45 +206,24 @@
     <div class="result-actions"><button id="resultStages" data-t="stages">Stages</button><button id="next" class="primary" data-t="nextStage">Next stage</button><button id="retry" data-t="replay">Replay</button></div>
   </dialog>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
   <script src="locales.js?v=20260910-zhao-main-poster-v23"></script>
+  <script src="guide-copy.js?v=20260912-block-v24"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260912-block-v24"></script>
   <script src="game.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="analytics-ownership.js?v=20260910-zhao-main-poster-v23"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
+  <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>
   <script src="../../src/game-page-info-general-reviewed.js?v=20260812-zhao-guide-v7"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260812-zhao-battle-v2"></script>
-<section class="game-page-info game-page-info-static" aria-label="조운과 아두: 먹선 방어전 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>조운과 아두: 먹선 방어전</h2><p>한자 병사를 모집해 세 개 전선에 배치하고 같은 부대를 합쳐, 30개의 짧은 먹선 방어 임무에서 아두를 지키세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>합성 전략 방어</strong></div><div class="game-info-fact"><span>장르</span><strong>전략 · 방어 · 합성</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉽게 시작해 점차 어려워짐</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>임무당 약 1~3분</strong></div><div class="game-info-fact"><span>연습 능력</span><strong>계획 · 타이밍 · 대응</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>적군이 아두를 둘러싼 먹선을 돌파하고 있습니다. 조운은 짧은 전투 동안 진형을 재정비해 세 전선을 지켜야 합니다.</p>
-<p>각 한자는 분명한 부대 기호입니다. 어느 전선에 둘지, 언제 합칠지, 언제 장수 기술을 쓸지가 핵심 선택입니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>모집은 군량 3개를 쓰고 다음 부대를 첫 빈칸에 놓습니다. 군량은 전투 중 회복됩니다.</p>
-<p>종류와 레벨이 같은 두 부대를 차례로 선택하면 합성됩니다. 레벨 3 두 명은 해당 장수로 승급합니다.</p>
-<p>각 진형 칸은 세 전선 중 하나에 속합니다. 공격은 자동이지만 배치와 합성 시점은 플레이어가 결정합니다.</p>
-<p>네 장수는 베기, 기절, 돌진, 다중 화살 기술을 가지며 표시된 재사용 대기시간 뒤 직접 발동합니다.</p>
-<p>결과는 전투 안에 표시되며 임무 지도, 다음 임무, 같은 임무 다시 하기를 선택할 수 있습니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>해제된 임무에 들어가 세 전선 목표를 확인하세요.</li><li>안전한 빈칸이 있을 때 모집하고 같은 부대 둘을 합치세요.</li><li>비어 가는 전선에는 부대를 옮기고 위험한 합성 전에는 최소한의 수비를 남기세요.</li><li>보스나 빠른 적이 위험한 전선에 접근하면 준비된 장수 기술을 사용하세요.</li><li>모든 웨이브와 적 지휘소를 쓰러뜨리면 승리합니다. 아두의 체력이 0이 되면 진형을 바꿔 재도전하세요.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>고레벨 부대가 강해도 빈 전선이 있으면 패배할 수 있습니다.</li><li>적이 오는 전선을 보고 보충과 합성 중 하나를 선택하세요.</li><li>장수 기술은 첫 적보다 눈에 보이는 위기 순간을 위해 아껴 두세요.</li><li>후반에는 속도, 내구도, 분산 압박, 보스 웨이브가 늘어나며 숨은 규칙은 없습니다.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>30개 임무는 여섯 장으로 나뉘며 뒤로 갈수록 웨이브 압박, 적 내구도, 보스 빈도가 올라갑니다.</p>
-<p>최고 별 결과는 이 브라우저에만 저장되며 계정이나 순위표는 없습니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>WeightPlay의 독창적인 합성 방어 게임으로 임무, 전장, 조작, 문구, 먹선 미술을 자체 제작했습니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>보호자 안내</h3><p>계정, 구매, 채팅, 순위표, 광고가 없으며 진행 상황은 현재 브라우저에만 저장됩니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>한자는 무엇을 뜻하나요?</dt><dd>병·궁·기·순은 공격력과 공격 속도가 다른 부대 기호이며 한자 시험이 아닙니다.</dd></div><div><dt>장수는 어떻게 얻나요?</dt><dd>같은 레벨 3 부대 둘을 합치면 해당 병종의 장수로 승급합니다.</dd></div><div><dt>강하게 합친 뒤에도 질 수 있나요?</dt><dd>네. 공격력은 올라가지만 전선이 비게 될 수 있으니 합성 전에 수비 범위를 확인하세요.</dd></div><div><dt>진행 상황이 저장되나요?</dt><dd>네. 완료 임무와 최고 별 결과는 현재 브라우저에만 저장됩니다.</dd></div></dl></div>
-
-    </div>
-  </section>
+  <script src="public-guide.js?v=20260912-block-v24"></script>
 </body>
 </html>

@@ -126,7 +126,7 @@
     CHAPTERS.forEach((chapter, chapterIndex) => {
       const card = document.createElement("article"); card.className = "chapter-card";
       const heading = document.createElement("h3"); heading.textContent = text(chapter.key);
-      const rule = document.createElement("p"); rule.textContent = text(chapter.ruleKey);
+      const rule = document.createElement("p"); rule.textContent = chapterIndex < 5 ? text(STAGES[chapterIndex*5].rule) : ["same","next","previous","missing","blocked"].map(key=>text(key)).join(" ");
       // This five-button chapter grid is intentionally not the shared horizontal
       // Stage rail.  Its old generic class was picked up by the shared rail CSS,
       // pushing Trail 1 off the phone viewport.
@@ -148,14 +148,15 @@
     const stage=STAGES[stageIndex],p=puzzle(),isGuide=phase==='guide'||phase==='settling';
     const step=isGuide?'guide':clueVisible?'pass':'scout';
     setText('roundLabel',text('round',{n:stage.number,total:30}));setText('meterLabel',text('meter',{n:light}));setText('sceneTitle','');
-    setText('bridgeProgress',text('step',{n:bridgeStep,total:stage.signals.length}));
-    $('bridgeTrack').innerHTML=stage.signals.map((_,i)=>`<span class="bridge-tile ${i<bridgeStep?'is-lit':''}" aria-hidden="true">${i+1}</span>`).join('');
-    setText('sceneHint',text(p.kind));setText('handoffPrompt',isGuide?text('handoff'):clueVisible?text('phasePass'):text('phaseScout'));
+    setText('bridgeProgress',text('step',{n:bridgeStep+(phase==='settling'?1:0),total:stage.signals.length}));
+    $('blockWorld').dataset.feedback=phase==='settling'?'success':'';
+    $('bridgeTrack').innerHTML=stage.signals.map((_,i)=>`<span class="bridge-tile ${i<bridgeStep+(phase==='settling'?1:0)?'is-lit':''}" aria-hidden="true">${i+1}</span>`).join('');
+    setText('sceneHint',text(p.kind));setText('handoffPrompt',lastWrong?lastWrong:isGuide?text('handoff'):clueVisible?text('phasePass'):text('phaseScout'));
     setText('stepScout',`1 · ${text('scout')}`);setText('stepPass',`2 · ${text('together')}`);setText('stepGuide',`3 · ${text('guide')}`);
     [['stepScout','scout'],['stepPass','pass'],['stepGuide','guide']].forEach(([id,key])=>{$(id).classList.toggle('is-current',step===key);$(id).classList.toggle('is-done',key==='scout'&&step!=='scout'||key==='pass'&&step==='guide');});
     document.querySelector('.scout-card').classList.toggle('is-active',!isGuide);document.querySelector('.guide-card-panel').classList.toggle('is-active',isGuide);
     document.querySelector('.scout-card').inert=isGuide;document.querySelector('.guide-card-panel').inert=!isGuide;
-    setText('guideRule',text(p.kind));
+    setText('guideRule',text(p.kind)+(p.kind==='blocked'?` × ${symbolName(SYMBOLS[p.blocked])}`:''));
     $('ruleMap').innerHTML=p.kind==='missing'?[[0,1,2],[1,2,0],[2,0,1]].map(([a,b,c])=>`<span>${glyph(SYMBOLS[a])}+${glyph(SYMBOLS[b])}<b>→</b>${glyph(SYMBOLS[c])}</span>`).join(''):p.mapping.map((to,from)=>`<span>${glyph(SYMBOLS[from])}<b>→</b>${glyph(SYMBOLS[to])}</span>`).join('');
     $('ruleMap').setAttribute('aria-label',p.kind==='missing'?[[0,1,2],[1,2,0],[2,0,1]].map(([a,b,c])=>`${symbolName(SYMBOLS[a])} + ${symbolName(SYMBOLS[b])} → ${symbolName(SYMBOLS[c])}`).join('; '):p.mapping.map((to,from)=>`${symbolName(SYMBOLS[from])} → ${symbolName(SYMBOLS[to])}`).join('; '));
     const reveal=document.createElement('button');reveal.type='button';reveal.className='symbol-button reveal-button';reveal.dataset.role='scout';
@@ -208,10 +209,17 @@
   [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].forEach(button => button?.addEventListener("click", toggleSettings));
   $("soundBtn").addEventListener("click", () => { soundEnabled = !soundEnabled; applyCopy(); });
   $("localeSelect").addEventListener("change", event => {
+    event.stopImmediatePropagation();
     locale = SUPPORTED_LOCALES.includes(event.target.value) ? event.target.value : "en";
     try { localStorage.setItem("weightPlayLocale", locale); localStorage.setItem("wp-locale", locale); } catch { /* restricted storage is supported */ }
+    // Keep the shared shell and this game's copy on one locale while routing.
+    // Rewriting a localized page before navigation can fight its title observer.
+    if (window.WonderI18n?.setLocale && window.WonderI18n.actualLocale?.() !== locale) {
+      window.WonderI18n.setLocale(locale);
+      return;
+    }
     applyCopy();
-  });
+  }, { capture: true });
   $("localeSelect").innerHTML = SUPPORTED_LOCALES.map(code => `<option value="${code}">${LOCALE_LABELS[code]}</option>`).join("");
   $('recallBtn').onclick=()=>{if(phase!=='guide')return;phase='scout';clueVisible=false;feedbackKey='';renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));};
   window.addEventListener('wp:block-pick',e=>guideChoice(SYMBOLS[e.detail.index]));window.addEventListener('wp:block-ready',scene);
