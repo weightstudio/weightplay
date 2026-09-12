@@ -28,21 +28,9 @@ body[data-wp-game-id="klondike-solitaire"] {
   margin: 0;
   min-height: 100%;
   background-color: #071728;
-  background-image: linear-gradient(180deg, rgba(5, 16, 28, 0.22), rgba(5, 16, 28, 0.62)), url("../../assets/klondike-solitaire-background.webp");
-  background-position: center, center;
-  background-size: cover, cover;
-  background-attachment: fixed;
   color: var(--kl-text);
   font-feature-settings: "liga" 1, "kern" 1;
   text-rendering: geometricPrecision;
-}
-
-body[data-game-id="klondike-solitaire"] .game-page-info,
-body[data-wp-game-id="klondike-solitaire"] .game-page-info {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin-right: 0;
 }
 
 body[data-game-id="klondike-solitaire"] .loading-card,
@@ -538,7 +526,7 @@ button.mini-btn {
 
 .card.front {
   background-color: #f6efde;
-  background-image: linear-gradient(180deg, #f5f2e9, #f6efde), url("../../assets/klondike-solitaire-cards.webp");
+  background-image: url("../../assets/klondike-solitaire-card-front-block-v52.webp");
   color: #132437;
   background-size: 100% 120%, cover;
   background-position: center, center;
@@ -547,7 +535,7 @@ button.mini-btn {
 
 .card.back .card-back-pattern {
   opacity: 0.95;
-  background: url("../../assets/klondike-solitaire-card-back.webp") center / cover no-repeat;
+  background: url("../../assets/klondike-solitaire-card-back-block-v52.webp") center / contain no-repeat;
 }
 
 .card .suit {
@@ -608,7 +596,7 @@ button.mini-btn {
   inset: 2px;
   border-radius: max(2px, calc(var(--kl-card-radius) - 2px));
   pointer-events: none;
-  background: url("../../assets/klondike-solitaire-card-back.webp") center / contain no-repeat;
+  background: url("../../assets/klondike-solitaire-card-back-block-v52.webp") center / contain no-repeat;
 }
 
 .card-deal {

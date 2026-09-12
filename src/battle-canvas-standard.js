@@ -62,6 +62,9 @@
     // Balance Grove's two-column subset tray needs the wide short-landscape
     // envelope so its Back and Check controls remain physical touch targets.
     "animal-balance-grove": [".battle-canvas", 390, 788, 760, 334],
+    // Layer Grove's stacked-layer actions must stay reachable in the 1280x720
+    // desktop envelope as well as compact landscape.
+    "animal-layer-grove": [".battle-canvas", 390, 788, 760, 334],
     "animal-auto-squad": ["#gamePanel", 382, 780],
     "animal-bubble-safari": ["#battleScreen", 390, 788],
     "animal-2048": [".battle-canvas", 390, 788, 760, 334],
@@ -187,6 +190,7 @@
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
     "animal-gust-garden": 1.25,
+    "animal-layer-grove": 1.25,
   };
   const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";

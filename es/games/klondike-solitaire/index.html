@@ -25,17 +25,17 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
   <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
-  <meta name="description" content="Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte." />
+  <meta name="description" content="Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer." />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Solitario Klondike | WeightPlay" />
-  <meta property="og:description" content="Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte." />
+  <meta property="og:description" content="Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer." />
   <meta property="og:url" content="https://weightplay.com/es/games/klondike-solitaire/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Solitario Klondike | WeightPlay" />
-  <meta name="twitter:description" content="Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte." />
+  <meta name="twitter:description" content="Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateEn" rel="alternate" hreflang="en" href="https://weightplay.com/en/games/klondike-solitaire/" />
@@ -46,7 +46,7 @@
       "@type": "VideoGame",
       "name": "Klondike Solitaire Online",
       "url": "https://weightplay.com/en/games/klondike-solitaire/",
-      "image": "https://weightplay.com/assets/lobby-posters/klondike-solitaire-square-v1.webp",
+      "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
       "description": "Classic Klondike Solitaire with drag/drop, Undo, Hint, Auto Finish, Draw 1/3 modes, animations, and cross-device support.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -61,8 +61,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260909-klondike-square-main-v51" />
+  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,7 +72,7 @@
   "alternateName": "Klondike Solitaire",
   "url": "https://weightplay.com/es/games/klondike-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
-  "description": "Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte.",
+  "description": "Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -93,7 +94,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v51" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -102,6 +103,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
       <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
@@ -148,12 +150,12 @@
 
     <section class="main-hero">
       <div class="poster-frame">
-        <img class="cover" src="/assets/lobby-posters/klondike-solitaire-square-v1.webp" width="1254" height="1254" alt="Imagen del juego Solitario Klondike" />
+        <img class="cover" src="/assets/interface7-redrawn/klondike-solitaire.webp" width="1254" height="1254" alt="Imagen del juego Solitario Klondike" />
       </div>
       <article class="main-copy">
         <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
         <h1 data-klocale="ui.hero.title">Solitario Klondike</h1>
-        <p id="menuHint" class="menu-hint" data-klocale="ui.hero.copy">A refined Klondike run with smoother motion, cleaner controls, and long-session performance. Play from phone or desktop with drag-and-drop, one-click moves, auto finish, Undo history, and live hints.</p>
+        <p id="menuHint" class="menu-hint" data-i18n="summary">Alterna colores, descubre cartas ocultas y completa cada palo del as al rey.</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
         <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
           <strong data-klocale="ui.feature.target_title">Target</strong>
@@ -172,6 +174,15 @@
       </aside>
     </section>
   </main>
+
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-i18n="howTitle">Cómo jugar</h3><ol>
+        <li data-i18n="rule1">Selecciona una carta visible y arrástrala o toca un destino resaltado. Ordena columnas en descenso alternando colores; solo reyes o secuencias encabezadas por rey ocupan columnas vacías.</li>
+        <li data-i18n="rule2">Completa cada base del as al rey del mismo palo. Retira las cartas superiores para descubrir las ocultas.</li>
+        <li data-i18n="rule3">Toca el mazo para robar. Al robar tres, solo puedes mover la carta superior del descarte.</li>
+      </ol><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>Hay 30 etapas escritas en seis capítulos de reglas. La etapa 30 se puede volver a jugar una vez completada.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -221,45 +232,21 @@
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-    <script src="game.js?v=20260909-klondike-square-main-v51"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="locales.js?v=20260913-klondike-block-v52"></script>
+  <script src="frame.js?v=20260913-klondike-block-v52"></script>
+    <script src="game.js?v=20260913-klondike-block-v52"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <section class="game-page-info game-page-info-static" aria-label="Información de Solitario Klondike">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Solitario Klondike</h2><p>Solitario Klondike es un juego clásico de 52 cartas en el que construyes cuatro bases del As al Rey mientras controlas el cuadro, el mazo y el descarte.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Dificultad</span><strong>De fácil a desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>2-12 minutos</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>En cada partida se reparte un tablero clásico de Klondike. Descubre cartas boca abajo, mantén secuencias descendentes de colores alternos en el cuadro y lleva las series estables hacia cada base.</p>
-<p>Deshacer, Pista y Finalización automática mantienen fluidas las sesiones largas, conservando la reversibilidad completa de los movimientos y la coherencia del tablero.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Toca una carta para seleccionarla. Arrástrala o toca un destino resaltado para moverla.</p>
-<p>Arrastra o toca cartas legales; las cartas individuales y las secuencias válidas del cuadro se mueven juntas según las reglas clásicas de Klondike.</p>
-<p>Puedes cambiar entre Robar 1 y Robar 3 en cualquier momento; el modo de robo se guarda localmente y determina el comportamiento del mazo.</p>
-<p>Pista solo resalta una jugada legal recomendada; nunca mueve cartas automáticamente.</p>
-<p>Finalización automática puede completar movimientos seguros hacia las bases cuando solo quedan jugadas no estratégicas.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Usa Nueva partida para un reparto nuevo o Reiniciar partida actual para volver al tablero de la semilla inicial.</li><li>Elige Robar 1 o Robar 3 en la cabecera de la partida y mueve cartas del Mazo al Descarte.</li><li>Toca una carta para seleccionarla. Arrástrala o toca un destino resaltado para moverla.</li><li>Usa Deshacer libremente para retroceder ante una ruta dudosa y continuar con decisiones nuevas.</li><li>Cuando no quede ninguna decisión estratégica, usa Finalización automática para completar las jugadas legales seguras hacia las bases y terminar rápido.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Descubre pronto las cartas boca abajo; cada revelación suele aumentar las opciones legales.</li><li>Da prioridad a liberar Reyes y Ases bloqueados para abrir movimientos más profundos en el cuadro.</li><li>En el modo Robar 3, evita ciclos rápidos sin despejar primero espacio en el cuadro.</li><li>Usa Deshacer solo cuando una jugada reduzca la flexibilidad futura, no después de cada duda.</li><li>Trata Finalización automática como una herramienta de final de partida cuando la disposición del cuadro ya sea estable.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Cada partida es un único desafío clásico de mesa con repeticiones ilimitadas y estadísticas locales.</p>
-<p>Las partidas largas premian secuencias de movimientos más limpias y menos ciclos especulativos del Mazo.</p>
-<p>Las decisiones constantes y una planificación cuidadosa del cuadro mejoran la fiabilidad al completar repartos repetidos.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>El juego usa movimiento basado en transformaciones para que las cartas se desplacen de forma legible y fluida, con actualizaciones compactas que permiten sesiones largas tanto en móvil como en escritorio.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Solitario Klondike es un juego de estrategia con cartas para público general, recomendado a partir de 9 años y para jugar en familia. No requiere cuenta; el progreso y las estadísticas se guardan en este navegador.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas cartas se usan?</dt><dd>Solitario Klondike utiliza una baraja estándar de 52 cartas.</dd></div><div><dt>¿Cuál es la condición de victoria?</dt><dd>Cada base debe completarse desde el As hasta el Rey en orden de palo.</dd></div><div><dt>¿Qué son Robar 1 y Robar 3?</dt><dd>Robar 1 revela una carta por cada extracción del Mazo; Robar 3 revela tres.</dd></div><div><dt>¿Se pueden mover las cartas una por una?</dt><dd>Sí, y las secuencias válidas descendentes de colores alternos pueden moverse como grupo.</dd></div><div><dt>¿Cómo sé si una jugada es legal?</dt><dd>Pista resalta un destino legal. Usa únicamente coincidencias válidas del cuadro o de las bases.</dd></div><div><dt>¿Qué hace Finalización automática?</dt><dd>Solo mueve jugadas legales y seguras hacia las bases cuando ya no quedan movimientos estratégicos en el cuadro.</dd></div><div><dt>¿Puedo usar Deshacer?</dt><dd>Sí. Deshacer se puede usar repetidamente y restaura por completo el estado anterior del tablero.</dd></div><div><dt>¿Qué pasa si no queda ninguna jugada sugerida?</dt><dd>Pista indica que no hay movimientos disponibles cuando no encuentra ninguna jugada.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/spider-solitaire/"><img src="/assets/interface7-redrawn/spider-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario Spider</strong><span>Solitario Spider usa dos barajas en diez columnas.</span></span></a><a class="game-info-related-card" href="/es/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>Las 52 cartas empiezan boca arriba; usa cuatro celdas libres y ocho columnas para completar cuatro bases del As al Rey.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
+    <script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
     <script src="analytics-ownership.js?v=20260909-klondike-poster-v51"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

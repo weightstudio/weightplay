@@ -4728,6 +4728,25 @@ if (catColorSudokuPublic) {
   delete catColorSudokuPublic.internalTrial;
 }
 
+// Star Map Position Logic is now an owner-approved public General release.
+// Keep this release-state override after the planned prototype records so the
+// exact v7/I6 candidate is discoverable with its playable localized routes.
+const constellationKeeperPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-constellation-keeper");
+if (constellationKeeperPublic) {
+  constellationKeeperPublic.status = "playable";
+  delete constellationKeeperPublic.statusText;
+  delete constellationKeeperPublic.internalTrial;
+}
+
+// Folded Field is now an owner-approved public General release. Keep this
+// override adjacent to the other final-release catalog entries.
+const foldedFieldPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-folded-field");
+if (foldedFieldPublic) {
+  foldedFieldPublic.status = "playable";
+  delete foldedFieldPublic.statusText;
+  delete foldedFieldPublic.internalTrial;
+}
+
 // Code Breaker is now an owner-approved public General release. Keep this
 // release-state override after the classic planned batch so the exact v11/I6
 // candidate is discoverable with its truthful Battle preview.

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-    <title>Paciência Klondike | WeightPlay</title>
+    <title>Solitário Klondike | WeightPlay</title>
 
     <base href="/games/klondike-solitaire/" />
     <link rel="canonical" href="https://weightplay.com/pt-br/games/klondike-solitaire/" />
@@ -25,17 +25,17 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
   <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
-  <meta name="description" content="Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte." />
+  <meta name="description" content="Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer." />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Paciência Klondike | WeightPlay" />
-  <meta property="og:description" content="Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte." />
+  <meta property="og:title" content="Solitário Klondike | WeightPlay" />
+  <meta property="og:description" content="Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer." />
   <meta property="og:url" content="https://weightplay.com/pt-br/games/klondike-solitaire/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Paciência Klondike | WeightPlay" />
-  <meta name="twitter:description" content="Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte." />
+  <meta name="twitter:title" content="Solitário Klondike | WeightPlay" />
+  <meta name="twitter:description" content="Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateEn" rel="alternate" hreflang="en" href="https://weightplay.com/en/games/klondike-solitaire/" />
@@ -46,7 +46,7 @@
       "@type": "VideoGame",
       "name": "Klondike Solitaire Online",
       "url": "https://weightplay.com/en/games/klondike-solitaire/",
-      "image": "https://weightplay.com/assets/lobby-posters/klondike-solitaire-square-v1.webp",
+      "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
       "description": "Classic Klondike Solitaire with drag/drop, Undo, Hint, Auto Finish, Draw 1/3 modes, animations, and cross-device support.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -61,17 +61,18 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260909-klondike-square-main-v51" />
+  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "Paciência Klondike",
+  "name": "Solitário Klondike",
   "alternateName": "Klondike Solitaire",
   "url": "https://weightplay.com/pt-br/games/klondike-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
-  "description": "Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte.",
+  "description": "Solitário clássico com fluxo de arrastar e soltar, modos de compra 1/3, auto-finalização e suporte a desfazer.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -93,7 +94,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v51" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -102,6 +103,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
       <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
@@ -148,12 +150,12 @@
 
     <section class="main-hero">
       <div class="poster-frame">
-        <img class="cover" src="/assets/lobby-posters/klondike-solitaire-square-v1.webp" width="1254" height="1254" alt="Imagem do jogo Paciência Klondike" />
+        <img class="cover" src="/assets/interface7-redrawn/klondike-solitaire.webp" width="1254" height="1254" alt="Imagem do jogo Solitário Klondike" />
       </div>
       <article class="main-copy">
         <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
-        <h1 data-klocale="ui.hero.title">Paciência Klondike</h1>
-        <p id="menuHint" class="menu-hint" data-klocale="ui.hero.copy">A refined Klondike run with smoother motion, cleaner controls, and long-session performance. Play from phone or desktop with drag-and-drop, one-click moves, auto finish, Undo history, and live hints.</p>
+        <h1 data-klocale="ui.hero.title">Solitário Klondike</h1>
+        <p id="menuHint" class="menu-hint" data-i18n="summary">Alterne cores, revele cartas ocultas e complete cada naipe do ás ao rei.</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
         <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
           <strong data-klocale="ui.feature.target_title">Target</strong>
@@ -172,6 +174,15 @@
       </aside>
     </section>
   </main>
+
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-i18n="howTitle">Como jogar</h3><ol>
+        <li data-i18n="rule1">Selecione uma carta aberta e arraste-a ou toque no destino destacado. Monte colunas em ordem decrescente alternando cores; apenas reis ou sequências iniciadas por rei ocupam colunas vazias.</li>
+        <li data-i18n="rule2">Complete cada fundação do ás ao rei do mesmo naipe. Remova as cartas de cima para revelar as ocultas.</li>
+        <li data-i18n="rule3">Toque no monte para puxar. Ao puxar três, só a carta superior do descarte pode ser movida.</li>
+      </ol><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>Existem 30 estágios de autoria em seis capítulos de regras. O estágio 30 permanece reproduzível após a conclusão.</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -221,45 +232,21 @@
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-    <script src="game.js?v=20260909-klondike-square-main-v51"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="locales.js?v=20260913-klondike-block-v52"></script>
+  <script src="frame.js?v=20260913-klondike-block-v52"></script>
+    <script src="game.js?v=20260913-klondike-block-v52"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <section class="game-page-info game-page-info-static" aria-label="Informações de Paciência Klondike">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guia de jogos originais WeightPlay</span><h2>Paciência Klondike</h2><p>Clássico jogo de 52 cartas: monte quatro fundações do Ás ao Rei enquanto administra o tableau, o estoque e o descarte.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Dificuldade</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>Tempo estimado</span><strong>2-12 minutos</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo e missão</h3><p>Um layout Klondike padrão é distribuído em cada jogo. Exponha cartas viradas para baixo, mantenha sequências descendentes de cores alternadas no tabuleiro e limpe corridas estáveis ​​em direção a cada fundação.</p>
-<p>Undo, Hint e Auto-Finish foram projetados para manter sessões longas fluidas, preservando a reversibilidade total dos movimentos e a consistência do tabuleiro.</p></div>
-      <div class="game-info-section"><h3>Sistemas do jogo</h3><p>Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</p>
-<p>Arraste ou toque em cartões legais; cartas únicas e sequências válidas do tabuleiro movem-se junto com as regras de ordem padrão do Klondike.</p>
-<p>Você pode alternar os modos Draw 1 e Draw 3 a qualquer momento; o modo de desenho é armazenado localmente e afeta o comportamento de desenho de estoque.</p>
-<p>A dica destaca apenas um movimento legal recomendado; ele nunca executa movimentos automaticamente.</p>
-<p>O Auto-Finish pode completar movimentos finais de jogo seguros quando restam apenas movimentos não estratégicos.</p></div>
-      <div class="game-info-section"><h3>Como jogar</h3><ol><li>Use o Novo Jogo para um novo acordo ou Reiniciar o Jogo Atual para retornar ao tabuleiro inicial.</li><li>Escolha Empate 1 ou Empate 3 no cabeçalho da batalha e compre do Estoque para o Desperdício.</li><li>Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</li><li>Use Desfazer livremente para recuar em rotas incertas e continuar com novas decisões.</li><li>Quando não resta nenhuma estratégia, use o Auto-Finish para liquidar os movimentos restantes da base legal e terminar rapidamente.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Dicas de estratégia</h3><ul><li>Exponha as cartas viradas para baixo antecipadamente; cada revelação geralmente aumenta as opções legais.</li><li>Priorize a liberação de Reis e Ases bloqueados para abrir um movimento mais profundo do tabuleiro.</li><li>No modo Draw 3, evite ciclos rápidos sem primeiro limpar o espaço do quadro.</li><li>Use Desfazer somente quando uma movimentação reduzir a flexibilidade futura, e não após cada incerteza.</li><li>Trate o Auto-Finish como uma ferramenta de final de jogo quando a organização do quadro estiver estável.</li></ul></div>
-      <div class="game-info-section"><h3>Progresso e dificuldade</h3><p>Cada sessão é um único desafio de mesa clássico com repetições ilimitadas e rastreamento de estatísticas locais.</p>
-<p>Um jogo mais longo enfatiza uma sequência de movimentos mais limpa e menos ciclos de ações especulativos.</p>
-<p>Mãos firmes e planejamento cuidadoso do quadro melhoram a confiabilidade da conclusão em tabuleiros repetidos.</p></div>
-      <div class="game-info-section"><h3>Nota de design</h3><p>A jogabilidade usa movimento baseado em transformação para um movimento legível e suave do cartão, com atualizações de objetos compactos para suportar sessões mais longas em desktops e dispositivos móveis.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informações do jogador e salvamento</h3><p>Klondike Solitaire é um jogo de estratégia de cartas para o público geral. Nenhuma conta é necessária. O progresso e as estatísticas são armazenados neste navegador.</p></div>
-      <div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantos cartões são usados?</dt><dd>Klondike Solitaire usa um baralho padrão de 52 cartas.</dd></div><div><dt>Qual é a condição de vitória?</dt><dd>Cada fundação deve ser concluída do Ás ao Rei na ordem dos naipes.</dd></div><div><dt>O que são Empate 1 e Empate 3?</dt><dd>O sorteio 1 revela uma carta por compra de estoque; O sorteio 3 revela três.</dd></div><div><dt>As cartas podem ser movidas uma por uma?</dt><dd>Sim, e execuções válidas de cores alternadas descendentes podem ser movidas como um grupo.</dd></div><div><dt>Como posso saber se uma mudança é legal?</dt><dd>A dica destaca um alvo legal. Use apenas tabelas legais ou correspondências de base.</dd></div><div><dt>O que o acabamento automático faz?</dt><dd>Ele move apenas movimentos legais seguros para os fundamentos depois que os movimentos não estratégicos do quadro se esgotam.</dd></div><div><dt>Posso desfazer?</dt><dd>Sim. Desfazer suporta o uso repetido e restaura totalmente o estado do quadro.</dd></div><div><dt>E se não existir nenhuma sugestão de movimento?</dt><dd>A dica retorna 0 movimentos disponíveis quando nenhum movimento é encontrado.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jogos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/spider-solitaire/"><img src="/assets/interface7-redrawn/spider-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Spider Solitaire</strong><span>Spider Solitaire usa dois baralhos em dez colunas.</span></span></a><a class="game-info-related-card" href="/pt-br/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Paciência FreeCell</strong><span>As 52 cartas começam viradas para cima; use quatro células livres e oito colunas para completar quatro fundações do Ás ao Rei.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
+    <script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
     <script src="analytics-ownership.js?v=20260909-klondike-poster-v51"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
 </body>
 </html>

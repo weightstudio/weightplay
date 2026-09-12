@@ -146,9 +146,9 @@
     return { unlocked: Math.max(unlocked, frontier), cleared, best: source.best && typeof source.best === "object" ? source.best : {} };
   };
   const loadProgress = () => {
-    try { return normalizeProgress(JSON.parse(localStorage.getItem("wp-canopy-progress-v14") || localStorage.getItem("wp-canopy-progress-v13") || "{}")); } catch { return normalizeProgress({}); }
+    try { return normalizeProgress(JSON.parse(localStorage.getItem("wp-canopy-progress-v15") || localStorage.getItem("wp-canopy-progress-v14") || localStorage.getItem("wp-canopy-progress-v13") || "{}")); } catch { return normalizeProgress({}); }
   };
-  const saveProgress = () => { try { localStorage.setItem("wp-canopy-progress-v14", JSON.stringify(progress)); } catch {} };
+  const saveProgress = () => { try { localStorage.setItem("wp-canopy-progress-v15", JSON.stringify(progress)); } catch {} };
   const progress = loadProgress();
   const state = { screen: "main", stage: Math.min(progress.unlocked, TOTAL_STAGES), chapter: 1, wave: 1, score: 0, best: Number(localStorage.getItem("wp-canopy-best") || 0), chain: 0, misses: 0, targets: [], stroke: [], active: false, strokeInputType: "unknown", elapsed: 0, last: 0, spawn: 0, ready: 0, previewUntil: 0, previewSafeShown: false, checkpointSpawned: false, checkpointHit: false, seed: 1, raf: 0, status: "ready", resultWin: null, bestImproved: false, cardsLocale: "" };
   const colors = { safe: ["#ffcf64", "#f8896c", "#96e6c1", "#b99cff"], hazard: "#25283b" };
@@ -251,7 +251,9 @@
     state.best = Math.max(state.best, waveScore);
     state.bestImproved = state.best > previousBest;
     try { localStorage.setItem("wp-canopy-best", String(state.best)); } catch {}
-    state.resultWin = state.misses < 3;
+    // A wave clear must be earned with at least one safe-fruit harvest; idle
+    // zero-input checks are failures and must not unlock the next stage.
+    state.resultWin = state.misses < 3 && state.score > 0;
     if (state.resultWin) {
       progress.cleared[state.stage] = true;
       progress.unlocked = Math.max(progress.unlocked, Math.min(TOTAL_STAGES, state.stage + 1));

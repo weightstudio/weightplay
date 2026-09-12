@@ -91,7 +91,7 @@
     mechanicDirect: "Direct neighbour rules", mechanicCross: "Crossed horizontal and vertical axes", mechanicDiagonal: "Diagonal endpoint clues", mechanicCorner: "Edge and shared-corner anchors", mechanicChain: "Stepped relation chains", mechanicMastery: "Combined relation families",
     checkpoint: "Checkpoint", checkpoint5: "Lantern Grove Guardian", checkpoint10: "Horizon Keeper", checkpoint15: "Starfold Guardian", checkpoint20: "Four-Corner Guardian", checkpoint25: "Chainlight Guardian", checkpoint30: "Constellation Crown Finale",
     relationLeft: "{subject} is directly left of {object}.", relationRight: "{subject} is directly right of {object}.", relationAbove: "{subject} is directly above {object}.", relationBelow: "{subject} is directly below {object}.", relationUpperLeft: "{subject} is upper-left of {object}.", relationLowerRight: "{subject} is lower-right of {object}.",
-    boardOption: "Board {slot}", locked: "Locked", faqTitle: "FAQ", faqProgress: "Is progress saved? Yes, cleared maps unlock the next map and remain replayable in this browser.",
+    boardOption: "Board {slot}", locked: "Locked", faqTitle: "FAQ", faqQuestion: "Is progress saved?", faqAnswer: "Yes, cleared maps unlock the next map and remain replayable in this browser.", faqProgress: "Is progress saved? Yes, cleared maps unlock the next map and remain replayable in this browser.",
     guideSummary: "Read visible relationships between animal stars, then choose the one constellation that obeys both rules across six five-map arcs.", resultGuideTitle: "Results and saves", resultGuide: "Six five-map arcs form a 30-map campaign. Progress and the best total checks are stored only in this browser when storage is available.", tipsTitle: "Practical tips", tips: "Read each relation literally: above, below, left, right, or diagonal. Each map introduces a visible rule, and the boards stay visible so every choice can be checked fairly."
   };
   keys.forEach((key) => Object.assign(tables[key] ||= {}, defaults));
@@ -123,7 +123,7 @@
     mechanicDirect: "直接鄰居規則", mechanicCross: "水平與垂直交叉星軸", mechanicDiagonal: "斜向端點線索", mechanicCorner: "邊緣與共享角落錨點", mechanicChain: "階梯式關係鏈", mechanicMastery: "綜合關係家族",
     checkpoint: "檢查點", checkpoint5: "燈籠林守護者", checkpoint10: "地平線守護員", checkpoint15: "星折守護者", checkpoint20: "四角守護者", checkpoint25: "鏈光守護者", checkpoint30: "星圖皇冠終章",
     relationLeft: "{subject} 就在 {object} 的正左方。", relationRight: "{subject} 就在 {object} 的正右方。", relationAbove: "{subject} 就在 {object} 的正上方。", relationBelow: "{subject} 就在 {object} 的正下方。", relationUpperLeft: "{subject} 在 {object} 的左上方。", relationLowerRight: "{subject} 在 {object} 的右下方。",
-    boardOption: "星圖 {slot}", locked: "尚未開放", faqTitle: "常見問題", faqProgress: "進度會保存嗎？會，修復的地圖會在這個瀏覽器開放下一幅，也能重新遊玩。",
+    boardOption: "星圖 {slot}", locked: "尚未開放", faqTitle: "常見問題", faqQuestion: "進度會保存嗎？", faqAnswer: "會，修復的地圖會在這個瀏覽器開放下一幅，也能重新遊玩。", faqProgress: "進度會保存嗎？會，修復的地圖會在這個瀏覽器開放下一幅，也能重新遊玩。",
     guideSummary: "閱讀動物星星之間的可見關係，從六個五關卡弧線中選出同時遵守兩條規則的唯一星圖。", resultGuide: "六個五關卡弧線組成 30 幅地圖的流程。進度與最佳檢查次數只會在可用時保存在本機瀏覽器。", tips: "仔細閱讀上、下、左、右與斜向關係。每幅地圖都會加入可見規則，星圖會保持顯示，讓你公平核對每個選擇。"
   });
   Object.assign(tables.ar, {
@@ -131,7 +131,7 @@
     mechanicDirect: "قواعد الجار المباشر", mechanicCross: "محاور أفقية ورأسية متقاطعة", mechanicDiagonal: "أدلة الأطراف القطرية", mechanicCorner: "مراسي الحافة والزاوية المشتركة", mechanicChain: "سلاسل علاقات متدرجة", mechanicMastery: "عائلات علاقات مجمعة",
     checkpoint: "نقطة تفتيش", checkpoint5: "حارس بستان الفوانيس", checkpoint10: "حارس الأفق", checkpoint15: "حارس طي النجوم", checkpoint20: "حارس الزوايا الأربع", checkpoint25: "حارس ضوء السلسلة", checkpoint30: "النهاية: تاج الكوكبة",
     relationLeft: "{subject} يقع مباشرة إلى يسار {object}.", relationRight: "{subject} يقع مباشرة إلى يمين {object}.", relationAbove: "{subject} يقع مباشرة فوق {object}.", relationBelow: "{subject} يقع مباشرة أسفل {object}.", relationUpperLeft: "{subject} يقع أعلى يسار {object}.", relationLowerRight: "{subject} يقع أسفل يمين {object}.",
-    boardOption: "الخريطة {slot}", locked: "مغلقة", faqTitle: "الأسئلة الشائعة", faqProgress: "هل يُحفظ التقدم؟ نعم، تفتح الخرائط المُصلحة الخريطة التالية وتبقى قابلة لإعادة اللعب في هذا المتصفح.",
+    boardOption: "الخريطة {slot}", locked: "مغلقة", faqTitle: "الأسئلة الشائعة", faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "نعم، تفتح الخرائط المُصلحة الخريطة التالية وتبقى قابلة لإعادة اللعب في هذا المتصفح.", faqProgress: "هل يُحفظ التقدم؟ نعم، تفتح الخرائط المُصلحة الخريطة التالية وتبقى قابلة لإعادة اللعب في هذا المتصفح.",
     guideSummary: "اقرأ العلاقات الظاهرة بين نجوم الحيوانات، ثم اختر الكوكبة الوحيدة التي تلتزم بالقاعدتين عبر ستة أقواس من خمس خرائط.", resultGuide: "تتكون الحملة من ستة أقواس، كل منها خمس خرائط، بإجمالي 30 خريطة. يُحفظ التقدم وأفضل عدد من الفحوصات في هذا المتصفح فقط عند توفر التخزين.", tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين أو قطريًا. تضيف كل خريطة قاعدة ظاهرة، وتبقى الخرائط معروضة لتتحقق من كل اختيار بعدل."
   });
 })();
@@ -227,5 +227,10 @@
     resultGuide: "تتكون الحملة من ستة أقواس، كل منها خمس خرائط، بإجمالي 30 خريطة. يُحفظ التقدم وأفضل عدد من الفحوصات في هذا المتصفح فقط عند توفر التخزين.",
     tipsTitle: "نصائح عملية",
     tips: "اقرأ كل علاقة حرفيًا: فوق أو تحت أو يسار أو يمين أو قطريًا. تضيف كل خريطة قاعدة ظاهرة، وتبقى الخرائط معروضة لتتحقق من كل اختيار بعدل."
+  });
+  Object.assign(tables.hi, {
+    faqTitle: "अक्सर पूछे जाने वाले प्रश्न",
+    faqQuestion: "क्या प्रगति सहेजी जाती है?",
+    faqAnswer: "हाँ, पूरे किए गए मानचित्र अगला मानचित्र खोलते हैं और इसी ब्राउज़र में फिर खेले जा सकते हैं।"
   });
 })();

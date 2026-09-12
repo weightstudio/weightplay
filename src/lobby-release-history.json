@@ -73,6 +73,10 @@
       "date": "2026-07-20T20:19:04+08:00",
       "evidence": "git:b44254f8bd2b97a5a81c965571a77387f7b500fe"
     },
+    "animal-constellation-keeper": {
+      "date": "2026-09-12T17:03:06.681Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-cratebound": {
       "date": "2026-07-26T14:39:48+08:00",
       "evidence": "git:0af3b8a45edfd8e11ede0ead0032a44f3ffbf0a3"
@@ -88,6 +92,10 @@
     "animal-flip-foundry": {
       "date": "2026-08-16T16:15:05+08:00",
       "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"
+    },
+    "animal-folded-field": {
+      "date": "2026-09-12T17:23:18.025Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-frost-maze": {
       "date": "2026-08-16T16:15:05+08:00",

@@ -1,0 +1,27 @@
+/* Game content only. Shared frame owns header, settings, guide and envelope. */
+.klondike-main-copy details {margin-top:12px}
+.klondike-main-copy summary {cursor:pointer;padding:8px 0}
+.klondike-main-copy details > button {margin-top:8px}
+.klondike-main-copy [hidden], #gameFrame > [hidden], #mainProgress[hidden] {display:none!important}
+body[data-screen="battle"] #gameGuide {display:none}
+.battle-canvas[data-wp-frame-scene] {display:grid}
+.board-shell[data-wp-frame-content] {
+  background:linear-gradient(#00291f30,#00291f30),url('../../assets/klondike-solitaire-table-block-v52.webp') center/cover;
+  backdrop-filter:none;
+}
+.board-shell .control-row {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.board-shell .control-row button {min-width:0;width:100%;padding-inline:3px}
+.card {--kl-card-radius:3px}
+.card.front {
+  background:#fff5df url('../../assets/klondike-solitaire-card-front-block-v52.webp') center/100% 100% no-repeat;
+  background-blend-mode:normal;
+}
+.card.back .card-back-pattern {background:url('../../assets/klondike-solitaire-card-back-block-v52.webp') center/contain no-repeat;opacity:1}
+.board-shell .pile {background-color:#052b26a6;border-radius:3px}
+#stockPile:not([data-count="0"]) {background-image:url('../../assets/klondike-solitaire-card-back-block-v52.webp');background-size:auto 100%;background-position:center;background-repeat:no-repeat}
+#stockPile .card-stack-note {inset:auto 4px 4px auto;min-width:24px;padding:2px;background:#07251f;color:#fff3d4;border-radius:2px}
+.board-shell .battle-tip {color:#fff3d4;background:#08231fd9}
+.result-card {max-height:100%;overflow:auto;box-sizing:border-box}
+@media(max-width:740px) {
+  .board-shell .stock-row .control-row {grid-template-columns:repeat(4,minmax(0,1fr))}
+}

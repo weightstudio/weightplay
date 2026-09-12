@@ -25,17 +25,17 @@
   <meta name="weightplay-audience" content="general" />
   <meta name="theme-color" content="#0a1f3a" />
   <title data-klocale="ui.meta.title">Klondike Solitaire Online - Play Free Classic Solitaire</title>
-  <meta name="description" content="52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。" />
+  <meta name="description" content="1枚または3枚取りソリティア。ドラッグ&amp;ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。" />
   <meta name="keywords" data-klocale="ui.meta.keywords" content="Solitaire,Klondike,Classic Solitaire,Free Solitaire,Play Solitaire Online,Card Game,Patience" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="クロンダイク・ソリティア | WeightPlay" />
-  <meta property="og:description" content="52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。" />
+  <meta property="og:description" content="1枚または3枚取りソリティア。ドラッグ&amp;ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/klondike-solitaire/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="クロンダイク・ソリティア | WeightPlay" />
-  <meta name="twitter:description" content="52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。" />
+  <meta name="twitter:description" content="1枚または3枚取りソリティア。ドラッグ&amp;ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp" />
   <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/klondike-solitaire/" />
   <link id="metaAlternateEn" rel="alternate" hreflang="en" href="https://weightplay.com/en/games/klondike-solitaire/" />
@@ -46,7 +46,7 @@
       "@type": "VideoGame",
       "name": "Klondike Solitaire Online",
       "url": "https://weightplay.com/en/games/klondike-solitaire/",
-      "image": "https://weightplay.com/assets/lobby-posters/klondike-solitaire-square-v1.webp",
+      "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
       "description": "Classic Klondike Solitaire with drag/drop, Undo, Hint, Auto Finish, Draw 1/3 modes, animations, and cross-device support.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -61,8 +61,9 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260909-klondike-square-main-v51" />
+  <link rel="stylesheet" href="/games/klondike-solitaire/style.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-klondike-block-v52" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,7 +72,7 @@
   "alternateName": "Klondike Solitaire",
   "url": "https://weightplay.com/ja/games/klondike-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp",
-  "description": "52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。",
+  "description": "1枚または3枚取りソリティア。ドラッグ&ドロップ、オートフィニッシュ、元に戻す機能付きのクラシック・ソリティア。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -93,7 +94,7 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v51" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="klondike-solitaire" data-wp-game-version="v52" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card">
       <strong data-klocale="ui.title">Klondike Solitaire</strong>
@@ -102,6 +103,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
       <a class="main-return" href="/en/" data-wp-return="main" data-klocale-aria="ui.nav.back_to_lobby">
@@ -148,12 +150,12 @@
 
     <section class="main-hero">
       <div class="poster-frame">
-        <img class="cover" src="/assets/lobby-posters/klondike-solitaire-square-v1.webp" width="1254" height="1254" alt="クロンダイク・ソリティアのゲーム画像" />
+        <img class="cover" src="/assets/interface7-redrawn/klondike-solitaire.webp" width="1254" height="1254" alt="クロンダイク・ソリティアのゲーム画像" />
       </div>
       <article class="main-copy">
         <small class="eyebrow" data-klocale="ui.hero.kicker">Classic Card Game</small>
         <h1 data-klocale="ui.hero.title">クロンダイク・ソリティア</h1>
-        <p id="menuHint" class="menu-hint" data-klocale="ui.hero.copy">A refined Klondike run with smoother motion, cleaner controls, and long-session performance. Play from phone or desktop with drag-and-drop, one-click moves, auto finish, Undo history, and live hints.</p>
+        <p id="menuHint" class="menu-hint" data-i18n="summary">赤黒交互に並べて伏せ札を開き、各スートを A から K まで集めよう。</p>
         <div id="statistics" class="stats-panel" role="status" aria-live="polite"></div>
         <div id="mainProgress" class="main-progress" data-wp-main-progress role="status" aria-live="polite">
           <strong data-klocale="ui.feature.target_title">Target</strong>
@@ -172,6 +174,15 @@
       </aside>
     </section>
   </main>
+
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide>
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-klocale="ui.hero.title">Klondike Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
+        <li data-i18n="rule1">表向きのカードを選び、ドラッグするか光った移動先をタップします。場札は赤黒交互の降順。空列には K または K からの列だけを置けます。</li>
+        <li data-i18n="rule2">組札へ同じスートを A から K の順に移します。上の札を動かすと伏せ札が開きます。</li>
+        <li data-i18n="rule3">山札をタップして引きます。3枚ドローでも、捨て札の一番上だけが使えます。</li>
+      </ol><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>ルールの 6 章にわたって 30 の作成されたステージがあります。ステージ 30 は完了後もリプレイ可能です。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -221,47 +232,23 @@
     <div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine3"></script>
-    <script src="game.js?v=20260909-klondike-square-main-v51"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="locales.js?v=20260913-klondike-block-v52"></script>
+  <script src="frame.js?v=20260913-klondike-block-v52"></script>
+    <script src="game.js?v=20260913-klondike-block-v52"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-    <section class="game-page-info game-page-info-static" aria-label="クロンダイク・ソリティア ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>クロンダイク・ソリティア</h2><p>52枚のカードでエースからキングまで4つの組札を作り、場札・山札・捨て札を管理する定番カードゲームです。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>2-12 分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>A standard Klondike layout is dealt each game. Expose facedown cards, maintain descending alternating-color tableau sequences, and clear stable runs toward each foundation.</p>
-<p>Undo, Hint, and Auto-Finish are designed to keep long sessions fluid while preserving full move reversibility and board consistency.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</p>
-<p>Drag or tap legal cards; single cards and valid tableau runs move together with standard Klondike order rules.</p>
-<p>You can switch Draw 1 and Draw 3 modes any time; draw mode is stored locally and affects stock draw behavior.</p>
-<p>Hint only highlights one recommended legal move; it never performs moves automatically.</p>
-<p>Auto-Finish can complete foundation-safe endgame moves when only non-strategic moves remain.</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>Use New Game for a fresh deal or Restart Current Game to return to the initial seed board.</li><li>Choose Draw 1 or Draw 3 from the battle header and draw from Stock into Waste.</li><li>Tap a card to select it. Drag it, or tap a highlighted destination, to move it.</li><li>Use Undo freely to step back from uncertain routes and continue with fresh decisions.</li><li>When no strategy remains, use Auto-Finish to settle remaining legal foundation moves and finish quickly.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Expose face-down cards early; each reveal usually increases legal options.</li><li>Prioritize freeing blocked Kings and Aces to open deeper tableau movement.</li><li>In Draw 3 mode, avoid rapid cycles without clearing tableau space first.</li><li>Use Undo only when a move reduces future flexibility, not after every uncertainty.</li><li>Treat Auto-Finish as an endgame tool once tableau arrangement is stable.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>Each session is a single classic table challenge with unlimited repeats and local stat tracking.</p>
-<p>Longer play emphasizes cleaner move sequencing and fewer speculative Stock cycles.</p>
-<p>Steady hands and careful tableau planning improve completion reliability over repeated boards.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>The gameplay uses transform-based motion for readable and smooth card movement, with compact object updates to support longer sessions on desktop and mobile.</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>Klondike Solitaire is a general-audience card strategy game. No account is required. Progress and stats are stored in this browser.</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/spider-solitaire/"><img src="/assets/interface7-redrawn/spider-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>スパイダーソリティア</strong><span>スパイダーソリティアは10列の場に2組のデッキを使います。</span></span></a><a class="game-info-related-card" href="/ja/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>フリーセル・ソリティア</strong><span>すべて表向きの52枚を、4つのフリーセルと8列の場札で整理し、4つの組札をAからKまで完成させます。</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
+    <script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
     <script src="analytics-ownership.js?v=20260909-klondike-poster-v51"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="クロンダイク・ソリティア";document.title="クロンダイク・ソリティア | WeightPlay";},{once:true});</script>
 </body>
 </html>

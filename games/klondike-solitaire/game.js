@@ -1214,8 +1214,8 @@ const KL_I18N = {
     syncMetaTag("meta[name='twitter:description']", description);
     syncMetaTag("meta[name='twitter:card']", "summary_large_image");
     syncMetaTag("meta[property='og:url']", canonical);
-    syncMetaTag("meta[property='og:image']", "https://weightplay.com/assets/weightplay-logo.png");
-    syncMetaTag("meta[name='twitter:image']", "https://weightplay.com/assets/weightplay-logo.png");
+    syncMetaTag("meta[property='og:image']", "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp");
+    syncMetaTag("meta[name='twitter:image']", "https://weightplay.com/assets/interface7-redrawn/klondike-solitaire.webp");
 
     const canonicalNode = document.getElementById("metaCanonical");
     if (canonicalNode) canonicalNode.href = canonical;
@@ -1644,6 +1644,12 @@ const KL_I18N = {
 
   const game = new KlondikeEngine();
   const audio = new SoundEngine(STORAGE_SOUND);
+  // The shared preference is authoritative; retain the game's actual card sounds.
+  function syncSharedSound() {
+    if (window.WonderSound?.isMuted) audio.setEnabled(!window.WonderSound.isMuted());
+    setSoundButtons(audio.enabled);
+  }
+  window.addEventListener('wonder:audio-volume-change', syncSharedSound);
   const stats = {
     wins: 0,
     losses: 0,
@@ -2218,6 +2224,7 @@ const KL_I18N = {
 
   function forceCloseResultOverlay() {
     if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    window.KlondikeFrame?.sync();
   }
 
   function createCardElement(card, isNew, withDelay = 0, animateFace = false, row = 0) {
@@ -3103,6 +3110,7 @@ const KL_I18N = {
       ui.resultOverlay.classList.remove("result-enter");
       ui.resultOverlay.classList.add("result-enter");
       ui.resultOverlay.hidden = false;
+      window.KlondikeFrame?.sync();
     }
     emitAnalytics("result", analyticsBoardDetails({
       from: "battle",
@@ -3278,6 +3286,7 @@ const KL_I18N = {
     createNewGame(inputType, "result");
     openBattle(inputType, "result");
     if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    window.KlondikeFrame?.sync();
   }
 
   function performResultRestart(inputType = state.interactionInputType, from = "result") {
@@ -3301,6 +3310,7 @@ const KL_I18N = {
     pauseClock();
     if (state.active) restartClock();
     if (ui.resultOverlay) ui.resultOverlay.hidden = true;
+    window.KlondikeFrame?.sync();
     emitAnalytics("restart", analyticsBoardDetails({ from, outcome: "restart", inputType }));
   }
 
@@ -3400,6 +3410,7 @@ const KL_I18N = {
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
+    window.KlondikeFrame?.sync();
     if (game.completed) {
       createNewGame(inputType, "battle");
     }
@@ -3425,6 +3436,7 @@ const KL_I18N = {
     ui.mainScreen.hidden = false;
     ui.battleScreen.hidden = true;
     document.body.dataset.screen = "main";
+    window.KlondikeFrame?.sync();
     pauseClock();
     forceCloseResultOverlay();
     clearVictoryClasses();
@@ -3823,7 +3835,7 @@ const KL_I18N = {
 
   function bootstrap() {
     statsStorage.load();
-    setSoundButtons(audio.enabled);
+    syncSharedSound();
     setDrawModeFromStorage();
     window.addEventListener("wonder:locale-change", () => {
       refreshLocalization();
@@ -3886,4 +3898,5 @@ const KL_I18N = {
   }
 
   bootstrap();
+  window.KlondikeFrame?.sync();
 })();

@@ -1,5 +1,5 @@
 /* Game content only; common headers, buttons and preferences belong to core. */
-.hexa-stage-content,.hexa-battle-content {background:linear-gradient(#10142b55,#10142b77),url('/assets/hexa-sort/workshop-block-v38.png') center / cover}
+.hexa-stage-content,.hexa-battle-content {background:linear-gradient(#10142b55,#10142b77),url('/assets/hexa-sort/workshop-block-v38.webp') center / cover}
 .hexa-stage-content {display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .hexa-stage-content #stageRail {flex:1;min-height:0}
 .hexa-stage-content #enterStage {position:static;flex:none}
@@ -8,12 +8,60 @@
 .hexa-battle-content #battleHelp {align-self:flex-end}
 /* Native alpha sprite shared by the board, tray and moving chip clones.
    Preserve the existing layer offsets and hit targets; never square the hex. */
-.chip[data-chip="red"],.chip[data-chip="blue"] {
+.chip[data-chip] {
   -webkit-mask:none;
   mask:none;
-  background:url('/assets/hexa-sort/chip-red-block-v38.png') center / 100% 100% no-repeat;
+  background:url('/assets/hexa-sort/chip-red-block-v38.webp') center / 100% 100% no-repeat;
   box-shadow:none;
 }
-.chip[data-chip="blue"] {background-image:url('/assets/hexa-sort/chip-blue-block-v38.png')}
-.chip[data-chip="red"]::before,.chip[data-chip="red"]::after,
-.chip[data-chip="blue"]::before,.chip[data-chip="blue"]::after {content:none}
+.chip[data-chip="blue"] {background-image:url('/assets/hexa-sort/chip-blue-block-v38.webp')}
+.chip[data-chip="green"] {background-image:url('/assets/hexa-sort/chip-green-block-v38.webp')}
+.chip[data-chip="gold"] {background-image:url('/assets/hexa-sort/chip-gold-block-v38.webp')}
+.chip[data-chip="violet"] {background-image:url('/assets/hexa-sort/chip-violet-block-v38.webp')}
+.chip[data-chip="bomb"] {background-image:url('/assets/hexa-sort/chip-bomb-block-v38.webp');font-size:0}
+.chip[data-chip="rainbow"] {background-image:url('/assets/hexa-sort/chip-rainbow-block-v38.webp');font-size:0}
+.chip[data-chip]::before,.chip[data-chip]::after {content:none}
+/* Board socket is authored art, separate from the unchanged clickable cell. */
+.hex-cell:not(.blocked):not(.stone)::before {
+  -webkit-mask:none;
+  mask:none;
+  background:url('/assets/hexa-sort/socket-block-v38.webp') center / 100% 100% no-repeat;
+}
+.hex-cell.stone::before {
+  -webkit-mask:none;
+  mask:none;
+  background:url('/assets/hexa-sort/stone-block-v38.webp') center / 100% 100% no-repeat;
+}
+.hex-cell.blocked::before {
+  -webkit-mask:none;
+  mask:none;
+  background:url('/assets/hexa-sort/blocked-block-v38.webp') center / 100% 100% no-repeat;
+}
+.hex-cell.blocked,.hex-cell.stone {font-size:0}
+.hex-cell.frozen::after,.hex-cell.gem::after {
+  content:"";
+  border-radius:0;
+  background:transparent center / contain no-repeat;
+  box-shadow:none;
+  text-shadow:none;
+}
+.hex-cell.frozen::after {background-image:url('/assets/hexa-sort/frozen-block-v38.webp')}
+.hex-cell.gem::after {background-image:url('/assets/hexa-sort/gem-block-v38.webp')}
+.hex-cell.chained::after {
+  content:"";position:absolute;z-index:8;left:2%;top:4%;width:29%;aspect-ratio:1;
+  background:url('/assets/hexa-sort/lock-block-v38.webp') center / contain no-repeat;
+  pointer-events:none;
+}
+@media (max-height:500px) and (orientation:landscape) {
+  .hexa-battle-content {display:grid;grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:auto minmax(0,1fr);gap:4px}
+  #battleLive > .hexa-battle-content > .objective-row {grid-column:1!important;grid-row:1!important;min-height:0;padding:5px 10px;align-self:stretch}
+  .hexa-battle-content .hexa-play {grid-column:1/-1;grid-row:2;grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:minmax(56px,auto) minmax(0,1fr);min-height:0}
+  .hexa-battle-content .hexa-board-track {width:100%;height:100%;min-height:0;grid-column:1;grid-row:1/3}
+  .hexa-battle-content .hex-board {width:min(100cqw,100cqh,300px)}
+  .hexa-battle-content .hexa-coach {height:auto;min-height:56px;padding:4px 7px}
+  .hexa-battle-content .hexa-coach small {display:none}
+  .hexa-battle-content .stack-tray {height:100%;min-height:0;padding:5px}
+  .hexa-battle-content .feedback:empty {display:none}
+  .hexa-battle-content .feedback {position:absolute;bottom:0;left:0;max-width:60%;pointer-events:none}
+  .hexa-battle-content #battleHelp {grid-column:2;grid-row:1;justify-self:end;align-self:center}
+}
