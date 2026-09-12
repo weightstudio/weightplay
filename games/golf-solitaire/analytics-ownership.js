@@ -2,8 +2,8 @@
   "use strict";
 
   const GAME_ID = "golf-solitaire";
-  const GAME_VERSION = "v27";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v28";
+  const INTERFACE_VERSION = "7";
   const LOCALE_MAP = {
     en: "en", "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", ja: "ja", ko: "ko",
     es: "es", "pt-br": "pt-BR", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar",

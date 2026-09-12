@@ -110,48 +110,8 @@
     .replaceAll("{best}", String(best));
   const formatProgress = (template, best) => template.replaceAll("{best}", String(best));
   const mount = () => {
-    document.body.dataset.gameVersion = "v27";
+    document.body.dataset.gameVersion = "v28";
     document.body.dataset.cardDeck = 'klondike';
-    const compactGuide = (section = document.querySelector(".game-page-info")) => {
-      if (!section || section.dataset.golfGuideCompact === "true") return;
-      section.dataset.golfGuideCompact = "true";
-      section.classList.add("golf-guide-compact");
-      let details = section.querySelector("details.golf-guide-details");
-      if (!details) {
-        details = document.createElement("details");
-        details.className = "golf-guide-details";
-        const summary = document.createElement("summary");
-        details.append(summary);
-        while (section.firstChild) details.append(section.firstChild);
-        section.append(details);
-      }
-      const selectedLocale = document.querySelector("#localeSelect")?.value || "";
-      const documentLocale = document.documentElement.lang || "";
-      const locale = selectedLocale && selectedLocale !== "en"
-        ? selectedLocale
-        : (documentLocale && documentLocale !== "en" ? documentLocale : selectedLocale || documentLocale || "en");
-      details.querySelector("summary").textContent = GOLF_GUIDE_TOGGLE_COPY[locale] || GOLF_GUIDE_TOGGLE_COPY.en;
-    };
-    const guideObserver = new MutationObserver(() => {
-      document.querySelectorAll(".game-page-info").forEach(compactGuide);
-    });
-    guideObserver.observe(document.body, { childList: true, subtree: true });
-    document.querySelectorAll(".game-page-info").forEach(compactGuide);
-    document.querySelector("#localeSelect")?.addEventListener("change", () => {
-      document.querySelectorAll(".game-page-info").forEach((section) => {
-        const summary = section.querySelector("summary");
-        if (!summary) return;
-        const locale = document.querySelector("#localeSelect")?.value || document.documentElement.lang || "en";
-        summary.textContent = GOLF_GUIDE_TOGGLE_COPY[locale] || GOLF_GUIDE_TOGGLE_COPY.en;
-      });
-    });
-    const mainReturn = document.querySelector(".main-return");
-    if (mainReturn && !mainReturn.querySelector("img")) {
-      const logo = document.createElement("img");
-      logo.src = "../../assets/weightplay-logo.png";
-      logo.alt = "";
-      mainReturn.append(logo);
-    }
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "golf", id: "golf-solitaire" });
     if (!view || typeof view.showResult !== "function") return;
@@ -164,43 +124,6 @@
         0% { opacity: .45; transform: scale(.96); }
         45% { opacity: 1; transform: scale(1.04); }
         100% { opacity: 1; transform: scale(1); }
-      }
-      .golf-guide-compact {
-        width: min(1040px, calc(100% - 24px));
-        margin: 12px auto calc(24px + env(safe-area-inset-bottom));
-        padding: 14px 16px;
-        border: 1px solid rgba(184, 211, 244, .32);
-        border-radius: 16px;
-        background: rgba(248, 250, 252, .96);
-        box-shadow: 0 8px 20px rgba(8, 17, 31, .12);
-      }
-      .golf-guide-details {
-        color: #0b3f63;
-      }
-      .golf-guide-details > summary {
-        min-height: 48px;
-        padding: 12px 4px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        cursor: pointer;
-        font-weight: 800;
-        list-style-position: inside;
-      }
-      .golf-guide-details > summary::after {
-        content: "＋";
-        font-size: 1.2rem;
-        line-height: 1;
-      }
-      .golf-guide-details[open] > summary::after { content: "−"; }
-      @media (max-width: 720px) {
-        .golf-guide-compact {
-          width: min(100% - 16px, 1040px);
-          margin-top: 8px;
-          padding: 12px;
-        }
-        .golf-guide-details > summary { padding: 10px 0; }
       }
     `;
     document.head.append(invalidStyle);
@@ -287,60 +210,11 @@
       owner.insertBefore(node, anchor);
       return node;
     })();
-    const battleHeader = document.querySelector("#battleScreen .battle-header");
-    let battleUtility = document.getElementById("battleSettingsBtn");
-    let battleSettingsPopover = document.getElementById("battleSettingsPopover");
-    let battleSoundBtn = document.getElementById("battleSoundBtn");
-    if (!battleUtility && battleHeader) {
-      battleUtility = document.createElement("button");
-      battleUtility.id = "battleSettingsBtn";
-      battleUtility.type = "button";
-      battleUtility.className = "battle-utility header-icon-btn";
-      battleUtility.dataset.wpBattleUtility = "true";
-      battleUtility.setAttribute("aria-expanded", "false");
-      battleUtility.textContent = "⚙";
-      battleHeader.append(battleUtility);
-    }
-    if (battleUtility && !battleSettingsPopover) {
-      battleSettingsPopover = document.createElement("div");
-      battleSettingsPopover.id = "battleSettingsPopover";
-      battleSettingsPopover.className = "battle-settings-popover";
-      battleSettingsPopover.hidden = true;
-      battleSettingsPopover.setAttribute("role", "dialog");
-      battleSettingsPopover.setAttribute("aria-label", "Settings");
-      battleSoundBtn = document.createElement("button");
-      battleSoundBtn.id = "battleSoundBtn";
-      battleSoundBtn.type = "button";
-      battleSoundBtn.className = "settings-row";
-      battleSettingsPopover.append(battleSoundBtn);
-      battleHeader.append(battleSettingsPopover);
-      battleUtility.addEventListener("click", () => {
-        battleSettingsPopover.hidden = !battleSettingsPopover.hidden;
-        battleUtility.setAttribute("aria-expanded", String(!battleSettingsPopover.hidden));
-      });
-      battleSoundBtn.addEventListener("click", () => {
-        view.audio?.setEnabled?.(!view.audio.enabled);
-        updateBattleUtility();
-      });
-    }
     const updateProgress = () => {
       if (!mainProgress) return;
       const locale = view.locale || document.documentElement.lang || "en";
       const best = Math.max(0, Number(view.game?.bestCombo) || 0);
       mainProgress.textContent = formatProgress(GOLF_PROGRESS_COPY[locale] || GOLF_PROGRESS_COPY.en, best);
-    };
-    const updateBattleUtility = () => {
-      if (!battleUtility) return;
-      const locale = view.locale || document.documentElement.lang || "en";
-      const soundLabel = view.audio?.enabled ? view.t("soundOn") : view.t("soundOff");
-      battleUtility.setAttribute("aria-label", view.t("settings"));
-      battleUtility.title = soundLabel;
-      if (battleSoundBtn) {
-        battleSoundBtn.textContent = soundLabel;
-        battleSoundBtn.setAttribute("aria-pressed", String(Boolean(view.audio?.enabled)));
-        battleSettingsPopover?.setAttribute("aria-label", view.t("settings"));
-      }
-      battleUtility.dataset.locale = locale;
     };
     const syncLocaleOwner = () => {
       const localeSelect = document.querySelector("#localeSelect");
@@ -355,9 +229,9 @@
     const renderMain = view.renderMain?.bind(view);
     if (renderMain) view.renderMain = () => { renderMain(); updateProgress(); };
     const refreshCopy = view.refreshCopy?.bind(view);
-    if (refreshCopy) view.refreshCopy = () => { refreshCopy(); updateProgress(); updateBattleUtility(); syncLocaleOwner(); };
+    if (refreshCopy) view.refreshCopy = () => { refreshCopy(); updateProgress(); syncLocaleOwner(); };
     updateProgress();
-    updateBattleUtility();
+
     const showResult = view.showResult.bind(view);
     const resultCard = view.nodes.resultText?.closest(".result-card");
     const resultBoundary = resultCard ? (() => {
@@ -392,6 +266,7 @@
       const goal = GOLF_REPLAY_GOAL_COPY[locale] || GOLF_REPLAY_GOAL_COPY.en;
       view.nodes.resultText.textContent = `${view.nodes.resultText.textContent} ${formatReplayGoal(goal, target, best)}`;
     };
+    window.installGolfFrame?.(view);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });
   else mount();

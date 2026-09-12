@@ -89,6 +89,10 @@
       "date": "2026-07-31T18:43:34+08:00",
       "evidence": "git:62569beb5803fce12476561bfaa0241799cbef96"
     },
+    "animal-echo-orchard": {
+      "date": "2026-09-12T19:53:33.209Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-flip-foundry": {
       "date": "2026-08-16T16:15:05+08:00",
       "evidence": "git:4d88486a2386b12b147a049e66a6b9e4460cd81b"

@@ -2232,7 +2232,7 @@
       designNote: "Bounce Brawl uses original soft-body art, readable knockback, three distinct foam tools, and a compact arena loop so every strike has a visible consequence without harsh presentation.",
       noteTitle: "Player and Save Information",
       parent: "This General browser game has no account, purchase, chat, leaderboard, or advertising flow. Arena wins and best progress stay in this browser.",
-      faq: [["How do I hit the rival?", "Move close enough for contact and press Space or the visible BOUNCE control during the opening."], ["What do the tools do?", "They change the active foam response, giving you a different timing or spacing option."], ["How do I lose?", "Your energy can run out, or the arena can reach its time limit before the rival is defeated."], ["Is progress saved?", "Only your best arena is saved in this browser."]],
+      faq: [["How do I hit the rival?", "Move close enough for contact and press Space or the visible BOUNCE control during the opening."], ["What do the tools do?", "They change the active foam response, giving you a different timing or spacing option."], ["How do I lose?", "Your energy can run out, or the arena can reach its time limit before the rival is defeated."], ["Is progress saved?", "Only your best arena is saved in this browser."], ["How many arenas are included?", "Six toy arenas make one short campaign; each changes the spacing, platforms, or rival rhythm."]],
     },
     "animal-signal-scout": {
       title: "Signal Scout", age: "6+", difficulty: "Calm and Readable", time: "2-5 minutes per patrol",
@@ -18574,7 +18574,7 @@
   // Bounce Brawl's public Guide is game-owned data, so these exact fields must
   // stay locale-owned instead of relying on the shared English fallback.
   const animalBounceBrawlGuideLocaleCopy = {
-    "zh-Hant": { title: "彈跳鬥場", gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["進度會保存嗎？", "會，只保存在這個瀏覽器中。"]] },
+    "zh-Hant": { title: "彈跳鬥場", gameplay: "柔和物理擊退競技場", difficulty: "容易到具挑戰性", faq: [["如何擊中對手？", "先靠近到能接觸的距離，按上方向鍵或「跳躍」起跳，再在空檔按下 Space 或畫面上的「彈跳」控制。"], ["泡棉工具有什麼作用？", "工具會改變泡棉碰撞的反應，提供不同的時機與距離選擇。"], ["怎麼會輸？", "自己的能量耗盡，或鬥場時間結束前仍未擊敗對手，就會輸掉這座鬥場。"], ["進度會保存嗎？", "會，只保存在這個瀏覽器中。"], ["共有幾座鬥場？", "共有六座玩具鬥場；每座會改變間距、平台或對手節奏。"]] },
     "zh-Hans": {
       title: "弹跳斗场", age: "9+", difficulty: "容易到有挑战性", time: "每座竞技场约 2–5 分钟", gameplay: "柔和物理击退竞技场", genre: ["动作", "街机", "动物"], skills: ["时机", "反应", "空间意识"],
       intro: "掌握弹跳时机，选择泡棉工具，在欢乐的物理竞技场中让对手失去平衡。",
@@ -18585,7 +18585,7 @@
       progression: ["六座竞技场会从暖身关卡逐步加入弹簧路线、移动踏板、狭窄转角、更快的对手，以及考验刻意控制间距的最终节奏。"],
       designNote: "弹跳斗场使用原创的柔和物理美术、清楚的击退反馈、三种不同的泡棉工具和紧凑的竞技场循环，让每次出手都有看得见的结果，同时保持轻松的表现。",
       noteTitle: "玩家与保存信息", parent: "这款一般向浏览器游戏没有账号、购买、聊天、排行榜或广告流程。竞技场胜场和最佳进度只保存在此浏览器中。",
-      faq: [["如何击中对手？", "靠近到能够接触的距离，在空档按 Space 或画面上的「弹跳」控制。"], ["泡棉工具有什么作用？", "工具会改变当前的泡棉反应，提供不同的时机或间距选择。"], ["怎样会输？", "自己的能量可能耗尽，或竞技场计时结束前仍未击败对手。"], ["进度会保存吗？", "会，仅保存在此浏览器中。"]],
+      faq: [["如何击中对手？", "靠近到能够接触的距离，在空档按 Space 或画面上的「弹跳」控制。"], ["泡棉工具有什么作用？", "工具会改变当前的泡棉反应，提供不同的时机或间距选择。"], ["怎样会输？", "自己的能量可能耗尽，或竞技场计时结束前仍未击败对手。"], ["进度会保存吗？", "会，仅保存在此浏览器中。"], ["共有几座竞技场？", "共有六座玩具竞技场；每座都会改变间距、平台或对手节奏。"]],
     },
     ja: {
       title: "バウンス乱闘", age: "9+", difficulty: "やさしく始めて挑戦的", time: "アリーナごとに2～5分", gameplay: "ソフト物理ノックバックアリーナ", genre: ["アクション", "アーケード", "動物"], skills: ["タイミング", "反応", "空間認識"],
@@ -18597,9 +18597,9 @@
       progression: ["6つのアリーナはウォームアップから始まり、バネのレーン、動く足場、狭い角、速いライバル、意識的な間隔判断を試す最後のリズムへ進みます。"],
       designNote: "バウンス乱闘は、オリジナルの柔らかな物理表現、見やすいノックバック、3種類のフォームツール、短いアリーナループを使い、強い演出に頼らず一撃ごとの結果を見せます。",
       noteTitle: "プレイヤーと保存情報", parent: "バウンス乱闘は一般向けのブラウザゲームで、アカウント、購入、チャット、ランキング、広告の流れはありません。アリーナの勝利数と最高進行度はこのブラウザに保存されます。",
-      faq: [["ライバルにどう当てますか？", "接触できる距離まで近づき、隙ができたらSpaceまたは画面の「バウンス」を押します。"], ["フォームツールは何を変えますか？", "現在のフォームの反応を変え、異なるタイミングや間隔の選択肢を作ります。"], ["どうすると負けますか？", "自分のエネルギーが尽きるか、制限時間までにライバルを倒せないと負けです。"], ["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"]],
+      faq: [["ライバルにどう当てますか？", "接触できる距離まで近づき、隙ができたらSpaceまたは画面の「バウンス」を押します。"], ["フォームツールは何を変えますか？", "現在のフォームの反応を変え、異なるタイミングや間隔の選択肢を作ります。"], ["どうすると負けますか？", "自分のエネルギーが尽きるか、制限時間までにライバルを倒せないと負けです。"], ["進行状況は保存されますか？", "はい、このブラウザにのみ保存されます。"], ["アリーナはいくつありますか？", "おもちゃのアリーナは6つあり、それぞれ間隔、足場、またはライバルのリズムが変わります。"]],
     },
-    ko: { title: "바운스 난투", gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
+    ko: { title: "바운스 난투", gameplay: "소프트 물리 밀어내기 아레나", difficulty: "쉬움부터 도전적", faq: [["상대에게 어떻게 맞히나요?", "접촉할 수 있는 거리까지 다가가 빈틈에 스페이스 키 또는 화면의 바운스 버튼을 누르세요."], ["폼 도구는 무엇을 바꾸나요?", "현재 폼의 반응을 바꿔 다른 타이밍이나 거리 선택을 제공합니다."], ["어떻게 지나요?", "내 에너지가 다하거나 아레나 시간이 끝날 때까지 라이벌을 쓰러뜨리지 못하면 집니다."], ["아레나는 몇 개인가요?", "장난감 아레나는 6개이며, 아레나마다 거리, 플랫폼 또는 라이벌의 리듬이 달라집니다."], ["진행 상황이 저장되나요?", "예, 이 브라우저에만 저장됩니다."]] },
     es: {
       title: "Duelo de rebotes", age: "9+", difficulty: "De fácil a desafiante", time: "2–5 minutos por arena", gameplay: "Arena de retroceso con física suave", genre: ["Acción", "Arcade", "Animales"], skills: ["Ritmo", "Reacción", "Percepción espacial"],
       intro: "Calcula tus rebotes, elige herramientas de espuma y desequilibra al rival en una arena de física juguetona.",
@@ -18610,9 +18610,9 @@
       progression: ["Las seis arenas avanzan desde un calentamiento hasta carriles con muelles, plataformas móviles, esquinas estrechas, un rival más rápido y un ritmo final que pone a prueba el control deliberado del espacio."],
       designNote: "Duelo de rebotes usa arte original de cuerpo blando, retroceso legible, tres herramientas de espuma distintas y un ciclo compacto para que cada golpe tenga una consecuencia visible sin una presentación agresiva.",
       noteTitle: "Información del jugador y guardado", parent: "Este juego de navegador para público general no tiene cuenta, compras, chat, clasificación ni flujo publicitario. Las victorias de arena y el mejor progreso se guardan en este navegador.",
-      faq: [["¿Cómo golpeo al rival?", "Acércate lo suficiente para entrar en contacto y pulsa Espacio o el control visible «REBOTE» durante la apertura."], ["¿Qué hacen las herramientas?", "Cambian la respuesta de la espuma activa y ofrecen otra opción de ritmo o distancia."], ["¿Cómo pierdo?", "Tu energía puede agotarse, o el tiempo de la arena puede terminar antes de derrotar al rival."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."]],
+      faq: [["¿Cómo golpeo al rival?", "Acércate lo suficiente para entrar en contacto y pulsa Espacio o el control visible «REBOTE» durante la apertura."], ["¿Qué hacen las herramientas?", "Cambian la respuesta de la espuma activa y ofrecen otra opción de ritmo o distancia."], ["¿Cómo pierdo?", "Tu energía puede agotarse, o el tiempo de la arena puede terminar antes de derrotar al rival."], ["¿Se guarda el progreso?", "Sí, solo en este navegador."], ["¿Cuántas arenas hay?", "Hay seis arenas de juguete; cada una cambia el espacio, las plataformas o el ritmo del rival."]],
     },
-    "pt-BR": { title: "Briga de Rebotes", gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["O progresso é salvo?", "Sim, apenas neste navegador."]] },
+    "pt-BR": { title: "Briga de Rebotes", gameplay: "Arena de repulsão com física suave", difficulty: "Fácil a desafiador", faq: [["Como atinjo o rival?", "Aproxime-se o suficiente para entrar em contato e pressione Espaço ou o controle visível de «REBOTE» durante a abertura."], ["O que as ferramentas fazem?", "Elas mudam a resposta da espuma ativa e oferecem outra opção de tempo ou distância."], ["Como perco?", "Sua energia pode acabar, ou o tempo da arena pode terminar antes de derrotar o rival."], ["Quantas arenas existem?", "Há seis arenas de brinquedo; cada uma muda o espaço, as plataformas ou o ritmo do rival."], ["O progresso é salvo?", "Sim, apenas neste navegador."]] },
     fr: {
       title: "Baston rebondissant", age: "9+", difficulty: "Facile à relever, puis exigeant", time: "2 à 5 minutes par arène", gameplay: "Arène de recul à physique douce", genre: ["Action", "Arcade", "Animaux"], skills: ["Timing", "Réaction", "Perception de l’espace"],
       intro: "Calibrez vos rebonds, choisissez vos outils en mousse et déséquilibrez l’adversaire dans une arène physique ludique.",
@@ -18623,7 +18623,7 @@
       progression: ["Les six arènes vont d’un échauffement aux couloirs à ressorts, plateformes mobiles, virages serrés, adversaire plus rapide et rythme final qui teste la maîtrise de l’espace."],
       designNote: "Baston rebondissant utilise des formes originales en mousse, un recul lisible, trois outils distincts et une boucle d’arène courte afin que chaque frappe ait une conséquence visible sans mise en scène agressive.",
       noteTitle: "Informations du joueur et sauvegarde", parent: "Ce jeu de navigateur grand public ne propose ni compte, ni achat, ni chat, ni classement, ni flux publicitaire. Les victoires d’arène et la meilleure progression restent dans ce navigateur.",
-      faq: [["Comment toucher l’adversaire ?", "Approchez-vous assez pour entrer en contact, puis appuyez sur Espace ou sur la commande visible « REBOND » pendant l’ouverture."], ["À quoi servent les outils ?", "Ils modifient la réaction de la mousse active et proposent une autre option de timing ou d’espace."], ["Comment perdre ?", "Votre énergie peut s’épuiser, ou le temps de l’arène peut finir avant la défaite de l’adversaire."], ["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."]],
+      faq: [["Comment toucher l’adversaire ?", "Approchez-vous assez pour entrer en contact, puis appuyez sur Espace ou sur la commande visible « REBOND » pendant l’ouverture."], ["À quoi servent les outils ?", "Ils modifient la réaction de la mousse active et proposent une autre option de timing ou d’espace."], ["Comment perdre ?", "Votre énergie peut s’épuiser, ou le temps de l’arène peut finir avant la défaite de l’adversaire."], ["La progression est-elle enregistrée ?", "Oui, uniquement dans ce navigateur."], ["Combien d’arènes y a-t-il ?", "Il y a six arènes-jouets ; chacune modifie l’espace, les plateformes ou le rythme de l’adversaire."]],
     },
     de: {
       title: "Hüpfduell", age: "9+", difficulty: "Leicht bis anspruchsvoll", time: "2–5 Minuten pro Arena", gameplay: "Arena mit sanfter Rückstoßphysik", genre: ["Action", "Arcade", "Tiere"], skills: ["Timing", "Reaktion", "Räumliches Denken"],
@@ -18635,11 +18635,11 @@
       progression: ["Die sechs Arenen führen vom Aufwärmen über Federbahnen, bewegliche Plattformen und enge Ecken zu einem schnelleren Rivalen und einem abschließenden Rhythmus, der bewusstes Abstandhalten prüft."],
       designNote: "Hüpfduell verbindet originale weiche Physik-Optik, gut lesbaren Rückstoß, drei unterschiedliche Schaumstoff-Werkzeuge und kurze Arenarunden, damit jeder Treffer eine sichtbare Folge hat, ohne harte Darstellung.",
       noteTitle: "Spieler- und Speicherinformationen", parent: "Dieses allgemeine Browser-Spiel hat kein Konto, keine Käufe, keinen Chat, keine Rangliste und keinen Werbeablauf. Arenasiege und der beste Fortschritt bleiben in diesem Browser.",
-      faq: [["Wie treffe ich den Rivalen?", "Gehen Sie nah genug heran, um Kontakt herzustellen, und drücken Sie in der Lücke die Leertaste oder die sichtbare «HÜPFEN»-Schaltfläche."], ["Was bewirken die Werkzeuge?", "Sie verändern die Reaktion des aktiven Schaumstoffs und geben Ihnen eine andere Timing- oder Abstandsoption."], ["Wie verliere ich?", "Ihre Energie kann ausgehen, oder die Arena-Zeit kann enden, bevor der Rivale besiegt ist."], ["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."]],
+      faq: [["Wie treffe ich den Rivalen?", "Gehen Sie nah genug heran, um Kontakt herzustellen, und drücken Sie in der Lücke die Leertaste oder die sichtbare «HÜPFEN»-Schaltfläche."], ["Was bewirken die Werkzeuge?", "Sie verändern die Reaktion des aktiven Schaumstoffs und geben Ihnen eine andere Timing- oder Abstandsoption."], ["Wie verliere ich?", "Ihre Energie kann ausgehen, oder die Arena-Zeit kann enden, bevor der Rivale besiegt ist."], ["Wird der Fortschritt gespeichert?", "Ja, nur in diesem Browser."], ["Wie viele Arenen gibt es?", "Es gibt sechs Spielzeug-Arenen; jede verändert Abstände, Plattformen oder den Rhythmus des Rivalen."]],
     },
-    it: { title: "Rissa rimbalzante", gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
-    ru: { title: "Прыгучая схватка", gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
-    hi: { title: "उछलती भिड़ंत", gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
+    it: { title: "Rissa rimbalzante", gameplay: "Arena di respinta con fisica morbida", difficulty: "Da facile a impegnativo", faq: [["Come colpisco il rivale?", "Avvicinati abbastanza per entrare in contatto, poi premi Spazio o il comando visibile «RIMBALZO» durante l’apertura."], ["Cosa fanno gli strumenti?", "Cambiano la risposta della schiuma attiva e offrono un’altra opzione di tempo o distanza."], ["Come si perde?", "La tua energia può esaurirsi, oppure il tempo dell’arena può finire prima di sconfiggere il rivale."], ["Quante arene ci sono?", "Ci sono sei arene giocattolo; ognuna cambia lo spazio, le piattaforme o il ritmo del rivale."], ["I progressi vengono salvati?", "Sì, solo in questo browser."]] },
+    ru: { title: "Прыгучая схватка", gameplay: "Арена мягкой физики с отбрасыванием", difficulty: "От простого к сложному", faq: [["Как попасть по сопернику?", "Подойдите достаточно близко для контакта и нажмите пробел или видимую кнопку «ОТСКОК» в нужный момент."], ["Что делают инструменты?", "Они меняют реакцию активной пены и дают другой вариант для тайминга или расстояния."], ["Как проиграть?", "Энергия может закончиться, либо время арены истечёт до победы над соперником."], ["Сколько здесь арен?", "Здесь шесть игрушечных арен; в каждой меняются расстояния, платформы или ритм соперника."], ["Сохраняется ли прогресс?", "Да, только в этом браузере."]] },
+    hi: { title: "उछलती भिड़ंत", gameplay: "सॉफ्ट फिज़िक्स नॉकबैक एरीना", difficulty: "आसान से चुनौतीपूर्ण", faq: [["प्रतिद्वंद्वी पर कैसे प्रहार करूँ?", "संपर्क की दूरी तक जाएँ और सही अवसर पर Space या स्क्रीन पर दिख रहे BOUNCE नियंत्रण को दबाएँ।"], ["फोम उपकरण क्या करते हैं?", "वे सक्रिय फोम की प्रतिक्रिया बदलते हैं और समय या दूरी के लिए अलग विकल्प देते हैं।"], ["मैं कैसे हारता हूँ?", "आपकी ऊर्जा समाप्त हो सकती है, या प्रतिद्वंद्वी के हारने से पहले अखाड़े का समय खत्म हो सकता है।"], ["कितने अखाड़े हैं?", "छह खिलौना अखाड़े हैं; हर अखाड़ा दूरी, प्लेटफ़ॉर्म या प्रतिद्वंद्वी की लय बदलता है।"], ["क्या प्रगति सहेजी जाती है?", "हाँ, केवल इसी ब्राउज़र में।"]] },
     ar: {
       title: "نزال الارتداد", age: "9+", difficulty: "من السهل إلى التحدي", time: "2–5 دقائق لكل ساحة", gameplay: "ساحة ارتداد بفيزياء ناعمة", genre: ["حركة", "أركيد", "حيوانات"], skills: ["التوقيت", "رد الفعل", "الإدراك المكاني"],
       intro: "اضبط توقيت ارتداداتك، واختر أدوات الرغوة، وأخل بتوازن المنافس في ساحة فيزياء مرحة.",
@@ -18650,7 +18650,7 @@
       progression: ["تتقدم الساحات الست من الإحماء إلى ممرات النوابض والمنصات المتحركة والزوايا الضيقة ومنافس أسرع وإيقاع نهائي يختبر التحكم المتعمد في المسافة."],
       designNote: "يستخدم نزال الارتداد رسوماً أصلية بجسم رغوي وفيزياء لطيفة، وارتداداً واضحاً، وثلاث أدوات رغوة مختلفة، وحلقة ساحة قصيرة كي تكون نتيجة كل ضربة مرئية من دون عرض قاسٍ.",
       noteTitle: "معلومات اللاعب والحفظ", parent: "هذه اللعبة العامة في المتصفح لا تتضمن حساباً أو شراءً أو دردشة أو لوحة متصدرين أو تدفقاً إعلانياً. تبقى انتصارات الساحات وأفضل تقدم في هذا المتصفح.",
-      faq: [["كيف أصيب المنافس؟", "اقترب بما يكفي لحدوث التلامس، ثم اضغط مفتاح المسافة أو زر «ارتداد» الظاهر أثناء الفتحة."], ["ماذا تفعل الأدوات؟", "تغيّر استجابة الرغوة النشطة وتمنحك خياراً مختلفاً في التوقيت أو المسافة."], ["كيف أخسر؟", "قد تنفد طاقتك، أو ينتهي وقت الساحة قبل هزيمة المنافس."], ["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."]],
+      faq: [["كيف أصيب المنافس؟", "اقترب بما يكفي لحدوث التلامس، ثم اضغط مفتاح المسافة أو زر «ارتداد» الظاهر أثناء الفتحة."], ["ماذا تفعل الأدوات؟", "تغيّر استجابة الرغوة النشطة وتمنحك خياراً مختلفاً في التوقيت أو المسافة."], ["كيف أخسر؟", "قد تنفد طاقتك، أو ينتهي وقت الساحة قبل هزيمة المنافس."], ["هل يتم حفظ التقدم؟", "نعم، في هذا المتصفح فقط."], ["كم ساحة توجد؟", "توجد ست ساحات على شكل ألعاب؛ تغيّر كل ساحة المسافات أو المنصات أو إيقاع المنافس."]],
     },
   };
   for (const [locale, copy] of Object.entries(animalBounceBrawlGuideLocaleCopy)) {
@@ -18704,6 +18704,7 @@
       ["泡棉工具有什麼作用？", "工具會改變泡棉碰撞的反應，提供不同的時機與距離選擇。"],
       ["怎麼會輸？", "自己的能量耗盡，或鬥場時間結束前仍未擊敗對手，就會輸掉這座鬥場。"],
       ["進度會保存嗎？", "會，只保存在這個瀏覽器中。"],
+      ["共有幾座鬥場？", "共有六座玩具鬥場；每座會改變間距、平台或對手節奏。"],
     ],
   };
 

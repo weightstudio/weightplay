@@ -13,6 +13,7 @@
     document.getElementById("battleBackBtn")?.setAttribute("data-wp-return", "battle");
     const view = window.WPClassicSolitaire?.mount({ variant: "yukon", id: "yukon-solitaire" });
     window.WPCardTablePresentation?.install(view);
+    window.installYukonFrame?.(view);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });
   else mount();

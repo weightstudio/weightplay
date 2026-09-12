@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v26";
+  document.body.dataset.gameVersion = "v27";
   document.body.dataset.cardDeck = 'klondike';
   const PYRAMID_PROGRESS_COPY = Object.freeze({
     en: { label: "Pyramid", text: "{label}: {remaining} cards left", aria: "Pyramid cards remaining: {remaining} of 28" },
@@ -246,4 +246,5 @@
     refreshBattleSound();
   });
   updateCardInteractionSemantics();
+  window.installPyramidFrame?.(view);
 })();

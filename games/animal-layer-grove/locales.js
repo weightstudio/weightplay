@@ -26,6 +26,24 @@
     hi: { title: "परतों का वन", back: "वापस", settings: "सेटिंग्स", language: "भाषा", sound: "ध्वनि", on: "चालू", off: "बंद", loading: "वन तैयार हो रहा है…", start: "पहला वन शुरू करें", choose: "वन चुनें", best: "सर्वश्रेष्ठ चालें", guideTitle: "कैसे खेलें", guideOne: "लक्ष्य खिड़की और तीन पारदर्शी परतों को देखें।", guideTwo: "गहराई बनाने के लिए परत को आगे या पीछे ले जाएँ।", guideThree: "ओवरलैप जाँचें; न मिले तो शांति से फिर कोशिश करें।", groves: "वन दृश्य", target: "लक्ष्य खिड़की", layers: "आपकी परतें", frontToBack: "आगे → पीछे", check: "खिड़की जाँचें", reset: "परतें रीसेट करें", waiting: "परतों का क्रम बदलकर खिड़की जाँचें।", wrong: "ओवरलैप अभी नहीं मिला। {hint}", correct: "आवास की खिड़की मिल गई। वन बहाल है।", round: "वन {n} / {total}", open: "खुला", complete: "बहाल", resultTitle: "वन साफ़ है", resultPartial: "वन बहाल", resultText: "{moves} चालों में {total} में से {count} दृश्य बहाल किए।", next: "अगला वन", home: "मेनू पर", moveCount: "चालें: {n}", front: "आगे", middle: "बीच", backLayer: "पीछे" },
     ar: { title: "بستان الطبقات", back: "عودة", settings: "الإعدادات", language: "اللغة", sound: "الصوت", on: "تشغيل", off: "إيقاف", loading: "نحضّر البستان…", start: "ابدأ البستان الأول", choose: "اختر بستاناً", best: "أفضل الحركات", guideTitle: "طريقة اللعب", guideOne: "تأمل نافذة الهدف والطبقات الشفافة الثلاث.", guideTwo: "حرّك طبقة إلى الأمام أو الخلف لبناء العمق.", guideThree: "افحص التداخل؛ وإن لم يطابق، حاول بهدوء من جديد.", groves: "مشاهد البستان", target: "نافذة الهدف", layers: "طبقاتك", frontToBack: "الأمام ← الخلف", check: "تحقق من النافذة", reset: "إعادة الطبقات", waiting: "أعد ترتيب الطبقات ثم تحقق من النافذة.", wrong: "لم يطابق التداخل بعد. {hint}", correct: "تطابقت نافذة الموطن. أُصلح هذا البستان.", round: "البستان {n} من {total}", open: "مفتوح", complete: "تم الإصلاح", resultTitle: "صار البستان صافياً", resultPartial: "أُصلح البستان", resultText: "أصلحت {count} من {total} مشاهد في {moves} حركات.", next: "البستان التالي", home: "العودة للقائمة", moveCount: "الحركات: {n}", front: "الأمام", middle: "الوسط", backLayer: "الخلف", kicker: "لغز هادئ لعمق الموطن", intro: "رتّب ثلاث طبقات شفافة من الموطن حتى يطابق مشهد الحيوان نافذة الحارس.", noBest: "لم تُنجز بعد", map: "مشاهد البستان", selected: "تغيّر ترتيب الطبقات. افحص التداخل عندما تكون مستعداً.", placementHint: "ضع {name} في {depth}.", moveForward: "حرّك {name} نحو الأمام", moveBackward: "حرّك {name} نحو الخلف", guideSummary: "قارن نافذة الموطن المستهدفة، ثم حرّك ثلاث طبقات شفافة إلى ترتيب العمق الذي يُظهر المشهد الحيواني نفسه.", gameplayFact: "طريقة اللعب", gameplayValue: "لغز ترتيب العمق", genreFact: "النوع", genreValue: "ألغاز · منطق · عائلي · حيوانات", resultGuideTitle: "النتائج والحفظ", resultGuide: "تشكّل ثلاثة مشاهد من البستان جلسة قصيرة. تُحفظ أفضل نتيجة للحركات في هذا المتصفح فقط عند توفر التخزين.", tipsTitle: "نصائح عملية", tips: "اقرأ الهدف كصورة لا كمهمة مؤقتة. الطبقات الأمامية تغطي المركز؛ والطبقات الخلفية تؤطر المشهد.", scene1: "نافذة السرخس", scene2: "الجدول الكهرماني", scene3: "الوادي الثلجي", scene1Intro: "تحتاج نافذة السرخس إلى وهج البركة الناعم خلف أوراقها.", scene2Intro: "يكشف الجدول الكهرماني عن قصبه حين يؤطر الضوء الدافئ الماء.", scene3Intro: "ينفتح وادٍ ثلجي حين تنظر البومة عبر طبقتي الصقيع والصنوبر.", target1: "تداخل السرخس والبركة وضوء القمر", target2: "تداخل القصب والجدول والضوء الكهرماني", target3: "تداخل البومة والصقيع والصنوبر", wrong1: "تحجب الطبقة الأمامية مركز نافذة السرخس.", wrong2: "لم تُؤطّر طبقة الماء بالضوء الكهرماني.", wrong3: "لم تنظر البومة عبر نافذة الصقيع.", fern: "طبقة السرخس", pond: "طبقة البركة", moon: "طبقة ضوء القمر", reeds: "طبقة القصب", creek: "طبقة الجدول", amber: "طبقة الضوء الكهرماني", owl: "طبقة البومة", frost: "طبقة الصقيع", pine: "طبقة الصنوبر", layerLabel: "{name}، {depth}", mapOption: "مشهد موطن {name}" }
   };
+  const guideKickers = {
+    en: "WeightPlay Original Game Guide",
+    "zh-Hant": "WeightPlay 原創遊戲指南",
+    "zh-Hans": "WeightPlay 原创游戏指南",
+    ja: "WeightPlay オリジナルゲームガイド",
+    ko: "WeightPlay 오리지널 게임 가이드",
+    es: "Guía de juegos originales de WeightPlay",
+    "pt-BR": "Guia de jogos originais WeightPlay",
+    fr: "Guide des jeux originaux WeightPlay",
+    de: "WeightPlay-Leitfaden für Originalspiele",
+    it: "Guida ai giochi originali WeightPlay",
+    ru: "Руководство по оригинальным играм WeightPlay",
+    hi: "WeightPlay मौलिक गेम गाइड",
+    ar: "دليل ألعاب WeightPlay الأصلية",
+  };
+  Object.entries(guideKickers).forEach(([locale, value]) => {
+    (variants[locale] || base).guideKicker = value;
+  });
   Object.assign(base, {
     intro: "Restore 30 habitat stages across six arcs. Stack layers to match the keeper’s window.",
     guideOne: "Study the target window and the layers for the current stage.",

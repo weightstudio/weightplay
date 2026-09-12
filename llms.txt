@@ -158,6 +158,7 @@ WeightPlay covers these game and content clusters:
 - Animal Skyport Dispatch: https://weightplay.com/games/animal-skyport-dispatch/
 - Weather Watch: https://weightplay.com/games/animal-weather-watch/
 - Signal Scout: https://weightplay.com/games/animal-signal-scout/
+- Orchard Sound Memory: https://weightplay.com/en/games/animal-echo-orchard/
 ## Age And Skill Positioning
 
 WeightPlay uses age-aware and skill-aware game discovery.

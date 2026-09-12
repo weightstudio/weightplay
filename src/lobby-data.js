@@ -4392,6 +4392,28 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalEchoOrchardPlanned.id)) window.WONDER_LOBBY.games.push(animalEchoOrchardPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalEchoOrchardPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalEchoOrchardPlanned.id);
 
+// Echo Orchard v9/I6 has completed the exact Tester, Gameplay Reviewer, art,
+// Director, preview, and Release Preflight gates. Expose the canonical game
+// as a public playable with its official localized title and truthful Battle
+// preview; remove the private trial bridge from the public card.
+const animalEchoOrchardPublic = window.WONDER_LOBBY.games.find((game) => game.id === "animal-echo-orchard");
+if (animalEchoOrchardPublic) {
+  animalEchoOrchardPublic.title = marketFiveLocalized([
+    "Orchard Sound Memory", "果園音序記憶", "果园音序记忆", "果樹園の音順記憶", "과수원 소리 순서 기억",
+    "Memoria Sonora del Huerto", "Memória Sonora do Pomar", "Mémoire sonore du verger", "Obstgarten-Klanggedächtnis",
+    "Memoria Sonora del Frutteto", "Звуковая память сада", "बगीचे की ध्वनि याद करें", "ذاكرة أصوات البستان",
+  ]);
+  animalEchoOrchardPublic.status = "playable";
+  animalEchoOrchardPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+    es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+    ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  animalEchoOrchardPublic.previewVideo = "assets/previews/animal-echo-orchard-battle.webm";
+  delete animalEchoOrchardPublic.internalTrial;
+  Object.defineProperty(animalEchoOrchardPublic.title, "__localizedExact", { value: true, enumerable: false });
+}
+
 // Acorn Auction is a planned General identity for a bounded quantity/budget
 // choice prototype. Keep its card Coming Soon until exact Tester, review,
 // release, art, and owner-opening gates are complete.

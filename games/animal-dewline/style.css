@@ -180,7 +180,7 @@ body[data-screen="result"] .game-page-info { display: none; }
 #stageScreen[data-wp-standard-stage-screen] { position: fixed; top: 0; left: 50%; right: auto; bottom: auto; transform: translateX(-50%); width: min(100%, 920px); height: calc(100vh - 56px); min-height: 0; margin: 0; padding: 10px; display: grid; grid-template-rows: 60px minmax(0, 1fr) 48px; gap: 8px; overflow: hidden; background: linear-gradient(180deg, #153f3ad9, #234c4bd9), var(--wp-stage-art) center / cover; }
 #stageScreen[data-wp-standard-stage-screen] .stage-header { width: 100%; height: 60px; min-height: 60px; margin: 0; padding: 0 2px; display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; align-items: center; gap: 10px; }
 #stageScreen[data-wp-standard-stage-screen] .stage-header h2 { min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#stageScreen[data-wp-standard-stage-screen] .stage-rail { width: 100%; min-width: 0; height: auto; min-height: 198px; margin: 0; padding: 12px !important; padding-inline: 12px !important; display: flex; justify-content: center; align-items: center; gap: 14px; overflow-x: auto; overflow-y: hidden; }
+#stageScreen[data-wp-standard-stage-screen] .stage-rail { width: 100%; min-width: 0; height: auto; min-height: 198px; margin: 0; padding: 12px !important; padding-inline: max(24px, calc((100% - 264px) / 2)) !important; display: flex; justify-content: flex-start !important; align-items: center; gap: 14px; overflow-x: auto; overflow-y: hidden; }
 #stageScreen[data-wp-standard-stage-screen] .stage-card { flex: 0 0 264px; width: 264px; min-height: 166px; }
 #stageScreen[data-wp-standard-stage-screen] .stage-tabs { height: 48px; min-height: 48px; display: grid; place-items: center; }
 #stageScreen[data-wp-standard-stage-screen] .stage-tabs button { min-height: 44px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); font-weight: 800; }
@@ -206,7 +206,13 @@ body[data-screen="result"] .game-page-info { display: none; }
   .cover-wrap { max-width: none; }
   .guide-card.game-page-info .game-info-sections { grid-template-columns: 1fr; }
   #battleScreen[data-wp-logical-battle-canvas] .battle-content { width: 100%; }
-  #stageScreen[data-wp-standard-stage-screen] .stage-rail { justify-content: flex-start; }
+  /* Keep the shared 264x190 Stage cards and its centered-current snap model.
+     The old game-local `justify-content:center` centered the overflowing
+     three-card row itself, hiding the early meadow choices on phone. */
+  #stageScreen[data-wp-standard-stage-screen] .stage-rail {
+    justify-content: flex-start !important;
+    padding-inline: max(24px, calc((100% - 264px) / 2)) !important;
+  }
 }
 
 #battleScreen[data-wp-logical-battle-canvas] { overflow: hidden; gap: 8px; }
