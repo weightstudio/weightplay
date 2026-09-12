@@ -3,22 +3,21 @@
 <head>
 
     <base href="/games/signal-veil/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="description" content="Fias 57 Missionen, Echtzeitkampf, Neural Vision, Ausrüstung und lokaler Fortschritt." />
+  <meta name="description" content="Befrage Zeugen, enthülle verborgene Gefahren mit der Neuralsicht und entdecke durch Erkundung und Kampf die Wahrheit hinter dem Signal." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Signal-Schleier | WeightPlay" />
-  <meta property="og:description" content="Fias 57 Missionen, Echtzeitkampf, Neural Vision, Ausrüstung und lokaler Fortschritt." />
+  <meta property="og:description" content="Befrage Zeugen, enthülle verborgene Gefahren mit der Neuralsicht und entdecke durch Erkundung und Kampf die Wahrheit hinter dem Signal." />
   <meta property="og:url" content="https://weightplay.com/de/games/signal-veil/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Signal-Schleier | WeightPlay" />
-  <meta name="twitter:description" content="Fias 57 Missionen, Echtzeitkampf, Neural Vision, Ausrüstung und lokaler Fortschritt." />
+  <meta name="twitter:description" content="Befrage Zeugen, enthülle verborgene Gefahren mit der Neuralsicht und entdecke durch Erkundung und Kampf die Wahrheit hinter dem Signal." />
   <title>Signal-Schleier | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/de/games/signal-veil/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/" />
@@ -66,16 +65,18 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../../src/loading-screen.css">
-  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="../../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260809-stage-visual1">
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-wp-locale="en" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">Neuralsicht wird kalibriert…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
@@ -83,7 +84,7 @@
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/en/" aria-label="Zurück zu WeightPlay">
+      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Zurück zu WeightPlay">
         <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
       </a>
       <div class="title-slot">
@@ -96,11 +97,11 @@
       </label>
     </header>
     <section class="main-hero">
-      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Signal Veil game artwork" data-t-alt="Spielgrafik zu Signal-Schleier">
+      <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="Spark Paw Fia enttarnt einen Echsenkommandanten mit Neuralsicht" data-t-alt="Spielgrafik zu Signal-Schleier">
       <div class="main-copy">
         <p class="kicker" data-t="kicker">2042 · ERSTER KONTAKT</p>
         <h1 data-t="title">Signal-Schleier</h1>
-        <p class="main-summary" data-t="summary">Fias 57 Missionen, Echtzeitkampf, Neural Vision, Ausrüstung und lokaler Fortschritt.</p>
+        <p class="main-summary" data-t="summary">Befrage Zeugen, enthülle verborgene Gefahren mit der Neuralsicht und entdecke durch Erkundung und Kampf die Wahrheit hinter dem Signal.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Spiel starten</button>
       </div>
@@ -167,7 +168,7 @@
             <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Zubehör</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamanten</span><b id="diamondBalance">0</b></div>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamanten</span><b id="diamondBalance">0</b></div>
             <h3 data-t="anchorTitle">Signalanker</h3>
             <p data-t="anchorEffect">Permanent: +12 maximale Gesundheit für diese und künftige Ermittlungen. Vollständig optional.</p>
             <button id="buyAnchor" type="button" data-t="anchorBuy">Installieren · 5 Diamanten</button>
@@ -198,20 +199,21 @@
   </section>
   <div class="ad-reserve" aria-hidden="true" hidden></div>
 
-  <script src="../../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../../src/site-config.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="../../../src/wallet.js"></script>
-  <script src="../../../games/signal-veil/locales.js"></script>
-  <script src="../../../games/signal-veil/guide-locales.js"></script>
+  <script src="../../src/wallet.js"></script>
+  <script src="locales.js"></script>
+  <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="../../../games/signal-veil/game.js?v=20260905-actionable-mission-hud-v12"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
+  <script defer src="game.js?v=20260905-actionable-mission-hud-v12"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Vollständiger Signal Veil-Ermittlungsleitfaden"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Vollständiger Signal Veil-Ermittlungsleitfaden</h2><p>Fias 57 Missionen, Echtzeitkampf, Neural Vision, Ausrüstung und lokaler Fortschritt.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Continuous action-RPG investigation</strong></div><div class="game-info-fact"><span>Progression</span><strong>57 missions · six connected regions</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Welt und Auftrag</h3><p>Im Jahr 2042 breiten sich Verschwinden und Angriffe über die Erde aus. Spark Paw Fia kommt nach Signalstadt, nachdem ein Video eines Echsenmenschen als Fälschung abgetan wurde. Befrage zehn Zeugen, durchquere den mondhellen Wald und betrete das verlassene Neurallabor. Dieses erste Kapitel ist eine verbundene Welt ohne Levelauswahl; Position, Stufe, Ausrüstung, Aufträge und Geschichte werden in diesem Browser gespeichert.</p><p>Die aktuelle Geschichte umfasst 57 verbundene Missionen in Signalstadt, Schleierwald, Neurallabor, Moonfall-Relais und Ashfall-Observatorium. Befrage Zeugen, folge verborgenen Wegen, besiege Patrouillen, berge Ausrüstung, entschlüssele Aufzeichnungen und entscheide über die Ashfall-Beweise. Ashfalls Osttor führt zum Archiv. Sein letztes Signal wartet. Er enthält eine Hin- und Rückroute. Antworten führt die Flotte; Abschirmen schützt alle Koordinaten.</p></div><div class="game-info-section"><h3>Mission</h3><p>1–23</p><p>Im Jahr 2042 breiten sich Verschwinden und Angriffe über die Erde aus. Spark Paw Fia kommt nach Signalstadt, nachdem ein Video eines Echsenmenschen als Fälschung abgetan wurde. Befrage zehn Zeugen, durchquere den mondhellen Wald und betrete das verlassene Neurallabor. Dieses erste Kapitel ist eine verbundene Welt ohne Levelauswahl; Position, Stufe, Ausrüstung, Aufträge und Geschichte werden in diesem Browser gespeichert. Sprich vor dem Waldtor mit allen Zeugen. Beobachte Alarmbereiche und locke Gegner einzeln. Nutze den Schuss gegen schwere Gegner und Wirker. Aktiviere Wahre Sicht bei cyanfarbenen Funken und verdächtigen Wänden. Bleib während der Salven des Kommandanten in Bewegung, weiche dem Ansturm aus und greife im Betäubungsfenster an.</p></div><div class="game-info-section"><h3>Ermittlung auf zwei Karten</h3><p>24–33</p><p>Melde dich nach dem Kommandanten bei Orla und öffne Moonfall. Besiege acht Wächter, aktiviere drei Akten und kehre zurück. Beide Tore bleiben für Aufgaben auf beiden Karten offen. Akte eins: Die Echsenflotte floh von einem sterbenden Mond und bat um Schutz. Akte zwei: Helix fing den Hilferuf ab und baute Tarnungen aus seinem Neuralmuster. Akte drei: Der Kommandant schützte die Beweise vor Helix.</p></div><div class="game-info-section"><h3>Ashfall-Observatorium</h3><p>34–45</p><p>Der Warnbericht nennt Ashfall. Helix meldete eine lebende Technikerin und befahl die Tilgung des Standorts. Das Osttor von Moonfall führt dorthin. Finde sie vor der Säuberung. Sie kann Helix entlarven, doch eine Live-Sendung verrät Aster. Jetzt senden oder die Zeugin schützen. Ich wartete Helix&#39; Tarnsystem. Als ich erfuhr, dass es Erinnerungen umschreibt, kopierte ich das Manifest. Sie verbrannten das Observatorium, um mich zu löschen. Sie kann Helix entlarven, doch eine Live-Sendung verrät Aster. Jetzt senden oder die Zeugin schützen. Die Beweise sind im offenen Netz. Helix kann sie nicht mehr fälschen nennen, kennt nun aber unseren Standort. Aster und die Blackbox sind sicher. Wir veröffentlichen über vertrauenswürdige Sender, ohne ihren Ort zu verraten.</p></div><div class="game-info-section"><h3>Hohlmond-Archiv</h3><p>46–57</p><p>Ashfalls Osttor führt zum Archiv. Sein letztes Signal wartet. Er enthält eine Hin- und Rückroute. Antworten führt die Flotte; Abschirmen schützt alle Koordinaten. Die Bake nennt 47 Zivilschiffe, die Helix in Trümmer umbenannte. Ihr Satz: Wir waren nie Eindringlinge. Die Karte besteht aus Familiengeschichten. Ohne die wahren Erinnerungen kann Helix ihr nicht folgen. Kinder lernten Signalstadts Wetter aus gestohlenen Sendungen und nennen Fias Welt den blauen Zufluchtsort. Die Verfolger sind besiegt. Dem Zufluchtsort antworten oder die Route verbergen, bis die Flüchtlinge wählen? Du hast dem Zufluchtsort geantwortet. Seine Piloten haben eine Route nach Signalstadt, und wir schützen jede Ankunft. Du hast die Schlüssel gelöscht. Der Ort bleibt unsichtbar und die Flüchtlinge wählen selbst ihren Zeitpunkt.</p></div><div class="game-info-section"><h3>Steuerung und Spielschleife</h3><p>Lies das Ziel oben und erkunde das aktuelle Gebiet.</p><p>Tippe auf den sichtbaren Hinweis oder drücke E für Gespräche, Truhen, Aufzeichnungen und Tore.</p><p>Blicke zum Gegner und nutze Angriff für die Schwertwelle oder Fähigkeit für den Fernschuss.</p><p>Aktiviere Wahre Sicht bei cyanfarbenen Spuren, um Tarnungen, unsichtbare Gegner und Wege zu finden.</p><p>Erfülle das Ziel und bringe Beweise zu Orla, wenn die Geschichte es verlangt.</p><p>Am Desktop bewegst du dich mit WASD oder Pfeiltasten. Space/J führt einen Nahkampfangriff aus, K feuert, V wechselt die Sicht, E spricht oder öffnet Truhen und Escape öffnet das Menü. Mobil nutzt du Joystick, Angriff, Fähigkeit und Sicht. Gegner patrouillieren, verfolgen und greifen an; der Kommandant wechselt sein Muster mit sinkender Gesundheit. Normale Sicht zeigt die Welt, wie die meisten Menschen sie wahrnehmen. Wahre Sicht enthüllt cyanfarbene Wege, getarnte Echsenmenschen, unsichtbare Monster, Geheimtüren und Schätze. Die Prototyplinse verbraucht nichts. Das stabile Gerät beweist, dass sie nie ihre Form änderten, sondern die menschliche Wahrnehmung störten.</p></div><div class="game-info-section"><h3>Fortschritt, Ausrüstung und Schwierigkeit</h3><p>Besiege fünfzehn Monster für EP. Jede Stufe erhöht maximale Gesundheit, Angriff und Verteidigung. Drei Truhen enthalten Impulsklinge, Ranger-Rüstung und Signal-Amulett; sie werden sofort angelegt und gespeichert. Der Fernschuss hat eine kurze Abklingzeit, der Nahkampf ist schneller und stärker. Melde dich nach dem Kommandanten bei Orla und öffne Moonfall. Besiege acht Wächter, aktiviere drei Akten und kehre zurück. Beide Tore bleiben für Aufgaben auf beiden Karten offen. Der Warnbericht nennt Ashfall. Helix meldete eine lebende Technikerin und befahl die Tilgung des Standorts. Das Osttor von Moonfall führt dorthin. Finde sie vor der Säuberung. Sie kann Helix entlarven, doch eine Live-Sendung verrät Aster. Jetzt senden oder die Zeugin schützen. Ashfalls Osttor führt zum Archiv. Sein letztes Signal wartet. Er enthält eine Hin- und Rückroute. Antworten führt die Flotte; Abschirmen schützt alle Koordinaten.</p></div><div class="game-info-section"><h3>Praktische Ermittlungstipps</h3><p>Sprich vor dem Waldtor mit allen Zeugen.</p><p>Beobachte Alarmbereiche und locke Gegner einzeln.</p><p>Nutze den Schuss gegen schwere Gegner und Wirker.</p><p>Aktiviere Wahre Sicht bei cyanfarbenen Funken und verdächtigen Wänden.</p><p>Bleib während der Salven des Kommandanten in Bewegung, weiche dem Ansturm aus und greife im Betäubungsfenster an.</p></div><div class="game-info-section"><h3>Designnotiz</h3><p>Die zusammenhängende Welt hält Orte und Hinweise in Beziehung. Wahre Sicht kostet keine Energie; Beobachtung ist wichtiger als Sparen. PC-Tasten und sichtbare Mobilbuttons führen dieselben Aktionen aus. Die 57 Missionen erfassen echte Entdeckungen, Kämpfe, Ausrüstung, Beweise und Berichte.</p></div><div class="game-info-section"><h3>Spieler-, Geräte- und Speicherinfos</h3><p>Das Kapitel endet, wenn der erste Kommandant besiegt und sein Gerät geborgen ist. Verliert Fia alle Gesundheit, kehrt sie zum sicheren Kontrollpunkt zurück und behält Stufe, Ausrüstung, Aufträge und wichtige Siege. Kein Konto nötig. Der Fortschritt liegt nur im Browserspeicher dieses Geräts. Kein Konto nötig. Missionen, EP, Level, Gesundheit, Ausrüstung, Truhen, Siege, Kontrollpunkte und Entscheidungen werden automatisch in diesem Browser gespeichert. Bewegung schreibt nicht jedes Bild. Der Signalanker für fünf Diamanten ist eine optionale permanente Lebensverbesserung.</p></div><div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie viele Missionen und Gebiete gibt es?</dt><dd>Es gibt 57 Missionen und sechs Hauptgebiete; die Geschichte öffnet verbindende Tore.</dd></div><div><dt>Verbraucht Wahre Sicht Energie?</dt><dd>Nein. Nach Freischaltung der Linse kannst du frei wechseln und Tarnungen, Gegner, Wege und Schätze enthüllen.</dd></div><div><dt>Kann Ausrüstung abgelegt werden?</dt><dd>Ja. Das Menü zeigt Werte; Ablegen löscht den Besitz nicht.</dd></div><div><dt>Was passiert bei einer Niederlage?</dt><dd>Fia kehrt zum sicheren Kontrollpunkt zurück und behält dauerhaften Fortschritt sowie wichtige Zustände.</dd></div><div><dt>Wie lange dauert die Ermittlung?</dt><dd>Das hängt von Erkundung und Kampf ab. Die vier Kapitel lassen sich mit dem lokalen Spielstand aufteilen.</dd></div></dl></div><div class="game-info-section"><h3>Verwandte WeightPlay-Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-relic-hunters/"><span class="game-info-related-copy"><strong>Tierische Reliktjäger</strong><span>Raum-Expeditionen mit Relikten und mehrphasigen Wächtern.</span></span></a><a class="game-info-related-card" href="/de/games/animal-crystal-survivor/"><span class="game-info-related-copy"><strong>Tierischer Kristallüberlebender</strong><span>Baue auf dreißig Routen eine Ausrüstung und besiege sechs Bosse.</span></span></a><a class="game-info-related-card" href="/de/games/shadow-wolf/"><span class="game-info-related-copy"><strong>Legende des Schattenwolfs</strong><span>Dunkle Actionkampagne mit Kontern und mehrphasigen Bossen.</span></span></a></div></div></div></section>
+<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Vollständiger Signal Veil-Ermittlungsleitfaden"><div class="game-info-hero"><div class="game-info-title"><h2>Vollständiger Signal Veil-Ermittlungsleitfaden</h2></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Welt und Auftrag</h3><p>Als Fuchs-Ermittlerin Fia folgst du einem verdächtigen Signal durch eine zusammenhängende Stadt, einen Wald und geheime Anlagen. Befrage Zeugen, enttarne Gefahren und sammle Beweise. Folge dem aktuellen Ziel: Sollst du Bericht erstatten, kehre zu Orla zurück, statt weitere Gegner zu suchen. Fortschritte öffnen neue Wege.</p></section><section class="game-info-section"><h3>Steuerung und Spielschleife</h3><ol><li>Lies das Ziel oben und erkunde das aktuelle Gebiet.</li><li>Tippe auf den sichtbaren Hinweis oder drücke E für Gespräche, Truhen, Aufzeichnungen und Tore.</li><li>Blicke zum Gegner und nutze Angriff für die Schwertwelle oder Fähigkeit für den Fernschuss.</li><li>Aktiviere Wahre Sicht bei cyanfarbenen Spuren, um Tarnungen, unsichtbare Gegner und Wege zu finden.</li><li>Erfülle das Ziel und bringe Beweise zu Orla, wenn die Geschichte es verlangt.</li></ol><p>Am Desktop bewegst du dich mit WASD oder Pfeiltasten. Space/J führt einen Nahkampfangriff aus, K feuert, V wechselt die Sicht, E spricht oder öffnet Truhen und Escape öffnet das Menü. Mobil nutzt du Joystick, Angriff, Fähigkeit und Sicht. Gegner patrouillieren, verfolgen und greifen an; der Kommandant wechselt sein Muster mit sinkender Gesundheit. Normale Sicht zeigt die Welt, wie die meisten Menschen sie wahrnehmen. Wahre Sicht enthüllt cyanfarbene Wege, getarnte Echsenmenschen, unsichtbare Monster, Geheimtüren und Schätze. Die Prototyplinse verbraucht nichts. Das stabile Gerät beweist, dass sie nie ihre Form änderten, sondern die menschliche Wahrnehmung störten.</p></section><section class="game-info-section"><h3>Fortschritt, Ausrüstung und Schwierigkeit</h3><p>Am Anfang stehen Gespräche und Beobachtung, später verbindest du Erkundung, Kampf und Neuralsicht. Besiegte Gegner geben Erfahrung und verbessern deine Werte. Gefundene Ausrüstung lässt sich im Menü an- und ablegen. Spätere Gebiete bieten stärkere Patrouillen, Aufzeichnungen zum Entschlüsseln und nachhaltige Entscheidungen. Nach einem Kapitel setzt Weitererkunden die Untersuchung fort.</p></section><section class="game-info-section"><h3>Praktische Ermittlungstipps</h3><ul><li>Beobachte Alarmbereiche und locke Gegner einzeln.</li><li>Nutze den Schuss gegen schwere Gegner und Wirker.</li><li>Aktiviere Wahre Sicht bei cyanfarbenen Funken und verdächtigen Wänden.</li><li>Bleib während der Salven des Kommandanten in Bewegung, weiche dem Ansturm aus und greife im Betäubungsfenster an.</li></ul></section><section class="game-info-section"><h3>Designnotiz</h3><p>Die verbundene Welt führt Hinweise zu vertrauten Personen und Orten zurück. Neuralsicht verbraucht keine Energie und enthüllt versteckte Wege und Gefahren. Tastatur und Touch-Steuerung bedienen dasselbe Abenteuer. Kehre zurück, wenn das Ziel es verlangt, und setze deinen gespeicherten Fortschritt später fort.</p></section><section class="game-info-section"><h3>Spieler-, Geräte- und Speicherinfos</h3><p>Kein Konto nötig. Missionen, EP, Level, Gesundheit, Ausrüstung, Truhen, Siege, Kontrollpunkte und Entscheidungen werden automatisch in diesem Browser gespeichert. Bewegung schreibt nicht jedes Bild. Der Signalanker für fünf Diamanten ist eine optionale permanente Lebensverbesserung.</p></section><section class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Verbraucht Wahre Sicht Energie?</dt><dd>Nein. Nach Freischaltung der Linse kannst du frei wechseln und Tarnungen, Gegner, Wege und Schätze enthüllen.</dd></div><div><dt>Kann Ausrüstung abgelegt werden?</dt><dd>Ja. Das Menü zeigt Werte; Ablegen löscht den Besitz nicht.</dd></div><div><dt>Was passiert bei einer Niederlage?</dt><dd>Fia kehrt zum sicheren Kontrollpunkt zurück und behält dauerhaften Fortschritt sowie wichtige Zustände.</dd></div></dl></section></div></section>
 </body>
 </html>

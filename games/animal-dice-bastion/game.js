@@ -2,6 +2,7 @@
   "use strict";
   const pack = window.AnimalDiceBastionLocales;
   const $ = (id) => document.getElementById(id);
+  const sharedFrame = window.mountDiceBastionFrame();
   const routeSegment = location.pathname.split("/").filter(Boolean)[0] || "";
   const routeLocale = Object.values(pack.segments).includes(routeSegment.toLowerCase()) ? routeSegment : "";
   const canonicalLocale = (value) => {
@@ -204,6 +205,8 @@
     $("mainGroup").hidden = name !== "main";
     $("stageScreen").hidden = name !== "stage";
     $("battleScreen").hidden = name !== "battle";
+    $("mainGuide").hidden = name !== "main";
+    sharedFrame.activate(name, {covered:name === "battle" && Boolean(activeModal())});
     if (name === "main") {
       $("mainScreen").classList.add("wp-standard-main-flow-owner");
       if (mainFlowMinHeight) $("mainScreen").style.setProperty("--wp-main-flow-min-height", mainFlowMinHeight);
@@ -530,7 +533,7 @@
     };
     resultCommitted = false;
     $("tutorialPanel").hidden = true; $("leavePanel").hidden = true; $("pausePanel").hidden = true; $("resultPanel").hidden = true;
-    $("battleLive").hidden = false; $("battleLive").inert = false;
+    $("battleLive").hidden = false; $("battleLive").inert = false; $("battleLive").classList.remove('is-settled');
     showScreen("battle"); renderBoard(); updateBattleHud(true); announce(t("objective"));
     lifecyclePaused = document.hidden; run.paused = lifecyclePaused;
     lastTime = performance.now(); stopLoop(); if (!run.paused) raf = requestAnimationFrame(frame);
@@ -818,7 +821,7 @@
   }
   function updateBattleHud(force = false) {
     if (!run) return;
-    $("stageLabel").textContent = `${t("stage",{stage:run.stage.n})} · ${t(chapters[run.stage.chapter])}`;
+    $("stageLabel").textContent = t("stage",{stage:run.stage.n});
     $("objectiveText").textContent = t("objective");
     $("coreValue").textContent = `${Math.max(0,run.core)}/${run.maxCore}`;
     $("waveValue").textContent = `${Math.max(1,run.wave)}/${run.stage.waves}`;
@@ -920,7 +923,9 @@
     $("resultStats").innerHTML=`<span><small>${t("coreLeft")}</small><strong>${Math.max(0,run.core)}/${run.maxCore}</strong></span><span><small>${t("merges")}</small><strong>${run.merges}</strong></span><span><small>${t("dustEarned")}</small><strong>+${earned}</strong></span>`;
     const canNext=won&&run.stage.n<30;[$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach((button)=>{button.disabled=false;button.classList.remove("primary-action")});
     $("nextBtn").disabled=!canNext;const primary=canNext?$("nextBtn"):$("resultStagesBtn");primary.classList.add("primary-action");
-    $("battleLive").hidden=true;$("battleLive").inert=true;$("resultPanel").hidden=false;
+    $("battleLive").hidden=true;$("battleLive").inert=true;$("battleLive").classList.add('is-settled');$("resultPanel").hidden=false;
+    sharedFrame.activate('battle', {covered:true});
+    [$("resultStagesBtn"),$("nextBtn"),$("retryBtn")].forEach(button=>button.setAttribute('data-wp-frame-action',button===primary?'primary':'secondary'));
     const focusPrimary=()=>{if(!$("resultPanel").hidden&&primary.isConnected)primary.focus({preventScroll:true})};
     requestAnimationFrame(focusPrimary);setTimeout(focusPrimary,80);window.WonderSound?.play?.(won?"win":"wrong");
   }
@@ -932,10 +937,12 @@
   function activeModal() { return [$("tutorialPanel"),$("leavePanel"),$("pausePanel"),$("resultPanel")].find((modal)=>!modal.hidden) || null; }
   function openModal(modal, focusTarget) {
     modalReturnFocus=document.activeElement;if(run)run.paused=true;stopLoop();modal.hidden=false;$("battleLive").inert=true;
+    sharedFrame.activate('battle', {covered:true});
     requestAnimationFrame(()=>focusTarget?.focus());
   }
   function closeModal(modal, restore=true) {
     modal.hidden=true;$("battleLive").inert=false;
+    sharedFrame.activate('battle', {covered:Boolean(activeModal())});
     if(run&&!run.finished&&!lifecyclePaused&&!document.hidden){run.paused=false;resumeLoop()}
     if(restore)(modalReturnFocus?.isConnected?modalReturnFocus:$("board"))?.focus({preventScroll:true});modalReturnFocus=null;
   }

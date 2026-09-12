@@ -203,6 +203,66 @@
   if (dictionaries["zh-Hans"]?.guideDetail) {
     dictionaries["zh-Hans"].guideDetail = dictionaries["zh-Hans"].guideDetail.replaceAll("取得", "获得");
   }
+  // Game-specific guide: describe decisions, not a fixed campaign total.
+  const conciseGuide = {
+    en:["Growing defenses","Choose your opening guardian, then summon and merge matching affinity and rank. Keep an empty slot for the next draw, save orders for dangerous waves, and protect the crystal. Merges reroll affinity; Reforge keeps rank but costs the third star."],
+    'zh-Hant':["逐步進階的防線","先選開場守護獸，再召喚並合併相同屬性、相同階級的守護獸。留一格給下一次召喚，把指令留給危險波次，守住水晶。合併會重抽屬性；重鑄保留階級，但本局無法取得第三顆星。"],
+    'zh-Hans':["逐步进阶的防线","先选开场守护兽，再召唤并合并相同属性、相同阶级的守护兽。留一格给下一次召唤，把指令留给危险波次，守住水晶。合并会重抽属性；重铸保留阶级，但本局无法获得第三颗星。"],
+    ja:["広がる防衛戦","最初の守護獣を選び、同じ属性とランクを召喚・合成しましょう。次の召喚用に空きを残し、危険な敵の波に指令を使って水晶を守ります。合成後の属性は抽選されます。再鋳造はランクを保ちますが、星3個は獲得できません。"],
+    ko:["단계적으로 깊어지는 방어","첫 수호수를 고른 뒤 같은 속성과 등급을 소환하고 합치세요. 다음 소환을 위해 빈칸을 남기고 위험한 적 무리에 명령을 사용해 수정을 지키세요. 합치면 속성이 다시 정해집니다. 재련은 등급을 유지하지만 별 세 개를 받을 수 없습니다."],
+    es:["Defensas progresivas","Elige tu primer guardián y fusiona los de igual afinidad y rango. Reserva un hueco para invocar y guarda las órdenes para las oleadas peligrosas. La fusión sortea otra afinidad; Reforjar conserva el rango, pero impide ganar la tercera estrella."],
+    'pt-BR':["Defesas progressivas","Escolha o primeiro guardião e una os de mesma afinidade e nível. Deixe um espaço para invocar e guarde ordens para ondas perigosas. A fusão sorteia outra afinidade; Reforjar mantém o nível, mas impede a terceira estrela."],
+    fr:["Des défenses progressives","Choisissez le premier gardien puis fusionnez ceux de même affinité et rang. Gardez une case libre et réservez les ordres aux vagues dangereuses. La fusion tire une nouvelle affinité ; Reforge conserve le rang mais empêche la troisième étoile."],
+    de:["Wachsende Verteidigung","Wähle den ersten Wächter und verschmelze gleiche Affinitäten und Ränge. Halte ein Feld für die nächste Beschwörung frei und spare Befehle für gefährliche Wellen. Fusion würfelt die Affinität neu aus; Umschmieden behält den Rang, verhindert aber den dritten Stern."],
+    it:["Difese progressive","Scegli il primo guardiano e fondi quelli con affinità e grado uguali. Lascia uno spazio libero e conserva gli ordini per le ondate pericolose. La fusione sorteggia una nuova affinità; Riforgia mantiene il grado ma impedisce la terza stella."],
+    ru:["Растущая оборона","Выберите первого стража и объединяйте одинаковые стихии и ранги. Оставляйте место для призыва и берегите приказы для опасных волн. Слияние случайно меняет стихию; перековка сохраняет ранг, но лишает третьей звезды."],
+    hi:["बढ़ती रक्षा चुनौती","पहला रक्षक चुनें और समान गुण व स्तर वाले रक्षकों को मिलाएँ। अगले आह्वान के लिए जगह रखें और खतरनाक लहरों के लिए आदेश बचाएँ। मिलाने पर गुण फिर चुना जाता है; पुनर्गठन स्तर बचाता है, लेकिन तीसरा सितारा नहीं मिलता।"],
+    ar:["دفاعات متدرجة","اختر الحارس الأول وادمج الحراس المتطابقين في السمة والرتبة. اترك خانة للاستدعاء واحتفظ بالأوامر للموجات الخطرة. الدمج يختار سمة جديدة عشوائيًا؛ إعادة التشكيل تحفظ الرتبة لكنها تمنع النجمة الثالثة."]
+  };
+  for (const [code,[progressTitle,guideDetail]] of Object.entries(conciseGuide)) Object.assign(dictionaries[code],{progressTitle,guideDetail});
+  const progressionCopy = {
+    en:['Next','Adapt your formation to armor, swarms, healers and bosses as new defenses unlock.'],
+    'zh-Hant':['下一關','解鎖新防線，調整陣容應對護甲、怪群、治療者與首領。'],
+    'zh-Hans':['下一关','解锁新防线，调整阵容应对护甲、怪群、治疗者与首领。'],
+    ja:['次へ','新たな防衛戦を解放し、装甲、群れ、回復役やボスに合わせて編成を変えよう。'],
+    ko:['다음','새 방어전을 열고 장갑, 무리, 치유사와 보스에 맞춰 진형을 바꾸세요.'],
+    es:['Siguiente','Desbloquea defensas y adapta tu formación a armaduras, enjambres, sanadores y jefes.'],
+    'pt-BR':['Próxima','Libere defesas e adapte a formação a armaduras, enxames, curandeiros e chefes.'],
+    fr:['Suite','Débloquez des défenses et adaptez votre formation aux armures, essaims, soigneurs et boss.'],
+    de:['Weiter','Schalte Verteidigungen frei und passe deine Formation an Panzerung, Schwärme, Heiler und Bosse an.'],
+    it:['Avanti','Sblocca difese e adatta la formazione ad armature, sciami, guaritori e boss.'],
+    ru:['Далее','Открывайте оборонительные рубежи и меняйте строй против брони, стай, целителей и боссов.'],
+    hi:['अगला','नई रक्षा चुनौतियाँ खोलें और कवच, झुंड, उपचारकों व बॉस के अनुसार रक्षकों की जमावट बदलें।'],
+    ar:['التالي','افتح دفاعات جديدة وعدّل تشكيلتك لمواجهة الدروع والأسراب والمعالجين والزعماء.']
+  };
+  for (const [code,[next,progressText]] of Object.entries(progressionCopy)) Object.assign(dictionaries[code],{next,progressText});
+  const actionCopy={
+    en:['Rally','Burst','Reforge'], 'zh-Hant':['集結','爆發','重塑'], 'zh-Hans':['集结','爆发','重塑'],
+    ja:['集結','バースト','再鍛造'],ko:['집결','폭발','재련'],
+    es:['Alentar','Estallido','Reforjar'],'pt-BR':['Reunir','Explodir','Reforjar'],
+    fr:['Rallier','Explosion','Reforger'],de:['Anfeuern','Runenstoß','Umschmieden'],
+    it:['Adunata','Esplosione','Riforgia'],ru:['Сбор','Взрыв','Перековка'],
+    hi:['आह्वान','विस्फोट','पुनर्गठन'],ar:['حشد','انفجار','إعادة صوغ']
+  };
+  for(const [code,[rally,burst,reroll]] of Object.entries(actionCopy))Object.assign(dictionaries[code],{rally,burst,reroll});
+  for(const [code,retry] of Object.entries({'pt-BR':'Repetir',de:'Nochmal',ru:'Повтор',ar:'إعادة'}))dictionaries[code].retry=retry;
+  dictionaries.de.summon='Rufen';
+  const accurateIntro={
+    en:['Summon guardians, merge matching affinity and rank, and time your orders to protect the crystal.','After repeated draws without a merge pair, summons favor an affinity already on the board. Rank must still match; a merge is not guaranteed.'],
+    'zh-Hant':['召喚守護獸，合併相同屬性與階級，抓準指令時機守住水晶。','連續召喚仍沒有可合併組合時，召喚會優先選擇場上已有的屬性。階級仍須相同，不保證立即能合併。'],
+    'zh-Hans':['召唤守护兽，合并相同属性与阶级，把握指令时机守住水晶。','连续召唤仍没有可合并组合时，召唤会优先选择场上已有的属性。阶级仍须相同，不保证立即能合并。'],
+    ja:['守護獣を召喚し、属性とランクが同じ仲間を合成。指令のタイミングで水晶を守ろう。','合成できる組がない召喚が続くと、盤上の属性が優先されます。ランクも一致する必要があり、すぐ合成できる保証はありません。'],
+    ko:['수호자를 소환하고 같은 속성과 등급을 합치세요. 알맞은 순간에 명령을 내려 수정을 지키세요.','합칠 쌍 없이 소환이 반복되면 보드에 있는 속성을 우선합니다. 등급도 같아야 하므로 즉시 합칠 수 있다는 보장은 없습니다.'],
+    es:['Invoca guardianes, une afinidad y rango iguales y usa órdenes a tiempo para proteger el cristal.','Tras varias invocaciones sin pareja, se favorece una afinidad del tablero. El rango también debe coincidir; la fusión no está garantizada.'],
+    'pt-BR':['Invoque guardiões, una afinidade e nível iguais e use ordens na hora certa para proteger o cristal.','Após invocações repetidas sem par, uma afinidade do tabuleiro é favorecida. O nível também precisa ser igual; a fusão não é garantida.'],
+    fr:['Invoquez des gardiens, fusionnez les mêmes affinités et rangs, puis donnez vos ordres au bon moment.','Après plusieurs invocations sans paire, une affinité du plateau est favorisée. Le rang doit aussi correspondre ; la fusion n’est pas garantie.'],
+    de:['Rufe Wächter, vereine gleiche Affinität und gleichen Rang und schütze den Kristall mit gezielten Befehlen.','Nach mehreren Beschwörungen ohne Paar wird eine Affinität auf dem Brett bevorzugt. Auch der Rang muss passen; eine Fusion ist nicht garantiert.'],
+    it:['Evoca guardiani, unisci affinità e grado uguali e proteggi il cristallo con ordini al momento giusto.','Dopo più evocazioni senza coppie, viene favorita un’affinità sul campo. Anche il grado deve coincidere: la fusione non è garantita.'],
+    ru:['Призывайте стражей, объединяйте одинаковые стихии и ранги и защищайте кристалл своевременными приказами.','После нескольких призывов без пары предпочтение получает стихия на поле. Ранги тоже должны совпадать: слияние не гарантировано.'],
+    hi:['रक्षक बुलाएँ, समान गुण और स्तर को मिलाएँ, और सही समय पर आदेश देकर क्रिस्टल बचाएँ।','बिना जोड़ी बने कई बार बुलाने पर बोर्ड पर मौजूद गुण को प्राथमिकता मिलती है। स्तर भी समान होना चाहिए; मिलाने की गारंटी नहीं है।'],
+    ar:['استدعِ الحراس وادمج المتطابقين في السمة والرتبة، واحمِ البلورة بأوامر في الوقت المناسب.','بعد استدعاءات متكررة دون زوج قابل للدمج، تُفضّل سمة موجودة على اللوحة. يجب أن تتطابق الرتبة أيضًا؛ الدمج غير مضمون.']
+  };
+  for(const [code,[pitch,faq2a]] of Object.entries(accurateIntro))Object.assign(dictionaries[code],{pitch,faq2a});
   window.AnimalDiceBastionLocales = {
     codes:["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],
     segments:{en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"},

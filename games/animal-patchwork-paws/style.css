@@ -66,3 +66,66 @@
   .screen.battle-screen .status{position:absolute;inset-inline-start:205px;inset-inline-end:16px;bottom:68px;height:24px;min-height:24px;margin:0;line-height:1.15}
   .screen.battle-screen .battle-actions{position:absolute;inset-inline-start:205px;inset-inline-end:16px;bottom:4px;grid-column:auto;grid-row:auto;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:8px;margin:0}
 }
+
+/* v6/I6 shell contract repair: keep authored scene controls inside each
+   logical canvas so the shared shell cannot intercept their hit targets. */
+#stageScreen[data-wp-standard-stage-screen],
+#battleScreen[data-wp-logical-battle-canvas]{
+  z-index:20!important;
+  isolation:isolate;
+}
+#stageScreen[data-wp-standard-stage-screen]{
+  display:grid!important;
+  grid-template-rows:60px auto minmax(0,1fr) 48px!important;
+  gap:8px!important;
+  padding:10px!important;
+  overflow:hidden!important;
+}
+#stageScreen[data-wp-standard-stage-screen] .stage-header,
+#battleScreen[data-wp-logical-battle-canvas] .battle-header{
+  position:relative!important;
+  z-index:30!important;
+  width:100%!important;
+  min-height:60px!important;
+  height:60px!important;
+  margin:0!important;
+  padding:0 2px!important;
+  display:grid!important;
+  align-items:center!important;
+  gap:10px!important;
+}
+#stageScreen[data-wp-standard-stage-screen] .stage-header{grid-template-columns:48px minmax(0,1fr) 48px!important}
+#battleScreen[data-wp-logical-battle-canvas] .battle-header{grid-template-columns:48px minmax(0,1fr) auto!important}
+#stageScreen .stage-header h2,
+#battleScreen .battle-head-title{min-width:0;text-align:center}
+#stageScreen .stage-header h2,
+#battleScreen .battle-head-title h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stageScreen .back-btn,#stageScreen .stage-settings,
+#battleScreen .back-btn,#battleScreen .battle-settings{
+  position:relative!important;
+  z-index:31!important;
+  display:grid!important;
+  place-items:center!important;
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  min-height:48px!important;
+  padding:0!important;
+  pointer-events:auto!important;
+}
+#stageScreen .stage-settings,
+#battleScreen .battle-settings{justify-self:end}
+#stageScreen .stage-list,
+#stageScreen .stage-tabs{
+  position:relative!important;
+  z-index:31!important;
+  pointer-events:auto!important;
+}
+#stageScreen .stage-tabs{height:48px!important;min-height:48px!important;margin:0!important;display:grid!important;place-items:center!important}
+#stageScreen .stage-tabs button{position:relative;z-index:32;min-height:44px;pointer-events:auto}
+#gameGuide.patchwork-guide{border-radius:24px!important;min-height:0}
+#mainScreen[hidden],#stageScreen[hidden],#battleScreen[hidden],#resultScreen[hidden]{display:none!important}
+@media(min-width:700px) and (max-height:500px) and (min-aspect-ratio:3/2){
+  #mainScreen .cover-wrap{display:block!important;width:420px!important;max-width:420px!important;height:420px!important;margin-inline:auto!important}
+  #mainScreen .main-poster{display:block!important;width:420px!important;max-width:420px!important;height:420px!important;object-fit:cover!important}
+}

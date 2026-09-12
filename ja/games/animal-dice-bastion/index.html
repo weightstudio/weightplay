@@ -31,7 +31,9 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1"><meta property="og:site_name" content="WeightPlay" />
+    <link rel="stylesheet" href="style.css?v=20260909-interface-repair-v29"><link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="ダイス砦 | WeightPlay" />
     <meta property="og:description" content="ランダムな動物ガーディアンを召喚し、同ランクを合成して、30のオリジナル砦防衛に挑もう。" />
@@ -54,6 +56,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -85,7 +88,7 @@
         <div class="main-copy">
           <small data-i18n="eyebrow">モスライトマージディフェンス</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">ダイス砦</h1>
-          <p data-i18n="pitch">ランダムな動物の守護者を召喚し、一致するランクを統合し、各波がクリスタルに到達する前に適切なパワーを指揮します。</p>
+          <p data-i18n="pitch">守護獣を召喚し、属性とランクが同じ仲間を合成。指令のタイミングで水晶を守ろう。</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">ゲーム開始</button>
         </div>
@@ -95,9 +98,9 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="ゲームガイド">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay オリジナルゲームガイド</span>
-        <h2 data-i18n="guideTitle">あらゆる驚きからより強力なボードを構築</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">ダイス砦</h2>
         <p data-i18n="guideIntro">苔貝太郎は生きたルーンダイスで水晶の砦を守っています。召喚するたびに盤面が変化しますが、慎重なマージとタイムリーな命令で運をコントロールできます。</p>
-        <p data-i18n="guideDetail">各防衛は、短く分かりやすい計画のループです。バトルの最初に開始ガーディアンの属性を選び、チャージを使って空いたルーン枠へランク1のガーディアンを召喚します。ガーディアンは自動で攻撃するため、プレイヤーが決めるのは召喚のタイミング、同じ組み合わせをマージするタイミング、そしてどの命令を温存するかです。マージには同じ属性とランクが必要です。成功すると強いガーディアンになりますが、属性は再抽選されるため、新しいペアが開くことも、別の役割を考える必要が生まれることもあります。盤面をすぐに埋めないでください。空き枠があれば次の召喚を置けますし、低ランクのペアは次のウェーブへの安全な答えになります。バトルラリーは6秒間攻撃速度を高め、ルーンバーストは道の前方にいる5体の敵を攻撃して遅くします。ルーンリフォージはランクを保ったまま属性を変えますが、その防衛では3つ目の星を獲得できません。グローブは安定した攻撃、スパークはチャージ、ムーンは先頭の敵の減速、フォージはアーマー破壊、タイドは集団への攻撃を担当します。6章にはアーマー、群れ、ヒーラー、加速、枠ロック、チャンピオン護衛、異なるボスが順に登場し、全30ステージで学習の流れを作ります。敵が水晶に到達するとコアが減ります。全ウェーブとボスを倒し、コアを半分以上残してリフォージを使わなければ3つ星です。解放したステージ、星、ルーンダスト、工房アップグレードはこのブラウザだけに保存され、アカウント、アップロード、賭け、課金抽選、現金報酬はありません。公平な驚きから計画を作り、役割の違いを学び、次の判断を改善するゲームです。</p>
+        <p data-i18n="guideDetail">最初の守護獣を選び、同じ属性とランクを召喚・合成しましょう。次の召喚用に空きを残し、危険な敵の波に指令を使って水晶を守ります。合成後の属性は抽選されます。再鋳造はランクを保ちますが、星3個は獲得できません。</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">遊び方</h3><ol>
@@ -106,13 +109,12 @@
           <li data-i18n="how3">ガーディアンが各ウェーブを自動的に停止している間に、{rally}、{reroll}、{burst} を使用します。</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">ルールと結果</h3><p data-i18n="rulesText">要塞に到達したクリーチャーはコアの完全性を取り除きます。すべてのウェーブとボスをクリアすると勝利します。少なくとも半分のコアを保持し、再ロールを避けて 3 つ星をすべて獲得してください。</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">30 の著者による防御</h3><p data-i18n="progressText">6 つの章では、アーマー、スウォーム、ヒーラー、ヘイスト、スロット ロック、チャンピオンの護衛、および 6 つの異なるボス防御が追加されます。</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">広がる防衛戦</h3><p data-i18n="progressText">新たな防衛戦を解放し、装甲、群れ、回復役やボスに合わせて編成を変えよう。</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">実践的なヒント</h3><p data-i18n="tipsText">すべてのペアをすぐにマージしないでください。空のスロットまたはチャージされたオーダーによってより安全な次の動きが得られるまで、有用な低ランクのペアを保持してください。</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">保存とプライバシー</h3><p data-i18n="saveText">ロック解除されたステージ、スター、ルーンダスト、ワークショップのアップグレードは、このブラウザー内にのみ残ります。アカウント、アップロード、個人情報は必要ありません。</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">よくある質問</h3><dl>
           <div><dt data-i18n="faq1q">これはギャンブルゲームですか?</dt><dd data-i18n="faq1a">いいえ、ダイスはガーディアンのランクのみを示します。賭け、有料のランダムな抽選、賞金、またはリアルマネーのチャンスの仕組みはありません。</dd></div>
-          <div><dt data-i18n="faq2q">悪い引き分けでランが終了することはありますか?</dt><dd data-i18n="faq2a">干ばつブレイカーは、マージ候補なしで 7 回召喚した後でも、有用なマッチング アフィニティを保証します。</dd></div>
-          <div><dt data-i18n="faq3q">次は何を遊べばいいでしょうか？</dt><dd data-i18n="faq3a">ルート構築の防御にはビースト ガーディアンを、分隊の準備にはアニマル ルーン タクティクスを試してください。</dd></div>
+          <div><dt data-i18n="faq2q">悪い引き分けでランが終了することはありますか?</dt><dd data-i18n="faq2a">合成できる組がない召喚が続くと、盤上の属性が優先されます。ランクも一致する必要があり、すぐ合成できる保証はありません。</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">関連ゲーム</h3><p data-i18n="relatedIntro">プレッシャー下のルート計画を続けたいなら、次はこちら：</p><div class="game-info-related">
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="../../games/beast-tactician/"><img src="../../assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">ビースト戦術家</strong><span data-i18n="relatedBeastDescription">森の通路を開き、防衛役を配置し、変化する6種類のボス規則に対応して結晶核を守ります。</span></span></a>
@@ -156,7 +158,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="ステージに戻る">←</button>
-          <div class="battle-title"><strong id="stageLabel" data-wp-game-title data-runtime-localize="off">ダイス砦</strong></div>
+          <div class="battle-title" data-wp-frame-info><strong id="stageLabel" data-wp-frame-stat></strong></div>
           <div class="battle-stat"><small data-i18n="core">コア</small><strong id="coreValue">6/6</strong></div>
           <div class="battle-stat"><small data-i18n="wave">ウェーブ</small><strong id="waveValue">1/5</strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="一時停止">Ⅱ</button>
@@ -173,9 +175,9 @@
               <div class="charge-meter"><span data-i18n="charge">チャージ</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
               <button id="summonBtn" class="summon-button" type="button" data-wp-primary-action><span data-i18n="summon">召喚</span><b id="summonCost">10</b></button>
               <div class="orders">
-                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">全軍ラリー</strong><em data-i18n="rallyHint">全員の攻速 ×1.72・6秒</em></span><small id="rallyState"></small></button>
-                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">ルーンバースト</strong><em data-i18n="burstHint">先頭5体を攻撃・減速</em></span><small id="burstState"></small></button>
-                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">ルーン再鍛造</strong><em data-i18n="rerollHint">ランク維持・属性変更</em></span><small id="rerollState"></small></button>
+                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">集結</strong><em data-i18n="rallyHint">全員の攻速 ×1.72・6秒</em></span><small id="rallyState"></small></button>
+                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">バースト</strong><em data-i18n="burstHint">先頭5体を攻撃・減速</em></span><small id="burstState"></small></button>
+                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">再鍛造</strong><em data-i18n="rerollHint">ランク維持・属性変更</em></span><small id="rerollState"></small></button>
               </div>
               <p id="battleFeedback" aria-live="polite"></p>
             </div>
@@ -212,16 +214,17 @@
         <img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="">
         <small data-i18n="resultKicker">バスティオンレポート</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div>
         <p id="resultText"></p><div id="resultStats" class="result-stats"></div>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">ステージ</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">次のステージ</button><button id="retryBtn" type="button" data-i18n="retry">リプレイ</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">ステージ</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">次へ</button><button id="retryBtn" type="button" data-i18n="retry">リプレイ</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
@@ -229,11 +232,13 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
   <script src="locales.js?v=20260731-public16"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="game.js?v=20260910-main-progress-v30"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="ダイス砦";document.title="ダイス砦 | WeightPlay";},{once:true});</script>
 </body>
 </html>

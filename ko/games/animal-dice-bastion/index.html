@@ -31,7 +31,9 @@
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1">
-    <link rel="stylesheet" href="style.css?v=20260809-stage-visual1"><meta property="og:site_name" content="WeightPlay" />
+    <link rel="stylesheet" href="style.css?v=20260909-interface-repair-v29"><link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="다이스 요새 | WeightPlay" />
     <meta property="og:description" content="무작위 동물 수호자를 소환하고 같은 등급을 합성해 30개의 오리지널 요새 방어를 지키세요." />
@@ -54,6 +56,7 @@
     </div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
@@ -85,7 +88,7 @@
         <div class="main-copy">
           <small data-i18n="eyebrow">모스라이트 병합 방어</small>
           <h1 data-i18n="title" data-wp-game-title data-runtime-localize="off">다이스 요새</h1>
-          <p data-i18n="pitch">무작위 동물 수호자를 소환하고, 일치하는 순위를 합치고, 각 파도가 수정에 도달하기 전에 적절한 힘을 명령하세요.</p>
+          <p data-i18n="pitch">수호자를 소환하고 같은 속성과 등급을 합치세요. 알맞은 순간에 명령을 내려 수정을 지키세요.</p>
           <div id="mainProgress" class="main-progress"></div>
           <button id="startBtn" class="primary-action" type="button" data-wp-main-start data-i18n="start">게임 시작</button>
         </div>
@@ -95,9 +98,9 @@
     <section class="game-page-info game-page-info-static" data-i18n-aria="guideLabel" aria-label="게임 가이드">
       <div class="game-info-hero"><div class="game-info-title">
         <span class="game-info-kicker" data-i18n="guideKicker">WeightPlay 오리지널 게임 가이드</span>
-        <h2 data-i18n="guideTitle">모든 놀라움으로부터 더 강한 보드를 구축하세요</h2>
+        <h2 data-wp-game-title data-runtime-localize="off">다이스 요새</h2>
         <p data-i18n="guideIntro">이끼껍질 타로는 살아있는 룬 주사위로 수정 요새를 지키고 있습니다. 소환할 때마다 보드가 바뀌지만 신중한 병합과 시기적절한 명령을 통해 행운을 통제할 수 있습니다.</p>
-        <p data-i18n="guideDetail">각 방어전은 짧고 분명한 계획의 반복입니다. 전투가 시작되면 첫 수호자의 친화력을 고르고, 충전을 사용해 빈 룬 슬롯에 1등급 수호자를 소환합니다. 수호자는 자동으로 공격하므로 플레이어가 결정할 일은 소환 시점, 같은 조합을 합칠 시점, 그리고 어떤 명령을 아껴 둘지입니다. 합성에는 같은 친화력과 등급이 필요합니다. 합성한 수호자는 더 강해지지만 친화력이 다시 정해지므로 새로운 짝이 열릴 수도 있고 다른 역할을 계획해야 할 수도 있습니다. 슬롯을 서둘러 모두 채우지 마세요. 빈 슬롯은 다음 소환을 받을 공간이며, 낮은 등급의 짝은 다음 웨이브를 위한 안전한 선택이 될 수 있습니다. 배틀 랠리는 6초 동안 공격 속도를 높이고, 룬 버스트는 도로 앞쪽의 위협 다섯 명을 공격하며 느리게 합니다. 룬 리포지는 등급을 유지한 채 친화력을 바꾸지만 사용한 방어전에서는 세 번째 별을 얻을 수 없습니다. 그로브는 꾸준한 공격, 스파크는 빠른 충전, 문은 선두 적 감속, 포지는 방어구 파괴, 타이드는 무리 공격을 담당합니다. 여섯 장은 방어구, 무리, 치유자, 가속, 슬롯 잠금, 챔피언 호위, 서로 다른 보스를 순서대로 추가하며 총 30개의 제작된 방어전을 제공합니다. 적이 수정에 도착하면 코어가 줄어듭니다. 모든 웨이브와 보스를 막고 코어를 절반 이상 남기며 리포지를 사용하지 않으면 별 세 개를 얻습니다. 해금한 스테이지, 별, 룬 가루, 작업장 업그레이드는 이 브라우저에만 저장되며 계정, 업로드, 베팅, 유료 추첨, 현금 보상은 없습니다. 공정한 놀라움에서 계획을 세우고 역할의 차이를 배우며 다음 판단을 개선하는 게임입니다.</p>
+        <p data-i18n="guideDetail">첫 수호수를 고른 뒤 같은 속성과 등급을 소환하고 합치세요. 다음 소환을 위해 빈칸을 남기고 위험한 적 무리에 명령을 사용해 수정을 지키세요. 합치면 속성이 다시 정해집니다. 재련은 등급을 유지하지만 별 세 개를 받을 수 없습니다.</p>
       </div></div>
       <div class="game-info-sections guide-grid">
         <article class="game-info-section"><h3 data-i18n="howTitle">플레이 방법</h3><ol>
@@ -106,13 +109,12 @@
           <li data-i18n="how3">가디언이 각 웨이브를 자동으로 중지하는 동안 {rally}, {reroll} 및 {burst}를 사용하세요.</li>
         </ol></article>
         <article class="game-info-section"><h3 data-i18n="rulesTitle">규칙 및 결과</h3><p data-i18n="rulesText">요새에 도달한 생물은 핵심 무결성을 제거합니다. 모든 웨이브와 보스를 클리어하여 승리하세요. 코어의 절반 이상을 유지하고 재굴림을 피하여 별 3개를 모두 획득하세요.</p></article>
-        <article class="game-info-section"><h3 data-i18n="progressTitle">30개의 방어책이 작성되었습니다.</h3><p data-i18n="progressText">6개의 챕터에는 갑옷, 떼, 힐러, 가속, 슬롯 잠금, 챔피언 호위 및 6개의 독특한 보스 방어가 추가됩니다.</p></article>
+        <article class="game-info-section"><h3 data-i18n="progressTitle">단계적으로 깊어지는 방어</h3><p data-i18n="progressText">새 방어전을 열고 장갑, 무리, 치유사와 보스에 맞춰 진형을 바꾸세요.</p></article>
         <article class="game-info-section"><h3 data-i18n="tipsTitle">실용적인 팁</h3><p data-i18n="tipsText">모든 쌍을 즉시 병합하지 마십시오. 빈 슬롯이나 충전된 주문이 더 안전한 다음 이동을 제공할 때까지 유용한 낮은 순위 쌍을 유지하십시오.</p></article>
         <article class="game-info-section"><h3 data-i18n="saveTitle">저장 및 개인정보 보호</h3><p data-i18n="saveText">잠금 해제된 스테이지, 별, 룬 가루, 작업장 업그레이드는 이 브라우저에만 유지됩니다. 계정, 업로드 또는 개인 정보가 필요하지 않습니다.</p></article>
         <article class="game-info-section"><h3 data-i18n="faqTitle">자주 묻는 질문</h3><dl>
           <div><dt data-i18n="faq1q">이것은 도박 게임입니까?</dt><dd data-i18n="faq1a">아니요. 주사위에는 가디언 순위만 표시됩니다. 베팅, 유료 무작위 추첨, 상금 또는 실제 현금 기회 메커니즘이 없습니다.</dd></div>
-          <div><dt data-i18n="faq2q">나쁜 무승부로 경기가 끝날 수 있나요?</dt><dd data-i18n="faq2a">가뭄 차단기는 병합 후보 없이 7번 소환한 후 유용한 매칭 친화력을 보장합니다.</dd></div>
-          <div><dt data-i18n="faq3q">다음에는 무엇을 플레이해야 할까요?</dt><dd data-i18n="faq3a">경로 구축 방어에는 Beast Guardian을, 분대 준비에는 Animal Rune Tactics를 사용해 보세요.</dd></div>
+          <div><dt data-i18n="faq2q">나쁜 무승부로 경기가 끝날 수 있나요?</dt><dd data-i18n="faq2a">합칠 쌍 없이 소환이 반복되면 보드에 있는 속성을 우선합니다. 등급도 같아야 하므로 즉시 합칠 수 있다는 보장은 없습니다.</dd></div>
         </dl></article>
         <article class="game-info-section"><h3 data-i18n="relatedTitle">관련 게임</h3><p data-i18n="relatedIntro">압박 속에서 계속 계획하고 싶다면 다음 게임을 플레이해 보세요:</p><div class="game-info-related">
           <a class="game-info-related-card" data-wp-related-id="beast-tactician" href="../../games/beast-tactician/"><img src="../../assets/beast-tactician-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async"><span class="game-info-related-copy"><strong data-i18n="relatedBeastTitle">Beast Guardian</strong><span data-i18n="relatedBeastDescription">열린 숲길을 만들고 수호자를 배치하며, 바뀌는 여섯 보스 규칙에 맞춰 수정 핵을 지키세요.</span></span></a>
@@ -156,7 +158,7 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBackBtn" type="button" data-wp-return="battle" data-i18n-aria="backStages" aria-label="단계로 돌아가기">←</button>
-          <div class="battle-title"><strong id="stageLabel" data-wp-game-title data-runtime-localize="off">다이스 요새</strong></div>
+          <div class="battle-title" data-wp-frame-info><strong id="stageLabel" data-wp-frame-stat></strong></div>
           <div class="battle-stat"><small data-i18n="core">코어</small><strong id="coreValue">6/6</strong></div>
           <div class="battle-stat"><small data-i18n="wave">웨이브</small><strong id="waveValue">1/5</strong></div>
           <button id="pauseBtn" class="utility-button" type="button" data-i18n-aria="pause" aria-label="일시중지">Ⅱ</button>
@@ -173,9 +175,9 @@
               <div class="charge-meter"><span data-i18n="charge">충전</span><strong id="chargeValue">0</strong><i><b id="chargeFill"></b></i></div>
               <button id="summonBtn" class="summon-button" type="button" data-wp-primary-action><span data-i18n="summon">소환</span><b id="summonCost">10</b></button>
               <div class="orders">
-                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">전군 집결</strong><em data-i18n="rallyHint">전체 공속 ×1.72 · 6초</em></span><small id="rallyState"></small></button>
-                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">룬 폭발</strong><em data-i18n="burstHint">선두 5명 공격·감속</em></span><small id="burstState"></small></button>
-                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">룬 재련</strong><em data-i18n="rerollHint">등급 유지 · 속성 변경</em></span><small id="rerollState"></small></button>
+                <button id="rallyBtn" type="button" data-i18n-title="rallyHint"><span><strong data-i18n="rally">집결</strong><em data-i18n="rallyHint">전체 공속 ×1.72 · 6초</em></span><small id="rallyState"></small></button>
+                <button id="burstBtn" type="button" data-i18n-title="burstHint"><span><strong data-i18n="burst">폭발</strong><em data-i18n="burstHint">선두 5명 공격·감속</em></span><small id="burstState"></small></button>
+                <button id="rerollBtn" type="button" data-i18n-title="rerollHint"><span><strong data-i18n="reroll">재련</strong><em data-i18n="rerollHint">등급 유지 · 속성 변경</em></span><small id="rerollState"></small></button>
               </div>
               <p id="battleFeedback" aria-live="polite"></p>
             </div>
@@ -212,15 +214,16 @@
         <img src="../../assets/weightplay-character-moss-shell-turtle-cutout.webp" alt="">
         <small data-i18n="resultKicker">요새 보고서</small><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div>
         <p id="resultText"></p><div id="resultStats" class="result-stats"></div>
-        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">스테이지</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">다음 스테이지</button><button id="retryBtn" type="button" data-i18n="retry">다시 플레이</button></div>
+        <div class="modal-actions result-actions"><button id="resultStagesBtn" type="button" data-i18n="stages">스테이지</button><button id="nextBtn" class="primary-action" type="button" data-i18n="next">다음</button><button id="retryBtn" type="button" data-i18n="retry">다시 플레이</button></div>
       </div></section>
     </div>
     <div class="battle-ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/wallet.js"></script>
@@ -228,10 +231,12 @@
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="locale-data.js?v=20260831-arabic-copy"></script>
   <script src="locales.js?v=20260731-public16"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
   <script src="game.js?v=20260910-main-progress-v30"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260908-approved-game-names1"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
+
 </body>
 </html>

@@ -2269,6 +2269,7 @@
       designNote: "Signal Scout keeps the cognitive task visible in every screen: Main explains the promise, Stage names the patrol, Battle shows the note and target order together, and Result reports the completed count and checks. The responsive logical canvas preserves those relationships on portrait phones, compact landscape screens, and desktop widths. The game has no account, multiplayer, advertising, purchase, or timed-pressure flow.",
       noteTitle: "Player and Save Information",
       parent: "Signal Scout is a General family browser puzzle for ages 6+; no account or purchase is required. Best checks and completed patrols stay only in this browser when local storage is available. Clearing site data can remove that local record, while every patrol remains playable.",
+      relatedIds: ["lights-out", "four-in-a-row"],
       faq: [
         ["How many patrols are included?", "Three authored patrols make one short session: Pine Lookout, Creek Lookout, and Fern Lookout."],
         ["What do I match?", "Read each scout note, pair every named animal with its signal colour, and tap the animals in the visible patrol order."],

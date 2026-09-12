@@ -3,22 +3,21 @@
 <head>
 
     <base href="/games/signal-veil/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="description" content="フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。" />
+  <meta name="description" content="目撃者に話を聞き、神経視界で隠れた脅威を見破ろう。調査と戦闘を通して信号の真相に迫る。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="シグナル・ヴェール | WeightPlay" />
-  <meta property="og:description" content="フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。" />
+  <meta property="og:description" content="目撃者に話を聞き、神経視界で隠れた脅威を見破ろう。調査と戦闘を通して信号の真相に迫る。" />
   <meta property="og:url" content="https://weightplay.com/ja/games/signal-veil/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="シグナル・ヴェール | WeightPlay" />
-  <meta name="twitter:description" content="フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。" />
+  <meta name="twitter:description" content="目撃者に話を聞き、神経視界で隠れた脅威を見破ろう。調査と戦闘を通して信号の真相に迫る。" />
   <title>シグナル・ヴェール | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/ja/games/signal-veil/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/" />
@@ -66,16 +65,18 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../../src/loading-screen.css">
-  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="../../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260809-stage-visual1">
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-wp-locale="en" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">ニューラルビジョンを調整中…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
@@ -83,7 +84,7 @@
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/en/" aria-label="WeightPlayへ戻る">
+      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="WeightPlayへ戻る">
         <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
       </a>
       <div class="title-slot">
@@ -96,11 +97,11 @@
       </label>
     </header>
     <section class="main-hero">
-      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Signal Veil game artwork" data-t-alt="シグナル・ヴェールのゲーム画像">
+      <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="装置でリザード司令官を暴くスパークポー・フィア" data-t-alt="シグナル・ヴェールのゲーム画像">
       <div class="main-copy">
         <p class="kicker" data-t="kicker">2042・ファーストコンタクト</p>
         <h1 data-t="title">シグナル・ヴェール</h1>
-        <p class="main-summary" data-t="summary">フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。</p>
+        <p class="main-summary" data-t="summary">目撃者に話を聞き、神経視界で隠れた脅威を見破ろう。調査と戦闘を通して信号の真相に迫る。</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">ゲーム開始</button>
       </div>
@@ -167,7 +168,7 @@
             <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">アクセサリー</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">ダイヤ</span><b id="diamondBalance">0</b></div>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">ダイヤ</span><b id="diamondBalance">0</b></div>
             <h3 data-t="anchorTitle">シグナルアンカー</h3>
             <p data-t="anchorEffect">永久：今回と今後の調査で最大体力+12。任意で、攻略には不要です。</p>
             <button id="buyAnchor" type="button" data-t="anchorBuy">設置・ダイヤ5個</button>
@@ -198,21 +199,22 @@
   </section>
   <div class="ad-reserve" aria-hidden="true" hidden></div>
 
-  <script src="../../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../../src/site-config.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="../../../src/wallet.js"></script>
-  <script src="../../../games/signal-veil/locales.js"></script>
-  <script src="../../../games/signal-veil/guide-locales.js"></script>
+  <script src="../../src/wallet.js"></script>
+  <script src="locales.js"></script>
+  <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="../../../games/signal-veil/game.js?v=20260905-actionable-mission-hud-v12"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
+  <script defer src="game.js?v=20260905-actionable-mission-hud-v12"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="『シグナル・ヴェール』完全調査ガイド"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>『シグナル・ヴェール』完全調査ガイド</h2><p>フィアの57ミッション、リアルタイム戦闘、ニューラルビジョン、装備、ローカル進行を解説します。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Continuous action-RPG investigation</strong></div><div class="game-info-fact"><span>Progression</span><strong>57 missions · six connected regions</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>世界と任務</h3><p>2042年、失踪と襲撃が地球各地で続発する。スパークポー・フィアは偽物扱いされたリザード人の映像を追ってシグナルタウンへ来た。十人の証言を集め、月夜の森を抜け、放棄された神経研究所へ入ろう。本作はステージ選択のない連続世界で、位置、レベル、装備、任務、宝箱、敵、物語の進行をこのブラウザに保存する。</p><p>現在の物語は57ミッションで、シグナルタウン、ヴェイルウッド、神経研究所、ムーンフォール中継所、アッシュフォール天文台を結びます。証人への聞き込み、隠し道の追跡、巡回兵との戦闘、装備回収、記録解読、最後の証拠選択までが一つの連続した調査です。 アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。</p></div><div class="game-info-section"><h3>任務</h3><p>1–23</p><p>2042年、失踪と襲撃が地球各地で続発する。スパークポー・フィアは偽物扱いされたリザード人の映像を追ってシグナルタウンへ来た。十人の証言を集め、月夜の森を抜け、放棄された神経研究所へ入ろう。本作はステージ選択のない連続世界で、位置、レベル、装備、任務、宝箱、敵、物語の進行をこのブラウザに保存する。 森の門を開く前に全員と話そう。警戒範囲を見て一体ずつ誘い出す。重装兵や術士にはスキルを当てて隙を攻める。シアンの火花、怪しい壁、変化する会話では真実視界を使う。司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</p></div><div class="game-info-section"><h3>2マップ調査</h3><p>24–33</p><p>司令官を倒したらオルラへ報告し、ムーンフォールを解放する。8体の番兵を倒し、3つの記録を起動して戻ろう。2つのゲートは開いたままなので、両マップを往復できる。 記録1：トカゲ艦隊は死にゆく月から逃れ、保護を求めていた。 記録2：ヘリックス局は救難信号を奪い、神経パターンで偽装を作った。 記録3：司令官は証拠を消されないよう守っていた。</p></div><div class="game-info-section"><h3>アッシュフォール天文台</h3><p>34–57</p><p>警告記録はアッシュフォール天文台を示している。Helixは生存中の技術者を一人確認し、施設抹消を命じた。ムーンフォール東門から向かい、粛清前に救出しよう。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 私はHelixの偽装装置を保守していた。人間の記憶を書き換えると知り、発進記録を複製した。彼らは私を消すため天文台を焼いた。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 証拠は公開網へ流れた。Helixは偽物と言えないが、こちらの位置も知られた。 アスターとブラックボックスは無事だ。追跡されないよう、信頼できる局から段階的に公開する。</p></div><div class="game-info-section"><h3>月裏のホロウ・アーカイブ</h3><p>46–57</p><p>アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。 47隻の民間船がHelixによって残骸と改名されている。帰還句は「私たちは侵略者ではない」。 地図は家族史として書かれている。本物の記憶を知らなければHelixは追えない。 子供たちは盗まれた放送でシグナル・タウンの天気を学び、フィアの世界を青い避難所と描いた。 追手は消えた。避難所に応答して船団を導くか、難民が時を選ぶまで航路を遮蔽するか？ 避難所に応答した。船団はシグナル・タウンへの生きた航路を得た。到着する全員を共に守ろう。 進入鍵を消去した。避難所は見えないまま、難民自身が姿を現す時を選べる。</p></div><div class="game-info-section"><h3>操作とゲームループ</h3><p>画面上部の目的を読み、現在の地域を探索する。</p><p>見える操作表示をタップ、またはEで会話・宝箱・記録・ゲートを使う。</p><p>敵の方向を向き、攻撃で剣気、スキルで遠距離弾を放つ。</p><p>シアンの手掛かりでは真実視界を使い、偽装や透明な対象を探す。</p><p>目的を完了し、必要な証拠をオーラへ持ち帰る。</p><p>PCはWASDまたは矢印キーで移動。Space/Jで正面近接攻撃、Kで遠距離弾、Vでビジョン切替、Eで会話や宝箱、Escapeでメニュー。モバイルは左スティックと攻撃・スキル・ビジョンボタンを使う。敵は巡回、追跡、近接攻撃を行い、司令官は体力に応じて攻撃を変える。 通常視界は人々が認識する世界を映す。真実視界は隠し道、偽装したリザード人、透明な敵、秘密の扉、宝をシアンで示す。試作レンズは資源を消費しない。司令官の安定装置は、相手が変身したのではなく、人間の視覚が干渉されていた事実を示す。</p></div><div class="game-info-section"><h3>成長・装備・難易度</h3><p>十五体の敵を倒して経験値を得る。レベルアップで最大体力、攻撃、防御が上がる。三つの隠し宝箱にはパルスブレード、レンジャーアーマー、シグナルチャームがあり、取得すると即座に装備され保存される。遠距離スキルには短いクールダウンがあり、近接は素早く強い。 司令官を倒したらオルラへ報告し、ムーンフォールを解放する。8体の番兵を倒し、3つの記録を起動して戻ろう。2つのゲートは開いたままなので、両マップを往復できる。 警告記録はアッシュフォール天文台を示している。Helixは生存中の技術者を一人確認し、施設抹消を命じた。ムーンフォール東門から向かい、粛清前に救出しよう。 Helixを暴けるが、生中継はアスターの位置を明かす。今放送するか、証人を守り持ち帰ろう。 アッシュフォール東門からホロウ・アーカイブへ。最後の信号が待っている。 双方向の避難航路がある。応答すれば帰路を示し、遮蔽すれば座標をHelixから守れる。</p></div><div class="game-info-section"><h3>実用的な調査のコツ</h3><p>森の門を開く前に全員と話そう。</p><p>警戒範囲を見て一体ずつ誘い出す。</p><p>重装兵や術士にはスキルを当てて隙を攻める。</p><p>シアンの火花、怪しい壁、変化する会話では真実視界を使う。</p><p>司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</p></div><div class="game-info-section"><h3>開発デザインノート</h3><p>連続世界は場所と手掛かりを覚えやすくします。真実視界にはエネルギー消費がなく、資源管理ではなく観察が判断になります。PCのキーとスマホの表示ボタンは同じ行動を実行し、57ミッションは発見、戦闘、装備、解読、報告をそれぞれ記録します。</p></div><div class="game-info-section"><h3>プレイヤー・端末・セーブ情報</h3><p>最初のリザード司令官を倒し装置を回収すると章クリア。体力がゼロでも安全なチェックポイントから復帰し、レベル、装備、任務、主要撃破は残る。アカウント不要で保存先はこの端末のブラウザ。サイトデータ削除や端末変更で失われる場合がある。 アカウント不要。任務、EXP、レベル、体力、装備、宝箱、撃破、チェックポイント、選択はブラウザへ自動保存されます。移動だけでは毎フレーム保存しません。5ダイヤのシグナルアンカーは任意の永続HP強化です。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ミッションと地域はいくつ？</dt><dd>57ミッションと6つの主要地域があり、物語でゲートが順に開きます。</dd></div><div><dt>真実視界はエネルギーを使う？</dt><dd>使いません。レンズ入手後は自由に切り替え、透明な敵、偽装、隠し道、宝を発見できます。</dd></div><div><dt>装備は外せる？</dt><dd>外せます。能力はメニューに表示され、外しても所有権は失いません。</dd></div><div><dt>倒されるとどうなる？</dt><dd>安全なチェックポイントへ戻り、永続進行と重要な状態は残ります。</dd></div><div><dt>所要時間は？</dt><dd>探索と戦闘で変わります。4章は分けて遊べ、ローカル地点から再開できます。</dd></div></dl></div><div class="game-info-section"><h3>関連するWeightPlayゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-relic-hunters/"><span class="game-info-related-copy"><strong>アニマル・レリックハンターズ</strong><span>遺物を集め、多段階ガーディアンと戦う部屋制アクション。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-crystal-survivor/"><span class="game-info-related-copy"><strong>アニマル・クリスタルサバイバー</strong><span>30ルートで構成を作り、6体のボスへ挑むサバイバル。</span></span></a><a class="game-info-related-card" href="/ja/games/shadow-wolf/"><span class="game-info-related-copy"><strong>シャドウウルフ・レジェンド</strong><span>敵対策と段階変化ボスを持つダークなアクション戦役。</span></span></a></div></div></div></section>
+<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="『シグナル・ヴェール』完全調査ガイド"><div class="game-info-hero"><div class="game-info-title"><h2>『シグナル・ヴェール』完全調査ガイド</h2></div></div><div class="game-info-sections"><section class="game-info-section"><h3>世界と任務</h3><p>キツネの調査員フィアとなり、町や森、秘密施設を結ぶ不審な信号を追います。目撃者に話を聞き、偽装を見破って証拠を集めましょう。報告を求められたら、新しい敵を探すのではなくオルラに戻ります。調査が進むと新たな道が開きます。</p></section><section class="game-info-section"><h3>操作とゲームループ</h3><ol><li>画面上部の目的を読み、現在の地域を探索する。</li><li>見える操作表示をタップ、またはEで会話・宝箱・記録・ゲートを使う。</li><li>敵の方向を向き、攻撃で剣気、スキルで遠距離弾を放つ。</li><li>シアンの手掛かりでは真実視界を使い、偽装や透明な対象を探す。</li><li>目的を完了し、必要な証拠をオーラへ持ち帰る。</li></ol><p>PCはWASDまたは矢印キーで移動。Space/Jで正面近接攻撃、Kで遠距離弾、Vでビジョン切替、Eで会話や宝箱、Escapeでメニュー。モバイルは左スティックと攻撃・スキル・ビジョンボタンを使う。敵は巡回、追跡、近接攻撃を行い、司令官は体力に応じて攻撃を変える。 通常視界は人々が認識する世界を映す。真実視界は隠し道、偽装したリザード人、透明な敵、秘密の扉、宝をシアンで示す。試作レンズは資源を消費しない。司令官の安定装置は、相手が変身したのではなく、人間の視覚が干渉されていた事実を示す。</p></section><section class="game-info-section"><h3>成長・装備・難易度</h3><p>会話と観察から始まり、探索、戦闘、神経視界を組み合わせます。敵を倒すと経験値が増えて能力が上がり、入手した装備はメニューで着脱できます。後半は強敵や記録の解読、後に影響する選択が登場します。章の結果画面では探索を続けることで調査を再開できます。</p></section><section class="game-info-section"><h3>実用的な調査のコツ</h3><ul><li>警戒範囲を見て一体ずつ誘い出す。</li><li>重装兵や術士にはスキルを当てて隙を攻める。</li><li>シアンの火花、怪しい壁、変化する会話では真実視界を使う。</li><li>司令官の弾幕中は動き続け、突進を避け、気絶中に反撃しよう。</li></ul></section><section class="game-info-section"><h3>開発デザインノート</h3><p>つながった世界では、手掛かりが見覚えのある人や場所に結び付きます。神経視界はエネルギーを消費せず、隠れた道や脅威の発見に使えます。タッチ操作とキーボードで同じ冒険を進められます。目標に従って以前の場所を訪ね、保存した進行から後日続けることもできます。</p></section><section class="game-info-section"><h3>プレイヤー・端末・セーブ情報</h3><p>アカウント不要。任務、EXP、レベル、体力、装備、宝箱、撃破、チェックポイント、選択はブラウザへ自動保存されます。移動だけでは毎フレーム保存しません。5ダイヤのシグナルアンカーは任意の永続HP強化です。</p></section><section class="game-info-section"><h3>よくある質問</h3><dl><div><dt>真実視界はエネルギーを使う？</dt><dd>使いません。レンズ入手後は自由に切り替え、透明な敵、偽装、隠し道、宝を発見できます。</dd></div><div><dt>装備は外せる？</dt><dd>外せます。能力はメニューに表示され、外しても所有権は失いません。</dd></div><div><dt>倒されるとどうなる？</dt><dd>安全なチェックポイントへ戻り、永続進行と重要な状態は残ります。</dd></div></dl></section></div></section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="シグナル・ヴェール";document.title="シグナル・ヴェール | WeightPlay";},{once:true});</script>
 </body>
 </html>

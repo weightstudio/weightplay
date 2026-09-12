@@ -18,6 +18,10 @@
     // Tide Tally's responsive answer grid needs the full wide short-landscape
     // envelope so its 44px Battle controls are not shrunk into a letterbox.
     "animal-tide-tally": [".battle-canvas", 390, 788, 760, 334],
+    // Dewline's three valve controls and paired Battle actions need the wide
+    // short-landscape envelope so the authored 44px targets remain physical
+    // touch controls instead of inheriting the portrait scaler.
+    "animal-dewline": ["#battleScreen", 390, 788, 760, 334],
     // Hoop League's aim and shot controls share this native Market Five
     // shell. Keep its short-landscape Battle in the wide envelope so the
     // scaler does not reduce 48px controls to roughly 20px at 844x390.

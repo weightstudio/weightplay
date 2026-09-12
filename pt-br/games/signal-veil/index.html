@@ -3,22 +3,21 @@
 <head>
 
     <base href="/games/signal-veil/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="description" content="As 57 missões de Fia, combate, Visão Neural, equipamentos e progresso local." />
+  <meta name="description" content="Interrogue testemunhas, revele ameaças ocultas com a Visão Neural e combine investigação e combate para descobrir a verdade por trás do sinal." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Véu do Sinal | WeightPlay" />
-  <meta property="og:description" content="As 57 missões de Fia, combate, Visão Neural, equipamentos e progresso local." />
+  <meta property="og:description" content="Interrogue testemunhas, revele ameaças ocultas com a Visão Neural e combine investigação e combate para descobrir a verdade por trás do sinal." />
   <meta property="og:url" content="https://weightplay.com/pt-br/games/signal-veil/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Véu do Sinal | WeightPlay" />
-  <meta name="twitter:description" content="As 57 missões de Fia, combate, Visão Neural, equipamentos e progresso local." />
+  <meta name="twitter:description" content="Interrogue testemunhas, revele ameaças ocultas com a Visão Neural e combine investigação e combate para descobrir a verdade por trás do sinal." />
   <title>Véu do Sinal | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/pt-br/games/signal-veil/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/" />
@@ -66,16 +65,18 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../../src/loading-screen.css">
-  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="../../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260809-stage-visual1">
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-wp-locale="en" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">Calibrando a visão neural…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
@@ -83,7 +84,7 @@
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/en/" aria-label="Voltar ao WeightPlay">
+      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="Voltar ao WeightPlay">
         <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
       </a>
       <div class="title-slot">
@@ -96,11 +97,11 @@
       </label>
     </header>
     <section class="main-hero">
-      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Signal Veil game artwork" data-t-alt="Imagem do jogo Véu do Sinal">
+      <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="Spark Paw Fia revela um comandante lagarto com visão neural" data-t-alt="Imagem do jogo Véu do Sinal">
       <div class="main-copy">
         <p class="kicker" data-t="kicker">2042 · PRIMEIRO CONTATO</p>
         <h1 data-t="title">Véu do Sinal</h1>
-        <p class="main-summary" data-t="summary">As 57 missões de Fia, combate, Visão Neural, equipamentos e progresso local.</p>
+        <p class="main-summary" data-t="summary">Interrogue testemunhas, revele ameaças ocultas com a Visão Neural e combine investigação e combate para descobrir a verdade por trás do sinal.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">Iniciar jogo</button>
       </div>
@@ -167,7 +168,7 @@
             <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">Acessório</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamantes</span><b id="diamondBalance">0</b></div>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">Diamantes</span><b id="diamondBalance">0</b></div>
             <h3 data-t="anchorTitle">Âncora de sinal</h3>
             <p data-t="anchorEffect">Permanente: +12 de vida máxima nesta e nas próximas investigações. É opcional.</p>
             <button id="buyAnchor" type="button" data-t="anchorBuy">Instalar · 5 diamantes</button>
@@ -198,20 +199,21 @@
   </section>
   <div class="ad-reserve" aria-hidden="true" hidden></div>
 
-  <script src="../../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../../src/site-config.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/pt-br.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="../../../src/wallet.js"></script>
-  <script src="../../../games/signal-veil/locales.js"></script>
-  <script src="../../../games/signal-veil/guide-locales.js"></script>
+  <script src="../../src/wallet.js"></script>
+  <script src="locales.js"></script>
+  <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="../../../games/signal-veil/game.js?v=20260905-actionable-mission-hud-v12"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
+  <script defer src="game.js?v=20260905-actionable-mission-hud-v12"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Guia completo de Véu do Sinal"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Guia completo de Véu do Sinal</h2><p>As 57 missões de Fia, combate, Visão Neural, equipamentos e progresso local.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Continuous action-RPG investigation</strong></div><div class="game-info-fact"><span>Progression</span><strong>57 missions · six connected regions</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Mundo e missão</h3><p>Em 2042, desaparecimentos e ataques se espalham pela Terra. Spark Paw Fia chega à Cidade Sinal depois que um vídeo de um povo-lagarto é tratado como falso. Converse com dez testemunhas, atravesse a floresta lunar e entre no laboratório neural abandonado. Este primeiro capítulo é um mundo contínuo sem seleção de fases; posição, nível, equipamento, missões e história ficam salvos neste navegador.</p><p>A história atual reúne 57 missões ligadas entre Cidade Sinal, Floresta do Véu, laboratório neural, Retransmissor Moonfall e Observatório Ashfall. Entreviste testemunhas, encontre rotas ocultas, derrote patrulhas, recupere equipamentos, decodifique registros e escolha o destino das provas. O portão leste de Ashfall leva ao Arquivo. O último sinal espera. Guarda uma rota de ida e volta. Responder guia a frota; ocultar protege as coordenadas.</p></div><div class="game-info-section"><h3>Missão</h3><p>1–23</p><p>Em 2042, desaparecimentos e ataques se espalham pela Terra. Spark Paw Fia chega à Cidade Sinal depois que um vídeo de um povo-lagarto é tratado como falso. Converse com dez testemunhas, atravesse a floresta lunar e entre no laboratório neural abandonado. Este primeiro capítulo é um mundo contínuo sem seleção de fases; posição, nível, equipamento, missões e história ficam salvos neste navegador. Fale com todas as testemunhas antes do portão. Observe o alcance de alerta e atraia um inimigo por vez. Use o disparo em brutos e conjuradores. Ative a visão real perto de faíscas ciano e paredes suspeitas. Contra o comandante, mova-se nas rajadas, desvie da investida e ataque durante o atordoamento.</p></div><div class="game-info-section"><h3>Investigação em dois mapas</h3><p>24–33</p><p>Após derrotar o comandante, fale com Orla para abrir Moonfall. Elimine oito sentinelas, ative três registros e retorne. Os portais permanecem abertos para missões nos dois mapas. Registro um: a frota Lagarto fugiu de uma lua moribunda e pediu abrigo. Registro dois: a Diretoria Helix interceptou o pedido e criou disfarces com o padrão neural. Registro três: o comandante protegia as provas para impedir que Helix as apagasse.</p></div><div class="game-info-section"><h3>Observatório Ashfall</h3><p>34–45</p><p>O Registro de Alerta cita Ashfall. A Helix marcou uma técnica viva e ordenou apagar o local. O portão leste de Moonfall ainda chega lá. Encontre-a antes da limpeza. Ela pode expor a Helix, mas uma transmissão revela Aster. Transmita agora ou proteja a testemunha. Eu mantinha a rede de disfarce da Helix. Ao descobrir que reescrevia memórias, copiei o manifesto. Queimaram o observatório para me apagar. Ela pode expor a Helix, mas uma transmissão revela Aster. Transmita agora ou proteja a testemunha. A prova está na rede aberta. A Helix não pode chamá-la de falsa, mas agora sabe onde estamos. Aster e a caixa-preta estão seguras. Vamos divulgar por estações confiáveis sem revelar sua localização.</p></div><div class="game-info-section"><h3>Arquivo da Lua Oca</h3><p>46–57</p><p>O portão leste de Ashfall leva ao Arquivo. O último sinal espera. Guarda uma rota de ida e volta. Responder guia a frota; ocultar protege as coordenadas. O farol lista 47 naves civis renomeadas como destroços pela Helix. A frase: Nunca fomos invasores. O mapa foi escrito como histórias de família. A Helix não pode segui-lo sem saber quais memórias são reais. As crianças aprenderam o clima de Signal Town por transmissões roubadas e chamam o mundo de Fia de refúgio azul. Os perseguidores acabaram. Responder ao refúgio ou proteger a rota até os refugiados escolherem? Você respondeu ao refúgio. Os pilotos têm uma rota viva para Signal Town e defenderemos cada chegada. Você apagou as chaves. O refúgio continua invisível e os refugiados escolherão quando aparecer.</p></div><div class="game-info-section"><h3>Controles e ciclo completo</h3><p>Leia o objetivo no topo e explore a região atual.</p><p>Toque no aviso visível ou use E para conversar, abrir baús, ativar registros e atravessar portais.</p><p>Olhe para o inimigo e use Ataque para a onda de espada ou Habilidade para o tiro distante.</p><p>Ative a Visão real perto de pistas ciano para revelar disfarces, inimigos e caminhos ocultos.</p><p>Conclua o objetivo e leve as provas a Orla quando a história pedir.</p><p>No computador, mova com WASD ou setas. Space/J ataca de perto, K dispara, V alterna a visão, E conversa ou abre baús e Escape abre o menu. No celular, use o joystick esquerdo e os botões Ataque, Habilidade e Visão. Inimigos patrulham, perseguem e atacam; o comandante muda de padrão ao perder vida. A visão normal mostra o mundo percebido pela maioria. A visão real revela caminhos ciano, pessoas-lagarto disfarçadas, monstros ocultos, portas secretas e tesouros. A lente protótipo não gasta recurso. O aparelho estável prova que eles nunca mudaram de forma: interferiram na percepção humana.</p></div><div class="game-info-section"><h3>Progresso, equipamento e dificuldade</h3><p>Derrote quinze monstros para ganhar EXP. Cada nível aumenta vida máxima, ataque e defesa. Três baús guardam Lâmina de Pulso, Armadura de Patrulha e Amuleto do Sinal; o efeito é imediato e salvo. O projétil tem recarga curta, enquanto o ataque próximo é rápido e forte. Após derrotar o comandante, fale com Orla para abrir Moonfall. Elimine oito sentinelas, ative três registros e retorne. Os portais permanecem abertos para missões nos dois mapas. O Registro de Alerta cita Ashfall. A Helix marcou uma técnica viva e ordenou apagar o local. O portão leste de Moonfall ainda chega lá. Encontre-a antes da limpeza. Ela pode expor a Helix, mas uma transmissão revela Aster. Transmita agora ou proteja a testemunha. O portão leste de Ashfall leva ao Arquivo. O último sinal espera. Guarda uma rota de ida e volta. Responder guia a frota; ocultar protege as coordenadas.</p></div><div class="game-info-section"><h3>Dicas de investigação</h3><p>Fale com todas as testemunhas antes do portão.</p><p>Observe o alcance de alerta e atraia um inimigo por vez.</p><p>Use o disparo em brutos e conjuradores.</p><p>Ative a visão real perto de faíscas ciano e paredes suspeitas.</p><p>Contra o comandante, mova-se nas rajadas, desvie da investida e ataque durante o atordoamento.</p></div><div class="game-info-section"><h3>Nota de design</h3><p>O mundo contínuo mantém locais e pistas conectados. A Visão real não consome energia: a escolha é observar, não economizar recurso. Atalhos no computador e botões no celular executam as mesmas ações; as 57 missões registram descobertas, combates, equipamentos, provas e retornos reais.</p></div><div class="game-info-section"><h3>Jogador, dispositivo e salvamento</h3><p>O capítulo termina ao derrotar o primeiro comandante e recuperar o dispositivo. Se Fia perder toda a vida, volta ao ponto seguro mantendo nível, equipamento, missões e alvos principais. Não é preciso conta. O progresso fica no armazenamento deste navegador e pode sumir ao apagar dados ou mudar de aparelho. Não exige conta. Missões, EXP, nível, vida, equipamentos, baús, derrotas, pontos seguros e escolhas são salvos automaticamente neste navegador. Caminhar não grava a cada quadro. A Âncora de Sinal de cinco Diamantes é um aumento permanente e opcional de vida.</p></div><div class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>Quantas missões e regiões existem?</dt><dd>São 57 missões e seis regiões principais, com portais liberados pela história.</dd></div><div><dt>A Visão real gasta energia?</dt><dd>Não. Após liberar a lente, alterne livremente para revelar ameaças, disfarces, rotas e tesouros.</dd></div><div><dt>Posso remover equipamentos?</dt><dd>Sim. O menu mostra os atributos; remover uma peça não apaga sua propriedade.</dd></div><div><dt>O que acontece se Fia cair?</dt><dd>Fia retorna ao ponto seguro e mantém progresso permanente e estados importantes.</dd></div><div><dt>Quanto dura a investigação?</dt><dd>Depende da exploração e do combate. Os quatro capítulos podem ser jogados em partes usando o save local.</dd></div></dl></div><div class="game-info-section"><h3>Jogos relacionados da WeightPlay</h3><div class="game-info-related"><a class="game-info-related-card" href="/pt-br/games/animal-relic-hunters/"><span class="game-info-related-copy"><strong>Caçadores de Relíquias Animais</strong><span>Expedições por salas com relíquias e Guardiões de várias fases.</span></span></a><a class="game-info-related-card" href="/pt-br/games/animal-crystal-survivor/"><span class="game-info-related-copy"><strong>Sobrevivente de Cristal Animal</strong><span>Monte uma configuração em trinta rotas e enfrente seis chefes.</span></span></a><a class="game-info-related-card" href="/pt-br/games/shadow-wolf/"><span class="game-info-related-copy"><strong>Lenda do Lobo Sombrio</strong><span>Campanha sombria com contra-ataques e chefes de várias fases.</span></span></a></div></div></div></section>
+<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Guia completo de Véu do Sinal"><div class="game-info-hero"><div class="game-info-title"><h2>Guia completo de Véu do Sinal</h2></div></div><div class="game-info-sections"><section class="game-info-section"><h3>Mundo e missão</h3><p>Você é Fia, uma raposa investigadora que segue um sinal suspeito por uma cidade, uma floresta e instalações secretas conectadas. Interrogue testemunhas, descubra ameaças disfarçadas e reúna provas. Siga o objetivo atual: se ele pedir um relato, volte até Orla em vez de procurar outro inimigo. A investigação abre novas rotas.</p></section><section class="game-info-section"><h3>Controles e ciclo completo</h3><ol><li>Leia o objetivo no topo e explore a região atual.</li><li>Toque no aviso visível ou use E para conversar, abrir baús, ativar registros e atravessar portais.</li><li>Olhe para o inimigo e use Ataque para a onda de espada ou Habilidade para o tiro distante.</li><li>Ative a Visão real perto de pistas ciano para revelar disfarces, inimigos e caminhos ocultos.</li><li>Conclua o objetivo e leve as provas a Orla quando a história pedir.</li></ol><p>No computador, mova com WASD ou setas. Space/J ataca de perto, K dispara, V alterna a visão, E conversa ou abre baús e Escape abre o menu. No celular, use o joystick esquerdo e os botões Ataque, Habilidade e Visão. Inimigos patrulham, perseguem e atacam; o comandante muda de padrão ao perder vida. A visão normal mostra o mundo percebido pela maioria. A visão real revela caminhos ciano, pessoas-lagarto disfarçadas, monstros ocultos, portas secretas e tesouros. A lente protótipo não gasta recurso. O aparelho estável prova que eles nunca mudaram de forma: interferiram na percepção humana.</p></section><section class="game-info-section"><h3>Progresso, equipamento e dificuldade</h3><p>Comece com conversas e observação; depois combine exploração, combate e Visão Neural. Inimigos derrotados concedem experiência que melhora seus atributos. Os equipamentos encontrados podem ser usados ou removidos no menu. Áreas posteriores trazem patrulhas fortes, registros para decifrar e escolhas duradouras. Continuar explorando após o resultado de um capítulo retoma a investigação.</p></section><section class="game-info-section"><h3>Dicas de investigação</h3><ul><li>Observe o alcance de alerta e atraia um inimigo por vez.</li><li>Use o disparo em brutos e conjuradores.</li><li>Ative a visão real perto de faíscas ciano e paredes suspeitas.</li><li>Contra o comandante, mova-se nas rajadas, desvie da investida e ataque durante o atordoamento.</li></ul></section><section class="game-info-section"><h3>Nota de design</h3><p>O mundo conectado liga pistas a pessoas e lugares reconhecíveis. A Visão Neural não consome energia: use-a para descobrir caminhos e ameaças ocultas. Toque e teclado controlam a mesma aventura. Volte a locais anteriores quando o objetivo pedir e retome o progresso salvo em outra sessão.</p></section><section class="game-info-section"><h3>Jogador, dispositivo e salvamento</h3><p>Não exige conta. Missões, EXP, nível, vida, equipamentos, baús, derrotas, pontos seguros e escolhas são salvos automaticamente neste navegador. Caminhar não grava a cada quadro. A Âncora de Sinal de cinco Diamantes é um aumento permanente e opcional de vida.</p></section><section class="game-info-section"><h3>Perguntas frequentes</h3><dl><div><dt>A Visão real gasta energia?</dt><dd>Não. Após liberar a lente, alterne livremente para revelar ameaças, disfarces, rotas e tesouros.</dd></div><div><dt>Posso remover equipamentos?</dt><dd>Sim. O menu mostra os atributos; remover uma peça não apaga sua propriedade.</dd></div><div><dt>O que acontece se Fia cair?</dt><dd>Fia retorna ao ponto seguro e mantém progresso permanente e estados importantes.</dd></div></dl></section></div></section>
 </body>
 </html>

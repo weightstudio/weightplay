@@ -259,7 +259,7 @@
       guideTipsTitle:text.section[3],
       guideTip1:tips[0]||base.guideTips,guideTip2:tips[1]||text.steps[2],guideTip3:tips[2]||text.steps[3],guideTip4:tips[3]||text.overview,guideTip5:tips[4]||tips.at(-1)||base.guideTips,
       guideDesignTitle:text.section[4],guideDesign:text.design,
-      guideSaveTitle:text.section[5],guideSave:`${base.guideWin} ${text.save}`,
+      guideSaveTitle:text.section[5],guideSave:text.save,
       guideFaqTitle:text.section[6],
       guideFaqQ1:text.q[0],guideFaqA1:text.a[0],guideFaqQ2:text.q[1],guideFaqA2:text.a[1],
       guideFaqQ3:text.q[2],guideFaqA3:text.a[2],guideFaqQ4:text.q[3],guideFaqA4:text.a[3],
@@ -277,7 +277,96 @@
   for(const code of ["ja","ko"]){
     const locale=locales[code];
     if(!locale)continue;
-    for(const key of Object.keys(locale))locale[key]=currentFacts(locale[key]);
+    // Legacy guide facts must not rewrite dialogue, rewards or mission copy.
+    for(const key of Object.keys(locale))if(key.startsWith("guide"))locale[key]=currentFacts(locale[key]);
+  }
+  // Entrance copy describes the actual loop, not a fixed campaign length.
+  // Detailed guide content remains separate from this short Main summary.
+  const entranceCopy={
+    en:"Question witnesses, reveal hidden threats with Neural Vision, and fight your way to the truth behind the signal.",
+    "zh-Hant":"訪問目擊者、用神經視界揭露隱藏威脅，並在調查與戰鬥中找出訊號背後的真相。",
+    "zh-Hans":"访问目击者、用神经视界揭露隐藏威胁，并在调查与战斗中找出信号背后的真相。",
+    ja:"目撃者に話を聞き、神経視界で隠れた脅威を見破ろう。調査と戦闘を通して信号の真相に迫る。",
+    ko:"목격자를 조사하고 신경 시야로 숨은 위협을 밝혀내세요. 탐색과 전투를 통해 신호 뒤에 숨은 진실을 찾으세요.",
+    es:"Interroga a los testigos, revela amenazas ocultas con la Visión Neural y combina investigación y combate para descubrir la verdad de la señal.",
+    "pt-BR":"Interrogue testemunhas, revele ameaças ocultas com a Visão Neural e combine investigação e combate para descobrir a verdade por trás do sinal.",
+    fr:"Interrogez les témoins, révélez les menaces cachées grâce à la Vision neurale et mêlez enquête et combat pour découvrir la vérité du signal.",
+    de:"Befrage Zeugen, enthülle verborgene Gefahren mit der Neuralsicht und entdecke durch Erkundung und Kampf die Wahrheit hinter dem Signal.",
+    it:"Interroga i testimoni, rivela le minacce nascoste con la Visione neurale e alterna indagini e combattimenti per scoprire la verità sul segnale.",
+    ru:"Опросите свидетелей, выявляйте скрытые угрозы нейрозрением и раскройте тайну сигнала в ходе расследования и сражений.",
+    hi:"गवाहों से पूछताछ करें, तंत्रिका दृष्टि से छिपे खतरों को उजागर करें और जाँच व मुकाबले के ज़रिए संकेत के पीछे का सच खोजें।",
+    ar:"استجوب الشهود، واكشف التهديدات الخفية بالرؤية العصبية، واجمع بين التحقيق والقتال للوصول إلى حقيقة الإشارة."
+  };
+  for(const [code,summary] of Object.entries(entranceCopy))locales[code].summary=summary;
+  const conciseGuide={
+    en:[
+      "Play as Fia, a fox investigator following a suspicious signal through a connected town, forest and hidden facilities. Question witnesses, reveal disguised threats and gather evidence. Follow the current objective; when asked to report back, return to Orla rather than searching for another enemy. New routes open as the investigation advances.",
+      "Begin with conversations and observation, then combine exploration, combat and Neural Vision. Defeated enemies grant experience that improves your combat stats. Recovered equipment can be equipped or removed in the menu. Later areas add tougher patrols, records to decode and choices with lasting effects. After a chapter result, Continue Exploring resumes the investigation instead of restarting it.",
+      "The world stays connected so clues lead back to recognizable people and places. Neural Vision changes what you can see without an energy cost; use observation to find hidden routes and threats. Touch controls and keyboard shortcuts operate the same adventure. Return to earlier places when the objective asks, and continue from your saved progress in a later session."
+    ],
+    "zh-Hant":[
+      "扮演狐狸調查員菲雅，追查串連城鎮、森林與隱密設施的可疑訊號。訪問目擊者、揭穿偽裝威脅並收集證據。依照當前任務行動；要求回報時，請返回奧拉身邊，不必繼續找敵人。調查推進後會開啟新路線。",
+      "先從對話與觀察入手，再結合探索、戰鬥和神經視界。擊敗敵人可獲得經驗並提升能力，找到的裝備能在選單穿戴或卸下。後續地區增加強敵、待解讀的紀錄與影響後續的選擇。章節結算後選擇繼續探索，就能接續調查，不會重新開始。",
+      "連續地圖讓線索與熟悉的人物、地點相連。神經視界不消耗能量，重點在觀察隱藏路線與威脅。觸控按鈕與鍵盤快捷鍵操作同一場冒險；任務要求時返回舊地點，也能利用存檔分次完成調查。"
+    ],
+    "zh-Hans":[
+      "扮演狐狸调查员菲雅，追查串连城镇、森林与隐密设施的可疑信号。访问目击者、揭穿伪装威胁并收集证据。按照当前任务行动；要求汇报时，请返回奥拉身边，不必继续找敌人。调查推进后会开启新路线。",
+      "先从对话与观察入手，再结合探索、战斗和神经视界。击败敌人可获得经验并提升能力，找到的装备能在菜单穿戴或卸下。后续地区增加强敌、待解读的记录与影响后续的选择。章节结算后选择继续探索，就能接续调查，不会重新开始。",
+      "连续地图让线索与熟悉的人物、地点相连。神经视界不消耗能量，重点在观察隐藏路线与威胁。触控按钮与键盘快捷键操作同一场冒险；任务要求时返回旧地点，也能利用存档分次完成调查。"
+    ],
+    ja:[
+      "キツネの調査員フィアとなり、町や森、秘密施設を結ぶ不審な信号を追います。目撃者に話を聞き、偽装を見破って証拠を集めましょう。報告を求められたら、新しい敵を探すのではなくオルラに戻ります。調査が進むと新たな道が開きます。",
+      "会話と観察から始まり、探索、戦闘、神経視界を組み合わせます。敵を倒すと経験値が増えて能力が上がり、入手した装備はメニューで着脱できます。後半は強敵や記録の解読、後に影響する選択が登場します。章の結果画面では探索を続けることで調査を再開できます。",
+      "つながった世界では、手掛かりが見覚えのある人や場所に結び付きます。神経視界はエネルギーを消費せず、隠れた道や脅威の発見に使えます。タッチ操作とキーボードで同じ冒険を進められます。目標に従って以前の場所を訪ね、保存した進行から後日続けることもできます。"
+    ],
+    ko:[
+      "여우 조사관 피아가 되어 마을과 숲, 비밀 시설을 잇는 수상한 신호를 추적하세요. 목격자를 조사하고 위장한 위협을 밝혀 증거를 모으세요. 보고하라는 목표가 나오면 적을 더 찾지 말고 오를라에게 돌아가세요. 조사가 진행되면 새로운 길이 열립니다.",
+      "대화와 관찰로 시작해 탐색, 전투, 신경 시야를 함께 활용하세요. 적을 쓰러뜨리면 경험치를 얻어 능력이 향상되며, 획득한 장비는 메뉴에서 착용하거나 해제할 수 있습니다. 이후 지역에는 강한 순찰대, 해독할 기록과 지속적인 영향을 주는 선택이 등장합니다. 장의 결과 화면에서 탐색을 계속하면 조사를 이어갑니다.",
+      "연결된 세계에서는 단서가 익숙한 사람과 장소로 이어집니다. 신경 시야는 에너지를 소모하지 않으며 숨겨진 길과 위협을 발견하는 데 쓰입니다. 터치와 키보드로 같은 모험을 즐길 수 있습니다. 목표에 따라 이전 장소로 돌아가거나 저장된 진행 상황에서 나중에 계속하세요."
+    ],
+    es:[
+      "Eres Fia, una investigadora zorro que sigue una señal sospechosa por una ciudad, un bosque y unas instalaciones ocultas conectadas. Interroga testigos, descubre amenazas disfrazadas y reúne pruebas. Sigue el objetivo actual: si pide informar, vuelve con Orla en vez de buscar otro enemigo. La investigación abre nuevas rutas.",
+      "Empieza conversando y observando; después combina exploración, combate y Visión Neural. Los enemigos derrotados dan experiencia que mejora tus atributos. Puedes equipar o quitar los objetos recuperados desde el menú. Más adelante aparecen patrullas fuertes, registros por descifrar y decisiones duraderas. Continuar explorando tras el resultado de un capítulo reanuda la investigación.",
+      "El mundo conectado vincula las pistas con personas y lugares reconocibles. La Visión Neural no consume energía: úsala para descubrir rutas y amenazas ocultas. El teclado y los controles táctiles llevan a la misma aventura. Regresa a lugares anteriores cuando lo indique el objetivo y retoma tu progreso guardado en otra sesión."
+    ],
+    "pt-BR":[
+      "Você é Fia, uma raposa investigadora que segue um sinal suspeito por uma cidade, uma floresta e instalações secretas conectadas. Interrogue testemunhas, descubra ameaças disfarçadas e reúna provas. Siga o objetivo atual: se ele pedir um relato, volte até Orla em vez de procurar outro inimigo. A investigação abre novas rotas.",
+      "Comece com conversas e observação; depois combine exploração, combate e Visão Neural. Inimigos derrotados concedem experiência que melhora seus atributos. Os equipamentos encontrados podem ser usados ou removidos no menu. Áreas posteriores trazem patrulhas fortes, registros para decifrar e escolhas duradouras. Continuar explorando após o resultado de um capítulo retoma a investigação.",
+      "O mundo conectado liga pistas a pessoas e lugares reconhecíveis. A Visão Neural não consome energia: use-a para descobrir caminhos e ameaças ocultas. Toque e teclado controlam a mesma aventura. Volte a locais anteriores quando o objetivo pedir e retome o progresso salvo em outra sessão."
+    ],
+    fr:[
+      "Incarnez Fia, une renarde enquêtrice qui suit un signal suspect à travers une ville, une forêt et des installations secrètes reliées entre elles. Interrogez les témoins, démasquez les menaces et rassemblez des preuves. Si l’objectif demande un rapport, retournez voir Orla au lieu de chercher un autre ennemi. L’enquête ouvre de nouveaux passages.",
+      "Commencez par discuter et observer, puis combinez exploration, combat et Vision neurale. Les ennemis vaincus donnent de l’expérience qui améliore vos caractéristiques. Le menu permet d’équiper ou de retirer les objets récupérés. La suite ajoute des patrouilles plus fortes, des archives à décoder et des choix durables. Continuer l’exploration après un chapitre reprend l’enquête.",
+      "Le monde connecté relie les indices à des personnes et des lieux reconnaissables. La Vision neurale ne consomme pas d’énergie : elle révèle des passages et des menaces cachés. Le clavier et les commandes tactiles donnent accès à la même aventure. Revenez sur vos pas si l’objectif le demande et reprenez votre sauvegarde lors d’une autre session."
+    ],
+    de:[
+      "Als Fuchs-Ermittlerin Fia folgst du einem verdächtigen Signal durch eine zusammenhängende Stadt, einen Wald und geheime Anlagen. Befrage Zeugen, enttarne Gefahren und sammle Beweise. Folge dem aktuellen Ziel: Sollst du Bericht erstatten, kehre zu Orla zurück, statt weitere Gegner zu suchen. Fortschritte öffnen neue Wege.",
+      "Am Anfang stehen Gespräche und Beobachtung, später verbindest du Erkundung, Kampf und Neuralsicht. Besiegte Gegner geben Erfahrung und verbessern deine Werte. Gefundene Ausrüstung lässt sich im Menü an- und ablegen. Spätere Gebiete bieten stärkere Patrouillen, Aufzeichnungen zum Entschlüsseln und nachhaltige Entscheidungen. Nach einem Kapitel setzt Weitererkunden die Untersuchung fort.",
+      "Die verbundene Welt führt Hinweise zu vertrauten Personen und Orten zurück. Neuralsicht verbraucht keine Energie und enthüllt versteckte Wege und Gefahren. Tastatur und Touch-Steuerung bedienen dasselbe Abenteuer. Kehre zurück, wenn das Ziel es verlangt, und setze deinen gespeicherten Fortschritt später fort."
+    ],
+    it:[
+      "Sei Fia, una volpe investigatrice che segue un segnale sospetto attraverso una città, una foresta e strutture segrete collegate. Interroga i testimoni, smaschera le minacce e raccogli prove. Segui l’obiettivo attuale: se chiede un rapporto, torna da Orla invece di cercare altri nemici. L’indagine apre nuovi percorsi.",
+      "Inizia con dialoghi e osservazione, poi combina esplorazione, combattimento e Visione neurale. I nemici sconfitti danno esperienza che migliora le statistiche. Puoi indossare o rimuovere l’equipaggiamento dal menu. Le aree successive aggiungono pattuglie più forti, documenti da decifrare e scelte durature. Continuare l’esplorazione dopo un capitolo riprende l’indagine.",
+      "Il mondo collegato riconduce gli indizi a persone e luoghi riconoscibili. La Visione neurale non consuma energia e rivela percorsi e minacce nascosti. Tastiera e comandi touch guidano la stessa avventura. Torna nei luoghi precedenti quando richiesto e riprendi i progressi salvati in un’altra sessione."
+    ],
+    ru:[
+      "Вы играете за лису-следователя Фию, которая ищет источник подозрительного сигнала в связанном мире города, леса и тайных объектов. Опрашивайте свидетелей, раскрывайте маскировку и собирайте улики. Если задание требует доклада, вернитесь к Орле, а не ищите новых врагов. По мере расследования открываются новые пути.",
+      "Начните с бесед и наблюдений, затем сочетайте исследование, бой и нейрозрение. Побеждённые враги дают опыт и улучшают характеристики. Найденное снаряжение можно надевать и снимать в меню. Позже появятся сильные патрули, записи для расшифровки и решения с последствиями. Продолжение исследования после итогов главы возвращает вас к расследованию.",
+      "Связанный мир возвращает улики к знакомым людям и местам. Нейрозрение не расходует энергию и помогает замечать скрытые пути и угрозы. Клавиатура и сенсорные кнопки управляют одним приключением. Возвращайтесь в прежние места по заданию и продолжайте с сохранённого прогресса в следующем сеансе."
+    ],
+    hi:[
+      "लोमड़ी जाँचकर्ता फ़िया बनकर जुड़े हुए नगर, जंगल और गुप्त ठिकानों में संदिग्ध संकेत का पीछा करें। गवाहों से पूछें, छिपे खतरों को पहचानें और सबूत जुटाएँ। वर्तमान उद्देश्य का पालन करें: रिपोर्ट देने को कहा जाए तो नए शत्रु खोजने के बजाय ऑरला के पास लौटें। जाँच आगे बढ़ने पर नए रास्ते खुलते हैं।",
+      "बातचीत और निरीक्षण से शुरुआत करें, फिर खोज, युद्ध और तंत्रिका दृष्टि का साथ में उपयोग करें। शत्रुओं को हराने से अनुभव और क्षमताएँ बढ़ती हैं। मिले उपकरण मेनू में पहने या उतारे जा सकते हैं। आगे कठिन गश्ती दल, पढ़ने योग्य अभिलेख और स्थायी प्रभाव वाले चुनाव मिलते हैं। अध्याय के परिणाम के बाद खोज जारी रखने से जाँच आगे चलती है।",
+      "जुड़ी हुई दुनिया सुरागों को परिचित लोगों और जगहों से जोड़ती है। तंत्रिका दृष्टि ऊर्जा खर्च किए बिना छिपे रास्ते और खतरे दिखाती है। स्पर्श और कीबोर्ड से एक ही साहसिक यात्रा खेली जाती है। उद्देश्य के अनुसार पुरानी जगह पर लौटें और सहेजी हुई प्रगति से अगली बार जारी रखें।"
+    ],
+    ar:[
+      "العب بدور المحققة الثعلبة فيا وتعقّب إشارة مشبوهة عبر بلدة وغابة ومنشآت سرية مترابطة. استجوب الشهود واكشف التهديدات المتنكرة واجمع الأدلة. اتبع الهدف الحالي: إذا طلب تقديم تقرير، فعد إلى أورلا بدلًا من البحث عن عدو آخر. تفتح طرق جديدة مع تقدم التحقيق.",
+      "ابدأ بالحوار والملاحظة، ثم اجمع بين الاستكشاف والقتال والرؤية العصبية. يمنحك هزم الأعداء خبرة تحسن قدراتك، ويمكن تجهيز المعدات المكتشفة أو نزعها من القائمة. تضيف المناطق اللاحقة دوريات أقوى وسجلات لفك رموزها وقرارات ذات آثار مستمرة. متابعة الاستكشاف بعد نتيجة الفصل تستأنف التحقيق.",
+      "يربط العالم المتصل الأدلة بأشخاص وأماكن مألوفة. لا تستهلك الرؤية العصبية طاقة، وتساعد على كشف الطرق والتهديدات الخفية. يقود اللمس ولوحة المفاتيح المغامرة نفسها. عد إلى الأماكن السابقة عندما يطلب الهدف ذلك، وتابع تقدمك المحفوظ في جلسة لاحقة."
+    ]
+  };
+  for(const [code,[guideOverviewA,guideProgression,guideDesign]] of Object.entries(conciseGuide)){
+    Object.assign(locales[code],{guideOverviewA,guideProgression,guideDesign});
   }
   void routeNames;
 })();

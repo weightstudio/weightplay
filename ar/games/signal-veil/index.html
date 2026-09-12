@@ -3,22 +3,21 @@
 <head>
 
     <base href="/games/signal-veil/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="weightplay-audience" content="general">
   <meta name="theme-color" content="#071923">
   <meta name="robots" content="index,follow" />
-  <meta name="description" content="شرح 57 مهمة لفيا والقتال والرؤية العصبية والمعدات والحفظ المحلي." />
+  <meta name="description" content="استجوب الشهود، واكشف التهديدات الخفية بالرؤية العصبية، واجمع بين التحقيق والقتال للوصول إلى حقيقة الإشارة." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="حجاب الإشارة | WeightPlay" />
-  <meta property="og:description" content="شرح 57 مهمة لفيا والقتال والرؤية العصبية والمعدات والحفظ المحلي." />
+  <meta property="og:description" content="استجوب الشهود، واكشف التهديدات الخفية بالرؤية العصبية، واجمع بين التحقيق والقتال للوصول إلى حقيقة الإشارة." />
   <meta property="og:url" content="https://weightplay.com/ar/games/signal-veil/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="حجاب الإشارة | WeightPlay" />
-  <meta name="twitter:description" content="شرح 57 مهمة لفيا والقتال والرؤية العصبية والمعدات والحفظ المحلي." />
+  <meta name="twitter:description" content="استجوب الشهود، واكشف التهديدات الخفية بالرؤية العصبية، واجمع بين التحقيق والقتال للوصول إلى حقيقة الإشارة." />
   <title>حجاب الإشارة | WeightPlay</title>
   <link rel="canonical" href="https://weightplay.com/ar/games/signal-veil/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/signal-veil/" />
@@ -66,16 +65,18 @@
   "alternateName": "Signal Veil"
 }
     </script>
-    <link rel="stylesheet" href="../../../src/loading-screen.css">
-  <link rel="stylesheet" href="../../../src/game-shell-controls-standard.css">
-  <link rel="stylesheet" href="../../../src/game-page-info.css">
-  <link rel="stylesheet" href="../../../games/signal-veil/style.css?v=20260809-stage-visual1">
+    <link rel="stylesheet" href="../../src/loading-screen.css">
+  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../src/game-page-info.css">
+  <link rel="stylesheet" href="style.css?v=20260809-stage-visual1">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css?v=20260911-sound-control">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/signal-veil.webp" />
   </head>
-<body data-wp-locale="en" data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
+<body data-game-id="signal-veil" data-wp-game-id="signal-veil" data-wp-combined-sound="true" data-runtime-localize="off">
   <div id="loadingPanel" class="loading-panel" role="status" aria-live="polite">
     <div class="loading-card">
-      <img src="../../../assets/signal-veil-items.webp" alt="" aria-hidden="true">
+      <span class="atlas-icon icon-device" aria-hidden="true"></span>
       <strong data-t="loading">تتم معايرة الرؤية العصبية…</strong>
       <span class="loading-bar"><i></i></span>
     </div>
@@ -83,7 +84,7 @@
 
   <main id="main" class="screen main-screen" data-screen="main">
     <header class="main-header wp-shell-header wp-main-shell-header">
-      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/en/" aria-label="العودة إلى WeightPlay">
+      <a class="lobby-return wp-shell-return" data-wp-return="main" data-t-aria="mainReturnLabel" href="/" aria-label="العودة إلى WeightPlay">
         <span aria-hidden="true">←</span><img src="/assets/weightplay-logo.png" alt="">
       </a>
       <div class="title-slot">
@@ -96,11 +97,11 @@
       </label>
     </header>
     <section class="main-hero">
-      <img class="main-poster" src="../../../assets/signal-veil-cover.webp" alt="Signal Veil game artwork" data-t-alt="شعار WeightPlay">
+      <img class="main-poster" src="../../assets/signal-veil-cover.webp" alt="سبارك باو فيا تكشف قائد السحالي بجهاز الرؤية العصبية" data-t-alt="شعار WeightPlay">
       <div class="main-copy">
         <p class="kicker" data-t="kicker">2042 · الاتصال الأول</p>
         <h1 data-t="title">حجاب الإشارة</h1>
-        <p class="main-summary" data-t="summary">شرح 57 مهمة لفيا والقتال والرؤية العصبية والمعدات والحفظ المحلي.</p>
+        <p class="main-summary" data-t="summary">استجوب الشهود، واكشف التهديدات الخفية بالرؤية العصبية، واجمع بين التحقيق والقتال للوصول إلى حقيقة الإشارة.</p>
         <p id="mainProgress" class="main-progress" data-wp-main-progress>MISSIONS 0 / 33</p>
         <button id="startGame" class="primary standard-main-start" data-runtime-localize="off" type="button" data-t="start">ابدأ اللعبة</button>
       </div>
@@ -167,7 +168,7 @@
             <div class="equipment-slot" data-slot="accessory"><span class="atlas-icon icon-accessory"></span><b data-t="accessory">الملحق</b><small id="accessoryName"></small><em id="accessoryEffect"></em><button id="accessoryToggle" type="button"></button></div>
           </div>
           <div class="diamond-upgrade">
-            <div class="diamond-balance"><img src="../../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">الماس</span><b id="diamondBalance">0</b></div>
+            <div class="diamond-balance"><img src="../../assets/weightplay-diamond.svg" alt=""><span data-t="diamonds">الماس</span><b id="diamondBalance">0</b></div>
             <h3 data-t="anchorTitle">مرساة الإشارة</h3>
             <p data-t="anchorEffect">دائم: +12 للصحة القصوى في هذا التحقيق والتحقيقات القادمة. اختياري تمامًا.</p>
             <button id="buyAnchor" type="button" data-t="anchorBuy">تثبيت · 5 ماسات</button>
@@ -198,20 +199,21 @@
   </section>
   <div class="ad-reserve" aria-hidden="true" hidden></div>
 
-  <script src="../../../src/sound.js?v=20260720-locale11"></script>
-  <script src="../../../src/site-config.js"></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="../../src/site-config.js"></script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="../../../src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="../../../src/wallet.js"></script>
-  <script src="../../../games/signal-veil/locales.js"></script>
-  <script src="../../../games/signal-veil/guide-locales.js"></script>
+  <script src="../../src/wallet.js"></script>
+  <script src="locales.js"></script>
+  <script src="guide-locales.js"></script>
   <script src="state-store.js"></script>
   <script src="quest-data.js"></script>
-  <script src="../../../games/signal-veil/game.js?v=20260905-actionable-mission-hud-v12"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js"></script>
+  <script defer src="game.js?v=20260905-actionable-mission-hud-v12"></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="الدليل الكامل لحجاب الإشارة"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>الدليل الكامل لحجاب الإشارة</h2><p>شرح 57 مهمة لفيا والقتال والرؤية العصبية والمعدات والحفظ المحلي.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Continuous action-RPG investigation</strong></div><div class="game-info-fact"><span>Progression</span><strong>57 missions · six connected regions</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>العالم ومهمة التحقيق</h3><p>في عام 2042 تنتشر حالات الاختفاء والهجمات على الأرض. تصل سبارك باو فيا إلى بلدة الإشارة بعد اعتبار فيديو لشخص سحلية مزيفًا. استجوب عشرة شهود، واعبر الغابة تحت ضوء القمر، وادخل المختبر العصبي المهجور. هذا الفصل الأول عالم متصل بلا اختيار مراحل؛ يُحفظ الموقع والمستوى والمعدات والمهام والقصة في هذا المتصفح.</p><p>تضم القصة الحالية 57 مهمة مترابطة في بلدة الإشارة وغابة الحجاب والمختبر العصبي ومرحل Moonfall ومرصد Ashfall. استجوب الشهود واتبع الطرق المخفية واهزم الدوريات واجمع المعدات وفك السجلات واختر مصير الأدلة. تؤدي بوابة Ashfall الشرقية إلى الأرشيف. آخر إشارة تنتظر. تحفظ مساراً ذهاباً وإياباً. الرد يرشد الأسطول؛ والحجب يخفي الإحداثيات.</p></div><div class="game-info-section"><h3>المهمة</h3><p>1–23</p><p>في عام 2042 تنتشر حالات الاختفاء والهجمات على الأرض. تصل سبارك باو فيا إلى بلدة الإشارة بعد اعتبار فيديو لشخص سحلية مزيفًا. استجوب عشرة شهود، واعبر الغابة تحت ضوء القمر، وادخل المختبر العصبي المهجور. هذا الفصل الأول عالم متصل بلا اختيار مراحل؛ يُحفظ الموقع والمستوى والمعدات والمهام والقصة في هذا المتصفح. تحدث إلى كل شاهد قبل بوابة الغابة. راقب نطاقات التنبيه واجذب عدوًا واحدًا. استخدم القذيفة ضد المدرعين والسحرة. فعّل الرؤية الحقيقية قرب الشرر السماوي والجدران المريبة. أمام القائد تحرك أثناء القذائف، وتجنب الاندفاع، واضرب في فترة الذهول.</p></div><div class="game-info-section"><h3>تحقيق بخريطتين</h3><p>24–33</p><p>بعد هزيمة القائد، أبلغ أورلا لفتح مونفول. اقضِ على ثمانية حراس وفعّل ثلاثة سجلات ثم عد. تبقى البوابتان مفتوحتين لمهام الخريطتين. السجل الأول: هرب أسطول السحالي من قمر يحتضر وطلب الملجأ. السجل الثاني: اعترضت هيليكس النداء وصنعت تمويهاً من نمطه العصبي. السجل الثالث: كان القائد يحمي الأدلة كي لا تمحوها هيليكس.</p></div><div class="game-info-section"><h3>مرصد آشْفول</h3><p>34–45</p><p>يسمّي سجل التحذير مرصد آشْفول. رصدت Helix تقنية ناجية ثم أمرت بمحو الموقع. ما زالت بوابة مونفول الشرقية تصل إليه. اعثر عليها قبل التطهير. يكفي لفضح Helix، لكن البث المباشر سيكشف موقع آستر. ابث الآن أو احمِ الشاهدة. كنت أصون شبكة تمويه Helix. حين عرفت أنها تعيد كتابة الذكريات نسخت قائمة الإطلاق. أحرقوا المرصد لمحي أثري. يكفي لفضح Helix، لكن البث المباشر سيكشف موقع آستر. ابث الآن أو احمِ الشاهدة. انتشر الدليل في الشبكة المفتوحة. لم تعد Helix قادرة على وصفه بالمزيف، لكنها تعرف موقعنا الآن. آستر والصندوق الأسود بأمان. سننشر الدليل عبر محطات موثوقة من دون كشف موقعها.</p></div><div class="game-info-section"><h3>أرشيف القمر الأجوف</h3><p>46–57</p><p>تؤدي بوابة Ashfall الشرقية إلى الأرشيف. آخر إشارة تنتظر. تحفظ مساراً ذهاباً وإياباً. الرد يرشد الأسطول؛ والحجب يخفي الإحداثيات. تسجل المنارة 47 سفينة مدنية سمّتها Helix حطاماً. العبارة: لم نكن غزاة قط. كُتبت الخريطة كتاريخ عائلات. لا تستطيع Helix تتبعها دون معرفة الذكريات الحقيقية. تعلم الأطفال طقس Signal Town من بث مسروق وسمّوا عالم Fia الملجأ الأزرق. انتهى المطاردون. هل تجيب الملجأ أم تحجب الطريق حتى يختار اللاجئون وقتهم؟ أجبت الملجأ. أصبح لطياريه طريق حي إلى Signal Town وسندافع عن كل قادم. مسحت مفاتيح الدخول. بقي الملجأ مخفياً ويمكن للاجئين اختيار وقت ظهورهم.</p></div><div class="game-info-section"><h3>التحكم ودورة اللعب</h3><p>اقرأ الهدف أعلى العالم واستكشف المنطقة الحالية.</p><p>المس تنبيه التفاعل الظاهر أو اضغط E للحديث وفتح الصناديق وتفعيل السجلات واستخدام البوابات.</p><p>واجه العدو واستخدم الهجوم لموجة السيف أو المهارة للقذيفة البعيدة.</p><p>فعّل الرؤية الحقيقية قرب الآثار السماوية لكشف التنكر والأعداء والطرق المخفية.</p><p>أكمل الهدف وأعد الأدلة إلى أورلا عندما تطلب القصة.</p><p>على الكمبيوتر تحرك بـ WASD أو الأسهم. Space أو J لهجوم قريب، K لقذيفة، V لتبديل الرؤية، E للحديث أو فتح الصندوق، وEscape للقائمة. على الهاتف استخدم عصا التحكم وأزرار الهجوم والمهارة والرؤية. يقوم الأعداء بالدورية والمطاردة والهجوم، ويغير القائد أنماطه مع انخفاض صحته. تعرض الرؤية العادية العالم كما يدركه معظم الناس. تكشف الرؤية الحقيقية المسارات السماوية وأشخاص السحالي المتنكرين والوحوش المخفية والأبواب السرية والكنوز. لا تستهلك العدسة التجريبية موردًا. يثبت الجهاز المستقر أنهم لم يغيروا شكلهم، بل تلاعبوا بالإدراك البشري.</p></div><div class="game-info-section"><h3>التقدم والمعدات والصعوبة</h3><p>اهزم خمسة عشر وحشًا لكسب الخبرة. يزيد كل مستوى الصحة القصوى والهجوم والدفاع. تحتوي ثلاثة صناديق على نصل النبض ودرع الحارس وتميمة الإشارة؛ تُطبق فورًا وتُحفظ. للقذيفة وقت إعادة قصير، والهجوم القريب أسرع وأقوى. بعد هزيمة القائد، أبلغ أورلا لفتح مونفول. اقضِ على ثمانية حراس وفعّل ثلاثة سجلات ثم عد. تبقى البوابتان مفتوحتين لمهام الخريطتين. يسمّي سجل التحذير مرصد آشْفول. رصدت Helix تقنية ناجية ثم أمرت بمحو الموقع. ما زالت بوابة مونفول الشرقية تصل إليه. اعثر عليها قبل التطهير. يكفي لفضح Helix، لكن البث المباشر سيكشف موقع آستر. ابث الآن أو احمِ الشاهدة. تؤدي بوابة Ashfall الشرقية إلى الأرشيف. آخر إشارة تنتظر. تحفظ مساراً ذهاباً وإياباً. الرد يرشد الأسطول؛ والحجب يخفي الإحداثيات.</p></div><div class="game-info-section"><h3>نصائح عملية</h3><p>تحدث إلى كل شاهد قبل بوابة الغابة.</p><p>راقب نطاقات التنبيه واجذب عدوًا واحدًا.</p><p>استخدم القذيفة ضد المدرعين والسحرة.</p><p>فعّل الرؤية الحقيقية قرب الشرر السماوي والجدران المريبة.</p><p>أمام القائد تحرك أثناء القذائف، وتجنب الاندفاع، واضرب في فترة الذهول.</p></div><div class="game-info-section"><h3>ملاحظة التصميم</h3><p>يبقي العالم المتصل الأماكن والقرائن مرتبطة. لا تستهلك الرؤية الحقيقية طاقة، لذلك يعتمد القرار على الملاحظة لا توفير مورد. تنفذ مفاتيح الكمبيوتر وأزرار الهاتف الأفعال نفسها، وتسجل المهام الخمس والأربعون اكتشافات ومعارك ومعدات وأدلة وتقارير فعلية.</p></div><div class="game-info-section"><h3>معلومات اللاعب والجهاز والحفظ</h3><p>يكتمل الفصل عند هزيمة أول قائد واستعادة جهازه. إذا فقدت فيا كل الصحة تعود إلى نقطة آمنة مع بقاء المستوى والمعدات والمهام والانتصارات الأساسية. لا يلزم حساب. يبقى التقدم في تخزين هذا المتصفح وقد يضيع عند حذف بيانات الموقع أو تغيير الجهاز. لا يلزم حساب. تحفظ المهمات والخبرة والمستوى والصحة والمعدات والصناديق والانتصارات ونقاط الأمان والاختيارات تلقائيا في المتصفح. لا تسجل الحركة كل إطار. مرساة الإشارة مقابل خمسة ألماسات زيادة دائمة اختيارية للصحة.</p></div><div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>كم مهمة ومنطقة متاحة؟</dt><dd>هناك 57 مهمة وست مناطق رئيسية، وتفتح القصة البوابات التي تصل بينها.</dd></div><div><dt>هل تستهلك الرؤية الحقيقية طاقة؟</dt><dd>لا. بعد فتح العدسة بدّل بحرية لكشف الأخطار والتنكر والطرق والكنوز.</dd></div><div><dt>هل يمكن نزع المعدات؟</dt><dd>نعم. تعرض القائمة التأثيرات، ولا يؤدي النزع إلى حذف ملكية القطعة.</dd></div><div><dt>ماذا يحدث عند هزيمة فيا؟</dt><dd>تعود فيا إلى نقطة آمنة مع بقاء التقدم الدائم والحالات المهمة.</dd></div><div><dt>كم يستغرق التحقيق؟</dt><dd>يعتمد على الاستكشاف والقتال. يمكن لعب الفصول الأربعة على جلسات باستخدام الحفظ المحلي.</dd></div></dl></div><div class="game-info-section"><h3>ألعاب WeightPlay مرتبطة</h3><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/animal-relic-hunters/"><span class="game-info-related-copy"><strong>صيادو الآثار الحيوانية</strong><span>رحلات بين الغرف مع آثار وحراس متعددي المراحل.</span></span></a><a class="game-info-related-card" href="/ar/games/animal-crystal-survivor/"><span class="game-info-related-copy"><strong>الناجي البلوري الحيواني</strong><span>كوّن تجهيزك عبر ثلاثين مسارا وواجه ستة زعماء.</span></span></a><a class="game-info-related-card" href="/ar/games/shadow-wolf/"><span class="game-info-related-copy"><strong>أسطورة ذئب الظلال</strong><span>حملة حركة داكنة مع مواجهات مضادة وزعماء متعددي المراحل.</span></span></a></div></div></div></section>
+<section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="الدليل الكامل لحجاب الإشارة"><div class="game-info-hero"><div class="game-info-title"><h2>الدليل الكامل لحجاب الإشارة</h2></div></div><div class="game-info-sections"><section class="game-info-section"><h3>العالم ومهمة التحقيق</h3><p>العب بدور المحققة الثعلبة فيا وتعقّب إشارة مشبوهة عبر بلدة وغابة ومنشآت سرية مترابطة. استجوب الشهود واكشف التهديدات المتنكرة واجمع الأدلة. اتبع الهدف الحالي: إذا طلب تقديم تقرير، فعد إلى أورلا بدلًا من البحث عن عدو آخر. تفتح طرق جديدة مع تقدم التحقيق.</p></section><section class="game-info-section"><h3>التحكم ودورة اللعب</h3><ol><li>اقرأ الهدف أعلى العالم واستكشف المنطقة الحالية.</li><li>المس تنبيه التفاعل الظاهر أو اضغط E للحديث وفتح الصناديق وتفعيل السجلات واستخدام البوابات.</li><li>واجه العدو واستخدم الهجوم لموجة السيف أو المهارة للقذيفة البعيدة.</li><li>فعّل الرؤية الحقيقية قرب الآثار السماوية لكشف التنكر والأعداء والطرق المخفية.</li><li>أكمل الهدف وأعد الأدلة إلى أورلا عندما تطلب القصة.</li></ol><p>على الكمبيوتر تحرك بـ WASD أو الأسهم. Space أو J لهجوم قريب، K لقذيفة، V لتبديل الرؤية، E للحديث أو فتح الصندوق، وEscape للقائمة. على الهاتف استخدم عصا التحكم وأزرار الهجوم والمهارة والرؤية. يقوم الأعداء بالدورية والمطاردة والهجوم، ويغير القائد أنماطه مع انخفاض صحته. تعرض الرؤية العادية العالم كما يدركه معظم الناس. تكشف الرؤية الحقيقية المسارات السماوية وأشخاص السحالي المتنكرين والوحوش المخفية والأبواب السرية والكنوز. لا تستهلك العدسة التجريبية موردًا. يثبت الجهاز المستقر أنهم لم يغيروا شكلهم، بل تلاعبوا بالإدراك البشري.</p></section><section class="game-info-section"><h3>التقدم والمعدات والصعوبة</h3><p>ابدأ بالحوار والملاحظة، ثم اجمع بين الاستكشاف والقتال والرؤية العصبية. يمنحك هزم الأعداء خبرة تحسن قدراتك، ويمكن تجهيز المعدات المكتشفة أو نزعها من القائمة. تضيف المناطق اللاحقة دوريات أقوى وسجلات لفك رموزها وقرارات ذات آثار مستمرة. متابعة الاستكشاف بعد نتيجة الفصل تستأنف التحقيق.</p></section><section class="game-info-section"><h3>نصائح عملية</h3><ul><li>راقب نطاقات التنبيه واجذب عدوًا واحدًا.</li><li>استخدم القذيفة ضد المدرعين والسحرة.</li><li>فعّل الرؤية الحقيقية قرب الشرر السماوي والجدران المريبة.</li><li>أمام القائد تحرك أثناء القذائف، وتجنب الاندفاع، واضرب في فترة الذهول.</li></ul></section><section class="game-info-section"><h3>ملاحظة التصميم</h3><p>يربط العالم المتصل الأدلة بأشخاص وأماكن مألوفة. لا تستهلك الرؤية العصبية طاقة، وتساعد على كشف الطرق والتهديدات الخفية. يقود اللمس ولوحة المفاتيح المغامرة نفسها. عد إلى الأماكن السابقة عندما يطلب الهدف ذلك، وتابع تقدمك المحفوظ في جلسة لاحقة.</p></section><section class="game-info-section"><h3>معلومات اللاعب والجهاز والحفظ</h3><p>لا يلزم حساب. تحفظ المهمات والخبرة والمستوى والصحة والمعدات والصناديق والانتصارات ونقاط الأمان والاختيارات تلقائيا في المتصفح. لا تسجل الحركة كل إطار. مرساة الإشارة مقابل خمسة ألماسات زيادة دائمة اختيارية للصحة.</p></section><section class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>هل تستهلك الرؤية الحقيقية طاقة؟</dt><dd>لا. بعد فتح العدسة بدّل بحرية لكشف الأخطار والتنكر والطرق والكنوز.</dd></div><div><dt>هل يمكن نزع المعدات؟</dt><dd>نعم. تعرض القائمة التأثيرات، ولا يؤدي النزع إلى حذف ملكية القطعة.</dd></div><div><dt>ماذا يحدث عند هزيمة فيا؟</dt><dd>تعود فيا إلى نقطة آمنة مع بقاء التقدم الدائم والحالات المهمة.</dd></div></dl></section></div></section>
 </body>
 </html>

@@ -2,6 +2,7 @@
   "use strict";
 
   const $ = (selector) => document.querySelector(selector);
+  let sharedFrame=null;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
   const GAME_ID = "signal-veil";
@@ -94,18 +95,22 @@
     {id:"core",x:2460,y:410,index:13,name:"lunarCoreName",message:"lunarCoreMessage",questId:"q54_reach_hollow_core"},
   ];
   const SPRITE_FRAMES = [
-    [55,45,230,220],[365,42,225,220],[642,42,228,220],[990,42,190,230],
-    [75,345,150,190],[360,298,225,245],[680,350,180,180],[985,310,210,240],
-    [20,590,230,230],[305,580,275,245],[625,548,270,275],[895,565,345,275],
-    [20,860,260,340],[285,875,305,310],
-    {bounds:[620,790,330,410],parts:[[620,790,310,410]]},
-    {bounds:[930,790,288,410],parts:[[990,790,190,45],[936,830,282,370]]},
+    // Player directions use their separate 2×2 atlas; enemy IDs remain stable.
+    null,null,null,null,
+    [40,60,270,290],[370,10,330,350],[755,80,280,270],[1090,10,340,355],
+    [0,390,350,305],[350,375,355,320],[720,347,330,348],[1050,375,398,320],
+    [15,695,330,380],[350,695,370,380],
+    // Split along empty space so wide casting FX never include the next pose.
+    {bounds:[720,695,425,380],parts:[[720,695,425,205],[720,900,360,175]]},
+    {bounds:[1080,695,368,380],parts:[[1150,695,298,205],[1080,900,368,175]]},
   ];
   const atlas = {sprites:new Image(),items:new Image(),npcs:new Image(),world:new Image()};
-  atlas.sprites.src = "/assets/signal-veil-sprites.webp";
+  atlas.sprites.src = "/assets/signal-veil-enemies-block-v13-final.webp";
+  atlas.player = new Image();
+  atlas.player.src = "/assets/signal-veil-fox-block-v13.webp";
   atlas.items.src = "/assets/signal-veil-items.webp";
-  atlas.npcs.src = "/assets/signal-veil-npcs.webp";
-  atlas.world.src = "/assets/signal-veil-ground-v2.webp";
+  atlas.npcs.src = "/assets/signal-veil-npcs-block-v13-final.webp";
+  atlas.world.src = "/assets/signal-veil-ground-block-v13.webp";
   atlas.objects = new Image();
   atlas.objects.src = "/assets/signal-veil-world-objects-v2.webp";
 
@@ -156,6 +161,9 @@
   const stateStore=window.SignalVeilStateStore;
   let state=stateStore.load(SAVE_KEY,fresh,Object.keys(MAP_OBJECTS));
   let playing = false, paused = false, trueVision = Boolean(state.trueVision), currentDialogue = null;
+  // Shared settings add a pause reason; closing them must never clear a
+  // dialogue, Result, inventory or explicit pause owned by the game.
+  const isSimulationPaused=()=>paused||Boolean(sharedFrame?.isSettingsOpen());
   if(applyLevelUps(false)>0)stateStore.save(SAVE_KEY,state,trueVision);
   let attackCooldown = 0, skillCooldown = 0, invulnerability = 0, swingTimer = 0, lastTime = 0, toastTimer = 0, resultRevealTimer = 0;
   let bossIntroduced = false, resultClaimed = false, playerMoving = false, walkCycle = 0;
@@ -519,7 +527,7 @@
     nodes.diamondBalance.textContent=String(diamonds);
     nodes.buyAnchor.disabled=Boolean(state.signalAnchor);
     nodes.buyAnchor.textContent=state.signalAnchor?t("anchorOwned"):t("anchorBuy");
-    nodes.anchorStatus.textContent=state.signalAnchor?t("anchorPermanent"):template(t("anchorBalance"),{n:diamonds});
+    nodes.anchorStatus.textContent=state.signalAnchor?t("anchorPermanent"):t("anchorBalance",{n:diamonds});
   }
   function toggleEquipment(slot){
     if(!state.equipment[slot])return;
@@ -530,7 +538,7 @@
   function buySignalAnchor(){
     if(state.signalAnchor)return;
     const wallet=window.WeightPlayWallet;
-    if(!wallet?.spendDiamonds?.(5)){nodes.anchorStatus.textContent=template(t("anchorNeed"),{n:wallet?.read?.().diamonds || 0});return}
+    if(!wallet?.spendDiamonds?.(5)){nodes.anchorStatus.textContent=t("anchorNeed",{n:wallet?.read?.().diamonds || 0});return}
     state.signalAnchor=true;state.maxHp+=12;state.hp=Math.min(state.maxHp,state.hp+12);
     saveGame();renderInventory();updateHud();showToast(t("anchorInstalled"),2200);
     track("diamond_spend",{item:"signal_anchor",cost:5,balance:wallet.read().diamonds});
@@ -548,6 +556,7 @@
   function setPanel(panel) {
     [nodes.pause,nodes.inventory,nodes.leave,nodes.result].forEach(item => item.hidden=item!==panel);
     nodes.overlay.hidden=!panel;
+    sharedFrame?.activate(document.body.dataset.screen==='battle'?'battle':'main',Boolean(panel));
     paused=Boolean(panel);
     if (panel) setTimeout(()=>panel.querySelector("button:not([disabled])")?.focus(),0);
     else canvas.focus({preventScroll:true});
@@ -624,7 +633,9 @@
     if(!image.complete||!image.naturalWidth)return;
     const cellW=image.naturalWidth/columns,cellH=image.naturalHeight/rows;
     const col=index%columns,row=Math.floor(index/columns);
-    ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,x-w/2,y-h/2,w,h);ctx.restore();
+    ctx.save();ctx.globalAlpha=alpha;
+    if(image===atlas.npcs||image===atlas.player)ctx.imageSmoothingEnabled=true;
+    ctx.drawImage(image,col*cellW,row*cellH,cellW,cellH,x-w/2,y-h/2,w,h);ctx.restore();
   }
   function drawAtlasRotated(image,index,columns,rows,x,y,w,h,rotation,alpha=1) {
     if(!image.complete||!image.naturalWidth)return;
@@ -640,12 +651,14 @@
   function drawSprite(index,x,y,maxWidth,maxHeight,alpha=1) {
     if(!atlas.sprites.complete||!atlas.sprites.naturalWidth)return;
     const definition=SPRITE_FRAMES[index];
+    if(!definition)return;
     const [sourceX,sourceY,sourceWidth,sourceHeight]=definition.bounds||definition;
     const parts=definition.parts||[definition];
     const scale=Math.min(maxWidth/sourceWidth,maxHeight/sourceHeight);
     const width=sourceWidth*scale,height=sourceHeight*scale;
     ctx.save();
     ctx.globalAlpha=alpha;
+    ctx.imageSmoothingEnabled=true;
     for(const [partX,partY,partWidth,partHeight] of parts){
       ctx.drawImage(
         atlas.sprites,partX,partY,partWidth,partHeight,
@@ -731,7 +744,8 @@
     ctx.save();ctx.fillStyle="#02080c70";ctx.beginPath();ctx.ellipse(x,y+31,playerMoving?25:22,8,0,0,Math.PI*2);ctx.fill();ctx.restore();
     const facingIndex={down:0,left:1,right:2,up:3}[state.facing]||0;
     ctx.save();ctx.translate(x,y-bob);ctx.rotate(stride*.035);ctx.scale(1-stride*.018,1+Math.abs(stride)*.025);
-    drawSprite(facingIndex,0,0,78,78,invulnerability>0&&Math.floor(invulnerability*12)%2?0.35:1);ctx.restore();
+    ctx.imageSmoothingEnabled=true;
+    drawAtlas(atlas.player,facingIndex,2,2,0,0,78,78,invulnerability>0&&Math.floor(invulnerability*12)%2?0.35:1);ctx.restore();
   }
   function drawEntityBars(entity,cam,width=62) {
     const ratio=clamp(entity.hp/entity.maxHp,0,1),x=entity.x-cam.x-width/2,y=entity.y-cam.y-50;
@@ -913,7 +927,7 @@
     return candidates.sort((a,b)=>distance(state,a)-distance(state,b))[0]||null;
   }
   function interact() {
-    if(paused)return;const target=nearestInteractable();if(!target)return;
+    if(isSimulationPaused())return;const target=nearestInteractable();if(!target)return;
     canvas.dataset.lastAction="interact";
     canvas.dataset.lastInteractKind=target.kind;
     if(target.kind==="npc")showDialogue(target.index);
@@ -1013,7 +1027,7 @@
     showToast(t("combatHit"),1250);
   }
   function attack(inputType="unknown") {
-    if(paused||attackCooldown>0)return;
+    if(isSimulationPaused()||attackCooldown>0)return;
     recordFirstCombatAction("attack",inputType);
     canvas.dataset.lastAction="attack";
     canvas.dataset.slashDirection=state.facing;
@@ -1022,13 +1036,13 @@
     if(state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15&&distance(point,boss)<105)damageBoss(effectiveAttack());
   }
   function useSkill(inputType="unknown") {
-    if(paused||skillCooldown>0)return;
+    if(isSimulationPaused()||skillCooldown>0)return;
     recordFirstCombatAction("skill",inputType);
     canvas.dataset.lastAction="skill";
     skillCooldown=2.4;const v=facingVector();projectiles.push({x:state.x+v.x*40,y:state.y+v.y*40,vx:v.x*470,vy:v.y*470,life:1.3,damage:effectiveAttack()*.78});playTone(520,.1);
   }
   function toggleVision() {
-    if(paused)return;
+    if(isSimulationPaused())return;
     if(!state.visionUnlocked){canvas.dataset.lastAction="vision-locked";showToast(t("objectiveTalk"));return}
     trueVision=!trueVision;state.trueVision=trueVision;showToast(t(trueVision?"visionOn":"visionOff"));updateHud();saveGame();
     canvas.dataset.lastAction=trueVision?"vision-on":"vision-off";
@@ -1060,7 +1074,7 @@
     updateHud();
   }
   function hurt(amount) {
-    if(invulnerability>0||paused)return;
+    if(invulnerability>0||isSimulationPaused())return;
     state.hp-=Math.max(1,amount-effectiveDefense());invulnerability=.75;playTone(90,.12);
     if(state.hp<=0){
       track("player_defeat",{map_id:state.mapId,quests_completed:completedQuestCount()});
@@ -1130,7 +1144,7 @@
   }
 
   function update(dt) {
-    if(!playing||paused){playerMoving=false;return}
+    if(!playing||isSimulationPaused()){playerMoving=false;return}
     attackCooldown=Math.max(0,attackCooldown-dt);skillCooldown=Math.max(0,skillCooldown-dt);invulnerability=Math.max(0,invulnerability-dt);swingTimer=Math.max(0,swingTimer-dt);
     movePlayer(dt);updateEnemies(dt);updateBoss(dt);updateProjectiles(dt);updateHud();
   }
@@ -1139,6 +1153,7 @@
   }
   function setScreenOwner(screen) {
     document.body.dataset.screen=screen;
+    sharedFrame?.activate(screen);
     if(nodes.reserve) nodes.reserve.hidden=screen!=="battle";
     for(const candidate of ["main","stage","battle"]){
       document.body.classList.toggle(`wp-shell-${candidate}-active`,candidate===screen);
@@ -1176,6 +1191,7 @@
 
   addEventListener("keydown",event=>{
     const key=event.key.toLowerCase();
+    if(sharedFrame?.isSettingsOpen())return;
     const interactiveTarget=event.target instanceof Element&&event.target.closest("button,a,input,select,textarea,[contenteditable='true']");
     if(interactiveTarget&&key!=="escape")return;
     if(["arrowup","arrowdown","arrowleft","arrowright"," ","w","a","s","d","j","k","v","e","escape"].includes(key))event.preventDefault();
@@ -1230,7 +1246,7 @@
     return{x:(pixelX-tr.ox)/tr.scale,y:(pixelY-tr.oy)/tr.scale};
   }
   function hitsInteractPrompt(event) {
-    if(paused||!nearestInteractable())return false;
+    if(isSimulationPaused()||!nearestInteractable())return false;
     const point=canvasPoint(event);
     return point.x>=INTERACT_PROMPT.x&&point.x<=INTERACT_PROMPT.x+INTERACT_PROMPT.w&&point.y>=INTERACT_PROMPT.y&&point.y<=INTERACT_PROMPT.y+INTERACT_PROMPT.h;
   }
@@ -1274,8 +1290,18 @@
       questState(){const active=activeQuest();return{completed:completedQuestCount(),activeId:active?.quest.id||null,activeNumber:active?active.index+1:null}},
       progressState(){return{level:state.level,xp:state.xp,need:xpNeeded(),text:nodes.xpText.textContent}},
       objectiveText(){return currentQuestText()},
+      simulationState(){return{x:state.x,y:state.y,hp:state.hp,paused:isSimulationPaused(),gamePaused:paused,dialogue:currentDialogue}},
       routeCueState(){const route=routeCueState();return route?{direction:route.direction,distance:route.distance,mapId:route.target.mapId}:null},
-      inspectBossSprite(index){state.mapId=MAP_SIGNAL_TOWN;state.x=2140;state.y=520;boss.x=2200;boss.dead=false;boss.sprite=index;boss.attackTimer=999;boss.charge=0;boss.stun=0;updateHud()},
+      inspectBossSprite(index){
+        if(![12,13,14,15].includes(index))throw new Error("Invalid Boss art fixture");
+        state.mapId=MAP_SIGNAL_TOWN;state.x=2140;state.y=520;
+        // Satisfy the real visibility gate in this trial-only fixture, without saving.
+        enemySeeds.forEach((_,id)=>state.defeated.add(id));
+        enemies.filter(enemy=>enemy.mapId===MAP_SIGNAL_TOWN).forEach(enemy=>enemy.dead=true);
+        boss.x=2200;boss.y=520;boss.hp=boss.maxHp;boss.dead=false;boss.sprite=index;
+        boss.attackTimer=999;boss.charge=0;boss.stun=0;updateHud();
+      },
+      bossVisualState(){return{visible:state.mapId===MAP_SIGNAL_TOWN&&!boss.dead&&firstMapDefeated()>=15,pose:boss.sprite}},
       setPlayer(x,y,mapId=state.mapId){state.mapId=mapId;state.x=x;state.y=y;updateHud();},
       unlockMoonfall(){state.bossDefeated=true;boss.dead=true;state.chapter2Started=true;saveGame();updateObjective();updateHud()},
       switchMap(mapId){const portal=Object.values(MAP_PORTALS).flat().find(candidate=>candidate.to===mapId);if(portal)switchMap(portal)},
@@ -1288,5 +1314,6 @@
       finishBoss(){finishBoss()},
     };
   }
+  sharedFrame=window.mountSignalVeilFrame();
   setScreenOwner("main");applyLocale();updateMainProgress();renderInventory();requestAnimationFrame(frame);
 })();

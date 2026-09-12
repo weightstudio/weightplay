@@ -30,6 +30,15 @@ body .stage-canvas .stage-header{left:18px!important;right:auto!important;width:
 #gameFrame .battle-actions{grid-template-columns:48px minmax(0,1fr) minmax(0,1fr)}
 #gameFrame .modal-layer{grid-area:1/1/-1/-1}
 .sprite.sprite-pup{background-image:url("../../assets/animal-honey-shield-pip-block-v1.webp");background-size:contain;background-position:center}
+/* Dialog content consumes the common skin; controls remain frame-owned. */
+.dialog-card,.result-card,.tutorial-card{border-radius:var(--wp-ui-radius);border-color:var(--wp-ui-line);background:var(--wp-ui-surface);color:var(--wp-ui-text)}
+.result-actions{padding-block:4px 8px}
+@media (orientation:landscape) and (max-height:480px){
+  .result-card{padding:10px 14px 14px}
+  .result-card h2{margin-bottom:4px}
+  .result-card .result-stars{font-size:24px;line-height:1.1}
+  .result-card p{font-size:13px;line-height:1.3;margin:4px 0}
+}
 @media(min-width:701px){.battle-header{padding:6px}}
 .stage-tabs button{min-height:44px;border:0;background:#263a59;color:#fff;font-weight:900;border-top:3px solid #6ff5d3}
 @media(max-height:480px) and (orientation:landscape){.stage-tabs{display:grid!important;height:56px!important}.stage-tabs button{min-height:44px!important}}

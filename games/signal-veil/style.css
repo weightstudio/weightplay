@@ -19,4 +19,27 @@ body.wp-logical-battle-active #battleCanvas{box-sizing:border-box;width:100%!imp
 .game-guide dt{color:var(--cyan);font-weight:900}.game-guide dd{margin-inline:0;line-height:1.75;color:#c9e2e6}
 .game-info-chapter{position:relative;overflow:hidden}.game-info-chapter::after{content:"";position:absolute;inset-inline-end:-54px;bottom:-54px;width:150px;height:150px;border:1px solid #5ce0e426;border-radius:50%;box-shadow:0 0 0 28px #5ce0e410,0 0 0 56px #5ce0e408;pointer-events:none}.game-info-chapter-heading{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px}.game-info-chapter-heading h3{margin-block:0}.game-info-chapter-heading span{flex:none;padding:5px 10px;border:1px solid #4b8792;border-radius:999px;background:#123844;color:#9ffcff;font-size:.76rem;font-weight:900;letter-spacing:.04em}.game-info-chapter>p{position:relative;z-index:1;margin-bottom:0}
 @media(max-width:520px){.game-info-chapter-heading{align-items:flex-start;flex-direction:column;gap:8px}}
+/* Game-owned content tracks inside the shared frame; no duplicate control skin. */
+#signalFrame>.locale-picker{display:none!important}
+#signalFrame .main-screen,#signalFrame .main-hero{min-height:0;padding:0}
+#signalWorkspace{display:grid;grid-template-rows:44px minmax(0,1fr) 118px 44px;gap:4px;min-height:0;direction:ltr}
+#signalWorkspace>.hud{grid-template-columns:1fr 1fr;grid-column:1;grid-row:1;min-width:0}
+#signalWorkspace>.game-viewport{grid-column:1;grid-row:2;min-height:0}
+#signalWorkspace>.mobile-controls{grid-column:1;grid-row:3;min-height:0;grid-template-columns:108px minmax(0,1fr)}
+#signalWorkspace>.signal-tools{grid-column:1;grid-row:4;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#signalWorkspace .action-buttons{grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:6px}
+#signalFrame #overlay{grid-area:1/1/-1/-1}
+#signalFrame .panel{border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line)}
+#signalFrame .atlas-icon,.loading-card .atlas-icon{background-image:url("../../assets/signal-veil-equipment-block-v13.webp");background-size:128px 128px}
+#signalFrame .icon-device{background-position:0 0}
+#signalFrame .icon-weapon{background-position:-64px 0}
+#signalFrame .icon-armor{background-position:0 -64px}
+#signalFrame .icon-accessory{background-position:-64px -64px}
+@media(orientation:landscape){
+ #signalWorkspace{grid-template-columns:minmax(0,1fr) 210px;grid-template-rows:44px minmax(0,1fr) 44px}
+ #signalWorkspace>.game-viewport{grid-row:2/4}
+ #signalWorkspace>.mobile-controls{grid-column:2;grid-row:1/3;grid-template-columns:1fr;align-content:center}
+ #signalWorkspace>.signal-tools{grid-column:2;grid-row:3}
+ #signalWorkspace .action-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 .diamond-upgrade{display:grid;gap:7px;margin:0 0 14px;padding:13px;border:1px solid #4b737d;border-radius:14px;background:#081f29;text-align:left}.diamond-upgrade h3,.diamond-upgrade p{margin:0}.diamond-upgrade p{color:var(--muted);font-size:.78rem;line-height:1.45}.diamond-balance{display:flex;align-items:center;gap:7px;color:var(--cyan);font-weight:900}.diamond-balance img{width:24px;height:24px}.diamond-balance b{margin-inline-start:auto;color:white}.diamond-upgrade button{width:100%}.diamond-upgrade button:disabled{opacity:.68}.diamond-upgrade small{min-height:1.2em;color:var(--amber)}
