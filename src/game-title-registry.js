@@ -113,7 +113,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
   },
   "zhao-yun-a-dou": {
     "__localizedExact": true,
-    "en": "Zhao Yun & A Dou: Inkline Defense",
+    "en": "Zhao Yun & A Dou",
     "zh-Hant": "趙雲與阿斗：墨線守衛",
     "zh-Hans": "赵云与阿斗：墨线守卫",
     "ja": "趙雲と阿斗：墨線ディフェンス",

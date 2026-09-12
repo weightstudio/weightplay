@@ -43,6 +43,8 @@
     // The obsolete character-symbol quiz is not part of the illustrated game.
     if (locale !== 'en') guide.faq = guide.faq.slice(1);
   }
+  // The route generator evaluates the same copy without allocating a DOM.
+  if (typeof document === 'undefined') return;
   const labels = {
     en: ['Mission','How to play','Progression','Tips','Design','Saved progress','Questions'],
     'zh-Hant': ['任務','玩法','成長挑戰','技巧','設計','進度保存','常見問題'],
