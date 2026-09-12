@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="蜘蛛接龙使用两副牌分布在十个牌桌列中。将牌按顺序向下排列，适时分开混合花色，完成八组同花色 K 到 A 的牌组即可清空牌桌。" />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
     <meta property="og:title" content="蜘蛛接龙 | WeightPlay" />
-    <meta property="og:description" content="蜘蛛接龙使用两副牌分布在十个牌桌列中。将牌按顺序向下排列，适时分开混合花色，完成八组同花色 K 到 A 的牌组即可清空牌桌。" />
+    <meta property="og:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
     <meta property="og:url" content="https://weightplay.com/zh-cn/games/spider-solitaire/" />
     <meta name="twitter:title" content="蜘蛛接龙 | WeightPlay" />
-    <meta name="twitter:description" content="蜘蛛接龙使用两副牌分布在十个牌桌列中。将牌按顺序向下排列，适时分开混合花色，完成八组同花色 K 到 A 的牌组即可清空牌桌。" />
+    <meta name="twitter:description" content="经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/zh-cn/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "蜘蛛接龙使用两副牌分布在十个牌桌列中。将牌按顺序向下排列，适时分开混合花色，完成八组同花色 K 到 A 的牌组即可清空牌桌。",
+  "description": "经典蜘蛛接龙，提供 1、2、4 花色，流畅拖拽、提示与不限次数撤销。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -99,11 +100,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -122,7 +124,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="《蜘蛛接龙》游戏图片" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="《蜘蛛接龙》游戏图片" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">蜘蛛接龙</h1>
@@ -187,8 +189,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Target</h3><p data-sl="hero" data-i18n="hero">构建跨十列的同花色 K 到 A 序列。选择花色数，然后清除所有八组。</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">How to Play</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">从 K 到 A 向下构建卡片。</li>
+        <li data-sl="tip_2" data-i18n="tip_2">只有同花色的牌才能一起移动。</li>
+        <li data-sl="tip_3" data-i18n="tip_3">完成同花色K→A跑即可清除。</li>
+        <li data-sl="tip_4" data-i18n="tip_4">从库存中向每一列发一张牌。</li>
+        <li data-sl="tip_5" data-i18n="tip_5">交易前填写每个空栏。</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Controls</h3><p data-sl="controls" data-i18n="controls">拖动一张牌或同花色跑。当一个目的地明确时点击。</p></section>
+    <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用两副标准牌，共 104 张；初始牌桌有 54 张，牌库有 50 张。</dd></div><div><dt>有多少列？</dt><dd>共有十列；前四列从六张开始，其余六列从五张开始。</dd></div><div><dt>不同花色可以叠放吗？</dt><dd>可以按点数跨花色向下叠放，但只有同花色连续牌组能整组移动或收走。</dd></div><div><dt>为什么牌库不能发牌？</dt><dd>经典蜘蛛接龙要求十列都有牌后，才能发出下一列。</dd></div><div><dt>完成几组才能获胜？</dt><dd>必须收走八组同花色 K 到 A。</dd></div><div><dt>难度有什么区别？</dt><dd>1、2、4 花色改变花色组成，但保留相同的十列规则。</dd></div><div><dt>可以重新玩同一副牌吗？</dt><dd>可以，重新开始会使用同一副牌；新游戏会重新洗牌。</dd></div><div><dt>撤销会还原完成牌组吗？</dt><dd>会，撤销会完整还原上一个牌桌与完成牌组数。</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -196,36 +213,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="蜘蛛接龙 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>蜘蛛接龙</h2><p>蜘蛛接龙使用两副牌分布在十个牌桌列中。将牌按顺序向下排列，适时分开混合花色，完成八组同花色 K 到 A 的牌组即可清空牌桌。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>卡牌策略游戏</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 纸牌 · 策略 · 家庭</strong></div><div class="game-info-fact"><span>难度</span><strong>简单到困难</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>5～20 分钟</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>蜘蛛接龙保留经典接龙的牌组操作，但每一列都会影响下一步；牌库每次会碰到十列，而空列虽然强大，发牌前却必须重新填满。</p>
-<p>1 花色适合学习节奏，2 花色加入花色分离，4 花色则要求更长期的规划，核心操作保持不变。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>牌面按点数递减排列。单张正面牌可以放到下一个较高点数上；只有正面、连续且同花色的牌组才能整组移动。</p>
-<p>完成同花色 K 到 A 后，牌组会以清晰的完成动画收走；收走八组即可获胜。</p>
-<p>牌库会向十个非空列各发一张正面牌。撤销会还原牌桌、翻牌状态、牌库、发牌次数、分数与完成牌组。</p>
-<p>提示会优先标示可揭开暗牌、延伸同花色、完成牌组与建立空列的实用合法步骤。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>在 Main 选择 1、2 或 4 花色。</li><li>将正面牌或合法的同花色牌组拖到下一个较高点数。</li><li>使用空列刷新单牌或合法牌组。</li><li>先揭开暗牌；只有每列都有牌时才能发下一列。</li><li>完成八组同花色 K 到 A 牌组即可获胜。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>优先揭开暗牌，不要只做表面变化。</li><li>保留同花色牌组；混合花色只能暂时垫牌，不能整组移动。</li><li>把空列当作暂存空间，用来分离花色或揭开暗牌。</li><li>还有可揭牌或同花色合并时，不要急着发牌。</li><li>4 花色时保护最干净的牌组，并用撤销比较不同目的地。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>1 花色教你熟悉节奏，2 花色加入花色冲突，4 花色是经典高难度模式。</p>
-<p>每种难度分开记录游戏场次、胜利、胜率、最佳时间与最少步数。</p>
-<p>重新开始会使用同一副牌；新游戏会建立新的洗牌结果。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>Spider 使用 WeightPlay 的 Card Engine、响应式 Battle 画布、拖拽层、触控输入、动画节奏、音效偏好、撤销快照与纸牌视觉语言。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与保存信息</h3><p>蜘蛛接龙适合一般玩家与家庭游玩。不需要账号；难度统计与偏好只会保存在这个浏览器。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>使用多少张牌？</dt><dd>使用两副标准牌，共 104 张；初始牌桌有 54 张，牌库有 50 张。</dd></div><div><dt>有多少列？</dt><dd>共有十列；前四列从六张开始，其余六列从五张开始。</dd></div><div><dt>不同花色可以叠放吗？</dt><dd>可以按点数跨花色向下叠放，但只有同花色连续牌组能整组移动或收走。</dd></div><div><dt>为什么牌库不能发牌？</dt><dd>经典蜘蛛接龙要求十列都有牌后，才能发出下一列。</dd></div><div><dt>完成几组才能获胜？</dt><dd>必须收走八组同花色 K 到 A。</dd></div><div><dt>难度有什么区别？</dt><dd>1、2、4 花色改变花色组成，但保留相同的十列规则。</dd></div><div><dt>可以重新玩同一副牌吗？</dt><dd>可以，重新开始会使用同一副牌；新游戏会重新洗牌。</dd></div><div><dt>撤销会还原完成牌组吗？</dt><dd>会，撤销会完整还原上一个牌桌与完成牌组数。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>克朗代克接龙</strong><span>经典单人纸牌接龙，提供 1 或 3 张抽牌、拖拉放置、底部自动收尾与撤销支持。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>空当接龙</strong><span>52 张牌全部正面朝上，利用四个空位和八列牌桌，将四个花色排到 A 至 K。</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

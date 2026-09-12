@@ -1,0 +1,12 @@
+/* Game content only. Never duplicate common header or preferences geometry. */
+[hidden] { display:none !important; }
+.spider-main-copy [hidden] { display:none !important; }
+#boardShell > .header-stat { text-align:end; font-size:12px; }
+#boardShell > .header-stat strong { margin-inline-start:8px; }
+.dialog-card, .result-card {
+  background:var(--wp-ui-surface);
+  color:var(--wp-ui-text);
+  border-color:var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);
+  max-height:100%; overflow:auto;
+}

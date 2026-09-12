@@ -79,6 +79,8 @@
   const t = (key, vars = {}) => {
     const table = locales[state.locale] || locales.en || {};
     let value = table[key] || locales.en?.[key] || key;
+    if (key === "start" && state.locale === "en") value = "Start Game";
+    if (key === "start" && state.locale === "zh-Hant") value = "開始遊戲";
     Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
   };
@@ -94,6 +96,29 @@
   const expectedOrder = (scene) => scene.mechanic === "wind" ? [...scene.target].reverse() : scene.target;
 
   const renderMain = () => { $("mainProgress").textContent = `${t("groves")}: ${state.completed} / ${scenes.length}`; $("bestValue").textContent = readBest() || t("noBest"); };
+  const ensureGuideDepth = () => {
+    const sections = document.querySelector("[data-wp-game-guide] .game-info-sections");
+    if (!sections || sections.querySelector("[data-wp-guide-depth]") ) return;
+    const authored = state.locale === "ar" ? [
+      ["قراءة نافذة الهدف", "الهدف رسم صغير للموطن يوضح الترتيب المقصود من الأمام إلى الخلف. لاحظ أي طبقة تؤطر الحيوان وأي طبقة خلف المركز وأي طبقة تثبت الحافة البعيدة. قد تظهر الرموز نفسها في الأقواس اللاحقة بدور مختلف، لذلك اقرأ النافذة الحالية كل مرة؛ فالتأمل الهادئ جزء من اللغز."],
+      ["قواعد الأقواس ونقاط التحقق", "تتكون الحملة من ستة أقواس، في كل منها خمس مراحل. تعلّم المراحل الأولى التكديس المباشر، ثم تضيف الأقواس اللاحقة طُعماً وقراءة للريح من الخلف إلى الأمام وطبقات صدى يجب أن تبقى في موضعها. تأتي نقاط التحقق في المراحل 5 و10 و15 و20 و25 و30 مع هدف واضح."],
+      ["خطط وانقل وأعد الضبط", "تغيّر كل نقلة طبقة واحدة. استخدم زري الأمام والخلف لقرارات صغيرة قابلة للعكس، وراقب تحديث تسميات العمق بعد كل نقلة. إذا تشابكت المحاولة، تعيد إعادة الضبط المشهد إلى ترتيبه الأول من دون فقدان التقدم. تبقى الترتيبات الخاطئة ظاهرة لتوضح ما حُجب وما انكشف."],
+      ["التقدم والراحة وإعادة اللعب", "أصلح مشهداً لفتح المرحلة التالية فقط، وتبقى المشاهد المكتملة متاحة لإعادة اللعب. يحفظ المتصفح الإكمال وأفضل مجموع للحركات محلياً عند توفر التخزين؛ لا يلزم حساب. تبقى الأزرار كبيرة وموسومة على الهاتف واللوحي وسطح المكتب، مع دعم لوحة المفاتيح والتغذية الراجعة والواجهة العربية من اليمين إلى اليسار."],
+      ["حلقة تعلم هادئة", "كل مشهد تجربة قصيرة ذات سبب ونتيجة واضحين. لاحظ ما تكشفه النقلة الأولى، وقارن التكديس المحدث بنافذة الحارس، ودع رسالة الحالة ترشد اختيارك التالي. لا يوجد عدّ تنازلي، لذا فالتفكير والتمرين المتكرر مرحّب بهما."]
+    ] : [
+      ["Reading the target window", "The target is a small habitat illustration that shows the intended front-to-back order. Look for which layer frames the animal, which layer sits behind the centre, and which layer anchors the far edge. The same symbols can appear in later arcs with a different role, so read the current window every time instead of relying on memory. A calm inspection is part of the puzzle, not wasted time."],
+      ["Arc rules and checkpoints", "The campaign is arranged as six five-stage arcs. Early stages teach direct stacking; later arcs add a moth decoy, back-to-front wind reading, and echo layers that must stay in their shown position. Checkpoint stages at 5, 10, 15, 20, 25, and 30 pause the lesson with a clear objective. Before moving anything, name the active rule in your head, then apply it to the target order. Each arc changes the decision context so the next scene feels authored rather than repetitive."],
+      ["Plan, move, and reset", "Each move changes one layer at a time. Use the front and back controls to make small, reversible decisions, and watch the depth labels update after every move. If a trial becomes tangled, Reset returns the scene to its starting order without costing progress. Wrong orders remain visible on purpose: they show what is hidden or exposed, so you can compare the result with the target and try a better sequence. Take a breath between attempts and use the feedback sentence as a precise clue."],
+      ["Progress, comfort, and replay", "Restore a scene to unlock exactly the next stage. Completed scenes stay open for replay, letting you refine a route or revisit a mechanic without losing the campaign frontier. The browser stores completion and best total moves locally when storage is available; no account is required, and a fresh browser starts with the first scene ready to learn. Controls stay large and labeled on phone, tablet, and desktop layouts, with keyboard-friendly buttons, readable status feedback, reduced-motion support, and right-to-left Arabic presentation. Choose a language in Settings before or during a session; scene names, objectives, rules, and result feedback follow that choice while local progress remains safe."],
+      ["A gentle learning loop", "Every scene is a short experiment with a visible cause and effect. Notice what the first move reveals, compare the updated stack with the keeper window, and let the status message guide the next choice. There is no countdown, so thoughtful play and repeatable practice are welcome."]
+    ];
+    authored.forEach(([title, text]) => {
+      const article = document.createElement("article"); article.className = "game-info-section"; article.dataset.wpGuideDepth = "true";
+      const heading = document.createElement("h3"); heading.textContent = title;
+      const paragraph = document.createElement("p"); paragraph.textContent = text;
+      article.append(heading, paragraph); sections.append(article);
+    });
+  };
   const show = (screen) => { state.screen = screen; document.querySelectorAll("section[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); document.body.dataset.screen = screen; if (screen === "main") renderMain(); };
   const renderStages = () => {
     $("stageList").replaceChildren(...scenes.map((scene, index) => {
@@ -138,7 +163,7 @@
   $("startBtn").addEventListener("click", openStage); $("mapBtn").addEventListener("click", openStage); $("stageBackBtn").addEventListener("click", () => show("main")); $("battleBackBtn").addEventListener("click", () => { show("stage"); renderStages(); }); $("resultMapBtn").addEventListener("click", openStage); $("resultHomeBtn").addEventListener("click", () => show("main")); $("checkBtn").addEventListener("click", checkWindow); $("resetBtn").addEventListener("click", resetLayers);
   settingsBtn?.addEventListener("click", () => { $("settingsPanel").hidden = !$("settingsPanel").hidden; }); soundBtn?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); battleSoundBtn?.addEventListener("click", () => { state.sound = !state.sound; applyLocale(); }); $("localeSelect").addEventListener("change", (event) => { state.locale = locales[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightPlayLocale", state.locale); } catch (_) {} applyLocale(); });
   const initialLocale = () => { const query = new URLSearchParams(window.location.search).get("lang"); if (query && locales[query]) return query; const routeLocale = document.documentElement.lang; if (routeLocale && locales[routeLocale]) return routeLocale; try { const saved = localStorage.getItem("weightPlayLocale") || localStorage.getItem("weightplayLocale"); if (saved && locales[saved]) return saved; } catch (_) {} return "en"; };
-  state.locale = initialLocale(); installSoundBridge(); applyLocale(); show("main"); window.setTimeout(() => $("loadingScreen").classList.add("is-ready"), 0);
+  state.locale = initialLocale(); installSoundBridge(); ensureGuideDepth(); applyLocale(); show("main"); window.setTimeout(() => $("loadingScreen").classList.add("is-ready"), 0);
   window.__ANIMAL_LAYER_GROVE_TEST__ = { scenes, startScene, moveLayer, resetLayers, checkWindow, getState: () => ({ ...state, order: [...state.order] }) };
   const placeKeeperGuide = (attempt = 0) => { const image = document.querySelector(".keeper-guide"); const copy = document.querySelector(".wp-standard-main-copy"); if (image && copy && !copy.contains(image)) copy.prepend(image); if ((!image || !copy) && attempt < 40) window.setTimeout(() => placeKeeperGuide(attempt + 1), 50); };
   placeKeeperGuide();

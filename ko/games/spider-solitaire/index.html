@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="스파이더 솔리테어는 두 덱을 열 개의 테이블 열에 배치합니다. 카드를 내림차순으로 쌓고 필요할 때 무늬가 섞인 줄을 나누며 같은 무늬 K부터 A까지 여덟 세트를 완성해 테이블을 비우세요." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
     <meta property="og:title" content="스파이더 솔리테어 | WeightPlay" />
-    <meta property="og:description" content="스파이더 솔리테어는 두 덱을 열 개의 테이블 열에 배치합니다. 카드를 내림차순으로 쌓고 필요할 때 무늬가 섞인 줄을 나누며 같은 무늬 K부터 A까지 여덟 세트를 완성해 테이블을 비우세요." />
+    <meta property="og:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
     <meta property="og:url" content="https://weightplay.com/ko/games/spider-solitaire/" />
     <meta name="twitter:title" content="스파이더 솔리테어 | WeightPlay" />
-    <meta name="twitter:description" content="스파이더 솔리테어는 두 덱을 열 개의 테이블 열에 배치합니다. 카드를 내림차순으로 쌓고 필요할 때 무늬가 섞인 줄을 나누며 같은 무늬 K부터 A까지 여덟 세트를 완성해 테이블을 비우세요." />
+    <meta name="twitter:description" content="1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/ko/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "스파이더 솔리테어는 두 덱을 열 개의 테이블 열에 배치합니다. 카드를 내림차순으로 쌓고 필요할 때 무늬가 섞인 줄을 나누며 같은 무늬 K부터 A까지 여덟 세트를 완성해 테이블을 비우세요.",
+  "description": "1·2·4무늬, 부드러운 드래그, 힌트와 무제한 실행 취소를 지원하는 클래식 스파이더 솔리테어.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -99,11 +100,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -122,7 +124,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="스파이더 솔리테어 게임 이미지" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="스파이더 솔리테어 게임 이미지" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">스파이더 솔리테어</h1>
@@ -187,8 +189,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">스파이더 솔리테어</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">목표</h3><p data-sl="hero" data-i18n="hero">10개 열에서 같은 무늬의 K부터 A까지를 만드세요. 무늬 수를 선택하고 8세트를 완성합니다.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">게임 방법</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">K부터 A까지 내림차순으로 놓습니다.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">같은 무늬의 연속 카드만 함께 이동합니다.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">같은 무늬 K → A를 완성하면 수거됩니다.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">덱을 누르면 각 열에 한 장씩 배분합니다.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">빈 열이 있으면 배분할 수 없습니다.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">조작</h3><p data-sl="controls" data-i18n="controls">카드 또는 같은 무늬 연속 묶음을 드래그하세요. 목적지가 하나면 탭할 수 있습니다.</p></section>
+    <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>카드는 몇 장인가요?</dt><dd>표준 덱 두 개, 총 104장입니다. 처음 테이블에 54장, 덱에 50장이 있습니다.</dd></div><div><dt>열은 몇 개인가요?</dt><dd>열은 열 개이며 처음 네 열은 여섯 장, 나머지는 다섯 장으로 시작합니다.</dd></div><div><dt>다른 무늬를 쌓을 수 있나요?</dt><dd>숫자는 다른 무늬에도 내려갈 수 있지만 같은 무늬 연속 묶음만 함께 이동하거나 수거할 수 있습니다.</dd></div><div><dt>왜 덱이 막히나요?</dt><dd>클래식 스파이더는 열 개 모두에 카드가 있어야 다음 줄을 배분합니다.</dd></div><div><dt>몇 세트를 완성해야 하나요?</dt><dd>같은 무늬 K-A 여덟 세트를 수거해야 합니다.</dd></div><div><dt>난이도는 무엇이 다른가요?</dt><dd>1, 2, 4 무늬가 무늬 구성을 바꾸지만 열 개 규칙은 같습니다.</dd></div><div><dt>같은 딜을 다시 할 수 있나요?</dt><dd>재시작은 같은 딜을 사용하고 새 게임은 새로 섞습니다.</dd></div><div><dt>실행 취소로 완성 세트도 돌아오나요?</dt><dd>네, 이전 테이블과 완성 세트 수를 모두 복원합니다.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -196,36 +213,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="스파이더 솔리테어 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2>스파이더 솔리테어</h2><p>스파이더 솔리테어는 두 덱을 열 개의 테이블 열에 배치합니다. 카드를 내림차순으로 쌓고 필요할 때 무늬가 섞인 줄을 나누며 같은 무늬 K부터 A까지 여덟 세트를 완성해 테이블을 비우세요.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>카드 전략 게임</strong></div><div class="game-info-fact"><span>장르</span><strong>퍼즐 · 카드 · 전략 · 가족</strong></div><div class="game-info-fact"><span>난이도</span><strong>쉬움부터 어려움</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5~20분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>세계와 목표</h3><p>스파이더는 클래식 솔리테어의 카드 조작감을 유지하면서 모든 열이 다음 선택에 영향을 줍니다. 덱은 열 개 모두에 닿고 빈 열은 강력하지만 배분 전에 다시 채워야 합니다.</p>
-<p>1 무늬는 흐름을 익히고 2 무늬는 무늬 분리를 더하며 4 무늬는 장기 계획을 요구합니다.</p></div>
-      <div class="game-info-section"><h3>게임 시스템</h3><p>카드는 숫자가 내려가도록 놓습니다. 앞면 한 장은 바로 높은 숫자 위에 놓을 수 있고 같은 무늬의 연속된 앞면 묶음만 함께 움직입니다.</p>
-<p>같은 무늬 K-A를 완성하면 애니메이션과 함께 수거되며 여덟 세트를 수거하면 승리합니다.</p>
-<p>덱은 비어 있지 않은 열 열 곳에 앞면 카드 한 장씩 배분합니다. 실행 취소는 테이블, 앞면 상태, 덱, 배분, 점수와 완성 세트를 복원합니다.</p>
-<p>힌트는 뒤집힌 카드 공개, 같은 무늬 확장, 완성 세트와 빈 열 만들기에 유용한 합법 수를 우선 표시합니다.</p></div>
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>Main에서 1, 2 또는 4 무늬를 선택합니다.</li><li>앞면 카드나 합법적인 같은 무늬 묶음을 다음 높은 숫자 위로 드래그합니다.</li><li>빈 열을 사용해 카드나 묶음을 재배치합니다.</li><li>뒷면 카드를 먼저 공개하고 모든 열에 카드가 있을 때만 새 줄을 배분합니다.</li><li>같은 무늬 K-A 여덟 세트를 완성하면 승리합니다.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>표면만 바꾸는 수보다 뒷면 카드 공개를 우선하세요.</li><li>같은 무늬 묶음은 함께 유지하고 섞인 무늬 묶음은 임시 발판으로만 사용하세요.</li><li>빈 열을 예비 공간으로 사용해 무늬를 나누거나 뒷면 카드를 공개하세요.</li><li>공개나 같은 무늬 합체가 가능하다면 바로 배분하지 마세요.</li><li>4 무늬에서는 가장 깨끗한 줄을 보호하고 실행 취소로 목적지를 비교하세요.</li></ul></div>
-      <div class="game-info-section"><h3>진행과 난이도</h3><p>1 무늬는 기본 흐름, 2 무늬는 무늬 충돌, 4 무늬는 클래식 고난도 모드입니다.</p>
-<p>난이도별 플레이 수, 승리, 승률, 최고 시간과 최소 이동을 따로 저장합니다.</p>
-<p>재시작은 같은 딜을 사용하고 새 게임은 새로 섞습니다.</p></div>
-      <div class="game-info-section"><h3>개발자 디자인 노트</h3><p>Spider는 WeightPlay Card Engine, 반응형 Battle 캔버스, 드래그 레이어, 터치 입력, 애니메이션, 사운드 설정, 실행 취소 스냅샷과 카드 시각 언어를 공유합니다.</p></div>
-      <div class="game-info-section game-info-parent"><h3>플레이어 및 저장 정보</h3><p>스파이더 솔리테어는 일반 플레이어와 가족 플레이에 맞는 카드 게임입니다. 계정은 필요 없고 난이도 통계와 설정은 이 브라우저에만 저장됩니다.</p></div>
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>카드는 몇 장인가요?</dt><dd>표준 덱 두 개, 총 104장입니다. 처음 테이블에 54장, 덱에 50장이 있습니다.</dd></div><div><dt>열은 몇 개인가요?</dt><dd>열은 열 개이며 처음 네 열은 여섯 장, 나머지는 다섯 장으로 시작합니다.</dd></div><div><dt>다른 무늬를 쌓을 수 있나요?</dt><dd>숫자는 다른 무늬에도 내려갈 수 있지만 같은 무늬 연속 묶음만 함께 이동하거나 수거할 수 있습니다.</dd></div><div><dt>왜 덱이 막히나요?</dt><dd>클래식 스파이더는 열 개 모두에 카드가 있어야 다음 줄을 배분합니다.</dd></div><div><dt>몇 세트를 완성해야 하나요?</dt><dd>같은 무늬 K-A 여덟 세트를 수거해야 합니다.</dd></div><div><dt>난이도는 무엇이 다른가요?</dt><dd>1, 2, 4 무늬가 무늬 구성을 바꾸지만 열 개 규칙은 같습니다.</dd></div><div><dt>같은 딜을 다시 할 수 있나요?</dt><dd>재시작은 같은 딜을 사용하고 새 게임은 새로 섞습니다.</dd></div><div><dt>실행 취소로 완성 세트도 돌아오나요?</dt><dd>네, 이전 테이블과 완성 세트 수를 모두 복원합니다.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>클론다이크 솔리테어</strong><span>1장 또는 3장 드로우를 지원하는 클래식 솔리테어.</span></span></a><a class="game-info-related-card" href="/ko/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>프리셀 솔리테어</strong><span>모든 52장 카드가 앞면으로 놓이며, 네 개의 프리 셀과 여덟 열을 활용해 네 기초 더미를 A부터 K까지 완성합니다.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

@@ -226,8 +226,8 @@ window.WEIGHTPLAY_GAME_TITLES = {
   "freecell-solitaire": {
     "__localizedExact": true,
     "en": "FreeCell Solitaire",
-    "zh-Hant": "空當接龍",
-    "zh-Hans": "空当接龙",
+    "zh-Hant": "FreeCell 接龍",
+    "zh-Hans": "FreeCell 接龙",
     "ja": "フリーセル・ソリティア",
     "ko": "프리셀 솔리테어",
     "es": "Solitario FreeCell",
@@ -235,9 +235,9 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "fr": "Solitaire FreeCell",
     "de": "FreeCell-Solitär",
     "it": "Solitario FreeCell",
-    "ru": "Пасьянс «Свободная ячейка»",
+    "ru": "Пасьянс FreeCell",
     "hi": "फ्रीसेल सॉलिटेयर",
-    "ar": "سوليتير الخلايا الحرة"
+    "ar": "سوليتير فري سيل"
   },
   "pyramid-solitaire": {
     "__localizedExact": true,

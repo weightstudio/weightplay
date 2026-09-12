@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo." />
     <meta property="og:title" content="Spider Solitaire | WeightPlay" />
-    <meta property="og:description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+    <meta property="og:description" content="Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo." />
     <meta property="og:url" content="https://weightplay.com/en/games/spider-solitaire/" />
     <meta name="twitter:title" content="Spider Solitaire | WeightPlay" />
-    <meta name="twitter:description" content="Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit..." />
+    <meta name="twitter:description" content="Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -75,7 +76,7 @@
   "name": "Spider Solitaire",
   "url": "https://weightplay.com/en/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit...",
+  "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, 4 Suits, smooth drag-and-drop, Hint, and unlimited Undo.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -97,11 +98,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -120,7 +122,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Spider Solitaire game artwork" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Spider Solitaire game artwork" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Spider Solitaire</h1>
@@ -185,44 +187,34 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Target</h3><p data-sl="hero" data-i18n="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">How to Play</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Build cards downward from K to A.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Only same-suit runs move together.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Finish a same-suit K → A run to clear it.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Deal one card to every column from Stock.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">Fill every empty column before dealing.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Controls</h3><p data-sl="controls" data-i18n="controls">Drag a card or same-suit run. Tap when one destination is clear.</p></section>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many cards are used?</dt><dd>Spider Solitaire uses two standard decks: 104 cards, with 54 in the initial tableau and 50 in Stock.</dd></div><div><dt>How many columns are there?</dt><dd>There are ten tableau columns; the first four begin with six cards and the other six with five.</dd></div><div><dt>Can different suits be stacked?</dt><dd>Yes. Ranks can descend across suits, but only a same-suit descending run can move as a group or be collected.</dd></div><div><dt>Why is Stock blocked?</dt><dd>Classic Spider requires all ten columns to contain at least one card before a new row can be dealt.</dd></div><div><dt>How many sequences are needed to win?</dt><dd>Eight same-suit King-to-Ace sequences must be collected.</dd></div><div><dt>What changes between difficulties?</dt><dd>1 Suit, 2 Suits, and 4 Suits change the suit mix while keeping the same ten-column rules.</dd></div><div><dt>Can I restart the same deal?</dt><dd>Yes. Restart Current Game uses the same seed, while New Game shuffles a fresh deal.</dd></div><div><dt>Does Undo restore a completed sequence?</dt><dd>Yes. Undo restores the complete prior tableau and collected-set count.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
-  <script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
+  <script src="/src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Spider Solitaire game information">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2>Spider Solitaire</h2><p>Spider Solitaire uses two decks in ten tableau columns. Build descending sequences, separate mixed suits when you can, and complete eight same-suit King-to-Ace runs to clear the table.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Multi-Suit Card Solitaire</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Card · Strategy</strong></div><div class="game-info-fact"><span>Difficulty</span><strong>Easy to Hard</strong></div><div class="game-info-fact"><span>Estimated Play Time</span><strong>5-20 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>World and Mission</h3><p>Spider keeps the familiar card-engine feel of Klondike while changing the decision space: every column matters, a new stock row touches all ten columns, and empty space is powerful but temporarily blocks dealing.</p>
-<p>One Suit teaches the rhythm, Two Suits adds suit separation, and Four Suits asks for careful long-term planning without changing the core controls.</p></div>
-      <div class="game-info-section"><h3>How the Systems Work</h3><p>Cards build downward by rank. A single face-up card can move onto the next rank, while a group moves together only when it is face-up, descending, and the same suit.</p>
-<p>Complete a same-suit K-to-A sequence and it is collected with a readable completion animation. Eight collected sequences win the game.</p>
-<p>The Stock deals one face-up card to each of ten non-empty columns. Undo restores tableau, face-up state, stock, deals, score, and completed sequences.</p>
-<p>Hint highlights one useful legal move, favoring hidden-card reveals, same-suit extensions, completed runs, and new empty columns.</p></div>
-      <div class="game-info-section"><h3>How to Play</h3><ol><li>Choose 1 Suit, 2 Suits, or 4 Suits on Main.</li><li>Drag a face-up card or a valid same-suit run onto the next higher rank.</li><li>Use empty columns to reorganize any card or valid run.</li><li>Reveal face-down cards, then deal a new row only when every column contains a card.</li><li>Complete all eight same-suit K-to-A runs to win.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategy Tips</h3><ul><li>Reveal a face-down card before making a move that only changes the surface.</li><li>Keep same-suit runs together; mixed-suit runs are useful scaffolding but cannot move as a group.</li><li>Treat an empty column as a reserve: use it to separate suits or expose a hidden card.</li><li>Do not deal automatically when a useful reveal or same-suit merge is available.</li><li>In Four Suits, protect the cleanest run and use Undo to compare competing destinations.</li></ul></div>
-      <div class="game-info-section"><h3>Campaign and Difficulty Growth</h3><p>1 Suit is the teaching mode, 2 Suits adds planning around suit conflicts, and 4 Suits is the classic high-challenge mode.</p>
-<p>Each difficulty stores its own games played, wins, win rate, best time, and fewest moves.</p>
-<p>The same seed can be restarted without changing the deal; New Game creates a fresh shuffle.</p></div>
-      <div class="game-info-section"><h3>Developer Design Note</h3><p>Spider shares WeightPlay&#39;s Card Engine, responsive battle canvas, drag layer, touch input, animation rhythm, sound preference, undo snapshots, and card visual language with Klondike.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Player and Save Information</h3><p>Spider Solitaire is a general-audience card strategy game. No account is required; difficulty statistics and preferences stay in this browser.</p></div>
-      <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many cards are used?</dt><dd>Spider Solitaire uses two standard decks: 104 cards, with 54 in the initial tableau and 50 in Stock.</dd></div><div><dt>How many columns are there?</dt><dd>There are ten tableau columns; the first four begin with six cards and the other six with five.</dd></div><div><dt>Can different suits be stacked?</dt><dd>Yes. Ranks can descend across suits, but only a same-suit descending run can move as a group or be collected.</dd></div><div><dt>Why is Stock blocked?</dt><dd>Classic Spider requires all ten columns to contain at least one card before a new row can be dealt.</dd></div><div><dt>How many sequences are needed to win?</dt><dd>Eight same-suit King-to-Ace sequences must be collected.</dd></div><div><dt>What changes between difficulties?</dt><dd>1 Suit, 2 Suits, and 4 Suits change the suit mix while keeping the same ten-column rules.</dd></div><div><dt>Can I restart the same deal?</dt><dd>Yes. Restart Current Game uses the same seed, while New Game shuffles a fresh deal.</dd></div><div><dt>Does Undo restore a completed sequence?</dt><dd>Yes. Undo restores the complete prior tableau and collected-set count.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Related Games</h3><div class="game-info-related"><a class="game-info-related-card" href="/en/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Klondike Solitaire</strong><span>Classic solitaire with a full deck drag-and-drop flow, draw 1/3 modes, auto-finish, and undo support.</span></span></a><a class="game-info-related-card" href="/en/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>FreeCell Solitaire</strong><span>FreeCell Solitaire is a classic 52-card puzzle where every card starts face up.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

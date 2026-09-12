@@ -77,8 +77,10 @@
   const bestValue=()=>Number(storage.get("weightplay-animal-patchwork-paws-best-v3")||0)||"—";
   function repairShellGeometry(){
     if(window.matchMedia("(min-width:700px) and (max-height:500px) and (min-aspect-ratio:3/2)").matches){
-      document.querySelectorAll("#mainScreen .cover-wrap,.wp-standard-main-poster").forEach(cover=>{cover.style.setProperty("width","420px","important");cover.style.setProperty("height","420px","important");cover.style.setProperty("min-height","420px","important");cover.style.setProperty("max-width","420px","important");cover.style.setProperty("max-height","420px","important");});
-      document.querySelectorAll("#mainScreen .main-poster,.wp-standard-main-poster img").forEach(poster=>{poster.style.setProperty("width","420px","important");poster.style.setProperty("height","420px","important");poster.style.setProperty("min-width","420px","important");poster.style.setProperty("min-height","420px","important");poster.style.setProperty("max-width","420px","important");poster.style.setProperty("max-height","420px","important");poster.style.setProperty("object-fit","cover","important");});
+      // Compact landscape must keep the entry action inside the short live
+      // viewport; the full poster track belongs to wide, tall Main layouts.
+      document.querySelectorAll("#mainScreen .cover-wrap,.wp-standard-main-poster").forEach(cover=>{cover.style.setProperty("width","140px","important");cover.style.setProperty("height","140px","important");cover.style.setProperty("min-height","140px","important");cover.style.setProperty("max-width","140px","important");cover.style.setProperty("max-height","140px","important");});
+      document.querySelectorAll("#mainScreen .main-poster,.wp-standard-main-poster img").forEach(poster=>{poster.style.setProperty("width","140px","important");poster.style.setProperty("height","140px","important");poster.style.setProperty("min-width","140px","important");poster.style.setProperty("min-height","140px","important");poster.style.setProperty("max-width","140px","important");poster.style.setProperty("max-height","140px","important");poster.style.setProperty("object-fit","cover","important");});
     }
     document.querySelectorAll(".game-page-info-static").forEach(node=>node.style.setProperty("border-radius","24px","important"));
   }

@@ -248,6 +248,7 @@
   const view = window.WPClassicSolitaire?.mount({ variant: "freecell", id: "freecell-solitaire", sequenceCue: SEQUENCE_CUE });
   document.body.dataset.cardDeck = 'klondike';
   window.WPCardTablePresentation?.install(view);
+  window.installFreecellFrame?.(view);
   const battleSoundToggle = document.getElementById("soundToggleBattle");
   const refreshFreecellHeaderCopy = () => {
     const locale = view?.locale || "en";
@@ -647,19 +648,28 @@
   refreshFreecellOutcomeCopy();
   if (view?.nodes?.boardStatus) {
     let capacityRefreshQueued = false;
-    new MutationObserver(() => {
+    let capacityFrame = 0;
+    const capacityObserver = new MutationObserver(() => {
       if (capacityRefreshQueued) return;
       capacityRefreshQueued = true;
-      window.requestAnimationFrame(() => {
+      capacityFrame = window.requestAnimationFrame(() => {
+        capacityFrame = 0;
         capacityRefreshQueued = false;
         renderCapacityStatus();
       });
-    }).observe(view.nodes.boardStatus, {
+    });
+    capacityObserver.observe(view.nodes.boardStatus, {
       attributes: true,
       attributeFilter: ["data-state"],
       childList: true,
       characterData: true,
       subtree: true,
+    });
+    window.addEventListener('pagehide', event => {
+      if (event.persisted) return;
+      capacityObserver.disconnect();
+      window.cancelAnimationFrame(capacityFrame);
+      window.clearTimeout(hintCueState.timer);
     });
   }
 })();

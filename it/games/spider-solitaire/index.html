@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="Spider Solitaire usa due mazzi in dieci colonne. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto sequenze dello stesso..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati." />
     <meta property="og:title" content="Spider Solitaire | WeightPlay" />
-    <meta property="og:description" content="Spider Solitaire usa due mazzi in dieci colonne. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto sequenze dello stesso..." />
+    <meta property="og:description" content="Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati." />
     <meta property="og:url" content="https://weightplay.com/it/games/spider-solitaire/" />
     <meta name="twitter:title" content="Spider Solitaire | WeightPlay" />
-    <meta name="twitter:description" content="Spider Solitaire usa due mazzi in dieci colonne. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto sequenze dello stesso..." />
+    <meta name="twitter:description" content="Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -75,7 +76,7 @@
   "name": "Spider Solitaire",
   "url": "https://weightplay.com/it/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "Spider Solitaire usa due mazzi in dieci colonne. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto sequenze dello stesso...",
+  "description": "Spider Solitaire classico con 1, 2 e 4 semi, trascinamento fluido, suggerimenti e annullamenti illimitati.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -98,11 +99,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -121,7 +123,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Immagine del gioco Spider Solitaire" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Immagine del gioco Spider Solitaire" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Spider Solitaire</h1>
@@ -186,8 +188,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Obiettivo</h3><p data-sl="hero" data-i18n="hero">Crea sequenze K-A dello stesso seme in dieci colonne. Scegli la difficoltà e completa gli otto gruppi.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Come si gioca</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Ordina da K ad A in modo decrescente.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Solo le sequenze dello stesso seme si muovono insieme.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Completa K → A dello stesso seme per rimuoverla.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Tocca il mazzo per distribuire una carta per colonna.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">Non puoi distribuire se c&#39;è una colonna vuota.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Comandi</h3><p data-sl="controls" data-i18n="controls">Trascina una carta o una sequenza dello stesso seme. Tocca se c&#39;è una sola destinazione.</p></section>
+    <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante carte vengono usate?</dt><dd>Si usano due mazzi standard: 104 carte, di cui 54 sul tavolo iniziale e 50 nel tallone.</dd></div><div><dt>Quante colonne ci sono?</dt><dd>Ci sono dieci colonne; le prime quattro iniziano con sei carte e le altre sei con cinque.</dd></div><div><dt>Si possono impilare semi diversi?</dt><dd>Sì, i valori possono scendere tra semi diversi, ma solo una sequenza dello stesso seme si muove o viene raccolta insieme.</dd></div><div><dt>Perché il tallone è bloccato?</dt><dd>Spider richiede una carta in tutte le colonne prima di distribuire una nuova riga.</dd></div><div><dt>Quante sequenze servono per vincere?</dt><dd>Devi raccogliere otto sequenze dello stesso seme dal Re all&#39;Asso.</dd></div><div><dt>Cosa cambia tra le difficoltà?</dt><dd>1, 2 e 4 semi cambiano la combinazione dei semi, mantenendo le stesse regole a dieci colonne.</dd></div><div><dt>Posso riavviare la stessa distribuzione?</dt><dd>Sì. Riavvia usa la stessa distribuzione; Nuova partita mescola una nuova mano.</dd></div><div><dt>Annulla ripristina una sequenza completata?</dt><dd>Sì. Annulla ripristina il tavolo precedente e il numero di sequenze raccolte.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/it.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -195,36 +212,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Informazioni su Spider Solitaire">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guida ai giochi originali WeightPlay</span><h2>Spider Solitaire</h2><p>Spider Solitaire usa due mazzi in dieci colonne. Costruisci sequenze discendenti, separa i semi misti quando puoi e completa otto sequenze dello stesso seme dal Re all&#39;Asso per liberare il tavolo.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Gioco</span><strong>Gioco di strategia con le carte</strong></div><div class="game-info-fact"><span>Genere</span><strong>Puzzle · Carte · Strategia · Famiglia</strong></div><div class="game-info-fact"><span>Difficoltà</span><strong>Da facile a difficile</strong></div><div class="game-info-fact"><span>Tempo stimato</span><strong>5-20 minuti</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mondo e missione</h3><p>Spider conserva la sensazione familiare del solitario, ma ogni colonna conta. Ogni riga del tallone tocca tutte le colonne e una colonna vuota è potente, anche se va riempita prima di distribuire.</p>
-<p>Un seme insegna il ritmo, due semi aggiungono conflitti e quattro semi richiedono pianificazione a lungo termine.</p></div>
-      <div class="game-info-section"><h3>Sistemi di gioco</h3><p>Le carte scendono per valore. Una carta scoperta può essere posata sul valore successivo più alto; solo una sequenza scoperta, continua e dello stesso seme si muove insieme.</p>
-<p>Completa una sequenza dello stesso seme dal Re all&#39;Asso per raccoglierla con un&#39;animazione chiara; otto sequenze fanno vincere la partita.</p>
-<p>Il tallone distribuisce una carta scoperta in ogni colonna non vuota. Annulla ripristina tavolo, carte scoperte, tallone, distribuzioni, punteggio e sequenze completate.</p>
-<p>Suggerimento privilegia le mosse legali che rivelano carte, estendono lo stesso seme, completano sequenze o creano colonne vuote.</p></div>
-      <div class="game-info-section"><h3>Come si gioca</h3><ol><li>Scegli 1, 2 o 4 semi nel Main.</li><li>Trascina una carta scoperta o una sequenza legale dello stesso seme sul valore successivo più alto.</li><li>Usa le colonne vuote per riorganizzare una carta o una sequenza valida.</li><li>Rivela le carte coperte e distribuisci una nuova riga solo quando tutte le colonne hanno una carta.</li><li>Completa otto sequenze dello stesso seme dal Re all&#39;Asso per vincere.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consigli strategici</h3><ul><li>Dai priorità alla scoperta di una carta coperta invece di cambiare solo la superficie.</li><li>Tieni unite le sequenze dello stesso seme; le sequenze miste sono solo un appoggio temporaneo.</li><li>Usa una colonna vuota come riserva per separare i semi o scoprire una carta.</li><li>Non distribuire se è ancora possibile una scoperta o un&#39;unione utile dello stesso seme.</li><li>Con quattro semi, proteggi la sequenza più pulita e usa Annulla per confrontare le destinazioni.</li></ul></div>
-      <div class="game-info-section"><h3>Progressione e difficoltà</h3><p>Un seme insegna il ritmo, due semi aggiungono conflitti e quattro semi è la modalità classica più difficile.</p>
-<p>Ogni difficoltà salva separatamente partite, vittorie, percentuale, miglior tempo e minor numero di mosse.</p>
-<p>Riavvia usa la stessa distribuzione; Nuova partita crea un nuovo mescolamento.</p></div>
-      <div class="game-info-section"><h3>Nota di design</h3><p>Spider condivide il Card Engine, il canvas Battle responsivo, il livello di trascinamento, il tocco, il ritmo delle animazioni, le preferenze audio, gli snapshot di Annulla e il linguaggio visivo delle carte di WeightPlay.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informazioni sul giocatore e salvataggio</h3><p>Spider Solitaire è un gioco di strategia con le carte per il pubblico generale. Non serve un account; statistiche e preferenze restano in questo browser.</p></div>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Quante carte vengono usate?</dt><dd>Si usano due mazzi standard: 104 carte, di cui 54 sul tavolo iniziale e 50 nel tallone.</dd></div><div><dt>Quante colonne ci sono?</dt><dd>Ci sono dieci colonne; le prime quattro iniziano con sei carte e le altre sei con cinque.</dd></div><div><dt>Si possono impilare semi diversi?</dt><dd>Sì, i valori possono scendere tra semi diversi, ma solo una sequenza dello stesso seme si muove o viene raccolta insieme.</dd></div><div><dt>Perché il tallone è bloccato?</dt><dd>Spider richiede una carta in tutte le colonne prima di distribuire una nuova riga.</dd></div><div><dt>Quante sequenze servono per vincere?</dt><dd>Devi raccogliere otto sequenze dello stesso seme dal Re all&#39;Asso.</dd></div><div><dt>Cosa cambia tra le difficoltà?</dt><dd>1, 2 e 4 semi cambiano la combinazione dei semi, mantenendo le stesse regole a dieci colonne.</dd></div><div><dt>Posso riavviare la stessa distribuzione?</dt><dd>Sì. Riavvia usa la stessa distribuzione; Nuova partita mescola una nuova mano.</dd></div><div><dt>Annulla ripristina una sequenza completata?</dt><dd>Sì. Annulla ripristina il tavolo precedente e il numero di sequenze raccolte.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Giochi correlati</h3><div class="game-info-related"><a class="game-info-related-card" href="/it/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Klondike Solitario</strong><span>Solitario classico con drag-and-drop completo, modalità pesca 1/3, auto-finish e supporto annulla.</span></span></a><a class="game-info-related-card" href="/it/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>Tutte le 52 carte iniziano scoperte; usa quattro celle libere e otto colonne per completare quattro basi dall’Asso al Re.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

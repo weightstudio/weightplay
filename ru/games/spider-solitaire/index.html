@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
     <meta property="og:title" content="Пасьянс Паук | WeightPlay" />
-    <meta property="og:description" content="В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь..." />
+    <meta property="og:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
     <meta property="og:url" content="https://weightplay.com/ru/games/spider-solitaire/" />
     <meta name="twitter:title" content="Пасьянс Паук | WeightPlay" />
-    <meta name="twitter:description" content="В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь..." />
+    <meta name="twitter:description" content="Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/ru/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь...",
+  "description": "Классический Пасьянс Паук на 1, 2 или 4 масти с плавным перетаскиванием, подсказками и отменой ходов.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -99,11 +100,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -122,7 +124,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Изображение игры «Пасьянс Паук»" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Изображение игры «Пасьянс Паук»" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Пасьянс Паук</h1>
@@ -187,8 +189,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Пасьянс Паук</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Цель</h3><p data-sl="hero" data-i18n="hero">Собирайте одномастные ряды от K до A в десяти колонках. Выберите сложность и уберите все восемь наборов.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Как играть</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Складывайте карты по убыванию от K до A.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Вместе перемещаются только ряды одной масти.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Готовый ряд K → A одной масти убирается.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Нажмите на колоду, чтобы раздать по карте в колонку.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">При пустой колонке раздача запрещена.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Управление</h3><p data-sl="controls" data-i18n="controls">Перетаскивайте карту или одномастный ряд. Нажмите, если есть только одна цель.</p></section>
+    <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сколько используется карт?</dt><dd>Две стандартные колоды, всего 104 карты: 54 на столе и 50 в колоде.</dd></div><div><dt>Сколько колонок?</dt><dd>Десять колонок; первые четыре начинаются с шести карт, остальные — с пяти.</dd></div><div><dt>Можно ли складывать разные масти?</dt><dd>Да, ранги можно понижать между мастями, но вместе перемещается и убирается только серия одной масти.</dd></div><div><dt>Почему колода заблокирована?</dt><dd>Классический Паук требует карты во всех колонках перед новой раздачей.</dd></div><div><dt>Сколько серий нужно для победы?</dt><dd>Нужно убрать восемь последовательностей одной масти от Короля до Туза.</dd></div><div><dt>Чем отличаются сложности?</dt><dd>1, 2 и 4 масти меняют состав мастей, но сохраняют правила десяти колонок.</dd></div><div><dt>Можно повторить ту же раздачу?</dt><dd>Да. Перезапуск использует ту же раздачу, а Новая игра перемешивает новую.</dd></div><div><dt>Отмена возвращает завершённую серию?</dt><dd>Да, Отмена полностью восстанавливает предыдущий стол и число собранных серий.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -196,36 +213,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Информация об игре Пасьянс Паук">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2>Пасьянс Паук</h2><p>В Пасьянсе Пауке используются две колоды в десяти колонках. Собирайте нисходящие последовательности, разделяйте смешанные масти и завершите восемь последовательностей одной масти от Короля до Туза.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Карточная стратегия</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Головоломка · Карты · Стратегия · Семейная</strong></div><div class="game-info-fact"><span>Сложность</span><strong>От простой до сложной</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>5–20 минут</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Мир и цель</h3><p>Паук сохраняет привычное управление пасьянсом, но каждая колонка влияет на следующий выбор. Каждая раздача касается всех десяти колонок, а пустая колонка сильна, но перед раздачей её нужно заполнить.</p>
-<p>Одна масть знакомит с ритмом, две масти добавляют конфликты, а четыре масти требуют долгого планирования.</p></div>
-      <div class="game-info-section"><h3>Игровые системы</h3><p>Карты выкладываются по убыванию. Открытую карту можно положить на следующий старший ранг; вместе перемещается только открытая непрерывная последовательность одной масти.</p>
-<p>Завершённая последовательность одной масти от Короля до Туза убирается с понятной анимацией; восемь последовательностей приносят победу.</p>
-<p>Колода выдаёт по одной открытой карте в каждую непустую колонку. Отмена восстанавливает стол, открытые карты, колоду, раздачи, счёт и завершённые последовательности.</p>
-<p>Подсказка сначала показывает полезные допустимые ходы для открытия скрытой карты, продолжения масти, завершения серии или создания пустой колонки.</p></div>
-      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите 1, 2 или 4 масти в Main.</li><li>Перетащите открытую карту или допустимую последовательность одной масти на следующий старший ранг.</li><li>Используйте пустые колонки для перестановки карты или допустимой последовательности.</li><li>Открывайте скрытые карты и раздавайте новый ряд только когда во всех колонках есть карты.</li><li>Завершите восемь последовательностей одной масти от Короля до Туза.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Сначала открывайте скрытую карту, а не просто меняйте верхний слой.</li><li>Сохраняйте последовательности одной масти; смешанные последовательности — временная опора.</li><li>Используйте пустую колонку как резерв для разделения мастей или открытия карты.</li><li>Не раздавайте карты, пока доступно полезное открытие или соединение одной масти.</li><li>В режиме четырёх мастей защищайте самую чистую серию и сравнивайте цели с помощью Отмены.</li></ul></div>
-      <div class="game-info-section"><h3>Прогресс и сложность</h3><p>Одна масть обучает ритму, две добавляют конфликты, четыре — классический сложный режим.</p>
-<p>Для каждой сложности отдельно сохраняются игры, победы, процент побед, лучшее время и минимум ходов.</p>
-<p>Перезапуск использует ту же раздачу, а Новая игра создаёт новую.</p></div>
-      <div class="game-info-section"><h3>Заметка разработчика</h3><p>Spider использует Card Engine WeightPlay, адаптивную Battle-сцену, слой перетаскивания, сенсорный ввод, анимации, настройку звука, снимки Отмены и единый язык карточного интерфейса.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Данные игрока и сохранение</h3><p>Пасьянс Паук — карточная стратегия для широкой аудитории. Аккаунт не нужен; статистика и настройки хранятся в этом браузере.</p></div>
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Сколько используется карт?</dt><dd>Две стандартные колоды, всего 104 карты: 54 на столе и 50 в колоде.</dd></div><div><dt>Сколько колонок?</dt><dd>Десять колонок; первые четыре начинаются с шести карт, остальные — с пяти.</dd></div><div><dt>Можно ли складывать разные масти?</dt><dd>Да, ранги можно понижать между мастями, но вместе перемещается и убирается только серия одной масти.</dd></div><div><dt>Почему колода заблокирована?</dt><dd>Классический Паук требует карты во всех колонках перед новой раздачей.</dd></div><div><dt>Сколько серий нужно для победы?</dt><dd>Нужно убрать восемь последовательностей одной масти от Короля до Туза.</dd></div><div><dt>Чем отличаются сложности?</dt><dd>1, 2 и 4 масти меняют состав мастей, но сохраняют правила десяти колонок.</dd></div><div><dt>Можно повторить ту же раздачу?</dt><dd>Да. Перезапуск использует ту же раздачу, а Новая игра перемешивает новую.</dd></div><div><dt>Отмена возвращает завершённую серию?</dt><dd>Да, Отмена полностью восстанавливает предыдущий стол и число собранных серий.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Клондайк Солитер</strong><span>Классический пасьянс с перетаскиванием карт, режимами взятия 1/3, автозавершением и отменой хода.</span></span></a><a class="game-info-related-card" href="/ru/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Пасьянс «Свободная ячейка»</strong><span>Все 52 карты лежат лицом вверх; используйте четыре свободные ячейки и восемь колонок, чтобы собрать четыре основы от туза до короля.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

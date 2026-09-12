@@ -3,6 +3,10 @@
   const GUTTER = 0;
   const DESKTOP_CANVAS_MAX_WIDTH = 920;
   const games = {
+    // Nest Weigh-In's comparison and answer lanes need the complete wide
+    // short-landscape envelope so Battle controls retain their physical
+    // touch target size instead of inheriting the portrait scaler.
+    "animal-nest-weigh": [".battle-canvas", 390, 788, 760, 334],
     // The five new General prototypes own native Battle shells. In compact
     // landscape, use their wide logical envelope instead of shrinking the
     // portrait shell until touch controls become non-interactive.
@@ -187,6 +191,7 @@
   // that viewport's safe-area ratio just under the shared 1.5 threshold;
   // lower it only for this game so its physical controls stay >=44px.
   const landscapeRatioThresholdByGame = {
+    "animal-nest-weigh": 1.25,
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
     "animal-gust-garden": 1.25,

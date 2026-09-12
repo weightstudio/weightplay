@@ -107,6 +107,21 @@
   };
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
+  const ensureGuideDepth = () => {
+    const sections = document.querySelector("#gameGuide .game-info-sections");
+    if (!sections || sections.dataset.wpGuideDepth === "true") return;
+    for (const [titleKey, textKey] of [["guideDepthTitle", "guideDepth"], ["guidePracticeTitle", "guidePractice"]]) {
+      const article = document.createElement("article");
+      article.className = "game-info-section";
+      const heading = document.createElement("h3");
+      heading.dataset.copy = titleKey;
+      const paragraph = document.createElement("p");
+      paragraph.dataset.copy = textKey;
+      article.append(heading, paragraph);
+      sections.append(article);
+    }
+    sections.dataset.wpGuideDepth = "true";
+  };
   const loadCompleted = () => {
     try {
       const parsed = JSON.parse(safeGet(completedStorageKey, "[]"));
@@ -117,7 +132,7 @@
   const copy = (key, vars = {}) => { const dictionary = localeMap[state.locale] || localeMap.en || {}; let value = dictionary[key] || localeMap.en[key] || key; Object.entries(vars).forEach(([name, replacement]) => { value = value.replace(new RegExp("\\{" + name + "\\}", "g"), String(replacement)); }); return value; };
   const bestTotal = () => Number(safeGet("weightplay-animal-dawn-shutters-best", "0")) || 0;
   const showToast = (message) => { $("toast").textContent = message; $("toast").classList.add("visible"); window.clearTimeout(showToast.timer); showToast.timer = window.setTimeout(() => $("toast").classList.remove("visible"), 1800); };
-  const applyText = () => { document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel))); $("mainSettingsBtn").setAttribute("aria-label", copy("settings")); $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); $("battleSoundBtn").setAttribute("aria-label", copy("sound")); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); };
+  const applyText = () => { ensureGuideDepth(); document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = copy(node.dataset.copy); }); document.querySelectorAll("[data-copy-aria-label]").forEach((node) => node.setAttribute("aria-label", copy(node.dataset.copyAriaLabel))); $("mainSettingsBtn").setAttribute("aria-label", copy("settings")); $("soundBtn").textContent = state.sound ? copy("soundOn") : copy("soundOff"); $("battleSoundBtn").setAttribute("aria-label", copy("sound")); $("mainProgress").textContent = copy("progress", { count: state.completed.length }); if (state.screen === "stage") renderStages(); if (state.screen === "battle") renderBattle(); };
   const setScreen = (screen) => { state.screen = screen; document.body.dataset.screen = screen; ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.classList.toggle("active", name === screen); }); const guide = $("gameGuide"); if (guide) guide.hidden = screen !== "main"; const stageReserve = document.querySelector(".stage-ad-reserve"); if (stageReserve) stageReserve.hidden = screen !== "stage"; const battleReserve = document.querySelector(".battle-ad-reserve"); if (battleReserve) battleReserve.hidden = screen !== "battle"; if (screen === "main") applyText(); if (screen === "stage") renderStages(); if (screen === "battle") renderBattle(); window.scrollTo(0, 0); };
   const stageUnlocked = (index) => index === 0 || state.completed.includes(index - 1);
   const bindStageRail = () => {

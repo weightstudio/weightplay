@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
     <meta property="og:title" content="Solitario Spider | WeightPlay" />
-    <meta property="og:description" content="Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del..." />
+    <meta property="og:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
     <meta property="og:url" content="https://weightplay.com/es/games/spider-solitaire/" />
     <meta name="twitter:title" content="Solitario Spider | WeightPlay" />
-    <meta name="twitter:description" content="Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del..." />
+    <meta name="twitter:description" content="Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/es/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del...",
+  "description": "Solitario Spider clásico con 1, 2 y 4 palos, arrastre fluido, pistas y deshacer ilimitado.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -98,11 +99,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -121,7 +123,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Imagen del juego Solitario Spider" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Imagen del juego Solitario Spider" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Solitario Spider</h1>
@@ -186,8 +188,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Solitario Spider</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Objetivo</h3><p data-sl="hero" data-i18n="hero">Forma secuencias K a A del mismo palo en diez columnas. Elige la dificultad y completa los ocho grupos.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Cómo jugar</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Ordena de K a A hacia abajo.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Solo las secuencias del mismo palo se mueven juntas.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Completa K → A del mismo palo para retirarla.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Pulsa el mazo para repartir una carta a cada columna.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">No puedes repartir si hay una columna vacía.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Controles</h3><p data-sl="controls" data-i18n="controls">Arrastra una carta o una secuencia del mismo palo. Toca si solo hay un destino.</p></section>
+    <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas cartas se usan?</dt><dd>Se usan dos barajas estándar: 104 cartas, con 54 en la mesa inicial y 50 en el mazo.</dd></div><div><dt>¿Cuántas columnas hay?</dt><dd>Hay diez columnas; las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd></div><div><dt>¿Se pueden apilar palos diferentes?</dt><dd>Sí. Los rangos pueden bajar entre palos, pero solo una secuencia descendente del mismo palo puede moverse como grupo o recogerse.</dd></div><div><dt>¿Por qué se bloquea el mazo?</dt><dd>El Spider clásico exige que las diez columnas contengan al menos una carta antes de repartir una fila nueva.</dd></div><div><dt>¿Cuántas secuencias hacen falta para ganar?</dt><dd>Hay que recoger ocho secuencias del mismo palo de Rey a As.</dd></div><div><dt>¿Qué cambia entre las dificultades?</dt><dd>1 palo, 2 palos y 4 palos cambian la mezcla de palos, pero mantienen las mismas reglas de diez columnas.</dd></div><div><dt>¿Puedo reiniciar el mismo reparto?</dt><dd>Sí. Reiniciar partida usa la misma semilla; Nueva partida mezcla un reparto nuevo.</dd></div><div><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura la mesa anterior completa y el número de grupos recogidos.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -195,37 +212,12 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
   <script src="/src/game-page-info-es.js?v=20260816-spider-v32-es-guide"></script>
-  <section class="game-page-info game-page-info-static" aria-label="Información de Solitario Spider">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>Solitario Spider</h2><p>Solitario Spider usa dos barajas en diez columnas. Forma secuencias descendentes, separa los palos mezclados cuando puedas y completa ocho secuencias del mismo palo de Rey a As para despejar la mesa.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Solitario de varios palos</strong></div><div class="game-info-fact"><span>Género</span><strong>Rompecabezas · Cartas · Estrategia</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>De fácil a difícil</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>5-20 minutos</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Solitario Spider conserva la sensación familiar del motor de cartas de Klondike, pero cambia el espacio de decisiones: cada columna importa, una nueva fila del mazo toca las diez columnas y el espacio vacío es poderoso, aunque bloquea temporalmente el reparto.</p>
-<p>Un palo enseña el ritmo, dos palos añaden la separación por palo y cuatro palos exigen una planificación cuidadosa sin cambiar los controles principales.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Las cartas se colocan hacia abajo por rango. Una carta boca arriba puede moverse sobre el rango siguiente; un grupo solo se mueve junto cuando está boca arriba, en orden descendente y es del mismo palo.</p>
-<p>Completa una secuencia K-A del mismo palo y se recoge con una animación clara. Ocho secuencias recogidas ganan la partida.</p>
-<p>El mazo reparte una carta boca arriba en cada una de las diez columnas no vacías. Deshacer restaura la mesa, el estado boca arriba, el mazo, los repartos, la puntuación y las secuencias completadas.</p>
-<p>Pista resalta un movimiento legal útil y prioriza revelar cartas ocultas, ampliar secuencias del mismo palo, completar grupos y crear columnas vacías.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige 1 palo, 2 palos o 4 palos en la pantalla principal.</li><li>Arrastra una carta boca arriba o una secuencia válida del mismo palo sobre el rango siguiente.</li><li>Usa las columnas vacías para reorganizar cualquier carta o secuencia válida.</li><li>Revela las cartas boca abajo y reparte una nueva fila solo cuando todas las columnas contengan una carta.</li><li>Completa las ocho secuencias del mismo palo de Rey a As para ganar.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Revela una carta boca abajo antes de hacer un movimiento que solo cambie la superficie.</li><li>Mantén juntas las secuencias del mismo palo; las secuencias mezcladas sirven de apoyo, pero no pueden moverse como grupo.</li><li>Trata una columna vacía como reserva: úsala para separar palos o descubrir una carta oculta.</li><li>No repartas automáticamente cuando aún puedes revelar una carta o unir una secuencia del mismo palo.</li><li>En cuatro palos, protege la secuencia más limpia y usa Deshacer para comparar destinos.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>1 palo enseña el ritmo, 2 palos añade conflictos entre palos y 4 palos es el modo clásico de mayor dificultad.</p>
-<p>Cada dificultad guarda por separado las partidas, victorias, porcentaje de victorias, mejor tiempo y menor número de movimientos.</p>
-<p>Reiniciar usa la misma semilla sin cambiar el reparto; Nueva partida crea una mezcla nueva.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>Spider comparte con Klondike el motor de cartas, el lienzo de batalla adaptable, la capa de arrastre, la entrada táctil, el ritmo de animación, la preferencia de sonido, los estados de Deshacer y el lenguaje visual de las cartas.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>Solitario Spider es un juego de estrategia con cartas para público general. No requiere cuenta; las estadísticas por dificultad y las preferencias se guardan en este navegador.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Cuántas cartas se usan?</dt><dd>Se usan dos barajas estándar: 104 cartas, con 54 en la mesa inicial y 50 en el mazo.</dd></div><div><dt>¿Cuántas columnas hay?</dt><dd>Hay diez columnas; las cuatro primeras empiezan con seis cartas y las otras seis con cinco.</dd></div><div><dt>¿Se pueden apilar palos diferentes?</dt><dd>Sí. Los rangos pueden bajar entre palos, pero solo una secuencia descendente del mismo palo puede moverse como grupo o recogerse.</dd></div><div><dt>¿Por qué se bloquea el mazo?</dt><dd>El Spider clásico exige que las diez columnas contengan al menos una carta antes de repartir una fila nueva.</dd></div><div><dt>¿Cuántas secuencias hacen falta para ganar?</dt><dd>Hay que recoger ocho secuencias del mismo palo de Rey a As.</dd></div><div><dt>¿Qué cambia entre las dificultades?</dt><dd>1 palo, 2 palos y 4 palos cambian la mezcla de palos, pero mantienen las mismas reglas de diez columnas.</dd></div><div><dt>¿Puedo reiniciar el mismo reparto?</dt><dd>Sí. Reiniciar partida usa la misma semilla; Nueva partida mezcla un reparto nuevo.</dd></div><div><dt>¿Deshacer restaura una secuencia completada?</dt><dd>Sí. Deshacer restaura la mesa anterior completa y el número de grupos recogidos.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario Klondike</strong><span>Solitario clásico con flujo completo de arrastrar y soltar, modos de 1 o 3 cartas, auto-finish y soporte de deshacer.</span></span></a><a class="game-info-related-card" href="/es/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitario FreeCell</strong><span>Las 52 cartas empiezan boca arriba; usa cuatro celdas libres y ocho columnas para completar cuatro bases del As al Rey.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260816-spider-v32-es-guide"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

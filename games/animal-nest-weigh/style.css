@@ -58,6 +58,7 @@ h3 { margin-bottom: 0; font-size: 1.08rem; }
 .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; color: var(--muted); font-weight: 750; }
 select { min-height: 48px; max-width: 60%; padding: 8px 12px; border: 1px solid #c8d8c7; border-radius: 12px; color: var(--ink); background: #fbfdf8; }
 .setting-sound { width: 100%; margin-top: 12px; }
+#stageScreen { --wp-stage-art: url('assets/animal-nest-weigh-cover.png'); }
 .stage-canvas, .battle-canvas { width: min(920px, 100%); height: calc(100vh - 56px); min-height: 0; margin: 0 auto; overflow-x: hidden; overflow-y: auto; padding: 20px 18px; border-radius: 0; }
 .stage-canvas { background-image: linear-gradient(rgba(255,253,248,.82), rgba(255,253,248,.82)), var(--wp-stage-art); background-position: center 96px; background-repeat: no-repeat; background-size: min(480px, 60vw); }
 .battle-canvas { background-color: #d8c39f; background-image: linear-gradient(rgba(255,253,248,.84), rgba(255,253,248,.84)), var(--wp-battle-art); background-position: center; background-repeat: no-repeat; background-size: cover; }
@@ -170,6 +171,18 @@ button:focus-visible, select:focus-visible { outline: 3px solid #e0a94d; outline
   #battleScreen .compare-card { grid-column: 1; grid-row: 3; min-height: 0; margin: 0; overflow: hidden; }
   #battleScreen .answer-card { grid-column: 2; grid-row: 3; min-height: 0; margin: 0; overflow: visible; }
   #battleScreen .battleStatus { grid-column: 1 / -1; grid-row: 4; margin: 0; }
+  #battleScreen .compare-card,
+  #battleScreen .answer-card { padding: 12px; }
+  #battleScreen .tray-grid { gap: 6px; }
+  #battleScreen .tray-card { min-height: 84px; padding: 6px 4px; gap: 2px; }
+  #battleScreen .tray-icon { width: 48px; height: 38px; }
+  #battleScreen .tray-card small { font-size: .68rem; }
+  #battleScreen .compare-actions { margin-top: 6px; gap: 6px; }
+  #battleScreen .compare-actions .primary-btn,
+  #battleScreen .compare-actions .text-btn { min-height: 44px; height: 44px; padding-block: 8px; }
+  #battleScreen .comparison { min-height: 20px; margin-top: 6px; padding: 6px 8px; font-size: .8rem; }
+  #battleScreen .answer-grid { margin: 6px 0; }
+  #battleScreen .full-btn { min-height: 44px; height: 44px; margin-top: 6px; padding-block: 8px; }
 }
 
 /* The compact landscape envelope has enough width for three bounded Battle

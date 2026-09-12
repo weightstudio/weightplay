@@ -30,11 +30,11 @@
   <meta id="ogTitle" property="og:title" content="Spider Solitaire Online - Play Free" />
   <meta id="ogDescription" property="og:description" content="Classic Spider Solitaire with three difficulty levels, smooth drag-and-drop, Hint, and Undo." />
   <meta id="ogUrl" property="og:url" content="https://weightplay.com/en/games/spider-solitaire/" />
-  <meta property="og:image" content="https://weightplay.com/assets/spider-solitaire-cover.png" />
+  <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta id="twitterTitle" name="twitter:title" content="Spider Solitaire Online - Play Free" />
   <meta id="twitterDescription" name="twitter:description" content="Classic Spider Solitaire with three difficulty levels, smooth drag-and-drop, Hint, and Undo." />
-  <meta name="twitter:image" content="https://weightplay.com/assets/spider-solitaire-cover.png" />
+  <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp" />
   <link id="metaCanonical" rel="canonical" href="https://weightplay.com/en/games/spider-solitaire/" />
   <script id="spiderStructuredData" type="application/ld+json">
     {
@@ -42,7 +42,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -57,15 +57,17 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
   <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -84,7 +86,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Spider Solitaire" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Spider Solitaire" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Spider Solitaire</h1>
@@ -149,6 +151,21 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider Solitaire</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Target</h3><p data-sl="hero" data-i18n="hero">Build same-suit K to A runs across ten columns. Choose a suit count, then clear all eight sets.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">How to Play</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Build cards downward from K to A.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Only same-suit runs move together.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Finish a same-suit K → A run to clear it.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Deal one card to every column from Stock.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">Fill every empty column before dealing.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Controls</h3><p data-sl="controls" data-i18n="controls">Drag a card or same-suit run. Tap when one destination is clear.</p></section>
+    </div>
+  </section>
   <script src="../../src/site-config.js"></script>
   <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
@@ -157,10 +174,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
   <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
 </body>
 </html>

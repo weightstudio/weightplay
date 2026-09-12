@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen." />
     <meta property="og:title" content="Spider-Solitär | WeightPlay" />
-    <meta property="og:description" content="Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und..." />
+    <meta property="og:description" content="Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen." />
     <meta property="og:url" content="https://weightplay.com/de/games/spider-solitaire/" />
     <meta name="twitter:title" content="Spider-Solitär | WeightPlay" />
-    <meta name="twitter:description" content="Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und..." />
+    <meta name="twitter:description" content="Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/de/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und...",
+  "description": "Klassisches Spider-Solitär mit 1, 2 und 4 Farben, flüssigem Drag-and-Drop, Hinweisen und unbegrenztem Rückgängigmachen.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -99,11 +100,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -122,7 +124,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Spielgrafik zu Spider-Solitär" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Spielgrafik zu Spider-Solitär" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Spider-Solitär</h1>
@@ -187,8 +189,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Spider-Solitär</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Ziel</h3><p data-sl="hero" data-i18n="hero">Bilde gleichfarbige Folgen von K bis A in zehn Spalten. Wähle eine Schwierigkeit und räume alle acht Sets ab.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Spielanleitung</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Lege Karten von K bis A absteigend.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Nur Folgen derselben Farbe bewegen sich zusammen.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Eine gleichfarbige K-bis-A-Folge wird entfernt.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Klicke den Stapel für eine Karte pro Spalte.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">Bei einer leeren Spalte darfst du nicht austeilen.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Steuerung</h3><p data-sl="controls" data-i18n="controls">Ziehe eine Karte oder gleichfarbige Folge. Tippe bei nur einem Ziel.</p></section>
+    <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie viele Karten werden verwendet?</dt><dd>Es werden zwei Standarddecks mit insgesamt 104 Karten verwendet: 54 im anfänglichen Tableau und 50 im Stock.</dd></div><div><dt>Wie viele Spalten gibt es?</dt><dd>Es gibt zehn Tableau-Spalten; die ersten vier beginnen mit sechs Karten, die anderen sechs mit fünf.</dd></div><div><dt>Können Karten verschiedener Farben gestapelt werden?</dt><dd>Ja. Ränge können über verschiedene Farben absteigen, aber nur eine absteigende Folge derselben Farbe kann als Gruppe bewegt oder eingesammelt werden.</dd></div><div><dt>Warum ist der Stock gesperrt?</dt><dd>Beim klassischen Spider müssen vor dem Austeilen einer neuen Reihe alle zehn Spalten mindestens eine Karte enthalten.</dd></div><div><dt>Wie viele Folgen braucht man zum Sieg?</dt><dd>Acht Folgen derselben Farbe vom König bis zum Ass müssen eingesammelt werden.</dd></div><div><dt>Was ändert sich zwischen den Schwierigkeitsgraden?</dt><dd>1, 2 und 4 Farben ändern die Farbmischung, die Regeln der zehn Spalten bleiben gleich.</dd></div><div><dt>Kann ich dieselbe Austeilung neu starten?</dt><dd>Ja. Neustart verwendet dieselbe Austeilung, während Neues Spiel eine frische Austeilung mischt.</dd></div><div><dt>Stellt Rückgängig eine abgeschlossene Folge wieder her?</dt><dd>Ja. Rückgängig stellt das vollständige vorherige Tableau und die Anzahl der eingesammelten Folgen wieder her.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -196,36 +213,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Informationen zu Spider-Solitär">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2>Spider-Solitär</h2><p>Spider-Solitär verwendet zwei Kartenspiele in zehn Tableau-Spalten. Bauen Sie absteigende Reihen, trennen Sie gemischte Farben, wenn es möglich ist, und vollenden Sie acht Reihen derselben Farbe vom König bis zum Ass, um das Tableau zu leeren.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Kartenspiel mit Strategie</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Karten · Strategie · Familie</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Einfach bis schwierig</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>5–20 Minuten</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Welt und Mission</h3><p>Spider bewahrt das vertraute Karten-Spielgefühl von Solitär, verändert aber den Entscheidungsraum: Jede Spalte zählt, jede neue Reihe aus dem Stock berührt alle zehn Spalten, und eine leere Spalte ist stark, blockiert aber vorübergehend das Austeilen.</p>
-<p>Eine Farbe lehrt den Rhythmus, zwei Farben fügen die Farbtrennung hinzu, und vier Farben verlangen langfristige Planung, ohne die grundlegende Steuerung zu ändern.</p></div>
-      <div class="game-info-section"><h3>Spielsysteme</h3><p>Die Karten werden nach Rang absteigend aufgebaut. Eine einzelne offene Karte kann auf den nächsthöheren Rang gelegt werden; gemeinsam bewegt wird nur eine offene, absteigende Folge derselben Farbe.</p>
-<p>Vollenden Sie eine Folge derselben Farbe vom König bis zum Ass; sie wird mit einer klaren Abschlussanimation eingesammelt. Acht gesammelte Folgen gewinnen das Spiel.</p>
-<p>Der Stock gibt jeder der zehn nicht leeren Spalten eine offene Karte. Rückgängig stellt Tableau, offene Karten, Stock, Austeilungen, Punktestand und abgeschlossene Folgen wieder her.</p>
-<p>Der Hinweis hebt einen nützlichen legalen Zug hervor und bevorzugt das Aufdecken verdeckter Karten, das Verlängern derselben Farbe, abgeschlossene Folgen und neue leere Spalten.</p></div>
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Wählen Sie auf Main 1 Farbe, 2 Farben oder 4 Farben.</li><li>Ziehen Sie eine offene Karte oder eine gültige Folge derselben Farbe auf den nächsthöheren Rang.</li><li>Nutzen Sie leere Spalten, um Karten oder gültige Folgen neu zu ordnen.</li><li>Decken Sie verdeckte Karten auf und teilen Sie eine neue Reihe nur aus, wenn jede Spalte eine Karte enthält.</li><li>Vollenden Sie alle acht Folgen derselben Farbe vom König bis zum Ass, um zu gewinnen.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Decken Sie eine verdeckte Karte auf, bevor Sie einen Zug machen, der nur die Oberfläche verändert.</li><li>Halten Sie Folgen derselben Farbe zusammen; gemischte Folgen sind nur ein vorübergehendes Gerüst.</li><li>Behandeln Sie eine leere Spalte als Reserve, um Farben zu trennen oder eine verdeckte Karte freizulegen.</li><li>Teilen Sie nicht automatisch aus, wenn noch ein nützliches Aufdecken oder eine Verbindung derselben Farbe möglich ist.</li><li>Schützen Sie bei vier Farben die sauberste Folge und vergleichen Sie mit Rückgängig mögliche Ziele.</li></ul></div>
-      <div class="game-info-section"><h3>Fortschritt und Schwierigkeit</h3><p>Eine Farbe lehrt den Rhythmus, zwei Farben bringen Farbkonflikte, und vier Farben sind der klassische Modus mit hoher Herausforderung.</p>
-<p>Jede Schwierigkeit speichert Spiele, Siege, Siegquote, Bestzeit und wenigste Züge getrennt.</p>
-<p>Neustart verwendet dieselbe Austeilung; Neues Spiel erstellt eine neue Mischung.</p></div>
-      <div class="game-info-section"><h3>Designnotiz</h3><p>Spider teilt die WeightPlay Card Engine, die responsive Battle-Fläche, die Ziehebene, Touch-Eingabe, den Animationsrhythmus, die Soundeinstellung, Rückgängig-Schnappschüsse und die visuelle Kartensprache mit Klondike.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Spieler- und Speicherinformationen</h3><p>Spider-Solitär ist ein Kartenspiel mit Strategie für ein allgemeines Publikum. Ein Konto ist nicht erforderlich; Schwierigkeitsstatistiken und Einstellungen bleiben in diesem Browser.</p></div>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie viele Karten werden verwendet?</dt><dd>Es werden zwei Standarddecks mit insgesamt 104 Karten verwendet: 54 im anfänglichen Tableau und 50 im Stock.</dd></div><div><dt>Wie viele Spalten gibt es?</dt><dd>Es gibt zehn Tableau-Spalten; die ersten vier beginnen mit sechs Karten, die anderen sechs mit fünf.</dd></div><div><dt>Können Karten verschiedener Farben gestapelt werden?</dt><dd>Ja. Ränge können über verschiedene Farben absteigen, aber nur eine absteigende Folge derselben Farbe kann als Gruppe bewegt oder eingesammelt werden.</dd></div><div><dt>Warum ist der Stock gesperrt?</dt><dd>Beim klassischen Spider müssen vor dem Austeilen einer neuen Reihe alle zehn Spalten mindestens eine Karte enthalten.</dd></div><div><dt>Wie viele Folgen braucht man zum Sieg?</dt><dd>Acht Folgen derselben Farbe vom König bis zum Ass müssen eingesammelt werden.</dd></div><div><dt>Was ändert sich zwischen den Schwierigkeitsgraden?</dt><dd>1, 2 und 4 Farben ändern die Farbmischung, die Regeln der zehn Spalten bleiben gleich.</dd></div><div><dt>Kann ich dieselbe Austeilung neu starten?</dt><dd>Ja. Neustart verwendet dieselbe Austeilung, während Neues Spiel eine frische Austeilung mischt.</dd></div><div><dt>Stellt Rückgängig eine abgeschlossene Folge wieder her?</dt><dd>Ja. Rückgängig stellt das vollständige vorherige Tableau und die Anzahl der eingesammelten Folgen wieder her.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Klondike-Solitär</strong><span>Klassisches Klondike-Solitär mit Drag-and-Drop, Ziehmodi 1/3, Auto-Finish und Undo.</span></span></a><a class="game-info-related-card" href="/de/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>FreeCell-Solitär</strong><span>Alle 52 Karten liegen offen; nutze vier freie Zellen und acht Tableau-Spalten, um vier Fundamente vom Ass bis zum König zu bauen.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

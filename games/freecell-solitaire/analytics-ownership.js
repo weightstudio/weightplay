@@ -1,7 +1,7 @@
 (() => {
   const GAME_ID = "freecell-solitaire";
-  const GAME_VERSION = "v38";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v39";
+  const INTERFACE_VERSION = "7";
   const EVENT_NAME = "wp-freecell-analytics";
   const LOCALES = new Set(["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"]);
   const EVENTS = new Set(["game_start", "card_move", "free_cell_occupy", "foundation_complete", "result", "restart", "new_game", "close", "main_return", "return_session"]);

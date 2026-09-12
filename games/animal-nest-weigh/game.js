@@ -37,6 +37,92 @@
   ];
   const state = { locale: "en", screen: "main", round: 0, selectedPair: [], selectedTarget: null, comparison: null, comparisons: 0, completed: [], sound: true, wrong: false, resultVisible: false };
   const $ = (id) => document.getElementById(id);
+  // Interface 7 is injected after the authored game stylesheet. Keep the
+  // guide's semantic cards visibly framed, retire the duplicate local Main
+  // Settings owner in favor of the shared shell, and ensure hidden Result
+  // content cannot intercept Battle controls during responsive probes.
+  const installInterfaceCompatibility = () => {
+    if (document.getElementById("animalNestWeighInterfaceCompatibility")) return;
+    const style = document.createElement("style");
+    style.id = "animalNestWeighInterfaceCompatibility";
+    style.textContent = `
+      html body[data-wp-game-id="animal-nest-weigh"] .game-page-info {
+        border-radius: 18px !important;
+        padding: 16px 18px !important;
+        background: #e8f1ea !important;
+        border: 1px solid #eadfc9 !important;
+        box-shadow: 0 8px 20px #73552b14 !important;
+      }
+      html body[data-wp-game-id="animal-nest-weigh"] .game-page-info .game-info-sections {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        margin-top: 18px !important;
+      }
+      html body[data-wp-game-id="animal-nest-weigh"] .game-page-info .game-info-section {
+        min-width: 0 !important;
+        padding: 16px !important;
+        border: 1px solid #c8ddca !important;
+        border-radius: 16px !important;
+        background: #f8fff8 !important;
+        color: #24324a !important;
+      }
+      #mainScreen #mainSettingsBtn {
+        display: none !important;
+      }
+      #battleScreen #resultPanel[hidden] {
+        display: none !important;
+        pointer-events: none !important;
+      }
+      @media (max-width: 680px) {
+        html body[data-wp-game-id="animal-nest-weigh"] .game-page-info .game-info-sections {
+          grid-template-columns: minmax(0, 1fr) !important;
+        }
+      }
+      @media (min-width: 700px) and (orientation: landscape) and (max-height: 560px) {
+        html body #mainScreen .wp-standard-main-composition {
+          --wp-main-landscape-poster-size: 420px !important;
+          grid-template-columns: 420px minmax(0, 1fr) !important;
+        }
+      }
+    `;
+    const legacySettings = $("mainSettingsBtn");
+    if (legacySettings) {
+      legacySettings.classList.remove("wp-shell-settings-button");
+      legacySettings.removeAttribute("data-wp-settings");
+      legacySettings.hidden = true;
+      legacySettings.setAttribute("aria-hidden", "true");
+      legacySettings.tabIndex = -1;
+    }
+    (document.body || document.head).append(style);
+    const syncGuideContract = () => {
+      document.querySelectorAll(".game-page-info").forEach((info) => {
+        info.style.setProperty("border-radius", "18px", "important");
+        info.style.setProperty("padding", "16px 18px", "important");
+        info.style.setProperty("background", "#e8f1ea", "important");
+        info.style.setProperty("border", "1px solid #eadfc9", "important");
+        info.style.setProperty("box-shadow", "0 8px 20px #73552b14", "important");
+        const sections = info.querySelector(".game-info-sections");
+        if (sections) {
+          sections.style.setProperty("display", "grid", "important");
+          sections.style.setProperty("grid-template-columns", window.matchMedia("(max-width: 680px)").matches ? "minmax(0, 1fr)" : "repeat(3, minmax(0, 1fr))", "important");
+          sections.style.setProperty("gap", "12px", "important");
+          sections.style.setProperty("margin-top", "18px", "important");
+          sections.querySelectorAll(".game-info-section").forEach((section) => {
+            section.style.setProperty("min-width", "0", "important");
+            section.style.setProperty("padding", "16px", "important");
+            section.style.setProperty("border", "1px solid #c8ddca", "important");
+            section.style.setProperty("border-radius", "16px", "important");
+            section.style.setProperty("background", "#f8fff8", "important");
+            section.style.setProperty("color", "#24324a", "important");
+          });
+        }
+      });
+    };
+    syncGuideContract();
+    new MutationObserver(syncGuideContract).observe(document.body, { childList: true, subtree: true });
+    window.setTimeout(syncGuideContract, 0);
+  };
   const safeGet = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch (_error) { return fallback; } };
   const safeSet = (key, value) => { try { localStorage.setItem(key, value); } catch (_error) {} };
   const progressKey = "weightplay-animal-nest-weigh-progress";
@@ -88,6 +174,10 @@
     const guide = $("guideSection");
     if (guide) guide.hidden = screen !== "main";
     ["main", "stage", "battle"].forEach((name) => { const element = $(name + "Screen"); element.hidden = name !== screen; element.classList.toggle("active", name === screen); });
+    const authoredStageReserve = document.querySelector("#app > .stage-ad-reserve");
+    if (authoredStageReserve) authoredStageReserve.hidden = true;
+    const authoredBattleReserve = document.querySelector("#app > .battle-ad-reserve");
+    if (authoredBattleReserve) authoredBattleReserve.hidden = screen !== "battle";
     if (screen === "main") applyText();
     if (screen === "stage") renderStages();
     if (screen === "battle") renderBattle();
@@ -223,7 +313,7 @@
     const pathMap = { "zh-tw": "zh-Hant", "zh-cn": "zh-Hans", "pt-br": "pt-BR" };
     return queryLocale || pathMap[pathLocale] || pathLocale || safeGet("weightplay-locale", "en");
   };
-  const init = () => { state.completed = loadCompleted(); state.sound = safeGet("weightplay-animal-nest-weigh-sound", "on") !== "off"; bind(); applyLocale(initialLocale()); setScreen("main"); };
+  const init = () => { installInterfaceCompatibility(); state.completed = loadCompleted(); state.sound = safeGet("weightplay-animal-nest-weigh-sound", "on") !== "off"; bind(); applyLocale(initialLocale()); setScreen("main"); };
   window.__ANIMAL_NEST_WEIGH_TEST__ = { state, rounds, targetIndex, startRound, applyLocale };
   init();
 }());

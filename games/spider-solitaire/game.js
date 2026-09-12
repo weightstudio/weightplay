@@ -1250,6 +1250,7 @@
     ui.mainScreen.hidden = true;
     ui.battleScreen.hidden = false;
     document.body.dataset.screen = "battle";
+    window.SpiderFrame?.sync();
     state.layoutFitKey = "";
     state.layoutMaxRows = 0;
     setBattleViewportLock(true);
@@ -1277,6 +1278,7 @@
     ui.tutorialOverlay.hidden = true;
     ui.confirmOverlay.hidden = true;
     setBattleViewportLock(false);
+    window.SpiderFrame?.sync();
     state.active = false;
     state.pendingAction = null;
     renderStatistics();
@@ -1299,9 +1301,11 @@
     ui.tutorialOverlay.hidden = true;
     ui.confirmOverlay.hidden = true;
     setBattleViewportLock(false);
+    window.SpiderFrame?.sync();
     state.active = false;
     state.pendingAction = null;
     renderStatistics();
+    window.dispatchEvent(new Event("weightplay:stage-sync"));
     window.dispatchEvent(new Event("weightplay:battle-sync"));
     window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.dispatchEvent(new Event("resize"));
@@ -1331,13 +1335,14 @@
     renderBoard();
     startClock();
     syncDifficultyCoach();
-    if (safeGet(STORAGE.tutorial, "0") !== "1") window.setTimeout(() => { ui.tutorialOverlay.hidden = false; }, 420);
+    if (safeGet(STORAGE.tutorial, "0") !== "1") window.setTimeout(() => { ui.tutorialOverlay.hidden = false; window.SpiderFrame?.sync(); }, 420);
   }
 
   function requestNewGame() {
     if (state.active && game.moveCount > 0 && !game.hasWon()) {
       state.pendingAction = beginNewGame;
       ui.confirmOverlay.hidden = false;
+      window.SpiderFrame?.sync();
       return;
     }
     beginNewGame();
@@ -1379,6 +1384,7 @@
     ui.resultOverlay.classList.add("eight-set-result");
     ui.resultText.textContent = t("result_summary", { sets: game.completed.total, moves: game.moveCount, time: formatTime(state.elapsed), score: game.score });
     ui.resultOverlay.hidden = false;
+    window.SpiderFrame?.sync();
   }
 
   function requestBack() {
@@ -1388,13 +1394,15 @@
     }
     state.pendingAction = showStage;
     ui.confirmOverlay.hidden = false;
+    window.SpiderFrame?.sync();
   }
 
-  function closeConfirm() { ui.confirmOverlay.hidden = true; state.pendingAction = null; }
+  function closeConfirm() { ui.confirmOverlay.hidden = true; state.pendingAction = null; window.SpiderFrame?.sync(); }
 
   function finishTutorial() {
     safeSet(STORAGE.tutorial, "1");
     ui.tutorialOverlay.hidden = true;
+    window.SpiderFrame?.sync();
   }
 
   function installSmokeHook() {
@@ -1819,7 +1827,7 @@
     ui.undoBtn.addEventListener("click", requestUndo);
     ui.hintBtn.addEventListener("click", requestHint);
     ui.copyReplayLinkBtn.addEventListener("click", copyReplayLink);
-    ui.helpBtn.addEventListener("click", () => { ui.tutorialOverlay.hidden = false; });
+    ui.helpBtn.addEventListener("click", () => { ui.tutorialOverlay.hidden = false; window.SpiderFrame?.sync(); });
     ui.audioMenuBtn.addEventListener("click", () => { ui.audioPopover.classList.toggle("is-hidden"); ui.audioMenuBtn.setAttribute("aria-expanded", String(!ui.audioPopover.classList.contains("is-hidden"))); });
     ui.soundBtn.addEventListener("click", () => { setCardSoundEnabled(!audio.enabled); setSoundButton(); });
     ui.localeSelect.addEventListener("change", () => window.WonderI18n?.setLocale?.(ui.localeSelect.value));

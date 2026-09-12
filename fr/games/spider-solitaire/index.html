@@ -44,7 +44,7 @@
       "@type": "VideoGame",
       "name": "Spider Solitaire Online",
       "url": "https://weightplay.com/en/games/spider-solitaire/",
-      "image": "https://weightplay.com/assets/spider-solitaire-cover.png",
+      "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
       "description": "Classic Spider Solitaire with 1 Suit, 2 Suits, and 4 Suits, smooth drag-and-drop, Hint, Undo, and responsive play.",
       "publisher": { "@type": "Organization", "name": "WeightStudio" },
       "operatingSystem": "Web Browser",
@@ -59,15 +59,16 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
   <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard />
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1" />
-  <link rel="stylesheet" href="style.css?v=20260908-spider-royal-v37" />
-  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260909-spider-deck-v39" />
-  <meta name="description" content="Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c&#39;est possible..." />
+  <link rel="stylesheet" href="style.css?v=20260909-spider-deck-v39" />
+  <link rel="stylesheet" href="/games/spider-solitaire/royal-table.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="frame-content.css?v=20260913-spider-block-v40" />
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control" />
+  <meta name="description" content="Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée." />
     <meta property="og:title" content="Solitaire Spider | WeightPlay" />
-    <meta property="og:description" content="Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c&#39;est possible..." />
+    <meta property="og:description" content="Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée." />
     <meta property="og:url" content="https://weightplay.com/fr/games/spider-solitaire/" />
     <meta name="twitter:title" content="Solitaire Spider | WeightPlay" />
-    <meta name="twitter:description" content="Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c&#39;est possible..." />
+    <meta name="twitter:description" content="Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée." />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -76,7 +77,7 @@
   "alternateName": "Spider Solitaire",
   "url": "https://weightplay.com/fr/games/spider-solitaire/",
   "image": "https://weightplay.com/assets/interface7-redrawn/spider-solitaire.webp",
-  "description": "Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c'est possible...",
+  "description": "Solitaire Spider classique avec 1, 2 et 4 couleurs, glisser-déposer fluide, indices et annulation illimitée.",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -98,11 +99,12 @@
 }
     </script>
   </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true">
+<body data-screen="main" data-audience="general" data-wp-game-id="spider-solitaire" data-wp-combined-sound="true" data-wp-game-owned-guide="true" data-runtime-localize="off">
   <section id="loadingPanel" class="loading-panel" aria-live="polite">
     <div class="loading-card"><strong data-sl="title">Spider Solitaire</strong><span id="loadingText" data-sl="loading">Preparing your table</span><div class="loading-track"><span id="loadingFill"></span></div></div>
   </section>
 
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup">
   <main id="mainScreen" class="main-screen">
     <header class="main-header">
@@ -121,7 +123,7 @@
     </header>
 
     <section class="main-hero">
-      <div class="poster-frame"><img class="cover" src="../../assets/spider-solitaire-cover.png" alt="Illustration du jeu Solitaire Spider" /></div>
+      <div class="poster-frame"><img class="cover" src="../../assets/interface7-redrawn/spider-solitaire.webp" alt="Illustration du jeu Solitaire Spider" /></div>
       <article class="main-copy">
         <small class="eyebrow" data-sl="kicker">Classic Card Game</small>
         <h1 data-sl="title">Solitaire Spider</h1>
@@ -186,8 +188,23 @@
     <div id="hintOverlay" class="hint-overlay" role="status" aria-live="polite" hidden></div><div id="dragLayer" class="drag-layer" aria-hidden="true"></div>
   </section>
 
+  </div>
+  <section id="gameGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <div class="game-info-hero"><div class="game-info-title"><h2 data-sl="title" data-i18n="title">Solitaire Spider</h2></div></div>
+    <div class="game-info-sections">
+      <section class="game-info-section"><h3 data-sl="target_label" data-i18n="target_label">Objectif</h3><p data-sl="hero" data-i18n="hero">Formez des suites K à A de même couleur dans dix colonnes. Choisissez la difficulté et complétez les huit groupes.</p></section>
+      <section class="game-info-section"><h3 data-sl="help" data-i18n="help">Comment jouer</h3><ol>
+        <li data-sl="tip_1" data-i18n="tip_1">Placez les cartes de K à A en ordre décroissant.</li>
+        <li data-sl="tip_2" data-i18n="tip_2">Seules les suites de même couleur se déplacent ensemble.</li>
+        <li data-sl="tip_3" data-i18n="tip_3">Terminez K → A de même couleur pour la retirer.</li>
+        <li data-sl="tip_4" data-i18n="tip_4">Touchez le talon pour distribuer une carte par colonne.</li>
+        <li data-sl="tip_5" data-i18n="tip_5">Une colonne vide bloque la distribution.</li>
+      </ol></section>
+      <section class="game-info-section"><h3 data-sl="controls_label" data-i18n="controls_label">Commandes</h3><p data-sl="controls" data-i18n="controls">Faites glisser une carte ou une suite de même couleur. Touchez s&#39;il n&#39;y a qu&#39;une destination.</p></section>
+    <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien de cartes sont utilisées ?</dt><dd>Deux jeux standard sont utilisés : 104 cartes, dont 54 dans la table initiale et 50 dans le talon.</dd></div><div><dt>Combien y a-t-il de colonnes ?</dt><dd>Il y a dix colonnes ; les quatre premières commencent avec six cartes et les six autres avec cinq.</dd></div><div><dt>Peut-on empiler des couleurs différentes ?</dt><dd>Oui. Les rangs peuvent descendre entre les couleurs, mais seule une suite décroissante de même couleur peut être déplacée en groupe ou récupérée.</dd></div><div><dt>Pourquoi le talon est-il bloqué ?</dt><dd>Le Spider classique exige que les dix colonnes contiennent au moins une carte avant de distribuer une nouvelle ligne.</dd></div><div><dt>Combien de suites faut-il pour gagner ?</dt><dd>Il faut récupérer huit suites de même couleur du Roi à l&#39;As.</dd></div><div><dt>Qu&#39;est-ce qui change selon la difficulté ?</dt><dd>1 couleur, 2 couleurs et 4 couleurs changent le mélange des couleurs, mais gardent les mêmes règles à dix colonnes.</dd></div><div><dt>Puis-je recommencer la même donne ?</dt><dd>Oui. Recommencer utilise la même graine ; Nouvelle partie mélange une nouvelle donne.</dd></div><div><dt>Annuler restaure-t-il une suite terminée ?</dt><dd>Oui. Annuler restaure toute la table précédente et le nombre de groupes récupérés.</dd></div></dl></div></div>
+  </section>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260816-spider-v31-funnel"></script>
@@ -195,36 +212,11 @@
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
   <script src="../../src/card-game-engine.js?v=20260808-card-engine1"></script>
   <script src="/src/card-table-presentation.js?v=20260909-deck-klondike-v2"></script>
-  <script src="game.js?v=20260909-spider-deck-v39"></script>
-  <script src="analytics-ownership.js?v=20260909-spider-deck-v39"></script>
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=20260913-spider-block-v40"></script>
+  <script src="game.js?v=20260913-spider-block-v40"></script>
+  <script src="analytics-ownership.js?v=20260913-spider-block-v40"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260809-battle-first-action1" data-wp-battle-standard></script>
-  <section class="game-page-info game-page-info-static" aria-label="Informations sur Solitaire Spider">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2>Solitaire Spider</h2><p>Solitaire Spider utilise deux jeux de cartes dans dix colonnes. Construisez des suites décroissantes, séparez les couleurs mélangées quand c&#39;est possible et complétez huit suites de même couleur du Roi à l&#39;As pour vider la table.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Multi-Suit Card Solitaire</strong></div><div class="game-info-fact"><span>Genre</span><strong>Puzzle · Card · Strategy</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Facile à difficile</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>5 à 20 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Monde et mission</h3><p>Solitaire Spider conserve la sensation familière du moteur de cartes de Klondike, mais change l&#39;espace de décision : chaque colonne compte, une nouvelle ligne du talon touche les dix colonnes et une colonne vide est puissante, tout en bloquant temporairement la distribution.</p>
-<p>Une couleur enseigne le rythme, deux couleurs ajoutent la séparation des couleurs et quatre couleurs demandent une planification à long terme sans changer les commandes principales.</p></div>
-      <div class="game-info-section"><h3>Systèmes du jeu</h3><p>Les cartes se placent par rang décroissant. Une carte face visible peut être posée sur le rang immédiatement supérieur ; un groupe ne se déplace ensemble que s&#39;il est visible, décroissant et de la même couleur.</p>
-<p>Complétez une suite Roi-As de même couleur : elle est récupérée avec une animation lisible. Huit suites récupérées remportent la partie.</p>
-<p>Le talon distribue une carte face visible dans chacune des dix colonnes non vides. Annuler restaure la table, l&#39;état visible, le talon, les distributions, le score et les suites complétées.</p>
-<p>Indice met en évidence un mouvement légal utile en privilégiant les cartes cachées révélées, les suites de même couleur, les suites terminées et les colonnes vides créées.</p></div>
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez 1 couleur, 2 couleurs ou 4 couleurs sur l&#39;écran principal.</li><li>Faites glisser une carte visible ou une suite valide de même couleur sur le rang immédiatement supérieur.</li><li>Utilisez les colonnes vides pour réorganiser n&#39;importe quelle carte ou suite valide.</li><li>Révélez les cartes cachées, puis distribuez une nouvelle ligne seulement lorsque chaque colonne contient une carte.</li><li>Complétez les huit suites de même couleur du Roi à l&#39;As pour gagner.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Révélez une carte cachée avant un mouvement qui ne change que la surface.</li><li>Gardez les suites de même couleur ensemble ; les suites mélangées servent d&#39;appui, mais ne peuvent pas se déplacer en groupe.</li><li>Considérez une colonne vide comme une réserve : utilisez-la pour séparer les couleurs ou révéler une carte cachée.</li><li>Ne distribuez pas automatiquement lorsqu&#39;une révélation ou une fusion de même couleur reste possible.</li><li>À quatre couleurs, protégez la suite la plus propre et utilisez Annuler pour comparer les destinations.</li></ul></div>
-      <div class="game-info-section"><h3>Progression et difficulté</h3><p>1 couleur enseigne le rythme, 2 couleurs ajoutent les conflits de couleurs et 4 couleurs est le mode classique le plus exigeant.</p>
-<p>Chaque difficulté conserve séparément les parties jouées, les victoires, le taux de victoire, le meilleur temps et le plus petit nombre de coups.</p>
-<p>Recommencer utilise la même graine sans changer la donne ; Nouvelle partie crée un nouveau mélange.</p></div>
-      <div class="game-info-section"><h3>Note de conception</h3><p>Spider partage avec Klondike le moteur de cartes, le canevas de bataille adaptatif, la couche de glisser-déposer, l&#39;entrée tactile, le rythme des animations, la préférence sonore, les instantanés d&#39;annulation et le langage visuel des cartes.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Informations du joueur et sauvegarde</h3><p>Solitaire Spider est un jeu de stratégie avec des cartes destiné au grand public. Aucun compte n&#39;est nécessaire ; les statistiques par difficulté et les préférences restent dans ce navigateur.</p></div>
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Combien de cartes sont utilisées ?</dt><dd>Deux jeux standard sont utilisés : 104 cartes, dont 54 dans la table initiale et 50 dans le talon.</dd></div><div><dt>Combien y a-t-il de colonnes ?</dt><dd>Il y a dix colonnes ; les quatre premières commencent avec six cartes et les six autres avec cinq.</dd></div><div><dt>Peut-on empiler des couleurs différentes ?</dt><dd>Oui. Les rangs peuvent descendre entre les couleurs, mais seule une suite décroissante de même couleur peut être déplacée en groupe ou récupérée.</dd></div><div><dt>Pourquoi le talon est-il bloqué ?</dt><dd>Le Spider classique exige que les dix colonnes contiennent au moins une carte avant de distribuer une nouvelle ligne.</dd></div><div><dt>Combien de suites faut-il pour gagner ?</dt><dd>Il faut récupérer huit suites de même couleur du Roi à l&#39;As.</dd></div><div><dt>Qu&#39;est-ce qui change selon la difficulté ?</dt><dd>1 couleur, 2 couleurs et 4 couleurs changent le mélange des couleurs, mais gardent les mêmes règles à dix colonnes.</dd></div><div><dt>Puis-je recommencer la même donne ?</dt><dd>Oui. Recommencer utilise la même graine ; Nouvelle partie mélange une nouvelle donne.</dd></div><div><dt>Annuler restaure-t-il une suite terminée ?</dt><dd>Oui. Annuler restaure toute la table précédente et le nombre de groupes récupérés.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/klondike-solitaire/"><img src="/assets/interface7-redrawn/klondike-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitaire Klondike</strong><span>Solitaire classique avec glisser-déposer complet, modes 1 ou 3 cartes, auto-fini et support d&#39;annulation.</span></span></a><a class="game-info-related-card" href="/fr/games/freecell-solitaire/"><img src="/assets/interface7-redrawn/freecell-solitaire.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Solitaire FreeCell</strong><span>Les 52 cartes commencent face visible ; utilisez quatre cellules libres et huit colonnes pour compléter quatre fondations de l’As au Roi.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

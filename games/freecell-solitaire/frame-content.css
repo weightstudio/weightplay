@@ -1,0 +1,22 @@
+/* Selected-game content only; header, preferences and guide use shared tokens. */
+.freecell-main-content [hidden], #gameFrame > [hidden] {display:none!important}
+.game-page-info[hidden] {display:none!important}
+.freecell-main-copy details {margin-top:12px}
+.freecell-main-copy summary {cursor:pointer;padding:8px 0}
+.freecell-main-copy details > button {margin-top:8px}
+.battle-canvas[data-wp-frame-scene] {display:grid}
+.wp-premium-table .board-shell[data-wp-frame-content] {
+  background:#064632 url('../../assets/freecell-solitaire-table-block-v39.webp') center/100% 100% no-repeat;
+}
+.wp-premium-table[data-card-deck='klondike'] .classic-card.front {
+ background:#fff5df url('../../assets/freecell-solitaire-card-front-block-v39.webp') center/100% 100% no-repeat;
+ border-radius:3px;
+}
+.result-card {max-height:100%;overflow:auto;box-sizing:border-box;background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+.result-card .result-actions {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.result-card .result-actions button {width:100%;min-width:0;margin:0;padding-inline:4px}
+@media(max-height:500px) {
+ .result-card {padding:12px}
+ .result-card h2 {margin:0 0 6px;font-size:20px}
+ .result-card p {margin:6px 0;font-size:13px}
+}

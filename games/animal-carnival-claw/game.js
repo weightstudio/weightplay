@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v42",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v43",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
 const interfaceValidatorRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
@@ -61,7 +61,7 @@ const levels=Array.from({length:30},(_,index)=>{
 
 function safeGet(key){try{return localStorage.getItem(key)}catch{return null}}
 function safeSet(key,value){try{localStorage.setItem(key,value);return true}catch{return false}}
-function loadSave(){try{const parsed=JSON.parse(safeGet("weightplay_animal_carnival_claw_v1")||"null"),base=defaultSave();if(!parsed)return base;return{...base,...parsed,medals:[...base.medals,...(parsed.medals||[])].slice(0,30),cabinet:[...base.cabinet,...(parsed.cabinet||[])].slice(0,8),upgrades:{...base.upgrades,...(parsed.upgrades||{})}}}catch{return defaultSave()}}
+function loadSave(){try{const parsed=JSON.parse(safeGet("weightplay_animal_carnival_claw_v1")||"null"),base=defaultSave();if(!parsed)return base;return{...base,...parsed,medals:[...(parsed.medals||[]),...base.medals].slice(0,30),cabinet:[...(parsed.cabinet||[]),...base.cabinet].slice(0,8),upgrades:{...base.upgrades,...(parsed.upgrades||{})}}}catch{return defaultSave()}}
 function persist(){safeSet("weightplay_animal_carnival_claw_v1",JSON.stringify(save))}
 function loadImage(src){const image=new Image();image.src=src;return image}
 function t(key,data){return fmt(copy[key]??window.CARNIVAL_CLAW_LOCALES.en[key]??key,data)}

@@ -182,7 +182,11 @@
         <li data-i18n="rule1">表向きのカードを選び、ドラッグするか光った移動先をタップします。場札は赤黒交互の降順。空列には K または K からの列だけを置けます。</li>
         <li data-i18n="rule2">組札へ同じスートを A から K の順に移します。上の札を動かすと伏せ札が開きます。</li>
         <li data-i18n="rule3">山札をタップして引きます。3枚ドローでも、捨て札の一番上だけが使えます。</li>
-      </ol><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>ルールの 6 章にわたって 30 の作成されたステージがあります。ステージ 30 は完了後もリプレイ可能です。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
+      </ol></section>
+      <section class="game-info-section"><h3 data-i18n="helpTitle">困ったとき</h3><p data-i18n="help">ヒントは合法手を示すだけです。元に戻すで手を取り消せます。自動完了は安全な終盤の手を処理します。再開は同じ配札、新しいゲームは別の配札です。</p></section>
+      <section class="game-info-section"><h3 data-i18n="noteTitle">プレイ記録</h3><p data-i18n="note">一つの配札が一局のパズルです。ステージ選択はありません。統計とドロー設定はこのブラウザーに保存されます。</p></section>
+    <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>How many cards are used?</dt><dd>Klondike Solitaire uses one standard deck of 52 cards.</dd></div><div><dt>What is the win condition?</dt><dd>Each foundation must be completed from Ace to King in suit order.</dd></div><div><dt>What are Draw 1 and Draw 3?</dt><dd>Draw 1 reveals one card per Stock draw; Draw 3 reveals three.</dd></div><div><dt>Can cards be moved one by one?</dt><dd>Yes, and valid descending alternating-color runs can be moved as a group.</dd></div><div><dt>How do I know a move is legal?</dt><dd>Hint highlights one legal target. Use legal tableau or foundation matches only.</dd></div><div><dt>What does Auto-Finish do?</dt><dd>It moves only legal foundation-safe moves after non-strategic tableau moves are exhausted.</dd></div><div><dt>Can I Undo?</dt><dd>Yes. Undo supports repeated use and fully restores board state.</dd></div><div><dt>What if no suggested move exists?</dt><dd>Hint returns 0 moves available when no move is found.</dd></div></dl></div></div>
+  </section>
 
   <section id="battleScreen" class="battle-screen" hidden>
     <div class="battle-canvas" data-wp-logical-battle-canvas>
@@ -248,7 +252,7 @@
     <script src="game.js?v=20260913-klondike-block-v52"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
     <script src="../../src/game-page-info.js?v=20260905-klondike-es-localization-v45"></script>
-    <script src="analytics-ownership.js?v=20260909-klondike-poster-v51"></script>
+    <script src="analytics-ownership.js?v=20260913-klondike-block-v52"></script>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="クロンダイク・ソリティア";document.title="クロンダイク・ソリティア | WeightPlay";},{once:true});</script>
 </body>
 </html>
