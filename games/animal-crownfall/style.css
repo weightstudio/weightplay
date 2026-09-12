@@ -2,3 +2,5 @@
 @media(min-aspect-ratio:1.45){#battleContent{grid-template-columns:minmax(0,1fr) 230px;grid-template-rows:minmax(0,1fr) 48px}#arena{grid-row:1/3}#side{grid-column:2;grid-row:1;grid-template-rows:40px minmax(32px,1fr) 30px 26px}.tools{grid-column:2;grid-row:2}.tools button{font-size:12px}#objective,#feedback{font-size:13px}.stage-card{min-height:170px;padding:12px;gap:8px}.stage-card .number{font-size:30px}.stage-card img{display:none}.stage-card strong{font-size:18px}}
 
 #resume[hidden]{display:none!important}
+
+.board-section{position:absolute;top:3px;transform:translateX(-50%);font-size:11px;color:#ffdf89;background:#17333c;padding:2px 5px}

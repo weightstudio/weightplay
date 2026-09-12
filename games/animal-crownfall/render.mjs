@@ -41,37 +41,39 @@ export class CrownScene {
     else {this.box(g,0,.07,0,.35,.4,.18,kind==='seal'?0xf5ce62:0x64e2ec,true);this.box(g,0,.08,.12,.11,.17,.04,0xf7ffff,true);}
     return g;
   }
+  point(x,row){const cut=Math.ceil((this.rows||8)/2);return {x:x+(this.folded&&row>=cut?8.2:0),y:-(this.folded?row%cut:row)};}
   show(state,highlight=[]) {
     this.state=state;this.world.clear();this.labels.replaceChildren();this.hitTargets=[];this.actorNodes=new Map();this.labelNodes=[];
-    const rows=state.board.length;this.rows=rows;this.center=(rows-1)/2;
+    const rows=state.board.length;this.rows=rows;this.folded=this.host.clientWidth/this.host.clientHeight>1.7&&rows>6;this.center=((this.folded?Math.ceil(rows/2):rows)-1)/2;
     // Repeated masonry is actual geometry, with quiet contrast behind the puzzle.
-    for(let y=-8;y<rows+8;y+=2)for(let x=-1;x<8;x+=2)this.box(this.world,x,y*-1, -1.3,1.92,1.92,.25,(x+y)%3?0x344752:0x3c5059);
-    this.box(this.world,-.85,-this.center,-.42,.25,rows+18,1.6,0x64717a);this.box(this.world,6.85,-this.center,-.42,.25,rows+18,1.6,0x64717a);
+    for(let y=-8;y<rows+8;y+=2)for(let x=-1;x<(this.folded?16:8);x+=2)this.box(this.world,x,y*-1, -1.3,1.92,1.92,.25,(x+y)%3?0x344752:0x3c5059);
+    this.box(this.world,-.85,-this.center,-.42,.25,rows+18,1.6,0x64717a);this.box(this.world,this.folded?15.05:6.85,-this.center,-.42,.25,rows+18,1.6,0x64717a);
     const marked=new Set(highlight.map(p=>p.join(',')));
     for(let y=0;y<rows;y++)for(let x=0;x<7;x++) {
-      const c=state.board[y][x];if(c==='.')continue;
-      const m=this.box(this.world,x,-y,0,.95,.95,.85,marked.has(`${x},${y}`)?0xffdf85:PALETTE[c],c==='1'||c==='2');
-      if(/^[ABC]$/.test(c)){m.userData.cell=[x,y];this.hitTargets.push(m);const rune=this.box(this.world,x,-y,.46,c==='A'?.28:.35,c==='B'?.1:.3,.055,0xffffff);rune.rotation.z=c==='C'?Math.PI/4:0;if(c==='A')this.box(this.world,x,-y,.46,.1,.4,.06,0xffe5ee);}
-      else if(c==='1'||c==='2'){for(const dx of [-.27,0,.27])this.box(this.world,x+dx,-y,.46,.07,.78,.07,0xffdf8a,true);}
-      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.world,x+dx,-y+.2,.27,.16,.55,.16,0xd4e0e6,true);spike.rotation.z=.18;}}
+      const c=state.board[y][x];if(c==='.')continue;const {x:gx,y:gy}=this.point(x,y);
+      const m=this.box(this.world,gx,gy,0,.95,.95,.85,marked.has(`${x},${y}`)?0xffdf85:PALETTE[c],c==='1'||c==='2');
+      if(/^[ABC]$/.test(c)){m.userData.cell=[x,y];this.hitTargets.push(m);const rune=this.box(this.world,gx,gy,.46,c==='A'?.28:.35,c==='B'?.1:.3,.055,0xffffff);rune.rotation.z=c==='C'?Math.PI/4:0;if(c==='A')this.box(this.world,gx,gy,.46,.1,.4,.06,0xffe5ee);}
+      else if(c==='1'||c==='2'){for(const dx of [-.27,0,.27])this.box(this.world,gx+dx,gy,.46,.07,.78,.07,0xffdf8a,true);}
+      else if(c==='^'){for(const dx of [-.26,0,.26]){const spike=this.box(this.world,gx+dx,gy+.2,.27,.16,.55,.16,0xd4e0e6,true);spike.rotation.z=.18;}}
     }
     const add=(a,kind)=>{
-      const node=kind==='hero'?this.actor():kind==='enemy'?this.actor(true,a.boss):this.prop(a.kind);node.position.set(a.x,-a.y-.1,.65);this.world.add(node);this.actorNodes.set(a.id||'hero',node);
+      const node=kind==='hero'?this.actor():kind==='enemy'?this.actor(true,a.boss):this.prop(a.kind);const at=this.point(a.x,a.y);node.position.set(at.x,at.y-.1,.65);this.world.add(node);this.actorNodes.set(a.id||'hero',node);
       const label=document.createElement('span');label.className=`actor-tag ${kind}`;label.textContent=this.label(a,kind,state);this.labels.append(label);this.labelNodes.push({element:label,actor:a,kind});
     };
     add(state.hero,'hero');state.enemies.filter(e=>e.alive).forEach(e=>add(e,'enemy'));state.items.filter(i=>i.alive).forEach(i=>add(i,'item'));
+    if(this.folded){for(const [index,title] of [[0,`1–${Math.ceil(rows/2)} ↓`],[1,`${Math.ceil(rows/2)+1}–${rows} ↓`]]){const el=document.createElement('span');el.className='board-section';el.textContent=title;el.style.left=index?'72%':'28%';this.labels.append(el);}}
     this.resize();this.paint();
   }
-  resize(){if(this.disposed)return;const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);const aspect=w/h,worldHeight=Math.max((this.rows||8)+1.7,8.4/aspect),worldWidth=worldHeight*aspect;this.camera.left=-worldWidth/2;this.camera.right=worldWidth/2;this.camera.top=worldHeight/2;this.camera.bottom=-worldHeight/2;this.camera.position.set(3,-(this.center||3.5)+3.0,20);this.camera.lookAt(3,-(this.center||3.5)+.25,0);this.camera.updateProjectionMatrix();this.paint();}
-  paint(){if(this.disposed)return;this.renderer.render(this.scene,this.camera);for(const l of this.labelNodes||[]){const p=new THREE.Vector3(l.actor.x,-l.actor.y+.7,.7).project(this.camera);l.element.style.left=`${(p.x+1)*50}%`;l.element.style.top=`${(1-p.y)*50}%`;}}
+  resize(){if(this.disposed)return;const w=this.host.clientWidth,h=this.host.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h,false);const folded=w/h>1.7&&(this.rows||8)>6;if(this.state&&folded!==this.folded){this.show(this.state);return;}const aspect=w/h,visibleRows=this.folded?Math.ceil(this.rows/2):(this.rows||8),worldHeight=Math.max(visibleRows+1.5,(this.folded?16.6:8.4)/aspect),worldWidth=worldHeight*aspect;this.camera.left=-worldWidth/2;this.camera.right=worldWidth/2;this.camera.top=worldHeight/2;this.camera.bottom=-worldHeight/2;this.camera.position.set(this.folded?7.1:3,-(this.center||3.5)+3.0,20);this.camera.lookAt(this.folded?7.1:3,-(this.center||3.5)+.25,0);this.camera.updateProjectionMatrix();this.paint();}
+  paint(){if(this.disposed)return;this.renderer.render(this.scene,this.camera);for(const l of this.labelNodes||[]){const pos=this.point(l.actor.x,l.actor.y);const p=new THREE.Vector3(pos.x,pos.y+.7,.7).project(this.camera);l.element.style.left=`${(p.x+1)*50}%`;l.element.style.top=`${(1-p.y)*50}%`;}}
   async animate(event,previous,isPaused=()=>false) {
     if(this.disposed)return;
     const duration=this.reduced()?80:({clear:190,fall:280,walk:200,approach:320,hit:320,phase:400,fail:350,pickup:220,win:280}[event.type]||150);
     const hero=this.actorNodes.get('hero'),target=this.actorNodes.get(event.target);const origin=hero?.position.clone();let elapsed=0,last=performance.now();
     await new Promise(resolve=>{this.resolveAnimation=resolve;const tick=now=>{if(this.disposed){resolve();return;}const delta=Math.min(40,now-last);last=now;if(!isPaused()&&!document.hidden)elapsed+=delta;const p=Math.min(1,elapsed/duration);
       if(!this.reduced()) {
-        if(event.type==='approach'&&hero&&origin){hero.position.x=origin.x+(event.to-origin.x)*.65*p;hero.rotation.z=-.08*Math.sin(p*Math.PI);}
-        if(event.type==='fall')for(const [id,node] of this.actorNodes){const after=id==='hero'?event.state.hero:[...event.state.enemies,...event.state.items].find(a=>a.id===id);const before=id==='hero'?previous.hero:[...previous.enemies,...previous.items].find(a=>a.id===id);if(after&&before)node.position.y=-before.y-.1-(after.y-before.y)*p*p;}
+        if(event.type==='approach'&&hero&&origin){hero.position.x=origin.x+(this.point(event.to,previous.hero.y).x-origin.x)*.65*p;hero.rotation.z=-.08*Math.sin(p*Math.PI);}
+        if(event.type==='fall')for(const [id,node] of this.actorNodes){const after=id==='hero'?event.state.hero:[...event.state.enemies,...event.state.items].find(a=>a.id===id);const before=id==='hero'?previous.hero:[...previous.enemies,...previous.items].find(a=>a.id===id);if(after&&before){const a=this.point(before.x,before.y),b=this.point(after.x,after.y);node.position.y=a.y-.1+(b.y-a.y)*p*p;node.position.x=a.x+(b.x-a.x)*p;}}
         if(['hit','phase','fail'].includes(event.type)&&target){target.rotation.z=Math.sin(p*Math.PI)*.2;target.position.x+=Math.sin(p*Math.PI*2)*.004;}
       }
       this.paint();if(p>=1){this.resolveAnimation=null;resolve();}else this.frame=requestAnimationFrame(tick);};this.frame=requestAnimationFrame(tick);});
