@@ -18,11 +18,11 @@
     <meta property="og:title" content="Block Blast | WeightPlay" />
     <meta property="og:description" content="Plan space for three shapes, clear complete lines, and master 30 puzzle missions plus Endless mode." />
     <meta property="og:url" content="https://weightplay.com/en/games/block-blast/" />
-    <meta property="og:image" content="https://weightplay.com/assets/block-blast/cover.png" />
+    <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Block Blast | WeightPlay" />
     <meta name="twitter:description" content="A free 8×8 line-clearing puzzle with 30 missions and Endless mode." />
-    <meta name="twitter:image" content="https://weightplay.com/assets/block-blast/cover.png" />
+    <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/block-blast.webp" />
     <link rel="canonical" href="https://weightplay.com/en/games/block-blast/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/block-blast/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/block-blast/" />
@@ -50,11 +50,12 @@
       href="../../src/battle-canvas-standard.css"
       data-wp-battle-standard
     />
-    <link rel="stylesheet" href="../../src/game-shell-controls-standard.css" />
     <link rel="stylesheet" href="../arrow-escape/style.css?v=20260801-shell1" />
     <link rel="stylesheet" href="style.css?v=20260904-interface-contract-v36" />
+    <link rel="stylesheet" href="../../src/game-screen-frame.css" />
+    <link rel="stylesheet" href="frame-content.css" />
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260826-first-session-tutorial-v36" data-wp-tutorial-style />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Blast","url":"https://weightplay.com/en/games/block-blast/","image":"https://weightplay.com/assets/block-blast/cover.png","description":"Fit fixed block shapes on an 8 by 8 board, clear complete lines, solve 30 terrain missions, and play an endless score challenge.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Block Blast","url":"https://weightplay.com/en/games/block-blast/","image":"https://weightplay.com/assets/interface7-redrawn/block-blast.webp","description":"Fit fixed block shapes on an 8 by 8 board, clear complete lines, solve 30 terrain missions, and play an endless score challenge.","applicationCategory":"Game","operatingSystem":"Web browser","publisher":{"@type":"Organization","name":"WeightStudio"},"inLanguage":"en","isAccessibleForFree":true,"genre":["Puzzle","Strategy","Browser Game"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":9}}</script>
   </head>
   <body
     data-wp-game-id="block-blast"
@@ -63,6 +64,7 @@
     <section id="loadingPanel" class="loading-panel" aria-live="polite">
       <div class="loading-card"><strong>Block Blast</strong><span>Preparing the board…</span><div class="loading-track"><i></i></div></div>
     </section>
+    <div id="gameFrame" data-wp-frame-root>
     <div id="mainGroup" class="main-group">
       <main class="main-canvas" data-screen="main">
         <header class="main-header">
@@ -91,7 +93,7 @@
         <section class="hero">
           <img
             class="poster"
-            src="../../assets/block-blast/cover.webp"
+            src="../../assets/interface7-redrawn/block-blast.webp"
             alt="Colorful blocks clearing lines on a puzzle board"
           />
           <div class="hero-copy">
@@ -276,7 +278,7 @@
           <section id="resultModal" class="modal" hidden>
             <div class="dialog result-layout">
               <img
-                src="../../assets/block-blast/cover.webp"
+                src="../../assets/interface7-redrawn/block-blast.webp"
                 alt="Block Blast"
               />
               <div>
@@ -304,6 +306,7 @@
         <div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
       </div>
     </section>
+    </div>
     <script src="../../src/site-config.js"></script>
     <script src="../../src/analytics.js"></script>
     <script>window.WonderAnalytics?.track("game_view",{game_id:"block-blast"});</script>
@@ -317,6 +320,8 @@
       data-wp-stage-virtualization-standard
     ></script>
     <script src="game.js?v=20260904-interface-contract-v36"></script>
+    <script src="../../src/game-screen-frame.js"></script>
+    <script src="frame.js"></script>
     <script
       src="../../src/stage-selector-standard.js"
       data-wp-stage-standard
@@ -326,7 +331,6 @@
       data-wp-battle-standard
     ></script>
     <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
-    <script src="../../src/game-shell-controls-standard.js?v=20260802-title-parity3"></script>
     <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
     <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
   </body>

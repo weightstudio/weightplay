@@ -1,0 +1,22 @@
+/* Only game-content layout. Shared core owns all headers and preferences. */
+.blast-stage-content {display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.blast-stage-content #stageRail {flex:1;min-height:0}
+.blast-stage-content #enterStage {position:static;flex:none}
+.blast-battle-content {display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto;min-height:0;gap:6px}
+#battleLive>.blast-battle-content>.objective-row {grid-row:1!important;grid-column:1!important}
+#battleLive>.blast-battle-content>.block-play {grid-row:2!important;grid-column:1!important;min-height:0}
+#battleLive>.blast-battle-content>#feedback {grid-row:3!important;grid-column:1!important}
+.blast-battle-content>#battleHelp {grid-row:4;justify-self:end}
+#battleLive .blast-battle-content .block-play {container-type:size}
+#battleLive .blast-battle-content #blockBoard {
+  width:min(100%,calc(100cqh - 124px));height:auto;aspect-ratio:1;
+  max-width:100%;max-height:100%;align-self:center;justify-self:center;
+}
+@media(max-height:500px) and (orientation:landscape) {
+ .blast-battle-content {grid-template-columns:150px minmax(0,1fr);grid-template-rows:minmax(0,1fr) 44px}
+ #battleLive>.blast-battle-content>.objective-row {grid-column:1!important;grid-row:1!important;align-self:start}
+ #battleLive>.blast-battle-content>.block-play {grid-column:2!important;grid-row:1/3!important;grid-template-columns:minmax(0,1fr) 200px;grid-template-rows:minmax(0,1fr)}
+ #battleLive>.blast-battle-content>#feedback {grid-column:1!important;grid-row:1!important;align-self:end;font-size:12px}
+ .blast-battle-content>#battleHelp {grid-column:1;grid-row:2}
+ #battleLive .blast-battle-content #blockBoard {width:min(100%,100cqh)}
+}

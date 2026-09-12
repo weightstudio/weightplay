@@ -7,6 +7,8 @@
   document.head.append(artStyles);
   const $ = id => document.getElementById(id);
   const root = $('gameFrame'), main = $('mainScreen');
+  // Legacy full-viewport wrapper must not insert blank space before the guide.
+  $('mainGroup').style.minHeight = '0';
   const stage = root.querySelector('.stage-canvas'), battle = $('battleLive');
   const select = $('localeSelect');
   // Retain IDs used by the original sound state handler without displaying
@@ -27,21 +29,28 @@
   copy.querySelector('p').setAttribute('data-wp-frame-summary', '');
   $('mainProgress').setAttribute('data-wp-frame-progress', '');
   $('startBtn').setAttribute('data-wp-frame-action', 'primary');
+  for (const id of ['hintBtn','restartBtn','battleHelp','helpClose','leaveContinue','leaveStage','resultStageBtn','retryBtn']) {
+    $(id).setAttribute('data-wp-frame-action', 'secondary');
+  }
+  $('nextBtn').setAttribute('data-wp-frame-action', 'primary');
   const stageHeader = stage.querySelector('header');
   const stageContent = document.createElement('div');
   stageContent.className = 'arrow-stage-content';
-  stageContent.style.background = 'linear-gradient(#08202b55,#08202baa), url("/assets/arrow-escape/block-sky-castle-v1.png") center / cover';
+  stageContent.style.background = 'linear-gradient(#08202b55,#08202baa), url("/assets/arrow-escape/block-sky-castle-v1.webp") center / cover';
   stage.append(stageContent);
   stageContent.append($('stageSummary'), $('stageRail'));
   stageHeader.querySelector('div').remove();
   const footer = stage.querySelector('footer');
   footer.setAttribute('data-wp-frame-nav', '');
+  footer.querySelectorAll('button').forEach(button => {
+    button.setAttribute('data-wp-frame-action', 'secondary');
+  });
   const battleHeader = battle.querySelector('header');
   const battleContent = document.createElement('div');
   battleContent.className = 'arrow-battle-content';
-  $('board').style.background = 'url("/assets/arrow-escape/block-board-v1.png") center / 100% 100%';
+  $('board').style.background = 'url("/assets/arrow-escape/block-board-v1.webp") center / 100% 100%';
   $('board').style.borderRadius = '3px';
-  battleContent.style.background = 'linear-gradient(#08202b44,#08202b77), url("/assets/arrow-escape/block-sky-castle-v1.png") center / cover';
+  battleContent.style.background = 'linear-gradient(#08202b44,#08202b77), url("/assets/arrow-escape/block-sky-castle-v1.webp") center / cover';
   for (const node of [...battle.children]) if (node !== battleHeader) battleContent.append(node);
   battle.append(battleContent);
   battleContent.querySelector('.battle-controls').append($('battleHelp'));

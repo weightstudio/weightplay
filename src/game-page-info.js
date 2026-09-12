@@ -2598,7 +2598,7 @@
     "animal-habitat-mahjong": "animal-habitat-mahjong-cover.webp",
     "animal-hidden-safari": "animal-hidden-safari-cover.webp",
     "animal-crystal-survivor": "animal-crystal-survivor-otter-cover-v26.webp",
-    "animal-guard-yard": "animal-guard-yard-poster.webp",
+    "animal-guard-yard": "interface7-redrawn/animal-guard-yard.webp",
     "animal-quiz": "quiz-cover.webp",
     "zoo-helper-day": "zoo-helper-day-cover.webp",
     "shape-train": "shape-train-cover.webp",
@@ -20377,6 +20377,7 @@
       "Choose a guard, then a tile. Place at least one guard before starting.",
       "Send wave · Wave cleared · prepare again",
       "Energy caps at 400. Combat grants 2 per second. Pickups give 35 when tapped or 20 automatically after 6 seconds. Recall refunds 100% while preparing or 50% in combat, multiplied by remaining health. Waves grant 45 energy when cleared.",
+      "Up to 12 guards. Recall one to change your formation.",
       "Choose a lane to slow every enemy for 2 seconds.",
       "Fox joins after Stage 5; existing purchases stay owned."
     ],
@@ -20387,19 +20388,19 @@
     ],
     "faq": [
       [
-        "Prepare your defence?",
+        "How do I start?",
         "Choose a guard, then a tile. Place at least one guard before starting."
       ],
       [
-        "Recover  energy?",
+        "How does energy work?",
         "Energy caps at 400. Combat grants 2 per second. Pickups give 35 when tapped or 20 automatically after 6 seconds. Recall refunds 100% while preparing or 50% in combat, multiplied by remaining health. Waves grant 45 energy when cleared."
       ],
       [
-        "Lion archer / Turtle sentinel?",
+        "How many stages are there?",
         "Defend five lanes across 30 garden stages and six different bosses. Prepare your guards, send each wave, then rebuild between waves. Stop every enemy before your home loses all hearts. Lion archers pierce, turtles block, owls slow, and foxes support adjacent lanes. Stone tiles change where you can deploy."
       ],
       [
-        "Fox joins after Stage 5; existing purchases stay owned.",
+        "How do I unlock the fox?",
         "Fox joins after Stage 5; existing purchases stay owned."
       ],
       [
@@ -20414,6 +20415,7 @@
       "先選守衛，再點格子。至少放置一名守衛後開始迎戰。",
       "迎戰 · 本波守住了，調整陣容再出發",
       "能量上限 400；戰鬥中每秒恢復 2。能量圖片點擊獲得 35，6 秒未點會自動收取 20。撤回依剩餘血量比例退款：布防時 100%、戰鬥中 50%。守住一波另得 45 能量。",
+      "最多 12 名守衛；可撤回一名，重新調整陣容。",
       "點選一路，讓該路所有敵人減速 2 秒。",
       "通過第 5 關免費獲得狐狸；原有購買保留。"
     ],
@@ -20424,19 +20426,19 @@
     ],
     "faq": [
       [
-        "布防時間?",
+        "如何開始？",
         "先選守衛，再點格子。至少放置一名守衛後開始迎戰。"
       ],
       [
-        "回收  能量?",
+        "能量怎麼取得與回收？",
         "能量上限 400；戰鬥中每秒恢復 2。能量圖片點擊獲得 35，6 秒未點會自動收取 20。撤回依剩餘血量比例退款：布防時 100%、戰鬥中 50%。守住一波另得 45 能量。"
       ],
       [
-        "獅子弓手 / 龜甲衛士?",
+        "共有多少關？",
         "在五條路線守住 30 關庭院與六種首領。先布防，再迎戰，每波結束都能重新整備；在家園愛心耗盡前消滅所有敵人。獅子弓手穿透、龜甲衛士擋路、貓頭鷹減速、狐狸支援鄰路。後期石塊地形會限制部署位置。"
       ],
       [
-        "通過第 5 關免費獲得狐狸；原有購買保留。",
+        "狐狸如何加入？",
         "通過第 5 關免費獲得狐狸；原有購買保留。"
       ],
       [
@@ -20451,6 +20453,7 @@
       "先选守卫，再点格子。至少放置一名守卫后开始迎战。",
       "迎战 · 本波守住了，调整阵容再出发",
       "能量上限 400；战斗中每秒恢复 2。能量图片点击获得 35，6 秒未点会自动收取 20。撤回按剩余血量比例退款：布防时 100%、战斗中 50%。守住一波另得 45 能量。",
+      "最多 12 名守卫；可撤回一名，重新调整阵容。",
       "点击一路，让该路所有敌人减速 2 秒。",
       "通过第 5 关免费获得狐狸；原有购买保留。"
     ],
@@ -20461,19 +20464,19 @@
     ],
     "faq": [
       [
-        "布防时间?",
+        "如何开始？",
         "先选守卫，再点格子。至少放置一名守卫后开始迎战。"
       ],
       [
-        "回收  能量?",
+        "能量如何取得与回收？",
         "能量上限 400；战斗中每秒恢复 2。能量图片点击获得 35，6 秒未点会自动收取 20。撤回按剩余血量比例退款：布防时 100%、战斗中 50%。守住一波另得 45 能量。"
       ],
       [
-        "狮子弓手 / 龟甲卫士?",
+        "共有多少关？",
         "在五条路线守住 30 关庭院与六种首领。先布防，再迎战，每波结束都能重新整备；在家园爱心耗尽前消灭所有敌人。狮子弓手穿透、龟甲卫士挡路、猫头鹰减速、狐狸支援邻路。后期石块地形会限制部署位置。"
       ],
       [
-        "通过第 5 关免费获得狐狸；原有购买保留。",
+        "狐狸如何加入？",
         "通过第 5 关免费获得狐狸；原有购买保留。"
       ],
       [
@@ -20488,6 +20491,7 @@
       "守衛を選んでマスに配置。1体以上置いてから開始。",
       "迎撃開始 · ウェーブ突破・再配置しよう",
       "エネルギー上限400。戦闘中は毎秒2回復。拾得物はタップで35、6秒後の自動回収で20。撤退は残り体力の割合に応じ、準備中100%、戦闘中50%を返還。波の突破で45獲得。",
+      "守衛は最大12体。撤退させると編成を変えられます。",
       "レーンを選び、敵全員を2秒間減速。",
       "ステージ5突破でキツネ加入。購入済みの権利は維持。"
     ],
@@ -20498,19 +20502,19 @@
     ],
     "faq": [
       [
-        "防衛を準備?",
+        "どう始めますか？",
         "守衛を選んでマスに配置。1体以上置いてから開始。"
       ],
       [
-        "エネルギー  を回収?",
+        "エネルギーはどう増えますか？",
         "エネルギー上限400。戦闘中は毎秒2回復。拾得物はタップで35、6秒後の自動回収で20。撤退は残り体力の割合に応じ、準備中100%、戦闘中50%を返還。波の突破で45獲得。"
       ],
       [
-        "ライオン弓兵 / カメ守衛?",
+        "ステージはいくつですか？",
         "5本のレーンで30の庭園ステージと6種類のボスに挑戦。配置してから波を開始し、波の間に再編成します。家のハートがなくなる前に全敵を倒しましょう。ライオンは貫通、カメは壁、フクロウは減速、キツネは隣のレーンを支援。後半は岩が配置を制限します。"
       ],
       [
-        "ステージ5突破でキツネ加入。購入済みの権利は維持。",
+        "キツネはどう加入しますか？",
         "ステージ5突破でキツネ加入。購入済みの権利は維持。"
       ],
       [
@@ -20525,6 +20529,7 @@
       "수호자를 고른 뒤 칸에 배치하세요. 한 명 이상 배치한 뒤 시작하세요.",
       "공격 시작 · 웨이브 방어 성공 · 재정비",
       "에너지 상한은 400입니다. 전투 중 초당 2 회복됩니다. 에너지 아이콘은 누르면 35, 6초 뒤 자동 회수 시 20입니다. 회수는 남은 체력 비율에 따라 준비 중 100%, 전투 중 50%를 반환합니다. 웨이브 방어 보너스는 45입니다.",
+      "수호자는 최대 12명입니다. 회수하고 진형을 바꾸세요.",
       "한 경로를 선택해 모든 적을 2초간 느리게 합니다.",
       "5단계 완료 시 여우 합류. 기존 구매는 유지됩니다."
     ],
@@ -20535,19 +20540,19 @@
     ],
     "faq": [
       [
-        "방어 준비?",
+        "어떻게 시작하나요?",
         "수호자를 고른 뒤 칸에 배치하세요. 한 명 이상 배치한 뒤 시작하세요."
       ],
       [
-        "에너지  회수?",
+        "에너지는 어떻게 얻나요?",
         "에너지 상한은 400입니다. 전투 중 초당 2 회복됩니다. 에너지 아이콘은 누르면 35, 6초 뒤 자동 회수 시 20입니다. 회수는 남은 체력 비율에 따라 준비 중 100%, 전투 중 50%를 반환합니다. 웨이브 방어 보너스는 45입니다."
       ],
       [
-        "사자 궁수 / 거북 수호자?",
+        "몇 단계가 있나요?",
         "5개 경로에서 정원 30단계와 서로 다른 보스 6종을 막으세요. 먼저 배치하고 웨이브를 시작한 뒤 매 웨이브 사이에 재정비하세요. 집의 하트가 모두 사라지기 전에 모든 적을 물리치세요. 사자는 관통, 거북은 방어, 부엉이는 감속, 여우는 인접 경로 지원을 맡습니다. 후반에는 바위가 배치를 제한합니다."
       ],
       [
-        "5단계 완료 시 여우 합류. 기존 구매는 유지됩니다.",
+        "여우는 어떻게 합류하나요?",
         "5단계 완료 시 여우 합류. 기존 구매는 유지됩니다."
       ],
       [
@@ -20562,6 +20567,7 @@
       "Elige un guardián y una casilla. Coloca al menos uno para comenzar.",
       "Enviar oleada · Oleada superada · reorganiza",
       "Máximo 400 de energía. Regenera 2 por segundo en combate. Un objeto da 35 al tocarlo o 20 automáticamente tras 6 segundos. Retirar devuelve el 100% en preparación o el 50% en combate, según la salud restante. Superar una oleada da 45.",
+      "Máximo 12 guardianes. Retira uno para cambiar la formación.",
       "Elige una fila: ralentiza a todos sus enemigos durante 2 segundos.",
       "El zorro se une tras el nivel 5. Las compras previas se conservan."
     ],
@@ -20572,19 +20578,19 @@
     ],
     "faq": [
       [
-        "Prepara la defensa?",
+        "¿Cómo empiezo?",
         "Elige un guardián y una casilla. Coloca al menos uno para comenzar."
       ],
       [
-        "Recuperar  de energía?",
+        "¿Cómo funciona la energía?",
         "Máximo 400 de energía. Regenera 2 por segundo en combate. Un objeto da 35 al tocarlo o 20 automáticamente tras 6 segundos. Retirar devuelve el 100% en preparación o el 50% en combate, según la salud restante. Superar una oleada da 45."
       ],
       [
-        "León arquero / Tortuga centinela?",
+        "¿Cuántos niveles hay?",
         "Defiende cinco filas en 30 jardines contra seis jefes distintos. Prepara las defensas, inicia una oleada y reorganiza entre oleadas. Vence a todos antes de perder los corazones del hogar. El león perfora, la tortuga bloquea, el búho ralentiza y el zorro apoya filas vecinas. Las rocas limitan el despliegue."
       ],
       [
-        "El zorro se une tras el nivel 5. Las compras previas se conservan.",
+        "¿Cómo consigo al zorro?",
         "El zorro se une tras el nivel 5. Las compras previas se conservan."
       ],
       [
@@ -20599,6 +20605,7 @@
       "Escolha um guarda e uma casa. Posicione ao menos um antes de iniciar.",
       "Iniciar onda · Onda vencida · reorganize",
       "Limite de energia: 400. Regenera 2 por segundo em combate. O item dá 35 ao tocar ou 20 automaticamente após 6 segundos. Recolher devolve 100% na preparação ou 50% no combate, conforme a vida restante. Vencer uma onda dá 45.",
+      "Até 12 guardas. Recolha um para mudar a formação.",
       "Escolha uma faixa: todos os inimigos ficam lentos por 2 segundos.",
       "A raposa chega após a fase 5. Compras anteriores são mantidas."
     ],
@@ -20609,19 +20616,19 @@
     ],
     "faq": [
       [
-        "Prepare a defesa?",
+        "Como começo?",
         "Escolha um guarda e uma casa. Posicione ao menos um antes de iniciar."
       ],
       [
-        "Recuperar  de energia?",
+        "Como funciona a energia?",
         "Limite de energia: 400. Regenera 2 por segundo em combate. O item dá 35 ao tocar ou 20 automaticamente após 6 segundos. Recolher devolve 100% na preparação ou 50% no combate, conforme a vida restante. Vencer uma onda dá 45."
       ],
       [
-        "Leão arqueiro / Tartaruga sentinela?",
+        "Quantas fases existem?",
         "Defenda cinco faixas em 30 jardins contra seis chefes diferentes. Prepare os guardas, inicie cada onda e reorganize entre elas. Derrote todos antes de perder os corações da casa. O leão perfura, a tartaruga bloqueia, a coruja desacelera e a raposa apoia faixas vizinhas. Pedras limitam o posicionamento."
       ],
       [
-        "A raposa chega após a fase 5. Compras anteriores são mantidas.",
+        "Como consigo a raposa?",
         "A raposa chega após a fase 5. Compras anteriores são mantidas."
       ],
       [
@@ -20636,6 +20643,7 @@
       "Choisissez un gardien puis une case. Placez-en au moins un avant de lancer.",
       "Lancer la vague · Vague repoussée · réorganisez",
       "Énergie maximale : 400. Gain de 2 par seconde au combat. Un objet donne 35 au toucher ou 20 automatiquement après 6 secondes. Retirer rembourse 100 % en préparation ou 50 % au combat, selon la vie restante. Une vague repoussée donne 45.",
+      "12 gardiens maximum. Retirez-en un pour changer la formation.",
       "Choisissez une ligne : ses ennemis sont ralentis pendant 2 secondes.",
       "Le renard rejoint après le niveau 5. Les achats restent acquis."
     ],
@@ -20646,19 +20654,19 @@
     ],
     "faq": [
       [
-        "Préparez la défense?",
+        "Comment commencer ?",
         "Choisissez un gardien puis une case. Placez-en au moins un avant de lancer."
       ],
       [
-        "Récupérer  énergie?",
+        "Comment fonctionne l’énergie ?",
         "Énergie maximale : 400. Gain de 2 par seconde au combat. Un objet donne 35 au toucher ou 20 automatiquement après 6 secondes. Retirer rembourse 100 % en préparation ou 50 % au combat, selon la vie restante. Une vague repoussée donne 45."
       ],
       [
-        "Lion archer / Tortue sentinelle?",
+        "Combien de niveaux y a-t-il ?",
         "Défendez cinq lignes dans 30 jardins contre six boss différents. Préparez les gardiens, lancez chaque vague et réorganisez entre les vagues. Battez tous les ennemis avant de perdre les cœurs du foyer. Le lion perce, la tortue bloque, le hibou ralentit et le renard soutient les lignes voisines. Les rochers limitent le placement."
       ],
       [
-        "Le renard rejoint après le niveau 5. Les achats restent acquis.",
+        "Comment obtenir le renard ?",
         "Le renard rejoint après le niveau 5. Les achats restent acquis."
       ],
       [
@@ -20673,6 +20681,7 @@
       "Wähle einen Wächter und ein Feld. Stelle vor dem Start mindestens einen auf.",
       "Welle starten · Welle abgewehrt · neu aufstellen",
       "Energiegrenze: 400. Im Kampf regenerieren 2 pro Sekunde. Ein Fund gibt beim Antippen 35 oder nach 6 Sekunden automatisch 20. Rückruf erstattet je nach Restleben 100 % in der Vorbereitung oder 50 % im Kampf. Eine abgewehrte Welle gibt 45.",
+      "Höchstens 12 Wächter. Rufe einen zurück, um die Formation zu ändern.",
       "Wähle eine Reihe: Alle Gegner werden 2 Sekunden verlangsamt.",
       "Der Fuchs kommt nach Stufe 5. Vorherige Käufe bleiben erhalten."
     ],
@@ -20683,19 +20692,19 @@
     ],
     "faq": [
       [
-        "Verteidigung vorbereiten?",
+        "Wie fange ich an?",
         "Wähle einen Wächter und ein Feld. Stelle vor dem Start mindestens einen auf."
       ],
       [
-        " Energie zurück?",
+        "Wie funktioniert Energie?",
         "Energiegrenze: 400. Im Kampf regenerieren 2 pro Sekunde. Ein Fund gibt beim Antippen 35 oder nach 6 Sekunden automatisch 20. Rückruf erstattet je nach Restleben 100 % in der Vorbereitung oder 50 % im Kampf. Eine abgewehrte Welle gibt 45."
       ],
       [
-        "Löwenbogenschütze / Schildkrötenwache?",
+        "Wie viele Stufen gibt es?",
         "Verteidige fünf Reihen in 30 Gartenstufen gegen sechs verschiedene Bosse. Stelle Wächter auf, starte die Wellen und ordne dazwischen neu. Besiege alle Gegner, bevor das Haus alle Herzen verliert. Der Löwe durchschlägt, die Schildkröte blockiert, die Eule verlangsamt und der Fuchs hilft Nachbarreihen. Felsen begrenzen die Aufstellung."
       ],
       [
-        "Der Fuchs kommt nach Stufe 5. Vorherige Käufe bleiben erhalten.",
+        "Wie bekomme ich den Fuchs?",
         "Der Fuchs kommt nach Stufe 5. Vorherige Käufe bleiben erhalten."
       ],
       [
@@ -20710,6 +20719,7 @@
       "Scegli una guardia e una casella. Schierane almeno una prima di iniziare.",
       "Avvia ondata · Ondata respinta · riorganizza",
       "Energia massima: 400. Recuperi 2 al secondo in battaglia. Un oggetto dà 35 al tocco o 20 automaticamente dopo 6 secondi. Il ritiro restituisce il 100% in preparazione o il 50% in battaglia, in base alla salute rimasta. Ogni ondata superata dà 45.",
+      "Massimo 12 guardie. Ritirane una per cambiare formazione.",
       "Scegli una corsia: rallenta tutti i nemici per 2 secondi.",
       "La volpe arriva dopo il livello 5. Gli acquisti restano validi."
     ],
@@ -20720,19 +20730,19 @@
     ],
     "faq": [
       [
-        "Prepara la difesa?",
+        "Come inizio?",
         "Scegli una guardia e una casella. Schierane almeno una prima di iniziare."
       ],
       [
-        "Recupera  energia?",
+        "Come funziona l’energia?",
         "Energia massima: 400. Recuperi 2 al secondo in battaglia. Un oggetto dà 35 al tocco o 20 automaticamente dopo 6 secondi. Il ritiro restituisce il 100% in preparazione o il 50% in battaglia, in base alla salute rimasta. Ogni ondata superata dà 45."
       ],
       [
-        "Leone arciere / Tartaruga sentinella?",
+        "Quanti livelli ci sono?",
         "Difendi cinque corsie in 30 giardini contro sei boss diversi. Prepara le guardie, avvia le ondate e riorganizza tra una e l’altra. Sconfiggi tutti prima di perdere i cuori della casa. Il leone perfora, la tartaruga blocca, il gufo rallenta e la volpe sostiene le corsie vicine. Le rocce limitano lo schieramento."
       ],
       [
-        "La volpe arriva dopo il livello 5. Gli acquisti restano validi.",
+        "Come ottengo la volpe?",
         "La volpe arriva dopo il livello 5. Gli acquisti restano validi."
       ],
       [
@@ -20747,6 +20757,7 @@
       "Выберите стража и клетку. Разместите хотя бы одного перед началом.",
       "Начать волну · Волна отбита · перестройтесь",
       "Предел энергии — 400, восстановление в бою — 2 в секунду. Предмет даёт 35 при нажатии или 20 автоматически через 6 секунд. Отзыв возвращает 100% при подготовке или 50% в бою с учётом оставшегося здоровья. За отражённую волну даётся 45.",
+      "Не более 12 стражей. Отзовите одного, чтобы изменить строй.",
       "Выберите ряд: все враги замедлятся на 2 секунды.",
       "Лис присоединится после этапа 5. Покупки сохраняются."
     ],
@@ -20757,19 +20768,19 @@
     ],
     "faq": [
       [
-        "Подготовьте оборону?",
+        "Как начать?",
         "Выберите стража и клетку. Разместите хотя бы одного перед началом."
       ],
       [
-        "Вернуть  энергии?",
+        "Как работает энергия?",
         "Предел энергии — 400, восстановление в бою — 2 в секунду. Предмет даёт 35 при нажатии или 20 автоматически через 6 секунд. Отзыв возвращает 100% при подготовке или 50% в бою с учётом оставшегося здоровья. За отражённую волну даётся 45."
       ],
       [
-        "Лев-лучник / Черепаха-страж?",
+        "Сколько этапов?",
         "Защитите пять рядов в 30 садах от шести разных боссов. Расставьте стражей, начните волну и перестраивайтесь между волнами. Победите всех врагов до потери сердец дома. Лев пробивает, черепаха блокирует, сова замедляет, а лис помогает соседним рядам. Камни ограничивают размещение."
       ],
       [
-        "Лис присоединится после этапа 5. Покупки сохраняются.",
+        "Как получить лиса?",
         "Лис присоединится после этапа 5. Покупки сохраняются."
       ],
       [
@@ -20784,6 +20795,7 @@
       "रक्षक चुनें और खाने पर रखें। शुरू करने से पहले कम से कम एक रखें।",
       "लहर शुरू करें · लहर रोकी · फिर तैयारी करें",
       "ऊर्जा सीमा 400 है। लड़ाई में प्रति सेकंड 2 लौटती है। वस्तु दबाने पर 35 या 6 सेकंड बाद अपने आप 20 मिलती है। वापसी शेष स्वास्थ्य के अनुपात में तैयारी में 100% और लड़ाई में 50% लौटाती है। लहर रोकने पर 45 मिलती है।",
+      "अधिकतम 12 रक्षक। गठन बदलने के लिए एक को वापस बुलाएँ।",
       "एक पंक्ति चुनें: सभी शत्रु 2 सेकंड धीमे होंगे।",
       "चरण 5 के बाद लोमड़ी मिलेगी। पिछली खरीद बनी रहती है।"
     ],
@@ -20794,19 +20806,19 @@
     ],
     "faq": [
       [
-        "रक्षा तैयार करें?",
+        "शुरू कैसे करें?",
         "रक्षक चुनें और खाने पर रखें। शुरू करने से पहले कम से कम एक रखें।"
       ],
       [
-        " ऊर्जा वापस?",
+        "ऊर्जा कैसे मिलती है?",
         "ऊर्जा सीमा 400 है। लड़ाई में प्रति सेकंड 2 लौटती है। वस्तु दबाने पर 35 या 6 सेकंड बाद अपने आप 20 मिलती है। वापसी शेष स्वास्थ्य के अनुपात में तैयारी में 100% और लड़ाई में 50% लौटाती है। लहर रोकने पर 45 मिलती है।"
       ],
       [
-        "सिंह धनुर्धर / कछुआ प्रहरी?",
+        "कितने चरण हैं?",
         "पाँच पंक्तियों में 30 बगीचे चरण और छह अलग बॉस रोकें। पहले रक्षक रखें, लहर शुरू करें और लहरों के बीच फिर तैयारी करें। घर के सारे दिल खोने से पहले सभी शत्रु हराएँ। सिंह भेदता है, कछुआ रोकता है, उल्लू धीमा करता है और लोमड़ी पास की पंक्तियों की मदद करती है। पत्थर तैनाती रोकते हैं।"
       ],
       [
-        "चरण 5 के बाद लोमड़ी मिलेगी। पिछली खरीद बनी रहती है।",
+        "लोमड़ी कैसे मिलेगी?",
         "चरण 5 के बाद लोमड़ी मिलेगी। पिछली खरीद बनी रहती है।"
       ],
       [
@@ -20821,6 +20833,7 @@
       "اختر حارساً ثم خانة. ضع حارساً واحداً على الأقل قبل البدء.",
       "ابدأ الموجة · صددت الموجة · أعد التنظيم",
       "حد الطاقة 400 وتتجدد بمقدار 2 كل ثانية في القتال. تمنح القطعة 35 عند لمسها أو 20 تلقائياً بعد 6 ثوانٍ. يعيد الاستدعاء 100% أثناء التحضير أو 50% في القتال وفق الصحة المتبقية. تمنح الموجة المكتملة 45 طاقة.",
+      "الحد الأقصى 12 حارساً. استدعِ أحدهم لتغيير التشكيل.",
       "اختر مساراً لإبطاء كل أعدائه لمدة ثانيتين.",
       "ينضم الثعلب بعد المرحلة 5. تبقى المشتريات السابقة محفوظة."
     ],
@@ -20831,19 +20844,19 @@
     ],
     "faq": [
       [
-        "جهّز الدفاع?",
+        "كيف أبدأ؟",
         "اختر حارساً ثم خانة. ضع حارساً واحداً على الأقل قبل البدء."
       ],
       [
-        "استرجاع  طاقة?",
+        "كيف تعمل الطاقة؟",
         "حد الطاقة 400 وتتجدد بمقدار 2 كل ثانية في القتال. تمنح القطعة 35 عند لمسها أو 20 تلقائياً بعد 6 ثوانٍ. يعيد الاستدعاء 100% أثناء التحضير أو 50% في القتال وفق الصحة المتبقية. تمنح الموجة المكتملة 45 طاقة."
       ],
       [
-        "الأسد الرامي / السلحفاة الحارسة?",
+        "كم عدد المراحل؟",
         "دافع عن خمسة مسارات في 30 حديقة ضد ستة زعماء مختلفين. جهّز الحراس ثم ابدأ الموجة وأعد التنظيم بين الموجات. اهزم كل الأعداء قبل نفاد قلوب المنزل. الأسد يخترق والسلحفاة تصد والبومة تبطئ والثعلب يدعم المسارات المجاورة. تحدّ الصخور من أماكن النشر."
       ],
       [
-        "ينضم الثعلب بعد المرحلة 5. تبقى المشتريات السابقة محفوظة.",
+        "كيف أحصل على الثعلب؟",
         "ينضم الثعلب بعد المرحلة 5. تبقى المشتريات السابقة محفوظة."
       ],
       [

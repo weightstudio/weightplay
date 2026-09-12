@@ -70,6 +70,7 @@ h2 { color:var(--deep-leaf); line-height:1.1; }
 .clue-legend { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:5px; color:var(--muted); font-size:.74rem; font-weight:900; text-transform:uppercase; letter-spacing:.08em; }
 .clue-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-top:8px; }
 .clue { padding:8px 4px; border-radius:12px; background:#f3f0df; color:var(--deep-leaf); font-size:.82rem; font-weight:800; text-align:center; }
+.clue.is-mismatch { background:#ffe4d9; color:#b45b4c; box-shadow:inset 0 0 0 2px var(--coral); }
 .section-heading { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
 .habitat-grid { width:min(390px,100%); margin:0 auto 12px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
 .cell { aspect-ratio:1; min-width:0; min-height:64px; border:2px solid #a6c6a0; border-radius:15px; background:#edf5e8; color:var(--deep-leaf); font-size:clamp(1.7rem,7vw,2.5rem); box-shadow:inset 0 -4px 0 rgba(49,91,73,.08); }

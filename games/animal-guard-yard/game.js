@@ -179,6 +179,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   const bestKey = "weightplay_animal_guard_best";
   const profileKey = "weightplay_animal_guard_profile";
   const progressKey = "weightplay_animal_guard_progress";
+  const identifyGuide=()=>{const guide=document.querySelector('.game-page-info');if(guide)guide.id='guardYardGuide';};
+  identifyGuide();document.addEventListener('DOMContentLoaded',identifyGuide,{once:true});
 
   document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
     image.addEventListener(
@@ -1765,7 +1767,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       previewTitle.textContent = `${t("nextStage")}: ${t("stage", { n: currentStage + 2 })}`;
       const previewThreats = document.createElement("span");
       const threatTypes = [...new Set([...(nextStage.boss ? [nextStage.boss.type] : []), ...nextStage.zombies.map((item) => item.type)])];
-      previewThreats.textContent = `${t("threatPreview")}: ${threatTypes.slice(0, 4).map((type) => stageThreatLabel(type)).join(", ")}`;
+      previewThreats.innerHTML=stageThreatPreview(nextStage);
       preview.append(previewTitle, previewThreats);
       nodes.resultText.appendChild(preview);
     }
@@ -2675,6 +2677,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.lanePressureAlert.setAttribute("aria-atomic", "true");
     nodes.yardBoard.appendChild(nodes.lanePressureAlert);
     for (let row = 0; row < stage.rows; row += 1) {
+      const label=document.createElement('span');label.className='yard-lane-label';label.textContent=String(row+1);label.style.top=`calc(${row/stage.rows*100}% + 3px)`;label.setAttribute('aria-hidden','true');nodes.yardBoard.appendChild(label);
       for (let col = 0; col < stage.cols; col += 1) {
         const cell = document.createElement("button");
         cell.className = "cell";
@@ -2694,6 +2697,9 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function renderUnits() {
+    const renderKey=`${locale}:${selectedUnit}:${units.map(u=>`${u.id}:${isOwned(u.id)}:${unitLevel(u.id)}`).join(',')}`;
+    if(nodes.unitBar.dataset.renderKey===renderKey&&nodes.unitBar.children.length){for(const b of nodes.unitBar.children){const u=units.find(u=>u.id===b.dataset.unitId);b.classList.toggle('disabled',energy<trainedUnit(u).cost);}return;}
+    nodes.unitBar.dataset.renderKey=renderKey;
     nodes.unitBar.innerHTML = "";
     units.filter((unit) => isOwned(unit.id)).forEach((unit) => {
       const trained = trainedUnit(unit);
@@ -3356,7 +3362,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function updateHud() {
-    const preview=$('wavePreview'),previewKey=`${currentStage}:${spawned}:${waveIndex}`;
+    const preview=$('wavePreview'),previewKey=`${currentStage}:${spawned}:${waveIndex}:${combatPhase}`;
     if(preview&&preview.dataset.key!==previewKey){
       preview.dataset.key=previewKey;
       const limit=Math.ceil(stages[currentStage].total*Math.min(stages[currentStage].waveCount,waveIndex+(combatPhase==='prepare'?1:0))/stages[currentStage].waveCount);
@@ -3729,6 +3735,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     window.__AnimalGuardYardTest = {
       finish,
       startStage,
+      fundForTest: ()=>{energy=400;updateHud();},
       setLastBreachForTest: (snapshot = {}) => {
         lastBreachSnapshot = {
           row: snapshot.row ?? 0,
@@ -3740,7 +3747,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
         };
       },
       spawnForTest: (count = 1) => {
-        for (let index = 0; index < count; index += 1) spawnZombie();
+        for (let index = 0; index < count; index += 1) {nextSpawnPlan=makeSpawnPlan();spawnZombie();}
         updateHud();
       },
       storageSnapshot: () => ({

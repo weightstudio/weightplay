@@ -1576,7 +1576,7 @@ body.guard-yard-stage .stage-grid { padding-inline: calc((100% - 264px) / 2); to
   aspect-ratio: 1;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  background: url("../../assets/animal-guard-beast-impact-fx.webp") 0 50% / 400% 100% no-repeat;
+  background: none; /* v31 owns the square impact fragments in block-v31.css. */
   filter: drop-shadow(0 4px 5px rgba(79, 45, 12, 0.24));
   animation: impact-pop 0.42s ease-out forwards;
 }

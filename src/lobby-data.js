@@ -65,7 +65,7 @@ window.WONDER_LOBBY = {
   },
   games: [
     {
-      id: "animal-crownfall", audience: "general", status: "planned", internalTrial: true,
+      id: "animal-crownfall", audience: "general", status: "planned", internalTrial: "index.html?trial=1",
       title: { en: "Crownfall", "zh-Hant": "落塊奪冠", "zh-Hans": "落块夺冠", ja: "ブロック王冠の旅", ko: "블록 왕관 모험", es: "La corona caída", "pt-BR": "A coroa perdida", fr: "La couronne perdue", de: "Kronensturz", it: "La corona perduta", ru: "Путь к короне", hi: "ताज की तलाश", ar: "رحلة التاج" },
       type: { en: "Dungeon Puzzle", "zh-Hant": "古堡消除解謎" },
       description: { en: "Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.", "zh-Hant": "消除相連符文方塊，安排打怪順序，在 30 道古堡謎題中奪回皇冠。" },

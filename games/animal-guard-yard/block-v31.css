@@ -123,9 +123,20 @@ body.guard-yard-playing #resultPanel button{color:#192f30!important}
 #yardBoard .impact{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;animation:none!important;width:24px!important;height:24px!important}
 #yardBoard .impact i{position:absolute;left:10px;top:10px;width:5px;height:5px;background:#ffe7a2;animation:yard-chip 250ms ease-out forwards;--dx:10px;--dy:8px}
 #yardBoard .impact i:nth-child(2){--dx:-10px;--dy:7px;background:#e59d42}#yardBoard .impact i:nth-child(3){--dx:7px;--dy:-9px}#yardBoard .impact i:nth-child(4){--dx:-8px;--dy:-8px;background:#abc879}
+#yardBoard .impact.owl i{background:#8be8e0}#yardBoard .impact.fox i{background:#bce589}
 @keyframes yard-chip{to{transform:translate(var(--dx),var(--dy));opacity:0}}
 #yardBoard .hp-bar[data-effect=shield]{outline:2px solid #a8d6ec!important}#yardBoard .hp-bar[data-effect=warning]{outline:3px solid #ffcf68!important}#yardBoard .hp-bar[data-effect=slow]{outline:2px solid #a5e2dc!important}
 .squad-count{display:flex;align-items:center;gap:3px;margin-inline-start:14px;color:#e4e9d2}.squad-count img{width:27px;height:29px;object-fit:contain}.squad-count b{font:700 12px system-ui}
+.yard-lane-label{position:absolute;left:2px;z-index:5;width:16px;height:16px;text-align:center;background:#15382fe6;border:1px solid #b6c591;color:#edf0bc;font:700 10px/14px system-ui;pointer-events:none}
+#resultPanel .stage-threats{display:flex;gap:6px;flex-wrap:wrap}#resultPanel .stage-threat{display:flex;align-items:center;gap:3px;background:#193630;border-radius:3px;padding:3px;font-size:11px}#resultPanel .stage-threat .zombie-sprite{width:25px;height:27px}#resultPanel .stage-threat img{width:25px;height:27px;object-fit:contain}
+body .game-page-info{border-radius:12px!important}
+body .game-page-info .game-info-sections{display:grid!important;gap:16px!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))!important}
+body .game-page-info .game-info-section{padding:12px!important;border:1px solid #527470!important;border-radius:12px!important;background:#193b3e!important;color:#e4ebdc!important}
+body .game-page-info .game-info-section :is(h3,p,li,dt,dd){color:#e4ebdc!important}
+#guardYardGuide{--wp-ui-radius:12px;border-radius:12px!important}
+#guardYardGuide .game-info-sections{display:grid!important;gap:16px!important}
+#guardYardGuide .game-info-section{padding:12px!important;border-radius:12px!important;background:#193b3e!important;border:1px solid #527470!important}
+#yardBoard .cell{border-radius:0!important}#yardBoard .cell::after{border-radius:2px!important;box-shadow:none!important}
 body.guard-yard-playing #resultPanel .mastery-result,body.guard-yard-playing #resultPanel .next-stage-preview{background:#264844!important;border:1px solid #7b937b!important;border-radius:4px!important}
 #yardBoard .board-pop{left:clamp(12%,var(--pop-x,50%),88%);max-width:130px!important;white-space:normal!important;text-align:center;line-height:1.15!important}
 @media(prefers-reduced-motion:reduce){#yardBoard .impact i{animation:none!important}}

@@ -19,6 +19,7 @@ class Yard3D{
   this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#18382f');light(this.scene);this.camera=new THREE.OrthographicCamera(-4.5,4.5,4.5,-4.5,.1,100);this.camera.position.set(0,20,12);this.camera.lookAt(0,0,0);
   this.mat=this.own(new THREE.MeshStandardMaterial({vertexColors:true,roughness:.88}));this.box=this.own(new THREE.BoxGeometry(1,1,1));this.stageGroup=new THREE.Group();this.scene.add(this.stageGroup);
   this.fxMat=this.own(new THREE.MeshBasicMaterial({color:'#ffe197'}));this.shots=Array.from({length:72},()=>{const m=new THREE.Mesh(this.box,this.fxMat);m.visible=false;this.scene.add(m);return m;});
+  this.shotMats={cat:this.fxMat,owl:this.own(new THREE.MeshBasicMaterial({color:'#8be8e0'})),fox:this.own(new THREE.MeshBasicMaterial({color:'#bce589'}))};
   this.onLost=e=>{e.preventDefault();this.dispose();host.dataset.renderer='fallback';};this.renderer.domElement.addEventListener('webglcontextlost',this.onLost);
   host.dataset.renderer='3d';window.guardYardRenderStats={active:1,drawCalls:0,geometries:0};
  }
@@ -47,12 +48,14 @@ class Yard3D{
    const hit=e.hitMs>0&&!state.reduced?Math.sin(e.hitMs*.04)*.045:0;
    m.scale.setScalar(scale);m.position.set((x-.5)*9+hit,0,((e.row+.5)/state.rows-.5)*this.depth+scale*.47);
    m.rotation.y=e.kind==='guard'?.85:-.85;m.rotation.z=hit*.6;
+   if(e.attackCount!==m.userData.attackCount){m.userData.attackCount=e.attackCount;m.userData.attackUntil=state.time+110;}
+   if(!state.reduced&&m.userData.attackUntil>state.time)m.rotation.z-=.07;
    if(e.shellClosed)m.scale.y*=.78;
    if(e.burrowWarned||e.rushChargeMs>0)m.position.y=state.reduced?0:.04+Math.sin(state.time*.022)*.035;
    e.hpEl.dataset.effect=e.shellClosed?'shield':e.burrowWarned||e.rushChargeMs>0?'warning':e.slowMs>0||e.roarSlowMs>0?'slow':'';
   }
   for(const [e,m] of this.actors)if(!alive.has(e)){this.scene.remove(m);this.actors.delete(e);}
-  this.shots.forEach((m,i)=>{const shot=state.projectiles[i];m.visible=!!shot;if(shot){m.scale.set(.13,.13,.13);m.position.set((shot.x-.5)*9,.55,(shot.y-.5)*this.depth+.33);m.rotation.z=state.time*.005;}});
+  this.shots.forEach((m,i)=>{const shot=state.projectiles[i];m.visible=!!shot;if(shot){m.material=this.shotMats[shot.unitId]||this.fxMat;m.scale.set(shot.isPiercing?.26:.13,.1,.1);m.position.set((shot.x-.5)*9,.55,(shot.y-.5)*this.depth+.33);m.rotation.z=state.reduced?0:state.time*.005;}});
   this.renderer.render(this.scene,this.camera);window.guardYardRenderStats={active:1,drawCalls:this.renderer.info.render.calls,geometries:this.renderer.info.memory.geometries,triangles:this.renderer.info.render.triangles,actors:this.actors.size};
  }
  dispose(){if(this.dead)return;this.dead=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.onLost);for(const m of this.stageGroup.children)m.geometry.dispose();for(const r of this.resources)r.dispose();this.actors.clear();this.geometries.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.host.dataset.renderer='fallback';window.guardYardRenderStats={active:0,drawCalls:0,geometries:0,actors:0};}
