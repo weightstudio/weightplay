@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en" data-wp-shared-interface="7">
+<html lang="zh-Hans">
 <head>
-    <script data-wp-locale-route>if (/^https?:$/.test(location.protocol) && !/^(127\.0\.0\.1|localhost)$/.test(location.hostname)) (function(){try{const map={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};const locale=localStorage.getItem("weightPlayLocale")||localStorage.getItem("weightplayLocale")||localStorage.getItem("wp-locale")||"en";location.replace("/"+(map[locale]||"en")+"/games/animal-crownfall/"+location.search+location.hash)}catch{location.replace("/en/games/animal-crownfall/"+location.search+location.hash)}})();</script>
-    <link rel="canonical" href="https://weightplay.com/en/games/animal-crownfall/" />
+
+    <base href="/games/animal-crownfall/" />
+    <link rel="canonical" href="https://weightplay.com/zh-cn/games/animal-crownfall/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-crownfall/" />
     <link rel="alternate" hreflang="zh-Hant" href="https://weightplay.com/zh-tw/games/animal-crownfall/" />
     <link rel="alternate" hreflang="zh-Hans" href="https://weightplay.com/zh-cn/games/animal-crownfall/" />
@@ -18,14 +19,53 @@
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/animal-crownfall/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-crownfall/" />
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow"><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v1"><meta name="weightplay-interface-version" content="7">
-<title>Crownfall | WeightPlay</title><meta name="description" content="Clear connected blocks, defeat weaker guards and reclaim the crown in 30 original castle puzzles.">
+<meta name="robots" content="noindex,nofollow" /><meta name="weightplay-audience" content="general"><meta name="weightplay-game-version" content="v1"><meta name="weightplay-interface-version" content="7">
+<title>落块夺冠 | WeightPlay</title><meta name="description" content="Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles." />
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="../../src/game-ui-theme.css"><link rel="stylesheet" href="../../src/game-screen-frame.css">
 <script src="../../src/site-config.js"></script><script defer src="../../src/i18n.js"></script><script defer src="../../src/sound.js"></script><script defer src="../../src/game-screen-frame.js"></script>
-</head>
+  <meta property="og:site_name" content="WeightPlay" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="落块夺冠 | WeightPlay" />
+    <meta property="og:description" content="Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles." />
+    <meta property="og:url" content="https://weightplay.com/zh-cn/games/animal-crownfall/" />
+    <meta property="og:image" content="https://weightplay.com/assets/animal-crownfall/cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="落块夺冠 | WeightPlay" />
+    <meta name="twitter:description" content="Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles." />
+    <meta name="twitter:image" content="https://weightplay.com/assets/animal-crownfall/cover.png" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "落块夺冠",
+  "alternateName": "Crownfall",
+  "url": "https://weightplay.com/zh-cn/games/animal-crownfall/",
+  "image": "https://weightplay.com/assets/animal-crownfall/cover.png",
+  "description": "Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "WeightStudio",
+    "url": "https://weightplay.com"
+  },
+  "inLanguage": "zh-Hans",
+  "isAccessibleForFree": true,
+  "operatingSystem": "Any modern web browser",
+  "genre": [
+    "Puzzle",
+    "Strategy",
+    "Animal Games"
+  ],
+  "audience": {
+    "@type": "PeopleAudience",
+    "audienceType": "General players"
+  }
+}
+    </script>
+  </head>
 <body data-sound-toggle="off" data-wp-game-id="animal-crownfall" data-wp-interface-version="7" data-wp-game-version="v1" data-wp-game-owned-guide data-runtime-localize="off" data-screen="main">
 <div id="gameFrame" data-wp-frame-root>
 <main id="main" class="main-screen">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">落块夺冠</h1>
 <header><a href="/" data-wp-return="main" data-aria="back">←</a><strong data-wp-frame-title data-t="title">Crownfall</strong><select id="locale" hidden></select></header>
 <section id="hero"><img data-wp-frame-poster src="../../assets/animal-crownfall/cover.png" alt=""><div data-wp-frame-copy><p data-wp-frame-summary data-t="goal">Defeat weaker guards, then collect the crown.</p><p data-wp-frame-progress id="progress"></p><button id="start" data-wp-frame-action="primary" data-t="start">Start game</button><button id="resume" data-wp-frame-action="secondary" data-t="resume" hidden>Resume</button></div></section>
 </main>
@@ -34,7 +74,28 @@
 <div id="battleContent"><div id="battleInfo" data-wp-frame-info><div><small data-t="power">Power</small><strong id="power">10</strong></div><div><small data-t="moves">Moves</small><strong id="moves">0</strong></div><div><small data-t="stage">Stage</small><strong id="stageNumber">1</strong></div></div><div id="arena" tabindex="0" role="group" data-aria="tap"></div><div id="side"><p id="objective"></p><p id="feedback" role="status" aria-live="polite"></p><div id="legend"></div><label class="motion"><input type="checkbox" id="reduced"><span data-t="reduced">Reduced motion</span></label></div><div class="tools"><button id="undo" data-wp-frame-action="secondary" data-t="undo">Undo</button><button id="retry" data-wp-frame-action="secondary" data-t="retry">Retry</button><button id="hint" data-wp-frame-action="secondary" data-t="hint">Hint</button></div></div>
 <div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><h2 id="modalTitle"></h2><p id="modalText"></p><p id="badges"></p><div id="modalActions"></div></div></div>
 </section>
-<section id="mainGuide" class="game-page-info game-page-info-static"><h2 data-t="title">Crownfall</h2><div class="facts"><p>30 <span data-t="stages">Stages</span></p><p>1–3 min</p></div><h3 data-t="rules">How to play</h3><p data-guide="0">Remove matching connected blocks. Only greater power wins.</p><p data-guide="1">Keys open gates; runes break shields.</p><h3 data-t="campaign">Six castle chapters</h3><p data-guide="2">Thirty authored puzzles with six bosses.</p><h3 data-t="save">Saved in this browser</h3><p data-guide="3">Progress and an unfinished run stay in this browser.</p></section>
+<section class="game-page-info game-page-info-static" aria-label="落块夺冠 游戏信息">
+
+    <div class="game-info-hero">
+      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>落块夺冠</h2><p>Clear connected rune blocks, choose the battle order and reclaim the crown across 30 castle puzzles.</p></div>
+      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>Dungeon Puzzle</strong></div><div class="game-info-fact"><span>类型</span><strong>Puzzle · Strategy · Animal Games</strong></div></div>
+    </div>
+
+    <div class="game-info-sections">
+
+
+
+
+
+
+
+      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div>
+
+    </div>
+  </section>
 </div><aside id="generalReserve" aria-hidden="true" hidden></aside>
 <script type="module" src="app.mjs"></script>
+<script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
+  <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
 </body></html>
