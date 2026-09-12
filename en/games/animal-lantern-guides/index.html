@@ -23,11 +23,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="description" content="Reveal safe lanterns, share the clue, and place matching trail markers together." />
   <title>Co-op Lantern Paths | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-animal-lantern-guides-v9-campaign">
-  <link rel="stylesheet" href="style.css?v=20260910-animal-lantern-guides-v9-campaign"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-animal-lantern-guides-v10-comprehension">
+  <link rel="stylesheet" href="style.css?v=20260912-animal-lantern-guides-v10-comprehension"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Co-op Lantern Paths | WeightPlay" />
     <meta property="og:description" content="Reveal safe lanterns, share the clue, and place matching trail markers together." />
@@ -41,7 +41,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v9" data-audience="general" data-runtime-localize="off" data-screen="main">
+<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v11" data-audience="general" data-runtime-localize="off" data-screen="main">
   <main id="mainScreen" class="screen main-screen" data-screen="main" aria-labelledby="mainHeading">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">Co-op Lantern Paths</h1>
     <header class="topbar wp-main-shell-header">
@@ -54,7 +54,7 @@
     </header>
 
     <section class="hero-card">
-      <img class="lantern-art main-poster wp-standard-main-poster" src="assets/animal-lantern-guides-cover-v1.png" alt="Co-op Lantern Paths game artwork" draggable="false" />
+      <img class="lantern-art main-poster wp-standard-main-poster" src="/assets/interface7-redrawn/animal-lantern-guides.webp" alt="Co-op Lantern Paths game artwork" draggable="false" />
       <div class="hero-copy">
         <p class="guide-badge" id="guideBadge">A quiet co-op prototype</p>
         <h2 id="mainHeading">One friend reads the lantern. One friend places the trail.</h2>
@@ -73,7 +73,7 @@
     <footer id="footer">Free to play · no account or network needed</footer>
   </main>
 
-  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo">
+  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo" open>
     <summary id="howTo">How to play</summary>
     <p id="howToBody">Scout privately reveals a signal and passes the device. Guide combines that spoken signal with a different trail rule. A wrong marker dims the shared light; a clear handoff unlocks the next trail.</p>
   </details>
@@ -103,8 +103,11 @@
         <div><p class="eyebrow" id="sceneBadge">Night rescue</p><h2 id="sceneTitle"></h2></div>
         <div class="battle-header-tools"><span class="meter-pill" id="roundLabel"></span><span class="meter-pill" id="meterLabel"></span><button id="battleSettingsBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div>
       </header>
-      <div class="coop-card">
+      <div class="coop-card"><div id="blockWorld" class="block-world"><img class="world-scout" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt=""><img class="world-guide" src="/assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp" alt=""><div class="bridge-hud"><span id="bridgeProgress"></span><div id="bridgeTrack"></div></div></div>
         <div class="scene-head"><p id="sceneHint" class="scene-hint"></p><p id="handoffPrompt" class="handoff-prompt" role="status" aria-live="polite"></p></div>
+        <ol class="turn-steps" aria-label="Turn order">
+          <li id="stepScout"></li><li id="stepPass"></li><li id="stepGuide"></li>
+        </ol>
         <div class="role-grid">
           <article class="role-card scout-card">
             <p class="role-kicker" id="scoutRole">Scout's side</p>
@@ -118,9 +121,9 @@
             <p class="role-kicker" id="guideRole">Guide's side</p>
             <h3 id="guideHeading">Apply the trail rule</h3>
             <p id="guideTask">Listen to Scout, read your rule, then choose the resulting marker.</p>
-            <p id="guideRule" class="guide-rule"></p>
+            <p id="guideRule" class="guide-rule"></p><div id="ruleMap" class="rule-map" role="img"></div>
             <div id="guideChoices" class="symbol-grid" role="group" aria-label="Guide trail-marker choices"></div>
-            <p id="guideState" class="role-state" role="status"></p>
+            <p id="guideState" class="role-state" role="status"></p><button id="recallBtn" class="secondary" type="button"></button>
           </article>
         </div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
@@ -139,8 +142,8 @@
     </div>
   </section>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/game-runtime-localizer-loader.js?v=20260804-rune-copy-v27"></script>
-  <script src="locales.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
-  <script src="game.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
+  <script src="locales.js?v=20260912-animal-lantern-guides-v10-comprehension"></script>
+  <script src="campaign.js?v=11"></script><script src="upgrade-copy.js?v=11"></script><script type="module" src="block-scene.js?v=11"></script><script src="../../src/sound.js"></script><script src="game.js?v=20260912-animal-lantern-guides-v11-block-campaign"></script>
 <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Co-op Lantern Paths game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay Original Game Guide</span><h2 data-wp-game-title data-runtime-localize="off">Co-op Lantern Paths</h2><p>Reveal safe lanterns, share the clue, and place matching trail markers together across a calm 30-trail forest campaign.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Gameplay</span><strong>Asymmetric Co-op Puzzle</strong></div><div class="game-info-fact"><span>Campaign</span><strong>30 trails · 6 chapters</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>How to Play</h3><p>Scout privately reveals one lantern symbol, remembers it, and tells Guide what appeared. Guide reads the current trail rule, then places the matching marker on the shared screen. One player can pass the device between roles.</p></div><div class="game-info-section"><h3>Trail Rules</h3><p>Early trails match the spoken symbol. Later chapters transform it with next, previous, echo, weather-shift, and mastery rules. The clue stays hidden during the handoff, so repeat the rule aloud before choosing.</p></div><div class="game-info-section"><h3>Campaign</h3><p>Thirty authored trails form six chapters with a checkpoint every fifth trail. A correct marker lights the rescue path and unlocks the next trail; the chapter rule changes the decision, not just the amount of work.</p></div><div class="game-info-section"><h3>Recovery and Save</h3><p>A wrong marker dims the shared rescue light and returns the turn to Scout for another attempt. There is no timer, purchase, account, or network requirement; unlocked trails and best clears stay in this browser only.</p></div><div class="game-info-section"><h3>Player and Save Information</h3><p>This is a general-audience co-op puzzle for shared-screen play. It has no public chat or leaderboard, and clearing site data or changing browsers can remove local progress.</p></div><div class="game-info-section"><h3>Frequently Asked Questions</h3><dl><div><dt>What does Scout do?</dt><dd>Scout reveals one private lantern symbol, remembers it, and communicates it to Guide.</dd></div><div><dt>How does Guide choose a marker?</dt><dd>Guide combines the spoken symbol with the current trail rule, then places the resulting marker.</dd></div><div><dt>What happens after a wrong marker?</dt><dd>The shared light dims and the game returns to Scout for a fresh attempt on that trail.</dd></div><div><dt>How many trails are included?</dt><dd>There are 30 authored trails across six chapters, with a checkpoint every fifth trail.</dd></div><div><dt>Is progress saved?</dt><dd>Unlocked trails and best clears are saved only in this browser; there is no cloud account.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>Related Games</h3><p>Try another short puzzle built around visible rules and deliberate choices.</p><div class="game-info-related"><a class="game-info-related-card" href="/en/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Lights Out</strong><span>Toggle a tile and its neighbors to clear every light.</span></span></a><a class="game-info-related-card" href="/en/games/four-in-a-row/"><img src="/assets/four-in-a-row-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Four in a Row</strong><span>Plan a line of four while reading the opponent&#39;s next threat.</span></span></a></div></div></div></section>
 </body>
 </html>

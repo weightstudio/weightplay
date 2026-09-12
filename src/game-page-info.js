@@ -1987,7 +1987,7 @@
     },
     hearts: {
       title: "Hearts", age: "9+", difficulty: "Easy to Challenging", time: "5-15 minutes",
-      gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false,
+      gameplay: "Classic Evasion Trick-Taking", genre: ["Card", "Family", "Strategy"], skills: ["Planning", "Focus", "Pattern Recognition"], hideSkillsFact: true, showRelatedSkill: false, hideScoreBands: true,
       intro: "Four players follow suit through thirteen tricks. Hearts are penalty cards, the Queen of Spades is worth 13 points, and taking every penalty card enables Shooting the Moon.",
       guideKicker: "WeightPlay Original Game Guide",
       story: [

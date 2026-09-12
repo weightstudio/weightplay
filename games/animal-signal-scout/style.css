@@ -31,3 +31,57 @@
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-signal-scout"] .game-page-info .game-info-sections { display: grid !important; }
   html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-signal-scout"] .game-page-info .game-info-section { border-radius: 16px !important; }
 }
+
+/* v10 comprehension repair: always name the next required action and keep the
+   visible order, current slot, selected code, and matching card in one visual
+   chain. */
+.mission-prompt{margin:0;padding:13px 16px;border:2px solid var(--gold);border-radius:14px;background:#342d18;color:#fff4c2;font-size:1.05rem;font-weight:900;text-align:center}
+.target-chip.is-current{border-color:var(--gold);box-shadow:0 0 0 3px #ffd16633}
+.target-chip.is-done{border-color:var(--mint);color:var(--mint)}
+.signal-btn.is-next{border-color:var(--gold);box-shadow:0 0 0 3px #ffd16633,0 10px 24px #0005}
+@media (max-height:520px) and (orientation:landscape){
+  #battleScreen .mission-prompt{grid-column:2;grid-row:2;padding:5px 8px;font-size:.76rem;line-height:1.2}
+  #battleScreen .order-card:not(.code-card){grid-row:3}
+  #battleScreen .code-card{grid-row:4}
+  #battleScreen .battle-status{display:none}
+}
+/* v11: authored block outpost; fixed input tracks never move with text/code. */
+#battleScreen .battle-content{height:calc(100% - 58px);max-width:none;padding:4px 8px 8px;gap:8px;grid-template-rows:minmax(95px,1fr) 72px 44px 88px 84px 126px 38px 52px;overflow:hidden}
+#battleScreen .block-world{position:relative;min-height:0;overflow:hidden;grid-row:1;border-bottom:3px solid #b78a47;background:linear-gradient(0deg,#102638dd,transparent)}
+.block-world canvas{display:block;width:100%;height:100%;touch-action:manipulation}
+.world-guide{position:absolute;inset:auto auto 0 0;height:90%;max-width:25%;object-fit:contain;pointer-events:none;filter:drop-shadow(4px 6px 0 #07172688)}
+#battleScreen .route-note{grid-row:2;padding:6px 10px;font-size:13px;line-height:1.35;overflow:auto;background:#102739ed;border:1px solid #9f8758;border-radius:4px}
+#battleScreen .mission-prompt{grid-row:3;display:grid;align-items:center;padding:4px 8px;font-size:14px;line-height:1.15;border-radius:4px}
+#battleScreen .order-card{padding:6px 8px;border-radius:4px;min-height:0;overflow:hidden;background:#132e42ed}
+#battleScreen .order-card:not(.code-card){grid-row:4}
+#battleScreen .code-card{grid-row:5}
+#battleScreen .order-card h3{font-size:11px;margin:0 0 4px}
+#battleScreen .target-order{gap:5px;flex-wrap:nowrap;min-height:0;direction:ltr}
+#battleScreen .target-chip,#battleScreen .code-chip{position:relative;display:flex;justify-content:center;flex:1;min-width:0;height:48px;min-height:44px;padding:2px;border-radius:3px;background:#23445a;border:1px solid #6995aa;color:#fff}
+.target-chip b,.code-chip b{position:absolute;top:1px;left:3px;font-size:10px;color:#d1e4ea}.animal-icon{height:100%;max-width:100%;object-fit:contain;pointer-events:none}.target-chip.is-sleeping{background:repeating-linear-gradient(135deg,#28394d 0 6px,#415368 6px 12px);color:#ffbb96;font-size:28px}
+#battleScreen .signal-card-grid{grid-row:6;gap:8px;min-height:0}
+#battleScreen .signal-btn{height:126px;min-height:0;padding:6px;gap:2px;border-radius:4px;grid-template-rows:72px 18px 16px;background:linear-gradient(135deg,#203d55,#0c1b2d);border:2px solid #678b9c;box-shadow:inset 0 -6px #071725}
+#battleScreen .signal-btn strong{font-size:13px}#battleScreen .signal-btn small{font-size:10px;display:flex;gap:4px;align-items:center}.signal-btn small i{width:9px;height:9px;display:inline-block}.signal-btn:active:not(:disabled){filter:brightness(1.35)}
+#battleScreen .battle-status{grid-row:7;margin:0;padding:4px 8px;min-height:0;display:grid;align-items:center;font-size:12px;line-height:1.2;background:#102738ec;border-radius:3px;overflow:auto}
+#battleScreen .battle-actions{grid-row:8;gap:8px}#battleScreen .battle-actions button{height:52px;min-height:44px;padding:4px 8px;border-radius:4px;font-size:14px}
+#battleScreen .memory-btn{float:inline-end;min-height:44px;height:44px;padding:3px 6px;font-size:11px;position:relative;z-index:1}
+#battleScreen:has(.memory-btn:not([hidden])) .order-card:not(.code-card){display:grid;grid-template-columns:minmax(0,1fr) 100px;grid-template-rows:16px 48px;gap:2px 6px}.memory-btn:not([hidden]){grid-column:2;grid-row:1/3;align-self:center}#battleScreen:has(.memory-btn:not([hidden])) #targetOrder{grid-column:1}
+#battleScreen .signal-btn.is-next{border-color:#ffcf73;box-shadow:inset 0 -5px #7e5829,0 0 0 2px #e8b54b66}
+@media(max-height:520px) and (orientation:landscape){
+ #battleScreen .battle-content{grid-template-columns:minmax(0,1fr) minmax(330px,46%);grid-template-rows:48px 40px 76px minmax(52px,1fr);gap:5px;height:calc(100% - 48px);padding:2px 4px}
+ #battleScreen .block-world{grid-column:1;grid-row:1/4}
+ #battleScreen .signal-card-grid{grid-column:1;grid-row:4;grid-template-columns:repeat(3,1fr)}
+ #battleScreen .signal-btn{height:100%;min-height:48px;display:grid;grid-template-columns:40px 1fr;grid-template-rows:1fr 1fr;padding:3px;gap:0 4px}#battleScreen .signal-btn img{grid-row:1/3;height:44px}#battleScreen .signal-btn strong{font-size:11px}
+ #battleScreen .route-note{grid-column:2;grid-row:1;font-size:11px;padding:3px 6px}#battleScreen .mission-prompt{grid-column:2;grid-row:2;font-size:12px}
+ #battleScreen .order-card:not(.code-card){grid-column:2;grid-row:3;padding:3px 5px}#battleScreen .code-card{display:none}
+ #battleScreen .battle-actions{grid-column:2;grid-row:4;align-self:end}#battleScreen .battle-actions button{height:48px;font-size:12px}#battleScreen .battle-status{display:none}
+}
+@media(prefers-reduced-motion:reduce){#battleScreen *{animation:none!important;transition:none!important}}
+@media(max-height:520px) and (orientation:landscape){
+ #battleScreen .battle-content{grid-template-rows:44px 30px 68px 56px minmax(48px,1fr);gap:4px}
+ #battleScreen .block-world{grid-row:1/4}#battleScreen .signal-card-grid{grid-row:4/6}
+ #battleScreen .code-card{display:block;grid-column:2;grid-row:4;padding:3px 5px}#battleScreen .code-card h3{display:none}
+ #battleScreen .target-chip,#battleScreen .code-chip{height:44px;min-height:44px}
+ #battleScreen .battle-actions{grid-row:5}
+}
+#battleBackBtn,#stageBackBtn{font-size:24px!important;overflow:hidden}

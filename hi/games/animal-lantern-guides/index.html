@@ -23,11 +23,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="description" content="सुरक्षित लालटेन दिखाएँ, संकेत साझा करें और मिलते रास्ते के निशान साथ रखें।" />
   <title>मिलकर लालटेन का रास्ता बनाएँ | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-animal-lantern-guides-v9-campaign">
-  <link rel="stylesheet" href="style.css?v=20260910-animal-lantern-guides-v9-campaign"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-animal-lantern-guides-v10-comprehension">
+  <link rel="stylesheet" href="style.css?v=20260912-animal-lantern-guides-v10-comprehension"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="मिलकर लालटेन का रास्ता बनाएँ | WeightPlay" />
     <meta property="og:description" content="सुरक्षित लालटेन दिखाएँ, संकेत साझा करें और मिलते रास्ते के निशान साथ रखें।" />
@@ -41,7 +41,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v9" data-audience="general" data-runtime-localize="off" data-screen="main">
+<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v11" data-audience="general" data-runtime-localize="off" data-screen="main">
   <main id="mainScreen" class="screen main-screen" data-screen="main" aria-labelledby="mainHeading">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">मिलकर लालटेन का रास्ता बनाएँ</h1>
     <header class="topbar wp-main-shell-header">
@@ -54,7 +54,7 @@
     </header>
 
     <section class="hero-card">
-      <img class="lantern-art main-poster wp-standard-main-poster" src="assets/animal-lantern-guides-cover-v1.png" alt="मिलकर लालटेन का रास्ता बनाएँ game artwork" draggable="false" />
+      <img class="lantern-art main-poster wp-standard-main-poster" src="/assets/interface7-redrawn/animal-lantern-guides.webp" alt="मिलकर लालटेन का रास्ता बनाएँ game artwork" draggable="false" />
       <div class="hero-copy">
         <p class="guide-badge" id="guideBadge">A quiet co-op prototype</p>
         <h2 id="mainHeading">One friend reads the lantern. One friend places the trail.</h2>
@@ -73,7 +73,7 @@
     <footer id="footer">Free to play · no account or network needed</footer>
   </main>
 
-  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo">
+  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo" open>
     <summary id="howTo">How to play</summary>
     <p id="howToBody">Scout privately reveals a signal and passes the device. Guide combines that spoken signal with a different trail rule. A wrong marker dims the shared light; a clear handoff unlocks the next trail.</p>
   </details>
@@ -103,8 +103,11 @@
         <div><p class="eyebrow" id="sceneBadge">Night rescue</p><h2 id="sceneTitle"></h2></div>
         <div class="battle-header-tools"><span class="meter-pill" id="roundLabel"></span><span class="meter-pill" id="meterLabel"></span><button id="battleSettingsBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div>
       </header>
-      <div class="coop-card">
+      <div class="coop-card"><div id="blockWorld" class="block-world"><img class="world-scout" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt=""><img class="world-guide" src="/assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp" alt=""><div class="bridge-hud"><span id="bridgeProgress"></span><div id="bridgeTrack"></div></div></div>
         <div class="scene-head"><p id="sceneHint" class="scene-hint"></p><p id="handoffPrompt" class="handoff-prompt" role="status" aria-live="polite"></p></div>
+        <ol class="turn-steps" aria-label="Turn order">
+          <li id="stepScout"></li><li id="stepPass"></li><li id="stepGuide"></li>
+        </ol>
         <div class="role-grid">
           <article class="role-card scout-card">
             <p class="role-kicker" id="scoutRole">Scout's side</p>
@@ -118,9 +121,9 @@
             <p class="role-kicker" id="guideRole">Guide's side</p>
             <h3 id="guideHeading">Apply the trail rule</h3>
             <p id="guideTask">Listen to Scout, read your rule, then choose the resulting marker.</p>
-            <p id="guideRule" class="guide-rule"></p>
+            <p id="guideRule" class="guide-rule"></p><div id="ruleMap" class="rule-map" role="img"></div>
             <div id="guideChoices" class="symbol-grid" role="group" aria-label="Guide trail-marker choices"></div>
-            <p id="guideState" class="role-state" role="status"></p>
+            <p id="guideState" class="role-state" role="status"></p><button id="recallBtn" class="secondary" type="button"></button>
           </article>
         </div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
@@ -140,8 +143,8 @@
   </section>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
-  <script src="game.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
+  <script src="locales.js?v=20260912-animal-lantern-guides-v10-comprehension"></script>
+  <script src="campaign.js?v=11"></script><script src="upgrade-copy.js?v=11"></script><script type="module" src="block-scene.js?v=11"></script><script src="../../src/sound.js"></script><script src="game.js?v=20260912-animal-lantern-guides-v11-block-campaign"></script>
 <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="पशु लालटेन मार्गदर्शक game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay मूल गेम गाइड</span><h2 data-wp-game-title data-runtime-localize="off">मिलकर लालटेन का रास्ता बनाएँ</h2><p>सुरक्षित लालटेन दिखाएँ, संकेत साझा करें और 30 शांत सहकारी वन-पथों में मिलते रास्ते के निशान रखें।</p></div><div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>असममित सहयोगी पहेली</strong></div><div class="game-info-fact"><span>अभियान</span><strong>30 पथ · 6 अध्याय</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>कैसे खेलें</h3><p>खोजी एक लालटेन-चिह्न निजी तौर पर देखती है, उसे याद रखती है और मार्गदर्शक को बताती है। मार्गदर्शक संकेत को वर्तमान पथ-नियम से मिलाकर साझा स्क्रीन पर सही निशान रखता है। एक व्यक्ति भूमिकाओं के बीच उपकरण बदल सकता है।</p></div><div class="game-info-section"><h3>पथ के नियम</h3><p>शुरुआत में बोला गया चिह्न उसी निशान से मिलता है। बाद के अध्याय अगले, पिछले, प्रतिध्वनि, मौसम-परिवर्तन और महारत रूपांतरण जोड़ते हैं। आदान-प्रदान के समय संकेत छिपा रहता है, इसलिए चुनने से पहले नियम दोहराएँ।</p></div><div class="game-info-section"><h3>प्रगति</h3><p>30 मूल पथ छह अध्यायों में हैं और हर पाँच पथ के बाद एक चेकपॉइंट आता है। सही निशान बचाव-रोशनी जलाता और अगला पथ खोलता है; हर अध्याय में निर्णय पढ़ने का तरीका बदलता है।</p></div><div class="game-info-section"><h3>गलती और सेव</h3><p>गलत निशान साझा रोशनी को मंद करता है और नई कोशिश के लिए बारी खोजी के पास लौटती है। टाइमर, खरीद, खाता या नेटवर्क की जरूरत नहीं; खुले पथ और सर्वोत्तम परिणाम इसी ब्राउज़र में रहते हैं।</p></div><div class="game-info-section"><h3>खिलाड़ी और सेव जानकारी</h3><p>यह साझा स्क्रीन पर सामान्य दर्शकों के लिए सहयोगी पहेली है। इसमें सार्वजनिक चैट या लीडरबोर्ड नहीं है; साइट डेटा मिटाने से स्थानीय प्रगति हट सकती है।</p></div><div class="game-info-section"><h3>अक्सर पूछे जाने वाले प्रश्न</h3><dl><div><dt>खोजी क्या करती है?</dt><dd>वह एक लालटेन-चिह्न दिखाकर उसे याद रखती है और परिणाम मार्गदर्शक को बताती है।</dd></div><div><dt>मार्गदर्शक निशान कैसे चुनता है?</dt><dd>वह बताए गए चिह्न को वर्तमान पथ-नियम से मिलाकर परिणाम वाला निशान रखता है।</dd></div><div><dt>गलत निशान रखने पर क्या होता है?</dt><dd>साझा रोशनी मंद होती है और पथ की नई कोशिश के लिए बारी खोजी के पास लौटती है।</dd></div><div><dt>कितने पथ हैं?</dt><dd>छह अध्यायों में 30 मूल पथ हैं और हर पाँच पथ के बाद चेकपॉइंट है।</dd></div><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>खुले पथ और सर्वोत्तम परिणाम केवल इसी ब्राउज़र में सहेजे जाते हैं; क्लाउड खाता नहीं है।</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>संबंधित गेम</h3><p>दिखने वाले नियमों और सोच-समझकर किए फैसलों वाली एक और छोटी पहेली आज़माएँ।</p><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>लाइट्स आउट</strong><span>खाने और उसके पड़ोसियों को बदलकर सभी लाइट बंद करें।</span></span></a><a class="game-info-related-card" href="/hi/games/four-in-a-row/"><img src="/assets/four-in-a-row-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>फोर इन अ रो</strong><span>प्रतिद्वंद्वी की धमकी पढ़ें और चार की पंक्ति बनाएँ।</span></span></a></div></div></div></section>
 </body>
 </html>

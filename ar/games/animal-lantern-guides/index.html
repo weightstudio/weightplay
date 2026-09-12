@@ -23,11 +23,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="description" content="اكشفا الفوانيس الآمنة، شاركا الدليل وضَعا علامات الطريق المطابقة معاً." />
   <title>مسارات الفوانيس التعاونية | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-animal-lantern-guides-v9-campaign">
-  <link rel="stylesheet" href="style.css?v=20260910-animal-lantern-guides-v9-campaign"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-animal-lantern-guides-v10-comprehension">
+  <link rel="stylesheet" href="style.css?v=20260912-animal-lantern-guides-v10-comprehension"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="مسارات الفوانيس التعاونية | WeightPlay" />
     <meta property="og:description" content="اكشفا الفوانيس الآمنة، شاركا الدليل وضَعا علامات الطريق المطابقة معاً." />
@@ -41,7 +41,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v9" data-audience="general" data-runtime-localize="off" data-screen="main">
+<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v11" data-audience="general" data-runtime-localize="off" data-screen="main">
   <main id="mainScreen" class="screen main-screen" data-screen="main" aria-labelledby="mainHeading">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">مسارات الفوانيس التعاونية</h1>
     <header class="topbar wp-main-shell-header">
@@ -54,7 +54,7 @@
     </header>
 
     <section class="hero-card">
-      <img class="lantern-art main-poster wp-standard-main-poster" src="assets/animal-lantern-guides-cover-v1.png" alt="شعار WeightPlay" draggable="false" />
+      <img class="lantern-art main-poster wp-standard-main-poster" src="/assets/interface7-redrawn/animal-lantern-guides.webp" alt="شعار WeightPlay" draggable="false" />
       <div class="hero-copy">
         <p class="guide-badge" id="guideBadge">A quiet co-op prototype</p>
         <h2 id="mainHeading">One friend reads the lantern. One friend places the trail.</h2>
@@ -73,7 +73,7 @@
     <footer id="footer">Free to play · no account or network needed</footer>
   </main>
 
-  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo">
+  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo" open>
     <summary id="howTo">How to play</summary>
     <p id="howToBody">Scout privately reveals a signal and passes the device. Guide combines that spoken signal with a different trail rule. A wrong marker dims the shared light; a clear handoff unlocks the next trail.</p>
   </details>
@@ -103,8 +103,11 @@
         <div><p class="eyebrow" id="sceneBadge">Night rescue</p><h2 id="sceneTitle"></h2></div>
         <div class="battle-header-tools"><span class="meter-pill" id="roundLabel"></span><span class="meter-pill" id="meterLabel"></span><button id="battleSettingsBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div>
       </header>
-      <div class="coop-card">
+      <div class="coop-card"><div id="blockWorld" class="block-world"><img class="world-scout" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt=""><img class="world-guide" src="/assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp" alt=""><div class="bridge-hud"><span id="bridgeProgress"></span><div id="bridgeTrack"></div></div></div>
         <div class="scene-head"><p id="sceneHint" class="scene-hint"></p><p id="handoffPrompt" class="handoff-prompt" role="status" aria-live="polite"></p></div>
+        <ol class="turn-steps" aria-label="Turn order">
+          <li id="stepScout"></li><li id="stepPass"></li><li id="stepGuide"></li>
+        </ol>
         <div class="role-grid">
           <article class="role-card scout-card">
             <p class="role-kicker" id="scoutRole">Scout's side</p>
@@ -118,9 +121,9 @@
             <p class="role-kicker" id="guideRole">Guide's side</p>
             <h3 id="guideHeading">Apply the trail rule</h3>
             <p id="guideTask">Listen to Scout, read your rule, then choose the resulting marker.</p>
-            <p id="guideRule" class="guide-rule"></p>
+            <p id="guideRule" class="guide-rule"></p><div id="ruleMap" class="rule-map" role="img"></div>
             <div id="guideChoices" class="symbol-grid" role="group" aria-label="Guide trail-marker choices"></div>
-            <p id="guideState" class="role-state" role="status"></p>
+            <p id="guideState" class="role-state" role="status"></p><button id="recallBtn" class="secondary" type="button"></button>
           </article>
         </div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
@@ -140,8 +143,8 @@
   </section>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/ar.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
-  <script src="game.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
+  <script src="locales.js?v=20260912-animal-lantern-guides-v10-comprehension"></script>
+  <script src="campaign.js?v=11"></script><script src="upgrade-copy.js?v=11"></script><script type="module" src="block-scene.js?v=11"></script><script src="../../src/sound.js"></script><script src="game.js?v=20260912-animal-lantern-guides-v11-block-campaign"></script>
 <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="أدلة فوانيس الحيوانات game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">دليل ألعاب WeightPlay الأصلية</span><h2 data-wp-game-title data-runtime-localize="off">مسارات الفوانيس التعاونية</h2><p>اكشفا الفوانيس الآمنة، شاركا الدليل، وضَعا علامات الطريق المطابقة عبر 30 مساراً تعاونياً هادئاً في الغابة.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>أسلوب اللعب</span><strong>لغز تعاوني غير متماثل</strong></div><div class="game-info-fact"><span>الحملة</span><strong>30 مساراً · 6 فصول</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>طريقة اللعب</h3><p>يكشف الكشّاف رمز فانوس واحداً سراً، ويحفظه ثم يخبر المرشد بما ظهر. يضم المرشد الدليل إلى قاعدة المسار الحالي ويضع العلامة المطابقة على الشاشة المشتركة. يمكن للاعب واحد تبديل الجهاز بين الدورين.</p></div><div class="game-info-section"><h3>قواعد المسارات</h3><p>تطابق المسارات الأولى الرمز المنطوق مع العلامة نفسها. تضيف الفصول اللاحقة تحويلات التالي والسابق والصدى وتبدّل الطقس والإتقان. يختفي الدليل أثناء التسليم، لذلك أعيدا القاعدة بصوت مسموع قبل الاختيار.</p></div><div class="game-info-section"><h3>التقدم</h3><p>تتوزع المسارات الثلاثون المصممة أصلياً على ستة فصول، مع نقطة فحص بعد كل خمسة مسارات. تضيء العلامة الصحيحة ضوء الإنقاذ وتفتح المسار التالي؛ وتغير كل مرحلة طريقة اتخاذ القرار.</p></div><div class="game-info-section"><h3>الخطأ والحفظ</h3><p>تخفت إضاءة الإنقاذ المشتركة عند اختيار علامة خاطئة، ويعود الدور إلى الكشّاف لمحاولة جديدة. لا تحتاج اللعبة إلى مؤقت أو شراء أو حساب أو شبكة؛ تُحفظ المسارات المفتوحة وأفضل النتائج في هذا المتصفح فقط.</p></div><div class="game-info-section"><h3>معلومات اللاعب والحفظ</h3><p>هذا لغز تعاوني للجمهور العام على شاشة مشتركة. لا توجد دردشة عامة أو لوحة متصدرين، وقد يؤدي مسح بيانات الموقع إلى حذف التقدم المحلي.</p></div><div class="game-info-section"><h3>الأسئلة الشائعة</h3><dl><div><dt>ماذا يفعل الكشّاف؟</dt><dd>يكشف رمز فانوس واحداً، يحفظه، ثم ينقل النتيجة إلى المرشد.</dd></div><div><dt>كيف يختار المرشد العلامة؟</dt><dd>يجمع الرمز المنقول مع قاعدة المسار الحالي، ثم يضع العلامة الناتجة.</dd></div><div><dt>ماذا يحدث بعد علامة خاطئة؟</dt><dd>يخفت الضوء المشترك ويعود الدور إلى الكشّاف لإعادة المسار.</dd></div><div><dt>كم عدد المسارات؟</dt><dd>توجد 30 مساراً أصلياً في ستة فصول، مع نقطة فحص بعد كل خمسة مسارات.</dd></div><div><dt>هل يُحفظ التقدم؟</dt><dd>تُحفظ المسارات المفتوحة وأفضل النتائج في هذا المتصفح فقط؛ لا يوجد حساب سحابي.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>ألعاب ذات صلة</h3><p>جرّبا لغزاً قصيراً آخر يعتمد على قواعد واضحة وقرارات مدروسة.</p><div class="game-info-related"><a class="game-info-related-card" href="/ar/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>إطفاء الأنوار</strong><span>بدّلا الخلية وجيرانها لإطفاء كل الأضواء.</span></span></a><a class="game-info-related-card" href="/ar/games/four-in-a-row/"><img src="/assets/four-in-a-row-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>أربعة على التوالي</strong><span>اقرآ تهديد الخصم وخططا لخط من أربعة.</span></span></a></div></div></div></section>
 </body>
 </html>

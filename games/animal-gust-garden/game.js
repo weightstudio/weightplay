@@ -23,9 +23,81 @@
     return value;
   };
   const directionCopy = (direction) => ((COPY[locale] || COPY.en).directions || COPY.en.directions)[direction];
-  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v6", interface_version: 6, stage: stageIndex + 1, ...data }); }
+  function announce(name, data = {}) { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: `gust_garden_${name}`, game_id: "animal-gust-garden", game_version: "v10", interface_version: 6, stage: stageIndex + 1, ...data }); }
   function best() { const value = Number(localStorage.getItem("weightplay-animal-gust-garden-best-v1") || 0); return value > 0 ? value : null; }
-  function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); const guide = document.querySelector("[data-wp-game-guide], .game-page-info.game-page-info-static"); if (guide) guide.hidden = screen !== "main"; $("settingsPanel").hidden = true; document.body.dataset.wpActiveScreen = screen; window.scrollTo(0, 0); }
+  function show(screen) { document.querySelectorAll("[data-screen]").forEach((node) => { node.hidden = node.dataset.screen !== screen; }); const guide = document.querySelector("[data-wp-game-guide], .game-page-info.game-page-info-static"); if (guide) guide.hidden = screen !== "main"; $("settingsPanel").hidden = true; document.body.dataset.wpActiveScreen = screen; window.dispatchEvent(new CustomEvent("weightplay:shell-sync")); window.scrollTo(0, 0); }
+  // Interface 7 supplies one shared Settings owner. Keep the authored local
+  // buttons only as inert compatibility bindings so Main, Stage, and Battle
+  // never expose duplicate controls or let a hidden title intercept input.
+  function installInterfaceCompatibility() {
+    if (document.getElementById("gustGardenInterfaceCompatibility")) return;
+    const style = document.createElement("style");
+    style.id = "gustGardenInterfaceCompatibility";
+    style.textContent = `
+      @layer wp-frame-contract {
+        #mainScreen #gustGardenLegacySettingsButton,
+        #stageScreen #gustGardenLegacyStageSettingsButton,
+        #battleScreen #gustGardenLegacyBattleSettingsButton { display: none !important; }
+      }
+    `;
+    const legacy = [
+      ["settingsButton", "gustGardenLegacySettingsButton"],
+      ["stageSettingsButton", "gustGardenLegacyStageSettingsButton"],
+      ["battleSettingsButton", "gustGardenLegacyBattleSettingsButton"],
+    ];
+    legacy.forEach(([id, replacement]) => {
+      const button = $(id);
+      if (!button) return;
+      button.id = replacement;
+      button.classList.remove("wp-shell-settings-button");
+      button.removeAttribute("data-wp-settings");
+      button.hidden = true;
+      button.setAttribute("aria-hidden", "true");
+      button.tabIndex = -1;
+    });
+    const close = $("closeSettings");
+    if (close) close.id = "gustGardenLegacyCloseSettings";
+    (document.body || document.head).append(style);
+    watchSharedSettings();
+  }
+  function ensureSharedSettingsButton() {
+    const button = document.querySelector(".wp-shell-settings-button");
+    if (!button) return false;
+    button.id = "settingsButton";
+    button.hidden = false;
+    button.removeAttribute("aria-hidden");
+    button.tabIndex = 0;
+    button.style.setProperty("display", "grid", "important");
+    button.style.setProperty("width", "48px", "important");
+    button.style.setProperty("height", "48px", "important");
+    const host = button.closest(".wp-shell-settings");
+    const popover = host?.querySelector(".wp-shell-settings-popover");
+    if (popover && !popover.querySelector("#closeSettings")) {
+      const close = document.createElement("button");
+      close.id = "closeSettings";
+      close.type = "button";
+      close.className = "close-button";
+      close.setAttribute("aria-label", "Close");
+      close.textContent = "×";
+      close.addEventListener("click", () => {
+        popover.hidden = true;
+        button.setAttribute("aria-expanded", "false");
+        button.focus({ preventScroll: true });
+      });
+      popover.prepend(close);
+    }
+    return true;
+  }
+  function watchSharedSettings() {
+    if (ensureSharedSettingsButton()) return;
+    const root = document.body || document.documentElement;
+    if (!root) return;
+    const observer = new MutationObserver(() => {
+      if (ensureSharedSettingsButton()) observer.disconnect();
+    });
+    observer.observe(root, { childList: true, subtree: true });
+    window.setTimeout(() => { if (ensureSharedSettingsButton()) observer.disconnect(); }, 2000);
+  }
   function stageName(index) { return copy("stage", { number: index + 1 }); }
   function applyCopy() {
     document.documentElement.lang = locale; document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
@@ -72,6 +144,6 @@
   function renderResult() { const resultText = $("resultText"); if (resultText) resultText.textContent = copy("resultText", { name: stageName(stageIndex), checks: lastChecks }); const nextButton = $("nextButton"); if (nextButton) { nextButton.disabled = stageIndex >= STAGES.length - 1; nextButton.hidden = stageIndex >= STAGES.length - 1; } }
   function openStage() { show("stage"); renderStages(); }
   function bind() { $("startButton").addEventListener("click", openStage); $("chooseButton").addEventListener("click", openStage); $("mapButton").addEventListener("click", openStage); $("nextButton").addEventListener("click", () => startStage(stageIndex + 1)); $("gustButton").addEventListener("click", sendGust); $("resetButton").addEventListener("click", () => { stageState = cloneStage(stageIndex); selectedSeed = 0; selectedDirection = null; lastChecks = 0; announce("reset"); renderBattle(); }); $("stageBackButton").addEventListener("click", () => { show("main"); renderMain(); }); $("battleBackButton").addEventListener("click", openStage); $("settingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("stageSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("battleSettingsButton").addEventListener("click", () => { $("settingsPanel").hidden = false; }); $("closeSettings").addEventListener("click", () => { $("settingsPanel").hidden = true; }); $("soundButton").addEventListener("click", () => { sound = !sound; localStorage.setItem("weightplay-animal-gust-garden-sound", sound ? "on" : "off"); applyCopy(); }); $("localeSelect").addEventListener("change", (event) => { locale = COPY[event.target.value] ? event.target.value : "en"; localStorage.setItem("weightplay-animal-gust-garden-locale", locale); applyCopy(); }); }
-  function boot() { bind(); $("loading").hidden = true; $("app").hidden = false; show("main"); applyCopy(); announce("loaded"); }
+  function boot() { bind(); installInterfaceCompatibility(); $("loading").hidden = true; $("app").hidden = false; show("main"); applyCopy(); ensureSharedSettingsButton(); announce("loaded"); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
 }());

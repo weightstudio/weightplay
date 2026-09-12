@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v53";
+  const GAME_VERSION="v54";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -1159,7 +1159,7 @@
     ctx.restore();
   }
   const platformMaterials={
-    meadow:{face:"#85623d",top:"#92c86a",edge:"#426437",light:"#d9edaa",mortar:"#58432c"},
+    meadow:{face:"#788767",top:"#93bf43",edge:"#465d39",light:"#c8df83",mortar:"#617451"},
     brook:{face:"#ac793f",top:"#e1b96b",edge:"#684628",light:"#fff0b9",mortar:"#79552e"},
     stones:{face:"#82908b",top:"#b9c6b8",edge:"#485b58",light:"#e3e9cb",mortar:"#566a63"},
     wind:{face:"#78acbd",top:"#cce8e6",edge:"#3f7289",light:"#f1fff5",mortar:"#548b9e"},
@@ -1173,15 +1173,33 @@
     const bevel=Math.min(10,w*.12,h*.22),top=Math.min(18,h*.3);
     ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();
     ctx.fillStyle=material.face;ctx.fillRect(x,y,w,h);
-    const tileW=terrain==="brook"?34:58,tileH=30;
+    // Aligned square facets replace the old staggered brick courses. Keep
+    // their displayed proportions square even on the portrait battle canvas.
+    const bounds=canvas.getBoundingClientRect(),tileW=36;
+    const tileH=tileW*(bounds.width/1000)/(Math.max(1,bounds.height)/620);
     for(let row=0,ty=y+top;ty<y+h;row++,ty+=tileH){
-      for(let tx=x-(row%2)*tileW*.5;tx<x+w;tx+=tileW){
-        ctx.fillStyle=material.mortar;ctx.fillRect(tx,ty,tileW,2);ctx.fillRect(tx,ty,2,tileH);
-        ctx.fillStyle=material.light;ctx.globalAlpha=.18;ctx.fillRect(tx+3,ty+3,tileW-5,2);
-        ctx.globalAlpha=1;
+      for(let col=0,tx=x;tx<x+w;col++,tx+=tileW){
+        const shade=(col*7+row*11)%5;
+        ctx.fillStyle=shade===0?material.mortar:material.face;
+        ctx.fillRect(tx,ty,tileW,tileH);
+        ctx.fillStyle=shade%2?material.light:material.edge;
+        ctx.globalAlpha=.12;ctx.fillRect(tx,ty,tileW,tileH);ctx.globalAlpha=1;
+        ctx.fillStyle=material.light;ctx.globalAlpha=.22;
+        ctx.fillRect(tx,ty,tileW,Math.min(3,tileH*.14));
+        ctx.fillRect(tx,ty,3,tileH);ctx.globalAlpha=1;
+        ctx.fillStyle=material.edge;ctx.globalAlpha=.2;
+        ctx.fillRect(tx+tileW-4,ty,4,tileH);ctx.globalAlpha=1;
+        if(terrain==="meadow"&&row<2&&(col+row*2)%3!==2){
+          ctx.fillStyle=row===0?material.top:material.mortar;
+          ctx.fillRect(tx,ty,tileW,row===0?tileH*.65:tileH*.3);
+        }
       }
     }
     ctx.fillStyle=material.top;ctx.fillRect(x,y,w,top);
+    for(let tx=x,index=0;tx<x+w;tx+=tileW,index++){
+      ctx.fillStyle=index%3===0?material.light:material.edge;ctx.globalAlpha=.15;
+      ctx.fillRect(tx,y,Math.min(tileW,w-(tx-x)),top);ctx.globalAlpha=1;
+    }
     ctx.fillStyle=material.edge;
     ctx.beginPath();ctx.moveTo(x+w-bevel,y+top);ctx.lineTo(x+w,y);
     ctx.lineTo(x+w,y+h);ctx.lineTo(x+w-bevel,y+h-bevel);ctx.closePath();ctx.fill();
@@ -1194,6 +1212,9 @@
   function drawTerrain(spec){
     ctx.save();ctx.globalCompositeOperation="soft-light";ctx.globalAlpha=.12;ctx.fillStyle=spec.theme.sky;ctx.fillRect(0,0,1000,620);ctx.restore();
     for(const zone of spec.zones){
+      // Meadow flowers were decorative only (no physics effect). The new
+      // painted meadow already supplies them; do not overlay a dotted panel.
+      if(zone.kind==="flowers")continue;
       ctx.save();ctx.beginPath();ctx.roundRect(zone.x,zone.y,zone.w,zone.h,28);ctx.clip();
       if(zone.kind==="water"){
         ctx.fillStyle="rgba(37,169,214,.38)";ctx.fillRect(zone.x,zone.y,zone.w,zone.h);ctx.strokeStyle="rgba(191,247,255,.72)";ctx.lineWidth=5;

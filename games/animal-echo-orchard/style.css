@@ -85,3 +85,36 @@ body.wp-shell-battle-active .topbar{display:none!important}
 
 .stage-card.is-locked{opacity:.66;cursor:not-allowed;background:#dce5df!important}
 .stage-card.is-locked .arrow{font-size:1rem}
+
+/* Interface 6 Main contract: keep the authored Guide readable under the
+   shared Interface 7 frame defaults and retain the canonical wide poster. */
+@layer wp-echo-main-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] .game-page-info {
+    border-radius: 18px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] .game-info-sections {
+    display: grid !important;
+    gap: 14px !important;
+    border-radius: 18px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] .game-info-section {
+    border-radius: 16px !important;
+    padding: 16px !important;
+    background: #173940 !important;
+  }
+  @media (min-width: 700px) and (max-height: 900px) {
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .cover-wrap,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .cover-wrap picture,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .cover-wrap img,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .wp-standard-main-poster,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .wp-standard-main-poster-media,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-echo-orchard"] #mainScreen .wp-standard-main-poster-media img {
+      width: 420px !important;
+      min-width: 420px !important;
+      max-width: 420px !important;
+      height: 420px !important;
+      min-height: 420px !important;
+      max-height: 420px !important;
+    }
+  }
+}

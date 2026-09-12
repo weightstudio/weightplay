@@ -23,11 +23,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v9">
+  <meta name="weightplay-game-version" content="v11">
   <meta name="description" content="Révèle les lanternes sûres, partage l’indice et posez ensemble les balises correspondantes." />
   <title>Chemins de lanternes en équipe | WeightPlay</title>
-  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260910-animal-lantern-guides-v9-campaign">
-  <link rel="stylesheet" href="style.css?v=20260910-animal-lantern-guides-v9-campaign"><meta property="og:site_name" content="WeightPlay" />
+  <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-animal-lantern-guides-v10-comprehension">
+  <link rel="stylesheet" href="style.css?v=20260912-animal-lantern-guides-v10-comprehension"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Chemins de lanternes en équipe | WeightPlay" />
     <meta property="og:description" content="Révèle les lanternes sûres, partage l’indice et posez ensemble les balises correspondantes." />
@@ -41,7 +41,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v9" data-audience="general" data-runtime-localize="off" data-screen="main">
+<body data-game-id="animal-lantern-guides" data-wp-game-id="animal-lantern-guides" data-wp-game-version="v11" data-audience="general" data-runtime-localize="off" data-screen="main">
   <main id="mainScreen" class="screen main-screen" data-screen="main" aria-labelledby="mainHeading">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" data-wp-game-title data-runtime-localize="off">Chemins de lanternes en équipe</h1>
     <header class="topbar wp-main-shell-header">
@@ -54,7 +54,7 @@
     </header>
 
     <section class="hero-card">
-      <img class="lantern-art main-poster wp-standard-main-poster" src="assets/animal-lantern-guides-cover-v1.png" alt="Illustration du jeu Chemins de lanternes en équipe" draggable="false" />
+      <img class="lantern-art main-poster wp-standard-main-poster" src="/assets/interface7-redrawn/animal-lantern-guides.webp" alt="Illustration du jeu Chemins de lanternes en équipe" draggable="false" />
       <div class="hero-copy">
         <p class="guide-badge" id="guideBadge">A quiet co-op prototype</p>
         <h2 id="mainHeading">One friend reads the lantern. One friend places the trail.</h2>
@@ -73,7 +73,7 @@
     <footer id="footer">Free to play · no account or network needed</footer>
   </main>
 
-  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo">
+  <details id="mainGuide" class="guide-card game-page-info" data-wp-game-guide aria-labelledby="howTo" open>
     <summary id="howTo">How to play</summary>
     <p id="howToBody">Scout privately reveals a signal and passes the device. Guide combines that spoken signal with a different trail rule. A wrong marker dims the shared light; a clear handoff unlocks the next trail.</p>
   </details>
@@ -103,8 +103,11 @@
         <div><p class="eyebrow" id="sceneBadge">Night rescue</p><h2 id="sceneTitle"></h2></div>
         <div class="battle-header-tools"><span class="meter-pill" id="roundLabel"></span><span class="meter-pill" id="meterLabel"></span><button id="battleSettingsBtn" class="utility-button" type="button" data-wp-battle-utility aria-label="Settings">⚙</button></div>
       </header>
-      <div class="coop-card">
+      <div class="coop-card"><div id="blockWorld" class="block-world"><img class="world-scout" src="/assets/weightplay-character-spark-paw-fox-block-v1.webp" alt=""><img class="world-guide" src="/assets/weightplay-character-rainbow-hop-rabbit-block-v1.webp" alt=""><div class="bridge-hud"><span id="bridgeProgress"></span><div id="bridgeTrack"></div></div></div>
         <div class="scene-head"><p id="sceneHint" class="scene-hint"></p><p id="handoffPrompt" class="handoff-prompt" role="status" aria-live="polite"></p></div>
+        <ol class="turn-steps" aria-label="Turn order">
+          <li id="stepScout"></li><li id="stepPass"></li><li id="stepGuide"></li>
+        </ol>
         <div class="role-grid">
           <article class="role-card scout-card">
             <p class="role-kicker" id="scoutRole">Scout's side</p>
@@ -118,9 +121,9 @@
             <p class="role-kicker" id="guideRole">Guide's side</p>
             <h3 id="guideHeading">Apply the trail rule</h3>
             <p id="guideTask">Listen to Scout, read your rule, then choose the resulting marker.</p>
-            <p id="guideRule" class="guide-rule"></p>
+            <p id="guideRule" class="guide-rule"></p><div id="ruleMap" class="rule-map" role="img"></div>
             <div id="guideChoices" class="symbol-grid" role="group" aria-label="Guide trail-marker choices"></div>
-            <p id="guideState" class="role-state" role="status"></p>
+            <p id="guideState" class="role-state" role="status"></p><button id="recallBtn" class="secondary" type="button"></button>
           </article>
         </div>
         <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
@@ -140,8 +143,8 @@
   </section>
   <script src="/src/site-config.js?v=20260721-locale13-1"></script><script src="/src/i18n.js?v=20260818-upcoming-count1"></script><script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
-  <script src="locales.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
-  <script src="game.js?v=20260910-animal-lantern-guides-v9-campaign"></script>
+  <script src="locales.js?v=20260912-animal-lantern-guides-v10-comprehension"></script>
+  <script src="campaign.js?v=11"></script><script src="upgrade-copy.js?v=11"></script><script type="module" src="block-scene.js?v=11"></script><script src="../../src/sound.js"></script><script src="game.js?v=20260912-animal-lantern-guides-v11-block-campaign"></script>
 <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="Guides des lanternes animales game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Chemins de lanternes en équipe</h2><p>Révélez les lanternes sûres, partagez l’indice et posez les balises correspondantes dans une campagne coopérative de 30 itinéraires.</p></div><div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Puzzle coopératif asymétrique</strong></div><div class="game-info-fact"><span>Campagne</span><strong>30 itinéraires · 6 chapitres</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>Comment jouer</h3><p>L’Éclaireur révèle en privé un symbole de lanterne, le mémorise et le dit au Guide. Le Guide combine l’indice avec la règle de l’itinéraire et pose la balise correspondante sur l’écran partagé. Une personne peut passer l’appareil entre les rôles.</p></div><div class="game-info-section"><h3>Règles des itinéraires</h3><p>Au début, on choisit la balise du même symbole. Les chapitres suivants ajoutent les transformations suivant, précédent, écho, météo et maîtrise. L’indice est caché pendant le relais : répétez donc la règle avant de choisir.</p></div><div class="game-info-section"><h3>Progression</h3><p>Les 30 itinéraires originaux forment six chapitres, avec un point de contrôle tous les cinq itinéraires. Une bonne balise allume la lumière de secours et débloque la suite ; chaque chapitre change le raisonnement demandé.</p></div><div class="game-info-section"><h3>Erreurs et sauvegarde</h3><p>Une mauvaise balise assombrit la lumière partagée et rend la main à l’Éclaireur pour un nouvel essai. Aucun minuteur, achat, compte ou réseau n’est nécessaire ; les itinéraires débloqués et meilleurs résultats restent dans ce navigateur.</p></div><div class="game-info-section"><h3>Informations du joueur et sauvegarde</h3><p>C’est un puzzle coopératif grand public à écran partagé. Il n’y a ni chat public ni classement, et effacer les données du site peut supprimer la progression locale.</p></div><div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Que fait l’Éclaireur ?</dt><dd>Il révèle un symbole de lanterne, le mémorise et communique le résultat au Guide.</dd></div><div><dt>Comment le Guide choisit-il la balise ?</dt><dd>Il combine le symbole annoncé avec la règle de l’itinéraire actuel, puis pose la balise obtenue.</dd></div><div><dt>Que se passe-t-il avec une mauvaise balise ?</dt><dd>La lumière partagée faiblit et la main revient à l’Éclaireur pour recommencer l’itinéraire.</dd></div><div><dt>Combien d’itinéraires sont inclus ?</dt><dd>Il y a 30 itinéraires originaux en six chapitres, avec un point de contrôle tous les cinq.</dd></div><div><dt>La progression est-elle enregistrée ?</dt><dd>Les itinéraires débloqués et meilleurs résultats restent dans ce navigateur ; aucun compte cloud n’est utilisé.</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><p>Essayez un autre puzzle court fondé sur des règles visibles et des choix réfléchis.</p><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/lights-out/"><img src="/assets/lights-out-cover-v2.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Extinction des lumières</strong><span>Basculez une case et ses voisines pour tout éteindre.</span></span></a><a class="game-info-related-card" href="/fr/games/four-in-a-row/"><img src="/assets/four-in-a-row-cover-v1.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Quatre à la suite</strong><span>Lisez la menace adverse et préparez une ligne de quatre.</span></span></a></div></div></div></section>
 </body>
 </html>

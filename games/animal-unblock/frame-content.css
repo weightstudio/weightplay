@@ -16,7 +16,7 @@ html:has(body[data-unblock-screen="stage"]),html:has(body[data-unblock-screen="b
 #board .art-h3 {background-image:url('../../assets/animal-unblock-h3-block-v22.webp')}
 #board .art-v2 {background-image:url('../../assets/animal-unblock-v2-block-v22-proportional.webp')}
 #board .art-v3 {background-image:url('../../assets/animal-unblock-v3-block-v22-proportional.webp')}
-#board .exit {background-image:url('../../assets/animal-unblock-gate-block-v22.webp')}
+#board .cell.exit {background:#fff3bf url('../../assets/animal-unblock-gate-block-v22.webp') center/contain no-repeat}
 #battleLive .status {max-width:100%;margin:0;color:var(--wp-ui-text);font-size:14px;line-height:1.3;align-self:center}
 #battleLive .tools {width:100%;max-width:460px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 #battleLive .tools button {min-width:0}

@@ -25,30 +25,30 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v20" />
-    <meta name="weightplay-interface-version" content="6" />
+    <meta name="weightplay-game-version" content="v22" />
+    <meta name="weightplay-interface-version" content="7" />
     <title>解鎖滑塊 | WeightPlay</title>
     <link
       rel="stylesheet"
       href="../../src/stage-selector-standard.css"
       data-wp-stage-standard
     />
-    <link rel="stylesheet" href="style.css?v=20260905-animal-unblock-landscape-v21" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260905-animal-unblock-landscape-v21" />
+    <link rel="stylesheet" href="style.css?v=20260912-unblock-block-frame-v22" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-unblock-block-frame-v22" />
     <link rel="stylesheet" href="result-v4.css" />
     <link rel="stylesheet" href="../../src/game-ui-theme.css">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
     <link rel="stylesheet" href="frame-content.css?v=20260912-block-frame-v22">
-  <meta name="description" content="沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。" />
+  <meta name="description" content="滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="解鎖滑塊 | WeightPlay" />
-    <meta property="og:description" content="沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。" />
+    <meta property="og:description" content="滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。" />
     <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-unblock/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="解鎖滑塊 | WeightPlay" />
-    <meta name="twitter:description" content="沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。" />
+    <meta name="twitter:description" content="滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp" />
     <script type="application/ld+json">
 {
@@ -58,7 +58,7 @@
   "alternateName": "Unblock Trail",
   "url": "https://weightplay.com/zh-tw/games/animal-unblock/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-unblock.webp",
-  "description": "沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。",
+  "description": "滑動木塊讓 Panko 從出口離開，挑戰 30 個關卡與數千種布局。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -81,28 +81,26 @@
 }
     </script>
   </head>
-  <body data-wp-game-id="animal-unblock" data-wp-game-version="v21" data-wp-interface-version="6" data-wp-combined-sound="true">
+  <body data-wp-game-id="animal-unblock" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-combined-sound="true">
     <div id="gameFrame" data-wp-frame-root>
     <main id="main" class="screen main main-screen" data-screen="main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">解鎖滑塊</h1>
       <header>
-        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-t="title" data-wp-frame-title>Unblock Trail</strong>
+        <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="返回 WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+        <strong data-t="title" data-wp-frame-title>解鎖滑塊</strong>
         <select id="locale"></select>
       </header>
       <section class="hero">
         <img
           src="../../assets/interface7-redrawn/animal-unblock.webp"
           data-wp-frame-poster
-          data-t-alt="coverAlt"
+          data-t-alt="熊貓角色在竹林中移動方塊開路"
           alt="《解鎖滑塊》遊戲圖片"
         />
         <div data-wp-frame-copy>
-          <p data-t="summary" data-wp-frame-summary></p>
+          <p data-t="summary" data-wp-frame-summary>滑動木塊清出通道，讓帶金箭頭的綠色竹塊抵達右側出口。</p>
           <p id="mainProgress" data-wp-frame-progress></p>
-          <button id="start" data-wp-main-start data-t="start">
-            Start game
-          </button></div>
+          <button id="start" data-wp-main-start data-t="start">開始遊戲</button></div>
       </section>
     </main>
     <main
@@ -117,8 +115,8 @@
       hidden
     >
       <header>
-        <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-        <h2 data-t="choose" data-wp-frame-title hidden></h2>
+        <button data-back data-wp-return="stage" data-t-aria="back" aria-label="返回">←</button>
+        <h2 data-t="choose" data-wp-frame-title hidden>選擇一條小徑</h2>
       </header>
       <section
         id="stageGrid"
@@ -126,30 +124,29 @@
         data-wp-stage-rail
         data-wp-stage-recommendation="last"
         data-t-aria="stageList"
-        aria-label="Trail list"
+        aria-label="小徑列表"
       ></section>
       <div data-wp-frame-nav><span id="progress"></span></div>
     </main>
-    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334">
+    <main id="battle" class="screen canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
       <header>
-        <button data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
+        <button data-back data-wp-return="battle" data-t-aria="back" aria-label="返回">←</button>
         <strong data-wp-frame-title hidden></strong>
       </header>
       <section class="battle" id="battleLive">
         <div id="battleInfo" data-wp-frame-info>
-          <div><strong id="chapter"></strong></div>
           <div><strong id="trailName"></strong></div>
           <div><strong id="moveCount"></strong></div>
         </div>
         <div
           id="board"
           data-t-aria="boardLabel"
-          aria-label="Unblock Trail game board"
+          aria-label="暢通小徑遊戲盤"
         ></div>
         <div class="tools">
-          <button id="undo" data-t="undo"></button>
-          <button id="hint" data-t="hint" data-wp-battle-utility></button>
-          <button id="restart" data-t="restart" data-wp-primary-action></button>
+          <button id="undo" data-t="undo">復原</button>
+          <button id="hint" data-t="hint" data-wp-battle-utility>提示</button>
+          <button id="restart" data-t="restart" data-wp-primary-action>重新開始</button>
         </div>
         <p id="status"></p>
       </section>
@@ -159,49 +156,36 @@
         src="../../assets/animal-unblock-panda-block-v22.webp"
         alt=""
       />
-      <h2 data-t="resultTitle"></h2>
+      <h2 data-t="resultTitle">小徑完成！</h2>
       <p id="resultBody"></p>
       <p id="resultMastery" data-result-mastery></p>
       <p id="resultTarget" class="result-target" data-runtime-localize="off"></p>
       <p id="resultNextPreview" class="result-next-preview" data-runtime-localize="off" hidden></p>
       <div class="result-actions">
-        <button id="resultStages" data-t="stageList"></button>
-        <button id="next" data-t="next"></button>
-        <button id="retry" data-t="retry"></button>
+        <button id="resultStages" data-t="stageList">小徑列表</button>
+        <button id="next" data-t="next">下一條小徑</button>
+        <button id="retry" data-t="retry">再玩一次</button>
       </div>
     </dialog>
     <dialog id="leaveDialog" aria-labelledby="leaveTitle">
-      <h2 id="leaveTitle" data-t="leaveTitle"></h2>
-      <p data-t="leaveText"></p>
-      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay"></button><button id="confirmLeave" data-t="stageList"></button></div>
+      <h2 id="leaveTitle" data-t="leaveTitle">離開小徑？</h2>
+      <p data-t="leaveText">離開後，本局配置與步數會重置；已通關的小徑和最佳紀錄會保留。</p>
+      <div class="leave-actions"><button id="continuePlay" data-t="continuePlay">繼續遊戲</button><button id="confirmLeave" data-t="stageList">小徑列表</button></div>
     </dialog>
     </main>
     </div>
     <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
-    <section class="game-page-info game-page-info-static" aria-label="解鎖滑塊 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>解鎖滑塊</h2><p>沿著每塊木塊自己的方向滑動，逐步清出出口通道，讓紅色探險家離開擁擠的森林關卡。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>滑塊出口益智</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 邏輯 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>簡單到具挑戰性</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關約 2–8 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>Panko 記錄了三十座被木塊堵住的森林關卡。每塊木塊都從固定格位開始，每個盤面都有一條經過驗證、能讓紅色探險家抵達出口的移動順序。</p>
-<p>木塊不會旋轉、跳躍或離開棋盤。真正的挑戰是判斷哪些暫時移動能騰出空間，最後完成關鍵的出口滑動。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>橫向木塊只能左右移動；直向木塊只能上下移動。</p>
-<p>木塊碰到棋盤邊界或其他木塊前就會停止，任何兩塊木塊都不能占用同一格。</p>
-<p>當紅色探險家的路徑接上標示的出口通道時，本關即告完成。</p>
-<p>復原會撤銷最近一次滑動；提示只指出值得移動的木塊與方向，不會代替玩家移動；重新開始則恢復原始盤面。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>從橫向關卡列選擇一條已解鎖的小徑。</li><li>找出所有擋在紅色探險家出口路線上的木塊。</li><li>先沿著合法方向騰出空間，再移開真正阻擋出口的木塊。</li><li>把紅色探險家滑出出口，查看結果並繼續下一條小徑。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>從出口位置反推，先確認最後一格必須由哪塊木塊讓開。</li><li>有些木塊需要移得比眼前看起來更遠，才能替下一塊木塊留下完整空間。</li><li>不要過早占用唯一的空欄，後面的直向木塊可能還需要經過那裡。</li><li>最近一步走錯時使用復原；如果整體順序已經卡死，重新開始會比連續嘗試更清楚。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>前期小徑先教會方向限制與單一阻擋；後續章節逐步加入較長木塊、狹窄緩衝區、巢狀依賴、多重交叉與更密集的終章盤面。</p>
-<p>每一關都改變空間解題順序，不會偷偷加入任意的新移動規則或倒數壓力。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>拖曳方向、格線吸附、碰撞判定與木塊圖像共用同一套格位幾何，因此觸控、滑鼠與鍵盤會操作相同的合法盤面。提示採用可見的木塊與方向指引，只提供下一步線索，不會替玩家增加步數或改變棋盤。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>遊戲沒有倒數、帳號、購買或公開排行榜。已解鎖關卡與本機最佳步數只保存在目前瀏覽器；清除網站資料、使用另一個瀏覽器或更換裝置可能會移除或分開這些紀錄。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>木塊可以旋轉嗎？</dt><dd>不行，每塊木塊都會保持原本的橫向或直向方向。</dd></div><div><dt>為什麼拖曳到一半就停下來？</dt><dd>下一格已被其他木塊占用，或木塊已經碰到棋盤邊界。</dd></div><div><dt>哪一塊需要離開棋盤？</dt><dd>只有清楚標示的紅色探險家需要從出口滑出去。</dd></div><div><dt>提示會自動替我移動嗎？</dt><dd>不會。提示只標出一塊有用的木塊與建議方向，盤面與步數仍保持不變。</dd></div><div><dt>三十條小徑都能解開嗎？</dt><dd>可以，每個手工盤面都有經過驗證的解法。</dd></div><div><dt>進度會保存嗎？</dt><dd>已解鎖小徑與最佳步數會保存在目前瀏覽器的本機儲存空間。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-rootvault-pins/"><img src="/assets/interface7-redrawn/animal-rootvault-pins.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>根脈機關</strong><span>拉出完整金色機關針，引導 Taro、月水、燼光、護盾、鑰匙、暗影與星核通過 30 個根脈房間。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一筆到底</strong><span>One Line 一筆到底是由彩虹跳跳米米主演的 30 關格子解謎遊戲。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-2048/"><img src="/assets/interface7-redrawn/animal-2048.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>2048：森林進化</strong><span>《動物 2048：森林進化》是由月帽貓頭鷹 Orla 引導的回合制森林策略遊戲。</span></span></a></div></div>
-    </div>
-  </section>
+    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+      <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideTitle">操作方式</span><h2 data-t="title">解鎖滑塊</h2><p data-t="summary">滑動木塊清出通道，讓帶金箭頭的綠色竹塊抵達右側出口。</p></div></div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-t="howTitle">操作方式</h3><p data-t="guideBody">選擇已解鎖的小徑。橫木只能左右滑，直木只能上下滑；也可聚焦方塊後用方向鍵移動。將帶金箭頭的綠色竹塊滑到右側門口即可通關。</p></article>
+        <article class="game-info-section"><h3 data-t="rulesTitle">移動規則</h3><p data-t="rulesText">木塊不能旋轉、重疊、跨越其他木塊或離開棋盤。每次有效滑動計一步，沒有倒數或步數用盡失敗。復原撤銷上一步，重來恢復起始配置。</p></article>
+        <article class="game-info-section"><h3 data-t="progressTitle">小徑進展</h3><p data-t="progressText">完成小徑會解鎖下一條。後續配置加入長木塊、狹窄空間與相互牽制的移動。重玩可挑戰本機最佳紀錄或目標步數。</p></article>
+        <article class="game-info-section"><h3 data-t="tipsTitle">規劃提示</h3><p data-t="tipsText">先從出口反推通道，有時要先把木塊移遠才能騰出空間。提示會標示可用的木塊與方向，不會自動代走。</p></article>
+        <article class="game-info-section"><h3 data-t="saveTitle">儲存與返回</h3><p data-t="saveText">解鎖進度與最佳步數儲存在此瀏覽器，不需帳號。離開未完成的小徑會重置本局配置，但保留已通關紀錄；清除瀏覽器資料會移除本機進度。</p></article>
+        <article class="game-info-section"><h3 data-t="faqTitle">常見問題</h3><dl><dt data-t="faqQuestion">為什麼木塊移不動？</dt><dd data-t="faqAnswer">下一格被占用或已到棋盤邊緣。先挪開阻擋的木塊；帶金箭頭的綠色竹塊才是需要送到出口的目標。</dd></dl></article>
+      </div>
+    </section>
     <script src="../../src/site-config.js"></script>
     <script src="/src/i18n.js?v=20260721-locale13-1"></script>
     <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
@@ -212,7 +196,7 @@
     <script src="guide-copy.js?v=20260912-block-frame-v22"></script>
     <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
     <script src="frame.js?v=20260912-block-frame-v22"></script>
-    <script src="game.js?v=20260905-animal-unblock-landscape-v21"></script>
+    <script src="game.js?v=20260912-unblock-block-frame-v22"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

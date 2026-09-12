@@ -4,7 +4,7 @@
   const $ = (id) => document.getElementById(id);
   const levels = UNBLOCK_LEVELS.levels;
   const dict = UNBLOCK_LOCALES;
-  const GAME_VERSION = "v20";
+  const GAME_VERSION = "v22";
   document.body.dataset.gameVersion = GAME_VERSION;
   const codes = Object.keys(dict);
   const localeRoutes = {
@@ -33,6 +33,7 @@
   let moveLocked = false;
   let animationToken = 0;
   let resultActionClaimed = false;
+  let frame = null;
 
   const saveKey = "unblockProgress";
   const bestMovesKey = "unblockBestMoves";
@@ -95,7 +96,7 @@
     window.WonderAnalytics?.track?.(name, {
       game_id: "animal-unblock",
       game_version: GAME_VERSION,
-      interface_version: "6",
+      interface_version: "7",
       ...detail,
     });
   }
@@ -162,6 +163,7 @@
     $("locale").value = locale;
     renderStage();
     renderResultPreview();
+    frame?.refresh();
   }
 
   function chooseLocale(nextLocale, synchronize = true) {
@@ -200,7 +202,13 @@
     ["main", "stage", "battle"].forEach((id) => {
       $(id).hidden = id !== nextScreen;
     });
-    $("generalReserve").hidden = nextScreen !== "battle";
+    $("generalReserve").hidden = nextScreen === "main";
+    $("mainGuide").hidden = nextScreen !== "main";
+    document.body.dataset.unblockScreen = nextScreen;
+    document.body.dataset.unblockCovered = "false";
+    $("battleLive").inert = nextScreen !== "battle";
+    frame?.activate(nextScreen);
+    $("mainProgress").textContent = t("progress", {done: progress.filter(Boolean).length});
     screen = nextScreen;
     if (nextScreen === "stage" && previousScreen === "battle") {
       renderStage();
@@ -329,9 +337,6 @@
   }
 
   function render() {
-    $("chapter").textContent = t("chapter", {
-      n: Math.floor(index / 10) + 1,
-    });
     $("trailName").textContent = t("trail", { n: index + 1 });
     $("moveCount").textContent = t("moves", { n: moves });
     let cells = "";
@@ -442,6 +447,9 @@
       $("retry").disabled = false;
       $("next").disabled = index >= levels.length - 1;
       $("result").showModal();
+      document.body.dataset.unblockCovered = "true";
+      $("battleLive").inert = true;
+      frame?.activate("battle", {covered: true});
       const focusResultAction = () => {
         if (!$("result").open) return;
         $(index >= levels.length - 1 ? "resultStages" : "next").focus({
@@ -714,8 +722,33 @@
     });
   };
   document.querySelectorAll("[data-back]").forEach((button) => {
-    button.onclick = () => show(screen === "battle" ? "stage" : "main");
+    button.onclick = () => {
+      if (screen !== "battle") { show("main"); return; }
+      if (moveLocked) return;
+      if (drag) {
+        drag.element.style.removeProperty("transform");
+        drag.element.classList.remove("dragging");
+        clearDrag();
+      }
+      $("leaveDialog").showModal();
+      document.body.dataset.unblockCovered = "true";
+      $("battleLive").inert = true;
+      frame?.activate("battle", {covered: true});
+      $("continuePlay").focus();
+    };
   });
+  $("continuePlay").onclick = () => $("leaveDialog").close();
+  $("confirmLeave").onclick = () => { $("leaveDialog").close(); show("stage"); };
+  $("leaveDialog").addEventListener("close", () => {
+    // close is asynchronous: confirming leave has already activated Stage.
+    // Only cancellation should restore Battle and its keyboard focus.
+    if (document.body.dataset.unblockScreen !== "battle") return;
+    document.body.dataset.unblockCovered = "false";
+    $("battleLive").inert = false;
+    frame?.activate("battle");
+    document.querySelector('#battle [data-back]').focus({preventScroll: true});
+  });
+  $("result").addEventListener("cancel", event => event.preventDefault());
   $("stageGrid").addEventListener("wonder:stage-snap", (event) => {
     const levelIndex = Number(event.detail?.index);
     if (Number.isInteger(levelIndex) && levelIndex >= 0) {
@@ -759,6 +792,7 @@
     }
   });
 
+  frame = window.mountUnblockFrame();
   chooseLocale(rememberedLocale(), false);
   show("main");
 })();

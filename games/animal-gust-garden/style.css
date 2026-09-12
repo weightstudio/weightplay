@@ -42,7 +42,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .battle-head { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
 .battle-head .eyebrow { margin-top: 0; }
 .prompt { min-height: 48px; margin: 14px 0 8px; color: var(--muted); }
-.grid { width: min(100%, 520px); display: grid; grid-template-columns: repeat(var(--grid-columns), minmax(44px, 1fr)); gap: 7px; margin: 16px auto; }
+.grid { width: min(100%, 480px); display: grid; grid-template-columns: repeat(var(--grid-columns), minmax(44px, 1fr)); gap: 7px; margin: 16px auto; }
 .grid-cell { aspect-ratio: 1; border: 1px solid rgba(75, 136, 129, .65); border-radius: 12px; background: #1b4144; color: #b7d5bf; font-size: clamp(1.35rem, 7vw, 2rem); display: grid; place-items: center; }
 .grid-cell.open { color: rgba(185, 212, 197, .3); }
 .grid-cell.flower, .grid-cell.flower-target { color: #ffdd8a; background: #3a4a3e; }
@@ -134,7 +134,7 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
   .stage-canvas .stage-list { gap: 4px; padding: 0; }
   .stage-canvas .stage-card { height: 52px !important; min-height: 52px !important; max-height: 52px !important; padding: 4px 10px; }
   .stage-tabs { min-height: 50px; padding: 3px; gap: 4px; }
-  .stage-tabs > button { min-height: 42px; }
+  .stage-tabs > button { min-height: 44px; }
   .battle-canvas { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); grid-template-rows: 52px 36px 30px 30px 82px 48px; align-content: center; gap: 4px; padding: 4px 10px 8px; overflow: hidden; }
   .battle-head { grid-column: 1 / -1; grid-row: 1; min-height: 52px; }
   .battle-canvas > .prompt { grid-column: 2; grid-row: 2; min-height: 0; margin: 0; align-self: center; text-align: center; }
@@ -144,4 +144,37 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
   .battle-canvas > .direction-panel { grid-column: 2; grid-row: 5; width: min(100%, 250px); margin: 0 auto; align-self: center; }
   .battle-canvas > .battle-actions { grid-column: 2; grid-row: 6; margin: 0; gap: 6px; align-self: center; }
   .battle-canvas > .battle-actions > button { min-width: 0; padding-inline: 10px; }
+}
+
+/* Interface 6 Main contract: preserve the framed Guide and canonical
+   420px wide-layout poster even when shared Interface 7 defaults are compact. */
+@layer wp-gust-main-contract {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-page-info {
+    border-radius: 18px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-info-sections {
+    display: grid !important;
+    gap: 14px !important;
+    border-radius: 18px !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .game-info-section {
+    border-radius: 16px !important;
+    padding: 16px !important;
+    background: #173940 !important;
+  }
+  @media (min-width: 700px) and (max-height: 900px) {
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap picture,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .cover-wrap img,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster-media,
+    html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] #mainScreen .wp-standard-main-poster-media img {
+      width: 420px !important;
+      min-width: 420px !important;
+      max-width: 420px !important;
+      height: 420px !important;
+      min-height: 420px !important;
+      max-height: 420px !important;
+    }
+  }
 }

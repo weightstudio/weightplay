@@ -22,6 +22,9 @@
     // short-landscape envelope so the authored 44px targets remain physical
     // touch controls instead of inheriting the portrait scaler.
     "animal-dewline": ["#battleScreen", 390, 788, 760, 334],
+    // Gust Garden's grid, direction pad, and paired actions need the wide
+    // short-landscape envelope so the authored controls remain operable.
+    "animal-gust-garden": [".battle-canvas", 390, 788, 760, 334],
     // Hoop League's aim and shot controls share this native Market Five
     // shell. Keep its short-landscape Battle in the wide envelope so the
     // scaler does not reduce 48px controls to roughly 20px at 844x390.
@@ -180,6 +183,7 @@
   const landscapeRatioThresholdByGame = {
     "animal-habitat-builder": 1.25,
     "animal-folded-field": 1.25,
+    "animal-gust-garden": 1.25,
   };
   const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";

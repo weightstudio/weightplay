@@ -16,20 +16,7 @@
     { key: "chapter6", ruleKey: "ruleMastery", shifts: [-1, 1, 2, 0, 1] }
   ];
   const STAGE_NAMES = ["Mossy Bridge", "Fern Hollow", "Owl Lookout", "Firefly Bend", "Badger Gate"];
-  const STAGES = CHAPTERS.flatMap((chapter, chapterIndex) => chapter.shifts.map((shift, slot) => {
-    const number = chapterIndex * 5 + slot + 1;
-    const signal = SYMBOLS[(number + chapterIndex + slot) % SYMBOLS.length];
-    return {
-      number,
-      chapter: chapterIndex,
-      checkpoint: slot === 4,
-      signal,
-      shift,
-      answer: SYMBOLS[(SYMBOLS.indexOf(signal) + shift + SYMBOLS.length * 2) % SYMBOLS.length],
-      ruleKey: shift === 0 ? "ruleSame" : shift === 1 ? "ruleNext" : "rulePrevious",
-      name: STAGE_NAMES[slot]
-    };
-  }));
+  const STAGES = window.LANTERN_TRAILS;
   const $ = id => document.getElementById(id);
   const screens = { main: $("mainScreen"), stage: $("stageScreen"), battle: $("battleScreen"), result: $("resultScreen") };
 
@@ -59,9 +46,10 @@
   let feedbackKey = "";
   let clueVisible = false;
   let resultSuccess = null;
+  let bridgeStep=0, pendingTimer=null, lastWrong="";
 
   function text(key, vars = {}) {
-    const pack = COPY[locale] || COPY.en;
+    const pack = { ...COPY[locale], ...window.LANTERN_UPGRADE_COPY[locale] };
     let value = pack[key] ?? COPY.en[key] ?? key;
     Object.entries(vars).forEach(([name, replacement]) => { value = value.replaceAll(`{${name}}`, String(replacement)); });
     return value;
@@ -71,6 +59,8 @@
   function focusNoScroll(node) { node?.focus({ preventScroll: true }); }
 
   function show(name) {
+    if(name!=="battle"){clearTimeout(pendingTimer);pendingTimer=null;}
+    window.dispatchEvent(new CustomEvent("wp:block-scene",{detail:{active:name==="battle",colours:["#e4be65","#64cfb0","#a78bfd"],lit:bridgeStep}}));
     Object.entries(screens).forEach(([key, node]) => { node.hidden = key !== name; });
     $("settingsPanel").hidden = true;
     $("mainGuide").hidden = name !== "main";
@@ -87,7 +77,7 @@
   }
 
   function stageTitle(stage) {
-    return text(stage.checkpoint ? "checkpointName" : "stageName", { n: stage.number, name: stage.name });
+    return `${text(CHAPTERS[stage.chapter].key)} · ${stage.number}`;
   }
 
   function applyCopy() {
@@ -100,7 +90,7 @@
     setText("eyebrow", text("eyebrow")); setText("title", text("title")); setText("languageLabel", text("language")); setText("settingsLabel", text("settings")); setText("soundBtn", text(soundEnabled ? "soundOn" : "soundOff"));
     setText("guideBadge", text("guideBadge")); setText("mainHeading", text("mainHeading")); setText("mainBody", text("mainBody")); setText("progressTitle", text("progressTitle")); setText("progressBody", text("progressBody")); setText("startBtn", text("start")); setText("soloNote", text("soloNote"));
     setText("promiseOneTitle", text("scout")); setText("promiseOneBody", text("scoutPromise")); setText("promiseTwoTitle", text("guide")); setText("promiseTwoBody", text("guidePromise")); setText("promiseThreeTitle", text("together")); setText("promiseThreeBody", text("togetherPromise"));
-    setText("howTo", text("howTo")); setText("howToBody", text("howToBody")); setText("stageBadge", text("stageBadge")); setText("stageTitle", text("stageTitle")); setText("stageHelp", text("stageHelp"));
+    setText("howTo", text("howTo")); setText("howToBody", text("guideText")); setText("stageBadge", text("stageBadge")); setText("stageTitle", text("stageTitle")); setText("stageHelp", text("stageHelp"));
     setText("stageOverviewTab", text("stageTitle")); setText("sceneBadge", text("sceneBadge")); setText("scoutRole", text("scoutRole")); setText("scoutHeading", text("scoutHeading")); setText("scoutTask", text("scoutTask")); setText("guideRole", text("guideRole")); setText("guideHeading", text("guideHeading")); setText("guideTask", text("guideTask")); setText("passBtn", text("passClue")); setText("leaveBtn", text("leave")); setText("footer", text("footer")); setText("resultBadge", text("resultBadge")); setText("replayBtn", text("replay")); setText("homeBtn", text("stageMap")); setText("nextBtn", text("nextStage"));
     $("localeSelect").value = locale;
     $("localeSelect").setAttribute("aria-label", text("language"));
@@ -113,14 +103,22 @@
     if (!screens.result.hidden) renderResult();
   }
 
-  function makeSymbolButton(id) {
-    const button = document.createElement("button");
-    button.type = "button"; button.className = "symbol-button"; button.dataset.symbol = id; button.dataset.role = "guide";
-    const glyph = document.createElement("span"); glyph.className = "symbol-glyph"; glyph.setAttribute("aria-hidden", "true"); glyph.textContent = GLYPHS[id];
-    const label = document.createElement("span"); label.textContent = symbolName(id);
-    button.append(glyph, label); button.setAttribute("aria-label", symbolName(id)); button.addEventListener("click", () => guideChoice(id));
-    return button;
+  function glyph(id) {
+    const shapes={moon:'M6 1H2V2H1V6H2V7H6V6H4V5H3V3H4V2H6Z',leaf:'M6 1H3V2H2V3H1V6H2V7H3V6H5V5H6V4H7V1Z',star:'M3 0H5V2H6V3H8V5H6V6H5V8H3V6H2V5H0V3H2V2H3Z'};
+    return `<svg viewBox="0 0 8 8" class="rune-icon rune-${id}" aria-hidden="true"><path d="${shapes[id]}"/></svg>`;
   }
+  function puzzle() {
+    const stage=STAGES[stageIndex];
+    const kind=stage.rule==='weather'?['same','next','previous'][bridgeStep%3]:stage.rule==='mixed'?['missing','blocked','next','previous'][bridgeStep%4]:stage.rule==='finale'?['same','next','missing','blocked','previous'][bridgeStep%5]:stage.rule;
+    const signal=stage.signals[bridgeStep], second=(signal+1+(stage.number%2))%3, blocked=(stage.number+bridgeStep)%3;
+    const mapping=[0,1,2].map(i=>{let v=(i+(kind==='previous'?2:kind==='same'?0:1))%3;if(kind==='blocked'&&v===blocked)v=(v+1)%3;return v;});
+    return {kind,signal,second,blocked,mapping,answer:kind==='missing'?3-signal-second:mapping[signal]};
+  }
+  function makeSymbolButton(id) {
+    const button=document.createElement('button');button.type='button';button.className='symbol-button';button.dataset.symbol=id;button.dataset.role='guide';button.innerHTML=`${glyph(id)}<span>${symbolName(id)}</span>`;button.setAttribute('aria-label',symbolName(id));button.onclick=()=>guideChoice(id);return button;
+  }
+  function scene(){window.dispatchEvent(new CustomEvent('wp:block-scene',{detail:{active:document.body.dataset.screen==='battle',colours:['#e4be65','#64cfb0','#a78bfd'],lit:bridgeStep}}));}
+  function cue(good=false){try{if(soundEnabled)window.WonderSound?.play(good?'success':'click');}catch{}}
 
   function renderStage() {
     setText("stageProgress", text("stageProgress", { unlocked, total: STAGES.length }));
@@ -147,20 +145,28 @@
   function showStage() { show("stage"); renderStage(); focusNoScroll($("chapterMap").querySelector(`button[data-stage="${Math.min(unlocked, 30)}"]`) || $("stageBackBtn")); }
 
   function renderBattle() {
-    const stage = STAGES[stageIndex];
-    setText("roundLabel", text("round", { n: stage.number, total: STAGES.length })); setText("meterLabel", text("meter", { n: light }));
-    setText("sceneTitle", stageTitle(stage)); setText("sceneHint", text(stage.checkpoint ? "checkpointHint" : "sceneHint", { chapter: text(CHAPTERS[stage.chapter].key) }));
-    setText("handoffPrompt", phase === "guide" ? text("phaseGuide") : clueVisible ? text("phasePass") : text("phaseScout"));
-    const exactRuleKey = stage.shift === 0 ? "ruleSame" : stage.shift === 1 ? "ruleNext" : "rulePrevious";
-    setText("guideRule", phase === "guide" ? `${text(stage.ruleKey)} ${text(exactRuleKey)}` : text("ruleHidden"));
-    const scoutGrid = $("scoutChoices"); const guideGrid = $("guideChoices"); scoutGrid.replaceChildren(); guideGrid.replaceChildren();
-    const reveal = document.createElement("button"); reveal.type = "button"; reveal.className = "symbol-button reveal-button"; reveal.dataset.role = "scout";
-    reveal.innerHTML = clueVisible ? `<span class="symbol-glyph" aria-hidden="true">${GLYPHS[stage.signal]}</span><span>${symbolName(stage.signal)}</span>` : `<span class="symbol-glyph" aria-hidden="true">?</span><span>${text("reveal")}</span>`;
-    reveal.setAttribute("aria-label", clueVisible ? text("privateSignal", { name: symbolName(stage.signal) }) : text("reveal")); reveal.disabled = phase !== "scout" || clueVisible; reveal.addEventListener("click", revealSignal); scoutGrid.appendChild(reveal);
-    SYMBOLS.forEach(id => guideGrid.appendChild(makeSymbolButton(id))); guideGrid.querySelectorAll("button").forEach(button => { button.disabled = phase !== "guide"; });
-    setText("scoutState", clueVisible ? text("privateSignal", { name: symbolName(stage.signal) }) : phase === "guide" ? text("clueHidden") : text("chooseSymbol"));
-    setText("guideState", phase === "guide" ? text("clueReady") : text("waiting")); $("passBtn").hidden = !(phase === "scout" && clueVisible);
-    $("feedback").textContent = feedbackKey ? text(feedbackKey) : ""; $("feedback").classList.toggle("is-good", feedbackKey === "scoutSuccess" || feedbackKey === "guideSuccess");
+    const stage=STAGES[stageIndex],p=puzzle(),isGuide=phase==='guide'||phase==='settling';
+    const step=isGuide?'guide':clueVisible?'pass':'scout';
+    setText('roundLabel',text('round',{n:stage.number,total:30}));setText('meterLabel',text('meter',{n:light}));setText('sceneTitle','');
+    setText('bridgeProgress',text('step',{n:bridgeStep,total:stage.signals.length}));
+    $('bridgeTrack').innerHTML=stage.signals.map((_,i)=>`<span class="bridge-tile ${i<bridgeStep?'is-lit':''}" aria-hidden="true">${i+1}</span>`).join('');
+    setText('sceneHint',text(p.kind));setText('handoffPrompt',isGuide?text('handoff'):clueVisible?text('phasePass'):text('phaseScout'));
+    setText('stepScout',`1 · ${text('scout')}`);setText('stepPass',`2 · ${text('together')}`);setText('stepGuide',`3 · ${text('guide')}`);
+    [['stepScout','scout'],['stepPass','pass'],['stepGuide','guide']].forEach(([id,key])=>{$(id).classList.toggle('is-current',step===key);$(id).classList.toggle('is-done',key==='scout'&&step!=='scout'||key==='pass'&&step==='guide');});
+    document.querySelector('.scout-card').classList.toggle('is-active',!isGuide);document.querySelector('.guide-card-panel').classList.toggle('is-active',isGuide);
+    document.querySelector('.scout-card').inert=isGuide;document.querySelector('.guide-card-panel').inert=!isGuide;
+    setText('guideRule',text(p.kind));
+    $('ruleMap').innerHTML=p.kind==='missing'?[[0,1,2],[1,2,0],[2,0,1]].map(([a,b,c])=>`<span>${glyph(SYMBOLS[a])}+${glyph(SYMBOLS[b])}<b>→</b>${glyph(SYMBOLS[c])}</span>`).join(''):p.mapping.map((to,from)=>`<span>${glyph(SYMBOLS[from])}<b>→</b>${glyph(SYMBOLS[to])}</span>`).join('');
+    $('ruleMap').setAttribute('aria-label',p.kind==='missing'?[[0,1,2],[1,2,0],[2,0,1]].map(([a,b,c])=>`${symbolName(SYMBOLS[a])} + ${symbolName(SYMBOLS[b])} → ${symbolName(SYMBOLS[c])}`).join('; '):p.mapping.map((to,from)=>`${symbolName(SYMBOLS[from])} → ${symbolName(SYMBOLS[to])}`).join('; '));
+    const reveal=document.createElement('button');reveal.type='button';reveal.className='symbol-button reveal-button';reveal.dataset.role='scout';
+    const names=clueVisible?[symbolName(SYMBOLS[p.signal]),...(p.kind==='missing'?[symbolName(SYMBOLS[p.second])]:[])].join(' + '):text('reveal');
+    reveal.innerHTML=clueVisible?`<span class="revealed-pair">${glyph(SYMBOLS[p.signal])}${p.kind==='missing'?glyph(SYMBOLS[p.second]):''}</span><span>${names}</span>`:`<span class="sealed-lantern">?</span><span>${text('reveal')}</span>`;
+    reveal.setAttribute('aria-label',names);reveal.disabled=isGuide||clueVisible;reveal.onclick=revealSignal;$('scoutChoices').replaceChildren(reveal);
+    $('guideChoices').replaceChildren(...SYMBOLS.map(makeSymbolButton));$('guideChoices').querySelectorAll('button').forEach(b=>b.disabled=phase!=='guide');
+    setText('scoutState',clueVisible?names:text('chooseSymbol'));setText('guideState',phase==='settling'?text('guideSuccess'):text('guideTask'));
+    $('passBtn').hidden=false;$('passBtn').disabled=isGuide||!clueVisible;setText('recallBtn',text('review'));$('recallBtn').disabled=phase!=='guide';
+    $('feedback').textContent=lastWrong|| (feedbackKey?text(feedbackKey):'');$('feedback').classList.toggle('is-good',feedbackKey==='guideSuccess');
+    scene();
   }
 
   function renderResult() {
@@ -173,21 +179,18 @@
   }
 
   function startStage(index) {
-    if (index + 1 > unlocked) return;
-    stageIndex = index; light = 3; phase = "scout"; feedbackKey = ""; clueVisible = false; resultSuccess = null;
-    show("battle"); renderBattle(); focusNoScroll($("scoutChoices").querySelector("button"));
+    if(!Number.isInteger(index)||index<0||index>=30||index+1>unlocked)return;
+    clearTimeout(pendingTimer);stageIndex=index;bridgeStep=0;light=3;phase='scout';feedbackKey='';lastWrong='';clueVisible=false;resultSuccess=null;
+    show('battle');renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));
   }
-  function revealSignal() { if (phase !== "scout" || clueVisible) return; clueVisible = true; feedbackKey = "scoutSuccess"; renderBattle(); focusNoScroll($("passBtn")); }
-  function passToGuide() { if (phase !== "scout" || !clueVisible) return; phase = "guide"; clueVisible = false; feedbackKey = ""; renderBattle(); focusNoScroll($("guideChoices").querySelector("button")); }
-  function guideChoice(id) {
-    if (phase !== "guide") return;
-    const stage = STAGES[stageIndex];
-    if (id !== stage.answer) {
-      light -= 1; feedbackKey = "guideWrong";
-      if (light <= 0) { finish(false); return; }
-      phase = "scout"; clueVisible = false; renderBattle(); focusNoScroll($("scoutChoices").querySelector("button")); return;
-    }
-    feedbackKey = "guideSuccess"; window.setTimeout(() => finish(true), 360);
+  function revealSignal(){if(phase!=='scout'||clueVisible)return;clueVisible=true;lastWrong='';feedbackKey='scoutSuccess';cue();renderBattle();focusNoScroll($('passBtn'));}
+  function passToGuide(){if(phase!=='scout'||!clueVisible)return;phase='guide';clueVisible=false;feedbackKey='';renderBattle();focusNoScroll($('guideChoices').querySelector('button'));}
+  function guideChoice(id){
+    if(phase!=='guide'||!SYMBOLS.includes(id))return;
+    const p=puzzle();
+    if(SYMBOLS.indexOf(id)!==p.answer){light--;lastWrong=`${text('guideWrong')} ${symbolName(SYMBOLS[p.signal])}${p.kind==='missing'?` + ${symbolName(SYMBOLS[p.second])}`:''} → ${symbolName(SYMBOLS[p.answer])}`;feedbackKey='';if(light<=0){finish(false);return;}phase='scout';clueVisible=false;renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));return;}
+    phase='settling';feedbackKey='guideSuccess';lastWrong='';cue(true);renderBattle();
+    pendingTimer=setTimeout(()=>{pendingTimer=null;bridgeStep++;if(bridgeStep>=STAGES[stageIndex].signals.length){finish(true);return;}phase='scout';clueVisible=false;feedbackKey='guideSuccess';renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));},320);
   }
   function finish(success) {
     resultSuccess = success;
@@ -198,7 +201,7 @@
     show("result"); renderResult(); focusNoScroll(success && stageIndex < STAGES.length - 1 ? $("nextBtn") : $("replayBtn"));
   }
 
-  $("startBtn").addEventListener("click", showStage);
+  $("startBtn").addEventListener("click", () => best === 0 && unlocked === 1 ? startStage(0) : showStage());
   $("stageBackBtn").addEventListener("click", () => { show("main"); focusNoScroll($("startBtn")); });
   $("battleBackBtn").addEventListener("click", showStage); $("leaveBtn").addEventListener("click", showStage); $("homeBtn").addEventListener("click", showStage);
   $("replayBtn").addEventListener("click", () => startStage(stageIndex)); $("nextBtn").addEventListener("click", () => startStage(Math.min(stageIndex + 1, STAGES.length - 1))); $("passBtn").addEventListener("click", passToGuide);
@@ -210,5 +213,9 @@
     applyCopy();
   });
   $("localeSelect").innerHTML = SUPPORTED_LOCALES.map(code => `<option value="${code}">${LOCALE_LABELS[code]}</option>`).join("");
+  $('recallBtn').onclick=()=>{if(phase!=='guide')return;phase='scout';clueVisible=false;feedbackKey='';renderBattle();focusNoScroll($('scoutChoices').querySelector('button'));};
+  window.addEventListener('wp:block-pick',e=>guideChoice(SYMBOLS[e.detail.index]));window.addEventListener('wp:block-ready',scene);
+  window.addEventListener('pagehide',()=>clearTimeout(pendingTimer));
+  window.__LANTERN_TEST__={stages:STAGES,getState:()=>({stageIndex,bridgeStep,phase,clueVisible,light,unlocked,best,puzzle:puzzle()})};
   applyCopy(); show("main");
 })();
