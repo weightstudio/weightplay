@@ -12,6 +12,7 @@
 body .stage-canvas .stage-header{left:18px!important;right:auto!important;width:calc(100% - 36px)!important;max-width:none!important}
 .battle-header>#battleBackBtn,.battle-header>#pauseBtn{align-self:center!important;justify-self:center!important}
 .sprite{height:150px}
+.sprite.sprite-pup{background-image:url("../../assets/animal-honey-shield-pip-block-v1.webp");background-size:contain;background-position:center}
 @media(min-width:701px){.battle-header{padding:6px}}
 .stage-tabs button{min-height:44px;border:0;background:#263a59;color:#fff;font-weight:900;border-top:3px solid #6ff5d3}
 @media(max-height:480px) and (orientation:landscape){.stage-tabs{display:grid!important;height:56px!important}.stage-tabs button{min-height:44px!important}}

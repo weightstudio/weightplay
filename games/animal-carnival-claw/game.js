@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),$$=selector=>[...document.querySelectorAll(selector)];
 const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const fmt=(value,data={})=>String(value??"").replace(/\{(\w+)\}/g,(_,key)=>data[key]??"");
-const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v39",ANALYTICS_INTERFACE_VERSION="6",ANALYTICS_SCHEMA_VERSION=1;
+const ANALYTICS_GAME_ID="animal-carnival-claw",ANALYTICS_GAME_VERSION="v40",ANALYTICS_INTERFACE_VERSION="7",ANALYTICS_SCHEMA_VERSION=1;
 const viewportBucket=()=>{const width=Math.max(window.innerWidth||0,window.innerHeight||0),short=Math.min(window.innerWidth||0,window.innerHeight||0);return short<480?"phone":width<900?"tablet":"desktop"};
 const boundedMetric=(value,max)=>{const number=Number(value);return Number.isFinite(number)?Math.max(0,Math.min(max,Math.round(number))):0};
 function track(eventName,details={}){try{window.WonderAnalytics?.track?.(eventName,{game_id:ANALYTICS_GAME_ID,game_version:ANALYTICS_GAME_VERSION,interface_version:ANALYTICS_INTERFACE_VERSION,schema_version:ANALYTICS_SCHEMA_VERSION,locale,viewport_bucket:viewportBucket(),...details})}catch{}}
@@ -14,21 +14,21 @@ if(!window.CARNIVAL_CLAW_LOCALES[locale])locale="en";
 let copy=window.CARNIVAL_CLAW_LOCALES[locale],screen="main",selected=0,focusReturn=null,raf=0,last=0,settledDecision=false,resolvedWallAnchor=0,stageEntry="main";
 const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
 const images={
-  background:loadImage("../../assets/animal-carnival-claw-background-block-v1.png"),
-  nori:loadImage("../../assets/animal-carnival-claw-nori-block-v1.png"),
-  rux:loadImage("../../assets/animal-carnival-claw-rux-block-v1.png"),
-  leo:loadImage("../../assets/animal-carnival-claw-leo-block-v1.png"),
-  fox:loadImage("../../assets/animal-carnival-claw-fox-block-v1.png"),
-  turtle:loadImage("../../assets/animal-carnival-claw-turtle-block-v1.png"),
-  owl:loadImage("../../assets/animal-carnival-claw-owl-block-v1.png"),
-  panda:loadImage("../../assets/animal-carnival-claw-panda-block-v1.png"),
-  rabbit:loadImage("../../assets/animal-carnival-claw-rabbit-block-v1.png"),
-  bell:loadImage("../../assets/animal-carnival-claw-bell-block-v1.png"),
-  bumper:loadImage("../../assets/animal-carnival-claw-bumper-block-v1.png"),
-  shelf:loadImage("../../assets/animal-carnival-claw-shelf-block-v1.png"),
-  magnet:loadImage("../../assets/animal-carnival-claw-magnet-block-v1.png"),
-  clawOpen:loadImage("../../assets/animal-carnival-claw-claw-open-block-v1.png"),
-  clawClosed:loadImage("../../assets/animal-carnival-claw-claw-closed-block-v1.png")
+  background:loadImage("../../assets/animal-carnival-claw-background-block-v1.webp"),
+  nori:loadImage("../../assets/animal-carnival-claw-nori-block-v1.webp"),
+  rux:loadImage("../../assets/animal-carnival-claw-rux-block-v1.webp"),
+  leo:loadImage("../../assets/animal-carnival-claw-leo-block-v1.webp"),
+  fox:loadImage("../../assets/animal-carnival-claw-fox-block-v1.webp"),
+  turtle:loadImage("../../assets/animal-carnival-claw-turtle-block-v1.webp"),
+  owl:loadImage("../../assets/animal-carnival-claw-owl-block-v1.webp"),
+  panda:loadImage("../../assets/animal-carnival-claw-panda-block-v1.webp"),
+  rabbit:loadImage("../../assets/animal-carnival-claw-rabbit-block-v1.webp"),
+  bell:loadImage("../../assets/animal-carnival-claw-bell-block-v1.webp"),
+  bumper:loadImage("../../assets/animal-carnival-claw-bumper-block-v1.webp"),
+  shelf:loadImage("../../assets/animal-carnival-claw-shelf-block-v1.webp"),
+  magnet:loadImage("../../assets/animal-carnival-claw-magnet-block-v1.webp"),
+  clawOpen:loadImage("../../assets/animal-carnival-claw-claw-open-block-v1.webp"),
+  clawClosed:loadImage("../../assets/animal-carnival-claw-claw-closed-block-v1.webp")
 };
 const defaultSave=()=>({unlocked:1,medals:Array(30).fill(0),cabinet:Array(8).fill(false),bolts:0,upgrades:{grip:0,stability:0,rail:0},tutorial:false});
 let save=loadSave();
@@ -281,7 +281,7 @@ function renderWorkshop(){
   const configs=[["grip","tuningGrip","tuningGripText"],["stability","tuningStability","tuningStabilityText"],["rail","tuningRail","tuningRailText"]];
   $("upgradeGrid").innerHTML=configs.map(([id,title,text])=>{
     const level=save.upgrades[id],cost=(level+1)*3,disabled=level>=3||save.bolts<cost;
-    return`<article class="upgrade-card"><h3>${t(title)} · ${level}/3</h3><p>${t(text)}</p><button type="button" data-upgrade="${id}" ${disabled?"disabled":""}>${level>=3?t("max"):`${t("upgrade")} · ${t("starbolts",{n:cost})}`}</button></article>`;
+    return`<article class="upgrade-card"><h3>${t(title)} · ${level}/3</h3><p>${t(text)}</p><button type="button" data-upgrade="${id}" data-wp-frame-action="secondary" ${disabled?"disabled":""}>${level>=3?t("max"):`${t("upgrade")} · ${t("starbolts",{n:cost})}`}</button></article>`;
   }).join("");
   $$("[data-upgrade]").forEach(button=>button.addEventListener("click",()=>buyUpgrade(button.dataset.upgrade)));
 }
@@ -493,7 +493,10 @@ function draw(){
       ctx.fillStyle=isTarget?"#087567ee":"#031c23cc";ctx.strokeStyle=isTarget?"#65ffe1":"#ffe173";ctx.lineWidth=isTarget?3:2;roundRect(px(prize.x)-badgeWidth/2,labelY,badgeWidth,22,10);ctx.fill();ctx.stroke();ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(badgeText,px(prize.x),labelY+11);
     }
   }
-  const claw=clawPosition(),clawSize=clamp(min*.28,70,128),clawX=px(claw.x),clawY=py(claw.y);
+  // Reserve the complete motor above the minimum (y=80) contact position.
+  // The cap depends on viewport geometry, never the animated claw phase, so
+  // the mechanism cannot resize while dropping or lifting. Physics stays intact.
+  const claw=clawPosition(),clawSize=Math.min(clamp(min*.28,70,128),Math.max(1,py(80)-4)/.72),clawX=px(claw.x),clawY=py(claw.y);
   if(heldPrize)drawContained(images.clawClosed,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
   else drawContained(images.clawOpen,clawX-clawSize/2,clawY-clawSize*.72,clawSize,clawSize);
   if(heldPrize){

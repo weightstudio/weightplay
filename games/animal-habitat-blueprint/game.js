@@ -61,7 +61,7 @@
   locale = normalizeLocale(locale);
   if (!locales[locale]) locale = "en";
   let sound = safeStorage.get("weightplay-habitat-blueprint-sound", "on") !== "off";
-  const savedSolved = safeStorage.get("weightplay-habitat-blueprint-solved-v8", "").split(",").map(Number).filter((value) => Number.isInteger(value) && value >= 0 && value < plans.length);
+  const savedSolved = safeStorage.get("weightplay-habitat-blueprint-solved-v8", "").split(",").map((value) => value.trim()).filter((value) => value !== "").map(Number).filter((value) => Number.isInteger(value) && value >= 0 && value < plans.length);
   let planIndex = 0; let tiles = []; let selected = []; let swaps = 0; let sessionSwaps = 0; let solved = new Set(savedSolved); let feedback = ""; let currentScreen = "main";
   const copy = (key, vars = {}) => Object.entries(vars).reduce((out, [name, value]) => out.replaceAll(`{${name}}`, String(value)), (locales[locale] || locales.en)[key] || locales.en[key] || key);
   const tileName = (type) => copy(`tile${type[0].toUpperCase()}${type.slice(1)}`);

@@ -43,7 +43,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v12" data-runtime-localize="off">
+<body data-wp-game-id="animal-ring-garden" data-wp-audience="general" data-wp-game-version="v12" data-runtime-localize="off" data-wp-battle-settings="visible">
   <main id="app" class="app-shell">
     <section id="loading-screen" class="screen loading-screen" aria-live="polite">
       <div class="loading-mark" aria-hidden="true">✦</div>
@@ -55,7 +55,7 @@
         <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="28" height="28" /></a>
         <strong class="wp-shell-main-title" id="main-header-title" data-wp-game-title data-runtime-localize="off">Puzles de Anillos Giratorios</strong>
         <div class="topbar-actions">
-          <button id="settings-button" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button>
+          <button id="settings-button" class="utility-button game-settings-button" type="button" hidden>⚙ <span>Settings</span></button>
         </div>
       </header>
       <div class="main-content">
@@ -82,7 +82,7 @@
       <header class="topbar stage-header">
         <button id="stage-back" class="return-link" data-wp-return="stage" type="button">← Main</button>
         <strong class="stage-header-title">Choose a garden</strong>
-        <div class="topbar-actions"><button id="stage-settings" class="utility-button wp-shell-settings-button" data-wp-settings type="button">⚙ <span>Settings</span></button></div>
+        <div class="topbar-actions"><button id="stage-settings" class="utility-button game-settings-button" data-wp-settings type="button" hidden>⚙ <span>Settings</span></button></div>
       </header>
       <div class="content-column">
         <p class="eyebrow" id="stage-eyebrow">CHOOSE A GARDEN</p>
@@ -97,7 +97,7 @@
       <header class="topbar battle-header">
         <button id="battle-back" class="return-link" data-wp-return="battle" type="button">← Gardens</button>
         <strong class="battle-header-title">Moon garden</strong>
-        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility type="button">⚙ <span>Settings</span></button></div>
+        <div class="topbar-actions"><button id="battle-settings" class="utility-button" data-wp-battle-utility data-wp-settings type="button" hidden>⚙ <span>Settings</span></button></div>
       </header>
       <div id="play-panel" class="content-column battle-content">
         <div class="battle-heading">

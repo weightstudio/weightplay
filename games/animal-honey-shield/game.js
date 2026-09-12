@@ -14,7 +14,7 @@
   const fallbackSave={unlocked:1,cleared:{},stars:{}};
   let save=loadSave(),screen="main",stageIndex=0,selectedStage=0,tutorialReturnFocus=null;
   const canvas=$("gameCanvas"),ctx=canvas.getContext("2d",{alpha:false});
-  const atlas=new Image(),background=new Image();
+  const atlas=new Image(),background=new Image(),pipArt=new Image();
   const themeBackgrounds=[background,new Image(),new Image(),new Image(),new Image(),new Image()];
   const themeBackgroundSources=[
     "../../assets/animal-honey-shield-background-simple-meadow.webp",
@@ -1114,14 +1114,16 @@
     {x:62,y:35,w:395,h:465},{x:54,y:28,w:410,h:465},{x:8,y:76,w:500,h:390},
   ];
   function drawSprite(cell,x,y,w,h,flip=false){
-    if(!atlas.complete||!atlas.naturalWidth)return;
-    const crop=SPRITE_CROPS[cell],sx=(cell%3)*512+crop.x,sy=Math.floor(cell/3)*512+crop.y;
+    const image=cell===0?pipArt:atlas;
+    if(!image.complete||!image.naturalWidth)return;
+    const crop=cell===0?{x:0,y:0,w:image.naturalWidth,h:image.naturalHeight}:SPRITE_CROPS[cell];
+    const sx=cell===0?0:(cell%3)*512+crop.x,sy=cell===0?0:Math.floor(cell/3)*512+crop.y;
     const rect=canvas.getBoundingClientRect(),physicalX=Math.max(.0001,rect.width/1000),physicalY=Math.max(.0001,rect.height/620),uniform=Math.sqrt(physicalX*physicalY);
     const physicalScale=Math.min((w*uniform)/crop.w,(h*uniform)/crop.h);
     const dw=crop.w*physicalScale/physicalX,dh=crop.h*physicalScale/physicalY,dx=x+(w-dw)/2,dy=y+(h-dh)/2;
     ctx.save();
-    if(flip){ctx.translate(dx+dw,dy);ctx.scale(-1,1);ctx.drawImage(atlas,sx,sy,crop.w,crop.h,0,0,dw,dh)}
-    else ctx.drawImage(atlas,sx,sy,crop.w,crop.h,dx,dy,dw,dh);
+    if(flip){ctx.translate(dx+dw,dy);ctx.scale(-1,1);ctx.drawImage(image,sx,sy,crop.w,crop.h,0,0,dw,dh)}
+    else ctx.drawImage(image,sx,sy,crop.w,crop.h,dx,dy,dw,dh);
     ctx.restore();
   }
   function wallRamVisual(bee){
@@ -1279,7 +1281,7 @@
   document.addEventListener("visibilitychange",()=>{if(document.hidden)suspendForeground()});
 
   function loadAssets(){
-    const sources=[[atlas,"../../assets/animal-honey-shield-sprites.webp"],...themeBackgrounds.map((image,index)=>[image,themeBackgroundSources[index]])];
+    const sources=[[atlas,"../../assets/animal-honey-shield-sprites.webp"],[pipArt,"../../assets/animal-honey-shield-pip-block-v1.webp"],...themeBackgrounds.map((image,index)=>[image,themeBackgroundSources[index]])];
     let settled=0;const done=()=>{settled++;$("loadingFill").style.width=`${settled/sources.length*100}%`;if(settled===sources.length)setTimeout(()=>{$("loadingPanel").hidden=true;applyLocale();draw()},120)};
     for(const [image,src] of sources){image.onload=done;image.onerror=done;image.src=src}
   }

@@ -649,6 +649,13 @@ body:not(.wp-kids-audience) .wp-standard-main-copy .card-main-controls button {
     --wp-main-landscape-poster-size: 420px;
   }
 
+  /* Ring Garden's exact Interface 6 issue contract requires the canonical
+     420px wide-layout poster even in the 844x390 compact-landscape viewport;
+     do not shrink this candidate to the generic height-derived 310px size. */
+  body[data-wp-game-id="animal-ring-garden"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+  }
+
   body[data-wp-game-id="animal-spectrum-pulse"] .stage-canvas {
     grid-template-rows: 58px 44px minmax(0, 1fr) !important;
   }
