@@ -2,7 +2,7 @@
   "use strict";
   const copy = {
     en: {
-      coverAlt: "A night dispatcher coordinating four crowded bus lines",
+      coverAlt: "A block-style panda conductor beside colorful buses at a bamboo terminal",
       kicker: "NIGHT TERMINAL CONTROL",
       summary: "Read the convoy order, route each queue, and keep the holding lane from locking up.",
       guideBody: "Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.",
@@ -20,7 +20,7 @@
       colors: ["coral", "sky", "amber", "violet"],
     },
     "zh-Hant": {
-      coverAlt: "夜間調度員正在安排四條擁擠的公車路線", kicker: "夜間轉運調度",
+      coverAlt: "方塊熊貓站長與竹林車站的彩色巴士", kicker: "夜間轉運調度",
       summary: "判讀車隊順序、安排各排隊伍，別讓候車通道堵死。",
       guideBody: "只有第一台公車能上客。顏色不符的乘客會依序進入候車通道；若通道塞住、當前公車又無法補滿，就會調度失敗。",
       guideRule1: "先確認當前公車及剩餘座位。", guideRule2: "每次只能派出各隊最前方的乘客。", guideRule3: "候車通道堵住前可使用復原。",
@@ -32,7 +32,7 @@
       complete: "轉運完成", resultTitle: "所有車隊皆已發車！", next: "下一站", colors: ["珊瑚", "天藍", "琥珀", "紫晶"],
     },
     "zh-Hans": {
-      coverAlt: "夜间调度员正在安排四条拥挤的公交线路", kicker: "夜间换乘调度",
+      coverAlt: "方块熊猫站长与竹林车站的彩色巴士", kicker: "夜间换乘调度",
       summary: "判断车队顺序、安排各排队伍，别让候车通道堵死。",
       guideBody: "只有第一辆公交车能上客。颜色不符的乘客会依次进入候车通道；若通道堵住、当前公交车又无法坐满，就会调度失败。",
       guideRule1: "先确认当前公交车及剩余座位。", guideRule2: "每次只能派出各队最前方的乘客。", guideRule3: "候车通道堵住前可使用撤销。",
@@ -44,7 +44,7 @@
       complete: "换乘完成", resultTitle: "所有车队均已发车！", next: "下一站", colors: ["珊瑚", "天蓝", "琥珀", "紫晶"],
     },
     ja: {
-      coverAlt: "夜のターミナルで4路線を指揮する管制官", kicker: "夜間ターミナル管制",
+      coverAlt: "竹林のターミナルに並ぶカラフルなバスとブロック風のパンダ車掌", kicker: "夜間ターミナル管制",
       summary: "車列の順番を読み、待機レーンを詰まらせずに各列をさばこう。",
       guideBody: "乗車できるのは先頭のバスだけです。色が違う乗客は待機レーンへ順番に入り、レーンが詰まると失敗します。",
       guideRule1: "現在のバスと空席を確認する。", guideRule2: "各列の先頭だけを送り出す。", guideRule3: "詰まる前に「戻す」を使う。",
@@ -56,7 +56,7 @@
       complete: "管制完了", resultTitle: "全車両が出発しました！", next: "次のターミナル", colors: ["コーラル", "スカイ", "アンバー", "バイオレット"],
     },
     ko: {
-      coverAlt: "야간 터미널의 네 혼잡 노선을 지휘하는 관제사", kicker: "야간 터미널 관제",
+      coverAlt: "대나무 터미널의 알록달록한 버스와 블록 스타일 판다 차장", kicker: "야간 터미널 관제",
       summary: "차량 순서를 읽고 대기 통로가 막히지 않게 각 줄을 배차하세요.",
       guideBody: "맨 앞 버스만 승객을 받습니다. 색이 다른 승객은 순서대로 대기 통로에 들어가며 통로가 막히면 실패합니다.",
       guideRule1: "현재 버스와 남은 좌석을 확인하세요.", guideRule2: "각 줄의 맨 앞 승객만 보낼 수 있습니다.", guideRule3: "막히기 전에 실행 취소를 사용하세요.",
@@ -68,7 +68,7 @@
       complete: "터미널 완료", resultTitle: "모든 차량이 출발했습니다!", next: "다음 터미널", colors: ["코랄", "스카이", "앰버", "바이올렛"],
     },
     es: {
-      coverAlt: "Un controlador nocturno coordina cuatro líneas de autobús", kicker: "CONTROL DE TERMINAL NOCTURNA",
+      coverAlt: "Un panda de estilo cúbico junto a autobuses de colores en una terminal de bambú", kicker: "CONTROL DE TERMINAL NOCTURNA",
       summary: "Lee el orden del convoy y evita bloquear el carril de espera.",
       guideBody: "Solo acepta pasajeros el primer autobús. Los colores incorrectos esperan en orden; si el carril se bloquea, pierdes.",
       guideRule1: "Comprueba el autobús activo y sus plazas.", guideRule2: "Envía solo al primero de cada fila.", guideRule3: "Deshaz antes de bloquear el carril.",
@@ -80,7 +80,7 @@
       complete: "TERMINAL DESPEJADA", resultTitle: "¡Todo el convoy partió!", next: "Siguiente terminal", colors: ["coral", "cielo", "ámbar", "violeta"],
     },
     "pt-BR": {
-      coverAlt: "Um controlador noturno coordena quatro linhas de ônibus", kicker: "CONTROLE DO TERMINAL NOTURNO",
+      coverAlt: "Um panda em estilo de blocos ao lado de ônibus coloridos em um terminal de bambu", kicker: "CONTROLE DO TERMINAL NOTURNO",
       summary: "Leia a ordem do comboio e não deixe a faixa de espera travar.",
       guideBody: "Só o primeiro ônibus recebe passageiros. Cores erradas aguardam em ordem; se a faixa travar, você perde.",
       guideRule1: "Confira o ônibus ativo e os assentos.", guideRule2: "Envie apenas o primeiro de cada fila.", guideRule3: "Desfaça antes de bloquear a faixa.",
@@ -92,7 +92,7 @@
       complete: "TERMINAL LIBERADO", resultTitle: "Todo o comboio partiu!", next: "Próximo terminal", colors: ["coral", "céu", "âmbar", "violeta"],
     },
     fr: {
-      coverAlt: "Un régulateur de nuit coordonne quatre lignes de bus", kicker: "CONTRÔLE DU TERMINAL DE NUIT",
+      coverAlt: "Un panda de style cubique près de bus colorés dans une gare de bambou", kicker: "CONTRÔLE DU TERMINAL DE NUIT",
       summary: "Lisez l’ordre du convoi sans bloquer la voie d’attente.",
       guideBody: "Seul le premier bus accepte des passagers. Les mauvaises couleurs attendent dans l’ordre ; si la voie se bloque, vous perdez.",
       guideRule1: "Vérifiez le bus actif et ses places.", guideRule2: "Envoyez seulement le premier de chaque file.", guideRule3: "Annulez avant de bloquer la voie.",
@@ -104,7 +104,7 @@
       complete: "TERMINAL DÉGAGÉ", resultTitle: "Tout le convoi est parti !", next: "Terminal suivant", colors: ["corail", "ciel", "ambre", "violet"],
     },
     de: {
-      coverAlt: "Ein Nachtlotse koordiniert vier überfüllte Buslinien", kicker: "NACHTTERMINAL-LEITUNG",
+      coverAlt: "Ein Panda-Schaffner im Blockstil neben bunten Bussen an einem Bambusterminal", kicker: "NACHTTERMINAL-LEITUNG",
       summary: "Lies die Abfahrtsfolge und halte die Wartezone frei.",
       guideBody: "Nur der erste Bus nimmt Fahrgäste auf. Falsche Farben warten der Reihe nach; blockiert die Zone, ist die Runde verloren.",
       guideRule1: "Prüfe den aktiven Bus und seine Plätze.", guideRule2: "Schicke nur den Ersten jeder Reihe.", guideRule3: "Nutze Rückgängig vor der Blockade.",
@@ -116,7 +116,7 @@
       complete: "TERMINAL FREI", resultTitle: "Alle Busse sind abgefahren!", next: "Nächstes Terminal", colors: ["Koralle", "Himmel", "Bernstein", "Violett"],
     },
     it: {
-      coverAlt: "Un controllore notturno coordina quattro linee di autobus", kicker: "CONTROLLO TERMINAL NOTTURNO",
+      coverAlt: "Un panda in stile a blocchi accanto ad autobus colorati in un terminal di bambù", kicker: "CONTROLLO TERMINAL NOTTURNO",
       summary: "Leggi l’ordine del convoglio e non bloccare la corsia d’attesa.",
       guideBody: "Solo il primo autobus accetta passeggeri. I colori errati attendono in ordine; se la corsia si blocca, perdi.",
       guideRule1: "Controlla l’autobus attivo e i posti.", guideRule2: "Invia solo il primo di ogni fila.", guideRule3: "Annulla prima di bloccare la corsia.",
@@ -128,7 +128,7 @@
       complete: "TERMINAL LIBERO", resultTitle: "Tutto il convoglio è partito!", next: "Terminal successivo", colors: ["corallo", "cielo", "ambra", "viola"],
     },
     ru: {
-      coverAlt: "Ночной диспетчер управляет четырьмя загруженными линиями", kicker: "НОЧНОЙ ТЕРМИНАЛ",
+      coverAlt: "Панда-кондуктор в кубическом стиле рядом с разноцветными автобусами на бамбуковом вокзале", kicker: "НОЧНОЙ ТЕРМИНАЛ",
       summary: "Следите за очередью автобусов и не блокируйте зону ожидания.",
       guideBody: "Пассажиров принимает только первый автобус. Другие цвета ждут по порядку; блокировка зоны означает поражение.",
       guideRule1: "Проверьте активный автобус и места.", guideRule2: "Отправляйте только первого в очереди.", guideRule3: "Отмените ход до блокировки.",
@@ -140,7 +140,7 @@
       complete: "ТЕРМИНАЛ ОЧИЩЕН", resultTitle: "Все автобусы отправлены!", next: "Следующий терминал", colors: ["коралл", "небо", "янтарь", "фиолетовый"],
     },
     hi: {
-      coverAlt: "रात का नियंत्रक चार व्यस्त बस लाइनों को संभाल रहा है", kicker: "रात्रि टर्मिनल नियंत्रण",
+      coverAlt: "बाँस के बस अड्डे पर रंगीन बसों के पास ब्लॉक शैली का पांडा कंडक्टर", kicker: "रात्रि टर्मिनल नियंत्रण",
       summary: "बस क्रम पढ़ें और प्रतीक्षा लेन को जाम होने से बचाएँ।",
       guideBody: "केवल पहली बस यात्री लेती है। गलत रंग के यात्री क्रम से प्रतीक्षा लेन में जाते हैं; लेन जाम हुई तो हार होगी।",
       guideRule1: "सक्रिय बस और खाली सीटें देखें।", guideRule2: "हर कतार के पहले यात्री को ही भेजें।", guideRule3: "जाम से पहले पूर्ववत करें।",
@@ -152,7 +152,7 @@
       complete: "टर्मिनल साफ़", resultTitle: "सभी बसें रवाना हुईं!", next: "अगला टर्मिनल", colors: ["मूंगा", "आसमानी", "अंबर", "बैंगनी"],
     },
     ar: {
-      coverAlt: "مراقب ليلي ينظم أربعة خطوط حافلات مزدحمة", kicker: "إدارة المحطة الليلية",
+      coverAlt: "باندا بأسلوب المكعبات بجوار حافلات ملونة في محطة من الخيزران", kicker: "إدارة المحطة الليلية",
       summary: "اقرأ ترتيب الحافلات ولا تدع مسار الانتظار ينسد.",
       guideBody: "الحافلة الأولى وحدها تستقبل الركاب. الألوان غير المطابقة تنتظر بالترتيب، وانسداد المسار يعني الخسارة.",
       guideRule1: "تحقق من الحافلة النشطة والمقاعد.", guideRule2: "أرسل أول راكب في كل صف فقط.", guideRule3: "استخدم التراجع قبل الانسداد.",

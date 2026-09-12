@@ -1,4 +1,4 @@
-﻿const ANIMAL_GUARD_YARD_SHELL_COPY = {
+const ANIMAL_GUARD_YARD_SHELL_COPY = {
   en: {
     gameTitle: "Animal Guard Yard", language: "Language", back: "Back", backToLobby: "Back to lobby",
     walletAria: "Animal Guard Yard wallet", beastGuideAria: "Beast guide", stageListAria: "Stage list",
@@ -172,7 +172,7 @@
 
 (() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v30";
+  const GAME_VERSION = "v31";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -1030,6 +1030,7 @@
     text[code] = Object.assign(text[code] || Object.create(text.en), { abilityCat: value });
   });
 
+  for (const [code, copy] of Object.entries(window.GUARD_YARD_UPGRADE_COPY || {})) Object.assign(text[code] ||= {}, copy);
   const units = [
     { id: "cat", nameKey: "unitCat", roleKey: "roleRanged", abilityKey: "abilityCat", attackStyle: "ranged", cost: 45, hp: 92, damage: 18, cooldown: 930, range: 9, pierceEvery: 4, unlockCost: 0 },
     { id: "dog", nameKey: "unitDog", roleKey: "roleTankMelee", abilityKey: "abilityDog", attackStyle: "melee", cost: 58, hp: 350, damage: 42, cooldown: 820, range: 1.5, unlockCost: 0 },
@@ -1038,34 +1039,30 @@
   ];
 
   const spriteAssets = {
-    cat: "../../assets/animal-guard-cat.png",
-    dog: "../../assets/animal-guard-dog.png",
-    owl: "../../assets/animal-guard-owl.png",
-    fox: "../../assets/animal-guard-fox.png",
-    normal: "../../assets/animal-guard-beast-normal.webp",
-    fast: "../../assets/animal-guard-beast-fast.webp",
-    shield: "../../assets/animal-guard-beast-shield.webp",
-    healer: "../../assets/animal-guard-beast-normal.webp",
-    burrow: "../../assets/animal-guard-beast-fast.webp",
-    thief: "../../assets/animal-guard-beast-shield.webp",
-    boss: "../../assets/animal-guard-beast-boss.webp",
-    bossRhino: "../../assets/animal-guard-beast-boss.webp",
-    bossTortoise: "../../assets/animal-guard-yard-boss-prism-shell-tortoise.webp",
-    bossBadger: "../../assets/animal-guard-yard-boss-burrow-badger-chief.webp",
-    bossBoar: "../../assets/animal-guard-yard-boss-ember-mane-boar.webp",
-    bossEagle: "../../assets/animal-guard-yard-boss-gale-wing-eagle.webp",
-    bossElk: "../../assets/animal-guard-yard-boss-moon-crown-elk.webp",
+    cat: "assets/block-v31/cat.png",
+    dog: "assets/block-v31/dog.png",
+    owl: "assets/block-v31/owl.png",
+    fox: "assets/block-v31/fox.png",
+    normal: "assets/block-v31/normal.png",
+    fast: "assets/block-v31/fast.png",
+    shield: "assets/block-v31/shield.png",
+    healer: "assets/block-v31/healer.png",
+    burrow: "assets/block-v31/burrow.png",
+    thief: "assets/block-v31/thief.png",
+    boss: "assets/block-v31/bossRhino.png",
+    bossRhino: "assets/block-v31/bossRhino.png",
+    bossTortoise: "assets/block-v31/bossTortoise.png",
+    bossBadger: "assets/block-v31/bossBadger.png",
+    bossBoar: "assets/block-v31/bossBoar.png",
+    bossEagle: "assets/block-v31/bossEagle.png",
+    bossElk: "assets/block-v31/bossElk.png",
   };
-  const diamondIcon = "../../assets/weightplay-diamond.svg?v=20260704-blue-diamond1";
-  const heartIcon = "../../assets/weightplay-heart.svg";
-  const impactFxAsset = "../../assets/animal-guard-beast-impact-fx.webp";
+  const diamondIcon = "assets/block-v31/diamond.png";
+  const heartIcon = "assets/block-v31/heart.png";
+  const impactFxAsset = "assets/block-v31/sun.png";
   const masteryMilestones = new Map([[5, 45], [15, 120], [30, 260]]);
 
-  const projectileAssets = {
-    cat: "../../assets/animal-guard-projectile-seed.svg",
-    owl: "../../assets/animal-guard-projectile-feather.svg",
-    fox: "../../assets/animal-guard-projectile-leaf.svg",
-  };
+  const projectileAssets = {cat: "assets/block-v31/sun.png", owl: "assets/block-v31/sun.png", fox: "assets/block-v31/sun.png"};
 
   const stageBlueprints = [
     ["First Sun", "\u521d\u967d\u8349\u5730", "Learn Cat range before the first quick beast arrives.", "\u5148\u8a8d\u8b58\u8c93\u9a0e\u58eb\u5c04\u7a0b\uff0c\u518d\u64cb\u4f4f\u7b2c\u4e00\u96bb\u5feb\u7378\u3002", ["normal"]],
@@ -1202,6 +1199,22 @@
       boss: checkpoint ? { type: checkpoint.id, isBoss: true, ...checkpoint } : null,
     };
   });
+  // Authored lane formations: each entry is a distinct 30-stage encounter order.
+  const laneFormations=['000111222','0011001122','0011220011','0120122100','012102210',
+   '0011221122','1122001122','2200112200','012210012','210012210',
+   '0033003311','1122442211','0044221133','024024420','402132402',
+   '0123401234','4422331100','0241302413','0132401324','432101234',
+   '0011442233','0413204132','0432101234','3140231402','240132401',
+   '0243113420','4321001234','1023443201','0413223140','012344321001234'];
+  stages.forEach((stage,index)=>{
+    stage.rows=5;stage.cols=7;
+    stage.planRows=[...laneFormations[index]].map(n=>index<5?Number(n)*2:Number(n));
+    stage.waveCount=index<2?2:3;
+    stage.total=index<5?8+index*2:15+Math.floor(index/5)*3+(index%5);
+    stage.energy=180+Math.floor(index/5)*20;
+    stage.interval=Math.max(1900,3100-index*28);
+    stage.blocked=index<10?[]:index<20?[[index%5,4],[(index+2)%5,6]]:[[index%5,3],[(index+1)%5,5],[(index+3)%5,6]];
+  });
   const arabicStageCopy = [
     ["شمس البداية", "تعلّم مدى القطة قبل وصول أول وحش سريع."],
     ["آثار مسارين", "غطِّ الممرين المحددين بدلًا من ملء صف واحد."],
@@ -1315,6 +1328,12 @@
   let selectedUnit = units[0].id;
   let activeMenuTab = "stages";
   let running = false;
+  let combatPhase='prepare', waveIndex=0, waveLimit=0, recallMode=false, rallyMode=false, rallyCooldown=0, speedFactor=1, incomeBank=0, renderer3d=null;
+  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function disposeYard(){renderer3d?.dispose();renderer3d=null;}
+  function startYardRenderer(){disposeYard();if(activeScene!=='battle'||!window.GuardYard3D)return;try{renderer3d=new window.GuardYard3D(nodes.yardBoard);}catch{nodes.yardBoard.dataset.renderer='fallback';}}
+  function renderYard(){renderer3d?.render({rows:stages[currentStage].rows,cols:stages[currentStage].cols,blocked:stages[currentStage].blocked,entities,projectiles,time:performance.now(),reduced:reducedMotion});}
+  window.addEventListener('guard-yard-3d-ready',()=>{if(activeScene==='battle'){startYardRenderer();renderYard();}});
   let paused = false;
   let lifecycleSuspended = false;
   let windowFocused = document.hasFocus();
@@ -1355,7 +1374,7 @@
 
   function ensureStageArtwork() {
     if (!nodes.menuPanel) return;
-    const stageArt = new URL("../../assets/animal-guard-yard-poster.webp", document.baseURI).href;
+    const stageArt = new URL("../../assets/interface7-redrawn/animal-guard-yard.webp", document.baseURI).href;
     const expectedValue = `url("${stageArt}")`;
     if (!nodes.menuPanel.classList.contains("wp-stage-art-shell")) {
       nodes.menuPanel.classList.add("wp-stage-art-shell");
@@ -1369,6 +1388,7 @@
   }
 
   function activateScene(scene) {
+    if(scene!=='battle')disposeYard();
     if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
     if (scene !== "stage") cancelStageSettlement();
     activeScene = scene;
@@ -1456,8 +1476,9 @@
     const isStage = mode === "stage";
     const isPlaying = mode === "playing";
     if (isStage || isPlaying) {
-      const minimumLogicalWidth = 390;
-      const minimumLogicalHeight = isStage ? 788 : 450;
+      const compactLandscape=safeWidth>height&&height<=520;
+      const minimumLogicalWidth = compactLandscape?760:390;
+      const minimumLogicalHeight = compactLandscape?334:isStage?788:640;
       const scale = Math.min(
         Math.max(1, width) / minimumLogicalWidth,
         availableHeight / minimumLogicalHeight
@@ -1482,6 +1503,11 @@
   window.addEventListener("resize", updateGuardYardViewport, { passive: true });
   window.visualViewport?.addEventListener("resize", updateGuardYardViewport, { passive: true });
 
+  function modernizeGuardNames(value) {
+    const copy=window.GUARD_YARD_UPGRADE_COPY?.[locale]||window.GUARD_YARD_UPGRADE_COPY.en;
+    return String(value).replace(/\b(?:Cat|Cats|Gato|Gatos|Chat|Chats|Katze|Katzen|Gatto|Gatti)\b|貓騎士|猫骑士|القطة|القطط|고양이|बिल्ली/giu,copy.unitCat)
+      .replace(/\b(?:Dog|Dogs|Perro|Perros|Chien|Chiens|Hund|Hunde|Cane|Cani|Cão|Cães)\b|狗戰士|狗战士|الكلب|الكلاب|강아지|कुत्ता/giu,copy.unitDog);
+  }
   function t(key, data) {
     const parts = key.split(".");
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
@@ -1490,11 +1516,12 @@
       for (const part of parts) value = value?.[part];
       return value;
     };
-    let value = lookup(ANIMAL_GUARD_YARD_SHELL_COPY[locale] || ANIMAL_GUARD_YARD_SHELL_COPY[sourceLocale]);
+    let value = lookup(window.GUARD_YARD_UPGRADE_COPY?.[locale] || window.GUARD_YARD_UPGRADE_COPY?.[sourceLocale]);
+    if(typeof value!=='string') value = lookup(ANIMAL_GUARD_YARD_SHELL_COPY[locale] || ANIMAL_GUARD_YARD_SHELL_COPY[sourceLocale]);
     if (typeof value !== "string") value = lookup(text[sourceLocale] || text.en);
     if (typeof value !== "string") value = key;
     value = Object.entries(data || {}).reduce((out, [name, item]) => out.replaceAll(`{${name}}`, item), value);
-    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value;
+    return modernizeGuardNames(locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(value) || value : value);
   }
 
   function trainingBridge(kind, coins = 0) {
@@ -1578,6 +1605,7 @@
 
   function updateCellSemantics(cell) {
     if (!cell?.button) return;
+    if (cell.button.dataset.blocked) {cell.button.setAttribute('aria-label',t('blocked'));return;}
     const copy = cellTargetCopy[locale] || cellTargetCopy.en;
     const template = cell.unit ? copy.occupied : copy.empty;
     const label = template
@@ -1607,11 +1635,11 @@
     const sourceLocale = locale === "zh-Hans" ? "zh-Hant" : locale;
     const value = stage?.[field]?.[sourceLocale] || stage?.[field]?.en || "";
     const override = stageCopyOverrides[value]?.[locale];
-    if (override) return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(override) || override : override;
+    if (override) return modernizeGuardNames(locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(override) || override : override);
     const translated = !["en", "es", "zh-Hant", "zh-Hans"].includes(locale)
       ? window.WeightPlayGameRuntimeLocalizer?.translate?.(value) || value
       : value;
-    return locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(translated) || translated : translated;
+    return modernizeGuardNames(locale === "zh-Hans" ? window.WonderI18n?.simplifyChineseText?.(translated) || translated : translated);
   }
 
   function clamp(value, min, max) {
@@ -1780,7 +1808,7 @@
   }
 
   function isOwned(unitId) {
-    return !!profile.owned[unitId];
+    return !!profile.owned[unitId] || (unitId==='fox' && unlocked>=6);
   }
 
   function trainedUnit(unit) {
@@ -1892,10 +1920,11 @@
   }
 
   function showBoardText(message, x, y, variant = "") {
+    if(['roar-pop','heal-pop','thief-pop'].includes(variant)){nodes.hintText.textContent=message;return;}
     const bubble = document.createElement("div");
     bubble.className = `board-pop ${variant}`.trim();
     bubble.textContent = message;
-    bubble.style.left = `${x * 100}%`;
+    bubble.style.left = `${clamp(x,.12,.88) * 100}%`;
     bubble.style.top = `${y * 100}%`;
     nodes.yardBoard.appendChild(bubble);
     window.setTimeout(() => bubble.remove(), 900);
@@ -1923,6 +1952,8 @@
   function bindStageCard(button, index) {
     const stage = stages[index];
     if (!stage) return;
+    const cardHeight=matchMedia('(orientation:landscape) and (max-height:520px)').matches?190:286;
+    for(const prop of ['height','min-height','max-height'])button.style.setProperty(prop,`${cardHeight}px`,'important');
     const stageNo = index + 1;
     const locked = stageNo > unlocked;
     const active = index === stageBrowseIndex;
@@ -2360,7 +2391,7 @@
 
   function costToken(token, amount) {
     if (token === "coin") {
-      return `<span class="cost-token"><img class="cost-icon" src="../../assets/coin.png" alt="" draggable="false" /><span>${amount}</span></span>`;
+      return `<span class="cost-token"><img class="cost-icon" src="assets/block-v31/coin.png" alt="" draggable="false" /><span>${amount}</span></span>`;
     }
     return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="${diamondIcon}" alt="" draggable="false" /><span>${amount}</span></span>`;
   }
@@ -2491,6 +2522,7 @@
   }
 
   function startStage(index) {
+    disposeYard();
     clearFloatingText();
     lifecycleSuspended = false;
     foregroundPlacementBlocked = false;
@@ -2502,7 +2534,8 @@
     energy = stage.energy;
     baseHp = stage.hp;
     spawned = 0;
-    nextSpawnAt = 900;
+    combatPhase='prepare';waveIndex=0;waveLimit=0;recallMode=false;rallyMode=false;rallyCooldown=0;speedFactor=1;incomeBank=0;
+    nextSpawnAt = 1800;
     currentSpawnDelay = nextSpawnAt;
     nextSpawnPlan = makeSpawnPlan();
     nextSunAt = 1400;
@@ -2526,7 +2559,8 @@
     nodes.pausePanel.classList.add("hidden");
     updateGuardYardViewport();
     buildBoard(stage);
-    nodes.hintText.textContent = t("select");
+    nodes.hintText.textContent = t("buildHint");
+    startYardRenderer();
     updateLanePressureAlert(true);
     renderUnits();
     updateHud();
@@ -2542,6 +2576,7 @@
     lifecycleSuspended = true;
     running = false;
     cancelAnimationFrame(raf);
+    disposeYard();
   }
 
   function resumeBattleLifecycle() {
@@ -2550,6 +2585,7 @@
     if (paused || nodes.playPanel.classList.contains("hidden") || !nodes.resultPanel.classList.contains("hidden")) return;
     running = true;
     lastTick = performance.now();
+    startYardRenderer();
     raf = requestAnimationFrame(tick);
   }
 
@@ -2648,6 +2684,7 @@
         cell.style.width = `${100 / stage.cols}%`;
         cell.style.height = `${100 / stage.rows}%`;
         cell.addEventListener("click", () => placeUnit(row, col));
+        if(stage.blocked?.some(c=>c[0]===row&&c[1]===col)){cell.dataset.blocked='true';cell.innerHTML='<img src="assets/block-v31/stone.png" alt="">';cell.setAttribute('aria-label',t('blocked'));}
         nodes.yardBoard.appendChild(cell);
         const cellState = { row, col, button: cell, unit: null };
         cells.push(cellState);
@@ -2675,7 +2712,7 @@
           <strong>${t(unit.nameKey)}</strong>
           <b class="role-badge" title="${t(trained.abilityKey)}">${t(trained.roleKey)}</b>
           <small class="unit-stats">
-            <span>${t("costShort")} ${trained.cost}</span>
+            <span><img class="cost-icon" src="assets/block-v31/sun.png" alt=""> ${trained.cost}</span>
             <span>${t("level", { n: trained.level })}</span>
           </small>
         </span>
@@ -2683,6 +2720,8 @@
       button.addEventListener("click", () => {
         const restoreFocus = document.activeElement === button;
         selectedUnit = unit.id;
+        recallMode=false;rallyMode=false;
+        nodes.hintText.textContent=`${t(unit.nameKey)} · ${t(unit.abilityKey)}`;
         track("guard_selected");
         playSound("click");
         renderUnits();
@@ -2697,6 +2736,18 @@
   function placeUnit(row, col) {
     if (!running) return;
     const cell = cells.find((item) => item.row === row && item.col === col);
+    if(rallyMode){
+      if(combatPhase!=='combat'||rallyCooldown>0)return;
+      entities.filter(e=>e.kind==='zombie'&&e.row===row).forEach(e=>{applySlow(e,.25,2000);e.hitMs=200;});
+      rallyCooldown=20000;rallyMode=false;pulseClass(nodes.yardBoard,'rally-lane',300);playSound('select');updateHud();return;
+    }
+    if(recallMode&&cell?.unit){
+      const guard=cell.unit,refund=Math.floor(guard.data.cost*(combatPhase==='prepare'?1:.5)*Math.max(0,guard.hp/guard.maxHp));
+      energy=Math.min(400,energy+refund);guard.el.remove();guard.hpEl.remove();guard.reachEl?.remove();entities=entities.filter(e=>e!==guard);cell.unit=null;updateCellSemantics(cell);
+      nodes.hintText.textContent=t('refund',{n:refund});updateHud();renderUnits();return;
+    }
+    if(recallMode)return;
+    if(stages[currentStage].blocked?.some(c=>c[0]===row&&c[1]===col)){nodes.hintText.textContent=t('blocked');playSound('error');return;}
     const baseUnit = units.find((item) => item.id === selectedUnit);
     if (!cell || !baseUnit) return;
     const unit = trainedUnit(baseUnit);
@@ -2710,6 +2761,7 @@
       playSound("error");
       return;
     }
+    if(entities.filter(e=>e.kind==='guard').length>=12){nodes.hintText.textContent=t('capacity');playSound('error');return;}
     if (energy < unit.cost) {
       showFloatingText(t("noEnergy"));
       playSound("error");
@@ -2753,6 +2805,7 @@
     updateCellSemantics(cell);
     entities.push(guard);
     guardPlacements += 1;
+    recallMode=false;
     track("guard_placed", { placement_number: guardPlacements });
     if (guardPlacements === 1) {
       track("first_guard_placed");
@@ -2817,31 +2870,38 @@
     const drop = document.createElement("button");
     drop.className = "energy-drop";
     drop.type = "button";
-    drop.textContent = "\u2600";
+    drop.innerHTML='<img src="assets/block-v31/sun.png" alt="">';
+    drop.setAttribute('aria-label',`${t('sunToken')} +35`);
     drop.style.left = `${12 + Math.random() * 72}%`;
     drop.style.top = `${10 + Math.random() * 58}%`;
-    const sunLife = Math.max(2600, 4600 - currentStage * 450);
+    const sunLife = 6000, generation=sceneGeneration;
     drop.style.setProperty("--sun-life", `${sunLife}ms`);
     drop.addEventListener("click", () => {
-      energy += 35;
+      if(!running||paused||generation!==sceneGeneration)return;
+      energy = Math.min(400,energy+35);
       drop.remove();
       updateHud();
       renderUnits();
       playSound("coin");
     }, { once: true });
     nodes.yardBoard.appendChild(drop);
-    window.setTimeout(() => drop.remove(), sunLife);
+    window.setTimeout(() => {if(drop.isConnected&&running&&generation===sceneGeneration){energy=Math.min(400,energy+20);updateHud();renderUnits();}drop.remove();}, sunLife);
     if (stage.total - spawned < 3) energy += 5;
   }
 
   function tick(now) {
     if (!running) return;
     updateGuardYardViewport();
-    const dt = Math.min(48, now - lastTick);
+    const dt = Math.min(48, now - lastTick)*speedFactor;
     lastTick = now;
+    entities.forEach(e=>e.hitMs=Math.max(0,(e.hitMs||0)-dt));
+    if(combatPhase==='prepare'){renderYard();updateHud();raf=requestAnimationFrame(tick);return;}
+    rallyCooldown=Math.max(0,rallyCooldown-dt);
+    incomeBank+=dt;
+    if(incomeBank>=1000){energy=Math.min(400,energy+2);incomeBank-=1000;renderUnits();}
     nextSpawnAt -= dt;
     nextSunAt -= dt;
-    if (nextSpawnAt <= 0) {
+    if (nextSpawnAt <= 0 && spawned<waveLimit) {
       spawnZombie();
       currentSpawnDelay = stages[currentStage].interval * (0.82 + Math.random() * 0.36);
       nextSpawnAt = currentSpawnDelay;
@@ -2859,6 +2919,8 @@
     if (baseHp <= 0) return finish(false);
     const zombiesLeft = entities.some((item) => item.kind === "zombie") || spawned < stages[currentStage].total;
     if (!zombiesLeft) return finish(true);
+    if(spawned>=waveLimit&&!entities.some(e=>e.kind==='zombie')){combatPhase='prepare';energy=Math.min(400,energy+45);nodes.hintText.textContent=t('waveReady');renderUnits();}
+    renderYard();
     raf = requestAnimationFrame(tick);
   }
 
@@ -2931,17 +2993,14 @@
   function applyDamage(target, damage, impactType, impactY, attacker = null) {
     if (target.shellClosed) damage = Math.max(1, Math.round(damage * 0.22));
     target.hp -= damage;
+    target.hitMs=180;
+    if(target.hp<=0&&!reducedMotion&&navigator.vibrate)navigator.vibrate(target.isBoss?[15,20,20]:8);
     pulseClass(target.el, "is-hit");
     spawnImpact(target.x, impactY, impactType);
     showBoardText(`-${damage}`, target.x, Math.max(0.06, impactY - 0.08));
     if (attacker && !attacker.defensePayoffShown) {
       attacker.defensePayoffShown = true;
-      showBoardText(
-        defenseMomentMessage("hit", attacker.id, target.row),
-        clamp(target.x, 0.12, 0.88),
-        Math.max(0.1, impactY - 0.17),
-        "defense-pop"
-      );
+      nodes.hintText.textContent=defenseMomentMessage("hit", attacker.id, target.row);
     }
     if (target.hp <= 0 && !target.rewarded) {
       target.rewarded = true;
@@ -3228,13 +3287,13 @@
       entity.el.style.setProperty("--actor-x", `${x}px`);
       entity.el.style.setProperty("--actor-y", `${y}px`);
       entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
-      updateHpBar(entity, x, y + (boardRect.height / stage.rows) * 0.35);
+      updateHpBar(entity, x, y + Math.min(24,(boardRect.height / stage.rows) * 0.25));
     } else {
       const y = laneCenterY(entity.row, stage) * boardRect.height;
       entity.el.style.setProperty("--actor-x", `${entity.x * boardRect.width}px`);
       entity.el.style.setProperty("--actor-y", `${y}px`);
       entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
-      updateHpBar(entity, entity.x * boardRect.width, y + (boardRect.height / stage.rows) * 0.36);
+      updateHpBar(entity, entity.x * boardRect.width, y + Math.min(24,(boardRect.height / stage.rows) * 0.25));
     }
   }
 
@@ -3269,6 +3328,7 @@
     spark.className = `impact ${type || "hit"}`;
     spark.style.left = `${x * 100}%`;
     spark.style.top = `${y * 100}%`;
+    spark.innerHTML='<i></i><i></i><i></i><i></i>';
     nodes.yardBoard.appendChild(spark);
     window.setTimeout(() => spark.remove(), 420);
   }
@@ -3296,10 +3356,25 @@
   }
 
   function updateHud() {
+    const preview=$('wavePreview'),previewKey=`${currentStage}:${spawned}:${waveIndex}`;
+    if(preview&&preview.dataset.key!==previewKey){
+      preview.dataset.key=previewKey;
+      const limit=Math.ceil(stages[currentStage].total*Math.min(stages[currentStage].waveCount,waveIndex+(combatPhase==='prepare'?1:0))/stages[currentStage].waveCount);
+      preview.setAttribute('aria-label',t('threatPreview'));
+      preview.innerHTML=Array.from({length:Math.min(4,Math.max(0,limit-spawned))},(_,i)=>{const plan=makeSpawnPlan(spawned+i+1);return `<span><img src="${spriteAssets[plan.data.type]}" alt="${stageThreatLabel(plan.data.type)}">→ ${plan.row+1}</span>`;}).join('');
+    }
+    energy=clamp(energy,0,400);
     const left = Math.max(0, stages[currentStage].total - spawned + entities.filter((item) => item.kind === "zombie").length);
     nodes.energyText.textContent = Math.floor(energy);
+    $('squadCount').textContent=`${entities.filter(e=>e.kind==='guard').length}/12`;
+    $('squadCount').parentElement.setAttribute('aria-label',t('capacity'));
     nodes.baseText.textContent = Math.max(0, baseHp);
-    nodes.waveText.textContent = t("wave", { n: currentStage + 1, left });
+    nodes.waveText.textContent = `${currentStage+1} · ${combatPhase==='prepare'?t(waveIndex?'waveReady':'prep'):t('waveCount',{n:waveIndex,total:stages[currentStage].waveCount})}`;
+    const launch=$('launchWave');if(launch){launch.disabled=combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard');launch.querySelector('span').textContent=t(waveIndex?'nextWave':'launch');
+      $('recallGuard').querySelector('span').textContent=t('recall');$('recallGuard').setAttribute('aria-pressed',String(recallMode));
+      $('rallyLane').querySelector('span').textContent=rallyCooldown>0?`${Math.ceil(rallyCooldown/1000)}s`:t('rally');$('rallyLane').disabled=combatPhase!=='combat'||rallyCooldown>0;
+      $('rallyLane').setAttribute('aria-pressed',String(rallyMode));$('yardSpeed').textContent=`×${speedFactor}`;
+    }
     updateWaveTimer(left);
     renderWallet();
   }
@@ -3312,7 +3387,7 @@
       : null;
     const data = stage.boss && nextSpawnNumber === stage.total
       ? stage.boss
-      : findStageEnemy(stage, scripted?.type) || stage.zombies[Math.floor(Math.random() * stage.zombies.length)];
+      : findStageEnemy(stage, scripted?.type) || stage.zombies[(nextSpawnNumber - 1) % stage.zombies.length];
     return {
       data,
       row: Number.isInteger(scripted?.row) ? clamp(scripted.row, 0, stage.rows - 1) : Math.floor(Math.random() * stage.rows),
@@ -3332,7 +3407,7 @@
   function updateSpawnWarning(left) {
     if (!nodes.spawnWarning) return;
     const remainingSpawns = Math.max(0, stages[currentStage].total - spawned);
-    const shouldShow = running && left > 0 && remainingSpawns > 0 && nextSpawnPlan;
+    const shouldShow = running && left > 0 && remainingSpawns > 0 && nextSpawnPlan && (combatPhase==='prepare'||spawned<waveLimit);
     nodes.spawnWarning.classList.toggle("hidden", !shouldShow);
     if (!shouldShow) {
       clearIncomingLane();
@@ -3346,8 +3421,9 @@
     syncIncomingLane(nextSpawnPlan.row, remaining);
     if (guardPlacements === 0) updateLanePressureAlert(true);
     const src = spriteAssets[nextSpawnPlan.data.type] || spriteAssets.normal;
-    const seconds = Math.max(1, Math.ceil(nextSpawnAt / 1000));
-    nodes.spawnWarning.innerHTML = `<img src="${src}" alt="" draggable="false" /><b>${seconds}</b>`;
+    const seconds = combatPhase==='prepare' ? '→' : Math.max(1, Math.ceil(nextSpawnAt / 1000));
+    const key=`${src}:${seconds}`;
+    if(nodes.spawnWarning.dataset.key!==key){nodes.spawnWarning.dataset.key=key;nodes.spawnWarning.innerHTML = `<img src="${src}" alt="" draggable="false" /><b>${seconds}</b>`;}
   }
 
   function syncIncomingLane(row, remaining) {
@@ -3374,6 +3450,7 @@
   }
 
   function finish(won) {
+    disposeYard();
     lifecycleSuspended = false;
     running = false;
     cancelAnimationFrame(raf);
@@ -3524,12 +3601,12 @@
 
   function initLoading() {
     const assets = [
-      "../../assets/animal-guard-yard-poster.webp",
+      "../../assets/interface7-redrawn/animal-guard-yard.webp",
       ...Object.values(spriteAssets),
-      "../../assets/menu-battle.png",
-      "../../assets/menu-character.png",
-      "../../assets/upgrade-coin.png",
-      "../../assets/coin.png",
+      "assets/block-v31/rally.png",
+      "assets/block-v31/cat.png",
+      "assets/block-v31/coin.png",
+      "assets/block-v31/coin.png",
       diamondIcon,
       heartIcon,
       impactFxAsset,
@@ -3704,6 +3781,11 @@
     else resumeBattleLifecycle();
   });
 
+  $('launchWave').onclick=()=>{if(!running||combatPhase!=='prepare'||!entities.some(e=>e.kind==='guard'))return;waveIndex++;waveLimit=Math.ceil(stages[currentStage].total*waveIndex/stages[currentStage].waveCount);combatPhase='combat';nextSpawnAt=1800;currentSpawnDelay=1800;nextSpawnPlan=makeSpawnPlan();nodes.hintText.textContent=t('incomeHint');playSound('start');updateHud();};
+  $('recallGuard').onclick=()=>{recallMode=!recallMode;rallyMode=false;nodes.hintText.textContent=t('incomeHint');updateHud();};
+  $('rallyLane').onclick=()=>{if(rallyCooldown>0||combatPhase!=='combat')return;rallyMode=!rallyMode;recallMode=false;nodes.hintText.textContent=t('rallyHint');updateHud();};
+  $('yardSpeed').onclick=()=>{speedFactor=speedFactor===1?2:1;updateHud();};
+  window.__guardYardUpgrade={snapshot:()=>({phase:combatPhase,waveIndex,waveLimit,energy,spawned,baseHp,stage:currentStage+1,guards:entities.filter(e=>e.kind==='guard').map(e=>({id:e.id,row:e.row,col:e.col,hp:e.hp})),enemies:entities.filter(e=>e.kind==='zombie').map(e=>({type:e.type,row:e.row,x:e.x,hp:e.hp})),rallyCooldown}),stages};
   localizeStatic();
   showMenuTab(activeMenuTab);
   showMain();

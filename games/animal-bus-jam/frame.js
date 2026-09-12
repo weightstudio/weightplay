@@ -12,7 +12,9 @@
     oldLabel.remove();
     // The shared guide is outside the framed poster/content group.
     const guide = root.querySelector('.public-guide');
-    $('main').after(guide);
+    // The frame already owns a viewport gutter. Keep the guide beside the
+    // frame, not inside it, so shared guide gutters are applied exactly once.
+    root.after(guide);
     frame = window.WeightPlayScreenFrame.mount({root, localeSelect: select, scenes: {
       main: {root: $('main'), header: $('main').querySelector('header'), content: root.querySelector('.main-content')},
       stage: {root: $('stage'), header: $('stage').querySelector('header'), content: $('stageContent')},

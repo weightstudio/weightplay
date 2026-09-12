@@ -19,8 +19,8 @@
     <link rel="alternate" hreflang="hi" href="https://weightplay.com/hi/games/wordle/" />
     <link rel="alternate" hreflang="ar" href="https://weightplay.com/ar/games/wordle/" />
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/wordle/" />
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>五字母猜词 | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260911-wordle-interface-contract-v15"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260911-wordle-interface-contract-v15">
-<link rel="stylesheet" href="../../games/wordle/wordle-ui.css?v=15"><script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><title>五字母猜词 | WeightPlay</title><link rel="stylesheet" href="../../src/popular-games-batch.css?v=20260912-wordle-battle-leave-v16"><link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-wordle-battle-leave-v16">
+<link rel="stylesheet" href="../../games/wordle/wordle-ui.css?v=20260912-wordle-battle-leave-v16"><script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
   <meta name="description" content="阅读每次五字母猜测的结果，保留有用线索，完成一轮六题短篇字谜。每次猜测都会缩小下一步决策，因此重点不只是速度，而是读懂反馈。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -36,7 +36,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-<body data-screen="main" data-audience="general" data-wp-game-id="wordle" data-game-version="v15" data-wp-battle-layout="native">
+<body data-screen="main" data-audience="general" data-wp-game-id="wordle" data-game-version="v16" data-wp-battle-layout="native">
   <main id="popularArcade" class="popular-arcade">
     <header class="arcade-header main-header">
       <a class="main-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
@@ -49,6 +49,7 @@
     <section id="battleScreen" class="screen battle-screen" hidden>
       <div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel battle-panel"><header class="battle-top"><button id="battleBackBtn" class="battle-back" type="button" data-wp-return="battle" aria-label="Back to main" title="Back to main">←</button><span id="roundLabel" class="round-label"></span><div class="control-row"><button id="hintBtn" class="secondary"></button><button id="restartBtn" class="secondary"></button></div><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="设置" title="设置">⚙</button></header><div class="board-wrap"><div id="board" class="board"></div></div><p id="gameMessage" class="game-message" aria-live="polite"></p><div id="controls"></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
+    <section id="leaveModal" class="wordle-leave-modal" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden><div class="wordle-leave-dialog"><h2 id="leaveTitle">要离开这一回合吗？</h2><p id="leaveText">继续会保留当前草稿。返回主页会结束这次尝试。</p><div class="wordle-leave-actions"><button id="leaveContinue" class="primary" type="button">继续</button><button id="leaveMain" class="secondary" type="button">返回主页</button></div></div></section>
     <section id="resultScreen" class="screen" hidden>
       <div class="battle-canvas" data-wp-logical-battle-canvas><div class="arcade-panel"><h2 id="resultTitle"></h2><p id="resultCopy" class="tagline"></p><div id="resultStats" class="stats"></div><div class="result-actions"><button id="retryBtn" class="primary"></button><button id="homeBtn" class="secondary"></button></div></div></div><div class="battle-ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div>
     </section>
@@ -77,7 +78,7 @@
       <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>熄灯游戏是经典 5×5 开关益智游戏：点击一格及其上下左右相邻格，关掉所有灯光。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/sliding-15/"><img src="/assets/interface7-redrawn/sliding-15.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>十五滑块</strong><span>从 30 个已保存关卡中选择，挑战经典、蛇形、直列、锚点和绕行目标。</span></span></a></div></div>
     </div>
   </section>
-  <script src="../../games/wordle/wordle-ui.js?v=15"></script><script src="../../src/popular-games-batch.js?v=20260911-wordle-interface-contract-v15"></script><script src="game.js?v=20260911-wordle-interface-contract-v15"></script>
+  <script src="../../games/wordle/wordle-ui.js?v=20260912-wordle-battle-leave-v16"></script><script src="../../src/popular-games-batch.js?v=20260912-wordle-battle-leave-v16"></script><script src="game.js?v=20260911-wordle-interface-contract-v16"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>
   <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>

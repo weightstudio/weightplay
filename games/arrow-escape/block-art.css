@@ -1,0 +1,57 @@
+/* Game-content artwork only; canonical frame retains all shared controls. */
+#board .obstacle.wall {
+  background: url('/assets/arrow-escape/block-wall-v1.png') center / 100% 100%;
+  font-size: 0;
+  border-radius: 3px;
+}
+#board .obstacle.gate {
+  background: url('/assets/arrow-escape/block-tile-gold-v1.png') center / 100% 100%;
+  border-radius: 3px;
+  border: 3px solid #624018;
+  color: #182b35;
+  text-shadow: 0 1px #fff3c0;
+}
+#board .arrow-block.locked:not(.frozen) {
+  background: url('/assets/arrow-escape/block-wall-v1.png') center / 100% 100%;
+}
+#board .obstacle.portal {
+  background: url('/assets/arrow-escape/block-portal-v1.png') center / 100% 100%;
+  border-radius: 3px;
+  font-size: 0;
+}
+#board .arrow-block.frozen {
+  background: url('/assets/arrow-escape/block-ice-v1.png') center / 100% 100%;
+}
+#board .arrow-block.frozen .arrow-glyph {
+  color: #07344a;
+  text-shadow: 0 1px 1px #fff;
+}
+#board .arrow-block.key:not(.locked) .block-badge {
+  font-size: 0;
+  width: 38%;
+  height: 38%;
+  background: url('/assets/arrow-escape/block-key-v1.png') center / contain no-repeat;
+  pointer-events: none;
+}
+#board .arrow-block.locked .block-badge {
+  font-size: 0;
+  width: 38%;
+  height: 38%;
+  background: url('/assets/arrow-escape/block-lock-v1.png') center / contain no-repeat;
+  pointer-events: none;
+}
+#board .arrow-block {
+  border-radius: 3px;
+}
+#board .arrow-block.tone-0:not(.locked):not(.frozen) {
+  background: url('/assets/arrow-escape/block-tile-cyan-v1.png') center / 100% 100%;
+}
+#board .arrow-block.tone-1:not(.locked):not(.frozen) {
+  background: url('/assets/arrow-escape/block-tile-blue-v1.png') center / 100% 100%;
+}
+#board .arrow-block.tone-2:not(.locked):not(.frozen) {
+  background: url('/assets/arrow-escape/block-tile-red-v1.png') center / 100% 100%;
+}
+#board .arrow-block.tone-3:not(.locked):not(.frozen) {
+  background: url('/assets/arrow-escape/block-tile-gold-v1.png') center / 100% 100%;
+}

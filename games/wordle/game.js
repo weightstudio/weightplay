@@ -6,7 +6,7 @@
   // board, keyboard, and command row retain their hit-testable dimensions.
   document.body.dataset.wpBattleLayout = "native";
   window.WPPopularArcade?.mount("wordle");
-  document.body.dataset.gameVersion = "v15";
+  document.body.dataset.gameVersion = "v16";
 
   const ensureGuideContract = () => {
     const guide = document.querySelector(".game-page-info-static[data-wp-game-guide]");

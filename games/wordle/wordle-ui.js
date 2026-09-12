@@ -64,7 +64,7 @@
   }
   document.addEventListener("keydown", e => {
     if (!active || document.body.dataset.screen !== "battle" || e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
-    if (document.querySelector('dialog[open]') || e.target.closest?.('input,textarea,select,[contenteditable="true"]')) return;
+    if (document.querySelector('dialog[open],[role="dialog"]:not([hidden])') || e.target.closest?.('input,textarea,select,[contenteditable="true"]')) return;
     if (e.key === "Enter" && e.target.closest?.('button') && !active.controls.contains(e.target)) return;
     if (/^[a-z]$/i.test(e.key) || ["Enter","Backspace"].includes(e.key)) { e.preventDefault(); input(e.key.toUpperCase()); }
   });

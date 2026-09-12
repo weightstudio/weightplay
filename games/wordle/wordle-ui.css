@@ -30,6 +30,15 @@ html body[data-game-id="wordle"][data-screen="battle"] #battleScreen #gameMessag
   html body[data-game-id="wordle"][data-screen="battle"] #battleScreen .wordle-key-row button { min-height:32px; }
 }
 
+.wordle-leave-modal{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:16px;background:rgb(10 20 31 / 82%)}
+.wordle-leave-modal[hidden]{display:none}
+.wordle-leave-dialog{width:min(100%,520px);padding:24px;border:2px solid #f6d779;border-radius:18px;background:#17283a;color:#f6f7ff;box-shadow:0 18px 48px #0008;text-align:center}
+.wordle-leave-dialog h2{margin:0 0 10px;font-size:clamp(1.4rem,4vw,2rem)}
+.wordle-leave-dialog p{margin:0;color:#cbd5e1;line-height:1.5}
+.wordle-leave-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.wordle-leave-actions button{min-height:50px}
+@media(max-width:520px){.wordle-leave-actions{grid-template-columns:1fr}}
+
 /* Wordle v15 keeps the canonical compact-landscape Main poster column. The
    shared shell derives 310px from viewport height; override that variable on
    the generated composition without changing Battle or sibling games. */

@@ -2981,7 +2981,7 @@ body.guard-yard-stage .wp-stage-art-shell .stage-screen-head {
 /* Keep the governed Stage artwork discoverable even when a shared shell
    adapter resets the inline custom property during scene activation. */
 #menuPanel.wp-stage-art-shell {
-  --wp-stage-art: url("../../assets/animal-guard-yard-poster.webp") !important;
+  --wp-stage-art: url("../../assets/interface7-redrawn/animal-guard-yard.webp") !important;
 }
 
 body.guard-yard-stage .stage-screen-head button {

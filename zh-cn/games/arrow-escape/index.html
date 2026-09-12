@@ -3,25 +3,24 @@
 <head>
 
     <base href="/games/arrow-escape/" />
-
-    <meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-    <meta name="weightplay-game-version" content="v20">
+  <meta name="weightplay-game-version" content="v21">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081a32">
   <title>箭头大逃亡 | WeightPlay</title>
-  <meta name="description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
+  <meta name="description" content="按照正确顺序移除箭头方块，破解 30 个逃脱关卡。" />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="箭头大逃亡 | WeightPlay" />
-  <meta property="og:description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
+  <meta property="og:description" content="按照正确顺序移除箭头方块，破解 30 个逃脱关卡。" />
   <meta property="og:url" content="https://weightplay.com/zh-cn/games/arrow-escape/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/arrow-escape.webp" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="箭头大逃亡 | WeightPlay" />
-  <meta name="twitter:description" content="《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。" />
+  <meta name="twitter:description" content="按照正确顺序移除箭头方块，破解 30 个逃脱关卡。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/arrow-escape.webp" />
   <link rel="canonical" href="https://weightplay.com/zh-cn/games/arrow-escape/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/arrow-escape/" />
@@ -42,7 +41,7 @@
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260905-related-layout-v1">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css" data-wp-battle-standard>
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css">
   <link rel="stylesheet" href="style.css?v=20260910-arrow-main-v21">
   <script type="application/ld+json">
 {
@@ -51,7 +50,7 @@
   "name": "箭头大逃亡",
   "url": "https://weightplay.com/zh-cn/games/arrow-escape/",
   "image": "https://weightplay.com/assets/arrow-escape/cover.png",
-  "description": "《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。",
+  "description": "按照正确顺序移除箭头方块，破解 30 个逃脱关卡。",
   "applicationCategory": "Game",
   "operatingSystem": "Web browser",
   "publisher": {
@@ -75,73 +74,61 @@
 }
     </script>
 </head>
-<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general">
+<body data-screen="main" data-wp-game-id="arrow-escape" data-wp-audience="general" data-wp-game-owned-guide="true">
   <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong>箭头大逃亡</strong><span>Preparing the puzzle…</span><div class="loading-track"><i></i></div></div></section>
+  <div id="gameFrame" data-wp-frame-root>
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-canvas">
       <header class="main-header">
         <a class="lobby-return" href="/" data-wp-return="main" aria-label="Back to WeightPlay"><span>←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-runtime-localize="off">Arrow Escape</strong>
-        <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">Language</span><select id="localeSelect" aria-label="Language"></select></label></div>
+        <strong data-runtime-localize="off">箭头大逃亡</strong>
+        <div class="main-controls"><button id="soundToggle" class="icon-control" type="button" aria-pressed="true" data-sound-toggle data-i18n-aria="sound">🔊</button><label class="locale-control"><span class="sr-only" data-i18n="language">语言</span><select id="localeSelect" aria-label="Language"></select></label></div>
       </header>
       <section class="hero">
-        <img class="poster" src="../../assets/arrow-escape/cover.webp" alt="《箭头大逃亡》游戏图片">
-        <div class="hero-copy"><small data-i18n="genre">ORDER PUZZLE</small><h1 data-runtime-localize="off">箭头大逃亡</h1><p data-i18n="pitch">Clear every arrow block in the only safe order.</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start" data-runtime-localize="off">Start Game</button></div>
+        <img class="poster" src="../../assets/interface7-redrawn/arrow-escape.webp" alt="《箭头大逃亡》游戏图片">
+        <div class="hero-copy"><small data-i18n="genre">顺序益智</small><h1 data-runtime-localize="off">箭头大逃亡</h1><p data-i18n="pitch">按照唯一安全顺序清空所有箭头方块。</p><strong id="mainProgress">1 / 30</strong><button id="startBtn" class="primary" type="button" data-i18n="start" data-runtime-localize="off">开始游戏</button></div>
       </section>
     </main>
-    <section class="game-page-info game-page-info-static" aria-label="箭头大逃亡 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2>箭头大逃亡</h2><p>《箭头大逃亡》是一款 30 关的顺序解谜游戏。先看清每个箭头前方的完整路线，只有整条路畅通时才能移除方块，并逐步破解墙壁、旋转箭头、配对锁、冰块、传送门与单向闸门。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>箭头顺序解谜</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 策略 · 空间推理</strong></div><div class="game-info-fact"><span>难度</span><strong>简单至具挑战性</strong></div><div class="game-info-fact"><span>预估游玩时间</span><strong>每关约 2–8 分钟</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界与任务</h3><p>每一关都是固定设计的逃脱棋盘，不是随机排列。同一关每次都会从同一组方块开始，而且都有经过验证的完整解法。</p>
-<p>六个教学章节会逐一介绍规则，最后五关再把所有机制组合成完整挑战。</p></div>
-      <div class="game-info-section"><h3>游戏系统</h3><p>普通箭头只有在前方射线上的每一格都没有障碍时才能离开。点到受阻的箭头会晃动并标出第一个障碍，而且不会消耗步数。</p>
-<p>旋转箭头要先转向一次；钥匙只会打开相同颜色的锁；移除相邻方块则能解冻冰块。</p>
-<p>箭头进入传送门后，会从成对出口沿原方向继续前进；单向闸门只允许相符方向通过。</p>
-<p>提示只会标出一个安全的下一步，并把键盘焦点移到该箭头，不会代替玩家行动或改变棋盘。</p></div>
-      <div class="game-info-section"><h3>玩法说明</h3><ol><li>从横向关卡列选择已解锁关卡。</li><li>查看每个箭头的方向与完整离场路线。</li><li>用触控、鼠标或键盘选择路线畅通的箭头。</li><li>从障碍标示理解错误选择，或使用提示获得一个建议步骤。</li><li>移除全部箭头即可过关并解锁下一关。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先找已经朝向棋盘外侧、路线明显畅通的箭头。</li><li>遇到传送门时，要连同出口后方的路线一起检查。</li><li>出现钥匙或冰块时，先思考移除后会改变哪些邻近箭头。</li><li>受阻操作不会消耗步数，可以利用第一个障碍的标示找出真正的依赖顺序。</li></ul></div>
-      <div class="game-info-section"><h3>关卡与难度成长</h3><p>第 1–5 关教导直线路径与移除顺序。</p>
-<p>第 6–15 关加入互相卡住的排列与固定墙壁。</p>
-<p>第 16–25 关加入旋转、配对锁、钥匙与冰块。</p>
-<p>第 26–30 关把传送门、单向闸门与先前规则结合。</p></div>
-      <div class="game-info-section"><h3>开发设计理念</h3><p>不同且合法的箭头会立即响应，因此熟练玩家可以连续快速点击，不必等待前一段飞出动画结束。棋盘状态仍维持固定顺序，同一个已移除箭头的重复输入会被安全忽略。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家与存档信息</h3><p>《箭头大逃亡》是面向普通玩家的浏览器益智游戏，不需要账号。关卡解锁、语言与音效偏好只保存在当前浏览器；清除网站数据或更换设备可能失去本地进度。</p></div>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少关？</dt><dd>共有 30 个手工设计关卡，分成六个规则章节；第 30 关完成后仍可重玩。</dd></div><div><dt>点到受阻箭头会消耗步数吗？</dt><dd>不会。游戏只会标出第一个障碍，棋盘保持不变。</dd></div><div><dt>提示会自动解题吗？</dt><dd>不会。提示只会标出并聚焦一个安全箭头，是否执行仍由玩家决定。</dd></div><div><dt>可以连续快速点多个箭头吗？</dt><dd>可以。不同的合法箭头能立即开始飞出，不受全局冷却限制。</dd></div><div><dt>传送门怎么运作？</dt><dd>箭头会从一个传送门进入，并从成对出口沿相同方向继续。</dd></div><div><dt>进度会保存吗？</dt><dd>关卡解锁与偏好会保存在当前浏览器。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相关游戏</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/block-blast/"><img src="/assets/interface7-redrawn/block-blast.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>方块爆破</strong><span>《方块爆破》是原创的 8×8 空间益智游戏，包含 30 个精心设计的地形任务与无限计分模式。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>符文战棋</strong><span>《动物符文战棋》是在 4×5 至 6×6 的多尺寸符文棋盘进行的 30 任务回合制战役。</span></span></a></div></div>
-    </div>
-  </section>
+    <section id="guide" class="game-page-info game-page-info-static" data-wp-game-guide aria-labelledby="arrowGuideTitle">
+      <div class="game-info-section">
+        <h2 id="arrowGuideTitle" data-i18n="howTitle">玩法说明</h2>
+        <ol>
+          <li data-i18n="how1">点击方块，检查箭头方向的完整路径。</li>
+          <li data-i18n="how2">路径畅通就滑出；受阻则震动并标出阻挡物。</li>
+          <li data-i18n="how3">移除全部方块；提示只标示一个安全动作。</li>
+        </ol>
+      </div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>六个规则章节有 30 个编写阶段。第 30 关在完成后仍然可以重玩。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
   </div>
   <section id="stageScreen" class="active-screen" hidden>
     <div class="stage-shell"><div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920">
-      <header class="stage-header"><button id="stageBack" class="return-button" type="button" data-wp-return="stage" aria-label="Back">←</button><div><strong data-i18n="chooseStage">Choose a Stage</strong><span id="stageSummary">1 / 30</span></div><button id="stageSound" class="icon-control" type="button" aria-pressed="true" data-i18n-aria="sound" hidden>🔊</button></header>
-      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="Stage selector"></div><footer class="stage-footer"><nav class="stage-tabs" aria-label="Stage navigation"><button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" data-i18n="stageMap">Stage Map</button></nav><p class="stage-hint" data-i18n="stageHint">Swipe or scroll. Tap an unlocked stage to play.</p></footer>
+      <header class="stage-header"><button id="stageBack" class="return-button" type="button" data-wp-return="stage" aria-label="Back">←</button><div><strong data-i18n="chooseStage">选择关卡</strong><span id="stageSummary">1 / 30</span></div><button id="stageSound" class="icon-control" type="button" aria-pressed="true" data-i18n-aria="sound" hidden>🔊</button></header>
+      <div id="stageRail" class="stage-rail" data-wp-stage-rail data-wp-stage-recommendation="explicit" data-wp-stage-settle-duration="340" data-wp-stage-settle-easing="smoothstep" aria-label="Stage selector"></div><footer class="stage-footer"><nav class="stage-tabs" aria-label="Stage navigation"><button class="stage-tab" type="button" role="tab" aria-selected="true" aria-controls="stageRail" data-i18n="stageMap">关卡地图</button></nav><p class="stage-hint" data-i18n="stageHint">滑动或滚动，选择已解锁关卡后进入。</p></footer>
     </div><div class="ad-reserve wp-stage-physical-reserve" data-wp-stage-reserve-active aria-hidden="true"></div></div>
   </section>
   <section id="battleScreen" class="active-screen" hidden>
     <div class="battle-shell"><div id="battleCanvas" class="battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
-      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-runtime-localize="off">箭头大逃亡</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">Moves</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">Left</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" aria-label="How to play" data-wp-battle-utility>?</button></header>
-        <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">Clear every arrow block.</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">Hint</button><button id="restartBtn" type="button" data-i18n="restart">Restart</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
+      <div id="battleLive" class="battle-live"><header class="battle-header"><button id="battleBack" class="return-button" type="button" data-wp-return="battle" aria-label="Back">←</button><div class="battle-title"><small id="stageLabel">STAGE 1</small><strong data-runtime-localize="off">箭头大逃亡</strong></div><div class="battle-stats"><span><b data-i18n="movesLabel">步数</b><strong id="movesValue">0</strong></span><span><b data-i18n="leftLabel">剩余</b><strong id="leftValue">0</strong></span></div><button id="battleHelp" class="icon-control" type="button" data-wp-battle-utility aria-label="How to play">?</button></header>
+        <div class="objective-row"><strong id="mechanicLabel">BASICS</strong><span id="objectiveText" data-i18n="objective">清空所有箭头方块。</span></div><div class="board-track"><div id="board" class="arrow-board" role="grid" aria-label="Arrow puzzle board"></div></div><div class="battle-controls"><button id="hintBtn" type="button" data-i18n="hint">提示</button><button id="restartBtn" type="button" data-i18n="restart">重新开始</button></div><p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
-      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">How to play</h2><p id="helpText" data-i18n="helpText">Only a completely clear arrow path can escape. Special tiles never choose a random outcome.</p><button id="helpClose" class="primary" type="button" data-i18n="continue">Continue</button></div></section>
-      <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">Leave this attempt?</h2><p data-i18n="leaveText">Continue keeps the exact board. Stage Map restarts this attempt later.</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">Continue</button><button id="leaveStage" type="button" data-i18n="stageMap">Stage Map</button></div></div></section>
-      <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/arrow-escape/cover.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">Stage Cleared!</h2><p id="resultText"></p><p id="resultPayoff" class="result-payoff" role="status" aria-live="polite"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">Stage Map</button><button id="nextBtn" class="primary" type="button" data-i18n="next">Next Stage</button><button id="retryBtn" type="button" data-i18n="retry">Play Again</button></div></div></section>
+      <section id="helpModal" class="modal" hidden><div class="dialog"><h2 id="helpTitle" data-i18n="howTitle">玩法说明</h2><p id="helpText" data-i18n="helpText">只有整条箭头路径畅通才能逃出，特殊机制不会随机决定。</p><button id="helpClose" class="primary" type="button" data-i18n="continue">继续</button></div></section>
+      <section id="leaveModal" class="modal" hidden><div class="dialog"><h2 data-i18n="leaveTitle">要离开这次挑战吗？</h2><p data-i18n="leaveText">继续会保留当前棋盘；返回关卡地图后下次会重新开始。</p><div class="modal-actions"><button id="leaveContinue" class="primary" type="button" data-i18n="continue">继续</button><button id="leaveStage" type="button" data-i18n="stageMap">关卡地图</button></div></div></section>
+      <section id="resultModal" class="modal" hidden><div class="dialog result-layout"><img src="../../assets/interface7-redrawn/arrow-escape.webp" alt="Arrow Escape"><div><small id="resultStage">STAGE 1</small><h2 data-i18n="clear">关卡完成！</h2><p id="resultText"></p><p id="resultPayoff" class="result-payoff" role="status" aria-live="polite"></p></div><div class="modal-actions result-actions"><button id="resultStageBtn" type="button" data-i18n="stageMap">关卡地图</button><button id="nextBtn" class="primary" type="button" data-i18n="next">下一关</button><button id="retryBtn" type="button" data-i18n="retry">再玩一次</button></div></div></section>
     </div><div class="ad-reserve" data-wp-battle-physical-reserve aria-hidden="true"></div></div>
   </section>
+  </div>
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js"></script><script>window.WonderAnalytics?.track("game_view",{game_id:"arrow-escape"});</script>
-  <script src="/src/i18n.js?v=20260818-upcoming-count1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-cn.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script><script src="../../src/edge-guard.js"></script>
   <script src="game.js?v=20260910-arrow-main-v21"></script>
+  <script src="../../src/game-screen-frame.js"></script>
+  <script src="frame.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js" data-wp-battle-standard></script>
-  <script src="../../src/game-page-info.js?v=20260804-arrow-release-v12"></script>
-  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script><script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
+  <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script>(()=>{const close=()=>{const panel=document.querySelector("#loadingPanel");if(panel){panel.classList.add("hidden");panel.hidden=true;}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",close,{once:true});else close();window.addEventListener("load",close,{once:true});window.setTimeout(close,1500);})();</script>
 </body>
 </html>

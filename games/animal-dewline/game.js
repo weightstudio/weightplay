@@ -23,11 +23,15 @@
   };
   const readBest = () => { try { const value = Number(localStorage.getItem("weightplay-animal-dewline-best-v1")); return Number.isFinite(value) && value > 0 ? value : null; } catch (_) { return null; } };
   const writeBest = (value) => { try { const old = readBest(); if (!old || value < old) localStorage.setItem("weightplay-animal-dewline-best-v1", String(value)); } catch (_) {} };
+  const refreshMainBest = () => { const node = $("bestValue"); if (node) node.textContent = readBest() || t("noBest"); };
   const show = (screen) => {
     state.screen = screen;
     ["main", "stage", "battle", "result"].forEach((name) => { $(`${name}Screen`).hidden = name !== screen; });
     document.body.dataset.screen = screen;
-    if (screen === "main") $("bestValue").textContent = readBest() || t("noBest");
+    if (screen === "main") {
+      refreshMainBest();
+      requestAnimationFrame(() => { if (state.screen === "main") refreshMainBest(); });
+    }
   };
   const applyLocale = () => {
     document.documentElement.lang = state.locale;
@@ -105,6 +109,7 @@
   const toggleSettings = () => { const panel = $("settingsPanel"); panel.hidden = !panel.hidden; [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.setAttribute("aria-expanded", String(!panel.hidden))); };
   [$("settingsBtn"), $("stageSettingsBtn"), $("battleSettingsBtn")].filter(Boolean).forEach((node) => node.addEventListener("click", toggleSettings));
   $("soundBtn").addEventListener("click", () => { state.sound = !state.sound; applyLocale(); track("sound", { enabled: state.sound }); });
+  window.addEventListener("weightplay:shell-sync", () => { if (state.screen === "main") refreshMainBest(); });
   $("localeSelect").addEventListener("change", (event) => { state.locale = copy[event.target.value] ? event.target.value : "en"; try { localStorage.setItem("weightplayLocale", state.locale); } catch (_) {} applyLocale(); track("locale", { locale: state.locale }); });
   try { const saved = localStorage.getItem("weightplayLocale"); if (saved && copy[saved]) state.locale = saved; } catch (_) {}
   const routeSegment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase();
