@@ -126,6 +126,15 @@ h2 { font-size: clamp(1.45rem, 5vw, 2rem); }
 .game-info-section li { margin-block: 6px; color: var(--muted); }
 [data-wp-game-guide][hidden] { display: none !important; }
 @media (max-width: 699px) { .main-header { margin-inline: -2px; } .stage-canvas, .battle-canvas { padding-inline: 10px; } .game-info-sections { grid-template-columns: 1fr; } }
+@media (min-width: 700px) and (max-height: 560px) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px;
+    grid-template-columns: 420px minmax(0, 1fr) !important;
+  }
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-gust-garden"] .wp-standard-main-copy {
+    height: 420px;
+  }
+}
 @media (max-height: 900px) and (orientation: landscape) {
   .stage-canvas { padding: 4px 10px 0; grid-template-rows: 52px minmax(0, 1fr) 50px; gap: 4px; }
   .stage-header { min-height: 52px; }

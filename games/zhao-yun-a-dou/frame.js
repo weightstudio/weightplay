@@ -15,7 +15,7 @@
     root.append(localeSelect);
     oldLocaleLabel?.remove();
     mounted = window.WeightPlayScreenFrame.mount({root, localeSelect, scenes: {
-      main: {root: main, header: main.querySelector('header'), content: main.querySelector('.hero')},
+      main: {root: main, header: main.querySelector('header'), content: main.querySelector('.main-content')},
       stage: {root: stage, header: stage.querySelector('header'), content: byId('stageContent')},
       battle: {root: battle, header: battle.querySelector('header'), content: battle.querySelector('.battle-content'), headerInfo: byId('battleInfo')},
     }});

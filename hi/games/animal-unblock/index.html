@@ -25,7 +25,7 @@
     />
     <meta name="robots" content="index,follow" />
     <meta name="weightplay-audience" content="general" />
-    <meta name="weightplay-game-version" content="v23" />
+    <meta name="weightplay-game-version" content="v24" />
     <meta name="weightplay-interface-version" content="7" />
     <title>अनब्लॉक ट्रेल | WeightPlay</title>
     <link
@@ -33,12 +33,12 @@
       href="../../src/stage-selector-standard.css"
       data-wp-stage-standard
     />
-    <link rel="stylesheet" href="style.css?v=20260912-unblock-block-frame-v22" />
-    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-unblock-block-frame-v22" />
+    <link rel="stylesheet" href="style.css?v=20260912-unblock-validator-contract-v24" />
+    <link rel="stylesheet" href="../../src/game-page-info.css?v=20260912-unblock-validator-contract-v24" />
     <link rel="stylesheet" href="result-v4.css" />
     <link rel="stylesheet" href="../../src/game-ui-theme.css">
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
-    <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-responsive-v23">
+    <link rel="stylesheet" href="frame-content.css?v=20260912-unblock-validator-contract-v24">
   <meta name="description" content="ब्लॉक खिसकाकर पांको को निकास तक पहुंचाएं।" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -81,25 +81,25 @@
 }
     </script>
   </head>
-  <body data-wp-game-id="animal-unblock" data-wp-game-version="v23" data-wp-interface-version="7" data-wp-combined-sound="true">
+  <body data-wp-game-id="animal-unblock" data-wp-game-version="v24" data-wp-interface-version="7" data-wp-combined-sound="true">
     <div id="gameFrame" data-wp-frame-root>
     <main id="main" class="screen main main-screen" data-screen="main">
-    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">अनब्लॉक ट्रेल</h1>
       <header>
         <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-        <strong data-t="title" data-wp-frame-title>Unblock Trail</strong>
+        <h1 data-t="title" data-wp-frame-title>Unblock Trail</h1>
         <select id="locale"></select>
       </header>
       <section class="hero">
         <img
           src="../../assets/interface7-redrawn/animal-unblock.webp"
+          class="cover main-cover"
           data-wp-frame-poster
           data-t-alt="Panko moving trail blocks through a bamboo grove"
           alt="अनब्लॉक ट्रेल game artwork"
         />
         <div data-wp-frame-copy>
-          <p data-t="summary" data-wp-frame-summary>लकड़ी के ब्लॉक खिसकाकर सुनहरे तीर वाले हरे बाँस को दाएँ निकास तक पहुँचाएँ।</p>
-          <p id="mainProgress" data-wp-frame-progress></p>
+          <p class="main-summary" data-t="summary" data-wp-frame-summary>लकड़ी के ब्लॉक खिसकाकर सुनहरे तीर वाले हरे बाँस को दाएँ निकास तक पहुँचाएँ।</p>
+          <p id="mainProgress" data-wp-main-progress data-wp-frame-progress></p>
           <button id="start" data-wp-main-start data-t="start">Start game</button></div>
       </section>
     </main>
@@ -175,7 +175,7 @@
     </main>
     </div>
     <aside id="generalReserve" class="ad-reserve" hidden aria-hidden="true"></aside>
-    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off">
+    <section id="mainGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-wp-game-owned-guide="true" data-runtime-localize="off">
       <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-t="guideTitle">कैसे खेलें</span><h2 data-t="title">Unblock Trail</h2><p data-t="summary">लकड़ी के ब्लॉक खिसकाकर सुनहरे तीर वाले हरे बाँस को दाएँ निकास तक पहुँचाएँ।</p></div></div>
       <div class="game-info-sections">
         <article class="game-info-section"><h3 data-t="howTitle">कैसे खेलें</h3><p data-t="guideBody">खुला रास्ता चुनें। आड़े ब्लॉक बाएँ-दाएँ और खड़े ब्लॉक ऊपर-नीचे खींचें। कीबोर्ड पर ब्लॉक चुनकर दिशा कुंजियाँ दबाएँ। बाँस के ब्लॉक को दाएँ दरवाज़े तक ले जाएँ।</p></article>
@@ -193,10 +193,10 @@
     <script src="../../src/analytics.js?v=20260829-opening-funnel-v19"></script>
     <script src="levels.js"></script>
     <script src="locales.js?v=20260826-reviewed-guide-v16"></script>
-    <script src="guide-copy.js?v=20260912-block-frame-v22"></script>
+    <script src="guide-copy.js?v=20260912-unblock-validator-contract-v24"></script>
     <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
-    <script src="frame.js?v=20260912-block-frame-v22"></script>
-    <script src="game.js?v=20260912-unblock-responsive-v23"></script>
+    <script src="frame.js?v=20260912-unblock-validator-contract-v24"></script>
+    <script src="game.js?v=20260912-unblock-validator-contract-v24"></script>
     <script
       src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2"
       data-wp-stage-standard

@@ -942,7 +942,7 @@ body.wp-shell-battle-active #generalReserve {
 .skill-button.ready {
   border-color: #e0b95e;
   color: #f3d08a;
-  background: rgba(194, 146, 65, .18);
+  background-color: rgba(194, 146, 65, .18);
 }
 
 .skill-button:disabled {

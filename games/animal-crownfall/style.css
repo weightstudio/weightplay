@@ -4,3 +4,5 @@
 
 
 .board-section{position:absolute;top:3px;transform:translateX(-50%);font-size:11px;color:#ffdf89;background:#17333c;padding:2px 5px}
+
+.active-scene{transform-origin:top left}

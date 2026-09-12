@@ -35,14 +35,14 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
     height: 100%;
     overflow: hidden;
     grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
-    grid-template-rows: 38px minmax(0, 1fr) 88px 16px;
+    grid-template-rows: 38px minmax(0, 1fr) 44px 16px;
     align-content: start;
     gap: 4px;
   }
   #battle .battle-hud { grid-column: 1; grid-row: 1; }
   #battle .battle-field {
-    grid-column: 1; grid-row: 2 / 4;
-    height: 100%; min-height: 180px; max-height: none;
+    grid-column: 1; grid-row: 2;
+    height: 100%; min-height: 0; max-height: none;
     grid-template-rows: 22px minmax(0,1fr) 22px;
   }
   #battle .enemy-lanes, #battle .player-lanes {
@@ -56,14 +56,16 @@ body:is([data-screen="stage"], [data-screen="battle"]) #gameFrame { height: calc
   #battle .formation-panel { min-height: 0; display: grid; grid-template-rows: minmax(0,1fr); padding: 0; }
   #battle .formation-head { display: none; }
   #battle .formation-head > span { display: none; }
-  #battle .formation-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 3px; }
-  #battle .unit-slot { min-height: 0; }
-  #battle .battle-actions { grid-column: 2; grid-row: 3; min-width: 0; }
-  #battle .battle-actions { display: grid; grid-template-columns: 1fr 1fr 44px; grid-template-rows: 44px 40px; gap: 4px; }
+  #battle .formation-grid { grid-template-columns: repeat(3,minmax(0,1fr)); grid-template-rows: repeat(3,minmax(44px,1fr)); gap: 3px; }
+  #battle .unit-slot { min-height: 44px; }
+  /* Use the full content width so every skill retains its 44px touch target
+     without taking a second action row away from the three-row formation. */
+  #battle .battle-actions { grid-column: 1 / -1; grid-row: 3; min-width: 0; }
+  #battle .battle-actions { display: grid; grid-template-columns: minmax(80px,1fr) minmax(60px,.7fr) 44px minmax(188px,1.4fr); grid-template-rows: 44px; gap: 4px; }
   #battle .battle-actions .action-recruit { grid-column: 1; grid-row: 1; }
   #battle .battle-actions .ghost-action { grid-column: 2; grid-row: 1; }
   #battle .battle-actions .action-hint { display: none; }
-  #battle .battle-actions .skills { grid-column: 1 / -1; grid-row: 2; min-height: 0; height: 40px; align-self: stretch; overflow: auto; }
+  #battle .battle-actions .skills { grid-column: 4; grid-row: 1; min-height: 44px; height: 44px; align-self: stretch; overflow: auto; }
   #battle .battle-guide { display: none; }
   #battle .pressure-cue { grid-column: 1; grid-row: 4; margin: 0; min-height: 0; font-size: 10px; }
   #battle .status-line { grid-column: 2; grid-row: 4; margin: 0; min-height: 0; height: 16px; font-size: 10px; }

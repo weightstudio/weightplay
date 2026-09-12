@@ -3,7 +3,7 @@
   const en = {
     title: "Signal Scout", kicker: "A calm signal-decoding puzzle",
     intro: "Read the scout note, decode each animal's signal colour, and copy the visible patrol order.",
-    start: "Start the first patrol", choose: "Choose a patrol", best: "Best checks", noBest: "Not yet",
+    start: "Start Game", choose: "Choose a patrol", best: "Best checks", noBest: "Not yet",
     guideTitle: "How to play", guideOne: "Read the animal-to-colour note.", guideTwo: "Tap signal cards in the shown patrol order.", guideThree: "A wrong code clears gently; no timer or lives are used.",
     back: "Back", settings: "Settings", language: "Language", signalChoices: "Signal choices", stages: "Patrols", round: "Patrol {n} of {total}", open: "Open", complete: "Complete",
     note1: "Scout note: Fox is amber, Owl is teal, and Rabbit is violet. Copy the patrol order: Fox, Owl, Fox.",

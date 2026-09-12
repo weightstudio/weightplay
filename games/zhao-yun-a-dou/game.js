@@ -135,7 +135,10 @@
     };
     document.querySelectorAll("[data-t-aria]").forEach(function (node) {
       const key = node.getAttribute("data-t-aria");
-      if (ariaMap[key]) node.setAttribute("aria-label", ariaMap[key]);
+      if (ariaMap[key]) {
+        node.setAttribute("aria-label", ariaMap[key]);
+        if (node.tagName === "IMG") node.alt = ariaMap[key];
+      }
     });
     [
       [".return", "returnToWeightPlay"],
@@ -167,9 +170,7 @@
       el.battleUtility.setAttribute("aria-label", label);
       el.battleUtility.title = label;
     }
-    const mainProgress = document.querySelector(".wp-standard-main-progress");
-    const progressMatch = mainProgress && mainProgress.textContent.match(/(\d+)\s*\/\s*(\d+)/);
-    if (progressMatch) mainProgress.textContent = t("stageLabel") + " " + progressMatch[1] + " / " + progressMatch[2];
+    renderMainProgress();
     document.title = (dictionaries[locale] || dictionaries.en).title + " | WeightPlay";
     if (battle) {
       formationRenderKey = null;
@@ -188,6 +189,7 @@
   }
 
   function showScreen(name) {
+    if (name === "main") renderMainProgress();
     [el.main, el.stage, el.battle].forEach(function (node) {
       node.hidden = node.id !== name;
     });
@@ -195,6 +197,11 @@
     if (frame) frame.activate(name);
     document.documentElement.scrollTop = 0;
     window.scrollTo(0, 0);
+  }
+
+  function renderMainProgress() {
+    const node = document.getElementById("mainProgress");
+    if (node) node.textContent = t("stageProgress") + ": " + progress.stars.filter(Boolean).length + " / " + data.levels.length;
   }
 
   function showMain() {
@@ -837,8 +844,24 @@
   }
 
   function renderSkills() {
-    el.skills.innerHTML = "";
     const hasGeneral = battle.units.some(function (unit) { return unit && unit.general; });
+    const types = [...new Set(battle.units.filter(function (unit) { return unit && unit.general; }).map(function (unit) { return unit.type; }))];
+    const structureKey = locale + ":" + types.join(",");
+    // Preserve pointer/focus targets between simulation ticks. Only roster or
+    // locale changes rebuild the controls; cooldown changes update in place.
+    if (el.skills.dataset.renderKey === structureKey) {
+      el.skills.querySelectorAll("[data-skill]").forEach(function (button) {
+        const cooldown = battle.skillsUsed[button.dataset.skill] || 0;
+        button.disabled = Boolean(cooldown) || Boolean(battle.result);
+        button.classList.toggle("ready", !cooldown);
+        const label = cooldown ? Math.ceil(cooldown / 10) + "s" : t("readySkill");
+        const node = button.querySelector(".skill-cooldown");
+        if (node.textContent !== label) node.textContent = label;
+      });
+      return;
+    }
+    el.skills.dataset.renderKey = structureKey;
+    el.skills.innerHTML = "";
     el.skills.classList.toggle("is-preview", !hasGeneral);
     el.battleActions?.classList.toggle("has-skill-preview", !hasGeneral);
     if (!hasGeneral) {

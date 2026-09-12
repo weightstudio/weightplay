@@ -5,8 +5,8 @@
   window.__weightplayZhaoYunADouAnalyticsInstalled = true;
 
   const GAME_ID = "zhao-yun-a-dou";
-  const GAME_VERSION = "v23";
-  const INTERFACE_VERSION = "6";
+  const GAME_VERSION = "v24";
+  const INTERFACE_VERSION = "7";
   const LOCALE_MAP = {
     en: "en",
     "zh-tw": "zh-Hant",

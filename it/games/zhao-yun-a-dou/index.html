@@ -26,7 +26,7 @@
   <meta name="theme-color" content="#18231f">
   <title>Zhao Yun e A Dou: Difesa d&#39;inchiostro | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css">
-  <link rel="stylesheet" href="style.css?v=20260910-zhao-main-poster-v23">
+  <link rel="stylesheet" href="style.css?v=20260912-zhao-block-frame-v24">
   <link rel="stylesheet" href="block-art.css?v=20260912-block-v24">
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="../../src/game-page-info.css">
@@ -75,20 +75,19 @@
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="zhao-yun-a-dou" data-wp-combined-sound="true">
   <div id="gameFrame" data-wp-frame-root>
-  <main id="main" class="screen main main-screen">
+  <main id="main" class="screen main">
     <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Zhao Yun e A Dou: Difesa d&#39;inchiostro</h1>
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
       <strong data-t="shortTitle" data-wp-frame-title>INKLINE DEFENSE</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
-    <section class="hero">
-      <div class="ink-poster" role="img" data-t-aria="posterAlt" aria-label="Ink wash battlefield with Zhao Yun and A Dou">
-        <img class="poster-art" data-wp-frame-poster src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="" width="1254" height="1254">
-      </div>
+    <section class="main-content">
+      <img data-wp-frame-poster data-t-aria="posterAlt" src="../../assets/interface7-redrawn/zhao-yun-a-dou.webp" alt="Immagine del gioco Zhao Yun e A Dou: Difesa d&#39;inchiostro" width="1254" height="1254">
       <div class="hero-copy" data-wp-frame-copy>
         <p class="main-summary" data-wp-frame-summary data-t="summary">Recruit soldiers, merge matching units and defend all three lanes.</p>
-        <button id="start" class="primary" data-wp-frame-action="primary" data-t="start">Start Campaign</button>
+        <p id="mainProgress" data-wp-frame-progress aria-live="polite"></p>
+        <button id="start" class="primary" data-wp-frame-action="primary" data-t="start">Start Game</button>
       </div>
     </section>
   </main>
@@ -129,12 +128,12 @@
       <p id="progress" class="stage-progress"></p>
     </section>
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="first" data-t-aria="stageList" aria-label="Stage list"></section>
-    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+    </div>
+    <nav data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
       <span aria-hidden="true"></span>
-      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <button type="button" data-wp-frame-action="tab" aria-current="page" aria-pressed="true" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
     </nav>
-    </div>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="760" hidden>
@@ -213,12 +212,12 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="/src/analytics.js?v=20260826-game-funnel"></script>
   <script src="levels.js"></script>
-  <script src="locales.js?v=20260910-zhao-main-poster-v23"></script>
+  <script src="locales.js?v=20260912-zhao-block-frame-v24"></script>
   <script src="guide-copy.js?v=20260912-block-v24"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
   <script src="frame.js?v=20260912-block-v24"></script>
-  <script src="game.js?v=20260910-zhao-main-poster-v23"></script>
-  <script src="analytics-ownership.js?v=20260910-zhao-main-poster-v23"></script>
+  <script src="game.js?v=20260912-zhao-block-frame-v24"></script>
+  <script src="analytics-ownership.js?v=20260912-zhao-block-frame-v24"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js?v=20260805-stage"></script>
   <script src="/src/game-title-registry.js?v=20260812-title" data-wp-game-title-registry></script>

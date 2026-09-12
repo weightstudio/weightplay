@@ -16,7 +16,23 @@
     hi: ['सैनिक भर्ती और मिलान करके तीनों रास्तों की रक्षा करें।', 'एक ही प्रकार और स्तर के दो सैनिक चुनकर उन्हें मिलाएँ। हर रास्ते पर रक्षक रखें और दुश्मन पास आने पर सेनापतियों की क्षमताएँ इस्तेमाल करें।'],
     ar: ['جنّد الجنود وادمج الوحدات المتطابقة للدفاع عن المسارات الثلاثة.', 'اختر جنديين من النوع والمستوى نفسيهما لدمجهما. أبقِ مدافعين في كل مسار واستخدم مهارات القادة عندما يتقدم الأعداء.'],
   };
+  const presentation = {
+    en: ['Start Game', 'Block-style Zhao Yun and soldiers protecting A Dou'],
+    'zh-Hant': ['開始遊戲', '方塊風格的趙雲與士兵保護阿斗'],
+    'zh-Hans': ['开始游戏', '方块风格的赵云与士兵保护阿斗'],
+    ja: ['ゲーム開始', '阿斗を守るブロック風の趙雲と兵士たち'],
+    ko: ['게임 시작', '아두를 지키는 블록 스타일의 조운과 병사들'],
+    es: ['Iniciar juego', 'Zhao Yun y sus soldados de estilo cúbico protegen a A Dou'],
+    'pt-BR': ['Iniciar jogo', 'Zhao Yun e seus soldados em estilo de blocos protegem A Dou'],
+    fr: ['Commencer le jeu', 'Zhao Yun et ses soldats en style cubique protègent A Dou'],
+    de: ['Spiel starten', 'Zhao Yun und seine Soldaten im Blockstil beschützen A Dou'],
+    it: ['Inizia il gioco', 'Zhao Yun e i suoi soldati in stile a blocchi proteggono A Dou'],
+    ru: ['Начать игру', 'Чжао Юнь и солдаты в блочном стиле защищают А-Доу'],
+    hi: ['खेल शुरू करें', 'ब्लॉक शैली में झाओ युन और सैनिक आ-दो की रक्षा करते हैं'],
+    ar: ['ابدأ اللعبة', 'تشاو يون وجنوده بأسلوب المكعبات يحمون آ دو'],
+  };
   for (const [locale, [summary, guideBody]] of Object.entries(copy)) {
-    Object.assign(window.ZHAO_YUN_ADOU_LOCALES[locale], {summary, guideBody});
+    const [start, posterAlt] = presentation[locale];
+    Object.assign(window.ZHAO_YUN_ADOU_LOCALES[locale], {summary, guideBody, start, posterAlt});
   }
 })();

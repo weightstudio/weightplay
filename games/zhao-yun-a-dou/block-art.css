@@ -64,3 +64,8 @@
 #battle .enemy-health { position: absolute; top: 0; left: 5%; width: 90%; }
 #battle .enemy-token { --zhao-enemy-half-width: 32px; }
 #battle .unit-slot.general-unit { background-position: center; }
+#battle .skill-cooldown {
+  position: absolute; inset-inline: 0; bottom: 0;
+  padding-block: 1px; line-height: 12px;
+  color: var(--wp-ui-text); background-color: rgba(8,27,31,.85);
+}
