@@ -917,7 +917,24 @@ body.wonder-stage-select #menuCoinLine .menu-wallet-item { min-width:0; gap:3px;
 body.wonder-stage-select #menuCoinLine .menu-wallet-item > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 body.wonder-stage-select #overlay { grid-template-rows:minmax(0,1fr); }
 body.wonder-stage-select #menuContent { grid-row:1; }
-body.wonder-stage-select .wp-stage-shell-header { height:48px !important; min-height:48px !important; }
+body.wonder-stage-select .wp-stage-shell-header {
+  height:48px !important; min-height:48px !important; max-height:48px !important;
+  --wp-scene-return-arrow-color:#f5e7ba;
+  padding:2px !important;
+  grid-template-columns:44px minmax(0,1fr) 44px !important;
+  grid-template-rows:44px !important;
+  align-items:center !important;
+}
+body.wonder-stage-select .wp-stage-shell-header :is(#wonderStageBack,.wp-shell-settings-button) {
+  box-sizing:border-box !important;
+  width:44px !important; min-width:44px !important; max-width:44px !important;
+  height:44px !important; min-height:44px !important; max-height:44px !important;
+  padding:0 !important;
+}
+body.wonder-stage-select #profilePanel button[data-profile-upgrade]:enabled,
+body.wonder-stage-select #profilePanel button[data-profile-upgrade]:enabled > span {
+  color:#182735 !important;
+}
 body.wonder-stage-select #overlay { padding-top:52px; }
 @media (min-aspect-ratio:3/2) and (max-height:500px) {
   body.wonder-stage-select #overlay { padding-top:calc(70px + var(--wonder-stage-tab-height,44px)); }

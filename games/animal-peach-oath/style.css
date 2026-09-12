@@ -79,12 +79,15 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .battle-tip { position: absolute; z-index: 14; left: 50%; bottom: 8px; display: flex; align-items: center; gap: 8px; transform: translateX(-50%); }
 .battle-tip span { padding: 7px 12px; border-radius: 99px; background: rgba(13,28,36,.82); font-size: 11px; font-weight: 800; white-space: nowrap; }
 .battle-tip button { min-width: 44px; height: 44px; border: 0; border-radius: 50%; color: #17243a; background: #f5c84c; font-weight: 900; }
-.campaign-goal { position: absolute; z-index: 14; left: 50%; top: 50%; width: min(calc(100% - 32px), 520px); margin: 0; padding: 7px 12px; transform: translate(-50%,-50%); border: 1px solid rgba(255,255,255,.16); border-radius: 12px; color: #fff0ad; background: rgba(13,28,36,.82); font-size: 11px; line-height: 1.35; text-align: center; }
+.campaign-goal { display: none; }
+.mission-goal { padding: 12px; border-inline-start: 4px solid var(--gold); background: var(--wp-ui-background); line-height: 1.6; }
 .loot-pile { position: absolute; z-index: 15; left: 50%; top: 51%; transform: translate(-50%,-50%); min-width: 96px; height: 44px; border: 2px solid #fff0a8; border-radius: 99px; color: #3a2a0a; background: linear-gradient(#fff1a8,#f0b83d); font-weight: 900; box-shadow: 0 0 18px #ffe47b; animation: loot 1s ease-in-out infinite alternate; }
 @keyframes loot { to { transform: translate(-50%,-56%) scale(1.05); } }
 
 .resource-bar { position: absolute; z-index: 20; left: 0; right: 0; bottom: 70px; height: 54px; display: grid; grid-template-columns: repeat(4,1fr); align-items: center; gap: 1px; padding: 5px 8px; background: rgba(15,29,49,.97); border-top: 1px solid var(--wp-ui-border); }
-.resource-bar span { min-width: 0; display: grid; gap: 2px; color: var(--wp-ui-muted); font-size: 9px; text-align: center; }
+.resource-bar > span { min-width: 0; display: grid; grid-template-columns: 32px minmax(0,1fr); grid-template-rows: auto auto; gap: 0 4px; color: var(--wp-ui-muted); font-size: 9px; text-align: start; }
+.resource-bar .item-art { grid-row: 1 / 3; width: 32px; height: 32px; }
+.resource-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .resource-bar strong { overflow: hidden; color: #ffe490; font-size: 13px; text-overflow: ellipsis; }
 .bottom-nav { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; height: 70px; display: grid; grid-template-columns: repeat(5,1fr); background: #101d2e; border-top: 1px solid var(--wp-ui-border); }
 .bottom-nav button { position: relative; display: grid; place-items: center; align-content: center; gap: 2px; min-width: 0; border: 0; color: #aebbd0; background: transparent; }
@@ -181,7 +184,7 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 .result-panel :is(h2,p) { color: var(--wp-ui-text); }
 .campaign-milestone { width: min(100%, 520px); margin: 2px auto 0; padding: 10px 14px; border: 1px solid rgba(255,227,154,.34); border-radius: 14px; color: #fff0ad; background: rgba(21,38,52,.72); font-size: 13px; font-weight: 800; line-height: 1.5; }
 .reward-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.reward-row span { padding: 8px 12px; border-radius: 12px; color: #2a2110; background: #ffe39a; font-weight: 900; }
+.reward-row > span { padding: 8px 12px; border-radius: 12px; color: #2a2110; background: #ffe39a; font-weight: 900; }
 .result-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: center; align-self: end; gap: 8px; width: min(100%,520px); margin: 6px auto 0; }
 .result-actions button { min-width: 0; overflow-wrap: anywhere; }
 .coach { z-index: 80; pointer-events: none; color: var(--wp-ui-text); background: var(--wp-ui-surface); }
@@ -249,4 +252,40 @@ button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid
 
 @media (prefers-reduced-motion:reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+/* Hero workspace: choose a person, inspect their slots, then change gear. */
+.item-art { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; flex: 0 0 auto; }
+.resource-chip { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; font-size: 12px; }
+.resource-chip > span { min-width: 0; }
+.wallet { display: flex; flex-wrap: wrap; gap: 8px 12px; padding-block: 8px; }
+.hero-roster { display: flex; gap: 8px; overflow-x: auto; padding: 4px 3px 12px; }
+.roster-choice { flex: 0 0 116px; display: grid; gap: 4px; padding: 8px; color: var(--wp-ui-text); border: 2px solid var(--wp-ui-border); background: var(--wp-ui-background); border-radius: var(--wp-ui-radius-sm,4px); }
+.roster-choice strong { font-size: 13px; }
+.roster-choice small { font-size: 10px; color: var(--wp-ui-muted); }
+.roster-portrait { position: relative; display: block; width: 80px; height: 76px; margin-inline: auto; }
+.roster-portrait .sprite { inset: 0; width: 100%; height: 100%; }
+.roster-choice[aria-pressed="true"], .loadout-slot[aria-pressed="true"] { border-color: var(--gold); background: #34402e; box-shadow: inset 0 0 0 1px var(--gold); }
+.hero-workspace-columns { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; }
+.hero-workspace-columns > section { min-width: 0; }
+.hero-detail { min-height: 160px; }
+.hero-growth-actions { margin-top: 8px; }
+.hero-growth-actions button, .hero-backpack .card-actions button { min-height: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; white-space: normal; overflow-wrap: anywhere; }
+.hero-growth-actions .resource-chip, .hero-backpack .card-actions .resource-chip { font-size: 10px; }
+.loadout-slots { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+.loadout-slot { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; padding: 8px 4px; border: 2px solid var(--wp-ui-border); border-radius: var(--wp-ui-radius-sm,4px); color: var(--wp-ui-text); background: var(--wp-ui-background); }
+.loadout-slot .equipment-art { width: 48px; height: 48px; flex-basis: 48px; }
+.loadout-slot strong { font-size: 12px; }
+.loadout-slot small { font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; }
+.loadout-help { margin: 0; color: var(--wp-ui-muted); font-size: 12px; line-height: 1.6; }
+.hero-backpack { padding: 12px; border: 1px solid var(--wp-ui-border); background: var(--wp-ui-background); }
+.hero-backpack .section-title { margin-top: 0; flex-wrap: wrap; }
+.hero-backpack .equipment-row { grid-template-columns: minmax(0,1fr); }
+.hero-backpack .card-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.hero-backpack .card-actions button:first-child { grid-column: 1 / -1; }
+.holder-label { display: inline-block; margin-top: 4px; padding: 4px 8px; color: #fff0ad; background: #34402e; font-size: 11px; }
+.empty-equipment { display: grid; justify-items: center; gap: 8px; padding: 24px 8px; text-align: center; }
+.empty-equipment p { margin: 0; color: var(--wp-ui-muted); font-size: 12px; line-height: 1.5; }
+@media (min-width:700px) {
+  .hero-workspace-columns { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
 }

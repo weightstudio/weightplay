@@ -7,8 +7,8 @@
   const GAME_ID = "animal-bus-jam";
   const GAME_VERSION = 15;
   const INTERFACE_VERSION = 6;
-  const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}.webp`);
-  const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}.webp`);
+  const busArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-bus-${color}-block-v16.webp`);
+  const passengerArt = ["coral", "sky", "sun", "violet"].map((color) => `/assets/animal-bus-jam-passenger-${color}-block-v16.webp`);
   const root = document;
   const engine = window.BUS_JAM_LEVELS;
   const levels = engine.levels;
@@ -209,6 +209,7 @@
     document.body.dataset.screen = name;
     document.body.dataset.gameView = name;
     screen = name;
+    window.syncBusJamFrame?.();
     window.scrollTo(0, 0);
     const sync = () => {
       if (generation !== sceneGeneration || screen !== name) return;
@@ -873,5 +874,6 @@
   });
 
   applyLocale();
+  window.mountBusJamFrame();
   show("main");
 })();

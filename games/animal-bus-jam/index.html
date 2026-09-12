@@ -27,43 +27,47 @@
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <main id="main" class="screen main main-screen" data-screen="main">
     <header class="main-header">
       <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle">BUS JAM</strong>
+      <strong data-wp-frame-title data-t="title">Panko's Bus Jam</strong>
       <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
     </header>
-    <section class="hero">
-      <img src="../../assets/animal-bus-jam-cover-general-v4.webp" data-t-alt="coverAlt" alt="Panko coordinating colorful animal buses and passenger queues">
-      <div>
-        <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
-        <h1 data-t="title">Panko's Bus Jam</h1>
-        <p class="main-summary" data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
-        <button id="start" class="primary" data-t="start">Start game</button>
+    <section class="main-content" data-wp-frame-content="main">
+      <img data-wp-frame-poster src="../../assets/interface7-redrawn/animal-bus-jam.webp" data-t-alt="coverAlt" alt="Panko coordinating colorful animal buses and passenger queues">
+      <div data-wp-frame-copy>
+        <p data-wp-frame-summary data-t="summary">Read the convoy order, route each queue, and keep the holding lane from locking up.</p>
+        <button id="start" class="primary" data-wp-frame-action="primary" data-t="start">Start game</button>
       </div>
     </section>
-    <section class="public-guide guide" aria-label="Game guide">
-      <h2 data-t="guideTitle">How to play</h2>
+    <section class="public-guide game-page-info" data-wp-game-guide aria-labelledby="busGuideTitle">
+      <div class="game-info-section">
+      <h2 id="busGuideTitle" data-t="guideTitle">How to play</h2>
       <p data-t="guideBody">Only the first bus accepts passengers. A wrong color waits in the holding lane, in order. If that lane blocks before the active bus is filled, the terminal deadlocks.</p>
       <ol>
         <li data-t="guideRule1">Check the active bus and its remaining seats.</li>
         <li data-t="guideRule2">Dispatch only the front passenger of a queue.</li>
         <li data-t="guideRule3">Use Undo before the holding lane becomes blocked.</li>
       </ol>
+      </div>
     </section>
   </main>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-terminal-block-v16.webp')" hidden>
     <header class="scene-header">
       <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-      <h2 data-t="shortTitle">BUS JAM</h2>
+      <h2 data-wp-frame-title hidden></h2>
     </header>
+    <div id="stageContent" class="stage-content">
     <span id="progress" class="stage-progress"></span>
     <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
-    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+    </div>
+    <nav class="stage-tabs" data-wp-frame-nav data-t-aria="stageTabs" aria-label="Stage navigation">
       <span aria-hidden="true"></span>
       <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
       <span aria-hidden="true"></span>
@@ -73,10 +77,10 @@
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <header class="scene-header">
       <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
-      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="remaining"></span>
+      <strong data-wp-frame-title hidden></strong>
     </header>
     <section class="battle-content">
+      <div id="battleInfo" data-wp-frame-info><div><small id="chapter"></small><strong id="stageName"></strong></div><span id="remaining"></span></div>
       <div class="convoy-panel">
         <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
         <div id="buses" class="buses"></div>
@@ -93,17 +97,17 @@
         <button id="hint" class="utility-button" data-wp-battle-utility="true" data-t="hint">Hint</button>
         <button id="restart" data-t="restart">Restart</button>
       </div>
-      <p id="status" aria-live="polite" data-runtime-localize="off"></p>
+      <p id="status" class="status" aria-live="polite" data-runtime-localize="off"></p>
     </section>
   </main>
 
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
   <dialog id="result">
     <div class="result-art" aria-hidden="true">
-      <img class="result-terminal" src="../../assets/animal-bus-jam-terminal-general-v2.webp" alt="">
-      <img class="result-bus result-bus-sky" src="../../assets/animal-bus-jam-bus-sky.webp" alt="">
-      <img class="result-bus result-bus-coral" src="../../assets/animal-bus-jam-bus-coral.webp" alt="">
-      <img class="result-panko" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="">
+      <img class="result-terminal" src="../../assets/animal-bus-jam-terminal-block-v16.webp" alt="">
+      <img class="result-bus result-bus-sky" src="../../assets/animal-bus-jam-bus-sky-block-v16.webp" alt="">
+      <img class="result-bus result-bus-coral" src="../../assets/animal-bus-jam-bus-coral-block-v16.webp" alt="">
+      <img class="result-panko" src="../../assets/animal-bus-jam-conductor-block-v16.webp" alt="">
     </div>
     <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
     <h2 data-t="resultTitle">Every convoy departed!</h2>
@@ -131,6 +135,7 @@
     </div>
   </dialog>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
@@ -139,10 +144,11 @@
   <script src="levels.js"></script>
   <script src="locales.js"></script>
   <script src="strategy-locales.js?v=20260909-bus-jam-interface-v15"></script>
+  <script src="../../src/game-screen-frame.js"></script>
+  <script src="frame.js"></script>
   <script src="game.js?v=20260909-bus-jam-interface-v15"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260817-bus-jam-guide-v12"></script>
 </body>
 </html>

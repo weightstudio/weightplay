@@ -10,6 +10,9 @@
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const fmt = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : String(Math.floor(n));
   const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  const itemArt = key => `<img class="item-art" src="/games/animal-peach-oath/assets/item-${key}.svg" alt="" aria-hidden="true">`;
+  const resourceCopyKey = { coins: 'resourceCoins', ingots: 'resourceIngots', food: 'resourceFood', materials: 'resourceMaterials', xp: 'rewardXp', gear: 'equipmentBag' };
+  const resourceChip = (key, amount) => `<span class="resource-chip">${itemArt(key)}<span>${copy(resourceCopyKey[key])} <b>${amount}</b></span></span>`;
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
   const localeLabels = { en: "English", "zh-Hant": "繁體中文", "zh-Hans": "简体中文", ja: "日本語", ko: "한국어", es: "Español", "pt-BR": "Português (Brasil)", fr: "Français", de: "Deutsch", it: "Italiano", ru: "Русский", hi: "हिन्दी", ar: "العربية" };
   const localeOrder = Object.keys(localeSegments);
@@ -156,7 +159,14 @@
     text("#autoBtn", copy("auto")); attr("#lootPile", "aria-label", copy("collectLoot")); attr(".resource-bar", "aria-label", copy("resources")); attr(".bottom-nav", "aria-label", copy("mainFunctions"));
     ["battle", "heroes", "tavern", "law", "campaign"].forEach((key, index) => text(`.bottom-nav button:nth-child(${index + 1}) b`, copy(key)));
     attr("#closeManagement", "aria-label", copy("close")); attr("#modalClose", "aria-label", copy("close"));
-    ["resourceCoins", "resourceIngots", "resourceFood", "resourceMaterials"].forEach((key, index) => { const node = $( `.resource-bar span:nth-child(${index + 1})`); if (node?.firstChild) node.firstChild.nodeValue = `${copy(key)} `; });
+    ['coins', 'ingots', 'food', 'materials'].forEach((key, index) => {
+      const node = $('.resource-bar').children[index];
+      const value = node.querySelector('strong');
+      node.innerHTML = `${itemArt(key)}<span class="resource-label">${copy(resourceCopyKey[key])}</span>`;
+      node.append(value);
+    });
+    // Campaign planning belongs to Missions, never over the live arena.
+    $('#campaignGoal')?.remove();
     text("#resultKicker", copy("battleResult")); text("#resultTitle", copy("victoryTitle")); text("#resultManage", copy("strengthen")); text("#resultNext", copy("next")); text("#resultRetry", copy("retry"));
     text("#coachTitle", copy("coachTitle1")); text("#coachNext", copy("nextStep"));
     updateHud();
@@ -209,6 +219,30 @@
   try { state = mergeState(JSON.parse(localStorage.getItem(C.saveKey))); }
   catch { state = defaultState(); }
 
+  // Preserve old single-item saves while giving every hero one slot per type.
+  const usedEquipment = new Set();
+  state.equipped = Object.fromEntries(C.heroes.map(hero => {
+    const previous = state.equipped?.[hero.id];
+    const slots = {};
+    for (const itemUid of typeof previous === 'string' ? [previous] : Object.values(previous || {})) {
+      const entry = state.inventory.find(item => item.uid === itemUid);
+      const def = entry && equipmentData(entry.itemId);
+      if (def && state.heroes[hero.id].owned && !usedEquipment.has(itemUid) && !slots[def.id]) {
+        slots[def.id] = itemUid;
+        usedEquipment.add(itemUid);
+      }
+    }
+    return [hero.id, slots];
+  }));
+  let selectedHero = state.team[0] || C.heroes[0].id;
+  let selectedSlot = C.equipment[0].id;
+  const equipmentHolder = itemUid => C.heroes.find(hero => Object.values(state.equipped[hero.id] || {}).includes(itemUid))?.id;
+  function removeEquipment(itemUid) {
+    Object.values(state.equipped).forEach(slots => {
+      Object.keys(slots).forEach(slot => { if (slots[slot] === itemUid) delete slots[slot]; });
+    });
+  }
+
   if (state.daily.date !== today()) {
     state.daily = { date: today(), loginClaimed: false, freeSummon: true, quick: true, campaign: {} };
   }
@@ -248,8 +282,7 @@
     let atk = base.atk * growth * (1 + state.law.valor * .045);
     let hp = base.hp * growth * (1 + state.law.bulwark * .055);
     let speed = base.speed * (1 + state.law.tactics * .022);
-    const equipped = state.equipped[id];
-    if (equipped) {
+    for (const equipped of Object.values(state.equipped[id] || {})) {
       const item = state.inventory.find((entry) => entry.uid === equipped);
       const def = item && equipmentData(item.itemId);
       if (def?.stat === "atk") atk += def.value * item.level;
@@ -615,7 +648,7 @@
     $("#resultKicker").textContent = win ? copy("victoryKicker", { chapter: localizedValue(C.chapters[chapterIndex()]), stage: stageCode() }) : copy("defeatKicker");
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
     $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
-    $("#resultRewards").innerHTML = win ? `<span>${copy("rewardXp")} +${35 + state.stage * 6}</span><span>${copy("rewardMaterials")} +${reward.materials || 3}</span>` : "";
+    $("#resultRewards").innerHTML = win ? resourceChip('xp', `+${35 + state.stage * 6}`) + resourceChip('materials', `+${reward.materials || 3}`) : "";
     renderCampaignMilestone(win);
     // Outcomes change availability, never the three permanent action tracks.
     $("#resultNext").disabled = !win;
@@ -668,32 +701,52 @@
     syncFrameCoverage();
   }
 
+  const loadoutCopy = {
+    'zh-Hant': ['空欄位','使用中','背包內','卸下','轉交','先選武將，再選裝備欄。同一件裝備只能由一人持有；換下的裝備會留在背包。','選擇武將','尚未解鎖', 'Boss 與裝備戰役會掉落這類裝備。'],
+    'zh-Hans': ['空栏位','使用中','背包内','卸下','转交','先选武将，再选装备栏。同一件装备只能由一人持有；换下的装备会留在背包。','选择武将','尚未解锁', 'Boss 与装备战役会掉落这类装备。'],
+    en: ['Empty slot','Equipped','In bag','Unequip','Transfer','Choose a hero, then a slot. Each item has one owner; replaced gear stays in your bag.','Choose a hero','Locked', 'Bosses and equipment campaigns drop this type of gear.'],
+    ja: ['空きスロット','装備中','バッグ内','外す','渡す','武将と装備枠を選択。一つの装備は一人が使用します。外した装備はバッグに残ります。','武将を選択','未解放', 'ボスや装備戦役からこの種類の装備を入手できます。'],
+    ko: ['빈 슬롯','장착 중','가방 안','해제','이전','무장과 장비 칸을 선택하세요. 장비 하나는 한 명만 사용하며 교체한 장비는 가방에 남습니다.','무장 선택','미해금', '보스와 장비 전역에서 이 종류의 장비를 얻을 수 있습니다.'],
+    es: ['Espacio vacío','Equipado','En la bolsa','Quitar','Transferir','Elige un héroe y una ranura. Cada objeto tiene un dueño; el equipo reemplazado queda en la bolsa.','Elegir héroe','Bloqueado', 'Los jefes y las campañas de equipo dan este tipo de objeto.'],
+    'pt-BR': ['Espaço vazio','Equipado','Na bolsa','Remover','Transferir','Escolha um herói e um espaço. Cada item tem um dono; o equipamento trocado fica na bolsa.','Escolher herói','Bloqueado', 'Chefes e campanhas de equipamento concedem itens deste tipo.'],
+    fr: ['Emplacement vide','Équipé','Dans le sac','Retirer','Transférer','Choisissez un héros puis un emplacement. Chaque objet a un porteur ; les objets remplacés restent dans le sac.','Choisir un héros','Verrouillé', 'Les boss et les campagnes d’équipement donnent ce type d’objet.'],
+    de: ['Leerer Platz','Ausgerüstet','Im Beutel','Ablegen','Übertragen','Wähle Held und Platz. Jeder Gegenstand hat einen Träger; ersetzte Ausrüstung bleibt im Beutel.','Held wählen','Gesperrt', 'Bosse und Ausrüstungsfeldzüge liefern Gegenstände dieses Typs.'],
+    it: ['Spazio vuoto','Equipaggiato','Nella borsa','Rimuovi','Trasferisci','Scegli un eroe e uno spazio. Ogni oggetto ha un solo portatore; gli oggetti sostituiti restano nella borsa.','Scegli un eroe','Bloccato', 'Boss e campagne di equipaggiamento forniscono oggetti di questo tipo.'],
+    ru: ['Пустая ячейка','Надето','В сумке','Снять','Передать','Выберите героя и ячейку. У предмета один владелец; заменённое снаряжение остаётся в сумке.','Выбрать героя','Закрыто', 'Боссы и походы за снаряжением дают предметы этого типа.'],
+    hi: ['खाली स्थान','सुसज्जित','बैग में','उतारें','सौंपें','नायक और स्थान चुनें। हर वस्तु का एक धारक है; बदले गए उपकरण बैग में रहते हैं।','नायक चुनें','लॉक है', 'बॉस और उपकरण अभियानों से इस प्रकार के उपकरण मिलते हैं।'],
+    ar: ['خانة فارغة','مجهز','في الحقيبة','نزع','نقل','اختر بطلاً ثم خانة. لكل قطعة حامل واحد؛ تبقى المعدات المستبدلة في الحقيبة.','اختر بطلاً','مقفل', 'يسقط الزعماء وحملات المعدات تجهيزات من هذا النوع.']
+  };
+  const loadoutText = index => (loadoutCopy[activeLocale()] || loadoutCopy.en)[index];
+  const gearArt = def => `<span class="equipment-art" data-equipment-art="${def.id}" aria-hidden="true"></span>`;
   function renderHeroes() {
-    const formation = state.team.map((id, index) => `<div class="formation-slot"><span>${index < 2 ? copy("front") : copy("back")}</span><strong>${localizedValue(heroData(id).name)}</strong></div>`).join("");
-    const cards = C.heroes.map((hero) => {
-      const p = state.heroes[hero.id];
-      const stats = p.owned ? heroStats(hero.id) : null;
-      const cost = heroUpgradeCost(hero.id);
-      const breakCost = 8 + (p.rank || 0) * 6;
-      const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
-      return `<article class="hero-card" data-hero="${hero.id}">
-        <div class="hero-portrait">${sprites.markup("hero", hero.id, `roster-${hero.id}`)}</div>
-        <div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3>
-        <p>${p.owned ? `${localizedValue(hero.role)} · ${localizedValue(hero.skill)}` : `${copy("fragments")} ${p.fragments}/10`}</p>
-        ${p.owned ? `<div class="mini-stats"><span>${copy("level")}${p.level}</span><span>${p.star} ${copy("stars")}</span><span>${copy("rank")} +${p.rank || 0}</span><span>${copy("attack")} ${stats.atk}</span><span>${copy("health")} ${stats.hp}</span></div>
-        <div class="card-actions"><button data-wp-frame-action="secondary" data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost ? "disabled" : ""}>${copy("upgrade")} ${cost}</button><button data-wp-frame-action="secondary" data-action="break-hero" data-id="${hero.id}" ${canBreak ? "" : "disabled"}>${copy("break")} ${breakCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy("remove") : copy("deploy")}</button></div>` : ""}
-        </div></article>`;
-    }).join("");
-    const equipment = state.inventory.length ? state.inventory.map((entry) => {
-      const def = equipmentData(entry.itemId);
-      const holder = Object.keys(state.equipped).find((id) => state.equipped[id] === entry.uid);
+    const focused = document.activeElement?.closest('#managementBody button')?.dataset;
+    const hero = heroData(selectedHero), p = state.heroes[selectedHero];
+    const stats = heroStats(selectedHero), cost = heroUpgradeCost(selectedHero);
+    const breakCost = 8 + (p.rank || 0) * 6;
+    const canBreak = p.level >= ((p.rank || 0) + 1) * 5 && state.resources.materials >= breakCost;
+    const roster = C.heroes.map(h => {
+      const progress = state.heroes[h.id];
+      return `<button class="roster-choice" data-action="select-hero" data-id="${h.id}" aria-pressed="${h.id === selectedHero}"><span class="roster-portrait">${sprites.markup('hero', h.id, `roster-${h.id}`)}</span><strong>${localizedValue(h.name)}</strong><small>${progress.owned ? `${copy('level')}${progress.level} · ${state.team.includes(h.id) ? `${copy('deploy')} · ${copy(state.team.indexOf(h.id) < 2 ? 'front' : 'back')}` : copy('remove')}` : loadoutText(7)}</small></button>`;
+    }).join('');
+    const slots = C.equipment.map(def => {
+      const entry = state.inventory.find(item => item.uid === state.equipped[selectedHero]?.[def.id]);
+      return `<button class="loadout-slot" data-action="select-slot" data-id="${def.id}" aria-pressed="${selectedSlot === def.id}">${gearArt(def)}<strong>${localizedValue(def.slot)}</strong><small>${entry ? `${localizedValue(def.name)} +${entry.level}` : loadoutText(0)}</small></button>`;
+    }).join('');
+    const entries = state.inventory.filter(entry => entry.itemId === selectedSlot);
+    const equipment = entries.map(entry => {
+      const def = equipmentData(entry.itemId), holder = equipmentHolder(entry.uid);
       const enhanceCost = 3 + entry.level * 2;
-      const icon = `<span class="equipment-art" data-equipment-art="${def.id}" aria-hidden="true"></span>`;
-      return `<div class="equipment-row"><div class="equipment-description">${icon}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.slot)} · ${localizedValue(def.quality)} · ${equipmentStat(def, entry.level)}${holder ? ` · ${localizedValue(heroData(holder).name)}` : ""}</small></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="equip" data-uid="${entry.uid}">${copy("equip")}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? "disabled" : ""}>${copy("enhance")} ${enhanceCost}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}">${copy("salvage")}</button></div></div>`;
-    }).join("") : `<p>${copy("noEquipment")}</p>`;
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>${copy("teamFormation")}</h3><span>${copy("maxTeam")}</span></div><div class="formation">${formation}</div>
-      <div class="section-title"><h3>${copy("heroGrowth")}</h3><span>${copy("heroGrowthMeta")}</span></div><div class="hero-grid">${cards}</div>
-      <div class="section-title"><h3>${copy("equipmentBag")}</h3><span>${state.inventory.length} ${copy("inventory")}</span></div><div>${equipment}</div>`;
+      return `<article class="equipment-row"><div class="equipment-description">${gearArt(def)}<div><strong>${localizedValue(def.name)} +${entry.level}</strong><small>${localizedValue(def.quality)} · ${equipmentStat(def, entry.level)}</small><span class="holder-label">${holder ? `${loadoutText(1)} · ${localizedValue(heroData(holder).name)}` : loadoutText(2)}</span></div></div><div class="card-actions"><button data-wp-frame-action="secondary" data-action="${holder === selectedHero ? 'unequip' : 'equip'}" data-id="${selectedHero}" data-uid="${entry.uid}" ${p.owned ? '' : 'disabled'}>${holder === selectedHero ? loadoutText(3) : `${holder ? loadoutText(4) : copy('equip')} → ${localizedValue(hero.name)}`}</button><button data-wp-frame-action="secondary" data-action="upgrade-equipment" data-uid="${entry.uid}" ${state.resources.materials < enhanceCost ? 'disabled' : ''}>${copy('enhance')} ${resourceChip('materials', enhanceCost)}</button><button data-wp-frame-action="secondary" class="alt" data-action="salvage" data-uid="${entry.uid}" ${holder ? 'disabled' : ''}>${copy('salvage')} ${resourceChip('materials', '+5')}</button></div></article>`;
+    }).join('');
+    $('#managementBody').innerHTML = `<section class="hero-workspace"><div class="section-title"><h3>${loadoutText(6)}</h3><span>${state.team.length}/3 · ${copy('deploy')}</span></div><div class="hero-roster">${roster}</div><div class="hero-workspace-columns"><section><article class="hero-card hero-detail" data-hero="${hero.id}"><div class="hero-portrait">${sprites.markup('hero', hero.id, `detail-${hero.id}`)}</div><div class="hero-card-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)} · ${localizedValue(hero.skill)}</p><div class="mini-stats"><span>${copy('level')}${p.level}</span><span>${p.star} ${copy('stars')}</span><span>${copy('rank')} +${p.rank || 0}</span><span>${copy('attack')} ${stats.atk}</span><span>${copy('health')} ${stats.hp}</span><span>${interactionText(4)} ${stats.speed.toFixed(2)}</span></div></div></article>
+    ${p.owned ? `<div class="hero-growth-actions card-actions"><button data-wp-frame-action="secondary" data-action="upgrade-hero" data-id="${hero.id}" ${state.resources.coins < cost || p.level >= C.heroLevelCap ? 'disabled' : ''}>${copy('upgrade')} ${resourceChip('coins', cost)}</button><button data-wp-frame-action="secondary" data-action="break-hero" data-id="${hero.id}" ${canBreak ? '' : 'disabled'}>${copy('break')} ${resourceChip('materials', breakCost)}</button><button data-wp-frame-action="secondary" data-action="toggle-team" data-id="${hero.id}">${state.team.includes(hero.id) ? copy('remove') : copy('deploy')}</button></div>` : `<p>${loadoutText(7)} · ${itemArt('fragments')}${copy('fragments')} ${p.fragments}/10</p>`}
+    <div class="section-title"><h3>${copy('equip')} · ${localizedValue(hero.name)}</h3></div><div class="loadout-slots">${slots}</div></section><section class="hero-backpack"><div class="section-title"><h3>${copy('equipmentBag')} · ${localizedValue(equipmentData(selectedSlot).slot)}</h3><span>${entries.length} ${copy('inventory')}</span></div><p class="loadout-help">${loadoutText(5)}</p><div class="wallet">${Object.entries(state.resources).map(([key, amount]) => resourceChip(key, fmt(amount))).join('')}</div>${equipment || `<div class="empty-equipment">${gearArt(equipmentData(selectedSlot))}<p>${loadoutText(0)}</p><p>${loadoutText(8)}</p></div>`}</section></div></section>`;
+    if (focused) {
+      const buttons = $$('#managementBody button[data-action]');
+      const same = buttons.find(button => button.dataset.action === focused.action && button.dataset.id === focused.id && button.dataset.uid === focused.uid);
+      const replacement = same || buttons.find(button => focused.uid && button.dataset.uid === focused.uid);
+      replacement?.focus({preventScroll: true});
+    }
   }
 
   const recruitCopy = {
@@ -714,10 +767,10 @@
   const recruitText = (index, values={}) => (recruitCopy[activeLocale()]||recruitCopy.en)[index].replace(/\{(\w+)\}/g,(match,key)=>values[key]??match);
   function renderTavern() {
     const owned = C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
-    $('#managementBody').innerHTML = `<section class="summon-stage" data-runtime-localize="off"><p>${recruitText(0)}</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? recruitText(1) : `${recruitText(2)} ×1 · 60 ${copy('resourceIngots')}`}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">${recruitText(2)} ×5 · 260 ${copy('resourceIngots')}</button></div></section>
+    $('#managementBody').innerHTML = `<section class="summon-stage" data-runtime-localize="off"><p>${recruitText(0)}</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? recruitText(1) : `${recruitText(2)} ×1 · ${resourceChip('ingots', 60)}`}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">${recruitText(2)} ×5 · 2${resourceChip('ingots', 60)}</button></div></section>
       <div class="section-title"><h3>${recruitText(3)}</h3><span>${owned} / ${C.heroes.length}</span></div><div class="card-grid">${C.heroes.map((hero) => {
         const p = state.heroes[hero.id], progress = p.owned ? 10 : Math.min(10, p.fragments);
-        return `<article class="panel-card tavern-hero-card" data-tavern-hero="${hero.id}"><div class="tavern-portrait">${sprites.markup('hero', hero.id, `tavern-${hero.id}`)}</div><div class="tavern-hero-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)}</p><div class="progress" role="progressbar" aria-label="${localizedValue(hero.name)} · ${copy('fragments')}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${progress}"><b style="width:${progress * 10}%"></b></div><small>${p.owned ? `${recruitText(4)} · ${p.fragments} ${copy('fragments')}` : `${p.fragments} / 10 ${copy('fragments')}`}</small></div></article>`;
+        return `<article class="panel-card tavern-hero-card" data-tavern-hero="${hero.id}"><div class="tavern-portrait">${sprites.markup('hero', hero.id, `tavern-${hero.id}`)}</div><div class="tavern-hero-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)}</p><div class="progress" role="progressbar" aria-label="${localizedValue(hero.name)} · ${copy('fragments')}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${progress}"><b style="width:${progress * 10}%"></b></div><small>${itemArt('fragments')}${p.owned ? `${recruitText(4)} · ${p.fragments} ${copy('fragments')}` : `${p.fragments} / 10 ${copy('fragments')}`}</small></div></article>`;
       }).join("")}</div>`;
   }
 
@@ -727,7 +780,7 @@
       { id: "bulwark", seal: "守", title: "堅陣軍令", copy: "全隊生命提升 5.5%" },
       { id: "tactics", seal: "策", title: "疾行軍令", copy: "全隊攻速提升 2.2%" }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>全隊永久強化</h3><span>材料 ${state.resources.materials}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><span class="seal">${law.seal}</span><div><h3>${law.title} · ${level} 級</h3><p>${law.copy} · 下一級需 ${cost} 材料</p></div><button data-wp-frame-action="secondary" data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>研習</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>全隊永久強化</h3><span>${resourceChip('materials', state.resources.materials)}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><span class="seal">${law.seal}</span><div><h3>${law.title} · ${level} 級</h3><p>${law.copy} · ${resourceChip('materials', cost)}</p></div><button data-wp-frame-action="secondary" data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>研習</button></article>`; }).join("")}</div>`;
   }
 
   function renderCampaign() {
@@ -738,14 +791,30 @@
       { id: "materials", title: "軍法演武", copy: "完成兵種操演，取得軍法材料。", reward: { materials: 14 + Math.floor(state.stage / 2) } },
       { id: "daily-boss", title: "每日 Boss · 黑角試煉", copy: "每日挑戰強敵一次，取得元寶與必得裝備。", reward: { ingots: 25, gear: 1 }, limit: 1 }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><button data-wp-frame-action="secondary" data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><div class="wallet">${Object.entries(c.reward).map(([key, amount]) => resourceChip(key, amount)).join('')}</div><button data-wp-frame-action="secondary" data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
   }
 
   function managementAction(event) {
     const button = event.target.closest("button[data-action]");
     if (!button) return;
     const { action, id, uid: itemUid } = button.dataset;
+    if (action === 'select-hero') {
+      selectedHero = id;
+      renderHeroes();
+      return;
+    }
+    if (action === 'select-slot') {
+      selectedSlot = id;
+      renderHeroes();
+      return;
+    }
+    if (action === 'unequip') {
+      if (equipmentHolder(itemUid) !== id) return;
+      removeEquipment(itemUid);
+      renderHeroes();
+    }
     if (action === "upgrade-hero") {
+      if (!state.heroes[id]?.owned || state.heroes[id].level >= C.heroLevelCap) return;
       const cost = heroUpgradeCost(id);
       if (state.resources.coins < cost) return;
       state.resources.coins -= cost;
@@ -773,16 +842,17 @@
       renderHeroes();
     }
     if (action === "equip") {
-      const target = state.team[0];
-      Object.keys(state.equipped).forEach((heroId) => { if (state.equipped[heroId] === itemUid) delete state.equipped[heroId]; });
-      state.equipped[target] = itemUid;
-      toast(`${localizedValue(equipmentData(state.inventory.find((entry) => entry.uid === itemUid).itemId).name)} · ${copy("equip")} · ${localizedValue(heroData(target).name)}`);
+      const target = id;
+      const item = state.inventory.find(entry => entry.uid === itemUid);
+      if (!item || !state.heroes[target]?.owned) return;
+      removeEquipment(itemUid);
+      state.equipped[target][item.itemId] = itemUid;
+      toast(`${localizedValue(equipmentData(item.itemId).name)} · ${copy("equip")} · ${localizedValue(heroData(target).name)}`);
       renderHeroes();
     }
     if (action === "salvage") {
       const index = state.inventory.findIndex((entry) => entry.uid === itemUid);
-      if (index < 0) return;
-      Object.keys(state.equipped).forEach((heroId) => { if (state.equipped[heroId] === itemUid) delete state.equipped[heroId]; });
+      if (index < 0 || equipmentHolder(itemUid)) return;
       state.inventory.splice(index, 1);
       state.resources.materials += 5;
       toast(`${copy("salvage")} · ${copy("resourceMaterials")} 5`);
@@ -883,11 +953,11 @@
   }
 
   function objectiveModal(entries, kind) {
-    openModal(kind === "mission" ? "任務" : "成就", `<div class="list">${entries.map((entry) => {
+    openModal(kind === "mission" ? "任務" : "成就", `<p class="mission-goal">${copy("longGoal", {text: campaignMilestoneText()})}</p><div class="list">${entries.map((entry) => {
       const value = progressFor(entry);
       const ready = value >= entry.target;
       const claimed = state.claimed[entry.id];
-      const reward = Object.entries(entry.reward).map(([key, amount]) => `${resourceName(key)} ${amount}`).join("、");
+      const reward = Object.entries(entry.reward).map(([key, amount]) => resourceChip(key, amount)).join("、");
       return `<div class="list-item"><div><p>${entry.label}</p><small>${Math.min(value, entry.target)} / ${entry.target} · ${reward}</small><div class="progress"><b style="width:${clamp(value / entry.target * 100,0,100)}%"></b></div></div><button data-wp-frame-action="secondary" data-claim="${entry.id}" data-kind="${kind}" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : "領取"}</button></div>`;
     }).join("")}</div>`);
   }
@@ -905,9 +975,9 @@
 
   function renderEvents() {
     const day = Math.min(7, Math.max(1, Math.floor((new Date(today()) - new Date(state.firstSeen)) / 86400000) + 1));
-    openModal("登入與七日活動", `<div class="list"><div class="list-item"><div><p>第 ${day} 日登入獎勵</p><small>元寶 ${20 + day * 10} · 軍糧 ${5 + day}</small></div><button data-event="login" ${state.daily.loginClaimed ? "disabled" : ""}>${state.daily.loginClaimed ? "已領取" : "領取"}</button></div>
+    openModal("登入與七日活動", `<div class="list"><div class="list-item"><div><p>第 ${day} 日登入獎勵</p><small>${resourceChip('ingots', 20 + day * 10)} ${resourceChip('food', 5 + day)}</small></div><button data-event="login" ${state.daily.loginClaimed ? "disabled" : ""}>${state.daily.loginClaimed ? "已領取" : "領取"}</button></div>
       <div class="list-item"><div><p>新手成長：通過第 5 關</p><small>完成後獲得稀有裝備箱</small><div class="progress"><b style="width:${clamp(state.stage / 5 * 100,0,100)}%"></b></div></div><button disabled>${state.stage >= 5 ? "待開放" : `${state.stage}/5`}</button></div>
-      <div class="list-item"><div><p>限時活動：桃花軍備</p><small>完成 3 次武將升級可獲得 30 元寶</small><div class="progress"><b style="width:${clamp(state.stats.upgrades / 3 * 100,0,100)}%"></b></div></div><button data-event="upgrade" ${state.stats.upgrades < 3 || state.claimed["event-upgrades"] ? "disabled" : ""}>${state.claimed["event-upgrades"] ? "已領取" : "領取"}</button></div></div>`);
+      <div class="list-item"><div><p>限時活動：桃花軍備</p><small>完成 3 次武將升級 ${resourceChip('ingots', 30)}</small><div class="progress"><b style="width:${clamp(state.stats.upgrades / 3 * 100,0,100)}%"></b></div></div><button data-event="upgrade" ${state.stats.upgrades < 3 || state.claimed["event-upgrades"] ? "disabled" : ""}>${state.claimed["event-upgrades"] ? "已領取" : "領取"}</button></div></div>`);
   }
 
   function renderCodex() {
@@ -935,11 +1005,11 @@
   };
   const shopText = index => (shopCopy[activeLocale()] || shopCopy.en)[index];
   function renderShop() {
-    const quantity = (value, key) => `${new Intl.NumberFormat(activeLocale()).format(value)} ${copy(key)}`;
+    const quantity = (value, key) => resourceChip(Object.keys(resourceCopyKey).find(name => resourceCopyKey[name] === key), new Intl.NumberFormat(activeLocale()).format(value));
     openModal(copy('shop'), `<div class="list" data-runtime-localize="off"><div class="list-item"><div><p>${shopText(0)}</p><small>${shopText(1)}</small></div><button data-wp-frame-action="secondary" data-shop="quick" ${!state.daily.quick ? "disabled" : ""}>${shopText(state.daily.quick ? 2 : 3)}</button></div>
       <div class="list-item"><div><p>${shopText(4)}</p><small>${quantity(50,'resourceFood')}</small></div><button data-wp-frame-action="secondary" data-shop="food">${quantity(20,'resourceIngots')}</button></div>
       <div class="list-item"><div><p>${shopText(5)}</p><small>${quantity(20,'resourceMaterials')}</small></div><button data-wp-frame-action="secondary" data-shop="material">${quantity(35,'resourceIngots')}</button></div>
-      <div class="list-item"><div><p>${shopText(6)}</p><small>${shopText(7)}</small></div><button data-wp-frame-action="secondary" data-shop="gear">${quantity(80,'resourceIngots')}</button></div></div>`);
+      <div class="list-item"><div><p>${itemArt('gear')}${shopText(6)}</p><small>${shopText(7)}</small></div><button data-wp-frame-action="secondary" data-shop="gear">${quantity(80,'resourceIngots')}</button></div></div>`);
   }
 
   function renderSettings() {
@@ -1007,7 +1077,7 @@
     const coins = Math.floor(elapsed * (1.5 + state.stage * .24));
     const materials = Math.floor(elapsed / 900);
     grant({ coins, materials });
-    openModal("離線收益", `<p>義軍在你離開的 ${Math.floor(elapsed / 60)} 分鐘持續巡守，收益最多累積 8 小時。</p><div class="reward-row"><span>銅錢 +${fmt(coins)}</span><span>材料 +${materials}</span></div>`);
+    openModal("離線收益", `<p>義軍在你離開的 ${Math.floor(elapsed / 60)} 分鐘持續巡守，收益最多累積 8 小時。</p><div class="reward-row">${resourceChip('coins', `+${fmt(coins)}`)}${resourceChip('materials', `+${materials}`)}</div>`);
   }
 
   function showCoach() {

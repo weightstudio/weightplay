@@ -6,6 +6,7 @@
     start: "Start Game", choose: "Choose a patrol", best: "Best checks", noBest: "Not yet",
     guideTitle: "How to play", guideOne: "Read the animal-to-colour note.", guideTwo: "Tap signal cards in the shown patrol order.", guideThree: "A wrong code clears gently; no timer or lives are used.",
     back: "Back", settings: "Settings", language: "Language", signalChoices: "Signal choices", stages: "Patrols", round: "Patrol {n} of {total}", open: "Open", complete: "Complete",
+    leaveTitle: "Leave this patrol?", leaveText: "Continue keeps your current code. Returning to Patrols ends this attempt.", continue: "Continue", returnStage: "Return to Patrols",
     note1: "Scout note: Fox is amber, Owl is teal, and Rabbit is violet. Copy the patrol order: Fox, Owl, Fox.",
     note2: "Scout note: Otter is blue, Finch is gold, and Deer is rose. Copy the patrol order: Deer, Otter, Finch.",
     note3: "Scout note: Badger is green, Hare is coral, and Mole is indigo. Copy the patrol order: Mole, Badger, Hare.",
@@ -61,5 +62,17 @@
   Object.assign(tables.ru, { signalChoices:"Варианты сигналов" });
   Object.assign(tables.hi, { signalChoices:"सिग्नल विकल्प" });
   Object.assign(tables.ar, { signalChoices:"خيارات الإشارة" });
+  Object.assign(tables["zh-Hant"], { leaveTitle:"要離開這趟巡邏嗎？", leaveText:"繼續會保留目前的代碼。返回巡邏任務會結束這次嘗試。", continue:"繼續", returnStage:"返回巡邏任務" });
+  Object.assign(tables["zh-Hans"], { leaveTitle:"要离开这趟巡逻吗？", leaveText:"继续会保留当前代码。返回巡逻任务会结束这次尝试。", continue:"继续", returnStage:"返回巡逻任务" });
+  Object.assign(tables.ja, { leaveTitle:"この巡回を離れますか？", leaveText:"続行すると現在のコードを保持します。巡回へ戻ると今回の試行を終了します。", continue:"続行", returnStage:"巡回へ戻る" });
+  Object.assign(tables.ko, { leaveTitle:"이 순찰을 나갈까요?", leaveText:"계속하면 현재 코드를 유지합니다. 순찰 목록으로 돌아가면 이번 시도가 끝납니다.", continue:"계속", returnStage:"순찰로 돌아가기" });
+  Object.assign(tables.es, { leaveTitle:"¿Salir de esta patrulla?", leaveText:"Continuar conserva tu código actual. Volver a Patrullas termina este intento.", continue:"Continuar", returnStage:"Volver a Patrullas" });
+  Object.assign(tables["pt-BR"], { leaveTitle:"Sair desta patrulha?", leaveText:"Continuar mantém seu código atual. Voltar às Patrulhas encerra esta tentativa.", continue:"Continuar", returnStage:"Voltar às patrulhas" });
+  Object.assign(tables.fr, { leaveTitle:"Quitter cette patrouille ?", leaveText:"Continuer conserve ton code actuel. Revenir aux patrouilles termine cet essai.", continue:"Continuer", returnStage:"Retour aux patrouilles" });
+  Object.assign(tables.de, { leaveTitle:"Diese Patrouille verlassen?", leaveText:"Weiter behält deinen aktuellen Code. Die Rückkehr zu den Patrouillen beendet diesen Versuch.", continue:"Weiter", returnStage:"Zu den Patrouillen" });
+  Object.assign(tables.it, { leaveTitle:"Vuoi lasciare questo giro?", leaveText:"Continua per mantenere il codice attuale. Tornare ai giri termina questo tentativo.", continue:"Continua", returnStage:"Torna ai giri" });
+  Object.assign(tables.ru, { leaveTitle:"Выйти из этого патруля?", leaveText:"Продолжение сохранит текущий код. Возврат к патрулям завершит эту попытку.", continue:"Продолжить", returnStage:"К патрулям" });
+  Object.assign(tables.hi, { leaveTitle:"इस गश्त से बाहर निकलें?", leaveText:"जारी रखने पर आपका मौजूदा कोड रहेगा। गश्त पर लौटने से यह कोशिश समाप्त होगी।", continue:"जारी रखें", returnStage:"गश्त पर लौटें" });
+  Object.assign(tables.ar, { leaveTitle:"هل تريد مغادرة هذه الدورية؟", leaveText:"يُبقي المتابعة الرمز الحالي. العودة إلى الدوريات تنهي هذه المحاولة.", continue:"متابعة", returnStage:"العودة إلى الدوريات" });
   window.ANIMAL_SIGNAL_SCOUT_LOCALES = tables;
 })();

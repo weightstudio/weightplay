@@ -24,31 +24,32 @@
   <meta name="weightplay-audience" content="general">
   <meta name="weightplay-scene-controls" content="immutable">
   <meta name="theme-color" content="#081622">
-  <title>パン子のバスジャム | WeightPlay</title>
+  <title>Pankoのバスジャム | WeightPlay</title>
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css?v=20260909-bus-jam-interface-v15">
   <link rel="stylesheet" href="style.css?v=20260909-bus-jam-interface-v15">
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260825-rtl-main-settings2">
-  <meta name="description" content="固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。" />
+  <link rel="stylesheet" href="../../src/game-ui-theme.css">
+  <link rel="stylesheet" href="../../src/game-screen-frame.css">
+  <meta name="description" content="車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。" />
     <meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="パン子のバスジャム | WeightPlay" />
-    <meta property="og:description" content="固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。" />
+    <meta property="og:title" content="Pankoのバスジャム | WeightPlay" />
+    <meta property="og:description" content="車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-bus-jam/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="パン子のバスジャム | WeightPlay" />
-    <meta name="twitter:description" content="固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。" />
+    <meta name="twitter:title" content="Pankoのバスジャム | WeightPlay" />
+    <meta name="twitter:description" content="車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "パン子のバスジャム",
+  "name": "Pankoのバスジャム",
   "alternateName": "Panko's Bus Jam",
   "url": "https://weightplay.com/ja/games/animal-bus-jam/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-bus-jam.webp",
-  "description": "固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。",
+  "description": "車列の順番を読み、限られた待機レーンを詰まらせず30ターミナルを攻略。",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio",
@@ -71,137 +72,128 @@
     </script>
   </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bus-jam" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <main id="main" class="screen main main-screen" data-screen="main">
+    <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Pankoのバスジャム</h1>
     <header class="main-header">
-      <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
-      <strong data-t="shortTitle">BUS JAM</strong>
-      <label class="locale"><span data-t="language">Language</span><select id="locale"></select></label>
+      <a class="return" href="/" data-wp-return="main" data-t-aria="returnLobby" aria-label="WeightPlayに戻る"><span class="wp-shell-return-arrow" aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a>
+      <strong data-wp-frame-title data-t="title">パンコのバス整理</strong>
+      <label class="locale"><span data-t="language">言語</span><select id="locale"></select></label>
     </header>
-    <section class="hero">
-      <img src="../../assets/animal-bus-jam-cover-general-v4.webp" data-t-alt="coverAlt" alt="パン子のバスジャムのゲーム画像">
-      <div>
-        <p class="eyebrow" data-t="kicker">NIGHT TERMINAL CONTROL</p>
-        <h1 data-t="title">パン子のバスジャム</h1>
-        <p class="main-summary" data-t="summary">固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。</p>
-        <button id="start" class="primary" data-t="start">Start game</button>
+    <section class="main-content" data-wp-frame-content="main">
+      <img data-wp-frame-poster src="../../assets/interface7-redrawn/animal-bus-jam.webp" data-t-alt="夜のターミナルで4路線を指揮する管制官" alt="Pankoのバスジャムのゲーム画像">
+      <div data-wp-frame-copy>
+        <p data-wp-frame-summary data-t="summary">車列の順番を読み、待機レーンを詰まらせずに各列をさばこう。</p>
+        <button id="start" class="primary" data-wp-frame-action="primary" data-t="start">ゲーム開始</button>
       </div>
     </section>
-    <section class="game-page-info game-page-info-static" aria-label="パン子のバスジャム ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2>パン子のバスジャム</h2><p>固定された出発順を読み、見えている乗客を送り、限られた先入れ先出しの待機レーンを詰まらせないようにしましょう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>車列と待機レーンの戦略</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · 戦略 · 動物</strong></div><div class="game-info-fact"><span>難易度</span><strong>やさしい〜手ごたえあり</strong></div><div class="game-info-fact"><span>目安時間</span><strong>1ステージ 2〜8分</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>30か所の夜間ターミナルが満員で稼働しています。乗客を乗せられるのは現在のバスだけで、ほかの色は送った順に待機レーンで待ちます。</p>
-<p>すべての判断材料が見えています。車列全体、各列、現在のバスの空席、埋まった待機枠を確認できます。失敗は隠れた交通やタイマーではなく、ルートの選択から起こります。</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>各列で動かせるのは先頭の乗客だけです。同じ色の乗客はすぐ現在のバスに乗ります。</p>
-<p>色が違う乗客は待機レーンに入り、その先頭を出すまで後ろの乗客は乗れません。</p>
-<p>現在のバスが満席になると出発し、次のバスが現在の目標になります。待機レーンの先頭が同じ色なら自動で乗車します。</p>
-<p>待機レーンが満杯で、見えている乗客から現在のルートを完成できないとターミナルが詰まります。「戻す」は直前の状態を復元し、「やり直す」はステージを初期化します。</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>解放済みのターミナルを選びます。</li><li>現在のバス、空席、車列の次のバスを確認します。</li><li>先の色を待機レーンへ送る前に、各列の先頭を比べます。</li><li>待機レーンを詰まらせず全バスを満席にして、次のターミナルを解放します。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>待機枠は無料の収納ではなく、限られた資源として扱いましょう。</li><li>先の色を送る前に、それが先頭の詰まりになるか確認します。</li><li>待機レーンが満杯に近いときは、現在の色を先に見えるようにします。</li><li>送り出した乗客で考えていた待機順が変わったら、すぐ「戻す」を使います。</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>ターミナル1で流れを学び、2以降では間違ったルートが本当の詰まりを生みます。</p>
-<p>後半は4路線、長い車列、多い列、同じ色のバスを追加し、固定3台構成ではなく2枠の待機レーンを使います。</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>4つのルートは色と文字コードを併用します。固定車列、FIFO待機レーン、決定的な列、検証済みの解答が、スマートフォンでもデスクトップでも読みやすい戦略パズルを作ります。完全な画面は中央寄せの単一論理レイアウトで、最大幅は920ピクセルです。スマートフォン、横画面、デスクトップでも操作、タップ領域、アート、ゲーム座標を一緒に拡大縮小し、個別には引き伸ばしません。そのためタッチ、マウス、キーボードは同じ合法状態を操作します。メインのポスターと開始操作はステージ管理から分離され、ステージ選択、バトル、ダイアログ、リザルトはそれぞれの範囲と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、公開ランキングのない、一般向けで時間制限のない戦略パズルです。クリア状況はこのブラウザだけに保存されます。アカウントなしで遊べます。進行状況は現在のブラウザプロフィールのローカルストレージに保存され、オンラインアカウントや端末間データベースには保存されません。サイトデータの削除、プライベートブラウズ、ブラウザや端末の変更で別のセーブが作られたり、現在の進行が消えたりすることがあります。保存が許可される場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果は医療、学校、専門的な評価ではありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>列の途中から乗客を送れますか？</dt><dd>いいえ。見えている各列の先頭だけを動かせます。</dd></div><div><dt>なぜ乗客が待機レーンに入ったのですか？</dt><dd>乗れるのは現在のバスだけで、ほかのルートは送った順に待つからです。</dd></div><div><dt>なぜターミナルが詰まったのですか？</dt><dd>待機順が現在のルートを塞ぎ、見えている乗客から解消できなかったためです。</dd></div><div><dt>すべてのターミナルは解けますか？</dt><dd>はい。30本の解答ルートはすべて自動検証されています。</dd></div><div><dt>対応する操作と画面サイズは？</dt><dd>タッチ、マウス、キーボードを使える場所では同じルールで遊べます。指定のスマートフォン、横画面、デスクトップで単一の論理レイアウトが拡大縮小します。</dd></div><div><dt>進行状況は別の端末へ自動で移りますか？</dt><dd>いいえ。現在はブラウザ内だけに保存され、別のプロフィールや端末には別の進行状況ができます。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>パンコの竹水路</strong><span>竹のネットワークを回して、彫刻された泉から花の池まで水をつなぎ、断線や偽の分岐、ずれた接続点をなくします。</span></span></a><a class="game-info-related-card" href="/ja/games/animal-cratebound/"><img src="/assets/interface7-redrawn/animal-cratebound.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>クレートバウンド</strong><span>30の手作り天空倉庫を歩き、ルーン貨物を押して引きながら運びます。</span></span></a></div></div>
-    </div>
-  </section>
+    <section class="public-guide game-page-info" data-wp-game-guide aria-labelledby="busGuideTitle">
+      <div class="game-info-section">
+      <h2 id="busGuideTitle" data-t="guideTitle">遊び方</h2>
+      <p data-t="guideBody">乗車できるのは先頭のバスだけです。色が違う乗客は待機レーンへ順番に入り、レーンが詰まると失敗します。</p>
+      <ol>
+        <li data-t="guideRule1">現在のバスと空席を確認する。</li>
+        <li data-t="guideRule2">各列の先頭だけを送り出す。</li>
+        <li data-t="guideRule3">詰まる前に「戻す」を使う。</li>
+      </ol>
+      </div>
+    <div class="game-info-section"><h3>FAQ</h3><dl><div><dt>How many stages are included?</dt><dd>ルールの 6 章にわたって 30 の作成されたステージがあります。ステージ 30 は完了後もリプレイ可能です。</dd></div><div><dt>Is progress saved?</dt><dd>Yes, only in this browser.</dd></div></dl></div></section>
   </main>
 
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-cover-general-v4.webp')" hidden>
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-bus-jam-terminal-block-v16.webp')" hidden>
     <header class="scene-header">
-      <button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button>
-      <h2 data-t="shortTitle">BUS JAM</h2>
+      <button data-back data-wp-return="stage" data-t-aria="back" aria-label="戻る">←</button>
+      <h2 data-wp-frame-title hidden></h2>
     </header>
+    <div id="stageContent" class="stage-content">
     <span id="progress" class="stage-progress"></span>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
-    <nav class="stage-tabs" data-t-aria="stageTabs" aria-label="Stage navigation">
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="停留所一覧"></section>
+    </div>
+    <nav class="stage-tabs" data-wp-frame-nav data-t-aria="stageTabs" aria-label="ステージナビゲーション">
       <span aria-hidden="true"></span>
-      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">Stages</button>
+      <button type="button" class="stage-tab active" aria-current="page" data-t="stages">ステージ</button>
       <span aria-hidden="true"></span>
     </nav>
   </main>
 
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
     <header class="scene-header">
-      <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button>
-      <div><small id="chapter"></small><h2 id="stageName"></h2></div>
-      <span id="remaining"></span>
+      <button id="battleBack" data-back data-wp-return="battle" data-t-aria="back" aria-label="戻る">←</button>
+      <strong data-wp-frame-title hidden></strong>
     </header>
     <section class="battle-content">
+      <div id="battleInfo" data-wp-frame-info><div><small id="chapter"></small><strong id="stageName"></strong></div><span id="remaining"></span></div>
       <div class="convoy-panel">
-        <div class="panel-label" data-t="convoy">DEPARTURE ORDER</div>
+        <div class="panel-label" data-t="convoy">出発順</div>
         <div id="buses" class="buses"></div>
       </div>
       <div class="dispatch-floor">
         <div class="holding-panel">
-          <div class="panel-label"><span data-t="holding">HOLDING LANE</span><span id="holdingCount"></span></div>
+          <div class="panel-label"><span data-t="holding">待機レーン</span><span id="holdingCount"></span></div>
           <div id="holding" class="holding"></div>
         </div>
-        <div id="queues" class="queues" role="list" data-t-aria="queueLabel" aria-label="Passenger queues"></div>
+        <div id="queues" class="queues" role="list" data-t-aria="queueLabel" aria-label="乗客の列"></div>
       </div>
       <div class="tools">
-        <button id="undo" data-t="undo">Undo</button>
-        <button id="hint" class="utility-button" data-wp-battle-utility="true" data-t="hint">Hint</button>
-        <button id="restart" data-t="restart">Restart</button>
+        <button id="undo" data-t="undo">元に戻す</button>
+        <button id="hint" class="utility-button" data-wp-battle-utility="true" data-t="hint">ヒント</button>
+        <button id="restart" data-t="restart">やり直す</button>
       </div>
-      <p id="status" aria-live="polite" data-runtime-localize="off"></p>
+      <p id="status" class="status" aria-live="polite" data-runtime-localize="off"></p>
     </section>
   </main>
 
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
   <dialog id="result">
     <div class="result-art" aria-hidden="true">
-      <img class="result-terminal" src="../../assets/animal-bus-jam-terminal-general-v2.webp" alt="">
-      <img class="result-bus result-bus-sky" src="../../assets/animal-bus-jam-bus-sky.webp" alt="">
-      <img class="result-bus result-bus-coral" src="../../assets/animal-bus-jam-bus-coral.webp" alt="">
-      <img class="result-panko" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="">
+      <img class="result-terminal" src="../../assets/animal-bus-jam-terminal-block-v16.webp" alt="">
+      <img class="result-bus result-bus-sky" src="../../assets/animal-bus-jam-bus-sky-block-v16.webp" alt="">
+      <img class="result-bus result-bus-coral" src="../../assets/animal-bus-jam-bus-coral-block-v16.webp" alt="">
+      <img class="result-panko" src="../../assets/animal-bus-jam-conductor-block-v16.webp" alt="">
     </div>
-    <p class="eyebrow" data-t="complete">TERMINAL CLEARED</p>
-    <h2 data-t="resultTitle">Every convoy departed!</h2>
+    <p class="eyebrow" data-t="complete">管制完了</p>
+    <h2 data-t="resultTitle">全車両が出発しました！</h2>
     <p id="resultBody"></p>
     <div class="result-actions">
-      <button id="resultStages" data-t="stages">Stages</button>
-      <button id="next" class="primary" data-t="next">Next terminal</button>
-      <button id="retry" data-t="retry">Play again</button>
+      <button id="resultStages" data-t="stages">ステージ</button>
+      <button id="next" class="primary" data-t="next">次のステージ</button>
+      <button id="retry" data-t="retry">もう一度</button>
     </div>
   </dialog>
   <dialog id="deadlock">
     <div class="result-mark fail-mark">!</div>
-    <p class="eyebrow" data-t="deadlockKicker">ROUTE LOCKED</p>
-    <h2 data-t="deadlockTitle">The holding lane is blocked</h2>
-    <p data-t="deadlockBody">The active bus cannot be filled from the exposed passengers. Undo the last dispatch or restart.</p>
-    <div><button id="deadlockUndo" data-t="undo">Undo</button><button id="deadlockRetry" class="primary" data-t="restart">Restart</button></div>
+    <p class="eyebrow" data-t="deadlockKicker">経路閉塞</p>
+    <h2 data-t="deadlockTitle">待機レーンが詰まりました</h2>
+    <p data-t="deadlockBody">見えている乗客では現在のバスを満席にできません。戻すか再スタートしてください。</p>
+    <div><button id="deadlockUndo" data-t="undo">元に戻す</button><button id="deadlockRetry" class="primary" data-t="restart">やり直す</button></div>
   </dialog>
   <dialog id="leaveBattle" aria-labelledby="leaveBattleTitle">
-    <p class="eyebrow" data-t="leaveKicker">LEAVE TERMINAL?</p>
-    <h2 id="leaveBattleTitle" data-t="leaveTitle">Return to terminal selection?</h2>
+    <p class="eyebrow" data-t="leaveKicker">ターミナルを離れますか？</p>
+    <h2 id="leaveBattleTitle" data-t="leaveTitle">ステージ選択に戻りますか？</h2>
     <p id="leaveBattleBody"></p>
     <div class="leave-actions">
-      <button id="continueBattle" class="primary" data-t="continueBattle">Continue playing</button>
-      <button id="returnToStage" data-t="returnStages">Return to stages</button>
+      <button id="continueBattle" class="primary" data-t="continueBattle">プレイを続ける</button>
+      <button id="returnToStage" data-t="returnStages">ステージへ戻る</button>
     </div>
   </dialog>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script src="../../src/analytics.js?v=20260701-analytics2"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes = false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="levels.js"></script>
   <script src="locales.js"></script>
   <script src="strategy-locales.js?v=20260909-bus-jam-interface-v15"></script>
+  <script src="../../src/game-screen-frame.js"></script>
+  <script src="frame.js"></script>
   <script src="game.js?v=20260909-bus-jam-interface-v15"></script>
   <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
-  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="パン子のバスジャム";document.title="パン子のバスジャム | WeightPlay";},{once:true});</script>
+  <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="Pankoのバスジャム";document.title="Pankoのバスジャム | WeightPlay";},{once:true});</script>
 </body>
 </html>

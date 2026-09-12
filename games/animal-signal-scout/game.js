@@ -35,8 +35,26 @@
   function clearCode(){state.code=[];state.feedback='';renderBattle();}
   function checkCode(){const p=patrols[state.patrol];if(state.screen!=='battle'||state.code.length!==p.order.length||(p.memory&&state.clue))return;state.checks++;state.sessionChecks++;const wrong=state.code.findIndex((v,i)=>v!==p.order[i]);if(wrong>=0){state.feedback=t('wrongAt',{n:wrong+1});$('battleScreen').dataset.feedback='wrong';renderBattle();return;}const stars=state.checks===1&&!state.hints?3:state.checks<=3?2:1;progress.stars[p.number]=Math.max(Number(progress.stars[p.number])||0,stars);progress.unlocked=Math.max(progress.unlocked,Math.min(30,p.number+1));persist();sound(true);show('result');renderResult();renderMain();}
   function openPatrolMap(){show('stage');renderStages();}
+  function requestBattleLeave(){
+    if(state.screen!=='battle')return openPatrolMap();
+    const modal=$('leaveModal');
+    if(!modal)return openPatrolMap();
+    modal.hidden=false;
+    $('leaveContinue')?.focus();
+  }
+  function continueBattle(){
+    const modal=$('leaveModal');
+    if(modal)modal.hidden=true;
+    renderBattle();
+  }
+  function confirmBattleLeave(){
+    const modal=$('leaveModal');
+    if(modal)modal.hidden=true;
+    Object.assign(state,{code:[],checks:0,hints:0,clue:true,feedback:''});
+    openPatrolMap();
+  }
   function applyLocale(){document.documentElement.lang=state.locale;document.documentElement.dir=state.locale==='ar'?'rtl':'ltr';document.querySelectorAll('[data-copy]').forEach(n=>n.textContent=t(n.dataset.copy));document.querySelectorAll('[data-copy-aria]').forEach(n=>n.setAttribute('aria-label',t(n.dataset.copyAria)));$('localeSelect').value=state.locale;$('signalGrid').setAttribute('aria-label',t('signalChoices'));renderMain();if(state.screen==='battle')renderBattle();if(state.screen==='stage')renderStages();if(state.screen==='result')renderResult();window.dispatchEvent(new CustomEvent('wonder:locale-change',{detail:{locale:state.locale}}));}
-  $('startBtn').onclick=openPatrolMap;$('mapBtn').onclick=openPatrolMap;$('stageBackBtn').onclick=()=>{show('main');applyLocale();};$('battleBackBtn').onclick=openPatrolMap;$('resultMapBtn').onclick=openPatrolMap;$('resultHomeBtn').onclick=()=>{show('main');applyLocale();};$('checkBtn').onclick=checkCode;$('clearBtn').onclick=clearCode;
+  $('startBtn').onclick=openPatrolMap;$('mapBtn').onclick=openPatrolMap;$('stageBackBtn').onclick=()=>{show('main');applyLocale();};$('battleBackBtn').onclick=requestBattleLeave;$('leaveContinue').onclick=continueBattle;$('leaveStage').onclick=confirmBattleLeave;$('resultMapBtn').onclick=openPatrolMap;$('resultHomeBtn').onclick=()=>{show('main');applyLocale();};$('checkBtn').onclick=checkCode;$('clearBtn').onclick=clearCode;
   $('memoryBtn').onclick=()=>{if(!state.clue)state.hints++;state.clue=!state.clue;renderBattle();};
   $('battleUtilityBtn').onclick=()=>document.querySelector('[data-wp-settings]')?.click();
   $('localeSelect').onchange=e=>{state.locale=locales[e.target.value]?e.target.value:'en';try{localStorage.setItem('weightplayLocale',state.locale);}catch{}applyLocale();};
