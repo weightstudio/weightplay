@@ -14,8 +14,8 @@
 #mainScreen .main-copy{text-align:center;}
 #mainScreen .main-copy .eyebrow{margin:0 0 5px;}
 #mainScreen .main-copy h1{margin:0;}
-#mainScreen .main-copy .lede{margin:8px auto 0;}
-#mainScreen .main-summary{margin:8px auto 0;min-height:40px;max-width:54ch;color:#24324a;font-size:.92rem;line-height:1.35;}
+#mainScreen .main-copy .lede{margin:8px auto 0;color:#e9eef5;}
+#mainScreen .main-summary{margin:8px auto 0;min-height:40px;max-width:54ch;color:#e9eef5!important;font-size:.92rem;line-height:1.35;}
 #mainScreen .main-progress{display:grid;place-items:center;min-height:42px;margin:4px 0;color:#9a6b2f;font-weight:800;}
 #mainScreen .hero-actions{justify-content:center;}
 #mainScreen #startBtn{height:52px;min-height:52px;}
