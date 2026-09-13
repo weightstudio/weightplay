@@ -1510,6 +1510,20 @@
     }),
   };
 
+  // Peach's Main guide is a quick-start, not a second campaign/manual screen.
+  // Keep its authored operations, progression and local-save facts in every
+  // locale. FAQ 0 explains agency; FAQ 3 explains a useful retry decision.
+  for (const copy of Object.values(animalPeachOath)) {
+    copy.story = [];
+    copy.systems = [];
+    copy.strategyTips = [];
+    copy.designNote = "";
+    copy.difficulty = "";
+    copy.time = "";
+    copy.relatedIds = [];
+    copy.faq = [copy.faq[0], copy.faq[3]];
+  }
+
   const wordle = {
     en: guide({
       title: "Wordle", intro: "Read each five-letter result, keep useful clues, and finish a short six-puzzle round. Every guess narrows the next decision, so the goal is not only speed but a clear reading of feedback.",

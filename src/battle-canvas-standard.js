@@ -199,6 +199,10 @@
   };
   const landscapeRatioThreshold = landscapeRatioThresholdByGame[gameId] || 1.5;
   const reserveSelector = ".battle-ad-reserve,.battle-ad,.ad-reserve,.result-ad-reserve,#battleAdReserve,#battleAd";
+  const nestedPhysicalReserveGames = new Set([
+    "gin-rummy", "casino", "crazy-eights", "hearts", "spades", "cribbage",
+    "go-fish", "war", "speed", "old-maid", "animal-orbit-orchard",
+  ]);
   const metrics = window.__weightPlayLayoutMetrics ||= {};
   metrics.battleQueued ||= 0;
   metrics.battleApplied ||= 0;
@@ -236,6 +240,7 @@
   };
 
   const savedStyles = new WeakMap();
+  const reserveOrigins = new WeakMap();
   let activeRoot = null;
   let activeReserve = null;
   let appliedViewportWidth = 0;
@@ -283,6 +288,11 @@
   };
   const restoreReserve = (node) => {
     restore(node);
+    const origin = reserveOrigins.get(node);
+    if (origin?.parent?.isConnected && node.parentElement !== origin.parent) {
+      origin.parent.insertBefore(node, origin.nextSibling?.isConnected ? origin.nextSibling : null);
+    }
+    reserveOrigins.delete(node);
     node?.removeAttribute("data-wp-battle-physical-reserve");
   };
   const clearCanvasVariables = () => {
@@ -326,12 +336,13 @@
     const width = Math.max(1, layoutWidth || Number(viewport?.width) || Number(innerWidth) || 0);
     const height = Math.max(1, layoutHeight || Number(viewport?.height) || Number(innerHeight) || 0);
     const reserve = findReserve(root);
-    if ((gameId === "gin-rummy" || gameId === "casino" || gameId === "crazy-eights" || gameId === "hearts" || gameId === "spades" || gameId === "cribbage" || gameId === "go-fish" || gameId === "war" || gameId === "speed" || gameId === "old-maid")
+    if (nestedPhysicalReserveGames.has(gameId)
       && reserve?.parentElement === root
       && root.parentElement) {
       // The card-game preview markup historically nested the physical reserve
       // inside the transformed play surface. Keep the permanent reserve as a
       // sibling so its 56px boundary is never scaled with the Canvas.
+      reserveOrigins.set(reserve, { parent: root, nextSibling: reserve.nextSibling });
       root.parentElement.append(reserve);
     }
     const stateSignature = [

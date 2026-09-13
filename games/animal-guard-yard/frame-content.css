@@ -18,6 +18,8 @@ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row img{width:
 html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row b{font:800 14px/18px system-ui!important}
 html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .menu-content{width:100%!important;min-width:0!important;padding:0!important;margin:0!important;border:0!important}
 html body.guard-yard-stage [data-wp-frame="2"] #stageTabPanel{width:100%!important;min-width:0!important;padding:0!important;margin:0!important}
+/* Children are in logical Canvas units: a physical 100vw cap shrinks them again. */
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel :is(.menu-tab-panel,.stage-grid){max-width:100%!important}
 html body.guard-yard-stage [data-wp-frame="2"] #stageGrid{width:100%!important;min-width:0!important;align-items:start!important;align-self:stretch!important;margin:0!important;padding-block:12px!important}
 /* One fixed card geometry; viewport changes scale the Stage envelope as a unit. */
 html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-card{height:190px!important;min-height:190px!important;max-height:190px!important;align-self:start!important;top:clamp(0px,calc(38% - 95px),calc(100% - 190px))!important;padding:12px!important;display:grid!important;grid-template-columns:48px minmax(0,1fr)!important;grid-template-rows:22px 22px 34px 22px 32px!important;gap:4px 8px!important;align-content:center!important;text-align:start!important}

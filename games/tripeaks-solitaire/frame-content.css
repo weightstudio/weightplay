@@ -13,7 +13,8 @@
 body.wp-premium-table[data-wp-game-id='tripeaks-solitaire'] .stock-pile {
   background:#174b4d url('../../assets/tripeaks-solitaire-card-back-block-v28.webp') center/100% 100% no-repeat;
 }
-.result-card {max-height:100%;overflow:auto;box-sizing:border-box;background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
+.result-overlay {grid-template-columns:minmax(0,1fr);box-sizing:border-box}
+.result-card {width:min(100%,440px);min-width:0;max-height:100%;overflow:auto;box-sizing:border-box;background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius)}
 .result-card .result-actions {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 .result-card .result-actions button {width:100%;min-width:0;margin:0;padding-inline:4px}
 @media(max-height:500px) {

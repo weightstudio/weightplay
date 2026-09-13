@@ -36,5 +36,8 @@ export function localizeMain(html, locale) {
   });
   html = html.replace(/(<strong\b[^>]*id="mainProgress"[^>]*>)[^<]*(<\/strong>)/, (_,start,end) => start + '1' + end);
   html = html.replace(/(<a\b[^>]*\bmain-return\b[^>]*aria-label=")[^"]*(")/, (_,start,end) => start + escape(mainReturnLabels[locale]) + end);
+  const title = html.match(/<h1\b[^>]*id="mainTitle"[^>]*>([^<]+)<\/h1>/)?.[1];
+  if (!title) throw new Error('Missing Peach Oath localized poster title');
+  html = html.replace(/(<img\b[^>]*data-wp-frame-poster[^>]*alt=")[^"]*(")/, (_,start,end) => start + title + end);
   return html.replace(/(<div\b[^>]*class="main-copy"[^>]*)(>)/, (_,start,end) => start.includes('data-runtime-localize') ? start + end : start + ' data-runtime-localize="off"' + end);
 }

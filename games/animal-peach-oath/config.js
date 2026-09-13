@@ -3,8 +3,8 @@
 
   window.PEACH_OATH_CONFIG = Object.freeze({
     gameId: "animal-peach-oath",
-    gameVersion: "v10",
-    interfaceVersion: 1,
+    gameVersion: "v11",
+    interfaceVersion: 7,
     saveKey: "weightplay_animal_peach_oath_v1",
     maxOfflineSeconds: 28800,
     heroLevelCap: 80,

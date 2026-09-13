@@ -785,13 +785,13 @@
   };
 
   const cardDb = {
-    "wolf-pack": { cost: 1, type: "attack", image: "wonder-beast-hyena.png", nameKey: "card_wolf_pack", descKey: "card_wolf_pack_desc" },
-    "guard-bear": { cost: 1, type: "defense", image: "wonder-beast-bear.png", nameKey: "card_guard_bear", descKey: "card_guard_bear_desc" },
-    "sky-hawk": { cost: 2, type: "attack", image: "wonder-beast-hawk.png", nameKey: "card_sky_hawk", descKey: "card_sky_hawk_desc" },
-    "cheetah-sprint": { cost: 1, type: "utility", image: "wonder-beast-tiger.png", nameKey: "card_cheetah_sprint", descKey: "card_cheetah_sprint_desc" },
-    "viper-venom": { cost: 1, type: "utility", image: "wonder-beast-crocodile.png", nameKey: "card_viper_venom", descKey: "card_viper_venom_desc" },
-    "owl-wisdom": { cost: 0, type: "utility", image: "animal-guard-owl.png", nameKey: "card_owl_wisdom", descKey: "card_owl_wisdom_desc" },
-    "iron-tortoise": { cost: 2, type: "defense", image: "wonder-beast-rhino.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
+    "wolf-pack": { cost: 1, type: "attack", image: "beast-deck-redrawn/wolf-pack-v1.png", nameKey: "card_wolf_pack", descKey: "card_wolf_pack_desc" },
+    "guard-bear": { cost: 1, type: "defense", image: "beast-deck-redrawn/guard-bear-v1.png", nameKey: "card_guard_bear", descKey: "card_guard_bear_desc" },
+    "sky-hawk": { cost: 2, type: "attack", image: "beast-deck-redrawn/sky-hawk-v1.png", nameKey: "card_sky_hawk", descKey: "card_sky_hawk_desc" },
+    "cheetah-sprint": { cost: 1, type: "utility", image: "beast-deck-redrawn/cheetah-sprint-v1.png", nameKey: "card_cheetah_sprint", descKey: "card_cheetah_sprint_desc" },
+    "viper-venom": { cost: 1, type: "utility", image: "beast-deck-redrawn/viper-venom-v1.png", nameKey: "card_viper_venom", descKey: "card_viper_venom_desc" },
+    "owl-wisdom": { cost: 0, type: "utility", image: "beast-deck-redrawn/owl-wisdom-v1.png", nameKey: "card_owl_wisdom", descKey: "card_owl_wisdom_desc" },
+    "iron-tortoise": { cost: 2, type: "defense", image: "beast-deck-redrawn/iron-tortoise-v1.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
     "mist-curse": { cost: 1, type: "curse", image: "beast-deck-boss-mist-crown.webp", nameKey: "card_mist_curse", descKey: "card_mist_curse_desc", draftable: false, temporary: true },
   };
 

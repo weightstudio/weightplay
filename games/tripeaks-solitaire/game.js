@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  document.body.dataset.gameVersion = "v29";
+  document.body.dataset.gameVersion = "v30";
   document.body.dataset.cardDeck = 'klondike';
   const TRIPEAKS_RANKS = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   const TRIPEAKS_DYNAMIC_COPY = Object.freeze({
@@ -106,10 +106,10 @@
   };
 
   const ensurePeakProgress = () => {
-    const header = document.querySelector("#battleScreen .battle-header");
-    if (!header) return null;
     const existing = document.getElementById("tripeaksPeakProgress");
     if (existing) return existing;
+    const header = document.querySelector("#battleScreen .battle-header");
+    if (!header) return null;
     const stat = document.createElement("div");
     stat.id = "tripeaksPeakProgress";
     stat.className = "header-stat tripeaks-progress-stat";
