@@ -30,6 +30,7 @@
   body:not(.wp-kids-audience) .main-copy small,
   body:not(.wp-kids-audience) .main-copy h1{display:none!important}
   .main-copy p{font-size:14px;line-height:1.3}
+  body:not(.wp-kids-audience) .main-copy.wp-standard-main-copy{gap:0!important}
   body:not(.wp-kids-audience) .main-copy #start{height:44px!important;min-height:44px!important;font-size:18px}
 }
 .stage-card.locked.centered{filter:saturate(.45) brightness(.72)}
