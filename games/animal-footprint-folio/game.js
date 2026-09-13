@@ -151,7 +151,10 @@
   }
   function primeBattleReserve() {
     const root = $("#battleScreen");
-    const reserve = root?.querySelector(".battle-ad-reserve");
+    // Keep the physical General reserve outside the transformed Battle root.
+    // A fixed descendant of the scaled canvas inherits that transform and
+    // becomes too small or drifts on wide viewports.
+    const reserve = document.querySelector(".battle-ad-reserve");
     if (!root || !reserve) return;
     const viewportWidth = Number(document.documentElement.clientWidth || window.innerWidth || 0);
     const viewportHeight = Number(document.documentElement.clientHeight || window.innerHeight || 0);

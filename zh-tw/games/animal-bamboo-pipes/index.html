@@ -6,14 +6,14 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#063f3c">
   <title>胖達竹水道 | WeightPlay</title>
-  <meta name="description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
+  <meta name="description" content="轉動胖達的竹管，讓水流過每一段管路，喚醒開花竹園。" />
   <meta property="og:site_name" content="WeightPlay" /><meta property="og:type" content="website" />
   <meta property="og:title" content="胖達竹水道 | WeightPlay" />
-  <meta property="og:description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
+  <meta property="og:description" content="轉動胖達的竹管，讓水流過每一段管路，喚醒開花竹園。" />
   <meta property="og:url" content="https://weightplay.com/zh-tw/games/animal-bamboo-pipes/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bamboo-pipes.webp" />
   <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content="胖達竹水道 | WeightPlay" />
-  <meta name="twitter:description" content="旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。" />
+  <meta name="twitter:description" content="轉動胖達的竹管，讓水流過每一段管路，喚醒開花竹園。" />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-bamboo-pipes.webp" />
   <link rel="canonical" href="https://weightplay.com/zh-tw/games/animal-bamboo-pipes/" />
     <link rel="alternate" hreflang="en" href="https://weightplay.com/en/games/animal-bamboo-pipes/" />
@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "VideoGame",
   "name": "胖達竹水道",
-  "description": "旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。",
+  "description": "轉動胖達的竹管，讓水流過每一段管路，喚醒開花竹園。",
   "url": "https://weightplay.com/zh-tw/games/animal-bamboo-pipes/",
   "image": "https://weightplay.com/assets/interface7-redrawn/animal-bamboo-pipes.webp",
   "applicationCategory": "Game",
@@ -68,60 +68,30 @@
   <link rel="stylesheet" href="style.css?v=20260831-bamboo-interface-v17">
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><style>
     .screen[hidden]{display:none!important}
-    @media (max-height:500px) and (orientation:landscape){
-      .battle{height:calc(100svh - 56px);min-height:0;grid-template-rows:48px minmax(0,1fr);overflow:hidden;padding:4px 10px;gap:4px}
-      .battle header{height:48px}
-      .battle-panel{grid-template-columns:210px;grid-template-rows:24px 210px 34px;gap:4px;align-content:start}
-      .battle .board{width:210px;height:210px}
-      .battle .tools{height:34px;align-items:center}
-      .battle .tools button{height:32px;min-height:32px;max-height:32px;padding:0 .15rem;font-size:.72rem;line-height:1;white-space:nowrap}
-    }
   </style>
   <link rel="stylesheet" href="../../src/game-ui-theme.css">
   <link rel="stylesheet" href="../../src/game-screen-frame.css">
-  <link rel="stylesheet" href="frame-content.css">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-bamboo-block-v20">
 </head>
 <body data-screen="main" data-audience="general" data-wp-game-id="animal-bamboo-pipes" data-runtime-localize="off">
   <div id="gameFrame" data-wp-frame-root>
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><span data-bamboo-t="summary">Preparing the waterways...</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
-  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">Panko's Bamboo Waterway</strong><label class="locale"><span data-bamboo-t="language">Language</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="《胖達竹水道》遊戲圖片"><div><p class="eyebrow" data-bamboo-t="kicker">PANKO'S PUZZLE GARDEN</p><h1 data-bamboo-t="title">胖達竹水道</h1><p data-bamboo-t="summary">Turn the bamboo. Let every drop reach the flowering grove.</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">Start Game</button></div></section></main><section class="game-page-info game-page-info-static" aria-label="胖達竹水道 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2>胖達竹水道</h2><p>旋轉完整竹管網路，讓水從雕刻泉眼流向開花水池，不留斷點、錯誤分支或偏移的管線中心。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>旋轉竹管網路益智遊戲</strong></div><div class="game-info-fact"><span>類型</span><strong>益智 · 策略 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>容易上手，逐步挑戰</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關 2–8 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界與任務</h3><p>胖達正在修復三十條被暴風雨扭亂竹節的花園水道。每個棋盤都是預先設計好的工程問題：泉眼、水池、管線形狀與正確路徑都在開始前確定。</p>
-<p>流動的水不只是裝飾。它會沿著目前接通的網路從泉眼前進，讓錯誤轉向、死路與未接通的區域在你繼續旋轉前清楚可讀。</p></div>
-      <div class="game-info-section"><h3>遊戲系統</h3><p>點按方格讓竹管順時針旋轉。直管、彎管、接點、泉眼與終點都使用相同的中心接點。</p>
-<p>只有兩側開口正對彼此時，管線才算接通。碰到美術邊緣或相鄰邊緣並不代表接上。</p>
-<p>泉眼會立刻沿著所有有效分支出水。當水在該關規則下抵達終點時就會過關；終點本身不需要旋轉。</p>
-<p>復原會還原一次旋轉，重來會還原原始棋盤，提示會指出下一個有用修正但不會自動解題。</p></div>
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>從水平關卡軌道選擇已解鎖的水道。</li><li>旋轉擁擠的接點前，先從終點回頭追蹤，再從泉眼向前確認路線。</li><li>逐一旋轉必要管線，讓每個使用中的開口都對準鄰格中心。</li><li>確認水抵達清楚標示的開花終點，再從結果畫面前往下一條水道。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>先處理邊緣管線；不可能朝外的開口會直接排除方向。</li><li>先用直線建立穩定主幹，再決定接點分支。</li><li>水流停下時，檢查第一個乾燥接點，不要立刻旋轉很遠下游的管線。</li><li>只有當關卡要求整張網路通水時，才需要讓未使用分支朝內。</li></ul></div>
-      <div class="game-info-section"><h3>關卡與難度成長</h3><p>六個五關章節會從短直線路徑，逐步加入彎管、接點、迴路、誤導分支與密集混合網路。</p>
-<p>後期水道增加結構上的歧義，而不只是藏起管線或要求更快操作。</p></div>
-      <div class="game-info-section"><h3>開發設計理念</h3><p>每格管線都填滿自己的棋盤格，每個接點都共用同一條數學中心線，因此手機與桌面上的美術、點擊區、水流路徑和過關判定描述的是同一套幾何。</p></div>
-      <div class="game-info-section game-info-parent"><h3>玩家與存檔資訊</h3><p>不需要帳號、計時器、購買或公開分數。解鎖進度與最佳旋轉次數保存在此瀏覽器；清除網站資料可能會重置它們。</p></div>
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>提示會自動旋轉嗎？</dt><dd>不會。提示只會標記一根尚未接通的必要竹管並顯示路線提示，仍由你親自旋轉竹管。</dd></div><div><dt>為什麼中間還有斷點？</dt><dd>兩個開口必須在相鄰方格邊緣的同一個中心點正確相對。</dd></div><div><dt>終點需要旋轉嗎？</dt><dd>不需要，只要水抵達它的入口即可。</dd></div><div><dt>裝飾分支可以忽略嗎？</dt><dd>只有在目前關卡不要求每根管線通水時才可以。</dd></div><div><dt>進度會保存嗎？</dt><dd>會，已修復水道與本機最佳結果會保存在此瀏覽器。</dd></div><div><dt>支援哪些控制方式與螢幕尺寸？</dt><dd>觸控、滑鼠與鍵盤使用同一套規則，版面會在手機、橫向與桌面視窗中一起縮放。</dd></div><div><dt>進度會自動同步到其他裝置嗎？</dt><dd>不會，進度只保存在目前瀏覽器；其他瀏覽器或裝置會有獨立進度。</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-bus-jam/"><img src="/assets/interface7-redrawn/animal-bus-jam.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Panko 公車大塞車</strong><span>判讀車隊順序，在有限候車通道堵死前安排露出的乘客，挑戰 30 座轉運站。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-one-line/"><img src="/assets/interface7-redrawn/animal-one-line.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>One Line 一筆到底</strong><span>One Line 一筆到底是由彩虹跳跳米米主演的 30 關格子解謎遊戲。</span></span></a></div></div>
-    </div>
-  </section></div>
-  <main id="stage" class="screen stage stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-bamboo-pipes-scenery-block-v20.webp" style="--wp-stage-art:url('../../assets/animal-bamboo-pipes-scenery-block-v20.webp')" hidden><header class="stage-header"><button class="back" type="button" data-back data-wp-return="stage">←</button><div><small data-bamboo-t="choose">CHOOSE A WATERWAY</small><h2 data-bamboo-t="title">Panko's Bamboo Waterway</h2></div></header><div id="rail" class="rail stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" aria-label="Stage selector"></div><nav class="stage-tabs" aria-label="Waterways"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-bamboo-t="waterways">Waterways</button><span aria-hidden="true"></span></nav></main>
-  <main id="battle" class="screen battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><header><button class="back" type="button" data-back data-wp-return="battle">←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="moves" aria-live="polite"></span><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" aria-expanded="false" aria-controls="battleSettingsPanel">⚙</button><div id="battleSettingsPanel" class="battle-settings-panel" role="group" aria-label="Settings" hidden><label for="battleLocale"><span id="battleLanguageLabel">Language</span><select id="battleLocale"></select></label></div></header><section class="battle-panel"><p id="cue" class="battle-objective" aria-live="polite"></p><div id="board" class="board" role="grid" aria-label="Bamboo pipe puzzle"></div><div class="tools"><button id="undo" data-bamboo-t="undo">Undo</button><button id="hint" data-bamboo-t="hint">Hint</button><button id="restart" data-bamboo-t="restart">Restart</button></div></section><section id="result" class="result-panel" data-wp-result-audit role="dialog" aria-modal="true" aria-describedby="resultText resultMastery resultPreview" hidden><img src="../../assets/animal-bamboo-pipes-panda-block-v20.webp" alt=""><p class="eyebrow" data-bamboo-t="clear">WATERWAY RESTORED</p><h2 data-bamboo-t="clearTitle">The grove is blooming!</h2><p id="resultText"></p><p id="resultMastery" class="result-mastery" aria-live="polite"></p><p id="resultPreview" class="result-preview" aria-live="polite"></p><div><button id="resultStages" data-bamboo-t="waterways">Waterways</button><button id="next" data-bamboo-t="next">Next waterway</button><button id="retry" data-bamboo-t="replay">Replay</button></div></section></main>
-  <template id="leaveDialogTemplate"><section id="leaveDialog" class="leave-panel" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden><h2 id="leaveTitle" data-bamboo-t="leaveTitle">Keep this waterway?</h2><p id="leaveText" data-bamboo-t="leaveText">Continue keeps every pipe in place. Returning to Waterways ends this attempt.</p><div><button id="continueBattle" class="primary" type="button" data-bamboo-t="continue">Continue playing</button><button id="leaveBattle" type="button" data-bamboo-t="returnMap">Waterways</button></div></section></template>
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-bamboo-t="title">胖達竹水道</strong><span data-bamboo-t="summary">旋轉竹管，將泉水引到花圃。</span><div class="loading-track"><i id="loadingFill"></i></div></div></section>
+  <div id="mainGroup" class="main-group"><main id="main" class="screen main"><header class="main-header"><a class="return" data-wp-return="main" href="/" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-bamboo-t="title">胖達竹水道</strong><label class="locale"><span data-bamboo-t="language">語言</span><select id="locale"></select></label></header><section class="hero"><img src="../../assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="《胖達竹水道》遊戲圖片"><div><p class="eyebrow" data-bamboo-t="kicker">胖達的益智花園</p><h1 data-bamboo-t="title">胖達竹水道</h1><p data-bamboo-t="summary">旋轉竹管，將泉水引到花圃。</p><strong id="mainProgress" class="main-progress"></strong><button id="start" class="primary" type="button" data-bamboo-t="start">開始遊戲</button></div></section></main><section id="publicGuide" class="game-page-info game-page-info-static"><div class="game-info-hero"><div class="game-info-title"><h2 data-bamboo-t="title">胖達竹水道</h2><p data-bamboo-t="summary">旋轉竹管，將泉水引到花圃。</p></div></div><div class="game-info-sections"><section class="game-info-section"><h3 data-bamboo-t="guideRulesTitle">玩法</h3><ol><li data-bamboo-t="guideRule1">選擇已解鎖的水道，點竹管順時針旋轉；相鄰格子的管口對上，水才能流過。</li><li data-bamboo-t="guideRule2">從水源追蹤到花圃，找出中斷的接頭。接通水路即可解鎖下一條水道。</li></ol><p data-bamboo-t="guideRecovery">復原會撤回上次旋轉。提示標出一根竹管與下一個接點，仍需自己轉動。重新開始會還原本題。重玩已通關水道，挑戰更少旋轉次數。進度儲存在此瀏覽器。</p></section><div class="game-info-section"><h3>常見問題</h3><dl><div><dt>提示有限制嗎？</dt><dd>沒有限制。提示會標出一根尚未完成的必要竹管並顯示路線提示；仍需由你自己轉動竹管。</dd></div><div><dt>可以重玩水道嗎？</dt><dd>可以。所有已解鎖的水道都能再次遊玩。</dd></div><div><dt>進度會保存嗎？</dt><dd>是，僅保存在此瀏覽器。</dd></div></dl></div></div></section></div>
+  <main id="stage" class="screen stage stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-bamboo-pipes-scenery-block-v20.webp" style="--wp-stage-art:url('../../assets/animal-bamboo-pipes-scenery-block-v20.webp')" hidden><header class="stage-header"><button class="back" type="button" data-back data-wp-return="stage">←</button><div><small data-bamboo-t="choose">選擇水道</small><h2 data-bamboo-t="title">胖達竹水道</h2></div></header><div id="rail" class="rail stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" aria-label="Stage selector"></div><nav class="stage-tabs" aria-label="Waterways"><span aria-hidden="true"></span><button class="stage-tab active" type="button" aria-current="page" data-bamboo-t="waterways">水道</button><span aria-hidden="true"></span></nav></main>
+  <main id="battle" class="screen battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" hidden><header><button class="back" type="button" data-back data-wp-return="battle">←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="moves" aria-live="polite"></span><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" aria-label="Settings" aria-expanded="false" aria-controls="battleSettingsPanel">⚙</button><div id="battleSettingsPanel" class="battle-settings-panel" role="group" aria-label="Settings" hidden><label for="battleLocale"><span id="battleLanguageLabel">Language</span><select id="battleLocale"></select></label></div></header><section class="battle-panel"><p id="cue" class="battle-objective" aria-live="polite"></p><div id="board" class="board" role="grid" aria-label="Bamboo pipe puzzle"></div><div class="tools"><button id="undo" data-bamboo-t="undo">復原</button><button id="hint" data-bamboo-t="hint">提示</button><button id="restart" data-bamboo-t="restart">重來</button></div></section><section id="result" class="result-panel" data-wp-result-audit role="dialog" aria-modal="true" aria-describedby="resultText resultMastery resultPreview" hidden><img src="../../assets/animal-bamboo-pipes-panda-block-v20.webp" alt=""><p class="eyebrow" data-bamboo-t="clear">水道修復</p><h2 data-bamboo-t="clearTitle">竹園開花了！</h2><p id="resultText"></p><p id="resultMastery" class="result-mastery" aria-live="polite"></p><p id="resultPreview" class="result-preview" aria-live="polite"></p><div><button id="resultStages" data-bamboo-t="waterways">水道</button><button id="next" data-bamboo-t="next">下一條水道</button><button id="retry" data-bamboo-t="replay">重新遊玩</button></div></section></main>
+  <template id="leaveDialogTemplate"><section id="leaveDialog" class="leave-panel" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" aria-describedby="leaveText" hidden><h2 id="leaveTitle" data-bamboo-t="leaveTitle">要保留這條水道嗎？</h2><p id="leaveText" data-bamboo-t="leaveText">繼續遊玩會保留每根竹管的位置；返回水道會結束這次挑戰。</p><div><button id="continueBattle" class="primary" type="button" data-bamboo-t="continue">繼續遊玩</button><button id="leaveBattle" type="button" data-bamboo-t="returnMap">返回水道</button></div></section></template>
   </div>
   <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
   <script src="../../src/game-screen-frame.js"></script>
-  <script src="frame.js"></script>
+  <script src="frame.js?v=20260913-bamboo-block-v20"></script>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
-  <script src="levels.js"></script><script src="locales.js?v=20260831-bamboo-interface-v19"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260726-bamboo-flow1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260831-bamboo-interface-v19"></script><script src="../../src/game-page-info.js?v=20260720-locale11-2"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
+  <script src="levels.js"></script><script src="locales.js?v=20260913-bamboo-block-v20"></script><script src="guide-locales.js?v=20260913-bamboo-block-v20"></script><script src="../../src/tutorial.js?v=20260729-bamboo-public1"></script><script src="../../src/stage-selector-standard.js?v=20260726-bamboo-flow1" data-wp-stage-standard></script><script src="../../src/battle-canvas-standard.js?v=20260726-bamboo-flow1" data-wp-battle-standard></script><script src="game.js?v=20260913-bamboo-block-v20"></script><script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
   <script>window.addEventListener("load",()=>{document.getElementById("loadingPanel")?.classList.add("hidden");window.WonderAnalytics?.track?.("game_view",{game_id:"animal-bamboo-pipes"});},{once:true});</script>
 </body>
 </html>

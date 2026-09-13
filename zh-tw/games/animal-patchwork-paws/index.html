@@ -24,7 +24,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-patchwork-paws" />
-  <meta name="weightplay-game-version" content="v6" />
+  <meta name="weightplay-game-version" content="v7" />
   <meta name="weightplay-interface-version" content="6" />
   <meta name="weightplay-scene-controls" content="immutable" />
   <meta name="theme-color" content="#315c6a" />
@@ -46,11 +46,11 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-patchwork-paws" data-wp-game-version="v6" data-runtime-localize="off">
+  <body data-audience="general" data-wp-game-id="animal-patchwork-paws" data-wp-game-version="v7" data-runtime-localize="off">
   <div id="loading" class="screen loading-screen"><div class="loader-mark">✣</div><p data-i18n="loading">Weaving the trail…</p></div>
   <main id="app" hidden>
     <section id="mainScreen" class="screen panel main-screen" data-screen="main" data-wp-standard-main-screen>
-      <header class="topbar main-header"><a id="mainReturn" class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><button id="backBtn" class="icon-btn back" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">拼布爪印</strong><button id="settingsBtn" class="icon-btn" data-wp-settings type="button" aria-label="Settings">⚙</button></header>
+      <header class="topbar main-header"><a id="mainReturn" class="main-return" data-wp-return="main" href="/" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" /></a><button id="backBtn" class="icon-btn back" data-wp-return="stage" type="button" aria-label="Back">←</button><strong data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">拼布爪印</strong><button id="settingsBtn" class="icon-btn wp-shell-legacy-control" type="button" aria-label="Settings" hidden>⚙</button></header>
       <div class="cover-wrap"><img class="main-poster" src="assets/animal-patchwork-paws-cover.svg" alt="" width="720" height="720" /><span class="cover-badge" data-i18n="kicker">A calm edge-matching puzzle</span></div>
       <p class="eyebrow" data-i18n="world">Pawprint Patchwork</p><h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">拼布爪印</h1>
       <p class="intro main-summary" data-i18n="intro">Restore 30 authored habitat stages across six arcs.</p>
@@ -76,9 +76,9 @@
 
     </div>
   </section>
-    <section id="stageScreen" class="screen panel stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg" style="--wp-stage-art:url('/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg')" hidden><header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><h2 data-i18n="choose">Choose a stage</h2><button id="stageSettingsBtn" class="icon-btn stage-settings" type="button" data-wp-stage-utility data-wp-settings aria-label="Settings">⚙</button></header><p class="eyebrow" data-i18n="chapter">Pawprint Patchwork · Six arcs</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page" data-i18n="chapter">Patches</button></nav></section>
+    <section id="stageScreen" class="screen panel stage-screen wp-stage-art-shell" data-screen="stage" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg" style="--wp-stage-art:url('/games/animal-patchwork-paws/assets/animal-patchwork-paws-cover.svg')" hidden><header class="panel-head stage-header"><button id="stageBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="stage" aria-label="Back"><span aria-hidden="true">←</span></button><h2 data-i18n="choose">Choose a stage</h2><button id="stageSettingsBtn" class="icon-btn wp-shell-legacy-control stage-settings" type="button" aria-label="Settings" hidden>⚙</button></header><p class="eyebrow" data-i18n="chapter">Pawprint Patchwork · Six arcs</p><div id="stageList" class="stage-list stage-rail" data-wp-stage-rail></div><nav class="stage-tabs" aria-label="Stage sections"><button type="button" aria-current="page" data-i18n="chapter">Patches</button></nav></section>
     <section id="battleScreen" class="screen panel battle-canvas battle-screen" data-screen="battle" data-wp-logical-battle-canvas hidden>
-      <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><div class="battle-head-title"><p class="eyebrow" data-i18n="round">Habitat stage</p><h2 id="patchTitle">Stage 1</h2></div><div class="battle-utility"><span id="progressPill" class="pill">1 / 30</span><button id="battleSettingsBtn" class="icon-btn battle-settings" type="button" data-wp-battle-utility data-wp-settings aria-label="Settings">⚙</button></div></header>
+      <header class="panel-head battle-header"><button id="battleBackBtn" class="back-btn wp-shell-return" type="button" data-wp-return="battle" aria-label="Back"><span aria-hidden="true">←</span></button><div class="battle-head-title"><p class="eyebrow" data-i18n="round">Habitat stage</p><h2 id="patchTitle">Stage 1</h2></div><div class="battle-utility"><span id="progressPill" class="pill">1 / 30</span><button id="battleSettingsBtn" class="icon-btn wp-shell-legacy-control battle-settings" type="button" aria-label="Settings" hidden>⚙</button></div></header>
       <p id="prompt" class="prompt"></p>
       <div class="weave-card"><div id="board" class="board" role="grid" aria-label="Patchwork board"></div><p id="ruleText" class="rule" role="note"></p></div>
       <p id="status" class="status" role="status" aria-live="polite"></p>

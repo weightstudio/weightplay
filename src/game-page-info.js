@@ -9946,6 +9946,12 @@
     const section = document.createElement("section");
     section.className = "game-page-info";
     if (["animal-footprint-folio", "animal-meadow-difference"].includes(id)) section.setAttribute("data-wp-game-guide", "");
+    if (id === "animal-footprint-folio") {
+      // Interface 7's compact global radius is useful for controls, but the
+      // General Guide is a public reading surface and must retain a framed,
+      // multi-section radius at every governed viewport.
+      section.style.setProperty("--wp-ui-radius", "16px", "important");
+    }
     if (id === "animal-meadow-difference") {
       // Interface 7 exposes a compact 3px block radius by default. The
       // General Guide is a framed reading surface, so keep its larger radius

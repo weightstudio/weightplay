@@ -6,15 +6,18 @@
 .board-section{position:absolute;top:3px;transform:translateX(-50%);font-size:11px;color:#ffdf89;background:#17333c;padding:2px 5px}
 
 .active-scene{transform-origin:top left;margin-left:0;margin-right:auto}
-/* Battle-owned state and route preview; shared navigation remains untouched. */
-#battleContent{grid-template-rows:minmax(0,1fr) 156px 48px}
-#side{grid-template-rows:32px 24px minmax(28px,1fr) 20px 22px;position:relative}
-#calculation{direction:ltr;unicode-bidi:isolate;font-size:11px;line-height:24px;color:#9df0c8;white-space:nowrap;overflow:auto;text-align:center}
-#calculation[data-low="true"]{color:#ff9baf}
-#feedback[data-risk="true"]{color:#ffadb8}
-#choice{position:absolute;bottom:0;inset-inline:0;display:flex;justify-content:center;gap:8px;background:#173944;z-index:2;min-height:42px}
-#choice button{font-size:12px;min-height:40px;padding:6px 12px}
+/* A stable compact status row gives the released space to the board. */
+#battleContent{position:relative;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 32px 48px}
+#arena{grid-column:1;grid-row:1}
+#side{grid-column:1;grid-row:2;display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
+#objective,#calculation{display:none}
+#feedback{direction:ltr;unicode-bidi:plaintext;flex:1;min-width:0;max-height:32px;font-size:12px;line-height:16px;padding:0 4px}
+#legend{flex:none;font-size:11px}
+#legend:empty{display:none}
+.tools{grid-column:1;grid-row:3}
+#choice{position:absolute;bottom:0;inset-inline:0;display:grid;grid-template-columns:1fr 1fr;gap:6px;height:48px;background:#173944;z-index:2}
+#choice button{font-size:12px;min-width:0;padding:6px 12px}
+#battle .wp-frame-popover .motion{display:flex;justify-content:space-between;font-size:12px;min-height:40px;gap:10px}
 .impact-cue{position:absolute;z-index:4;pointer-events:none;transform:translate(-50%,-130%);border:1px solid #ffe3a0;border-radius:6px;background:#243642ed;color:#ffe09a;font-size:12px;font-weight:800;padding:5px 8px;white-space:nowrap}
 .impact-cue[data-kind="pickup"]{color:#a0ffce;border-color:#a0ffce}
 .impact-cue[data-kind="fail"]{color:#ff9cb4;border-color:#ff9cb4}
-@media(min-aspect-ratio:1.45){#battleContent{grid-template-rows:minmax(0,1fr) 48px}#side{grid-template-rows:40px 28px minmax(28px,1fr) 24px 24px}#calculation{font-size:10px}#choice{min-height:38px}}

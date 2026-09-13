@@ -7,6 +7,9 @@
     const $ = id => document.getElementById(id);
     const root = $('gameFrame'), main = $('main'), stage = $('stage'), battle = $('battle');
     if (!root || !window.WeightPlayScreenFrame) throw new Error('BAMBOO_FRAME_DEPENDENCY_REQUIRED');
+    // The shared guide measures against the page, not an already-inset Main.
+    const guide = $('publicGuide');
+    root.after(guide);
     const mainHeader = main.querySelector('header');
     const mainContent = main.querySelector('.hero');
     const copy = mainContent.querySelector(':scope > div');
@@ -21,6 +24,7 @@
 
     const stageHeader = stage.querySelector('header');
     stageHeader.querySelector('h2').dataset.wpFrameTitle = '';
+    stageHeader.querySelector('h2').hidden = true;
     stageHeader.querySelector('small').hidden = true;
     stage.querySelector('.stage-tabs').dataset.wpFrameNav = '';
 
@@ -30,6 +34,10 @@
       $(id).inert = true;
     }
     const battleContent = battle.querySelector('.battle-panel');
+    const boardSpace = document.createElement('div');
+    boardSpace.className = 'bamboo-board-space';
+    $('board').before(boardSpace);
+    boardSpace.append($('board'));
     const context = battleHeader.querySelector(':scope > div');
     // Keep the existing localized context and moves nodes, never clone their IDs.
     const info = document.createElement('div');
@@ -54,6 +62,7 @@
     binding = Object.freeze({
       sync() {
         const scene = document.body.dataset.screen || 'main';
+        guide.hidden = scene !== 'main';
         frame.activate(scene, {covered: scene === 'battle' &&
           (!$('result').hidden || !$('leaveDialog').hidden)});
       },
