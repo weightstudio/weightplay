@@ -1366,6 +1366,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   let viewportHeight = 0;
   let viewportMode = "";
   let activeScene = "main";
+  let sharedFrame = null;
   let sceneGeneration = 0;
   const STAGE_POOL_SIZE = 9;
   const STAGE_NAV_SHORTCUTS = "ArrowLeft ArrowRight Home End";
@@ -1394,6 +1395,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     if (!['main', 'stage', 'battle'].includes(scene)) return sceneGeneration;
     if (scene !== "stage") cancelStageSettlement();
     activeScene = scene;
+    sharedFrame?.activate(scene);
     sceneGeneration += 1;
     if (scene === "main") document.documentElement.removeAttribute("data-screen");
     else document.documentElement.dataset.screen = scene;
@@ -1873,6 +1875,10 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function localizeStatic() {
+    import('/games/animal-guard-yard/guide.mjs?v=32').then(({guardYardGuide}) => {
+      const guide=document.querySelector('.game-page-info');
+      if (guide) guide.outerHTML=guardYardGuide(locale);
+    }).catch(error => console.error('Guard Yard guide could not initialize',error));
     document.documentElement.lang = window.WonderI18n?.actualLocale?.() || locale;
     document.title = `${t("gameTitle")} - WeightPlay`;
     document.querySelectorAll("[data-ui]").forEach((node) => {
@@ -2638,6 +2644,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.gameShell.inert = true;
     nodes.gameShell.setAttribute("aria-hidden", "true");
     nodes.pausePanel.classList.remove("hidden");
+    sharedFrame?.activate('battle', {covered:true});
     window.requestAnimationFrame(() => nodes.resumeBtn.focus({ preventScroll: true }));
   }
 
@@ -2646,6 +2653,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     paused = false;
     nodes.pausePanel.classList.add("hidden");
     nodes.gameShell.inert = false;
+    sharedFrame?.activate('battle');
     nodes.gameShell.removeAttribute("aria-hidden");
     running = true;
     lastTick = performance.now();
@@ -3528,6 +3536,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     nodes.gameShell.classList.add("hidden");
     nodes.gameShell.inert = true;
     nodes.resultPanel.classList.remove("hidden");
+    sharedFrame?.activate('battle', {covered:true});
     primaryResultAction.focus({ preventScroll: true });
     renderWallet();
     renderKennel();
@@ -3794,6 +3803,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   $('yardSpeed').onclick=()=>{speedFactor=speedFactor===1?2:1;updateHud();};
   window.__guardYardUpgrade={snapshot:()=>({phase:combatPhase,waveIndex,waveLimit,energy,spawned,baseHp,stage:currentStage+1,guards:entities.filter(e=>e.kind==='guard').map(e=>({id:e.id,row:e.row,col:e.col,hp:e.hp})),enemies:entities.filter(e=>e.kind==='zombie').map(e=>({type:e.type,row:e.row,x:e.x,hp:e.hp})),rallyCooldown}),stages};
   localizeStatic();
+  sharedFrame = window.mountGuardYardFrame();
   showMenuTab(activeMenuTab);
   showMain();
   initLoading();

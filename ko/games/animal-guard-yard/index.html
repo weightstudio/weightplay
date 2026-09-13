@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="로비로 돌아가기"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ko.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Animal Guard Yard 게임 정보">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 오리지널 게임 가이드</span><h2 data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h2><p>5개 경로에서 정원 30단계와 서로 다른 보스 6종을 막으세요. 먼저 배치하고 웨이브를 시작한 뒤 매 웨이브 사이에 재정비하세요. 집의 하트가 모두 사라지기 전에 모든 적을 물리치세요. 사자는 관통, 거북은 방어, 부엉이는 감속, 여우는 인접 경로 지원을 맡습니다. 후반에는 바위가 배치를 제한합니다.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>게임플레이</span><strong>차선 방어</strong></div><div class="game-info-fact"><span>장르</span><strong>Strategy · 타워 디펜스 · Animal</strong></div><div class="game-info-fact"><span>난이도</span><strong>Medium</strong></div><div class="game-info-fact"><span>예상 시간</span><strong>5~8분</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>게임 방법</h3><ol><li>수호자를 고른 뒤 칸에 배치하세요. 한 명 이상 배치한 뒤 시작하세요.</li><li>공격 시작 · 웨이브 방어 성공 · 재정비</li><li>에너지 상한은 400입니다. 전투 중 초당 2 회복됩니다. 에너지 아이콘은 누르면 35, 6초 뒤 자동 회수 시 20입니다. 회수는 남은 체력 비율에 따라 준비 중 100%, 전투 중 50%를 반환합니다. 웨이브 방어 보너스는 45입니다.</li><li>수호자는 최대 12명입니다. 회수하고 진형을 바꾸세요.</li><li>한 경로를 선택해 모든 적을 2초간 느리게 합니다.</li><li>5단계 완료 시 여우 합류. 기존 구매는 유지됩니다.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>전략 팁</h3><ul><li>바위에는 배치할 수 없습니다</li><li>한 경로를 선택해 모든 적을 2초간 느리게 합니다.</li><li>전투 중 에너지가 회복됩니다. 회수하면 남은 체력에 따라 일부를 돌려받습니다.</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>자주 묻는 질문</h3><dl><div><dt>어떻게 시작하나요?</dt><dd>수호자를 고른 뒤 칸에 배치하세요. 한 명 이상 배치한 뒤 시작하세요.</dd></div><div><dt>에너지는 어떻게 얻나요?</dt><dd>에너지 상한은 400입니다. 전투 중 초당 2 회복됩니다. 에너지 아이콘은 누르면 35, 6초 뒤 자동 회수 시 20입니다. 회수는 남은 체력 비율에 따라 준비 중 100%, 전투 중 50%를 반환합니다. 웨이브 방어 보너스는 45입니다.</dd></div><div><dt>몇 단계가 있나요?</dt><dd>5개 경로에서 정원 30단계와 서로 다른 보스 6종을 막으세요. 먼저 배치하고 웨이브를 시작한 뒤 매 웨이브 사이에 재정비하세요. 집의 하트가 모두 사라지기 전에 모든 적을 물리치세요. 사자는 관통, 거북은 방어, 부엉이는 감속, 여우는 인접 경로 지원을 맡습니다. 후반에는 바위가 배치를 제한합니다.</dd></div><div><dt>여우는 어떻게 합류하나요?</dt><dd>5단계 완료 시 여우 합류. 기존 구매는 유지됩니다.</dd></div><div><dt>웨이브 1/3?</dt><dd>웨이브 방어 성공 · 재정비</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>함께 즐길 게임</h3><div class="game-info-related"><a class="game-info-related-card" href="/ko/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>프리즘 대대</strong><span>세 차선 사이에서 자동 프리즘 포대를 전환하고, 몰려오는 편대를 파괴하며, 희귀 공격 코어를 모아 살아남은 괴물이 크리스털 코어에 닿지 않게 하세요.</span></span></a><a class="game-info-related-card" href="/ko/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>룬 전술</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>정원을 지키세요</h2><p>적이 집에 도착하기 전에 막으세요.</p><div class="game-info-sections"><div class="game-info-section"><h3>게임 방법</h3><ol><li>수호자를 고르고 빈 잔디 칸에 배치한 뒤 웨이브를 시작하세요.</li><li>적의 진입 경로를 보세요. 앞에는 방어형, 뒤에는 원거리 수호자를 두고 에너지로 약한 경로를 보강하세요.</li><li>웨이브 사이에 수호자를 회수하고 재배치한 뒤 다음 웨이브를 시작하세요.</li></ol></div><div class="game-info-section"><h3>방어 요령</h3><p>비상 에너지를 남기고 위험한 경로에 집결을 사용하세요. 바위에는 배치할 수 없습니다.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>진행 상황이 저장되나요?</dt><dd>스테이지 잠금 해제, 클리어, 점수, 메달, 코인과 훈련은 이 브라우저에 저장됩니다.</dd></div></dl></div></div></section>
 </body>
 </html>

@@ -23,13 +23,13 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-triple-match/" />
     <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v20">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v22">
+  <meta name="weightplay-interface-version" content="7">
   <title>Abbinamento triplo | WeightPlay</title>
   <meta name="description" content="Leggi le pile di tesori, crea coppie sicure e completa ogni trio prima di riempire i sette spazi di Mimi in 30 livelli." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260910-triple-match-main-v21">
+  <link rel="stylesheet" href="style.css?v=20260913-triple-block-v22">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,7 +45,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
+  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-combined-sound="true" data-sound-toggle="off">
   <div id="gameFrame" data-wp-frame-root>
   <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Apertura della serra dei tesori…</strong></div>
 
@@ -79,7 +79,8 @@
         <article class="game-info-section"><h3 data-t="chaptersTitle">Scaffali che cambiano</h3><p data-t="chaptersText">Gli scaffali successivi aggiungono rampicanti, gusci di cristallo, tesori nascosti e pile mobili. Leggi la regola prima di scegliere un trio.</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">Pianifica prima di toccare</h3><p data-t="strategyText">Cerca coppie e conserva uno spazio libero.</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">Progressi e privacy</h3><p data-t="trustText">I progressi restano nel browser; nessun accesso richiesto.</p></article>
-      <div class="game-info-section"><h3>Domande frequenti</h3><dl><div><dt>Perché non posso scegliere un tesoro?</dt><dd>Un altro oggetto attivo copre ancora la sua area di selezione.</dd></div><div><dt>Quando scompare un trio?</dt><dd>Non appena il terzo tesoro uguale entra nel vassoio.</dd></div><div><dt>Restano spazi vuoti dopo un trio?</dt><dd>No. I tesori rimasti si avvicinano automaticamente.</dd></div></dl></div></div>
+      </div>
+      <div class="game-info-section" data-wp-owned-faq><h3>Domande frequenti</h3><dl><dt>Perché non posso scegliere un tesoro?</dt><dd>Un altro oggetto attivo copre ancora la sua area di selezione.</dd><dt>Quando scompare un trio?</dt><dd>Non appena il terzo tesoro uguale entra nel vassoio.</dd><dt>Restano spazi vuoti dopo un trio?</dt><dd>No. I tesori rimasti si avvicinano automaticamente.</dd></dl></div>
     </section>
   </div>
 
@@ -103,8 +104,8 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBack" class="back-btn" type="button" aria-label="Indietro" data-t-aria="back" data-wp-return="battle">&larr;</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-game-title data-runtime-localize="off">Abbinamento triplo</strong></div>
-          <div class="hud"><span><b data-t="left">Rimasti</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
+          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-frame-stat></strong></div>
+          <div class="hud" data-wp-frame-info><span><b data-t="left">Rimasti</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
           <button id="soundBtn" class="icon-btn" type="button" aria-label="Audio" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
           <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="Come giocare" data-t-aria="help">?</button>
         </header>
@@ -155,9 +156,10 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
   <script src="frame.js?v=triple-block-v22"></script>
-  <script src="game.js?v=20260910-triple-match-main-v21"></script>
+  <script src="game.js?v=20260913-triple-block-v22"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

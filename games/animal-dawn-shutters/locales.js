@@ -43,6 +43,22 @@
   const hintPrefix = { "zh-Hant": "調整晨光", "zh-Hans": "调整晨光", ja: "朝の光を調整", ko: "새벽빛 조절", es: "Ajusta la luz", "pt-BR": "Ajuste a luz", fr: "Règle la lumière", de: "Stelle das Licht ein", it: "Regola la luce", ru: "Настройте свет", hi: "रोशनी समायोजित करें", ar: "اضبط الضوء" };
   const locales = { en: { ...base } };
   Object.keys(overrides).forEach((locale) => { locales[locale] = { ...base, ...overrides[locale] }; });
+  const faqCopy = {
+    en: { faqQuestion: "Is progress saved?", faqAnswer: "Cleared rooms and the best tap total are saved only in this browser when storage is available." },
+    "zh-Hant": { faqQuestion: "進度會保存嗎？", faqAnswer: "完成的房間與最佳點擊總數只會在可用時保存在這個瀏覽器。" },
+    "zh-Hans": { faqQuestion: "进度会保存吗？", faqAnswer: "完成的房间与最佳点击总数只会在可用时保存在这个浏览器。" },
+    ja: { faqQuestion: "進行状況は保存されますか？", faqAnswer: "完了した部屋と最少タップ数は、このブラウザでのみ保存されます。" },
+    ko: { faqQuestion: "진행이 저장되나요?", faqAnswer: "완료한 방과 최소 탭 수는 이 브라우저에만 저장돼요." },
+    es: { faqQuestion: "¿Se guarda el progreso?", faqAnswer: "Las salas completadas y el mejor total de toques solo se guardan en este navegador cuando el almacenamiento está disponible." },
+    "pt-BR": { faqQuestion: "O progresso é salvo?", faqAnswer: "As salas concluídas e o melhor total de toques ficam salvos somente neste navegador quando o armazenamento está disponível." },
+    fr: { faqQuestion: "La progression est-elle sauvegardée ?", faqAnswer: "Les pièces terminées et le meilleur total de pressions sont enregistrés uniquement dans ce navigateur lorsque le stockage est disponible." },
+    de: { faqQuestion: "Wird der Fortschritt gespeichert?", faqAnswer: "Abgeschlossene Räume und die beste Tippzahl werden nur in diesem Browser gespeichert, wenn lokaler Speicher verfügbar ist." },
+    it: { faqQuestion: "I progressi vengono salvati?", faqAnswer: "Le stanze completate e il miglior totale di tocchi vengono salvati solo in questo browser quando lo spazio è disponibile." },
+    ru: { faqQuestion: "Сохраняется ли прогресс?", faqAnswer: "Завершённые комнаты и лучший результат по нажатиям сохраняются только в этом браузере, если доступно хранилище." },
+    hi: { faqQuestion: "क्या प्रगति सहेजी जाती है?", faqAnswer: "पूरे किए गए कमरे और सबसे कम टैप इसी ब्राउज़र में सहेजे जाते हैं, जब संग्रहण उपलब्ध हो।" },
+    ar: { faqQuestion: "هل يُحفظ التقدم؟", faqAnswer: "تُحفظ الغرف المكتملة وأفضل مجموع للنقرات في هذا المتصفح فقط عند توفر التخزين." },
+  };
+  Object.entries(faqCopy).forEach(([locale, extra]) => Object.assign(locales[locale], extra));
   const guideDepth = {
     en: {
       guideDepthTitle: "Read the room before you tap",

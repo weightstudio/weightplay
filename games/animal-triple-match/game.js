@@ -168,8 +168,8 @@
 
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
-  const GAME_VERSION = 18;
-  const INTERFACE_VERSION = 6;
+  const GAME_VERSION = 22;
+  const INTERFACE_VERSION = 7;
   const CHAPTERS = ["openShelf","vineGallery","crystalRoom","mysteryLoft","shiftingHall","grandFinale"];
   const ITEM_NAMES = ["Acorn Lantern","Moon Cup","Shell Compass","Berry Brooch","Cloud Jar","Prism Flower","Star Telescope","Leaf Locket","Coral Music Box","Bee Bell","Mushroom Lamp","Crystal Feather"];
   const ITEM_NAMES_ZH_HANT = ["橡果提燈","月光杯","貝殼羅盤","莓果胸針","雲朵罐","稜鏡花","星光望遠鏡","葉片墜飾","珊瑚音樂盒","蜜蜂鈴","蘑菇燈","水晶羽毛"];
@@ -946,9 +946,12 @@
     return pendingMatch?.runRef === run ? new Set((pendingMatch.groups || []).flat()) : new Set();
   }
   function pieceBounds(piece) {
-    const w = els.board.clientWidth || 390, h = els.board.clientHeight || 788, size = 78;
+    // A short viewport scrolls the board instead of compressing separate rows
+    // into overlapping hit targets. Hit testing and rendering share this space.
+    const w = els.board.clientWidth || 390, h = Math.max(350, els.board.clientHeight), size = 78;
     const trackX = Math.max(0, w - size - 24), trackY = Math.max(0, h - size - 24);
-    const left = 12 + piece.x * trackX, top = 12 + piece.y * trackY;
+    const left = 12 + Math.max(0, Math.min(1, piece.x)) * trackX;
+    const top = 12 + Math.max(0, Math.min(1, piece.y)) * trackY;
     return { left, top, right: left + size, bottom: top + size };
   }
   function isBlocked(piece) {
@@ -963,12 +966,12 @@
   }
   function layoutPieces() {
     if (!run) return;
-    const w = els.board.clientWidth, h = els.board.clientHeight, size = 78;
     run.pieces.forEach(piece => {
       const el = els.board.querySelector(`[data-piece="${piece.id}"]`);
       if (!el) return;
-      el.style.left = `${12 + piece.x * Math.max(0, w - size - 24)}px`;
-      el.style.top = `${12 + piece.y * Math.max(0, h - size - 24)}px`;
+      const bounds = pieceBounds(piece);
+      el.style.left = `${bounds.left}px`;
+      el.style.top = `${bounds.top}px`;
       el.style.zIndex = String(piece.layer + 1);
     });
   }
@@ -1162,7 +1165,9 @@
     try {
       volume = Math.max(0, Math.min(100, Number(localStorage.getItem("weightPlayEffectsVolume") ?? 80))) / 100;
     } catch {}
-    if (!save.sound || volume <= 0) return;
+    // Shared preferences own sound; a legacy per-game save must not contradict them.
+    if (window.WonderSound) volume = window.WonderSound.getEffectsVolume() / 100;
+    if ((window.WonderSound ? window.WonderSound.isMuted() : !save.sound) || volume <= 0) return;
     try {
       audio ||= new (window.AudioContext || window.webkitAudioContext)();
       const tones = { start:[392,.08],pick:[520,.05],match:[784,.18],crack:[220,.08],reveal:[660,.1],shuffle:[330,.12],undo:[280,.08],hint:[880,.1],win:[988,.35],fail:[170,.28] };

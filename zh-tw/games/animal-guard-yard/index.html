@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="返回大廳"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/zh-tw.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="守衛庭院 遊戲資訊">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原創遊戲指南</span><h2 data-wp-game-title data-runtime-localize="off">守衛庭院</h2><p>在五條路線守住 30 關庭院與六種首領。先布防，再迎戰，每波結束都能重新整備；在家園愛心耗盡前消滅所有敵人。獅子弓手穿透、龜甲衛士擋路、貓頭鷹減速、狐狸支援鄰路。後期石塊地形會限制部署位置。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>路線防守</strong></div><div class="game-info-fact"><span>類型</span><strong>策略 · 防守 · 動物</strong></div><div class="game-info-fact"><span>難度</span><strong>中等</strong></div><div class="game-info-fact"><span>預估遊玩時間</span><strong>每關約 5 至 8 分鐘</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>玩法說明</h3><ol><li>先選守衛，再點格子。至少放置一名守衛後開始迎戰。</li><li>迎戰 · 本波守住了，調整陣容再出發</li><li>能量上限 400；戰鬥中每秒恢復 2。能量圖片點擊獲得 35，6 秒未點會自動收取 20。撤回依剩餘血量比例退款：布防時 100%、戰鬥中 50%。守住一波另得 45 能量。</li><li>最多 12 名守衛；可撤回一名，重新調整陣容。</li><li>點選一路，讓該路所有敵人減速 2 秒。</li><li>通過第 5 關免費獲得狐狸；原有購買保留。</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>策略提示</h3><ul><li>石塊地形，無法部署</li><li>點選一路，讓該路所有敵人減速 2 秒。</li><li>戰鬥中自動恢復能量；撤回守衛可按剩餘血量回收部分能量。</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>常見問題</h3><dl><div><dt>如何開始？</dt><dd>先選守衛，再點格子。至少放置一名守衛後開始迎戰。</dd></div><div><dt>能量怎麼取得與回收？</dt><dd>能量上限 400；戰鬥中每秒恢復 2。能量圖片點擊獲得 35，6 秒未點會自動收取 20。撤回依剩餘血量比例退款：布防時 100%、戰鬥中 50%。守住一波另得 45 能量。</dd></div><div><dt>共有多少關？</dt><dd>在五條路線守住 30 關庭院與六種首領。先布防，再迎戰，每波結束都能重新整備；在家園愛心耗盡前消滅所有敵人。獅子弓手穿透、龜甲衛士擋路、貓頭鷹減速、狐狸支援鄰路。後期石塊地形會限制部署位置。</dd></div><div><dt>狐狸如何加入？</dt><dd>通過第 5 關免費獲得狐狸；原有購買保留。</dd></div><div><dt>第 1/3 波?</dt><dd>本波守住了，調整陣容再出發</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>相關遊戲</h3><div class="game-info-related"><a class="game-info-related-card" href="/zh-tw/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>稜光軍團</strong><span>在三條路線之間切換一座自動稜光砲台，摧毀來襲編隊，收集稀有攻擊核心，並讓所有存活的怪物遠離水晶核心。</span></span></a><a class="game-info-related-card" href="/zh-tw/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>符文戰棋</strong><span>《動物符文戰棋》是在 4×5 至 6×6 的多尺寸符文棋盤進行的 30 任務回合制戰役。</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>守住庭院</h2><p>攔截來襲敵人，別讓牠們抵達家園。</p><div class="game-info-sections"><div class="game-info-section"><h3>怎麼玩</h3><ol><li>先選守衛，再點空草地。放好守衛後按迎戰。</li><li>查看敵人來路，前排阻擋、後排遠攻，收集能量補強薄弱路線。</li><li>每波結束後，撤回並調整守衛，再開始下一波。</li></ol></div><div class="game-info-section"><h3>布防技巧</h3><p>保留能量應急；危急時對一路使用集結。石塊格不能放守衛。</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>進度會保存嗎？</dt><dd>關卡解鎖、通關、分數、勳章、金幣與訓練會保存在這個瀏覽器中。</dd></div></dl></div></div></section>
 </body>
 </html>

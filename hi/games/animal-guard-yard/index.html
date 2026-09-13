@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="लॉबी पर लौटें"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/hi.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Animal Guard Yard गेम की जानकारी">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay मौलिक गेम गाइड</span><h2 data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h2><p>पाँच पंक्तियों में 30 बगीचे चरण और छह अलग बॉस रोकें। पहले रक्षक रखें, लहर शुरू करें और लहरों के बीच फिर तैयारी करें। घर के सारे दिल खोने से पहले सभी शत्रु हराएँ। सिंह भेदता है, कछुआ रोकता है, उल्लू धीमा करता है और लोमड़ी पास की पंक्तियों की मदद करती है। पत्थर तैनाती रोकते हैं।</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>गेमप्ले</span><strong>लेन रक्षा</strong></div><div class="game-info-fact"><span>शैली</span><strong>Strategy · टावर रक्षा · Animal</strong></div><div class="game-info-fact"><span>कठिनाई</span><strong>Medium</strong></div><div class="game-info-fact"><span>अनुमानित समय</span><strong>5-8 मिनट</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>रक्षक चुनें और खाने पर रखें। शुरू करने से पहले कम से कम एक रखें।</li><li>लहर शुरू करें · लहर रोकी · फिर तैयारी करें</li><li>ऊर्जा सीमा 400 है। लड़ाई में प्रति सेकंड 2 लौटती है। वस्तु दबाने पर 35 या 6 सेकंड बाद अपने आप 20 मिलती है। वापसी शेष स्वास्थ्य के अनुपात में तैयारी में 100% और लड़ाई में 50% लौटाती है। लहर रोकने पर 45 मिलती है।</li><li>अधिकतम 12 रक्षक। गठन बदलने के लिए एक को वापस बुलाएँ।</li><li>एक पंक्ति चुनें: सभी शत्रु 2 सेकंड धीमे होंगे।</li><li>चरण 5 के बाद लोमड़ी मिलेगी। पिछली खरीद बनी रहती है।</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>रणनीति संकेत</h3><ul><li>पत्थर पर तैनाती नहीं</li><li>एक पंक्ति चुनें: सभी शत्रु 2 सेकंड धीमे होंगे।</li><li>लड़ाई में ऊर्जा लौटती है। वापस बुलाने पर शेष स्वास्थ्य के अनुसार कुछ ऊर्जा मिलती है।</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>अक्सर पूछे गए प्रश्न</h3><dl><div><dt>शुरू कैसे करें?</dt><dd>रक्षक चुनें और खाने पर रखें। शुरू करने से पहले कम से कम एक रखें।</dd></div><div><dt>ऊर्जा कैसे मिलती है?</dt><dd>ऊर्जा सीमा 400 है। लड़ाई में प्रति सेकंड 2 लौटती है। वस्तु दबाने पर 35 या 6 सेकंड बाद अपने आप 20 मिलती है। वापसी शेष स्वास्थ्य के अनुपात में तैयारी में 100% और लड़ाई में 50% लौटाती है। लहर रोकने पर 45 मिलती है।</dd></div><div><dt>कितने चरण हैं?</dt><dd>पाँच पंक्तियों में 30 बगीचे चरण और छह अलग बॉस रोकें। पहले रक्षक रखें, लहर शुरू करें और लहरों के बीच फिर तैयारी करें। घर के सारे दिल खोने से पहले सभी शत्रु हराएँ। सिंह भेदता है, कछुआ रोकता है, उल्लू धीमा करता है और लोमड़ी पास की पंक्तियों की मदद करती है। पत्थर तैनाती रोकते हैं।</dd></div><div><dt>लोमड़ी कैसे मिलेगी?</dt><dd>चरण 5 के बाद लोमड़ी मिलेगी। पिछली खरीद बनी रहती है।</dd></div><div><dt>लहर 1/3?</dt><dd>लहर रोकी · फिर तैयारी करें</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>मिलते-जुलते खेल</h3><div class="game-info-related"><a class="game-info-related-card" href="/hi/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>प्रिज़्म बटालियन</strong><span>तीन गलियों के बीच एक स्वचालित प्रिज़्म बैटरी बदलें, आती हुई संरचनाएँ नष्ट करें, दुर्लभ आक्रमण कोर इकट्ठा करें और बचे हुए राक्षसों को क्रिस्टल कोर से दूर रखें।</span></span></a><a class="game-info-related-card" href="/hi/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>रूण रणनीति</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>बगीचे की रक्षा करें</h2><p>शत्रुओं को घर पहुँचने से पहले रोकें।</p><div class="game-info-sections"><div class="game-info-section"><h3>कैसे खेलें</h3><ol><li>रक्षक चुनें और खाली घास के खाने पर रखें। लहर शुरू करने से पहले एक रक्षक तैनात करें।</li><li>हमले की पंक्तियाँ देखें। आगे अवरोधक और पीछे दूर से वार करने वाले रखें; ऊर्जा लेकर कमजोर पंक्तियाँ मजबूत करें।</li><li>लहरों के बीच रक्षकों को वापस बुलाकर नई जगह रखें, फिर अगली लहर शुरू करें।</li></ol></div><div class="game-info-section"><h3>रणनीति</h3><p>आपातकाल के लिए ऊर्जा बचाएँ और खतरे वाली पंक्ति में एकजुट का उपयोग करें। पत्थर पर रक्षक नहीं रख सकते।</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>क्या प्रगति सहेजी जाती है?</dt><dd>स्टेज अनलॉक, क्लियर, स्कोर, पदक, सिक्के और प्रशिक्षण इसी ब्राउज़र में सहेजे जाते हैं।</dd></div></dl></div></div></section>
 </body>
 </html>

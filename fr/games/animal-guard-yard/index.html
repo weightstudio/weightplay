@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Retour au lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/fr.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informations sur Guard Yard">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guide des jeux originaux WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Guard Yard</h2><p>Défendez cinq lignes dans 30 jardins contre six boss différents. Préparez les gardiens, lancez chaque vague et réorganisez entre les vagues. Battez tous les ennemis avant de perdre les cœurs du foyer. Le lion perce, la tortue bloque, le hibou ralentit et le renard soutient les lignes voisines. Les rochers limitent le placement.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jeu</span><strong>Lane Defense</strong></div><div class="game-info-fact"><span>Genre</span><strong>Strategy · Tower Defense · Animal</strong></div><div class="game-info-fact"><span>Difficulté</span><strong>Medium</strong></div><div class="game-info-fact"><span>Temps estimé</span><strong>5-8 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un gardien puis une case. Placez-en au moins un avant de lancer.</li><li>Lancer la vague · Vague repoussée · réorganisez</li><li>Énergie maximale : 400. Gain de 2 par seconde au combat. Un objet donne 35 au toucher ou 20 automatiquement après 6 secondes. Retirer rembourse 100 % en préparation ou 50 % au combat, selon la vie restante. Une vague repoussée donne 45.</li><li>12 gardiens maximum. Retirez-en un pour changer la formation.</li><li>Choisissez une ligne : ses ennemis sont ralentis pendant 2 secondes.</li><li>Le renard rejoint après le niveau 5. Les achats restent acquis.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Conseils</h3><ul><li>Rocher : placement impossible</li><li>Choisissez une ligne : ses ennemis sont ralentis pendant 2 secondes.</li><li>L’énergie revient au combat. Retirer rend une partie selon la vie restante.</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>Questions fréquentes</h3><dl><div><dt>Comment commencer ?</dt><dd>Choisissez un gardien puis une case. Placez-en au moins un avant de lancer.</dd></div><div><dt>Comment fonctionne l’énergie ?</dt><dd>Énergie maximale : 400. Gain de 2 par seconde au combat. Un objet donne 35 au toucher ou 20 automatiquement après 6 secondes. Retirer rembourse 100 % en préparation ou 50 % au combat, selon la vie restante. Une vague repoussée donne 45.</dd></div><div><dt>Combien de niveaux y a-t-il ?</dt><dd>Défendez cinq lignes dans 30 jardins contre six boss différents. Préparez les gardiens, lancez chaque vague et réorganisez entre les vagues. Battez tous les ennemis avant de perdre les cœurs du foyer. Le lion perce, la tortue bloque, le hibou ralentit et le renard soutient les lignes voisines. Les rochers limitent le placement.</dd></div><div><dt>Comment obtenir le renard ?</dt><dd>Le renard rejoint après le niveau 5. Les achats restent acquis.</dd></div><div><dt>Vague 1/3?</dt><dd>Vague repoussée · réorganisez</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Jeux associés</h3><div class="game-info-related"><a class="game-info-related-card" href="/fr/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Bataillon de prismes</strong><span>Basculez une batterie prismatique automatique entre trois voies, détruisez chaque formation, récoltez les noyaux d’attaque rares et éloignez les monstres du noyau de cristal.</span></span></a><a class="game-info-related-card" href="/fr/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Tactiques runiques</strong><span>Tactiques runiques animales est une campagne de 30 missions au tour par tour, jouée sur un plateau runique de trois cases sur quatre.</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>Défendez le jardin</h2><p>Arrêtez les ennemis avant qu’ils atteignent la maison.</p><div class="game-info-sections"><div class="game-info-section"><h3>Comment jouer</h3><ol><li>Choisissez un gardien et une case d’herbe libre. Placez-en un avant de lancer la vague.</li><li>Repérez les lignes attaquées. Placez les bloqueurs devant et les tireurs derrière ; collectez de l’énergie pour renforcer la défense.</li><li>Entre les vagues, retirez et replacez les gardiens avant de continuer.</li></ol></div><div class="game-info-section"><h3>Tactiques</h3><p>Gardez de l’énergie et utilisez Ralliement sur une ligne menacée. Les rochers interdisent le placement.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>La progression est-elle sauvegardée ?</dt><dd>Les niveaux débloqués, les victoires, les scores, les médailles, les pièces et l’entraînement sont enregistrés dans ce navigateur.</dd></div></dl></div></div></section>
 </body>
 </html>

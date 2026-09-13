@@ -3458,6 +3458,21 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.games.push(animalDawnShuttersPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDawnShuttersPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDawnShuttersPlanned.id);
 
+// Dawn Shutters cleared the exact v5/I6 Tester, Gameplay Reviewer, art,
+// Director, and Release Preflight gates. Expose the reviewed General game with
+// its truthful Battle preview and remove the planned-only trial boundary.
+const animalDawnShuttersPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-dawn-shutters");
+if (animalDawnShuttersPublic) {
+  animalDawnShuttersPublic.status = "playable";
+  animalDawnShuttersPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+    es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+    ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  animalDawnShuttersPublic.previewVideo = "assets/previews/animal-dawn-shutters-battle.webm";
+  delete animalDawnShuttersPublic.internalTrial;
+}
+
 // Weighted General prototype (2026-08-30). Keep the comparison lesson
 // planned and private until production art, QA, review, and release gates pass.
 const animalNestWeighLocaleKeys = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es", "pt-BR", "fr", "de", "it", "ru", "hi", "ar"];

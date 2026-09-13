@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Zurück zur Lobby"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/de.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Informationen zu Animal Guard Yard">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay-Leitfaden für Originalspiele</span><h2 data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h2><p>Verteidige fünf Reihen in 30 Gartenstufen gegen sechs verschiedene Bosse. Stelle Wächter auf, starte die Wellen und ordne dazwischen neu. Besiege alle Gegner, bevor das Haus alle Herzen verliert. Der Löwe durchschlägt, die Schildkröte blockiert, die Eule verlangsamt und der Fuchs hilft Nachbarreihen. Felsen begrenzen die Aufstellung.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Spielweise</span><strong>Lane Defense</strong></div><div class="game-info-fact"><span>Genre</span><strong>Strategy · Tower Defense · Animal</strong></div><div class="game-info-fact"><span>Schwierigkeit</span><strong>Medium</strong></div><div class="game-info-fact"><span>Geschätzte Zeit</span><strong>5-8 minutes</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>So wird gespielt</h3><ol><li>Wähle einen Wächter und ein Feld. Stelle vor dem Start mindestens einen auf.</li><li>Welle starten · Welle abgewehrt · neu aufstellen</li><li>Energiegrenze: 400. Im Kampf regenerieren 2 pro Sekunde. Ein Fund gibt beim Antippen 35 oder nach 6 Sekunden automatisch 20. Rückruf erstattet je nach Restleben 100 % in der Vorbereitung oder 50 % im Kampf. Eine abgewehrte Welle gibt 45.</li><li>Höchstens 12 Wächter. Rufe einen zurück, um die Formation zu ändern.</li><li>Wähle eine Reihe: Alle Gegner werden 2 Sekunden verlangsamt.</li><li>Der Fuchs kommt nach Stufe 5. Vorherige Käufe bleiben erhalten.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Strategietipps</h3><ul><li>Felsfeld: kein Aufstellen</li><li>Wähle eine Reihe: Alle Gegner werden 2 Sekunden verlangsamt.</li><li>Energie regeneriert im Kampf. Rückruf erstattet einen Teil je nach Restleben.</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Wie fange ich an?</dt><dd>Wähle einen Wächter und ein Feld. Stelle vor dem Start mindestens einen auf.</dd></div><div><dt>Wie funktioniert Energie?</dt><dd>Energiegrenze: 400. Im Kampf regenerieren 2 pro Sekunde. Ein Fund gibt beim Antippen 35 oder nach 6 Sekunden automatisch 20. Rückruf erstattet je nach Restleben 100 % in der Vorbereitung oder 50 % im Kampf. Eine abgewehrte Welle gibt 45.</dd></div><div><dt>Wie viele Stufen gibt es?</dt><dd>Verteidige fünf Reihen in 30 Gartenstufen gegen sechs verschiedene Bosse. Stelle Wächter auf, starte die Wellen und ordne dazwischen neu. Besiege alle Gegner, bevor das Haus alle Herzen verliert. Der Löwe durchschlägt, die Schildkröte blockiert, die Eule verlangsamt und der Fuchs hilft Nachbarreihen. Felsen begrenzen die Aufstellung.</dd></div><div><dt>Wie bekomme ich den Fuchs?</dt><dd>Der Fuchs kommt nach Stufe 5. Vorherige Käufe bleiben erhalten.</dd></div><div><dt>Welle 1/3?</dt><dd>Welle abgewehrt · neu aufstellen</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Ähnliche Spiele</h3><div class="game-info-related"><a class="game-info-related-card" href="/de/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Prismabataillon</strong><span>Wechsle eine automatische Prismabatterie zwischen drei Spuren, zerstöre jede Formation, sammle seltene Angriffskerne und halte alle überlebenden Monster vom Kristallkern fern.</span></span></a><a class="game-info-related-card" href="/de/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Runentaktik</strong><span>Tierische Runentaktik ist eine rundenbasierte Kampagne mit 30 Missionen auf einem drei mal vier Felder großen Runenbrett.</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>Verteidige den Garten</h2><p>Halte die Gegner auf, bevor sie das Haus erreichen.</p><div class="game-info-sections"><div class="game-info-section"><h3>So spielst du</h3><ol><li>Wähle einen Wächter und ein freies Grasfeld. Stelle einen auf, bevor du die Welle startest.</li><li>Achte auf angegriffene Reihen. Blocker nach vorne, Fernkämpfer dahinter; sammle Energie für Verstärkung.</li><li>Rufe zwischen den Wellen Wächter zurück und stelle sie neu auf.</li></ol></div><div class="game-info-section"><h3>Taktik</h3><p>Halte Energie bereit und nutze Sammeln in einer bedrohten Reihe. Auf Felsen können keine Wächter stehen.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Wird der Fortschritt gespeichert?</dt><dd>Freigeschaltete Stufen, Abschlüsse, Punkte, Medaillen, Münzen und Training werden in diesem Browser gespeichert.</dd></div></dl></div></div></section>
 </body>
 </html>

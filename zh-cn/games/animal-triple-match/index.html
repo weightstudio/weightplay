@@ -23,13 +23,13 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-triple-match/" />
     <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v20">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v22">
+  <meta name="weightplay-interface-version" content="7">
   <title>三消收纳 | WeightPlay</title>
   <meta name="description" content="观察分层宝物堆、建立安全配对，在咪咪的七格托盘塞满前完成 30 关的所有三连。" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260910-triple-match-main-v21">
+  <link rel="stylesheet" href="style.css?v=20260913-triple-block-v22">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,7 +45,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
+  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-combined-sound="true" data-sound-toggle="off">
   <div id="gameFrame" data-wp-frame-root>
   <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">正在开启宝物温室…</strong></div>
 
@@ -79,7 +79,8 @@
         <article class="game-info-section"><h3 data-t="chaptersTitle">逐步变化的货架</h3><p data-t="chaptersText">后续货架加入藤蔓、水晶外壳、神秘宝物与移动堆叠。先读货架规则，再决定凑哪一组。</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">点击前先规划</h3><p data-t="strategyText">诱人的物件可能打开好配对，也可能让托盘堆满单张。先找成对机会、观察上层，并保留一个紧急空位。</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">进度与隐私</h3><p data-t="trustText">过关、星星与最佳剩余格数只保存在本浏览器，不需要登录或个人资料。</p></article>
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>为什么不能选择宝物？</dt><dd>另一个仍在作用中的物件还遮住了它的选择范围。</dd></div><div><dt>三连组什么时候会消失？</dt><dd>第三个相同宝物放入托盘后就会立即消失。</dd></div><div><dt>三连组消失后会留下空位吗？</dt><dd>不会。剩余宝物会自动一起靠拢。</dd></div></dl></div></div>
+      </div>
+      <div class="game-info-section" data-wp-owned-faq><h3>常见问题</h3><dl><dt>为什么不能选择宝物？</dt><dd>另一个仍在作用中的物件还遮住了它的选择范围。</dd><dt>三连组什么时候会消失？</dt><dd>第三个相同宝物放入托盘后就会立即消失。</dd><dt>三连组消失后会留下空位吗？</dt><dd>不会。剩余宝物会自动一起靠拢。</dd></dl></div>
     </section>
   </div>
 
@@ -103,8 +104,8 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBack" class="back-btn" type="button" aria-label="返回" data-t-aria="back" data-wp-return="battle">&larr;</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-game-title data-runtime-localize="off">三消收纳</strong></div>
-          <div class="hud"><span><b data-t="left">剩余</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
+          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-frame-stat></strong></div>
+          <div class="hud" data-wp-frame-info><span><b data-t="left">剩余</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
           <button id="soundBtn" class="icon-btn" type="button" aria-label="音效" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
           <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="玩法" data-t-aria="help">?</button>
         </header>
@@ -155,9 +156,10 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
   <script src="frame.js?v=triple-block-v22"></script>
-  <script src="game.js?v=20260910-triple-match-main-v21"></script>
+  <script src="game.js?v=20260913-triple-block-v22"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

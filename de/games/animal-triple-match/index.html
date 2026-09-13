@@ -23,13 +23,13 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-triple-match/" />
     <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general">
-  <meta name="weightplay-game-version" content="v20">
-  <meta name="weightplay-interface-version" content="6">
+  <meta name="weightplay-game-version" content="v22">
+  <meta name="weightplay-interface-version" content="7">
   <title>Animal Triple Match | WeightPlay</title>
   <meta name="description" content="Lies geschichtete Schatzstapel, bilde sichere Paare und vollende in 30 Stufen jedes Trio, bevor Mimis sieben Plätze voll sind." />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
-  <link rel="stylesheet" href="style.css?v=20260910-triple-match-main-v21">
+  <link rel="stylesheet" href="style.css?v=20260913-triple-block-v22">
   <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260720-canvas-max920-1" data-wp-battle-standard>
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
@@ -45,7 +45,7 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
+  <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v22" data-wp-interface-version="7" data-wp-combined-sound="true" data-sound-toggle="off">
   <div id="gameFrame" data-wp-frame-root>
   <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Die Schatzhalle wird geöffnet…</strong></div>
 
@@ -79,7 +79,8 @@
         <article class="game-info-section"><h3 data-t="chaptersTitle">Wechselnde Regale</h3><p data-t="chaptersText">Spätere Regale bringen Ranken, Kristallhüllen, verborgene Schätze und bewegliche Stapel. Lies die Regalregel, bevor du ein Trio auswählst.</p></article>
         <article class="game-info-section"><h3 data-t="strategyTitle">Vor dem Tippen planen</h3><p data-t="strategyText">Suche Paare und halte einen Notplatz frei.</p></article>
         <article class="game-info-section"><h3 data-t="trustTitle">Fortschritt und Datenschutz</h3><p data-t="trustText">Fortschritt bleibt in diesem Browser; keine Anmeldung nötig.</p></article>
-      <div class="game-info-section"><h3>Häufige Fragen</h3><dl><div><dt>Warum kann ich einen Schatz nicht auswählen?</dt><dd>Ein anderes aktives Objekt verdeckt noch seine Auswahlfläche.</dd></div><div><dt>Wann verschwindet eine Dreiergruppe?</dt><dd>Sobald der dritte gleiche Schatz in die Ablage kommt.</dd></div><div><dt>Bleiben nach einer Dreiergruppe leere Plätze?</dt><dd>Nein. Die übrigen Schätze rücken automatisch zusammen.</dd></div></dl></div></div>
+      </div>
+      <div class="game-info-section" data-wp-owned-faq><h3>Häufige Fragen</h3><dl><dt>Warum kann ich einen Schatz nicht auswählen?</dt><dd>Ein anderes aktives Objekt verdeckt noch seine Auswahlfläche.</dd><dt>Wann verschwindet eine Dreiergruppe?</dt><dd>Sobald der dritte gleiche Schatz in die Ablage kommt.</dd><dt>Bleiben nach einer Dreiergruppe leere Plätze?</dt><dd>Nein. Die übrigen Schätze rücken automatisch zusammen.</dd></dl></div>
     </section>
   </div>
 
@@ -103,8 +104,8 @@
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
           <button id="battleBack" class="back-btn" type="button" aria-label="Zurück" data-t-aria="back" data-wp-return="battle">&larr;</button>
-          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-game-title data-runtime-localize="off">Animal Triple Match</strong></div>
-          <div class="hud"><span><b data-t="left">Übrig</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
+          <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-frame-stat></strong></div>
+          <div class="hud" data-wp-frame-info><span><b data-t="left">Übrig</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
           <button id="soundBtn" class="icon-btn" type="button" aria-label="Ton" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
           <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="So wird gespielt" data-t-aria="help">?</button>
         </header>
@@ -155,9 +156,10 @@
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <script src="../../src/sound.js?v=20260720-locale11"></script>
   <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
   <script src="frame.js?v=triple-block-v22"></script>
-  <script src="game.js?v=20260910-triple-match-main-v21"></script>
+  <script src="game.js?v=20260913-triple-block-v22"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
 </body>
 </html>

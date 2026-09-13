@@ -55,7 +55,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-tutorial-auto-show="false" data-wp-active-scene="main" data-wp-game-owned-guide="true">
-    <main class="yard-game main-screen" data-no-mobile-immersive="true">
+    <main class="yard-game main-screen" data-no-mobile-immersive="true" data-wp-frame-root>
       <header class="topbar">
         <a class="home-link" data-wp-return="main" href="/" aria-label="Вернуться в лобби"><span aria-hidden="true">&larr;</span><img src="../../assets/weightplay-logo.png" alt="" draggable="false" /></a>
         <div class="title-block">
@@ -188,7 +188,7 @@
         </div>
       </div>
     </main>
-    <script src="/src/site-config.js?v=20260721-locale13-1"></script>
+    <script src="/src/site-config.js?v=20260710-guard-fixed-play1"></script>
     <script src="../../src/version.js?v=20260701-version2"></script>
     <script src="../../src/analytics.js?v=20260701-analytics2"></script>
     <script>
@@ -218,13 +218,17 @@
     <script src="../../src/wallet.js?v=20260630-senior1"></script>
     <script src="../../src/sound.js?v=20260720-locale11"></script>
     <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-    <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
+    <script src="/src/i18n.js?v=20260721-locale13-1"></script><script src="/src/runtime-locales/ru.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
     <script type="module" src="yard-3d.mjs?v=31"></script>
-    <script src="game.js?v=20260912-guard-yard-v31"></script>
-    <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+    <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+    <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
+    <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+    <script src="frame.js?v=yard-frame-v32"></script>
+    <script src="game.js?v=yard-frame-v32"></script>
+    <script src="../../src/stage-selector-standard.js?v=20260729-guard-general2" data-wp-stage-standard></script>
     <script src="../../src/battle-canvas-standard.js?v=20260729-guard-general2" data-wp-battle-standard></script>
     <script>
       (() => {
@@ -246,25 +250,6 @@
         else window.addEventListener("load", schedule, { once: true });
       })();
     </script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Информация об игре Animal Guard Yard">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Руководство по оригинальным играм WeightPlay</span><h2 data-wp-game-title data-runtime-localize="off">Animal Guard Yard</h2><p>Защитите пять рядов в 30 садах от шести разных боссов. Расставьте стражей, начните волну и перестраивайтесь между волнами. Победите всех врагов до потери сердец дома. Лев пробивает, черепаха блокирует, сова замедляет, а лис помогает соседним рядам. Камни ограничивают размещение.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Геймплей</span><strong>Лейн обороны</strong></div><div class="game-info-fact"><span>Жанр</span><strong>Strategy · Башня обороны · Animal</strong></div><div class="game-info-fact"><span>Сложность</span><strong>Medium</strong></div><div class="game-info-fact"><span>Примерное время</span><strong>5-8 минут</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-      <div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите стража и клетку. Разместите хотя бы одного перед началом.</li><li>Начать волну · Волна отбита · перестройтесь</li><li>Предел энергии — 400, восстановление в бою — 2 в секунду. Предмет даёт 35 при нажатии или 20 автоматически через 6 секунд. Отзыв возвращает 100% при подготовке или 50% в бою с учётом оставшегося здоровья. За отражённую волну даётся 45.</li><li>Не более 12 стражей. Отзовите одного, чтобы изменить строй.</li><li>Выберите ряд: все враги замедлятся на 2 секунды.</li><li>Лис присоединится после этапа 5. Покупки сохраняются.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Советы</h3><ul><li>Камень: размещение запрещено</li><li>Выберите ряд: все враги замедлятся на 2 секунды.</li><li>Энергия восстанавливается в бою. Отзыв возвращает часть по оставшемуся здоровью.</li></ul></div>
-
-
-      <!-- General classic card games keep player guidance in the guide and reserve difficulty for Stage-owned UI. -->
-      <div class="game-info-section"><h3>Частые вопросы</h3><dl><div><dt>Как начать?</dt><dd>Выберите стража и клетку. Разместите хотя бы одного перед началом.</dd></div><div><dt>Как работает энергия?</dt><dd>Предел энергии — 400, восстановление в бою — 2 в секунду. Предмет даёт 35 при нажатии или 20 автоматически через 6 секунд. Отзыв возвращает 100% при подготовке или 50% в бою с учётом оставшегося здоровья. За отражённую волну даётся 45.</dd></div><div><dt>Сколько этапов?</dt><dd>Защитите пять рядов в 30 садах от шести разных боссов. Расставьте стражей, начните волну и перестраивайтесь между волнами. Победите всех врагов до потери сердец дома. Лев пробивает, черепаха блокирует, сова замедляет, а лис помогает соседним рядам. Камни ограничивают размещение.</dd></div><div><dt>Как получить лиса?</dt><dd>Лис присоединится после этапа 5. Покупки сохраняются.</dd></div><div><dt>Волна 1/3?</dt><dd>Волна отбита · перестройтесь</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Похожие игры</h3><div class="game-info-related"><a class="game-info-related-card" href="/ru/games/animal-prism-battalion/"><img src="/assets/interface7-redrawn/animal-prism-battalion.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Батальон Животных Призм</strong><span>Переключайте автоматическую призматическую батарею между тремя линиями, уничтожайте формации, собирайте редкие ядра и защищайте кристальное ядро.</span></span></a><a class="game-info-related-card" href="/ru/games/animal-rune-tactics/"><img src="/assets/animal-rune-tactics-cover.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Тактика животных с рунами</strong><span>Animal Rune Tactics is a 30-mission turn-based campaign played on variable 4×5 to 6×6 rune boards.</span></span></a></div></div>
-    </div>
-  </section>
+<section id="guardYardGuide" class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off"><h2>Защитите сад</h2><p>Остановите врагов, пока они не добрались до дома.</p><div class="game-info-sections"><div class="game-info-section"><h3>Как играть</h3><ol><li>Выберите стража и свободную травяную клетку. Поставьте стража перед началом волны.</li><li>Следите за рядами атаки. Ставьте защитников впереди, стрелков позади; собирайте энергию для подкрепления.</li><li>Между волнами отзывайте и переставляйте стражей, затем продолжайте.</li></ol></div><div class="game-info-section"><h3>Тактика</h3><p>Сохраняйте запас энергии и применяйте «Сбор» в опасном ряду. На камнях размещать нельзя.</p></div><div class="game-info-section"><h3>FAQ</h3><dl><div><dt>Сохраняется ли прогресс?</dt><dd>Открытые этапы, прохождения, очки, медали, монеты и тренировки сохраняются в этом браузере.</dd></div></dl></div></div></section>
 </body>
 </html>
