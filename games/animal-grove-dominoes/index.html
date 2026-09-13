@@ -32,13 +32,13 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
   <script src="/src/shared-interface-bootstrap.js?v=20260911-interface7-universal" data-wp-shared-interface="7"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-screen="main">
+  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-wp-battle-layout="native" data-wp-game-owned-guide data-screen="main">
     <main id="app" class="app-shell">
       <section id="mainView" class="screen main-screen" aria-labelledby="mainTitle">
         <header class="topbar wp-main-shell-header">
           <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="backHome" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="34" height="34"></a>
           <strong class="header-title" data-copy="title" data-wp-game-title data-runtime-localize="off">Habitat Domino Chain</strong>
-          <button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
+          <button id="settingsBtn" class="icon-btn wp-shell-settings-button wp-shell-legacy-control" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
           <div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden>
             <label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" data-copy-aria-label="language" aria-label="Language"></select></label>
             <button id="soundBtn" class="setting-row sound-row" data-sound-toggle type="button" data-copy="soundOn">Sound: On</button>
@@ -60,9 +60,9 @@
         <img class="guide-fia" src="assets/animal-grove-dominoes-fia-v2.png" alt="" aria-hidden="true" width="1337" height="1176" loading="lazy">
         <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay Original Game Guide</span><h2 id="guideTitle" data-copy="guideTitle">How to play</h2><p data-copy="guideIntro">Plan a habitat route, use every required domino and reach the moon after completing the stage objectives.</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">Gameplay</span><strong data-copy="guideGameplayValue">Habitat Chain Puzzle</strong></div><div class="game-info-fact"><span data-copy="guideGenre">Genre</span><strong data-copy="guideGenreValue">Puzzle · Logic · Spatial Reasoning · Family · Animal</strong></div><div class="game-info-fact"><span data-copy="facts">30 route puzzles · progress saved locally</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">Habitat Domino Chain</strong></div><div class="game-info-fact"><span data-copy="language">Language</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">Habitat Domino Chain</strong></div></div></div>
         <div class="guide-grid game-info-sections">
-          <article><b data-copy="guideOneTitle">Required</b><p data-copy="guideOne">Match the first habitat on a domino to the open end. Required tiles must all be used; optional tiles may be left. Visit every named habitat before reaching the goal.</p></article>
-          <article><b data-copy="guideTwoTitle">Bridges / Flips</b><p data-copy="guideTwo">A bridge-marked tile spends one bridge token. Flip mode reverses only tiles marked ↕ and spends one flip when placed. Follow the displayed delivery order; visiting a later destination early blocks the route.</p></article>
-          <article><b data-copy="guideThreeTitle">Stages</b><p data-copy="guideThree">A matching move can still create a dead end. Undo restores the tile, bridge tokens, flips and delivery progress. Finish a stage to unlock the next; replay cleared stages to improve your pick count.</p></article>
+          <article class="game-info-section"><b data-copy="guideOneTitle">Required</b><p data-copy="guideOne">Match the first habitat on a domino to the open end. Required tiles must all be used; optional tiles may be left. Visit every named habitat before reaching the goal.</p></article>
+          <article class="game-info-section"><b data-copy="guideTwoTitle">Bridges / Flips</b><p data-copy="guideTwo">A bridge-marked tile spends one bridge token. Flip mode reverses only tiles marked ↕ and spends one flip when placed. Follow the displayed delivery order; visiting a later destination early blocks the route.</p></article>
+          <article class="game-info-section"><b data-copy="guideThreeTitle">Stages</b><p data-copy="guideThree">A matching move can still create a dead end. Undo restores the tile, bridge tokens, flips and delivery progress. Finish a stage to unlock the next; replay cleared stages to improve your pick count.</p></article>
           <article class="game-info-section"><h3 data-copy="faqTitle">Frequently Asked Questions</h3><dl><div><dt data-copy="faqProgressQuestion">Is progress saved?</dt><dd data-copy="faqProgressAnswer">Cleared stages and best pick counts are saved in this browser. If storage is unavailable, progress lasts only while this page stays open.</dd></div></dl></article>
         </div>
       </section>

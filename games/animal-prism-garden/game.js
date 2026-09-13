@@ -6,7 +6,7 @@
   const localeLang={en:"en","zh-Hant":"zh-Hant","zh-Hans":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const localeByRoute={en:"en","zh-tw":"zh-Hant","zh-cn":"zh-Hans",ja:"ja",ko:"ko",es:"es","pt-br":"pt-BR",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const palette=["#22dfff","#ff4fcf","#ffbf45","#946cff","#68e56c","#ff786d","#4589ff","#ff6298","#f7d85a"];
-  const GAME_VERSION="v15";
+  const GAME_VERSION="v16";
   const STAGE_CARD_POOL_SIZE=9;
   const saveKey="wp-animal-prism-garden-v1";
   const {levels}=window.PRISM_GARDEN_LEVELS;
@@ -17,6 +17,7 @@
   let selected=unlocked-1;
   let level=null,paths={},history=[],activeColor=null,pointerId=null,moves=0,resultClaimed=false,audioContext=null;
   let stageCardPool=[],stageWindowStart=0,stageSettleRaf=0,cancelStageRailInteraction=()=>{};
+  let lastPointerPoint=null;
 
   function read(key){try{return localStorage.getItem(key)}catch{return null}}
   function write(key,value){try{localStorage.setItem(key,String(value))}catch{}}
@@ -202,6 +203,7 @@
       cell.className="cell";cell.dataset.index=String(index);cell.setAttribute("role","gridcell");
       const seed=seedColorAt(index),owner=ownerAt(index),gate=Number.isInteger(level.gates[index])?level.gates[index]:-1;
       if(owner>=0){cell.classList.add("path");cell.style.setProperty("--path",palette[owner])}
+      if(seed>=0&&connected(seed))cell.classList.add("connected");
       if(seed>=0){cell.classList.add("seed");cell.style.setProperty("--seed",palette[seed]);cell.dataset.seed=String(seed)}
       if(gate>=0){
         cell.classList.add("gate");cell.style.setProperty("--gate",palette[gate]);
@@ -216,12 +218,14 @@
     return Math.abs(ar-br)+Math.abs(ac-bc)===1;
   }
   function begin(index,event){
+    if(activeColor!==null||event.isPrimary===false||event.button>0)return;
     const color=seedColorAt(index);
     if(color<0)return;
     event.preventDefault();
     history.push(copyPaths());
     delete paths[color];
     paths[color]=[index];activeColor=color;pointerId=event.pointerId;
+    lastPointerPoint={x:event.clientX,y:event.clientY};
     $("#grid").setPointerCapture?.(pointerId);
     renderBoard();tone(360,.035);
   }
@@ -230,6 +234,8 @@
     const path=paths[activeColor],last=path.at(-1);
     if(index===last)return;
     if(path.length>1&&index===path.at(-2)){path.pop();renderBoard();return}
+    // A matching flower terminates a route; overshooting must not undo the pair.
+    if(connected(activeColor))return;
     if(!adjacent(last,index)||path.includes(index)){blocked(index);return}
     const seed=seedColorAt(index),owner=ownerAt(index),gate=Number.isInteger(level.gates[index])?level.gates[index]:-1;
     if((seed>=0&&seed!==activeColor)||(owner>=0&&owner!==activeColor)||(gate>=0&&gate!==activeColor)){blocked(index);return}
@@ -242,7 +248,9 @@
   }
   function end(event){
     if(activeColor===null||event.pointerId!==pointerId)return;
+    if(event.type!=="pointercancel")tracePointer(event);
     moves++;activeColor=null;pointerId=null;
+    lastPointerPoint=null;
     renderBoard();checkComplete();
   }
   function checkComplete(){
@@ -287,11 +295,21 @@
   function successTone(){[520,680,880].forEach((note,index)=>setTimeout(()=>tone(note,.14),index*100))}
 
   $("#grid").addEventListener("pointerdown",event=>begin(Number(event.target.closest(".cell")?.dataset.index),event));
-  $("#grid").addEventListener("pointermove",event=>{
+  function tracePointer(event){
     if(activeColor===null||event.pointerId!==pointerId)return;
-    const cell=document.elementFromPoint(event.clientX,event.clientY)?.closest?.(".cell");
-    if(cell&&$("#grid").contains(cell))extend(Number(cell.dataset.index));
-  });
+    const grid=$("#grid"),rect=grid.getBoundingClientRect();
+    const samples=event.getCoalescedEvents?.()||[];
+    for(const sample of [...samples,event]){
+      const point={x:sample.clientX,y:sample.clientY},from=lastPointerPoint||point;
+      const steps=Math.max(1,Math.ceil(Math.hypot(point.x-from.x,point.y-from.y)/(rect.width/level.size/4)));
+      for(let step=1;step<=steps;step++){
+        const cell=document.elementFromPoint(from.x+(point.x-from.x)*step/steps,from.y+(point.y-from.y)*step/steps)?.closest?.(".cell");
+        if(cell&&grid.contains(cell))extend(Number(cell.dataset.index));
+      }
+      lastPointerPoint=point;
+    }
+  }
+  $("#grid").addEventListener("pointermove",tracePointer);
   $("#grid").addEventListener("pointerup",end);
   $("#grid").addEventListener("pointercancel",end);
   $("#start").addEventListener("click",()=>show("stage"));

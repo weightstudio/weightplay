@@ -10,7 +10,13 @@
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   const fmt = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : String(Math.floor(n));
   const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
-  const itemArt = key => `<img class="item-art" src="/games/animal-peach-oath/assets/item-${key}.svg" alt="" aria-hidden="true">`;
+  const itemArt = key => `<img class="item-art" src="/games/animal-peach-oath/assets/item-${key}-block-v1.png" width="28" height="28" decoding="async" alt="" aria-hidden="true">`;
+  function navigationArt(key) {
+    // Reuse the approved full illustrations; navigation never crops the poster.
+    if (key === 'battle') return '<span class="equipment-art" data-equipment-art="bronze-sword" aria-hidden="true"></span>';
+    if (key === 'heroes') return '<img src="/games/animal-peach-oath/assets/hero-lion-block-v1.png" width="28" height="28" decoding="async" alt="" aria-hidden="true">';
+    return itemArt({ tavern: 'fragments', law: 'xp', campaign: 'gear' }[key]);
+  }
   const resourceCopyKey = { coins: 'resourceCoins', ingots: 'resourceIngots', food: 'resourceFood', materials: 'resourceMaterials', xp: 'rewardXp', gear: 'equipmentBag' };
   const resourceChip = (key, amount) => `<span class="resource-chip">${itemArt(key)}<span>${copy(resourceCopyKey[key])} <b>${amount}</b></span></span>`;
   const localeSegments = { en: "en", "zh-Hant": "zh-tw", "zh-Hans": "zh-cn", ja: "ja", ko: "ko", es: "es", "pt-BR": "pt-br", fr: "fr", de: "de", it: "it", ru: "ru", hi: "hi", ar: "ar" };
@@ -75,6 +81,33 @@
     en: { "桃園劍陣": "Peach Garden Blade Formation", "青月斬": "Azure Moon Slash", "長坂怒吼": "Changban Roar", "東風星火": "East Wind Starfire", "七進箭雨": "Sevenfold Arrow Rain", "百鍊青銅劍": "Hundred-Forged Bronze Sword", "桃紋明光甲": "Peach-patterned Bright Armor", "踏雲戰靴": "Cloudstep War Boots", "盟誓兵符": "Oathbound War Seal", "武器": "Weapon", "鎧甲": "Armor", "戰靴": "Boots", "寶物": "Relic" },
     ar: { "桃園劍陣": "تشكيلة سيوف بستان الخوخ", "青月斬": "ضربة القمر الأزرق", "長坂怒吼": "زئير تشانغبان", "東風星火": "شرر ريح الشرق", "七進箭雨": "وابل السهام السباعي", "百鍊青銅劍": "سيف البرونز المصقول", "桃紋明光甲": "درع الضوء بنقش الخوخ", "踏雲戰靴": "حذاء حرب عابر للسحاب", "盟誓兵符": "ختم عهد الحرب", "武器": "سلاح", "鎧甲": "درع", "戰靴": "حذاء", "寶物": "أثر" }
   };
+  const collectionNameKeys = ['桃園劍陣','青月斬','長坂怒吼','東風星火','七進箭雨','灰狼刀兵','野豬騎尉','鬣狗弩手','白蛇妖士','黑角魔將','百鍊青銅劍','精良','武器','桃紋明光甲','鎧甲','踏雲戰靴','戰靴','盟誓兵符','寶物'];
+  const collectionNames = {
+    'zh-Hans':['桃园剑阵','青月斩','长坂怒吼','东风星火','七进箭雨','灰狼刀兵','野猪骑尉','鬣狗弩手','白蛇妖士','黑角魔将','百炼青铜剑','精良','武器','桃纹明光甲','铠甲','踏云战靴','战靴','盟誓兵符','宝物'],
+    ja:['桃園剣陣','青月斬','長坂の咆哮','東風の星火','七連矢雨','灰狼の剣兵','イノシシ騎兵','ハイエナ弩兵','白蛇の妖術師','黒角の魔将','百錬青銅剣','上質','武器','桃紋の光明鎧','鎧','雲渡りの戦靴','戦靴','盟約の兵符','宝物'],
+    ko:['도원 검진','푸른 달 베기','장판의 포효','동풍의 불꽃','일곱 겹 화살비','회색 늑대 검병','멧돼지 기병','하이에나 쇠뇌병','백사 주술사','검은 뿔 마장','백련 청동검','고급','무기','복숭아 문양 갑옷','갑옷','구름걸음 전투화','전투화','맹세의 병부','유물'],
+    es:['Formación del jardín','Corte de luna azul','Rugido de Changban','Chispa del viento del este','Lluvia de siete flechas','Espadachín lobo gris','Jinete jabalí','Ballestero hiena','Hechicero serpiente blanca','General cuerno negro','Espada de bronce forjado','Fino','Arma','Armadura de flor de durazno','Armadura','Botas de nube','Botas','Sello del juramento','Reliquia'],
+    'pt-BR':['Formação do pomar','Corte da lua azul','Rugido de Changban','Faísca do vento leste','Chuva de sete flechas','Espadachim lobo cinzento','Cavaleiro javali','Besteiro hiena','Feiticeiro serpente branca','General chifre negro','Espada de bronze forjado','Refinado','Arma','Armadura de flor de pêssego','Armadura','Botas das nuvens','Botas','Selo do juramento','Relíquia'],
+    fr:['Formation du verger','Entaille de lune bleue','Rugissement de Changban','Étincelle du vent d’est','Pluie de sept flèches','Loup gris épéiste','Cavalier sanglier','Hyène arbalétrière','Sorcier serpent blanc','Général corne noire','Épée de bronze forgé','Soigné','Arme','Armure à motif de pêcher','Armure','Bottes des nuages','Bottes','Sceau du serment','Relique'],
+    de:['Pfirsichgarten-Formation','Blauer Mondschnitt','Changban-Brüllen','Ostwind-Sternenfeuer','Siebenfacher Pfeilregen','Grauwolf-Schwertkämpfer','Wildschweinreiter','Hyänen-Armbrustschütze','Weißschlangen-Magier','Schwarzhorn-General','Geschmiedetes Bronzeschwert','Fein','Waffe','Pfirsichblütenrüstung','Rüstung','Wolkenstiefel','Stiefel','Eidessiegel','Relikt'],
+    it:['Formazione del frutteto','Taglio della luna azzurra','Ruggito di Changban','Scintilla del vento orientale','Pioggia di sette frecce','Lupo grigio spadaccino','Cavaliere cinghiale','Iena balestriere','Stregone serpente bianco','Generale corno nero','Spada di bronzo forgiato','Pregiato','Arma','Armatura a fiori di pesco','Armatura','Stivali delle nuvole','Stivali','Sigillo del giuramento','Reliquia'],
+    ru:['Строй персикового сада','Удар синей луны','Рёв Чанбаня','Искра восточного ветра','Семикратный дождь стрел','Серый волк-мечник','Всадник-кабан','Гиена-арбалетчик','Колдун белой змеи','Чернорогий генерал','Кованый бронзовый меч','Добротный','Оружие','Доспех с цветами персика','Доспех','Облачные сапоги','Сапоги','Печать клятвы','Реликвия'],
+    hi:['आड़ू उद्यान व्यूह','नीले चाँद का वार','चांगबान की गर्जना','पूर्वी पवन की चिंगारी','सात गुना तीर वर्षा','धूसर भेड़िया तलवारबाज़','जंगली सूअर सवार','लकड़बग्घा क्रॉसबोधारी','श्वेत सर्प जादूगर','काले सींग का सेनापति','गढ़ी हुई कांस्य तलवार','उत्तम','हथियार','आड़ू फूल वाला कवच','कवच','बादल चाल युद्ध जूते','जूते','शपथ की मुहर','धरोहर']
+  };
+  for (const [locale, values] of Object.entries(collectionNames)) localeExtraNames[locale] = Object.fromEntries(collectionNameKeys.map((key,index)=>[key,values[index]]));
+  const chapterCopy = {
+    'zh-Hans':['桃园起兵','黄巾风云','虎牢雄关','徐州月夜','荆州长歌','赤壁东风','汉中争锋','五丈星落'],
+    ja:['桃園の挙兵','黄巾の嵐','虎牢関','徐州の月夜','荊州の長歌','赤壁の東風','漢中の争覇','五丈原の星'],
+    ko:['도원의 봉기','황건의 폭풍','호뢰관','서주의 달밤','형주의 노래','적벽의 동풍','한중의 격전','오장원의 별'],
+    es:['Alzamiento del jardín','Turbantes amarillos','Paso de Hulao','Luna sobre Xuzhou','Canto de Jingzhou','Viento de los Acantilados Rojos','Disputa de Hanzhong','Estrellas de Wuzhang'],
+    'pt-BR':['Levante do pomar','Turbantes amarelos','Passagem de Hulao','Luar em Xuzhou','Canção de Jingzhou','Vento dos Penhascos Vermelhos','Disputa de Hanzhong','Estrelas de Wuzhang'],
+    fr:['Levée du verger','Turbans jaunes','Passe de Hulao','Lune sur Xuzhou','Chant de Jingzhou','Vent des Falaises rouges','Lutte de Hanzhong','Étoiles de Wuzhang'],
+    de:['Aufstand im Pfirsichgarten','Gelbe Turbane','Hulao-Pass','Mond über Xuzhou','Lied von Jingzhou','Wind der Roten Klippen','Kampf um Hanzhong','Sterne von Wuzhang'],
+    it:['Rivolta del frutteto','Turbanti gialli','Passo di Hulao','Luna su Xuzhou','Canto di Jingzhou','Vento delle Scogliere Rosse','Contesa di Hanzhong','Stelle di Wuzhang'],
+    ru:['Восстание в саду','Жёлтые повязки','Перевал Хулао','Луна над Сюйчжоу','Песнь Цзинчжоу','Ветер Красных скал','Битва за Ханьчжун','Звёзды Учжана'],
+    hi:['उद्यान का विद्रोह','पीली पगड़ियाँ','हुलाओ दर्रा','शुझोउ की चाँदनी','जिंगझोउ का गीत','लाल चट्टानों की पवन','हांझोंग का संघर्ष','वुझांग के तारे']
+  };
+  for (const [locale, values] of Object.entries(chapterCopy)) localeNames[locale] = {...localeNames[locale], ...Object.fromEntries(C.chapters.map((key,index)=>[key,values[index]]))};
   const heroIdentityCopy = {
     'zh-Hant':['玄德獅','雲長虎','翼德熊','孔明鶴','子龍狐','碎片','元寶'],
     'zh-Hans':['玄德狮','云长虎','翼德熊','孔明鹤','子龙狐','碎片','元宝'],
@@ -108,6 +141,35 @@
     localeNames[locale] = {...localeNames[locale], ...Object.fromEntries(['玄德獅','雲長虎','翼德熊','孔明鶴','子龍狐'].map((name,index)=>[name,values[index]]))};
     localeCopy[locale] = {...(localeCopy[locale] || localeCopy.en), fragments:values[5], resourceIngots:values[6]};
   }
+  const battleCopyKeys = ['battleAria','backMain','power','auto','quick','shop','arena','wave','enemies','loot','resources','mainFunctions','battle','tavern','law','campaign','bossIncoming','enemyIncoming','waveVictory','autoOn','autoOff','critical','skillCrane','skillLeo','skillBear','skillCobra','debuff','shield','buff','collectLoot'];
+  const battleCopies = {
+    'zh-Hans':['战场','返回主画面','战力','自动','快捷功能','商店','即时战斗区','波次','敌军','战利品','资源','主要功能','征战','酒馆','军法','战役','首领来袭！','敌军来袭','第 {wave} 波胜利 · 战利品已掉落','自动战斗已开启','自动战斗已暂停','暴击 ','{name}施放「{skill}」','桃园盟誓：全队回复','铁壁守阵：获得护盾','白蛇妖士施放虚弱咒','虚弱','铁壁护盾','仁心恢复','领取战利品'],
+    ja:['戦場','メインに戻る','戦力','自動','ショートカット','商店','戦闘エリア','ウェーブ','敵','戦利品','資源','主な機能','戦闘','酒場','軍法','遠征','ボス襲来！','敵が接近','ウェーブ{wave}勝利・戦利品出現','自動戦闘オン','自動戦闘一時停止','会心 ','{name}が「{skill}」を発動','桃園の誓い：全員回復','鉄壁：シールド獲得','白蛇が弱体化を発動','弱体化','鉄壁シールド','慈愛の回復','戦利品を回収'],
+    ko:['전장','메인으로 돌아가기','전투력','자동','빠른 기능','상점','전투 구역','웨이브','적군','전리품','자원','주요 기능','전투','주점','군법','원정','우두머리 등장!','적군 접근','웨이브 {wave} 승리 · 전리품 등장','자동 전투 켜짐','자동 전투 일시 정지','치명타 ','{name}: {skill} 사용','도원 맹세: 아군 회복','철벽: 보호막 획득','백사 주술사의 약화 주문','약화','철벽 보호막','자비의 회복','전리품 수집'],
+    es:['Campo de batalla','Volver al inicio','Poder','Auto','Accesos rápidos','Tienda','Zona de combate','Oleada','Enemigos','Botín','Recursos','Funciones principales','Batalla','Taberna','Leyes','Campaña','¡Llega el jefe!','Llegan enemigos','Oleada {wave} ganada · Botín disponible','Combate automático activado','Combate automático pausado','Crítico ','{name} usa {skill}','Juramento: el equipo se recupera','Muro de hierro: escudo obtenido','La serpiente blanca lanza Debilitar','Debilitado','Escudo de hierro','Recuperación benévola','Recoger botín'],
+    'pt-BR':['Campo de batalha','Voltar ao início','Poder','Auto','Atalhos','Loja','Área de combate','Onda','Inimigos','Espólios','Recursos','Funções principais','Batalha','Taverna','Leis','Campanha','Chefe chegando!','Inimigos chegando','Onda {wave} vencida · Espólios disponíveis','Combate automático ativado','Combate automático pausado','Crítico ','{name} usa {skill}','Juramento: a equipe se recupera','Muralha de ferro: escudo obtido','A serpente branca lança Fraqueza','Fraqueza','Escudo de ferro','Recuperação benevolente','Coletar espólios'],
+    fr:['Champ de bataille','Retour à l’accueil','Puissance','Auto','Raccourcis','Boutique','Zone de combat','Vague','Ennemis','Butin','Ressources','Fonctions principales','Bataille','Taverne','Lois','Campagne','Le boss arrive !','Ennemis en approche','Vague {wave} gagnée · Butin disponible','Combat automatique activé','Combat automatique en pause','Critique ','{name} utilise {skill}','Serment : le groupe récupère','Mur de fer : bouclier obtenu','Le serpent blanc lance Affaiblissement','Affaibli','Bouclier de fer','Soin bienveillant','Ramasser le butin'],
+    de:['Schlachtfeld','Zurück zum Hauptmenü','Stärke','Auto','Schnellzugriff','Laden','Kampfbereich','Welle','Gegner','Beute','Ressourcen','Hauptfunktionen','Kampf','Taverne','Kriegskunst','Feldzug','Boss im Anmarsch!','Gegner im Anmarsch','Welle {wave} gewonnen · Beute verfügbar','Automatischer Kampf an','Automatischer Kampf pausiert','Kritisch ','{name} wirkt {skill}','Eid: Die Gruppe erholt sich','Eiserne Mauer: Schild erhalten','Weiße Schlange wirkt Schwächung','Geschwächt','Eiserner Schild','Gütige Heilung','Beute einsammeln'],
+    it:['Campo di battaglia','Torna al menu','Potenza','Auto','Scorciatoie','Negozio','Area di combattimento','Ondata','Nemici','Bottino','Risorse','Funzioni principali','Battaglia','Taverna','Leggi','Campagna','Arriva il boss!','Nemici in arrivo','Ondata {wave} vinta · Bottino disponibile','Combattimento automatico attivo','Combattimento automatico in pausa','Critico ','{name} usa {skill}','Giuramento: la squadra recupera','Muro di ferro: scudo ottenuto','Il serpente bianco lancia Indebolimento','Indebolito','Scudo di ferro','Cura benevola','Raccogli bottino'],
+    ru:['Поле боя','Вернуться в меню','Сила','Авто','Быстрые действия','Магазин','Боевая зона','Волна','Враги','Добыча','Ресурсы','Основные функции','Бой','Таверна','Тактика','Поход','Приближается босс!','Враги приближаются','Волна {wave} пройдена · Добыча доступна','Автобой включён','Автобой приостановлен','Критический ','{name} применяет {skill}','Клятва: отряд исцеляется','Железная стена: получен щит','Белая змея применяет Ослабление','Ослабление','Железный щит','Милосердное исцеление','Собрать добычу'],
+    hi:['रणभूमि','मुख्य पृष्ठ पर लौटें','शक्ति','स्वचालित','त्वरित सुविधाएँ','दुकान','युद्ध क्षेत्र','लहर','शत्रु','लूट','संसाधन','मुख्य सुविधाएँ','युद्ध','मधुशाला','सैन्य नियम','अभियान','सरदार आ रहा है!','शत्रु आ रहे हैं','लहर {wave} जीती · लूट उपलब्ध','स्वचालित युद्ध चालू','स्वचालित युद्ध रुका','घातक वार ','{name} ने {skill} का प्रयोग किया','शपथ: दल का स्वास्थ्य बहाल','लौह दीवार: ढाल मिली','श्वेत सर्प ने दुर्बलता डाली','दुर्बलता','लौह ढाल','दयालु उपचार','लूट उठाएँ']
+  };
+  for (const [locale, values] of Object.entries(battleCopies)) Object.assign(localeCopy[locale], Object.fromEntries(battleCopyKeys.map((key,index)=>[key,values[index]])));
+  Object.assign(localeCopy['zh-Hant'], {wave:'波次',bossIncoming:'首領來襲！',waveVictory:'第 {wave} 波勝利 · 戰利品已掉落',debuff:'虛弱',shield:'鐵壁護盾',buff:'仁心恢復'});
+  const journeyKeys = ['defeatKicker','victoryTitle','defeatTitle','victoryCopy','defeatCopy','strengthen','next','retry','longGoal','milestone','recovery','nextChapter','finalChapter','coachTitle1','coachCopy1','coachTitle2','coachCopy2','coachTitle3','coachCopy3','beginCampaign','nextStep'];
+  const journeyCopies = {
+    'zh-Hans':['整军再战','胜利！','战败','已击败首领，奖励已入账。下一关更强。','保留当前关卡。强化队伍后再挑战。','强化队伍','下一关','重试','目标：{text}','战役目标','整军目标','完成第 {end} 关，进入{next}。','完成第 {end} 关，结束全部 {count} 章。','自动战斗','武将自动攻击和施放技能。点击战利品收取奖励。','培养队伍','使用底部功能招募、装备和强化武将。','失败不倒退','保留当前关卡。调整队伍后重试。','开始征战','下一步'],
+    ja:['立て直して再挑戦','勝利！','敗北','ボスを撃破し、報酬を獲得。次はさらに強敵です。','現在のステージを維持。部隊を強化して再挑戦。','部隊を強化','次のステージ','再挑戦','目標：{text}','遠征目標','立て直し目標','ステージ{end}をクリアし、{next}へ。','ステージ{end}で全{count}章を完了。','自動戦闘','武将は自動で攻撃し、技を使います。戦利品を押して回収。','部隊を育成','下のメニューで募集、装備、強化ができます。','敗北しても後退なし','現在のステージを維持。部隊を調整して再挑戦。','戦闘開始','次へ'],
+    ko:['정비 후 재도전','승리!','패배','우두머리를 물리치고 보상을 받았습니다. 다음 적은 더 강합니다.','현재 스테이지는 유지됩니다. 부대를 강화한 뒤 재도전하세요.','부대 강화','다음 스테이지','재도전','목표: {text}','원정 목표','정비 목표','스테이지 {end} 완료 후 {next}에 진입합니다.','스테이지 {end}에서 총 {count}장을 완료합니다.','자동 전투','무장이 자동으로 공격하고 기술을 씁니다. 전리품을 눌러 수집하세요.','부대 육성','아래 메뉴에서 모집, 장비 착용, 강화를 할 수 있습니다.','패배해도 후퇴하지 않아요','현재 스테이지가 유지됩니다. 부대를 조정하고 재도전하세요.','전투 시작','다음'],
+    es:['Reagrupa y vuelve','¡Victoria!','Derrota','Jefe derrotado y recompensas guardadas. La siguiente etapa será más difícil.','Conservas esta etapa. Mejora el equipo y vuelve a intentarlo.','Mejorar equipo','Siguiente etapa','Reintentar','Objetivo: {text}','Meta de campaña','Reorganización','Supera la etapa {end} para entrar en {next}.','Completa la etapa {end} para terminar los {count} capítulos.','Combate automático','Los héroes atacan y usan habilidades solos. Toca el botín para recogerlo.','Desarrolla el equipo','Usa el menú inferior para reclutar, equipar y mejorar.','No retrocedes al perder','Conservas la etapa. Ajusta el equipo y reintenta.','Comenzar','Siguiente'],
+    'pt-BR':['Reagrupe e tente de novo','Vitória!','Derrota','Chefe derrotado e recompensas guardadas. A próxima fase será mais difícil.','Esta fase é mantida. Fortaleça a equipe e tente novamente.','Fortalecer equipe','Próxima fase','Tentar novamente','Objetivo: {text}','Meta da campanha','Reorganização','Conclua a fase {end} para entrar em {next}.','Conclua a fase {end} para terminar os {count} capítulos.','Combate automático','Os heróis atacam e usam habilidades sozinhos. Toque nos espólios para coletar.','Desenvolva a equipe','Use o menu inferior para recrutar, equipar e melhorar.','Derrotas não fazem recuar','A fase é mantida. Ajuste a equipe e tente novamente.','Começar','Próximo'],
+    fr:['Reformez le groupe','Victoire !','Défaite','Boss vaincu et récompenses sauvegardées. La suite sera plus difficile.','Vous gardez ce niveau. Renforcez le groupe et réessayez.','Renforcer le groupe','Niveau suivant','Réessayer','Objectif : {text}','Objectif de campagne','Préparation','Terminez le niveau {end} pour entrer dans {next}.','Terminez le niveau {end} pour finir les {count} chapitres.','Combat automatique','Les héros attaquent et lancent leurs compétences seuls. Touchez le butin pour le ramasser.','Développez le groupe','Le menu inférieur permet de recruter, équiper et améliorer.','La défaite ne fait pas reculer','Le niveau reste acquis. Ajustez le groupe et réessayez.','Commencer','Suivant'],
+    de:['Neu formieren','Sieg!','Niederlage','Boss besiegt, Belohnungen gesichert. Der nächste Abschnitt wird schwerer.','Dieser Abschnitt bleibt erhalten. Stärke die Gruppe und versuche es erneut.','Gruppe stärken','Weiter','Erneut versuchen','Ziel: {text}','Feldzugsziel','Vorbereitung','Schließe Abschnitt {end} ab, um {next} zu erreichen.','Schließe Abschnitt {end} ab, um alle {count} Kapitel zu beenden.','Automatischer Kampf','Helden greifen selbst an und nutzen Fähigkeiten. Tippe auf Beute, um sie einzusammeln.','Gruppe entwickeln','Nutze das untere Menü zum Rekrutieren, Ausrüsten und Verbessern.','Kein Rückschritt bei Niederlage','Der Abschnitt bleibt erhalten. Passe die Gruppe an und versuche es erneut.','Beginnen','Weiter'],
+    it:['Riorganizza la squadra','Vittoria!','Sconfitta','Boss sconfitto e ricompense salvate. Il prossimo livello sarà più difficile.','Mantieni questo livello. Rafforza la squadra e riprova.','Rafforza squadra','Livello successivo','Riprova','Obiettivo: {text}','Meta della campagna','Preparazione','Completa il livello {end} per entrare in {next}.','Completa il livello {end} per finire tutti i {count} capitoli.','Combattimento automatico','Gli eroi attaccano e usano abilità da soli. Tocca il bottino per raccoglierlo.','Sviluppa la squadra','Usa il menu in basso per reclutare, equipaggiare e potenziare.','La sconfitta non fa arretrare','Mantieni il livello. Modifica la squadra e riprova.','Inizia','Avanti'],
+    ru:['Перестройте отряд','Победа!','Поражение','Босс побеждён, награды сохранены. Следующий этап сложнее.','Текущий этап сохранён. Усильте отряд и повторите попытку.','Усилить отряд','Следующий этап','Повторить','Цель: {text}','Цель похода','Подготовка','Пройдите этап {end}, чтобы открыть {next}.','Пройдите этап {end}, чтобы завершить все {count} глав.','Автоматический бой','Герои атакуют и применяют умения сами. Нажмите на добычу, чтобы собрать её.','Развивайте отряд','В нижнем меню можно призывать, снаряжать и улучшать героев.','Поражение не отбрасывает назад','Этап сохранён. Измените отряд и повторите попытку.','Начать','Далее'],
+    hi:['दल को फिर तैयार करें','विजय!','हार','सरदार पराजित और पुरस्कार सुरक्षित। अगला चरण कठिन होगा।','मौजूदा चरण सुरक्षित है। दल को मजबूत करके फिर प्रयास करें।','दल मजबूत करें','अगला चरण','फिर प्रयास','लक्ष्य: {text}','अभियान लक्ष्य','तैयारी','चरण {end} पूरा करके {next} में प्रवेश करें।','चरण {end} पूरा करके सभी {count} अध्याय समाप्त करें।','स्वचालित युद्ध','योद्धा अपने आप हमला और कौशल प्रयोग करते हैं। लूट लेने के लिए उसे दबाएँ।','दल विकसित करें','नीचे के मेनू से भर्ती, उपकरण और उन्नयन करें।','हार से पीछे नहीं लौटते','चरण सुरक्षित रहता है। दल बदलकर फिर प्रयास करें।','शुरू करें','अगला']
+  };
+  for (const [locale, values] of Object.entries(journeyCopies)) Object.assign(localeCopy[locale], Object.fromEntries(journeyKeys.map((key,index)=>[key,values[index]])));
   const activeLocale = () => localeOrder.includes(routeLocale()) ? routeLocale() : "en";
   const copy = (key, values = {}) => {
     const table = localeCopy[activeLocale()] || localeCopy.en;
@@ -149,15 +211,23 @@
     const attr = (selector, name, value) => { const node = $(selector); if (node) node.setAttribute(name, value); };
     // The generated route already contains the catalog's localized game name.
     // Keep that identity instead of restoring an older title from runtime copy.
-    text(".main-copy .eyebrow", copy("eyebrow")); text(".main-copy p", copy("intro"));
-    text(".main-progress span", copy("progress")); text("#startBtn", copy("start")); text(".guide h2", $("#mainTitle").textContent); text(".guide p", copy("guideText"));
+    // Main and its guide are authored into the selected locale route. Do not
+    // overwrite that first-response content with legacy runtime fallback copy.
     // "back" is also the formation's back-row label; preserve the route's
     // already localized lobby-return label instead of replacing it with that.
     attr(".shared-header .utility", "aria-label", copy("settings")); attr(".battle-settings", "aria-label", copy("settings"));
     attr("#battleScene", "aria-label", copy("battleAria")); attr("#battleBack", "aria-label", copy("backMain")); attr(".quick-rail", "aria-label", copy("quick")); attr(".arena-wrap", "aria-label", copy("arena"));
     ["missions", "achievements", "events", "codex", "shop", "settings"].forEach((key, index) => { const button = $(".quick-rail button:nth-child(" + (index + 1) + ")"); if (button) { const label = key === "settings" ? copy("settings") : copy(key); text(`.quick-rail button:nth-child(${index + 1}) span`, label); button.setAttribute("aria-label", label); } });
     text("#autoBtn", copy("auto")); attr("#lootPile", "aria-label", copy("collectLoot")); attr(".resource-bar", "aria-label", copy("resources")); attr(".bottom-nav", "aria-label", copy("mainFunctions"));
-    ["battle", "heroes", "tavern", "law", "campaign"].forEach((key, index) => text(`.bottom-nav button:nth-child(${index + 1}) b`, copy(key)));
+    ["battle", "heroes", "tavern", "law", "campaign"].forEach((key, index) => {
+      text(`.bottom-nav button:nth-child(${index + 1}) b`, copy(key));
+      const icon = $(`.bottom-nav button:nth-child(${index + 1}) > span`);
+      if (icon) {
+        icon.classList.add('nav-art');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.innerHTML = navigationArt(key);
+      }
+    });
     attr("#closeManagement", "aria-label", copy("close")); attr("#modalClose", "aria-label", copy("close"));
     ['coins', 'ingots', 'food', 'materials'].forEach((key, index) => {
       const node = $('.resource-bar').children[index];
@@ -767,31 +837,69 @@
   const recruitText = (index, values={}) => (recruitCopy[activeLocale()]||recruitCopy.en)[index].replace(/\{(\w+)\}/g,(match,key)=>values[key]??match);
   function renderTavern() {
     const owned = C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
-    $('#managementBody').innerHTML = `<section class="summon-stage" data-runtime-localize="off"><p>${recruitText(0)}</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? recruitText(1) : `${recruitText(2)} ×1 · ${resourceChip('ingots', 60)}`}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">${recruitText(2)} ×5 · 2${resourceChip('ingots', 60)}</button></div></section>
+    $('#managementBody').innerHTML = `<section class="summon-stage" data-runtime-localize="off"><p>${recruitText(0)}</p><div class="summon-buttons"><button data-wp-frame-action="secondary" data-action="summon" data-count="1">${state.daily.freeSummon ? recruitText(1) : `${recruitText(2)} ×1 · ${resourceChip('ingots', 60)}`}</button><button data-wp-frame-action="secondary" data-action="summon" data-count="5">${recruitText(2)} ×5 · ${resourceChip('ingots', 260)}</button></div></section>
       <div class="section-title"><h3>${recruitText(3)}</h3><span>${owned} / ${C.heroes.length}</span></div><div class="card-grid">${C.heroes.map((hero) => {
         const p = state.heroes[hero.id], progress = p.owned ? 10 : Math.min(10, p.fragments);
         return `<article class="panel-card tavern-hero-card" data-tavern-hero="${hero.id}"><div class="tavern-portrait">${sprites.markup('hero', hero.id, `tavern-${hero.id}`)}</div><div class="tavern-hero-copy"><span class="quality">${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</span><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.role)}</p><div class="progress" role="progressbar" aria-label="${localizedValue(hero.name)} · ${copy('fragments')}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${progress}"><b style="width:${progress * 10}%"></b></div><small>${itemArt('fragments')}${p.owned ? `${recruitText(4)} · ${p.fragments} ${copy('fragments')}` : `${p.fragments} / 10 ${copy('fragments')}`}</small></div></article>`;
       }).join("")}</div>`;
   }
 
+  // Game-owned concise copy. These resource encounters settle immediately;
+  // never promise a playable battle that the existing action does not start.
+  const strategyCopy = {
+    'zh-Hant': ['全隊永久強化','研習','每級全隊{stat} +{rate}%','勇武軍令','堅陣軍令','疾行軍令','每日戰役','消耗一次機會，立即結算獎勵','剩餘 {left}/{limit}','速戰領取','銅雀金庫','群英試煉','兵甲秘庫','軍法演武','黑角試煉','取得銅錢，數量隨目前關卡增加。','取得主公經驗，數量隨目前關卡增加。','隨機取得一件裝備。','取得強化材料，數量隨目前關卡增加。','每日一次，取得元寶與一件隨機裝備。','速戰完成，獎勵已領取','取得裝備：{item}','{level} 級','攻擊速度'],
+    'zh-Hans': ['全队永久强化','研习','每级全队{stat} +{rate}%','勇武军令','坚阵军令','疾行军令','每日战役','消耗一次机会，立即结算奖励','剩余 {left}/{limit}','速战领取','铜雀金库','群英试炼','兵甲秘库','军法演武','黑角试炼','获得铜钱，数量随当前关卡增加。','获得主公经验，数量随当前关卡增加。','随机获得一件装备。','获得强化材料，数量随当前关卡增加。','每日一次，获得元宝与一件随机装备。','速战完成，奖励已领取','获得装备：{item}','{level} 级','攻击速度'],
+    en: ['Permanent squad upgrades','Train','Squad {stat} +{rate}% per level','Valor order','Bulwark order','Swift order','Daily campaigns','Spend one attempt for instant rewards','Remaining {left}/{limit}','Quick clear','Bronze treasury','Hero trial','Hidden armory','Military drill','Blackhorn trial','Gain coins; rewards scale with your current stage.','Gain leader XP; rewards scale with your current stage.','Receive one random equipment item.','Gain upgrade materials; rewards scale with your current stage.','Once daily: ingots and one random equipment item.','Quick clear complete; rewards collected','Equipment received: {item}','Lv. {level}','attack speed'],
+    ja: ['部隊の永続強化','研究','1レベルごとに部隊の{stat} +{rate}%','勇武の軍令','堅陣の軍令','疾行の軍令','毎日の戦役','挑戦回数を1回使い、報酬を即時獲得','残り {left}/{limit}','即時クリア','銅雀の金庫','群英の試練','隠された武器庫','軍法演習','黒角の試練','銅貨を獲得。現在のステージに応じて増加。','主君経験値を獲得。現在のステージに応じて増加。','ランダムな装備を1個獲得。','強化素材を獲得。現在のステージに応じて増加。','1日1回、元宝とランダムな装備を1個獲得。','即時クリア完了。報酬を獲得しました','装備獲得：{item}','レベル {level}','攻撃速度'],
+    ko: ['분대 영구 강화','연구','레벨당 분대 {stat} +{rate}%','용맹 명령','수비 명령','신속 명령','일일 전역','도전 횟수 1회를 사용해 즉시 보상을 받습니다','남은 횟수 {left}/{limit}','즉시 완료','동작 금고','영웅 시련','비밀 무기고','군법 훈련','흑각 시련','동전을 받습니다. 현재 스테이지에 따라 증가합니다.','군주 경험치를 받습니다. 현재 스테이지에 따라 증가합니다.','무작위 장비 1개를 받습니다.','강화 재료를 받습니다. 현재 스테이지에 따라 증가합니다.','하루 1회, 원보와 무작위 장비 1개를 받습니다.','즉시 완료하여 보상을 받았습니다','장비 획득: {item}','레벨 {level}','공격 속도'],
+    es: ['Mejoras permanentes del equipo','Entrenar','{stat} del equipo +{rate}% por nivel','Orden de valor','Orden defensiva','Orden veloz','Campañas diarias','Gasta un intento para recibir premios al instante','Quedan {left}/{limit}','Resolución rápida','Tesoro de bronce','Prueba heroica','Armería oculta','Ejercicio militar','Prueba de Cuerno Negro','Recibe monedas; aumentan con tu fase actual.','Recibe experiencia del líder; aumenta con tu fase actual.','Recibe una pieza de equipo aleatoria.','Recibe materiales de mejora; aumentan con tu fase actual.','Una vez al día: lingotes y una pieza de equipo aleatoria.','Resolución terminada; premios recibidos','Equipo recibido: {item}','Nv. {level}','velocidad de ataque'],
+    'pt-BR': ['Melhorias permanentes da equipe','Treinar','{stat} da equipe +{rate}% por nível','Ordem de coragem','Ordem defensiva','Ordem veloz','Campanhas diárias','Gaste uma tentativa para receber recompensas imediatas','Restam {left}/{limit}','Conclusão rápida','Tesouro de bronze','Provação heroica','Arsenal oculto','Exercício militar','Provação do Chifre Negro','Receba moedas; aumentam com a fase atual.','Receba experiência do líder; aumenta com a fase atual.','Receba um equipamento aleatório.','Receba materiais de melhoria; aumentam com a fase atual.','Uma vez por dia: lingotes e um equipamento aleatório.','Conclusão rápida; recompensas recebidas','Equipamento recebido: {item}','Nv. {level}','velocidade de ataque'],
+    fr: ['Améliorations permanentes du groupe','Former','{stat} du groupe +{rate}% par niveau','Ordre de bravoure','Ordre défensif','Ordre de célérité','Campagnes quotidiennes','Dépensez un essai pour des récompenses immédiates','Restants : {left}/{limit}','Résolution rapide','Trésor de bronze','Épreuve héroïque','Armurerie secrète','Exercice militaire','Épreuve de Corne Noire','Recevez des pièces ; le montant suit votre étape actuelle.','Recevez de l’expérience de chef ; le montant suit votre étape.','Recevez un équipement aléatoire.','Recevez des matériaux ; le montant suit votre étape actuelle.','Une fois par jour : des lingots et un équipement aléatoire.','Résolution terminée ; récompenses reçues','Équipement reçu : {item}','Niv. {level}','vitesse d’attaque'],
+    de: ['Dauerhafte Gruppenverbesserungen','Trainieren','{stat} der Gruppe +{rate}% je Stufe','Tapferkeitsbefehl','Schutzbefehl','Eilbefehl','Tägliche Feldzüge','Ein Versuch bringt sofort Belohnungen','Übrig: {left}/{limit}','Sofort abschließen','Bronzeschatz','Heldenprüfung','Geheime Rüstkammer','Militärübung','Schwarzhornprüfung','Erhalte Münzen; die Menge steigt mit dem aktuellen Abschnitt.','Erhalte Anführer-Erfahrung; die Menge steigt mit dem Abschnitt.','Erhalte ein zufälliges Ausrüstungsteil.','Erhalte Verbesserungsmaterial; die Menge steigt mit dem Abschnitt.','Einmal täglich: Barren und ein zufälliges Ausrüstungsteil.','Sofortabschluss beendet; Belohnungen erhalten','Ausrüstung erhalten: {item}','Stufe {level}','Angriffstempo'],
+    it: ['Migliorie permanenti della squadra','Addestra','{stat} della squadra +{rate}% per livello','Ordine valoroso','Ordine difensivo','Ordine rapido','Campagne giornaliere','Usa un tentativo per ricevere subito le ricompense','Rimasti {left}/{limit}','Risolvi subito','Tesoro di bronzo','Prova eroica','Armeria segreta','Esercitazione militare','Prova di Corno Nero','Ricevi monete; aumentano con la fase attuale.','Ricevi esperienza del comandante; aumenta con la fase attuale.','Ricevi un equipaggiamento casuale.','Ricevi materiali di miglioria; aumentano con la fase attuale.','Una volta al giorno: lingotti e un equipaggiamento casuale.','Risoluzione completata; ricompense ricevute','Equipaggiamento ricevuto: {item}','Liv. {level}','velocità di attacco'],
+    ru: ['Постоянные улучшения отряда','Изучить','{stat} отряда +{rate}% за уровень','Приказ доблести','Приказ защиты','Приказ скорости','Ежедневные походы','Потратьте одну попытку и сразу получите награды','Осталось {left}/{limit}','Быстро завершить','Бронзовая казна','Испытание героев','Тайный арсенал','Военные учения','Испытание Чёрного Рога','Получите монеты; количество растёт с текущим этапом.','Получите опыт командира; количество растёт с этапом.','Получите один случайный предмет снаряжения.','Получите материалы улучшения; количество растёт с этапом.','Раз в день: слитки и один случайный предмет снаряжения.','Быстрое завершение; награды получены','Получено снаряжение: {item}','Ур. {level}','скорость атаки'],
+    hi: ['दल के स्थायी उन्नयन','प्रशिक्षण','हर स्तर पर दल की {stat} +{rate}%','वीरता आदेश','रक्षा आदेश','तीव्रता आदेश','दैनिक अभियान','एक प्रयास खर्च करें और तुरंत पुरस्कार पाएँ','शेष {left}/{limit}','तुरंत पूरा करें','कांस्य कोष','नायक परीक्षा','गुप्त शस्त्रागार','सैन्य अभ्यास','काले सींग की परीक्षा','सिक्के पाएँ; मात्रा वर्तमान चरण के साथ बढ़ती है।','सेनापति अनुभव पाएँ; मात्रा वर्तमान चरण के साथ बढ़ती है।','एक यादृच्छिक उपकरण पाएँ।','उन्नयन सामग्री पाएँ; मात्रा वर्तमान चरण के साथ बढ़ती है।','दिन में एक बार: स्वर्ण खंड और एक यादृच्छिक उपकरण।','अभियान तुरंत पूरा हुआ; पुरस्कार मिले','उपकरण मिला: {item}','स्तर {level}','हमले की गति'],
+    ar: ['ترقيات دائمة للفريق','تدريب','{stat} الفريق +{rate}% لكل مستوى','أمر الشجاعة','أمر الحماية','أمر السرعة','الحملات اليومية','استهلك محاولة لتحصل على المكافآت فورًا','المتبقي {left}/{limit}','إنجاز سريع','خزينة البرونز','اختبار الأبطال','مخزن السلاح الخفي','تدريب عسكري','اختبار القرن الأسود','احصل على عملات؛ تزداد الكمية مع مرحلتك الحالية.','احصل على خبرة القائد؛ تزداد الكمية مع المرحلة.','احصل على قطعة معدات عشوائية.','احصل على مواد ترقية؛ تزداد الكمية مع المرحلة.','مرة يوميًا: سبائك وقطعة معدات عشوائية.','اكتمل الإنجاز السريع وتم استلام المكافآت','حصلت على معدات: {item}','المستوى {level}','سرعة هجوم']
+  };
+  const strategyText = (index, values={}) => (strategyCopy[activeLocale()] || strategyCopy.en)[index].replace(/\{(\w+)\}/g, (match,key) => values[key] ?? match);
+  const strategyLabels = {
+    'zh-Hant':['攻擊','生命','銅錢','材料','主公經驗','裝備','軍糧'],
+    'zh-Hans':['攻击','生命','铜钱','材料','主公经验','装备','军粮'],
+    en:['attack','health','Coins','Materials','Leader XP','Equipment','Rations'],
+    ja:['攻撃力','体力','銅貨','素材','主君経験値','装備','兵糧'],
+    ko:['공격력','체력','동전','재료','군주 경험치','장비','군량'],
+    es:['ataque','salud','Monedas','Materiales','Experiencia del líder','Equipo','Raciones'],
+    'pt-BR':['ataque','vida','Moedas','Materiais','Experiência do líder','Equipamento','Mantimentos'],
+    fr:['attaque','santé','Pièces','Matériaux','Expérience du chef','Équipement','Rations'],
+    de:['Angriff','Leben','Münzen','Material','Anführer-Erfahrung','Ausrüstung','Proviant'],
+    it:['attacco','salute','Monete','Materiali','Esperienza del comandante','Equipaggiamento','Razioni'],
+    ru:['атака','здоровье','Монеты','Материалы','Опыт командира','Снаряжение','Провиант'],
+    hi:['हमला','स्वास्थ्य','सिक्के','सामग्री','सेनापति अनुभव','उपकरण','राशन'],
+    ar:['هجوم','صحة','عملات','مواد','خبرة القائد','معدات','مؤن']
+  };
+  const strategyLabelKeys = ['attack','health','resourceCoins','resourceMaterials','rewardXp','equipmentBag','resourceFood'];
+  for (const [locale, values] of Object.entries(strategyLabels)) {
+    localeCopy[locale] = {...localeCopy[locale], ...Object.fromEntries(strategyLabelKeys.map((key,index)=>[key,values[index]]))};
+  }
+
   function renderLaw() {
     const laws = [
-      { id: "valor", seal: "武", title: "勇武軍令", copy: "全隊攻擊提升 4.5%" },
-      { id: "bulwark", seal: "守", title: "堅陣軍令", copy: "全隊生命提升 5.5%" },
-      { id: "tactics", seal: "策", title: "疾行軍令", copy: "全隊攻速提升 2.2%" }
+      { id: "valor", title: strategyText(3), stat: copy('attack'), rate: 4.5 },
+      { id: "bulwark", title: strategyText(4), stat: copy('health'), rate: 5.5 },
+      { id: "tactics", title: strategyText(5), stat: strategyText(23), rate: 2.2 }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>全隊永久強化</h3><span>${resourceChip('materials', state.resources.materials)}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><span class="seal">${law.seal}</span><div><h3>${law.title} · ${level} 級</h3><p>${law.copy} · ${resourceChip('materials', cost)}</p></div><button data-wp-frame-action="secondary" data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>研習</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<section data-runtime-localize="off"><div class="section-title"><h3>${strategyText(0)}</h3><span>${resourceChip('materials', state.resources.materials)}</span></div><div class="law-tree">${laws.map((law) => { const level = state.law[law.id]; const cost = 6 + level * 5; return `<article class="law-node"><div><h3>${law.title} · ${strategyText(22,{level})}</h3><p>${strategyText(2,{stat:law.stat,rate:new Intl.NumberFormat(activeLocale()).format(law.rate)})}</p><p>${resourceChip('materials', cost)}</p></div><button data-wp-frame-action="secondary" data-action="law" data-id="${law.id}" ${state.resources.materials < cost ? "disabled" : ""}>${strategyText(1)}</button></article>`; }).join("")}</div></section>`;
   }
 
   function renderCampaign() {
     const campaigns = [
-      { id: "coins", title: "銅雀金庫", copy: "迎戰守庫軍，取得大量銅錢。", reward: { coins: 2200 + state.stage * 80 } },
-      { id: "xp", title: "群英試煉", copy: "與名將切磋，取得主公經驗。", reward: { xp: 90 + state.stage * 4 } },
-      { id: "gear", title: "兵甲秘庫", copy: "打開古代軍械庫，必得一件裝備。", reward: { gear: 1 } },
-      { id: "materials", title: "軍法演武", copy: "完成兵種操演，取得軍法材料。", reward: { materials: 14 + Math.floor(state.stage / 2) } },
-      { id: "daily-boss", title: "每日 Boss · 黑角試煉", copy: "每日挑戰強敵一次，取得元寶與必得裝備。", reward: { ingots: 25, gear: 1 }, limit: 1 }
+      { id: "coins", title: strategyText(10), copy: strategyText(15), reward: { coins: 2200 + state.stage * 80 } },
+      { id: "xp", title: strategyText(11), copy: strategyText(16), reward: { xp: 90 + state.stage * 4 } },
+      { id: "gear", title: strategyText(12), copy: strategyText(17), reward: { gear: 1 } },
+      { id: "materials", title: strategyText(13), copy: strategyText(18), reward: { materials: 14 + Math.floor(state.stage / 2) } },
+      { id: "daily-boss", title: strategyText(14), copy: strategyText(19), reward: { ingots: 25, gear: 1 }, limit: 1 }
     ];
-    $("#managementBody").innerHTML = `<div class="section-title"><h3>每日戰役</h3><span>資源副本與特殊 Boss</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">剩餘 ${limit - used} / ${limit}</span><h3>${c.title}</h3><p>${c.copy}</p><div class="wallet">${Object.entries(c.reward).map(([key, amount]) => resourceChip(key, amount)).join('')}</div><button data-wp-frame-action="secondary" data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>立即挑戰</button></article>`; }).join("")}</div>`;
+    $("#managementBody").innerHTML = `<section data-runtime-localize="off"><div class="section-title"><h3>${strategyText(6)}</h3><span>${strategyText(7)}</span></div><div class="campaign-grid">${campaigns.map((c) => { const used = state.daily.campaign[c.id] || 0; const limit = c.limit || 2; return `<article class="campaign-card"><span class="quality">${strategyText(8,{left:limit-used,limit})}</span><h3>${c.title}</h3><p>${c.copy}</p><div class="wallet">${Object.entries(c.reward).map(([key, amount]) => resourceChip(key, amount)).join('')}</div><button data-wp-frame-action="secondary" data-action="campaign" data-id="${c.id}" ${used >= limit ? "disabled" : ""}>${strategyText(9)}</button></article>`; }).join("")}</div></section>`;
   }
 
   function managementAction(event) {
@@ -916,8 +1024,8 @@
     if (id === "gear" || id === "daily-boss") {
       const def = C.equipment[Math.floor(Math.random() * C.equipment.length)];
       state.inventory.push({ uid: uid(), itemId: def.id, level: 1 });
-      toast(`取得裝備：${def.name}`);
-    } else toast("戰役速戰完成，獎勵已領取");
+      toast(strategyText(21,{item:localizedValue(def.name)}));
+    } else toast(strategyText(20));
     renderCampaign();
   }
 
@@ -952,13 +1060,31 @@
     if (afterClose && $('#app').dataset.scene === 'battle') afterClose();
   }
 
+  const objectiveCopy = {
+    'zh-Hant':['任務','成就','領取','已領取','擊敗 {n} 名敵軍','完成 {n} 次武將升級','招募 {n} 次','推進至第 {n} 關','戰力達到 {n}','擊敗 {n} 名首領','收集 {n} 名武將','活動獎勵','登入獎勵 · 第 {n} 日'],
+    'zh-Hans':['任务','成就','领取','已领取','击败 {n} 名敌军','完成 {n} 次武将升级','招募 {n} 次','推进至第 {n} 关','战力达到 {n}','击败 {n} 名首领','收集 {n} 名武将','活动奖励','登录奖励 · 第 {n} 日'],
+    en:['Missions','Achievements','Claim','Claimed','Defeat {n} enemies','Upgrade heroes {n} times','Recruit {n} times','Reach stage {n}','Reach {n} power','Defeat {n} bosses','Collect {n} heroes','Event rewards','Login reward · Day {n}'],
+    ja:['任務','実績','受け取る','受取済み','敵を{n}体倒す','武将を{n}回強化','{n}回募集','ステージ{n}に到達','戦力{n}に到達','ボスを{n}体倒す','武将を{n}人集める','イベント報酬','ログイン報酬・{n}日目'],
+    ko:['임무','업적','받기','수령 완료','적 {n}명 처치','무장 {n}회 강화','{n}회 모집','스테이지 {n} 도달','전투력 {n} 달성','우두머리 {n}명 처치','무장 {n}명 수집','이벤트 보상','로그인 보상 · {n}일째'],
+    es:['Misiones','Logros','Recoger','Recogido','Derrota a {n} enemigos','Mejora héroes {n} veces','Recluta {n} veces','Llega a la etapa {n}','Alcanza {n} de poder','Derrota a {n} jefes','Consigue {n} héroes','Recompensas de eventos','Inicio de sesión · Día {n}'],
+    'pt-BR':['Missões','Conquistas','Resgatar','Resgatado','Derrote {n} inimigos','Melhore heróis {n} vezes','Recrute {n} vezes','Alcance a fase {n}','Alcance {n} de poder','Derrote {n} chefes','Colete {n} heróis','Recompensas de eventos','Recompensa de acesso · Dia {n}'],
+    fr:['Missions','Succès','Récupérer','Récupéré','Vaincre {n} ennemis','Améliorer les héros {n} fois','Recruter {n} fois','Atteindre le niveau {n}','Atteindre {n} de puissance','Vaincre {n} boss','Obtenir {n} héros','Récompenses des événements','Connexion · Jour {n}'],
+    de:['Aufgaben','Erfolge','Abholen','Abgeholt','Besiege {n} Gegner','Verbessere Helden {n}-mal','Rekrutiere {n}-mal','Erreiche Abschnitt {n}','Erreiche {n} Kampfkraft','Besiege {n} Bosse','Sammle {n} Helden','Event-Belohnungen','Anmeldebelohnung · Tag {n}'],
+    it:['Missioni','Traguardi','Riscatta','Riscosso','Sconfiggi {n} nemici','Potenzia gli eroi {n} volte','Recluta {n} volte','Raggiungi il livello {n}','Raggiungi {n} di potenza','Sconfiggi {n} boss','Ottieni {n} eroi','Ricompense degli eventi','Accesso · Giorno {n}'],
+    ru:['Задания','Достижения','Получить','Получено','Победить врагов: {n}','Улучшить героев: {n} раз','Призвать героев: {n} раз','Дойти до этапа {n}','Достичь силы {n}','Победить боссов: {n}','Собрать героев: {n}','Награды событий','Награда за вход · День {n}'],
+    hi:['मिशन','उपलब्धियाँ','प्राप्त करें','प्राप्त','{n} शत्रुओं को हराएँ','योद्धाओं को {n} बार उन्नत करें','{n} बार भर्ती करें','चरण {n} तक पहुँचें','{n} शक्ति हासिल करें','{n} सरदारों को हराएँ','{n} योद्धा जुटाएँ','आयोजन पुरस्कार','लॉगिन पुरस्कार · दिन {n}'],
+    ar:['المهمات','الإنجازات','استلام','تم الاستلام','اهزم الأعداء: {n}','ترقيات الأبطال: {n}','مرات التجنيد: {n}','بلغ المرحلة {n}','بلغ قوة {n}','اهزم الزعماء: {n}','اجمع الأبطال: {n}','مكافآت الأنشطة','مكافأة الدخول · اليوم {n}']
+  };
+  const objectiveText = (index,n) => (objectiveCopy[activeLocale()] || objectiveCopy.en)[index].replace('{n}', new Intl.NumberFormat(activeLocale()).format(n ?? 0));
+  const objectiveField = {kills:4,upgrades:5,summons:6,stage:7,power:8,bossKills:9,collection:10};
+  for (const [locale, values] of Object.entries(objectiveCopy)) Object.assign(localeCopy[locale], {missions:values[0],achievements:values[1],events:values[11]});
   function objectiveModal(entries, kind) {
-    openModal(kind === "mission" ? "任務" : "成就", `<p class="mission-goal">${copy("longGoal", {text: campaignMilestoneText()})}</p><div class="list">${entries.map((entry) => {
+    openModal(objectiveText(kind === 'mission' ? 0 : 1), `<div class="list" data-runtime-localize="off">${entries.map((entry) => {
       const value = progressFor(entry);
       const ready = value >= entry.target;
       const claimed = state.claimed[entry.id];
-      const reward = Object.entries(entry.reward).map(([key, amount]) => resourceChip(key, amount)).join("、");
-      return `<div class="list-item"><div><p>${entry.label}</p><small>${Math.min(value, entry.target)} / ${entry.target} · ${reward}</small><div class="progress"><b style="width:${clamp(value / entry.target * 100,0,100)}%"></b></div></div><button data-wp-frame-action="secondary" data-claim="${entry.id}" data-kind="${kind}" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : "領取"}</button></div>`;
+      const reward = Object.entries(entry.reward).map(([key, amount]) => resourceChip(key, amount)).join(' ');
+      return `<div class="list-item"><div><p>${objectiveText(objectiveField[entry.field],entry.target)}</p><small>${Math.min(value, entry.target)} / ${entry.target} · ${reward}</small><div class="progress"><b style="width:${clamp(value / entry.target * 100,0,100)}%"></b></div></div><button data-wp-frame-action="secondary" data-claim="${entry.id}" data-kind="${kind}" ${!ready || claimed ? "disabled" : ""}>${objectiveText(claimed ? 3 : 2)}</button></div>`;
     }).join("")}</div>`);
   }
 
@@ -975,15 +1101,46 @@
 
   function renderEvents() {
     const day = Math.min(7, Math.max(1, Math.floor((new Date(today()) - new Date(state.firstSeen)) / 86400000) + 1));
-    openModal("登入與七日活動", `<div class="list"><div class="list-item"><div><p>第 ${day} 日登入獎勵</p><small>${resourceChip('ingots', 20 + day * 10)} ${resourceChip('food', 5 + day)}</small></div><button data-event="login" ${state.daily.loginClaimed ? "disabled" : ""}>${state.daily.loginClaimed ? "已領取" : "領取"}</button></div>
-      <div class="list-item"><div><p>新手成長：通過第 5 關</p><small>完成後獲得稀有裝備箱</small><div class="progress"><b style="width:${clamp(state.stage / 5 * 100,0,100)}%"></b></div></div><button disabled>${state.stage >= 5 ? "待開放" : `${state.stage}/5`}</button></div>
-      <div class="list-item"><div><p>限時活動：桃花軍備</p><small>完成 3 次武將升級 ${resourceChip('ingots', 30)}</small><div class="progress"><b style="width:${clamp(state.stats.upgrades / 3 * 100,0,100)}%"></b></div></div><button data-event="upgrade" ${state.stats.upgrades < 3 || state.claimed["event-upgrades"] ? "disabled" : ""}>${state.claimed["event-upgrades"] ? "已領取" : "領取"}</button></div></div>`);
+    // Only show rewards with an implemented claim action. The old stage-five
+    // chest had no handler and was permanently disabled, even after its goal.
+    openModal(objectiveText(11), `<div class="list" data-runtime-localize="off"><div class="list-item"><div><p>${objectiveText(12,day)}</p><small>${resourceChip('ingots', 20 + day * 10)} ${resourceChip('food', 5 + day)}</small></div><button data-wp-frame-action="secondary" data-event="login" ${state.daily.loginClaimed ? "disabled" : ""}>${objectiveText(state.daily.loginClaimed ? 3 : 2)}</button></div>
+      <div class="list-item"><div><p>${objectiveText(5,3)}</p><small>${resourceChip('ingots', 30)}</small><div class="progress"><b style="width:${clamp(state.stats.upgrades / 3 * 100,0,100)}%"></b></div></div><button data-wp-frame-action="secondary" data-event="upgrade" ${state.stats.upgrades < 3 || state.claimed['event-upgrades'] ? 'disabled' : ''}>${objectiveText(state.claimed['event-upgrades'] ? 3 : 2)}</button></div></div>`);
   }
 
+  const codexCopy = {
+    'zh-Hant': ['圖鑑','敵軍','推進關卡揭露敵軍；裝備數量以目前背包為準。'],
+    'zh-Hans': ['图鉴','敌军','推进关卡揭露敌军；装备数量以当前背包为准。'],
+    en: ['Codex','Enemies','Advance to reveal enemies. Equipment totals reflect your current bag.'],
+    ja: ['図鑑','敵軍','進行に応じて敵を公開。装備数は現在の所持品です。'],
+    ko: ['도감','적군','진행하면 적이 공개됩니다. 장비 수는 현재 가방 기준입니다.'],
+    es: ['Códice','Enemigos','Avanza para revelar enemigos. El equipo refleja tu inventario actual.'],
+    'pt-BR': ['Códice','Inimigos','Avance para revelar inimigos. O equipamento reflete sua bolsa atual.'],
+    fr: ['Codex','Ennemis','Avancez pour découvrir les ennemis. Le total des équipements correspond au sac actuel.'],
+    de: ['Kodex','Gegner','Fortschritt enthüllt Gegner. Die Ausrüstungszahl zeigt den aktuellen Tascheninhalt.'],
+    it: ['Codice','Nemici','Avanza per scoprire i nemici. Il totale degli equipaggiamenti indica la borsa attuale.'],
+    ru: ['Атлас','Враги','Продвигайтесь, чтобы открыть врагов. Число снаряжения отражает содержимое сумки.'],
+    hi: ['संग्रह','शत्रु','आगे बढ़ने पर शत्रु दिखेंगे। उपकरणों की संख्या मौजूदा थैले के अनुसार है।'],
+    ar: ['الموسوعة','الأعداء','تقدم للكشف عن الأعداء. عدد المعدات يعكس محتويات الحقيبة الحالية.']
+  };
+  const collectionUi = {
+    'zh-Hant':['武將','圖鑑','關閉'], 'zh-Hans':['武将','图鉴','关闭'],
+    en:['Heroes','Codex','Close'], ja:['武将','図鑑','閉じる'],
+    ko:['무장','도감','닫기'], es:['Héroes','Códice','Cerrar'],
+    'pt-BR':['Heróis','Códice','Fechar'], fr:['Héros','Codex','Fermer'],
+    de:['Helden','Kodex','Schließen'], it:['Eroi','Codice','Chiudi'],
+    ru:['Герои','Атлас','Закрыть'], hi:['योद्धा','संग्रह','बंद करें'],
+    ar:['الأبطال','الموسوعة','إغلاق']
+  };
+  for (const [locale, values] of Object.entries(collectionUi)) Object.assign(localeCopy[locale], {heroes:values[0],codex:values[1],close:values[2]});
+  const codexText = index => (codexCopy[activeLocale()] || codexCopy.en)[index];
   function renderCodex() {
     const owned = C.heroes.filter((hero) => state.heroes[hero.id].owned).length;
     const seenEnemies = clamp(1 + Math.floor(state.stage / 2), 1, C.enemies.length);
-    openModal("圖鑑", `<div class="card-grid"><article class="panel-card"><span class="quality">武將圖鑑</span><h3>${owned} / ${C.heroes.length}</h3><p>收集武將，查看品質、兵種與技能。</p></article><article class="panel-card"><span class="quality">敵軍圖鑑</span><h3>${seenEnemies} / ${C.enemies.length}</h3><p>推進關卡會揭露新兵種與 Boss。</p></article><article class="panel-card"><span class="quality">裝備圖鑑</span><h3>${new Set(state.inventory.map((item) => item.itemId)).size} / ${C.equipment.length}</h3><p>Boss、戰役與商店會掉落不同品質裝備。</p></article></div>`);
+    const gearIds = new Set(state.inventory.map(item => item.itemId));
+    const heroes = C.heroes.map(hero => `<article class="panel-card codex-card" data-codex-hero="${hero.id}"><div class="codex-art">${sprites.markup('hero', hero.id, `codex-hero-${hero.id}`)}</div><h3>${localizedValue(hero.name)}</h3><p>${localizedValue(hero.quality)} · ${localizedValue(hero.troop)}</p><p>${localizedValue(hero.skill)}</p><small>${state.heroes[hero.id].owned ? recruitText(4) : loadoutText(7)}</small></article>`).join('');
+    const enemies = C.enemies.map((enemy,index) => `<article class="panel-card codex-card" data-codex-enemy="${enemy.id}">${index < seenEnemies ? `<div class="codex-art">${sprites.markup('enemy', enemy.id, `codex-enemy-${enemy.id}`)}</div><h3>${localizedValue(enemy.name)}</h3><p>${localizedValue(enemy.troop)}</p>` : `<div class="codex-art codex-locked" aria-hidden="true">?</div><h3>${loadoutText(7)}</h3>`}</article>`).join('');
+    const equipment = C.equipment.map(item => `<article class="panel-card codex-card" data-codex-equipment="${item.id}"><div class="codex-art">${gearArt(item)}</div><h3>${localizedValue(item.name)}</h3><p>${localizedValue(item.quality)} · ${localizedValue(item.slot)}</p><small>×${state.inventory.filter(entry => entry.itemId === item.id).length}</small></article>`).join('');
+    openModal(codexText(0), `<section class="codex-content" data-runtime-localize="off"><p>${codexText(2)}</p><h3>${copy('heroes')} · ${owned}/${C.heroes.length}</h3><div class="codex-grid">${heroes}</div><h3>${codexText(1)} · ${seenEnemies}/${C.enemies.length}</h3><div class="codex-grid">${enemies}</div><h3>${copy('equipmentBag')} · ${gearIds.size}/${C.equipment.length}</h3><div class="codex-grid">${equipment}</div></section>`);
   }
 
   // Authored shop copy, including result feedback; never rely on a runtime
@@ -1012,9 +1169,23 @@
       <div class="list-item"><div><p>${itemArt('gear')}${shopText(6)}</p><small>${shopText(7)}</small></div><button data-wp-frame-action="secondary" data-shop="gear">${quantity(80,'resourceIngots')}</button></div></div>`);
   }
 
+  const settingsKeys = ['quality','high','low','damage','save','autoSave','resetProgress','reset','confirmReset'];
+  const settingsCopies = {
+    'zh-Hans':['战斗画质','精细','省电','显示伤害数字','存档','自动保存在本机','重置全部进度','重置存档','再次点击确认'],
+    ja:['戦闘画質','高画質','省電力','ダメージ数値を表示','セーブ','この端末に自動保存','全進行をリセット','セーブをリセット','もう一度押して確定'],
+    ko:['전투 화질','고화질','절전','피해 수치 표시','저장','이 기기에 자동 저장','모든 진행 초기화','저장 초기화','다시 눌러 확인'],
+    es:['Calidad de combate','Alta','Ahorro','Mostrar daño','Partida','Guardado automático en este dispositivo','Borrar todo el progreso','Borrar partida','Pulsa de nuevo para confirmar'],
+    'pt-BR':['Qualidade de combate','Alta','Economia','Mostrar dano','Progresso','Salvo automaticamente neste dispositivo','Apagar todo o progresso','Apagar dados','Toque novamente para confirmar'],
+    fr:['Qualité du combat','Élevée','Économie','Afficher les dégâts','Sauvegarde','Sauvegarde automatique sur cet appareil','Effacer toute la progression','Effacer la sauvegarde','Appuyez encore pour confirmer'],
+    de:['Kampfqualität','Hoch','Sparmodus','Schadenszahlen anzeigen','Spielstand','Automatisch auf diesem Gerät gespeichert','Gesamten Fortschritt löschen','Spielstand löschen','Erneut drücken zum Bestätigen'],
+    it:['Qualità del combattimento','Alta','Risparmio','Mostra danni','Salvataggio','Salvataggio automatico su questo dispositivo','Azzera tutti i progressi','Azzera salvataggio','Premi ancora per confermare'],
+    ru:['Качество боя','Высокое','Экономное','Показывать урон','Сохранение','Автосохранение на этом устройстве','Сбросить весь прогресс','Сбросить сохранение','Нажмите ещё раз для подтверждения'],
+    hi:['युद्ध की गुणवत्ता','उच्च','ऊर्जा बचत','क्षति अंक दिखाएँ','सहेजना','इस उपकरण पर अपने आप सहेजा जाता है','पूरी प्रगति मिटाएँ','सहेजा डेटा मिटाएँ','पुष्टि के लिए फिर दबाएँ']
+  };
+  for (const [locale,values] of Object.entries(settingsCopies)) Object.assign(localeCopy[locale],Object.fromEntries(settingsKeys.map((key,index)=>[key,values[index]])));
   function renderSettings() {
-    openModal(battleOptionsLabel(), `<div class="settings-list">
-      <div class="setting-row"><span>${copy("quality")}</span><select data-setting="quality"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>${copy("high")}</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>${copy("low")}</option></select></div>
+    openModal(battleOptionsLabel(), `<div class="settings-list" data-runtime-localize="off">
+      <div class="setting-row"><span>${copy("quality")}</span><select data-setting="quality" aria-label="${copy('quality')}"><option value="high" ${state.settings.quality === "high" ? "selected" : ""}>${copy("high")}</option><option value="low" ${state.settings.quality === "low" ? "selected" : ""}>${copy("low")}</option></select></div>
       <div class="setting-row"><span>${copy("damage")}</span><button data-wp-frame-action="tab" data-setting="damage" aria-label="${copy("damage")}" aria-pressed="${state.settings.damage}">${state.settings.damage ? "✓" : "—"}</button></div>
       <div class="setting-row"><span>${copy("save")}</span><strong>${copy("autoSave")}</strong></div>
       <div class="setting-row"><span>${copy("resetProgress")}</span><button data-wp-frame-action="secondary" data-reset="arm">${copy("reset")}</button></div></div>`);
@@ -1071,13 +1242,35 @@
     toast(shopText(9)); updateHud(); renderShop(); save();
   }
 
+  const offlineCopy = {
+    'zh-Hant': ['離線收益', '巡守收益已累積 {minutes} 分鐘，最多累積 {hours} 小時。'],
+    'zh-Hans': ['离线收益', '巡守收益已累积 {minutes} 分钟，最多累积 {hours} 小时。'],
+    en: ['Offline rewards', 'Patrol rewards accrued for {minutes} minutes, capped at {hours} hours.'],
+    ja: ['オフライン報酬', '巡回報酬を{minutes}分間蓄積しました。上限は{hours}時間です。'],
+    ko: ['오프라인 보상', '순찰 보상이 {minutes}분 동안 쌓였습니다. 최대 {hours}시간까지 쌓입니다.'],
+    es: ['Recompensas sin conexión', 'La patrulla acumuló recompensas durante {minutes} minutos, con un límite de {hours} horas.'],
+    'pt-BR': ['Recompensas offline', 'A patrulha acumulou recompensas por {minutes} minutos, com limite de {hours} horas.'],
+    fr: ['Récompenses hors ligne', 'La patrouille a accumulé des récompenses pendant {minutes} minutes, dans la limite de {hours} heures.'],
+    de: ['Offline-Belohnungen', 'Die Patrouille hat {minutes} Minuten lang Belohnungen gesammelt. Das Limit beträgt {hours} Stunden.'],
+    it: ['Ricompense offline', 'La pattuglia ha accumulato ricompense per {minutes} minuti, fino a un massimo di {hours} ore.'],
+    ru: ['Награды за отсутствие', 'Награды патруля накоплены за {minutes} мин. Максимум — {hours} ч.'],
+    hi: ['ऑफ़लाइन पुरस्कार', 'गश्त ने {minutes} मिनट तक पुरस्कार जमा किए। अधिकतम सीमा {hours} घंटे है।'],
+    ar: ['مكافآت أثناء الغياب', 'تراكمت مكافآت الدورية لمدة {minutes} دقيقة، بحد أقصى {hours} ساعات.']
+  };
+  function offlineMessage(elapsed) {
+    const [title, template] = offlineCopy[activeLocale()] || offlineCopy.en;
+    const numbers = { minutes: Math.floor(elapsed / 60), hours: C.maxOfflineSeconds / 3600 };
+    const formatter = new Intl.NumberFormat(activeLocale());
+    return { title, body: template.replace(/\{(minutes|hours)\}/g, (_, key) => formatter.format(numbers[key])) };
+  }
   function calculateOffline() {
     const elapsed = clamp(Math.floor((Date.now() - Number(state.lastSave || Date.now())) / 1000), 0, C.maxOfflineSeconds);
     if (elapsed < 60) return;
     const coins = Math.floor(elapsed * (1.5 + state.stage * .24));
     const materials = Math.floor(elapsed / 900);
     grant({ coins, materials });
-    openModal("離線收益", `<p>義軍在你離開的 ${Math.floor(elapsed / 60)} 分鐘持續巡守，收益最多累積 8 小時。</p><div class="reward-row">${resourceChip('coins', `+${fmt(coins)}`)}${resourceChip('materials', `+${materials}`)}</div>`);
+    const message = offlineMessage(elapsed);
+    openModal(message.title, `<section data-runtime-localize="off"><p>${message.body}</p><div class="reward-row">${resourceChip('coins', `+${fmt(coins)}`)}${resourceChip('materials', `+${materials}`)}</div></section>`);
   }
 
   function showCoach() {

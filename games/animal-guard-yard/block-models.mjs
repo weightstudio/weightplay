@@ -33,8 +33,8 @@ export function modelParts(kind){
  if(species==='fox'){b(.15,.44,-.5,.22,.24,.55,fur);b(.15,.48,-.84,.22,.2,.2,ivory);}
  if(species==='deer'){for(const s of [-1,1]){b(s*.25,1.62,-.04,.09,.43,.09,gold);b(s*.36,1.73,-.04,.26,.09,.09,gold);b(s*.46,1.83,-.04,.08,.2,.08,gold);}}
  if(guard){b(0,.56,.29,.07,.2,.045,ivory);b(-.065,.62,.29,.13,.06,.04,ivory);}
- if(kind==='cat'||kind==='fox'){b(.5,.66,.1,.07,.72,.08,gold);b(.5,.99,.17,.07,.1,.21,gold);b(.5,.32,.17,.07,.1,.21,gold);b(.5,.65,.3,.02,.6,.025,ivory);}
- if(kind==='owl'||kind==='healer'){b(.48,.72,.13,.075,1.1,.075,'#66573e');b(.48,1.23,.13,.27,.3,.25,kind==='owl'?'#5cdbdf':'#89d798');b(.48,1.24,.27,.14,.17,.035,ivory);}
+ if(kind==='cat'||kind==='fox'){b(-.5,.66,.1,.07,.72,.08,gold);b(-.5,.99,.17,.07,.1,.21,gold);b(-.5,.32,.17,.07,.1,.21,gold);b(-.5,.65,.3,.02,.6,.025,ivory);}
+ if(kind==='owl'||kind==='healer'){b(-.48,.72,.13,.075,1.1,.075,'#66573e');b(-.48,1.23,.13,.27,.3,.25,kind==='owl'?'#5cdbdf':'#89d798');b(-.48,1.24,.27,.14,.17,.035,ivory);}
  if(kind==='thief'){b(.45,.44,-.2,.3,.4,.35,'#ba8d48');b(.45,.47,.0,.19,.18,.025,gold);}
  // Costumes are authored to the poster: layered cape, boots, leaf clasp and
  // species-specific equipment, rather than the former uniform gold crown.
@@ -61,6 +61,20 @@ export function modelParts(kind){
  if(kind==='owl'){
   for(const s of [-1,1])for(let j=0;j<4;j++)b(s*(.33+j*.025),.75-j*.1,-.06,.16,.13,.3,j%2?'#6f533c':'#a18761');
   b(0,.82,.25,.18,.12,.035,ivory);
+ }
+ // Readable profile faces for the lane-facing battle camera.
+ for(const s of [-1,1]){
+  b(s*.335,.56,0,.035,.46,.4,teal);
+  b(s*.36,.76,0,.04,.065,.43,gold);
+  b(s*.36,.35,0,.04,.055,.43,gold);
+  b(s*.365,.56,.04,.04,.2,.13,gold);
+  b(s*.39,.57,.04,.035,.09,.075,'#8de3d1');
+  b(s*.24,.12,.05,.045,.08,.28,gold);
+  const side=species==='lion'?.485:.36;
+  b(s*side,1.06,.13,.035,.39,.32,fur);
+  b(s*(side+.025),1.15,.23,.025,.13,.13,ivory);
+  b(s*(side+.04),1.15,.27,.018,.085,.055,ink);
+  b(s*(side+.03),1.255,.23,.028,.045,.16,ink);
  }
  return p;
 }
@@ -118,6 +132,11 @@ function enemyParts(kind){
   b(s*.2,headY+.31,headZ+.026,.08,.11,.024,'#aa8d7b');
  }
  // Two shoulder plates, buckles and a stepped back rather than a humanoid chest.
+ for(const s of [-1,1]){
+  b(s*.276,headY+.07,headZ+.08,.025,.12,.14,ivory);
+  b(s*.292,headY+.07,headZ+.115,.018,.085,.065,ink);
+  b(s*.282,headY+.16,headZ+.09,.035,.05,.17,ink);
+ }
  for(const s of [-1,1]){
   b(s*bodyW*.48,bodyY+.13,.04,.16,.26,.38,armor);
   b(s*bodyW*.49,bodyY+.285,.04,.17,.055,.4,gold);

@@ -1061,10 +1061,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   };
   const diamondIcon = "assets/diamond-block-v32.png";
   const heartIcon = "assets/heart-block-v32.png";
-  const impactFxAsset = "assets/block-v31/sun.png";
   const masteryMilestones = new Map([[5, 45], [15, 120], [30, 260]]);
 
-  const projectileAssets = {cat: "assets/block-v31/sun.png", owl: "assets/block-v31/sun.png", fox: "assets/block-v31/sun.png"};
 
   const stageBlueprints = [
     ["First Sun", "\u521d\u967d\u8349\u5730", "Learn Cat range before the first quick beast arrives.", "\u5148\u8a8d\u8b58\u8c93\u9a0e\u58eb\u5c04\u7a0b\uff0c\u518d\u64cb\u4f4f\u7b2c\u4e00\u96bb\u5feb\u7378\u3002", ["normal"]],
@@ -1482,7 +1480,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     if (isStage || isPlaying) {
       const compactLandscape=safeWidth>height&&height<=520;
       const minimumLogicalWidth = compactLandscape?760:390;
-      const minimumLogicalHeight = compactLandscape?334:isStage?788:640;
+      const minimumLogicalHeight = compactLandscape?334:788;
       const scale = Math.min(
         Math.max(1, width) / minimumLogicalWidth,
         availableHeight / minimumLogicalHeight
@@ -1960,8 +1958,6 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   function bindStageCard(button, index) {
     const stage = stages[index];
     if (!stage) return;
-    const cardHeight=matchMedia('(orientation:landscape) and (max-height:520px)').matches?190:286;
-    for(const prop of ['height','min-height','max-height'])button.style.setProperty(prop,`${cardHeight}px`,'important');
     const stageNo = index + 1;
     const locked = stageNo > unlocked;
     const active = index === stageBrowseIndex;
@@ -2093,13 +2089,15 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       const anchorScroll = rail.scrollLeft
         + ((cardBox.left + cardBox.width / 2) - (railBox.left + railBox.width / 2)) * coordinateScale;
       const fraction = logical - anchorIndex;
-      const target = anchorScroll + fraction * stageRailGeometry().orientation * stageRailGeometry().pitch;
+      const target = anchorScroll + fraction * stageRailGeometry().orientation * stageRailGeometry().pitch * coordinateScale;
       const maximum = Math.max(0, rail.scrollWidth - rail.clientWidth);
       const immediateScroll = rail.dataset.wpStageDragDown !== "1" && rail.dataset.wpStageSettling !== "true";
       const previousBehavior = rail.style.getPropertyValue("scroll-behavior");
       const previousPriority = rail.style.getPropertyPriority("scroll-behavior");
       if (immediateScroll) rail.style.setProperty("scroll-behavior", "auto", "important");
-      rail.scrollLeft = Math.max(0, Math.min(maximum, target));
+      rail.scrollLeft = getComputedStyle(rail).direction === "rtl"
+        ? Math.max(-maximum, Math.min(0, target))
+        : Math.max(0, Math.min(maximum, target));
       if (immediateScroll) {
         if (previousBehavior) rail.style.setProperty("scroll-behavior", previousBehavior, previousPriority);
         else rail.style.removeProperty("scroll-behavior");
@@ -2945,6 +2943,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       guard.cooldown -= dt * (slowed ? 0.45 : 1);
       guard.el.classList.toggle("is-roar-slowed", guard.roarSlowMs > 0);
       const target = findTargetForGuard(guard);
+      if (target && !guard.aiming && guard.cooldown <= 0) guard.cooldown = 260;
+      guard.aiming = !!target;
       if (target) faceTarget(guard, target);
       if (target && guard.cooldown <= 0) {
         if (guard.data.attackStyle === "melee") {
@@ -3030,6 +3030,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   }
 
   function meleeAttack(guard, target) {
+    guard.attackCount += 1;
     faceTarget(guard, target);
     pulseClass(guard.el, "is-shooting");
     const y = laneProjectileY(target.row);
@@ -3077,7 +3078,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       el: document.createElement("div"),
     };
     projectile.el.className = `projectile ${guard.id} ${isSupportShot ? "support-shot" : ""} ${isPiercing ? "piercing-shot" : ""} ${direction < 0 ? "left" : "right"}`;
-    projectile.el.innerHTML = `<img src="${projectileAssets[guard.id] || projectileAssets.cat}" alt="" draggable="false" />`;
+    projectile.el.innerHTML = '<i class="yard-bolt" aria-hidden="true"></i>';
     nodes.yardBoard.appendChild(projectile.el);
     projectiles.push(projectile);
   }
@@ -3152,6 +3153,8 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
             );
           }
           blocking.hp -= zombie.damage;
+          blocking.hitMs = 180;
+          zombie.attackCount = (zombie.attackCount || 0) + 1;
           zombie.biteCooldown = 940;
           pulseClass(zombie.el, "is-biting");
           pulseClass(blocking.el, "is-hit");
@@ -3301,13 +3304,13 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       entity.el.style.setProperty("--actor-x", `${x}px`);
       entity.el.style.setProperty("--actor-y", `${y}px`);
       entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
-      updateHpBar(entity, x, y + Math.min(24,(boardRect.height / stage.rows) * 0.25));
+      updateHpBar(entity, x, y + (boardRect.height / stage.rows) * 0.43);
     } else {
       const y = laneCenterY(entity.row, stage) * boardRect.height;
       entity.el.style.setProperty("--actor-x", `${entity.x * boardRect.width}px`);
       entity.el.style.setProperty("--actor-y", `${y}px`);
       entity.el.style.transform = "translate(var(--actor-x), var(--actor-y)) translate(-50%, -50%)";
-      updateHpBar(entity, entity.x * boardRect.width, y + Math.min(24,(boardRect.height / stage.rows) * 0.25));
+      updateHpBar(entity, entity.x * boardRect.width, y + (boardRect.height / stage.rows) * 0.43);
     }
   }
 
@@ -3624,7 +3627,6 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       "assets/coin-block-v32.png",
       diamondIcon,
       heartIcon,
-      impactFxAsset,
     ];
     let loaded = 0;
     const update = () => {

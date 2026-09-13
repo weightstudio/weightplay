@@ -306,6 +306,19 @@ body[data-screen="main"] .game-page-info-static { display: block; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .feedback { min-height: 20px; margin-top: 4px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .battle-actions { margin-top: 3px; gap: 6px; }
   body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .battle-actions .primary-btn { height: 44px; min-height: 44px; }
+  /* The authored Result replaces Battle in the same 334px landscape Canvas;
+     keep its compact action row inside that envelope instead of letting the
+     long-form card escape below the reserve. */
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-panel {
+    position:absolute; top:50px; left:12px; right:12px; z-index:5;
+    max-width:none; margin:0; padding:8px; overflow:hidden;
+  }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-identity { height:48px; margin:-4px 0 0; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-panel h2 { margin:2px 0 4px; font-size:1.15rem; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-panel p { margin:4px 0; line-height:1.2; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .stats { padding:6px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-actions { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:6px; }
+  body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .result-actions > button { min-width:0; padding-inline:4px; white-space:nowrap; font-size:.72rem; }
 }
 @media (max-width: 699px) {
   .panel-head { grid-template-columns: minmax(48px, 58px) minmax(0, 1fr) minmax(0, 106px); }
@@ -315,6 +328,21 @@ body[data-screen="main"] .game-page-info-static { display: block; }
 }
 html[dir="rtl"] .wp-shell-settings-popover { right: auto; left: -4px; }
 html[dir="rtl"] body[data-wp-game-id="animal-canopy-compass"] .battle-canvas .panel-head-actions .panel-utility { transform: none; }
+
+/* Canopy Compass owns its Stage/Battle envelopes and its authored Guide.
+   Keep the Interface 7 theme from shrinking the Main poster or flattening
+   the Guide cards after the shared runtime is installed. */
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"] .game-page-info {
+  --wp-ui-radius:24px;
+}
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-canopy-compass"] .game-page-info .game-info-section {
+  --wp-ui-radius:16px;
+}
+@media (min-width:700px) and (max-height:560px) and (orientation:landscape) {
+  body[data-wp-game-id="animal-canopy-compass"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size:420px !important;
+  }
+}
 
 /* stage-selector-standard.css intentionally normalizes every generic rail.
    Canopy Compass uses a compact authored list, so restore its local layout

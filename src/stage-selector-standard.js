@@ -20,7 +20,7 @@
   let appliedStageRootStyleSignature = "";
   const savedStageStyles = new WeakMap();
   const savedReserveStyles = new WeakMap();
-  const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels"]);
+  const nativeStageScalers = new Set(["campus-dash", "animal-rope-rescue", "animal-coloring-studio", "animal-bubble-safari", "animal-rift-salvage", "animal-rune-reels", "animal-canopy-compass"]);
   // Habitat Builder uses the same wide, short-landscape envelope as its
   // Battle surface. Keep the Stage header and rail controls at their
   // authored touch size instead of scaling the portrait shell down to ~20px

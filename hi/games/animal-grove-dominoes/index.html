@@ -44,13 +44,13 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-screen="main">
+  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-wp-battle-layout="native" data-wp-game-owned-guide data-screen="main">
     <main id="app" class="app-shell">
       <section id="mainView" class="screen main-screen" aria-labelledby="mainTitle">
         <header class="topbar wp-main-shell-header">
           <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="backHome" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="34" height="34"></a>
           <strong class="header-title" data-copy="title" data-wp-game-title data-runtime-localize="off">आवास डोमिनो श्रृंखला</strong>
-          <button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
+          <button id="settingsBtn" class="icon-btn wp-shell-settings-button wp-shell-legacy-control" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
           <div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden>
             <label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" data-copy-aria-label="language" aria-label="Language"></select></label>
             <button id="soundBtn" class="setting-row sound-row" data-sound-toggle type="button" data-copy="soundOn">Sound: On</button>
@@ -72,9 +72,9 @@
         <img class="guide-fia" src="assets/animal-grove-dominoes-fia-v2.png" alt="" aria-hidden="true" width="1337" height="1176" loading="lazy">
         <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay मौलिक गेम गाइड</span><h2 id="guideTitle" data-copy="guideTitle">कैसे खेलें</h2><p data-copy="guideIntro">आवासों का रास्ता बनाएँ, सभी अनिवार्य टाइलें लगाएँ और लक्ष्य पूरे करने के बाद चाँद तक पहुँचें।</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">गेमप्ले</span><strong data-copy="guideGameplayValue">आवास श्रृंखला पहेली</strong></div><div class="game-info-fact"><span data-copy="guideGenre">शैली</span><strong data-copy="guideGenreValue">पहेली · तर्क · स्थानिक विवेक · परिवार · जानवर</strong></div><div class="game-info-fact"><span data-copy="facts">30 रास्तों की पहेलियाँ · प्रगति इसी उपकरण पर सहेजी जाती है</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">आवास डोमिनो श्रृंखला</strong></div><div class="game-info-fact"><span data-copy="language">Language</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">आवास डोमिनो श्रृंखला</strong></div></div></div>
         <div class="guide-grid game-info-sections">
-          <article><b data-copy="guideOneTitle">अनिवार्य</b><p data-copy="guideOne">टाइल के पहले आवास को रास्ते के खुले सिरे से मिलाएँ। सभी अनिवार्य टाइलें लगानी हैं; वैकल्पिक टाइलें छोड़ी जा सकती हैं। लक्ष्य तक पहुँचने से पहले बताए गए सभी आवासों पर जाएँ।</p></article>
-          <article><b data-copy="guideTwoTitle">पुल / पलटाव</b><p data-copy="guideTwo">पुल वाली टाइल एक पास खर्च करती है। पलटने का मोड केवल ↕ वाली टाइलों की दिशा बदलता है और लगाने पर एक पलटाव खर्च होता है। डिलीवरी का क्रम मानें: बाद के स्थान पर पहले पहुँचने से रास्ता बंद हो जाता है।</p></article>
-          <article><b data-copy="guideThreeTitle">स्तर</b><p data-copy="guideThree">मिलती हुई टाइल भी बंद रास्ता बना सकती है। वापस करने पर टाइल, पास, पलटाव और डिलीवरी की प्रगति लौट आती है। स्तर पूरा करके अगला खोलें या पूरे स्तर को कम चुनावों में फिर खेलें।</p></article>
+          <article class="game-info-section"><b data-copy="guideOneTitle">अनिवार्य</b><p data-copy="guideOne">टाइल के पहले आवास को रास्ते के खुले सिरे से मिलाएँ। सभी अनिवार्य टाइलें लगानी हैं; वैकल्पिक टाइलें छोड़ी जा सकती हैं। लक्ष्य तक पहुँचने से पहले बताए गए सभी आवासों पर जाएँ।</p></article>
+          <article class="game-info-section"><b data-copy="guideTwoTitle">पुल / पलटाव</b><p data-copy="guideTwo">पुल वाली टाइल एक पास खर्च करती है। पलटने का मोड केवल ↕ वाली टाइलों की दिशा बदलता है और लगाने पर एक पलटाव खर्च होता है। डिलीवरी का क्रम मानें: बाद के स्थान पर पहले पहुँचने से रास्ता बंद हो जाता है।</p></article>
+          <article class="game-info-section"><b data-copy="guideThreeTitle">स्तर</b><p data-copy="guideThree">मिलती हुई टाइल भी बंद रास्ता बना सकती है। वापस करने पर टाइल, पास, पलटाव और डिलीवरी की प्रगति लौट आती है। स्तर पूरा करके अगला खोलें या पूरे स्तर को कम चुनावों में फिर खेलें।</p></article>
           <article class="game-info-section"><h3 data-copy="faqTitle">अक्सर पूछे गए प्रश्न</h3><dl><div><dt data-copy="faqProgressQuestion">क्या प्रगति सहेजी जाती है?</dt><dd data-copy="faqProgressAnswer">पूरे स्तर और सबसे कम चुनाव इसी ब्राउज़र में सहेजे जाते हैं। भंडारण उपलब्ध न हो तो प्रगति पेज खुला रहने तक ही रहती है।</dd></div></dl></article>
         </div>
       </section>

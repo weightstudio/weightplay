@@ -1089,7 +1089,8 @@
   function renderResultInsight(){
     if(!state.result)return;
     const {used,left}=nectarSummary(),won=state.result.won,stars=state.result.stars;
-    const lockedOpenRoute=!won&&state.pathOpenedAt!==null&&state.strokes.some(stroke=>stroke.anchored&&(stroke.lockContacts||0)>=2);
+    const dog=level(stageIndex).dog;
+    const lockedOpenRoute=!won&&state.strokes.some(stroke=>stroke.anchored&&(stroke.lockContacts||0)>=2&&!pointInsideStroke(dog,stroke.points));
     $("resultRule").textContent=won?fmt("resultRule",{used,nectar:left}):fmt(lockedOpenRoute?"resultFailOpenRoute":"resultFailRule",{used,nectar:left});
     $("resultNext").hidden=!won;
     if(won)$("resultNext").textContent=stars>=3?fmt("resultTop"):fmt("resultNext",{threshold:stars===2?45:72,need:Math.max(1,used-(stars===2?45:72))});

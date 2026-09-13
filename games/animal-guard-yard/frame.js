@@ -6,7 +6,14 @@
     const root = document.querySelector('.yard-game');
     const main = document.getElementById('mainPanel');
     const stage = document.getElementById('menuPanel');
+    stage.dataset.wpStageLandscapeWidth = '760';
+    stage.dataset.wpStageLandscapeHeight = '334';
     const battle = document.getElementById('playPanel');
+    // Declare the content envelope to the shared scaler before its first fit.
+    battle.dataset.wpBattleMinWidth = '390';
+    battle.dataset.wpBattleMinHeight = '788';
+    battle.dataset.wpBattleLandscapeWidth = '760';
+    battle.dataset.wpBattleLandscapeHeight = '334';
     const localeSelect = document.getElementById('localeSelect');
     const mainHeader = root.querySelector('.topbar');
     const title = mainHeader.querySelector('h1');
@@ -30,6 +37,10 @@
     stageTitle.removeAttribute('data-ui');
     stageTitle.textContent='';
     stage.prepend(stageHeader);
+    const wallet=stageContent.querySelector('.wallet-row');
+    wallet.setAttribute('data-wp-frame-info','');
+    wallet.querySelectorAll(':scope > span').forEach(node=>node.setAttribute('data-wp-frame-stat',''));
+    stageHeader.append(wallet);
     const nav=document.getElementById('menuTabs'); nav.setAttribute('data-wp-frame-nav','');
     nav.querySelectorAll('button').forEach(n=>n.setAttribute('data-wp-frame-action','tab'));
     const battleContent=battle.querySelector('.fixed-game-shell');

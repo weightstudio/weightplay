@@ -6,6 +6,14 @@
 #battle .battle-content,#stage .stage-workspace{background:linear-gradient(#06192166,#06192155),url('../../assets/animal-prism-garden-scenery-block-v15.webp') center/cover no-repeat}
 #battle .battle-objective,#battle .status{background:#081e28e8;padding:6px 9px;border-radius:3px}
 #battle .grid{min-width:0;max-width:100%;max-height:100%;box-sizing:border-box}
+#battle .prism-board-slot{width:100%;height:100%;min-width:0;min-height:0;container-type:size;display:grid;place-items:center}
+#battle .prism-board-slot .grid{width:min(100cqw,100cqh);height:min(100cqw,100cqh);margin:0;grid-area:auto;align-self:center}
+#battle .cell.seed:not(.connected)::after{filter:grayscale(.8);opacity:.55}
+#battle .cell.seed.connected{outline:2px solid #fff;outline-offset:-5px}
+@media(max-height:500px) and (orientation:landscape){
+ #battle .battle-content{grid-template-rows:28px minmax(0,1fr) 38px}
+ #battle .prism-board-slot{grid-column:1;grid-row:1/4}
+}
 #battle .cell{border-radius:3px;background:url('../../assets/animal-prism-garden-tile-block-v15.webp') center/cover no-repeat}
 #battle .prism-battle-help{position:absolute;inset-inline-end:8px;inset-block-start:8px}
 #battle .cell.seed::after{inset:8%;background:url('../../assets/animal-prism-garden-flower-block-v15.webp') center/contain no-repeat;border-radius:0;box-shadow:none;filter:drop-shadow(0 0 3px var(--seed))}

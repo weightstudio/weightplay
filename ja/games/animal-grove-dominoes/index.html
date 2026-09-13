@@ -44,13 +44,13 @@
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
-  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-screen="main">
+  <body data-audience="general" data-wp-game-id="animal-grove-dominoes" data-wp-game-version="v6" data-wp-battle-layout="native" data-wp-game-owned-guide data-screen="main">
     <main id="app" class="app-shell">
       <section id="mainView" class="screen main-screen" aria-labelledby="mainTitle">
         <header class="topbar wp-main-shell-header">
           <a class="return-link wp-shell-return" data-wp-return="main" href="../../index.html" data-copy-aria-label="backHome" aria-label="Back to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt="" width="34" height="34"></a>
           <strong class="header-title" data-copy="title" data-wp-game-title data-runtime-localize="off">すみかドミノつなぎ</strong>
-          <button id="settingsBtn" class="icon-btn wp-shell-settings-button" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
+          <button id="settingsBtn" class="icon-btn wp-shell-settings-button wp-shell-legacy-control" type="button" aria-expanded="false" aria-controls="settingsPanel" aria-label="Settings">⚙</button>
           <div id="settingsPanel" class="settings-panel" role="dialog" aria-label="Settings" hidden>
             <label class="setting-row"><span data-copy="language">Language</span><select id="localeSelect" data-copy-aria-label="language" aria-label="Language"></select></label>
             <button id="soundBtn" class="setting-row sound-row" data-sound-toggle type="button" data-copy="soundOn">サウンド：オン</button>
@@ -72,9 +72,9 @@
         <img class="guide-fia" src="assets/animal-grove-dominoes-fia-v2.png" alt="" aria-hidden="true" width="1337" height="1176" loading="lazy">
         <div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker" data-copy="guideKicker">WeightPlay オリジナルゲームガイド</span><h2 id="guideTitle" data-copy="guideTitle">遊び方</h2><p data-copy="guideIntro">生息地をつなぐ道を考え、必須の牌をすべて使い、課題を達成してから月の地へ進みましょう。</p></div><div class="game-info-facts"><div class="game-info-fact"><span data-copy="guideGameplay">ゲーム内容</span><strong data-copy="guideGameplayValue">生息地チェーンパズル</strong></div><div class="game-info-fact"><span data-copy="guideGenre">ジャンル</span><strong data-copy="guideGenreValue">パズル · ロジック · 空間推理 · ファミリー · 動物</strong></div><div class="game-info-fact"><span data-copy="facts">30 の経路パズル・進行状況は端末に保存</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">すみかドミノつなぎ</strong></div><div class="game-info-fact"><span data-copy="language">Language</span><strong data-copy="title" data-wp-game-title data-runtime-localize="off">すみかドミノつなぎ</strong></div></div></div>
         <div class="guide-grid game-info-sections">
-          <article><b data-copy="guideOneTitle">必須</b><p data-copy="guideOne">牌の最初の生息地を道の先端に合わせます。必須の牌はすべて使い、任意の牌は残せます。ゴール前に指定の生息地をすべて訪れてください。</p></article>
-          <article><b data-copy="guideTwoTitle">橋 / 反転</b><p data-copy="guideTwo">橋の印がある牌は通行券を1枚使います。反転モードは ↕ の牌だけを逆向きにし、置くと反転回数を1回使います。配達は表示順に行い、後の届け先へ先に進むと行き詰まります。</p></article>
-          <article><b data-copy="guideThreeTitle">ステージ</b><p data-copy="guideThree">つながる牌でも行き止まりになることがあります。元に戻すと牌、通行券、反転回数、配達状況が戻ります。クリアで次が解放され、クリア済みの面は手数更新のため再挑戦できます。</p></article>
+          <article class="game-info-section"><b data-copy="guideOneTitle">必須</b><p data-copy="guideOne">牌の最初の生息地を道の先端に合わせます。必須の牌はすべて使い、任意の牌は残せます。ゴール前に指定の生息地をすべて訪れてください。</p></article>
+          <article class="game-info-section"><b data-copy="guideTwoTitle">橋 / 反転</b><p data-copy="guideTwo">橋の印がある牌は通行券を1枚使います。反転モードは ↕ の牌だけを逆向きにし、置くと反転回数を1回使います。配達は表示順に行い、後の届け先へ先に進むと行き詰まります。</p></article>
+          <article class="game-info-section"><b data-copy="guideThreeTitle">ステージ</b><p data-copy="guideThree">つながる牌でも行き止まりになることがあります。元に戻すと牌、通行券、反転回数、配達状況が戻ります。クリアで次が解放され、クリア済みの面は手数更新のため再挑戦できます。</p></article>
           <article class="game-info-section"><h3 data-copy="faqTitle">よくある質問</h3><dl><div><dt data-copy="faqProgressQuestion">進行状況は保存されますか？</dt><dd data-copy="faqProgressAnswer">クリア状況と最少手数はこのブラウザに保存されます。保存できない場合、ページを閉じると進行状況が失われます。</dd></div></dl></article>
         </div>
       </section>

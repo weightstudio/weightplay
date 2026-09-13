@@ -15,6 +15,8 @@
   const sh=stage.querySelector('header'),sc=stage.querySelector('.stage-workspace');
   sh.querySelector('h2').dataset.wpFrameTitle='';stage.querySelector('.stage-tabs').dataset.wpFrameNav='';
   const bh=battle.querySelector('header'),bc=battle.querySelector('.battle-content'),hud=bc.querySelector('.hud');
+  const boardSlot=document.createElement('div');boardSlot.className='prism-board-slot';
+  $('grid').before(boardSlot);boardSlot.append($('grid'));
   hud.dataset.wpFrameInfo='';
   for(const node of [...hud.children]){
    const field=document.createElement('div'),label=document.createElement('span');

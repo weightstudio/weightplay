@@ -34,6 +34,7 @@
     enemy: {
       wolf: { source: "enemy-wolf-block-v1.png", width: 1024, height: 1536 },
       boar: { source: "enemy-boar-block-v1.png", width: 1024, height: 1536 },
+      hyena: { source: "hyena-crossbow-block-alpha-v1.png", width: 1144, height: 1375, facing: "left" },
       cobra: { source: "enemy-cobra-block-v1.png", width: 1024, height: 1536 },
       buffalo: { source: "enemy-buffalo-block-v1.png", width: 1024, height: 1536 },
     },
@@ -46,7 +47,7 @@
     if (!frame || !/^[a-zA-Z0-9-]+$/.test(instance)) throw new Error("Unknown Peach Oath sprite");
     const asset = individual[side]?.[id];
     if (asset) {
-      return `<svg class="sprite" data-sprite="${id}" viewBox="0 0 ${asset.width} ${asset.height}"
+      return `<svg class="sprite" data-sprite="${id}" data-native-facing="${asset.facing || 'right'}" viewBox="0 0 ${asset.width} ${asset.height}"
         preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
         <image href="assets/${asset.source}" width="${asset.width}" height="${asset.height}"/>
       </svg>`;

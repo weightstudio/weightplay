@@ -1,9 +1,26 @@
 /* Game-owned content only. Shared frame styles own all header/preferences skin. */
+.yard-bolt{position:absolute;left:0;top:50%;width:22px;height:3px;background:#f5d58a;transform:translateY(-50%)}
+.yard-bolt::before{content:'';position:absolute;right:-2px;top:-3px;width:8px;height:8px;background:#fff0c6;clip-path:polygon(0 0,100% 50%,0 100%)}
+.yard-bolt::after{content:'';position:absolute;left:1px;top:-2px;width:5px;height:7px;background:#69b6a8}
+.projectile.left .yard-bolt{transform:translateY(-50%) rotate(180deg)}
+.projectile.owl .yard-bolt{background:#8be8e0}.projectile.fox .yard-bolt{background:#bce589}
 [data-wp-frame="2"] #menuTabs{position:static!important;inset:auto!important;width:100%!important}
 [data-wp-frame="2"] #menuTabs img{width:24px;height:24px;object-fit:contain}
 html body.guard-yard-stage [data-wp-frame="2"] #animalTabPanel .kennel-head [data-ui],html body.guard-yard-stage [data-wp-frame="2"] #shopTabPanel .kennel-head [data-ui]{color:var(--wp-ui-text)!important}
 html body.guard-yard-stage [data-wp-frame="2"] #kennelGrid .kennel-next{color:var(--wp-ui-text)!important;background:var(--wp-ui-surface)!important;border:1px solid var(--wp-ui-line)}
-[data-wp-frame="2"] .menu-shell{min-height:0!important;overflow:auto;grid-template-rows:48px minmax(0,1fr)!important}
+[data-wp-frame="2"] .menu-shell{min-height:0!important;overflow:hidden;grid-template-rows:48px minmax(0,1fr)!important}
+/* One workspace owns the rail: remove the legacy inset phone frame. */
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .menu-shell{padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;gap:6px!important;grid-template-rows:minmax(0,1fr)!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .menu-tab-panel{grid-row:1!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row{grid-column:2!important;grid-row:1!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;height:48px!important;z-index:auto!important;gap:4px!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row>span{height:48px!important;justify-content:center!important;gap:0!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row img{width:22px!important;height:22px!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row b{font:800 14px/18px system-ui!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .menu-content{width:100%!important;min-width:0!important;padding:0!important;margin:0!important;border:0!important}
+html body.guard-yard-stage [data-wp-frame="2"] #stageTabPanel{width:100%!important;min-width:0!important;padding:0!important;margin:0!important}
+html body.guard-yard-stage [data-wp-frame="2"] #stageGrid{width:100%!important;min-width:0!important;align-items:center!important;align-self:stretch!important;margin:0!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-card{height:286px!important;min-height:286px!important;max-height:286px!important}
+html body.guard-yard-playing [data-wp-frame="2"] .fixed-game-shell{border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important}
 body.guard-yard-stage [data-wp-frame="2"] .wallet-row{position:relative!important;inset:auto!important;grid-row:1;height:44px!important}
 html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row :is(span,b){color:var(--wp-ui-text)!important}
 html body.guard-yard-stage [data-wp-frame="2"] .training-bridge-cue{max-height:none;overflow:visible;color:var(--wp-ui-muted)!important;background:var(--wp-ui-surface)!important}
@@ -28,6 +45,15 @@ body.guard-yard-playing [data-wp-frame="2"] #hintText{grid-row:6!important}
  body.guard-yard-playing [data-wp-frame="2"] #hintText{grid-column:1!important;grid-row:4!important}
 }
 @media(orientation:landscape) and (max-height:520px){
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .menu-shell{grid-template-columns:minmax(0,1fr)!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-card{height:122px!important;min-height:122px!important;max-height:122px!important;display:grid!important;grid-template-columns:44px minmax(0,1fr)!important;grid-template-rows:16px 16px minmax(0,1fr) auto auto!important;gap:2px 6px!important;padding:8px!important;text-align:start!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-animal{grid-column:1!important;grid-row:1/4!important;width:42px!important;height:42px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-card>strong{grid-column:2;font-size:13px!important;line-height:16px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-card>span{grid-column:2;font-size:11px!important;line-height:14px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-plan{grid-column:2;font-size:10px!important;line-height:12px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-threats{grid-column:1/-1;font-size:10px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .stage-threat img{width:19px!important;height:19px!important}
+ html body.guard-yard-stage [data-wp-frame="2"] #stageGrid{padding-block:6px!important}
  body.guard-yard-playing [data-wp-frame="2"] .fixed-game-shell{grid-template-rows:28px 28px minmax(0,1fr) 52px!important}
  body.guard-yard-playing [data-wp-frame="2"] .yard-wave-preview{grid-row:2!important}
  body.guard-yard-playing [data-wp-frame="2"] .unit-bar,body.guard-yard-playing [data-wp-frame="2"] #yardBoard{grid-row:3!important}

@@ -17,6 +17,27 @@
     ar:{time:"الوقت",mistakes:"الأخطاء",hints:"التلميحات",alt:"فسيفساء الحيوان المكتملة",row:"الصف",column:"العمود",filled:"ممتلئة",empty:"فارغة",boardState:"حالة اللغز",rowClues:"أدلة الصفوف",columnClues:"أدلة الأعمدة",grid:"الشبكة",legend:"المفتاح: ■ ممتلئة، × فارغة معلّمة، ? غير معروفة.",forced:"تلميح: دليل {line} {number} وهو {clue} يثبت أن الخانة {cell} {state}.",none:"تلميح: لا يوجد صف أو عمود محسوم بمفرده الآن. طابق الأدلة المتقاطعة."}
   };
   const locale=window.WonderI18n?.actualLocale?.()||document.documentElement.lang||"en",t=copy[locale]||copy.en;
+  const revealCopy={
+    en:{line:"You uncovered {animal}."},"zh-Hant":{line:"你揭開了{animal}。"},"zh-Hans":{line:"你揭开了{animal}。"},
+    ja:{line:"{animal}を見つけました。"},ko:{line:"{animal}을(를) 발견했어요."},es:{line:"Has descubierto {animal}."},
+    "pt-BR":{line:"Você revelou {animal}."},fr:{line:"Vous avez révélé {animal}."},de:{line:"Du hast {animal} enthüllt."},
+    it:{line:"Hai rivelato {animal}."},ru:{line:"Вы раскрыли образ: {animal}."},hi:{line:"आपने {animal} को खोज निकाला।"},ar:{line:"لقد كشفت عن {animal}."}
+  }[locale]||{line:"You uncovered {animal}."};
+  const revealAnimals={
+    en:["the Forest Fox","the River Otter","the Moon Hare","the Coral Turtle","the Sky Heron","the Grand Bear"],
+    "zh-Hant":["森林狐狸","河畔水獺","月光野兔","珊瑚海龜","天空蒼鷺","巨獸棕熊"],
+    "zh-Hans":["森林狐狸","河畔水獭","月光野兔","珊瑚海龟","天空苍鹭","巨兽棕熊"],
+    ja:["森のキツネ","川のカワウソ","月のノウサギ","サンゴのカメ","空のサギ","大地のクマ"],
+    ko:["숲의 여우","강의 수달","달빛 토끼","산호 거북","하늘 왜가리","큰곰"],
+    es:["el zorro del bosque","la nutria del río","la liebre lunar","la tortuga de coral","la garza del cielo","el gran oso"],
+    "pt-BR":["a raposa da floresta","a lontra do rio","a lebre lunar","a tartaruga de coral","a garça do céu","o grande urso"],
+    fr:["le renard des bois","la loutre de rivière","le lièvre lunaire","la tortue de corail","le héron du ciel","le grand ours"],
+    de:["der Wald-Fuchs","der Flussotter","der Mondhase","die Korallenschildkröte","der Himmelreiher","der große Bär"],
+    it:["la volpe del bosco","la lontra del fiume","la lepre lunare","la tartaruga corallina","l’airone del cielo","il grande orso"],
+    ru:["лесная лиса","речная выдра","лунный заяц","коралловая черепаха","небесная цапля","великий медведь"],
+    hi:["वन लोमड़ी","नदी ऊदबिलाव","चाँदनी खरगोश","मूँगा कछुआ","आकाश बगुला","बड़ा भालू"],
+    ar:["ثعلب الغابة","قندس النهر","أرنب القمر","سلحفاة المرجان","مالك الحزين السماوي","الدب الكبير"]
+  }[locale]||["the Forest Fox","the River Otter","the Moon Hare","the Coral Turtle","the Sky Heron","the Grand Bear"];
   const result=document.querySelector("#resultModal"),feedback=document.querySelector("#feedback"),records=new WeakMap();
   let active=null,last=performance.now();
   const state=()=>window.__blockTrilogyTest?.getState?.();
@@ -53,7 +74,7 @@
   }
   function updateResult(){
     if(result.hidden)return;const current=state(),engine=current?.engine;if(engine?.kind!=="mosaic"||!engine.cells.every((row,y)=>row.every((value,x)=>(value===1)===engine.solution[y][x])))return;
-    const record=recordFor(engine),image=result.querySelector(".result-art"),labels=result.querySelectorAll(".result-stats b");image.src=resultImage(engine);image.alt=t.alt;image.dataset.completedMosaic="true";[t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;document.querySelector("#resultB").textContent=String(engine.mistakes);document.querySelector("#resultC").textContent=String(record.hints);
+    const record=recordFor(engine),image=result.querySelector(".result-art"),labels=result.querySelectorAll(".result-stats b"),stage=current.selected||1,animalIndex=Math.min(revealAnimals.length-1,Math.max(0,stage-1));image.src=resultImage(engine);image.alt=t.alt;image.dataset.completedMosaic="true";image.dataset.revealedAnimal=revealAnimals[animalIndex];[t.time,t.mistakes,t.hints].forEach((value,index)=>labels[index].textContent=value);document.querySelector("#resultText").textContent=format(revealCopy.line,{animal:revealAnimals[animalIndex]});document.querySelector("#resultA").textContent=`${Math.floor(record.elapsed/60)}:${String(Math.floor(record.elapsed%60)).padStart(2,"0")}`;document.querySelector("#resultB").textContent=String(engine.mistakes);document.querySelector("#resultC").textContent=String(record.hints);
   }
   const canvas=document.querySelector("#arena"),arenaWrap=document.querySelector("#arenaWrap"),keyboardCursor=document.createElement("div"),boardDescription=document.createElement("p");
   let keyboardEngine=null,keyboardActive=false,boardDescriptionSignature="";
