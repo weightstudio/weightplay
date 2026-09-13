@@ -47,3 +47,6 @@ for(const [locale,parts] of Object.entries(DETAILS)){
  parts[1]+=' '+upgradeText(locale,'mathGuide');
  parts[2]+=' '+['gate','runeLesson','finale'].map(key=>upgradeText(locale,key)).join(' ');
 }
+
+import {cameraText} from './camera-copy.mjs';
+for(const [locale,parts] of Object.entries(DETAILS))parts[0]+=' '+cameraText(locale,'guide');

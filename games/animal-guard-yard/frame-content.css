@@ -1,8 +1,12 @@
 /* Game-owned content only. Shared frame styles own all header/preferences skin. */
 [data-wp-frame="2"] #menuTabs{position:static!important;inset:auto!important;width:100%!important}
 [data-wp-frame="2"] #menuTabs img{width:24px;height:24px;object-fit:contain}
+html body.guard-yard-stage [data-wp-frame="2"] #animalTabPanel .kennel-head [data-ui],html body.guard-yard-stage [data-wp-frame="2"] #shopTabPanel .kennel-head [data-ui]{color:var(--wp-ui-text)!important}
+html body.guard-yard-stage [data-wp-frame="2"] #kennelGrid .kennel-next{color:var(--wp-ui-text)!important;background:var(--wp-ui-surface)!important;border:1px solid var(--wp-ui-line)}
 [data-wp-frame="2"] .menu-shell{min-height:0!important;overflow:auto;grid-template-rows:48px minmax(0,1fr)!important}
 body.guard-yard-stage [data-wp-frame="2"] .wallet-row{position:relative!important;inset:auto!important;grid-row:1;height:44px!important}
+html body.guard-yard-stage [data-wp-frame="2"] #menuPanel .wallet-row :is(span,b){color:var(--wp-ui-text)!important}
+html body.guard-yard-stage [data-wp-frame="2"] .training-bridge-cue{max-height:none;overflow:visible;color:var(--wp-ui-muted)!important;background:var(--wp-ui-surface)!important}
 body.guard-yard-stage [data-wp-frame="2"] .menu-tab-panel{grid-row:2;min-height:0!important}
 body.guard-yard-playing [data-wp-frame="2"] .fixed-game-shell{position:relative!important;inset:auto!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;overflow:auto!important;grid-template-rows:30px 80px 32px minmax(220px,1fr) 52px 54px!important}
 body.guard-yard-playing [data-wp-frame="2"] .wave-status{grid-row:1!important}

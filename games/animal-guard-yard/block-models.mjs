@@ -13,6 +13,7 @@ export function modelParts(kind){
   b(0,.15,0,.46,.2,.45,teal);b(0,.6,0,.1,.75,.12,gold);b(0,.95,0,.6,.16,.15,ivory);b(-.24,.82,0,.13,.23,.15,ivory);return p;
  }
  const guard=['cat','dog','owl','fox'].includes(kind),boss=kind.startsWith('boss');
+ if(!guard)return enemyParts(kind);
  const species={cat:'lion',dog:'turtle',normal:'wolf',fast:'hyena',shield:'boar',healer:'deer',burrow:'badger',thief:'raccoon',bossRhino:'rhino',bossTortoise:'turtle',bossBadger:'badger',bossBoar:'boar',bossEagle:'eagle',bossElk:'deer'}[kind]||kind;
  const fur={lion:'#e6a52c',turtle:'#779b56',owl:'#907858',fox:'#c66b29',wolf:'#627b85',hyena:'#a17a5d',boar:'#745649',deer:'#987358',badger:'#64717a',raccoon:'#5a777e',rhino:'#8b9686',eagle:'#766c91'}[species];
  const belly=guard?ivory:'#b4b4a0',armour=guard?teal:kind==='healer'?'#408d70':kind==='thief'?'#67578e':boss?'#633f48':'#3b4f5e';
@@ -35,6 +36,138 @@ export function modelParts(kind){
  if(kind==='cat'||kind==='fox'){b(.5,.66,.1,.07,.72,.08,gold);b(.5,.99,.17,.07,.1,.21,gold);b(.5,.32,.17,.07,.1,.21,gold);b(.5,.65,.3,.02,.6,.025,ivory);}
  if(kind==='owl'||kind==='healer'){b(.48,.72,.13,.075,1.1,.075,'#66573e');b(.48,1.23,.13,.27,.3,.25,kind==='owl'?'#5cdbdf':'#89d798');b(.48,1.24,.27,.14,.17,.035,ivory);}
  if(kind==='thief'){b(.45,.44,-.2,.3,.4,.35,'#ba8d48');b(.45,.47,.0,.19,.18,.025,gold);}
- if(boss){b(0,1.43,0,.69,.12,.5,gold);for(const x of [-.28,0,.28])b(x,1.57,0,.12,.23,.2,gold);b(0,1.52,.27,.13,.17,.06,'#bd5c75');for(const s of [-1,1])b(s*.45,.73,0,.27,.23,.4,gold);}
+ // Costumes are authored to the poster: layered cape, boots, leaf clasp and
+ // species-specific equipment, rather than the former uniform gold crown.
+ for(const s of [-1,1]){
+  b(s*.22,.34,.24,.16,.08,.055,gold);
+  b(s*.3,.72,.18,.13,.12,.12,'#b68c46');
+  b(s*.27,.31,-.31,.15,.12,.1,'#18585e');
+ }
+ b(0,.32,-.34,.3,.18,.08,'#18585e');
+ b(0,.68,.29,.13,.12,.04,gold);
+ b(0,.69,.315,.065,.07,.02,'#e8dab1');
+ if(kind==='cat'){
+  for(const s of [-1,1])for(let j=0;j<3;j++){
+   b(s*(.33-j*.07),.81-j*.1,.19,.18,.13,.32,j%2?'#9e602b':'#b67732');
+  }
+  b(0,.78,.22,.27,.15,.28,'#b67732');
+ }
+ if(kind==='dog'){
+  // Terraced teal shell, gold edge and a complete shield face.
+  for(let j=0;j<3;j++)b(0,.55+j*.14,-.49-j*.025,.65-j*.13,.13,.12,j%2?teal:'#236b6b');
+  for(const y of [.34,.68])b(-.6,y,.16,.055,.065,.34,gold);
+  b(-.62,.51,.16,.06,.22,.12,'#e6cb77');
+ }
+ if(kind==='owl'){
+  for(const s of [-1,1])for(let j=0;j<4;j++)b(s*(.33+j*.025),.75-j*.1,-.06,.16,.13,.3,j%2?'#6f533c':'#a18761');
+  b(0,.82,.25,.18,.12,.035,ivory);
+ }
+ return p;
+}
+
+// Actor-local +Z is forward. All feet rest at Y=0; only the flight species
+// has a raised body. The renderer still owns world placement and animation.
+function enemyParts(kind){
+ const p=[],b=(x,y,z,w,h,d,c)=>p.push([x,y,z,w,h,d,c]);
+ const boss=kind.startsWith('boss');
+ const species={normal:'wolf',fast:'hyena',shield:'boar',healer:'deer',burrow:'badger',thief:'raccoon',bossRhino:'rhino',bossTortoise:'turtle',bossBadger:'badger',bossBoar:'boar',bossEagle:'eagle',bossElk:'deer'}[kind];
+ if(!species)throw new Error(`Unknown Guard Yard model: ${kind}`);
+ const ivory='#eee0be',ink='#20262c',gold='#b9904e',silver='#b3c4d1';
+ const fur={wolf:'#73828a',hyena:'#aa8055',boar:boss?'#9b5536':'#69564b',deer:boss?'#384d66':'#ac7e4f',badger:'#696b6b',raccoon:'#7a7e80',rhino:'#929084',turtle:'#7e8650',eagle:'#e8e0ce'}[species];
+ const armor=kind==='bossBadger'?'#594258':kind==='bossBoar'?'#81462e':kind==='bossElk'?'#304560':kind==='healer'?'#286d52':kind==='thief'?'#603d54':kind==='bossRhino'?'#325956':'#3b4850';
+ if(species==='eagle'){
+  b(0,.72,0,.48,.7,.45,'#33485c');
+  b(0,1.2,.14,.55,.43,.48,ivory);b(0,1.04,.48,.18,.16,.26,gold);b(0,.94,.57,.14,.16,.11,gold);
+  for(const s of [-1,1]){
+   b(s*.17,1.24,.392,.17,.1,.03,ink);b(s*.17,1.24,.414,.08,.065,.02,'#63bdd9');
+   b(s*.17,1.34,.38,.23,.07,.1,ivory);
+   for(let j=0;j<5;j++){
+    const x=s*(.33+j*.16),y=.9+j*.15;
+    b(x,y,-.06,.19,.46-j*.025,.18,j%2?'#3c5770':'#294056');
+    b(x,y-.23+j*.012,-.06,.19,.09,.19,'#46abc3');
+    b(x,y-.17+j*.012,.045,.19,.045,.025,gold);
+   }
+   b(s*.16,.32,.08,.11,.22,.12,gold);
+   for(let j=0;j<3;j++)b(s*.16+(j-1)*.06,.19,.17,.045,.1,.28,gold);
+  }
+  for(let j=0;j<3;j++)b((j-1)*.13,.36,-.29,.12,.25,.25,'#355e78');
+  b(0,.89,.245,.13,.15,.04,silver);return p;
+ }
+ const deer=species==='deer',low=['turtle','badger'].includes(species);
+ const bodyY=deer?.65:low?.44:.5,legH=deer?.48:low?.23:.29;
+ const bodyW=species==='turtle'?.82:boss?.75:.57;
+ b(0,bodyY,-.11,bodyW,.46,.82,fur);
+ b(0,bodyY-.1,.04,bodyW*.82,.24,.62,ivory);
+ for(const x of [-1,1])for(const z of [-1,1]){
+  const px=x*bodyW*.36,pz=z*.29-.1;
+  b(px,legH*.58,pz,.18,legH,.21,fur);
+  b(px,.065,pz+.045,.2,.13,.3,['badger','turtle'].includes(species)?fur:ink);
+  if(species==='badger'||species==='turtle')for(let j=0;j<3;j++)b(px+(j-1)*.057,.04,pz+.22,.044,.08,boss?.21:.13,ivory);
+ }
+ const headY=deer?1.07:low?.6:.78,headZ=deer?.34:.47;
+ if(deer)b(0,.84,.29,.29,.53,.3,fur);
+ b(0,headY,headZ,.53,.46,.44,fur);
+ const muzzle=species==='rhino'?.41:species==='boar'?.37:.28;
+ b(0,headY-.11,headZ+.28,muzzle,.22,.23,['wolf','badger','raccoon','deer'].includes(species)?ivory:fur);
+ b(0,headY-.035,headZ+.41,muzzle*.53,.095,.055,ink);
+ for(const s of [-1,1]){
+  b(s*.16,headY+.055,headZ+.229,.15,.11,.035,ivory);
+  b(s*.15,headY+.055,headZ+.251,.075,.09,.024,kind==='bossElk'?'#84c9ea':'#bd7d37');
+  b(s*.15,headY+.16,headZ+.235,.19,.06,.07,ink);
+  b(s*.2,headY+.3,headZ-.06,.16,.2,.16,fur);
+  b(s*.2,headY+.31,headZ+.026,.08,.11,.024,'#aa8d7b');
+ }
+ // Two shoulder plates, buckles and a stepped back rather than a humanoid chest.
+ for(const s of [-1,1]){
+  b(s*bodyW*.48,bodyY+.13,.04,.16,.26,.38,armor);
+  b(s*bodyW*.49,bodyY+.285,.04,.17,.055,.4,gold);
+  b(s*bodyW*.58,bodyY+.15,.12,.03,.075,.08,gold);
+ }
+ for(let j=0;j<3;j++)b(0,bodyY+.26+j*.035,-.31+j*.17,bodyW*.76,.07,.17,armor);
+ if(['wolf','hyena','badger','boar','raccoon'].includes(species)){
+  for(let j=0;j<3;j++)b(0,bodyY+.02+j*.06,-.62-j*.14,.18-j*.025,.18,.2,species==='raccoon'&&j%2?ink:fur);
+ }
+ if(species==='hyena'){
+  for(let j=0;j<4;j++)b(0,bodyY+.33,-.33+j*.17,.16,.16,.15,'#584633');
+  for(const s of [-1,1])for(let j=0;j<3;j++)b(s*bodyW*.505,bodyY-.015,-.32+j*.2,.026,.095,.095,'#654d36');
+ }
+ if(species==='badger'||species==='raccoon'){
+  b(0,headY+.06,headZ+.245,.12,.37,.025,ivory);
+  for(const s of [-1,1])b(s*.17,headY+.045,headZ+.269,.22,.055,.022,ink);
+ }
+ if(species==='boar'){
+  for(const s of [-1,1])for(let j=0;j<3;j++)b(s*(.2+j*.018),headY-.06+j*.11,headZ+.31+j*.04,.095-j*.018,.12,.1,ivory);
+  for(let j=0;j<4;j++)b(0,bodyY+.37,-.31+j*.18,.17,.23,.16,'#49362c');
+ }
+ if(species==='rhino'){
+  for(let j=0;j<4;j++)b(0,headY+.12+j*.12,headZ+.3,.2-j*.04,.13,.2-j*.035,ivory);
+  b(0,headY+.1,headZ+.3,.25,.06,.26,'#7a8c47');
+  b(0,headY-.19,headZ+.407,.27,.13,.035,'#573c36');
+ }
+ if(species==='turtle'){
+  for(let j=0;j<4;j++){
+   b(0,bodyY+.26+j*.13,-.14,.93-j*.16,.14,.97-j*.15,'#465052');
+   for(const s of [-1,1])b(s*(.42-j*.07),bodyY+.3+j*.13,-.03,.09,.07,.09,gold);
+  }
+ }
+ if(deer){
+  const horn=kind==='bossElk'?silver:'#9b7246';
+  for(const s of [-1,1]){
+   b(s*.22,headY+.51,headZ-.05,.09,.48,.09,horn);
+   b(s*.37,headY+.61,headZ-.05,.36,.09,.09,horn);
+   b(s*.51,headY+.75,headZ-.05,.09,.34,.09,horn);
+   b(s*.3,headY+.86,headZ-.05,.08,.18,.08,horn);
+  }
+  const gem=kind==='bossElk'?'#74bcde':'#82d5a3';
+  b(0,headY+.49,headZ+.05,.2,.27,.18,gem);
+  b(0,headY+.5,headZ+.15,.09,.14,.035,'#c9f1df');
+  b(0,bodyY+.02,.34,.17,.2,.07,gem);
+ }
+ if(kind==='thief'){
+  b(.37,.48,-.2,.29,.34,.32,'#8a5c39');
+  b(.37,.47,-.02,.12,.09,.035,gold);
+  for(let j=0;j<3;j++)b(.28+j*.08,.68+(j%2)*.07,-.17,.08,.1,.1,'#f4cc68');
+ }
+ if(kind==='bossBadger')for(const s of [-1,1])b(s*.39,bodyY+.36,.03,.14,.16,.14,'#a779ba');
  return p;
 }

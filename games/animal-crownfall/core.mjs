@@ -14,7 +14,7 @@ export function groupAt(s, x, y) {
   }
   return group;
 }
-export function solid(s,x,y) { return y >= s.board.length || (x >= 0 && x < WIDTH && !['.', undefined].includes(s.board[y]?.[x])); }
+export function solid(s,x,y) { return y >= s.board.length || (x >= 0 && x < s.board[0].length && !['.', undefined].includes(s.board[y]?.[x])); }
 export function powerOf(s, e) {
   return e.power + s.enemies.filter(f => f.alive && f.buff?.targets.includes(e.id)).reduce((n,f) => n+f.buff.amount, 0);
 }
@@ -44,7 +44,7 @@ export function step(input,x,y,{trace=true}={}) {
   group.forEach(([a,b])=>s.board[b][a]='.');s.moves++;emit('clear',{group});
   // Each pass either moves an entity, consumes one, kills one or changes phase.
   // Board height and inventory bound the stabilization; no real-time physics.
-  for(let iteration=0;iteration<256 && s.status==='playing';iteration++) {
+  for(let iteration=0;iteration<(s.items.length+s.enemies.length*3+2)*4 && s.status==='playing';iteration++) {
     let fell=false,fallFailure=null;
     for(const a of [s.hero,...s.enemies.filter(e=>e.alive),...s.items.filter(i=>i.alive)]) {
       const old=a.y;
@@ -109,7 +109,7 @@ export function step(input,x,y,{trace=true}={}) {
 }
 export function actions(s) {
   const seen=new Set(), result=[];
-  for(let y=0;y<s.board.length;y++)for(let x=0;x<WIDTH;x++)if(isColour(s.board[y][x])&&!seen.has(`${x},${y}`)) {
+  for(let y=0;y<s.board.length;y++)for(let x=0;x<s.board[y].length;x++)if(isColour(s.board[y][x])&&!seen.has(`${x},${y}`)) {
     const g=groupAt(s,x,y);g.forEach(([a,b])=>seen.add(`${a},${b}`));result.push([x,y]);
   }
   return result;

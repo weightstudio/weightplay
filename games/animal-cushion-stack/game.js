@@ -90,13 +90,16 @@
     const hidden = panel.hidden;
     panel.hidden = !hidden;
     $("settingsBtn").setAttribute("aria-expanded", String(hidden));
-    // The shared shell adopts the locale control into its generated popover.
-    // Keep the authored settings trigger usable for the maintained smoke flow
-    // by mirroring its open state to that adopted control surface.
+    // This authored trigger is retained for the maintained Cushion Stack
+    // smoke/keyboard path, while the shared shell owns the actual language and
+    // sound controls. Mirror the trigger to that one visible popover and keep
+    // the legacy panel as a collapsed compatibility proxy so RTL never paints
+    // two overlapping settings surfaces.
     const generatedPopover = document.querySelector(".wp-shell-settings-popover");
     if (generatedPopover) {
       generatedPopover.hidden = !hidden;
       generatedPopover.querySelector(".wp-shell-settings-button")?.setAttribute("aria-expanded", String(hidden));
+      panel.classList.add("cushion-settings-proxy");
     }
   };
 

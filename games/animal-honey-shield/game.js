@@ -4,7 +4,7 @@
   const LOCALES=window.ANIMAL_HONEY_SHIELD_LOCALES;
   const STORAGE_KEY="weightplay_animal_honey_shield_v1";
   const TUTORIAL_KEY="weightplay_tutorial_seen_animal_honey_shield_v1";
-  const GAME_VERSION="v54";
+  const GAME_VERSION="v55";
   const interfaceValidationRun=new URLSearchParams(location.search).get("qa")==="interface-validator";
   const ROUTE_LOCALES={"zh-tw":"zh-Hant","zh-cn":"zh-Hans","pt-br":"pt-BR",en:"en",ja:"ja",ko:"ko",es:"es",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"};
   const routeSegment=location.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
@@ -1089,7 +1089,8 @@
   function renderResultInsight(){
     if(!state.result)return;
     const {used,left}=nectarSummary(),won=state.result.won,stars=state.result.stars;
-    $("resultRule").textContent=won?fmt("resultRule",{used,nectar:left}):fmt("resultFailRule",{used,nectar:left});
+    const lockedOpenRoute=!won&&state.pathOpenedAt!==null&&state.strokes.some(stroke=>stroke.anchored&&(stroke.lockContacts||0)>=2);
+    $("resultRule").textContent=won?fmt("resultRule",{used,nectar:left}):fmt(lockedOpenRoute?"resultFailOpenRoute":"resultFailRule",{used,nectar:left});
     $("resultNext").hidden=!won;
     if(won)$("resultNext").textContent=stars>=3?fmt("resultTop"):fmt("resultNext",{threshold:stars===2?45:72,need:Math.max(1,used-(stars===2?45:72))});
   }

@@ -29,3 +29,16 @@
  .tools{grid-column:2;grid-row:2}
  #choice{inset-inline-start:auto;inset-inline-end:0;width:180px}
 }
+
+/* Read-only map navigation lives at the edges of the play surface. */
+.map-nav{position:absolute;inset:0;pointer-events:none;z-index:5}
+.map-nav button{position:absolute;pointer-events:auto;width:30px;height:30px;padding:0;border:1px solid #aec9bb;border-radius:6px;background:#173944ed;color:#ffe7a7;font-size:20px;line-height:28px;touch-action:manipulation}
+.map-nav button:disabled{opacity:.28;pointer-events:none}
+#mapUp{top:4px;left:calc(50% - 15px)}
+#mapDown{bottom:4px;left:calc(50% - 15px)}
+#mapLeft{left:4px;top:calc(50% - 15px)}
+#mapRight{right:4px;top:calc(50% - 15px)}
+#mapFollow{right:4px;bottom:4px}
+#mapOverview{left:4px;bottom:4px}
+.map-nav button[aria-pressed="true"]{border-color:#ffdf85;background:#365856}
+.map-floor{position:absolute;top:4px;left:4px;max-width:calc(50% - 26px);color:#ffdf89;background:#173944dd;padding:3px 5px;font-size:10px;line-height:16px;pointer-events:none;white-space:nowrap;z-index:4}

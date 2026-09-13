@@ -155,23 +155,23 @@ export function makeProp(box, item) {
 
 // Dressing has no input/collision role. Batched by material by CrownScene;
 // columns frame the board, while low-contrast back-wall details stay behind it.
-export function makeCastle(box, rows, folded) {
+export function makeCastle(box, rows, folded=false, columns=7) {
   const g=new THREE.Group(), add=(...p)=>box(g,...p);
   const height=folded?Math.ceil(rows/2):rows;
   const wings=folded?[0,8.2]:[0];
   // Fill the arena behind the architecture, including spare portrait height.
   // A single shared-geometry instance avoids a visible rectangular backdrop.
-  add(3,-(height-1)/2,-2.65,200,200,.12,0x243c48);
+  add((columns-1)/2,-(height-1)/2,-2.65,200,200,.12,0x243c48);
   for(const offset of wings) {
-    add(offset+3,-(height-1)/2,-2.5,8.15,height+4,.3,0x243c48);
+    add(offset+(columns-1)/2,-(height-1)/2,-2.5,columns+1.15,height+4,.3,0x243c48);
     // Quiet recessed walls, varied courses and inset windows, not a flat grid.
     for(let row=-1;row<=height;row++) {
-      for(let col=0;col<4;col++) {
+      for(let col=0;col<Math.ceil((columns+1)/2);col++) {
         const x=offset-.2+col*2+(row%2?.5:0);
         add(x,-row,-2.21,1.9,.91,.14,(row+col)%3===0?0x314b55:0x2a424d);
       }
     }
-    for(const x of [offset-.85,offset+6.85]) {
+    for(const x of [offset-.85,offset+columns-.15]) {
       add(x,-(height-1)/2,-1.16,.48,height+1.5,.72,0x8a958c);
       for(let y=-1;y<=height;y+=2) {
         add(x,-y,-.94,.57,.16,.8,0xb6b7a0);
@@ -180,7 +180,7 @@ export function makeCastle(box, rows, folded) {
       add(x,.86,-1,.8,.23,.9,0xc7c5aa);
       for(const dx of [-.25,.25])add(x+dx,1.06,-1,.23,.24,.85,0xb6b7a0);
     }
-    for(const x of [offset+1.2,offset+4.8]) {
+    for(const x of [offset+1.2,offset+columns-2.2]) {
       add(x,-height*.38,-2,.84,1.65,.13,0x172d3c);
       add(x,-height*.38-.74,-1.85,.96,.12,.3,0x536c73);
       add(x,-height*.38+.83,-1.91,.48,.15,.2,0x62757a);
@@ -192,7 +192,7 @@ export function makeCastle(box, rows, folded) {
       add(x,-height*.38+.13,-1.85,.7,.06,.045,0x3a6074);
     }
     // Teal pennants echo the poster; no animated clutter behind touch cells.
-    for(const x of [offset-.38,offset+6.38]) {
+    for(const x of [offset-.38,offset+columns-.62]) {
       add(x,-.22,-1.72,.34,1.15,.05,C.teal);
       add(x,-.85,-1.72,.2,.17,.05,C.teal);
       add(x,.36,-1.67,.43,.075,.08,0xbaa35c,true);

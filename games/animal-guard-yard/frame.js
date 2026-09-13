@@ -25,7 +25,10 @@
     const start=document.getElementById('startGameBtn'); start.setAttribute('data-wp-frame-action','primary'); copy.append(start);
     const stageContent = stage.querySelector('.menu-shell');
     const stageHeader = stageContent.querySelector('.stage-screen-head');
-    stageHeader.querySelector('strong').setAttribute('data-wp-frame-title','');
+    const stageTitle=stageHeader.querySelector('strong');
+    stageTitle.setAttribute('data-wp-frame-title','');
+    stageTitle.removeAttribute('data-ui');
+    stageTitle.textContent='';
     stage.prepend(stageHeader);
     const nav=document.getElementById('menuTabs'); nav.setAttribute('data-wp-frame-nav','');
     nav.querySelectorAll('button').forEach(n=>n.setAttribute('data-wp-frame-action','tab'));

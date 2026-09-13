@@ -1,5 +1,5 @@
 import * as THREE from '../animal-skyspire-drop/vendor/three/three.module.min.js';
-import {modelParts,MODEL_KEYS} from './block-models.mjs';
+import {modelParts,MODEL_KEYS} from './block-models.mjs?v=32';
 export function mergeParts(parts){
  const source=new THREE.BoxGeometry(1,1,1).toNonIndexed(),p=[],n=[],c=[];
  for(const [x,y,z,w,h,d,colour] of parts){const color=new THREE.Color(colour);for(let i=0;i<source.attributes.position.count;i++){p.push(source.attributes.position.getX(i)*w+x,source.attributes.position.getY(i)*h+y,source.attributes.position.getZ(i)*d+z);n.push(source.attributes.normal.getX(i),source.attributes.normal.getY(i),source.attributes.normal.getZ(i));c.push(color.r,color.g,color.b);}}
@@ -21,9 +21,17 @@ class Yard3D{
   this.fxMat=this.own(new THREE.MeshBasicMaterial({color:'#ffe197'}));this.shots=Array.from({length:72},()=>{const m=new THREE.Mesh(this.box,this.fxMat);m.visible=false;this.scene.add(m);return m;});
   this.shotMats={cat:this.fxMat,owl:this.own(new THREE.MeshBasicMaterial({color:'#8be8e0'})),fox:this.own(new THREE.MeshBasicMaterial({color:'#bce589'}))};
   this.onLost=e=>{e.preventDefault();this.dispose();host.dataset.renderer='fallback';};this.renderer.domElement.addEventListener('webglcontextlost',this.onLost);
-  host.dataset.renderer='3d';window.guardYardRenderStats={active:1,drawCalls:0,geometries:0};
+  host.dataset.renderer='3d';this.reportStats({active:1,drawCalls:0,geometries:0,actors:0,triangles:0});
  }
  own(r){this.resources.push(r);return r;}
+ reportStats(stats){
+  window.guardYardRenderStats=stats;
+  // Bounded DOM diagnostics for browser acceptance; update only on change.
+  for(const [key,value] of Object.entries(stats)){
+   const name=`render${key[0].toUpperCase()}${key.slice(1)}`,text=String(value);
+   if(this.host.dataset[name]!==text)this.host.dataset[name]=text;
+  }
+ }
  geom(kind){if(!this.geometries.has(kind))this.geometries.set(kind,this.own(mergeParts(modelParts(kind))));return this.geometries.get(kind);}
  rebuild(w,h,rows,cols,blocked){
   const key=`${w}:${h}:${rows}:${cols}`;if(key===this.lastSize)return;this.lastSize=key;this.renderer.setSize(w,h,false);const viewH=9*h/w;this.depth=viewH/.857493;this.camera.top=viewH/2;this.camera.bottom=-viewH/2;this.camera.updateProjectionMatrix();
@@ -56,9 +64,9 @@ class Yard3D{
   }
   for(const [e,m] of this.actors)if(!alive.has(e)){this.scene.remove(m);this.actors.delete(e);}
   this.shots.forEach((m,i)=>{const shot=state.projectiles[i];m.visible=!!shot;if(shot){m.material=this.shotMats[shot.unitId]||this.fxMat;m.scale.set(shot.isPiercing?.26:.13,.1,.1);m.position.set((shot.x-.5)*9,.55,(shot.y-.5)*this.depth+.33);m.rotation.z=state.reduced?0:state.time*.005;}});
-  this.renderer.render(this.scene,this.camera);window.guardYardRenderStats={active:1,drawCalls:this.renderer.info.render.calls,geometries:this.renderer.info.memory.geometries,triangles:this.renderer.info.render.triangles,actors:this.actors.size};
+  this.renderer.render(this.scene,this.camera);this.reportStats({active:1,drawCalls:this.renderer.info.render.calls,geometries:this.renderer.info.memory.geometries,triangles:this.renderer.info.render.triangles,actors:this.actors.size});
  }
- dispose(){if(this.dead)return;this.dead=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.onLost);for(const m of this.stageGroup.children)m.geometry.dispose();for(const r of this.resources)r.dispose();this.actors.clear();this.geometries.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.host.dataset.renderer='fallback';window.guardYardRenderStats={active:0,drawCalls:0,geometries:0,actors:0};}
+ dispose(){if(this.dead)return;this.dead=true;this.renderer.domElement.removeEventListener('webglcontextlost',this.onLost);for(const m of this.stageGroup.children)m.geometry.dispose();for(const r of this.resources)r.dispose();this.actors.clear();this.geometries.clear();this.renderer.dispose();this.renderer.forceContextLoss();this.renderer.domElement.remove();this.host.dataset.renderer='fallback';this.reportStats({active:0,drawCalls:0,geometries:this.renderer.info.memory.geometries,actors:this.actors.size,triangles:0});}
 }
 window.GuardYard3D=Yard3D;
 window.dispatchEvent(new Event('guard-yard-3d-ready'));

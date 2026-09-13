@@ -71,6 +71,27 @@
         background: #f8fff8 !important;
         color: #24324a !important;
       }
+      html body #gameGuide.game-page-info.game-page-info-static :is(h2, h3, p, li, dt, dd, strong) {
+        color: #24324a !important;
+      }
+      html body #gameGuide.game-page-info.game-page-info-static .game-info-kicker {
+        color: #5b6475 !important;
+      }
+      html body #gameGuide.game-page-info.game-page-info-static .game-info-related-copy span {
+        color: #48556b !important;
+      }
+      html body #gameGuide.game-page-info.game-page-info-static .game-info-fact {
+        background: #f8fff8 !important;
+        border: 1px solid #c8ddca !important;
+        color: #24324a !important;
+      }
+      html body #gameGuide.game-page-info.game-page-info-static .game-info-fact span {
+        color: #5b6475 !important;
+      }
+      html body #mainScreen .main-copy .lede,
+      html body #mainScreen .main-copy .main-summary {
+        color: #e9eef5 !important;
+      }
       #mainScreen #mainSettingsBtn { display: none !important; }
       #battleScreen #resultPanel[hidden] {
         display: none !important;

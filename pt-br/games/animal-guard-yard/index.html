@@ -38,7 +38,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-guard-yard/" />
     <link rel="stylesheet" href="../../src/stage-selector-standard.css?v=20260729-guard-general2" data-wp-stage-standard />
     <link rel="stylesheet" href="../../src/battle-canvas-standard.css?v=20260729-guard-general2" data-wp-battle-standard />
-    <link rel="stylesheet" href="style.css?v=20260912-guard-yard-v31" data-wp-stage-standard data-wp-battle-standard />
+    <link rel="stylesheet" href="style.css?v=yard-frame-v32" data-wp-stage-standard data-wp-battle-standard />
     <script data-wp-stage-standard>/* Shared General Stage selector owns pointer drag, settle, and the physical reserve. */</script>
     <script data-wp-battle-standard>/* Shared General Battle Canvas owns capped scaling and the physical reserve. */</script>
     <link rel="stylesheet" href="../../src/tutorial.css?v=20260701-style1" />
@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="../../src/game-page-info.css?v=20260710-guide-play-shell1" />
     <link rel="stylesheet" href="../../src/loading-screen.css?v=20260702-unified1" />
     <link rel="stylesheet" href="../../src/play-viewport.css?v=20260710-mobile-play-shell2" />
-<link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260729-return-owner1"><link rel="stylesheet" href="block-v31.css?v=31" />
+<link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260729-return-owner1"><link rel="stylesheet" href="block-v31.css?v=32-props" />
   <meta name="twitter:title" content="Guard Yard | WeightPlay" />
     <meta name="twitter:description" content="Defenda cinco faixas em 30 jardins contra seis chefes diferentes. Prepare os guardas, inicie cada onda e reorganize entre elas. Derrote todos antes de..." />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-guard-yard.webp" />
@@ -92,8 +92,8 @@
         <div class="menu-shell">
           <div class="stage-screen-head"><button id="stageBackMainBtn" data-wp-return="stage" type="button" aria-label="Voltar">&larr;</button><strong data-ui="chooseStage">Escolher fase</strong></div>
           <div class="wallet-row" aria-label="Carteira do Animal Guard Yard">
-            <span class="coin-chip"><img src="assets/block-v31/coin.png" alt="" /><b id="coinText">0</b></span>
-            <span class="diamond-chip"><img src="assets/block-v31/diamond.png" alt="" /><b id="diamondText">0</b></span>
+            <span class="coin-chip"><img src="assets/coin-block-v32.png" alt="" /><b id="coinText">0</b></span>
+            <span class="diamond-chip"><img src="assets/diamond-block-v32.png" alt="" /><b id="diamondText">0</b></span>
           </div>
           <section id="stageTabPanel" class="menu-tab-panel" data-tab-panel="stages">
             <div class="menu-copy">
@@ -126,9 +126,9 @@
           </section>
         </div>
         <nav id="menuTabs" class="menu-tabs" aria-label="Menu do Animal Guard Yard">
-          <button type="button" role="tab" aria-selected="true" aria-controls="stageTabPanel" data-menu-tab="stages" class="active"><img src="assets/block-v31/rally.png" alt="" /><span data-ui="tabStages">Fases</span></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="animalTabPanel" data-menu-tab="animals"><img src="assets/block-v31/cat.png" alt="" /><span data-ui="tabAnimals">Animais</span></button>
-          <button type="button" role="tab" aria-selected="false" aria-controls="shopTabPanel" data-menu-tab="shop"><img src="assets/block-v31/coin.png" alt="" /><span data-ui="tabShop">Loja</span></button>
+          <button type="button" role="tab" aria-selected="true" aria-controls="stageTabPanel" data-menu-tab="stages" class="active"><img src="assets/rally-block-v32.png" alt="" /><span data-ui="tabStages">Fases</span></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="animalTabPanel" data-menu-tab="animals"><img src="assets/lion-archer-block-v32.png" alt="" /><span data-ui="tabAnimals">Animais</span></button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="shopTabPanel" data-menu-tab="shop"><img src="assets/coin-block-v32.png" alt="" /><span data-ui="tabShop">Loja</span></button>
         </nav>
       </section>
 
@@ -139,12 +139,12 @@
               <span aria-hidden="true">&larr;</span>
               <span class="sr-only" data-ui="stages">Fases</span>
             </button>
-            <div class="resource-pill" aria-label="Energia solar"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b><span class="squad-count"><img src="assets/block-v31/cat.png" alt=""><b id="squadCount">0/12</b></span></div>
+            <div class="resource-pill" aria-label="Energia solar"><span class="hud-icon sun-icon" aria-hidden="true"></span><b id="energyText">0</b><span class="squad-count"><img src="assets/lion-archer-block-v32.png" alt=""><b id="squadCount">0/12</b></span></div>
             <button id="pauseBtn" class="play-settings" type="button" aria-label="Pause battle" data-ui-aria-label="Pausar batalha"><img src="../../assets/menu-settings.png" alt="" draggable="false" /></button>
           </div>
           <div class="wave-status">
             <span id="waveText" class="wave-text">Stage 1</span>
-            <span class="base-pill" aria-label="Corações da casa"><img class="hud-icon heart-img" src="assets/block-v31/heart.png" alt="" draggable="false" /><b id="baseText">3</b></span>
+            <span class="base-pill" aria-label="Corações da casa"><img class="hud-icon heart-img" src="assets/heart-block-v32.png" alt="" draggable="false" /><b id="baseText">3</b></span>
           </div>
           <div id="waveTimer" class="wave-timer" aria-hidden="true"><i></i></div>
           <div id="unitBar" class="unit-bar" aria-label="Guardas animais"></div>
@@ -153,9 +153,9 @@
             <div id="dangerAlert" class="danger-alert hidden" aria-live="polite">Danger!</div>
           </div>
           <div class="yard-command-dock">
-            <button id="launchWave" type="button"><img src="assets/block-v31/rally.png" alt=""><span></span></button>
-            <button id="recallGuard" type="button" aria-pressed="false"><img src="assets/block-v31/recall.png" alt=""><span></span></button>
-            <button id="rallyLane" type="button" aria-pressed="false"><img src="assets/block-v31/rally.png" alt=""><span></span></button>
+            <button id="launchWave" type="button"><img src="assets/rally-block-v32.png" alt=""><span></span></button>
+            <button id="recallGuard" type="button" aria-pressed="false"><img src="assets/recall-block-v32.png" alt=""><span></span></button>
+            <button id="rallyLane" type="button" aria-pressed="false"><img src="assets/rally-block-v32.png" alt=""><span></span></button>
             <button id="yardSpeed" type="button" aria-label="Speed">×1</button>
           </div>
           <div id="hintText" class="hint-text" aria-live="polite"></div>
@@ -222,7 +222,7 @@
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
     <script src="../../src/tutorial.js?v=20260702-tutorial-locale1"></script>
     <script src="upgrade-copy.js?v=31"></script>
-    <script type="module" src="yard-3d.mjs?v=31"></script>
+    <script type="module" src="yard-3d.mjs?v=32-mesh2"></script>
     <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
     <link rel="stylesheet" href="frame-content.css?v=yard-frame-v32">
     <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>

@@ -37,7 +37,7 @@ body.guard-yard-stage :is(.kennel-card,.shop-card) button:disabled{opacity:.55}
 body.guard-yard-playing .fixed-game-shell{grid-template-rows:48px 30px 80px minmax(0,1fr) 52px 44px!important;gap:5px!important;padding:6px!important;border:2px solid #66837a!important;border-radius:4px!important;background:#102b30!important;color:#e6eee0!important}
 body.guard-yard-playing .play-head{height:48px!important;background:#214447!important;border-radius:3px!important;box-shadow:none!important;border-bottom:1px solid #83917a}
 body.guard-yard-playing .resource-pill{background:none!important;border:0!important;color:#f1d28a!important;box-shadow:none!important}
-body.guard-yard-playing .sun-icon{background:url('assets/block-v31/sun.png') center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;width:32px!important;height:32px!important}
+body.guard-yard-playing .sun-icon{background:url('assets/sun-block-v32.png') center/contain no-repeat!important;border:0!important;box-shadow:none!important;border-radius:0!important;width:32px!important;height:32px!important}
 body.guard-yard-playing .sun-icon::before,body.guard-yard-playing .sun-icon::after{display:none!important}
 body.guard-yard-playing .wave-status{grid-row:2!important;color:#ccd7bd!important;background:#18363a!important;padding:3px 8px!important;gap:8px;font-size:12px!important;border-radius:3px!important}
 body.guard-yard-playing .wave-text{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0;font-size:12px!important;color:#e6d49a!important}

@@ -1045,22 +1045,22 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     dog: "assets/turtle-sentinel-block-v32.png",
     owl: "assets/owl-mage-block-v32.png",
     fox: "assets/fox-ranger-block-v32.png",
-    normal: "assets/block-v31/normal.png",
-    fast: "assets/block-v31/fast.png",
-    shield: "assets/block-v31/shield.png",
-    healer: "assets/block-v31/healer.png",
-    burrow: "assets/block-v31/burrow.png",
-    thief: "assets/block-v31/thief.png",
-    boss: "assets/block-v31/bossRhino.png",
-    bossRhino: "assets/block-v31/bossRhino.png",
-    bossTortoise: "assets/block-v31/bossTortoise.png",
-    bossBadger: "assets/block-v31/bossBadger.png",
-    bossBoar: "assets/block-v31/bossBoar.png",
-    bossEagle: "assets/block-v31/bossEagle.png",
-    bossElk: "assets/block-v31/bossElk.png",
+    normal: "assets/wolf-block-v32.png",
+    fast: "assets/hyena-block-v32.png",
+    shield: "assets/armored-boar-block-v32.png",
+    healer: "assets/healer-deer-block-v32.png",
+    burrow: "assets/burrow-badger-block-v32.png",
+    thief: "assets/thief-raccoon-block-v32.png",
+    boss: "assets/boss-rhino-block-v32.png",
+    bossRhino: "assets/boss-rhino-block-v32.png",
+    bossTortoise: "assets/boss-tortoise-block-v32.png",
+    bossBadger: "assets/boss-badger-block-v32.png",
+    bossBoar: "assets/boss-boar-block-v32.png",
+    bossEagle: "assets/boss-eagle-block-v32.png",
+    bossElk: "assets/boss-elk-block-v32.png",
   };
-  const diamondIcon = "assets/block-v31/diamond.png";
-  const heartIcon = "assets/block-v31/heart.png";
+  const diamondIcon = "assets/diamond-block-v32.png";
+  const heartIcon = "assets/heart-block-v32.png";
   const impactFxAsset = "assets/block-v31/sun.png";
   const masteryMilestones = new Map([[5, 45], [15, 120], [30, 260]]);
 
@@ -2399,7 +2399,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
   function costToken(token, amount) {
     if (token === "coin") {
-      return `<span class="cost-token"><img class="cost-icon" src="assets/block-v31/coin.png" alt="" draggable="false" /><span>${amount}</span></span>`;
+      return `<span class="cost-token"><img class="cost-icon" src="assets/coin-block-v32.png" alt="" draggable="false" /><span>${amount}</span></span>`;
     }
     return `<span class="cost-token diamond-token" aria-label="${t("diamondToken")} ${amount}"><img class="cost-icon" src="${diamondIcon}" alt="" draggable="false" /><span>${amount}</span></span>`;
   }
@@ -2695,7 +2695,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
         cell.style.width = `${100 / stage.cols}%`;
         cell.style.height = `${100 / stage.rows}%`;
         cell.addEventListener("click", () => placeUnit(row, col));
-        if(stage.blocked?.some(c=>c[0]===row&&c[1]===col)){cell.dataset.blocked='true';cell.innerHTML='<img src="assets/block-v31/stone.png" alt="">';cell.setAttribute('aria-label',t('blocked'));}
+        if(stage.blocked?.some(c=>c[0]===row&&c[1]===col)){cell.dataset.blocked='true';cell.innerHTML='<img src="assets/stone-block-v32.png" alt="">';cell.setAttribute('aria-label',t('blocked'));}
         nodes.yardBoard.appendChild(cell);
         const cellState = { row, col, button: cell, unit: null };
         cells.push(cellState);
@@ -2726,7 +2726,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
           <strong>${t(unit.nameKey)}</strong>
           <b class="role-badge" title="${t(trained.abilityKey)}">${t(trained.roleKey)}</b>
           <small class="unit-stats">
-            <span><img class="cost-icon" src="assets/block-v31/sun.png" alt=""> ${trained.cost}</span>
+            <span><img class="cost-icon" src="assets/sun-block-v32.png" alt=""> ${trained.cost}</span>
             <span>${t("level", { n: trained.level })}</span>
           </small>
         </span>
@@ -2884,7 +2884,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     const drop = document.createElement("button");
     drop.className = "energy-drop";
     drop.type = "button";
-    drop.innerHTML='<img src="assets/block-v31/sun.png" alt="">';
+    drop.innerHTML='<img src="assets/sun-block-v32.png" alt="">';
     drop.setAttribute('aria-label',`${t('sunToken')} +35`);
     drop.style.left = `${12 + Math.random() * 72}%`;
     drop.style.top = `${10 + Math.random() * 58}%`;
@@ -3618,10 +3618,10 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     const assets = [
       "../../assets/interface7-redrawn/animal-guard-yard.webp",
       ...Object.values(spriteAssets),
-      "assets/block-v31/rally.png",
+      "assets/rally-block-v32.png",
       "assets/lion-archer-block-v32.png",
-      "assets/block-v31/coin.png",
-      "assets/block-v31/coin.png",
+      "assets/coin-block-v32.png",
+      "assets/coin-block-v32.png",
       diamondIcon,
       heartIcon,
       impactFxAsset,
