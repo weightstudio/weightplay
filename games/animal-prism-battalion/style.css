@@ -33,6 +33,17 @@
   body:not(.wp-kids-audience) .main-copy.wp-standard-main-copy{gap:0!important}
   body:not(.wp-kids-audience) .main-copy #start{height:44px!important;min-height:44px!important;font-size:18px}
 }
+/* Keep the generated Interface 7 Guide frame and cards rounded for this
+   authored General shell; the shared frame resolves their radius through the
+   game-scoped theme variable. Compact landscape also needs the complete Start
+   control to stay inside the 390px first fold after the shared poster column
+   is fixed at 420px. */
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"]{--wp-ui-radius:24px}
+html[data-wp-shared-interface="7"] body[data-game-id="animal-prism-battalion"] .game-info-section{--wp-ui-radius:16px}
+@media (min-width:700px) and (max-height:560px){
+  body[data-game-id="animal-prism-battalion"] .wp-standard-main-copy{gap:0!important}
+}
+
 .stage-card.locked.centered{filter:saturate(.45) brightness(.72)}
 .stage-card.locked>span:first-child{color:#ffd862;text-transform:uppercase;letter-spacing:.08em}
 

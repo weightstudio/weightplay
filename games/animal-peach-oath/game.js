@@ -141,6 +141,37 @@
     localeNames[locale] = {...localeNames[locale], ...Object.fromEntries(['玄德獅','雲長虎','翼德熊','孔明鶴','子龍狐'].map((name,index)=>[name,values[index]]))};
     localeCopy[locale] = {...(localeCopy[locale] || localeCopy.en), fragments:values[5], resourceIngots:values[6]};
   }
+  const feedbackCopyKeys = ['settings','battleResult','maxTeam','fragments'];
+  const feedbackCopies = {
+    'zh-Hant':['設定','戰鬥結果','最多上陣 3 位武將','碎片'],
+    'zh-Hans':['设置','战斗结果','最多上阵 3 位武将','碎片'],
+    en:['Settings','Battle result','Up to 3 heroes deployed','fragments'],
+    ja:['設定','戦闘結果','編成できる武将は3人まで','欠片'],
+    ko:['설정','전투 결과','최대 3명의 무장을 편성할 수 있습니다','조각'],
+    es:['Ajustes','Resultado del combate','Puedes desplegar hasta 3 héroes','fragmentos'],
+    'pt-BR':['Configurações','Resultado da batalha','Você pode escalar até 3 heróis','fragmentos'],
+    fr:['Paramètres','Résultat du combat','Vous pouvez déployer jusqu’à 3 héros','fragments'],
+    de:['Einstellungen','Kampfergebnis','Höchstens 3 Helden im Einsatz','Fragmente'],
+    it:['Impostazioni','Risultato della battaglia','Puoi schierare fino a 3 eroi','frammenti'],
+    ru:['Настройки','Итог боя','В отряде может быть не более 3 героев','осколки'],
+    hi:['सेटिंग','युद्ध का परिणाम','अधिकतम 3 योद्धा तैनात किए जा सकते हैं','टुकड़े'],
+    ar:['الإعدادات','نتيجة المعركة','يمكن نشر 3 أبطال كحد أقصى','شظايا']
+  };
+  for (const [locale,values] of Object.entries(feedbackCopies)) Object.assign(localeCopy[locale],Object.fromEntries(feedbackCopyKeys.map((key,index)=>[key,values[index]])));
+  const managementCopyKeys = ['managementHeroes','managementLaw','managementCampaign','managementBattle','upgrade','break','remove','deploy','equip','enhance','salvage','front','back','stars','rank','inventory'];
+  const managementCopies = {
+    'zh-Hans':['武将与队伍','军法研习','资源战役','战斗','升级','突破','下阵','上阵','穿戴','强化','分解','前排','后排','星','突破','件'],
+    ja:['武将と部隊','軍法研究','資源遠征','戦闘','強化','突破','外す','編成','装備','鍛錬','分解','前列','後列','星','突破','個'],
+    ko:['무장과 부대','군법 연구','자원 원정','전투','레벨업','돌파','제외','편성','착용','강화','분해','전열','후열','성','돌파','개'],
+    es:['Héroes y grupo','Estudio de leyes','Campaña de recursos','Batalla','Subir nivel','Ascender','Retirar','Desplegar','Equipar','Mejorar','Desmantelar','Frente','Retaguardia','estrellas','Ascensión','objetos'],
+    'pt-BR':['Heróis e grupo','Estudo de leis','Campanha de recursos','Batalha','Subir nível','Ascender','Retirar','Escalar','Equipar','Melhorar','Desmontar','Frente','Retaguarda','estrelas','Ascensão','itens'],
+    fr:['Héros et groupe','Étude des lois','Campagne de ressources','Bataille','Améliorer','Éveiller','Retirer','Déployer','Équiper','Renforcer','Démonter','Avant','Arrière','étoiles','Éveil','objets'],
+    de:['Helden und Gruppe','Militärlehre','Ressourcenfeldzug','Kampf','Aufwerten','Aufsteigen','Entfernen','Einsetzen','Anlegen','Verstärken','Zerlegen','Vorne','Hinten','Sterne','Aufstieg','Objekte'],
+    it:['Eroi e squadra','Studio delle leggi','Campagna risorse','Battaglia','Potenzia','Ascendi','Rimuovi','Schiera','Equipaggia','Rinforza','Smonta','Fronte','Retro','stelle','Ascesa','oggetti'],
+    ru:['Герои и отряд','Военное учение','Поход за ресурсами','Бой','Улучшить','Возвысить','Убрать','В строй','Надеть','Усилить','Разобрать','Спереди','Сзади','звёзд','Возвышение','предметов'],
+    hi:['योद्धा और दल','सैन्य अध्ययन','संसाधन अभियान','युद्ध','उन्नयन','उत्कर्ष','हटाएँ','तैनात करें','पहनाएँ','मज़बूत करें','विघटित करें','आगे','पीछे','सितारे','उत्कर्ष','वस्तुएँ']
+  };
+  for (const [locale,values] of Object.entries(managementCopies)) Object.assign(localeCopy[locale],Object.fromEntries(managementCopyKeys.map((key,index)=>[key,values[index]])));
   const battleCopyKeys = ['battleAria','backMain','power','auto','quick','shop','arena','wave','enemies','loot','resources','mainFunctions','battle','tavern','law','campaign','bossIncoming','enemyIncoming','waveVictory','autoOn','autoOff','critical','skillCrane','skillLeo','skillBear','skillCobra','debuff','shield','buff','collectLoot'];
   const battleCopies = {
     'zh-Hans':['战场','返回主画面','战力','自动','快捷功能','商店','即时战斗区','波次','敌军','战利品','资源','主要功能','征战','酒馆','军法','战役','首领来袭！','敌军来袭','第 {wave} 波胜利 · 战利品已掉落','自动战斗已开启','自动战斗已暂停','暴击 ','{name}施放「{skill}」','桃园盟誓：全队回复','铁壁守阵：获得护盾','白蛇妖士施放虚弱咒','虚弱','铁壁护盾','仁心恢复','领取战利品'],
@@ -381,12 +412,12 @@
       : copy("finalChapter", { end: chapterEnd, count: C.chapters.length });
   }
 
-  function renderCampaignMilestone(resultWin = false) {
+  function renderCampaignMilestone() {
     const text = campaignMilestoneText();
     const battleGoal = $("#campaignGoal");
     const resultGoal = $("#resultMilestone");
     if (battleGoal) battleGoal.textContent = copy("longGoal", { text });
-    if (resultGoal) resultGoal.textContent = `${resultWin ? copy("milestone") : copy("recovery")}：${text}`;
+    if (resultGoal) resultGoal.textContent = text;
   }
 
   function grant(reward) {
@@ -491,6 +522,7 @@
   }
 
   function resumeCombat() {
+    if (!$('#coach').classList.contains('is-hidden')) return;
     if (!battle.pausedAt) return;
     const pausedAt = battle.pausedAt, elapsed = Date.now() - pausedAt;
     for (const unit of [...battle.heroes, ...battle.enemies]) {
@@ -719,7 +751,7 @@
     $("#resultTitle").textContent = win ? copy("victoryTitle") : copy("defeatTitle");
     $("#resultCopy").textContent = win ? copy("victoryCopy") : copy("defeatCopy");
     $("#resultRewards").innerHTML = win ? resourceChip('xp', `+${35 + state.stage * 6}`) + resourceChip('materials', `+${reward.materials || 3}`) : "";
-    renderCampaignMilestone(win);
+    renderCampaignMilestone();
     // Outcomes change availability, never the three permanent action tracks.
     $("#resultNext").disabled = !win;
     if (win) collectLoot(true);
@@ -937,7 +969,7 @@
       if (p.level < ((p.rank || 0) + 1) * 5 || state.resources.materials < cost) return;
       state.resources.materials -= cost;
       p.rank = (p.rank || 0) + 1;
-      toast(`${localizedValue(heroData(id).name)} · ${copy("break")} complete`);
+      toast(`${localizedValue(heroData(id).name)} · ${copy("break")} +${p.rank}`);
       renderHeroes();
     }
     if (action === "toggle-team") {
@@ -1282,6 +1314,8 @@
     let index = 0;
     const coach = $("#coach");
     coach.classList.remove("is-hidden");
+    suspendCombat();
+    syncFrameCoverage();
     const render = () => {
       $("#coachStep").textContent = `${index + 1} / ${steps.length}`;
       $("#coachTitle").textContent = steps[index][0];
@@ -1290,7 +1324,10 @@
     };
     $("#coachNext").onclick = () => {
       index += 1;
-      if (index >= steps.length) { coach.classList.add("is-hidden"); state.tutorialDone = true; save(); }
+      if (index >= steps.length) {
+        coach.classList.add("is-hidden"); state.tutorialDone = true; save();
+        syncFrameCoverage(); resumeCombat();
+      }
       else render();
     };
     render();
@@ -1383,7 +1420,7 @@
   function syncFrameCoverage() {
     const scene = $("#app").dataset.scene;
     const modalOpen = !$('#modalLayer').classList.contains('is-hidden');
-    const covered = modalOpen || (scene === "battle" && (!$("#resultPanel").classList.contains("is-hidden") || !$('#leaveConfirm').classList.contains('is-hidden')));
+    const covered = modalOpen || (scene === "battle" && (!$('#coach').classList.contains('is-hidden') || !$("#resultPanel").classList.contains("is-hidden") || !$('#leaveConfirm').classList.contains('is-hidden')));
     sharedFrame?.activate(scene, {covered});
     $("#battleContent").inert = covered;
     $('#mainScene').inert = scene !== 'main' || modalOpen;

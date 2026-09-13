@@ -749,7 +749,7 @@
         "Use Retry to test one deliberate change at a time, so the Result screen teaches you what actually helped."
       ],
       "progression": [
-        "Chapters add new enemy groups, milestones, heroes, equipment decisions, and boss checks. The authored route grows by asking for a more intentional squad rather than by hiding the rules."
+        "Later stages increase enemy numbers, variety and strength. Upgrade the squad and equip collected items before retrying a difficult boss; entering a new chapter does not automatically grant heroes or equipment."
       ],
       "noteTitle": "Player and Save Information",
       "parent": "Unlocked stages, heroes, progress, and preferences are saved only in this browser. No account, purchase, online profile, or cloud save is required; clearing site data can remove the local campaign.",
@@ -810,7 +810,7 @@
         "重試時一次只改變一個明確因素，讓結果畫面真正告訴你哪個決定有幫助。"
       ],
       "progression": [
-        "章節會加入新的敵人組合、里程碑、英雄、裝備決策與首領檢查。成長不是把規則藏起來，而是要求你更有意識地組織小隊。"
+        "後續關卡會增加敵人數量、種類與強度。遇到難關時先升級隊伍、裝上收集的裝備，再挑戰首領；進入新章節不會自動獲得英雄或裝備。"
       ],
       "noteTitle": "玩家與存檔資訊",
       "parent": "解鎖的關卡、英雄、進度與偏好只會保存在這個瀏覽器。不需要帳號、購買、線上個人檔案或雲端存檔；清除網站資料可能刪除本機戰役。",
@@ -871,7 +871,7 @@
         "重试时一次只改变一个明确因素，让结果画面真正告诉你哪个决定有帮助。"
       ],
       "progression": [
-        "章节会加入新的敌人组合、里程碑、英雄、装备决策与首领检查。成长不是把规则藏起来，而是要求你更有意识地组织小队。"
+        "后续关卡会增加敌人数量、种类与强度。遇到难关时先升级队伍、装上收集的装备，再挑战首领；进入新章节不会自动获得英雄或装备。"
       ],
       "noteTitle": "玩家与存档信息",
       "parent": "解锁的关卡、英雄、进度和偏好只会保存在此浏览器。不需要账号、购买、在线个人档案或云端存档；清除网站数据可能删除本地战役。",
@@ -932,7 +932,7 @@
         "再挑戦では一度に一つだけ変更し、結果から何が効いたかを読み取ります。"
       ],
       "progression": [
-        "章が進むと敵の組み合わせ、マイルストーン、英雄、装備、ボスの確認が増えます。ルールを隠すのではなく、より意図的な部隊作りを求める成長です。"
+        "先のステージほど敵の数、種類、強さが増します。難しいボスには部隊を強化し、集めた装備を付けて再挑戦しましょう。新章に入るだけでは英雄や装備は手に入りません。"
       ],
       "noteTitle": "プレイヤーと保存情報",
       "parent": "解放したステージ、英雄、進行、設定はこのブラウザだけに保存されます。アカウント、購入、オンラインプロフィール、クラウド保存は不要です。サイトデータを消すとローカルキャンペーンが失われることがあります。",
@@ -993,7 +993,7 @@
         "재도전에서는 한 번에 하나만 바꾸고 결과에서 효과를 확인하세요."
       ],
       "progression": [
-        "장이 진행되면 적 조합, 목표, 영웅, 장비와 보스 확인이 늘어납니다. 규칙을 숨기기보다 더 의도적인 부대 구성을 요구하는 성장입니다."
+        "뒤로 갈수록 적의 수, 종류와 힘이 증가합니다. 어려운 우두머리를 만나면 부대를 강화하고 모은 장비를 착용한 뒤 재도전하세요. 새 장에 진입해도 영웅이나 장비가 자동 지급되지는 않습니다."
       ],
       "noteTitle": "플레이어 및 저장 정보",
       "parent": "해금한 스테이지, 영웅, 진행과 설정은 이 브라우저에만 저장됩니다. 계정, 구매, 온라인 프로필, 클라우드 저장은 필요하지 않으며 사이트 데이터를 지우면 로컬 캠페인이 사라질 수 있습니다.",
@@ -1054,7 +1054,7 @@
         "Cambia una cosa por reintento para saber qué decisión ayudó."
       ],
       "progression": [
-        "Los capítulos añaden enemigos, hitos, héroes, equipo y comprobaciones de jefe."
+        "Las fases posteriores aumentan la cantidad, variedad y fuerza de los enemigos. Mejora al grupo y equipa los objetos recogidos antes de reintentar un jefe difícil; un capítulo nuevo no concede héroes ni equipo automáticamente."
       ],
       "noteTitle": "Información del jugador y guardado",
       "parent": "Las fases, héroes, progreso y preferencias se guardan solo en este navegador. No hacen falta cuenta, compra, perfil online ni nube.",
@@ -1115,7 +1115,7 @@
         "Mude uma coisa por tentativa para entender o que ajudou."
       ],
       "progression": [
-        "Os capítulos acrescentam inimigos, marcos, heróis, equipamentos e testes de chefe."
+        "As fases seguintes aumentam a quantidade, variedade e força dos inimigos. Melhore o grupo e equipe os itens coletados antes de tentar um chefe difícil novamente; um novo capítulo não concede heróis nem equipamentos automaticamente."
       ],
       "noteTitle": "Informações do jogador e do salvamento",
       "parent": "Fases, heróis, progresso e preferências são salvos apenas neste navegador. Não é necessário ter conta, comprar, usar perfil online ou nuvem.",
@@ -1176,7 +1176,7 @@
         "Ne changez qu’un élément par essai pour comprendre ce qui a aidé."
       ],
       "progression": [
-        "Les chapitres ajoutent ennemis, objectifs, héros, équipement et contrôles de boss."
+        "Les étapes suivantes augmentent le nombre, la variété et la force des ennemis. Améliorez le groupe et équipez les objets collectés avant de retenter un boss difficile ; un nouveau chapitre ne donne pas automatiquement de héros ni d’équipement."
       ],
       "noteTitle": "Informations du joueur et sauvegarde",
       "parent": "Étapes, héros, progression et préférences sont sauvegardés uniquement dans ce navigateur. Aucun compte, achat, profil en ligne ou cloud n’est nécessaire.",
@@ -1237,7 +1237,7 @@
         "Ändere pro Versuch nur eine Sache, damit das Ergebnis aussagekräftig bleibt."
       ],
       "progression": [
-        "Kapitel ergänzen Gegner, Ziele, Helden, Ausrüstung und Bossprüfungen."
+        "Spätere Stufen erhöhen Anzahl, Vielfalt und Stärke der Gegner. Verstärke die Gruppe und lege gesammelte Ausrüstung an, bevor du einen schweren Boss erneut versuchst. Ein neues Kapitel gewährt nicht automatisch Helden oder Ausrüstung."
       ],
       "noteTitle": "Spieler- und Speicherhinweise",
       "parent": "Stufen, Helden, Fortschritt und Einstellungen werden nur in diesem Browser gespeichert. Konto, Kauf, Online-Profil und Cloud-Speicher sind nicht nötig.",
@@ -1298,7 +1298,7 @@
         "Cambia una sola cosa per tentativo per capire cosa ha funzionato."
       ],
       "progression": [
-        "I capitoli aggiungono nemici, traguardi, eroi, equipaggiamento e controlli dei boss."
+        "I livelli successivi aumentano numero, varietà e forza dei nemici. Potenzia la squadra e indossa gli oggetti raccolti prima di ritentare un boss difficile; un nuovo capitolo non assegna automaticamente eroi o equipaggiamento."
       ],
       "noteTitle": "Informazioni del giocatore e salvataggio",
       "parent": "Livelli, eroi, progressi e preferenze vengono salvati solo in questo browser. Non servono account, acquisti, profili online o cloud.",
@@ -1359,7 +1359,7 @@
         "Меняйте за попытку что-то одно, чтобы результат оставался понятным."
       ],
       "progression": [
-        "Главы добавляют врагов, цели, героев, экипировку и проверки боссов."
+        "На следующих этапах растут число, разнообразие и сила врагов. Усильте отряд и наденьте собранное снаряжение перед новой попыткой победить сложного босса. Новая глава не выдаёт героев или экипировку автоматически."
       ],
       "noteTitle": "Сведения об игроке и сохранении",
       "parent": "Стадии, герои, прогресс и настройки сохраняются только в этом браузере. Аккаунт, покупка, онлайн-профиль и облако не нужны.",
@@ -1420,7 +1420,7 @@
         "हर प्रयास में एक ही चीज बदलें ताकि परिणाम से सीख मिल सके।"
       ],
       "progression": [
-        "अध्याय नए दुश्मन, लक्ष्य, हीरो, उपकरण और बॉस जाँच जोड़ते हैं।"
+        "आगे के चरणों में दुश्मनों की संख्या, प्रकार और ताकत बढ़ती है। कठिन सरदार को फिर चुनौती देने से पहले दल को उन्नत करें और जुटाए उपकरण पहनाएँ। नया अध्याय अपने आप योद्धा या उपकरण नहीं देता।"
       ],
       "noteTitle": "खिलाड़ी और सेव जानकारी",
       "parent": "चरण, हीरो, प्रगति और पसंद केवल इसी ब्राउज़र में सहेजे जाते हैं। खाते, खरीद, ऑनलाइन प्रोफ़ाइल या क्लाउड सेव की जरूरत नहीं।",
@@ -1481,7 +1481,7 @@
         "غيّر شيئًا واحدًا في كل إعادة حتى تعرف ما الذي ساعد."
       ],
       "progression": [
-        "تضيف الفصول أعداء وأهدافًا وأبطالًا ومعدات وفحوص زعماء جديدة."
+        "تزيد المراحل اللاحقة عدد الأعداء وتنوعهم وقوتهم. طوّر الفريق وجهّزه بالمعدات التي جمعتها قبل إعادة تحدي زعيم صعب؛ دخول فصل جديد لا يمنح أبطالًا أو معدات تلقائيًا."
       ],
       "noteTitle": "معلومات اللاعب والحفظ",
       "parent": "تُحفظ المراحل والأبطال والتقدم والتفضيلات في هذا المتصفح فقط. لا يلزم حساب أو شراء أو ملف عبر الإنترنت أو حفظ سحابي.",

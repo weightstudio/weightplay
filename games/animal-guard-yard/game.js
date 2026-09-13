@@ -172,7 +172,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
 
 (() => {
   const GAME_ID = "animal-guard-yard";
-  const GAME_VERSION = "v31";
+  const GAME_VERSION = "v33";
   const INTERFACE_VERSION = 6;
   const localeKey = "weightplayLocale";
   const unlockKey = "weightplay_animal_guard_unlocked";
@@ -2292,8 +2292,6 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
     stageBrowseIndex = clamp(Math.max(currentStage, unlocked - 1), 0, stages.length - 1);
     ensureStageWindow(stageBrowseIndex);
     bindStageGridSelection();
-    const stageCardTop = Math.max(0, nodes.stageGrid.clientHeight * 0.38 - 95);
-    nodes.stageGrid.style.setProperty("--guard-stage-card-top", `${stageCardTop}px`);
     window.requestAnimationFrame(() => settleStageRail(stageBrowseIndex, stageBrowseIndex, true));
   }
 

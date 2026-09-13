@@ -173,6 +173,10 @@
       "date": "2026-07-23T00:39:38+08:00",
       "evidence": "git:6d94e3e9f732a860412aa735b6524c27c50c3ce5"
     },
+    "animal-nest-weigh": {
+      "date": "2026-09-13T08:44:28.959Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-number-match": {
       "date": "2026-07-29T14:36:22+08:00",
       "evidence": "git:5b2eba2acfddc059640be47e460ea2e778f8ec31"

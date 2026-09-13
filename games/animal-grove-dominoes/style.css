@@ -230,7 +230,17 @@ html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"]
 html:has(body:is([data-screen="stage"],[data-screen="battle"],[data-screen="result"])){overflow:hidden;overscroll-behavior:none;}
 body:is([data-screen="stage"],[data-screen="battle"],[data-screen="result"]){position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;overscroll-behavior:none;}
 #battleView{touch-action:none;}
+/* Let the document root own Main scrolling. Keeping body as a second
+   scroll container makes Chromium's mobile/touch wheel path stall at 0
+   even though the guide's content is taller than the viewport. */
 html:has(body[data-screen="main"]){overflow-y:auto;overscroll-behavior-y:contain;touch-action:pan-y;}
+body[data-screen="main"],
+html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-grove-dominoes"][data-screen="main"]{
+  height:auto!important;
+  overflow:visible!important;
+  overscroll-behavior-y:contain;
+  touch-action:pan-y;
+}
 .grove-stage-logical header .utility-button{justify-self:end;}
 .grove-stage-canvas[data-header-layout="stacked"] .grove-stage-logical{grid-template-rows:104px minmax(0,1fr) 56px;}
 .grove-stage-canvas[data-header-layout="stacked"] header{grid-template-columns:48px minmax(0,1fr) 48px;grid-template-rows:48px 32px;row-gap:8px;padding:8px 12px;}

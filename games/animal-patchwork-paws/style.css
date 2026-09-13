@@ -116,6 +116,17 @@
 #stageScreen .stage-settings,
 #battleScreen .battle-settings{justify-self:end}
 
+/* Hidden legacy Settings triggers must remain hidden even though the shared
+   responsive utility contract gives visible buttons an explicit display rule.
+   The settings dialog itself owns the interaction layer above Battle tiles so
+   its Close action cannot be intercepted by the board. */
+#stageScreen .stage-settings,
+#battleScreen .battle-settings,
+#stageScreen .stage-settings[hidden],
+#battleScreen .battle-settings[hidden]{display:none!important;pointer-events:none!important}
+#settingsPanel{z-index:120!important;pointer-events:auto!important}
+#settingsPanel .modal-card{position:relative;z-index:121!important;pointer-events:auto!important}
+
 /* v8/I6 Arabic Battle repair: the shared Battle Settings host sits on the
    physical left in RTL. Open the popover inward so its controls stay inside
    the owning Canvas at narrow phone widths. */

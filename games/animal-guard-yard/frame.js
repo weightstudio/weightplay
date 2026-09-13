@@ -7,7 +7,7 @@
     const main = document.getElementById('mainPanel');
     const stage = document.getElementById('menuPanel');
     stage.dataset.wpStageLandscapeWidth = '760';
-    stage.dataset.wpStageLandscapeHeight = '334';
+    stage.dataset.wpStageLandscapeHeight = '420';
     const battle = document.getElementById('playPanel');
     // Declare the content envelope to the shared scaler before its first fit.
     battle.dataset.wpBattleMinWidth = '390';

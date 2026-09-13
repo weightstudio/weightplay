@@ -3498,6 +3498,21 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalNestWeighPlanned.id)) window.WONDER_LOBBY.games.push(animalNestWeighPlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalNestWeighPlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalNestWeighPlanned.id);
 
+// Nest Weigh-In is now an owner-approved public General release. Keep this
+// conversion after its planned identity so the exact v4/I6 candidate is
+// discoverable without restoring the private trial boundary. The approved
+// poster-only catalog boundary intentionally exposes no preview video.
+const animalNestWeighPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-nest-weigh");
+if (animalNestWeighPublic) {
+  animalNestWeighPublic.status = "playable";
+  animalNestWeighPublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能",
+    ko: "플레이 가능", es: "Disponible", "pt-BR": "Disponível", fr: "Disponible",
+    de: "Spielbar", it: "Disponibile", ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  delete animalNestWeighPublic.internalTrial;
+}
+
 // General Issue repair (2026-08-30): provide the private planned identity
 // required by the localized-route generator while keeping Glyph Garden out of
 // the playable lobby catalog until its remaining release gates pass.

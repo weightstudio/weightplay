@@ -131,3 +131,28 @@ html body [data-wp-frame="2"] .wp-frame-play-content {display:flex!important;fle
 html body [data-wp-frame="2"] .wp-frame-play-content > :is(.battle-layout,.prep-area,.combat-area) {flex:1;min-height:0}
 html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-selected="true"] {background:var(--wp-ui-active)!important}
 }
+/* Opt-in tutorial skin for migrated games; no changes to non-adopters. */
+body[data-wp-frame-tutorial="true"] .wp-tutorial-card {
+  box-sizing:border-box;border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);
+  color:var(--wp-ui-text);box-shadow:0 5px 0 var(--wp-ui-shadow);
+}
+body[data-wp-frame-tutorial="true"] .wp-tutorial-step,
+body[data-wp-frame-tutorial="true"] .wp-tutorial-icon {
+  border:1px solid var(--wp-ui-line);border-radius:var(--wp-ui-radius);
+  background:var(--wp-ui-background);color:var(--wp-ui-text);
+}
+body[data-wp-frame-tutorial="true"] .wp-tutorial-copy span {color:var(--wp-ui-muted)}
+body[data-wp-frame-tutorial="true"] .wp-tutorial-close {
+  width:44px;height:44px;border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);background:var(--wp-ui-button-image);
+  color:var(--wp-ui-text);box-shadow:0 3px 0 var(--wp-ui-shadow);
+}
+body[data-wp-frame-tutorial="true"] .wp-tutorial-action {
+  min-height:52px;border:2px solid var(--wp-ui-line);
+  border-radius:var(--wp-ui-radius);background:var(--wp-ui-gold);
+  color:var(--wp-ui-background);box-shadow:0 3px 0 var(--wp-ui-shadow);
+}
+body[data-wp-frame-tutorial="true"] :is(.wp-tutorial-action,.wp-tutorial-close):focus-visible {
+  outline:2px solid var(--wp-ui-gold);outline-offset:3px;
+}

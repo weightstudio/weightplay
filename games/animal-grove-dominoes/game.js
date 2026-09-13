@@ -89,6 +89,11 @@
     document.body.dataset.screen = main ? "main" : stage?'stage':result ? "result" : "battle";
     $("settingsPanel").hidden = true;
     $("settingsBtn").setAttribute("aria-expanded", "false");
+    // Keep the shared shell's document-flow/active-play lock in step with the
+    // scene before an immediate post-return gesture (for example, the Main
+    // guide wheel in the responsive smoke path). The mutation observer also
+    // reconciles this state, but only on its next animation frame.
+    window.dispatchEvent(new Event("weightplay:shell-sync"));
     window.scrollTo(0, 0);
     if(!main)viewportResetFrame=requestAnimationFrame(()=>{
       viewportResetFrame=0;
