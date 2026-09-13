@@ -1,3 +1,4 @@
+import {challengeLevels} from './challenges.mjs';
 // Hand-authored topology, encounters and rule combinations, not random seeds.
 const H=(x=1,power=10)=>({x,y:0,power});
 const E=(id,x,y,power,extra={})=>({id,x,y,power,...extra});
@@ -15,7 +16,7 @@ L(3,'A whole group','The linked middle floor must survive until the first fight.
 // v4: supplies are physical pieces. Dropping them early/late changes the
 // arithmetic order; no random loot or permanent grind can bypass a puzzle.
 const P=(id,kind,x,y,amount)=>({...I(id,kind,x,y),amount});
-export const LEVELS=[...ORIGINAL_LEVELS.slice(0,3),
+const BASE_LEVELS=[...ORIGINAL_LEVELS.slice(0,3),
 L(4,'Arm before battle','Drop the +14 sword before the guard floor: 24 beats 20.','......./AAA.CCC/......./BBBBBBB/......./#######',[E('last',4,4,20)],[P('blade','sword',5,0,14),C(6,4)]),
 L(5,'Gate captain','Collect the sword and remove both flag bonuses before the 54-power captain.','......./AAA.CCC/......./BBBBBBB/......./CCCCCCC/......./#######',[E('flag1',2,2,6,{buff:{targets:['boss'],amount:30}}),E('flag2',4,4,14,{buff:{targets:['boss'],amount:30}}),E('boss',2,6,54,{boss:true})],[P('blade','sword',5,0,16),P('fruit','power',5,2,10),C(6,6)]),
 L(6,'Power crystal','Rescue the +80 crystal from its balcony before facing the 70-power guard.','......./AAA.CCC/......./BBBBBBB/......./#######',[E('last',4,4,70)],[P('fruit','power',5,0,80),C(6,4)],{hero:H(1,10)}),
@@ -46,6 +47,8 @@ L(30,'Guardian of the crown','Combine sword, addition, absorbed flag, x2, rune s
 ];
 
 // Mark mandatory duels explicitly; unmarked side guards remain optional routes.
-for(const [id,required] of [[13,['first','last']],[18,['weak','high','last']],[22,['one','two','three','last']],[23,['first','second']],[24,['first','weak','last']],[28,['flag','shield','last']],[29,['flag','shield','last']]])LEVELS[id-1].required=required;
+for(const [id,required] of [[13,['first','last']],[18,['weak','high','last']],[22,['one','two','three','last']],[23,['first','second']],[24,['first','weak','last']],[28,['flag','shield','last']],[29,['flag','shield','last']]])BASE_LEVELS[id-1].required=required;
 
-LEVELS[10].required=['last'];
+BASE_LEVELS[10].required=['last'];
+
+export const LEVELS=challengeLevels(BASE_LEVELS);

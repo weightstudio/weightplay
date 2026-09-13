@@ -132,7 +132,11 @@ html body [data-wp-frame="2"] .wp-frame-play-content > :is(.battle-layout,.prep-
 html body [data-wp-frame="2"] [data-wp-frame-action="tab"][aria-selected="true"] {background:var(--wp-ui-active)!important}
 }
 /* Opt-in tutorial skin for migrated games; no changes to non-adopters. */
+body[data-wp-frame-tutorial="true"] .wp-tutorial-backdrop {
+  grid-template-columns:minmax(0,1fr);
+}
 body[data-wp-frame-tutorial="true"] .wp-tutorial-card {
+  width:min(100%,430px);min-width:0;max-width:100%;
   box-sizing:border-box;border:2px solid var(--wp-ui-line);
   border-radius:var(--wp-ui-radius);background:var(--wp-ui-surface);
   color:var(--wp-ui-text);box-shadow:0 5px 0 var(--wp-ui-shadow);

@@ -42,3 +42,7 @@
 #mapOverview{left:4px;bottom:4px}
 .map-nav button[aria-pressed="true"]{border-color:#ffdf85;background:#365856}
 .map-floor{position:absolute;top:4px;left:4px;max-width:calc(50% - 26px);color:#ffdf89;background:#173944dd;padding:3px 5px;font-size:10px;line-height:16px;pointer-events:none;white-space:nowrap;z-index:4}
+
+/* A running move owns input until its readable animation completes. */
+#arena[aria-busy="true"] canvas{cursor:progress}
+#arena[aria-busy="true"]::after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:#edb74e;pointer-events:none;z-index:6}

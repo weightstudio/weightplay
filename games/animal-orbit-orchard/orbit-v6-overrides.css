@@ -1,0 +1,23 @@
+/* v6 repairs: preserve the game's required landscape composition and guide card
+   geometry after the shared Interface 7 normalization is loaded. */
+@media (min-width: 700px) and (max-height: 560px) and (orientation: landscape) {
+  html[data-wp-shared-interface="7"] body[data-wp-game-id="animal-orbit-orchard"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px !important;
+  }
+}
+
+/* This file is loaded only by Orbit Orchard. Keep these selectors independent
+   of the bootstrap's dynamically-added document attribute so the repair also
+   applies during the first frame of route startup. */
+.game-page-info {
+  border-radius: 18px !important;
+}
+
+.game-info-sections {
+  display: grid !important;
+}
+
+.game-info-section {
+  border-radius: 16px !important;
+  background: #fff !important;
+}

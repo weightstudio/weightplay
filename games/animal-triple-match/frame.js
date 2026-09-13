@@ -19,7 +19,9 @@
     }
     root.setAttribute("data-wp-frame-root", "");
     mainHeader.querySelector("[data-wp-game-title]").setAttribute("data-wp-frame-title", "");
-    stageHeader.querySelector("strong").setAttribute("data-wp-frame-title", "");
+    const stageTitle = stageHeader.querySelector("strong");
+    stageTitle.setAttribute("data-wp-frame-title", "");
+    stageTitle.hidden = true;
     const battleTitle = document.createElement("strong");
     battleTitle.setAttribute("data-wp-frame-title", "");
     battleHeader.append(battleTitle);
@@ -43,6 +45,9 @@
     stageHeader.after(stageContent);
     nav.setAttribute("data-wp-frame-nav", "");
     nav.querySelectorAll("button").forEach(node => node.setAttribute("data-wp-frame-action", "tab"));
+    root.querySelectorAll(".dialog-card button").forEach(node => {
+      node.setAttribute("data-wp-frame-action", node.classList.contains("primary") ? "primary" : "secondary");
+    });
     // Preserve game-owned values and listeners; move them, never clone them.
     const hud = battleHeader.querySelector(".hud");
     battleContent.prepend(hud);

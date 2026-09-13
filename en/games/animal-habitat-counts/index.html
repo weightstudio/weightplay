@@ -70,7 +70,7 @@
 }
     </script>
   </head>
-<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-habitat-counts" data-wp-game-version="v8" data-wp-interface-version="6" data-screen="main">
+<body data-audience="general" data-runtime-localize="off" data-wp-game-id="animal-habitat-counts" data-wp-game-version="v8" data-wp-interface-version="6" data-wp-battle-layout="native" data-wp-game-owned-guide data-screen="main">
   <div id="app">
     <main id="mainScreen" class="screen" data-screen="main" data-wp-standard-main-screen data-wp-main-screen>
       <div class="main-canvas" data-wp-logical-main-canvas>
@@ -109,7 +109,7 @@
       </div>
     </section>
     <section id="stageScreen" class="screen" data-screen="stage" hidden>
-      <div class="stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas style="--wp-stage-art:url('assets/animal-habitat-counts-cover.svg')">
+      <div class="stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" style="--wp-stage-art:url('/games/animal-habitat-counts/assets/animal-habitat-counts-cover.svg')">
         <header class="panel-head"><button id="stageBackBtn" class="back-btn" type="button" data-wp-return="stage" data-copy="back">Back</button><h2 data-copy="map">Habitat pages</h2><button id="stageInfoBtn" class="icon-btn" type="button" data-wp-settings data-copy-aria-label="help" aria-label="Help">i</button></header>
         <p class="panel-intro" data-copy="mapIntro">Each page uses the same row-and-column proof with a new habitat shape.</p>
         <div id="stageList" class="stage-list" data-wp-stage-rail></div>
@@ -117,7 +117,7 @@
       <div class="general-reserve" data-wp-stage-physical-reserve data-wp-ad-reserve aria-hidden="true"></div>
     </section>
     <section id="battleScreen" class="screen" data-screen="battle" hidden>
-      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas>
+      <div class="battle-canvas" data-wp-standard-battle-screen data-wp-logical-battle-canvas data-wp-canvas-max-width="920" style="--wp-battle-art:url('/games/animal-habitat-counts/assets/animal-habitat-counts-cover.svg')">
         <header class="panel-head"><button id="battleBackBtn" class="back-btn" type="button" data-wp-return="battle" data-copy="back">Back</button><h2 id="battleHeading"></h2><button id="battleSoundBtn" class="icon-btn" type="button" data-wp-battle-utility aria-pressed="true" data-copy-aria-label="sound" aria-label="sound">♫</button></header>
         <div id="battlePanel" class="battle-content">
           <div class="mission-row"><div><p class="eyebrow" data-copy="missionEyebrow">HABITAT CHECK</p><p id="roundHint" class="panel-intro"></p></div><span id="progressBadge" class="progress-badge"></span></div>
