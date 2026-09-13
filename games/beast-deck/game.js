@@ -795,7 +795,7 @@
     "viper-venom": { cost: 1, type: "utility", image: "beast-deck-redrawn/viper-venom-v1.png", nameKey: "card_viper_venom", descKey: "card_viper_venom_desc" },
     "owl-wisdom": { cost: 0, type: "utility", image: "beast-deck-redrawn/owl-wisdom-v1.png", nameKey: "card_owl_wisdom", descKey: "card_owl_wisdom_desc" },
     "iron-tortoise": { cost: 2, type: "defense", image: "beast-deck-redrawn/iron-tortoise-v1.png", nameKey: "card_iron_tortoise", descKey: "card_iron_tortoise_desc" },
-    "mist-curse": { cost: 1, type: "curse", image: "beast-deck-boss-mist-crown.webp", nameKey: "card_mist_curse", descKey: "card_mist_curse_desc", draftable: false, temporary: true },
+    "mist-curse": { cost: 1, type: "curse", image: "beast-deck-redrawn/mist-crown-monarch-v1.png", nameKey: "card_mist_curse", descKey: "card_mist_curse_desc", draftable: false, temporary: true },
   };
 
   text.es = {
@@ -1254,12 +1254,12 @@
     mireToad: { name: "Mirecoil Toad", nameZh: "泥沼蟾蜍", image: "beast-deck-redrawn/mirecoil-toad-v1.png", hp: 48, regen: 3, intents: [{ type: "poison", val: 2 }, { type: "regen", val: 5 }, { type: "weak", val: 4 }, { type: "attack", val: 10 }] },
     archiveOwl: { name: "Archive Owl", nameZh: "典藏夜梟", image: "beast-deck-redrawn/archive-owl-v1.png", hp: 46, intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 9 }, { type: "seal", val: 0, seal: "utility" }, { type: "defend", val: 9 }] },
     crownWolf: { name: "Crownmist Wolf", nameZh: "冠霧狼", image: "beast-deck-redrawn/crownmist-wolf-v1.png", hp: 50, fog: true, intents: [{ type: "curse", val: 1 }, { type: "attack", val: 12 }, { type: "fog", val: 0 }, { type: "attack", val: 8 }] },
-    stonebackBoss: { name: "Stoneback Behemoth", nameZh: "磐背巨獸", image: "beast-deck-boss-stoneback.webp", hp: 72, armor: 3, isBoss: true, bossId: "stoneback", phaseMechanic: "armor", intents: [{ type: "armor", val: 2 }, { type: "attack", val: 12 }, { type: "defend", val: 10 }, { type: "attack", val: 16 }] },
+    stonebackBoss: { name: "Stoneback Behemoth", nameZh: "磐背巨獸", image: "beast-deck-redrawn/stoneback-boss-alpha-v1.png", hp: 72, armor: 3, isBoss: true, bossId: "stoneback", phaseMechanic: "armor", intents: [{ type: "armor", val: 2 }, { type: "attack", val: 12 }, { type: "defend", val: 10 }, { type: "attack", val: 16 }] },
     ironrootBoss: { name: "Ironroot Warden", nameZh: "鐵根守衛", image: "beast-deck-redrawn/ironroot-boss-v1.png", hp: 76, isBoss: true, bossId: "ironroot", phaseMechanic: "riposte", intents: [{ type: "riposte", val: 5 }, { type: "attack", val: 13 }, { type: "exhaust", val: 1 }, { type: "attack", val: 17 }] },
     amberBoss: { name: "Amber Huntmaster", nameZh: "琥珀獵主", image: "beast-deck-redrawn/amber-huntmaster-v1.png", hp: 78, haste: true, isBoss: true, bossId: "amber", phaseMechanic: "haste", intents: [{ type: "mark", val: 7 }, { type: "attack", val: 9 }, { type: "weak", val: 4 }, { type: "attack", val: 15 }, { type: "defend", val: 8 }] },
-    mirecoilBoss: { name: "Mirecoil Hydra", nameZh: "泥沼盤蛇", image: "beast-deck-boss-mirecoil-hydra.webp", hp: 84, regen: 4, isBoss: true, bossId: "mirecoil", phaseMechanic: "regen", intents: [{ type: "poison", val: 3 }, { type: "regen", val: 7 }, { type: "attack", val: 13 }, { type: "cleanse", val: 0 }, { type: "attack", val: 17 }] },
-    moonBoss: { name: "Moon Archive Keeper", nameZh: "月典守藏者", image: "beast-deck-boss-moon-archive.webp", hp: 82, isBoss: true, bossId: "moon", phaseMechanic: "seal", intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 12 }, { type: "seal", val: 0, seal: "defense" }, { type: "defend", val: 12 }, { type: "seal", val: 0, seal: "utility" }] },
-    mistCrownBoss: { name: "Mist Crown Monarch", nameZh: "霧冠獸王", image: "beast-deck-boss-mist-crown.webp", hp: 92, ward: 3, isBoss: true, bossId: "mist-crown", phaseMechanic: "ward", intents: [{ type: "curse", val: 2 }, { type: "attack", val: 14 }, { type: "fog", val: 0 }, { type: "attack", val: 19 }, { type: "seal", val: 0, seal: "utility" }] },
+    mirecoilBoss: { name: "Mirecoil Hydra", nameZh: "泥沼盤蛇", image: "beast-deck-redrawn/mirecoil-hydra-v1.png", hp: 84, regen: 4, isBoss: true, bossId: "mirecoil", phaseMechanic: "regen", intents: [{ type: "poison", val: 3 }, { type: "regen", val: 7 }, { type: "attack", val: 13 }, { type: "cleanse", val: 0 }, { type: "attack", val: 17 }] },
+    moonBoss: { name: "Moon Archive Keeper", nameZh: "月典守藏者", image: "beast-deck-redrawn/moon-archive-keeper-v1.png", hp: 82, isBoss: true, bossId: "moon", phaseMechanic: "seal", intents: [{ type: "seal", val: 0, seal: "attack" }, { type: "attack", val: 12 }, { type: "seal", val: 0, seal: "defense" }, { type: "defend", val: 12 }, { type: "seal", val: 0, seal: "utility" }] },
+    mistCrownBoss: { name: "Mist Crown Monarch", nameZh: "霧冠獸王", image: "beast-deck-redrawn/mist-crown-monarch-v1.png", hp: 92, ward: 3, isBoss: true, bossId: "mist-crown", phaseMechanic: "ward", intents: [{ type: "curse", val: 2 }, { type: "attack", val: 14 }, { type: "fog", val: 0 }, { type: "attack", val: 19 }, { type: "seal", val: 0, seal: "utility" }] },
   };
   const enemyNamesEs = {
     boar: "Jabalí Sombrío",

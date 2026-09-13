@@ -1995,7 +1995,7 @@ body.beast-deck-playing #menuBtn {
 #stagePanel.wp-standard-stage-panel {
   grid-template-rows: 52px minmax(0, 1fr) 52px;
   background-color: #17243a;
-  background-image: linear-gradient(rgb(7 18 31 / 82%), rgb(23 36 58 / 92%)), url("../../assets/beast-deck-cover.webp");
+  background-image: linear-gradient(rgb(7 18 31 / 82%), rgb(23 36 58 / 92%)), url("../../assets/interface7-redrawn/beast-deck.webp");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

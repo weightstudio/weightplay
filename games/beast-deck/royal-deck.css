@@ -109,7 +109,7 @@ body.beast-deck-playing #resultPanel .result-summary>* {flex-shrink:0;}
 body.beast-deck-playing #resultPanel .result-summary::after {
  content:'';display:block;flex:0 0 auto;order:-1;
  width:100%;aspect-ratio:3/2;max-height:200px;
- background:url('../../assets/beast-deck-settlement-forest-v1.png') center/contain no-repeat;
+ background:url('../../assets/beast-deck-redrawn/settlement-forest-v1.png') center/contain no-repeat;
  border-radius:12px;pointer-events:none;
 }
 body.beast-deck-playing #resultPanel .result-progress {text-align:start;}

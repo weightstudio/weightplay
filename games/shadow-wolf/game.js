@@ -950,7 +950,7 @@
   }
 
   const shadowAssetPaths = {
-    bg: "../../assets/shadow-wolf-stage-bg.webp",
+    bg: "../../assets/shadow-wolf-redrawn/moon-ruins-v1.png",
     bgCrystal: "../../assets/shadow-wolf-bg-crystal-cavern.webp",
     bgJungle: "../../assets/shadow-wolf-bg-vine-jungle.webp",
     bgRift: "../../assets/shadow-wolf-bg-shadow-rift.webp",

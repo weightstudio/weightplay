@@ -17,6 +17,13 @@
   .beast-frame-play { grid-template-rows:42px minmax(0,1fr) 280px; }
 }
 @media(orientation:landscape) and (max-height:560px) {
+  body.wp-logical-battle-active.beast-deck-playing #main #gamePanel .beast-frame-play .battlefield { grid-template-rows:minmax(0,1fr) 30px 44px!important; }
+  #main #gamePanel .beast-frame-play .battle-log { height:30px; min-height:30px; max-height:30px; }
+  #main #gamePanel .beast-frame-play #enemyName { font-size:13px; line-height:15px; }
+  #main #gamePanel .beast-frame-play .enemy-container { row-gap:2px; }
+  #main #gamePanel .beast-frame-play #enemyIntent { font-size:10px; line-height:12px; white-space:normal; }
+  #main #gamePanel .beast-frame-play #enemyStatusRow { min-width:0; width:100%; flex-wrap:wrap; overflow:visible; }
+  #main #gamePanel .beast-frame-play #enemyStatusRow .status-badge { min-width:0; max-width:100%; box-sizing:border-box; white-space:normal; overflow-wrap:anywhere; flex:0 1 auto; font-size:10px; line-height:1.2; }
   #main #gamePanel .beast-frame-play #enemyAvatar { max-height:76px; align-self:center; }
   .beast-frame-play { grid-template-columns:minmax(180px,.8fr) minmax(0,1.8fr); grid-template-rows:36px minmax(0,1fr); gap:8px; }
   .beast-frame-play > .hud-row { grid-column:1/-1!important; grid-row:1!important; }
