@@ -200,6 +200,7 @@
         : gameId === "old-maid" ? "20260829-old-maid-arabic-guide-v17"
           : gameId === "animal-trap-trail" ? "20260829-animal-trap-trail-faq-timing-v6"
           : gameId === "animal-canopy-cut" ? "20260907-canopy-v13-campaign-depth"
+          : gameId === "animal-footprint-folio" ? "20260913-footprint-folio-interface7-guide-v1"
           : gameId === "casino" ? "20260901-casino-locale-v18d"
           : gameId === "freecell-solitaire" ? "20260905-freecell-es-guide-v30"
           : "20260817-bus-jam-guide-v12";

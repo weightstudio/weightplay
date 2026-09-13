@@ -3291,6 +3291,8 @@
   };
   localizedGames.ar["animal-nest-weigh"] = {
     title: "ميزان العش",
+    difficulty: "من السهل إلى التحدي",
+    time: "2–6 دقائق لكل درس",
     gameplay: "لغز مقارنة المراتب بالميزان",
     genre: ["ألغاز", "رياضيات", "حيوانات"],
     skills: ["الرياضيات", "التركيز", "حل المشكلات"],
@@ -3300,6 +3302,7 @@
     how: ["اختر درسًا مفتوحًا واقرأ هل يريد العش المادة الأثقل أو الأخف أو المتوسطة أو الثانية في الثقل أو الثانية في الخفة.", "اختر صينيتين وزنهما. تتطلب الدروس اللاحقة عددًا أكبر من المقارنات الظاهرة قبل فحص العش.", "اختر إجابة واحدة وافحص العش. يفتح الاختيار الصحيح الدرس التالي، ويمكنك الإعادة أو استخدام خريطة الدروس للتدرب."],
     strategyTips: ["قارن زوجًا يحدد موضع المرتبة المطلوبة بدل المقارنة العشوائية.", "احتفظ بكل نتيجة ظاهرة في ذاكرتك لبناء ترتيب، خصوصًا عندما يزداد عدد الصواني.", "خطط لأقل عدد من المقارنات عند نقاط الفحص قبل فحص العش، حتى تعكس النتيجة قرارًا مقصودًا."],
     progression: ["تعلّم الدروس 1–5 اختيارات الأثقل والأخف والمتوسط مع ثلاث صوانٍ. تضيف الدروس 6–10 صينية رابعة وطلبات المرتبة الثانية.", "تبني الدروس 11–15 سلاسل مقارنة من خمس صوانٍ. تغيّر الدروس 16–20 المرتبة وعدد الصواني، ثم تضيف الدروس 21–25 ضغط ست صوانٍ ومتطلبات مقارنة أعلى.", "تكوّن الدروس 26–30 قوس الإتقان ذي السبع صوانٍ وتنتهي بنقطة فحص قابلة للإعادة. يغير كل درس المرتبة المطلوبة أو ترتيب المواد أو عدد الصواني أو حد المقارنات."],
+    designNote: "ميزان العش حملة داخلية عامة مؤلفة من 30 درسًا مصممًا، ببيانات ثابتة، وست نقاط فحص، وحفظ محلي لفتح الدروس، وتدفق متجاوب بين الواجهة الرئيسية والمراحل والمعركة والنتيجة، من دون ادعاء بإصدار عام.",
     parent: "قد يساعد هذا اللغز العام الداخلي على ممارسة العد والترتيب والانتباه وشرح المقارنة. هذه ملاحظات للعب وليست تقييمًا رسميًا للقدرات؛ تبقى الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط.",
     faq: [["كم عدد الدروس؟", "هناك 30 درسًا مؤلفًا قابلًا لإعادة اللعب في ستة أقواس، مع نقاط فحص في الدروس 5 و10 و15 و20 و25 و30."], ["كيف تختلف الدروس اللاحقة؟", "يزداد عدد الصواني من ثلاث إلى سبع، وتظهر طلبات المرتبة الثانية، وتتطلب دروس محددة مقارنات ظاهرة أكثر قبل الفحص."], ["هل يُحفظ التقدم؟", "تُحفظ الدروس المفتوحة وأفضل نتيجة مقارنة في هذا المتصفح فقط."]],
   };
@@ -9942,6 +9945,7 @@
     const scoreBands = scoreBandsFor(baseGame);
     const section = document.createElement("section");
     section.className = "game-page-info";
+    if (id === "animal-footprint-folio") section.setAttribute("data-wp-game-guide", "");
     if (activeLocale !== "en" || id === "snake") section.dataset.runtimeLocalize = "off";
     section.setAttribute("aria-label", uiLabel("guideLabel", { title: game.title }));
     if (isFreeCell) {
@@ -20873,5 +20877,89 @@
   }
   Object.assign(games["animal-guard-yard"],guardYardV31Guides.en);
   // End Guard Yard v31 guide.
+
+  // Footprint Folio owns a static shell, but the shared Guide renderer still
+  // needs a complete General-audience Guide so Interface 7 can enforce the
+  // framed, multi-section contract. Keep the long English authoring here and
+  // derive the other locales from the game's locale-owned copy rather than
+  // exposing English fallback text on localized routes.
+  const footprintFolioGuide = {
+    title: "Trail Logic",
+    age: "",
+    difficulty: "Easy to Challenging",
+    time: "2-6 minutes per record",
+    gameplay: "Visible sequence deduction",
+    genre: ["Puzzle", "Logic", "Animal"],
+    skills: ["Pattern reading", "Sequencing", "Careful comparison"],
+    hideSkillsFact: true,
+    showRelatedSkill: false,
+    hideScoreBands: true,
+    relatedIds: [],
+    noteTitle: "Player and Save Information",
+    intro: "Trail Logic is a calm three-record deduction game about reading visible marker sequences. Each record shows a steady rhythm with one open space. Compare the shapes on both sides, choose the marker that completes the pattern, and confirm only when the whole sequence makes sense. The experience is deliberately compact, but it still teaches a complete observation loop: inspect, predict, test, recover from a wrong answer, and explain why the final choice fits.",
+    story: [
+      "The field-note folio follows three small locations: the edge of dawn, a bend in the river, and a path under the night sky. Each location uses a different family of marker shapes, yet the logic stays visible. Known markers are shown as calm evidence, while the open card is highlighted so players can focus on the relationship between positions rather than hunt for hidden information.",
+      "Every record is authored instead of randomly generated. The first and last markers mirror one another, and the two markers around the gap provide a second confirmation. This makes the puzzle fair for a first attempt and leaves room for a gentle retry when a player notices a shape or rhythm that was easy to overlook.",
+    ],
+    systems: [
+      "Read the row from left to right. The missing card is not a prize or inventory item; it is a deduction slot. The board, clue labels, and marker legend remain visible while you decide, so the answer can be checked against the complete sequence instead of memory alone.",
+      "Choose one of the three visible marker buttons. The selected button is announced, the Confirm note action becomes available, and the marker remains selected until you change it or submit. Touch, mouse, and keyboard activation use the same record state and the same answer set.",
+      "A wrong marker never advances the folio. The feedback line asks you to compare shape and rhythm, and the record stays intact so you can make a better second observation. A correct marker locks the record, reveals the next-record action, and increments the solved count without hiding the evidence that supported the answer.",
+      "After the third correct record, the Result panel stays inside the Battle Canvas. Replay starts a clean folio, while Field notes home returns to Main and restores the Guide. Progress and the current sound preference are local to this browser; no account, purchase, or network service is required.",
+    ],
+    how: [
+      "Start the field note from Main and read the short summary before entering the Battle Canvas.",
+      "Read every known marker in the current row from left to right, including the clue labels beneath them.",
+      "Compare the marker before and after the open space. Look for the repeated shape, mirrored pair, or steady rhythm that the record is teaching.",
+      "Select the marker that completes the sequence, then press Confirm note. If the feedback says to compare again, leave the record open and try a different marker.",
+      "When a record is correct, press Next record. Complete all three records to open Result, then choose Replay folio or Field notes home.",
+    ],
+    strategyTips: [
+      "Name the visible shapes in your head before choosing. Saying leaf, ripple, diamond, dot, arc, or star makes a repeated rhythm easier to compare.",
+      "Use both sides of the gap. The matching marker is supported by the whole row, not just by the card immediately before it.",
+      "If two options look similar, check the outer pair first and then read the clue numbers again. The authored rows always contain enough evidence for one answer.",
+      "A wrong answer is a pause, not a penalty. Read the feedback, keep the same row in view, and change only the marker choice that the evidence disproves.",
+      "On a small screen, keep the Battle Canvas settled before tapping Confirm. The shared responsive envelope keeps the row and action controls together across phone, landscape, and desktop views.",
+    ],
+    progression: [
+      "Record 1 introduces mirrored leaf and ripple markers and asks for a single repeated shape. Record 2 changes the vocabulary to diamond and dot so the player must use the relationship, not a memorized button position.",
+      "Record 3 adds arc and star markers and completes the same deduction loop under a different visual rhythm. Finishing the third record is the authored endpoint for this compact folio; it does not claim an endless or competitive mode.",
+      "The campaign is intentionally three records long. The challenge grows through new marker families and careful reading, while retries remain immediate and the Result state makes the next choice clear. There are no hidden stages, timers, or score multipliers behind the Guide.",
+      "The visible board is the source of truth for every answer. A clue number identifies its position, the highlighted gap identifies the only missing card, and the legend distinguishes known evidence from the player's note. Nothing is timed, purchased, or hidden behind a power-up. This gives families and classroom-style players a useful way to talk through an answer: name the shapes, point to the repeated relationship, choose a candidate, and explain what changed after confirmation. The same explanation remains valid after a wrong attempt because the game keeps the record, the feedback, and the available choices together. In the final Result, the player can replay the same authored folio to practice a different observation rhythm or return to Main and read the Guide again.",
+    ],
+    designNote: "Trail Logic is designed as a readable observation exercise rather than a speed test. Fixed records make every answer explainable, the highlighted gap keeps attention on the active decision, and wrong-answer feedback preserves the evidence instead of resetting the player to an unrelated puzzle. The responsive logical Canvas uses one uniform scale, keeps the General reserve outside Battle, and gives touch, mouse, and keyboard players the same marker choices and Result recovery.",
+    parent: "This General-audience puzzle is free to play in the browser. The current folio state and sound preference stay in this browser only; clearing site data or changing devices may remove the local record. No account, purchase, social sign-in, or external data collection is required to complete the three records.",
+    faq: [
+      ["How do I choose the missing marker?", "Read the full row from left to right and compare the shapes around the open space. Choose the marker that keeps the repeated or mirrored sequence steady, then confirm the note."],
+      ["What happens after a wrong answer?", "The record stays open and a short feedback line asks you to compare shape and rhythm again. Nothing is lost, and you can choose another visible marker immediately."],
+      ["Can I use a phone or keyboard?", "Yes. The same marker buttons work with touch, mouse, and keyboard activation. The responsive Battle Canvas keeps the evidence and Confirm action together across the supported viewports."],
+      ["How many records are in the folio?", "There are three authored records: Dawn edge, River bend, and Night path. The third correct answer opens the Result panel."],
+      ["Is the result a formal ability test?", "No. It is a small observation puzzle for practice and play, not a standardized assessment or a promise about a player's ability."],
+      ["Is progress saved?", "The current state and sound preference are stored only in this browser. No account or cloud save is needed, and clearing browser data can remove the local record."],
+    ],
+  };
+  games["animal-footprint-folio"] = footprintFolioGuide;
+  const footprintLocaleCopy = window.FOOTPRINT_FOLIO_LOCALES || {};
+  for (const [localeCode, copy] of Object.entries(footprintLocaleCopy)) {
+    const localized = {
+      ...footprintFolioGuide,
+      title: copy.title || footprintFolioGuide.title,
+      intro: copy.lede || footprintFolioGuide.intro,
+      difficulty: localeCode === "en" ? footprintFolioGuide.difficulty : (copy.ready || footprintFolioGuide.difficulty),
+      time: localeCode === "en" ? footprintFolioGuide.time : (copy.fact1 || footprintFolioGuide.time),
+      gameplay: copy.fact2 || footprintFolioGuide.gameplay,
+      genre: [copy.guideEyebrow || footprintFolioGuide.genre[0], copy.chooseMarker || footprintFolioGuide.genre[1], copy.fact3 || footprintFolioGuide.genre[2]],
+      story: [copy.guide || footprintFolioGuide.story[0], copy.instruction || footprintFolioGuide.story[1]],
+      systems: [copy.guide || footprintFolioGuide.systems[0], copy.selected || footprintFolioGuide.systems[1], copy.wrong || footprintFolioGuide.systems[2], copy.resultCopy || footprintFolioGuide.systems[3]],
+      how: [copy.start || footprintFolioGuide.how[0], copy.guide || footprintFolioGuide.how[1], copy.instruction || footprintFolioGuide.how[2], copy.confirm || footprintFolioGuide.how[3], copy.continue || footprintFolioGuide.how[4]],
+      strategyTips: [copy.guide || footprintFolioGuide.strategyTips[0], copy.instruction || footprintFolioGuide.strategyTips[1], copy.correct || footprintFolioGuide.strategyTips[2], copy.wrong || footprintFolioGuide.strategyTips[3], copy.selected || footprintFolioGuide.strategyTips[4]],
+      progression: [copy.ready || footprintFolioGuide.progression[0], copy.resultCopy || footprintFolioGuide.progression[1], copy.resultTitle || footprintFolioGuide.progression[2]],
+      designNote: copy.resultCopy || footprintFolioGuide.designNote,
+      parent: copy.faqAnswer || footprintFolioGuide.parent,
+      faq: Array.from({ length: 6 }, (_, index) => [copy.faqQuestion || footprintFolioGuide.faq[index][0], copy.faqAnswer || footprintFolioGuide.faq[index][1]]),
+    };
+    localizedGames[localeCode] ||= {};
+    localizedGames[localeCode]["animal-footprint-folio"] = localized;
+  }
   render();
 })();

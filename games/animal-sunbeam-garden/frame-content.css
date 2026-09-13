@@ -1,0 +1,26 @@
+/* Only game-owned content. Header, preferences and guide use shared tokens. */
+#gameFrame [hidden] {display:none!important}
+#gameFrame > .screen {margin-inline:auto}
+#main[data-wp-frame-scene] {padding:0;min-height:0}
+.sunbeam-main-content > img {object-fit:contain}
+.sunbeam-stage-content {min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+#stage .sunbeam-stage-content #progress {position:static;transform:none;max-width:none;text-align:center;padding:8px;font-size:14px;line-height:1.3}
+#battle [data-wp-frame-content] {min-height:0}
+#battle .garden-panel {min-width:0;max-width:100%;box-sizing:border-box;grid-template-columns:minmax(0,1fr)}
+#battle .board {min-width:0;max-width:100%;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr))}
+#battle .cell {min-width:0;min-height:0;padding:0}
+#battle .cell {background-image:url('../../assets/animal-sunbeam-garden-cell-block-v14.webp')}
+#battle .cell.source {background-image:url('../../assets/animal-sunbeam-garden-source-block-v14.webp')}
+#battle .cell.goal {background-image:none}
+#battle .battle-content::before {background-image:linear-gradient(#12392c70,#12392c70),url('../../assets/animal-sunbeam-garden-scenery-block-v14.webp')}
+#stage {background-image:linear-gradient(#24472f70,#24472f70),url('../../assets/animal-sunbeam-garden-scenery-block-v14.webp')}
+body #stageGrid .stage-card,body #stageGrid .stage-card.selected,body #stageGrid .stage-card.centered {background-image:linear-gradient(180deg,#173f2820 10%,#173f28e8 86%),url('../../assets/animal-sunbeam-garden-scenery-block-v14.webp')}
+#battle .cell.mirror::after {background-image:url('../../assets/animal-sunbeam-garden-mirror-block-v14.webp')}
+#battle .cell.goal::before {background-image:url('../../assets/animal-sunbeam-garden-flower-block-v14.webp');transform:none}
+#battle .cell.goal.hit {background-image:none}
+#battle .cell.goal.hit::before {background-image:url('../../assets/animal-sunbeam-garden-flower-hit-block-v14.webp');transform:none}
+#battleHelp {position:absolute;inset-inline-end:8px;inset-block-start:8px}
+#result,#leave,#tutorialPanel {background:var(--wp-ui-surface);color:var(--wp-ui-text);border-color:var(--wp-ui-line);border-radius:var(--wp-ui-radius);max-width:calc(100vw - 24px);box-sizing:border-box}
+@media(max-height:500px) and (orientation:landscape) {
+ #battle .garden-panel {grid-template-columns:minmax(0,1fr) minmax(0,210px)}
+}

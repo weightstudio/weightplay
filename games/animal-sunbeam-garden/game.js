@@ -1,5 +1,6 @@
 (()=>{
   "use strict";
+  document.body.dataset.gameVersion="v14";
   const codes=["en","zh-Hant","zh-Hans","ja","ko","es","pt-BR","fr","de","it","ru","hi","ar"],segments={en:"en","zh-Hant":"zh-tw","zh-Hans":"zh-cn",ja:"ja",ko:"ko",es:"es","pt-BR":"pt-br",fr:"fr",de:"de",it:"it",ru:"ru",hi:"hi",ar:"ar"},levels=window.SUNBEAM_LEVELS.levels;
   const $=s=>document.querySelector(s),screens=[...document.querySelectorAll(".screen")],key="wp-animal-sunbeam-v1",roots=Object.freeze({main:$("#main"),stage:$("#stage"),battle:$("#battle")}),returns=Object.freeze({main:$("[data-wp-return='main']"),stage:$("[data-wp-return='stage']"),battle:$("[data-wp-return='battle']")}),mainFlow=Object.freeze({poster:$("#main .hero img"),summary:$("#main .hero [data-t='summary']"),start:$("#start")}),lifecycleIdentity=new Map([...Object.entries(roots),...Object.entries(returns).map(([name,node])=>[`${name}Return`,node]),...Object.entries(mainFlow)]),mainGuide=()=>$(".game-page-info");
   Object.assign(roots.battle.dataset,{wpBattleLandscapeWidth:"760",wpBattleLandscapeHeight:"400"});

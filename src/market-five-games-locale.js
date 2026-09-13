@@ -18,6 +18,27 @@
     hi: ["भाषा", "खेल शुरू करें", "स्तर", "मुख्य पृष्ठ पर लौटें", "स्तरों पर लौटें", "फिर कोशिश", "अगला स्तर", "कैसे खेलें", "सर्वश्रेष्ठ", "स्तर", "लक्ष्य पूरा", "फिर प्रयास करें", "एक स्तर चुनें", "ध्वनि", "शूट", "संकेत खोलें", "ऊपर", "बाएँ", "नीचे", "दाएँ", "छद्मावरण लॉक करें", "अभयारण्य रीसेट करें", "गेम नियंत्रण"],
     ar: ["اللغة", "ابدأ اللعبة", "المراحل", "العودة إلى الرئيسية", "العودة إلى المراحل", "إعادة المحاولة", "المرحلة التالية", "طريقة اللعب", "الأفضل", "المرحلة", "تحقق الهدف", "حاول مجدداً", "اختر مرحلة", "الصوت", "تسديد", "اكشف الدليل", "أعلى", "يسار", "أسفل", "يمين", "ثبّت التمويه", "أعد ضبط المحمية", "عناصر التحكم باللعبة"],
   };
+  const blendStageNamesEn = [
+    "First Blend", "Twin Tones", "Quiet Pattern", "Memory Garden", "Lantern Checkpoint",
+    "Moving Hues", "Breezy Match", "Reverse Petals", "Long Recall", "Windkeeper Checkpoint",
+    "Shadow Blend", "Soft Decoy", "Twilight Memory", "Mixed Signals", "Twilight Checkpoint",
+    "Weaving Colors", "Branch Sequence", "Narrow Match", "Fast Recall", "Bough Guardian Checkpoint",
+    "Signal Garden", "Pulse Pattern", "Hazard Rhythm", "Last Light Relay", "Signal Checkpoint",
+    "Mastery Blend", "Full Palette", "Storm Recall", "Final Relay", "Grand Blend Finale",
+  ];
+  const blendStageNamesAr = [
+    "المزج الأول", "نغمتان", "النمط الهادئ", "حديقة الذاكرة", "نقطة ضوء الفانوس",
+    "ألوان متحركة", "مطابقة النسيم", "بتلات معكوسة", "تذكّر طويل", "نقطة حارس الريح",
+    "مزج الظلال", "خدعة ناعمة", "ذاكرة الشفق", "إشارات مختلطة", "نقطة الشفق",
+    "ألوان متشابكة", "تسلسل الأغصان", "مطابقة ضيقة", "تذكّر سريع", "نقطة حارس الغصن",
+    "حديقة الإشارة", "نمط النبض", "إيقاع الخطر", "تتابع الضوء الأخير", "نقطة الإشارة",
+    "مزج الإتقان", "الطيف الكامل", "تذكّر العاصفة", "التتابع الأخير", "نهائي المزج الكبير",
+  ];
+  const blendArcNamesEn = ["First Light", "Windy Boughs", "Twilight Garden", "Moving Canopy", "Signal Orchard", "Mastery Grove"];
+  const blendArcNamesAr = ["الضوء الأول", "أغصان عاصفة", "حديقة الشفق", "مظلة متحركة", "بستان الإشارة", "بستان الإتقان"];
+  const blendLocalizedSeries = (english, arabic) => english.map((name, index) => localeOrder.map((locale) => locale === "ar" ? arabic[index] : name));
+  const blendStageNames = blendLocalizedSeries(blendStageNamesEn, blendStageNamesAr);
+  const blendArcNames = blendLocalizedSeries(blendArcNamesEn, blendArcNamesAr);
   const gameText = {
     "animal-hoop-league": {
       title: ["Animal Hoop League", "動物灌籃聯盟", "动物灌篮联盟", "アニマル・フープリーグ", "애니멀 후프 리그", "Liga Animal de Aros", "Liga Animal de Cestas", "Ligue Animale du Panier", "Tierische Korbliga", "Lega Animale del Canestro", "Звериная лига колец", "एनिमल हूप लीग", "دوري سلال الحيوانات"],
@@ -80,6 +101,8 @@
         ["Blossom pattern", "花朵圖樣", "花朵图样", "花の模様", "꽃 무늬", "Patrón floral", "Padrão floral", "Motif floral", "Blütenmuster", "Motivo floreale", "Цветочный узор", "फूल पैटर्न", "نمط الأزهار"],
         ["Water pattern", "水波圖樣", "水波图样", "水の模様", "물결 무늬", "Patrón de agua", "Padrão de água", "Motif aquatique", "Wassermuster", "Motivo acqua", "Узор воды", "पानी पैटर्न", "نمط الماء"],
       ],
+      stageNames: blendStageNames,
+      arcNames: blendArcNames,
       checkpoint: ["Checkpoint", "檢查點", "检查点", "チェックポイント", "체크포인트", "Punto de control", "Ponto de controle", "Point de contrôle", "Kontrollpunkt", "Punto di controllo", "Контрольная точка", "चेकपॉइंट", "نقطة تفتيش"],
       finale: ["Finale", "終章", "终章", "フィナーレ", "피날레", "Final", "Finale", "Finale", "Finale", "Finale", "Финал", "अंतिम चरण", "النهائي"],
     },
@@ -122,7 +145,7 @@
     if (!localeOrder.includes(next)) return;
     locale = next; localStorage.setItem("weightPlayLocale", locale); localStorage.setItem("weightplayLocale", locale); apply();
   }
-  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), canvas: at(game.canvas || game.title), incorrect: at(game.incorrect || game.guide), correct: at(game.correct || game.guide), checkpoint: at(game.checkpoint || ["Checkpoint"]), finale: at(game.finale || ["Finale"]), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
+  window.WeightPlayMarketFiveLocale = Object.freeze({ locales: localeOrder, get locale() { return locale; }, setLocale, common: c, game: () => ({ title: at(game.title), lede: at(game.lede), guide: at(game.guide), canvas: at(game.canvas || game.title), incorrect: at(game.incorrect || game.guide), correct: at(game.correct || game.guide), checkpoint: at(game.checkpoint || ["Checkpoint"]), finale: at(game.finale || ["Finale"]), courts: game.courts?.map(at) || [], hoop: Object.fromEntries(Object.entries(game.hoop || {}).map(([key, value]) => [key, at(value)])), regions: game.regions?.map(at) || [], colors: game.colors?.map(at) || [], patterns: game.patterns?.map(at) || [], stageNames: game.stageNames?.map(at) || [], arcNames: game.arcNames?.map(at) || [], tiles: game.tiles?.map(at) || [] }) });
   window.WeightPlayFiveGameLocale = window.WeightPlayMarketFiveLocale;
   window.wpMarketCommon = (index) => c()[index];
   const begin = () => { const select = document.getElementById("localeSelect"); select?.addEventListener("change", (event) => setLocale(event.target.value)); apply(); };

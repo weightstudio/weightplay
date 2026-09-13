@@ -5700,7 +5700,7 @@ window.WONDER_LOBBY.officialTitleOverrides = {
     "it": "Animal Guard Yard",
     "ru": "Animal Guard Yard",
     "hi": "Animal Guard Yard",
-    "ar": "Animal Guard Yard",
+    "ar": "ساحة حراس الحيوانات",
     "zh-Hant": "守衛庭院",
     "zh-Hans": "守卫庭院"
   },

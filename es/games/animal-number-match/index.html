@@ -21,26 +21,26 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="robots" content="index,follow" /><meta name="weightplay-audience" content="general"><meta name="theme-color" content="#245f52">
   <meta name="weightplay-scene-controls" content="immutable">
-  <title>La arboleda de números de Panko | WeightPlay</title><link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/tutorial.css"><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="style.css?v=20260809-stage-visual1"><link rel="stylesheet" href="stage-header-fix.css"><link rel="stylesheet" href="art.css">
-  <meta name="description" content="Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas..." />
+  <title>Bosque numérico de Panko | WeightPlay</title><link rel="stylesheet" href="../../src/loading-screen.css"><link rel="stylesheet" href="../../src/tutorial.css"><link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard><link rel="stylesheet" href="../../src/game-page-info.css"><link rel="stylesheet" href="style.css?v=20260913-number-frame-v15"><link rel="stylesheet" href="art.css">
+  <meta name="description" content="Elimina parejas que sumen diez y abre líneas de visión en 30 bosques tranquilos." />
   <meta property="og:site_name" content="WeightPlay" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="La arboleda de números de Panko | WeightPlay" />
-  <meta property="og:description" content="Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas..." />
+  <meta property="og:title" content="Bosque numérico de Panko | WeightPlay" />
+  <meta property="og:description" content="Elimina parejas que sumen diez y abre líneas de visión en 30 bosques tranquilos." />
   <meta property="og:url" content="https://weightplay.com/es/games/animal-number-match/" />
   <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-number-match.webp" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="La arboleda de números de Panko | WeightPlay" />
-  <meta name="twitter:description" content="Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas..." />
+  <meta name="twitter:title" content="Bosque numérico de Panko | WeightPlay" />
+  <meta name="twitter:description" content="Elimina parejas que sumen diez y abre líneas de visión en 30 bosques tranquilos." />
   <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-number-match.webp" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VideoGame",
-  "name": "La arboleda de números de Panko",
+  "name": "Bosque numérico de Panko",
   "url": "https://weightplay.com/es/games/animal-number-match/",
-  "description": "Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas...",
-  "image": "https://weightplay.com/assets/animal-number-match-cover-general-v3.webp",
+  "description": "Elimina parejas que sumen diez y abre líneas de visión en 30 bosques tranquilos.",
+  "image": "https://weightplay.com/assets/interface7-redrawn/animal-number-match.webp",
   "publisher": {
     "@type": "Organization",
     "name": "WeightStudio"
@@ -63,64 +63,40 @@
   "alternateName": "Panko's Number Grove"
 }
     </script>
-  <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260906-number-match-main-poster-v1">
+  <link rel="stylesheet" href="frame-content.css?v=20260913-number-v15"><link rel="stylesheet" href="/src/game-ui-theme.css"><link rel="stylesheet" href="/src/game-screen-frame.css">
   <style data-animal-number-match-related-copy>body[data-wp-game-id="animal-number-match"] .game-info-related-copy span{display:block;overflow:visible;-webkit-box-orient:initial;-webkit-line-clamp:unset}</style>
 </head>
-<body class="wp-shell-main-active" data-game-view="main" data-screen="main" data-audience="general" data-wp-game-id="animal-number-match" data-runtime-localize="off">
-  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-t="title">Panko's Number Grove</strong><span data-t="guideTitle">How to play</span><div><i id="loadingFill" style="width:100%"></i></div></div></section>
-  <main id="main" class="screen main main-screen" data-screen="main">
-    <header class="main-header"><a class="return" data-wp-return="main" href="/" data-t-aria="returnLobby" aria-label="Return to WeightPlay"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-t="shortTitle">NUMBER MATCH</strong><label class="locale"><span data-t="language">Language</span><select id="locale"></select></label></header>
-    <section class="hero"><img src="../../assets/animal-number-match-cover-general-v3.webp" data-t-alt="coverAlt" alt="Imagen del juego La arboleda de números de Panko"><div><p class="eyebrow" data-t="kicker">PANKO'S NUMBER GROVE</p><h1 data-t="title">La arboleda de números de Panko</h1><p class="main-summary" data-t="summary">Clear number pairs that add up to ten. Open sight lines and keep the grove tidy.</p><button id="start" class="primary" data-runtime-localize="off" data-t="start">Start game</button><button id="tutorialOpen" type="button" data-t="guideTitle">How to play</button></div></section><section class="public-guide guide" aria-label="Game guide"><h2 data-t="guideTitle">How to play</h2><p data-t="guideBody">Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.</p></section>
+<body class="wp-shell-main-active" data-game-view="main" data-screen="main" data-audience="general" data-wp-game-id="animal-number-match" data-runtime-localize="off" data-wp-combined-sound="true" data-sound-toggle="off">
+  <section id="loadingPanel" class="loading-panel" aria-live="polite"><div class="loading-card"><strong data-t="title">Panko&#39;s Number Grove</strong><span data-t="guideTitle">How to play</span><div><i id="loadingFill" style="width:100%"></i></div></div></section>
+  <div id="gameFrame" data-wp-frame-root><main id="main" class="screen main main-screen" data-screen="main">
+    <header class="main-header"><a class="return" data-wp-return="main" href="/" data-t-aria="returnLobby" aria-label="returnLobby"><span aria-hidden="true">←</span><img src="../../assets/weightplay-logo.png" alt=""></a><strong data-t="shortTitle">COINCIDENCIA DE NÚMEROS</strong><label class="locale"><span data-t="language">Language</span><select id="locale"></select></label></header>
+    <section class="hero"><img src="/assets/interface7-redrawn/animal-number-match.webp" data-t-alt="coverAlt" alt="Imagen del juego Bosque numérico de Panko"><div><p class="eyebrow" data-t="kicker">LA ARBOLEDA DE NUMEROS DE PANKO</p><h1 data-t="title">Bosque numérico de Panko</h1><p class="main-summary" data-t="summary">Vacía el tablero formando parejas que sumen diez.</p><button id="start" class="primary" data-runtime-localize="off" data-t="start">Start game</button><button id="tutorialOpen" type="button" data-t="guideTitle">How to play</button></div></section><section id="gameGuide" class="game-page-info game-page-info-static"><h2 data-wp-game-title>Panko\'s Number Grove</h2><p data-i18n="summary">Vacía el tablero formando parejas que sumen diez.</p><h3 data-i18n="how">Cómo jugar</h3><ol><li data-i18n="rule1">Elige dos números que sumen exactamente 10.</li><li data-i18n="rule2">Deben estar en la misma fila o columna, sin fichas entre ellos. Las diagonales no cuentan.</li><li data-i18n="rule3">Elimina todas las parejas para abrir el siguiente jardín.</li></ol><p data-i18n="recovery">Pista solo señala una pareja válida. Deshacer recupera la última pareja eliminada. Reordenar cambia las fichas restantes; Reiniciar comienza este jardín de nuevo.</p><div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Por qué no se pueden eliminar dos valores iguales?</dt><dd>Solo 5 y 5 forman una pareja igual. Toda pareja válida debe sumar diez y compartir una línea abierta en la misma fila o columna.</dd></div><div><dt>¿Cuentan las parejas diagonales?</dt><dd>No. Las parejas deben tocarse o verse en una línea horizontal o vertical despejada.</dd></div><div><dt>¿Qué hace Reordenar?</dt><dd>Reorganiza los valores restantes sin cambiar la regla de suma diez.</dd></div><div><dt>¿Los niveles tienen tiempo límite?</dt><dd>No. Puedes observar el tablero a tu ritmo.</dd></div></dl></div></section>
   </main>
-  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('../../assets/animal-number-match-cover-general-v3.webp')" hidden>
-    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="Back">←</button><div><small data-t="choose">CHOOSE A GROVE</small><h2 data-t="title">Panko's Number Grove</h2></div><span id="progress"></span></header>
-    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="Stage list"></section>
-    <nav class="stage-tabs" data-t-aria="stageList" aria-label="Stage list"><span aria-hidden="true"></span><button type="button" class="stage-tab active" aria-current="page" data-t="stageList">Stage list</button><span aria-hidden="true"></span></nav>
+  <main id="stage" class="screen canvas stage stage-canvas" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-landscape-width="760" data-wp-stage-landscape-height="334" style="--wp-stage-art:url('/assets/interface7-redrawn/animal-number-match.webp')" hidden>
+    <header class="scene-header"><button data-back data-wp-return="stage" data-t-aria="back" aria-label="back">←</button><div><small data-t="choose">ELIGE UNA ARBOLADA</small><h2 data-t="title">Panko&#39;s Number Grove</h2></div><span id="progress"></span></header>
+    <section id="stageGrid" class="stage-grid stage-rail" data-wp-stage-rail data-wp-stage-recommendation="last" data-t-aria="stageList" aria-label="stageList"></section>
+    <nav class="stage-tabs" data-t-aria="stageList" aria-label="stageList"><span aria-hidden="true"></span><button type="button" class="stage-tab active" aria-current="page" data-t="stageList">Stage list</button><span aria-hidden="true"></span></nav>
   </main>
   <main id="battle" class="screen canvas battle" data-wp-logical-battle-canvas data-wp-canvas-max-width="920" data-wp-battle-landscape-width="760" data-wp-battle-landscape-height="334" hidden>
-    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="Back">←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><div class="battle-header-tools"><span id="pairsLeft"></span><button id="battleUtilityBtn" class="battle-utility" type="button" data-wp-battle-utility="true" data-t-aria="settings" aria-label="Settings" aria-expanded="false" aria-controls="battleSettingsPanel">⚙</button><div id="battleSettingsPanel" class="battle-settings-panel" role="group" data-t-aria="settings" aria-label="Settings" hidden><label for="battleLocale"><span id="battleLanguageLabel" data-t="language">Language</span><select id="battleLocale" aria-label="Language"></select></label></div></div></header>
-    <section class="battle-content"><img class="battle-coach" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" aria-hidden="true"><div id="board" class="board" role="grid" data-t-aria="boardLabel" aria-label="Number Match board"></div><div class="tools"><button id="undo" data-t="undo">Undo</button><button id="hint" data-wp-primary-action="true" data-t="hint">Hint</button><button id="shuffle" data-t="shuffle">Reorder</button><button id="restart" data-t="restart">Restart</button></div><p id="status" aria-live="polite"></p></section>
-    <dialog id="result"><img class="result-character" src="../../assets/weightplay-character-drum-belly-panda-safe-face-cutout.webp" alt="" aria-hidden="true"><p class="eyebrow" data-t="complete">GROVE CLEARED</p><h2 data-t="resultTitle">Every number found a partner!</h2><p id="resultBody"></p><div><button id="resultStages" data-t="stageList">Stages</button><button id="next" class="primary" data-t="next">Next grove</button><button id="retry" data-t="retry">Replay</button></div></dialog>
+    <header class="scene-header"><button data-back data-wp-return="battle" data-t-aria="back" aria-label="back">←</button><div><small id="chapter"></small><h2 id="stageName"></h2></div><span id="pairsLeft"></span></header>
+    <section class="battle-content"><img class="battle-coach" src="/assets/animal-number-match-panda-block-v15.webp" alt="" aria-hidden="true"><div id="board" class="board" role="grid" data-t-aria="boardLabel" aria-label="boardLabel"></div><div class="tools"><button id="undo" data-t="undo">Undo</button><button id="hint" data-wp-primary-action="true" data-t="hint">Hint</button><button id="shuffle" data-t="shuffle">Reordenar</button><button id="restart" data-t="restart">Restart</button></div><p id="status" aria-live="polite"></p></section>
+    <dialog id="result"><img class="result-character" src="/assets/animal-number-match-panda-block-v15.webp" alt="" aria-hidden="true"><p class="eyebrow" data-t="complete">ARBOLEDA LIMPIA</p><h2 data-t="resultTitle">¡Cada número encontró un compañero!</h2><p id="resultBody"></p><div><button id="resultStages" data-t="stageList">Stages</button><button id="next" class="primary" data-t="next">Next grove</button><button id="retry" data-t="retry">Replay</button></div></dialog>
   </main>
-  <div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
+  </div><div id="generalReserve" class="ad-reserve" aria-hidden="true" hidden></div>
   <dialog id="leaveDialog" class="leave-dialog" aria-labelledby="leaveTitle">
-    <h2 id="leaveTitle" data-t="leaveTitle">Leave this run?</h2>
+    <h2 id="leaveTitle" data-t="leaveTitle">¿Dejar esta carrera?</h2>
     <div><button id="continueBattle" class="primary" data-t="continuePlaying">Continue playing</button><button id="leaveBattle" data-t="returnStages">Return to stages</button></div>
   </dialog>
-  <dialog id="tutorialPanel" aria-labelledby="tutorialTitle"><p class="eyebrow" data-t="kicker">PANKO'S NUMBER GROVE</p><h2 id="tutorialTitle" data-t="guideTitle">How to play</h2><p data-t="guideBody">Choose two numbers whose sum is exactly 10. They must touch or see each other across cleared spaces.</p><div><button id="tutorialStart" class="primary" data-t="start">Start game</button></div></dialog>
+  <dialog id="tutorialPanel" aria-labelledby="tutorialTitle"><p class="eyebrow" data-t="kicker">LA ARBOLEDA DE NUMEROS DE PANKO</p><h2 id="tutorialTitle" data-t="guideTitle">How to play</h2><p data-t="guideBody">Elige dos números cuya suma sea exactamente 10. Deben tocarse o verse a través de casillas vacías.</p><div><button id="tutorialStart" class="primary" data-t="start">Start game</button></div></dialog>
   <script src="../../src/site-config.js"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/es.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js?v=20260630-analytics1"></script>
-  <script src="levels.js?v=20260802-early-variety1"></script><script src="locales.js?v=20260901-battle-settings-v14"></script><script src="game.js?v=20260901-battle-touch-v14"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <script src="levels.js?v=20260802-early-variety1"></script><script src="locales.js?v=20260901-battle-settings-v14"></script><script src="game.js?v=20260913-number-frame-v15"></script><script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
   <script src="/src/game-title-registry.js?v=20260802-title-parity1" data-wp-game-title-registry></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260809-stage-v6-2"></script>
+  <script src="/src/sound.js?v=20260720-locale11"></script><script src="/src/game-screen-frame.js"></script><script src="guide-locales.js?v=20260913-number-v15"></script><script src="frame.js?v=20260913-number-v15"></script>
   <script src="../../src/edge-guard.js?v=20260730-edge-history2"></script>
-<section class="game-page-info game-page-info-static" aria-label="Información de La arboleda de números de Panko">
 
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">Guía de juegos originales de WeightPlay</span><h2>La arboleda de números de Panko</h2><p>Elige dos números que sumen diez. Deben tocarse o verse en la misma fila o columna a través de casillas ya vacías. Elimina las parejas y abre nuevas líneas de visión hasta limpiar todo el bosque.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>Jugabilidad</span><strong>Puzzle de parejas numéricas con líneas de visión</strong></div><div class="game-info-fact"><span>Género</span><strong>Puzle · Estrategia · Animales</strong></div><div class="game-info-fact"><span>Dificultad</span><strong>Fácil y desafiante</strong></div><div class="game-info-fact"><span>Tiempo estimado</span><strong>Unos 2-8 minutos por bosque</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>Mundo y misión</h3><p>Treinta bosques numéricos están llenos de fichas rúnicas emparejadas. Panko los despeja encontrando sumas de diez con una regla de visibilidad constante.</p>
-<p>El tablero nunca pide adivinar un valor oculto. Todos los números y espacios vacíos necesarios para la siguiente deducción permanecen visibles.</p></div>
-      <div class="game-info-section"><h3>Sistemas del juego</h3><p>Una pareja válida contiene dos valores cuya suma es diez. Los valores iguales solo son válidos cuando ambos son cinco.</p>
-<p>Las fichas deben estar juntas en la misma fila o columna, o compartir una línea recta formada solo por casillas vacías. Las diagonales no cuentan.</p>
-<p>Eliminar una pareja crea nuevos espacios vacíos y puede revelar una línea más larga que antes estaba bloqueada.</p>
-<p>Deshacer restaura una pareja. Reordenar mezcla solo los valores restantes y Reiniciar recupera el tablero original.</p></div>
-      <div class="game-info-section"><h3>Cómo jugar</h3><ol><li>Elige un bosque desbloqueado en la lista horizontal de niveles.</li><li>Toca un número y después su pareja válida.</li><li>Usa los nuevos espacios vacíos para buscar líneas de visión horizontales o verticales más largas.</li><li>Elimina todas las parejas para completar el bosque y abrir el siguiente nivel.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>Consejos</h3><ul><li>Prefiere las parejas que abren el centro o conectan dos zonas vacías separadas.</li><li>Antes de gastar un número flexible, comprueba si su complemento tiene otra línea de visión útil.</li><li>Vuelve a revisar filas y columnas después de cada eliminación porque la visibilidad cambia al instante.</li><li>Usa Pista para entender la regla de la pareja actual, no para sustituir la lectura del tablero.</li></ul></div>
-      <div class="game-info-section"><h3>Progreso y dificultad</h3><p>Seis capítulos amplían los tableros y añaden bloqueadores más densos, líneas de visión más largas, parejas competidoras y diseños que requieren un orden de apertura cuidadoso.</p>
-<p>La dificultad nace de las consecuencias espaciales, mientras que la aritmética se limita a sumas de diez.</p></div>
-      <div class="game-info-section"><h3>Nota de diseño</h3><p>Los números siempre aparecen como texto y el estado seleccionado no depende solo del color, así que el mismo tablero se entiende con teclado, toque o ratón. Cada eliminación cambia la visibilidad siguiente y convierte una suma sencilla en planificación espacial.</p></div>
-      <div class="game-info-section game-info-parent"><h3>Información del jugador y guardado</h3><p>No se necesita cuenta, cuenta atrás, compra ni puntuación pública. Los bosques completados y el mejor número de movimientos se guardan en este navegador; borrar los datos del sitio puede eliminarlos.</p></div>
-      <div class="game-info-section"><h3>Preguntas frecuentes</h3><dl><div><dt>¿Por qué no se pueden eliminar dos valores iguales?</dt><dd>Solo 5 y 5 forman una pareja igual. Toda pareja válida debe sumar diez y compartir una línea abierta en la misma fila o columna.</dd></div><div><dt>¿Cuentan las parejas diagonales?</dt><dd>No. Las parejas deben tocarse o verse en una línea horizontal o vertical despejada.</dd></div><div><dt>¿Qué hace Reordenar?</dt><dd>Reorganiza los valores restantes sin cambiar la regla de suma diez.</dd></div><div><dt>¿Los niveles tienen tiempo límite?</dt><dd>No. Puedes observar el tablero a tu ritmo.</dd></div></dl></div>
-      <div class="game-info-section game-info-related-section"><h3>Juegos relacionados</h3><div class="game-info-related"><a class="game-info-related-card" href="/es/games/animal-bamboo-pipes/"><img src="/assets/interface7-redrawn/animal-bamboo-pipes.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Canal de bambú de Panko</strong><span>Gira una red completa de bambú para llevar el agua desde el manantial tallado hasta la cuenca florida sin cortes, ramales falsos ni centros desalineados.</span></span></a><a class="game-info-related-card" href="/es/games/animal-sunbeam-garden/"><img src="/assets/interface7-redrawn/animal-sunbeam-garden.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>Jardín Solar: Rutas de Espejos</strong><span>Gira los espejos de un jardín de 6×6 hasta llevar todos los rayos visibles por una ruta válida hacia el loto dormido.</span></span></a></div></div>
-    </div>
-  </section>
-<script src="../../src/game-page-info.js?v=20260720-locale11-2"></script>
 </body>
 </html>

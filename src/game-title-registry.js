@@ -325,15 +325,15 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "zh-Hant": "胖達數字花園",
     "zh-Hans": "胖达数字花园",
     "ja": "パンコのナンバーグローブ",
-    "ko": "판코즈 넘버 그로브",
-    "es": "La arboleda de números de Panko",
-    "pt-BR": "Bosque dos Números de Panko",
-    "fr": "Le bosquet des nombres de Panko",
+    "ko": "판코의 넘버 그로브",
+    "es": "Bosque numérico de Panko",
+    "pt-BR": "Bosque Numérico do Panko",
+    "fr": "Bosquet numérique de Panko",
     "de": "Pankos Zahlenhain",
-    "it": "Il boschetto dei numeri di Panko",
-    "ru": "Номерная роща Панко",
-    "hi": "पंको का नंबर ग्रोव",
-    "ar": "بستان رقم بانكو"
+    "it": "Boschetto numerico di Panko",
+    "ru": "Числовая роща Панко",
+    "hi": "पैंको का नंबर ग्रोव",
+    "ar": "بستان أرقام بانكو"
   },
   "animal-tangram": {
     "__localizedExact": true,
@@ -637,7 +637,7 @@ window.WEIGHTPLAY_GAME_TITLES = {
     "it": "Animal Guard Yard",
     "ru": "Animal Guard Yard",
     "hi": "Animal Guard Yard",
-    "ar": "Animal Guard Yard"
+    "ar": "ساحة حراس الحيوانات"
   },
   "animal-crystal-survivor": {
     "__localizedExact": true,

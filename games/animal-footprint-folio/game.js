@@ -32,6 +32,15 @@
     return `<span class="marker-icon marker-atlas marker-atlas-${key} ${extra}" aria-hidden="true" data-marker-art="atlas"></span>`;
   }
   function track(name, payload = {}) { window.WonderAnalytics?.track?.(name, { game_id: "animal-footprint-folio", game_version: "v4", interface_version: 6, ...payload }); }
+  function syncSharedSettingsIds() {
+    const host = document.querySelector(".wp-shell-settings");
+    if (host) document.querySelector(".wp-shell-locale-source")?.classList.remove("wp-shell-locale-source");
+    const button = host?.querySelector(".wp-shell-settings-button");
+    const popover = host?.querySelector(".wp-shell-settings-popover");
+    if (!button) return;
+    button.id = document.body.dataset.screen === "battle" ? "battleSettingsButton" : "settingsButton";
+    if (popover) popover.id = "settingsPopover";
+  }
   function setScreen(name) {
     $("#mainScreen").classList.toggle("active", name === "main");
     $("#battleScreen").classList.toggle("active", name === "battle");
@@ -41,16 +50,16 @@
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    syncSharedSettingsIds();
+    requestAnimationFrame(syncSharedSettingsIds);
   }
   function applyCopy() {
     document.documentElement.lang = state.locale;
     document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
     document.title = `${t("title")} | WeightPlay`;
     document.querySelectorAll("[data-copy]").forEach((node) => { node.textContent = t(node.dataset.copy); });
-    $("#locale").setAttribute("aria-label", t("language"));
-    $("#settingsButton").setAttribute("aria-label", t("settings"));
-    $("#soundButton").textContent = state.sound ? t("soundOn") : t("soundOff");
-    $("#soundButton").setAttribute("aria-pressed", String(state.sound));
+    $("#locale")?.setAttribute("aria-label", t("language"));
+    document.querySelector(".wp-shell-settings-button")?.setAttribute("aria-label", t("settings"));
     $(".poster").setAttribute("alt", t("coverAlt"));
     renderRecord();
     renderResult();
@@ -125,12 +134,11 @@
   $("#confirmButton").addEventListener("click", confirm);
   $("#continueButton").addEventListener("click", nextRecord);
   $("#guideButton").addEventListener("click", () => document.querySelector("[data-wp-game-guide]")?.scrollIntoView({ behavior: "smooth", block: "center" }));
-  const toggleSettings = () => { const popover = $("#settingsPopover"); const open = popover.hidden; popover.hidden = !open; $("#settingsButton").setAttribute("aria-expanded", String(open)); $("#battleSettingsButton")?.setAttribute("aria-expanded", String(open)); };
-  $("#settingsButton").addEventListener("click", toggleSettings);
-  $("#battleSettingsButton").addEventListener("click", toggleSettings);
-  $("#soundButton").addEventListener("click", () => { state.sound = !state.sound; applyCopy(); });
+  window.addEventListener("weightplay:shell-sync", syncSharedSettingsIds);
+  window.addEventListener("wonder:locale-change", (event) => { state.locale = event.detail?.locale || window.__WEIGHTPLAY_ROUTE_LOCALE__ || state.locale; applyCopy(); });
   $("#locale").value = state.locale;
   $("#locale").addEventListener("change", (event) => { state.locale = event.target.value; applyCopy(); });
+  syncSharedSettingsIds();
   window.__ANIMAL_FOOTPRINT_FOLIO_TEST__ = { state, records: RECORDS, start, selectMarker, confirm, nextRecord };
   applyCopy();
 })();
