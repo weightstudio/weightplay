@@ -3599,6 +3599,22 @@ for (const field of ["title", "type", "description", "meta", "statusText", "ageL
 if (!window.WONDER_LOBBY.games.some((game) => game.id === animalDewlinePlanned.id)) window.WONDER_LOBBY.games.push(animalDewlinePlanned);
 if (!window.WONDER_LOBBY.audiences.generalGameIds.includes(animalDewlinePlanned.id)) window.WONDER_LOBBY.audiences.generalGameIds.push(animalDewlinePlanned.id);
 
+// Meadow Dewline is now an owner-approved public General release after the
+// exact v15/I6 Tester, Gameplay Reviewer, art, Director, and Preflight gates.
+// Keep the truthful Battle preview alongside the public catalog entry and
+// remove the planned-only staging markers.
+const animalDewlinePublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-dewline");
+if (animalDewlinePublic) {
+  animalDewlinePublic.status = "playable";
+  animalDewlinePublic.statusText = {
+    en: "Playable", "zh-Hant": "可遊玩", "zh-Hans": "可游玩", ja: "プレイ可能", ko: "플레이 가능",
+    es: "Disponible", "pt-BR": "Disponível", fr: "Disponible", de: "Spielbar", it: "Disponibile",
+    ru: "Доступно", hi: "खेलने योग्य", ar: "متاحة للعب",
+  };
+  animalDewlinePublic.previewVideo = "assets/previews/animal-dewline-battle.webm";
+  delete animalDewlinePublic.internalTrial;
+}
+
 // Animal Peach Oath cleared the exact v9/I1 Tester, Reviewer, art, Director,
 // and Release Preflight gates. Keep its localized discovery copy truthful and
 // expose the reviewed candidate through the public playable catalog.
@@ -4767,6 +4783,16 @@ if (foldedFieldPublic) {
   foldedFieldPublic.status = "playable";
   delete foldedFieldPublic.statusText;
   delete foldedFieldPublic.internalTrial;
+}
+
+// Gust Garden is now an owner-approved public General release. Keep the
+// truthful Battle preview wired alongside the final-release catalog entries.
+const gustGardenPublic = window.WONDER_LOBBY.games.find((entry) => entry.id === "animal-gust-garden");
+if (gustGardenPublic) {
+  gustGardenPublic.status = "playable";
+  gustGardenPublic.previewVideo = "assets/previews/animal-gust-garden-battle.webm";
+  delete gustGardenPublic.statusText;
+  delete gustGardenPublic.internalTrial;
 }
 
 // Code Breaker is now an owner-approved public General release. Keep this

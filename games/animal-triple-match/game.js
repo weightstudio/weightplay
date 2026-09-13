@@ -145,6 +145,27 @@
     },
   };
 
+  // Describe the actual progression mechanics, not a campaign total that can drift.
+  const progressionGuide = {
+    en: ["Changing shelves", "Later shelves add vines, crystal shells, hidden treasures and shifting piles. Read the shelf rule before choosing a trio."],
+    "zh-Hant": ["逐步變化的貨架", "後續貨架加入藤蔓、水晶外殼、神秘寶物與移動堆疊。先讀貨架規則，再決定湊哪一組。"],
+    "zh-Hans": ["逐步变化的货架", "后续货架加入藤蔓、水晶外壳、神秘宝物与移动堆叠。先读货架规则，再决定凑哪一组。"],
+    ja: ["変化する棚", "先の棚にはツタ、水晶の殻、隠された宝物、動く山が登場します。棚のルールを読んでから、揃える三つを選びましょう。"],
+    ko: ["달라지는 선반", "다음 선반에는 덩굴, 수정 껍질, 숨겨진 보물과 움직이는 더미가 등장합니다. 선반 규칙을 읽고 맞출 세 개를 고르세요."],
+    es: ["Estantes cambiantes", "Más adelante aparecen enredaderas, cubiertas de cristal, tesoros ocultos y pilas móviles. Lee la regla del estante antes de elegir un trío."],
+    "pt-BR": ["Prateleiras que mudam", "Mais adiante surgem cipós, cascas de cristal, tesouros ocultos e pilhas móveis. Leia a regra da prateleira antes de escolher um trio."],
+    fr: ["Des étagères changeantes", "Les étagères suivantes ajoutent lianes, coques de cristal, trésors cachés et piles mobiles. Lisez leur règle avant de choisir un trio."],
+    de: ["Wechselnde Regale", "Spätere Regale bringen Ranken, Kristallhüllen, verborgene Schätze und bewegliche Stapel. Lies die Regalregel, bevor du ein Trio auswählst."],
+    it: ["Scaffali che cambiano", "Gli scaffali successivi aggiungono rampicanti, gusci di cristallo, tesori nascosti e pile mobili. Leggi la regola prima di scegliere un trio."],
+    ru: ["Меняющиеся полки", "Дальше появляются лозы, хрустальные оболочки, скрытые сокровища и подвижные стопки. Прочитайте правило полки, прежде чем выбирать тройку."],
+    hi: ["बदलती अलमारियाँ", "आगे बेलें, क्रिस्टल के खोल, छिपे खज़ाने और हिलते ढेर मिलते हैं। तीन वस्तुएँ चुनने से पहले अलमारी का नियम पढ़ें।"],
+    ar: ["رفوف متغيرة", "تضيف الرفوف اللاحقة كرومًا وأغلفة بلورية وكنوزًا مخفية وأكوامًا متحركة. اقرأ قاعدة الرف قبل اختيار مجموعة من ثلاثة."],
+  };
+  for (const [code, [heading, body]] of Object.entries(progressionGuide)) {
+    L[code][K.indexOf("chaptersTitle")] = heading;
+    L[code][K.indexOf("chaptersText")] = body;
+  }
+
   const els = Object.fromEntries([...document.querySelectorAll("[id]")].map(el => [el.id, el]));
   const SAVE_KEY = "weightplay_animal_triple_match_v1";
   const GAME_VERSION = 18;
@@ -219,6 +240,7 @@
   const isInterfaceValidation = new URLSearchParams(window.location.search).get("qa") === "interface-validator";
   const runtimeCatalogLoads = new Map();
   let locale = "en", screen = "main", stageIndex = 0, run = null, audio = null, centeredTimer = 0, resultDecisionCommitted = false;
+  let sharedFrame = null;
   let pendingMatch = null, rewardBeatTimer = 0, windowFocused = document.hasFocus();
   let save = loadSave();
 
@@ -685,6 +707,7 @@
       renderResultChapterPreview(run.resultWin);
     }
     syncGameOwnedMainOwners();
+    sharedFrame?.refresh();
   }
   function setLocale(value) {
     locale = LOCALES.some(([code]) => code === value) ? value : "en";
@@ -727,6 +750,7 @@
     els.stageScreen.hidden = next !== "stage";
     els.battleScreen.hidden = next !== "battle";
     document.body.style.overflow = next === "main" ? "" : "hidden";
+    sharedFrame?.activate(next);
     fitCanvas();
     if (next === "stage") {
       renderStages();
@@ -889,8 +913,11 @@
     track("game_start", { stage: stageIndex + 1 });
   }
   function spriteStyle(type) {
-    const x = type % 4, y = Math.floor(type / 4);
-    return `background-position:${x * 100 / 3}% ${y * 50}%;`;
+    // Keep the saved type IDs identical for both the pile and the tray.
+    const sprites = ["acorn", "moon-cup", "shell-compass", "berry-brooch",
+      "cloud-jar", "prism-flower", "star-telescope", "leaf-locket",
+      "coral-music-box", "bee-bell", "mushroom-lamp", "crystal-feather"];
+    return `background-image:url("../../assets/animal-triple-match-${sprites[type]}-block-v22.webp");background-position:center;background-size:contain;background-repeat:no-repeat;`;
   }
   function itemName(type) {
     if (locale === "zh-Hant") return ITEM_NAMES_ZH_HANT[type];
@@ -1109,7 +1136,11 @@
     els.feedback.textContent = t("shuffled"); sound("shuffle"); renderRun();
   }
 
-  function isolateBattle(value) { els.battleLive.inert = value; value ? els.battleLive.setAttribute("aria-hidden", "true") : els.battleLive.removeAttribute("aria-hidden"); }
+  function isolateBattle(value) {
+    els.battleLive.inert = value;
+    value ? els.battleLive.setAttribute("aria-hidden", "true") : els.battleLive.removeAttribute("aria-hidden");
+    if (screen === "battle") sharedFrame?.activate("battle", { covered: value });
+  }
   function openModal(modal, focus) { modal.hidden = false; suspendPendingMatch(); isolateBattle(true); requestAnimationFrame(() => focus?.focus()); }
   function closeModal(modal, focus) {
     modal.hidden = true;
@@ -1224,6 +1255,8 @@
     setSave: value => { save = { ...save, ...value }; persist(); renderMainProgress(); renderStages(); },
   };
 
-  initLocale(); installLocaleOwnerObservers(); applyLocale(); renderMainProgress(); renderStages();
+  initLocale();
+  if (window.mountTripleMatchFrame) sharedFrame = window.mountTripleMatchFrame();
+  installLocaleOwnerObservers(); applyLocale(); renderMainProgress(); renderStages();
   Promise.all([...document.images].map(img => img.complete ? Promise.resolve() : new Promise(resolve => { img.addEventListener("load", resolve, { once: true }); img.addEventListener("error", resolve, { once: true }); }))).then(() => { els.loading.hidden = true; });
 })();

@@ -182,3 +182,32 @@ body[data-screen="result"] footer { display:none; }
 @media (max-width:420px) and (min-height:501px) {
   .battle-content > #leaveBtn { position:absolute; left:50%; bottom:4px; transform:translateX(-50%); margin:0; min-height:44px; height:44px; }
 }
+
+/* Interface 6 owns a 420px Main poster at the governed compact-landscape
+   frame. The shared shell otherwise clamps this track to the viewport's
+   short height, which makes Pattern Patch's authored poster undersized. */
+@media (min-width:701px) and (max-height:600px) {
+  body[data-wp-game-id="animal-pattern-patch"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px !important;
+  }
+  body[data-wp-game-id="animal-pattern-patch"] .wp-standard-main-poster,
+  body[data-wp-game-id="animal-pattern-patch"] .wp-standard-main-poster-media,
+  body[data-wp-game-id="animal-pattern-patch"] .wp-standard-main-poster-media > img,
+  body[data-wp-game-id="animal-pattern-patch"] .wp-standard-main-poster > img,
+  body[data-wp-game-id="animal-pattern-patch"] .main-screen .main-poster {
+    width:420px !important;
+    min-width:420px !important;
+    max-width:420px !important;
+    height:420px !important;
+    min-height:420px !important;
+    max-height:420px !important;
+  }
+}
+
+/* Shared Interface 7 applies a compact radius token to generic guides; this
+   authored Guide is intentionally the same 24px surface as the Main card. */
+@layer pattern-patch-interface {
+  html[data-wp-shared-interface="7"] body details.guide-card.game-page-info {
+    border-radius:24px !important;
+  }
+}

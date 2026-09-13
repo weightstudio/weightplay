@@ -21,7 +21,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-gust-garden/" />
     <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
   <meta name="weightplay-game-version" content="v13" />
@@ -54,7 +54,7 @@
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h1>
       <p class="intro main-summary" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
-      <div class="facts"><span data-i18n="fact1">3 breezes</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
+      <div class="facts"><span data-i18n="fact1">30 authored plots</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
       <p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p>
       <div class="main-actions"><button id="startButton" class="primary" type="button" data-wp-main-start data-i18n="start">Open the garden</button><button id="chooseButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
       <p id="bestText" class="best" aria-live="polite"></p>
@@ -87,25 +87,7 @@
 
     <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" data-sound-toggle aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="風まかせ種まき庭園 ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h2><p>種を選び、一度に一陣の風を送り、棘を避けてすべての花を咲かせよう。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>風ベクトル種子パズル</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>パズル · ロジック · 空間計画 · ファミリー · 動物</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>進行状況は保存されますか？</dt><dd>はい、このブラウザにのみ保存されます。</dd></div></dl></div>
-
-    </div>
-  </section>
+  <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="風まきガーデン game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">風まかせ種まき庭園</h2><p>『風まきガーデン』は、風を一手ずつ送り、トゲに触れずにすべての種を花へ導く空間計画パズルです。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>ゲームプレイ</span><strong>風向き種子パズル</strong></div><div class="game-info-fact"><span>キャンペーン</span><strong>30ステージ · 6章</strong></div><div class="game-info-fact"><span>操作</span><strong>タッチまたはマウス</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>世界とミッション</h3><p>苔の光る草原では、各ステージが3つの種、3つの花、空き地、動かないトゲからなる小さな庭の道です。種を選び、上下左右の風を送り、すべての花を咲かせます。大切なのは観察と計画で、トゲには触れません。</p></div><div class="game-info-section"><h3>ステージの見方</h3><p>盤面は5列×4行の草原です。種、花、トゲ、特殊タイルは動かす前に見えます。ポインター、キーボード、タッチで種を選ぶと、次の風を受ける種がハイライトされます。タイマーや残機はありません。</p></div><div class="game-info-section"><h3>風の仕組み</h3><p>通常の風は選んだ種を上下左右のいずれかへ1マス動かします。安全な空きマスだけに進めます。トゲ、端、別の種、ルート規則で止まったときは状態メッセージが理由を示すので、失敗ではなく手がかりになります。</p></div><div class="game-info-section"><h3>気流、片道ゲート、ポータル</h3><p>後半には3つのルート要素が登場します。矢印と同じ向きから気流に入ると2マス進み、印の方向から片道ゲートへ近づくと通過し、ポータルに乗ると対のポータルへ移動します。道が変わっても、すべての種を花へ導く目的は同じです。</p></div><div class="game-info-section"><h3>キャンペーンとチェックポイント</h3><p>30ステージは5ステージずつの6章、草原の目覚め、交差する風、灯りのポータル、トゲの迷路、月種の道、完全な樹冠に分かれます。5、10、15、20、25、30は名前付きチェックポイントで、開花順が表示されます。クリアすると次が開き、済んだステージは再挑戦できます。</p></div><div class="game-info-section"><h3>攻略とやり直し</h3><p>動かす前に草原全体を見て、現実的な入口が1つしかない花から考えます。ほかの種を通路から遠ざけ、風のたびに状態を読みましょう。チェックポイントでは近い花より開花順を優先します。「庭をリセット」で初期配置に戻せますが、解放状況は消えません。</p></div><div class="game-info-section"><h3>開発者メモ</h3><p>庭は、観察して選び、調整する静かなループとして設計しました。難度は障害、気流、片道ゲート、ポータル、順番のルールで上がり、カウントダウンや罰はありません。メイン、ステージ、バトル、結果を分け、画面の小さい端末でも現在の道筋を理解できるようにしています。</p></div><div class="game-info-section"><h3>プレイヤーと保存情報</h3><p>アカウント、購入、オンライン接続は不要です。タッチとマウスに対応し、音は設定で変更できます。解放済み、クリア済みのステージと最少風回数はこのブラウザだけに保存されます。サイトデータを消したりブラウザを変えたりするとローカル進行が失われる場合があり、クラウド保存ではありません。</p></div><div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>ステージはいくつありますか？</dt><dd>全30ステージで、5ステージずつの6章に分かれています。5、10、15、20、25、30がチェックポイントです。</dd></div><div><dt>風を1回送るとどうなりますか？</dt><dd>通常は選んだ種が4方向のいずれかへ1マス進みます。対応する気流に入ると2マス進むことがあります。</dd></div><div><dt>風が止まったらどうなりますか？</dt><dd>盤面は安全なままで、状態メッセージが理由を示します。種や方向を変えるか、庭をリセットして再挑戦できます。</dd></div><div><dt>咲いたステージを再プレイできますか？</dt><dd>はい。次のステージを解放した後も、クリア済みのステージはステージレールに残ります。</dd></div><div><dt>進行状況はオンラインに保存されますか？</dt><dd>いいえ。解放、クリア、最少風回数はこのブラウザだけに保存され、アカウントやクラウド保存はありません。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>関連ゲーム</h3><p>明確な合図とルート計画を楽しめるWeightPlayの別のパズルもどうぞ。</p><div class="game-info-related"><a class="game-info-related-card" href="/ja/games/animal-signal-scout/"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>巡回信号合わせ</strong><span>3つの偵察メモを読み、動物と信号色を合わせ、見える巡回順をまねします。</span></span></a><a class="game-info-related-card" href="/ja/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>ライツアウト</strong><span>マスと上下左右を切り替え、すべての灯りを消します。</span></span></a></div></div></div></section>
   <script src="locales.js?v=20260912-gust-garden-compact-result-v12"></script>
   <script src="game.js?v=20260913-gust-garden-depth30-v13"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>

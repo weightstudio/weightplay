@@ -25,7 +25,7 @@
   <meta name="weightplay-game-version" content="v20">
   <meta name="weightplay-interface-version" content="6">
   <title>Triple Match | WeightPlay</title>
-  <meta name="description" content="Find uncovered treasures, collect three of a kind, and keep Mimi's seven-slot tray from filling across 30 crafted stages.">
+  <meta name="description" content="Find uncovered treasures, collect three of a kind, and protect Mimi's seven-slot tray as new shelf rules change the puzzle.">
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260910-triple-match-main-v21">
@@ -34,6 +34,7 @@
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
+  <div id="gameFrame" data-wp-frame-root>
   <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Opening the treasure greenhouse</strong></div>
 
   <div id="mainGroup" class="main-group">
@@ -44,7 +45,7 @@
         <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-triple-match-cover.webp" alt="Mimi sorting colorful fantasy treasures into groups of three" data-t-alt="posterAlt">
+        <img class="poster" src="../../assets/interface7-redrawn/animal-triple-match.webp" alt="Mimi sorting colorful fantasy treasures into groups of three" data-t-alt="posterAlt">
         <div class="main-copy">
           <small data-t="eyebrow">Treasure sorting puzzle</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">Triple Match</h1>
@@ -55,21 +56,22 @@
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="public-guide" aria-label="Game guide" data-t-aria="guideLabel">
-      <strong class="guide-label" data-t="guideLabel">Game guide</strong>
-      <small data-t="guideKicker">Original WeightPlay collection puzzle</small>
-      <h2 data-t="guideTitle">Read the pile. Protect the tray. Complete every trio.</h2>
+    <section id="publicGuide" class="game-page-info" data-wp-game-guide data-runtime-localize="off" aria-label="Game guide" data-t-aria="guideLabel">
+      <div class="game-info-hero"><div class="game-info-title">
+      <small class="game-info-kicker" data-t="guideLabel">Game guide</small>
+      <h2 data-wp-game-title data-runtime-localize="off">Triple Match</h2>
       <p data-t="guideIntro">Mimi's greenhouse shelves are overflowing with enchanted keepsakes. Only uncovered objects can move into the tray. Three matching objects vanish, but seven unmatched objects end the attempt.</p>
-      <div class="guide-grid">
-        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
-        <article><h3 data-t="chaptersTitle">Six rule chapters</h3><p data-t="chaptersText">Thirty stages introduce tangled vines, crystal shells, mystery wrapping, shifting shelves, tight trays, and finale piles that combine the rules.</p></article>
-        <article><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match. Keep one emergency slot open.</p></article>
-        <article><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
+      </div></div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
+        <article class="game-info-section"><h3 data-t="chaptersTitle">Changing shelves</h3><p data-t="chaptersText">Later shelves add vines, crystal shells, hidden treasures and shifting piles. Read the shelf rule before choosing a trio.</p></article>
+        <article class="game-info-section"><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match. Keep one emergency slot open.</p></article>
+        <article class="game-info-section"><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
       </div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-triple-match-cover.webp" style="--wp-stage-art:url('../../assets/animal-triple-match-cover.webp')" hidden>
+  <section id="stageScreen" class="active-screen stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/interface7-redrawn/animal-triple-match.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-triple-match.webp')" hidden>
       <header class="stage-header">
         <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">&larr;</button>
         <strong data-t="chooseStage">Choose a shelf</strong>
@@ -132,14 +134,17 @@
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="../../src/i18n.js?v=20260721-locale13-1"></script>
   <script src="../../src/game-runtime-localizer-loader.js?v=20260721-locale13-1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js" data-wp-stage-standard></script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=triple-block-v22"></script>
   <script src="game.js?v=20260910-triple-match-main-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
 </body>
 </html>

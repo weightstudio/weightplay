@@ -21,7 +21,7 @@
     <link rel="alternate" hreflang="x-default" href="https://weightplay.com/en/games/animal-gust-garden/" />
     <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="robots" content="noindex,nofollow" />
+  <meta name="robots" content="index,follow" />
   <meta name="weightplay-audience" content="general" />
   <meta name="weightplay-game-id" content="animal-gust-garden" />
   <meta name="weightplay-game-version" content="v13" />
@@ -54,7 +54,7 @@
       <p class="eyebrow" data-i18n="world">Mosslight meadow</p>
       <h1 data-runtime-localize="off" data-wp-game-title data-runtime-localize="off">风向播种花园</h1>
       <p class="intro main-summary" data-i18n="intro">Choose a seed, point the vane, and guide every seed to a flower without brushing a thorn.</p>
-      <div class="facts"><span data-i18n="fact1">3 breezes</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
+      <div class="facts"><span data-i18n="fact1">30 authored plots</span><span data-i18n="fact2">Plan each gust</span><span data-i18n="fact3">Calm retry</span></div>
       <p id="mainProgress" class="progress" data-wp-main-progress aria-live="polite"></p>
       <div class="main-actions"><button id="startButton" class="primary" type="button" data-wp-main-start data-i18n="start">Open the garden</button><button id="chooseButton" class="secondary" type="button" data-i18n="choose">Choose a breeze</button></div>
       <p id="bestText" class="best" aria-live="polite"></p>
@@ -87,25 +87,7 @@
 
     <section id="settingsPanel" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-card"><button id="closeSettings" class="close-button" type="button" aria-label="Close" data-i18n-aria="close">×</button><h2 id="settingsTitle" data-i18n="settings">Settings</h2><label class="setting-row wp-shell-sound-row"><span data-i18n="sound">Sound</span><button id="soundButton" class="toggle" type="button" data-sound-toggle aria-pressed="true"></button></label><label class="setting-row"><span data-i18n="language">Language</span><select id="localeSelect" aria-label="Language" data-i18n-aria="language"><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh-Hans">简体中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option><option value="pt-BR">Português</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="it">Italiano</option><option value="ru">Русский</option><option value="hi">हिन्दी</option><option value="ar">العربية</option></select></label></div></section>
   </main>
-  <section class="game-page-info game-page-info-static" aria-label="风向播种花园 游戏信息">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2 data-wp-game-title data-runtime-localize="off">风向播种花园</h2><p>选择种子，一次送出一阵微风，让每朵花开放并避开荆棘。</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>风向种子益智</strong></div><div class="game-info-fact"><span>类型</span><strong>益智 · 逻辑 · 空间规划 · 家庭 · 动物</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-
-
-
-
-
-
-
-      <div class="game-info-section"><h3>常见问题</h3><dl><div><dt>进度会保存吗？</dt><dd>是，仅保存在此浏览器中。</dd></div></dl></div>
-
-    </div>
-  </section>
+  <section class="game-page-info game-page-info-static" data-wp-game-guide data-runtime-localize="off" aria-label="风向播种花园 game information"><div class="game-info-hero"><div class="game-info-title"><span class="game-info-kicker">WeightPlay 原创游戏指南</span><h2 data-wp-game-title data-runtime-localize="off">风向播种花园</h2><p>《风向播种花园》是一款空间规划益智游戏；一次送出一阵风，引导每颗种子到达花朵并避开荆棘。</p></div><div class="game-info-facts"><div class="game-info-fact"><span>玩法</span><strong>风向种子益智</strong></div><div class="game-info-fact"><span>战役</span><strong>30 关 · 6 个篇章</strong></div><div class="game-info-fact"><span>操作</span><strong>触控或鼠标</strong></div></div></div><div class="game-info-sections"><div class="game-info-section"><h3>世界与任务</h3><p>在苔光草原里，每座花圃都是一条小型花园路线，包含三颗种子、三朵花、空地和不会移动的荆棘。选择种子，送出上下左右的一阵风，让所有花朵开放；重点是观察与规划，不要碰到荆棘。</p></div><div class="game-info-section"><h3>读懂花圃</h3><p>每个棋盘都是五列四行的草原。种子、花朵、荆棘和特殊格在行动前都会显示。可以用指针、键盘或触控选择种子；高亮提示会提醒下一阵风作用的对象。游戏没有隐藏计时器或生命数。</p></div><div class="game-info-section"><h3>一阵风如何运作</h3><p>普通风会把选中的种子向上、右、下或左移动一格，只有目的地是安全空格时才会前进。被荆棘、边界、其他种子或路线规则挡住时，状态消息会说明原因；受阻不是扣命，而是提供线索。</p></div><div class="game-info-section"><h3>气流、单向门与传送环</h3><p>后面的花圃会加入三种路线工具：从符合箭头方向进入气流可以前进两格，从标记方向接近单向门才能通过，走上传送环会到达配对的传送环。这些格子改变路线，但目标不变：每颗种子都要找到一朵花。</p></div><div class="game-info-section"><h3>战役与检查点</h3><p>30 座花圃分成六个五关篇章：草原初醒、交叉风径、灯笼传送、荆棘迷结、月种路线和完整树冠。第 5、10、15、20、25、30 关是有名称的检查点，会显示开花顺序。完成一关会解锁下一关，已完成的花圃仍可重玩。</p></div><div class="game-info-section"><h3>策略与重试</h3><p>行动前先看完整座花圃，从只有一条实际入口的花朵开始，让其他种子避开通道，每次送风后阅读状态消息。检查点要先遵守开花顺序，再追最近的花。按下“重置花圃”会恢复起始配置，不会删除已解锁进度。</p></div><div class="game-info-section"><h3>设计者笔记</h3><p>我们把花园设计成安静的观察、选择与调整循环，让难度靠障碍、气流、单向门、传送环与顺序规则成长，而不是靠倒数或惩罚。主界面、关卡、战斗与结果分开呈现，让小屏幕和大屏幕都能看懂当前花圃与下一步。</p></div><div class="game-info-section"><h3>玩家与保存信息</h3><p>不需要账号、付费或网络连接。游戏支持触控和鼠标，音效可以在设置中调整。已解锁、已完成花圃和最佳送风次数只保存在此浏览器；清除网站数据或更换浏览器可能移除本地进度，并不是云端存档。</p></div><div class="game-info-section"><h3>常见问题</h3><dl><div><dt>共有多少座花圃？</dt><dd>共有 30 座精心设计的花圃，分成六个五关篇章；第 5、10、15、20、25、30 关是检查点。</dd></div><div><dt>一阵风会做什么？</dt><dd>通常会让选中的种子向四个方向之一移动一格；从正确方向进入气流时可以延伸到两格。</dd></div><div><dt>送出的风被挡住会怎样？</dt><dd>棋盘保持安全，状态消息会说明阻挡原因。换一颗种子或方向，也可以重置花圃再试。</dd></div><div><dt>开花的花圃可以重玩吗？</dt><dd>可以。解锁下一关后，完成的花圃会继续留在关卡列上。</dd></div><div><dt>进度会上传吗？</dt><dd>不会。解锁、完成记录和最佳送风次数只保存在此浏览器，没有账号或云端存档。</dd></div></dl></div><div class="game-info-section game-info-related-section"><h3>相关游戏</h3><p>再试试 WeightPlay 其他重视清晰信号与路线规划的益智游戏。</p><div class="game-info-related"><a class="game-info-related-card" href="/zh-cn/games/animal-signal-scout/"><img src="/assets/interface7-redrawn/animal-signal-scout.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>巡逻讯号配对</strong><span>读懂三张侦察笔记，把动物配对到信号颜色，再按可见巡逻顺序点击。</span></span></a><a class="game-info-related-card" href="/zh-cn/games/lights-out/"><img src="/assets/interface7-redrawn/lights-out.webp" alt="" width="320" height="320" loading="lazy" decoding="async" /><span class="game-info-related-copy"><strong>熄灯游戏</strong><span>点击一格及相邻格，关掉所有灯并挑战最少步数。</span></span></a></div></div></div></section>
   <script src="locales.js?v=20260912-gust-garden-compact-result-v12"></script>
   <script src="game.js?v=20260913-gust-garden-depth30-v13"></script>
 <script src="/src/site-config.js?v=20260721-locale13-1"></script>

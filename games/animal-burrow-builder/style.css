@@ -66,3 +66,31 @@ body[data-screen="battle"] footer { display: none; }
   .feedback { min-height: 18px; margin: 4px 0 0; }
   .battle-content > .text-button { min-height: 36px; }
 }
+
+/* Interface 6 keeps Burrow Builder's authored poster track at 420px in the
+   governed compact-landscape frame instead of the shared short-height clamp. */
+@media (min-width:701px) and (max-height:600px) {
+  body[data-wp-game-id="animal-burrow-builder"] .wp-standard-main-composition {
+    --wp-main-landscape-poster-size: 420px !important;
+  }
+  body[data-wp-game-id="animal-burrow-builder"] .wp-standard-main-poster,
+  body[data-wp-game-id="animal-burrow-builder"] .wp-standard-main-poster-media,
+  body[data-wp-game-id="animal-burrow-builder"] .wp-standard-main-poster-media > img,
+  body[data-wp-game-id="animal-burrow-builder"] .wp-standard-main-poster > img,
+  body[data-wp-game-id="animal-burrow-builder"] .main-screen .main-poster {
+    width:420px !important;
+    min-width:420px !important;
+    max-width:420px !important;
+    height:420px !important;
+    min-height:420px !important;
+    max-height:420px !important;
+  }
+}
+
+/* Interface 7's frame layer supplies a compact radius token to generic
+   guides; retain this game's authored 18px Guide surface. */
+@layer burrow-builder-interface {
+  html[data-wp-shared-interface="7"] body details.guide-card.game-page-info {
+    border-radius:18px !important;
+  }
+}

@@ -1,4 +1,4 @@
-:root{color-scheme:dark;--scale:1;--logical-w:390px;--logical-h:788px;--canvas-w:390px;--canvas-h:788px;--gold:#ffd76a;--teal:#54e4dc;--ink:#071625;--tm-greenhouse:url("../../assets/animal-triple-match-greenhouse.png");--tm-items:url("../../assets/animal-triple-match-items.png")}
+:root{color-scheme:dark;--scale:1;--logical-w:390px;--logical-h:788px;--canvas-w:390px;--canvas-h:788px;--gold:#ffd76a;--teal:#54e4dc;--ink:#071625;--tm-greenhouse:url("../../assets/animal-triple-match-greenhouse-block-v22.webp");--tm-items:none}
 *{box-sizing:border-box}html,body{margin:0;min-width:320px;min-height:100%;font-family:Inter,Arial,"Noto Sans TC","Noto Sans Arabic",sans-serif;background:#061421;color:#fff}button,select{font:inherit}button{cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}
 .loading{position:fixed;inset:0;z-index:50;display:grid;place-content:center;justify-items:center;gap:18px;background:#071526;color:#fff}.loading-gem{width:50px;height:50px;border:6px solid #50e5dd33;border-top-color:var(--gold);border-radius:50%;animation:spin .75s linear infinite}@keyframes spin{to{transform:rotate(1turn)}}
 .main-group{width:min(100%,920px);margin:auto}.main-screen{height:100vh;height:100dvh;min-height:620px;padding:12px;display:flex;flex-direction:column;gap:10px}.main-header{height:52px;display:grid;grid-template-columns:64px minmax(0,1fr) 118px;align-items:center;gap:8px}.main-header>strong{text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lobby-return{width:58px;height:46px;display:grid;grid-template-columns:18px 28px;place-items:center;padding:4px;border-radius:14px;background:#f8fbff;color:#12335d;text-decoration:none;font-size:22px}.lobby-return img{width:28px;height:28px;object-fit:contain}.locale-control select{width:118px;height:40px;border:1px solid #8be8df;border-radius:11px;background:#0c2b39;color:#fff;padding:0 7px}
@@ -65,8 +65,19 @@ html[dir="rtl"] .guide-grid ol,html[dir="rtl"] .dialog-card ol{padding-left:0;pa
 
 /* The standard Stage root owns the fixed Canvas directly, so its children
    must not inherit the screen-level two-row grid used by the legacy wrapper. */
-body.wp-stage-select-active #stageScreen.stage-canvas{display:block!important}
+body.wp-stage-select-active #stageScreen.stage-canvas:not([data-wp-frame-scene]){display:block!important}
 body.wp-stage-select-active #stageScreen.stage-canvas[hidden]{display:none!important;pointer-events:none!important}
 body.wp-stage-select-active #stageScreen .stage-rail{width:100%!important;min-width:0!important;max-width:100%!important;height:190px!important;min-height:190px!important;max-height:190px!important;box-sizing:border-box!important}
 body.wp-stage-select-active .wp-shell-settings-row{font-size:13.25px!important}
 body.wp-stage-select-active .wp-shell-settings-row>span:first-child{font-size:13.25px!important}
+
+/* Game-owned content only; the shared core owns headers and preferences. */
+[data-wp-frame="2"] .triple-stage-content{min-height:0;overflow-y:auto;overflow-x:hidden}
+[data-wp-frame="2"] .battle-live{height:100%;min-height:0;grid-template-rows:48px 34px minmax(0,1fr) 30px 96px 82px}
+[data-wp-frame="2"] .triple-battle-context{display:grid;grid-template-columns:minmax(0,1fr) 48px;grid-template-rows:20px 28px;align-items:center;padding-inline:12px;min-width:0}
+.triple-battle-context #stageLabel,.triple-battle-context #stageName{grid-column:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.triple-battle-context #helpBtn{grid-column:2;grid-row:1 / 3}
+@media(orientation:landscape) and (max-height:500px){
+ body.wp-logical-battle-active [data-wp-frame-content="battle"]{grid-template-columns:minmax(0,1fr) 200px 236px;grid-template-rows:48px 30px minmax(0,1fr) 76px}
+ [data-wp-frame="2"] .triple-battle-context{grid-column:1 / -1;grid-row:1}
+}

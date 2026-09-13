@@ -85,6 +85,10 @@
       "date": "2026-07-06T08:33:55+08:00",
       "evidence": "git:52046a360aaa1726c6e54bf488c2ac4f6e488bab"
     },
+    "animal-dewline": {
+      "date": "2026-09-13T04:54:16.327Z",
+      "evidence": "canonical-public-catalog"
+    },
     "animal-dice-bastion": {
       "date": "2026-07-31T18:43:34+08:00",
       "evidence": "git:62569beb5803fce12476561bfaa0241799cbef96"
@@ -112,6 +116,10 @@
     "animal-guard-yard": {
       "date": "2026-07-01T09:20:11+08:00",
       "evidence": "git:acbe4717fa418382f374a30421d48372c0617366"
+    },
+    "animal-gust-garden": {
+      "date": "2026-09-13T04:04:31.207Z",
+      "evidence": "canonical-public-catalog"
     },
     "animal-habitat-atlas": {
       "date": "2026-09-07T09:01:53+08:00",

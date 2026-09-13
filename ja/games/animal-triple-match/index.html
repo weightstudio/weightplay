@@ -26,7 +26,7 @@
   <meta name="weightplay-game-version" content="v20">
   <meta name="weightplay-interface-version" content="6">
   <title>Animal Triple Match | WeightPlay</title>
-  <meta name="description" content="Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot." />
+  <meta name="description" content="重なった宝物を読み、ペアを組み、ミミの7枠トレイが埋まる前に30ステージの全ての3個組を完成させます。" />
   <link rel="stylesheet" href="../../src/stage-selector-standard.css" data-wp-stage-standard>
   <link rel="stylesheet" href="../../src/game-page-info.css">
   <link rel="stylesheet" href="style.css?v=20260910-triple-match-main-v21">
@@ -34,64 +34,66 @@
   <link rel="stylesheet" href="../../src/game-shell-controls-standard.css?v=20260726-shell1"><meta property="og:site_name" content="WeightPlay" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Animal Triple Match | WeightPlay" />
-    <meta property="og:description" content="Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot." />
+    <meta property="og:description" content="重なった宝物を読み、ペアを組み、ミミの7枠トレイが埋まる前に30ステージの全ての3個組を完成させます。" />
     <meta property="og:url" content="https://weightplay.com/ja/games/animal-triple-match/" />
     <meta property="og:image" content="https://weightplay.com/assets/interface7-redrawn/animal-triple-match.webp" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Animal Triple Match | WeightPlay" />
-    <meta name="twitter:description" content="Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot." />
+    <meta name="twitter:description" content="重なった宝物を読み、ペアを組み、ミミの7枠トレイが埋まる前に30ステージの全ての3個組を完成させます。" />
     <meta name="twitter:image" content="https://weightplay.com/assets/interface7-redrawn/animal-triple-match.webp" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Triple Match","alternateName":"Triple Match","url":"https://weightplay.com/ja/games/animal-triple-match/","image":"https://weightplay.com/assets/interface7-redrawn/animal-triple-match.webp","description":"Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot.","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Strategy","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Animal Triple Match","alternateName":"Triple Match","url":"https://weightplay.com/ja/games/animal-triple-match/","image":"https://weightplay.com/assets/interface7-redrawn/animal-triple-match.webp","description":"重なった宝物を読み、ペアを組み、ミミの7枠トレイが埋まる前に30ステージの全ての3個組を完成させます。","publisher":{"@type":"Organization","name":"WeightStudio","url":"https://weightplay.com"},"inLanguage":"ja","isAccessibleForFree":true,"operatingSystem":"Any modern web browser","genre":["Puzzle","Strategy","Animal"],"audience":{"@type":"PeopleAudience","audienceType":"General players","suggestedMinAge":13}}</script>
   <style data-wp-name-layout>html[data-wp-official-name] body [data-wp-frame="2"] [data-wp-frame-title],html[data-wp-official-name] .wp-main-shell-header :is(.wp-shell-main-title,.wp-generated-main-title,[data-wp-game-title]),html[data-wp-official-name] .wp-shell-main-title[data-wp-game-title]{white-space:normal!important;overflow-wrap:anywhere!important;font-size:clamp(14px,3.4vw,20px)!important;line-height:1.15!important}</style>
 <script defer src="/src/game-official-name.js?v=20260908-approved-game-names1"></script>
 </head>
   <body data-screen="main" data-wp-game-id="animal-triple-match" data-wp-game-version="v20" data-wp-interface-version="6" data-wp-combined-sound="true">
-  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">Opening the treasure greenhouse</strong></div>
+  <div id="gameFrame" data-wp-frame-root>
+  <div id="loading" class="loading"><div class="loading-gem"></div><strong data-t="loading">宝物温室を開いています…</strong></div>
 
   <div id="mainGroup" class="main-group">
     <main id="mainScreen" class="main-screen">
       <header class="main-header">
         <a class="lobby-return" href="/" aria-label="Back to WeightPlay" data-wp-return="main"><span>&larr;</span><img src="../../assets/weightplay-logo.png" alt="Animal Triple Matchのゲーム画像"></a>
         <strong data-t="title" data-wp-game-title data-runtime-localize="off">Animal Triple Match</strong>
-        <label class="locale-control"><span class="sr-only" data-t="language">Language</span><select id="localeSelect"></select></label>
+        <label class="locale-control"><span class="sr-only" data-t="language">言語</span><select id="localeSelect"></select></label>
       </header>
       <section class="main-hero">
-        <img class="poster" src="../../assets/animal-triple-match-cover.webp" alt="Mimi sorting colorful fantasy treasures into groups of three" data-t-alt="posterAlt">
+        <img class="poster" src="../../assets/interface7-redrawn/animal-triple-match.webp" alt="ミミが魔法の宝物を3個ずつ整理している" data-t-alt="posterAlt">
         <div class="main-copy">
-          <small data-t="eyebrow">Treasure sorting puzzle</small>
+          <small data-t="eyebrow">宝物整理パズル</small>
           <h1 data-t="title" data-wp-game-title data-runtime-localize="off">Animal Triple Match</h1>
-          <p data-t="pitch">Tap uncovered treasures and collect three of a kind before the seven-slot tray fills.</p>
+          <p data-t="pitch">覆われていない宝物を選び、トレイが埋まる前に同じ物を3個集めよう。</p>
           <span id="mainProgress">0 / 30</span>
-          <button id="startBtn" class="primary" type="button" data-t="start" data-wp-main-start data-runtime-localize="off">Start Game</button>
-          <a class="guide-jump" href="#publicGuide" data-t="guideLabel">Game guide</a>
+          <button id="startBtn" class="primary" type="button" data-t="start" data-wp-main-start data-runtime-localize="off">ゲーム開始</button>
+          <a class="guide-jump" href="#publicGuide" data-t="guideLabel">ゲームガイド</a>
         </div>
       </section>
     </main>
-    <section id="publicGuide" class="public-guide" aria-label="Game guide" data-t-aria="guideLabel">
-      <strong class="guide-label" data-t="guideLabel">Game guide</strong>
-      <small data-t="guideKicker">Original WeightPlay collection puzzle</small>
-      <h2 data-t="guideTitle">Read the pile. Protect the tray. Complete every trio.</h2>
-      <p data-t="guideIntro">Mimi's greenhouse shelves are overflowing with enchanted keepsakes. Only uncovered objects can move into the tray. Three matching objects vanish, but seven unmatched objects end the attempt.</p>
-      <div class="guide-grid">
-        <article><h3 data-t="howTitle">How to play</h3><ol><li data-t="how1">Tap an uncovered object to move it into the tray.</li><li data-t="how2">Collect three matching objects to clear them automatically.</li><li data-t="how3">Clear the complete pile before all seven tray slots are occupied.</li></ol></article>
-        <article><h3 data-t="chaptersTitle">Six rule chapters</h3><p data-t="chaptersText">Thirty stages introduce tangled vines, crystal shells, mystery wrapping, shifting shelves, tight trays, and finale piles that combine the rules.</p></article>
-        <article><h3 data-t="strategyTitle">Plan before tapping</h3><p data-t="strategyText">A tempting object can uncover a useful match. Keep one emergency slot open.</p></article>
-        <article><h3 data-t="trustTitle">Progress and privacy</h3><p data-t="trustText">Cleared stages, stars, and best tray space stay in this browser. No login or personal information is needed.</p></article>
-      </div>
+    <section id="publicGuide" class="game-page-info" data-wp-game-guide data-runtime-localize="off" aria-label="ゲームガイド" data-t-aria="guideLabel">
+      <div class="game-info-hero"><div class="game-info-title">
+      <small class="game-info-kicker" data-t="guideLabel">ゲームガイド</small>
+      <h2 data-wp-game-title data-runtime-localize="off">Animal Triple Match</h2>
+      <p data-t="guideIntro">温室には魔法の宝物が山積みです。上に物がない宝物だけを選べます。同じ物3個は消えますが、未一致の物7個で失敗です。</p>
+      </div></div>
+      <div class="game-info-sections">
+        <article class="game-info-section"><h3 data-t="howTitle">遊び方</h3><ol><li data-t="how1">覆われていない物をタップしてトレイへ。</li><li data-t="how2">同じ物3個で自動的に消えます。</li><li data-t="how3">7枠が埋まる前に山を空にします。</li></ol></article>
+        <article class="game-info-section"><h3 data-t="chaptersTitle">変化する棚</h3><p data-t="chaptersText">先の棚にはツタ、水晶の殻、隠された宝物、動く山が登場します。棚のルールを読んでから、揃える三つを選びましょう。</p></article>
+        <article class="game-info-section"><h3 data-t="strategyTitle">タップ前に計画</h3><p data-t="strategyText">ペアと上層を確認し、緊急用の空きを1つ残しましょう。</p></article>
+        <article class="game-info-section"><h3 data-t="trustTitle">進行とプライバシー</h3><p data-t="trustText">進行はこのブラウザーだけに保存され、ログインは不要です。</p></article>
+      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>宝物を選べないのはなぜですか？</dt><dd>別の有効な物が、まだ選択範囲を覆っています。</dd></div><div><dt>3個組はいつ消えますか？</dt><dd>3個目の同じ宝物がトレイに入るとすぐに消えます。</dd></div><div><dt>3個組が消えた後に空きは残りますか？</dt><dd>いいえ。残りの宝物が自動的に詰まります。</dd></div></dl></div></div>
     </section>
   </div>
 
-  <section id="stageScreen" class="active-screen stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/animal-triple-match-cover.webp" style="--wp-stage-art:url('../../assets/animal-triple-match-cover.webp')" hidden>
+  <section id="stageScreen" class="active-screen stage-canvas wp-stage-art-shell" data-wp-standard-stage-screen data-wp-logical-stage-canvas data-wp-canvas-max-width="920" data-wp-stage-art="../../assets/interface7-redrawn/animal-triple-match.webp" style="--wp-stage-art:url('../../assets/interface7-redrawn/animal-triple-match.webp')" hidden>
       <header class="stage-header">
-        <button id="stageBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="stage">&larr;</button>
-        <strong data-t="chooseStage">Choose a shelf</strong>
+        <button id="stageBack" class="back-btn" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="stage">&larr;</button>
+        <strong data-t="chooseStage">棚を選ぶ</strong>
       </header>
-      <div class="chapter-strip"><span data-t="chapter">Chapter</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
-      <div id="stageRail" class="stage-rail" aria-label="Stage selector" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
-      <p class="rail-hint" data-t="stageHint">Drag the shelf and choose an unlocked stage.</p>
-      <nav class="stage-tabs" aria-label="Stages" data-t-aria="stages">
+      <div class="chapter-strip"><span data-t="chapter">章</span><strong id="chapterName"></strong><small id="stageSummary"></small></div>
+      <div id="stageRail" class="stage-rail" aria-label="ステージ選択" data-t-aria="stageRailLabel" data-wp-stage-rail></div>
+      <p class="rail-hint" data-t="stageHint">ドラッグして解放済みステージを選択。</p>
+      <nav class="stage-tabs" aria-label="ステージ" data-t-aria="stages">
         <span aria-hidden="true"></span>
-        <button class="stage-tab" type="button" aria-current="page" data-t="stages">Stages</button>
+        <button class="stage-tab" type="button" aria-current="page" data-t="stages">ステージ</button>
         <span aria-hidden="true"></span>
       </nav>
   </section>
@@ -100,85 +102,64 @@
     <div class="physical-canvas"><div class="logical-canvas battle-canvas" data-wp-logical-battle-canvas data-wp-canvas-max-width="920">
       <div id="battleLive" class="battle-live">
         <header class="battle-header">
-          <button id="battleBack" class="back-btn" type="button" aria-label="Back" data-t-aria="back" data-wp-return="battle">&larr;</button>
+          <button id="battleBack" class="back-btn" type="button" aria-label="戻る" data-t-aria="back" data-wp-return="battle">&larr;</button>
           <div class="battle-title"><small id="stageLabel"></small><strong id="stageName" data-wp-game-title data-runtime-localize="off">Animal Triple Match</strong></div>
-          <div class="hud"><span><b data-t="left">Left</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
-          <button id="soundBtn" class="icon-btn" type="button" aria-label="Sound" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
-          <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="How to play" data-t-aria="help">?</button>
+          <div class="hud"><span><b data-t="left">残り</b><strong id="leftValue">0</strong></span><span><b id="starLabel">Star outlook</b><strong id="starValue" aria-live="polite">0</strong></span></div>
+          <button id="soundBtn" class="icon-btn" type="button" aria-label="サウンド" data-t-aria="sound" hidden tabindex="-1">&#x1F50A;</button>
+          <button id="helpBtn" class="icon-btn battle-utility" type="button" data-wp-battle-utility aria-label="遊び方" data-t-aria="help">?</button>
         </header>
-        <p id="objective" class="objective" data-t="objective">Match every treasure without filling the tray.</p>
-        <div id="board" class="board" aria-label="Treasure pile" data-t-aria="boardLabel"></div>
+        <p id="objective" class="objective" data-t="objective">トレイを満杯にせず全ての宝物を消そう。</p>
+        <div id="board" class="board" aria-label="宝物の山" data-t-aria="boardLabel"></div>
         <p id="feedback" class="feedback" aria-live="polite"></p>
-        <div class="tray-wrap"><span data-t="tray">Tray</span><div id="tray" class="tray" aria-label="Seven-slot tray" data-t-aria="trayLabel"></div></div>
+        <div class="tray-wrap"><span data-t="tray">トレイ</span><div id="tray" class="tray" aria-label="7枠トレイ" data-t-aria="trayLabel"></div></div>
         <nav class="tools">
-          <button id="undoBtn" type="button"><span class="tool-icon">&#x21B6;</span><span data-t="undo">Undo</span><b id="undoCount">2</b></button>
-          <button id="magnetBtn" type="button"><span class="tool-icon">&#x1F9F2;</span><span data-t="magnet">Pair Finder</span><b id="magnetCount">2</b></button>
-          <button id="shuffleBtn" type="button"><span class="tool-icon">&#x1F500;</span><span data-t="shuffle">Shuffle</span><b id="shuffleCount">2</b></button>
+          <button id="undoBtn" type="button"><span class="tool-icon">&#x21B6;</span><span data-t="undo">元に戻す</span><b id="undoCount">2</b></button>
+          <button id="magnetBtn" type="button"><span class="tool-icon">&#x1F9F2;</span><span data-t="magnet">ペア探し</span><b id="magnetCount">2</b></button>
+          <button id="shuffleBtn" type="button"><span class="tool-icon">&#x1F500;</span><span data-t="shuffle">シャッフル</span><b id="shuffleCount">2</b></button>
         </nav>
       </div>
 
       <section id="tutorialModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" hidden><div class="dialog-card">
-        <h2 id="tutorialTitle" data-t="tutorialTitle">Make room with trios</h2>
-        <ol><li data-t="tutorial1">Bright treasures are uncovered and ready to tap.</li><li data-t="tutorial2">Three matching treasures disappear from the seven-slot tray.</li><li data-t="tutorial3">Vines and crystal shells need one tap before the treasure can move.</li></ol>
-        <button id="tutorialClose" class="primary" type="button" data-t="continue">Continue</button>
+        <h2 id="tutorialTitle" data-t="tutorialTitle">3個組で空きを作ろう</h2>
+        <ol><li data-t="tutorial1">明るい宝物は選べます。</li><li data-t="tutorial2">同じ宝物3個はトレイから消えます。</li><li data-t="tutorial3">ツタと結晶は一度タップして解除します。</li></ol>
+        <button id="tutorialClose" class="primary" type="button" data-t="continue">続ける</button>
       </div></section>
 
       <section id="firstPlanModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="firstPlanTitle" hidden><div class="dialog-card first-plan-card">
-        <h2 id="firstPlanTitle" data-t="firstPlanTitle">A safe first plan</h2>
-        <p data-t="firstPlanText">Begin with an exposed pair or trio, then keep one tray slot open. You choose the order—nothing is selected for you.</p>
-        <button id="firstPlanClose" class="primary" type="button" data-t="firstPlanClose">Got it</button>
+        <h2 id="firstPlanTitle" data-t="firstPlanTitle">最初のペア作戦</h2>
+        <p data-t="firstPlanText">まずは見えているペアか3個組から始め、トレイを1枠空けておきましょう。順番はあなたが決めます。</p>
+        <button id="firstPlanClose" class="primary" type="button" data-t="firstPlanClose">わかりました</button>
       </div></section>
 
       <section id="leaveModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="leaveTitle" hidden><div class="dialog-card">
-        <h2 id="leaveTitle" data-t="leaveTitle">Leave this shelf?</h2>
-        <p data-t="leaveText">Continue keeps the exact pile. Returning to stages ends only this attempt.</p>
-        <div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">Continue</button><button id="leaveStage" type="button" data-t="returnStages">Return to stages</button></div>
+        <h2 id="leaveTitle" data-t="leaveTitle">この棚を離れますか？</h2>
+        <p data-t="leaveText">続けると山を保持します。ステージへ戻ると今回だけ終了します。</p>
+        <div class="dialog-actions"><button id="leaveContinue" class="primary" type="button" data-t="continue">続ける</button><button id="leaveStage" type="button" data-t="returnStages">ステージへ戻る</button></div>
       </div></section>
 
       <section id="resultModal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="resultTitle" hidden><div class="dialog-card result-card">
         <small id="resultKicker"></small><p id="resultReward" class="result-reward" aria-live="polite" hidden></p><h2 id="resultTitle"></h2><div id="resultStars" class="result-stars"></div><p id="resultText"></p>
-        <div class="next-plan"><b data-t="nextPlan">Next shelf</b><span id="planText"></span><span id="masteryTarget" class="mastery-target" aria-live="polite"></span><span id="chapterPreview" class="chapter-preview" aria-live="polite" hidden></span></div>
-        <div class="dialog-actions result-actions"><button id="resultStages" type="button" data-t="stages">Stages</button><button id="nextBtn" class="primary" type="button" data-t="next">Next Stage</button><button id="retryBtn" type="button" data-t="retry">Retry</button></div>
+        <div class="next-plan"><b data-t="nextPlan">次の棚の作戦</b><span id="planText"></span><span id="masteryTarget" class="mastery-target" aria-live="polite"></span><span id="chapterPreview" class="chapter-preview" aria-live="polite" hidden></span></div>
+        <div class="dialog-actions result-actions"><button id="resultStages" type="button" data-t="stages">ステージ</button><button id="nextBtn" class="primary" type="button" data-t="next">次のステージ</button><button id="retryBtn" type="button" data-t="retry">再挑戦</button></div>
       </div></section>
     </div></div>
     <div class="ad-reserve" aria-hidden="true"></div>
   </section>
 
+  </div>
   <script src="../../src/site-config.js"></script>
   <script>window.WONDER_SITE.localization.useLocaleRoutes=false;</script>
   <script src="/src/i18n-ja.js?v=20260719-ja1"></script>
-  <script src="/src/i18n.js?v=20260906-lobby-pagination1"></script>
+  <script src="/src/i18n.js?v=20260721-locale13-1"></script>
   <script src="/src/runtime-locales/ja.js?v=20260910-auto-squad-relic-free-v1"></script>
   <script src="/src/game-runtime-localizer.js?v=20260721-pattern1"></script>
   <script src="../../src/analytics.js"></script>
   <script src="../../src/stage-selector-standard.js?v=20260809-stage-v6-2" data-wp-stage-standard></script>
+  <link rel="stylesheet" href="../../src/game-screen-frame.css?v=20260911-sound-control">
+  <script src="../../src/game-screen-frame.js?v=20260911-sound-control"></script>
+  <script src="frame.js?v=triple-block-v22"></script>
   <script src="game.js?v=20260910-triple-match-main-v21"></script>
   <script src="../../src/battle-canvas-standard.js?v=20260720-canvas-max920-1" data-wp-battle-standard></script>
-  <script src="../../src/game-shell-controls-standard.js?v=20260908-approved-game-names1"></script>
-<section class="game-page-info game-page-info-static" aria-label="Animal Triple Match ゲーム情報">
-
-    <div class="game-info-hero">
-      <div class="game-info-title"><span class="game-info-kicker">WeightPlay オリジナルゲームガイド</span><h2 data-wp-game-title data-runtime-localize="off">Animal Triple Match</h2><p>Move uncovered objects from a layered pile into a seven-slot tray and collect three identical objects before unmatched singles fill every slot.</p></div>
-      <div class="game-info-facts"><div class="game-info-fact"><span>ゲーム内容</span><strong>Layered Object Triple Puzzle</strong></div><div class="game-info-fact"><span>ジャンル</span><strong>Puzzle · Strategy · Animal</strong></div><div class="game-info-fact"><span>難易度</span><strong>Easy to Challenging</strong></div><div class="game-info-fact"><span>目安時間</span><strong>2-8 分 per stage</strong></div><div class="game-info-fact"><span>身につく力</span><strong>論理力 · 計画力 · 問題解決</strong></div></div>
-    </div>
-
-    <div class="game-info-sections">
-      <div class="game-info-section"><h3>世界とミッション</h3><p>Thirty forest piles hide animal supplies beneath overlapping layers. A visible object can move only when no active object covers its selection point.</p>
-<p>The tray is both workspace and danger meter: every choice reveals more of the pile but may consume space needed for a later triple.</p></div>
-      <div class="game-info-section"><h3>ゲームの仕組み</h3><p>Tap an uncovered object to place it in the next tray slot.</p>
-<p>Three identical objects clear automatically, close the tray gap, and expose the remaining capacity.</p>
-<p>Covered objects remain visible but cannot be selected until their blockers move.</p>
-<p>Later chapters add vines, crystal shells, mystery wrapping, shifting shelves, tighter trays, and combined finale piles.</p></div>
-      <div class="game-info-section"><h3>遊び方</h3><ol><li>Choose an unlocked stage.</li><li>Inspect the top layer and identify an accessible pair or triple.</li><li>Move objects into the tray while preserving at least one recovery slot.</li><li>Clear the full pile before all tray slots hold unmatched objects.</li></ol></div>
-      <div class="game-info-section game-info-strategy"><h3>攻略のヒント</h3><ul><li>Prefer an object that reveals several covered items.</li><li>Track pairs already in the tray before adding a new singleton type.</li><li>Delay mystery objects when a known triple is available.</li><li>Use Hint to identify legal access, then decide whether the tray can support that move.</li></ul></div>
-      <div class="game-info-section"><h3>進行と難易度</h3><p>Six five-stage chapters introduce one rule family at a time before the final chapter combines them.</p>
-<p>Difficulty grows through layer dependencies and tray pressure, not a hidden timer.</p></div>
-      <div class="game-info-section"><h3>開発者メモ</h3><p>Large objects, stable overlap shadows, visible tray order, and automatic triple motion make each consequence readable without flashing the whole board. 完全なインターフェースは、最大幅 920 ピクセルの中央揃えされた一つの論理レイアウトを使用します。スマートフォン、横画面、デスクトップでは、個々の要素を引き伸ばすのではなく、同じ操作部、当たり判定、アート、ゲーム座標をまとめて拡大縮小します。そのためタッチ、マウス、キーボードは同じ合法な状態を操作します。Main のポスターとゲーム開始操作は Stage 管理から分離され、Stage 選択、Battle、ダイアログ、Result はそれぞれの範囲内の内容と戻り道を保ちます。</p></div>
-      <div class="game-info-section game-info-parent"><h3>保護者向け</h3><p>No account, purchase, countdown, or public leaderboard is required. Clears, stars, and local best tray space stay in this browser. アカウントを作成せずに遊べます。進行状況はオンラインアカウントや端末間データベースではなく、現在のブラウザプロファイルのローカルストレージに保存されます。サイトデータの消去、プライベートブラウジング、ブラウザの変更、別の端末への移行によって、別のセーブが作られたり既存のセーブが削除されたりすることがあります。ブラウザが保存を許可している場合、言語、サウンド、動きを減らす設定は WeightPlay 共通コントロールに従います。ガイドの結果はいかなる医療、学校、専門的な評価でもありません。</p></div>
-      <div class="game-info-section"><h3>よくある質問</h3><dl><div><dt>Why can I not select an object?</dt><dd>Another active object still covers it.</dd></div><div><dt>When does a triple clear?</dt><dd>Immediately after the third identical object enters the tray.</dd></div><div><dt>Do tray gaps remain?</dt><dd>No, remaining objects close together.</dd></div><div><dt>Are stages random?</dt><dd>No, each pile and rule set is authored.</dd></div><div><dt>Which controls and screen sizes are supported?</dt><dd>The same rules support touch, mouse, and keyboard where the game uses those inputs. The interface scales as one logical layout across the required phone, landscape, and desktop viewports.</dd></div><div><dt>Can progress move automatically to another device?</dt><dd>No. This game currently saves to local browser storage only, so another browser profile or device begins with its own separate local progress unless a future account system is added.</dd></div></dl></div>
-
-    </div>
-  </section>
   <script data-wp-ja-route>window.addEventListener("load",()=>{const h=document.querySelector("h1[data-ui='title'], h1");if(h)h.textContent="Animal Triple Match";document.title="Animal Triple Match | WeightPlay";},{once:true});</script>
 </body>
 </html>
