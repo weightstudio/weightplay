@@ -1041,10 +1041,10 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
   ];
 
   const spriteAssets = {
-    cat: "assets/block-v31/cat.png",
-    dog: "assets/block-v31/dog.png",
-    owl: "assets/block-v31/owl.png",
-    fox: "assets/block-v31/fox.png",
+    cat: "assets/lion-archer-block-v32.png",
+    dog: "assets/turtle-sentinel-block-v32.png",
+    owl: "assets/owl-mage-block-v32.png",
+    fox: "assets/fox-ranger-block-v32.png",
     normal: "assets/block-v31/normal.png",
     fast: "assets/block-v31/fast.png",
     shield: "assets/block-v31/shield.png",
@@ -3619,7 +3619,7 @@ const ANIMAL_GUARD_YARD_SHELL_COPY = {
       "../../assets/interface7-redrawn/animal-guard-yard.webp",
       ...Object.values(spriteAssets),
       "assets/block-v31/rally.png",
-      "assets/block-v31/cat.png",
+      "assets/lion-archer-block-v32.png",
       "assets/block-v31/coin.png",
       "assets/block-v31/coin.png",
       diamondIcon,

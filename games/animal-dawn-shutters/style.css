@@ -27,7 +27,6 @@
 #mainScreen{position:relative;}
 #mainScreen .settings-panel{position:absolute;top:66px;right:18px;z-index:20;width:min(280px,calc(100% - 36px));max-height:calc(100dvh - 78px);margin:0;padding:14px;overflow:auto;}
 #stageScreen,#battleScreen{position:fixed;inset:0 0 56px;width:min(100vw,920px);height:calc(100dvh - 56px);min-height:0;margin:0 auto;padding:env(safe-area-inset-top) 18px 14px;overflow:auto;z-index:10;background:#f5f0e7;}
-#stageScreen{--wp-stage-art:url('assets/animal-dawn-shutters-cover-v2.png');}
 #stageScreen .stage-canvas,#battleScreen .battle-canvas{width:100%;min-height:calc(100% - 58px);margin:0 auto;}
 #stageScreen .panel-head,#battleScreen .panel-head{padding:0 0 10px;border-bottom:1px solid #dfd3bd;}
 #stageScreen .panel-head .back-btn,#battleScreen .panel-head .back-btn{width:58px;min-height:48px;padding:0;}
